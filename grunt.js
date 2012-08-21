@@ -165,8 +165,8 @@ module.exports = function(grunt) {
         files: {
           'NUSMods-Offline.zip': [
             'css/*.main.css',
+            'css/*.gif',
             'css/*.png',
-            'css/spinner.gif',
             'e3/**',
             'fonts/*',
             'index.html',
