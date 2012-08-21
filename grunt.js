@@ -146,10 +146,11 @@ module.exports = function(grunt) {
       'js/mod_info_tt.js': 'js/mod_info_tt.js'
     },
     rev: {
-      css: 'css/main.css',
+      css: 'css/*',
       js: 'js/*.js'
     },
     usemin: {
+      css: 'css/*.main.css',
       html: 'index.html'
     },
     html: {
@@ -164,7 +165,7 @@ module.exports = function(grunt) {
         files: {
           'NUSMods-Offline.zip': [
             'css/*.main.css',
-            'css/select2.png',
+            'css/*.png',
             'css/spinner.gif',
             'e3/**',
             'fonts/*',
