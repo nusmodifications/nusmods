@@ -69,7 +69,7 @@ module.exports = (grunt) ->
 
     grunt.utils.async.series
       correctAsAt: (callback) ->
-        getCached CORS_BASE + 'ModuleInfoListing.jsp?fac_c=10', (data) ->
+        get CORS_BASE + 'ModuleInfoListing.jsp?fac_c=10', (data) ->
           re = /Correct as at ([^<]+)</
           if match = re.exec data
             if !options.refresh? && fs.existsSync(options.dest) &&
