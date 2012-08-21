@@ -17,14 +17,14 @@ module.exports = (grunt) ->
 
   protocol = 'http:': http, 'https:': https
 
-  get = (urlStr, callback, cache = false) ->
+  get = (urlStr, callback) ->
     urlObj = url.parse urlStr
     protocol[urlObj.protocol].get urlObj, (res) ->
       if res.statusCode == 200
         data = ''
         res.on 'data', (chunk) -> data += chunk
         res.on 'end', -> callback data
-        res.pipe fs.createWriteStream(cachePath(urlStr)) if cache
+        res.pipe fs.createWriteStream(cachePath(urlStr))
       else
         grunt.warn "#{res.statusCode} while getting #{urlStr}."
     .on 'error', (err) -> grunt.warn "#{err} while getting #{urlStr}."
@@ -36,13 +36,13 @@ module.exports = (grunt) ->
   , 64
 
   getCached = (urlStr, callback) ->
-    return get urlStr, callback, true if options.refresh
+    return get urlStr, callback if options.refresh
     cachedPath = cachePath urlStr
     fs.stat cachedPath, (err, stats) ->
       if !err && stats.mtime > cacheThreshold
         queue.push cachedPath, callback
       else
-        get urlStr, callback, true
+        get urlStr, callback
 
   get$ = (urlStr, callback) ->
     getCached urlStr, (data) -> callback cheerio.load(data)
