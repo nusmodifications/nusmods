@@ -72,10 +72,14 @@ module.exports = (grunt) ->
         get CORS_BASE + 'ModuleInfoListing.jsp?fac_c=10', (data) ->
           re = /Correct as at ([^<]+)</
           if match = re.exec data
-            if !options.refresh? && fs.existsSync(options.dest) &&
-            match[1] != grunt.file.readJSON(options.dest).correctAsAt
-              options.refresh = true
-            callback null, match[1]
+            if !options.refresh? && fs.existsSync(options.dest)
+              prevCorrectAsAt = grunt.file.readJSON(options.dest).correctAsAt
+              currCorrectAsAt = match[1]
+              if prevCorrectAsAt != currCorrectAsAt
+                grunt.log.write "CORS update: #{prevCorrectAsAt} "
+                grunt.log.ok currCorrectAsAt
+                options.refresh = true
+            callback null, currCorrectAsAt
           else
             grunt.warn "#{re} not found."
       departments: (callback) ->
