@@ -14,7 +14,11 @@ module.exports = function(grunt) {
         options = url.parse(this.file.src);
         options.headers = {'accept-encoding': 'gzip,deflate'};
     fs.stat(dest, function(err, stats) {
-      if(!err) options.headers['If-Modified-Since'] = stats.mtime.toUTCString();
+      if(err)
+        // creates intermediate directories if necessary
+        grunt.file.write(dest, '');
+      else
+        options.headers['If-Modified-Since'] = stats.mtime.toUTCString();
       protocol[options.protocol].get(options, function(res) {
         if(res.statusCode == 200) {
           grunt.log.writeln(src + ' last modified ' +
