@@ -1,0 +1,376 @@
+@import "reset.less";
+@import "variables.less";
+@linkColor: #f60;
+@linkColorHover: darken(@linkColor, 15%);
+@import "mixins.less";
+@import "scaffolding.less";
+@import "grid.less";
+@import "layouts.less";
+@import "type.less";
+@import "forms.less";
+@import "tables.less";
+@import "font-awesome.less";
+@import "dropdowns.less";
+@import "component-animations.less";
+@import "close.less";
+@import "buttons.less";
+@import "button-groups.less";
+@import "alerts.less";
+@import "navs.less";
+@import "navbar.less";
+@import "modals.less";
+@import "progress-bars.less";
+@import "utilities.less";
+@import "responsive-utilities.less";
+@import "responsive-767px-max.less";
+@import "responsive-768px-979px.less";
+@import "responsive-1200px-min.less";
+
+@import "timetable.less";
+
+// Layout
+html {
+  overflow-y: scroll; // prevent jumps when switching tabs
+}
+body {
+  padding-top: 60px;
+}
+.tab-content {
+  margin-top: -5px;
+  overflow: visible;
+}
+
+// Navbar
+.navbar-fixed-top {
+  background-color: #fff;
+  .opacity(90);
+}
+.nav {
+  margin-bottom: 0;
+  padding: 5px 0 0 20px;
+}
+
+// Social Bar
+#social-bar {
+  position: fixed;
+  top: 11px;
+  left: 50%;
+  margin-left: -140px;
+}
+#notice {
+  font-size: 11px;
+}
+#fb-like,
+#social-buttons {
+  position: absolute;
+  top: 0;
+}
+#social-buttons {
+  left: 275px;
+}
+#fb-like {
+  left: 90px;
+}
+@media (max-width: 979px) {
+  #notice {
+    display: none;
+  }
+  #social-buttons {
+    left: 125px;
+  }
+}
+@media (max-width: 639px) {
+  #social-bar {
+    display: none;
+  }
+}
+
+// NUSMods Beta Logo
+.logo {
+  position: fixed;
+  top: 7px;
+  right: 20px;
+  text-align: right;
+  color: @linkColor;
+  font-weight: bold;
+  font-size: 24px;
+  &:hover {
+    color: @linkColor;
+    text-decoration: none;
+  }
+  .beta {
+    display: block;
+    margin-top: -4px;
+    font-size: 9px;
+  }
+  .mods {
+    color: @grayLight;
+  }
+}
+
+// Loading Overlay
+#overlay {
+  background-color: @white;
+  opacity: 1;
+  top: 50px;
+}
+#loading {
+  position: fixed;
+  left: 50%;
+  margin-left: -100px;
+  top: 220px;
+  width: 200px;
+  z-index: @zindexModal;
+  font-weight: bold;
+  text-align: center;
+}
+
+// Select2
+#select2-header {
+  float: left;
+}
+#clear-all {
+  float: right;
+}
+.select2-container-multi {
+  margin-bottom: 9px;
+  .select2-choices {
+    border-color: @inputBorder;
+    .border-radius(3px);
+    .select2-search-choice {
+      margin: 4px;
+      padding: 4px 5px 4px 18px;
+    }
+    li {
+      float: none;
+    }
+  }
+}
+.select2-dropdown-open .select2-choices {
+  .border-radius(3px 3px 0 0);
+}
+.select2-drop-above .select2-choices {
+  .border-radius(0 0 3px 3px);
+}
+.select2-container-multi.select2-container-active .select2-choices,
+input[type="text"]:focus {
+  border-color: rgba(255,102,0,0.6);
+  .box-shadow(~"inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(255,102,0,0.6)");
+}
+.select2-search-choice-close {
+  top: 5px;
+}
+.select2-results .select2-highlighted {
+  background: none repeat scroll 0 0 @linkColor;
+}
+
+// Module Finder Sidebar
+@media (max-width: 768px) {
+  #sidebar #clear-all {
+    float: left;
+  }
+}
+.exhibit-facet-body {
+  .border-radius(3px);
+  font-size: 12px;
+}
+.exhibit-text-facet {
+  padding-right: 10px;
+}
+
+// Sidebar Toggling
+#sidebar-toggle {
+  position: fixed;
+  left: 4px;
+  bottom: 4px;
+  font-size: 24px;
+  text-decoration: none;
+}
+.no-sidebar {
+  margin-left: 0 !important;
+}
+
+// Module Finder Content
+#content {
+  .exhibit-flowingFacet {
+    .exhibit-flowingFacet-value {
+      clear: none;
+      float: left;
+      margin: 0 0 5px 3px;
+    }
+    .exhibit-flowingFacet-header {
+      float: left;
+      padding: 0;
+      width: 35px;
+    }
+    .exhibit-flowingFacet-value-checkbox {
+      float: left;
+      position: relative;
+      top: -2px;
+      left: 0;
+    }
+  }
+}
+.exhibit-viewPanel {
+  margin-top: 30px;
+}
+.btn-mini {
+  font-size: 13px;
+}
+td.code, td.mc {
+  text-align: center !important;
+}
+td.code {
+  font-weight: bold;
+  width: 70px;
+}
+td.exam {
+  min-width: 70px;
+}
+td.details {
+  .buttons {
+    float: right;
+  }
+  .ivle {
+    margin-right: 3px;
+  }
+  .desc {
+    margin-top: 3px !important;
+  }
+}
+
+// Timetable
+#timetable {
+  .user-select(none);
+}
+colgroup.hover {
+  background-color: @tableBackgroundHover;
+}
+#sat {
+  display: none;
+}
+.lesson {
+  &:hover {
+    cursor: not-allowed;
+  }
+  &.active {
+    .opacity(60);
+  }
+  &.hover {
+    .opacity(100);
+  }
+}
+.ui-draggable {
+  .border-radius(8px);
+  &:hover {
+    cursor: move;
+  }
+}
+
+// Timetable Controls
+#timetable-controls {
+  #exam-timetable,
+  #selected-mods {
+    margin-top: 45px;
+  }
+  label {
+    float: left;
+    font-weight: bold;
+    padding: 5px 10px 0 0;
+  }
+}
+
+// Export, Share, Exam Timetable
+#export-share-exams-container {
+  float: left;
+  margin: 0 16px;
+}
+
+#export-share-container {
+  width: 100%;
+}
+
+#export-timetable {
+  float: left;
+  margin-right: 20px;
+}
+.dropdown-menu i {
+  font-size: 16px;
+}
+
+#share-container {
+  float: right;
+  position: relative;
+  .btn {
+    font-size: 16px;
+    width: 36px;
+  }
+  .input-append {
+    float: right;
+  }
+}
+#copy-to-clipboard.hover {
+  color: @grayDark;
+  text-decoration: none;
+  background-color: darken(@white, 10%);
+  *background-color: darken(@white, 15%);
+  background-position: 0 -15px;
+  .transition(background-position .1s linear);
+}
+#copy-to-clipboard.active {
+  border-color: transparent;
+}
+#short-url {
+  cursor: auto;
+  width: 155px;
+}
+
+#exam-timetable {
+  border: 1px solid @gray;
+  font-weight: bold;
+  th {
+    border: 1px solid @gray;
+    background-color: @grayLighter;
+  }
+  td {
+    border: 1px solid @gray;
+    &:first-child {
+      text-align: right;
+    }
+  }
+  tr.clash {
+    background-color: @grayLighter;
+  }
+  tr:hover td {
+    background-color: transparent;
+  }
+}
+.clash {
+  color: red;
+}
+
+// Show / Hide, Selected Modules
+#show-hide-selected-mods-container {
+  float: left;
+  margin-left: 16px;
+  width: 355px;
+}
+#show-hide .btn-group {
+  float: right;
+}
+
+// Footer
+footer {
+  position: relative;
+}
+.github-buttons {
+  left: 50%;
+  margin-left: -140px;
+  position: absolute;
+  top: 0;
+}
+@media (max-width: 799px) {
+  .github-buttons {
+    display: none;
+  }
+}
