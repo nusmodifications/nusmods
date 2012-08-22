@@ -6,9 +6,6 @@ module.exports = (grunt) ->
   path = require 'path'
   url = require 'url'
 
-  # Conservative throttling
-  http.globalAgent.maxSockets = https.globalAgent.maxSockets = 1
-
   cacheThreshold = options = undefined
 
   cachePath = (urlStr) ->
@@ -55,13 +52,15 @@ module.exports = (grunt) ->
     options = grunt.utils._.defaults grunt.config(this.name),
       cachePath: 'cache'
       dest: 'mod_info.json'
-      maxCacheAge: 2 * 86400, # in seconds
+      maxCacheAge: 2 * 86400 # in seconds
+      maxConcurrentSockets: 8
       nusBulletin: false
-      refresh: undefined,
+      refresh: undefined
     options.nusBulletin = true if this.flags.nusBulletin
     options.refresh = true if this.flags.refresh
 
     cacheThreshold = new Date(Date.now() - options.maxCacheAge * 1000)
+    http.globalAgent.maxSockets = https.globalAgent.maxSockets = options.maxConcurrentSockets
 
     grunt.file.mkdir options.cachePath
 
@@ -72,9 +71,9 @@ module.exports = (grunt) ->
         get CORS_BASE + 'ModuleInfoListing.jsp?fac_c=10', (data) ->
           re = /Correct as at ([^<]+)</
           if match = re.exec data
+            currCorrectAsAt = match[1]
             if !options.refresh? && fs.existsSync(options.dest)
               prevCorrectAsAt = grunt.file.readJSON(options.dest).correctAsAt
-              currCorrectAsAt = match[1]
               if prevCorrectAsAt != currCorrectAsAt
                 grunt.log.write "CORS update: #{prevCorrectAsAt} "
                 grunt.log.ok currCorrectAsAt

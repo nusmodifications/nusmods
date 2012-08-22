@@ -5,7 +5,8 @@ module.exports = function(grunt) {
     crawl: {
       cachePath: 'cache',
       dest: 'json/mod_info.json',
-      maxCacheAge: 2 * 86400 // in seconds
+      maxCacheAge: 2 * 86400, // in seconds
+      maxConcurrentSockets: 8
     },
     download: {
       'json/mod_info.json': 'http://nusmods.com/json/mod_info.json'
