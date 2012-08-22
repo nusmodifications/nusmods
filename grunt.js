@@ -147,6 +147,7 @@ module.exports = function(grunt) {
     },
     rev: {
       css: 'css/*',
+      fonts: 'fonts/*',
       js: 'js/*.js'
     },
     usemin: {
