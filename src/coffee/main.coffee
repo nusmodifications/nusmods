@@ -41,10 +41,41 @@ Date.prototype.toISOString ||= `function(a){
      '$3-$1-$2T$4.$5Z')
 }`
 
+days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+daysAbbrev = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat']
+
+lessonTypes = [
+  'Design Lecture',
+  'Laboratory',
+  'Lecture',
+  'Packaged Lecture',
+  'Packaged Tutorial',
+  'Recitation',
+  'Sectional Teaching',
+  'Seminar-Style Module Class',
+  'Tutorial',
+  'Tutorial Type 2',
+  'Tutorial Type 3'
+]
+
+typeAbbrev = [
+  'LEC',
+  'LAB',
+  'LEC',
+  'LEC',
+  'TUT',
+  'REC',
+  'SEC',
+  'SEM',
+  'TUT',
+  'TUT2',
+  'TUT3'
+]
+
 modIndexes = {}
 getModIndex = (code) -> modIndexes[code.split(' ')[0]]
 modsLength = modInfoTT.code.length
-days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+
 examStr = []
 do ->
   modIndexes[code.split(' ')[0]] = i for code, i in modInfoTT.code
@@ -270,6 +301,8 @@ $ ->
       $('#dl-html').attr 'href', 'data:text/html,' + htmlTimetable
       $('#dl-ical').attr 'href', 'data:text/calendar,' +
         encodeURIComponent iCalendar()
+      $('#dl-xls').attr 'href', 'data:application/vnd.ms-excel,' +
+        encodeURIComponent SpreadsheetML()
 
   $('#export-timetable-action').click showModal
   $('#jpg-file').click ->
@@ -295,9 +328,15 @@ $ ->
         alert 'No modules to export!'
         return false
       $(this).attr 'href', 'data:text/calendar,' + encodeURIComponent iCalendar()
+    $('#xls-file').click ->
+      if !exams.length
+        alert 'No modules to export!'
+        return false
+      $(this).attr 'href', 'data:application/vnd.ms-excel,' + encodeURIComponent SpreadsheetML()
   else
     $('#html-file').click showModal
     $('#ical-file').click showModal
+    $('#xls-file').click showModal
 
   if dlAttrSupported || fileURI || !flash10
     if !dlAttrSupported
@@ -312,6 +351,11 @@ $ ->
     $('#dl-ical-container').downloadify
       data: iCalendar
       filename: 'My NUSMods.com Timetable.ics'
+      height: 28
+      width: 96
+    $('#dl-xls-container').downloadify
+      data: SpreadsheetML
+      filename: 'My NUSMods.com Timetable.xls'
       height: 28
       width: 96
 
@@ -394,6 +438,33 @@ iCalendar = ->
     i++
   v.join('\r\n')
 
+SpreadsheetML = ->
+  xml = '<?xml version="1.0"?><Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"><Styles><Style ss:ID="Default"><Alignment ss:Horizontal="Center" ss:Vertical="Center" ss:WrapText="1"/></Style><Style ss:ID="b"><Font ss:FontName="Calibri" ss:Size="12" ss:Bold="1"/><NumberFormat ss:Format="0000"/></Style></Styles><Worksheet ss:Name="My NUSMods.com Timetable"><Table ss:DefaultColumnWidth="35"><Column ss:Width="65"/><Row><Cell ss:Index="2" ss:MergeAcross="1" ss:StyleID="b"><Data ss:Type="Number">800</Data></Cell><Cell ss:MergeAcross="1" ss:StyleID="b"><Data ss:Type="Number">900</Data></Cell><Cell ss:MergeAcross="1" ss:StyleID="b"><Data ss:Type="Number">1000</Data></Cell><Cell ss:MergeAcross="1" ss:StyleID="b"><Data ss:Type="Number">1100</Data></Cell><Cell ss:MergeAcross="1" ss:StyleID="b"><Data ss:Type="Number">1200</Data></Cell><Cell ss:MergeAcross="1" ss:StyleID="b"><Data ss:Type="Number">1300</Data></Cell><Cell ss:MergeAcross="1" ss:StyleID="b"><Data ss:Type="Number">1400</Data></Cell><Cell ss:MergeAcross="1" ss:StyleID="b"><Data ss:Type="Number">1500</Data></Cell><Cell ss:MergeAcross="1" ss:StyleID="b"><Data ss:Type="Number">1600</Data></Cell><Cell ss:MergeAcross="1" ss:StyleID="b"><Data ss:Type="Number">1700</Data></Cell><Cell ss:MergeAcross="1" ss:StyleID="b"><Data ss:Type="Number">1800</Data></Cell><Cell ss:MergeAcross="1" ss:StyleID="b"><Data ss:Type="Number">1900</Data></Cell><Cell ss:MergeAcross="1" ss:StyleID="b"><Data ss:Type="Number">2000</Data></Cell><Cell ss:MergeAcross="1" ss:StyleID="b"><Data ss:Type="Number">2100</Data></Cell><Cell ss:MergeAcross="1" ss:StyleID="b"><Data ss:Type="Number">2200</Data></Cell><Cell ss:MergeAcross="1" ss:StyleID="b"><Data ss:Type="Number">2300</Data></Cell></Row>'
+  for dayAbbrev, i in daysAbbrev
+    rows = $("##{dayAbbrev} > tr")
+    for j in [rows.length - 1..1] by -1
+      row = rows[j]
+      rows.splice j, 1 if !$(row).find('.lesson').length
+    for row, j in rows
+      xml += '<Row ss:Height="60">'
+      if !j
+        xml += '<Cell '
+        xml += 'ss:MergeDown="' + (rows.length - 1) + '" ' if rows.length > 1
+        xml += 'ss:StyleID="b"><Data ss:Type="String">' + days[i] +
+               '</Data></Cell>'
+      for el in $(row).find('.lesson')
+        lesson = $(el).data('lesson')
+        xml += '<Cell ss:Index="' + (Math.round(lesson.start / 50) - 14)
+        if lesson.duration > 1
+          xml += '" ss:MergeAcross="' + (lesson.duration - 1)
+        xml += '"><Data ss:Type="String">' + lesson.shortCode + '&#13;' +
+               typeAbbrev[lesson.type] + ' ' + lesson.group + '&#13;' +
+               lesson.room
+        xml += '&#13;' +  lesson.weekStr if lesson.week
+        xml +=  '</Data></Cell>'
+      xml += '</Row>'
+  xml + '</Table></Worksheet></Workbook>'
+
 examKey = (examTime) ->
   return if !examTime || examTime == 'No Exam'
   hour = +examTime[11]
@@ -471,35 +542,7 @@ removeMod = (code) ->
       lesson.detach(true) for lesson in lessons
   delete timetable[code]
 
-lessonTypes = [
-  'Design Lecture',
-  'Laboratory',
-  'Lecture',
-  'Packaged Lecture',
-  'Packaged Tutorial',
-  'Recitation',
-  'Sectional Teaching',
-  'Seminar-Style Module Class',
-  'Tutorial',
-  'Tutorial Type 2',
-  'Tutorial Type 3'
-]
-
 class Lesson
-  dayAbbrev = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat']
-  typeAbbrev = [
-    'LEC',
-    'LAB',
-    'LEC',
-    'LEC',
-    'TUT',
-    'REC',
-    'SEC',
-    'SEM',
-    'TUT',
-    'TUT2',
-    'TUT3'
-  ]
   weeks = ['Every Week', 'Odd Weeks', 'Even Weeks']
   constructor: ([@week, @day, @start, @end, @room], obj) ->
     $.extend this, obj
@@ -507,24 +550,24 @@ class Lesson
     @start) / 50)
     @room = modInfoTT.rooms[@room]
     @typeName = lessonTypes[@type]
-    week = if typeof @week == 'number' then weeks[@week] else "Weeks #{@week}"
+    @weekStr = if typeof @week == 'number' then weeks[@week] else "Weeks #{@week}"
     @shortCode = @code.split(' ')[0]
     @queryString = "#{@shortCode}=#{if @type == '10' then 'A' else @type}#{@group}"
-    @dayAbbrev = dayAbbrev[@day]
+    @dayAbbrev = daysAbbrev[@day]
     @el = $('<div>',
       class: "lesson color#{@color}"
       html: "<div><span class='code'>#{@shortCode}</span> " +
             "<span class='title'>#{@title}</span></div>" +
             "#{typeAbbrev[@type]} <span class='group'>[#{@group}]</span>" +
             "<div class='room'>#{@room}</div>" +
-            "<div class='week'>#{if @week then week else ''}</div>")
+            "<div class='week'>#{if @week then @weekStr else ''}</div>")
     .data('lesson', this)
     .qtip
       content: "<strong>#{@code}</strong><br>" +
                "#{@title}<br>" +
                "#{@typeName} Group #{@group}<br>" +
                "#{days[@day]} #{@start} - #{@end}<br>" +
-               "#{week} @ #{@room}"
+               "#{@weekStr} @ #{@room}"
       position:
         my: 'left center'
         at: 'right center'

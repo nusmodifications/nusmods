@@ -652,6 +652,11 @@
                   </button>
                   <ul class="dropdown-menu">
                     <li>
+                      <a download="My NUSMods.com Timetable.xls" href="#" id="xls-file">
+                        <i class="icon-file-excel"></i>&nbsp;Excel File
+                      </a>
+                    </li>
+                    <li>
                       <a download="My NUSMods.com Timetable.html" href="#" id="html-file">
                         <i class="icon-globe"></i>&nbsp;HTML File
                       </a>
@@ -746,10 +751,10 @@
     <div class="modal-body">
       <div class="alert alert-block hide" id="save-link-as-instructions">
         <h4 class="alert-heading">Warning!</h4>
-        <p>For HTML / iCalendar files, you need to&nbsp;<strong>Right-Click
-        Download &rarr; Save Link As / Download Linked File
+        <p>For Excel / HTML / iCalendar files, you need to&nbsp;<strong>
+        Right-Click Download &rarr; Save Link As / Download Linked File
         As</strong>&nbsp;then rename the file with the appropriate extension
-        (.html / .ics).</p>
+        (.html / .ics / .xls).</p>
         <p>If you install the latest&nbsp;<span class="hide" id="afp-or">Flash
         Player or&nbsp;</span>Google Chrome, you will be able to just click
         Download instead. (These files are generated directly using your
@@ -780,6 +785,14 @@
       <p><strong>Note:</strong>&nbsp;For the above files, Code / Group / Room /
       Title / Week will be shown or hidden as you have selected in the timetable
       displayed.</p>
+      <h4><i class="icon-file-excel"></i>&nbsp;Excel File (.xls)&nbsp;
+      <small>Using Excel 2003 XML (SpreadsheetML) format</small></h4>
+      <div id="dl-xls-container">
+        <a class="btn btn-warning" download="My NUSMods.com Timetable.xls"
+        href="#" id="dl-xls">
+          <i class="icon-download-alt"></i>&nbsp;Download
+        </a>
+      </div>
       <h4><i class="icon-calendar"></i>&nbsp;iCalendar File
       (.ics)&nbsp;<small>For import into Google Calendar, iCal, Outlook,
       etc.</small></h4>
