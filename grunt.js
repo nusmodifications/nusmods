@@ -207,6 +207,13 @@ module.exports = function(grunt) {
     grunt.helper('node-build-script-copy', src, dest, ['.buildignore'], cb);
   });
 
+  // Override to handle ? and # in CSS url() references
+  grunt.registerHelper('usemin:post:css', function(content) {
+    grunt.log.writeln('Update the CSS with new img filenames');
+    content = grunt.helper('replace', content, /url\(\s*['"]([^"'?#]+)[^"']*["']\s*\)/gm);
+    return content;
+  });
+
   grunt.loadTasks('tasks');
   grunt.registerTask('dev', 'coffee less concat');
   grunt.registerTask('default', 'download jsify dev clean mkdirs css min ' +
