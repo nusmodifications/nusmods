@@ -138,8 +138,8 @@ body {
     border-color: @inputBorder;
     .border-radius(3px);
     .select2-search-choice {
+      line-height: 18px;
       margin: 4px;
-      padding: 4px 5px 4px 18px;
     }
     li {
       float: none;
@@ -172,10 +172,13 @@ input[type="text"]:focus {
 }
 .exhibit-facet-body {
   .border-radius(3px);
-  font-size: 12px;
 }
 .exhibit-text-facet {
   padding-right: 10px;
+}
+.exhibit-facet-header-collapse,
+.exhibit-facet-header-expand {
+  padding-bottom: 1px;
 }
 
 // Sidebar Toggling
@@ -278,6 +281,9 @@ colgroup.hover {
     font-weight: bold;
     padding: 5px 10px 0 0;
   }
+  .btn {
+    padding: 4px 10px;
+  }
 }
 
 // Export, Share, Exam Timetable
@@ -303,7 +309,6 @@ colgroup.hover {
   position: relative;
   .btn {
     font-size: 16px;
-    width: 36px;
   }
   .input-append {
     float: right;
@@ -328,6 +333,7 @@ colgroup.hover {
 #exam-timetable {
   border: 1px solid @gray;
   font-weight: bold;
+  max-width: 540px;
   th {
     border: 1px solid @gray;
     background-color: @grayLighter;
@@ -345,6 +351,9 @@ colgroup.hover {
     background-color: transparent;
   }
 }
+.exam-time {
+  width: 135px;
+}
 .clash {
   color: red;
 }
@@ -353,7 +362,7 @@ colgroup.hover {
 #show-hide-selected-mods-container {
   float: left;
   margin-left: 16px;
-  width: 355px;
+  width: 375px;
 }
 #show-hide .btn-group {
   float: right;
