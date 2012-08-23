@@ -33,10 +33,9 @@ html {
   overflow-y: scroll; // prevent jumps when switching tabs
 }
 body {
-  padding-top: 60px;
+  padding-top: 55px;
 }
 .tab-content {
-  margin-top: -5px;
   overflow: visible;
 }
 
@@ -47,64 +46,71 @@ body {
 }
 .nav {
   margin-bottom: 0;
-  padding: 5px 0 0 20px;
+  padding: 5px 0 0 5px;
+}
+@media (max-width: 767px) {
+  .navbar-fixed-top {
+    margin: 0;
+  }
 }
 
 // Social Bar
-#social-bar {
-  position: fixed;
-  top: 11px;
-  left: 50%;
-  margin-left: -140px;
-}
-#notice {
+.social-bar {
   font-size: 11px;
-}
-#fb-like,
-#social-buttons {
+  left: 50%;
+  margin-left: -130px;
   position: absolute;
-  top: 0;
+  top: 11px;
 }
-#social-buttons {
-  left: 275px;
+.social-notice,
+.twitter-share-button,
+.fb-like {
+  float: left;
 }
-#fb-like {
-  left: 90px;
+.social-notice {
+  white-space: nowrap;
 }
-@media (max-width: 979px) {
-  #notice {
-    display: none;
+.twitter-share-button {
+  margin: 0 -20px 0 5px;
+}
+@media (max-width: 899px) {
+  .social-bar {
+    margin: 0;
   }
-  #social-buttons {
-    left: 125px;
+  .social-notice {
+    display: none;
   }
 }
 @media (max-width: 639px) {
-  #social-bar {
+  .social-bar {
     display: none;
   }
 }
 
 // NUSMods Beta Logo
-.logo {
-  position: fixed;
-  top: 7px;
-  right: 20px;
-  text-align: right;
-  color: @linkColor;
-  font-weight: bold;
+.brand {
   font-size: 24px;
+  font-weight: bold;
+  position: absolute;
+  right: 10px;
+  text-align: right;
+  top: 7px;
   &:hover {
     color: @linkColor;
     text-decoration: none;
   }
   .beta {
     display: block;
-    margin-top: -4px;
+    margin-top: -6px;
     font-size: 9px;
   }
   .mods {
-    color: @grayLight;
+    color: #aaa;
+  }
+}
+@media (max-width: 449px) {
+  .brand {
+    display: none;
   }
 }
 
