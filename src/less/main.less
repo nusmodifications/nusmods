@@ -101,8 +101,8 @@ body {
   }
   .beta {
     display: block;
-    margin-top: -6px;
     font-size: 9px;
+    margin-top: -6px;
   }
   .mods {
     color: #aaa;
@@ -117,18 +117,18 @@ body {
 // Loading Overlay
 #overlay {
   background-color: @white;
-  opacity: 1;
+  .opacity(100);
   top: 50px;
 }
 #loading {
-  position: fixed;
+  font-weight: bold;
   left: 50%;
   margin-left: -100px;
+  position: fixed;
+  text-align: center;
   top: 220px;
   width: 200px;
   z-index: @zindexModal;
-  font-weight: bold;
-  text-align: center;
 }
 
 // Select2
@@ -189,10 +189,10 @@ input[type="text"]:focus {
 
 // Sidebar Toggling
 #sidebar-toggle {
-  position: fixed;
-  left: 4px;
   bottom: 4px;
   font-size: 24px;
+  left: 4px;
+  position: fixed;
   text-decoration: none;
 }
 .no-sidebar {
@@ -214,9 +214,9 @@ input[type="text"]:focus {
     }
     .exhibit-flowingFacet-value-checkbox {
       float: left;
+      left: 0;
       position: relative;
       top: -2px;
-      left: 0;
     }
   }
 }
@@ -320,6 +320,16 @@ colgroup.hover {
     float: right;
   }
 }
+#short-url {
+  cursor: auto;
+  width: 155px;
+}
+
+// For Zero Clipboard CSS effect system, copied from bootstrap/buttons.less
+#copy-to-clipboard.active {
+  border-bottom-color: darken(@btnBorder, 10%);
+  border-color: @btnBorder;
+}
 #copy-to-clipboard.hover {
   color: @grayDark;
   text-decoration: none;
@@ -327,13 +337,6 @@ colgroup.hover {
   *background-color: darken(@white, 15%);
   background-position: 0 -15px;
   .transition(background-position .1s linear);
-}
-#copy-to-clipboard.active {
-  border-color: transparent;
-}
-#short-url {
-  cursor: auto;
-  width: 155px;
 }
 
 #exam-timetable {
