@@ -17,7 +17,6 @@
 @import "button-groups.less";
 @import "alerts.less";
 @import "navs.less";
-@import "navbar.less";
 @import "modals.less";
 @import "progress-bars.less";
 @import "utilities.less";
@@ -32,25 +31,18 @@
 html {
   overflow-y: scroll; // prevent jumps when switching tabs
 }
-body {
-  padding-top: 55px;
-}
 .tab-content {
   overflow: visible;
 }
 
 // Navbar
-.navbar-fixed-top {
-  background-color: #fff;
-  .opacity(90);
-}
 .nav {
-  margin-bottom: 0;
-  padding: 5px 0 0 5px;
+  padding: 5px 0 0 20px;
 }
 @media (max-width: 767px) {
-  .navbar-fixed-top {
-    margin: 0;
+  .nav {
+    margin-left: -20px;
+    margin-right: -20px;
   }
 }
 
@@ -58,7 +50,7 @@ body {
 .social-bar {
   font-size: 11px;
   left: 50%;
-  margin-left: -130px;
+  margin-left: -120px;
   position: absolute;
   top: 11px;
 }
@@ -75,13 +67,13 @@ body {
 }
 @media (max-width: 899px) {
   .social-bar {
-    margin: 0;
+    margin-left: 10px;
   }
   .social-notice {
     display: none;
   }
 }
-@media (max-width: 639px) {
+@media (max-width: 619px) {
   .social-bar {
     display: none;
   }
