@@ -1,0 +1,216 @@
+/*  Font Awesome 3.0
+    the iconic font designed for use with Twitter Bootstrap
+    -------------------------------------------------------
+    The full suite of pictographic icons, examples, and documentation
+    can be found at: http://fortawesome.github.com/Font-Awesome/
+
+    License
+    -------------------------------------------------------
+    • The Font Awesome font is licensed under the SIL Open Font License - http://scripts.sil.org/OFL
+    • Font Awesome CSS, LESS, and SASS files are licensed under the MIT License -
+      http://opensource.org/licenses/mit-license.html
+    • The Font Awesome pictograms are licensed under the CC BY 3.0 License - http://creativecommons.org/licenses/by/3.0/
+    • Attribution is no longer required in Font Awesome 3.0, but much appreciated:
+      "Font Awesome by Dave Gandy - http://fortawesome.github.com/Font-Awesome"
+
+    Contact
+    -------------------------------------------------------
+    Email: dave@davegandy.com
+    Twitter: http://twitter.com/fortaweso_me
+    Work: Lead Product Designer @ http://kyruus.com
+
+    */
+
+$fontAwesomePath:   "../font" !default;
+$borderColor:       #eee;
+$iconMuted:         #eee;
+@mixin border-radius($radius) { -webkit-border-radius: $radius; -moz-border-radius: $radius; border-radius: $radius; }
+
+
+@font-face {
+  font-family: 'FontAwesome';
+  src: url('#{$fontAwesomePath}/fontawesome-webfont.eot');
+  src: url('#{$fontAwesomePath}/fontawesome-webfont.eot?#iefix') format("embedded-opentype"),
+    url('#{$fontAwesomePath}/fontawesome-webfont.woff') format("woff"),
+    url('#{$fontAwesomePath}/fontawesome-webfont.ttf') format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/*  Font Awesome styles
+    ------------------------------------------------------- */
+/* includes sprites.less reset */
+[class^="icon-"],
+[class*=" icon-"] {
+  font-family: FontAwesome;
+  font-weight: normal;
+  font-style: normal;
+  text-decoration: inherit;
+  display: inline;
+  width: auto;
+  height: auto;
+  line-height: normal;
+  vertical-align: baseline;
+  background-image: none !important;
+  background-position: 0% 0%;
+  background-repeat: repeat;
+}
+
+[class^="icon-"]:before,
+[class*=" icon-"]:before {
+  text-decoration: inherit;
+  display: inline-block;
+  speak: none;
+}
+
+/* makes sure icons active on rollover in links */
+a {
+  [class^="icon-"],
+  [class*=" icon-"] {
+    display: inline-block;
+  }
+}
+
+/* makes the font 33% larger relative to the icon container */
+.icon-large:before {
+  vertical-align: -10%;
+  font-size: 1.3333333333333333em;
+}
+
+.btn, .nav {
+  [class^="icon-"],
+  [class*=" icon-"] {
+    display: inline;
+    /* keeps button heights with and without icons the same */
+    line-height: .6em;
+    &.icon-spin {
+      display: inline-block;
+    }
+  }
+}
+
+li {
+  [class^="icon-"],
+  [class*=" icon-"] {
+    display: inline-block;
+    width: 1.25em;
+    text-align: center;
+    &.icon-large {
+      /* increased font size for icon-large */
+      width: 1.25*1.25em;
+    }
+  }
+}
+
+ul.icons {
+  list-style-type: none;
+  text-indent: -.75em;
+
+  li {
+    [class^="icon-"],
+    [class*=" icon-"] {
+      width: .75em;
+    }
+  }
+}
+
+.icon-muted {
+  color: $iconMuted;
+}
+
+// Icon Borders
+// -------------------------
+
+.icon-border {
+  border: solid 1px $borderColor;
+  padding: .2em .25em .15em;
+  @include border-radius(3px);
+}
+
+// Icon Sizes
+// -------------------------
+
+.icon-2x {
+  font-size: 2em;
+  &.icon-border {
+    border-width: 2px;
+    @include border-radius(4px);
+  }
+}
+.icon-3x {
+  font-size: 3em;
+  &.icon-border {
+    border-width: 3px;
+    @include border-radius(5px);
+  }
+}
+.icon-4x {
+  font-size: 4em;
+  &.icon-border {
+    border-width: 4px;
+    @include border-radius(6px);
+  }
+}
+
+// Floats
+// -------------------------
+
+// Quick floats
+.pull-right { float: right; }
+.pull-left { float: left; }
+
+[class^="icon-"],
+[class*=" icon-"] {
+  &.pull-left {
+    margin-right: .35em;
+  }
+  &.pull-right {
+    margin-left: .35em;
+  }
+}
+
+.btn {
+  [class^="icon-"],
+  [class*=" icon-"] {
+    &.pull-left, &.pull-right {
+      &.icon-2x { margin-top: .35em; }
+    }
+    &.icon-spin.icon-large { height: .75em; }
+  }
+}
+
+.btn.btn-small {
+  [class^="icon-"],
+  [class*=" icon-"] {
+    &.pull-left, &.pull-right {
+      &.icon-2x { margin-top: .45em; }
+    }
+  }
+}
+
+.btn.btn-large {
+  [class^="icon-"],
+  [class*=" icon-"] {
+    &.pull-left, &.pull-right {
+      &.icon-2x { margin-top: .2em; }
+    }
+  }
+}
+
+.icon-search:before		{ content: "\f002"; }
+.icon-envelope:before		{ content: "\f003"; }
+.icon-th:before		{ content: "\f00a"; }
+.icon-download-alt:before		{ content: "\f019"; }
+.icon-picture:before		{ content: "\f03e"; }
+.icon-chevron-left:before		{ content: "\f053"; }
+.icon-chevron-right:before		{ content: "\f054"; }
+.icon-plus-sign:before		{ content: "\f055"; }
+.icon-info-sign:before		{ content: "\f05a"; }
+.icon-share-alt:before		{ content: "\f064"; }
+.icon-calendar:before		{ content: "\f073"; }
+.icon-facebook-sign:before		{ content: "\f082"; }
+.icon-twitter:before		{ content: "\f099"; }
+.icon-globe:before		{ content: "\f0ac"; }
+.icon-table:before		{ content: "\f0ce"; }
+.icon-paste:before		{ content: "\f0ea"; }
+.icon-file-alt:before		{ content: "\f0f6"; }

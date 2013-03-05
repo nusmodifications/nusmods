@@ -1,0 +1,463 @@
+// Core variables and mixins
+@import "variables"; // Modify this for custom colors, font-sizes, etc
+$linkColor: #f60;
+$linkColorHover: darken($linkColor, 15%);
+@import "mixins";
+
+// CSS Reset
+@import "reset";
+
+// Grid system and page structure
+@import "scaffolding";
+@import "grid";
+@import "layouts";
+
+// Base CSS
+@import "type";
+@import "forms";
+@import "tables";
+
+// Components: common
+@import "fontawesome";
+@import "dropdowns";
+@import "component-animations";
+@import "close";
+
+// Components: Buttons & Alerts
+@import "buttons";
+@import "button-groups";
+@import "alerts"; // Note: alerts share common CSS with buttons and thus have styles in buttons
+
+// Components: Nav
+@import "navs";
+
+// Components: Popovers
+@import "modals";
+
+// Components: Misc
+@import "progress-bars";
+
+// Utility classes
+@import "utilities"; // Has to be last to override when necessary
+
+// RESPONSIVE CLASSES
+// ------------------
+
+@import "responsive-utilities";
+
+
+// MEDIA QUERIES
+// ------------------
+
+// Large desktops
+@import "responsive-1200px-min";
+
+// Tablets to regular desktops
+@import "responsive-768px-979px";
+
+// Phones to portrait tablets and narrow desktops
+@import "responsive-767px-max";
+
+@import "exhibit-scripted-bundle";
+@import "qTip2/core";
+@import "qTip2/css3";
+@import "qTip2/tips";
+@import "select2";
+@import "timetable";
+
+// Layout
+html {
+  overflow-y: scroll; // prevent jumps when switching tabs
+}
+.tab-content {
+  overflow: visible;
+}
+
+// Navbar
+.nav {
+  padding: 5px 0 0 20px;
+}
+@media (max-width: 767px) {
+  .nav {
+    margin-left: -20px;
+    margin-right: -20px;
+  }
+}
+
+// Social Bar
+.social-bar {
+  font-size: 11px;
+  left: 50%;
+  margin-left: -120px;
+  position: absolute;
+  top: 11px;
+  width: 500px;
+}
+.social-notice,
+.twitter-share-button,
+.fb-like {
+  float: left;
+}
+.social-notice {
+  white-space: nowrap;
+}
+.twitter-share-button {
+  margin: 0 -20px 0 5px;
+}
+@media (max-width: 899px) {
+  .social-bar {
+    margin-left: 10px;
+  }
+  .social-notice {
+    display: none;
+  }
+}
+@media (max-width: 629px) {
+  .social-bar {
+    display: none;
+  }
+}
+
+// NUSMods Beta Logo
+.brand {
+  font-size: 24px;
+  font-weight: bold;
+  position: absolute;
+  right: 10px;
+  text-align: right;
+  top: 7px;
+  &:hover {
+    color: $linkColor;
+    text-decoration: none;
+  }
+  .beta {
+    display: block;
+    font-size: 9px;
+    margin-top: -6px;
+  }
+  .mods {
+    color: #aaa;
+  }
+}
+@media (max-width: 459px) {
+  .brand {
+    display: none;
+  }
+}
+
+// Loading Overlay
+#overlay {
+  background-color: $white;
+  @include opacity(100);
+  top: 50px;
+}
+#loading {
+  font-weight: bold;
+  left: 50%;
+  margin-left: -100px;
+  position: fixed;
+  text-align: center;
+  top: 220px;
+  width: 200px;
+  z-index: $zindexModal;
+}
+
+// Select2
+#select2-header {
+  float: left;
+}
+#clear-all {
+  float: right;
+}
+.select2-container-multi {
+  margin-bottom: 9px;
+  .select2-choices {
+    border-color: $inputBorder;
+    @include border-radius(3px);
+    .select2-search-choice {
+      line-height: 18px;
+      margin: 4px;
+    }
+    li {
+      float: none;
+    }
+  }
+}
+.select2-dropdown-open .select2-choices {
+  @include border-radius(3px 3px 0 0);
+}
+.select2-drop-above .select2-choices {
+  @include border-radius(0 0 3px 3px);
+}
+.select2-container-multi.select2-container-active .select2-choices,
+input[type="text"]:focus,
+input[type="url"]:focus {
+  border-color: rgba(255,102,0,0.6);
+  @include box-shadow(#{inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(255,102,0,.6)});
+}
+.select2-search-choice-close {
+  top: 5px;
+}
+.select2-results .select2-highlighted {
+  background: none repeat scroll 0 0 $linkColor;
+}
+
+// Module Finder Sidebar
+@media (max-width: 768px) {
+  #sidebar #clear-all {
+    float: left;
+  }
+}
+.exhibit-facet-body {
+  @include border-radius(3px);
+}
+.exhibit-text-facet {
+  padding-right: 15px;
+}
+.exhibit-facet-header-collapse,
+.exhibit-facet-header-expand {
+  padding-bottom: 1px;
+}
+
+.filter-department label.checkbox.inline {
+  display: block;
+}
+
+.arrow-right {
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 10px solid black;
+  display: inline-block;
+}
+
+.arrow-down {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 10px solid black;
+  display: inline-block;
+}
+
+// Sidebar Toggling
+#sidebar-toggle {
+  bottom: 4px;
+  font-size: 24px;
+  left: 4px;
+  position: fixed;
+  text-decoration: none;
+}
+.no-sidebar {
+  margin-left: 0 !important;
+}
+
+// Module Finder Content
+#content {
+  .exhibit-flowingFacet {
+    .exhibit-flowingFacet-value {
+      clear: none;
+      float: left;
+      margin: 0 0 5px 3px;
+    }
+    .exhibit-flowingFacet-header {
+      float: left;
+      padding: 0;
+      width: 35px;
+    }
+    .exhibit-flowingFacet-value-checkbox {
+      float: left;
+      left: 0;
+      position: relative;
+      top: -2px;
+    }
+  }
+}
+.exhibit-viewPanel {
+  margin-top: 30px;
+}
+.btn-mini {
+  font-size: 13px;
+}
+td.code, td.mc {
+  text-align: center !important;
+}
+td.code {
+  font-weight: bold;
+  width: 70px;
+}
+td.exam {
+  min-width: 75px;
+}
+td.details {
+  .buttons {
+    float: right;
+  }
+  .ivle {
+    margin-right: 3px;
+  }
+  .desc {
+    margin-top: 3px !important;
+  }
+}
+
+// Timetable
+#timetable {
+  @include user-select(none);
+}
+colgroup.hover {
+  background-color: $tableBackgroundHover;
+}
+#sat {
+  display: none;
+}
+.lesson {
+  &:hover {
+    cursor: not-allowed;
+  }
+  &.active {
+    @include opacity(60);
+  }
+  &.hover {
+    @include opacity(100);
+  }
+}
+.ui-draggable {
+  @include border-radius(8px);
+  &:hover {
+    cursor: move;
+  }
+}
+
+// Timetable Controls
+#timetable-controls {
+  #exam-timetable,
+  #selected-mods {
+    margin-top: 45px;
+  }
+  label {
+    float: left;
+    font-weight: bold;
+    padding: 5px 10px 0 0;
+  }
+  .btn {
+    padding: 4px 10px;
+  }
+}
+
+// Export, Share, Exam Timetable
+#export-share-exams-container {
+  float: left;
+  margin: 0 16px;
+}
+
+#export-share-container {
+  width: 100%;
+}
+
+#export-timetable {
+  float: left;
+  margin-right: 20px;
+}
+
+#share-container {
+  float: right;
+  position: relative;
+  .input-append {
+    float: right;
+  }
+}
+#short-url {
+  cursor: auto;
+  width: 155px;
+}
+
+// For Zero Clipboard CSS effect system, copied from bootstrap/buttons.less
+#copy-to-clipboard.active {
+  border-bottom-color: darken($btnBorder, 10%);
+  border-color: $btnBorder;
+}
+#copy-to-clipboard.hover {
+  color: $grayDark;
+  text-decoration: none;
+  background-color: darken($white, 10%);
+  *background-color: darken($white, 15%);
+  background-position: 0 -15px;
+  @include transition(background-position .1s linear);
+}
+
+#exam-timetable {
+  border: 1px solid $gray;
+  font-weight: bold;
+  max-width: 540px;
+  th {
+    border: 1px solid $gray;
+    background-color: $grayLighter;
+  }
+  td {
+    border: 1px solid $gray;
+    &:first-child {
+      text-align: right;
+    }
+  }
+  tr.clash {
+    background-color: $grayLighter;
+  }
+  tr:hover td {
+    background-color: transparent;
+  }
+}
+.exam-time {
+  width: 135px;
+}
+.clash {
+  color: red;
+}
+
+// Show / Hide, Selected Modules
+#show-hide-selected-mods-container {
+  float: left;
+  margin-left: 16px;
+  width: 375px;
+}
+#show-hide .btn-group {
+  float: right;
+}
+
+// Footer
+.footer {
+  height: 160px;
+  position: relative;
+}
+.github-buttons {
+  // Iframe frameborder attribute is invalid HTML5 but no alternative for IE8.
+  // Hide using IE CSS hack instead as most likely IE user != GitHub user.
+  display: none\9;
+
+  left: 50%;
+  margin-left: -140px;
+  position: absolute;
+  top: 0;
+  iframe {
+    border: 0;
+    height: 20px;
+    width: 85px;
+  }
+}
+@media (max-width: 849px) {
+  .github-buttons {
+    display: none;
+  }
+}
+
+// Export Timetable Modal
+.modal-body {
+  padding-top: 0;
+  form {
+    margin: 0;
+  }
+  h4 {
+    margin-bottom: 5px;
+  }
+}
