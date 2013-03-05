@@ -1,9 +1,6 @@
-.DS_Store
-cache
-css/*.css
-dist
-js/*.js
-json
 node_modules
-tasks/crawl.js
-tasks/jsify.js
+dist
+.tmp
+.sass-cache
+app/components
+cache

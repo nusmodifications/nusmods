@@ -1,0 +1,22 @@
+{
+  "name": "NUSMods",
+  "version": "0.3.0",
+  "dependencies": {
+    "almond": "~0.2.4",
+    "backbone": "~0.9.10",
+    "backbone.localStorage": "~1.1.0",
+    "Downloadify": "git://github.com/dcneiner/Downloadify.git#~0.2.1",
+    "font-awesome": "~3.0.2",
+    "jquery": "~1.9.1",
+    "jquery.ui": "~1.10.0",
+    "jqueryui-touch-punch": "latest",
+    "lodash": "~1.0.0-rc.3",
+    "qTip2": "https://github.com/Craga89/qTip2/archive/master.zip",
+    "requirejs": "~2.1.4",
+    "sass-bootstrap": "~2.3.0",
+    "select2": "~3.3.0",
+    "swfobject": "latest",
+    "zeroclipboard": "~1.1.6"
+  },
+  "devDependencies": {}
+}

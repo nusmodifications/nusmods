@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>NUSMods · NUS CORS Module Finder &amp; Timetable Builder (Unofficial)</title>
+  <meta name="description" content="NUSMods helps you find modules which fit your schedule, plan your ideal timetable, then share it with your friends or export it to various formats.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="image_src" href="thumbnail.png">
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+  <div class="modal-backdrop" id="overlay"></div>
+  <div id="loading">
+    Loading&hellip;
+    <div class="progress progress-warning progress-striped active">
+      <div class="bar" style="width: 100%;"></div>
+    </div>
+    <!--[if lt IE 8]>
+      Timetable Builder supports IE8+ but Module Finder does not support any version of IE. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience NUSMods.
+    <![endif]-->
+  </div>
+  <ul class="nav nav-tabs">
+    <li class="active">
+      <a data-toggle="tab" href="#module-finder">
+        <i class="icon-search"></i>&nbsp;Module Finder
+      </a>
+    </li>
+    <li>
+      <a data-toggle="tab" href="#timetable-builder">
+        <i class="icon-th"></i>&nbsp;Timetable Builder
+      </a>
+    </li>
+  </ul>
+  <div class="social-bar">
+    <div class="social-notice">
+      Please give us your feedback at our&nbsp;<a href=
+      "http://www.facebook.com/NUSMods">Facebook page</a>&nbsp;[=
+    </div>
+    <a class="twitter-share-button"
+       data-hashtags="NUSMods"
+       data-url="http://nusmods.com"
+       href="https://twitter.com/share"></a>
+    <div class="fb-like"
+         data-font="arial"
+         data-href="http://www.facebook.com/NUSMods"
+         data-layout="button_count"
+         data-width="90"></div>
+    <!--<iframe src="//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2FNUSMods&amp;send=false&amp;layout=button_count&amp;width=450&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font=arial&amp;height=21&amp;appId=360419287362497" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:90px; height:21px;" allowTransparency="true"></iframe>-->
+  </div>
+  <a class="brand" href="/">
+    NUS<span class="mods">Mods</span>
+    <span class="beta">BETA</span>
+  </a>
+  <div class="container-fluid hide">
+    <div class="row-fluid">
+      <div class="tab-content">
+        <!--[if IE]>
+          <div class="alert">Timetable Builder supports IE8+ but Module Finder does not support any version of IE. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience NUSMods.</div>
+        <![endif]-->
+        <div class="tab-pane active" id="module-finder">
+          <div class="span3" id="sidebar">
+            <ul>
+              <li>
+                <div class="arrow-right"></div>
+                <input type="checkbox" id="Monday"><label for="Monday">Monday</label>
+                <ul style="display: none">
+                  <li><input type="checkbox" id="Monday Morning"><label
+                      for="Monday Morning">Monday Morning</label></li>
+                  <li><input type="checkbox" id="Monday Afternoon"><label
+                      for="Monday Afternoon">Monday Afternoon</label></li>
+                </ul>
+              </li>
+              <li>
+                <div class="arrow-down"></div>
+                <input type="checkbox" id="Tuesday"><label for="Tuesday">Tuesday</label>
+                <ul>
+                  <li>
+                    <input type="checkbox" id="Tuesday Morning"><label
+                      for="Tuesday Morning">Tuesday Morning</label>
+                    <ul>
+                      <li>
+                        <input type="checkbox" id="Tuesday Morning"><label
+                          for="Tuesday Morning">Tuesday Morning</label>
+                        <ul>
+                          <li><input type="checkbox" id="Tuesday Morning"><label
+                              for="Tuesday Morning">Tuesday Morning</label></li>
+                          <li><input type="checkbox" id="Tuesday Afternoon"><label
+                              for="Tuesday Afternoon">Tuesday Afternoon</label></li>
+                        </ul>
+                      </li>
+                      <li><input type="checkbox" id="Tuesday Morning"><label
+                          for="Tuesday Morning">Tuesday Morning</label></li>
+                      <li><input type="checkbox" id="Tuesday Afternoon"><label
+                          for="Tuesday Afternoon">Tuesday Afternoon</label></li>
+                    </ul>
+                  </li>
+                  <li><input type="checkbox" id="Tuesday Afternoon"><label
+                      for="Tuesday Afternoon">Tuesday Afternoon</label></li>
+                </ul>
+              </li>
+            </ul>
+            <form class="filter-department form-inline">
+              <label>Faculty / Department</label>
+            </form>
+            For the lecture / tutorial timing filters:
+            <ul>
+              <li><strong>Morning:</strong>&nbsp;Before 12pm
+              <li><strong>Afternoon:</strong>&nbsp;12pm - 6pm
+              <li><strong>Evening:</strong>&nbsp;After 6pm
+            </ul>
+          </div>
+          <div class="span9" id="content">
+            <form class="filter-mc form-inline">
+              <label class="checkbox inline">MC</label>
+            </form>
+            <table class="modules table table-bordered table-striped">
+              <thead>
+              <tr>
+                <th>Code</th>
+                <th>Details</th>
+                <th>MC</th>
+                <th>Exam</th>
+                <th>Department</th>
+              </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </div>
+          <a href="#" id="sidebar-toggle"><i class="icon-chevron-left"></i></a>
+        </div>
+        <div class="tab-pane" id="timetable-builder">
+          <div class="alert alert-error hide" id="clash">
+            <strong>Warning!</strong>&nbsp;There are&nbsp;
+            <strong class="clash">clashes</strong>&nbsp;in your&nbsp;
+            <a href="#exam-timetable">exam timetable</a>.
+          </div>
+          <div class="hide-room hide-title" id="timetable-wrapper">
+            <table id="timetable">
+              <colgroup></colgroup>
+              <colgroup span="2"></colgroup>
+              <colgroup span="2"></colgroup>
+              <colgroup span="2"></colgroup>
+              <colgroup span="2"></colgroup>
+              <colgroup span="2"></colgroup>
+              <colgroup span="2"></colgroup>
+              <colgroup span="2"></colgroup>
+              <colgroup span="2"></colgroup>
+              <colgroup span="2"></colgroup>
+              <colgroup span="2"></colgroup>
+              <colgroup span="2"></colgroup>
+              <colgroup span="2"></colgroup>
+              <colgroup span="2"></colgroup>
+              <colgroup span="2"></colgroup>
+              <colgroup span="2"></colgroup>
+              <colgroup span="2"></colgroup>
+              <tbody>
+                <tr id="times">
+                  <th><div>0800</div></th>
+                  <th colspan="2"><div>0900</div></th>
+                  <th colspan="2"><div>1000</div></th>
+                  <th colspan="2"><div>1100</div></th>
+                  <th colspan="2"><div>1200</div></th>
+                  <th colspan="2"><div>1300</div></th>
+                  <th colspan="2"><div>1400</div></th>
+                  <th colspan="2"><div>1500</div></th>
+                  <th colspan="2"><div>1600</div></th>
+                  <th colspan="2"><div>1700</div></th>
+                  <th colspan="2"><div>1800</div></th>
+                  <th colspan="2"><div>1900</div></th>
+                  <th colspan="2"><div>2000</div></th>
+                  <th colspan="2"><div>2100</div></th>
+                  <th colspan="2"><div>2200</div></th>
+                  <th colspan="2"><div>2300</div></th>
+                  <th colspan="2"><div>0000</div></th>
+                </tr>
+              </tbody>
+              <tbody class="day" id="mon">
+                <tr>
+                  <th rowspan="2"><div>M<br>O<br>N</div></th>
+                  <td class="h08 m00"></td>
+                  <td class="h08 m30"></td>
+                  <td class="h09 m00"></td>
+                  <td class="h09 m30"></td>
+                  <td class="h10 m00"></td>
+                  <td class="h10 m30"></td>
+                  <td class="h11 m00"></td>
+                  <td class="h11 m30"></td>
+                  <td class="h12 m00"></td>
+                  <td class="h12 m30"></td>
+                  <td class="h13 m00"></td>
+                  <td class="h13 m30"></td>
+                  <td class="h14 m00"></td>
+                  <td class="h14 m30"></td>
+                  <td class="h15 m00"></td>
+                  <td class="h15 m30"></td>
+                  <td class="h16 m00"></td>
+                  <td class="h16 m30"></td>
+                  <td class="h17 m00"></td>
+                  <td class="h17 m30"></td>
+                  <td class="h18 m00"></td>
+                  <td class="h18 m30"></td>
+                  <td class="h19 m00"></td>
+                  <td class="h19 m30"></td>
+                  <td class="h20 m00"></td>
+                  <td class="h20 m30"></td>
+                  <td class="h21 m00"></td>
+                  <td class="h21 m30"></td>
+                  <td class="h22 m00"></td>
+                  <td class="h22 m30"></td>
+                  <td class="h23 m00"></td>
+                  <td class="h23 m30"></td>
+                </tr>
+                <tr>
+                  <td class="h08 m00"></td>
+                  <td class="h08 m30"></td>
+                  <td class="h09 m00"></td>
+                  <td class="h09 m30"></td>
+                  <td class="h10 m00"></td>
+                  <td class="h10 m30"></td>
+                  <td class="h11 m00"></td>
+                  <td class="h11 m30"></td>
+                  <td class="h12 m00"></td>
+                  <td class="h12 m30"></td>
+                  <td class="h13 m00"></td>
+                  <td class="h13 m30"></td>
+                  <td class="h14 m00"></td>
+                  <td class="h14 m30"></td>
+                  <td class="h15 m00"></td>
+                  <td class="h15 m30"></td>
+                  <td class="h16 m00"></td>
+                  <td class="h16 m30"></td>
+                  <td class="h17 m00"></td>
+                  <td class="h17 m30"></td>
+                  <td class="h18 m00"></td>
+                  <td class="h18 m30"></td>
+                  <td class="h19 m00"></td>
+                  <td class="h19 m30"></td>
+                  <td class="h20 m00"></td>
+                  <td class="h20 m30"></td>
+                  <td class="h21 m00"></td>
+                  <td class="h21 m30"></td>
+                  <td class="h22 m00"></td>
+                  <td class="h22 m30"></td>
+                  <td class="h23 m00"></td>
+                  <td class="h23 m30"></td>
+                </tr>
+              </tbody>
+              <tbody class="day" id="tue">
+                <tr>
+                  <th rowspan="2"><div>T<br>U<br>E</div></th>
+                  <td class="h08 m00"></td>
+                  <td class="h08 m30"></td>
+                  <td class="h09 m00"></td>
+                  <td class="h09 m30"></td>
+                  <td class="h10 m00"></td>
+                  <td class="h10 m30"></td>
+                  <td class="h11 m00"></td>
+                  <td class="h11 m30"></td>
+                  <td class="h12 m00"></td>
+                  <td class="h12 m30"></td>
+                  <td class="h13 m00"></td>
+                  <td class="h13 m30"></td>
+                  <td class="h14 m00"></td>
+                  <td class="h14 m30"></td>
+                  <td class="h15 m00"></td>
+                  <td class="h15 m30"></td>
+                  <td class="h16 m00"></td>
+                  <td class="h16 m30"></td>
+                  <td class="h17 m00"></td>
+                  <td class="h17 m30"></td>
+                  <td class="h18 m00"></td>
+                  <td class="h18 m30"></td>
+                  <td class="h19 m00"></td>
+                  <td class="h19 m30"></td>
+                  <td class="h20 m00"></td>
+                  <td class="h20 m30"></td>
+                  <td class="h21 m00"></td>
+                  <td class="h21 m30"></td>
+                  <td class="h22 m00"></td>
+                  <td class="h22 m30"></td>
+                  <td class="h23 m00"></td>
+                  <td class="h23 m30"></td>
+                </tr>
+                <tr>
+                  <td class="h08 m00"></td>
+                  <td class="h08 m30"></td>
+                  <td class="h09 m00"></td>
+                  <td class="h09 m30"></td>
+                  <td class="h10 m00"></td>
+                  <td class="h10 m30"></td>
+                  <td class="h11 m00"></td>
+                  <td class="h11 m30"></td>
+                  <td class="h12 m00"></td>
+                  <td class="h12 m30"></td>
+                  <td class="h13 m00"></td>
+                  <td class="h13 m30"></td>
+                  <td class="h14 m00"></td>
+                  <td class="h14 m30"></td>
+                  <td class="h15 m00"></td>
+                  <td class="h15 m30"></td>
+                  <td class="h16 m00"></td>
+                  <td class="h16 m30"></td>
+                  <td class="h17 m00"></td>
+                  <td class="h17 m30"></td>
+                  <td class="h18 m00"></td>
+                  <td class="h18 m30"></td>
+                  <td class="h19 m00"></td>
+                  <td class="h19 m30"></td>
+                  <td class="h20 m00"></td>
+                  <td class="h20 m30"></td>
+                  <td class="h21 m00"></td>
+                  <td class="h21 m30"></td>
+                  <td class="h22 m00"></td>
+                  <td class="h22 m30"></td>
+                  <td class="h23 m00"></td>
+                  <td class="h23 m30"></td>
+                </tr>
+              </tbody>
+              <tbody class="day" id="wed">
+                <tr>
+                  <th rowspan="2"><div>W<br>E<br>D</div></th>
+                  <td class="h08 m00"></td>
+                  <td class="h08 m30"></td>
+                  <td class="h09 m00"></td>
+                  <td class="h09 m30"></td>
+                  <td class="h10 m00"></td>
+                  <td class="h10 m30"></td>
+                  <td class="h11 m00"></td>
+                  <td class="h11 m30"></td>
+                  <td class="h12 m00"></td>
+                  <td class="h12 m30"></td>
+                  <td class="h13 m00"></td>
+                  <td class="h13 m30"></td>
+                  <td class="h14 m00"></td>
+                  <td class="h14 m30"></td>
+                  <td class="h15 m00"></td>
+                  <td class="h15 m30"></td>
+                  <td class="h16 m00"></td>
+                  <td class="h16 m30"></td>
+                  <td class="h17 m00"></td>
+                  <td class="h17 m30"></td>
+                  <td class="h18 m00"></td>
+                  <td class="h18 m30"></td>
+                  <td class="h19 m00"></td>
+                  <td class="h19 m30"></td>
+                  <td class="h20 m00"></td>
+                  <td class="h20 m30"></td>
+                  <td class="h21 m00"></td>
+                  <td class="h21 m30"></td>
+                  <td class="h22 m00"></td>
+                  <td class="h22 m30"></td>
+                  <td class="h23 m00"></td>
+                  <td class="h23 m30"></td>
+                </tr>
+                <tr>
+                  <td class="h08 m00"></td>
+                  <td class="h08 m30"></td>
+                  <td class="h09 m00"></td>
+                  <td class="h09 m30"></td>
+                  <td class="h10 m00"></td>
+                  <td class="h10 m30"></td>
+                  <td class="h11 m00"></td>
+                  <td class="h11 m30"></td>
+                  <td class="h12 m00"></td>
+                  <td class="h12 m30"></td>
+                  <td class="h13 m00"></td>
+                  <td class="h13 m30"></td>
+                  <td class="h14 m00"></td>
+                  <td class="h14 m30"></td>
+                  <td class="h15 m00"></td>
+                  <td class="h15 m30"></td>
+                  <td class="h16 m00"></td>
+                  <td class="h16 m30"></td>
+                  <td class="h17 m00"></td>
+                  <td class="h17 m30"></td>
+                  <td class="h18 m00"></td>
+                  <td class="h18 m30"></td>
+                  <td class="h19 m00"></td>
+                  <td class="h19 m30"></td>
+                  <td class="h20 m00"></td>
+                  <td class="h20 m30"></td>
+                  <td class="h21 m00"></td>
+                  <td class="h21 m30"></td>
+                  <td class="h22 m00"></td>
+                  <td class="h22 m30"></td>
+                  <td class="h23 m00"></td>
+                  <td class="h23 m30"></td>
+                </tr>
+              </tbody>
+              <tbody class="day" id="thu">
+                <tr>
+                  <th rowspan="2"><div>T<br>H<br>U</div></th>
+                  <td class="h08 m00"></td>
+                  <td class="h08 m30"></td>
+                  <td class="h09 m00"></td>
+                  <td class="h09 m30"></td>
+                  <td class="h10 m00"></td>
+                  <td class="h10 m30"></td>
+                  <td class="h11 m00"></td>
+                  <td class="h11 m30"></td>
+                  <td class="h12 m00"></td>
+                  <td class="h12 m30"></td>
+                  <td class="h13 m00"></td>
+                  <td class="h13 m30"></td>
+                  <td class="h14 m00"></td>
+                  <td class="h14 m30"></td>
+                  <td class="h15 m00"></td>
+                  <td class="h15 m30"></td>
+                  <td class="h16 m00"></td>
+                  <td class="h16 m30"></td>
+                  <td class="h17 m00"></td>
+                  <td class="h17 m30"></td>
+                  <td class="h18 m00"></td>
+                  <td class="h18 m30"></td>
+                  <td class="h19 m00"></td>
+                  <td class="h19 m30"></td>
+                  <td class="h20 m00"></td>
+                  <td class="h20 m30"></td>
+                  <td class="h21 m00"></td>
+                  <td class="h21 m30"></td>
+                  <td class="h22 m00"></td>
+                  <td class="h22 m30"></td>
+                  <td class="h23 m00"></td>
+                  <td class="h23 m30"></td>
+                </tr>
+                <tr>
+                  <td class="h08 m00"></td>
+                  <td class="h08 m30"></td>
+                  <td class="h09 m00"></td>
+                  <td class="h09 m30"></td>
+                  <td class="h10 m00"></td>
+                  <td class="h10 m30"></td>
+                  <td class="h11 m00"></td>
+                  <td class="h11 m30"></td>
+                  <td class="h12 m00"></td>
+                  <td class="h12 m30"></td>
+                  <td class="h13 m00"></td>
+                  <td class="h13 m30"></td>
+                  <td class="h14 m00"></td>
+                  <td class="h14 m30"></td>
+                  <td class="h15 m00"></td>
+                  <td class="h15 m30"></td>
+                  <td class="h16 m00"></td>
+                  <td class="h16 m30"></td>
+                  <td class="h17 m00"></td>
+                  <td class="h17 m30"></td>
+                  <td class="h18 m00"></td>
+                  <td class="h18 m30"></td>
+                  <td class="h19 m00"></td>
+                  <td class="h19 m30"></td>
+                  <td class="h20 m00"></td>
+                  <td class="h20 m30"></td>
+                  <td class="h21 m00"></td>
+                  <td class="h21 m30"></td>
+                  <td class="h22 m00"></td>
+                  <td class="h22 m30"></td>
+                  <td class="h23 m00"></td>
+                  <td class="h23 m30"></td>
+                </tr>
+              </tbody>
+              <tbody class="day" id="fri">
+                <tr>
+                  <th rowspan="2"><div>F<br>R<br>I</div></th>
+                  <td class="h08 m00"></td>
+                  <td class="h08 m30"></td>
+                  <td class="h09 m00"></td>
+                  <td class="h09 m30"></td>
+                  <td class="h10 m00"></td>
+                  <td class="h10 m30"></td>
+                  <td class="h11 m00"></td>
+                  <td class="h11 m30"></td>
+                  <td class="h12 m00"></td>
+                  <td class="h12 m30"></td>
+                  <td class="h13 m00"></td>
+                  <td class="h13 m30"></td>
+                  <td class="h14 m00"></td>
+                  <td class="h14 m30"></td>
+                  <td class="h15 m00"></td>
+                  <td class="h15 m30"></td>
+                  <td class="h16 m00"></td>
+                  <td class="h16 m30"></td>
+                  <td class="h17 m00"></td>
+                  <td class="h17 m30"></td>
+                  <td class="h18 m00"></td>
+                  <td class="h18 m30"></td>
+                  <td class="h19 m00"></td>
+                  <td class="h19 m30"></td>
+                  <td class="h20 m00"></td>
+                  <td class="h20 m30"></td>
+                  <td class="h21 m00"></td>
+                  <td class="h21 m30"></td>
+                  <td class="h22 m00"></td>
+                  <td class="h22 m30"></td>
+                  <td class="h23 m00"></td>
+                  <td class="h23 m30"></td>
+                </tr>
+                <tr>
+                  <td class="h08 m00"></td>
+                  <td class="h08 m30"></td>
+                  <td class="h09 m00"></td>
+                  <td class="h09 m30"></td>
+                  <td class="h10 m00"></td>
+                  <td class="h10 m30"></td>
+                  <td class="h11 m00"></td>
+                  <td class="h11 m30"></td>
+                  <td class="h12 m00"></td>
+                  <td class="h12 m30"></td>
+                  <td class="h13 m00"></td>
+                  <td class="h13 m30"></td>
+                  <td class="h14 m00"></td>
+                  <td class="h14 m30"></td>
+                  <td class="h15 m00"></td>
+                  <td class="h15 m30"></td>
+                  <td class="h16 m00"></td>
+                  <td class="h16 m30"></td>
+                  <td class="h17 m00"></td>
+                  <td class="h17 m30"></td>
+                  <td class="h18 m00"></td>
+                  <td class="h18 m30"></td>
+                  <td class="h19 m00"></td>
+                  <td class="h19 m30"></td>
+                  <td class="h20 m00"></td>
+                  <td class="h20 m30"></td>
+                  <td class="h21 m00"></td>
+                  <td class="h21 m30"></td>
+                  <td class="h22 m00"></td>
+                  <td class="h22 m30"></td>
+                  <td class="h23 m00"></td>
+                  <td class="h23 m30"></td>
+                </tr>
+              </tbody>
+              <tbody class="day" id="sat">
+                <tr>
+                  <th rowspan="2"><div>S<br>A<br>T</div></th>
+                  <td class="h08 m00"></td>
+                  <td class="h08 m30"></td>
+                  <td class="h09 m00"></td>
+                  <td class="h09 m30"></td>
+                  <td class="h10 m00"></td>
+                  <td class="h10 m30"></td>
+                  <td class="h11 m00"></td>
+                  <td class="h11 m30"></td>
+                  <td class="h12 m00"></td>
+                  <td class="h12 m30"></td>
+                  <td class="h13 m00"></td>
+                  <td class="h13 m30"></td>
+                  <td class="h14 m00"></td>
+                  <td class="h14 m30"></td>
+                  <td class="h15 m00"></td>
+                  <td class="h15 m30"></td>
+                  <td class="h16 m00"></td>
+                  <td class="h16 m30"></td>
+                  <td class="h17 m00"></td>
+                  <td class="h17 m30"></td>
+                  <td class="h18 m00"></td>
+                  <td class="h18 m30"></td>
+                  <td class="h19 m00"></td>
+                  <td class="h19 m30"></td>
+                  <td class="h20 m00"></td>
+                  <td class="h20 m30"></td>
+                  <td class="h21 m00"></td>
+                  <td class="h21 m30"></td>
+                  <td class="h22 m00"></td>
+                  <td class="h22 m30"></td>
+                  <td class="h23 m00"></td>
+                  <td class="h23 m30"></td>
+                </tr>
+                <tr>
+                  <td class="h08 m00"></td>
+                  <td class="h08 m30"></td>
+                  <td class="h09 m00"></td>
+                  <td class="h09 m30"></td>
+                  <td class="h10 m00"></td>
+                  <td class="h10 m30"></td>
+                  <td class="h11 m00"></td>
+                  <td class="h11 m30"></td>
+                  <td class="h12 m00"></td>
+                  <td class="h12 m30"></td>
+                  <td class="h13 m00"></td>
+                  <td class="h13 m30"></td>
+                  <td class="h14 m00"></td>
+                  <td class="h14 m30"></td>
+                  <td class="h15 m00"></td>
+                  <td class="h15 m30"></td>
+                  <td class="h16 m00"></td>
+                  <td class="h16 m30"></td>
+                  <td class="h17 m00"></td>
+                  <td class="h17 m30"></td>
+                  <td class="h18 m00"></td>
+                  <td class="h18 m30"></td>
+                  <td class="h19 m00"></td>
+                  <td class="h19 m30"></td>
+                  <td class="h20 m00"></td>
+                  <td class="h20 m30"></td>
+                  <td class="h21 m00"></td>
+                  <td class="h21 m30"></td>
+                  <td class="h22 m00"></td>
+                  <td class="h22 m30"></td>
+                  <td class="h23 m00"></td>
+                  <td class="h23 m30"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="timetable-controls">
+            <div id="export-share-exams-container">
+              <div id="export-share-container">
+                <div class="btn-group dropup" id="export-timetable">
+                  <button class="btn" id="export-timetable-action">
+                    <i class="icon-share-alt"></i>&nbsp;Export
+                  </button>
+                  <button class="btn dropdown-toggle"
+                          data-toggle="dropdown">
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a download="My NUSMods.com Timetable.xls" href="#" id="xls-file">
+                        <i class="icon-table"></i>&nbsp;Excel File
+                      </a>
+                    </li>
+                    <li>
+                      <a download="My NUSMods.com Timetable.html" href="#" id="html-file">
+                        <i class="icon-globe"></i>&nbsp;HTML File
+                      </a>
+                    </li>
+                    <li>
+                      <a download="My NUSMods.com Timetable.ics" href="#" id="ical-file">
+                        <i class="icon-calendar"></i>&nbsp;iCalendar File (.ics)<br>
+                        (For Google Calendar / iCal / Outlook)
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" id="jpg-file">
+                        <i class="icon-picture"></i>&nbsp;Image File (.jpg)
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" id="pdf-file">
+                        <i class="icon-file-alt"></i>&nbsp;PDF File
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <div id="share-container">
+                  <label>Share</label>
+                  <div class="input-prepend input-append">
+                    <button class="btn" id="copy-to-clipboard" type="button">
+                      <i class="icon-paste"></i>
+                    </button>
+                    <input id="short-url" placeholder="Click to get short URL"
+                    readonly type="url">
+                    <button class="btn" id="share-email" type="button">
+                      <i class="icon-envelope"></i>
+                    </button>
+                    <button class="btn" id="share-facebook" type="button">
+                      <i class="icon-facebook-sign"></i>
+                    </button>
+                    <button class="btn" id="share-twitter" type="button">
+                      <i class="icon-twitter"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <table class="table table-bordered table-condensed" id="exam-timetable">
+                <caption>Exam Timetable</caption>
+                <thead>
+                  <tr>
+                    <th>Code</th>
+                    <th>Title</th>
+                    <th class="exam-time">Exam Time</th>
+                <tbody>
+              </table>
+            </div>
+            <div id="show-hide-selected-mods-container">
+              <div id="show-hide">
+                <label>Show / Hide</label>
+                <div class="btn-group" data-toggle="buttons-checkbox">
+                  <button class="btn active" type="button">Code</button>
+                  <button class="btn active" type="button">Group</button>
+                  <button class="btn" type="button">Room</button>
+                  <button class="btn" type="button">Title</button>
+                  <button class="btn active" type="button">Week</button>
+                </div>
+              </div>
+              <div id="selected-mods">
+                <span class="exhibit-facet-header-title" id="select2-header">
+                  Select Modules for Timetable
+                </span>
+                <a href="#" class="hide" id="clear-all">(Clear&nbsp;All)</a>
+                <input id="select2" type="hidden">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <div class="footer">
+      <p class="pull-left">Academic Year: 2012/2013 Semester: 2<br>
+      Correct as at&nbsp;<span id="correct-as-at"></span></p>
+      <div class="github-buttons">
+        <iframe src="http://ghbtns.com/github-btn.html?user=ahbeng&repo=NUSMods&type=watch&count=true"></iframe>
+        <iframe src="http://ghbtns.com/github-btn.html?user=ahbeng&repo=NUSMods&type=fork&count=true"></iframe>
+      </div>
+      <p class="pull-right"><span>Module information courtesy
+      of&nbsp;<a href="http://www.nus.edu.sg/cors/schedule.html">NUS CORS</a>.
+      Built by&nbsp;<a href="mailto:beng@nus.edu.sg">Beng</a>.</span></p>
+    </div>
+  </div>
+  <div class="fade modal hide" id="export-modal">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal">&times;</button>
+      <h3>Export Timetable</h3>
+    </div>
+    <div class="modal-body">
+      <div class="alert alert-block hide" id="save-link-as-instructions">
+        <h4 class="alert-heading">Warning!</h4>
+        <p>For Excel / HTML / iCalendar files, you need to&nbsp;<strong>
+        Right-Click Download &rarr; Save Link As / Download Linked File
+        As</strong>&nbsp;then rename the file with the appropriate extension
+        (.html / .ics / .xls).</p>
+        <p>If you install the latest&nbsp;<span class="hide" id="afp-or">Flash
+        Player or&nbsp;</span>Google Chrome, you will be able to just click
+        Download instead. (These files are generated directly using your
+        browser, so other browsers don't support downloading them like normal
+        files yet.)</p>
+      </div>
+      <h4><i class="icon-picture"></i>&nbsp;Image File (.jpg)</h4>
+      <form action="jpg.php" id="jpg-form" method="post">
+        <input id="jpg-html" name="html" type="hidden">
+        <button class="btn btn-warning" type="submit">
+          <i class="icon-download-alt"></i>&nbsp;Download
+        </button>
+      </form>
+      <h4><i class="icon-file-alt"></i>&nbsp;PDF File</h4>
+      <form action="pdf.php" id="pdf-form" method="post">
+        <input id="pdf-html" name="html" type="hidden">
+        <button class="btn btn-warning" type="submit">
+          <i class="icon-download-alt"></i>&nbsp;Download
+        </button>
+      </form>
+      <h4><i class="icon-globe"></i>&nbsp;HTML File</h4>
+      <div id="dl-html-container">
+        <a class="btn btn-warning" download="My NUSMods.com Timetable.html"
+        href="#" id="dl-html">
+          <i class="icon-download-alt"></i>&nbsp;Download
+        </a>
+      </div>
+      <p><strong>Note:</strong>&nbsp;For the above files, Code / Group / Room /
+      Title / Week will be shown or hidden as you have selected in the timetable
+      displayed.</p>
+      <h4><i class="icon-table"></i>&nbsp;Excel File (.xls)&nbsp;
+      <small>Using Excel 2003 XML (SpreadsheetML) format</small></h4>
+      <div id="dl-xls-container">
+        <a class="btn btn-warning" download="My NUSMods.com Timetable.xls"
+        href="#" id="dl-xls">
+          <i class="icon-download-alt"></i>&nbsp;Download
+        </a>
+      </div>
+      <h4><i class="icon-calendar"></i>&nbsp;iCalendar File
+      (.ics)&nbsp;<small>For import into Google Calendar, iCal, Outlook,
+      etc.</small></h4>
+      <div id="dl-ical-container">
+        <a class="btn btn-warning" download="My NUSMods.com Timetable.ics"
+        href="#" id="dl-ical">
+          <i class="icon-download-alt"></i>&nbsp;Download
+        </a>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a href="#" class="btn btn-warning" data-dismiss="modal">Close</a>
+    </div>
+  </div>
+
+  <script type="text/template" id="exam-template">
+    <td><%= id %><td><%= title %><td><%= time %>
+  </script>
+
+  <script type="text/template" id="lesson-template">
+    <div><span class="code"><%= shortCode %></span> <span class="title"><%= title %></span></div>
+    <%= typeAbbrev %> <span class="group">[<%= group %>]</span>
+    <div class="room"><%= room %></div>
+    <div class="week"><%= weekStrNoEvery %></div>
+  </script>
+
+  <script type="text/template" id="tooltip-template">
+    <strong><%= code %></strong><br>
+    <%= title %><br>
+    <%= typeName %> Group <%= group %><br>
+    <%= dayStr %> <%= start %> - <%= end %><br>
+    <%= weekStr %> @ <%= room %>
+  </script>
+
+  <script type="text/template" id="module-template">
+    <td class="code"><%= code %>
+    <td class="details">
+      <div class="buttons">
+          <a class="ivle btn btn-mini"
+             data-code="<%= code %>"
+             href="http://ivle.nus.edu.sg/lms/public/list_course_public.aspx?code=<%= code %>"
+             target="_blank">
+              <i class="icon-info-sign"></i>&nbsp;IVLE
+          </a>
+          <button class="add btn btn-mini btn-warning"
+                  data-code="<%= code %>"
+                  type="button">
+              <i class="icon-plus-sign"></i>&nbsp;Add
+          </button>
+      </div>
+      <strong><%= title %></strong>
+      <div class="desc"><%= description %></div>
+      <% if (typeof prereq !== 'undefined') { %>
+        <div><strong>Prerequisites:</strong>&nbsp;<%= prereq %></div>
+      <% } %>
+      <% if (typeof preclusion !== 'undefined') { %>
+        <div><strong>Preclusions:</strong>&nbsp;<%= preclusion %></div>
+      <% } %>
+      <% if (typeof workload !== 'undefined') { %>
+        <div><strong>Workload:</strong>&nbsp;<%= workload %></div>
+      <% } %>
+    <td class="mc"><%= mc %>
+    <td class="exam"><%= examStr %>
+    <td class="department"><%= department %>
+  </script>
+
+  <script type="text/template" id="filter-template">
+      <label class="checkbox inline">
+        <input type="checkbox">
+        <a href="#"><%= label %></a> <span class="muted">(<%= count %>)</span>
+      </label>
+  </script>
+
+  <!-- build:js scripts/main.js -->
+  <script data-main="scripts/main" src="components/requirejs/require.js"></script>
+  <!-- endbuild -->
+
+  <div id="fb-root"></div>
+  <script>
+    var _gaq=[['_setAccount','UA-33503218-1'],['_trackPageview']];(function(d,s){var j,e=d.getElementsByTagName(s)[0],a=function(u){j=d.createElement(s);j.src=u;e.parentNode.insertBefore(j,e)};a('//www.google-analytics.com/ga.js');a('//connect.facebook.net/en_US/all.js#xfbml=1&appId=360419287362497');a('//platform.twitter.com/widgets.js')}(document,'script'));
+  </script>
+</body>
+</html>

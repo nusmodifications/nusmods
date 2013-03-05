@@ -15,7 +15,7 @@ module.exports = function(grunt) {
         options.headers = {'accept-encoding': 'gzip,deflate'};
     fs.stat(dest, function(err, stats) {
       if(err)
-        // creates intermediate directories if necessary
+        // Creates intermediate directories if necessary.
         grunt.file.write(dest, '');
       else
         options.headers['If-Modified-Since'] = stats.mtime.toUTCString();
