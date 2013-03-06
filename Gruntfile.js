@@ -149,11 +149,16 @@ module.exports = function (grunt) {
                 }
             }
         },
-        // not used since Uglify task does concat,
-        // but still available if needed
-        /*concat: {
-            dist: {}
-        },*/
+        concat: {
+            dist: {
+                files: {
+                    'app/components/qTip2/src/_core.scss': 'app/components/qTip2/src/core.css',
+                    'app/components/qTip2/src/_css3.scss': 'app/components/qTip2/src/css3.css',
+                    'app/components/qTip2/src/tips/_tips.scss': 'app/components/qTip2/src/tips/tips.css',
+                    'app/components/select2/_select2.scss': 'app/components/select2/select2.css'
+                }
+            }
+        },
         requirejs: {
             dist: {
                 // Options: https://github.com/jrburke/r.js/blob/master/build/example.build.js
@@ -296,6 +301,7 @@ module.exports = function (grunt) {
         grunt.task.run([
             'clean:server',
             'coffee:dist',
+            'concat',
             'compass:server',
             'livereload-start',
             'connect:livereload',
@@ -307,6 +313,7 @@ module.exports = function (grunt) {
     grunt.registerTask('test', [
         'clean:server',
         'coffee',
+        'concat',
         'compass',
         'connect:test',
         'mocha'
@@ -315,6 +322,7 @@ module.exports = function (grunt) {
     grunt.registerTask('build', [
         'clean:dist',
         'coffee',
+        'concat',
         'compass:dist',
         'useminPrepare',
         'requirejs',

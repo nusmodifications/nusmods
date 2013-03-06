@@ -1,68 +1,67 @@
 // Core variables and mixins
-@import "variables"; // Modify this for custom colors, font-sizes, etc
+@import "sass-bootstrap/lib/variables"; // Modify this for custom colors, font-sizes, etc
 $linkColor: #f60;
 $linkColorHover: darken($linkColor, 15%);
-@import "mixins";
+@import "sass-bootstrap/lib/mixins";
 
 // CSS Reset
-@import "reset";
+@import "sass-bootstrap/lib/reset";
 
 // Grid system and page structure
-@import "scaffolding";
-@import "grid";
-@import "layouts";
+@import "sass-bootstrap/lib/scaffolding";
+@import "sass-bootstrap/lib/grid";
+@import "sass-bootstrap/lib/layouts";
 
 // Base CSS
-@import "type";
-@import "forms";
-@import "tables";
+@import "sass-bootstrap/lib/type";
+@import "sass-bootstrap/lib/forms";
+@import "sass-bootstrap/lib/tables";
 
 // Components: common
 @import "fontawesome";
-@import "dropdowns";
-@import "component-animations";
-@import "close";
+@import "sass-bootstrap/lib/dropdowns";
+@import "sass-bootstrap/lib/component-animations";
+@import "sass-bootstrap/lib/close";
 
 // Components: Buttons & Alerts
-@import "buttons";
-@import "button-groups";
-@import "alerts"; // Note: alerts share common CSS with buttons and thus have styles in buttons
+@import "sass-bootstrap/lib/buttons";
+@import "sass-bootstrap/lib/button-groups";
+@import "sass-bootstrap/lib/alerts"; // Note: alerts share common CSS with buttons and thus have styles in buttons
 
 // Components: Nav
-@import "navs";
+@import "sass-bootstrap/lib/navs";
 
 // Components: Popovers
-@import "modals";
+@import "sass-bootstrap/lib/modals";
 
 // Components: Misc
-@import "progress-bars";
+@import "sass-bootstrap/lib/progress-bars";
 
 // Utility classes
-@import "utilities"; // Has to be last to override when necessary
+@import "sass-bootstrap/lib/utilities"; // Has to be last to override when necessary
 
 // RESPONSIVE CLASSES
 // ------------------
 
-@import "responsive-utilities";
+@import "sass-bootstrap/lib/responsive-utilities";
 
 
 // MEDIA QUERIES
 // ------------------
 
 // Large desktops
-@import "responsive-1200px-min";
+@import "sass-bootstrap/lib/responsive-1200px-min";
 
 // Tablets to regular desktops
-@import "responsive-768px-979px";
+@import "sass-bootstrap/lib/responsive-768px-979px";
 
 // Phones to portrait tablets and narrow desktops
-@import "responsive-767px-max";
+@import "sass-bootstrap/lib/responsive-767px-max";
 
-@import "exhibit-scripted-bundle";
-@import "qTip2/core";
-@import "qTip2/css3";
-@import "qTip2/tips";
-@import "select2";
+@import "qTip2/src/core";
+@import "qTip2/src/css3";
+@import "qTip2/src/tips/tips";
+@import "select2/select2";
 @import "timetable";
 
 // Layout
