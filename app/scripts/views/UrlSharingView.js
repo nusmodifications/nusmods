@@ -43,16 +43,16 @@ define(['backbone', 'ZeroClipboard'], function(Backbone, ZeroClipboard) {
         }
       });
 
-      clip.addEventListener('onMouseOver', function() {
+      clip.on('mouseover', function() {
         getShortURL(function(shortURL) {
           clip.setText(shortURL);
         });
         copyToClipboard.qtip('show');
       });
-      clip.addEventListener('onMouseOut', function() {
+      clip.on('mouseout', function() {
         copyToClipboard.qtip('hide');
       });
-      clip.addEventListener('onComplete', function() {
+      clip.on('complete', function() {
         copyToClipboard.qtip('option', 'content.text', 'Copied!');
       });
 
