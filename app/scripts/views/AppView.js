@@ -20,7 +20,7 @@ define(['backbone', 'timetable_data'], function(Backbone, timetable_data) {
       $.fn.qtip.defaults.position.at = 'top center';
       $.fn.qtip.defaults.position.viewport = true;
       $.fn.qtip.defaults.show.solo = true;
-      $.fn.qtip.defaults.style.classes = 'ui-tooltip-bootstrap';
+      $.fn.qtip.defaults.style.classes = 'qtip-bootstrap';
 
       $('#correct-as-at').text(timetable_data.correctAsAt);
 
