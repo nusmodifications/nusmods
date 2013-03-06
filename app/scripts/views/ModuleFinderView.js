@@ -112,7 +112,6 @@ function(timetable_data, Backbone, ModuleCollection, ModulesView, FilterCollecti
       $(window).scroll(function() {
         if ($(window).scrollTop() + $(window).height() + 100 >= $(document).height()) {
           begin += 10;
-          console.log(begin);
           _.each(filteredCodes.slice(begin, begin + 10), function(code) {
             filteredModules.add(_.extend(timetable_data.mods[code], { code: code }));
           });
