@@ -373,18 +373,13 @@ colgroup.hover {
   width: 155px;
 }
 
-// For Zero Clipboard CSS effect system, copied from bootstrap/buttons.less
-#copy-to-clipboard.active {
-  border-bottom-color: darken($btnBorder, 10%);
-  border-color: $btnBorder;
+// For ZeroClipboard CSS effects
+// https://github.com/jonrohan/ZeroClipboard/blob/master/docs/instructions.md#css-effects
+#copy-to-clipboard.zeroclipboard-is-active {
+  @extend .btn:active
 }
-#copy-to-clipboard.hover {
-  color: $grayDark;
-  text-decoration: none;
-  background-color: darken($white, 10%);
-  *background-color: darken($white, 15%);
-  background-position: 0 -15px;
-  @include transition(background-position .1s linear);
+#copy-to-clipboard.zeroclipboard-is-hover {
+  @extend .btn:hover
 }
 
 #exam-timetable {
