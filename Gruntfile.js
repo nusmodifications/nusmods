@@ -152,6 +152,13 @@ module.exports = function (grunt) {
         concat: {
             dist: {
                 files: {
+                    'app/components/qTip2/dist/jquery.qtip.js': [
+                        'app/components/qTip2/src/intro.js',
+                        'app/components/qTip2/src/core.js',
+                        'app/components/qTip2/src/tips/tips.js',
+                        'app/components/qTip2/src/viewport/viewport.js',
+                        'app/components/qTip2/src/outro.js'
+                    ],
                     'app/components/qTip2/src/_core.scss': 'app/components/qTip2/src/core.css',
                     'app/components/qTip2/src/_css3.scss': 'app/components/qTip2/src/css3.css',
                     'app/components/qTip2/src/tips/_tips.scss': 'app/components/qTip2/src/tips/tips.css',
