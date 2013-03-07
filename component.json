@@ -2,7 +2,6 @@
   "name": "NUSMods",
   "version": "0.3.0",
   "dependencies": {
-    "almond": "~0.2.5",
     "backbone": "~0.9.10",
     "backbone.localStorage": "~1.1.0",
     "Downloadify": "git://github.com/dcneiner/Downloadify.git#~0.2.1",
