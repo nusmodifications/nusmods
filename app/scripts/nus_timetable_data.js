@@ -1,5 +1,5 @@
 define({
-	"correctAsAt": "07 Jan 2013 18:09",
+	"correctAsAt": "05 Feb 2013 17:58",
 	"lectureTypes": [
 		2,
 		3,
@@ -419,7 +419,7 @@ define({
 				[
 					8,
 					"J1",
-					0,
+					"1-6",
 					0,
 					"0900",
 					"1100",
@@ -428,7 +428,7 @@ define({
 				[
 					8,
 					"J1",
-					"9-13",
+					"7-13",
 					0,
 					"0900",
 					"1100",
@@ -437,7 +437,7 @@ define({
 				[
 					8,
 					"J2",
-					0,
+					"1-6",
 					0,
 					"1100",
 					"1300",
@@ -446,7 +446,7 @@ define({
 				[
 					8,
 					"J2",
-					"9-13",
+					"7-13",
 					0,
 					"1100",
 					"1300",
@@ -455,7 +455,7 @@ define({
 				[
 					8,
 					"J3",
-					0,
+					"1-6",
 					0,
 					"1400",
 					"1600",
@@ -464,7 +464,7 @@ define({
 				[
 					8,
 					"J3",
-					"9-13",
+					"7-13",
 					0,
 					"1400",
 					"1600",
@@ -473,7 +473,7 @@ define({
 				[
 					8,
 					"J4",
-					0,
+					"1-6",
 					0,
 					"1600",
 					"1800",
@@ -482,7 +482,7 @@ define({
 				[
 					8,
 					"J4",
-					"9-13",
+					"7-13",
 					0,
 					"1600",
 					"1800",
@@ -509,7 +509,7 @@ define({
 				[
 					8,
 					"J6",
-					0,
+					"1-6",
 					1,
 					"1530",
 					"1730",
@@ -518,7 +518,7 @@ define({
 				[
 					8,
 					"J6",
-					"9-13",
+					"7-13",
 					1,
 					"1530",
 					"1730",
@@ -527,7 +527,7 @@ define({
 				[
 					8,
 					"J7",
-					0,
+					"1-6",
 					1,
 					"0900",
 					"1100",
@@ -536,7 +536,7 @@ define({
 				[
 					8,
 					"J7",
-					"9-13",
+					"7-13",
 					1,
 					"0900",
 					"1100",
@@ -545,7 +545,7 @@ define({
 				[
 					8,
 					"J8",
-					0,
+					"1-6",
 					1,
 					"1100",
 					"1300",
@@ -554,7 +554,7 @@ define({
 				[
 					8,
 					"J8",
-					"9-13",
+					"7-13",
 					1,
 					"1100",
 					"1300",
@@ -563,7 +563,7 @@ define({
 				[
 					8,
 					"J9",
-					0,
+					"1-6",
 					3,
 					"1300",
 					"1500",
@@ -572,7 +572,7 @@ define({
 				[
 					8,
 					"J9",
-					"9-13",
+					"7-13",
 					3,
 					"1300",
 					"1500",
@@ -1476,7 +1476,7 @@ define({
 					0,
 					"0900",
 					"1100",
-					"BIZ2-0510"
+					"BIZ2-0413A"
 				],
 				[
 					6,
@@ -1615,6 +1615,15 @@ define({
 					"1400",
 					"1800",
 					"SDE-LR427"
+				],
+				[
+					0,
+					"1",
+					0,
+					3,
+					"1400",
+					"1800",
+					"SDE-LR427"
 				]
 			]
 		},
@@ -1747,120 +1756,12 @@ define({
 				],
 				[
 					8,
-					"1",
-					0,
-					1,
-					"1800",
-					"2000",
-					"SDE-LR427"
-				],
-				[
-					8,
-					"10",
-					0,
-					2,
-					"1600",
-					"1800",
-					"SDE-SR7"
-				],
-				[
-					8,
-					"11",
-					0,
-					2,
-					"1600",
-					"1800",
-					"SDE-SR9"
-				],
-				[
-					8,
-					"12",
-					0,
-					2,
-					"1600",
-					"1800",
-					"SDE-SR4"
-				],
-				[
-					8,
-					"13",
-					0,
-					2,
-					"1600",
-					"1800",
-					"SDE-SR5"
-				],
-				[
-					8,
-					"14",
-					0,
-					2,
-					"1100",
-					"1300",
-					"SDE-SR11"
-				],
-				[
-					8,
 					"2",
 					0,
 					2,
-					"1600",
-					"1800",
+					"1830",
+					"2030",
 					"SDE-SR12"
-				],
-				[
-					8,
-					"3",
-					0,
-					2,
-					"1600",
-					"1800",
-					"SDE-SR14"
-				],
-				[
-					8,
-					"4",
-					0,
-					2,
-					"1600",
-					"1800",
-					"SDE-SR6"
-				],
-				[
-					8,
-					"5",
-					0,
-					2,
-					"1600",
-					"1800",
-					"SDE-SR9"
-				],
-				[
-					8,
-					"6",
-					0,
-					1,
-					"1100",
-					"1300",
-					"SDE-SR10"
-				],
-				[
-					8,
-					"7",
-					0,
-					1,
-					"1100",
-					"1300",
-					"SDE-SR11"
-				],
-				[
-					8,
-					"8",
-					0,
-					1,
-					"1100",
-					"1300",
-					"SDE-ER4"
 				]
 			]
 		},
@@ -1905,7 +1806,7 @@ define({
 					4,
 					"1400",
 					"1600",
-					"null"
+					"SDE-SR13"
 				],
 				[
 					8,
@@ -2007,8 +1908,42 @@ define({
 					"1400",
 					"1800",
 					"AKI2"
+				],
+				[
+					0,
+					"1",
+					0,
+					3,
+					"1400",
+					"1800",
+					"AKI2"
+				],
+				[
+					8,
+					"1",
+					0,
+					0,
+					"1400",
+					"1800",
+					"SDE-LR423"
+				],
+				[
+					8,
+					"1",
+					0,
+					3,
+					"1400",
+					"1800",
+					"SDE-LR424"
 				]
 			]
+		},
+		"AR2151": {
+			"description": "This module will involve the study of technology integration with design project/s under AR2102 at year two level.",
+			"title": "Technology Integration I",
+			"workload": "0-2-0-2-6",
+			"department": "Architecture",
+			"mc": 4
 		},
 		"AR2223": {
 			"description": "This module will focus on the fundamental principles of urban design and planning. It will enable students to understand and appreciate the issues and process of urban design & planning. The module introduces students to the concepts of urban form, urban function, urban change and how urban spaces are designed through different urban design models. The module will include the study of the western urban development in general and of Singapore. It will examine the driving force behind urban transformation. Important urban design models will be introduced, including the traditional city, medieval city, garden city, modern city and ecological city.",
@@ -2043,6 +1978,15 @@ define({
 					"0900",
 					"1000",
 					"SDE-SR13"
+				],
+				[
+					8,
+					"11",
+					0,
+					2,
+					"1500",
+					"1600",
+					"SDE-SR6"
 				],
 				[
 					8,
@@ -2140,7 +2084,7 @@ define({
 					0,
 					"1300",
 					"1500",
-					"null"
+					"SDE-SR9"
 				],
 				[
 					8,
@@ -2353,24 +2297,6 @@ define({
 				],
 				[
 					8,
-					"12",
-					0,
-					4,
-					"1600",
-					"1800",
-					"SDE-ES1"
-				],
-				[
-					8,
-					"13",
-					0,
-					1,
-					"1100",
-					"1300",
-					"SDE-LR424"
-				],
-				[
-					8,
 					"4",
 					0,
 					4,
@@ -2430,6 +2356,15 @@ define({
 					"1",
 					0,
 					3,
+					"1400",
+					"1800",
+					"AKI3"
+				],
+				[
+					0,
+					"1",
+					0,
+					0,
 					"1400",
 					"1800",
 					"SDE-LR426"
@@ -2575,18 +2510,18 @@ define({
 				[
 					8,
 					"1",
-					1,
+					0,
 					4,
 					"0900",
-					"1100",
+					"1000",
 					"SDE-SR15"
 				],
 				[
 					8,
 					"10",
-					2,
+					0,
 					4,
-					"0900",
+					"1000",
 					"1100",
 					"SDE-SR9"
 				],
@@ -2620,76 +2555,81 @@ define({
 				[
 					8,
 					"2",
-					2,
+					0,
 					4,
-					"0900",
+					"1000",
 					"1100",
 					"SDE-SR15"
 				],
 				[
 					8,
 					"3",
-					1,
+					0,
 					4,
 					"0900",
-					"1100",
+					"1000",
 					"SDE-SR11"
 				],
 				[
 					8,
 					"4",
-					2,
+					0,
 					4,
-					"0900",
+					"1000",
 					"1100",
 					"SDE-SR11"
 				],
 				[
 					8,
 					"5",
-					1,
+					0,
 					4,
 					"0900",
-					"1100",
+					"1000",
 					"SDE-SR6"
 				],
 				[
 					8,
 					"6",
-					2,
+					0,
 					4,
-					"0900",
+					"1000",
 					"1100",
 					"SDE-SR6"
 				],
 				[
 					8,
 					"7",
-					1,
+					0,
 					4,
 					"0900",
-					"1100",
+					"1000",
 					"SDE-SR4"
 				],
 				[
 					8,
 					"8",
-					2,
+					0,
 					4,
-					"0900",
+					"1000",
 					"1100",
 					"SDE-SR4"
 				],
 				[
 					8,
 					"9",
-					1,
+					0,
 					4,
 					"0900",
-					"1100",
+					"1000",
 					"SDE-SR9"
 				]
 			]
+		},
+		"AR3612": {
+			"title": "Cultural Heritage Studies",
+			"department": "Architecture",
+			"mc": 4
 		},
 		"AR4102": {
 			"description": "This module will study the issues and methods involved with the urban community and high-density housing. It will enable students to explore the forms and typologies of housing in high-dense cities and the methods that may be pursued in the design of these building types. Topics - The module examines the design issues connected with the urban context of Asian cities and the development of housing in Singapore, including public housing. It will include site investigation and analysis, urban design considerations and the design of appropriate housing types in response to the urban and social context. New concepts of dwelling in the city will be explored, and students have to demonstrate their ability to integrate urban, social and environmental factors into their housing proposals. Emphasis is also placed on the ability to resolve the relationship of public, community and private spaces in these developments.",
@@ -2708,6 +2648,15 @@ define({
 					"1400",
 					"1800",
 					"SDE-LR425"
+				],
+				[
+					0,
+					"1",
+					0,
+					3,
+					"1400",
+					"1800",
+					"AKI4A"
 				]
 			]
 		},
@@ -2728,6 +2677,15 @@ define({
 					"1400",
 					"1800",
 					"AKI4B"
+				],
+				[
+					0,
+					"1",
+					0,
+					0,
+					"1400",
+					"1800",
+					"AKI4B"
 				]
 			]
 		},
@@ -2745,7 +2703,7 @@ define({
 					1,
 					"0900",
 					"1100",
-					"null"
+					"SDE-SR7"
 				],
 				[
 					8,
@@ -2771,7 +2729,7 @@ define({
 					3,
 					"0900",
 					"1200",
-					"null"
+					"SDE-SR8"
 				],
 				[
 					8,
@@ -2780,7 +2738,7 @@ define({
 					0,
 					"0900",
 					"1200",
-					"null"
+					"SDE-SR7"
 				]
 			]
 		},
@@ -2793,10 +2751,10 @@ define({
 					2,
 					"1",
 					0,
-					2,
-					"1100",
-					"1300",
-					"null"
+					4,
+					"1000",
+					"1200",
+					"SDE-LR423"
 				],
 				[
 					8,
@@ -2805,7 +2763,7 @@ define({
 					1,
 					"1000",
 					"1200",
-					"null"
+					"SDE-SR4"
 				],
 				[
 					8,
@@ -2814,7 +2772,7 @@ define({
 					1,
 					"1400",
 					"1600",
-					"null"
+					"SDE-SR8"
 				],
 				[
 					8,
@@ -2832,7 +2790,7 @@ define({
 					0,
 					"1100",
 					"1300",
-					"SDE-ER4"
+					"null"
 				],
 				[
 					8,
@@ -2886,7 +2844,7 @@ define({
 					4,
 					"1100",
 					"1300",
-					"null"
+					"SDE-LR421"
 				],
 				[
 					8,
@@ -2956,7 +2914,7 @@ define({
 					0,
 					"1000",
 					"1300",
-					"SDE-SR10"
+					"SDE-LR421"
 				],
 				[
 					8,
@@ -2965,7 +2923,7 @@ define({
 					0,
 					"1000",
 					"1300",
-					"SDE-LR421"
+					"SDE-SR10"
 				],
 				[
 					8,
@@ -3000,6 +2958,85 @@ define({
 			"description": "This module aims to introduce building technology in the context of design strategies and as the enabler of architectural design concepts and function. Lectures are organized sequentially to relate in one building. a. operator/user requirements to building requirements b. design strategies to meet building requirements c. the technical resolution of those design strategies Design strategies include: Site planning considerations for major provisions such as substation, basement car parks; Construction processes due to site constraints; Structural strategy and concept in relation to architectural form, space and layout considerations; Mechanical & electrical strategy and concept in relation to architecture and layout.",
 			"title": "Advanced Architectural Technology",
 			"workload": "2-2-0-2-4",
+			"department": "Architecture",
+			"mc": 4
+		},
+		"AR5951K": {
+			"description": "The module is a multi-disciplinary and multi-scalar study on vast and continuous interior environments, which form a large part of our everyday experience of the city. Through lectures, assignments and case studies centred on Singapore and Hong Kong, students will acquire a heightened awareness and theoretical foundation on the history, evolution, impact and the possible futures of these vast and interconnected interior spaces.",
+			"title": "Topics In History And Theory Of Architecture - Vast And Continuous Interiors: The Asian Experience",
+			"workload": "1-1-0-4-4",
+			"department": "Architecture",
+			"mc": 4,
+			"lessons": [
+				[
+					2,
+					"1",
+					0,
+					3,
+					"0900",
+					"1000",
+					"SDE-SR9"
+				],
+				[
+					8,
+					"1",
+					0,
+					3,
+					"1000",
+					"1100",
+					"SDE-SR12"
+				]
+			]
+		},
+		"AR5952J": {
+			"description": "The main aim of this module is to widen the capacity for understanding the relationship of men and built environment. Topics like THE - Total Healing Environment, accessibility and inclusive spaces, semantics of space, senses, wayfinding, etc. will be discussed from social, psychological, technical, cultural and environmental perspective. Upon completion, students will be able to understand how space influences users and improve this relation through creative and integrative universal design. Students will engage in creative exercises asking for critical enquiry and innovativeness.Particular attention will be paid to design for ageing population and Universal Design principles and practices.",
+			"title": "Topics in Urban Studies - Human Ecology and Built Environment - Space and Health",
+			"workload": "2-2-0-5-1",
+			"department": "Architecture",
+			"mc": 4,
+			"lessons": [
+				[
+					2,
+					"1",
+					0,
+					2,
+					"1300",
+					"1600",
+					"SDE-CR4"
+				],
+				[
+					8,
+					"1",
+					0,
+					2,
+					"1600",
+					"1900",
+					"SDE-LR425"
+				]
+			]
+		},
+		"AR5952L": {
+			"description": "In this course, students are introduced to a selection of classic texts about urban planning. How did urban planning arise as a professional, intellectual and political activity? What are the assumptions and values attached to various planning paradigms? How should one study and intervene into the city, and to what ends? The “urban question” has been posed since the 19th century, and we foresee new and old challenges in the future. As a reading seminar, students are taught to read critically and closely. There are three pedagogical objectives: 1. Prepare students for research and dissertation-writing; 2. Challenge students to think critically about cities by reviewing classic texts; and 3. Contribute to our awareness of the politics of planning in Singapore and around the world.",
+			"title": "Topics in Urban Studies: Politics of Planning: Histories, Theories And Challenges",
+			"workload": "0-2-0-3-5",
+			"department": "Architecture",
+			"mc": 4,
+			"lessons": [
+				[
+					7,
+					"1",
+					0,
+					4,
+					"1400",
+					"1700",
+					"SDE-SR6"
+				]
+			]
+		},
+		"AR5953J": {
+			"description": "This is a studio-based module, where students from different disciplines work in integrated team to synthesize and implement various sub-systems in the solar house, such as PV-LVDC systems, HVAC and adaptive controls, optimizing hot water and radiant heating. The designing and implementation of each system involves a breadth of considerations and tasks including analyses, simulation, optimization and control strategies, as well as responding to overall architecture intents and constraints such as performance, cost, buildability, site and size constraints. The deliverables of this module is working prototypes, and a written report.",
+			"title": "Topics in Design Technology - Solar Decathlon",
+			"workload": "2-0-2-4-2",
 			"department": "Architecture",
 			"mc": 4
 		},
@@ -3070,6 +3107,14 @@ define({
 			"workload": "Varies depending on individual student with their supervisor",
 			"department": "Dean's Office (Biz)",
 			"mc": 12
+		},
+		"BIS3001": {
+			"description": "The Independent Study Module in Business provides the opportunity for student to pursue an in-depth study of a Business topic or issue independently, but under the close supervision and guidance of an instructor. Through such a learning experience, not only will the student gain an indepth knowledge of the topic of interest, the skills acquired through such a process of independent knowledge acquisition will be invaluable for a career in the Business world. The personalized interaction with the instructor will also facilitate mentorship.",
+			"prerequisite": "This will vary according to specific topics.",
+			"preclusion": "This will vary according to specific topics.",
+			"title": "Independent Study Module in Business",
+			"department": "Dean's Office (Biz)",
+			"mc": 4
 		},
 		"BL5233": {
 			"description": "Analysis and modeling of environmental biology data are essential skills in environmental biology in general and ecological research in particular. The range of statistical and modeling techniques necessary to analyze real data and the complexities inherent to natural systems will be covered. The module will provide graduate students with the expertise to perform modeling and statistical inference on environmental biology datasets at a publishable standard. Topics covered include: generalized linear models, generalized additive models, generalized linear mixed-effects models, analysis of communities structure, time series and spatial statistics.",
@@ -3202,7 +3247,7 @@ define({
 			"workload": "2-1-0.5-1.5-5",
 			"department": "Bioengineering",
 			"mc": 4,
-			"exam": 1367312400000,
+			"exam": 1367197200000,
 			"lessons": [
 				[
 					2,
@@ -3212,6 +3257,15 @@ define({
 					"1000",
 					"1200",
 					"LT5"
+				],
+				[
+					1,
+					"1",
+					0,
+					0,
+					"1400",
+					"1700",
+					"DV1"
 				],
 				[
 					8,
@@ -4356,7 +4410,7 @@ define({
 					0,
 					"1400",
 					"1500",
-					"null"
+					"E3-06-14"
 				],
 				[
 					8,
@@ -4449,7 +4503,7 @@ define({
 					0,
 					"1100",
 					"1200",
-					"E2-03-03"
+					"E1-06-08"
 				],
 				[
 					8,
@@ -4494,7 +4548,7 @@ define({
 					0,
 					"1200",
 					"1300",
-					"null"
+					"E3-06-12"
 				],
 				[
 					8,
@@ -4503,7 +4557,7 @@ define({
 					0,
 					"1200",
 					"1300",
-					"null"
+					"E3-06-15"
 				]
 			]
 		},
@@ -4557,18 +4611,18 @@ define({
 					"3AB",
 					0,
 					2,
-					"0900",
-					"1000",
-					"E2-03-03"
+					"1200",
+					"1300",
+					"E3-06-15"
 				],
 				[
 					8,
 					"4AB",
 					0,
 					2,
-					"0900",
-					"1000",
-					"EA-06-04"
+					"1200",
+					"1300",
+					"E3-06-13"
 				],
 				[
 					8,
@@ -4693,7 +4747,7 @@ define({
 					8,
 					"7AB",
 					0,
-					0,
+					2,
 					"0900",
 					"1000",
 					"EA-06-04"
@@ -4702,10 +4756,10 @@ define({
 					8,
 					"8AB",
 					0,
-					0,
+					2,
 					"0900",
 					"1000",
-					"E3-06-07"
+					"E3-06-13"
 				]
 			]
 		},
@@ -4777,18 +4831,18 @@ define({
 					"5AB",
 					0,
 					0,
-					"0900",
-					"1000",
-					"null"
+					"1200",
+					"1300",
+					"E1-06-02"
 				],
 				[
 					8,
 					"6AB",
 					0,
 					0,
-					"0900",
-					"1000",
-					"null"
+					"1200",
+					"1300",
+					"E4-04-02"
 				],
 				[
 					8,
@@ -4860,28 +4914,19 @@ define({
 					3,
 					"1",
 					0,
-					3,
-					"1300",
-					"1500",
-					"EA-02-11"
-				],
-				[
-					3,
-					"1",
 					0,
-					0,
-					"1400",
-					"1500",
-					"EA-02-11"
+					"1800",
+					"2100",
+					"E2-03-03"
 				],
 				[
 					4,
 					"1",
 					0,
 					0,
-					"1500",
-					"1600",
-					"EA-02-11"
+					"1700",
+					"1800",
+					"E2-03-02"
 				]
 			]
 		},
@@ -4930,7 +4975,7 @@ define({
 					3,
 					"1800",
 					"2100",
-					"EA-06-03"
+					"E2-0308PC"
 				]
 			]
 		},
@@ -5087,7 +5132,7 @@ define({
 					4,
 					"1800",
 					"2100",
-					"EA-06-03"
+					"E1-06-06"
 				]
 			]
 		},
@@ -5352,33 +5397,6 @@ define({
 					"DSALab1"
 				],
 				[
-					1,
-					"B3",
-					0,
-					3,
-					"1400",
-					"1700",
-					"DSALab1"
-				],
-				[
-					8,
-					"T1",
-					0,
-					2,
-					"1100",
-					"1200",
-					"E3-06-11"
-				],
-				[
-					8,
-					"T2",
-					0,
-					2,
-					"1100",
-					"1200",
-					"E3-06-14"
-				],
-				[
 					8,
 					"T3",
 					0,
@@ -5427,42 +5445,6 @@ define({
 			"lessons": [
 				[
 					8,
-					"C02",
-					0,
-					0,
-					"1200",
-					"1400",
-					"COM2-0108"
-				],
-				[
-					8,
-					"C02",
-					0,
-					3,
-					"1200",
-					"1400",
-					"COM2-0108"
-				],
-				[
-					8,
-					"C03",
-					0,
-					0,
-					"1000",
-					"1200",
-					"COM1-0208"
-				],
-				[
-					8,
-					"C03",
-					0,
-					3,
-					"1000",
-					"1200",
-					"COM1-0208"
-				],
-				[
-					8,
 					"C04",
 					0,
 					0,
@@ -5486,7 +5468,7 @@ define({
 					0,
 					"1200",
 					"1400",
-					"COM1-0113"
+					"COM1-0212"
 				],
 				[
 					8,
@@ -5495,7 +5477,7 @@ define({
 					3,
 					"1200",
 					"1400",
-					"COM1-0114"
+					"COM1-0201"
 				],
 				[
 					8,
@@ -5504,7 +5486,7 @@ define({
 					0,
 					"1000",
 					"1200",
-					"COM1-B103"
+					"COM1-0218"
 				],
 				[
 					8,
@@ -5513,7 +5495,7 @@ define({
 					3,
 					"1000",
 					"1200",
-					"COM1-B103"
+					"COM1-0212"
 				],
 				[
 					8,
@@ -5601,15 +5583,6 @@ define({
 				],
 				[
 					8,
-					"T2",
-					0,
-					2,
-					"1000",
-					"1100",
-					"E3-06-11"
-				],
-				[
-					8,
 					"T3",
 					0,
 					3,
@@ -5646,12 +5619,12 @@ define({
 				],
 				[
 					8,
-					"T7",
+					"T8",
 					0,
-					4,
-					"1500",
-					"1600",
-					"E5-03-22"
+					3,
+					"1100",
+					"1200",
+					"E3-06-11"
 				]
 			]
 		},
@@ -5679,8 +5652,8 @@ define({
 					"1",
 					0,
 					1,
-					"1200",
 					"1400",
+					"1600",
 					"COM1-0114"
 				],
 				[
@@ -6055,7 +6028,7 @@ define({
 					2,
 					"1600",
 					"1800",
-					"LT12"
+					"AS3-0302"
 				],
 				[
 					8,
@@ -6690,15 +6663,6 @@ define({
 					"1500",
 					"1600",
 					"AS7-0119"
-				],
-				[
-					8,
-					"W5",
-					0,
-					3,
-					"1600",
-					"1700",
-					"AS4-0109"
 				]
 			]
 		},
@@ -7309,7 +7273,7 @@ define({
 					4,
 					"0900",
 					"1200",
-					"null"
+					"S5-0101"
 				],
 				[
 					1,
@@ -7318,7 +7282,7 @@ define({
 					4,
 					"0900",
 					"1200",
-					"null"
+					"S5-0101"
 				],
 				[
 					1,
@@ -7327,7 +7291,7 @@ define({
 					4,
 					"1400",
 					"1700",
-					"null"
+					"S5-0101"
 				],
 				[
 					1,
@@ -7336,7 +7300,7 @@ define({
 					4,
 					"1400",
 					"1700",
-					"null"
+					"S5-0101"
 				],
 				[
 					8,
@@ -7749,7 +7713,7 @@ define({
 					4,
 					"1600",
 					"1700",
-					"S9-0513"
+					"S16-0436"
 				],
 				[
 					8,
@@ -7758,7 +7722,7 @@ define({
 					4,
 					"1700",
 					"1800",
-					"S9-0513"
+					"S16-0436"
 				],
 				[
 					8,
@@ -7767,7 +7731,7 @@ define({
 					1,
 					"1600",
 					"1700",
-					"S9-0513"
+					"S16-0436"
 				],
 				[
 					8,
@@ -7776,7 +7740,7 @@ define({
 					1,
 					"1700",
 					"1800",
-					"S9-0513"
+					"S16-0436"
 				],
 				[
 					8,
@@ -7785,7 +7749,7 @@ define({
 					2,
 					"1600",
 					"1700",
-					"S9-0513"
+					"S16-0436"
 				],
 				[
 					8,
@@ -7794,7 +7758,7 @@ define({
 					2,
 					"1700",
 					"1800",
-					"S9-0513"
+					"S16-0436"
 				]
 			]
 		},
@@ -8718,6 +8682,15 @@ define({
 					"1600",
 					"1800",
 					"LT20"
+				],
+				[
+					8,
+					"ST1",
+					0,
+					2,
+					"1100",
+					"1200",
+					"S14-06SR"
 				]
 			]
 		},
@@ -9729,7 +9702,7 @@ define({
 					0,
 					"0900",
 					"1100",
-					"E5-03-23"
+					"E5-03-19"
 				],
 				[
 					2,
@@ -9738,7 +9711,7 @@ define({
 					2,
 					"0900",
 					"1000",
-					"E5-02-32"
+					"E5-03-19"
 				],
 				[
 					8,
@@ -9747,7 +9720,7 @@ define({
 					2,
 					"1000",
 					"1100",
-					"E5-02-32"
+					"E5-03-19"
 				]
 			]
 		},
@@ -9767,7 +9740,7 @@ define({
 					1,
 					"1600",
 					"1800",
-					"null"
+					"E5-03-23"
 				],
 				[
 					8,
@@ -9897,7 +9870,7 @@ define({
 					3,
 					"1800",
 					"2130",
-					"E2-03-03"
+					"EA-06-04"
 				],
 				[
 					8,
@@ -10082,7 +10055,7 @@ define({
 					1,
 					"1700",
 					"1800",
-					"null"
+					"E3-06-05"
 				],
 				[
 					8,
@@ -10091,7 +10064,7 @@ define({
 					2,
 					"1600",
 					"1700",
-					"null"
+					"E3-06-05"
 				],
 				[
 					8,
@@ -10100,7 +10073,7 @@ define({
 					0,
 					"1700",
 					"1800",
-					"null"
+					"E3-06-05"
 				]
 			]
 		},
@@ -10148,7 +10121,7 @@ define({
 					1,
 					"1800",
 					"2030",
-					"E1-06-08"
+					"E5-02-32"
 				],
 				[
 					8,
@@ -10157,7 +10130,7 @@ define({
 					1,
 					"2030",
 					"2130",
-					"E1-06-08"
+					"E5-02-32"
 				]
 			]
 		},
@@ -10358,6 +10331,14 @@ define({
 				]
 			]
 		},
+		"CP3101A": {
+			"description": "This module is a part of an experimental global software engineering education initiative spearheaded by Stanford/Facebook. It is offered as part of the CP3101 Topics in Computing series. Student teams will be associated with a select group of open source software projects. These projects are characterized by being active in both development and utilization as well as being open to new and relatively inexperienced committers. They are also projects that are deemed to be relevant in today's software ecosystem. We also believe there is value in seeding awareness of how to contribute to open source projects like these among future technology leaders. Ideally there will also be some value from the development work student teams contribute back to the project as well.",
+			"prerequisite": "CS2103 or its equivalent",
+			"title": "Global Open Source Project",
+			"workload": "1-1-0-8-0",
+			"department": "Dean's Office (School Of Computing)",
+			"mc": 4
+		},
 		"CP3106": {
 			"prerequisite": "[(CS2102 or CS2102S) and CS2105 and read (CS3214 or CS3215)] or IS3102 or IS4102 or CS3201 or CS3281 or CS4201 or CS4203",
 			"title": "Independent Project",
@@ -10384,6 +10365,14 @@ define({
 			"workload": "0-0-0-2.5-2.5",
 			"department": "Dean's Office (School Of Computing)",
 			"mc": 2
+		},
+		"CP3200": {
+			"description": "The IT industry and related businesses are developing rapidly for which students need to have an opportunity to expose themselves to the latest industry developments. This internship module requires students to work in a company for a period of three months. Their progress on projects will be monitored during attachment, and their performance will be graded as “Completed Satisfactory/Completed Unsatisfactory (CS/CU)” at the end of the attachment, based on the final project report. During the attachment, students are not expected to take other modules offered by the university.",
+			"prerequisite": "Students can only take this module after completing 70 MCs. Student Selection process will be enforced",
+			"title": "Internship",
+			"workload": "0-0-0-15-0",
+			"department": "Dean's Office (School Of Computing)",
+			"mc": 6
 		},
 		"CP3201": {
 			"description": "The information technology (IT) industry is in an everchanging state of evolvement and innovation. This module aims to acquaint students with the latest Information Technology (IT) innovation, practices, and developments. Prominent leaders and practitioners in the IT industry will be invited to impart their knowledge and insights into the latest IT trends and developments from various industry arenas such as the finance, healthcare, consulting, manufacturing, and entertainment industries. Students' performance will be graded as \"Completed Satisfactory/Completed Unsatisfactory (CS/CU)\" at the end of the module based on the coursework.",
@@ -10880,6 +10869,15 @@ define({
 					"COM1-0120"
 				],
 				[
+					1,
+					"9",
+					0,
+					3,
+					"1000",
+					"1200",
+					"COM1-B112"
+				],
+				[
 					8,
 					"1",
 					0,
@@ -10887,6 +10885,15 @@ define({
 					"0900",
 					"1000",
 					"COM1-0201"
+				],
+				[
+					8,
+					"10",
+					0,
+					4,
+					"1100",
+					"1200",
+					"COM1-0203"
 				],
 				[
 					8,
@@ -10988,7 +10995,7 @@ define({
 					3,
 					"1600",
 					"1800",
-					"COM1-B112"
+					"COM1-B108"
 				],
 				[
 					1,
@@ -10997,15 +11004,15 @@ define({
 					3,
 					"1400",
 					"1600",
-					"COM1-B112"
+					"COM1-B108"
 				],
 				[
 					1,
 					"3",
 					0,
 					3,
-					"1400",
-					"1600",
+					"1800",
+					"2000",
 					"COM1-B108"
 				],
 				[
@@ -11015,15 +11022,6 @@ define({
 					4,
 					"1500",
 					"1600",
-					"COM1-0210"
-				],
-				[
-					8,
-					"2",
-					0,
-					4,
-					"1600",
-					"1700",
 					"COM1-0210"
 				],
 				[
@@ -11100,33 +11098,6 @@ define({
 					"1100",
 					"1200",
 					"COM1-0218"
-				],
-				[
-					8,
-					"11",
-					0,
-					4,
-					"1200",
-					"1300",
-					"COM1-0218"
-				],
-				[
-					8,
-					"12",
-					0,
-					4,
-					"1000",
-					"1100",
-					"COM1-0209"
-				],
-				[
-					8,
-					"13",
-					0,
-					4,
-					"1100",
-					"1200",
-					"COM1-0209"
 				],
 				[
 					8,
@@ -11240,6 +11211,24 @@ define({
 					"COM1-B109"
 				],
 				[
+					1,
+					"3",
+					0,
+					3,
+					"1300",
+					"1400",
+					"COM1-B110"
+				],
+				[
+					1,
+					"4",
+					0,
+					3,
+					"1600",
+					"1700",
+					"COM1-B109"
+				],
+				[
 					8,
 					"1",
 					0,
@@ -11265,6 +11254,15 @@ define({
 					"1100",
 					"1200",
 					"COM1-0208"
+				],
+				[
+					8,
+					"8",
+					0,
+					2,
+					"1100",
+					"1200",
+					"COM1-0209"
 				]
 			]
 		},
@@ -11327,8 +11325,26 @@ define({
 					"4",
 					0,
 					3,
+					"1700",
+					"1900",
+					"i3-0346"
+				],
+				[
+					1,
+					"5",
+					0,
+					1,
+					"1400",
 					"1600",
-					"1800",
+					"i3-0346"
+				],
+				[
+					1,
+					"6",
+					0,
+					1,
+					"1700",
+					"1900",
 					"i3-0346"
 				],
 				[
@@ -11521,7 +11537,7 @@ define({
 					0,
 					"0900",
 					"1000",
-					"COM1-0208"
+					"COM1-0211"
 				],
 				[
 					8,
@@ -11602,7 +11618,7 @@ define({
 					1,
 					"0900",
 					"1000",
-					"COM1-0208"
+					"COM1-0211"
 				],
 				[
 					8,
@@ -11920,17 +11936,17 @@ define({
 					"6",
 					0,
 					2,
-					"1000",
 					"1200",
-					"i3-0346"
+					"1400",
+					"i3-0345"
 				],
 				[
 					8,
 					"7",
 					0,
 					2,
-					"1400",
-					"1600",
+					"1000",
+					"1200",
 					"COM1-0203"
 				],
 				[
@@ -11938,8 +11954,26 @@ define({
 					"7",
 					0,
 					2,
-					"1400",
+					"1000",
+					"1200",
+					"i3-0346"
+				],
+				[
+					8,
+					"8",
+					0,
+					3,
 					"1600",
+					"1800",
+					"COM1-0203"
+				],
+				[
+					8,
+					"8",
+					0,
+					3,
+					"1600",
+					"1800",
 					"COM1-0120"
 				]
 			]
@@ -11991,6 +12025,15 @@ define({
 					"1400",
 					"1500",
 					"COM1-0210"
+				],
+				[
+					8,
+					"14",
+					0,
+					3,
+					"1700",
+					"1800",
+					"COM1-0211"
 				],
 				[
 					8,
@@ -12186,6 +12229,15 @@ define({
 					"1300",
 					"1400",
 					"COM1-0210"
+				],
+				[
+					8,
+					"5",
+					0,
+					0,
+					"1200",
+					"1300",
+					"COM1-0203"
 				],
 				[
 					8,
@@ -12502,6 +12554,24 @@ define({
 					"1400",
 					"1500",
 					"COM1-0209"
+				],
+				[
+					8,
+					"2",
+					0,
+					0,
+					"1500",
+					"1600",
+					"COM1-0209"
+				],
+				[
+					8,
+					"3",
+					0,
+					1,
+					"1200",
+					"1300",
+					"COM1-0209"
 				]
 			]
 		},
@@ -12549,7 +12619,7 @@ define({
 					0,
 					"1600",
 					"1800",
-					"LT15"
+					"COM1-0212"
 				],
 				[
 					8,
@@ -12659,9 +12729,9 @@ define({
 					"2",
 					0,
 					0,
-					"1000",
-					"1100",
-					"COM1-0209"
+					"1500",
+					"1600",
+					"COM1-0207"
 				],
 				[
 					8,
@@ -12712,6 +12782,24 @@ define({
 				[
 					8,
 					"1",
+					0,
+					3,
+					"1500",
+					"1600",
+					"COM1-0218"
+				],
+				[
+					8,
+					"2",
+					0,
+					3,
+					"1600",
+					"1700",
+					"COM1-0218"
+				],
+				[
+					8,
+					"3",
 					0,
 					4,
 					"1600",
@@ -12764,6 +12852,15 @@ define({
 					"1700",
 					"1800",
 					"COM1-0209"
+				],
+				[
+					8,
+					"4",
+					0,
+					4,
+					"1300",
+					"1400",
+					"COM1-0203"
 				]
 			]
 		},
@@ -12802,6 +12899,15 @@ define({
 					"1500",
 					"1600",
 					"COM1-0209"
+				],
+				[
+					8,
+					"3",
+					0,
+					1,
+					"1000",
+					"1100",
+					"COM1-B110"
 				]
 			]
 		},
@@ -12978,7 +13084,7 @@ define({
 					3,
 					"1000",
 					"1200",
-					"COM1-0202"
+					"AS6-0426"
 				],
 				[
 					1,
@@ -12987,16 +13093,7 @@ define({
 					4,
 					"1400",
 					"1600",
-					"COM1-0202"
-				],
-				[
-					1,
-					"3",
-					0,
-					3,
-					"1400",
-					"1600",
-					"COM1-0202"
+					"AS6-0426"
 				],
 				[
 					1,
@@ -13005,7 +13102,7 @@ define({
 					3,
 					"1830",
 					"2030",
-					"COM1-0202"
+					"AS6-0426"
 				],
 				[
 					1,
@@ -13014,7 +13111,7 @@ define({
 					0,
 					"1830",
 					"2030",
-					"COM1-0202"
+					"AS6-0426"
 				],
 				[
 					8,
@@ -13144,6 +13241,15 @@ define({
 					"1300",
 					"1400",
 					"COM1-0209"
+				],
+				[
+					8,
+					"6",
+					0,
+					2,
+					"1200",
+					"1300",
+					"COM1-0208"
 				]
 			]
 		},
@@ -13388,7 +13494,7 @@ define({
 					0,
 					"0900",
 					"1000",
-					"COM1-B103"
+					"COM1-0207"
 				],
 				[
 					8,
@@ -13407,6 +13513,15 @@ define({
 					"1100",
 					"1200",
 					"COM1-0207"
+				],
+				[
+					8,
+					"4",
+					0,
+					0,
+					"1500",
+					"1600",
+					"COM1-0210"
 				]
 			]
 		},
@@ -13546,6 +13661,15 @@ define({
 					3,
 					"1600",
 					"1800",
+					"AS6-0421"
+				],
+				[
+					1,
+					"3",
+					0,
+					4,
+					"1000",
+					"1200",
 					"AS6-0421"
 				]
 			]
@@ -13689,7 +13813,7 @@ define({
 					2,
 					"1000",
 					"1100",
-					"COM1-B101"
+					"COM1-B103"
 				],
 				[
 					8,
@@ -13698,7 +13822,7 @@ define({
 					2,
 					"1100",
 					"1200",
-					"COM1-B101"
+					"COM1-B103"
 				],
 				[
 					8,
@@ -13707,7 +13831,7 @@ define({
 					2,
 					"1200",
 					"1300",
-					"COM1-B101"
+					"COM1-B103"
 				]
 			]
 		},
@@ -13817,10 +13941,10 @@ define({
 					8,
 					"2",
 					0,
-					4,
-					"1200",
-					"1300",
-					"COM1-0207"
+					2,
+					"1400",
+					"1500",
+					"COM1-0208"
 				],
 				[
 					8,
@@ -14627,7 +14751,7 @@ define({
 					4,
 					"1200",
 					"1500",
-					"MRB-0301"
+					"BIZ1-0301"
 				]
 			]
 		},
@@ -14716,9 +14840,15 @@ define({
 					0,
 					"1500",
 					"1800",
-					"SR@LT19"
+					"HSSMLCR"
 				]
 			]
+		},
+		"DSC3222M": {
+			"prerequisite": "Student should have completed all levels 1000 and 2000 foundation modules.",
+			"title": "TIOSCM: Business Practicum",
+			"department": "Decision Sciences",
+			"mc": 4
 		},
 		"DSC3229": {
 			"description": "Independent Study Modules (ISMs) are for students with the requisite background to work closely with an instructor on a well-defined project in the respective specialization areas. Students will be exposed to individual-based research and report-writing while tackling a business issue under the guidance of the instructor.",
@@ -14753,7 +14883,7 @@ define({
 					4,
 					"1200",
 					"1500",
-					"BIZ2-0413B"
+					"BIZ2-0509"
 				]
 			]
 		},
@@ -14772,7 +14902,7 @@ define({
 					0,
 					"0900",
 					"1200",
-					"BIZ2-0413A"
+					"BIZ2-0510"
 				]
 			]
 		},
@@ -15666,15 +15796,6 @@ define({
 				],
 				[
 					8,
-					"W4",
-					0,
-					2,
-					"0800",
-					"0900",
-					"AS1-0210"
-				],
-				[
-					8,
 					"W5",
 					0,
 					2,
@@ -16328,15 +16449,6 @@ define({
 					"1600",
 					"1700",
 					"AS1-0304"
-				],
-				[
-					8,
-					"W4",
-					0,
-					4,
-					"1700",
-					"1800",
-					"AS1-0304"
 				]
 			]
 		},
@@ -16932,15 +17044,6 @@ define({
 				],
 				[
 					8,
-					"W4",
-					0,
-					2,
-					"1700",
-					"1800",
-					"AS7-0101"
-				],
-				[
-					8,
 					"W5",
 					0,
 					4,
@@ -16982,10 +17085,10 @@ define({
 					8,
 					"W1",
 					0,
-					0,
-					"1700",
-					"1800",
-					"AS3-0305"
+					4,
+					"1100",
+					"1200",
+					"AS2-0510"
 				],
 				[
 					8,
@@ -17098,7 +17201,7 @@ define({
 					2,
 					"1200",
 					"1300",
-					"AS1-0304"
+					"AS5-0202"
 				],
 				[
 					8,
@@ -17149,38 +17252,11 @@ define({
 				],
 				[
 					8,
-					"W1",
-					0,
-					1,
-					"1400",
-					"1500",
-					"AS3-0212"
-				],
-				[
-					8,
-					"W2",
-					0,
-					1,
-					"1500",
-					"1600",
-					"AS2-0413"
-				],
-				[
-					8,
 					"W3",
 					0,
 					2,
 					"1400",
 					"1500",
-					"AS3-0212"
-				],
-				[
-					8,
-					"W4",
-					0,
-					2,
-					"1500",
-					"1600",
 					"AS3-0212"
 				]
 			]
@@ -17249,7 +17325,7 @@ define({
 					0,
 					"0900",
 					"1200",
-					"LT10"
+					"AS6-0212"
 				],
 				[
 					7,
@@ -17309,7 +17385,7 @@ define({
 					4,
 					"1500",
 					"1800",
-					"AS4-0117"
+					"AS4-0118"
 				]
 			]
 		},
@@ -17420,15 +17496,6 @@ define({
 					4,
 					"1400",
 					"1500",
-					"AS4-0109"
-				],
-				[
-					8,
-					"W4",
-					0,
-					4,
-					"1500",
-					"1600",
 					"AS4-0109"
 				]
 			]
@@ -17545,7 +17612,7 @@ define({
 					1,
 					"1830",
 					"2130",
-					"AS2-0312"
+					"LT9"
 				]
 			]
 		},
@@ -17748,7 +17815,7 @@ define({
 					3,
 					"1800",
 					"2130",
-					"E4-04-06"
+					"E4-04-05"
 				],
 				[
 					8,
@@ -17814,15 +17881,6 @@ define({
 					"1700",
 					"1800",
 					"E3-06-13"
-				],
-				[
-					8,
-					"T12",
-					0,
-					3,
-					"1700",
-					"1800",
-					"E3-06-14"
 				],
 				[
 					8,
@@ -18450,7 +18508,7 @@ define({
 					1,
 					"1600",
 					"1800",
-					"E3-06-08"
+					"E5-03-19"
 				],
 				[
 					3,
@@ -18486,7 +18544,7 @@ define({
 					3,
 					"1400",
 					"1600",
-					"E3-06-08"
+					"E5-03-19"
 				],
 				[
 					4,
@@ -18587,7 +18645,7 @@ define({
 					0,
 					"1700",
 					"1800",
-					"E3-06-11"
+					"E3-06-12"
 				],
 				[
 					8,
@@ -18597,15 +18655,6 @@ define({
 					"1700",
 					"1800",
 					"E3-06-13"
-				],
-				[
-					8,
-					"T5",
-					0,
-					1,
-					"1200",
-					"1300",
-					"E3-06-15"
 				]
 			]
 		},
@@ -18660,6 +18709,15 @@ define({
 					4,
 					"0900",
 					"1200",
+					"LinELab"
+				],
+				[
+					1,
+					"B5",
+					0,
+					1,
+					"1400",
+					"1700",
 					"LinELab"
 				]
 			]
@@ -18791,7 +18849,7 @@ define({
 					1,
 					"1800",
 					"2100",
-					"ERC-GLR"
+					"ERC-SR3"
 				],
 				[
 					2,
@@ -18801,15 +18859,6 @@ define({
 					"1800",
 					"2100",
 					"ERC-SR2"
-				],
-				[
-					2,
-					"L3",
-					0,
-					1,
-					"1800",
-					"2100",
-					"ERC-SR3"
 				]
 			]
 		},
@@ -19006,7 +19055,7 @@ define({
 					0,
 					"0900",
 					"1100",
-					"LT2"
+					"E1-06-03"
 				],
 				[
 					4,
@@ -19015,7 +19064,7 @@ define({
 					1,
 					"1300",
 					"1400",
-					"LT2"
+					"E1-06-04"
 				]
 			]
 		},
@@ -19123,7 +19172,7 @@ define({
 					1,
 					"1200",
 					"1400",
-					"LT6"
+					"E5-02-32"
 				],
 				[
 					3,
@@ -19132,7 +19181,7 @@ define({
 					3,
 					"1200",
 					"1400",
-					"LT4"
+					"E5-02-32"
 				],
 				[
 					4,
@@ -19141,7 +19190,7 @@ define({
 					3,
 					"1200",
 					"1400",
-					"E1-06-07"
+					"E5-02-32"
 				]
 			]
 		},
@@ -19928,6 +19977,106 @@ define({
 				]
 			]
 		},
+		"EE5138R": {
+			"description": "The module exposes students to a variety of modelling and techniques involving optimization problem formulations in communications signal processing and networks. The topics include linear and nonlinear programming formulations, constrained and unconstrained optimization techniques, network flow models and algorithms, and convex optimization techniques. The module also helps in the understanding of the problem formulation approaches for a wide variety of applications using the methods and techniques taught in the earlier part of the course. It is intended for students to gain knowledge and use of optimization techniques pertaining to the applications in communications & signal processing and networks (wired and wireless) domains.",
+			"prerequisite": "Mathematical background of an undergraduate course in ECE",
+			"title": "Optimization for Communication Systems",
+			"workload": "3-0-0-2-5",
+			"department": "Electrical & Computer Engineering",
+			"mc": 4,
+			"exam": 1368147600000,
+			"lessons": [
+				[
+					2,
+					"1",
+					0,
+					4,
+					"1800",
+					"2100",
+					"EA-06-05"
+				]
+			]
+		},
+		"EE5508": {
+			"description": "This module provides background knowledge of physics of electrical and optical properties of bulk and low dimensional semiconductor materials. The topics covered are as follows: Quantum mechanics: Schrodinger equation, particle in a box, tunneling effect, harmonic oscillator, time- independent perturbation theory. Solid state physics: crystal lattices, band theory, lattice vibration, the Fermi-Dirac distribution function and Fermi level, donor and acceptor states and carrier concentrations. Electrical properties of semiconductors, drift, diffusion, generation, recombination, trapping and tunneling. Optical properties of semiconductors, optical constants, optical absorption, radiative transition and luminescence, exciton effect, etc. Ternary and quaternary compound semiconductors, heterostructures, quantum wells and superlattices, quantum effect devices.",
+			"prerequisite": "(Undergraduate physics and mathematics AND Electronics materials courses) OR EE2004: Semiconductor Devices OR EE3406: Microelectronic Materials OR EE3431C: Microelectronics Materials & Devices",
+			"title": "SEMICONDUCTOR FUNDAMENTALS",
+			"workload": "3-0-0-0-7",
+			"department": "Electrical & Computer Engineering",
+			"mc": 4,
+			"exam": 1367830800000,
+			"lessons": [
+				[
+					2,
+					"1",
+					0,
+					4,
+					"1800",
+					"2100",
+					"E2-03-32"
+				]
+			]
+		},
+		"EE5904R": {
+			"description": "In this module students will learn various neural network models and develop all the essential background needed to apply these models to solve practical pattern recognition and regression problems. The main topics that will be covered are: single and multilayer perceptrons, support vector machines, radial basis function networks, Kohonen networks, principal component analysis, and recurrent networks. There is a compulsory computer project for this module. This module is intended for graduate students and engineers interested in learning about neural networks and using them to solve real world problems.",
+			"title": "NEURAL NETWORKS",
+			"department": "Electrical & Computer Engineering",
+			"mc": 4,
+			"exam": 1367888400000,
+			"lessons": [
+				[
+					2,
+					"1",
+					0,
+					3,
+					"1800",
+					"2100",
+					"LT3"
+				]
+			]
+		},
+		"EE6130": {
+			"description": "This is a module for those majoring in communications, particularly digital communications. The first aim is to provide a rigorous treatment of Shannon’s source coding and channel coding theorems, results which provide the fundamental limits of digital communications. The second aim is to provide state-of-the-art coding techniques such as Turbo and low density parity check codes, which enable the fundamental limits to be approached. This module will bring the student to the cutting edge of current research in information and coding theory.",
+			"prerequisite": "EE5139R Communication Systems",
+			"preclusion": "EE5307 Coding Theory and Techniques",
+			"title": "Information and Coding Theory",
+			"workload": "3-0-0-3-4",
+			"department": "Electrical & Computer Engineering",
+			"mc": 4,
+			"exam": 1367888400000,
+			"lessons": [
+				[
+					2,
+					"1",
+					0,
+					0,
+					"1800",
+					"2100",
+					"E5-03-22"
+				]
+			]
+		},
+		"EE6135": {
+			"description": "Probability theory, stochastic processes and vector spaces. Application of statistical decision theory to optimum receiver design for Gaussian channels. Efficient signaling for message sequences. Channel capacity. Analysis of coded systems. Communication via fading channels.",
+			"prerequisite": "EE5137R Stochastic Processes OR EE5306 Random Signal Analysis",
+			"preclusion": "EE5305 Digital Communications",
+			"title": "Digital Communications",
+			"workload": "3-0-0-2-5",
+			"department": "Electrical & Computer Engineering",
+			"mc": 4,
+			"exam": 1367456400000,
+			"lessons": [
+				[
+					2,
+					"1",
+					0,
+					3,
+					"1800",
+					"2100",
+					"E4-04-06"
+				]
+			]
+		},
 		"EG1108": {
 			"description": "This module introduces basic concepts in electrical and computer engineering in an integrated manner. It motivates the understanding of basic concepts in the context of practical engineering applications. The main part of the course gives the students a very strong foundation in DC and AC circuit analysis. The rest of the course gives the students a good flavor of what electrical engineering is all about. This is done using simple application examples that demonstrate the importance of AC and DC analysis. The topics covered are: Kirchhoff's Current and Voltage Laws, Ohm's Law. Resistive networks. Ideal and real sources. AC Circuits: phasors, impedance, power, power factor, resonance. Energy storage elements: capacitors and inductors. Introduction to circuit concepts including diodes, operational amplifiers, transformers, DC machines and logic gates using applications.",
 			"prerequisite": "H1 Physics or H2 Physics or A Level Physics or PC1222 Fundamentals of Physics II",
@@ -20597,6 +20746,15 @@ define({
 					"1400",
 					"1700",
 					"E1A-0303A"
+				],
+				[
+					1,
+					"2",
+					0,
+					1,
+					"1400",
+					"1700",
+					"DV1"
 				]
 			]
 		},
@@ -21460,15 +21618,6 @@ define({
 				],
 				[
 					8,
-					"W10",
-					0,
-					2,
-					"1500",
-					"1600",
-					"AS5-0309"
-				],
-				[
-					8,
 					"W11",
 					0,
 					3,
@@ -21639,7 +21788,7 @@ define({
 					2,
 					"1100",
 					"1200",
-					"AS5-0202"
+					"AS7-0413"
 				],
 				[
 					8,
@@ -21648,7 +21797,7 @@ define({
 					2,
 					"1200",
 					"1300",
-					"AS5-0202"
+					"AS7-0413"
 				]
 			]
 		},
@@ -21696,7 +21845,7 @@ define({
 					2,
 					"1400",
 					"1500",
-					"AS5-0202"
+					"AS7-0102"
 				],
 				[
 					8,
@@ -21705,16 +21854,7 @@ define({
 					2,
 					"1500",
 					"1600",
-					"AS5-0202"
-				],
-				[
-					8,
-					"W5",
-					0,
-					3,
-					"1400",
-					"1500",
-					"AS5-0202"
+					"AS7-0102"
 				],
 				[
 					8,
@@ -21747,21 +21887,12 @@ define({
 				],
 				[
 					8,
-					"W1",
+					"W3",
 					0,
-					2,
+					3,
 					"1200",
 					"1300",
 					"AS5-0205"
-				],
-				[
-					8,
-					"W2",
-					0,
-					3,
-					"1300",
-					"1400",
-					"AS5-0309"
 				]
 			]
 		},
@@ -21799,7 +21930,7 @@ define({
 					2,
 					"1300",
 					"1600",
-					"AS1-0304"
+					"AS5-0202"
 				]
 			]
 		},
@@ -21927,21 +22058,12 @@ define({
 				],
 				[
 					8,
-					"W1",
+					"W3",
 					0,
 					0,
-					"1300",
-					"1400",
-					"AS5-0205"
-				],
-				[
-					8,
-					"W2",
-					0,
-					0,
-					"1400",
-					"1500",
-					"AS5-0205"
+					"1600",
+					"1700",
+					"AS5-0309"
 				]
 			]
 		},
@@ -22049,7 +22171,6 @@ define({
 			"workload": "0-3-0-3-4",
 			"department": "English Language & Literature",
 			"mc": 5,
-			"exam": 1367816400000,
 			"lessons": [
 				[
 					7,
@@ -22069,7 +22190,6 @@ define({
 			"workload": "0-3-0-3-4",
 			"department": "English Language & Literature",
 			"mc": 5,
-			"exam": 1367974800000,
 			"lessons": [
 				[
 					7,
@@ -22322,6 +22442,24 @@ define({
 					0,
 					"1200",
 					"1300",
+					"AS5-0205"
+				],
+				[
+					8,
+					"W3",
+					0,
+					0,
+					"1000",
+					"1100",
+					"AS5-0205"
+				],
+				[
+					8,
+					"W4",
+					0,
+					0,
+					"1300",
+					"1400",
 					"AS5-0205"
 				]
 			]
@@ -22843,12 +22981,30 @@ define({
 				],
 				[
 					6,
+					"E4",
+					0,
+					1,
+					"1000",
+					"1200",
+					"CELC-T7"
+				],
+				[
+					6,
+					"E4",
+					0,
+					3,
+					"1000",
+					"1200",
+					"CELC-T7"
+				],
+				[
+					6,
 					"S1",
 					0,
 					1,
 					"0800",
 					"1000",
-					"S16-0435"
+					"CELC-T7"
 				],
 				[
 					6,
@@ -22857,7 +23013,7 @@ define({
 					3,
 					"0800",
 					"1000",
-					"S16-0435"
+					"CELC-T7"
 				],
 				[
 					6,
@@ -22866,7 +23022,7 @@ define({
 					0,
 					"1200",
 					"1400",
-					"S16-0440"
+					"CELC-T7"
 				],
 				[
 					6,
@@ -22875,7 +23031,7 @@ define({
 					3,
 					"1200",
 					"1400",
-					"S16-0440"
+					"CELC-T7"
 				]
 			]
 		},
@@ -23039,7 +23195,7 @@ define({
 					0,
 					"0800",
 					"1000",
-					"ELC-SR2B"
+					"CELC-SR2B"
 				],
 				[
 					6,
@@ -23057,7 +23213,7 @@ define({
 					0,
 					"1000",
 					"1200",
-					"ELC-SR2B"
+					"CELC-SR2B"
 				],
 				[
 					6,
@@ -23075,7 +23231,7 @@ define({
 					1,
 					"0800",
 					"1000",
-					"COM1-0217"
+					"CELC-SR1B"
 				],
 				[
 					6,
@@ -23093,7 +23249,7 @@ define({
 					1,
 					"1000",
 					"1200",
-					"ELC-SR1B"
+					"CELC-SR1B"
 				],
 				[
 					6,
@@ -23201,7 +23357,7 @@ define({
 					0,
 					"0900",
 					"1100",
-					"SDE-SR13"
+					"SDE-SR6"
 				],
 				[
 					6,
@@ -23273,7 +23429,7 @@ define({
 					0,
 					"1000",
 					"1200",
-					"EA-06-02"
+					"E1-06-13"
 				],
 				[
 					6,
@@ -23282,7 +23438,7 @@ define({
 					3,
 					"0900",
 					"1100",
-					"EA-06-02"
+					"E3-06-15"
 				],
 				[
 					6,
@@ -23291,7 +23447,7 @@ define({
 					0,
 					"1500",
 					"1700",
-					"EA-06-02"
+					"EA-06-06"
 				],
 				[
 					6,
@@ -23300,7 +23456,7 @@ define({
 					3,
 					"1200",
 					"1400",
-					"EA-06-03"
+					"E3-06-03"
 				],
 				[
 					6,
@@ -23327,7 +23483,7 @@ define({
 					0,
 					"1400",
 					"1600",
-					"E1-06-13"
+					"E4-04-02"
 				],
 				[
 					6,
@@ -23336,7 +23492,7 @@ define({
 					3,
 					"1000",
 					"1200",
-					"E1-06-12"
+					"E3-06-02"
 				],
 				[
 					6,
@@ -23381,7 +23537,7 @@ define({
 					0,
 					"1100",
 					"1300",
-					"EA-06-03"
+					"SDE-SR13"
 				],
 				[
 					6,
@@ -23390,7 +23546,7 @@ define({
 					3,
 					"1100",
 					"1300",
-					"E3-06-13"
+					"SDE-SR12"
 				],
 				[
 					6,
@@ -23399,7 +23555,7 @@ define({
 					1,
 					"1600",
 					"1800",
-					"E1-06-12"
+					"E1-06-13"
 				],
 				[
 					6,
@@ -23489,7 +23645,7 @@ define({
 					1,
 					"1400",
 					"1600",
-					"E4-04-04"
+					"E1-06-13"
 				],
 				[
 					6,
@@ -23498,7 +23654,7 @@ define({
 					4,
 					"1600",
 					"1800",
-					"EA-06-06"
+					"E1-06-13"
 				],
 				[
 					6,
@@ -23615,7 +23771,7 @@ define({
 					0,
 					"1200",
 					"1400",
-					"S16-0437"
+					"S16-0435"
 				],
 				[
 					6,
@@ -23624,7 +23780,7 @@ define({
 					3,
 					"1200",
 					"1400",
-					"S16-0437"
+					"S16-0435"
 				],
 				[
 					6,
@@ -24218,7 +24374,7 @@ define({
 					0,
 					"1600",
 					"1800",
-					"E4-04-04"
+					"E3-06-02"
 				],
 				[
 					6,
@@ -24398,7 +24554,7 @@ define({
 					0,
 					"1400",
 					"1600",
-					"E1-06-13"
+					"E3-06-02"
 				],
 				[
 					6,
@@ -25187,7 +25343,7 @@ define({
 					0,
 					"1000",
 					"1200",
-					"EDUS-SR7"
+					"TP-SR2"
 				],
 				[
 					6,
@@ -25196,7 +25352,7 @@ define({
 					3,
 					"1000",
 					"1200",
-					"EDUS-SR7"
+					"TP-SR2"
 				],
 				[
 					6,
@@ -25205,7 +25361,7 @@ define({
 					1,
 					"1200",
 					"1400",
-					"ELC-SR2B"
+					"CELC-SR2B"
 				],
 				[
 					6,
@@ -25214,7 +25370,7 @@ define({
 					4,
 					"1200",
 					"1400",
-					"ELC-SR2B"
+					"CELC-SR2B"
 				],
 				[
 					6,
@@ -25259,7 +25415,7 @@ define({
 					1,
 					"1400",
 					"1600",
-					"ELC-SR1B"
+					"CELC-SR1B"
 				],
 				[
 					6,
@@ -25268,7 +25424,7 @@ define({
 					4,
 					"1400",
 					"1600",
-					"ELC-SR1B"
+					"CELC-SR1B"
 				],
 				[
 					6,
@@ -25349,7 +25505,7 @@ define({
 					1,
 					"1400",
 					"1600",
-					"ELC-SR2A"
+					"CELC-SR2A"
 				],
 				[
 					6,
@@ -25358,7 +25514,7 @@ define({
 					4,
 					"1400",
 					"1600",
-					"ELC-SR2A"
+					"CELC-SR2A"
 				],
 				[
 					6,
@@ -25367,7 +25523,7 @@ define({
 					0,
 					"1200",
 					"1400",
-					"null"
+					"TP-SR2"
 				],
 				[
 					6,
@@ -25385,7 +25541,7 @@ define({
 					1,
 					"1400",
 					"1600",
-					"ELC-SR2B"
+					"CELC-SR2B"
 				],
 				[
 					6,
@@ -25394,7 +25550,7 @@ define({
 					4,
 					"1400",
 					"1600",
-					"ELC-SR2B"
+					"CELC-SR2B"
 				],
 				[
 					6,
@@ -25403,7 +25559,7 @@ define({
 					1,
 					"1200",
 					"1400",
-					"ELC-SR2A"
+					"CELC-SR2A"
 				],
 				[
 					6,
@@ -25412,7 +25568,52 @@ define({
 					4,
 					"1200",
 					"1400",
-					"ELC-SR2A"
+					"CELC-SR2A"
+				],
+				[
+					6,
+					"22",
+					0,
+					0,
+					"1000",
+					"1200",
+					"CELC-SR2A"
+				],
+				[
+					6,
+					"22",
+					0,
+					3,
+					"1000",
+					"1200",
+					"CELC-SR2A"
+				],
+				[
+					6,
+					"23",
+					0,
+					2,
+					"1200",
+					"1400",
+					"CELC-T7"
+				],
+				[
+					6,
+					"23",
+					0,
+					4,
+					"1200",
+					"1400",
+					"CELC-T7"
+				],
+				[
+					6,
+					"24",
+					0,
+					4,
+					"1800",
+					"2100",
+					"E1-06-11"
 				],
 				[
 					6,
@@ -25493,7 +25694,7 @@ define({
 					1,
 					"0900",
 					"1100",
-					"ELC-SR2A"
+					"CELC-SR2A"
 				],
 				[
 					6,
@@ -25502,7 +25703,7 @@ define({
 					4,
 					"0900",
 					"1100",
-					"ELC-SR2A"
+					"CELC-SR2A"
 				],
 				[
 					6,
@@ -25631,7 +25832,7 @@ define({
 					2,
 					"1000",
 					"1100",
-					"null"
+					"EA-06-02"
 				]
 			]
 		},
@@ -25651,7 +25852,7 @@ define({
 					4,
 					"0900",
 					"1100",
-					"null"
+					"EA-06-04"
 				],
 				[
 					2,
@@ -25689,7 +25890,7 @@ define({
 					1,
 					"1800",
 					"2100",
-					"LT4"
+					"E4-04-03"
 				],
 				[
 					8,
@@ -25698,7 +25899,7 @@ define({
 					1,
 					"1700",
 					"1800",
-					"EA-06-04"
+					"E4-04-03"
 				]
 			]
 		},
@@ -25718,7 +25919,7 @@ define({
 					3,
 					"1800",
 					"2100",
-					"E1-06-05"
+					"E2-03-02"
 				]
 			]
 		},
@@ -25794,7 +25995,26 @@ define({
 					4,
 					"1800",
 					"2100",
-					"E1-06-06"
+					"E2-0307PC"
+				]
+			]
+		},
+		"ESE5901": {
+			"description": "The proposed module replaces the module EX5104. Population growth and economical development generate large quantities of wastes and also place great pressures on the finite material and energy resources of the earth. Raw materials are bieng used at a faster rate than they are being replaced or available. Therefore, proper management of environmental resources by applying available and emerging environmental technologies in the planning, design and operation activities are important in global resource conservation and in environmental pollution control.",
+			"title": "Environmental Technology",
+			"workload": "3-0-0-0-7",
+			"department": "Civil & Environmental Engineering",
+			"mc": 4,
+			"exam": 1367816400000,
+			"lessons": [
+				[
+					2,
+					"1",
+					0,
+					0,
+					"1830",
+					"2130",
+					"SDE-ER5"
 				]
 			]
 		},
@@ -25965,7 +26185,6 @@ define({
 			"workload": "6-0-0-24-0",
 			"department": "Engineering Science Programme",
 			"mc": 12,
-			"exam": 1367989200000,
 			"lessons": [
 				[
 					2,
@@ -26020,15 +26239,6 @@ define({
 					3,
 					"1200",
 					"1400",
-					"AS1-0204"
-				],
-				[
-					8,
-					"D4",
-					1,
-					2,
-					"0800",
-					"1000",
 					"AS1-0204"
 				]
 			]
@@ -26174,30 +26384,12 @@ define({
 				],
 				[
 					8,
-					"E4",
-					2,
-					4,
-					"1200",
-					"1400",
-					"AS4-0109"
-				],
-				[
-					8,
 					"E5",
 					2,
 					3,
 					"1200",
 					"1400",
 					"AS1-0204"
-				],
-				[
-					8,
-					"E6",
-					2,
-					3,
-					"1400",
-					"1600",
-					"TP-SR3"
 				]
 			]
 		},
@@ -26249,15 +26441,6 @@ define({
 				],
 				[
 					8,
-					"D2",
-					1,
-					0,
-					"1200",
-					"1400",
-					"AS1-0208"
-				],
-				[
-					8,
 					"D4",
 					1,
 					4,
@@ -26282,15 +26465,6 @@ define({
 					"1400",
 					"1600",
 					"AS3-0306"
-				],
-				[
-					8,
-					"E2",
-					2,
-					0,
-					"1200",
-					"1400",
-					"AS1-0208"
 				],
 				[
 					8,
@@ -27105,7 +27279,7 @@ define({
 					0,
 					"1400",
 					"1700",
-					"AS3-0305"
+					"AS3-0302"
 				]
 			]
 		},
@@ -27124,7 +27298,7 @@ define({
 					2,
 					"0900",
 					"1200",
-					"AS3-0305"
+					"AS3-0302"
 				]
 			]
 		},
@@ -27143,7 +27317,7 @@ define({
 					4,
 					"1000",
 					"1300",
-					"AS3-0305"
+					"AS3-0302"
 				]
 			]
 		},
@@ -27181,7 +27355,7 @@ define({
 					0,
 					"0900",
 					"1200",
-					"AS3-0305"
+					"AS3-0302"
 				]
 			]
 		},
@@ -27219,7 +27393,7 @@ define({
 					2,
 					"1200",
 					"1500",
-					"AS3-0305"
+					"AS3-0302"
 				]
 			]
 		},
@@ -27298,7 +27472,7 @@ define({
 					3,
 					"1300",
 					"1600",
-					"SDE-ES1"
+					"SDE-SR15"
 				]
 			]
 		},
@@ -27496,7 +27670,7 @@ define({
 					0,
 					"1600",
 					"1800",
-					"null"
+					"S16-0304"
 				]
 			]
 		},
@@ -28050,15 +28224,6 @@ define({
 				],
 				[
 					8,
-					"D11",
-					"3,5",
-					3,
-					"1400",
-					"1600",
-					"AS2-0203"
-				],
-				[
-					8,
 					"D12",
 					"3,5",
 					4,
@@ -28073,15 +28238,6 @@ define({
 					4,
 					"1200",
 					"1400",
-					"AS2-0203"
-				],
-				[
-					8,
-					"DO1",
-					"3,5",
-					0,
-					"1000",
-					"1200",
 					"AS2-0203"
 				],
 				[
@@ -28109,15 +28265,6 @@ define({
 					0,
 					"1600",
 					"1800",
-					"AS2-0203"
-				],
-				[
-					8,
-					"DO5",
-					"3,5",
-					1,
-					"0800",
-					"1000",
 					"AS2-0203"
 				],
 				[
@@ -28251,15 +28398,6 @@ define({
 				],
 				[
 					8,
-					"DE3",
-					2,
-					0,
-					"1600",
-					"1800",
-					"AS2-0204"
-				],
-				[
-					8,
 					"DE4",
 					2,
 					4,
@@ -28384,15 +28522,6 @@ define({
 					0,
 					"1200",
 					"1400",
-					"AS2-0203"
-				],
-				[
-					8,
-					"DE3",
-					2,
-					1,
-					"1000",
-					"1200",
 					"AS2-0203"
 				],
 				[
@@ -29078,15 +29207,6 @@ define({
 				],
 				[
 					8,
-					"D11",
-					"3,5",
-					3,
-					"1400",
-					"1600",
-					"AS2-0203"
-				],
-				[
-					8,
 					"D12",
 					"3,5",
 					4,
@@ -29101,15 +29221,6 @@ define({
 					4,
 					"1200",
 					"1400",
-					"AS2-0203"
-				],
-				[
-					8,
-					"DO1",
-					"3,5",
-					0,
-					"1000",
-					"1200",
 					"AS2-0203"
 				],
 				[
@@ -29137,15 +29248,6 @@ define({
 					0,
 					"1600",
 					"1800",
-					"AS2-0203"
-				],
-				[
-					8,
-					"DO5",
-					"3,5",
-					1,
-					"0800",
-					"1000",
 					"AS2-0203"
 				],
 				[
@@ -29212,15 +29314,6 @@ define({
 					"1000",
 					"1100",
 					"ADM-0417"
-				],
-				[
-					8,
-					"W10",
-					0,
-					1,
-					"1500",
-					"1600",
-					"ADM-0418"
 				],
 				[
 					8,
@@ -29301,15 +29394,6 @@ define({
 					1,
 					"1300",
 					"1400",
-					"ADM-0418"
-				],
-				[
-					8,
-					"W9",
-					0,
-					1,
-					"1400",
-					"1500",
 					"ADM-0418"
 				]
 			]
@@ -29692,15 +29776,6 @@ define({
 				],
 				[
 					8,
-					"W10",
-					0,
-					2,
-					"1500",
-					"1600",
-					"AS5-0309"
-				],
-				[
-					8,
 					"W11",
 					0,
 					3,
@@ -29971,7 +30046,7 @@ define({
 					4,
 					"1800",
 					"2000",
-					"null"
+					"TP-SR10"
 				]
 			]
 		},
@@ -30125,7 +30200,7 @@ define({
 					1,
 					"1200",
 					"1400",
-					"SR8"
+					"WS"
 				],
 				[
 					8,
@@ -30180,6 +30255,15 @@ define({
 					"1400",
 					"1600",
 					"ERC-SR10"
+				],
+				[
+					8,
+					"D11",
+					1,
+					1,
+					"1200",
+					"1400",
+					"ERC-SR3"
 				],
 				[
 					8,
@@ -30299,6 +30383,15 @@ define({
 					"1500",
 					"1600",
 					"AS5-0203"
+				],
+				[
+					8,
+					"W4",
+					0,
+					1,
+					"1500",
+					"1600",
+					"AS5-0203"
 				]
 			]
 		},
@@ -30332,7 +30425,6 @@ define({
 		},
 		"GEK1505": {
 			"description": "The objective of this course is to exhibit some simple mathematical ideas that permeate a modern society and to show how a reasonably numerate person can use these ideas in everyday life and, in the process, gain an appreciation of the beauty and power of mathematical ideas. This course is intuitive in approach and should help the student to develop enough confidence in confronting many of the problems in daily life that require more than the usual amount of computing work. Topics covered are: reasoning, counting, modular arithmetic, codes, cryptography, chances, visualizing.",
-			"prerequisite": "'O' Level Mathematics",
 			"preclusion": "Mathematics majors, Applied Mathematics majors, Computational Finance majors, Quantitative Finance majors, Mathematics with Management Science majors, Physics majors, second major in Mathematics, second major in Financial Mathematics",
 			"title": "Living with Mathematics",
 			"workload": "3-1-0-3-3",
@@ -31453,7 +31545,6 @@ define({
 			"workload": "3-1-0-0-4",
 			"department": "Mechanical Engineering",
 			"mc": 4,
-			"exam": 1368147600000,
 			"lessons": [
 				[
 					2,
@@ -31471,7 +31562,7 @@ define({
 					1,
 					"1400",
 					"1500",
-					"null"
+					"LT6"
 				]
 			]
 		},
@@ -31483,7 +31574,6 @@ define({
 			"workload": "3-0-0-2-4",
 			"department": "Mechanical Engineering",
 			"mc": 4,
-			"exam": 1368061200000,
 			"lessons": [
 				[
 					2,
@@ -32756,7 +32846,7 @@ define({
 					0,
 					"1300",
 					"1500",
-					"null"
+					"SDE-SR9"
 				],
 				[
 					8,
@@ -33050,7 +33140,7 @@ define({
 					3,
 					"1400",
 					"1600",
-					"null"
+					"SDE-LR425"
 				],
 				[
 					8,
@@ -34073,7 +34163,7 @@ define({
 					2,
 					"1000",
 					"1200",
-					"AS3-0214"
+					"ERC-SR8"
 				],
 				[
 					8,
@@ -34082,7 +34172,7 @@ define({
 					2,
 					"1000",
 					"1200",
-					"AS3-0214"
+					"ERC-SR8"
 				],
 				[
 					8,
@@ -34091,7 +34181,7 @@ define({
 					2,
 					"0800",
 					"1000",
-					"AS3-0308"
+					"ERC-SR8"
 				]
 			]
 		},
@@ -34303,15 +34393,6 @@ define({
 					2,
 					"1000",
 					"1200",
-					"AS1-0204"
-				],
-				[
-					8,
-					"E4",
-					2,
-					2,
-					"0800",
-					"1000",
 					"AS1-0204"
 				]
 			]
@@ -34665,30 +34746,12 @@ define({
 				],
 				[
 					8,
-					"E4",
-					2,
-					4,
-					"1200",
-					"1400",
-					"AS4-0109"
-				],
-				[
-					8,
 					"E5",
 					2,
 					3,
 					"1200",
 					"1400",
 					"AS1-0204"
-				],
-				[
-					8,
-					"E6",
-					2,
-					3,
-					"1400",
-					"1600",
-					"TP-SR3"
 				]
 			]
 		},
@@ -35271,6 +35334,33 @@ define({
 					"1400",
 					"1800",
 					"SDE-SR12"
+				],
+				[
+					0,
+					"1",
+					0,
+					4,
+					"0900",
+					"1300",
+					"SDE-CR1"
+				],
+				[
+					0,
+					"2",
+					0,
+					1,
+					"1400",
+					"1800",
+					"SDE-LR422"
+				],
+				[
+					0,
+					"2",
+					0,
+					4,
+					"0900",
+					"1300",
+					"SDE-SR5"
 				]
 			]
 		},
@@ -35286,7 +35376,7 @@ define({
 					3,
 					"0900",
 					"1300",
-					"null"
+					"SDE-SR5"
 				]
 			]
 		},
@@ -35325,6 +35415,33 @@ define({
 					"1400",
 					"1800",
 					"SDE-CR4"
+				],
+				[
+					0,
+					"1",
+					0,
+					3,
+					"1400",
+					"1800",
+					"SDE-SR12"
+				],
+				[
+					0,
+					"2",
+					0,
+					1,
+					"1400",
+					"1800",
+					"SDE-LR425"
+				],
+				[
+					0,
+					"2",
+					0,
+					3,
+					"1400",
+					"1800",
+					"SDE-SR5"
 				]
 			]
 		},
@@ -35386,7 +35503,7 @@ define({
 		"ID3041": {
 			"description": "This is a one semester involvement for attachment to industry or other institutions of design, research and development work.",
 			"title": "Special Studies",
-			"workload": "0-0-0-30-0",
+			"workload": "0-0-0-35-0",
 			"department": "Division Of Industrial Design",
 			"mc": 14
 		},
@@ -35434,6 +35551,33 @@ define({
 					"1400",
 					"1800",
 					"SDE-SR10"
+				],
+				[
+					0,
+					"1",
+					0,
+					3,
+					"1400",
+					"1800",
+					"SDE-SR11"
+				],
+				[
+					0,
+					"2",
+					0,
+					1,
+					"1400",
+					"1800",
+					"SDE-SR5"
+				],
+				[
+					0,
+					"2",
+					0,
+					3,
+					"1400",
+					"1800",
+					"SDE-SR10"
 				]
 			]
 		},
@@ -35472,6 +35616,393 @@ define({
 					"1400",
 					"1800",
 					"SDE-SR15"
+				],
+				[
+					0,
+					"1",
+					0,
+					4,
+					"0900",
+					"1300",
+					"SDE-LR424"
+				],
+				[
+					0,
+					"10",
+					0,
+					2,
+					"1400",
+					"1800",
+					"null"
+				],
+				[
+					0,
+					"10",
+					0,
+					4,
+					"0900",
+					"1300",
+					"null"
+				],
+				[
+					0,
+					"11",
+					0,
+					2,
+					"1400",
+					"1800",
+					"null"
+				],
+				[
+					0,
+					"11",
+					0,
+					4,
+					"0900",
+					"1300",
+					"null"
+				],
+				[
+					0,
+					"12",
+					0,
+					2,
+					"1400",
+					"1800",
+					"null"
+				],
+				[
+					0,
+					"12",
+					0,
+					4,
+					"0900",
+					"1300",
+					"null"
+				],
+				[
+					0,
+					"13",
+					0,
+					2,
+					"1400",
+					"1800",
+					"null"
+				],
+				[
+					0,
+					"13",
+					0,
+					4,
+					"0900",
+					"1300",
+					"null"
+				],
+				[
+					0,
+					"14",
+					0,
+					2,
+					"1400",
+					"1800",
+					"null"
+				],
+				[
+					0,
+					"14",
+					0,
+					4,
+					"0900",
+					"1300",
+					"null"
+				],
+				[
+					0,
+					"15",
+					0,
+					2,
+					"1400",
+					"1800",
+					"null"
+				],
+				[
+					0,
+					"15",
+					0,
+					4,
+					"0900",
+					"1300",
+					"null"
+				],
+				[
+					0,
+					"16",
+					0,
+					2,
+					"1400",
+					"1800",
+					"null"
+				],
+				[
+					0,
+					"16",
+					0,
+					4,
+					"0900",
+					"1300",
+					"null"
+				],
+				[
+					0,
+					"17",
+					0,
+					2,
+					"1400",
+					"1800",
+					"null"
+				],
+				[
+					0,
+					"17",
+					0,
+					4,
+					"0900",
+					"1300",
+					"null"
+				],
+				[
+					0,
+					"18",
+					0,
+					2,
+					"1400",
+					"1800",
+					"null"
+				],
+				[
+					0,
+					"18",
+					0,
+					4,
+					"0900",
+					"1300",
+					"null"
+				],
+				[
+					0,
+					"19",
+					0,
+					2,
+					"1400",
+					"1800",
+					"null"
+				],
+				[
+					0,
+					"19",
+					0,
+					4,
+					"0900",
+					"1300",
+					"null"
+				],
+				[
+					0,
+					"2",
+					0,
+					2,
+					"1400",
+					"1800",
+					"SDE-DV1"
+				],
+				[
+					0,
+					"2",
+					0,
+					4,
+					"0900",
+					"1300",
+					"SDE-IDS1"
+				],
+				[
+					0,
+					"20",
+					0,
+					2,
+					"1400",
+					"1800",
+					"null"
+				],
+				[
+					0,
+					"20",
+					0,
+					4,
+					"0900",
+					"1300",
+					"null"
+				],
+				[
+					0,
+					"21",
+					0,
+					2,
+					"1400",
+					"1800",
+					"null"
+				],
+				[
+					0,
+					"21",
+					0,
+					4,
+					"0900",
+					"1300",
+					"null"
+				],
+				[
+					0,
+					"22",
+					0,
+					2,
+					"1400",
+					"1800",
+					"null"
+				],
+				[
+					0,
+					"22",
+					0,
+					4,
+					"0900",
+					"1300",
+					"null"
+				],
+				[
+					0,
+					"3",
+					0,
+					2,
+					"1400",
+					"1800",
+					"SDE-IDS2"
+				],
+				[
+					0,
+					"3",
+					0,
+					4,
+					"0900",
+					"1300",
+					"null"
+				],
+				[
+					0,
+					"4",
+					0,
+					2,
+					"1400",
+					"1800",
+					"null"
+				],
+				[
+					0,
+					"4",
+					0,
+					4,
+					"0900",
+					"1300",
+					"null"
+				],
+				[
+					0,
+					"5",
+					0,
+					2,
+					"1400",
+					"1800",
+					"null"
+				],
+				[
+					0,
+					"5",
+					0,
+					4,
+					"0900",
+					"1300",
+					"null"
+				],
+				[
+					0,
+					"6",
+					0,
+					2,
+					"1400",
+					"1800",
+					"null"
+				],
+				[
+					0,
+					"6",
+					0,
+					4,
+					"0900",
+					"1300",
+					"null"
+				],
+				[
+					0,
+					"7",
+					0,
+					2,
+					"1400",
+					"1800",
+					"null"
+				],
+				[
+					0,
+					"7",
+					0,
+					4,
+					"0900",
+					"1300",
+					"null"
+				],
+				[
+					0,
+					"8",
+					0,
+					2,
+					"1400",
+					"1800",
+					"null"
+				],
+				[
+					0,
+					"8",
+					0,
+					4,
+					"0900",
+					"1300",
+					"null"
+				],
+				[
+					0,
+					"9",
+					0,
+					2,
+					"1400",
+					"1800",
+					"SDE-IDS3"
+				],
+				[
+					0,
+					"9",
+					0,
+					4,
+					"0900",
+					"1300",
+					"SDE-IDS3"
 				]
 			]
 		},
@@ -35961,6 +36492,15 @@ define({
 					"1800",
 					"2130",
 					"E1-06-14"
+				],
+				[
+					8,
+					"3",
+					0,
+					0,
+					"1800",
+					"2130",
+					"E1-06-10"
 				]
 			]
 		},
@@ -36145,7 +36685,7 @@ define({
 					1,
 					"1700",
 					"1800",
-					"TP-GLR"
+					"null"
 				],
 				[
 					2,
@@ -36229,7 +36769,7 @@ define({
 					2,
 					"1800",
 					"2030",
-					"E4-04-04"
+					"E5-03-21"
 				],
 				[
 					8,
@@ -36238,7 +36778,7 @@ define({
 					2,
 					"2030",
 					"2130",
-					"E4-04-04"
+					"E5-03-21"
 				]
 			]
 		},
@@ -36466,7 +37006,7 @@ define({
 					6,
 					"2",
 					0,
-					1,
+					4,
 					"1600",
 					"1800",
 					"AC-SR3"
@@ -36885,6 +37425,15 @@ define({
 				]
 			]
 		},
+		"INM3550": {
+			"description": "Internships vary in length but all take place within organisations or companies, are vetted and approved by the Communications and New Media Programme, have relevance to the major in NM, involve the application of subject knowledge and theory in reflection upon the work, and are assessed. Available credited internships for each semester will be advertised at the beginning of the semester before. Internships proposed by students will require the approval of the department. Student must apply for and be accepted to work in the company/organization offering the internship for a duration of 6 months (together with NM3550), on full time basis.",
+			"prerequisite": "(1) For NM Major only, (2) Read and pass a minimum of 80 MCs AND (3) Must read NM3550 concurrently",
+			"preclusion": "Any other series-internship modules (Note: Students who change major may not do a second internship in their new major)",
+			"title": "Extended Internship",
+			"workload": "3 months at the place of work on full time basis.",
+			"department": "Communications And New Media",
+			"mc": 4
+		},
 		"IS1103": {
 			"description": "Students will explore the interactions and impacts of computing & information technologies on social systems. They will examine how technological paradigms transform industries, organizations and individuals, and vice versa; how policies and social norms are developed as they relate to technology use; and investigate the emerging controversies surrounding the regulation of technology in society. Emphasis is placed on establishing an in-depth understanding of the professional and ethical responsibilities of computing professionals, and developing an ability to analyze the impact of computing technologies on a local and global scale. Historical and contemporary studies, cases and examples will be used extensively.",
 			"preclusion": "CS1105/A",
@@ -36951,42 +37500,6 @@ define({
 				],
 				[
 					8,
-					"10",
-					0,
-					0,
-					"1600",
-					"1700",
-					"COM1-0201"
-				],
-				[
-					8,
-					"2",
-					0,
-					3,
-					"1100",
-					"1200",
-					"COM1-0201"
-				],
-				[
-					8,
-					"3",
-					0,
-					2,
-					"1000",
-					"1100",
-					"COM1-0201"
-				],
-				[
-					8,
-					"4",
-					0,
-					2,
-					"1100",
-					"1200",
-					"COM1-0201"
-				],
-				[
-					8,
 					"5",
 					0,
 					2,
@@ -37001,24 +37514,6 @@ define({
 					2,
 					"1300",
 					"1400",
-					"COM1-0201"
-				],
-				[
-					8,
-					"7",
-					0,
-					0,
-					"1300",
-					"1400",
-					"COM1-0201"
-				],
-				[
-					8,
-					"8",
-					0,
-					0,
-					"1400",
-					"1500",
 					"COM1-0201"
 				],
 				[
@@ -37048,15 +37543,6 @@ define({
 					"1200",
 					"1400",
 					"LT15"
-				],
-				[
-					8,
-					"1",
-					0,
-					4,
-					"1200",
-					"1300",
-					"COM1-B111"
 				],
 				[
 					8,
@@ -37124,15 +37610,6 @@ define({
 				],
 				[
 					8,
-					"1",
-					0,
-					0,
-					"1000",
-					"1300",
-					"COM1-0203"
-				],
-				[
-					8,
 					"2",
 					0,
 					0,
@@ -37156,7 +37633,7 @@ define({
 					1,
 					"0900",
 					"1200",
-					"COM1-0113"
+					"COM1-0218"
 				],
 				[
 					8,
@@ -37174,7 +37651,7 @@ define({
 					2,
 					"0900",
 					"1200",
-					"COM1-0218"
+					"COM1-0212"
 				],
 				[
 					8,
@@ -37184,15 +37661,6 @@ define({
 					"1400",
 					"1700",
 					"COM1-0217"
-				],
-				[
-					8,
-					"8",
-					0,
-					3,
-					"1300",
-					"1600",
-					"COM1-B103"
 				]
 			]
 		},
@@ -37568,7 +38036,7 @@ define({
 					0,
 					"0900",
 					"1200",
-					"LT15"
+					"COM1-0206"
 				]
 			]
 		},
@@ -37737,7 +38205,7 @@ define({
 					0,
 					"1300",
 					"1400",
-					"i3-0347"
+					"COM1-B103"
 				],
 				[
 					8,
@@ -37746,7 +38214,7 @@ define({
 					0,
 					"1400",
 					"1500",
-					"i3-0347"
+					"COM1-B103"
 				],
 				[
 					8,
@@ -37755,7 +38223,7 @@ define({
 					0,
 					"1500",
 					"1600",
-					"i3-0347"
+					"COM1-B103"
 				],
 				[
 					8,
@@ -37764,7 +38232,7 @@ define({
 					1,
 					"1200",
 					"1300",
-					"i3-0347"
+					"COM1-B103"
 				],
 				[
 					8,
@@ -37773,7 +38241,7 @@ define({
 					1,
 					"1300",
 					"1400",
-					"i3-0347"
+					"COM1-B103"
 				],
 				[
 					8,
@@ -37782,7 +38250,16 @@ define({
 					1,
 					"1400",
 					"1500",
-					"i3-0347"
+					"COM1-B103"
+				],
+				[
+					8,
+					"7",
+					0,
+					1,
+					"1500",
+					"1600",
+					"COM1-B103"
 				]
 			]
 		},
@@ -37847,6 +38324,15 @@ define({
 					2,
 					"1400",
 					"1500",
+					"COM1-0218"
+				],
+				[
+					8,
+					"6",
+					0,
+					2,
+					"1800",
+					"1900",
 					"COM1-0218"
 				]
 			]
@@ -37943,7 +38429,7 @@ define({
 					4,
 					"1300",
 					"1400",
-					"COM1-B103"
+					"COM1-B101"
 				]
 			]
 		},
@@ -37983,6 +38469,15 @@ define({
 					"1100",
 					"1200",
 					"COM1-B110"
+				],
+				[
+					8,
+					"2",
+					0,
+					3,
+					"1400",
+					"1500",
+					"COM1-B110"
 				]
 			]
 		},
@@ -38012,15 +38507,6 @@ define({
 					"1000",
 					"1100",
 					"ADM-0417"
-				],
-				[
-					8,
-					"W10",
-					0,
-					1,
-					"1500",
-					"1600",
-					"ADM-0418"
 				],
 				[
 					8,
@@ -38102,15 +38588,6 @@ define({
 					"1300",
 					"1400",
 					"ADM-0418"
-				],
-				[
-					8,
-					"W9",
-					0,
-					1,
-					"1400",
-					"1500",
-					"ADM-0418"
 				]
 			]
 		},
@@ -38129,7 +38606,7 @@ define({
 					0,
 					"1500",
 					"1800",
-					"AS4-0116"
+					"AS3-0212"
 				]
 			]
 		},
@@ -38176,15 +38653,6 @@ define({
 					"1500",
 					"1600",
 					"AS1-0201"
-				],
-				[
-					8,
-					"W4",
-					0,
-					3,
-					"1600",
-					"1700",
-					"AS4-0119"
 				]
 			]
 		},
@@ -38349,15 +38817,6 @@ define({
 					1,
 					"1000",
 					"1200",
-					"ADM-0401"
-				],
-				[
-					8,
-					"E2",
-					2,
-					1,
-					"1200",
-					"1400",
 					"ADM-0401"
 				],
 				[
@@ -38674,6 +39133,15 @@ define({
 					"1400",
 					"1800",
 					"AKIMLA4"
+				],
+				[
+					0,
+					"1",
+					0,
+					4,
+					"1400",
+					"1800",
+					"AKIMLA4"
 				]
 			]
 		},
@@ -38701,6 +39169,33 @@ define({
 					"1200",
 					"1300",
 					"SDE-ER5"
+				]
+			]
+		},
+		"LA5302": {
+			"description": "This module covers landscape construction techniques and detailing. The emphasis is in the integration of details in terms of performance and coherence of the overall design. Consistency in the use of materials and adaptation of detailing to develop thematic strategies to carry design conceptual ideals are explored. The interrelationship and interdependence of parts and whole, between near and far, and between small and large scales are engaged. Current examples of local and international designs are presented and critique.",
+			"title": "Detail Design",
+			"department": "Architecture",
+			"mc": 4,
+			"exam": 1367816400000,
+			"lessons": [
+				[
+					2,
+					"1",
+					0,
+					1,
+					"0900",
+					"1300",
+					"AKIMLA5"
+				],
+				[
+					8,
+					"1",
+					0,
+					1,
+					"1300",
+					"1600",
+					"AKIMLA5"
 				]
 			]
 		},
@@ -39009,7 +39504,7 @@ define({
 					3,
 					"1200",
 					"1400",
-					"AS6-0205"
+					"AS4-0602"
 				],
 				[
 					9,
@@ -39025,9 +39520,9 @@ define({
 					"B3",
 					0,
 					3,
-					"1600",
-					"1800",
-					"AS6-0203"
+					"1000",
+					"1200",
+					"AS3-0309"
 				],
 				[
 					9,
@@ -39036,15 +39531,6 @@ define({
 					4,
 					"0800",
 					"1000",
-					"AS6-0203"
-				],
-				[
-					9,
-					"B5",
-					0,
-					4,
-					"1000",
-					"1200",
 					"AS6-0203"
 				],
 				[
@@ -39094,21 +39580,12 @@ define({
 				],
 				[
 					8,
-					"A2",
-					0,
-					0,
-					"1800",
-					"2000",
-					"AS1-0210"
-				],
-				[
-					8,
 					"A3",
 					0,
 					1,
 					"1200",
 					"1400",
-					"AS6-0205"
+					"AS1-0209"
 				],
 				[
 					8,
@@ -39143,9 +39620,9 @@ define({
 					"B1",
 					0,
 					2,
-					"1800",
-					"2000",
-					"AS1-0205"
+					"1000",
+					"1200",
+					"AS1-0302"
 				],
 				[
 					9,
@@ -39161,9 +39638,9 @@ define({
 					"C1",
 					0,
 					3,
-					"0800",
-					"1000",
-					"AS1-0205"
+					"1800",
+					"2000",
+					"ADM-0418"
 				],
 				[
 					10,
@@ -39187,10 +39664,10 @@ define({
 					8,
 					"A2",
 					0,
-					0,
+					1,
 					"1800",
 					"2000",
-					"AS1-0213"
+					"ADM-0418"
 				]
 			]
 		},
@@ -39206,6 +39683,15 @@ define({
 					2,
 					"1",
 					0,
+					2,
+					"1800",
+					"2000",
+					"AS3-0303"
+				],
+				[
+					9,
+					"B1",
+					0,
 					0,
 					"1200",
 					"1400",
@@ -39213,16 +39699,16 @@ define({
 				],
 				[
 					9,
-					"B1",
+					"B2",
 					0,
 					1,
+					"1600",
 					"1800",
-					"2000",
-					"AS6-0203"
+					"AS2-0311"
 				],
 				[
-					9,
-					"B2",
+					8,
+					"A1",
 					0,
 					3,
 					"1800",
@@ -39231,18 +39717,9 @@ define({
 				],
 				[
 					8,
-					"A1",
-					0,
-					0,
-					"1400",
-					"1600",
-					"AS6-0203"
-				],
-				[
-					8,
 					"A2",
 					0,
-					0,
+					4,
 					"1600",
 					"1800",
 					"AS6-0203"
@@ -39261,19 +39738,19 @@ define({
 					9,
 					"B1",
 					0,
-					3,
+					2,
 					"1800",
 					"2000",
-					"AS6-0204"
+					"ADM-0418"
 				],
 				[
 					8,
 					"A1",
 					0,
-					0,
-					"1800",
-					"2000",
-					"AS6-0203"
+					3,
+					"0800",
+					"1000",
+					"ADM-0418"
 				]
 			]
 		},
@@ -39289,9 +39766,9 @@ define({
 					9,
 					"B1",
 					0,
-					2,
-					"0800",
-					"1000",
+					1,
+					"1200",
+					"1400",
 					"AS6-0203"
 				],
 				[
@@ -39393,7 +39870,7 @@ define({
 					2,
 					"1400",
 					"1600",
-					"AS7-0102"
+					"AS1-0304"
 				],
 				[
 					2,
@@ -39438,7 +39915,7 @@ define({
 					3,
 					"1600",
 					"1800",
-					"AS3-0214"
+					"AS4-0119"
 				],
 				[
 					8,
@@ -39478,15 +39955,6 @@ define({
 				],
 				[
 					8,
-					"T05",
-					0,
-					0,
-					"1800",
-					"2000",
-					"AS4-0602"
-				],
-				[
-					8,
 					"T06",
 					0,
 					1,
@@ -39520,15 +39988,6 @@ define({
 					"1400",
 					"1600",
 					"AS1-0209"
-				],
-				[
-					8,
-					"T10",
-					0,
-					3,
-					"0800",
-					"1000",
-					"AS1-0213"
 				],
 				[
 					8,
@@ -39612,6 +40071,24 @@ define({
 					"1600",
 					"1800",
 					"AS4-0109"
+				],
+				[
+					2,
+					"3",
+					0,
+					1,
+					"1600",
+					"1800",
+					"AS1-0304"
+				],
+				[
+					2,
+					"3",
+					0,
+					3,
+					"1000",
+					"1200",
+					"AS7-0106"
 				],
 				[
 					8,
@@ -39704,6 +40181,15 @@ define({
 					"0800",
 					"1000",
 					"AS4-0119"
+				],
+				[
+					8,
+					"T01",
+					0,
+					3,
+					"1400",
+					"1600",
+					"AS4-0115"
 				],
 				[
 					8,
@@ -40152,15 +40638,6 @@ define({
 				],
 				[
 					8,
-					"T8",
-					0,
-					4,
-					"0800",
-					"1000",
-					"AS1-0205"
-				],
-				[
-					8,
 					"T9",
 					0,
 					3,
@@ -40324,7 +40801,7 @@ define({
 					3,
 					"1400",
 					"1600",
-					"AS3-0305"
+					"AS3-0303"
 				],
 				[
 					8,
@@ -40345,6 +40822,14 @@ define({
 					"AS3-0208"
 				]
 			]
+		},
+		"LAF4203": {
+			"description": "Building upon the foundation of the French 6 module, this module focuses on the development of students' ability to communicate on fairly complex topics of general interests. It will continue to adopt an integrated approach and cultivate students' proficiency in all areas of language learning, including their learning competence. Strategies to be developed focus on writing and speaking. This module will introduce students to various themes and topics in French culture and society. The texts for this module will be drawn from the press, and visual and computer media. The module will be conducted in French.",
+			"prerequisite": "Passed LAF4202, or placement test.",
+			"title": "French Studies 1",
+			"workload": "4-2-0-2-4.5",
+			"department": "Centre For Language Studies",
+			"mc": 5
 		},
 		"LAG1201": {
 			"description": "This module focuses on the basic linguistic and communicative structures of the German language. By developing the four skills of listening, speaking, reading and writing as well as teaching basic grammar and vocabulary, it aims at helping students achieve communicative competence in simple everyday situations and personal interaction. The module will also attempt to help students optimise their learning by teaching them vital strategies for language learning and language use.",
@@ -41318,7 +41803,7 @@ define({
 					4,
 					"1200",
 					"1300",
-					"AS3-0304"
+					"AS4-0601"
 				],
 				[
 					10,
@@ -41779,7 +42264,7 @@ define({
 					4,
 					"1600",
 					"1700",
-					"AS2-0311"
+					"AS3-0209"
 				],
 				[
 					10,
@@ -42078,7 +42563,7 @@ define({
 					4,
 					"1200",
 					"1300",
-					"AS4-0601"
+					"AS3-0304"
 				],
 				[
 					10,
@@ -42324,7 +42809,7 @@ define({
 					3,
 					"1200",
 					"1400",
-					"AS4-0602"
+					"AS3-0309"
 				],
 				[
 					9,
@@ -42360,7 +42845,7 @@ define({
 					1,
 					"1200",
 					"1400",
-					"AS1-0209"
+					"AS3-0302"
 				],
 				[
 					8,
@@ -42388,7 +42873,7 @@ define({
 					3,
 					"1800",
 					"2000",
-					"ADM-0402"
+					"LT8"
 				],
 				[
 					9,
@@ -42532,9 +43017,9 @@ define({
 					"B2",
 					0,
 					2,
-					"1200",
-					"1400",
-					"AS3-0212"
+					"1800",
+					"2000",
+					"AS4-0206"
 				],
 				[
 					10,
@@ -42733,7 +43218,7 @@ define({
 					2,
 					"1200",
 					"1400",
-					"AS3-0302"
+					"AS3-0305"
 				],
 				[
 					8,
@@ -42943,7 +43428,7 @@ define({
 					3,
 					"1800",
 					"2000",
-					"AS3-0303"
+					"AS6-0214"
 				],
 				[
 					8,
@@ -42952,7 +43437,7 @@ define({
 					1,
 					"0800",
 					"1000",
-					"AS3-0307"
+					"ADM-0417"
 				],
 				[
 					8,
@@ -42961,7 +43446,7 @@ define({
 					4,
 					"1000",
 					"1200",
-					"AS2-0311"
+					"ADM-0402"
 				],
 				[
 					8,
@@ -42970,7 +43455,7 @@ define({
 					4,
 					"1800",
 					"2000",
-					"AS3-0209"
+					"ADM-0417"
 				]
 			]
 		},
@@ -43045,7 +43530,7 @@ define({
 					3,
 					"1800",
 					"2000",
-					"AS3-0305"
+					"AS3-0303"
 				],
 				[
 					8,
@@ -43055,6 +43540,15 @@ define({
 					"0800",
 					"1000",
 					"AS3-0305"
+				],
+				[
+					8,
+					"T2",
+					0,
+					2,
+					"1000",
+					"1200",
+					"AS4-0118"
 				]
 			]
 		},
@@ -43110,7 +43604,7 @@ define({
 					2,
 					"1400",
 					"1600",
-					"AS6-0204"
+					"AS1-0207"
 				],
 				[
 					9,
@@ -43239,7 +43733,7 @@ define({
 					1,
 					"1800",
 					"2000",
-					"AS2-0311"
+					"AS1-0209"
 				],
 				[
 					8,
@@ -43257,7 +43751,7 @@ define({
 					3,
 					"1800",
 					"2000",
-					"AS2-0311"
+					"AS1-0213"
 				],
 				[
 					8,
@@ -43286,7 +43780,7 @@ define({
 					1,
 					"1600",
 					"1800",
-					"AS7-0102"
+					"AS4-0109"
 				],
 				[
 					9,
@@ -43360,27 +43854,7 @@ define({
 			"title": "Malay 4",
 			"workload": "2-2-0-3-3",
 			"department": "Centre For Language Studies",
-			"mc": 4,
-			"lessons": [
-				[
-					2,
-					"1",
-					0,
-					1,
-					"1600",
-					"1800",
-					"AS4-0109"
-				],
-				[
-					8,
-					"T1",
-					0,
-					2,
-					"1600",
-					"1800",
-					"AS2-0413"
-				]
-			]
+			"mc": 4
 		},
 		"LAR1201": {
 			"description": "Arabic 1 is a beginners’ module. This is an integrated course which will help students gain basic proficiency in the four skills (listening, speaking, reading, and writing), grammar, vocabulary (including the Arabic alphabet), for personal interaction and communication in authentic situations.",
@@ -43603,9 +44077,9 @@ define({
 					8,
 					"T1",
 					0,
-					4,
-					"1600",
+					3,
 					"1800",
+					"2000",
 					"AS1-0302"
 				]
 			]
@@ -43623,18 +44097,18 @@ define({
 					"1",
 					0,
 					1,
-					"1400",
-					"1600",
-					"AS3-0305"
+					"0800",
+					"1000",
+					"AS3-0309"
 				],
 				[
 					2,
 					"1",
 					0,
-					3,
-					"1400",
-					"1600",
-					"AS3-0303"
+					4,
+					"0800",
+					"1000",
+					"AS3-0305"
 				],
 				[
 					8,
@@ -44006,9 +44480,9 @@ define({
 					"1",
 					0,
 					0,
+					"0900",
 					"1200",
-					"1500",
-					"AS3-0302"
+					"AS4-0116"
 				]
 			]
 		},
@@ -44024,10 +44498,10 @@ define({
 					2,
 					"1",
 					0,
-					1,
+					0,
+					"1500",
 					"1800",
-					"2100",
-					"AS1-0207"
+					"AS3-0305"
 				]
 			]
 		},
@@ -44077,15 +44551,6 @@ define({
 				],
 				[
 					10,
-					"T1",
-					0,
-					2,
-					"0900",
-					"1000",
-					"AS1-0209"
-				],
-				[
-					10,
 					"T2",
 					0,
 					2,
@@ -44125,19 +44590,19 @@ define({
 					2,
 					"1",
 					0,
-					1,
+					0,
 					"1600",
 					"1800",
-					"AS1-0304"
+					"AS6-0205"
 				],
 				[
 					2,
 					"1",
 					0,
-					3,
+					4,
+					"0800",
 					"1000",
-					"1200",
-					"AS7-0106"
+					"AS1-0301"
 				],
 				[
 					10,
@@ -44147,15 +44612,6 @@ define({
 					"1400",
 					"1500",
 					"AS1-0303"
-				],
-				[
-					10,
-					"T2",
-					0,
-					0,
-					"1700",
-					"1800",
-					"AS1-0302"
 				]
 			]
 		},
@@ -44187,15 +44643,6 @@ define({
 				],
 				[
 					8,
-					"A1",
-					0,
-					3,
-					"1700",
-					"1800",
-					"ADM-0418"
-				],
-				[
-					8,
 					"A2",
 					0,
 					3,
@@ -44218,18 +44665,9 @@ define({
 					"B1",
 					0,
 					3,
+					"1000",
 					"1200",
-					"1400",
-					"AS6-0204"
-				],
-				[
-					8,
-					"A1",
-					0,
-					1,
-					"1900",
-					"2100",
-					"AS7-0119"
+					"AS6-0203"
 				]
 			]
 		},
@@ -44254,9 +44692,9 @@ define({
 					"A1",
 					0,
 					0,
-					"1800",
-					"2000",
-					"AS1-0302"
+					"1400",
+					"1600",
+					"ADM-0418"
 				]
 			]
 		},
@@ -44774,6 +45212,15 @@ define({
 					"1000",
 					"1200",
 					"LT27"
+				],
+				[
+					1,
+					"B01",
+					0,
+					5,
+					"1000",
+					"1030",
+					"DV"
 				],
 				[
 					1,
@@ -46096,7 +46543,7 @@ define({
 				[
 					1,
 					"B01",
-					"7-13",
+					"8-13",
 					0,
 					"1100",
 					"1200",
@@ -46105,7 +46552,7 @@ define({
 				[
 					1,
 					"B02",
-					"7-13",
+					"8-13",
 					0,
 					"1200",
 					"1300",
@@ -46114,7 +46561,7 @@ define({
 				[
 					1,
 					"B03",
-					"7-13",
+					"8-13",
 					2,
 					"1400",
 					"1500",
@@ -46123,7 +46570,7 @@ define({
 				[
 					1,
 					"B04",
-					"7-13",
+					"8-13",
 					2,
 					"1500",
 					"1600",
@@ -46132,7 +46579,7 @@ define({
 				[
 					1,
 					"B05",
-					"7-13",
+					"8-13",
 					2,
 					"1600",
 					"1700",
@@ -46141,7 +46588,7 @@ define({
 				[
 					1,
 					"B06",
-					"7-13",
+					"8-13",
 					3,
 					"1300",
 					"1400",
@@ -46150,7 +46597,7 @@ define({
 				[
 					1,
 					"B07",
-					"7-13",
+					"8-13",
 					3,
 					"1400",
 					"1500",
@@ -46159,7 +46606,7 @@ define({
 				[
 					1,
 					"BH1",
-					"7-13",
+					"8-13",
 					3,
 					"1800",
 					"1900",
@@ -46168,7 +46615,7 @@ define({
 				[
 					1,
 					"BH2",
-					"7-13",
+					"8-13",
 					3,
 					"1800",
 					"1900",
@@ -46177,7 +46624,7 @@ define({
 				[
 					1,
 					"BH3",
-					"7-13",
+					"8-13",
 					0,
 					"1800",
 					"1900",
@@ -46186,7 +46633,7 @@ define({
 				[
 					1,
 					"BM1",
-					"7-13",
+					"8-13",
 					1,
 					"1000",
 					"1100",
@@ -46195,7 +46642,7 @@ define({
 				[
 					1,
 					"BM2",
-					"7-13",
+					"8-13",
 					1,
 					"1100",
 					"1200",
@@ -46204,7 +46651,7 @@ define({
 				[
 					1,
 					"BM3",
-					"7-13",
+					"8-13",
 					1,
 					"1200",
 					"1300",
@@ -46575,6 +47022,15 @@ define({
 					"1500",
 					"1600",
 					"S16-0433"
+				],
+				[
+					8,
+					"T13",
+					0,
+					3,
+					"1000",
+					"1100",
+					"S16-0435"
 				]
 			]
 		},
@@ -46614,6 +47070,15 @@ define({
 					"1500",
 					"1600",
 					"S16-0431"
+				],
+				[
+					8,
+					"T02",
+					0,
+					0,
+					"1500",
+					"1600",
+					"S16-0598"
 				]
 			]
 		},
@@ -46689,6 +47154,15 @@ define({
 					"1600",
 					"1700",
 					"S17-0404"
+				],
+				[
+					8,
+					"T06",
+					0,
+					0,
+					"1200",
+					"1300",
+					"S16-0431"
 				]
 			]
 		},
@@ -46782,6 +47256,33 @@ define({
 					"1000",
 					"1100",
 					"S16-0433"
+				],
+				[
+					8,
+					"T08",
+					0,
+					0,
+					"1500",
+					"1600",
+					"S16-0433"
+				],
+				[
+					8,
+					"T09",
+					0,
+					0,
+					"1600",
+					"1700",
+					"S16-0433"
+				],
+				[
+					8,
+					"T10",
+					0,
+					4,
+					"1700",
+					"1800",
+					"S16-0433"
 				]
 			]
 		},
@@ -46869,357 +47370,6 @@ define({
 				],
 				[
 					1,
-					"A02",
-					"6,9",
-					4,
-					"1100",
-					"1200",
-					"null"
-				],
-				[
-					1,
-					"A03",
-					0,
-					4,
-					"1100",
-					"1200",
-					"null"
-				],
-				[
-					1,
-					"A04",
-					0,
-					4,
-					"1400",
-					"1500",
-					"null"
-				],
-				[
-					1,
-					"A07",
-					"6,9",
-					4,
-					"1600",
-					"1700",
-					"null"
-				],
-				[
-					1,
-					"A08",
-					"5,7",
-					1,
-					"0900",
-					"1000",
-					"null"
-				],
-				[
-					1,
-					"A09",
-					0,
-					1,
-					"1000",
-					"1100",
-					"null"
-				],
-				[
-					1,
-					"A10",
-					"6,9",
-					1,
-					"1000",
-					"1100",
-					"null"
-				],
-				[
-					1,
-					"A12",
-					0,
-					2,
-					"1500",
-					"1600",
-					"null"
-				],
-				[
-					1,
-					"A13",
-					"10",
-					2,
-					"1400",
-					"1500",
-					"null"
-				],
-				[
-					1,
-					"A14",
-					"6,9",
-					2,
-					"1400",
-					"1500",
-					"null"
-				],
-				[
-					1,
-					"A16",
-					"7,10",
-					3,
-					"1500",
-					"1600",
-					"null"
-				],
-				[
-					1,
-					"B04",
-					0,
-					1,
-					"0900",
-					"1000",
-					"null"
-				],
-				[
-					1,
-					"B06",
-					"10",
-					2,
-					"1100",
-					"1200",
-					"null"
-				],
-				[
-					1,
-					"B08",
-					"6,9",
-					2,
-					"1000",
-					"1100",
-					"null"
-				],
-				[
-					1,
-					"B09",
-					"5,7",
-					2,
-					"1100",
-					"1200",
-					"null"
-				],
-				[
-					1,
-					"C02",
-					0,
-					1,
-					"1500",
-					"1600",
-					"null"
-				],
-				[
-					1,
-					"C03",
-					0,
-					2,
-					"1000",
-					"1100",
-					"null"
-				],
-				[
-					1,
-					"C05",
-					"6,10",
-					2,
-					"1500",
-					"1600",
-					"null"
-				],
-				[
-					1,
-					"C06",
-					"6,9",
-					2,
-					"1100",
-					"1200",
-					"null"
-				],
-				[
-					1,
-					"C07",
-					"10",
-					1,
-					"1400",
-					"1500",
-					"null"
-				],
-				[
-					1,
-					"C08",
-					0,
-					3,
-					"0900",
-					"1000",
-					"null"
-				],
-				[
-					1,
-					"C09",
-					"6,10",
-					3,
-					"1100",
-					"1200",
-					"null"
-				],
-				[
-					1,
-					"C10",
-					0,
-					3,
-					"1000",
-					"1100",
-					"null"
-				],
-				[
-					1,
-					"C11",
-					"7,10",
-					3,
-					"0900",
-					"1000",
-					"null"
-				],
-				[
-					1,
-					"C12",
-					"7,10",
-					3,
-					"1000",
-					"1100",
-					"null"
-				],
-				[
-					1,
-					"C13",
-					"10",
-					2,
-					"0900",
-					"1000",
-					"null"
-				],
-				[
-					1,
-					"C14",
-					"10",
-					2,
-					"1100",
-					"1200",
-					"null"
-				],
-				[
-					1,
-					"C15",
-					"10",
-					2,
-					"1000",
-					"1100",
-					"null"
-				],
-				[
-					1,
-					"C16",
-					"7,11",
-					2,
-					"0900",
-					"1000",
-					"null"
-				],
-				[
-					1,
-					"D01",
-					"7,11",
-					0,
-					"0900",
-					"1000",
-					"null"
-				],
-				[
-					1,
-					"D02",
-					"7,10",
-					0,
-					"1000",
-					"1100",
-					"null"
-				],
-				[
-					1,
-					"D03",
-					"7,10",
-					0,
-					"0900",
-					"1000",
-					"null"
-				],
-				[
-					1,
-					"D06",
-					"6,9",
-					3,
-					"1500",
-					"1600",
-					"null"
-				],
-				[
-					1,
-					"D07",
-					"6,9",
-					3,
-					"1500",
-					"1600",
-					"null"
-				],
-				[
-					1,
-					"D09",
-					"10",
-					3,
-					"1500",
-					"1600",
-					"null"
-				],
-				[
-					1,
-					"D11",
-					"10",
-					3,
-					"1400",
-					"1500",
-					"null"
-				],
-				[
-					1,
-					"D12",
-					"5,7",
-					4,
-					"1100",
-					"1200",
-					"null"
-				],
-				[
-					1,
-					"D13",
-					0,
-					4,
-					"1000",
-					"1100",
-					"null"
-				],
-				[
-					1,
-					"D14",
-					0,
-					4,
-					"1000",
-					"1100",
-					"null"
-				],
-				[
-					1,
 					"LC1",
 					"6-9",
 					0,
@@ -47241,8 +47391,8 @@ define({
 					"LC3",
 					"6-9",
 					2,
-					"1300",
-					"1400",
+					"1000",
+					"1100",
 					"S17-0302"
 				],
 				[
@@ -47250,8 +47400,8 @@ define({
 					"LC4",
 					"6-9",
 					3,
-					"1600",
-					"1700",
+					"1100",
+					"1200",
 					"S17-0302"
 				],
 				[
@@ -47499,24 +47649,6 @@ define({
 				],
 				[
 					8,
-					"C02",
-					0,
-					0,
-					"0900",
-					"1000",
-					"E1-06-04"
-				],
-				[
-					8,
-					"C03",
-					0,
-					0,
-					"0900",
-					"1000",
-					"E3-06-01"
-				],
-				[
-					8,
 					"C04",
 					0,
 					0,
@@ -47760,24 +47892,6 @@ define({
 				],
 				[
 					8,
-					"T01",
-					0,
-					1,
-					"1600",
-					"1700",
-					"S16-0433"
-				],
-				[
-					8,
-					"T02",
-					0,
-					1,
-					"1700",
-					"1800",
-					"S16-0433"
-				],
-				[
-					8,
 					"T03",
 					0,
 					4,
@@ -47813,7 +47927,7 @@ define({
 					1,
 					"0900",
 					"1100",
-					"E1-06-03"
+					"E1-06-08"
 				],
 				[
 					2,
@@ -47822,7 +47936,7 @@ define({
 					3,
 					"1200",
 					"1300",
-					"E1-06-03"
+					"E1-06-08"
 				],
 				[
 					8,
@@ -47831,7 +47945,7 @@ define({
 					3,
 					"1300",
 					"1400",
-					"E1-06-03"
+					"E1-06-08"
 				],
 				[
 					8,
@@ -47916,6 +48030,15 @@ define({
 					"1100",
 					"1200",
 					"S16-0431"
+				],
+				[
+					8,
+					"T06",
+					0,
+					2,
+					"0800",
+					"0900",
+					"S16-0431"
 				]
 			]
 		},
@@ -47963,7 +48086,7 @@ define({
 					1,
 					"1200",
 					"1300",
-					"S17-0404"
+					"S16-0309"
 				],
 				[
 					8,
@@ -47972,7 +48095,16 @@ define({
 					3,
 					"0900",
 					"1000",
-					"S17-0404"
+					"S17-0405"
+				],
+				[
+					8,
+					"T04",
+					0,
+					3,
+					"1000",
+					"1100",
+					"S17-0405"
 				]
 			]
 		},
@@ -48075,6 +48207,15 @@ define({
 					"1100",
 					"1200",
 					"S17-0512"
+				],
+				[
+					8,
+					"T09",
+					0,
+					1,
+					"1100",
+					"1200",
+					"S17-0405"
 				]
 			]
 		},
@@ -48110,9 +48251,9 @@ define({
 					8,
 					"T01",
 					0,
-					4,
-					"1000",
-					"1200",
+					2,
+					"1800",
+					"2000",
 					"S17-0611"
 				]
 			]
@@ -48174,15 +48315,6 @@ define({
 				],
 				[
 					1,
-					"B04",
-					2,
-					3,
-					"1400",
-					"1500",
-					"S17-0304"
-				],
-				[
-					1,
 					"B05",
 					2,
 					3,
@@ -48216,15 +48348,6 @@ define({
 					"1000",
 					"1100",
 					"S17-0404"
-				],
-				[
-					8,
-					"T04",
-					1,
-					3,
-					"1400",
-					"1500",
-					"S17-0512"
 				],
 				[
 					8,
@@ -48269,9 +48392,9 @@ define({
 					8,
 					"T01",
 					0,
-					2,
-					"1100",
-					"1200",
+					4,
+					"1300",
+					"1400",
 					"S16-0431"
 				],
 				[
@@ -48610,15 +48733,6 @@ define({
 					"1600",
 					"1700",
 					"S17-0405"
-				],
-				[
-					8,
-					"T07",
-					0,
-					4,
-					"1700",
-					"1800",
-					"S17-0405"
 				]
 			]
 		},
@@ -48718,24 +48832,6 @@ define({
 				],
 				[
 					8,
-					"T04",
-					0,
-					3,
-					"1200",
-					"1300",
-					"S17-0512"
-				],
-				[
-					8,
-					"T05",
-					0,
-					3,
-					"1300",
-					"1400",
-					"S17-0512"
-				],
-				[
-					8,
 					"T06",
 					0,
 					4,
@@ -48771,7 +48867,7 @@ define({
 					1,
 					"1400",
 					"1600",
-					"S17-0511"
+					"S17-0512"
 				],
 				[
 					2,
@@ -48780,7 +48876,7 @@ define({
 					4,
 					"1400",
 					"1600",
-					"S17-0511"
+					"S17-0512"
 				],
 				[
 					8,
@@ -48789,7 +48885,7 @@ define({
 					1,
 					"1800",
 					"2000",
-					"S17-0511"
+					"S17-0512"
 				]
 			]
 		},
@@ -48824,9 +48920,9 @@ define({
 					8,
 					"T01",
 					0,
-					1,
-					"1100",
-					"1200",
+					2,
+					"1600",
+					"1700",
 					"S17-0512"
 				],
 				[
@@ -48916,18 +49012,18 @@ define({
 					"S16-0307"
 				],
 				[
-					8,
-					"T01",
+					1,
+					"B01",
+					2,
 					0,
-					0,
-					"1600",
 					"1700",
-					"S17-0404"
+					"1800",
+					"S17-0304"
 				],
 				[
 					8,
 					"T02",
-					0,
+					1,
 					0,
 					"1700",
 					"1800",
@@ -48962,6 +49058,69 @@ define({
 					"1000",
 					"1200",
 					"LT31"
+				],
+				[
+					8,
+					"T01",
+					0,
+					0,
+					"1600",
+					"1700",
+					"S16-0598"
+				],
+				[
+					8,
+					"T02",
+					0,
+					0,
+					"1700",
+					"1800",
+					"S16-0598"
+				],
+				[
+					8,
+					"T03",
+					0,
+					2,
+					"1300",
+					"1400",
+					"S16-0598"
+				],
+				[
+					8,
+					"T04",
+					0,
+					2,
+					"1200",
+					"1300",
+					"S16-0598"
+				],
+				[
+					8,
+					"T05",
+					0,
+					3,
+					"0900",
+					"1000",
+					"S17-0406"
+				],
+				[
+					8,
+					"T06",
+					0,
+					3,
+					"1000",
+					"1100",
+					"S17-0406"
+				],
+				[
+					8,
+					"T07",
+					0,
+					4,
+					"0900",
+					"1000",
+					"S16-0598"
 				]
 			]
 		},
@@ -48982,24 +49141,6 @@ define({
 					"1900",
 					"2200",
 					"LT34"
-				],
-				[
-					8,
-					"T01",
-					0,
-					0,
-					"1300",
-					"1400",
-					"S17-0405"
-				],
-				[
-					8,
-					"T02",
-					0,
-					0,
-					"1400",
-					"1500",
-					"S17-0405"
 				],
 				[
 					8,
@@ -49193,7 +49334,7 @@ define({
 					0,
 					"1400",
 					"1500",
-					"S16-0598"
+					"S16-0307"
 				]
 			]
 		},
@@ -49343,33 +49484,6 @@ define({
 					"0800",
 					"0900",
 					"E4-04-03"
-				],
-				[
-					8,
-					"3",
-					0,
-					1,
-					"1000",
-					"1100",
-					"E1-06-13"
-				],
-				[
-					8,
-					"4",
-					0,
-					2,
-					"1100",
-					"1200",
-					"E1-06-13"
-				],
-				[
-					8,
-					"6",
-					0,
-					4,
-					"1000",
-					"1100",
-					"E1-06-13"
 				]
 			]
 		},
@@ -49462,7 +49576,7 @@ define({
 					2,
 					"1300",
 					"1400",
-					"S17-0404"
+					"S17-0405"
 				]
 			]
 		},
@@ -49500,6 +49614,15 @@ define({
 					1,
 					"1400",
 					"1500",
+					"S17-0404"
+				],
+				[
+					8,
+					"T02",
+					0,
+					1,
+					"1300",
+					"1400",
 					"S17-0404"
 				]
 			]
@@ -49623,17 +49746,17 @@ define({
 					0,
 					3,
 					"1600",
-					"1800",
+					"1700",
 					"LT33"
 				],
 				[
 					8,
 					"T1",
 					0,
-					0,
+					3,
+					"1700",
 					"1800",
-					"1900",
-					"S16-06118"
+					"LT33"
 				]
 			]
 		},
@@ -49682,6 +49805,24 @@ define({
 					"1500",
 					"1600",
 					"S17-0404"
+				],
+				[
+					8,
+					"T04",
+					0,
+					1,
+					"1700",
+					"1800",
+					"S17-0404"
+				],
+				[
+					8,
+					"T05",
+					0,
+					3,
+					"1300",
+					"1400",
+					"S17-0512"
 				]
 			]
 		},
@@ -49724,15 +49865,6 @@ define({
 				],
 				[
 					8,
-					"T03",
-					0,
-					3,
-					"1400",
-					"1500",
-					"S17-0404"
-				],
-				[
-					8,
 					"T04",
 					0,
 					3,
@@ -49767,7 +49899,7 @@ define({
 					1,
 					"1200",
 					"1400",
-					"S16-0430"
+					"S16-0435"
 				],
 				[
 					2,
@@ -49776,7 +49908,7 @@ define({
 					4,
 					"1200",
 					"1400",
-					"S16-0430"
+					"S16-0435"
 				],
 				[
 					8,
@@ -49785,7 +49917,7 @@ define({
 					3,
 					"1600",
 					"1700",
-					"S16-0433"
+					"S17-0405"
 				]
 			]
 		},
@@ -49814,6 +49946,15 @@ define({
 					3,
 					"0800",
 					"1000",
+					"S17-0611"
+				],
+				[
+					8,
+					"T01",
+					0,
+					2,
+					"1100",
+					"1200",
 					"S17-0611"
 				]
 			]
@@ -49872,7 +50013,7 @@ define({
 					1,
 					"1400",
 					"1600",
-					"S17-0512"
+					"S17-0511"
 				],
 				[
 					2,
@@ -49881,7 +50022,7 @@ define({
 					4,
 					"1400",
 					"1600",
-					"S17-0512"
+					"S17-0511"
 				]
 			]
 		},
@@ -50042,8 +50183,8 @@ define({
 					"SL1",
 					0,
 					4,
-					"1900",
-					"2200",
+					"1800",
+					"2100",
 					"S17-0512"
 				]
 			]
@@ -52076,7 +52217,7 @@ define({
 					2,
 					"1800",
 					"2100",
-					"EA-06-03"
+					"EA-06-05"
 				]
 			]
 		},
@@ -52135,11 +52276,29 @@ define({
 				]
 			]
 		},
+		"ME5404": {
+			"description": "In this module students will learn various neural network models and develop all the essential background needed to apply these models to solve practical pattern recognition and regression problems. The main topics that will be covered are: single and multilayer perceptrons, support vector machines, radial basis function networks, Kohonen networks, principal component analysis, and recurrent networks. There is a compulsory computer project for this module. This module is intended for graduate students and engineers interested in learning about neural networks and using them to solve real world problems.",
+			"title": "NEURAL NETWORKS",
+			"workload": "3-0-0-3-4",
+			"department": "Electrical & Computer Engineering",
+			"mc": 4,
+			"exam": 1367888400000,
+			"lessons": [
+				[
+					2,
+					"1",
+					0,
+					3,
+					"1800",
+					"2100",
+					"LT3"
+				]
+			]
+		},
 		"ME5502": {
 			"title": "Engineering Plastics And Composite Materials",
 			"department": "Mechanical Engineering",
 			"mc": 4,
-			"exam": 1367888400000,
 			"lessons": [
 				[
 					2,
@@ -52204,7 +52363,7 @@ define({
 					2,
 					"1800",
 					"2100",
-					"EA-06-05"
+					"EA-06-03"
 				]
 			]
 		},
@@ -52370,7 +52529,7 @@ define({
 					1,
 					"1200",
 					"1400",
-					"null"
+					"BIZ2-0116"
 				],
 				[
 					8,
@@ -53310,6 +53469,15 @@ define({
 					"1200",
 					"1300",
 					"TP-SR9"
+				],
+				[
+					8,
+					"Q5",
+					0,
+					0,
+					"1200",
+					"1300",
+					"TP-SR9"
 				]
 			]
 		},
@@ -53660,6 +53828,24 @@ define({
 					"1600",
 					"1700",
 					"TP-SR2"
+				],
+				[
+					8,
+					"Q4",
+					0,
+					2,
+					"1400",
+					"1500",
+					"TP-SR4"
+				],
+				[
+					8,
+					"Q5",
+					0,
+					2,
+					"1500",
+					"1600",
+					"TP-SR4"
 				]
 			]
 		},
@@ -53857,26 +54043,8 @@ define({
 				],
 				[
 					8,
-					"Z06",
-					2,
-					4,
-					"0900",
-					"1100",
-					"BIZ2-B104"
-				],
-				[
-					8,
 					"Z07",
 					1,
-					4,
-					"1100",
-					"1300",
-					"BIZ2-B104"
-				],
-				[
-					8,
-					"Z08",
-					2,
 					4,
 					"1100",
 					"1300",
@@ -53912,29 +54080,11 @@ define({
 				],
 				[
 					8,
-					"K02",
-					0,
-					3,
-					"1700",
-					"1800",
-					"BIZ2-0117"
-				],
-				[
-					8,
 					"K03",
 					0,
 					3,
 					"1600",
 					"1700",
-					"BIZ2-0118"
-				],
-				[
-					8,
-					"K04",
-					0,
-					3,
-					"1700",
-					"1800",
 					"BIZ2-0118"
 				],
 				[
@@ -53972,15 +54122,6 @@ define({
 					"1500",
 					"1600",
 					"BIZ2-0118"
-				],
-				[
-					8,
-					"K09",
-					0,
-					3,
-					"1500",
-					"1600",
-					"BIZ2-0227"
 				]
 			]
 		},
@@ -54223,7 +54364,7 @@ define({
 					0,
 					"1200",
 					"1500",
-					"SR@LT19"
+					"BIZ1-0204"
 				]
 			]
 		},
@@ -54246,6 +54387,14 @@ define({
 					"BIZ1-0204"
 				]
 			]
+		},
+		"MNO3329": {
+			"description": "Independent Study Modules (ISMs) are for students with the requisite background to work closely with an instructor on a well-defined project in the respective specialization areas. Students will be exposed to individual-based research and report-writing while tackling a business issue under the guidance of the instructor.",
+			"prerequisite": "Vary according to project topic. In general, however, students will have to have completed the core modules of the BBA/BBA(Acc) curriculum.",
+			"title": "Independent Study in Mgt & Human Capital",
+			"workload": "0-0-0-10-0",
+			"department": "Management And Organisation",
+			"mc": 4
 		},
 		"MNO3330": {
 			"description": "Social entrepreneurship presents an alternative approach to community development. It advocates the adoption of innovative solutions (often incorporating market mechanisms) to address social problems. This module discusses the concepts associated with social entrepreneurship, and examines the practices and challenges of social entrepreneurship in the Asian context. Topics to be covered include identification of social problems; marginalization and the poverty cycle; varied conceptualizations of social entrepreneurship and innovation; different types of social enterprises; sustainable social enterprises as an effective means of community development; developing a social enterprise business plan; establishing a social enterprise; scaling up a social enterprise; social impact measurement.",
@@ -54302,6 +54451,14 @@ define({
 					"BIZ2-0413C"
 				]
 			]
+		},
+		"MNO4319": {
+			"description": "Advanced Independent Study Modules (ISMs) are for senior students who are in the BBA and BBA(Acc) honors programs with the requisite background to work closely with an instructor on a well-defined project in the respective specialization areas. (The modules may also be made available to students who are eligible for admission into the honors programs but choose to pursue the non-honors course of study.) Students will hone their research and report-writing skills while tackling a business issue under the guidance of the instructor.",
+			"prerequisite": "Vary according to project topic. In general, however, students will have to have completed the core modules of the BBA/BBA(Acc) curriculum.",
+			"title": "Advanced Independent Study in Mgt & Human Capital",
+			"workload": "0-0-0-10-0",
+			"department": "Management And Organisation",
+			"mc": 4
 		},
 		"MS2210": {
 			"description": "The main theme of this module is processes of change in Malay cultures and societies and how attempts at creating certainties are made. Part 1 introduces students to approaches in studying Malay culture and society. Malay culture and society does not exist in vacuum. In Part 2, we look at how in encountering &quot;others&quot; Malay culture and society has historically gone through and is going through massive changes. Part 3 highlights aspects of changes in contemporary Malay society including ethnicity and Malay identity, new Malay rich, Malay woman and femininity as well as national development and the indigenous people.",
@@ -54364,7 +54521,7 @@ define({
 					1,
 					"1400",
 					"1700",
-					"AS7-0413"
+					"AS1-0207"
 				]
 			]
 		},
@@ -54383,7 +54540,7 @@ define({
 					0,
 					"1400",
 					"1600",
-					"AS7-0413"
+					"AS4-0116"
 				],
 				[
 					8,
@@ -54392,7 +54549,7 @@ define({
 					0,
 					"1600",
 					"1700",
-					"AS7-0413"
+					"AS4-0116"
 				]
 			]
 		},
@@ -54552,7 +54709,7 @@ define({
 					3,
 					"1200",
 					"1500",
-					"AS7-0413"
+					"AS7-0411"
 				]
 			]
 		},
@@ -54580,7 +54737,7 @@ define({
 					1,
 					"1400",
 					"1700",
-					"AS7-0423"
+					"AS7-0413"
 				]
 			]
 		},
@@ -54609,7 +54766,7 @@ define({
 					3,
 					"1100",
 					"1400",
-					"AS7-0423"
+					"AS7-0413"
 				]
 			]
 		},
@@ -54848,7 +55005,18 @@ define({
 		"MUA1161": {
 			"title": "Major Study 1A",
 			"department": "Yong Siew Toh Conservatory Of Music",
-			"mc": 5
+			"mc": 5,
+			"lessons": [
+				[
+					6,
+					"1",
+					0,
+					5,
+					"0600",
+					"0630",
+					"WS"
+				]
+			]
 		},
 		"MUA1162": {
 			"title": "Major Study 1B",
@@ -55592,6 +55760,15 @@ define({
 					"0630",
 					"0700",
 					"FMS"
+				],
+				[
+					6,
+					"74",
+					0,
+					0,
+					"2300",
+					"2330",
+					"RecS"
 				]
 			]
 		},
@@ -55814,6 +55991,15 @@ define({
 					"1000",
 					"1030",
 					"null"
+				],
+				[
+					6,
+					"58",
+					0,
+					5,
+					"2330",
+					"2359",
+					"RecS"
 				]
 			]
 		},
@@ -56809,7 +56995,27 @@ define({
 		"MUA4162": {
 			"title": "Major Study 4B",
 			"department": "Yong Siew Toh Conservatory Of Music",
-			"mc": 12
+			"mc": 12,
+			"lessons": [
+				[
+					6,
+					"47",
+					0,
+					5,
+					"2230",
+					"2300",
+					"RecS"
+				],
+				[
+					6,
+					"48",
+					0,
+					5,
+					"2200",
+					"2230",
+					"RecS"
+				]
+			]
 		},
 		"MUA4203": {
 			"description": "Designed for the student who desires more intensive study in conducting. Literature will be sequenced with the more difficult works in the Advanced Conducting course.",
@@ -56851,7 +57057,18 @@ define({
 			"description": "This ensemble is devoted to the study and performance of experimental musical works representative of the 20th century and contemporary compositions.",
 			"title": "Advanced Chamber Ensemble",
 			"department": "Yong Siew Toh Conservatory Of Music",
-			"mc": 2
+			"mc": 2,
+			"lessons": [
+				[
+					6,
+					"22",
+					0,
+					0,
+					"2330",
+					"2359",
+					"RecS"
+				]
+			]
 		},
 		"MUA4220": {
 			"description": "This ensemble is devoted to the study and performance of experimental musical works representative of the 20th century and contemporary compositions.",
@@ -57167,7 +57384,18 @@ define({
 			"title": "Orchestral Excerpts for Strings 4A",
 			"workload": "0-2-0-0-3",
 			"department": "Yong Siew Toh Conservatory Of Music",
-			"mc": 2
+			"mc": 2,
+			"lessons": [
+				[
+					6,
+					"4",
+					0,
+					5,
+					"2300",
+					"2330",
+					"RecS"
+				]
+			]
 		},
 		"MUA4232": {
 			"prerequisite": "MUA4231 Orchestral Excerpts for Strings 4A",
@@ -58827,7 +59055,7 @@ define({
 					3,
 					"1900",
 					"2000",
-					"AS1-0303"
+					"null"
 				],
 				[
 					8,
@@ -58836,7 +59064,7 @@ define({
 					3,
 					"1100",
 					"1200",
-					"AS1-0204"
+					"AS6-0338"
 				]
 			]
 		},
@@ -59108,7 +59336,7 @@ define({
 					4,
 					"0900",
 					"1000",
-					"AS3-0215"
+					"AS1-0207"
 				],
 				[
 					8,
@@ -59117,7 +59345,7 @@ define({
 					4,
 					"1600",
 					"1700",
-					"AS3-0215"
+					"ADM-0417"
 				],
 				[
 					8,
@@ -59144,7 +59372,7 @@ define({
 					2,
 					"1600",
 					"1700",
-					"AS1-0204"
+					"AS1-0207"
 				],
 				[
 					8,
@@ -59153,7 +59381,7 @@ define({
 					2,
 					"1700",
 					"1800",
-					"AS1-0204"
+					"AS1-0207"
 				],
 				[
 					8,
@@ -59162,7 +59390,7 @@ define({
 					3,
 					"1700",
 					"1800",
-					"AS1-0204"
+					"AS1-0207"
 				],
 				[
 					8,
@@ -59422,43 +59650,16 @@ define({
 					2,
 					"1000",
 					"1200",
-					"EDUS-LT52"
+					"TP-SR10"
 				],
 				[
 					8,
 					"W1",
 					0,
-					3,
+					2,
+					"1200",
 					"1300",
-					"1400",
-					"EDUS-SR6"
-				],
-				[
-					8,
-					"W2",
-					0,
-					3,
-					"1400",
-					"1500",
-					"EDUS-SR6"
-				],
-				[
-					8,
-					"W3",
-					0,
-					4,
-					"1300",
-					"1400",
-					"ERC-SR9CAM"
-				],
-				[
-					8,
-					"W4",
-					0,
-					4,
-					"1400",
-					"1500",
-					"ERC-SR9CAM"
+					"TP-SR10"
 				]
 			]
 		},
@@ -59525,24 +59726,6 @@ define({
 					"1600",
 					"1700",
 					"TP-SR1"
-				],
-				[
-					8,
-					"W6",
-					0,
-					3,
-					"1700",
-					"1800",
-					"TP-SR1"
-				],
-				[
-					8,
-					"W7",
-					0,
-					2,
-					"1300",
-					"1400",
-					"AS3-0303"
 				]
 			]
 		},
@@ -59832,6 +60015,23 @@ define({
 				]
 			]
 		},
+		"NM3550": {
+			"description": "Internships vary in length but all take place within organisations or companies, are vetted and approved by the Communications and New Media Programme, have relevance to the major in NM, involve the application of subject knowledge and theory in reflection upon the work, and are assessed. Available credited internships for each semester will be advertised at the beginning of the semester before. Internships proposed by students will require the approval of the department. Student must apply for and be accepted to work in the company/organization offering the internship for a duration of 6 months (together with INM3550), on full time basis.",
+			"prerequisite": "(1) For NM Major only, (2) Read and pass a minimum of 80 MCs AND (3) Must read INM3550 concurrently",
+			"preclusion": "Any other series-internship modules (Note: Students who change major may not do a second internship in their new major)",
+			"title": "Communications & New Media Internship",
+			"workload": "3 months at the place of work on full time basis.",
+			"department": "Communications And New Media",
+			"mc": 4
+		},
+		"NM3551": {
+			"description": "A UROP involves the student working with a supervisor, and usually in a team, on an existing research project. It has relevance to the student’s Major, and involves the application of subject knowledge, methodology and theory in reflection upon the research project. UROPs usually take place within FASS or ARI, though a few involve international partners. All are vetted and approved by the Major department. All are assessed. UROPs can be proposed by supervisor or student, and require the approval of the Major department.",
+			"prerequisite": "Students must: have declared a Major, completed a minimum of 24 MC in that Major, and have a CAP of at least 3.5.",
+			"title": "FASS Undergraduate Research Opportunity (UROP)",
+			"workload": "0-0-0-8-2",
+			"department": "Communications And New Media",
+			"mc": 4
+		},
 		"NM3880A": {
 			"description": "This course will introduce students to fundamental principles of copyright law in the field of new media. The module will focus on copyright issues as they apply to content producers confronted with ongoing technological developments in information and communications technologies. It will review copyright issues from a socioeconomic, legal and policy perspective, and will cover issues such as fair-use exceptions, the open-source movement, digital rights management and anticircumvention and peer-to-peer file sharing.",
 			"prerequisite": "Any IF/NM or recognised modules.",
@@ -59868,7 +60068,7 @@ define({
 					4,
 					"0900",
 					"1200",
-					"ADM-0402"
+					"AS6-0333"
 				]
 			]
 		},
@@ -59942,7 +60142,7 @@ define({
 					4,
 					"1400",
 					"1600",
-					"TP-SR10"
+					"AS3-0215"
 				],
 				[
 					8,
@@ -60095,7 +60295,7 @@ define({
 					0,
 					"1800",
 					"2100",
-					"AS1-0301"
+					"ADM-0401"
 				]
 			]
 		},
@@ -60184,6 +60384,24 @@ define({
 				]
 			]
 		},
+		"NM4401": {
+			"description": "Each student is required to conduct an independent research project on an approved topic under the supervision of a faculty member. The student may select a topic in any field of Communications and New Media. The topic may entail a technical aspect of Communications and New Media or an aspect which explores the application of Communications and New Media to an area of the Humanities and Social Sciences. The project will be submitted as an Honours Thesis.",
+			"prerequisite": "Cohort 2006 and before: (i) Pass NM4101/NM4102; (ii) Complete at least 100MCs including 56MCs of NM major requirements and (iii) Obtain one of the following minimum standards at the point of registration: (a) minimum CAP of 4.0 OR (b) minimum SJAP of 4.0 and CAP of 3.5. Cohort 2007 onwards: (1) Pass NM4101 or NM4102; (2) Completed 110MCs including 60MCs of NM major requirements with a minimum SJAP of 4.0 and CAP of 3.5.",
+			"preclusion": "NM4660",
+			"title": "Honours Thesis",
+			"workload": "0-0-0-0-37.5",
+			"department": "Communications And New Media",
+			"mc": 15
+		},
+		"NM4660": {
+			"description": "The Independent Study Module is designed to enable the student to explore an approved topic within the discipline in depth. The student should approach a lecturer to work out an agreed topic, readings, and assignments for the module. A formal, written agreement is to be drawn up, giving a clear account of the topic, programme of study, assignments, evaluation, and other pertinent details. Head's and Honours Coordinator's approvals of the written agreement are required. Regular meetings and reports are expected. Evaluation is based on 100% Continuous Assessment and must be worked out between the student and the lecturer prior to seeking departmental approval.",
+			"prerequisite": "Cohort 2006 and before: To be offered subject to the agreement of the Supervisor and Department. Complete at least 100MCs including 56MCs of major requirements and obtain a minimum CAP of 3.2. Cohort 2007 onwards: Completed 100MCs, including 60MCs in NM, with a minimum CAP of 3.5.",
+			"preclusion": "NM4401",
+			"title": "Independent Study",
+			"workload": "0-0-0-0-12.5",
+			"department": "Communications And New Media",
+			"mc": 5
+		},
 		"NM4881A": {
 			"description": "Social media is everywhere and is affecting many aspects of social, cultural, economic and political life. This module will allow students to explore advanced topics in the design, communication and impact of social media, while also encouraging them to experiment with real social media platforms before and during each class. There is no need for prior experience with social media or social network sites to successfully complete this module. The emphasis will be on the analysis of contemporary social media practice and the design of social media platforms. The pedagogical focus will be on learning by doing and theory-informed design.",
 			"prerequisite": "Cohort 2006 and before: Read and passed a minimum of 80MCs. Cohort 2007 onwards: Completed 80MCs, including 28MCs in NM, with a minimum CAP of 3.5 or be on the Honours track.",
@@ -60200,6 +60418,78 @@ define({
 					"1800",
 					"2100",
 					"AS6-0212"
+				]
+			]
+		},
+		"NM5201R": {
+			"description": "State and Civil Society in the Information Age",
+			"prerequisite": "(a) For CNM major who has accumulated 120 MCs (b) For CNM, FASS, and SoC graduate students.",
+			"preclusion": "IF4880A, IF5201",
+			"title": "State and Civil Society in the Information Age",
+			"department": "Communications And New Media",
+			"mc": 5,
+			"lessons": [
+				[
+					7,
+					"1",
+					0,
+					1,
+					"1000",
+					"1300",
+					"AS6-0333"
+				]
+			]
+		},
+		"NM5210R": {
+			"description": "Critical Interactive Media Design Issues",
+			"title": "Critical Interactive Media Design Issues",
+			"department": "Communications And New Media",
+			"mc": 5,
+			"lessons": [
+				[
+					7,
+					"1",
+					0,
+					3,
+					"1600",
+					"1900",
+					"AS6-0333"
+				]
+			]
+		},
+		"NM5212R": {
+			"description": "Theories of Public Relations",
+			"prerequisite": "(a) For CNM major who has accumulated 120 MCs (b) For CNM, FASS, and SoC graduate students",
+			"title": "Theories of Public Relations",
+			"department": "Communications And New Media",
+			"mc": 5,
+			"lessons": [
+				[
+					7,
+					"1",
+					0,
+					0,
+					"1000",
+					"1300",
+					"AS6-0333"
+				]
+			]
+		},
+		"NM5215R": {
+			"description": "This module explores how a designer of interactive media acquires, integrates, articulates, and shares design knowledge and skills for interactive media design. Students will learn about different design methods, techniques, and formalisms. The module will involve an interactive media project for which students will identify and articulate design knowledge – and then evaluate the result of using that design knowledge. In addition, the concepts of design knowledge, design methods, and design thinking will be critically examined.",
+			"title": "Design Knowledge for Interactive Media",
+			"workload": "3-0-0-6-1",
+			"department": "Communications And New Media",
+			"mc": 5,
+			"lessons": [
+				[
+					7,
+					"1",
+					0,
+					2,
+					"1200",
+					"1500",
+					"AS6-0333"
 				]
 			]
 		},
@@ -60429,7 +60719,7 @@ define({
 			"workload": "3-0-0-1-6",
 			"department": "Nursing/Alice Lee Ctr For Nursing Stud",
 			"mc": 4,
-			"exam": 1367456400000,
+			"exam": 1367974800000,
 			"lessons": [
 				[
 					2,
@@ -60629,19 +60919,10 @@ define({
 					2,
 					"1",
 					0,
-					2,
-					"1200",
-					"1400",
-					"LT28"
-				],
-				[
-					2,
-					"1",
-					0,
 					0,
 					"1000",
 					"1200",
-					"LT29"
+					"LT28"
 				],
 				[
 					1,
@@ -61143,7 +61424,7 @@ define({
 		},
 		"OT5204": {
 			"description": "The module will cover various mooring and riser systems; hydrodynamics and vortex-induced vibrations; moored object dynamics; design of deepwater moorings and risers; design codes and criteria; material selection; fatigue and structural intergrity; offshore installation and practical applications.",
-			"prerequisite": "CE5307 Offshore hydrodynamics",
+			"prerequisite": "CE5307 or OT5201",
 			"title": "Moorings & Risers",
 			"workload": "3-1-0-1-5",
 			"department": "Civil & Environmental Engineering",
@@ -61227,7 +61508,6 @@ define({
 			"workload": "3-0-0-4-3",
 			"department": "Mechanical Engineering",
 			"mc": 4,
-			"exam": 1367542800000,
 			"lessons": [
 				[
 					2,
@@ -61591,6 +61871,24 @@ define({
 				],
 				[
 					8,
+					"ST1",
+					2,
+					1,
+					"1800",
+					"1900",
+					"S11-0301"
+				],
+				[
+					8,
+					"ST2",
+					1,
+					4,
+					"1800",
+					"1900",
+					"S11-0301"
+				],
+				[
+					8,
 					"TB1",
 					2,
 					2,
@@ -61692,6 +61990,15 @@ define({
 					"S12-0402"
 				],
 				[
+					1,
+					"SA3",
+					2,
+					2,
+					"1400",
+					"1700",
+					"S12-0402"
+				],
+				[
 					8,
 					"ST1",
 					1,
@@ -61756,6 +62063,24 @@ define({
 					"1400",
 					"1700",
 					"S12-0402"
+				],
+				[
+					8,
+					"M2A",
+					2,
+					4,
+					"1000",
+					"1100",
+					"S13-0416"
+				],
+				[
+					8,
+					"M2B",
+					2,
+					4,
+					"1100",
+					"1200",
+					"S13-0416"
 				],
 				[
 					8,
@@ -62807,6 +63132,24 @@ define({
 					"1700",
 					"1800",
 					"E1-06-14"
+				],
+				[
+					8,
+					"U04",
+					0,
+					1,
+					"1000",
+					"1100",
+					"E1-06-10"
+				],
+				[
+					8,
+					"U05",
+					0,
+					4,
+					"1100",
+					"1200",
+					"E1-06-02"
 				]
 			]
 		},
@@ -63187,18 +63530,9 @@ define({
 					8,
 					"ST2",
 					0,
-					1,
+					4,
 					"1500",
 					"1600",
-					"S13-0414"
-				],
-				[
-					8,
-					"ST3",
-					0,
-					4,
-					"1400",
-					"1500",
 					"S13-0414"
 				]
 			]
@@ -63277,6 +63611,24 @@ define({
 					"1200",
 					"1400",
 					"LT22"
+				],
+				[
+					8,
+					"ST1",
+					0,
+					1,
+					"1300",
+					"1400",
+					"S15-06SR"
+				],
+				[
+					8,
+					"ST2",
+					0,
+					2,
+					"1500",
+					"1600",
+					"S15-06SR"
 				]
 			]
 		},
@@ -63334,7 +63686,36 @@ define({
 			"title": "Experimental Physics I",
 			"workload": "0-0-6-1-3",
 			"department": "Physics",
-			"mc": 4
+			"mc": 4,
+			"lessons": [
+				[
+					1,
+					"SB1",
+					0,
+					1,
+					"1400",
+					"1700",
+					"S11-0401"
+				],
+				[
+					1,
+					"SB2",
+					0,
+					2,
+					"1400",
+					"1700",
+					"S11-0401"
+				],
+				[
+					1,
+					"SB3",
+					0,
+					4,
+					"1400",
+					"1700",
+					"S11-0401"
+				]
+			]
 		},
 		"PC2230": {
 			"description": "This module is an introductory course in statistical and thermal physics, and is a prerequisite to advanced statistical mechanics. The topics to be covered include: mathematical background, laws of thermodynamics, thermodynamics functions, chemical equilibrium and phase transitions, kinetic theory, postulates of statistical mechanics, independent particle approach of statistical mechanics, basic distributions, ideal gases, paramagnetism, equipartition theorem, etc. Science and engineering students with a background knowledge of general physics are the targeted students.",
@@ -63366,38 +63747,38 @@ define({
 				[
 					8,
 					"ST1",
-					2,
 					1,
-					"1600",
-					"1700",
-					"S13-0414"
+					3,
+					"1100",
+					"1200",
+					"S13-0402"
 				],
 				[
 					8,
 					"ST2",
-					2,
 					1,
-					"1700",
-					"1800",
-					"S13-0414"
+					3,
+					"1200",
+					"1300",
+					"S13-0402"
 				],
 				[
 					8,
 					"ST3",
-					2,
+					1,
 					4,
-					"1500",
-					"1600",
-					"S13-0414"
+					"1200",
+					"1300",
+					"S13-0402"
 				],
 				[
 					8,
 					"ST4",
-					2,
+					1,
 					4,
-					"1600",
-					"1700",
-					"S13-0414"
+					"1300",
+					"1400",
+					"S13-0402"
 				]
 			]
 		},
@@ -63678,7 +64059,7 @@ define({
 					0,
 					"1700",
 					"1800",
-					"E3-06-12"
+					"E3-06-11"
 				],
 				[
 					8,
@@ -63830,7 +64211,45 @@ define({
 			"title": "Experimental Physics II",
 			"workload": "0-0-6-1-3",
 			"department": "Physics",
-			"mc": 4
+			"mc": 4,
+			"lessons": [
+				[
+					1,
+					"SB1",
+					0,
+					0,
+					"1400",
+					"1700",
+					"S13-0313"
+				],
+				[
+					1,
+					"SB2",
+					0,
+					1,
+					"1400",
+					"1700",
+					"S13-0313"
+				],
+				[
+					1,
+					"SB3",
+					0,
+					3,
+					"1400",
+					"1700",
+					"S13-0313"
+				],
+				[
+					1,
+					"SB4",
+					0,
+					4,
+					"1400",
+					"1700",
+					"S13-0313"
+				]
+			]
 		},
 		"PC3236": {
 			"description": "The module presents basic computational methods useful for physics and science students. The lectures cover: (1) Basic numerical methods - differentiation, integration, interpolation, root-finding and random number generators, (2) Differential equations - finite difference method, shooting method and relaxation method; applications to chaotic dynamics of a driven pendulum, one-dimensional Schr&#246;dinger equation, and fast Fourier transform, (3) Matrices - Gaussian elimination scheme for a system of linear equations, eigenvalues of Hermitian matrices; Hartree-Fock approximation, (4) Monte Carlo simulations - sampling and integration; random walk and simulation of diffusion equation, stochastic differential equation, Brownian dynamics; variational Monte Carlo simulation; Metropolis algorithm and Ising model, and (5) Finite element methods - basic concepts; applications to the Poisson equation in electrostatics.",
@@ -63858,6 +64277,24 @@ define({
 					"1000",
 					"1200",
 					"S16-0436"
+				],
+				[
+					8,
+					"ST1",
+					1,
+					0,
+					"1600",
+					"1700",
+					"S11-0301"
+				],
+				[
+					8,
+					"ST2",
+					1,
+					2,
+					"1000",
+					"1100",
+					"S13-0401"
 				]
 			]
 		},
@@ -63887,6 +64324,15 @@ define({
 					"1400",
 					"1600",
 					"S16-0436"
+				],
+				[
+					8,
+					"ST1",
+					0,
+					2,
+					"1600",
+					"1800",
+					"S16-0430"
 				]
 			]
 		},
@@ -63916,6 +64362,15 @@ define({
 					"1800",
 					"2100",
 					"S16-0430"
+				],
+				[
+					8,
+					"ST1",
+					1,
+					4,
+					"1300",
+					"1400",
+					"S11-0301"
 				]
 			]
 		},
@@ -63945,6 +64400,24 @@ define({
 					"1200",
 					"1400",
 					"S16-0436"
+				],
+				[
+					8,
+					"ST1",
+					1,
+					2,
+					"1200",
+					"1300",
+					"S13-0401"
+				],
+				[
+					8,
+					"ST2",
+					1,
+					4,
+					"1000",
+					"1100",
+					"S13-0401"
 				]
 			]
 		},
@@ -63974,6 +64447,24 @@ define({
 					"1200",
 					"1400",
 					"S16-0430"
+				],
+				[
+					8,
+					"ST1",
+					2,
+					2,
+					"0900",
+					"1000",
+					"S13-0401"
+				],
+				[
+					8,
+					"ST2",
+					2,
+					4,
+					"1200",
+					"1300",
+					"S11-0301"
 				]
 			]
 		},
@@ -64003,6 +64494,15 @@ define({
 					"0800",
 					"1000",
 					"S16-0436"
+				],
+				[
+					8,
+					"ST1",
+					1,
+					2,
+					"1300",
+					"1400",
+					"S11-0301"
 				]
 			]
 		},
@@ -64032,6 +64532,15 @@ define({
 					"0800",
 					"1000",
 					"S16-0436"
+				],
+				[
+					8,
+					"ST1",
+					2,
+					2,
+					"1000",
+					"1100",
+					"S13-0401"
 				]
 			]
 		},
@@ -64687,7 +65196,7 @@ define({
 					2,
 					"1300",
 					"1500",
-					"null"
+					"SDE-LR424"
 				],
 				[
 					8,
@@ -64760,7 +65269,7 @@ define({
 					0,
 					"1000",
 					"1200",
-					"null"
+					"SDE-LR423"
 				],
 				[
 					8,
@@ -64769,7 +65278,7 @@ define({
 					4,
 					"1000",
 					"1200",
-					"null"
+					"SDE-SR7"
 				],
 				[
 					8,
@@ -64833,7 +65342,7 @@ define({
 					3,
 					"1400",
 					"1600",
-					"null"
+					"SDE-LR421"
 				],
 				[
 					8,
@@ -64842,7 +65351,7 @@ define({
 					1,
 					"1000",
 					"1200",
-					"null"
+					"SDE-CR1"
 				],
 				[
 					8,
@@ -64851,7 +65360,7 @@ define({
 					1,
 					"1000",
 					"1200",
-					"null"
+					"SDE-CR1"
 				],
 				[
 					8,
@@ -64903,11 +65412,11 @@ define({
 				[
 					2,
 					"1",
-					2,
+					0,
 					0,
 					"1200",
 					"1400",
-					"null"
+					"SDE-LR424"
 				],
 				[
 					8,
@@ -65035,7 +65544,7 @@ define({
 					2,
 					"0900",
 					"1100",
-					"null"
+					"SDE-CR1"
 				]
 			]
 		},
@@ -65055,7 +65564,7 @@ define({
 					1,
 					"0900",
 					"1100",
-					"null"
+					"SDE-LR424"
 				],
 				[
 					8,
@@ -65127,7 +65636,7 @@ define({
 					0,
 					"1400",
 					"1600",
-					"null"
+					"SDE-LR424"
 				],
 				[
 					8,
@@ -65200,7 +65709,7 @@ define({
 					3,
 					"1400",
 					"1600",
-					"null"
+					"SDE-LR422"
 				],
 				[
 					8,
@@ -65237,7 +65746,7 @@ define({
 					4,
 					"0900",
 					"1100",
-					"null"
+					"SDE-LR425"
 				],
 				[
 					8,
@@ -65292,7 +65801,7 @@ define({
 					0,
 					"1400",
 					"1600",
-					"null"
+					"SDE-LR421"
 				],
 				[
 					8,
@@ -65319,7 +65828,7 @@ define({
 					1,
 					"1400",
 					"1600",
-					"null"
+					"SDE-GIS"
 				],
 				[
 					8,
@@ -65328,7 +65837,7 @@ define({
 					1,
 					"1400",
 					"1600",
-					"null"
+					"SDE-GIS"
 				],
 				[
 					8,
@@ -65337,7 +65846,7 @@ define({
 					1,
 					"1200",
 					"1400",
-					"SDE-SR9"
+					"SDE-GIS"
 				],
 				[
 					8,
@@ -65346,7 +65855,7 @@ define({
 					1,
 					"1200",
 					"1400",
-					"null"
+					"SDE-GIS"
 				]
 			]
 		},
@@ -65366,7 +65875,7 @@ define({
 					3,
 					"1200",
 					"1400",
-					"null"
+					"SDE-LR425"
 				],
 				[
 					8,
@@ -65393,7 +65902,7 @@ define({
 					3,
 					"1600",
 					"1800",
-					"SDE-SR8"
+					"SDE-SR14"
 				],
 				[
 					8,
@@ -65402,7 +65911,16 @@ define({
 					3,
 					"1600",
 					"1800",
-					"SDE-SR8"
+					"SDE-CR4"
+				],
+				[
+					8,
+					"6",
+					2,
+					1,
+					"1600",
+					"1800",
+					"SDE-GIS"
 				]
 			]
 		},
@@ -65422,7 +65940,7 @@ define({
 					4,
 					"1830",
 					"2030",
-					"null"
+					"SDE-LR425"
 				],
 				[
 					8,
@@ -65478,7 +65996,7 @@ define({
 					3,
 					"1200",
 					"1400",
-					"null"
+					"SDE-LR425"
 				],
 				[
 					8,
@@ -65505,7 +66023,7 @@ define({
 					3,
 					"1600",
 					"1800",
-					"SDE-SR8"
+					"SDE-SR14"
 				],
 				[
 					8,
@@ -65514,7 +66032,16 @@ define({
 					3,
 					"1600",
 					"1800",
-					"SDE-SR8"
+					"SDE-CR4"
+				],
+				[
+					8,
+					"6",
+					2,
+					1,
+					"1600",
+					"1800",
+					"SDE-GIS"
 				]
 			]
 		},
@@ -65589,7 +66116,7 @@ define({
 					4,
 					"1400",
 					"1600",
-					"null"
+					"SDE-LR422"
 				],
 				[
 					8,
@@ -65656,7 +66183,7 @@ define({
 					0,
 					"1000",
 					"1200",
-					"null"
+					"SDE-LR425"
 				],
 				[
 					8,
@@ -65665,7 +66192,7 @@ define({
 					0,
 					"1300",
 					"1500",
-					"null"
+					"SDE-GIS"
 				],
 				[
 					8,
@@ -65674,24 +66201,15 @@ define({
 					0,
 					"1300",
 					"1500",
-					"null"
+					"SDE-GIS"
 				],
 				[
 					8,
 					"3",
 					1,
-					2,
-					"1200",
-					"1400",
-					"SDE-GIS"
-				],
-				[
-					8,
-					"4",
-					2,
-					2,
-					"1200",
-					"1400",
+					0,
+					"1600",
+					"1800",
 					"SDE-GIS"
 				]
 			]
@@ -65710,7 +66228,7 @@ define({
 					0,
 					"1400",
 					"1600",
-					"null"
+					"SDE-ER1"
 				]
 			]
 		},
@@ -65728,7 +66246,7 @@ define({
 					1,
 					"0900",
 					"1100",
-					"null"
+					"SDE-LR426"
 				],
 				[
 					8,
@@ -66323,7 +66841,6 @@ define({
 			"workload": "2-1-0-0-7",
 			"department": "Philosophy",
 			"mc": 4,
-			"exam": 1367629200000,
 			"lessons": [
 				[
 					2,
@@ -66367,10 +66884,10 @@ define({
 					2,
 					"1",
 					0,
-					0,
-					"1000",
-					"1200",
-					"AS4-0206"
+					1,
+					"1400",
+					"1600",
+					"AS7-0119"
 				],
 				[
 					8,
@@ -66489,10 +67006,10 @@ define({
 					2,
 					"1",
 					0,
-					1,
-					"1400",
-					"1600",
-					"AS7-0119"
+					0,
+					"1000",
+					"1200",
+					"AS4-0206"
 				],
 				[
 					8,
@@ -66769,18 +67286,7 @@ define({
 			"title": "TRADITIONS IN ASIAN PHILOSOPHY",
 			"workload": "0-3-0-0-7",
 			"department": "Philosophy",
-			"mc": 4,
-			"lessons": [
-				[
-					7,
-					"1",
-					0,
-					3,
-					"1700",
-					"2000",
-					"AS3-0523"
-				]
-			]
+			"mc": 4
 		},
 		"PH6660": {
 			"description": "Independent research plays an important role in graduate education. The Independent Study Module is designed to enable the student to explore an approved topic in Philosophy in depth. The student should approach a lecturer to work out an agreed topic, readings, and assignments for the module. A formal, written agreement is to be drawn up, giving a clear account of the topic, programme of study, assignments, evaluation, and other pertinent details. Head's and/or Graduate Coordinator's approval of the written agreement is required. Regular meetings and reports are expected. Evaluation is based on 100% Continuous Assessment and must be worked out between the student and the lecturer prior to seeking departmental approval.",
@@ -67197,7 +67703,7 @@ define({
 					1,
 					"1000",
 					"1200",
-					"AS7-0201A"
+					"AS7-0201"
 				],
 				[
 					8,
@@ -67333,7 +67839,7 @@ define({
 					4,
 					"1200",
 					"1400",
-					"ADM-0417"
+					"AS4-0109"
 				]
 			]
 		},
@@ -67750,15 +68256,6 @@ define({
 					"1400",
 					"1600",
 					"AS4-B107"
-				],
-				[
-					8,
-					"E3",
-					2,
-					0,
-					"1400",
-					"1600",
-					"AS4-B107"
 				]
 			]
 		},
@@ -68120,15 +68617,6 @@ define({
 					"1600",
 					"1700",
 					"AS4-B107"
-				],
-				[
-					8,
-					"W4",
-					0,
-					3,
-					"1700",
-					"1800",
-					"AS4-B107"
 				]
 			]
 		},
@@ -68344,7 +68832,7 @@ define({
 					1,
 					"0900",
 					"1200",
-					"AS7-0201"
+					"AS7-0201A"
 				]
 			]
 		},
@@ -68731,6 +69219,128 @@ define({
 				]
 			]
 		},
+		"PP5206": {
+			"title": "Politics and Policy in Southeast Asia",
+			"department": "Na",
+			"mc": 4,
+			"exam": 1367989200000,
+			"lessons": [
+				[
+					2,
+					"L1",
+					0,
+					2,
+					"1400",
+					"1700",
+					"MMSR2-3"
+				]
+			]
+		},
+		"PP5209": {
+			"description": "This is a skills-based course that focuses on the interpersonal and intrapersonal dynamics that impact leadership. Participants are encouraged to clarify their own leadership direction and personal motives so they may make effective progress in pursuing their ambitions while avoiding typical areas of derailment. The classroom is used for both didactic learning, e.g., of diagnostic tools for analyzing interactions in case studies and in class, and for practicing new strategies of action. Other sources of learning include readings, lectures, plenary discussions, small group work, film, and cases provided by participants’ of their experience with leadership challenges.",
+			"title": "Exercising Leadership",
+			"workload": "3-0-0-3-4",
+			"department": "Na",
+			"mc": 4,
+			"lessons": [
+				[
+					2,
+					"L1",
+					0,
+					1,
+					"1400",
+					"1700",
+					"MMSR2-3"
+				]
+			]
+		},
+		"PP5223": {
+			"description": "This course covers policy issues of modern ageing societies, with special emphases on families and comparisons between Asian and Western countries. To tackle the complex issues, we discuss both relevant theories and empirical evidence from various disciplines. The first part investigates demographic causes of population ageing–decreased fertility and extended longevity. The second part reviews public old-age support programs and discuss their challenges. We also describe policy options to mitigate the consequences of population ageing, and assess the effectiveness of the policies. The third part examines why families provide elder support, and how public and private old-age provisions are interrelated.",
+			"title": "Population Ageing, Public Policy, and Family",
+			"workload": "3-0-0-3-4",
+			"department": "Na",
+			"mc": 4,
+			"lessons": [
+				[
+					2,
+					"L1",
+					0,
+					0,
+					"1830",
+					"2130",
+					"MMSR2-3"
+				]
+			]
+		},
+		"PP5242K": {
+			"title": "Policies for Urban Intervention",
+			"department": "Na",
+			"mc": 4,
+			"lessons": [
+				[
+					2,
+					"L1",
+					0,
+					1,
+					"1400",
+					"1700",
+					"MMSR2-2"
+				]
+			]
+		},
+		"PP5246": {
+			"title": "PUBLIC POLICY AND MANAGEMENT OF HEALTH SYSTEMS",
+			"department": "Na",
+			"mc": 4,
+			"exam": 1367902800000,
+			"lessons": [
+				[
+					2,
+					"L1",
+					0,
+					1,
+					"1830",
+					"2130",
+					"MMSR2-3"
+				]
+			]
+		},
+		"PP5257": {
+			"title": "WATER POLICY & GOVERNANCE",
+			"department": "Na",
+			"mc": 4,
+			"exam": 1367542800000,
+			"lessons": [
+				[
+					2,
+					"L1",
+					0,
+					4,
+					"0900",
+					"1200",
+					"MMSR2-2"
+				]
+			]
+		},
+		"PP5296": {
+			"description": "This module will explore trade and investment issues in goods and services, in the context of ASEAN’s goal to establish an ASEAN Economic Community (AEC) by 2015. The issues will be approached from a mix of theoretical, empirical and practical dimensions. The module will cover the measures that ASEAN members are undertaking to move towards an AEC, and the challenges as well as potential benefits of deeper regional economic integration. Students will learn to analyse policy issues based on a sound understanding of the theories of trade and foreign direct investment and facility with the construction and use of statistical indicators.",
+			"prerequisite": "PP5101, PP5501 or prior training in basic microeconomic theory",
+			"title": "Trade, Investment and Integration Issues in ASEAN",
+			"workload": "2-1-0-2-5",
+			"department": "Na",
+			"mc": 4,
+			"lessons": [
+				[
+					2,
+					"L1",
+					0,
+					1,
+					"1400",
+					"1700",
+					"MMSR2-1"
+				]
+			]
+		},
 		"PR1102": {
 			"description": "To understand the fundamental physicochemical principles relating to the design of pharmaceutical dosage forms. To be able to apply these principles to the understanding of the relationship between pharmaceutical formulations and biological activity.Major topics: Solubility. Solutions and their properties. Buffered and isotonic solutions. Partition phenomena. Phase distribution. Polymorphism, drying process and phase transition. Mass transfer. Heat transfer.Target student: Pharmacy Year One",
 			"prerequisite": "A-level Chemistry or equivalent exam, excluding CM1417",
@@ -68809,18 +69419,18 @@ define({
 					1,
 					"SB1",
 					0,
-					0,
-					"0900",
-					"1200",
+					1,
+					"1400",
+					"1700",
 					"S4A-01Lab"
 				],
 				[
 					1,
 					"SB2",
 					0,
-					3,
-					"0900",
-					"1200",
+					4,
+					"1400",
+					"1700",
 					"S4A-01Lab"
 				]
 			]
@@ -68854,11 +69464,20 @@ define({
 				],
 				[
 					1,
+					"SB1",
+					0,
+					0,
+					"0900",
+					"1200",
+					"S4A-02Lab"
+				],
+				[
+					1,
 					"SB2",
 					0,
 					3,
-					"1400",
-					"1700",
+					"0900",
+					"1200",
 					"S4A-02Lab"
 				]
 			]
@@ -68936,16 +69555,16 @@ define({
 					1,
 					"SB1",
 					0,
-					2,
-					"0900",
-					"1200",
+					4,
+					"1400",
+					"1700",
 					"S7-0203"
 				],
 				[
 					1,
 					"SB2",
 					0,
-					2,
+					1,
 					"1400",
 					"1700",
 					"S7-0203"
@@ -68983,18 +69602,18 @@ define({
 					1,
 					"SB1",
 					0,
-					3,
-					"1400",
-					"1700",
+					0,
+					"0900",
+					"1200",
 					"S4-04Lab"
 				],
 				[
 					1,
 					"SB2",
 					0,
-					0,
-					"1400",
-					"1700",
+					3,
+					"0900",
+					"1200",
 					"S4-04Lab"
 				]
 			]
@@ -69061,7 +69680,7 @@ define({
 					0,
 					2,
 					"1400",
-					"1800",
+					"1700",
 					"S4A-02Lab"
 				],
 				[
@@ -69556,7 +70175,7 @@ define({
 					4,
 					"1800",
 					"2000",
-					"S14-06SR"
+					"S4-0516"
 				]
 			]
 		},
@@ -69602,7 +70221,7 @@ define({
 					2,
 					"1200",
 					"1400",
-					"S14-06SR"
+					"S4-0516"
 				]
 			]
 		},
@@ -70037,15 +70656,6 @@ define({
 				],
 				[
 					8,
-					"E2",
-					2,
-					4,
-					"1000",
-					"1200",
-					"AS3-0214"
-				],
-				[
-					8,
 					"E3",
 					2,
 					2,
@@ -70418,15 +71028,6 @@ define({
 				],
 				[
 					8,
-					"E1",
-					2,
-					1,
-					"0800",
-					"1000",
-					"AS3-0214"
-				],
-				[
-					8,
 					"E2",
 					2,
 					2,
@@ -70603,15 +71204,6 @@ define({
 					"1200",
 					"1400",
 					"AS3-0308"
-				],
-				[
-					8,
-					"E1",
-					2,
-					0,
-					"1200",
-					"1400",
-					"AS3-0308"
 				]
 			]
 		},
@@ -70649,15 +71241,6 @@ define({
 					"1400",
 					"1600",
 					"AS3-0308"
-				],
-				[
-					8,
-					"E1",
-					2,
-					4,
-					"1400",
-					"1600",
-					"AS3-0308"
 				]
 			]
 		},
@@ -70685,7 +71268,7 @@ define({
 					0,
 					"1000",
 					"1200",
-					"AS3-0308"
+					"ERC-SR8"
 				],
 				[
 					8,
@@ -70694,7 +71277,7 @@ define({
 					0,
 					"1000",
 					"1200",
-					"AS3-0308"
+					"ERC-SR8"
 				]
 			]
 		},
@@ -70720,15 +71303,6 @@ define({
 					8,
 					"D1",
 					1,
-					4,
-					"1200",
-					"1400",
-					"AS3-0308"
-				],
-				[
-					8,
-					"E1",
-					2,
 					4,
 					"1200",
 					"1400",
@@ -70780,15 +71354,6 @@ define({
 					"1200",
 					"1400",
 					"AS3-0214"
-				],
-				[
-					8,
-					"E1",
-					2,
-					4,
-					"0800",
-					"1000",
-					"AS3-0308"
 				],
 				[
 					8,
@@ -70994,7 +71559,7 @@ define({
 		},
 		"PS4217A": {
 			"description": "This module examines the political writings of Plato and Jean-Jacques Rousseau",
-			"prerequisite": "Cohort 2006 and before: Completed at least 80MCs and of which at least 28MCs must be EU/LA [French/ German]/ recognised modules. Cohort 2007 onwards: Completed 80MCs, including 28MCs in EU/LA [French/ German]/ recognised modules, with a minimum CAP of 3.5 or be on the Honours track.",
+			"prerequisite": "Cohort 2006 and before: Completed 80MCs and for PS Majors only. Cohort 2007 onwards: Completed 80MCs, including 28MCs in PS, with a minimum CAP of 3.5 or be on the Honours track.",
 			"preclusion": "EU4227A",
 			"title": "Major Political Thinkers: Plato & Rousseau",
 			"workload": "0-3-0-2-7.5",
@@ -71392,10 +71957,10 @@ define({
 					8,
 					"T01",
 					0,
-					0,
+					3,
 					"1600",
 					"1700",
-					"S17-0405"
+					"S16-0433"
 				],
 				[
 					8,
@@ -71404,7 +71969,7 @@ define({
 					3,
 					"1500",
 					"1600",
-					"S17-0404"
+					"S16-0433"
 				],
 				[
 					8,
@@ -71510,15 +72075,6 @@ define({
 					"1600",
 					"1800",
 					"SDE-ER5"
-				],
-				[
-					8,
-					"5",
-					1,
-					0,
-					"0900",
-					"1100",
-					"SDE-SR12"
 				],
 				[
 					8,
@@ -71796,7 +72352,7 @@ define({
 					4,
 					"1200",
 					"1400",
-					"SDE-SR9"
+					"SDE-SR7"
 				],
 				[
 					8,
@@ -71805,7 +72361,7 @@ define({
 					4,
 					"1200",
 					"1400",
-					"SDE-SR9"
+					"SDE-SR7"
 				],
 				[
 					8,
@@ -71937,24 +72493,6 @@ define({
 					"1000",
 					"1200",
 					"SDE-ER4"
-				],
-				[
-					8,
-					"3",
-					1,
-					1,
-					"1600",
-					"1800",
-					"SDE-GIS"
-				],
-				[
-					8,
-					"4",
-					2,
-					1,
-					"1600",
-					"1800",
-					"SDE-GIS"
 				]
 			]
 		},
@@ -72285,15 +72823,6 @@ define({
 				],
 				[
 					8,
-					"3",
-					1,
-					1,
-					"1400",
-					"1600",
-					"SDE-SR11"
-				],
-				[
-					8,
 					"4",
 					2,
 					1,
@@ -72337,15 +72866,6 @@ define({
 					2,
 					"1200",
 					"1400",
-					"SDE-ER5"
-				],
-				[
-					8,
-					"3",
-					1,
-					2,
-					"1600",
-					"1800",
 					"SDE-ER5"
 				],
 				[
@@ -72404,21 +72924,12 @@ define({
 					0,
 					"1400",
 					"1600",
-					"SDE-LR424"
+					"SDE-LR422"
 				],
 				[
 					8,
 					"1",
 					1,
-					0,
-					"1000",
-					"1200",
-					"SDE-SR4"
-				],
-				[
-					8,
-					"2",
-					2,
 					0,
 					"1000",
 					"1200",
@@ -72442,15 +72953,6 @@ define({
 					"1000",
 					"1200",
 					"SDE-LR424"
-				],
-				[
-					8,
-					"1",
-					1,
-					3,
-					"1400",
-					"1600",
-					"SDE-ER5"
 				],
 				[
 					8,
@@ -72483,15 +72985,6 @@ define({
 				],
 				[
 					8,
-					"1",
-					1,
-					1,
-					"0900",
-					"1100",
-					"SDE-CR4"
-				],
-				[
-					8,
 					"2",
 					2,
 					1,
@@ -72516,7 +73009,7 @@ define({
 					4,
 					"1400",
 					"1600",
-					"SDE-LR426"
+					"SDE-CR1"
 				],
 				[
 					8,
@@ -72594,15 +73087,6 @@ define({
 				],
 				[
 					8,
-					"1",
-					1,
-					0,
-					"1400",
-					"1600",
-					"SDE-SR6"
-				],
-				[
-					8,
 					"2",
 					2,
 					0,
@@ -72629,15 +73113,6 @@ define({
 					"1600",
 					"1800",
 					"SDE-LR424"
-				],
-				[
-					8,
-					"1",
-					1,
-					2,
-					"0900",
-					"1100",
-					"SDE-SR12"
 				],
 				[
 					8,
@@ -72696,7 +73171,6 @@ define({
 			"workload": "2-1-0-3-4",
 			"department": "Real Estate",
 			"mc": 4,
-			"exam": 1368075600000,
 			"lessons": [
 				[
 					2,
@@ -72714,33 +73188,6 @@ define({
 					3,
 					"1200",
 					"1400",
-					"SDE-SR9"
-				],
-				[
-					8,
-					"2",
-					2,
-					3,
-					"1200",
-					"1400",
-					"SDE-SR9"
-				],
-				[
-					8,
-					"3",
-					1,
-					3,
-					"1600",
-					"1800",
-					"SDE-SR9"
-				],
-				[
-					8,
-					"4",
-					2,
-					3,
-					"1600",
-					"1800",
 					"SDE-SR9"
 				]
 			]
@@ -72778,7 +73225,7 @@ define({
 					3,
 					"1200",
 					"1400",
-					"AS3-0209"
+					"AS7-0214"
 				],
 				[
 					8,
@@ -72926,24 +73373,6 @@ define({
 				],
 				[
 					8,
-					"E6",
-					2,
-					0,
-					"1200",
-					"1400",
-					"ADM-0418"
-				],
-				[
-					8,
-					"E7",
-					2,
-					3,
-					"1400",
-					"1600",
-					"AS3-0306"
-				],
-				[
-					8,
 					"E8",
 					2,
 					3,
@@ -72990,6 +73419,15 @@ define({
 				],
 				[
 					8,
+					"D2",
+					1,
+					1,
+					"1400",
+					"1600",
+					"AS4-0114"
+				],
+				[
+					8,
 					"D3",
 					1,
 					2,
@@ -73022,6 +73460,15 @@ define({
 					1,
 					"1000",
 					"1200",
+					"AS4-0114"
+				],
+				[
+					8,
+					"E2",
+					2,
+					1,
+					"1400",
+					"1600",
 					"AS4-0114"
 				],
 				[
@@ -73069,15 +73516,6 @@ define({
 					"1600",
 					"1800",
 					"AS1-0208"
-				],
-				[
-					8,
-					"D2",
-					1,
-					1,
-					"1400",
-					"1600",
-					"AS3-0209"
 				],
 				[
 					8,
@@ -73209,15 +73647,6 @@ define({
 				],
 				[
 					8,
-					"D1",
-					1,
-					2,
-					"1400",
-					"1600",
-					"AS1-0208"
-				],
-				[
-					8,
 					"D2",
 					1,
 					1,
@@ -73294,9 +73723,9 @@ define({
 					"D4",
 					1,
 					3,
-					"1200",
 					"1400",
-					"AS3-0304"
+					"1600",
+					"AS1-0210"
 				],
 				[
 					8,
@@ -73360,15 +73789,6 @@ define({
 					"1400",
 					"1600",
 					"AS4-0601"
-				],
-				[
-					8,
-					"E6",
-					2,
-					4,
-					"1400",
-					"1600",
-					"AS3-0212"
 				]
 			]
 		},
@@ -73638,15 +74058,6 @@ define({
 				],
 				[
 					8,
-					"D1",
-					1,
-					2,
-					"1000",
-					"1200",
-					"AS1-0208"
-				],
-				[
-					8,
 					"D2",
 					1,
 					2,
@@ -73661,24 +74072,6 @@ define({
 					3,
 					"1200",
 					"1400",
-					"AS1-0208"
-				],
-				[
-					8,
-					"D4",
-					1,
-					1,
-					"1600",
-					"1800",
-					"AS3-0213"
-				],
-				[
-					8,
-					"E1",
-					2,
-					2,
-					"1000",
-					"1200",
 					"AS1-0208"
 				],
 				[
@@ -73762,15 +74155,6 @@ define({
 					"1200",
 					"1400",
 					"AS3-0213"
-				],
-				[
-					8,
-					"E3",
-					2,
-					3,
-					"1200",
-					"1400",
-					"AS3-0213"
 				]
 			]
 		},
@@ -73803,15 +74187,6 @@ define({
 				],
 				[
 					8,
-					"D2",
-					1,
-					0,
-					"1200",
-					"1400",
-					"AS1-0208"
-				],
-				[
-					8,
 					"D4",
 					1,
 					4,
@@ -73836,15 +74211,6 @@ define({
 					"1400",
 					"1600",
 					"AS3-0306"
-				],
-				[
-					8,
-					"E2",
-					2,
-					0,
-					"1200",
-					"1400",
-					"AS1-0208"
 				],
 				[
 					8,
@@ -74055,24 +74421,6 @@ define({
 					"1000",
 					"1200",
 					"AS1-0213"
-				],
-				[
-					8,
-					"E1",
-					2,
-					2,
-					"1000",
-					"1200",
-					"AS1-0302"
-				],
-				[
-					8,
-					"E2",
-					2,
-					0,
-					"1200",
-					"1400",
-					"AS3-0307"
 				]
 			]
 		},
@@ -74101,24 +74449,6 @@ define({
 					"1000",
 					"1200",
 					"AS1-0208"
-				],
-				[
-					8,
-					"D2",
-					1,
-					3,
-					"1200",
-					"1400",
-					"AS2-0311"
-				],
-				[
-					8,
-					"D3",
-					1,
-					0,
-					"1400",
-					"1600",
-					"AS3-0307"
 				],
 				[
 					8,
@@ -75000,18 +75330,9 @@ define({
 					"E1",
 					2,
 					3,
-					"1200",
-					"1400",
-					"AS3-0620"
-				],
-				[
-					8,
-					"E2",
-					2,
-					3,
-					"1400",
-					"1600",
-					"AS3-0620"
+					"1800",
+					"2000",
+					"ADM-0401"
 				]
 			]
 		},
@@ -75218,7 +75539,7 @@ define({
 					3,
 					"1830",
 					"2130",
-					"AS3-0212"
+					"AS3-0305"
 				]
 			]
 		},
@@ -75351,7 +75672,7 @@ define({
 					2,
 					"1200",
 					"1400",
-					"AS7-0413"
+					"AS1-0304"
 				],
 				[
 					8,
@@ -75360,7 +75681,7 @@ define({
 					3,
 					"1400",
 					"1600",
-					"AS3-0304"
+					"null"
 				],
 				[
 					8,
@@ -75370,15 +75691,6 @@ define({
 					"1000",
 					"1200",
 					"AS7-0413"
-				],
-				[
-					8,
-					"D6",
-					1,
-					1,
-					"1400",
-					"1600",
-					"AS4-0603"
 				],
 				[
 					8,
@@ -75396,7 +75708,7 @@ define({
 					2,
 					"1200",
 					"1400",
-					"AS7-0413"
+					"AS1-0304"
 				],
 				[
 					8,
@@ -75462,15 +75774,6 @@ define({
 					"1600",
 					"1800",
 					"AS1-0213"
-				],
-				[
-					8,
-					"E1",
-					2,
-					3,
-					"1600",
-					"1800",
-					"AS3-0215"
 				]
 			]
 		},
@@ -75535,7 +75838,7 @@ define({
 					3,
 					"1000",
 					"1200",
-					"AS3-0212"
+					"AS7-0411"
 				],
 				[
 					8,
@@ -75544,7 +75847,7 @@ define({
 					3,
 					"1000",
 					"1200",
-					"AS3-0212"
+					"AS7-0411"
 				]
 			]
 		},
@@ -75572,7 +75875,7 @@ define({
 					3,
 					"1400",
 					"1600",
-					"ADM-0418"
+					"null"
 				],
 				[
 					8,
@@ -75600,7 +75903,7 @@ define({
 					2,
 					"1000",
 					"1200",
-					"AS3-0302"
+					"AS3-0305"
 				],
 				[
 					8,
@@ -75657,9 +75960,9 @@ define({
 					"E1",
 					2,
 					0,
-					"1400",
-					"1600",
-					"AS3-0209"
+					"1830",
+					"2030",
+					"AS7-0411"
 				]
 			]
 		},
@@ -75679,7 +75982,7 @@ define({
 					1,
 					"1400",
 					"1700",
-					"ADM-0401"
+					"AS7-0411"
 				]
 			]
 		},
@@ -75838,24 +76141,6 @@ define({
 					4,
 					"1400",
 					"1600",
-					"S16-0304"
-				],
-				[
-					6,
-					"SL6",
-					0,
-					1,
-					"1200",
-					"1400",
-					"S16-0304"
-				],
-				[
-					6,
-					"SL6",
-					0,
-					4,
-					"1200",
-					"1400",
 					"S16-0304"
 				]
 			]
@@ -76456,15 +76741,6 @@ define({
 					"1600",
 					"1800",
 					"LT8"
-				],
-				[
-					8,
-					"D1",
-					1,
-					0,
-					"1000",
-					"1200",
-					"AS3-0215"
 				],
 				[
 					8,
@@ -77339,7 +77615,7 @@ define({
 					3,
 					"1400",
 					"1600",
-					"E1-06-08"
+					"E1-06-12"
 				],
 				[
 					8,
@@ -77385,7 +77661,7 @@ define({
 					3,
 					"1200",
 					"1400",
-					"AS7-0411"
+					"AS7-0413"
 				],
 				[
 					8,
@@ -77746,7 +78022,7 @@ define({
 					4,
 					"0900",
 					"1200",
-					"MRB-0301"
+					"BIZ1-0301"
 				],
 				[
 					6,
@@ -77755,7 +78031,7 @@ define({
 					4,
 					"1500",
 					"1800",
-					"MRB-0301"
+					"BIZ1-0301"
 				]
 			]
 		},
@@ -77892,7 +78168,7 @@ define({
 					3,
 					"1000",
 					"1200",
-					"null"
+					"SDE-LR422"
 				],
 				[
 					8,
@@ -77910,7 +78186,7 @@ define({
 					4,
 					"1400",
 					"1500",
-					"SDE-SR11"
+					"SDE-SR12"
 				],
 				[
 					8,
@@ -77935,18 +78211,27 @@ define({
 					"5",
 					0,
 					4,
-					"1300",
 					"1400",
-					"SDE-SR13"
+					"1500",
+					"SDE-SR11"
 				],
 				[
 					8,
 					"6",
 					0,
 					4,
-					"1400",
 					"1500",
-					"null"
+					"1600",
+					"SDE-SR11"
+				],
+				[
+					8,
+					"7",
+					0,
+					4,
+					"1200",
+					"1300",
+					"SDE-SR12"
 				]
 			]
 		},
@@ -78239,6 +78524,14 @@ define({
 				]
 			]
 		},
+		"SSU2001": {
+			"description": "The Capstone Experience is open to undergraduate members of the College (Year 2 and above) and builds on the first and second year modules of the UTown Residential Programme. Students may elect to work individually (e.g. as part of an internship) or in an multidisciplinary group. Together with an external organization, and under the guidance of an academic supervisor, they apply disciplinary knowledge and skills to address an issue or question which is authentic and of practical relevance to the community. In the process, students engage communities and organizations either locally or abroad in planning, implementing and communicating their ideas and concepts, develop collaborative and leadership skills, cultural competency and an awareness of civic values. The learning experience is reflected in well-researched and thoughtful situational analyses, a learning journal, and midterm and final reports or presentations. Capstone experiences will be supervised by College faculty with expertise in the chosen area, with the participation of a qualified preceptor from the external organization.",
+			"prerequisite": "Completed (or concurrently reading) Senior seminar requirements of the College curriculum (not applicable for pilot phase)",
+			"title": "College 3 Capstone Experience",
+			"workload": "0-2-0-5-3",
+			"department": "Angsana College",
+			"mc": 4
+		},
 		"SSU2003": {
 			"description": "Many root causes of health problems are found in the social environment of our communities. This course challenges students to think beyond individual level factors and consider the ways in which community and social structures influence their own health as well as the health of others. During large lecture sessions students will learn more about approaches to improve health that target community and policy change. In tutorial groups, students will use the Photovoice method to explicate both individual and community assets to health.",
 			"preclusion": "This module is currently open only to students of Angsana College, University Town",
@@ -78360,6 +78653,15 @@ define({
 				],
 				[
 					8,
+					"T10",
+					0,
+					2,
+					"1500",
+					"1600",
+					"S16-05101"
+				],
+				[
+					8,
 					"T2",
 					0,
 					3,
@@ -78419,6 +78721,15 @@ define({
 					3,
 					"1600",
 					"1700",
+					"S16-05101"
+				],
+				[
+					8,
+					"T9",
+					0,
+					2,
+					"1400",
+					"1500",
 					"S16-05101"
 				]
 			]
@@ -78832,6 +79143,24 @@ define({
 					"1100",
 					"1200",
 					"S16-0202"
+				],
+				[
+					8,
+					"T4",
+					0,
+					1,
+					"1200",
+					"1300",
+					"S16-05101"
+				],
+				[
+					8,
+					"T5",
+					0,
+					1,
+					"1300",
+					"1400",
+					"S16-05101"
 				]
 			]
 		},
@@ -79021,6 +79350,15 @@ define({
 					"1000",
 					"1100",
 					"S16-06118"
+				],
+				[
+					8,
+					"T4",
+					0,
+					0,
+					"1400",
+					"1500",
+					"S16-0202"
 				]
 			]
 		},
@@ -79089,6 +79427,69 @@ define({
 					"1000",
 					"1200",
 					"LT31"
+				],
+				[
+					8,
+					"T01",
+					0,
+					0,
+					"1600",
+					"1700",
+					"S16-0598"
+				],
+				[
+					8,
+					"T02",
+					0,
+					0,
+					"1700",
+					"1800",
+					"S16-0598"
+				],
+				[
+					8,
+					"T03",
+					0,
+					2,
+					"1300",
+					"1400",
+					"S16-0598"
+				],
+				[
+					8,
+					"T04",
+					0,
+					2,
+					"1200",
+					"1300",
+					"S16-0598"
+				],
+				[
+					8,
+					"T05",
+					0,
+					3,
+					"0900",
+					"1000",
+					"S17-0406"
+				],
+				[
+					8,
+					"T06",
+					0,
+					3,
+					"1000",
+					"1100",
+					"S17-0406"
+				],
+				[
+					8,
+					"T07",
+					0,
+					4,
+					"0900",
+					"1000",
+					"S16-0598"
 				]
 			]
 		},
@@ -79154,6 +79555,15 @@ define({
 					"1600",
 					"1700",
 					"S16-0598"
+				],
+				[
+					8,
+					"T5",
+					0,
+					2,
+					"0900",
+					"1000",
+					"S16-0430"
 				]
 			]
 		},
@@ -79173,7 +79583,7 @@ define({
 					1,
 					"1400",
 					"1600",
-					"NAK-AUD"
+					"EDUS-LT51"
 				],
 				[
 					2,
@@ -79182,7 +79592,7 @@ define({
 					4,
 					"1400",
 					"1600",
-					"NAK-AUD"
+					"EDUS-LT51"
 				],
 				[
 					8,
@@ -79191,7 +79601,7 @@ define({
 					1,
 					"1200",
 					"1300",
-					"S16-0202"
+					"ERC-GLR"
 				],
 				[
 					8,
@@ -79200,7 +79610,7 @@ define({
 					1,
 					"1300",
 					"1400",
-					"S16-0202"
+					"ERC-GLR"
 				],
 				[
 					8,
@@ -79209,7 +79619,7 @@ define({
 					1,
 					"1600",
 					"1700",
-					"S16-0202"
+					"ERC-GLR"
 				],
 				[
 					8,
@@ -79246,7 +79656,7 @@ define({
 					0,
 					0,
 					"1000",
-					"1200",
+					"1100",
 					"LT26"
 				],
 				[
@@ -79262,28 +79672,10 @@ define({
 					8,
 					"T1",
 					0,
-					2,
-					"1200",
-					"1300",
-					"S16-05101"
-				],
-				[
-					8,
-					"T2",
 					0,
-					2,
-					"1300",
-					"1400",
-					"S16-05101"
-				],
-				[
-					8,
-					"T3",
-					0,
-					3,
+					"1100",
 					"1200",
-					"1300",
-					"S16-05102"
+					"S16-05101"
 				]
 			]
 		},
@@ -79339,6 +79731,33 @@ define({
 					4,
 					"1000",
 					"1100",
+					"S16-05102"
+				],
+				[
+					8,
+					"T4",
+					0,
+					4,
+					"1200",
+					"1300",
+					"S16-05102"
+				],
+				[
+					8,
+					"T5",
+					0,
+					4,
+					"1500",
+					"1600",
+					"S16-05102"
+				],
+				[
+					8,
+					"T6",
+					0,
+					3,
+					"1200",
+					"1300",
 					"S16-05102"
 				]
 			]
@@ -79444,17 +79863,17 @@ define({
 					0,
 					4,
 					"1000",
-					"1200",
+					"1100",
 					"LT20"
 				],
 				[
 					8,
 					"T1",
 					0,
-					2,
-					"1000",
+					4,
 					"1100",
-					"S16-06118"
+					"1200",
+					"LT20"
 				]
 			]
 		},
@@ -79482,17 +79901,17 @@ define({
 					0,
 					3,
 					"1600",
-					"1800",
+					"1700",
 					"LT33"
 				],
 				[
 					8,
 					"T1",
 					0,
-					0,
+					3,
+					"1700",
 					"1800",
-					"1900",
-					"S16-06118"
+					"LT33"
 				]
 			]
 		},
@@ -79511,7 +79930,7 @@ define({
 					0,
 					0,
 					"1000",
-					"1200",
+					"1100",
 					"LT22"
 				],
 				[
@@ -79528,9 +79947,9 @@ define({
 					"T1",
 					0,
 					0,
-					"0900",
-					"1000",
-					"S16-06118"
+					"1100",
+					"1200",
+					"LT22"
 				]
 			]
 		},
@@ -79558,17 +79977,17 @@ define({
 					0,
 					4,
 					"0800",
-					"1000",
+					"0900",
 					"NAK-AUD"
 				],
 				[
 					8,
 					"T1",
 					0,
-					1,
-					"1200",
-					"1300",
-					"S16-06118"
+					4,
+					"0900",
+					"1000",
+					"NAK-AUD"
 				]
 			]
 		},
@@ -79596,17 +80015,17 @@ define({
 					0,
 					4,
 					"1400",
-					"1600",
+					"1500",
 					"LT21"
 				],
 				[
 					8,
 					"T1",
 					0,
-					1,
-					"1300",
-					"1400",
-					"S16-06118"
+					4,
+					"1500",
+					"1600",
+					"LT21"
 				]
 			]
 		},
@@ -79675,15 +80094,6 @@ define({
 				],
 				[
 					8,
-					"D3",
-					1,
-					2,
-					"1000",
-					"1200",
-					"AS1-0302"
-				],
-				[
-					8,
 					"D4",
 					1,
 					2,
@@ -79708,15 +80118,6 @@ define({
 					"1200",
 					"1400",
 					"AS4-B110"
-				],
-				[
-					8,
-					"E3",
-					2,
-					2,
-					"1000",
-					"1200",
-					"AS1-0209"
 				],
 				[
 					8,
@@ -80156,6 +80557,15 @@ define({
 				]
 			]
 		},
+		"SW3550": {
+			"description": "Internships vary in length but all take place within organisations or companies, are vetted and approved by the Department of Social Work, have relevance to the major in Social Work, involve the application of subject knowledge and theory in reflection upon the work, and are assessed. Available credited internships will be advertised at the beginning of each semester. Internships proposed by students will require the approval of the department.",
+			"prerequisite": "Students should: have completed a minimum of 24 MC in Social Work; and have declared Social Work as their Major.",
+			"preclusion": "Any other XX3550 internship modules (Note: Students who change major may not do a second internship in their new major)",
+			"title": "Social Work Internship",
+			"workload": "Please see remarks",
+			"department": "Social Work",
+			"mc": 4
+		},
 		"SW3551": {
 			"description": "A UROP involves the student working with a supervisor, and usually in a team, on an existing research project. It has relevance to the student’s Major, and involves the application of subject knowledge, methodology and theory in reflection upon the research project. UROPs usually take place within FASS or ARI, though a few involve international partners. All are vetted and approved by the Major department. All are assessed. UROPs can be proposed by supervisor or student, and require the approval of the Major department.",
 			"prerequisite": "Students must: have declared a Major, completed a minimum of 24 MC in that Major, and have a CAP of at least 3.5.",
@@ -80248,7 +80658,6 @@ define({
 			"workload": "0-3-0-3-4",
 			"department": "Social Work",
 			"mc": 5,
-			"exam": 1367485200000,
 			"lessons": [
 				[
 					7,
@@ -80267,7 +80676,6 @@ define({
 			"workload": "0-3-0-3-4",
 			"department": "Social Work",
 			"mc": 5,
-			"exam": 1367917200000,
 			"lessons": [
 				[
 					7,
@@ -80285,7 +80693,6 @@ define({
 			"title": "COMMUNITY ORGANISATION AND DEVELOPMENT",
 			"department": "Social Work",
 			"mc": 5,
-			"exam": 1368003600000,
 			"lessons": [
 				[
 					7,
@@ -80303,19 +80710,7 @@ define({
 			"title": "Special Topics in Social Work",
 			"workload": "0-3-0-3-4",
 			"department": "Social Work",
-			"mc": 5,
-			"exam": 1368090000000,
-			"lessons": [
-				[
-					7,
-					"1",
-					0,
-					3,
-					"1830",
-					"2130",
-					"AS7-0106"
-				]
-			]
+			"mc": 5
 		},
 		"SX1991": {
 			"title": "Exchange Enrichment Level 1000 Module",
@@ -81147,7 +81542,7 @@ define({
 					1,
 					"1800",
 					"2100",
-					"null"
+					"EA-06-04"
 				]
 			]
 		},
@@ -81612,15 +82007,6 @@ define({
 					1,
 					"1400",
 					"1600",
-					"LT13"
-				],
-				[
-					8,
-					"W2",
-					0,
-					1,
-					"1600",
-					"1800",
 					"LT13"
 				]
 			]
@@ -82130,7 +82516,6 @@ define({
 			"workload": "2-2-0-0-3-3",
 			"department": "University Scholars Programme",
 			"mc": 4,
-			"exam": 1367456400000,
 			"lessons": [
 				[
 					2,
@@ -82601,7 +82986,7 @@ define({
 					1,
 					"1600",
 					"1800",
-					"USP-SR2"
+					"USP-TR1"
 				],
 				[
 					7,
@@ -82677,7 +83062,7 @@ define({
 					1,
 					"1400",
 					"1600",
-					"USP-MML"
+					"TP-SR5"
 				],
 				[
 					7,
@@ -82876,7 +83261,7 @@ define({
 					1,
 					"1600",
 					"2000",
-					"ERC-SR10"
+					"USP-SR2"
 				]
 			]
 		},
@@ -83006,7 +83391,7 @@ define({
 					1,
 					"1800",
 					"2000",
-					"USP-SR1"
+					"USP-TR1"
 				],
 				[
 					7,
@@ -83015,7 +83400,7 @@ define({
 					3,
 					"1800",
 					"2000",
-					"USP-SR1"
+					"USP-TR1"
 				]
 			]
 		},
@@ -83035,7 +83420,7 @@ define({
 					1,
 					"1800",
 					"2000",
-					"USP-SR2"
+					"USP-SR1"
 				],
 				[
 					7,
@@ -83044,7 +83429,7 @@ define({
 					4,
 					"1800",
 					"2000",
-					"USP-SR2"
+					"USP-SR1"
 				]
 			]
 		},
@@ -83261,6 +83646,19 @@ define({
 			"title": "Integrated Honours Thesis",
 			"workload": "0-0-0-0-37.5",
 			"department": "Economics",
+			"mc": 15
+		},
+		"XFB4001": {
+			"title": "Integrated Honors Thesis",
+			"department": "Dean's Office (Biz)",
+			"mc": 12
+		},
+		"XFB4002": {
+			"description": "The purpose of the Integrated Honours Dissertation is to provide DDP students with an opportunity to select and synthesise research topics from two distinct bodies of knowledge, and to present their findings logically and systematically in a clear and concise prose. Students are expected to demonstrate (i) a good understanding of relevant methodology and literature; (ii) the significance and relevance of the problem; (iii) logical and sound analysis; (iv) clear and effective presentation; and (v) achieve a balance between the learning objectives of both the Business course and the second course of study.",
+			"prerequisite": "Vary, depending on specific research topic.",
+			"preclusion": "Integrated honours thesis/dissertation from other faculties",
+			"title": "Integrated Honours Dissertation",
+			"department": "Dean's Office (Biz)",
 			"mc": 15
 		},
 		"XFC4101": {

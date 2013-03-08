@@ -1,24 +1,5 @@
 define({
 	"facultyDepartments": {
-		"School Of Computing": [
-			"Computer Science",
-			"Dean's Office (School Of Computing)",
-			"Information Systems"
-		],
-		"School Of Business": [
-			"Accounting",
-			"Centre For E-Business",
-			"Dean's Office (Biz)",
-			"Decision Sciences",
-			"Finance",
-			"Human Resource Management Unit",
-			"Management And Organisation",
-			"Marketing",
-			"Strategy And Policy"
-		],
-		"Law": [
-			"Law"
-		],
 		"Arts & Social Sciences": [
 			"Centre For Language Studies",
 			"Chinese Studies",
@@ -38,22 +19,9 @@ define({
 			"South Asian Studies Programme",
 			"Southeast Asian Studies"
 		],
-		"School Of Design And Environment": [
-			"Architecture",
-			"Building",
-			"Dean's Office (School Of Design & Env)",
-			"Division Of Industrial Design",
-			"Real Estate"
-		],
-		"Non-Faculty-Based Departments": [
-			"Ctr For English Language Communication"
-		],
 		"Dentistry": [
 			"Dentistry",
 			"Division Of Graduate Dental Studies"
-		],
-		"Joint Multi-Disciplinary Programmes": [
-			"Computing & Engineering"
 		],
 		"Engineering": [
 			"Bachelor Of Technology Programme",
@@ -72,8 +40,37 @@ define({
 			"Nanoengineering Programme",
 			"Singapore-Delft Water Alliance"
 		],
-		"University Administration": [
-			"Office Of Student Affairs"
+		"Joint Multi-Disciplinary Programmes": [
+			"Computing & Engineering"
+		],
+		"Law": [
+			"Law"
+		],
+		"Non-Faculty-Based Departments": [
+			"Ctr For English Language Communication"
+		],
+		"School Of Business": [
+			"Accounting",
+			"Centre For E-Business",
+			"Dean's Office (Biz)",
+			"Decision Sciences",
+			"Finance",
+			"Human Resource Management Unit",
+			"Management And Organisation",
+			"Marketing",
+			"Strategy And Policy"
+		],
+		"School Of Computing": [
+			"Computer Science",
+			"Dean's Office (School Of Computing)",
+			"Information Systems"
+		],
+		"School Of Design And Environment": [
+			"Architecture",
+			"Building",
+			"Dean's Office (School Of Design & Env)",
+			"Division Of Industrial Design",
+			"Real Estate"
 		],
 		"Science": [
 			"Biological Sciences",
@@ -85,6 +82,12 @@ define({
 			"Physics",
 			"Statistics & Applied Probability",
 			"Zoological Reference Collections"
+		],
+		"University Administration": [
+			"Office Of Student Affairs"
+		],
+		"University Scholars Programme": [
+			"University Scholars Programme"
 		],
 		"Yong Loo Lin School Of Medicine": [
 			"Anaesthesia",
@@ -110,9 +113,6 @@ define({
 			"Psychological Medicine",
 			"Surgery",
 			"Who Immunology Research & Training Ctr"
-		],
-		"University Scholars Programme": [
-			"University Scholars Programme"
 		],
 		"Yong Siew Toh Conservatory Of Music": [
 			"Yong Siew Toh Conservatory Of Music"
