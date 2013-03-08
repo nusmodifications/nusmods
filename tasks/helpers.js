@@ -13,7 +13,7 @@ exports.init = function (grunt, options) {
     'https:': https
   };
 
-  options = grunt.utils._.defaults(options, {
+  options = grunt.util._.defaults(options, {
     cachePath: 'cache',
     maxCacheAge: 24 * 60 * 60, // in seconds
     maxConcurrentFiles: 64,
@@ -47,7 +47,7 @@ exports.init = function (grunt, options) {
     return path.join(options.cachePath, urlStr);
   };
 
-  var queue = grunt.utils.async.queue(function (filename, callback) {
+  var queue = grunt.util.async.queue(function (filename, callback) {
     fs.readFile(filename, 'utf8', function (err, data) {
       if (err) {
         grunt.warn(err + ' while reading ' + filename + '.');

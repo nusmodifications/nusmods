@@ -2,7 +2,7 @@ module.exports = function (grunt) {
   'use strict';
 
   var querystring = require('querystring');
-  var _ = grunt.utils._;
+  var _ = grunt.util._;
 
   var WISH_BASE = 'https://wish.wis.ntu.edu.sg/webexe/owa/';
 
@@ -20,14 +20,14 @@ module.exports = function (grunt) {
 
     var helpers = require('./helpers').init(grunt, options);
 
-    grunt.utils.async.parallel({
+    grunt.util.async.parallel({
       classSchedule: function (callback) {
         helpers.getCached(WISH_BASE + 'aus_schedule.main', function (data) {
           data = /r_course_yr([\s\S]+?)<\/select>/.exec(data)[1];
           var progMatches = helpers.matches(/value=(.+)>(.+)/g, data);
 
           var classSchedule = {};
-          grunt.utils.async.forEach(progMatches, function (progMatch, callback) {
+          grunt.util.async.forEach(progMatches, function (progMatch, callback) {
             helpers.getCached(
                 WISH_BASE + 'AUS_SCHEDULE.main_display1?' +
                     querystring.stringify({
@@ -88,7 +88,7 @@ module.exports = function (grunt) {
           var progMatches = helpers.matches(/value=(.+)>(.+)/g, data);
 
           var courses = {};
-          grunt.utils.async.forEach(progMatches, function (progMatch, callback) {
+          grunt.util.async.forEach(progMatches, function (progMatch, callback) {
             helpers.getCached(
                 WISH_BASE + 'AUS_SUBJ_CONT.main_display1?' +
                     querystring.stringify({

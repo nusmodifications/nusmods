@@ -2,8 +2,8 @@ module.exports = function(grunt) {
   'use strict';
 
   grunt.registerTask('jsifyNUS', 'Generate NUS module information JS files.', function() {
-    var _ = grunt.utils._;
-    
+    var _ = grunt.util._;
+
     var options = _.defaults(grunt.config(this.name), {
       destModuleFinder: 'app/scripts/nus_module_data.js',
       destTimetable: 'app/scripts/nus_timetable_data.js',

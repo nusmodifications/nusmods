@@ -1,7 +1,7 @@
 module.exports = function(grunt) {
   'use strict';
 
-  var _ = grunt.utils._;
+  var _ = grunt.util._;
 
   var CORS_BASE = 'https://aces01.nus.edu.sg/cors/jsp/report/';
 
@@ -21,7 +21,7 @@ module.exports = function(grunt) {
 
     var lessonTypes = [{}, {}];
 
-    grunt.utils.async.series({
+    grunt.util.async.series({
       correctAsAt: function(callback) {
         // Get "Correct as at" timestamp from the All Faculty/School/Programme
         // Module Information Listing.
@@ -88,7 +88,7 @@ module.exports = function(grunt) {
           var facMatches = helpers.matches(/value="(\w{2})"\s*>([^<]+)/g, data);
 
           var facultyDepartments = {};
-          grunt.utils.async.forEach(facMatches, function(facMatch, callback) {
+          grunt.util.async.forEach(facMatches, function(facMatch, callback) {
             helpers.getCached(baseURL + '?fac_c=' + facMatch[1], function(data) {
               data = /Select a Department([\s\S]+?)<\/select>/.exec(data)[1];
               facultyDepartments[facMatch[2]] = helpers.matches(/>(.+)</g, data);
@@ -112,12 +112,12 @@ module.exports = function(grunt) {
         // processed. Hence, to take maximum advantage of caching, process types
         // in series so that the order of URLs seen for each module is
         // deterministic.
-        grunt.utils.async.forEachSeries(types, function(type, callback) {
+        grunt.util.async.forEachSeries(types, function(type, callback) {
           helpers.getCached(CORS_BASE + type + 'InfoListing.jsp', function(data) {
             var urlDeptMatches = helpers.matches(
                 /(ModuleD.+)">([^<]+)[\s\S]+?> (.*)<\/div>\s*<\/td>\s*<\/?tr/g,
                 data);
-            grunt.utils.async.forEach(urlDeptMatches, function(match, callback) {
+            grunt.util.async.forEach(urlDeptMatches, function(match, callback) {
               var label = match[2];
               var code = label.split(' ')[0];
               if (moduleInformation[code]) {
