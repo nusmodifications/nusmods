@@ -311,6 +311,8 @@ module.exports = function (grunt) {
         }
     });
 
+    grunt.loadTasks('tasks');
+
     grunt.renameTask('regarde', 'watch');
 
     grunt.registerTask('server', function (target) {
