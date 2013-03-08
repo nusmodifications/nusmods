@@ -17,7 +17,7 @@ module.exports = function(grunt) {
     };
 
     var facultyDepartments = {};
-    Object.keys(module_info.facultyDepartments).forEach(function (faculty) {
+    Object.keys(module_info.facultyDepartments).sort().forEach(function (faculty) {
       facultyDepartments[titleize(faculty)] =
           module_info.facultyDepartments[faculty].map(titleize);
     });
