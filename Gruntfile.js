@@ -248,9 +248,14 @@ module.exports = function (grunt) {
                     cwd: '<%= yeoman.app %>',
                     dest: '<%= yeoman.dist %>',
                     src: [
-                        '*.{ico,txt}',
+                        '*.*',
                         '.htaccess',
-                        'scripts/nus_timetable_data.js'
+                        'font/*',
+                        'media/*',
+                        'json/*',
+                        'scripts/nus_timetable_data.js',
+                        'snappy/**',
+                        'styles/*.{gif,png}'
                     ]
                 }]
             }
