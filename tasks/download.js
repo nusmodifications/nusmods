@@ -9,9 +9,9 @@ module.exports = function(grunt) {
 
   grunt.registerMultiTask('download', 'Download files.', function() {
     var done = this.async(),
-        src = this.file.src,
-        dest = this.file.dest,
-        options = url.parse(this.file.src);
+        src = this.options().src,
+        dest = this.options().dest,
+        options = url.parse(src);
         options.headers = {'accept-encoding': 'gzip,deflate'};
     fs.stat(dest, function(err, stats) {
       if(err)

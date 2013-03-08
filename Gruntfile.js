@@ -286,8 +286,18 @@ module.exports = function (grunt) {
             semester: 2
         },
         download: {
-            'app/json/ntu_module_info.json': 'http://nusmods.com/json/ntu_module_info.json',
-            'app/json/nus_module_info.json': 'http://nusmods.com/json/nus_module_info.json'
+            ntu: {
+                options: {
+                    dest: 'app/json/ntu_module_info.json',
+                    src: 'http://nusmods.com/json/ntu_module_info.json'
+                }
+            },
+            nus: {
+                options: {
+                    dest: 'app/json/nus_module_info.json',
+                    src: 'http://nusmods.com/json/nus_module_info.json'
+                }
+            }
         },
         jsifyNTU: {
             destModuleFinder: 'app/scripts/ntu_module_data.js',
