@@ -67,14 +67,11 @@ function(timetable_data, Backbone, Lesson, LessonCollection) {
         placeholder: 'Type code/title to add mods',
         multiple: true,
         initSelection: function (el, callback) {
-          callback(_.map(el.val().split(','), function (val) {
-            var i = timetable_data.getModIndex(val);
-            if (i != null) {
-              return {
-                id: val,
-                text: val + ' ' + timetable_data.title[i]
-              };
-            }
+          callback(_.map(el.val().split(','), function (code) {
+            return {
+              id: code,
+              text: code + ' ' + timetable_data.mods[code].title
+            };
           }));
         },
         query: function (options) {
@@ -108,7 +105,7 @@ function(timetable_data, Backbone, Lesson, LessonCollection) {
         }
       });
     },
-    
+
     colors: [],
 
     add: function(module, collection, options) {
