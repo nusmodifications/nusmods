@@ -1,4 +1,4 @@
-define(['backbone', 'timetable_data'], function(Backbone, timetable_data) {
+define(['backbone', 'timetableData'], function(Backbone, timetableData) {
   'use strict';
 
   var AppView = Backbone.View.extend({
@@ -22,7 +22,7 @@ define(['backbone', 'timetable_data'], function(Backbone, timetable_data) {
       $.fn.qtip.defaults.show.solo = true;
       $.fn.qtip.defaults.style.classes = 'qtip-bootstrap';
 
-      $('#correct-as-at').text(timetable_data.correctAsAt);
+      $('#correct-as-at').text(timetableData.correctAsAt);
 
       $('.container-fluid').show();
     },

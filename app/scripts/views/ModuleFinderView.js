@@ -1,5 +1,5 @@
 define([
-  'timetable_data',
+  'timetableData',
   'backbone',
   'collections/ModuleCollection',
   'views/ModulesView',
@@ -7,7 +7,7 @@ define([
   'views/FiltersView'
 ],
 
-function(timetable_data, Backbone, ModuleCollection, ModulesView, FilterCollection, FiltersView) {
+function(timetableData, Backbone, ModuleCollection, ModulesView, FilterCollection, FiltersView) {
   'use strict';
 
   var ModuleFinderView = Backbone.View.extend({
@@ -101,19 +101,19 @@ function(timetable_data, Backbone, ModuleCollection, ModulesView, FilterCollecti
 
       var modulesView = new ModulesView({collection: filteredModules});
 
-      var filteredCodes = _.keys(timetable_data.mods);
+      var filteredCodes = _.keys(timetableData.mods);
 
       var begin = 0;
 
       _.each(filteredCodes.slice(begin, begin + 10), function(code) {
-        filteredModules.add(_.extend(timetable_data.mods[code], { code: code }));
+        filteredModules.add(_.extend(timetableData.mods[code], { code: code }));
       });
 
       $(window).scroll(function() {
         if ($(window).scrollTop() + $(window).height() + 100 >= $(document).height()) {
           begin += 10;
           _.each(filteredCodes.slice(begin, begin + 10), function(code) {
-            filteredModules.add(_.extend(timetable_data.mods[code], { code: code }));
+            filteredModules.add(_.extend(timetableData.mods[code], { code: code }));
           });
         }
       });
@@ -121,7 +121,7 @@ function(timetable_data, Backbone, ModuleCollection, ModulesView, FilterCollecti
       var filters = new FilterCollection(
         _.map(['department', 'mc'], function(key) {
           return {
-            filteredCollection: timetable_data.mods,
+            filteredCollection: timetableData.mods,
             key: key
           };
         }),

@@ -19,7 +19,7 @@ require.config({
     'qtip': '../components/qTip2/dist/jquery.qtip',
     'select2': '../components/select2/select2',
     'swfobject': '../components/swfobject/swfobject/swfobject',
-    'timetable_data': 'nus_timetable_data',
+    'timetableData': 'nus_timetable_data',
     'ZeroClipboard': '../components/zeroclipboard/ZeroClipboard'
   },
   shim: {
@@ -49,7 +49,7 @@ require.config({
 });
 
 require([
-  'timetable_data',
+  'timetableData',
   'app',
   'router',
   'jquery',
@@ -65,7 +65,7 @@ require([
   'qtip'
 ],
 
-function(timetable_data, app, Router, $, Backbone, AppView, TimetableBuilderView) {
+function(timetableData, app, Router, $, Backbone, AppView, TimetableBuilderView) {
   'use strict';
 
   var appView = new AppView();
@@ -101,7 +101,7 @@ function(timetable_data, app, Router, $, Backbone, AppView, TimetableBuilderView
 
   Backbone.sync = function() {};
 
-//  var modsLength = timetable_data.code.length;
+//  var modsLength = timetableData.code.length;
 
 //  prevHash = s2 = void 0;
 //
@@ -117,7 +117,7 @@ function(timetable_data, app, Router, $, Backbone, AppView, TimetableBuilderView
 //    for (i = _j = 0, _len1 = _ref1.length; _j < _len1; i = ++_j) {
 //      pair = _ref1[i];
 //      _ref2 = pair.split('='), shortCode = _ref2[0], val = _ref2[1];
-//      code = timetable_data.code[getModIndex(shortCode)];
+//      code = timetableData.code[getModIndex(shortCode)];
 //      if (!code) {
 //        alert('' + shortCode + ' no longer exists.');
 //        continue;

@@ -1,15 +1,15 @@
 define([
-  'timetable_data',
+  'timetableData',
   'backbone',
   'models/LessonModel',
   'collections/LessonCollection',
   'select2'
 ],
-function(timetable_data, Backbone, Lesson, LessonCollection) {
+function(timetableData, Backbone, Lesson, LessonCollection) {
   'use strict';
 
-  var codes = _.keys(timetable_data.mods);
-  var titles = _.pluck(_.values(timetable_data.mods), 'title');
+  var codes = _.keys(timetableData.mods);
+  var titles = _.pluck(_.values(timetableData.mods), 'title');
   var modsLength = codes.length;
 
   var padTwo = function(number) {
@@ -70,7 +70,7 @@ function(timetable_data, Backbone, Lesson, LessonCollection) {
           callback(_.map(el.val().split(','), function (code) {
             return {
               id: code,
-              text: code + ' ' + timetable_data.mods[code].title
+              text: code + ' ' + timetableData.mods[code].title
             };
           }));
         },
@@ -115,18 +115,18 @@ function(timetable_data, Backbone, Lesson, LessonCollection) {
         this.colors = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
       }
       var color = this.colors.splice(Math.floor(Math.random() * this.colors.length), 1)[0];
-      var title = timetable_data.mods[code].title;
+      var title = timetableData.mods[code].title;
 
       this.options.exams.add({
         color: color,
         id: code,
-        time: examStr(timetable_data.mods[code].exam),
+        time: examStr(timetableData.mods[code].exam),
         title: title,
-        unixTime: timetable_data.mods[code].exam
+        unixTime: timetableData.mods[code].exam
       });
 
       var lessonKeys = ['type', 'group', 'week', 'day', 'start', 'end', 'room'];
-      var lessons = _.map(timetable_data.mods[code].lessons, function(lesson) {
+      var lessons = _.map(timetableData.mods[code].lessons, function(lesson) {
         return _.object(lessonKeys, lesson);
       });
 
