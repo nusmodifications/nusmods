@@ -338,6 +338,7 @@ module.exports = function (grunt) {
         },
         crawlNTU: {
             academicYear: 2012,
+            baseUrl: 'https://wish.wis.ntu.edu.sg/webexe/owa/',
             cachePath: 'cache',
             dest: 'app/json/ntu_module_info.json',
             maxCacheAge: 24 * 60 * 60, // in seconds
@@ -348,6 +349,7 @@ module.exports = function (grunt) {
         },
         crawlNUS: {
             academicYear: 2012,
+            baseUrl: 'https://sit.aces01.nus.edu.sg/cors/jsp/report/',
             cachePath: 'cache',
             dest: 'app/json/nus_module_info.json',
             maxCacheAge: 24 * 60 * 60, // in seconds

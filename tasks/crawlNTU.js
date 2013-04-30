@@ -4,13 +4,12 @@ module.exports = function (grunt) {
   var querystring = require('querystring');
   var _ = grunt.util._;
 
-  var WISH_BASE = 'https://wish.wis.ntu.edu.sg/webexe/owa/';
-
   grunt.registerTask('crawlNTU', 'Crawl NTU module information.', function () {
     var done = this.async();
 
     var options = _.defaults(grunt.config(this.name), {
       academicYear: 2012,
+      baseUrl: 'https://wish.wis.ntu.edu.sg/webexe/owa/',
       dest: 'app/json/ntu_module_info.json',
       semester: 2
     });
@@ -22,7 +21,7 @@ module.exports = function (grunt) {
 
     grunt.util.async.parallel({
       classSchedule: function (callback) {
-        helpers.getCached(WISH_BASE + 'aus_schedule.main_display?' +
+        helpers.getCached(options.baseUrl + 'aus_schedule.main_display?' +
           querystring.stringify({
             acadsem: options.academicYear + ';' + options.semester,
             boption: 'x',
@@ -36,7 +35,7 @@ module.exports = function (grunt) {
           var classSchedule = {};
           grunt.util.async.forEach(progMatches, function (progMatch, callback) {
             helpers.getCached(
-                WISH_BASE + 'AUS_SCHEDULE.main_display1?' +
+                options.baseUrl + 'AUS_SCHEDULE.main_display1?' +
                     querystring.stringify({
                       acadsem: options.academicYear + ';' + options.semester,
                       boption: 'CLoad',
@@ -90,7 +89,7 @@ module.exports = function (grunt) {
       },
 
       contentOfCourses: function (callback) {
-        helpers.getCached(WISH_BASE + 'aus_subj_cont.main_display?' +
+        helpers.getCached(options.baseUrl + 'aus_subj_cont.main_display?' +
           querystring.stringify({
             acad: options.academicYear,
             acadsem: options.academicYear + '_' + options.semester,
@@ -105,7 +104,7 @@ module.exports = function (grunt) {
           var courses = {};
           grunt.util.async.forEach(progMatches, function (progMatch, callback) {
             helpers.getCached(
-                WISH_BASE + 'AUS_SUBJ_CONT.main_display1?' +
+                options.baseUrl + 'AUS_SUBJ_CONT.main_display1?' +
                     querystring.stringify({
                       acad: options.academicYear,
                       acadsem: options.academicYear + '_' + options.semester,

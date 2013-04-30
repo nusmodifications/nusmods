@@ -3,13 +3,12 @@ module.exports = function(grunt) {
 
   var _ = grunt.util._;
 
-  var CORS_BASE = 'https://aces01.nus.edu.sg/cors/jsp/report/';
-
   grunt.registerTask('crawlNUS', 'Crawl NUS module information.', function() {
     var done = this.async();
 
     var options = _.defaults(grunt.config(this.name), {
       academicYear: 2012,
+      baseUrl: 'https://sit.aces01.nus.edu.sg/cors/jsp/report/',
       dest: 'app/json/nus_module_info.json',
       semester: 2
     });
@@ -33,7 +32,7 @@ module.exports = function(grunt) {
         //
         // Check using the "University Administration" faculty sub-listing as it
         // is the smallest to retrieve.
-        helpers.get(CORS_BASE + 'ModuleInfoListing.jsp?fac_c=10', function(data) {
+        helpers.get(options.baseUrl + 'ModuleInfoListing.jsp?fac_c=10', function(data) {
           var pattern = /Correct as at ([^<]+)</;
           var match;
           if (match = pattern.exec(data)) {
@@ -82,7 +81,7 @@ module.exports = function(grunt) {
       // Map each faculty to its departments. Use Cross-Faculty Module
       // Information Listings as they are the smallest to retrieve.
       facultyDepartments: function(callback) {
-        var baseURL = CORS_BASE + 'CFMInfoListing.jsp';
+        var baseURL = options.baseUrl + 'CFMInfoListing.jsp';
         helpers.getCached(baseURL, function(data) {
           data = /Select a Faculty([\s\S]+?)<\/select>/.exec(data)[1];
           var facMatches = helpers.matches(/value="(\w{2})"\s*>([^<]+)/g, data);
@@ -113,7 +112,7 @@ module.exports = function(grunt) {
         // in series so that the order of URLs seen for each module is
         // deterministic.
         grunt.util.async.forEachSeries(types, function(type, callback) {
-          helpers.getCached(CORS_BASE + type + 'InfoListing.jsp', function(data) {
+          helpers.getCached(options.baseUrl + type + 'InfoListing.jsp', function(data) {
             var urlDeptMatches = helpers.matches(
                 /(ModuleD.+)">([^<]+)[\s\S]+?> (.*)<\/div>\s*<\/td>\s*<\/?tr/g,
                 data);
@@ -130,7 +129,7 @@ module.exports = function(grunt) {
                   department: match[3],
                   lessons: []
                 };
-                helpers.getCached(CORS_BASE + match[1], function(data) {
+                helpers.getCached(options.baseUrl + match[1], function(data) {
                   var tdPattern = /<td (?:valign=top )?colspan="2">([\s\S]*?)<\/td>/g;
                   var nullPattern = /^(--|n[/.]?a\.?|nil|none\.?|null|No Exam Date\.)$/i;
                   keys.forEach(function (key) {
