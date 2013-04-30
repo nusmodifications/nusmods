@@ -100,15 +100,6 @@ function(timetable_data, app, Router, $, Backbone, AppView, TimetableBuilderView
 //  });
 
   Backbone.sync = function() {};
-  var modIndexes = {};
-
-  _.each(timetable_data.code, function(code, index) {
-    modIndexes[code.split(' ')[0]] = index;
-  });
-
-  timetable_data.getModIndex = function(code) {
-    return modIndexes[code.split(' ')[0]];
-  };
 
 //  var modsLength = timetable_data.code.length;
 
