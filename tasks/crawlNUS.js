@@ -65,7 +65,7 @@ module.exports = function(grunt) {
                 options.semester + ' by Module.html',
             function(data) {
               var examMatches = helpers.matches(
-                  />([A-Z]+\d+[A-Z]*)<[\s\S]+?(\d{2})\/(\d{2})\/(\d{4})[\s\S]+?(\d):(\d{2})\s+([AP])/g,
+                  />([A-Z]+\d+[A-Z]*)<\/FONT><\/TD>[^<][\s\S]+?(\d{2})\/(\d{2})\/(\d{4})[\s\S]+?(\d):(\d{2})\s+([AP])/g,
                   data);
 
               var examTimetable = {};
