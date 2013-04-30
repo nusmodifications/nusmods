@@ -10,7 +10,7 @@
     "jquery.ui": "~1.10.2",
     "jqueryui-touch-punch": "latest",
     "lodash": "~1.2.1",
-    "qTip2": "https://github.com/Craga89/qTip2/archive/master.zip",
+    "qTip2": "https://github.com/Craga89/qTip2/archive/4acc8d0355088ffe09ae8fab6aeb164354f07a1b.zip",
     "requirejs": "~2.1.5",
     "sass-bootstrap": "~2.3.1",
     "select2": "~3.3.2",
