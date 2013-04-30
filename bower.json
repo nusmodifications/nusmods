@@ -5,6 +5,7 @@
     "backbone": "~1.0.0",
     "backbone.localStorage": "~1.1.0",
     "Downloadify": "git://github.com/dcneiner/Downloadify.git#~0.2.1",
+    "imagesloaded": "~2.1.1",
     "jquery": "~1.9.1",
     "jquery.ui": "~1.10.2",
     "jqueryui-touch-punch": "latest",
