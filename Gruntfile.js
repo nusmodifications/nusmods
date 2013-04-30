@@ -153,11 +153,31 @@ module.exports = function (grunt) {
             dist: {
                 files: {
                     'app/components/qTip2/dist/jquery.qtip.js': [
-                        'app/components/qTip2/src/intro.js',
-                        'app/components/qTip2/src/core.js',
+                        'app/components/qTip2/src/core/intro.js',
+                        'app/components/qTip2/src/core/constants.js',
+                        'app/components/qTip2/src/core/class.js',
+
+                        'app/components/qTip2/src/core/options.js',
+                        'app/components/qTip2/src/core/content.js',
+                        'app/components/qTip2/src/core/position.js',
+                        'app/components/qTip2/src/core/toggle.js',
+                        'app/components/qTip2/src/core/focus.js',
+                        'app/components/qTip2/src/core/disable.js',
+                        'app/components/qTip2/src/core/button.js',
+                        'app/components/qTip2/src/core/style.js',
+                        'app/components/qTip2/src/core/events.js',
+
+                        'app/components/qTip2/src/core/jquery_methods.js',
+                        'app/components/qTip2/src/core/jquery_overrides.js',
+
+                        'app/components/qTip2/src/core/defaults.js',
+
                         'app/components/qTip2/src/tips/tips.js',
                         'app/components/qTip2/src/viewport/viewport.js',
-                        'app/components/qTip2/src/outro.js'
+
+                        'app/components/qTip2/src/core/outro.js',
+
+                        'app/components/imagesloaded/jquery.imagesloaded.js'
                     ],
                     'app/components/qTip2/src/_core.scss': 'app/components/qTip2/src/core.css',
                     'app/components/qTip2/src/_css3.scss': 'app/components/qTip2/src/css3.css',
