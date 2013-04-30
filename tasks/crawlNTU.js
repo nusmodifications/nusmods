@@ -22,7 +22,14 @@ module.exports = function (grunt) {
 
     grunt.util.async.parallel({
       classSchedule: function (callback) {
-        helpers.getCached(WISH_BASE + 'aus_schedule.main', function (data) {
+        helpers.getCached(WISH_BASE + 'aus_schedule.main_display?' +
+          querystring.stringify({
+            acadsem: options.academicYear + ';' + options.semester,
+            boption: 'x',
+            r_search_type: 'F',
+            r_subj_code: 'Enter Keywords or Course Code',
+            staff_access: 'false'
+          }), function (data) {
           data = /r_course_yr([\s\S]+?)<\/select>/.exec(data)[1];
           var progMatches = helpers.matches(/value=(.+)>(.+)/g, data);
 
@@ -83,7 +90,15 @@ module.exports = function (grunt) {
       },
 
       contentOfCourses: function (callback) {
-        helpers.getCached(WISH_BASE + 'aus_subj_cont.main', function (data) {
+        helpers.getCached(WISH_BASE + 'aus_subj_cont.main_display?' +
+          querystring.stringify({
+            acad: options.academicYear,
+            acadsem: options.academicYear + '_' + options.semester,
+            boption: '',
+            r_course_yr: '',
+            r_subj_code: '',
+            semester: options.semester
+          }), function (data) {
           data = /r_course_yr([\s\S]+?)<\/select>/.exec(data)[1];
           var progMatches = helpers.matches(/value=(.+)>(.+)/g, data);
 
