@@ -13,14 +13,17 @@ define(['backbone', 'views/LessonView'], function(Backbone, LessonView) {
       this.collection.on('add', this.add, this);
       this.collection.on('remove', this.remove, this);
 
-      this.colX = this.$('#mon > tr:last-child > td')
-          .filter(':even')
-          .map(function() { return $(this).offset().left; })
-          .get();
       this.$colgroups = this.$('colgroup');
     },
 
     mouseMove: function(evt) {
+      if (!this.colX) {
+        this.colX = this.$('#mon > tr:last-child > td')
+          .filter(':even')
+          .map(function() { return $(this).offset().left; })
+          .get();
+      }
+
       var currCol = this.$colgroups.eq(_.sortedIndex(this.colX, evt.pageX));
       if (!currCol.is(this.prevCol)) {
         if (this.prevCol) {
