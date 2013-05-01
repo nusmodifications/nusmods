@@ -17,7 +17,7 @@ define([
       this.model.on('change', this.render, this);
       this.model.on('destroy', this.remove, this);
       _.bindAll(this, 'drop', 'out', 'over', 'revert', 'start');
-      this.$el.data('lesson', this.model);
+      this.$el.data('lessonView', this);
     },
 
     render: function() {
@@ -62,7 +62,11 @@ define([
           zIndex: 3
         });
       }
+      this.attach();
+      return this;
+    },
 
+    attach: function() {
       if (this.model.get('day') === 5) {
         $('#sat').show();
       }
@@ -83,7 +87,6 @@ define([
           }
         }
       }
-      return this;
     },
 
     out: function() {
@@ -145,12 +148,20 @@ define([
       }, this);
     },
 
-    remove: function() {
+    remove: function(detach) {
       var tr = this.$el.parent().removeAttr('colspan').after(this.detached).parent();
-      this.$el.remove();
+      if (detach) {
+        this.$el.detach();
+      } else {
+        this.$el.remove();
+        tr.nextAll().find('.lesson').each(function() {
+          $(this).data('lessonView').remove(true).attach();
+        });
+      }
       if (!tr.find('.lesson').length && tr.index() > 1) {
         tr.remove();
       }
+      return this;
     }
   });
 
