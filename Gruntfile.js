@@ -328,10 +328,11 @@ module.exports = function (grunt) {
                     cwd: '<%= yeoman.app %>',
                     dest: '<%= yeoman.dist %>',
                     src: [
-                        '*.{config,ico,php,png,swf,txt}',
+                        '*.{config,ico,php,png,txt}',
                         '.htaccess',
+                        'bower_components/Downloadify/media/downloadify.swf',
+                        'bower_components/ZeroClipboard/ZeroClipboard.swf',
                         'images/{,*/}*.{webp,gif}',
-                        'media/*',
                         'json/*',
                         'scripts/nus_timetable_data.js',
                         'snappy/**',

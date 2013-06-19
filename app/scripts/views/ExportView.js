@@ -45,6 +45,7 @@ define(['backbone', 'downloadify', 'swfobject'], function(Backbone) {
         }
       } else {
         var downloadifyOptions = {
+          swf: 'bower_components/Downloadify/media/downloadify.swf',
           downloadImage: 'images/988945bc.download.png',
           height: 30,
           width: 111
