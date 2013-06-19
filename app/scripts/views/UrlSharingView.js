@@ -5,13 +5,10 @@ define(['backbone', 'ZeroClipboard'], function(Backbone, ZeroClipboard) {
     el: '#share-container',
 
     initialize: function() {
-      // Temporary fix till ZeroClipboard's Flash event dispatch supports AMD
-      // https://github.com/jonrohan/ZeroClipboard/issues/101#issuecomment-14342868
-      window.ZeroClipboard = ZeroClipboard;
-
       var copyToClipboard = $('#copy-to-clipboard'),
           clip = new ZeroClipboard(copyToClipboard, {
-            moviePath: 'bower_components/ZeroClipboard/ZeroClipboard.swf'
+            moviePath: 'bower_components/ZeroClipboard/ZeroClipboard.swf',
+            amdModuleId: 'ZeroClipboard'
           }),
           shortURLInput = $('#short-url');
 
