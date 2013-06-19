@@ -330,13 +330,13 @@ module.exports = function (grunt) {
                     src: [
                         '*.{config,ico,php,png,swf,txt}',
                         '.htaccess',
-                        'font/*',
                         'images/{,*/}*.{webp,gif}',
                         'media/*',
                         'json/*',
                         'scripts/nus_timetable_data.js',
                         'snappy/**',
                         'styles/*.{gif,png}',
+                        'styles/fonts/*'
                     ]
                 }, {
                     expand: true,
