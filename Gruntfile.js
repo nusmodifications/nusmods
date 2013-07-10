@@ -209,9 +209,7 @@ module.exports = function (grunt) {
                         'app/bower_components/qTip2/src/tips/tips.js',
                         'app/bower_components/qTip2/src/viewport/viewport.js',
 
-                        'app/bower_components/qTip2/src/core/outro.js',
-
-                        'app/bower_components/imagesloaded/jquery.imagesloaded.js'
+                        'app/bower_components/qTip2/src/core/outro.js'
                     ],
                     'app/bower_components/qTip2/src/_core.scss': 'app/bower_components/qTip2/src/core.css',
                     'app/bower_components/qTip2/src/_css3.scss': 'app/bower_components/qTip2/src/css3.css',
