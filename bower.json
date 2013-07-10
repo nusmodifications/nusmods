@@ -3,19 +3,18 @@
   "version": "0.3.0",
   "dependencies": {
     "backbone": "~1.0.0",
-    "Backbone.localStorage": "~1.1.5",
+    "Backbone.localStorage": "~1.1.6",
     "Downloadify": "dcneiner/Downloadify#~0.2.1",
-    "imagesloaded": "~2.1.2",
-    "jquery": "~1.10.1",
+    "jquery": "~1.10.2",
     "jquery.ui": "~1.10.3",
     "jqueryui-touch-punch": "latest",
     "lodash": "~1.3.1",
-    "qTip2": "https://github.com/Craga89/qTip2/archive/4fc6b06950125c15073c4b4a62904578a4d1b4f3.zip",
-    "requirejs": "~2.1.6",
+    "qtip2": "#303110ff082c6dc1f3a9aa876560740e963833c3",
+    "requirejs": "~2.1.8",
     "sass-bootstrap": "~2.3.2",
-    "select2": "~3.4.0",
-    "swfobject": "latest",
-    "zeroclipboard": "~1.2.0-beta.1"
+    "select2": "~3.4.1",
+    "swfobject": "#a22b7db077abc126d6aa5f2d0f44b11e4ed97940",
+    "zeroclipboard": "~1.2.0-beta.2"
   },
   "devDependencies": {}
 }
