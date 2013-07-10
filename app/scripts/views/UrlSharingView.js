@@ -7,8 +7,7 @@ define(['backbone', 'ZeroClipboard'], function(Backbone, ZeroClipboard) {
     initialize: function() {
       var copyToClipboard = $('#copy-to-clipboard'),
           clip = new ZeroClipboard(copyToClipboard, {
-            moviePath: 'bower_components/ZeroClipboard/ZeroClipboard.swf',
-            amdModuleId: 'ZeroClipboard'
+            moviePath: 'bower_components/ZeroClipboard/ZeroClipboard.swf'
           }),
           shortURLInput = $('#short-url');
 
