@@ -1,4 +1,4 @@
-// Generated on 2013-06-19 using generator-webapp 0.2.4
+// Generated on 2013-07-10 using generator-webapp 0.2.6
 'use strict';
 var LIVERELOAD_PORT = 35729;
 var lrSnippet = require('connect-livereload')({port: LIVERELOAD_PORT});
@@ -25,9 +25,6 @@ module.exports = function (grunt) {
     grunt.initConfig({
         yeoman: yeomanConfig,
         watch: {
-            options: {
-                nospawn: true
-            },
             coffee: {
                 files: ['<%= yeoman.app %>/scripts/{,*/}*.coffee'],
                 tasks: ['coffee:dist']
@@ -291,10 +288,15 @@ module.exports = function (grunt) {
             }
         },
         cssmin: {
+            // This task is pre-configured if you do not wish to use Usemin
+            // blocks for your CSS. By default, the Usemin block from your
+            // `index.html` will take care of minification, e.g.
+            //
+            //     <!-- build:css({.tmp,app}) styles/main.css -->
+            //
             dist: {
                 files: {
-                    '<%= yeoman.dist %>/styles/exports.css': '.tmp/styles/exports.css',
-                    '<%= yeoman.dist %>/styles/main.css': '.tmp/styles/main.css'
+                    '<%= yeoman.dist %>/styles/exports.css': '.tmp/styles/exports.css'
                 }
             }
         },
@@ -360,13 +362,11 @@ module.exports = function (grunt) {
             server: [
                 'compass',
                 'coffee:dist',
-                'copy:styles',
-                'autoprefixer'
+                'copy:styles'
             ],
             test: [
                 'coffee',
-                'copy:styles',
-                'autoprefixer'
+                'copy:styles'
             ],
             dist: [
                 'coffee',
@@ -466,8 +466,8 @@ module.exports = function (grunt) {
         'concurrent:dist',
         'autoprefixer',
         'requirejs',
-        'cssmin',
         'concat',
+        'cssmin',
         'uglify',
         'copy:dist',
         'rev',
