@@ -99,9 +99,6 @@ module.exports = (grunt) ->
                 fac.push $(this).text()
               callback()
           , (err) ->
-            depts['NON-FACULTY-BASED DEPARTMENTS'].push 'ANGSANA COLLEGE',
-              'TEMBUSU COLLEGE', 'CENTRE FOR QUANTUM TECHNOLOGIES'
-            depts['UNIVERSITY ADMINISTRATION'].push 'OFFICE OF STUDENT AFFAIRS'
             callback null, depts
       cors: (callback) ->
         mods = {}
@@ -149,10 +146,6 @@ module.exports = (grunt) ->
                   callback()
             , callback
         , (err) ->
-          if mods.QT5101.department == 'NA'
-            mods.QT5101.department = 'CENTRE FOR QUANTUM TECHNOLOGIES'
-          else
-            grunt.log.writeln "QT5101's department is no longer NA."
           callback null, mods
       examTimes: (callback) ->
         examTimes = {}
