@@ -5,3 +5,5 @@ dist
 app/bower_components
 cache
 vendor
+app/json
+app/scripts/*_data.js
