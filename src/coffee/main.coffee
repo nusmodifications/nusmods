@@ -192,6 +192,12 @@ $ ->
       removeMod evt.removed.id
     s2OnUpdate s2.select2('val')
 
+  s2.select2('container').find('ul.select2-choices').sortable({
+    containment: 'parent',
+    start: -> s2.select2('onSortStart'),
+    update: -> s2.select2('onSortEnd')
+  });
+
   $('#clear-all').click ->
     if confirm 'Are you sure you want to clear all selected modules?'
       removeMod code for code of timetable

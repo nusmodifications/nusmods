@@ -51,6 +51,7 @@ module.exports = function(grunt) {
         'src/js/jquery-ui/jquery.ui.mouse.js',
         'src/js/jquery-ui/jquery.ui.draggable.js',
         'src/js/jquery-ui/jquery.ui.droppable.js',
+        'src/js/jquery-ui/jquery.ui.sortable.js',
         'src/js/qTip2/intro.js',
         'src/js/qTip2/core.js',
         'src/js/qTip2/tips.js',
