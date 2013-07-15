@@ -219,6 +219,6 @@ module.exports = function(grunt) {
 
   grunt.loadTasks('tasks');
   grunt.registerTask('dev', 'coffee less concat');
-  grunt.registerTask('default', 'download jsify dev clean mkdirs css min ' +
+  grunt.registerTask('default', 'jsify dev clean mkdirs css min ' +
                                 'denull rev usemin html time');
 };
