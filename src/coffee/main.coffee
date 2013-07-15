@@ -94,8 +94,8 @@ do ->
       "-#{d.getUTCFullYear()} #{h}:" + "0#{d.getUTCMinutes()}"[-2..] + " #{A}"
 
 s2OnUpdate = (val) ->
-  localStorage.setItem 'select2', val.join(',')
-  localStorage.setItem 'hash', (location.hash = prevHash = queryString())
+  localStorage.setItem 'select2_v1', val.join(',')
+  localStorage.setItem 'hash_v1', (location.hash = prevHash = queryString())
   if clashCount then $('#clash').show() else $('#clash').hide()
   if count = val.length
     if count == 1
@@ -138,6 +138,8 @@ $ ->
   colX = for el, i in $('#mon > tr:last-child > td') when !(i % 2)
            $(el).offset().left
   Lesson.TR = $('#mon > tr:last-child').clone()
+
+  hash = location.href.split('#')[1] || localStorage.getItem 'hash_v1'
 
   PAGE_SIZE = 50
   (s2 = $('#select2')).select2
@@ -197,10 +199,9 @@ $ ->
       s2OnUpdate []
     return false
 
-  hash = location.href.split('#')[1] || localStorage.getItem 'hash'
   if hash && hash.indexOf('=') != -1
     loadHash hash
-  else if s2val = localStorage.getItem 'select2'
+  else if s2val = localStorage.getItem 'select2_v1'
     addMod ID for ID in (IDs = s2val.split(','))
     s2.select2 'val', IDs
 
@@ -591,7 +592,7 @@ class Lesson
             lesson.cascade() for lesson in @sameGroup
             for lesson in @sameType[droppable.data('lesson').group]
               lesson.detach().attach()
-            localStorage.setItem 'hash',
+            localStorage.setItem 'hash_v1',
               (location.hash = prevHash = queryString())
             $('#short-url').val('').blur()
             return false
