@@ -12,7 +12,6 @@ require.config({
     'downloadify': '../bower_components/Downloadify/src/downloadify',
     'eventEmitter': '../bower_components/eventEmitter/EventEmitter',
     'eventie': '../bower_components/eventie/eventie',
-    'imagesloaded': '../bower_components/imagesloaded/imagesloaded',
     'jquery.ui.core': '../bower_components/jquery.ui/ui/jquery.ui.core',
     'jquery.ui.widget': '../bower_components/jquery.ui/ui/jquery.ui.widget',
     'jquery.ui.mouse': '../bower_components/jquery.ui/ui/jquery.ui.mouse',
