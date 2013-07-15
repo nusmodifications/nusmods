@@ -152,6 +152,7 @@ html {
   .border-radius(0 0 3px 3px);
 }
 .select2-container-multi.select2-container-active .select2-choices,
+.select2-drop-active
 input[type="text"]:focus,
 input[type="url"]:focus {
   border-color: rgba(255,102,0,0.6);
@@ -162,6 +163,9 @@ input[type="url"]:focus {
 }
 .select2-results .select2-highlighted {
   background: none repeat scroll 0 0 @linkColor;
+}
+.select2-drop-active {
+  border: 1px solid @inputBorder
 }
 
 // Module Finder Sidebar
