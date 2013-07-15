@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
+  <script>var WRInitTime=(new Date()).getTime();</script>
   <div class="modal-backdrop" id="overlay"></div>
   <div id="loading">
     Loading&hellip;
@@ -825,6 +826,13 @@
   var _gaq=[['_setAccount','UA-33503218-1'],['_trackPageview']];(function(d,s){var j,e=d.getElementsByTagName(s)[0],a=function(u){j=d.createElement(s);j.src=u;e.parentNode.insertBefore(j,e)};a('//www.google-analytics.com/ga.js');a('//connect.facebook.net/en_US/all.js#xfbml=1');a('//platform.twitter.com/widgets.js')}(document,'script'))
   var e3Path='<script src="js/e3.js"><\/script>'
   var modInfoMFPath='<script src="js/mod_info_mf.js"><\/script>'
+  </script>
+  <div id="ClickTaleDiv" style="display: none;"></div>
+  <script>
+  if(document.location.protocol != 'https:') document.write(unescape("%3Cscript%20src='" +'http://cdn.clicktale.net/www/' + "WRe0.js'%20type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  if(typeof ClickTale=='function')  ClickTale(10677, 0.0315, "www08");
   </script>
 </body>
 </html>
