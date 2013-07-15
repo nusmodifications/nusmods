@@ -401,9 +401,9 @@ iCalendar = ->
       "DESCRIPTION:#{lesson.title}\\n#{lesson.typeName} Group #{lesson.group}",
       "LOCATION:#{lesson.room}",
       'URL:https://aces01.nus.edu.sg/cors/jsp/report/ModuleDetailedInfo.jsp' +
-        "?acad_y=2012/2013&sem_c=1&mod_c=#{lesson.shortCode}"
+        "?acad_y=2013/2014&sem_c=1&mod_c=#{lesson.shortCode}"
     ]
-    start = new Date(Date.UTC(2012, 7, 13,
+    start = new Date(Date.UTC(2013, 7, 12,
                      +lesson.start[..1] - 8, lesson.start[2..]))
     start.setUTCDate(start.getUTCDate() + lesson.day)
     recess = new Date(start.getTime())

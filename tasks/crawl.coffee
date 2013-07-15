@@ -149,7 +149,7 @@ module.exports = (grunt) ->
           callback null, mods
       examTimes: (callback) ->
         examTimes = {}
-        getCached 'https://webrb.nus.edu.sg/examtt/Exam2012/Semester 1/' +
+        getCached 'https://webrb.nus.edu.sg/examtt/Exam2013/Semester 1/' +
         'MASTER Sem 1 by Module.html', (data) ->
           reTD = /<TD><FONT size=-1>([^<]*)/g
           keys = ['fac', 'code', 'title', 'date', 'time']
