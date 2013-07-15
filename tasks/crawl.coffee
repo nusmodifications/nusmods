@@ -123,26 +123,29 @@ module.exports = (grunt) ->
                   label: label
                   types: [type]
                   department: match[3]
-                get$ CORS_BASE + match[1], ($) ->
-                  $('td[colspan="2"]').each (i) ->
+                getCached CORS_BASE + match[1], (data) ->
+                  reTDColspan2 = /<td (?:valign=top )?colspan="2">([\s\S]*?)<\/td>/g
+                  grunt.utils._.each (match[1] while match = reTDColspan2.exec data), (match, i) ->
                     if (key = keys[i]) &&
-                    !reNull.test(field = $(this).text().trim().replace(/\s+/g, ' '))
+                    !reNull.test(field = match.trim().replace(/\s+/g, ' '))
                       mod[key] = field
+                  reTable = /class="tableframe"([\s\S]+?)<\/table>/g
+                  tables = (match[1] while match = reTable.exec data)
                   for lecTut, i in ['lectures', 'tutorials']
-                    $('table.tableframe')
-                      .eq(i + 1)
-                      .children('tr[bgcolor=#eeeeee], tr[bgcolor=#ffffff]')
-                      .each ->
-                        tr = ($(el).text() for el in $(this).children().toArray())
-                        if tr?.length > 6
-                          (mod[lecTut] ||= []).push
-                            group: tr[0].trim()
-                            type: tr[1]
-                            week: tr[2]
-                            day: tr[3]
-                            start: "000#{tr[4]}"[-4..]
-                            end: "000#{tr[5]}"[-4..]
-                            room: tr[6].replace(/,$/, '')
+                    reTR = /<tr bgcolor="#[ef]{6}">([\s\S]+?)<\/tr>/g
+                    rows = (match[1] while match = reTR.exec tables[i + 1])
+                    grunt.utils._.each rows, (row) ->
+                      reTD = /<td>([^<]*)/g
+                      tr = (match[1] while match = reTD.exec row)
+                      if (tr?.length > 6) && (tr[2] != '  There are no lectures for this module. ')
+                        (mod[lecTut] ||= []).push
+                          group: tr[0].trim()
+                          type: tr[1]
+                          week: tr[2]
+                          day: tr[3]
+                          start: "000#{tr[4]}"[-4..]
+                          end: "000#{tr[5]}"[-4..]
+                          room: tr[6].replace(/,$/, '')
                   callback()
             , callback
         , (err) ->
@@ -158,17 +161,20 @@ module.exports = (grunt) ->
             exam[key] = reTD.exec(data)[1] for key in keys
             [h, mm, A] = exam.time.split /[: ]/
             nbMods[exam.code] = {}
-            examTimes[exam.code] = (
-              new Date(
-                Date.UTC(
-                  exam.date[6..9],
-                  +exam.date[3..4] - 1,
-                  exam.date[..1],
-                  (if A == 'AM' then +h else +h + 12),
-                  mm
+            try
+              examTimes[exam.code] = (
+                new Date(
+                  Date.UTC(
+                    exam.date[6..9],
+                    +exam.date[3..4] - 1,
+                    exam.date[..1],
+                    (if A == 'AM' then +h else +h + 12),
+                    mm
+                  )
                 )
-              )
-            ).toISOString()[..15] + '+0800'
+              ).toISOString()[..15] + '+0800'
+            catch error
+              continue
           callback null, examTimes
       nusBulletin: (callback) ->
         return callback() unless options.nusBulletin

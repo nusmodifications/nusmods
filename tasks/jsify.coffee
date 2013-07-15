@@ -32,9 +32,9 @@ module.exports = (grunt) ->
     mods[key] = [] for key in raw.concat processed
 
     weeks =
-      'EVERY\u00a0WEEK': 0
-      'ODD\u00a0WEEK': 1
-      'EVEN\u00a0WEEK': 2
+      'EVERY&nbsp;WEEK': 0
+      'ODD&nbsp;WEEK': 1
+      'EVEN&nbsp;WEEK': 2
     days =
       MONDAY: 0
       TUESDAY: 1
@@ -109,7 +109,7 @@ module.exports = (grunt) ->
           for lesson in mod[lecTut]
             unless (week = weeks[lesson.week])?
               weekNos = (+weekNo for weekNo in lesson.week.split(','))
-              week = weekNos[0]
+              week = weekNos[0].toString()
               for i in [1...weekNos.length]
                 week += (if weekNos[i-1] == weekNos[i] - 1 then '-' else ',') +
                         weekNos[i]
