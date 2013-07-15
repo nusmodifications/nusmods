@@ -1,5 +1,5 @@
 <?php
-require_once 'snappy/src/autoload.php';
+require_once 'vendor/knplabs/knp-snappy/src/autoload.php';
 use Knp\Snappy\Pdf;
 $snappy = new Pdf('/usr/local/bin/wkhtmltopdf');
 $snappy->setOption('disable-javascript', true);

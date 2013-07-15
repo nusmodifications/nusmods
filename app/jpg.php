@@ -1,5 +1,5 @@
 <?php
-require_once 'snappy/src/autoload.php';
+require_once 'vendor/knplabs/knp-snappy/src/autoload.php';
 use Knp\Snappy\Image;
 $snappy = new Image('/usr/local/bin/wkhtmltoimage');
 $snappy->setOption('disable-javascript', true);

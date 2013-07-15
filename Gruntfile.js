@@ -335,9 +335,9 @@ module.exports = function (grunt) {
                         'images/{,*/}*.{webp,gif}',
                         'json/*',
                         'scripts/nus_timetable_data.js',
-                        'snappy/**',
                         'styles/*.{gif,png}',
-                        'styles/fonts/*'
+                        'styles/fonts/*',
+                        'vendor/knplabs/knp-snappy/src/**/*.php'
                     ]
                 }, {
                     expand: true,
