@@ -20,10 +20,16 @@ module.exports = (grunt) ->
       if res.statusCode == 200
         data = ''
         res.on 'data', (chunk) -> data += chunk
-        res.on 'end', -> callback data
+        res.on 'end', ->
+          if data.length == 2740
+            console.log "Server unavailable while getting #{urlStr}."
+            get(urlStr, callback)
+          else
+            callback data
         res.pipe fs.createWriteStream(cachePath(urlStr))
       else
-        grunt.warn "#{res.statusCode} while getting #{urlStr}."
+        console.log "#{res.statusCode} while getting #{urlStr}."
+        get(urlStr, callback)
     .on 'error', (err) -> grunt.warn "#{err} while getting #{urlStr}."
 
   queue = grunt.utils.async.queue (filename, callback) ->
