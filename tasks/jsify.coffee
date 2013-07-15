@@ -114,9 +114,6 @@ module.exports = (grunt) ->
                 week += (if weekNos[i-1] == weekNos[i] - 1 then '-' else ',') +
                         weekNos[i]
               week = week.replace /-[^,]+-/g, '-'
-              if week.split(/[-,]/).length != 2
-                grunt.log.error "Add iCal export logic to handle #{code} " +
-                                "lessons on weeks #{week}."
             ((lessons[lessonTypes[lesson.type]] ||= {})[lesson.group] ||= [])
             .push [
               week,

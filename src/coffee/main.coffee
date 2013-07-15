@@ -423,11 +423,28 @@ iCalendar = ->
           v.push "EXDATE:#{iCalDateTime(exDate)}"
     else
       weeks = week.split(/[-,]/)
+      startWeek = weeks[0]
       start.setUTCDate(start.getUTCDate() + delta(weeks[0]) * 7)
-      if week.indexOf(',') != -1
-        v.push "RRULE:FREQ=WEEKLY;COUNT=2;INTERVAL=#{delta(weeks[1]) - delta(weeks[0])}"
-      else
-        v.push "RRULE:FREQ=WEEKLY;COUNT=#{weeks[1] - weeks[0] + 1}"
+      switch weeks.length
+        when 1
+          v.push 'RRULE:FREQ=WEEKLY;COUNT=1'
+        when 2
+          if week.indexOf(',') != -1
+            v.push "RRULE:FREQ=WEEKLY;COUNT=2;INTERVAL=#{delta(weeks[1]) - delta(weeks[0])}"
+          else
+            v.push "RRULE:FREQ=WEEKLY;COUNT=#{weeks[1] - weeks[0] + 1}"
+        else
+          v.push "RRULE:FREQ=WEEKLY;COUNT=#{weeks[weeks.length - 1] - weeks[0] + 1}"
+          for weeksWithComma in week.split('-')
+            weeks = (+str for str in weeksWithComma.split(','))
+            if weeks.length > 1
+              i = weeks[0] + 1
+              while i < weeks[weeks.length - 1]
+                if i not in weeks
+                  exDate = new Date(start.getTime());
+                  exDate.setUTCDate(exDate.getUTCDate() + (delta(i) - delta(startWeek)) * 7);
+                  v.push "EXDATE:#{iCalDateTime(exDate)}"
+                i++
     end = new Date(start.getTime())
     end.setUTCHours(end.getUTCHours() + lesson.duration / 2)
     v = v.concat [
