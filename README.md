@@ -15,16 +15,23 @@ allows the API to be as fast as possible, and be completely browsable at
 http://api.nusmods.com.
 
 The raw and intermediate processed JSON are also available, in addition to the
-fully processed and normalized JSON.
-
-JSON property names are UpperCamelCase and match the equivalent IVLE API
-property names where possible to adhere to the principle of least astonishment.
+fully processed and normalized JSON. JSON property names are UpperCamelCase and
+match the equivalent IVLE API property names where possible to adhere to the
+principle of least astonishment.
 
 To be respectful to NUS servers, and reduce waiting while developing, the
 crawlers use simple local filesystem caching and HTTP `if-modified-since`
 headers. They are modular, being written as separate Grunt tasks, so if only a
 subset of information is required, it can be specified down to individual
 semesters.
+
+## Contributing
+
+The API is still in its infancy, and there are plenty more endpoints that could
+be integrated, and other formats that might be useful, like CSV. Suggestions are
+very welcome, and if you have any particular needs for your app, feel free to
+open an issue or pull request, or simply contact me directly. I'd be happy to
+deploy any additional tasks to the live API site as well.
 
 ## Cross-Origin Resource Sharing (CORS) Support
 
@@ -277,7 +284,10 @@ grunt.registerTask('default', 'ay2013to2014sem1');
 
 They may be run by invoking `grunt ay2013to2014`, `grunt ay2013to2014sem1`,
 etc. `grunt ay2013to2014sem2` would be equivalent to invoking
-`grunt bulletinModules:semester2 examTimetable:ay2013to2014sem2 ivle:ay2013to2014sem2 moduleTimetableDelta consolidate:ay2013to2014sem2 normalize:ay2013to2014sem2 split:ay2013to2014sem2`.
+
+```bash
+$ grunt bulletinModules:semester2 examTimetable:ay2013to2014sem2 ivle:ay2013to2014sem2 moduleTimetableDelta consolidate:ay2013to2014sem2 normalize:ay2013to2014sem2 split:ay2013to2014sem2
+```
 
 ## Task Configuration and Targets
 
