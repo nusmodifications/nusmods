@@ -332,10 +332,22 @@ module.exports = function (grunt) {
         jsonSpace: '<%= defaults.jsonSpace %>',
         destFileName: 'mod_info.json'
       },
+      ay2012to2013sem2: {
+        options: {
+          academicYear: '2012/2013',
+          semester: '2'
+        }
+      },
       ay2013to2014sem1: {
         options: {
           academicYear: '2013/2014',
           semester: '1'
+        }
+      },
+      ay2013to2014sem2: {
+        options: {
+          academicYear: '2013/2014',
+          semester: '2'
         }
       }
     }
