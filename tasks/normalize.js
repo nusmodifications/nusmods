@@ -79,6 +79,17 @@ module.exports = function (grunt) {
           mod.Types = rawMod.CORS.Types;
         }
 
+        if (rawMod.IVLE) {
+          mod.Lecturers = _.compact(rawMod.IVLE.Lecturers.map(function (lecturer) {
+            switch (lecturer.Role.trim()) {
+              case 'Lecturer':
+              case 'Co-Lecturer':
+              case 'Visiting Professor':
+                return lecturer.User.Name;
+            }
+          }));
+        }
+
         _.each(rawMod.TimetableDelta, function (delta) {
           // Ignore Sundays - they seem to be dummy values.
           if (delta.DayCode === '7') {

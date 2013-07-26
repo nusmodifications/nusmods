@@ -49,6 +49,7 @@ module.exports = function (grunt) {
         workload: mod.Workload,
         examTime: mod.ExamDate,
         types: mod.Types || ['Not in CORS'],
+        lecturers: mod.Lecturers,
         lectures: _.filter(lessons, function (lesson) {
           return lessonTypes[lesson.type] === 'Lecture';
         }),
