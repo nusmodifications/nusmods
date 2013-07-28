@@ -52,7 +52,7 @@ module.exports = function (grunt) {
           exam = rawMod.CORS.ExamDate;
           if (exam !== 'No Exam Date.') {
             var dateTime = rawMod.CORS.ExamDate.split(' ');
-            var date = moment.utc('29-04-2013', 'DD-MM-YYYY');
+            var date = moment.utc(dateTime[0], 'DD-MM-YYYY');
             switch (dateTime[1]) {
               case 'AM':
                 date.hour(9);
