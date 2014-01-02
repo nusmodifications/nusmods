@@ -219,7 +219,7 @@ define(['backbone', 'downloadify', 'swfobject'], function(Backbone) {
         }
       }, this);
       _.each($('td > .lesson'), function(el) {
-        var lesson = $(el).data('lesson');
+        var lesson = $(el).data('lessonView').model;
         v = v.concat([
           'BEGIN:VEVENT',
           'UID:' + this.iCalUID() + '@nusmods.com',
@@ -407,7 +407,7 @@ define(['backbone', 'downloadify', 'swfobject'], function(Backbone) {
             xml += 'ss:StyleID="b"><Data ss:Type="String">' + days[i] + '</Data></Cell>';
           }
           $(row).find('.lesson').each(function() {
-            var lesson = $(this).data('lesson');
+            var lesson = $(this).data('lessonView').model;
             xml += '<Cell ss:Index="' + (Math.round(lesson.get('start') / 50) - 14);
             if (lesson.get('duration') > 1) {
               xml += '" ss:MergeAcross="' + (lesson.get('duration') - 1);
