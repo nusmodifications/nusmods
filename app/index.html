@@ -672,6 +672,7 @@
                     <th>Code</th>
                     <th>Title</th>
                     <th class="exam-time">Exam Time</th>
+                    <th>Action</th>
                 <tbody>
               </table>
             </div>
@@ -777,7 +778,19 @@
   </div>
 
   <script type="text/template" id="exam-template">
-    <td><%= id %><td><%= title %><td><%= time %>
+    <td><%= id %>
+    <td><%= title %>
+    <td><%= time %>
+    <td>
+      <div class="btn-group">
+        <a href="#" class="btn">
+          <i class="icon-eye-open"></i>
+        </a>
+        <a href="#" class="btn">
+          <i class="icon-remove"></i>
+        </a>
+      </div>
+      <input type='text' class='color'>
   </script>
 
   <script type="text/template" id="lesson-template">
