@@ -3,20 +3,20 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "46708027cba8f4252ac292daaa62ad80",
+    "hash": "adc45f7b7043e747a202300542d5e247",
     "packages": [
         {
             "name": "knplabs/knp-snappy",
-            "version": "0.1.1",
+            "version": "0.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/snappy.git",
-                "reference": "0.1.1"
+                "reference": "1f56b336f8e158b57dcfce007234363cbb54192b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/snappy/zipball/0.1.1",
-                "reference": "0.1.1",
+                "url": "https://api.github.com/repos/KnpLabs/snappy/zipball/1f56b336f8e158b57dcfce007234363cbb54192b",
+                "reference": "1f56b336f8e158b57dcfce007234363cbb54192b",
                 "shasum": ""
             },
             "require": {
@@ -57,7 +57,7 @@
                 "thumbnail",
                 "wkhtmltopdf"
             ],
-            "time": "2013-04-10 07:21:56"
+            "time": "2013-09-06 14:16:50"
         }
     ],
     "packages-dev": [
