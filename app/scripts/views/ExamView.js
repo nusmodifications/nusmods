@@ -1,4 +1,4 @@
-define(['backbone'], function(Backbone) {
+define(['backbone', 'spectrum'], function(Backbone) {
   'use strict';
 
   var ExamView = Backbone.View.extend({
@@ -18,6 +18,7 @@ define(['backbone'], function(Backbone) {
       } else {
         this.$el.removeClass('clash');
       }
+      this.$('.color').spectrum();
       return this;
     }
   });

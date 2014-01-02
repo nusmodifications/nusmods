@@ -13,6 +13,7 @@
     "requirejs": "~2.1.8",
     "sass-bootstrap": "~2.3.2",
     "select2": "~3.4.1",
+    "spectrum": "~1.2.0",
     "swfobject": "#a22b7db077abc126d6aa5f2d0f44b11e4ed97940",
     "zeroclipboard": "~1.2.0-beta.2"
   },

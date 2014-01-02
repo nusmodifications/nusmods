@@ -20,6 +20,7 @@ require.config({
     'jquery.ui.touch-punch': '../bower_components/jqueryui-touch-punch/jquery.ui.touch-punch',
     'qtip': '../bower_components/qTip2/dist/jquery.qtip',
     'select2': '../bower_components/select2/select2',
+    'spectrum': '../bower_components/spectrum/spectrum',
     'swfobject': '../bower_components/swfobject/swfobject/swfobject',
     'timetableData': 'nus_timetable_data',
     'ZeroClipboard': '../bower_components/zeroclipboard/ZeroClipboard'
@@ -44,6 +45,7 @@ require.config({
     'jquery.ui.touch-punch': ['jquery.ui.mouse'],
     'qtip': ['jquery'],
     'select2': ['jquery'],
+    'spectrum': ['jquery'],
     'swfobject': {
       exports: 'swfobject'
     }

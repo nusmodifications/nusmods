@@ -214,7 +214,8 @@ module.exports = function (grunt) {
                     'app/bower_components/qTip2/src/_core.scss': 'app/bower_components/qTip2/src/core.css',
                     'app/bower_components/qTip2/src/_css3.scss': 'app/bower_components/qTip2/src/css3.css',
                     'app/bower_components/qTip2/src/tips/_tips.scss': 'app/bower_components/qTip2/src/tips/tips.css',
-                    'app/bower_components/select2/_select2.scss': 'app/bower_components/select2/select2.css'
+                    'app/bower_components/select2/_select2.scss': 'app/bower_components/select2/select2.css',
+                    'app/bower_components/spectrum/_spectrum.scss': 'app/bower_components/spectrum/spectrum.css'
                 }
             }
         },
