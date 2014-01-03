@@ -181,17 +181,15 @@ module.exports = function (grunt) {
                 }]
             }
         },
-        // not used since Uglify task does concat,
-        // but still available if needed
-        concat: {
-            dist: {
-                files: {
-                    'app/bower_components/qtip2/_jquery.qtip.scss': 'app/bower_components/qtip2/jquery.qtip.css',
-                    'app/bower_components/select2/_select2.scss': 'app/bower_components/select2/select2.css',
-                    'app/bower_components/spectrum/_spectrum.scss': 'app/bower_components/spectrum/spectrum.css'
-                }
+
+        // Automatically inject Bower components into the HTML file
+        'bower-install': {
+            app: {
+                html: '<%= yeoman.app %>/index.html',
+                ignorePath: '<%= yeoman.app %>/'
             }
         },
+
         requirejs: {
             dist: {
                 // Options: https://github.com/jrburke/r.js/blob/master/build/example.build.js
@@ -214,6 +212,8 @@ module.exports = function (grunt) {
                 }
             }
         },
+
+        // Renames files for browser caching purposes
         rev: {
             dist: {
                 files: {
@@ -383,7 +383,6 @@ module.exports = function (grunt) {
 
         grunt.task.run([
             'clean:server',
-            'concat',
             'concurrent:server',
             'autoprefixer',
             'connect:livereload',
@@ -414,7 +413,6 @@ module.exports = function (grunt) {
     grunt.registerTask('build', [
         'clean:dist',
         'useminPrepare',
-        'concat',
         'concurrent:dist',
         'autoprefixer',
         'requirejs',

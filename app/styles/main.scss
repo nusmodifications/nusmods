@@ -58,9 +58,6 @@ $linkColorHover: darken($linkColor, 15%);
 // Phones to portrait tablets and narrow desktops
 @import "sass-bootstrap/lib/responsive-767px-max";
 
-@import "qtip2/jquery.qtip";
-@import "select2/select2";
-@import "spectrum/spectrum";
 @import "timetable";
 
 // Layout
