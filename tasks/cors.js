@@ -55,7 +55,7 @@ module.exports = function (grunt) {
 
             mod.Timetable = [];
             var tableMatches = helpers.matches(
-              /(Lecture|Tutorial) Time Table([\s\S]+?)<\/table>/g,
+              /(Lecture|Tutorial) Time Table([\s\S]+?)^<\/table>/gm,
               data);
             tableMatches.forEach(function (tableMatch) {
               var trMatches = helpers.matches(
