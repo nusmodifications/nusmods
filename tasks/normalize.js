@@ -90,45 +90,53 @@ module.exports = function (grunt) {
           }));
         }
 
-        _.each(rawMod.TimetableDelta, function (delta) {
-          // Ignore Sundays - they seem to be dummy values.
-          if (delta.DayCode === '7') {
-            return;
-          }
+        if (rawMod.CORS && rawMod.CORS.Timetable.length) {
+          mod.Timetable = rawMod.CORS.Timetable.map(function (lesson) {
+            lesson.DayCode = dayTextToCode[lesson.DayText];
+            lesson.Venue = lesson.Venue.replace(/(?:^null)?,$/, '');
+            return lesson;
+          });
+        } else {
+          _.each(rawMod.TimetableDelta, function (delta) {
+            // Ignore Sundays - they seem to be dummy values.
+            if (delta.DayCode === '7') {
+              return;
+            }
 
-          var timetable = mod.Timetable = mod.Timetable || [];
-          var originalLength = timetable.length;
-          for (var i = originalLength; i--;) {
-            var lesson = timetable[i];
-            if (lesson.ClassNo === delta.ClassNo &&
-              lesson.LessonType === delta.LessonType &&
-              lesson.WeekText === delta.WeekText &&
-              lesson.DayCode === delta.DayCode &&
-              lesson.StartTime === delta.StartTime &&
-              lesson.EndTime === delta.EndTime) {
-              if (lesson.Venue === delta.Venue || (!delta.isDelete &&
-                lesson.LastModified_js !== delta.LastModified_js)) {
-                timetable.splice(i, 1);
+            var timetable = mod.Timetable = mod.Timetable || [];
+            var originalLength = timetable.length;
+            for (var i = originalLength; i--;) {
+              var lesson = timetable[i];
+              if (lesson.ClassNo === delta.ClassNo &&
+                lesson.LessonType === delta.LessonType &&
+                lesson.WeekText === delta.WeekText &&
+                lesson.DayCode === delta.DayCode &&
+                lesson.StartTime === delta.StartTime &&
+                lesson.EndTime === delta.EndTime) {
+                if (lesson.Venue === delta.Venue || (!delta.isDelete &&
+                  lesson.LastModified_js !== delta.LastModified_js)) {
+                  timetable.splice(i, 1);
+                }
               }
             }
-          }
-          var lessonsDeleted = originalLength - timetable.length;
-          if (delta.isDelete) {
-            if (lessonsDeleted !== 1) {
-              grunt.verbose.writeln(lessonsDeleted + ' lessons deleted for ' + modInfo.ModuleCode);
+            var lessonsDeleted = originalLength - timetable.length;
+            if (delta.isDelete) {
+              if (lessonsDeleted !== 1) {
+                grunt.verbose.writeln(lessonsDeleted + ' lessons deleted for ' + modInfo.ModuleCode);
+              }
+              if (timetable.length === 0) {
+                grunt.verbose.writeln('No more lessons for ' + modInfo.ModuleCode);
+                delete mod.Timetable;
+              }
+            } else {
+              if (lessonsDeleted > 0) {
+                grunt.verbose.writeln('Duplicate lesson deleted for ' + modInfo.ModuleCode);
+              }
+              timetable.push(_.pick(delta, 'ClassNo', 'LessonType', 'WeekText', 'DayCode',
+                'DayText', 'StartTime', 'EndTime', 'Venue', 'LastModified_js'));
             }
-            if (timetable.length === 0) {
-              grunt.verbose.writeln('No more lessons for ' + modInfo.ModuleCode);
-              delete mod.Timetable;
-            }
-          } else {
-            if (lessonsDeleted > 0) {
-              grunt.verbose.writeln('Duplicate lesson deleted for ' + modInfo.ModuleCode);
-            }
-            timetable.push(_.pick(delta, 'ClassNo', 'LessonType', 'WeekText', 'DayCode',
-              'DayText', 'StartTime', 'EndTime', 'Venue', 'LastModified_js'));
-          }
-        });
+          });
+        }
 
         if (mod.Timetable) {
           mod.Timetable.forEach(function (lesson) {
