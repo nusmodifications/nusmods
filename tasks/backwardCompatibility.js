@@ -23,10 +23,9 @@ module.exports = function (grunt) {
     };
 
     var cors = mod_info.cors;
-    var lessons;
     _.each(normalized, function (mod) {
       if (mod.Timetable) {
-        lessons = mod.Timetable.map(function (lesson) {
+        var lessons = mod.Timetable.map(function (lesson) {
           return {
             group: lesson.ClassNo,
             type: lesson.LessonType,
