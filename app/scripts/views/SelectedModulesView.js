@@ -57,7 +57,9 @@ function(_, timetableData, Backbone, Lesson, LessonCollection) {
       }
     },
 
-    initialize: function () {
+    initialize: function (options) {
+      this.options = options;
+
       this.collection.on('add', this.add, this);
       this.collection.on('remove', this.remove, this);
       this.collection.on('add remove', this.render, this);

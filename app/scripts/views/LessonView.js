@@ -14,7 +14,9 @@ define([
 
     TR: $('#mon > tr:last-child').clone(),
 
-    initialize: function() {
+    initialize: function(options) {
+      this.options = options;
+
       this.model.on('change', this.render, this);
       this.model.on('destroy', this.remove, this);
       _.bindAll(this, 'drop', 'out', 'over', 'revert', 'start');

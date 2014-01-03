@@ -14,7 +14,9 @@ define(['underscore', 'backbone', 'downloadify', 'swfobject'],
       'show': 'show'
     },
 
-    initialize: function() {
+    initialize: function(options) {
+      this.options = options;
+
       _.bindAll(this, 'showModal', 'jpgClick', 'pdfClick', 'htmlClick',
           'icalClick', 'xlsClick');
 
