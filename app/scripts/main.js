@@ -20,7 +20,7 @@ require.config({
     'jquery.ui.draggable': '../bower_components/jquery.ui/ui/jquery.ui.draggable',
     'jquery.ui.droppable': '../bower_components/jquery.ui/ui/jquery.ui.droppable',
     'jquery.ui.touch-punch': '../bower_components/jqueryui-touch-punch/jquery.ui.touch-punch',
-    'qtip': '../bower_components/qTip2/dist/jquery.qtip',
+    'qtip2': '../bower_components/qtip2/jquery.qtip',
     'select2': '../bower_components/select2/select2',
     'spectrum': '../bower_components/spectrum/spectrum',
     'swfobject': '../bower_components/swfobject/swfobject/swfobject',
@@ -45,7 +45,7 @@ require.config({
     'jquery.ui.draggable': ['jquery.ui.mouse'],
     'jquery.ui.droppable': ['jquery.ui.draggable'],
     'jquery.ui.touch-punch': ['jquery.ui.mouse'],
-    'qtip': ['jquery'],
+    'qtip2': ['jquery'],
     'select2': ['jquery'],
     'spectrum': ['jquery'],
     'swfobject': {
@@ -68,7 +68,7 @@ require([
   'bootstrap-modal',
   'bootstrap-tab',
   'bootstrap-transition',
-  'qtip'
+  'qtip2'
 ],
 
 function(timetableData, app, Router, $, Backbone, AppView, TimetableBuilderView) {

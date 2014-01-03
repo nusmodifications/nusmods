@@ -186,34 +186,7 @@ module.exports = function (grunt) {
         concat: {
             dist: {
                 files: {
-                    'app/bower_components/qTip2/dist/jquery.qtip.js': [
-                        'app/bower_components/qTip2/src/core/intro.js',
-                        'app/bower_components/qTip2/src/core/constants.js',
-                        'app/bower_components/qTip2/src/core/class.js',
-
-                        'app/bower_components/qTip2/src/core/options.js',
-                        'app/bower_components/qTip2/src/core/content.js',
-                        'app/bower_components/qTip2/src/core/position.js',
-                        'app/bower_components/qTip2/src/core/toggle.js',
-                        'app/bower_components/qTip2/src/core/focus.js',
-                        'app/bower_components/qTip2/src/core/disable.js',
-                        'app/bower_components/qTip2/src/core/button.js',
-                        'app/bower_components/qTip2/src/core/style.js',
-                        'app/bower_components/qTip2/src/core/events.js',
-
-                        'app/bower_components/qTip2/src/core/jquery_methods.js',
-                        'app/bower_components/qTip2/src/core/jquery_overrides.js',
-
-                        'app/bower_components/qTip2/src/core/defaults.js',
-
-                        'app/bower_components/qTip2/src/tips/tips.js',
-                        'app/bower_components/qTip2/src/viewport/viewport.js',
-
-                        'app/bower_components/qTip2/src/core/outro.js'
-                    ],
-                    'app/bower_components/qTip2/src/_core.scss': 'app/bower_components/qTip2/src/core.css',
-                    'app/bower_components/qTip2/src/_css3.scss': 'app/bower_components/qTip2/src/css3.css',
-                    'app/bower_components/qTip2/src/tips/_tips.scss': 'app/bower_components/qTip2/src/tips/tips.css',
+                    'app/bower_components/qtip2/_jquery.qtip.scss': 'app/bower_components/qtip2/jquery.qtip.css',
                     'app/bower_components/select2/_select2.scss': 'app/bower_components/select2/select2.css',
                     'app/bower_components/spectrum/_spectrum.scss': 'app/bower_components/spectrum/spectrum.css'
                 }
