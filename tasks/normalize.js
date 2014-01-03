@@ -96,19 +96,24 @@ module.exports = function (grunt) {
             return;
           }
 
-          var isDelete = delta.isDelete;
-          delta = _.pick(delta, 'ClassNo', 'LessonType', 'WeekText', 'DayCode',
-            'DayText', 'StartTime', 'EndTime', 'Venue');
-
           var timetable = mod.Timetable = mod.Timetable || [];
           var originalLength = timetable.length;
-          for (var i = 0; i < timetable.length; i++) {
-            if (_.isEqual(timetable[i], delta)) {
-              timetable.splice(i--, 1);
+          for (var i = originalLength; i--;) {
+            var lesson = timetable[i];
+            if (lesson.ClassNo === delta.ClassNo &&
+              lesson.LessonType === delta.LessonType &&
+              lesson.WeekText === delta.WeekText &&
+              lesson.DayCode === delta.DayCode &&
+              lesson.StartTime === delta.StartTime &&
+              lesson.EndTime === delta.EndTime) {
+              if (lesson.Venue === delta.Venue || (!delta.isDelete &&
+                lesson.LastModified_js !== delta.LastModified_js)) {
+                timetable.splice(i, 1);
+              }
             }
           }
           var lessonsDeleted = originalLength - timetable.length;
-          if (isDelete) {
+          if (delta.isDelete) {
             if (lessonsDeleted !== 1) {
               grunt.verbose.writeln(lessonsDeleted + ' lessons deleted for ' + modInfo.ModuleCode);
             }
@@ -120,7 +125,8 @@ module.exports = function (grunt) {
             if (lessonsDeleted > 0) {
               grunt.verbose.writeln('Duplicate lesson deleted for ' + modInfo.ModuleCode);
             }
-            timetable.push(delta);
+            timetable.push(_.pick(delta, 'ClassNo', 'LessonType', 'WeekText', 'DayCode',
+              'DayText', 'StartTime', 'EndTime', 'Venue', 'LastModified_js'));
           }
         });
 
@@ -146,6 +152,7 @@ module.exports = function (grunt) {
 
           mod.Timetable.forEach(function (lesson) {
             delete lesson.DayCode;
+            delete lesson.LastModified_js;
           });
         }
 
