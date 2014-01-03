@@ -367,7 +367,14 @@ module.exports = function (grunt) {
         },
         bower: {
             options: {
-                exclude: ['modernizr']
+                exclude: [
+                    'jquery.ui',
+                    'lodash-amd',
+                    'modernizr',
+                    'qtip2',
+                    'requirejs',
+                    'sass-bootstrap'
+                ]
             },
             all: {
                 rjsConfig: '<%= yeoman.app %>/scripts/main.js'
