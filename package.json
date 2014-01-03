@@ -18,11 +18,11 @@
     }
   ],
   "dependencies": {
-    "graceful-fs": "~2.0.0",
-    "grunt": "~0.4.1",
-    "jsdom": "~0.7.0",
-    "moment": "~2.1.0",
-    "request": "~2.23.0"
+    "graceful-fs": "~2.0.1",
+    "grunt": "~0.4.2",
+    "jsdom": "~0.8.10",
+    "moment": "~2.5.0",
+    "request": "~2.30.0"
   },
   "private": true
 }
