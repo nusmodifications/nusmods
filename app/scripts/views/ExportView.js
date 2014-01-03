@@ -1,4 +1,5 @@
-define(['backbone', 'downloadify', 'swfobject'], function(Backbone) {
+define(['underscore', 'backbone', 'downloadify', 'swfobject'],
+  function(_, Backbone) {
   'use strict';
 
   // Pad number to two digits.

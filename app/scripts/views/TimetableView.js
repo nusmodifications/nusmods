@@ -1,4 +1,5 @@
-define(['backbone', 'views/LessonView'], function(Backbone, LessonView) {
+define(['underscore', 'backbone', 'views/LessonView'],
+  function(_, Backbone, LessonView) {
   'use strict';
 
   var TimetableView = Backbone.View.extend({

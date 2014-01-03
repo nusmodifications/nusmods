@@ -1,4 +1,5 @@
-define(['timetableData', 'backbone'], function(timetableData, Backbone) {
+define(['underscore', 'timetableData', 'backbone'],
+  function(_, timetableData, Backbone) {
   'use strict';
 
   // Common terminology throughout project is to refer to lessons instead of

@@ -1,7 +1,9 @@
 require.config({
+  packages: [
+    { name: 'underscore', location: '../bower_components/lodash-amd/compat' }
+  ],
   paths: {
     'jquery': '../bower_components/jquery/jquery',
-    'underscore': '../bower_components/lodash/lodash',
     'backbone': '../bower_components/backbone/backbone',
     'backbone.localStorage': '../bower_components/backbone.localStorage/backbone.localStorage',
     'bootstrap-button': '../bower_components/sass-bootstrap/js/bootstrap-button',

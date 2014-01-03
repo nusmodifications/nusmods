@@ -1,11 +1,12 @@
 define([
+  'underscore',
   'timetableData',
   'backbone',
   'models/LessonModel',
   'collections/LessonCollection',
   'select2'
 ],
-function(timetableData, Backbone, Lesson, LessonCollection) {
+function(_, timetableData, Backbone, Lesson, LessonCollection) {
   'use strict';
 
   var codes = _.keys(timetableData.mods);

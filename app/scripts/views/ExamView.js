@@ -1,4 +1,4 @@
-define(['backbone', 'spectrum'], function(Backbone) {
+define(['underscore', 'backbone', 'spectrum'], function(_, Backbone) {
   'use strict';
 
   var ExamView = Backbone.View.extend({

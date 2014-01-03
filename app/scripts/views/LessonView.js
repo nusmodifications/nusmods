@@ -1,9 +1,10 @@
 define([
+  'underscore',
   'backbone',
   'jquery.ui.draggable',
   'jquery.ui.droppable',
   'jquery.ui.touch-punch'
-], function(Backbone) {
+], function(_, Backbone) {
   'use strict';
 
   var LessonView = Backbone.View.extend({

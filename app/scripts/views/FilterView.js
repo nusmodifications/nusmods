@@ -1,4 +1,4 @@
-define(['backbone'], function(Backbone) {
+define(['underscore', 'backbone'], function(_, Backbone) {
   'use strict';
 
   var FilterView = Backbone.View.extend({

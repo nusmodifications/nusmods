@@ -1,4 +1,5 @@
 define([
+  'underscore',
   'timetableData',
   'backbone',
   'collections/ModuleCollection',
@@ -7,7 +8,8 @@ define([
   'views/FiltersView'
 ],
 
-function(timetableData, Backbone, ModuleCollection, ModulesView, FilterCollection, FiltersView) {
+function(_, timetableData, Backbone, ModuleCollection, ModulesView,
+         FilterCollection, FiltersView) {
   'use strict';
 
   var ModuleFinderView = Backbone.View.extend({
