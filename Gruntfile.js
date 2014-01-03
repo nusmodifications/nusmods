@@ -374,7 +374,6 @@ module.exports = function (grunt) {
 
   grunt.registerTask('ay2012to2013sem2', [
     'bulletinModules:semester2',
-    'cors:previousSemester',
     'corsBiddingStats',
     'examTimetable:ay2012to2013sem2',
     'ivle:ay2012to2013sem2',
@@ -387,7 +386,8 @@ module.exports = function (grunt) {
 
   grunt.registerTask('ay2013to2014sem1', [
     'bulletinModules:semester1',
-    'cors:currentSemester',
+    'cors:previousSemester',
+    'corsBiddingStats',
     'examTimetable:ay2013to2014sem1',
     'ivle:ay2013to2014sem1',
     'moduleTimetableDelta',
@@ -399,12 +399,14 @@ module.exports = function (grunt) {
 
   grunt.registerTask('ay2013to2014sem2', [
     'bulletinModules:semester2',
+    'cors:currentSemester',
     'examTimetable:ay2013to2014sem2',
     'ivle:ay2013to2014sem2',
     'moduleTimetableDelta',
     'consolidate:ay2013to2014sem2',
     'normalize:ay2013to2014sem2',
-    'split:ay2013to2014sem2'
+    'split:ay2013to2014sem2',
+    'backwardCompatibility:ay2013to2014sem2'
   ]);
 
   grunt.registerTask('ay2013to2014', [
@@ -412,5 +414,5 @@ module.exports = function (grunt) {
     'ay2013to2014sem2'
   ]);
 
-  grunt.registerTask('default', 'ay2013to2014sem1');
+  grunt.registerTask('default', 'ay2013to2014sem2');
 };
