@@ -194,18 +194,22 @@ module.exports = function (grunt) {
             dist: {
                 // Options: https://github.com/jrburke/r.js/blob/master/build/example.build.js
                 options: {
-                    // `name` and `out` is set by grunt-usemin
+                    almond: true,
                     baseUrl: '<%= yeoman.app %>/scripts',
+                    include: 'main',
+                    mainConfigFile: '<%= yeoman.app %>/scripts/main.js',
+                    name: 'main',
                     optimize: 'none',
+                    out: '.tmp/scripts/main.js',
                     // TODO: Figure out how to make sourcemaps work with grunt-usemin
                     // https://github.com/yeoman/grunt-usemin/issues/30
                     //generateSourceMaps: true,
                     // required to support SourceMaps
                     // http://requirejs.org/docs/errors.html#sourcemapcomments
-                    paths: {
-                        timetabledata: 'empty:'
-                    },
                     preserveLicenseComments: false,
+                    replaceRequireScript: [{
+                        files: ['.tmp/index.html']
+                    }],
                     useStrict: true,
                     wrap: true
                     //uglify2: {} // https://github.com/mishoo/UglifyJS2
@@ -218,7 +222,7 @@ module.exports = function (grunt) {
             dist: {
                 files: {
                     src: [
-                        // '<%= yeoman.dist %>/scripts/{,*/}*.js',
+                        '<%= yeoman.dist %>/scripts/{,*/}*.js',
                         '<%= yeoman.dist %>/styles/{,*/}*.css',
                         '<%= yeoman.dist %>/images/{,*/}*.{gif,jpeg,jpg,png,webp}',
                         '<%= yeoman.dist %>/styles/fonts/{,*/}*.*'
@@ -234,7 +238,7 @@ module.exports = function (grunt) {
             options: {
                 dest: '<%= yeoman.dist %>'
             },
-            html: '<%= yeoman.app %>/index.html'
+            html: '.tmp/index.html'
         },
 
         // Performs rewrites based on rev and the useminPrepare configuration
@@ -336,6 +340,11 @@ module.exports = function (grunt) {
                         'vendor/knplabs/knp-snappy/src/**/*.php',
                         'bower_components/sass-bootstrap/fonts/*.*'
                     ]
+                }, {
+                    expand: true,
+                    cwd: '.tmp',
+                    dest: '<%= yeoman.dist %>',
+                    src: 'index.html'
                 }]
             },
             styles: {
@@ -344,6 +353,17 @@ module.exports = function (grunt) {
                 cwd: '<%= yeoman.app %>/styles',
                 dest: '.tmp/styles/',
                 src: '{,*/}*.css'
+            },
+            tmp: {
+                expand: true,
+                cwd: '<%= yeoman.app %>',
+                dest: '.tmp',
+                src: [
+                    'bower_components/qtip2/jquery.qtip.css',
+                    'bower_components/select2/select2.css',
+                    'bower_components/spectrum/spectrum.css',
+                    'index.html'
+                ]
             }
         },
 
@@ -419,10 +439,11 @@ module.exports = function (grunt) {
 
     grunt.registerTask('build', [
         'clean:dist',
+        'copy:tmp',
+        'requirejs',
         'useminPrepare',
         'concurrent:dist',
         'autoprefixer',
-        'requirejs',
         'concat',
         'cssmin',
         'uglify',
