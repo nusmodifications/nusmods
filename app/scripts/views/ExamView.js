@@ -6,8 +6,8 @@ define(['underscore', 'backbone', 'spectrum'], function(_, Backbone) {
     template: _.template($('#exam-template').html()),
 
     initialize: function() {
-      this.model.on('change', this.render, this);
-      this.model.on('destroy', this.remove, this);
+      this.listenTo(this.model, 'change', this.render);
+      this.listenTo(this.model, 'destroy', this.remove);
     },
 
     render: function() {

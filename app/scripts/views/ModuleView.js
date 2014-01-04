@@ -6,8 +6,8 @@ define(['underscore', 'backbone'], function(_, Backbone) {
     template: _.template($('#module-template').html()),
 
     initialize: function() {
-      this.model.bind('change', this.render, this);
-      this.model.bind('destroy', this.remove, this);
+      this.listenTo(this.model, 'change', this.render);
+      this.listenTo(this.model, 'destroy', this.remove);
     },
 
     render: function() {

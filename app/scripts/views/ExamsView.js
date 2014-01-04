@@ -6,8 +6,8 @@ define(['backbone', 'views/ExamView'], function(Backbone, ExamView) {
     el: $('#exam-timetable > tbody'),
 
     initialize: function() {
-      this.collection.on('add', this.add, this);
-      this.collection.on('remove', this.remove, this);
+      this.listenTo(this.collection, 'add', this.add);
+      this.listenTo(this.collection, 'remove', this.remove);
     },
 
     add: function(exam, collection, options) {

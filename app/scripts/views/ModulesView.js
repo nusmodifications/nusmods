@@ -10,7 +10,7 @@ function(Backbone, ModuleView) {
     el: $('.modules > tbody'),
 
     initialize: function() {
-      this.collection.on('add', this.add, this);
+      this.listenTo(this.collection, 'add', this.add);
     },
 
     add: function(module) {

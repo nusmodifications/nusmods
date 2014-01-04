@@ -11,8 +11,8 @@ define(['underscore', 'backbone', 'views/LessonView'],
     },
 
     initialize: function() {
-      this.collection.on('add', this.add, this);
-      this.collection.on('remove', this.remove, this);
+      this.listenTo(this.collection, 'add', this.add);
+      this.listenTo(this.collection, 'remove', this.remove);
 
       this.$colgroups = this.$('colgroup');
     },

@@ -5,8 +5,8 @@ define(['underscore', 'backbone'], function(_, Backbone) {
     template: _.template($('#filter-template').html()),
 
     initialize: function() {
-      this.model.on('change', this.render, this);
-      this.model.on('destroy', this.remove, this);
+      this.listenTo(this.model, 'change', this.render);
+      this.listenTo(this.model, 'destroy', this.remove);
     },
 
     render: function() {
