@@ -74,7 +74,8 @@ module.exports = function (grunt) {
                     open: true,
                     base: [
                         '.tmp',
-                        '<%= yeoman.app %>'
+                        '<%= yeoman.app %>',
+                        '.'
                     ]
                 }
             },
@@ -152,6 +153,7 @@ module.exports = function (grunt) {
                 httpImagesPath: '/images',
                 httpGeneratedImagesPath: '/images/generated',
                 httpFontsPath: '/styles/fonts',
+                sourcemap: true,
                 relativeAssets: false,
                 assetCacheBuster: false
             },
