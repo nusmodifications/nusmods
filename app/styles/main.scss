@@ -181,11 +181,15 @@ html {
 .select2-drop-above .select2-choices {
   border-radius: 0 0 3px 3px;
 }
-.select2-container-multi.select2-container-active .select2-choices,
-input[type="text"]:focus,
-input[type="url"]:focus {
-  border-color: rgba(255,102,0,0.6);
-  @include box-shadow(#{inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(255,102,0,.6)});
+.select2-drop-active,
+.select2-drop.select2-drop-above.select2-drop-active,
+.select2-container-active .select2-choices,
+.select2-dropdown-open.select2-drop-above .select2-choices,
+.select2-container-multi.select2-container-active .select2-choices {
+  border-color: $link-color;
+}
+.select2-dropdown-open.select2-drop-above .select2-choices {
+  border-top-color: transparent;
 }
 .select2-search-choice-close {
   top: 5px;
