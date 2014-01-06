@@ -57,7 +57,7 @@ define([
           appendTo: '#timetable-wrapper',
           cursor: 'move',
           helper: function() {
-            return $(this).clone().width($(this).width()).height($(this).height());
+            return $(this).clone().width($(this).outerWidth()).height($(this).outerHeight());
           },
           opacity: 0.4,
           revert: this.revert,
