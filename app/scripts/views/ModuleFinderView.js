@@ -47,11 +47,11 @@ function(_, timetableData, Backbone, ModuleCollection, ModulesView,
         }
       }).click(function() {
         var qtipContent;
-        $('#sidebar-toggle i').toggleClass('icon-chevron-left icon-chevron-right');
+        $('#sidebar-toggle i').toggleClass('fa-chevron-left fa-chevron-right');
         $('#sidebar').animate({
           width: 'toggle'
         }, 100);
-        $('#content').toggleClass('span12 span9');
+        $('#content').toggleClass('col-md-12 col-md-9');
         $('#content').toggleClass('no-sidebar');
         sidebarShown = !sidebarShown;
         qtipContent = sidebarShown ? 'Hide Sidebar' : 'Show Sidebar';

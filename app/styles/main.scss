@@ -1,62 +1,58 @@
+$brand-primary: #f60;
+
 // Core variables and mixins
-@import "sass-bootstrap/lib/variables"; // Modify this for custom colors, font-sizes, etc
-$linkColor: #f60;
-$linkColorHover: darken($linkColor, 15%);
-@import "sass-bootstrap/lib/mixins";
+@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/variables";
+@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/mixins";
 
-// CSS Reset
-@import "sass-bootstrap/lib/reset";
+// Reset
+@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/normalize";
+@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/print";
 
-// Grid system and page structure
-@import "sass-bootstrap/lib/scaffolding";
-@import "sass-bootstrap/lib/grid";
-@import "sass-bootstrap/lib/layouts";
+// Core CSS
+@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/scaffolding";
+@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/type";
+@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/code";
+@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/grid";
+@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/tables";
+@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/forms";
+@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/buttons";
 
-// Base CSS
-@import "sass-bootstrap/lib/type";
-@import "sass-bootstrap/lib/forms";
-@import "sass-bootstrap/lib/tables";
+// Components
+@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/component-animations";
+//@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/glyphicons";
+@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/dropdowns";
+@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/button-groups";
+@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/input-groups";
+@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/navs";
+@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/navbar";
+//@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/breadcrumbs";
+//@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/pagination";
+//@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/pager";
+//@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/labels";
+//@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/badges";
+//@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/jumbotron";
+//@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/thumbnails";
+@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/alerts";
+@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/progress-bars";
+//@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/media";
+//@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/list-group";
+//@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/panels";
+//@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/wells";
+@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/close";
 
-// Components: common
-@import "fontawesome";
-@import "sass-bootstrap/lib/dropdowns";
-@import "sass-bootstrap/lib/component-animations";
-@import "sass-bootstrap/lib/close";
-
-// Components: Buttons & Alerts
-@import "sass-bootstrap/lib/buttons";
-@import "sass-bootstrap/lib/button-groups";
-@import "sass-bootstrap/lib/alerts"; // Note: alerts share common CSS with buttons and thus have styles in buttons
-
-// Components: Nav
-@import "sass-bootstrap/lib/navs";
-
-// Components: Popovers
-@import "sass-bootstrap/lib/modals";
-
-// Components: Misc
-@import "sass-bootstrap/lib/progress-bars";
+// Components w/ JavaScript
+@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/modals";
+//@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/tooltip";
+//@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/popovers";
+//@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/carousel";
 
 // Utility classes
-@import "sass-bootstrap/lib/utilities"; // Has to be last to override when necessary
-
-// RESPONSIVE CLASSES
-// ------------------
-
-@import "sass-bootstrap/lib/responsive-utilities";
+@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/utilities";
+@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/responsive-utilities";
 
 
-// MEDIA QUERIES
-// ------------------
-
-// Large desktops
-@import "sass-bootstrap/lib/responsive-1200px-min";
-
-// Tablets to regular desktops
-@import "sass-bootstrap/lib/responsive-768px-979px";
-
-// Phones to portrait tablets and narrow desktops
-@import "sass-bootstrap/lib/responsive-767px-max";
+$fa-font-path: "/bower_components/font-awesome/fonts";
+@import "font-awesome/scss/font-awesome";
 
 @import "timetable";
 
@@ -114,7 +110,7 @@ html {
 }
 
 // NUSMods Beta Logo
-.brand {
+.navbar-brand {
   font-size: 24px;
   font-weight: bold;
   position: absolute;
@@ -122,7 +118,7 @@ html {
   text-align: right;
   top: 7px;
   &:hover {
-    color: $linkColor;
+    color: $link-color;
     text-decoration: none;
   }
   .beta {
@@ -135,14 +131,14 @@ html {
   }
 }
 @media (max-width: 459px) {
-  .brand {
+  .navbar-brand {
     display: none;
   }
 }
 
 // Loading Overlay
 #overlay {
-  background-color: $white;
+  background-color: #fff;
   @include opacity(100);
   top: 50px;
 }
@@ -154,7 +150,7 @@ html {
   text-align: center;
   top: 220px;
   width: 200px;
-  z-index: $zindexModal;
+  z-index: $zindex-modal-background;
 }
 
 // Select2
@@ -168,8 +164,8 @@ html {
 .select2-container-multi {
   margin-bottom: 9px;
   .select2-choices {
-    border-color: $inputBorder;
-    @include border-radius(3px);
+    border-color: $input-border;
+    border-radius: 3px;
     .select2-search-choice {
       line-height: 18px;
       margin: 4px;
@@ -180,10 +176,10 @@ html {
   }
 }
 .select2-dropdown-open .select2-choices {
-  @include border-radius(3px 3px 0 0);
+  border-radius: 3px 3px 0 0;
 }
 .select2-drop-above .select2-choices {
-  @include border-radius(0 0 3px 3px);
+  border-radius: 0 0 3px 3px;
 }
 .select2-container-multi.select2-container-active .select2-choices,
 input[type="text"]:focus,
@@ -195,7 +191,7 @@ input[type="url"]:focus {
   top: 5px;
 }
 .select2-results .select2-highlighted {
-  background: none repeat scroll 0 0 $linkColor;
+  background: none repeat scroll 0 0 $link-color;
 }
 
 // Module Finder Sidebar
@@ -205,7 +201,7 @@ input[type="url"]:focus {
   }
 }
 .exhibit-facet-body {
-  @include border-radius(3px);
+  border-radius: 3px;
 }
 .exhibit-text-facet {
   padding-right: 15px;
@@ -303,7 +299,7 @@ td.details {
   @include user-select(none);
 }
 colgroup.hover {
-  background-color: $tableBackgroundHover;
+  background-color: $table-bg-hover;
 }
 #sat {
   display: none;
@@ -320,53 +316,53 @@ colgroup.hover {
   }
 }
 .ui-draggable {
-  @include border-radius(8px);
+  border-radius: 8px;
   &:hover {
     cursor: move;
   }
 }
 
 // Timetable Controls
-#timetable-controls {
-  #exam-timetable,
-  #selected-mods {
-    margin-top: 45px;
-  }
-  label {
-    float: left;
-    font-weight: bold;
-    padding: 5px 10px 0 0;
-  }
-  .btn {
-    padding: 4px 10px;
-  }
-}
+//#timetable-controls {
+//  #exam-timetable,
+//  #selected-mods {
+//    margin-top: 45px;
+//  }
+//  label {
+//    float: left;
+//    font-weight: bold;
+//    padding: 5px 10px 0 0;
+//  }
+//  .btn {
+//    padding: 4px 10px;
+//  }
+//}
 
 // Export, Share, Exam Timetable
-#export-share-exams-container {
-  float: left;
-  margin: 0 16px;
-}
-
-#export-share-container {
-  width: 100%;
-}
-
-#export-timetable {
-  float: left;
-  margin-right: 20px;
-}
-
-#share-container {
-  float: right;
-  position: relative;
-  .input-append {
-    float: right;
-  }
-}
+//#export-share-exams-container {
+//  float: left;
+//  margin: 0 16px;
+//}
+//
+//#export-share-container {
+//  width: 100%;
+//}
+//
+//#export-timetable {
+//  float: left;
+//  margin-right: 20px;
+//}
+//
+//#share-container {
+//  float: right;
+//  position: relative;
+//  .input-append {
+//    float: right;
+//  }
+//}
 #short-url {
   cursor: auto;
-  width: 155px;
+//  width: 155px;
 }
 
 // For ZeroClipboard CSS effects
@@ -381,10 +377,10 @@ colgroup.hover {
 #exam-timetable {
   border: 1px solid $gray;
   font-weight: bold;
-  max-width: 540px;
+//  max-width: 540px;
   th {
     border: 1px solid $gray;
-    background-color: $grayLighter;
+    background-color: $gray-lighter;
   }
   td {
     border: 1px solid $gray;
@@ -393,28 +389,28 @@ colgroup.hover {
     }
   }
   tr.clash {
-    background-color: $grayLighter;
+    background-color: $gray-lighter;
   }
   tr:hover td {
     background-color: transparent;
   }
 }
 .exam-time {
-  width: 135px;
+//  width: 135px;
 }
 .clash {
   color: red;
 }
 
 // Show / Hide, Selected Modules
-#show-hide-selected-mods-container {
-  float: left;
-  margin-left: 16px;
-  width: 375px;
-}
-#show-hide .btn-group {
-  float: right;
-}
+//#show-hide-selected-mods-container {
+//  float: left;
+//  margin-left: 16px;
+//  width: 375px;
+//}
+//#show-hide .btn-group {
+//  float: right;
+//}
 
 // Footer
 .footer {

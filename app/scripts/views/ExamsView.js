@@ -29,7 +29,7 @@ define(['backbone', 'views/ExamView'], function(Backbone, ExamView) {
         });
         // If clashCount was originally 0, is first clash, show #clash.
         if (!this.clashCount) {
-          $('#clash').show();
+          $('#clash').removeClass('hidden');
         }
         this.clashCount++;
       }
@@ -43,7 +43,7 @@ define(['backbone', 'views/ExamView'], function(Backbone, ExamView) {
         }
         this.clashCount--;
         if (!this.clashCount) {
-          $('#clash').hide();
+          $('#clash').addClass('hidden');
         }
       }
     }

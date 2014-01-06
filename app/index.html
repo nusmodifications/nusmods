@@ -21,8 +21,8 @@
   <div class="modal-backdrop" id="overlay"></div>
   <div id="loading">
     Loading&hellip;
-    <div class="progress progress-warning progress-striped active">
-      <div class="bar" style="width: 100%;"></div>
+    <div class="progress progress-striped active">
+      <div class="progress-bar progress-bar-warning" style="width: 100%;"></div>
     </div>
     <!--[if lt IE 8]>
       Timetable Builder supports IE8+ but Module Finder does not support any version of IE. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience NUSMods.
@@ -31,12 +31,12 @@
   <ul class="nav nav-tabs">
     <li class="active">
       <a data-toggle="tab" href="#module-finder">
-        <i class="icon-search"></i>&nbsp;Module Finder
+        <i class="fa fa-search"></i>&nbsp;Module Finder
       </a>
     </li>
     <li>
       <a data-toggle="tab" href="#timetable-builder">
-        <i class="icon-th"></i>&nbsp;Timetable Builder
+        <i class="fa fa-th"></i>&nbsp;Timetable Builder
       </a>
     </li>
   </ul>
@@ -56,18 +56,18 @@
          data-width="90"></div>
     <!--<iframe src="//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2FNUSMods&amp;send=false&amp;layout=button_count&amp;width=450&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font=arial&amp;height=21&amp;appId=360419287362497" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:90px; height:21px;" allowTransparency="true"></iframe>-->
   </div>
-  <a class="brand" href="/">
+  <a class="navbar-brand" href="/">
     NUS<span class="mods">Mods</span>
     <span class="beta">BETA</span>
   </a>
-  <div class="container-fluid hide">
-    <div class="row-fluid">
+  <div class="container hidden">
+    <div class="row">
       <div class="tab-content">
         <!--[if IE]>
           <div class="alert">Timetable Builder supports IE8+ but Module Finder does not support any version of IE. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience NUSMods.</div>
         <![endif]-->
         <div class="tab-pane active" id="module-finder">
-          <div class="span3" id="sidebar">
+          <div class="col-sm-3" id="sidebar">
             <ul>
               <li>
                 <div class="arrow-right"></div>
@@ -118,9 +118,9 @@
               <li><strong>Evening:</strong>&nbsp;After 6pm
             </ul>
           </div>
-          <div class="span9" id="content">
+          <div class="col-sm-9" id="content">
             <form class="filter-mc form-inline">
-              <label class="checkbox inline">MC</label>
+              <label class="checkbox-inline">MC</label>
             </form>
             <table class="modules table table-bordered table-striped">
               <thead>
@@ -136,10 +136,10 @@
               </tbody>
             </table>
           </div>
-          <a href="#" id="sidebar-toggle"><i class="icon-chevron-left"></i></a>
+          <a href="#" id="sidebar-toggle"><i class="fa fa-chevron-left"></i></a>
         </div>
         <div class="tab-pane" id="timetable-builder">
-          <div class="alert alert-error hide" id="clash">
+          <div class="alert alert-danger hidden" id="clash">
             <strong>Warning!</strong>&nbsp;There are&nbsp;
             <strong class="clash">clashes</strong>&nbsp;in your&nbsp;
             <a href="#exam-timetable">exam timetable</a>.
@@ -612,63 +612,67 @@
               </tbody>
             </table>
           </div>
-          <div id="timetable-controls">
-            <div id="export-share-exams-container">
+          <div id="timetable-controls" class="row">
+            <div id="export-share-exams-container" class="col-sm-6">
               <div id="export-share-container">
                 <div class="btn-group dropup" id="export-timetable">
-                  <button class="btn" id="export-timetable-action">
-                    <i class="icon-share-alt"></i>&nbsp;Export
+                  <button class="btn btn-default" id="export-timetable-action">
+                    <i class="fa fa-share-alt"></i>&nbsp;Export
                   </button>
-                  <button class="btn dropdown-toggle"
+                  <button class="btn btn-default dropdown-toggle"
                           data-toggle="dropdown">
                     <span class="caret"></span>
                   </button>
                   <ul class="dropdown-menu">
                     <li>
                       <a download="My NUSMods.com Timetable.xls" href="#" id="xls-file">
-                        <i class="icon-table"></i>&nbsp;Excel File
+                        <i class="fa fa-table"></i>&nbsp;Excel File
                       </a>
                     </li>
                     <li>
                       <a download="My NUSMods.com Timetable.html" href="#" id="html-file">
-                        <i class="icon-globe"></i>&nbsp;HTML File
+                        <i class="fa fa-globe"></i>&nbsp;HTML File
                       </a>
                     </li>
                     <li>
                       <a download="My NUSMods.com Timetable.ics" href="#" id="ical-file">
-                        <i class="icon-calendar"></i>&nbsp;iCalendar File (.ics)<br>
+                        <i class="fa fa-calendar"></i>&nbsp;iCalendar File (.ics)<br>
                         (For Google Calendar / iCal / Outlook)
                       </a>
                     </li>
                     <li>
                       <a href="#" id="jpg-file">
-                        <i class="icon-picture"></i>&nbsp;Image File (.jpg)
+                        <i class="fa fa-picture-o"></i>&nbsp;Image File (.jpg)
                       </a>
                     </li>
                     <li>
                       <a href="#" id="pdf-file">
-                        <i class="icon-file-text-alt"></i>&nbsp;PDF File
+                        <i class="fa fa-file-text-o"></i>&nbsp;PDF File
                       </a>
                     </li>
                   </ul>
                 </div>
-                <div id="share-container">
+                <div id="share-container" class="form-group">
                   <label>Share</label>
-                  <div class="input-prepend input-append">
-                    <button class="btn" id="copy-to-clipboard" type="button">
-                      <i class="icon-paste"></i>
-                    </button>
-                    <input id="short-url" placeholder="Click to get short URL"
+                  <div class="input-group">
+                    <span class="input-group-btn">
+                      <button class="btn btn-default" id="copy-to-clipboard" type="button">
+                        <i class="fa fa-paste"></i>
+                      </button>
+                    </span>
+                    <input id="short-url" class="form-control" placeholder="Click to get short URL"
                     readonly type="url">
-                    <button class="btn" id="share-email" type="button">
-                      <i class="icon-envelope"></i>
-                    </button>
-                    <button class="btn" id="share-facebook" type="button">
-                      <i class="icon-facebook-sign"></i>
-                    </button>
-                    <button class="btn" id="share-twitter" type="button">
-                      <i class="icon-twitter"></i>
-                    </button>
+                    <span class="input-group-btn">
+                      <button class="btn btn-default" id="share-email" type="button">
+                        <i class="fa fa-envelope"></i>
+                      </button>
+                      <button class="btn btn-default" id="share-facebook" type="button">
+                        <i class="fa fa-facebook-square"></i>
+                      </button>
+                      <button class="btn btn-default" id="share-twitter" type="button">
+                        <i class="fa fa-twitter"></i>
+                      </button>
+                    </span>
                   </div>
                 </div>
               </div>
@@ -683,22 +687,22 @@
                 <tbody>
               </table>
             </div>
-            <div id="show-hide-selected-mods-container">
+            <div id="show-hide-selected-mods-container" class="col-sm-6">
               <div id="show-hide">
                 <label>Show / Hide</label>
                 <div class="btn-group" data-toggle="buttons-checkbox">
-                  <button class="btn active" type="button">Code</button>
-                  <button class="btn active" type="button">Group</button>
-                  <button class="btn" type="button">Room</button>
-                  <button class="btn" type="button">Title</button>
-                  <button class="btn active" type="button">Week</button>
+                  <button class="btn btn-default active" type="button">Code</button>
+                  <button class="btn btn-default active" type="button">Group</button>
+                  <button class="btn btn-default" type="button">Room</button>
+                  <button class="btn btn-default" type="button">Title</button>
+                  <button class="btn btn-default active" type="button">Week</button>
                 </div>
               </div>
               <div id="selected-mods">
                 <span id="select2-header">
                   Select Modules for Timetable
                 </span>
-                <a href="#" class="hide" id="clear-all">(Clear&nbsp;All)</a>
+                <a href="#" class="hidden" id="clear-all">(Clear&nbsp;All)</a>
                 <input id="select2" type="hidden">
               </div>
             </div>
@@ -719,68 +723,72 @@
       Built by&nbsp;<a href="mailto:beng@nus.edu.sg">Beng</a>.</span></p>
     </div>
   </div>
-  <div class="fade modal hide" id="export-modal">
-    <div class="modal-header">
-      <button type="button" class="close" data-dismiss="modal">&times;</button>
-      <h3>Export Timetable</h3>
-    </div>
-    <div class="modal-body">
-      <div class="alert alert-block hide" id="save-link-as-instructions">
-        <h4 class="alert-heading">Warning!</h4>
-        <p>For Excel / HTML / iCalendar files, you need to&nbsp;<strong>
-        Right-Click Download &rarr; Save Link As / Download Linked File
-        As</strong>&nbsp;then rename the file with the appropriate extension
-        (.html / .ics / .xls).</p>
-        <p>If you install the latest&nbsp;<span class="hide" id="afp-or">Flash
-        Player or&nbsp;</span>Google Chrome, you will be able to just click
-        Download instead. (These files are generated directly using your
-        browser, so other browsers don't support downloading them like normal
-        files yet.)</p>
+  <div class="fade modal" id="export-modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Export Timetable</h4>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-block hidden" id="save-link-as-instructions">
+            <h4 class="alert-heading">Warning!</h4>
+            <p>For Excel / HTML / iCalendar files, you need to&nbsp;<strong>
+            Right-Click Download &rarr; Save Link As / Download Linked File
+            As</strong>&nbsp;then rename the file with the appropriate extension
+            (.html / .ics / .xls).</p>
+            <p>If you install the latest&nbsp;<span class="hidden" id="afp-or">Flash
+            Player or&nbsp;</span>Google Chrome, you will be able to just click
+            Download instead. (These files are generated directly using your
+            browser, so other browsers don't support downloading them like normal
+            files yet.)</p>
+          </div>
+          <h4><i class="fa fa-picture-o"></i>&nbsp;Image File (.jpg)</h4>
+          <form action="jpg.php" id="jpg-form" method="post">
+            <input id="jpg-html" name="html" type="hidden">
+            <button class="btn btn-warning" type="submit">
+              <i class="fa fa-download-alt"></i>&nbsp;Download
+            </button>
+          </form>
+          <h4><i class="fa fa-file-text-o"></i>&nbsp;PDF File</h4>
+          <form action="pdf.php" id="pdf-form" method="post">
+            <input id="pdf-html" name="html" type="hidden">
+            <button class="btn btn-warning" type="submit">
+              <i class="fa fa-download-alt"></i>&nbsp;Download
+            </button>
+          </form>
+          <h4><i class="fa fa-globe"></i>&nbsp;HTML File</h4>
+          <div id="dl-html-container">
+            <a class="btn btn-warning" download="My NUSMods.com Timetable.html"
+            href="#" id="dl-html">
+              <i class="fa fa-download-alt"></i>&nbsp;Download
+            </a>
+          </div>
+          <p><strong>Note:</strong>&nbsp;For the above files, Code / Group / Room /
+          Title / Week will be shown or hidden as you have selected in the timetable
+          displayed.</p>
+          <h4><i class="fa fa-table"></i>&nbsp;Excel File (.xls)&nbsp;
+          <small>Using Excel 2003 XML (SpreadsheetML) format</small></h4>
+          <div id="dl-xls-container">
+            <a class="btn btn-warning" download="My NUSMods.com Timetable.xls"
+            href="#" id="dl-xls">
+              <i class="fa fa-download-alt"></i>&nbsp;Download
+            </a>
+          </div>
+          <h4><i class="fa fa-calendar"></i>&nbsp;iCalendar File
+          (.ics)&nbsp;<small>For import into Google Calendar, iCal, Outlook,
+          etc.</small></h4>
+          <div id="dl-ical-container">
+            <a class="btn btn-warning" download="My NUSMods.com Timetable.ics"
+            href="#" id="dl-ical">
+              <i class="fa fa-download-alt"></i>&nbsp;Download
+            </a>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <a href="#" class="btn btn-warning" data-dismiss="modal">Close</a>
+        </div>
       </div>
-      <h4><i class="icon-picture"></i>&nbsp;Image File (.jpg)</h4>
-      <form action="jpg.php" id="jpg-form" method="post">
-        <input id="jpg-html" name="html" type="hidden">
-        <button class="btn btn-warning" type="submit">
-          <i class="icon-download-alt"></i>&nbsp;Download
-        </button>
-      </form>
-      <h4><i class="icon-file-text-alt"></i>&nbsp;PDF File</h4>
-      <form action="pdf.php" id="pdf-form" method="post">
-        <input id="pdf-html" name="html" type="hidden">
-        <button class="btn btn-warning" type="submit">
-          <i class="icon-download-alt"></i>&nbsp;Download
-        </button>
-      </form>
-      <h4><i class="icon-globe"></i>&nbsp;HTML File</h4>
-      <div id="dl-html-container">
-        <a class="btn btn-warning" download="My NUSMods.com Timetable.html"
-        href="#" id="dl-html">
-          <i class="icon-download-alt"></i>&nbsp;Download
-        </a>
-      </div>
-      <p><strong>Note:</strong>&nbsp;For the above files, Code / Group / Room /
-      Title / Week will be shown or hidden as you have selected in the timetable
-      displayed.</p>
-      <h4><i class="icon-table"></i>&nbsp;Excel File (.xls)&nbsp;
-      <small>Using Excel 2003 XML (SpreadsheetML) format</small></h4>
-      <div id="dl-xls-container">
-        <a class="btn btn-warning" download="My NUSMods.com Timetable.xls"
-        href="#" id="dl-xls">
-          <i class="icon-download-alt"></i>&nbsp;Download
-        </a>
-      </div>
-      <h4><i class="icon-calendar"></i>&nbsp;iCalendar File
-      (.ics)&nbsp;<small>For import into Google Calendar, iCal, Outlook,
-      etc.</small></h4>
-      <div id="dl-ical-container">
-        <a class="btn btn-warning" download="My NUSMods.com Timetable.ics"
-        href="#" id="dl-ical">
-          <i class="icon-download-alt"></i>&nbsp;Download
-        </a>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <a href="#" class="btn btn-warning" data-dismiss="modal">Close</a>
     </div>
   </div>
 
@@ -790,11 +798,11 @@
     <td><%= time %>
     <td>
       <div class="btn-group">
-        <a href="#" class="btn">
-          <i class="icon-eye-open"></i>
+        <a href="#" class="btn btn-default">
+          <i class="fa fa-eye"></i>
         </a>
-        <a href="#" class="btn">
-          <i class="icon-remove"></i>
+        <a href="#" class="btn btn-default">
+          <i class="fa fa-times"></i>
         </a>
       </div>
       <input type='text' class='color'>
@@ -819,16 +827,16 @@
     <td class="code"><%= code %></td>
     <td class="details">
       <div class="buttons">
-          <a class="ivle btn btn-mini"
+          <a class="ivle btn btn-default btn-xs"
              data-code="<%= code %>"
              href="http://ivle.nus.edu.sg/lms/public/list_course_public.aspx?code=<%= code %>"
              target="_blank">
-              <i class="icon-info-sign"></i>&nbsp;IVLE
+              <i class="fa fa-info-circle"></i>&nbsp;IVLE
           </a>
-          <button class="add btn btn-mini btn-warning"
+          <button class="add btn btn-xs btn-warning"
                   data-code="<%= code %>"
                   type="button">
-              <i class="icon-plus-sign"></i>&nbsp;Add
+              <i class="fa fa-plus-circle"></i>&nbsp;Add
           </button>
       </div>
       <strong><%= title %></strong>

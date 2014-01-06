@@ -42,9 +42,9 @@ define(['underscore', 'backbone', 'downloadify', 'swfobject'],
       if (this.dlAttrSupported || this.fileURI || !this.flash10) {
         if (!this.dlAttrSupported) {
           if (!this.fileURI) {
-            $('#afp-or').show();
+            $('#afp-or').removeClass('hidden');
           }
-          $('#save-link-as-instructions').show();
+          $('#save-link-as-instructions').removeClass('hidden');
         }
       } else {
         var downloadifyOptions = {

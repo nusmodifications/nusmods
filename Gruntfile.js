@@ -390,12 +390,12 @@ module.exports = function (grunt) {
         bower: {
             options: {
                 exclude: [
+                    'bootstrap-sass',
                     'jquery.ui',
                     'lodash-amd',
                     'modernizr',
                     'qtip2',
-                    'requirejs',
-                    'sass-bootstrap'
+                    'requirejs'
                 ]
             },
             all: {

@@ -1,6 +1,6 @@
-@import "sass-bootstrap/lib/variables";
+@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/variables";
 @import "timetable";
 table {
   border-collapse: collapse;
-  font-family: $baseFontFamily;
+  font-family: $font-family-base;
 }

@@ -10,7 +10,7 @@
   table-layout: fixed;
   width: 1235px;
   th {
-    background-color: $white;
+    background-color: #fff;
   }
 }
 #times div {
@@ -18,11 +18,11 @@
   text-align: right;
 }
 .day {
-  border-bottom: 1px solid $tableBorder;
-  border-top: 1px solid $tableBorder;
+  border-bottom: 1px solid $table-border-color;
+  border-top: 1px solid $table-border-color;
   th {
-    border-bottom: 1px solid $white;
-    border-top: 1px solid $white;
+    border-bottom: 1px solid #fff;
+    border-top: 1px solid #fff;
     div {
       line-height: 15px;
       margin-right: -20px;
@@ -34,10 +34,10 @@
   }
 }
 .m00 {
-  border-left: 1px solid $tableBorder;
+  border-left: 1px solid $table-border-color;
 }
 .m30 {
-  border-right: 1px solid $tableBorder;
+  border-right: 1px solid $table-border-color;
 }
 .lesson {
   border: 2px solid;

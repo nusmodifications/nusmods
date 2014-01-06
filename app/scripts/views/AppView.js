@@ -24,7 +24,7 @@ define(['backbone', 'timetabledata'], function(Backbone, timetableData) {
 
       $('#correct-as-at').text(timetableData.correctAsAt);
 
-      $('.container-fluid').show();
+      $('.container').removeClass('hidden');
     },
 
     showModuleFinder: function() {

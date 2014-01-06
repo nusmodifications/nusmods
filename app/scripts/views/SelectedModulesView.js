@@ -178,10 +178,10 @@ function(_, timetableData, Backbone, Lesson, LessonCollection) {
       if (length) {
         this.$('#select2-header').text('Selected ' + length + ' Module' +
             (length == 1 ? '' : 's'));
-        this.$('#clear-all').show();
+        this.$('#clear-all').removeClass('hidden');
       } else {
         this.$('#select2-header').text('Select Modules for Timetable ');
-        this.$('#clear-all').hide();
+        this.$('#clear-all').addClass('hidden');
       }
       this.$('#select2').val(this.collection.pluck('id')).trigger('change');
       this.$('#short-url').val('').blur();
