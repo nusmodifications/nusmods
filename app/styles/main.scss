@@ -139,7 +139,7 @@ html {
 // Loading Overlay
 #overlay {
   background-color: #fff;
-  @include opacity(100);
+  @include opacity(1);
   top: 50px;
 }
 #loading {
@@ -313,10 +313,10 @@ colgroup.hover {
     cursor: not-allowed;
   }
   &.active {
-    @include opacity(60);
+    @include opacity(.6);
   }
   &.hover {
-    @include opacity(100);
+    @include opacity(1);
   }
 }
 .ui-draggable {
