@@ -203,7 +203,7 @@ module.exports = function (grunt) {
                     // required to support SourceMaps
                     // http://requirejs.org/docs/errors.html#sourcemapcomments
                     paths: {
-                        timetableData: 'empty:'
+                        timetabledata: 'empty:'
                     },
                     preserveLicenseComments: false,
                     useStrict: true,

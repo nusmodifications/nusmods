@@ -1,4 +1,4 @@
-define(['underscore', 'timetableData', 'backbone'],
+define(['underscore', 'timetabledata', 'backbone'],
   function(_, timetableData, Backbone) {
   'use strict';
 

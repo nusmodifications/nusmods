@@ -3,7 +3,7 @@ define([
   'backbone',
   'jquery.ui.draggable',
   'jquery.ui.droppable',
-  'jquery.ui.touch-punch'
+  'jquery-ui-touch-punch-improved'
 ], function(_, Backbone) {
   'use strict';
 

@@ -1,68 +1,105 @@
 require.config({
   packages: [
-    { name: 'underscore', location: '../bower_components/lodash-amd/compat' }
+    {
+      name: 'underscore',
+      location: '../bower_components/lodash-amd/compat'
+    }
   ],
   paths: {
-    'jquery': '../bower_components/jquery/jquery',
-    'backbone': '../bower_components/backbone/backbone',
-    'backbone.localStorage': '../bower_components/backbone.localStorage/backbone.localStorage',
+    'backbone.localstorage': '../bower_components/backbone.localstorage/backbone.localStorage',
+    backbone: '../bower_components/backbone/backbone',
     'bootstrap-button': '../bower_components/sass-bootstrap/js/bootstrap-button',
     'bootstrap-dropdown': '../bower_components/sass-bootstrap/js/bootstrap-dropdown',
     'bootstrap-modal': '../bower_components/sass-bootstrap/js/bootstrap-modal',
     'bootstrap-tab': '../bower_components/sass-bootstrap/js/bootstrap-tab',
     'bootstrap-transition': '../bower_components/sass-bootstrap/js/bootstrap-transition',
-    'downloadify': '../bower_components/Downloadify/src/downloadify',
-    'eventEmitter': '../bower_components/eventEmitter/EventEmitter',
-    'eventie': '../bower_components/eventie/eventie',
+    downloadify: '../bower_components/downloadify/src/downloadify',
+    jquery: '../bower_components/jquery/jquery',
     'jquery.ui.core': '../bower_components/jquery.ui/ui/jquery.ui.core',
     'jquery.ui.widget': '../bower_components/jquery.ui/ui/jquery.ui.widget',
     'jquery.ui.mouse': '../bower_components/jquery.ui/ui/jquery.ui.mouse',
     'jquery.ui.draggable': '../bower_components/jquery.ui/ui/jquery.ui.draggable',
     'jquery.ui.droppable': '../bower_components/jquery.ui/ui/jquery.ui.droppable',
-    'jquery.ui.touch-punch': '../bower_components/jqueryui-touch-punch/jquery.ui.touch-punch',
-    'qtip2': '../bower_components/qtip2/jquery.qtip',
-    'select2': '../bower_components/select2/select2',
-    'spectrum': '../bower_components/spectrum/spectrum',
-    'swfobject': '../bower_components/swfobject/swfobject/swfobject',
-    'timetableData': 'nus_timetable_data',
-    'ZeroClipboard': '../bower_components/zeroclipboard/ZeroClipboard'
+    'jquery-ui-touch-punch-improved': '../bower_components/jquery-ui-touch-punch-improved/jquery.ui.touch-punch-improved',
+    qtip2: '../bower_components/qtip2/jquery.qtip',
+    select2: '../bower_components/select2/select2',
+    spectrum: '../bower_components/spectrum/spectrum',
+    swfobject: '../bower_components/swfobject/swfobject/swfobject',
+    timetabledata: 'nus_timetable_data',
+    zeroclipboard: '../bower_components/zeroclipboard/ZeroClipboard'
   },
   shim: {
-    'backbone': {
-      deps: ['underscore', 'jquery'],
+    backbone: {
+      deps: [
+        'underscore',
+        'jquery'
+      ],
       exports: 'Backbone'
     },
-    'backbone.localStorage': ['backbone'],
-    'bootstrap-button': ['jquery'],
-    'bootstrap-dropdown': ['jquery'],
-    'bootstrap-modal': ['jquery'],
-    'bootstrap-tab': ['jquery'],
-    'bootstrap-transition': ['jquery'],
-    'downloadify': ['jquery', 'swfobject'],
-    'jquery.ui.core': ['jquery'],
-    'jquery.ui.widget': ['jquery.ui.core'],
-    'jquery.ui.mouse': ['jquery.ui.widget'],
-    'jquery.ui.draggable': ['jquery.ui.mouse'],
-    'jquery.ui.droppable': ['jquery.ui.draggable'],
-    'jquery.ui.touch-punch': ['jquery.ui.mouse'],
-    'qtip2': ['jquery'],
-    'select2': ['jquery'],
-    'spectrum': ['jquery'],
-    'swfobject': {
+    'backbone.localstorage': [
+      'backbone'
+    ],
+    'bootstrap-button': [
+      'jquery'
+    ],
+    'bootstrap-dropdown': [
+      'jquery'
+    ],
+    'bootstrap-modal': [
+      'jquery'
+    ],
+    'bootstrap-tab': [
+      'jquery'
+    ],
+    'bootstrap-transition': [
+      'jquery'
+    ],
+    downloadify: [
+      'jquery',
+      'swfobject'
+    ],
+    'jquery.ui.core': [
+      'jquery'
+    ],
+    'jquery.ui.widget': [
+      'jquery.ui.core'
+    ],
+    'jquery.ui.mouse': [
+      'jquery.ui.widget'
+    ],
+    'jquery.ui.draggable': [
+      'jquery.ui.mouse'
+    ],
+    'jquery.ui.droppable': [
+      'jquery.ui.draggable'
+    ],
+    'jquery-ui-touch-punch-improved': [
+      'jquery.ui.mouse'
+    ],
+    qtip2: [
+      'jquery'
+    ],
+    select2: [
+      'jquery'
+    ],
+    spectrum: [
+      'jquery'
+    ],
+    swfobject: {
       exports: 'swfobject'
     }
   }
 });
 
 require([
-  'timetableData',
+  'timetabledata',
   'app',
   'router',
   'jquery',
   'backbone',
   'views/AppView',
   'views/TimetableBuilderView',
-  'backbone.localStorage',
+  'backbone.localstorage',
   'bootstrap-button',
   'bootstrap-dropdown',
   'bootstrap-modal',

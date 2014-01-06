@@ -1,6 +1,6 @@
 define([
   'underscore',
-  'timetableData',
+  'timetabledata',
   'backbone',
   'collections/ModuleCollection',
   'views/ModulesView',

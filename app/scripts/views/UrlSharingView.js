@@ -1,4 +1,4 @@
-define(['backbone', 'ZeroClipboard'], function(Backbone, ZeroClipboard) {
+define(['backbone', 'zeroclipboard'], function(Backbone, ZeroClipboard) {
   'use strict';
 
   var UrlSharingView = Backbone.View.extend({

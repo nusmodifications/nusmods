@@ -1,4 +1,4 @@
-define(['backbone', 'timetableData'], function(Backbone, timetableData) {
+define(['backbone', 'timetabledata'], function(Backbone, timetableData) {
   'use strict';
 
   var AppView = Backbone.View.extend({
