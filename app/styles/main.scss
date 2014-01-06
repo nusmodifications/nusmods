@@ -70,19 +70,19 @@ html {
 }
 @media (max-width: 767px) {
   .nav {
-    margin-left: -20px;
     margin-right: -20px;
+    margin-left: -20px;
   }
 }
 
 // Social Bar
 .social-bar {
-  font-size: 11px;
-  left: 50%;
-  margin-left: -120px;
   position: absolute;
   top: 11px;
+  left: 50%;
+  margin-left: -120px;
   width: 500px;
+  font-size: 11px;
 }
 .social-notice,
 .twitter-share-button,
@@ -111,20 +111,20 @@ html {
 
 // NUSMods Beta Logo
 .navbar-brand {
-  font-size: 24px;
-  font-weight: bold;
   position: absolute;
+  top: 7px;
   right: 10px;
   text-align: right;
-  top: 7px;
+  font-weight: bold;
+  font-size: 24px;
   &:hover {
     color: $link-color;
     text-decoration: none;
   }
   .beta {
     display: block;
-    font-size: 9px;
     margin-top: -6px;
+    font-size: 9px;
   }
   .mods {
     color: #aaa;
@@ -138,19 +138,19 @@ html {
 
 // Loading Overlay
 #overlay {
-  background-color: #fff;
   @include opacity(1);
   top: 50px;
+  background-color: #fff;
 }
 #loading {
-  font-weight: bold;
-  left: 50%;
-  margin-left: -100px;
   position: fixed;
-  text-align: center;
   top: 220px;
-  width: 200px;
+  left: 50%;
   z-index: $zindex-modal-background;
+  margin-left: -100px;
+  width: 200px;
+  text-align: center;
+  font-weight: bold;
 }
 
 // Select2
@@ -167,8 +167,8 @@ html {
     border-color: $input-border;
     border-radius: 3px;
     .select2-search-choice {
-      line-height: 18px;
       margin: 4px;
+      line-height: 18px;
     }
     li {
       float: none;
@@ -220,30 +220,30 @@ html {
 }
 
 .arrow-right {
+  display: inline-block;
   width: 0;
   height: 0;
   border-top: 5px solid transparent;
   border-bottom: 5px solid transparent;
   border-left: 10px solid black;
-  display: inline-block;
 }
 
 .arrow-down {
+  display: inline-block;
   width: 0;
   height: 0;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
   border-top: 10px solid black;
-  display: inline-block;
+  border-right: 5px solid transparent;
+  border-left: 5px solid transparent;
 }
 
 // Sidebar Toggling
 #sidebar-toggle {
-  bottom: 4px;
-  font-size: 24px;
-  left: 4px;
   position: fixed;
+  bottom: 4px;
+  left: 4px;
   text-decoration: none;
+  font-size: 24px;
 }
 .no-sidebar {
   margin-left: 0 !important;
@@ -253,8 +253,8 @@ html {
 #content {
   .exhibit-flowingFacet {
     .exhibit-flowingFacet-value {
-      clear: none;
       float: left;
+      clear: none;
       margin: 0 0 5px 3px;
     }
     .exhibit-flowingFacet-header {
@@ -263,10 +263,10 @@ html {
       width: 35px;
     }
     .exhibit-flowingFacet-value-checkbox {
-      float: left;
-      left: 0;
       position: relative;
       top: -2px;
+      left: 0;
+      float: left;
     }
   }
 }
@@ -280,8 +280,8 @@ td.code, td.mc {
   text-align: center !important;
 }
 td.code {
-  font-weight: bold;
   width: 70px;
+  font-weight: bold;
 }
 td.exam {
   min-width: 75px;
@@ -366,22 +366,22 @@ colgroup.hover {
 //}
 #short-url {
   cursor: auto;
-//  width: 155px;
+  //  width: 155px;
 }
 
 // For ZeroClipboard CSS effects
 // https://github.com/jonrohan/ZeroClipboard/blob/master/docs/instructions.md#css-effects
 #copy-to-clipboard.zeroclipboard-is-active {
-  @extend .btn:active
+  @extend .btn:active;
 }
 #copy-to-clipboard.zeroclipboard-is-hover {
-  @extend .btn:hover
+  @extend .btn:hover;
 }
 
 #exam-timetable {
   border: 1px solid $gray;
   font-weight: bold;
-//  max-width: 540px;
+  //  max-width: 540px;
   th {
     border: 1px solid $gray;
     background-color: $gray-lighter;
@@ -400,7 +400,7 @@ colgroup.hover {
   }
 }
 .exam-time {
-//  width: 135px;
+  //  width: 135px;
 }
 .clash {
   color: red;
@@ -418,22 +418,21 @@ colgroup.hover {
 
 // Footer
 .footer {
-  height: 160px;
   position: relative;
+  height: 160px;
 }
 .github-buttons {
+  position: absolute;
+  top: 0;
+  left: 50%;
   // Iframe frameborder attribute is invalid HTML5 but no alternative for IE8.
   // Hide using IE CSS hack instead as most likely IE user != GitHub user.
   display: none\9;
-
-  left: 50%;
   margin-left: -140px;
-  position: absolute;
-  top: 0;
   iframe {
-    border: 0;
-    height: 20px;
     width: 85px;
+    height: 20px;
+    border: 0;
   }
 }
 @media (max-width: 849px) {
