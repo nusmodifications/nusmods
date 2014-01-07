@@ -857,7 +857,7 @@
   </script>
 
   <script type="text/template" id="filter-template">
-    <input type="checkbox">
+    <input type="checkbox" <%= selected ? 'checked' : '' %>>
     <a href="#"><%= label %></a> <span class="text-muted">(<%= count %>)</span>
   </script>
 
