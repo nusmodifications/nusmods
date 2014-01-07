@@ -340,7 +340,7 @@ module.exports = function (grunt) {
                         'styles/*.{gif,png}',
                         'styles/fonts/{,*/}*.*',
                         'vendor/knplabs/knp-snappy/src/**/*.php',
-                        'bower_components/sass-bootstrap/fonts/*.*'
+                        'bower_components/font-awesome/fonts/*.*'
                     ]
                 }, {
                     expand: true,
