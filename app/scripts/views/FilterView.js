@@ -2,6 +2,8 @@ define(['underscore', 'backbone'], function(_, Backbone) {
   'use strict';
 
   var FilterView = Backbone.View.extend({
+    tagName: 'label',
+    className: 'checkbox-inline',
     template: _.template($('#filter-template').html()),
 
     initialize: function() {
@@ -10,12 +12,7 @@ define(['underscore', 'backbone'], function(_, Backbone) {
     },
 
     render: function() {
-      _.each(this.model.get('groupedCollection'), function(modules, key) {
-        this.$el.append(this.template({
-          count: modules.length,
-          label: key
-        }));
-      }, this);
+      this.$el.html(this.template(this.model.toJSON()));
       return this;
     }
   });

@@ -4,6 +4,7 @@
   "dependencies": {
     "backbone": "~1.1.0",
     "backbone.localstorage": "~1.1.7",
+    "backbone.picky": "~0.2.0",
     "bootstrap-sass": "git://github.com/twbs/bootstrap-sass.git#v3.0.3-0",
     "downloadify": "dcneiner/Downloadify#~0.2.1",
     "font-awesome": "~4.0.3",

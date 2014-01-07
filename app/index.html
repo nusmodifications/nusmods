@@ -108,7 +108,7 @@
                 </ul>
               </li>
             </ul>
-            <form class="filter-department form-inline">
+            <form class="facet-department form-inline">
               <label>Faculty / Department</label>
             </form>
             For the lecture / tutorial timing filters:
@@ -119,7 +119,7 @@
             </ul>
           </div>
           <div class="col-sm-9" id="content">
-            <form class="filter-mc form-inline">
+            <form class="facet-mc form-inline">
               <label>MC</label>
             </form>
             <table class="modules table table-bordered table-striped">
@@ -857,10 +857,8 @@
   </script>
 
   <script type="text/template" id="filter-template">
-      <label class="checkbox inline">
-        <input type="checkbox">
-        <a href="#"><%= label %></a> <span class="text-muted">(<%= count %>)</span>
-      </label>
+    <input type="checkbox">
+    <a href="#"><%= label %></a> <span class="text-muted">(<%= count %>)</span>
   </script>
 
   <!-- build:js scripts/main.js -->

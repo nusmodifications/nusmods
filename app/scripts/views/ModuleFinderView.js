@@ -4,12 +4,12 @@ define([
   'backbone',
   'collections/ModuleCollection',
   'views/ModulesView',
-  'collections/FilterCollection',
-  'views/FiltersView'
+  'collections/FacetCollection',
+  'views/FacetsView'
 ],
 
 function(_, timetableData, Backbone, ModuleCollection, ModulesView,
-         FilterCollection, FiltersView) {
+         FacetCollection, FacetsView) {
   'use strict';
 
   var ModuleFinderView = Backbone.View.extend({
@@ -120,7 +120,7 @@ function(_, timetableData, Backbone, ModuleCollection, ModulesView,
         }
       });
 
-      var filters = new FilterCollection(
+      var facets = new FacetCollection(
         _.map(['department', 'mc'], function(key) {
           return {
             filteredCollection: timetableData.mods,
@@ -132,7 +132,7 @@ function(_, timetableData, Backbone, ModuleCollection, ModulesView,
         }
       );
 
-      var filtersView = new FiltersView({collection: filters});
+      var facetsView = new FacetsView({collection: facets});
     }
   });
 

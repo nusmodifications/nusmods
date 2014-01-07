@@ -7,6 +7,7 @@ require.config({
   ],
   paths: {
     'backbone.localstorage': '../bower_components/backbone.localstorage/backbone.localStorage',
+    'backbone.picky': '../bower_components/backbone.picky/lib/amd/backbone.picky',
     backbone: '../bower_components/backbone/backbone',
     'bootstrap-button': '../bower_components/bootstrap-sass/vendor/assets/javascripts/bootstrap/button',
     'bootstrap-dropdown': '../bower_components/bootstrap-sass/vendor/assets/javascripts/bootstrap/dropdown',
