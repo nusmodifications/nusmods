@@ -390,6 +390,7 @@ module.exports = function (grunt) {
         bower: {
             options: {
                 exclude: [
+                    'backbone.marionette',
                     'bootstrap-sass',
                     'jquery.ui',
                     'lodash-amd',
