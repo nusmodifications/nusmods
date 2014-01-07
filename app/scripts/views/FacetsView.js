@@ -1,22 +1,17 @@
-define([
-  'backbone',
-  'models/FacetModel',
-  'views/FacetView'
-],
-
-  function(Backbone, FacetModel, FacetView) {
+define(['backbone.marionette', 'views/FacetView'],
+  function (Marionette, FacetView) {
     'use strict';
 
-    var FacetsView = Backbone.View.extend({
-      initialize: function() {
-        this.collection.each(function(Facet) {
-          (new FacetView({
-            el: $('.facet-' + Facet.get('key')),
-            model: Facet
-          })).render();
-        });
+    return Marionette.CollectionView.extend({
+      itemView: FacetView,
+      itemViewOptions: function (facet) {
+        return {
+          el: $('.facet-' + facet.get('key')),
+          collection: facet.get('filters')
+        };
+      },
+
+      appendHtml: function () {
       }
     });
-
-    return FacetsView;
   });

@@ -134,7 +134,7 @@ function(_, timetableData, Backbone, ModuleCollection, ModulesView,
         };
       }));
 
-      var facetsView = new FacetsView({collection: facets});
+      var facetsView = (new FacetsView({collection: facets})).render();
     }
   });
 
