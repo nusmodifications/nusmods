@@ -1,27 +1,18 @@
-define(['underscore', 'backbone', 'spectrum'], function(_, Backbone) {
+define(['backbone.marionette', 'spectrum'], function (Marionette) {
   'use strict';
 
-  var ExamView = Backbone.View.extend({
+  return Marionette.ItemView.extend({
     tagName: 'tr',
-    template: _.template($('#exam-template').html()),
+    template: '#exam-template',
 
-    initialize: function() {
-      this.listenTo(this.model, 'change', this.render);
-      this.listenTo(this.model, 'destroy', this.remove);
+    modelEvents: {
+      change: 'render'
     },
 
-    render: function() {
-      this.$el.html(this.template(this.model.toJSON()))
-          .addClass('color' + this.model.get('color'));
-      if (this.model.get('clash')) {
-        this.$el.addClass('clash');
-      } else {
-        this.$el.removeClass('clash');
-      }
-      this.$('.color').spectrum();
-      return this;
+    onRender: function () {
+      this.$el.addClass('color' + this.model.get('color'))
+        .toggleClass('clash', this.model.get('clash'))
+        .find('.color').spectrum();
     }
   });
-
-  return ExamView;
 });

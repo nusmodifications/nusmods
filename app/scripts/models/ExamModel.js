@@ -1,12 +1,13 @@
-define(['backbone'], function(Backbone) {
+define(['backbone'], function (Backbone) {
   'use strict';
 
-  var Exam = Backbone.Model.extend({
+  return Backbone.Model.extend({
     defaults: {
+      clash: false,
       time: 'No Exam'
     },
 
-    initialize: function() {
+    initialize: function () {
       // Time is in the dd-mm-yyyy h:mm tt format.
       var time = this.get('time');
       if (time) {
@@ -24,6 +25,4 @@ define(['backbone'], function(Backbone) {
       }
     }
   });
-
-  return Exam;
 });

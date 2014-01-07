@@ -1,53 +1,25 @@
-define(['backbone', 'views/ExamView'], function(Backbone, ExamView) {
-  'use strict';
+define(['backbone.marionette', 'views/ExamView'],
+  function (Marionette, ExamView) {
+    'use strict';
 
-  var ExamsView = Backbone.View.extend({
-    clashCount: 0,
-    el: $('#exam-timetable > tbody'),
+    return Marionette.CollectionView.extend({
+      el: $('#exam-timetable > tbody'),
+      itemView: ExamView,
 
-    initialize: function() {
-      this.listenTo(this.collection, 'add', this.add);
-      this.listenTo(this.collection, 'remove', this.remove);
-    },
-
-    add: function(exam, collection, options) {
-      var el = (new ExamView({model: exam})).render().el;
-      if (options.index) {
-        // If index > 0, insert after row with index - 1.
-        this.$el.children().eq(options.index - 1).after(el);
-      } else {
-        // If index == 0, prepend to table.
-        this.$el.prepend(el);
-      }
-
-      // Compute clashes based on keys with clustered hours.
-      var clashes = collection.where({key: exam.get('key')});
-      if (clashes.length > 1) {
-        // If clash found, set clash property on all of them.
-        _.each(clashes, function(clash) {
-          clash.set('clash', true);
-        });
-        // If clashCount was originally 0, is first clash, show #clash.
-        if (!this.clashCount) {
-          $('#clash').removeClass('hidden');
+      collectionEvents: {
+        'add remove': function() {
+          $('#clash').toggleClass('hidden', !this.collection.clashCount);
         }
-        this.clashCount++;
-      }
-    },
+      },
 
-    remove: function(exam, collection) {
-      if (exam.get('clash')) {
-        var clashes = collection.where({key: exam.get('key')});
-        if (clashes.length == 1) {
-          clashes[0].set('clash', false);
-        }
-        this.clashCount--;
-        if (!this.clashCount) {
-          $('#clash').addClass('hidden');
+      appendHtml: function (collectionView, itemView, index) {
+        var childrenContainer = collectionView.$el;
+        var children = childrenContainer.children();
+        if (children.size() <= index) {
+          childrenContainer.append(itemView.el);
+        } else {
+          children.eq(index).before(itemView.el);
         }
       }
-    }
+    });
   });
-
-  return ExamsView;
-});
