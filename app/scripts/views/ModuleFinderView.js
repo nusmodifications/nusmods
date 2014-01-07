@@ -107,30 +107,32 @@ function(_, timetableData, Backbone, ModuleCollection, ModulesView,
 
       var begin = 0;
 
+      _.each(timetableData.mods, function(mod, code) {
+        mod.code = code;
+      });
+
       _.each(filteredCodes.slice(begin, begin + 10), function(code) {
-        filteredModules.add(_.extend(timetableData.mods[code], { code: code }));
+        filteredModules.add(timetableData.mods[code]);
       });
 
-      $(window).scroll(function() {
-        if ($(window).scrollTop() + $(window).height() + 100 >= $(document).height()) {
-          begin += 10;
-          _.each(filteredCodes.slice(begin, begin + 10), function(code) {
-            filteredModules.add(_.extend(timetableData.mods[code], { code: code }));
-          });
-        }
-      });
+//      $(window).scroll(function() {
+//        if ($(window).scrollTop() + $(window).height() + 100 >= $(document).height()) {
+//          begin += 10;
+//          _.each(filteredCodes.slice(begin, begin + 10), function(code) {
+//            filteredModules.add(_.extend(timetableData.mods[code], { code: code }));
+//          });
+//        }
+//      });
 
-      var facets = new FacetCollection(
-        _.map(['department', 'mc'], function(key) {
-          return {
-            filteredCollection: timetableData.mods,
-            key: key
-          };
-        }),
-        {
+      var facets = new FacetCollection([], {
           filteredCollection: filteredModules
-        }
-      );
+      });
+      facets.add(_.map(['department', 'mc'], function(key) {
+        return {
+          filteredCollection: timetableData.mods,
+          key: key
+        };
+      }));
 
       var facetsView = new FacetsView({collection: facets});
     }
