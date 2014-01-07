@@ -2,7 +2,7 @@ require.config({
   packages: [
     {
       name: 'underscore',
-      location: '../bower_components/lodash-amd/compat'
+      location: '../bower_components/lodash-amd/underscore'
     }
   ],
   paths: {
