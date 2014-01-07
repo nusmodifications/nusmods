@@ -6,8 +6,11 @@ require.config({
     }
   ],
   paths: {
+    'backbone.babysitter': '../bower_components/backbone.babysitter/lib/amd/backbone.babysitter',
     'backbone.localstorage': '../bower_components/backbone.localstorage/backbone.localStorage',
+    'backbone.marionette': '../bower_components/backbone.marionette/lib/core/amd/backbone.marionette',
     'backbone.picky': '../bower_components/backbone.picky/lib/amd/backbone.picky',
+    'backbone.wreqr': '../bower_components/backbone.wreqr/lib/amd/backbone.wreqr',
     backbone: '../bower_components/backbone/backbone',
     'bootstrap-button': '../bower_components/bootstrap-sass/vendor/assets/javascripts/bootstrap/button',
     'bootstrap-dropdown': '../bower_components/bootstrap-sass/vendor/assets/javascripts/bootstrap/dropdown',

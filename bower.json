@@ -3,8 +3,11 @@
   "private": true,
   "dependencies": {
     "backbone": "~1.1.0",
+    "backbone.babysitter": "~0.0.6",
     "backbone.localstorage": "~1.1.7",
+    "backbone.marionette": "~1.4.1",
     "backbone.picky": "~0.2.0",
+    "backbone.wreqr": "~0.2.0",
     "bootstrap-sass": "git://github.com/twbs/bootstrap-sass.git#v3.0.3-0",
     "downloadify": "dcneiner/Downloadify#~0.2.1",
     "font-awesome": "~4.0.3",
