@@ -1,16 +1,18 @@
 define([
   'underscore',
   'backbone',
+  'hbs!templates/lesson',
+  'hbs!templates/tooltip',
   'jquery.ui.draggable',
   'jquery.ui.droppable',
   'jquery-ui-touch-punch-improved'
-], function(_, Backbone) {
+], function(_, Backbone, template, tooltipTemplate) {
   'use strict';
 
   var LessonView = Backbone.View.extend({
     className: 'lesson',
-    template: _.template($('#lesson-template').html()),
-    tooltipTemplate:_.template($('#tooltip-template').html()),
+    template: template,
+    tooltipTemplate: tooltipTemplate,
 
     TR: $('#mon > tr:last-child').clone(),
 

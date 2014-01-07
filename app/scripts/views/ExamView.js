@@ -1,18 +1,19 @@
-define(['backbone.marionette', 'spectrum'], function (Marionette) {
-  'use strict';
+define(['backbone.marionette', 'hbs!templates/exam', 'spectrum'],
+  function (Marionette, template) {
+    'use strict';
 
-  return Marionette.ItemView.extend({
-    tagName: 'tr',
-    template: '#exam-template',
+    return Marionette.ItemView.extend({
+      tagName: 'tr',
+      template: template,
 
-    modelEvents: {
-      change: 'render'
-    },
+      modelEvents: {
+        change: 'render'
+      },
 
-    onRender: function () {
-      this.$el.addClass('color' + this.model.get('color'))
-        .toggleClass('clash', this.model.get('clash'))
-        .find('.color').spectrum();
-    }
+      onRender: function () {
+        this.$el.addClass('color' + this.model.get('color'))
+          .toggleClass('clash', this.model.get('clash'))
+          .find('.color').spectrum();
+      }
+    });
   });
-});

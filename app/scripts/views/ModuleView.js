@@ -1,8 +1,9 @@
-define(['backbone.marionette'], function (Marionette) {
-  'use strict';
+define(['backbone.marionette', 'hbs!templates/module'],
+  function (Marionette, template) {
+    'use strict';
 
-  return Marionette.ItemView.extend({
-    tagName: 'tr',
-    template: '#module-template'
+    return Marionette.ItemView.extend({
+      tagName: 'tr',
+      template: template
+    });
   });
-});

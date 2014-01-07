@@ -18,6 +18,7 @@ require.config({
     'bootstrap-tab': '../bower_components/bootstrap-sass/vendor/assets/javascripts/bootstrap/tab',
     'bootstrap-transition': '../bower_components/bootstrap-sass/vendor/assets/javascripts/bootstrap/transition',
     downloadify: '../bower_components/downloadify/src/downloadify',
+    'hbs': '../bower_components/require-handlebars-plugin/hbs',
     jquery: '../bower_components/jquery/jquery',
     'jquery.ui.core': '../bower_components/jquery.ui/ui/jquery.ui.core',
     'jquery.ui.widget': '../bower_components/jquery.ui/ui/jquery.ui.widget',

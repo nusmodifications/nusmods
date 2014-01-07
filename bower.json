@@ -12,14 +12,15 @@
     "downloadify": "dcneiner/Downloadify#~0.2.1",
     "font-awesome": "~4.0.3",
     "jquery": "~1.10.2",
-    "jquery.ui": "~1.10.3",
     "jquery-ui-touch-punch-improved": "~0.3.1",
+    "jquery.ui": "~1.10.3",
     "lodash-amd": "~2.4.1",
     "qtip2": "~2.2.0",
+    "require-handlebars-plugin": "~0.7.0",
     "requirejs": "~2.1.9",
     "select2": "~3.4.5",
-    "swfobject": "2.3-beta+rc1",
     "spectrum": "~1.2.0",
+    "swfobject": "2.3-beta+rc1",
     "zeroclipboard": "~1.2.3"
   },
   "devDependencies": {}
