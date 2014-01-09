@@ -306,7 +306,7 @@ td.details {
 
 // Timetable
 #timetable {
-  @include user-select(none);
+  user-select: none;
 }
 colgroup.hover {
   background-color: $table-bg-hover;
