@@ -68,9 +68,7 @@ html {
 // Navbar
 .nav {
   padding: 5px 0 0 20px;
-}
-@media (max-width: 767px) {
-  .nav {
+  @media (max-width: 767px) {
     margin-right: -20px;
     margin-left: -20px;
   }
@@ -84,6 +82,12 @@ html {
   margin-left: -120px;
   width: 500px;
   font-size: 11px;
+  @media (max-width: 899px) {
+    margin-left: 10px;
+  }
+  @media (max-width: 629px) {
+    display: none;
+  }
 }
 .social-notice,
 .twitter-share-button,
@@ -92,22 +96,12 @@ html {
 }
 .social-notice {
   white-space: nowrap;
+  @media (max-width: 899px) {
+    display: none;
+  }
 }
 .twitter-share-button {
   margin: 0 -20px 0 5px;
-}
-@media (max-width: 899px) {
-  .social-bar {
-    margin-left: 10px;
-  }
-  .social-notice {
-    display: none;
-  }
-}
-@media (max-width: 629px) {
-  .social-bar {
-    display: none;
-  }
 }
 
 // NUSMods Beta Logo
@@ -131,9 +125,7 @@ html {
   .mods {
     color: #aaa;
   }
-}
-@media (max-width: 459px) {
-  .navbar-brand {
+  @media (max-width: 459px) {
     display: none;
   }
 }
@@ -282,25 +274,28 @@ html {
 .btn-mini {
   font-size: 13px;
 }
-td.code, td.mc {
-  text-align: center !important;
-}
-td.code {
-  width: 70px;
-  font-weight: bold;
-}
-td.exam {
-  min-width: 75px;
-}
-td.details {
-  .buttons {
-    float: right;
+
+td {
+  &.code, &.mc {
+    text-align: center !important;
   }
-  .ivle {
-    margin-right: 3px;
+  &.code {
+    width: 70px;
+    font-weight: bold;
   }
-  .desc {
-    margin-top: 3px !important;
+  &.exam {
+    min-width: 75px;
+  }
+  &.details {
+    .buttons {
+      float: right;
+    }
+    .ivle {
+      margin-right: 3px;
+    }
+    .desc {
+      margin-top: 3px !important;
+    }
   }
 }
 
@@ -398,11 +393,13 @@ colgroup.hover {
       text-align: right;
     }
   }
-  tr.clash {
-    background-color: $gray-lighter;
-  }
-  tr:hover td {
-    background-color: transparent;
+  tr {
+    &.clash {
+      background-color: $gray-lighter;
+    }
+    &:hover td {
+      background-color: transparent;
+    }
   }
 }
 .exam-time {
@@ -440,9 +437,7 @@ colgroup.hover {
     height: 20px;
     border: 0;
   }
-}
-@media (max-width: 849px) {
-  .github-buttons {
+  @media (max-width: 849px) {
     display: none;
   }
 }
