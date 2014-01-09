@@ -1,4 +1,4 @@
-define(['underscore', 'backbone', 'views/LessonView'],
+define(['underscore', 'backbone', './LessonView'],
   function(_, Backbone, LessonView) {
   'use strict';
 

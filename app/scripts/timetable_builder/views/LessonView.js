@@ -1,8 +1,8 @@
 define([
   'underscore',
   'backbone',
-  'hbs!templates/lesson',
-  'hbs!templates/tooltip',
+  'hbs!../templates/lesson',
+  'hbs!../templates/tooltip',
   'jquery.ui.draggable',
   'jquery.ui.droppable',
   'jquery-ui-touch-punch-improved'

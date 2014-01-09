@@ -1,4 +1,4 @@
-define(['backbone.marionette', 'hbs!templates/exam', 'spectrum'],
+define(['backbone.marionette', 'hbs!../templates/exam', 'spectrum'],
   function (Marionette, template) {
     'use strict';
 

@@ -1,4 +1,4 @@
-define(['underscore', 'backbone', 'collections/FilterCollection'],
+define(['underscore', 'backbone', '../collections/FilterCollection'],
   function(_, Backbone, FilterCollection) {
   'use strict';
 

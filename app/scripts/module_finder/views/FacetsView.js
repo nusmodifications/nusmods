@@ -1,4 +1,4 @@
-define(['backbone.marionette', 'views/FacetView'],
+define(['backbone.marionette', './FacetView'],
   function (Marionette, FacetView) {
     'use strict';
 

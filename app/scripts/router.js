@@ -1,19 +1,18 @@
 define([
   // Application.
   'app',
-  'backbone',
-  'views/TimetableBuilderView'
+  'backbone'
 ],
 
-function(app, Backbone, TimetableBuilderView) {
+function(app, Backbone) {
   'use strict';
 
   // Defining the application router, you can attach sub routers here.
   var Router = Backbone.Router.extend({
     routes: {
-      "": "index",
-      "modules": "modules",
-      "timetable(/*lessons)": "timetable"
+      '': 'index',
+      'modules': 'modules',
+      'timetable(/*lessons)': 'timetable'
     },
 
     index: function() {

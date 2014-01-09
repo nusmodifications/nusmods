@@ -1,4 +1,4 @@
-define(['backbone', 'models/LessonModel'], function(Backbone, Lesson) {
+define(['backbone', '../models/LessonModel'], function(Backbone, Lesson) {
   'use strict';
 
   var LessonCollection = Backbone.Collection.extend({

@@ -1,4 +1,4 @@
-define(['underscore', 'backbone', 'models/ExamModel'],
+define(['underscore', 'backbone', '../models/ExamModel'],
   function(_, Backbone, Exam) {
   'use strict';
 

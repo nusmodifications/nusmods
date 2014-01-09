@@ -1,4 +1,4 @@
-define(['underscore', 'backbone', 'models/FilterModel', 'backbone.picky'],
+define(['underscore', 'backbone', '../models/FilterModel', 'backbone.picky'],
   function(_, Backbone, Filter) {
   'use strict';
 

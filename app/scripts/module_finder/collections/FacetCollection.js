@@ -1,4 +1,4 @@
-define(['underscore', 'backbone', 'models/FacetModel'],
+define(['underscore', 'backbone', '../models/FacetModel'],
   function(_, Backbone, Facet) {
   'use strict';
 

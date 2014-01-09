@@ -1,4 +1,4 @@
-define(['backbone.marionette', 'views/FilterView'],
+define(['backbone.marionette', './FilterView'],
   function (Marionette, FilterView) {
     'use strict';
 

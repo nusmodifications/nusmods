@@ -2,8 +2,8 @@ define([
   'underscore',
   'timetabledata',
   'backbone',
-  'models/LessonModel',
-  'collections/LessonCollection',
+  '../models/LessonModel',
+  '../collections/LessonCollection',
   'select2'
 ],
 function(_, timetableData, Backbone, Lesson, LessonCollection) {

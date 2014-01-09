@@ -2,10 +2,10 @@ define([
   'underscore',
   'timetabledata',
   'backbone',
-  'collections/ModuleCollection',
-  'views/ModulesView',
-  'collections/FacetCollection',
-  'views/FacetsView'
+  'common/collections/ModuleCollection',
+  './ModulesView',
+  '../collections/FacetCollection',
+  './FacetsView'
 ],
 
 function(_, timetableData, Backbone, ModuleCollection, ModulesView,

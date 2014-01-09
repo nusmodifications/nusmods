@@ -1,14 +1,14 @@
 define([
   'backbone',
-  'collections/ModuleCollection',
-  'views/SelectedModulesView',
-  'views/ExportView',
-  'collections/ExamCollection',
-  'views/ExamsView',
-  'collections/LessonCollection',
-  'views/TimetableView',
-  'views/UrlSharingView',
-  'views/ModuleFinderView'
+  'common/collections/ModuleCollection',
+  './SelectedModulesView',
+  './ExportView',
+  '../collections/ExamCollection',
+  './ExamsView',
+  '../collections/LessonCollection',
+  './TimetableView',
+  './UrlSharingView',
+  'module_finder/views/ModuleFinderView'
 ],
 
 function(Backbone, ModuleCollection, SelectedModulesView, ExportView,

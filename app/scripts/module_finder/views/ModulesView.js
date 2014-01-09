@@ -1,4 +1,4 @@
-define(['backbone.marionette', 'views/ModuleView'],
+define(['backbone.marionette', './ModuleView'],
   function (Marionette, ModuleView) {
     'use strict';
 
