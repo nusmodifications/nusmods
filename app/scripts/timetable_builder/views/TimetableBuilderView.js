@@ -41,9 +41,6 @@ function(Backbone, ModuleCollection, SelectedModulesView, ExportView,
 
       var moduleFinderView = new ModuleFinderView({collection: selectedModules});
 
-      $('#overlay').fadeOut();
-      $('#loading').fadeOut();
-
       $('#show-hide button:last-child').qtip({
         content: 'Only shown if Odd / Even / Irregular',
         position: {
