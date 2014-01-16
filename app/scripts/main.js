@@ -1,5 +1,7 @@
 require.config({
   packages: [
+    'module_finder',
+    'timetable_builder',
     {
       name: 'underscore',
       location: '../bower_components/lodash-amd/underscore'

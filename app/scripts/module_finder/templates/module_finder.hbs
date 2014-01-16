@@ -1,0 +1,58 @@
+<div class="col-sm-3" id="sidebar">
+  <ul>
+    <li>
+      <div class="arrow-right"></div>
+      <input type="checkbox" id="Monday"><label for="Monday">Monday</label>
+      <ul style="display: none">
+        <li><input type="checkbox" id="Monday Morning"><label
+            for="Monday Morning">Monday Morning</label></li>
+        <li><input type="checkbox" id="Monday Afternoon"><label
+            for="Monday Afternoon">Monday Afternoon</label></li>
+      </ul>
+    </li>
+    <li>
+      <div class="arrow-down"></div>
+      <input type="checkbox" id="Tuesday"><label for="Tuesday">Tuesday</label>
+      <ul>
+        <li>
+          <input type="checkbox" id="Tuesday Morning"><label
+            for="Tuesday Morning">Tuesday Morning</label>
+          <ul>
+            <li>
+              <input type="checkbox" id="Tuesday Morning"><label
+                for="Tuesday Morning">Tuesday Morning</label>
+              <ul>
+                <li><input type="checkbox" id="Tuesday Morning"><label
+                    for="Tuesday Morning">Tuesday Morning</label></li>
+                <li><input type="checkbox" id="Tuesday Afternoon"><label
+                    for="Tuesday Afternoon">Tuesday Afternoon</label></li>
+              </ul>
+            </li>
+            <li><input type="checkbox" id="Tuesday Morning"><label
+                for="Tuesday Morning">Tuesday Morning</label></li>
+            <li><input type="checkbox" id="Tuesday Afternoon"><label
+                for="Tuesday Afternoon">Tuesday Afternoon</label></li>
+          </ul>
+        </li>
+        <li><input type="checkbox" id="Tuesday Afternoon"><label
+            for="Tuesday Afternoon">Tuesday Afternoon</label></li>
+      </ul>
+    </li>
+  </ul>
+  <form class="facet-department form-inline">
+    <label>Faculty / Department</label>
+  </form>
+  For the lecture / tutorial timing filters:
+  <ul>
+    <li><strong>Morning:</strong>&nbsp;Before 12pm
+    <li><strong>Afternoon:</strong>&nbsp;12pm - 6pm
+    <li><strong>Evening:</strong>&nbsp;After 6pm
+  </ul>
+</div>
+<div class="col-sm-9" id="content">
+  <form class="facet-mc form-inline">
+    <label>MC</label>
+  </form>
+  <div class="modules"></div>
+</div>
+<a href="#" id="sidebar-toggle"><i class="fa fa-chevron-left"></i></a>

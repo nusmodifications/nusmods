@@ -1,13 +1,8 @@
 define(['backbone', 'timetabledata'], function(Backbone, timetableData) {
   'use strict';
 
-  var AppView = Backbone.View.extend({
+  return Backbone.View.extend({
     el: 'body',
-
-    events: {
-      'show a[href="#module-finder"]': 'showModuleFinder',
-      'show a[href="#timetable-builder"]': 'showTimetableBuilder'
-    },
 
     initialize: function() {
       $.ajaxSetup({
@@ -25,18 +20,6 @@ define(['backbone', 'timetabledata'], function(Backbone, timetableData) {
       $('#correct-as-at').text(timetableData.correctAsAt);
 
       $('.container').removeClass('hidden');
-    },
-
-    showModuleFinder: function() {
-      Backbone.history.navigate('modules');
-      $('#selected-mods').prependTo('#module-finder .span3');
-    },
-
-    showTimetableBuilder: function() {
-      Backbone.history.navigate('timetable');
-      $('#selected-mods').appendTo('#show-hide-selected-mods-container');
     }
   });
-
-  return AppView;
 });

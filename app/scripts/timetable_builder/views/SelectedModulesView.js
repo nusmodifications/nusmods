@@ -1,17 +1,14 @@
 define([
   'underscore',
   'timetabledata',
-  'backbone',
+  'backbone.marionette',
   '../models/LessonModel',
   '../collections/LessonCollection',
+  'hbs!../templates/selected_mods',
   'select2'
 ],
-function(_, timetableData, Backbone, Lesson, LessonCollection) {
+function(_, timetableData, Marionette, Lesson, LessonCollection, template) {
   'use strict';
-
-  var codes = _.keys(timetableData.mods);
-  var titles = _.pluck(_.values(timetableData.mods), 'title');
-  var modsLength = codes.length;
 
   var padTwo = function(number) {
     return (number < 10 ? '0' : '') + number;
@@ -34,11 +31,10 @@ function(_, timetableData, Backbone, Lesson, LessonCollection) {
     return null;
   };
 
-  var SelectedModulesView = Backbone.View.extend({
-    el: $('#selected-mods'),
+  return Marionette.Layout.extend({
+    template: template,
 
     events: {
-      'change': 'change',
       'click #clear-all': function () {
         if (confirm('Are you sure you want to clear all selected modules?')) {
           this.collection.remove(this.collection.models);
@@ -47,66 +43,13 @@ function(_, timetableData, Backbone, Lesson, LessonCollection) {
       }
     },
 
-    change: function(evt) {
-      if (evt.added) {
-        this.collection.add({
-          id: evt.added.id
-        });
-      } else if (evt.removed) {
-        this.collection.remove(this.collection.get(evt.removed.id));
-      }
-    },
-
     initialize: function (options) {
-      this.options = options;
+      this.exams = options.exams;
+      this.timetable = options.timetable;
 
       this.listenTo(this.collection, 'add', this.add);
       this.listenTo(this.collection, 'remove', this.remove);
       this.listenTo(this.collection, 'add remove', this.render);
-
-      var PAGE_SIZE = 50;
-      this.$('#select2').select2({
-        width: '100%',
-        placeholder: 'Type code/title to add mods',
-        multiple: true,
-        initSelection: function (el, callback) {
-          callback(_.map(el.val().split(','), function (code) {
-            return {
-              id: code,
-              text: code + ' ' + timetableData.mods[code].title
-            };
-          }));
-        },
-        query: function (options) {
-          var results = [],
-              pushResult = function (i) {
-                return results.push({
-                  id: codes[i],
-                  text: codes[i] + ' ' + titles[i]
-                });
-              };
-          if (options.term) {
-            var re = new RegExp(options.term, 'i');
-            for (var i = options.context | 0; i < modsLength; i++) {
-              if (codes[i].search(re) !== -1 || titles[i].search(re) !== -1) {
-                if (pushResult(i) === PAGE_SIZE) {
-                  i++;
-                  break;
-                }
-              }
-            }
-          } else {
-            for (i = (options.page - 1) * PAGE_SIZE; i < options.page * PAGE_SIZE; i++) {
-              pushResult(i);
-            }
-          }
-          options.callback({
-            context: i,
-            more: i < modsLength,
-            results: results
-          });
-        }
-      });
     },
 
     colors: [],
@@ -120,7 +63,7 @@ function(_, timetableData, Backbone, Lesson, LessonCollection) {
       var color = this.colors.splice(Math.floor(Math.random() * this.colors.length), 1)[0];
       var title = timetableData.mods[code].title;
 
-      this.options.exams.add({
+      this.exams.add({
         color: color,
         id: code,
         time: examStr(timetableData.mods[code].exam),
@@ -158,7 +101,7 @@ function(_, timetableData, Backbone, Lesson, LessonCollection) {
             sameGroup.add(lesson);
             sameType.add(lesson);
             if (firstGroup) {
-              this.options.timetable.add(lesson);
+              this.timetable.add(lesson);
             }
           }, this);
           firstGroup = false;
@@ -167,26 +110,21 @@ function(_, timetableData, Backbone, Lesson, LessonCollection) {
     },
 
     remove: function(module, collection) {
-      _.each(this.options.timetable.where({code: module.id}), function(lesson) {
-        lesson.destroy();
-      });
-      this.options.exams.get(module.id).destroy();
+      this.timetable.remove(this.timetable.where({code: module.id}))
+      this.exams.remove(this.exams.get(module.id));
     },
 
-    render: function() {
+    onRender: function() {
       var length = this.collection.length;
       if (length) {
         this.$('#select2-header').text('Selected ' + length + ' Module' +
-            (length == 1 ? '' : 's'));
+            (length === 1 ? '' : 's'));
         this.$('#clear-all').removeClass('hidden');
       } else {
         this.$('#select2-header').text('Select Modules for Timetable ');
         this.$('#clear-all').addClass('hidden');
       }
-      this.$('#select2').val(this.collection.pluck('id')).trigger('change');
       this.$('#short-url').val('').blur();
     }
   });
-
-  return SelectedModulesView;
 });

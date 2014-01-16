@@ -1,19 +1,26 @@
 define([
   'underscore',
   'timetabledata',
-  'backbone',
+  'backbone.marionette',
   'common/collections/ModuleCollection',
   './ModulesView',
   '../collections/FacetCollection',
-  './FacetsView'
+  './FacetsView',
+  'hbs!../templates/module_finder'
 ],
 
-function(_, timetableData, Backbone, ModuleCollection, ModulesView,
-         FacetCollection, FacetsView) {
+function(_, timetableData, Marionette, ModuleCollection, ModulesView,
+         FacetCollection, FacetsView, template) {
   'use strict';
 
-  var ModuleFinderView = Backbone.View.extend({
-    initialize: function() {
+  var ModuleFinderView = Marionette.Layout.extend({
+    template: template,
+
+    regions: {
+      modulesRegion: '.modules'
+    },
+
+    onShow: function() {
       $('.exhibit-collectionView-header').on('click', '.add', function(evt) {
         var qtipContent;
         var itemID = $(this).data('code');
@@ -101,8 +108,6 @@ function(_, timetableData, Backbone, ModuleCollection, ModulesView,
 
       var filteredModules = new ModuleCollection();
 
-      var modulesView = new ModulesView({collection: filteredModules});
-
       var filteredCodes = _.keys(timetableData.mods);
 
       var begin = 0;
@@ -135,6 +140,8 @@ function(_, timetableData, Backbone, ModuleCollection, ModulesView,
       }));
 
       var facetsView = (new FacetsView({collection: facets})).render();
+
+      this.modulesRegion.show(new ModulesView({collection: filteredModules}));
     }
   });
 

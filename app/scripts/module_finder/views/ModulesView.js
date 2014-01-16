@@ -1,9 +1,10 @@
-define(['backbone.marionette', './ModuleView'],
-  function (Marionette, ModuleView) {
+define(['backbone.marionette', './ModuleView', 'hbs!../templates/modules'],
+  function (Marionette, ModuleView, template) {
     'use strict';
 
-    return Marionette.CollectionView.extend({
-      el: $('.modules > tbody'),
-      itemView: ModuleView
+    return Marionette.CompositeView.extend({
+      itemView: ModuleView,
+      itemViewContainer: 'tbody',
+      template: template
     });
   });

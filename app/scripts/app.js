@@ -1,25 +1,32 @@
 define([
   'backbone',
   'backbone.marionette',
-  'router',
   'common/views/AppView',
-  'timetable_builder/views/TimetableBuilderView',
-  'timetabledata',
+  'backbone.localstorage',
   'bootstrap-button',
   'bootstrap-dropdown',
   'bootstrap-modal',
   'bootstrap-transition',
   'qtip2'
-], function (Backbone, Marionette, Router, AppView, TimetableBuilderView) {
+], function (Backbone, Marionette, AppView) {
   'use strict';
 
   var App = new Marionette.Application();
 
-  App.addInitializer(function () {
-    var appView = new AppView();
-    var timetableBuilderView = new TimetableBuilderView();
-    App.router = new Router();
-    Backbone.history.start();
+  App.addRegions({
+    mainRegion: '.tab-pane'
+  });
+
+  var appView = new AppView();
+
+  App.on('initialize:after', function () {
+    require(['module_finder', 'timetable_builder'], function () {
+      Backbone.history.start();
+
+      if (Backbone.history.fragment === '') {
+        Backbone.history.navigate('timetable-builder', {trigger: true});
+      }
+    });
   });
 
   return App;
