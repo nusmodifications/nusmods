@@ -1,4 +1,4 @@
-define(['underscore', 'backbone', 'downloadify', 'swfobject'],
+define(['underscore', 'backbone'],
   function(_, Backbone) {
   'use strict';
 
@@ -7,7 +7,7 @@ define(['underscore', 'backbone', 'downloadify', 'swfobject'],
     return (number < 10 ? '0' : '') + number;
   };
 
-  var ExportView = Backbone.View.extend({
+  return Backbone.View.extend({
     el: $('#export-modal'),
 
     events: {
@@ -17,68 +17,18 @@ define(['underscore', 'backbone', 'downloadify', 'swfobject'],
     initialize: function(options) {
       this.options = options;
 
-      _.bindAll(this, 'showModal', 'jpgClick', 'pdfClick', 'htmlClick',
-          'icalClick', 'xlsClick');
+      _.bindAll(this, 'jpgClick', 'pdfClick', 'htmlClick', 'icalClick',
+        'xlsClick');
 
       // Currently only supported in Chrome.
       this.dlAttrSupported = 'download' in document.createElement('a');
       this.fileURI = location.protocol === 'file:';
-      this.flash10 = swfobject.hasFlashPlayerVersion('10');
 
-      $('#export-timetable-action').click(this.showModal);
       $('#jpg-file').click(this.jpgClick);
       $('#pdf-file').click(this.pdfClick);
-      if (this.dlAttrSupported) {
-        // If download attribute supported, enable downloading directly from
-        // menu items.
-        $('#html-file').click(this.htmlClick);
-        $('#ical-file').click(this.icalClick);
-        $('#xls-file').click(this.xlsClick);
-      } else {
-        $('#html-file').click(this.showModal);
-        $('#ical-file').click(this.showModal);
-        $('#xls-file').click(this.showModal);
-      }
-      if (this.dlAttrSupported || this.fileURI || !this.flash10) {
-        if (!this.dlAttrSupported) {
-          if (!this.fileURI) {
-            $('#afp-or').removeClass('hidden');
-          }
-          $('#save-link-as-instructions').removeClass('hidden');
-        }
-      } else {
-        var downloadifyOptions = {
-          swf: 'bower_components/Downloadify/media/downloadify.swf',
-          downloadImage: 'images/988945bc.download.png',
-          height: 30,
-          width: 111
-        };
-        $('#dl-html-container').downloadify($.extend({}, downloadifyOptions, {
-          data: this.htmlTimetable,
-          filename: 'My NUSMods.com Timetable.html'
-        }));
-        $('#dl-ical-container').downloadify($.extend({}, downloadifyOptions, {
-          data: this.iCalendar,
-          filename: 'My NUSMods.com Timetable.ics'
-        }));
-        $('#dl-xls-container').downloadify($.extend({}, downloadifyOptions, {
-          data: this.spreadsheetML,
-          filename: 'My NUSMods.com Timetable.xls'
-        }));
-      }
-    },
-
-    show: function() {
-      var htmlTimetable = encodeURIComponent(this.htmlTimetable());
-      $('#jpg-html').val(htmlTimetable);
-      $('#pdf-html').val(htmlTimetable);
-      if (this.dlAttrSupported || this.fileURI || !this.flash10) {
-        $('#dl-html').attr('href', 'data:text/html,' + htmlTimetable);
-        $('#dl-ical').attr('href', 'data:text/calendar,' +
-            encodeURIComponent(this.iCalendar()));
-        $('#dl-xls').attr('href', 'data:application/vnd.ms-excel,' +
-            encodeURIComponent(this.spreadsheetML()));
-      }
+      $('#html-file').click(this.htmlClick);
+      $('#ical-file').click(this.icalClick);
+      $('#xls-file').click(this.xlsClick);
     },
 
     jpgClick: function() {
@@ -124,14 +74,6 @@ define(['underscore', 'backbone', 'downloadify', 'swfobject'],
       }
       $(this).attr('href', 'data:application/vnd.ms-excel,' +
           encodeURIComponent(this.spreadsheetML()));
-    },
-
-    showModal: function() {
-      if (!this.collection.length) {
-        alert('No modules to export!');
-        return false;
-      }
-      $('#export-modal').modal('show');
     },
 
     // Custom minimal HTML5/CSS3. CSS that applies to export timetable separated
@@ -429,6 +371,4 @@ define(['underscore', 'backbone', 'downloadify', 'swfobject'],
       return xml + '</Table></Worksheet></Workbook>';
     }
   });
-
-  return ExportView;
 });

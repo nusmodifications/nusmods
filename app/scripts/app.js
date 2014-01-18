@@ -5,8 +5,6 @@ define([
   'backbone.localstorage',
   'bootstrap-button',
   'bootstrap-dropdown',
-  'bootstrap-modal',
-  'bootstrap-transition',
   'qtip2'
 ], function (Backbone, Marionette, AppView) {
   'use strict';

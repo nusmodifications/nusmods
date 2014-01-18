@@ -16,9 +16,6 @@ require.config({
     backbone: '../bower_components/backbone/backbone',
     'bootstrap-button': '../bower_components/bootstrap-sass/vendor/assets/javascripts/bootstrap/button',
     'bootstrap-dropdown': '../bower_components/bootstrap-sass/vendor/assets/javascripts/bootstrap/dropdown',
-    'bootstrap-modal': '../bower_components/bootstrap-sass/vendor/assets/javascripts/bootstrap/modal',
-    'bootstrap-transition': '../bower_components/bootstrap-sass/vendor/assets/javascripts/bootstrap/transition',
-    downloadify: '../bower_components/downloadify/src/downloadify',
     'hbs': '../bower_components/require-handlebars-plugin/hbs',
     jquery: '../bower_components/jquery/jquery',
     'jquery.ui.core': '../bower_components/jquery.ui/ui/jquery.ui.core',
@@ -30,7 +27,6 @@ require.config({
     qtip2: '../bower_components/qtip2/jquery.qtip',
     select2: '../bower_components/select2/select2',
     spectrum: '../bower_components/spectrum/spectrum',
-    swfobject: '../bower_components/swfobject/swfobject/swfobject',
     timetabledata: 'nus_timetable_data',
     zeroclipboard: '../bower_components/zeroclipboard/ZeroClipboard'
   },
@@ -50,16 +46,6 @@ require.config({
     ],
     'bootstrap-dropdown': [
       'jquery'
-    ],
-    'bootstrap-modal': [
-      'jquery'
-    ],
-    'bootstrap-transition': [
-      'jquery'
-    ],
-    downloadify: [
-      'jquery',
-      'swfobject'
     ],
     'jquery.ui.core': [
       'jquery'
@@ -87,10 +73,7 @@ require.config({
     ],
     spectrum: [
       'jquery'
-    ],
-    swfobject: {
-      exports: 'swfobject'
-    }
+    ]
   }
 });
 

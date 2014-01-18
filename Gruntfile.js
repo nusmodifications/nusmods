@@ -331,7 +331,6 @@ module.exports = function (grunt) {
                         '*.{config,php}',
                         '*.{ico,png,txt}',
                         '.htaccess',
-                        'bower_components/Downloadify/media/downloadify.swf',
                         'bower_components/ZeroClipboard/ZeroClipboard.swf',
                         'images/{,*/}*.webp',
                         'json/*',
