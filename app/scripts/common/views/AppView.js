@@ -1,4 +1,4 @@
-define(['backbone', 'timetabledata'], function(Backbone, timetableData) {
+define(['backbone'], function(Backbone) {
   'use strict';
 
   return Backbone.View.extend({

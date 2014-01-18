@@ -27,7 +27,6 @@ require.config({
     qtip2: '../bower_components/qtip2/jquery.qtip',
     select2: '../bower_components/select2/select2',
     spectrum: '../bower_components/spectrum/spectrum',
-    timetabledata: 'nus_timetable_data',
     zeroclipboard: '../bower_components/zeroclipboard/ZeroClipboard'
   },
   shim: {

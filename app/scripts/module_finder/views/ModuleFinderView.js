@@ -1,6 +1,5 @@
 define([
   'underscore',
-  'timetabledata',
   'backbone.marionette',
   'common/collections/ModuleCollection',
   './ModulesView',
@@ -9,8 +8,8 @@ define([
   'hbs!../templates/module_finder'
 ],
 
-function(_, timetableData, Marionette, ModuleCollection, ModulesView,
-         FacetCollection, FacetsView, template) {
+function(_, Marionette, ModuleCollection, ModulesView, FacetCollection,
+         FacetsView, template) {
   'use strict';
 
   var ModuleFinderView = Marionette.Layout.extend({

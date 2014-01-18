@@ -1,10 +1,4 @@
-define([
-  'underscore',
-  'timetabledata',
-  'backbone.marionette',
-  'select2'
-],
-  function(_, timetableData, Marionette) {
+define(['underscore', 'backbone', 'select2'], function(_, Backbone) {
     'use strict';
 
     var codes = _.keys(timetableData.mods);

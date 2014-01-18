@@ -1,13 +1,12 @@
 define([
   'underscore',
-  'timetabledata',
   'backbone.marionette',
   '../models/LessonModel',
   '../collections/LessonCollection',
   'hbs!../templates/selected_mods',
   'select2'
 ],
-function(_, timetableData, Marionette, Lesson, LessonCollection, template) {
+function(_, Marionette, Lesson, LessonCollection, template) {
   'use strict';
 
   var padTwo = function(number) {
@@ -110,7 +109,7 @@ function(_, timetableData, Marionette, Lesson, LessonCollection, template) {
     },
 
     remove: function(module, collection) {
-      this.timetable.remove(this.timetable.where({code: module.id}))
+      this.timetable.remove(this.timetable.where({code: module.id}));
       this.exams.remove(this.exams.get(module.id));
     },
 
