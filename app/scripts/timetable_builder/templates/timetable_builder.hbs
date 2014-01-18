@@ -471,70 +471,79 @@
     </tbody>
   </table>
 </div>
-<div id="timetable-controls" class="row">
-  <div id="export-share-exams-container" class="col-sm-6">
-    <div id="export-share-container">
-      <div class="btn-group dropup" id="export-timetable">
-        <button class="btn btn-default" id="export-timetable-action">
-          <i class="fa fa-share-alt"></i>&nbsp;Export
-        </button>
-        <button class="btn btn-default dropdown-toggle"
-                data-toggle="dropdown">
-          <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-          <li>
-            <a download="My NUSMods.com Timetable.xls" href="#" id="xls-file">
-              <i class="fa fa-table"></i>&nbsp;Excel File
-            </a>
-          </li>
-          <li>
-            <a download="My NUSMods.com Timetable.html" href="#" id="html-file">
-              <i class="fa fa-globe"></i>&nbsp;HTML File
-            </a>
-          </li>
-          <li>
-            <a download="My NUSMods.com Timetable.ics" href="#" id="ical-file">
-              <i class="fa fa-calendar"></i>&nbsp;iCalendar File (.ics)<br>
-              (For Google Calendar / iCal / Outlook)
-            </a>
-          </li>
-          <li>
-            <a href="#" id="jpg-file">
-              <i class="fa fa-picture-o"></i>&nbsp;Image File (.jpg)
-            </a>
-          </li>
-          <li>
-            <a href="#" id="pdf-file">
-              <i class="fa fa-file-text-o"></i>&nbsp;PDF File
-            </a>
-          </li>
-        </ul>
-      </div>
-      <div id="share-container" class="form-group">
-        <label>Share</label>
-        <div class="input-group">
-          <span class="input-group-btn">
-            <button class="btn btn-default" id="copy-to-clipboard" type="button">
-              <i class="fa fa-paste"></i>
-            </button>
-          </span>
-          <input id="short-url" class="form-control" placeholder="Click to get short URL"
-          readonly type="url">
-          <span class="input-group-btn">
-            <button class="btn btn-default" id="share-email" type="button">
-              <i class="fa fa-envelope"></i>
-            </button>
-            <button class="btn btn-default" id="share-facebook" type="button">
-              <i class="fa fa-facebook-square"></i>
-            </button>
-            <button class="btn btn-default" id="share-twitter" type="button">
-              <i class="fa fa-twitter"></i>
-            </button>
-          </span>
-        </div>
-      </div>
+<div class="row">
+  <div class="col-xs-3 col-sm-2">
+    <div class="btn-group dropup" id="export-timetable">
+      <button class="btn btn-default btn-sm dropdown-toggle"
+              data-toggle="dropdown">
+        <i class="fa fa-share"></i>&nbsp;Export
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li>
+          <a download="My NUSMods.com Timetable.xls" href="#" id="xls-file">
+            <i class="fa fa-table"></i>&nbsp;Excel File
+          </a>
+        </li>
+        <li>
+          <a download="My NUSMods.com Timetable.html" href="#" id="html-file">
+            <i class="fa fa-globe"></i>&nbsp;HTML File
+          </a>
+        </li>
+        <li>
+          <a download="My NUSMods.com Timetable.ics" href="#" id="ical-file">
+            <i class="fa fa-calendar"></i>&nbsp;iCalendar File (.ics)<br>
+            (For Google Calendar / iCal / Outlook)
+          </a>
+        </li>
+        <li>
+          <a href="#" id="jpg-file">
+            <i class="fa fa-picture-o"></i>&nbsp;Image File (.jpg)
+          </a>
+        </li>
+        <li>
+          <a href="#" id="pdf-file">
+            <i class="fa fa-file-text-o"></i>&nbsp;PDF File
+          </a>
+        </li>
+      </ul>
     </div>
+  </div>
+  <div class="col-xs-9 col-sm-4">
+    <div class="input-group input-group-sm">
+      <span class="input-group-btn">
+        <button class="btn btn-default" id="copy-to-clipboard" type="button">
+          <i class="fa fa-paste"></i>
+        </button>
+      </span>
+      <input id="short-url" class="form-control" placeholder="Click to get short URL"
+             readonly type="url">
+      <span class="input-group-btn">
+        <button class="btn btn-default" id="share-email" type="button">
+          <i class="fa fa-envelope"></i>
+        </button>
+        <button class="btn btn-default" id="share-facebook" type="button">
+          <i class="fa fa-facebook-square"></i>
+        </button>
+        <button class="btn btn-default" id="share-twitter" type="button">
+          <i class="fa fa-twitter"></i>
+        </button>
+      </span>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <label>Show / Hide</label>
+    <div class="btn-group btn-group-sm" data-toggle="buttons-checkbox">
+      <button class="btn btn-default active" type="button">Code</button>
+      <button class="btn btn-default active" type="button">Group</button>
+      <button class="btn btn-default active" type="button">Room</button>
+      <button class="btn btn-default" type="button">Title</button>
+      <button class="btn btn-default active" type="button">Week</button>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-6">
     <table class="table table-bordered table-condensed" id="exam-timetable">
       <caption>Exam Timetable</caption>
       <thead>
@@ -546,17 +555,7 @@
       <tbody>
     </table>
   </div>
-  <div id="show-hide-selected-mods-container" class="col-sm-6">
-    <div id="show-hide">
-      <label>Show / Hide</label>
-      <div class="btn-group" data-toggle="buttons-checkbox">
-        <button class="btn btn-default active" type="button">Code</button>
-        <button class="btn btn-default active" type="button">Group</button>
-        <button class="btn btn-default" type="button">Room</button>
-        <button class="btn btn-default" type="button">Title</button>
-        <button class="btn btn-default active" type="button">Week</button>
-      </div>
-    </div>
+  <div class="col-sm-6">
     <div id="selected-mods"></div>
     <div id="select2"></div>
   </div>
