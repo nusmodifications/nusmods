@@ -19,7 +19,7 @@ function(Marionette, template, ModuleCollection, SelectedModulesView,
          TimetableView, UrlSharingView) {
   'use strict';
 
-  var TimetableBuilderView = Marionette.Layout.extend({
+  return Marionette.Layout.extend({
     template: template,
 
     regions: {
@@ -35,12 +35,12 @@ function(Marionette, template, ModuleCollection, SelectedModulesView,
       var timetableView = new TimetableView({collection: timetable});
 
       var selectedModules = new ModuleCollection();
-      var selectedModulesView = this.selectedModsRegion.show(new SelectedModulesView({
+      this.selectedModsRegion.show(new SelectedModulesView({
         collection: selectedModules,
         timetable: timetable,
         exams: exams
       }));
-      var selectView = this.selectRegion.show(new SelectView({
+      this.selectRegion.show(new SelectView({
         collection: selectedModules
       }));
       var exportView = new ExportView({
@@ -61,6 +61,4 @@ function(Marionette, template, ModuleCollection, SelectedModulesView,
       });
     }
   });
-
-  return TimetableBuilderView;
 });
