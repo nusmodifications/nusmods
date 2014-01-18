@@ -327,47 +327,8 @@ colgroup.hover {
   }
 }
 
-// Timetable Controls
-//#timetable-controls {
-//  #exam-timetable,
-//  #selected-mods {
-//    margin-top: 45px;
-//  }
-//  label {
-//    float: left;
-//    font-weight: bold;
-//    padding: 5px 10px 0 0;
-//  }
-//  .btn {
-//    padding: 4px 10px;
-//  }
-//}
-
-// Export, Share, Exam Timetable
-//#export-share-exams-container {
-//  float: left;
-//  margin: 0 16px;
-//}
-//
-//#export-share-container {
-//  width: 100%;
-//}
-//
-//#export-timetable {
-//  float: left;
-//  margin-right: 20px;
-//}
-//
-//#share-container {
-//  float: right;
-//  position: relative;
-//  .input-append {
-//    float: right;
-//  }
-//}
 #short-url {
   cursor: auto;
-  //  width: 155px;
 }
 
 // For ZeroClipboard CSS effects
@@ -382,7 +343,6 @@ colgroup.hover {
 #exam-timetable > table {
   border: 1px solid $gray;
   font-weight: bold;
-  //  max-width: 540px;
   th {
     border: 1px solid $gray;
     background-color: $gray-lighter;
@@ -402,22 +362,9 @@ colgroup.hover {
     }
   }
 }
-.exam-time {
-  //  width: 135px;
-}
 .clash {
   color: red;
 }
-
-// Show / Hide, Selected Modules
-//#show-hide-selected-mods-container {
-//  float: left;
-//  margin-left: 16px;
-//  width: 375px;
-//}
-//#show-hide .btn-group {
-//  float: right;
-//}
 
 // Footer
 .footer {
@@ -439,16 +386,5 @@ colgroup.hover {
   }
   @media (max-width: 849px) {
     display: none;
-  }
-}
-
-// Export Timetable Modal
-.modal-body {
-  padding-top: 0;
-  form {
-    margin: 0;
-  }
-  h4 {
-    margin-bottom: 5px;
   }
 }
