@@ -379,7 +379,7 @@ colgroup.hover {
   @extend .btn:hover;
 }
 
-#exam-timetable {
+#exam-timetable > table {
   border: 1px solid $gray;
   font-weight: bold;
   //  max-width: 540px;

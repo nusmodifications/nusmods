@@ -1,10 +1,13 @@
-define(['backbone.marionette', './ExamView'],
-  function (Marionette, ExamView) {
+define(['backbone.marionette', './ExamView', 'hbs!../templates/exams'],
+  function (Marionette, ExamView, template) {
     'use strict';
 
-    return Marionette.CollectionView.extend({
-      el: $('#exam-timetable > tbody'),
+    return Marionette.CompositeView.extend({
+      tagName: 'table',
+      className: 'table table-bordered table-condensed',
       itemView: ExamView,
+      itemViewContainer: 'tbody',
+      template: template,
 
       collectionEvents: {
         'add remove': function() {
@@ -12,8 +15,8 @@ define(['backbone.marionette', './ExamView'],
         }
       },
 
-      appendHtml: function (collectionView, itemView, index) {
-        var childrenContainer = collectionView.$el;
+      appendHtml: function (compositeView, itemView, index) {
+        var childrenContainer = compositeView.$itemViewContainer;
         var children = childrenContainer.children();
         if (children.size() <= index) {
           childrenContainer.append(itemView.el);

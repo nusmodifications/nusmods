@@ -23,6 +23,7 @@ function(Marionette, template, TimetableModuleCollection, SelectedModulesView,
     template: template,
 
     regions: {
+      examsRegion: '#exam-timetable',
       selectedModsRegion: '#selected-mods',
       selectRegion: '#select2'
     },
@@ -35,9 +36,9 @@ function(Marionette, template, TimetableModuleCollection, SelectedModulesView,
         exams: exams
       });
 
-      var examsView = new ExamsView({collection: exams});
       var timetableView = new TimetableView({collection: timetable});
 
+      this.examsRegion.show(new ExamsView({collection: exams}));
       this.selectedModsRegion.show(new SelectedModulesView({
         collection: selectedModules
       }));
