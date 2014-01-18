@@ -26,7 +26,6 @@ require.config({
     'jquery-ui-touch-punch-improved': '../bower_components/jquery-ui-touch-punch-improved/jquery.ui.touch-punch-improved',
     qtip2: '../bower_components/qtip2/jquery.qtip',
     select2: '../bower_components/select2/select2',
-    spectrum: '../bower_components/spectrum/spectrum',
     zeroclipboard: '../bower_components/zeroclipboard/ZeroClipboard'
   },
   shim: {
@@ -68,9 +67,6 @@ require.config({
       'jquery'
     ],
     select2: [
-      'jquery'
-    ],
-    spectrum: [
       'jquery'
     ]
   }

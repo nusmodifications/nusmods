@@ -1,4 +1,4 @@
-define(['backbone.marionette', 'hbs!../templates/exam', 'spectrum'],
+define(['backbone.marionette', 'hbs!../templates/exam'],
   function (Marionette, template) {
     'use strict';
 
@@ -12,8 +12,7 @@ define(['backbone.marionette', 'hbs!../templates/exam', 'spectrum'],
 
       onRender: function () {
         this.$el.addClass('color' + this.model.get('color'))
-          .toggleClass('clash', this.model.get('clash'))
-          .find('.color').spectrum();
+          .toggleClass('clash', this.model.get('clash'));
       }
     });
   });
