@@ -17,9 +17,9 @@ define(['underscore', 'backbone', 'select2'], function(_, Backbone) {
 
       change: function(evt) {
         if (evt.added) {
-          this.collection.add({
-            id: evt.added.id
-          });
+          var module = timetableData.mods[evt.added.id];
+          module.id = evt.added.id;
+          this.collection.add(module);
         } else if (evt.removed) {
           this.collection.remove(this.collection.get(evt.removed.id));
         }

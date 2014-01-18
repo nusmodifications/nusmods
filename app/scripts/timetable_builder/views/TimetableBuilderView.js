@@ -1,7 +1,7 @@
 define([
   'backbone.marionette',
   'hbs!../templates/timetable_builder',
-  'common/collections/ModuleCollection',
+  '../collections/TimetableModuleCollection',
   './SelectedModulesView',
   './SelectView',
   './ExportView',
@@ -14,7 +14,7 @@ define([
   'bootstrap-dropdown'
 ],
 
-function(Marionette, template, ModuleCollection, SelectedModulesView,
+function(Marionette, template, TimetableModuleCollection, SelectedModulesView,
          SelectView, ExportView, ExamCollection, ExamsView, LessonCollection,
          TimetableView, UrlSharingView) {
   'use strict';
@@ -29,16 +29,17 @@ function(Marionette, template, ModuleCollection, SelectedModulesView,
 
     onShow: function() {
       var exams = new ExamCollection();
-      var examsView = new ExamsView({collection: exams});
-
       var timetable = new LessonCollection();
-      var timetableView = new TimetableView({collection: timetable});
-
-      var selectedModules = new ModuleCollection();
-      this.selectedModsRegion.show(new SelectedModulesView({
-        collection: selectedModules,
+      var selectedModules = new TimetableModuleCollection([], {
         timetable: timetable,
         exams: exams
+      });
+
+      var examsView = new ExamsView({collection: exams});
+      var timetableView = new TimetableView({collection: timetable});
+
+      this.selectedModsRegion.show(new SelectedModulesView({
+        collection: selectedModules
       }));
       this.selectRegion.show(new SelectView({
         collection: selectedModules
