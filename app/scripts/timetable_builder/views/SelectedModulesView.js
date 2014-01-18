@@ -9,27 +9,6 @@ define([
 function(_, Marionette, Lesson, LessonCollection, template) {
   'use strict';
 
-  var padTwo = function(number) {
-    return (number < 10 ? '0' : '') + number;
-  };
-
-  // Convert exam in Unix time to 12-hour date/time format. We add 8 hours to
-  // the UTC time, then use the getUTC* methods so that they will correspond to
-  // Singapore time regardless of the local time zone.
-  var examStr = function(exam) {
-    if (exam) {
-      var date = new Date(exam + 288e5);
-      var hours = date.getUTCHours();
-      return padTwo(date.getUTCDate()) +
-          '-' + padTwo(date.getUTCMonth() + 1) +
-          '-' + date.getUTCFullYear() +
-          ' ' + (hours % 12 || 12) +
-          ':' + padTwo(date.getUTCMinutes()) +
-          ' ' + (hours < 12 ? 'AM' : 'PM');
-    }
-    return null;
-  };
-
   return Marionette.Layout.extend({
     template: template,
 
@@ -65,9 +44,9 @@ function(_, Marionette, Lesson, LessonCollection, template) {
       this.exams.add({
         color: color,
         id: code,
-        time: examStr(timetableData.mods[code].exam),
+        time: module.get('examStr'),
         title: title,
-        unixTime: timetableData.mods[code].exam
+        unixTime: module.get('exam')
       });
 
       var lessonKeys = ['type', 'group', 'week', 'day', 'start', 'end', 'room'];

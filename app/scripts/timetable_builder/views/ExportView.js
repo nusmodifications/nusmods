@@ -1,11 +1,6 @@
-define(['underscore', 'backbone'],
-  function(_, Backbone) {
+define(['underscore', 'backbone', 'common/utils/padTwo'],
+  function(_, Backbone, padTwo) {
   'use strict';
-
-  // Pad number to two digits.
-  var padTwo = function(number) {
-    return (number < 10 ? '0' : '') + number;
-  };
 
   return Backbone.View.extend({
     el: $('#export-modal'),

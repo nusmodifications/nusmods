@@ -1,9 +1,5 @@
-define(['backbone'], function(Backbone) {
+define(['backbone', 'common/utils/padTwo'], function(Backbone, padTwo) {
   'use strict';
-
-  var padTwo = function(number) {
-    return (number < 10 ? '0' : '') + number;
-  };
 
   // Convert exam in Unix time to 12-hour date/time format. We add 8 hours to
   // the UTC time, then use the getUTC* methods so that they will correspond to
