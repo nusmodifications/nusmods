@@ -5,7 +5,7 @@ define(['underscore', 'backbone', 'select2'], function(_, Backbone) {
     var titles = _.pluck(_.values(timetableData.mods), 'title');
     var modsLength = codes.length;
 
-    return Marionette.View.extend({
+    return Backbone.View.extend({
       tagName: 'input',
       attributes: {
         type: 'hidden'
@@ -44,7 +44,8 @@ define(['underscore', 'backbone', 'select2'], function(_, Backbone) {
             }));
           },
           query: function (options) {
-            var results = [],
+            var i,
+              results = [],
               pushResult = function (i) {
                 return results.push({
                   id: codes[i],
@@ -53,7 +54,7 @@ define(['underscore', 'backbone', 'select2'], function(_, Backbone) {
               };
             if (options.term) {
               var re = new RegExp(options.term, 'i');
-              for (var i = options.context | 0; i < modsLength; i++) {
+              for (i = options.context || 0; i < modsLength; i++) {
                 if (codes[i].search(re) !== -1 || titles[i].search(re) !== -1) {
                   if (pushResult(i) === PAGE_SIZE) {
                     i++;
@@ -75,7 +76,7 @@ define(['underscore', 'backbone', 'select2'], function(_, Backbone) {
         });
       },
 
-      onRender: function() {
+      render: function() {
         this.$el.val(this.collection.pluck('id')).trigger('change');
       }
     });
