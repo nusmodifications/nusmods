@@ -9,7 +9,9 @@ define([
   './ExamsView',
   '../collections/LessonCollection',
   './TimetableView',
-  './UrlSharingView'
+  './UrlSharingView',
+  'bootstrap-button',
+  'bootstrap-dropdown'
 ],
 
 function(Marionette, template, ModuleCollection, SelectedModulesView,

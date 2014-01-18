@@ -3,8 +3,6 @@ define([
   'backbone.marionette',
   'common/views/AppView',
   'backbone.localstorage',
-  'bootstrap-button',
-  'bootstrap-dropdown',
   'qtip2'
 ], function (Backbone, Marionette, AppView) {
   'use strict';
