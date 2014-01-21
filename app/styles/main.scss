@@ -367,24 +367,13 @@ colgroup.hover {
 }
 
 // Footer
-.footer {
-  position: relative;
-  height: 160px;
-}
 .github-buttons {
-  position: absolute;
-  top: 0;
-  left: 50%;
   // Iframe frameborder attribute is invalid HTML5 but no alternative for IE8.
   // Hide using IE CSS hack instead as most likely IE user != GitHub user.
   display: none\9;
-  margin-left: -140px;
   iframe {
     width: 85px;
     height: 20px;
     border: 0;
-  }
-  @media (max-width: 849px) {
-    display: none;
   }
 }
