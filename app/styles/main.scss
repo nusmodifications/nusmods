@@ -332,3 +332,8 @@ colgroup.hover {
     float: right;
   }
 }
+@media (max-width: $screen-xs-max) {
+  .footer {
+    text-align: center;
+  }
+}
