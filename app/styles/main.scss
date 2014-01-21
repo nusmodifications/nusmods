@@ -320,4 +320,15 @@ colgroup.hover {
     height: 20px;
     border: 0;
   }
+
+  @media (min-width: $screen-md-min) {
+    div {
+      float: right;
+    }
+  }
+}
+@media (min-width: $screen-sm-min) {
+  .credits > div {
+    float: right;
+  }
 }
