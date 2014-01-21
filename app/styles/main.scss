@@ -57,6 +57,11 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 
 @import "timetable";
 
+// Layout
+.container-fluid {
+  padding: 15px;
+}
+
 // Navbar
 .nav {
   padding: 5px 0 0 20px;
