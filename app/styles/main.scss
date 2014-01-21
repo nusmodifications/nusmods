@@ -42,7 +42,7 @@ $input-border-focus: $brand-primary;
 @import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/close";
 
 // Components w/ JavaScript
-@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/modals";
+//@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/modals";
 //@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/tooltip";
 //@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/popovers";
 //@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap/carousel";
@@ -56,14 +56,6 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 @import "font-awesome/scss/font-awesome";
 
 @import "timetable";
-
-// Layout
-html {
-  overflow-y: scroll; // prevent jumps when switching tabs
-}
-.tab-content {
-  overflow: visible;
-}
 
 // Navbar
 .nav {
@@ -198,16 +190,6 @@ html {
     float: left;
   }
 }
-.exhibit-facet-body {
-  border-radius: 3px;
-}
-.exhibit-text-facet {
-  padding-right: 15px;
-}
-.exhibit-facet-header-collapse,
-.exhibit-facet-header-expand {
-  padding-bottom: 1px;
-}
 
 #module-finder label {
   font-weight: normal;
@@ -236,66 +218,28 @@ html {
 }
 
 // Sidebar Toggling
-#sidebar-toggle {
-  position: fixed;
-  bottom: 4px;
-  left: 4px;
-  text-decoration: none;
-  font-size: 24px;
-}
-.no-sidebar {
-  margin-left: 0 !important;
+@media (min-width: $screen-sm-min) {
+  #sidebar-toggle {
+    position: fixed;
+    bottom: 4px;
+    left: 4px;
+    font-size: 24px;
+  }
 }
 
 // Module Finder Content
-#content {
-  .exhibit-flowingFacet {
-    .exhibit-flowingFacet-value {
-      float: left;
-      clear: none;
-      margin: 0 0 5px 3px;
-    }
-    .exhibit-flowingFacet-header {
-      float: left;
-      padding: 0;
-      width: 35px;
-    }
-    .exhibit-flowingFacet-value-checkbox {
-      position: relative;
-      top: -2px;
-      left: 0;
-      float: left;
-    }
-  }
-}
-.exhibit-viewPanel {
-  margin-top: 30px;
-}
-.btn-mini {
-  font-size: 13px;
-}
-
 td {
   &.code, &.mc {
-    text-align: center !important;
+    text-align: center;
   }
   &.code {
-    width: 70px;
     font-weight: bold;
   }
   &.exam {
-    min-width: 75px;
+    min-width: 95px;
   }
-  &.details {
-    .buttons {
-      float: right;
-    }
-    .ivle {
-      margin-right: 3px;
-    }
-    .desc {
-      margin-top: 3px !important;
-    }
+  &.details .desc {
+    margin-top: 2px;
   }
 }
 
