@@ -59,7 +59,12 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 
 // Layout
 .container-fluid {
+  max-width: $container-lg;
   padding: 15px;
+
+  @media (min-width: $screen-lg-min) {
+    @include container-fixed();
+  }
 }
 
 // Navbar
