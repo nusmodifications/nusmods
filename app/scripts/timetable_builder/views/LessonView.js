@@ -1,15 +1,15 @@
 define([
   'underscore',
-  'backbone',
+  'backbone.marionette',
   'hbs!../templates/lesson',
   'hbs!../templates/tooltip',
   'jquery.ui.draggable',
   'jquery.ui.droppable',
   'jquery-ui-touch-punch-improved'
-], function(_, Backbone, template, tooltipTemplate) {
+], function(_, Marionette, template, tooltipTemplate) {
   'use strict';
 
-  var LessonView = Backbone.View.extend({
+  var LessonView = Marionette.ItemView.extend({
     className: 'lesson',
     template: template,
     tooltipTemplate: tooltipTemplate,
@@ -19,21 +19,17 @@ define([
     initialize: function(options) {
       this.options = options;
 
-      this.listenTo(this.model, 'change', this.render);
-      this.listenTo(this.model, 'destroy', this.remove);
       _.bindAll(this, 'drop', 'out', 'over', 'revert', 'start');
       this.$el.data('lessonView', this);
     },
 
-    render: function() {
-      var modelJSON = this.model.toJSON();
-      this.$el.html(this.template(modelJSON));
+    onRender: function() {
       this.$el.addClass('color' + this.model.get('color'));
       if (this.model.get('isDraggable')) {
         this.$el.addClass('ui-draggable');
       }
       this.$el.qtip({
-        content: this.tooltipTemplate(modelJSON),
+        content: this.tooltipTemplate(this.model.toJSON()),
         position: {
           my: 'left center',
           at: 'right center'
