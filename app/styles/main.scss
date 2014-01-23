@@ -293,9 +293,11 @@ colgroup.hover {
 // https://github.com/jonrohan/ZeroClipboard/blob/master/docs/instructions.md#css-effects
 #copy-to-clipboard.zeroclipboard-is-active {
   @extend .btn:active;
+  @extend .btn-default:active;
 }
 #copy-to-clipboard.zeroclipboard-is-hover {
   @extend .btn:hover;
+  @extend .btn-default:hover;
 }
 
 #exam-timetable > table {
