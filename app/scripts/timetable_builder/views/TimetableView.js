@@ -1,9 +1,15 @@
-define(['underscore', 'backbone', './LessonView'],
-  function(_, Backbone, LessonView) {
+define(['underscore', 'backbone.marionette', './LessonView'],
+  function(_, Marionette, LessonView) {
   'use strict';
 
-  var TimetableView = Backbone.View.extend({
+  return Marionette.CollectionView.extend({
     el: $('#timetable'),
+    itemView: LessonView,
+    itemViewOptions: function () {
+      return {
+        timetable: this.collection
+      };
+    },
 
     events: {
       'mousemove': 'mouseMove',
@@ -11,9 +17,6 @@ define(['underscore', 'backbone', './LessonView'],
     },
 
     initialize: function() {
-      this.listenTo(this.collection, 'add', this.add);
-      this.listenTo(this.collection, 'remove', this.remove);
-
       this.$colgroups = this.$('colgroup');
     },
 
@@ -42,14 +45,7 @@ define(['underscore', 'backbone', './LessonView'],
       }
     },
 
-    add: function(lesson, collection, options) {
-      lesson.view = (new LessonView({model: lesson, timetable: this.collection})).render();
-    },
-
-    remove: function(lesson, collection) {
-      lesson.view.remove();
+    appendHtml: function () {
     }
   });
-
-  return TimetableView;
 });
