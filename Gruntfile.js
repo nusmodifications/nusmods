@@ -394,7 +394,9 @@ module.exports = function (grunt) {
                     'lodash-amd',
                     'modernizr',
                     'qtip2',
-                    'requirejs'
+                    'requirejs',
+                    'requirejs-plugins',
+                    'require-handlebars-plugin'
                 ]
             },
             all: {

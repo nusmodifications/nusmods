@@ -16,7 +16,7 @@ require.config({
     backbone: '../bower_components/backbone/backbone',
     'bootstrap-button': '../bower_components/bootstrap-sass/vendor/assets/javascripts/bootstrap/button',
     'bootstrap-dropdown': '../bower_components/bootstrap-sass/vendor/assets/javascripts/bootstrap/dropdown',
-    'hbs': '../bower_components/require-handlebars-plugin/hbs',
+    hbs: '../bower_components/require-handlebars-plugin/hbs',
     jquery: '../bower_components/jquery/jquery',
     'jquery.ui.core': '../bower_components/jquery.ui/ui/jquery.ui.core',
     'jquery.ui.widget': '../bower_components/jquery.ui/ui/jquery.ui.widget',
@@ -24,6 +24,7 @@ require.config({
     'jquery.ui.draggable': '../bower_components/jquery.ui/ui/jquery.ui.draggable',
     'jquery.ui.droppable': '../bower_components/jquery.ui/ui/jquery.ui.droppable',
     'jquery-ui-touch-punch-improved': '../bower_components/jquery-ui-touch-punch-improved/jquery.ui.touch-punch-improved',
+    json: '../bower_components/requirejs-plugins/src/json',
     qtip2: '../bower_components/qtip2/jquery.qtip',
     select2: '../bower_components/select2/select2',
     zeroclipboard: '../bower_components/zeroclipboard/ZeroClipboard'
