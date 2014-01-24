@@ -212,6 +212,7 @@ module.exports = function (grunt) {
                     replaceRequireScript: [{
                         files: ['.tmp/index.html']
                     }],
+                    stubModules : ['json', 'text'],
                     useStrict: true,
                     wrap: true
                     //uglify2: {} // https://github.com/mishoo/UglifyJS2
