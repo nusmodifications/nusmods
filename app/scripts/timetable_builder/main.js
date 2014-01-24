@@ -1,23 +1,25 @@
 define(['require', 'app', 'backbone.marionette'],
   function (require, App, Marionette) {
-  var Router = Marionette.AppRouter.extend({
-    appRoutes: {
-      'timetable-builder': 'showTimetableBuilder'
-    }
-  });
+    'use strict';
 
-  var API = {
-    showTimetableBuilder: function () {
-      require(['./views/TimetableBuilderView'],
-        function (TimetableBuilderView) {
-          App.mainRegion.show(new TimetableBuilderView());
-        });
-    }
-  };
+    var Router = Marionette.AppRouter.extend({
+      appRoutes: {
+        'timetable-builder': 'showTimetableBuilder'
+      }
+    });
 
-  App.addInitializer(function () {
-    new Router({
-      controller: API
+    var API = {
+      showTimetableBuilder: function () {
+        require(['./views/TimetableBuilderView'],
+          function (TimetableBuilderView) {
+            App.mainRegion.show(new TimetableBuilderView());
+          });
+      }
+    };
+
+    App.addInitializer(function () {
+      new Router({
+        controller: API
+      });
     });
   });
-});
