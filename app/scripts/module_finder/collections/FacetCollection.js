@@ -15,13 +15,13 @@ define(['underscore', 'backbone', '../models/FacetModel'],
     },
 
     onSelect: function () {
-      this.filteredCollection.reset(_.intersection.apply(this,
+      this.filteredCollection.reset(_.sortBy(_.intersection.apply(this,
         _.filter(this.map(function (facet) {
           return _.union.apply(this,
             _.map(facet.get('filters').selected, function (filter) {
               return facet.get('groupedCollection')[filter.get('label')];
             }));
-        }), _.size)));
+        }), _.size)), 'code'));
     }
   });
 
