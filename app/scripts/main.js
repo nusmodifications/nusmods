@@ -29,13 +29,6 @@ require.config({
     zeroclipboard: '../bower_components/zeroclipboard/ZeroClipboard'
   },
   shim: {
-    backbone: {
-      deps: [
-        'underscore',
-        'jquery'
-      ],
-      exports: 'Backbone'
-    },
     'bootstrap-button': [
       'jquery'
     ],
