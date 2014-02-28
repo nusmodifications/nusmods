@@ -18,7 +18,8 @@
     "requirejs": "~2.1.11",
     "requirejs-plugins": "~1.0.2",
     "select2": "~3.4.5",
-    "zeroclipboard": "~1.3.2"
+    "zeroclipboard": "~1.3.2",
+    "localforage": "*"
   },
   "devDependencies": {},
   "resolutions": {
