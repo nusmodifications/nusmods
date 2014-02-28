@@ -8,10 +8,17 @@ define(['require', 'app', 'backbone.marionette'],
       }
     });
 
+    var navigationItem = App.addNavigationItem({
+      name: 'Timetable',
+      icon: 'table',
+      url: '#timetable-builder'
+    });
+
     var API = {
       showTimetableBuilder: function () {
         require(['./views/TimetableBuilderView'],
           function (TimetableBuilderView) {
+            navigationItem.select();
             App.mainRegion.show(new TimetableBuilderView());
           });
       }

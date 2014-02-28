@@ -8,10 +8,17 @@ define(['require', 'app', 'backbone.marionette'],
       }
     });
 
+    var navigationItem = App.addNavigationItem({
+      name: 'Module Finder',
+      icon: 'search',
+      url: '#module-finder'
+    });
+
     var API = {
       showModuleFinder: function () {
         require(['./views/ModuleFinderView'],
           function (ModuleFinderView) {
+            navigationItem.select();
             App.mainRegion.show(new ModuleFinderView());
           });
       }

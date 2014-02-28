@@ -1,18 +1,30 @@
 define([
   'backbone',
   'backbone.marionette',
+  'common/collections/NavigationCollection',
   'common/views/AppView',
+  'common/views/NavigationView',
   'qtip2'
-], function (Backbone, Marionette, AppView) {
+], function (Backbone, Marionette, NavigationCollection, AppView,
+             NavigationView) {
   'use strict';
 
   var App = new Marionette.Application();
 
   App.addRegions({
-    mainRegion: '.tab-pane'
+    mainRegion: '.tab-pane',
+    navigationRegion: 'nav'
   });
 
-  var appView = new AppView();
+  new AppView();
+
+  var navigationCollection = new NavigationCollection();
+  var navigationView = new NavigationView({collection: navigationCollection});
+  App.navigationRegion.show(navigationView);
+
+  App.addNavigationItem = function (navigationItem) {
+    return navigationCollection.add(navigationItem);
+  };
 
   App.on('initialize:after', function () {
     require(['module_finder', 'timetable_builder'], function () {
