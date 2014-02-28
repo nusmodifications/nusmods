@@ -255,6 +255,13 @@ colgroup.hover {
   margin-bottom: 15px;
 }
 
+.share-label {
+  text-align: right;
+  label {
+    margin: 5px -25px;
+  }
+}
+
 #short-url {
   cursor: auto;
 }
