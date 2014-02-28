@@ -11,15 +11,15 @@
     "font-awesome": "~4.0.3",
     "jquery": "~1.10.2",
     "jquery-ui-touch-punch-improved": "~0.3.1",
-    "jquery.ui": "~1.10.3",
+    "jquery.ui": "~1.10.4",
+    "localforage": "cf8d1488d5fbdfb47b9ea0852ac5f825df2ace87",
     "lodash-amd": "~2.4.1",
     "qtip2": "~2.2.0",
     "require-handlebars-plugin": "~0.8.0",
     "requirejs": "~2.1.11",
     "requirejs-plugins": "~1.0.2",
     "select2": "~3.4.5",
-    "zeroclipboard": "~1.3.2",
-    "localforage": "*"
+    "zeroclipboard": "~1.3.2"
   },
   "devDependencies": {},
   "resolutions": {
