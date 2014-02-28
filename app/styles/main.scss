@@ -76,36 +76,6 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
   }
 }
 
-// Social Bar
-.social-bar {
-  position: absolute;
-  top: 11px;
-  left: 50%;
-  margin-left: -120px;
-  width: 500px;
-  font-size: 11px;
-  @media (max-width: 899px) {
-    margin-left: 10px;
-  }
-  @media (max-width: 629px) {
-    display: none;
-  }
-}
-.social-notice,
-.twitter-share-button,
-.fb-like {
-  float: left;
-}
-.social-notice {
-  white-space: nowrap;
-  @media (max-width: 899px) {
-    display: none;
-  }
-}
-.twitter-share-button {
-  margin: 0 -20px 0 5px;
-}
-
 // NUSMods Beta Logo
 .brand {
   position: absolute;
@@ -327,20 +297,18 @@ colgroup.hover {
 }
 
 // Footer
-.github-buttons {
+.footer {
+  white-space: nowrap;
+}
+.social-buttons {
   // Iframe frameborder attribute is invalid HTML5 but no alternative for IE8.
   // Hide using IE CSS hack instead as most likely IE user != GitHub user.
   display: none\9;
+  text-align: center;
   iframe {
     width: 85px;
     height: 20px;
     border: 0;
-  }
-
-  @media (min-width: $screen-md-min) {
-    div {
-      float: right;
-    }
   }
 }
 @media (min-width: $screen-sm-min) {
