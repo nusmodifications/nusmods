@@ -4,7 +4,6 @@
   "dependencies": {
     "backbone": "~1.1.2",
     "backbone.babysitter": "~0.1.0",
-    "backbone.localstorage": "~1.1.7",
     "backbone.marionette": "~1.6.2",
     "backbone.picky": "~0.2.0",
     "backbone.wreqr": "~1.0.0",

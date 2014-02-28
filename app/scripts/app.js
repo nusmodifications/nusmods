@@ -2,7 +2,6 @@ define([
   'backbone',
   'backbone.marionette',
   'common/views/AppView',
-  'backbone.localstorage',
   'qtip2'
 ], function (Backbone, Marionette, AppView) {
   'use strict';
