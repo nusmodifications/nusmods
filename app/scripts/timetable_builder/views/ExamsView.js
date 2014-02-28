@@ -16,7 +16,7 @@ define(['backbone.marionette', './ExamView', 'hbs!../templates/exams'],
       },
 
       appendHtml: function (compositeView, itemView, index) {
-        var childrenContainer = compositeView.$itemViewContainer;
+        var childrenContainer = this.getItemViewContainer(compositeView);
         var children = childrenContainer.children();
         if (children.size() <= index) {
           childrenContainer.append(itemView.el);
