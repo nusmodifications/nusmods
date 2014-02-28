@@ -345,7 +345,7 @@ colgroup.hover {
 }
 @media (min-width: $screen-sm-min) {
   .credits > div {
-    float: right;
+    text-align: right;
   }
 }
 @media (max-width: $screen-xs-max) {
