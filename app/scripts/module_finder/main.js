@@ -8,7 +8,7 @@ define(['require', 'app', 'backbone.marionette'],
       }
     });
 
-    var navigationItem = App.addNavigationItem({
+    var navigationItem = App.request('addNavigationItem', {
       name: 'Module Finder',
       icon: 'search',
       url: '#module-finder'

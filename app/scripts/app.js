@@ -22,9 +22,9 @@ define([
   var navigationView = new NavigationView({collection: navigationCollection});
   App.navigationRegion.show(navigationView);
 
-  App.addNavigationItem = function (navigationItem) {
+  App.reqres.setHandler('addNavigationItem', function (navigationItem) {
     return navigationCollection.add(navigationItem);
-  };
+  });
 
   App.on('initialize:after', function () {
     require(['module_finder', 'timetable_builder'], function () {
