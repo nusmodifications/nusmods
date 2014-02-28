@@ -154,6 +154,7 @@ module.exports = function (grunt) {
                 httpGeneratedImagesPath: '/images/generated',
                 httpFontsPath: '/styles/fonts',
                 sourcemap: true,
+                bundleExec: true,
                 relativeAssets: false,
                 assetCacheBuster: false
             },
