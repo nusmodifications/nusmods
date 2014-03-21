@@ -263,6 +263,11 @@ module.exports = function (grunt) {
                     cwd: '<%= yeoman.app %>/images',
                     src: '{,*/}*.{gif,jpeg,jpg,png}',
                     dest: '<%= yeoman.dist %>/images'
+                }, {
+                  expand: true,
+                  cwd: '<%= yeoman.app %>/bower_components/select2',
+                  src: '*.{gif,png}',
+                  dest: '<%= yeoman.dist %>/styles'
                 }]
             }
         },
