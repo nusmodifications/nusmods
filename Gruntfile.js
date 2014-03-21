@@ -199,6 +199,7 @@ module.exports = function (grunt) {
                 options: {
                     almond: true,
                     baseUrl: '<%= yeoman.app %>/scripts',
+                    findNestedDependencies: true,
                     include: 'main',
                     mainConfigFile: '<%= yeoman.app %>/scripts/main.js',
                     name: 'main',
