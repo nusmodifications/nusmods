@@ -23,7 +23,7 @@ require.config({
     'jquery.ui.widget': '../bower_components/jquery.ui/ui/jquery.ui.widget',
     backbone: '../bower_components/backbone/backbone',
     hbs: '../bower_components/require-handlebars-plugin/hbs',
-    jquery: '../bower_components/jquery/jquery',
+    jquery: '../bower_components/jquery/dist/jquery',
     json: '../bower_components/requirejs-plugins/src/json',
     localforage: '../bower_components/localforage/dist/localforage.min',
     qtip2: '../bower_components/qtip2/jquery.qtip',
