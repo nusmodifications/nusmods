@@ -4,7 +4,7 @@ define(['underscore', 'backbone'],
 
   // Common terminology throughout project is to refer to lessons instead of
   // classes, as class is a keyword in JavaScript.
-  var Lesson = Backbone.Model.extend({
+  return Backbone.Model.extend({
     days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
 
     daysAbbrev: ['mon', 'tue', 'wed', 'thu', 'fri', 'sat'],
@@ -50,6 +50,4 @@ define(['underscore', 'backbone'],
       return Backbone.Model.prototype.get.call(this, attr);
     }
   });
-
-  return Lesson;
 });

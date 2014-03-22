@@ -2,7 +2,7 @@ define(['underscore', 'backbone', '../collections/FilterCollection'],
   function(_, Backbone, FilterCollection) {
   'use strict';
 
-  var Facet = Backbone.Model.extend({
+  return Backbone.Model.extend({
     initialize: function() {
       this.set(
         'groupedCollection',
@@ -17,6 +17,4 @@ define(['underscore', 'backbone', '../collections/FilterCollection'],
       this.set('filters', new FilterCollection(filters));
     }
   });
-
-  return Facet;
 });

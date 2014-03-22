@@ -1,7 +1,7 @@
 define(['backbone', 'zeroclipboard'], function(Backbone, ZeroClipboard) {
   'use strict';
 
-  var UrlSharingView = Backbone.View.extend({
+  return Backbone.View.extend({
     el: '#share-container',
 
     initialize: function() {
@@ -87,6 +87,4 @@ define(['backbone', 'zeroclipboard'], function(Backbone, ZeroClipboard) {
           });
     }
   });
-
-  return UrlSharingView;
 });

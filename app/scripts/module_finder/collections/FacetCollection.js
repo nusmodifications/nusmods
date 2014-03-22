@@ -2,7 +2,7 @@ define(['underscore', 'backbone', '../models/FacetModel'],
   function(_, Backbone, Facet) {
   'use strict';
 
-  var FacetCollection = Backbone.Collection.extend({
+  return Backbone.Collection.extend({
     model: Facet,
 
     initialize: function (models, options) {
@@ -24,6 +24,4 @@ define(['underscore', 'backbone', '../models/FacetModel'],
         }), _.size)), 'code'));
     }
   });
-
-  return FacetCollection;
 });

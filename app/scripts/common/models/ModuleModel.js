@@ -18,11 +18,9 @@ define(['backbone', 'common/utils/padTwo'], function(Backbone, padTwo) {
     return null;
   };
 
-  var Module = Backbone.Model.extend({
+  return Backbone.Model.extend({
     initialize: function() {
       this.set('examStr', examStr(this.get('exam')));
     }
   });
-
-  return Module;
 });

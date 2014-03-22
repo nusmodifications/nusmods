@@ -1,12 +1,10 @@
 define(['underscore', 'backbone', 'backbone.picky'], function(_, Backbone) {
   'use strict';
 
-  var Filter = Backbone.Model.extend({
+  return Backbone.Model.extend({
     initialize: function() {
       _.extend(this, new Backbone.Picky.Selectable(this));
       this.selected = false;
     }
   });
-
-  return Filter;
 });
