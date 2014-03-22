@@ -3,6 +3,6 @@
     "vendor-dir": "app/vendor"
   },
   "require": {
-    "knplabs/knp-snappy": "~0.1.2"
+    "knplabs/knp-snappy": "~0.2.0"
   }
 }
