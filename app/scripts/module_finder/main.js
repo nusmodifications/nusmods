@@ -2,19 +2,13 @@ define(['require', 'app', 'backbone.marionette'],
   function (require, App, Marionette) {
     'use strict';
 
-    var Router = Marionette.AppRouter.extend({
-      appRoutes: {
-        'module-finder': 'showModuleFinder'
-      }
-    });
-
     var navigationItem = App.request('addNavigationItem', {
       name: 'Module Finder',
       icon: 'search',
       url: '#module-finder'
     });
 
-    var API = {
+    var controller = {
       showModuleFinder: function () {
         require(['./views/ModuleFinderView'],
           function (ModuleFinderView) {
@@ -25,8 +19,11 @@ define(['require', 'app', 'backbone.marionette'],
     };
 
     App.addInitializer(function () {
-      new Router({
-        controller: API
+      new Marionette.AppRouter({
+        controller: controller,
+        appRoutes: {
+          'module-finder': 'showModuleFinder'
+        }
       });
     });
   });
