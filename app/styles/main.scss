@@ -308,11 +308,11 @@ colgroup.hover {
   white-space: nowrap;
 }
 .social-buttons {
-  // Iframe frameborder attribute is invalid HTML5 but no alternative for IE8.
-  // Hide using IE CSS hack instead as most likely IE user != GitHub user.
-  display: none\9;
   text-align: center;
   iframe {
+    // Iframe frameborder attribute is invalid HTML5 but no alternative for IE8.
+    // Hide using IE CSS hack instead.
+    display: none\9;
     width: 85px;
     height: 20px;
     border: 0;
