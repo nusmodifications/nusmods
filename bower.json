@@ -21,6 +21,7 @@
     "requirejs-plugins": "~1.0.2",
     "respond": "~1.4.2",
     "select2": "~3.4.5",
+    "select2-bootstrap-css": "~1.3.0",
     "zeroclipboard": "~1.3.4"
   },
   "devDependencies": {},

@@ -126,25 +126,14 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 #clear-all {
   float: right;
 }
-.select2-container-multi {
-  margin-bottom: 9px;
-  .select2-choices {
-    border-color: $input-border;
-    border-radius: 3px;
-    .select2-search-choice {
-      margin: 4px;
-      line-height: 18px;
-    }
-    li {
-      float: none;
-    }
+.select2-container-multi .select2-choices {
+  .select2-search-choice {
+    margin-right: 5px;
+    line-height: $line-height-base;
   }
-}
-.select2-dropdown-open .select2-choices {
-  border-radius: 3px 3px 0 0;
-}
-.select2-drop-above .select2-choices {
-  border-radius: 0 0 3px 3px;
+  li {
+    float: none;
+  }
 }
 .select2-drop-active,
 .select2-drop.select2-drop-above.select2-drop-active,
@@ -155,9 +144,6 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 }
 .select2-dropdown-open.select2-drop-above .select2-choices {
   border-top-color: transparent;
-}
-.select2-search-choice-close {
-  top: 5px;
 }
 .select2-results .select2-highlighted {
   background: none repeat scroll 0 0 $link-color;
