@@ -14,7 +14,6 @@ module.exports = function (grunt) {
     var corsBiddingStatsPath = path.join(basePath, grunt.config('corsBiddingStats').options.destFileName);
     var examTimetablePath = path.join(basePath, grunt.config('examTimetable').options.destFileName);
     var moduleTimetableDeltaPath = path.join(basePath, grunt.config('moduleTimetableDelta').options.destFileName);
-    var ivlePath = path.join(basePath, grunt.config('ivle').options.destFileName);
 
     var modules = {};
 
@@ -74,16 +73,6 @@ module.exports = function (grunt) {
         modules[delta.ModuleCode] = modules[delta.ModuleCode] || {};
         modules[delta.ModuleCode].TimetableDelta = modules[delta.ModuleCode].TimetableDelta || [];
         modules[delta.ModuleCode].TimetableDelta.push(delta);
-      });
-    }
-
-    if (grunt.file.exists(ivlePath)) {
-      var ivle = grunt.file.readJSON(ivlePath);
-      ivle.forEach(function (mod) {
-        mod.CourseCode.split('/').forEach(function (code) {
-          modules[code] = modules[code] || {};
-          modules[code].IVLE = mod;
-        });
       });
     }
 

@@ -92,8 +92,8 @@ module.exports = function (grunt) {
           mod.Types = rawMod.CORS.Types;
         }
 
-        if (rawMod.IVLE) {
-          mod.Lecturers = _.compact(rawMod.IVLE.Lecturers.map(function (lecturer) {
+        if (rawMod.IVLE[0]) {
+          mod.Lecturers = _.compact(rawMod.IVLE[0].Lecturers.map(function (lecturer) {
             switch (lecturer.Role.trim()) {
               case 'Lecturer':
               case 'Co-Lecturer':

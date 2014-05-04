@@ -4,6 +4,7 @@ module.exports = function (grunt) {
   grunt.initConfig({
     defaults: {
       cachePath: 'cache',
+      concurrencyLimit: 128,
       // Maximum cache age in seconds. Can be set to 0 to force refresh every
       // time. If set to -1, cached files never expire and are always used.
       maxCacheAge: 6 * 60 * 60,
@@ -129,10 +130,11 @@ module.exports = function (grunt) {
     ivle: {
       options: {
         cachePath: '<%= defaults.cachePath %>',
+        concurrencyLimit: '<%= defaults.concurrencyLimit %>',
         maxCacheAge: '<%= defaults.maxCacheAge %>',
         destFolder: '<%= defaults.destFolder %>',
         jsonSpace: '<%= defaults.jsonSpace %>',
-        destFileName: 'ivleRaw.json',
+        destSubfolder: 'ivle',
         ivleApi: grunt.file.readJSON('ivleApi.json')
       },
       ay2012to2013sem1: {
@@ -364,9 +366,9 @@ module.exports = function (grunt) {
     'cors',
     'corsBiddingStats',
     'examTimetable',
-    'ivle',
     'moduleTimetableDelta',
     'consolidate',
+    'ivle',
     'normalize',
     'split',
     'backwardCompatibility'
@@ -376,9 +378,9 @@ module.exports = function (grunt) {
     'bulletinModules:semester2',
     'corsBiddingStats',
     'examTimetable:ay2012to2013sem2',
-    'ivle:ay2012to2013sem2',
     'moduleTimetableDelta',
     'consolidate:ay2012to2013sem2',
+    'ivle:ay2012to2013sem2',
     'normalize:ay2012to2013sem2',
     'split:ay2012to2013sem2',
     'backwardCompatibility:ay2012to2013sem2'
@@ -389,9 +391,9 @@ module.exports = function (grunt) {
     'cors:previousSemester',
     'corsBiddingStats',
     'examTimetable:ay2013to2014sem1',
-    'ivle:ay2013to2014sem1',
     'moduleTimetableDelta',
     'consolidate:ay2013to2014sem1',
+    'ivle:ay2013to2014sem1',
     'normalize:ay2013to2014sem1',
     'split:ay2013to2014sem1',
     'backwardCompatibility:ay2013to2014sem1'
@@ -401,9 +403,9 @@ module.exports = function (grunt) {
     'bulletinModules:semester2',
     'cors:currentSemester',
     'examTimetable:ay2013to2014sem2',
-    'ivle:ay2013to2014sem2',
     'moduleTimetableDelta',
     'consolidate:ay2013to2014sem2',
+    'ivle:ay2013to2014sem2',
     'normalize:ay2013to2014sem2',
     'split:ay2013to2014sem2',
     'backwardCompatibility:ay2013to2014sem2'

@@ -1,4 +1,5 @@
 {
   "baseUrl": "https://ivle.nus.edu.sg/api/Lapi.svc/",
-  "key": "APILoadTest"
+  "key": "APILoadTest",
+  "token": ""
 }
