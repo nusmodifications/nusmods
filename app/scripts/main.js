@@ -38,9 +38,6 @@ require.config({
     'jquery-ui-touch-punch-improved': [
       'jquery-ui/mouse'
     ],
-    qtip2: [
-      'jquery'
-    ],
     select2: [
       'jquery'
     ]
