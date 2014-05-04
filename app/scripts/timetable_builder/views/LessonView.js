@@ -3,8 +3,8 @@ define([
   'backbone.marionette',
   'hbs!../templates/lesson',
   'hbs!../templates/tooltip',
-  'jquery.ui.draggable',
-  'jquery.ui.droppable',
+  'jquery-ui/draggable',
+  'jquery-ui/droppable',
   'jquery-ui-touch-punch-improved'
 ], function(_, Marionette, template, tooltipTemplate) {
   'use strict';

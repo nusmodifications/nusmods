@@ -12,7 +12,7 @@
     "html5shiv": "~3.7.0",
     "jquery": "~1.11.0",
     "jquery-ui-touch-punch-improved": "~0.3.1",
-    "jquery.ui": "~1.10.4",
+    "jquery.ui": "~1.11.0-beta.1",
     "localforage": "~0.2.0",
     "lodash-amd": "~2.4.1",
     "qtip2": "~2.2.0",
