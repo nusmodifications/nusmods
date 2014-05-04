@@ -10,8 +10,8 @@ define([
   '../collections/LessonCollection',
   './TimetableView',
   './UrlSharingView',
-  'bootstrap-button',
-  'bootstrap-dropdown'
+  'bootstrap/button',
+  'bootstrap/dropdown'
 ],
 
 function(Marionette, template, TimetableModuleCollection, SelectedModulesView,

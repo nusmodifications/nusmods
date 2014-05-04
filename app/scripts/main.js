@@ -13,11 +13,10 @@ require.config({
     'backbone.marionette': '../bower_components/backbone.marionette/lib/core/amd/backbone.marionette',
     'backbone.picky': '../bower_components/backbone.picky/lib/amd/backbone.picky',
     'backbone.wreqr': '../bower_components/backbone.wreqr/lib/amd/backbone.wreqr',
-    'bootstrap-button': '../bower_components/bootstrap-sass/vendor/assets/javascripts/bootstrap/button',
-    'bootstrap-dropdown': '../bower_components/bootstrap-sass/vendor/assets/javascripts/bootstrap/dropdown',
     'jquery-ui': '../bower_components/jquery.ui/ui',
     'jquery-ui-touch-punch-improved': '../bower_components/jquery-ui-touch-punch-improved/jquery.ui.touch-punch-improved',
     backbone: '../bower_components/backbone/backbone',
+    bootstrap: '../bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap',
     hbs: '../bower_components/require-handlebars-plugin/hbs',
     jquery: '../bower_components/jquery/dist/jquery',
     json: '../bower_components/requirejs-plugins/src/json',
@@ -30,10 +29,10 @@ require.config({
     'backbone.localforage': [
       'backbone'
     ],
-    'bootstrap-button': [
+    'bootstrap/button': [
       'jquery'
     ],
-    'bootstrap-dropdown': [
+    'bootstrap/dropdown': [
       'jquery'
     ],
     'jquery-ui-touch-punch-improved': [
