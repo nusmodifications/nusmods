@@ -8,10 +8,10 @@ require.config({
     }
   ],
   paths: {
-    'backbone.babysitter': '../bower_components/backbone.babysitter/lib/amd/backbone.babysitter',
+    'backbone.babysitter': '../bower_components/backbone.babysitter/lib/backbone.babysitter',
     'backbone.marionette': '../bower_components/backbone.marionette/lib/core/amd/backbone.marionette',
     'backbone.picky': '../bower_components/backbone.picky/lib/amd/backbone.picky',
-    'backbone.wreqr': '../bower_components/backbone.wreqr/lib/amd/backbone.wreqr',
+    'backbone.wreqr': '../bower_components/backbone.wreqr/lib/backbone.wreqr',
     'jquery-ui': '../bower_components/jquery.ui/ui',
     'jquery-ui-touch-punch-improved': '../bower_components/jquery-ui-touch-punch-improved/jquery.ui.touch-punch-improved',
     backbone: '../bower_components/backbone/backbone',
