@@ -9,7 +9,6 @@ require.config({
   ],
   paths: {
     'backbone.babysitter': '../bower_components/backbone.babysitter/lib/amd/backbone.babysitter',
-    'backbone.localforage': '../bower_components/localforage/dist/backbone.localforage.min',
     'backbone.marionette': '../bower_components/backbone.marionette/lib/core/amd/backbone.marionette',
     'backbone.picky': '../bower_components/backbone.picky/lib/amd/backbone.picky',
     'backbone.wreqr': '../bower_components/backbone.wreqr/lib/amd/backbone.wreqr',
@@ -26,9 +25,6 @@ require.config({
     zeroclipboard: '../bower_components/zeroclipboard/ZeroClipboard'
   },
   shim: {
-    'backbone.localforage': [
-      'backbone'
-    ],
     'bootstrap/button': [
       'jquery'
     ],
