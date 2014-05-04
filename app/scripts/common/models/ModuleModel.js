@@ -19,6 +19,7 @@ define(['backbone', 'common/utils/padTwo'], function(Backbone, padTwo) {
   };
 
   return Backbone.Model.extend({
+    idAttribute: 'code',
     initialize: function() {
       this.set('examStr', examStr(this.get('exam')));
     }
