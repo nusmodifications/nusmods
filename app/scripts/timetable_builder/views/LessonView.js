@@ -55,7 +55,9 @@ define([
           appendTo: '#timetable-wrapper',
           cursor: 'move',
           helper: function() {
-            return $(this).clone().width($(this).outerWidth()).height($(this).outerHeight());
+            return $(this).clone()
+              .width($(this).outerWidth())
+              .height($(this).outerHeight());
           },
           opacity: 0.4,
           revert: this.revert,
@@ -78,9 +80,13 @@ define([
           row = this.TR.clone().appendTo('#' + this.model.get('dayAbbrev'));
           $(rows[0]).children().first().attr('rowspan', i + 1);
         }
-        var td;
-        if (td = $(row).children('.h' + this.model.get('start').slice(0, 2) + '.m' + this.model.get('start').slice(2) + ':empty')) {
-          this.detached = td.nextUntil('.h' + this.model.get('end').slice(0, 2) + '.m' + this.model.get('end').slice(2), 'td:empty');
+        var td = $(row).children('.h' +
+          this.model.get('start').slice(0, 2) + '.m' +
+          this.model.get('start').slice(2) + ':empty');
+        if (td) {
+          this.detached = td.nextUntil('.h' +
+            this.model.get('end').slice(0, 2) + '.m' +
+            this.model.get('end').slice(2), 'td:empty');
           if (this.detached.length === this.model.get('duration') - 1) {
             td.attr('colspan', this.model.get('duration')).html(this.$el);
             this.detached.detach();
@@ -94,7 +100,7 @@ define([
       this.$el.qtip('hide');
       var group = this.model.get('group');
       _.each(this.options.droppables, function(lessonView) {
-        if (lessonView.model.get('group') == group) {
+        if (lessonView.model.get('group') === group) {
           lessonView.$el.removeClass('hover');
         }
       });
@@ -104,7 +110,7 @@ define([
       this.$el.qtip('show');
       var group = this.model.get('group');
       _.each(this.options.droppables, function(lessonView) {
-        if (lessonView.model.get('group') == group) {
+        if (lessonView.model.get('group') === group) {
           lessonView.$el.addClass('hover');
         }
       });
@@ -150,7 +156,10 @@ define([
     },
 
     remove: function(detach) {
-      var tr = this.$el.parent().removeAttr('colspan').after(this.detached).parent();
+      var tr = this.$el.parent()
+        .removeAttr('colspan')
+        .after(this.detached)
+        .parent();
       if (detach) {
         this.$el.detach();
       } else {
