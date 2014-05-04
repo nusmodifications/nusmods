@@ -87,6 +87,9 @@ module.exports = function (grunt) {
       });
     }
 
+    _.each(modules, function (mod, code) {
+      mod.ModuleCode = code;
+    });
     modules = _.sortBy(_.values(modules), 'ModuleCode');
     grunt.file.write(
       path.join(basePath, options.destFileName),
