@@ -7,22 +7,23 @@
     "backbone.picky": "~0.2.0",
     "bootstrap-sass-official": "~3.1.1+2",
     "font-awesome": "~4.0.3",
-    "html5shiv": "~3.7.0",
-    "jquery": "~1.11.0",
+    "html5shiv": "~3.7.2",
+    "jquery": "~1.11.1",
     "jquery-ui-touch-punch-improved": "~0.3.1",
     "jquery.ui": "~1.11.0-beta.1",
-    "localforage": "~0.2.0",
+    "localforage": "~0.7.0",
     "lodash-amd": "~2.4.1",
     "qtip2": "~2.2.0",
     "require-handlebars-plugin": "~0.8.0",
     "requirejs": "~2.1.11",
     "requirejs-plugins": "~1.0.2",
     "respond": "~1.4.2",
-    "select2": "~3.4.5",
+    "select2": "~3.4.8",
     "select2-bootstrap-css": "~1.3.0",
-    "zeroclipboard": "~1.3.4"
+    "zeroclipboard": "~2.0.0-beta.5"
   },
   "devDependencies": {},
   "resolutions": {
+    "jquery": "~1.11.1"
   }
 }
