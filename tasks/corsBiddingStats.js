@@ -9,8 +9,8 @@ module.exports = function (grunt) {
     }
 
     var path = require('path');
-    var _ = grunt.util._;
-    var async = grunt.util.async;
+    var _ = require('lodash');
+    var async = require('async');
     var helpers = require('./helpers');
 
     var CORS_URL = 'http://www.nus.edu.sg/cors/';

@@ -9,9 +9,12 @@ module.exports = function (grunt) {
     }
 
     var path = require('path');
-    var _ = grunt.util._;
+    var _ = require('lodash');
     var jsdom = require("jsdom");
     var helpers = require('./helpers');
+
+    _.str = require('underscore.string');
+    _.mixin(_.str.exports());
 
     helpers.requestCached('https://webrb.nus.edu.sg/examtt/Exam' + options.academicYear.slice(0, 4) +
       '/Semester ' + options.semester + '/MASTER Sem ' +

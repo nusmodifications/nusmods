@@ -9,9 +9,12 @@ module.exports = function (grunt) {
     }
 
     var path = require('path');
-    var _ = grunt.util._;
-    var async = grunt.util.async;
+    var _ = require('lodash');
+    var async = require('async');
     var helpers = require('./helpers');
+
+    _.str = require('underscore.string');
+    _.mixin(_.str.exports());
 
     var keys = ['ModuleTitle', 'ModuleDescription', '', 'ExamDate',
       'ModuleCredit', 'Prerequisite', 'Preclusion', 'Workload'];

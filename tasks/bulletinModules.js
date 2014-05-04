@@ -10,7 +10,7 @@ module.exports = function (grunt) {
 
     var path = require('path');
     var querystring = require('querystring');
-    var _ = grunt.util._;
+    var _ = require('lodash');
     var helpers = require('./helpers');
 
     helpers.requestCached(options.ivleApi.baseUrl + 'Bulletin_Module_Search?' +

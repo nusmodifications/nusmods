@@ -5,7 +5,7 @@ module.exports = function (grunt) {
     var options = this.options();
 
     var path = require('path');
-    var _ = grunt.util._;
+    var _ = require('lodash');
 
     var basePath = path.join(options.srcFolder, options.academicYear.replace('/', '-'), options.semester);
     var normalizePath = path.join(basePath, grunt.config('normalize').options.destFileName);

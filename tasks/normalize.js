@@ -5,9 +5,12 @@ module.exports = function (grunt) {
     var options = this.options();
 
     var path = require('path');
-    var _ = grunt.util._;
+    var _ = require('lodash');
     var moment = require('moment');
     var helpers = require('./helpers');
+
+    _.str = require('underscore.string');
+    _.mixin(_.str.exports());
 
     var basePath = path.join(options.srcFolder, options.academicYear.replace('/', '-'), options.semester);
     var consolidatePath = path.join(basePath, grunt.config('consolidate').options.destFileName);
