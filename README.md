@@ -10,6 +10,7 @@ comes with Node.js.
 
 ```bash
 $ npm install -g grunt
+$ npm install -g grunt-cli
 $ npm install
 $ grunt coffee:tasks
 $ grunt
