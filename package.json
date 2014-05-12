@@ -19,8 +19,8 @@
   ],
   "dependencies": {
     "cheerio": "~0.9.2",
-    "node-build-script": "https://github.com/h5bp/node-build-script/tarball/master"
+    "node-build-script": "https://github.com/h5bp/node-build-script/tarball/master",
     "grunt": "~0.3.17",
-    "grunt-contrib": "~0.3.0:",
+    "grunt-contrib": "~0.3.0"
   },
   "private": true}
