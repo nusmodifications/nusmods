@@ -22,7 +22,7 @@ require.config({
     localforage: '../bower_components/localforage/dist/localforage.min',
     qtip2: '../bower_components/qtip2/jquery.qtip',
     select2: '../bower_components/select2/select2',
-    zeroclipboard: '../bower_components/zeroclipboard/ZeroClipboard'
+    zeroclipboard: '../bower_components/zeroclipboard/dist/ZeroClipboard'
   },
   shim: {
     'bootstrap/button': [

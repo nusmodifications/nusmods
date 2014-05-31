@@ -339,7 +339,7 @@ module.exports = function (grunt) {
                         '*.{config,php}',
                         '*.{ico,png,txt}',
                         '.htaccess',
-                        'bower_components/ZeroClipboard/ZeroClipboard.swf',
+                        'bower_components/ZeroClipboard/dist/ZeroClipboard.swf',
                         'images/{,*/}*.webp',
                         'json/*',
                         'scripts/nus_timetable_data.js',

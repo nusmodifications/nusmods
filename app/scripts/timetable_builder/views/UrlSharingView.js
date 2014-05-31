@@ -6,7 +6,7 @@ define(['backbone', 'zeroclipboard'], function(Backbone, ZeroClipboard) {
 
     initialize: function() {
       ZeroClipboard.config({
-        swfPath: 'bower_components/ZeroClipboard/ZeroClipboard.swf'
+        swfPath: 'bower_components/ZeroClipboard/dist/ZeroClipboard.swf'
       });
 
       // For ZeroClipboard versions >= v1.3.x and < v2.x
