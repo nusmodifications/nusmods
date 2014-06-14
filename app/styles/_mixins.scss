@@ -1,0 +1,6 @@
+@mixin color($color) {
+  background-color: $color;
+  border-color: darken($color, 40%);
+  color: darken($color, 50%);
+}
+

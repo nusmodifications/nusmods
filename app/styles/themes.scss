@@ -1,0 +1,63 @@
+@import "mixins";
+
+#theme-dropdown {
+  display: inline-block;
+  width: 120px;  
+}
+
+.theme-light {
+  background-color: #fff;
+}
+
+$dark-bg-color: #272822;
+
+.theme-dark {
+  
+  background-color: $dark-bg-color;
+  color: #fff;
+  /* Color scheme inspired by Sublime Text */
+  .color0 { @include color(#cc9900); }
+  .color1 { @include color(#cfbfad); }
+  .color2 { @include color(#d9e577); }
+  .color3 { @include color(#52e3f6); }
+  .color4 { @include color(#a7ec21); }
+  .color5 { @include color(#c48cff); }
+  .color6 { @include color(#ece47e); }
+  .color7 { @include color(#ff007f); }
+  .color8 { @include color(#ff0000); }
+  .color9 { @include color(#bed6ff); }
+  .color10 { @include color(#79abff); }
+  .color11 { @include color(#bfa4a4); }
+
+  a {
+    color: #A7EC21;
+  }
+  .table-striped > tbody > tr:nth-child(odd) > {
+    td, th {
+      background-color: #333;
+    }
+  }
+  .nav {
+    background-color: #161713;
+  }
+  .nav-tabs > { 
+    li.active > {
+      a, a:hover, a:focus {
+        border-color: #ddd;
+        background-color: $dark-bg-color;
+        border-bottom-color: $dark-bg-color;
+        color: #fff;
+      }
+    }
+    li > {
+      a:hover, a:focus {
+        background-color: #424240;
+        border-color: transparent transparent #ddd;
+      }
+    } 
+  }
+  #exam-timetable > table th {
+    color: #000;
+  }
+
+}

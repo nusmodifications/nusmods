@@ -61,6 +61,10 @@ function(Marionette, template, TimetableModuleCollection, SelectedModulesView,
       $('#show-hide').on('click', '.btn', function() {
         $('#timetable-wrapper').toggleClass('hide-' + $(this).text().toLowerCase());
       });
+      $('#theme-dropdown').on('change', function() {
+        $('body').removeClass();
+        $('body').addClass('theme-' + $(this).val());
+      })
     }
   });
 });
