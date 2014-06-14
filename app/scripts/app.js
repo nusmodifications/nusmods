@@ -34,6 +34,8 @@ define([
         Backbone.history.navigate('timetable-builder', {trigger: true});
       }
     });
+
+    $('body').addClass('theme-' + localStorage['theme']);
   });
 
   return App;

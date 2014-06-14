@@ -4,13 +4,18 @@ define(['underscore', 'backbone'], function(_, Backbone) {
     function updateTheme() {
       $('body').removeClass();
       // TODO: Only remove classes that start with 'theme-'
-      $('body').addClass('theme-' + this.$el.val());
+      var themeName = this.$el.val();
+      $('body').addClass('theme-' + themeName);
+      localStorage['theme'] = themeName;
     }
 
     return Backbone.View.extend({
       el: '#theme-options',
       events: {
         'change': updateTheme
+      },
+      initialize: function() {
+        this.$el.val(localStorage['theme']);
       }
     });
   });
