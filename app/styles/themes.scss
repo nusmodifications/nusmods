@@ -12,7 +12,6 @@
 $dark-bg-color: #272822;
 
 .theme-dark {
-  
   background-color: $dark-bg-color;
   color: #fff;
   /* Color scheme inspired by Sublime Text */
@@ -29,7 +28,7 @@ $dark-bg-color: #272822;
   .color10 { @include color(#79abff); }
   .color11 { @include color(#bfa4a4); }
 
-  a {
+  a, a:hover {
     color: #A7EC21;
   }
   .table-striped > tbody > tr:nth-child(odd) > {

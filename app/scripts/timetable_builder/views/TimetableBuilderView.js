@@ -10,13 +10,14 @@ define([
   '../collections/LessonCollection',
   './TimetableView',
   './UrlSharingView',
+  './ThemeView',
   'bootstrap/button',
   'bootstrap/dropdown'
 ],
 
 function(Marionette, template, TimetableModuleCollection, SelectedModulesView,
          SelectView, ExportView, ExamCollection, ExamsView, LessonCollection,
-         TimetableView, UrlSharingView) {
+         ThemeView, TimetableView, UrlSharingView) {
   'use strict';
 
   return Marionette.Layout.extend({
@@ -61,10 +62,7 @@ function(Marionette, template, TimetableModuleCollection, SelectedModulesView,
       $('#show-hide').on('click', '.btn', function() {
         $('#timetable-wrapper').toggleClass('hide-' + $(this).text().toLowerCase());
       });
-      $('#theme-dropdown').on('change', function() {
-        $('body').removeClass();
-        $('body').addClass('theme-' + $(this).val());
-      })
+      
     }
   });
 });
