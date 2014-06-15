@@ -2,11 +2,13 @@ define(['underscore', 'backbone'], function(_, Backbone) {
     'use strict';
 
     function updateTheme() {
-      $('body').removeClass();
+      // $('body').removeClass();
       // TODO: Only remove classes that start with 'theme-'
-      var themeName = this.$el.val();
-      $('body').addClass('theme-' + themeName);
-      localStorage['theme'] = themeName;
+      var theme = this.$el.val();
+      // $('body').addClass('theme-' + theme);
+      localStorage['theme'] = theme;
+      var cssFile = theme !== 'default' ? 'http://bootswatch.com/' + theme + '/bootstrap.min.css' : '';
+      $('#theme').attr('href', cssFile);
     }
 
     return Backbone.View.extend({
