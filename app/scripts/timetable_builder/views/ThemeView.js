@@ -7,7 +7,7 @@ define(['underscore', 'backbone', 'localforage'], function(_, Backbone, localfor
       var theme = this.$el.val();
       $('body').addClass('theme-' + theme);
       localforage.setItem('theme', theme);
-      var cssFile = theme !== 'default' ? 'http://bootswatch.com/' + theme + '/bootstrap.min.css' : '';
+      var cssFile = theme !== 'default' ? 'styles/' + theme + '.min.css' : '';
       $('#theme').attr('href', cssFile);
     }
 
