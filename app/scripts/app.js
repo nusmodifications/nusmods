@@ -4,9 +4,10 @@ define([
   'common/collections/NavigationCollection',
   'common/views/AppView',
   'common/views/NavigationView',
+  'localforage',
   'qtip2'
 ], function (Backbone, Marionette, NavigationCollection, AppView,
-             NavigationView) {
+             NavigationView, localforage) {
   'use strict';
 
   var App = new Marionette.Application();
@@ -35,11 +36,14 @@ define([
       }
     });
 
-    var theme = localStorage['theme'];
-    if (theme !== 'default') {
-      $('body').addClass('theme-' + localStorage['theme']);
-      $('#theme').attr('href', 'http://bootswatch.com/' + theme + '/bootstrap.min.css');
-    }
+    localforage.getItem('theme', function (theme) {
+      if (theme && theme !== 'default') {
+        $('body').addClass('theme-' + theme);
+        $('#theme').attr('href', 'http://bootswatch.com/' + theme + '/bootstrap.min.css');
+      } else {
+        localforage.setItem('theme', 'default');
+      }
+    });
   });
 
   return App;

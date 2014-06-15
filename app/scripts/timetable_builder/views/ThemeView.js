@@ -1,4 +1,4 @@
-define(['underscore', 'backbone'], function(_, Backbone) {
+define(['underscore', 'backbone', 'localforage'], function(_, Backbone, localforage) {
     'use strict';
 
     function updateTheme() {
@@ -6,7 +6,7 @@ define(['underscore', 'backbone'], function(_, Backbone) {
       // TODO: Only remove classes that start with 'theme-'
       var theme = this.$el.val();
       $('body').addClass('theme-' + theme);
-      localStorage['theme'] = theme;
+      localforage.setItem('theme', theme);
       var cssFile = theme !== 'default' ? 'http://bootswatch.com/' + theme + '/bootstrap.min.css' : '';
       $('#theme').attr('href', cssFile);
     }
@@ -17,10 +17,12 @@ define(['underscore', 'backbone'], function(_, Backbone) {
         'change': updateTheme
       },
       initialize: function() {
-        var themeName = localStorage['theme'];
-        if (themeName) {
-          this.$el.val(themeName);
-        }
+        var that = this;
+        localforage.getItem('theme', function (theme) {
+          if (theme) {
+            that.$el.val(theme);
+          }
+        });
       }
     });
   });
