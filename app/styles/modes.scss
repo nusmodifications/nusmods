@@ -9,16 +9,6 @@
   $mode-color: #a7ec21;
   color: #fff;
 
-  /* Color scheme inspired by Sublime Text */
-  .color0  { @include color(#f92672); }
-  .color1  { @include color(#fd971f); }
-  .color2  { @include color(#f4bf75); }
-  .color3  { @include color(#a6e22e); }
-  .color4  { @include color(#a1efe4); }
-  .color5  { @include color(#66d9ef); }
-  .color6  { @include color(#ae81ff); }
-  .color7  { @include color(#cc6633); }
-
   a, a:hover {
     color: $mode-color;
   }

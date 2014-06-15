@@ -2,10 +2,11 @@ define(['underscore', 'backbone', 'localforage'], function(_, Backbone, localfor
     'use strict';
 
     function updatemode() {
-      $('body').removeClass();
+      var $body = $('body');
+      $body.removeClass();
       // TODO: Only remove classes that start with 'mode-'
       var mode = this.$el.val();
-      $('body').addClass('mode-' + mode);
+      $body.addClass('mode-' + mode);
       localforage.setItem('mode', mode);
       var cssFile = mode !== 'default' ? 'styles/' + mode + '.min.css' : '';
       $('#mode').attr('href', cssFile);
