@@ -37,7 +37,7 @@ define([
 
     var theme = localStorage['theme'];
     if (theme !== 'default') {
-      // $('body').addClass('theme-' + localStorage['theme']);
+      $('body').addClass('theme-' + localStorage['theme']);
       $('#theme').attr('href', 'http://bootswatch.com/' + theme + '/bootstrap.min.css');
     }
   });
