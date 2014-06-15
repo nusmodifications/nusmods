@@ -15,7 +15,10 @@ define(['underscore', 'backbone'], function(_, Backbone) {
         'change': updateTheme
       },
       initialize: function() {
-        this.$el.val(localStorage['theme']);
+        var themeName = localStorage['theme'];
+        if (themeName) {
+          this.$el.val(themeName);
+        }
       }
     });
   });
