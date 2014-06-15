@@ -43,22 +43,15 @@
   padding: 1px 3px 3px;
 }
 
-.color0 { @include color(#F7977A); }
-.color1 { @include color(#F9AD81); }
-.color2 { @include color(#FDC68A); }
-.color3 { @include color(#FFF79A); }
-.color4 { @include color(#C4DF9B); }
-.color5 { @include color(#A2D39C); }
-.color6 { @include color(#82CA9D); }
-.color7 { @include color(#7BCDC8); }
-.color8 { @include color(#6ECFF6); }
-.color9 { @include color(#7EA7D8); }
-.color10 { @include color(#8493CA); }
-.color11 { @include color(#8882BE); }
-.color12 { @include color(#A187BE); }
-.color13 { @include color(#BC8DBF); }
-.color14 { @include color(#F49AC2); }
-.color15 { @include color(#F6989D); }
+.color0 { @include color(#ac4142); }
+.color1 { @include color(#d28445); }
+.color2 { @include color(#f4bf75); }
+.color3 { @include color(#90a959); }
+.color4 { @include color(#75b5aa); }
+.color5 { @include color(#6a9bf5); }
+.color6 { @include color(#aa759f); }
+.color7 { @include color(#8f5536); }
+
 .hide-code .code,
 .hide-group .group,
 .hide-room .room,
