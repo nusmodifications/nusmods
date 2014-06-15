@@ -39,7 +39,7 @@ define([
     localforage.getItem('theme', function (theme) {
       if (theme && theme !== 'default') {
         $('body').addClass('theme-' + theme);
-        $('#theme').attr('href', 'http://bootswatch.com/' + theme + '/bootstrap.min.css');
+        $('#theme').attr('href', './styles/' + theme + '.min.css');
       } else {
         localforage.setItem('theme', 'default');
       }
