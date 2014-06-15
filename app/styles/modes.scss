@@ -1,12 +1,12 @@
 @import "mixins";
 
-#theme-options {
+#mode-options {
   display: inline-block;
   width: 120px;  
 }
 
-.theme-slate {
-  $theme-color: #a7ec21;
+.mode-slate {
+  $mode-color: #a7ec21;
   color: #fff;
 
   /* Color scheme inspired by Sublime Text */
@@ -18,13 +18,9 @@
   .color5  { @include color(#c48cff); }
   .color6  { @include color(#ece47e); }
   .color7  { @include color(#ff007f); }
-  .color8  { @include color(#ff0000); }
-  .color9  { @include color(#79abff); }
-  .color10 { @include color(#bfa4a4); }
-  .color11 { @include color(#66d9ef); }
 
   a, a:hover {
-    color: $theme-color;
+    color: $mode-color;
   }
   .nav {
     background-color: #161713;
@@ -54,12 +50,12 @@
   .select2-container-active .select2-choices,
   .select2-dropdown-open.select2-drop-above .select2-choices,
   .select2-container-multi.select2-container-active .select2-choices {
-    border-color: $theme-color;
+    border-color: $mode-color;
   }
   .select2-results .select2-highlighted {
-    background: none repeat scroll 0 0 $theme-color;
+    background: none repeat scroll 0 0 $mode-color;
   }
   .brand:hover {
-    color: $theme-color;
+    color: $mode-color;
   }
 }

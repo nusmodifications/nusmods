@@ -10,14 +10,14 @@ define([
   '../collections/LessonCollection',
   './TimetableView',
   './UrlSharingView',
-  './ThemeView',
+  './ModeView',
   'bootstrap/button',
   'bootstrap/dropdown'
 ],
 
 function(Marionette, template, TimetableModuleCollection, SelectedModulesView,
          SelectView, ExportView, ExamCollection, ExamsView, LessonCollection,
-         TimetableView, UrlSharingView, ThemeView) {
+         TimetableView, UrlSharingView, ModeView) {
   'use strict';
 
   return Marionette.Layout.extend({
@@ -52,7 +52,7 @@ function(Marionette, template, TimetableModuleCollection, SelectedModulesView,
       });
 
       var urlSharingView = new UrlSharingView();
-      var themeView = new ThemeView();
+      var modeView = new ModeView();
 
       $('#show-hide button:last-child').qtip({
         content: 'Only shown if Odd / Even / Irregular',

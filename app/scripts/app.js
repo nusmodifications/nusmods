@@ -36,12 +36,12 @@ define([
       }
     });
 
-    localforage.getItem('theme', function (theme) {
-      if (theme && theme !== 'default') {
-        $('body').addClass('theme-' + theme);
-        $('#theme').attr('href', 'styles/' + theme + '.min.css');
+    localforage.getItem('mode', function (mode) {
+      if (mode && mode !== 'default') {
+        $('body').addClass('mode-' + mode);
+        $('#mode').attr('href', 'styles/' + mode + '.min.css');
       } else {
-        localforage.setItem('theme', 'default');
+        localforage.setItem('mode', 'default');
       }
     });
   });
