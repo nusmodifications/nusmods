@@ -36,14 +36,22 @@ define([
       }
     });
 
-    localforage.getItem('mode', function (mode) {
-      if (mode && mode !== 'default') {
-        $('body').addClass('mode-' + mode);
-        $('#mode').attr('href', 'styles/' + mode + '.min.css');
-      } else {
-        localforage.setItem('mode', 'default');
-      }
+    var $body = $('body');
+    ['theme', 'mode'].forEach(function (property) {
+      localforage.getItem(property, function (value) {
+        if (value) {
+          $body.addClass(property + '-' + value);
+          $body.attr('data-' + property, value);
+          if (property === 'mode' && value !== 'default') {
+            $('#mode').attr('href', 'styles/' + value + '.min.css');
+          }
+        } else {
+          localforage.setItem(property, 'default');
+        }
+      });
     });
+
+    console.log('app init')
   });
 
   return App;
