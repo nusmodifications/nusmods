@@ -1,5 +1,15 @@
 @import "mixins";
 
+.theme-default {
+  .color0 { @include color(#f9ad81); }
+  .color1 { @include color(#fff79a); }
+  .color2 { @include color(#a2d39c); }
+  .color3 { @include color(#7bcdc8); }
+  .color4 { @include color(#7ea7d8); }
+  .color5 { @include color(#8882be); }
+  .color6 { @include color(#bc8dbf); }
+  .color7 { @include color(#f6989d); }
+}
 .theme-3024 {
   .color0 { @include color(#db2d20); }
   .color1 { @include color(#e8bbd0); }
@@ -11,14 +21,14 @@
   .color7 { @include color(#cdab53); }
 }
 .theme-ashes {
-  .color0 { @include color(#C7AE95); }
-  .color1 { @include color(#C7C795); }
-  .color2 { @include color(#AEC795); }
-  .color3 { @include color(#95C7AE); }
-  .color4 { @include color(#95AEC7); }
-  .color5 { @include color(#AE95C7); }
-  .color6 { @include color(#C795AE); }
-  .color7 { @include color(#C79595); }
+  .color0 { @include color(#c7ae95); }
+  .color1 { @include color(#c7c795); }
+  .color2 { @include color(#aec795); }
+  .color3 { @include color(#95c7ae); }
+  .color4 { @include color(#95aec7); }
+  .color5 { @include color(#ae95c7); }
+  .color6 { @include color(#c795ae); }
+  .color7 { @include color(#c79595); }
 }
 .theme-atelierdune {
   .color0 { @include color(#d73737); }
@@ -110,7 +120,7 @@
   .color6 { @include color(#c59820); }
   .color7 { @include color(#c98344); }
 }
-.theme-default {
+.theme-base16 {
   .color0 { @include color(#ac4142); }
   .color1 { @include color(#d28445); }
   .color2 { @include color(#f4bf75); }
@@ -131,24 +141,24 @@
   .color7 { @include color(#d27b53); }
 }
 .theme-embers {
-  .color0 { @include color(#826D57); }
+  .color0 { @include color(#826d57); }
   .color1 { @include color(#828257); }
-  .color2 { @include color(#6D8257); }
-  .color3 { @include color(#57826D); }
-  .color4 { @include color(#576D82); }
-  .color5 { @include color(#6D5782); }
-  .color6 { @include color(#82576D); }
+  .color2 { @include color(#6d8257); }
+  .color3 { @include color(#57826d); }
+  .color4 { @include color(#576d82); }
+  .color5 { @include color(#6d5782); }
+  .color6 { @include color(#82576d); }
   .color7 { @include color(#825757); }
 }
 .theme-google {
-  .color0 { @include color(#CC342B); }
-  .color1 { @include color(#F96A38); }
-  .color2 { @include color(#FBA922); }
+  .color0 { @include color(#cc342b); }
+  .color1 { @include color(#f96a38); }
+  .color2 { @include color(#fba922); }
   .color3 { @include color(#198844); }
-  .color4 { @include color(#3971ED); }
-  .color5 { @include color(#3971ED); }
-  .color6 { @include color(#A36AC7); }
-  .color7 { @include color(#3971ED); }
+  .color4 { @include color(#3971ed); }
+  .color5 { @include color(#3971ed); }
+  .color6 { @include color(#a36ac7); }
+  .color7 { @include color(#3971ed); }
 }
 .theme-grayscale {
   .color0 { @include color(#7c7c7c); }
