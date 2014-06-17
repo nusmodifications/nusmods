@@ -12,6 +12,10 @@
   a, a:hover {
     color: $mode-color;
   }
+  hr {
+    border-color: #444;
+  }
+
   .nav {
     background-color: #161713;
   }
@@ -43,6 +47,7 @@
       background-color: #2e3338;
     }
   }
+
   .select2-drop-active,
   .select2-drop.select2-drop-above.select2-drop-active,
   .select2-container-active .select2-choices,
