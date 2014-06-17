@@ -289,6 +289,44 @@ colgroup.hover {
   color: red;
 }
 
+// Preferences
+#preferences {
+
+  margin-top: 20px;
+  
+  select {
+    width: 200px;
+  }
+  .radio {
+    height: 30px;
+  }
+  .control-label {
+    font-size: 14px;
+  }
+  .help-block {
+    color: #888;
+    font-size: 12px;
+  }
+  .radio, .checkbox {
+    padding-left: 0;
+    label {
+      display: inline-block;  
+      padding-right: 10px;
+    }
+  }
+  .theme-colors-sample {
+    margin: 10px 0;
+    span {
+      border: 2px solid;
+      border-radius: 4px;
+      display: inline-block;
+      height: 32px;
+      width: 32px;
+      margin-right: 8px;
+    }
+  }
+}
+
 // Footer
 .footer {
   white-space: nowrap;

@@ -1,0 +1,64 @@
+@import "mixins";
+
+#mode-options {
+  display: inline-block;
+  width: 120px;  
+}
+
+.mode-slate {
+  $mode-color: #a7ec21;
+  color: #fff;
+
+  a, a:hover {
+    color: $mode-color;
+  }
+  hr {
+    border-color: #444;
+  }
+
+  .nav {
+    background-color: #161713;
+  }
+  .nav-tabs > { 
+    li.active > {
+      a, a:hover, a:focus {
+        background-color: #272b30;
+        color: #fff;
+      }
+    }
+  }
+
+  .ivle {
+    color: #fff;
+    text-decoration: none;
+    &:hover {
+      color: #fff;
+    }
+  }
+  #exam-timetable > table th {
+    color: #000;
+  }
+  .form-control {
+    border-color: #000;
+  }
+  #timetable {
+    background-color: transparent;
+    td {
+      background-color: #2e3338;
+    }
+  }
+
+  .select2-drop-active,
+  .select2-drop.select2-drop-above.select2-drop-active,
+  .select2-container-active .select2-choices,
+  .select2-dropdown-open.select2-drop-above .select2-choices,
+  .select2-container-multi.select2-container-active .select2-choices {
+    border-color: $mode-color;
+  }
+  .select2-results .select2-highlighted {
+    background: none repeat scroll 0 0 $mode-color;
+  }
+  .brand:hover {
+    color: $mode-color;
+  }
+}

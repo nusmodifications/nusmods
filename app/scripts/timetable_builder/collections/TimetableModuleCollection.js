@@ -22,7 +22,7 @@ define([
         var code = module.get('id');
 
         if (!this.colors.length) {
-          this.colors = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+          this.colors = [0, 1, 2, 3, 4, 5, 6, 7];
         }
         var color = this.colors.splice(Math.floor(Math.random() * this.colors.length), 1)[0];
         var title = timetableData.mods[code].title;

@@ -10,13 +10,16 @@ define([
   '../collections/LessonCollection',
   './TimetableView',
   './UrlSharingView',
+  './ModeView',
+  './ThemeView',
+  'localforage',
   'bootstrap/button',
   'bootstrap/dropdown'
 ],
 
 function(Marionette, template, TimetableModuleCollection, SelectedModulesView,
          SelectView, ExportView, ExamCollection, ExamsView, LessonCollection,
-         TimetableView, UrlSharingView) {
+         TimetableView, UrlSharingView, ModeView, ThemeView, localforage) {
   'use strict';
 
   return Marionette.Layout.extend({
@@ -51,6 +54,8 @@ function(Marionette, template, TimetableModuleCollection, SelectedModulesView,
       });
 
       var urlSharingView = new UrlSharingView();
+      var modeView = new ModeView();
+      var themeView = new ThemeView();
 
       $('#show-hide button:last-child').qtip({
         content: 'Only shown if Odd / Even / Irregular',
@@ -60,7 +65,7 @@ function(Marionette, template, TimetableModuleCollection, SelectedModulesView,
       });
       $('#show-hide').on('click', '.btn', function() {
         $('#timetable-wrapper').toggleClass('hide-' + $(this).text().toLowerCase());
-      });
+      });      
     }
   });
 });

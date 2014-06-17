@@ -8,9 +8,6 @@
   max-width: none;
   table-layout: fixed;
   width: 1189px;
-  th {
-    background-color: #fff;
-  }
 }
 #times div {
   margin-right: -13px;
@@ -20,8 +17,8 @@
   border-bottom: 1px solid $table-border-color;
   border-top: 1px solid $table-border-color;
   th {
-    border-bottom: 1px solid #fff;
-    border-top: 1px solid #fff;
+    border-bottom: 1px solid transparent;
+    border-top: 1px solid transparent;
     div {
       line-height: 15px;
       margin-left: 20px;
@@ -43,27 +40,7 @@
   overflow: hidden;
   padding: 1px 3px 3px;
 }
-@mixin color($color) {
-  background-color: $color;
-  border-color: darken($color, 40%);
-  color: darken($color, 50%);
-}
-.color0 { @include color(#F7977A); }
-.color1 { @include color(#F9AD81); }
-.color2 { @include color(#FDC68A); }
-.color3 { @include color(#FFF79A); }
-.color4 { @include color(#C4DF9B); }
-.color5 { @include color(#A2D39C); }
-.color6 { @include color(#82CA9D); }
-.color7 { @include color(#7BCDC8); }
-.color8 { @include color(#6ECFF6); }
-.color9 { @include color(#7EA7D8); }
-.color10 { @include color(#8493CA); }
-.color11 { @include color(#8882BE); }
-.color12 { @include color(#A187BE); }
-.color13 { @include color(#BC8DBF); }
-.color14 { @include color(#F49AC2); }
-.color15 { @include color(#F6989D); }
+
 .hide-code .code,
 .hide-group .group,
 .hide-room .room,
