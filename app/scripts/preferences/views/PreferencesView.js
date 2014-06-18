@@ -30,8 +30,10 @@ function(_, Marionette, template, localforage) {
       }
       _.each(formElements, function (selector, item) {
         localforage.getItem(item, function (value) {
-          $(selector).val([value]); 
-        });  
+          if (value) {
+            $(selector).val([value]); 
+          }
+        })
       });
 
       var that = this;
@@ -76,6 +78,13 @@ function(_, Marionette, template, localforage) {
       this.savePreference(property, value);
     },
     savePreference: function (property, value) {
+      if (property === 'faculty' && value === 'default') {
+        alert('You have to select a faculty.');
+        localforage.getItem(property, function (value) {
+          $('#faculty').val(value);
+        });
+        return;
+      }
       localforage.setItem(property, value);
       if (property === 'mode' || property === 'theme') {
         this.updateAppearance(property, value);
