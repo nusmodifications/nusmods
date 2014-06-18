@@ -26,24 +26,26 @@ function(_, Marionette, template, localforage) {
       });
 
       var that = this;
-      $('body').keydown(function ($ev) {
+      $body.keydown(function ($ev) {
         var keyCode = $ev.keyCode;
         var LEFT_ARROW_KEY = 37;
         var RIGHT_ARROW_KEY = 39;
         if (keyCode != LEFT_ARROW_KEY && keyCode != RIGHT_ARROW_KEY) { return; }
 
         var $themeOptions = $('#theme-options');
+        if ($themeOptions.length) {
+          // So that arrow events are prevented on non-preferences pages.
+          var optionValues = [];
+          $themeOptions.children('option').each(function() {
+              optionValues.push($(this).val());
+          });
 
-        var optionValues = [];
-        $themeOptions.children('option').each(function() {
-            optionValues.push($(this).val());
-        });
-
-        var newIndex = Math.min(Math.max(optionValues.indexOf($themeOptions.val()) + (keyCode == LEFT_ARROW_KEY ? -1 : +1), 0), optionValues.length - 1);
-        var newTheme = optionValues[newIndex];
-        $themeOptions.val(newTheme);
-        that.savePreference('theme', newTheme);
-      })
+          var newIndex = Math.min(Math.max(optionValues.indexOf($themeOptions.val()) + (keyCode == LEFT_ARROW_KEY ? -1 : +1), 0), optionValues.length - 1);
+          var newTheme = optionValues[newIndex];
+          $themeOptions.val(newTheme);
+          that.savePreference('theme', newTheme);
+        }
+      });
     }, 
     events: {
       'change #faculty, input:radio[name="student-radios"], input:radio[name="mode-radios"], #theme-options': 'updatePreference',
