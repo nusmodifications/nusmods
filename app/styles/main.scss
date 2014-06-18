@@ -101,6 +101,11 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
   }
 }
 
+.highlight {
+  color: $brand-primary;
+  font-weight: bold;
+}
+
 // Loading Overlay
 #overlay {
   @include opacity(1);
@@ -324,10 +329,6 @@ colgroup.hover {
       width: 32px;
       margin-right: 8px;
     }
-  }
-  .theme-arrow {
-    color: $brand-primary;
-    font-weight: bold;
   }
 }
 

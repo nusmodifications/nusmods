@@ -48,11 +48,11 @@
       background-color: #2e3338;
     }
   }
-  #preferences {
-    .theme-arrow {
-      color: $mode-color;
-    }
+  
+  .highlight {
+    color: $mode-color;
   }
+
 
   .select2-drop-active,
   .select2-drop.select2-drop-above.select2-drop-active,
