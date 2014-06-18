@@ -325,6 +325,12 @@ colgroup.hover {
       margin-right: 8px;
     }
   }
+  #preferences {
+    .theme-arrow {
+      color: $brand-primary;
+      font-weight: bold;
+    }
+  }
 }
 
 // Footer

@@ -50,8 +50,6 @@ define([
         }
       });
     });
-
-    console.log('app init')
   });
 
   return App;
