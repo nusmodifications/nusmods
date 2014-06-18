@@ -10,9 +10,18 @@ function(_, Marionette, template, localforage) {
 
   var $body = $('body');
 
+  function getThemeOptions () {
+    var optionValues = []
+    $('#theme-options').children('option').each(function() {
+      optionValues.push($(this).val());
+    });
+    return optionValues;
+  }
+
   var PreferencesView = Marionette.Layout.extend({
     template: template,
     initialize: function() {
+      // TODO: Populate default values of form elements for first time users.
       var formElements = {
         'faculty': '#faculty',
         'student': 'input:radio[name="student-radios"]',
@@ -35,11 +44,7 @@ function(_, Marionette, template, localforage) {
         var $themeOptions = $('#theme-options');
         if ($themeOptions.length) {
           // So that arrow events are prevented on non-preferences pages.
-          var optionValues = [];
-          $themeOptions.children('option').each(function() {
-              optionValues.push($(this).val());
-          });
-
+          var optionValues = getThemeOptions();
           var newIndex = Math.min(Math.max(optionValues.indexOf($themeOptions.val()) + (keyCode == LEFT_ARROW_KEY ? -1 : +1), 0), optionValues.length - 1);
           var newTheme = optionValues[newIndex];
           $themeOptions.val(newTheme);
@@ -48,8 +53,20 @@ function(_, Marionette, template, localforage) {
       });
     }, 
     events: {
+      'click .random-theme': 'randomTheme',
       'change #faculty, input:radio[name="student-radios"], input:radio[name="mode-radios"], #theme-options': 'updatePreference',
       'keydown': 'toggleTheme'
+    },
+    randomTheme: function () {
+      var optionValues = getThemeOptions();
+      var $themeOptions = $('#theme-options');
+
+      do {
+        var value = optionValues[Math.floor(Math.random() * (optionValues.length))];
+      } while (value === $themeOptions.val());
+
+      $themeOptions.val(value);
+      this.savePreference('theme', value);
     },
     updatePreference: function ($ev) {
       var $target = $($ev.target);

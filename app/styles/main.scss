@@ -298,8 +298,10 @@ colgroup.hover {
 #preferences {
 
   margin-top: 20px;
-  
+  @include user-select(none);
+
   select {
+    display: inline-block;
     width: 200px;
   }
   .radio {
@@ -330,6 +332,14 @@ colgroup.hover {
       margin-right: 8px;
     }
   }
+  .random-theme {
+    cursor: pointer;
+    display: inline-block;
+    font-size: 11px;
+    font-weight: bold;
+    margin-left: 5px;
+  }
+
 }
 
 // Footer
