@@ -4,7 +4,7 @@ define(['require', 'app', 'backbone.marionette'],
 
     var navigationItem = App.request('addNavigationItem', {
       name: 'Corspedia',
-      icon: 'list-alt',
+      icon: 'history',
       url: '#corspedia'
     });
 

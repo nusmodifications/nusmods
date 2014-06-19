@@ -1,5 +1,6 @@
 $brand-primary: #f60;
 $input-border-focus: $brand-primary;
+$body-bg: #fcfcfc;
 
 // Core variables and mixins
 @import "bootstrap-sass-official/vendor/assets/stylesheets/bootstrap/variables";
@@ -69,10 +70,18 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 
 // Navbar
 .nav {
+  background-color: #fff;
   padding: 5px 0 0 20px;
   @media (max-width: 767px) {
     margin-right: -20px;
     margin-left: -20px;
+  }
+}
+.nav-tabs > { 
+  li.active > {
+    a, a:hover, a:focus {
+      background-color: $body-bg;
+    }
   }
 }
 
@@ -104,6 +113,27 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 .highlight {
   color: $brand-primary;
   font-weight: bold;
+}
+
+.nm-boxify {
+  $margin-width: 10px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: $margin-width;
+  &.nm-boxify-col {
+    margin-left: $margin-width;
+    &.col-md-9 {
+      width: calc(75% - 10px);
+    }
+  }
+}
+
+.mode-slate {
+  .nm-boxify {
+    color: #000;
+    background-color: #fff;
+  }
 }
 
 // Loading Overlay
@@ -294,10 +324,16 @@ colgroup.hover {
   color: red;
 }
 
+// Corspedia 
+#corspedia {
+  dd {
+    margin-bottom: 10px;
+  }
+}
+
 // Preferences
 #preferences {
 
-  margin-top: 20px;
   @include user-select(none);
 
   select {
