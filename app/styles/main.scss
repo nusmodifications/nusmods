@@ -1,6 +1,7 @@
 $brand-primary: #f60;
 $input-border-focus: $brand-primary;
 $body-bg: #fcfcfc;
+$font-family-sans-serif: "proxima-nova", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 
 // Core variables and mixins
 @import "bootstrap-sass-official/vendor/assets/stylesheets/bootstrap/variables";
@@ -328,10 +329,11 @@ colgroup.hover {
 // Corspedia 
 #corspedia {
   .module-code {
+    color: $brand-primary;
     margin-bottom: 5px;
   }
   .module-title {
-    color: #666;
+    // color: #666;
     font-weight: normal;
     margin: 5px 0;
     text-shadow: none;

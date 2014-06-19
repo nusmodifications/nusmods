@@ -8,7 +8,9 @@
 .mode-slate {
   $mode-color: #a7ec21;
   color: #fff;
-
+  h1, h2, h3, h4, h5, h6 {
+    font-family: "proxima-nova", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
   a, a:hover {
     color: $mode-color;
   }
@@ -52,7 +54,11 @@
   .highlight {
     color: $mode-color;
   }
-
+  #corspedia {
+    .module-code {
+      color: $mode-color;
+    }
+  }
 
   .select2-drop-active,
   .select2-drop.select2-drop-above.select2-drop-active,
