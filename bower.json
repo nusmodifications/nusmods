@@ -5,7 +5,7 @@
     "backbone": "~1.1.2",
     "backbone.marionette": "~1.8.6",
     "backbone.picky": "~0.2.0",
-    "bootstrap-sass-official": "~3.1.1+2",
+    "bootstrap-sass-official": "~3.1.1",
     "font-awesome": "~4.1.0",
     "html5shiv": "~3.7.2",
     "jquery": "~1.11.1",
