@@ -72,6 +72,7 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 .nav {
   background-color: #fff;
   padding: 5px 0 0 20px;
+  margin-bottom: 20px;
   @media (max-width: 767px) {
     margin-right: -20px;
     margin-left: -20px;
@@ -131,8 +132,8 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 
 .mode-slate {
   .nm-boxify {
-    color: #000;
-    background-color: #fff;
+    border: none;
+    background-color: #222326;
   }
 }
 
@@ -326,6 +327,15 @@ colgroup.hover {
 
 // Corspedia 
 #corspedia {
+  .module-code {
+    margin-bottom: 5px;
+  }
+  .module-title {
+    color: #666;
+    font-weight: normal;
+    margin: 5px 0;
+    text-shadow: none;
+  }
   dd {
     margin-bottom: 10px;
   }
