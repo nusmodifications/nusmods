@@ -9,9 +9,6 @@ define(['backbone', 'zeroclipboard'], function(Backbone, ZeroClipboard) {
         swfPath: 'bower_components/ZeroClipboard/dist/ZeroClipboard.swf'
       });
 
-      // For ZeroClipboard versions >= v1.3.x and < v2.x
-      ZeroClipboard.config({ moviePath: ZeroClipboard.config('swfPath') });
-
       var copyToClipboard = $('#copy-to-clipboard'),
           clip = new ZeroClipboard(copyToClipboard),
           shortURLInput = $('#short-url');
