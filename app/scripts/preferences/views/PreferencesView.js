@@ -11,7 +11,7 @@ function(_, Marionette, template, localforage) {
   var $body = $('body');
 
   function getThemeOptions () {
-    var optionValues = []
+    var optionValues = [];
     $('#theme-options').children('option').each(function() {
       optionValues.push($(this).val());
     });
@@ -20,7 +20,7 @@ function(_, Marionette, template, localforage) {
 
   var PreferencesView = Marionette.Layout.extend({
     template: template,
-    initialize: function() {
+    initialize: function () {
       // TODO: Populate default values of form elements for first time users.
       var formElements = {
         'faculty': '#faculty',
@@ -37,17 +37,19 @@ function(_, Marionette, template, localforage) {
       });
 
       var that = this;
-      $body.keydown(function ($ev) {
+      $body.unbind('keydown').keydown(function ($ev) {
         var keyCode = $ev.keyCode;
         var LEFT_ARROW_KEY = 37;
         var RIGHT_ARROW_KEY = 39;
-        if (keyCode != LEFT_ARROW_KEY && keyCode != RIGHT_ARROW_KEY) { return; }
+        if (keyCode !== LEFT_ARROW_KEY && keyCode !== RIGHT_ARROW_KEY) { return; }
 
         var $themeOptions = $('#theme-options');
         if ($themeOptions.length) {
           // So that arrow events are prevented on non-preferences pages.
           var optionValues = getThemeOptions();
-          var newIndex = Math.min(Math.max(optionValues.indexOf($themeOptions.val()) + (keyCode == LEFT_ARROW_KEY ? -1 : +1), 0), optionValues.length - 1);
+          var newIndex = optionValues.indexOf($themeOptions.val()) + (keyCode === LEFT_ARROW_KEY ? -1 : +1);
+          newIndex = Math.min(newIndex, optionValues.length - 1);
+          newIndex = Math.max(newIndex, 0);
           var newTheme = optionValues[newIndex];
           $themeOptions.val(newTheme);
           that.savePreference('theme', newTheme);
