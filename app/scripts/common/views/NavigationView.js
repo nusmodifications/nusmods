@@ -1,4 +1,4 @@
-define(['backbone.marionette', './NavigationItemView'],
+define(['backbone.marionette', './NavigationItemView', 'bootstrap/collapse'],
   function (Marionette, NavigationItemView) {
     'use strict';
 
