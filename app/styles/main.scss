@@ -107,6 +107,15 @@ body {
   }
 }
 
+.navbar-default {
+  .navbar-form {
+    border: none;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0;
+  }
+}
+
 .nav-tabs > { 
   li.active > {
     a, a:hover, a:focus {
@@ -162,14 +171,16 @@ body {
 }
 
 .search-form {
-  position: relative;
+  .form-group {
+    position: relative;
+  }
   .form-control {
-    padding-right: 24px;
-    width: 300px;
+    padding-right: 30px;
+    width: 100%;
   }
   .search-icon {
     position: absolute;
-    right: 24px;
+    right: 10px;
     top: 8px;
   }
 }
