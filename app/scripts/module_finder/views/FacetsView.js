@@ -3,15 +3,18 @@ define(['backbone.marionette', './FacetView'],
     'use strict';
 
     return Marionette.CollectionView.extend({
-      itemView: FacetView,
-      itemViewOptions: function (facet) {
+      childView: FacetView,
+      childViewOptions: function (facet) {
         return {
           el: $('.facet-' + facet.get('key')),
           collection: facet.get('filters')
         };
       },
 
-      appendHtml: function () {
+      attachBuffer: function () {
+      },
+
+      attachHtml: function () {
       }
     });
   });

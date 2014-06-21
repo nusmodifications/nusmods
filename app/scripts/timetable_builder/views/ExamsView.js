@@ -5,8 +5,8 @@ define(['backbone.marionette', './ExamView', 'hbs!../templates/exams'],
     return Marionette.CompositeView.extend({
       tagName: 'table',
       className: 'table table-bordered table-condensed',
-      itemView: ExamView,
-      itemViewContainer: 'tbody',
+      childView: ExamView,
+      childViewContainer: 'tbody',
       template: template,
 
       collectionEvents: {
@@ -15,13 +15,16 @@ define(['backbone.marionette', './ExamView', 'hbs!../templates/exams'],
         }
       },
 
-      appendHtml: function (compositeView, itemView, index) {
-        var childrenContainer = this.getItemViewContainer(compositeView);
+      attachBuffer: function () {
+      },
+
+      attachHtml: function (compositeView, childView, index) {
+        var childrenContainer = this.getChildViewContainer(compositeView);
         var children = childrenContainer.children();
         if (children.size() <= index) {
-          childrenContainer.append(itemView.el);
+          childrenContainer.append(childView.el);
         } else {
-          children.eq(index).before(itemView.el);
+          children.eq(index).before(childView.el);
         }
       }
     });

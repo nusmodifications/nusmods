@@ -12,7 +12,7 @@ function(_, Marionette, ModuleCollection, ModulesView, FacetCollection,
          FacetsView, template) {
   'use strict';
 
-  var ModuleFinderView = Marionette.Layout.extend({
+  var ModuleFinderView = Marionette.LayoutView.extend({
     template: template,
 
     regions: {

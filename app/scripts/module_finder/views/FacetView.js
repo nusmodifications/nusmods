@@ -3,6 +3,6 @@ define(['backbone.marionette', './FilterView'],
     'use strict';
 
     return Marionette.CollectionView.extend({
-      itemView: FilterView
+      childView: FilterView
     });
   });

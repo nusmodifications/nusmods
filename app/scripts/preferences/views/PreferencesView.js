@@ -18,7 +18,7 @@ function(_, Marionette, template, localforage) {
     return optionValues;
   }
 
-  var PreferencesView = Marionette.Layout.extend({
+  var PreferencesView = Marionette.LayoutView.extend({
     template: template,
     initialize: function () {
       // TODO: Populate default values of form elements for first time users.

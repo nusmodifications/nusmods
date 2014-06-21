@@ -5,6 +5,6 @@ define(['backbone.marionette', './NavigationItemView'],
     return Marionette.CollectionView.extend({
       tagName: 'ul',
       className: 'nav nav-tabs',
-      itemView: NavigationItemView
+      childView: NavigationItemView
     });
   });

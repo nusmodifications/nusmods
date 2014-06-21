@@ -27,7 +27,7 @@ define([
     return navigationCollection.add(navigationItem);
   });
 
-  App.on('initialize:after', function () {
+  App.on('start', function () {
     require(['module_finder', 'timetable_builder', 'corspedia', 'preferences'], function () {
       Backbone.history.start();
 

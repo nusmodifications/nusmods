@@ -4,8 +4,8 @@ define(['underscore', 'backbone.marionette', './LessonView'],
 
   return Marionette.CollectionView.extend({
     el: $('#timetable'),
-    itemView: LessonView,
-    itemViewOptions: function () {
+    childView: LessonView,
+    childViewOptions: function () {
       return {
         timetable: this.collection
       };
@@ -45,7 +45,10 @@ define(['underscore', 'backbone.marionette', './LessonView'],
       }
     },
 
-    appendHtml: function () {
+    attachBuffer: function () {
+    },
+
+    attachHtml: function () {
     }
   });
 });

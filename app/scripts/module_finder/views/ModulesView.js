@@ -5,8 +5,8 @@ define(['backbone.marionette', './ModuleView', 'hbs!../templates/modules'],
     return Marionette.CompositeView.extend({
       tagName: 'table',
       className: 'table table-bordered table-striped',
-      itemView: ModuleView,
-      itemViewContainer: 'tbody',
+      childView: ModuleView,
+      childViewContainer: 'tbody',
       template: template
     });
   });

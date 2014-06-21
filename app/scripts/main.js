@@ -11,7 +11,7 @@ require.config({
   ],
   paths: {
     'backbone.babysitter': '../bower_components/backbone.babysitter/lib/backbone.babysitter',
-    'backbone.marionette': '../bower_components/backbone.marionette/lib/core/amd/backbone.marionette',
+    'backbone.marionette': '../bower_components/backbone.marionette/lib/core/backbone.marionette',
     'backbone.picky': '../bower_components/backbone.picky/lib/amd/backbone.picky',
     'backbone.wreqr': '../bower_components/backbone.wreqr/lib/backbone.wreqr',
     'jquery-ui': '../bower_components/jquery.ui/ui',

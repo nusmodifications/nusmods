@@ -20,7 +20,7 @@ function(Marionette, template, TimetableModuleCollection, SelectedModulesView,
          TimetableView, UrlSharingView, localforage) {
   'use strict';
 
-  return Marionette.Layout.extend({
+  return Marionette.LayoutView.extend({
     template: template,
 
     regions: {

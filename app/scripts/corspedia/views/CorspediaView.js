@@ -8,7 +8,7 @@ define([
 function(_, Marionette, template, localforage) {
   'use strict';
 
-  var CorspediaView = Marionette.Layout.extend({
+  var CorspediaView = Marionette.LayoutView.extend({
     template: template,
     initialize: function() {
       
