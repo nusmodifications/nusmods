@@ -57,6 +57,8 @@ $font-family-sans-serif: "proxima-nova", "Helvetica Neue", Helvetica, Arial, san
 $fa-font-path: "/bower_components/font-awesome/fonts";
 @import "font-awesome/scss/font-awesome";
 
+@import "select2-bootstrap-css/lib/select2-bootstrap";
+
 @import "timetable";
 
 // Layout
@@ -171,19 +173,6 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
   li {
     float: none;
   }
-}
-.select2-drop-active,
-.select2-drop.select2-drop-above.select2-drop-active,
-.select2-container-active .select2-choices,
-.select2-dropdown-open.select2-drop-above .select2-choices,
-.select2-container-multi.select2-container-active .select2-choices {
-  border-color: $link-color;
-}
-.select2-dropdown-open.select2-drop-above .select2-choices {
-  border-top-color: transparent;
-}
-.select2-results .select2-highlighted {
-  background: none repeat scroll 0 0 $link-color;
 }
 
 // Module Finder Sidebar
