@@ -161,6 +161,19 @@ body {
   }
 }
 
+.search-form {
+  position: relative;
+  .form-control {
+    padding-right: 24px;
+    width: 300px;
+  }
+  .search-icon {
+    position: absolute;
+    right: 24px;
+    top: 8px;
+  }
+}
+
 // Loading Overlay
 #overlay {
   @include opacity(1);
