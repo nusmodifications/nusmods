@@ -85,6 +85,28 @@ body {
   }
 }
 
+.navbar-default {
+  .navbar-nav > {
+    li {
+      a:hover {
+        background: none;
+        color: $brand-primary;
+      }
+      &.active > {
+        a {
+          background: none;
+          border-bottom: 3px solid $brand-primary;
+          color: $brand-primary;
+          &:hover {
+            background: none;
+            color: $brand-primary;
+          }
+        }
+      }
+    }
+  }
+}
+
 .nav-tabs > { 
   li.active > {
     a, a:hover, a:focus {
@@ -94,10 +116,11 @@ body {
 }
 
 // NUSMods Beta Logo
-.brand {
-  text-align: right;
+#brand {
+  color: $brand-primary;
   font-weight: bold;
   font-size: 24px;
+  text-align: right;
   &:hover {
     color: $link-color;
     text-decoration: none;

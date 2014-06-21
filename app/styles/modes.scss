@@ -14,13 +14,43 @@
   a, a:hover {
     color: $mode-color;
   }
+  #brand {
+    color: $mode-color;
+    &:hover {
+      color: $mode-color;
+    }
+  }
   hr {
     border-color: #444;
   }
 
-  .nav {
-    background-color: #161713;
-    padding-left: 20px;
+  .navbar {
+    background: #161713;
+    border: none;
+  }
+  .navbar-default {
+    .navbar-nav > {
+      li {
+        a {
+          border: none;
+        }
+        a:hover {
+          background: none;
+          color: $mode-color;
+        }
+        &.active > {
+          a {
+            background: none;
+            border-bottom: 3px solid $mode-color;
+            color: $mode-color;
+            &:hover {
+              background: none;
+              color: $mode-color;
+            }
+          }
+        }
+      }
+    }
   }
   .nav-tabs > { 
     li.active > {
