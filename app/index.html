@@ -27,11 +27,31 @@
   <![endif]-->
 </head>
 <body>
-  <nav></nav>
-  <a class="brand" href="/">
-    NUS<span class="mods">Mods</span>
-    <span class="beta">BETA</span>
-  </a>
+
+  <header class="navbar navbar-default navbar-fixed-top" id="top" role="banner">
+    <div class="container">
+      <div class="navbar-header">
+        <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a id="brand" class="navbar-brand" href="/">NUS<span class="mods">Mods</span></a>
+      </div>
+      <div class="collapse navbar-collapse" role="navigation">
+        <form class="navbar-form navbar-left search-form" role="search">
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="Search Module">
+            <span class="search-icon"><i class="fa fa-search"></i></span>
+          </div>
+        </form>
+        <nav></nav>
+      </div>
+      
+    </div>
+  </header>
+  
   <div class="container-fluid">
     <div class="row content"></div>
     <hr>

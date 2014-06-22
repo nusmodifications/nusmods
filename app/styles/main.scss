@@ -21,13 +21,13 @@ $font-family-sans-serif: "proxima-nova", "Helvetica Neue", Helvetica, Arial, san
 @import "bootstrap-sass-official/vendor/assets/stylesheets/bootstrap/buttons";
 
 // Components
-//@import "bootstrap-sass-official/vendor/assets/stylesheets/bootstrap/component-animations";
+@import "bootstrap-sass-official/vendor/assets/stylesheets/bootstrap/component-animations";
 //@import "bootstrap-sass-official/vendor/assets/stylesheets/bootstrap/glyphicons";
 @import "bootstrap-sass-official/vendor/assets/stylesheets/bootstrap/dropdowns";
 @import "bootstrap-sass-official/vendor/assets/stylesheets/bootstrap/button-groups";
 @import "bootstrap-sass-official/vendor/assets/stylesheets/bootstrap/input-groups";
 @import "bootstrap-sass-official/vendor/assets/stylesheets/bootstrap/navs";
-//@import "bootstrap-sass-official/vendor/assets/stylesheets/bootstrap/navbar";
+@import "bootstrap-sass-official/vendor/assets/stylesheets/bootstrap/navbar";
 //@import "bootstrap-sass-official/vendor/assets/stylesheets/bootstrap/breadcrumbs";
 //@import "bootstrap-sass-official/vendor/assets/stylesheets/bootstrap/pagination";
 //@import "bootstrap-sass-official/vendor/assets/stylesheets/bootstrap/pager";
@@ -61,6 +61,10 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 
 @import "timetable";
 
+body {
+  padding-top: 70px;
+}
+
 // Layout
 .container-fluid {
   max-width: $container-lg;
@@ -72,15 +76,48 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 }
 
 // Navbar
-.nav {
+.navbar {
   background-color: #fff;
-  padding: 5px 0 0 20px;
-  margin-bottom: 20px;
-  @media (max-width: 767px) {
-    margin-right: -20px;
-    margin-left: -20px;
+}
+
+.navbar-toggle {
+  border-color: $brand-primary;
+  .icon-bar {
+    background-color: $brand-primary;
   }
 }
+
+.navbar-default {
+  .navbar-nav > {
+    li {
+      a:hover {
+        background: none;
+        color: $brand-primary;
+      }
+      &.active > {
+        a {
+          background: none;
+          border-bottom: 3px solid $brand-primary;
+          color: $brand-primary;
+          &:hover {
+            background: none;
+            color: $brand-primary;
+          }
+        }
+      }
+    }
+  }
+}
+
+.navbar-default {
+  .navbar-form {
+    border: none;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0;
+  }
+}
+
 .nav-tabs > { 
   li.active > {
     a, a:hover, a:focus {
@@ -90,13 +127,11 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 }
 
 // NUSMods Beta Logo
-.brand {
-  position: absolute;
-  top: 0;
-  right: 10px;
-  text-align: right;
+#brand {
+  color: $brand-primary;
   font-weight: bold;
   font-size: 24px;
+  text-align: right;
   &:hover {
     color: $link-color;
     text-decoration: none;
@@ -108,9 +143,6 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
   }
   .mods {
     color: #aaa;
-  }
-  @media (max-width: 459px) {
-    display: none;
   }
 }
 
@@ -137,6 +169,21 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
   .nm-boxify {
     border: none;
     background-color: #222326;
+  }
+}
+
+.search-form {
+  .form-group {
+    position: relative;
+  }
+  .form-control {
+    padding-right: 30px;
+    width: 100%;
+  }
+  .search-icon {
+    position: absolute;
+    right: 10px;
+    top: 8px;
   }
 }
 
@@ -322,7 +369,7 @@ colgroup.hover {
     margin-bottom: 5px;
   }
   .module-title {
-    // color: #666;
+    color: #606163;
     font-weight: normal;
     margin: 5px 0;
     text-shadow: none;

@@ -30,7 +30,14 @@ require.config({
     'bootstrap/button': [
       'jquery'
     ],
+    'bootstrap/collapse': [
+      'bootstrap/transition',
+      'jquery'
+    ],
     'bootstrap/dropdown': [
+      'jquery'
+    ],
+    'bootstrap/transition': [
       'jquery'
     ],
     'jquery-ui-touch-punch-improved': [
