@@ -1,4 +1,4 @@
-define(['backbone', 'common/utils/padTwo'], function(Backbone, padTwo) {
+define(['backbone', 'underscore', 'common/utils/padTwo'], function(Backbone, _, padTwo) {
   'use strict';
 
   // Convert exam in Unix time to 12-hour date/time format. We add 8 hours to
@@ -24,6 +24,21 @@ define(['backbone', 'common/utils/padTwo'], function(Backbone, padTwo) {
     return desc.split(' ').splice(0, DESCRIPTION_LIMIT).join(' ');
   }
 
+  var workloadify = function (workload) {
+    var workloadArray = workload.split('-');
+    var workloadComponents = {
+      lectureHours: workloadArray[0],
+      tutorialHours: workloadArray[1],
+      labHours: workloadArray[2],
+      projectHours: workloadArray[3],
+      preparationHours: workloadArray[4]
+    };
+    _.each(workloadComponents, function (value, key) {
+      workloadComponents[key] = parseInt(value);
+    });
+    return workloadComponents;
+  }
+
   return Backbone.Model.extend({
     idAttribute: 'code',
     initialize: function() {
@@ -31,6 +46,10 @@ define(['backbone', 'common/utils/padTwo'], function(Backbone, padTwo) {
       var description = this.get('description');
       if (description && description.split(' ').length > DESCRIPTION_LIMIT + 10) {
         this.set('shortDescription', shortenDescription(this.get('description')));
+      }
+      var workload = this.get('workload');
+      if (workload) {
+        this.set('workloadComponents', workloadify(workload));
       }
     }
   });

@@ -30,8 +30,24 @@
           <dd>No Exam</dd>
         {{/if}}
         {{#if workload}}
-        <dt class="highlight">Workload</dt>
-        <dd>{{workload}}</dd>
+          <dt class="highlight">Weekly Workload</dt>
+          <dl class="workload-components">
+            {{#if workloadComponents.lectureHours}}
+              <dd>Lecture: {{workloadComponents.lectureHours}} hrs</dd>
+            {{/if}}
+            {{#if workloadComponents.tutorialHours}}
+              <dd>Tutorial: {{workloadComponents.tutorialHours}} hrs</dd>
+            {{/if}}
+            {{#if workloadComponents.labHours}}
+              <dd>Lab: {{workloadComponents.labHours}} hrs</dd>
+            {{/if}}
+            {{#if workloadComponents.projectHours}}
+              <dd>Project: {{workloadComponents.projectHours}} hrs</dd>
+            {{/if}}
+            {{#if workloadComponents.preparationHours}}
+              <dd>Preparation: {{workloadComponents.preparationHours}} hrs</dd>
+            {{/if}}
+          </dl>
         {{/if}}
       </dl>
     </div>
