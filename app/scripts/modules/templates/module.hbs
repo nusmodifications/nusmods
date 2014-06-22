@@ -9,17 +9,21 @@
         <dt class="highlight">Credits</dt>
         <dd>{{mc}}</dd>
         {{#if prerequisite}}
-        <dt class="highlight">Pre-requisite(s)</dt>
-        <dd>{{prerequisite}}</dd>
+          <dt class="highlight">Pre-requisite(s)</dt>
+          <dd>{{prerequisite}}</dd>
         {{/if}}
         {{#if preclusion}}
-        <dt class="highlight">Preclusion(s)</dt>
-        <dd>{{preclusion}}</dd>
+          <dt class="highlight">Preclusion(s)</dt>
+          <dd>{{preclusion}}</dd>
         {{/if}}
         <dt class="highlight">Department</dt>
         <dd>{{department}}</dd>
         <dt class="highlight">Exam Date</dt>
-        <dd>{{examStr}}</dd>
+        {{#if examStr}}
+          <dd>{{examStr}}</dd>
+        {{else}}
+          <dd>No Exam</dd>
+        {{/if}}
         {{#if workload}}
         <dt class="highlight">Workload</dt>
         <dd>{{workload}}</dd>
