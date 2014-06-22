@@ -3,17 +3,17 @@ define([
   'backbone.marionette',
   'nusmods',
   'common/collections/ModuleCollection',
-  './ModulesView',
+  './ModulesListingView',
   '../collections/FacetCollection',
   './FacetsView',
-  'hbs!../templates/module_finder'
+  'hbs!../templates/modules'
 ],
 
-function(_, Marionette, NUSMods, ModuleCollection, ModulesView, FacetCollection,
-         FacetsView, template) {
+function(_, Marionette, NUSMods, ModuleCollection, ModulesListingView,
+         FacetCollection, FacetsView, template) {
   'use strict';
 
-  var ModuleFinderView = Marionette.LayoutView.extend({
+  return Marionette.LayoutView.extend({
     template: template,
 
     regions: {
@@ -142,10 +142,8 @@ function(_, Marionette, NUSMods, ModuleCollection, ModulesView, FacetCollection,
 
         var facetsView = (new FacetsView({collection: facets})).render();
 
-        this.modulesRegion.show(new ModulesView({collection: filteredModules}));
+        this.modulesRegion.show(new ModulesListingView({collection: filteredModules}));
       }, this));
     }
   });
-
-  return ModuleFinderView;
 });

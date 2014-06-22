@@ -1,4 +1,4 @@
-define(['backbone.marionette', 'hbs!../templates/module'],
+define(['backbone.marionette', 'hbs!../templates/module_item'],
   function (Marionette, template) {
     'use strict';
 

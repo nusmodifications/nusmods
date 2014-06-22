@@ -28,7 +28,7 @@ define([
   });
 
   App.on('start', function () {
-    require(['module_finder', 'timetable_builder', 'corspedia', 'preferences'], function () {
+    require(['modules', 'timetable_builder', 'corspedia', 'preferences'], function () {
       Backbone.history.start();
 
       if (Backbone.history.fragment === '') {

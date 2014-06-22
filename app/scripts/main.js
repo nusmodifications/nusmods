@@ -1,6 +1,6 @@
 require.config({
   packages: [
-    'module_finder',
+    'modules',
     'timetable_builder',
     'preferences',
     'corspedia',
