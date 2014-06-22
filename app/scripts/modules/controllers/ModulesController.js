@@ -20,8 +20,9 @@ define(['underscore', 'require', 'app', 'backbone.marionette'],
         require(['../views/ModuleView', 'nusmods', 'common/models/ModuleModel'],
           function (ModuleView, NUSMods, ModuleModel) {
             navigationItem.select();
-            NUSMods.getMod(id, _.bind(function (mod) {
-              mod.id = id;
+            var modCode = id.toUpperCase();
+            NUSMods.getMod(modCode, _.bind(function (mod) {
+              mod.id = modCode;
               var moduleModel = new ModuleModel(mod);
               App.mainRegion.show(new ModuleView({model: moduleModel}));
             }, this));
