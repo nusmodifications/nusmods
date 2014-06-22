@@ -14,13 +14,13 @@
 
   return {
     getCorrectAsAt: function (callback) {
-        callback(timetableData.correctAsAt);
+      callback(timetableData.correctAsAt);
     },
     getMod: function (code, callback) {
-        callback(timetableData.mods[code]);
+      callback(timetableData.mods[code]);
     },
     getMods: function (callback) {
-        callback(timetableData.mods);
+      callback(timetableData.mods);
     }
   };
 }));
