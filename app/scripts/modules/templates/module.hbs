@@ -1,17 +1,29 @@
-<div class="col-md-12">
+<div class="col-md-12 corspedia">
   <div class="row">
     <div class="col-md-3">
       <h2 class="module-code">{{id}}</h2>
-      <h4 class="module-title">{{title}}</h4>
+      <h3>{{title}}</h3>
       <hr>
       <dl>
-        <dd>This module introduces the fundamental concepts of problem solving by computing and programming using an imperative programming language. It is the first and foremost introductory course to computing and is equivalent to CS1010 (<a>view more...</a>)</dd>
-        <dt>Credits</dt>
-        <dd>4</dd>
-        <dt>Pre-Requisite</dt>
-        <dd>None</dd>
-        <dt>Preclusions</dt>
-        <dd><a class="module-links" href="/module/CS1010?fac=COM&amp;acc=g&amp;new=1">CS1010</a> or its equivalent</dd>
+        <dd>{{description}}</dd>
+        <dt class="highlight">Credits</dt>
+        <dd>{{mc}}</dd>
+        {{#if prerequisite}}
+        <dt class="highlight">Pre-requisite(s)</dt>
+        <dd>{{prerequisite}}</dd>
+        {{/if}}
+        {{#if preclusion}}
+        <dt class="highlight">Preclusion(s)</dt>
+        <dd>{{preclusion}}</dd>
+        {{/if}}
+        <dt class="highlight">Department</dt>
+        <dd>{{department}}</dd>
+        <dt class="highlight">Exam Date</dt>
+        <dd>{{examStr}}</dd>
+        {{#if workload}}
+        <dt class="highlight">Workload</dt>
+        <dd>{{workload}}</dd>
+        {{/if}}
       </dl>
     </div>
     <div class="col-md-9 nm-boxify nm-boxify-col">
