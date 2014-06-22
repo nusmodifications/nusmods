@@ -1,6 +1,7 @@
 define([
   'underscore',
   'backbone.marionette',
+  'nusmods',
   'common/collections/ModuleCollection',
   './ModulesView',
   '../collections/FacetCollection',
@@ -8,7 +9,7 @@ define([
   'hbs!../templates/module_finder'
 ],
 
-function(_, Marionette, ModuleCollection, ModulesView, FacetCollection,
+function(_, Marionette, NUSMods, ModuleCollection, ModulesView, FacetCollection,
          FacetsView, template) {
   'use strict';
 
@@ -105,42 +106,44 @@ function(_, Marionette, ModuleCollection, ModulesView, FacetCollection,
         updateAncestors(parent, checked);
       });
 
-      var filteredModules = new ModuleCollection();
+      NUSMods.getMods(_.bind(function (mods) {
+        var filteredModules = new ModuleCollection();
 
-      var filteredCodes = _.keys(timetableData.mods);
+        var filteredCodes = _.keys(mods);
 
-      var begin = 0;
+        var begin = 0;
 
-      _.each(timetableData.mods, function(mod, code) {
-        mod.code = code;
-      });
+        _.each(mods, function(mod, code) {
+          mod.code = code;
+        });
 
-      _.each(filteredCodes.slice(begin, begin + 10), function(code) {
-        filteredModules.add(timetableData.mods[code]);
-      });
+        _.each(filteredCodes.slice(begin, begin + 10), function(code) {
+          filteredModules.add(mods[code]);
+        });
 
 //      $(window).scroll(function() {
 //        if ($(window).scrollTop() + $(window).height() + 100 >= $(document).height()) {
 //          begin += 10;
 //          _.each(filteredCodes.slice(begin, begin + 10), function(code) {
-//            filteredModules.add(_.extend(timetableData.mods[code], { code: code }));
+//            filteredModules.add(_.extend(mods[code], { code: code }));
 //          });
 //        }
 //      });
 
-      var facets = new FacetCollection([], {
+        var facets = new FacetCollection([], {
           filteredCollection: filteredModules
-      });
-      facets.add(_.map(['department', 'mc'], function(key) {
-        return {
-          filteredCollection: timetableData.mods,
-          key: key
-        };
-      }));
+        });
+        facets.add(_.map(['department', 'mc'], function(key) {
+          return {
+            filteredCollection: mods,
+            key: key
+          };
+        }));
 
-      var facetsView = (new FacetsView({collection: facets})).render();
+        var facetsView = (new FacetsView({collection: facets})).render();
 
-      this.modulesRegion.show(new ModulesView({collection: filteredModules}));
+        this.modulesRegion.show(new ModulesView({collection: filteredModules}));
+      }, this));
     }
   });
 

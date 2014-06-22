@@ -1,28 +1,17 @@
-define(['require', 'app', 'backbone.marionette'],
-  function (require, App, Marionette) {
+define([
+    'app',
+    'backbone.marionette',
+    './controllers/TimetableBuilderController'
+  ],
+  function (App, Marionette, TimetableBuilderController) {
     'use strict';
-
-    var navigationItem = App.request('addNavigationItem', {
-      name: 'Timetable',
-      icon: 'table',
-      url: '#timetable-builder'
-    });
-
-    var controller = {
-      showTimetableBuilder: function () {
-        require(['./views/TimetableBuilderView'],
-          function (TimetableBuilderView) {
-            navigationItem.select();
-            App.mainRegion.show(new TimetableBuilderView());
-          });
-      }
-    };
 
     App.addInitializer(function () {
       new Marionette.AppRouter({
-        controller: controller,
+        controller: new TimetableBuilderController(),
         appRoutes: {
-          'timetable-builder': 'showTimetableBuilder'
+          'timetable-builder': 'showTimetableBuilder',
+          'timetable-builder/:options': 'showTimetableBuilder'
         }
       });
     });

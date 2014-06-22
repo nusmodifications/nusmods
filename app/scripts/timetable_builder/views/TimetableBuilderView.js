@@ -1,5 +1,8 @@
 define([
+  'underscore',
+  'backbone',
   'backbone.marionette',
+  'NUSMods',
   'hbs!../templates/timetable_builder',
   '../collections/TimetableModuleCollection',
   './SelectedModulesView',
@@ -15,9 +18,9 @@ define([
   'bootstrap/dropdown'
 ],
 
-function(Marionette, template, TimetableModuleCollection, SelectedModulesView,
-         SelectView, ExportView, ExamCollection, ExamsView, LessonCollection,
-         TimetableView, UrlSharingView, localforage) {
+function(_, Backbone, Marionette, NUSMods, template, TimetableModuleCollection,
+         SelectedModulesView, SelectView, ExportView, ExamCollection, ExamsView,
+         LessonCollection, TimetableView, UrlSharingView, localforage) {
   'use strict';
 
   return Marionette.LayoutView.extend({
@@ -31,23 +34,26 @@ function(Marionette, template, TimetableModuleCollection, SelectedModulesView,
 
     onShow: function() {
       var exams = new ExamCollection();
-      var timetable = new LessonCollection();
-      var selectedModules = new TimetableModuleCollection([], {
-        timetable: timetable,
+      this.timetable = new LessonCollection();
+      this.selectedModules = new TimetableModuleCollection([], {
+        timetable: this.timetable,
         exams: exams
       });
 
-      var timetableView = new TimetableView({collection: timetable});
+      this.listenTo(this.selectedModules, 'add remove', this.modulesChanged);
+      this.listenTo(this.timetable, 'change', this.modulesChanged);
+
+      var timetableView = new TimetableView({collection: this.timetable});
 
       this.examsRegion.show(new ExamsView({collection: exams}));
       this.selectedModsRegion.show(new SelectedModulesView({
-        collection: selectedModules
+        collection: this.selectedModules
       }));
       this.selectRegion.show(new SelectView({
-        collection: selectedModules
+        collection: this.selectedModules
       }));
       var exportView = new ExportView({
-        collection: selectedModules,
+        collection: this.selectedModules,
         exams: exams
       });
 
@@ -61,7 +67,39 @@ function(Marionette, template, TimetableModuleCollection, SelectedModulesView,
       });
       $('#show-hide').on('click', '.btn', function() {
         $('#timetable-wrapper').toggleClass('hide-' + $(this).text().toLowerCase());
-      });      
+      });
+    },
+
+    modulesChanged: function (model, collection, options) {
+      if (options && options.settingOptions) {
+        return;
+      }
+      var newOptions = {selectedModules: this.selectedModules.toJSON()};
+      localforage.setItem('timetableBuilderOptions', newOptions);
+      Backbone.history.navigate('timetable-builder/' +
+        encodeURIComponent(JSON.stringify(newOptions)));
+    },
+
+    setOptions: function (options) {
+      if (!options) {
+        return;
+      }
+      _.each(options.selectedModules, function (module) {
+        NUSMods.getMod(module.code, _.bind(function (mod) {
+          mod.id = module.code;
+          this.selectedModules.add(mod, {settingOptions: true});
+          _.each(module.lessons, function (lesson) {
+            var remove = this.timetable.where({
+              code: module.code,
+              type: lesson.type
+            });
+            this.timetable.remove(remove);
+            this.timetable.add(remove[0].get('sameType').where({
+              group: lesson.group
+            }));
+          }, this);
+        }, this));
+      }, this);
     }
   });
 });

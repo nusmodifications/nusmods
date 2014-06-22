@@ -410,9 +410,15 @@ module.exports = function (grunt) {
             all: {
                 rjsConfig: '<%= yeoman.app %>/scripts/main.js'
             }
+        },
+        jsifyNUS: {
+          destModuleFinder: 'app/scripts/nus_module_data.js',
+          destTimetable: 'app/scripts/nus_timetable_data.js',
+          src: 'app/json/nus_module_info.json'
         }
     });
 
+//    grunt.loadTasks('tasks');
 
     grunt.registerTask('serve', function (target) {
         if (target === 'dist') {

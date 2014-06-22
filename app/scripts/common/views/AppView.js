@@ -1,4 +1,4 @@
-define(['backbone'], function(Backbone) {
+define(['backbone', 'nusmods'], function(Backbone, NUSMods) {
   'use strict';
 
   return Backbone.View.extend({
@@ -17,7 +17,9 @@ define(['backbone'], function(Backbone) {
       $.fn.qtip.defaults.show.solo = true;
       $.fn.qtip.defaults.style.classes = 'qtip-bootstrap';
 
-      $('#correct-as-at').text(timetableData.correctAsAt);
+      NUSMods.getCorrectAsAt(function (correctAsAt) {
+        $('#correct-as-at').text(correctAsAt);
+      });
 
       $('.container').removeClass('hidden');
     }

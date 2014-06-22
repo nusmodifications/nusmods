@@ -127,6 +127,7 @@ define([
       this.model.get('sameGroup').each(function(lesson) {
         this.options.timetable.add(lesson);
       }, this);
+      this.options.timetable.trigger('change');
     },
 
     revert: function(droppable) {

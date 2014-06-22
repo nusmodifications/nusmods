@@ -1,4 +1,5 @@
-define(['underscore', 'backbone', 'select2'], function(_, Backbone) {
+define(['underscore', 'backbone', 'nusmods', 'select2'],
+  function(_, Backbone, NUSMods) {
     'use strict';
 
     var codes = _.keys(timetableData.mods);
@@ -17,9 +18,10 @@ define(['underscore', 'backbone', 'select2'], function(_, Backbone) {
 
       change: function(evt) {
         if (evt.added) {
-          var module = timetableData.mods[evt.added.id];
-          module.id = evt.added.id;
-          this.collection.add(module);
+          NUSMods.getMod(evt.added.id, _.bind(function (mod) {
+            mod.id = evt.added.id;
+            this.collection.add(mod);
+          }, this));
         } else if (evt.removed) {
           this.collection.remove(this.collection.get(evt.removed.id));
         }
