@@ -3,7 +3,6 @@ require.config({
     'modules',
     'timetable_builder',
     'preferences',
-    'corspedia',
     {
       name: 'underscore',
       location: '../bower_components/lodash-amd/underscore'

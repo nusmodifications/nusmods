@@ -1,28 +1,13 @@
-define(['require', 'app', 'backbone.marionette'],
-  function (require, App, Marionette) {
+define(['app', 'backbone.marionette', './controllers/ModulesController'],
+  function (App, Marionette, ModulesController) {
     'use strict';
-
-    var navigationItem = App.request('addNavigationItem', {
-      name: 'Modules',
-      icon: 'search',
-      url: '#modules'
-    });
-
-    var controller = {
-      showModules: function () {
-        require(['./views/ModulesView'],
-          function (ModulesView) {
-            navigationItem.select();
-            App.mainRegion.show(new ModulesView());
-          });
-      }
-    };
 
     App.addInitializer(function () {
       new Marionette.AppRouter({
-        controller: controller,
+        controller: new ModulesController(),
         appRoutes: {
-          'modules': 'showModules'
+          'modules': 'showModules',
+          'modules/:id': 'showModule'
         }
       });
     });
