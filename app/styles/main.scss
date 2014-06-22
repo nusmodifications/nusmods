@@ -149,6 +149,9 @@ body {
 .highlight {
   color: $brand-primary;
   font-weight: bold;
+  &.thin {
+    font-weight: normal;
+  }
 }
 
 .nm-boxify {
@@ -375,6 +378,20 @@ colgroup.hover {
   }
   dd {
     margin-bottom: 10px;
+  }
+  .desc-more {
+    display: none;
+  }
+  .module-desc-more {
+    .desc-less {
+      display: none;
+    }
+    .desc-more {
+      display: inherit;
+    }
+  }
+  .desc-full {
+    text-align: right;
   }
 }
 

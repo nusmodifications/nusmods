@@ -14,16 +14,21 @@
   a, a:hover {
     color: $mode-color;
   }
+  table a {
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  hr {
+    border-color: #444;
+  }
   #brand {
     color: $mode-color;
     &:hover {
       color: $mode-color;
     }
   }
-  hr {
-    border-color: #444;
-  }
-
   .navbar {
     background: #161713;
     border: none;
