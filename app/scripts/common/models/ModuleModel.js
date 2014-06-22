@@ -18,15 +18,20 @@ define(['backbone', 'common/utils/padTwo'], function(Backbone, padTwo) {
     return null;
   };
 
+  var DESCRIPTION_LIMIT = 40;
+
   var shortenDescription = function (desc) {
-    return desc.split(' ').splice(0, 40).join(' ');
+    return desc.split(' ').splice(0, DESCRIPTION_LIMIT).join(' ');
   }
 
   return Backbone.Model.extend({
     idAttribute: 'code',
     initialize: function() {
       this.set('examStr', examStr(this.get('exam')));
-      this.set('shortDescription', shortenDescription(this.get('description')));
+      var description = this.get('description');
+      if (description && description.split(' ').length > DESCRIPTION_LIMIT + 10) {
+        this.set('shortDescription', shortenDescription(this.get('description')));
+      }
     }
   });
 });

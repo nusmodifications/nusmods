@@ -5,8 +5,10 @@
       <h3 class="module-title">{{title}}</h3>
       <hr>
       <dl>
-        <dd class="module-desc">
-          <span class="desc-less">{{shortDescription}}<div class="desc-full">( <a href="#" class="show-full-desc">See full description</a> )</div></span>
+        <dd class="module-desc {{#unless shortDescription}} module-desc-more {{/unless}}">
+          <span class="desc-less">{{shortDescription}}...
+            <div class="desc-full">( <a href="#" class="show-full-desc">See full description</a> )</div>
+          </span>
           <span class="desc-more">{{description}}</span>
         </dd>
         <dt class="highlight">Credits</dt>
