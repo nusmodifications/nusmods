@@ -1,0 +1,7 @@
+---
+- hosts: all
+  sudo: yes
+  roles:
+    - apt-get_update
+    - cd_project_dir
+    - app_server

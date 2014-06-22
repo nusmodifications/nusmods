@@ -1,0 +1,6 @@
+---
+dependencies:
+  - bower
+  - bundler
+  - grunt
+  - nginx

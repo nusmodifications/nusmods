@@ -2,6 +2,7 @@ node_modules
 dist
 .tmp
 .sass-cache
+.vagrant
 app/bower_components
 cache
 vendor

@@ -1,0 +1,3 @@
+---
+user: '{{ ansible_ssh_user }}'
+project_dir: /home/{{ user }}/NUSMods

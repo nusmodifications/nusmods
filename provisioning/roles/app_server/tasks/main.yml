@@ -1,0 +1,2 @@
+---
+- { include: sudo_no.yml, sudo: no }
