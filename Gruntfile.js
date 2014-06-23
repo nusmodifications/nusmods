@@ -60,25 +60,7 @@ module.exports = function (grunt) {
       },
       currentSemester: {
         options: {
-          baseUrl: 'https://aces01.nus.edu.sg/cors/jsp/report/'
-        }
-      },
-      previousSemester: {
-        options: {
-          maxCacheAge: -1,
-          baseUrl: 'https://sit.aces01.nus.edu.sg/cors/jsp/report/'
-        }
-      },
-      semester3: {
-        options: {
-          maxCacheAge: -1,
-          baseUrl: 'https://sit.aces01.nus.edu.sg/sts/jsp/report/'
-        }
-      },
-      semester4: {
-        options: {
-          maxCacheAge: -1,
-          baseUrl: 'https://aces01.nus.edu.sg/sts/jsp/report/'
+          baseUrl: 'https://myaces.nus.edu.sg/cors/jsp/report/'
         }
       }
     },
@@ -116,12 +98,14 @@ module.exports = function (grunt) {
       },
       ay2013to2014sem1: {
         options: {
+          maxCacheAge: -1,
           academicYear: '2013/2014',
           semester: '1'
         }
       },
       ay2013to2014sem2: {
         options: {
+          maxCacheAge: -1,
           academicYear: '2013/2014',
           semester: '2'
         }
@@ -184,6 +168,12 @@ module.exports = function (grunt) {
           academicYear: '2013/2014',
           semester: '4'
         }
+      },
+      ay2014to2015sem1: {
+        options: {
+          academicYear: '2014/2015',
+          semester: '1'
+        }
       }
     },
     moduleTimetableDelta: {
@@ -237,6 +227,24 @@ module.exports = function (grunt) {
           academicYear: '2013/2014',
           semester: '2'
         }
+      },
+      ay2013to2014sem3: {
+        options: {
+          academicYear: '2013/2014',
+          semester: '3'
+        }
+      },
+      ay2013to2014sem4: {
+        options: {
+          academicYear: '2013/2014',
+          semester: '4'
+        }
+      },
+      ay2014to2015sem1: {
+        options: {
+          academicYear: '2014/2015',
+          semester: '1'
+        }
       }
     },
     normalize: {
@@ -280,6 +288,24 @@ module.exports = function (grunt) {
         options: {
           academicYear: '2013/2014',
           semester: '2'
+        }
+      },
+      ay2013to2014sem3: {
+        options: {
+          academicYear: '2013/2014',
+          semester: '3'
+        }
+      },
+      ay2013to2014sem4: {
+        options: {
+          academicYear: '2013/2014',
+          semester: '4'
+        }
+      },
+      ay2014to2015sem1: {
+        options: {
+          academicYear: '2014/2015',
+          semester: '1'
         }
       }
     },
@@ -326,6 +352,24 @@ module.exports = function (grunt) {
           academicYear: '2013/2014',
           semester: '2'
         }
+      },
+      ay2013to2014sem3: {
+        options: {
+          academicYear: '2013/2014',
+          semester: '3'
+        }
+      },
+      ay2013to2014sem4: {
+        options: {
+          academicYear: '2013/2014',
+          semester: '4'
+        }
+      },
+      ay2014to2015sem1: {
+        options: {
+          academicYear: '2014/2015',
+          semester: '1'
+        }
       }
     },
     backwardCompatibility: {
@@ -351,6 +395,12 @@ module.exports = function (grunt) {
           academicYear: '2013/2014',
           semester: '2'
         }
+      },
+      ay2014to2015sem1: {
+        options: {
+          academicYear: '2014/2015',
+          semester: '1'
+        }
       }
     }
   });
@@ -374,34 +424,9 @@ module.exports = function (grunt) {
     'backwardCompatibility'
   ]);
 
-  grunt.registerTask('ay2012to2013sem2', [
-    'bulletinModules:semester2',
-    'corsBiddingStats',
-    'examTimetable:ay2012to2013sem2',
-    'moduleTimetableDelta',
-    'consolidate:ay2012to2013sem2',
-    'ivle:ay2012to2013sem2',
-    'normalize:ay2012to2013sem2',
-    'split:ay2012to2013sem2',
-    'backwardCompatibility:ay2012to2013sem2'
-  ]);
-
-  grunt.registerTask('ay2013to2014sem1', [
-    'bulletinModules:semester1',
-    'cors:previousSemester',
-    'corsBiddingStats',
-    'examTimetable:ay2013to2014sem1',
-    'moduleTimetableDelta',
-    'consolidate:ay2013to2014sem1',
-    'ivle:ay2013to2014sem1',
-    'normalize:ay2013to2014sem1',
-    'split:ay2013to2014sem1',
-    'backwardCompatibility:ay2013to2014sem1'
-  ]);
-
   grunt.registerTask('ay2013to2014sem2', [
     'bulletinModules:semester2',
-    'cors:currentSemester',
+    'corsBiddingStats',
     'examTimetable:ay2013to2014sem2',
     'moduleTimetableDelta',
     'consolidate:ay2013to2014sem2',
@@ -411,10 +436,18 @@ module.exports = function (grunt) {
     'backwardCompatibility:ay2013to2014sem2'
   ]);
 
-  grunt.registerTask('ay2013to2014', [
-    'ay2013to2014sem1',
-    'ay2013to2014sem2'
+  grunt.registerTask('ay2014to2015sem1', [
+    'bulletinModules:semester1',
+    'cors:currentSemester',
+    'corsBiddingStats',
+    'examTimetable:ay2014to2015sem1',
+    'moduleTimetableDelta',
+    'consolidate:ay2014to2015sem1',
+    'ivle:ay2014to2015sem1',
+    'normalize:ay2014to2015sem1',
+    'split:ay2014to2015sem1',
+    'backwardCompatibility:ay2014to2015sem1'
   ]);
 
-  grunt.registerTask('default', 'ay2013to2014sem2');
+  grunt.registerTask('default', 'ay2014to2015sem1');
 };
