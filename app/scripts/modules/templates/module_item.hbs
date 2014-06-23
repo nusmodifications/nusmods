@@ -16,10 +16,10 @@
   <strong>{{title}}</strong>
   <div class="desc">{{description}}</div>
   {{#if prerequisite}}
-    <div><strong>Prerequisites:</strong>&nbsp;{{prerequisite}}</div>
+    <div><strong>Prerequisites:</strong>&nbsp;{{{parsedPrerequisite}}}</div>
   {{/if}}
   {{#if preclusion}}
-    <div><strong>Preclusions:</strong>&nbsp;{{preclusion}}</div>
+    <div><strong>Preclusions:</strong>&nbsp;{{{parsedPreclusion}}}</div>
   {{/if}}
   {{#if workload}}
     <div><strong>Workload:</strong>&nbsp;{{workload}}</div>

@@ -1,4 +1,4 @@
-define(['backbone', 'underscore', 'common/utils/padTwo'], function(Backbone, _, padTwo) {
+define(['backbone', 'underscore', 'common/utils/padTwo', 'common/utils/modulify'], function(Backbone, _, padTwo, modulify) {
   'use strict';
 
   // Convert exam in Unix time to 12-hour date/time format. We add 8 hours to
@@ -50,6 +50,14 @@ define(['backbone', 'underscore', 'common/utils/padTwo'], function(Backbone, _, 
       var workload = this.get('workload');
       if (workload) {
         this.set('workloadComponents', workloadify(workload));
+      }
+      var prerequisite = this.get('prerequisite');
+      if (prerequisite) {
+        this.set('parsedPrerequisite', modulify.linkifyModules(prerequisite));
+      }
+      var preclusion = this.get('preclusion');
+      if (preclusion) {
+        this.set('parsedPreclusion', modulify.linkifyModules(preclusion));
       }
     }
   });
