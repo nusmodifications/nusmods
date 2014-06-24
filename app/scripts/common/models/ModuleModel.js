@@ -50,9 +50,7 @@ define(['backbone', 'underscore', 'common/utils/padTwo', 'common/utils/modulify'
   return Backbone.Model.extend({
     idAttribute: 'code',
     initialize: function() {
-      console.log(this);
       // TODO: Display exam date when 2014-2015/1 exam timetable released.
-      // this.set('examStr', examStr(this.get('exam')));
       
       var description = this.get('ModuleDescription');
       if (description && description.split(' ').length > DESCRIPTION_LIMIT + 10) {
@@ -77,6 +75,20 @@ define(['backbone', 'underscore', 'common/utils/padTwo', 'common/utils/modulify'
       var preclusion = this.get('Preclusion');
       if (preclusion) {
         this.set('ParsedPreclusion', modulify.linkifyModules(preclusion));
+      }
+
+      // TODO: These attributes are being used by module_item.hbs as model is being loaded from
+      //       nus_timetable_data.js and are kept here for backward compatibility.
+      this.set('examStr', examStr(this.get('exam')));
+
+      var prereq = this.get('prerequisite');
+      if (prereq) {
+        this.set('parsedPrerequisite', modulify.linkifyModules(prereq));
+      }
+
+      var preclu = this.get('preclusion');
+      if (preclu) {
+        this.set('parsedPreclusion', modulify.linkifyModules(preclu));
       }
     }
   });
