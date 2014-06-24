@@ -25,6 +25,7 @@
     "lodash": "^2.4.1",
     "moment": "^2.7.0",
     "request": "^2.36.0",
+    "request-replay": "^0.3.0",
     "underscore.string": "^2.3.3"
   },
   "private": true

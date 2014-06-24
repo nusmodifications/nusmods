@@ -2,6 +2,7 @@
 
 var fs = require('graceful-fs');
 var path = require('path');
+var replay = require('request-replay');
 var request = require('request');
 
 // Convert URL to equivalent valid filename.
@@ -31,7 +32,7 @@ exports.requestCached = function (url, options, callback) {
         options.headers = options.headers || {};
         options.headers['if-modified-since'] = (new Date(stats.mtime)).toUTCString();
       }
-      request(options, function (err, response, body) {
+      replay(request(options, function (err, response, body) {
         if (err) {
           callback(err);
         }
@@ -47,6 +48,10 @@ exports.requestCached = function (url, options, callback) {
           default:
             callback(new Error(response.statusCode + ' while fetching ' + url));
         }
+      })).on('replay', function (replay) {
+        console.log('request failed: ' + replay.error.code + ' ' + replay.error.message);
+        console.log('replay nr: #' + replay.number);
+        console.log('will retry in: ' + replay.delay + 'ms');
       });
     }
   });
