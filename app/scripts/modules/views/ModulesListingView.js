@@ -1,11 +1,11 @@
 define(['backbone.marionette', './ModuleItemView', 'hbs!../templates/modules_listing'],
-  function (Marionette, ModuleView, template) {
+  function (Marionette, ModuleItemView, template) {
     'use strict';
 
     return Marionette.CompositeView.extend({
       tagName: 'table',
       className: 'table table-bordered table-striped',
-      childView: ModuleView,
+      childView: ModuleItemView,
       childViewContainer: 'tbody',
       template: template
     });

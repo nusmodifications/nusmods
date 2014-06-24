@@ -23,7 +23,8 @@ function(_, Marionette, NUSMods, ModuleCollection, ModulesListingView,
     onShow: function() {
       $('.exhibit-collectionView-header').on('click', '.add', function(evt) {
         var qtipContent;
-        var itemID = $(this).data('code');
+        var $this = $(this);
+        var itemID = $this.data('code');
         if (this.collection.get(itemID)) {
           qtipContent = 'Already added!';
         } else {
@@ -32,7 +33,7 @@ function(_, Marionette, NUSMods, ModuleCollection, ModulesListingView,
             id: itemID
           })
         }
-        $(this).qtip({
+        $this.qtip({
           content: qtipContent,
           show: {
             event: false,
@@ -58,8 +59,9 @@ function(_, Marionette, NUSMods, ModuleCollection, ModulesListingView,
         $('#sidebar').animate({
           width: 'toggle'
         }, 100);
-        $('#content').toggleClass('col-md-12 col-md-9');
-        $('#content').toggleClass('no-sidebar');
+        var $content = $('#content');
+        $content.toggleClass('col-md-12 col-md-9');
+        $content.toggleClass('no-sidebar');
         sidebarShown = !sidebarShown;
         qtipContent = sidebarShown ? 'Hide Sidebar' : 'Show Sidebar';
         $(this).qtip('option', 'content.text', qtipContent);
@@ -97,8 +99,9 @@ function(_, Marionette, NUSMods, ModuleCollection, ModulesListingView,
       }
 
       $('#sidebar input[type="checkbox"]').click(function() {
-        var checked = $(this).prop('checked'),
-            parent = $(this).parent();
+        var $this = $(this);
+        var checked = $this.prop('checked'),
+            parent = $this.parent();
         parent.find('input[type="checkbox"]').prop({
           checked: checked,
           indeterminate: false
