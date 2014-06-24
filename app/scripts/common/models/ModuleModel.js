@@ -78,20 +78,6 @@ define(['backbone', 'underscore', 'common/utils/padTwo', 'common/utils/modulify'
       if (preclusion) {
         this.set('ParsedPreclusion', modulify.linkifyModules(preclusion));
       }
-      var that = this;
-      (function() {
-        $('#disqus-script').remove(); // Force reload of disqus
-        window.disqus_shortname = 'corspedia';
-        window.disqus_identifier = that.get('ModuleCode');
-        window.disqus_url = window.location.href;
-        var dsq = document.createElement('script'); 
-        dsq.type = 'text/javascript'; 
-        dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        dsq.id = 'disqus-script';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        console.log('init dsq')
-      })();
     }
   });
 });
