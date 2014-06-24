@@ -42,28 +42,34 @@ define(['backbone', 'underscore', 'common/utils/padTwo', 'common/utils/modulify'
   return Backbone.Model.extend({
     idAttribute: 'code',
     initialize: function() {
-      this.set('examStr', examStr(this.get('exam')));
-      var description = this.get('description');
+      console.log(this);
+      // TODO: Display exam date when 2014-2015/1 exam timetable released.
+      // this.set('examStr', examStr(this.get('exam')));
+      
+      var description = this.get('ModuleDescription');
       if (description && description.split(' ').length > DESCRIPTION_LIMIT + 10) {
-        this.set('shortDescription', shortenDescription(this.get('description')));
+        this.set('ShortModuleDescription', shortenDescription(this.get('ModuleDescription')));
       }
-      var workload = this.get('workload');
+
+      var workload = this.get('Workload');
       if (workload) {
-        this.set('workloadComponents', workloadify(workload));
+        this.set('WorkloadComponents', workloadify(workload));
       }
-      var prerequisite = this.get('prerequisite');
+
+      var prerequisite = this.get('Prerequisite');
       if (prerequisite) {
-        this.set('parsedPrerequisite', modulify.linkifyModules(prerequisite));
+        this.set('ParsedPrerequisite', modulify.linkifyModules(prerequisite));
       }
-      var preclusion = this.get('preclusion');
+
+      var preclusion = this.get('Preclusion');
       if (preclusion) {
-        this.set('parsedPreclusion', modulify.linkifyModules(preclusion));
+        this.set('ParsedPreclusion', modulify.linkifyModules(preclusion));
       }
       var that = this;
       (function() {
         $('#disqus-script').remove(); // Force reload of disqus
         window.disqus_shortname = 'corspedia';
-        window.disqus_identifier = that.get('id');
+        window.disqus_identifier = that.get('ModuleCode');
         window.disqus_url = window.location.href;
         var dsq = document.createElement('script'); 
         dsq.type = 'text/javascript'; 

@@ -1,51 +1,51 @@
 <div class="col-md-12 corspedia">
   <div class="row">
     <div class="col-md-3">
-      <h1 class="module-code">{{id}}</h1>
-      <h3 class="module-title">{{title}}</h3>
+      <h1 class="module-code">{{ModuleCode}}</h1>
+      <h3 class="module-title">{{ModuleTitle}}</h3>
       <hr>
       <dl>
-        <dd class="module-desc {{#unless shortDescription}} module-desc-more {{/unless}}">
-          <span class="desc-less">{{shortDescription}}...
+        <dd class="module-desc {{#unless ShortModuleDescription}} module-desc-more {{/unless}}">
+          <span class="desc-less">{{ShortModuleDescription}}...
             <div class="desc-full">( <a href="#" class="show-full-desc">See full description</a> )</div>
           </span>
-          <span class="desc-more">{{description}}</span>
+          <span class="desc-more">{{ModuleDescription}}</span>
         </dd>
         <dt class="highlight">Credits</dt>
-        <dd>{{mc}}</dd>
+        <dd>{{ModuleCredit}}</dd>
         {{#if prerequisite}}
           <dt class="highlight">Pre-requisite(s)</dt>
-          <dd>{{{parsedPrerequisite}}}</dd>
+          <dd>{{{ParsedPrerequisite}}}</dd>
         {{/if}}
         {{#if preclusion}}
           <dt class="highlight">Preclusion(s)</dt>
-          <dd>{{{parsedPreclusion}}}</dd>
+          <dd>{{{ParsedPreclusion}}}</dd>
         {{/if}}
         <dt class="highlight">Department</dt>
-        <dd>{{department}}</dd>
+        <dd>{{Department}}</dd>
         <dt class="highlight">Exam Date</dt>
-        {{#if examStr}}
-          <dd>{{examStr}}</dd>
+        {{#if ExamDate}}
+          <dd>{{ExamDate}}</dd>
         {{else}}
           <dd>No Exam</dd>
         {{/if}}
         {{#if workload}}
           <dt class="highlight">Weekly Workload</dt>
           <dl class="workload-components">
-            {{#if workloadComponents.lectureHours}}
-              <dd>Lecture: {{workloadComponents.lectureHours}} hrs</dd>
+            {{#if WorkloadComponents.lectureHours}}
+              <dd>Lecture: {{WorkloadComponents.lectureHours}} hrs</dd>
             {{/if}}
-            {{#if workloadComponents.tutorialHours}}
-              <dd>Tutorial: {{workloadComponents.tutorialHours}} hrs</dd>
+            {{#if WorkloadComponents.tutorialHours}}
+              <dd>Tutorial: {{WorkloadComponents.tutorialHours}} hrs</dd>
             {{/if}}
-            {{#if workloadComponents.labHours}}
-              <dd>Lab: {{workloadComponents.labHours}} hrs</dd>
+            {{#if WorkloadComponents.labHours}}
+              <dd>Lab: {{WorkloadComponents.labHours}} hrs</dd>
             {{/if}}
-            {{#if workloadComponents.projectHours}}
-              <dd>Project: {{workloadComponents.projectHours}} hrs</dd>
+            {{#if WorkloadComponents.projectHours}}
+              <dd>Project: {{WorkloadComponents.projectHours}} hrs</dd>
             {{/if}}
-            {{#if workloadComponents.preparationHours}}
-              <dd>Preparation: {{workloadComponents.preparationHours}} hrs</dd>
+            {{#if WorkloadComponents.preparationHours}}
+              <dd>Preparation: {{WorkloadComponents.preparationHours}} hrs</dd>
             {{/if}}
           </dl>
         {{/if}}
