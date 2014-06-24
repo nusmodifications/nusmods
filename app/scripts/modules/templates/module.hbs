@@ -13,11 +13,11 @@
         </dd>
         <dt class="highlight">Credits</dt>
         <dd>{{ModuleCredit}}</dd>
-        {{#if prerequisite}}
+        {{#if Prerequisite}}
           <dt class="highlight">Pre-requisite(s)</dt>
           <dd>{{{ParsedPrerequisite}}}</dd>
         {{/if}}
-        {{#if preclusion}}
+        {{#if Preclusion}}
           <dt class="highlight">Preclusion(s)</dt>
           <dd>{{{ParsedPreclusion}}}</dd>
         {{/if}}
@@ -29,7 +29,7 @@
         {{else}}
           <dd>No Exam</dd>
         {{/if}}
-        {{#if workload}}
+        {{#if Workload}}
           <dt class="highlight">Weekly Workload</dt>
           <dl class="workload-components">
             {{#if WorkloadComponents.lectureHours}}
