@@ -13,6 +13,9 @@
   }
   a, a:hover {
     color: $mode-color;
+    &.plain {
+      color: #000;
+    }
   }
   table a {
     text-decoration: none;

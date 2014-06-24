@@ -65,6 +65,10 @@ body {
   padding-top: 70px;
 }
 
+a.plain {
+  color: $text-color;
+}
+
 // Layout
 .container-fluid {
   max-width: $container-lg;
