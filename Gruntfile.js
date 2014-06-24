@@ -75,7 +75,8 @@ module.exports = function (grunt) {
                     base: [
                         '.tmp',
                         '<%= yeoman.app %>',
-                        '.'
+                        '.',
+                        'api/app'
                     ]
                 }
             },
@@ -85,14 +86,18 @@ module.exports = function (grunt) {
                     base: [
                         '.tmp',
                         'test',
-                        '<%= yeoman.app %>'
+                        '<%= yeoman.app %>',
+                        'api/app'
                     ]
                 }
             },
             dist: {
                 options: {
                     open: true,
-                    base: '<%= yeoman.dist %>',
+                    base: [
+                        '<%= yeoman.dist %>',
+                        'api/app'
+                    ],
                     livereload: false
                 }
             }
