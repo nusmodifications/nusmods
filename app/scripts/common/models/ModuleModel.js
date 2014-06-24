@@ -24,6 +24,14 @@ define(['backbone', 'underscore', 'common/utils/padTwo', 'common/utils/modulify'
     return desc.split(' ').splice(0, DESCRIPTION_LIMIT).join(' ');
   }
 
+  var prettifyDepartment = function (dept) {
+    var words = [];
+    _.each(dept.split(' '), function (word) {
+      words.push(word.charAt(0) + word.slice(1).toLowerCase());
+    })
+    return words.join(' ');
+  }
+
   var workloadify = function (workload) {
     var workloadArray = workload.split('-');
     var workloadComponents = {
@@ -54,6 +62,11 @@ define(['backbone', 'underscore', 'common/utils/padTwo', 'common/utils/modulify'
       var workload = this.get('Workload');
       if (workload) {
         this.set('WorkloadComponents', workloadify(workload));
+      }
+
+      var department = this.get('Department');
+      if (department) {
+        this.set('Department', prettifyDepartment(department));
       }
 
       var prerequisite = this.get('Prerequisite');
