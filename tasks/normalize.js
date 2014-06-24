@@ -92,15 +92,18 @@ module.exports = function (grunt) {
           mod.Types = rawMod.CORS.Types;
         }
 
-        if (rawMod.IVLE[0]) {
-          mod.Lecturers = _.compact(rawMod.IVLE[0].Lecturers.map(function (lecturer) {
-            switch (lecturer.Role.trim()) {
-              case 'Lecturer':
-              case 'Co-Lecturer':
-              case 'Visiting Professor':
-                return lecturer.User.Name;
-            }
-          }));
+        if (rawMod.IVLE) {
+          if (rawMod.IVLE[0]) {
+            mod.Lecturers = _.compact(rawMod.IVLE[0].Lecturers.map(function (lecturer) {
+              switch (lecturer.Role.trim()) {
+                case 'Lecturer':
+                case 'Co-Lecturer':
+                case 'Visiting Professor':
+                  return lecturer.User.Name;
+              }
+            }));
+          }
+          mod.IVLE = rawMod.IVLE;
         }
 
         if (rawMod.CORS && rawMod.CORS.Timetable.length) {
@@ -149,6 +152,10 @@ module.exports = function (grunt) {
                 'DayText', 'StartTime', 'EndTime', 'Venue', 'LastModified_js'));
             }
           });
+        }
+
+        if (rawMod.CorsBiddingStats) {
+          mod.CorsBiddingStats = rawMod.CorsBiddingStats;
         }
 
         if (mod.Timetable) {
