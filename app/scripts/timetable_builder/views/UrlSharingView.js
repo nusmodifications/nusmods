@@ -30,8 +30,19 @@ define(['backbone', 'zeroclipboard'], function(Backbone, ZeroClipboard) {
         }
       }
 
-      shortURLInput.focus(function() {
-        getShortURL(function() {});
+      shortURLInput.on('cut keydown', function (event) {
+        // Prevent default actions on cut and keydown to simulate readOnly
+        // behavior on input, as the readOnly attribute does not allow selection
+        // on some mobile platforms.
+        event.preventDefault();
+      }).focus(function() {
+        getShortURL(function() {
+          // shortURLInput.select() does not work on iOS
+          shortURLInput[0].setSelectionRange(0, 99);
+        });
+      }).mouseup(function (event) {
+        // Prevent the mouseup event from unselecting the selection
+        event.preventDefault();
       });
 
       copyToClipboard.qtip({
