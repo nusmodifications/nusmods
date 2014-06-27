@@ -13,19 +13,6 @@ define(['backbone.marionette', './ExamView', 'hbs!../templates/exams'],
         'add remove': function() {
           $('#clash').toggleClass('hidden', !this.collection.clashCount);
         }
-      },
-
-      attachBuffer: function () {
-      },
-
-      attachHtml: function (compositeView, childView, index) {
-        var childrenContainer = this.getChildViewContainer(compositeView);
-        var children = childrenContainer.children();
-        if (children.size() <= index) {
-          childrenContainer.append(childView.el);
-        } else {
-          children.eq(index).before(childView.el);
-        }
       }
     });
   });
