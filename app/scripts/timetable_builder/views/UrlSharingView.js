@@ -45,11 +45,13 @@ define(['backbone', 'zeroclipboard'], function(Backbone, ZeroClipboard) {
         event.preventDefault();
       });
 
+      var CLIPBOARD_TOOLTIP = 'Copy to Clipboard';
       copyToClipboard.qtip({
-        content: 'Copy to Clipboard',
+        content: CLIPBOARD_TOOLTIP,
         events: {
           hidden: function() {
-            copyToClipboard.qtip('option', 'content.text', 'Copy to Clipboard');
+            // Set to original text when hidden as text may have been changed.
+            copyToClipboard.qtip('option', 'content.text', CLIPBOARD_TOOLTIP);
           }
         }
       });
