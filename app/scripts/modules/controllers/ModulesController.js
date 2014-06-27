@@ -23,7 +23,7 @@ define(['underscore', 'require', 'app', 'backbone.marionette'],
           function (ModuleView, NUSMods, ModuleModel) {
             navigationItem.select();
             var modCode = id.toUpperCase();
-            $.getJSON('/api/json/' + SEMESTER + '/modules/' + modCode + '.json', function (data) {
+            $.getJSON('/api/' + SEMESTER + '/modules/' + modCode + '.json', function (data) {
               var moduleModel = new ModuleModel(data);
               App.mainRegion.show(new ModuleView({model: moduleModel}));
             });
