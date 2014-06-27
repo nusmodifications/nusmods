@@ -55,17 +55,12 @@ define(['backbone', 'zeroclipboard'], function(Backbone, ZeroClipboard) {
           }
         }
       });
-
-      clip.on('mouseover', function() {
+      copyToClipboard.on('mouseover', function() {
         getShortURL(function(shortURL) {
           clip.setText(shortURL);
         });
-        copyToClipboard.qtip('show');
       });
-      clip.on('mouseout', function() {
-        copyToClipboard.qtip('hide');
-      });
-      clip.on('complete', function() {
+      clip.on('aftercopy', function() {
         copyToClipboard.qtip('option', 'content.text', 'Copied!');
       });
 
