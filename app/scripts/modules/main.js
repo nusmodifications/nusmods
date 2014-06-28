@@ -7,7 +7,8 @@ define(['app', 'backbone.marionette', './controllers/ModulesController'],
         controller: new ModulesController(),
         appRoutes: {
           'modules': 'showModules',
-          'modules/:id': 'showModule'
+          'modules/:id': 'showModule',
+          'modules/:id/:section': 'showModule' 
         }
       });
     });
