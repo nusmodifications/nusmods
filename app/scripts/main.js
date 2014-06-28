@@ -16,7 +16,7 @@ require.config({
     'jquery-ui': '../bower_components/jquery.ui/ui',
     'jquery-ui-touch-punch-improved': '../bower_components/jquery-ui-touch-punch-improved/jquery.ui.touch-punch-improved',
     backbone: '../bower_components/backbone/backbone',
-    bootstrap: '../bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap',
+    bootstrap: '../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap',
     hbs: '../bower_components/require-handlebars-plugin/hbs',
     jquery: '../bower_components/jquery/dist/jquery',
     json: '../bower_components/requirejs-plugins/src/json',
