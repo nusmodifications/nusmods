@@ -1,50 +1,50 @@
 <div class="row corspedia">
   <div class="col-md-3">
-    <h1 class="module-code">{{ModuleCode}}</h1>
-    <h3 class="module-title">{{ModuleTitle}}</h3>
+    <h1 class="module-code">{{module.ModuleCode}}</h1>
+    <h3 class="module-title">{{module.ModuleTitle}}</h3>
     <hr>
     <dl>
-      <dd class="module-desc {{#unless ShortModuleDescription}} module-desc-more {{/unless}}">
-        <span class="desc-less">{{ShortModuleDescription}}...
+      <dd class="module-desc {{#unless module.ShortModuleDescription}} module-desc-more {{/unless}}">
+        <span class="desc-less">{{module.ShortModuleDescription}}...
           <div class="desc-full">( <a href="#" class="show-full-desc">See full description</a> )</div>
         </span>
-        <span class="desc-more">{{ModuleDescription}}</span>
+        <span class="desc-more">{{module.ModuleDescription}}</span>
       </dd>
       <dt class="highlight">Credits</dt>
-      <dd>{{ModuleCredit}}</dd>
-      {{#if Prerequisite}}
+      <dd>{{module.ModuleCredit}}</dd>
+      {{#if module.Prerequisite}}
         <dt class="highlight">Pre-requisite(s)</dt>
-        <dd>{{{ParsedPrerequisite}}}</dd>
+        <dd>{{{module.ParsedPrerequisite}}}</dd>
       {{/if}}
-      {{#if Preclusion}}
+      {{#if module.Preclusion}}
         <dt class="highlight">Preclusion(s)</dt>
-        <dd>{{{ParsedPreclusion}}}</dd>
+        <dd>{{{module.ParsedPreclusion}}}</dd>
       {{/if}}
       <dt class="highlight">Department</dt>
-      <dd>{{Department}}</dd>
+      <dd>{{module.Department}}</dd>
       <dt class="highlight">Exam Date</dt>
-      {{#if ExamDate}}
-        <dd>{{ExamDate}}</dd>
+      {{#if module.ExamDate}}
+        <dd>{{module.ExamDate}}</dd>
       {{else}}
         <dd>No Exam</dd>
       {{/if}}
-      {{#if Workload}}
+      {{#if module.Workload}}
         <dt class="highlight">Weekly Workload</dt>
         <dl class="workload-components">
-          {{#if WorkloadComponents.lectureHours}}
-            <dd>Lecture: {{WorkloadComponents.lectureHours}} hrs</dd>
+          {{#if module.WorkloadComponents.lectureHours}}
+            <dd>Lecture: {{module.WorkloadComponents.lectureHours}} hrs</dd>
           {{/if}}
-          {{#if WorkloadComponents.tutorialHours}}
-            <dd>Tutorial: {{WorkloadComponents.tutorialHours}} hrs</dd>
+          {{#if module.WorkloadComponents.tutorialHours}}
+            <dd>Tutorial: {{module.WorkloadComponents.tutorialHours}} hrs</dd>
           {{/if}}
-          {{#if WorkloadComponents.labHours}}
-            <dd>Lab: {{WorkloadComponents.labHours}} hrs</dd>
+          {{#if module.WorkloadComponents.labHours}}
+            <dd>Lab: {{module.WorkloadComponents.labHours}} hrs</dd>
           {{/if}}
-          {{#if WorkloadComponents.projectHours}}
-            <dd>Project: {{WorkloadComponents.projectHours}} hrs</dd>
+          {{#if module.WorkloadComponents.projectHours}}
+            <dd>Project: {{module.WorkloadComponents.projectHours}} hrs</dd>
           {{/if}}
-          {{#if WorkloadComponents.preparationHours}}
-            <dd>Preparation: {{WorkloadComponents.preparationHours}} hrs</dd>
+          {{#if module.WorkloadComponents.preparationHours}}
+            <dd>Preparation: {{module.WorkloadComponents.preparationHours}} hrs</dd>
           {{/if}}
         </dl>
       {{/if}}
@@ -53,19 +53,31 @@
   <div class="col-md-9 nm-boxify">
     <div class="row">
       <div class="col-md-12">
-        <div ng-repeat="year in data.bid_history_by_year" id="ay13/14-sem-1" ng-show="year.data.length != 0 &amp;&amp; !empty_data" class="ng-scope ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-1" role="tabpanel" aria-expanded="true" aria-hidden="false"><h3 class="ng-binding">AY13/14 Sem 1</h3><!-- ngRepeat: (index, group) in year.data -->
-          <div ng-repeat="(index, group) in year.data" class="pure-u-1 ng-scope">
-            <table width="100%" class="table table-bordered"><tbody><tr ng-show="index == 0"><th class="lecture-group">Lecture Group</th><th class="bidding-round">Bidding Round</th><th>Quota</th><th>No. of Bidders</th><th>Lowest Bid</th><th>Lowest Succ Bid</th><th>Highest Bid</th></tr><!-- ngRepeat: round in group.bid_info --><tr ng-repeat="round in group.bid_info" class="ng-scope"><td ng-show="$first" rowspan="4" class="lecture-group"><h2 class="ng-binding">1</h2></td><td class="bidding-round ng-binding">2A</td><!-- ngRepeat: value in round.bid_summary --><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">26</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">23</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">1</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding success">1</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">415</td></tr><tr ng-repeat="round in group.bid_info" class="ng-scope"><td ng-show="$first" rowspan="4" class="lecture-group" style="display: none;"><h2 class="ng-binding">1</h2></td><td class="bidding-round ng-binding">2B</td><!-- ngRepeat: value in round.bid_summary --><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">3</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">1</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">999</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding success">1</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">999</td></tr><tr ng-repeat="round in group.bid_info" class="ng-scope"><td ng-show="$first" rowspan="4" class="lecture-group" style="display: none;"><h2 class="ng-binding">1</h2></td><td class="bidding-round ng-binding">3A</td><!-- ngRepeat: value in round.bid_summary --><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">55</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">7</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">1</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding success">1</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">5</td></tr><tr ng-repeat="round in group.bid_info" class="ng-scope"><td ng-show="$first" rowspan="4" class="lecture-group" style="display: none;"><h2 class="ng-binding">1</h2></td><td class="bidding-round ng-binding">3B</td><!-- ngRepeat: value in round.bid_summary --><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">51</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">3</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">1</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding success">1</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">100</td></tr></tbody></table>
-          </div>
-          <div ng-repeat="(index, group) in year.data" class="pure-u-1 ng-scope">
-            <table width="100%" class="table table-bordered"><tbody><tr ng-show="index == 0"><th class="lecture-group">Lecture Group</th><th class="bidding-round">Bidding Round</th><th>Quota</th><th>No. of Bidders</th><th>Lowest Bid</th><th>Lowest Succ Bid</th><th>Highest Bid</th></tr><!-- ngRepeat: round in group.bid_info --><tr ng-repeat="round in group.bid_info" class="ng-scope"><td ng-show="$first" rowspan="4" class="lecture-group"><h2 class="ng-binding">1</h2></td><td class="bidding-round ng-binding">2A</td><!-- ngRepeat: value in round.bid_summary --><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">26</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">23</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">1</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding success">1</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">415</td></tr><tr ng-repeat="round in group.bid_info" class="ng-scope"><td ng-show="$first" rowspan="4" class="lecture-group" style="display: none;"><h2 class="ng-binding">1</h2></td><td class="bidding-round ng-binding">2B</td><!-- ngRepeat: value in round.bid_summary --><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">3</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">1</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">999</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding success">1</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">999</td></tr><tr ng-repeat="round in group.bid_info" class="ng-scope"><td ng-show="$first" rowspan="4" class="lecture-group" style="display: none;"><h2 class="ng-binding">1</h2></td><td class="bidding-round ng-binding">3A</td><!-- ngRepeat: value in round.bid_summary --><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">55</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">7</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">1</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding success">1</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">5</td></tr><tr ng-repeat="round in group.bid_info" class="ng-scope"><td ng-show="$first" rowspan="4" class="lecture-group" style="display: none;"><h2 class="ng-binding">1</h2></td><td class="bidding-round ng-binding">3B</td><!-- ngRepeat: value in round.bid_summary --><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">51</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">3</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">1</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding success">1</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">100</td></tr></tbody></table>
-          </div>
-        </div>
+        <ul class="nav nav-tabs" role="tablist">
+          <li {{#equals section 'cors'}}class="active"{{/equals}}><a href="#/modules/{{module.ModuleCode}}/cors">Cors</a></li>
+          <li {{#equals section 'reviews'}}class="active"{{/equals}}><a href="#/modules/{{module.ModuleCode}}/reviews">Reviews</a></li>
+          <li {{#equals section 'timetable'}}class="active"{{/equals}}><a href="#/modules/{{module.ModuleCode}}/timetable">Timetable</a></li>
+        </ul>
+        <h1>{{sectionTitle}}</h1>
         <hr>
-        <div>
-          <h2 class="ng-binding">Micro-reviews</h2>
+        {{#equals section 'cors'}}
+          <div ng-repeat="year in data.bid_history_by_year" id="ay13/14-sem-1" ng-show="year.data.length != 0 &amp;&amp; !empty_data" class="ng-scope ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-1" role="tabpanel" aria-expanded="true" aria-hidden="false"><h3 class="ng-binding">AY13/14 Sem 1</h3><!-- ngRepeat: (index, group) in year.data -->
+            <div ng-repeat="(index, group) in year.data" class="pure-u-1 ng-scope">
+              <table width="100%" class="table table-bordered"><tbody><tr ng-show="index == 0"><th class="lecture-group">Lecture Group</th><th class="bidding-round">Bidding Round</th><th>Quota</th><th>No. of Bidders</th><th>Lowest Bid</th><th>Lowest Succ Bid</th><th>Highest Bid</th></tr><!-- ngRepeat: round in group.bid_info --><tr ng-repeat="round in group.bid_info" class="ng-scope"><td ng-show="$first" rowspan="4" class="lecture-group"><h2 class="ng-binding">1</h2></td><td class="bidding-round ng-binding">2A</td><!-- ngRepeat: value in round.bid_summary --><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">26</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">23</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">1</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding success">1</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">415</td></tr><tr ng-repeat="round in group.bid_info" class="ng-scope"><td ng-show="$first" rowspan="4" class="lecture-group" style="display: none;"><h2 class="ng-binding">1</h2></td><td class="bidding-round ng-binding">2B</td><!-- ngRepeat: value in round.bid_summary --><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">3</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">1</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">999</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding success">1</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">999</td></tr><tr ng-repeat="round in group.bid_info" class="ng-scope"><td ng-show="$first" rowspan="4" class="lecture-group" style="display: none;"><h2 class="ng-binding">1</h2></td><td class="bidding-round ng-binding">3A</td><!-- ngRepeat: value in round.bid_summary --><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">55</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">7</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">1</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding success">1</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">5</td></tr><tr ng-repeat="round in group.bid_info" class="ng-scope"><td ng-show="$first" rowspan="4" class="lecture-group" style="display: none;"><h2 class="ng-binding">1</h2></td><td class="bidding-round ng-binding">3B</td><!-- ngRepeat: value in round.bid_summary --><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">51</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">3</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">1</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding success">1</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">100</td></tr></tbody></table>
+            </div>
+            <div ng-repeat="(index, group) in year.data" class="pure-u-1 ng-scope">
+              <table width="100%" class="table table-bordered"><tbody><tr ng-show="index == 0"><th class="lecture-group">Lecture Group</th><th class="bidding-round">Bidding Round</th><th>Quota</th><th>No. of Bidders</th><th>Lowest Bid</th><th>Lowest Succ Bid</th><th>Highest Bid</th></tr><!-- ngRepeat: round in group.bid_info --><tr ng-repeat="round in group.bid_info" class="ng-scope"><td ng-show="$first" rowspan="4" class="lecture-group"><h2 class="ng-binding">1</h2></td><td class="bidding-round ng-binding">2A</td><!-- ngRepeat: value in round.bid_summary --><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">26</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">23</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">1</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding success">1</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">415</td></tr><tr ng-repeat="round in group.bid_info" class="ng-scope"><td ng-show="$first" rowspan="4" class="lecture-group" style="display: none;"><h2 class="ng-binding">1</h2></td><td class="bidding-round ng-binding">2B</td><!-- ngRepeat: value in round.bid_summary --><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">3</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">1</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">999</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding success">1</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">999</td></tr><tr ng-repeat="round in group.bid_info" class="ng-scope"><td ng-show="$first" rowspan="4" class="lecture-group" style="display: none;"><h2 class="ng-binding">1</h2></td><td class="bidding-round ng-binding">3A</td><!-- ngRepeat: value in round.bid_summary --><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">55</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">7</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">1</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding success">1</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">5</td></tr><tr ng-repeat="round in group.bid_info" class="ng-scope"><td ng-show="$first" rowspan="4" class="lecture-group" style="display: none;"><h2 class="ng-binding">1</h2></td><td class="bidding-round ng-binding">3B</td><!-- ngRepeat: value in round.bid_summary --><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">51</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">3</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">1</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding success">1</td><td ng-repeat="value in round.bid_summary" ng-class="{true: 'success', false: 'nothing'}[$index == 3];" class="ng-scope ng-binding nothing">100</td></tr></tbody></table>
+            </div>
+          </div>
+        {{/equals}}
+
+        {{#equals section 'reviews'}}
           <div id="disqus_thread"></div>
-        </div>
+        {{/equals}}
+
+        {{#equals section 'timetable'}}
+          <div>Timetable woots</div>
+        {{/equals}}
       </div>
     </div>
   </div>

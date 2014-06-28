@@ -18,14 +18,19 @@ define(['underscore', 'require', 'app', 'backbone.marionette'],
             App.mainRegion.show(new ModulesView());
           });
       },
-      showModule: function (id) {
-        require(['../views/ModuleView', 'nusmods', 'common/models/ModuleModel'],
-          function (ModuleView, NUSMods, ModuleModel) {
+      showModule: function (id, section) {
+        require(['../views/ModuleView', 'nusmods', 'common/models/ModuleModel', '../models/ModulePageModel'],
+          function (ModuleView, NUSMods, ModuleModel, ModulePageModel) {
             navigationItem.select();
             var modCode = id.toUpperCase();
+            if (!section) {
+              section = 'cors';
+              Backbone.history.navigate('module/' + modCode + '/' + section);
+            }
             $.getJSON('/api/' + SEMESTER + '/modules/' + modCode + '.json', function (data) {
               var moduleModel = new ModuleModel(data);
-              App.mainRegion.show(new ModuleView({model: moduleModel}));
+              var modulePageModel = new ModulePageModel({module: moduleModel.attributes, section: section});
+              App.mainRegion.show(new ModuleView({model: modulePageModel}));
             });
 
             (function() {
