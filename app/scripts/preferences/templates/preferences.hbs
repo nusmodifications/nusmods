@@ -1,119 +1,121 @@
-<div class="col-md-6 col-md-offset-3" id="preferences">
-  <h2>Preferences</h2>
-  <hr>
-  <form class="form-horizontal" role="form">
-    
-    <div class="form-group">
-      <div class="col-sm-4">
-        <label for="faculty" class="control-label">Faculty</label>
-      </div>
-      <div class="col-sm-8">
-        <select class="form-control" name="faculty" id="faculty" data-pref-type="faculty">
-          <option value="default">Your Faculty</option>
-          <option value="ART">Arts</option>
-          <option value="BIZ">Business</option>
-          <option value="COM">Computing</option>
-          <option value="SDE">Design &amp; Environment</option>
-          <option value="ENG">Engineering</option>
-          <option value="LAW">Law</option>
-          <option value="MED">Medicine</option>
-          <option value="MDP">Multi-Disciplinary Program</option>
-          <option value="YST">Music</option>
-          <option value="SCI">Science</option>
-          <option value="USP">USP</option>
-        </select>
-        <span class="help-block">CEG Students are to select <span class="highlight">Multi-Disciplinary Program</span> due to the unique nature of their course.</span>
-      </div>
-    </div>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3" id="preferences">
+    <h2>Preferences</h2>
     <hr>
-    <div class="form-group">
-      <div class="col-sm-4">
-        <label for="student-radios" class="control-label">New Student</label>
-      </div>
-      <div class="col-sm-8">
-        <div class="radio">
-          <label>
-            <input type="radio" name="student-radios" id="student-radio-1" value="new" data-pref-type="student" selected>
-            Yes
-          </label>
-          <label>
-            <input type="radio" name="student-radios" id="student-radio-2" value="old" data-pref-type="student">
-            No
-          </label>
+    <form class="form-horizontal" role="form">
+
+      <div class="form-group">
+        <div class="col-sm-4">
+          <label for="faculty" class="control-label">Faculty</label>
         </div>
-        <span class="help-block">For certain modules, places are reserved for new students in CORS Bidding Rounds 1 and 2, recognizing that new students do not have as many points as some of the seniors.</span>
-      </div>
-    </div>
-    <hr>
-    <div class="form-group">
-      <div class="col-sm-4">
-        <label for="mode-radios" class="control-label">Mode</label>
-      </div>
-      <div class="col-sm-8">
-        <div class="radio">
-          <label>
-            <input type="radio" name="mode-radios" id="light-mode" value="default" data-pref-type="mode">
-            Light
-          </label>
-          <label>
-            <input type="radio" name="mode-radios" id="dark-mode" value="slate" data-pref-type="mode">
-            Dark
-          </label>
+        <div class="col-sm-8">
+          <select class="form-control" name="faculty" id="faculty" data-pref-type="faculty">
+            <option value="default">Your Faculty</option>
+            <option value="ART">Arts</option>
+            <option value="BIZ">Business</option>
+            <option value="COM">Computing</option>
+            <option value="SDE">Design &amp; Environment</option>
+            <option value="ENG">Engineering</option>
+            <option value="LAW">Law</option>
+            <option value="MED">Medicine</option>
+            <option value="MDP">Multi-Disciplinary Program</option>
+            <option value="YST">Music</option>
+            <option value="SCI">Science</option>
+            <option value="USP">USP</option>
+          </select>
+          <span class="help-block">CEG Students are to select <span class="highlight">Multi-Disciplinary Program</span> due to the unique nature of their course.</span>
         </div>
-        <span class="help-block">Both modes are awesome, try them out!</span>
       </div>
-    </div>
-    <hr>
-    <div class="form-group">
-      <div class="col-sm-4">
-        <label for="theme-options" class="control-label">Colour Theme</label>
-      </div>
-      <div class="col-sm-8">
-        <div class="theme-colors-sample">
-          <span class="color0"></span>
-          <span class="color1"></span>
-          <span class="color2"></span>
-          <span class="color3"></span>
-          <span class="color4"></span>
-          <span class="color5"></span>
-          <span class="color6"></span>
-          <span class="color7"></span>
+      <hr>
+      <div class="form-group">
+        <div class="col-sm-4">
+          <label for="student-radios" class="control-label">New Student</label>
         </div>
-        <select class="form-control" name="theme-options" id="theme-options" data-pref-type="theme">
-          <option value="default" selected>Default</option>
-          <option value="3024">3024</option>
-          <option value="ashes">Ashes</option>
-          <option value="atelierdune">Atelier Dune</option>
-          <option value="atelierforest">Atelier Forest</option>
-          <option value="atelierheath">Atelier Heath</option>
-          <option value="atelierlakeside">Atelier Lakeside</option>
-          <option value="atelierseaside">Atelier Seaside</option>
-          <option value="bespin">Bespin</option>
-          <option value="brewer">Brewer</option>
-          <option value="chalk">Chalk</option>
-          <option value="codeschool">Code School</option>
-          <option value="eighties">Eighties</option>
-          <option value="embers">Embers</option>
-          <option value="google">Google</option>
-          <option value="grayscale">Grayscale</option>
-          <option value="greenscreen">Green Screen</option>
-          <option value="isotope">Isotope</option>
-          <option value="londontube">London Tube</option>
-          <option value="marrakesh">Marrakesh</option>
-          <option value="mocha">Mocha</option>
-          <option value="monokai">Monokai</option>
-          <option value="ocean">Ocean</option>
-          <option value="paraiso">Paraiso</option>
-          <option value="railscasts">Railscasts</option>
-          <option value="shapeshifter">Shapeshifter</option>
-          <option value="solarized">Solarized</option>
-          <option value="tomorrow">Tomorrow</option>
-          <option value="twilight">Twilight</option>
-        </select>
-        <span class="highlight random-theme"><i class="fa fa-random"></i> Random Theme</span>
-        <span class="help-block">Choose from these awesome Base 16 colour themes for the modules in your timetable!</span>
-        <span class="help-block">Use the <span class="highlight">&#8592;</span> and <span class="highlight">&#8594;</span> arrow keys to switch between themes!</span>
+        <div class="col-sm-8">
+          <div class="radio">
+            <label>
+              <input type="radio" name="student-radios" id="student-radio-1" value="new" data-pref-type="student" selected>
+              Yes
+            </label>
+            <label>
+              <input type="radio" name="student-radios" id="student-radio-2" value="old" data-pref-type="student">
+              No
+            </label>
+          </div>
+          <span class="help-block">For certain modules, places are reserved for new students in CORS Bidding Rounds 1 and 2, recognizing that new students do not have as many points as some of the seniors.</span>
+        </div>
       </div>
-    </div>
-  </form>
+      <hr>
+      <div class="form-group">
+        <div class="col-sm-4">
+          <label for="mode-radios" class="control-label">Mode</label>
+        </div>
+        <div class="col-sm-8">
+          <div class="radio">
+            <label>
+              <input type="radio" name="mode-radios" id="light-mode" value="default" data-pref-type="mode">
+              Light
+            </label>
+            <label>
+              <input type="radio" name="mode-radios" id="dark-mode" value="slate" data-pref-type="mode">
+              Dark
+            </label>
+          </div>
+          <span class="help-block">Both modes are awesome, try them out!</span>
+        </div>
+      </div>
+      <hr>
+      <div class="form-group">
+        <div class="col-sm-4">
+          <label for="theme-options" class="control-label">Colour Theme</label>
+        </div>
+        <div class="col-sm-8">
+          <div class="theme-colors-sample">
+            <span class="color0"></span>
+            <span class="color1"></span>
+            <span class="color2"></span>
+            <span class="color3"></span>
+            <span class="color4"></span>
+            <span class="color5"></span>
+            <span class="color6"></span>
+            <span class="color7"></span>
+          </div>
+          <select class="form-control" name="theme-options" id="theme-options" data-pref-type="theme">
+            <option value="default" selected>Default</option>
+            <option value="3024">3024</option>
+            <option value="ashes">Ashes</option>
+            <option value="atelierdune">Atelier Dune</option>
+            <option value="atelierforest">Atelier Forest</option>
+            <option value="atelierheath">Atelier Heath</option>
+            <option value="atelierlakeside">Atelier Lakeside</option>
+            <option value="atelierseaside">Atelier Seaside</option>
+            <option value="bespin">Bespin</option>
+            <option value="brewer">Brewer</option>
+            <option value="chalk">Chalk</option>
+            <option value="codeschool">Code School</option>
+            <option value="eighties">Eighties</option>
+            <option value="embers">Embers</option>
+            <option value="google">Google</option>
+            <option value="grayscale">Grayscale</option>
+            <option value="greenscreen">Green Screen</option>
+            <option value="isotope">Isotope</option>
+            <option value="londontube">London Tube</option>
+            <option value="marrakesh">Marrakesh</option>
+            <option value="mocha">Mocha</option>
+            <option value="monokai">Monokai</option>
+            <option value="ocean">Ocean</option>
+            <option value="paraiso">Paraiso</option>
+            <option value="railscasts">Railscasts</option>
+            <option value="shapeshifter">Shapeshifter</option>
+            <option value="solarized">Solarized</option>
+            <option value="tomorrow">Tomorrow</option>
+            <option value="twilight">Twilight</option>
+          </select>
+          <span class="highlight random-theme"><i class="fa fa-random"></i> Random Theme</span>
+          <span class="help-block">Choose from these awesome Base 16 colour themes for the modules in your timetable!</span>
+          <span class="help-block">Use the <span class="highlight">&#8592;</span> and <span class="highlight">&#8594;</span> arrow keys to switch between themes!</span>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>
