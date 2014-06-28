@@ -179,18 +179,14 @@ a.plain {
   }
 }
 
-.search-form {
-  .form-group {
-    position: relative;
+.navbar-form .form-control {
+  margin-left: $navbar-padding-horizontal;
+  width: 300px;
+  @media (min-width: $screen-sm-min) {
+    width: 400px;
   }
-  .form-control {
-    padding-right: 30px;
-    width: 100%;
-  }
-  .search-icon {
-    position: absolute;
-    right: 10px;
-    top: 8px;
+  @media (min-width: $screen-lg-min) {
+    width: 500px;
   }
 }
 
