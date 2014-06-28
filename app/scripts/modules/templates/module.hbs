@@ -54,9 +54,11 @@
     <div class="row">
       <div class="col-md-12">
         <ul class="nav nav-tabs" role="tablist">
-          <li {{#equals section 'cors'}}class="active"{{/equals}}><a href="#/modules/{{module.ModuleCode}}/cors">Cors</a></li>
-          <li {{#equals section 'reviews'}}class="active"{{/equals}}><a href="#/modules/{{module.ModuleCode}}/reviews">Reviews</a></li>
-          <li {{#equals section 'timetable'}}class="active"{{/equals}}><a href="#/modules/{{module.ModuleCode}}/timetable">Timetable</a></li>
+          {{#each sectionsInfo}}
+            <li {{#equals sectionType ../section}}class="active"{{/equals}}>
+              <a href="#/modules/{{../module.ModuleCode}}/{{sectionType}}">{{tabTitle}}</a>
+            </li>
+          {{/each}}
         </ul>
         <h1>{{sectionTitle}}</h1>
         <hr>

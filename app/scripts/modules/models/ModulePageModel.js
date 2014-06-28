@@ -5,19 +5,33 @@ define(['underscore', 'backbone', 'common/models/ModuleModel'],
   return Backbone.Model.extend({
     initialize: function(data) {
       var section = this.get('section');
-      var sectionTitle = '';
-      switch (section) {
-        case 'cors':
-          sectionTitle = 'Cors Bidding History';
-          break;
-        case 'reviews':
-          sectionTitle = 'Micro-reviews';
-          break;
-        case 'timetable':
-          sectionTitle = 'Timetable';
-          break;
-      }
-      this.set('sectionTitle', sectionTitle);
+      var sectionsInfo = [
+        {
+          'sectionType': 'cors',
+          'tabTitle': 'CORS',
+          'sectionTitle': 'CORS Bidding History',
+          'active': false
+        },
+        {
+          'sectionType': 'reviews',
+          'tabTitle': 'Reviews',
+          'sectionTitle': 'Reviews',
+          'active': false
+        },
+        {
+          'sectionType': 'timetable',
+          'tabTitle': 'Timetable',
+          'sectionTitle': 'Timetable Infomration',
+          'active': false
+        }
+      ];
+      var selectedSection = _.filter(sectionsInfo, function (item) {
+        return item.sectionType == section;
+      })[0];
+
+      selectedSection.active = true;
+      this.set('sectionTitle', selectedSection.sectionTitle);
+      this.set('sectionsInfo', sectionsInfo);
     }
   });
 });
