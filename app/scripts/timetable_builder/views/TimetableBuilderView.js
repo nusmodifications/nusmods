@@ -5,7 +5,6 @@ define([
   'NUSMods',
   'hbs!../templates/timetable_builder',
   '../collections/TimetableModuleCollection',
-  './SelectedModulesView',
   './SelectView',
   './ExportView',
   '../collections/ExamCollection',
@@ -19,7 +18,7 @@ define([
 ],
 
 function(_, Backbone, Marionette, NUSMods, template, TimetableModuleCollection,
-         SelectedModulesView, SelectView, ExportView, ExamCollection, ExamsView,
+         SelectView, ExportView, ExamCollection, ExamsView,
          LessonCollection, TimetableView, UrlSharingView, localforage) {
   'use strict';
 
@@ -27,9 +26,7 @@ function(_, Backbone, Marionette, NUSMods, template, TimetableModuleCollection,
     template: template,
 
     regions: {
-      examsRegion: '#exam-timetable',
-      selectedModsRegion: '#selected-mods',
-      selectRegion: '#select2'
+      examsRegion: '#exam-timetable'
     },
 
     onShow: function() {
@@ -46,9 +43,6 @@ function(_, Backbone, Marionette, NUSMods, template, TimetableModuleCollection,
       var timetableView = new TimetableView({collection: this.timetable});
 
       this.examsRegion.show(new ExamsView({collection: exams}));
-      this.selectedModsRegion.show(new SelectedModulesView({
-        collection: this.selectedModules
-      }));
       new SelectView({
         collection: this.selectedModules
       });
