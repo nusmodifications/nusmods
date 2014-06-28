@@ -160,12 +160,6 @@ a.plain {
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: $margin-width;
-  &.nm-boxify-col {
-    margin-left: $margin-width;
-    &.col-md-9 {
-      width: calc(75% - 10px);
-    }
-  }
 }
 
 .mode-slate {
