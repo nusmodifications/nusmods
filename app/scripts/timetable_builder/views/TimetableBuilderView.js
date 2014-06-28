@@ -49,9 +49,9 @@ function(_, Backbone, Marionette, NUSMods, template, TimetableModuleCollection,
       this.selectedModsRegion.show(new SelectedModulesView({
         collection: this.selectedModules
       }));
-      this.selectRegion.show(new SelectView({
+      new SelectView({
         collection: this.selectedModules
-      }));
+      });
       var exportView = new ExportView({
         collection: this.selectedModules,
         exams: exams

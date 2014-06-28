@@ -215,13 +215,11 @@ a.plain {
 #clear-all {
   float: right;
 }
-.select2-container-multi .select2-choices {
-  .select2-search-choice {
-    margin-right: 5px;
-    line-height: $line-height-base;
-  }
-  li {
-    float: none;
+.select2-result-label .btn {
+  color: #ddd;
+  float: right;
+  &:hover {
+    color: #fff;
   }
 }
 
