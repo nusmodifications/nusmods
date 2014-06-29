@@ -2,12 +2,15 @@ define([
   'backbone',
   'backbone.marionette',
   'common/collections/NavigationCollection',
+  'common/controllers/SelectedModulesController',
   'common/views/AppView',
   'common/views/NavigationView',
+  'common/views/SelectView',
   'localforage',
   'qtip2'
-], function (Backbone, Marionette, NavigationCollection, AppView,
-             NavigationView, localforage) {
+], function (Backbone, Marionette, NavigationCollection,
+             SelectedModulesController, AppView, NavigationView, SelectView,
+             localforage) {
   'use strict';
 
   var App = new Marionette.Application();
@@ -25,6 +28,15 @@ define([
 
   App.reqres.setHandler('addNavigationItem', function (navigationItem) {
     return navigationCollection.add(navigationItem);
+  });
+
+  var selectedModulesController = new SelectedModulesController();
+  App.reqres.setHandler('selectedModules', function(){
+    return selectedModulesController.selectedModules;
+  });
+
+  new SelectView({
+    collection: App.request('selectedModules')
   });
 
   App.on('start', function () {
