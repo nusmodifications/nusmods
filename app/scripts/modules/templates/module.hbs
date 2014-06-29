@@ -66,49 +66,6 @@
         </ul>
         <h1>{{sectionTitle}}</h1>
         <hr>
-        {{#equals section 'corspedia'}}
-          <div>
-            <table class="table table-striped">
-              <tbody>
-                <tr>
-                  <th>Acad Year</th>
-                  <th>Semester</th>
-                  <th>Faculty</th>
-                  <th>Group</th>
-                  <th>Round</th>
-                  <th>Quota</th>
-                  <th>Bidders</th>
-                  <th>Lowest Bid</th>
-                  <th>Lowest Succ Bid</th>
-                  <th>Highest Bid</th>
-                  <th>Student Acc Type</th>
-                </tr>
-                {{#if module.CorsBiddingStats}}
-                  {{#each module.CorsBiddingStats}}
-                    <tr>
-                      <td>{{AcadYear}}</td>
-                      <td>{{Semester}}</td>
-                      <td>{{Faculty}}</td>
-                      <td>{{Group}}</td>
-                      <td>{{Round}}</td>
-                      <td>{{Quota}}</td>
-                      <td>{{Bidders}}</td>
-                      <td>{{LowestBid}}</td>
-                      <td>{{LowestSuccessfulBid}}</td>
-                      <td>{{HighestBid}}</td>
-                      <td>{{StudentAcctType}}</td>
-                    </tr>
-                  {{/each}}
-                {{/if}}
-              </tbody>
-            </table>
-          </div>
-        {{/equals}}
-
-        {{#equals section 'reviews'}}
-          <div id="disqus_thread"></div>
-        {{/equals}}
-
         {{#equals section 'timetable'}}
           <div>
             {{#if module.Timetable}}
@@ -142,6 +99,52 @@
             {{/if}}
           </div>
         {{/equals}}
+
+        {{#equals section 'corspedia'}}
+          <div>
+            {{#if module.CorsBiddingStats}}
+              <table class="table table-striped">
+                <tbody>
+                  <tr>
+                    <th>Acad Year</th>
+                    <th>Semester</th>
+                    <th>Faculty</th>
+                    <th>Group</th>
+                    <th>Round</th>
+                    <th>Quota</th>
+                    <th>Bidders</th>
+                    <th>Lowest Bid</th>
+                    <th>Lowest Succ Bid</th>
+                    <th>Highest Bid</th>
+                    <th>Student Acc Type</th>
+                  </tr>
+                  {{#each module.CorsBiddingStats}}
+                    <tr>
+                      <td>{{AcadYear}}</td>
+                      <td>{{Semester}}</td>
+                      <td>{{Faculty}}</td>
+                      <td>{{Group}}</td>
+                      <td>{{Round}}</td>
+                      <td>{{Quota}}</td>
+                      <td>{{Bidders}}</td>
+                      <td>{{LowestBid}}</td>
+                      <td>{{LowestSuccessfulBid}}</td>
+                      <td>{{HighestBid}}</td>
+                      <td>{{StudentAcctType}}</td>
+                    </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+            {{else}}
+              <p>No CORS bidding data to be shown.</p>
+            {{/if}}
+          </div>
+        {{/equals}}
+
+        {{#equals section 'reviews'}}
+          <div id="disqus_thread"></div>
+        {{/equals}}
+
       </div>
     </div>
   </div>
