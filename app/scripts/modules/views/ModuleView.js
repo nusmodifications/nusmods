@@ -10,6 +10,15 @@ define(['backbone.marionette', 'hbs!../templates/module'],
       events: {
         'click .show-full-desc': 'showFullDescription'
       },
+      onShow: function () {
+        DISQUS.reset({
+          reload: true,
+          config: function () {
+            this.page.identifier = this.model.module.id;
+            this.page.url = window.location.href;
+          }
+        });
+      },
       showFullDescription: function ($ev) {
         $('.module-desc').addClass('module-desc-more');
         return false;
