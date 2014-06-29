@@ -14,8 +14,6 @@ define([
     template: template,
     tooltipTemplate: tooltipTemplate,
 
-    TR: $('#mon > tr:last-child').clone(),
-
     initialize: function(options) {
       this.options = options;
 
@@ -71,13 +69,14 @@ define([
 
     attach: function() {
       if (this.model.get('day') === 5) {
-        $('#sat').show();
+        this.options.parentView.$('#sat').show();
       }
-      var rows = $('#' + this.model.get('dayAbbrev') + ' > tr');
+      var rows = this.options.parentView.$('#' + this.model.get('dayAbbrev') + ' > tr');
       for (var i = 0; i <= rows.length; i++) {
         var row = rows[i];
         if (i === rows.length) {
-          row = this.TR.clone().appendTo('#' + this.model.get('dayAbbrev'));
+          row = this.options.parentView.$('#mon > tr:last-child').clone()
+            .appendTo(this.options.parentView.$('#' + this.model.get('dayAbbrev')));
           $(rows[0]).children().first().attr('rowspan', i + 1);
         }
         var td = $(row).children('.h' +

@@ -7,6 +7,7 @@ define(['underscore', 'backbone.marionette', './LessonView'],
     childView: LessonView,
     childViewOptions: function () {
       return {
+        parentView: this,
         timetable: this.collection
       };
     },
