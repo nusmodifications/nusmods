@@ -56,7 +56,7 @@
         <ul class="nav nav-tabs" role="tablist">
           {{#each sectionsInfo}}
             <li {{#equals sectionType ../section}}class="active"{{/equals}}>
-              <a href="#modules/{{../module.ModuleCode}}/{{sectionType}}">{{tabTitle}}</a>
+              <a href="#!/modules/{{../module.ModuleCode}}/{{sectionType}}">{{tabTitle}}</a>
             </li>
           {{/each}}
         </ul>
