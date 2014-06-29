@@ -5,7 +5,7 @@ define(['require', 'app', 'backbone.marionette'],
     var navigationItem = App.request('addNavigationItem', {
       name: 'IVLE',
       icon: 'graduation-cap',
-      url: '#ivle'
+      url: '#!/ivle'
     });
 
     var controller = {
@@ -22,7 +22,7 @@ define(['require', 'app', 'backbone.marionette'],
       new Marionette.AppRouter({
         controller: controller,
         appRoutes: {
-          'ivle': 'showIvle'
+          '!/ivle': 'showIvle'
         }
       });
     });

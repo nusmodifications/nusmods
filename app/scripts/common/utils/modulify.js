@@ -29,7 +29,7 @@ define(function () {
           var length = matchedModules[i].length;
           var ending_index = starting_index + length;
           desc = desc.insert(ending_index, '</a>');
-          desc = desc.insert(starting_index, '<a href="#modules/' + matchedModules[i].module + '">');
+          desc = desc.insert(starting_index, '<a href="#!/modules/' + matchedModules[i].module + '">');
         }
       }
       return desc;

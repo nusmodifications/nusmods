@@ -5,7 +5,7 @@ define(['underscore', 'require', 'app', 'backbone.marionette'],
     var navigationItem = App.request('addNavigationItem', {
       name: 'Modules',
       icon: 'search',
-      url: '#modules'
+      url: '#!/modules'
     });
 
     var SEMESTER = '2013-2014/1';

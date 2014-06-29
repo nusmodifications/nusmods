@@ -53,7 +53,7 @@ function(_, App, Backbone, Marionette, NUSMods, template,
       }
       var newOptions = {selectedModules: this.selectedModules.toJSON()};
       localforage.setItem('timetableBuilderOptions', newOptions);
-      Backbone.history.navigate('timetable-builder/' +
+      Backbone.history.navigate('!/timetable-builder/' +
         encodeURIComponent(JSON.stringify(newOptions)));
     },
 

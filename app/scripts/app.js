@@ -49,7 +49,7 @@ define([
       Backbone.history.start();
 
       if (Backbone.history.fragment === '') {
-        Backbone.history.navigate('timetable-builder', {trigger: true});
+        Backbone.history.navigate('!/timetable-builder', {trigger: true});
       }
     });
 

@@ -10,8 +10,8 @@ define([
       new Marionette.AppRouter({
         controller: new TimetableBuilderController(),
         appRoutes: {
-          'timetable-builder': 'showTimetableBuilder',
-          'timetable-builder/:options': 'showTimetableBuilder'
+          '!/timetable-builder': 'showTimetableBuilder',
+          '!/timetable-builder/:options': 'showTimetableBuilder'
         }
       });
     });

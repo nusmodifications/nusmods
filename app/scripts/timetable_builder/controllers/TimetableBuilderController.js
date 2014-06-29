@@ -5,7 +5,7 @@ define(['require', 'app', 'backbone.marionette', 'localforage'],
     var navigationItem = App.request('addNavigationItem', {
       name: 'Timetable',
       icon: 'table',
-      url: '#timetable-builder'
+      url: '#!/timetable-builder'
     });
 
     var timetableBuilderView;
