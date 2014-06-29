@@ -1,13 +1,10 @@
-define(['underscore', 'backbone', 'common/utils/padTwo'],
-  function(_, Backbone, padTwo) {
+define(['underscore', 'backbone.marionette', 'common/utils/padTwo',
+    'hbs!../templates/export', 'bootstrap/dropdown'],
+  function(_, Marionette, padTwo, template) {
   'use strict';
 
-  return Backbone.View.extend({
-    el: $('#export-modal'),
-
-    events: {
-      'show': 'show'
-    },
+  return Marionette.ItemView.extend({
+    template: template,
 
     initialize: function(options) {
       this.options = options;

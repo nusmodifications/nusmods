@@ -1,67 +1,50 @@
 define([
   'underscore',
+  'app',
   'backbone',
   'backbone.marionette',
   'NUSMods',
   'hbs!../templates/timetable_builder',
-  '../collections/TimetableModuleCollection',
-  './SelectView',
   './ExportView',
-  '../collections/ExamCollection',
   './ExamsView',
-  '../collections/LessonCollection',
+  './ShowHideView',
   './TimetableView',
   './UrlSharingView',
-  'localforage',
-  'bootstrap/button',
-  'bootstrap/dropdown'
+  'localforage'
 ],
 
-function(_, Backbone, Marionette, NUSMods, template, TimetableModuleCollection,
-         SelectView, ExportView, ExamCollection, ExamsView,
-         LessonCollection, TimetableView, UrlSharingView, localforage) {
+function(_, App, Backbone, Marionette, NUSMods, template,
+         ExportView, ExamsView, ShowHideView,
+         TimetableView, UrlSharingView, localforage) {
   'use strict';
 
   return Marionette.LayoutView.extend({
     template: template,
 
     regions: {
-      examsRegion: '#exam-timetable'
+      examsRegion: '#exam-timetable',
+      exportRegion: '.export-region',
+      showHideRegion: '.show-hide-region',
+      timetableRegion: '#timetable-wrapper',
+      urlSharingRegion: '.url-sharing-region'
     },
 
     onShow: function() {
-      var exams = new ExamCollection();
-      this.timetable = new LessonCollection();
-      this.selectedModules = new TimetableModuleCollection([], {
-        timetable: this.timetable,
-        exams: exams
-      });
+      this.selectedModules = App.request('selectedModules');
+      this.timetable = this.selectedModules.timetable;
+      var exams = this.selectedModules.exams;
 
       this.listenTo(this.selectedModules, 'add remove', this.modulesChanged);
       this.listenTo(this.timetable, 'change', this.modulesChanged);
 
-      var timetableView = new TimetableView({collection: this.timetable});
-
       this.examsRegion.show(new ExamsView({collection: exams}));
-      new SelectView({
-        collection: this.selectedModules
-      });
-      var exportView = new ExportView({
+      this.exportRegion.show(new ExportView({
         collection: this.selectedModules,
         exams: exams
-      });
-
-      var urlSharingView = new UrlSharingView();
-
-      $('#show-hide button:last-child').qtip({
-        content: 'Only shown if Odd / Even / Irregular',
-        position: {
-          my: 'bottom right'
-        }
-      });
-      $('#show-hide').on('click', '.btn', function() {
-        $('#timetable-wrapper').toggleClass('hide-' + $(this).text().toLowerCase());
-      });
+      }));
+      this.showHideRegion.show(new ShowHideView());
+      this.timetableRegion.show(new TimetableView({collection: this.timetable}));
+      this.urlSharingRegion.show(new UrlSharingView());
     },
 
     modulesChanged: function (model, collection, options) {

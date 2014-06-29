@@ -1,9 +1,10 @@
-define(['underscore', 'backbone.marionette', './LessonView'],
-  function(_, Marionette, LessonView) {
+define(['underscore', 'backbone.marionette', './LessonView', 'hbs!../templates/timetable'],
+  function(_, Marionette, LessonView, template) {
   'use strict';
 
-  return Marionette.CollectionView.extend({
-    el: $('#timetable'),
+  return Marionette.CompositeView.extend({
+    id: 'timetable',
+    tagName: 'table',
     childView: LessonView,
     childViewOptions: function () {
       return {
@@ -11,6 +12,7 @@ define(['underscore', 'backbone.marionette', './LessonView'],
         timetable: this.collection
       };
     },
+    template: template,
 
     events: {
       'mousemove': 'mouseMove',
