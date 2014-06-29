@@ -17,7 +17,8 @@ define([
 
   App.addRegions({
     mainRegion: '.content',
-    navigationRegion: 'nav'
+    navigationRegion: 'nav',
+    selectRegion: '.navbar-form'
   });
 
   new AppView();
@@ -39,9 +40,9 @@ define([
     selectedModules.remove(selectedModules.get(id));
   });
 
-  new SelectView({
+  App.selectRegion.show(new SelectView({
     collection: App.request('selectedModules')
-  });
+  }));
 
   App.on('start', function () {
     require(['ivle', 'modules', 'timetable_builder', 'preferences'], function () {

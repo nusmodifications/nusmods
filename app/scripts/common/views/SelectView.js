@@ -1,17 +1,23 @@
-define(['underscore', 'backbone', 'nusmods', 'hbs!../templates/select_result','select2'],
-  function(_, Backbone, NUSMods, template) {
+define(['underscore', 'backbone', 'backbone.marionette', 'nusmods',
+    'hbs!../templates/select', 'hbs!../templates/select_result','select2'],
+  function(_, Backbone, Marionette, NUSMods, template, selectResultTemplate) {
     'use strict';
 
     var codes = _.keys(timetableData.mods);
     var titles = _.pluck(_.values(timetableData.mods), 'title');
     var modsLength = codes.length;
 
-    return Backbone.View.extend({
-      el: '.navbar-form input',
+    return Marionette.ItemView.extend({
+      className: 'form-group',
+      template: template,
 
       events: {
         'select2-open': 'onSelect2Open',
         'select2-selecting': 'onSelect2Selecting'
+      },
+      
+      ui: {
+        'input': 'input'
       },
 
       onAdd: function (event) {
@@ -21,7 +27,7 @@ define(['underscore', 'backbone', 'nusmods', 'hbs!../templates/select_result','s
           this.collection.add(mod);
         }, this));
         $('#select2-drop').off('mouseup', '.btn');
-        this.$el.select2('focus');
+        this.ui.input.select2('focus');
       },
 
       onSelect2Open: function () {
@@ -31,17 +37,17 @@ define(['underscore', 'backbone', 'nusmods', 'hbs!../templates/select_result','s
       onSelect2Selecting: function(event) {
         event.preventDefault();
         Backbone.history.navigate('modules/' + event.val, {trigger: true});
-        this.$el.select2('focus');
+        this.ui.input.select2('focus');
       },
 
-      initialize: function () {
+      onShow: function () {
         _.bindAll(this, 'onAdd');
 
         var PAGE_SIZE = 50;
-        this.$el.select2({
+        this.ui.input.select2({
           multiple: true,
           formatResult: function (object) {
-            return template(object);
+            return selectResultTemplate(object);
           },
           initSelection: function (el, callback) {
             callback(_.map(el.val().split(','), function (code) {
