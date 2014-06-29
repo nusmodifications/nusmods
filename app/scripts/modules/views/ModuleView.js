@@ -12,15 +12,19 @@ define(['backbone.marionette', 'hbs!../templates/module'],
       },
       onShow: function () {
         var module = this.model.get('module');
-        DISQUS.reset({
-          reload: true,
-          config: function () {
-            var code = module.ModuleCode;
-            this.page.identifier = code;
-            this.page.title = code + ' ' + module.ModuleTitle + ' · Reviews';
-            this.page.url = 'http://nusmods.com/#!/modules/' + code + '/reviews';
-          }
-        });
+        var code = module.ModuleCode;
+
+        if (this.model.get('section') === 'reviews') {
+          // Only reset Disqus when showing reviews section
+          DISQUS.reset({
+            reload: true,
+            config: function () {
+              this.page.identifier = code;
+              this.page.title = code + ' ' + module.ModuleTitle + ' · Reviews';
+              this.page.url = 'http://nusmods.com/#!/modules/' + code + '/reviews';
+            }
+          });
+        }
       },
       showFullDescription: function ($ev) {
         $('.module-desc').addClass('module-desc-more');
