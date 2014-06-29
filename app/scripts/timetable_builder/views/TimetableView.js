@@ -17,8 +17,11 @@ define(['underscore', 'backbone.marionette', './LessonView'],
       'mouseleave': 'mouseLeave'
     },
 
+    ui: {
+      colgroups: 'colgroup'
+    },
+
     initialize: function() {
-      this.$colgroups = this.$('colgroup');
     },
 
     mouseMove: function(evt) {
@@ -29,7 +32,7 @@ define(['underscore', 'backbone.marionette', './LessonView'],
           .get();
       }
 
-      var currCol = this.$colgroups.eq(_.sortedIndex(this.colX, evt.pageX));
+      var currCol = this.ui.colgroups.eq(_.sortedIndex(this.colX, evt.pageX));
       if (!currCol.is(this.prevCol)) {
         if (this.prevCol) {
           this.prevCol.removeAttr('class');
