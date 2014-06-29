@@ -1,23 +1,29 @@
-define(['underscore', 'backbone.marionette', './LessonView'],
-  function(_, Marionette, LessonView) {
+define(['underscore', 'backbone.marionette', './LessonView', 'hbs!../templates/timetable'],
+  function(_, Marionette, LessonView, template) {
   'use strict';
 
-  return Marionette.CollectionView.extend({
-    el: $('#timetable'),
+  return Marionette.CompositeView.extend({
+    id: 'timetable',
+    tagName: 'table',
     childView: LessonView,
     childViewOptions: function () {
       return {
+        parentView: this,
         timetable: this.collection
       };
     },
+    template: template,
 
     events: {
       'mousemove': 'mouseMove',
       'mouseleave': 'mouseLeave'
     },
 
+    ui: {
+      colgroups: 'colgroup'
+    },
+
     initialize: function() {
-      this.$colgroups = this.$('colgroup');
     },
 
     mouseMove: function(evt) {
@@ -28,7 +34,7 @@ define(['underscore', 'backbone.marionette', './LessonView'],
           .get();
       }
 
-      var currCol = this.$colgroups.eq(_.sortedIndex(this.colX, evt.pageX));
+      var currCol = this.ui.colgroups.eq(_.sortedIndex(this.colX, evt.pageX));
       if (!currCol.is(this.prevCol)) {
         if (this.prevCol) {
           this.prevCol.removeAttr('class');

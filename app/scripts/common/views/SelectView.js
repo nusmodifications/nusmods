@@ -1,5 +1,5 @@
-define(['underscore', 'backbone', 'nusmods', 'select2'],
-  function(_, Backbone, NUSMods) {
+define(['underscore', 'backbone', 'nusmods', 'hbs!../templates/select_result','select2'],
+  function(_, Backbone, NUSMods, template) {
     'use strict';
 
     var codes = _.keys(timetableData.mods);
@@ -7,36 +7,42 @@ define(['underscore', 'backbone', 'nusmods', 'select2'],
     var modsLength = codes.length;
 
     return Backbone.View.extend({
-      tagName: 'input',
-      attributes: {
-        type: 'hidden'
-      },
+      el: '.navbar-form input',
 
       events: {
-        change: 'change'
+        'select2-open': 'onSelect2Open',
+        'select2-selecting': 'onSelect2Selecting'
       },
 
-      change: function(evt) {
-        if (evt.added) {
-          NUSMods.getMod(evt.added.id, _.bind(function (mod) {
-            mod.id = evt.added.id;
-            this.collection.add(mod);
-          }, this));
-        } else if (evt.removed) {
-          this.collection.remove(this.collection.get(evt.removed.id));
-        }
+      onAdd: function (event) {
+        var id = $(event.currentTarget).data('code');
+        NUSMods.getMod(id, _.bind(function (mod) {
+          mod.id = id;
+          this.collection.add(mod);
+        }, this));
+        $('#select2-drop').off('mouseup', '.btn');
+        this.$el.select2('focus');
+      },
+
+      onSelect2Open: function () {
+        $('#select2-drop').on('mouseup', '.btn', this.onAdd);
+      },
+
+      onSelect2Selecting: function(event) {
+        event.preventDefault();
+        Backbone.history.navigate('modules/' + event.val, {trigger: true});
+        this.$el.select2('focus');
       },
 
       initialize: function () {
-        this.listenTo(this.collection, 'add remove', this.render);
-      },
+        _.bindAll(this, 'onAdd');
 
-      onShow: function () {
         var PAGE_SIZE = 50;
         this.$el.select2({
-          width: '100%',
-          placeholder: 'Type code/title to add mods',
           multiple: true,
+          formatResult: function (object) {
+            return template(object);
+          },
           initSelection: function (el, callback) {
             callback(_.map(el.val().split(','), function (code) {
               return {
@@ -76,10 +82,6 @@ define(['underscore', 'backbone', 'nusmods', 'select2'],
             });
           }
         });
-      },
-
-      render: function() {
-        this.$el.val(this.collection.pluck('id')).trigger('change');
       }
     });
   });

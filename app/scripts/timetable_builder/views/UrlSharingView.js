@@ -1,8 +1,9 @@
-define(['backbone', 'zeroclipboard'], function(Backbone, ZeroClipboard) {
+define(['backbone.marionette', 'zeroclipboard', 'hbs!../templates/url_sharing'],
+  function(Marionette, ZeroClipboard, template) {
   'use strict';
 
-  return Backbone.View.extend({
-    el: '#share-container',
+  return Marionette.ItemView.extend({
+    template: template,
 
     initialize: function() {
       ZeroClipboard.config({

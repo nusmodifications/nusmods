@@ -169,18 +169,14 @@ a.plain {
   }
 }
 
-.search-form {
-  .form-group {
-    position: relative;
+.navbar-form .form-control {
+  margin-left: $navbar-padding-horizontal;
+  width: 300px;
+  @media (min-width: $screen-sm-min) {
+    width: 400px;
   }
-  .form-control {
-    padding-right: 30px;
-    width: 100%;
-  }
-  .search-icon {
-    position: absolute;
-    right: 10px;
-    top: 8px;
+  @media (min-width: $screen-lg-min) {
+    width: 500px;
   }
 }
 
@@ -202,20 +198,11 @@ a.plain {
 }
 
 // Select2
-#select2-header {
-  float: left;
-  font-weight: bold;
-}
-#clear-all {
+.select2-result-label .btn {
+  color: #ddd;
   float: right;
-}
-.select2-container-multi .select2-choices {
-  .select2-search-choice {
-    margin-right: 5px;
-    line-height: $line-height-base;
-  }
-  li {
-    float: none;
+  &:hover {
+    color: #fff;
   }
 }
 
@@ -307,19 +294,8 @@ colgroup.hover {
 }
 
 // Timetable Controls
-.timetable-controls > .row > div {
-  margin-bottom: 15px;
-}
-
-.share-label {
-  text-align: right;
-  label {
-    margin: 5px -25px;
-  }
-}
-
-#short-url {
-  cursor: auto;
+.url-sharing-region {
+  margin-top: 15px;
 }
 
 // For ZeroClipboard CSS effects
