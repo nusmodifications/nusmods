@@ -1,5 +1,6 @@
 require.config({
   packages: [
+    'ivle',
     'modules',
     'timetable_builder',
     'preferences',
