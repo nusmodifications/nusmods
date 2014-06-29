@@ -11,12 +11,14 @@ define(['backbone.marionette', 'hbs!../templates/module'],
         'click .show-full-desc': 'showFullDescription'
       },
       onShow: function () {
-        var code = this.model.get('module').ModuleCode;
+        var module = this.model.get('module');
         DISQUS.reset({
           reload: true,
           config: function () {
+            var code = module.ModuleCode;
             this.page.identifier = code;
-            this.page.url = window.location.href;
+            this.page.title = code + ' ' + module.ModuleTitle + ' · Reviews';
+            this.page.url = 'http://nusmods.com/#!/modules/' + code + '/reviews';
           }
         });
       },
