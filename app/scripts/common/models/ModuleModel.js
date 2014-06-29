@@ -1,5 +1,5 @@
-define(['backbone', 'underscore', 'common/utils/padTwo', 'common/utils/modulify'], 
-  function(Backbone, _, padTwo, modulify) {
+define(['backbone', 'underscore', 'common/utils/padTwo', 'common/utils/modulify', 'common/utils/capitalize'], 
+  function(Backbone, _, padTwo, modulify, capitalize) {
     'use strict';
 
     // Convert exam in Unix time to 12-hour date/time format. We add 8 hours to
@@ -23,14 +23,6 @@ define(['backbone', 'underscore', 'common/utils/padTwo', 'common/utils/modulify'
 
     var shortenDescription = function (desc) {
       return desc.split(' ').splice(0, DESCRIPTION_LIMIT).join(' ');
-    }
-
-    var prettifyDepartment = function (dept) {
-      var words = [];
-      _.each(dept.split(' '), function (word) {
-        words.push(word.charAt(0) + word.slice(1).toLowerCase());
-      })
-      return words.join(' ');
     }
 
     var workloadify = function (workload) {
@@ -65,7 +57,7 @@ define(['backbone', 'underscore', 'common/utils/padTwo', 'common/utils/modulify'
 
         var department = this.get('Department');
         if (department) {
-          this.set('Department', prettifyDepartment(department));
+          this.set('Department', capitalize(department));
         }
 
         var prerequisite = this.get('Prerequisite');
@@ -105,14 +97,10 @@ define(['backbone', 'underscore', 'common/utils/padTwo', 'common/utils/modulify'
               delete lesson.LessonType;
               _.each(lesson, function (value, key) {
                 if (key === 'Venue') { return; }
-                var words = [];
-                _.each(value.split(' '), function (word) {
-                  words.push(word.charAt(0) + word.slice(1).toLowerCase());
-                })
-                lesson[key] = words.join(' ');
+                lesson[key] = capitalize(value);
               })
             })
-            var prettyLessonType = type.charAt(0) + type.slice(1).toLowerCase();
+            var prettyLessonType = capitalize(type);
             formattedTimetable.push({
               LessonType: prettyLessonType,
               Lessons: lessons
