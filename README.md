@@ -1,5 +1,17 @@
 # [NUSMods](http://nusmods.com)
 
+## Clone Repository with Submodules
+
+```bash
+$ git clone --recursive https://github.com/ahbeng/NUSMods.git
+```
+
+Or if you have already cloned the repository without submodules before:
+
+```bash
+$ git submodule update --init
+```
+
 ## Setup with Vagrant
 
 ### Prerequisites
