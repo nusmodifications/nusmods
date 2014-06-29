@@ -60,7 +60,7 @@ define([
           $body.addClass(property + '-' + value);
           $body.attr('data-' + property, value);
           if (property === 'mode' && value !== 'default') {
-            $('#mode').attr('href', 'styles/' + value + '.min.css');
+            $('#mode').attr('href', '/styles/' + value + '.min.css');
           }
         } else {
           localforage.setItem(property, 'default');

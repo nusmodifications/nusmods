@@ -103,7 +103,7 @@ function(_, Marionette, template, localforage) {
       });
       
       if (property === 'mode') {
-        var cssFile = value !== 'default' ? 'styles/' + value + '.min.css' : '';
+        var cssFile = value !== 'default' ? '/styles/' + value + '.min.css' : '';
         $('#mode').attr('href', cssFile);
       }
     }
