@@ -7,6 +7,12 @@ define(['underscore', 'backbone', 'common/models/ModuleModel'],
         var section = this.get('section');
         var sectionsInfo = [
           {
+            'sectionType': 'timetable',
+            'tabTitle': 'Timetable',
+            'sectionTitle': 'Timetable Information',
+            'active': false
+          },
+          {
             'sectionType': 'cors',
             'tabTitle': 'CORS',
             'sectionTitle': 'CORS Bidding History',
@@ -16,12 +22,6 @@ define(['underscore', 'backbone', 'common/models/ModuleModel'],
             'sectionType': 'reviews',
             'tabTitle': 'Reviews',
             'sectionTitle': 'Reviews',
-            'active': false
-          },
-          {
-            'sectionType': 'timetable',
-            'tabTitle': 'Timetable',
-            'sectionTitle': 'Timetable Information',
             'active': false
           }
         ];

@@ -24,8 +24,7 @@ define(['underscore', 'require', 'app', 'backbone.marionette'],
             navigationItem.select();
             var modCode = id.toUpperCase();
             if (!section) {
-              section = 'cors';
-              Backbone.history.navigate('module/' + modCode + '/' + section);
+              section = 'timetable';
             }
             $.getJSON('/api/' + SEMESTER + '/modules/' + modCode + '.json', function (data) {
               var moduleModel = new ModuleModel(data);
