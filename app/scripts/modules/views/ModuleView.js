@@ -14,6 +14,21 @@ define(['backbone.marionette', 'hbs!../templates/module'],
         var module = this.model.get('module');
         var code = module.ModuleCode;
 
+        var disqusPublicKey = "nthJBpACy8Oo1hp52aaQL2eQ9Sp3XjhYuQkEVYe6EmOqCZbcbi88BqJkr2UbTsY0";
+        var disqusShortname = "nusmods"; // Replace with your own shortname
+        var urlArray = 'link:http://nusmods.com/#!/modules/' + code + '/reviews';
+
+        $.ajax({
+          type: 'GET',
+          url: "https://disqus.com/api/3.0/threads/set.jsonp",
+          data: { api_key: disqusPublicKey, forum : disqusShortname, thread : urlArray },
+          cache: false,
+          dataType: 'jsonp',
+          success: function (result) {
+            $('#disqus-count').html(result.response[0].posts);
+          }
+        });
+
         if (this.model.get('section') === 'reviews') {
           // Only reset Disqus when showing reviews section
           DISQUS.reset({
