@@ -61,22 +61,6 @@ function(_, App, Backbone, Marionette, NUSMods, template,
       if (!options) {
         return;
       }
-      _.each(options.selectedModules, function (module) {
-        NUSMods.getMod(module.code, _.bind(function (mod) {
-          mod.id = module.code;
-          this.selectedModules.add(mod, {settingOptions: true});
-          _.each(module.lessons, function (lesson) {
-            var remove = this.timetable.where({
-              code: module.code,
-              type: lesson.type
-            });
-            this.timetable.remove(remove);
-            this.timetable.add(remove[0].get('sameType').where({
-              group: lesson.group
-            }));
-          }, this);
-        }, this));
-      }, this);
     }
   });
 });
