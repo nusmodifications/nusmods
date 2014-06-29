@@ -154,19 +154,22 @@ a.plain {
   }
 }
 
+$module-section-min-height: 700px;
+
 .nm-boxify {
   $margin-width: 10px;
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 5px;
-  min-height: 700px;
+  min-height: $module-section-min-height;
   padding: $margin-width;
 }
 
 .mode-slate {
   .nm-boxify {
-    border: none;
     background-color: #222326;
+    border: none;
+    min-height: $module-section-min-height;
   }
 }
 
