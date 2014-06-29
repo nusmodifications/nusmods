@@ -20,8 +20,8 @@ define(['underscore', 'backbone', 'common/models/ModuleModel'],
           },
           {
             'sectionType': 'reviews',
-            'tabTitle': 'Reviews',
-            'sectionTitle': 'Reviews',
+            'tabTitle': 'Reviews & Discussions',
+            'sectionTitle': 'Reviews & Discussions',
             'active': false
           }
         ];
