@@ -28,6 +28,10 @@ define(['underscore', 'backbone', 'backbone.marionette', 'nusmods',
         this.ui.input.select2('focus');
       },
 
+      onSelect2Open: function () {
+        $('#select2-drop').on('mouseup', '.btn', this.onAdd);
+      },
+
       onSelect2Selecting: function(event) {
         event.preventDefault();
         Backbone.history.navigate('modules/' + event.val, {trigger: true});
@@ -35,7 +39,7 @@ define(['underscore', 'backbone', 'backbone.marionette', 'nusmods',
       },
 
       onShow: function () {
-        _.bindAll(this, 'onAdd');
+        _.bindAll(this, 'onAdd', 'onSelect2Open');
 
         var PAGE_SIZE = 50;
         this.ui.input.select2({
@@ -83,9 +87,7 @@ define(['underscore', 'backbone', 'backbone.marionette', 'nusmods',
           }
         });
 
-        this.ui.input.one('select2-open', _.bind(function () {
-          $('#select2-drop').on('mouseup', '.btn', this.onAdd);
-        }, this));
+        this.ui.input.one('select2-open', this.onSelect2Open)
       }
     });
   });
