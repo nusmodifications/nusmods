@@ -149,6 +149,7 @@ define([
           this.options.droppables.push((new LessonView({
             model: lesson,
             droppables: this.options.droppables,
+            parentView: this.options.parentView,
             timetable: this.options.timetable
           })).render());
         }
