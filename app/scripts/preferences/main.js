@@ -5,7 +5,7 @@ define(['require', 'app', 'backbone.marionette'],
     var navigationItem = App.request('addNavigationItem', {
       name: 'Preferences',
       icon: 'gear',
-      url: '#!/preferences'
+      url: '/preferences'
     });
 
     var controller = {
@@ -22,7 +22,7 @@ define(['require', 'app', 'backbone.marionette'],
       new Marionette.AppRouter({
         controller: controller,
         appRoutes: {
-          '!/preferences': 'showPreferences'
+          'preferences': 'showPreferences'
         }
       });
     });

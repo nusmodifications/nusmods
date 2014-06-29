@@ -16,7 +16,7 @@ define(['backbone.marionette', 'hbs!../templates/module'],
 
         var disqusPublicKey = "nthJBpACy8Oo1hp52aaQL2eQ9Sp3XjhYuQkEVYe6EmOqCZbcbi88BqJkr2UbTsY0";
         var disqusShortname = "nusmods"; // Replace with your own shortname
-        var urlArray = 'link:http://nusmods.com/#!/modules/' + code + '/reviews';
+        var urlArray = 'link:http://nusmods.com/modules/' + code + '/reviews';
 
         $.ajax({
           type: 'GET',
@@ -36,7 +36,7 @@ define(['backbone.marionette', 'hbs!../templates/module'],
             config: function () {
               this.page.identifier = code;
               this.page.title = code + ' ' + module.ModuleTitle + ' · Reviews';
-              this.page.url = 'http://nusmods.com/#!/modules/' + code + '/reviews';
+              this.page.url = 'http://nusmods.com/modules/' + code + '/reviews';
             }
           });
         }
