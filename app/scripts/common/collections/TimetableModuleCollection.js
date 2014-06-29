@@ -21,7 +21,7 @@ define([
       },
 
       onAdd: function (module) {
-        var code = module.get('id');
+        var code = module.id;
         NUSMods.getMod(code, _.bind(function (mod) {
           if (!this.colors.length) {
             this.colors = [0, 1, 2, 3, 4, 5, 6, 7];
@@ -84,8 +84,8 @@ define([
       toJSON: function () {
         return this.map(function (module) {
           return {
-            code: module.get('id'),
-            lessons: _.chain(this.timetable.where({code: module.get('id')}))
+            code: module.id,
+            lessons: _.chain(this.timetable.where({code: module.id}))
               .map(function (lesson) {
                 return lesson.pick('group', 'type');
               })

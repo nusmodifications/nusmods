@@ -17,7 +17,7 @@ define(['underscore', 'backbone', 'nusmods', 'hbs!../templates/select_result','s
       onAdd: function (event) {
         var id = $(event.currentTarget).data('code');
         NUSMods.getMod(id, _.bind(function (mod) {
-          mod.id = id;
+          mod.code = id;
           this.collection.add(mod);
         }, this));
         $('#select2-drop').off('mouseup', '.btn');
