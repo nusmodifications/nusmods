@@ -25,7 +25,13 @@ define(['backbone.marionette', 'hbs!../templates/module'],
           cache: false,
           dataType: 'jsonp',
           success: function (result) {
-            $('#disqus-count').html(result.response[0].posts);
+            var number = 0;
+            var article = result.response[0];
+            if (article) { 
+              number = article.posts; 
+            }
+            $('#disqus-count').html(number);
+            
           }
         });
 
