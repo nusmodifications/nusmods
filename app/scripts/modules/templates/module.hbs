@@ -78,7 +78,37 @@
         {{/equals}}
 
         {{#equals section 'timetable'}}
-          <div>Timetable woots</div>
+          <div>
+            {{#if module.Timetable}}
+               {{#each module.FormattedTimetable}}
+                <h3 class="highlight thin">{{LessonType}}s</h3>
+                <table class="table table-striped">
+                  <tbody>
+                    <tr>
+                      <th>Class No</th>
+                      <th>Week Type</th>
+                      <th>Day</th>
+                      <th>Start Time</th>
+                      <th>End Time</th>
+                      <th>Venue</th>
+                    </tr>
+                    {{#each Lessons}}
+                      <tr>
+                        <td>{{ClassNo}}</td>
+                        <td>{{WeekText}}</td>
+                        <td>{{DayText}}</td>
+                        <td>{{StartTime}}</td>
+                        <td>{{EndTime}}</td>
+                        <td>{{Venue}}</td>
+                      </tr>
+                    {{/each}}
+                  </tbody>
+                </table>
+               {{/each}}
+            {{else}}
+              <p>No timetable data to be shown.</p>
+            {{/if}}
+          </div>
         {{/equals}}
       </div>
     </div>
