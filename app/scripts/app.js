@@ -34,6 +34,10 @@ define([
   App.reqres.setHandler('selectedModules', function(){
     return selectedModulesController.selectedModules;
   });
+  App.commands.setHandler('removeModule', function (id) {
+    var selectedModules = selectedModulesController.selectedModules;
+    selectedModules.remove(selectedModules.get(id));
+  });
 
   new SelectView({
     collection: App.request('selectedModules')

@@ -1,10 +1,16 @@
-define(['backbone.marionette', 'hbs!../templates/exam'],
-  function (Marionette, template) {
+define(['backbone.marionette', 'app', 'hbs!../templates/exam'],
+  function (Marionette, App, template) {
     'use strict';
 
     return Marionette.ItemView.extend({
       tagName: 'tr',
       template: template,
+
+      events: {
+        'click .remove': function () {
+          App.execute('removeModule', this.model.id);
+        }
+      },
 
       modelEvents: {
         change: 'render'
