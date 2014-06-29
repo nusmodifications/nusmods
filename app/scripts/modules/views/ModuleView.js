@@ -11,10 +11,11 @@ define(['backbone.marionette', 'hbs!../templates/module'],
         'click .show-full-desc': 'showFullDescription'
       },
       onShow: function () {
+        var code = this.model.get('module').ModuleCode;
         DISQUS.reset({
           reload: true,
           config: function () {
-            this.page.identifier = this.model.module.id;
+            this.page.identifier = code;
             this.page.url = window.location.href;
           }
         });
