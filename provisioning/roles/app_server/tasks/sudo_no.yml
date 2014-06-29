@@ -1,0 +1,4 @@
+---
+- command: bower install chdir={{ project_dir }}
+- command: bundle install chdir={{ project_dir }}
+- command: npm install chdir={{ project_dir }}

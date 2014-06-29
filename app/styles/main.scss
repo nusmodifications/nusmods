@@ -1,0 +1,443 @@
+$brand-primary: #f60;
+$input-border-focus: $brand-primary;
+$body-bg: #fcfcfc;
+$font-family-sans-serif: "proxima-nova", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+
+// Core variables and mixins
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap/variables";
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap/mixins";
+
+// Reset and dependencies
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap/normalize";
+//@import "bootstrap-sass-official/assets/stylesheets/bootstrap/print";
+//@import "bootstrap-sass-official/assets/stylesheets/bootstrap/glyphicons";
+
+// Core CSS
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap/scaffolding";
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap/type";
+//@import "bootstrap-sass-official/assets/stylesheets/bootstrap/code";
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap/grid";
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap/tables";
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap/forms";
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap/buttons";
+
+// Components
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap/component-animations";
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap/dropdowns";
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap/button-groups";
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap/input-groups";
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap/navs";
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap/navbar";
+//@import "bootstrap-sass-official/assets/stylesheets/bootstrap/breadcrumbs";
+//@import "bootstrap-sass-official/assets/stylesheets/bootstrap/pagination";
+//@import "bootstrap-sass-official/assets/stylesheets/bootstrap/pager";
+//@import "bootstrap-sass-official/assets/stylesheets/bootstrap/labels";
+//@import "bootstrap-sass-official/assets/stylesheets/bootstrap/badges";
+//@import "bootstrap-sass-official/assets/stylesheets/bootstrap/jumbotron";
+//@import "bootstrap-sass-official/assets/stylesheets/bootstrap/thumbnails";
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap/alerts";
+//@import "bootstrap-sass-official/assets/stylesheets/bootstrap/progress-bars";
+//@import "bootstrap-sass-official/assets/stylesheets/bootstrap/media";
+//@import "bootstrap-sass-official/assets/stylesheets/bootstrap/list-group";
+//@import "bootstrap-sass-official/assets/stylesheets/bootstrap/panels";
+//@import "bootstrap-sass-official/assets/stylesheets/bootstrap/responsive-embed";
+//@import "bootstrap-sass-official/assets/stylesheets/bootstrap/wells";
+//@import "bootstrap-sass-official/assets/stylesheets/bootstrap/close";
+
+// Components w/ JavaScript
+//@import "bootstrap-sass-official/assets/stylesheets/bootstrap/modals";
+//@import "bootstrap-sass-official/assets/stylesheets/bootstrap/tooltip";
+//@import "bootstrap-sass-official/assets/stylesheets/bootstrap/popovers";
+//@import "bootstrap-sass-official/assets/stylesheets/bootstrap/carousel";
+
+// Utility classes
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap/utilities";
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap/responsive-utilities";
+
+
+$fa-font-path: "/bower_components/font-awesome/fonts";
+@import "font-awesome/scss/font-awesome";
+
+@import "select2-bootstrap-css/lib/select2-bootstrap";
+
+@import "timetable";
+
+body {
+  padding-top: 70px;
+}
+
+a.plain {
+  color: $text-color;
+}
+
+// Layout
+.container-fluid {
+  max-width: $container-lg;
+  padding: 15px;
+
+  @media (min-width: $screen-lg-min) {
+    @include container-fixed();
+  }
+}
+
+// Navbar
+.navbar {
+  background-color: #fff;
+}
+
+.navbar-toggle {
+  border-color: $brand-primary;
+  .icon-bar {
+    background-color: $brand-primary;
+  }
+}
+
+.navbar-default {
+  .navbar-nav > {
+    li {
+      a:hover {
+        background: none;
+        color: $brand-primary;
+      }
+      &.active > {
+        a {
+          background: none;
+          border-bottom: 3px solid $brand-primary;
+          color: $brand-primary;
+          &:hover {
+            background: none;
+            color: $brand-primary;
+          }
+        }
+      }
+    }
+  }
+}
+
+.navbar-default {
+  .navbar-form {
+    border: none;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0;
+  }
+}
+
+.nav-tabs > { 
+  li.active > {
+    a, a:hover, a:focus {
+      background-color: $body-bg;
+    }
+  }
+}
+
+// NUSMods Logo
+#brand {
+  color: $brand-primary;
+  font-weight: bold;
+  font-size: 24px;
+  text-align: right;
+  &:hover {
+    color: $link-color;
+    text-decoration: none;
+  }
+  .mods {
+    color: #aaa;
+  }
+}
+
+.highlight {
+  color: $brand-primary;
+  font-weight: bold;
+  &.thin {
+    font-weight: normal;
+  }
+}
+
+.nm-boxify {
+  $margin-width: 10px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: $margin-width;
+}
+
+.mode-slate {
+  .nm-boxify {
+    border: none;
+    background-color: #222326;
+  }
+}
+
+.navbar-form .form-control {
+  margin-left: $navbar-padding-horizontal;
+  width: 300px;
+  @media (min-width: $screen-sm-min) {
+    width: 400px;
+  }
+  @media (min-width: $screen-lg-min) {
+    width: 500px;
+  }
+}
+
+// Loading Overlay
+#overlay {
+  @include opacity(1);
+  top: 50px;
+  background-color: #fff;
+}
+#loading {
+  position: fixed;
+  top: 220px;
+  left: 50%;
+  z-index: $zindex-modal-background;
+  margin-left: -100px;
+  width: 200px;
+  text-align: center;
+  font-weight: bold;
+}
+
+// Select2
+.select2-result-label .btn {
+  color: #ddd;
+  float: right;
+  &:hover {
+    color: #fff;
+  }
+}
+
+// Module Finder Sidebar
+@media (max-width: 768px) {
+  #sidebar #clear-all {
+    float: left;
+  }
+}
+
+#module-finder label {
+  font-weight: normal;
+}
+
+.filter-department label.checkbox.inline {
+  display: block;
+}
+
+.arrow-right {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 10px solid black;
+}
+
+.arrow-down {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-top: 10px solid black;
+  border-right: 5px solid transparent;
+  border-left: 5px solid transparent;
+}
+
+// Sidebar Toggling
+@media (min-width: $screen-sm-min) {
+  #sidebar-toggle {
+    position: fixed;
+    bottom: 4px;
+    left: 4px;
+    font-size: 24px;
+  }
+}
+
+// Module Finder Content
+td {
+  &.code, &.mc {
+    text-align: center;
+  }
+  &.code {
+    font-weight: bold;
+  }
+  &.exam {
+    min-width: 95px;
+  }
+  &.details .desc {
+    margin-top: 2px;
+  }
+}
+
+// Timetable
+#timetable {
+  user-select: none;
+}
+colgroup.hover {
+  background-color: $table-bg-hover;
+}
+#sat {
+  display: none;
+}
+.lesson {
+  &:hover {
+    cursor: not-allowed;
+  }
+  &.active {
+    @include opacity(.6);
+  }
+  &.hover {
+    @include opacity(1);
+  }
+}
+.ui-draggable {
+  border-radius: 8px;
+  &:hover {
+    cursor: move;
+  }
+}
+
+// Timetable Controls
+.url-sharing-region {
+  margin-top: 15px;
+}
+
+// For ZeroClipboard CSS effects
+// https://github.com/jonrohan/ZeroClipboard/blob/master/docs/instructions.md#css-effects
+#copy-to-clipboard.zeroclipboard-is-active {
+  @extend .btn:active;
+  @extend .btn-default:active;
+}
+#copy-to-clipboard.zeroclipboard-is-hover {
+  @extend .btn:hover;
+  @extend .btn-default:hover;
+}
+
+#exam-timetable > table {
+  border: 1px solid $gray;
+  font-weight: bold;
+  th {
+    border: 1px solid $gray;
+    background-color: $gray-lighter;
+  }
+  td {
+    border: 1px solid $gray;
+    &:first-child {
+      text-align: right;
+    }
+  }
+  tr {
+    &.clash {
+      background-color: $gray-lighter;
+    }
+    &:hover td {
+      background-color: transparent;
+    }
+  }
+}
+.clash {
+  color: red !important;
+}
+
+// Corspedia 
+.corspedia {
+  .module-code {
+    color: $brand-primary;
+    margin-bottom: 5px;
+  }
+  .module-title {
+    font-weight: normal;
+    margin: 5px 0;
+    text-shadow: none;
+  }
+  dd {
+    margin-bottom: 10px;
+  }
+  .desc-more {
+    display: none;
+  }
+  .module-desc-more {
+    .desc-less {
+      display: none;
+    }
+    .desc-more {
+      display: inherit;
+    }
+  }
+  .desc-full {
+    text-align: right;
+  }
+  .workload-components dd {
+    margin-bottom: 0;  
+  }
+}
+
+// Preferences
+#preferences {
+
+  @include user-select(none);
+
+  select {
+    display: inline-block;
+    width: 200px;
+  }
+  .radio {
+    height: 30px;
+  }
+  .control-label {
+    font-size: 14px;
+  }
+  .help-block {
+    color: #888;
+    font-size: 12px;
+  }
+  .radio, .checkbox {
+    padding-left: 0;
+    label {
+      display: inline-block;  
+      padding-right: 10px;
+    }
+  }
+  .theme-colors-sample {
+    margin: 10px 0;
+    span {
+      border: 2px solid;
+      border-radius: 4px;
+      display: inline-block;
+      height: 32px;
+      width: 32px;
+      margin-right: 8px;
+    }
+  }
+  .random-theme {
+    cursor: pointer;
+    display: inline-block;
+    font-size: 11px;
+    font-weight: bold;
+    margin-left: 5px;
+  }
+
+}
+
+// Footer
+.footer {
+  white-space: nowrap;
+}
+.social-buttons {
+  text-align: center;
+  iframe {
+    // Iframe frameborder attribute is invalid HTML5 but no alternative for IE8.
+    // Hide using IE CSS hack instead.
+    display: none\9;
+    width: 85px;
+    height: 20px;
+    border: 0;
+    overflow: hidden;
+  }
+}
+@media (min-width: $screen-sm-min) {
+  .credits > div {
+    text-align: right;
+  }
+}
+@media (max-width: $screen-xs-max) {
+  .footer {
+    text-align: center;
+  }
+}

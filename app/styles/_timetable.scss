@@ -1,0 +1,50 @@
+#timetable-wrapper {
+  font-size: 11px;
+  font-weight: bold;
+  line-height: 13px;
+}
+#timetable {
+  margin: 0 0 15px -20px;
+  max-width: none;
+  table-layout: fixed;
+  width: 1159px;
+}
+#times div {
+  margin-right: -13px;
+  text-align: right;
+}
+.day {
+  border-bottom: 1px solid $table-border-color;
+  border-top: 1px solid $table-border-color;
+  th {
+    border-bottom: 1px solid transparent;
+    border-top: 1px solid transparent;
+    div {
+      line-height: 15px;
+      margin-left: 20px;
+    }
+  }
+  td {
+    height: 34px;
+    padding: 1px 0 0;
+  }
+}
+.m00 {
+  border-left: 1px solid $table-border-color;
+}
+.m30 {
+  border-right: 1px solid $table-border-color;
+}
+.lesson {
+  border: 2px solid;
+  overflow: hidden;
+  padding: 1px 3px 3px;
+}
+
+.hide-code .code,
+.hide-group .group,
+.hide-room .room,
+.hide-title .title,
+.hide-week .week {
+  display: none;
+}

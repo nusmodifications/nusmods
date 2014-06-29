@@ -1,0 +1,127 @@
+@import "mixins";
+
+#mode-options {
+  display: inline-block;
+  width: 120px;  
+}
+
+.mode-slate {
+  $mode-color: #a7ec21;
+  color: #fff;
+  h1, h2, h3, h4, h5, h6 {
+    font-family: "proxima-nova", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+  a, a:hover {
+    color: $mode-color;
+    &.plain {
+      color: #000;
+    }
+  }
+  table a {
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  hr {
+    border-color: #444;
+  }
+  #brand {
+    color: $mode-color;
+    &:hover {
+      color: $mode-color;
+    }
+  }
+  .navbar {
+    background: #161713;
+    border: none;
+  }
+  .navbar-default {
+    .navbar-nav > {
+      li {
+        a {
+          border: none;
+        }
+        a:hover {
+          background: none;
+          color: $mode-color;
+        }
+        &.active > {
+          a {
+            background: none;
+            border-bottom: 3px solid $mode-color;
+            color: $mode-color;
+            &:hover {
+              background: none;
+              color: $mode-color;
+            }
+          }
+        }
+      }
+    }
+
+    .navbar-form {
+      border: none;
+      box-shadow: none;
+    }
+  }
+  .nav-tabs > { 
+    li.active > {
+      a, a:hover, a:focus {
+        background-color: #272b30;
+        color: #fff;
+      }
+    }
+  }
+
+  .search-form {
+    .search-icon  {
+      color: #000;
+      text-shadow: none;
+    }
+  }
+
+  .ivle {
+    color: #fff;
+    text-decoration: none;
+    &:hover {
+      color: #fff;
+    }
+  }
+  #exam-timetable > table th {
+    color: #000;
+  }
+  .form-control {
+    border-color: #000;
+  }
+  #timetable {
+    background-color: transparent;
+    td {
+      background-color: #2e3338;
+    }
+  }
+  
+  .highlight {
+    color: $mode-color;
+  }
+  
+  .corspedia {
+    .module-code {
+      color: $mode-color;
+    }
+  }
+
+  .select2-drop-active,
+  .select2-drop.select2-drop-above.select2-drop-active,
+  .select2-container-active .select2-choices,
+  .select2-dropdown-open.select2-drop-above .select2-choices,
+  .select2-container-multi.select2-container-active .select2-choices {
+    border-color: $mode-color;
+  }
+  .select2-results .select2-highlighted {
+    background: none repeat scroll 0 0 $mode-color;
+  }
+  .brand:hover {
+    color: $mode-color;
+  }
+}

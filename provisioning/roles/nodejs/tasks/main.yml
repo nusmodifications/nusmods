@@ -1,0 +1,3 @@
+---
+- apt_repository: repo=ppa:chris-lea/node.js
+- apt: name=nodejs

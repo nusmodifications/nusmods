@@ -1,0 +1,37 @@
+<td class="code"><a href="#modules/{{code}}">{{code}}</a></td>
+<td class="details">
+  <div class="pull-right">
+    <a class="ivle btn btn-primary btn-xs"
+       data-code="{{code}}"
+       href="http://ivle.nus.edu.sg/lms/public/list_course_public.aspx?code={{code}}"
+       target="_blank">
+      <i class="fa fa-info-circle"></i>&nbsp;IVLE
+    </a>
+    <button class="add btn btn-xs btn-warning"
+            data-code="{{code}}"
+            type="button">
+      <i class="fa fa-plus-circle"></i>&nbsp;Add
+    </button>
+  </div>
+  <strong>{{title}}</strong>
+  <div class="desc">{{description}}</div>
+  {{#if prerequisite}}
+    <div><strong>Prerequisites:</strong>&nbsp;{{{parsedPrerequisite}}}</div>
+  {{/if}}
+  {{#if preclusion}}
+    <div><strong>Preclusions:</strong>&nbsp;{{{parsedPreclusion}}}</div>
+  {{/if}}
+  {{#if workload}}
+    <div><strong>Workload:</strong>&nbsp;{{workload}}</div>
+  {{/if}}
+</td>
+<td class="mc">{{mc}}</td>
+<td class="exam">
+{{#if examStr}}
+  {{examStr}}
+{{else}}
+  No Exam
+{{/if}}
+</td>
+
+<td class="department">{{department}}</td>
