@@ -15,6 +15,8 @@ module.exports = function (grunt) {
     // Time how long tasks take. Can help when optimizing build times
     require('time-grunt')(grunt);
 
+    var modRewrite = require('connect-modrewrite');
+
     // Define the configuration for all the tasks
     grunt.initConfig({
 
@@ -77,7 +79,13 @@ module.exports = function (grunt) {
                         '<%= yeoman.app %>',
                         '.',
                         'api/app'
-                    ]
+                    ],
+                    middleware: function(connect, options, middlewares) {
+                      // Rewrite everything that does not contain a '.' to
+                      // support pushState
+                      middlewares.unshift(modRewrite(['^[^\\.]*$ /index.html [L]']));
+                      return middlewares;
+                    }
                 }
             },
             test: {
