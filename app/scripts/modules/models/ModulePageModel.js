@@ -13,8 +13,8 @@ define(['underscore', 'backbone', 'common/models/ModuleModel'],
             'active': false
           },
           {
-            'sectionType': 'cors',
-            'tabTitle': 'CORS',
+            'sectionType': 'corspedia',
+            'tabTitle': 'Corspedia',
             'sectionTitle': 'CORS Bidding History',
             'active': false
           },
