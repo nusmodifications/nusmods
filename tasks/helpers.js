@@ -48,7 +48,16 @@ exports.requestCached = function (url, options, callback) {
           default:
             callback(new Error(response.statusCode + ' while fetching ' + url));
         }
-      })).on('replay', function (replay) {
+      }), {
+        errorCodes: [
+          'EADDRINFO',
+          'ETIMEDOUT',
+          'ECONNRESET',
+          'ESOCKETTIMEDOUT',
+          'ENOTFOUND',
+          'ECONNREFUSED'
+        ]
+      }).on('replay', function (replay) {
         console.log('request failed: ' + replay.error.code + ' ' + replay.error.message);
         console.log('replay nr: #' + replay.number);
         console.log('will retry in: ' + replay.delay + 'ms');
