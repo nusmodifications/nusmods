@@ -69,7 +69,13 @@ module.exports = function (grunt) {
                 port: 9000,
                 livereload: 35729,
                 // Change this to '0.0.0.0' to access the server from outside
-                hostname: '0.0.0.0'
+                hostname: '0.0.0.0',
+                middleware: function(connect, options, middlewares) {
+                    // Rewrite everything that does not contain a '.' to
+                    // support pushState
+                    middlewares.unshift(modRewrite(['^[^\\.]*$ /index.html [L]']));
+                    return middlewares;
+                }
             },
             livereload: {
                 options: {
@@ -79,13 +85,7 @@ module.exports = function (grunt) {
                         '<%= yeoman.app %>',
                         '.',
                         'api/app'
-                    ],
-                    middleware: function(connect, options, middlewares) {
-                      // Rewrite everything that does not contain a '.' to
-                      // support pushState
-                      middlewares.unshift(modRewrite(['^[^\\.]*$ /index.html [L]']));
-                      return middlewares;
-                    }
+                    ]
                 }
             },
             test: {
