@@ -156,10 +156,9 @@ module.exports = function (grunt) {
         }
 
         if (rawMod.CorsBiddingStats) {
-          mod.CorsBiddingStatsFaculty = rawMod.CorsBiddingStats[0].Faculty;
           mod.CorsBiddingStats = _.map(rawMod.CorsBiddingStats, function (stats) {
             stats.StudentAcctType = stats.StudentAcctType.replace('<br>', '');
-            return _.omit(stats, 'ModuleCode', 'Faculty');
+            return _.omit(stats, 'ModuleCode');
           });
         }
 
