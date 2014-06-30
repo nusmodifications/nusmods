@@ -108,6 +108,7 @@ module.exports = function (grunt) {
 
         if (rawMod.CORS && rawMod.CORS.Timetable.length) {
           mod.Timetable = rawMod.CORS.Timetable.map(function (lesson) {
+            lesson.WeekText = lesson.WeekText.replace('&nbsp;', ' ');
             lesson.DayCode = dayTextToCode[lesson.DayText];
             lesson.Venue = lesson.Venue.replace(/(?:^null)?,$/, '');
             return lesson;
@@ -157,6 +158,7 @@ module.exports = function (grunt) {
         if (rawMod.CorsBiddingStats) {
           mod.CorsBiddingStatsFaculty = rawMod.CorsBiddingStats[0].Faculty;
           mod.CorsBiddingStats = _.map(rawMod.CorsBiddingStats, function (stats) {
+            stats.StudentAcctType = stats.StudentAcctType.replace('<br>', '');
             return _.omit(stats, 'ModuleCode', 'Faculty');
           });
         }
