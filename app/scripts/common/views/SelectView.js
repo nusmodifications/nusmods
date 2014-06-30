@@ -28,8 +28,16 @@ define(['underscore', 'backbone', 'backbone.marionette', 'nusmods',
         this.ui.input.select2('focus');
       },
 
+      onRemove: function (event) {
+        var id = $(event.currentTarget).data('code');
+        this.collection.remove(this.collection.get(id));
+        this.ui.input.select2('focus');
+      },
+
       onSelect2Open: function () {
-        $('#select2-drop').on('mouseup', '.btn', this.onAdd);
+        $('#select2-drop')
+          .on('mouseup', '.add', this.onAdd)
+          .on('mouseup', '.remove', this.onRemove);
       },
 
       onSelect2Selecting: function(event) {
@@ -39,9 +47,10 @@ define(['underscore', 'backbone', 'backbone.marionette', 'nusmods',
       },
 
       onShow: function () {
-        _.bindAll(this, 'onAdd', 'onSelect2Open');
+        _.bindAll(this, 'onAdd', 'onRemove', 'onSelect2Open');
 
         var PAGE_SIZE = 50;
+        var selectedModules = this.collection;
         this.ui.input.select2({
           multiple: true,
           formatResult: function (object) {
@@ -53,6 +62,7 @@ define(['underscore', 'backbone', 'backbone.marionette', 'nusmods',
               pushResult = function (i) {
                 return results.push({
                   id: codes[i],
+                  selected: selectedModules.get(codes[i]),
                   text: codes[i] + ' ' + titles[i]
                 });
               };
@@ -79,7 +89,7 @@ define(['underscore', 'backbone', 'backbone.marionette', 'nusmods',
           }
         });
 
-        this.ui.input.one('select2-open', this.onSelect2Open)
+        this.ui.input.one('select2-open', this.onSelect2Open);
       }
     });
   });
