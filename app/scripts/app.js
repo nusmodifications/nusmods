@@ -56,15 +56,14 @@ define([
     var $body = $('body');
     ['theme', 'mode'].forEach(function (property) {
       localforage.getItem(property, function (value) {
-        if (value) {
-          $body.addClass(property + '-' + value);
-          $body.attr('data-' + property, value);
-          if (property === 'mode' && value !== 'default') {
-            $('#mode').attr('href', '/styles/' + value + '.min.css');
-          }
-        } else {
+        if (!value) {
           localforage.setItem(property, 'default');
         }
+        $body.addClass(property + '-' + value);
+        $body.attr('data-' + property, value);
+        if (property === 'mode' && value !== 'default') {
+          $('#mode').attr('href', '/styles/' + value + '.min.css');
+        }        
       });
     });
   });
