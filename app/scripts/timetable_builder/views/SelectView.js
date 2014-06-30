@@ -29,16 +29,20 @@ define(['underscore', 'backbone', 'backbone.marionette', 'nusmods',
 
       onShow: function () {
         var PAGE_SIZE = 50;
+        var selectedModules = this.collection;
         this.ui.input.select2({
           multiple: true,
           query: function (options) {
             var i,
               results = [],
               pushResult = function (i) {
-                return results.push({
-                  id: codes[i],
-                  text: codes[i] + ' ' + titles[i]
-                });
+                if (!selectedModules.get(codes[i])) {
+                  results.push({
+                    id: codes[i],
+                    text: codes[i] + ' ' + titles[i]
+                  });
+                }
+                return results.length;
               };
             if (options.term) {
               var re = new RegExp(options.term, 'i');
