@@ -155,6 +155,7 @@ module.exports = function (grunt) {
         }
 
         if (rawMod.CorsBiddingStats) {
+          mod.CorsBiddingStatsFaculty = rawMod.CorsBiddingStats[0].Faculty;
           mod.CorsBiddingStats = _.map(rawMod.CorsBiddingStats, function (stats) {
             return _.omit(stats, 'ModuleCode', 'Faculty');
           });
