@@ -1,6 +1,6 @@
 define(['underscore', 'backbone', 'backbone.marionette', 'nusmods',
-    'hbs!../templates/select', 'hbs!../templates/select_result','select2'],
-  function(_, Backbone, Marionette, NUSMods, template, selectResultTemplate) {
+    'hbs!../templates/select', 'select2'],
+  function(_, Backbone, Marionette, NUSMods, template) {
     'use strict';
 
     var codes = _.keys(timetableData.mods);
