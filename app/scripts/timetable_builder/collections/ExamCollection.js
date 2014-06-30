@@ -5,11 +5,28 @@ define(['underscore', 'backbone', '../models/ExamModel'],
   return Backbone.Collection.extend({
     model: Exam,
 
-    initialize: function () {
+    initialize: function (models, options) {
       this.clashCount = 0;
+      this.listenTo(this, {add: this.onAdd, remove: this.onRemove});
 
-      this.on('add', this.onAdd, this);
-      this.on('remove', this.onRemove, this);
+      options.modules.each(_.bind(this.addModule, this));
+
+      this.listenTo(options.modules, {
+        add: this.addModule,
+        remove: function (module) {
+          this.remove(this.get(module.id));
+        }
+      });
+    },
+
+    addModule: function (module) {
+      this.add({
+        color: module.get('color'),
+        id: module.id,
+        time: module.get('examStr'),
+        title: module.get('title'),
+        unixTime: module.get('exam')
+      });
     },
 
     onAdd: function (exam) {

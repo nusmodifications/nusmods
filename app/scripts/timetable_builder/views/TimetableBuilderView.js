@@ -5,6 +5,7 @@ define([
   'backbone.marionette',
   'NUSMods',
   'hbs!../templates/timetable_builder',
+  '../collections/ExamCollection',
   './ExportView',
   './ExamsView',
   './SelectView',
@@ -14,7 +15,7 @@ define([
   'localforage'
 ],
 
-function(_, App, Backbone, Marionette, NUSMods, template,
+function(_, App, Backbone, Marionette, NUSMods, template, ExamCollection,
          ExportView, ExamsView, SelectView, ShowHideView,
          TimetableView, UrlSharingView, localforage) {
   'use strict';
@@ -34,7 +35,7 @@ function(_, App, Backbone, Marionette, NUSMods, template,
     onShow: function() {
       this.selectedModules = App.request('selectedModules');
       this.timetable = this.selectedModules.timetable;
-      var exams = this.selectedModules.exams;
+      var exams = new ExamCollection(null, {modules: this.selectedModules});
 
       this.listenTo(this.selectedModules, 'add remove', this.modulesChanged);
       this.listenTo(this.timetable, 'change', this.modulesChanged);

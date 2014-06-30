@@ -13,7 +13,6 @@ define([
     return ModuleCollection.extend({
       initialize: function (models, options) {
         this.colors = [];
-        this.exams = options.exams;
         this.timetable = options.timetable;
 
         this.on('add', this.onAdd, this);
@@ -27,15 +26,9 @@ define([
             this.colors = [0, 1, 2, 3, 4, 5, 6, 7];
           }
           var color = this.colors.splice(Math.floor(Math.random() * this.colors.length), 1)[0];
-          var title = mod.title;
+          module.set('color', color);
 
-          this.exams.add({
-            color: color,
-            id: code,
-            time: module.get('examStr'),
-            title: title,
-            unixTime: module.get('exam')
-          });
+          var title = mod.title;
 
           var lessonKeys = ['type', 'group', 'week', 'day', 'start', 'end', 'room'];
           var lessons = _.map(mod.lessons, function (lesson) {
@@ -78,7 +71,6 @@ define([
 
       onRemove: function (module) {
         this.timetable.remove(this.timetable.where({code: module.id}));
-        this.exams.remove(this.exams.get(module.id));
       },
 
       toJSON: function () {
