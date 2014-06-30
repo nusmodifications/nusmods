@@ -11,7 +11,7 @@ module.exports = function (grunt) {
       destFolder: 'app/api',
       // Pretty-print JSON with '\t', uglify JSON with ''.
       // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#space_argument
-      jsonSpace: '\t'
+      jsonSpace: grunt.option('target') === 'dist' ? '' : '\t'
     },
     bulletinModules: {
       options: {
