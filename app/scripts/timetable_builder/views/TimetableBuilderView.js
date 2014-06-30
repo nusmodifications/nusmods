@@ -7,6 +7,7 @@ define([
   'hbs!../templates/timetable_builder',
   './ExportView',
   './ExamsView',
+  './SelectView',
   './ShowHideView',
   './TimetableView',
   './UrlSharingView',
@@ -14,7 +15,7 @@ define([
 ],
 
 function(_, App, Backbone, Marionette, NUSMods, template,
-         ExportView, ExamsView, ShowHideView,
+         ExportView, ExamsView, SelectView, ShowHideView,
          TimetableView, UrlSharingView, localforage) {
   'use strict';
 
@@ -24,6 +25,7 @@ function(_, App, Backbone, Marionette, NUSMods, template,
     regions: {
       examsRegion: '#exam-timetable',
       exportRegion: '.export-region',
+      selectRegion: '.select-region',
       showHideRegion: '.show-hide-region',
       timetableRegion: '#timetable-wrapper',
       urlSharingRegion: '.url-sharing-region'
@@ -41,6 +43,9 @@ function(_, App, Backbone, Marionette, NUSMods, template,
       this.exportRegion.show(new ExportView({
         collection: this.selectedModules,
         exams: exams
+      }));
+      this.selectRegion.show(new SelectView({
+        collection: this.selectedModules
       }));
       this.showHideRegion.show(new ShowHideView());
       this.timetableRegion.show(new TimetableView({collection: this.timetable}));
