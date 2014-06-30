@@ -189,7 +189,7 @@ module.exports = function (grunt) {
     consolidate: {
       options: {
         jsonSpace: '<%= defaults.jsonSpace %>',
-        srcFolder: 'json',
+        srcFolder: '<%= defaults.destFolder %>',
         destFileName: 'consolidatedRaw.json'
       },
       ay2012to2013sem1: {
