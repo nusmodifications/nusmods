@@ -34,7 +34,7 @@ exports.requestCached = function (url, options, callback) {
       }
       replay(request(options, function (err, response, body) {
         if (err) {
-          callback(err);
+          return callback(err);
         }
         switch (response.statusCode) {
           case 200:
