@@ -315,6 +315,7 @@ module.exports = function (grunt) {
         jsonSpace: '<%= defaults.jsonSpace %>',
         destModuleCodes: 'moduleCodes.json',
         destModuleList: 'moduleList.json',
+        destModuleInformation: 'moduleInformation.json',
         destSubfolder: 'modules'
       },
       ay2012to2013sem1: {

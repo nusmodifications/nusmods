@@ -23,6 +23,25 @@ module.exports = function (grunt) {
       JSON.stringify(_.object(moduleCodes, moduleTitles), null, options.jsonSpace)
     );
 
+    var moduleInformation = _.map(normalized, function (mod) {
+      return _.pick(mod, [
+        'ModuleCode',
+        'ModuleTitle',
+        'Department',
+        'ModuleDescription',
+        'ModuleCredit',
+        'Workload',
+        'Prerequisite',
+        'Preclusion',
+        'ExamDate',
+        'Types'
+      ]);
+    });
+    grunt.file.write(
+      path.join(basePath, options.destModuleInformation),
+      JSON.stringify(moduleInformation, null, options.jsonSpace)
+    );
+
     normalized.forEach(function (mod) {
       grunt.file.write(
         path.join(basePath, options.destSubfolder, mod.ModuleCode + '.json'),
