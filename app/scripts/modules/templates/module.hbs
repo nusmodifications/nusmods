@@ -103,38 +103,37 @@
         {{#equals section 'corspedia'}}
           <div>
             {{#if module.CorsBiddingStats}}
-              <table class="table table-striped">
-                <tbody>
-                  <tr>
-                    <th>Acad Year</th>
-                    <th>Semester</th>
-                    <th>Faculty</th>
-                    <th>Group</th>
-                    <th>Round</th>
-                    <th>Quota</th>
-                    <th>Bidders</th>
-                    <th>Lowest Bid</th>
-                    <th>Lowest Succ Bid</th>
-                    <th>Highest Bid</th>
-                    <th>Student Acc Type</th>
-                  </tr>
-                  {{#each module.CorsBiddingStats}}
+              {{#each module.FormattedCorsBiddingStats}}
+                <h3 class="highlight thin">{{Semester}}</h3>
+                <table class="table table-striped">
+                  <tbody>
                     <tr>
-                      <td>{{AcadYear}}</td>
-                      <td>{{Semester}}</td>
-                      <td>{{Faculty}}</td>
-                      <td>{{Group}}</td>
-                      <td>{{Round}}</td>
-                      <td>{{Quota}}</td>
-                      <td>{{Bidders}}</td>
-                      <td>{{LowestBid}}</td>
-                      <td>{{LowestSuccessfulBid}}</td>
-                      <td>{{HighestBid}}</td>
-                      <td>{{StudentAcctType}}</td>
+                      <th>Faculty</th>
+                      <th>Group</th>
+                      <th>Round</th>
+                      <th>Quota</th>
+                      <th>Bidders</th>
+                      <th>Lowest Bid</th>
+                      <th>Lowest Succ Bid</th>
+                      <th>Highest Bid</th>
+                      <th>Student Acct Type</th>
                     </tr>
-                  {{/each}}
-                </tbody>
-              </table>
+                    {{#each BiddingStats}}
+                      <tr>
+                        <td>{{Faculty}}</td>
+                        <td>{{Group}}</td>
+                        <td>{{Round}}</td>
+                        <td>{{Quota}}</td>
+                        <td>{{Bidders}}</td>
+                        <td>{{LowestBid}}</td>
+                        <td>{{LowestSuccessfulBid}}</td>
+                        <td>{{HighestBid}}</td>
+                        <td>{{StudentAcctType}}</td>
+                      </tr>
+                    {{/each}}
+                  </tbody>
+                </table>
+              {{/each}}
             {{else}}
               <p>No CORS bidding data to be shown.</p>
             {{/if}}

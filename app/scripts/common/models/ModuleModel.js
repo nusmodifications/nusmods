@@ -89,17 +89,17 @@ define(['backbone', 'underscore', 'common/utils/padTwo', 'common/utils/modulify'
           _.each(timetableTypes, function (type) {
             var lessons = _.filter(timetable, function (lesson) {
               return lesson.LessonType == type;
-            })
+            });
             lessons = _.sortBy(lessons, function (lesson) {
               return parseInt(lesson.ClassNo);
-            })
+            });
             _.each(lessons, function (lesson) {
               delete lesson.LessonType;
               _.each(lesson, function (value, key) {
                 if (key === 'Venue') { return; }
                 lesson[key] = capitalize(value);
-              })
-            })
+              });
+            });
             var prettyLessonType = capitalize(type);
             formattedTimetable.push({
               LessonType: prettyLessonType,
@@ -108,6 +108,43 @@ define(['backbone', 'underscore', 'common/utils/padTwo', 'common/utils/modulify'
           })
 
           this.set('FormattedTimetable', formattedTimetable);
+        }
+
+        var corsBiddingStats = this.get('CorsBiddingStats');
+        if (corsBiddingStats) {
+          var formattedCorsBiddingStats = [];
+
+          var semesters = [];
+          _.each(corsBiddingStats, function (stats) {
+            var sem = stats.AcadYear + ',' + stats.Semester;
+            if (semesters.indexOf(sem) < 0) {
+              semesters.push(sem);
+            }
+
+            stats.Faculty = capitalize(stats.Faculty);
+            stats.Group = capitalize(stats.Group);
+          });
+          
+          _.each(semesters, function (sem) {
+            var parts = sem.split(',');
+            var acadYear = parts[0];
+            var semester = parts[1];
+            var stats = _.filter(corsBiddingStats, function (stat) {
+              return stat.AcadYear === acadYear && stat.Semester === semester;
+            });
+
+            _.each(stats, function (stat) {
+              delete stat.AcadYear;
+              delete stat.Semester;
+              stat.StudentAcctType = stat.StudentAcctType.replace('<br>', '');
+            });
+
+            formattedCorsBiddingStats.push({
+              Semester: 'AY' + acadYear + ' Sem ' + semester,
+              BiddingStats: stats
+            });
+          });
+          this.set('FormattedCorsBiddingStats', formattedCorsBiddingStats);
         }
 
         // TODO: These attributes are being used by module_item.hbs as model is being loaded from
