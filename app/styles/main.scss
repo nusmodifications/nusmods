@@ -73,11 +73,13 @@ a.plain {
 // Layout
 .container-fluid {
   max-width: $container-lg;
-  padding: 15px;
-
   @media (min-width: $screen-lg-min) {
     @include container-fixed();
   }
+}
+
+.main-content {
+  padding: 15px;
 }
 
 // Navbar
