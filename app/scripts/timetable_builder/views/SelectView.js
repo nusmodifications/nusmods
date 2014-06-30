@@ -31,14 +31,6 @@ define(['underscore', 'backbone', 'backbone.marionette', 'nusmods',
         var PAGE_SIZE = 50;
         this.ui.input.select2({
           multiple: true,
-          initSelection: function (el, callback) {
-            callback(_.map(el.val().split(','), function (code) {
-              return {
-                id: code,
-                text: code + ' ' + timetableData.mods[code].title
-              };
-            }));
-          },
           query: function (options) {
             var i,
               results = [],

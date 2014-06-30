@@ -47,14 +47,6 @@ define(['underscore', 'backbone', 'backbone.marionette', 'nusmods',
           formatResult: function (object) {
             return selectResultTemplate(object);
           },
-          initSelection: function (el, callback) {
-            callback(_.map(el.val().split(','), function (code) {
-              return {
-                id: code,
-                text: code + ' ' + timetableData.mods[code].title
-              };
-            }));
-          },
           query: function (options) {
             var i,
               results = [],
