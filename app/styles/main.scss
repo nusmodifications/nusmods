@@ -173,11 +173,20 @@ $module-section-min-height: 700px;
   }
 }
 
+.navbar-header {
+  @media (min-width: $screen-sm-min) {
+    width: 500px;
+  }
+  @media (min-width: $screen-lg-min) {
+    width: 650px;
+  }
+}
+
 .navbar-form .form-control {
   margin-left: $navbar-padding-horizontal;
   width: 300px;
   @media (min-width: $screen-sm-min) {
-    width: 400px;
+    width: 350px;
   }
   @media (min-width: $screen-lg-min) {
     width: 500px;
