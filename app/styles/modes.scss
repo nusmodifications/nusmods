@@ -96,9 +96,12 @@
   }
   #timetable {
     background-color: transparent;
-    td {
-      background-color: #2e3338;
+    th {
+      background-color: #272b30;
     }
+  }
+  colgroup.hover {
+    background-color: #222;
   }
   
   .highlight {

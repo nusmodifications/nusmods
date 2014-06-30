@@ -272,7 +272,11 @@ td {
 // Timetable
 #timetable {
   user-select: none;
+  th {
+    background-color: $body-bg;
+  }
 }
+
 colgroup.hover {
   background-color: $table-bg-hover;
 }
