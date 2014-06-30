@@ -7,7 +7,7 @@ define(['backbone.marionette', 'zeroclipboard', 'hbs!../templates/url_sharing'],
 
     initialize: function() {
       ZeroClipboard.config({
-        swfPath: 'bower_components/ZeroClipboard/dist/ZeroClipboard.swf'
+        swfPath: '/bower_components/ZeroClipboard/dist/ZeroClipboard.swf'
       });
 
       var copyToClipboard = $('#copy-to-clipboard'),
