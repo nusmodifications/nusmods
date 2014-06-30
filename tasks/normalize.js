@@ -155,7 +155,9 @@ module.exports = function (grunt) {
         }
 
         if (rawMod.CorsBiddingStats) {
-          mod.CorsBiddingStats = rawMod.CorsBiddingStats;
+          mod.CorsBiddingStats = _.map(rawMod.CorsBiddingStats, function (stats) {
+            return _.omit(stats, 'ModuleCode', 'Faculty');
+          });
         }
 
         if (mod.Timetable) {
