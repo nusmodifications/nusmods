@@ -1,19 +1,34 @@
-define(['backbone.marionette', 'hbs!../templates/module',  'underscore', 'localforage', 'bootstrap'],
-  function (Marionette, template, _, localforage) {
+define([
+  'backbone',
+  'backbone.marionette',
+  'hbs!../templates/module',
+  'underscore',
+  'localforage',
+  './BiddingStatsView',
+  'bootstrap'],
+  function (Backbone, Marionette, template, _, localforage, BiddingStatsView) {
     'use strict';
 
-    return Marionette.ItemView.extend({
+    var searchPreferences = {};
+
+    return Marionette.LayoutView.extend({
       template: template,
+      regions: {
+        biddingStatsRegion: '#bidding-stats'
+      },
       initialize: function (data) {
         var formElements = {
           'faculty': '#faculty',
-          'student': 'input:radio[name="student-radios"]',
-          'account': '#account'
+          'account': '#account',
+          'student': 'input:radio[name="student-radios"]'
         }
+
+        var that = this;
         _.each(formElements, function (selector, item) {
           localforage.getItem(item, function (value) {
             if (value) {
-              $(selector).val([value]); 
+              $(selector).val([value]);
+              searchPreferences[item] = value;
             }
           })
         });
@@ -51,6 +66,8 @@ define(['backbone.marionette', 'hbs!../templates/module',  'underscore', 'localf
 
         // So that users can use keyboard shortcuts immediately after the page loads
         $('input').blur();
+
+        this.showBiddingStatsRegion();
       },
       showFullDescription: function ($ev) {
         $('.module-desc').addClass('module-desc-more');
@@ -61,16 +78,32 @@ define(['backbone.marionette', 'hbs!../templates/module',  'underscore', 'localf
         $target.blur();
         var property = $target.attr('data-pref-type');
         var value = $target.val();
-        console.log(property, value);
-
+        if (this.savePreference(property, value)) {
+          searchPreferences[property] = value;
+          this.showBiddingStatsRegion(searchPreferences['faculty'], 
+            searchPreferences['account'], searchPreferences['student']);
+        }
+      },
+      showBiddingStatsRegion: function (faculty, accountType, newStudent) {
+        
+        var biddingStatsDeepCopy = $.extend(true, {}, this.model.attributes.module.FormattedCorsBiddingStats);
+        var biddingStatsModel = new Backbone.Model({stats: biddingStatsDeepCopy});
+        var biddingStatsView = new BiddingStatsView({model: biddingStatsModel});
+        if (faculty && accountType && newStudent) {
+          biddingStatsView.filterStats(faculty, accountType, newStudent);
+        }
+        this.biddingStatsRegion.show(biddingStatsView);
+      },
+      savePreference: function (property, value) {
         if (property === 'faculty' && value === 'default') {
           alert('You have to select a faculty.');
           localforage.getItem(property, function (value) {
             $('#faculty').val(value);
           });
-          return;
+          return false;
         }
         localforage.setItem(property, value);
+        return true;
       }
     });
   });
