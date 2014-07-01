@@ -372,37 +372,6 @@ module.exports = function (grunt) {
           semester: '1'
         }
       }
-    },
-    backwardCompatibility: {
-      options: {
-        srcFolder: '<%= defaults.destFolder %>',
-        jsonSpace: '<%= defaults.jsonSpace %>',
-        destFileName: 'mod_info.json'
-      },
-      ay2012to2013sem2: {
-        options: {
-          academicYear: '2012/2013',
-          semester: '2'
-        }
-      },
-      ay2013to2014sem1: {
-        options: {
-          academicYear: '2013/2014',
-          semester: '1'
-        }
-      },
-      ay2013to2014sem2: {
-        options: {
-          academicYear: '2013/2014',
-          semester: '2'
-        }
-      },
-      ay2014to2015sem1: {
-        options: {
-          academicYear: '2014/2015',
-          semester: '1'
-        }
-      }
     }
   });
 
@@ -421,8 +390,7 @@ module.exports = function (grunt) {
     'consolidate',
     'ivle',
     'normalize',
-    'split',
-    'backwardCompatibility'
+    'split'
   ]);
 
   grunt.registerTask('ay2013to2014sem2', [
@@ -433,8 +401,7 @@ module.exports = function (grunt) {
     'consolidate:ay2013to2014sem2',
     'ivle:ay2013to2014sem2',
     'normalize:ay2013to2014sem2',
-    'split:ay2013to2014sem2',
-    'backwardCompatibility:ay2013to2014sem2'
+    'split:ay2013to2014sem2'
   ]);
 
   grunt.registerTask('ay2014to2015sem1', [
@@ -446,8 +413,7 @@ module.exports = function (grunt) {
     'consolidate:ay2014to2015sem1',
     'ivle:ay2014to2015sem1',
     'normalize:ay2014to2015sem1',
-    'split:ay2014to2015sem1',
-    'backwardCompatibility:ay2014to2015sem1'
+    'split:ay2014to2015sem1'
   ]);
 
   grunt.registerTask('default', 'ay2014to2015sem1');
