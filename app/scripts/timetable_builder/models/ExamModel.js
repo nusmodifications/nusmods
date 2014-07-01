@@ -9,7 +9,7 @@ define(['backbone'], function (Backbone) {
 
     initialize: function () {
       // Time is in the dd-mm-yyyy h:mm tt format.
-      var time = this.get('time');
+      var time = this.get('examStr');
       if (time) {
         // Hour can only be single digit. 9 AM, 1 PM, 2 PM, 2:30 PM, 5 PM, 7 PM.
         var hour = +time[11];
@@ -20,7 +20,7 @@ define(['backbone'], function (Backbone) {
         this.set('key', time.slice(3, 5) + time.slice(0, 2) + hour);
       } else {
         // For modules without exam, sort alphabetically by id (code).
-        this.set('time', this.defaults.time);
+        this.set('examStr', this.defaults.time);
         this.set('key', this.id);
       }
     }

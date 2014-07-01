@@ -22,9 +22,10 @@ define(['underscore', 'backbone', '../models/ExamModel'],
     addModule: function (module) {
       this.add({
         color: module.get('color'),
+        ExamDate: module.get('ExamDate'),
+        examStr: module.get('examStr'),
         id: module.id,
-        time: module.get('examStr'),
-        title: module.get('ModuleTitle')
+        ModuleTitle: module.get('ModuleTitle')
       });
     },
 
