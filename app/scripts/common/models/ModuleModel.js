@@ -123,7 +123,6 @@ define(['backbone', 'underscore', 'common/utils/padTwo', 'common/utils/modulify'
             _.each(stats, function (stat) {
               delete stat.AcadYear;
               delete stat.Semester;
-              stat.StudentAcctType = stat.StudentAcctType.replace('<br>', '');
             });
 
             formattedCorsBiddingStats.push({
