@@ -57,12 +57,12 @@ define(['backbone', 'underscore', 'common/utils/padTwo', 'common/utils/modulify'
 
         var prerequisite = this.get('Prerequisite');
         if (prerequisite) {
-          this.set('ParsedPrerequisite', modulify.linkifyModules(prerequisite));
+          this.set('parsedPrerequisite', modulify.linkifyModules(prerequisite));
         }
 
         var preclusion = this.get('Preclusion');
         if (preclusion) {
-          this.set('ParsedPreclusion', modulify.linkifyModules(preclusion));
+          this.set('parsedPreclusion', modulify.linkifyModules(preclusion));
         }
 
         var timetable = this.get('Timetable');
