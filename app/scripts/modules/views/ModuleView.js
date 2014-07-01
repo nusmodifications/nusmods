@@ -1,14 +1,26 @@
-define(['backbone.marionette', 'hbs!../templates/module', 'bootstrap'],
-  function (Marionette, template) {
+define(['backbone.marionette', 'hbs!../templates/module',  'underscore', 'localforage', 'bootstrap'],
+  function (Marionette, template, _, localforage) {
     'use strict';
 
     return Marionette.ItemView.extend({
       template: template,
       initialize: function (data) {
-
+        var formElements = {
+          'faculty': '#faculty',
+          'student': 'input:radio[name="student-radios"]',
+          'account': '#account'
+        }
+        _.each(formElements, function (selector, item) {
+          localforage.getItem(item, function (value) {
+            if (value) {
+              $(selector).val([value]); 
+            }
+          })
+        });
       },
       events: {
-        'click .show-full-desc': 'showFullDescription'
+        'change #faculty, input:radio[name="student-radios"], #account': 'updateCorspedia',
+        'click .show-full-desc': 'showFullDescription',
       },
       onShow: function () {
         var module = this.model.get('module');
@@ -43,6 +55,22 @@ define(['backbone.marionette', 'hbs!../templates/module', 'bootstrap'],
       showFullDescription: function ($ev) {
         $('.module-desc').addClass('module-desc-more');
         return false;
+      },
+      updateCorspedia: function ($ev) {
+        var $target = $($ev.target);
+        $target.blur();
+        var property = $target.attr('data-pref-type');
+        var value = $target.val();
+        console.log(property, value);
+
+        if (property === 'faculty' && value === 'default') {
+          alert('You have to select a faculty.');
+          localforage.getItem(property, function (value) {
+            $('#faculty').val(value);
+          });
+          return;
+        }
+        localforage.setItem(property, value);
       }
     });
   });
