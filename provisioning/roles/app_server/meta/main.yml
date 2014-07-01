@@ -3,5 +3,6 @@ dependencies:
   - bower
   - bundler
   - grunt
+  - mysql
   - nginx
   - wkhtmltopdf
