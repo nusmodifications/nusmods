@@ -4,7 +4,4 @@ dist
 .sass-cache
 .vagrant
 app/bower_components
-cache
 vendor
-app/json
-app/scripts/*_data.js
