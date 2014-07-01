@@ -12,6 +12,14 @@ Or if you have already cloned the repository without submodules before:
 $ git submodule update --init
 ```
 
+## Get API data
+
+```bash
+$ cd api
+$ npm install
+$ grunt ay2013to2014sem2
+```
+
 ## Setup with Vagrant
 
 ### Prerequisites
