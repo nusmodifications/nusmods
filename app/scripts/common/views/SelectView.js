@@ -59,7 +59,7 @@ define(['underscore', 'backbone', 'backbone.marionette', 'nusmods',
             return selectResultTemplate(object);
           },
           query: function (options) {
-            codesAndTitlesPromise.done(function () {
+            codesAndTitlesPromise.then(function () {
               var i,
                 results = [],
                 pushResult = function (i) {

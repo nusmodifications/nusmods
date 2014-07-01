@@ -35,7 +35,7 @@ define(['underscore', 'backbone', 'backbone.marionette', 'nusmods',
         this.ui.input.select2({
           multiple: true,
           query: function (options) {
-            codesAndTitlesPromise.done(function () {
+            codesAndTitlesPromise.then(function () {
               var i,
                 results = [],
                 pushResult = function (i) {
