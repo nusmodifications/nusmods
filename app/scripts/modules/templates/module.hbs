@@ -58,7 +58,7 @@
             <li {{#equals sectionType ../section}}class="active"{{/equals}}>
               <a href="/modules/{{../module.ModuleCode}}/{{sectionType}}">{{tabTitle}}
                 {{#equals sectionType 'reviews'}}
-                  &nbsp;<span class="badge" id="disqus-count"></span>
+                  &nbsp;<span class="badge" data-disqus-identifier="{{../../module.ModuleCode}}"></span>
                 {{/equals}}
               </a>
             </li>

@@ -14,26 +14,15 @@ define(['backbone.marionette', 'hbs!../templates/module'],
         var module = this.model.get('module');
         var code = module.ModuleCode;
 
-        var disqusPublicKey = "nthJBpACy8Oo1hp52aaQL2eQ9Sp3XjhYuQkEVYe6EmOqCZbcbi88BqJkr2UbTsY0";
-        var disqusShortname = "nusmods"; // Replace with your own shortname
-        var urlArray = 'link:http://nusmods.com/modules/' + code + '/reviews';
+        var disqusShortname = 'nusmods';
 
-        $.ajax({
-          type: 'GET',
-          url: "https://disqus.com/api/3.0/threads/set.jsonp",
-          data: { api_key: disqusPublicKey, forum : disqusShortname, thread : urlArray },
-          cache: false,
-          dataType: 'jsonp',
-          success: function (result) {
-            var number = 0;
-            var article = result.response[0];
-            if (article) { 
-              number = article.posts; 
-            }
-            $('#disqus-count').html(number);
-            
+        (function() {
+          if (typeof disqus_domain != 'undefined') {
+            DISQUSWIDGETS.domain = 'disqus.com';
           }
-        });
+          DISQUSWIDGETS.forum = disqusShortname;
+          DISQUSWIDGETS.getCount();
+        })();
 
         if (this.model.get('section') === 'reviews') {
           // Only reset Disqus when showing reviews section
