@@ -14,17 +14,17 @@
       <dd>{{module.ModuleCredit}}</dd>
       {{#if module.Prerequisite}}
         <dt class="highlight">Pre-requisite(s)</dt>
-        <dd>{{{module.ParsedPrerequisite}}}</dd>
+        <dd>{{{module.parsedPrerequisite}}}</dd>
       {{/if}}
       {{#if module.Preclusion}}
         <dt class="highlight">Preclusion(s)</dt>
-        <dd>{{{module.ParsedPreclusion}}}</dd>
+        <dd>{{{module.parsedPreclusion}}}</dd>
       {{/if}}
       <dt class="highlight">Department</dt>
       <dd>{{module.Department}}</dd>
       <dt class="highlight">Exam Date</dt>
-      {{#if module.ExamDate}}
-        <dd>{{module.ExamDate}}</dd>
+      {{#if module.examStr}}
+        <dd>{{module.examStr}}</dd>
       {{else}}
         <dd>No Exam</dd>
       {{/if}}

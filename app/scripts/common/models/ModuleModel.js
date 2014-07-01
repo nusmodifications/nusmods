@@ -2,12 +2,13 @@ define(['backbone', 'underscore', 'common/utils/padTwo', 'common/utils/modulify'
   function(Backbone, _, padTwo, modulify) {
     'use strict';
 
-    // Convert exam in Unix time to 12-hour date/time format. We add 8 hours to
-    // the UTC time, then use the getUTC* methods so that they will correspond to
-    // Singapore time regardless of the local time zone.
+    // Convert exam in ISO format to 12-hour date/time format. We slice off the
+    // SGT time zone and interpret as UTC time, then use the getUTC* methods so
+    // that they will correspond to Singapore time regardless of the local time
+    // zone.
     var examStr = function (exam) {
       if (exam) {
-        var date = new Date(exam + 288e5);
+        var date = new Date(exam.slice(0,16) + 'Z');
         var hours = date.getUTCHours();
         return padTwo(date.getUTCDate()) +
           '-' + padTwo(date.getUTCMonth() + 1) +
@@ -41,7 +42,7 @@ define(['backbone', 'underscore', 'common/utils/padTwo', 'common/utils/modulify'
     }
 
     return Backbone.Model.extend({
-      idAttribute: 'code',
+      idAttribute: 'ModuleCode',
       initialize: function() {
         // TODO: Display exam date when 2014-2015/1 exam timetable released.
         
@@ -57,12 +58,12 @@ define(['backbone', 'underscore', 'common/utils/padTwo', 'common/utils/modulify'
 
         var prerequisite = this.get('Prerequisite');
         if (prerequisite) {
-          this.set('ParsedPrerequisite', modulify.linkifyModules(prerequisite));
+          this.set('parsedPrerequisite', modulify.linkifyModules(prerequisite));
         }
 
         var preclusion = this.get('Preclusion');
         if (preclusion) {
-          this.set('ParsedPreclusion', modulify.linkifyModules(preclusion));
+          this.set('parsedPreclusion', modulify.linkifyModules(preclusion));
         }
 
         var timetable = this.get('Timetable');
@@ -123,7 +124,6 @@ define(['backbone', 'underscore', 'common/utils/padTwo', 'common/utils/modulify'
             _.each(stats, function (stat) {
               delete stat.AcadYear;
               delete stat.Semester;
-              stat.StudentAcctType = stat.StudentAcctType.replace('<br>', '');
             });
 
             formattedCorsBiddingStats.push({
@@ -134,19 +134,7 @@ define(['backbone', 'underscore', 'common/utils/padTwo', 'common/utils/modulify'
           this.set('FormattedCorsBiddingStats', formattedCorsBiddingStats);
         }
 
-        // TODO: These attributes are being used by module_item.hbs as model is being loaded from
-        //       nus_timetable_data.js and are kept here for backward compatibility.
-        this.set('examStr', examStr(this.get('exam')));
-
-        var prereq = this.get('prerequisite');
-        if (prereq) {
-          this.set('parsedPrerequisite', modulify.linkifyModules(prereq));
-        }
-
-        var preclu = this.get('preclusion');
-        if (preclu) {
-          this.set('parsedPreclusion', modulify.linkifyModules(preclu));
-        }
+        this.set('examStr', examStr(this.get('ExamDate')));
       }
     });
   });

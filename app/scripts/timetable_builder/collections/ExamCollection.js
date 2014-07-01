@@ -24,8 +24,7 @@ define(['underscore', 'backbone', '../models/ExamModel'],
         color: module.get('color'),
         id: module.id,
         time: module.get('examStr'),
-        title: module.get('title'),
-        unixTime: module.get('exam')
+        title: module.get('ModuleTitle')
       });
     },
 

@@ -12,15 +12,33 @@
 }(this, function () {
   'use strict';
 
+  var baseUrl = '/api/2013-2014/2/';
+  var moduleInformationPromise, moduleListPromise;
+
   return {
     getCorrectAsAt: function (callback) {
-      callback(timetableData.correctAsAt);
+      moduleListPromise = moduleListPromise || $.getJSON(baseUrl + 'moduleList.json');
+      return moduleListPromise.then(function () {
+        var lastModified = moduleListPromise.getResponseHeader('Last-Modified');
+        if (callback) {
+          callback(lastModified);
+        }
+        return moduleListPromise.getResponseHeader('Last-Modified');
+      });
     },
     getMod: function (code, callback) {
-      callback(timetableData.mods[code]);
+      return $.getJSON(baseUrl + 'modules/' + code + '.json', callback);
     },
     getMods: function (callback) {
-      callback(timetableData.mods);
+      moduleInformationPromise = moduleInformationPromise || $.getJSON(baseUrl + 'moduleInformation.json');
+      return moduleInformationPromise.then(callback);
+    },
+    getCodesAndTitles: function (callback) {
+      moduleListPromise = moduleListPromise || $.getJSON(baseUrl + 'moduleList.json');
+      return moduleListPromise.then(callback);
+    },
+    setBaseUrl: function (url) {
+      baseUrl = url;
     }
   };
 }));

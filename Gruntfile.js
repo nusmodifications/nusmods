@@ -354,8 +354,6 @@ module.exports = function (grunt) {
                         '.htaccess',
                         'bower_components/ZeroClipboard/dist/ZeroClipboard.swf',
                         'images/{,*/}*.webp',
-                        'json/*',
-                        'scripts/nus_timetable_data.js',
                         '{,*/}*.html',
                         'styles/*.{gif,png}',
                         'styles/fonts/{,*/}*.*',
@@ -423,11 +421,6 @@ module.exports = function (grunt) {
             all: {
                 rjsConfig: '<%= yeoman.app %>/scripts/main.js'
             }
-        },
-        jsifyNUS: {
-          destModuleFinder: 'app/scripts/nus_module_data.js',
-          destTimetable: 'app/scripts/nus_timetable_data.js',
-          src: 'app/json/nus_module_info.json'
         }
     });
 

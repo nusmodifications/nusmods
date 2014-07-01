@@ -68,7 +68,7 @@ define([
     },
 
     attach: function() {
-      if (this.model.get('day') === 5) {
+      if (this.model.get('DayText') === 'Saturday') {
         this.options.parentView.$('#sat').show();
       }
       var rows = this.options.parentView.$('#' + this.model.get('dayAbbrev') + ' > tr');
@@ -80,12 +80,12 @@ define([
           $(rows[0]).children().first().attr('rowspan', i + 1);
         }
         var td = $(row).children('.h' +
-          this.model.get('start').slice(0, 2) + '.m' +
-          this.model.get('start').slice(2) + ':empty');
+          this.model.get('StartTime').slice(0, 2) + '.m' +
+          this.model.get('StartTime').slice(2) + ':empty');
         if (td) {
           this.detached = td.nextUntil('.h' +
-            this.model.get('end').slice(0, 2) + '.m' +
-            this.model.get('end').slice(2), 'td:empty');
+            this.model.get('EndTime').slice(0, 2) + '.m' +
+            this.model.get('EndTime').slice(2), 'td:empty');
           if (this.detached.length === this.model.get('duration') - 1) {
             td.attr('colspan', this.model.get('duration')).html(this.$el);
             this.detached.detach();
@@ -97,9 +97,9 @@ define([
 
     out: function() {
       this.$el.qtip('hide');
-      var group = this.model.get('group');
+      var group = this.model.get('ClassNo');
       _.each(this.options.droppables, function(lessonView) {
-        if (lessonView.model.get('group') === group) {
+        if (lessonView.model.get('ClassNo') === group) {
           lessonView.$el.removeClass('hover');
         }
       });
@@ -107,9 +107,9 @@ define([
 
     over: function() {
       this.$el.qtip('show');
-      var group = this.model.get('group');
+      var group = this.model.get('ClassNo');
       _.each(this.options.droppables, function(lessonView) {
-        if (lessonView.model.get('group') === group) {
+        if (lessonView.model.get('ClassNo') === group) {
           lessonView.$el.addClass('hover');
         }
       });
@@ -120,8 +120,8 @@ define([
         lessonView.remove();
       });
       this.options.timetable.remove(this.options.timetable.where({
-        code: this.model.get('code'),
-        type: this.model.get('type')
+        code: this.model.get('ModuleCode'),
+        type: this.model.get('LessonType')
       }));
       this.model.get('sameGroup').each(function(lesson) {
         this.options.timetable.add(lesson);
@@ -142,10 +142,10 @@ define([
     },
 
     start: function() {
-      var group = this.model.get('group');
+      var group = this.model.get('ClassNo');
       this.options.droppables = [];
       this.model.get('sameType').each(function(lesson) {
-        if (lesson.get('group') !== group) {
+        if (lesson.get('ClassNo') !== group) {
           this.options.droppables.push((new LessonView({
             model: lesson,
             droppables: this.options.droppables,

@@ -3,9 +3,12 @@ define(['underscore', 'backbone', 'backbone.marionette', 'nusmods',
   function(_, Backbone, Marionette, NUSMods, template) {
     'use strict';
 
-    var codes = _.keys(timetableData.mods);
-    var titles = _.pluck(_.values(timetableData.mods), 'title');
-    var modsLength = codes.length;
+    var codes, titles, modsLength;
+    var codesAndTitlesPromise = NUSMods.getCodesAndTitles().then(function (data) {
+      codes = _.keys(data);
+      titles = _.values(data);
+      modsLength = codes.length;
+    });
 
     return Marionette.ItemView.extend({
       template: template,
@@ -20,8 +23,7 @@ define(['underscore', 'backbone', 'backbone.marionette', 'nusmods',
 
       onSelect2Selecting: function(event) {
         event.preventDefault();
-        NUSMods.getMod(event.val, _.bind(function (mod) {
-          mod.code = event.val;
+        NUSMods.getMod(event.val).then(_.bind(function (mod) {
           this.collection.add(mod);
         }, this));
         this.ui.input.select2('focus');
@@ -33,36 +35,38 @@ define(['underscore', 'backbone', 'backbone.marionette', 'nusmods',
         this.ui.input.select2({
           multiple: true,
           query: function (options) {
-            var i,
-              results = [],
-              pushResult = function (i) {
-                if (!selectedModules.get(codes[i])) {
-                  results.push({
-                    id: codes[i],
-                    text: codes[i] + ' ' + titles[i]
-                  });
-                }
-                return results.length;
-              };
-            if (options.term) {
-              var re = new RegExp(options.term, 'i');
-              for (i = options.context || 0; i < modsLength; i++) {
-                if (codes[i].search(re) !== -1 || titles[i].search(re) !== -1) {
-                  if (pushResult(i) === PAGE_SIZE) {
-                    i++;
-                    break;
+            codesAndTitlesPromise.then(function () {
+              var i,
+                results = [],
+                pushResult = function (i) {
+                  if (!selectedModules.get(codes[i])) {
+                    results.push({
+                      id: codes[i],
+                      text: codes[i] + ' ' + titles[i]
+                    });
+                  }
+                  return results.length;
+                };
+              if (options.term) {
+                var re = new RegExp(options.term, 'i');
+                for (i = options.context || 0; i < modsLength; i++) {
+                  if (codes[i].search(re) !== -1 || titles[i].search(re) !== -1) {
+                    if (pushResult(i) === PAGE_SIZE) {
+                      i++;
+                      break;
+                    }
                   }
                 }
+              } else {
+                for (i = (options.page - 1) * PAGE_SIZE; i < options.page * PAGE_SIZE; i++) {
+                  pushResult(i);
+                }
               }
-            } else {
-              for (i = (options.page - 1) * PAGE_SIZE; i < options.page * PAGE_SIZE; i++) {
-                pushResult(i);
-              }
-            }
-            options.callback({
-              context: i,
-              more: i < modsLength,
-              results: results
+              options.callback({
+                context: i,
+                more: i < modsLength,
+                results: results
+              });
             });
           }
         });

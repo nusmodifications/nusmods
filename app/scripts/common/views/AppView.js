@@ -47,8 +47,8 @@ define(['backbone', 'nusmods'], function (Backbone, NUSMods) {
       $.fn.qtip.defaults.show.solo = true;
       $.fn.qtip.defaults.style.classes = 'qtip-bootstrap';
 
-      NUSMods.getCorrectAsAt(function (correctAsAt) {
-        $('#correct-as-at').text(correctAsAt);
+      NUSMods.getCorrectAsAt().then(function (correctAsAt) {
+        $('#correct-as-at').text(new Date(correctAsAt));
       });
 
       $('.container').removeClass('hidden');
