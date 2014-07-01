@@ -355,7 +355,6 @@ module.exports = function (grunt) {
                         'bower_components/ZeroClipboard/dist/ZeroClipboard.swf',
                         'images/{,*/}*.webp',
                         'json/*',
-                        'scripts/nus_timetable_data.js',
                         '{,*/}*.html',
                         'styles/*.{gif,png}',
                         'styles/fonts/{,*/}*.*',
