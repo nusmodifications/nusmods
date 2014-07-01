@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "88172205ff835e0b2dbc2a3c1d4724b0",
+    "hash": "84a97b0e269c434b2c14d8eaddd56404",
     "packages": [
         {
             "name": "knplabs/knp-snappy",
@@ -63,22 +63,43 @@
                 "wkhtmltopdf"
             ],
             "time": "2014-03-20 15:05:12"
+        },
+        {
+            "name": "yourls/yourls",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/YOURLS/YOURLS.git",
+                "reference": "4ce79cad7f5bd2382ed0d807fd12cacf72b67e8f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/YOURLS/YOURLS/zipball/4ce79cad7f5bd2382ed0d807fd12cacf72b67e8f",
+                "reference": "4ce79cad7f5bd2382ed0d807fd12cacf72b67e8f",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Your Own URL Shortener",
+            "homepage": "http://yourls.org",
+            "keywords": [
+                "bitly",
+                "short url",
+                "shortener",
+                "url"
+            ],
+            "time": "2014-06-28 15:38:48"
         }
     ],
-    "packages-dev": [
-
-    ],
-    "aliases": [
-
-    ],
+    "packages-dev": [],
+    "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [
-
-    ],
-    "platform": [
-
-    ],
-    "platform-dev": [
-
-    ]
+    "stability-flags": {
+        "yourls/yourls": 20
+    },
+    "platform": [],
+    "platform-dev": []
 }
