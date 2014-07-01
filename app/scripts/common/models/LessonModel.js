@@ -19,12 +19,6 @@ define(['underscore', 'backbone'],
       'Tutorial Type 3': 'TUT3'
     },
 
-    weeks: {
-      'Every Week': 'Every',
-      'Odd Weeks': 'Odd',
-      'Even Weeks': 'Even'
-    },
-
     initialize: function() {
       // Duration is in number of half hours.
       this.set('duration', Math.round(((this.get('EndTime') === '0000' ?
@@ -33,7 +27,7 @@ define(['underscore', 'backbone'],
       var weekText = this.get('WeekText');
       // If week is not 'Every Week', 'Odd Weeks' or 'Even Weeks', is string
       // 1,4,9 or 1-6 etc, present as 'Weeks 1,4,9'.
-      this.set('weekStr', this.weeks[weekText] ? weekText : 'Weeks ' + weekText);
+      this.set('weekStr', weekText.indexOf('Week') !== -1 ? weekText : 'Weeks ' + weekText);
       this.set('dayAbbrev', this.get('DayText').slice(0, 3).toLowerCase());
       // For certain display purposes. Don't show week if it's Every Week.
       this.set('weekStrNoEvery', weekText === 'Every Week' ?'' : this.get('weekStr'));
