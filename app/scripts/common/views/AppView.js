@@ -27,10 +27,14 @@ define(['backbone', 'nusmods'], function (Backbone, NUSMods) {
         // refresh.
         event.preventDefault();
 
-        // `Backbone.history.navigate` is sufficient for all Routers and will
-        // trigger the correct events. The Router's internal `navigate` method
-        // calls this anyways.  The fragment is sliced from the root.
-        Backbone.history.navigate(href.attr, {trigger: true});
+        if (href.attr === '/') {
+          window.location = root;
+        } else {
+          // `Backbone.history.navigate` is sufficient for all Routers and will
+          // trigger the correct events. The Router's internal `navigate` method
+          // calls this anyways.  The fragment is sliced from the root.
+          Backbone.history.navigate(href.attr, {trigger: true});
+        }
       }
     },
 
