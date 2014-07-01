@@ -13,9 +13,18 @@
   'use strict';
 
   var baseUrl = '/api/2013-2014/2/';
+  var moduleListPromise;
+
   return {
     getCorrectAsAt: function (callback) {
-      callback(timetableData.correctAsAt);
+      moduleListPromise = moduleListPromise || $.getJSON(baseUrl + 'moduleList.json');
+      return moduleListPromise.then(function () {
+        var lastModified = moduleListPromise.getResponseHeader('Last-Modified');
+        if (callback) {
+          callback(lastModified);
+        }
+        return moduleListPromise.getResponseHeader('Last-Modified');
+      });
     },
     getMod: function (code, callback) {
       callback(timetableData.mods[code]);
