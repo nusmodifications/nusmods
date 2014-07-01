@@ -30,6 +30,13 @@ module.exports = function (grunt) {
       SUNDAY: '7'
     };
 
+    var titleize = function(str) {
+      return str.toLowerCase()
+        .replace(/(?:^|\s\(?|-|\/)\S/g, function(c){ return c.toUpperCase(); })
+        .replace(/\bNus\b/, 'NUS')
+        .replace(/\bMit\b/, 'MIT');
+    };
+
     var modules = _.compact(_.map(consolidated, function (rawMod) {
       var modInfo = rawMod.Bulletin || rawMod.CORS;
       if (modInfo) {
@@ -43,9 +50,12 @@ module.exports = function (grunt) {
           }
         });
 
+        mod.Department = titleize(mod.Department);
+
         if (rawMod.Bulletin) {
-          facultyDepartments[modInfo.Faculty] = facultyDepartments[modInfo.Faculty] || {};
-          facultyDepartments[modInfo.Faculty][modInfo.Department] = true;
+          var faculty = titleize(modInfo.Faculty);
+          facultyDepartments[faculty] = facultyDepartments[faculty] || {};
+          facultyDepartments[faculty][mod.Department] = true;
         }
 
         var exam = rawMod.Exam;
@@ -157,14 +167,19 @@ module.exports = function (grunt) {
 
         if (rawMod.CorsBiddingStats) {
           mod.CorsBiddingStats = _.map(rawMod.CorsBiddingStats, function (stats) {
+            stats = _.omit(stats, 'ModuleCode');
+            stats.Group = titleize(stats.Group);
+            stats.Faculty = titleize(stats.Faculty);
             stats.StudentAcctType = stats.StudentAcctType.replace('<br>', '');
-            return _.omit(stats, 'ModuleCode');
+            return stats;
           });
         }
 
         if (mod.Timetable) {
           mod.Timetable.forEach(function (lesson) {
-            lesson.DayText = lesson.DayText.toUpperCase();
+            lesson.LessonType = titleize(lesson.LessonType);
+            lesson.WeekText = titleize(lesson.WeekText);
+            lesson.DayText = titleize(lesson.DayText);
             lesson.StartTime = ('000' + lesson.StartTime).slice(-4);
             lesson.EndTime = ('000' + lesson.EndTime).slice(-4);
             lesson.Venue = lesson.Venue.trim();
