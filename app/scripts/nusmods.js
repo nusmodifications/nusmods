@@ -31,6 +31,9 @@
     },
     getMods: function (callback) {
       callback(timetableData.mods);
+    getCodesAndTitles: function (callback) {
+      moduleListPromise = moduleListPromise || $.getJSON(baseUrl + 'moduleList.json');
+      return moduleListPromise.then(callback);
     },
     setBaseUrl: function (url) {
       baseUrl = url;

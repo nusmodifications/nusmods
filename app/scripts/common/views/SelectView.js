@@ -3,9 +3,12 @@ define(['underscore', 'backbone', 'backbone.marionette', 'nusmods',
   function(_, Backbone, Marionette, NUSMods, template, selectResultTemplate) {
     'use strict';
 
-    var codes = _.keys(timetableData.mods);
-    var titles = _.pluck(_.values(timetableData.mods), 'title');
-    var modsLength = codes.length;
+    var codes, titles, modsLength;
+    var codesAndTitlesPromise = NUSMods.getCodesAndTitles().then(function (data) {
+      codes = _.keys(data);
+      titles = _.values(data);
+      modsLength = codes.length;
+    });
 
     return Marionette.ItemView.extend({
       className: 'form-group',
@@ -57,34 +60,36 @@ define(['underscore', 'backbone', 'backbone.marionette', 'nusmods',
             return selectResultTemplate(object);
           },
           query: function (options) {
-            var i,
-              results = [],
-              pushResult = function (i) {
-                return results.push({
-                  id: codes[i],
-                  selected: selectedModules.get(codes[i]),
-                  text: codes[i] + ' ' + titles[i]
-                });
-              };
-            if (options.term) {
-              var re = new RegExp(options.term, 'i');
-              for (i = options.context || 0; i < modsLength; i++) {
-                if (codes[i].search(re) !== -1 || titles[i].search(re) !== -1) {
-                  if (pushResult(i) === PAGE_SIZE) {
-                    i++;
-                    break;
+            codesAndTitlesPromise.done(function () {
+              var i,
+                results = [],
+                pushResult = function (i) {
+                  return results.push({
+                    id: codes[i],
+                    selected: selectedModules.get(codes[i]),
+                    text: codes[i] + ' ' + titles[i]
+                  });
+                };
+              if (options.term) {
+                var re = new RegExp(options.term, 'i');
+                for (i = options.context || 0; i < modsLength; i++) {
+                  if (codes[i].search(re) !== -1 || titles[i].search(re) !== -1) {
+                    if (pushResult(i) === PAGE_SIZE) {
+                      i++;
+                      break;
+                    }
                   }
                 }
+              } else {
+                for (i = (options.page - 1) * PAGE_SIZE; i < options.page * PAGE_SIZE; i++) {
+                  pushResult(i);
+                }
               }
-            } else {
-              for (i = (options.page - 1) * PAGE_SIZE; i < options.page * PAGE_SIZE; i++) {
-                pushResult(i);
-              }
-            }
-            options.callback({
-              context: i,
-              more: i < modsLength,
-              results: results
+              options.callback({
+                context: i,
+                more: i < modsLength,
+                results: results
+              });
             });
           }
         });
