@@ -13,7 +13,7 @@
   'use strict';
 
   var baseUrl = '/api/2013-2014/2/';
-  var moduleListPromise;
+  var moduleInformationPromise, moduleListPromise;
 
   return {
     getCorrectAsAt: function (callback) {
@@ -30,7 +30,9 @@
       callback(timetableData.mods[code]);
     },
     getMods: function (callback) {
-      callback(timetableData.mods);
+      moduleInformationPromise = moduleInformationPromise || $.getJSON(baseUrl + 'moduleInformation.json');
+      return moduleInformationPromise.then(callback);
+    },
     getCodesAndTitles: function (callback) {
       moduleListPromise = moduleListPromise || $.getJSON(baseUrl + 'moduleList.json');
       return moduleListPromise.then(callback);
