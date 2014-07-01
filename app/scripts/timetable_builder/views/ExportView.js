@@ -116,14 +116,14 @@ define(['underscore', 'backbone.marionette', 'common/utils/padTwo',
     iCalendar: function() {
       var v = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:NUSMods.com'];
       this.options.exams.each(function(exam) {
-        if (exam.get('unixTime')) {
+        if (exam.get('ExamDate')) {
           v = v.concat([
             'BEGIN:VEVENT',
             'UID:' + this.iCalUID() + '@nusmods.com',
             'DTSTAMP:' + this.iCalDateTime(new Date()),
             'SUMMARY:' + exam.id.split(' ')[0] + ' Exam',
-            'DESCRIPTION:' + exam.get('title'),
-            'DTSTART:' + this.iCalDateTime(new Date(exam.get('unixTime'))),
+            'DESCRIPTION:' + exam.get('ModuleTitle'),
+            'DTSTART:' + this.iCalDateTime(new Date(exam.get('ExamDate'))),
             'DURATION:PT2H',
             'URL:http://www.nus.edu.sg/registrar/event/examschedule-sem1.html',
             'END:VEVENT'
@@ -136,10 +136,10 @@ define(['underscore', 'backbone.marionette', 'common/utils/padTwo',
           'BEGIN:VEVENT',
           'UID:' + this.iCalUID() + '@nusmods.com',
           'DTSTAMP:' + (this.iCalDateTime(new Date())),
-          'SUMMARY:' + lesson.get('shortCode') + ' ' + lesson.get('typeName'),
-          'DESCRIPTION:' + lesson.get('title') + '\\n' +
-              lesson.get('typeName') + ' Group ' + lesson.get('group'),
-          'LOCATION:' + lesson.get('room'),
+          'SUMMARY:' + lesson.get('ModuleCode') + ' ' + lesson.get('LessonType'),
+          'DESCRIPTION:' + lesson.get('ModuleTitle') + '\\n' +
+              lesson.get('LessonType') + ' Group ' + lesson.get('ClassNo'),
+          'LOCATION:' + lesson.get('Venue'),
           'URL:https://myaces.nus.edu.sg/cors/jsp/report/ModuleDetailedInfo.jsp' +
               ('?acad_y=2014/2015&sem_c=1&mod_c=' + lesson.get('ModuleCode'))]);
         var start = new Date(Date.UTC(2014, 7, 11,
@@ -148,14 +148,14 @@ define(['underscore', 'backbone.marionette', 'common/utils/padTwo',
         start.setUTCDate(start.getUTCDate() + lesson.get('day'));
         var recess = new Date(start.getTime());
         recess.setUTCDate(recess.getUTCDate() + 42);
-        var week = lesson.get('week');
+        var week = lesson.get('WeekText');
         var exDate;
-        if (typeof (week) === 'number') {
+        if (week.indexOf('Week') !== -1) {
           v.push('RRULE:FREQ=WEEKLY;COUNT=14');
-          if (lesson.isTut || week === 2) {
+          if (lesson.isTut || week === 'Even Weeks') {
             v.push('EXDATE:' + (this.iCalDateTime(start)));
           }
-          if (lesson.isTut && week !== 1) {
+          if (lesson.isTut && week !== 'Odd Weeks') {
             exDate = new Date(start.getTime());
             exDate.setUTCDate(exDate.getUTCDate() + 7);
             v.push('EXDATE:' + (this.iCalDateTime(exDate)));
@@ -169,7 +169,7 @@ define(['underscore', 'backbone.marionette', 'common/utils/padTwo',
           }
         } else {
           var weeks = week.split(/[-,]/);
-          var startWeek = +weeks[0]
+          var startWeek = +weeks[0];
           start.setUTCDate(start.getUTCDate() + this.delta(startWeek) * 7);
           switch (weeks.length) {
             case 1:
@@ -321,14 +321,14 @@ define(['underscore', 'backbone.marionette', 'common/utils/padTwo',
           }
           $(row).find('.lesson').each(function() {
             var lesson = $(this).data('lessonView').model;
-            xml += '<Cell ss:Index="' + (Math.round(lesson.get('start') / 50) - 14);
+            xml += '<Cell ss:Index="' + (Math.round(lesson.get('StartTime') / 50) - 14);
             if (lesson.get('duration') > 1) {
               xml += '" ss:MergeAcross="' + (lesson.get('duration') - 1);
             }
-            xml += '"><Data ss:Type="String">' + lesson.get('shortCode') + '&#13;' +
-                typeAbbrev[lesson.get('type')] + ' ' + lesson.get('group') + '&#13;' +
-                lesson.get('room');
-            if (lesson.get('week')) {
+            xml += '"><Data ss:Type="String">' + lesson.get('ModuleCode') + '&#13;' +
+                lesson.get('typeAbbrev') + ' ' + lesson.get('ClassNo') + '&#13;' +
+                lesson.get('Venue');
+            if (lesson.get('WeekText') !== 'Every Week') {
               xml += '&#13;' + lesson.get('weekStr');
             }
             xml += '</Data></Cell>';
