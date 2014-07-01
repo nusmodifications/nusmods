@@ -23,8 +23,7 @@ define(['underscore', 'backbone', 'backbone.marionette', 'nusmods',
 
       onSelect2Selecting: function(event) {
         event.preventDefault();
-        NUSMods.getMod(event.val, _.bind(function (mod) {
-          mod.code = event.val;
+        NUSMods.getMod(event.val).then(_.bind(function (mod) {
           this.collection.add(mod);
         }, this));
         this.ui.input.select2('focus');

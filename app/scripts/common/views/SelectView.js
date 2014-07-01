@@ -24,8 +24,7 @@ define(['underscore', 'backbone', 'backbone.marionette', 'nusmods',
 
       onAdd: function (event) {
         var id = $(event.currentTarget).data('code');
-        NUSMods.getMod(id, _.bind(function (mod) {
-          mod.code = id;
+        NUSMods.getMod(id).then(_.bind(function (mod) {
           this.collection.add(mod);
         }, this));
         this.ui.input.select2('focus');

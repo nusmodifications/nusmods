@@ -1,5 +1,5 @@
-define(['underscore', 'require', 'app', 'backbone.marionette'],
-  function (_, require, App, Marionette) {
+define(['underscore', 'require', 'app', 'backbone.marionette', 'nusmods'],
+  function (_, require, App, Marionette, NUSMods) {
     'use strict';
 
     var navigationItem = App.request('addNavigationItem', {
@@ -7,8 +7,6 @@ define(['underscore', 'require', 'app', 'backbone.marionette'],
       icon: 'search',
       url: '/modules'
     });
-
-    var SEMESTER = '2013-2014/1';
 
     return Marionette.Controller.extend({
       showModules: function () {
@@ -26,7 +24,7 @@ define(['underscore', 'require', 'app', 'backbone.marionette'],
             if (!section) {
               section = 'timetable';
             }
-            $.getJSON('/api/' + SEMESTER + '/modules/' + modCode + '.json', function (data) {
+            NUSMods.getMod(modCode).then(function (data) {
               var moduleModel = new ModuleModel(data);
               var modulePageModel = new ModulePageModel({module: moduleModel.attributes, section: section});
               App.mainRegion.show(new ModuleView({model: modulePageModel}));
