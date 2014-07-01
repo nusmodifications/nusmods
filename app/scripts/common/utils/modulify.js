@@ -11,7 +11,7 @@ define(function () {
 
   return {
     matchModules: function (desc) {
-      var re = /[a-zA-Z]{2,3}[\d]{4}[a-zA-Z]{0,1}/g;
+      var re = /[a-zA-Z]{2,3}[\d]{4}[a-zA-Z]{0,2}/g;
       var matchPos = [];
       if (!desc) { return matchPos; }
       var match = re.exec(desc);
