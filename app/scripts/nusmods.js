@@ -12,6 +12,7 @@
 }(this, function () {
   'use strict';
 
+  var baseUrl = '/api/2013-2014/2/';
   return {
     getCorrectAsAt: function (callback) {
       callback(timetableData.correctAsAt);
@@ -21,6 +22,9 @@
     },
     getMods: function (callback) {
       callback(timetableData.mods);
+    },
+    setBaseUrl: function (url) {
+      baseUrl = url;
     }
   };
 }));
