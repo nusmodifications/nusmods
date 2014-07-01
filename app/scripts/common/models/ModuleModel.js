@@ -1,5 +1,5 @@
-define(['backbone', 'underscore', 'common/utils/padTwo', 'common/utils/modulify', 'common/utils/capitalize'], 
-  function(Backbone, _, padTwo, modulify, capitalize) {
+define(['backbone', 'underscore', 'common/utils/padTwo', 'common/utils/modulify'],
+  function(Backbone, _, padTwo, modulify) {
     'use strict';
 
     // Convert exam in Unix time to 12-hour date/time format. We add 8 hours to
@@ -55,11 +55,6 @@ define(['backbone', 'underscore', 'common/utils/padTwo', 'common/utils/modulify'
           this.set('WorkloadComponents', workloadify(workload));
         }
 
-        var department = this.get('Department');
-        if (department) {
-          this.set('Department', capitalize(department));
-        }
-
         var prerequisite = this.get('Prerequisite');
         if (prerequisite) {
           this.set('ParsedPrerequisite', modulify.linkifyModules(prerequisite));
@@ -79,8 +74,8 @@ define(['backbone', 'underscore', 'common/utils/padTwo', 'common/utils/modulify'
             }
           });
           
-          var AVAILABLE_TYPES = ['LECTURE', 'SECTIONAL TEACHING', 'SEMINAR-STYLE MODULE CLASS', 'PACKAGED LECTURE', 'PACKAGED TUTORIAL', 
-                                 'TUTORIAL', 'TUTORIAL TYPE 2', 'TUTORIAL TYPE 3', 'DESIGN LECTURE', 'LABORATORY', 'RECITATION'];
+          var AVAILABLE_TYPES = ['Lecture', 'Sectional Teaching', 'Seminar-Style Module Class', 'Packaged Lecture', 'Packaged Tutorial',
+                                 'Tutorial', 'Tutorial Type 2', 'Tutorial Type 3', 'Design Lecture', 'Laboratory', 'Recitation'];
           timetableTypes = _.sortBy(timetableTypes, function (type) {
             return AVAILABLE_TYPES.indexOf(type);
           })
@@ -95,14 +90,9 @@ define(['backbone', 'underscore', 'common/utils/padTwo', 'common/utils/modulify'
             });
             _.each(lessons, function (lesson) {
               delete lesson.LessonType;
-              _.each(lesson, function (value, key) {
-                if (key === 'Venue') { return; }
-                lesson[key] = capitalize(value);
-              });
             });
-            var prettyLessonType = capitalize(type);
             formattedTimetable.push({
-              LessonType: prettyLessonType,
+              LessonType: type,
               Lessons: lessons
             });
           })
@@ -120,9 +110,6 @@ define(['backbone', 'underscore', 'common/utils/padTwo', 'common/utils/modulify'
             if (semesters.indexOf(sem) < 0) {
               semesters.push(sem);
             }
-
-            stats.Faculty = capitalize(stats.Faculty);
-            stats.Group = capitalize(stats.Group);
           });
           
           _.each(semesters, function (sem) {
