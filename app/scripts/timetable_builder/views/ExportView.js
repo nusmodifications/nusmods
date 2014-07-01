@@ -6,66 +6,41 @@ define(['underscore', 'backbone.marionette', 'common/utils/padTwo',
   return Marionette.ItemView.extend({
     template: template,
 
+    events: {
+      'click a': 'onClick'
+    },
+
+    onClick: function (event) {
+      if (!this.collection.length) {
+        alert('No modules to export!');
+        return false;
+      }
+      switch (event.currentTarget.id) {
+        case 'jpg-file':
+          $('#jpg-html').val(encodeURIComponent(this.htmlTimetable()));
+          document.forms['jpg-form'].submit();
+          break;
+        case 'pdf-file':
+          $('#pdf-html').val(encodeURIComponent(this.htmlTimetable()));
+          document.forms['pdf-form'].submit();
+          break;
+        case 'html-file':
+          $(event.currentTarget).attr('href', 'data:text/html,' +
+            encodeURIComponent(this.htmlTimetable()));
+          break;
+        case 'ical-file':
+          $(event.currentTarget).attr('href', 'data:text/calendar,' +
+            encodeURIComponent(this.iCalendar()));
+          break;
+        case 'xls-file':
+          $(event.currentTarget).attr('href', 'data:application/vnd.ms-excel,' +
+            encodeURIComponent(this.spreadsheetML()));
+          break;
+      }
+    },
+
     initialize: function(options) {
       this.options = options;
-
-      _.bindAll(this, 'jpgClick', 'pdfClick', 'htmlClick', 'icalClick',
-        'xlsClick');
-
-      // Currently only supported in Chrome.
-      this.dlAttrSupported = 'download' in document.createElement('a');
-      this.fileURI = location.protocol === 'file:';
-
-      $('#jpg-file').click(this.jpgClick);
-      $('#pdf-file').click(this.pdfClick);
-      $('#html-file').click(this.htmlClick);
-      $('#ical-file').click(this.icalClick);
-      $('#xls-file').click(this.xlsClick);
-    },
-
-    jpgClick: function() {
-      if (!this.collection.length) {
-        alert('No modules to export!');
-        return false;
-      }
-      $('#jpg-html').val(encodeURIComponent(this.htmlTimetable()));
-      document.forms['jpg-form'].submit();
-    },
-
-    pdfClick: function() {
-      if (!this.collection.length) {
-        alert('No modules to export!');
-        return false;
-      }
-      $('#pdf-html').val(encodeURIComponent(this.htmlTimetable()));
-      document.forms['pdf-form'].submit();
-    },
-
-    htmlClick: function() {
-      if (!this.collection.length) {
-        alert('No modules to export!');
-        return false;
-      }
-      $(this).attr('href', 'data:text/html,' +
-          encodeURIComponent(this.htmlTimetable()));
-    },
-
-    icalClick: function() {
-      if (!this.collection.length) {
-        alert('No modules to export!');
-        return false;
-      }
-      $(this).attr('href', 'data:text/calendar,' +
-          encodeURIComponent(this.iCalendar()));
-    },
-
-    xlsClick: function() {
-      if (!this.collection.length) {
-        alert('No modules to export!');
-        return false;
-      }
-      $(this).attr('href', 'data:application/vnd.ms-excel,' +
-          encodeURIComponent(this.spreadsheetML()));
     },
 
     // Custom minimal HTML5/CSS3. CSS that applies to export timetable separated
