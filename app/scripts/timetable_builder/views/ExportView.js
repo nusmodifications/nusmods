@@ -125,7 +125,7 @@ define(['underscore', 'backbone.marionette', 'common/utils/padTwo',
             'DESCRIPTION:' + exam.get('title'),
             'DTSTART:' + this.iCalDateTime(new Date(exam.get('unixTime'))),
             'DURATION:PT2H',
-            'URL:http://www.nus.edu.sg/registrar/event/examschedule-sem2.html',
+            'URL:http://www.nus.edu.sg/registrar/event/examschedule-sem1.html',
             'END:VEVENT'
           ]);
         }
@@ -140,10 +140,11 @@ define(['underscore', 'backbone.marionette', 'common/utils/padTwo',
           'DESCRIPTION:' + lesson.get('title') + '\\n' +
               lesson.get('typeName') + ' Group ' + lesson.get('group'),
           'LOCATION:' + lesson.get('room'),
-          'URL:https://aces01.nus.edu.sg/cors/jsp/report/ModuleDetailedInfo.jsp' +
-              ('?acad_y=2012/2013&sem_c=2&mod_c=' + lesson.get('shortCode'))]);
-        var start = new Date(Date.UTC(2013, 0, 14,
-            +lesson.get('start').slice(0, 2) - 8, +lesson.get('start').slice(2)));
+          'URL:https://myaces.nus.edu.sg/cors/jsp/report/ModuleDetailedInfo.jsp' +
+              ('?acad_y=2014/2015&sem_c=1&mod_c=' + lesson.get('ModuleCode'))]);
+        var start = new Date(Date.UTC(2014, 7, 11,
+          +lesson.get('StartTime').slice(0, 2) - 8,
+          +lesson.get('StartTime').slice(2)));
         start.setUTCDate(start.getUTCDate() + lesson.get('day'));
         var recess = new Date(start.getTime());
         recess.setUTCDate(recess.getUTCDate() + 42);
