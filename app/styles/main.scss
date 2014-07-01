@@ -41,12 +41,12 @@ $font-family-sans-serif: "proxima-nova", "Helvetica Neue", Helvetica, Arial, san
 //@import "bootstrap-sass-official/assets/stylesheets/bootstrap/list-group";
 //@import "bootstrap-sass-official/assets/stylesheets/bootstrap/panels";
 //@import "bootstrap-sass-official/assets/stylesheets/bootstrap/responsive-embed";
-//@import "bootstrap-sass-official/assets/stylesheets/bootstrap/wells";
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap/wells";
 //@import "bootstrap-sass-official/assets/stylesheets/bootstrap/close";
 
 // Components w/ JavaScript
 //@import "bootstrap-sass-official/assets/stylesheets/bootstrap/modals";
-//@import "bootstrap-sass-official/assets/stylesheets/bootstrap/tooltip";
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap/tooltip";
 //@import "bootstrap-sass-official/assets/stylesheets/bootstrap/popovers";
 //@import "bootstrap-sass-official/assets/stylesheets/bootstrap/carousel";
 
@@ -381,7 +381,21 @@ colgroup.hover {
     margin-bottom: 0;  
   }
   #disqus-count {
-    font-weight: normal;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+  .radio {
+    padding-left: 0;
+    label {
+      display: inline-block;  
+      padding-right: 10px;
+    }
+  }
+  .nm-filter {
+    label {
+      .tooltip {
+        font-weight: normal;
+      }
+    }
   }
 }
 

@@ -103,6 +103,54 @@
         {{#equals section 'corspedia'}}
           <div>
             {{#if module.CorsBiddingStats}}
+              <div class="well well-sm nm-filter">
+                <div class="row">
+                  <div class="col-md-4 form-group">
+                    <label class="control-label" for="faculty">Your Faculty 
+                      <i class="nm-help highlight thin fa fa-question-circle" data-toggle="tooltip" data-placement="right" data-trigger="hover" title="CEG Students are to select Multi-Disciplinary Program due to the unique nature of their course."></i>
+                    </label>
+                    <select class="form-control" name="faculty" id="faculty" data-pref-type="faculty">
+                      <option value="default">Your Faculty</option>
+                      <option value="ART">Arts</option>
+                      <option value="BIZ">Business</option>
+                      <option value="COM">Computing</option>
+                      <option value="SDE">Design &amp; Environment</option>
+                      <option value="ENG">Engineering</option>
+                      <option value="LAW">Law</option>
+                      <option value="MED">Medicine</option>
+                      <option value="MDP">Multi-Disciplinary Program</option>
+                      <option value="YST">Music</option>
+                      <option value="SCI">Science</option>
+                      <option value="USP">USP</option>
+                    </select>
+                  </div>
+                  <div class="col-md-4 form-group">
+                    <label class="control-label" for="faculty">Account Type
+                      <i class="nm-help highlight thin fa fa-question-circle" data-toggle="tooltip" data-placement="right" data-trigger="hover" title="Programme Account (P) - Used for Core modules, Higher Level Electives, Major Modules (Cross-Faculty included). General Account (G) - Used for UEM (Unrestricted Elective Modules), Minor modules, GEM and SS"></i>
+                    </label>
+                    <select class="form-control" name="points" id="points" data-pref-type="points">
+                      <option value="P">Programme</option>
+                      <option value="G">General</option>
+                    </select>
+                  </div>
+                  <div class="col-md-4">
+                    <label class="control-label" for="faculty">New Student 
+                      <i class="nm-help highlight thin fa fa-question-circle" data-toggle="tooltip" data-placement="right" data-trigger="hover" title="For certain modules, places are reserved for new students in Rounds 1 and 2, recognizing that new students do not have as many points as some of the seniors."></i>
+                    </label>
+                    <div class="radio">
+                      <label>
+                        <input type="radio" name="student-radios" id="student-radio-1" value="new" data-pref-type="student" selected>
+                        Yes
+                      </label>
+                      <label>
+                        <input type="radio" name="student-radios" id="student-radio-2" value="old" data-pref-type="student">
+                        No
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               {{#each module.FormattedCorsBiddingStats}}
                 <h3 class="highlight thin">{{Semester}}</h3>
                 <table class="table table-striped">

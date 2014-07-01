@@ -1,4 +1,4 @@
-define(['backbone.marionette', 'hbs!../templates/module'],
+define(['backbone.marionette', 'hbs!../templates/module', 'bootstrap'],
   function (Marionette, template) {
     'use strict';
 
@@ -35,7 +35,9 @@ define(['backbone.marionette', 'hbs!../templates/module'],
             }
           });
         }
+        $('.nm-help').tooltip();
 
+        // So that users can use keyboard shortcuts immediately after the page loads
         $('input').blur();
       },
       showFullDescription: function ($ev) {
