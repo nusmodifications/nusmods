@@ -120,8 +120,8 @@ define([
         lessonView.remove();
       });
       this.options.timetable.remove(this.options.timetable.where({
-        code: this.model.get('ModuleCode'),
-        type: this.model.get('LessonType')
+        ModuleCode: this.model.get('ModuleCode'),
+        LessonType: this.model.get('LessonType')
       }));
       this.model.get('sameGroup').each(function(lesson) {
         this.options.timetable.add(lesson);

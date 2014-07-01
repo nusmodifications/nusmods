@@ -21,7 +21,7 @@ define(['underscore', 'backbone', '../models/FacetModel'],
             _.map(facet.get('filters').selected, function (filter) {
               return facet.get('groupedCollection')[filter.get('label')];
             }));
-        }), _.size)), 'code'));
+        }), _.size)), 'ModuleCode'));
     }
   });
 });
