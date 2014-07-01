@@ -27,7 +27,7 @@
       });
     },
     getMod: function (code, callback) {
-      callback(timetableData.mods[code]);
+      return $.getJSON(baseUrl + 'modules/' + code + '.json', callback);
     },
     getMods: function (callback) {
       moduleInformationPromise = moduleInformationPromise || $.getJSON(baseUrl + 'moduleInformation.json');

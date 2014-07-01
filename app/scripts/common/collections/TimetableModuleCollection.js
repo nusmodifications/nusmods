@@ -20,43 +20,28 @@ define([
       },
 
       onAdd: function (module) {
-        var code = module.id;
-        NUSMods.getMod(code, _.bind(function (mod) {
-          if (!this.colors.length) {
-            this.colors = [0, 1, 2, 3, 4, 5, 6, 7];
-          }
-          var color = this.colors.splice(Math.floor(Math.random() * this.colors.length), 1)[0];
-          module.set('color', color);
+        if (!this.colors.length) {
+          this.colors = [0, 1, 2, 3, 4, 5, 6, 7];
+        }
+        var color = this.colors.splice(Math.floor(Math.random() * this.colors.length), 1)[0];
+        module.set('color', color);
 
-          var title = mod.title;
-
-          var lessonKeys = ['type', 'group', 'week', 'day', 'start', 'end', 'room'];
-          var lessons = _.map(mod.lessons, function (lesson) {
-            return _.object(lessonKeys, lesson);
-          });
-
-          _.each(_.groupBy(lessons, 'type'), function (groups, type) {
+        NUSMods.getMod(module.id).then(_.bind(function (mod) {
+          _.each(_.groupBy(mod.Timetable, 'LessonType'), function (groups) {
             var firstGroup = true;
             var isDraggable = _.size(groups) > 1;
             var sameType = new LessonCollection();
-            _.each(_.groupBy(groups, 'group'), function (lessonsData, group) {
+            _.each(_.groupBy(groups, 'ClassNo'), function (lessonsData) {
               var sameGroup = new LessonCollection();
               _.each(lessonsData, function (lessonData) {
-                var lesson = new LessonModel({
-                  week: lessonData.week,
-                  day: lessonData.day,
-                  start: lessonData.start,
-                  end: lessonData.end,
-                  room: lessonData.room,
-                  code: code,
+                var lesson = new LessonModel(_.extend({
                   color: color,
-                  group: group,
                   isDraggable: isDraggable,
+                  ModuleCode: mod.ModuleCode,
+                  ModuleTitle: mod.ModuleTitle,
                   sameGroup: sameGroup,
-                  sameType: sameType,
-                  title: title,
-                  type: type
-                });
+                  sameType: sameType
+                }, lessonData));
                 sameGroup.add(lesson);
                 sameType.add(lesson);
                 if (firstGroup) {
@@ -70,18 +55,18 @@ define([
       },
 
       onRemove: function (module) {
-        this.timetable.remove(this.timetable.where({code: module.id}));
+        this.timetable.remove(this.timetable.where({ModuleCode: module.id}));
       },
 
       toJSON: function () {
         return this.map(function (module) {
           return {
             code: module.id,
-            lessons: _.chain(this.timetable.where({code: module.id}))
+            lessons: _.chain(this.timetable.where({ModuleCode: module.id}))
               .map(function (lesson) {
-                return lesson.pick('group', 'type');
+                return lesson.pick('ClassNo', 'LessonType');
               })
-              .uniq('type')
+              .uniq('LessonType')
               .value()
           };
         }, this);
