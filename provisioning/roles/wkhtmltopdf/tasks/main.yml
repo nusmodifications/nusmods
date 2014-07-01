@@ -1,0 +1,9 @@
+---
+- apt: name=fontconfig
+- stat: path=/usr/local/bin/wkhtmltopdf
+  register: usr_local_bin_wkhtmltopdf
+- get_url: url=http://downloads.sourceforge.net/project/wkhtmltopdf/0.12.1/wkhtmltox-0.12.1_linux-trusty-amd64.deb dest=/tmp sha256sum=5ad7877ae32f2c378c2cfb8469cf01a0f425ba44e817047c694e1798106502e1
+  when: not usr_local_bin_wkhtmltopdf.stat.exists
+- apt: deb=/tmp/wkhtmltox-0.12.1_linux-trusty-amd64.deb
+  when: not usr_local_bin_wkhtmltopdf.stat.exists
+- file: path=/tmp/wkhtmltox-0.12.1_linux-trusty-amd64.deb state=absent

@@ -4,3 +4,4 @@ dependencies:
   - bundler
   - grunt
   - nginx
+  - wkhtmltopdf
