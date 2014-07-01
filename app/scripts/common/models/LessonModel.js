@@ -37,13 +37,6 @@ define(['underscore', 'backbone'],
       this.set('dayAbbrev', this.get('DayText').slice(0, 3).toLowerCase());
       // For certain display purposes. Don't show week if it's Every Week.
       this.set('weekStrNoEvery', weekText === 'Every Week' ?'' : this.get('weekStr'));
-    },
-
-    get: function (attr) {
-      if (_.isFunction(this[attr])) {
-        return this[attr]();
-      }
-      return Backbone.Model.prototype.get.call(this, attr);
     }
   });
 });
