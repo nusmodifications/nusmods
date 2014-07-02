@@ -3,3 +3,11 @@
 - apt: name=nginx
 - file: path=/etc/nginx/sites-enabled/default state=absent
   notify: reload nginx
+- template:
+    src=etc/nginx/sites-available/nusmods.com.j2
+    dest=/etc/nginx/sites-available/nusmods.com
+- file:
+    src=/etc/nginx/sites-available/nusmods.com
+    dest=/etc/nginx/sites-enabled/nusmods.com
+    state=link
+  notify: reload nginx
