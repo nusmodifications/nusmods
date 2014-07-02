@@ -58,7 +58,7 @@ define(['backbone', 'nusmods', 'mousetrap', '../utils/modulify', 'underscore'],
 
       $('.container').removeClass('hidden');
 
-      Mousetrap.bind('shift+s', function(ev) {
+      Mousetrap.bind('/', function(ev) {
         $('#s2id_autogen2').focus();
         ev.preventDefault();
         return false;
@@ -74,7 +74,7 @@ define(['backbone', 'nusmods', 'mousetrap', '../utils/modulify', 'underscore'],
       };
 
       _.each(keyboardNavigationMappings, function (value, key) {
-        Mousetrap.bind('shift+' + key, function (ev) {
+        Mousetrap.bind(key, function (ev) {
           if (value.indexOf('<module>') > -1) {
             var modulePage = true;
             var moduleCode = modulify.getModuleFromString(window.location.href);
