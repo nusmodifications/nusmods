@@ -1,3 +1,6 @@
 ---
-- apt: name=g++
+- apt: name={{ item }}
+  with_items:
+    - g++
+    - php5-curl
 - { include: install_dependencies.yml, sudo: no }
