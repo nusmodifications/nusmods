@@ -1,4 +1,5 @@
-define(['backbone', 'nusmods', 'mousetrap'], function (Backbone, NUSMods, Mousetrap) {
+define(['backbone', 'nusmods', 'mousetrap', '../utils/modulify', 'underscore'], 
+  function (Backbone, NUSMods, Mousetrap, modulify, _) {
   'use strict';
 
   return Backbone.View.extend({
@@ -57,10 +58,31 @@ define(['backbone', 'nusmods', 'mousetrap'], function (Backbone, NUSMods, Mouset
 
       $('.container').removeClass('hidden');
 
-      Mousetrap.bind('mod+a', function(ev) {
+      Mousetrap.bind('shift+s', function(ev) {
         $('#s2id_autogen2').focus();
         ev.preventDefault();
         return false;
+      });
+
+      var keyboardNavigationMappings = {
+        b: '/timetable-builder',
+        m: '/modules',
+        p: '/preferences',
+        c: '/modules/<module>/corspedia',
+        t: '/modules/<module>/timetable',
+        r: '/modules/<module>/reviews',
+      };
+
+      _.each(keyboardNavigationMappings, function (value, key) {
+        Mousetrap.bind('shift+' + key, function (ev) {
+          if (value.indexOf('<module>') > -1) {
+            var modulePage = true;
+            var moduleCode = modulify.getModuleFromString(window.location.href);
+          }
+          if (moduleCode || !modulePage) {
+            Backbone.history.navigate(value.replace('<module>', moduleCode ? moduleCode : ''), {trigger: true});
+          }
+        });
       })
     }
   });
