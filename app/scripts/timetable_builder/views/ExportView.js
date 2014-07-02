@@ -17,12 +17,12 @@ define(['underscore', 'backbone.marionette', 'common/utils/padTwo',
       }
       switch (event.currentTarget.id) {
         case 'jpg-file':
-          $('#jpg-html').val(encodeURIComponent(this.htmlTimetable()));
-          document.forms['jpg-form'].submit();
+          this.$('#jpg-html').val(encodeURIComponent(this.htmlTimetable()));
+          this.$('#jpg-form').submit();
           break;
         case 'pdf-file':
-          $('#pdf-html').val(encodeURIComponent(this.htmlTimetable()));
-          document.forms['pdf-form'].submit();
+          this.$('#pdf-html').val(encodeURIComponent(this.htmlTimetable()));
+          this.$('#pdf-form').submit();
           break;
         case 'html-file':
           $(event.currentTarget).attr('href', 'data:text/html,' +
