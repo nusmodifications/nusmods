@@ -8,10 +8,15 @@ define(function () {
       return string + this;
     }
   };
+  
+  var re = /[a-zA-Z]{2,3}[\d]{4}[a-zA-Z]{0,2}/g;
 
   return {
+    getModuleFromString: function (string) {
+      var match = re.exec(string);
+      return match ? match[0] : '';
+    },
     matchModules: function (desc) {
-      var re = /[a-zA-Z]{2,3}[\d]{4}[a-zA-Z]{0,2}/g;
       var matchPos = [];
       if (!desc) { return matchPos; }
       var match = re.exec(desc);
