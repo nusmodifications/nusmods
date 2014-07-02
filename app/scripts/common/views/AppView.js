@@ -1,4 +1,4 @@
-define(['backbone', 'nusmods'], function (Backbone, NUSMods) {
+define(['backbone', 'nusmods', 'mousetrap'], function (Backbone, NUSMods, Mousetrap) {
   'use strict';
 
   return Backbone.View.extend({
@@ -56,6 +56,12 @@ define(['backbone', 'nusmods'], function (Backbone, NUSMods) {
       });
 
       $('.container').removeClass('hidden');
+
+      Mousetrap.bind('mod+a', function(ev) {
+        $('#s2id_autogen2').focus();
+        ev.preventDefault();
+        return false;
+      })
     }
   });
 });
