@@ -13,6 +13,7 @@
     "jquery.ui": "~1.11.0",
     "localforage": "~0.8.1",
     "lodash-amd": "~2.4.1",
+    "mousetrap": "~1.4.6",
     "qtip2": "~2.2.0",
     "require-handlebars-plugin": "~0.8.1",
     "requirejs": "~2.1.14",
