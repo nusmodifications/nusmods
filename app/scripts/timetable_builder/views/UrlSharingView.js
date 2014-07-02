@@ -1,96 +1,99 @@
-define(['backbone.marionette', 'zeroclipboard', 'hbs!../templates/url_sharing'],
-  function(Marionette, ZeroClipboard, template) {
-  'use strict';
+define(['underscore', 'backbone.marionette', 'zeroclipboard', 'hbs!../templates/url_sharing', 'qtip2'],
+  function (_, Marionette, ZeroClipboard, template) {
+    'use strict';
 
-  return Marionette.ItemView.extend({
-    template: template,
+    return Marionette.ItemView.extend({
+      template: template,
 
-    initialize: function() {
-      ZeroClipboard.config({
-        swfPath: '/bower_components/ZeroClipboard/dist/ZeroClipboard.swf'
-      });
+      ui: {
+        copyToClipboard: '#copy-to-clipboard',
+        input: 'input',
+        shareEmail: '#share-email',
+        shareFacebook: '#share-facebook',
+        shareTwitter: '#share-twitter'
+      },
 
-      var copyToClipboard = $('#copy-to-clipboard'),
-          clip = new ZeroClipboard(copyToClipboard),
-          shortURLInput = $('#short-url');
+      events: {
+        'cut keydown @ui.input': function (event) {
+          // Prevent default actions on cut and keydown to simulate readOnly
+          // behavior on input, as the readOnly attribute does not allow selection
+          // on some mobile platforms.
+          event.preventDefault();
+        },
+        'focus @ui.input': function () {
+          this.getShortURL().then(_.bind(function () {
+            // shortURLInput.select() does not work on iOS
+            this.ui.input[0].setSelectionRange(0, 99);
+          }, this));
+        },
+        'mouseup @ui.input': function (event) {
+          // Prevent the mouseup event from unselecting the selection
+          event.preventDefault();
+        },
+        'mouseover @ui.copyToClipboard': function () {
+          this.getShortURL().then(_.bind(function (shortURL) {
+            this.clip.setText(shortURL);
+          }, this));
+        },
+        'click @ui.shareEmail': function () {
+          this.getShortURL().then(function (shortURL) {
+            window.location.href = 'mailto:?subject=My%20NUSMods.com%20Timetable&' +
+              'body=' + encodeURIComponent(shortURL);
+          });
+        },
+        'click @ui.shareFacebook': function () {
+          this.getShortURL().then(function (shortURL) {
+            window.open('http://www.facebook.com/sharer.php?u=' +
+              encodeURIComponent(shortURL), '', 'width=660,height=350');
+          });
+        },
+        'click @ui.shareTwitter': function () {
+          this.getShortURL().then(function (shortURL) {
+            window.open('http://twitter.com/intent/tweet?url=' +
+              encodeURIComponent(shortURL), '', 'width=660,height=350');
+          });
+        }
+      },
 
-      function getShortURL(callback) {
-        var shortURL = shortURLInput.val();
-        if (shortURL) {
-          callback(shortURL);
-        } else {
+      getShortURL: function () {
+        this.shortUrlPromise = this.shortUrlPromise ||
           $.getJSON('short_url.php', {
             url: location.href
-          }, function(data) {
-            shortURL = data.shorturl;
-            if (shortURL) {
-              shortURLInput.val(shortURL);
-              callback(shortURL);
+          }).then(_.bind(function (data) {
+            this.ui.input.val(data.shorturl);
+            return data.shorturl;
+          }, this));
+        return this.shortUrlPromise;
+      },
+
+      initialize: function () {
+        ZeroClipboard.config({
+          swfPath: '/bower_components/ZeroClipboard/dist/ZeroClipboard.swf'
+        });
+      },
+
+      onShow: function () {
+        var ui = this.ui;
+
+        this.clip = new ZeroClipboard(ui.copyToClipboard);
+        this.clip.on('aftercopy', function () {
+          ui.copyToClipboard.qtip('option', 'content.text', 'Copied!');
+        });
+
+        var CLIPBOARD_TOOLTIP = 'Copy to Clipboard';
+        ui.copyToClipboard.qtip({
+          content: CLIPBOARD_TOOLTIP,
+          events: {
+            hidden: function () {
+              // Set to original text when hidden as text may have been changed.
+              ui.copyToClipboard.qtip('option', 'content.text', CLIPBOARD_TOOLTIP);
             }
-          });
-        }
-      }
-
-      shortURLInput.on('cut keydown', function (event) {
-        // Prevent default actions on cut and keydown to simulate readOnly
-        // behavior on input, as the readOnly attribute does not allow selection
-        // on some mobile platforms.
-        event.preventDefault();
-      }).focus(function() {
-        getShortURL(function() {
-          // shortURLInput.select() does not work on iOS
-          shortURLInput[0].setSelectionRange(0, 99);
-        });
-      }).mouseup(function (event) {
-        // Prevent the mouseup event from unselecting the selection
-        event.preventDefault();
-      });
-
-      var CLIPBOARD_TOOLTIP = 'Copy to Clipboard';
-      copyToClipboard.qtip({
-        content: CLIPBOARD_TOOLTIP,
-        events: {
-          hidden: function() {
-            // Set to original text when hidden as text may have been changed.
-            copyToClipboard.qtip('option', 'content.text', CLIPBOARD_TOOLTIP);
           }
-        }
-      });
-      copyToClipboard.on('mouseover', function() {
-        getShortURL(function(shortURL) {
-          clip.setText(shortURL);
         });
-      });
-      clip.on('aftercopy', function() {
-        copyToClipboard.qtip('option', 'content.text', 'Copied!');
-      });
 
-      $('#share-email').click(function() {
-        getShortURL(function(shortURL) {
-          window.location.href = 'mailto:?subject=My%20NUSMods.com%20Timetable&' +
-              'body=' + encodeURIComponent(shortURL);
+        _.each(['Email', 'Facebook', 'Twitter'], function (medium) {
+          ui['share' + medium].qtip({content: 'Share via ' + medium});
         });
-      }).qtip({
-            content: 'Share via Email'
-          });
-
-      $('#share-facebook').click(function() {
-        getShortURL(function(shortURL) {
-          window.open('http://www.facebook.com/sharer.php?u=' +
-              encodeURIComponent(shortURL), '', 'width=660,height=350');
-        });
-      }).qtip({
-            content: 'Share via Facebook'
-          });
-
-      $('#share-twitter').click(function() {
-        getShortURL(function(shortURL) {
-          window.open('http://twitter.com/intent/tweet?url=' +
-              encodeURIComponent(shortURL), '', 'width=660,height=350');
-        });
-      }).qtip({
-            content: 'Share via Twitter'
-          });
-    }
+      }
+    });
   });
-});
