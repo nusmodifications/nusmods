@@ -121,9 +121,9 @@ define(['backbone', 'underscore', 'common/utils/padTwo', 'common/utils/modulify'
               return stat.AcadYear === acadYear && stat.Semester === semester;
             });
 
-            _.each(stats, function (stat) {
-              delete stat.AcadYear;
-              delete stat.Semester;
+            stats = _.map(stats, function (stat) {
+              stat = _.omit(stat, ['AcadYear', 'Semester']);
+              return stat;
             });
 
             formattedCorsBiddingStats.push({
