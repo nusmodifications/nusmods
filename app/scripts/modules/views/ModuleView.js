@@ -35,6 +35,8 @@ define(['backbone.marionette', 'hbs!../templates/module'],
             }
           });
         }
+
+        $('input').blur();
       },
       showFullDescription: function ($ev) {
         $('.module-desc').addClass('module-desc-more');
