@@ -24,11 +24,16 @@ define([
         }
 
         var that = this;
+        var loadedItems = 0;
         _.each(formElements, function (selector, item) {
           localforage.getItem(item, function (value) {
             if (value) {
               $(selector).val([value]);
               searchPreferences[item] = value;
+            }
+            loadedItems++;
+            if (loadedItems === _.keys(formElements).length) {
+              that.showBiddingStatsRegion(true);
             }
           })
         });
@@ -36,6 +41,7 @@ define([
       events: {
         'change #faculty, input:radio[name="student-radios"], #account': 'updateCorspedia',
         'click .show-full-desc': 'showFullDescription',
+        'click #show-all-stats': 'showAllStats'
       },
       onShow: function () {
         var module = this.model.get('module');
@@ -66,12 +72,13 @@ define([
 
         // So that users can use keyboard shortcuts immediately after the page loads
         $('input').blur();
-
-        this.showBiddingStatsRegion();
       },
       showFullDescription: function ($ev) {
         $('.module-desc').addClass('module-desc-more');
         return false;
+      },
+      showAllStats: function () {
+        this.showBiddingStatsRegion(false);
       },
       updateCorspedia: function ($ev) {
         var $target = $($ev.target);
@@ -80,18 +87,23 @@ define([
         var value = $target.val();
         if (this.savePreference(property, value)) {
           searchPreferences[property] = value;
-          this.showBiddingStatsRegion(searchPreferences['faculty'], 
-            searchPreferences['account'], searchPreferences['student']);
+          this.showBiddingStatsRegion(true);
         }
       },
-      showBiddingStatsRegion: function (faculty, accountType, newStudent) {
-        
-        var biddingStatsDeepCopy = $.extend(true, {}, this.model.attributes.module.FormattedCorsBiddingStats);
+      showBiddingStatsRegion: function (displayFiltered) {
+        var biddingStatsDeepCopy = $.extend(true, {}, 
+          this.model.attributes.module.FormattedCorsBiddingStats);
         var biddingStatsModel = new Backbone.Model({stats: biddingStatsDeepCopy});
         var biddingStatsView = new BiddingStatsView({model: biddingStatsModel});
-        if (faculty && accountType && newStudent) {
+
+        var faculty = searchPreferences['faculty'];
+        var accountType = searchPreferences['account'];
+        var newStudent = searchPreferences['student'] === 'true';
+
+        if (faculty && accountType && displayFiltered) {
           biddingStatsView.filterStats(faculty, accountType, newStudent);
         }
+
         this.biddingStatsRegion.show(biddingStatsView);
       },
       savePreference: function (property, value) {

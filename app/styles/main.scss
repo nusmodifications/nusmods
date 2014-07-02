@@ -66,8 +66,11 @@ body {
   padding-top: 70px;
 }
 
-a.plain {
-  color: $text-color;
+a {
+  cursor: pointer;
+  &.plain {
+    color: $text-color;
+  }
 }
 
 // Layout

@@ -18,6 +18,15 @@
       color: #000;
     }
   }
+  .alert {
+    .alert-link, a {
+      text-decoration: none;
+      &:hover {
+        color: #fff;
+        text-decoration: underline;
+      }
+    }
+  }
   table a {
     text-decoration: none;
     &:hover {
