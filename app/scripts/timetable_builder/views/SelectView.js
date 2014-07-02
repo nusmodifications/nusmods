@@ -1,6 +1,6 @@
 define(['underscore', 'backbone', 'backbone.marionette', 'nusmods',
-    'hbs!../templates/select', 'select2'],
-  function(_, Backbone, Marionette, NUSMods, template) {
+    'hbs!../templates/select', 'mousetrap', 'select2'],
+  function(_, Backbone, Marionette, NUSMods, template, Mousetrap) {
     'use strict';
 
     var codes, titles, modsLength;
@@ -70,6 +70,12 @@ define(['underscore', 'backbone', 'backbone.marionette', 'nusmods',
             });
           }
         });
+                
+        Mousetrap.bind('.', function(ev) {
+          $('.timetable-input .select2-input').focus();
+          ev.preventDefault();
+          return false;
+        }); 
       }
     });
   });
