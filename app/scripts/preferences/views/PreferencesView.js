@@ -2,10 +2,11 @@ define([
   'underscore',
   'backbone.marionette',
   'hbs!../templates/preferences',
-  'localforage'
+  'localforage',
+  'mousetrap'
 ],
 
-function(_, Marionette, template, localforage) {
+function(_, Marionette, template, localforage, Mousetrap) {
   'use strict';
 
   var $body = $('body');
@@ -37,17 +38,13 @@ function(_, Marionette, template, localforage) {
       });
 
       var that = this;
-      $body.unbind('keydown').keydown(function ($ev) {
-        var keyCode = $ev.keyCode;
-        var LEFT_ARROW_KEY = 37;
-        var RIGHT_ARROW_KEY = 39;
-        if (keyCode !== LEFT_ARROW_KEY && keyCode !== RIGHT_ARROW_KEY) { return; }
 
+      Mousetrap.bind(['left', 'right'], function (e) {
         var $themeOptions = $('#theme-options');
         if ($themeOptions.length) {
           // So that arrow events are prevented on non-preferences pages.
           var optionValues = getThemeOptions();
-          var newIndex = optionValues.indexOf($themeOptions.val()) + (keyCode === LEFT_ARROW_KEY ? -1 : +1);
+          var newIndex = optionValues.indexOf($themeOptions.val()) + (e.keyIdentifier === 'Left' ? -1 : +1);
           newIndex = Math.min(newIndex, optionValues.length - 1);
           newIndex = Math.max(newIndex, 0);
           var newTheme = optionValues[newIndex];
