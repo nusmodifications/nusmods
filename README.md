@@ -66,6 +66,15 @@ To get a complete, minified, production build under `dist/`:
 $ grunt
 ```
 
+## Deploying to Production
+
+Change the host in the production inventory file `provisioning/production` and
+execute the Ansible playbook against it:
+
+```bash
+$ ansible-playbook provisioning/production.yml -i provisioning/production
+```
+
 ## Optional Dependencies
 
 - [PHP](http://www.php.net) for export and URL shortening scripts.
