@@ -17,26 +17,29 @@ define([
         biddingStatsRegion: '#bidding-stats'
       },
       initialize: function (data) {
-        var formElements = {
-          'faculty': '#faculty',
-          'account': '#account',
-          'student': 'input:radio[name="student-radios"]'
-        }
 
-        var that = this;
-        var loadedItems = 0;
-        _.each(formElements, function (selector, item) {
-          localforage.getItem(item, function (value) {
-            if (value) {
-              $(selector).val([value]);
-              searchPreferences[item] = value;
-            }
-            loadedItems++;
-            if (loadedItems === _.keys(formElements).length) {
-              that.showBiddingStatsRegion(true);
-            }
-          })
-        });
+        if (this.model.get('section') === 'corspedia') {
+          var formElements = {
+            'faculty': '#faculty',
+            'account': '#account',
+            'student': 'input:radio[name="student-radios"]'
+          }
+
+          var that = this;
+          var loadedItems = 0;
+          _.each(formElements, function (selector, item) {
+            localforage.getItem(item, function (value) {
+              if (value) {
+                $(selector).val([value]);
+                searchPreferences[item] = value;
+              }
+              loadedItems++;
+              if (loadedItems === _.keys(formElements).length) {
+                that.showBiddingStatsRegion(true);
+              }
+            })
+          });
+        }
       },
       events: {
         'change #faculty, input:radio[name="student-radios"], #account': 'updateCorspedia',
