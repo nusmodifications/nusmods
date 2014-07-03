@@ -51,7 +51,8 @@ define([
       // 'ivle',
       'modules',
       'timetable_builder',
-      'preferences'
+      'preferences',
+      'help'
     ], function (AppView) {
       Backbone.history.start({pushState: true});
 

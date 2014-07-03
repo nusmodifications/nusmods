@@ -1,0 +1,72 @@
+[
+  {
+    "category": "General",
+    "shortcuts": [
+      {
+        "title": "Quick Search",
+        "keys": ["/"],
+        "description": "Pressing <strong>P</strong> puts the cursor in the module search bar at the top for easy navigation to a module's homepage."
+      }
+    ]
+  },
+  {
+    "category": "Navigation",
+    "shortcuts": [
+      {
+        "title": "Timetable Builder",
+        "keys": ["B"],
+        "description": "Pressing <strong>B</strong> will quickly jump you to the Timetable Builder page."
+      },
+      {
+        "title": "Modules",
+        "keys": ["M"],
+        "description": "Pressing <strong>M</strong> will quickly jump you to the Modules Catalogue page."
+      },
+      {
+        "title": "Preferences",
+        "keys": ["P"],
+        "description": "Pressing <strong>P</strong> will quickly jump you to the Preferences page."
+      }
+    ]
+  },
+  {
+    "category": "Timetable Builder",
+    "shortcuts": [
+      {
+        "title": "Add modules to timetable",
+        "keys": ["."],
+        "description": "Pressing <strong>.</strong> will focus on the search box where you can add modules to the timetable."
+      }
+    ]
+  },
+  {
+    "category": "Module Catalogue",
+    "shortcuts": [
+      {
+        "title": "Show module's timetable",
+        "keys": ["T"],
+        "description": "Pressing <strong>T</strong> will display the lesson timetable tab of the module."
+      },
+      {
+        "title": "Show Corspedia",
+        "keys": ["C"],
+        "description": "Pressing <strong>C</strong> will display the CORS bidding history tab of the module."
+      },
+      {
+        "title": "Show reviews and discussions",
+        "keys": ["R"],
+        "description": "Pressing <strong>R</strong> will display the reviews and discussions tab of the module."
+      }
+    ]
+  },
+  {
+    "category": "Preferences",
+    "shortcuts": [
+      {
+        "title": "Switch theme",
+        "keys": ["&#8592;", "&#8594;"],
+        "description": "Pressing <strong>&#8592;</strong> and <strong>&#8594;</strong> will switch between the available theme colours for modules in the timetable builder."
+      }
+    ]
+  }
+]

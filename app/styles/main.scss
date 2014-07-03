@@ -449,6 +449,27 @@ colgroup.hover {
 
 }
 
+// Help
+#help {
+  .keyboard-shortcuts {
+    .category-title {
+      margin-bottom: 10px;
+    }
+    .key {
+      $key-size: 30px;
+      border: 1px solid #000;
+      border-radius: 5px;
+      display: inline-block;
+      font-weight: bold;
+      height: $key-size;
+      line-height: $key-size;
+      margin-bottom: 20px;
+      text-align: center;
+      width: $key-size;
+    }
+  }
+}
+
 // Footer
 .footer {
   white-space: nowrap;
