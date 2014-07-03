@@ -22,31 +22,6 @@ function(_, Marionette, NUSMods, ModuleCollection, ModulesListingView,
     },
 
     onShow: function() {
-      $('.exhibit-collectionView-header').on('click', '.add', function(evt) {
-        var qtipContent;
-        var $this = $(this);
-        var itemID = $this.data('code');
-        if (this.collection.get(itemID)) {
-          qtipContent = 'Already added!';
-        } else {
-          qtipContent = 'Added!';
-          this.collection.add({
-            id: itemID
-          })
-        }
-        $this.qtip({
-          content: qtipContent,
-          show: {
-            event: false,
-            ready: true
-          },
-          hide: {
-            event: false,
-            inactive: 1000
-          }
-        });
-      });
-
       var sidebarShown = true;
       $('#sidebar-toggle').qtip({
         content: 'Hide Sidebar',
