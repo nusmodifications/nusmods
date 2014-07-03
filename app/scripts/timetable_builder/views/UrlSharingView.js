@@ -57,7 +57,7 @@ define(['underscore', 'backbone.marionette', 'zeroclipboard', 'hbs!../templates/
 
       getShortURL: function () {
         this.shortUrlPromise = this.shortUrlPromise ||
-          $.getJSON('short_url.php', {
+          $.getJSON('/short_url.php', {
             url: location.href
           }).then(_.bind(function (data) {
             this.ui.input.val(data.shorturl);
