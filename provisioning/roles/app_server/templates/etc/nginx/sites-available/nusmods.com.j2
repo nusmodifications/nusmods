@@ -2,6 +2,9 @@ server {
         listen 80;
         server_name nusmods.com;
         root {{ project_dir }}/dist;
+        location / {
+                try_files $uri /index.html;
+        }
         location /api/ {
                 alias {{ project_dir }}/api/app/api/;
         }
