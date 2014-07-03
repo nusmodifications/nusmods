@@ -1,6 +1,6 @@
-define(['underscore', 'backbone', 'backbone.marionette', 'nusmods',
+define(['underscore', 'app', 'backbone', 'backbone.marionette', 'nusmods',
     'hbs!../templates/select', 'hbs!../templates/select_result','select2'],
-  function(_, Backbone, Marionette, NUSMods, template, selectResultTemplate) {
+  function(_, App, Backbone, Marionette, NUSMods, template, selectResultTemplate) {
     'use strict';
 
     var codes, titles, modsLength;
@@ -23,16 +23,12 @@ define(['underscore', 'backbone', 'backbone.marionette', 'nusmods',
       },
 
       onAdd: function (event) {
-        var id = $(event.currentTarget).data('code');
-        NUSMods.getMod(id).then(_.bind(function (mod) {
-          this.collection.add(mod);
-        }, this));
+        App.request('addModule', $(event.currentTarget).data('code'));
         this.ui.input.select2('focus');
       },
 
       onRemove: function (event) {
-        var id = $(event.currentTarget).data('code');
-        this.collection.remove(this.collection.get(id));
+        App.request('removeModule', $(event.currentTarget).data('code'))
         this.ui.input.select2('focus');
       },
 
@@ -52,7 +48,6 @@ define(['underscore', 'backbone', 'backbone.marionette', 'nusmods',
         _.bindAll(this, 'onAdd', 'onRemove', 'onSelect2Open');
 
         var PAGE_SIZE = 50;
-        var selectedModules = this.collection;
         this.ui.input.select2({
           multiple: true,
           formatResult: function (object) {
@@ -65,7 +60,7 @@ define(['underscore', 'backbone', 'backbone.marionette', 'nusmods',
                 pushResult = function (i) {
                   return results.push({
                     id: codes[i],
-                    selected: selectedModules.get(codes[i]),
+                    selected: App.request('isModuleSelected', codes[i]),
                     text: codes[i] + ' ' + titles[i]
                   });
                 };

@@ -1,6 +1,6 @@
-define(['underscore', 'backbone', 'backbone.marionette', 'nusmods',
+define(['underscore', 'app', 'backbone', 'backbone.marionette', 'nusmods',
     'hbs!../templates/select', 'mousetrap', 'select2'],
-  function(_, Backbone, Marionette, NUSMods, template, Mousetrap) {
+  function(_, App, Backbone, Marionette, NUSMods, template, Mousetrap) {
     'use strict';
 
     var codes, titles, modsLength;
@@ -23,15 +23,12 @@ define(['underscore', 'backbone', 'backbone.marionette', 'nusmods',
 
       onSelect2Selecting: function(event) {
         event.preventDefault();
-        NUSMods.getMod(event.val).then(_.bind(function (mod) {
-          this.collection.add(mod);
-        }, this));
+        App.request('addModule', event.val);
         this.ui.input.select2('focus');
       },
 
       onShow: function () {
         var PAGE_SIZE = 50;
-        var selectedModules = this.collection;
         this.ui.input.select2({
           multiple: true,
           query: function (options) {
@@ -75,7 +72,7 @@ define(['underscore', 'backbone', 'backbone.marionette', 'nusmods',
           $('.timetable-input .select2-input').focus();
           ev.preventDefault();
           return false;
-        }); 
+        });
       }
     });
   });

@@ -45,9 +45,7 @@ function(_, App, Backbone, Marionette, NUSMods, template, ExamCollection,
         collection: this.selectedModules,
         exams: exams
       }));
-      this.selectRegion.show(new SelectView({
-        collection: this.selectedModules
-      }));
+      this.selectRegion.show(new SelectView());
       this.showHideRegion.show(new ShowHideView());
       this.timetableRegion.show(new TimetableView({collection: this.timetable}));
       this.urlSharingRegion.show(new UrlSharingView());
