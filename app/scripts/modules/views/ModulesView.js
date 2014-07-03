@@ -21,27 +21,35 @@ function(_, Marionette, NUSMods, ModuleCollection, ModulesListingView,
       modulesRegion: '.modules'
     },
 
+    ui: {
+      content: '#content',
+      sidebar: '#sidebar',
+      sidebarToggle: '#sidebar-toggle',
+      sidebarToggleIcon: '#sidebar-toggle i'
+    },
+
+    events: {
+      'click @ui.sidebarToggle': function(event) {
+        event.preventDefault();
+        this.ui.sidebarToggleIcon.toggleClass('fa-chevron-left fa-chevron-right');
+        this.ui.sidebar.animate({width: 'toggle'}, 100);
+        this.ui.content
+          .toggleClass('col-md-12 col-md-9')
+          .toggleClass('no-sidebar');
+        this.sidebarShown = !this.sidebarShown;
+        var qtipContent = this.sidebarShown ? 'Hide Sidebar' : 'Show Sidebar';
+        this.ui.sidebarToggle.qtip('option', 'content.text', qtipContent);
+      }
+    },
+
     onShow: function() {
-      var sidebarShown = true;
-      $('#sidebar-toggle').qtip({
+      this.sidebarShown = true;
+      this.ui.sidebarToggle.qtip({
         content: 'Hide Sidebar',
         position: {
           my: 'left center',
           at: 'top right'
         }
-      }).click(function() {
-        var qtipContent;
-        $('#sidebar-toggle i').toggleClass('fa-chevron-left fa-chevron-right');
-        $('#sidebar').animate({
-          width: 'toggle'
-        }, 100);
-        var $content = $('#content');
-        $content.toggleClass('col-md-12 col-md-9');
-        $content.toggleClass('no-sidebar');
-        sidebarShown = !sidebarShown;
-        qtipContent = sidebarShown ? 'Hide Sidebar' : 'Show Sidebar';
-        $(this).qtip('option', 'content.text', qtipContent);
-        return false;
       });
 
       $('.arrow-down, .arrow-right').click(function() {
