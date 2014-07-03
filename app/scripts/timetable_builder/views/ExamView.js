@@ -8,7 +8,7 @@ define(['backbone.marionette', 'app', 'hbs!../templates/exam'],
 
       events: {
         'click .remove': function () {
-          App.execute('removeModule', this.model.id);
+          App.request('removeModule', this.model.id);
         }
       },
 
