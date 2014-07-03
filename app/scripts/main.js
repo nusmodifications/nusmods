@@ -27,6 +27,7 @@ require.config({
     mousetrap: '../bower_components/mousetrap/mousetrap',
     qtip2: '../bower_components/qtip2/jquery.qtip',
     select2: '../bower_components/select2/select2',
+    text: '../bower_components/requirejs-plugins/lib/text',
     zeroclipboard: '../bower_components/zeroclipboard/dist/ZeroClipboard'
   },
   shim: {
