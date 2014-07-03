@@ -23,6 +23,7 @@ require.config({
     jquery: '../bower_components/jquery/dist/jquery',
     json: '../bower_components/requirejs-plugins/src/json',
     localforage: '../bower_components/localforage/dist/localforage.min',
+    marked: '../bower_components/marked/lib/marked',
     mousetrap: '../bower_components/mousetrap/mousetrap',
     qtip2: '../bower_components/qtip2/jquery.qtip',
     select2: '../bower_components/select2/select2',
