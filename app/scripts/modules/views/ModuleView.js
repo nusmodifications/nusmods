@@ -5,7 +5,7 @@ define([
   'underscore',
   'localforage',
   './BiddingStatsView',
-  'bootstrap'],
+  'bootstrap/tooltip'],
   function (Backbone, Marionette, template, _, localforage, BiddingStatsView) {
     'use strict';
 

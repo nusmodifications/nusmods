@@ -41,6 +41,9 @@ require.config({
     'bootstrap/dropdown': [
       'jquery'
     ],
+    'bootstrap/tooltip': [
+      'jquery'
+    ],
     'bootstrap/transition': [
       'jquery'
     ],
