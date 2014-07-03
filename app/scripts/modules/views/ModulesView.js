@@ -119,6 +119,7 @@ function(_, Marionette, NUSMods, ModuleCollection, ModulesListingView,
           UEM: 'Breadth / UE'
         };
         _.each(mods, function (mod) {
+          mod.level = mod.ModuleCode[mod.ModuleCode.search(/\d/)] * 1000;
           if (mod.Types) {
             mod.Types = _.map(mod.Types, function (type) {
               return typeFriendlyName[type];
@@ -148,7 +149,7 @@ function(_, Marionette, NUSMods, ModuleCollection, ModulesListingView,
         var facets = new FacetCollection([], {
           filteredCollection: filteredModules
         });
-        facets.add(_.map(['Department', 'ModuleCredit'], function(key) {
+        facets.add(_.map(['Department', 'ModuleCredit', 'level'], function(key) {
           return {
             filteredCollection: mods,
             key: key

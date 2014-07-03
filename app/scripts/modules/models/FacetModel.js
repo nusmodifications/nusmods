@@ -12,7 +12,7 @@ define(['underscore', 'backbone', '../collections/FilterCollection'],
         return {
           count: mods.length,
           label: key
-        }
+        };
       });
       this.set('filters', new FilterCollection(filters));
     }
