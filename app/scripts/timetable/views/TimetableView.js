@@ -4,13 +4,13 @@ define([
   'backbone',
   'backbone.marionette',
   'nusmods',
-  'hbs!../templates/timetable_builder',
+  'hbs!../templates/timetable',
   '../collections/ExamCollection',
   './ExportView',
   './ExamsView',
   './SelectView',
   './ShowHideView',
-  './TimetableView',
+  './TableView',
   './UrlSharingView',
   'localforage'
 ],
@@ -56,8 +56,8 @@ function(_, App, Backbone, Marionette, NUSMods, template, ExamCollection,
         return;
       }
       var newOptions = {selectedModules: this.selectedModules.toJSON()};
-      localforage.setItem('timetableBuilderOptions', newOptions);
-      Backbone.history.navigate('timetable-builder/' +
+      localforage.setItem('timetableOptions', newOptions);
+      Backbone.history.navigate('timetable/' +
         encodeURIComponent(JSON.stringify(newOptions)));
     },
 

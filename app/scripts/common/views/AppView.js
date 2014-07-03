@@ -67,7 +67,7 @@ define(['app', 'backbone', 'nusmods', 'mousetrap', '../utils/modulify', 'undersc
       });
 
       var keyboardNavigationMappings = {
-        t: '/timetable-builder',
+        t: '/timetable',
         m: '/modules',
         p: '/preferences',
         '?': '/help',

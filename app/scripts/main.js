@@ -3,7 +3,7 @@ require.config({
     // 'ivle',
     'help',
     'modules',
-    'timetable_builder',
+    'timetable',
     'preferences',
     {
       name: 'underscore',

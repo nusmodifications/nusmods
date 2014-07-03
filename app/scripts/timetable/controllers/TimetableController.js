@@ -5,25 +5,25 @@ define(['require', 'app', 'backbone.marionette', 'localforage'],
     var navigationItem = App.request('addNavigationItem', {
       name: 'Timetable',
       icon: 'table',
-      url: '/timetable-builder'
+      url: '/timetable'
     });
 
-    var timetableBuilderView;
+    var timetableView;
 
     return Marionette.Controller.extend({
-      showTimetableBuilder: function (options) {
-        require(['../views/TimetableBuilderView'],
-          function (TimetableBuilderView) {
+      showTimetable: function (options) {
+        require(['../views/TimetableView'],
+          function (TimetableView) {
             navigationItem.select();
-            timetableBuilderView = new TimetableBuilderView();
-            App.mainRegion.show(timetableBuilderView);
+            timetableView = new TimetableView();
+            App.mainRegion.show(timetableView);
             if (options) {
               options = JSON.parse(decodeURIComponent(options));
-              timetableBuilderView.setOptions(options);
+              timetableView.setOptions(options);
             } else {
-              localforage.getItem('timetableBuilderOptions',
+              localforage.getItem('timetableOptions',
                 function (options) {
-                  timetableBuilderView.setOptions(options);
+                  timetableView.setOptions(options);
                 });
             }
           });

@@ -18,9 +18,9 @@
     "category": "Navigation",
     "shortcuts": [
       {
-        "title": "Timetable Builder",
+        "title": "Timetable",
         "keys": ["T"],
-        "description": "Pressing __T__ will quickly jump you to the Timetable Builder page."
+        "description": "Pressing __T__ will quickly jump you to the Timetable page."
       },
       {
         "title": "Modules",
@@ -35,7 +35,7 @@
     ]
   },
   {
-    "category": "Timetable Builder",
+    "category": "Timetable",
     "shortcuts": [
       {
         "title": "Add modules to timetable",
@@ -70,7 +70,7 @@
       {
         "title": "Switch theme",
         "keys": ["&#8592;", "&#8594;"],
-        "description": "Pressing __&#8592;__ and __&#8594;__ will switch between the available theme colours for modules in the timetable builder."
+        "description": "Pressing __&#8592;__ and __&#8594;__ will switch between the available theme colours for modules in the timetable."
       }
     ]
   }

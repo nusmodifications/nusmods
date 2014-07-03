@@ -1,4 +1,4 @@
-define(['underscore', 'backbone.marionette', './LessonView', 'hbs!../templates/timetable'],
+define(['underscore', 'backbone.marionette', './LessonView', 'hbs!../templates/table'],
   function(_, Marionette, LessonView, template) {
   'use strict';
 
