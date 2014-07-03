@@ -5,12 +5,13 @@ define([
   'common/collections/ModuleCollection',
   './ModulesListingView',
   '../collections/FacetCollection',
+  '../models/ArrayFacetModel',
   './FacetsView',
   'hbs!../templates/modules'
 ],
 
 function(_, Marionette, NUSMods, ModuleCollection, ModulesListingView,
-         FacetCollection, FacetsView, template) {
+         FacetCollection, ArrayFacetModel, FacetsView, template) {
   'use strict';
 
   return Marionette.LayoutView.extend({
@@ -110,6 +111,23 @@ function(_, Marionette, NUSMods, ModuleCollection, ModulesListingView,
       });
 
       NUSMods.getMods().then(_.bind(function (mods) {
+        var typeFriendlyName = {
+          CFM: 'Cross-Faculty',
+          GEM: 'GEM',
+          Module: 'Faculty',
+          SSM: 'Singapore Studies',
+          UEM: 'Breadth / UE'
+        };
+        _.each(mods, function (mod) {
+          if (mod.Types) {
+            mod.Types = _.map(mod.Types, function (type) {
+              return typeFriendlyName[type];
+            });
+          } else {
+            mod.Types = ['Not in CORS'];
+          }
+        });
+
         var filteredModules = new ModuleCollection();
 
         var filteredCodes = _.pluck(mods, 'ModuleCode');
@@ -135,6 +153,10 @@ function(_, Marionette, NUSMods, ModuleCollection, ModulesListingView,
             filteredCollection: mods,
             key: key
           };
+        }));
+        facets.add(new ArrayFacetModel({
+          filteredCollection: mods,
+          key: 'Types'
         }));
 
         var facetsView = (new FacetsView({collection: facets})).render();
