@@ -4,7 +4,6 @@ define([
   'common/collections/NavigationCollection',
   'common/controllers/SelectedModulesController',
   'common/views/NavigationView',
-  'common/views/SelectView',
   'localforage',
   'nusmods',
   'qtip2'
@@ -45,10 +44,6 @@ define([
   App.reqres.setHandler('isModuleSelected', function (id) {
     return !!selectedModulesController.selectedModules.get(id);
   });
-
-  App.selectRegion.show(new SelectView({
-    collection: App.request('selectedModules')
-  }));
 
   App.on('start', function () {
     require([

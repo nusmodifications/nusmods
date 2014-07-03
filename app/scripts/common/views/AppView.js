@@ -1,5 +1,5 @@
-define(['backbone', 'nusmods', 'mousetrap', '../utils/modulify', 'underscore'], 
-  function (Backbone, NUSMods, Mousetrap, modulify, _) {
+define(['app', 'backbone', 'nusmods', 'mousetrap', '../utils/modulify', 'underscore', 'common/views/SelectView'],
+  function (App, Backbone, NUSMods, Mousetrap, modulify, _, SelectView) {
   'use strict';
 
   return Backbone.View.extend({
@@ -55,6 +55,8 @@ define(['backbone', 'nusmods', 'mousetrap', '../utils/modulify', 'underscore'],
       NUSMods.getCorrectAsAt().then(function (correctAsAt) {
         $('#correct-as-at').text(new Date(correctAsAt));
       });
+
+      App.selectRegion.show(new SelectView());
 
       $('.container').removeClass('hidden');
 
