@@ -109,6 +109,12 @@ module.exports = function (grunt) {
           academicYear: '2013/2014',
           semester: '2'
         }
+      },
+      ay2014to2015sem1: {
+        options: {
+          academicYear: '2014/2015',
+          semester: '1'
+        }
       }
     },
     ivle: {
