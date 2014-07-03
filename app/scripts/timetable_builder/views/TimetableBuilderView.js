@@ -3,7 +3,7 @@ define([
   'app',
   'backbone',
   'backbone.marionette',
-  'NUSMods',
+  'nusmods',
   'hbs!../templates/timetable_builder',
   '../collections/ExamCollection',
   './ExportView',
