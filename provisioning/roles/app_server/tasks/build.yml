@@ -1,0 +1,3 @@
+---
+- command: grunt all chdir={{ project_dir }}/api
+- command: grunt chdir={{ project_dir }}
