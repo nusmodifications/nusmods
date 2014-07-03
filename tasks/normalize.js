@@ -50,6 +50,10 @@ module.exports = function (grunt) {
           }
         });
 
+        // Only titleize if title is all caps.
+        if (mod.ModuleTitle.toUpperCase() === mod.ModuleTitle) {
+          mod.ModuleTitle = titleize(mod.ModuleTitle);
+        }
         mod.Department = titleize(mod.Department);
 
         if (rawMod.Bulletin) {
