@@ -8,7 +8,7 @@ define([
   'nusmods',
   'qtip2'
 ], function (Backbone, Marionette, NavigationCollection,
-             SelectedModulesController, NavigationView, SelectView,
+             SelectedModulesController, NavigationView,
              localforage, NUSMods) {
   'use strict';
 
