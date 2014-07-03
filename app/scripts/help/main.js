@@ -11,7 +11,8 @@ define(['require', 'app', 'backbone.marionette', 'backbone', 'marked', 'undersco
                 _.each(category.shortcuts, function (shortcut) {
                   shortcut.description = marked(shortcut.description);
                 })
-              })
+              });
+
               var helpModel = new Backbone.Model({keyboardShortcuts: data});
               App.mainRegion.show(new HelpView({model: helpModel}));
             });
