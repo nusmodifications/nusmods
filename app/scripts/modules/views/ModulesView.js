@@ -114,23 +114,10 @@ function(_, Marionette, NUSMods, ModuleCollection, ModulesListingView,
 
         var filteredModules = new ModuleCollection();
 
-        var filteredCodes = _.pluck(mods, 'ModuleCode');
-
-        var begin = 0;
-
-        filteredModules.add(mods.slice(begin, begin + 10));
-
-//      $(window).scroll(function() {
-//        if ($(window).scrollTop() + $(window).height() + 100 >= $(document).height()) {
-//          begin += 10;
-//          _.each(filteredCodes.slice(begin, begin + 10), function(code) {
-//            filteredModules.add(_.extend(mods[code], { code: code }));
-//          });
-//        }
-//      });
-
         var facets = new FacetCollection([], {
-          filteredCollection: filteredModules
+          filteredCollection: filteredModules,
+          pageSize: 10,
+          rawCollection: mods
         });
         facets.add(_.map(['Department', 'ModuleCredit', 'level'], function(key) {
           return {
@@ -143,7 +130,10 @@ function(_, Marionette, NUSMods, ModuleCollection, ModulesListingView,
           key: 'Types'
         }));
 
-        var facetsView = (new FacetsView({collection: facets})).render();
+        (new FacetsView({
+          collection: facets,
+          threshold: 100
+        })).render();
 
         this.modulesRegion.show(new ModulesListingView({collection: filteredModules}));
       }, this));
