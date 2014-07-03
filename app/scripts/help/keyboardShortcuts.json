@@ -5,7 +5,7 @@
       {
         "title": "Quick Search",
         "keys": ["/"],
-        "description": "Pressing __P__ puts the cursor in the module search bar at the top for easy navigation to a module's homepage."
+        "description": "Pressing __/__ puts the cursor in the module search bar at the top for easy navigation to a module's homepage."
       }
     ]
   },
