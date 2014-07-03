@@ -33,8 +33,9 @@ module.exports = function (grunt) {
     var titleize = function(str) {
       return str.toLowerCase()
         .replace(/(?:^|\s\(?|-|\/)\S/g, function(c){ return c.toUpperCase(); })
-        .replace(/\bNus\b/, 'NUS')
-        .replace(/\bMit\b/, 'MIT');
+        .replace(/\bIp\b/, 'IP')
+        .replace(/\bMit\b/, 'MIT')
+        .replace(/\bNus\b/, 'NUS');
     };
 
     var modules = _.compact(_.map(consolidated, function (rawMod) {
