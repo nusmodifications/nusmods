@@ -97,7 +97,7 @@ function(_, Marionette, NUSMods, ModuleCollection, ModulesListingView,
           mod.level = mod.ModuleCode[mod.ModuleCode.search(/\d/)] * 1000;
           if (mod.Types) {
             mod.Types = _.map(mod.Types, function (type) {
-              return typeFriendlyName[type];
+              return typeFriendlyName[type] || type;
             });
           } else {
             mod.Types = ['Not in CORS'];
