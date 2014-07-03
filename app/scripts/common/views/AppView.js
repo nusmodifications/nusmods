@@ -67,12 +67,12 @@ define(['app', 'backbone', 'nusmods', 'mousetrap', '../utils/modulify', 'undersc
       });
 
       var keyboardNavigationMappings = {
-        b: '/timetable-builder',
+        t: '/timetable-builder',
         m: '/modules',
         p: '/preferences',
         '?': '/help',
         c: '/modules/<module>/corspedia',
-        t: '/modules/<module>/timetable',
+        s: '/modules/<module>/schedule',
         r: '/modules/<module>/reviews',
       };
 

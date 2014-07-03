@@ -19,8 +19,8 @@
     "shortcuts": [
       {
         "title": "Timetable Builder",
-        "keys": ["B"],
-        "description": "Pressing __B__ will quickly jump you to the Timetable Builder page."
+        "keys": ["T"],
+        "description": "Pressing __T__ will quickly jump you to the Timetable Builder page."
       },
       {
         "title": "Modules",
@@ -48,9 +48,9 @@
     "category": "Module Catalogue",
     "shortcuts": [
       {
-        "title": "Show module's timetable",
-        "keys": ["T"],
-        "description": "Pressing __T__ will display the lesson timetable tab of the module."
+        "title": "Show module's class schedule",
+        "keys": ["S"],
+        "description": "Pressing __S__ will display the class schedule tab of the module."
       },
       {
         "title": "Show Corspedia",
