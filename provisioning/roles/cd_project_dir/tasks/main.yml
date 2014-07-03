@@ -1,2 +1,2 @@
 ---
-- lineinfile: dest=/home/{{ user }}/.bashrc line='cd {{ project_dir }}'
+- lineinfile: dest=/home/{{ user }}/.bashrc line='cd {{ project_dir }}' create=yes
