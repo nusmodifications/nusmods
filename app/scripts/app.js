@@ -6,10 +6,11 @@ define([
   'common/views/NavigationView',
   'common/views/SelectView',
   'localforage',
+  'nusmods',
   'qtip2'
 ], function (Backbone, Marionette, NavigationCollection,
              SelectedModulesController, NavigationView, SelectView,
-             localforage) {
+             localforage, NUSMods) {
   'use strict';
 
   var App = new Marionette.Application();
@@ -29,12 +30,20 @@ define([
   });
 
   var selectedModulesController = new SelectedModulesController();
-  App.reqres.setHandler('selectedModules', function(){
+  App.reqres.setHandler('selectedModules', function () {
     return selectedModulesController.selectedModules;
   });
-  App.commands.setHandler('removeModule', function (id) {
+  App.reqres.setHandler('addModule', function (id) {
+    return NUSMods.getMod(id).then(function (mod) {
+      return selectedModulesController.selectedModules.add(mod);
+    });
+  });
+  App.reqres.setHandler('removeModule', function (id) {
     var selectedModules = selectedModulesController.selectedModules;
-    selectedModules.remove(selectedModules.get(id));
+    return selectedModules.remove(selectedModules.get(id));
+  });
+  App.reqres.setHandler('isModuleSelected', function (id) {
+    return !!selectedModulesController.selectedModules.get(id);
   });
 
   App.selectRegion.show(new SelectView({
