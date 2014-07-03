@@ -70,6 +70,7 @@ define(['app', 'backbone', 'nusmods', 'mousetrap', '../utils/modulify', 'undersc
         b: '/timetable-builder',
         m: '/modules',
         p: '/preferences',
+        '?': '/help',
         c: '/modules/<module>/corspedia',
         t: '/modules/<module>/timetable',
         r: '/modules/<module>/reviews',

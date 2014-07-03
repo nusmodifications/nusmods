@@ -6,6 +6,11 @@
         "title": "Quick Search",
         "keys": ["/"],
         "description": "Pressing __/__ puts the cursor in the module search bar at the top for easy navigation to a module's homepage."
+      },
+      {
+        "title": "Help",
+        "keys": ["?"],
+        "description": "Pressing __?__ will quickly jump you to this Help page."
       }
     ]
   },
