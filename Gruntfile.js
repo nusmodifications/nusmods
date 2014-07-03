@@ -352,7 +352,7 @@ module.exports = function (grunt) {
                         '*.{config,php}',
                         '*.{ico,png,txt}',
                         '.htaccess',
-                        'bower_components/ZeroClipboard/dist/ZeroClipboard.swf',
+                        'bower_components/zeroclipboard/dist/ZeroClipboard.swf',
                         'images/{,*/}*.webp',
                         '{,*/}*.html',
                         'styles/*.{gif,png}',
