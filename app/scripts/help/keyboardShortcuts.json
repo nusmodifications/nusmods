@@ -10,7 +10,7 @@
       {
         "title": "Help",
         "keys": ["?"],
-        "description": "Pressing __?__ will quickly jump you to this Help page."
+        "description": "Pressing __?__ will quickly jump you to this [Help](/help) page."
       }
     ]
   },
@@ -20,17 +20,17 @@
       {
         "title": "Timetable",
         "keys": ["T"],
-        "description": "Pressing __T__ will quickly jump you to the Timetable page."
+        "description": "Pressing __T__ will quickly jump you to the [Timetable](/timetable) page."
       },
       {
         "title": "Modules",
         "keys": ["M"],
-        "description": "Pressing __M__ will quickly jump you to the Modules Catalogue page."
+        "description": "Pressing __M__ will quickly jump you to the [Modules Catalogue](/modules) page."
       },
       {
         "title": "Preferences",
         "keys": ["P"],
-        "description": "Pressing __P__ will quickly jump you to the Preferences page."
+        "description": "Pressing __P__ will quickly jump you to the [Preferences](/preferences) page."
       }
     ]
   },
