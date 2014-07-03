@@ -45,7 +45,12 @@ define([
   }));
 
   App.on('start', function () {
-    require(['ivle', 'modules', 'timetable_builder', 'preferences'], function () {
+    require([
+      // 'ivle',
+      'modules',
+      'timetable_builder',
+      'preferences'
+    ], function () {
       Backbone.history.start({pushState: true});
 
       if (Backbone.history.fragment === '') {
