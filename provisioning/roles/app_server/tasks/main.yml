@@ -3,8 +3,15 @@
   with_items:
     - build-essential
     - php5-curl
+    - php5-mysql
+    - python-mysqldb  # Required for mysql ansible modules
 - { include: install_dependencies.yml, sudo: no }
 - { include: build.yml, sudo: no }
+- mysql_db: name={{ yourls_db_name }}
+- mysql_user:
+    name={{ yourls_db_user }}
+    password={{ yourls_db_pass }}
+    priv={{ yourls_db_name }}.*:ALL
 - template:
     src=etc/nginx/sites-available/{{ item }}.j2
     dest=/etc/nginx/sites-available/{{ item }}

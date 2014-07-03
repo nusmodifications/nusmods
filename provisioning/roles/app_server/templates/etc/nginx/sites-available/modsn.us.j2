@@ -1,0 +1,14 @@
+server {
+        listen 80;
+        server_name modsn.us;
+        root {{ project_dir }}/app/vendor/yourls/yourls;
+        location / {
+                try_files $uri $uri/ /yourls-loader.php;
+        }
+        location ~ \.php$ {
+                fastcgi_split_path_info ^(.+\.php)(/.+)$;
+                fastcgi_pass unix:/var/run/php5-fpm.sock;
+                fastcgi_index index.php;
+                include fastcgi_params;
+        }
+}
