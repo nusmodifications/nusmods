@@ -355,6 +355,7 @@ module.exports = function (grunt) {
                         'bower_components/zeroclipboard/dist/ZeroClipboard.swf',
                         'images/{,*/}*.webp',
                         '{,*/}*.html',
+                        'scripts/disqus-count.js',
                         'styles/*.{gif,png}',
                         'styles/fonts/{,*/}*.*',
                         'vendor/knplabs/knp-snappy/src/**/*.php',
