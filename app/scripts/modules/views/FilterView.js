@@ -10,7 +10,16 @@ define(['backbone.marionette', 'hbs!../templates/filter'],
       events: {
         'click :checkbox': function () {
           this.model.toggleSelected();
+        },
+        'click a': function (event) {
+          event.preventDefault();
+          this.model.collection.selectNone();
+          this.model.toggleSelected();
         }
+      },
+
+      modelEvents: {
+        'selected deselected': 'render'
       }
     });
   });
