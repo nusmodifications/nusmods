@@ -36,7 +36,7 @@ define(['underscore', 'app', 'backbone', 'backbone.marionette', 'nusmods',
               var i,
                 results = [],
                 pushResult = function (i) {
-                  if (!selectedModules.get(codes[i])) {
+                  if (!App.request('isModuleSelected', codes[i])) {
                     results.push({
                       id: codes[i],
                       text: codes[i] + ' ' + titles[i]
