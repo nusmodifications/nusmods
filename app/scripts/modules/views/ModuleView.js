@@ -25,14 +25,22 @@ define([
             'student': 'input:radio[name="student-radios"]'
           }
 
+          var defaults = {
+            'faculty': 'default',
+            'account': 'P',
+            'student': 'true'
+          }
+
           var that = this;
           var loadedItems = 0;
           _.each(formElements, function (selector, item) {
             localforage.getItem(item, function (value) {
-              if (value) {
-                $(selector).val([value]);
-                searchPreferences[item] = value;
+              if (!value) {
+                value = defaults[item];
+                localforage.setItem(item, value);
               }
+              $(selector).val([value]);
+              searchPreferences[item] = value;
               loadedItems++;
               if (loadedItems === _.keys(formElements).length) {
                 that.showBiddingStatsRegion(true);
@@ -103,7 +111,7 @@ define([
         var accountType = searchPreferences['account'];
         var newStudent = searchPreferences['student'] === 'true';
 
-        if (faculty && accountType && displayFiltered) {
+        if (faculty && faculty !== 'default' && accountType && displayFiltered) {
           biddingStatsView.filterStats(faculty, accountType, newStudent);
         }
 

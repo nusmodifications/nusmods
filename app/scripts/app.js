@@ -67,7 +67,8 @@ define([
     ['theme', 'mode'].forEach(function (property) {
       localforage.getItem(property, function (value) {
         if (!value) {
-          localforage.setItem(property, 'default');
+          value = 'default';
+          localforage.setItem(property, value);
         }
         $body.addClass(property + '-' + value);
         $body.attr('data-' + property, value);
