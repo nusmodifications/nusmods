@@ -68,7 +68,7 @@ define(['underscore', 'backbone.marionette', 'zeroclipboard', 'hbs!../templates/
 
       initialize: function () {
         ZeroClipboard.config({
-          swfPath: '/bower_components/ZeroClipboard/dist/ZeroClipboard.swf'
+          swfPath: '/bower_components/zeroclipboard/dist/ZeroClipboard.swf'
         });
       },
 
