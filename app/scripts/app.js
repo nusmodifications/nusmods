@@ -3,13 +3,12 @@ define([
   'backbone.marionette',
   'common/collections/NavigationCollection',
   'common/controllers/SelectedModulesController',
-  'common/views/AppView',
   'common/views/NavigationView',
   'common/views/SelectView',
   'localforage',
   'qtip2'
 ], function (Backbone, Marionette, NavigationCollection,
-             SelectedModulesController, AppView, NavigationView, SelectView,
+             SelectedModulesController, NavigationView, SelectView,
              localforage) {
   'use strict';
 
@@ -20,8 +19,6 @@ define([
     navigationRegion: 'nav',
     selectRegion: '.navbar-form'
   });
-
-  new AppView();
 
   var navigationCollection = new NavigationCollection();
   var navigationView = new NavigationView({collection: navigationCollection});
@@ -46,12 +43,15 @@ define([
 
   App.on('start', function () {
     require([
+      'common/views/AppView',
       // 'ivle',
       'modules',
       'timetable_builder',
       'preferences'
-    ], function () {
+    ], function (AppView) {
       Backbone.history.start({pushState: true});
+
+      new AppView();
 
       if (Backbone.history.fragment === '') {
         Backbone.history.navigate('timetable-builder', {trigger: true});
@@ -68,7 +68,7 @@ define([
         $body.attr('data-' + property, value);
         if (property === 'mode' && value !== 'default') {
           $('#mode').attr('href', '/styles/' + value + '.min.css');
-        }        
+        }
       });
     });
   });
