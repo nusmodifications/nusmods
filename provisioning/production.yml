@@ -1,0 +1,8 @@
+---
+- hosts: all
+  roles:
+    - { role: git, sudo: yes }
+  tasks:
+    - git: repo=https://github.com/ahbeng/NUSMods.git dest={{ project_dir }}
+        accept_hostkey=yes
+- include: site.yml
