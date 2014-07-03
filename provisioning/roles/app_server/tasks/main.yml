@@ -5,3 +5,13 @@
     - php5-curl
 - { include: install_dependencies.yml, sudo: no }
 - { include: build.yml, sudo: no }
+- template:
+    src=etc/nginx/sites-available/{{ item }}.j2
+    dest=/etc/nginx/sites-available/{{ item }}
+  with_items: domains
+- file:
+    src=/etc/nginx/sites-available/{{ item }}
+    dest=/etc/nginx/sites-enabled/{{ item }}
+    state=link
+  with_items: domains
+  notify: reload nginx
