@@ -242,6 +242,7 @@ module.exports = function (grunt) {
                     src: [
                         '<%= yeoman.dist %>/scripts/{,*/}*.js',
                         '<%= yeoman.dist %>/styles/{,*/}*.css',
+                        '!<%= yeoman.dist %>/styles/slate.min.css',
                         '<%= yeoman.dist %>/images/{,*/}*.{gif,jpeg,jpg,png,webp}',
 //                        '<%= yeoman.dist %>/styles/fonts/{,*/}*.*'
                     ]
@@ -356,6 +357,7 @@ module.exports = function (grunt) {
                         'images/{,*/}*.webp',
                         '{,*/}*.html',
                         'scripts/disqus-count.js',
+                        'styles/slate.min.css',
                         'styles/*.{gif,png}',
                         'styles/fonts/{,*/}*.*',
                         'vendor/knplabs/knp-snappy/src/**/*.php',
