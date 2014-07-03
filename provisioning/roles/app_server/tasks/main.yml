@@ -1,7 +1,7 @@
 ---
 - apt: name={{ item }}
   with_items:
-    - g++
+    - build-essential
     - php5-curl
 - { include: install_dependencies.yml, sudo: no }
 - { include: build.yml, sudo: no }
