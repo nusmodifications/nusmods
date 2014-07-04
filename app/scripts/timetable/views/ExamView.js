@@ -7,10 +7,12 @@ define(['backbone.marionette', 'app', 'hbs!../templates/exam'],
       template: template,
 
       events: {
-        'click .remove': function () {
+        'click .remove': function (event) {
+          event.preventDefault();
           App.request('removeModule', this.model.id);
         },
-        'click .show-hide': function () {
+        'click .show-hide': function (event) {
+          event.preventDefault();
           var display = !this.model.get('display');
           this.model.set('display', display);
           App.request('displayLessons', this.model.id, display);
