@@ -6,9 +6,7 @@ define(['app', 'backbone.marionette', './controllers/ModulesController'],
       new Marionette.AppRouter({
         controller: new ModulesController(),
         appRoutes: {
-          'modules': 'showModules',
-          'modules/:id': 'showModule',
-          'modules/:id/:section': 'showModule'
+          'modules(/:id)(/:section)': 'showModules'
         }
       });
     });

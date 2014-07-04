@@ -1,5 +1,5 @@
-define(['underscore', 'require', 'app', 'backbone.marionette', 'nusmods'],
-  function (_, require, App, Marionette, NUSMods) {
+define(['underscore', 'require', 'app', 'backbone.marionette'],
+  function (_, require, App, Marionette) {
     'use strict';
 
     var navigationItem = App.request('addNavigationItem', {
@@ -30,29 +30,29 @@ define(['underscore', 'require', 'app', 'backbone.marionette', 'nusmods'],
     ];
 
     return Marionette.Controller.extend({
-      showModules: function () {
-        require(['../views/ModulesView'],
-          function (ModulesView) {
+      showModules: function (id, section) {
+        require(['../views/ModulesView', '../views/ModuleView', 'nusmods',
+            'common/models/ModuleModel', '../models/ModulePageModel'],
+          function (ModulesView, ModuleView, NUSMods, ModuleModel, ModulePageModel) {
             navigationItem.select();
-            App.mainRegion.show(new ModulesView());
-          });
-      },
-      showModule: function (id, section) {
-        require(['../views/ModuleView', 'nusmods', 'common/models/ModuleModel', '../models/ModulePageModel'],
-          function (ModuleView, NUSMods, ModuleModel, ModulePageModel) {
-            navigationItem.select();
-            var modCode = id.toUpperCase();
-            var sectionTypes = _.pluck(sectionsInfo, 'sectionType');
-            if (!section || sectionTypes.indexOf(section) === -1) {
-              section = 'schedule';
+            if (!id) {
+              App.mainRegion.show(new ModulesView());
+            } else {
+              var modCode = id.toUpperCase();
+              var sectionTypes = _.pluck(sectionsInfo, 'sectionType');
+              if (!section || sectionTypes.indexOf(section) === -1) {
+                section = 'schedule';
+              }
+              NUSMods.getMod(modCode).then(function (data) {
+                var moduleModel = new ModuleModel(data);
+                var modulePageModel = new ModulePageModel({
+                  module: moduleModel.attributes,
+                  section: section,
+                  sectionsInfo: sectionsInfo
+                });
+                App.mainRegion.show(new ModuleView({model: modulePageModel}));
+              });
             }
-            NUSMods.getMod(modCode).then(function (data) {
-              var moduleModel = new ModuleModel(data);
-              var modulePageModel = new ModulePageModel({module: moduleModel.attributes, 
-                                                          section: section,
-                                                          sectionsInfo: sectionsInfo});
-              App.mainRegion.show(new ModuleView({model: modulePageModel}));
-            });
           });
       }
     });
