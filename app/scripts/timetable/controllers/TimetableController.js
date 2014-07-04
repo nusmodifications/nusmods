@@ -1,5 +1,5 @@
-define(['require', 'app', 'backbone.marionette', 'localforage'],
-  function (require, App, Marionette, localforage) {
+define(['require', 'app', 'backbone', 'backbone.marionette', 'localforage', 'json!config.json'],
+  function (require, App, Backbone, Marionette, localforage, config) {
     'use strict';
 
     var navigationItem = App.request('addNavigationItem', {
@@ -8,12 +8,16 @@ define(['require', 'app', 'backbone.marionette', 'localforage'],
       url: '/timetable'
     });
 
+    var semTimetableFragment = 'timetable/' + config.academicYear.replace('/', '-') + '/sem' + config.semester;
     var timetableView;
 
     return Marionette.Controller.extend({
       showTimetable: function (academicYear, semester, options) {
         require(['../views/TimetableView'],
           function (TimetableView) {
+            if (!semester) {
+              return Backbone.history.navigate(semTimetableFragment, {trigger: true});
+            }
             navigationItem.select();
             timetableView = new TimetableView();
             App.mainRegion.show(timetableView);
