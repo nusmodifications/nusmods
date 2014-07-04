@@ -53,7 +53,7 @@ define(['app', 'backbone', 'nusmods', 'mousetrap', '../utils/modulify', 'undersc
       $.fn.qtip.defaults.style.classes = 'qtip-bootstrap';
 
       NUSMods.getCorrectAsAt().then(function (correctAsAt) {
-        $('#correct-as-at').text(new Date(correctAsAt));
+        $('#correct-as-at').text((new Date(correctAsAt)).toString().slice(0,21));
       });
 
       App.selectRegion.show(new SelectView());
