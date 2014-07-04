@@ -6,27 +6,19 @@ define(['backbone.marionette', 'app', 'hbs!../templates/exam'],
       tagName: 'tr',
       template: template,
 
-      ui: {
-        showHideIcon: '.show-hide i'
-      },
-
       events: {
         'click .remove': function () {
           App.request('removeModule', this.model.id);
         },
         'click .show-hide': function () {
-          this.displayLessons = !this.displayLessons;
-          App.request('displayLessons', this.model.id, this.displayLessons);
-          this.ui.showHideIcon.toggleClass('fa-eye fa-eye-slash');
+          var display = !this.model.get('display');
+          this.model.set('display', display);
+          App.request('displayLessons', this.model.id, display);
         }
       },
 
       modelEvents: {
         change: 'render'
-      },
-
-      initialize: function () {
-        this.displayLessons = true;
       },
 
       onRender: function () {

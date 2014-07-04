@@ -4,6 +4,7 @@ define(['backbone'], function (Backbone) {
   return Backbone.Model.extend({
     defaults: {
       clash: false,
+      display: true,
       time: 'No Exam'
     },
 
