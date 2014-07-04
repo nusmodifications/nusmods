@@ -36,6 +36,7 @@ define([
               _.each(lessonsData, function (lessonData) {
                 var lesson = new LessonModel(_.extend({
                   color: color,
+                  display: true,
                   isDraggable: isDraggable,
                   ModuleCode: mod.ModuleCode,
                   ModuleTitle: mod.ModuleTitle,

@@ -14,6 +14,16 @@ define([
     template: template,
     tooltipTemplate: tooltipTemplate,
 
+    modelEvents: {
+      'change:display': function (model, display) {
+        if (display) {
+          this.attach();
+        } else {
+          this.remove();
+        }
+      }
+    },
+
     initialize: function(options) {
       this.options = options;
 
@@ -63,7 +73,9 @@ define([
           zIndex: 3
         });
       }
-      this.attach();
+      if (this.model.get('display')) {
+        this.attach();
+      }
       return this;
     },
 

@@ -1,4 +1,5 @@
 define([
+  'underscore',
   'backbone',
   'backbone.marionette',
   'common/collections/NavigationCollection',
@@ -8,7 +9,7 @@ define([
   'nusmods',
   'json!config.json',
   'qtip2'
-], function (Backbone, Marionette, NavigationCollection,
+], function (_, Backbone, Marionette, NavigationCollection,
              SelectedModulesController, NavigationView,
              localforage, NUSMods, config) {
   'use strict';
@@ -46,6 +47,13 @@ define([
   });
   App.reqres.setHandler('isModuleSelected', function (id) {
     return !!selectedModulesController.selectedModules.get(id);
+  });
+  App.reqres.setHandler('displayLessons', function (id, display) {
+    _.each(selectedModulesController.timetable.where({
+      ModuleCode: id
+    }), function (lesson) {
+      lesson.set('display', display);
+    });
   });
 
   App.on('start', function () {
