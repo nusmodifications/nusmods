@@ -216,11 +216,24 @@ $module-section-min-height: 700px;
 }
 
 // Select2
-.select2-result-label .btn {
-  color: #ddd;
-  float: right;
-  &:hover {
-    color: #fff;
+.select2-result-label {
+  @include clearfix();
+  div {
+    float: left;
+    width: 235px;
+    @media (min-width: $screen-sm-min) {
+      width: 285px;
+    }
+    @media (min-width: $screen-lg-min) {
+      width: 435px;
+    }
+  }
+  .btn {
+    color: #ddd;
+    float: right;
+    &:hover {
+      color: #fff;
+    }
   }
 }
 
