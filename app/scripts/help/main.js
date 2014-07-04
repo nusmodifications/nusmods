@@ -1,5 +1,5 @@
 define(['require', 'app', 'backbone.marionette', 'backbone', 'marked',
-    'underscore', 'json!./keyboardShortcuts.json'],
+    'underscore', 'json!help/keyboardShortcuts.json'],
   function (require, App, Marionette, Backbone, marked, _, keyboardShortcuts) {
     'use strict';
 
