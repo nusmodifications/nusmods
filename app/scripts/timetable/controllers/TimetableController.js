@@ -11,7 +11,7 @@ define(['require', 'app', 'backbone.marionette', 'localforage'],
     var timetableView;
 
     return Marionette.Controller.extend({
-      showTimetable: function (options) {
+      showTimetable: function (academicYear, semester, options) {
         require(['../views/TimetableView'],
           function (TimetableView) {
             navigationItem.select();
