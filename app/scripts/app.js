@@ -6,10 +6,11 @@ define([
   'common/views/NavigationView',
   'localforage',
   'nusmods',
+  'json!config.json',
   'qtip2'
 ], function (Backbone, Marionette, NavigationCollection,
              SelectedModulesController, NavigationView,
-             localforage, NUSMods) {
+             localforage, NUSMods, config) {
   'use strict';
 
   var App = new Marionette.Application();
@@ -27,6 +28,8 @@ define([
   App.reqres.setHandler('addNavigationItem', function (navigationItem) {
     return navigationCollection.add(navigationItem);
   });
+
+  NUSMods.setConfig(config);
 
   var selectedModulesController = new SelectedModulesController();
   App.reqres.setHandler('selectedModules', function () {

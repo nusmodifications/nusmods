@@ -12,12 +12,12 @@
 }(this, function () {
   'use strict';
 
-  var baseUrl = '/api/2013-2014/2/';
+  var apiBaseUrl, semBaseUrl;
   var moduleInformationPromise, moduleListPromise;
 
   return {
     getCorrectAsAt: function (callback) {
-      moduleListPromise = moduleListPromise || $.getJSON(baseUrl + 'moduleList.json');
+      moduleListPromise = moduleListPromise || $.getJSON(semBaseUrl + 'moduleList.json');
       return moduleListPromise.then(function () {
         var lastModified = moduleListPromise.getResponseHeader('Last-Modified');
         if (callback) {
@@ -27,18 +27,19 @@
       });
     },
     getMod: function (code, callback) {
-      return $.getJSON(baseUrl + 'modules/' + code + '.json', callback);
+      return $.getJSON(semBaseUrl + 'modules/' + code + '.json', callback);
     },
     getMods: function (callback) {
-      moduleInformationPromise = moduleInformationPromise || $.getJSON(baseUrl + 'moduleInformation.json');
+      moduleInformationPromise = moduleInformationPromise || $.getJSON(semBaseUrl + 'moduleInformation.json');
       return moduleInformationPromise.then(callback);
     },
     getCodesAndTitles: function (callback) {
-      moduleListPromise = moduleListPromise || $.getJSON(baseUrl + 'moduleList.json');
+      moduleListPromise = moduleListPromise || $.getJSON(semBaseUrl + 'moduleList.json');
       return moduleListPromise.then(callback);
     },
-    setBaseUrl: function (url) {
-      baseUrl = url;
+    setConfig: function (config) {
+      apiBaseUrl = config.baseUrl + 'api/';
+      semBaseUrl = apiBaseUrl + config.academicYear.replace('/', '-') + '/' + config.semester + '/';
     }
   };
 }));
