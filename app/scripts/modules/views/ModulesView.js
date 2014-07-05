@@ -119,12 +119,19 @@ function(_, Marionette, NUSMods, ModuleCollection, ModulesListingView,
           pageSize: 10,
           rawCollection: mods
         });
-        facets.add(_.map(['Department', 'ModuleCredit', 'level'], function(key) {
+        facets.add(_.map(['Department', 'level'], function(key) {
           return {
             filteredCollection: mods,
             key: key
           };
         }));
+        facets.add({
+          filteredCollection: mods,
+          key: 'ModuleCredit',
+          sortBy: function (filter) {
+            return +filter.label;
+          }
+        });
         facets.add(new ArrayFacetModel({
           filteredCollection: mods,
           key: 'Types'
