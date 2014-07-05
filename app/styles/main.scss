@@ -248,8 +248,9 @@ $module-section-min-height: 700px;
   font-weight: normal;
 }
 
-.filter-department label.checkbox.inline {
+.facet-Department .checkbox-inline {
   display: block;
+  margin-left: 0;
 }
 
 .arrow-right {
