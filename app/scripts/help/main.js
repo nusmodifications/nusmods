@@ -15,6 +15,7 @@ define(['require', 'app', 'backbone.marionette', 'backbone', 'marked',
 
             var helpModel = new Backbone.Model({keyboardShortcuts: keyboardShortcuts});
             App.mainRegion.show(new HelpView({model: helpModel}));
+            App.navigationRegion.currentView.options.collection.deselect();
           });
       }
     };

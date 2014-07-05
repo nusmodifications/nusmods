@@ -6,11 +6,13 @@ define(['require', 'app', 'backbone.marionette', 'backbone'],
       showAbout: function () {
         require(['./views/AboutView'], function (AboutView) {
           App.mainRegion.show(new AboutView());
+          App.navigationRegion.currentView.options.collection.deselect();
         });
       },
       showTeam: function () {
         require(['./views/TeamView'], function (TeamView) {
           App.mainRegion.show(new TeamView());
+          App.navigationRegion.currentView.options.collection.deselect();
         });
       }
     };
