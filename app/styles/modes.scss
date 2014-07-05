@@ -7,7 +7,7 @@
 }
 
 .mode-slate {
-  $mode-color: #a7ec21;
+  $mode-color: #f60;
   color: #fff;
   h1, h2, h3, h4, h5, h6 {
     font-family: "proxima-nova", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -163,5 +163,10 @@
 
   .footer-container {
     background-color: #1b1b1b;
+    ul li a {
+      &:hover {
+        color: $mode-color;
+      }
+    }
   }
 }
