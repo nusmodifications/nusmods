@@ -32,6 +32,12 @@
     &:hover {
       text-decoration: underline;
     }
+    &.icon {
+      text-decoration: none;
+      &:hover {
+        text-decoration: none;
+      }
+    }
   }
   hr {
     border-color: #444;

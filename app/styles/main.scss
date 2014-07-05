@@ -71,6 +71,9 @@ a {
   &.plain {
     color: $text-color;
   }
+  &.icon:hover {
+    text-decoration: none;
+  }
 }
 
 // Layout
