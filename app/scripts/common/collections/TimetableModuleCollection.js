@@ -28,9 +28,9 @@ define([
 
         NUSMods.getMod(module.id).then(_.bind(function (mod) {
           _.each(_.groupBy(mod.Timetable, 'LessonType'), function (groups) {
-            var isDraggable = _.size(groups) > 1;
             var uniqueClassNos = _.uniq(_.pluck(groups, 'ClassNo'));
             var randomClassNo = _.sample(uniqueClassNos);
+            var isDraggable = _.size(uniqueClassNos) > 1;
             var sameType = new LessonCollection();
             _.each(_.groupBy(groups, 'ClassNo'), function (lessonsData) {
               var sameGroup = new LessonCollection();
