@@ -28,8 +28,9 @@ define([
 
         NUSMods.getMod(module.id).then(_.bind(function (mod) {
           _.each(_.groupBy(mod.Timetable, 'LessonType'), function (groups) {
-            var firstGroup = true;
             var isDraggable = _.size(groups) > 1;
+            var uniqueClassNos = _.uniq(_.pluck(groups, 'ClassNo'));
+            var randomClassNo = _.sample(uniqueClassNos);
             var sameType = new LessonCollection();
             _.each(_.groupBy(groups, 'ClassNo'), function (lessonsData) {
               var sameGroup = new LessonCollection();
@@ -45,11 +46,10 @@ define([
                 }, lessonData));
                 sameGroup.add(lesson);
                 sameType.add(lesson);
-                if (firstGroup) {
+                if (lessonData.ClassNo === randomClassNo) {
                   this.timetable.add(lesson);
                 }
               }, this);
-              firstGroup = false;
             }, this);
           }, this);
         }, this));
