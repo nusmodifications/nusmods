@@ -1,6 +1,7 @@
 require.config({
   packages: [
     // 'ivle',
+    'about',
     'help',
     'modules',
     'timetable',
