@@ -491,14 +491,39 @@ colgroup.hover {
 // Footer
 
 .footer-container {
+  $footer-text-color: #fff;
   background-color: #333;
-  color: #fff;
+  color: $footer-text-color;
   padding-bottom: 50px;
   padding-top: 50px;
+  .footer {
+    white-space: nowrap;
+  }
+  .section-title {
+    color: #777;
+    font-weight: bold;
+  }
+  ul {
+    list-style: none;
+    padding-left: 0;
+    li {
+      font-weight: 300;
+      a {
+        color: $footer-text-color;
+        &:hover {
+          color: $brand-primary;
+        }
+      }
+    }
+    &.nm-social {
+      li {
+        display: inline-block;
+        margin-right: 10px;
+      }
+    }
+  }
 }
-.footer {
-  white-space: nowrap;
-}
+
 .social-buttons {
   text-align: center;
   iframe {
