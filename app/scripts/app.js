@@ -36,9 +36,9 @@ define([
   App.reqres.setHandler('selectedModules', function () {
     return selectedModulesController.selectedModules;
   });
-  App.reqres.setHandler('addModule', function (id) {
+  App.reqres.setHandler('addModule', function (id, options) {
     return NUSMods.getMod(id).then(function (mod) {
-      return selectedModulesController.selectedModules.add(mod);
+      return selectedModulesController.selectedModules.add(mod, options);
     });
   });
   App.reqres.setHandler('removeModule', function (id) {
@@ -53,6 +53,12 @@ define([
       ModuleCode: id
     }), function (lesson) {
       lesson.set('display', display);
+    });
+  });
+
+  localforage.getItem('selectedModules', function (selectedModules) {
+    _.each(selectedModules, function (module) {
+      App.request('addModule', module.ModuleCode, module);
     });
   });
 

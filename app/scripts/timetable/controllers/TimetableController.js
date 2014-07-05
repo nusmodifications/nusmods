@@ -24,11 +24,6 @@ define(['require', 'app', 'backbone', 'backbone.marionette', 'localforage', 'jso
             if (options) {
               options = JSON.parse(decodeURIComponent(options));
               timetableView.setOptions(options);
-            } else {
-              localforage.getItem('timetableOptions',
-                function (options) {
-                  timetableView.setOptions(options);
-                });
             }
           });
       }

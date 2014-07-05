@@ -19,7 +19,7 @@ define([
         this.on('remove', this.onRemove, this);
       },
 
-      onAdd: function (module) {
+      onAdd: function (module, collection, options) {
         if (!this.colors.length) {
           this.colors = [0, 1, 2, 3, 4, 5, 6, 7];
         }
@@ -27,6 +27,9 @@ define([
         module.set('color', color);
 
         NUSMods.getMod(module.id).then(_.bind(function (mod) {
+          var selectedLessons = options.selectedLessons;
+          var lessons = new LessonCollection();
+          module.set('lessons', lessons);
           _.each(_.groupBy(mod.Timetable, 'LessonType'), function (groups) {
             var uniqueClassNos = _.uniq(_.pluck(groups, 'ClassNo'));
             var randomClassNo = _.sample(uniqueClassNos);
@@ -44,14 +47,19 @@ define([
                   sameGroup: sameGroup,
                   sameType: sameType
                 }, lessonData));
+                lessons.add(lesson);
                 sameGroup.add(lesson);
                 sameType.add(lesson);
-                if (lessonData.ClassNo === randomClassNo) {
+                if (!selectedLessons && lessonData.ClassNo === randomClassNo) {
                   this.timetable.add(lesson);
                 }
               }, this);
             }, this);
           }, this);
+          _.each(selectedLessons, function (lesson) {
+            this.timetable.add(lessons.where(lesson));
+          }, this);
+          this.timetable.trigger('change');
         }, this));
       },
 
@@ -62,8 +70,8 @@ define([
       toJSON: function () {
         return this.map(function (module) {
           return {
-            code: module.id,
-            lessons: _.chain(this.timetable.where({ModuleCode: module.id}))
+            ModuleCode: module.id,
+            selectedLessons: _.chain(this.timetable.where({ModuleCode: module.id}))
               .map(function (lesson) {
                 return lesson.pick('ClassNo', 'LessonType');
               })

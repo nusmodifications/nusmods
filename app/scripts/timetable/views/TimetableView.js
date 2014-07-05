@@ -55,10 +55,10 @@ function(_, App, Backbone, Marionette, NUSMods, template, ExamCollection,
       if (options && options.settingOptions) {
         return;
       }
-      var newOptions = {selectedModules: this.selectedModules.toJSON()};
-      localforage.setItem('timetableOptions', newOptions);
+      var selectedModules = this.selectedModules.toJSON();
+      localforage.setItem('selectedModules', selectedModules);
       Backbone.history.navigate('timetable/' +
-        encodeURIComponent(JSON.stringify(newOptions)));
+        encodeURIComponent(JSON.stringify(selectedModules)));
     },
 
     setOptions: function (options) {
