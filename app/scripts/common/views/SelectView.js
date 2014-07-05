@@ -28,7 +28,7 @@ define(['underscore', 'app', 'backbone', 'backbone.marionette', 'nusmods',
       },
 
       onRemove: function (event) {
-        App.request('removeModule', $(event.currentTarget).data('code'))
+        App.request('removeModule', $(event.currentTarget).data('code'));
         this.ui.input.select2('focus');
       },
 

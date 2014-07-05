@@ -73,20 +73,21 @@ define(['app', 'backbone', 'nusmods', 'mousetrap', '../utils/modulify', 'undersc
         '?': '/help',
         c: '/modules/<module>/corspedia',
         s: '/modules/<module>/schedule',
-        r: '/modules/<module>/reviews',
+        r: '/modules/<module>/reviews'
       };
 
       _.each(keyboardNavigationMappings, function (value, key) {
-        Mousetrap.bind(key, function (ev) {
+        Mousetrap.bind(key, function () {
+          var modulePage, moduleCode;
           if (value.indexOf('<module>') > -1) {
-            var modulePage = true;
-            var moduleCode = modulify.getModuleFromString(window.location.href);
+            modulePage = true;
+            moduleCode = modulify.getModuleFromString(window.location.href);
           }
           if (moduleCode || !modulePage) {
             Backbone.history.navigate(value.replace('<module>', moduleCode ? moduleCode : ''), {trigger: true});
           }
         });
-      })
+      });
     }
   });
 });

@@ -1,14 +1,14 @@
-define(['underscore', 'backbone', 'common/models/ModuleModel'],
-  function(_, Backbone, ModuleModel) {
+define(['underscore', 'backbone'],
+  function(_, Backbone) {
     'use strict';
 
     return Backbone.Model.extend({
-      initialize: function(data) {
+      initialize: function() {
         var section = this.get('section');
         var sectionsInfo = this.get('sectionsInfo');
 
         var selectedSection = _.filter(sectionsInfo, function (item) {
-          return item.sectionType == section;
+          return item.sectionType === section;
         })[0];
 
         selectedSection.active = true;

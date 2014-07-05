@@ -9,8 +9,6 @@ define([
 function(_, Marionette, template, localforage, Mousetrap) {
   'use strict';
 
-  var $body = $('body');
-
   function getThemeOptions () {
     var optionValues = [];
     $('#theme-options').children('option').each(function() {
@@ -19,7 +17,7 @@ function(_, Marionette, template, localforage, Mousetrap) {
     return optionValues;
   }
 
-  var PreferencesView = Marionette.LayoutView.extend({
+  return Marionette.LayoutView.extend({
     template: template,
     initialize: function () {
       // TODO: Populate default values of form elements for first time users.
@@ -28,13 +26,13 @@ function(_, Marionette, template, localforage, Mousetrap) {
         'student': 'input:radio[name="student-radios"]',
         'mode': 'input:radio[name="mode-radios"]',
         'theme': '#theme-options'
-      }
+      };
       _.each(formElements, function (selector, item) {
         localforage.getItem(item, function (value) {
           if (value) {
-            $(selector).val([value]); 
+            $(selector).val([value]);
           }
-        })
+        });
       });
 
       var that = this;
@@ -52,7 +50,7 @@ function(_, Marionette, template, localforage, Mousetrap) {
           that.savePreference('theme', newTheme);
         }
       });
-    }, 
+    },
     events: {
       'click .random-theme': 'randomTheme',
       'change #faculty, input:radio[name="student-radios"], input:radio[name="mode-radios"], #theme-options': 'updatePreference',
@@ -61,9 +59,10 @@ function(_, Marionette, template, localforage, Mousetrap) {
     randomTheme: function () {
       var optionValues = getThemeOptions();
       var $themeOptions = $('#theme-options');
+      var value;
 
       do {
-        var value = optionValues[Math.floor(Math.random() * (optionValues.length))];
+        value = optionValues[Math.floor(Math.random() * (optionValues.length))];
       } while (value === $themeOptions.val());
 
       $themeOptions.val(value);
@@ -87,12 +86,12 @@ function(_, Marionette, template, localforage, Mousetrap) {
       localforage.setItem(property, value);
       if (property === 'mode' || property === 'theme') {
         this.updateAppearance(property, value);
-      }      
+      }
     },
     updateAppearance: function (property, value) {
       
       var $body = $('body');
-      $body.attr('data-' + property, value);      
+      $body.attr('data-' + property, value);
       $body.removeClass();
 
       _.each(['mode', 'theme'], function (prop) {
@@ -105,6 +104,4 @@ function(_, Marionette, template, localforage, Mousetrap) {
       }
     }
   });
-
-  return PreferencesView;
 });

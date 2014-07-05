@@ -54,8 +54,8 @@ define(['backbone.marionette', 'hbs!../templates/bidding_stats', 'underscore'],
         _.each(stats, function (semester) {
           semester.BiddingStats = _.filter(semester.BiddingStats, function (stat) {
             return determineStatRelevance(stat, {
-              faculty: faculty, 
-              accountType: accountType, 
+              faculty: faculty,
+              accountType: accountType,
               newStudent: newStudent
             });
           });

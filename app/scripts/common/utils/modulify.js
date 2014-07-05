@@ -30,14 +30,14 @@ define(function () {
       var matchedModules = this.matchModules(desc);
       if (desc && matchedModules.length) {
         for (var i = matchedModules.length - 1; i >= 0; i--) {
-          var starting_index = matchedModules[i].index;
+          var startingIndex = matchedModules[i].index;
           var length = matchedModules[i].length;
-          var ending_index = starting_index + length;
-          desc = desc.insert(ending_index, '</a>');
-          desc = desc.insert(starting_index, '<a href="/modules/' + matchedModules[i].module + '">');
+          var endingIndex = startingIndex + length;
+          desc = desc.insert(endingIndex, '</a>');
+          desc = desc.insert(startingIndex, '<a href="/modules/' + matchedModules[i].module + '">');
         }
       }
       return desc;
     }
-  }
+  };
 });

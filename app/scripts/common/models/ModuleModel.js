@@ -24,7 +24,7 @@ define(['backbone', 'underscore', 'common/utils/padTwo', 'common/utils/modulify'
 
     var shortenDescription = function (desc) {
       return desc.split(' ').splice(0, DESCRIPTION_LIMIT).join(' ');
-    }
+    };
 
     var workloadify = function (workload) {
       var workloadArray = workload.split('-');
@@ -39,13 +39,11 @@ define(['backbone', 'underscore', 'common/utils/padTwo', 'common/utils/modulify'
         workloadComponents[key] = parseInt(value);
       });
       return workloadComponents;
-    }
+    };
 
     return Backbone.Model.extend({
       idAttribute: 'ModuleCode',
       initialize: function() {
-        // TODO: Display exam date when 2014-2015/1 exam timetable released.
-        
         var description = this.get('ModuleDescription');
         if (description && description.split(' ').length > DESCRIPTION_LIMIT + 10) {
           this.set('ShortModuleDescription', shortenDescription(this.get('ModuleDescription')));
@@ -75,16 +73,27 @@ define(['backbone', 'underscore', 'common/utils/padTwo', 'common/utils/modulify'
             }
           });
           
-          var AVAILABLE_TYPES = ['Lecture', 'Sectional Teaching', 'Seminar-Style Module Class', 'Packaged Lecture', 'Packaged Tutorial',
-                                 'Tutorial', 'Tutorial Type 2', 'Tutorial Type 3', 'Design Lecture', 'Laboratory', 'Recitation'];
+          var AVAILABLE_TYPES = [
+            'Lecture',
+            'Sectional Teaching',
+            'Seminar-Style Module Class',
+            'Packaged Lecture',
+            'Packaged Tutorial',
+            'Tutorial',
+            'Tutorial Type 2',
+            'Tutorial Type 3',
+            'Design Lecture',
+            'Laboratory',
+            'Recitation'
+          ];
           timetableTypes = _.sortBy(timetableTypes, function (type) {
             return AVAILABLE_TYPES.indexOf(type);
-          })
+          });
           
           var formattedTimetable = [];
           _.each(timetableTypes, function (type) {
             var lessons = _.filter(timetable, function (lesson) {
-              return lesson.LessonType == type;
+              return lesson.LessonType === type;
             });
             lessons = _.sortBy(lessons, function (lesson) {
               return parseInt(lesson.ClassNo);
@@ -96,7 +105,7 @@ define(['backbone', 'underscore', 'common/utils/padTwo', 'common/utils/modulify'
               LessonType: type,
               Lessons: lessons
             });
-          })
+          });
 
           this.set('FormattedTimetable', formattedTimetable);
         }

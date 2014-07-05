@@ -141,7 +141,8 @@ define(['underscore', 'backbone.marionette', 'common/utils/padTwo',
               lesson.get('LessonType') + ' Group ' + lesson.get('ClassNo'),
           'LOCATION:' + lesson.get('Venue'),
           'URL:https://myaces.nus.edu.sg/cors/jsp/report/ModuleDetailedInfo.jsp' +
-              ('?acad_y=2014/2015&sem_c=1&mod_c=' + lesson.get('ModuleCode'))]);
+              ('?acad_y=2014/2015&sem_c=1&mod_c=' + lesson.get('ModuleCode'))
+        ]);
         var start = new Date(Date.UTC(2014, 7, 11,
           +lesson.get('StartTime').slice(0, 2) - 8,
           +lesson.get('StartTime').slice(2)));

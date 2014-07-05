@@ -1,11 +1,12 @@
 define([
-  'backbone',
-  'backbone.marionette',
-  'hbs!../templates/module',
-  'underscore',
-  'localforage',
-  './BiddingStatsView',
-  'bootstrap/tooltip'],
+    'backbone',
+    'backbone.marionette',
+    'hbs!../templates/module',
+    'underscore',
+    'localforage',
+    './BiddingStatsView',
+    'bootstrap/tooltip'
+  ],
   function (Backbone, Marionette, template, _, localforage, BiddingStatsView) {
     'use strict';
 
@@ -16,20 +17,20 @@ define([
       regions: {
         biddingStatsRegion: '#bidding-stats'
       },
-      initialize: function (data) {
+      initialize: function () {
 
         if (this.model.get('section') === 'corspedia') {
           var formElements = {
             'faculty': '#faculty',
             'account': '#account',
             'student': 'input:radio[name="student-radios"]'
-          }
+          };
 
           var defaults = {
             'faculty': 'default',
             'account': 'P',
             'student': 'true'
-          }
+          };
 
           var that = this;
           var loadedItems = 0;
@@ -45,7 +46,7 @@ define([
               if (loadedItems === _.keys(formElements).length) {
                 that.showBiddingStatsRegion(true);
               }
-            })
+            });
           });
         }
       },
@@ -60,8 +61,8 @@ define([
 
         var disqusShortname = 'nusmods';
 
-        (function() {
-          if (typeof disqus_domain != 'undefined') {
+        (function () {
+          if (typeof disqus_domain !== 'undefined') {
             DISQUSWIDGETS.domain = 'disqus.com';
           }
           DISQUSWIDGETS.forum = disqusShortname;
@@ -84,7 +85,7 @@ define([
         // So that users can use keyboard shortcuts immediately after the page loads
         $('input').blur();
       },
-      showFullDescription: function ($ev) {
+      showFullDescription: function () {
         $('.module-desc').addClass('module-desc-more');
         return false;
       },
@@ -102,14 +103,14 @@ define([
         }
       },
       showBiddingStatsRegion: function (displayFiltered) {
-        var biddingStatsDeepCopy = $.extend(true, {}, 
+        var biddingStatsDeepCopy = $.extend(true, {},
           this.model.attributes.module.FormattedCorsBiddingStats);
         var biddingStatsModel = new Backbone.Model({stats: biddingStatsDeepCopy});
         var biddingStatsView = new BiddingStatsView({model: biddingStatsModel});
 
-        var faculty = searchPreferences['faculty'];
-        var accountType = searchPreferences['account'];
-        var newStudent = searchPreferences['student'] === 'true';
+        var faculty = searchPreferences.faculty;
+        var accountType = searchPreferences.account;
+        var newStudent = searchPreferences.student === 'true';
 
         if (faculty && faculty !== 'default' && accountType && displayFiltered) {
           biddingStatsView.filterStats(faculty, accountType, newStudent);
