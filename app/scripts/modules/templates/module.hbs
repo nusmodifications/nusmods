@@ -64,7 +64,14 @@
             </li>
           {{/each}}
         </ul>
-        <h2 class="nm-section-heading">{{sectionTitle}}</h2>
+        <div> 
+          <h2 class="nm-section-heading">{{sectionTitle}} 
+            <button class="add pull-right btn btn-primary"
+                    data-code="{{../module.ModuleCode}}"
+                    type="button">
+                <i class="fa fa-plus"></i>&nbsp;Add {{module.ModuleCode}} To Timetable
+            </button>
+          </h2>
         <hr>
         {{#equals section 'schedule'}}
           <div>
