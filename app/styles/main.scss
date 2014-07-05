@@ -74,6 +74,10 @@ a {
   &.icon:hover {
     text-decoration: none;
   }
+  &:hover {
+    @include transition-property(all);
+    @include transition-duration(.3s);
+  }
 }
 
 // Layout
@@ -494,8 +498,8 @@ colgroup.hover {
   $footer-text-color: #fff;
   background-color: #333;
   color: $footer-text-color;
-  padding-bottom: 50px;
-  padding-top: 50px;
+  padding-bottom: 15px;
+  padding-top: 30px;
   .footer {
     white-space: nowrap;
   }
@@ -512,6 +516,7 @@ colgroup.hover {
         color: $footer-text-color;
         &:hover {
           color: $brand-primary;
+          text-decoration: none;
         }
       }
     }
@@ -521,6 +526,15 @@ colgroup.hover {
         margin-right: 10px;
       }
     }
+  }
+  .last-update-timestamp {
+    border: 2px solid #777;
+    border-radius: 5px;
+    margin-top: 5px;
+    padding: 10px;
+  }
+  #copyright p {
+    text-align: center;
   }
 }
 
