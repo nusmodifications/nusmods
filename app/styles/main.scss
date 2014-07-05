@@ -449,7 +449,7 @@ colgroup.hover {
 
   @include user-select(none);
 
-  select {
+  #theme-options {
     display: inline-block;
     width: 200px;
   }
