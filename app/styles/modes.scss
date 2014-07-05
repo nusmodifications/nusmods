@@ -9,6 +9,8 @@
 .mode-slate {
   $mode-color: #f60;
   color: #fff;
+  margin-bottom: 265px;
+  
   h1, h2, h3, h4, h5, h6 {
     font-family: "proxima-nova", "Helvetica Neue", Helvetica, Arial, sans-serif;
   }
@@ -168,5 +170,11 @@
         color: $mode-color;
       }
     }
+  }
+}
+
+@media (max-width: 768px) {
+  .mode-slate {
+    margin-bottom: 0;
   }
 }

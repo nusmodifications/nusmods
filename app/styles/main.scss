@@ -62,7 +62,13 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 
 @import "timetable";
 
+html {
+  position: relative;
+  min-height: 100%;
+}
+
 body {
+  margin-bottom: 265px;
   padding-top: 70px;
 }
 
@@ -544,9 +550,12 @@ colgroup.hover {
 .footer-container {
   $footer-text-color: #fff;
   background-color: #333;
+  bottom: 0;
   color: $footer-text-color;
   padding-bottom: 15px;
   padding-top: 30px;
+  position: absolute;
+  width: 100%;
   .footer {
     white-space: nowrap;
   }
@@ -582,6 +591,15 @@ colgroup.hover {
   }
   #copyright p {
     text-align: center;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    margin-bottom: 0;
+  }
+  .footer-container {
+    position: static;
   }
 }
 
