@@ -86,6 +86,7 @@ a {
 
 .main-content {
   padding: 15px;
+  padding-bottom: 30px;
 }
 
 // Navbar
@@ -488,6 +489,13 @@ colgroup.hover {
 }
 
 // Footer
+
+.footer-container {
+  background-color: #333;
+  color: #fff;
+  padding-bottom: 50px;
+  padding-top: 50px;
+}
 .footer {
   white-space: nowrap;
 }
