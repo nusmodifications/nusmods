@@ -69,7 +69,8 @@ define([
       'modules',
       'timetable',
       'preferences',
-      'help'
+      'help',
+      'about'
     ], function (AppView) {
       Backbone.history.start({pushState: true});
 

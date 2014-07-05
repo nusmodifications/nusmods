@@ -43,34 +43,73 @@
       <div class="collapse navbar-collapse" role="navigation">
         <nav></nav>
       </div>
-      
     </div>
   </header>
   
   <div class="main-content container-fluid">
     <div class="content"></div>
-    <hr>
-    <div class="row footer">
-      <div class="col-sm-4">
-        <div>Academic Year: 2014/2015 Semester: 1</div>
-        <div>Correct as at&nbsp;<span id="correct-as-at"></span></div>
-      </div>
-      <div class="col-sm-4 social-buttons">
-        <div>
-          <iframe src="//platform.twitter.com/widgets/tweet_button.html?hashtags=NUSMods&amp;url=http%3A%2F%2Fnusmods.com"></iframe>
-          <iframe src="//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2FNUSMods&amp;layout=button_count"></iframe>
+  </div>
+  
+  <footer class="footer-container">
+    <div class="container-fluid">
+      <div class="row footer">
+        <div class="col-md-10 col-md-offset-1">
+          <div class="col-sm-3">
+            <h5 class="section-title">Product</h5>
+            <ul>
+              <!-- <li><a href="#">Tour</a></li> -->
+              <li><a href="/help">Help</a></li>
+              <!-- <li><a href="#">Contribute</a></li> -->
+              <li><a href="https://github.com/ahbeng/NUSModsAPI/" target="_blank">API</a></li>
+            </ul>
+          </div>
+          <div class="col-sm-3">
+            <h5 class="section-title">NUSMods</h5>
+            <ul>
+              <li><a href="/about">About</a></li>
+              <li><a href="/team">The Team</a></li>
+              <!-- <li><a href="#">Blog</a></li> -->
+              <li><a href="mailto:beng@nus.edu.sg">Contact Us</a></li>
+            </ul>
+          </div>
+          <div class="col-sm-3">
+            <h5 class="section-title">Follow</h5>
+            <ul class="nm-social">
+              <li>
+                <a href="https://www.facebook.com/NUSMods" target="_blank">
+                  <i class="fa fa-facebook-square fa-2x"></i>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.twitter.com/NUSMods" target="_blank">
+                  <i class="fa fa-twitter fa-2x"></i>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.github.com/ahbeng/NUSMods" target="_blank">
+                  <i class="fa fa-github fa-2x"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-sm-3">
+            <h5 class="section-title">Status</h5>
+            <ul>
+              <li>Academic Year 2014/2015</li>
+              <li>Semester 1</li>
+              <li>
+                <div class="last-update-timestamp">Information correct as at<br><span class="highlight thin" id="correct-as-at"></span></div>
+              </li>
+            </ul>
+          </div>
         </div>
-        <div>
-          <iframe src="http://ghbtns.com/github-btn.html?user=ahbeng&amp;repo=NUSMods&amp;type=watch&amp;count=true"></iframe>
-          <iframe src="http://ghbtns.com/github-btn.html?user=ahbeng&amp;repo=NUSMods&amp;type=fork&amp;count=true"></iframe>
-        </div>
-      </div>
-      <div class="col-sm-4 credits">
-        <div>Built by&nbsp;<a href="mailto:beng@nus.edu.sg">Beng</a>&nbsp;using the&nbsp;<a href="https://github.com/ahbeng/NUSModsAPI">NUSMods API</a></div>
-        <div>Hosted on&nbsp;<a href="https://www.digitalocean.com/?refcode=5ec18754c977">Digital Ocean</a></div>
+        <div class="col-md-10 col-md-offset-1" id="copyright">
+          <hr>
+          <p>Copyright &copy; 2014 NUSMods. All rights reserved.</p>
+        </div>        
       </div>
     </div>
-  </div>
+  </footer>
 
   <!-- build:js /scripts/main.js -->
   <script data-main="/scripts/main" src="/bower_components/requirejs/require.js"></script>
