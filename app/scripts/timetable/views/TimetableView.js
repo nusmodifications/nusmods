@@ -11,13 +11,12 @@ define([
   './SelectView',
   './ShowHideView',
   './TableView',
-  './UrlSharingView',
-  'localforage'
+  './UrlSharingView'
 ],
 
 function(_, App, Backbone, Marionette, NUSMods, template, ExamCollection,
          ExportView, ExamsView, SelectView, ShowHideView,
-         TimetableView, UrlSharingView, localforage) {
+         TimetableView, UrlSharingView) {
   'use strict';
 
   return Marionette.LayoutView.extend({
@@ -51,18 +50,9 @@ function(_, App, Backbone, Marionette, NUSMods, template, ExamCollection,
       this.urlSharingRegion.show(new UrlSharingView());
     },
 
-    modulesChanged: function (model, collection, options) {
-      if (options && options.settingOptions) {
-        return;
-      }
+    modulesChanged: function () {
       Backbone.history.navigate('timetable/' +
         encodeURIComponent(JSON.stringify(this.selectedModules.toJSON())));
-    },
-
-    setOptions: function (options) {
-      if (!options) {
-        return;
-      }
     }
   });
 });
