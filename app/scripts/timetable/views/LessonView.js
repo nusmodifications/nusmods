@@ -87,7 +87,7 @@ define([
       for (var i = 0; i <= rows.length; i++) {
         var row = rows[i];
         if (i === rows.length) {
-          row = this.options.parentView.$('#mon > tr:last-child').clone()
+          row = this.options.parentView.TR.clone()
             .appendTo(this.options.parentView.$('#' + this.model.get('dayAbbrev')));
           $(rows[0]).children().first().attr('rowspan', i + 1);
         }

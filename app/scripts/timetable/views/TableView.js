@@ -24,6 +24,7 @@ define(['underscore', 'backbone.marionette', './LessonView', 'hbs!../templates/t
     },
 
     initialize: function() {
+      this.TR = this.$('#mon > tr:last-child').clone();
     },
 
     mouseMove: function(evt) {
