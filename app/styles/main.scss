@@ -106,6 +106,7 @@ a {
 
 .navbar-toggle {
   border-color: $brand-primary;
+  z-index: 100;
   .icon-bar {
     background-color: $brand-primary;
   }
