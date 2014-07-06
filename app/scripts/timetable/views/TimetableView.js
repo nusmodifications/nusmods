@@ -52,14 +52,15 @@ function(_, App, Backbone, Marionette, NUSMods, template, ExamCollection,
       this.showHideRegion.show(new ShowHideView());
       this.timetableRegion.show(new TimetableView({collection: this.timetable}));
       this.urlSharingRegion.show(new UrlSharingView());
+      this.modulesChanged({replace: true});
     },
 
-    modulesChanged: function () {
+    modulesChanged: function (options) {
       if (this.selectedModules.length) {
         Backbone.history.navigate(this.semTimetableFragment + '/' +
-          encodeURIComponent(JSON.stringify(this.selectedModules.toJSON())));
+          encodeURIComponent(JSON.stringify(this.selectedModules.toJSON())), options);
       } else {
-        Backbone.history.navigate(this.semTimetableFragment);
+        Backbone.history.navigate(this.semTimetableFragment, options);
       }
     }
   });
