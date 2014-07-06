@@ -8,7 +8,8 @@ define(['backbone.marionette', 'hbs!../templates/filter'],
       template: template,
 
       events: {
-        'click :checkbox': function () {
+        'click :checkbox': function (event) {
+          event.preventDefault();
           this.model.toggleSelected();
         },
         'click a': function (event) {
