@@ -92,14 +92,24 @@ define([
 
         if (this.model.get('section') === 'reviews') {
           // Only reset Disqus when showing reviews section
-          DISQUS.reset({
-            reload: true,
-            config: function () {
-              this.page.identifier = code;
-              this.page.title = code + ' ' + module.ModuleTitle + ' · Reviews';
-              this.page.url = 'http://nusmods.com/modules/' + code + '/reviews';
-            }
-          });
+          if (!window.DISQUS) {
+            (function() {
+              var dsq = document.createElement('script');
+              dsq.type = 'text/javascript';
+              dsq.async = true;
+              dsq.src = '//nusmods.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+          } else {
+            DISQUS.reset({
+              reload: true,
+              config: function () {
+                this.page.identifier = code;
+                this.page.title = code + ' ' + module.ModuleTitle + ' · Reviews';
+                this.page.url = 'http://nusmods.com/modules/' + code + '/reviews';
+              }
+            });
+          }
         }
         $('.nm-help').tooltip();
       },
