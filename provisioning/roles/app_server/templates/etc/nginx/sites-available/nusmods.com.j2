@@ -5,9 +5,6 @@ server {
         location / {
                 try_files $uri /index.html;
         }
-        location /api/ {
-                alias {{ project_dir }}/api/app/api/;
-        }
         location ~ \.php$ {
                 fastcgi_split_path_info ^(.+\.php)(/.+)$;
                 fastcgi_pass unix:/var/run/php5-fpm.sock;

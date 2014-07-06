@@ -12,7 +12,7 @@
 }(this, function () {
   'use strict';
 
-  var apiBaseUrl, semBaseUrl;
+  var semBaseUrl;
   var moduleInformationPromise, moduleListPromise;
 
   return {
@@ -38,8 +38,7 @@
       return moduleListPromise.then(callback);
     },
     setConfig: function (config) {
-      apiBaseUrl = config.baseUrl + 'api/';
-      semBaseUrl = apiBaseUrl + config.academicYear.replace('/', '-') + '/' + config.semester + '/';
+      semBaseUrl = config.baseUrl + config.academicYear.replace('/', '-') + '/' + config.semester + '/';
     }
   };
 }));
