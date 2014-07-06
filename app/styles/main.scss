@@ -251,12 +251,12 @@ $module-section-min-height: 700px;
   @include clearfix();
   div {
     float: left;
-    width: 235px;
+    width: 230px;
     @media (min-width: $screen-sm-min) {
-      width: 285px;
+      width: 280px;
     }
     @media (min-width: $screen-lg-min) {
-      width: 435px;
+      width: 430px;
     }
   }
   .btn {
