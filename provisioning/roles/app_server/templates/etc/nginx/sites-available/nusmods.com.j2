@@ -1,4 +1,8 @@
 server {
+        server_name www.nusmods.com;
+        return 301 $scheme://nusmods.com$request_uri;
+}
+server {
         listen 80 default_server;
         server_name nusmods.com;
         root /home/{{ user }}/nusmods.com;
