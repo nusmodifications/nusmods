@@ -1,4 +1,5 @@
 define([
+    'app',
     'backbone',
     'backbone.marionette',
     'hbs!../templates/module',
@@ -7,7 +8,7 @@ define([
     './BiddingStatsView',
     'bootstrap/tooltip'
   ],
-  function (Backbone, Marionette, template, _, localforage, BiddingStatsView) {
+  function (App, Backbone, Marionette, template, _, localforage, BiddingStatsView) {
     'use strict';
 
     var searchPreferences = {};
@@ -53,7 +54,27 @@ define([
       events: {
         'change #faculty, input:radio[name="student-radios"], #account': 'updateCorspedia',
         'click .show-full-desc': 'showFullDescription',
-        'click #show-all-stats': 'showAllStats'
+        'click #show-all-stats': 'showAllStats',
+        'click .add': function(event) {
+          var qtipContent;
+          if (App.request('isModuleSelected', this.model.get('module').ModuleCode)) {
+            qtipContent = 'Already added!';
+          } else {
+            qtipContent = 'Added!';
+            App.request('addModule', this.model.get('module').ModuleCode);
+          }
+          $(event.currentTarget).qtip({
+            content: qtipContent,
+            show: {
+              event: false,
+              ready: true
+            },
+            hide: {
+              event: false,
+              inactive: 1000
+            }
+          });
+        }
       },
       onShow: function () {
         var module = this.model.get('module');
