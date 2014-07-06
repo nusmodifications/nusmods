@@ -429,12 +429,6 @@ module.exports = function (grunt) {
             options: {
                 args: ['-cruv']
             },
-            'api.nusmods.com': {
-              options: {
-                src: 'api/app/api/*',
-                dest: '~/api.nusmods.com'
-              }
-            },
             'nusmods.com': {
                 options: {
                     src: '<%= yeoman.dist %>/*',
