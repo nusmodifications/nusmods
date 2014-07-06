@@ -55,8 +55,12 @@ function(_, App, Backbone, Marionette, NUSMods, template, ExamCollection,
     },
 
     modulesChanged: function () {
-      Backbone.history.navigate(this.semTimetableFragment + '/' +
-        encodeURIComponent(JSON.stringify(this.selectedModules.toJSON())));
+      if (this.selectedModules.length) {
+        Backbone.history.navigate(this.semTimetableFragment + '/' +
+          encodeURIComponent(JSON.stringify(this.selectedModules.toJSON())));
+      } else {
+        Backbone.history.navigate(this.semTimetableFragment);
+      }
     }
   });
 });
