@@ -31,6 +31,10 @@ function(_, App, Backbone, Marionette, NUSMods, template, ExamCollection,
       urlSharingRegion: '.url-sharing-region'
     },
 
+    initialize: function (options) {
+      this.semTimetableFragment = options.semTimetableFragment;
+    },
+
     onShow: function() {
       this.selectedModules = App.request('selectedModules');
       this.timetable = this.selectedModules.timetable;
@@ -51,7 +55,7 @@ function(_, App, Backbone, Marionette, NUSMods, template, ExamCollection,
     },
 
     modulesChanged: function () {
-      Backbone.history.navigate('timetable/' +
+      Backbone.history.navigate(this.semTimetableFragment + '/' +
         encodeURIComponent(JSON.stringify(this.selectedModules.toJSON())));
     }
   });
