@@ -55,8 +55,6 @@ function(_, App, Backbone, Marionette, NUSMods, template, ExamCollection,
       if (options && options.settingOptions) {
         return;
       }
-      var selectedModules = this.selectedModules.toJSON();
-      localforage.setItem('selectedModules', selectedModules);
       Backbone.history.navigate('timetable/' +
         encodeURIComponent(JSON.stringify(selectedModules)));
     },
