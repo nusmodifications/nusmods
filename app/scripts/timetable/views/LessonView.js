@@ -5,7 +5,7 @@ define([
   'hbs!../templates/tooltip',
   'jquery-ui/draggable',
   'jquery-ui/droppable',
-  'jquery-ui-touch-punch-improved'
+  'jquery-ui-touch-punch'
 ], function(_, Marionette, template, tooltipTemplate) {
   'use strict';
 

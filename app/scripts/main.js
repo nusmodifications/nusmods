@@ -17,7 +17,7 @@ require.config({
     'backbone.picky': '../bower_components/backbone.picky/lib/amd/backbone.picky',
     'backbone.wreqr': '../bower_components/backbone.wreqr/lib/backbone.wreqr',
     'jquery-ui': '../bower_components/jquery.ui/ui',
-    'jquery-ui-touch-punch-improved': '../bower_components/jquery-ui-touch-punch-improved/jquery.ui.touch-punch-improved',
+    'jquery-ui-touch-punch': '../bower_components/jquery-ui-touch-punch/jquery.ui.touch-punch',
     backbone: '../bower_components/backbone/backbone',
     bootstrap: '../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap',
     hbs: '../bower_components/require-handlebars-plugin/hbs',
@@ -47,9 +47,6 @@ require.config({
     ],
     'bootstrap/transition': [
       'jquery'
-    ],
-    'jquery-ui-touch-punch-improved': [
-      'jquery-ui/mouse'
     ],
     select2: [
       'jquery'
