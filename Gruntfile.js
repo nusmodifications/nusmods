@@ -424,6 +424,23 @@ module.exports = function (grunt) {
             all: {
                 rjsConfig: '<%= yeoman.app %>/scripts/main.js'
             }
+        },
+        rsync: {
+            options: {
+                args: ['-cruv']
+            },
+            'api.nusmods.com': {
+              options: {
+                src: 'api/app/api/*',
+                dest: '~/api.nusmods.com'
+              }
+            },
+            'nusmods.com': {
+                options: {
+                    src: '<%= yeoman.dist %>/*',
+                    dest: '~/nusmods.com'
+                }
+            }
         }
     });
 
