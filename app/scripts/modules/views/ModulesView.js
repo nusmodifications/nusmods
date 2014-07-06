@@ -139,7 +139,7 @@ function(_, Marionette, NUSMods, ModuleCollection, ModulesListingView,
 
         (new FacetsView({
           collection: facets,
-          threshold: 100
+          threshold: 300
         })).render();
 
         this.modulesRegion.show(new ModulesListingView({collection: filteredModules}));
