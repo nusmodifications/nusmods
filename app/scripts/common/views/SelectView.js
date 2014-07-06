@@ -41,7 +41,7 @@ define(['underscore', 'app', 'backbone', 'backbone.marionette', 'nusmods',
         event.preventDefault();
         Backbone.history.navigate('modules/' + event.val, {trigger: true});
         this.ui.input.select2('close');
-        $('input').blur();
+        this.$(':focus').blur();
       },
 
       onShow: function () {
