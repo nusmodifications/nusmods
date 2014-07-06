@@ -378,12 +378,24 @@ module.exports = function (grunt) {
           semester: '1'
         }
       }
+    },
+    rsync: {
+      options: {
+        args: ['-cruv']
+      },
+      'api.nusmods.com': {
+        options: {
+          src: '<%= defaults.destFolder %>/*',
+          dest: '~/api.nusmods.com'
+        }
+      }
     }
   });
 
   // Ensure that cache folder is created.
   grunt.file.mkdir(grunt.config('defaults').cachePath);
 
+  grunt.loadNpmTasks('grunt-rsync');
   grunt.loadTasks('tasks');
 
   // Takes about half an hour.
