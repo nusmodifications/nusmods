@@ -8,6 +8,7 @@ server {
         location /api/ {
                 alias /home/{{ user }}/api.nusmods.com/;
                 add_header "Access-Control-Allow-Origin" "*";
+                autoindex on;
         }
         location ~ \.php$ {
                 fastcgi_split_path_info ^(.+\.php)(/.+)$;
