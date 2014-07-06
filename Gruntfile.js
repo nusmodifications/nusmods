@@ -432,7 +432,7 @@ module.exports = function (grunt) {
             'api.nusmods.com': {
               options: {
                 src: 'api/app/api/*',
-                dest: '~/api.nusmods.com'
+                dest: '~/nusmods.com/api'
               }
             },
             'nusmods.com': {
