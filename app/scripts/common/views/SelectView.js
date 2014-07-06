@@ -23,13 +23,23 @@ define(['underscore', 'app', 'backbone', 'backbone.marionette', 'nusmods',
       },
 
       onAdd: function (event) {
-        App.request('addModule', $(event.currentTarget).data('code'));
-        this.ui.input.select2('focus');
+        event.stopPropagation();
+        var button = $(event.currentTarget);
+        App.request('addModule', button.data('code'));
+        button
+          .toggleClass('add remove')
+          .prop('title', 'Remove from Timetable')
+          .children().toggleClass('fa-plus fa-times');
       },
 
       onRemove: function (event) {
-        App.request('removeModule', $(event.currentTarget).data('code'));
-        this.ui.input.select2('focus');
+        event.stopPropagation();
+        var button = $(event.currentTarget);
+        App.request('removeModule', button.data('code'));
+        button
+          .toggleClass('add remove')
+          .prop('title', 'Add to Timetable')
+          .children().toggleClass('fa-plus fa-times');
       },
 
       onSelect2Open: function () {
