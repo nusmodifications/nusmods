@@ -16,7 +16,7 @@ define(['require', 'app', 'backbone', 'backbone.marionette', 'localforage', 'jso
         require(['../views/TimetableView'],
           function (TimetableView) {
             if (!semester) {
-              return Backbone.history.navigate(semTimetableFragment, {trigger: true});
+              return Backbone.history.navigate(semTimetableFragment, {trigger: true, replace: true});
             }
             navigationItem.select();
             timetableView = new TimetableView();

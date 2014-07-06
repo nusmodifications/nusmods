@@ -77,7 +77,7 @@ define([
       new AppView();
 
       if (Backbone.history.fragment === '') {
-        Backbone.history.navigate('timetable', {trigger: true});
+        Backbone.history.navigate('timetable', {trigger: true, replace: true});
       }
     });
 
