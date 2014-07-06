@@ -20,8 +20,7 @@ define([
       },
 
       modulesChanged: function () {
-        var selectedModules = this.selectedModules.toJSON();
-        localforage.setItem('selectedModules', selectedModules);
+        localforage.setItem('selectedModules', this.selectedModules.toJSON());
       }
     });
   });

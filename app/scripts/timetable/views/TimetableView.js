@@ -56,7 +56,7 @@ function(_, App, Backbone, Marionette, NUSMods, template, ExamCollection,
         return;
       }
       Backbone.history.navigate('timetable/' +
-        encodeURIComponent(JSON.stringify(selectedModules)));
+        encodeURIComponent(JSON.stringify(this.selectedModules.toJSON())));
     },
 
     setOptions: function (options) {
