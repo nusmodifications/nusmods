@@ -81,9 +81,6 @@ define([
           });
         }
         $('.nm-help').tooltip();
-
-        // So that users can use keyboard shortcuts immediately after the page loads
-        $('input').blur();
       },
       showFullDescription: function () {
         $('.module-desc').addClass('module-desc-more');
