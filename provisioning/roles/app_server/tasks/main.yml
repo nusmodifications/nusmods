@@ -6,7 +6,6 @@
     - php5-mysql
     - python-mysqldb  # Required for mysql ansible modules
 - { include: install_dependencies.yml, sudo: no }
-- { include: build.yml, sudo: no }
 - mysql_db: name={{ yourls_db_name }}
 - mysql_user:
     name={{ yourls_db_user }}
