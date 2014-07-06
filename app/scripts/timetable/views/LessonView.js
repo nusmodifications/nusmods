@@ -3,16 +3,18 @@ define([
   'backbone.marionette',
   'hbs!../templates/lesson',
   'hbs!../templates/tooltip',
+  'hbs!../templates/table_row',
   'jquery-ui/draggable',
   'jquery-ui/droppable',
   'jquery-ui-touch-punch'
-], function(_, Marionette, template, tooltipTemplate) {
+], function(_, Marionette, template, tooltipTemplate, tableRowTemplate) {
   'use strict';
 
   var LessonView = Marionette.ItemView.extend({
     className: 'lesson',
     template: template,
     tooltipTemplate: tooltipTemplate,
+    tableRow: $(tableRowTemplate()),
 
     modelEvents: {
       'change:display': function (model, display) {
@@ -87,7 +89,7 @@ define([
       for (var i = 0; i <= rows.length; i++) {
         var row = rows[i];
         if (i === rows.length) {
-          row = this.options.parentView.TR.clone()
+          row = this.tableRow.clone()
             .appendTo(this.options.parentView.$('#' + this.model.get('dayAbbrev')));
           $(rows[0]).children().first().attr('rowspan', i + 1);
         }

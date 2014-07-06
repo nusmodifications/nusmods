@@ -23,10 +23,6 @@ define(['underscore', 'backbone.marionette', './LessonView', 'hbs!../templates/t
       colgroups: 'colgroup'
     },
 
-    initialize: function() {
-      this.TR = this.$('#mon > tr:last-child').clone();
-    },
-
     mouseMove: function(evt) {
       if (!this.colX) {
         this.colX = this.$('#mon > tr:last-child > td')
