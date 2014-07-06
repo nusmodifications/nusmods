@@ -12,6 +12,7 @@ require.config({
     }
   ],
   paths: {
+    'backbone.analytics': '../bower_components/backbone.analytics/backbone.analytics',
     'backbone.babysitter': '../bower_components/backbone.babysitter/lib/backbone.babysitter',
     'backbone.marionette': '../bower_components/backbone.marionette/lib/core/backbone.marionette',
     'backbone.picky': '../bower_components/backbone.picky/lib/amd/backbone.picky',
@@ -32,6 +33,9 @@ require.config({
     zeroclipboard: '../bower_components/zeroclipboard/dist/ZeroClipboard'
   },
   shim: {
+    'backbone.analytics': [
+      'backbone'
+    ],
     'bootstrap/button': [
       'jquery'
     ],

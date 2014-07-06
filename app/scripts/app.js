@@ -8,6 +8,7 @@ define([
   'localforage',
   'nusmods',
   'json!config.json',
+  'backbone.analytics',
   'qtip2'
 ], function (_, Backbone, Marionette, NavigationCollection,
              SelectedModulesController, NavigationView,
