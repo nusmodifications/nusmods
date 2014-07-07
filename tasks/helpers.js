@@ -4,6 +4,7 @@ var fs = require('graceful-fs');
 var path = require('path');
 var replay = require('request-replay');
 var request = require('request');
+request = request.defaults({jar: true});
 
 // Convert URL to equivalent valid filename.
 var cachePath = function (urlStr, options) {

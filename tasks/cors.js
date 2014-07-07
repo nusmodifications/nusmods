@@ -35,7 +35,7 @@ module.exports = function (grunt) {
 
         var urlDeptPattern = /(ModuleD.+)">([^<]+)[\s\S]+?> (.*)<\/div>\s*<\/td>\s*<\/?tr/g;
         var urlDeptMatches = helpers.matches(urlDeptPattern, data);
-        async.map(urlDeptMatches, function (match, callback) {
+        async.mapSeries(urlDeptMatches, function (match, callback) {
           helpers.requestCached(options.baseUrl + match[1], options, function (err, data) {
             if (err) {
               return callback(err);
