@@ -78,6 +78,7 @@ a {
     color: $text-color;
   }
   &.icon:hover {
+    color: #666;
     text-decoration: none;
   }
   &:hover {
@@ -399,6 +400,11 @@ colgroup.hover {
 }
 .clash {
   color: red !important;
+}
+.nm-timetable-action {
+  a {
+    margin-right: 5px;
+  }
 }
 
 // Corspedia 
