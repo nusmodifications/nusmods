@@ -34,12 +34,7 @@ define(['app', 'backbone', 'nusmods', 'mousetrap', '../utils/modulify', 'undersc
           // `Backbone.history.navigate` is sufficient for all Routers and will
           // trigger the correct events. The Router's internal `navigate` method
           // calls this anyways.  The fragment is sliced from the root.
-          Backbone.history.navigate(href.attr, {trigger: true});
-
-          // Hack: Scroll to top of page after navigation
-          setTimeout(function () {
-            window.scrollTo(0, 0);
-          }, 0);
+          this.navigateWithScrollTop(href.attr, true);
         }
       }
     },
@@ -81,6 +76,8 @@ define(['app', 'backbone', 'nusmods', 'mousetrap', '../utils/modulify', 'undersc
         r: '/modules/<module>/reviews'
       };
 
+      var that = this;
+      
       _.each(keyboardNavigationMappings, function (value, key) {
         Mousetrap.bind(key, function () {
           var modulePage, moduleCode;
@@ -89,10 +86,18 @@ define(['app', 'backbone', 'nusmods', 'mousetrap', '../utils/modulify', 'undersc
             moduleCode = modulify.getModuleFromString(window.location.href);
           }
           if (moduleCode || !modulePage) {
-            Backbone.history.navigate(value.replace('<module>', moduleCode ? moduleCode : ''), {trigger: true});
+            that.navigateWithScrollTop(value.replace('<module>', moduleCode ? moduleCode : ''), true);
           }
         });
       });
+    },
+
+    navigateWithScrollTop: function (location, trigger) {
+      Backbone.history.navigate(location, {trigger: trigger});
+      // Hack: Scroll to top of page after navigation
+      setTimeout(function () {
+        window.scrollTo(0, 0);
+      }, 0);
     }
   });
 });
