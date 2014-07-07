@@ -41,7 +41,7 @@ function(Marionette, template) {
         timezone: 'SGT',
         noframes: 'Your browser has disabled iframes. Why?!',
         anonymous: 0,
-        minimal: 1,
+        minimal: 0,
         width: '100%',
         height: 500,
         welcome: 'Welcome to NUSMods Support! Feel free to leave comments or feedback here.'
