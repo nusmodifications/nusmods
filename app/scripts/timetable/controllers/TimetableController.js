@@ -1,5 +1,6 @@
-define(['require', 'underscore', 'app', 'backbone', 'backbone.marionette', 'localforage', 'json!config.json'],
-  function (require, _, App, Backbone, Marionette, localforage, config) {
+define(['require', 'underscore', 'app', 'backbone', 'backbone.marionette',
+    'localforage', 'json!config.json', 'vendor/node-querystring'],
+  function (require, _, App, Backbone, Marionette, localforage, config, qs) {
     'use strict';
 
     var navigationItem = App.request('addNavigationItem', {
@@ -11,19 +12,19 @@ define(['require', 'underscore', 'app', 'backbone', 'backbone.marionette', 'loca
     var semTimetableFragment = 'timetable/' + config.academicYear.replace('/', '-') + '/sem' + config.semester;
 
     return Marionette.Controller.extend({
-      showTimetable: function (academicYear, semester, options) {
+      showTimetable: function (academicYear, semester, queryString) {
         require(['../views/TimetableView'],
           function (TimetableView) {
             if (!semester) {
               return Backbone.history.navigate(semTimetableFragment, {trigger: true, replace: true});
             }
             navigationItem.select();
-            if (options) {
+            if (queryString) {
               var selectedModules = App.request('selectedModules');
               var timetable = selectedModules.timetable;
               timetable.reset();
               var selectedCodes = selectedModules.pluck('ModuleCode');
-              var routeModules = JSON.parse(decodeURIComponent(options));
+              var routeModules = selectedModules.fromQueryString(queryString);
               var routeCodes = _.pluck(routeModules, 'ModuleCode');
               _.each(_.difference(selectedCodes, routeCodes), function (code) {
                 selectedModules.remove(selectedModules.get(code));
