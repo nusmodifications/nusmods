@@ -57,8 +57,8 @@ function(_, App, Backbone, Marionette, NUSMods, template, ExamCollection,
 
     modulesChanged: function (model, collection, options) {
       if (this.selectedModules.length) {
-        Backbone.history.navigate(this.semTimetableFragment + '/' +
-          encodeURIComponent(JSON.stringify(this.selectedModules.toJSON())), options);
+        Backbone.history.navigate(this.semTimetableFragment + '?' +
+          this.selectedModules.toQueryString(), options);
       } else {
         Backbone.history.navigate(this.semTimetableFragment, options);
       }

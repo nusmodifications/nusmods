@@ -10,7 +10,7 @@ define([
       new Marionette.AppRouter({
         controller: new TimetableController(),
         appRoutes: {
-          'timetable(/:academicYear/sem:semester)(/:options)': 'showTimetable'
+          'timetable(/:academicYear/sem:semester)': 'showTimetable'
         }
       });
     });

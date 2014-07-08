@@ -70,17 +70,17 @@ define([
       'support'
     ], function (AppView) {
       localforage.getItem('selectedModules').then(function (selectedModules) {
-        _.each(selectedModules, function (module) {
-          App.request('addModule', module.ModuleCode, module);
+        $.when.apply($, _.map(selectedModules, function (module) {
+          return App.request('addModule', module.ModuleCode, module).promise;
+        })).then(function () {
+          Backbone.history.start({pushState: true});
+
+          new AppView();
+
+          if (Backbone.history.fragment === '') {
+            Backbone.history.navigate('timetable', {trigger: true, replace: true});
+          }
         });
-
-        Backbone.history.start({pushState: true});
-
-        new AppView();
-
-        if (Backbone.history.fragment === '') {
-          Backbone.history.navigate('timetable', {trigger: true, replace: true});
-        }
       });
     });
 
