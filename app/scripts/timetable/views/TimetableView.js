@@ -31,6 +31,10 @@ function(_, App, Backbone, Marionette, NUSMods, template, ExamCollection,
       urlSharingRegion: '.url-sharing-region'
     },
 
+    initialize: function (options) {
+      this.semTimetableFragment = options.semTimetableFragment;
+    },
+
     onShow: function() {
       this.selectedModules = App.request('selectedModules');
       this.timetable = this.selectedModules.timetable;
@@ -48,11 +52,16 @@ function(_, App, Backbone, Marionette, NUSMods, template, ExamCollection,
       this.showHideRegion.show(new ShowHideView());
       this.timetableRegion.show(new TimetableView({collection: this.timetable}));
       this.urlSharingRegion.show(new UrlSharingView());
+      this.modulesChanged(null, null, {replace: true});
     },
 
-    modulesChanged: function () {
-      Backbone.history.navigate('timetable/' +
-        encodeURIComponent(JSON.stringify(this.selectedModules.toJSON())));
+    modulesChanged: function (model, collection, options) {
+      if (this.selectedModules.length) {
+        Backbone.history.navigate(this.semTimetableFragment + '/' +
+          encodeURIComponent(JSON.stringify(this.selectedModules.toJSON())), options);
+      } else {
+        Backbone.history.navigate(this.semTimetableFragment, options);
+      }
     }
   });
 });

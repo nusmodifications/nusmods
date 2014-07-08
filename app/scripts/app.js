@@ -57,12 +57,6 @@ define([
     });
   });
 
-  localforage.getItem('selectedModules', function (selectedModules) {
-    _.each(selectedModules, function (module) {
-      App.request('addModule', module.ModuleCode, module);
-    });
-  });
-
   App.on('start', function () {
     require([
       'common/views/AppView',
@@ -74,13 +68,19 @@ define([
       'about',
       'support'
     ], function (AppView) {
-      Backbone.history.start({pushState: true});
+      localforage.getItem('selectedModules').then(function (selectedModules) {
+        _.each(selectedModules, function (module) {
+          App.request('addModule', module.ModuleCode, module);
+        });
 
-      new AppView();
+        Backbone.history.start({pushState: true});
 
-      if (Backbone.history.fragment === '') {
-        Backbone.history.navigate('timetable', {trigger: true, replace: true});
-      }
+        new AppView();
+
+        if (Backbone.history.fragment === '') {
+          Backbone.history.navigate('timetable', {trigger: true, replace: true});
+        }
+      });
     });
 
     var $body = $('body');

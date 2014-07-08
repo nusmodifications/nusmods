@@ -1,5 +1,5 @@
-define(['underscore', 'backbone.marionette', 'zeroclipboard', 'hbs!../templates/url_sharing', 'qtip2'],
-  function (_, Marionette, ZeroClipboard, template) {
+define(['underscore', 'app', 'backbone.marionette', 'zeroclipboard', 'hbs!../templates/url_sharing', 'qtip2'],
+  function (_, App, Marionette, ZeroClipboard, template) {
     'use strict';
 
     return Marionette.ItemView.extend({
@@ -72,7 +72,17 @@ define(['underscore', 'backbone.marionette', 'zeroclipboard', 'hbs!../templates/
         });
       },
 
+      modulesChanged: function () {
+        this.shortUrlPromise = null;
+        this.ui.input.val('');
+      },
+
       onShow: function () {
+        var selectedModules = App.request('selectedModules');
+
+        this.listenTo(selectedModules, 'add remove', this.modulesChanged);
+        this.listenTo(selectedModules.timetable, 'change', this.modulesChanged);
+
         var ui = this.ui;
 
         this.clip = new ZeroClipboard(ui.copyToClipboard);
