@@ -15,25 +15,21 @@ define([
     var searchPreferences = {};
 
     function drawTree(data, toggle) {
-            var interact,
-                SVGWidth,
-                SVGHeight = 550;
-            d3.selectAll("svg").remove();
 
-            SVGWidth = $("#Tree").width();
+            var SVGWidth = $("#Tree").width();
+            var SVGHeight = 550;
+            var pathColor = $('body').attr('data-mode') === 'default' ? '#000' : '#fff';
+
+            d3.selectAll("svg").remove();
+            
             var canvas = d3.select('#Tree')
                 .append("svg")
                 .attr("id", "svg")
                 .attr("width", SVGWidth)
                 .attr("height", SVGHeight)
-                .attr("style", "cursor: move; z-index: -999;"),
-                border = canvas.append("rect")
-                    .attr("width", SVGWidth)
-                    .attr("height", SVGHeight)
-                    .attr("stroke", "black")
-                    .attr("stroke-width", 5)
-                    .attr("fill", "none");
-            interact = d3.behavior.zoom()
+                .attr("style", "cursor: move; z-index: -999;");
+            
+            var interact = d3.behavior.zoom()
                 .scaleExtent([0.3, 5.0])
                 .on("zoom", zoom);
 
@@ -49,22 +45,6 @@ define([
             }
 
             var aspect = $("#svg").width() / $("#svg").height();
-            $(window).on("resize", function() {
-              console.log("In");
-                SVGWidth = $('#Tree').parent().width() - 10;
-                d3.select("#svg")
-                    .attr("width", SVGWidth);
-                border.attr("width", SVGWidth);
-                var translation = [(SVGWidth) / 2, 75]
-                interact.translate(translation);
-                d3.select("#drawarea")
-                    .transition()
-                    .delay(1)
-                    .attr("transform", "translate(" + translation + ")" +
-                        " scale(" + interact.scale() + ")");
-
-            }).trigger("resize");
-
 
             var tree = d3.layout.tree()
                 .nodeSize([130, 130]);
@@ -85,7 +65,7 @@ define([
                 .append("path")
                 .attr("class", "link")
                 .attr("fill", "none")
-                .attr("stroke", "black")
+                .attr("stroke", pathColor)
                 .attr("opacity", 0)
                 .attr("d", diagonal);
 
@@ -151,11 +131,6 @@ define([
                     return "";
                 })
                 .attr("text-anchor", "middle")
-                .attr("text-decoration", function(d) {
-                    if (d.name == 'or' || d.name == 'and')
-                        return ""
-                    return "underline";
-                })
                 .attr("class", "lead");
 
             node.selectAll("rect")
@@ -183,11 +158,12 @@ define([
             node.selectAll("text")
                 .transition()
                 .duration(500)
-                .style("fill", "black")
+                .style("fill", pathColor)
                 .style("opacity", 1)
+                .style('cursor', 'pointer')
                 .attr("style", function(d) {
                     if (d.name == 'or' || d.name == 'and')
-                        return "cursor:default; font-size: 50px;"
+                        return "font-size: 50px;"
                 })
                 .each("end", function() {
                     node.on("mouseout", function() {
@@ -276,7 +252,8 @@ define([
                                         return 0;
                                     else
                                         return 0.3;
-                                });
+                                })
+                                .attr("style", 'cursor:pointer');
                             node.selectAll("text")
                                 .transition()
                                 .style("opacity", 0.3);
@@ -299,6 +276,21 @@ define([
                         }
                     });
                 });
+
+            $(window).on("resize", function() {
+                console.log("In");
+                SVGWidth = $('#Tree').parent().width() - 10;
+                d3.select("#svg")
+                    .attr("width", SVGWidth);
+                var translation = [(SVGWidth) / 2, 75]
+                interact.translate(translation);
+                d3.select("#drawarea")
+                    .transition()
+                    .delay(1)
+                    .attr("transform", "translate(" + translation + ")" +
+                        " scale(" + interact.scale() + ")");
+
+            }).trigger("resize");
         }
 
     return Marionette.LayoutView.extend({
