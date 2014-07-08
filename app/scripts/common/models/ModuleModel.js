@@ -86,6 +86,21 @@ define(['backbone', 'underscore', 'common/utils/padTwo', 'common/utils/modulify'
             'Laboratory',
             'Recitation'
           ];
+
+          var PLURALIZED_LESSON_TYPES = {
+            'Lecture': 'Lectures',
+            'Sectional Teaching': 'Sectional Teachings',
+            'Seminar-Style Module Class': 'Seminar-Style Module Classes',
+            'Packaged Lecture': 'Packaged Lectures',
+            'Packaged Tutorial': 'Packaged Tutorials',
+            'Tutorial': 'Tutorials',
+            'Tutorial Type 2': 'Tutorial Type 2',
+            'Tutorial Type 3': 'Tutorial Type 3',
+            'Design Lecture': 'Design Lectures',
+            'Laboratory': 'Laboratories',
+            'Recitation': 'Recitations'
+          };
+
           timetableTypes = _.sortBy(timetableTypes, function (type) {
             return AVAILABLE_TYPES.indexOf(type);
           });
@@ -102,7 +117,7 @@ define(['backbone', 'underscore', 'common/utils/padTwo', 'common/utils/modulify'
               delete lesson.LessonType;
             });
             formattedTimetable.push({
-              LessonType: type,
+              LessonType: PLURALIZED_LESSON_TYPES[type],
               Lessons: lessons
             });
           });
