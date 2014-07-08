@@ -60,6 +60,7 @@ define([
             this.timetable.add(lessons.where(lesson));
           }, this);
           this.timetable.trigger('change');
+          return module;
         }, this));
       },
 
