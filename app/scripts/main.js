@@ -22,6 +22,7 @@ require.config({
     'jquery-ui-touch-punch': '../bower_components/jquery-ui-touch-punch/jquery.ui.touch-punch',
     backbone: '../bower_components/backbone/backbone',
     bootstrap: '../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap',
+    d3: '../bower_components/d3/d3',
     hbs: '../bower_components/require-handlebars-plugin/hbs',
     jquery: '../bower_components/jquery/dist/jquery',
     json: '../bower_components/requirejs-plugins/src/json',

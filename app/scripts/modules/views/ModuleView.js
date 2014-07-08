@@ -2,16 +2,307 @@ define([
     'app',
     'backbone',
     'backbone.marionette',
+    'd3',
     'hbs!../templates/module',
     'underscore',
     'localforage',
     './BiddingStatsView',
     'bootstrap/tooltip'
   ],
-  function (App, Backbone, Marionette, template, _, localforage, BiddingStatsView) {
+  function (App, Backbone, Marionette, d3, template, _, localforage, BiddingStatsView) {
     'use strict';
 
     var searchPreferences = {};
+
+    function drawTree(data, toggle) {
+            var interact,
+                SVGWidth,
+                SVGHeight = 550;
+            d3.selectAll("svg").remove();
+
+            SVGWidth = $("#Tree").width();
+            var canvas = d3.select('#Tree')
+                .append("svg")
+                .attr("id", "svg")
+                .attr("width", SVGWidth)
+                .attr("height", SVGHeight)
+                .attr("style", "cursor: move; z-index: -999;"),
+                border = canvas.append("rect")
+                    .attr("width", SVGWidth)
+                    .attr("height", SVGHeight)
+                    .attr("stroke", "black")
+                    .attr("stroke-width", 5)
+                    .attr("fill", "none");
+            interact = d3.behavior.zoom()
+                .scaleExtent([0.3, 5.0])
+                .on("zoom", zoom);
+
+            canvas = canvas.append("g")
+                .attr("id", "drawarea");
+
+            interact(d3.select("svg"));
+
+            function zoom() {
+                d3.select("#drawarea")
+                    .attr("transform", "translate(" + d3.event.translate + ")" +
+                        " scale(" + d3.event.scale + ")");
+            }
+
+            var aspect = $("#svg").width() / $("#svg").height();
+            $(window).on("resize", function() {
+              console.log("In");
+                SVGWidth = $('#Tree').parent().width() - 10;
+                d3.select("#svg")
+                    .attr("width", SVGWidth);
+                border.attr("width", SVGWidth);
+                var translation = [(SVGWidth) / 2, 75]
+                interact.translate(translation);
+                d3.select("#drawarea")
+                    .transition()
+                    .delay(1)
+                    .attr("transform", "translate(" + translation + ")" +
+                        " scale(" + interact.scale() + ")");
+
+            }).trigger("resize");
+
+
+            var tree = d3.layout.tree()
+                .nodeSize([130, 130]);
+
+            var nodes = tree.nodes(data);
+            var links = tree.links(nodes);
+
+            var node = canvas.selectAll(".node")
+                .data(nodes)
+                .enter()
+                .append("g")
+                .attr("class", "node")
+                .attr("transform", function(d) {
+                    return "translate(" + d.x + "," + d.y + ")";
+                });
+
+            var diagonal = d3.svg.diagonal()
+                .projection(function(d) {
+                    return [d.x, d.y];
+                });
+            var x, y;
+            canvas.selectAll(".link")
+                .data(links)
+                .enter()
+                .append("path")
+                .attr("class", "link")
+                .attr("fill", "none")
+                .attr("stroke", "black")
+                .attr("opacity", 0)
+                .attr("d", diagonal);
+
+            var rectangles = node.append("rect")
+                .attr("width", 0)
+                .attr("height", 0)
+                .attr("x", function(d) {
+                    if (d.name == 'or' || d.name == 'and') {
+                        return -25;
+                    } else
+                        return -50;
+                })
+                .attr("y", function(d) {
+                    if (d.name == 'or' || d.name == 'and') {
+                        return -17.5;
+                    } else
+                        return -35;
+                })
+                .attr("rx", 20)
+                .attr("ry", 20)
+                .attr("stroke", "black")
+                .attr("stroke-width", 1.5)
+                .attr("opacity", function(d) {
+                    if (d.name == 'or' || d.name == 'and') {
+                        return 0;
+                    } else
+                        return 1;
+                })
+                .attr("nodeValue", function(d) {
+                    return d.name;
+                })
+                .attr("fill", function(d) {
+                    if (d['done'])
+                        return "red";
+                    else if (d['prec'])
+                        return "yellow";
+                    else
+                        return "steelblue";
+                })
+                .attr("style", function(d) {
+                    if (d.name == 'or' || d.name == 'and')
+                        return "cursor:default"
+                });
+
+            var labels = node.append("text")
+                .text(function(d) {
+                    return d.name;
+                })
+                .style("fill", "none")
+                .style("opacity", 0)
+                .attr("dy", function(d) {
+                    if (d.name == 'or' || d.name == 'and')
+                        return "10";
+                    return "";
+                })
+                .attr("text-anchor", "middle")
+                .attr("text-decoration", function(d) {
+                    if (d.name == 'or' || d.name == 'and')
+                        return ""
+                    return "underline";
+                })
+                .attr("class", "lead");
+
+            node.selectAll("rect")
+                .transition()
+                .duration(1000)
+                .attr("width", function(d) {
+                    if (d.name == 'or' || d.name == 'and')
+                        return 50;
+                    else
+                        return 100;
+                })
+                .attr("height", function(d) {
+                    if (d.name == 'or' || d.name == 'and')
+                        return 35;
+                    else
+                        return 70;
+                })
+                .ease("elastic");
+
+            canvas.selectAll("path")
+                .transition()                
+                .duration(500)
+                .attr("opacity", 1);
+
+            node.selectAll("text")
+                .transition()
+                .duration(500)
+                .style("fill", "black")
+                .style("opacity", 1)
+                .attr("style", function(d) {
+                    if (d.name == 'or' || d.name == 'and')
+                        return "cursor:default; font-size: 50px;"
+                })
+                .each("end", function() {
+                    node.on("mouseout", function() {
+                        node.selectAll("rect")
+                            .transition()
+                            .attr("fill", function(d) {
+                                if (d['done'])
+                                    return "red";
+                                else if (d['prec'])
+                                    return "yellow";
+                                else
+                                    return "steelblue";
+                            })
+                            .attr("height", function(d) {
+                                if (d.name == 'or' || d.name == 'and')
+                                    return 35;
+                                else
+                                    return 70;
+                            })
+                            .attr("y", function(d) {
+                                if (d.name == 'or' || d.name == 'and')
+                                    return -17.5;
+                                else
+                                    return -35;
+                            })
+                            .attr("x", function(d) {
+                                if (d.name == 'or' || d.name == 'and')
+                                    return -25;
+                                else
+                                    return -50;
+                            })
+                            .attr("width", function(d) {
+                                if (d.name == 'or' || d.name == 'and')
+                                    return 50;
+                                else
+                                    return 100;
+                            })
+                            .attr("opacity", function(d) {
+                                if (d.name == 'and' || d.name == 'or')
+                                    return 0;
+                                else
+                                    return 1;
+                            });
+                        node.selectAll("text")
+                            .transition()
+                            .style("opacity", 1);
+                    });
+                    node.on("mouseover", function(d) {
+                        if (d.name != 'and' && d.name != 'or') {
+                            node.selectAll("rect")
+                                .transition()
+                                .attr("fill", function(d) {
+                                    if (d['done'])
+                                        return "red";
+                                    else if (d['prec'])
+                                        return "yellow";
+                                    else
+                                        return "steelblue";
+                                })
+                                .attr("height", function(d) {
+                                    if (d.name == 'and' || d.name == 'or')
+                                        return 35;
+                                    else
+                                        return 70;
+                                })
+                                .attr("y", function(d) {
+                                    if (d.name == 'and' || d.name == 'or')
+                                        return -17.5;
+                                    else
+                                        return -35;
+                                })
+                                .attr("x", function(d) {
+                                    if (d.name == 'and' || d.name == 'or')
+                                        return -25;
+                                    else
+                                        return -50;
+                                })
+                                .attr("width", function(d) {
+                                    if (d.name == 'and' || d.name == 'or')
+                                        return 50;
+                                    else
+                                        return 100;
+                                })
+                                .attr("opacity", function(d) {
+                                    if (d.name == 'and' || d.name == 'or')
+                                        return 0;
+                                    else
+                                        return 0.3;
+                                });
+                            node.selectAll("text")
+                                .transition()
+                                .style("opacity", 0.3);
+                            d3.select(this)
+                                .select("text")
+                                .transition()
+                                .style("opacity", 1);
+
+                            d3.select(this)
+                                .select("rect")
+                                .transition()
+                                .attr("fill", "green")
+                                .attr("height", 100)
+                                .attr("y", -50)
+                                .attr("x", -75)
+                                .attr("width", 150)
+                                .attr("opacity", 0.8);
+
+                            node.on("click", function(d) {
+                                if (d.name != 'and' && d.name != 'or') {
+                                    var currMod = d3.select(this).text();
+                                    console.log(currMod);
+                                }
+                            });
+                        }
+                    });
+                });
+        }
 
     return Marionette.LayoutView.extend({
       template: template,
@@ -20,6 +311,14 @@ define([
       },
       initialize: function () {
 
+        if (this.model.get('section') === 'modmaven') {
+          var module = this.model.get('module').ModuleCode;
+          $.getJSON("http://nusmodmaven.appspot.com/gettree?modName=" + module)
+              .done(function(data) {
+                  drawTree(data, false);
+              });
+        }
+        
         if (this.model.get('section') === 'corspedia') {
           var formElements = {
             'faculty': '#faculty',
@@ -146,16 +445,16 @@ define([
 
         this.biddingStatsRegion.show(biddingStatsView);
       },
-      savePreference: function (property, value) {
-        if (property === 'faculty' && value === 'default') {
-          alert('You have to select a faculty.');
-          localforage.getItem(property, function (value) {
-            $('#faculty').val(value);
-          });
-          return false;
-        }
-        localforage.setItem(property, value);
-        return true;
+      savePreference: function(property, value) {
+          if (property === 'faculty' && value === 'default') {
+              alert('You have to select a faculty.');
+              localforage.getItem(property, function(value) {
+                  $('#faculty').val(value);
+              });
+              return false;
+          }
+          localforage.setItem(property, value);
+          return true;
       }
-    });
   });
+});

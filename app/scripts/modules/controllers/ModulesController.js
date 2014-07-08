@@ -22,6 +22,12 @@ define(['underscore', 'require', 'app', 'backbone.marionette'],
         'active': false
       },
       {
+        'sectionType': 'modmaven',
+        'tabTitle': 'ModMaven',
+        'sectionTitle': 'Prerequisite Tree',
+        'active': false
+      },
+      {
         'sectionType': 'reviews',
         'tabTitle': 'Reviews & Discussions',
         'sectionTitle': 'Reviews & Discussions',
