@@ -4,5 +4,5 @@ dist
 .sass-cache
 .vagrant
 app/bower_components
-vendor
+app/vendor
 .DS_Store
