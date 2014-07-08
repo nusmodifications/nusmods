@@ -29,13 +29,13 @@ define(['underscore', 'nusmods'], function (_, NUSMods) {
     },
     linkifyModules: function (desc) {
       if (!allModuleCodes) {
-        allModuleCodes = _.keys(NUSMods.getAllModules());
+        allModuleCodes = NUSMods.getAllModules();
       }
 
       var matchedModules = this.matchModules(desc);
       if (desc && matchedModules.length) {
         for (var i = matchedModules.length - 1; i >= 0; i--) {
-          if (allModuleCodes.indexOf(matchedModules[i].module) > -1) {
+          if (allModuleCodes[matchedModules[i].module]) {
             var startingIndex = matchedModules[i].index;
             var length = matchedModules[i].length;
             var endingIndex = startingIndex + length;
