@@ -5,3 +5,4 @@ dist
 .vagrant
 app/bower_components
 vendor
+.DS_Store
