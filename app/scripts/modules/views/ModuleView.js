@@ -72,14 +72,7 @@ define([
             var nodes = tree.nodes(data);
             var links = tree.links(nodes);
 
-            var node = canvas.selectAll(".node")
-                .data(nodes)
-                .enter()
-                .append("g")
-                .attr("class", "node")
-                .attr("transform", function(d) {
-                    return "translate(" + d.x + "," + d.y + ")";
-                });
+            
 
             var diagonal = d3.svg.diagonal()
                 .projection(function(d) {
@@ -95,6 +88,15 @@ define([
                 .attr("stroke", "black")
                 .attr("opacity", 0)
                 .attr("d", diagonal);
+
+            var node = canvas.selectAll(".node")
+                .data(nodes)
+                .enter()
+                .append("g")
+                .attr("class", "node")
+                .attr("transform", function(d) {
+                    return "translate(" + d.x + "," + d.y + ")";
+                });
 
             var rectangles = node.append("rect")
                 .attr("width", 0)
@@ -130,7 +132,7 @@ define([
                     else if (d['prec'])
                         return "yellow";
                     else
-                        return "steelblue";
+                        return "#f60";
                 })
                 .attr("style", function(d) {
                     if (d.name == 'or' || d.name == 'and')
@@ -141,7 +143,7 @@ define([
                 .text(function(d) {
                     return d.name;
                 })
-                .style("fill", "none")
+                .style("fill", "#ccc")
                 .style("opacity", 0)
                 .attr("dy", function(d) {
                     if (d.name == 'or' || d.name == 'and')
@@ -197,7 +199,7 @@ define([
                                 else if (d['prec'])
                                     return "yellow";
                                 else
-                                    return "steelblue";
+                                    return "#f60";
                             })
                             .attr("height", function(d) {
                                 if (d.name == 'or' || d.name == 'and')
@@ -243,7 +245,7 @@ define([
                                     else if (d['prec'])
                                         return "yellow";
                                     else
-                                        return "steelblue";
+                                        return "#f60";
                                 })
                                 .attr("height", function(d) {
                                     if (d.name == 'and' || d.name == 'or')
@@ -286,12 +288,7 @@ define([
                             d3.select(this)
                                 .select("rect")
                                 .transition()
-                                .attr("fill", "green")
-                                .attr("height", 100)
-                                .attr("y", -50)
-                                .attr("x", -75)
-                                .attr("width", 150)
-                                .attr("opacity", 0.8);
+                                .attr("fill", "#ccc");
 
                             node.on("click", function(d) {
                                 if (d.name != 'and' && d.name != 'or') {
