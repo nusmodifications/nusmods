@@ -14,8 +14,18 @@
 
   var semBaseUrl;
   var moduleInformationPromise, moduleListPromise;
+  var moduleCodes;
 
   return {
+    getAllModules: function () {
+      return moduleCodes;
+    },
+    generateModuleCodes: function () {
+      moduleListPromise = moduleListPromise || $.getJSON(semBaseUrl + 'moduleList.json');
+      moduleListPromise.then(function () {
+        moduleCodes = moduleListPromise.responseJSON;
+      });
+    },
     getCorrectAsAt: function (callback) {
       moduleListPromise = moduleListPromise || $.getJSON(semBaseUrl + 'moduleList.json');
       return moduleListPromise.then(function () {
