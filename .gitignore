@@ -1,8 +1,8 @@
-node_modules
-dist
-.tmp
+.DS_Store
 .sass-cache
+.tmp
 .vagrant
 app/bower_components
 app/vendor
-.DS_Store
+dist
+node_modules
