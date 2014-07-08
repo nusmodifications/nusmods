@@ -32,6 +32,7 @@ define([
   });
 
   NUSMods.setConfig(config);
+  NUSMods.generateModuleCodes();
 
   var selectedModulesController = new SelectedModulesController();
   App.reqres.setHandler('selectedModules', function () {
