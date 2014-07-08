@@ -73,11 +73,11 @@ define([
         $.when.apply($, _.map(selectedModules, function (module) {
           return App.request('addModule', module.ModuleCode, module).promise;
         })).then(function () {
-          Backbone.history.start({pushState: true});
-
           new AppView();
 
-          if (Backbone.history.fragment === '') {
+          // Backbone.history.start returns false if no defined route matches
+          // the current URL, so navigate to timetable by default.
+          if (!Backbone.history.start({pushState: true})) {
             Backbone.history.navigate('timetable', {trigger: true, replace: true});
           }
         });
