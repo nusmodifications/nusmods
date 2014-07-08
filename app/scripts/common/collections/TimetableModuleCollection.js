@@ -26,7 +26,7 @@ define([
         var color = this.colors.splice(Math.floor(Math.random() * this.colors.length), 1)[0];
         module.set('color', color);
 
-        NUSMods.getMod(module.id).then(_.bind(function (mod) {
+        module.promise = NUSMods.getMod(module.id).then(_.bind(function (mod) {
           var selectedLessons = options.selectedLessons;
           var lessons = new LessonCollection();
           module.set('lessons', lessons);
