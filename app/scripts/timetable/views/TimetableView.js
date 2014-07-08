@@ -52,10 +52,10 @@ function(_, App, Backbone, Marionette, NUSMods, template, ExamCollection,
       this.showHideRegion.show(new ShowHideView());
       this.timetableRegion.show(new TimetableView({collection: this.timetable}));
       this.urlSharingRegion.show(new UrlSharingView());
-      this.modulesChanged({replace: true});
+      this.modulesChanged(null, null, {replace: true});
     },
 
-    modulesChanged: function (options) {
+    modulesChanged: function (model, collection, options) {
       if (this.selectedModules.length) {
         Backbone.history.navigate(this.semTimetableFragment + '/' +
           encodeURIComponent(JSON.stringify(this.selectedModules.toJSON())), options);
