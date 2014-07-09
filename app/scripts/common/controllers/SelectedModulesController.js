@@ -22,7 +22,8 @@ define([
       },
 
       modulesChanged: function () {
-        localforage.setItem('selectedModules', this.selectedModules.toJSON());
+        localforage.setItem(config.semTimetableFragment +
+          ':selectedModulesQueryString', this.selectedModules.toQueryString());
       }
     });
   });
