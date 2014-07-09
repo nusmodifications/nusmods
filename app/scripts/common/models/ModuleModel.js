@@ -1,5 +1,5 @@
-define(['backbone', 'underscore', 'common/utils/padTwo', 'common/utils/modulify'],
-  function(Backbone, _, padTwo, modulify) {
+define(['backbone', 'underscore', 'common/utils/padTwo', 'common/utils/modulify', 'json!config.json'],
+  function(Backbone, _, padTwo, modulify, config) {
     'use strict';
 
     // Convert exam in ISO format to 12-hour date/time format. We slice off the
@@ -159,6 +159,8 @@ define(['backbone', 'underscore', 'common/utils/padTwo', 'common/utils/modulify'
         }
 
         this.set('examStr', examStr(this.get('ExamDate')));
+
+        this.set('IVLELink', config.ivleUrl.replace('<ModuleCode>', this.get('ModuleCode')));
       }
     });
   });
