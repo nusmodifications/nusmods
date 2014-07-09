@@ -1,5 +1,6 @@
-define(['app', 'backbone', 'nusmods', 'mousetrap', '../utils/modulify', 'underscore', 'common/views/SelectView'],
-  function (App, Backbone, NUSMods, Mousetrap, modulify, _, SelectView) {
+define(['app', 'backbone', 'nusmods', 'mousetrap', '../utils/modulify', 
+    'underscore', 'common/views/SelectView', '../utils/themePicker'],
+  function (App, Backbone, NUSMods, Mousetrap, modulify, _, SelectView, themePicker) {
   'use strict';
 
   return Backbone.View.extend({
@@ -89,6 +90,10 @@ define(['app', 'backbone', 'nusmods', 'mousetrap', '../utils/modulify', 'undersc
             that.navigateWithScrollTop(value.replace('<module>', moduleCode ? moduleCode : ''), true);
           }
         });
+      });
+
+      Mousetrap.bind(['left', 'right'], function (e) {
+        themePicker.selectNextTheme(e.keyIdentifier);
       });
     },
 
