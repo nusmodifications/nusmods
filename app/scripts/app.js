@@ -61,6 +61,7 @@ define([
   App.on('start', function () {
     require([
       'common/views/AppView',
+      'common/collections/TimetableModuleCollection',
       // 'ivle',
       'modules',
       'timetable',
@@ -68,19 +69,29 @@ define([
       'help',
       'about',
       'support'
-    ], function (AppView) {
-      localforage.getItem('selectedModules').then(function (selectedModules) {
-        $.when.apply($, _.map(selectedModules, function (module) {
+    ], function (AppView, TimetableModuleCollection) {
+      localforage.getItem(config.semTimetableFragment +
+        ':selectedModulesQueryString').then(function (selectedModulesQueryString) {
+        // Needed to transform legacy JSON format to query string.
+        // TODO: remove after a sufficient transition period has passed.
+        if (!selectedModulesQueryString) {
+          return localforage.getItem('selectedModules')
+            .then(TimetableModuleCollection.fromJSONtoQueryString);
+        }
+        return selectedModulesQueryString;
+      }).then(function (selectedModulesQueryString) {
+        var selectedModules = TimetableModuleCollection.fromQueryStringToJSON(selectedModulesQueryString);
+        return $.when.apply($, _.map(selectedModules, function (module) {
           return App.request('addModule', module.ModuleCode, module).promise;
-        })).then(function () {
-          new AppView();
+        }));
+      }).then(function () {
+        new AppView();
 
-          // Backbone.history.start returns false if no defined route matches
-          // the current URL, so navigate to timetable by default.
-          if (!Backbone.history.start({pushState: true})) {
-            Backbone.history.navigate('timetable', {trigger: true, replace: true});
-          }
-        });
+        // Backbone.history.start returns false if no defined route matches
+        // the current URL, so navigate to timetable by default.
+        if (!Backbone.history.start({pushState: true})) {
+          Backbone.history.navigate('timetable', {trigger: true, replace: true});
+        }
       });
     });
 
