@@ -71,19 +71,19 @@ define([
       'support'
     ], function (AppView, TimetableModuleCollection) {
       localforage.getItem(config.semTimetableFragment +
-        ':selectedModulesQueryString').then(function (selectedModulesQueryString) {
+        ':queryString').then(function (savedQueryString) {
         // Needed to transform legacy JSON format to query string.
         // TODO: remove after a sufficient transition period has passed.
-        if (!selectedModulesQueryString) {
+        if (!savedQueryString) {
           return localforage.getItem('selectedModules')
             .then(TimetableModuleCollection.fromJSONtoQueryString);
         }
-        return selectedModulesQueryString;
-      }).then(function (selectedModulesQueryString) {
+        return savedQueryString;
+      }).then(function (savedQueryString) {
         if ('/' + config.semTimetableFragment === window.location.pathname) {
           var queryString = window.location.search.slice(1);
           if (queryString) {
-            if (selectedModulesQueryString !== queryString) {
+            if (savedQueryString !== queryString) {
               // If initial query string does not match saved query string,
               // timetable is shared.
               selectedModulesController.selectedModules.shared = true;
@@ -93,7 +93,7 @@ define([
             return;
           }
         }
-        var selectedModules = TimetableModuleCollection.fromQueryStringToJSON(selectedModulesQueryString);
+        var selectedModules = TimetableModuleCollection.fromQueryStringToJSON(savedQueryString);
         return $.when.apply($, _.map(selectedModules, function (module) {
           return App.request('addModule', module.ModuleCode, module).promise;
         }));
