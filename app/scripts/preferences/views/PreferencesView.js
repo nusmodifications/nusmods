@@ -53,22 +53,7 @@ function(_, Marionette, template, localforage, Mousetrap, themePicker) {
       }
       localforage.setItem(property, value);
       if (property === 'mode' || property === 'theme') {
-        this.updateAppearance(property, value);
-      }
-    },
-    updateAppearance: function (property, value) {
-      
-      var $body = $('body');
-      $body.attr('data-' + property, value);
-      $body.removeClass();
-
-      _.each(['mode', 'theme'], function (prop) {
-        $body.addClass(prop + '-' + $body.attr('data-' + prop));
-      });
-      
-      if (property === 'mode') {
-        var cssFile = value !== 'default' ? '/styles/' + value + '.min.css' : '';
-        $('#mode').attr('href', cssFile);
+        themePicker.updateAppearance(property, value);
       }
     }
   });

@@ -31,17 +31,33 @@ define(['underscore',
       this.applyTheme(newTheme);
     },
     applyTheme: function (newTheme) {
-
       var $themeOptions = $('#theme-options');
       if ($themeOptions.length) {
         $themeOptions.val(newTheme);
       }
-
-      localforage.setItem('theme', newTheme);
-
+      this.updateAppearance('theme', newTheme);
+    },
+    toggleMode: function () {
       var $body = $('body');
-      $body.attr('data-theme', newTheme);
+      var newMode = $body.attr('data-mode') === 'default' ? 'slate' : 'default';
+
+      var $modeRadios = $('input:radio[name="mode-radios"]');
+      if ($modeRadios) {
+        $modeRadios.val([newMode]);
+      }
+
+      var cssFile = newMode !== 'default' ? '/styles/' + newMode + '.min.css' : '';
+      $('#mode').attr('href', cssFile);
+
+      this.updateAppearance('mode', newMode);
+    },
+    updateAppearance: function (property, value) {
+      localforage.setItem(property, value);
+      
+      var $body = $('body');
+      $body.attr('data-' + property, value);
       $body.removeClass();
+
       _.each(['mode', 'theme'], function (prop) {
         $body.addClass(prop + '-' + $body.attr('data-' + prop));
       });

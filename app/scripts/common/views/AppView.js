@@ -95,6 +95,10 @@ define(['app', 'backbone', 'nusmods', 'mousetrap', '../utils/modulify',
       Mousetrap.bind(['left', 'right'], function (e) {
         themePicker.selectNextTheme(e.keyIdentifier);
       });
+
+      Mousetrap.bind(['x'], function (e) {
+        themePicker.toggleMode();
+      });
     },
 
     navigateWithScrollTop: function (location, trigger) {
