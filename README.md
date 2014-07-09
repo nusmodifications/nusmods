@@ -1,4 +1,4 @@
-# NUSMods API [![Code Climate](https://codeclimate.com/github/ahbeng/NUSModsAPI.png)](https://codeclimate.com/github/ahbeng/NUSModsAPI)
+# NUSMods API [![Code Climate](https://codeclimate.com/github/ahbeng/NUSModsAPI.png)](https://codeclimate.com/github/ahbeng/NUSModsAPI) [![Dependency Status](https://david-dm.org/ahbeng/NUSModsAPI.svg?theme=shields.io)](https://david-dm.org/ahbeng/NUSModsAPI)
 
 NUSMods API consolidates and normalizes various bits of NUS module information
 from the following sources:
