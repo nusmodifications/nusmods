@@ -80,6 +80,19 @@ define([
         }
         return selectedModulesQueryString;
       }).then(function (selectedModulesQueryString) {
+        if ('/' + config.semTimetableFragment === window.location.pathname) {
+          var queryString = window.location.search.slice(1);
+          if (queryString) {
+            if (selectedModulesQueryString !== queryString) {
+              // If initial query string does not match saved query string,
+              // timetable is shared.
+              selectedModulesController.selectedModules.shared = true;
+            }
+            // If there is a query string for timetable, return so that it will
+            // be used instead of saved query string.
+            return;
+          }
+        }
         var selectedModules = TimetableModuleCollection.fromQueryStringToJSON(selectedModulesQueryString);
         return $.when.apply($, _.map(selectedModules, function (module) {
           return App.request('addModule', module.ModuleCode, module).promise;

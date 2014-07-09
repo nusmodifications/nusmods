@@ -22,8 +22,10 @@ define([
       },
 
       modulesChanged: function () {
-        localforage.setItem(config.semTimetableFragment +
-          ':selectedModulesQueryString', this.selectedModules.toQueryString());
+        if (!this.selectedModules.shared) {
+          localforage.setItem(config.semTimetableFragment +
+            ':selectedModulesQueryString', this.selectedModules.toQueryString());
+        }
       }
     });
   });
