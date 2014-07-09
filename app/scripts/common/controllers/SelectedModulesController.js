@@ -4,9 +4,11 @@ define([
     'backbone.marionette',
     'localforage',
     '../collections/TimetableModuleCollection',
-    '../collections/LessonCollection'
+    '../collections/LessonCollection',
+    'common/config'
   ],
-  function (_, App, Marionette, localforage, TimetableModuleCollection, LessonCollection) {
+  function (_, App, Marionette, localforage, TimetableModuleCollection,
+            LessonCollection, config) {
     'use strict';
 
     return Marionette.Controller.extend({
@@ -20,7 +22,10 @@ define([
       },
 
       modulesChanged: function () {
-        localforage.setItem('selectedModules', this.selectedModules.toJSON());
+        if (!this.selectedModules.shared) {
+          localforage.setItem(config.semTimetableFragment +
+            ':queryString', this.selectedModules.toQueryString());
+        }
       }
     });
   });

@@ -1,5 +1,5 @@
-define(['backbone', 'underscore', 'common/utils/padTwo', 'common/utils/modulify'],
-  function(Backbone, _, padTwo, modulify) {
+define(['backbone', 'underscore', 'common/utils/padTwo', 'common/utils/modulify', 'json!config.json'],
+  function(Backbone, _, padTwo, modulify, config) {
     'use strict';
 
     // Convert exam in ISO format to 12-hour date/time format. We slice off the
@@ -86,6 +86,21 @@ define(['backbone', 'underscore', 'common/utils/padTwo', 'common/utils/modulify'
             'Laboratory',
             'Recitation'
           ];
+
+          var PLURALIZED_LESSON_TYPES = {
+            'Lecture': 'Lectures',
+            'Sectional Teaching': 'Sectional Teachings',
+            'Seminar-Style Module Class': 'Seminar-Style Module Classes',
+            'Packaged Lecture': 'Packaged Lectures',
+            'Packaged Tutorial': 'Packaged Tutorials',
+            'Tutorial': 'Tutorials',
+            'Tutorial Type 2': 'Tutorial Type 2',
+            'Tutorial Type 3': 'Tutorial Type 3',
+            'Design Lecture': 'Design Lectures',
+            'Laboratory': 'Laboratories',
+            'Recitation': 'Recitations'
+          };
+
           timetableTypes = _.sortBy(timetableTypes, function (type) {
             return AVAILABLE_TYPES.indexOf(type);
           });
@@ -102,7 +117,7 @@ define(['backbone', 'underscore', 'common/utils/padTwo', 'common/utils/modulify'
               delete lesson.LessonType;
             });
             formattedTimetable.push({
-              LessonType: type,
+              LessonType: PLURALIZED_LESSON_TYPES[type],
               Lessons: lessons
             });
           });
@@ -144,6 +159,8 @@ define(['backbone', 'underscore', 'common/utils/padTwo', 'common/utils/modulify'
         }
 
         this.set('examStr', examStr(this.get('ExamDate')));
+
+        this.set('IVLELink', config.ivleUrl.replace('<ModuleCode>', this.get('ModuleCode')));
       }
     });
   });

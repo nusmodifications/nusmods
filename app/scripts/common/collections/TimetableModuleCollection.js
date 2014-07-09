@@ -4,10 +4,11 @@ define([
     'nusmods',
     'common/collections/ModuleCollection',
     '../models/LessonModel',
-    '../collections/LessonCollection'
+    '../collections/LessonCollection',
+    'vendor/node-querystring'
   ],
   function (_, Backbone, NUSMods, ModuleCollection, LessonModel,
-            LessonCollection) {
+            LessonCollection, qs) {
     'use strict';
 
     return ModuleCollection.extend({
@@ -80,6 +81,54 @@ define([
               .value()
           };
         }, this);
+      },
+
+      toQueryString: function () {
+        var qsObject = {};
+        this.each(function (module) {
+          var qsModule = qsObject[module.id] = {};
+          var moduleLessons = this.timetable.where({ModuleCode: module.id});
+          if (moduleLessons.length) {
+            _.each(moduleLessons, function (lesson) {
+              qsModule[lesson.get('typeAbbrev')] = lesson.get('ClassNo');
+            });
+          } else {
+            qsObject[module.id] = '';
+          }
+        }, this);
+        return qs.stringify(qsObject);
+      }
+    }, {
+      fromQueryStringToJSON: function (queryString) {
+        return _.map(qs.parse(queryString), function (lessons, ModuleCode) {
+          return {
+            ModuleCode: ModuleCode,
+            selectedLessons: _.map(lessons, function (ClassNo, LessonType) {
+              return {
+                ClassNo: ClassNo,
+                LessonType: LessonModel.typeAbbrevInverse[LessonType]
+              };
+            })
+          };
+        });
+      },
+
+      // Needed to transform legacy JSON format to query string.
+      // TODO: remove after a sufficient transition period has passed.
+      fromJSONtoQueryString: function (modules) {
+        var qsObject = {};
+        _.each(modules, function (module) {
+          var qsModule = qsObject[module.ModuleCode] = {};
+          var moduleLessons = module.selectedLessons;
+          if (moduleLessons.length) {
+            _.each(moduleLessons, function (lesson) {
+              qsModule[LessonModel.typeAbbrev[lesson.LessonType]] = lesson.ClassNo;
+            });
+          } else {
+            qsObject[module.ModuleCode] = '';
+          }
+        });
+        return qs.stringify(qsObject);
       }
     });
   });
