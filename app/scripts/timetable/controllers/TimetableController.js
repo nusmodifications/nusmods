@@ -1,6 +1,6 @@
 define(['require', 'underscore', 'app', 'backbone', 'backbone.marionette',
-    'localforage', 'json!config.json', 'vendor/node-querystring'],
-  function (require, _, App, Backbone, Marionette, localforage, config, qs) {
+    'localforage', 'common/config'],
+  function (require, _, App, Backbone, Marionette, localforage, config) {
     'use strict';
 
     var navigationItem = App.request('addNavigationItem', {
@@ -9,14 +9,17 @@ define(['require', 'underscore', 'app', 'backbone', 'backbone.marionette',
       url: '/timetable'
     });
 
-    var semTimetableFragment = 'timetable/' + config.academicYear.replace('/', '-') + '/sem' + config.semester;
-
     return Marionette.Controller.extend({
       showTimetable: function (academicYear, semester, queryString) {
         require(['../views/TimetableView'],
           function (TimetableView) {
             if (!semester) {
-              return Backbone.history.navigate(semTimetableFragment, {trigger: true, replace: true});
+              return Backbone.history.navigate(
+                config.semTimetableFragment,
+                {
+                  trigger: true,
+                  replace: true
+                });
             }
             navigationItem.select();
             if (queryString) {
@@ -45,7 +48,7 @@ define(['require', 'underscore', 'app', 'backbone', 'backbone.marionette',
               });
             }
             App.mainRegion.show(new TimetableView({
-              semTimetableFragment: semTimetableFragment
+              semTimetableFragment: config.semTimetableFragment
             }));
           });
       }

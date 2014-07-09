@@ -3,6 +3,7 @@ define([
   'app',
   'backbone',
   'backbone.marionette',
+  'common/config',
   'nusmods',
   'hbs!../templates/timetable',
   '../collections/ExamCollection',
@@ -14,7 +15,7 @@ define([
   './UrlSharingView'
 ],
 
-function(_, App, Backbone, Marionette, NUSMods, template, ExamCollection,
+function(_, App, Backbone, Marionette, config, NUSMods, template, ExamCollection,
          ExportView, ExamsView, SelectView, ShowHideView,
          TimetableView, UrlSharingView) {
   'use strict';
@@ -29,10 +30,6 @@ function(_, App, Backbone, Marionette, NUSMods, template, ExamCollection,
       showHideRegion: '.show-hide-region',
       timetableRegion: '#timetable-wrapper',
       urlSharingRegion: '.url-sharing-region'
-    },
-
-    initialize: function (options) {
-      this.semTimetableFragment = options.semTimetableFragment;
     },
 
     onShow: function() {
@@ -57,10 +54,10 @@ function(_, App, Backbone, Marionette, NUSMods, template, ExamCollection,
 
     modulesChanged: function (model, collection, options) {
       if (this.selectedModules.length) {
-        Backbone.history.navigate(this.semTimetableFragment + '?' +
+        Backbone.history.navigate(config.semTimetableFragment + '?' +
           this.selectedModules.toQueryString(), options);
       } else {
-        Backbone.history.navigate(this.semTimetableFragment, options);
+        Backbone.history.navigate(config.semTimetableFragment, options);
       }
     }
   });

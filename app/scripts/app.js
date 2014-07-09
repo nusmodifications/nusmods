@@ -7,7 +7,7 @@ define([
   'common/views/NavigationView',
   'localforage',
   'nusmods',
-  'json!config.json',
+  'common/config',
   'backbone.analytics',
   'qtip2'
 ], function (_, Backbone, Marionette, NavigationCollection,
