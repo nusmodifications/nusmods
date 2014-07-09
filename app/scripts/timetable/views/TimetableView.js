@@ -3,20 +3,22 @@ define([
   'app',
   'backbone',
   'backbone.marionette',
+  'common/config',
   'nusmods',
   'hbs!../templates/timetable',
   '../collections/ExamCollection',
   './ExportView',
   './ExamsView',
   './SelectView',
+  './SharedTimetableControlsView',
   './ShowHideView',
   './TableView',
   './UrlSharingView'
 ],
 
-function(_, App, Backbone, Marionette, NUSMods, template, ExamCollection,
-         ExportView, ExamsView, SelectView, ShowHideView,
-         TimetableView, UrlSharingView) {
+function(_, App, Backbone, Marionette, config, NUSMods, template, ExamCollection,
+         ExportView, ExamsView, SelectView, SharedTimetableControlsView,
+         ShowHideView, TimetableView, UrlSharingView) {
   'use strict';
 
   return Marionette.LayoutView.extend({
@@ -26,13 +28,10 @@ function(_, App, Backbone, Marionette, NUSMods, template, ExamCollection,
       examsRegion: '#exam-timetable',
       exportRegion: '.export-region',
       selectRegion: '.select-region',
+      sharedTimetableControlsRegion: '.shared-timetable-controls-region',
       showHideRegion: '.show-hide-region',
       timetableRegion: '#timetable-wrapper',
       urlSharingRegion: '.url-sharing-region'
-    },
-
-    initialize: function (options) {
-      this.semTimetableFragment = options.semTimetableFragment;
     },
 
     onShow: function() {
@@ -49,6 +48,11 @@ function(_, App, Backbone, Marionette, NUSMods, template, ExamCollection,
         exams: exams
       }));
       this.selectRegion.show(new SelectView());
+      if (this.selectedModules.shared) {
+        this.sharedTimetableControlsRegion.show(new SharedTimetableControlsView({
+          collection: this.selectedModules
+        }));
+      }
       this.showHideRegion.show(new ShowHideView());
       this.timetableRegion.show(new TimetableView({collection: this.timetable}));
       this.urlSharingRegion.show(new UrlSharingView());
@@ -57,10 +61,10 @@ function(_, App, Backbone, Marionette, NUSMods, template, ExamCollection,
 
     modulesChanged: function (model, collection, options) {
       if (this.selectedModules.length) {
-        Backbone.history.navigate(this.semTimetableFragment + '?' +
+        Backbone.history.navigate(config.semTimetableFragment + '?' +
           this.selectedModules.toQueryString(), options);
       } else {
-        Backbone.history.navigate(this.semTimetableFragment, options);
+        Backbone.history.navigate(config.semTimetableFragment, options);
       }
     }
   });
