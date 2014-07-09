@@ -97,9 +97,9 @@ define([
           }
         }, this);
         return qs.stringify(qsObject);
-      },
-
-      fromQueryString: function (queryString) {
+      }
+    }, {
+      fromQueryStringToJSON: function (queryString) {
         return _.map(qs.parse(queryString), function (lessons, ModuleCode) {
           return {
             ModuleCode: ModuleCode,

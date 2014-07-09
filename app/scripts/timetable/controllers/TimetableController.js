@@ -11,8 +11,8 @@ define(['require', 'underscore', 'app', 'backbone', 'backbone.marionette',
 
     return Marionette.Controller.extend({
       showTimetable: function (academicYear, semester, queryString) {
-        require(['../views/TimetableView'],
-          function (TimetableView) {
+        require(['../views/TimetableView', 'common/collections/TimetableModuleCollection'],
+          function (TimetableView, TimetableModuleCollection) {
             if (!semester) {
               return Backbone.history.navigate(
                 config.semTimetableFragment,
@@ -27,7 +27,7 @@ define(['require', 'underscore', 'app', 'backbone', 'backbone.marionette',
               var timetable = selectedModules.timetable;
               timetable.reset();
               var selectedCodes = selectedModules.pluck('ModuleCode');
-              var routeModules = selectedModules.fromQueryString(queryString);
+              var routeModules = TimetableModuleCollection.fromQueryStringToJSON(queryString);
               var routeCodes = _.pluck(routeModules, 'ModuleCode');
               _.each(_.difference(selectedCodes, routeCodes), function (code) {
                 selectedModules.remove(selectedModules.get(code));
