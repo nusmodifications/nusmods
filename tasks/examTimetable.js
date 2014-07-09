@@ -10,7 +10,7 @@ module.exports = function (grunt) {
 
     var path = require('path');
     var _ = require('lodash');
-    var jsdom = require("jsdom");
+    var jsdom = require('jsdom');
     var helpers = require('./helpers');
 
     _.str = require('underscore.string');

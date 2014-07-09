@@ -19,20 +19,20 @@ module.exports = function (grunt) {
         Semester: options.semester,
         TitleOnly: false
       }), options, function (err, data) {
-      if (err) {
-        console.log(err);
-        return done(false);
-      }
+        if (err) {
+          console.log(err);
+          return done(false);
+        }
 
-      var bulletinModules = JSON.parse(data).Results;
-      _.each(_.groupBy(bulletinModules, 'AcadYear'), function (mods, academicYear) {
-        grunt.file.write(
-          path.join(options.destFolder, academicYear.replace('/', '-'), options.semester, options.destFileName),
-          JSON.stringify(mods, null, options.jsonSpace)
-        );
+        var bulletinModules = JSON.parse(data).Results;
+        _.each(_.groupBy(bulletinModules, 'AcadYear'), function (mods, academicYear) {
+          grunt.file.write(
+            path.join(options.destFolder, academicYear.replace('/', '-'), options.semester, options.destFileName),
+            JSON.stringify(mods, null, options.jsonSpace)
+          );
+        });
+
+        done();
       });
-
-      done();
-    });
   });
 };

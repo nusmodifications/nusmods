@@ -6,7 +6,6 @@ module.exports = function (grunt) {
 
     var path = require('path');
     var _ = require('lodash');
-    var helpers = require('./helpers');
 
     var basePath = path.join(options.srcFolder, options.academicYear.replace('/', '-'), options.semester);
     var bulletinModulesPath = path.join(basePath, grunt.config('bulletinModules').options.destFileName);

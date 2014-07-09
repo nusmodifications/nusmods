@@ -26,23 +26,23 @@ module.exports = function (grunt) {
         APIKey: options.ivleApi.key,
         LastModified: Math.floor((Date.now() - lastModified) / 1000) - 1
       }), options, function (err, data) {
-      if (err) {
-        console.log(err);
-        return done(false);
-      }
+        if (err) {
+          console.log(err);
+          return done(false);
+        }
 
-      moduleTimetableDelta = moduleTimetableDelta.concat(JSON.parse(data));
-      grunt.file.write(destPath, JSON.stringify(moduleTimetableDelta, null, options.jsonSpace));
-      _.each(_.groupBy(moduleTimetableDelta, 'AcadYear'), function (deltaForAY, academicYear) {
-        _.each(_.groupBy(deltaForAY, 'Semester'), function (deltaForSem, semester) {
-          grunt.file.write(
-            path.join(options.destFolder, academicYear.replace('/', '-'), semester, options.destFileName),
-            JSON.stringify(deltaForSem, null, options.jsonSpace)
-          );
+        moduleTimetableDelta = moduleTimetableDelta.concat(JSON.parse(data));
+        grunt.file.write(destPath, JSON.stringify(moduleTimetableDelta, null, options.jsonSpace));
+        _.each(_.groupBy(moduleTimetableDelta, 'AcadYear'), function (deltaForAY, academicYear) {
+          _.each(_.groupBy(deltaForAY, 'Semester'), function (deltaForSem, semester) {
+            grunt.file.write(
+              path.join(options.destFolder, academicYear.replace('/', '-'), semester, options.destFileName),
+              JSON.stringify(deltaForSem, null, options.jsonSpace)
+            );
+          });
         });
-      });
 
-      done();
-    });
+        done();
+      });
   });
 };
