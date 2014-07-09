@@ -50,7 +50,7 @@
       {{/if}}
     </dl>
   </div>
-  <div class="col-md-9 nm-boxify">
+  <div class="col-md-9 nm-boxify module-page">
     <div class="row">
       <div class="col-md-12">
         <ul class="nav nav-tabs" role="tablist">
@@ -64,122 +64,130 @@
             </li>
           {{/each}}
         </ul>
+
         <div> 
           <h2 class="nm-section-heading">{{sectionTitle}} 
-            <button class="add pull-right btn btn-primary"
-                    data-code="{{../module.ModuleCode}}"
+            <button class="pull-right btn  btn-primary"
+                    data-code="{{module.ModuleCode}}"
                     type="button">
                 <i class="fa fa-plus"></i>&nbsp;Add {{module.ModuleCode}} To Timetable
             </button>
+            <a class="ivle pull-right btn btn-default"
+                    data-code="{{module.ModuleCode}}"
+                    type="button"
+                    href="{{module.IVLELink}}"
+                    target="_blank">
+                <i class="fa fa-info-circle"></i>&nbsp;IVLE
+            </a>
           </h2>
-        <hr>
-        {{#equals section 'schedule'}}
-          <div>
-            {{#if module.Timetable}}
-              {{#each module.FormattedTimetable}}
-                <h3 class="highlight thin">{{LessonType}}s</h3>
-                <table class="table table-striped">
-                  <tbody>
-                    <tr>
-                      <th>Class No</th>
-                      <th>Week Type</th>
-                      <th>Day</th>
-                      <th>Start Time</th>
-                      <th>End Time</th>
-                      <th>Venue</th>
-                    </tr>
-                    {{#each Lessons}}
+          <hr>
+          {{#equals section 'schedule'}}
+            <div>
+              {{#if module.Timetable}}
+                {{#each module.FormattedTimetable}}
+                  <h3 class="highlight thin">{{LessonType}}</h3>
+                  <table class="table table-striped">
+                    <tbody>
                       <tr>
-                        <td>{{ClassNo}}</td>
-                        <td>{{WeekText}}</td>
-                        <td>{{DayText}}</td>
-                        <td>{{StartTime}}</td>
-                        <td>{{EndTime}}</td>
-                        <td>{{Venue}}</td>
+                        <th>Class No</th>
+                        <th>Week Type</th>
+                        <th>Day</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Venue</th>
                       </tr>
-                    {{/each}}
-                  </tbody>
-                </table>
-              {{/each}}
-            {{else}}
-              <p>No timetable data to be shown.</p>
-            {{/if}}
-          </div>
-        {{/equals}}
+                      {{#each Lessons}}
+                        <tr>
+                          <td>{{ClassNo}}</td>
+                          <td>{{WeekText}}</td>
+                          <td>{{DayText}}</td>
+                          <td>{{StartTime}}</td>
+                          <td>{{EndTime}}</td>
+                          <td>{{Venue}}</td>
+                        </tr>
+                      {{/each}}
+                    </tbody>
+                  </table>
+                {{/each}}
+              {{else}}
+                <p>No timetable data to be shown.</p>
+              {{/if}}
+            </div>
+          {{/equals}}
 
-        {{#equals section 'corspedia'}}
-          <div>
-            {{#if module.CorsBiddingStats}}
-              <div class="well well-sm nm-filter">
-                <div class="row">
-                  <div class="col-md-5 form-group">
-                    <label class="control-label" for="faculty">Your Faculty 
-                      <i class="nm-help highlight thin fa fa-question-circle" data-toggle="tooltip" data-placement="right" data-trigger="hover" title="CEG Students are to select <span class='highlight'>Joint Multi-Disciplinary Programmes</span> due to the unique nature of their course." data-html="true"></i>
-                    </label>
-                    <select class="form-control" name="faculty" id="faculty" data-pref-type="faculty">
-                      <option value="default">Your Faculty</option>
-                      <option value="Arts &amp; Social Sciences">Arts &amp; Social Sciences</option>
-                      <option value="Dentistry">Dentistry</option>
-                      <option value="Engineering">Engineering</option>
-                      <option value="Joint Multi-Disciplinary Programmes">Joint Multi-Disciplinary Programmes</option>
-                      <option value="Law">Law</option>
-                      <option value="School Of Business">School Of Business</option>
-                      <option value="School Of Computing">School Of Computing</option>
-                      <option value="School Of Design And Environment">School Of Design And Environment</option>
-                      <option value="Science">Science</option>
-                      <option value="University Scholars Programme">University Scholars Programme</option>
-                      <option value="Yong Loo Lin School Of Medicine">Yong Loo Lin School Of Medicine</option>
-                      <option value="Yong Siew Toh Conservatory Of Music">Yong Siew Toh Conservatory Of Music</option>
-                    </select>
-                  </div>
-                  <div class="col-md-4 form-group">
-                    <label class="control-label" for="account">Account Type
-                      <i class="nm-help highlight thin fa fa-question-circle" data-toggle="tooltip" data-placement="right" data-trigger="hover" title="<span class='highlight'>Programme Account (P)</span><br>Used for Core modules, Higher Level Electives, Major Modules (Cross-Faculty included).<br><br><span class='highlight'>General Account (G)</span><br>Used for UEM (Unrestricted Elective Modules), Minor modules, GEM and SS." data-html="true"></i>
-                    </label>
-                    <select class="form-control" name="account" id="account" data-pref-type="account">
-                      <option value="P">Programme</option>
-                      <option value="G">General</option>
-                    </select>
-                  </div>
-                  <div class="col-md-3">
-                    <label class="control-label" for="faculty">New Student 
-                      <i class="nm-help highlight thin fa fa-question-circle" data-toggle="tooltip" data-placement="right" data-trigger="hover" title="For certain modules, places are reserved for new students in Rounds 1 and 2, recognizing that new students do not have as many points as some of the seniors."></i>
-                    </label>
-                    <div class="radio">
-                      <label>
-                        <input type="radio" name="student-radios" id="student-radio-1" value="true" data-pref-type="student" selected>
-                        Yes
+          {{#equals section 'corspedia'}}
+            <div>
+              {{#if module.CorsBiddingStats}}
+                <div class="well well-sm nm-filter">
+                  <div class="row">
+                    <div class="col-md-5 form-group">
+                      <label class="control-label" for="faculty">Your Faculty 
+                        <i class="nm-help highlight thin fa fa-question-circle" data-toggle="tooltip" data-placement="right" data-trigger="hover" title="CEG Students are to select <span class='highlight'>Joint Multi-Disciplinary Programmes</span> due to the unique nature of their course." data-html="true"></i>
                       </label>
-                      <label>
-                        <input type="radio" name="student-radios" id="student-radio-2" value="false" data-pref-type="student">
-                        No
+                      <select class="form-control" name="faculty" id="faculty" data-pref-type="faculty">
+                        <option value="default">Your Faculty</option>
+                        <option value="Arts &amp; Social Sciences">Arts &amp; Social Sciences</option>
+                        <option value="Dentistry">Dentistry</option>
+                        <option value="Engineering">Engineering</option>
+                        <option value="Joint Multi-Disciplinary Programmes">Joint Multi-Disciplinary Programmes</option>
+                        <option value="Law">Law</option>
+                        <option value="School Of Business">School Of Business</option>
+                        <option value="School Of Computing">School Of Computing</option>
+                        <option value="School Of Design And Environment">School Of Design And Environment</option>
+                        <option value="Science">Science</option>
+                        <option value="University Scholars Programme">University Scholars Programme</option>
+                        <option value="Yong Loo Lin School Of Medicine">Yong Loo Lin School Of Medicine</option>
+                        <option value="Yong Siew Toh Conservatory Of Music">Yong Siew Toh Conservatory Of Music</option>
+                      </select>
+                    </div>
+                    <div class="col-md-4 form-group">
+                      <label class="control-label" for="account">Account Type
+                        <i class="nm-help highlight thin fa fa-question-circle" data-toggle="tooltip" data-placement="right" data-trigger="hover" title="<span class='highlight'>Programme Account (P)</span><br>Used for Core modules, Higher Level Electives, Major Modules (Cross-Faculty included).<br><br><span class='highlight'>General Account (G)</span><br>Used for UEM (Unrestricted Elective Modules), Minor modules, GEM and SS." data-html="true"></i>
                       </label>
+                      <select class="form-control" name="account" id="account" data-pref-type="account">
+                        <option value="P">Programme</option>
+                        <option value="G">General</option>
+                      </select>
+                    </div>
+                    <div class="col-md-3">
+                      <label class="control-label" for="faculty">New Student 
+                        <i class="nm-help highlight thin fa fa-question-circle" data-toggle="tooltip" data-placement="right" data-trigger="hover" title="For certain modules, places are reserved for new students in Rounds 1 and 2, recognizing that new students do not have as many points as some of the seniors."></i>
+                      </label>
+                      <div class="radio">
+                        <label>
+                          <input type="radio" name="student-radios" id="student-radio-1" value="true" data-pref-type="student" selected>
+                          Yes
+                        </label>
+                        <label>
+                          <input type="radio" name="student-radios" id="student-radio-2" value="false" data-pref-type="student">
+                          No
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="alert alert-warning" role="alert">
+                        <p>Corspedia smart filters are still in beta. If you would like to view unfiltered CORS bidding history, click <a class="alert-link" id="show-all-stats">here</a>. Please leave a feedback/comment on our <a href="https://www.facebook.com/NUSMods" class="alert-link" target="_blank">Facebook page</a> if you find any errors.</p>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="alert alert-warning" role="alert">
-                      <p>Corspedia smart filters are still in beta. If you would like to view unfiltered CORS bidding history, click <a class="alert-link" id="show-all-stats">here</a>. Please leave a feedback/comment on our <a href="https://www.facebook.com/NUSMods" class="alert-link" target="_blank">Facebook page</a> if you find any errors.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div id="bidding-stats"></div>
-            {{else}}
-              <p>No CORS bidding data to be shown.</p>
-            {{/if}}
-          </div>
-        {{/equals}}
+                <div id="bidding-stats"></div>
+              {{else}}
+                <p>No CORS bidding data to be shown.</p>
+              {{/if}}
+            </div>
+          {{/equals}}
 
-        {{#equals section 'reviews'}}
-          <div id="disqus_thread"></div>
-        {{/equals}}
+          {{#equals section 'modmaven'}}
+            <div id="Tree" style="padding-left: 5px; padding-right: 5px;"></div>
+          {{/equals}}
 
-        {{#equals section 'modmaven'}}
-        <div id="Tree" style="padding-left: 5px; padding-right: 5px;"></div>
-        {{/equals}}
-
+          {{#equals section 'reviews'}}
+            <div id="disqus_thread"></div>
+          {{/equals}}
+        </div>
       </div>
     </div>
   </div>
