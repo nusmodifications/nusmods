@@ -122,7 +122,7 @@ define([
           var moduleLessons = module.selectedLessons;
           if (moduleLessons.length) {
             _.each(moduleLessons, function (lesson) {
-              qsModule[LessonModel.typeAbbrev[lesson.typeAbbrev]] = lesson.ClassNo;
+              qsModule[LessonModel.typeAbbrev[lesson.LessonType]] = lesson.ClassNo;
             });
           } else {
             qsObject[module.ModuleCode] = '';
