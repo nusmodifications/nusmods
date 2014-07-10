@@ -5,293 +5,143 @@ define([
     'd3',
     'hbs!../templates/module',
     'underscore',
+    'nusmods',
     'localforage',
     './BiddingStatsView',
     'bootstrap/tooltip'
   ],
-  function (App, Backbone, Marionette, d3, template, _, localforage, BiddingStatsView) {
+  function (App, Backbone, Marionette, d3, template, _, NUSMods, localforage, BiddingStatsView) {
     'use strict';
 
     var searchPreferences = {};
 
-    function drawTree(data, toggle) {
+    function drawTree(selector, data) {
+      var SVGWidth = $(selector).width(),
+          SVGHeight = 550,
+          allMods = NUSMods.getAllModules();
 
-            var SVGWidth = $("#Tree").width();
-            var SVGHeight = 550;
-            var pathColor = $('body').attr('data-mode') === 'default' ? '#000' : '#fff';
+      d3.selectAll("svg").remove();
+      var canvas = d3.select(selector)
+                      .append("svg")
+                      .attr("id", "svg")
+                      .attr("width", SVGWidth)
+                      .attr("height", SVGHeight),
+          interact = d3.behavior.zoom()
+                        .scaleExtent([0.0, 5.0])
+                        .on("zoom", function () {
+                          d3.select("#drawarea")
+                            .attr("transform", "translate("+d3.event.translate+") scale("+d3.event.scale+")");
+                        }),
+          aspect = $("#svg").width() / $("#svg").height();
 
-            d3.selectAll("svg").remove();
-            
-            var canvas = d3.select('#Tree')
-                .append("svg")
-                .attr("id", "svg")
-                .attr("width", SVGWidth)
-                .attr("height", SVGHeight)
-                .attr("style", "cursor: move; z-index: -999;");
-            
-            var interact = d3.behavior.zoom()
-                .scaleExtent([0.3, 5.0])
-                .on("zoom", zoom);
+      interact(d3.select("svg"));
+      canvas = canvas.append("g")
+                      .attr("id", "drawarea");
 
-            canvas = canvas.append("g")
-                .attr("id", "drawarea");
+      function getDefaultTranslation() { return [(SVGWidth) / 2, 75]; }
 
-            interact(d3.select("svg"));
+      $(window).on("resize", _.debounce(resized, 100));
+      function resized() {
+        SVGWidth = $(selector).width();
+        d3.select("#svg").attr("width", SVGWidth);
 
-            function zoom() {
-                d3.select("#drawarea")
-                    .attr("transform", "translate(" + d3.event.translate + ")" +
-                        " scale(" + d3.event.scale + ")");
-            }
+        interact.translate(getDefaultTranslation());
+        d3.select("#drawarea")
+          .transition()
+          .delay(1)
+          .attr("transform", "translate("+getDefaultTranslation()+") scale("+interact.scale()+")");
+      }
+      resized();
 
-            var aspect = $("#svg").width() / $("#svg").height();
+      var tree = d3.layout.tree().nodeSize([130, 130]);
+      var nodes = tree.nodes(data);
+      var links = tree.links(nodes);
+      var diagonal = d3.svg.diagonal().projection(function (d) { return [d.x, d.y]; });
+      var x, y;
+      canvas.selectAll(".link")
+          .data(links)
+          .enter()
+          .append("path")
+          .attr("class", "link")
+          .attr("d", diagonal);
 
-            var tree = d3.layout.tree()
-                .nodeSize([130, 130]);
+      var node = canvas.selectAll(".node")
+                      .data(nodes)
+                      .enter()
+                      .append("g")
+                      .attr("class", "node")
+                      .attr("transform", function (d) {
+                          return "translate("+d.x+","+d.y+")";
+                      });
 
-            var nodes = tree.nodes(data);
-            var links = tree.links(nodes);
+      function isOrAnd (d) { return (d.name == 'or' || d.name == 'and'); }
+      function modsFilter (d) { return !isOrAnd(d); }
+      function andOrFilter (d) { return isOrAnd(d); }
+      function getX (d) { return isOrAnd(d) ? -25 : -50; }
+      function getY (d) { return isOrAnd(d) ? -17.5 : -35; }
+      function getHeight (d) { return isOrAnd(d) ? 35 : 70; }
+      function getWidth (d) { return isOrAnd(d) ? 50 : 100; }
+      function getOpacity (d) { return isOrAnd(d) ? 0 : 1; }
 
-            
+      var rectangles = node.append("rect")
+                            .attr("width", 0)
+                            .attr("height", 0)
+                            .attr("x", getX)
+                            .attr("y", getY)
+                            .attr("rx", 20)
+                            .attr("ry", 20)
+                            .classed({"rect": true, "opaque": true})
+                            .attr("nodeValue", function (d) { return d.name; })
+      rectangles.filter(modsFilter)
+                .classed({"mod-rect": true, "linkable-mod": true})
+      rectangles.filter(andOrFilter)
+                .classed({"andor-rect": true});
 
-            var diagonal = d3.svg.diagonal()
-                .projection(function(d) {
-                    return [d.x, d.y];
-                });
-            var x, y;
-            canvas.selectAll(".link")
-                .data(links)
-                .enter()
-                .append("path")
-                .attr("class", "link")
-                .attr("fill", "none")
-                .attr("stroke", pathColor)
-                .attr("opacity", 0)
-                .attr("d", diagonal);
+      var labels = node.append("text")
+                        .text(function (d) { return d.name; })
+                        .classed({"rect-label": true, "lead": true, "transparent": true})
+                        .attr("dy", function (d) { return isOrAnd(d)? "10" : ""; });
+      labels.filter(andOrFilter)
+            .classed({"andor-label": true});
+      labels.filter(modsFilter)
+            .classed({"linkable-mod": true});
 
-            var node = canvas.selectAll(".node")
-                .data(nodes)
-                .enter()
-                .append("g")
-                .attr("class", "node")
-                .attr("transform", function(d) {
-                    return "translate(" + d.x + "," + d.y + ")";
-                });
+      canvas.selectAll("path")
+            .classed({"opacity-transition": true, "opaque": true, "transparent": false});
 
-            var rectangles = node.append("rect")
-                .attr("width", 0)
-                .attr("height", 0)
-                .attr("x", function(d) {
-                    if (d.name == 'or' || d.name == 'and') {
-                        return -25;
-                    } else
-                        return -50;
-                })
-                .attr("y", function(d) {
-                    if (d.name == 'or' || d.name == 'and') {
-                        return -17.5;
-                    } else
-                        return -35;
-                })
-                .attr("rx", 20)
-                .attr("ry", 20)
-                .attr("stroke", "black")
-                .attr("stroke-width", 1.5)
-                .attr("opacity", function(d) {
-                    if (d.name == 'or' || d.name == 'and') {
-                        return 0;
-                    } else
-                        return 1;
-                })
-                .attr("nodeValue", function(d) {
-                    return d.name;
-                })
-                .attr("fill", function(d) {
-                    if (d['done'])
-                        return "red";
-                    else if (d['prec'])
-                        return "yellow";
-                    else
-                        return "#f60";
-                })
-                .attr("style", function(d) {
-                    if (d.name == 'or' || d.name == 'and')
-                        return "cursor:default"
-                });
+      node.selectAll("rect")
+          .transition()
+          .duration(1000)
+          .attr("width", getWidth)
+          .attr("height", getHeight)
+          .ease("elastic");
 
-            var labels = node.append("text")
-                .text(function(d) {
-                    return d.name;
-                })
-                .style("fill", "#ccc")
-                .style("opacity", 0)
-                .attr("dy", function(d) {
-                    if (d.name == 'or' || d.name == 'and')
-                        return "10";
-                    return "";
-                })
-                .attr("text-anchor", "middle")
-                .attr("class", "lead");
+      node.selectAll("text")
+          .classed({"opacity-transition": true, "opaque": true, "transparent": false})
 
-            node.selectAll("rect")
-                .transition()
-                .duration(1000)
-                .attr("width", function(d) {
-                    if (d.name == 'or' || d.name == 'and')
-                        return 50;
-                    else
-                        return 100;
-                })
-                .attr("height", function(d) {
-                    if (d.name == 'or' || d.name == 'and')
-                        return 35;
-                    else
-                        return 70;
-                })
-                .ease("elastic");
+      node.on("mouseover", mouseOver);
+      node.on("mouseout", mouseOut);
+      node.on("click", clicked);
 
-            canvas.selectAll("path")
-                .transition()                
-                .duration(500)
-                .attr("opacity", 1);
-
-            node.selectAll("text")
-                .transition()
-                .duration(500)
-                .style("fill", pathColor)
-                .style("opacity", 1)
-                .style('cursor', 'pointer')
-                .attr("style", function(d) {
-                    if (d.name == 'or' || d.name == 'and')
-                        return "font-size: 50px;"
-                })
-                .each("end", function() {
-                    node.on("mouseout", function() {
-                        node.selectAll("rect")
-                            .transition()
-                            .attr("fill", function(d) {
-                                if (d['done'])
-                                    return "red";
-                                else if (d['prec'])
-                                    return "yellow";
-                                else
-                                    return "#f60";
-                            })
-                            .attr("height", function(d) {
-                                if (d.name == 'or' || d.name == 'and')
-                                    return 35;
-                                else
-                                    return 70;
-                            })
-                            .attr("y", function(d) {
-                                if (d.name == 'or' || d.name == 'and')
-                                    return -17.5;
-                                else
-                                    return -35;
-                            })
-                            .attr("x", function(d) {
-                                if (d.name == 'or' || d.name == 'and')
-                                    return -25;
-                                else
-                                    return -50;
-                            })
-                            .attr("width", function(d) {
-                                if (d.name == 'or' || d.name == 'and')
-                                    return 50;
-                                else
-                                    return 100;
-                            })
-                            .attr("opacity", function(d) {
-                                if (d.name == 'and' || d.name == 'or')
-                                    return 0;
-                                else
-                                    return 1;
-                            });
-                        node.selectAll("text")
-                            .transition()
-                            .style("opacity", 1);
-                    });
-                    node.on("mouseover", function(d) {
-                        if (d.name != 'and' && d.name != 'or') {
-                            node.selectAll("rect")
-                                .transition()
-                                .attr("fill", function(d) {
-                                    if (d['done'])
-                                        return "red";
-                                    else if (d['prec'])
-                                        return "yellow";
-                                    else
-                                        return "#f60";
-                                })
-                                .attr("height", function(d) {
-                                    if (d.name == 'and' || d.name == 'or')
-                                        return 35;
-                                    else
-                                        return 70;
-                                })
-                                .attr("y", function(d) {
-                                    if (d.name == 'and' || d.name == 'or')
-                                        return -17.5;
-                                    else
-                                        return -35;
-                                })
-                                .attr("x", function(d) {
-                                    if (d.name == 'and' || d.name == 'or')
-                                        return -25;
-                                    else
-                                        return -50;
-                                })
-                                .attr("width", function(d) {
-                                    if (d.name == 'and' || d.name == 'or')
-                                        return 50;
-                                    else
-                                        return 100;
-                                })
-                                .attr("opacity", function(d) {
-                                    if (d.name == 'and' || d.name == 'or')
-                                        return 0;
-                                    else
-                                        return 0.3;
-                                })
-                                .attr("style", 'cursor:pointer');
-                            node.selectAll("text")
-                                .transition()
-                                .style("opacity", 0.3);
-                            d3.select(this)
-                                .select("text")
-                                .transition()
-                                .style("opacity", 1);
-
-                            d3.select(this)
-                                .select("rect")
-                                .transition()
-                                .attr("fill", "#ccc");
-
-                            node.on("click", function(d) {
-                                if (d.name != 'and' && d.name != 'or') {
-                                    var currMod = d3.select(this).text();
-                                    console.log(currMod);
-                                }
-                            });
-                        }
-                    });
-                });
-
-            $(window).on("resize", function() {
-                console.log("In");
-                SVGWidth = $('#Tree').parent().width() - 10;
-                d3.select("#svg")
-                    .attr("width", SVGWidth);
-                var translation = [(SVGWidth) / 2, 75]
-                interact.translate(translation);
-                d3.select("#drawarea")
-                    .transition()
-                    .delay(1)
-                    .attr("transform", "translate(" + translation + ")" +
-                        " scale(" + interact.scale() + ")");
-
-            }).trigger("resize");
+      function mouseOver (d) {
+        if (!isOrAnd(d)) {
+          rectangles.filter(modsFilter)
+                    .classed({"active-rect": false, "opaque": false, "translucent": true});
+          d3.select(this).selectAll("rect").classed({"active-rect": true, "opaque": true, "translucent": false});
         }
+      }
+
+      function mouseOut (d) {
+        rectangles.filter(modsFilter)
+                  .classed({"active-rect": false, "opaque": true, "translucent": false});
+      }
+
+      function clicked (d) {
+        if (!isOrAnd(d) && d.name in allMods) {
+          window.location.href = "/modules/" + d.name;
+        }
+      }
+    }
 
     return Marionette.LayoutView.extend({
       template: template,
@@ -303,8 +153,8 @@ define([
         if (this.model.get('section') === 'modmaven') {
           var module = this.model.get('module').ModuleCode;
           $.getJSON("http://nusmodmaven.appspot.com/gettree?modName=" + module)
-              .done(function(data) {
-                  drawTree(data, false);
+              .done(function (data) {
+                  drawTree("#tree", data);
               });
         }
         
