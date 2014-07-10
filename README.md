@@ -1,4 +1,4 @@
-# [NUSMods](http://nusmods.com)
+# [NUSMods](http://nusmods.com) [![Code Climate](https://codeclimate.com/github/ahbeng/NUSMods.png)](https://codeclimate.com/github/ahbeng/NUSMods)
 
 ## Clone Repository with Submodules
 
