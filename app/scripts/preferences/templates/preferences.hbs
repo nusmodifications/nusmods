@@ -3,7 +3,20 @@
     <h1 class="nm-page-heading">Preferences</h1>
     <hr>
     <form class="form-horizontal" role="form">
-
+      <div class="form-group">
+        <div class="col-sm-4">
+          <label for="mod-history" class="control-label">Module History</label>
+        </div>
+        <div class="col-sm-8">
+          <button class="connect-ivle btn btn-primary" type="button">Get from IVLE</button>
+          <span class="ivle-status">
+            <i id="ivle-status-loading" class="fa fa-refresh fa-spin fa-lg hidden"></i>
+            <i id="ivle-status-success" class="fa fa-check-circle fa-lg hidden"></i>
+          </span>
+          <span class="help-block">Your module history will help us in providing a better, more personalized experience!</span>
+        </div>
+      </div>
+      <hr>
       <div class="form-group">
         <div class="col-sm-4">
           <label for="faculty" class="control-label">Faculty</label>

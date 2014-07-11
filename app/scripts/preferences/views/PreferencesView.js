@@ -27,11 +27,76 @@ function(_, Marionette, template, localforage, Mousetrap, themePicker) {
           }
         });
       });
+
+      localforage.getItem("ivle-module-history", function (value) {
+        if (value) {
+          $("#ivle-status-success").removeClass("hidden");
+        }
+      });
+
+      this.ivleDialog = null;
     },
     events: {
       'click .random-theme': 'randomTheme',
       'change #faculty, input:radio[name="student-radios"], input:radio[name="mode-radios"], #theme-options': 'updatePreference',
-      'keydown': 'toggleTheme'
+      'keydown': 'toggleTheme',
+      'click .connect-ivle': 'connectIvle'
+    },
+    connectIvle: function () {
+      var that = this;
+      if (that.ivleDialog == null || that.ivleDialog.closed) {
+        var w = 255,
+            h = 210,
+            left = (screen.width / 2) - (w / 2),
+            top = (screen.height / 3) - (h / 2);
+        var options = 'dependent, toolbar=no, location=no, directories=no, ' +
+                      'status=no, menubar=no, scrollbars=no, resizable=no, ' +
+                      'copyhistory=no, width=' + w + ', height=' + h +
+                      ', top=' + top + ', left=' + left;
+
+        window.ivleLoginSuccessful = function (token) {
+          $("#ivle-status-success").addClass("hidden");
+          $("#ivle-status-loading").removeClass("hidden");
+          localforage.setItem("ivleToken", token);
+          that.fetchModuleHistory(token);
+          window.ivleLoginSuccessful = undefined;
+        };
+
+        var callbackUrl = window.location.protocol + '//' + window.location.host + '/ivlelogin.html';
+        var popUpUrl = 'https://ivle.nus.edu.sg/api/login/?apikey=APILoadTest&url=' + callbackUrl;
+        that.ivleDialog = window.open(popUpUrl, '', options);
+      }
+      else {
+        that.ivleDialog.focus();
+      }
+    },
+    fetchModuleHistory: function (ivleToken) {
+      var that = this;
+      $.get(
+        "https://ivle.nus.edu.sg/api/Lapi.svc/UserID_Get",
+        {
+          "APIKey": "APILoadTest",
+          "Token": ivleToken
+        },
+        function (studentId) {
+          $.get(
+            "https://ivle.nus.edu.sg/api/Lapi.svc/Modules_Taken",
+            {
+              "APIKey": "APILoadTest",
+              "AuthToken": ivleToken,
+              "StudentID": studentId
+            },
+            function (data) { that.saveModuleHistory(data); },
+            "jsonp"
+          );
+        },
+        "jsonp"
+      );
+    },
+    saveModuleHistory: function (moduleHistory) {
+      localforage.setItem("ivle-module-history", moduleHistory["Results"]);
+      $("#ivle-status-success").removeClass("hidden");
+      $("#ivle-status-loading").addClass("hidden");
     },
     randomTheme: function () {
       themePicker.selectRandomTheme();
