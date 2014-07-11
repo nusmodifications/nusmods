@@ -7,21 +7,21 @@
   line-height: 13px;
 }
 #timetable {
-  margin: 0 0 15px -20px;
-  max-width: none;
-  table-layout: fixed;
   width: 1159px;
+  max-width: none;
+  margin: 0 0 15px -20px;
+  table-layout: fixed;
 }
 #times div {
   margin-right: -13px;
   text-align: right;
 }
 .day {
-  border-bottom: 1px solid $table-border-color;
   border-top: 1px solid $table-border-color;
+  border-bottom: 1px solid $table-border-color;
   th {
-    border-bottom: 1px solid transparent;
     border-top: 1px solid transparent;
+    border-bottom: 1px solid transparent;
     div {
       line-height: 15px;
       margin-left: 20px;
@@ -39,9 +39,9 @@
   border-right: 1px solid $table-border-color;
 }
 .lesson {
-  border: 2px solid;
   overflow: hidden;
   padding: 1px 3px 3px;
+  border: 2px solid;
 }
 
 .hide-code .code,

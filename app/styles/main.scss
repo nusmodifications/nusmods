@@ -78,8 +78,8 @@ a {
     color: $text-color;
   }
   &.icon:hover {
-    color: #666;
     text-decoration: none;
+    color: #666;
   }
   &:hover {
     @include transition-property(all);
@@ -106,8 +106,8 @@ a {
 }
 
 .navbar-toggle {
-  border-color: $brand-primary;
   z-index: 100;
+  border-color: $brand-primary;
   .icon-bar {
     background-color: $brand-primary;
   }
@@ -117,17 +117,17 @@ a {
   .navbar-nav > {
     li {
       a:hover {
-        background: none;
         color: $brand-primary;
+        background: none;
       }
       &.active > {
         a {
-          background: none;
-          border-bottom: 3px solid $brand-primary;
           color: $brand-primary;
+          border-bottom: 3px solid $brand-primary;
+          background: none;
           &:hover {
-            background: none;
             color: $brand-primary;
+            background: none;
           }
         }
       }
@@ -137,16 +137,18 @@ a {
 
 .navbar-default {
   .navbar-form {
-    border: none;
-    margin-left: 0;
     margin-right: 0;
+    margin-left: 0;
     padding: 0;
+    border: none;
   }
 }
 
-.nav-tabs > { 
+.nav-tabs > {
   li.active > {
-    a, a:hover, a:focus {
+    a,
+    a:hover,
+    a:focus {
       background-color: $body-bg;
     }
   }
@@ -154,13 +156,13 @@ a {
 
 // NUSMods Logo
 #brand {
-  color: $brand-primary;
-  font-weight: bold;
   font-size: 24px;
+  font-weight: bold;
   text-align: right;
+  color: $brand-primary;
   &:hover {
-    color: $link-color;
     text-decoration: none;
+    color: $link-color;
   }
   .mods {
     color: #aaa;
@@ -168,16 +170,16 @@ a {
 }
 
 .nm-logo {
-  background-image: url(/images/logo.png);
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: 109px 18px;
   width: 139px;
+  background-image: url(/images/logo.png);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 109px 18px;
 }
 
 .highlight {
-  color: $brand-primary;
   font-weight: bold;
+  color: $brand-primary;
   &.thin {
     font-weight: normal;
   }
@@ -195,18 +197,18 @@ $module-section-min-height: 700px;
 
 .nm-boxify {
   $margin-width: 10px;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 5px;
   min-height: $module-section-min-height;
   padding: $margin-width;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
 }
 
 .mode-slate {
   .nm-boxify {
-    background-color: #222326;
-    border: none;
     min-height: $module-section-min-height;
+    border: none;
+    background-color: #222326;
   }
 }
 
@@ -220,8 +222,8 @@ $module-section-min-height: 700px;
 }
 
 .navbar-form .form-control {
-  margin-left: $navbar-padding-horizontal;
   width: 300px;
+  margin-left: $navbar-padding-horizontal;
   @media (min-width: $screen-sm-min) {
     width: 350px;
   }
@@ -237,14 +239,14 @@ $module-section-min-height: 700px;
   background-color: #fff;
 }
 #loading {
+  font-weight: bold;
   position: fixed;
+  z-index: $zindex-modal-background;
   top: 220px;
   left: 50%;
-  z-index: $zindex-modal-background;
-  margin-left: -100px;
   width: 200px;
+  margin-left: -100px;
   text-align: center;
-  font-weight: bold;
 }
 
 // Select2
@@ -261,8 +263,8 @@ $module-section-min-height: 700px;
     }
   }
   .btn {
-    color: #ddd;
     float: right;
+    color: #ddd;
     &:hover {
       color: #fff;
     }
@@ -310,16 +312,17 @@ $module-section-min-height: 700px;
 // Sidebar Toggling
 @media (min-width: $screen-sm-min) {
   #sidebar-toggle {
+    font-size: 24px;
     position: fixed;
     bottom: 4px;
     left: 4px;
-    font-size: 24px;
   }
 }
 
 // Module Finder Content
 td {
-  &.code, &.mc {
+  &.code,
+  &.mc {
     text-align: center;
   }
   &.code {
@@ -377,8 +380,8 @@ colgroup.hover {
 }
 
 #exam-timetable > table {
-  border: 1px solid $gray;
   font-weight: bold;
+  border: 1px solid $gray;
   th {
     border: 1px solid $gray;
     background-color: $gray-lighter;
@@ -416,8 +419,8 @@ colgroup.hover {
 // Corspedia 
 .corspedia {
   .module-code {
-    color: $brand-primary;
     margin-bottom: 5px;
+    color: $brand-primary;
   }
   .module-title {
     font-weight: normal;
@@ -442,7 +445,7 @@ colgroup.hover {
     text-align: right;
   }
   .workload-components dd {
-    margin-bottom: 0;  
+    margin-bottom: 0;
   }
   #disqus-count {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -450,7 +453,7 @@ colgroup.hover {
   .radio {
     padding-left: 0;
     label {
-      display: inline-block;  
+      display: inline-block;
       padding-right: 10px;
     }
   }
@@ -465,9 +468,7 @@ colgroup.hover {
 
 // Preferences
 #preferences {
-
   @include user-select(none);
-
   #theme-options {
     display: inline-block;
     width: 200px;
@@ -479,35 +480,35 @@ colgroup.hover {
     font-size: 14px;
   }
   .help-block {
-    color: #888;
     font-size: 12px;
+    color: #888;
   }
-  .radio, .checkbox {
+  .radio,
+  .checkbox {
     padding-left: 0;
     label {
-      display: inline-block;  
+      display: inline-block;
       padding-right: 10px;
     }
   }
   .theme-colors-sample {
     margin: 10px 0;
     span {
+      display: inline-block;
+      width: 32px;
+      height: 32px;
+      margin-right: 8px;
       border: 2px solid;
       border-radius: 4px;
-      display: inline-block;
-      height: 32px;
-      width: 32px;
-      margin-right: 8px;
     }
   }
   .random-theme {
-    cursor: pointer;
-    display: inline-block;
     font-size: 11px;
     font-weight: bold;
+    display: inline-block;
     margin-left: 5px;
+    cursor: pointer;
   }
-
 }
 
 // Help
@@ -518,15 +519,15 @@ colgroup.hover {
     }
     .key {
       $key-size: 30px;
-      border: 1px solid #000;
-      border-radius: 5px;
-      display: inline-block;
       font-weight: bold;
-      height: $key-size;
       line-height: $key-size;
+      display: inline-block;
+      width: $key-size;
+      height: $key-size;
       margin-bottom: 10px;
       text-align: center;
-      width: $key-size;
+      border: 1px solid #000;
+      border-radius: 5px;
     }
   }
 }
@@ -562,30 +563,30 @@ colgroup.hover {
 
 .footer-container {
   $footer-text-color: #fff;
-  background-color: #333;
-  bottom: 0;
-  color: $footer-text-color;
-  padding-bottom: 15px;
-  padding-top: 30px;
   position: absolute;
+  bottom: 0;
   width: 100%;
+  padding-top: 30px;
+  padding-bottom: 15px;
+  color: $footer-text-color;
+  background-color: #333;
   .footer {
     white-space: nowrap;
   }
   .section-title {
-    color: #777;
     font-weight: bold;
+    color: #777;
   }
   ul {
-    list-style: none;
     padding-left: 0;
+    list-style: none;
     li {
       font-weight: 300;
       a {
         color: $footer-text-color;
         &:hover {
-          color: $brand-primary;
           text-decoration: none;
+          color: $brand-primary;
         }
       }
     }
@@ -597,10 +598,10 @@ colgroup.hover {
     }
   }
   .last-update-timestamp {
-    border: 2px solid #777;
-    border-radius: 5px;
     margin-top: 5px;
     padding: 10px;
+    border: 2px solid #777;
+    border-radius: 5px;
   }
   #copyright p {
     text-align: center;
@@ -622,10 +623,10 @@ colgroup.hover {
     // Iframe frameborder attribute is invalid HTML5 but no alternative for IE8.
     // Hide using IE CSS hack instead.
     display: none\9;
+    overflow: hidden;
     width: 85px;
     height: 20px;
     border: 0;
-    overflow: hidden;
   }
 }
 @media (min-width: $screen-sm-min) {
