@@ -466,6 +466,86 @@ colgroup.hover {
   }
 }
 
+// ModMaven
+.modmaven {
+  #tree {
+    border: 2px solid #eee;
+    min-height: 550px;
+  }
+  #svg {
+    cursor: move;
+  }
+  .opaque {
+    opacity: 1;
+  }
+  .transparent {
+    opacity: 0;
+  }
+  .translucent {
+    opacity: 0.3;
+  }
+  .opacity-transition {
+    transition: opacity .5s ease-in-out;
+    -moz-transition: opacity .5s ease-in-out;
+    -webkit-transition: opacity .5s ease-in-out;
+  }
+  .link {
+    stroke: #000;
+    fill: none;
+  }
+  .rect {
+    stroke: black;
+    stroke-width: 1.5;
+  }
+  .mod-rect {
+    fill: $brand-primary;
+    transition: opacity .25s ease, fill .25s ease;
+    -moz-transition: opacity .25s ease, fill .25s ease;
+    -webkit-transition: opacity .25s ease, fill .25s ease;
+  }
+  .andor-rect {
+    cursor: default;
+    opacity: 0 !important;
+  }
+  .active-rect {
+    fill: #ccc;
+  }
+  .rect-label {
+    fill: #000;
+    text-anchor: middle;
+    pointer-events:none;
+  }
+  .andor-label {
+    font-size: 50px !important;
+  }
+  .linkable-mod {
+    cursor: pointer;
+  }
+  .non-linkable-mod {
+    cursor: not-allowed;
+  }
+}
+
+.mode-slate {
+  .modmaven {
+    #tree {
+      border: 2px solid #444;
+    }
+    .link {
+      stroke: #fff;
+      fill: none;
+    }
+    .rect-label {
+      fill: #fff;
+      text-anchor: middle;
+      pointer-events:none;
+    }
+    .active-rect {
+      fill: #7E7E7E;
+    }
+  }
+}
+
 // Preferences
 #preferences {
   @include user-select(none);
@@ -643,90 +723,5 @@ colgroup.hover {
 @media (max-width: $screen-xs-max) {
   .footer {
     text-align: center;
-  }
-}
-
-// Modmaven
-#tree {
-  border: 2px solid #eee;
-  min-height: 550px;
-}
-
-#svg {
-  cursor: move;
-}
-
-.link {
-  stroke: #000;
-  fill: none;
-}
-
-.opaque {
-  opacity: 1;
-}
-
-.transparent {
-  opacity: 0;
-}
-
-.translucent {
-  opacity: 0.3;
-}
-
-.opacity-transition {
-  transition: opacity .5s ease-in-out;
-  -moz-transition: opacity .5s ease-in-out;
-  -webkit-transition: opacity .5s ease-in-out;
-}
-
-.rect {
-  stroke: black;
-  stroke-width: 1.5;
-}
-
-.mod-rect {
-  fill: $brand-primary;
-  transition: opacity .25s ease, fill .25s ease;
-  -moz-transition: opacity .25s ease, fill .25s ease;
-  -webkit-transition: opacity .25s ease, fill .25s ease;
-}
-
-.andor-rect {
-  cursor: default;
-  opacity: 0 !important;
-}
-
-.active-rect {
-  fill: #ccc;
-}
-
-.rect-label {
-  fill: #000;
-  text-anchor: middle;
-  pointer-events:none;
-}
-
-.andor-label {
-  font-size: 50px !important;
-}
-
-.linkable-mod {
-  cursor: pointer;
-}
-.mode-slate {
-  #tree {
-    border: 2px solid #444;
-  }
-  .link {
-    stroke: #fff;
-    fill: none;
-  }
-  .rect-label {
-    fill: #fff;
-    text-anchor: middle;
-    pointer-events:none;
-  }
-  .active-rect {
-    fill: #7E7E7E;
   }
 }

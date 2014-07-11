@@ -93,7 +93,9 @@ define([
                             .classed({"rect": true, "opaque": true})
                             .attr("nodeValue", function (d) { return d.name; })
       rectangles.filter(modsFilter)
-                .classed({"mod-rect": true, "linkable-mod": true})
+                .classed({"mod-rect": true, "non-linkable-mod": true})
+                .filter(function (d) { return d.name in allMods; })
+                .classed({"non-linkable-mod": false, "linkable-mod": true});
       rectangles.filter(andOrFilter)
                 .classed({"andor-rect": true});
 
@@ -104,7 +106,9 @@ define([
       labels.filter(andOrFilter)
             .classed({"andor-label": true});
       labels.filter(modsFilter)
-            .classed({"linkable-mod": true});
+            .classed({"non-linkable-mod": true})
+            .filter(function (d) { return d.name in allMods; })
+            .classed({"non-linkable-mod": false, "linkable-mod": true});
 
       canvas.selectAll("path")
             .classed({"opacity-transition": true, "opaque": true, "transparent": false});
