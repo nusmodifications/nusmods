@@ -3,19 +3,12 @@ define([
   'backbone.marionette',
   'hbs!../templates/preferences',
   'localforage',
-  'mousetrap'
+  'mousetrap',
+  '../../common/utils/themePicker'
 ],
 
-function(_, Marionette, template, localforage, Mousetrap) {
+function(_, Marionette, template, localforage, Mousetrap, themePicker) {
   'use strict';
-
-  function getThemeOptions () {
-    var optionValues = [];
-    $('#theme-options').children('option').each(function() {
-      optionValues.push($(this).val());
-    });
-    return optionValues;
-  }
 
   return Marionette.LayoutView.extend({
     template: template,
@@ -34,22 +27,6 @@ function(_, Marionette, template, localforage, Mousetrap) {
           }
         });
       });
-
-      var that = this;
-
-      Mousetrap.bind(['left', 'right'], function (e) {
-        var $themeOptions = $('#theme-options');
-        if ($themeOptions.length) {
-          // So that arrow events are prevented on non-preferences pages.
-          var optionValues = getThemeOptions();
-          var newIndex = optionValues.indexOf($themeOptions.val()) + (e.keyIdentifier === 'Left' ? -1 : +1);
-          newIndex = Math.min(newIndex, optionValues.length - 1);
-          newIndex = Math.max(newIndex, 0);
-          var newTheme = optionValues[newIndex];
-          $themeOptions.val(newTheme);
-          that.savePreference('theme', newTheme);
-        }
-      });
     },
     events: {
       'click .random-theme': 'randomTheme',
@@ -57,16 +34,7 @@ function(_, Marionette, template, localforage, Mousetrap) {
       'keydown': 'toggleTheme'
     },
     randomTheme: function () {
-      var optionValues = getThemeOptions();
-      var $themeOptions = $('#theme-options');
-      var value;
-
-      do {
-        value = optionValues[Math.floor(Math.random() * (optionValues.length))];
-      } while (value === $themeOptions.val());
-
-      $themeOptions.val(value);
-      this.savePreference('theme', value);
+      themePicker.selectRandomTheme();
     },
     updatePreference: function ($ev) {
       var $target = $($ev.target);
@@ -85,22 +53,7 @@ function(_, Marionette, template, localforage, Mousetrap) {
       }
       localforage.setItem(property, value);
       if (property === 'mode' || property === 'theme') {
-        this.updateAppearance(property, value);
-      }
-    },
-    updateAppearance: function (property, value) {
-      
-      var $body = $('body');
-      $body.attr('data-' + property, value);
-      $body.removeClass();
-
-      _.each(['mode', 'theme'], function (prop) {
-        $body.addClass(prop + '-' + $body.attr('data-' + prop));
-      });
-      
-      if (property === 'mode') {
-        var cssFile = value !== 'default' ? '/styles/' + value + '.min.css' : '';
-        $('#mode').attr('href', cssFile);
+        themePicker.updateAppearance(property, value);
       }
     }
   });

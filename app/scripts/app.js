@@ -7,7 +7,7 @@ define([
   'common/views/NavigationView',
   'localforage',
   'nusmods',
-  'json!config.json',
+  'common/config',
   'backbone.analytics',
   'qtip2'
 ], function (_, Backbone, Marionette, NavigationCollection,
@@ -58,15 +58,10 @@ define([
     });
   });
 
-  localforage.getItem('selectedModules', function (selectedModules) {
-    _.each(selectedModules, function (module) {
-      App.request('addModule', module.ModuleCode, module);
-    });
-  });
-
   App.on('start', function () {
     require([
       'common/views/AppView',
+      'common/collections/TimetableModuleCollection',
       // 'ivle',
       'modules',
       'timetable',
@@ -74,14 +69,43 @@ define([
       'help',
       'about',
       'support'
-    ], function (AppView) {
-      Backbone.history.start({pushState: true});
+    ], function (AppView, TimetableModuleCollection) {
+      localforage.getItem(config.semTimetableFragment +
+        ':queryString').then(function (savedQueryString) {
+        // Needed to transform legacy JSON format to query string.
+        // TODO: remove after a sufficient transition period has passed.
+        if (!savedQueryString) {
+          return localforage.getItem('selectedModules')
+            .then(TimetableModuleCollection.fromJSONtoQueryString);
+        }
+        return savedQueryString;
+      }).then(function (savedQueryString) {
+        if ('/' + config.semTimetableFragment === window.location.pathname) {
+          var queryString = window.location.search.slice(1);
+          if (queryString) {
+            if (savedQueryString !== queryString) {
+              // If initial query string does not match saved query string,
+              // timetable is shared.
+              selectedModulesController.selectedModules.shared = true;
+            }
+            // If there is a query string for timetable, return so that it will
+            // be used instead of saved query string.
+            return;
+          }
+        }
+        var selectedModules = TimetableModuleCollection.fromQueryStringToJSON(savedQueryString);
+        return $.when.apply($, _.map(selectedModules, function (module) {
+          return App.request('addModule', module.ModuleCode, module).promise;
+        }));
+      }).then(function () {
+        new AppView();
 
-      new AppView();
-
-      if (Backbone.history.fragment === '') {
-        Backbone.history.navigate('timetable', {trigger: true, replace: true});
-      }
+        // Backbone.history.start returns false if no defined route matches
+        // the current URL, so navigate to timetable by default.
+        if (!Backbone.history.start({pushState: true})) {
+          Backbone.history.navigate('timetable', {trigger: true, replace: true});
+        }
+      });
     });
 
     var $body = $('body');

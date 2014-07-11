@@ -65,8 +65,13 @@
     ]
   },
   {
-    "category": "Preferences",
+    "category": "Appearance",
     "shortcuts": [
+      {
+        "title": "Toggle modes",
+        "keys": ["X"],
+        "description": "Pressing __X__ will switch between the light and dark modes of the site."
+      },
       {
         "title": "Switch theme",
         "keys": ["&#8592;", "&#8594;"],

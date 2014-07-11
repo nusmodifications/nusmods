@@ -40,7 +40,7 @@ function(Marionette, template) {
         url: 'https://www.hipchat.com/g6MlLApNR',
         timezone: 'SGT',
         noframes: 'Your browser has disabled iframes. Why?!',
-        anonymous: 0,
+        anonymous: 1,
         minimal: 0,
         width: '100%',
         height: 500,
