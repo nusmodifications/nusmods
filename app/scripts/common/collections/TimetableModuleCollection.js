@@ -67,6 +67,10 @@ define([
 
       onRemove: function (module) {
         this.timetable.remove(this.timetable.where({ModuleCode: module.id}));
+
+        // Return removed color back to color array to prevent
+        // uneven distribution when new modules are added.
+        this.colors.push(module.get('color'));
       },
 
       toJSON: function () {
