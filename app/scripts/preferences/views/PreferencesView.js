@@ -52,8 +52,10 @@ function(_, Marionette, template, localforage, Mousetrap, themePicker) {
         return;
       }
       localforage.setItem(property, value);
-      if (property === 'mode' || property === 'theme') {
-        themePicker.updateAppearance(property, value);
+      if (property === 'theme') {
+        themePicker.applyTheme(value);
+      } else if (property === 'mode') {
+        themePicker.toggleMode();
       }
     }
   });
