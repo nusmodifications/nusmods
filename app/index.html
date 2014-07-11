@@ -133,6 +133,12 @@
     </div>
   </footer>
 
+  <script src="//cdn.ravenjs.com/1.1.15/native/raven.min.js"></script>
+  <script>
+    Raven.config('https://44876a16654343e5a30acfcaa5144806@app.getsentry.com/27278', {
+      whitelistUrls: ['nusmods.com/scripts/']
+    }).install();
+  </script>
   <!-- build:js /scripts/main.js -->
   <script data-main="/scripts/main" src="/bower_components/requirejs/require.js"></script>
   <!-- endbuild -->
