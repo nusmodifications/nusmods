@@ -15,6 +15,16 @@
   </div>
   <strong>{{ModuleTitle}}</strong>
   <div class="desc">{{ModuleDescription}}</div>
+  {{#if Lecturers}}
+    <div>
+      <strong>Lecturer(s):</strong>
+      <ul class="lecturers list-inline">
+        {{#each Lecturers}}
+        <li>{{this}}</li>
+        {{/each}}
+      </ul>
+    </div>
+  {{/if}}
   {{#if Prerequisite}}
     <div><strong>Prerequisites:</strong>&nbsp;{{{parsedPrerequisite}}}</div>
   {{/if}}

@@ -336,6 +336,19 @@ td {
   }
 }
 
+.lecturers {
+  display: inline;
+  li {
+    padding-right: 0;
+  }
+  li:after {
+    content: ","
+  }
+  li:last-of-type:after {
+    content: "";
+  }
+}
+
 // Timetable
 #timetable {
   user-select: none;
