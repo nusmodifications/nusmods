@@ -34,7 +34,8 @@ module.exports = function (grunt) {
         'Prerequisite',
         'Preclusion',
         'ExamDate',
-        'Types'
+        'Types',
+        'Lecturers'
       ]);
     });
     grunt.file.write(
