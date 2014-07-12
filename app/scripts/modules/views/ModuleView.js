@@ -28,7 +28,7 @@ define([
           };
 
           var defaults = {
-            'faculty': 'default',
+            'faculty': 'Arts & Social Sciences',
             'account': 'P',
             'student': 'true'
           };
