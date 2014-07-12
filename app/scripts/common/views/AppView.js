@@ -1,5 +1,5 @@
 define(['app', 'backbone', 'nusmods', 'mousetrap', '../utils/modulify', 
-    'underscore', 'common/views/SelectView', '../utils/themePicker'],
+    'underscore', 'common/views/SelectView', '../themes/themePicker'],
   function (App, Backbone, NUSMods, Mousetrap, modulify, _, SelectView, themePicker) {
   'use strict';
 

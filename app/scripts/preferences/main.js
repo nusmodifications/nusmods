@@ -1,5 +1,5 @@
 define(['require', 'app', 'backbone.marionette', 
-    'json!../common/utils/themeOptions.json', 'json!../common/faculty/facultyList.json'],
+    'json!../common/themes/themeOptions.json', 'json!../common/faculty/facultyList.json'],
   function (require, App, Marionette, themeOptions, facultyList) {
     'use strict';
 
