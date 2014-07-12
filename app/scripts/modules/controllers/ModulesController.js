@@ -32,8 +32,9 @@ define(['underscore', 'require', 'app', 'backbone.marionette'],
     return Marionette.Controller.extend({
       showModules: function (id, section) {
         require(['../views/ModulesView', '../views/ModuleView', 'nusmods',
-            'common/models/ModuleModel', '../models/ModulePageModel'],
-          function (ModulesView, ModuleView, NUSMods, ModuleModel, ModulePageModel) {
+            'common/models/ModuleModel', '../models/ModulePageModel', 
+            'json!common/faculty/facultyList.json'],
+          function (ModulesView, ModuleView, NUSMods, ModuleModel, ModulePageModel, facultyList) {
             navigationItem.select();
             if (!id) {
               App.mainRegion.show(new ModulesView());
@@ -46,6 +47,7 @@ define(['underscore', 'require', 'app', 'backbone.marionette'],
               NUSMods.getMod(modCode).then(function (data) {
                 var moduleModel = new ModuleModel(data);
                 var modulePageModel = new ModulePageModel({
+                  faculties: facultyList,
                   module: moduleModel.attributes,
                   section: section,
                   sectionsInfo: sectionsInfo

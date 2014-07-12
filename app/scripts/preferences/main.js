@@ -1,5 +1,6 @@
-define(['require', 'app', 'backbone.marionette', 'json!../common/utils/themeOptions.json'],
-  function (require, App, Marionette, themeOptions) {
+define(['require', 'app', 'backbone.marionette', 
+    'json!../common/utils/themeOptions.json', 'json!../common/faculty/facultyList.json'],
+  function (require, App, Marionette, themeOptions, facultyList) {
     'use strict';
 
     var navigationItem = App.request('addNavigationItem', {
@@ -13,7 +14,10 @@ define(['require', 'app', 'backbone.marionette', 'json!../common/utils/themeOpti
         require(['./views/PreferencesView'],
           function (PreferencesView) {
             navigationItem.select();
-            var preferencesModel = new Backbone.Model({themes: themeOptions});
+            var preferencesModel = new Backbone.Model({
+              faculties: facultyList,
+              themes: themeOptions
+            });
             App.mainRegion.show(new PreferencesView({model: preferencesModel}));
           });
       }

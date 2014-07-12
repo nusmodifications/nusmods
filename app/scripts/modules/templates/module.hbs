@@ -125,19 +125,9 @@
                         <i class="nm-help highlight thin fa fa-question-circle" data-toggle="tooltip" data-placement="right" data-trigger="hover" title="CEG Students are to select <span class='highlight'>Joint Multi-Disciplinary Programmes</span> due to the unique nature of their course." data-html="true"></i>
                       </label>
                       <select class="form-control" name="faculty" id="faculty" data-pref-type="faculty">
-                        <option value="default">Your Faculty</option>
-                        <option value="Arts &amp; Social Sciences">Arts &amp; Social Sciences</option>
-                        <option value="Dentistry">Dentistry</option>
-                        <option value="Engineering">Engineering</option>
-                        <option value="Joint Multi-Disciplinary Programmes">Joint Multi-Disciplinary Programmes</option>
-                        <option value="Law">Law</option>
-                        <option value="School Of Business">School Of Business</option>
-                        <option value="School Of Computing">School Of Computing</option>
-                        <option value="School Of Design And Environment">School Of Design And Environment</option>
-                        <option value="Science">Science</option>
-                        <option value="University Scholars Programme">University Scholars Programme</option>
-                        <option value="Yong Loo Lin School Of Medicine">Yong Loo Lin School Of Medicine</option>
-                        <option value="Yong Siew Toh Conservatory Of Music">Yong Siew Toh Conservatory Of Music</option>
+                        {{#each faculties}}
+                          <option value="{{value}}">{{name}}</option>
+                        {{/each}}
                       </select>
                     </div>
                     <div class="col-md-4 form-group">
