@@ -1,5 +1,5 @@
-define(['require', 'app', 'backbone.marionette'],
-  function (require, App, Marionette) {
+define(['require', 'app', 'backbone.marionette', 'json!../common/utils/themeOptions.json'],
+  function (require, App, Marionette, themeOptions) {
     'use strict';
 
     var navigationItem = App.request('addNavigationItem', {
@@ -13,7 +13,8 @@ define(['require', 'app', 'backbone.marionette'],
         require(['./views/PreferencesView'],
           function (PreferencesView) {
             navigationItem.select();
-            App.mainRegion.show(new PreferencesView());
+            var preferencesModel = new Backbone.Model({themes: themeOptions});
+            App.mainRegion.show(new PreferencesView({model: preferencesModel}));
           });
       }
     };
