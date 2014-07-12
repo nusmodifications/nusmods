@@ -3,7 +3,7 @@
   "private": true,
   "dependencies": {
     "backbone": "~1.1.2",
-    "backbone.analytics": "~1.0.1",
+    "backbone.analytics": "#f5648f583ed9cf073c123ec61b9e31dd9c77c4f9",
     "backbone.marionette": "~2.0.1",
     "backbone.picky": "~0.2.0",
     "bootstrap-sass-official": "~3.2.0",
