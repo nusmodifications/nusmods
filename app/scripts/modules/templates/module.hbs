@@ -12,6 +12,16 @@
       </dd>
       <dt class="highlight">Credits</dt>
       <dd>{{module.ModuleCredit}}</dd>
+      {{#if module.Lecturers}}
+        <dt class="highlight">Lecturer(s)</dt>
+        <dd>
+          <ul class="lecturers list-inline">
+            {{#each module.Lecturers}}
+              <li>{{this}}</li>
+            {{/each}}
+          </ul>
+        </dd>
+      {{/if}}
       {{#if module.Prerequisite}}
         <dt class="highlight">Pre-requisite(s)</dt>
         <dd>{{{module.parsedPrerequisite}}}</dd>
