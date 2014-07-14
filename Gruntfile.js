@@ -406,8 +406,8 @@ module.exports = function (grunt) {
     'corsBiddingStats',
     'examTimetable',
     'moduleTimetableDelta',
-    'consolidate',
     'ivle',
+    'consolidate',
     'normalize',
     'split'
   ]);
@@ -417,8 +417,8 @@ module.exports = function (grunt) {
     'corsBiddingStats',
     'examTimetable:ay2013to2014sem2',
     'moduleTimetableDelta',
-    'consolidate:ay2013to2014sem2',
     'ivle:ay2013to2014sem2',
+    'consolidate:ay2013to2014sem2',
     'normalize:ay2013to2014sem2',
     'split:ay2013to2014sem2'
   ]);
@@ -429,8 +429,8 @@ module.exports = function (grunt) {
     'corsBiddingStats',
     'examTimetable:ay2014to2015sem1',
     'moduleTimetableDelta',
-    'consolidate:ay2014to2015sem1',
     'ivle:ay2014to2015sem1',
+    'consolidate:ay2014to2015sem1',
     'normalize:ay2014to2015sem1',
     'split:ay2014to2015sem1'
   ]);
