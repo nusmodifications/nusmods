@@ -28,7 +28,7 @@ function(_, Marionette, template, localforage, Mousetrap, themePicker) {
         });
       });
 
-      localforage.getItem("ivle-module-history", function (value) {
+      localforage.getItem("ivle:ivleModuleHistory", function (value) {
         if (value) {
           $("#ivle-status-success").removeClass("hidden");
         }
@@ -57,7 +57,7 @@ function(_, Marionette, template, localforage, Mousetrap, themePicker) {
         window.ivleLoginSuccessful = function (token) {
           $("#ivle-status-success").addClass("hidden");
           $("#ivle-status-loading").removeClass("hidden");
-          localforage.setItem("ivleToken", token);
+          localforage.setItem("ivle:ivleToken", token);
           that.fetchModuleHistory(token);
           window.ivleLoginSuccessful = undefined;
         };
@@ -94,7 +94,7 @@ function(_, Marionette, template, localforage, Mousetrap, themePicker) {
       );
     },
     saveModuleHistory: function (moduleHistory) {
-      localforage.setItem("ivle-module-history", moduleHistory["Results"]);
+      localforage.setItem("ivle:ivleModuleHistory", moduleHistory["Results"]);
       $("#ivle-status-success").removeClass("hidden");
       $("#ivle-status-loading").addClass("hidden");
     },
