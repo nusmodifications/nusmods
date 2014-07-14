@@ -79,7 +79,7 @@ define([
       function andOrFilter (d) { return isOrAnd(d); }
       function getX (d) { return isOrAnd(d) ? -25 : -50; }
       function getY (d) { return isOrAnd(d) ? -17.5 : -35; }
-      function getHeight (d) { return isOrAnd(d) ? 35 : 70; }
+      function getHeight (d) { return isOrAnd(d) ? 35 : 60; }
       function getWidth (d) { return isOrAnd(d) ? 50 : 100; }
       function getOpacity (d) { return isOrAnd(d) ? 0 : 1; }
 

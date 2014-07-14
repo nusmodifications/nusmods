@@ -525,6 +525,7 @@ colgroup.hover {
   }
   .rect-label {
     fill: #000;
+    font-weight: bold;
     text-anchor: middle;
     pointer-events:none;
   }
@@ -542,19 +543,17 @@ colgroup.hover {
 .mode-slate {
   .modmaven {
     #tree {
-      border: 2px solid #444;
+      border-color: #444;
     }
     .link {
-      stroke: #fff;
       fill: none;
+      stroke: #fff;
     }
     .rect-label {
       fill: #fff;
-      text-anchor: middle;
-      pointer-events:none;
     }
     .active-rect {
-      fill: #7E7E7E;
+      fill: #7e7e7e;
     }
   }
 }
