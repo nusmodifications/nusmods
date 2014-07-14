@@ -23,8 +23,15 @@ module.exports = function (grunt) {
       JSON.stringify(_.object(moduleCodes, moduleTitles), null, options.jsonSpace)
     );
 
-    var moduleInformation = _.map(normalized, function (mod) {
-      return _.pick(mod, [
+    var moduleInformation = [];
+
+    normalized.forEach(function (mod) {
+      grunt.file.write(
+        path.join(basePath, options.destSubfolder, mod.ModuleCode + '.json'),
+        JSON.stringify(mod, null, options.jsonSpace)
+      );
+
+      var info = _.pick(mod, [
         'ModuleCode',
         'ModuleTitle',
         'Department',
@@ -37,17 +44,29 @@ module.exports = function (grunt) {
         'Types',
         'Lecturers'
       ]);
+      moduleInformation.push(info);
+      grunt.file.write(
+        path.join(basePath, options.destSubfolder, mod.ModuleCode, 'index.json'),
+        JSON.stringify(info, null, options.jsonSpace)
+      );
+
+      grunt.file.write(
+        path.join(basePath, options.destSubfolder, mod.ModuleCode, 'corsbiddingstats.json'),
+        JSON.stringify(mod.CorsBiddingStats, null, options.jsonSpace)
+      );
+      grunt.file.write(
+        path.join(basePath, options.destSubfolder, mod.ModuleCode, 'ivle.json'),
+        JSON.stringify(mod.IVLE, null, options.jsonSpace)
+      );
+      grunt.file.write(
+        path.join(basePath, options.destSubfolder, mod.ModuleCode, 'timetable.json'),
+        JSON.stringify(mod.Timetable, null, options.jsonSpace)
+      );
     });
+
     grunt.file.write(
       path.join(basePath, options.destModuleInformation),
       JSON.stringify(moduleInformation, null, options.jsonSpace)
     );
-
-    normalized.forEach(function (mod) {
-      grunt.file.write(
-        path.join(basePath, options.destSubfolder, mod.ModuleCode + '.json'),
-        JSON.stringify(mod, null, options.jsonSpace)
-      );
-    });
   });
 };
