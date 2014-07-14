@@ -122,9 +122,10 @@ module.exports = function (grunt) {
         cachePath: '<%= defaults.cachePath %>',
         concurrencyLimit: '<%= defaults.concurrencyLimit %>',
         maxCacheAge: '<%= defaults.maxCacheAge %>',
+        srcFolder: '<%= defaults.destFolder %>',
         destFolder: '<%= defaults.destFolder %>',
         jsonSpace: '<%= defaults.jsonSpace %>',
-        destSubfolder: 'ivle',
+        destFileName: 'ivleRaw.json',
         ivleApi: grunt.file.readJSON('ivleApi.json')
       },
       ay2012to2013sem1: {

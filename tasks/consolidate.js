@@ -13,6 +13,7 @@ module.exports = function (grunt) {
     var corsBiddingStatsOptions = grunt.config('corsBiddingStats').options;
     var corsBiddingStatsPath = path.join(corsBiddingStatsOptions.destFolder, corsBiddingStatsOptions.destFileName);
     var examTimetablePath = path.join(basePath, grunt.config('examTimetable').options.destFileName);
+    var ivlePath = path.join(basePath, grunt.config('ivle').options.destFileName);
     var moduleTimetableDeltaPath = path.join(basePath, grunt.config('moduleTimetableDelta').options.destFileName);
 
     var modules = {};
@@ -64,6 +65,15 @@ module.exports = function (grunt) {
       examTimetable.forEach(function (exam) {
         modules[exam.Code] = modules[exam.Code] || {};
         modules[exam.Code].Exam = exam;
+      });
+    }
+
+    if (grunt.file.exists(ivlePath)) {
+      var ivle = grunt.file.readJSON(ivlePath);
+      ivle.forEach(function (results) {
+        var code = results[0].CourseCode;
+        modules[code] = modules[code] || {};
+        modules[code].IVLE = results;
       });
     }
 

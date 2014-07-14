@@ -13,18 +13,41 @@ module.exports = function (grunt) {
     var querystring = require('querystring');
     var helpers = require('./helpers');
 
-    var consolidateOptions = grunt.config('consolidate').options;
-    var basePath = path.join(consolidateOptions.srcFolder, options.academicYear.replace('/', '-'), options.semester);
-    var consolidatePath = path.join(basePath, consolidateOptions.destFileName);
-    var consolidated = grunt.file.readJSON(consolidatePath);
+    var basePath = path.join(options.srcFolder, options.academicYear.replace('/', '-'), options.semester);
+    var bulletinModulesPath = path.join(basePath, grunt.config('bulletinModules').options.destFileName);
+    var corsPath = path.join(basePath, grunt.config('cors').options.destFileName);
+    var corsBiddingStatsOptions = grunt.config('corsBiddingStats').options;
+    var corsBiddingStatsPath = path.join(corsBiddingStatsOptions.destFolder, corsBiddingStatsOptions.destFileName);
+    var examTimetablePath = path.join(basePath, grunt.config('examTimetable').options.destFileName);
+    var moduleTimetableDeltaPath = path.join(basePath, grunt.config('moduleTimetableDelta').options.destFileName);
 
-    async.mapLimit(consolidated, options.concurrencyLimit, function (rawMod, callback) {
+    // Get module codes from all preceding tasks
+    var moduleCodes = {};
+    var populateModuleCodes = function (path, keyOrFunc) {
+      if (grunt.file.exists(path)) {
+        grunt.file.readJSON(path).forEach(typeof keyOrFunc === 'string' ?
+          function (mod) {
+            moduleCodes[mod[keyOrFunc]] = true;
+          } : keyOrFunc);
+      }
+    };
+    populateModuleCodes(bulletinModulesPath, 'ModuleCode');
+    populateModuleCodes(corsPath, function (mod) {
+      mod.ModuleCode.split(' / ').forEach(function (code) {
+        moduleCodes[code] = true;
+      });
+    });
+    populateModuleCodes(corsBiddingStatsPath, 'ModuleCode');
+    populateModuleCodes(examTimetablePath, 'Code');
+    populateModuleCodes(moduleTimetableDeltaPath, 'ModuleCode');
+
+    async.mapLimit(Object.keys(moduleCodes), options.concurrencyLimit, function (moduleCode, callback) {
       var url = options.ivleApi.baseUrl + 'Modules_Search?' +
         querystring.stringify({
           APIKey: options.ivleApi.key,
           AcadYear: options.academicYear,
           IncludeAllInfo: true,
-          ModuleCode: rawMod.ModuleCode,
+          ModuleCode: moduleCode,
           Semester: 'Semester ' + options.semester,
           AuthToken: options.ivleApi.token
         });
@@ -33,15 +56,9 @@ module.exports = function (grunt) {
           return callback(err);
         }
 
-        rawMod.IVLE = JSON.parse(data).Results.filter(function (result) {
-          return result.CourseCode === rawMod.ModuleCode;
-        });
-        grunt.file.write(
-          path.join(options.destFolder, options.academicYear.replace('/', '-'),
-            options.semester, options.destSubfolder, rawMod.ModuleCode + '.json'),
-          JSON.stringify(rawMod.IVLE, null, options.jsonSpace)
-        );
-        callback(null, rawMod);
+        callback(null, JSON.parse(data).Results.filter(function (result) {
+          return result.CourseCode === moduleCode;
+        }));
       });
     }, function (err, results) {
       if (err) {
@@ -50,10 +67,9 @@ module.exports = function (grunt) {
       }
 
       grunt.file.write(
-        consolidatePath,
+        path.join(options.destFolder, options.academicYear.replace('/', '-'), options.semester, options.destFileName),
         JSON.stringify(results, null, options.jsonSpace)
       );
-
       done();
     });
   });
