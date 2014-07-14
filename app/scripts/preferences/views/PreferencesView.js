@@ -4,7 +4,7 @@ define([
   'hbs!../templates/preferences',
   'localforage',
   'mousetrap',
-  '../../common/utils/themePicker'
+  '../../common/themes/themePicker'
 ],
 
 function(_, Marionette, template, localforage, Mousetrap, themePicker) {

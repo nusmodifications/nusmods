@@ -1,5 +1,5 @@
 define(['app', 'backbone', 'nusmods', 'mousetrap', '../utils/modulify', 
-    'underscore', 'common/views/SelectView', '../utils/themePicker'],
+    'underscore', 'common/views/SelectView', '../themes/themePicker'],
   function (App, Backbone, NUSMods, Mousetrap, modulify, _, SelectView, themePicker) {
   'use strict';
 
@@ -93,7 +93,7 @@ define(['app', 'backbone', 'nusmods', 'mousetrap', '../utils/modulify',
       });
 
       Mousetrap.bind(['left', 'right'], function (e) {
-        themePicker.selectNextTheme(e.keyIdentifier);
+        themePicker.selectNextTheme(e.keyCode === 37 ? 'Left' : 'Right' );
       });
 
       Mousetrap.bind(['x'], function (e) {

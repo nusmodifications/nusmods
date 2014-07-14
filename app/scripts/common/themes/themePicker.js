@@ -1,5 +1,5 @@
 define(['underscore', 
-    'json!common/utils/themeOptions.json',
+    'json!common/themes/themeOptions.json',
     'localforage'], 
   function (_, themeOptions, localforage) {
   'use strict';

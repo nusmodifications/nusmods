@@ -3,9 +3,18 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>NUSMods · NUS CORS Module Finder &amp; Timetable Builder (Unofficial)</title>
-  <meta name="description" content="NUSMods helps you find modules which fit your schedule, plan your ideal timetable, then share it with your friends or export it to various formats.">
+  <title>NUSMods</title>
+  <meta name="description" content="NUSMods provides students with a better way to plan their school timetables and also serves to be a complete knowledge bank of NUS modules by providing useful module-related information such as archived CORS bidding statistics and community-driven module reviews and discussions.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Facebook Open Graph Meta Tags -->
+  <meta name="og:image" content="icon.png">
+  <meta name="og:url" content="http://nusmods.com">
+  <meta name="og:title" content="NUSMods">
+  <meta name="og:description" content="NUSMods provides students with a better way to plan their school timetables and also serves to be a complete knowledge bank of NUS modules by providing useful module-related information such as archived CORS bidding statistics and community-driven module reviews and discussions.">
+  <meta name="og:site_name" content="NUSMods">
+  <meta name="og:type" content="website">
+
   <link rel="image_src" href="thumbnail.png">
   
   <link rel="shortcut icon" href="/favicon.ico">
@@ -88,7 +97,7 @@
                 <li><a href="/about">About</a></li>
                 <li><a href="/team">The Team</a></li>
                 <!-- <li><a href="#">Blog</a></li> -->
-                <li><a href="mailto:beng@nus.edu.sg">Contact Us</a></li>
+                <li><a href="mailto:mods@nusmods.com">Contact Us</a></li>
               </ul>
             </div>
             <div class="col-sm-3">
@@ -147,7 +156,14 @@
   <!-- endbuild -->
   <div id="fb-root"></div>
   <script>
-    var _gaq=[['_setAccount','UA-33503218-1']];(function(d,s){var j,e=d.getElementsByTagName(s)[0],a=function(u){j=d.createElement(s);j.src=u;e.parentNode.insertBefore(j,e)};a('//www.google-analytics.com/ga.js')}(document,'script'));
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-33503218-1', 'auto');
+    // Comment out to prevent double counting as pageview is
+    // already sent during Backbone routing.
+    // ga('send', 'pageview');
   </script>
 </body>
 </html>

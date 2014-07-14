@@ -23,21 +23,11 @@
         </div>
         <div class="col-sm-8">
           <select class="form-control" name="faculty" id="faculty" data-pref-type="faculty">
-            <option value="default">Your Faculty</option>
-            <option value="Arts &amp; Social Sciences">Arts &amp; Social Sciences</option>
-            <option value="Dentistry">Dentistry</option>
-            <option value="Engineering">Engineering</option>
-            <option value="Joint Multi-Disciplinary Programmes">Joint Multi-Disciplinary Programmes</option>
-            <option value="Law">Law</option>
-            <option value="School Of Business">School Of Business</option>
-            <option value="School Of Computing">School Of Computing</option>
-            <option value="School Of Design And Environment">School Of Design And Environment</option>
-            <option value="Science">Science</option>
-            <option value="University Scholars Programme">University Scholars Programme</option>
-            <option value="Yong Loo Lin School Of Medicine">Yong Loo Lin School Of Medicine</option>
-            <option value="Yong Siew Toh Conservatory Of Music">Yong Siew Toh Conservatory Of Music</option>
+            {{#each faculties}}
+              <option value="{{value}}">{{name}}</option>
+            {{/each}}
           </select>
-          <span class="help-block">CEG Students are to select <span class="highlight">Multi-Disciplinary Program</span> due to the unique nature of their course.</span>
+          <span class="help-block">CEG Students are to select <span class="highlight">Joint Multi-Disciplinary Program</span> due to the unique nature of their course.</span>
         </div>
       </div>
       <hr>
@@ -95,35 +85,9 @@
             <span class="color7"></span>
           </div>
           <select class="form-control" name="theme-options" id="theme-options" data-pref-type="theme">
-            <option value="default" selected>Default</option>
-            <option value="3024">3024</option>
-            <option value="ashes">Ashes</option>
-            <option value="atelierdune">Atelier Dune</option>
-            <option value="atelierforest">Atelier Forest</option>
-            <option value="atelierheath">Atelier Heath</option>
-            <option value="atelierlakeside">Atelier Lakeside</option>
-            <option value="atelierseaside">Atelier Seaside</option>
-            <option value="bespin">Bespin</option>
-            <option value="brewer">Brewer</option>
-            <option value="chalk">Chalk</option>
-            <option value="codeschool">Code School</option>
-            <option value="eighties">Eighties</option>
-            <option value="embers">Embers</option>
-            <option value="google">Google</option>
-            <option value="grayscale">Grayscale</option>
-            <option value="greenscreen">Green Screen</option>
-            <option value="isotope">Isotope</option>
-            <option value="londontube">London Tube</option>
-            <option value="marrakesh">Marrakesh</option>
-            <option value="mocha">Mocha</option>
-            <option value="monokai">Monokai</option>
-            <option value="ocean">Ocean</option>
-            <option value="paraiso">Paraiso</option>
-            <option value="railscasts">Railscasts</option>
-            <option value="shapeshifter">Shapeshifter</option>
-            <option value="solarized">Solarized</option>
-            <option value="tomorrow">Tomorrow</option>
-            <option value="twilight">Twilight</option>
+            {{#each themes}}
+              <option value="{{value}}">{{name}}</option>
+            {{/each}}
           </select>
           <span class="highlight random-theme"><i class="fa fa-random"></i> Random Theme</span>
           <span class="help-block">Choose from these awesome Base 16 colour themes for the modules in your timetable!</span>
