@@ -33,7 +33,7 @@ define(['underscore', 'nusmods'], function (_, NUSMods) {
       }
 
       var matchedModules = this.matchModules(desc);
-      if (desc && matchedModules.length) {
+      if (desc && matchedModules.length && allModuleCodes) {
         for (var i = matchedModules.length - 1; i >= 0; i--) {
           if (allModuleCodes[matchedModules[i].module]) {
             var startingIndex = matchedModules[i].index;
