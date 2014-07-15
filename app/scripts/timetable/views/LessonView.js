@@ -130,6 +130,7 @@ define([
     },
 
     drop: function() {
+      this.$el.qtip('hide');
       _.each(this.options.droppables, function(lessonView) {
         lessonView.remove();
       });
