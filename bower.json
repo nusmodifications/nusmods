@@ -12,7 +12,7 @@
     "jquery": "~1.11.1",
     "jquery-ui-touch-punch": "larslaade/jquery-ui-touch-punch#ui-1-11-umd-support",
     "jquery.ui": "~1.11.0",
-    "localforage": "~0.9.1",
+    "localforage": "ahbeng/localForage#ebb0c3d9cb6d53774eaf23be75399db916a64b0d",
     "lodash-amd": "~2.4.1",
     "marked": "~0.3.2",
     "mousetrap": "~1.4.6",
