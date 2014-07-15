@@ -24,7 +24,7 @@ define(['underscore', 'require', 'app', 'backbone.marionette'],
       {
         'sectionType': 'modmaven',
         'tabTitle': 'ModMaven',
-        'sectionTitle': 'Pre-requisites Tree',
+        'sectionTitle': 'Prerequisites Tree',
         'active': false
       },
       {
