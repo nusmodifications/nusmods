@@ -36,10 +36,12 @@ module.exports = function (grunt) {
         'ModuleTitle',
         'Department',
         'ModuleDescription',
+        'CrossModule',
         'ModuleCredit',
         'Workload',
         'Prerequisite',
         'Preclusion',
+        'Corequisite',
         'ExamDate',
         'Types',
         'Lecturers'
