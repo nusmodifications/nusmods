@@ -68,7 +68,9 @@ module.exports = function (grunt) {
 
       grunt.file.write(
         path.join(options.destFolder, options.academicYear.replace('/', '-'), options.semester, options.destFileName),
-        JSON.stringify(results, null, options.jsonSpace)
+        JSON.stringify(results.filter(function (result) {
+          return result.length;
+        }), null, options.jsonSpace)
       );
       done();
     });
