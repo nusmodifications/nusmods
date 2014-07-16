@@ -1,16 +1,14 @@
-define([
-  'underscore',
-  'backbone',
-  '../models/NavigationModel',
-  'backbone.picky'
-], function (_, Backbone, NavigationModel) {
-  'use strict';
+'use strict';
 
-  return Backbone.Collection.extend({
-    model: NavigationModel,
+var Backbone = require('backbone');
+var NavigationModel = require('../models/NavigationModel');
+var _ = require('underscore');
+require('backbone.picky');
 
-    initialize: function () {
-      _.extend(this, new Backbone.Picky.SingleSelect(this));
-    }
-  });
+module.exports = Backbone.Collection.extend({
+  model: NavigationModel,
+
+  initialize: function () {
+    _.extend(this, new Backbone.Picky.SingleSelect(this));
+  }
 });

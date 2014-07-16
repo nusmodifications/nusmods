@@ -1,10 +1,11 @@
-define(['backbone.marionette', './NavigationItemView', 'bootstrap/collapse'],
-  function (Marionette, NavigationItemView) {
-    'use strict';
+'use strict';
 
-    return Marionette.CollectionView.extend({
-      tagName: 'ul',
-      className: 'nav navbar-nav navbar-right',
-      childView: NavigationItemView
-    });
-  });
+var Marionette = require('backbone.marionette');
+var NavigationItemView = require('./NavigationItemView');
+require('bootstrap/collapse');
+
+module.exports = Marionette.CollectionView.extend({
+  tagName: 'ul',
+  className: 'nav navbar-nav navbar-right',
+  childView: NavigationItemView
+});

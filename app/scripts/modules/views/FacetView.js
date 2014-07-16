@@ -1,8 +1,8 @@
-define(['backbone.marionette', './FilterView'],
-  function (Marionette, FilterView) {
-    'use strict';
+'use strict';
 
-    return Marionette.CollectionView.extend({
-      childView: FilterView
-    });
-  });
+var Marionette = require('backbone.marionette');
+var FilterView = require('./FilterView');
+
+module.exports = Marionette.CollectionView.extend({
+  childView: FilterView
+});

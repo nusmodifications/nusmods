@@ -1,18 +1,18 @@
-define(['backbone.marionette', 'hbs!../templates/shared_timetable_controls'],
-  function (Marionette, template) {
-    'use strict';
+'use strict';
 
-    return Marionette.ItemView.extend({
-      template: template,
+var Marionette = require('backbone.marionette');
+var template = require('../templates/shared_timetable_controls.hbs');
 
-      events: {
-        'click .replace': 'onClickReplace'
-      },
+module.exports = Marionette.ItemView.extend({
+  template: template,
 
-      onClickReplace: function () {
-        this.collection.shared = false;
-        this.collection.timetable.trigger('change');
-        this.destroy();
-      }
-    });
-  });
+  events: {
+    'click .replace': 'onClickReplace'
+  },
+
+  onClickReplace: function () {
+    this.collection.shared = false;
+    this.collection.timetable.trigger('change');
+    this.destroy();
+  }
+});
