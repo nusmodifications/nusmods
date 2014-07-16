@@ -23,6 +23,7 @@ require.config({
     backbone: '../bower_components/backbone/backbone',
     bootstrap: '../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap',
     d3: '../bower_components/d3/d3',
+    fastclick: '../bower_components/fastclick/lib/fastclick',
     hbs: '../bower_components/require-handlebars-plugin/hbs',
     jquery: '../bower_components/jquery/dist/jquery',
     json: '../bower_components/requirejs-plugins/src/json',

@@ -1,7 +1,7 @@
 define(['app', 'backbone', 'nusmods', 'mousetrap', '../utils/modulify', 
     'underscore', 'common/views/SelectView', '../themes/themePicker',
-    '../../cors/corsify'],
-  function (App, Backbone, NUSMods, Mousetrap, modulify, _, SelectView, themePicker, corsify) {
+    '../../cors/corsify', 'fastclick'],
+  function (App, Backbone, NUSMods, Mousetrap, modulify, _, SelectView, themePicker, corsify, FastClick) {
   'use strict';
 
   return Backbone.View.extend({
@@ -103,6 +103,8 @@ define(['app', 'backbone', 'nusmods', 'mousetrap', '../utils/modulify',
       Mousetrap.bind(['x'], function (e) {
         themePicker.toggleMode();
       });
+
+      FastClick.attach(document.body);
     },
 
     navigateWithScrollTop: function (location, trigger) {
