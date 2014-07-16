@@ -48,7 +48,7 @@ define(['underscore', 'backbone.marionette', 'common/utils/padTwo',
     // when updated. DOM is extracted directly from currently displaying
     // timetable and embedded into template.
     htmlTimetable: function() {
-      return '<!DOCTYPE html><title>My NUSMods.com Timetable</title><style>' +
+      var html = '<!DOCTYPE html><title>My NUSMods.com Timetable</title><style>' +
           '#timetable-wrapper{font-size:11px;font-weight:700;line-height:13px;width:1245px}' +
           '#timetable{margin:0 0 15px -20px;max-width:none;table-layout:fixed;width:1235px}' +
           '#timetable th{background-color:#fff}' +
@@ -59,27 +59,26 @@ define(['underscore', 'backbone.marionette', 'common/utils/padTwo',
           '.day td{height:34px;padding:1px 0 0}' +
           '.m00{border-left:1px solid #ddd}' +
           '.m30{border-right:1px solid #ddd}' +
-          '.lesson{border:2px solid;overflow:hidden;padding:1px 3px 3px}' +
-          '.color0{background-color:#f7977a;border-color:#9c2b09;color:#6c1e06}' +
-          '.color1{background-color:#f9ad81;border-color:#a64208;color:#752f06}' +
-          '.color2{background-color:#fdc68a;border-color:#b86103;color:#864702}' +
-          '.color3{background-color:#fff79a;border-color:#cdbd00;color:#9a8e00}' +
-          '.color4{background-color:#c4df9b;border-color:#60842a;color:#445d1e}' +
-          '.color5{background-color:#a2d39c;border-color:#397132;color:#274e22}' +
-          '.color6{background-color:#82ca9d;border-color:#265a3a;color:#173623}' +
-          '.color7{background-color:#7bcdc8;border-color:#225a57;color:#143533}' +
-          '.color8{background-color:#6ecff6;border-color:#09698f;color:#06465f}' +
-          '.color9{background-color:#7ea7d8;border-color:#20426a;color:#142943}' +
-          '.color10{background-color:#8493ca;border-color:#27325b;color:#181f37}' +
-          '.color11{background-color:#8882be;border-color:#2b284c;color:#18162b}' +
-          '.color12{background-color:#a187be;border-color:#3c2b4e;color:#22192d}' +
-          '.color13{background-color:#bc8dbf;border-color:#502e52;color:#301c31}' +
-          '.color14{background-color:#f49ac2;border-color:#af1358;color:#810e41}' +
-          '.color15{background-color:#f6989d;border-color:#b21018;color:#840b12}' +
-          '.hide-code .code,.hide-group .group,.hide-room .room,.hide-title .title,.hide-week .week{display:none}' +
+          '.lesson{border:2px solid;overflow:hidden;padding:1px 3px 3px}';
+      var cssProperties = ['background-color', 'border-color', 'color'];
+
+      for (var i = 0; i < 8; i++) {
+        var currentColor = '.color' + i;
+        var currentColorProperties = [];
+        _.each(cssProperties, function (prop) {
+          var $el = $(currentColor);
+          if ($el.length) {
+            currentColorProperties.push(prop + ':' + $el.css(prop));
+            html += currentColor + '{' + currentColorProperties.join(';') + '}';
+          }
+        });
+      }
+
+      html += '.hide-code .code,.hide-group .group,.hide-room .room,.hide-title .title,.hide-week .week{display:none}' +
           'table{border-collapse:collapse;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif}' +
           '</style><div class="' + $('#timetable-wrapper').attr('class') +
           '" id="timetable-wrapper">' + $('#timetable-wrapper').html() + '</div>';
+      return html;
     },
 
     delta: function(week) {
