@@ -6,7 +6,9 @@ var template = require('../templates/chat.hbs');
 function initializeHipChat (options) {
   if (options && options.url && options.el && options.timezone) {
     var $container = $(options.el);
-    if ($container.length === 0) return;
+    if ($container.length === 0) {
+      return;
+    }
 
     var params = {
       timezone: options.timezone,
@@ -25,7 +27,8 @@ function initializeHipChat (options) {
     var w = options.width || '100%';
     var h = options.height || 500;
     var nf = (options.noframes || '');
-    $container.html('<iframe src="' + url + '" frameborder="' + 0 + '" width="' + w + '" height="' + h + '">' + nf + '</iframe>');
+    $container.html('<iframe src="' + url + '" frameborder="' + 0 +
+      '" width="' + w + '" height="' + h + '">' + nf + '</iframe>');
   }
 }
 

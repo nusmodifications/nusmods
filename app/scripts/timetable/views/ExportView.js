@@ -303,7 +303,6 @@ module.exports = Marionette.ItemView.extend({
 
     var days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     var daysAbbrev = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
-    var typeAbbrev = ['LEC', 'LAB', 'LEC', 'LEC', 'TUT', 'REC', 'SEC', 'SEM', 'TUT', 'TUT2', 'TUT3'];
 
     _.each(daysAbbrev, function(dayAbbrev, i) {
       var rows = $('#' + dayAbbrev + ' > tr');

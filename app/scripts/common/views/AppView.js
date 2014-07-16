@@ -102,7 +102,7 @@ module.exports = Backbone.View.extend({
       themePicker.selectNextTheme(e.keyCode === 37 ? 'Left' : 'Right' );
     });
 
-    Mousetrap.bind(['x'], function (e) {
+    Mousetrap.bind(['x'], function () {
       themePicker.toggleMode();
     });
   },

@@ -19,131 +19,128 @@ function drawTree(selector, data) {
       SVGHeight = 550,
       allMods = NUSMods.getAllModules();
 
-  d3.selectAll("svg").remove();
+  d3.selectAll('svg').remove();
   var canvas = d3.select(selector)
-                  .append("svg")
-                  .attr("id", "svg")
-                  .attr("width", SVGWidth)
-                  .attr("height", SVGHeight),
+                  .append('svg')
+                  .attr('id', 'svg')
+                  .attr('width', SVGWidth)
+                  .attr('height', SVGHeight),
       interact = d3.behavior.zoom()
                     .scaleExtent([0.0, 5.0])
-                    .on("zoom", function () {
-                      d3.select("#drawarea")
-                        .attr("transform", "translate("+d3.event.translate+") scale("+d3.event.scale+")");
-                    }),
-      aspect = $("#svg").width() / $("#svg").height();
+                    .on('zoom', function () {
+                      d3.select('#drawarea')
+                        .attr('transform', 'translate('+d3.event.translate+') scale('+d3.event.scale+')');
+                    });
 
-  interact(d3.select("svg"));
-  canvas = canvas.append("g")
-                  .attr("id", "drawarea");
+  interact(d3.select('svg'));
+  canvas = canvas.append('g')
+                  .attr('id', 'drawarea');
 
   function getDefaultTranslation() { return [(SVGWidth) / 2, 75]; }
 
-  $(window).on("resize", _.debounce(resized, 100));
   function resized() {
     SVGWidth = $(selector).width();
-    d3.select("#svg").attr("width", SVGWidth);
+    d3.select('#svg').attr('width', SVGWidth);
 
     interact.translate(getDefaultTranslation());
-    d3.select("#drawarea")
+    d3.select('#drawarea')
       .transition()
       .delay(1)
-      .attr("transform", "translate("+getDefaultTranslation()+") scale("+interact.scale()+")");
+      .attr('transform', 'translate('+getDefaultTranslation()+') scale('+interact.scale()+')');
   }
+  $(window).on('resize', _.debounce(resized, 100));
   resized();
 
   var tree = d3.layout.tree().nodeSize([130, 130]);
   var nodes = tree.nodes(data);
   var links = tree.links(nodes);
   var diagonal = d3.svg.diagonal().projection(function (d) { return [d.x, d.y]; });
-  var x, y;
-  canvas.selectAll(".link")
+  canvas.selectAll('.link')
       .data(links)
       .enter()
-      .append("path")
-      .attr("class", "link")
-      .attr("d", diagonal);
+      .append('path')
+      .attr('class', 'link')
+      .attr('d', diagonal);
 
-  var node = canvas.selectAll(".node")
+  var node = canvas.selectAll('.node')
                   .data(nodes)
                   .enter()
-                  .append("g")
-                  .attr("class", "node")
-                  .attr("transform", function (d) {
-                      return "translate("+d.x+","+d.y+")";
+                  .append('g')
+                  .attr('class', 'node')
+                  .attr('transform', function (d) {
+                      return 'translate('+d.x+','+d.y+')';
                   });
 
-  function isOrAnd (d) { return (d.name == 'or' || d.name == 'and'); }
+  function isOrAnd (d) { return (d.name === 'or' || d.name === 'and'); }
   function modsFilter (d) { return !isOrAnd(d); }
   function andOrFilter (d) { return isOrAnd(d); }
   function getX (d) { return isOrAnd(d) ? -25 : -50; }
   function getY (d) { return isOrAnd(d) ? -17.5 : -35; }
   function getHeight (d) { return isOrAnd(d) ? 35 : 60; }
   function getWidth (d) { return isOrAnd(d) ? 50 : 100; }
-  function getOpacity (d) { return isOrAnd(d) ? 0 : 1; }
 
-  var rectangles = node.append("rect")
-                        .attr("width", 0)
-                        .attr("height", 0)
-                        .attr("x", getX)
-                        .attr("y", getY)
-                        .attr("rx", 20)
-                        .attr("ry", 20)
-                        .classed({"rect": true, "opaque": true})
-                        .attr("nodeValue", function (d) { return d.name; })
+  var rectangles = node.append('rect')
+                        .attr('width', 0)
+                        .attr('height', 0)
+                        .attr('x', getX)
+                        .attr('y', getY)
+                        .attr('rx', 20)
+                        .attr('ry', 20)
+                        .classed({'rect': true, 'opaque': true})
+                        .attr('nodeValue', function (d) { return d.name; });
   rectangles.filter(modsFilter)
-            .classed({"mod-rect": true, "non-linkable-mod": true})
+            .classed({'mod-rect': true, 'non-linkable-mod': true})
             .filter(function (d) { return d.name in allMods; })
-            .classed({"non-linkable-mod": false, "linkable-mod": true});
+            .classed({'non-linkable-mod': false, 'linkable-mod': true});
   rectangles.filter(andOrFilter)
-            .classed({"andor-rect": true});
+            .classed({'andor-rect': true});
 
-  var labels = node.append("text")
+  var labels = node.append('text')
                     .text(function (d) { return d.name; })
-                    .classed({"rect-label": true, "lead": true, "transparent": true})
-                    .attr("dy", function (d) { return isOrAnd(d)? "10" : ""; });
+                    .classed({'rect-label': true, 'lead': true, 'transparent': true})
+                    .attr('dy', function (d) { return isOrAnd(d)? '10' : ''; });
   labels.filter(andOrFilter)
-        .classed({"andor-label": true});
+        .classed({'andor-label': true});
   labels.filter(modsFilter)
-        .classed({"non-linkable-mod": true})
+        .classed({'non-linkable-mod': true})
         .filter(function (d) { return d.name in allMods; })
-        .classed({"non-linkable-mod": false, "linkable-mod": true});
+        .classed({'non-linkable-mod': false, 'linkable-mod': true});
 
-  canvas.selectAll("path")
-        .classed({"opacity-transition": true, "opaque": true, "transparent": false});
+  canvas.selectAll('path')
+        .classed({'opacity-transition': true, 'opaque': true, 'transparent': false});
 
-  node.selectAll("rect")
+  node.selectAll('rect')
       .transition()
       .duration(1000)
-      .attr("width", getWidth)
-      .attr("height", getHeight)
-      .ease("elastic");
+      .attr('width', getWidth)
+      .attr('height', getHeight)
+      .ease('elastic');
 
-  node.selectAll("text")
-      .classed({"opacity-transition": true, "opaque": true, "transparent": false})
-
-  node.on("mouseover", mouseOver);
-  node.on("mouseout", mouseOut);
-  node.on("click", clicked);
+  node.selectAll('text')
+      .classed({'opacity-transition': true, 'opaque': true, 'transparent': false});
 
   function mouseOver (d) {
     if (!isOrAnd(d)) {
       rectangles.filter(modsFilter)
-                .classed({"active-rect": false, "opaque": false, "translucent": true});
-      d3.select(this).selectAll("rect").classed({"active-rect": true, "opaque": true, "translucent": false});
+                .classed({'active-rect': false, 'opaque': false, 'translucent': true});
+      d3.select(this).selectAll('rect').classed({'active-rect': true, 'opaque': true, 'translucent': false});
     }
   }
 
-  function mouseOut (d) {
+  function mouseOut () {
     rectangles.filter(modsFilter)
-              .classed({"active-rect": false, "opaque": true, "translucent": false});
+              .classed({'active-rect': false, 'opaque': true, 'translucent': false});
   }
 
   function clicked (d) {
     if (!isOrAnd(d) && d.name in allMods) {
-      window.location.href = "/modules/" + d.name;
+      window.location.href = '/modules/' + d.name;
     }
   }
+
+  node.on('mouseover', mouseOver);
+  node.on('mouseout', mouseOut);
+  node.on('click', clicked);
 }
 
 module.exports = Marionette.LayoutView.extend({
@@ -155,10 +152,10 @@ module.exports = Marionette.LayoutView.extend({
 
     if (this.model.get('section') === 'modmaven') {
       var module = this.model.get('module').ModuleCode;
-      $.getJSON("http://nusmodmaven.appspot.com/gettree?modName=" + module)
-          .done(function (data) {
-              drawTree("#tree", data);
-          });
+      $.getJSON('http://nusmodmaven.appspot.com/gettree?modName=' + module)
+        .done(function (data) {
+          drawTree('#tree', data);
+        });
     }
 
     if (this.model.get('section') === 'corspedia') {

@@ -1,3 +1,5 @@
+'use strict';
+
 var App = require('../../app');
 var Marionette = require('backbone.marionette');
 var Mousetrap = require('Mousetrap');
@@ -5,8 +7,6 @@ var NUSMods = require('../../nusmods');
 var _ = require('underscore');
 var template = require('../templates/select.hbs');
 require('select2');
-
-'use strict';
 
 var codes, titles, modsLength;
 var codesAndTitlesPromise = NUSMods.getCodesAndTitles().then(function (data) {

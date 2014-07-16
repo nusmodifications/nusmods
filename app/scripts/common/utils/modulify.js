@@ -1,7 +1,6 @@
 'use strict';
 
 var NUSMods = require('../../nusmods');
-var _ = require('underscore');
 
 String.prototype.insert = function (index, string) {
   if (index > 0) {
