@@ -1,6 +1,7 @@
 define(['app', 'backbone', 'nusmods', 'mousetrap', '../utils/modulify', 
-    'underscore', 'common/views/SelectView', '../themes/themePicker'],
-  function (App, Backbone, NUSMods, Mousetrap, modulify, _, SelectView, themePicker) {
+    'underscore', 'common/views/SelectView', '../themes/themePicker',
+    '../../cors/corsify'],
+  function (App, Backbone, NUSMods, Mousetrap, modulify, _, SelectView, themePicker, corsify) {
   'use strict';
 
   return Backbone.View.extend({
@@ -54,8 +55,10 @@ define(['app', 'backbone', 'nusmods', 'mousetrap', '../utils/modulify',
       $.fn.qtip.defaults.style.classes = 'qtip-bootstrap';
 
       NUSMods.getCorrectAsAt().then(function (correctAsAt) {
-        $('#correct-as-at').text((new Date(correctAsAt)).toString().slice(0,21));
+        $('#correct-as-at').text((new Date(correctAsAt)).toString().slice(0, 21));
       });
+
+      // $('.current-round').text(corsify.determineRound(Date.now()));
 
       App.selectRegion.show(new SelectView());
 
