@@ -96,7 +96,8 @@ define(['app', 'backbone', 'nusmods', 'mousetrap', '../utils/modulify',
       });
 
       Mousetrap.bind(['left', 'right'], function (e) {
-        themePicker.selectNextTheme(e.keyCode === 37 ? 'Left' : 'Right' );
+        themePicker.selectNextTheme(e.keyCode === 37 ? 'Left' : 'Right');
+        return false;
       });
 
       Mousetrap.bind(['x'], function (e) {
