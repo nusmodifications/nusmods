@@ -29,13 +29,6 @@ module.exports = function (grunt) {
 
         // Watches files for changes and runs tasks based on the changed files
         watch: {
-            js: {
-                files: ['<%= yeoman.app %>/scripts/**/*.{js,hbs}'],
-                tasks: ['browserify'],
-                options: {
-                    livereload: true
-                }
-            },
             jstest: {
                 files: ['test/spec/{,*/}*.js'],
                 tasks: ['test:watch']
@@ -57,6 +50,7 @@ module.exports = function (grunt) {
                 },
                 files: [
                     '<%= yeoman.app %>/{,*/}*.html',
+                    '.tmp/scripts/main.js',
                     '.tmp/styles/{,*/}*.css',
                     '<%= yeoman.app %>/images/{,*/}*.{gif,jpeg,jpg,png,svg,webp}'
                 ]
@@ -203,6 +197,9 @@ module.exports = function (grunt) {
             all: {
                 files: {
                     '.tmp/scripts/main.js': '<%= yeoman.app %>/scripts/main.js'
+                },
+                options: {
+                    watch: true
                 }
             }
         },
@@ -366,7 +363,6 @@ module.exports = function (grunt) {
         // Run some tasks in parallel to speed up build process
         concurrent: {
             server: [
-                'browserify',
                 'compass:server',
                 'copy:styles'
             ],
@@ -374,7 +370,6 @@ module.exports = function (grunt) {
                 'copy:styles'
             ],
             dist: [
-                'browserify',
                 'compass',
                 'copy:styles',
                 'imagemin',
@@ -403,6 +398,7 @@ module.exports = function (grunt) {
             'clean:server',
             'concurrent:server',
             'autoprefixer',
+            'browserify',
             'connect:livereload',
             'watch'
         ]);
@@ -434,6 +430,7 @@ module.exports = function (grunt) {
         'useminPrepare',
         'concurrent:dist',
         'autoprefixer',
+        'browserify',
         'concat',
         'cssmin',
         'uglify',
