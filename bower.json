@@ -4,8 +4,6 @@
   "dependencies": {
     "backbone.picky": "~0.2.0",
     "bootstrap-sass-official": "~3.2.0",
-    "d3": "~3.4.9",
-    "fastclick": "~1.0.2",
     "font-awesome": "~4.1.0",
     "jquery": "~2.1.1",
     "jquery-ui-touch-punch": "larslaade/jquery-ui-touch-punch#ui-1-11-umd-support",
