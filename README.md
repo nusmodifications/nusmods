@@ -1,4 +1,4 @@
-# [NUSMods](http://nusmods.com) [![Code Climate](https://codeclimate.com/github/ahbeng/NUSMods.png)](https://codeclimate.com/github/ahbeng/NUSMods) [![Dependency Status](https://david-dm.org/ahbeng/NUSMods.svg?theme=shields.io)](https://david-dm.org/ahbeng/NUSMods)
+# [NUSMods](http://nusmods.com) [![Code Climate](http://img.shields.io/codeclimate/github/ahbeng/NUSMods.svg)](https://codeclimate.com/github/ahbeng/NUSMods) [![Dependency Status](http://img.shields.io/david/ahbeng/NUSMods.svg)](https://david-dm.org/ahbeng/NUSMods)
 
 ## Clone Repository with Submodules
 
