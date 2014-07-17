@@ -390,6 +390,28 @@ module.exports = function (grunt) {
           dest: '~/api.nusmods.com'
         }
       }
+    },
+    shell: {
+      runPrereqParser: {
+        command: function (academicYearAndSem) {
+          var path = require('path'),
+              config = grunt.config("normalize")["options"],
+              matches = academicYearAndSem.match(/ay(20\d\d)to(20\d\d)sem(\d)/);
+          var dataPath = path.join(
+            '..',
+            config["srcFolder"],        //default source folder
+            matches[1]+'-'+matches[2],  //academic year
+            matches[3],                 //semester
+            config["destFileName"]      //normalized file name
+          );
+          return 'python init_parsing.py ' + dataPath;
+        },
+        options: {
+          execOptions: {
+            cwd: 'tasks'
+          }
+        }
+      }
     }
   });
 
@@ -397,6 +419,7 @@ module.exports = function (grunt) {
   grunt.file.mkdir(grunt.config('defaults').cachePath);
 
   grunt.loadNpmTasks('grunt-rsync');
+  grunt.loadNpmTasks('grunt-shell');
   grunt.loadTasks('tasks');
 
   // Takes about half an hour.
@@ -432,6 +455,7 @@ module.exports = function (grunt) {
     'ivle:ay2014to2015sem1',
     'consolidate:ay2014to2015sem1',
     'normalize:ay2014to2015sem1',
+    'shell:runPrereqParser:ay2014to2015sem1',
     'split:ay2014to2015sem1'
   ]);
 
