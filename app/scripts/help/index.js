@@ -4,7 +4,7 @@ var App = require('../app');
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var _ = require('underscore');
-var keyboardShortcuts = require('./keyboardshortcuts.json');
+var keyboardShortcuts = require('./keyboardShortcuts.json');
 var marked = require('marked');
 
 var controller = {
