@@ -196,7 +196,7 @@ a {
 $module-section-min-height: 700px;
 
 .nm-boxify {
-  $margin-width: 10px;
+  $margin-width: 15px;
   min-height: $module-section-min-height;
   padding: $margin-width;
   border: 1px solid #ccc;
@@ -423,14 +423,8 @@ colgroup.hover {
   }
 }
 
+// Module Detail Page 
 .module-page {
-  .ivle {
-    margin-right: 5px;
-  }
-}
-
-// Corspedia 
-.corspedia {
   .module-code {
     margin-bottom: 5px;
     color: $brand-primary;
@@ -476,6 +470,9 @@ colgroup.hover {
         font-weight: normal;
       }
     }
+  }
+  .ivle {
+    margin-right: 5px;
   }
 }
 
