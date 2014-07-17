@@ -107,8 +107,20 @@ module.exports = Backbone.View.extend({
       return false;
     });
 
+    var reviewsRegex = /^\/modules\/[^\/]{6,10}\/reviews/;
     Mousetrap.bind(['x'], function () {
       themePicker.toggleMode();
+      if (reviewsRegex.test(window.location.pathname) && window.DISQUS) {
+        console.log("Refrehing");
+        window.DISQUS.reset({
+          reload: true,
+          config: function () {
+            this.page.identifier = window.disqus_identifier;
+            this.page.title = window.disqus_title;
+            this.page.url = window.disqus_url;
+          }
+        });
+      }
     });
 
     attachFastClick(document.body);
