@@ -4,6 +4,7 @@ var Marionette = require('backbone.marionette');
 var _ = require('underscore');
 var padTwo = require('../../common/utils/padTwo');
 var template = require('../templates/export.hbs');
+require('bootstrap/dropdown');
 
 module.exports = Marionette.ItemView.extend({
   template: template,
