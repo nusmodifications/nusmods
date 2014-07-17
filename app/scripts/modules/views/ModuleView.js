@@ -15,6 +15,41 @@ require('bootstrap/tooltip');
 var searchPreferences = {};
 
 function drawTree(selector, data) {
+  function isOrAnd (d) { return (d.name === 'or' || d.name === 'and'); }
+  function modsFilter (d) { return !isOrAnd(d); }
+  function andOrFilter (d) { return isOrAnd(d); }
+  function getX (d) { return isOrAnd(d) ? -25 : -50; }
+  function getY (d) { return isOrAnd(d) ? -17.5 : -35; }
+  function getHeight (d) { return isOrAnd(d) ? 35 : 60; }
+  function getWidth (d) { return isOrAnd(d) ? 50 : 100; }
+  function getDefaultTranslation() { return [(SVGWidth) / 2, 75]; }
+  function mouseOver (d) {
+    if (!isOrAnd(d)) {
+      rectangles.filter(modsFilter)
+                .classed({'active-rect': false, 'opaque': false, 'translucent': true});
+      d3.select(this).selectAll('rect').classed({'active-rect': true, 'opaque': true, 'translucent': false});
+    }
+  }
+  function mouseOut () {
+    rectangles.filter(modsFilter)
+              .classed({'active-rect': false, 'opaque': true, 'translucent': false});
+  }
+  function clicked (d) {
+    if (!isOrAnd(d) && d.name in allMods) {
+      window.location.href = '/modules/' + d.name;
+    }
+  }
+  function resized() {
+    SVGWidth = $(selector).width();
+    d3.select('#svg').attr('width', SVGWidth);
+
+    interact.translate(getDefaultTranslation());
+    d3.select('#drawarea')
+      .transition()
+      .delay(1)
+      .attr('transform', 'translate('+getDefaultTranslation()+') scale('+interact.scale()+')');
+  }
+
   var SVGWidth = $(selector).width(),
       SVGHeight = 550,
       allMods = NUSMods.getAllModules();
@@ -31,23 +66,10 @@ function drawTree(selector, data) {
                       d3.select('#drawarea')
                         .attr('transform', 'translate('+d3.event.translate+') scale('+d3.event.scale+')');
                     });
-
   interact(d3.select('svg'));
   canvas = canvas.append('g')
                   .attr('id', 'drawarea');
 
-  function getDefaultTranslation() { return [(SVGWidth) / 2, 75]; }
-
-  function resized() {
-    SVGWidth = $(selector).width();
-    d3.select('#svg').attr('width', SVGWidth);
-
-    interact.translate(getDefaultTranslation());
-    d3.select('#drawarea')
-      .transition()
-      .delay(1)
-      .attr('transform', 'translate('+getDefaultTranslation()+') scale('+interact.scale()+')');
-  }
   $(window).on('resize', _.debounce(resized, 100));
   resized();
 
@@ -70,14 +92,6 @@ function drawTree(selector, data) {
                   .attr('transform', function (d) {
                       return 'translate('+d.x+','+d.y+')';
                   });
-
-  function isOrAnd (d) { return (d.name === 'or' || d.name === 'and'); }
-  function modsFilter (d) { return !isOrAnd(d); }
-  function andOrFilter (d) { return isOrAnd(d); }
-  function getX (d) { return isOrAnd(d) ? -25 : -50; }
-  function getY (d) { return isOrAnd(d) ? -17.5 : -35; }
-  function getHeight (d) { return isOrAnd(d) ? 35 : 60; }
-  function getWidth (d) { return isOrAnd(d) ? 50 : 100; }
 
   var rectangles = node.append('rect')
                         .attr('width', 0)
@@ -119,25 +133,6 @@ function drawTree(selector, data) {
   node.selectAll('text')
       .classed({'opacity-transition': true, 'opaque': true, 'transparent': false});
 
-  function mouseOver (d) {
-    if (!isOrAnd(d)) {
-      rectangles.filter(modsFilter)
-                .classed({'active-rect': false, 'opaque': false, 'translucent': true});
-      d3.select(this).selectAll('rect').classed({'active-rect': true, 'opaque': true, 'translucent': false});
-    }
-  }
-
-  function mouseOut () {
-    rectangles.filter(modsFilter)
-              .classed({'active-rect': false, 'opaque': true, 'translucent': false});
-  }
-
-  function clicked (d) {
-    if (!isOrAnd(d) && d.name in allMods) {
-      window.location.href = '/modules/' + d.name;
-    }
-  }
-
   node.on('mouseover', mouseOver);
   node.on('mouseout', mouseOut);
   node.on('click', clicked);
@@ -149,14 +144,6 @@ module.exports = Marionette.LayoutView.extend({
     biddingStatsRegion: '#bidding-stats'
   },
   initialize: function () {
-
-    if (this.model.get('section') === 'modmaven') {
-      var module = this.model.get('module').ModuleCode;
-      $.getJSON('http://nusmodmaven.appspot.com/gettree?modName=' + module)
-        .done(function (data) {
-          drawTree('#tree', data);
-        });
-    }
 
     if (this.model.get('section') === 'corspedia') {
       var formElements = {
@@ -216,10 +203,13 @@ module.exports = Marionette.LayoutView.extend({
   },
   onShow: function () {
     var module = this.model.get('module');
+
+    if (this.model.get('section') === 'modmaven') {
+      drawTree('#tree', module.ModmavenTree);
+    }
+
     var code = module.ModuleCode;
-
     var disqusShortname = 'nusmods';
-
     if (this.model.get('section') === 'reviews') {
       // Only reset Disqus when showing reviews section
       var url = 'http://nusmods.com/modules/' + code + '/reviews';
