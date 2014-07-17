@@ -125,7 +125,6 @@ def start_prereq_parsing(db):
     for mod_code in db:
         if "Prerequisite" in db[mod_code]:
             db[mod_code]["Prerequisite"] = modmaven_parser.get_prereq(db[mod_code]["Prerequisite"], mod_code)
-            #print db[mod_code]["Prerequisite"]
         if mod_code[:2] == "FM":
             db[mod_code]["Preclusion"] = freshmenSeminars
         elif mod_code.find("3550") != -1:
@@ -188,7 +187,7 @@ def update_data(db, data):
         mod_code = module["ModuleCode"]
         module["ModmavenTree"] = db[mod_code]["ModmavenTree"]
         if "Preclusion" in module and db[mod_code]["Preclusion"] != module["Preclusion"]:
-            print db[mod_code]["Preclusion"]
+            module["ParsedPreclusion"] = db[mod_code]["Preclusion"]
         if "Prerequisite" in module and (db[mod_code]["Prerequisite"] != module["Prerequisite"] or is_str_single_mod(module["Prerequisite"])):
             module["ParsedPrerequisite"] = db[mod_code]["Prerequisite"]
         module["LockedModules"] = db[mod_code]["LockedModules"] if "LockedModules" in db[mod_code] else []
