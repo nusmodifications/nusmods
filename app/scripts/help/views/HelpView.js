@@ -1,12 +1,8 @@
-define([
-  'backbone.marionette',
-  'hbs!../templates/help'
-],
+'use strict';
 
-function(Marionette, template) {
-  'use strict';
+var Marionette = require('backbone.marionette');
+var template = require('../templates/help.hbs');
 
-  return Marionette.LayoutView.extend({
-    template: template
-  });
+module.exports = Marionette.LayoutView.extend({
+  template: template
 });

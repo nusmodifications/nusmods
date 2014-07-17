@@ -1,18 +1,18 @@
-define(['underscore', 'backbone'],
-  function(_, Backbone) {
-    'use strict';
+'use strict';
 
-    return Backbone.Model.extend({
-      initialize: function() {
-        var section = this.get('section');
-        var sectionsInfo = this.get('sectionsInfo');
+var Backbone = require('backbone');
+var _ = require('underscore');
 
-        var selectedSection = _.filter(sectionsInfo, function (item) {
-          return item.sectionType === section;
-        })[0];
+module.exports = Backbone.Model.extend({
+  initialize: function() {
+    var section = this.get('section');
+    var sectionsInfo = this.get('sectionsInfo');
 
-        selectedSection.active = true;
-        this.set('sectionTitle', selectedSection.sectionTitle);
-      }
-    });
-  });
+    var selectedSection = _.filter(sectionsInfo, function (item) {
+      return item.sectionType === section;
+    })[0];
+
+    selectedSection.active = true;
+    this.set('sectionTitle', selectedSection.sectionTitle);
+  }
+});

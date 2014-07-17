@@ -1,18 +1,19 @@
-define(['backbone.marionette', './ExamView', 'hbs!../templates/exams'],
-  function (Marionette, ExamView, template) {
-    'use strict';
+'use strict';
 
-    return Marionette.CompositeView.extend({
-      tagName: 'table',
-      className: 'table table-bordered table-condensed',
-      childView: ExamView,
-      childViewContainer: 'tbody',
-      template: template,
+var ExamView = require('./ExamView');
+var Marionette = require('backbone.marionette');
+var template = require('../templates/exams.hbs');
 
-      collectionEvents: {
-        'add remove': function() {
-          $('#clash').toggleClass('hidden', !this.collection.clashCount);
-        }
-      }
-    });
-  });
+module.exports = Marionette.CompositeView.extend({
+  tagName: 'table',
+  className: 'table table-bordered table-condensed',
+  childView: ExamView,
+  childViewContainer: 'tbody',
+  template: template,
+
+  collectionEvents: {
+    'add remove': function() {
+      $('#clash').toggleClass('hidden', !this.collection.clashCount);
+    }
+  }
+});

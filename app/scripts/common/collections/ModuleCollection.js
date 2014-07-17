@@ -1,7 +1,8 @@
-define(['backbone', '../models/ModuleModel'], function(Backbone, Module) {
-  'use strict';
+'use strict';
 
-  return Backbone.Collection.extend({
-    model: Module
-  });
+var Backbone = require('backbone');
+var Module = require('../models/ModuleModel');
+
+module.exports = Backbone.Collection.extend({
+  model: Module
 });

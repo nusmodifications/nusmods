@@ -1,17 +1,17 @@
-define(['backbone.marionette', 'hbs!../templates/navigation_item'],
-  function (Marionette, template) {
-    'use strict';
+'use strict';
 
-    return Marionette.ItemView.extend({
-      tagName: 'li',
-      template: template,
+var Marionette = require('backbone.marionette');
+var template = require('../templates/navigation_item.hbs');
 
-      modelEvents: {
-        'selected deselected': 'render'
-      },
+module.exports = Marionette.ItemView.extend({
+  tagName: 'li',
+  template: template,
 
-      onRender: function () {
-        this.$el.toggleClass('active', this.model.selected);
-      }
-    });
-  });
+  modelEvents: {
+    'selected deselected': 'render'
+  },
+
+  onRender: function () {
+    this.$el.toggleClass('active', this.model.selected);
+  }
+});

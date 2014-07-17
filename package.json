@@ -18,11 +18,25 @@
     }
   ],
   "dependencies": {
+    "backbone": "^1.1.2",
+    "backbone.analytics": "git://github.com/kendagriff/backbone.analytics#f5648f583ed9cf073c123ec61b9e31dd9c77c4f9",
+    "backbone.babysitter": "^0.1.4",
+    "backbone.marionette": "^2.0.2",
+    "backbone.wreqr": "^1.3.1",
+    "d3": "^3.4.10",
+    "marked": "^0.3.2",
+    "qs": "^0.6.6",
+    "underscore": "^1.6.0",
+    "zeroclipboard": "^2.1.5"
+  },
+  "devDependencies": {
+    "browserify": "^4.2.1",
+    "browserify-shim": "^3.6.0",
     "connect-modrewrite": "^0.7.6",
     "grunt": "^0.4.5",
     "grunt-autoprefixer": "^0.8.1",
     "grunt-bower-install": "^1.6.0",
-    "grunt-bower-requirejs": "^0.11.0",
+    "grunt-browserify": "^2.1.3",
     "grunt-concurrent": "^0.5.0",
     "grunt-contrib-clean": "^0.5.0",
     "grunt-contrib-compass": "^0.9.0",
@@ -37,11 +51,12 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-mocha": "^0.4.11",
     "grunt-newer": "^0.7.0",
-    "grunt-requirejs": "^0.4.2",
     "grunt-rev": "^0.1.0",
     "grunt-rsync": "^0.6.1",
     "grunt-svgmin": "^0.4.0",
     "grunt-usemin": "^2.3.0",
+    "handlebars": "^1.3.0",
+    "hbsfy": "^1.3.2",
     "jshint-stylish": "^0.2.0",
     "load-grunt-tasks": "^0.6.0",
     "time-grunt": "^0.3.2"
@@ -49,5 +64,60 @@
   "engines": {
     "node": ">=0.8.0"
   },
-  "private": true
+  "private": true,
+  "browserify": {
+    "transform": [
+      "browserify-shim",
+      "hbsfy"
+    ]
+  },
+  "browser": {
+    "Mousetrap": "./app/bower_components/mousetrap/mousetrap.js",
+    "backbone.picky": "./app/bower_components/backbone.picky/lib/amd/backbone.picky.js",
+    "bootstrap/button": "./app/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/button.js",
+    "bootstrap/collapse": "./app/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/collapse.js",
+    "bootstrap/dropdown": "./app/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/dropdown.js",
+    "bootstrap/tooltip": "./app/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tooltip.js",
+    "bootstrap/transition": "./app/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/transition.js",
+    "fastclick": "./app/bower_components/fastclick/lib/fastclick.js",
+    "jquery-ui/core": "./app/bower_components/jquery.ui/ui/core.js",
+    "jquery-ui/draggable": "./app/bower_components/jquery.ui/ui/draggable.js",
+    "jquery-ui/droppable": "./app/bower_components/jquery.ui/ui/droppable.js",
+    "jquery-ui/mouse": "./app/bower_components/jquery.ui/ui/mouse.js",
+    "jquery-ui/widget": "./app/bower_components/jquery.ui/ui/widget.js",
+    "jquery-ui-touch-punch": "./app/bower_components/jquery-ui-touch-punch/jquery.ui.touch-punch.js",
+    "localforage": "./app/bower_components/localforage/dist/localforage.js",
+    "qTip2": "./app/bower_components/qtip2/jquery.qtip.js",
+    "select2": "./app/bower_components/select2/select2.js"
+  },
+  "browserify-shim": {
+    "Mousetrap": "Mousetrap",
+    "bootstrap/collapse": {
+      "depends": [
+        "bootstrap/transition"
+      ]
+    },
+    "jquery": "global:$",
+    "jquery-ui/draggable": {
+      "depends": [
+        "jquery-ui/core",
+        "jquery-ui/mouse",
+        "jquery-ui/widget"
+      ]
+    },
+    "jquery-ui/droppable": {
+      "depends": [
+        "jquery-ui/core",
+        "jquery-ui/widget",
+        "jquery-ui/mouse",
+        "jquery-ui/draggable"
+      ]
+    },
+    "jquery-ui/mouse": {
+      "depends": [
+        "jquery-ui/widget"
+      ]
+    },
+    "localforage": "localforage"
+  }
 }
