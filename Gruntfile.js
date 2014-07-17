@@ -389,24 +389,6 @@ module.exports = function (grunt) {
                 'svgmin'
             ]
         },
-        bower: {
-            options: {
-                exclude: [
-                    'backbone.marionette',
-                    'bootstrap-sass',
-                    'jquery.ui',
-                    'lodash-amd',
-                    'modernizr',
-                    'qtip2',
-                    'requirejs',
-                    'requirejs-plugins',
-                    'require-handlebars-plugin'
-                ]
-            },
-            all: {
-                rjsConfig: '<%= yeoman.app %>/scripts/main.js'
-            }
-        },
         rsync: {
             options: {
                 args: ['-cruv']
