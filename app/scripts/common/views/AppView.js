@@ -111,7 +111,6 @@ module.exports = Backbone.View.extend({
     Mousetrap.bind(['x'], function () {
       themePicker.toggleMode();
       if (reviewsRegex.test(window.location.pathname) && window.DISQUS) {
-        console.log("Refrehing");
         window.DISQUS.reset({
           reload: true,
           config: function () {
