@@ -42,7 +42,8 @@ exceptions = {
     'Pass ID 1105 & 1106': {' and ': ['ID1105', 'ID1106']},
     'Pass ID 3105 & 3106': {' and ': ['ID3105', 'ID3106']},
     'ME21234 Fluid Mechanics I ME2114 Mechanics of Materials II': {' and ': ['ME2134', 'ME2114']},
-    'LAK3202 Korean 4, LAK3203 Korean for Academic Purposes or by placement test.': {' or ': ['LAK3202', 'LAK3203']}
+    'LAK3202 Korean 4, LAK3203 Korean for Academic Purposes or by placement test.': {' or ': ['LAK3202', 'LAK3203']},
+    'SOC students: CS1020 or its equivalent; Other students:NM2217 or NM3209 or the prerequisites for SoC students': {' or ': ['CS1020', 'NM2217', 'NM3209']}
 }
 
 def precedence(val, stack):
@@ -121,7 +122,7 @@ def pre_process(prereq, mod):
     prereq = re.sub("CE ", "CE", prereq)
     prereq = re.sub("ME ", "ME", prereq)
     prereq = re.sub("MUA ", "MUA", prereq)
-    prereq = re.sub(" *or its equivalent *", "", prereq)
+    prereq = re.sub("or its equivalent", "", prereq)
     comma_result = [re.escape(result) for result in comma_re.findall(prereq)]
     if len(comma_result):
         prereq = comma_fix(prereq, comma_result)
@@ -251,14 +252,3 @@ def get_preclusions(preclusion, mod):
     preclusions = list(set(preclusions))
     return preclusions if len(preclusions) != 0 else preclusion
 
-
-# Not Using Coz Screwed Up Preclusion in IVLE Data, not safe to assume
-# def twoWayPreclusions(preclusion, data):
-#     if isinstance(preclusion, list):
-#         preclusion = set(preclusion)
-#         updates = set()
-#         for mod in preclusion:
-#             updates.update(data[mod]["Preclusion"])
-#         preclusion.update(updates)
-#         return list(preclusion)
-#     return preclusion
