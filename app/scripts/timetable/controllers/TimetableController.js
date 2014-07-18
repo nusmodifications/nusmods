@@ -39,12 +39,20 @@ module.exports = Marionette.Controller.extend({
         var selectedModule = selectedModules.get(module.ModuleCode);
         if (selectedModule) {
           var selectedModuleLessons = selectedModule.get('lessons');
-          _.each(module.selectedLessons, function (lesson) {
-            timetable.add(selectedModuleLessons.where({
-              LessonType: lesson.LessonType,
-              ClassNo: lesson.ClassNo
-            }));
-          }, this);
+          if (selectedModuleLessons) {
+            var lessonsByType = selectedModuleLessons.groupBy('LessonType');
+            _.each(module.selectedLessons, function (lesson) {
+              timetable.add(selectedModuleLessons.where({
+                LessonType: lesson.LessonType,
+                ClassNo: lesson.ClassNo
+              }));
+              delete lessonsByType[lesson.LessonType];
+            });
+            // Add lessons whose type did not exist in data when timetable last saved
+            _.each(lessonsByType, function (lessonsOfType) {
+              timetable.add(_.sample(lessonsOfType));
+            });
+          }
         } else {
           App.request('addModule', module.ModuleCode, module);
         }

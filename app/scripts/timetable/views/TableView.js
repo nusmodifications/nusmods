@@ -28,8 +28,7 @@ module.exports = Marionette.CompositeView.extend({
 
   mouseMove: function(evt) {
     if (!this.colX) {
-      this.colX = this.$('#mon > tr:last-child > td')
-        .filter(':even')
+      this.colX = this.$('#times > th + th')
         .map(function() { return $(this).offset().left; })
         .get();
     }

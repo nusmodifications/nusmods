@@ -24,7 +24,7 @@ module.exports = ModuleCollection.extend({
     module.set('color', color);
 
     module.promise = NUSMods.getMod(module.id).then(_.bind(function (mod) {
-      var selectedLessons = options.selectedLessons;
+      var selectedLessonsByType = _.groupBy(options.selectedLessons, 'LessonType');
       var lessons = new LessonCollection();
       module.set('lessons', lessons);
       _.each(_.groupBy(mod.Timetable, 'LessonType'), function (groups) {
@@ -47,13 +47,13 @@ module.exports = ModuleCollection.extend({
             lessons.add(lesson);
             sameGroup.add(lesson);
             sameType.add(lesson);
-            if (!selectedLessons && lessonData.ClassNo === randomClassNo) {
+            if (!selectedLessonsByType[lessonData.LessonType] && lessonData.ClassNo === randomClassNo) {
               this.timetable.add(lesson);
             }
           }, this);
         }, this);
       }, this);
-      _.each(selectedLessons, function (lesson) {
+      _.each(options.selectedLessons, function (lesson) {
         this.timetable.add(lessons.where(lesson));
       }, this);
       this.timetable.trigger('change');
