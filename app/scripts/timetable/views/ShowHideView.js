@@ -1,26 +1,27 @@
-define(['backbone.marionette', 'hbs!../templates/show_hide', 'bootstrap/button'],
-  function (Marionette, template) {
-    'use strict';
+'use strict';
 
-    return Marionette.ItemView.extend({
-      template: template,
+var Marionette = require('backbone.marionette');
+var template = require('../templates/show_hide.hbs');
+require('bootstrap/button');
 
-      events: {
-        'click .btn': 'onClick'
-      },
+module.exports = Marionette.ItemView.extend({
+  template: template,
 
-      onClick: function (event) {
-        var label = $(event.currentTarget).text().trim().toLowerCase();
-        $('#timetable-wrapper').toggleClass('hide-' + label);
-      },
+  events: {
+    'click .btn': 'onClick'
+  },
 
-      onShow: function () {
-        this.$('label:last-child').qtip({
-          content: 'Only shown if Odd/Even/Irregular',
-          position: {
-            my: 'bottom right'
-          }
-        });
+  onClick: function (event) {
+    var label = $(event.currentTarget).text().trim().toLowerCase();
+    $('#timetable-wrapper').toggleClass('hide-' + label);
+  },
+
+  onShow: function () {
+    this.$('label:last-child').qtip({
+      content: 'Only shown if Odd/Even/Irregular',
+      position: {
+        my: 'bottom right'
       }
     });
-  });
+  }
+});

@@ -29,13 +29,6 @@ module.exports = function (grunt) {
 
         // Watches files for changes and runs tasks based on the changed files
         watch: {
-            js: {
-                files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
-                tasks: ['jshint'],
-                options: {
-                    livereload: true
-                }
-            },
             jstest: {
                 files: ['test/spec/{,*/}*.js'],
                 tasks: ['test:watch']
@@ -57,6 +50,7 @@ module.exports = function (grunt) {
                 },
                 files: [
                     '<%= yeoman.app %>/{,*/}*.html',
+                    '.tmp/scripts/main.js',
                     '.tmp/styles/{,*/}*.css',
                     '<%= yeoman.app %>/images/{,*/}*.{gif,jpeg,jpg,png,svg,webp}'
                 ]
@@ -134,7 +128,7 @@ module.exports = function (grunt) {
             },
             all: [
                 'Gruntfile.js',
-                '<%= yeoman.app %>/scripts/{,*/}*.js',
+                '<%= yeoman.app %>/scripts/**/*.js',
                 '!<%= yeoman.app %>/scripts/vendor/*',
                 'test/spec/{,*/}*.js'
             ]
@@ -199,39 +193,16 @@ module.exports = function (grunt) {
             }
         },
 
-        // Automatically inject Bower components into the HTML file
-        'bower-install': {
-            app: {
-                html: '<%= yeoman.app %>/index.html',
-                ignorePath: '<%= yeoman.app %>/'
-            }
-        },
-
-        requirejs: {
-            dist: {
-                // Options: https://github.com/jrburke/r.js/blob/master/build/example.build.js
+        browserify: {
+            all: {
+                files: {
+                    '.tmp/scripts/main.js': '<%= yeoman.app %>/scripts/main.js'
+                },
                 options: {
-                    almond: true,
-                    baseUrl: '<%= yeoman.app %>/scripts',
-                    findNestedDependencies: true,
-                    include: 'main',
-                    mainConfigFile: '<%= yeoman.app %>/scripts/main.js',
-                    name: 'main',
-                    optimize: 'none',
-                    out: '.tmp/scripts/main.js',
-                    // TODO: Figure out how to make sourcemaps work with grunt-usemin
-                    // https://github.com/yeoman/grunt-usemin/issues/30
-                    //generateSourceMaps: true,
-                    // required to support SourceMaps
-                    // http://requirejs.org/docs/errors.html#sourcemapcomments
-                    preserveLicenseComments: false,
-                    replaceRequireScript: [{
-                        files: ['.tmp/index.html']
-                    }],
-                    stubModules : ['json', 'text'],
-                    useStrict: true,
-                    wrap: true
-                    //uglify2: {} // https://github.com/mishoo/UglifyJS2
+                    bundleOptions: {
+                        debug: true
+                    },
+                    watch: true
                 }
             }
         },
@@ -408,24 +379,6 @@ module.exports = function (grunt) {
                 'svgmin'
             ]
         },
-        bower: {
-            options: {
-                exclude: [
-                    'backbone.marionette',
-                    'bootstrap-sass',
-                    'jquery.ui',
-                    'lodash-amd',
-                    'modernizr',
-                    'qtip2',
-                    'requirejs',
-                    'requirejs-plugins',
-                    'require-handlebars-plugin'
-                ]
-            },
-            all: {
-                rjsConfig: '<%= yeoman.app %>/scripts/main.js'
-            }
-        },
         rsync: {
             options: {
                 args: ['-cruv']
@@ -448,6 +401,7 @@ module.exports = function (grunt) {
             'clean:server',
             'concurrent:server',
             'autoprefixer',
+            'browserify',
             'connect:livereload',
             'watch'
         ]);
@@ -463,7 +417,7 @@ module.exports = function (grunt) {
             grunt.task.run([
                 'clean:server',
                 'concurrent:test',
-                'autoprefixer',
+                'autoprefixer'
             ]);
         }
 
@@ -476,10 +430,10 @@ module.exports = function (grunt) {
     grunt.registerTask('build', [
         'clean:dist',
         'copy:tmp',
-        'requirejs',
         'useminPrepare',
         'concurrent:dist',
         'autoprefixer',
+        'browserify',
         'concat',
         'cssmin',
         'uglify',

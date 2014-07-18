@@ -1,12 +1,14 @@
-define(['underscore', 'backbone', '../models/FilterModel', 'backbone.picky'],
-  function(_, Backbone, Filter) {
-  'use strict';
+'use strict';
 
-  return Backbone.Collection.extend({
-    model: Filter,
+var Backbone = require('backbone');
+var Filter = require('../models/FilterModel');
+var _ = require('underscore');
+require('backbone.picky');
 
-    initialize: function () {
-      _.extend(this, new Backbone.Picky.MultiSelect(this));
-    }
-  });
+module.exports = Backbone.Collection.extend({
+  model: Filter,
+
+  initialize: function () {
+    _.extend(this, new Backbone.Picky.MultiSelect(this));
+  }
 });

@@ -1,31 +1,32 @@
-define(['backbone.marionette', 'app', 'hbs!../templates/exam'],
-  function (Marionette, App, template) {
-    'use strict';
+'use strict';
 
-    return Marionette.ItemView.extend({
-      tagName: 'tr',
-      template: template,
+var App = require('../../app');
+var Marionette = require('backbone.marionette');
+var template = require('../templates/exam.hbs');
 
-      events: {
-        'click .remove': function (event) {
-          event.preventDefault();
-          App.request('removeModule', this.model.id);
-        },
-        'click .show-hide': function (event) {
-          event.preventDefault();
-          var display = !this.model.get('display');
-          this.model.set('display', display);
-          App.request('displayLessons', this.model.id, display);
-        }
-      },
+module.exports = Marionette.ItemView.extend({
+  tagName: 'tr',
+  template: template,
 
-      modelEvents: {
-        change: 'render'
-      },
+  events: {
+    'click .remove': function (event) {
+      event.preventDefault();
+      App.request('removeModule', this.model.id);
+    },
+    'click .show-hide': function (event) {
+      event.preventDefault();
+      var display = !this.model.get('display');
+      this.model.set('display', display);
+      App.request('displayLessons', this.model.id, display);
+    }
+  },
 
-      onRender: function () {
-        this.$el.addClass('color' + this.model.get('color'))
-          .toggleClass('clash', this.model.get('clash'));
-      }
-    });
-  });
+  modelEvents: {
+    change: 'render'
+  },
+
+  onRender: function () {
+    this.$el.addClass('color' + this.model.get('color'))
+      .toggleClass('clash', this.model.get('clash'));
+  }
+});

@@ -1,9 +1,9 @@
-define(['underscore', 'json!config.json'],
-  function (_, config) {
-    'use strict';
+'use strict';
 
-    return _.extend({
-      semTimetableFragment: 'timetable/' +
-        config.academicYear.replace('/', '-') + '/sem' + config.semester
-    }, config);
-  });
+var _ = require('underscore');
+var config = require('../config.json');
+
+module.exports = _.extend({
+  semTimetableFragment: 'timetable/' +
+    config.academicYear.replace('/', '-') + '/sem' + config.semester
+}, config);

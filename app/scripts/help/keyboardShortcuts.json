@@ -58,6 +58,11 @@
         "description": "Pressing __C__ will display the CORS bidding history tab of the module."
       },
       {
+        "title": "Show ModMaven",
+        "keys": ["V"],
+        "description": "Pressing __V__ will display the module prerequisites visualization of the module."
+      },
+      {
         "title": "Show reviews and discussions",
         "keys": ["R"],
         "description": "Pressing __R__ will display the reviews and discussions tab of the module."
