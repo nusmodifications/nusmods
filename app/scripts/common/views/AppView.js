@@ -84,6 +84,7 @@ module.exports = Backbone.View.extend({
       '?': '/help',
       c: '/modules/<module>/corspedia',
       s: '/modules/<module>/schedule',
+      v: '/modules/<module>/modmaven',
       r: '/modules/<module>/reviews'
     };
 
