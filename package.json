@@ -85,7 +85,7 @@
     "jquery-ui/droppable": "./app/bower_components/jquery.ui/ui/droppable.js",
     "jquery-ui/mouse": "./app/bower_components/jquery.ui/ui/mouse.js",
     "jquery-ui/widget": "./app/bower_components/jquery.ui/ui/widget.js",
-    "jquery-ui-touch-punch": "./app/bower_components/jquery-ui-touch-punch/jquery.ui.touch-punch.js",
+    "jquery-ui-touch-punch": "./app/bower_components/jqueryui-touch-punch/jquery.ui.touch-punch.js",
     "localforage": "./app/bower_components/localforage/dist/localforage.nopromises.js",
     "qTip2": "./app/bower_components/qtip2/jquery.qtip.js",
     "select2": "./app/bower_components/select2/select2.js"
@@ -116,6 +116,11 @@
     "jquery-ui/mouse": {
       "depends": [
         "jquery-ui/widget"
+      ]
+    },
+    "jquery-ui-touch-punch": {
+      "depends": [
+        "jquery-ui/mouse"
       ]
     },
     "localforage": {
