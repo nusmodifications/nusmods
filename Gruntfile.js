@@ -333,7 +333,9 @@ module.exports = function (grunt) {
                         'styles/*.{gif,png}',
                         'styles/fonts/{,*/}*.*',
                         'vendor/knplabs/knp-snappy/src/**/*.php',
-                        'bower_components/font-awesome/fonts/*.*'
+                        'bower_components/font-awesome/fonts/*.*',
+                        'bower_components/jquery/dist/jquery.min.*',
+                        'bower_components/raven-js/dist/raven.min.*'
                     ]
                 }, {
                     expand: true,
