@@ -82,8 +82,8 @@ a {
     color: #666;
   }
   &:hover {
-    @include transition-property(all);
-    @include transition-duration(.3s);
+    transition-property: all;
+    transition-duration: .3s;
   }
 }
 
@@ -234,7 +234,7 @@ $module-section-min-height: 700px;
 
 // Loading Overlay
 #overlay {
-  @include opacity(1);
+  opacity: 1;
   top: 50px;
   background-color: #fff;
 }
@@ -368,10 +368,10 @@ colgroup.hover {
     cursor: not-allowed;
   }
   &.active {
-    @include opacity(.6);
+    opacity: .6;
   }
   &.hover {
-    @include opacity(1);
+    opacity: 1;
   }
 }
 .ui-draggable {
@@ -496,8 +496,6 @@ colgroup.hover {
   }
   .opacity-transition {
     transition: opacity .5s ease-in-out;
-    -moz-transition: opacity .5s ease-in-out;
-    -webkit-transition: opacity .5s ease-in-out;
   }
   .link {
     stroke: #000;
@@ -510,8 +508,6 @@ colgroup.hover {
   .mod-rect {
     fill: $brand-primary;
     transition: opacity .25s ease, fill .25s ease;
-    -moz-transition: opacity .25s ease, fill .25s ease;
-    -webkit-transition: opacity .25s ease, fill .25s ease;
   }
   .andor-rect {
     cursor: default;
@@ -560,7 +556,7 @@ colgroup.hover {
 
 // Preferences
 #preferences {
-  @include user-select(none);
+  user-select: none;
   #theme-options {
     display: inline-block;
     width: 200px;
