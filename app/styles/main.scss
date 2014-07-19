@@ -82,8 +82,8 @@ a {
     color: #666;
   }
   &:hover {
-    transition-property: all;
     transition-duration: .3s;
+    transition-property: all;
   }
 }
 
@@ -234,8 +234,8 @@ $module-section-min-height: 700px;
 
 // Loading Overlay
 #overlay {
-  opacity: 1;
   top: 50px;
+  opacity: 1;
   background-color: #fff;
 }
 #loading {
@@ -342,7 +342,7 @@ td {
     padding-right: 0;
   }
   li:after {
-    content: ","
+    content: ",";
   }
   li:last-of-type:after {
     content: "";
@@ -479,8 +479,8 @@ colgroup.hover {
 // ModMaven
 .modmaven {
   #tree {
-    border: 2px solid #eee;
     min-height: 550px;
+    border: 2px solid #eee;
   }
   #svg {
     cursor: move;
@@ -492,38 +492,38 @@ colgroup.hover {
     opacity: 0;
   }
   .translucent {
-    opacity: 0.3;
+    opacity: .3;
   }
   .opacity-transition {
     transition: opacity .5s ease-in-out;
   }
   .link {
-    stroke: #000;
     fill: none;
+    stroke: #000;
   }
   .rect {
     stroke: black;
     stroke-width: 1.5;
   }
   .mod-rect {
-    fill: $brand-primary;
     transition: opacity .25s ease, fill .25s ease;
+    fill: $brand-primary;
   }
   .andor-rect {
     cursor: default;
     opacity: 0 !important;
   }
   .current-mod-rect {
-    fill: #6930FF;
+    fill: #6930ff;
   }
   .active-rect {
     fill: #ccc;
   }
   .rect-label {
-    fill: #000;
     font-weight: bold;
+    pointer-events: none;
+    fill: #000;
     text-anchor: middle;
-    pointer-events:none;
   }
   .andor-label {
     font-size: 50px !important;
