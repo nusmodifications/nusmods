@@ -59,13 +59,17 @@ App.reqres.setHandler('displayLessons', function (id, display) {
 App.on('start', function () {
   var AppView = require('./common/views/AppView');
   var TimetableModuleCollection = require('./common/collections/TimetableModuleCollection');
+
+  // header modules
+  require('./modules');
+  require('./timetable');
+  // require('ivle');
+  require('./preferences');
+
+  // footer modules
   require('./about');
   require('./help');
-  // require('ivle');
-  require('./modules');
-  require('./preferences');
   require('./support');
-  require('./timetable');
 
   localforage.getItem(config.semTimetableFragment +
     ':queryString').then(function (savedQueryString) {
