@@ -8,7 +8,7 @@
     "jquery": "~2.1.1",
     "jquery.ui": "~1.11.0",
     "jqueryui-touch-punch": "*",
-    "localforage": "ahbeng/localForage",
+    "localforage": "ahbeng/localForage#631a9011a24f6e1442ec2c752b0063af38a251c7",
     "mousetrap": "~1.4.6",
     "qtip2": "~2.2.0",
     "raven-js": "~1.1.15",
