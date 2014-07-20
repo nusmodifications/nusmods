@@ -60,12 +60,12 @@ module.exports = Backbone.Model.extend({
 
     var prerequisite = this.get('Prerequisite');
     if (prerequisite) {
-      this.set('parsedPrerequisite', modulify.linkifyModules(prerequisite));
+      this.set('linkedPrerequisite', modulify.linkifyModules(prerequisite));
     }
 
     var preclusion = this.get('Preclusion');
     if (preclusion) {
-      this.set('parsedPreclusion', modulify.linkifyModules(preclusion));
+      this.set('linkedPreclusion', modulify.linkifyModules(preclusion));
     }
 
     var timetable = this.get('Timetable');
