@@ -115,6 +115,12 @@ module.exports = function (grunt) {
           academicYear: '2014/2015',
           semester: '1'
         }
+      },
+      ay2014to2015sem2: {
+        options: {
+          academicYear: '2014/2015',
+          semester: '2'
+        }
       }
     },
     ivle: {
@@ -180,6 +186,12 @@ module.exports = function (grunt) {
         options: {
           academicYear: '2014/2015',
           semester: '1'
+        }
+      },
+      ay2014to2015sem2: {
+        options: {
+          academicYear: '2014/2015',
+          semester: '2'
         }
       }
     },
@@ -252,6 +264,12 @@ module.exports = function (grunt) {
           academicYear: '2014/2015',
           semester: '1'
         }
+      },
+      ay2014to2015sem2: {
+        options: {
+          academicYear: '2014/2015',
+          semester: '2'
+        }
       }
     },
     normalize: {
@@ -313,6 +331,12 @@ module.exports = function (grunt) {
         options: {
           academicYear: '2014/2015',
           semester: '1'
+        }
+      },
+      ay2014to2015sem2: {
+        options: {
+          academicYear: '2014/2015',
+          semester: '2'
         }
       }
     },
@@ -378,6 +402,12 @@ module.exports = function (grunt) {
           academicYear: '2014/2015',
           semester: '1'
         }
+      },
+      ay2014to2015sem2: {
+        options: {
+          academicYear: '2014/2015',
+          semester: '2'
+        }
       }
     },
     rsync: {
@@ -435,17 +465,6 @@ module.exports = function (grunt) {
     'split'
   ]);
 
-  grunt.registerTask('ay2013to2014sem2', [
-    'bulletinModules:semester2',
-    'corsBiddingStats',
-    'examTimetable:ay2013to2014sem2',
-    'moduleTimetableDelta',
-    'ivle:ay2013to2014sem2',
-    'consolidate:ay2013to2014sem2',
-    'normalize:ay2013to2014sem2',
-    'split:ay2013to2014sem2'
-  ]);
-
   grunt.registerTask('ay2014to2015sem1', [
     'bulletinModules:semester1',
     'cors:currentSemester',
@@ -457,6 +476,18 @@ module.exports = function (grunt) {
     'normalize:ay2014to2015sem1',
     'shell:runPrereqParser:ay2014to2015sem1',
     'split:ay2014to2015sem1'
+  ]);
+
+  grunt.registerTask('ay2014to2015sem2', [
+    'bulletinModules:semester2',
+    'corsBiddingStats',
+    'examTimetable:ay2014to2015sem2',
+    'moduleTimetableDelta',
+    'ivle:ay2014to2015sem2',
+    'consolidate:ay2014to2015sem2',
+    'normalize:ay2014to2015sem2',
+    'shell:runPrereqParser:ay2014to2015sem2',
+    'split:ay2014to2015sem2'
   ]);
 
   grunt.registerTask('default', 'ay2014to2015sem1');
