@@ -6,7 +6,7 @@
     - php5-mysql
     - python-mysqldb  # Required for mysql ansible modules
 - { include: install_dependencies.yml, sudo: no }
-- cron: name='Update API data' special_time=hourly job='cd {{ project_dir }}/api && grunt ay2014to2015sem1 rsync' user={{ user }}
+- cron: name='Update API data' special_time=hourly job='cd {{ project_dir }}/api && grunt ay2014to2015sem1 rsync --target=dist' user={{ user }}
 - mysql_db: name={{ yourls_db_name }}
 - mysql_user:
     name={{ yourls_db_user }}
