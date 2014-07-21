@@ -8,11 +8,13 @@ server {
         root /home/{{ user }}/nusmods.com;
         location / {
                 try_files $uri /index.html;
+                expires -1;
         }
         location /api/ {
                 alias /home/{{ user }}/api.nusmods.com/;
                 add_header "Access-Control-Allow-Origin" "*";
                 autoindex on;
+                expires -1;
         }
         location ~ \.php$ {
                 fastcgi_split_path_info ^(.+\.php)(/.+)$;
