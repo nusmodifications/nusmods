@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = function (grunt) {
-  grunt.initConfig({
+  var config = {
     defaults: {
       cachePath: 'cache',
       concurrencyLimit: 128,
@@ -133,66 +133,6 @@ module.exports = function (grunt) {
         jsonSpace: '<%= defaults.jsonSpace %>',
         destFileName: 'ivleRaw.json',
         ivleApi: grunt.file.readJSON('ivleApi.json')
-      },
-      ay2012to2013sem1: {
-        options: {
-          academicYear: '2012/2013',
-          semester: '1'
-        }
-      },
-      ay2012to2013sem2: {
-        options: {
-          academicYear: '2012/2013',
-          semester: '2'
-        }
-      },
-      ay2012to2013sem3: {
-        options: {
-          academicYear: '2012/2013',
-          semester: '3'
-        }
-      },
-      ay2012to2013sem4: {
-        options: {
-          academicYear: '2012/2013',
-          semester: '4'
-        }
-      },
-      ay2013to2014sem1: {
-        options: {
-          academicYear: '2013/2014',
-          semester: '1'
-        }
-      },
-      ay2013to2014sem2: {
-        options: {
-          academicYear: '2013/2014',
-          semester: '2'
-        }
-      },
-      ay2013to2014sem3: {
-        options: {
-          academicYear: '2013/2014',
-          semester: '3'
-        }
-      },
-      ay2013to2014sem4: {
-        options: {
-          academicYear: '2013/2014',
-          semester: '4'
-        }
-      },
-      ay2014to2015sem1: {
-        options: {
-          academicYear: '2014/2015',
-          semester: '1'
-        }
-      },
-      ay2014to2015sem2: {
-        options: {
-          academicYear: '2014/2015',
-          semester: '2'
-        }
       }
     },
     moduleTimetableDelta: {
@@ -210,66 +150,6 @@ module.exports = function (grunt) {
         jsonSpace: '<%= defaults.jsonSpace %>',
         srcFolder: '<%= defaults.destFolder %>',
         destFileName: 'consolidatedRaw.json'
-      },
-      ay2012to2013sem1: {
-        options: {
-          academicYear: '2012/2013',
-          semester: '1'
-        }
-      },
-      ay2012to2013sem2: {
-        options: {
-          academicYear: '2012/2013',
-          semester: '2'
-        }
-      },
-      ay2012to2013sem3: {
-        options: {
-          academicYear: '2012/2013',
-          semester: '3'
-        }
-      },
-      ay2012to2013sem4: {
-        options: {
-          academicYear: '2012/2013',
-          semester: '4'
-        }
-      },
-      ay2013to2014sem1: {
-        options: {
-          academicYear: '2013/2014',
-          semester: '1'
-        }
-      },
-      ay2013to2014sem2: {
-        options: {
-          academicYear: '2013/2014',
-          semester: '2'
-        }
-      },
-      ay2013to2014sem3: {
-        options: {
-          academicYear: '2013/2014',
-          semester: '3'
-        }
-      },
-      ay2013to2014sem4: {
-        options: {
-          academicYear: '2013/2014',
-          semester: '4'
-        }
-      },
-      ay2014to2015sem1: {
-        options: {
-          academicYear: '2014/2015',
-          semester: '1'
-        }
-      },
-      ay2014to2015sem2: {
-        options: {
-          academicYear: '2014/2015',
-          semester: '2'
-        }
       }
     },
     normalize: {
@@ -278,66 +158,6 @@ module.exports = function (grunt) {
         jsonSpace: '<%= defaults.jsonSpace %>',
         destFileName: 'modules.json',
         destFacultyDepartments: 'facultyDepartments.json'
-      },
-      ay2012to2013sem1: {
-        options: {
-          academicYear: '2012/2013',
-          semester: '1'
-        }
-      },
-      ay2012to2013sem2: {
-        options: {
-          academicYear: '2012/2013',
-          semester: '2'
-        }
-      },
-      ay2012to2013sem3: {
-        options: {
-          academicYear: '2012/2013',
-          semester: '3'
-        }
-      },
-      ay2012to2013sem4: {
-        options: {
-          academicYear: '2012/2013',
-          semester: '4'
-        }
-      },
-      ay2013to2014sem1: {
-        options: {
-          academicYear: '2013/2014',
-          semester: '1'
-        }
-      },
-      ay2013to2014sem2: {
-        options: {
-          academicYear: '2013/2014',
-          semester: '2'
-        }
-      },
-      ay2013to2014sem3: {
-        options: {
-          academicYear: '2013/2014',
-          semester: '3'
-        }
-      },
-      ay2013to2014sem4: {
-        options: {
-          academicYear: '2013/2014',
-          semester: '4'
-        }
-      },
-      ay2014to2015sem1: {
-        options: {
-          academicYear: '2014/2015',
-          semester: '1'
-        }
-      },
-      ay2014to2015sem2: {
-        options: {
-          academicYear: '2014/2015',
-          semester: '2'
-        }
       }
     },
     split: {
@@ -348,66 +168,6 @@ module.exports = function (grunt) {
         destModuleList: 'moduleList.json',
         destModuleInformation: 'moduleInformation.json',
         destSubfolder: 'modules'
-      },
-      ay2012to2013sem1: {
-        options: {
-          academicYear: '2012/2013',
-          semester: '1'
-        }
-      },
-      ay2012to2013sem2: {
-        options: {
-          academicYear: '2012/2013',
-          semester: '2'
-        }
-      },
-      ay2012to2013sem3: {
-        options: {
-          academicYear: '2012/2013',
-          semester: '3'
-        }
-      },
-      ay2012to2013sem4: {
-        options: {
-          academicYear: '2012/2013',
-          semester: '4'
-        }
-      },
-      ay2013to2014sem1: {
-        options: {
-          academicYear: '2013/2014',
-          semester: '1'
-        }
-      },
-      ay2013to2014sem2: {
-        options: {
-          academicYear: '2013/2014',
-          semester: '2'
-        }
-      },
-      ay2013to2014sem3: {
-        options: {
-          academicYear: '2013/2014',
-          semester: '3'
-        }
-      },
-      ay2013to2014sem4: {
-        options: {
-          academicYear: '2013/2014',
-          semester: '4'
-        }
-      },
-      ay2014to2015sem1: {
-        options: {
-          academicYear: '2014/2015',
-          semester: '1'
-        }
-      },
-      ay2014to2015sem2: {
-        options: {
-          academicYear: '2014/2015',
-          semester: '2'
-        }
       }
     },
     rsync: {
@@ -443,7 +203,26 @@ module.exports = function (grunt) {
         }
       }
     }
+  };
+
+  var AY_START = 2012;
+  var AY_END = 2015;
+
+  // Generate task targets.
+  ['ivle', 'consolidate', 'normalize', 'split'].forEach(function (task) {
+    for (var ay = AY_START; ay < AY_END; ay++) {
+      for (var sem = 1; sem < 5; sem++) {
+        config[task]['ay' + ay + 'to' + (ay + 1) + 'sem' + sem] = {
+          options: {
+            academicYear: ay + '/' + (ay + 1),
+            semester: sem.toString()
+          }
+        };
+      }
+    }
   });
+
+  grunt.initConfig(config);
 
   // Ensure that cache folder is created.
   grunt.file.mkdir(grunt.config('defaults').cachePath);
