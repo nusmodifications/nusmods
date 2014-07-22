@@ -32,14 +32,15 @@
         moduleCodes = moduleListPromise.responseJSON;
       });
     },
-    getCorrectAsAt: function (callback) {
-      moduleListPromise = moduleListPromise || $.getJSON(semBaseUrl + 'moduleList.json');
-      return moduleListPromise.then(function () {
-        var lastModified = moduleListPromise.getResponseHeader('Last-Modified');
+    getLastModified: function (callback) {
+      return $.ajax(ayBaseUrl + 'modules.json', {
+        type: 'HEAD'
+      }).then(function (data, textStatus, jqXHR) {
+        var lastModified = jqXHR.getResponseHeader('Last-Modified');
         if (callback) {
           callback(lastModified);
         }
-        return moduleListPromise.getResponseHeader('Last-Modified');
+        return lastModified;
       });
     },
     getMod: function (code, callback) {

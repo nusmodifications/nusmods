@@ -62,8 +62,8 @@ module.exports = Backbone.View.extend({
     $.fn.qtip.defaults.show.solo = true;
     $.fn.qtip.defaults.style.classes = 'qtip-bootstrap';
 
-    NUSMods.getCorrectAsAt().then(function (correctAsAt) {
-      $('#correct-as-at').text((new Date(correctAsAt)).toString().slice(0, 21));
+    NUSMods.getLastModified().then(function (lastModified) {
+      $('#correct-as-at').text((new Date(lastModified)).toString().slice(0, 21));
     });
 
     $('.cors-round-text').html(corsify.determineRound(Date.now()));
