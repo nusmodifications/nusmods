@@ -243,7 +243,7 @@ module.exports = Marionette.LayoutView.extend({
     if (this.model.get('section') === 'reviews') {
       // Only reset Disqus when showing reviews section
       var url = 'http://nusmods.com/modules/' + code + '/reviews';
-      var title = code + ' ' + module.ModuleTitle + ' · Reviews';
+      var title = code + ' ' + module.ModuleTitle;
 
       window.disqus_identifier = code;
       window.disqus_title = title;
