@@ -65,7 +65,8 @@ module.exports = Backbone.View.extend({
       $('#correct-as-at').text((new Date(correctAsAt)).toString().slice(0, 21));
     });
 
-    // $('.current-round').text(corsify.determineRound(Date.now()));
+    $('.cors-round-text').html(corsify.determineRound(Date.now()));
+    $('.cors-round-container').addClass('animated bounceInUp shown');
 
     App.selectRegion.show(new SelectView());
 

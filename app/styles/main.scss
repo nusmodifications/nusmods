@@ -42,7 +42,7 @@ $font-family-sans-serif: "proxima-nova", "Helvetica Neue", Helvetica, Arial, san
 //@import "bootstrap-sass-official/assets/stylesheets/bootstrap/panels";
 //@import "bootstrap-sass-official/assets/stylesheets/bootstrap/responsive-embed";
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/wells";
-//@import "bootstrap-sass-official/assets/stylesheets/bootstrap/close";
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap/close";
 
 // Components w/ JavaScript
 //@import "bootstrap-sass-official/assets/stylesheets/bootstrap/modals";
@@ -650,6 +650,21 @@ colgroup.hover {
   .nm-social-icons {
     display: inline-block;
     margin-right: 10px;
+  }
+}
+
+.cors-round-container {
+  $offset: 20px;
+  bottom: $offset;
+  box-shadow: 0 0 5px rgba(0,0,0,0.3);
+  margin-bottom: 0 !important;
+  opacity: 0;
+  position: fixed;
+  right: $offset;
+  width: 300px;
+  z-index: 100;
+  &.shown {
+    opacity: 1;
   }
 }
 
