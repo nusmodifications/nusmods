@@ -170,6 +170,29 @@ module.exports = function (grunt) {
         destSubfolder: 'modules'
       }
     },
+    joinSems: {
+      options: {
+        srcFolder: '<%= defaults.destFolder %>',
+        jsonSpace: '<%= defaults.jsonSpace %>'
+      },
+      ay2014to2015sem1: {
+        options: {
+          academicYear: '2014/2015',
+          semester: '1'
+        }
+      }
+    },
+    splitSems: {
+      options: {
+        srcFolder: '<%= defaults.destFolder %>',
+        jsonSpace: '<%= defaults.jsonSpace %>'
+      },
+      ay2014to2015: {
+        options: {
+          academicYear: '2014/2015'
+        }
+      }
+    },
     rsync: {
       options: {
         args: ['-cruv']
@@ -241,7 +264,9 @@ module.exports = function (grunt) {
     'ivle',
     'consolidate',
     'normalize',
-    'split'
+    'split',
+    'joinSems',
+    'splitSems'
   ]);
 
   grunt.registerTask('ay2014to2015sem1', [
