@@ -18,7 +18,8 @@ var App = new Marionette.Application();
 App.addRegions({
   mainRegion: '.content',
   navigationRegion: 'nav',
-  selectRegion: '.navbar-form'
+  selectRegion: '.navbar-form',
+  bookmarksRegion: '.nm-bookmarks'
 });
 
 var navigationCollection = new NavigationCollection();

@@ -5,12 +5,14 @@ var Backbone = require('backbone');
 var Mousetrap = require('Mousetrap');
 var NUSMods = require('../../nusmods');
 var SelectView = require('./SelectView');
+var BookmarksView = require('./BookmarksView');
 var _ = require('underscore');
 var attachFastClick = require('fastclick');
 var corsify = require('../../cors/corsify');
 var modulify = require('../utils/modulify');
 var themePicker = require('../themes/themePicker');
 require('bootstrap/alert');
+require('qTip2');
 
 module.exports = Backbone.View.extend({
   el: 'body',
@@ -126,6 +128,21 @@ module.exports = Backbone.View.extend({
     });
 
     attachFastClick(document.body);
+
+    $('.nm-bookmark-button').qtip({
+      content: '<div class="nm-bookmarks"></div>',
+      hide: {
+        fixed: true,
+        delay: 300
+      },
+      events: {
+        show: function(event, api) {
+          var bookmarksModel = new Backbone.Model({bookmarks: ['CS1010S', 'CS1231', 'CS2010']});
+          var bookmarksView = new BookmarksView({model: bookmarksModel});
+          App.bookmarksRegion.show(bookmarksView);
+        }
+      }
+    });
   },
 
   navigateWithScrollTop: function (location, trigger) {
