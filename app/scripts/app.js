@@ -73,14 +73,6 @@ App.on('start', function () {
 
   localforage.getItem(config.semTimetableFragment +
     ':queryString').then(function (savedQueryString) {
-    // Needed to transform legacy JSON format to query string.
-    // TODO: remove after a sufficient transition period has passed.
-    if (!savedQueryString) {
-      return localforage.getItem('selectedModules')
-        .then(TimetableModuleCollection.fromJSONtoQueryString);
-    }
-    return savedQueryString;
-  }).then(function (savedQueryString) {
     if ('/' + config.semTimetableFragment === window.location.pathname) {
       var queryString = window.location.search.slice(1);
       if (queryString) {

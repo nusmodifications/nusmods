@@ -111,23 +111,5 @@ module.exports = ModuleCollection.extend({
         })
       };
     });
-  },
-
-  // Needed to transform legacy JSON format to query string.
-  // TODO: remove after a sufficient transition period has passed.
-  fromJSONtoQueryString: function (modules) {
-    var qsObject = {};
-    _.each(modules, function (module) {
-      var qsModule = qsObject[module.ModuleCode] = {};
-      var moduleLessons = module.selectedLessons;
-      if (moduleLessons.length) {
-        _.each(moduleLessons, function (lesson) {
-          qsModule[LessonModel.typeAbbrev[lesson.LessonType]] = lesson.ClassNo;
-        });
-      } else {
-        qsObject[module.ModuleCode] = '';
-      }
-    });
-    return qs.stringify(qsObject);
   }
 });
