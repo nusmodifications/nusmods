@@ -75,6 +75,7 @@
   "browser": {
     "Mousetrap": "./app/bower_components/mousetrap/mousetrap.js",
     "backbone.picky": "./app/bower_components/backbone.picky/lib/amd/backbone.picky.js",
+    "bootstrap/alert": "./app/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/alert.js",
     "bootstrap/button": "./app/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/button.js",
     "bootstrap/collapse": "./app/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/collapse.js",
     "bootstrap/dropdown": "./app/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/dropdown.js",

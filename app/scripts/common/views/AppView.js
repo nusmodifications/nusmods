@@ -10,6 +10,7 @@ var attachFastClick = require('fastclick');
 var corsify = require('../../cors/corsify');
 var modulify = require('../utils/modulify');
 var themePicker = require('../themes/themePicker');
+require('bootstrap/alert');
 
 module.exports = Backbone.View.extend({
   el: 'body',
@@ -66,7 +67,7 @@ module.exports = Backbone.View.extend({
     });
 
     $('.cors-round-text').html(corsify.determineRound(Date.now()));
-    $('.cors-round-container').addClass('animated bounceInUp shown');
+    $('.cors-round-container').addClass('animated bounceInUp shown').alert();
 
     App.selectRegion.show(new SelectView());
 
