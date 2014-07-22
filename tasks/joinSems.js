@@ -55,7 +55,7 @@ module.exports = function (grunt) {
 
     grunt.file.write(
       path.join(basePath, grunt.config('normalize').options.destFileName),
-      JSON.stringify(joined, null, options.jsonSpace)
+      JSON.stringify(_.sortBy(joined, 'ModuleCode'), null, options.jsonSpace)
     );
   });
 };
