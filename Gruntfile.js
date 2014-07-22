@@ -208,14 +208,14 @@ module.exports = function (grunt) {
       runPrereqParser: {
         command: function (academicYearAndSem) {
           var path = require('path'),
-              config = grunt.config("normalize")["options"],
-              matches = academicYearAndSem.match(/ay(20\d\d)to(20\d\d)sem(\d)/);
+              config = grunt.config('normalize').options,
+              matches = academicYearAndSem.match(/ay(20\d\d)to(20\d\d)(?:sem(\d))?/);
           var dataPath = path.join(
             '..',
-            config["srcFolder"],        //default source folder
+            config.srcFolder,           //default source folder
             matches[1]+'-'+matches[2],  //academic year
-            matches[3],                 //semester
-            config["destFileName"]      //normalized file name
+            matches[3] || '',           //semester if present
+            config.destFileName         //normalized file name
           );
           return 'python init_parsing.py ' + dataPath;
         },
@@ -264,8 +264,14 @@ module.exports = function (grunt) {
     'ivle',
     'consolidate',
     'normalize',
+
+    // for backward compatibility, can remove when all code is using combined
+    // semester info
+    'shell:runPrereqParser:ay2014to2015sem1',
+
     'split',
     'joinSems',
+    'shell:runPrereqParser:ay2014to2015',
     'splitSems'
   ]);
 
