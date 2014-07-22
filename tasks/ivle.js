@@ -16,8 +16,6 @@ module.exports = function (grunt) {
     var basePath = path.join(options.srcFolder, options.academicYear.replace('/', '-'), options.semester);
     var bulletinModulesPath = path.join(basePath, grunt.config('bulletinModules').options.destFileName);
     var corsPath = path.join(basePath, grunt.config('cors').options.destFileName);
-    var corsBiddingStatsOptions = grunt.config('corsBiddingStats').options;
-    var corsBiddingStatsPath = path.join(corsBiddingStatsOptions.destFolder, corsBiddingStatsOptions.destFileName);
     var examTimetablePath = path.join(basePath, grunt.config('examTimetable').options.destFileName);
     var moduleTimetableDeltaPath = path.join(basePath, grunt.config('moduleTimetableDelta').options.destFileName);
 
@@ -37,7 +35,6 @@ module.exports = function (grunt) {
         moduleCodes[code] = true;
       });
     });
-    populateModuleCodes(corsBiddingStatsPath, 'ModuleCode');
     populateModuleCodes(examTimetablePath, 'Code');
     populateModuleCodes(moduleTimetableDeltaPath, 'ModuleCode');
 
