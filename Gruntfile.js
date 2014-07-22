@@ -358,6 +358,7 @@ module.exports = function (grunt) {
                 src: [
                     'bower_components/qtip2/jquery.qtip.css',
                     'bower_components/select2/select2.css',
+                    'bower_components/animate.css/animate.min.css',
                     'index.html'
                 ]
             }
