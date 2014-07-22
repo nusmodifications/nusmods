@@ -300,5 +300,5 @@ module.exports = function (grunt) {
     'split:ay2014to2015sem2'
   ]);
 
-  grunt.registerTask('default', 'ay2014to2015sem1');
+  grunt.registerTask('default', 'all');
 };
