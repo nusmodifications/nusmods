@@ -17,6 +17,7 @@
 }(this, function () {
   'use strict';
 
+  var ayBaseUrl;
   var semBaseUrl;
   var moduleInformationPromise, moduleListPromise;
   var moduleCodes;
@@ -53,7 +54,8 @@
       return moduleListPromise.then(callback);
     },
     setConfig: function (config) {
-      semBaseUrl = config.baseUrl + config.academicYear.replace('/', '-') + '/' + config.semester + '/';
+      ayBaseUrl = config.baseUrl + config.academicYear.replace('/', '-') + '/';
+      semBaseUrl = ayBaseUrl + config.semester + '/';
     }
   };
 }));
