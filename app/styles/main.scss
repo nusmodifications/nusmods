@@ -137,6 +137,7 @@ a {
 
 .navbar-default {
   .navbar-form {
+    display: inline-block;
     margin-right: 0;
     margin-left: 0;
     padding: 0;
@@ -214,10 +215,10 @@ $module-section-min-height: 700px;
 
 .navbar-header {
   @media (min-width: $screen-sm-min) {
-    width: 500px;
+    width: 550px;
   }
   @media (min-width: $screen-lg-min) {
-    width: 650px;
+    width: 700px;
   }
 }
 
@@ -230,6 +231,12 @@ $module-section-min-height: 700px;
   @media (min-width: $screen-lg-min) {
     width: 500px;
   }
+}
+
+// Bookmarks
+
+.nm-bookmark-button {
+  padding-top: 7px;
 }
 
 // Loading Overlay
