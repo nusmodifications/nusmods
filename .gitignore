@@ -1,4 +1,4 @@
+*.pyc
 app
 cache
 node_modules
-.pyc
