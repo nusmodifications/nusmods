@@ -319,6 +319,18 @@ $module-section-min-height: 700px;
   }
 }
 
+// Back to Top Button
+#back-to-top {
+  position: fixed;
+  bottom: -100px;
+  right: 5px;
+  outline: none;
+}
+
+#back-to-top i {
+  padding-right: 5px;
+}
+
 // Module Finder Content
 td {
   &.code,
