@@ -326,6 +326,11 @@ $module-section-min-height: 700px;
   bottom: -100px;
   right: 10px;
   outline: none;
+  transition: bottom 0.25s ease-in-out;
+}
+
+.back-to-top-visible {
+  bottom: 10px !important;
 }
 
 #back-to-top i {

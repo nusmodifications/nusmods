@@ -47,10 +47,10 @@ module.exports = Marionette.LayoutView.extend({
   onShow: function() {
     var that = this;
     $(window).scroll(_.debounce(function() {
-      if ($(this).scrollTop() > 100) {
-        $(that.ui.backToTopButton).stop().animate({bottom: '10px'}, 250);
+      if ($(this).scrollTop() > 150) {
+        $(that.ui.backToTopButton).addClass('back-to-top-visible');
       } else {
-        $(that.ui.backToTopButton).stop().animate({bottom: '-100px'}, 250);
+        $(that.ui.backToTopButton).removeClass('back-to-top-visible');
       }
     }, 50));
 
