@@ -7,6 +7,7 @@ var NUSMods = require('../../nusmods');
 var _ = require('underscore');
 var template = require('../templates/bookmarks.hbs');
 
-module.exports = Marionette.LayoutView.extend({
-  template: template,
+module.exports = Marionette.CompositeView.extend({
+  className: 'bookmarks',
+  template: template
 });

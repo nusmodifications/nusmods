@@ -57,6 +57,29 @@ App.reqres.setHandler('displayLessons', function (id, display) {
   });
 });
 
+App.reqres.setHandler('getBookmarks', function (id) {
+  localforage.getItem('bookmarks:bookmarkedModules', function (modules) {
+    return modules;
+  });
+});
+App.reqres.setHandler('addBookmark', function (id) {
+  localforage.getItem('bookmarks:bookmarkedModules', function (modules) {
+    if (!_.contains(modules, id)) {
+      modules.push(id);
+    }
+    localforage.setItem('bookmarks:bookmarkedModules', modules);
+  });
+});
+App.reqres.setHandler('deleteBookmark', function (id) {
+  localforage.getItem('bookmarks:bookmarkedModules', function (modules) {
+    var index = modules.indexOf(id);
+    if (index > -1) {
+      modules.splice(index, 1);
+      localforage.setItem('bookmarks:bookmarkedModules', modules);
+    }
+  });
+});
+
 App.on('start', function () {
   var AppView = require('./common/views/AppView');
   var TimetableModuleCollection = require('./common/collections/TimetableModuleCollection');
@@ -114,6 +137,12 @@ App.on('start', function () {
         $('#mode').attr('href', '/styles/' + value + '.min.css');
       }
     });
+  });
+
+  localforage.getItem('bookmarks:bookmarkedModules', function (modules) {
+    if (!modules) {
+      localforage.setItem('bookmarks:bookmarkedModules', []);
+    }
   });
 });
 
