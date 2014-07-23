@@ -666,15 +666,16 @@ colgroup.hover {
   }
 }
 
-.cors-round-container {
+.cors-round-container.alert {
   $offset: 20px;
   bottom: $offset;
   box-shadow: 0 0 5px rgba(0,0,0,0.3);
   margin-bottom: 0 !important;
+  padding: 10px;
   opacity: 0;
   position: fixed;
-  right: $offset;
-  width: 300px;
+  left: $offset;
+  width: 275px;
   z-index: 100;
   &.shown {
     opacity: 1;
