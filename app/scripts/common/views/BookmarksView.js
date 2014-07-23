@@ -7,7 +7,7 @@ var BookmarkItemView = require('./BookmarkItemView');
 var template = require('../templates/bookmarks.hbs');
 
 var EmptyView = Marionette.ItemView.extend({
-  template: _.template('<p>No bookmarks yet!</p>')
+  template: _.template('<p>No bookmarks.</p>')
 });
 
 module.exports = Marionette.CompositeView.extend({
