@@ -192,6 +192,9 @@ a {
 
 .nm-section-heading {
   color: $gray-light;
+  button {
+    margin-left: 5px;
+  }
 }
 
 $module-section-min-height: 700px;
@@ -237,6 +240,23 @@ $module-section-min-height: 700px;
 
 .nm-bookmark-button {
   padding-top: 7px;
+}
+
+.nm-bookmarks {
+  width: 100px;
+  .nm-bookmarks-title {
+    font-weight: bold;
+  }
+  ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  .js-remove-bookmark {
+    cursor: pointer; 
+    &:hover {
+      color: #ccc;
+    }
+  }
 }
 
 // Loading Overlay
@@ -490,9 +510,6 @@ colgroup.hover {
         font-weight: normal;
       }
     }
-  }
-  .ivle {
-    margin-right: 5px;
   }
 }
 

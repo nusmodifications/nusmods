@@ -227,7 +227,7 @@ module.exports = Marionette.LayoutView.extend({
       });
     },
     'click .add-bookmark': function (event) {
-      App.request('addBookmark', tthis.model.get('module').ModuleCode);
+      App.request('addBookmark', this.model.get('module').ModuleCode);
       $(event.currentTarget).qtip({
         content: 'Bookmarked!',
         show: {
