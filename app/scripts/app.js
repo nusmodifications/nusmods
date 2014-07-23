@@ -57,9 +57,12 @@ App.reqres.setHandler('displayLessons', function (id, display) {
   });
 });
 
-App.reqres.setHandler('getBookmarks', function (id) {
+App.reqres.setHandler('getBookmarks', function (callback) {
+  if (!callback) { 
+    return; 
+  }
   localforage.getItem('bookmarks:bookmarkedModules', function (modules) {
-    return modules;
+    callback(modules);
   });
 });
 App.reqres.setHandler('addBookmark', function (id) {

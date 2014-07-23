@@ -137,9 +137,15 @@ module.exports = Backbone.View.extend({
       },
       events: {
         show: function(event, api) {
-          var bookmarksModel = new Backbone.Model({bookmarks: ['CS1010S', 'CS1231', 'CS2010']});
-          var bookmarksView = new BookmarksView({model: bookmarksModel});
-          App.bookmarksRegion.show(bookmarksView);
+          App.request('getBookmarks', function (modules) {
+            var modulesList = [];
+            _.each(modules, function (module) {
+              modulesList.push({'module': module});
+            });
+            var bookmarksCollection = new Backbone.Collection(modulesList);
+            var bookmarksView = new BookmarksView({collection: bookmarksCollection});
+            App.bookmarksRegion.show(bookmarksView);
+          });
         }
       }
     });
