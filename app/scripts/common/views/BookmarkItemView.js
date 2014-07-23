@@ -8,9 +8,12 @@ module.exports = Marionette.ItemView.extend({
   tagName: 'li',
   template: template,
   events: {
-    'click .js-remove-bookmark': function(event) {
+    'click .js-remove-bookmark': function (event) {
       App.request('deleteBookmark', this.model.get('module'));
       this.model.collection.remove(this.model);
+    },
+    'click a': function () {
+      $('.nm-bookmark-button').qtip('hide');
     }
   }
 });
