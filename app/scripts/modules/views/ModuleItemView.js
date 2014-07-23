@@ -9,7 +9,7 @@ module.exports = Marionette.ItemView.extend({
   template: template,
 
   events: {
-    'click .add': function(event) {
+    'click .add-timetable': function(event) {
       var qtipContent;
       if (App.request('isModuleSelected', this.model.id)) {
         qtipContent = 'Already added!';
@@ -26,6 +26,16 @@ module.exports = Marionette.ItemView.extend({
         hide: {
           event: false,
           inactive: 1000
+        }
+      });
+    },
+    'click .add-bookmark': function(event) {
+      App.request('addBookmark', this.model.id);
+      $(event.currentTarget).qtip({
+        content: 'Bookmarked!',
+        show: {
+          event: false,
+          ready: true
         }
       });
     }

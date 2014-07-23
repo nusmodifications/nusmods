@@ -206,7 +206,7 @@ module.exports = Marionette.LayoutView.extend({
     'change #faculty, input:radio[name="student-radios"], #account': 'updateCorspedia',
     'click .show-full-desc': 'showFullDescription',
     'click #show-all-stats': 'showAllStats',
-    'click .add': function(event) {
+    'click .add-timetable': function (event) {
       var qtipContent;
       if (App.request('isModuleSelected', this.model.get('module').ModuleCode)) {
         qtipContent = 'Already added!';
@@ -223,6 +223,16 @@ module.exports = Marionette.LayoutView.extend({
         hide: {
           event: false,
           inactive: 1000
+        }
+      });
+    },
+    'click .add-bookmark': function (event) {
+      App.request('addBookmark', this.model.get('module').ModuleCode);
+      $(event.currentTarget).qtip({
+        content: 'Bookmarked!',
+        show: {
+          event: false,
+          ready: true
         }
       });
     }
@@ -315,14 +325,14 @@ module.exports = Marionette.LayoutView.extend({
     this.biddingStatsRegion.show(biddingStatsView);
   },
   savePreference: function(property, value) {
-      if (property === 'faculty' && value === 'default') {
-          alert('You have to select a faculty.');
-          localforage.getItem(property, function(value) {
-              $('#faculty').val(value);
-          });
-          return false;
-      }
-      localforage.setItem(property, value);
-      return true;
+    if (property === 'faculty' && value === 'default') {
+      alert('You have to select a faculty.');
+      localforage.getItem(property, function(value) {
+          $('#faculty').val(value);
+      });
+      return false;
+    }
+    localforage.setItem(property, value);
+    return true;
   }
 });
