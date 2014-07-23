@@ -22,8 +22,7 @@ module.exports = Marionette.LayoutView.extend({
     sidebar: '#sidebar',
     sidebarToggle: '#sidebar-toggle',
     sidebarToggleIcon: '#sidebar-toggle i',
-    backToTopButton: '#back-to-top',
-    backToTopButtonIcon: '#back-to-top i',
+    backToTopButton: '#back-to-top'
   },
 
   events: {
