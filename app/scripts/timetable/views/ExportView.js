@@ -51,11 +51,19 @@ module.exports = Marionette.ItemView.extend({
   // when updated. DOM is extracted directly from currently displaying
   // timetable and embedded into template.
   htmlTimetable: function() {
+    var exam_timetable = $('#exam-timetable').clone();
+    exam_timetable.find("th:last-child, td:last-child").remove();
     var html = '<!DOCTYPE html><title>My NUSMods.com Timetable</title><style>' +
       '#timetable-wrapper{font-size:11px;font-weight:700;line-height:13px;width:1245px}' +
       '#timetable{margin:0 0 15px -20px;max-width:none;table-layout:fixed;width:1235px}' +
       '#timetable th{background-color:#fff}' +
       '#times div{margin-right:-13px;text-align:right}' +
+      '#exam-timetable > table {font-weight: bold;border: 1px solid #555555;}' +
+      '#exam-timetable > table th {border: 1px solid #555555;background-color: #eeeeee;}' +
+      '#exam-timetable > table td {border: 1px solid #555555;}' +
+      '#exam-timetable > table td:first-child {text-align: right;}' +
+      '#exam-timetable > table tr.clash {background-color: #eeeeee;}' +
+      '#exam-timetable > table tr:hover td {background-color: transparent;}' +
       '.day{border-bottom:1px solid #ddd;border-top:1px solid #ddd}' +
       '.day th{border-bottom:1px solid #fff;border-top:1px solid #fff}' +
       '.day th div{line-height:15px;margin-right:-20px}' +
@@ -80,7 +88,8 @@ module.exports = Marionette.ItemView.extend({
     html += '.hide-code .code,.hide-group .group,.hide-room .room,.hide-title .title,.hide-week .week{display:none}' +
       'table{border-collapse:collapse;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif}' +
       '</style><div class="' + $('#timetable-wrapper').attr('class') +
-      '" id="timetable-wrapper">' + $('#timetable-wrapper').html() + '</div>';
+      '" id="timetable-wrapper">' + $('#timetable-wrapper').html() + '</div>' +
+      exam_timetable[0].outerHTML;
     return html;
   },
 
