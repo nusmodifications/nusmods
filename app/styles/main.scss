@@ -42,7 +42,7 @@ $font-family-sans-serif: "proxima-nova", "Helvetica Neue", Helvetica, Arial, san
 //@import "bootstrap-sass-official/assets/stylesheets/bootstrap/panels";
 //@import "bootstrap-sass-official/assets/stylesheets/bootstrap/responsive-embed";
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/wells";
-//@import "bootstrap-sass-official/assets/stylesheets/bootstrap/close";
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap/close";
 
 // Components w/ JavaScript
 //@import "bootstrap-sass-official/assets/stylesheets/bootstrap/modals";
@@ -82,8 +82,8 @@ a {
     color: #666;
   }
   &:hover {
-    @include transition-property(all);
-    @include transition-duration(.3s);
+    transition-duration: .3s;
+    transition-property: all;
   }
 }
 
@@ -137,6 +137,7 @@ a {
 
 .navbar-default {
   .navbar-form {
+    display: inline-block;
     margin-right: 0;
     margin-left: 0;
     padding: 0;
@@ -191,6 +192,9 @@ a {
 
 .nm-section-heading {
   color: $gray-light;
+  button {
+    margin-left: 5px;
+  }
 }
 
 $module-section-min-height: 700px;
@@ -214,10 +218,10 @@ $module-section-min-height: 700px;
 
 .navbar-header {
   @media (min-width: $screen-sm-min) {
-    width: 500px;
+    width: 550px;
   }
   @media (min-width: $screen-lg-min) {
-    width: 650px;
+    width: 700px;
   }
 }
 
@@ -232,10 +236,34 @@ $module-section-min-height: 700px;
   }
 }
 
+// Bookmarks
+
+.nm-bookmark-button {
+  margin-left: 7px;
+  padding-top: 7px;
+}
+
+.nm-bookmarks {
+  width: 100px;
+  .nm-bookmarks-title {
+    font-weight: bold;
+  }
+  ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  .js-remove-bookmark {
+    cursor: pointer; 
+    &:hover {
+      color: #ccc;
+    }
+  }
+}
+
 // Loading Overlay
 #overlay {
-  @include opacity(1);
   top: 50px;
+  opacity: 1;
   background-color: #fff;
 }
 #loading {
@@ -312,11 +340,29 @@ $module-section-min-height: 700px;
 // Sidebar Toggling
 @media (min-width: $screen-sm-min) {
   #sidebar-toggle {
+    display: none;
     font-size: 24px;
     position: fixed;
     bottom: 4px;
     left: 4px;
   }
+}
+
+// Back to Top Button
+#back-to-top {
+  position: fixed;
+  bottom: -100px;
+  right: 10px;
+  outline: none;
+  transition: bottom 0.25s ease-in-out;
+}
+
+.back-to-top-visible {
+  bottom: 10px !important;
+}
+
+#back-to-top i {
+  padding-right: 5px;
 }
 
 // Module Finder Content
@@ -342,7 +388,7 @@ td {
     padding-right: 0;
   }
   li:after {
-    content: ","
+    content: ",";
   }
   li:last-of-type:after {
     content: "";
@@ -368,10 +414,10 @@ colgroup.hover {
     cursor: not-allowed;
   }
   &.active {
-    @include opacity(.6);
+    opacity: .6;
   }
   &.hover {
-    @include opacity(1);
+    opacity: 1;
   }
 }
 .ui-draggable {
@@ -471,16 +517,13 @@ colgroup.hover {
       }
     }
   }
-  .ivle {
-    margin-right: 5px;
-  }
 }
 
 // ModMaven
 .modmaven {
   #tree {
-    border: 2px solid #eee;
     min-height: 550px;
+    border: 2px solid #eee;
   }
   #svg {
     cursor: move;
@@ -492,39 +535,38 @@ colgroup.hover {
     opacity: 0;
   }
   .translucent {
-    opacity: 0.3;
+    opacity: .3;
   }
   .opacity-transition {
     transition: opacity .5s ease-in-out;
-    -moz-transition: opacity .5s ease-in-out;
-    -webkit-transition: opacity .5s ease-in-out;
   }
   .link {
-    stroke: #000;
     fill: none;
+    stroke: #000;
   }
   .rect {
     stroke: black;
     stroke-width: 1.5;
   }
   .mod-rect {
-    fill: $brand-primary;
     transition: opacity .25s ease, fill .25s ease;
-    -moz-transition: opacity .25s ease, fill .25s ease;
-    -webkit-transition: opacity .25s ease, fill .25s ease;
+    fill: $brand-primary;
   }
   .andor-rect {
     cursor: default;
     opacity: 0 !important;
   }
+  .current-mod-rect {
+    fill: #6930ff;
+  }
   .active-rect {
     fill: #ccc;
   }
   .rect-label {
-    fill: #000;
     font-weight: bold;
+    pointer-events: none;
+    fill: #000;
     text-anchor: middle;
-    pointer-events:none;
   }
   .andor-label {
     font-size: 50px !important;
@@ -557,7 +599,7 @@ colgroup.hover {
 
 // Preferences
 #preferences {
-  @include user-select(none);
+  user-select: none;
   #theme-options {
     display: inline-block;
     width: 200px;
@@ -651,6 +693,22 @@ colgroup.hover {
   .nm-social-icons {
     display: inline-block;
     margin-right: 10px;
+  }
+}
+
+.cors-round-container.alert {
+  $offset: 10px;
+  bottom: $offset;
+  box-shadow: 0 0 5px rgba(0,0,0,0.3);
+  margin-bottom: 0 !important;
+  padding: 10px;
+  opacity: 0;
+  position: fixed;
+  left: $offset;
+  width: 275px;
+  z-index: 100;
+  &.shown {
+    opacity: 1;
   }
 }
 

@@ -311,6 +311,10 @@
         "box-shadow",
         "filter:progid:DXImageTransform.Microsoft.gradient",
         "-ms-filter:\\'progid:DXImageTransform.Microsoft.gradient",
-        "text-shadow"
+        "text-shadow",
+        "fill",
+        "stroke",
+        "stroke-width",
+        "text-anchor"
     ]
 }

@@ -24,11 +24,11 @@
       {{/if}}
       {{#if module.Prerequisite}}
         <dt class="highlight">Prerequisite(s)</dt>
-        <dd>{{{module.parsedPrerequisite}}}</dd>
+        <dd>{{{module.linkedPrerequisite}}}</dd>
       {{/if}}
       {{#if module.Preclusion}}
         <dt class="highlight">Preclusion(s)</dt>
-        <dd>{{{module.parsedPreclusion}}}</dd>
+        <dd>{{{module.linkedPreclusion}}}</dd>
       {{/if}}
       <dt class="highlight">Department</dt>
       <dd>{{module.Department}}</dd>
@@ -77,10 +77,15 @@
           </ul>
           <div> 
             <h2 class="nm-section-heading">{{sectionTitle}} 
-              <button class="add pull-right btn  btn-primary"
+              <button class="add-timetable pull-right btn btn-primary"
                       data-code="{{module.ModuleCode}}"
                       type="button">
                   <i class="fa fa-plus"></i>&nbsp;Add {{module.ModuleCode}} To Timetable
+              </button>
+              <button class="add-bookmark pull-right btn btn-info"
+                      data-code="{{module.ModuleCode}}"
+                      type="button">
+                  <i class="fa fa-bookmark"></i>&nbsp;Bookmark
               </button>
               <a class="ivle pull-right btn btn-default"
                       data-code="{{module.ModuleCode}}"

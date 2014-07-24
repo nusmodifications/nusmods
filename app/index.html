@@ -39,6 +39,7 @@
   <link rel="stylesheet" href="/bower_components/qtip2/jquery.qtip.css" />
   <!-- bower:css -->
   <link rel="stylesheet" href="/bower_components/select2/select2.css" />
+  <link rel="stylesheet" href="/bower_components/animate.css/animate.min.css" />
   <!-- endbower -->
   <!-- endbuild -->
   <!-- build:css(.tmp) /styles/main.css -->
@@ -61,6 +62,9 @@
         </button>
         <a id="brand" class="nm-logo navbar-brand hidden-xs" href="/"></a>
         <form class="navbar-form" role="search"></form>
+        <button class="btn btn-default nm-bookmark-button hidden-xs">
+          <i class="fa fa-bookmark fa-lg"></i>
+        </button>
       </div>
       <div class="collapse navbar-collapse" role="navigation">
         <nav></nav>
@@ -139,9 +143,18 @@
     </div>
   </footer>
 
+  <div class="cors-round-container alert alert-info hidden-xs">
+    <button type="button" class="close" data-dismiss="alert">
+      <span aria-hidden="true">&times;</span>
+      <span class="sr-only">Close</span>
+    </button>
+    <p class="cors-round-text">Round 0</p>
+  </div>
+
   <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="/bower_components/jquery/dist/jquery.min.js"><\/script>')</script>
   <script src="//cdn.ravenjs.com/1.1.15/jquery,native/raven.min.js"></script>
+  <script>window.Raven || document.write('<script src="/bower_components/raven-js/dist/raven.min.js"><\/script>')</script>
   <script>
     Raven.config('https://44876a16654343e5a30acfcaa5144806@app.getsentry.com/27278', {
       whitelistUrls: ['nusmods.com/scripts/']

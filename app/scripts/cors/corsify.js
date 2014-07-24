@@ -23,24 +23,24 @@ function formatTime(date) {
   return start_date.join(', ');
 }
 
-return {
+module.exports = {
   determineRound: function (nowDate) {
-    var start = 'Current Round: ';
+    var start = 'Current CORS Round: <strong>';
     for (var i = 0; i < corsSchedule.length; i++) {
       var round = corsSchedule[i].round;
       if (nowDate < toUTC(new Date(corsSchedule[i].openBiddingStart))) {
-        return 'Next Round: ' + corsSchedule[i].round + ' (Open) at ' + formatTime(corsSchedule[i].openBiddingStart);
+        return 'Next CORS Round: <strong>' + corsSchedule[i].round + ' (Open)</strong> at<br><strong>' + formatTime(corsSchedule[i].openBiddingStart) + '</strong>';
       }
       if (nowDate >= toUTC(new Date(corsSchedule[i].openBiddingStart)) &&
         nowDate <= toUTC(new Date(corsSchedule[i].openBiddingEnd))) {
-        round += ' (Open)';
-        return start + round + ' till ' + formatTime(corsSchedule[i].openBiddingEnd);
+        round += ' (Open)</strong>';
+        return start + round + ' till<br><strong>' + formatTime(corsSchedule[i].openBiddingEnd) + '</strong>';
       }
       if (corsSchedule[i].openBiddingStart &&
           nowDate >= toUTC(new Date(corsSchedule[i].closedBiddingStart)) &&
           nowDate <= toUTC(new Date(corsSchedule[i].closedBiddingEnd))) {
-        round += ' (Closed)';
-        return start + round + ' till ' + formatTime(corsSchedule[i].closedBiddingEnd);
+        round += ' (Closed)</strong>';
+        return start + round + ' till<br><strong>' + formatTime(corsSchedule[i].closedBiddingEnd) + '</strong>';
       }
     }
   }

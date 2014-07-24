@@ -21,7 +21,8 @@ module.exports = Marionette.LayoutView.extend({
     content: '#content',
     sidebar: '#sidebar',
     sidebarToggle: '#sidebar-toggle',
-    sidebarToggleIcon: '#sidebar-toggle i'
+    sidebarToggleIcon: '#sidebar-toggle i',
+    backToTopButton: '#back-to-top'
   },
 
   events: {
@@ -35,10 +36,24 @@ module.exports = Marionette.LayoutView.extend({
       this.sidebarShown = !this.sidebarShown;
       var qtipContent = this.sidebarShown ? 'Hide Sidebar' : 'Show Sidebar';
       this.ui.sidebarToggle.qtip('option', 'content.text', qtipContent);
+    },
+    'click @ui.backToTopButton': function(event) {
+      $('body').stop().animate({scrollTop: 0}, 400);
+      $(this.ui.backToTopButton).blur();
+
     }
   },
 
   onShow: function() {
+    var that = this;
+    $(window).scroll(_.debounce(function() {
+      if ($(this).scrollTop() > 150) {
+        $(that.ui.backToTopButton).addClass('back-to-top-visible');
+      } else {
+        $(that.ui.backToTopButton).removeClass('back-to-top-visible');
+      }
+    }, 50));
+
     this.sidebarShown = true;
     this.ui.sidebarToggle.qtip({
       content: 'Hide Sidebar',

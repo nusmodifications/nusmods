@@ -18,7 +18,8 @@ var App = new Marionette.Application();
 App.addRegions({
   mainRegion: '.content',
   navigationRegion: 'nav',
-  selectRegion: '.navbar-form'
+  selectRegion: '.navbar-form',
+  bookmarksRegion: '.nm-bookmarks'
 });
 
 var navigationCollection = new NavigationCollection();
@@ -56,27 +57,49 @@ App.reqres.setHandler('displayLessons', function (id, display) {
   });
 });
 
+App.reqres.setHandler('getBookmarks', function (callback) {
+  if (!callback) { 
+    return; 
+  }
+  localforage.getItem('bookmarks:bookmarkedModules', function (modules) {
+    callback(modules);
+  });
+});
+App.reqres.setHandler('addBookmark', function (id) {
+  localforage.getItem('bookmarks:bookmarkedModules', function (modules) {
+    if (!_.contains(modules, id)) {
+      modules.push(id);
+    }
+    localforage.setItem('bookmarks:bookmarkedModules', modules);
+  });
+});
+App.reqres.setHandler('deleteBookmark', function (id) {
+  localforage.getItem('bookmarks:bookmarkedModules', function (modules) {
+    var index = modules.indexOf(id);
+    if (index > -1) {
+      modules.splice(index, 1);
+      localforage.setItem('bookmarks:bookmarkedModules', modules);
+    }
+  });
+});
+
 App.on('start', function () {
   var AppView = require('./common/views/AppView');
   var TimetableModuleCollection = require('./common/collections/TimetableModuleCollection');
+
+  // header modules
+  require('./modules');
+  require('./timetable');
+  // require('ivle');
+  require('./preferences');
+
+  // footer modules
   require('./about');
   require('./help');
-  // require('ivle');
-  require('./modules');
-  require('./preferences');
   require('./support');
-  require('./timetable');
 
   localforage.getItem(config.semTimetableFragment +
     ':queryString').then(function (savedQueryString) {
-    // Needed to transform legacy JSON format to query string.
-    // TODO: remove after a sufficient transition period has passed.
-    if (!savedQueryString) {
-      return localforage.getItem('selectedModules')
-        .then(TimetableModuleCollection.fromJSONtoQueryString);
-    }
-    return savedQueryString;
-  }).then(function (savedQueryString) {
     if ('/' + config.semTimetableFragment === window.location.pathname) {
       var queryString = window.location.search.slice(1);
       if (queryString) {
@@ -117,6 +140,12 @@ App.on('start', function () {
         $('#mode').attr('href', '/styles/' + value + '.min.css');
       }
     });
+  });
+
+  localforage.getItem('bookmarks:bookmarkedModules', function (modules) {
+    if (!modules) {
+      localforage.setItem('bookmarks:bookmarkedModules', []);
+    }
   });
 });
 

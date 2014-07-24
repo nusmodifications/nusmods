@@ -17,6 +17,7 @@
 }(this, function () {
   'use strict';
 
+  var ayBaseUrl;
   var semBaseUrl;
   var moduleInformationPromise, moduleListPromise;
   var moduleCodes;
@@ -31,14 +32,15 @@
         moduleCodes = moduleListPromise.responseJSON;
       });
     },
-    getCorrectAsAt: function (callback) {
-      moduleListPromise = moduleListPromise || $.getJSON(semBaseUrl + 'moduleList.json');
-      return moduleListPromise.then(function () {
-        var lastModified = moduleListPromise.getResponseHeader('Last-Modified');
+    getLastModified: function (callback) {
+      return $.ajax(ayBaseUrl + 'modules.json', {
+        type: 'HEAD'
+      }).then(function (data, textStatus, jqXHR) {
+        var lastModified = jqXHR.getResponseHeader('Last-Modified');
         if (callback) {
           callback(lastModified);
         }
-        return moduleListPromise.getResponseHeader('Last-Modified');
+        return lastModified;
       });
     },
     getMod: function (code, callback) {
@@ -53,7 +55,8 @@
       return moduleListPromise.then(callback);
     },
     setConfig: function (config) {
-      semBaseUrl = config.baseUrl + config.academicYear.replace('/', '-') + '/' + config.semester + '/';
+      ayBaseUrl = config.baseUrl + config.academicYear.replace('/', '-') + '/';
+      semBaseUrl = ayBaseUrl + config.semester + '/';
     }
   };
 }));

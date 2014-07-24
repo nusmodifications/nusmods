@@ -5,11 +5,14 @@ var Backbone = require('backbone');
 var Mousetrap = require('Mousetrap');
 var NUSMods = require('../../nusmods');
 var SelectView = require('./SelectView');
+var BookmarksView = require('./BookmarksView');
 var _ = require('underscore');
 var attachFastClick = require('fastclick');
 var corsify = require('../../cors/corsify');
 var modulify = require('../utils/modulify');
 var themePicker = require('../themes/themePicker');
+require('bootstrap/alert');
+require('qTip2');
 
 module.exports = Backbone.View.extend({
   el: 'body',
@@ -61,11 +64,12 @@ module.exports = Backbone.View.extend({
     $.fn.qtip.defaults.show.solo = true;
     $.fn.qtip.defaults.style.classes = 'qtip-bootstrap';
 
-    NUSMods.getCorrectAsAt().then(function (correctAsAt) {
-      $('#correct-as-at').text((new Date(correctAsAt)).toString().slice(0, 21));
+    NUSMods.getLastModified().then(function (lastModified) {
+      $('#correct-as-at').text((new Date(lastModified)).toString().slice(0, 21));
     });
 
-    // $('.current-round').text(corsify.determineRound(Date.now()));
+    $('.cors-round-text').html(corsify.determineRound(Date.now()));
+    $('.cors-round-container').addClass('animated bounceInUp shown').alert();
 
     App.selectRegion.show(new SelectView());
 
@@ -124,6 +128,27 @@ module.exports = Backbone.View.extend({
     });
 
     attachFastClick(document.body);
+
+    $('.nm-bookmark-button').qtip({
+      content: '<div class="nm-bookmarks"></div>',
+      hide: {
+        fixed: true,
+        delay: 300
+      },
+      events: {
+        show: function(event, api) {
+          App.request('getBookmarks', function (modules) {
+            var modulesList = [];
+            _.each(modules, function (module) {
+              modulesList.push({'module': module});
+            });
+            var bookmarksCollection = new Backbone.Collection(modulesList);
+            var bookmarksView = new BookmarksView({collection: bookmarksCollection});
+            App.bookmarksRegion.show(bookmarksView);
+          });
+        }
+      }
+    });
   },
 
   navigateWithScrollTop: function (location, trigger) {

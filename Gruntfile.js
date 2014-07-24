@@ -333,7 +333,9 @@ module.exports = function (grunt) {
                         'styles/*.{gif,png}',
                         'styles/fonts/{,*/}*.*',
                         'vendor/knplabs/knp-snappy/src/**/*.php',
-                        'bower_components/font-awesome/fonts/*.*'
+                        'bower_components/font-awesome/fonts/*.*',
+                        'bower_components/jquery/dist/jquery.min.*',
+                        'bower_components/raven-js/dist/raven.min.*'
                     ]
                 }, {
                     expand: true,
@@ -356,6 +358,7 @@ module.exports = function (grunt) {
                 src: [
                     'bower_components/qtip2/jquery.qtip.css',
                     'bower_components/select2/select2.css',
+                    'bower_components/animate.css/animate.min.css',
                     'index.html'
                 ]
             }
