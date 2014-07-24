@@ -16,11 +16,11 @@ function toUTC(date) {
 }
 
 function formatTime(date) {
-  var start_date = date.split(', ').slice(0, 2);
-  var start_hour = (new Date(date)).getHours();
-  start_date.unshift((start_hour < 12 ? start_hour.toString() + ' am' : (start_hour - 12).toString() + ' pm'));
-  start_date.unshift(DAYS[(new Date(date)).getDay()]);
-  return start_date.join(', ');
+  var startDate = date.split(', ').slice(0, 2);
+  var startHour = (new Date(date)).getHours();
+  startDate.unshift((startHour < 12 ? startHour.toString() + ' am' : (startHour - 12).toString() + ' pm'));
+  startDate.unshift(DAYS[(new Date(date)).getDay()]);
+  return startDate.join(', ');
 }
 
 module.exports = {
@@ -29,7 +29,8 @@ module.exports = {
     for (var i = 0; i < corsSchedule.length; i++) {
       var round = corsSchedule[i].round;
       if (nowDate < toUTC(new Date(corsSchedule[i].openBiddingStart))) {
-        return 'Next CORS Round: <strong>' + corsSchedule[i].round + ' (Open)</strong> at<br><strong>' + formatTime(corsSchedule[i].openBiddingStart) + '</strong>';
+        var text = 'Next CORS Round: <strong>' + corsSchedule[i].round;
+        return text + ' (Open)</strong> at<br><strong>' + formatTime(corsSchedule[i].openBiddingStart) + '</strong>';
       }
       if (nowDate >= toUTC(new Date(corsSchedule[i].openBiddingStart)) &&
         nowDate <= toUTC(new Date(corsSchedule[i].openBiddingEnd))) {

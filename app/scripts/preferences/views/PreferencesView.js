@@ -106,7 +106,7 @@ module.exports = Marionette.LayoutView.extend({
   },
   savePreference: function (property, value) {
     if (property === 'faculty' && value === 'default') {
-      alert('You have to select a faculty.');
+      window.alert('You have to select a faculty.');
       localforage.getItem(property, function (value) {
         $('#faculty').val(value);
       });

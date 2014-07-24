@@ -136,7 +136,7 @@ module.exports = Backbone.View.extend({
         delay: 300
       },
       events: {
-        show: function(event, api) {
+        show: function() {
           App.request('getBookmarks', function (modules) {
             var modulesList = [];
             _.each(modules, function (module) {

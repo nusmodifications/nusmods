@@ -37,7 +37,7 @@ module.exports = Marionette.LayoutView.extend({
       var qtipContent = this.sidebarShown ? 'Hide Sidebar' : 'Show Sidebar';
       this.ui.sidebarToggle.qtip('option', 'content.text', qtipContent);
     },
-    'click @ui.backToTopButton': function(event) {
+    'click @ui.backToTopButton': function() {
       $('body').stop().animate({scrollTop: 0}, 400);
       $(this.ui.backToTopButton).blur();
 

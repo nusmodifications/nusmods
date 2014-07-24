@@ -15,7 +15,7 @@ module.exports = Marionette.ItemView.extend({
 
   onClick: function (event) {
     if (!this.collection.length) {
-      alert('No modules to export!');
+      window.alert('No modules to export!');
       return false;
     }
     switch (event.currentTarget.id) {
