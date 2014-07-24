@@ -143,9 +143,11 @@ module.exports = Marionette.LayoutView.extend({
           return +filter.label;
         }
       });
-      facets.add(new ArrayFacetModel({
-        filteredCollection: mods,
-        key: 'Types'
+      facets.add(_.map(['LecturePeriods', 'TutorialPeriods', 'Types'], function(key) {
+        return new ArrayFacetModel({
+          filteredCollection: mods,
+          key: key
+        });
       }));
 
       (new FacetsView({
