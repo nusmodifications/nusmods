@@ -109,14 +109,18 @@ module.exports = function (grunt) {
 
         if (rawMod.IVLE) {
           if (rawMod.IVLE[0]) {
-            mod.Lecturers = _.compact(rawMod.IVLE[0].Lecturers.map(function (lecturer) {
+            var lecturers = [];
+            rawMod.IVLE[0].Lecturers.forEach(function (lecturer) {
               switch (lecturer.Role.trim()) {
                 case 'Lecturer':
                 case 'Co-Lecturer':
                 case 'Visiting Professor':
-                  return lecturer.User.Name;
+                  lecturers.push(lecturer.User.Name);
               }
-            }));
+            });
+            if (!_.isEmpty(lecturers)) {
+              mod.Lecturers = lecturers;
+            }
           }
           mod.IVLE = rawMod.IVLE;
         } else {
