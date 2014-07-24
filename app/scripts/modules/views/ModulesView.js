@@ -121,6 +121,8 @@ module.exports = Marionette.LayoutView.extend({
         } else {
           mod.Types = ['Not in CORS'];
         }
+        mod.LecturePeriods = mod.LecturePeriods || ['No Lectures'];
+        mod.TutorialPeriods = mod.TutorialPeriods || ['No Tutorials'];
       });
 
       var filteredModules = new ModuleCollection();
