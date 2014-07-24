@@ -20,7 +20,13 @@ module.exports = function (grunt) {
       'ModuleCredit', 'Prerequisite', 'Preclusion', 'Workload'];
 
     var academicYear, semester;
+
     var lessonTypes = {};
+    var lessonTypesPath = path.join(options.destFolder, options.destLessonTypes);
+    if (grunt.file.exists(lessonTypesPath)) {
+      lessonTypes = grunt.file.readJSON(lessonTypesPath);
+    }
+
     async.concatSeries(options.types, function (type, callback) {
       var url = options.baseUrl + type + 'InfoListing.jsp';
       helpers.requestCached(url, options, function (err, data) {
@@ -93,7 +99,7 @@ module.exports = function (grunt) {
       }
 
       grunt.file.write(
-        path.join(options.destFolder, academicYear.replace('/', '-'), semester, options.destLessonTypes),
+        path.join(options.destFolder, options.destLessonTypes),
         JSON.stringify(helpers.sortByKey(lessonTypes), null, options.jsonSpace)
       );
       grunt.file.write(
