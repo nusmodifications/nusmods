@@ -14,7 +14,9 @@ module.exports = function (grunt) {
 
     var basePath = path.join(options.srcFolder, options.academicYear.replace('/', '-'), options.semester);
     var consolidatePath = path.join(basePath, grunt.config('consolidate').options.destFileName);
+    var lessonTypesPath = path.join(options.srcFolder, grunt.config('cors').options.destLessonTypes);
     var consolidated = grunt.file.readJSON(consolidatePath);
+    var lessonTypes = grunt.file.readJSON(lessonTypesPath);
 
     var nullPattern = /^(--|n[/.]?a\.?|nil|none\.?|null|No Exam Date\.|)$/i;
 
@@ -185,14 +187,32 @@ module.exports = function (grunt) {
         });
 
         if (mod.Timetable) {
+          var periods = {Lecture: {}, Tutorial: {}};
           mod.Timetable.forEach(function (lesson) {
-            lesson.LessonType = titleize(lesson.LessonType);
-            lesson.WeekText = titleize(lesson.WeekText);
             lesson.DayText = titleize(lesson.DayText);
             lesson.StartTime = ('000' + lesson.StartTime).slice(-4);
+
+            var period;
+            if (lesson.StartTime < '1200') {
+              period = 'Morning';
+            } else if (lesson.StartTime < '1800') {
+              period = 'Afternoon';
+            } else {
+              period = 'Evening';
+            }
+            periods[lessonTypes[lesson.LessonType]][lesson.DayText + ' ' + period] = true;
+
+            lesson.LessonType = titleize(lesson.LessonType);
+            lesson.WeekText = titleize(lesson.WeekText);
             lesson.EndTime = ('000' + lesson.EndTime).slice(-4);
             lesson.Venue = lesson.Venue.trim();
           });
+          if (!_.isEmpty(periods.Lecture)) {
+            mod.LecturePeriods = _.keys(periods.Lecture);
+          }
+          if (!_.isEmpty(periods.Tutorial)) {
+            mod.TutorialPeriods = _.keys(periods.Tutorial);
+          }
 
           var lessonSortOrder = ['LessonType', 'ClassNo', 'DayCode', 'StartTime',
             'EndTime', 'WeekText', 'Venue'];

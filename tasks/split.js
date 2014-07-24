@@ -44,7 +44,9 @@ module.exports = function (grunt) {
         'Corequisite',
         'ExamDate',
         'Types',
-        'Lecturers'
+        'Lecturers',
+        'LecturePeriods',
+        'TutorialPeriods'
       ]);
       moduleInformation.push(info);
       grunt.file.write(
