@@ -3,7 +3,5 @@
   "baseUrl": "http://nusmods.com/api/",
   "semester": "1",
   "ivleUrl": "http://ivle.nus.edu.sg/lms/public/list_course_public.aspx?code=<ModuleCode>",
-  "nameSpaces": {
-    "bookmarks": "bookmarks"
-  }
+  "disqusShortname": "nusmodstesting"
 }

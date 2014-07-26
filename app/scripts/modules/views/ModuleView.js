@@ -9,6 +9,7 @@ var _ = require('underscore');
 var d3 = require('d3');
 var localforage = require('localforage');
 var template = require('../templates/module.hbs');
+var config = require('../../common/config');
 require('../../templates/helpers/equals');
 require('bootstrap/tooltip');
 
@@ -249,7 +250,7 @@ module.exports = Marionette.LayoutView.extend({
     }
 
     var code = module.ModuleCode;
-    var disqusShortname = 'nusmods';
+    var disqusShortname = config.disqusShortname;
     if (this.model.get('section') === 'reviews') {
       // Only reset Disqus when showing reviews section
       var url = 'http://nusmods.com/modules/' + code + '/reviews';
@@ -266,7 +267,7 @@ module.exports = Marionette.LayoutView.extend({
           var dsq = document.createElement('script');
           dsq.type = 'text/javascript';
           dsq.async = true;
-          dsq.src = '//nusmods.disqus.com/embed.js';
+          dsq.src = '//' + disqusShortname + '.disqus.com/embed.js';
           (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
         })();
       } else {
