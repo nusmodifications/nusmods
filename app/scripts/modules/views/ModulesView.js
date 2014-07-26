@@ -3,6 +3,7 @@
 var ArrayFacetModel = require('../models/ArrayFacetModel');
 var FacetCollection = require('../collections/FacetCollection');
 var FacetsView = require('./FacetsView');
+var GoToTopBehavior = require('../../common/behaviors/GoToTopBehavior');
 var Marionette = require('backbone.marionette');
 var ModuleCollection = require('../../common/collections/ModuleCollection');
 var ModulesListingView = require('./ModulesListingView');
@@ -25,6 +26,12 @@ module.exports = Marionette.LayoutView.extend({
     backToTopButton: '#back-to-top'
   },
 
+  behaviors: {
+    GoToTopBehavior: {
+      behaviorClass: GoToTopBehavior
+    }
+  },
+
   events: {
     'click @ui.sidebarToggle': function(event) {
       event.preventDefault();
@@ -37,22 +44,9 @@ module.exports = Marionette.LayoutView.extend({
       var qtipContent = this.sidebarShown ? 'Hide Sidebar' : 'Show Sidebar';
       this.ui.sidebarToggle.qtip('option', 'content.text', qtipContent);
     },
-    'click @ui.backToTopButton': function() {
-      $('body').stop().animate({scrollTop: 0}, 400);
-      $(this.ui.backToTopButton).blur();
-
-    }
   },
 
   onShow: function() {
-    var that = this;
-    $(window).scroll(_.debounce(function() {
-      if ($(this).scrollTop() > 150) {
-        $(that.ui.backToTopButton).addClass('back-to-top-visible');
-      } else {
-        $(that.ui.backToTopButton).removeClass('back-to-top-visible');
-      }
-    }, 50));
 
     this.sidebarShown = true;
     this.ui.sidebarToggle.qtip({
