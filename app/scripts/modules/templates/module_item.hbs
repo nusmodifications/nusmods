@@ -1,6 +1,12 @@
 <td class="code"><a href="/modules/{{ModuleCode}}">{{ModuleCode}}</a></td>
 <td class="details">
   <div class="pull-right">
+    <a class="cors btn btn-default btn-xs"
+       {{#unless inCORS}}disabled="disabled"{{/unless}}
+       href="{{CORSLink}}"
+       target="_blank">
+      <i class="fa fa-{{#if inCORS}}check{{else}}times{{/if}} fa-fw"></i>&nbsp;CORS
+    </a>
     <a class="ivle btn btn-default btn-xs"
        data-code="{{ModuleCode}}"
        href="{{IVLELink}}"

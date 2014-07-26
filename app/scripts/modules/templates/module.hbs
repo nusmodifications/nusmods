@@ -94,6 +94,12 @@
                       target="_blank">
                   <i class="fa fa-graduation-cap"></i>&nbsp;IVLE
               </a>
+              <a class="cors pull-right btn btn-default"
+                 {{#unless module.inCORS}}disabled="disabled"{{/unless}}
+                 href="{{module.CORSLink}}"
+                 target="_blank">
+                <i class="fa fa-{{#if module.inCORS}}check{{else}}times{{/if}} fa-fw"></i>&nbsp;CORS
+              </a>
             </h2>
             <hr>
             {{#equals section 'schedule'}}

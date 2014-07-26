@@ -192,7 +192,7 @@ a {
 
 .nm-section-heading {
   color: $gray-light;
-  button {
+  a, button {
     margin-left: 5px;
   }
 }
@@ -380,6 +380,10 @@ td {
   &.details .desc {
     margin-top: 2px;
   }
+}
+
+a.cors > .fa-fw {
+  width: .9em;
 }
 
 .lecturers {

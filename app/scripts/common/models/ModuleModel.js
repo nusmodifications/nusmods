@@ -164,6 +164,10 @@ module.exports = Backbone.Model.extend({
 
     this.set('examStr', examStr(this.get('ExamDate')));
 
+    var types = this.get('Types');
+    this.set('inCORS', types && types.indexOf('Not in CORS') === -1);
+
+    this.set('CORSLink', config.corsUrl + this.get('ModuleCode'));
     this.set('IVLELink', config.ivleUrl.replace('<ModuleCode>', this.get('ModuleCode')));
   }
 });
