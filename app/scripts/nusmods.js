@@ -44,7 +44,7 @@
       });
     },
     getMod: function (code, callback) {
-      return $.getJSON(semBaseUrl + 'modules/' + code + '.json', callback);
+      return $.getJSON(ayBaseUrl + 'modules/' + code + '.json', callback);
     },
     getModIndex: function (code, callback) {
       return $.getJSON(ayBaseUrl + 'modules/' + code + '/index.json', callback);
