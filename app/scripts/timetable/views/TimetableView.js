@@ -32,7 +32,7 @@ module.exports = Marionette.LayoutView.extend({
   },
 
   onShow: function() {
-    this.selectedModules = App.request('selectedModules');
+    this.selectedModules = App.request('selectedModules', this.semester);
     this.timetable = this.selectedModules.timetable;
     var exams = new ExamCollection(null, {modules: this.selectedModules});
 
@@ -44,7 +44,9 @@ module.exports = Marionette.LayoutView.extend({
       collection: this.selectedModules,
       exams: exams
     }));
-    this.selectRegion.show(new SelectView());
+    this.selectRegion.show(new SelectView({
+      semester: this.semester
+    }));
     if (this.selectedModules.shared) {
       this.sharedTimetableControlsRegion.show(new SharedTimetableControlsView({
         collection: this.selectedModules

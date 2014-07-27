@@ -11,13 +11,13 @@ module.exports = Marionette.ItemView.extend({
   events: {
     'click .remove': function (event) {
       event.preventDefault();
-      App.request('removeModule', this.model.id);
+      App.request('removeModule', this.model.get('Semester'), this.model.id);
     },
     'click .show-hide': function (event) {
       event.preventDefault();
       var display = !this.model.get('display');
       this.model.set('display', display);
-      App.request('displayLessons', this.model.id, display);
+      App.request('displayLessons', this.model.get('Semester'), this.model.id, display);
     }
   },
 

@@ -47,24 +47,31 @@ App.reqres.setHandler('addNavigationItem', function (navigationItem) {
 NUSMods.setConfig(config);
 NUSMods.generateModuleCodes();
 
-var selectedModulesController = new SelectedModulesController();
-App.reqres.setHandler('selectedModules', function () {
-  return selectedModulesController.selectedModules;
+var selectedModulesControllers = [];
+
+for (var i = 0; i < 5; i++) {
+  selectedModulesControllers[i] = new SelectedModulesController({
+    semester: i + 1
+  });
+}
+
+App.reqres.setHandler('selectedModules', function (sem) {
+  return selectedModulesControllers[sem - 1].selectedModules;
 });
-App.reqres.setHandler('addModule', function (id, options) {
+App.reqres.setHandler('addModule', function (sem, id, options) {
   return NUSMods.getMod(id).then(function (mod) {
-    return selectedModulesController.selectedModules.add(mod, options);
+    return selectedModulesControllers[sem - 1].selectedModules.add(mod, options);
   });
 });
-App.reqres.setHandler('removeModule', function (id) {
-  var selectedModules = selectedModulesController.selectedModules;
+App.reqres.setHandler('removeModule', function (sem, id) {
+  var selectedModules = selectedModulesControllers[sem - 1].selectedModules;
   return selectedModules.remove(selectedModules.get(id));
 });
-App.reqres.setHandler('isModuleSelected', function (id) {
-  return !!selectedModulesController.selectedModules.get(id);
+App.reqres.setHandler('isModuleSelected', function (sem, id) {
+  return !!selectedModulesControllers[sem - 1].selectedModules.get(id);
 });
-App.reqres.setHandler('displayLessons', function (id, display) {
-  _.each(selectedModulesController.timetable.where({
+App.reqres.setHandler('displayLessons', function (sem, id, display) {
+  _.each(selectedModulesControllers[sem - 1].timetable.where({
     ModuleCode: id
   }), function (lesson) {
     lesson.set('display', display);

@@ -26,14 +26,19 @@ module.exports = Marionette.ItemView.extend({
     'input': 'input'
   },
 
+  initialize: function (options) {
+    this.semester = options.semester;
+  },
+
   onSelect2Selecting: function(event) {
     event.preventDefault();
-    App.request('addModule', event.val);
+    App.request('addModule', this.semester, event.val);
     this.ui.input.select2('focus');
   },
 
   onShow: function () {
     var PAGE_SIZE = 50;
+    var semester = this.semester;
     this.ui.input.select2({
       multiple: true,
       query: function (options) {
@@ -41,7 +46,7 @@ module.exports = Marionette.ItemView.extend({
           var i,
             results = [],
             pushResult = function (i) {
-              if (!App.request('isModuleSelected', codes[i])) {
+              if (!App.request('isModuleSelected', semester, codes[i])) {
                 results.push({
                   id: codes[i],
                   text: codes[i] + ' ' + titles[i]

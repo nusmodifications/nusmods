@@ -37,7 +37,7 @@ module.exports = Marionette.Controller.extend({
         if (Backbone.History.initialRoute && queryString && savedQueryString !== queryString) {
           // If initial query string does not match saved query string,
           // timetable is shared.
-          var selectedModules = App.request('selectedModules');
+          var selectedModules = App.request('selectedModules', semester);
           selectedModules.shared = true;
           return queryString;
         }
@@ -45,7 +45,7 @@ module.exports = Marionette.Controller.extend({
       });
     }).then(function (queryString) {
       if (queryString) {
-        var selectedModules = App.request('selectedModules');
+        var selectedModules = App.request('selectedModules', semester);
         var timetable = selectedModules.timetable;
         timetable.reset();
         var selectedCodes = selectedModules.pluck('ModuleCode');
@@ -73,7 +73,7 @@ module.exports = Marionette.Controller.extend({
               });
             }
           } else {
-            return Promise.resolve(App.request('addModule', module.ModuleCode, module).promise);
+            return Promise.resolve(App.request('addModule', semester, module.ModuleCode, module).promise);
           }
         }));
       }

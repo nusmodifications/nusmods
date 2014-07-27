@@ -32,7 +32,7 @@ module.exports = Marionette.ItemView.extend({
     event.stopPropagation();
     var button = $(event.currentTarget);
     var add = button.hasClass('add');
-    App.request((add ? 'add' : 'remove') + 'Module', button.data('code'));
+    App.request((add ? 'add' : 'remove') + 'Module', 1, button.data('code'));
     button
       .toggleClass('add remove')
       .prop('title', (add ? 'Add to' : 'Remove from') + 'Timetable')
@@ -66,7 +66,7 @@ module.exports = Marionette.ItemView.extend({
             pushResult = function (i) {
               return results.push({
                 id: codes[i],
-                selected: App.request('isModuleSelected', codes[i]),
+                selected: App.request(1, 'isModuleSelected', codes[i]),
                 text: codes[i] + ' ' + titles[i]
               });
             };
