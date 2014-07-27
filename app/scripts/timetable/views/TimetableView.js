@@ -48,7 +48,9 @@ module.exports = Marionette.LayoutView.extend({
     }
     this.showHideRegion.show(new ShowHideView());
     this.timetableRegion.show(new TimetableView({collection: this.timetable}));
-    this.urlSharingRegion.show(new UrlSharingView());
+    this.urlSharingRegion.show(new UrlSharingView({
+      collection: this.selectedModules
+    }));
     this.modulesChanged(null, null, {replace: true});
   },
 
