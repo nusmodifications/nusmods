@@ -106,7 +106,14 @@ App.reqres.setHandler('deleteBookmark', function (id) {
 
 App.on('start', function () {
   var AppView = require('./common/views/AppView');
-  var TimetableModuleCollection = require('./common/collections/TimetableModuleCollection');
+
+  new Marionette.AppRouter({
+    routes: {
+      '*default': function () {
+        Backbone.history.navigate('timetable', {trigger: true, replace: true});
+      }
+    }
+  });
 
   // header modules
   require('./modules');
@@ -121,11 +128,7 @@ App.on('start', function () {
 
   new AppView();
 
-  // Backbone.history.start returns false if no defined route matches
-  // the current URL, so navigate to timetable by default.
-  if (!Backbone.history.start({pushState: true})) {
-    Backbone.history.navigate('timetable', {trigger: true, replace: true});
-  }
+  Backbone.history.start({pushState: true});
 
   localforage.getItem('bookmarks:bookmarkedModules', function (modules) {
     if (!modules) {
