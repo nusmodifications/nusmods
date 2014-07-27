@@ -27,7 +27,7 @@
       return moduleCodes;
     },
     generateModuleCodes: function () {
-      moduleListPromise = moduleListPromise || $.getJSON(semBaseUrl + 'moduleList.json');
+      moduleListPromise = moduleListPromise || $.getJSON(ayBaseUrl + 'moduleList.json');
       moduleListPromise.then(function () {
         moduleCodes = moduleListPromise.responseJSON;
       });
@@ -46,12 +46,15 @@
     getMod: function (code, callback) {
       return $.getJSON(semBaseUrl + 'modules/' + code + '.json', callback);
     },
+    getModIndex: function (code, callback) {
+      return $.getJSON(ayBaseUrl + 'modules/' + code + '/index.json', callback);
+    },
     getMods: function (callback) {
-      moduleInformationPromise = moduleInformationPromise || $.getJSON(semBaseUrl + 'moduleInformation.json');
+      moduleInformationPromise = moduleInformationPromise || $.getJSON(ayBaseUrl + 'moduleInformation.json');
       return moduleInformationPromise.then(callback);
     },
     getCodesAndTitles: function (callback) {
-      moduleListPromise = moduleListPromise || $.getJSON(semBaseUrl + 'moduleList.json');
+      moduleListPromise = moduleListPromise || $.getJSON(ayBaseUrl + 'moduleList.json');
       return moduleListPromise.then(callback);
     },
     setConfig: function (config) {
