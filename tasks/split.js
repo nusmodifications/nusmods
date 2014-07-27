@@ -56,15 +56,15 @@ module.exports = function (grunt) {
 
       grunt.file.write(
         path.join(basePath, options.destSubfolder, mod.ModuleCode, 'corsbiddingstats.json'),
-        JSON.stringify(mod.CorsBiddingStats, null, options.jsonSpace)
+        JSON.stringify(mod.CorsBiddingStats || [], null, options.jsonSpace)
       );
       grunt.file.write(
         path.join(basePath, options.destSubfolder, mod.ModuleCode, 'ivle.json'),
-        JSON.stringify(mod.IVLE, null, options.jsonSpace)
+        JSON.stringify(mod.IVLE || [], null, options.jsonSpace)
       );
       grunt.file.write(
         path.join(basePath, options.destSubfolder, mod.ModuleCode, 'timetable.json'),
-        JSON.stringify(mod.Timetable, null, options.jsonSpace)
+        JSON.stringify(mod.Timetable || [], null, options.jsonSpace)
       );
     });
 
