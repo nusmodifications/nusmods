@@ -18,7 +18,6 @@
   'use strict';
 
   var ayBaseUrl;
-  var semBaseUrl;
   var moduleInformationPromise, moduleListPromise;
   var moduleCodes;
 
@@ -59,7 +58,6 @@
     },
     setConfig: function (config) {
       ayBaseUrl = config.baseUrl + config.academicYear.replace('/', '-') + '/';
-      semBaseUrl = ayBaseUrl + config.semester + '/';
     }
   };
 }));
