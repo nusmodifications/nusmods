@@ -29,7 +29,7 @@ $font-family-sans-serif: "proxima-nova", "Helvetica Neue", Helvetica, Arial, san
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/navs";
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/navbar";
 //@import "bootstrap-sass-official/assets/stylesheets/bootstrap/breadcrumbs";
-//@import "bootstrap-sass-official/assets/stylesheets/bootstrap/pagination";
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap/pagination";
 //@import "bootstrap-sass-official/assets/stylesheets/bootstrap/pager";
 //@import "bootstrap-sass-official/assets/stylesheets/bootstrap/labels";
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/badges";
@@ -401,6 +401,10 @@ a.cors > .fa-fw {
 }
 
 // Timetable
+.semester-selector-region ul {
+  margin-top: 0;
+}
+
 #timetable {
   user-select: none;
   th {

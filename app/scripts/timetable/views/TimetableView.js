@@ -7,6 +7,7 @@ var ExamsView = require('./ExamsView');
 var ExportView = require('./ExportView');
 var Marionette = require('backbone.marionette');
 var SelectView = require('./SelectView');
+var SemesterSelectorView = require('./SemesterSelectorView');
 var SharedTimetableControlsView = require('./SharedTimetableControlsView');
 var ShowHideView = require('./ShowHideView');
 var TimetableView = require('./TableView');
@@ -21,6 +22,7 @@ module.exports = Marionette.LayoutView.extend({
     examsRegion: '#exam-timetable',
     exportRegion: '.export-region',
     selectRegion: '.select-region',
+    semesterSelectorRegion: '.semester-selector-region',
     sharedTimetableControlsRegion: '.shared-timetable-controls-region',
     showHideRegion: '.show-hide-region',
     timetableRegion: '#timetable-wrapper',
@@ -52,6 +54,9 @@ module.exports = Marionette.LayoutView.extend({
         collection: this.selectedModules
       }));
     }
+    this.semesterSelectorRegion.show(new SemesterSelectorView({
+      semester: this.semester
+    }));
     this.showHideRegion.show(new ShowHideView());
     this.timetableRegion.show(new TimetableView({collection: this.timetable}));
     this.urlSharingRegion.show(new UrlSharingView({
