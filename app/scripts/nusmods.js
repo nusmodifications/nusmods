@@ -52,6 +52,9 @@
       moduleInformationPromise = moduleInformationPromise || $.getJSON(ayBaseUrl + 'moduleInformation.json');
       return moduleInformationPromise.then(callback);
     },
+    getTimetable: function (semester, code, callback) {
+      return $.getJSON(ayBaseUrl + semester + '/modules/' + code + '/timetable.json', callback);
+    },
     getCodesAndTitles: function (callback) {
       moduleListPromise = moduleListPromise || $.getJSON(ayBaseUrl + 'moduleList.json');
       return moduleListPromise.then(callback);
