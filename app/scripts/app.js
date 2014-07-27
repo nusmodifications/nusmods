@@ -6,6 +6,7 @@ var Marionette = require('backbone.marionette');
 var NUSMods = require('./nusmods');
 var NavigationCollection = require('./common/collections/NavigationCollection');
 var NavigationView = require('./common/views/NavigationView');
+var Promise = require('bluebird');
 var SelectedModulesController = require('./common/controllers/SelectedModulesController');
 var _ = require('underscore');
 var config = require('./common/config');
@@ -59,7 +60,13 @@ App.reqres.setHandler('selectedModules', function (sem) {
   return selectedModulesControllers[sem - 1].selectedModules;
 });
 App.reqres.setHandler('addModule', function (sem, id, options) {
-  return NUSMods.getMod(id).then(function (mod) {
+  return Promise.all([
+    NUSMods.getModIndex(id),
+    NUSMods.getTimetable(sem, id)
+  ]).then(function (modTimetable) {
+    var mod = modTimetable[0];
+    mod = _.extend(mod, _.findWhere(mod.History, {Semester: sem}));
+    mod.Timetable = modTimetable[1];
     return selectedModulesControllers[sem - 1].selectedModules.add(mod, options);
   });
 });

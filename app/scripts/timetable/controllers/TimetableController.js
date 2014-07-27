@@ -73,7 +73,7 @@ module.exports = Marionette.Controller.extend({
               });
             }
           } else {
-            return Promise.resolve(App.request('addModule', semester, module.ModuleCode, module).promise);
+            return App.request('addModule', semester, module.ModuleCode, module);
           }
         }));
       }

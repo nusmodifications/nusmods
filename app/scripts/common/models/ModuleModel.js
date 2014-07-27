@@ -117,9 +117,6 @@ module.exports = Backbone.Model.extend({
         lessons = _.sortBy(lessons, function (lesson) {
           return parseInt(lesson.ClassNo);
         });
-        _.each(lessons, function (lesson) {
-          delete lesson.LessonType;
-        });
         formattedTimetable.push({
           LessonType: PLURALIZED_LESSON_TYPES[type],
           Lessons: lessons
@@ -171,11 +168,13 @@ module.exports = Backbone.Model.extend({
     this.set('IVLELink', config.ivleUrl.replace('<ModuleCode>', this.get('ModuleCode')));
 
     var history = this.get('History');
-    var allSems = [{semester: 1}, {semester: 2}, {semester: 3}, {semester: 4}];
-    for (var i = 0; i < history.length; i++) {
-      var sem = history[i].Semester;
-      allSems[sem - 1].offered = true;
+    if (history) {
+      var allSems = [{semester: 1}, {semester: 2}, {semester: 3}, {semester: 4}];
+      for (var i = 0; i < history.length; i++) {
+        var sem = history[i].Semester;
+        allSems[sem - 1].offered = true;
+      }
+      this.set('allSems', allSems);
     }
-    this.set('allSems', allSems);
   }
 });

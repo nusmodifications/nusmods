@@ -3,7 +3,6 @@
 var LessonCollection = require('../collections/LessonCollection');
 var LessonModel = require('../models/LessonModel');
 var ModuleCollection = require('./ModuleCollection');
-var NUSMods = require('../../nusmods');
 var _ = require('underscore');
 var qs = require('qs');
 
@@ -23,42 +22,39 @@ module.exports = ModuleCollection.extend({
     var color = this.colors.splice(Math.floor(Math.random() * this.colors.length), 1)[0];
     module.set('color', color);
 
-    module.promise = NUSMods.getMod(module.id).then(_.bind(function (mod) {
-      var selectedLessonsByType = _.groupBy(options.selectedLessons, 'LessonType');
-      var lessons = new LessonCollection();
-      module.set('lessons', lessons);
-      _.each(_.groupBy(mod.Timetable, 'LessonType'), function (groups) {
-        var uniqueClassNos = _.uniq(_.pluck(groups, 'ClassNo'));
-        var randomClassNo = _.sample(uniqueClassNos);
-        var isDraggable = _.size(uniqueClassNos) > 1;
-        var sameType = new LessonCollection();
-        _.each(_.groupBy(groups, 'ClassNo'), function (lessonsData) {
-          var sameGroup = new LessonCollection();
-          _.each(lessonsData, function (lessonData) {
-            var lesson = new LessonModel(_.extend({
-              color: color,
-              display: true,
-              isDraggable: isDraggable,
-              ModuleCode: mod.ModuleCode,
-              ModuleTitle: mod.ModuleTitle,
-              sameGroup: sameGroup,
-              sameType: sameType
-            }, lessonData));
-            lessons.add(lesson);
-            sameGroup.add(lesson);
-            sameType.add(lesson);
-            if (!selectedLessonsByType[lessonData.LessonType] && lessonData.ClassNo === randomClassNo) {
-              this.timetable.add(lesson);
-            }
-          }, this);
+    var selectedLessonsByType = _.groupBy(options.selectedLessons, 'LessonType');
+    var lessons = new LessonCollection();
+    module.set('lessons', lessons);
+    _.each(_.groupBy(module.get('Timetable'), 'LessonType'), function (groups) {
+      var uniqueClassNos = _.uniq(_.pluck(groups, 'ClassNo'));
+      var randomClassNo = _.sample(uniqueClassNos);
+      var isDraggable = _.size(uniqueClassNos) > 1;
+      var sameType = new LessonCollection();
+      _.each(_.groupBy(groups, 'ClassNo'), function (lessonsData) {
+        var sameGroup = new LessonCollection();
+        _.each(lessonsData, function (lessonData) {
+          var lesson = new LessonModel(_.extend({
+            color: color,
+            display: true,
+            isDraggable: isDraggable,
+            ModuleCode: module.id,
+            ModuleTitle: module.get('ModuleTitle'),
+            sameGroup: sameGroup,
+            sameType: sameType
+          }, lessonData));
+          lessons.add(lesson);
+          sameGroup.add(lesson);
+          sameType.add(lesson);
+          if (!selectedLessonsByType[lessonData.LessonType] && lessonData.ClassNo === randomClassNo) {
+            this.timetable.add(lesson);
+          }
         }, this);
       }, this);
-      _.each(options.selectedLessons, function (lesson) {
-        this.timetable.add(lessons.where(lesson));
-      }, this);
-      this.timetable.trigger('change');
-      return module;
-    }, this));
+    }, this);
+    _.each(options.selectedLessons, function (lesson) {
+      this.timetable.add(lessons.where(lesson));
+    }, this);
+    this.timetable.trigger('change');
   },
 
   onRemove: function (module) {

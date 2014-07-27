@@ -27,7 +27,8 @@ module.exports = Backbone.Collection.extend({
       ExamDate: module.get('ExamDate'),
       examStr: module.get('examStr'),
       id: module.id,
-      ModuleTitle: module.get('ModuleTitle')
+      ModuleTitle: module.get('ModuleTitle'),
+      Semester: module.get('Semester')
     });
   },
 
