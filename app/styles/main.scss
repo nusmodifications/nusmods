@@ -31,7 +31,7 @@ $font-family-sans-serif: "proxima-nova", "Helvetica Neue", Helvetica, Arial, san
 //@import "bootstrap-sass-official/assets/stylesheets/bootstrap/breadcrumbs";
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/pagination";
 //@import "bootstrap-sass-official/assets/stylesheets/bootstrap/pager";
-//@import "bootstrap-sass-official/assets/stylesheets/bootstrap/labels";
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap/labels";
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/badges";
 //@import "bootstrap-sass-official/assets/stylesheets/bootstrap/jumbotron";
 //@import "bootstrap-sass-official/assets/stylesheets/bootstrap/thumbnails";
@@ -280,22 +280,26 @@ $module-section-min-height: 700px;
 // Select2
 .select2-result-label {
   @include clearfix();
-  div {
+  .code-title {
     float: left;
-    width: 230px;
+    width: 210px;
     @media (min-width: $screen-sm-min) {
-      width: 280px;
+      width: 260px;
     }
     @media (min-width: $screen-lg-min) {
-      width: 430px;
+      width: 410px;
     }
   }
-  .btn {
+  .semesters {
     float: right;
-    color: #ddd;
-    &:hover {
-      color: #fff;
-    }
+  }
+  .fa {
+    display: inline;
+    margin-left: -1px;
+    margin-right: -1px;
+  }
+  .sem-1 .fa {
+    margin-right: -2px;
   }
 }
 
