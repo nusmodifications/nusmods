@@ -125,8 +125,6 @@ module.exports = function (grunt) {
             }
           }
           mod.IVLE = rawMod.IVLE;
-        } else {
-          mod.IVLE = [];
         }
 
         if (rawMod.CORS && rawMod.CORS.Timetable.length) {
@@ -178,13 +176,15 @@ module.exports = function (grunt) {
           });
         }
 
-        mod.CorsBiddingStats = _.map(rawMod.CorsBiddingStats, function (stats) {
-          stats = _.omit(stats, 'ModuleCode');
-          stats.Group = titleize(stats.Group);
-          stats.Faculty = titleize(stats.Faculty);
-          stats.StudentAcctType = stats.StudentAcctType.replace('<br>', '');
-          return stats;
-        });
+        if (rawMod.CorsBiddingStats) {
+          mod.CorsBiddingStats = _.map(rawMod.CorsBiddingStats, function (stats) {
+            stats = _.omit(stats, 'ModuleCode');
+            stats.Group = titleize(stats.Group);
+            stats.Faculty = titleize(stats.Faculty);
+            stats.StudentAcctType = stats.StudentAcctType.replace('<br>', '');
+            return stats;
+          });
+        }
 
         if (mod.Timetable) {
           var periods = {Lecture: {}, Tutorial: {}};
@@ -230,8 +230,6 @@ module.exports = function (grunt) {
             delete lesson.DayCode;
             delete lesson.LastModified_js;
           });
-        } else {
-          mod.Timetable = [];
         }
 
         return mod;
