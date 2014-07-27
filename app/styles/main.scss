@@ -350,20 +350,21 @@ $module-section-min-height: 700px;
 
 // Back to Top Button
 #back-to-top {
-  position: fixed;
   bottom: -100px;
-  right: 10px;
   outline: none;
+  position: fixed;
+  right: 10px;
   transition: bottom 0.25s ease-in-out;
+  z-index: 100;
+  .fa {
+    padding-right: 5px;
+  }
+  &.visible {
+    bottom: 10px !important;
+  }
 }
 
-.back-to-top-visible {
-  bottom: 10px !important;
-}
 
-#back-to-top i {
-  padding-right: 5px;
-}
 
 // Module Finder Content
 td {
