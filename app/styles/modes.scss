@@ -17,6 +17,7 @@
   h5,
   h6 {
     font-family: "proxima-nova", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    text-shadow: none;
   }
   a,
   a:hover {
@@ -109,7 +110,8 @@
       text-shadow: none;
     }
   }
-  .ivle {
+  .ivle,
+  .cors {
     text-decoration: none;
     color: #fff;
     &:hover {

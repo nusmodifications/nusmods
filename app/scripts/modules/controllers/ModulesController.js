@@ -31,7 +31,7 @@ var sectionsInfo = [
   },
   {
     'sectionType': 'reviews',
-    'tabTitle': 'Reviews & Discussions',
+    'tabTitle': 'Module Reviews',
     'sectionTitle': 'Reviews & Discussions',
     'active': false
   }
