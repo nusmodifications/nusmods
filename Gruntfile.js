@@ -82,34 +82,6 @@ module.exports = function (grunt) {
         jquery: 'jquery.min.js',
         destFileName: 'examTimetableRaw.json'
       },
-      ay2012to2013sem1: {
-        options: {
-          maxCacheAge: -1,
-          academicYear: '2012/2013',
-          semester: '1'
-        }
-      },
-      ay2012to2013sem2: {
-        options: {
-          maxCacheAge: -1,
-          academicYear: '2012/2013',
-          semester: '2'
-        }
-      },
-      ay2013to2014sem1: {
-        options: {
-          maxCacheAge: -1,
-          academicYear: '2013/2014',
-          semester: '1'
-        }
-      },
-      ay2013to2014sem2: {
-        options: {
-          maxCacheAge: -1,
-          academicYear: '2013/2014',
-          semester: '2'
-        }
-      },
       ay2014to2015sem1: {
         options: {
           academicYear: '2014/2015',
