@@ -48,7 +48,7 @@ module.exports = function (grunt) {
       });
       baseMod.History = history;
 
-      return baseMod;
+      return _.omit(baseMod, semSpecificKeys);
     });
 
     grunt.file.write(
