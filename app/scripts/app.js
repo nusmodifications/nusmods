@@ -127,21 +127,6 @@ App.on('start', function () {
     Backbone.history.navigate('timetable', {trigger: true, replace: true});
   }
 
-  var $body = $('body');
-  ['theme', 'mode'].forEach(function (property) {
-    localforage.getItem(property, function (value) {
-      if (!value) {
-        value = 'default';
-        localforage.setItem(property, value);
-      }
-      $body.addClass(property + '-' + value);
-      $body.attr('data-' + property, value);
-      if (property === 'mode' && value !== 'default') {
-        $('#mode').attr('href', '/styles/' + value + '.min.css');
-      }
-    });
-  });
-
   localforage.getItem('bookmarks:bookmarkedModules', function (modules) {
     if (!modules) {
       localforage.setItem('bookmarks:bookmarkedModules', []);
