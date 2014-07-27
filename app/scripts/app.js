@@ -112,34 +112,13 @@ App.on('start', function () {
   require('./help');
   require('./support');
 
-  localforage.getItem(config.semTimetableFragment() +
-    ':queryString').then(function (savedQueryString) {
-    if ('/' + config.semTimetableFragment() === window.location.pathname) {
-      var queryString = window.location.search.slice(1);
-      if (queryString) {
-        if (savedQueryString !== queryString) {
-          // If initial query string does not match saved query string,
-          // timetable is shared.
-          selectedModulesController.selectedModules.shared = true;
-        }
-        // If there is a query string for timetable, return so that it will
-        // be used instead of saved query string.
-        return;
-      }
-    }
-    var selectedModules = TimetableModuleCollection.fromQueryStringToJSON(savedQueryString);
-    return $.when.apply($, _.map(selectedModules, function (module) {
-      return App.request('addModule', module.ModuleCode, module).promise;
-    }));
-  }).then(function () {
-    new AppView();
+  new AppView();
 
-    // Backbone.history.start returns false if no defined route matches
-    // the current URL, so navigate to timetable by default.
-    if (!Backbone.history.start({pushState: true})) {
-      Backbone.history.navigate('timetable', {trigger: true, replace: true});
-    }
-  });
+  // Backbone.history.start returns false if no defined route matches
+  // the current URL, so navigate to timetable by default.
+  if (!Backbone.history.start({pushState: true})) {
+    Backbone.history.navigate('timetable', {trigger: true, replace: true});
+  }
 
   var $body = $('body');
   ['theme', 'mode'].forEach(function (property) {
