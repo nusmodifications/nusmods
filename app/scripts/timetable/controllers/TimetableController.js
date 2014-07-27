@@ -3,6 +3,8 @@
 var App = require('../../app');
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
+var TimetableModuleCollection = require('../../common/collections/TimetableModuleCollection');
+var TimetableView = require('../views/TimetableView');
 var _ = require('underscore');
 var config = require('../../common/config');
 
@@ -14,9 +16,8 @@ var navigationItem = App.request('addNavigationItem', {
 
 module.exports = Marionette.Controller.extend({
   showTimetable: function (academicYear, semester, queryString) {
-    var TimetableView = require('../views/TimetableView');
-    var TimetableModuleCollection = require('../../common/collections/TimetableModuleCollection');
-    if (!semester) {
+    semester = parseInt(semester, 10);
+    if (!(semester >= 1 && semester <= 4)) {
       return Backbone.history.navigate(
         config.semTimetableFragment(),
         {
