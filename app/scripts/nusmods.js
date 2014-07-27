@@ -1,5 +1,7 @@
 'use strict';
 
+var Promise = require('bluebird');
+
 var ayBaseUrl;
 var moduleInformationPromise, moduleListPromise;
 var moduleCodes;
@@ -9,13 +11,13 @@ module.exports = {
     return moduleCodes;
   },
   generateModuleCodes: function () {
-    moduleListPromise = moduleListPromise || $.getJSON(ayBaseUrl + 'moduleList.json');
-    moduleListPromise.then(function () {
-      moduleCodes = moduleListPromise.responseJSON;
+    moduleListPromise = moduleListPromise || Promise.resolve($.getJSON(ayBaseUrl + 'moduleList.json'));
+    moduleListPromise.then(function (data) {
+      moduleCodes = data;
     });
   },
   getLastModified: function (callback) {
-    return $.ajax(ayBaseUrl + 'modules.json', {
+    return Promise.resolve($.ajax(ayBaseUrl + 'modules.json', {
       type: 'HEAD'
     }).then(function (data, textStatus, jqXHR) {
       var lastModified = jqXHR.getResponseHeader('Last-Modified');
@@ -23,23 +25,23 @@ module.exports = {
         callback(lastModified);
       }
       return lastModified;
-    });
+    }));
   },
   getMod: function (code, callback) {
-    return $.getJSON(ayBaseUrl + 'modules/' + code + '.json', callback);
+    return Promise.resolve($.getJSON(ayBaseUrl + 'modules/' + code + '.json', callback));
   },
   getModIndex: function (code, callback) {
-    return $.getJSON(ayBaseUrl + 'modules/' + code + '/index.json', callback);
+    return Promise.resolve($.getJSON(ayBaseUrl + 'modules/' + code + '/index.json', callback));
   },
   getMods: function (callback) {
-    moduleInformationPromise = moduleInformationPromise || $.getJSON(ayBaseUrl + 'moduleInformation.json');
+    moduleInformationPromise = moduleInformationPromise || Promise.resolve($.getJSON(ayBaseUrl + 'moduleInformation.json'));
     return moduleInformationPromise.then(callback);
   },
   getTimetable: function (semester, code, callback) {
-    return $.getJSON(ayBaseUrl + semester + '/modules/' + code + '/timetable.json', callback);
+    return Promise.resolve($.getJSON(ayBaseUrl + semester + '/modules/' + code + '/timetable.json', callback));
   },
   getCodesAndTitles: function (callback) {
-    moduleListPromise = moduleListPromise || $.getJSON(ayBaseUrl + 'moduleList.json');
+    moduleListPromise = moduleListPromise || Promise.resolve($.getJSON(ayBaseUrl + 'moduleList.json'));
     return moduleListPromise.then(callback);
   },
   setConfig: function (config) {
