@@ -98,9 +98,9 @@ App.on('start', function () {
   require('./help');
   require('./support');
 
-  localforage.getItem(config.semTimetableFragment +
+  localforage.getItem(config.semTimetableFragment() +
     ':queryString').then(function (savedQueryString) {
-    if ('/' + config.semTimetableFragment === window.location.pathname) {
+    if ('/' + config.semTimetableFragment() === window.location.pathname) {
       var queryString = window.location.search.slice(1);
       if (queryString) {
         if (savedQueryString !== queryString) {

@@ -18,7 +18,7 @@ module.exports = Marionette.Controller.extend({
     var TimetableModuleCollection = require('../../common/collections/TimetableModuleCollection');
     if (!semester) {
       return Backbone.history.navigate(
-        config.semTimetableFragment,
+        config.semTimetableFragment(),
         {
           trigger: true,
           replace: true
@@ -59,7 +59,7 @@ module.exports = Marionette.Controller.extend({
       });
     }
     App.mainRegion.show(new TimetableView({
-      semTimetableFragment: config.semTimetableFragment
+      semester: semester
     }));
   }
 });

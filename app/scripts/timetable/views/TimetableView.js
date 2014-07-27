@@ -27,6 +27,10 @@ module.exports = Marionette.LayoutView.extend({
     urlSharingRegion: '.url-sharing-region'
   },
 
+  initialize: function (options) {
+    this.semester = options.semester;
+  },
+
   onShow: function() {
     this.selectedModules = App.request('selectedModules');
     this.timetable = this.selectedModules.timetable;
@@ -56,10 +60,10 @@ module.exports = Marionette.LayoutView.extend({
 
   modulesChanged: function (model, collection, options) {
     if (this.selectedModules.length) {
-      Backbone.history.navigate(config.semTimetableFragment + '?' +
-        this.selectedModules.toQueryString(), options);
+      Backbone.history.navigate(config.semTimetableFragment(this.semester) +
+        '?' + this.selectedModules.toQueryString(), options);
     } else {
-      Backbone.history.navigate(config.semTimetableFragment, options);
+      Backbone.history.navigate(config.semTimetableFragment(this.semester), options);
     }
   }
 });

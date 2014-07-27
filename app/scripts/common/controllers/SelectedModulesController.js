@@ -7,7 +7,8 @@ var config = require('../config');
 var localforage = require('localforage');
 
 module.exports = Marionette.Controller.extend({
-  initialize: function () {
+  initialize: function (options) {
+    this.semester = options.semester;
     this.timetable = new LessonCollection();
     this.selectedModules = new TimetableModuleCollection([], {
       timetable: this.timetable
@@ -18,7 +19,7 @@ module.exports = Marionette.Controller.extend({
 
   modulesChanged: function () {
     if (!this.selectedModules.shared) {
-      localforage.setItem(config.semTimetableFragment +
+      localforage.setItem(config.semTimetableFragment(this.semester) +
         ':queryString', this.selectedModules.toQueryString());
     }
   }
