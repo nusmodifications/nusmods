@@ -148,7 +148,7 @@ module.exports = Marionette.LayoutView.extend({
 
       (new FacetsView({
         collection: facets,
-        threshold: 300
+        threshold: 600
       })).render();
 
       this.modulesRegion.show(new ModulesListingView({collection: filteredModules}));
