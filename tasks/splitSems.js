@@ -34,9 +34,11 @@ module.exports = function (grunt) {
         'Prerequisite',
         'Preclusion',
         'Corequisite',
-        'Types',
-        'History'
+        'Types'
       ]);
+      info.History = mod.History.map(function (history) {
+        return _.omit(history, 'Timetable', 'IVLE');
+      });
       grunt.file.write(
         path.join(basePath, grunt.config('split').options.destSubfolder, mod.ModuleCode, 'index.json'),
         JSON.stringify(info, null, options.jsonSpace)

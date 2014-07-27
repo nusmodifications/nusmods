@@ -27,8 +27,8 @@ module.exports = function (grunt) {
       'ModuleDescription', 'CrossModule', 'ModuleCredit', 'Workload',
       'Prerequisite', 'Preclusion', 'Corequisite'];
 
-    var semSpecificKeys = ['Semester', 'ExamDate', 'Lecturers',
-      'LecturePeriods', 'TutorialPeriods'];
+    var semSpecificKeys = ['Semester', 'ExamDate', 'Timetable', 'IVLE',
+      'Lecturers', 'LecturePeriods', 'TutorialPeriods'];
 
     var joined = _.map(modules, function (mods, code) {
       // Just log differences between sems for now. May have to take further
