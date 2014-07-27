@@ -16,11 +16,12 @@ module.exports = function (grunt) {
     var moduleInformation = [];
 
     modules.forEach(function (mod) {
-      moduleList.push(_.pick(mod, [
+      moduleList.push(_.extend(_.pick(mod, [
         'ModuleCode',
-        'ModuleTitle',
-        'Semesters'
-      ]));
+        'ModuleTitle'
+      ]), {
+        Semesters: _.pluck(mod.History, 'Semester')
+      }));
 
       var info = _.pick(mod, [
         'ModuleCode',

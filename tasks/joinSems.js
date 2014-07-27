@@ -42,14 +42,11 @@ module.exports = function (grunt) {
 
       var baseMod = mods[acadYear + options.semester];
       var history = [];
-      var semesters = [];
       _.each(mods, function (mod) {
         baseMod = baseMod || mod;
         history.push(_.pick(mod, semSpecificKeys));
-        semesters.push(mod.Semester);
       });
       baseMod.History = history;
-      baseMod.Semesters = semesters;
 
       return baseMod;
     });
