@@ -21,7 +21,7 @@ module.exports = Marionette.Behavior.extend({
   },
 
   scrollToTop: function () {
-    $('body').stop().animate({scrollTop: 0}, 400);
+    $('html,body').stop(true, true).animate({scrollTop: 0}, 400);
     $(this.view.ui.backToTopButton).blur();
   }
 });
