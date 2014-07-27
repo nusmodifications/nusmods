@@ -1,4 +1,11 @@
-<td class="code"><a href="/modules/{{ModuleCode}}">{{ModuleCode}}</a></td>
+<td class="code">
+  <a href="/modules/{{ModuleCode}}">{{ModuleCode}}</a>
+  <ul class="pagination">
+    {{#each allSems}}
+      <li{{#if offered}} class="active"{{/if}}><span>{{semester}}</span></li>
+    {{/each}}
+  </ul>
+</td>
 <td class="details">
   <div class="pull-right">
     <a class="cors btn btn-default btn-xs"

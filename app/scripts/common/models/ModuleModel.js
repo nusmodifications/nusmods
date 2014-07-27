@@ -169,5 +169,13 @@ module.exports = Backbone.Model.extend({
 
     this.set('CORSLink', config.corsUrl + this.get('ModuleCode'));
     this.set('IVLELink', config.ivleUrl.replace('<ModuleCode>', this.get('ModuleCode')));
+
+    var history = this.get('History');
+    var allSems = [{semester: 1}, {semester: 2}, {semester: 3}, {semester: 4}];
+    for (var i = 0; i < history.length; i++) {
+      var sem = history[i].Semester;
+      allSems[sem - 1].offered = true;
+    }
+    this.set('allSems', allSems);
   }
 });

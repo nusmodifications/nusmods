@@ -368,6 +368,9 @@ $module-section-min-height: 700px;
 
 // Module Finder Content
 td {
+  &.code .pagination > li > span {
+    padding: 2px 4px;
+  }
   &.code,
   &.mc {
     text-align: center;
