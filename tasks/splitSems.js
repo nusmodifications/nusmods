@@ -16,6 +16,11 @@ module.exports = function (grunt) {
     var moduleInformation = [];
 
     modules.forEach(function (mod) {
+      grunt.file.write(
+        path.join(basePath, grunt.config('split').options.destSubfolder, mod.ModuleCode + '.json'),
+        JSON.stringify(mod, null, options.jsonSpace)
+      );
+
       moduleList.push(_.extend(_.pick(mod, [
         'ModuleCode',
         'ModuleTitle'
