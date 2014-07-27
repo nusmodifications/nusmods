@@ -226,8 +226,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadTasks('tasks');
 
-  // Takes about half an hour.
-  grunt.registerTask('all', [
+  grunt.registerTask('default', [
     'bulletinModules',
     'cors',
     'corsBiddingStats',
@@ -246,6 +245,4 @@ module.exports = function (grunt) {
     'shell:runPrereqParser:ay2014to2015',
     'splitSems'
   ]);
-
-  grunt.registerTask('default', 'all');
 };
