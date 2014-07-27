@@ -13,6 +13,20 @@ var localforage = require('localforage');
 require('backbone.analytics');
 require('qTip2');
 
+// Set Backbone.History.initialRoute to allow route handlers to find out if they
+// were called from the initial route.
+var loadUrl = Backbone.History.prototype.loadUrl;
+Backbone.History.prototype.loadUrl = function() {
+  if (!Backbone.History.initialRoute) {
+    Backbone.History.initialRoute = true;
+  } else {
+    Backbone.History.initialRoute = false;
+    // No longer initial route, restore original loadUrl.
+    Backbone.History.prototype.loadUrl = loadUrl;
+  }
+  return loadUrl.apply(this, arguments);
+};
+
 var App = new Marionette.Application();
 
 App.addRegions({
