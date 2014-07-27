@@ -247,30 +247,5 @@ module.exports = function (grunt) {
     'splitSems'
   ]);
 
-  grunt.registerTask('ay2014to2015sem1', [
-    'bulletinModules:semester1',
-    'cors:currentSemester',
-    'corsBiddingStats',
-    'examTimetable:ay2014to2015sem1',
-    'moduleTimetableDelta',
-    'ivle:ay2014to2015sem1',
-    'consolidate:ay2014to2015sem1',
-    'normalize:ay2014to2015sem1',
-    'shell:runPrereqParser:ay2014to2015sem1',
-    'split:ay2014to2015sem1'
-  ]);
-
-  grunt.registerTask('ay2014to2015sem2', [
-    'bulletinModules:semester2',
-    'corsBiddingStats',
-    'examTimetable:ay2014to2015sem2',
-    'moduleTimetableDelta',
-    'ivle:ay2014to2015sem2',
-    'consolidate:ay2014to2015sem2',
-    'normalize:ay2014to2015sem2',
-    'shell:runPrereqParser:ay2014to2015sem2',
-    'split:ay2014to2015sem2'
-  ]);
-
   grunt.registerTask('default', 'all');
 };
