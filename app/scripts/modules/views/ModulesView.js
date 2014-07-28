@@ -14,7 +14,7 @@ module.exports = Marionette.LayoutView.extend({
   template: template,
 
   regions: {
-    modulesRegion: '.modules'
+    modulesRegion: '#content'
   },
 
   ui: {
