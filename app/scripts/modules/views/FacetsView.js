@@ -8,7 +8,6 @@ module.exports = Marionette.CollectionView.extend({
   childView: FacetView,
   childViewOptions: function (facet) {
     return {
-      el: $('.facet-' + facet.get('key')),
       collection: facet.get('filters')
     };
   },
@@ -34,11 +33,5 @@ module.exports = Marionette.CollectionView.extend({
 
     this.listenTo(this.collection.filteredCollection, 'reset', this.onReset);
     this.collection.onSelect();
-  },
-
-  attachBuffer: function () {
-  },
-
-  attachHtml: function () {
   }
 });

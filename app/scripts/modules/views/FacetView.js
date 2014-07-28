@@ -2,7 +2,11 @@
 
 var Marionette = require('backbone.marionette');
 var FilterView = require('./FilterView');
+var template = require('../templates/facet.hbs')
 
-module.exports = Marionette.CollectionView.extend({
-  childView: FilterView
+module.exports = Marionette.CompositeView.extend({
+  tagName: 'form',
+  className: 'form-inline',
+  childView: FilterView,
+  template: template
 });

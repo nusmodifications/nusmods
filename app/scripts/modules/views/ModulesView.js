@@ -14,7 +14,8 @@ module.exports = Marionette.LayoutView.extend({
   template: template,
 
   regions: {
-    modulesRegion: '#content'
+    modulesRegion: '#content',
+    sidebarRegion: '#sidebar'
   },
 
   ui: {
@@ -129,30 +130,41 @@ module.exports = Marionette.LayoutView.extend({
       pageSize: 10,
       rawCollection: mods
     });
-    facets.add(_.map(['Department', 'level'], function(key) {
+    facets.add(new ArrayFacetModel({
+      filteredCollection: mods,
+      key: 'Types',
+      label: 'Types'
+    }));
+    facets.add(_.map({
+      Department: 'Faculty/Department',
+      level: 'Level'
+    }, function(label, key) {
       return {
         filteredCollection: mods,
-        key: key
+        key: key,
+        label: label
       };
     }));
     facets.add({
       filteredCollection: mods,
       key: 'ModuleCredit',
+      label: 'Modular Credits (MCs)',
       sortBy: function (filter) {
         return +filter.label;
       }
     });
-    facets.add(_.map(['LecturePeriods', 'TutorialPeriods', 'Types'], function(key) {
+    facets.add(_.map(['Lecture Periods', 'Tutorial Periods'], function(label) {
       return new ArrayFacetModel({
         filteredCollection: mods,
-        key: key
+        key: label.replace(' ', ''),
+        label: label
       });
     }));
 
-    (new FacetsView({
+    this.sidebarRegion.show(new FacetsView({
       collection: facets,
       threshold: 600
-    })).render();
+    }));
 
     this.modulesRegion.show(new ModulesListingView({collection: filteredModules}));
   }
