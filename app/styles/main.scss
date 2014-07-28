@@ -1,6 +1,6 @@
 $brand-primary: #f60;
 $input-border-focus: $brand-primary;
-$body-bg: #fcfcfc;
+$body-bg: #f7f7f7;
 $font-family-sans-serif: "proxima-nova", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 
 // Core variables and mixins
@@ -39,7 +39,7 @@ $font-family-sans-serif: "proxima-nova", "Helvetica Neue", Helvetica, Arial, san
 //@import "bootstrap-sass-official/assets/stylesheets/bootstrap/progress-bars";
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/media";
 //@import "bootstrap-sass-official/assets/stylesheets/bootstrap/list-group";
-//@import "bootstrap-sass-official/assets/stylesheets/bootstrap/panels";
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap/panels";
 //@import "bootstrap-sass-official/assets/stylesheets/bootstrap/responsive-embed";
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/wells";
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/close";
@@ -199,20 +199,13 @@ a {
 
 $module-section-min-height: 700px;
 
-.nm-boxify {
-  $margin-width: 15px;
+.module-main-content {
   min-height: $module-section-min-height;
-  padding: $margin-width;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #fff;
 }
 
 .mode-slate {
-  .nm-boxify {
+  .module-main-content {
     min-height: $module-section-min-height;
-    border: none;
-    background-color: #222326;
   }
 }
 
@@ -233,6 +226,13 @@ $module-section-min-height: 700px;
   }
   @media (min-width: $screen-lg-min) {
     width: 500px;
+  }
+}
+
+.mode-slate {
+  .panel {
+    background-color: #222326;
+    border: none;
   }
 }
 
@@ -524,6 +524,7 @@ colgroup.hover {
       width: 100%;
       z-index: 1;
       li {
+        position: relative;
         width: 25%;
         a {
           background-color: transparent;
@@ -546,9 +547,9 @@ colgroup.hover {
       }
     }
     #disqus-count {
-      left: -15px;
-      position: relative;
-      top: -22px;
+      left: 50%;
+      position: absolute;
+      top: -5px;
     }
   }
   

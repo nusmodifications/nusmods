@@ -60,9 +60,10 @@
       color: $mode-color;
     }
   }
+  $dark-nav-bg-color: #161713;
   .navbar {
     border: none;
-    background: #161713;
+    background: $dark-nav-bg-color;
   }
   .navbar-default {
     .navbar-nav > {
@@ -94,13 +95,31 @@
       box-shadow: none;
     }
   }
+  $dark-nav-tab-bg-color: #272b30;
   .nav-tabs > {
     li.active > {
       a,
       a:hover,
       a:focus {
         color: #fff;
-        background-color: #272b30;
+        background-color: $dark-nav-tab-bg-color;
+      }
+    }
+  }
+  @media (max-width: 768px) {
+    .module-navigation {
+      background-color: $dark-nav-bg-color;
+      border: none;
+    }
+    .nav-tabs > {
+      li.active > {
+        a,
+        a:hover,
+        a:focus {
+          color: $mode-color;
+          background-color: transparent;
+          border: none;
+        }
       }
     }
   }

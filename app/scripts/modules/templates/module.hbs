@@ -63,45 +63,61 @@
   <div class="col-md-9">
     <div class="row">
       <div class="col-md-12">
-        <div class="nm-boxify">
-          <ul class="nav nav-tabs module-navigation" role="tablist">
-            {{#each sectionsInfo}}
-              <li {{#equals sectionType ../section}}class="active"{{/equals}}>
-                <a href="/modules/{{../module.ModuleCode}}/{{sectionType}}">
-                  <i class="module-tab-icon fa fa-{{icon}}"></i>
-                  <span class="hidden-xs">{{tabTitle}}</span>
-                  {{#equals sectionType 'reviews'}}
-                    <span class="badge" data-disqus-identifier="{{../../module.ModuleCode}}" id="disqus-count"></span>
-                  {{/equals}}
-                </a>
-              </li>
-            {{/each}}
-          </ul>
-          <div> 
+        <div class="panel panel-default">
+          <div class="btn-group btn-group-justified">
+            <div class="btn-group">
+              <a class="cors btn btn-default"
+                   {{#unless module.inCORS}}disabled="disabled"{{/unless}}
+                   href="{{module.CORSLink}}"
+                   target="_blank">
+                <i class="fa fa-{{#if module.inCORS}}check{{else}}times{{/if}} fa-fw"></i>
+                <span class="hidden-xs">&nbsp;CORS</span>
+              </a>
+            </div>
+            <div class="btn-group">
+              <a class="ivle btn btn-default"
+                        data-code="{{module.ModuleCode}}"
+                        type="button"
+                        href="{{module.IVLELink}}"
+                        target="_blank">
+                <i class="fa fa-graduation-cap"></i>
+                <span class="hidden-xs">&nbsp;IVLE</span>
+              </a>
+            </div>
+            <div class="btn-group">
+              <button class="add-bookmark btn btn-default"
+                        data-code="{{module.ModuleCode}}"
+                        type="button">
+                <i class="fa fa-bookmark"></i>
+                <span class="hidden-xs">&nbsp;Bookmark</span>
+              </button>
+            </div>
+            <div class="btn-group">
+              <button class="add-timetable btn btn-default"
+                        data-code="{{module.ModuleCode}}"
+                        type="button">
+                <i class="fa fa-plus"></i>
+                <span class="hidden-xs">&nbsp;Add {{module.ModuleCode}} To Timetable</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default module-main-content">
+          <div class="panel-body">
+            <ul class="nav nav-tabs module-navigation" role="tablist">
+              {{#each sectionsInfo}}
+                <li {{#equals sectionType ../section}}class="active"{{/equals}}>
+                  <a href="/modules/{{../module.ModuleCode}}/{{sectionType}}">
+                    <i class="module-tab-icon fa fa-{{icon}}"></i>
+                    <span class="hidden-xs">{{tabTitle}}</span>
+                    {{#equals sectionType 'reviews'}}
+                      <span class="badge" data-disqus-identifier="{{../../module.ModuleCode}}" id="disqus-count"></span>
+                    {{/equals}}
+                  </a>
+                </li>
+              {{/each}}
+            </ul>
             <h2 class="nm-section-heading">{{sectionTitle}} 
-              <button class="add-timetable pull-right btn btn-primary"
-                      data-code="{{module.ModuleCode}}"
-                      type="button">
-                  <i class="fa fa-plus"></i>&nbsp;Add {{module.ModuleCode}} To Timetable
-              </button>
-              <button class="add-bookmark pull-right btn btn-info"
-                      data-code="{{module.ModuleCode}}"
-                      type="button">
-                  <i class="fa fa-bookmark"></i>&nbsp;Bookmark
-              </button>
-              <a class="ivle pull-right btn btn-default"
-                      data-code="{{module.ModuleCode}}"
-                      type="button"
-                      href="{{module.IVLELink}}"
-                      target="_blank">
-                  <i class="fa fa-graduation-cap"></i>&nbsp;IVLE
-              </a>
-              <a class="cors pull-right btn btn-default"
-                 {{#unless module.inCORS}}disabled="disabled"{{/unless}}
-                 href="{{module.CORSLink}}"
-                 target="_blank">
-                <i class="fa fa-{{#if module.inCORS}}check{{else}}times{{/if}} fa-fw"></i>&nbsp;CORS
-              </a>
             </h2>
             <hr>
             {{#equals section 'schedule'}}
