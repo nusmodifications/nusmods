@@ -169,12 +169,12 @@ module.exports = Backbone.Model.extend({
 
     var history = this.get('History');
     if (history) {
-      var allSems = [{semester: 1}, {semester: 2}, {semester: 3}, {semester: 4}];
+      var semestersOffered = [{semester: 1}, {semester: 2}];
       for (var i = 0; i < history.length; i++) {
         var sem = history[i].Semester;
-        allSems[sem - 1].offered = true;
+        semestersOffered[sem - 1].offered = true;
       }
-      this.set('allSems', allSems);
+      this.set('semestersOffered', semestersOffered);
     }
   }
 });
