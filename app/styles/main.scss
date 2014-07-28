@@ -505,9 +505,53 @@ colgroup.hover {
   .workload-components dd {
     margin-bottom: 0;
   }
+  .module-tab-icon {
+    margin-right: 5px;
+  }
   #disqus-count {
+    background-color: red;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   }
+  @media (max-width: 768px) {
+    .module-navigation {
+      background-color: #fff;
+      border: none;
+      border-top: 1px solid #e7e7e7;
+      bottom: 0;
+      height: 44px;
+      left: 0;
+      position: fixed;
+      width: 100%;
+      z-index: 1;
+      li {
+        width: 25%;
+        a {
+          background-color: transparent;
+          border: none;
+          color: #b5b5b5;
+          font-size: 1.5em;
+          padding-top: 8px;
+          text-align: center;
+          &:hover {
+            background-color: transparent !important;
+            border: none !important;
+          }
+        }
+        &.active {
+          background-color: transparent;
+          a {
+            color: $brand-primary;
+          }
+        }
+      }
+    }
+    #disqus-count {
+      left: -15px;
+      position: relative;
+      top: -22px;
+    }
+  }
+  
   .radio {
     padding-left: 0;
     label {
