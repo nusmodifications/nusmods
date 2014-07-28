@@ -136,7 +136,7 @@ module.exports = Marionette.LayoutView.extend({
       label: 'Types'
     }));
     facets.add(_.map({
-      Department: 'Faculty/Department',
+      Department: 'Faculty / Department',
       level: 'Level'
     }, function(label, key) {
       return {
