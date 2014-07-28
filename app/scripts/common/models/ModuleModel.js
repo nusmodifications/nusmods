@@ -174,7 +174,9 @@ module.exports = Backbone.Model.extend({
       var semestersOffered = [{semester: 1}, {semester: 2}];
       for (var i = 0; i < history.length; i++) {
         var sem = history[i].Semester;
-        semestersOffered[sem - 1].offered = true;
+        if (sem === 1 || sem === 2) {
+          semestersOffered[sem - 1].offered = true;
+        }
       }
       this.set('semestersOffered', semestersOffered);
     }
