@@ -47,7 +47,9 @@ module.exports = Marionette.Controller.extend({
     var facultyList = require('../../common/faculty/facultyList.json');
     navigationItem.select();
     if (!id) {
-      App.mainRegion.show(new ModulesView());
+      NUSMods.getMods().then(function (mods) {
+        App.mainRegion.show(new ModulesView({mods: mods}));
+      });
     } else {
       var modCode = id.toUpperCase();
       var sectionTypes = _.pluck(sectionsInfo, 'sectionType');
