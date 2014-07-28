@@ -112,7 +112,7 @@ module.exports = Backbone.View.extend({
       return false;
     });
 
-    var reviewsRegex = /^\/modules\/[^\/]{6,10}\/reviews/;
+    var reviewsRegex = /^\/modules\/[^\/]{6,10}/;
     Mousetrap.bind(['x'], function () {
       themePicker.toggleMode();
       if (reviewsRegex.test(window.location.pathname) && window.DISQUS) {

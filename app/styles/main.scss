@@ -199,15 +199,15 @@ a {
 
 $module-section-min-height: 700px;
 
-.module-main-content {
-  min-height: $module-section-min-height;
-}
+// .module-main-content {
+//   min-height: $module-section-min-height;
+// }
 
-.mode-slate {
-  .module-main-content {
-    min-height: $module-section-min-height;
-  }
-}
+// .mode-slate {
+//   .module-main-content {
+//     min-height: $module-section-min-height;
+//   }
+// }
 
 .navbar-header {
   @media (min-width: $screen-sm-min) {
