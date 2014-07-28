@@ -68,63 +68,65 @@ module.exports = Backbone.Model.extend({
       this.set('linkedPreclusion', modulify.linkifyModules(preclusion));
     }
 
-    var timetable = this.get('Timetable');
-    if (timetable) {
-      var timetableTypes = [];
-      _.each(timetable, function (lesson) {
-        if (timetableTypes.indexOf(lesson.LessonType) < 0) {
-          timetableTypes.push(lesson.LessonType);
-        }
-      });
-
-      var AVAILABLE_TYPES = [
-        'Lecture',
-        'Sectional Teaching',
-        'Seminar-Style Module Class',
-        'Packaged Lecture',
-        'Packaged Tutorial',
-        'Tutorial',
-        'Tutorial Type 2',
-        'Tutorial Type 3',
-        'Design Lecture',
-        'Laboratory',
-        'Recitation'
-      ];
-
-      var PLURALIZED_LESSON_TYPES = {
-        'Lecture': 'Lectures',
-        'Sectional Teaching': 'Sectional Teachings',
-        'Seminar-Style Module Class': 'Seminar-Style Module Classes',
-        'Packaged Lecture': 'Packaged Lectures',
-        'Packaged Tutorial': 'Packaged Tutorials',
-        'Tutorial': 'Tutorials',
-        'Tutorial Type 2': 'Tutorial Type 2',
-        'Tutorial Type 3': 'Tutorial Type 3',
-        'Design Lecture': 'Design Lectures',
-        'Laboratory': 'Laboratories',
-        'Recitation': 'Recitations'
-      };
-
-      timetableTypes = _.sortBy(timetableTypes, function (type) {
-        return AVAILABLE_TYPES.indexOf(type);
-      });
-
-      var formattedTimetable = [];
-      _.each(timetableTypes, function (type) {
-        var lessons = _.filter(timetable, function (lesson) {
-          return lesson.LessonType === type;
+    _.each(this.get('History'), function (history) {
+      var timetable = history.Timetable;
+      if (timetable) {
+        var timetableTypes = [];
+        _.each(timetable, function (lesson) {
+          if (timetableTypes.indexOf(lesson.LessonType) < 0) {
+            timetableTypes.push(lesson.LessonType);
+          }
         });
-        lessons = _.sortBy(lessons, function (lesson) {
-          return parseInt(lesson.ClassNo);
-        });
-        formattedTimetable.push({
-          LessonType: PLURALIZED_LESSON_TYPES[type],
-          Lessons: lessons
-        });
-      });
 
-      this.set('FormattedTimetable', formattedTimetable);
-    }
+        var AVAILABLE_TYPES = [
+          'Lecture',
+          'Sectional Teaching',
+          'Seminar-Style Module Class',
+          'Packaged Lecture',
+          'Packaged Tutorial',
+          'Tutorial',
+          'Tutorial Type 2',
+          'Tutorial Type 3',
+          'Design Lecture',
+          'Laboratory',
+          'Recitation'
+        ];
+
+        var PLURALIZED_LESSON_TYPES = {
+          'Lecture': 'Lectures',
+          'Sectional Teaching': 'Sectional Teachings',
+          'Seminar-Style Module Class': 'Seminar-Style Module Classes',
+          'Packaged Lecture': 'Packaged Lectures',
+          'Packaged Tutorial': 'Packaged Tutorials',
+          'Tutorial': 'Tutorials',
+          'Tutorial Type 2': 'Tutorial Type 2',
+          'Tutorial Type 3': 'Tutorial Type 3',
+          'Design Lecture': 'Design Lectures',
+          'Laboratory': 'Laboratories',
+          'Recitation': 'Recitations'
+        };
+
+        timetableTypes = _.sortBy(timetableTypes, function (type) {
+          return AVAILABLE_TYPES.indexOf(type);
+        });
+
+        var formattedTimetable = [];
+        _.each(timetableTypes, function (type) {
+          var lessons = _.filter(timetable, function (lesson) {
+            return lesson.LessonType === type;
+          });
+          lessons = _.sortBy(lessons, function (lesson) {
+            return parseInt(lesson.ClassNo);
+          });
+          formattedTimetable.push({
+            LessonType: PLURALIZED_LESSON_TYPES[type],
+            Lessons: lessons
+          });
+        });
+
+        history.formattedTimetable = formattedTimetable;
+      }
+    });
 
     var corsBiddingStats = this.get('CorsBiddingStats');
     if (corsBiddingStats) {

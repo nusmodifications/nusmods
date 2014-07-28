@@ -103,37 +103,36 @@
             </h2>
             <hr>
             {{#equals section 'schedule'}}
-              <div>
-                {{#if module.Timetable}}
-                  {{#each module.FormattedTimetable}}
+              {{#each module.History}}
+                  <h3>Semester {{Semester}}</h3>
+                  {{#each formattedTimetable}}
                     <h3 class="highlight thin">{{LessonType}}</h3>
                     <table class="table table-striped">
                       <tbody>
+                      <tr>
+                        <th>Class No</th>
+                        <th>Week Type</th>
+                        <th>Day</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Venue</th>
+                      </tr>
+                      {{#each Lessons}}
                         <tr>
-                          <th>Class No</th>
-                          <th>Week Type</th>
-                          <th>Day</th>
-                          <th>Start Time</th>
-                          <th>End Time</th>
-                          <th>Venue</th>
+                          <td>{{ClassNo}}</td>
+                          <td>{{WeekText}}</td>
+                          <td>{{DayText}}</td>
+                          <td>{{StartTime}}</td>
+                          <td>{{EndTime}}</td>
+                          <td>{{Venue}}</td>
                         </tr>
-                        {{#each Lessons}}
-                          <tr>
-                            <td>{{ClassNo}}</td>
-                            <td>{{WeekText}}</td>
-                            <td>{{DayText}}</td>
-                            <td>{{StartTime}}</td>
-                            <td>{{EndTime}}</td>
-                            <td>{{Venue}}</td>
-                          </tr>
-                        {{/each}}
+                      {{/each}}
                       </tbody>
                     </table>
+                  {{else}}
+                    <p>No timetable data to be shown.</p>
                   {{/each}}
-                {{else}}
-                  <p>No timetable data to be shown.</p>
-                {{/if}}
-              </div>
+              {{/each}}
             {{/equals}}
 
             {{#equals section 'corspedia'}}
