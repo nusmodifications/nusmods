@@ -51,15 +51,6 @@ module.exports = function (grunt) {
       });
     }
 
-    if (grunt.file.exists(corsBiddingStatsPath)) {
-      var corsBiddingStats = grunt.file.readJSON(corsBiddingStatsPath);
-      corsBiddingStats.forEach(function (stat) {
-        modules[stat.ModuleCode] = modules[stat.ModuleCode] || {};
-        modules[stat.ModuleCode].CorsBiddingStats = modules[stat.ModuleCode].CorsBiddingStats || [];
-        modules[stat.ModuleCode].CorsBiddingStats.push(stat);
-      });
-    }
-
     if (grunt.file.exists(examTimetablePath)) {
       var examTimetable = grunt.file.readJSON(examTimetablePath);
       examTimetable.forEach(function (exam) {
@@ -83,6 +74,16 @@ module.exports = function (grunt) {
         modules[delta.ModuleCode] = modules[delta.ModuleCode] || {};
         modules[delta.ModuleCode].TimetableDelta = modules[delta.ModuleCode].TimetableDelta || [];
         modules[delta.ModuleCode].TimetableDelta.push(delta);
+      });
+    }
+
+    if (grunt.file.exists(corsBiddingStatsPath)) {
+      var corsBiddingStats = grunt.file.readJSON(corsBiddingStatsPath);
+      corsBiddingStats.forEach(function (stat) {
+        if (modules[stat.ModuleCode]) {
+          modules[stat.ModuleCode].CorsBiddingStats = modules[stat.ModuleCode].CorsBiddingStats || [];
+          modules[stat.ModuleCode].CorsBiddingStats.push(stat);
+        }
       });
     }
 
