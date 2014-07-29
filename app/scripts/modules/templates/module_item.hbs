@@ -55,11 +55,19 @@
 </td>
 <td class="mc">{{ModuleCredit}}</td>
 <td class="exam">
-{{#if examStr}}
-  {{examStr}}
-{{else}}
-  No Exam
-{{/if}}
+  {{#if hasExams}}
+    {{#each History}}
+      <div>
+        {{#if examStr}}
+          {{examStr}}
+        {{else}}
+          No Exam
+        {{/if}}
+      </div>
+    {{/each}}
+  {{else}}
+    No Exam
+  {{/if}}
 </td>
 
 <td class="department">{{Department}}</td>

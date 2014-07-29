@@ -119,8 +119,12 @@ module.exports = Marionette.LayoutView.extend({
       } else {
         mod.Types = ['Not in CORS'];
       }
+      mod.hasExams = false;
       for (var i = 0; i < mod.History.length; i++) {
         var history = mod.History[i];
+        if (history.ExamDate) {
+          mod.hasExams = true;
+        }
         var sem = history.Semester;
         mod['LecturePeriods' + sem] = history.LecturePeriods || ['No Lectures'];
         mod['TutorialPeriods' + sem] = history.TutorialPeriods || ['No Tutorials'];

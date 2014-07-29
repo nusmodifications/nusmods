@@ -69,6 +69,8 @@ module.exports = Backbone.Model.extend({
     }
 
     _.each(this.get('History'), function (history) {
+      history.examStr = examStr(history.ExamDate);
+
       var timetable = history.Timetable;
       if (timetable) {
         var timetableTypes = [];

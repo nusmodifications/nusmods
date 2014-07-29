@@ -372,6 +372,9 @@ td {
   }
   &.exam {
     min-width: 95px;
+    div {
+      margin-bottom: 10px;
+    }
   }
   &.details .desc {
     margin-top: 2px;
