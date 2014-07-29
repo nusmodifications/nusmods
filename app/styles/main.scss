@@ -512,6 +512,12 @@ colgroup.hover {
     background-color: red;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   }
+  .module-page-section-title {
+    color: #666;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
   @media (max-width: 768px) {
     .module-navigation {
       background-color: #fff;
