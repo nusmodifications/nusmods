@@ -1,17 +1,5 @@
 # [NUSMods](http://nusmods.com) [![Code Climate](http://img.shields.io/codeclimate/github/ahbeng/NUSMods.svg)](https://codeclimate.com/github/ahbeng/NUSMods) [![Dependency Status](http://img.shields.io/david/ahbeng/NUSMods.svg)](https://david-dm.org/ahbeng/NUSMods) [![devDependency Status](http://img.shields.io/david/dev/ahbeng/NUSMods.svg)](https://david-dm.org/ahbeng/NUSMods#info=devDependencies)
 
-## Clone Repository with Submodules
-
-```bash
-$ git clone --recursive https://github.com/ahbeng/NUSMods.git
-```
-
-Or if you have already cloned the repository without submodules before:
-
-```bash
-$ git submodule update --init
-```
-
 ## Setup with Vagrant
 
 ### Prerequisites
@@ -66,6 +54,21 @@ execute the Ansible playbook against it:
 ```bash
 $ ansible-playbook provisioning/production.yml -i provisioning/production
 ```
+
+## Working with the [NUSMods API](https://github.com/ahbeng/NUSModsAPI)
+
+NUSMods is set up to work with the remote API at http://nusmods.com/api/ by
+default. To work with a local copy of the API:
+
+```bash
+$ git submodule update --init
+$ cd api
+$ grunt
+```
+
+The development server serves the files generated in `api/app/api` under
+`/api/`, so change `baseUrl` under `app/scripts/config.json` to point to
+`/api/`.
 
 ## Optional Dependencies
 
