@@ -63,6 +63,26 @@ module.exports = function (grunt) {
         options: {
           baseUrl: 'https://myaces.nus.edu.sg/cors/jsp/report/'
         }
+      },
+      lastSemester: {
+        options: {
+          baseUrl: 'https://aces01.nus.edu.sg/cors/jsp/report/'
+        }
+      },
+      penultimateSemester: {
+        options: {
+          baseUrl: 'https://sit.aces01.nus.edu.sg/cors/jsp/report/'
+        }
+      },
+      lastSpecialTerm: {
+        options: {
+          baseUrl: 'https://myaces.nus.edu.sg/sts/jsp/report/'
+        }
+      },
+      penultimateSpecialTerm: {
+        options: {
+          baseUrl: 'https://sit.aces01.nus.edu.sg/sts/jsp/report/'
+        }
       }
     },
     corsBiddingStats: {
@@ -228,7 +248,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('remote', [
     'bulletinModules',
-    'cors',
+    'cors:currentSemester',
     'corsBiddingStats',
     'examTimetable',
     'moduleTimetableDelta',
