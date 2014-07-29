@@ -20,11 +20,23 @@
        target="_blank">
       <i class="fa fa-graduation-cap"></i>&nbsp;IVLE
     </a>
-    <button class="add-timetable btn btn-primary btn-xs"
-            data-code="{{ModuleCode}}"
-            type="button">
-      <i class="fa fa-plus-circle"></i>&nbsp;Add
-    </button>
+    <div class="btn-group">
+      <button class="btn btn-primary btn-xs dropdown-toggle"
+              data-toggle="dropdown"
+              data-code="{{ModuleCode}}"
+              type="button">
+        <i class="fa fa-plus-circle"></i>&nbsp;Add&nbsp;<span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-right" role="menu">
+        {{#each semestersOffered}}
+          <li{{#unless offered}} class="disabled"{{/unless}}>
+            <a href="#" class="add-timetable" data-semester="{{semester}}">
+              Add to Semester {{semester}} Timetable
+            </a>
+          </li>
+        {{/each}}
+      </ul>
+    </div>
     <button class="add-bookmark btn btn-info btn-xs"
             data-code="{{ModuleCode}}"
             type="button">

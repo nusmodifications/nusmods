@@ -77,11 +77,23 @@
           </ul>
           <div> 
             <h2 class="nm-section-heading">{{sectionTitle}} 
-              <button class="add-timetable pull-right btn btn-primary"
-                      data-code="{{module.ModuleCode}}"
-                      type="button">
-                  <i class="fa fa-plus"></i>&nbsp;Add {{module.ModuleCode}} To Timetable
-              </button>
+              <div class="btn-group pull-right">
+                <button class="btn btn-primary dropdown-toggle"
+                        data-toggle="dropdown"
+                        data-code="{{module.ModuleCode}}"
+                        type="button">
+                  <i class="fa fa-plus-circle"></i>&nbsp;Add {{module.ModuleCode}} To Timetable&nbsp;<span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                  {{#each module.semestersOffered}}
+                    <li{{#unless offered}} class="disabled"{{/unless}}>
+                      <a href="#" class="add-timetable" data-semester="{{semester}}">
+                        Add to Semester {{semester}} Timetable
+                      </a>
+                    </li>
+                  {{/each}}
+                </ul>
+              </div>
               <button class="add-bookmark pull-right btn btn-info"
                       data-code="{{module.ModuleCode}}"
                       type="button">

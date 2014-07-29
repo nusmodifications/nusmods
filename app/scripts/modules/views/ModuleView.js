@@ -209,13 +209,15 @@ module.exports = Marionette.LayoutView.extend({
     'click #show-all-stats': 'showAllStats',
     'click .add-timetable': function (event) {
       var qtipContent;
-      if (App.request('isModuleSelected', this.model.get('module').ModuleCode)) {
+      var currentTarget = $(event.currentTarget);
+      var semester = currentTarget.data('semester');
+      if (App.request('isModuleSelected', semester, this.model.get('module').ModuleCode)) {
         qtipContent = 'Already added!';
       } else {
         qtipContent = 'Added!';
-        App.request('addModule', this.model.get('module').ModuleCode);
+        App.request('addModule', semester, this.model.get('module').ModuleCode);
       }
-      $(event.currentTarget).qtip({
+      currentTarget.qtip({
         content: qtipContent,
         show: {
           event: false,
@@ -226,6 +228,7 @@ module.exports = Marionette.LayoutView.extend({
           inactive: 1000
         }
       });
+      return false;
     },
     'click .add-bookmark': function (event) {
       App.request('addBookmark', this.model.get('module').ModuleCode);
