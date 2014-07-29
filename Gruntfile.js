@@ -68,7 +68,6 @@ module.exports = function (grunt) {
     corsBiddingStats: {
       options: {
         cachePath: '<%= defaults.cachePath %>',
-        maxCacheAge: -1,
         destFolder: '<%= defaults.destFolder %>',
         jsonSpace: '<%= defaults.jsonSpace %>',
         destFileName: 'corsBiddingStatsRaw.json'
