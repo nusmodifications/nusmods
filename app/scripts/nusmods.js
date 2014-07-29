@@ -4,7 +4,7 @@ var Promise = require('bluebird');
 
 var ayBaseUrl;
 var moduleInformationPromise, moduleListPromise;
-var moduleCodes;
+var moduleCodes = {};
 
 module.exports = {
   getAllModules: function () {
@@ -12,8 +12,10 @@ module.exports = {
   },
   generateModuleCodes: function () {
     moduleListPromise = moduleListPromise || Promise.resolve($.getJSON(ayBaseUrl + 'moduleList.json'));
-    moduleListPromise.then(function (data) {
-      moduleCodes = data;
+    return moduleListPromise.then(function (data) {
+      for (var i = 0; i < data.length; i++) {
+        moduleCodes[data[i].ModuleCode] = data[i].ModuleTitle;
+      }
     });
   },
   getLastModified: function (callback) {
