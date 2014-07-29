@@ -67,41 +67,43 @@
         <div class="row">
           <div class="col-md-12">
             <div class="panel">
-              <div class="btn-group btn-group-justified">
-                <div class="btn-group">
-                  <a class="cors btn btn-default"
-                       {{#unless module.inCORS}}disabled="disabled"{{/unless}}
-                       href="{{module.CORSLink}}"
-                       target="_blank">
-                    <i class="fa fa-{{#if module.inCORS}}check{{else}}times{{/if}} fa-fw"></i>
-                    <span class="hidden-xs">&nbsp;CORS</span>
-                  </a>
-                </div>
-                <div class="btn-group">
-                  <a class="ivle btn btn-default"
-                            data-code="{{module.ModuleCode}}"
-                            type="button"
-                            href="{{module.IVLELink}}"
-                            target="_blank">
-                    <i class="fa fa-graduation-cap"></i>
-                    <span class="hidden-xs">&nbsp;IVLE</span>
-                  </a>
-                </div>
-                <div class="btn-group">
-                  <button class="add-bookmark btn btn-default"
-                            data-code="{{module.ModuleCode}}"
-                            type="button">
-                    <i class="fa fa-bookmark"></i>
-                    <span class="hidden-xs">&nbsp;Bookmark</span>
-                  </button>
-                </div>
-                <div class="btn-group">
-                  <button class="add-timetable btn btn-default"
-                            data-code="{{module.ModuleCode}}"
-                            type="button">
-                    <i class="fa fa-plus"></i>
-                    <span class="hidden-xs">&nbsp;Add {{module.ModuleCode}} To Timetable</span>
-                  </button>
+              <div class="panel-body">
+                <div class="btn-group btn-group-justified">
+                  <div class="btn-group">
+                    <a class="cors btn btn-default"
+                         {{#unless module.inCORS}}disabled="disabled"{{/unless}}
+                         href="{{module.CORSLink}}"
+                         target="_blank">
+                      <i class="fa fa-{{#if module.inCORS}}check{{else}}times{{/if}} fa-fw"></i>
+                      <span class="hidden-xs">&nbsp;CORS</span>
+                    </a>
+                  </div>
+                  <div class="btn-group">
+                    <a class="ivle btn btn-default"
+                              data-code="{{module.ModuleCode}}"
+                              type="button"
+                              href="{{module.IVLELink}}"
+                              target="_blank">
+                      <i class="fa fa-graduation-cap"></i>
+                      <span class="hidden-xs">&nbsp;IVLE</span>
+                    </a>
+                  </div>
+                  <div class="btn-group">
+                    <button class="add-bookmark btn btn-default"
+                              data-code="{{module.ModuleCode}}"
+                              type="button">
+                      <i class="fa fa-bookmark"></i>
+                      <span class="hidden-xs">&nbsp;Bookmark</span>
+                    </button>
+                  </div>
+                  <div class="btn-group">
+                    <button class="add-timetable btn btn-default"
+                              data-code="{{module.ModuleCode}}"
+                              type="button">
+                      <i class="fa fa-plus"></i>
+                      <span class="hidden-xs">&nbsp;Add {{module.ModuleCode}} To Timetable</span>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
