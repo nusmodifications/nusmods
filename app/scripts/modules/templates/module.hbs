@@ -16,16 +16,18 @@
               </dd>
               <dt class="highlight">Credits</dt>
               <dd>{{module.ModuleCredit}}</dd>
-              {{#if module.Lecturers}}
-                <dt class="highlight">Lecturer(s)</dt>
-                <dd>
-                  <ul class="lecturers list-inline">
-                    {{#each module.Lecturers}}
-                      <li>{{this}}</li>
-                    {{/each}}
-                  </ul>
-                </dd>
-              {{/if}}
+              {{#each module.History}}
+                {{#if Lecturers}}
+                  <dt class="highlight">Semester {{Semester}} Lecturer(s)</dt>
+                  <dd>
+                    <ul class="lecturers list-inline">
+                      {{#each Lecturers}}
+                        <li>{{this}}</li>
+                      {{/each}}
+                    </ul>
+                  </dd>
+                {{/if}}
+              {{/each}}
               {{#if module.Prerequisite}}
                 <dt class="highlight">Prerequisite(s)</dt>
                 <dd>{{{module.linkedPrerequisite}}}</dd>

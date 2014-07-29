@@ -45,16 +45,18 @@
   </div>
   <strong>{{ModuleTitle}}</strong>
   <div class="desc">{{ModuleDescription}}</div>
-  {{#if Lecturers}}
-    <div>
-      <strong>Lecturer(s):</strong>
-      <ul class="lecturers list-inline">
-        {{#each Lecturers}}
-          <li>{{this}}</li>
-        {{/each}}
-      </ul>
-    </div>
-  {{/if}}
+  {{#each History}}
+    {{#if Lecturers}}
+      <div>
+        <strong>Semester {{Semester}} Lecturer(s):</strong>
+        <ul class="lecturers list-inline">
+          {{#each Lecturers}}
+            <li>{{this}}</li>
+          {{/each}}
+        </ul>
+      </div>
+    {{/if}}
+  {{/each}}
   {{#if Prerequisite}}
     <div><strong>Prerequisites:</strong>&nbsp;{{{linkedPrerequisite}}}</div>
   {{/if}}
