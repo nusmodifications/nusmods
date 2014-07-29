@@ -7,7 +7,8 @@ module.exports = function (grunt) {
       concurrencyLimit: 128,
       // Maximum cache age in seconds. Can be set to 0 to force refresh every
       // time. If set to -1, cached files never expire and are always used.
-      maxCacheAge: 6 * 60 * 60,
+      // By default, force refresh for dist build, cache for one day otherwise.
+      maxCacheAge: grunt.option('target') === 'dist' ? 0 : 86400,
       destFolder: 'app/api',
       // Pretty-print JSON with '\t', uglify JSON with ''.
       // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#space_argument
