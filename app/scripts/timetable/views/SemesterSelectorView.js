@@ -6,13 +6,6 @@ var _ = require('underscore');
 var config = require('../../common/config');
 var template = require('../templates/semester_selector.hbs');
 
-var semesterNames = [
-  'Semester 1',
-  'Semester 2',
-  'Special Term I',
-  'Special Term II'
-];
-
 module.exports = Marionette.ItemView.extend({
   tagName: 'ul',
   className: 'pagination',
@@ -23,7 +16,7 @@ module.exports = Marionette.ItemView.extend({
       var sem = i + 1;
       return {
         id: sem,
-        label: semesterNames[i],
+        label: config.semesterNames[i],
         url: config.semTimetableFragment(sem)
       };
     }));
