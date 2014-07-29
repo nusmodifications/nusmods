@@ -226,13 +226,16 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadTasks('tasks');
 
-  grunt.registerTask('default', [
+  grunt.registerTask('remote', [
     'bulletinModules',
     'cors',
     'corsBiddingStats',
     'examTimetable',
     'moduleTimetableDelta',
-    'ivle',
+    'ivle'
+  ]);
+
+  grunt.registerTask('local', [
     'consolidate',
     'normalize',
 
@@ -244,5 +247,10 @@ module.exports = function (grunt) {
     'joinSems',
     'shell:runPrereqParser:ay2014to2015',
     'splitSems'
+  ]);
+
+  grunt.registerTask('default', [
+    'remote',
+    'local'
   ]);
 };
