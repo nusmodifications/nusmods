@@ -8,6 +8,7 @@ var Marionette = require('backbone.marionette');
 var ModuleCollection = require('../../common/collections/ModuleCollection');
 var ModulesListingView = require('./ModulesListingView');
 var _ = require('underscore');
+var config = require('../../common/config');
 var template = require('../templates/modules.hbs');
 
 module.exports = Marionette.LayoutView.extend({
@@ -109,6 +110,7 @@ module.exports = Marionette.LayoutView.extend({
       UEM: 'Breadth / UE'
     };
 
+    var semesterNames = config.semesterNames;
     var mods = this.mods;
     _.each(mods, function (mod) {
       mod.level = mod.ModuleCode[mod.ModuleCode.search(/\d/)] * 1000;
@@ -119,9 +121,11 @@ module.exports = Marionette.LayoutView.extend({
       } else {
         mod.Types = ['Not in CORS'];
       }
+      mod.semesterNames = [];
       for (var i = 0; i < mod.History.length; i++) {
         var history = mod.History[i];
         var sem = history.Semester;
+        mod.semesterNames.push(semesterNames[sem - 1]);
         mod['LecturePeriods' + sem] = history.LecturePeriods || ['No Lectures'];
         mod['TutorialPeriods' + sem] = history.TutorialPeriods || ['No Tutorials'];
       }
@@ -134,6 +138,11 @@ module.exports = Marionette.LayoutView.extend({
       pageSize: 25,
       rawCollection: mods
     });
+    facets.add(new ArrayFacetModel({
+      filteredCollection: mods,
+      key: 'semesterNames',
+      label: 'Academic Year ' + config.academicYear
+    }));
     facets.add(new ArrayFacetModel({
       filteredCollection: mods,
       key: 'Types',
