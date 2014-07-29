@@ -53,7 +53,7 @@ function drawTree(selector, prereqs, lockedModules, modCode) {
 
   var SVGWidth = $(selector).width(),
       SVGHeight = 550,
-      allMods = NUSMods.getAllModules();
+      allMods = _.indexBy(NUSMods.getAllModules(), "ModuleCode");
 
   d3.selectAll('svg').remove();
   var canvas = d3.select(selector)
