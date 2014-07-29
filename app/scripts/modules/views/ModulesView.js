@@ -119,8 +119,12 @@ module.exports = Marionette.LayoutView.extend({
       } else {
         mod.Types = ['Not in CORS'];
       }
-      mod.LecturePeriods = mod.LecturePeriods || ['No Lectures'];
-      mod.TutorialPeriods = mod.TutorialPeriods || ['No Tutorials'];
+      for (var i = 0; i < mod.History.length; i++) {
+        var history = mod.History[i];
+        var sem = history.Semester;
+        mod['LecturePeriods' + sem] = history.LecturePeriods || ['No Lectures'];
+        mod['TutorialPeriods' + sem] = history.TutorialPeriods || ['No Tutorials'];
+      }
     });
 
     var filteredModules = new ModuleCollection();
@@ -153,13 +157,15 @@ module.exports = Marionette.LayoutView.extend({
         return +filter.label;
       }
     });
-    facets.add(_.map(['Lecture Periods', 'Tutorial Periods'], function(label) {
-      return new ArrayFacetModel({
-        filteredCollection: mods,
-        key: label.replace(' ', ''),
-        label: label
-      });
-    }));
+    for (var i = 1; i < 3; i++) {
+      facets.add(_.map(['Lecture Periods', 'Tutorial Periods'], function(label) {
+        return new ArrayFacetModel({
+          filteredCollection: mods,
+          key: label.replace(' ', '') + i,
+          label: 'Semester ' + i + ' ' + label
+        });
+      }));
+    }
 
     this.sidebarRegion.show(new FacetsView({
       collection: facets,
