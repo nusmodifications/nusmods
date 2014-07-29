@@ -171,10 +171,14 @@ module.exports = Backbone.Model.extend({
     this.set('CORSLink', config.corsUrl + this.get('ModuleCode'));
     this.set('IVLELink', config.ivleUrl.replace('<ModuleCode>', this.get('ModuleCode')));
 
+    this.set('hasExams', false);
     var history = this.get('History');
     if (history) {
       var semestersOffered = [{semester: 1}, {semester: 2}];
       for (var i = 0; i < history.length; i++) {
+        if (history[i].ExamDate) {
+          this.set('hasExams', true);
+        }
         var sem = history[i].Semester;
         if (sem === 1 || sem === 2) {
           semestersOffered[sem - 1].offered = true;
