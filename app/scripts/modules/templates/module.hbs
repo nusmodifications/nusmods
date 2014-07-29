@@ -38,11 +38,10 @@
               {{/if}}
               <dt class="highlight">Department</dt>
               <dd>{{module.Department}}</dd>
-              <dt class="highlight">Exam Date</dt>
               {{#if module.hasExams}}
                 {{#each module.History}}
+                  <dt class="highlight">Semester {{Semester}} Exam Date</dt>
                   <dd>
-                    <strong>Semester {{Semester}}</strong><br>
                     {{#if examStr}}
                       {{examStr}}
                     {{else}}
@@ -51,6 +50,7 @@
                   </dd>
                 {{/each}}
               {{else}}
+                <dt class="highlight">Exam Date</dt>
                 <dd>No Exam</dd>
               {{/if}}
               {{#if module.Workload}}
