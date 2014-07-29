@@ -63,6 +63,7 @@ default. To work with a local copy of the API:
 ```bash
 $ git submodule update --init
 $ cd api
+$ npm install
 $ grunt
 ```
 
