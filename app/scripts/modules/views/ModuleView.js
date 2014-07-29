@@ -52,7 +52,7 @@ function drawTree(selector, prereqs, lockedModules, modCode) {
   }
 
   var SVGWidth = $(selector).width(),
-      SVGHeight = 550,
+      SVGHeight = 400,
       allMods = NUSMods.getAllModules();
 
   d3.selectAll('svg').remove();
