@@ -45,6 +45,8 @@ var workloadify = function (workload) {
   return workloadComponents;
 };
 
+var semesterNames = config.semesterNames;
+
 module.exports = Backbone.Model.extend({
   idAttribute: 'ModuleCode',
   initialize: function() {
@@ -171,6 +173,7 @@ module.exports = Backbone.Model.extend({
     this.set('CORSLink', config.corsUrl + this.get('ModuleCode'));
     this.set('IVLELink', config.ivleUrl.replace('<ModuleCode>', this.get('ModuleCode')));
 
+    var modSemesterNames = [];
     this.set('hasExams', false);
     var history = this.get('History');
     if (history) {
@@ -180,10 +183,12 @@ module.exports = Backbone.Model.extend({
           this.set('hasExams', true);
         }
         var sem = history[i].Semester;
+        modSemesterNames.push(semesterNames[sem - 1]);
         if (sem === 1 || sem === 2) {
           semestersOffered[sem - 1].offered = true;
         }
       }
+      this.set('semesterNames', modSemesterNames);
       this.set('semestersOffered', semestersOffered);
     }
   }

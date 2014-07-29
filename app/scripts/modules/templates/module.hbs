@@ -9,6 +9,9 @@
           <div class="panel-body">
             <h1 class="module-code">{{module.ModuleCode}}</h1>
             <h3 class="module-title">{{module.ModuleTitle}}</h3>
+            {{#each module.semesterNames}}
+              <span class="label label-default">{{this}}</span>
+            {{/each}}
             <hr>
             <dl>
               <dd class="module-desc">
