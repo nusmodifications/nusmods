@@ -131,7 +131,7 @@ module.exports = Marionette.LayoutView.extend({
 
     var facets = new FacetCollection([], {
       filteredCollection: filteredModules,
-      pageSize: 10,
+      pageSize: 25,
       rawCollection: mods
     });
     facets.add(new ArrayFacetModel({
