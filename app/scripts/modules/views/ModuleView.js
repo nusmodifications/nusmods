@@ -52,7 +52,7 @@ function drawTree(selector, prereqs, lockedModules, modCode) {
   }
 
   var SVGWidth = $(selector).width(),
-      SVGHeight = 550,
+      SVGHeight = 400,
       allMods = _.indexBy(NUSMods.getAllModules(), "ModuleCode");
 
   d3.selectAll('svg').remove();
@@ -171,37 +171,34 @@ module.exports = Marionette.LayoutView.extend({
     biddingStatsRegion: '#bidding-stats'
   },
   initialize: function () {
+    var formElements = {
+      'faculty': '#faculty',
+      'account': '#account',
+      'student': 'input:radio[name="student-radios"]'
+    };
 
-    if (this.model.get('section') === 'corspedia') {
-      var formElements = {
-        'faculty': '#faculty',
-        'account': '#account',
-        'student': 'input:radio[name="student-radios"]'
-      };
+    var defaults = {
+      'faculty': 'Arts & Social Sciences',
+      'account': 'P',
+      'student': 'true'
+    };
 
-      var defaults = {
-        'faculty': 'Arts & Social Sciences',
-        'account': 'P',
-        'student': 'true'
-      };
-
-      var that = this;
-      var loadedItems = 0;
-      _.each(formElements, function (selector, item) {
-        localforage.getItem(item, function (value) {
-          if (!value) {
-            value = defaults[item];
-            localforage.setItem(item, value);
-          }
-          $(selector).val([value]);
-          searchPreferences[item] = value;
-          loadedItems++;
-          if (loadedItems === _.keys(formElements).length) {
-            that.showBiddingStatsRegion(true);
-          }
-        });
+    var that = this;
+    var loadedItems = 0;
+    _.each(formElements, function (selector, item) {
+      localforage.getItem(item, function (value) {
+        if (!value) {
+          value = defaults[item];
+          localforage.setItem(item, value);
+        }
+        $(selector).val([value]);
+        searchPreferences[item] = value;
+        loadedItems++;
+        if (loadedItems === _.keys(formElements).length) {
+          that.showBiddingStatsRegion(true);
+        }
       });
-    }
+    });
   },
   events: {
     'change #faculty, input:radio[name="student-radios"], #account': 'updateCorspedia',
@@ -244,47 +241,44 @@ module.exports = Marionette.LayoutView.extend({
   onShow: function () {
     var module = this.model.get('module');
 
-    if (this.model.get('section') === 'modmaven') {
-      var lockedModules = {'name': module.ModmavenTree['name'], 'children': []};
-      for (var i = 0; i < module.LockedModules.length; i++) {
-        lockedModules['children'].push({'name': module.LockedModules[i], 'children': []});
-      };
-      drawTree('#tree', module.ModmavenTree, lockedModules, module.ModuleCode);
-    }
-
+    var lockedModules = {'name': module.ModmavenTree['name'], 'children': []};
+    for (var i = 0; i < module.LockedModules.length; i++) {
+      lockedModules['children'].push({'name': module.LockedModules[i], 'children': []});
+    };
+    drawTree('#tree', module.ModmavenTree, lockedModules, module.ModuleCode);
+    
     var code = module.ModuleCode;
     var disqusShortname = config.disqusShortname;
-    if (this.model.get('section') === 'reviews') {
-      // Only reset Disqus when showing reviews section
-      var url = 'http://nusmods.com/modules/' + code + '/reviews';
-      var title = code + ' ' + module.ModuleTitle;
+    
+    // Only reset Disqus when showing reviews section
+    var url = 'http://nusmods.com/modules/' + code + '/reviews';
+    var title = code + ' ' + module.ModuleTitle;
 
-      window.disqus_identifier = code;
-      window.disqus_title = title;
-      window.disqus_url = url;
+    window.disqus_identifier = code;
+    window.disqus_title = title;
+    window.disqus_url = url;
 
-      if (!window.DISQUS) {
-        window.disqus_shortname = disqusShortname;
+    if (!window.DISQUS) {
+      window.disqus_shortname = disqusShortname;
 
-        (function() {
-          var dsq = document.createElement('script');
-          dsq.type = 'text/javascript';
-          dsq.async = true;
-          dsq.src = '//' + disqusShortname + '.disqus.com/embed.js';
-          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-      } else {
-        DISQUS.reset({
-          reload: true,
-          config: function () {
-            this.page.identifier = code;
-            this.page.title = title;
-            this.page.url = url;
-          }
-        });
-      }
+      (function() {
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqusShortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    } else {
+      DISQUS.reset({
+        reload: true,
+        config: function () {
+          this.page.identifier = code;
+          this.page.title = title;
+          this.page.url = url;
+        }
+      });
     }
-
+    
     (function () {
       if (typeof disqus_domain !== 'undefined') {
         DISQUSWIDGETS.domain = 'disqus.com';

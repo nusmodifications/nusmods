@@ -15,24 +15,28 @@ var sectionsInfo = [
     'sectionType': 'schedule',
     'tabTitle': 'Schedule',
     'sectionTitle': 'Class Schedule',
+    'icon': 'clock-o',
     'active': false
   },
   {
     'sectionType': 'corspedia',
     'tabTitle': 'Corspedia',
     'sectionTitle': 'CORS Bidding History',
+    'icon': 'bar-chart-o',
     'active': false
   },
   {
     'sectionType': 'modmaven',
     'tabTitle': 'ModMaven',
     'sectionTitle': 'Prerequisites Tree',
+    'icon': 'code-fork',
     'active': false
   },
   {
     'sectionType': 'reviews',
     'tabTitle': 'Module Reviews',
     'sectionTitle': 'Reviews & Discussions',
+    'icon': 'thumbs-o-up',
     'active': false
   }
 ];

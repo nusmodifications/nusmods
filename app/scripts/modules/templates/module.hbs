@@ -1,88 +1,125 @@
 <div class="row module-page">
-  <div class="col-md-3">
-    <h1 class="module-code">{{module.ModuleCode}}</h1>
-    <h3 class="module-title">{{module.ModuleTitle}}</h3>
-    <hr>
-    <dl>
-      <dd class="module-desc {{#unless module.ShortModuleDescription}} module-desc-more {{/unless}}">
-        <span class="desc-less">{{module.ShortModuleDescription}}...
-          <div class="desc-full">( <a href="#" class="show-full-desc">See full description</a> )</div>
-        </span>
-        <span class="desc-more">{{module.ModuleDescription}}</span>
-      </dd>
-      <dt class="highlight">Credits</dt>
-      <dd>{{module.ModuleCredit}}</dd>
-      {{#if module.Lecturers}}
-        <dt class="highlight">Lecturer(s)</dt>
-        <dd>
-          <ul class="lecturers list-inline">
-            {{#each module.Lecturers}}
-              <li>{{this}}</li>
-            {{/each}}
-          </ul>
-        </dd>
-      {{/if}}
-      {{#if module.Prerequisite}}
-        <dt class="highlight">Prerequisite(s)</dt>
-        <dd>{{{module.linkedPrerequisite}}}</dd>
-      {{/if}}
-      {{#if module.Preclusion}}
-        <dt class="highlight">Preclusion(s)</dt>
-        <dd>{{{module.linkedPreclusion}}}</dd>
-      {{/if}}
-      <dt class="highlight">Department</dt>
-      <dd>{{module.Department}}</dd>
-      <dt class="highlight">Exam Date</dt>
-      {{#if module.examStr}}
-        <dd>{{module.examStr}}</dd>
-      {{else}}
-        <dd>No Exam</dd>
-      {{/if}}
-      {{#if module.Workload}}
-        <dt class="highlight">Weekly Workload</dt>
-        <dl class="workload-components">
-          {{#if module.WorkloadComponents.lectureHours}}
-            <dd>Lecture: {{module.WorkloadComponents.lectureHours}} hrs</dd>
-          {{/if}}
-          {{#if module.WorkloadComponents.tutorialHours}}
-            <dd>Tutorial: {{module.WorkloadComponents.tutorialHours}} hrs</dd>
-          {{/if}}
-          {{#if module.WorkloadComponents.labHours}}
-            <dd>Lab: {{module.WorkloadComponents.labHours}} hrs</dd>
-          {{/if}}
-          {{#if module.WorkloadComponents.projectHours}}
-            <dd>Project: {{module.WorkloadComponents.projectHours}} hrs</dd>
-          {{/if}}
-          {{#if module.WorkloadComponents.preparationHours}}
-            <dd>Preparation: {{module.WorkloadComponents.preparationHours}} hrs</dd>
-          {{/if}}
-        </dl>
-      {{/if}}
-    </dl>
-  </div>
-  <div class="col-md-9">
+  <div class="col-md-12">
     <div class="row">
-      <div class="col-md-12">
-        <div class="nm-boxify">
-          <ul class="nav nav-tabs" role="tablist">
-            {{#each sectionsInfo}}
-              <li {{#equals sectionType ../section}}class="active"{{/equals}}>
-                <a href="/modules/{{../module.ModuleCode}}/{{sectionType}}">{{tabTitle}}
-                  {{#equals sectionType 'reviews'}}
-                    <span class="badge" data-disqus-identifier="{{../../module.ModuleCode}}" id="disqus-count"></span>
-                  {{/equals}}
+      <div class="col-md-5">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h2 class="panel-title module-page-section-title">Module Details</h2>
+          </div>
+          <div class="panel-body">
+            <h1 class="module-code">{{module.ModuleCode}}</h1>
+            <h3 class="module-title">{{module.ModuleTitle}}</h3>
+            <hr>
+            <dl>
+              <dd class="module-desc">
+                {{module.ModuleDescription}}
+              </dd>
+              <dt class="highlight">Credits</dt>
+              <dd>{{module.ModuleCredit}}</dd>
+              {{#if module.Lecturers}}
+                <dt class="highlight">Lecturer(s)</dt>
+                <dd>
+                  <ul class="lecturers list-inline">
+                    {{#each module.Lecturers}}
+                      <li>{{this}}</li>
+                    {{/each}}
+                  </ul>
+                </dd>
+              {{/if}}
+              {{#if module.Prerequisite}}
+                <dt class="highlight">Prerequisite(s)</dt>
+                <dd>{{{module.linkedPrerequisite}}}</dd>
+              {{/if}}
+              {{#if module.Preclusion}}
+                <dt class="highlight">Preclusion(s)</dt>
+                <dd>{{{module.linkedPreclusion}}}</dd>
+              {{/if}}
+              <dt class="highlight">Department</dt>
+              <dd>{{module.Department}}</dd>
+              <dt class="highlight">Exam Date</dt>
+              {{#if module.examStr}}
+                <dd>{{module.examStr}}</dd>
+              {{else}}
+                <dd>No Exam</dd>
+              {{/if}}
+              {{#if module.Workload}}
+                <dt class="highlight">Weekly Workload</dt>
+                <dl class="workload-components">
+                  {{#if module.WorkloadComponents.lectureHours}}
+                    <dd>Lecture: {{module.WorkloadComponents.lectureHours}} hrs</dd>
+                  {{/if}}
+                  {{#if module.WorkloadComponents.tutorialHours}}
+                    <dd>Tutorial: {{module.WorkloadComponents.tutorialHours}} hrs</dd>
+                  {{/if}}
+                  {{#if module.WorkloadComponents.labHours}}
+                    <dd>Lab: {{module.WorkloadComponents.labHours}} hrs</dd>
+                  {{/if}}
+                  {{#if module.WorkloadComponents.projectHours}}
+                    <dd>Project: {{module.WorkloadComponents.projectHours}} hrs</dd>
+                  {{/if}}
+                  {{#if module.WorkloadComponents.preparationHours}}
+                    <dd>Preparation: {{module.WorkloadComponents.preparationHours}} hrs</dd>
+                  {{/if}}
+                </dl>
+              {{/if}}
+            </dl>
+          </div>
+        </div>
+
+        <div class="panel panel-default module-main-content" id="modmaven">
+          <div class="panel-heading">
+            <h2 class="panel-title module-page-section-title">Prerequisites Tree</h2>
+          </div>
+          <div class="panel-body">
+            <div class="alert alert-warning" role="alert">
+              <p>ModMaven's prerequisites trees are still in beta. If you find any errors, please send an email to <a href="mailto:mods@nusmods.com">mods@nusmods.com</a> or leave a feedback/comment on our <a href="https://www.facebook.com/NUSMods" class="alert-link" target="_blank">Facebook page</a>. Thanks!</p>
+            </div>
+            <div class="modmaven">
+              <div id="tree"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-7">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h2 class="panel-title module-page-section-title">Actions</h2>
+          </div>
+          <div class="panel-body">
+            <div class="btn-group btn-group-justified">
+              <div class="btn-group">
+                <a class="cors btn btn-default"
+                     {{#unless module.inCORS}}disabled="disabled"{{/unless}}
+                     href="{{module.CORSLink}}"
+                     target="_blank">
+                  <i class="fa fa-{{#if module.inCORS}}check{{else}}times{{/if}} fa-fw"></i>
+                  <span class="hidden-xs">&nbsp;CORS</span>
                 </a>
-              </li>
-            {{/each}}
-          </ul>
-          <div> 
-            <h2 class="nm-section-heading">{{sectionTitle}} 
-              <div class="btn-group pull-right">
-                <button class="btn btn-primary dropdown-toggle"
+              </div>
+              <div class="btn-group">
+                <a class="ivle btn btn-default"
+                          data-code="{{module.ModuleCode}}"
+                          type="button"
+                          href="{{module.IVLELink}}"
+                          target="_blank">
+                  <i class="fa fa-graduation-cap"></i>
+                  <span class="hidden-xs">&nbsp;IVLE</span>
+                </a>
+              </div>
+              <div class="btn-group">
+                <button class="add-bookmark btn btn-default"
+                          data-code="{{module.ModuleCode}}"
+                          type="button">
+                  <i class="fa fa-bookmark"></i>
+                  <span class="hidden-xs">&nbsp;Bookmark</span>
+                </button>
+              </div>
+              <div class="btn-group">
+                <button class="btn btn-default dropdown-toggle"
                         data-toggle="dropdown"
                         data-code="{{module.ModuleCode}}"
                         type="button">
-                  <i class="fa fa-plus-circle"></i>&nbsp;Add {{module.ModuleCode}} To Timetable&nbsp;<span class="caret"></span>
+                  <i class="fa fa-plus"></i>&nbsp;Add To Timetable&nbsp;<span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-right" role="menu">
                   {{#each module.semestersOffered}}
@@ -94,24 +131,25 @@
                   {{/each}}
                 </ul>
               </div>
-              <button class="add-bookmark pull-right btn btn-info"
-                      data-code="{{module.ModuleCode}}"
-                      type="button">
-                  <i class="fa fa-bookmark"></i>&nbsp;Bookmark
-              </button>
-              <a class="ivle pull-right btn btn-default"
-                      data-code="{{module.ModuleCode}}"
-                      type="button"
-                      href="{{module.IVLELink}}"
-                      target="_blank">
-                  <i class="fa fa-graduation-cap"></i>&nbsp;IVLE
-              </a>
-              <a class="cors pull-right btn btn-default"
-                 {{#unless module.inCORS}}disabled="disabled"{{/unless}}
-                 href="{{module.CORSLink}}"
-                 target="_blank">
-                <i class="fa fa-{{#if module.inCORS}}check{{else}}times{{/if}} fa-fw"></i>&nbsp;CORS
-              </a>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="panel panel-default module-main-content">
+          <div class="panel-body">
+            <ul class="nav nav-tabs module-navigation" role="tablist">
+              {{#each sectionsInfo}}
+                <li {{#equals sectionType ../section}}class="active"{{/equals}}>
+                  <a href="/modules/{{../module.ModuleCode}}/{{sectionType}}">
+                    <i class="module-tab-icon fa fa-{{icon}}"></i>
+                    <span class="hidden-xs">{{tabTitle}}</span>
+                    {{#equals sectionType 'reviews'}}
+                      <span class="badge" data-disqus-identifier="{{../../module.ModuleCode}}" id="disqus-count"></span>
+                    {{/equals}}
+                  </a>
+                </li>
+              {{/each}}
+            </ul>
+            <h2 class="nm-section-heading">{{sectionTitle}} 
             </h2>
             <hr>
             {{#equals section 'schedule'}}
@@ -220,7 +258,116 @@
               <div id="disqus_thread"></div>
             {{/equals}}
           </div>
+        </div> -->
+        <div class="panel panel-default module-main-content" id="reviews">
+          <div class="panel-heading">
+            <h2 class="panel-title module-page-section-title">Reviews &amp; Discussions</h2>
+          </div>
+          <div class="panel-body">
+            <div class="alert alert-warning module-reviews">
+              <h4 class="message-title">Hi There!</h4>
+              <p>We would like to encourage everyone who enjoyed using NUSMods to contribute back to the community by writing reviews for modules that you have taken before. Your efforts will go a long way in building up a vibrant and rich NUS community.</p>
+              <p><strong>Please Note:</strong> Because the experience of each module will differ according to the professor teaching the module. At the start of your review, please state the semester taken and the name of the professor who taught the module in that semester.</p>
+            </div>
+            <div id="disqus_thread"></div>
+          </div>
         </div>
+      </div>
+    </div>
+
+    <div class="panel panel-default module-main-content" id="schedule">
+      <div class="panel-heading">
+        <h2 class="panel-title module-page-section-title">Lesson Schedule</h2>
+      </div>
+      <div class="panel-body">
+        {{#each module.History}}
+          <h2>Semester {{Semester}}</h2>
+          {{#each formattedTimetable}}
+            <h3 class="highlight thin">{{LessonType}}</h3>
+            <table class="table table-striped">
+              <tbody>
+              <tr>
+                <th>Class No</th>
+                <th>Week Type</th>
+                <th>Day</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Venue</th>
+              </tr>
+              {{#each Lessons}}
+                <tr>
+                  <td>{{ClassNo}}</td>
+                  <td>{{WeekText}}</td>
+                  <td>{{DayText}}</td>
+                  <td>{{StartTime}}</td>
+                  <td>{{EndTime}}</td>
+                  <td>{{Venue}}</td>
+                </tr>
+              {{/each}}
+              </tbody>
+            </table>
+          {{else}}
+            <p>No timetable data to be shown.</p>
+          {{/each}}
+        {{/each}}
+      </div>
+    </div>
+
+    <div class="panel panel-default module-main-content" id="corspedia">
+      <div class="panel-heading">
+        <h2 class="panel-title module-page-section-title">CORS Bidding History</h2>
+      </div>
+      <div class="panel-body">
+        {{#if module.CorsBiddingStats}}
+          <div class="well well-sm nm-filter">
+            <div class="row">
+              <div class="col-md-5 form-group">
+                <label class="control-label" for="faculty">Your Faculty
+                  <i class="nm-help highlight thin fa fa-question-circle" data-toggle="tooltip" data-placement="right" data-trigger="hover" title="CEG Students are to select <span class='highlight'>Joint Multi-Disciplinary Programmes</span> due to the unique nature of their course." data-html="true"></i>
+                </label>
+                <select class="form-control" name="faculty" id="faculty" data-pref-type="faculty">
+                  {{#each faculties}}
+                    <option value="{{value}}">{{name}}</option>
+                  {{/each}}
+                </select>
+              </div>
+              <div class="col-md-4 form-group">
+                <label class="control-label" for="account">Account Type
+                  <i class="nm-help highlight thin fa fa-question-circle" data-toggle="tooltip" data-placement="right" data-trigger="hover" title="<span class='highlight'>Programme Account (P)</span><br>Used for Core modules, Higher Level Electives, Major Modules (Cross-Faculty included).<br><br><span class='highlight'>General Account (G)</span><br>Used for UEM (Unrestricted Elective Modules), Minor modules, GEM and SS." data-html="true"></i>
+                </label>
+                <select class="form-control" name="account" id="account" data-pref-type="account">
+                  <option value="P">Programme</option>
+                  <option value="G">General</option>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <label class="control-label" for="faculty">New Student
+                  <i class="nm-help highlight thin fa fa-question-circle" data-toggle="tooltip" data-placement="right" data-trigger="hover" title="For certain modules, places are reserved for new students in Rounds 1 and 2, recognizing that new students do not have as many points as some of the seniors."></i>
+                </label>
+                <div class="radio">
+                  <label>
+                    <input type="radio" name="student-radios" id="student-radio-1" value="true" data-pref-type="student" selected>
+                    Yes
+                  </label>
+                  <label>
+                    <input type="radio" name="student-radios" id="student-radio-2" value="false" data-pref-type="student">
+                    No
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="alert alert-warning" role="alert">
+                  <p>Corspedia smart filters are still in beta. If you would like to view unfiltered CORS bidding history, click <a class="alert-link" id="show-all-stats">here</a>. Please leave a feedback/comment on our <a href="https://www.facebook.com/NUSMods" class="alert-link" target="_blank">Facebook page</a> if you find any errors.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        {{else}}
+          <p>No CORS bidding data to be shown.</p>
+        {{/if}}
+        <div id="bidding-stats"></div>
       </div>
     </div>
   </div>
