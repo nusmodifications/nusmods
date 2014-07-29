@@ -85,11 +85,7 @@ module.exports = Backbone.View.extend({
       t: '/timetable',
       m: '/modules',
       p: '/preferences',
-      '?': '/help',
-      c: '/modules/<module>/corspedia',
-      s: '/modules/<module>/schedule',
-      v: '/modules/<module>/modmaven',
-      r: '/modules/<module>/reviews'
+      '?': '/help'
     };
 
     var that = this;
@@ -104,6 +100,19 @@ module.exports = Backbone.View.extend({
         if (moduleCode || !modulePage) {
           that.navigateWithScrollTop(value.replace('<module>', moduleCode ? moduleCode : ''), true);
         }
+      });
+    });
+
+    var keyboardAnchorMappings = {
+      c: '#corspedia',
+      s: '#schedule',
+      v: '#modmaven',
+      r: '#reviews'
+    };
+
+    _.each(keyboardAnchorMappings, function (value, key) {
+      Mousetrap.bind(key, function () {
+        location.hash = value;
       });
     });
 
