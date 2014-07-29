@@ -304,19 +304,14 @@ $module-section-min-height: 700px;
 }
 
 // Module Finder Sidebar
-@media (max-width: 768px) {
-  #sidebar #clear-all {
-    float: left;
+#sidebar {
+  label {
+    font-weight: normal;
   }
-}
-
-#module-finder label {
-  font-weight: normal;
-}
-
-#sidebar .checkbox-inline {
-  display: block;
-  margin-left: 0 !important;
+  ul {
+    list-style: none;
+    padding: 0;
+  }
 }
 
 .arrow-right {
