@@ -8,6 +8,7 @@ var NavigationCollection = require('./common/collections/NavigationCollection');
 var NavigationView = require('./common/views/NavigationView');
 var Promise = require('bluebird');
 var SelectedModulesController = require('./common/controllers/SelectedModulesController');
+var TimetableModuleCollection = require('./common/collections/TimetableModuleCollection');
 var _ = require('underscore');
 var config = require('./common/config');
 var localforage = require('localforage');
@@ -46,7 +47,6 @@ App.reqres.setHandler('addNavigationItem', function (navigationItem) {
 });
 
 NUSMods.setConfig(config);
-NUSMods.generateModuleCodes();
 
 var selectedModulesControllers = [];
 
@@ -60,15 +60,10 @@ App.reqres.setHandler('selectedModules', function (sem) {
   return selectedModulesControllers[sem - 1].selectedModules;
 });
 App.reqres.setHandler('addModule', function (sem, id, options) {
-  return Promise.all([
-    NUSMods.getModIndex(id),
-    NUSMods.getTimetable(sem, id)
-  ]).then(function (modTimetable) {
-    var mod = modTimetable[0];
-    mod = _.extend(mod, _.findWhere(mod.History, {Semester: sem}));
-    mod.Timetable = modTimetable[1];
-    return selectedModulesControllers[sem - 1].selectedModules.add(mod, options);
-  });
+  return selectedModulesControllers[sem - 1].selectedModules.add({
+    ModuleCode: id,
+    Semester: sem
+  }, options);
 });
 App.reqres.setHandler('removeModule', function (sem, id) {
   var selectedModules = selectedModulesControllers[sem - 1].selectedModules;
@@ -133,9 +128,33 @@ App.on('start', function () {
   require('./help');
   require('./support');
 
-  new AppView();
+  Promise.all(_.map(_.range(1, 5), function(semester) {
+    var semTimetableFragment = config.semTimetableFragment(semester);
+    return localforage.getItem(semTimetableFragment + ':queryString')
+      .then(function (savedQueryString) {
+      if ('/' + semTimetableFragment === window.location.pathname) {
+        var queryString = window.location.search.slice(1);
+        if (queryString) {
+          if (savedQueryString !== queryString) {
+            // If initial query string does not match saved query string,
+            // timetable is shared.
+            App.request('selectedModules', semester).shared = true;
+          }
+          // If there is a query string for timetable, return so that it will
+          // be used instead of saved query string.
+          return;
+        }
+      }
+      var selectedModules = TimetableModuleCollection.fromQueryStringToJSON(savedQueryString);
+      return Promise.all(_.map(selectedModules, function (module) {
+        return App.request('addModule', semester, module.ModuleCode, module);
+      }));
+    });
+  }).concat([NUSMods.generateModuleCodes()])).then(function () {
+    new AppView();
 
-  Backbone.history.start({pushState: true});
+    Backbone.history.start({pushState: true});
+  });
 
   localforage.getItem('bookmarks:bookmarkedModules', function (modules) {
     if (!modules) {

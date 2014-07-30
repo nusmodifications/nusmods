@@ -2,7 +2,6 @@
 
 var App = require('../../app');
 var Backbone = require('backbone');
-var ExamCollection = require('../collections/ExamCollection');
 var ExamsView = require('./ExamsView');
 var ExportView = require('./ExportView');
 var Marionette = require('backbone.marionette');
@@ -36,15 +35,14 @@ module.exports = Marionette.LayoutView.extend({
   onShow: function() {
     this.selectedModules = App.request('selectedModules', this.semester);
     this.timetable = this.selectedModules.timetable;
-    var exams = new ExamCollection(null, {modules: this.selectedModules});
 
     this.listenTo(this.selectedModules, 'add remove', this.modulesChanged);
     this.listenTo(this.timetable, 'change', this.modulesChanged);
 
-    this.examsRegion.show(new ExamsView({collection: exams}));
+    this.examsRegion.show(new ExamsView({collection: this.selectedModules.exams}));
     this.exportRegion.show(new ExportView({
       collection: this.selectedModules,
-      exams: exams
+      exams: this.selectedModules.exams
     }));
     this.selectRegion.show(new SelectView({
       semester: this.semester

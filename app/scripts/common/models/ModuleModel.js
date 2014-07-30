@@ -165,7 +165,9 @@ module.exports = Backbone.Model.extend({
       this.set('FormattedCorsBiddingStats', formattedCorsBiddingStats);
     }
 
-    this.set('examStr', examStr(this.get('ExamDate')));
+    this.on('change:ExamDate', function () {
+      this.set('examStr', examStr(this.get('ExamDate')));
+    });
 
     var types = this.get('Types');
     this.set('inCORS', types && types.indexOf('Not in CORS') === -1);

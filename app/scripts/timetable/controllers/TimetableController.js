@@ -8,7 +8,6 @@ var TimetableModuleCollection = require('../../common/collections/TimetableModul
 var TimetableView = require('../views/TimetableView');
 var _ = require('underscore');
 var config = require('../../common/config');
-var localforage = require('localforage');
 
 var navigationItem = App.request('addNavigationItem', {
   name: 'Timetable',
@@ -29,21 +28,6 @@ module.exports = Marionette.Controller.extend({
     }
     navigationItem.select();
     Promise.resolve().then(function () {
-      if (queryString && !Backbone.History.initialRoute) {
-        return queryString;
-      }
-      return localforage.getItem(config.semTimetableFragment(semester) +
-        ':queryString').then(function (savedQueryString) {
-        if (Backbone.History.initialRoute && queryString && savedQueryString !== queryString) {
-          // If initial query string does not match saved query string,
-          // timetable is shared.
-          var selectedModules = App.request('selectedModules', semester);
-          selectedModules.shared = true;
-          return queryString;
-        }
-        return savedQueryString;
-      });
-    }).then(function (queryString) {
       if (queryString) {
         var selectedModules = App.request('selectedModules', semester);
         var timetable = selectedModules.timetable;
