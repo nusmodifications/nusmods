@@ -100,15 +100,7 @@
             </div>
             <div class="btn-group btn-group-justified">
               <div class="btn-group">
-                <button class="add-bookmark btn btn-default"
-                        data-code="{{module.ModuleCode}}"
-                        type="button">
-                  <i class="fa fa-bookmark"></i>
-                  &nbsp;Bookmark
-                </button>
-              </div>
-              <div class="btn-group">
-                <button class="btn btn-default dropdown-toggle"
+                <button class="btn btn-primary dropdown-toggle"
                         data-toggle="dropdown"
                         data-code="{{module.ModuleCode}}"
                         type="button">
@@ -123,6 +115,14 @@
                     </li>
                   {{/each}}
                 </ul>
+              </div>
+              <div class="btn-group">
+                <button class="add-bookmark btn btn-info"
+                        data-code="{{module.ModuleCode}}"
+                        type="button">
+                  <i class="fa fa-bookmark"></i>
+                  &nbsp;Bookmark
+                </button>
               </div>
             </div>
           </div>
