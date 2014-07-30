@@ -3,6 +3,7 @@
 var App = require('../../app');
 var Backbone = require('backbone');
 var BiddingStatsView = require('./BiddingStatsView');
+var GoToTopBehavior = require('../../common/behaviors/GoToTopBehavior');
 var Marionette = require('backbone.marionette');
 var NUSMods = require('../../nusmods');
 var _ = require('underscore');
@@ -167,6 +168,14 @@ function drawTree(selector, prereqs, lockedModules, modCode) {
 
 module.exports = Marionette.LayoutView.extend({
   template: template,
+  ui: {
+    backToTopButton: '#back-to-top'
+  },
+  behaviors: {
+    GoToTopBehavior: {
+      behaviorClass: GoToTopBehavior
+    }
+  },
   regions: {
     biddingStatsRegion: '#bidding-stats'
   },
