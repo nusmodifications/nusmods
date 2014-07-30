@@ -295,6 +295,12 @@ module.exports = Marionette.LayoutView.extend({
       DISQUSWIDGETS.forum = disqusShortname;
       DISQUSWIDGETS.getCount();
     })();
+    var hash = window.location.hash;
+    window.location.hash = '';
+
+    setTimeout(function () {      
+      window.location.hash = hash;
+    }, 0);
 
     $('.nm-help').tooltip();
   },
