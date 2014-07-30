@@ -1,7 +1,7 @@
 <div class="row module-page">
   <div class="col-md-12">
     <div class="row">
-      <div class="col-md-5">
+      <div class="col-md-4">
         <div class="panel panel-default">
           <div class="panel-heading">
             <h2 class="panel-title module-page-section-title">Module Details</h2>
@@ -77,55 +77,34 @@
                 </dl>
               {{/if}}
             </dl>
-          </div>
-        </div>
-
-        <div class="panel panel-default module-main-content" id="modmaven">
-          <div class="panel-heading">
-            <h2 class="panel-title module-page-section-title">Prerequisites Tree</h2>
-          </div>
-          <div class="panel-body">
-            <div class="alert alert-warning" role="alert">
-              <p>ModMaven's prerequisites trees are still in beta. If you find any errors, please send an email to <a href="mailto:mods@nusmods.com">mods@nusmods.com</a> or leave a feedback/comment on our <a href="https://www.facebook.com/NUSMods" class="alert-link" target="_blank">Facebook page</a>. Thanks!</p>
-            </div>
-            <div class="modmaven">
-              <div id="tree"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-7">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h2 class="panel-title module-page-section-title">Actions</h2>
-          </div>
-          <div class="panel-body">
             <div class="btn-group btn-group-justified">
               <div class="btn-group">
                 <a class="cors btn btn-default"
-                     {{#unless module.inCORS}}disabled="disabled"{{/unless}}
-                     href="{{module.CORSLink}}"
-                     target="_blank">
+                   {{#unless module.inCORS}}disabled="disabled"{{/unless}}
+                   href="{{module.CORSLink}}"
+                   target="_blank">
                   <i class="fa fa-{{#if module.inCORS}}check{{else}}times{{/if}} fa-fw"></i>
-                  <span class="hidden-xs">&nbsp;CORS</span>
+                  &nbsp;CORS
                 </a>
               </div>
               <div class="btn-group">
                 <a class="ivle btn btn-default"
-                          data-code="{{module.ModuleCode}}"
-                          type="button"
-                          href="{{module.IVLELink}}"
-                          target="_blank">
+                   data-code="{{module.ModuleCode}}"
+                   type="button"
+                   href="{{module.IVLELink}}"
+                   target="_blank">
                   <i class="fa fa-graduation-cap"></i>
-                  <span class="hidden-xs">&nbsp;IVLE</span>
+                  &nbsp;IVLE
                 </a>
               </div>
+            </div>
+            <div class="btn-group btn-group-justified">
               <div class="btn-group">
                 <button class="add-bookmark btn btn-default"
-                          data-code="{{module.ModuleCode}}"
-                          type="button">
+                        data-code="{{module.ModuleCode}}"
+                        type="button">
                   <i class="fa fa-bookmark"></i>
-                  <span class="hidden-xs">&nbsp;Bookmark</span>
+                  &nbsp;Bookmark
                 </button>
               </div>
               <div class="btn-group">
@@ -133,7 +112,7 @@
                         data-toggle="dropdown"
                         data-code="{{module.ModuleCode}}"
                         type="button">
-                  <i class="fa fa-plus"></i><span class="hidden-xs">&nbsp;Add<span class="hidden-md"> To Timetable</span></span>&nbsp;<span class="caret"></span>
+                  <i class="fa fa-plus"></i>&nbsp;Add<span class="hidden-md"> To Timetable</span>&nbsp;<span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-right" role="menu">
                   {{#each module.semestersOffered}}
@@ -145,6 +124,21 @@
                   {{/each}}
                 </ul>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="panel panel-default module-main-content" id="modmaven">
+          <div class="panel-heading">
+            <h2 class="panel-title module-page-section-title">Prerequisites Tree</h2>
+          </div>
+          <div class="panel-body">
+            <div class="alert alert-warning" role="alert">
+              <p>ModMaven's prerequisites trees are still in beta. If you find any errors, please send an email to <a href="mailto:mods@nusmods.com">mods@nusmods.com</a> or leave a feedback/comment on our <a href="https://www.facebook.com/NUSMods" class="alert-link" target="_blank">Facebook page</a>. Thanks!</p>
+            </div>
+            <div class="modmaven">
+              <div id="tree"></div>
             </div>
           </div>
         </div>
@@ -161,44 +155,6 @@
             <div id="disqus_thread"></div>
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="panel panel-default module-main-content" id="schedule">
-      <div class="panel-heading">
-        <h2 class="panel-title module-page-section-title">Lesson Schedule</h2>
-      </div>
-      <div class="panel-body">
-        {{#each module.History}}
-          <h2>Semester {{Semester}}</h2>
-          {{#each formattedTimetable}}
-            <h3 class="highlight thin">{{LessonType}}</h3>
-            <table class="table table-striped">
-              <tbody>
-              <tr>
-                <th>Class No</th>
-                <th>Week Type</th>
-                <th>Day</th>
-                <th>Start Time</th>
-                <th>End Time</th>
-                <th>Venue</th>
-              </tr>
-              {{#each Lessons}}
-                <tr>
-                  <td>{{ClassNo}}</td>
-                  <td>{{WeekText}}</td>
-                  <td>{{DayText}}</td>
-                  <td>{{StartTime}}</td>
-                  <td>{{EndTime}}</td>
-                  <td>{{Venue}}</td>
-                </tr>
-              {{/each}}
-              </tbody>
-            </table>
-          {{else}}
-            <p>No timetable data to be shown.</p>
-          {{/each}}
-        {{/each}}
       </div>
     </div>
 
@@ -257,6 +213,44 @@
           <p>No CORS bidding data to be shown.</p>
         {{/if}}
         <div id="bidding-stats"></div>
+      </div>
+    </div>
+
+    <div class="panel panel-default module-main-content" id="schedule">
+      <div class="panel-heading">
+        <h2 class="panel-title module-page-section-title">Lesson Schedule</h2>
+      </div>
+      <div class="panel-body">
+        {{#each module.History}}
+          <h2>Semester {{Semester}}</h2>
+          {{#each formattedTimetable}}
+            <h3 class="highlight thin">{{LessonType}}</h3>
+            <table class="table table-striped">
+              <tbody>
+              <tr>
+                <th>Class No</th>
+                <th>Week Type</th>
+                <th>Day</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Venue</th>
+              </tr>
+              {{#each Lessons}}
+                <tr>
+                  <td>{{ClassNo}}</td>
+                  <td>{{WeekText}}</td>
+                  <td>{{DayText}}</td>
+                  <td>{{StartTime}}</td>
+                  <td>{{EndTime}}</td>
+                  <td>{{Venue}}</td>
+                </tr>
+              {{/each}}
+              </tbody>
+            </table>
+          {{else}}
+            <p>No timetable data to be shown.</p>
+          {{/each}}
+        {{/each}}
       </div>
     </div>
   </div>

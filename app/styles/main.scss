@@ -490,22 +490,14 @@ colgroup.hover {
   dd {
     margin-bottom: 10px;
   }
-  .desc-more {
-    display: none;
-  }
-  .module-desc-more {
-    .desc-less {
-      display: none;
-    }
-    .desc-more {
-      display: inherit;
-    }
-  }
-  .desc-full {
-    text-align: right;
+  .module-desc {
+    text-align: justify;
   }
   .workload-components dd {
     margin-bottom: 0;
+  }
+  .btn-group-justified {
+    padding-bottom: 10px;
   }
   .module-tab-icon {
     margin-right: 5px;
