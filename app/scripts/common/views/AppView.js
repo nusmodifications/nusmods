@@ -88,16 +88,11 @@ module.exports = Backbone.View.extend({
     
     _.each(keyboardNavigationMappings, function (value, key) {
       Mousetrap.bind(key, function () {
-        var modulePage, moduleCode;
-        if (value.indexOf('<module>') > -1) {
-          modulePage = true;
-          moduleCode = modulify.getModuleFromString(window.location.href);
-        }
-        if (moduleCode || !modulePage) {
-          that.navigateWithScrollTop(value.replace('<module>', moduleCode ? moduleCode : ''), true);
-        }
+        that.navigateWithScrollTop(value, true);
       });
     });
+
+    var modulePageRegex = /^\/modules\/[^\/]{6,10}/;
 
     var keyboardAnchorMappings = {
       c: '#corspedia',
@@ -108,19 +103,15 @@ module.exports = Backbone.View.extend({
 
     _.each(keyboardAnchorMappings, function (value, key) {
       Mousetrap.bind(key, function () {
-        location.hash = value;
+        if (modulePageRegex.test(window.location.pathname)) {
+          location.hash = value;
+        }
       });
     });
-
-    Mousetrap.bind(['left', 'right'], function (e) {
-      themePicker.selectNextTheme(e.keyCode === 37 ? 'Left' : 'Right');
-      return false;
-    });
-
-    var reviewsRegex = /^\/modules\/[^\/]{6,10}/;
+    
     Mousetrap.bind(['x'], function () {
       themePicker.toggleMode();
-      if (reviewsRegex.test(window.location.pathname) && window.DISQUS) {
+      if (modulePageRegex.test(window.location.pathname) && window.DISQUS) {
         window.DISQUS.reset({
           reload: true,
           config: function () {
@@ -132,7 +123,10 @@ module.exports = Backbone.View.extend({
       }
     });
 
-    attachFastClick(document.body);
+    Mousetrap.bind(['left', 'right'], function (e) {
+      themePicker.selectNextTheme(e.keyCode === 37 ? 'Left' : 'Right');
+      return false;
+    });
 
     $('.nm-bookmark-button').qtip({
       content: '<div class="nm-bookmarks"></div>',
@@ -154,6 +148,8 @@ module.exports = Backbone.View.extend({
         }
       }
     });
+
+    attachFastClick(document.body);
   },
 
   navigateWithScrollTop: function (location, trigger) {
