@@ -83,10 +83,8 @@ module.exports = Marionette.ItemView.extend({
   },
 
   onShow: function () {
-    var selectedModules = App.request('selectedModules');
-
-    this.listenTo(selectedModules, 'add remove', this.modulesChanged);
-    this.listenTo(selectedModules.timetable, 'change', this.modulesChanged);
+    this.listenTo(this.collection, 'add remove', this.modulesChanged);
+    this.listenTo(this.collection.timetable, 'change', this.modulesChanged);
 
     var ui = this.ui;
 

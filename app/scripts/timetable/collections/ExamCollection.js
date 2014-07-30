@@ -7,18 +7,9 @@ var _ = require('underscore');
 module.exports = Backbone.Collection.extend({
   model: Exam,
 
-  initialize: function (models, options) {
+  initialize: function () {
     this.clashCount = 0;
     this.listenTo(this, {add: this.onAdd, remove: this.onRemove});
-
-    options.modules.each(_.bind(this.addModule, this));
-
-    this.listenTo(options.modules, {
-      add: this.addModule,
-      remove: function (module) {
-        this.remove(this.get(module.id));
-      }
-    });
   },
 
   addModule: function (module) {
@@ -27,7 +18,8 @@ module.exports = Backbone.Collection.extend({
       ExamDate: module.get('ExamDate'),
       examStr: module.get('examStr'),
       id: module.id,
-      ModuleTitle: module.get('ModuleTitle')
+      ModuleTitle: module.get('ModuleTitle'),
+      Semester: module.get('Semester')
     });
   },
 

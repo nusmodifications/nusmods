@@ -9,13 +9,6 @@ var selectResultTemplate = require('../templates/select_result.hbs');
 var template = require('../templates/select.hbs');
 require('select2');
 
-var codes, titles, modsLength;
-var codesAndTitlesPromise = NUSMods.getCodesAndTitles().then(function (data) {
-  codes = _.keys(data);
-  titles = _.values(data);
-  modsLength = codes.length;
-});
-
 module.exports = Marionette.ItemView.extend({
   className: 'form-group',
   template: template,
@@ -28,19 +21,34 @@ module.exports = Marionette.ItemView.extend({
     'input': 'input'
   },
 
+  onMouseenter: function (event) {
+    var button = $(event.currentTarget);
+    button.children('span').hide();
+    button.children('i').removeClass('hidden');
+  },
+
+  onMouseleave: function (event) {
+    var button = $(event.currentTarget);
+    button.children('span').show();
+    button.children('i').addClass('hidden');
+  },
+
   onMouseup: function (event) {
     event.stopPropagation();
     var button = $(event.currentTarget);
     var add = button.hasClass('add');
-    App.request((add ? 'add' : 'remove') + 'Module', button.data('code'));
+    App.request((add ? 'add' : 'remove') + 'Module', button.data('semester'), button.data('code'));
     button
-      .toggleClass('add remove')
+      .toggleClass('add remove label-default label-success')
       .prop('title', (add ? 'Add to' : 'Remove from') + 'Timetable')
-      .children().toggleClass('fa-plus fa-times');
+      .children('i').toggleClass('fa-plus fa-times');
   },
 
   onSelect2Open: function () {
-    $('#select2-drop').on('mouseup', '.btn', this.onMouseup);
+    $('#select2-drop')
+      .on('mouseenter', 'a', this.onMouseenter)
+      .on('mouseleave', 'a', this.onMouseleave)
+      .on('mouseup', 'a', this.onMouseup);
   },
 
   onSelect2Selecting: function(event) {
@@ -60,20 +68,30 @@ module.exports = Marionette.ItemView.extend({
         return selectResultTemplate(object);
       },
       query: function (options) {
-        codesAndTitlesPromise.then(function () {
+        NUSMods.getCodesAndTitles().then(function (data) {
           var i,
             results = [],
             pushResult = function (i) {
+              var code = data[i].ModuleCode;
+              var semesters = data[i].Semesters;
+              var sems = [{semester: 1}, {semester: 2}];
+              for (var j = 0; j < semesters.length; j++) {
+                var semester = semesters[j];
+                if (semester === 1 || semester === 2) {
+                  sems[semester - 1].offered = true;
+                  sems[semester - 1].selected = App.request('isModuleSelected', semester, code);
+                }
+              }
               return results.push({
-                id: codes[i],
-                selected: App.request('isModuleSelected', codes[i]),
-                text: codes[i] + ' ' + titles[i]
+                id: code,
+                semesters: sems,
+                text: code + ' ' + data[i].ModuleTitle
               });
             };
           if (options.term) {
             var re = new RegExp(options.term, 'i');
-            for (i = options.context || 0; i < modsLength; i++) {
-              if (codes[i].search(re) !== -1 || titles[i].search(re) !== -1) {
+            for (i = options.context || 0; i < data.length; i++) {
+              if (data[i].ModuleCode.search(re) !== -1 || data[i].ModuleTitle.search(re) !== -1) {
                 if (pushResult(i) === PAGE_SIZE) {
                   i++;
                   break;
@@ -87,7 +105,7 @@ module.exports = Marionette.ItemView.extend({
           }
           options.callback({
             context: i,
-            more: i < modsLength,
+            more: i < data.length,
             results: results
           });
         });

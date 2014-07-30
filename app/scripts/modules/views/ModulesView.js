@@ -7,15 +7,16 @@ var GoToTopBehavior = require('../../common/behaviors/GoToTopBehavior');
 var Marionette = require('backbone.marionette');
 var ModuleCollection = require('../../common/collections/ModuleCollection');
 var ModulesListingView = require('./ModulesListingView');
-var NUSMods = require('../../nusmods');
 var _ = require('underscore');
+var config = require('../../common/config');
 var template = require('../templates/modules.hbs');
 
 module.exports = Marionette.LayoutView.extend({
   template: template,
 
   regions: {
-    modulesRegion: '.modules'
+    modulesRegion: '#content',
+    sidebarRegion: '#sidebar'
   },
 
   ui: {
@@ -43,11 +44,14 @@ module.exports = Marionette.LayoutView.extend({
       this.sidebarShown = !this.sidebarShown;
       var qtipContent = this.sidebarShown ? 'Hide Sidebar' : 'Show Sidebar';
       this.ui.sidebarToggle.qtip('option', 'content.text', qtipContent);
-    },
+    }
+  },
+  
+  initialize: function (options) {
+    this.mods = options.mods;
   },
 
-  onShow: function() {
-
+  onShow: function () {
     this.sidebarShown = true;
     this.ui.sidebarToggle.qtip({
       content: 'Hide Sidebar',
@@ -98,60 +102,85 @@ module.exports = Marionette.LayoutView.extend({
       updateAncestors(parent, checked);
     });
 
-    NUSMods.getMods().then(_.bind(function (mods) {
-      var typeFriendlyName = {
-        CFM: 'Cross-Faculty',
-        GEM: 'GEM',
-        Module: 'Faculty',
-        SSM: 'Singapore Studies',
-        UEM: 'Breadth / UE'
-      };
-      _.each(mods, function (mod) {
-        mod.level = mod.ModuleCode[mod.ModuleCode.search(/\d/)] * 1000;
-        if (mod.Types) {
-          mod.Types = _.map(mod.Types, function (type) {
-            return typeFriendlyName[type] || type;
-          });
-        } else {
-          mod.Types = ['Not in CORS'];
-        }
-        mod.LecturePeriods = mod.LecturePeriods || ['No Lectures'];
-        mod.TutorialPeriods = mod.TutorialPeriods || ['No Tutorials'];
-      });
+    var typeFriendlyName = {
+      CFM: 'Cross-Faculty',
+      GEM: 'GEM',
+      Module: 'Faculty',
+      SSM: 'Singapore Studies',
+      UEM: 'Breadth / UE'
+    };
 
-      var filteredModules = new ModuleCollection();
+    var semesterNames = config.semesterNames;
+    var mods = this.mods;
+    _.each(mods, function (mod) {
+      mod.level = mod.ModuleCode[mod.ModuleCode.search(/\d/)] * 1000;
+      if (mod.Types) {
+        mod.Types = _.map(mod.Types, function (type) {
+          return typeFriendlyName[type] || type;
+        });
+      } else {
+        mod.Types = ['Not in CORS'];
+      }
+      mod.semesterNames = [];
+      for (var i = 0; i < mod.History.length; i++) {
+        var history = mod.History[i];
+        var sem = history.Semester;
+        mod.semesterNames.push(semesterNames[sem - 1]);
+        mod['LecturePeriods' + sem] = history.LecturePeriods || ['No Lectures'];
+        mod['TutorialPeriods' + sem] = history.TutorialPeriods || ['No Tutorials'];
+      }
+    });
 
-      var facets = new FacetCollection([], {
-        filteredCollection: filteredModules,
-        pageSize: 10,
-        rawCollection: mods
-      });
-      facets.add(_.map(['Department', 'level'], function(key) {
-        return {
-          filteredCollection: mods,
-          key: key
-        };
-      }));
-      facets.add({
+    var filteredModules = new ModuleCollection();
+
+    var facets = new FacetCollection([], {
+      filteredCollection: filteredModules,
+      pageSize: 25,
+      rawCollection: mods
+    });
+    facets.add(new ArrayFacetModel({
+      filteredCollection: mods,
+      key: 'semesterNames',
+      label: 'Academic Year ' + config.academicYear
+    }));
+    facets.add(new ArrayFacetModel({
+      filteredCollection: mods,
+      key: 'Types',
+      label: 'Types'
+    }));
+    facets.add(_.map({
+      Department: 'Faculty / Department',
+      level: 'Level'
+    }, function(label, key) {
+      return {
         filteredCollection: mods,
-        key: 'ModuleCredit',
-        sortBy: function (filter) {
-          return +filter.label;
-        }
-      });
-      facets.add(_.map(['LecturePeriods', 'TutorialPeriods', 'Types'], function(key) {
+        key: key,
+        label: label
+      };
+    }));
+    facets.add({
+      filteredCollection: mods,
+      key: 'ModuleCredit',
+      label: 'Modular Credits (MCs)',
+      sortBy: function (filter) {
+        return +filter.label;
+      }
+    });
+    for (var i = 1; i < 3; i++) {
+      facets.add(_.map(['Lecture Periods', 'Tutorial Periods'], function(label) {
         return new ArrayFacetModel({
           filteredCollection: mods,
-          key: key
+          key: label.replace(' ', '') + i,
+          label: 'Semester ' + i + ' ' + label
         });
       }));
+    }
 
-      (new FacetsView({
-        collection: facets,
-        threshold: 600
-      })).render();
+    this.sidebarRegion.show(new FacetsView({
+      collection: facets,
+      threshold: 600
+    }));
 
-      this.modulesRegion.show(new ModulesListingView({collection: filteredModules}));
-    }, this));
+    this.modulesRegion.show(new ModulesListingView({collection: filteredModules}));
   }
 });

@@ -4,6 +4,8 @@ var _ = require('underscore');
 var config = require('../config.json');
 
 module.exports = _.extend({
-  semTimetableFragment: 'timetable/' +
-    config.academicYear.replace('/', '-') + '/sem' + config.semester
+  semTimetableFragment: function (semester) {
+    return 'timetable/' + config.academicYear.replace('/', '-') +
+      '/sem' + (semester || config.semester);
+  }
 }, config);

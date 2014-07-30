@@ -8,13 +8,6 @@ var _ = require('underscore');
 var template = require('../templates/select.hbs');
 require('select2');
 
-var codes, titles, modsLength;
-var codesAndTitlesPromise = NUSMods.getCodesAndTitles().then(function (data) {
-  codes = _.keys(data);
-  titles = _.values(data);
-  modsLength = codes.length;
-});
-
 module.exports = Marionette.ItemView.extend({
   template: template,
 
@@ -26,54 +19,57 @@ module.exports = Marionette.ItemView.extend({
     'input': 'input'
   },
 
-  onSelect2Selecting: function(event) {
+  initialize: function (options) {
+    this.semester = options.semester;
+  },
+
+  onSelect2Selecting: function (event) {
     event.preventDefault();
-    App.request('addModule', event.val);
+    App.request('addModule', this.semester, event.val);
     this.ui.input.select2('focus');
   },
 
   onShow: function () {
     var PAGE_SIZE = 50;
+    var semester = this.semester;
     this.ui.input.select2({
       multiple: true,
       query: function (options) {
-        codesAndTitlesPromise.then(function () {
+        NUSMods.getCodesAndTitles().then(function (data) {
           var i,
             results = [],
             pushResult = function (i) {
-              if (!App.request('isModuleSelected', codes[i])) {
+              var code = data[i].ModuleCode;
+              if (!App.request('isModuleSelected', semester, code)) {
                 results.push({
-                  id: codes[i],
-                  text: codes[i] + ' ' + titles[i]
+                  id: code,
+                  text: code + ' ' + data[i].ModuleTitle
                 });
               }
               return results.length;
             };
-          if (options.term) {
-            var re = new RegExp(options.term, 'i');
-            for (i = options.context || 0; i < modsLength; i++) {
-              if (codes[i].search(re) !== -1 || titles[i].search(re) !== -1) {
-                if (pushResult(i) === PAGE_SIZE) {
-                  i++;
-                  break;
-                }
+          var re = new RegExp(options.term, 'i');
+          for (i = options.context || 0; i < data.length; i++) {
+            if (data[i].Semesters.indexOf(semester) !== -1 &&
+              (!options.term ||
+                data[i].ModuleCode.search(re) !== -1 ||
+                data[i].ModuleTitle.search(re) !== -1)) {
+              if (pushResult(i) === PAGE_SIZE) {
+                i++;
+                break;
               }
-            }
-          } else {
-            for (i = (options.page - 1) * PAGE_SIZE; i < options.page * PAGE_SIZE; i++) {
-              pushResult(i);
             }
           }
           options.callback({
             context: i,
-            more: i < modsLength,
+            more: i < data.length,
             results: results
           });
         });
       }
     });
 
-    Mousetrap.bind('.', function(ev) {
+    Mousetrap.bind('.', function (ev) {
       $('.timetable-input .select2-input').focus();
       ev.preventDefault();
       return false;

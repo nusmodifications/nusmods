@@ -2,11 +2,11 @@
 
 var App = require('../../app');
 var Backbone = require('backbone');
-var ExamCollection = require('../collections/ExamCollection');
 var ExamsView = require('./ExamsView');
 var ExportView = require('./ExportView');
 var Marionette = require('backbone.marionette');
 var SelectView = require('./SelectView');
+var SemesterSelectorView = require('./SemesterSelectorView');
 var SharedTimetableControlsView = require('./SharedTimetableControlsView');
 var ShowHideView = require('./ShowHideView');
 var TimetableView = require('./TableView');
@@ -21,43 +21,54 @@ module.exports = Marionette.LayoutView.extend({
     examsRegion: '#exam-timetable',
     exportRegion: '.export-region',
     selectRegion: '.select-region',
+    semesterSelectorRegion: '.semester-selector-region',
     sharedTimetableControlsRegion: '.shared-timetable-controls-region',
     showHideRegion: '.show-hide-region',
     timetableRegion: '#timetable-wrapper',
     urlSharingRegion: '.url-sharing-region'
   },
 
+  initialize: function (options) {
+    this.semester = options.semester;
+  },
+
   onShow: function() {
-    this.selectedModules = App.request('selectedModules');
+    this.selectedModules = App.request('selectedModules', this.semester);
     this.timetable = this.selectedModules.timetable;
-    var exams = new ExamCollection(null, {modules: this.selectedModules});
 
     this.listenTo(this.selectedModules, 'add remove', this.modulesChanged);
     this.listenTo(this.timetable, 'change', this.modulesChanged);
 
-    this.examsRegion.show(new ExamsView({collection: exams}));
+    this.examsRegion.show(new ExamsView({collection: this.selectedModules.exams}));
     this.exportRegion.show(new ExportView({
       collection: this.selectedModules,
-      exams: exams
+      exams: this.selectedModules.exams
     }));
-    this.selectRegion.show(new SelectView());
+    this.selectRegion.show(new SelectView({
+      semester: this.semester
+    }));
     if (this.selectedModules.shared) {
       this.sharedTimetableControlsRegion.show(new SharedTimetableControlsView({
         collection: this.selectedModules
       }));
     }
+    this.semesterSelectorRegion.show(new SemesterSelectorView({
+      semester: this.semester
+    }));
     this.showHideRegion.show(new ShowHideView());
     this.timetableRegion.show(new TimetableView({collection: this.timetable}));
-    this.urlSharingRegion.show(new UrlSharingView());
+    this.urlSharingRegion.show(new UrlSharingView({
+      collection: this.selectedModules
+    }));
     this.modulesChanged(null, null, {replace: true});
   },
 
   modulesChanged: function (model, collection, options) {
     if (this.selectedModules.length) {
-      Backbone.history.navigate(config.semTimetableFragment + '?' +
-        this.selectedModules.toQueryString(), options);
+      Backbone.history.navigate(config.semTimetableFragment(this.semester) +
+        '?' + this.selectedModules.toQueryString(), options);
     } else {
-      Backbone.history.navigate(config.semTimetableFragment, options);
+      Backbone.history.navigate(config.semTimetableFragment(this.semester), options);
     }
   }
 });

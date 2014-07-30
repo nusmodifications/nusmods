@@ -1,4 +1,11 @@
-<td class="code"><a href="/modules/{{ModuleCode}}">{{ModuleCode}}</a></td>
+<td class="code">
+  <a href="/modules/{{ModuleCode}}">{{ModuleCode}}</a>
+  <ul class="pagination">
+    {{#each semestersOffered}}
+      <li{{#if offered}} class="active"{{/if}}><span>{{semester}}</span></li>
+    {{/each}}
+  </ul>
+</td>
 <td class="details">
   <div class="pull-right">
     <a class="cors btn btn-default btn-xs"
@@ -13,11 +20,23 @@
        target="_blank">
       <i class="fa fa-graduation-cap"></i>&nbsp;IVLE
     </a>
-    <button class="add-timetable btn btn-primary btn-xs"
-            data-code="{{ModuleCode}}"
-            type="button">
-      <i class="fa fa-plus-circle"></i>&nbsp;Add
-    </button>
+    <div class="btn-group">
+      <button class="btn btn-primary btn-xs dropdown-toggle"
+              data-toggle="dropdown"
+              data-code="{{ModuleCode}}"
+              type="button">
+        <i class="fa fa-plus-circle"></i>&nbsp;Add&nbsp;<span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-right" role="menu">
+        {{#each semestersOffered}}
+          <li{{#unless offered}} class="disabled"{{/unless}}>
+            <a href="#" class="add-timetable" data-semester="{{semester}}">
+              Add to Semester {{semester}} Timetable
+            </a>
+          </li>
+        {{/each}}
+      </ul>
+    </div>
     <button class="add-bookmark btn btn-info btn-xs"
             data-code="{{ModuleCode}}"
             type="button">
@@ -26,16 +45,18 @@
   </div>
   <strong>{{ModuleTitle}}</strong>
   <div class="desc">{{ModuleDescription}}</div>
-  {{#if Lecturers}}
-    <div>
-      <strong>Lecturer(s):</strong>
-      <ul class="lecturers list-inline">
-        {{#each Lecturers}}
-          <li>{{this}}</li>
-        {{/each}}
-      </ul>
-    </div>
-  {{/if}}
+  {{#each History}}
+    {{#if Lecturers}}
+      <div>
+        <strong>Semester {{Semester}} Lecturer(s):</strong>
+        <ul class="lecturers list-inline">
+          {{#each Lecturers}}
+            <li>{{this}}</li>
+          {{/each}}
+        </ul>
+      </div>
+    {{/if}}
+  {{/each}}
   {{#if Prerequisite}}
     <div><strong>Prerequisites:</strong>&nbsp;{{{linkedPrerequisite}}}</div>
   {{/if}}
@@ -48,11 +69,20 @@
 </td>
 <td class="mc">{{ModuleCredit}}</td>
 <td class="exam">
-{{#if examStr}}
-  {{examStr}}
-{{else}}
-  No Exam
-{{/if}}
+  {{#if hasExams}}
+    {{#each History}}
+      <div>
+        <strong>Semester {{Semester}}</strong><br>
+        {{#if examStr}}
+          {{examStr}}
+        {{else}}
+          No Exam
+        {{/if}}
+      </div>
+    {{/each}}
+  {{else}}
+    No Exam
+  {{/if}}
 </td>
 
 <td class="department">{{Department}}</td>

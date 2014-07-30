@@ -11,13 +11,15 @@ module.exports = Marionette.ItemView.extend({
   events: {
     'click .add-timetable': function(event) {
       var qtipContent;
-      if (App.request('isModuleSelected', this.model.id)) {
+      var currentTarget = $(event.currentTarget);
+      var semester = currentTarget.data('semester');
+      if (App.request('isModuleSelected', semester, this.model.id)) {
         qtipContent = 'Already added!';
       } else {
         qtipContent = 'Added!';
-        App.request('addModule', this.model.id);
+        App.request('addModule', semester, this.model.id);
       }
-      $(event.currentTarget).qtip({
+      currentTarget.qtip({
         content: qtipContent,
         show: {
           event: false,
@@ -28,6 +30,7 @@ module.exports = Marionette.ItemView.extend({
           inactive: 1000
         }
       });
+      return false;
     },
     'click .add-bookmark': function(event) {
       App.request('addBookmark', this.model.id);

@@ -4,12 +4,15 @@ var LessonCollection = require('../collections/LessonCollection');
 var LessonModel = require('../models/LessonModel');
 var ModuleCollection = require('./ModuleCollection');
 var NUSMods = require('../../nusmods');
+var Promise = require('bluebird');
+
 var _ = require('underscore');
 var qs = require('qs');
 
 module.exports = ModuleCollection.extend({
   initialize: function (models, options) {
     this.colors = [];
+    this.exams = options.exams;
     this.timetable = options.timetable;
 
     this.on('add', this.onAdd, this);
@@ -23,11 +26,23 @@ module.exports = ModuleCollection.extend({
     var color = this.colors.splice(Math.floor(Math.random() * this.colors.length), 1)[0];
     module.set('color', color);
 
-    module.promise = NUSMods.getMod(module.id).then(_.bind(function (mod) {
+    if (options && options.selectedLessons) {
+      module.set('selectedLessons', options.selectedLessons);
+    }
+
+    return Promise.all([
+      NUSMods.getModIndex(module.id),
+      NUSMods.getTimetable(module.get('Semester'), module.id)
+    ]).then(_.bind(function (modTimetable) {
+      var mod = modTimetable[0];
+      mod = _.extend(mod, _.findWhere(mod.History, {Semester: module.get('Semester')}));
+      mod.Timetable = modTimetable[1];
+      module.set(mod);
+      this.exams.addModule(module);
       var selectedLessonsByType = _.groupBy(options.selectedLessons, 'LessonType');
       var lessons = new LessonCollection();
       module.set('lessons', lessons);
-      _.each(_.groupBy(mod.Timetable, 'LessonType'), function (groups) {
+      _.each(_.groupBy(module.get('Timetable'), 'LessonType'), function (groups) {
         var uniqueClassNos = _.uniq(_.pluck(groups, 'ClassNo'));
         var randomClassNo = _.sample(uniqueClassNos);
         var isDraggable = _.size(uniqueClassNos) > 1;
@@ -39,8 +54,8 @@ module.exports = ModuleCollection.extend({
               color: color,
               display: true,
               isDraggable: isDraggable,
-              ModuleCode: mod.ModuleCode,
-              ModuleTitle: mod.ModuleTitle,
+              ModuleCode: module.id,
+              ModuleTitle: module.get('ModuleTitle'),
               sameGroup: sameGroup,
               sameType: sameType
             }, lessonData));
@@ -57,11 +72,11 @@ module.exports = ModuleCollection.extend({
         this.timetable.add(lessons.where(lesson));
       }, this);
       this.timetable.trigger('change');
-      return module;
     }, this));
   },
 
   onRemove: function (module) {
+    this.exams.remove(this.exams.get(module.id));
     this.timetable.remove(this.timetable.where({ModuleCode: module.id}));
 
     // Return removed color back to color array to prevent
@@ -91,6 +106,10 @@ module.exports = ModuleCollection.extend({
       if (moduleLessons.length) {
         _.each(moduleLessons, function (lesson) {
           qsModule[lesson.get('typeAbbrev')] = lesson.get('ClassNo');
+        });
+      } else if (module.get('selectedLessons') && module.get('selectedLessons').length) {
+        _.each(module.get('selectedLessons'), function (lesson) {
+          qsModule[LessonModel.typeAbbrev[lesson.LessonType]] = lesson.ClassNo;
         });
       } else {
         qsObject[module.id] = '';

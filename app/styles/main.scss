@@ -29,9 +29,9 @@ $font-family-sans-serif: "proxima-nova", "Helvetica Neue", Helvetica, Arial, san
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/navs";
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/navbar";
 //@import "bootstrap-sass-official/assets/stylesheets/bootstrap/breadcrumbs";
-//@import "bootstrap-sass-official/assets/stylesheets/bootstrap/pagination";
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap/pagination";
 //@import "bootstrap-sass-official/assets/stylesheets/bootstrap/pager";
-//@import "bootstrap-sass-official/assets/stylesheets/bootstrap/labels";
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap/labels";
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/badges";
 //@import "bootstrap-sass-official/assets/stylesheets/bootstrap/jumbotron";
 //@import "bootstrap-sass-official/assets/stylesheets/bootstrap/thumbnails";
@@ -192,22 +192,22 @@ a {
 
 .nm-section-heading {
   color: $gray-light;
-  a, button {
+  a, button, .btn-group {
     margin-left: 5px;
   }
 }
 
 $module-section-min-height: 700px;
 
-.module-main-content {
-  min-height: $module-section-min-height;
-}
+// .module-main-content {
+//   min-height: $module-section-min-height;
+// }
 
-.mode-slate {
-  .module-main-content {
-    min-height: $module-section-min-height;
-  }
-}
+// .mode-slate {
+//   .module-main-content {
+//     min-height: $module-section-min-height;
+//   }
+// }
 
 .navbar-header {
   @media (min-width: $screen-sm-min) {
@@ -280,43 +280,38 @@ $module-section-min-height: 700px;
 // Select2
 .select2-result-label {
   @include clearfix();
-  div {
+  .code-title {
     float: left;
-    width: 230px;
+    width: 210px;
     @media (min-width: $screen-sm-min) {
-      width: 280px;
+      width: 260px;
     }
     @media (min-width: $screen-lg-min) {
-      width: 430px;
+      width: 410px;
     }
   }
-  .btn {
+  .semesters {
     float: right;
-    color: #ddd;
-    &:hover {
-      color: #fff;
-    }
+  }
+  .fa {
+    display: inline;
+    margin-left: -1px;
+    margin-right: -1px;
+  }
+  .sem-1 .fa {
+    margin-right: -2px;
   }
 }
 
 // Module Finder Sidebar
-@media (max-width: 768px) {
-  #sidebar #clear-all {
-    float: left;
+#sidebar {
+  label {
+    font-weight: normal;
   }
-}
-
-#module-finder label {
-  font-weight: normal;
-}
-
-#content .form-inline label:first-child {
-  width: 40px;
-}
-
-#sidebar .checkbox-inline {
-  display: block;
-  margin-left: 0 !important;
+  ul {
+    list-style: none;
+    padding: 0;
+  }
 }
 
 .arrow-right {
@@ -377,6 +372,9 @@ td {
   }
   &.exam {
     min-width: 95px;
+    div {
+      margin-bottom: 10px;
+    }
   }
   &.details .desc {
     margin-top: 2px;
@@ -401,6 +399,10 @@ a.cors > .fa-fw {
 }
 
 // Timetable
+.semester-selector-region ul {
+  margin-top: 0;
+}
+
 #timetable {
   user-select: none;
   th {
@@ -488,22 +490,14 @@ colgroup.hover {
   dd {
     margin-bottom: 10px;
   }
-  .desc-more {
-    display: none;
-  }
-  .module-desc-more {
-    .desc-less {
-      display: none;
-    }
-    .desc-more {
-      display: inherit;
-    }
-  }
-  .desc-full {
-    text-align: right;
+  .module-desc {
+    text-align: justify;
   }
   .workload-components dd {
     margin-bottom: 0;
+  }
+  .btn-group-justified {
+    padding-bottom: 10px;
   }
   .module-tab-icon {
     margin-right: 5px;
@@ -511,6 +505,12 @@ colgroup.hover {
   #disqus-count {
     background-color: red;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+  .module-page-section-title {
+    color: #666;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
   }
   @media (max-width: 768px) {
     .module-navigation {
@@ -572,8 +572,8 @@ colgroup.hover {
 // ModMaven
 .modmaven {
   #tree {
-    min-height: 550px;
     border: 2px solid #eee;
+    min-height: 400px;
   }
   #svg {
     cursor: move;

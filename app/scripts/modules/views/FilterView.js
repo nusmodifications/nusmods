@@ -4,8 +4,7 @@ var Marionette = require('backbone.marionette');
 var template = require('../templates/filter.hbs');
 
 module.exports = Marionette.ItemView.extend({
-  tagName: 'label',
-  className: 'checkbox-inline',
+  tagName: 'li',
   template: template,
 
   events: {

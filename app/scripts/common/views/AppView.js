@@ -40,14 +40,10 @@ module.exports = Backbone.View.extend({
       // refresh.
       event.preventDefault();
 
-      if (href.attr === '/') {
-        window.location = root;
-      } else {
-        // `Backbone.history.navigate` is sufficient for all Routers and will
-        // trigger the correct events. The Router's internal `navigate` method
-        // calls this anyways.  The fragment is sliced from the root.
-        this.navigateWithScrollTop(href.attr, true);
-      }
+      // `Backbone.history.navigate` is sufficient for all Routers and will
+      // trigger the correct events. The Router's internal `navigate` method
+      // calls this anyways.  The fragment is sliced from the root.
+      this.navigateWithScrollTop(href.attr, true);
     }
   },
 
@@ -85,11 +81,7 @@ module.exports = Backbone.View.extend({
       t: '/timetable',
       m: '/modules',
       p: '/preferences',
-      '?': '/help',
-      c: '/modules/<module>/corspedia',
-      s: '/modules/<module>/schedule',
-      v: '/modules/<module>/modmaven',
-      r: '/modules/<module>/reviews'
+      '?': '/help'
     };
 
     var that = this;
@@ -107,12 +99,25 @@ module.exports = Backbone.View.extend({
       });
     });
 
+    var keyboardAnchorMappings = {
+      c: '#corspedia',
+      s: '#schedule',
+      v: '#modmaven',
+      r: '#reviews'
+    };
+
+    _.each(keyboardAnchorMappings, function (value, key) {
+      Mousetrap.bind(key, function () {
+        location.hash = value;
+      });
+    });
+
     Mousetrap.bind(['left', 'right'], function (e) {
       themePicker.selectNextTheme(e.keyCode === 37 ? 'Left' : 'Right');
       return false;
     });
 
-    var reviewsRegex = /^\/modules\/[^\/]{6,10}\/reviews/;
+    var reviewsRegex = /^\/modules\/[^\/]{6,10}/;
     Mousetrap.bind(['x'], function () {
       themePicker.toggleMode();
       if (reviewsRegex.test(window.location.pathname) && window.DISQUS) {
