@@ -54,6 +54,15 @@
   hr {
     border-color: #444;
   }
+  .pagination > .active > {
+    a, span {
+      &,
+      &:hover,
+      &:focus {
+        background-color: $mode-color;
+      }
+    }
+  }
   #brand {
     color: $mode-color;
     &:hover {
