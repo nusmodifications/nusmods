@@ -72,6 +72,7 @@ module.exports = Backbone.View.extend({
     $('.container').removeClass('hidden');
 
     Mousetrap.bind('/', function(ev) {
+      ga('send', 'event', 'Search', 'Keyboard', 'Main Search');
       $('#s2id_autogen2').focus();
       ev.preventDefault();
       return false;
@@ -88,6 +89,7 @@ module.exports = Backbone.View.extend({
     
     _.each(keyboardNavigationMappings, function (value, key) {
       Mousetrap.bind(key, function () {
+        ga('send', 'event', 'Navigation', 'Keyboard', value.slice(1));
         that.navigateWithScrollTop(value, true);
       });
     });
@@ -95,14 +97,17 @@ module.exports = Backbone.View.extend({
     var modulePageRegex = /^\/modules\/[^\/]{6,10}/;
 
     var keyboardAnchorMappings = {
-      c: '#corspedia',
+      c: '#cors',
       s: '#schedule',
-      v: '#modmaven',
+      e: '#prerequisites',
       r: '#reviews'
     };
 
     _.each(keyboardAnchorMappings, function (value, key) {
       Mousetrap.bind(key, function () {
+        var moduleCode = modulify.getModuleFromString(window.location.href);
+        var section = value.slice(1);
+        ga('send', 'event', 'Module ' + section, 'Visit - Keyboard', section);
         if (modulePageRegex.test(window.location.pathname)) {
           location.hash = value;
         }
@@ -110,7 +115,8 @@ module.exports = Backbone.View.extend({
     });
     
     Mousetrap.bind(['x'], function () {
-      themePicker.toggleMode();
+      var newMode = themePicker.toggleMode();
+      ga('send', 'event', 'event', 'Mode', 'Change mode using keyboard', newMode);
       if (modulePageRegex.test(window.location.pathname) && window.DISQUS) {
         window.DISQUS.reset({
           reload: true,
@@ -124,7 +130,8 @@ module.exports = Backbone.View.extend({
     });
 
     Mousetrap.bind(['left', 'right'], function (e) {
-      themePicker.selectNextTheme(e.keyCode === 37 ? 'Left' : 'Right');
+      var newTheme = themePicker.selectNextTheme(e.keyCode === 37 ? 'Left' : 'Right');
+      ga('send', 'event', 'Theme', 'Change theme using keyboard', newTheme, e.keyCode === 37 ? 1 : 0);
       return false;
     });
 

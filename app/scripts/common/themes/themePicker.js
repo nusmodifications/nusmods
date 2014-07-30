@@ -16,7 +16,9 @@ module.exports = {
     var newIndex = allThemes.indexOf(currentTheme) + (direction === 'Left' ? -1 : +1);
     newIndex = (newIndex + allThemes.length) % allThemes.length;
 
-    this.applyTheme(themeOptions[newIndex].value);
+    var newTheme = themeOptions[newIndex].value;
+    this.applyTheme(newTheme);
+    return newTheme;
   },
   selectRandomTheme: function () {
     var allThemes = _.pluck(themeOptions, 'value');
@@ -49,6 +51,7 @@ module.exports = {
     $('#mode').attr('href', cssFile);
 
     this.updateAppearance('mode', newMode);
+    return newMode;
   },
   updateAppearance: function (property, value) {
     localforage.setItem(property, value);

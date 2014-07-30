@@ -70,6 +70,7 @@ module.exports = Marionette.ItemView.extend({
     });
 
     Mousetrap.bind('.', function (ev) {
+      ga('send', 'event', 'Search', 'Keyboard', 'Timetable Search');
       $('.timetable-input .select2-input').focus();
       ev.preventDefault();
       return false;

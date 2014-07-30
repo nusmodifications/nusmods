@@ -48,22 +48,22 @@
     "category": "Module Page",
     "shortcuts": [
       {
-        "title": "Show ModMaven",
-        "keys": ["V"],
-        "description": "Pressing __V__ will jump to the module prerequisites visualization section of the module page"
+        "title": "Jump to prerequisites",
+        "keys": ["E"],
+        "description": "Pressing __E__ will jump to the module prerequisites visualization section of the module page."
       },
       {
-        "title": "Show reviews and discussions",
+        "title": "Jump to reviews and discussions",
         "keys": ["R"],
         "description": "Pressing __R__ will jump to the reviews and discussions section of the module page."
       },
       {
-        "title": "Show Corspedia",
+        "title": "Jump to CORS bidding history",
         "keys": ["C"],
         "description": "Pressing __C__ will jump to the CORS bidding history section of the module page."
       },
       {
-        "title": "Show module's class schedule",
+        "title": "Jump to module's class schedule",
         "keys": ["S"],
         "description": "Pressing __S__ will jump to the class schedule section of the module page."
       }
