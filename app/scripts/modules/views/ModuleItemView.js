@@ -33,6 +33,7 @@ module.exports = Marionette.ItemView.extend({
       return false;
     },
     'click .add-bookmark': function(event) {
+      ga('send', 'event', 'Bookmarks', 'Add bookmark', 'From module finder');
       App.request('addBookmark', this.model.id);
       $(event.currentTarget).qtip({
         content: 'Bookmarked!',

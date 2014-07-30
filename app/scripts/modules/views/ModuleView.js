@@ -237,6 +237,7 @@ module.exports = Marionette.LayoutView.extend({
       return false;
     },
     'click .add-bookmark': function (event) {
+      ga('send', 'event', 'Bookmarks', 'Add bookmark', 'From module page');
       App.request('addBookmark', this.model.get('module').ModuleCode);
       $(event.currentTarget).qtip({
         content: 'Bookmarked!',
