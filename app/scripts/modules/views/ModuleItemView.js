@@ -13,6 +13,7 @@ module.exports = Marionette.ItemView.extend({
       var qtipContent;
       var currentTarget = $(event.currentTarget);
       var semester = currentTarget.data('semester');
+      ga('send', 'event', 'Timetable', 'Add module', 'From module finder', semester);
       if (App.request('isModuleSelected', semester, this.model.id)) {
         qtipContent = 'Already added!';
       } else {

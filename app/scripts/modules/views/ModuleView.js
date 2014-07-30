@@ -217,7 +217,9 @@ module.exports = Marionette.LayoutView.extend({
       var qtipContent;
       var currentTarget = $(event.currentTarget);
       var semester = currentTarget.data('semester');
-      if (App.request('isModuleSelected', semester, this.model.get('module').ModuleCode)) {
+      var moduleCode = this.model.get('module').ModuleCode;
+      ga('send', 'event', 'Timetable', 'Add module', 'From module page', semester);
+      if (App.request('isModuleSelected', semester, moduleCode)) {
         qtipContent = 'Already added!';
       } else {
         qtipContent = 'Added!';
@@ -310,6 +312,7 @@ module.exports = Marionette.LayoutView.extend({
     return false;
   },
   showAllStats: function () {
+    ga('send', 'event', 'Module cors', 'View full stats', this.model.get('module').ModuleCode);
     this.showBiddingStatsRegion(false);
   },
   updateCorspedia: function ($ev) {
@@ -317,6 +320,7 @@ module.exports = Marionette.LayoutView.extend({
     $target.blur();
     var property = $target.attr('data-pref-type');
     var value = $target.val();
+    ga('send', 'event', 'Module cors', 'Change ' + property, value);
     if (this.savePreference(property, value)) {
       searchPreferences[property] = value;
       this.showBiddingStatsRegion(true);
