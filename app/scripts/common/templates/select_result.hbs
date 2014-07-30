@@ -2,7 +2,7 @@
 <div class="semesters">
   {{#each semesters}}
     {{#if selected}}
-      <a class="sem-{{semester}} label label-success remove{{#unless offered}} invisible{{/unless}}"
+      <a class="sem-{{semester}} label nm-module-added remove{{#unless offered}} invisible{{/unless}}"
          data-code="{{../../id}}" data-semester="{{semester}}" title="Remove from Timetable">
         <span>{{semester}}</span><i class="fa fa-times hidden"></i></a>
     {{else}}

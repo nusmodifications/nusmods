@@ -197,6 +197,10 @@ a {
   }
 }
 
+.nm-module-added {
+  background-color: $brand-primary;
+}
+
 .navbar-header {
   @media (min-width: $screen-sm-min) {
     width: 550px;
