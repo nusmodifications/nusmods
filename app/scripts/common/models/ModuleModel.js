@@ -120,7 +120,19 @@ module.exports = Backbone.Model.extend({
             return lesson.LessonType === type;
           });
           lessons = _.sortBy(lessons, function (lesson) {
-            return parseInt(lesson.ClassNo);
+            // The default sort is alphabetical, which is not ideal becase
+            // classes appear in this order: T1, T10, T2, T3, ...
+            // Hence pad with zero then sort alphabetically (assuming < 100 classes)
+            var result = lesson.ClassNo.match(/\d/);
+            if (!result) {
+              return lesson.ClassNo;
+            }
+            var alpha = lesson.ClassNo.substring(0, result.index);
+            var number = parseInt(lesson.ClassNo.slice(result.index));
+            if (number < 10) {
+              number = '0' + number.toString();
+            }
+            return alpha + number;
           });
           formattedTimetable.push({
             LessonType: PLURALIZED_LESSON_TYPES[type],
