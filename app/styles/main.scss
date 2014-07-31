@@ -352,7 +352,6 @@ a {
 }
 
 
-
 // Module Finder Content
 td {
   &.code,
@@ -372,6 +371,10 @@ td {
   &.details .desc {
     margin-top: 2px;
   }
+}
+
+.empty-module-listing {
+  text-align: center;
 }
 
 a.cors > .fa-fw {
