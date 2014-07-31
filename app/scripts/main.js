@@ -11,10 +11,12 @@ var $body = $('body');
     } else {
       // For non-first time users, we want to see what modes/themes they are using.
       if (property === 'theme') {
-        ga('send', 'event', 'Theme', 'Load page with theme', value);
+        // Set theme custom dimension
+        ga('set', 'dimension3', value);
       }
       if (property === 'mode') {
-        ga('send', 'event', 'Mode', 'Load page with mode', value);
+        // Set mode custom dimension
+        ga('set', 'dimension4', value);
       }
     }
     $body.addClass(property + '-' + value);
