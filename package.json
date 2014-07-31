@@ -21,7 +21,7 @@
     "backbone": "^1.1.2",
     "backbone.analytics": "git://github.com/kendagriff/backbone.analytics#f5648f583ed9cf073c123ec61b9e31dd9c77c4f9",
     "backbone.babysitter": "^0.1.4",
-    "backbone.marionette": "git://github.com/ahbeng/backbone.marionette#4e578a090b36f1f3dd6c241fb8cfe6f95ca7adb4",
+    "backbone.marionette": "^2.1.0",
     "backbone.wreqr": "^1.3.1",
     "bluebird": "^2.2.2",
     "d3": "^3.4.11",
