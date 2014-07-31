@@ -10,7 +10,7 @@ String.prototype.insert = function (index, string) {
   }
 };
 
-var re = /[a-zA-Z]{2,3}[\d]{4}[a-zA-Z]{0,2}/g;
+var re = /[a-zA-Z]{2,3}[\s]?[\d]{4}[a-zA-Z]{0,2}/g;
 var allModuleCodes;
 
 module.exports = {
@@ -36,6 +36,7 @@ module.exports = {
     var matchedModules = this.matchModules(desc);
     if (desc && matchedModules.length && allModuleCodes) {
       for (var i = matchedModules.length - 1; i >= 0; i--) {
+        matchedModules[i].module = matchedModules[i].module.replace(/\s/g, '');
         if (allModuleCodes[matchedModules[i].module]) {
           var startingIndex = matchedModules[i].index;
           var length = matchedModules[i].length;
