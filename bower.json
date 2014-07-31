@@ -11,7 +11,7 @@
     "localforage": "ahbeng/localForage#b32a74ab43c70b3792728f22483bbe832dc27082",
     "mousetrap": "~1.4.6",
     "qtip2": "~2.2.0",
-    "raven-js": "~1.1.15",
+    "raven-js": "~1.1.16",
     "select2": "~3.5.0",
     "select2-bootstrap-css": "~1.3.1",
     "zeroclipboard": "~2.1.5",
