@@ -39,7 +39,7 @@ module.exports = Marionette.ItemView.extend({
     var add = button.hasClass('add');
     App.request((add ? 'add' : 'remove') + 'Module', button.data('semester'), button.data('code'));
     button
-      .toggleClass('add remove label-default label-success')
+      .toggleClass('add remove label-default nm-module-added')
       .prop('title', (add ? 'Add to' : 'Remove from') + 'Timetable')
       .children('i').toggleClass('fa-plus fa-times');
   },
