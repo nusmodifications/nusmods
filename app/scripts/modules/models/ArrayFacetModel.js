@@ -14,10 +14,12 @@ module.exports = Backbone.Model.extend({
       });
     }, this));
     this.set('groupedCollection', groupedCollection);
+    var facet = this;
     var filters = _.sortBy(_.map(this.get('groupedCollection'),
       function (mods, key) {
         return {
           count: mods.length,
+          facet: facet,
           label: key
         };
       }), 'label');

@@ -10,10 +10,12 @@ module.exports = Backbone.Model.extend({
       'groupedCollection',
       _.groupBy(this.get('filteredCollection'), this.get('key'))
     );
+    var facet = this;
     var filters = _.sortBy(_.map(this.get('groupedCollection'),
       function (mods, key) {
         return {
           count: mods.length,
+          facet: facet,
           label: key
         };
       }), this.get('sortBy') || 'label');
