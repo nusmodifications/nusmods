@@ -10,9 +10,11 @@ var SemesterSelectorView = require('./SemesterSelectorView');
 var SharedTimetableControlsView = require('./SharedTimetableControlsView');
 var ShowHideView = require('./ShowHideView');
 var TimetableView = require('./TableView');
+var TipsView = require('./TipsView');
 var UrlSharingView = require('./UrlSharingView');
 var config = require('../../common/config');
 var template = require('../templates/timetable.hbs');
+var tips = require('../tips.json');
 
 module.exports = Marionette.LayoutView.extend({
   template: template,
@@ -25,6 +27,7 @@ module.exports = Marionette.LayoutView.extend({
     sharedTimetableControlsRegion: '.shared-timetable-controls-region',
     showHideRegion: '.show-hide-region',
     timetableRegion: '#timetable-wrapper',
+    tipsRegion: '.tips-region',
     urlSharingRegion: '.url-sharing-region'
   },
 
@@ -57,6 +60,10 @@ module.exports = Marionette.LayoutView.extend({
     }));
     this.showHideRegion.show(new ShowHideView());
     this.timetableRegion.show(new TimetableView({collection: this.timetable}));
+
+    var tipsModel = new Backbone.Model({tips: tips});
+    this.tipsRegion.show(new TipsView({model: tipsModel}));
+
     this.urlSharingRegion.show(new UrlSharingView({
       collection: this.selectedModules
     }));

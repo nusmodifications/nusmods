@@ -1,0 +1,23 @@
+[
+  {
+    "message": "Use the <span class='highlight'>&#8592;</span> and <span class='highlight'>&#8594;</span> arrow keys to switch between theme colours of the timetable and press <span class='highlight'>X</span> to toggle between light and dark modes!</span>"
+  },
+  {
+    "message": "Bookmarking modules can help you access them quickly from the Bookmark icon ( <i class='fa fa-bookmark'></i> ) in the top navigation bar."
+  },
+  {
+    "message": "You can quickly navigate between the pages by pressing <span class='highlight'>M</span> for Module finder, <span class='highlight'>T</span> for Timetable builder and <span class='highlight'>P</span> for Preferences."
+  },
+  {
+    "message": "Pressing <span class='highlight'>.</span> highlights the timetable page's search bar so that you can add modules to your timetable quickly."
+  },
+  {
+    "message": "Pressing <span class='highlight'>/</span> highlights the search bar at the top so that you can search for modules easily."
+  },
+  {
+    "message": "On a module's page, you can quickly navigate between the various sections using keyboard shortcuts! Press <span class='highlight'>E</span> to jump to the prerequisities section, <span class='highlight'>R</span> to jump to the reviews section, <span class='highlight'>C</span> to jump to the CORS bidding history section and <span class='highlight'>S</span> to jump to the lesson schedule section."
+  },
+  {
+    "message": "NUSMods supports many keyboard shortcuts to make usage super easy. Check them out <a class='highlight' href='/help'>here</a>. Press <span class='highlight'>?</span> and see what happens!"
+  }
+]
