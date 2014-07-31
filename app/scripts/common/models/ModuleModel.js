@@ -65,6 +65,11 @@ module.exports = Backbone.Model.extend({
       this.set('linkedPrerequisite', modulify.linkifyModules(prerequisite));
     }
 
+    var corequisite = this.get('Corequisite');
+    if (corequisite) {
+      this.set('linkedCorequisite', modulify.linkifyModules(corequisite));
+    }
+
     var preclusion = this.get('Preclusion');
     if (preclusion) {
       this.set('linkedPreclusion', modulify.linkifyModules(preclusion));

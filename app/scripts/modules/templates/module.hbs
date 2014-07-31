@@ -35,6 +35,10 @@
                 <dt class="highlight">Prerequisite(s)</dt>
                 <dd>{{{module.linkedPrerequisite}}}</dd>
               {{/if}}
+              {{#if module.Corequisite}}
+                <dt class="highlight">Corequisite(s)</dt>
+                <dd>{{{module.linkedCorequisite}}}</dd>
+              {{/if}}
               {{#if module.Preclusion}}
                 <dt class="highlight">Preclusion(s)</dt>
                 <dd>{{{module.linkedPreclusion}}}</dd>
