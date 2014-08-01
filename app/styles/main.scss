@@ -695,13 +695,14 @@ colgroup.hover {
   .theme-colors-sample {
     margin: 10px 0;
     span {
-      display: inline-block;
-      width: 32px;
-      height: 32px;
-      margin-right: 8px;
+      $color-width: 28px;
       border: 2px solid;
       border-radius: 4px;
-    }
+      display: inline-block;
+      height: $color-width;
+      margin-right: 4px;
+      width: $color-width;
+    }      
   }
   .random-theme {
     font-size: 11px;
