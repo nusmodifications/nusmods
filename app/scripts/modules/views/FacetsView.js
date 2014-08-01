@@ -5,6 +5,7 @@ var Marionette = require('backbone.marionette');
 var _ = require('underscore');
 
 module.exports = Marionette.CollectionView.extend({
+  id: 'js-nm-facets',
   childView: FacetView,
   childViewOptions: function (facet) {
     return {
