@@ -7,9 +7,11 @@ var GoToTopBehavior = require('../../common/behaviors/GoToTopBehavior');
 var Marionette = require('backbone.marionette');
 var ModuleCollection = require('../../common/collections/ModuleCollection');
 var ModulesListingView = require('./ModulesListingView');
+var ModulesListingView = require('./ModulesListingView');
 var _ = require('underscore');
 var config = require('../../common/config');
 var template = require('../templates/modules.hbs');
+var slugify = require('../../common/utils/slugify');
 
 module.exports = Marionette.LayoutView.extend({
   template: template,
@@ -141,37 +143,43 @@ module.exports = Marionette.LayoutView.extend({
     facets.add(new ArrayFacetModel({
       filteredCollection: mods,
       key: 'semesterNames',
-      label: 'Academic Year ' + config.academicYear
+      label: 'Semesters',
+      slug: 'semesters'
     }));
     facets.add(new ArrayFacetModel({
       filteredCollection: mods,
       key: 'Types',
-      label: 'Types'
+      label: 'Types',
+      slug: 'types'
     }));
     facets.add(_.map({
       Department: 'Faculty / Department',
-      level: 'Level'
+      level: 'Level',
     }, function(label, key) {
       return {
         filteredCollection: mods,
         key: key,
-        label: label
+        label: label,
+        slug: slugify(label)
       };
     }));
     facets.add({
       filteredCollection: mods,
       key: 'ModuleCredit',
       label: 'Modular Credits (MCs)',
+      slug: 'mcs',
       sortBy: function (filter) {
         return +filter.label;
       }
     });
     for (var i = 1; i < 3; i++) {
       facets.add(_.map(['Lecture Periods', 'Tutorial Periods'], function(label) {
+        var currentLabel = 'Semester ' + i + ' ' + label;
         return new ArrayFacetModel({
           filteredCollection: mods,
           key: label.replace(' ', '') + i,
-          label: 'Semester ' + i + ' ' + label
+          label: currentLabel,
+          slug: slugify(currentLabel)
         });
       }));
     }

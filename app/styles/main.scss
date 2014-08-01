@@ -377,6 +377,26 @@ td {
   }
 }
 
+.nm-module-facet {
+  border-bottom: none;
+  border-radius: 0;
+  box-shadow: none;
+  margin-bottom: 0 !important;
+  .panel-heading {
+    border-radius: 0;
+    cursor: pointer;
+    transition: all 0.1s linear;
+    &:hover {
+      color: #fff;
+      background-color: $brand-primary;
+    }
+  }
+}
+
+.nm-module-filter {
+  padding: 10px 15px;
+}
+
 .empty-module-listing {
   text-align: center;
 }
