@@ -3,6 +3,15 @@
 var Backbone = require('backbone');
 var _ = require('underscore');
 
+var dayIndex = {
+  Monday: 0,
+  Tuesday: 1,
+  Wednesday: 2,
+  Thursday: 3,
+  Friday: 4,
+  Saturday: 5
+};
+
 var typeAbbrev = {
   'Design Lecture': 'DLEC',
   Laboratory: 'LAB',
@@ -30,6 +39,7 @@ module.exports = Backbone.Model.extend({
     // 1,4,9 or 1-6 etc, present as 'Weeks 1,4,9'.
     this.set('weekStr', weekText.indexOf('Week') !== -1 ? weekText : 'Weeks ' + weekText);
     this.set('dayAbbrev', this.get('DayText').slice(0, 3).toLowerCase());
+    this.set('dayIndex', dayIndex[this.get('DayText')]);
     // For certain display purposes. Don't show week if it's Every Week.
     this.set('weekStrNoEvery', weekText === 'Every Week' ? '' : this.get('weekStr'));
   }

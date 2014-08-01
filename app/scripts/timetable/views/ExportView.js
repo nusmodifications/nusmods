@@ -161,7 +161,7 @@ module.exports = Marionette.ItemView.extend({
       var start = new Date(Date.UTC(2014, 7, 11,
         +lesson.get('StartTime').slice(0, 2) - 8,
         +lesson.get('StartTime').slice(2)));
-      start.setUTCDate(start.getUTCDate() + lesson.get('day'));
+      start.setUTCDate(start.getUTCDate() + lesson.get('dayIndex'));
       var recess = new Date(start.getTime());
       recess.setUTCDate(recess.getUTCDate() + 42);
       var week = lesson.get('WeekText');
@@ -224,7 +224,7 @@ module.exports = Marionette.ItemView.extend({
         }
       }
       var end = new Date(start.getTime());
-      end.setUTCHours(end.getUTCHours() + lesson.duration / 2);
+      end.setUTCHours(end.getUTCHours() + lesson.get('duration') / 2);
       v = v.concat([
         'DTSTART:' + this.iCalDateTime(start),
         'DTEND:' + this.iCalDateTime(end),
