@@ -1,3 +1,8 @@
 {{#each items}}
-  <li{{#if active}} class="active"{{/if}}><a href="{{url}}">{{label}}</a></li>
+  <li{{#if active}} class="active"{{/if}}>
+    <a href="{{url}}">
+      <span class="hidden-xs">{{label}}</span>
+      <span class="visible-xs-inline nm-mini">{{shortLabel}}</span>
+    </a>
+  </li>
 {{/each}}

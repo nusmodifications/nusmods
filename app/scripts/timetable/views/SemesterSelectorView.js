@@ -17,6 +17,7 @@ module.exports = Marionette.ItemView.extend({
       return {
         id: sem,
         label: config.semesterNames[i],
+        shortLabel: config.shortSemesterNames[i],
         url: config.semTimetableFragment(sem)
       };
     }));
