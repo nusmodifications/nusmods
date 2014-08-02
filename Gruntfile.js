@@ -258,11 +258,6 @@ module.exports = function (grunt) {
   grunt.registerTask('local', [
     'consolidate',
     'normalize',
-
-    // for backward compatibility, can remove when all code is using combined
-    // semester info
-    'shell:runPrereqParser:ay2014to2015sem1',
-
     'split',
     'joinSems',
     'shell:runPrereqParser:ay2014to2015',
