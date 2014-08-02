@@ -28,7 +28,9 @@ module.exports = Marionette.CollectionView.extend({
     localforage.getItem('moduleFinder:facets', function(data) {
       if (data) {
         _.each(data, function (id) {
-          $('#' + id).addClass('in');
+          var $panel = $('#' + id);
+          $panel.addClass('in');
+          $panel.parent().find('.js-caret-container').addClass('dropup');
         })
       }
     });

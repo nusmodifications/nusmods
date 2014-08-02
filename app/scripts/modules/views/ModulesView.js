@@ -174,7 +174,7 @@ module.exports = Marionette.LayoutView.extend({
     });
     for (var i = 1; i < 3; i++) {
       facets.add(_.map(['Lecture Periods', 'Tutorial Periods'], function(label) {
-        var currentLabel = 'Semester ' + i + ' ' + label;
+        var currentLabel = 'Sem ' + i + ' ' + label;
         return new ArrayFacetModel({
           filteredCollection: mods,
           key: label.replace(' ', '') + i,

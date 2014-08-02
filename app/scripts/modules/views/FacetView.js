@@ -8,5 +8,13 @@ module.exports = Marionette.CompositeView.extend({
   childView: FilterView,
   childViewContainer: 'ul',
   className: 'panel panel-default nm-module-facet',
-  template: template
+  template: template,
+  ui: {
+    caret: '.caret'
+  },
+  events: {
+    'click .panel-heading': function () {
+      this.ui.caret.parent('.js-caret-container').toggleClass('dropup');
+    }
+  }
 });

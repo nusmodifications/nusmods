@@ -377,6 +377,13 @@ td {
   }
 }
 
+.nm-section-title {
+  color: #666;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
 .nm-module-facet {
   border-bottom: none;
   border-radius: 0;
@@ -537,12 +544,6 @@ colgroup.hover {
   #disqus-count {
     background-color: red;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  }
-  .module-page-section-title {
-    color: #666;
-    font-weight: bold;
-    letter-spacing: 1px;
-    text-transform: uppercase;
   }
   @media (max-width: 768px) {
     .module-navigation {
