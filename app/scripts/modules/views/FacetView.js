@@ -7,14 +7,14 @@ var template = require('../templates/facet.hbs');
 module.exports = Marionette.CompositeView.extend({
   childView: FilterView,
   childViewContainer: 'ul',
-  className: 'panel panel-default nm-module-facet',
+  className: 'nm-module-facet',
   template: template,
   ui: {
-    caret: '.caret'
+    caret: '.nm-caret'
   },
   events: {
-    'click .panel-heading': function () {
-      this.ui.caret.parent('.js-caret-container').toggleClass('dropup');
+    'click .nm-section-heading': function () {
+      this.ui.caret.toggleClass('nm-caret-down');
     }
   }
 });

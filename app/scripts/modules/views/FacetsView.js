@@ -30,7 +30,7 @@ module.exports = Marionette.CollectionView.extend({
         _.each(data, function (id) {
           var $panel = $('#' + id);
           $panel.addClass('in');
-          $panel.parent().find('.js-caret-container').addClass('dropup');
+          $panel.parent().find('.nm-caret').addClass('nm-caret-down');
         })
       }
     });

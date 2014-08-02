@@ -190,6 +190,13 @@ a {
   }
 }
 
+.nm-caret {
+  transition: all 0.2s linear;
+  &.nm-caret-down {
+    transform: rotate(90deg);
+  }
+}
+
 .nm-page-heading {
   color: $brand-primary;
 }
@@ -389,13 +396,11 @@ td {
   border-radius: 0;
   box-shadow: none;
   margin-bottom: 0 !important;
-  .panel-heading {
-    border-radius: 0;
+  .nm-section-heading {
     cursor: pointer;
     transition: all 0.1s linear;
     &:hover {
-      color: #fff;
-      background-color: $brand-primary;
+      color: $brand-primary;
     }
   }
 }
