@@ -38,10 +38,20 @@ module.exports = Marionette.CollectionView.extend({
     });
   },
   events: {
-    'click .panel-heading': function (ev) {
-      // console.log($(ev.target).attr('data-target'));
+    'click': function () {
+      var selectedFilters = {};
+      _.each(this.collection.models, function (facet) {
+        var filters = [];
+        _.each(facet.get('filters').selected, function (filter) {
+          filters.push(filter.get('label'));
+        });
+        if (filters.length) {
+          selectedFilters[facet.get('label')] = filters;
+        }
+      });
+      localforage.setItem('moduleFinder:filters', selectedFilters);
     }
-  }, 
+  },
 
   initialize: function (options) {
     _.bindAll(this, 'onScroll');

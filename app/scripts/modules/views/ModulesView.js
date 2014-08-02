@@ -184,11 +184,28 @@ module.exports = Marionette.LayoutView.extend({
       }));
     }
 
-    this.sidebarRegion.show(new FacetsView({
-      collection: facets,
-      threshold: 600
-    }));
+    var that = this;
 
-    this.modulesRegion.show(new ModulesListingView({collection: filteredModules}));
+    localforage.getItem('moduleFinder:filters', function (selectedFilters) {
+      if (selectedFilters) {
+        _.each(facets.models, function (facet) {
+          var filters = selectedFilters[facet.get('label')];
+          if (filters && filters.length) {
+            _.each(facet.get('filters').models, function (filter) {
+              if (filters.indexOf(filter.get('label')) > -1) {
+                filter.select();
+              }
+            });
+          }
+        });
+      }
+
+      that.sidebarRegion.show(new FacetsView({
+        collection: facets,
+        threshold: 600
+      }));
+
+      that.modulesRegion.show(new ModulesListingView({collection: filteredModules}));
+    });
   }
 });
