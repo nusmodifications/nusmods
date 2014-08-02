@@ -3,9 +3,9 @@
 var FacetView = require('./FacetView');
 var Marionette = require('backbone.marionette');
 var _ = require('underscore');
+var localforage = require('localforage');
 
 module.exports = Marionette.CollectionView.extend({
-  id: 'js-nm-facets',
   childView: FacetView,
   childViewOptions: function (facet) {
     return {
@@ -24,6 +24,24 @@ module.exports = Marionette.CollectionView.extend({
       }
     }
   },
+  onShow: function () {
+    localforage.getItem('moduleFinder:facets', function(data) {
+      if (data) {
+        _.each(data, function (id) {
+          $('#' + id).addClass('in');
+        })
+      }
+    });
+
+    $('.collapse').on('shown.bs.collapse hidden.bs.collapse', function () {
+      localforage.setItem('moduleFinder:facets', _.pluck($('.collapse.in'), 'id'));
+    });
+  },
+  events: {
+    'click .panel-heading': function (ev) {
+      // console.log($(ev.target).attr('data-target'));
+    }
+  }, 
 
   initialize: function (options) {
     _.bindAll(this, 'onScroll');
