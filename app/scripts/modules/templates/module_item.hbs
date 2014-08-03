@@ -1,13 +1,62 @@
-<td class="code">
-  <a href="/modules/{{ModuleCode}}">{{ModuleCode}}</a>
-  <ul class="pagination semester-availability">
+<div class="panel-heading">
+  <h2 class="panel-title nm-section-title">
+    <a href="/modules/{{ModuleCode}}"><span class="highlight">{{ModuleCode}}</span>&nbsp;{{ModuleTitle}}</a>
+    <span class="mc">
+      {{ModuleCredit}} MCs
+    </span>
+  </h2>
+  <ul class="pagination pagination-sm semester-availability">
     {{#each semestersOffered}}
       <li{{#if offered}} class="active"{{/if}}><span>{{semester}}</span></li>
     {{/each}}
   </ul>
-</td>
-<td class="details">
-  <div class="pull-right">
+</div>
+<div class="panel-body row">
+  <dl class="col-sm-9">
+    <div class="description">{{ModuleDescription}}</div>
+    {{#if Prerequisite}}
+      <dt>Prerequisites</dt>
+      <dd>{{{linkedPrerequisite}}}</dd>
+    {{/if}}
+    {{#if Preclusion}}
+      <dt>Preclusions</dt>
+      <dd>{{{linkedPreclusion}}}</dd>
+    {{/if}}
+    {{#each History}}
+      {{#if Lecturers}}
+        <dt>Semester {{Semester}} Lecturer(s)</dt>
+        {{#each Lecturers}}
+          <dd class="lecturer">{{this}}</dd>
+        {{/each}}
+      {{/if}}
+    {{/each}}
+  </dl>
+  <dl class="col-sm-3">
+    {{#if Workload}}
+      <dt>Workload</dt>
+      <dd class="workload">{{Workload}}</dd>
+    {{/if}}
+    {{#if hasExams}}
+      {{#each History}}
+        <dt>Semester {{Semester}} Exam</dt>
+        <dd class="exam">
+          {{#if examStr}}
+            <span>{{examDateStr}}</span>
+            <span>{{examTimeStr}}</span>
+          {{else}}
+            No Exam
+          {{/if}}
+        </dd>
+      {{/each}}
+    {{else}}
+      <dt>Exams</dt>
+      <dd>No Exam</dd>
+    {{/if}}
+  </dl>
+</div>
+<div class="panel-footer clearfix">
+  <div class="department">{{Department}}</div>
+  <div class="buttons">
     <a class="cors btn btn-default btn-xs"
        {{#unless inCORS}}disabled="disabled"{{/unless}}
        href="{{CORSLink}}"
@@ -43,46 +92,4 @@
       <i class="fa fa-bookmark"></i>&nbsp;Bookmark
     </button>
   </div>
-  <strong>{{ModuleTitle}}</strong>
-  <div class="desc">{{ModuleDescription}}</div>
-  {{#each History}}
-    {{#if Lecturers}}
-      <div>
-        <strong>Semester {{Semester}} Lecturer(s):</strong>
-        <ul class="lecturers list-inline">
-          {{#each Lecturers}}
-            <li>{{this}}</li>
-          {{/each}}
-        </ul>
-      </div>
-    {{/if}}
-  {{/each}}
-  {{#if Prerequisite}}
-    <div><strong>Prerequisites:</strong>&nbsp;{{{linkedPrerequisite}}}</div>
-  {{/if}}
-  {{#if Preclusion}}
-    <div><strong>Preclusions:</strong>&nbsp;{{{linkedPreclusion}}}</div>
-  {{/if}}
-  {{#if Workload}}
-    <div><strong>Workload:</strong>&nbsp;{{Workload}}</div>
-  {{/if}}
-</td>
-<td class="mc">{{ModuleCredit}}</td>
-<td class="exam">
-  {{#if hasExams}}
-    {{#each History}}
-      <div>
-        <strong>Semester {{Semester}}</strong><br>
-        {{#if examStr}}
-          {{examStr}}
-        {{else}}
-          No Exam
-        {{/if}}
-      </div>
-    {{/each}}
-  {{else}}
-    No Exam
-  {{/if}}
-</td>
-
-<td class="department">{{Department}}</td>
+</div>

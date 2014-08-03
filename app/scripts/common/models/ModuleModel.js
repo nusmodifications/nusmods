@@ -77,6 +77,10 @@ module.exports = Backbone.Model.extend({
 
     _.each(this.get('History'), function (history) {
       history.examStr = examStr(history.ExamDate);
+      if (history.examStr) {
+        history.examDateStr = history.examStr.slice(0, 10);
+        history.examTimeStr = history.examStr.slice(11);
+      }
 
       var timetable = history.Timetable;
       if (timetable) {

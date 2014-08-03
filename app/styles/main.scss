@@ -364,23 +364,54 @@ a {
 
 
 // Module Finder Content
-td {
-  &.code,
-  &.mc {
-    text-align: center;
+.module-item {
+  .mc {
+    font-weight: normal;
+    text-transform: none;
   }
-  &.code {
-    font-weight: bold;
-    min-width: 82px;
-  }
-  &.exam {
-    min-width: 95px;
-    div {
-      margin-bottom: 10px;
+  .semester-availability {
+    float: right;
+    margin: -5px 0 0;
+    span {
+      padding: 4px 8px;
     }
   }
-  &.details .desc {
-    margin-top: 2px;
+  dl {
+    margin-bottom: 0;
+  }
+  dt,
+  dd {
+    display: inline;
+  }
+  dt:before {
+    content: "";
+    display: block;
+  }
+  dt:after {
+    content: ":";
+  }
+  .description {
+    text-align: justify;
+  }
+  .lecturer:after {
+    content: ",";
+  }
+  .lecturer:last-of-type:after {
+    content: "";
+  }
+  .exam > span {
+    white-space: nowrap;
+  }
+  .department {
+    font-weight: bold;
+  }
+  @media (min-width: 640px) {
+    .department {
+      float: left;
+    }
+    .buttons {
+      float: right;
+    }
   }
 }
 
@@ -415,19 +446,6 @@ td {
 
 a.cors > .fa-fw {
   width: .9em;
-}
-
-.lecturers {
-  display: inline;
-  li {
-    padding-right: 0;
-  }
-  li:after {
-    content: ",";
-  }
-  li:last-of-type:after {
-    content: "";
-  }
 }
 
 // Timetable

@@ -5,7 +5,7 @@ var Marionette = require('backbone.marionette');
 var template = require('../templates/module_item.hbs');
 
 module.exports = Marionette.ItemView.extend({
-  tagName: 'tr',
+  className: 'module-item panel panel-default',
   template: template,
 
   events: {
