@@ -11,7 +11,6 @@ var d3 = require('d3');
 var localforage = require('localforage');
 var template = require('../templates/module.hbs');
 var config = require('../../common/config');
-require('../../templates/helpers/equals');
 require('bootstrap/tooltip');
 
 var searchPreferences = {};
