@@ -1,5 +1,6 @@
 'use strict';
 
+var App = require('../../app');
 var FacetView = require('./FacetView');
 var Marionette = require('backbone.marionette');
 var _ = require('underscore');
@@ -55,6 +56,13 @@ module.exports = Marionette.CollectionView.extend({
     }
   },
 
+  onFilter: function(options) {
+    var filteredCollection = this.collection.findWhere({key: options.type}).get('filters'); 
+    var filteredModel = filteredCollection.findWhere({label: options.value});
+    filteredModel.model.collection.selectNone();
+    filteredModel.model.toggleSelected();
+  },
+
   initialize: function (options) {
     _.bindAll(this, 'onScroll');
 
@@ -63,6 +71,7 @@ module.exports = Marionette.CollectionView.extend({
     this.threshold = options.threshold;
 
     this.listenTo(this.collection.filteredCollection, 'reset', this.onReset);
+    App.vent.on('filterActivated', this.onFilter, this);
     this.collection.onSelect();
   }
 });
