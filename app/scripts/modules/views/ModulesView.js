@@ -24,8 +24,6 @@ module.exports = Marionette.LayoutView.extend({
   ui: {
     content: '#content',
     sidebar: '#sidebar',
-    sidebarToggle: '#sidebar-toggle',
-    sidebarToggleIcon: '#sidebar-toggle i',
     backToTopButton: '#back-to-top'
   },
 
@@ -35,34 +33,11 @@ module.exports = Marionette.LayoutView.extend({
     }
   },
 
-  events: {
-    'click @ui.sidebarToggle': function(event) {
-      event.preventDefault();
-      this.ui.sidebarToggleIcon.toggleClass('fa-chevron-left fa-chevron-right');
-      this.ui.sidebar.animate({width: 'toggle'}, 100);
-      this.ui.content
-        .toggleClass('col-md-12 col-md-9')
-        .toggleClass('no-sidebar');
-      this.sidebarShown = !this.sidebarShown;
-      var qtipContent = this.sidebarShown ? 'Hide Sidebar' : 'Show Sidebar';
-      this.ui.sidebarToggle.qtip('option', 'content.text', qtipContent);
-    }
-  },
-  
   initialize: function (options) {
     this.mods = options.mods;
   },
 
   onShow: function () {
-    this.sidebarShown = true;
-    this.ui.sidebarToggle.qtip({
-      content: 'Hide Sidebar',
-      position: {
-        my: 'left center',
-        at: 'top right'
-      }
-    });
-
     $('.arrow-down, .arrow-right').click(function() {
       $(this)
           .toggleClass('arrow-down arrow-right')

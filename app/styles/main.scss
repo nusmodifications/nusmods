@@ -335,17 +335,6 @@ a {
   border-left: 5px solid transparent;
 }
 
-// Sidebar Toggling
-@media (min-width: $screen-sm-min) {
-  #sidebar-toggle {
-    display: none;
-    font-size: 24px;
-    position: fixed;
-    bottom: 4px;
-    left: 4px;
-  }
-}
-
 // Back to Top Button
 #back-to-top {
   bottom: -100px;
