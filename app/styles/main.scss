@@ -190,6 +190,13 @@ a {
   }
 }
 
+.nm-caret {
+  transition: all 0.2s linear;
+  &.nm-caret-down {
+    transform: rotate(90deg);
+  }
+}
+
 .nm-page-heading {
   color: $brand-primary;
 }
@@ -377,6 +384,31 @@ td {
   }
 }
 
+.nm-section-title {
+  color: #666;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.nm-module-facet {
+  border-bottom: none;
+  border-radius: 0;
+  box-shadow: none;
+  margin-bottom: 0 !important;
+  .nm-section-heading {
+    cursor: pointer;
+    transition: all 0.1s linear;
+    &:hover {
+      color: $brand-primary;
+    }
+  }
+}
+
+.nm-module-filter {
+  padding: 10px 15px;
+}
+
 .empty-module-listing {
   text-align: center;
 }
@@ -517,12 +549,6 @@ colgroup.hover {
   #disqus-count {
     background-color: red;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  }
-  .module-page-section-title {
-    color: #666;
-    font-weight: bold;
-    letter-spacing: 1px;
-    text-transform: uppercase;
   }
   @media (max-width: 768px) {
     .module-navigation {

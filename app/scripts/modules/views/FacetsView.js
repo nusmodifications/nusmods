@@ -3,6 +3,7 @@
 var FacetView = require('./FacetView');
 var Marionette = require('backbone.marionette');
 var _ = require('underscore');
+var localforage = require('localforage');
 
 module.exports = Marionette.CollectionView.extend({
   childView: FacetView,
@@ -21,6 +22,36 @@ module.exports = Marionette.CollectionView.extend({
       if (!this.collection.addNextPage()) {
         this.$window.off('scroll', this.onScroll);
       }
+    }
+  },
+  onShow: function () {
+    localforage.getItem('moduleFinder:facets', function(data) {
+      if (data) {
+        _.each(data, function (id) {
+          var $panel = $('#' + id);
+          $panel.addClass('in');
+          $panel.parent().find('.nm-caret').addClass('nm-caret-down');
+        })
+      }
+    });
+
+    $('.collapse').on('shown.bs.collapse hidden.bs.collapse', function () {
+      localforage.setItem('moduleFinder:facets', _.pluck($('.collapse.in'), 'id'));
+    });
+  },
+  events: {
+    'click': function () {
+      var selectedFilters = {};
+      _.each(this.collection.models, function (facet) {
+        var filters = [];
+        _.each(facet.get('filters').selected, function (filter) {
+          filters.push(filter.get('label'));
+        });
+        if (filters.length) {
+          selectedFilters[facet.get('label')] = filters;
+        }
+      });
+      localforage.setItem('moduleFinder:filters', selectedFilters);
     }
   },
 
