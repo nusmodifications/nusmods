@@ -229,28 +229,30 @@
           <h2>Semester {{Semester}}</h2>
           {{#each formattedTimetable}}
             <h3 class="highlight thin">{{LessonType}}</h3>
-            <table class="table table-striped">
-              <tbody>
-              <tr>
-                <th>Class No</th>
-                <th>Week Type</th>
-                <th>Day</th>
-                <th>Start Time</th>
-                <th>End Time</th>
-                <th>Venue</th>
-              </tr>
-              {{#each Lessons}}
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <tbody>
                 <tr>
-                  <td>{{ClassNo}}</td>
-                  <td>{{WeekText}}</td>
-                  <td>{{DayText}}</td>
-                  <td>{{StartTime}}</td>
-                  <td>{{EndTime}}</td>
-                  <td>{{Venue}}</td>
+                  <th>Class No</th>
+                  <th>Week Type</th>
+                  <th>Day</th>
+                  <th>Start Time</th>
+                  <th>End Time</th>
+                  <th>Venue</th>
                 </tr>
-              {{/each}}
-              </tbody>
-            </table>
+                {{#each Lessons}}
+                  <tr>
+                    <td>{{ClassNo}}</td>
+                    <td>{{WeekText}}</td>
+                    <td>{{DayText}}</td>
+                    <td>{{StartTime}}</td>
+                    <td>{{EndTime}}</td>
+                    <td>{{Venue}}</td>
+                  </tr>
+                {{/each}}
+                </tbody>
+              </table>
+            </div>
           {{else}}
             <p>No timetable data to be shown.</p>
           {{/each}}

@@ -1,37 +1,39 @@
 {{#each stats}}
   <h3 class="highlight thin">{{Semester}}</h3>
-  <table class="table table-striped">
-    <tbody>
-      <tr>
-        <th>Faculty</th>
-        <th>Group</th>
-        <th>Round</th>
-        <th>Quota</th>
-        <th>Bidders</th>
-        <th>Lowest Bid</th>
-        <th>Lowest Succ Bid</th>
-        <th>Highest Bid</th>
-        <th>Student Acct Type</th>
-      </tr>
-      {{#if BiddingStats.length}}
-        {{#each BiddingStats}}
-          <tr>
-            <td>{{Faculty}}</td>
-            <td>{{Group}}</td>
-            <td>{{Round}}</td>
-            <td>{{Quota}}</td>
-            <td>{{Bidders}}</td>
-            <td>{{LowestBid}}</td>
-            <td>{{LowestSuccessfulBid}}</td>
-            <td>{{HighestBid}}</td>
-            <td>{{StudentAcctType}}</td>
-          </tr>
-        {{/each}}
-      {{else}}
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <tbody>
         <tr>
-          <td colspan="9">No history to show.</td>
+          <th>Faculty</th>
+          <th>Group</th>
+          <th>Round</th>
+          <th>Quota</th>
+          <th>Bidders</th>
+          <th>Lowest Bid</th>
+          <th>Lowest Succ Bid</th>
+          <th>Highest Bid</th>
+          <th>Student Acct Type</th>
         </tr>
-      {{/if}}
-    </tbody>
-  </table>
+        {{#if BiddingStats.length}}
+          {{#each BiddingStats}}
+            <tr>
+              <td>{{Faculty}}</td>
+              <td>{{Group}}</td>
+              <td>{{Round}}</td>
+              <td>{{Quota}}</td>
+              <td>{{Bidders}}</td>
+              <td>{{LowestBid}}</td>
+              <td>{{LowestSuccessfulBid}}</td>
+              <td>{{HighestBid}}</td>
+              <td>{{StudentAcctType}}</td>
+            </tr>
+          {{/each}}
+        {{else}}
+          <tr>
+            <td colspan="9">No history to show.</td>
+          </tr>
+        {{/if}}
+      </tbody>
+    </table>
+  </div>
 {{/each}}
