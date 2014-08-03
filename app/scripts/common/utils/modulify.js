@@ -14,10 +14,6 @@ var re = /[a-zA-Z]{2,3}[\s]?[\d]{4}[a-zA-Z]{0,2}/g;
 var allModuleCodes;
 
 module.exports = {
-  getModuleFromString: function (string) {
-    var match = re.exec(string);
-    return match ? match[0] : '';
-  },
   matchModules: function (desc) {
     var matchPos = [];
     if (!desc) { return matchPos; }

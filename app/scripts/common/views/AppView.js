@@ -9,7 +9,6 @@ var BookmarksView = require('./BookmarksView');
 var _ = require('underscore');
 var attachFastClick = require('fastclick');
 var corsify = require('../../cors/corsify');
-var modulify = require('../utils/modulify');
 var themePicker = require('../themes/themePicker');
 require('bootstrap/alert');
 require('qTip2');
@@ -105,7 +104,6 @@ module.exports = Backbone.View.extend({
 
     _.each(keyboardAnchorMappings, function (value, key) {
       Mousetrap.bind(key, function () {
-        var moduleCode = modulify.getModuleFromString(window.location.href);
         var section = value.slice(1);
         ga('send', 'event', 'Module ' + section, 'Visit - Keyboard', section);
         if (modulePageRegex.test(window.location.pathname)) {
