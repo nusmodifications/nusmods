@@ -13,16 +13,24 @@ module.exports = Marionette.ItemView.extend({
       this.model.toggleSelected();
       var facet = this.model.get('facet');
       ga('send', 'event', 'Modules filter',
-        (this.model.selected ? 'Selected ' : 'Deselected ') + facet.get('label'),
+        (this.model.selected ? 'S' : 'Des') + 'elected ' + facet.get('label'),
         this.model.get('label'), facet.get('filters').selectedLength);
     },
     'click a': function (event) {
       event.preventDefault();
-      this.model.collection.selectNone();
+      var facet = this.model.get('facet');
+      var filters = facet.get('filters');
+
+      // If filter is the the only one selected, do not select none before
+      // toggling select, so that it will be deselected.
+      if (filters.selectedLength > 1 || !filters.selected[this.model.cid]) {
+        this.model.collection.selectNone();
+      }
       this.model.toggleSelected();
+
       ga('send', 'event', 'Modules filter',
-        'Selected one ' + this.model.get('facet').get('label'),
-        this.model.get('label'));
+        (this.model.selected ? 'S' : 'Des') + 'elected one ' + facet.get('label'),
+        this.model.get('label'), filters.selectedLength);
     }
   },
 
