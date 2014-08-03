@@ -222,8 +222,11 @@ a {
 }
 
 .navbar-form .form-control {
-  width: 300px;
+  width: 240px;
   margin-left: $navbar-padding-horizontal;
+  @media (min-width: 400px) {
+    width: 300px;
+  }
   @media (min-width: $screen-sm-min) {
     width: 350px;
   }
@@ -285,7 +288,10 @@ a {
   @include clearfix();
   .code-title {
     float: left;
-    width: 210px;
+    width: 150px;
+    @media (min-width: 400px) {
+      width: 210px;
+    }
     @media (min-width: $screen-sm-min) {
       width: 260px;
     }
