@@ -7,9 +7,9 @@ var GoToTopBehavior = require('../../common/behaviors/GoToTopBehavior');
 var Marionette = require('backbone.marionette');
 var ModuleCollection = require('../../common/collections/ModuleCollection');
 var ModulesListingView = require('./ModulesListingView');
-var ModulesListingView = require('./ModulesListingView');
 var _ = require('underscore');
 var config = require('../../common/config');
+var localforage = require('localforage');
 var template = require('../templates/modules.hbs');
 var slugify = require('../../common/utils/slugify');
 
@@ -129,7 +129,7 @@ module.exports = Marionette.LayoutView.extend({
     }));
     facets.add(_.map({
       Department: 'Faculty / Department',
-      level: 'Level',
+      level: 'Level'
     }, function(label, key) {
       return {
         filteredCollection: mods,
@@ -147,17 +147,17 @@ module.exports = Marionette.LayoutView.extend({
         return +filter.label;
       }
     });
-    for (var i = 1; i < 3; i++) {
+    _.each([1, 2], function (semester) {
       facets.add(_.map(['Lecture Periods', 'Tutorial Periods'], function(label) {
-        var currentLabel = 'Sem ' + i + ' ' + label;
+        var currentLabel = 'Sem ' + semester + ' ' + label;
         return new ArrayFacetModel({
           filteredCollection: mods,
-          key: label.replace(' ', '') + i,
+          key: label.replace(' ', '') + semester,
           label: currentLabel,
           slug: slugify(currentLabel)
         });
       }));
-    }
+    });
 
     var that = this;
 

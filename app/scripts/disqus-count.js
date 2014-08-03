@@ -1,3 +1,4 @@
+/* jshint ignore:start */
 'use strict';
 var DISQUSWIDGETS, disqus_domain, disqus_shortname;
 typeof DISQUSWIDGETS === 'undefined' && (DISQUSWIDGETS = function () {

@@ -17,6 +17,7 @@ function initializeHipChat (options) {
     };
 
     if (options.welcome) {
+      /* jshint camelcase: false */
       params.welcome_msg = options.welcome;
     }
 

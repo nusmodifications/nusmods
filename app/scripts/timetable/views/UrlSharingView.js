@@ -1,6 +1,5 @@
 'use strict';
 
-var App = require('../../app');
 var Marionette = require('backbone.marionette');
 var ZeroClipboard = require('zeroclipboard');
 var _ = require('underscore');

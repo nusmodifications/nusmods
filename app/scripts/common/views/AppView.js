@@ -20,8 +20,10 @@ module.exports = Backbone.View.extend({
     'click a[href]:not([data-bypass])': 'hijackLinks'
   },
 
-  // Ref: https://github.com/backbone-boilerplate/backbone-boilerplate/blob/85723839dbab6787d69eedcbbea05e1d59960eff/app/app.js#L52
   hijackLinks: function (event) {
+    /* jshint maxlen: 140 */
+    // Ref: https://github.com/backbone-boilerplate/backbone-boilerplate/blob/85723839dbab6787d69eedcbbea05e1d59960eff/app/app.js#L52
+
     // Do not hijack if modifier key was pressed when the event fired.
     if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) {
       return;
@@ -119,6 +121,7 @@ module.exports = Backbone.View.extend({
         window.DISQUS.reset({
           reload: true,
           config: function () {
+            /* jshint camelcase: false */
             this.page.identifier = window.disqus_identifier;
             this.page.title = window.disqus_title;
             this.page.url = window.disqus_url;

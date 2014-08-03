@@ -31,7 +31,7 @@ module.exports = Marionette.CollectionView.extend({
           var $panel = $('#' + id);
           $panel.addClass('in');
           $panel.parent().find('.nm-caret').addClass('nm-caret-down');
-        })
+        });
       }
     });
 

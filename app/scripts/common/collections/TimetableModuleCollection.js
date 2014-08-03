@@ -4,7 +4,7 @@ var LessonCollection = require('../collections/LessonCollection');
 var LessonModel = require('../models/LessonModel');
 var ModuleCollection = require('./ModuleCollection');
 var NUSMods = require('../../nusmods');
-var Promise = require('bluebird');
+var Promise = require('bluebird'); // jshint ignore:line
 
 var _ = require('underscore');
 var qs = require('qs');

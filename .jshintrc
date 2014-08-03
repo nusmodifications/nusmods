@@ -19,7 +19,9 @@
     "smarttabs": true,
     "jquery": true,
     "globals": {
-        "define": false
+        "DISQUS": false,
+        "DISQUSWIDGETS": false,
+        "ga": false
     },
     "maxlen": 120
 }

@@ -3,7 +3,7 @@
 var App = require('../../app');
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
-var Promise = require('bluebird');
+var Promise = require('bluebird'); // jshint ignore:line
 var TimetableModuleCollection = require('../../common/collections/TimetableModuleCollection');
 var TimetableView = require('../views/TimetableView');
 var _ = require('underscore');

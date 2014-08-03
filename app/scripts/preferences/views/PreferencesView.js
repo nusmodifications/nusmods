@@ -8,15 +8,15 @@ var themePicker = require('../../common/themes/themePicker');
 
 module.exports = Marionette.LayoutView.extend({
   template: template,
+  ui: {
+    faculty: '#faculty',
+    student: 'input:radio[name="student-radios"]',
+    mode: 'input:radio[name="mode-radios"]',
+    theme: '#theme-options'
+  },
   initialize: function () {
     // TODO: Populate default values of form elements for first time users.
-    var formElements = {
-      'faculty': '#faculty',
-      'student': 'input:radio[name="student-radios"]',
-      'mode': 'input:radio[name="mode-radios"]',
-      'theme': '#theme-options'
-    };
-    _.each(formElements, function (selector, item) {
+    _.each(this.ui, function (selector, item) {
       localforage.getItem(item, function (value) {
         if (value) {
           $(selector).val([value]);
@@ -34,7 +34,7 @@ module.exports = Marionette.LayoutView.extend({
   },
   events: {
     'click .random-theme': 'randomTheme',
-    'change #faculty, input:radio[name="student-radios"], input:radio[name="mode-radios"], #theme-options': 'updatePreference',
+    'change @ui.faculty, @ui.student, @ui.mode, @ui.theme': 'updatePreference',
     'keydown': 'toggleTheme',
     'click .connect-ivle': 'connectIvle'
   },

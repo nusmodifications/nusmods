@@ -25,6 +25,7 @@ function drawTree(selector, prereqs, lockedModules, modCode) {
   function getWidth (d) { return isOrAnd(d) ? 50 : 120; }
   function getDefaultTranslation() { return [(SVGWidth) / 2, 180]; }
   function mouseOver (d) {
+    /* jshint validthis: true */
     if (!isOrAnd(d)) {
       rectangles.filter(modsFilter)
                 .classed({'active-rect': false, 'opaque': false, 'translucent': true});
@@ -80,10 +81,10 @@ function drawTree(selector, prereqs, lockedModules, modCode) {
   var links = tree.links(nodes);
   var diagonal = d3.svg.diagonal().projection(function (d) { return [d.x, d.y]; });
 
-  var tree_lm = d3.layout.tree().nodeSize([130, 130]);
-  var nodes_lm = tree_lm.nodes(lockedModules);
-  var links_lm = tree_lm.links(nodes_lm);
-  var diagonal_lm = d3.svg.diagonal().projection(function (d) { return [d.x, -d.y]; });
+  var treeLm = d3.layout.tree().nodeSize([130, 130]);
+  var nodesLm = treeLm.nodes(lockedModules);
+  var linksLm = treeLm.links(nodesLm);
+  var diagonalLm = d3.svg.diagonal().projection(function (d) { return [d.x, -d.y]; });
 
   canvas.selectAll('.link')
       .data(links)
@@ -93,32 +94,15 @@ function drawTree(selector, prereqs, lockedModules, modCode) {
       .attr('d', diagonal);
 
   canvas.selectAll('.link.locked-modules')
-      .data(links_lm)
+      .data(linksLm)
       .enter()
       .append('path')
       .classed({'link': true, 'locked-modules': true})
-      .attr('d', diagonal_lm);
+      .attr('d', diagonalLm);
 
-  var node = canvas.selectAll('.node')
-                  .data(nodes)
-                  .enter()
-                  .append('g')
-                  .attr('class', 'node')
-                  .attr('transform', function (d) {
-                    return 'translate('+d.x+','+d.y+')';
-                  });
+  var nodeAll = canvas.selectAll('.node');
 
-  var node_lm = canvas.selectAll('.node.locked-modules')
-                      .data(nodes_lm)
-                      .enter()
-                      .append('g')
-                      .classed({'node': true, 'locked-modules': true})
-                      .attr('transform', function (d) {
-                        return 'translate('+d.x+','+-d.y+')';
-                      });
-  var node_all = canvas.selectAll('.node');
-
-  var rectangles = node_all.append('rect')
+  var rectangles = nodeAll.append('rect')
                         .attr('width', 0)
                         .attr('height', 0)
                         .attr('x', getX)
@@ -136,7 +120,7 @@ function drawTree(selector, prereqs, lockedModules, modCode) {
   rectangles.filter(function (d) { return d.name === modCode; })
             .classed({'current-mod-rect': true});
 
-  var labels = node_all.append('text')
+  var labels = nodeAll.append('text')
                     .text(function (d) { return d.name; })
                     .classed({'rect-label': true, 'lead': true, 'transparent': true})
                     .attr('dy', function (d) { return isOrAnd(d)? '10' : ''; });
@@ -150,19 +134,19 @@ function drawTree(selector, prereqs, lockedModules, modCode) {
   canvas.selectAll('path')
         .classed({'opacity-transition': true, 'opaque': true, 'transparent': false});
 
-  node_all.selectAll('rect')
+  nodeAll.selectAll('rect')
           .transition()
           .duration(1000)
           .attr('width', getWidth)
           .attr('height', getHeight)
           .ease('elastic');
 
-  node_all.selectAll('text')
+  nodeAll.selectAll('text')
       .classed({'opacity-transition': true, 'opaque': true, 'transparent': false});
 
-  node_all.on('mouseover', mouseOver);
-  node_all.on('mouseout', mouseOut);
-  node_all.on('click', clicked);
+  nodeAll.on('mouseover', mouseOver);
+  nodeAll.on('mouseout', mouseOut);
+  nodeAll.on('click', clicked);
 }
 
 module.exports = Marionette.LayoutView.extend({
@@ -250,12 +234,13 @@ module.exports = Marionette.LayoutView.extend({
     }
   },
   onShow: function () {
+    /* jshint camelcase: false */
     var module = this.model.get('module');
 
-    var lockedModules = {'name': module.ModmavenTree['name'], 'children': []};
+    var lockedModules = {'name': module.ModmavenTree.name, 'children': []};
     for (var i = 0; i < module.LockedModules.length; i++) {
-      lockedModules['children'].push({'name': module.LockedModules[i], 'children': []});
-    };
+      lockedModules.children.push({'name': module.LockedModules[i], 'children': []});
+    }
     drawTree('#tree', module.ModmavenTree, lockedModules, module.ModuleCode);
     
     var code = module.ModuleCode;
@@ -300,7 +285,7 @@ module.exports = Marionette.LayoutView.extend({
     var hash = window.location.hash;
     window.location.hash = '';
 
-    setTimeout(function () {      
+    setTimeout(function () {
       window.location.hash = hash;
     }, 0);
 
@@ -343,7 +328,7 @@ module.exports = Marionette.LayoutView.extend({
   },
   savePreference: function(property, value) {
     if (property === 'faculty' && value === 'default') {
-      alert('You have to select a faculty.');
+      window.alert('You have to select a faculty.');
       localforage.getItem(property, function(value) {
           $('#faculty').val(value);
       });

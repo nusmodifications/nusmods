@@ -1,6 +1,6 @@
 'use strict';
 
-var Promise = require('bluebird');
+var Promise = require('bluebird'); // jshint ignore:line
 
 var ayBaseUrl;
 var moduleInformationPromise, moduleListPromise;
@@ -36,7 +36,8 @@ module.exports = {
     return Promise.resolve($.getJSON(ayBaseUrl + 'modules/' + code + '/index.json', callback));
   },
   getMods: function (callback) {
-    moduleInformationPromise = moduleInformationPromise || Promise.resolve($.getJSON(ayBaseUrl + 'moduleInformation.json'));
+    moduleInformationPromise = moduleInformationPromise ||
+      Promise.resolve($.getJSON(ayBaseUrl + 'moduleInformation.json'));
     return moduleInformationPromise.then(callback);
   },
   getTimetable: function (semester, code, callback) {

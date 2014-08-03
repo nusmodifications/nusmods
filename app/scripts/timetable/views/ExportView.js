@@ -79,13 +79,14 @@ module.exports = Marionette.ItemView.extend({
     for (var i = 0; i < 8; i++) {
       var currentColor = '.color' + i;
       var currentColorProperties = [];
-      _.each(cssProperties, function (prop) {
+      for (var j = 0; j < cssProperties.length; j++) {
+        var prop = cssProperties[j];
         var $el = $(currentColor);
         if ($el.length) {
           currentColorProperties.push(prop + ':' + $el.css(prop));
           html += currentColor + '{' + currentColorProperties.join(';') + '}';
         }
-      });
+      }
     }
 
     html += '.hide-code .code,.hide-group .group,.hide-room .room,.hide-title .title,.hide-week .week{display:none}' +
@@ -250,7 +251,8 @@ module.exports = Marionette.ItemView.extend({
   spreadsheetML: function() {
     var xml =
         '<?xml version="1.0"?>' +
-        '<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">' +
+        '<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"' +
+        'xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">' +
         '<Styles>' +
         '<Style ss:ID="Default">' +
         '<Alignment ss:Horizontal="Center" ss:Vertical="Center" ss:WrapText="1"/>' +
