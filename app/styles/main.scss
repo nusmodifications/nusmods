@@ -62,6 +62,20 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 
 @import "timetable";
 
+$screen-xs-min: 400px;
+$screen-xxs-max: $screen-xs-min - 1;
+
+.visible-xxs-inline {
+  display: none !important;
+  @media (max-width: $screen-xxs-max) {
+    display: inline !important;
+  }
+}
+
+@media (max-width: $screen-xxs-max) {
+  @include responsive-invisibility('.hidden-xxs');
+}
+
 html {
   position: relative;
   min-height: 100%;
@@ -90,10 +104,6 @@ a {
 kbd {
   background-color: #fff !important;
   color: #000 !important;
-}
-
-.nm-mini {
-  font-size: 11px;
 }
 
 // Layout
@@ -229,7 +239,7 @@ kbd {
 .navbar-form .form-control {
   width: 240px;
   margin-left: $navbar-padding-horizontal;
-  @media (min-width: 400px) {
+  @media (min-width: $screen-xs-min) {
     width: 300px;
   }
   @media (min-width: $screen-sm-min) {
@@ -294,7 +304,7 @@ kbd {
   .code-title {
     float: left;
     width: 150px;
-    @media (min-width: 400px) {
+    @media (min-width: $screen-xs-min) {
       width: 210px;
     }
     @media (min-width: $screen-sm-min) {
