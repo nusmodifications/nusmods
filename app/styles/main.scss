@@ -15,7 +15,7 @@ $font-family-sans-serif: "proxima-nova", "Helvetica Neue", Helvetica, Arial, san
 // Core CSS
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/scaffolding";
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/type";
-//@import "bootstrap-sass-official/assets/stylesheets/bootstrap/code";
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap/code";
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/grid";
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/tables";
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/forms";

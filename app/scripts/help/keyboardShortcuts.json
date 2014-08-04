@@ -5,12 +5,12 @@
       {
         "title": "Quick Search",
         "keys": ["/"],
-        "description": "Pressing __/__ puts the cursor in the module search bar at the top for easy navigation to a module's homepage."
+        "description": "Pressing <kbd>/</kbd> puts the cursor in the module search bar at the top for easy navigation to a module's homepage."
       },
       {
         "title": "Help",
         "keys": ["?"],
-        "description": "Pressing __?__ will quickly jump you to this [Help](/help) page."
+        "description": "Pressing <kbd>?</kbd> will quickly jump you to this [Help](/help) page."
       }
     ]
   },
@@ -20,17 +20,17 @@
       {
         "title": "Modules",
         "keys": ["M"],
-        "description": "Pressing __M__ will quickly jump you to the [Modules Catalogue](/modules) page."
+        "description": "Pressing <kbd>M</kbd> will quickly jump you to the [Modules Catalogue](/modules) page."
       },
       {
         "title": "Timetable",
         "keys": ["T"],
-        "description": "Pressing __T__ will quickly jump you to the [Timetable](/timetable) page."
+        "description": "Pressing <kbd>T</kbd> will quickly jump you to the [Timetable](/timetable) page."
       },
       {
         "title": "Preferences",
         "keys": ["P"],
-        "description": "Pressing __P__ will quickly jump you to the [Preferences](/preferences) page."
+        "description": "Pressing <kbd>P</kbd> will quickly jump you to the [Preferences](/preferences) page."
       }
     ]
   },
@@ -40,7 +40,7 @@
       {
         "title": "Add modules to timetable",
         "keys": ["."],
-        "description": "Pressing __.__ will focus on the search box where you can add modules to the timetable."
+        "description": "Pressing <kbd>.</kbd> will focus on the search box where you can add modules to the timetable."
       }
     ]
   },
@@ -50,22 +50,22 @@
       {
         "title": "Jump to prerequisites",
         "keys": ["E"],
-        "description": "Pressing __E__ will jump to the module prerequisites visualization section of the module page."
+        "description": "Pressing <kbd>E</kbd> will jump to the module prerequisites visualization section of the module page."
       },
       {
         "title": "Jump to reviews and discussions",
         "keys": ["R"],
-        "description": "Pressing __R__ will jump to the reviews and discussions section of the module page."
+        "description": "Pressing <kbd>R</kbd> will jump to the reviews and discussions section of the module page."
       },
       {
         "title": "Jump to CORS bidding history",
         "keys": ["C"],
-        "description": "Pressing __C__ will jump to the CORS bidding history section of the module page."
+        "description": "Pressing <kbd>C</kbd> will jump to the CORS bidding history section of the module page."
       },
       {
         "title": "Jump to module's class schedule",
         "keys": ["S"],
-        "description": "Pressing __S__ will jump to the class schedule section of the module page."
+        "description": "Pressing <kbd>S</kbd> will jump to the class schedule section of the module page."
       }
     ]
   },
@@ -75,12 +75,12 @@
       {
         "title": "Toggle modes",
         "keys": ["X"],
-        "description": "Pressing __X__ will switch between the light and dark modes of the site."
+        "description": "Pressing <kbd>X</kbd> will switch between the light and dark modes of the site."
       },
       {
         "title": "Switch theme",
         "keys": ["&#8592;", "&#8594;"],
-        "description": "Pressing __&#8592;__ and __&#8594;__ will switch between the available theme colours for modules in the timetable."
+        "description": "Pressing <kbd>&#8592;</kbd> and <kbd>&#8594;</kbd> will switch between the available theme colours for modules in the timetable."
       }
     ]
   }
