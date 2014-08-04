@@ -15,7 +15,7 @@ $font-family-sans-serif: "proxima-nova", "Helvetica Neue", Helvetica, Arial, san
 // Core CSS
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/scaffolding";
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/type";
-//@import "bootstrap-sass-official/assets/stylesheets/bootstrap/code";
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap/code";
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/grid";
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/tables";
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/forms";
@@ -85,6 +85,11 @@ a {
     transition-duration: .3s;
     transition-property: all;
   }
+}
+
+kbd {
+  background-color: #fff !important;
+  color: #000 !important;
 }
 
 .nm-mini {
