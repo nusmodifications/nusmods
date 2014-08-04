@@ -15,6 +15,7 @@ Backbone.History.prototype.loadUrl = function() {
   var ga = window.ga;
 
   if (typeof ga !== 'undefined') {
+    ga('set', 'page', gaFragment);
     ga('send', 'pageview', gaFragment);
   }
   return matched;
