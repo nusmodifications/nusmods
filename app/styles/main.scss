@@ -135,6 +135,9 @@ kbd {
 .navbar-default {
   .navbar-nav > {
     li {
+      a {
+        padding-bottom: 12px;
+      }
       a:hover {
         color: $brand-primary;
         background: none;
