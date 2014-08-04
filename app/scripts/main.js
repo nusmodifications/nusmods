@@ -1,11 +1,12 @@
 'use strict';
 
+var Promise = require('bluebird'); // jshint ignore:line
 var analytics = require('analytics');
 var localforage = require('localforage');
 
 var $body = $('body');
-['theme', 'mode'].forEach(function (property) {
-  localforage.getItem(property, function (value) {
+Promise.all(['theme', 'mode'].map(function (property) {
+  return localforage.getItem(property).then(function (value) {
     if (!value) {
       value = 'default';
       localforage.setItem(property, value);
@@ -26,7 +27,7 @@ var $body = $('body');
       $('#mode').attr('href', '/styles/' + value + '.min.css');
     }
   });
-});
+})).then(analytics.flush);
 
 var App = require('./app');
 App.start();

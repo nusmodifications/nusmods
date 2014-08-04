@@ -20,8 +20,7 @@
     "jquery": true,
     "globals": {
         "DISQUS": false,
-        "DISQUSWIDGETS": false,
-        "ga": false
+        "DISQUSWIDGETS": false
     },
     "maxlen": 120
 }
