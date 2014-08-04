@@ -2,6 +2,7 @@
 
 var Marionette = require('backbone.marionette');
 var _ = require('underscore');
+var analytics = require('analytics');
 
 module.exports = Marionette.Behavior.extend({
   defaults: {
@@ -21,7 +22,7 @@ module.exports = Marionette.Behavior.extend({
   },
 
   scrollToTop: function () {
-    ga('send', 'event', 'Misc', 'Back to top', window.location.pathname);
+    analytics.track('Misc', 'Back to top', window.location.pathname);
     $('html,body').stop(true, true).animate({scrollTop: 0}, 400);
     $(this.view.ui.backToTopButton).blur();
   }

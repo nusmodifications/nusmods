@@ -7,6 +7,7 @@ var GoToTopBehavior = require('../../common/behaviors/GoToTopBehavior');
 var Marionette = require('backbone.marionette');
 var NUSMods = require('../../nusmods');
 var _ = require('underscore');
+var analytics = require('analytics');
 var d3 = require('d3');
 var localforage = require('localforage');
 var template = require('../templates/module.hbs');
@@ -218,7 +219,7 @@ module.exports = Marionette.LayoutView.extend({
       var currentTarget = $(event.currentTarget);
       var semester = currentTarget.data('semester');
       var moduleCode = this.model.get('module').ModuleCode;
-      ga('send', 'event', 'Timetable', 'Add module', 'From module page', semester);
+      analytics.track('Timetable', 'Add module', 'From module page', semester);
       if (App.request('isModuleSelected', semester, moduleCode)) {
         qtipContent = 'Already added!';
       } else {
@@ -239,7 +240,7 @@ module.exports = Marionette.LayoutView.extend({
       return false;
     },
     'click .add-bookmark': function (event) {
-      ga('send', 'event', 'Bookmarks', 'Add bookmark', 'From module page');
+      analytics.track('Bookmarks', 'Add bookmark', 'From module page');
       App.request('addBookmark', this.model.get('module').ModuleCode);
       $(event.currentTarget).qtip({
         content: 'Bookmarked!',
@@ -313,7 +314,7 @@ module.exports = Marionette.LayoutView.extend({
     return false;
   },
   showAllStats: function () {
-    ga('send', 'event', 'Module cors', 'View full stats', this.model.get('module').ModuleCode);
+    analytics.track('Module cors', 'View full stats', this.model.get('module').ModuleCode);
     this.showBiddingStatsRegion(false);
   },
   updateCorspedia: function ($ev) {
@@ -321,7 +322,7 @@ module.exports = Marionette.LayoutView.extend({
     $target.blur();
     var property = $target.attr('data-pref-type');
     var value = $target.val();
-    ga('send', 'event', 'Module cors', 'Change ' + property, value);
+    analytics.track('Module cors', 'Change ' + property, value);
     if (this.savePreference(property, value)) {
       searchPreferences[property] = value;
       this.showBiddingStatsRegion(true);

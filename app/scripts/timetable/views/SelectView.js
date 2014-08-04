@@ -4,6 +4,7 @@ var App = require('../../app');
 var Marionette = require('backbone.marionette');
 var Mousetrap = require('Mousetrap');
 var NUSMods = require('../../nusmods');
+var analytics = require('analytics');
 var template = require('../templates/select.hbs');
 require('select2');
 
@@ -69,7 +70,7 @@ module.exports = Marionette.ItemView.extend({
     });
 
     Mousetrap.bind('.', function (ev) {
-      ga('send', 'event', 'Search', 'Keyboard', 'Timetable Search');
+      analytics.track('Search', 'Keyboard', 'Timetable Search');
       $('.timetable-input .select2-input').focus();
       ev.preventDefault();
       return false;

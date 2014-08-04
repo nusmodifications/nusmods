@@ -7,6 +7,7 @@ var NUSMods = require('../../nusmods');
 var SelectView = require('./SelectView');
 var BookmarksView = require('./BookmarksView');
 var _ = require('underscore');
+var analytics = require('analytics');
 var attachFastClick = require('fastclick');
 var corsify = require('../../cors/corsify');
 var themePicker = require('../themes/themePicker');
@@ -73,7 +74,7 @@ module.exports = Backbone.View.extend({
     $('.container').removeClass('hidden');
 
     Mousetrap.bind('/', function(ev) {
-      ga('send', 'event', 'Search', 'Keyboard', 'Main Search');
+      analytics.track('Search', 'Keyboard', 'Main Search');
       $('#s2id_autogen2').focus();
       ev.preventDefault();
       return false;
@@ -90,7 +91,7 @@ module.exports = Backbone.View.extend({
     
     _.each(keyboardNavigationMappings, function (value, key) {
       Mousetrap.bind(key, function () {
-        ga('send', 'event', 'Navigation', 'Keyboard', value.slice(1));
+        analytics.track('Navigation', 'Keyboard', value.slice(1));
         that.navigateWithScrollTop(value, true);
       });
     });
@@ -107,7 +108,7 @@ module.exports = Backbone.View.extend({
     _.each(keyboardAnchorMappings, function (value, key) {
       Mousetrap.bind(key, function () {
         var section = value.slice(1);
-        ga('send', 'event', 'Module ' + section, 'Visit - Keyboard', section);
+        analytics.track('Module ' + section, 'Visit - Keyboard', section);
         if (modulePageRegex.test(window.location.pathname)) {
           location.hash = value;
         }
@@ -116,7 +117,7 @@ module.exports = Backbone.View.extend({
     
     Mousetrap.bind(['x'], function () {
       var newMode = themePicker.toggleMode();
-      ga('send', 'event', 'event', 'Mode', 'Change mode using keyboard', newMode);
+      analytics.track('event', 'Mode', 'Change mode using keyboard', newMode);
       if (modulePageRegex.test(window.location.pathname) && window.DISQUS) {
         window.DISQUS.reset({
           reload: true,
@@ -132,7 +133,7 @@ module.exports = Backbone.View.extend({
 
     Mousetrap.bind(['left', 'right'], function (e) {
       var newTheme = themePicker.selectNextTheme(e.keyCode === 37 ? 'Left' : 'Right');
-      ga('send', 'event', 'Theme', 'Change theme using keyboard', newTheme, e.keyCode === 37 ? 1 : 0);
+      analytics.track('Theme', 'Change theme using keyboard', newTheme, e.keyCode === 37 ? 1 : 0);
       return false;
     });
 
@@ -144,7 +145,7 @@ module.exports = Backbone.View.extend({
       },
       events: {
         show: function() {
-          ga('send', 'event', 'Bookmarks', 'Display bookmark');
+          analytics.track('Bookmarks', 'Display bookmark');
           App.request('getBookmarks', function (modules) {
             var modulesList = [];
             _.each(modules, function (module) {

@@ -2,6 +2,7 @@
 
 var App = require('../../app');
 var Marionette = require('backbone.marionette');
+var analytics = require('analytics');
 var template = require('../templates/module_item.hbs');
 
 module.exports = Marionette.ItemView.extend({
@@ -13,7 +14,7 @@ module.exports = Marionette.ItemView.extend({
       var qtipContent;
       var currentTarget = $(event.currentTarget);
       var semester = currentTarget.data('semester');
-      ga('send', 'event', 'Timetable', 'Add module', 'From module finder', semester);
+      analytics.track('Timetable', 'Add module', 'From module finder', semester);
       if (App.request('isModuleSelected', semester, this.model.id)) {
         qtipContent = 'Already added!';
       } else {
@@ -34,7 +35,7 @@ module.exports = Marionette.ItemView.extend({
       return false;
     },
     'click .add-bookmark': function(event) {
-      ga('send', 'event', 'Bookmarks', 'Add bookmark', 'From module finder');
+      analytics.track('Bookmarks', 'Add bookmark', 'From module finder');
       App.request('addBookmark', this.model.id);
       $(event.currentTarget).qtip({
         content: 'Bookmarked!',

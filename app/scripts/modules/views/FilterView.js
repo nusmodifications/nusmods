@@ -1,6 +1,7 @@
 'use strict';
 
 var Marionette = require('backbone.marionette');
+var analytics = require('analytics');
 var template = require('../templates/filter.hbs');
 
 module.exports = Marionette.ItemView.extend({
@@ -12,7 +13,7 @@ module.exports = Marionette.ItemView.extend({
       event.preventDefault();
       this.model.toggleSelected();
       var facet = this.model.get('facet');
-      ga('send', 'event', 'Modules filter',
+      analytics.track('Modules filter',
         (this.model.selected ? 'S' : 'Des') + 'elected ' + facet.get('label'),
         this.model.get('label'), facet.get('filters').selectedLength);
     },
@@ -28,7 +29,7 @@ module.exports = Marionette.ItemView.extend({
       }
       this.model.toggleSelected();
 
-      ga('send', 'event', 'Modules filter',
+      analytics.track('Modules filter',
         (this.model.selected ? 'S' : 'Des') + 'elected one ' + facet.get('label'),
         this.model.get('label'), filters.selectedLength);
     }

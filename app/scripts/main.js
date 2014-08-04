@@ -1,5 +1,6 @@
 'use strict';
 
+var analytics = require('analytics');
 var localforage = require('localforage');
 
 var $body = $('body');
@@ -12,11 +13,11 @@ var $body = $('body');
       // For non-first time users, we want to see what modes/themes they are using.
       if (property === 'theme') {
         // Set theme custom dimension
-        ga('set', 'dimension3', value);
+        analytics.set('dimension3', value);
       }
       if (property === 'mode') {
         // Set mode custom dimension
-        ga('set', 'dimension4', value);
+        analytics.set('dimension4', value);
       }
     }
     $body.addClass(property + '-' + value);
