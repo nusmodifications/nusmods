@@ -20,3 +20,14 @@ Backbone.History.prototype.loadUrl = function() {
   }
   return matched;
 };
+
+module.exports = {
+  set: function () {
+    Array.prototype.unshift.call(arguments, 'set');
+    ga.apply(null, arguments);
+  },
+  track: function () {
+    Array.prototype.unshift.call(arguments, 'send', 'event');
+    ga.apply(null, arguments);
+  }
+};
