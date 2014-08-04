@@ -412,12 +412,6 @@ kbd {
   .description {
     text-align: justify;
   }
-  .lecturer:after {
-    content: ",";
-  }
-  .lecturer:last-of-type:after {
-    content: "";
-  }
   .exam > span {
     white-space: nowrap;
   }
@@ -431,6 +425,16 @@ kbd {
     .buttons {
       float: right;
     }
+  }
+}
+
+dd.lecturer {
+  display: inline-block;
+  &:after {
+    content: ",";
+  }
+  &.last:after {
+    content: "";
   }
 }
 

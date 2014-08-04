@@ -22,12 +22,9 @@
               {{#each module.History}}
                 {{#if Lecturers}}
                   <dt class="highlight">Semester {{Semester}} Lecturer(s)</dt>
-                  <dd>
-                    <ul class="lecturers list-inline">
-                      {{#each Lecturers}}
-                        <li>{{this}}</li>
-                      {{/each}}
-                    </ul>
+                  {{#each Lecturers}}
+                    <dd class="lecturer{{#if @last}} last{{/if}}">{{this}}</dd>
+                  {{/each}}
                   </dd>
                 {{/if}}
               {{/each}}

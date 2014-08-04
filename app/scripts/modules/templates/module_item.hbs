@@ -26,7 +26,7 @@
       {{#if Lecturers}}
         <dt>Semester {{Semester}} Lecturer(s)</dt>
         {{#each Lecturers}}
-          <dd class="lecturer">{{this}}</dd>
+          <dd class="lecturer{{#if @last}} last{{/if}}">{{this}}</dd>
         {{/each}}
       {{/if}}
     {{/each}}
