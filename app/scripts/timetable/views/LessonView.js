@@ -92,17 +92,21 @@ var LessonView = Marionette.ItemView.extend({
           .appendTo(this.options.parentView.$('#' + this.model.get('dayAbbrev')));
         $(rows[0]).children().first().attr('rowspan', i + 1);
       }
-      var td = $(row).children('.h' +
-        this.model.get('StartTime').slice(0, 2) + '.m' +
-        this.model.get('StartTime').slice(2) + ':empty');
-      if (td) {
-        this.detached = td.nextUntil('.h' +
-          this.model.get('EndTime').slice(0, 2) + '.m' +
-          this.model.get('EndTime').slice(2), 'td:empty');
-        if (this.detached.length === this.model.get('duration') - 1) {
-          td.attr('colspan', this.model.get('duration')).html(this.$el);
-          this.detached.detach();
-          break;
+      var startTime = this.model.get('StartTime');
+      var tdStart = $(row).children('.h' + startTime.slice(0, 2) +
+        '.m' + startTime.slice(2) + ':empty');
+      if (tdStart.length) {
+        var endTime = this.model.get('EndTime');
+        var tdAfterEnd = tdStart.nextAll('.h' + endTime.slice(0, 2) +
+          '.m' + endTime.slice(2));
+        // 0000 EndTime has never been seen but just in case.
+        if (tdAfterEnd.length || endTime === '0000') {
+          this.detached = tdStart.nextUntil(tdAfterEnd, 'td:empty');
+          if (this.detached.length === this.model.get('duration') - 1) {
+            tdStart.attr('colspan', this.model.get('duration')).html(this.$el);
+            this.detached.detach();
+            break;
+          }
         }
       }
     }
