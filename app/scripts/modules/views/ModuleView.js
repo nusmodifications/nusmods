@@ -16,7 +16,6 @@ require('bootstrap/tooltip');
 var searchPreferences = {};
 
 function drawTree(selector, prereqs, lockedModules, modCode) {
-  /* jshint unused:false */
   function isOrAnd (d) { return (d.name === 'or' || d.name === 'and'); }
   function modsFilter (d) { return !isOrAnd(d); }
   function andOrFilter (d) { return isOrAnd(d); }
@@ -101,23 +100,23 @@ function drawTree(selector, prereqs, lockedModules, modCode) {
       .classed({'link': true, 'locked-modules': true})
       .attr('d', diagonalLm);
 
-  var node = canvas.selectAll('.node')
-                  .data(nodes)
-                  .enter()
-                  .append('g')
-                  .attr('class', 'node')
-                  .attr('transform', function (d) {
-                    return 'translate('+d.x+','+d.y+')';
-                  });
+  canvas.selectAll('.node')
+        .data(nodes)
+        .enter()
+        .append('g')
+        .attr('class', 'node')
+        .attr('transform', function (d) {
+          return 'translate('+d.x+','+d.y+')';
+        });
 
-  var nodeLm = canvas.selectAll('.node.locked-modules')
-                      .data(nodesLm)
-                      .enter()
-                      .append('g')
-                      .classed({'node': true, 'locked-modules': true})
-                      .attr('transform', function (d) {
-                        return 'translate('+d.x+','+-d.y+')';
-                      });
+  canvas.selectAll('.node.locked-modules')
+        .data(nodesLm)
+        .enter()
+        .append('g')
+        .classed({'node': true, 'locked-modules': true})
+        .attr('transform', function (d) {
+          return 'translate('+d.x+','+-d.y+')';
+        });
   var nodeAll = canvas.selectAll('.node');
 
   var rectangles = nodeAll.append('rect')
