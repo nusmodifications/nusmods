@@ -158,9 +158,13 @@ kbd {
   .navbar-form {
     display: inline-block;
     margin-right: 0;
+    margin-bottom: 0;
     margin-left: 0;
     padding: 0;
     border: none;
+    .form-group {
+      margin-bottom: 0;
+    }
   }
 }
 
