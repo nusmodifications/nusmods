@@ -16,8 +16,7 @@ define( 'YOURLS_DB_PASS', '{{ yourls_db_pass }}' );
 /** The name of the database for YOURLS */
 define( 'YOURLS_DB_NAME', '{{ yourls_db_name }}' );
 
-/** MySQL hostname.
- ** If using a non standard port, specify it like 'hostname:port', eg. 'localhost:9999' or '127.0.0.1:666' */
+/** MySQL hostname */
 define( 'YOURLS_DB_HOST', 'localhost' );
 
 /** MySQL tables prefix */
@@ -32,13 +31,7 @@ define( 'YOURLS_DB_PREFIX', 'yourls_' );
 define( 'YOURLS_SITE', 'http://modsn.us' );
 
 /** Timezone GMT offset */
-define( 'YOURLS_HOURS_OFFSET', 8 );
-
-/** YOURLS language
- ** Change this setting to use a translation file for your language, instead of the default English.
- ** That translation file (a .mo file) must be installed in the user/language directory.
- ** See http://yourls.org/translations for more information */
-define( 'YOURLS_LANG', '' );
+define( 'YOURLS_HOURS_OFFSET', 0 );
 
 /** Allow multiple short URLs for a same long URL
  ** Set to true to have only one pair of shortURL/longURL (default YOURLS behavior)
@@ -53,17 +46,12 @@ define( 'YOURLS_PRIVATE', true );
 /** A random secret hash used to encrypt cookies. You don't have to remember it, make it long and complicated. Hint: copy from http://yourls.org/cookie **/
 define( 'YOURLS_COOKIEKEY', '{{ yourls_cookiekey }}' );
 
-/** Username(s) and password(s) allowed to access the site. Passwords either in plain text or as encrypted hashes
- ** YOURLS will auto encrypt plain text passwords in this file
+/** Username(s) and password(s) allowed to access the site. Passwords either in plain text or as salted hashes.
  ** Read http://yourls.org/userpassword for more information */
 $yourls_user_passwords = array(
 	'{{ yourls_user }}' => '{{ yourls_pass }}',
 	// 'username2' => 'password2'	// You can have one or more 'login'=>'password' lines
 	);
-
-/** Debug mode to output some internal information
- ** Default is false for live site. Enable when coding or before submitting a new issue */
-define( 'YOURLS_DEBUG', false );
 
 /*
  ** URL Shortening settings

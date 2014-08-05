@@ -1,7 +1,7 @@
 server {
         listen 80;
         server_name modsn.us;
-        root {{ project_dir }}/app/vendor/yourls/yourls;
+        root /home/{{ user }}/modsn.us;
         location / {
                 try_files $uri $uri/ /yourls-loader.php;
         }
