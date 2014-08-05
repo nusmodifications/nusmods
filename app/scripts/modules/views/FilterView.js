@@ -1,7 +1,7 @@
 'use strict';
 
 var Marionette = require('backbone.marionette');
-var analytics = require('analytics');
+var analytics = require('../../analytics');
 var template = require('../templates/filter.hbs');
 
 module.exports = Marionette.ItemView.extend({

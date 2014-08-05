@@ -1,7 +1,7 @@
 'use strict';
 
 var Promise = require('bluebird'); // jshint ignore:line
-var analytics = require('analytics');
+var analytics = require('./analytics');
 var localforage = require('localforage');
 
 var $body = $('body');

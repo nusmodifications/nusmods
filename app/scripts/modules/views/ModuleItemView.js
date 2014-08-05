@@ -2,7 +2,7 @@
 
 var App = require('../../app');
 var Marionette = require('backbone.marionette');
-var analytics = require('analytics');
+var analytics = require('../../analytics');
 var template = require('../templates/module_item.hbs');
 
 module.exports = Marionette.ItemView.extend({

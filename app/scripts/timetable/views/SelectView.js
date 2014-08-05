@@ -4,7 +4,7 @@ var App = require('../../app');
 var Marionette = require('backbone.marionette');
 var Mousetrap = require('Mousetrap');
 var NUSMods = require('../../nusmods');
-var analytics = require('analytics');
+var analytics = require('../../analytics');
 var template = require('../templates/select.hbs');
 require('select2');
 

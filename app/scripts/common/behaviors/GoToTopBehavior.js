@@ -2,7 +2,7 @@
 
 var Marionette = require('backbone.marionette');
 var _ = require('underscore');
-var analytics = require('analytics');
+var analytics = require('../../analytics');
 
 module.exports = Marionette.Behavior.extend({
   defaults: {

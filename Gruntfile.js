@@ -199,9 +199,6 @@ module.exports = function (grunt) {
                     '.tmp/scripts/main.js': '<%= yeoman.app %>/scripts/main.js'
                 },
                 options: {
-                    browserifyOptions: {
-                        paths: ['<%= yeoman.app %>/scripts']
-                    },
                     bundleOptions: {
                         debug: true
                     },
