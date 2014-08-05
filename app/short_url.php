@@ -7,7 +7,8 @@ curl_setopt($ch, CURLOPT_POST, 1);
 curl_setopt($ch, CURLOPT_POSTFIELDS, array(
   'action'    => 'shorturl',
   'format'    => 'json',
-  'signature' => '3ef261dc03',
+  'username'  => $_SERVER['YOURLS_USER'],
+  'password'  => $_SERVER['YOURLS_PASS'],
   'url'       => $_GET['url'],
 ));
 $data = curl_exec($ch);

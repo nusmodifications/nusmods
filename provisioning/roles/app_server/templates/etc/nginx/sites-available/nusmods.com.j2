@@ -20,6 +20,8 @@ server {
                 fastcgi_split_path_info ^(.+\.php)(/.+)$;
                 fastcgi_pass unix:/var/run/php5-fpm.sock;
                 fastcgi_index index.php;
+                fastcgi_param YOURLS_USER {{ yourls_user }};
+                fastcgi_param YOURLS_PASS {{ yourls_pass }};
                 include fastcgi_params;
         }
 }
