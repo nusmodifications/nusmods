@@ -2,6 +2,10 @@ $brand-primary: #f60;
 $input-border-focus: $brand-primary;
 $body-bg: #f7f7f7;
 $font-family-sans-serif: "proxima-nova", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+$navbar-default-bg: #fff;
+$navbar-default-link-color: #666;
+$navbar-default-link-hover-color: $brand-primary;
+$navbar-default-link-active-color: $brand-primary;
 
 // Core variables and mixins
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/variables";
@@ -119,11 +123,6 @@ kbd {
   padding-bottom: 30px;
 }
 
-// Navbar
-.navbar {
-  background-color: #fff;
-}
-
 .navbar-toggle {
   z-index: 100;
   border-color: $brand-primary;
@@ -139,18 +138,12 @@ kbd {
         padding-bottom: 12px;
       }
       a:hover {
-        color: $brand-primary;
         background: none;
       }
       &.active > {
-        a {
-          color: $brand-primary;
-          border-bottom: 3px solid $brand-primary;
+        a, a:hover {
           background: none;
-          &:hover {
-            color: $brand-primary;
-            background: none;
-          }
+          border-bottom: 3px solid $navbar-default-link-hover-color;
         }
       }
     }
@@ -379,7 +372,6 @@ kbd {
     bottom: 10px !important;
   }
 }
-
 
 // Module Finder Content
 .module-item {
