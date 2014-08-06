@@ -2,7 +2,9 @@
   <h2 class="panel-title nm-section-title">
     <a href="/modules/{{ModuleCode}}"><span class="highlight">{{ModuleCode}}</span>&nbsp;{{ModuleTitle}}</a>
     <span class="mc">
-      {{ModuleCredit}} MCs
+      <a class="js-nm-mi-filter" data-type="ModuleCredit">
+        {{ModuleCredit}} MCs
+      </a>
     </span>
   </h2>
   <ul class="pagination pagination-sm semester-availability">
@@ -59,7 +61,11 @@
   </dl>
 </div>
 <div class="panel-footer clearfix">
-  <div class="department">{{Department}}</div>
+  <div class="department">
+    <a class="js-nm-mi-filter" data-type="Department">
+      {{Department}}
+    </a>
+  </div>
   <div class="buttons">
     <a class="cors btn btn-default btn-xs"
        {{#unless inCORS}}disabled="disabled"{{/unless}}

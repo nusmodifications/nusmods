@@ -44,6 +44,15 @@ module.exports = Marionette.ItemView.extend({
           ready: true
         }
       });
+    },
+    'click a.js-nm-mi-filter': function(event) {
+      event.preventDefault();
+      var currentTarget = $(event.currentTarget);
+      var filterType = currentTarget.data('type');
+      App.vent.trigger('filterActivated', {
+        type: currentTarget.data('type'),
+        value: this.model.get(filterType)
+      });
     }
   }
 });
