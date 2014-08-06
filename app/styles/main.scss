@@ -448,6 +448,8 @@ dd.lecturer {
   }
   .nm-section-heading {
     cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
     transition: all 0.1s linear;
     &:hover {
       color: $brand-primary;
