@@ -12,6 +12,7 @@ var attachFastClick = require('fastclick');
 var corsify = require('../../cors/corsify');
 var themePicker = require('../themes/themePicker');
 require('bootstrap/alert');
+require('bootstrap/tooltip');
 require('qTip2');
 
 module.exports = Backbone.View.extend({
@@ -53,6 +54,8 @@ module.exports = Backbone.View.extend({
     $.ajaxSetup({
       cache: true
     });
+
+    this.$el.tooltip({selector: '[data-toggle="tooltip"]'});
 
     // [Override](http://craigsworks.com/projects/qtip2/tutorials/advanced/#override)
     // default tooltip settings.

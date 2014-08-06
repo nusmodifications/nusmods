@@ -12,7 +12,6 @@ var d3 = require('d3');
 var localforage = require('localforage');
 var template = require('../templates/module.hbs');
 var config = require('../../common/config');
-require('bootstrap/tooltip');
 
 var searchPreferences = {};
 
@@ -306,8 +305,6 @@ module.exports = Marionette.LayoutView.extend({
     setTimeout(function () {
       window.location.hash = hash;
     }, 0);
-
-    $('.nm-help').tooltip();
   },
   showFullDescription: function () {
     $('.module-desc').addClass('module-desc-more');
