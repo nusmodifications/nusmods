@@ -2,7 +2,8 @@
   <h2 class="panel-title nm-section-title">
     <a href="/modules/{{ModuleCode}}"><span class="highlight">{{ModuleCode}}</span>&nbsp;{{ModuleTitle}}</a>
     <span class="mc">
-      <a class="js-nm-mi-filter" data-type="ModuleCredit">
+      <a class="js-nm-mi-filter" data-type="ModuleCredit" data-toggle="tooltip" data-container="body"
+         title="Find other modules with {{ModuleCredit}} MCs, given current criteria">
         {{ModuleCredit}} MCs
       </a>
     </span>
@@ -62,7 +63,8 @@
 </div>
 <div class="panel-footer clearfix">
   <div class="department">
-    <a class="js-nm-mi-filter" data-type="Department">
+    <a class="js-nm-mi-filter" data-type="Department" data-toggle="tooltip"
+       title="Find other modules from {{Department}}, given current criteria">
       {{Department}}
     </a>
   </div>
