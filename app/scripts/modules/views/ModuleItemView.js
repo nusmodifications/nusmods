@@ -50,7 +50,7 @@ module.exports = Marionette.ItemView.extend({
       var currentTarget = $(event.currentTarget);
       var filterType = currentTarget.data('type');
       App.vent.trigger('filterActivated', {
-        type: currentTarget.data('type'),
+        type: filterType,
         value: this.model.get(filterType)
       });
     }
