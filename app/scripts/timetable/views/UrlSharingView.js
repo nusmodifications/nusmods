@@ -34,8 +34,11 @@ module.exports = Marionette.ItemView.extend({
       // Prevent the mouseup event from unselecting the selection
       event.preventDefault();
     },
-    'mouseover @ui.copyToClipboard': function () {
-      this.getShortURL().then(_.bind(function (shortURL) {
+    'mousedown @ui.copyToClipboard': function () {
+      // Have to get short URL synchronously in order to maintain the
+      // temporarily elevated permissions granted by the user's click event:
+      // https://github.com/zeroclipboard/zeroclipboard/blob/master/docs/instructions.md#synchronicity-required-during-copy
+      this.getShortURL(true).then(_.bind(function (shortURL) {
         this.clip.setText(shortURL);
       }, this));
     },
@@ -59,14 +62,22 @@ module.exports = Marionette.ItemView.extend({
     }
   },
 
-  getShortURL: function () {
-    this.shortUrlPromise = this.shortUrlPromise ||
-      $.getJSON('/short_url.php', {
-        url: location.href
-      }).then(_.bind(function (data) {
-        this.ui.input.val(data.shorturl);
-        return data.shorturl;
-      }, this));
+  getShortURL: function (sync) {
+    if (!this.shortUrlPromise ||
+      (sync && this.shortUrlPromise.state() !== 'resolved')) {
+      var jqxhr = $.ajax('/short_url.php', {
+        async: !sync,
+        data: {
+          url: location.href
+        },
+        dataType: 'json'
+      });
+      this.shortUrlPromise = (sync ? $.when(jqxhr.responseJSON) : jqxhr)
+        .then(_.bind(function (data) {
+          this.ui.input.val(data.shorturl);
+          return data.shorturl;
+        }, this));
+    }
     return this.shortUrlPromise;
   },
 
