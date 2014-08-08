@@ -42,6 +42,10 @@ module.exports = Marionette.ItemView.extend({
           encodeURIComponent(this.htmlTimetable()));
         break;
       case 'ical-file':
+        if (this.isSpecialTerm) {
+          // Disable as special term export is not yet supported fully.
+          return false;
+        }
         $(event.currentTarget).attr('href', 'data:text/calendar,' +
           encodeURIComponent(this.iCalendar()));
         break;
@@ -54,6 +58,13 @@ module.exports = Marionette.ItemView.extend({
 
   initialize: function(options) {
     this.options = options;
+    this.isSpecialTerm = options.semester === 3 || options.semester === 4;
+  },
+
+  serializeData: function () {
+    return {
+      isSpecialTerm: this.isSpecialTerm
+    };
   },
 
   // Custom minimal HTML5/CSS3. CSS that applies to export timetable separated
