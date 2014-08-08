@@ -6,6 +6,15 @@ var padTwo = require('../../common/utils/padTwo');
 var template = require('../templates/export.hbs');
 require('bootstrap/dropdown');
 
+var isTutorial = {
+  'Design Lecture': true,
+  Laboratory: true,
+  Recitation: true,
+  Tutorial: true,
+  'Tutorial Type 2': true,
+  'Tutorial Type 3': true
+};
+
 module.exports = Marionette.ItemView.extend({
   template: template,
 
@@ -169,16 +178,17 @@ module.exports = Marionette.ItemView.extend({
       var exDate;
       if (week.indexOf('Week') !== -1) {
         v.push('RRULE:FREQ=WEEKLY;COUNT=14');
-        if (lesson.isTut || week === 'Even Weeks') {
+        var isTut = isTutorial[lesson.get('LessonType')];
+        if (isTut || week === 'Even Week') {
           v.push('EXDATE:' + (this.iCalDateTime(start)));
         }
-        if (lesson.isTut && week !== 'Odd Weeks') {
+        if (isTut && week !== 'Odd Week') {
           exDate = new Date(start.getTime());
           exDate.setUTCDate(exDate.getUTCDate() + 7);
           v.push('EXDATE:' + (this.iCalDateTime(exDate)));
         }
-        if (week) {
-          for (var i = week + 1; i <= 13; i += 2) {
+        if (week !== 'Every Week') {
+          for (var i = (week === 'Odd Week' ? 2 : 3); i <= 13; i += 2) {
             exDate = new Date(start.getTime());
             exDate.setUTCDate(exDate.getUTCDate() + this.delta(i) * 7);
             v.push('EXDATE:' + (this.iCalDateTime(exDate)));
