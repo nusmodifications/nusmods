@@ -54,5 +54,9 @@ module.exports = Marionette.ItemView.extend({
         value: this.model.get(filterType)
       });
     }
+  },
+
+  onShow: function() {
+    this.$('.js-nm-mi-filter').qtip();
   }
 });

@@ -259,7 +259,14 @@ module.exports = Marionette.LayoutView.extend({
       lockedModules.children.push({'name': module.LockedModules[i], 'children': []});
     }
     drawTree('#tree', module.ModmavenTree, lockedModules, module.ModuleCode);
-    
+
+    this.$('.nm-help').qtip({
+      position: {
+        my: 'left bottom',
+        at: 'right center'
+      }
+    });
+
     var code = module.ModuleCode;
     var disqusShortname = config.disqusShortname;
     
