@@ -32,6 +32,7 @@ module.exports = Marionette.LayoutView.extend({
   },
 
   initialize: function (options) {
+    this.academicYear = options.academicYear;
     this.semester = options.semester;
   },
 
@@ -44,8 +45,10 @@ module.exports = Marionette.LayoutView.extend({
 
     this.examsRegion.show(new ExamsView({collection: this.selectedModules.exams}));
     this.exportRegion.show(new ExportView({
+      academicYear: this.academicYear,
       collection: this.selectedModules,
-      exams: this.selectedModules.exams
+      exams: this.selectedModules.exams,
+      semester: this.semester
     }));
     this.selectRegion.show(new SelectView({
       semester: this.semester

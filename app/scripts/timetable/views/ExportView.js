@@ -2,6 +2,7 @@
 
 var Marionette = require('backbone.marionette');
 var _ = require('underscore');
+var academicCalendar = require('./academicCalendar.json');
 var padTwo = require('../../common/utils/padTwo');
 var template = require('../templates/export.hbs');
 require('bootstrap/dropdown');
@@ -139,6 +140,8 @@ module.exports = Marionette.ItemView.extend({
   // iCal, Google Calendar and Microsoft Outlook.
   // [Specification](http://www.kanzaki.com/docs/ical/).
   iCalendar: function() {
+    var academicYear = this.options.academicYear;
+    var semester = this.options.semester;
     var v = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:NUSMods.com'];
     this.options.exams.each(function(exam) {
       if (exam.get('ExamDate')) {
@@ -150,7 +153,8 @@ module.exports = Marionette.ItemView.extend({
           'DESCRIPTION:' + exam.get('ModuleTitle'),
           'DTSTART:' + this.iCalDateTime(new Date(exam.get('ExamDate'))),
           'DURATION:PT2H',
-          'URL:http://www.nus.edu.sg/registrar/event/examschedule-sem1.html',
+          'URL:http://www.nus.edu.sg/registrar/event/examschedule-sem' +
+            semester + '.html',
           'END:VEVENT'
         ]);
       }
@@ -163,12 +167,14 @@ module.exports = Marionette.ItemView.extend({
         'DTSTAMP:' + (this.iCalDateTime(new Date())),
         'SUMMARY:' + lesson.get('ModuleCode') + ' ' + lesson.get('LessonType'),
         'DESCRIPTION:' + lesson.get('ModuleTitle') + '\\n' +
-            lesson.get('LessonType') + ' Group ' + lesson.get('ClassNo'),
+          lesson.get('LessonType') + ' Group ' + lesson.get('ClassNo'),
         'LOCATION:' + lesson.get('Venue'),
         'URL:https://myaces.nus.edu.sg/cors/jsp/report/ModuleDetailedInfo.jsp' +
-            ('?acad_y=2014/2015&sem_c=1&mod_c=' + lesson.get('ModuleCode'))
+          '?acad_y=' + academicYear + '&sem_c=' + semester + '&mod_c=' +
+          lesson.get('ModuleCode')
       ]);
-      var start = new Date(Date.UTC(2014, 7, 11,
+      var semStart = academicCalendar[academicYear][semester].start;
+      var start = new Date(Date.UTC(semStart[0], semStart[1], semStart[2],
         +lesson.get('StartTime').slice(0, 2) - 8,
         +lesson.get('StartTime').slice(2)));
       start.setUTCDate(start.getUTCDate() + lesson.get('dayIndex'));

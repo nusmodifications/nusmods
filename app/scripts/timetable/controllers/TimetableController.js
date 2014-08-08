@@ -26,6 +26,7 @@ module.exports = Marionette.Controller.extend({
           replace: true
         });
     }
+    academicYear = academicYear.replace('-', '/');
     navigationItem.select();
     Promise.resolve().then(function () {
       if (queryString) {
@@ -63,6 +64,7 @@ module.exports = Marionette.Controller.extend({
       }
     }).then(function () {
       App.mainRegion.show(new TimetableView({
+        academicYear: academicYear,
         semester: semester
       }));
     });
