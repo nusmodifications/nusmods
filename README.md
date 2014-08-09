@@ -1,4 +1,4 @@
-# [NUSMods](http://nusmods.com) [![Code Climate](http://img.shields.io/codeclimate/github/ahbeng/NUSMods.svg)](https://codeclimate.com/github/ahbeng/NUSMods) [![Dependency Status](http://img.shields.io/david/NUSModifications/NUSMods.svg)](https://david-dm.org/NUSModifications/NUSMods) [![devDependency Status](http://img.shields.io/david/dev/NUSModifications/NUSMods.svg)](https://david-dm.org/NUSModifications/NUSMods#info=devDependencies)
+# [NUSMods](http://nusmods.com) [![Code Climate](http://img.shields.io/codeclimate/github/nusmodifications/nusmods.svg)](https://codeclimate.com/github/nusmodifications/nusmods) [![Dependency Status](http://img.shields.io/david/nusmodifications/nusmods.svg)](https://david-dm.org/nusmodifications/nusmods) [![devDependency Status](http://img.shields.io/david/dev/nusmodifications/nusmods.svg)](https://david-dm.org/nusmodifications/nusmods#info=devDependencies)
 
 ## Setup with Vagrant
 
@@ -55,7 +55,7 @@ execute the Ansible playbook against it:
 $ ansible-playbook provisioning/production.yml -i provisioning/production
 ```
 
-## Working with the [NUSMods API](https://github.com/ahbeng/NUSModsAPI)
+## Working with the [NUSMods API](https://github.com/nusmodifications/nusmods-api)
 
 NUSMods is set up to work with the remote API at http://nusmods.com/api/ by
 default. To work with a local copy of the API:

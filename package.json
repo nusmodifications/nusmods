@@ -2,19 +2,19 @@
   "name": "nusmods",
   "version": "0.3.0",
   "description": "NUS CORS Module Finder & Timetable Builder (Unofficial)",
-  "homepage": "https://github.com/ahbeng/NUSMods",
+  "homepage": "https://github.com/nusmodifications/nusmods",
   "author": {
     "name": "Eu Beng Hee",
     "email": "beng@benghee.eu"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/ahbeng/NUSMods.git"
+    "url": "git://github.com/nusmodifications/nusmods.git"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/ahbeng/NUSMods/blob/master/LICENSE-MIT"
+      "url": "https://github.com/nusmodifications/nusmods/blob/master/LICENSE-MIT"
     }
   ],
   "dependencies": {
