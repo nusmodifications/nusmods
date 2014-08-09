@@ -1,4 +1,4 @@
-# [NUSMods](http://nusmods.com) [![Code Climate](http://img.shields.io/codeclimate/github/ahbeng/NUSMods.svg)](https://codeclimate.com/github/ahbeng/NUSMods) [![Dependency Status](http://img.shields.io/david/ahbeng/NUSMods.svg)](https://david-dm.org/ahbeng/NUSMods) [![devDependency Status](http://img.shields.io/david/dev/ahbeng/NUSMods.svg)](https://david-dm.org/ahbeng/NUSMods#info=devDependencies)
+# [NUSMods](http://nusmods.com) [![Code Climate](http://img.shields.io/codeclimate/github/ahbeng/NUSMods.svg)](https://codeclimate.com/github/ahbeng/NUSMods) [![Dependency Status](http://img.shields.io/david/NUSModifications/NUSMods.svg)](https://david-dm.org/NUSModifications/NUSMods) [![devDependency Status](http://img.shields.io/david/dev/NUSModifications/NUSMods.svg)](https://david-dm.org/NUSModifications/NUSMods#info=devDependencies)
 
 ## Setup with Vagrant
 
