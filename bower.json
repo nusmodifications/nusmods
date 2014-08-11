@@ -2,10 +2,12 @@
   "name": "NUSMods",
   "private": true,
   "dependencies": {
+    "animate.css": "~3.2.0",
     "backbone.picky": "~0.2.0",
     "bootstrap-sass-official": "~3.2.0",
     "font-awesome": "~4.1.0",
     "jquery": "~2.1.1",
+    "jquery.fileDownload": "johnculviner/jquery.fileDownload#fc5f120a952213987ea4567ce8a22e105a926dc1",
     "jquery.ui": "~1.11.0",
     "jqueryui-touch-punch": "#8f7559b6e65cdc3ee3648d5fe76d38c653f87ff5",
     "localforage": "ahbeng/localForage#2da72b902fb55866f6a4c0415970931d94d98592",
@@ -14,8 +16,7 @@
     "raven-js": "~1.1.16",
     "select2": "~3.5.0",
     "select2-bootstrap-css": "~1.3.1",
-    "zeroclipboard": "~2.1.5",
-    "animate.css": "~3.2.0"
+    "zeroclipboard": "~2.1.5"
   },
   "devDependencies": {}
 }

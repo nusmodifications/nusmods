@@ -6,6 +6,7 @@ var academicCalendar = require('./academicCalendar.json');
 var padTwo = require('../../common/utils/padTwo');
 var template = require('../templates/export.hbs');
 require('bootstrap/dropdown');
+require('jquery.fileDownload');
 
 var isTutorial = {
   'Design Lecture': true,
@@ -30,13 +31,21 @@ module.exports = Marionette.ItemView.extend({
     }
     switch (event.currentTarget.id) {
       case 'jpg-file':
-        this.$('#jpg-html').val(encodeURIComponent(this.htmlTimetable()));
-        this.$('#jpg-form').submit();
-        break;
+        $.fileDownload('/jpg.php', {
+          httpMethod: 'POST',
+          data: {
+            html: encodeURIComponent(this.htmlTimetable())
+          }
+        });
+        return false;
       case 'pdf-file':
-        this.$('#pdf-html').val(encodeURIComponent(this.htmlTimetable()));
-        this.$('#pdf-form').submit();
-        break;
+        $.fileDownload('/pdf.php', {
+          httpMethod: 'POST',
+          data: {
+            html: encodeURIComponent(this.htmlTimetable())
+          }
+        });
+        return false;
       case 'html-file':
         $(event.currentTarget).attr('href', 'data:text/html,' +
           encodeURIComponent(this.htmlTimetable()));
