@@ -47,20 +47,50 @@ module.exports = Marionette.ItemView.extend({
         });
         return false;
       case 'html-file':
-        $(event.currentTarget).attr('href', 'data:text/html,' +
-          encodeURIComponent(this.htmlTimetable()));
+        if (this.dlAttrSupported) {
+          $(event.currentTarget).attr('href', 'data:text/html,' +
+            encodeURIComponent(this.htmlTimetable()));
+        } else {
+          $.fileDownload('/html.php', {
+            httpMethod: 'POST',
+            data: {
+              html: encodeURIComponent(this.htmlTimetable())
+            }
+          });
+          return false;
+        }
         break;
       case 'ical-file':
         if (this.isSpecialTerm) {
           // Disable as special term export is not yet supported fully.
           return false;
         }
-        $(event.currentTarget).attr('href', 'data:text/calendar,' +
-          encodeURIComponent(this.iCalendar()));
+        if (this.dlAttrSupported) {
+          $(event.currentTarget).attr('href', 'data:text/calendar,' +
+            encodeURIComponent(this.iCalendar()));
+        } else {
+          $.fileDownload('/ical.php', {
+            httpMethod: 'POST',
+            data: {
+              html: encodeURIComponent(this.iCalendar())
+            }
+          });
+          return false;
+        }
         break;
       case 'xls-file':
-        $(event.currentTarget).attr('href', 'data:application/vnd.ms-excel,' +
-          encodeURIComponent(this.spreadsheetML()));
+        if (this.dlAttrSupported) {
+          $(event.currentTarget).attr('href', 'data:application/vnd.ms-excel,' +
+            encodeURIComponent(this.spreadsheetML()));
+        } else {
+          $.fileDownload('/xls.php', {
+            httpMethod: 'POST',
+            data: {
+              html: encodeURIComponent(this.spreadsheetML())
+            }
+          });
+          return false;
+        }
         break;
     }
   },
@@ -68,6 +98,8 @@ module.exports = Marionette.ItemView.extend({
   initialize: function(options) {
     this.options = options;
     this.isSpecialTerm = options.semester === 3 || options.semester === 4;
+
+    this.dlAttrSupported = 'download' in document.createElement('a');
   },
 
   serializeData: function () {
