@@ -386,6 +386,7 @@ module.exports = Marionette.ItemView.extend({
 
     var days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     var daysAbbrev = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+    var newLine = window.navigator.platform.indexOf('Win') != -1 ? '&#13;&#10;' : '&#13;';
 
     _.each(daysAbbrev, function(dayAbbrev, i) {
       var rows = $('#' + dayAbbrev + ' > tr');
@@ -410,11 +411,11 @@ module.exports = Marionette.ItemView.extend({
           if (lesson.get('duration') > 1) {
             xml += '" ss:MergeAcross="' + (lesson.get('duration') - 1);
           }
-          xml += '"><Data ss:Type="String">' + lesson.get('ModuleCode') + '&#13;' +
-              lesson.get('typeAbbrev') + ' ' + lesson.get('ClassNo') + '&#13;' +
+          xml += '"><Data ss:Type="String">' + lesson.get('ModuleCode') + newLine +
+              lesson.get('typeAbbrev') + ' ' + lesson.get('ClassNo') + newLine +
               lesson.get('Venue');
           if (lesson.get('WeekText') !== 'Every Week') {
-            xml += '&#13;' + lesson.get('weekStr');
+            xml += newLine + lesson.get('weekStr');
           }
           xml += '</Data></Cell>';
         });
