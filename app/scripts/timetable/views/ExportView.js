@@ -319,7 +319,7 @@ module.exports = Marionette.ItemView.extend({
   spreadsheetML: function() {
     var xml =
         '<?xml version="1.0"?>' +
-        '<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"' +
+        '<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" ' +
         'xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">' +
         '<Styles>' +
         '<Style ss:ID="Default">' +
