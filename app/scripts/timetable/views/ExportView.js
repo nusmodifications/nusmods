@@ -125,7 +125,7 @@ module.exports = Marionette.ItemView.extend({
       '#times div{margin-right:-13px;text-align:right}' +
       '#exam-timetable > table{font-weight: bold;border:1px solid #555;}' +
       '#exam-timetable > table th{border:1px solid #555;background-color: #eee;}' +
-      '#exam-timetable > table td{border:1px solid #555;}' +
+      '#exam-timetable > table td{border:1px solid #555; padding: 5px;}' +
       '#exam-timetable > table td:first-child{text-align: right;}' +
       '#exam-timetable > table tr.clash{background-color: #eee; color:red !important}' +
       '.day{border-bottom:1px solid #ddd;border-top:1px solid #ddd}' +
