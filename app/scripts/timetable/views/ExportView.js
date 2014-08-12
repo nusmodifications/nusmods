@@ -386,7 +386,7 @@ module.exports = Marionette.ItemView.extend({
 
     var days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     var daysAbbrev = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
-    var newLine = window.navigator.platform.indexOf('Win') != -1 ? '&#13;&#10;' : '&#13;';
+    var newLine = window.navigator.platform.indexOf('Win') !== -1 ? '&#13;&#10;' : '&#13;';
 
     _.each(daysAbbrev, function(dayAbbrev, i) {
       var rows = $('#' + dayAbbrev + ' > tr');
