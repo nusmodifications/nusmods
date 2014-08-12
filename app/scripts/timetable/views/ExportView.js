@@ -3,6 +3,7 @@
 var Marionette = require('backbone.marionette');
 var _ = require('underscore');
 var academicCalendar = require('./academicCalendar.json');
+var analytics = require('../../analytics');
 var padTwo = require('../../common/utils/padTwo');
 var template = require('../templates/export.hbs');
 require('bootstrap/dropdown');
@@ -31,6 +32,7 @@ module.exports = Marionette.ItemView.extend({
     }
     switch (event.currentTarget.id) {
       case 'jpg-file':
+        analytics.track('Timetable', 'Export', 'JPEG', +this.dlAttrSupported);
         $.fileDownload('/jpg.php', {
           httpMethod: 'POST',
           data: {
@@ -39,6 +41,7 @@ module.exports = Marionette.ItemView.extend({
         });
         return false;
       case 'pdf-file':
+        analytics.track('Timetable', 'Export', 'PDF', +this.dlAttrSupported);
         $.fileDownload('/pdf.php', {
           httpMethod: 'POST',
           data: {
@@ -47,6 +50,7 @@ module.exports = Marionette.ItemView.extend({
         });
         return false;
       case 'html-file':
+        analytics.track('Timetable', 'Export', 'HTML', +this.dlAttrSupported);
         if (this.dlAttrSupported) {
           $(event.currentTarget).attr('href', 'data:text/html,' +
             encodeURIComponent(this.htmlTimetable()));
@@ -61,6 +65,7 @@ module.exports = Marionette.ItemView.extend({
         }
         break;
       case 'ical-file':
+        analytics.track('Timetable', 'Export', 'iCalendar', +this.dlAttrSupported);
         if (this.isSpecialTerm) {
           // Disable as special term export is not yet supported fully.
           return false;
@@ -79,6 +84,7 @@ module.exports = Marionette.ItemView.extend({
         }
         break;
       case 'xls-file':
+        analytics.track('Timetable', 'Export', 'Excel', +this.dlAttrSupported);
         if (this.dlAttrSupported) {
           $(event.currentTarget).attr('href', 'data:application/vnd.ms-excel,' +
             encodeURIComponent(this.spreadsheetML()));
