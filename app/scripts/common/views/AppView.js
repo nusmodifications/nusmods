@@ -71,7 +71,7 @@ module.exports = Backbone.View.extend({
       $('.cors-round-container').addClass('animated bounceInUp shown').alert();
     }
 
-    activateCORS();
+    // activateCORS();
 
     App.selectRegion.show(new SelectView());
 
