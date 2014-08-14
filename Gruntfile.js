@@ -54,6 +54,10 @@ module.exports = function (grunt) {
                     '.tmp/styles/{,*/}*.css',
                     '<%= yeoman.app %>/images/{,*/}*.{gif,jpeg,jpg,png,svg,webp}'
                 ]
+            },
+            packagejson: {
+                files: ['package.json'],
+                tasks: ['browserify']
             }
         },
 
