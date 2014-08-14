@@ -3,6 +3,11 @@
 var Backbone = require('backbone');
 var $ = require('jquery');
 Backbone.$ = $;
+var Raven = require('raven');
+
+Raven.config('https://44876a16654343e5a30acfcaa5144806@app.getsentry.com/27278', {
+  whitelistUrls: ['nusmods.com/scripts/']
+}).install();
 
 var Promise = require('bluebird'); // jshint ignore:line
 var analytics = require('./analytics');

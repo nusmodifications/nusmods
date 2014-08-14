@@ -89,6 +89,7 @@
     "jquery.fileDownload": "./app/bower_components/jquery.fileDownload/src/Scripts/jquery.fileDownload.js",
     "localforage": "./app/bower_components/localforage/dist/localforage.nopromises.js",
     "qTip2": "./app/bower_components/qtip2/jquery.qtip.js",
+    "raven": "./app/bower_components/raven-js/dist/raven.js",
     "select2": "./app/bower_components/select2/select2.js"
   },
   "browserify-shim": {
@@ -130,7 +131,10 @@
     },
     "localforage": {
       "exports": "localforage",
-      "depends": ["bluebird:Promise"]
-    }
+      "depends": [
+        "bluebird:Promise"
+      ]
+    },
+    "raven": "Raven"
   }
 }
