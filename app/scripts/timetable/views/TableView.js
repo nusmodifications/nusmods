@@ -1,5 +1,6 @@
 'use strict';
 
+var $ = require('jquery');
 var LessonView = require('./LessonView');
 var Marionette = require('backbone.marionette');
 var _ = require('underscore');

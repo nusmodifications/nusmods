@@ -1,5 +1,6 @@
 'use strict';
 
+var $ = require('jquery');
 var ExamView = require('./ExamView');
 var Marionette = require('backbone.marionette');
 var template = require('../templates/exams.hbs');

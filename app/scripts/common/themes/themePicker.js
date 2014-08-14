@@ -1,5 +1,6 @@
 'use strict';
 
+var $ = require('jquery');
 var _ = require('underscore');
 var localforage = require('localforage');
 var themeOptions = require('./themeOptions.json');

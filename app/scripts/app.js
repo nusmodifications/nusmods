@@ -1,7 +1,6 @@
 'use strict';
 
 var Backbone = require('backbone');
-Backbone.$ = require('jquery');
 var Marionette = require('backbone.marionette');
 var NUSMods = require('./nusmods');
 var NavigationCollection = require('./common/collections/NavigationCollection');

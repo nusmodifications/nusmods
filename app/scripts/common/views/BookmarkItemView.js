@@ -1,5 +1,6 @@
 'use strict';
 
+var $ = require('jquery');
 var App = require('../../app');
 var Marionette = require('backbone.marionette');
 var analytics = require('../../analytics');

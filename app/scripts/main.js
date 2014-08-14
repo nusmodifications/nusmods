@@ -1,5 +1,9 @@
 'use strict';
 
+var Backbone = require('backbone');
+var $ = require('jquery');
+Backbone.$ = $;
+
 var Promise = require('bluebird'); // jshint ignore:line
 var analytics = require('./analytics');
 var localforage = require('localforage');

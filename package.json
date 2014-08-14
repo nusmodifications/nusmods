@@ -25,6 +25,7 @@
     "bluebird": "^2.2.2",
     "d3": "^3.4.11",
     "fastclick": "^1.0.2",
+    "jquery": "^2.1.1",
     "marked": "^0.3.2",
     "qs": "^0.6.6",
     "underscore": "^1.6.0",
@@ -97,7 +98,11 @@
         "bootstrap/transition"
       ]
     },
-    "jquery": "global:$",
+    "bootstrap/transition": {
+      "depends": [
+        "jquery:jQuery"
+      ]
+    },
     "jquery-ui/draggable": {
       "depends": [
         "jquery-ui/core",

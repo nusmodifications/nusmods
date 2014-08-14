@@ -1,5 +1,6 @@
 'use strict';
 
+var $ = require('jquery');
 var ArrayFacetModel = require('../models/ArrayFacetModel');
 var FacetCollection = require('../collections/FacetCollection');
 var FacetsView = require('./FacetsView');

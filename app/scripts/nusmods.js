@@ -1,5 +1,6 @@
 'use strict';
 
+var $ = require('jquery');
 var Promise = require('bluebird'); // jshint ignore:line
 
 var ayBaseUrl;

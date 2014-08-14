@@ -1,5 +1,6 @@
 'use strict';
 
+var $ = require('jquery');
 var Marionette = require('backbone.marionette');
 var _ = require('underscore');
 var academicCalendar = require('./academicCalendar.json');

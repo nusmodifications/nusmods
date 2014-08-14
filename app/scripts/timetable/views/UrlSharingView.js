@@ -1,5 +1,6 @@
 'use strict';
 
+var $ = require('jquery');
 var Marionette = require('backbone.marionette');
 var ZeroClipboard = require('zeroclipboard');
 var _ = require('underscore');
