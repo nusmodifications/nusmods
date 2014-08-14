@@ -203,7 +203,7 @@ module.exports = function (grunt) {
                     '.tmp/scripts/main.js': '<%= yeoman.app %>/scripts/main.js'
                 },
                 options: {
-                    bundleOptions: {
+                    browserifyOptions: {
                         debug: true
                     },
                     watch: true
