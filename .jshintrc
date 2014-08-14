@@ -17,7 +17,6 @@
     "strict": true,
     "trailing": true,
     "smarttabs": true,
-    "jquery": true,
     "globals": {
         "DISQUS": false,
         "DISQUSWIDGETS": false
