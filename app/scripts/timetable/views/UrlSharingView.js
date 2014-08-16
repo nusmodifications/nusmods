@@ -84,7 +84,7 @@ module.exports = Marionette.ItemView.extend({
 
   initialize: function () {
     ZeroClipboard.config({
-      swfPath: '/bower_components/zeroclipboard/dist/ZeroClipboard.swf'
+      swfPath: '/ZeroClipboard.swf'
     });
   },
 

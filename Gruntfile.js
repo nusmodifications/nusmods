@@ -329,7 +329,6 @@ module.exports = function (grunt) {
                         '*.{config,php}',
                         '*.{ico,png,txt}',
                         '.htaccess',
-                        'bower_components/zeroclipboard/dist/ZeroClipboard.swf',
                         'images/{,*/}*.webp',
                         '{,*/}*.html',
                         'scripts/disqus-count.js',
@@ -339,6 +338,9 @@ module.exports = function (grunt) {
                         'vendor/knplabs/knp-snappy/src/**/*.php',
                         'bower_components/font-awesome/fonts/*.*'
                     ]
+                }, {
+                  dest: '<%= yeoman.dist %>/ZeroClipboard.swf',
+                  src: 'node_modules/zeroclipboard/dist/ZeroClipboard.swf'
                 }, {
                     expand: true,
                     cwd: '.tmp',
