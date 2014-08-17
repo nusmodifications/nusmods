@@ -7,14 +7,14 @@
     "bootstrap-sass-official": "~3.2.0",
     "font-awesome": "~4.1.0",
     "jquery.fileDownload": "johnculviner/jquery.fileDownload#fc5f120a952213987ea4567ce8a22e105a926dc1",
-    "jquery.ui": "~1.11.0",
+    "jquery.ui": "~1.11.1",
     "jqueryui-touch-punch": "#8f7559b6e65cdc3ee3648d5fe76d38c653f87ff5",
     "localforage": "ahbeng/localForage#2da72b902fb55866f6a4c0415970931d94d98592",
     "mousetrap": "~1.4.6",
     "qtip2": "~2.2.0",
     "raven-js": "~1.1.16",
-    "select2": "~3.5.0",
-    "select2-bootstrap-css": "~1.3.1"
+    "select2": "~3.5.1",
+    "select2-bootstrap-css": "~1.4.1"
   },
   "devDependencies": {}
 }
