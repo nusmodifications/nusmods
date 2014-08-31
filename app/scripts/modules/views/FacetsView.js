@@ -37,8 +37,9 @@ module.exports = Marionette.CollectionView.extend({
       }
     });
 
+    var that = this;
     $('.collapse').on('shown.bs.collapse hidden.bs.collapse', function () {
-      localforage.setItem('moduleFinder:facets', _.pluck($('.collapse.in'), 'id'));
+      that.persistFacets(_.pluck($('.collapse.in'), 'id'));  
     });
   },
   events: {
@@ -53,15 +54,34 @@ module.exports = Marionette.CollectionView.extend({
           selectedFilters[facet.get('label')] = filters;
         }
       });
-      localforage.setItem('moduleFinder:filters', selectedFilters);
+      this.persistFilters(selectedFilters);
     }
   },
 
-  onFilter: function(options) {
+  resetFilters: function () {
+    $('.nm-module-filter').removeClass('in');
+    $('.nm-caret').removeClass('nm-caret-down');
+
+    _.each(this.collection.models, function (item) {
+      item.get('filters').selectNone();
+    });
+    that.persistFilters('');
+    that.persistFacets('');
+  },
+
+  onFilter: function (options) {
     var filteredCollection = this.collection.findWhere({key: options.type}).get('filters'); 
     var filteredModel = filteredCollection.findWhere({label: options.value});
     filteredModel.model.collection.selectNone();
     filteredModel.model.toggleSelected();
+  },
+
+  persistFilters: function (value) {
+    localforage.setItem('moduleFinder:filters', value);
+  },
+
+  persistFacets: function (value) {
+    localforage.setItem('moduleFinder:facets', value);
   },
 
   initialize: function (options) {
