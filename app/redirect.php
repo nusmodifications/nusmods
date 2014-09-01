@@ -3,6 +3,7 @@
 header('Access-Control-Allow-Methods: GET');
 header('Access-Control-Max-Age: 1000');
 header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *');
 
 function getRedirectUrl ($url) {
   stream_context_set_default(array(
