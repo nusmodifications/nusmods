@@ -15,7 +15,11 @@
             <hr>
             <dl>
               <dd class="module-desc">
-                {{module.ModuleDescription}}
+                {{#if module.ModuleDescription}}
+                  {{module.ModuleDescription}}
+                {{else}}
+                  No description available.
+                {{/if}}
               </dd>
               <dt class="highlight">Modular Credits (MCs)</dt>
               <dd>{{module.ModuleCredit}}</dd>

@@ -18,7 +18,13 @@
 </div>
 <div class="panel-body row">
   <dl class="col-sm-9">
-    <div class="description">{{ModuleDescription}}</div>
+    <div class="description">
+    {{#if ModuleDescription}}
+      {{ModuleDescription}}
+    {{else}}
+      No description available.
+    {{/if}}
+    </div>
     {{#if Prerequisite}}
       <dt>Prerequisites</dt>
       <dd>{{{linkedPrerequisite}}}</dd>
