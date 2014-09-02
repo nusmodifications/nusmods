@@ -16,5 +16,19 @@
     "Semester 2",
     "ST I",
     "ST II"
-  ]
+  ],
+  "defaultPreferences": {
+    "theme": "default", 
+    "mode": "default",
+    "faculty": "default",
+    "student": "false",
+    "account": "P"
+  },
+  "namespaces": {
+    "ivle": "ivle",
+    "preferences": "preferences",
+    "moduleFinder": "module:finder",
+    "bookmarkedModules": "module:bookmarks:bookmarkedModules",
+    "user": "user"
+  }
 }

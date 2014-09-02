@@ -78,28 +78,30 @@ App.reqres.setHandler('displayLessons', function (sem, id, display) {
   });
 });
 
+var bookmarkedModulesNamespace = config.namespaces.bookmarkedModules + ':';
+
 App.reqres.setHandler('getBookmarks', function (callback) {
   if (!callback) { 
     return; 
   }
-  localforage.getItem('bookmarks:bookmarkedModules', function (modules) {
+  localforage.getItem(bookmarkedModulesNamespace, function (modules) {
     callback(modules);
   });
 });
 App.reqres.setHandler('addBookmark', function (id) {
-  localforage.getItem('bookmarks:bookmarkedModules', function (modules) {
+  localforage.getItem(bookmarkedModulesNamespace, function (modules) {
     if (!_.contains(modules, id)) {
       modules.push(id);
     }
-    localforage.setItem('bookmarks:bookmarkedModules', modules);
+    localforage.setItem(bookmarkedModulesNamespace, modules);
   });
 });
 App.reqres.setHandler('deleteBookmark', function (id) {
-  localforage.getItem('bookmarks:bookmarkedModules', function (modules) {
+  localforage.getItem(bookmarkedModulesNamespace, function (modules) {
     var index = modules.indexOf(id);
     if (index > -1) {
       modules.splice(index, 1);
-      localforage.setItem('bookmarks:bookmarkedModules', modules);
+      localforage.setItem(bookmarkedModulesNamespace, modules);
     }
   });
 });
@@ -154,9 +156,9 @@ App.on('start', function () {
     Backbone.history.start({pushState: true});
   });
 
-  localforage.getItem('bookmarks:bookmarkedModules', function (modules) {
+  localforage.getItem(bookmarkedModulesNamespace, function (modules) {
     if (!modules) {
-      localforage.setItem('bookmarks:bookmarkedModules', []);
+      localforage.setItem(bookmarkedModulesNamespace, []);
     }
   });
 });

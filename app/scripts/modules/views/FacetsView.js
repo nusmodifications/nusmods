@@ -7,6 +7,9 @@ var Marionette = require('backbone.marionette');
 var _ = require('underscore');
 var localforage = require('localforage');
 
+var config = require('../../common/config');
+var moduleFinderNamespace = config.namespaces.moduleFinder + ':';
+
 module.exports = Marionette.CollectionView.extend({
   childView: FacetView,
   childViewOptions: function (facet) {
@@ -27,7 +30,7 @@ module.exports = Marionette.CollectionView.extend({
     }
   },
   onShow: function () {
-    localforage.getItem('moduleFinder:facets', function(data) {
+    localforage.getItem(moduleFinderNamespace + 'facets', function(data) {
       if (data) {
         _.each(data, function (id) {
           var $panel = $('#' + id);
@@ -38,7 +41,7 @@ module.exports = Marionette.CollectionView.extend({
     });
 
     $('.collapse').on('shown.bs.collapse hidden.bs.collapse', function () {
-      localforage.setItem('moduleFinder:facets', _.pluck($('.collapse.in'), 'id'));
+      localforage.setItem(moduleFinderNamespace + 'facets', _.pluck($('.collapse.in'), 'id'));
     });
   },
   events: {
@@ -53,7 +56,7 @@ module.exports = Marionette.CollectionView.extend({
           selectedFilters[facet.get('label')] = filters;
         }
       });
-      localforage.setItem('moduleFinder:filters', selectedFilters);
+      localforage.setItem(moduleFinderNamespace + 'filters', selectedFilters);
     }
   },
 

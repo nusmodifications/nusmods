@@ -4,8 +4,8 @@ var ExamCollection = require('../../timetable/collections/ExamCollection');
 var LessonCollection = require('../collections/LessonCollection');
 var Marionette = require('backbone.marionette');
 var TimetableModuleCollection = require('../collections/TimetableModuleCollection');
-var config = require('../config');
 var localforage = require('localforage');
+var config = require('../config');
 
 module.exports = Marionette.Controller.extend({
   initialize: function (options) {

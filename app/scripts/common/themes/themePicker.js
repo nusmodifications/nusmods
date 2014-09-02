@@ -4,6 +4,8 @@ var $ = require('jquery');
 var _ = require('underscore');
 var localforage = require('localforage');
 var themeOptions = require('./themeOptions.json');
+var config = require('../../common/config');
+var preferencesNamespace = config.namespaces.preferences + ':';
 
 module.exports = {
   getThemeOptions: function () {
@@ -55,7 +57,7 @@ module.exports = {
     return newMode;
   },
   updateAppearance: function (property, value) {
-    localforage.setItem(property, value);
+    localforage.setItem(preferencesNamespace + property, value);
     
     var $body = $('body');
     $body.attr('data-' + property, value);
