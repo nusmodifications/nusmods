@@ -31,6 +31,7 @@ restricted_re = re.compile('|'.join(restricted))
 # key = EXACT pre-requisite string to match
 # value = parsed output
 exceptions = {
+    'CS3241, PC1221, MA1521and MA1101R': {' and ': ['CS3241', 'PC1221', 'MA1521', 'MA1101R']},
     'RE4221 ADVANCED URBAN PLANNING THEORIES, RE4222 PUBLIC POLICY AND REAL ESTATE MARKETS.':
         {' and ': ['RE4221', 'RE4222']},
     'Pass 80 MCs and [CS3240, IS2150, IS3230 and IS3150]': {' and ': ['CS3240', 'IS2150', 'IS3230', 'IS3150']},
