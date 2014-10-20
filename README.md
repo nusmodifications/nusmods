@@ -41,7 +41,7 @@ browsers is not required.
 ### jQuery Example
 
 ```js
-$.getJSON('http://api.nusmods.com/2013-2014/1/moduleList.json', function (data) {
+$.getJSON('http://api.nusmods.com/2014-2015/1/moduleList.json', function (data) {
   console.log(data);
 });
 ```
@@ -53,7 +53,7 @@ If supporting legacy browsers is required, JSONP can be used instead.
 ### jQuery Example
 
 ```js
-$.getJSON('http://api.nusmods.com/2013-2014/1/moduleList.json?callback=?', function (data) {
+$.getJSON('http://api.nusmods.com/2014-2015/1/moduleList.json?callback=?', function (data) {
   console.log(data);
 });
 ```
@@ -66,7 +66,7 @@ JSONP response.
 
 ### GET /&lt;AcadYear&gt;/&lt;Semester&gt;/moduleCodes.json
 
-http://api.nusmods.com/2013-2014/1/moduleCodes.json
+http://api.nusmods.com/2014-2015/1/moduleCodes.json
 
 ```json
 [
@@ -79,7 +79,7 @@ http://api.nusmods.com/2013-2014/1/moduleCodes.json
 
 ### GET /&lt;AcadYear&gt;/&lt;Semester&gt;/moduleList.json
 
-http://api.nusmods.com/2013-2014/1/moduleList.json
+http://api.nusmods.com/2014-2015/1/moduleList.json
 
 ```json
 {
@@ -92,7 +92,7 @@ http://api.nusmods.com/2013-2014/1/moduleList.json
 
 ### GET /&lt;AcadYear&gt;/&lt;Semester&gt;/facultyDepartments.json
 
-http://api.nusmods.com/2013-2014/1/facultyDepartments.json
+http://api.nusmods.com/2014-2015/1/facultyDepartments.json
 
 ```json
 {
@@ -137,7 +137,7 @@ http://api.nusmods.com/2013-2014/1/lessonTypes.json
 
 `ExamDate` and `ExamDuration` are in ISO 8601 formats.
 
-http://api.nusmods.com/2012-2013/2/modules/FE5218.json
+http://api.nusmods.com/2014-2015/1/modules/FE5218.json
 
 ```json
 {
@@ -169,7 +169,7 @@ http://api.nusmods.com/2012-2013/2/modules/FE5218.json
 
 ### GET /&lt;AcadYear&gt;/&lt;Semester&gt;/modules.json
 
-http://api.nusmods.com/2013-2014/1/modules.json
+http://api.nusmods.com/2014-2015/1/modules.json
 
 ```json
 [
