@@ -137,7 +137,7 @@ http://api.nusmods.com/2013-2014/1/lessonTypes.json
 
 `ExamDate` and `ExamDuration` are in ISO 8601 formats.
 
-http://api.nusmods.com/2014-2015/1/modules/FE5218.json
+http://api.nusmods.com/2014-2015/2/modules/FE5218.json
 
 ```json
 {
