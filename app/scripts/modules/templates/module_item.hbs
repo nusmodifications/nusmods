@@ -1,14 +1,8 @@
 <div class="panel-heading">
   <h2 class="panel-title nm-section-title">
     <a href="/modules/{{ModuleCode}}">
-      <span class="highlight">{{ModuleCode}}</span>&nbsp;{{ModuleTitle}}
-    </a>&middot;
-    <span class="mc">
-      <a class="js-nm-mi-filter" data-type="ModuleCredit"
-         title="Filter modules with {{ModuleCredit}} MCs">
-        {{ModuleCredit}} MCs
-      </a>
-    </span>
+      {{ModuleCode}} {{ModuleTitle}}
+    </a>
   </h2>
   <ul class="pagination pagination-sm semester-availability">
     {{#each semestersOffered}}
@@ -16,64 +10,71 @@
     {{/each}}
   </ul>
 </div>
-<div class="panel-body row">
-  <dl class="col-sm-9">
-    <div class="description">
-    {{#if ModuleDescription}}
-      {{ModuleDescription}}
-    {{else}}
-      No description available.
-    {{/if}}
-    </div>
-    {{#if Prerequisite}}
-      <dt>Prerequisites</dt>
-      <dd>{{{linkedPrerequisite}}}</dd>
-    {{/if}}
-    {{#if Corequisite}}
-      <dt>Co-Requisite</dt>
-      <dd>{{{linkedCorequisite}}}</dd>
-    {{/if}}
-    {{#if Preclusion}}
-      <dt>Preclusions</dt>
-      <dd>{{{linkedPreclusion}}}</dd>
-    {{/if}}
-    {{#each History}}
-      {{#if Lecturers}}
-        <dt>Semester {{Semester}} Lecturer(s)</dt>
-        {{#each Lecturers}}
-          <dd class="lecturer{{#if @last}} last{{/if}}">{{this}}</dd>
-        {{/each}}
+<div class="panel-body">
+  <div class="row">
+    <dl class="col-sm-9">
+      <div class="description">
+      {{#if ModuleDescription}}
+        {{ModuleDescription}}
+      {{else}}
+        No description available.
       {{/if}}
-    {{/each}}
-  </dl>
-  <dl class="col-sm-3">
-    {{#if Workload}}
-      <dt>Workload</dt>
-      <dd class="workload">{{Workload}}</dd>
-    {{/if}}
-    {{#if hasExams}}
+      </div>
+      {{#if Prerequisite}}
+        <dt>Prerequisites</dt>
+        <dd>{{{linkedPrerequisite}}}</dd>
+      {{/if}}
+      {{#if Corequisite}}
+        <dt>Co-Requisite</dt>
+        <dd>{{{linkedCorequisite}}}</dd>
+      {{/if}}
+      {{#if Preclusion}}
+        <dt>Preclusions</dt>
+        <dd>{{{linkedPreclusion}}}</dd>
+      {{/if}}
       {{#each History}}
-        <dt>Semester {{Semester}} Exam</dt>
-        <dd class="exam">
-          {{#if examStr}}
-            <span>{{examDateStr}}</span>
-            <span>{{examTimeStr}}</span>
-          {{else}}
-            No Exam
-          {{/if}}
-        </dd>
+        {{#if Lecturers}}
+          <dt>Semester {{Semester}} Lecturer(s)</dt>
+          {{#each Lecturers}}
+            <dd class="lecturer{{#if @last}} last{{/if}}">{{this}}</dd>
+          {{/each}}
+        {{/if}}
       {{/each}}
-    {{else}}
-      <dt>Exams</dt>
-      <dd>No Exam</dd>
-    {{/if}}
-  </dl>
+    </dl>
+    <dl class="col-sm-3">
+      {{#if Workload}}
+        <dt>Workload</dt>
+        <dd class="workload">{{Workload}}</dd>
+      {{/if}}
+      {{#if hasExams}}
+        {{#each History}}
+          <dt>Semester {{Semester}} Exam</dt>
+          <dd class="exam">
+            {{#if examStr}}
+              <span>{{examDateStr}}</span>
+              <span>{{examTimeStr}}</span>
+            {{else}}
+              No Exam
+            {{/if}}
+          </dd>
+        {{/each}}
+      {{else}}
+        <dt>Exams</dt>
+        <dd>No Exam</dd>
+      {{/if}}
+    </dl>
+  </div>
 </div>
 <div class="panel-footer clearfix">
   <div class="department">
     <a class="js-nm-mi-filter" data-type="Department"
        title="Filter modules from {{Department}}">
       {{Department}}
+    </a>
+    &middot;
+    <a class="js-nm-mi-filter" data-type="ModuleCredit"
+       title="Filter modules with {{ModuleCredit}} MCs">
+      {{ModuleCredit}} MCs
     </a>
   </div>
   <div class="buttons">

@@ -248,6 +248,19 @@
       }
     }
   }
+  .panel {
+    background-color: #222326;
+    border: none;
+    .panel-body {
+      background-color: #222326;
+    }
+    .panel-footer {
+      background-color: #222326;
+    }
+  }
+  .nm-section-title {
+    font-size: 18px;
+  }
 }
 
 @media (max-width: 768px) {
