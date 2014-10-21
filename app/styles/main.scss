@@ -206,7 +206,7 @@ kbd {
 }
 
 .nm-caret {
-  transition: all 0.2s linear;
+  transition: transform .1s linear;
   &.nm-caret-down {
     transform: rotate(90deg);
   }
@@ -363,7 +363,7 @@ kbd {
   outline: none;
   position: fixed;
   right: 10px;
-  transition: bottom 0.25s ease-in-out;
+  transition: bottom .25s ease-in-out;
   z-index: 100;
   .fa {
     padding-right: 5px;
@@ -450,7 +450,7 @@ dd.lecturer {
     cursor: pointer;
     font-size: 14px;
     font-weight: bold;
-    transition: all 0.1s linear;
+    transition: all .1s linear;
     &:hover {
       color: $brand-primary;
     }
@@ -835,7 +835,7 @@ colgroup.hover {
 .cors-round-container.alert {
   $offset: 10px;
   bottom: $offset;
-  box-shadow: 0 0 5px rgba(0,0,0,0.3);
+  box-shadow: 0 0 5px rgba(0,0,0,.3);
   margin-bottom: 0 !important;
   padding: 10px;
   opacity: 0;
