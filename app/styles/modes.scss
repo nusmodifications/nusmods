@@ -8,7 +8,6 @@
 
 .mode-slate {
   $mode-color: #f60;
-  margin-bottom: 265px;
   color: #fff;
   h1,
   h2,
@@ -107,6 +106,16 @@
       box-shadow: none;
     }
   }
+  
+  .navbar-toggle {
+    float: left;
+    margin-left: 15px;
+  }
+
+  .nm-brand {
+    float: right;
+  }
+
   $dark-nav-tab-bg-color: #272b30;
   .nav-tabs > {
     li.active > {

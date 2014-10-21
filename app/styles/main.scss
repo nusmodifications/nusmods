@@ -88,8 +88,7 @@ html {
 }
 
 body {
-  padding-top: 70px;
-  padding-left: $navmenu-width;
+  padding-top: 50px;
 }
 
 a {
@@ -114,7 +113,6 @@ kbd {
 
 // Layout
 .container-fluid {
-  max-width: $container-lg;
   @media (min-width: $screen-lg-min) {
     @include container-fixed();
   }
@@ -136,8 +134,10 @@ kbd {
 }
 
 .navbar-toggle {
-  z-index: 100;
   border-color: $brand-primary;
+  float: left;
+  margin-left: 15px;
+  z-index: 100;
   .icon-bar {
     background-color: $brand-primary;
   }
@@ -145,6 +145,9 @@ kbd {
 
 .navbar {
   margin-left: $navmenu-width;
+  @media (max-width: $screen-sm-min) {
+    margin-left: 0;
+  }
 }
 
 .navbar-default {
@@ -192,25 +195,25 @@ kbd {
 
 // NUSMods Logo
 .nm-brand {
+  float: right;
   font-size: 24px;
   font-weight: bold;
-  text-align: right;
-  color: $brand-primary;
-  &:hover {
-    text-decoration: none;
-    color: $link-color;
-  }
-  .mods {
-    color: #aaa;
+}
+
+.nm-navbar {
+  .nm-brand {
+    @media (max-width: 500px) {
+      display: none !important;
+    }
   }
 }
 
 .nm-logo {
-  width: 139px;
   background-image: url(/images/logo.png);
   background-repeat: no-repeat;
   background-position: center center;
   background-size: 109px 18px;
+  width: 139px;
 }
 
 .highlight {
@@ -254,7 +257,6 @@ kbd {
 
 .navbar-form .form-control {
   width: 240px;
-  margin-left: $navbar-padding-horizontal;
   @media (min-width: $screen-xs-min) {
     width: 300px;
   }
@@ -914,8 +916,8 @@ colgroup.hover {
 }
 
 @media (max-width: 768px) {
-  body {
-    margin-bottom: 0;
+  .main-container {
+    padding-bottom: 0;
   }
   .footer-container {
     position: static;
@@ -942,5 +944,71 @@ colgroup.hover {
 @media (max-width: $screen-xs-max) {
   .footer {
     text-align: center;
+  }
+}
+
+#nm-wrapper {
+  padding-left: 0;
+  transition: all 0.5s ease;
+}
+
+.js-toggled {
+  overflow: hidden;
+  #nm-wrapper {
+    padding-left: $navmenu-width;
+  }
+}
+
+#sidebar-wrapper {
+  border: 0;
+  height: 100%;
+  left: $navmenu-width;
+  margin-left: -$navmenu-width;
+  overflow-y: auto;
+  position: fixed;
+  transition: width .5s ease;
+  width: 0;
+  z-index: 1000;
+  .nm-brand {
+    float: left;
+  }
+}
+
+.js-toggled {
+  #nm-wrapper {
+    #sidebar-wrapper {
+      margin-top: 50px;
+      width: $navmenu-width;
+    }
+    #page-content-wrapper {
+      margin-right: -$navmenu-width;
+      position: absolute;
+    }
+  }
+}
+
+#page-content-wrapper {
+  width: 100%;
+}
+
+@media(min-width:768px) {
+  #nm-wrapper {
+    padding-left: $navmenu-width;
+  }
+
+  #sidebar-wrapper {
+    width: $navmenu-width;
+  }
+  .js-toggled {
+    #nm-wrapper {
+      padding-left: 0;
+      #sidebar-wrapper {
+        width: 0;
+      }
+      #page-content-wrapper {
+        position: relative;
+        margin-right: 0;
+      }
+    }
   }
 }
