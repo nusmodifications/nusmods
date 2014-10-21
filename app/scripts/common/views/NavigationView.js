@@ -6,6 +6,6 @@ require('bootstrap/collapse');
 
 module.exports = Marionette.CollectionView.extend({
   tagName: 'ul',
-  className: 'nav navbar-nav navbar-right',
+  className: 'nav navmenu-nav',
   childView: NavigationItemView
 });

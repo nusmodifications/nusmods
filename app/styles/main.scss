@@ -6,6 +6,7 @@ $navbar-default-bg: #fff;
 $navbar-default-link-color: #666;
 $navbar-default-link-hover-color: $brand-primary;
 $navbar-default-link-active-color: $brand-primary;
+$navmenu-width: 200px;
 
 // Core variables and mixins
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/variables";
@@ -58,6 +59,7 @@ $navbar-default-link-active-color: $brand-primary;
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/utilities";
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/responsive-utilities";
 
+@import "jasny-bootstrap/scss/jasny-bootstrap";
 
 $fa-font-path: "/bower_components/font-awesome/fonts";
 @import "font-awesome/scss/font-awesome";
@@ -86,8 +88,8 @@ html {
 }
 
 body {
-  margin-bottom: 265px;
   padding-top: 70px;
+  padding-left: $navmenu-width;
 }
 
 a {
@@ -118,9 +120,19 @@ kbd {
   }
 }
 
+.main-container {
+  padding-bottom: 265px;
+  position: relative;
+}
+
 .main-content {
   padding: 15px;
   padding-bottom: 30px;
+  position: relative;
+}
+
+#nav {
+  clear: both;
 }
 
 .navbar-toggle {
@@ -129,6 +141,10 @@ kbd {
   .icon-bar {
     background-color: $brand-primary;
   }
+}
+
+.navbar {
+  margin-left: $navmenu-width;
 }
 
 .navbar-default {
@@ -175,7 +191,7 @@ kbd {
 }
 
 // NUSMods Logo
-#brand {
+.nm-brand {
   font-size: 24px;
   font-weight: bold;
   text-align: right;
