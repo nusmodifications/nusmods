@@ -8,6 +8,7 @@
 
 .mode-slate {
   $mode-color: #f60;
+  $mode-background-color: #272b30;
   color: #fff;
   h1,
   h2,
@@ -106,17 +107,42 @@
       box-shadow: none;
     }
   }
+
+  .navmenu-inverse .navmenu-nav > {
+    .active > a {
+      &, &:hover, &:focus {
+        background-color: #eee;
+        color: #000;
+      }
+    }
+
+    li > a {
+      &:hover, &:focus, {
+        color: #222;
+      } 
+    }
+  }
   
   .navbar-toggle {
     float: left;
     margin-left: 15px;
   }
 
+  .navmenu {
+    background-color: #fff;
+    color: #000;
+  }
+
+  .navmenu-nav li.active {
+    &:before {
+      border-right-color: $mode-background-color;
+    }
+  }
   .nm-brand {
     float: right;
   }
 
-  $dark-nav-tab-bg-color: #272b30;
+  $dark-nav-tab-bg-color: $mode-background-color;
   .nav-tabs > {
     li.active > {
       a,
@@ -170,7 +196,7 @@
   #timetable {
     background-color: transparent;
     th {
-      background-color: #272b30;
+      background-color: $mode-background-color;
     }
   }
   colgroup.hover {

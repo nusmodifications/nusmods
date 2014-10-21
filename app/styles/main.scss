@@ -2,10 +2,13 @@ $brand-primary: #f60;
 $input-border-focus: $brand-primary;
 $body-bg: #f7f7f7;
 $font-family-sans-serif: "proxima-nova", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
-$navbar-default-bg: #fff;
+$navbar-default-bg: $brand-primary;
 $navbar-default-link-color: #666;
 $navbar-default-link-hover-color: $brand-primary;
 $navbar-default-link-active-color: $brand-primary;
+
+$navbar-default-toggle-icon-bar-bg: #fff;
+$navbar-default-toggle-border-color: #fff;
 $navmenu-width: 200px;
 
 // Core variables and mixins
@@ -151,6 +154,7 @@ kbd {
 }
 
 .navbar-default {
+  border: none;
   .navbar-nav > {
     li {
       a {
@@ -180,6 +184,21 @@ kbd {
     .form-group {
       margin-bottom: 0;
     }
+  }
+}
+
+.navmenu-nav li.active {
+  position: relative;
+  &:before {
+    border: 10px solid transparent;
+    border-right-color: $body-bg;
+    content: " ";
+    height: 0;
+    position: absolute;
+    right: 0;
+    top: calc(50% - 10px);
+    width: 0;
+    z-index: 100;
   }
 }
 
@@ -214,6 +233,9 @@ kbd {
   background-position: center center;
   background-size: 109px 18px;
   width: 139px;
+  &.nm-logo-white {
+    background-image: url(/images/logo-white.png);
+  }
 }
 
 .highlight {
