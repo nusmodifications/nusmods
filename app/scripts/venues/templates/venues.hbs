@@ -1,7 +1,47 @@
-<h1>Venues</h1>
-<hr>
-<dl>
-  {{#each venuesList}}
-    <dd>{{this}}</dd>
-  {{/each}}
-</dl>
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+    <h1 class="nm-page-heading">Venue Lookup</h1>
+    <hr>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label class="control-label" for="venue">Search Venue:</label>
+          <input type="text" class="form-control js-nm-venue-input" value="{{this.selectedVenueName}}" placeholder="e.g. COM1-0114">
+        </div>
+        <button type="submit" class="js-nm-venue-search btn btn-primary">Search</button>
+      </div>
+    </div>
+    <hr>
+    {{#if selectedVenue}}
+      <h3>Venue Information for {{this.selectedVenueName}}</h3>
+      {{#each selectedVenue}}
+        <hr>
+        <h4>{{this.day}}</h4>
+        <div class="row">
+          {{#if this.classes}}
+            {{#each this.classes}}
+              <div class="col-sm-2">
+                <dl>
+                  <dd><strong>{{this.StartTime}} - {{this.EndTime}}</strong></dd>
+                  <dd><a href="/modules/{{this.ModuleCode}}">{{this.ModuleCode}}</a></dd>
+                  <dd>{{this.LessonType}} [{{this.ClassNo}}]</dd>
+                  <dd>{{this.WeekText}}</dd>
+                </dl>
+              </div>
+            {{/each}}
+          {{else}}
+            <div class="col-md-12">
+              <p>No classes</p>
+            </div>
+          {{/if}}
+        </div>
+      {{/each}}
+      </div>
+    {{else}}
+      {{#if this.selectedVenueName}}
+        <p>No venue information found for <strong>{{this.selectedVenueName}}</strong>.</p>
+      {{/if}}
+    {{/if}}
+    </div>
+  </div>
+</div>

@@ -5,6 +5,7 @@ var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var NUSMods = require('../nusmods');
 var _ = require('underscore');
+var config = require('../common/config');
 
 var navigationItem = App.request('addNavigationItem', {
   name: 'Venues',
@@ -13,20 +14,28 @@ var navigationItem = App.request('addNavigationItem', {
 });
 
 var controller = {
-  showVenues: function () {
+  showAvailabilityOfVenue: function (venueName) {
+    if (!venueName) {
+      // Set to empty string for the default page
+      venueName = '';
+    }
+
     var VenuesView = require('./views/VenuesView');
     navigationItem.select();
 
+    // List of venues ['LT17', 'BIZ2-0118', 'COM1-0114', ...]
     var venuesList = [];
     var venues = {};
 
-    NUSMods.getAllTimetable(1).then(function (data) {
-      _.each(data, function (module) {
+    NUSMods.getAllTimetable(config.semester).then(function (data) {
+      // Make a deepcopy so modifications will not affect the cached timetable data
+      var timetables = jQuery.extend(true, {}, data); 
+
+      _.each(timetables, function (module) {
         if (module.Timetable) {
           _.each(module.Timetable, function (cls) {
             var currentVenue = cls.Venue;
             if (!venues[currentVenue]) {
-              venuesList.push(currentVenue);
               venues[currentVenue] = [];
             }
             cls.ModuleCode = module.ModuleCode;
@@ -35,11 +44,38 @@ var controller = {
           });
         }
       });
-      venuesList.sort();
-      var venuesModel = new Backbone.Model({
-        venues: venues,
-        venuesList: venuesList
+
+      venues = _.omit(venues, ''); // Delete empty venue string
+      
+      venuesList = _.keys(venues);
+      _.each(venuesList, function (venueName) {
+        var venueTimetable = venues[venueName];
+        var newVenueTimetable = [];
+        var days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        _.each(days, function (day) {
+          var classes = _.filter(venueTimetable, function (cls) {
+            return cls.DayText === day;
+          });
+          classes = _.sortBy(classes, function (cls) {
+            return cls.StartTime + cls.EndTime;
+          });
+          newVenueTimetable.push({
+            day: day,
+            classes: classes
+          });
+        });
+        venues[venueName] = newVenueTimetable;
       });
+
+      venuesList.sort();
+
+      var venuesModel = new Backbone.Model({
+        selectedVenueName: venueName,
+        venues: venues,
+        venuesList: venuesList,
+        selectedVenue: null
+      });
+
       App.mainRegion.show(new VenuesView({model: venuesModel}));
     });
   }
@@ -49,7 +85,8 @@ App.addInitializer(function () {
   new Marionette.AppRouter({
     controller: controller,
     appRoutes: {
-      'venues': 'showVenues'
+      'venues': 'showAvailabilityOfVenue',
+      'venues(/:id)': 'showAvailabilityOfVenue'
     }
   });
 });
