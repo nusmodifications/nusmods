@@ -7,5 +7,6 @@
 
 .btn-default {
   background-color: transparent;
-  border-color: #adadad;
+  border-color: $brand-primary;
+  color: $brand-primary;
 }

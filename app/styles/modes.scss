@@ -9,6 +9,11 @@
 .mode-slate {
   $mode-color: #f60;
   $mode-background-color: #272b30;
+  $mode-navmenu-bg-color: #1c1c1f;
+  $mode-navbar-bg-color: #3e3e40;
+  body {
+    background-color: $mode-background-color;
+  }
   color: #fff;
   h1,
   h2,
@@ -72,10 +77,10 @@
       color: $mode-color;
     }
   }
-  $dark-nav-bg-color: #161713;
+  
   .navbar {
     border: none;
-    background: $dark-nav-bg-color;
+    background: $mode-navbar-bg-color;
   }
   .navbar-default {
     .navbar-nav > {
@@ -111,14 +116,14 @@
   .navmenu-inverse .navmenu-nav > {
     .active > a {
       &, &:hover, &:focus {
-        background-color: #eee;
-        color: #000;
+        // background-color: transparent;
+        // color: #fff;
       }
     }
 
     li > a {
       &:hover, &:focus, {
-        color: #222;
+        // color: #222;
       } 
     }
   }
@@ -129,7 +134,7 @@
   }
 
   .navmenu {
-    background-color: #fff;
+    background-color: $mode-navmenu-bg-color;
     color: #000;
   }
 
@@ -155,7 +160,7 @@
   }
   @media (max-width: 768px) {
     .module-navigation {
-      background-color: $dark-nav-bg-color;
+      background-color: $mode-navbar-bg-color;
       border: none;
     }
     .nav-tabs > {
