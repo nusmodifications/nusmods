@@ -1,6 +1,7 @@
 'use strict';
 
 var App = require('../app');
+var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var NUSMods = require('../nusmods');
 var _ = require('underscore');
@@ -35,10 +36,12 @@ var controller = {
         }
       });
       venuesList.sort();
-      console.log(venuesList);
-      console.log(venues);
+      var venuesModel = new Backbone.Model({
+        venues: venues,
+        venuesList: venuesList
+      });
+      App.mainRegion.show(new VenuesView({model: venuesModel}));
     });
-    App.mainRegion.show(new VenuesView());
   }
 };
 
