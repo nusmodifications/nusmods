@@ -1,0 +1,119 @@
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+      <li><a href="/venues" role="tab" data-toggle="tab">Venue Information</a></li>
+      <li class="active"><a href="#" role="tab" data-toggle="tab">Find Available Venues</a></li>
+    </ul>
+
+    <h1 class="nm-page-heading">Venue Availability</h1>
+    <hr>
+
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label class="control-label" for="venue">Day:</label>
+          <select type="text" class="form-control js-nm-venue-time-day-input">
+            <option value="Monday">Monday</option>
+            <option value="Tuesday">Tuesday</option>
+            <option value="Wednesday">Wednesday</option>
+            <option value="Thursday">Thursday</option>
+            <option value="Friday">Friday</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label class="control-label" for="venue">Start Time:</label>
+          <select type="text" class="form-control js-nm-venue-time-start-input">
+            <option value="0800">0800</option>
+            <option value="0830">0830</option>
+            <option value="0900">0900</option>
+            <option value="0930">0930</option>
+            <option value="1000">1000</option>
+            <option value="1030">1030</option>
+            <option value="1100">1100</option>
+            <option value="1130">1130</option>
+            <option value="1200">1200</option>
+            <option value="1230">1230</option>
+            <option value="1300">1300</option>
+            <option value="1330">1330</option>
+            <option value="1400">1400</option>
+            <option value="1430">1430</option>
+            <option value="1500">1500</option>
+            <option value="1530">1530</option>
+            <option value="1600">1600</option>
+            <option value="1630">1630</option>
+            <option value="1700">1700</option>
+            <option value="1730">1730</option>
+            <option value="1800">1800</option>
+            <option value="1830">1830</option>
+            <option value="1900">1900</option>
+            <option value="1930">1930</option>
+            <option value="2000">2000</option>
+            <option value="2030">2030</option>
+            <option value="2100">2100</option>
+            <option value="2130">2130</option>
+            <option value="2200">2200</option>
+            <option value="2230">2230</option>
+            <option value="2300">2300</option>
+            <option value="2330">2330</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label class="control-label" for="venue">End Time:</label>
+          <select type="text" class="form-control js-nm-venue-time-end-input">
+            <option value="0800">0800</option>
+            <option value="0830">0830</option>
+            <option value="0900">0900</option>
+            <option value="0930">0930</option>
+            <option value="1000">1000</option>
+            <option value="1030">1030</option>
+            <option value="1100">1100</option>
+            <option value="1130">1130</option>
+            <option value="1200">1200</option>
+            <option value="1230">1230</option>
+            <option value="1300">1300</option>
+            <option value="1330">1330</option>
+            <option value="1400">1400</option>
+            <option value="1430">1430</option>
+            <option value="1500">1500</option>
+            <option value="1530">1530</option>
+            <option value="1600">1600</option>
+            <option value="1630">1630</option>
+            <option value="1700">1700</option>
+            <option value="1730">1730</option>
+            <option value="1800">1800</option>
+            <option value="1830">1830</option>
+            <option value="1900">1900</option>
+            <option value="1930">1930</option>
+            <option value="2000">2000</option>
+            <option value="2030">2030</option>
+            <option value="2100">2100</option>
+            <option value="2130">2130</option>
+            <option value="2200">2200</option>
+            <option value="2230">2230</option>
+            <option value="2300">2300</option>
+            <option value="2330">2330</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <button type="submit" class="js-nm-available-venue-search btn btn-primary">Search</button>
+      </div>
+    </div>
+    <hr>
+
+    <div>
+      <ul>
+        {{#each availableVenues}}
+          <li>{{this}}</li>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+</div>

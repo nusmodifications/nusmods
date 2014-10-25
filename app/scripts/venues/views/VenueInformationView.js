@@ -3,7 +3,7 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Marionette = require('backbone.marionette');
-var template = require('../templates/venues.hbs');
+var template = require('../templates/venue_information.hbs');
 var Backbone = require('backbone');
 var timify = require('../../common/utils/timify');
 
