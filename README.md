@@ -82,4 +82,4 @@ The development server serves the files generated in `api/app/api` under
 
 ## License
 
-Copyright (c) 2014 Eu Beng Hee. Licensed under the MIT license.
+Copyright (c) 2014 NUS Modifications. Licensed under the MIT license.
