@@ -6,6 +6,7 @@ module.exports = function (grunt) {
 
     var path = require('path');
     var _ = require('lodash');
+    var timify = require('./timify');
 
     var basePath = path.join(options.srcFolder, options.academicYear.replace('/', '-'), options.semester);
     var normalizePath = path.join(basePath, grunt.config('normalize').options.destFileName);
@@ -68,17 +69,90 @@ module.exports = function (grunt) {
       );
     });
 
-    grunt.file.write(
-      path.join(basePath, 'timetable.json'), 
-      JSON.stringify(normalized.map(function (mod) {
-        return _.pick(mod, [
+    var timetables = normalized.map(function (mod) {
+      return _.pick(mod, [
         'ModuleCode',
         'ModuleTitle',
         'Timetable'
-        ]);
-      }), null, options.jsonSpace)
+      ]);
+    });
+
+    // timetable.json
+    grunt.file.write(
+      path.join(basePath, options.destTimetableInformation), 
+      JSON.stringify(timetables, null, options.jsonSpace)
     );
 
+    var venues = {};
+    _.each(timetables, function (module) {
+      if (module.Timetable) {
+        _.each(module.Timetable, function (cls) {
+          var cls = _.clone(cls);
+          var currentVenue = cls.Venue;
+          if (!venues[currentVenue]) {
+            venues[currentVenue] = [];
+          }
+          cls.ModuleCode = module.ModuleCode;
+          delete cls.Venue;
+          venues[currentVenue].push(cls);
+        });
+      }
+    });
+
+    venues = _.omit(venues, ''); // Delete empty venue string
+    var schoolDays = timify.getSchoolDays();
+
+    _.each(_.keys(venues), function (venueName) {
+      var venueTimetable = venues[venueName];
+      var newVenueTimetable = [];
+      
+      _.each(schoolDays, function (day) {
+        var classes = _.filter(venueTimetable, function (cls) {
+          return cls.DayText === day;
+        });
+        classes = _.sortBy(classes, function (cls) {
+          return cls.StartTime + cls.EndTime;
+        });
+
+        var timeRange = _.range(timify.convertTimeToIndex('0800'), 
+                                timify.convertTimeToIndex('2400'));
+        var availability = _.object(_.map(timeRange, function (index) {
+          return [timify.convertIndexToTime(index), 'vacant'];
+        }));
+
+        _.each(classes, function (cls) {
+          var startIndex = timify.convertTimeToIndex(cls.StartTime);
+          var endIndex = timify.convertTimeToIndex(cls.EndTime) - 1;
+          for (var i = startIndex; i <= endIndex; i++) {
+            availability[timify.convertIndexToTime(i)] = 'occupied';
+          }
+        });
+
+        // availability: {
+        //    "0800": "vacant",
+        //    "0830": "vacant",
+        //    "0900": "occupied",
+        //    "0930": "occupied",
+        //    ...
+        //    "2330": "vacant"
+        // }
+
+        newVenueTimetable.push({
+          day: day,
+          classes: classes,
+          availability: availability
+        });
+      });
+      venues[venueName] = newVenueTimetable;
+    });
+
+    // venueInformation.json
+    grunt.file.write(
+      path.join(basePath, options.destVenueInformation), 
+      JSON.stringify(venues, null, options.jsonSpace)
+    );
+
+    // moduleInformation.json
     grunt.file.write(
       path.join(basePath, options.destModuleInformation),
       JSON.stringify(moduleInformation, null, options.jsonSpace)

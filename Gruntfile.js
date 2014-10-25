@@ -161,6 +161,8 @@ module.exports = function (grunt) {
         destModuleCodes: 'moduleCodes.json',
         destModuleList: 'moduleList.json',
         destModuleInformation: 'moduleInformation.json',
+        destTimetableInformation: 'timetable.json',
+        destVenueInformation: 'venueInformation.json',
         destSubfolder: 'modules'
       }
     },

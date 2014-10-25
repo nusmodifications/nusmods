@@ -247,9 +247,10 @@ module.exports = function (grunt) {
       JSON.stringify(helpers.sortByKey(facultyDepartments), null, options.jsonSpace)
     );
 
-    var venuesList = _.keys(venues).sort();
-    venuesList = _.omit(venuesList, ''); // Omit empty venue string
-
+    venues = _.omit(venues, ''); // Omit empty keys
+    var venuesList = _.keys(venues);
+    venuesList.sort();
+    
     grunt.file.write(
       path.join(basePath, options.destVenues),
       JSON.stringify(venuesList, null, options.jsonSpace)
