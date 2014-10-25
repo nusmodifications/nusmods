@@ -150,7 +150,8 @@ module.exports = function (grunt) {
         srcFolder: '<%= defaults.destFolder %>',
         jsonSpace: '<%= defaults.jsonSpace %>',
         destFileName: 'modules.json',
-        destFacultyDepartments: 'facultyDepartments.json'
+        destFacultyDepartments: 'facultyDepartments.json',
+        destVenues: 'venues.json',
       }
     },
     split: {

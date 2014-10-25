@@ -21,6 +21,7 @@ module.exports = function (grunt) {
     var nullPattern = /^(--|n[/.]?a\.?|nil|none\.?|null|No Exam Date\.|)$/i;
 
     var facultyDepartments = {};
+    var venues = {};
 
     var dayTextToCode = {
       MONDAY: '1',
@@ -206,6 +207,7 @@ module.exports = function (grunt) {
             lesson.WeekText = titleize(lesson.WeekText);
             lesson.EndTime = ('000' + lesson.EndTime).slice(-4);
             lesson.Venue = lesson.Venue.trim();
+            venues[lesson.Venue] = true;
           });
           if (!_.isEmpty(periods.Lecture)) {
             mod.LecturePeriods = _.keys(periods.Lecture);
@@ -239,9 +241,18 @@ module.exports = function (grunt) {
     _.each(facultyDepartments, function (departments, faculty) {
       facultyDepartments[faculty] = Object.keys(departments).sort();
     });
+
     grunt.file.write(
       path.join(basePath, options.destFacultyDepartments),
       JSON.stringify(helpers.sortByKey(facultyDepartments), null, options.jsonSpace)
+    );
+
+    var venuesList = _.keys(venues).sort();
+    venuesList = _.omit(venuesList, ''); // Omit empty venue string
+
+    grunt.file.write(
+      path.join(basePath, options.destVenues),
+      JSON.stringify(venuesList, null, options.jsonSpace)
     );
 
     grunt.file.write(
