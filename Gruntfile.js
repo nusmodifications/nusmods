@@ -21,7 +21,8 @@ module.exports = function (grunt) {
         destFolder: '<%= defaults.destFolder %>',
         jsonSpace: '<%= defaults.jsonSpace %>',
         destFileName: 'bulletinModulesRaw.json',
-        ivleApi: grunt.file.readJSON('ivleApi.json')
+        ivleApi: grunt.file.readJSON('ivleApi.json'),
+        venuesApi: grunt.file.readJSON('venuesApi.json'),
       },
       semester0: {
         options: {
@@ -185,6 +186,16 @@ module.exports = function (grunt) {
         }
       }
     },
+    venues: {
+      options: {
+        cachePath: '<%= defaults.cachePath %>',
+        maxCacheAge: '<%= defaults.maxCacheAge %>',
+        destFolder: '<%= defaults.destFolder %>',
+        jsonSpace: '<%= defaults.jsonSpace %>',
+        destFileName: 'venuesRaw.json',
+        venuesApi: grunt.file.readJSON('venuesApi.json')
+      }
+    },
     rsync: {
       options: {
         args: ['-cruv']
@@ -252,7 +263,8 @@ module.exports = function (grunt) {
     'corsBiddingStats',
     'examTimetable',
     'moduleTimetableDelta',
-    'ivle'
+    'ivle',
+    'venues'
   ]);
 
   grunt.registerTask('local', [
