@@ -14,8 +14,7 @@ module.exports = Marionette.LayoutView.extend({
   },
   events: {
     'keypress input[type=text]': 'processKey',
-    'click .js-nm-venue-search': 'searchVenue',
-    'click .js-nm-available-venue-search': 'showAvailableVenues'
+    'click .js-nm-venue-search': 'searchVenue'
   },
   processKey: function (e) {
     if (e.which === 13) { // Enter key
@@ -38,36 +37,8 @@ module.exports = Marionette.LayoutView.extend({
     this.model.set('selectedVenue', selectedVenue);
     this.model.set('selectedVenueName', venue);
     if (venue !== '') {
-      Backbone.history.navigate('venues/' + venue);
+      Backbone.history.navigate('venue/' + venue);
     }
     this.render();
-  },
-  showAvailableVenues: function () {
-    var day = $('.js-nm-venue-time-day-input').val();
-    var startTime = $('.js-nm-venue-time-start-input').val();
-    var endTime = $('.js-nm-venue-time-end-input').val();
-
-    var venuesList = this.model.get('venuesList');
-    var venues = this.model.get('venues');
-
-    var dayIndex = timify.getWeekdays().indexOf(day);
-    var startIndex = timify.convertTimeToIndex(startTime);
-    var endIndex = timify.convertTimeToIndex(endTime) - 1;
-
-    if (endIndex - startIndex < 0) {
-      return [];
-    }
-
-    var availableVenues = _.filter(venuesList, function (venueName) {
-      var availability = venues[venueName][dayIndex].availability;
-      for (var i = startIndex; i <= endIndex; i++) {
-        if (availability[timify.convertIndexToTime(i)] === 'occupied') {
-          return false;
-        }
-      }
-      return true;
-    });
-
-    console.log(availableVenues);
-  },
+  }
 });
