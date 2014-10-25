@@ -79,7 +79,8 @@ var loadVenueInformation = function (callback) {
         newVenueTimetable.push({
           day: day,
           classes: classes,
-          availability: availability
+          availability: availability,
+          shortDay: day.slice(0, 3)
         });
       });
       venues[venueName] = newVenueTimetable;

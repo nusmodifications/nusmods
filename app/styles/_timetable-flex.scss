@@ -1,0 +1,55 @@
+.nm-timetable-flex {
+  $border-style: 1px solid #ccc;
+  &.nm-flex-vertical {
+    flex-direction: row;
+    .nm-timetable-flex-row {
+      flex-direction: column;
+      float: left;
+      height: 1200px;
+      width: 16.66%;
+      .nm-timetable-flex-cell {
+        border-left: $border-style;
+        height: 0;
+        width: 100%;
+      }
+      &:last-child {
+        .nm-timetable-flex-cell {
+          border-bottom: none;
+          border-right: $border-style;
+        }
+      }
+    }
+  }
+  .nm-timetable-flex-row {
+    display: flex;
+    justify-content: flex-start;
+    &:last-child {
+      .nm-timetable-flex-cell {
+        border-bottom: $border-style;
+      }
+    }
+  }
+  .nm-timetable-flex-cell {
+    border-top: $border-style;
+    height: 60px;
+    text-align: center;
+    width: 0;
+    &:first-child {
+      border: none !important;
+    }
+    &:nth-child(even) {
+      // border-left: $border-style;
+    }
+    &:last-child {
+      // border-right: $border-style;
+    }
+    &.nm-flex-occupied {
+      background-color: #eee;
+    }
+    .nm-timetable-flex-module-name {
+      font-size: 12px;
+      height: 15px;
+      margin: auto;
+    }
+  }
+}
