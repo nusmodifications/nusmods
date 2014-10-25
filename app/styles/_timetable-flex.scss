@@ -1,21 +1,55 @@
+.nm-timetable-flex-container {
+  margin-bottom: 30px;
+}
+
 .nm-timetable-flex {
   $border-style: 1px solid #ccc;
-  &.nm-flex-vertical {
+  margin-bottom: 30px;
+  &.nm-timetable-vertical {
     flex-direction: row;
     .nm-timetable-flex-row {
       flex-direction: column;
       float: left;
       height: 1200px;
-      width: 16.66%;
-      .nm-timetable-flex-cell {
-        border-left: $border-style;
-        height: 0;
-        width: 100%;
+      width: 16%;
+      &.nm-timetable-timing {
+        height: 1200px;
+        width: 4%;
+        .nm-timetable-flex-cell {
+          height: 0;
+          text-align: right;
+        }
       }
       &:last-child {
         .nm-timetable-flex-cell {
           border-bottom: none;
-          border-right: $border-style;
+          &, &:last-child {
+            border-right: $border-style;
+          }
+        }
+      }
+      .nm-timetable-flex-cell {
+        border-left: $border-style;
+        height: 0;
+        width: 100%;
+        &.box-2 {
+          border-bottom: 1px solid transparent;
+        }
+        &.box-3 {
+          border-bottom: 2px solid transparent;
+        }
+        &.box-4 {
+          border-bottom: 3px solid transparent;
+        }
+        &.box-5 {
+          border-bottom: 4px solid transparent;
+        }
+        &.box-6 {
+          border-bottom: 5px solid transparent;
+        }
+        &:last-child {
+          border-bottom: $border-style;
+          border-right: none;
         }
       }
     }
@@ -28,20 +62,32 @@
         border-bottom: $border-style;
       }
     }
+    &.nm-timetable-timing {
+      height: 20px;
+      .nm-timetable-flex-cell {
+        border: none !important;
+        flex-grow: 2;
+        font-size: 12px;
+        font-weight: bold;
+        height: 100%;
+        left: -13px;
+        position: relative;
+        text-align: left;
+        &:first-child {
+          flex-grow: 1;
+        }
+      }
+    }
   }
   .nm-timetable-flex-cell {
+    border-left: $border-style;
     border-top: $border-style;
+    flex-grow: 1;
     height: 60px;
     text-align: center;
     width: 0;
-    &:first-child {
-      border: none !important;
-    }
-    &:nth-child(even) {
-      // border-left: $border-style;
-    }
     &:last-child {
-      // border-right: $border-style;
+      border-right: $border-style;
     }
     &.nm-flex-occupied {
       background-color: #eee;
@@ -50,6 +96,24 @@
       font-size: 12px;
       height: 15px;
       margin: auto;
+    }
+    &.box-2 {
+      border-right: 1px solid transparent;
+    }
+    &.box-3 {
+      border-right: 2px solid transparent;
+    }
+    &.box-4 {
+      border-right: 3px solid transparent;
+    }
+    &.box-5 {
+      border-right: 4px solid transparent;
+    }
+    &.box-6 {
+      border-right: 5px solid transparent;
+    }
+    &.nm-timetable-day {
+      border: none !important;
     }
   }
 }
