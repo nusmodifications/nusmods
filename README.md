@@ -8,6 +8,7 @@ from the following sources:
 - [IVLE API](http://wiki.nus.edu.sg/display/ivlelapi/Home)
 - [NUS Bulletin](http://www.nus.edu.sg/registrar/nusbulletin/modulesearch.html)
 - [NUS Examination Time-Table](http://www.nus.edu.sg/registrar/event/examschedule-sem1.html)
+- [NUS Living Lab API](http://nuslivinglab.nus.edu.sg/)
 
 It is a purely JSON API, with CORS and JSONP support, and is statically
 generated - since the module information changes a few times a day at most, this
