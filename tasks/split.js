@@ -69,6 +69,17 @@ module.exports = function (grunt) {
     });
 
     grunt.file.write(
+      path.join(basePath, 'timetable.json'), 
+      JSON.stringify(normalized.map(function (mod) {
+        return _.pick(mod, [
+        'ModuleCode',
+        'ModuleTitle',
+        'Timetable'
+        ]);
+      }), null, options.jsonSpace)
+    );
+
+    grunt.file.write(
       path.join(basePath, options.destModuleInformation),
       JSON.stringify(moduleInformation, null, options.jsonSpace)
     );
