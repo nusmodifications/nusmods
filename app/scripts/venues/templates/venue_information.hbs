@@ -49,7 +49,7 @@
               <div class="nm-timetable-flex-cell nm-timetable-day"><strong>{{this.shortDay}}</strong></div>
               {{#each this.timetable}}
                 <div class="nm-timetable-flex-cell {{this.class}} box-{{this.width}}" style="flex-grow: {{this.width}}">
-                  <div class="nm-timetable-flex-module-name">{{this.module}}</div>
+                  <a class="nm-timetable-flex-module-name" href="/modules/{{this.module}}">{{this.module}}</a>
                 </div>
               {{/each}}
             </div>

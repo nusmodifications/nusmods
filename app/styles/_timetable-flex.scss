@@ -71,7 +71,6 @@
         flex-grow: 2;
         font-size: 12px;
         font-weight: bold;
-        height: 100%;
         left: -13px;
         position: relative;
         text-align: left;
@@ -96,8 +95,9 @@
     }
     .nm-timetable-flex-module-name {
       font-size: 12px;
+      font-weight: bold;
       height: 15px;
-      margin: auto;
+      margin-top: 5px;
     }
     &.box-2 {
       border-right: 1px solid transparent;
@@ -117,5 +117,11 @@
     &.nm-timetable-day {
       border: none !important;
     }
+  }
+}
+
+.mode-slate {
+  .nm-timetable-flex .nm-timetable-flex-cell.nm-flex-occupied {
+    background-color: #1c1c1f;
   }
 }
