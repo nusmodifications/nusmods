@@ -5,12 +5,12 @@
 .nm-timetable-flex {
   $border-style: 1px solid #ccc;
   margin-bottom: 30px;
-  &.nm-timetable-vertical {
+  @media (max-width: $screen-lg-min) {
     flex-direction: row;
     .nm-timetable-flex-row {
       flex-direction: column;
       float: left;
-      height: 1200px;
+      height: 1200px !important;
       width: 16%;
       &.nm-timetable-timing {
         height: 1200px;
@@ -22,9 +22,11 @@
       }
       &:last-child {
         .nm-timetable-flex-cell {
-          border-bottom: none;
           &, &:last-child {
             border-right: $border-style;
+          }
+          &:not(:last-child) {
+            border-bottom: none !important;
           }
         }
       }
