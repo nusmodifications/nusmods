@@ -23,38 +23,7 @@
       <h3>Venue Information for "{{this.selectedVenueName}}"</h3>
       <hr>
 
-      <div class="nm-timetable-flex-container">
-        <div class="nm-timetable-flex">
-          <div class="nm-timetable-flex-row nm-timetable-timing">
-            <div class="nm-timetable-flex-cell"></div>
-            <div class="nm-timetable-flex-cell">0800</div>
-            <div class="nm-timetable-flex-cell">0900</div>
-            <div class="nm-timetable-flex-cell">1000</div>
-            <div class="nm-timetable-flex-cell">1100</div>
-            <div class="nm-timetable-flex-cell">1200</div>
-            <div class="nm-timetable-flex-cell">1300</div>
-            <div class="nm-timetable-flex-cell">1400</div>
-            <div class="nm-timetable-flex-cell">1500</div>
-            <div class="nm-timetable-flex-cell">1600</div>
-            <div class="nm-timetable-flex-cell">1700</div>
-            <div class="nm-timetable-flex-cell">1800</div>
-            <div class="nm-timetable-flex-cell">1900</div>
-            <div class="nm-timetable-flex-cell">2000</div>
-            <div class="nm-timetable-flex-cell">2100</div>
-            <div class="nm-timetable-flex-cell">2200</div>
-            <div class="nm-timetable-flex-cell">2300</div>
-          </div>
-          {{#each selectedVenue}}
-            <div class="nm-timetable-flex-row">
-              <div class="nm-timetable-flex-cell nm-timetable-day"><strong>{{this.shortDay}}</strong></div>
-              {{#each this.timetable}}
-                <div class="nm-timetable-flex-cell {{this.class}} box-{{this.width}}" style="flex-grow: {{this.width}}">
-                  <a class="nm-timetable-flex-module-name" href="/modules/{{this.module}}">{{this.module}}</a>
-                </div>
-              {{/each}}
-            </div>
-          {{/each}}
-        </div>
+      <div class="nm-venue-information-timetable">
       </div>
 
       <hr>
