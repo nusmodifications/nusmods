@@ -11,15 +11,19 @@ module.exports = Marionette.LayoutView.extend({
   className: 'media nm-friends-list-item',
   template: template,
   events: {
-    'click .js-delete-friend-timetable': 'deleteFriendTimetable'
+    'click .js-nm-friends-delete': 'deleteFriendTimetable',
+    'click': 'toggleSelection'
   },
   onShow: function () {  
     
   },
-  generateTimetableFromQueryString: function (name, semester, queryString) { 
-    
+  toggleSelection: function () {
+    var selected = this.model.get('selected');
+    this.model.set('selected', !selected);
   },
-  deleteFriendTimetable: function () {
+  deleteFriendTimetable: function (e) {
+    e.preventDefault();
+    e.stopPropagation();
     var friendsListCollection = this.model.collection;
     friendsListCollection.remove(this.model);
     var friendsListData = _.pluck(friendsListCollection.models, 'attributes');

@@ -2,7 +2,11 @@
   <img class="media-object img-responsive img-rounded" width="64" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpf1/v/t1.0-1/c11.0.365.365/10411737_10152469716533354_5778333944655082211_n.jpg?oh=8d9fb4bf73cccfedc110736aea9bf6a8&oe=54DD949C&__gda__=1420939566_c6dc55ed957f1f333991f7badbaa8d9e" alt="{{name}} thumbnail">
 </a>
 <div class="media-body">
-  <h4 class="media-heading">{{name}}</h4>
+  <h4 class="media-heading">{{name}}
+  {{#if selected}}
+    <span class="badge">Active</span>
+  {{/if}}
+  </h4>
   <p>Computer Science</p>
-  <a class="js-delete-friend-timetable">Delete</a>
+  <a class="js-nm-friends-delete">Delete</a>
 </div>

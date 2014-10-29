@@ -5,30 +5,55 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var App = require('../../app');
 var Marionette = require('backbone.marionette');
+var NUSMods = require('../../nusmods');
+
 var template = require('../templates/friends.hbs');
 var addFriendTimetableModalTemplate = require('../templates/friend_add_modal.hbs');
 var timify = require('../../common/utils/timify');
 var TimetableFlexView = require('../../timetable_flex/views/TimetableFlexView');
 var FriendsListView = require('./FriendsListView');
+var FriendsSelectedListView = require('./FriendsSelectedListView');
+var config = require('../../common/config');
 
 require('bootstrap/tooltip');
 require('bootstrap/popover');
 
 module.exports = Marionette.LayoutView.extend({
+  initialize: function () {
+    var that = this;
+    NUSMods.getAllTimetable(config.semester).then(function (data) {
+      console.log(data);
+      that.modules = {};
+      _.each(data, function (module) {
+        that.modules[module.ModuleCode] = module;
+      });
+    });
+  },
   template: template,
   regions: {
     friendsListRegion: '.nm-friends-list',
+    friendsSelectedListRegion: '.nm-friends-selected-list',
     timetableRegion: '.nm-friends-timetable'
   },
   ui: {
-    'addButton': '.js-add-timetable-popover'
+    'addButton': '.js-nm-friends-add-popover'
   },
   onShow: function () {
-    var that = this; 
+    var that = this;
     localforage.getItem('timetable:friends', function (data) {
       that.friendsListCollection = new Backbone.Collection(data);
-      var friendsListView = new FriendsListView({collection: that.friendsListCollection});
-      that.friendsListRegion.show(friendsListView);
+      that.friendsListView = new FriendsListView({collection: that.friendsListCollection});
+      that.friendsListRegion.show(that.friendsListView);
+
+      that.friendsSelectedListView = new FriendsSelectedListView();
+      that.friendsSelectedListRegion.show(that.friendsSelectedListView);
+      that.showSelectedFriendsList();
+
+      that.friendsListCollection.on('change', function () {
+        that.updateDisplayedTimetable();
+        that.showSelectedFriendsList();
+        that.friendsListView.render();
+      });
     });
     this.ui.addButton.popover({
       html: true,
@@ -37,8 +62,12 @@ module.exports = Marionette.LayoutView.extend({
     });
   },
   events: {
-    'click .js-add-friend-timetable': 'addFriendTimetable',
-    'click .js-merge-timetables': 'mergeTimetables'
+    'click .js-nm-friends-add': 'addFriendTimetable'
+  },
+  showSelectedFriendsList: function () {
+    var friendsSelectedList = this.friendsListCollection.where({selected: true});
+    this.friendsSelectedListView.collection = new Backbone.Collection(friendsSelectedList);
+    this.friendsSelectedListView.render();
   },
   addFriendTimetable: function () {
     var that = this;
@@ -77,11 +106,15 @@ module.exports = Marionette.LayoutView.extend({
     this.friendsListCollection.add({
       name: name,
       semester: semester,
-      queryString: timetableQueryString
+      queryString: timetableQueryString,
+      selected: false
     });
 
     var friendsData = _.pluck(this.friendsListCollection.models, 'attributes');
     localforage.setItem('timetable:friends', friendsData);
+  },
+  updateDisplayedTimetable: function () {
+    console.log('updateDisplayedTimetable');
   },
   mergeTimetables: function () {
     var mergedQueryString = _.pluck(_.pluck(this.friendsListCollection.models, 'attributes'), 'queryString').join('&');
