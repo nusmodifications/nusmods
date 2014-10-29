@@ -122,6 +122,7 @@ App.on('start', function () {
   require('./modules');
   // require('ivle');
   require('./barenus');
+  require('./friends');
   require('./venues');
   require('./preferences');
   require('./blog');
