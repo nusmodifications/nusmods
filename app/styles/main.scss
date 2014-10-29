@@ -913,6 +913,31 @@ colgroup.hover {
   }
 }
 
+// Friends
+.nm-friends-list {
+  padding: 0;
+}
+
+.nm-friends-list-item {
+  border-top: 1px solid #ccc;
+  cursor: pointer;
+  margin-top: 0;
+  padding: 15px;
+  &:first-child {
+    border-top: none;
+  }
+  &:hover {
+    background-color: #eee;
+    transition: background .5s linear;
+  }
+}
+
+.nm-friends-add-modal {
+  background-color: #fff;
+  color: #000;
+  width: 200px;
+}
+
 // Preferences
 #preferences {
   user-select: none;

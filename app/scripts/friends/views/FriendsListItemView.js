@@ -8,7 +8,7 @@ var template = require('../templates/friends_list_item.hbs');
 
 module.exports = Marionette.LayoutView.extend({
   tagName: 'div',
-  className: 'media',
+  className: 'media nm-friends-list-item',
   template: template,
   events: {
     'click .js-delete-friend-timetable': 'deleteFriendTimetable'
