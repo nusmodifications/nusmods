@@ -1,12 +1,17 @@
 <div class="row">
   <div class="col-md-12">
+
+    <h1 class="nm-page-heading">Venues</h1>
+    <hr>
+
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
       <li class="active"><a role="tab" data-toggle="tab">Venue Information</a></li>
       <li><a href="/venueavailability" role="tab" data-toggle="tab">Find Available Venues</a></li>
     </ul>
-
-    <h1 class="nm-page-heading">Venue Lookup</h1>
+    
+    <h2>Venue Lookup</h2>
+    <p>Retrieve a venue's weekly occupancy timetable.</p>
     <hr>
 
     <div class="row">
@@ -18,8 +23,9 @@
         <button type="submit" class="js-nm-venue-search btn btn-primary">Search</button>
       </div>
     </div>
-    <hr>
+
     {{#if selectedVenue}}
+
       <h3>Venue Information for "{{this.selectedVenueName}}"</h3>
       <hr>
 

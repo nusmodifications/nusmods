@@ -1,12 +1,17 @@
 <div class="row">
   <div class="col-md-12">
+
+    <h1 class="nm-page-heading">Venues</h1>
+    <hr>
+
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
       <li><a href="/venues" role="tab" data-toggle="tab">Venue Information</a></li>
       <li class="active"><a role="tab" data-toggle="tab">Find Available Venues</a></li>
     </ul>
 
-    <h1 class="nm-page-heading">Venue Availability</h1>
+    <h2>Venue Availability</h2>
+    <p>Search for available venues by specifying a day and date range.</p>
     <hr>
 
     <div class="row">
@@ -111,7 +116,7 @@
     <div>
       <ul>
         {{#each availableVenues}}
-          <li>{{this}}</li>
+          <li><a href="/venues/{{this}}">{{this}}</a></li>
         {{/each}}
       </ul>
     </div>
