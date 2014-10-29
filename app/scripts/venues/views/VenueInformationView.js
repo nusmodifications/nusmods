@@ -33,21 +33,22 @@ module.exports = Marionette.LayoutView.extend({
     var searchText = $.trim($('.js-nm-venue-input').val().toUpperCase());
     this.showAvailabilityForVenue(searchText);
   },
-  showAvailabilityForVenue: function (venue) {
-    if (venue !== '') {
-      Backbone.history.navigate('venues/' + venue);
+  showAvailabilityForVenue: function (venueName) {
+    if (venueName !== '') {
+      Backbone.history.navigate('venues/' + venueName);
     }
 
     var selectedVenue = null;
-    if (this.model.get('venuesList').indexOf(venue) > -1) {
-      selectedVenue = this.model.get('venues')[venue];
+    if (this.model.get('venuesList').indexOf(venueName) > -1) {
+      selectedVenue = this.model.get('venues')[venueName];
     }
 
+    this.model.set('selectedVenueName', venueName);
     this.model.set('selectedVenue', selectedVenue);
     this.render();
 
     var venueTimetableModel = new Backbone.Model({
-      venueDayAvailability: selectedVenue
+      dayAvailability: selectedVenue
     });
 
     this.venueTimetableRegion.show(new TimetableFlexView({

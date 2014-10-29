@@ -19,12 +19,12 @@
       <div class="nm-timetable-flex-cell">2200</div>
       <div class="nm-timetable-flex-cell">2300</div>
     </div>
-    {{#each venueDayAvailability}}
+    {{#each dayAvailability}}
       <div class="nm-timetable-flex-row">
         <div class="nm-timetable-flex-cell nm-timetable-day"><strong>{{this.shortDay}}</strong></div>
         {{#each this.timetable}}
           <div class="nm-timetable-flex-cell {{this.class}} box-{{this.width}}" style="flex-grow: {{this.width}}">
-            <a class="nm-timetable-flex-module-name" href="/modules/{{this.module}}">{{this.module}}</a>
+            <a class="nm-timetable-flex-module-name" href="/modules/{{this.module}}">{{this.label}}</a>
           </div>
         {{/each}}
       </div>

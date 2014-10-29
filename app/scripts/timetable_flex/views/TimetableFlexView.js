@@ -11,8 +11,8 @@ module.exports = Marionette.LayoutView.extend({
   template: template,
   initialize: function () {
     console.log(this.model);
-    var selectedVenue = this.model.get('venueDayAvailability');
-    _.each(selectedVenue, function (day) {
+    var dayAvailability = this.model.get('dayAvailability');
+    _.each(dayAvailability, function (day) {
       var range = _.map(_.range(timify.convertTimeToIndex('0800'), 
                                 timify.convertTimeToIndex('2400')), function () {
         return {
@@ -28,7 +28,7 @@ module.exports = Marionette.LayoutView.extend({
         var width = endIndex - startIndex;
         range[startIndex] = {
           width: width,
-          module: cls.ModuleCode,
+          label: cls.ModuleCode,
           class: 'nm-flex-occupied'
         };
       });
