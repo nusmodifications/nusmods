@@ -11,7 +11,7 @@ var timify = require('../common/utils/timify');
 var navigationItem = App.request('addNavigationItem', {
   name: 'Venues',
   icon: 'location-arrow',
-  url: '/venue'
+  url: '/venues'
 });
 
 var loadVenueInformation = function (callback) {
@@ -129,8 +129,8 @@ App.addInitializer(function () {
   new Marionette.AppRouter({
     controller: controller,
     appRoutes: {
-      'venue': 'showVenueInformation',
-      'venue(/:id)': 'showVenueInformation',
+      'venues': 'showVenueInformation',
+      'venues(/:id)': 'showVenueInformation',
       'venueavailability': 'showVenueAvailability'
     }
   });
