@@ -26,14 +26,14 @@ var loadVenueInformation = function (callback) {
 
     _.each(timetables, function (module) {
       if (module.Timetable) {
-        _.each(module.Timetable, function (cls) {
-          var currentVenue = cls.Venue;
+        _.each(module.Timetable, function (lesson) {
+          var currentVenue = lesson.Venue;
           if (!venues[currentVenue]) {
             venues[currentVenue] = [];
           }
-          cls.ModuleCode = module.ModuleCode;
-          delete cls.Venue;
-          venues[currentVenue].push(cls);
+          lesson.ModuleCode = module.ModuleCode;
+          delete lesson.Venue;
+          venues[currentVenue].push(lesson);
         });
       }
     });
@@ -46,11 +46,11 @@ var loadVenueInformation = function (callback) {
       var newVenueTimetable = [];
       var days = timify.getSchoolDays();
       _.each(days, function (day) {
-        var classes = _.filter(venueTimetable, function (cls) {
-          return cls.DayText === day;
+        var lessons = _.filter(venueTimetable, function (lesson) {
+          return lesson.DayText === day;
         });
-        classes = _.sortBy(classes, function (cls) {
-          return cls.StartTime + cls.EndTime;
+        lessons = _.sortBy(lessons, function (lesson) {
+          return lesson.StartTime + lesson.EndTime;
         });
 
         var timeRange = _.range(timify.convertTimeToIndex('0800'), 
@@ -59,9 +59,9 @@ var loadVenueInformation = function (callback) {
           return [timify.convertIndexToTime(index), 'vacant'];
         }));
 
-        _.each(classes, function (cls) {
-          var startIndex = timify.convertTimeToIndex(cls.StartTime);
-          var endIndex = timify.convertTimeToIndex(cls.EndTime) - 1;
+        _.each(lessons, function (lesson) {
+          var startIndex = timify.convertTimeToIndex(lesson.StartTime);
+          var endIndex = timify.convertTimeToIndex(lesson.EndTime) - 1;
           for (var i = startIndex; i <= endIndex; i++) {
             availability[timify.convertIndexToTime(i)] = 'occupied';
           }
@@ -78,7 +78,7 @@ var loadVenueInformation = function (callback) {
 
         newVenueTimetable.push({
           day: day,
-          classes: classes,
+          lessons: lessons,
           availability: availability,
           shortDay: day.slice(0, 3)
         });
