@@ -21,14 +21,14 @@ module.exports = Marionette.LayoutView.extend({
         }
       });
 
-      _.each(day.classes, function (cls) {
+      _.each(day.classes, function (lesson) {
         var eightAmIndex = timify.convertTimeToIndex('0800');
-        var startIndex = timify.convertTimeToIndex(cls.StartTime) - eightAmIndex;
-        var endIndex = timify.convertTimeToIndex(cls.EndTime) - eightAmIndex;
+        var startIndex = timify.convertTimeToIndex(lesson.StartTime) - eightAmIndex;
+        var endIndex = timify.convertTimeToIndex(lesson.EndTime) - eightAmIndex;
         var width = endIndex - startIndex;
         range[startIndex] = {
           width: width,
-          label: cls.ModuleCode,
+          label: lesson.ModuleCode,
           class: 'nm-flex-occupied'
         };
       });
