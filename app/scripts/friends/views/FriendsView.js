@@ -120,7 +120,6 @@ module.exports = Marionette.LayoutView.extend({
       });
     });
 
-    console.log('lessons', lessons)
     var TimetableFlexModel = new Backbone.Model({
       lessonsList: lessons,
       mergeMode: true

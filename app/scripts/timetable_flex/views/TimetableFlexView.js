@@ -10,7 +10,6 @@ var timify = require('../../common/utils/timify');
 module.exports = Marionette.LayoutView.extend({
   template: template,
   initialize: function () {
-    console.log('lessonsList', this.model.get('lessonsList'));
     var lessonsList = this.model.get('lessonsList');
 
     var dayAvailability = this.convertToDayAvailability(lessonsList);
@@ -45,7 +44,6 @@ module.exports = Marionette.LayoutView.extend({
       }
       day.timetable = finalRange;
     });
-    console.log('dayAvailability', dayAvailability);
   },
   convertToDayAvailability: function (lessonsList) {
     var days = timify.getSchoolDays();
