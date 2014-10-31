@@ -728,6 +728,32 @@
     @include color(#d33682);
   }
 }
+.theme-spookypumpkin {
+  .color0 {
+    @include color(#964515);
+  }
+  .color1 {
+    @include color(#ff751a);
+  }
+  .color2 {
+    @include color(#e55401);
+  }
+  .color3 {
+    @include color(#ffbd4c);
+  }
+  .color4 {
+    @include color(#dfff4c);
+  }
+  .color5 {
+    @include color(#a69708);
+  }
+  .color6 {
+    @include color(#6d5000);
+  }
+  .color7 {
+    @include color(#88254b);
+  }
+}
 .theme-tomorrow {
   .color0 {
     @include color(#c66);
