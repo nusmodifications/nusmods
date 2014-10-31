@@ -5,6 +5,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var App = require('../../app');
 var Marionette = require('backbone.marionette');
+var localforage = require('localforage');
 
 var template = require('../templates/friends.hbs');
 var addFriendTimetableModalTemplate = require('../templates/friend_add_modal.hbs');
@@ -101,44 +102,37 @@ module.exports = Marionette.LayoutView.extend({
     var queryFragments = urlFragments.slice(-1)[0].split('?');
     var semester = parseInt(queryFragments[0].slice(3));
     var timetableQueryString = queryFragments[1];
-    this.friendsListCollection.add({
+    this.friendsListCollection.add(new FriendModel({
       name: name,
       semester: semester,
       queryString: timetableQueryString,
       selected: false
-    });
-
+    }));
     var friendsData = _.pluck(this.friendsListCollection.models, 'attributes');
+    friendsData = _.map(friendsData, function (person) {
+      return _.omit(person, 'moduleInformation');
+    });
     localforage.setItem('timetable:friends', friendsData);
   },
   updateDisplayedTimetable: function () {
 
-    var lessons;
-    var selectedFriends = _.each(this.friendsSelectedListView.collection.models, function (person) {
-      lessons = _.map(person.get('moduleInformation').timetable.models, function (lesson) {
+    var combinedLessons = _.map(this.friendsSelectedListView.collection.models, function (person) {
+      return _.map(person.get('moduleInformation').timetable.models, function (lesson) {
         return lesson.attributes;
       });
     });
 
+    combinedLessons = _.reduce(combinedLessons, function (a, b) {
+      return a.concat(b);
+    }, []);
+
     var TimetableFlexModel = new Backbone.Model({
-      lessonsList: lessons,
+      lessonsList: combinedLessons,
       mergeMode: true
     });
 
     this.timetableRegion.show(new TimetableFlexView({
       model: TimetableFlexModel
     }));
-  },
-  mergeTimetables: function () {
-    var mergedQueryString = _.pluck(_.pluck(this.friendsListCollection.models, 'attributes'), 'queryString').join('&');
-    var model = new Backbone.Model({
-      name: 'Merged Timetable',
-      semester: 1,
-      queryString: mergedQueryString
-    });
-
-    // this.timetableRegion.show(new TimetableFlexView({
-    //   model: venueTimetableModel
-    // }));
   }
 });

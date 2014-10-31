@@ -10,9 +10,15 @@ var timify = require('../../common/utils/timify');
 module.exports = Marionette.LayoutView.extend({
   template: template,
   initialize: function () {
-    var lessonsList = this.model.get('lessonsList');
+    var that = this;
 
-    var dayAvailability = this.convertToDayAvailability(lessonsList);
+    var lessonsList = this.model.get('lessonsList');
+    if (this.model.get('mergeMode')) {
+      var dayAvailability = this.convertToDayAvailability(lessonsList);
+    } else {
+      var dayAvailability = lessonsList;
+    }
+
     this.model.set('dayAvailability', dayAvailability);
 
     _.each(dayAvailability, function (day) {
@@ -20,21 +26,42 @@ module.exports = Marionette.LayoutView.extend({
                                 timify.convertTimeToIndex('2400')), function () {
         return {
           width: 1,
-          module: ''
+          module: '',
+          label: ''
         }
       });
 
-      _.each(day.lessons, function (lesson) {
-        var eightAmIndex = timify.convertTimeToIndex('0800');
-        var startIndex = timify.convertTimeToIndex(lesson.StartTime) - eightAmIndex;
-        var endIndex = timify.convertTimeToIndex(lesson.EndTime) - eightAmIndex;
-        var width = endIndex - startIndex;
-        range[startIndex] = {
-          width: width,
-          label: lesson.ModuleCode,
-          class: 'nm-flex-occupied'
-        };
-      });
+      var eightAmIndex = timify.convertTimeToIndex('0800');
+
+      if (that.model.get('mergeMode')) {
+        _.each(day.lessons, function (lesson) {
+          var startIndex = timify.convertTimeToIndex(lesson.StartTime) - eightAmIndex;
+          var endIndex = timify.convertTimeToIndex(lesson.EndTime) - eightAmIndex;
+          var width = endIndex - startIndex;
+          for (var i = startIndex; i < endIndex; i++) {
+            var overlap = range[i].count;
+            if (!overlap) {
+              overlap = 1;
+            } else {
+              overlap += 1;
+            }
+            range[i].count = overlap;
+            range[i].class = 'nm-flex-clash-' + overlap;
+          }
+        });
+      } else {
+        _.each(day.lessons, function (lesson) {
+          
+          var startIndex = timify.convertTimeToIndex(lesson.StartTime) - eightAmIndex;
+          var endIndex = timify.convertTimeToIndex(lesson.EndTime) - eightAmIndex;
+          var width = endIndex - startIndex;
+          range[startIndex] = {
+            width: width,
+            label: lesson.ModuleCode,
+            class: 'nm-flex-occupied'
+          };
+        });
+      }
 
       var finalRange = [];
       var step;

@@ -24,7 +24,12 @@
         <div class="nm-timetable-flex-cell nm-timetable-day"><strong>{{this.shortDay}}</strong></div>
         {{#each this.timetable}}
           <div class="nm-timetable-flex-cell {{this.class}} box-{{this.width}}" style="flex-grow: {{this.width}}">
-            <a class="nm-timetable-flex-module-name" href="/modules/{{this.module}}">{{this.label}}</a>
+            {{#if this.label}}
+              <a class="nm-timetable-flex-module-name" href="/modules/{{this.label}}">{{this.label}}</a>
+            {{/if}}
+            {{#if this.count}}
+              <h4>{{this.count}}</h4>
+            {{/if}}
           </div>
         {{/each}}
       </div>

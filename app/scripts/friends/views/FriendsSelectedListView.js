@@ -13,7 +13,6 @@ module.exports = Marionette.CompositeView.extend({
   childViewContainer: 'div',
   emptyView: EmptyView,
   template: _.template('<div></div>'),
-  initialize: function () {
-    console.log(this);
+  initialize: function () {    
   }
 });
