@@ -10,8 +10,12 @@ var timify = require('../../common/utils/timify');
 module.exports = Marionette.LayoutView.extend({
   template: template,
   initialize: function () {
-    console.log(this.model);
-    var dayAvailability = this.model.get('dayAvailability');
+    console.log('lessonsList', this.model.get('lessonsList'));
+    var lessonsList = this.model.get('lessonsList');
+
+    var dayAvailability = this.convertToDayAvailability(lessonsList);
+    this.model.set('dayAvailability', dayAvailability);
+
     _.each(dayAvailability, function (day) {
       var range = _.map(_.range(timify.convertTimeToIndex('0800'), 
                                 timify.convertTimeToIndex('2400')), function () {
@@ -21,7 +25,7 @@ module.exports = Marionette.LayoutView.extend({
         }
       });
 
-      _.each(day.classes, function (lesson) {
+      _.each(day.lessons, function (lesson) {
         var eightAmIndex = timify.convertTimeToIndex('0800');
         var startIndex = timify.convertTimeToIndex(lesson.StartTime) - eightAmIndex;
         var endIndex = timify.convertTimeToIndex(lesson.EndTime) - eightAmIndex;
@@ -41,5 +45,49 @@ module.exports = Marionette.LayoutView.extend({
       }
       day.timetable = finalRange;
     });
+    console.log('dayAvailability', dayAvailability);
+  },
+  convertToDayAvailability: function (lessonsList) {
+    var days = timify.getSchoolDays();
+    var dayAvailability = []
+    _.each(days, function (day) {
+      var lessons = _.filter(lessonsList, function (lesson) {
+        return lesson.DayText === day;
+      });
+      lessons = _.sortBy(lessons, function (lesson) {
+        return lesson.StartTime + lesson.EndTime;
+      });
+
+      var timeRange = _.range(timify.convertTimeToIndex('0800'), 
+                              timify.convertTimeToIndex('2400'));
+      var availability = _.object(_.map(timeRange, function (index) {
+        return [timify.convertIndexToTime(index), 'vacant'];
+      }));
+
+      _.each(lessons, function (lesson) {
+        var startIndex = timify.convertTimeToIndex(lesson.StartTime);
+        var endIndex = timify.convertTimeToIndex(lesson.EndTime) - 1;
+        for (var i = startIndex; i <= endIndex; i++) {
+          availability[timify.convertIndexToTime(i)] = 'occupied';
+        }
+      });
+
+      // availability: {
+      //    "0800": "vacant",
+      //    "0830": "vacant",
+      //    "0900": "occupied",
+      //    "0930": "occupied",
+      //    ...
+      //    "2330": "vacant"
+      // }
+
+      dayAvailability.push({
+        day: day,
+        lessons: lessons,
+        availability: availability,
+        shortDay: day.slice(0, 3)
+      });
+    });
+    return dayAvailability;
   }
 });

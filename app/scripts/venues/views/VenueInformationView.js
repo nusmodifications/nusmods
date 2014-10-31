@@ -47,12 +47,18 @@ module.exports = Marionette.LayoutView.extend({
     this.model.set('selectedVenue', selectedVenue);
     this.render();
 
-    var venueTimetableModel = new Backbone.Model({
-      dayAvailability: selectedVenue
+    
+    var lessons = _.reduce(_.pluck(selectedVenue, 'lessons'), function (memo, list) {
+      return memo.concat(list); 
+    }, []);
+
+    var TimetableFlexModel = new Backbone.Model({
+      lessonsList: lessons,
+      mergeMode: false
     });
 
     this.venueTimetableRegion.show(new TimetableFlexView({
-      model: venueTimetableModel
+      model: TimetableFlexModel
     }));
   }
 });
