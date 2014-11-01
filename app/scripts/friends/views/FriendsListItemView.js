@@ -11,13 +11,22 @@ module.exports = Marionette.LayoutView.extend({
   className: 'media nm-friends-list-item',
   template: template,
   events: {
+    'click': 'selectFriend',
     'click .js-nm-friends-delete': 'deleteFriendTimetable',
-    'click': 'toggleSelection'
+    'change .js-nm-friends-select-checkbox': 'toggleFriendSelection'
   },
   onShow: function () {  
     
   },
-  toggleSelection: function () {
+  selectFriend: function () {
+    _.each(this.model.collection.models, function (model) {
+      model.set('selected', false);
+    });
+    this.model.set('selected', true);
+  },
+  toggleFriendSelection: function (e) {
+    e.preventDefault();
+    e.stopPropagation();
     var selected = this.model.get('selected');
     this.model.set('selected', !selected);
   },
@@ -26,6 +35,7 @@ module.exports = Marionette.LayoutView.extend({
     e.stopPropagation();
     var friendsListCollection = this.model.collection;
     friendsListCollection.remove(this.model);
+    friendsListCollection.trigger('change');
     var friendsListData = _.pick(_.pluck(friendsListCollection.models, 'attributes'), 'name', 'queryString', 'selected', 'semester');
     localforage.setItem('timetable:friends', friendsListData);
   }

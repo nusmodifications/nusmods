@@ -929,11 +929,25 @@ colgroup.hover {
   &:hover {
     background-color: #eee;
     transition: background .3s linear;
+    .nm-friends-delete {
+      display: inherit;
+    }
+  }
+  .nm-friends-delete {
+    display: none;
+    float: right;
+  }
+}
+
+.js-nm-friends-deselect {
+  color: #000;
+  cursor: pointer;
+  &:hover {
+    color: #ccc;
   }
 }
 
 .js-nm-friends-add-popover {
-  background-color: #fff;
   color: #000;
   width: 200px;
 }
