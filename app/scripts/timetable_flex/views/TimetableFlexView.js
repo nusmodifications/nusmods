@@ -13,14 +13,9 @@ module.exports = Marionette.LayoutView.extend({
     var that = this;
 
     var lessonsList = this.model.get('lessonsList');
-    if (this.model.get('mergeMode')) {
-      var dayAvailability = this.convertToDayAvailability(lessonsList);
-    } else {
-      var dayAvailability = lessonsList;
-    }
+    var dayAvailability = this.convertToDayAvailability(lessonsList);
 
     this.model.set('dayAvailability', dayAvailability);
-
     _.each(dayAvailability, function (day) {
       var range = _.map(_.range(timify.convertTimeToIndex('0800'), 
                                 timify.convertTimeToIndex('2400')), function () {
