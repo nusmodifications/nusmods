@@ -5,7 +5,7 @@ var Marionette = require('backbone.marionette');
 
 var navigationItem = App.request('addNavigationItem', {
   name: 'Friends',
-  icon: 'users',
+  icon: 'user',
   url: '/friends'
 });
 
