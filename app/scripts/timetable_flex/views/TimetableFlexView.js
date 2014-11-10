@@ -6,6 +6,7 @@ var Marionette = require('backbone.marionette');
 var template = require('../templates/timetable_flex.hbs');
 var Backbone = require('backbone');
 var timify = require('../../common/utils/timify');
+var LessonModel = require('../../common/models/LessonModel');
 
 require('bootstrap/tooltip');
 require('bootstrap/popover');
@@ -58,7 +59,9 @@ module.exports = Marionette.LayoutView.extend({
           range[startIndex] = {
             width: width,
             label: lesson.ModuleCode,
-            class: 'nm-flex-occupied'
+            class: 'nm-flex-occupied',
+            type: LessonModel.typeAbbrev[lesson.LessonType],
+            classNo: lesson.ClassNo
           };
         });
       }

@@ -27,7 +27,9 @@ module.exports = Marionette.LayoutView.extend({
     return;
   },
   onShow: function () {
-    this.showAvailabilityForVenue(this.model.get('selectedVenueName'));
+    if (this.model.get('selectedVenueName')) {
+      this.showAvailabilityForVenue(this.model.get('selectedVenueName'));
+    }
   },
   searchVenue: function () {
     var searchText = $.trim($('.js-nm-venue-input').val().toUpperCase());

@@ -25,12 +25,17 @@
         {{#each this.timetable}}
           <div class="nm-timetable-flex-cell {{this.class}} box-{{this.width}}" style="flex-grow: {{this.width}}">
             {{#if this.label}}
-              <a class="nm-timetable-flex-module-name" href="/modules/{{this.label}}">{{this.label}}</a>
+              <div><a class="nm-timetable-flex-module-name" href="/modules/{{this.label}}">{{this.label}}</a></div>
             {{/if}}
             {{#if this.count}}
               <h4 class="nm-timetable-flex-count" {{#if this.nameList}} data-placement="bottom" title="{{this.nameList}}" {{/if}}>
                 {{this.count}}
               </h4>
+            {{/if}}
+            {{#if this.type}}
+              <div>
+                <span class="nm-timetable-flex-module-lesson-type">{{this.type}} {{#if this.classNo}} [{{this.classNo}}] {{/if}}</span>
+              </div>
             {{/if}}
           </div>
         {{/each}}
