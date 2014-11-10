@@ -1,34 +1,50 @@
 <div class="nm-timetable-flex-container">
   <div class="nm-timetable-flex">
     <div class="nm-timetable-flex-row nm-timetable-timing">
-      <div class="nm-timetable-flex-cell"></div>
+      <div class="nm-timetable-flex-cell nm-timetable-day"></div>
       <div class="nm-timetable-flex-cell">0800</div>
+      <div class="nm-timetable-flex-cell"></div>
       <div class="nm-timetable-flex-cell">0900</div>
+      <div class="nm-timetable-flex-cell"></div>
       <div class="nm-timetable-flex-cell">1000</div>
+      <div class="nm-timetable-flex-cell"></div>
       <div class="nm-timetable-flex-cell">1100</div>
+      <div class="nm-timetable-flex-cell"></div>
       <div class="nm-timetable-flex-cell">1200</div>
+      <div class="nm-timetable-flex-cell"></div>
       <div class="nm-timetable-flex-cell">1300</div>
+      <div class="nm-timetable-flex-cell"></div>
       <div class="nm-timetable-flex-cell">1400</div>
+      <div class="nm-timetable-flex-cell"></div>
       <div class="nm-timetable-flex-cell">1500</div>
+      <div class="nm-timetable-flex-cell"></div>
       <div class="nm-timetable-flex-cell">1600</div>
+      <div class="nm-timetable-flex-cell"></div>
       <div class="nm-timetable-flex-cell">1700</div>
+      <div class="nm-timetable-flex-cell"></div>
       <div class="nm-timetable-flex-cell">1800</div>
+      <div class="nm-timetable-flex-cell"></div>
       <div class="nm-timetable-flex-cell">1900</div>
+      <div class="nm-timetable-flex-cell"></div>
       <div class="nm-timetable-flex-cell">2000</div>
+      <div class="nm-timetable-flex-cell"></div>
       <div class="nm-timetable-flex-cell">2100</div>
+      <div class="nm-timetable-flex-cell"></div>
       <div class="nm-timetable-flex-cell">2200</div>
+      <div class="nm-timetable-flex-cell"></div>
       <div class="nm-timetable-flex-cell">2300</div>
+      <div class="nm-timetable-flex-cell"></div>
     </div>
     {{#each dayAvailability}}
       <div class="nm-timetable-flex-row">
         <div class="nm-timetable-flex-cell nm-timetable-day"><strong>{{this.shortDay}}</strong></div>
         {{#each this.timetable}}
-          <div class="nm-timetable-flex-cell {{this.class}} box-{{this.width}}" style="flex-grow: {{this.width}}">
+          <div class="nm-timetable-flex-cell nm-timetable-flex-cell-lesson {{this.class}} box-{{this.width}} {{#if this.nameList}} js-nm-timetable-overlap-cell {{/if}}" {{#if this.nameList}} data-placement="bottom" title="{{this.nameList}}" {{/if}} style="flex-grow: {{this.width}}">
             {{#if this.label}}
               <div><a class="nm-timetable-flex-module-name" href="/modules/{{this.label}}">{{this.label}}</a></div>
             {{/if}}
             {{#if this.count}}
-              <h4 class="nm-timetable-flex-count" {{#if this.nameList}} data-placement="bottom" title="{{this.nameList}}" {{/if}}>
+              <h4 class="nm-timetable-flex-count">
                 {{this.count}}
               </h4>
             {{/if}}

@@ -79,7 +79,7 @@ module.exports = Marionette.LayoutView.extend({
     });
   },
   onShow: function () {
-    $('.nm-timetable-flex-count').tooltip();
+    $('.js-nm-timetable-overlap-cell').tooltip();
   },
   convertToDayAvailability: function (lessonsList) {
     var days = timify.getSchoolDays();

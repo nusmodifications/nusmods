@@ -17,6 +17,7 @@
         width: 4%;
         .nm-timetable-flex-cell {
           height: 0;
+          left: -7px;
           text-align: right;
         }
       }
@@ -74,16 +75,12 @@
       height: 20px;
       .nm-timetable-flex-cell {
         border: none !important;
-        flex-grow: 2;
-        font-size: 12px;
+        font-size: 10px;
         font-weight: bold;
         height: 100%;
         left: -13px;
         position: relative;
         text-align: left;
-        &:first-child {
-          flex-grow: 1;
-        }
       }
     }
   }
@@ -93,12 +90,20 @@
     flex-grow: 1;
     height: 60px;
     text-align: center;
+    transition-duration: .3s;
+    transition-property: all;
     width: 0;
+    &.nm-timetable-flex-cell-lesson:hover {
+      background-color: #eee;
+    }
     &:last-child {
       border-right: $border-style;
     }
     &.nm-flex-occupied {
       background-color: #eee;
+    }
+    .nm-timetable-flex-count {
+      font-weight: bold;
     }
     .nm-timetable-flex-module-name {
       font-size: 12px;
@@ -132,6 +137,7 @@
     }
     &.nm-timetable-day {
       border: none !important;
+      font-size: 10px;
     }
   }
   .nm-flex-clash-1 {
@@ -160,5 +166,9 @@
 .mode-slate {
   .nm-timetable-flex .nm-timetable-flex-cell.nm-flex-occupied {
     background-color: #1c1c1f;
+  }
+  .nm-timetable-flex-count {
+    color: #000;
+    cursor: pointer;
   }
 }
