@@ -127,9 +127,11 @@ module.exports = Marionette.LayoutView.extend({
       return a.concat(b);
     }, []);
 
+    var isMergeMode = this.friendsSelectedListView.collection.models.length > 1;
+
     var TimetableFlexModel = new Backbone.Model({
       lessonsList: combinedLessons,
-      mergeMode: true
+      mergeMode: isMergeMode
     });
 
     this.timetableRegion.show(new TimetableFlexView({
