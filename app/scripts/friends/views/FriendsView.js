@@ -118,6 +118,7 @@ module.exports = Marionette.LayoutView.extend({
 
     var combinedLessons = _.map(this.friendsSelectedListView.collection.models, function (person) {
       return _.map(person.get('moduleInformation').timetable.models, function (lesson) {
+        lesson.attributes.name = person.get('name');
         return lesson.attributes;
       });
     });

@@ -7,6 +7,9 @@ var template = require('../templates/timetable_flex.hbs');
 var Backbone = require('backbone');
 var timify = require('../../common/utils/timify');
 
+require('bootstrap/tooltip');
+require('bootstrap/popover');
+
 module.exports = Marionette.LayoutView.extend({
   template: template,
   initialize: function () {
@@ -37,9 +40,11 @@ module.exports = Marionette.LayoutView.extend({
             var overlap = range[i].count;
             if (!overlap) {
               overlap = 1;
+              range[i].names = {};
             } else {
               overlap += 1;
             }
+            range[i].names[lesson.name] = true;
             range[i].count = overlap;
             range[i].class = 'nm-flex-clash-' + overlap;
           }
@@ -63,9 +68,15 @@ module.exports = Marionette.LayoutView.extend({
       for (var i = 0; i < range.length; i += step) {
         step = range[i].width;
         finalRange.push(range[i]);
+        if (that.model.get('mergeMode')) {
+          range[i].nameList = _.keys(range[i].names).join(', ');
+        }
       }
       day.timetable = finalRange;
     });
+  },
+  onShow: function () {
+    $('.nm-timetable-flex-count').tooltip();
   },
   convertToDayAvailability: function (lessonsList) {
     var days = timify.getSchoolDays();

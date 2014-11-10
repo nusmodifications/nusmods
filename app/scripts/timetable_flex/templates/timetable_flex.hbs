@@ -28,7 +28,9 @@
               <a class="nm-timetable-flex-module-name" href="/modules/{{this.label}}">{{this.label}}</a>
             {{/if}}
             {{#if this.count}}
-              <h4>{{this.count}}</h4>
+              <h4 class="nm-timetable-flex-count" {{#if this.nameList}} data-placement="bottom" title="{{this.nameList}}" {{/if}}>
+                {{this.count}}
+              </h4>
             {{/if}}
           </div>
         {{/each}}
