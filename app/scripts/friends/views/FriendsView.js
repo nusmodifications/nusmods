@@ -14,6 +14,7 @@ var TimetableFlexView = require('../../timetable_flex/views/TimetableFlexView');
 var FriendsListView = require('./FriendsListView');
 var FriendsSelectedListView = require('./FriendsSelectedListView');
 var FriendModel = require('../models/FriendModel');
+var FriendsNotGoingSchoolView = require('./FriendsNotGoingSchoolView');
 var config = require('../../common/config');
 
 require('bootstrap/tooltip');
@@ -26,6 +27,7 @@ module.exports = Marionette.LayoutView.extend({
   regions: {
     friendsListRegion: '.nm-friends-list',
     friendsSelectedListRegion: '.nm-friends-selected-list',
+    friendsNotGoingSchoolRegion: '.nm-friends-not-going-school',
     timetableRegion: '.nm-friends-timetable'
   },
   ui: {
@@ -116,12 +118,53 @@ module.exports = Marionette.LayoutView.extend({
   },
   updateDisplayedTimetable: function () {
 
+    var people = _.map(this.friendsSelectedListView.collection.models, function (person) {
+      return person.get('name');
+    });
+
+    var daysNotGoingToSchool = {};
+    _.each(timify.getSchoolDays(), function (day) {
+      daysNotGoingToSchool[day] = people;
+    });
+
     var combinedLessons = _.map(this.friendsSelectedListView.collection.models, function (person) {
       return _.map(person.get('moduleInformation').timetable.models, function (lesson) {
-        lesson.attributes.name = person.get('name');
+        var personName = person.get('name');
+        lesson.attributes.name = personName;
+        daysNotGoingToSchool[lesson.attributes.DayText] = _.without(daysNotGoingToSchool[lesson.attributes.DayText], personName);
         return lesson.attributes;
       });
     });
+
+    var daysNotGoingToSchoolList = _.map(timify.getSchoolDays(), function (day) {
+      return {
+        day: day,
+        peopleNotGoingList: daysNotGoingToSchool[day],
+        peopleNotGoing: daysNotGoingToSchool[day].join(', ')
+      };
+    });
+
+    var haveSchoolEveryday = true;
+    _.each(timify.getWeekDays(), function (day) {
+      if (daysNotGoingToSchool[day].length > 0) {
+        haveSchoolEveryday = false;
+      }
+    });
+
+    if (daysNotGoingToSchool['Saturday'] !== people.length) {
+      // By default, hide Saturday if everyone not going on Saturday
+      daysNotGoingToSchoolList.splice(5, 1);
+    }
+
+    var notGoingSchoolModel = new Backbone.Model({
+      daysNotGoingToSchool: daysNotGoingToSchoolList,
+      haveSchoolEveryday: haveSchoolEveryday
+    });
+
+    
+    this.friendsNotGoingSchoolRegion.show(new FriendsNotGoingSchoolView({
+      model: notGoingSchoolModel,
+    }));
 
     combinedLessons = _.reduce(combinedLessons, function (a, b) {
       return a.concat(b);
@@ -129,13 +172,13 @@ module.exports = Marionette.LayoutView.extend({
 
     var isMergeMode = this.friendsSelectedListView.collection.models.length > 1;
 
-    var TimetableFlexModel = new Backbone.Model({
+    var timetableFlexModel = new Backbone.Model({
       lessonsList: combinedLessons,
       mergeMode: isMergeMode
     });
 
     this.timetableRegion.show(new TimetableFlexView({
-      model: TimetableFlexModel
+      model: timetableFlexModel
     }));
   }
 });

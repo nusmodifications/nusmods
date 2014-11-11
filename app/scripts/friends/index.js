@@ -1,6 +1,7 @@
 'use strict';
 
 var App = require('../app');
+var Backbone = require('Backbone');
 var Marionette = require('backbone.marionette');
 
 var navigationItem = App.request('addNavigationItem', {
@@ -13,7 +14,10 @@ var controller = {
   showFriends: function () {
     var FriendsView = require('./views/FriendsView');
     navigationItem.select();
-    App.mainRegion.show(new FriendsView());
+    var model = new Backbone.Model();
+    App.mainRegion.show(new FriendsView({
+      model: model
+    }));
   }
 };
 

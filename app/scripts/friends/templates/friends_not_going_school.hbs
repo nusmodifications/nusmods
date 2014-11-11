@@ -1,0 +1,10 @@
+{{#unless haveSchoolEveryday}}
+  <p>Note that the following people do have not lessons on the following days:</p>
+  <ul>
+    {{#each daysNotGoingToSchool}}
+      {{#if peopleNotGoing}}
+        <li>{{day}}: {{peopleNotGoing}}</li>
+      {{/if}}
+    {{/each}}
+  </ul>
+{{/unless}}

@@ -21,7 +21,7 @@ module.exports = {
     var daysArray = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     return daysArray.slice(0);  // Make a copy
   },
-  getWeekdays: function (index) {
+  getWeekDays: function (index) {
     var daysArray = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
     return daysArray.slice(0);  // Make a copy
   }
