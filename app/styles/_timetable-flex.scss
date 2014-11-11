@@ -7,6 +7,11 @@
   margin-bottom: 30px;
   @media (max-width: $screen-lg-min) {
     flex-direction: row;
+    &.nm-timetable-flex-five-day {
+      .nm-timetable-flex-row {
+        width: 19.2%;
+      }
+    }
     .nm-timetable-flex-row {
       flex-direction: column;
       float: left;

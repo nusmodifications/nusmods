@@ -20,6 +20,7 @@ module.exports = Marionette.LayoutView.extend({
     var dayAvailability = this.convertToDayAvailability(lessonsList);
 
     this.model.set('dayAvailability', dayAvailability);
+    this.model.set('fiveDayLayout', false);
     _.each(dayAvailability, function (day) {
       var range = _.map(_.range(timify.convertTimeToIndex('0800'), 
                                 timify.convertTimeToIndex('2400')), function () {
@@ -76,7 +77,12 @@ module.exports = Marionette.LayoutView.extend({
         }
       }
       day.timetable = finalRange;
-    });
+    });  
+    if (dayAvailability[5].lessons.length === 0) {
+      // Remove Saturday if empty
+      dayAvailability.splice(5, 1);
+      this.model.set('fiveDayLayout', true);
+    }
   },
   onShow: function () {
     $('.js-nm-timetable-overlap-cell').tooltip();
