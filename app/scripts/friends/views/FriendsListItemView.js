@@ -33,10 +33,13 @@ module.exports = Marionette.LayoutView.extend({
   deleteFriendTimetable: function (e) {
     e.preventDefault();
     e.stopPropagation();
-    var friendsListCollection = this.model.collection;
-    friendsListCollection.remove(this.model);
-    friendsListCollection.trigger('change');
-    var friendsListData = _.pick(_.pluck(friendsListCollection.models, 'attributes'), 'name', 'queryString', 'selected', 'semester');
-    localforage.setItem('timetable:friends', friendsListData);
+    var choice = confirm('Do you really want to delete ' + this.model.get('name'));
+    if (choice) {
+      var friendsListCollection = this.model.collection;
+      friendsListCollection.remove(this.model);
+      friendsListCollection.trigger('change');
+      var friendsListData = _.pick(_.pluck(friendsListCollection.models, 'attributes'), 'name', 'queryString', 'selected', 'semester');
+      localforage.setItem('timetable:friends', friendsListData);
+    }
   }
 });

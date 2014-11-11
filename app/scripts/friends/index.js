@@ -13,10 +13,7 @@ var controller = {
   showFriends: function () {
     var FriendsView = require('./views/FriendsView');
     navigationItem.select();
-    var model = new Backbone.Model();
-    App.mainRegion.show(new FriendsView({
-      model: model
-    }));
+    App.mainRegion.show(new FriendsView());
   }
 };
 
