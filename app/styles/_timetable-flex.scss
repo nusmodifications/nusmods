@@ -99,7 +99,8 @@
     transition-property: all;
     width: 0;
     &.nm-timetable-flex-cell-lesson:hover {
-      background-color: #eee;
+      box-shadow: 0 0 10px #999;
+      z-index: 100;
     }
     &:last-child {
       border-right: $border-style;

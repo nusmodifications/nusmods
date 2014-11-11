@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-md-12">
 
-    <h1 class="nm-page-heading">Venues</h1>
+    <h1>Venues</h1>
     <hr>
 
     <!-- Nav tabs -->
@@ -11,57 +11,65 @@
     </ul>
     
     <h2>Venue Lookup</h2>
-    <p>Retrieve a venue's weekly occupancy timetable.</p>
     <hr>
-
     <div class="row">
       <div class="col-md-6">
-        <div class="form-group">
-          <label class="control-label" for="venue">Search Venue:</label>
-          <input type="text" class="form-control js-nm-venue-input" value="{{this.selectedVenueName}}" placeholder="e.g. COM1-0114">
+        <div class="alert alert-warning">
+          <div class="form-group">
+            <p>Retrieve a venue's weekly occupancy timetable and information.</p>
+            <label class="control-label" for="venue">Search Venue:</label>
+            <input type="text" class="form-control js-nm-venue-input" value="{{this.selectedVenueName}}" placeholder="e.g. COM1-0114">
+          </div>
+          <button type="submit" class="js-nm-venue-search btn btn-primary">Search</button>
         </div>
-        <button type="submit" class="js-nm-venue-search btn btn-primary">Search</button>
       </div>
     </div>
+    <hr>
 
     {{#if selectedVenue}}
 
-      <h3>Venue Information for "{{this.selectedVenueName}}"</h3>
-      <hr>
-
-      <div class="nm-venue-information-timetable">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title nm-section-title">Venue Timetable for {{this.selectedVenueName}}</h3>
+        </div>
+        <div class="panel-body">
+          <div class="nm-venue-information-timetable"></div>
+        </div>
       </div>
-
-      <hr>
       
-      <div>
-        {{#each selectedVenue}}
-          <div class="row">
-            <div class="col-sm-2">
-              <strong>{{this.day}}</strong>
-            </div>
-            <div class="col-sm-10">
-              <div class="row">
-                {{#if this.lessons}}
-                  {{#each this.lessons}}
-                    <div class="col-xs-3">
-                      <dl>
-                        <dd><strong>{{this.StartTime}} - {{this.EndTime}}</strong></dd>
-                        <dd><a href="/modules/{{this.ModuleCode}}">{{this.ModuleCode}}</a></dd>
-                        <dd>{{this.LessonType}} [{{this.ClassNo}}]</dd>
-                        <dd>{{this.WeekText}}</dd>
-                      </dl>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title nm-section-title">Venue Information for {{this.selectedVenueName}}</h3>
+        </div>
+        <div class="panel-body">
+          {{#each selectedVenue}}
+            <div class="row">
+              <div class="col-sm-2">
+                <strong>{{this.day}}</strong>
+              </div>
+              <div class="col-sm-10">
+                <div class="row">
+                  {{#if this.lessons}}
+                    {{#each this.lessons}}
+                      <div class="col-xs-3">
+                        <dl>
+                          <dd><strong>{{this.StartTime}} - {{this.EndTime}}</strong></dd>
+                          <dd><a href="/modules/{{this.ModuleCode}}">{{this.ModuleCode}}</a></dd>
+                          <dd>{{this.LessonType}} [{{this.ClassNo}}]</dd>
+                          <dd>{{this.WeekText}}</dd>
+                        </dl>
+                      </div>
+                    {{/each}}
+                  {{else}}
+                    <div class="col-md-12">
+                      <p>No lessons</p>
                     </div>
-                  {{/each}}
-                {{else}}
-                  <div class="col-md-12">
-                    <p>No lessons</p>
-                  </div>
-                {{/if}}
+                  {{/if}}
+                </div>
               </div>
             </div>
-          </div>
-        {{/each}}
+          {{/each}}
+        </div>
       </div>
     {{else}}
       {{#if this.selectedVenueName}}
