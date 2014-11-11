@@ -11,7 +11,7 @@
     </ul>
 
     <h2>Venue Availability</h2>
-    <p>Search for available venues by specifying a day and date range.</p>
+    <p>Search for available venues by specifying a day and time range.</p>
     <hr>
 
     <div class="row">
@@ -72,7 +72,7 @@
           <select type="text" class="form-control js-nm-venue-time-end-input">
             <option value="0800">0800</option>
             <option value="0830">0830</option>
-            <option value="0900">0900</option>
+            <option value="0900" selected>0900</option>
             <option value="0930">0930</option>
             <option value="1000">1000</option>
             <option value="1030">1030</option>
@@ -114,11 +114,24 @@
     <hr>
 
     <div>
-      <ul>
-        {{#each availableVenues}}
-          <li><a href="/venues/{{this}}">{{this}}</a></li>
-        {{/each}}
-      </ul>
+      {{#if availableVenues}}
+        <p>The following venues do not have any usual classes on <strong>{{venueDay}}</strong> from <strong>{{venueStartTime}}</strong> to <strong>{{venueEndTime}}</strong>:</p>
+      {{/if}}
+      {{#each availableVenues}}
+        <div class="row">
+          <div class="col-md-1">
+            <strong>{{this.letter}}</strong>
+          </div>
+          <div class="col-md-11">
+            {{#each this.venues}}
+              <div class="nm-venue-availability-items">
+                <a href="/venues/{{this}}">{{this}}</a>
+              </div>
+            {{/each}}
+          </div>
+        </div>
+        <hr>
+      {{/each}}
     </div>
   </div>
 </div>

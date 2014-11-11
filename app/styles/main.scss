@@ -654,6 +654,13 @@ colgroup.hover {
   }
 }
 
+// Venues
+
+.nm-venue-availability-items {
+  display: inline-block;
+  width: 100px;
+}
+
 // For ZeroClipboard CSS effects
 // https://github.com/jonrohan/ZeroClipboard/blob/master/docs/instructions.md#css-effects
 #copy-to-clipboard.zeroclipboard-is-active {

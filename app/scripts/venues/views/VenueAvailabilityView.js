@@ -32,7 +32,7 @@ module.exports = Marionette.LayoutView.extend({
     var venuesList = this.model.get('venuesList');
     var venues = this.model.get('venues');
 
-    var dayIndex = timify.getWeekdays().indexOf(day);
+    var dayIndex = timify.getWeekDays().indexOf(day);
     var startIndex = timify.convertTimeToIndex(startTime);
     var endIndex = timify.convertTimeToIndex(endTime) - 1;
 
@@ -49,7 +49,17 @@ module.exports = Marionette.LayoutView.extend({
       }
       return true;
     });
-    this.model.set('availableVenues', availableVenues);
+
+    var groupedVenues = _.groupBy(availableVenues, function (venue) {
+      return venue.charAt(0).toUpperCase();
+    });
+    var groupedVenuesList = _.map(_.pairs(groupedVenues), function (pair) {
+      return {
+        letter: pair[0],
+        venues: pair[1]
+      };
+    });
+    this.model.set('availableVenues', groupedVenuesList);
     this.render();
   },
 });
