@@ -1,7 +1,6 @@
 'use strict';
 
 var App = require('../app');
-var Backbone = require('Backbone');
 var Marionette = require('backbone.marionette');
 
 var navigationItem = App.request('addNavigationItem', {
