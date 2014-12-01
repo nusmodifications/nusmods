@@ -41,6 +41,12 @@ module.exports = Marionette.LayoutView.extend({
     this.mods = options.mods;
   },
 
+  events: {
+    'click .js-reset-filters': function () {
+      this.facetsView.resetFilters();
+    }
+  },
+
   onShow: function () {
     $('.arrow-down, .arrow-right').click(function() {
       $(this)
