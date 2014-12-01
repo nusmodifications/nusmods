@@ -67,7 +67,12 @@ module.exports = Marionette.CollectionView.extend({
     $('.nm-caret').removeClass('nm-caret-down');
 
     _.each(this.collection.models, function (item) {
-      item.get('filters').selectNone();
+      var itemFilters = item.get('filters').models;
+      _.each(itemFilters, function (filter) {
+        if (filter.get('selected')) {
+          filter.deselect();
+        }
+      });
     });
     this.persistFilters('');
     this.persistFacets('');
