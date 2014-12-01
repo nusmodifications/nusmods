@@ -73,7 +73,7 @@ The development server serves the files generated in `api/app/api` under
 
 ## Optional Dependencies
 
-- [PHP](http://www.php.net) for export and URL shortening scripts.
+- [PHP](http://www.php.net) for export, URL shortening and redirect scripts.
 - [YOURLS](http://yourls.org/) for URL shortening.
 - [wkhtmltopdf and wkhtmltoimage](http://code.google.com/p/wkhtmltopdf/) for pdf
   and image export. Using the static binaries is suggested, as compiling with
