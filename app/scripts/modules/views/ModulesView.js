@@ -38,6 +38,12 @@ module.exports = Marionette.LayoutView.extend({
     this.mods = options.mods;
   },
 
+  events: {
+    'click .js-reset-filters': function () {
+      this.facetsView.resetFilters();
+    }
+  },
+
   onShow: function () {
     $('.arrow-down, .arrow-right').click(function() {
       $(this)
@@ -177,10 +183,12 @@ module.exports = Marionette.LayoutView.extend({
         });
       }
 
-      that.sidebarRegion.show(new FacetsView({
+      that.facetsView = new FacetsView({
         collection: facets,
         threshold: 600
-      }));
+      });
+
+      that.sidebarRegion.show(that.facetsView);
 
       that.modulesRegion.show(new ModulesListingView({collection: filteredModules}));
     });

@@ -56,8 +56,19 @@ module.exports = Marionette.CollectionView.extend({
           selectedFilters[facet.get('label')] = filters;
         }
       });
-      localforage.setItem(moduleFinderNamespace + 'filters', selectedFilters);
+      this.persistFilters(selectedFilters);
     }
+  },
+
+  resetFilters: function () {
+    $('.nm-module-filter').removeClass('in');
+    $('.nm-caret').removeClass('nm-caret-down');
+
+    _.each(this.collection.models, function (item) {
+      item.get('filters').selectNone();
+    });
+    this.persistFilters('');
+    this.persistFacets('');
   },
 
   onFilter: function(options) {
@@ -65,6 +76,14 @@ module.exports = Marionette.CollectionView.extend({
     var filteredModel = filteredCollection.findWhere({label: options.value});
     filteredModel.model.collection.selectNone();
     filteredModel.model.toggleSelected();
+  },
+
+  persistFilters: function (value) {
+    localforage.setItem('moduleFinder:filters', value);
+  },
+
+  persistFacets: function (value) {
+    localforage.setItem('moduleFinder:facets', value);
   },
 
   initialize: function (options) {
