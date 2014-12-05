@@ -1,7 +1,7 @@
 {
   "academicYear": "2014/2015",
   "baseUrl": "http://nusmods.com/api/",
-  "semester": "1",
+  "semester": "2",
   "corsUrl": "https://myaces.nus.edu.sg/cors/jsp/report/ModuleDetailedInfo.jsp?acad_y=2014/2015&sem_c=1&mod_c=",
   "ivleUrl": "http://ivle.nus.edu.sg/lms/public/list_course_public.aspx?code=<ModuleCode>",
   "disqusShortname": "nusmods-prod",
