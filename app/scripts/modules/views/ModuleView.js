@@ -255,11 +255,13 @@ module.exports = Marionette.LayoutView.extend({
     /* jshint camelcase: false */
     var module = this.model.get('module');
 
-    var lockedModules = {'name': module.ModmavenTree.name, 'children': []};
-    for (var i = 0; i < module.LockedModules.length; i++) {
-      lockedModules.children.push({'name': module.LockedModules[i], 'children': []});
+    if (module.ModmavenTree) {
+      var lockedModules = {'name': module.ModmavenTree.name, 'children': []};
+      for (var i = 0; i < module.LockedModules.length; i++) {
+        lockedModules.children.push({'name': module.LockedModules[i], 'children': []});
+      }
+      drawTree('#tree', module.ModmavenTree, lockedModules, module.ModuleCode);
     }
-    drawTree('#tree', module.ModmavenTree, lockedModules, module.ModuleCode);
 
     this.$('.nm-help').qtip({
       position: {
