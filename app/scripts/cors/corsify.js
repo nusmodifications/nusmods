@@ -1,6 +1,6 @@
 'use strict';
 
-var corsSchedule = require('./corsSchedule1415Sem1.json');
+var corsSchedule = require('./corsSchedule1415Sem2.json');
 
 var DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
@@ -25,6 +25,7 @@ function formatTime(date) {
 
 module.exports = {
   determineRound: function (nowDate) {
+    // TODO: Write a CORS Marionette view to separate HTML from CORS Logic
     var start = 'Current CORS Round: <strong>';
     for (var i = 0; i < corsSchedule.length; i++) {
       var round = corsSchedule[i].round;
