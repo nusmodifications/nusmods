@@ -929,7 +929,7 @@ colgroup.hover {
   position: fixed;
   left: $offset;
   width: 275px;
-  z-index: 100;
+  z-index: 1000;
   &.shown {
     opacity: 1;
   }
