@@ -10,7 +10,7 @@ var BookmarksView = require('./BookmarksView');
 var _ = require('underscore');
 var analytics = require('../../analytics');
 var attachFastClick = require('fastclick');
-// var corsify = require('../../cors/corsify');
+var corsify = require('../../cors/corsify');
 var themePicker = require('../themes/themePicker');
 require('bootstrap/alert');
 require('qTip2');
@@ -67,12 +67,10 @@ module.exports = Backbone.View.extend({
       $('#correct-as-at').text((new Date(lastModified)).toString().slice(0, 21));
     });
 
-    // function activateCORS() {
-    //   $('.cors-round-text').html(corsify.determineRound(Date.now()));
-    //   $('.cors-round-container').addClass('animated bounceInUp shown').alert();
-    // }
-
-    // activateCORS();
+    (function () {
+      $('.cors-round-text').html(corsify.determineRound(Date.now()));
+      $('.cors-round-container').addClass('animated bounceInUp shown').alert();
+    })();
 
     App.selectRegion.show(new SelectView());
 
