@@ -30,5 +30,12 @@
     "moduleFinder": "module:finder",
     "bookmarkedModules": "module:bookmarks:bookmarkedModules",
     "user": "user"
+  },
+  "bareNusessities": {
+    "facebookId": "bareNUS"
+  },
+  "facebook": {
+    "appID": "",
+    "appSecret": ""
   }
 }
