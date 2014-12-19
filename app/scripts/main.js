@@ -21,15 +21,14 @@ var $body = $('body');
 Promise.all(_.keys(config.defaultPreferences).map(function (property) {
   return localforage.getItem(property).then(function (value) {
     // Migration from old preferences to new namespaced preferencs.
-    if (!value) {
-      value = config.defaultPreferences[property];
-    }
+    value = value ? value : config.defaultPreferences[property];
     localforage.setItem(preferencesNamespace + property, value);
   });
 }));
 
 Promise.all(['theme', 'mode'].map(function (property) {
   return localforage.getItem(preferencesNamespace + property).then(function (value) {
+    value = value ? value : config.defaultPreferences[property];
     $body.addClass(property + '-' + value);
     $body.attr('data-' + property, value);
     if (property === 'mode' && value !== 'default') {
