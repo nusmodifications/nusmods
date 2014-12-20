@@ -2,7 +2,7 @@
 
 var Backbone = require('backbone');
 var _ = require('underscore');
-var config = require('../../config.json');
+var config = require('../../common/config');
 var modulify = require('../utils/modulify');
 var padTwo = require('../utils/padTwo');
 
