@@ -3,7 +3,7 @@ require_once 'vendor/facebook/php-sdk-v4/autoload.php';
 use Facebook\FacebookSession;
 use Facebook\FacebookRequest;
 use Facebook\GraphPage;
-$config = file_get_contents('./scripts/config.json');
+$config = file_get_contents('./config.json');
 $configData = json_decode($config, true);
 
 define('APP_ID', 'bareNUS');
