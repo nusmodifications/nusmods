@@ -6,7 +6,9 @@ var $ = require('jquery');
 
 module.exports = Marionette.LayoutView.extend({
   initialize: function () {
-    
+    $.get('http://0.0.0.0/bare/barenusessities.php', function (data) {
+      console.log(data);
+    });
   },
   template: template,
   onShow: function () {
