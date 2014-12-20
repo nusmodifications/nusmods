@@ -336,6 +336,8 @@ module.exports = function (grunt) {
                         'styles/*.{gif,png}',
                         'styles/fonts/{,*/}*.*',
                         'vendor/knplabs/knp-snappy/src/**/*.php',
+                        'vendor/facebook/php-sdk-v4/autoload.php',
+                        'vendor/facebook/php-sdk-v4/src/Facebook/**/*.php',
                         'bower_components/font-awesome/fonts/*.*'
                     ]
                 }, {
