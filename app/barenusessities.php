@@ -16,7 +16,7 @@ $fbAppId = $configData['facebook']['appID'];
 $fbAppSecret = $configData['facebook']['appSecret'];
 $fbAccessToken = $configData['facebook']['accessToken'];
 FacebookSession::setDefaultApplication($fbAppId, $fbAppSecret);
-$session = new FacebookSession($fbAccessToken);
+$session = FacebookSession::newAppSession();
 
 
 $path = '/' . $bareNusNote . 

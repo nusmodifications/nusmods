@@ -39,7 +39,6 @@
   },
   "facebook": {
     "appID": "",
-    "appSecret": "",
-    "accessToken": ""
+    "appSecret": ""
   }
 }
