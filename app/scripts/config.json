@@ -38,8 +38,8 @@
     "limit": "10"
   },
   "facebook": {
-    "appID": "1517936148484632",
-    "appSecret": "523bed14ea4f3283dd2398f91774f7f4",
-    "accessToken": "1517936148484632|iklnPJYsdmZ4lkNviqgBxdprqoY"
+    "appID": "",
+    "appSecret": "",
+    "accessToken": ""
   }
 }
