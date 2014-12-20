@@ -1,7 +1,7 @@
 'use strict';
 
 var Marionette = require('backbone.marionette');
-var template = require('../templates/nusessities.hbs');
+var template = require('../templates/barenusessities.hbs');
 var $ = require('jquery');
 
 module.exports = Marionette.LayoutView.extend({

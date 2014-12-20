@@ -36,7 +36,8 @@ try {
   $data['paging']->next = transformUrl($data['paging']->next);
 
   header('Content-type: application/json');
-  echo json_encode($data, JSON_PRETTY_PRINT);
+  header('Access-Control-Allow-Origin: *');
+  echo json_encode($data);
 } catch (FacebookRequestException $e) {
   // The Graph API returned an error
 } catch (\Exception $e) {

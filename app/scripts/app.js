@@ -122,7 +122,7 @@ App.on('start', function () {
   require('./modules');
   require('./timetable');
   // require('ivle');
-  require('./nusessities');
+  require('./barenusessities');
   require('./preferences');
 
   // footer modules
