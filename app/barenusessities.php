@@ -6,24 +6,21 @@ use Facebook\GraphPage;
 $config = file_get_contents('./scripts/config.json');
 $configData = json_decode($config, true);
 
-$bareNusNote = $configData['bareNusessities']['noteName'];
-$bareNusEdge = $configData['bareNusessities']['edgeName'];
-$bareNusFields = $configData['bareNusessities']['fields'];
-$bareNusLimit = isset($_GET['limit']) ? $_GET['limit'] 
-				: $configData['bareNusessities']['limit'];
+define('APP_ID', 'bareNUS');
+define('EDGE', 'posts');
+define('FIELDS', 'comments{comments{comments},message,id,like_count,
+  comment_count,parent,created_time,from},description,full_picture,
+  message,width,type,caption');
+define('LIMIT', 10);
+
+$limit = isset($_GET['limit']) ? $_GET['limit'] : LIMIT;
 
 $fbAppId = $configData['facebook']['appID'];
 $fbAppSecret = $configData['facebook']['appSecret'];
-$fbAccessToken = $configData['facebook']['accessToken'];
 FacebookSession::setDefaultApplication($fbAppId, $fbAppSecret);
-$session = new FacebookSession($fbAccessToken);
+$session = FacebookSession::newAppSession();
 
-
-$path = '/' . $bareNusNote . 
-    	'/' . $bareNusEdge . 
-    	'?fields=' . $bareNusFields . 
-    	'&limit=' . $bareNusLimit;
-
+$path = '/' . APP_ID . '/' . EDGE . '?fields=' . FIELDS . '&limit=' . $limit;
 if (isset($_GET['since'])) {
 	$path .= '&since=' . $_GET['since'];
 } elseif (isset($_GET['until'])) {
@@ -45,7 +42,6 @@ try {
 } catch (\Exception $e) {
   // Some other error occurred
 }
-
 
 /**
  * A function to convert the fb paging url to nusmods url and hide token

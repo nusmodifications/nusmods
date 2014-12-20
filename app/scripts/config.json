@@ -31,15 +31,8 @@
     "bookmarkedModules": "module:bookmarks:bookmarkedModules",
     "user": "user"
   },
-  "bareNusessities": {
-    "noteName": "328441777292205",
-    "edgeName": "posts", 
-    "fields": "comments{comments{comments},message,id,like_count,comment_count,parent,created_time,from},description,full_picture,message,width,type,caption",
-    "limit": "10"
-  },
   "facebook": {
     "appID": "",
     "appSecret": "",
-    "accessToken": ""
   }
 }
