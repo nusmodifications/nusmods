@@ -1,5 +1,4 @@
 <?php
-
 require_once 'vendor/facebook/php-sdk-v4/autoload.php';
 use Facebook\FacebookSession;
 use Facebook\FacebookRequest;
