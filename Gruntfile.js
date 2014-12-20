@@ -329,6 +329,7 @@ module.exports = function (grunt) {
                         '*.{config,php}',
                         '*.{ico,png,txt}',
                         '.htaccess',
+                        'config.json',
                         'images/{,*/}*.webp',
                         '{,*/}*.html',
                         'scripts/disqus-count.js',
