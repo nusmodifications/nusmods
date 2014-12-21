@@ -11,9 +11,9 @@ var navigationItem = App.request('addNavigationItem', {
 
 var controller = {
   showNusessities: function () {
-    var NusessitiesView = require('./views/NusessitiesView');
+    var BareNusessitiesView = require('./views/BareNusessitiesView');
     navigationItem.select();
-    App.mainRegion.show(new NusessitiesView());
+    App.mainRegion.show(new BareNusessitiesView());
   }
 };
 
