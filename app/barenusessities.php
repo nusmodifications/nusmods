@@ -52,6 +52,7 @@ function transformUrl($url) {
 	parse_str(parse_url($url, PHP_URL_QUERY), $query);
 	$allowed = array('limit', 'since', 'until');
 	// use array_flip + array_intersect_key to filter by key
-	$extractedQuery = http_build_query(array_intersect_key($query, array_flip($allowed)));
-	return $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'] . '?' . $extractedQuery;
+	$extractedQuery = http_build_query(array_intersect_key($query, array_flip($allowed))); 
+	return (isset($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . 
+          $_SERVER['PHP_SELF'] . '?' . $extractedQuery;
 }
