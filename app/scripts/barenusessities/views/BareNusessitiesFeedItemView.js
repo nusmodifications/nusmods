@@ -5,7 +5,8 @@ var Marionette = require('backbone.marionette');
 var template = require('../templates/barenusessities_feed_item.hbs');
 
 module.exports = Marionette.ItemView.extend({
-  tagName: 'li',
+  tagName: 'div',
+  className: 'nm-bn-post col-md-12',
   template: template,
   events: {
   }

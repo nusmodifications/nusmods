@@ -1,4 +1,34 @@
-<li>
-  <img class="img-responsive" src="{{full_picture}}">
-  <p>{{message}}</p>
-</li>
+<div class="row">
+  <div class="col-md-1">
+    {{created_time}}
+  </div>
+  <div class="col-md-7">
+    <div class="nm-bn-post-content">
+      {{#if object_id}}
+        <img class="img-responsive" src="https://graph.facebook.com/{{object_id}}/picture">
+      {{/if}}
+      {{#if message }}
+        <div class="nm-bn-post-caption">
+          <p>{{{message}}}</p>
+        </div>
+      {{/if}}
+    </div>
+  </div>
+  <div class="col-md-4">
+    {{#if comments}}
+      {{#each comments.data}}
+        <div class="media">
+          <a class="media-left img-rounded" target="_blank" href="https://www.facebook.com/{{from.id}}">
+            <img src="https://graph.facebook.com/{{from.id}}/picture?type=square" alt="{{from.name}} Thumbnail">
+          </a>
+          <div class="media-body">
+            <h5 class="media-heading">
+              <a target="_blank" href="https://www.facebook.com/{{from.id}}">{{from.name}}</a>
+            </h5>
+            <p>{{{message}}}</p>
+          </div>
+        </div>
+      {{/each}}
+    {{/if}}
+  </div>
+</div>

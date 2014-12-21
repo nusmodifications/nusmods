@@ -42,13 +42,13 @@ $navmenu-width: 200px;
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/labels";
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/badges";
 //@import "bootstrap-sass-official/assets/stylesheets/bootstrap/jumbotron";
-//@import "bootstrap-sass-official/assets/stylesheets/bootstrap/thumbnails";
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap/thumbnails";
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/alerts";
 //@import "bootstrap-sass-official/assets/stylesheets/bootstrap/progress-bars";
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/media";
 //@import "bootstrap-sass-official/assets/stylesheets/bootstrap/list-group";
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/panels";
-//@import "bootstrap-sass-official/assets/stylesheets/bootstrap/responsive-embed";
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap/responsive-embed";
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/wells";
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/close";
 
@@ -1081,3 +1081,5 @@ colgroup.hover {
     }
   }
 }
+
+@import "barenus";

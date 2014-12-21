@@ -6,13 +6,13 @@ var BareNusessitiesFeedItemView = require('./BareNusessitiesFeedItemView');
 var template = require('../templates/barenusessities_feed.hbs');
 
 var EmptyView = Marionette.ItemView.extend({
-  template: _.template('<p>No posts to show.</p>')
+  template: _.template('<div class="col-md-12">Loading...<br></div>')
 });
 
 module.exports = Marionette.CompositeView.extend({
   className: 'nm-bn-feed',
   childView: BareNusessitiesFeedItemView,
-  childViewContainer: 'ul',
+  childViewContainer: 'div',
   emptyView: EmptyView,
   template: template
 });

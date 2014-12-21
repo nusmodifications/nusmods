@@ -5,6 +5,7 @@ var Marionette = require('backbone.marionette');
 var template = require('../templates/barenusessities.hbs');
 var $ = require('jquery');
 var BareNusessitiesFeedView = require('./BareNusessitiesFeedView');
+var _ = require('underscore');
 
 module.exports = Marionette.LayoutView.extend({
   initialize: function () {
@@ -28,7 +29,15 @@ module.exports = Marionette.LayoutView.extend({
     var that = this;
     $.get(that.model.get('feedUrl'), function (data) {
       console.log(data);
-      that.feedItemsCollection.add(data.data);
+      var feedData = data.data;
+      _.each(feedData, function (item) {
+        if (item.message) {
+          item.message = item.message.replace(/\n/g, '<br>\n');
+        }
+      });
+      that.feedItemsCollection.add(_.filter(feedData, function (item) {
+        return !!item.object_id;
+      }));
       if (data.paging.next) {
         that.model.set('feedUrl', data.paging.next);
       } else {
