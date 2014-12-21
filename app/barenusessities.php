@@ -3,7 +3,7 @@ require_once 'vendor/facebook/php-sdk-v4/autoload.php';
 use Facebook\FacebookSession;
 use Facebook\FacebookRequest;
 use Facebook\GraphPage;
-$config = file_get_contents('./config.json');
+$config = file_get_contents('./config.json.dist');
 $configData = json_decode($config, true);
 
 define('APP_ID', 'bareNUS');
@@ -53,5 +53,5 @@ function transformUrl($url) {
 	$allowed = array('limit', 'since', 'until');
 	// use array_flip + array_intersect_key to filter by key
 	$extractedQuery = http_build_query(array_intersect_key($query, array_flip($allowed)));
-	return 'http://nusmods.com/barenusessities.php?' . $extractedQuery;
+	return $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'] . '?' . $extractedQuery;
 }
