@@ -10,7 +10,7 @@ var _ = require('underscore');
 module.exports = Marionette.LayoutView.extend({
   initialize: function () {
     this.model = new Backbone.Model();
-    this.model.set('feedUrl', 'http://0.0.0.0/bare/barenusessities.php');
+    this.model.set('feedUrl', '/barenusessities.php');
   },
   template: template,
   regions: {
