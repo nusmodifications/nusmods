@@ -318,6 +318,12 @@ $panel-heading-color: #3e444c;
   }
 }
 
+.list-group-item {
+  border-radius: 0 !important;
+  border-left: none;
+  border-right: none;
+}
+
 .alert {
   border: none;
 }

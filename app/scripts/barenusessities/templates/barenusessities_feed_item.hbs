@@ -1,6 +1,7 @@
 <div class="row">
-  <div class="col-md-1">
-    {{created_time}}
+  <div class="col-md-1 text-right nm-bn-post-date">
+    <strong class="nm-bn-post-month">{{month}}</strong><span class="hidden-xs"><br></span>
+    <strong class="nm-bn-post-day">{{date}}</strong>
   </div>
   <div class="col-md-7">
     <div class="nm-bn-post-content">
@@ -21,14 +22,14 @@
       {{/if}}
       <div class="nm-bn-post-bar">
         {{#if comments}}
-          <a class="white js-nm-bn-show-comments">{{comments.data.length}} comments</a>
+          <a class=" js-nm-bn-show-comments">{{comments.data.length}} comments</a>
         {{else}}
-          <span class="white">No comments</span>
+          <span class="highlight thin">No comments</span>
         {{/if}}
-        <span class="white">&middot;</span>
-        <a class="white">View original post</a>
-        <span class="white">&middot;</span>
-        <a class="white">Share on Facebook</a>
+        <span class="highlight thin">&middot;</span>
+        <a class="">View original post</a>
+        <span class="highlight thin">&middot;</span>
+        <a class="">Share on Facebook</a>
       </div>
     </div>
     <div class="nm-bn-comments js-nm-bn-comments">
@@ -42,9 +43,32 @@
                 </a>
                 <div class="media-body">
                   <h5 class="media-heading">
-                    <a target="_blank" href="https://www.facebook.com/{{from.id}}">{{from.name}}</a>
+                    <a target="_blank" href="https://www.facebook.com/{{from.id}}"><strong>{{from.name}}</strong></a>  &middot; <span class="nm-bn-comment-date">{{date}}</span>
                   </h5>
-                  <p>{{{message}}}</p>
+                  <p class="nm-bn-comment">{{{message}}}</p>
+                  <div class="nm-bn-comment-meta">
+                    {{#if like_count}}
+                      <span><i class="fa fa-heart"></i> {{like_count}}</span>
+                    {{/if}}
+                  </div>
+                  {{#each comments.data}}
+                    <div class="media">
+                      <a class="media-left" target="_blank" href="https://www.facebook.com/{{from.id}}">
+                        <img class="img-rounded" src="https://graph.facebook.com/{{from.id}}/picture?type=square" alt="{{from.name}} Thumbnail">
+                      </a>
+                      <div class="media-body">
+                        <h5 class="media-heading">
+                          <a target="_blank" href="https://www.facebook.com/{{from.id}}"><strong>{{from.name}}</strong></a> &middot; <span class="nm-bn-comment-date">{{date}}</span>
+                        </h5>
+                        <p>{{{message}}}</p>
+                        <div class="nm-bn-comment-meta">
+                          {{#if like_count}}
+                            <span><i class="fa fa-heart"></i> {{like_count}}</span>
+                          {{/if}}
+                        </div>
+                      </div>
+                    </div>
+                  {{/each}}
                 </div>
               </div>
             </li>

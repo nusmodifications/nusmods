@@ -6,6 +6,7 @@ var template = require('../templates/barenusessities.hbs');
 var $ = require('jquery');
 var BareNusessitiesFeedView = require('./BareNusessitiesFeedView');
 var _ = require('underscore');
+var moment = require('moment');
 
 module.exports = Marionette.LayoutView.extend({
   initialize: function () {
@@ -35,6 +36,7 @@ module.exports = Marionette.LayoutView.extend({
       _.each(feedData, function (item) {
         if (!!item.message) {
           var words = item.message.split(' ');
+          item.message = _.escape(item.message);
           if (words.length > MESSAGE_LIMIT + 10) {
             item.shortMessage = words.splice(0, MESSAGE_LIMIT).join(' ');
             item.shortMessage = item.shortMessage.replace(/\n/g, '<br>');
@@ -44,7 +46,22 @@ module.exports = Marionette.LayoutView.extend({
             item.message = item.message.replace(/\n/g, '<br>\n');
           }
         }
+        item.month = moment(item.created_time).format('MMM');
+        item.date = moment(item.created_time).format('DD');
+        if (item.comments) {
+          _.each(item.comments.data, function (comment) {
+            comment.message = _.escape(comment.message);
+            comment.date = moment(comment.created_time).fromNow();
+            if (comment.comments) {
+              _.each(comment.comments.data, function (comment) {
+                comment.message = _.escape(comment.message);
+                comment.date = moment(comment.created_time).fromNow();
+              });
+            }
+          });
+        }
       });
+      console.log(feedData);
       that.feedItemsCollection.add(_.filter(feedData, function (item) {
         return !!item.object_id;
       }));

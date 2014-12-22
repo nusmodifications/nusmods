@@ -8,9 +8,9 @@ $configData = json_decode($config, true);
 
 define('APP_ID', 'bareNUS');
 define('EDGE', 'posts');
-define('FIELDS', 'comments{comments{comments},message,id,like_count,
-  comment_count,created_time,from},description,object_id,
-  message,type,caption');
+define('FIELDS', 'comments{comments{comments,message,id,like_count,comment_count,
+  created_time,from},message,id,like_count,comment_count,created_time,from},
+  description,object_id,message,type,caption');
 define('LIMIT', 10);
 
 $limit = isset($_GET['limit']) ? $_GET['limit'] : LIMIT;
