@@ -11,6 +11,7 @@ var moment = require('moment');
 module.exports = Marionette.LayoutView.extend({
   initialize: function () {
     this.model = new Backbone.Model();
+    this.feedLoadedOnce = false;
     this.model.set('feedUrl', 'http://localhost/bare/barenusessities.php');
   },
   template: template,
@@ -61,7 +62,6 @@ module.exports = Marionette.LayoutView.extend({
           });
         }
       });
-      console.log(feedData);
       that.feedItemsCollection.add(_.filter(feedData, function (item) {
         return !!item.object_id;
       }));
@@ -69,6 +69,10 @@ module.exports = Marionette.LayoutView.extend({
         that.model.set('feedUrl', data.paging.next);
       } else {
         that.model.set('feedUrl', null);
+      }
+      if (!this.feedLoadedOnce) {
+        $('.nm-bn-feed-container').addClass('animated fadeIn');
+        this.feedLoadedOnce = true;
       }
     });
   },

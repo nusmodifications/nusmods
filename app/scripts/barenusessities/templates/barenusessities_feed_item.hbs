@@ -1,15 +1,15 @@
 <div class="row">
-  <div class="col-md-1 text-right nm-bn-post-date">
-    <strong class="nm-bn-post-month">{{month}}</strong><span class="hidden-xs"><br></span>
-    <strong class="nm-bn-post-day">{{date}}</strong>
+  <div class="col-md-2 text-right nm-bn-post-date">
+    <strong class="nm-bn-post-day">{{date}}</strong><span class="hidden-xs"><br></span>
+    <span class="nm-bn-post-month">{{month}}</span>
   </div>
-  <div class="col-md-7">
+  <div class="col-md-10">
     <div class="nm-bn-post-content">
       {{#if object_id}}
         <img class="img-responsive" src="https://graph.facebook.com/{{object_id}}/picture">
       {{/if}}
-      {{#if message }}
-        <div class="nm-bn-post-message-container">
+      <div class="nm-bn-post-message-container">
+        {{#if message }}
           <p>
             {{#if shortMessage}}
               {{{shortMessage}}} <span class="nm-bn-post-full-message">{{{fullMessage}}}</span>
@@ -17,19 +17,21 @@
             {{else}}
               {{{message}}}
             {{/if}}
-          </p>          
-        </div>
-      {{/if}}
-      <div class="nm-bn-post-bar">
-        {{#if comments}}
-          <a class=" js-nm-bn-show-comments">{{comments.data.length}} comments</a>
-        {{else}}
-          <span class="highlight thin">No comments</span>
+          </p>
         {{/if}}
-        <span class="highlight thin">&middot;</span>
-        <a class="">View original post</a>
-        <span class="highlight thin">&middot;</span>
-        <a class="">Share on Facebook</a>
+        <div>
+          {{#if comments}}
+            <a class=" js-nm-bn-show-comments">{{comments.data.length}} comments</a>
+          {{else}}
+            <span class="highlight thin">No comments</span>
+          {{/if}}
+          <span class="highlight thin">&middot;</span>
+          <a>View original post</a>
+          <span class="highlight thin">&middot;</span>
+          <a><i class="fa fa-facebook-square fa-lg"></i></a>
+          <span class="highlight thin">&middot;</span>
+          <a><i class="fa fa-twitter-square fa-lg"></i></a>
+        </div>          
       </div>
     </div>
     <div class="nm-bn-comments js-nm-bn-comments">

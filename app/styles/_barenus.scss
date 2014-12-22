@@ -1,4 +1,10 @@
 .nm-bn {
+  .nm-bn-feed-container {
+    display: none;
+    &.animated {
+      display: inherit;
+    }
+  }
   .nm-bn-post {
     display: inline-block;
     margin-bottom: 20px;
@@ -7,10 +13,11 @@
     color: #666;
     .nm-bn-post-month {
       font-size: 18px;
-      text-transform: uppercase;
+      line-height: 24px;
     }
     .nm-bn-post-day {
-      font-size: 24px;
+      font-size: 32px;
+      line-height: 28px;
     }
   }
   .nm-bn-post-bar {
