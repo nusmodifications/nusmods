@@ -47,8 +47,12 @@ module.exports = Marionette.LayoutView.extend({
             item.message = item.message.replace(/\n/g, '<br>\n');
           }
         }
+
         item.month = moment(item.created_time).format('MMM');
         item.date = moment(item.created_time).format('DD');
+
+        item.postId = item.id.split('_')[1];
+
         if (item.comments) {
           _.each(item.comments.data, function (comment) {
             comment.message = _.escape(comment.message);
