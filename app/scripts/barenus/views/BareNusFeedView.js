@@ -2,8 +2,8 @@
 
 var _ = require('underscore');
 var Marionette = require('backbone.marionette');
-var BareNusessitiesFeedItemView = require('./BareNusessitiesFeedItemView');
-var template = require('../templates/barenusessities_feed.hbs');
+var BareNusFeedItemView = require('./BareNusFeedItemView');
+var template = require('../templates/barenus_feed.hbs');
 
 var EmptyView = Marionette.ItemView.extend({
   template: _.template('<div class="col-md-12">Loading...<br></div>')
@@ -11,7 +11,7 @@ var EmptyView = Marionette.ItemView.extend({
 
 module.exports = Marionette.CompositeView.extend({
   className: 'nm-bn-feed',
-  childView: BareNusessitiesFeedItemView,
+  childView: BareNusFeedItemView,
   childViewContainer: 'div',
   emptyView: EmptyView,
   template: template

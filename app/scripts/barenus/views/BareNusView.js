@@ -2,9 +2,9 @@
 
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
-var template = require('../templates/barenusessities.hbs');
+var template = require('../templates/barenus.hbs');
 var $ = require('jquery');
-var BareNusessitiesFeedView = require('./BareNusessitiesFeedView');
+var BareNusFeedView = require('./BareNusFeedView');
 var _ = require('underscore');
 var moment = require('moment');
 require('../../common/utils/notequals');
@@ -13,7 +13,7 @@ module.exports = Marionette.LayoutView.extend({
   initialize: function () {
     this.model = new Backbone.Model();
     this.feedLoadedOnce = false;
-    this.model.set('feedUrl', '/barenusessities.php');
+    this.model.set('feedUrl', '/barenus.php');
   },
   template: template,
   regions: {
@@ -21,7 +21,7 @@ module.exports = Marionette.LayoutView.extend({
   },
   onShow: function () {
     this.feedItemsCollection = new Backbone.Collection();
-    this.feedView = new BareNusessitiesFeedView({collection: this.feedItemsCollection});
+    this.feedView = new BareNusFeedView({collection: this.feedItemsCollection});
     this.feedRegion.show(this.feedView);
     this.loadPosts();
   },
