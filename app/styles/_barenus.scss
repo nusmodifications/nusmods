@@ -1,11 +1,35 @@
 .nm-bn {
   .nm-bn-post {
+    display: inline-block;
     margin-bottom: 20px;
+  }
+  .nm-bn-post-bar {
+    background-color: $panel-heading-color;
+    padding: 5px 15px;
   }
   .nm-bn-post-content {
     background-color: #fff;
   }
   .nm-bn-post-caption {
     padding: 15px;
+    .nm-bn-post-message {
+      display: none;
+    }
+    &.nm-bn-show-message {
+      .nm-bn-post-short-message {
+        display: none;
+      }
+      .nm-bn-post-message {
+        display: inherit;
+      }
+    }
+  }
+  .nm-bn-show-comments {
+    .nm-bn-comments {
+      display: inherit;
+    } 
+  }
+  .nm-bn-comments {
+    display: none;
   }
 }

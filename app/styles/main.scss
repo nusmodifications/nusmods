@@ -46,7 +46,7 @@ $navmenu-width: 200px;
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/alerts";
 //@import "bootstrap-sass-official/assets/stylesheets/bootstrap/progress-bars";
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/media";
-//@import "bootstrap-sass-official/assets/stylesheets/bootstrap/list-group";
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap/list-group";
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/panels";
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/responsive-embed";
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/wells";
@@ -247,6 +247,13 @@ kbd {
   }
 }
 
+.white {
+  color: #fff;
+}
+a.white:hover {
+  color: $brand-primary;
+}
+
 .nm-caret {
   transition: transform .1s linear;
   &.nm-caret-down {
@@ -293,11 +300,13 @@ kbd {
 
 // Bootstrap overrides
 
+$panel-heading-color: #3e444c;
+
 .panel {
   $panel-bg-color: #fff;
   border: none;
   .panel-heading {
-    background-color: #3e444c;
+    background-color: $panel-heading-color;
     border: none;
     color: #fff;
   }

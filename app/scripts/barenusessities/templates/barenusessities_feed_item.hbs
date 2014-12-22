@@ -9,26 +9,52 @@
       {{/if}}
       {{#if message }}
         <div class="nm-bn-post-caption">
-          <p>{{{message}}}</p>
-        </div>
-      {{/if}}
-    </div>
-  </div>
-  <div class="col-md-4">
-    {{#if comments}}
-      {{#each comments.data}}
-        <div class="media">
-          <a class="media-left img-rounded" target="_blank" href="https://www.facebook.com/{{from.id}}">
-            <img src="https://graph.facebook.com/{{from.id}}/picture?type=square" alt="{{from.name}} Thumbnail">
-          </a>
-          <div class="media-body">
-            <h5 class="media-heading">
-              <a target="_blank" href="https://www.facebook.com/{{from.id}}">{{from.name}}</a>
-            </h5>
+          <div class="nm-bn-post-short-message">
+            <p>
+              {{#if shortMessage}}
+                {{{shortMessage}}} ... <a class="js-nm-bn-post-see-more">See More</a>
+              {{else}}
+                {{{message}}}
+              {{/if}}
+            </p>
+          </div>
+          <div class="nm-bn-post-message">
             <p>{{{message}}}</p>
           </div>
         </div>
-      {{/each}}
-    {{/if}}
+      {{/if}}
+      <div class="nm-bn-post-bar">
+        {{#if comments}}
+          <a class="white js-nm-bn-show-comments">{{comments.data.length}} comments</a>
+        {{else}}
+          <span class="white">No comments</span>
+        {{/if}}
+        <span class="white">&middot;</span>
+        <a class="white">View original post</a>
+        <span class="white">&middot;</span>
+        <a class="white">Share on Facebook</a>
+      </div>
+    </div>
+    <div class="nm-bn-comments js-nm-bn-comments">
+      {{#if comments}}
+        <ul class="list-group">
+          {{#each comments.data}}
+            <li class="list-group-item">
+              <div class="media">
+                <a class="media-left" target="_blank" href="https://www.facebook.com/{{from.id}}">
+                  <img class="img-rounded" src="https://graph.facebook.com/{{from.id}}/picture?type=square" alt="{{from.name}} Thumbnail">
+                </a>
+                <div class="media-body">
+                  <h5 class="media-heading">
+                    <a target="_blank" href="https://www.facebook.com/{{from.id}}">{{from.name}}</a>
+                  </h5>
+                  <p>{{{message}}}</p>
+                </div>
+              </div>
+            </li>
+          {{/each}}
+        </ul>
+      {{/if}}
+    </div>
   </div>
 </div>
