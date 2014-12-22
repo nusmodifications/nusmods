@@ -7,6 +7,7 @@ var $ = require('jquery');
 var BareNusessitiesFeedView = require('./BareNusessitiesFeedView');
 var _ = require('underscore');
 var moment = require('moment');
+require('../../common/utils/notequals');
 
 module.exports = Marionette.LayoutView.extend({
   initialize: function () {
