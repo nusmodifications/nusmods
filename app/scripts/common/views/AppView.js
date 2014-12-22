@@ -162,10 +162,21 @@ module.exports = Backbone.View.extend({
       }
     });
 
+    // For sidebar navigations
+    $('.navbar-toggle').click(function (e) {
+      e.preventDefault();
+      $('body').toggleClass('js-toggled');
+    });
+
+    $(window).resize(function () {
+      $('body').removeClass('js-toggled');
+    })
+
     attachFastClick(document.body);
   },
 
   navigateWithScrollTop: function (location, trigger) {
+    $('body').removeClass('js-toggled');
     Backbone.history.navigate(location, {trigger: trigger});
     // Hack: Scroll to top of page after navigation
     setTimeout(function () {

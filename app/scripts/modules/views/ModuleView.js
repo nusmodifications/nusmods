@@ -14,6 +14,7 @@ var localforage = require('localforage');
 var template = require('../templates/module.hbs');
 var config = require('../../common/config');
 
+var preferencesNamespace = config.namespaces.preferences + ':';
 var searchPreferences = {};
 
 function drawTree(selector, prereqs, lockedModules, modCode) {
@@ -196,10 +197,10 @@ module.exports = Marionette.LayoutView.extend({
     var that = this;
     var loadedItems = 0;
     _.each(formElements, function (selector, item) {
-      localforage.getItem(item, function (value) {
+      localforage.getItem(preferencesNamespace + item, function (value) {
         if (!value) {
           value = defaults[item];
-          localforage.setItem(item, value);
+          localforage.setItem(preferencesNamespace + item, value);
         }
         $(selector).val([value]);
         searchPreferences[item] = value;

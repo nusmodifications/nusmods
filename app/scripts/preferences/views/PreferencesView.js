@@ -6,6 +6,10 @@ var _ = require('underscore');
 var localforage = require('localforage');
 var template = require('../templates/preferences.hbs');
 var themePicker = require('../../common/themes/themePicker');
+var config = require('../../common/config');
+
+var preferencesNamespace = config.namespaces.preferences + ':';
+var ivleNamespace = config.namespaces.ivle + ':';
 
 module.exports = Marionette.LayoutView.extend({
   template: template,
@@ -18,14 +22,14 @@ module.exports = Marionette.LayoutView.extend({
   initialize: function () {
     // TODO: Populate default values of form elements for first time users.
     _.each(this.ui, function (selector, item) {
-      localforage.getItem(item, function (value) {
+      localforage.getItem(preferencesNamespace + item, function (value) {
         if (value) {
           $(selector).val([value]);
         }
       });
     });
 
-    localforage.getItem('ivle:ivleModuleHistory', function (value) {
+    localforage.getItem(ivleNamespace + 'ivleModuleHistory', function (value) {
       if (value) {
         $('#ivle-status-success').removeClass('hidden');
       }
@@ -54,7 +58,7 @@ module.exports = Marionette.LayoutView.extend({
       window.ivleLoginSuccessful = function (token) {
         $('#ivle-status-success').addClass('hidden');
         $('#ivle-status-loading').removeClass('hidden');
-        localforage.setItem('ivle:ivleToken', token);
+        localforage.setItem(ivleNamespace + 'ivleToken', token);
         that.fetchModuleHistory(token);
         window.ivleLoginSuccessful = undefined;
       };
@@ -91,7 +95,7 @@ module.exports = Marionette.LayoutView.extend({
     );
   },
   saveModuleHistory: function (moduleHistory) {
-    localforage.setItem('ivle:ivleModuleHistory', moduleHistory.Results);
+    localforage.setItem(ivleNamespace + 'ivleModuleHistory', moduleHistory.Results);
     $('#ivle-status-success').removeClass('hidden');
     $('#ivle-status-loading').addClass('hidden');
   },
@@ -108,12 +112,12 @@ module.exports = Marionette.LayoutView.extend({
   savePreference: function (property, value) {
     if (property === 'faculty' && value === 'default') {
       window.alert('You have to select a faculty.');
-      localforage.getItem(property, function (value) {
+      localforage.getItem(preferencesNamespace + property, function (value) {
         $('#faculty').val(value);
       });
       return;
     }
-    localforage.setItem(property, value);
+    localforage.setItem(preferencesNamespace + property, value);
     if (property === 'theme') {
       themePicker.applyTheme(value);
     } else if (property === 'mode') {

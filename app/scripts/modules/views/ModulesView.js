@@ -162,7 +162,8 @@ module.exports = Marionette.LayoutView.extend({
 
     var that = this;
 
-    localforage.getItem('moduleFinder:filters', function (selectedFilters) {
+    var moduleFinderNamespace = config.namespaces.moduleFinder + ':';
+    localforage.getItem(moduleFinderNamespace + 'filters', function (selectedFilters) {
       if (selectedFilters) {
         _.each(facets.models, function (facet) {
           var filters = selectedFilters[facet.get('label')];

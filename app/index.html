@@ -63,104 +63,108 @@
   </script>
 </head>
 <body>
+  <div id="nm-wrapper">
+    <nav id="sidebar-wrapper" class="navmenu navmenu-inverse navmenu-fixed-left offcanvas" role="navigation">
+      <a class="nm-brand nm-logo navbar-brand hidden-xs" href="/"></a>
+      <div id="nav">
+      </div>
+    </nav>
 
-  <header class="navbar navbar-default navbar-fixed-top" id="top" role="banner">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a id="brand" class="nm-logo navbar-brand hidden-xs" href="/"></a>
-        <form class="navbar-form" role="search"></form>
-        <button class="btn btn-default nm-bookmark-button hidden-xs">
-          <i class="fa fa-bookmark fa-lg"></i>
-        </button>
-      </div>
-      <div class="collapse navbar-collapse" role="navigation">
-        <nav></nav>
-      </div>
-    </div>
-  </header>
-  
-  <div class="main-content container-fluid">
-    <div class="content"></div>
-  </div>
-  
-  <footer class="footer-container">
-    <div class="container-fluid">
-      <div class="row footer">
-        <div class="col-md-10 col-md-offset-1">
-          <div class="row">
-            <div class="col-sm-6">
-              <div class="row">
-                <div class="col-md-6 col-xs-6">
-                  <h5 class="section-title">Product</h5>
-                  <ul>
-                    <!-- <li><a href="#">Tour</a></li> -->
-                    <li><a href="/help">Help</a></li>
-                    <li><a href="/support">Chat With Us</a></li>
-                    <!-- <li><a href="#">Contribute</a></li> -->
-                    <li><a href="https://github.com/nusmodifications/nusmods-api" target="_blank">API</a></li>
-                  </ul>
-                </div>
-                <div class="col-md-6 col-xs-6">
-                  <h5 class="section-title">NUSMods</h5>
-                  <ul>
-                    <li><a href="/about">About</a></li>
-                    <li><a href="/team">The Team</a></li>
-                    <!-- <li><a href="#">Blog</a></li> -->
-                    <li><a href="mailto:nusmods@googlegroups.com">Contact Us</a></li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-6">
-              <div class="row">
-                <div class="col-sm-6">
-                  <h5 class="section-title">Follow</h5>
-                  <ul class="nm-social">
-                    <li>
-                      <a href="https://www.facebook.com/NUSMods" target="_blank">
-                        <i class="fa fa-facebook-square fa-3x"></i>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="https://www.twitter.com/NUSMods" target="_blank">
-                        <i class="fa fa-twitter fa-3x"></i>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="https://github.com/nusmodifications/nusmods" target="_blank">
-                        <i class="fa fa-github fa-3x"></i>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                <div class="col-sm-6">
-                  <h5 class="section-title">Status</h5>
-                  <ul>
-                    <li>
-                      <div class="last-update-timestamp">Information correct as at<br><span class="highlight thin" id="correct-as-at"></span></div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
+    <header class="nm-navbar navbar navbar-default navbar-fixed-top" id="top" role="banner">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <form class="navbar-form" role="search"></form>
+          <button class="btn btn-default nm-bookmark-button hidden-xs">
+            <i class="fa fa-bookmark fa-lg"></i>
+          </button>
+          <a class="nm-brand nm-logo nm-logo-white navbar-brand visible-xs-inline-block" href="/"></a>
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-10 col-md-offset-1" id="copyright">
-          <hr>
-          <p>Copyright &copy; 2014 NUSMods. All rights reserved.</p>
-        </div>        
-      </div>
-    </div>
-  </footer>
+    </header>
 
+    <div id="page-content-wrapper" class="main-container">
+      <div class="main-content">
+        <div class="content"></div>
+      </div>
+      <footer class="footer-container">
+        <div class="container-fluid">
+            <div class="row footer">
+              <div class="col-md-10 col-md-offset-1">
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="row">
+                      <div class="col-md-6 col-xs-6">
+                        <h5 class="section-title">Product</h5>
+                        <ul>
+                          <!-- <li><a href="#">Tour</a></li> -->
+                          <li><a href="/help">Help</a></li>
+                          <li><a href="/support">Chat With Us</a></li>
+                          <!-- <li><a href="#">Contribute</a></li> -->
+                          <li><a href="https://github.com/nusmodifications/nusmods-api" target="_blank">API</a></li>
+                        </ul>
+                      </div>
+                      <div class="col-md-6 col-xs-6">
+                        <h5 class="section-title">NUSMods</h5>
+                        <ul>
+                          <li><a href="/about">About</a></li>
+                          <li><a href="/team">The Team</a></li>
+                          <!-- <li><a href="#">Blog</a></li> -->
+                          <li><a href="mailto:nusmods@googlegroups.com">Contact Us</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <h5 class="section-title">Follow</h5>
+                        <ul class="nm-social">
+                          <li>
+                            <a href="https://www.facebook.com/NUSMods" target="_blank">
+                              <i class="fa fa-facebook-square fa-3x"></i>
+                            </a>
+                          </li>
+                          <li>
+                            <a href="https://www.twitter.com/NUSMods" target="_blank">
+                              <i class="fa fa-twitter fa-3x"></i>
+                            </a>
+                          </li>
+                          <li>
+                            <a href="https://github.com/nusmodifications/nusmods" target="_blank">
+                              <i class="fa fa-github fa-3x"></i>
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                      <div class="col-sm-6">
+                        <h5 class="section-title">Status</h5>
+                        <ul>
+                          <li>
+                            <div class="last-update-timestamp">Information correct as at<br><span class="highlight thin" id="correct-as-at"></span></div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-10 col-md-offset-1" id="copyright">
+                <hr>
+                <p>Copyright &copy; 2014 NUSMods. All rights reserved.</p>
+              </div>        
+            </div>
+        </div>
+      </footer>
+    </div>
+  </div>
   <div class="cors-round-container alert alert-info hidden-xs">
     <button type="button" class="close" data-dismiss="alert">
       <span aria-hidden="true">&times;</span>

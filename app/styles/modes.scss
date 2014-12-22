@@ -8,7 +8,12 @@
 
 .mode-slate {
   $mode-color: #f60;
-  margin-bottom: 265px;
+  $mode-background-color: #272b30;
+  $mode-navmenu-bg-color: #1c1c1f;
+  $mode-navbar-bg-color: #3e3e40;
+  body {
+    background-color: $mode-background-color;
+  }
   color: #fff;
   h1,
   h2,
@@ -72,10 +77,10 @@
       color: $mode-color;
     }
   }
-  $dark-nav-bg-color: #161713;
+  
   .navbar {
     border: none;
-    background: $dark-nav-bg-color;
+    background: $mode-navbar-bg-color;
   }
   .navbar-default {
     .navbar-nav > {
@@ -107,7 +112,42 @@
       box-shadow: none;
     }
   }
-  $dark-nav-tab-bg-color: #272b30;
+
+  .navmenu-inverse .navmenu-nav > {
+    .active > a {
+      &, &:hover, &:focus {
+        // background-color: transparent;
+        // color: #fff;
+      }
+    }
+
+    li > a {
+      &:hover, &:focus, {
+        // color: #222;
+      } 
+    }
+  }
+  
+  .navbar-toggle {
+    float: left;
+    margin-left: 15px;
+  }
+
+  .navmenu {
+    background-color: $mode-navmenu-bg-color;
+    color: #000;
+  }
+
+  .navmenu-nav li.active {
+    &:before {
+      border-right-color: $mode-background-color;
+    }
+  }
+  .nm-brand {
+    float: right;
+  }
+
+  $dark-nav-tab-bg-color: $mode-background-color;
   .nav-tabs > {
     li.active > {
       a,
@@ -120,7 +160,7 @@
   }
   @media (max-width: 768px) {
     .module-navigation {
-      background-color: $dark-nav-bg-color;
+      background-color: $mode-navbar-bg-color;
       border: none;
     }
     .nav-tabs > {
@@ -161,7 +201,7 @@
   #timetable {
     background-color: transparent;
     th {
-      background-color: #272b30;
+      background-color: $mode-background-color;
     }
   }
   colgroup.hover {
@@ -212,6 +252,19 @@
         color: $mode-color;
       }
     }
+  }
+  .panel {
+    background-color: #222326;
+    border: none;
+    .panel-body {
+      background-color: #222326;
+    }
+    .panel-footer {
+      background-color: #222326;
+    }
+  }
+  .nm-section-title {
+    font-size: 18px;
   }
 }
 

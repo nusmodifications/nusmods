@@ -329,6 +329,7 @@ module.exports = function (grunt) {
                         '*.{config,php}',
                         '*.{ico,png,txt}',
                         '.htaccess',
+                        'config.json',
                         'images/{,*/}*.webp',
                         '{,*/}*.html',
                         'scripts/disqus-count.js',
@@ -336,6 +337,8 @@ module.exports = function (grunt) {
                         'styles/*.{gif,png}',
                         'styles/fonts/{,*/}*.*',
                         'vendor/knplabs/knp-snappy/src/**/*.php',
+                        'vendor/facebook/php-sdk-v4/autoload.php',
+                        'vendor/facebook/php-sdk-v4/src/Facebook/**/*',
                         'bower_components/font-awesome/fonts/*.*'
                     ]
                 }, {
