@@ -89,6 +89,7 @@
     "jquery-ui/widget": "./app/bower_components/jquery.ui/ui/widget.js",
     "jquery.fileDownload": "./app/bower_components/jquery.fileDownload/src/Scripts/jquery.fileDownload.js",
     "localforage": "./app/bower_components/localforage/dist/localforage.nopromises.js",
+    "moment": "./app/bower_components/moment/moment.js",
     "qTip2": "./app/bower_components/qtip2/jquery.qtip.js",
     "raven": "./app/bower_components/raven-js/dist/raven.js",
     "select2": "./app/bower_components/select2/select2.js"
