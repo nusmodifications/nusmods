@@ -8,19 +8,15 @@
         <img class="img-responsive" src="https://graph.facebook.com/{{object_id}}/picture">
       {{/if}}
       {{#if message }}
-        <div class="nm-bn-post-caption">
-          <div class="nm-bn-post-short-message">
-            <p>
-              {{#if shortMessage}}
-                {{{shortMessage}}} ... <a class="js-nm-bn-post-see-more">See More</a>
-              {{else}}
-                {{{message}}}
-              {{/if}}
-            </p>
-          </div>
-          <div class="nm-bn-post-message">
-            <p>{{{message}}}</p>
-          </div>
+        <div class="nm-bn-post-message-container">
+          <p>
+            {{#if shortMessage}}
+              {{{shortMessage}}} <span class="nm-bn-post-full-message">{{{fullMessage}}}</span>
+              <span class="nm-bn-post-see-more">... <a class="js-nm-bn-post-see-more">See More</a></span>
+            {{else}}
+              {{{message}}}
+            {{/if}}
+          </p>          
         </div>
       {{/if}}
       <div class="nm-bn-post-bar">

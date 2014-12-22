@@ -35,11 +35,14 @@ module.exports = Marionette.LayoutView.extend({
       _.each(feedData, function (item) {
         if (!!item.message) {
           var words = item.message.split(' ');
-          if (words.length > 50) {
+          if (words.length > MESSAGE_LIMIT + 10) {
             item.shortMessage = words.splice(0, MESSAGE_LIMIT).join(' ');
-            item.shortMessage = item.shortMessage.replace(/\n/g, '<br>\n');
+            item.shortMessage = item.shortMessage.replace(/\n/g, '<br>');
+            item.fullMessage = words.join(' ');
+            item.fullMessage = item.fullMessage.replace(/\n/g, '<br>');
+          } else {
+            item.message = item.message.replace(/\n/g, '<br>\n');
           }
-          item.message = item.message.replace(/\n/g, '<br>\n');
         }
       });
       that.feedItemsCollection.add(_.filter(feedData, function (item) {
@@ -53,7 +56,9 @@ module.exports = Marionette.LayoutView.extend({
     });
   },
   seeMorePost: function (event) {
-    $(event.target).closest('.nm-bn-post-caption').addClass('nm-bn-show-message');
+    var $postMessage = $(event.target).closest('.nm-bn-post-message-container');
+    $postMessage.addClass('nm-bn-show-message');
+    $postMessage.find('.nm-bn-post-full-message').addClass('animated fadeIn');
   },
   showComments: function (event) {
     var $post = $(event.target).closest('.js-nm-bn-post');

@@ -10,17 +10,17 @@
   .nm-bn-post-content {
     background-color: #fff;
   }
-  .nm-bn-post-caption {
+  .nm-bn-post-message-container {
     padding: 15px;
-    .nm-bn-post-message {
+    .nm-bn-post-full-message {
       display: none;
     }
     &.nm-bn-show-message {
-      .nm-bn-post-short-message {
+      .nm-bn-post-see-more {
         display: none;
       }
-      .nm-bn-post-message {
-        display: inherit;
+      .nm-bn-post-full-message {
+        display: inline;
       }
     }
   }
