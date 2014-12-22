@@ -1,4 +1,9 @@
 .nm-bn {
+  @media (max-width: 1024px) {
+    .nm-bn-logo img {
+      width: 128px;
+    }
+  }
   .nm-bn-feed-container {
     display: none;
     &.animated {
