@@ -25,9 +25,7 @@ module.exports = Marionette.LayoutView.extend({
     this.loadPosts();
   },
   events: {
-    'click .js-nm-bn-more-posts': 'loadPosts',
-    'click .js-nm-bn-post-see-more': 'seeMorePost',
-    'click .js-nm-bn-show-comments': 'showComments'
+    'click .js-nm-bn-more-posts': 'loadPosts'
   },
   loadPosts: function () {
     var that = this;
@@ -52,6 +50,7 @@ module.exports = Marionette.LayoutView.extend({
         item.date = moment(item.created_time).format('DD');
 
         item.postId = item.id.split('_')[1];
+        item.postUrl = 'https://www.facebook.com/bareNUS/posts/' + item.postId;
 
         if (item.comments) {
           _.each(item.comments.data, function (comment) {
@@ -79,15 +78,5 @@ module.exports = Marionette.LayoutView.extend({
         this.feedLoadedOnce = true;
       }
     });
-  },
-  seeMorePost: function (event) {
-    var $postMessage = $(event.target).closest('.nm-bn-post-message-container');
-    $postMessage.addClass('nm-bn-show-message');
-    $postMessage.find('.nm-bn-post-full-message').addClass('animated fadeIn');
-  },
-  showComments: function (event) {
-    var $post = $(event.target).closest('.js-nm-bn-post');
-    $post.addClass('nm-bn-show-comments');
-    $post.find('.js-nm-bn-comments').addClass('animated fadeIn');
   }
 });
