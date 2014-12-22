@@ -6,11 +6,11 @@ var Marionette = require('backbone.marionette');
 var navigationItem = App.request('addNavigationItem', {
   name: 'Bare Nusessities',
   icon: 'photo',
-  url: '/BareNUS'
+  url: '/bareNUS'
 });
 
 var controller = {
-  showNus: function () {
+  showBareNus: function () {
     var BareNusView = require('./views/BareNusView');
     navigationItem.select();
     App.mainRegion.show(new BareNusView());
@@ -21,7 +21,7 @@ App.addInitializer(function () {
   new Marionette.AppRouter({
     controller: controller,
     appRoutes: {
-      'BareNUS': 'showNus'
+      'bareNUS': 'showBareNus'
     }
   });
 });
