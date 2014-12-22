@@ -12,7 +12,7 @@ module.exports = Marionette.LayoutView.extend({
   initialize: function () {
     this.model = new Backbone.Model();
     this.feedLoadedOnce = false;
-    this.model.set('feedUrl', 'http://localhost/bare/barenusessities.php');
+    this.model.set('feedUrl', '/barenusessities.php');
   },
   template: template,
   regions: {
