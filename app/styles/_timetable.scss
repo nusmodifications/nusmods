@@ -7,8 +7,8 @@
   line-height: 13px;
 }
 #timetable {
-  width: 1159px;
-  max-width: none;
+  width: 100%;
+  min-width: 1159px;
   margin: 0 0 15px -20px;
   table-layout: fixed;
 }
