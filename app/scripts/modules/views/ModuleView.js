@@ -192,7 +192,6 @@ module.exports = Marionette.LayoutView.extend({
   },
   events: {
     'change #faculty, input:radio[name="student-radios"], #account': 'updatePreferences',
-    'click .show-full-desc': 'showFullDescription',
     'click #show-all-stats': 'showAllStats',
     'click .js-nm-module-nav a': 'scrollToSection',
     'click .add-timetable': function (event) {
@@ -324,10 +323,6 @@ module.exports = Marionette.LayoutView.extend({
     $('body').scrollspy({ 
       target: '.js-nm-module-nav-container' 
     });
-  },
-  showFullDescription: function () {
-    $('.module-desc').addClass('module-desc-more');
-    return false;
   },
   showAllStats: function () {
     analytics.track('Module cors', 'View full stats', this.model.get('module').ModuleCode);
