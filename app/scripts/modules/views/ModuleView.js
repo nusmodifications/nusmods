@@ -13,6 +13,8 @@ var d3 = require('d3');
 var localforage = require('localforage');
 var template = require('../templates/module.hbs');
 var config = require('../../common/config');
+require('bootstrap/scrollspy');
+require('bootstrap/affix');
 
 var preferencesNamespace = config.namespaces.preferences + ':';
 var searchPreferences = {};
@@ -192,6 +194,7 @@ module.exports = Marionette.LayoutView.extend({
     'change #faculty, input:radio[name="student-radios"], #account': 'updatePreferences',
     'click .show-full-desc': 'showFullDescription',
     'click #show-all-stats': 'showAllStats',
+    'click .js-nm-module-nav a': 'scrollToSection',
     'click .add-timetable': function (event) {
       var qtipContent;
       var currentTarget = $(event.currentTarget);
@@ -310,6 +313,17 @@ module.exports = Marionette.LayoutView.extend({
         }
       });
     });
+
+    $('.js-nm-module-nav').affix({
+      offset: {
+        top: 160,
+        bottom: 200
+      }
+    });
+
+    $('body').scrollspy({ 
+      target: '.js-nm-module-nav-container' 
+    });
   },
   showFullDescription: function () {
     $('.module-desc').addClass('module-desc-more');
@@ -346,7 +360,7 @@ module.exports = Marionette.LayoutView.extend({
 
     this.biddingStatsRegion.show(biddingStatsView);
   },
-  savePreference: function(property, value) {
+  savePreference: function (property, value) {
     if (property === 'faculty' && value === 'default') {
       window.alert('You have to select a faculty.');
       localforage.getItem(preferencesNamespace + property, function (value) {
@@ -356,5 +370,12 @@ module.exports = Marionette.LayoutView.extend({
     }
     localforage.setItem(preferencesNamespace + property, value);
     return true;
+  },
+  scrollToSection: function (event) {
+    var target = $(event.currentTarget).attr('href');
+    event.preventDefault();
+    $('html, body').animate({
+      scrollTop: $(target).offset().top
+    }, 300);
   }
 });

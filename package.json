@@ -76,10 +76,12 @@
   "browser": {
     "Mousetrap": "./app/bower_components/mousetrap/mousetrap.js",
     "backbone.picky": "./app/bower_components/backbone.picky/lib/amd/backbone.picky.js",
+    "bootstrap/affix": "./app/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/affix.js",
     "bootstrap/alert": "./app/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/alert.js",
     "bootstrap/button": "./app/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/button.js",
     "bootstrap/collapse": "./app/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/collapse.js",
     "bootstrap/dropdown": "./app/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/dropdown.js",
+    "bootstrap/scrollspy": "./app/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/scrollspy.js",
     "bootstrap/transition": "./app/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/transition.js",
     "jquery-ui-touch-punch": "./app/bower_components/jqueryui-touch-punch/jquery.ui.touch-punch.js",
     "jquery-ui/core": "./app/bower_components/jquery.ui/ui/core.js",

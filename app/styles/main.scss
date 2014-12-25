@@ -663,7 +663,28 @@ colgroup.hover {
 
 // Module Detail Page 
 .module-page {
-  
+  .nm-module-nav {
+    list-style: none;
+    padding-left: 0;
+    li {
+      $gray: #aaa;
+      border-left: 5px solid $gray;
+      font-size: 16px;
+      a {
+        color: $gray;
+      }
+      &:hover,
+      &.active {
+        border-left: 5px solid $brand-primary;
+        a {
+          color: $brand-primary;
+        }
+      }
+    }
+    &.affix {
+      top: 85px;
+    }
+  }
   .module-main-content:before {
     content: ' ';
     display: block; 
