@@ -182,37 +182,14 @@ module.exports = Marionette.LayoutView.extend({
     biddingStatsRegion: '#bidding-stats'
   },
   initialize: function () {
-    var formElements = {
+    this.formElements = {
       'faculty': '#faculty',
       'account': '#account',
       'student': 'input:radio[name="student-radios"]'
     };
-
-    var defaults = {
-      'faculty': 'Arts & Social Sciences',
-      'account': 'P',
-      'student': 'true'
-    };
-
-    var that = this;
-    var loadedItems = 0;
-    _.each(formElements, function (selector, item) {
-      localforage.getItem(preferencesNamespace + item, function (value) {
-        if (!value) {
-          value = defaults[item];
-          localforage.setItem(preferencesNamespace + item, value);
-        }
-        $(selector).val([value]);
-        searchPreferences[item] = value;
-        loadedItems++;
-        if (loadedItems === _.keys(formElements).length) {
-          that.showBiddingStatsRegion(true);
-        }
-      });
-    });
   },
   events: {
-    'change #faculty, input:radio[name="student-radios"], #account': 'updateCorspedia',
+    'change #faculty, input:radio[name="student-radios"], #account': 'updatePreferences',
     'click .show-full-desc': 'showFullDescription',
     'click #show-all-stats': 'showAllStats',
     'click .add-timetable': function (event) {
@@ -316,6 +293,23 @@ module.exports = Marionette.LayoutView.extend({
     setTimeout(function () {
       window.location.hash = hash;
     }, 0);
+
+    var that = this;
+    var loadedItems = 0;
+    _.each(that.formElements, function (selector, item) {
+      localforage.getItem(preferencesNamespace + item, function (value) {
+        if (!value) {
+          value = config.defaultPreferences[item];
+          localforage.setItem(preferencesNamespace + item, value);
+        }
+        $(selector).val([value]);
+        searchPreferences[item] = value;
+        loadedItems++;
+        if (loadedItems === _.keys(that.formElements).length) {
+          that.showBiddingStatsRegion(true);
+        }
+      });
+    });
   },
   showFullDescription: function () {
     $('.module-desc').addClass('module-desc-more');
@@ -325,7 +319,7 @@ module.exports = Marionette.LayoutView.extend({
     analytics.track('Module cors', 'View full stats', this.model.get('module').ModuleCode);
     this.showBiddingStatsRegion(false);
   },
-  updateCorspedia: function ($ev) {
+  updatePreferences: function ($ev) {
     var $target = $($ev.target);
     $target.blur();
     var property = $target.attr('data-pref-type');
@@ -355,12 +349,12 @@ module.exports = Marionette.LayoutView.extend({
   savePreference: function(property, value) {
     if (property === 'faculty' && value === 'default') {
       window.alert('You have to select a faculty.');
-      localforage.getItem(property, function(value) {
-          $('#faculty').val(value);
+      localforage.getItem(preferencesNamespace + property, function (value) {
+        $('#faculty').val(value);
       });
       return false;
     }
-    localforage.setItem(property, value);
+    localforage.setItem(preferencesNamespace + property, value);
     return true;
   }
 });
