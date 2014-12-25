@@ -372,5 +372,8 @@ module.exports = Marionette.LayoutView.extend({
     $('html, body').animate({
       scrollTop: $(target).offset().top
     }, 300);
+    setTimeout(function () {
+      window.location.hash = target;
+    })
   }
 });
