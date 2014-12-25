@@ -663,6 +663,14 @@ colgroup.hover {
 
 // Module Detail Page 
 .module-page {
+  
+  .module-main-content:before {
+    content: ' ';
+    display: block; 
+    height: $navbar-height + $grid-gutter-width/2; 
+    margin-top: -$navbar-height - $grid-gutter-width/2; 
+    visibility: hidden; 
+  }
   .module-code {
     margin-bottom: 5px;
     color: $brand-primary;
