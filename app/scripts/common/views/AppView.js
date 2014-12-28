@@ -67,11 +67,6 @@ module.exports = Backbone.View.extend({
       $('#correct-as-at').text((new Date(lastModified)).toString().slice(0, 21));
     });
 
-    (function () {
-      $('.cors-round-text').html(corsify.determineRound(Date.now()));
-      $('.cors-round-container').addClass('animated bounceInUp shown').alert();
-    })();
-
     App.selectRegion.show(new SelectView());
 
     $('.container').removeClass('hidden');
@@ -170,9 +165,16 @@ module.exports = Backbone.View.extend({
 
     $(window).resize(function () {
       $('body').removeClass('js-toggled');
-    })
+    });
 
     attachFastClick(document.body);
+
+
+    (function () {
+      $('.cors-round-text').html(corsify.determineRound(Date.now()));
+      $('.cors-round-container').addClass('animated bounceInUp shown');
+      $('.js-nm-contest-alert').addClass('animated bounceInDown nm-force-show');
+    })();
   },
 
   navigateWithScrollTop: function (location, trigger) {
