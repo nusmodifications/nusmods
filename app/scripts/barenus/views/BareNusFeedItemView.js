@@ -5,6 +5,9 @@ var Marionette = require('backbone.marionette');
 var template = require('../templates/barenus_feed_item.hbs');
 
 module.exports = Marionette.ItemView.extend({
+  initialize: function () {
+    this.model.set('commentsShown', false);
+  },
   tagName: 'div',
   className: 'nm-bn-post js-nm-bn-post col-md-12',
   template: template,
@@ -24,23 +27,28 @@ module.exports = Marionette.ItemView.extend({
     var $comments = $post.find('.js-nm-bn-comments');
     var count = this.model.get('comments').data.length;
     var suffix = count > 1 ? 's' : '';
-    if ($post.hasClass('nm-bn-show-comments')) {
-      $comments.addClass('animated fadeOut');
-      var duration = parseInt($comments.css('animation-duration'));
-      duration = isNaN(duration) ? 800 : duration * 1000 * 0.8;
-      setTimeout(function() {
-        $post.removeClass('nm-bn-show-comments');
-      }, duration);
+    var commentsShown = this.model.get('commentsShown');
+    if (commentsShown) {
+      // $comments.addClass('animated fadeOut');
+      // console.log('lola')
+      $comments.slideUp();
+      // var duration = parseInt($comments.css('animation-duration'));
+      // duration = isNaN(duration) ? 800 : duration * 1000 * 0.8;
+      // setTimeout(function () {
+      //   $post.removeClass('nm-bn-show-comments');
+      // }, duration);
       $(event.target).text('Show ' + count + ' Comment' + suffix);
     } else {
-      $comments.removeClass('animated fadeOut');
-      $post.addClass('nm-bn-show-comments');
-      $comments.addClass('animated fadeIn');
+      $comments.slideDown();
+      // $comments.removeClass('animated fadeOut');
+      // $post.addClass('nm-bn-show-comments');
+      // $comments.addClass('animated fadeIn');
       $(event.target).text('Hide Comment' + suffix);
     }
   },
   sharePostFacebook : function (event) {
     window.open('http://www.facebook.com/sharer.php?u=' +
       encodeURIComponent(this.model.get('postUrl')), '', 'width=660,height=350');
+    this.model.set('commentsShown', !commentsShown);
   }
 });
