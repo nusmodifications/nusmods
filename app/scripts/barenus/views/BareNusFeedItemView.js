@@ -13,9 +13,7 @@ module.exports = Marionette.ItemView.extend({
   template: template,
   events: {
     'click .js-nm-bn-post-see-more': 'seeMorePost',
-    'click .js-nm-bn-toggle-comments': 'toggleComments',
-    'click .js-nm-bn-share-fb': 'sharePostFacebook',
-    'click .js-nm-bn-share-tw': 'sharePostTwitter'
+    'click .js-nm-bn-toggle-comments': 'toggleComments'
   },
   seeMorePost: function (event) {
     var $postMessage = $(event.target).closest('.nm-bn-post-message-container');
@@ -45,10 +43,6 @@ module.exports = Marionette.ItemView.extend({
       // $comments.addClass('animated fadeIn');
       $(event.target).text('Hide Comment' + suffix);
     }
-  },
-  sharePostFacebook : function (event) {
-    window.open('http://www.facebook.com/sharer.php?u=' +
-      encodeURIComponent(this.model.get('postUrl')), '', 'width=660,height=350');
     this.model.set('commentsShown', !commentsShown);
   }
 });
