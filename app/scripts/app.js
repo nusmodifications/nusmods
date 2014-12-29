@@ -124,6 +124,7 @@ App.on('start', function () {
   // require('ivle');
   require('./barenus');
   require('./preferences');
+  require('./blog');
 
   // footer modules
   require('./about');
