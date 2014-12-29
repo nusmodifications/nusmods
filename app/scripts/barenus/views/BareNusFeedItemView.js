@@ -27,7 +27,7 @@ module.exports = Marionette.ItemView.extend({
     if ($post.hasClass('nm-bn-show-comments')) {
       $comments.addClass('animated fadeOut');
       var duration = parseInt($comments.css('animation-duration'));
-      duration = isNaN(duration) ? 800 : duration * 1000 - 200;
+      duration = isNaN(duration) ? 800 : duration * 1000 * 0.8;
       setTimeout(function() {
         $post.removeClass('nm-bn-show-comments');
       }, duration);
