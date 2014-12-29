@@ -10,7 +10,7 @@ module.exports = Marionette.ItemView.extend({
   template: template,
   events: {
     'click .js-nm-bn-post-see-more': 'seeMorePost',
-    'click .js-nm-bn-show-comments': 'showComments',
+    'click .js-nm-bn-toggle-comments': 'toggleComments',
     'click .js-nm-bn-share-fb': 'sharePostFacebook',
     'click .js-nm-bn-share-tw': 'sharePostTwitter'
   },
@@ -19,10 +19,25 @@ module.exports = Marionette.ItemView.extend({
     $postMessage.addClass('nm-bn-show-message');
     $postMessage.find('.nm-bn-post-full-message').addClass('animated fadeIn');
   },
-  showComments: function (event) {
+  toggleComments: function (event) {
     var $post = $(event.target).closest('.js-nm-bn-post');
-    $post.addClass('nm-bn-show-comments');
-    $post.find('.js-nm-bn-comments').addClass('animated fadeIn');
+    var $comments = $post.find('.js-nm-bn-comments');
+    var count = this.model.get('comments').data.length;
+    var suffix = count > 1 ? 's' : '';
+    if ($post.hasClass('nm-bn-show-comments')) {
+      $comments.addClass('animated fadeOut');
+      var duration = parseInt($comments.css('animation-duration'));
+      duration = isNaN(duration) ? 800 : duration * 1000 - 200;
+      setTimeout(function() {
+        $post.removeClass('nm-bn-show-comments');
+      }, duration);
+      $(event.target).text('Show ' + count + ' Comment' + suffix);
+    } else {
+      $comments.removeClass('animated fadeOut');
+      $post.addClass('nm-bn-show-comments');
+      $comments.addClass('animated fadeIn');
+      $(event.target).text('Hide Comment' + suffix);
+    }
   },
   sharePostFacebook : function (event) {
     window.open('http://www.facebook.com/sharer.php?u=' +
