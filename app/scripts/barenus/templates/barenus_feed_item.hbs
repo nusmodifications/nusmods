@@ -21,7 +21,7 @@
         {{/if}}
         <div>
           {{#if comments}}
-            <a class="js-nm-bn-show-comments">{{comments.data.length}} comment{{#notequals comments.data.length 1}}s{{/notequals}}</a>
+            <a class="js-nm-bn-toggle-comments">Show {{comments.data.length}} comment{{#notequals comments.data.length 1}}s{{/notequals}}</a>
           {{else}}
             <span class="highlight thin">No comments</span>
           {{/if}}
