@@ -4,7 +4,16 @@ var moment = require('moment');
 
 module.exports = {
   currentAcadYear: function (date) {
-    return '14/15';
+    // Return format: 'YY/YY'
+    var currYear = moment(date).year();
+    var currSem = this.currentAcadSem(date);
+    if (currSem === '1'){
+      nextYear = currYear + 1;
+      return String(currYear).substr(2, 3) + '/' + String(nextYear).substr(2, 3);
+    } else if(currSem === '2'){
+      prevYear = currYear -1;
+      return String(prevYear).substr(2, 3) + '/' + String(currYear).substr(2, 3);
+    }
   },
   currentAcadSem: function (date) {
     // Return '1' or '2'. We'll ignore special sem for now
