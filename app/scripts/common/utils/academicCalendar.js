@@ -7,7 +7,8 @@ module.exports = {
     return '14/15';
   },
   currentAcadSem: function (date) {
-    return '2';
+    // Return '1' or '2'. We'll ignore special sem for now
+    return moment(date).month() < 7 ? '2' : '1';
   },
   currentAcadWeek: function (date) {
     var currentAcadYear = this.currentAcadYear(date);
