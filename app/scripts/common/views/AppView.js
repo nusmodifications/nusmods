@@ -12,6 +12,7 @@ var analytics = require('../../analytics');
 var attachFastClick = require('fastclick');
 var corsify = require('../../cors/corsify');
 var themePicker = require('../themes/themePicker');
+var academicCalendar = require('../utils/academicCalendar');
 require('bootstrap/alert');
 require('qTip2');
 
@@ -174,6 +175,7 @@ module.exports = Backbone.View.extend({
       $('.cors-round-text').html(corsify.determineRound(Date.now()));
       $('.cors-round-container').addClass('animated bounceInUp shown');
       $('.js-nm-contest-alert').addClass('animated bounceInDown nm-force-show');
+      $('.js-nm-current-week-text').text(academicCalendar.currentAcadWeek(new Date()));
     })();
   },
 
