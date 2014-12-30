@@ -9,10 +9,10 @@ module.exports = {
     var currSem = this.currentAcadSem(date);
     if (currSem === '1'){
       var nextYear = currYear + 1;
-      return String(currYear).substr(2, 3) + '/' + String(nextYear).substr(2, 3);
+      return currYear.toString().substr(2, 3) + '/' + nextYear.toString().substr(2, 3);
     } else if(currSem === '2'){
       var prevYear = currYear -1;
-      return String(prevYear).substr(2, 3) + '/' + String(currYear).substr(2, 3);
+      return prevYear.toString().substr(2, 3) + '/' + currYear.toString().substr(2, 3);
     }
   },
   currentAcadSem: function (date) {
@@ -41,18 +41,19 @@ module.exports = {
     if (currentWeekOfTheSem > 17 || (currentSemester === '2' && currentWeekOfTheSem === 0) || currentWeekOfTheSem < 0 ){
       return 'AY20' + currentAcadYear + ', Vacation Week';
     } else {
+      var week;
       switch (currentWeekOfTheSem) {
         case 7:
-          var week = "Recess Week";
+          week = 'Recess Week';
           break;
         case 15:
-          var week = "Reading Week";
+          week = 'Reading Week';
           break;
         case 16:
-          var week = "Examination Week 1";
+          week = 'Examination Week 1';
           break;
         case 17:
-          var week = "Examination Week 2";
+          week = 'Examination Week 2';
           break;
         default:
           var weekNumber = currentWeekOfTheSem;
@@ -60,7 +61,7 @@ module.exports = {
             // For weeks after recess week
             weekNumber--;
           }
-          var week = "Week " + String(weekNumber);
+          week = 'Week ' + weekNumber.toString();
       }
             
       return ('AY20' + currentAcadYear + ', ' + 

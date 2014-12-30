@@ -2,7 +2,6 @@
 
 var App = require('../../app');
 var Marionette = require('backbone.marionette');
-var _ = require('underscore');
 
 var navigationItem = App.request('addNavigationItem', {
   name: 'Modules',
