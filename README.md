@@ -33,7 +33,7 @@ $ bower install
 $ bundle install
 ```
 
-Make a copy of the config file. Add Facebook App credentials (needed only for barenus.php).
+Make a copy of the config file. Add Facebook App credentials (needed only by `barenus.php`).
 ```bash
 $ cp ./app/config.json.dist ./app/config.json
 ```
@@ -50,6 +50,12 @@ To get a complete, minified, production build under `dist/`:
 
 ```bash
 $ grunt
+```
+
+Alternatively, a version that ignores jshint warnings:
+
+```bash
+$ grunt build
 ```
 
 ## Deploying to Production
@@ -79,12 +85,17 @@ The development server serves the files generated in `api/app/api` under
 
 ## Optional Dependencies
 
-- [PHP](http://www.php.net) for export, URL shortening and redirect scripts.
+- [PHP](http://www.php.net) for export, URL shortening, redirect and Facebook API proxy scripts.
 - [YOURLS](http://yourls.org/) for URL shortening.
 - [wkhtmltopdf and wkhtmltoimage](http://code.google.com/p/wkhtmltopdf/) for pdf
   and image export. Using the static binaries is suggested, as compiling with
   all the features of the static build needs a custom patched version of QT,
   which takes a *long* time to build.
+- [Facebook PHP SDK](https://github.com/facebook/facebook-php-sdk-v4) for Facebook API proxy.
+- To install the PHP dependencies, simple do:
+```bash
+$ composer install
+```
 
 ## License
 
