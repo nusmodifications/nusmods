@@ -1,0 +1,22 @@
+<div class="panel panel-default">
+  <div class="panel-body">
+    <fieldset>
+      <legend>Active Filters</legend>
+      <dl>
+        {{#if selectedFiltersParsed}}
+          {{#each selectedFiltersParsed}}
+            <div class="nm-module-filter-meta-list">
+              <dt><strong>{{type}}:</strong></dt>
+              <dd>{{#each options}} <span class="label label-primary">{{this}}</span> {{/each}}</dd>
+            </div>
+          {{/each}}
+        {{else}}
+          <p>No filters active.</p>
+        {{/if}}
+      </dl>
+    </fieldset>
+  </div>
+</div>
+<hr>
+<h3>{{resultsLength}} Modules Found</h3>
+<hr>

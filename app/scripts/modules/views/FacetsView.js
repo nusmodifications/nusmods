@@ -56,6 +56,7 @@ module.exports = Marionette.CollectionView.extend({
           selectedFilters[facet.get('label')] = filters;
         }
       });
+      this.trigger('selectedFiltersChanged', selectedFilters);
       localforage.setItem(moduleFinderNamespace + 'filters', selectedFilters);
     }
   },

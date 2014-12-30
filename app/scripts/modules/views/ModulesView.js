@@ -1,6 +1,7 @@
 'use strict';
 
 var $ = require('jquery');
+var Backbone = require('backbone');
 var ArrayFacetModel = require('../models/ArrayFacetModel');
 var FacetCollection = require('../collections/FacetCollection');
 var FacetsView = require('./FacetsView');
@@ -8,6 +9,7 @@ var GoToTopBehavior = require('../../common/behaviors/GoToTopBehavior');
 var Marionette = require('backbone.marionette');
 var ModuleCollection = require('../../common/collections/ModuleCollection');
 var ModulesListingView = require('./ModulesListingView');
+var ModulesFilterMetaView = require('./ModulesFilterMetaView');
 var _ = require('underscore');
 var config = require('../../common/config');
 var localforage = require('localforage');
@@ -18,6 +20,7 @@ module.exports = Marionette.LayoutView.extend({
   template: template,
 
   regions: {
+    modulesFilterMetaRegion: '.nm-module-filter-meta',
     modulesRegion: '#content',
     sidebarRegion: '#sidebar'
   },
@@ -45,7 +48,7 @@ module.exports = Marionette.LayoutView.extend({
           .siblings('ul').toggle();
     });
 
-    function updateAncestors(el, checked) {
+    function updateAncestors (el, checked) {
       var all = true;
       el.siblings().each(function() {
         all = $(this).children('input[type="checkbox"]')
@@ -177,11 +180,26 @@ module.exports = Marionette.LayoutView.extend({
         });
       }
 
-      that.sidebarRegion.show(new FacetsView({
+      var facetsView = new FacetsView({
         collection: facets,
         threshold: 600
-      }));
+      });
+      that.sidebarRegion.show(facetsView);
 
+      var modulesFilterMetaView = new ModulesFilterMetaView({
+        model: new Backbone.Model({
+          selectedFilters: selectedFilters,
+          resultsLength: facetsView.collection.rawFilteredCollection.length
+        })
+      });
+
+      that.listenTo(facetsView, 'selectedFiltersChanged', function (selectedFilters) {
+        modulesFilterMetaView.model.set('selectedFilters', selectedFilters);
+        modulesFilterMetaView.model.set('resultsLength', facetsView.collection.rawFilteredCollection.length);
+        modulesFilterMetaView.updateView();
+      });
+
+      that.modulesFilterMetaRegion.show(modulesFilterMetaView);
       that.modulesRegion.show(new ModulesListingView({collection: filteredModules}));
     });
   }

@@ -571,6 +571,16 @@ dd.lecturer {
   padding: 10px 15px;
 }
 
+.nm-module-filter-meta {
+  .nm-module-filter-meta-list {
+    dt, 
+    dd {
+      display: inline-block;
+    }
+    margin-bottom: 5px;
+  }
+}
+
 .empty-module-listing {
   text-align: center;
 }
