@@ -8,10 +8,10 @@ module.exports = {
     var currYear = moment(date).year();
     var currSem = this.currentAcadSem(date);
     if (currSem === '1'){
-      nextYear = currYear + 1;
+      var nextYear = currYear + 1;
       return String(currYear).substr(2, 3) + '/' + String(nextYear).substr(2, 3);
     } else if(currSem === '2'){
-      prevYear = currYear -1;
+      var prevYear = currYear -1;
       return String(prevYear).substr(2, 3) + '/' + String(currYear).substr(2, 3);
     }
   },
