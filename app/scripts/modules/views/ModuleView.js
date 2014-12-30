@@ -374,6 +374,6 @@ module.exports = Marionette.LayoutView.extend({
     }, 300);
     setTimeout(function () {
       window.location.hash = target;
-    })
+    });
   }
 });
