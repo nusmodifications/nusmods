@@ -795,9 +795,9 @@ colgroup.hover {
   }
 }
 
-// ModMaven
-.modmaven {
-  #tree {
+// Pre-requisites Tree
+.nm-prerequisites-tree{
+  #nm-prerequisites-tree-canvas {
     border: 2px solid #eee;
     min-height: 400px;
   }
@@ -864,8 +864,8 @@ colgroup.hover {
 }
 
 .mode-slate {
-  .modmaven {
-    #tree {
+  .nm-prerequisites-tree {
+    #nm-prerequisites-tree-canvas {
       border-color: #444;
     }
     .link {
