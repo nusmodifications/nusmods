@@ -17,7 +17,6 @@ require('bootstrap/scrollspy');
 require('bootstrap/affix');
 
 var preferencesNamespace = config.namespaces.preferences + ':';
-var searchPreferences = {};
 
 function drawTree(selector, prereqs, lockedModules, modCode) {
   function isOrAnd (d) { return (d.name === 'or' || d.name === 'and'); }
@@ -189,6 +188,7 @@ module.exports = Marionette.LayoutView.extend({
       'account': '#account',
       'student': 'input:radio[name="student-radios"]'
     };
+    this.searchPreferences = {};
   },
   events: {
     'change #faculty, input:radio[name="student-radios"], #account': 'updatePreferences',
@@ -305,7 +305,7 @@ module.exports = Marionette.LayoutView.extend({
           localforage.setItem(preferencesNamespace + item, value);
         }
         $(selector).val([value]);
-        searchPreferences[item] = value;
+        that.searchPreferences[item] = value;
         loadedItems++;
         if (loadedItems === _.keys(that.formElements).length) {
           that.showBiddingStatsRegion(true);
@@ -335,7 +335,7 @@ module.exports = Marionette.LayoutView.extend({
     var value = $target.val();
     analytics.track('Module cors', 'Change ' + property, value);
     if (this.savePreference(property, value)) {
-      searchPreferences[property] = value;
+      this.searchPreferences[property] = value;
       this.showBiddingStatsRegion(true);
     }
   },
@@ -345,9 +345,9 @@ module.exports = Marionette.LayoutView.extend({
     var biddingStatsModel = new Backbone.Model({stats: biddingStatsDeepCopy});
     var biddingStatsView = new BiddingStatsView({model: biddingStatsModel});
 
-    var faculty = searchPreferences.faculty;
-    var accountType = searchPreferences.account;
-    var newStudent = searchPreferences.student === 'true';
+    var faculty = this.searchPreferences.faculty;
+    var accountType = this.searchPreferences.account;
+    var newStudent = this.searchPreferences.student === 'true';
 
     if (faculty && faculty !== 'default' && accountType && displayFiltered) {
       biddingStatsView.filterStats(faculty, accountType, newStudent);
