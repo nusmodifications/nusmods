@@ -25,11 +25,17 @@ Once it's up, do a `vagrant ssh` to enter the development environment.
 
 ### Setup
 
+Install the necessary packages.
 ```bash
 $ npm install -g bower grunt-cli
 $ npm install
 $ bower install
 $ bundle install
+```
+
+Make a copy of the config file. Add Facebook App credentials (needed only for barenus.php).
+```bash
+$ cp ./app/config.json.dist ./app/config.json
 ```
 
 ## Building for Development
