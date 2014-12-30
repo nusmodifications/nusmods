@@ -2,7 +2,6 @@
 
 var $ = require('jquery');
 var _ = require('underscore');
-var App = require('../../app');
 var Marionette = require('backbone.marionette');
 var NUSMods = require('../../nusmods');
 var d3 = require('d3');
