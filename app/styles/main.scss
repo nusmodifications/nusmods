@@ -116,6 +116,10 @@ kbd {
   color: #000 !important;
 }
 
+.btn[disabled] {
+  color: #ccc;
+}
+
 // Layout
 .container-fluid {
   @media (min-width: $screen-lg-min) {
