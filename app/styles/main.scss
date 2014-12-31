@@ -529,6 +529,15 @@ $panel-heading-color: #3e444c;
       float: right;
     }
   }
+  .nm-module-item-right-col {
+    dt,
+    dd {
+      display: block;
+    }
+    hr {
+      margin: 10px;
+    }
+  }
 }
 
 dd.lecturer {

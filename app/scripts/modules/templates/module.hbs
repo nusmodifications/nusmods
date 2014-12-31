@@ -53,21 +53,6 @@
                     {{/if}}
                     <dt class="highlight">Department</dt>
                     <dd>{{module.Department}}</dd>
-                    {{#if module.hasExams}}
-                      {{#each module.History}}
-                        <dt class="highlight">Semester {{Semester}} Exam Date</dt>
-                        <dd>
-                          {{#if examStr}}
-                            {{examStr}}
-                          {{else}}
-                            No Exam
-                          {{/if}}
-                        </dd>
-                      {{/each}}
-                    {{else}}
-                      <dt class="highlight">Exam Date</dt>
-                      <dd>No Exam</dd>
-                    {{/if}}
                     {{#if module.Workload}}
                       <dt class="highlight">Weekly Workload</dt>
                       <dl class="workload-components">
@@ -87,6 +72,22 @@
                           <dd>Preparation: {{module.WorkloadComponents.preparationHours}} hrs</dd>
                         {{/if}}
                       </dl>
+                    {{/if}}
+                    
+                    {{#if module.hasExams}}
+                      {{#each module.History}}
+                        <dt class="highlight">Semester {{Semester}} Exam Date</dt>
+                        <dd>
+                          {{#if examStr}}
+                            {{examStr}}
+                          {{else}}
+                            No Exam
+                          {{/if}}
+                        </dd>
+                      {{/each}}
+                    {{else}}
+                      <dt class="highlight">Exam Date</dt>
+                      <dd>No Exam</dd>
                     {{/if}}
                   </dl>
                 </div>

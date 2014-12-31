@@ -41,11 +41,28 @@
         {{/if}}
       {{/each}}
     </dl>
-    <dl class="col-sm-3">
+    <dl class="col-sm-3 nm-module-item-right-col">
       {{#if Workload}}
-        <dt>Workload</dt>
-        <dd class="workload">{{Workload}}</dd>
+        <dt>Weekly Workload</dt>
+        <dl class="nm-workload-components">
+          {{#if WorkloadComponents.lectureHours}}
+            <dd>Lecture: {{WorkloadComponents.lectureHours}} hrs</dd>
+          {{/if}}
+          {{#if WorkloadComponents.tutorialHours}}
+            <dd>Tutorial: {{WorkloadComponents.tutorialHours}} hrs</dd>
+          {{/if}}
+          {{#if WorkloadComponents.labHours}}
+            <dd>Lab: {{WorkloadComponents.labHours}} hrs</dd>
+          {{/if}}
+          {{#if WorkloadComponents.projectHours}}
+            <dd>Project: {{WorkloadComponents.projectHours}} hrs</dd>
+          {{/if}}
+          {{#if WorkloadComponents.preparationHours}}
+            <dd>Preparation: {{WorkloadComponents.preparationHours}} hrs</dd>
+          {{/if}}
+        </dl>
       {{/if}}
+      <hr>
       {{#if hasExams}}
         {{#each History}}
           <dt>Semester {{Semester}} Exam</dt>
