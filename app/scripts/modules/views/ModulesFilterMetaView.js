@@ -19,7 +19,9 @@ module.exports = Marionette.CompositeView.extend({
     });
     this.model.set('selectedFiltersParsed', selectedFiltersParsed);
   },
-  updateView: function () {
+  updateView: function (selectedFilters, resultsLength) {
+    this.model.set('selectedFilters', selectedFilters);
+    this.model.set('resultsLength', resultsLength);
     this.parseSelectedFilters();
     this.render();
   }

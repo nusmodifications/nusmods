@@ -42,13 +42,13 @@ module.exports = Marionette.LayoutView.extend({
   },
 
   events: {
-    'click .js-reset-filters': function () {
-      this.facetsView.resetFilters();
+    'click .js-nm-clear-filters': function () {
+      this.facetsView.clearFilters();
     }
   },
 
   onShow: function () {
-    $('.arrow-down, .arrow-right').click(function() {
+    $('.arrow-down, .arrow-right').click(function () {
       $(this)
           .toggleClass('arrow-down arrow-right')
           .siblings('ul').toggle();
@@ -186,26 +186,24 @@ module.exports = Marionette.LayoutView.extend({
         });
       }
 
-      var facetsView = new FacetsView({
+      that.facetsView = new FacetsView({
         collection: facets,
         threshold: 600
       });
-      that.sidebarRegion.show(facetsView);
+      that.sidebarRegion.show(that.facetsView);
 
-      var modulesFilterMetaView = new ModulesFilterMetaView({
+      that.modulesFilterMetaView = new ModulesFilterMetaView({
         model: new Backbone.Model({
           selectedFilters: selectedFilters,
-          resultsLength: facetsView.collection.rawFilteredCollection.length
+          resultsLength: that.facetsView.collection.rawFilteredCollection.length
         })
       });
 
-      that.listenTo(facetsView, 'selectedFiltersChanged', function (selectedFilters) {
-        modulesFilterMetaView.model.set('selectedFilters', selectedFilters);
-        modulesFilterMetaView.model.set('resultsLength', facetsView.collection.rawFilteredCollection.length);
-        modulesFilterMetaView.updateView();
+      that.listenTo(that.facetsView, 'selectedFiltersChanged', function (selectedFilters) {
+        that.modulesFilterMetaView.updateView(selectedFilters, that.facetsView.collection.rawFilteredCollection.length);
       });
 
-      that.modulesFilterMetaRegion.show(modulesFilterMetaView);
+      that.modulesFilterMetaRegion.show(that.modulesFilterMetaView);
       that.modulesRegion.show(new ModulesListingView({collection: filteredModules}));
     });
   }

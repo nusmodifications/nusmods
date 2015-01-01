@@ -62,7 +62,7 @@ module.exports = Marionette.CollectionView.extend({
     }
   },
 
-  resetFilters: function () {
+  clearFilters: function () {
     $('.nm-module-filter').removeClass('in');
     $('.nm-caret').removeClass('nm-caret-down');
 
@@ -76,6 +76,7 @@ module.exports = Marionette.CollectionView.extend({
     });
     this.persistFilters('');
     this.persistFacets('');
+    this.trigger('selectedFiltersChanged', {});
   },
 
   onFilter: function(options) {
