@@ -192,6 +192,10 @@ var LessonView = Marionette.ItemView.extend({
       tr.remove();
     }
     return this;
+  },
+
+  onBeforeDestroy: function() {
+    this.$el.qtip('hide');
   }
 });
 
