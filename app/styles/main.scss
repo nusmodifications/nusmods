@@ -715,6 +715,9 @@ colgroup.hover {
     &.affix {
       top: 85px;
     }
+    &.affix-bottom {
+      position: relative;
+    }
   }
   .module-main-content:before {
     content: ' ';
