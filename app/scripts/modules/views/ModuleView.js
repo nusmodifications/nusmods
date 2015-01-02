@@ -32,6 +32,10 @@ module.exports = Marionette.LayoutView.extend({
     prerequisitesTreeRegion: '.nm-prerequisites-tree'
   },
   initialize: function () {
+    if (!window.location.hash) {
+      $('html,body').stop(true, true).animate({scrollTop: 0}, 400);
+    }
+    
     this.formElements = {
       'faculty': '#faculty',
       'account': '#account',
