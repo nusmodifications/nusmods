@@ -127,6 +127,7 @@ App.on('start', function () {
 
   // footer modules
   require('./about');
+  require('./contribute');
   require('./help');
   require('./support');
 
