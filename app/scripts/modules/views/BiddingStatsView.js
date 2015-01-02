@@ -3,6 +3,7 @@
 var Marionette = require('backbone.marionette');
 var _ = require('underscore');
 var template = require('../templates/bidding_stats.hbs');
+require('bootstrap/tab');
 
 var studentAcctTypeMapping = {
   'Returning Students [P]': function (stat, student) {
@@ -54,6 +55,8 @@ module.exports = Marionette.CompositeView.extend({
   filterStats: function (faculty, accountType, newStudent) {
     var stats = this.model.attributes.stats;
     _.each(stats, function (semester) {
+      semester.shortName = semester.Semester.replace(/20/g, '').replace(/ Sem /, 'S');
+      semester.tabId = semester.shortName.replace('/', '').concat('-BiddingStat');
       semester.BiddingStats = _.filter(semester.BiddingStats, function (stat) {
         return determineStatRelevance(stat, {
           faculty: faculty,
