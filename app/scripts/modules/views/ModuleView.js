@@ -14,6 +14,7 @@ var template = require('../templates/module.hbs');
 var config = require('../../common/config');
 require('bootstrap/scrollspy');
 require('bootstrap/affix');
+require('bootstrap/tab');
 
 var preferencesNamespace = config.namespaces.preferences + ':';
 

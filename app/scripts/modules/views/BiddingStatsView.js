@@ -3,7 +3,6 @@
 var Marionette = require('backbone.marionette');
 var _ = require('underscore');
 var template = require('../templates/bidding_stats.hbs');
-require('bootstrap/tab');
 
 var studentAcctTypeMapping = {
   'Returning Students [P]': function (stat, student) {
