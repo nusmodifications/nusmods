@@ -211,9 +211,8 @@ module.exports = Marionette.LayoutView.extend({
 
     if (faculty && faculty !== 'default' && accountType && displayFiltered) {
       biddingStatsView.filterStats(faculty, accountType, newStudent);
+      this.biddingStatsRegion.show(biddingStatsView);
     }
-
-    this.biddingStatsRegion.show(biddingStatsView);
   },
   savePreference: function (property, value) {
     if (property === 'faculty' && value === 'default') {
