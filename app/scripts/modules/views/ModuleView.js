@@ -184,6 +184,9 @@ module.exports = Marionette.LayoutView.extend({
     $('body').scrollspy({ 
       target: '.js-nm-module-nav-container' 
     });
+
+    // Index 0 is "All", therefore index no. = sem no.
+    $('.js-nm-ls-schedule-tabs li:eq(' + config.semester + ') a').tab('show');
   },
   showAllStats: function () {
     analytics.track('Module cors', 'View full stats', this.model.get('module').ModuleCode);

@@ -2,6 +2,7 @@
 
 var Marionette = require('backbone.marionette');
 var _ = require('underscore');
+var $ = require('jquery');
 var template = require('../templates/bidding_stats.hbs');
 
 var studentAcctTypeMapping = {
@@ -66,5 +67,8 @@ module.exports = Marionette.CompositeView.extend({
         });
       });
     });
+  },
+  onShow: function () {
+    $('.js-nm-bid-stat-tabs li:eq(1) a').tab('show');
   }
 });
