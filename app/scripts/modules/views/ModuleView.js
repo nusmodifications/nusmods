@@ -186,7 +186,7 @@ module.exports = Marionette.LayoutView.extend({
     });
 
     // Index 0 is "All", therefore index no. = sem no.
-    $('.js-nm-ls-schedule-tabs li:eq(' + config.semester + ') a').tab('show');
+    $('.js-nm-ls-schedule-tabs a[data-target="#nm-ls-schedule-sem' + config.semester + '"]').tab('show');
   },
   showAllStats: function () {
     analytics.track('Module cors', 'View full stats', this.model.get('module').ModuleCode);
