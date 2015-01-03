@@ -252,7 +252,7 @@
                 </li>
                 {{#each module.History}}
                   <li role="presentation">
-                    <a data-target="#Sem{{Semester}}-Schdule" aria-controls="{{Semester}}" role="tab" data-toggle="pill">Semester {{Semester}}</a>
+                    <a data-target="#nm-ls-schedule-sem{{Semester}}" aria-controls="{{Semester}}" role="tab" data-toggle="pill">Semester {{Semester}}</a>
                   </li>
                 {{/each}}
               </ul>
@@ -260,7 +260,7 @@
               <!-- Tab panes -->
               <div class="tab-content">
                 {{#each module.History}}
-                  <div role="tabpanel" class="tab-pane fade semester-schedule-tab" id="Sem{{Semester}}-Schdule">
+                  <div role="tabpanel" class="tab-pane fade semester-schedule-tab" id="nm-ls-schedule-sem{{Semester}}">
                   <h2>Semester {{Semester}}</h2>
                   {{#each formattedTimetable}}
                     <h3 class="highlight thin">{{LessonType}}</h3>

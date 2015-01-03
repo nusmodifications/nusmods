@@ -54,8 +54,10 @@ module.exports = Marionette.CompositeView.extend({
   filterStats: function (faculty, accountType, newStudent) {
     var stats = this.model.attributes.stats;
     _.each(stats, function (semester) {
-      semester.shortName = semester.Semester.replace(/20/g, '').replace(/ Sem /, 'S');
-      semester.tabId = semester.shortName.replace('/', '').concat('-BiddingStat');
+      semester.shortName = semester.Semester.replace(/20/g, '');
+      semester.tabId = semester.shortName.replace(/AY|\//g, '')
+                                         .replace(/ Sem /, 's')
+                                         .replace(/^/, 'js-nm-bid-stat-');
       semester.BiddingStats = _.filter(semester.BiddingStats, function (stat) {
         return determineStatRelevance(stat, {
           faculty: faculty,
