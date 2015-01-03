@@ -2,6 +2,7 @@
 
 var Marionette = require('backbone.marionette');
 var _ = require('underscore');
+var $ = require('jquery');
 var template = require('../templates/bidding_stats.hbs');
 
 var studentAcctTypeMapping = {
@@ -54,6 +55,10 @@ module.exports = Marionette.CompositeView.extend({
   filterStats: function (faculty, accountType, newStudent) {
     var stats = this.model.attributes.stats;
     _.each(stats, function (semester) {
+      semester.shortName = semester.Semester.replace(/20/g, '');
+      semester.tabId = semester.shortName.replace(/AY|\//g, '')
+                                         .replace(/ Sem /, 's')
+                                         .replace(/^/, 'js-nm-bid-stat-');
       semester.BiddingStats = _.filter(semester.BiddingStats, function (stat) {
         return determineStatRelevance(stat, {
           faculty: faculty,
@@ -62,5 +67,8 @@ module.exports = Marionette.CompositeView.extend({
         });
       });
     });
+  },
+  onShow: function () {
+    $('.js-nm-bid-stat-tabs li:eq(1) a').tab('show');
   }
 });

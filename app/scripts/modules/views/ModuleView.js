@@ -14,6 +14,7 @@ var template = require('../templates/module.hbs');
 var config = require('../../common/config');
 require('bootstrap/scrollspy');
 require('bootstrap/affix');
+require('bootstrap/tab');
 
 var preferencesNamespace = config.namespaces.preferences + ':';
 
@@ -183,6 +184,9 @@ module.exports = Marionette.LayoutView.extend({
     $('body').scrollspy({ 
       target: '.js-nm-module-nav-container' 
     });
+
+    // Index 0 is "All", therefore index no. = sem no.
+    $('.js-nm-ls-schedule-tabs li:eq(' + config.semester + ') a').tab('show');
   },
   showAllStats: function () {
     analytics.track('Module cors', 'View full stats', this.model.get('module').ModuleCode);
@@ -211,9 +215,8 @@ module.exports = Marionette.LayoutView.extend({
 
     if (faculty && faculty !== 'default' && accountType && displayFiltered) {
       biddingStatsView.filterStats(faculty, accountType, newStudent);
+      this.biddingStatsRegion.show(biddingStatsView);
     }
-
-    this.biddingStatsRegion.show(biddingStatsView);
   },
   savePreference: function (property, value) {
     if (property === 'faculty' && value === 'default') {
