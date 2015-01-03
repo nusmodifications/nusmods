@@ -2,9 +2,13 @@
 
   <!-- Nav tabs -->
   <ul class="nav nav-pills" role="tablist">
-    <li role="presentation"><a data-target=".bidding-history-tab" aria-controls="all" role="tab" data-toggle="pill">All</a></li>
+    <li role="presentation">
+      <a data-target=".bidding-history-tab" aria-controls="all" role="tab" data-toggle="pill">All</a>
+    </li>
     {{#each stats}}
-      <li role="presentation"><a data-target="#{{tabId}}" aria-controls="{{tabId}}" role="tab" data-toggle="pill">{{shortName}}</a></li>
+      <li role="presentation">
+        <a data-target="#{{tabId}}" aria-controls="{{tabId}}" role="tab" data-toggle="pill">{{shortName}}</a>
+      </li>
     {{/each}}
   </ul>
 
