@@ -23,20 +23,20 @@ module.exports = Marionette.LayoutView.extend({
   initialize: function () {
     this.model = new Backbone.Model();
     // temporary using developer list lol
-    this.model.set('revsUrl', 'https://api.github.com/repos/NUSModifications/NUSMods/contributors');
+    // this.model.set('revsUrl', 'https://api.github.com/repos/NUSModifications/NUSMods/contributors');
   },
   template: template,
   regions: {
     reviewersRegion: '.nm-ct-revs-container'
   },
   onShow: function () {
-    this.reviewersCollection = new Backbone.Collection();
-    this.reviewersListView = new ReviewersListView({collection: this.reviewersCollection});
-    var _this = this;
-    $.get(_this.model.get('revsUrl'), function (items) {
-      _this.reviewersCollection.add(items);
-    });
-    $('.nm-ct-revs-container').addClass('animated fadeIn');
-    this.reviewersRegion.show(this.reviewersListView);
+    // this.reviewersCollection = new Backbone.Collection();
+    // this.reviewersListView = new ReviewersListView({collection: this.reviewersCollection});
+    // var _this = this;
+    // $.get(_this.model.get('revsUrl'), function (items) {
+    //   _this.reviewersCollection.add(items);
+    // });
+    // $('.nm-ct-revs-container').addClass('animated fadeIn');
+    // this.reviewersRegion.show(this.reviewersListView);
   },
 });

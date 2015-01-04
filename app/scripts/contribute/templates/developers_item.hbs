@@ -1,5 +1,13 @@
-<a class="nm-ct-dev-head" href="{{html_url}}" target="_blank">
-  <img class="img-circle img-responsive" src="{{avatar_url}}" alt="{{login}}">
-  <div class="nm-ct-dev-stat"><p>{{contributions}}<br>commits</p></div>
+<a href="{{html_url}}" target="_blank">
+  <div class="nm-ct-dev-head">
+    <img class="img-rounded img-responsive" src="{{avatar_url}}" alt="{{login}}">
+    <div class="nm-ct-dev-stat img-rounded">
+      <p>
+        <span class="nm-text-xlarge">{{contributions}}</span>
+        <span class="nm-text-medium hidden-xs hidden-sm"><br></span>
+        commit{{#notequals contributions 1}}s{{/notequals}}
+      </p>
+    </div>
+  </div>
+  <h4 class="nm-ct-dev-id"><i class="fa fa-github"></i> {{login}}</h4>
 </a>
-<p class="nm-ct-dev-id">{{login}}</p>

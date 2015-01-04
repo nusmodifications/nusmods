@@ -1,62 +1,54 @@
-@import "compass/css3/filter";
-@import "compass/css3/transition";
-
 .nm-ct {
   .nm-ct-devs-container {
     margin-top: 30px;
-
+    a:hover {
+      text-decoration: none;
+    }
     .nm-ct-dev-item {
       margin-top: 10px;
       text-align: center;
-
-      .nm-ct-dev-head {
-        display: inline-block;
-        position: relative;
-
-        .nm-ct-dev-stat {
-          border-radius: 50%;
-          background: rgba(255, 100, 0, 0.5);
-          color: white;
-          display: block;
-          height: 100%;
-          width: 100%;
-          position: absolute;
-          top: 0;
-          left: 0;
-          opacity: 0;
-          @include transition(all, .5s);
-          p {
-            position: relative;
-            top: 50%;
-            transform: translateY(-50%);
-          }
-        }
-        @media (max-width: 992px) {
-          .nm-ct-dev-stat {
-            opacity: 1;
-            height: 40%;
-            width: 40%;
-          }
-        }
-      }
-
-      .nm-ct-dev-id {
-        color: rgba(255, 100, 0, 1);
-        margin: 0 0 10px;
-        @include filter(grayscale(80%));
-      }
-
       &:hover {
-        .nm-ct-dev-head {
-          .nm-ct-dev-stat {
+        .nm-ct-dev-stat {
             opacity: 1;
-          }
         }
-
         .nm-ct-dev-id {
-          @include filter(grayscale(0));
+          filter: grayscale(0);
+          text-decoration: none;
+        }  
+      }
+    }
+    .nm-ct-dev-head {
+      display: inline-block;
+      margin-bottom: 5px;
+      position: relative;
+      .nm-ct-dev-stat {
+        background: rgba(255, 100, 0, 0.5);
+        color: white;
+        display: block;
+        height: 100%;
+        left: 0;
+        opacity: 0;
+        position: absolute;
+        top: 0;
+        width: 100%;
+        transition: all .5s;
+        p {
+          position: relative;
+          top: 50%;
+          transform: translateY(-50%);
         }
       }
+      @media (max-width: 992px) {
+        .nm-ct-dev-stat {
+          opacity: 1;
+          height: 40%;
+          width: 40%;
+        }
+      }
+    }
+    .nm-ct-dev-id {
+      color: #666;
+      margin: 0 0 10px;
     }
   }
 
@@ -82,7 +74,7 @@
           top: 0;
           left: 0;
           opacity: 0;
-          @include transition(all, .5s);
+          transition: all .5s;
           p {
             position: relative;
             top: 50%;
@@ -101,7 +93,7 @@
       .nm-ct-rev-id {
         color: rgba(255, 100, 0, 1);
         margin: 0 0 10px;
-        @include filter(grayscale(80%));
+        filter: grayscale(80%);
       }
 
       &:hover {
@@ -110,9 +102,8 @@
             opacity: 1;
           }
         }
-
         .nm-ct-rev-id {
-          @include filter(grayscale(0));
+          filter: grayscale(0);
         }
       }
     }
