@@ -1,8 +1,12 @@
 .nm-ct {
   .nm-ct-devs-container {
     margin-top: 30px;
-    a:hover {
-      text-decoration: none;
+    a {
+      display: inline-block;
+      width: 100%;
+      &:hover {
+        text-decoration: none;
+      }
     }
     .nm-ct-dev-item {
       margin-top: 10px;
@@ -21,6 +25,7 @@
       display: inline-block;
       margin-bottom: 5px;
       position: relative;
+      width: 100%;
       .nm-ct-dev-stat {
         background: rgba(255, 100, 0, 0.5);
         color: white;
@@ -38,11 +43,12 @@
           transform: translateY(-50%);
         }
       }
-      @media (max-width: 992px) {
+      @media (max-width: 1024px) {
         .nm-ct-dev-stat {
+          bottom: 0;
           opacity: 1;
-          height: 40%;
-          width: 40%;
+          height: 20%;
+          top: auto;
         }
       }
     }

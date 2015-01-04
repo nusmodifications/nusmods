@@ -10,7 +10,7 @@ require('../../common/utils/notequals');
 
 var DeveloperItemView = Marionette.ItemView.extend({
   tagName: 'div',
-  className: 'nm-ct-dev-item col-md-3 col-sm-4 col-xs-6',
+  className: 'nm-ct-dev-item col-md-3 col-sm-3 col-xs-6',
   template: item_template
 });
 
