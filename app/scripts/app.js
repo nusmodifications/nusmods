@@ -124,7 +124,6 @@ App.on('start', function () {
   require('./barenus');
   require('./friends');
   require('./venues');
-  require('./nusessities');
   require('./preferences');
   require('./blog');
 
