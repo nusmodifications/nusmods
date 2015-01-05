@@ -20,6 +20,8 @@ var config = require('../../common/config');
 require('bootstrap/tooltip');
 require('bootstrap/popover');
 
+var USER_NAME = 'Me';
+
 module.exports = Marionette.LayoutView.extend({
   initialize: function () {
   },
@@ -35,30 +37,47 @@ module.exports = Marionette.LayoutView.extend({
   },
   onShow: function () {
     var that = this;
-    localforage.getItem('timetable:friends', function (data) {
-      var friendsList = _.map(data, function (friend) {
-        return new FriendModel(friend);
-      });
-      that.friendsListCollection = new Backbone.Collection(friendsList);
-      that.friendsListView = new FriendsListView({collection: that.friendsListCollection});
-      that.friendsListRegion.show(that.friendsListView);
+    var userTimetableUrl;
+    localforage.getItem(config.semTimetableFragment(config.semester) + ':queryString').then(function (data) {
+      userTimetableUrl = data;
+    }).then(function () {
+      localforage.getItem('timetable:friends', function (data) {
+        // Get current user's information
+        var userInfo = {
+          name: USER_NAME,
+          queryString: userTimetableUrl,
+          selected: true,
+          semester: config.semester
+        };
+        if (!data) {
+          data = [userInfo];
+        } else {
+          data.unshift(userInfo);
+        }
+        var friendsList = _.map(data, function (friend) {
+          return new FriendModel(friend);
+        });
+        that.friendsListCollection = new Backbone.Collection(friendsList);
+        that.friendsListView = new FriendsListView({collection: that.friendsListCollection});
+        that.friendsListRegion.show(that.friendsListView);
 
-      var friendsSelectedList = that.friendsListCollection.where({selected: true});
-      that.friendsSelectedListView = new FriendsSelectedListView();
-      that.friendsSelectedListView.collection = new Backbone.Collection(friendsSelectedList);
-      that.friendsSelectedListRegion.show(that.friendsSelectedListView);
-      that.showSelectedFriendsList();
-      that.updateDisplayedTimetable();
-
-      that.friendsListCollection.on('change', function () {
         var friendsSelectedList = that.friendsListCollection.where({selected: true});
+        that.friendsSelectedListView = new FriendsSelectedListView();
         that.friendsSelectedListView.collection = new Backbone.Collection(friendsSelectedList);
-        that.updateDisplayedTimetable();
+        that.friendsSelectedListRegion.show(that.friendsSelectedListView);
         that.showSelectedFriendsList();
-        that.friendsListView.render();
-      });
+        that.updateDisplayedTimetable();
 
+        that.friendsListCollection.on('change', function () {
+          var friendsSelectedList = that.friendsListCollection.where({selected: true});
+          that.friendsSelectedListView.collection = new Backbone.Collection(friendsSelectedList);
+          that.updateDisplayedTimetable();
+          that.showSelectedFriendsList();
+          that.friendsListView.render();
+        });
+      });
     });
+
     this.ui.addButton.popover({
       html: true,
       placement: 'bottom',
@@ -73,8 +92,8 @@ module.exports = Marionette.LayoutView.extend({
   },
   addFriendTimetable: function () {
     var that = this;
-    var timetableUrl = $('#url').val();
     var friendName = $('#name').val();
+    var timetableUrl = $('#url').val();
     this.getFinalTimetableUrl(timetableUrl, function (data) {
       that.ui.addButton.popover('hide');
       that.insertFriendTimetableFromUrl(friendName, data.redirectedUrl);
@@ -114,6 +133,10 @@ module.exports = Marionette.LayoutView.extend({
     friendsData = _.map(friendsData, function (person) {
       return _.omit(person, 'moduleInformation');
     });
+    // Don't persist current user's information into friend's data.
+    friendsData = _.filter(friendsData, function (person) {
+      return person.name !== USER_NAME;
+    })
     localforage.setItem('timetable:friends', friendsData);
   },
   updateDisplayedTimetable: function () {

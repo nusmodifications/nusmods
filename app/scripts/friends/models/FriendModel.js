@@ -11,21 +11,22 @@ module.exports = Backbone.Model.extend({
   initialize: function () {
     var selectedModules = TimetableModuleCollection.fromQueryStringToJSON(this.get('queryString'));
     // TODO: Change semester
+    var that = this;
     var selectedModulesController = new SelectedModulesController({
       name: name,
-      semester: 1,
+      semester: this.get('semester'),
       saveOnChange: false
     });
 
     _.each(selectedModules, function (module) {
       selectedModulesController.selectedModules.add({
         ModuleCode: module.ModuleCode,
-        Semester: 1
+        Semester: that.get('semester')
       }, module);
     });
 
     this.set('moduleInformation', selectedModulesController.selectedModules);
-    var that = this;
+    
     selectedModulesController.selectedModules.on('change', function () {
       that.trigger('change');
     })
