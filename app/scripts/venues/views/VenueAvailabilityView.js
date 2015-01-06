@@ -4,7 +4,6 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Marionette = require('backbone.marionette');
 var template = require('../templates/venue_availability.hbs');
-var Backbone = require('backbone');
 var timify = require('../../common/utils/timify');
 
 module.exports = Marionette.LayoutView.extend({

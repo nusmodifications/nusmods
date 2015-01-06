@@ -29,6 +29,6 @@ module.exports = Backbone.Model.extend({
     
     selectedModulesController.selectedModules.on('change', function () {
       that.trigger('change');
-    })
+    });
   }
 });

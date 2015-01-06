@@ -3,7 +3,6 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var App = require('../../app');
 var Marionette = require('backbone.marionette');
 var localforage = require('localforage');
 
@@ -113,8 +112,8 @@ module.exports = Marionette.LayoutView.extend({
           callback(result);
         }
       },
-      error: function (xhr, status, error) {
-        alert(status);
+      error: function (xhr, status) {
+        window.alert(status);
       }
     });
   },
@@ -136,7 +135,7 @@ module.exports = Marionette.LayoutView.extend({
     // Don't persist current user's information into friend's data.
     friendsData = _.filter(friendsData, function (person) {
       return person.name !== USER_NAME;
-    })
+    });
     localforage.setItem('timetable:friends', friendsData);
   },
   updateDisplayedTimetable: function () {
@@ -154,7 +153,8 @@ module.exports = Marionette.LayoutView.extend({
       return _.map(person.get('moduleInformation').timetable.models, function (lesson) {
         var personName = person.get('name');
         lesson.attributes.name = personName;
-        daysNotGoingToSchool[lesson.attributes.DayText] = _.without(daysNotGoingToSchool[lesson.attributes.DayText], personName);
+        var dayText = lesson.attributes.DayText;
+        daysNotGoingToSchool[dayText] = _.without(daysNotGoingToSchool[dayText], personName);
         return lesson.attributes;
       });
     });
@@ -174,7 +174,7 @@ module.exports = Marionette.LayoutView.extend({
       }
     });
 
-    if (daysNotGoingToSchool['Saturday'] !== people.length) {
+    if (daysNotGoingToSchool.Saturday !== people.length) {
       // By default, hide Saturday if everyone not going on Saturday
       daysNotGoingToSchoolList.splice(5, 1);
     }

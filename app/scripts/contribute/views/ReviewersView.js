@@ -3,14 +3,12 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var template = require('../templates/reviewers.hbs');
-var item_template = require('../templates/reviewers_item.hbs')
-var $ = require('jquery');
-var _ = require('underscore');
+var itemTemplate = require('../templates/reviewers_item.hbs');
 
 var ReviewersItemView = Marionette.ItemView.extend({
   tagName: 'div',
   className: 'nm-ct-rev-item col-md-3 col-sm-3 col-xs-4',
-  template: item_template
+  template: itemTemplate
 });
 
 var ReviewersListView = Marionette.CollectionView.extend({

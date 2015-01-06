@@ -1,7 +1,6 @@
 'use strict';
 
 var $ = require('jquery');
-var App = require('../../app');
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var _ = require('underscore');
@@ -50,7 +49,7 @@ module.exports = Marionette.ItemView.extend({
     _.bindAll(this, 'onSelect2Open');
 
     var PAGE_SIZE = 50;
-    var venues_list = this.model.get('venuesList');
+    var venueList = this.model.get('venuesList');
     this.ui.input.select2({
       multiple: true,
       formatResult: function (object) {
@@ -60,17 +59,17 @@ module.exports = Marionette.ItemView.extend({
         var i,
           results = [],
           pushResult = function (i) {
-            var name = venues_list[i];
+            var name = venueList[i];
             return results.push({
               id: name,
-              venue_name: name
+              venueName: name
             });
           };
         var re = new RegExp(options.term, 'i');
-        for (i = options.context || 0; i < venues_list.length; i++) {
+        for (i = options.context || 0; i < venueList.length; i++) {
           if (!options.term ||
-              venues_list[i].search(re) !== -1 ||
-              venues_list[i].search(re) !== -1) {
+              venueList[i].search(re) !== -1 ||
+              venueList[i].search(re) !== -1) {
             if (pushResult(i) === PAGE_SIZE) {
               i++;
               break;
@@ -79,7 +78,7 @@ module.exports = Marionette.ItemView.extend({
         }
         options.callback({
           context: i,
-          more: i < venues_list.length,
+          more: i < venueList.length,
           results: results
         });
       }

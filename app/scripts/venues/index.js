@@ -5,6 +5,7 @@ var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var NUSMods = require('../nusmods');
 var _ = require('underscore');
+var $ = require('jquery');
 var config = require('../common/config');
 var timify = require('../common/utils/timify');
 
@@ -22,7 +23,7 @@ var loadVenueInformation = function (callback) {
 
   NUSMods.getAllTimetable(config.semester).then(function (data) {
     // Make a deepcopy so modifications will not affect the cached timetable data
-    var timetables = jQuery.extend(true, {}, data); 
+    var timetables = $.extend(true, {}, data); 
 
     _.each(timetables, function (module) {
       if (module.Timetable) {
@@ -88,7 +89,7 @@ var loadVenueInformation = function (callback) {
     venuesList.sort();
     callback(venues, venuesList);
   });
-}
+};
 
 var controller = {
   showVenueInformation: function (venueName) {

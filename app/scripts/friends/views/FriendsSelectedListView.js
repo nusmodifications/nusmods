@@ -12,7 +12,5 @@ module.exports = Marionette.CompositeView.extend({
   childView: FriendsSelectedListItemView,
   childViewContainer: 'div',
   emptyView: EmptyView,
-  template: _.template('<div></div>'),
-  initialize: function () {    
-  }
+  template: _.template('<div></div>')
 });

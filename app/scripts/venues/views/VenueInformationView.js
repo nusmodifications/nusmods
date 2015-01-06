@@ -1,11 +1,9 @@
 'use strict';
 
-var $ = require('jquery');
 var _ = require('underscore');
 var Marionette = require('backbone.marionette');
 var template = require('../templates/venue_information.hbs');
 var Backbone = require('backbone');
-var timify = require('../../common/utils/timify');
 var VenueSelectView = require('./VenueSelectView');
 var TimetableFlexView = require('../../timetable_flex/views/TimetableFlexView');
 
@@ -39,7 +37,6 @@ module.exports = Marionette.LayoutView.extend({
     this.model.set('selectedVenue', selectedVenue);
     this.render();
 
-    
     var lessons = _.reduce(_.pluck(selectedVenue, 'lessons'), function (memo, list) {
       return memo.concat(list); 
     }, []);

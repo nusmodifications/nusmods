@@ -4,7 +4,6 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Marionette = require('backbone.marionette');
 var template = require('../templates/timetable_flex.hbs');
-var Backbone = require('backbone');
 var timify = require('../../common/utils/timify');
 var LessonModel = require('../../common/models/LessonModel');
 
@@ -28,7 +27,7 @@ module.exports = Marionette.LayoutView.extend({
           width: 1,
           module: '',
           label: ''
-        }
+        };
       });
 
       var eightAmIndex = timify.convertTimeToIndex('0800');
@@ -37,7 +36,6 @@ module.exports = Marionette.LayoutView.extend({
         _.each(day.lessons, function (lesson) {
           var startIndex = timify.convertTimeToIndex(lesson.StartTime) - eightAmIndex;
           var endIndex = timify.convertTimeToIndex(lesson.EndTime) - eightAmIndex;
-          var width = endIndex - startIndex;
           for (var i = startIndex; i < endIndex; i++) {
             var overlap = range[i].count;
             if (!overlap) {
@@ -89,7 +87,7 @@ module.exports = Marionette.LayoutView.extend({
   },
   convertToDayAvailability: function (lessonsList) {
     var days = timify.getSchoolDays();
-    var dayAvailability = []
+    var dayAvailability = [];
     _.each(days, function (day) {
       var lessons = _.filter(lessonsList, function (lesson) {
         return lesson.DayText === day;

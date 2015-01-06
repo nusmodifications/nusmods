@@ -13,16 +13,16 @@ module.exports = {
     var minute = (index % 2) === 0 ? '00' : '30';
     return (hour < 10 ? '0' + hour.toString() : hour.toString()) + minute;
   },
-  getAllDays: function (index) {
+  getAllDays: function () {
     var daysArray = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
     return daysArray.slice(0);  // Make a copy
   },
-  getSchoolDays: function (index) {
+  getSchoolDays: function () {
     var daysArray = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     return daysArray.slice(0);  // Make a copy
   },
-  getWeekDays: function (index) {
+  getWeekDays: function () {
     var daysArray = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
     return daysArray.slice(0);  // Make a copy
   }
-}
+};

@@ -3,9 +3,10 @@
 var _ = require('underscore');
 var Marionette = require('backbone.marionette');
 var FriendsListItemView = require('./FriendsListItemView');
+var template = require('../templates/friends_list_empty.hbs');
 
 var EmptyView = Marionette.ItemView.extend({
-  template: _.template('<div class="media nm-friends-list-item">No friends selected. Click the <i class="fa fa-plus"></i> icon to add your friends!</div>')
+  template: template
 });
 
 module.exports = Marionette.CompositeView.extend({

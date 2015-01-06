@@ -3,15 +3,14 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var template = require('../templates/developers.hbs');
-var item_template = require('../templates/developers_item.hbs')
+var itemTemplate = require('../templates/developers_item.hbs');
 var $ = require('jquery');
-var _ = require('underscore');
 require('../../common/utils/notequals');
 
 var DeveloperItemView = Marionette.ItemView.extend({
   tagName: 'div',
   className: 'nm-ct-dev-item col-md-3 col-sm-3 col-xs-6',
-  template: item_template
+  template: itemTemplate
 });
 
 var DevelopersListView = Marionette.CollectionView.extend({

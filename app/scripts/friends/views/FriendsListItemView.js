@@ -1,10 +1,9 @@
 'use strict';
 
 var _ = require('underscore');
-var $ = require('jquery');
-var App = require('../../app');
 var Marionette = require('backbone.marionette');
 var template = require('../templates/friends_list_item.hbs');
+var localforage = require('localforage');
 
 module.exports = Marionette.LayoutView.extend({
   tagName: 'div',
@@ -14,9 +13,6 @@ module.exports = Marionette.LayoutView.extend({
     'click': 'selectFriend',
     'click .js-nm-friends-delete': 'deleteFriendTimetable',
     'change .js-nm-friends-select-checkbox': 'toggleFriendSelection'
-  },
-  onShow: function () {  
-    
   },
   selectFriend: function () {
     _.each(this.model.collection.models, function (model) {
@@ -33,12 +29,13 @@ module.exports = Marionette.LayoutView.extend({
   deleteFriendTimetable: function (e) {
     e.preventDefault();
     e.stopPropagation();
-    var choice = confirm('Do you really want to delete ' + this.model.get('name'));
+    var choice = window.confirm('Do you really want to delete ' + this.model.get('name') + '\'s timetable?');
     if (choice) {
       var friendsListCollection = this.model.collection;
       friendsListCollection.remove(this.model);
       friendsListCollection.trigger('change');
-      var friendsListData = _.pick(_.pluck(friendsListCollection.models, 'attributes'), 'name', 'queryString', 'selected', 'semester');
+      var attributes = _.pluck(friendsListCollection.models, 'attributes');
+      var friendsListData = _.pick(attributes, 'name', 'queryString', 'selected', 'semester');
       localforage.setItem('timetable:friends', friendsListData);
     }
   }
