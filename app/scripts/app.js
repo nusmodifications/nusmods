@@ -117,16 +117,16 @@ App.on('start', function () {
     }
   });
 
-  // header modules
+  // navigation menu modules
   require('./timetable');
   require('./modules');
-  // require('ivle');
-  require('./apps');
-  require('./barenus');
-  require('./friends');
   require('./venues');
+  require('./apps');
+  // require('./friends');
+  require('./barenus');
   require('./preferences');
   require('./blog');
+  // require('ivle');
 
   // footer modules
   require('./about');
