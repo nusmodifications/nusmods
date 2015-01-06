@@ -39,7 +39,7 @@
       <div class="nm-timetable-flex-row">
         <div class="nm-timetable-flex-cell nm-timetable-day"><strong>{{this.shortDay}}</strong></div>
         {{#each this.timetable}}
-          <div class="nm-timetable-flex-cell nm-timetable-flex-cell-lesson {{this.class}} box-{{this.width}} {{#if this.nameList}} js-nm-timetable-overlap-cell {{/if}}" {{#if this.nameList}} data-placement="bottom" title="{{this.nameList}}" {{/if}} style="flex-grow: {{this.width}}">
+          <div class="nm-timetable-flex-cell nm-timetable-flex-cell-lesson {{this.class}} box-{{this.width}} nm-flex-grow-{{this.width}} {{#if this.nameList}} js-nm-timetable-overlap-cell {{/if}}" {{#if this.nameList}} data-placement="bottom" title="{{this.nameList}}" {{/if}}>
             {{#if this.label}}
               <div><a class="nm-timetable-flex-module-name" href="/modules/{{this.label}}">{{this.label}}</a></div>
             {{/if}}

@@ -120,26 +120,15 @@
     .nm-timetable-flex-module-lesson-type {
       font-size: 12px;
     }
-    &.box-2 {
-      border-right: 1px solid transparent;
+    @for $i from 2 through 10 {
+      &.box-#{$i} { 
+        border-right: ($i - 1px) solid transparent;
+      }
     }
-    &.box-3 {
-      border-right: 2px solid transparent;
-    }
-    &.box-4 {
-      border-right: 3px solid transparent;
-    }
-    &.box-5 {
-      border-right: 4px solid transparent;
-    }
-    &.box-6 {
-      border-right: 5px solid transparent;
-    }
-    &.box-7 {
-      border-right: 6px solid transparent;
-    }
-    &.box-8 {
-      border-right: 7px solid transparent;
+    @for $i from 1 through 10 {
+      &.nm-flex-grow-#{$i} { 
+        flex-grow: $i; 
+      }
     }
     &.nm-timetable-day {
       border: none !important;
