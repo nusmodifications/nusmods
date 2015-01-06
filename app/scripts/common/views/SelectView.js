@@ -89,19 +89,15 @@ module.exports = Marionette.ItemView.extend({
                 text: code + ' ' + data[i].ModuleTitle
               });
             };
-          if (options.term) {
-            var re = new RegExp(options.term, 'i');
-            for (i = options.context || 0; i < data.length; i++) {
-              if (data[i].ModuleCode.search(re) !== -1 || data[i].ModuleTitle.search(re) !== -1) {
-                if (pushResult(i) === PAGE_SIZE) {
-                  i++;
-                  break;
-                }
+          var re = new RegExp(options.term, 'i');
+          for (i = options.context || 0; i < data.length; i++) {
+            if (!options.term ||
+                data[i].ModuleCode.search(re) !== -1 ||
+                data[i].ModuleTitle.search(re) !== -1) {
+              if (pushResult(i) === PAGE_SIZE) {
+                i++;
+                break;
               }
-            }
-          } else {
-            for (i = (options.page - 1) * PAGE_SIZE; i < options.page * PAGE_SIZE; i++) {
-              pushResult(i);
             }
           }
           options.callback({

@@ -5,6 +5,7 @@ var Promise = require('bluebird'); // jshint ignore:line
 
 var ayBaseUrl;
 var moduleInformationPromise, moduleListPromise;
+var timetablePromise;
 var moduleCodes = {};
 
 module.exports = {
@@ -40,6 +41,10 @@ module.exports = {
     moduleInformationPromise = moduleInformationPromise ||
       Promise.resolve($.getJSON(ayBaseUrl + 'moduleInformation.json'));
     return moduleInformationPromise.then(callback);
+  },
+  getAllTimetable: function (semester, callback) {
+    timetablePromise = timetablePromise || Promise.resolve($.getJSON(ayBaseUrl + semester + '/timetable.json'));
+    return timetablePromise.then(callback);
   },
   getTimetable: function (semester, code, callback) {
     return Promise.resolve($.getJSON(ayBaseUrl + semester + '/modules/' + code + '/timetable.json', callback));

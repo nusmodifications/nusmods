@@ -118,11 +118,13 @@ App.on('start', function () {
   });
 
   // header modules
-  require('./modules');
   require('./timetable');
+  require('./modules');
   // require('ivle');
   require('./apps');
   require('./barenus');
+  require('./friends');
+  require('./venues');
   require('./preferences');
   require('./blog');
 
