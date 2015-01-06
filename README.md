@@ -358,4 +358,4 @@ $ grunt ivle:ay2013to2014sem1:refresh
 
 ## License
 
-Copyright (c) 2014 NUS Modifications. Licensed under the MIT license.
+Copyright (c) 2015 NUS Modifications. Licensed under the MIT license.
