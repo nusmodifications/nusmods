@@ -1,0 +1,28 @@
+<div class="nm-apps-list-item row">
+  <div class="col-md-2">
+    <a href="{{url}}" target="_blank">
+      <img class="img-rounded img-responsive" src="{{icon_url}}" alt="{{name}} icon">
+    </a>
+  </div>
+  <div class="col-md-10">
+    <a {{#if url}} href="{{url}}" {{/if}} target="_blank">
+      <h3 class="nm-app-title">{{name}}</h3>
+    </a>
+    {{#if author}}
+      <small class="nm-app-author">By {{author}}</small>
+    {{/if}}
+    <div class="nm-app-details-container">
+      {{#if description}}
+        <p>{{description}}</p>
+      {{/if}}
+      {{#if tags}}
+        <p>
+          {{#each tags}}
+            <span class="label label-default">{{this}}</span>
+          {{/each}}
+        </p>
+      {{/if}}
+    </div>
+  </div>
+</div>
+<hr>
