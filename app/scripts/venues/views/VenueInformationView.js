@@ -6,6 +6,7 @@ var Marionette = require('backbone.marionette');
 var template = require('../templates/venue_information.hbs');
 var Backbone = require('backbone');
 var timify = require('../../common/utils/timify');
+var VenueSelectView = require('./VenueSelectView');
 var TimetableFlexView = require('../../timetable_flex/views/TimetableFlexView');
 
 module.exports = Marionette.LayoutView.extend({
@@ -14,11 +15,11 @@ module.exports = Marionette.LayoutView.extend({
     
   },
   regions: {
+    venueSearchRegion: '.nm-venue-search',
     venueTimetableRegion: '.nm-venue-information-timetable'
   },
   events: {
     'keypress input[type=text]': 'processKey',
-    'click .js-nm-venue-search': 'searchVenue'
   },
   processKey: function (e) {
     if (e.which === 13) { // Enter key
@@ -30,6 +31,7 @@ module.exports = Marionette.LayoutView.extend({
     if (this.model.get('selectedVenueName')) {
       this.showAvailabilityForVenue(this.model.get('selectedVenueName'));
     }
+    this.venueSearchRegion.show(new VenueSelectView(this.model));
   },
   searchVenue: function () {
     var searchText = $.trim($('.js-nm-venue-input').val().toUpperCase());

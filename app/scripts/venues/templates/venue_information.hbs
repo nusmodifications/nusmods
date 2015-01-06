@@ -12,18 +12,7 @@
     
     <h2>Venue Lookup</h2>
     <hr>
-    <div class="row">
-      <div class="col-md-6">
-        <div class="alert alert-warning">
-          <div class="form-group">
-            <p>Retrieve a venue's weekly occupancy timetable and information.</p>
-            <label class="control-label" for="venue">Search Venue:</label>
-            <input type="text" class="form-control js-nm-venue-input" value="{{this.selectedVenueName}}" placeholder="e.g. COM1-0114">
-          </div>
-          <button type="submit" class="js-nm-venue-search btn btn-primary">Search</button>
-        </div>
-      </div>
-    </div>
+    <div class="row nm-venue-search"></div>
     <hr>
 
     {{#if selectedVenue}}
