@@ -18,24 +18,12 @@ module.exports = Marionette.LayoutView.extend({
     venueSearchRegion: '.nm-venue-search',
     venueTimetableRegion: '.nm-venue-information-timetable'
   },
-  events: {
-    'keypress input[type=text]': 'processKey',
-  },
-  processKey: function (e) {
-    if (e.which === 13) { // Enter key
-      this.searchVenue();
-    }
-    return;
-  },
   onShow: function () {
     if (this.model.get('selectedVenueName')) {
       this.showAvailabilityForVenue(this.model.get('selectedVenueName'));
     }
-    this.venueSearchRegion.show(new VenueSelectView(this.model));
-  },
-  searchVenue: function () {
-    var searchText = $.trim($('.js-nm-venue-input').val().toUpperCase());
-    this.showAvailabilityForVenue(searchText);
+    var _this = this;
+    this.venueSearchRegion.show(new VenueSelectView({model: _this.model}));
   },
   showAvailabilityForVenue: function (venueName) {
     if (venueName !== '') {
