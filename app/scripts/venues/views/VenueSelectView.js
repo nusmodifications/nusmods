@@ -66,19 +66,15 @@ module.exports = Marionette.ItemView.extend({
               venue_name: name
             });
           };
-        if (options.term) {
-          var re = new RegExp(options.term, 'i');
-          for (i = options.context || 0; i < venues_list.length; i++) {
-            if (venues_list[i].search(re) !== -1 || venues_list[i].search(re) !== -1) {
-              if (pushResult(i) === PAGE_SIZE) {
-                i++;
-                break;
-              }
+        var re = new RegExp(options.term, 'i');
+        for (i = options.context || 0; i < venues_list.length; i++) {
+          if (!options.term ||
+              venues_list[i].search(re) !== -1 ||
+              venues_list[i].search(re) !== -1) {
+            if (pushResult(i) === PAGE_SIZE) {
+              i++;
+              break;
             }
-          }
-        } else {
-          for (i = (options.page - 1) * PAGE_SIZE; i < options.page * PAGE_SIZE; i++) {
-            pushResult(i);
           }
         }
         options.callback({
