@@ -625,6 +625,12 @@ a.cors > .fa-fw {
 // Loading Indicator
 .nm-loading {
   padding-top: 25%;
+  &.nm-page-loading {
+    left: 50%;
+    padding-top: 0;
+    position: fixed;
+    top: 40%;
+  }
 }
 
 // Timetable
