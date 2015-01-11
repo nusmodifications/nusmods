@@ -30,7 +30,8 @@
     "marked": "~0.3.2",
     "qs": "~2.3.3",
     "underscore": "~1.6.0",
-    "zeroclipboard": "~2.1.6"
+    "zeroclipboard": "~2.1.6",
+    "spin.js": "2.0.2"
   },
   "devDependencies": {
     "browserify": "~2.3.0",
