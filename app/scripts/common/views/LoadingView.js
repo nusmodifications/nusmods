@@ -30,6 +30,6 @@ module.exports = Marionette.ItemView.extend({
       left: '50%' // Left position relative to parent
     };
     var spinner = new Spinner(opts).spin();
-    this.$('.loading').html(spinner.el);
+    this.$('.js-nm-loading').html(spinner.el);
   }
 });
