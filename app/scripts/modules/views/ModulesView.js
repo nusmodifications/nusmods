@@ -15,6 +15,7 @@ var config = require('../../common/config');
 var localforage = require('localforage');
 var template = require('../templates/modules.hbs');
 var slugify = require('../../common/utils/slugify');
+var LoadingView = require('../../common/views/LoadingView');
 
 module.exports = Marionette.LayoutView.extend({
   template: template,
@@ -168,6 +169,8 @@ module.exports = Marionette.LayoutView.extend({
         });
       }));
     });
+
+    this.modulesRegion.show(new LoadingView());
 
     var that = this;
 
