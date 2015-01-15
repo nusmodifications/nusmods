@@ -3,12 +3,19 @@
 var $ = require('jquery');
 var App = require('../../app');
 var Marionette = require('backbone.marionette');
+var ModuleHoverBehavior = require('../../common/behaviors/ModuleHoverBehavior');
 var analytics = require('../../analytics');
 var template = require('../templates/module_item.hbs');
 
 module.exports = Marionette.ItemView.extend({
   className: 'module-item panel panel-default',
   template: template,
+  
+  behaviors: {
+    ModuleHoverBehavior: {
+      behaviorClass: ModuleHoverBehavior
+    }
+  },
 
   events: {
     'click .add-timetable': function(event) {

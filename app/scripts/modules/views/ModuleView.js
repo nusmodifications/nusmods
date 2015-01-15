@@ -5,6 +5,7 @@ var App = require('../../app');
 var Backbone = require('backbone');
 var BiddingStatsView = require('./BiddingStatsView');
 var GoToTopBehavior = require('../../common/behaviors/GoToTopBehavior');
+var ModuleHoverBehavior = require('../../common/behaviors/ModuleHoverBehavior');
 var Marionette = require('backbone.marionette');
 var PrerequisitesTreeView = require('./PrerequisitesTreeView');
 var _ = require('underscore');
@@ -26,6 +27,9 @@ module.exports = Marionette.LayoutView.extend({
   behaviors: {
     GoToTopBehavior: {
       behaviorClass: GoToTopBehavior
+    },
+    ModuleHoverBehavior: {
+      behaviorClass: ModuleHoverBehavior
     }
   },
   regions: {
@@ -187,42 +191,6 @@ module.exports = Marionette.LayoutView.extend({
 
     // Index 0 is "All", therefore index no. = sem no.
     $('.js-nm-ls-schedule-tabs a[data-target="#nm-ls-schedule-sem' + config.semester + '"]').tab('show');
-
-    // Module code hover brief info
-    $('.js-hover-info').qtip({
-      content: {
-        text: function(event, api) {
-          var NUSMods = require('../../nusmods');
-          var ModuleModel = require('../../common/models/ModuleModel');
-          
-          var reqModuleCode = $(this).text();
-          var reqModule = NUSMods.getMod(reqModuleCode).then(function(data) {
-            var reqModuleModel = new ModuleModel(data);
-
-            var title = reqModuleModel.get('ModuleTitle') + '\n'
-            api.set('content.title', '<strong>' + title + '</strong>');
-
-            var semesters = reqModuleModel.get('semesterNames');
-            var offeredIn = _.reduce(semesters, function(a, b) {
-              return a + ', ' + b;
-            });
-            api.set('content.text', 'Offered in: ' + offeredIn);
-          });
-
-          return 'Loading...';
-        }
-      },
-      position: {
-        effect: 'false',
-        my: 'bottom center',
-        at: 'top center'
-      },
-      show: {
-        effect: function() {
-          $(this).fadeTo(200, 0.85);
-        }
-      }
-    });
   },
   showAllStats: function () {
     analytics.track('Module cors', 'View full stats', this.model.get('module').ModuleCode);
@@ -274,8 +242,5 @@ module.exports = Marionette.LayoutView.extend({
     setTimeout(function () {
       window.location.hash = target;
     });
-  },
-  onBeforeDestroy: function() {
-    $('.js-hover-info').qtip('hide');
   }
 });

@@ -38,7 +38,7 @@ module.exports = {
           var length = matchedModules[i].length;
           var endingIndex = startingIndex + length;
           desc = desc.insert(endingIndex, '</a>');
-          desc = desc.insert(startingIndex, '<a class="js-hover-info" href="/modules/' + matchedModules[i].module + '">');
+          desc = desc.insert(startingIndex, '<a href="/modules/' + matchedModules[i].module + '">');
         }
       }
     }
