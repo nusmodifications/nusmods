@@ -6,7 +6,7 @@ var Marionette = require('backbone.marionette');
 
 module.exports = Marionette.Behavior.extend({
   onShow: function () {
-    // Module code hover brief info
+    // Module hover brief info
     $("a[href^='/modules/'").qtip({
       content: {
         text: function(event, api) {
@@ -38,6 +38,14 @@ module.exports = Marionette.Behavior.extend({
       show: {
         effect: function() {
           $(this).fadeTo(200, 0.85);
+        }
+      },
+      events: {
+        show: function(event, api) {
+          // Prevents qtip from appearing when hovering over main module link
+          if ($(event.originalEvent.currentTarget).parent().is('h2')) {
+            event.preventDefault();
+          }
         }
       }
     });
