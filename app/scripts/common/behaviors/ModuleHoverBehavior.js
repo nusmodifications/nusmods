@@ -5,50 +5,53 @@ var _ = require('underscore');
 var Marionette = require('backbone.marionette');
 
 module.exports = Marionette.Behavior.extend({
-  onShow: function () {
-    // Module hover brief info
-    $("a[href^='/modules/'").qtip({
-      content: {
-        text: function(event, api) {
-          var NUSMods = require('../../nusmods');
-          var ModuleModel = require('../models/ModuleModel');
-          
-          var reqModuleCode = $(this).text();
-          var reqModule = NUSMods.getMod(reqModuleCode).then(function(data) {
+  events: {
+    "mouseenter a[href^='/modules/']" : 'showDetails'
+  },
+
+  showDetails: function(event) {
+    var curr = event.currentTarget;
+
+    var NUSMods = require('../../nusmods');
+    var ModuleModel = require('../models/ModuleModel');
+
+    var reqModuleCode = $(curr).text();
+
+    $(curr).qtip({
+      content: function(event, api) {
+        var reqModule = NUSMods.getMod(reqModuleCode)
+          .then(function(data) {
             var reqModuleModel = new ModuleModel(data);
 
-            var title = reqModuleModel.get('ModuleTitle') + '\n'
-            api.set('content.title', '<strong>' + title + '</strong>');
-
+            var title = reqModuleModel.get('ModuleTitle');
             var semesters = reqModuleModel.get('semesterNames');
             var offeredIn = _.reduce(semesters, function(a, b) {
               return a + ', ' + b;
             });
+
+            api.set('content.title', '<strong>' + title + '</strong>');
             api.set('content.text', 'Offered in: ' + offeredIn);
           });
-
-          return 'Loading...';
-        }
+        return 'Loading...';
+      },
+      show: {
+        event: event.type,
+        ready: true
       },
       position: {
         effect: 'false',
         my: 'bottom center',
         at: 'top center'
       },
-      show: {
-        effect: function() {
-          $(this).fadeTo(200, 0.85);
-        }
-      },
       events: {
         show: function(event, api) {
-          // Prevents qtip from appearing when hovering over main module link
-          if ($(event.originalEvent.currentTarget).parent().is('h2')) {
+          // Prevents qtip from loading if main module link is selected
+          if ($(curr).parent().is('h2')) {
             event.preventDefault();
           }
         }
       }
-    });
+    }, event);
   }
 });
 
