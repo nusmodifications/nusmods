@@ -6,7 +6,8 @@ var Marionette = require('backbone.marionette');
 
 module.exports = Marionette.Behavior.extend({
   events: {
-    "mouseenter a[href^='/modules/']" : 'showDetails'
+    "mouseenter a[href^='/modules/']" : 'showDetails',
+    "click a[href^='/modules/']": 'destroyDetails'
   },
 
   showDetails: function(event) {
@@ -52,6 +53,10 @@ module.exports = Marionette.Behavior.extend({
         }
       }
     }, event);
+  },
+  destroyDetails: function(event) {
+    var curr = event.currentTarget;
+    $(curr).qtip('destroy', true);
   }
 });
 
