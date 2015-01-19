@@ -46,8 +46,8 @@ module.exports = Marionette.Behavior.extend({
       },
       events: {
         show: function(event, api) {
-          // Prevents qtip from loading if main module link is selected
-          if ($(curr).parent().is('h2')) {
+          // Prevents tags with data-no-module-qtip from loading
+          if (curr.hasAttribute('data-no-module-qtip')) {
             event.preventDefault();
           }
         }
