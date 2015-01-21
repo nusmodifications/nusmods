@@ -180,8 +180,7 @@ module.exports = Marionette.LayoutView.extend({
 
     $('.js-nm-module-nav').affix({
       offset: {
-        top: 160,
-        bottom: 200
+        top: 160
       }
     });
 
