@@ -172,9 +172,9 @@ module.exports = Backbone.View.extend({
 
 
     (function () {
-      $('.cors-round-text').html(corsify.determineRound(Date.now()));
-      $('.cors-round-container').addClass('animated bounceInUp shown');
-      $('.js-nm-contest-alert').addClass('animated bounceInDown nm-force-show');
+      // $('.cors-round-text').html(corsify.determineRound(Date.now()));
+      // $('.cors-round-container').addClass('animated bounceInUp shown');
+      // $('.js-nm-contest-alert').addClass('animated bounceInDown nm-force-show');
       $('.js-nm-current-week-text').text(academicCalendar.currentAcadWeek(new Date()));
     })();
   },
