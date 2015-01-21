@@ -5,6 +5,7 @@ var App = require('../../app');
 var Backbone = require('backbone');
 var BiddingStatsView = require('./BiddingStatsView');
 var GoToTopBehavior = require('../../common/behaviors/GoToTopBehavior');
+var ModuleHoverBehavior = require('../../common/behaviors/ModuleHoverBehavior');
 var Marionette = require('backbone.marionette');
 var PrerequisitesTreeView = require('./PrerequisitesTreeView');
 var _ = require('underscore');
@@ -26,6 +27,9 @@ module.exports = Marionette.LayoutView.extend({
   behaviors: {
     GoToTopBehavior: {
       behaviorClass: GoToTopBehavior
+    },
+    ModuleHoverBehavior: {
+      behaviorClass: ModuleHoverBehavior
     }
   },
   regions: {

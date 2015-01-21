@@ -6,6 +6,7 @@ var ArrayFacetModel = require('../models/ArrayFacetModel');
 var FacetCollection = require('../collections/FacetCollection');
 var FacetsView = require('./FacetsView');
 var GoToTopBehavior = require('../../common/behaviors/GoToTopBehavior');
+var ModuleHoverBehavior = require('../../common/behaviors/ModuleHoverBehavior');
 var Marionette = require('backbone.marionette');
 var ModuleCollection = require('../../common/collections/ModuleCollection');
 var ModulesListingView = require('./ModulesListingView');
