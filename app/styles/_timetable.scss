@@ -52,6 +52,17 @@
     padding-right: 0;
     text-align: center;
   }
+  .image-normal {
+    position: relative;
+    font-size: 0.8em;
+    right: -5px;
+  }
+  .image-big {
+    font-size: 1em;
+  }
+  .image-large {
+    font-size: 1.2em;
+  }
 }
 
 .hide-code .code,
