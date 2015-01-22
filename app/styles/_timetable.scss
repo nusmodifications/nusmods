@@ -44,6 +44,16 @@
   border: 2px solid;
 }
 
+// For the image export options
+.dropdown-menu .horiz-menu a {
+  clear: none;
+  &:not(:first-child) {
+    padding-left: 0;
+    padding-right: 0;
+    text-align: center;
+  }
+}
+
 .hide-code .code,
 .hide-group .group,
 .hide-room .room,

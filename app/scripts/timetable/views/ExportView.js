@@ -37,6 +37,7 @@ module.exports = Marionette.ItemView.extend({
         $.fileDownload('/jpg.php', {
           httpMethod: 'POST',
           data: {
+            size: event.currentTarget.dataset.imagesize,
             html: encodeURIComponent(this.htmlTimetable())
           }
         });
