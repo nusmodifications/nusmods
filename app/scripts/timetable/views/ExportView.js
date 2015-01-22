@@ -31,13 +31,13 @@ module.exports = Marionette.ItemView.extend({
       window.alert('No modules to export!');
       return false;
     }
-    switch (event.currentTarget.id) {
+    switch (event.currentTarget.dataset.exportType) {
       case 'jpg-file':
         analytics.track('Timetable', 'Export', 'JPEG', +this.dlAttrSupported);
         $.fileDownload('/jpg.php', {
           httpMethod: 'POST',
           data: {
-            size: event.currentTarget.dataset.imagesize,
+            size: event.currentTarget.dataset.imageSize,
             html: encodeURIComponent(this.htmlTimetable())
           }
         });

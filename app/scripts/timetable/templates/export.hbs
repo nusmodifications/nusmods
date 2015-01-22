@@ -6,35 +6,35 @@
   </button>
   <ul class="dropdown-menu">
     <li>
-      <a download="My NUSMods.com Timetable.xls" href="#" id="xls-file">
+      <a download="My NUSMods.com Timetable.xls" href="#" data-export-type="xls-file">
         <i class="fa fa-file-excel-o fa-fw"></i>&nbsp;Excel File
       </a>
     </li>
     <li>
-      <a download="My NUSMods.com Timetable.html" href="#" id="html-file">
+      <a download="My NUSMods.com Timetable.html" href="#" data-export-type="html-file">
         <i class="fa fa-file-code-o fa-fw"></i>&nbsp;HTML File
       </a>
     </li>
     <li{{#if isSpecialTerm}} class="disabled"{{/if}}>
-      <a download="My NUSMods.com Timetable.ics" href="#" id="ical-file">
+      <a download="My NUSMods.com Timetable.ics" href="#" data-export-type="ical-file">
         <i class="fa fa-calendar fa-fw"></i>&nbsp;iCalendar File (.ics)<br>
         (For Google Calendar / iCal / Outlook)
       </a>
     </li>
     <li class="horiz-menu">
-      <a href="#" class="col-xs-8" id="jpg-file" data-imagesize="1" title="Normal">
+      <a href="#" class="col-xs-8" data-export-type="jpg-file" data-image-size="1" title="Normal">
         <i class="fa fa-file-image-o fa-fw"></i>&nbsp;Image File (.jpg)
         <i class="fa fa-picture-o image-normal"></i>
       </a>
-      <a href="#" class="col-xs-2" id="jpg-file" data-imagesize="2" title="Big">
+      <a href="#" class="col-xs-2" data-export-type="jpg-file" data-image-size="2" title="Big">
         <i class="fa fa-picture-o image-big"></i>
       </a>
-      <a href="#" class="col-xs-2" id="jpg-file" data-imagesize="3" title="Large">
+      <a href="#" class="col-xs-2" data-export-type="jpg-file" data-image-size="3" title="Large">
         <i class="fa fa-picture-o image-large"></i>
       </a>
     </li>
     <li>
-      <a href="#" id="pdf-file">
+      <a href="#" data-export-type="pdf-file">
         <i class="fa fa-file-pdf-o fa-fw"></i>&nbsp;PDF File
       </a>
     </li>
