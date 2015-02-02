@@ -65,7 +65,7 @@ module.exports = Backbone.View.extend({
     $.fn.qtip.defaults.style.classes = 'qtip-bootstrap';
 
     NUSMods.getLastModified().then(function (lastModified) {
-      $('#correct-as-at').text((new Date(lastModified)).toString().slice(0, 21));
+      $('#correct-as-of').text((new Date(lastModified)).toString().slice(0, 21));
     });
 
     App.selectRegion.show(new SelectView());
@@ -87,7 +87,7 @@ module.exports = Backbone.View.extend({
     };
 
     var that = this;
-    
+
     _.each(keyboardNavigationMappings, function (value, key) {
       Mousetrap.bind(key, function () {
         analytics.track('Navigation', 'Keyboard', value.slice(1));
@@ -113,7 +113,7 @@ module.exports = Backbone.View.extend({
         }
       });
     });
-    
+
     Mousetrap.bind(['x'], function () {
       var newMode = themePicker.toggleMode();
       analytics.track('event', 'Mode', 'Change mode using keyboard', newMode);
