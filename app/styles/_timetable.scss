@@ -52,6 +52,17 @@
     padding-right: 0;
     text-align: center;
   }
+  .icon-image-normal {
+    font-size: 0.8em;
+    left: 12px;
+    position: relative;
+  }
+  .icon-image-big {
+    font-size: 1em;
+  }
+  .icon-image-large {
+    font-size: 1.2em;
+  }
 }
 
 .hide-code .code,
