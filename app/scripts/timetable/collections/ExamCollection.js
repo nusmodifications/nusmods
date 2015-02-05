@@ -9,6 +9,7 @@ module.exports = Backbone.Collection.extend({
 
   initialize: function () {
     this.clashCount = 0;
+    this.totalModuleCredits = 0;
     this.listenTo(this, {add: this.onAdd, remove: this.onRemove});
   },
 
@@ -19,11 +20,13 @@ module.exports = Backbone.Collection.extend({
       examStr: module.get('examStr'),
       id: module.id,
       ModuleTitle: module.get('ModuleTitle'),
-      Semester: module.get('Semester')
+      Semester: module.get('Semester'),
+      moduleCredit: module.get('ModuleCredit')
     });
   },
 
   onAdd: function (exam) {
+    this.totalModuleCredits += exam.get('moduleCredit');
     // Compute clashes based on keys with clustered hours.
     var clashes = this.where({key: exam.get('key')});
     if (clashes.length > 1) {
@@ -36,6 +39,8 @@ module.exports = Backbone.Collection.extend({
   },
 
   onRemove: function(exam) {
+    this.totalModuleCredits -= exam.get('moduleCredit');
+
     if (exam.get('clash')) {
       var clashes = this.where({key: exam.get('key')});
       if (clashes.length === 1) {

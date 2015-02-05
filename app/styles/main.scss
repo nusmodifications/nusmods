@@ -382,7 +382,7 @@ $panel-heading-color: #3e444c;
     box-shadow: none !important;
     &:hover,
     &:focus,
-    &:active {  
+    &:active {
       box-shadow: none !important;
     }
   }
@@ -407,7 +407,7 @@ $panel-heading-color: #3e444c;
     padding-left: 0;
   }
   .js-remove-bookmark {
-    cursor: pointer; 
+    cursor: pointer;
     &:hover {
       color: #ccc;
     }
@@ -607,7 +607,7 @@ dd.lecturer {
 
 .nm-module-filter-meta {
   .nm-module-filter-meta-list {
-    dt, 
+    dt,
     dd {
       display: inline-block;
     }
@@ -712,6 +712,10 @@ colgroup.hover {
   td.empty-timetable {
     text-align: center;
   }
+
+  td.total-module-credits {
+    text-align: center;
+  }
 }
 .clash {
   color: red !important;
@@ -731,7 +735,7 @@ colgroup.hover {
   }
 }
 
-// Module Detail Page 
+// Module Detail Page
 .module-page {
   .nm-module-nav {
     list-style: none;
@@ -760,10 +764,10 @@ colgroup.hover {
   }
   .module-main-content:before {
     content: ' ';
-    display: block; 
-    height: $navbar-height + $grid-gutter-width/2; 
-    margin-top: -$navbar-height - $grid-gutter-width/2; 
-    visibility: hidden; 
+    display: block;
+    height: $navbar-height + $grid-gutter-width/2;
+    margin-top: -$navbar-height - $grid-gutter-width/2;
+    visibility: hidden;
   }
   .module-code {
     margin-bottom: 5px;
@@ -833,7 +837,7 @@ colgroup.hover {
       top: -5px;
     }
   }
-  
+
   .radio {
     padding-left: 0;
     label {
@@ -1016,7 +1020,7 @@ colgroup.hover {
       height: $color-width;
       margin-right: 4px;
       width: $color-width;
-    }      
+    }
   }
   .random-theme {
     font-size: 11px;

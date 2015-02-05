@@ -21,6 +21,7 @@ module.exports = Marionette.CompositeView.extend({
   collectionEvents: {
     'add remove': function() {
       $('#clash').toggleClass('hidden', !this.collection.clashCount);
+      $('#js-nm-total-mc').text(this.collection.totalModuleCredits);
     }
   }
 });
