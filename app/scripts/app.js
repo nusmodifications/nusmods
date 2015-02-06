@@ -126,6 +126,7 @@ App.on('start', function () {
   require('./barenus');
   require('./preferences');
   require('./blog');
+  require('./reddit');
   // require('ivle');
 
   // footer modules
