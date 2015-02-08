@@ -69,6 +69,6 @@ module.exports = Marionette.ItemView.extend({
   },
 
   onBeforeDestroy: function() {
-    $("a[href^='/modules/']").qtip('destroy', true);
+    $('a[href^="/modules/"]').qtip('destroy', true);
   }
 });
