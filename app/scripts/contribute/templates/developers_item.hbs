@@ -1,13 +1,16 @@
-<a href="{{html_url}}" target="_blank">
-  <div class="nm-ct-dev-head">
-    <img class="img-rounded img-responsive" src="{{avatar_url}}" alt="{{login}}">
-    <div class="nm-ct-dev-stat img-rounded">
-      <p>
+<div class="nm-ct-dev-head">
+  <img class="img-rounded img-responsive" src="{{avatar_url}}" alt="{{login}}">
+  <div class="nm-ct-dev-stat img-rounded">
+    <p>
+      <a href="{{html_url}}" target="_blank" class="nm-ct-dev-profile">
+        <i class="fa fa-github fa-lg"></i>
+      </a>
+      <a href="https://github.com/nusmodifications/nusmods/commits?author={{login}}" target="_blank">
         <span class="nm-text-xlarge">{{contributions}}</span>
         <span class="nm-text-medium hidden-xs hidden-sm"><br></span>
         commit{{#notequals contributions 1}}s{{/notequals}}
-      </p>
-    </div>
+      </a>
+    </p>
   </div>
-  <h4 class="nm-ct-dev-id"><i class="fa fa-github"></i> {{login}}</h4>
-</a>
+</div>
+<h4 class="nm-ct-dev-id">{{login}}</h4>

@@ -1,3 +1,11 @@
+@mixin dev-github-profile($font-size) {
+  .nm-ct-dev-profile {
+    .fa-github {
+      font-size: $font-size;
+    }
+  }
+}
+
 .nm-ct {
   .nm-ct-devs-container {
     margin-top: 30px;
@@ -18,7 +26,7 @@
         .nm-ct-dev-id {
           filter: grayscale(0);
           text-decoration: none;
-        }  
+        }
       }
     }
     .nm-ct-dev-head {
@@ -28,7 +36,6 @@
       width: 100%;
       .nm-ct-dev-stat {
         background: rgba(255, 100, 0, 0.5);
-        color: white;
         display: block;
         height: 100%;
         left: 0;
@@ -42,8 +49,21 @@
           top: 50%;
           transform: translateY(-50%);
         }
+        a {
+          color: white;
+        }
+        a:hover{
+          color: black;
+        }
+      }
+      @include dev-github-profile(5em);
+      @media (max-width: 1250px) {
+        @include dev-github-profile(3em);
       }
       @media (max-width: 1024px) {
+        .nm-ct-dev-profile {
+          display: none;
+        }
         .nm-ct-dev-stat {
           bottom: 0;
           opacity: 1;
