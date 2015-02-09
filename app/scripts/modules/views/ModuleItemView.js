@@ -66,5 +66,9 @@ module.exports = Marionette.ItemView.extend({
 
   onShow: function() {
     this.$('.js-nm-mi-filter').qtip();
+  },
+
+  onBeforeDestroy: function() {
+    $('a[href^="/modules/"]').qtip('destroy', true);
   }
 });
