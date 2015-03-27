@@ -11,7 +11,7 @@ module.exports = Marionette.CompositeView.extend({
     this.parseSelectedFilters();
   },
   events: {
-    'click button': function(event) {
+    'click .js-nm-module-filter-button': function(event) {
       //Get the label of the filter that the user deselected
       var deselectedFilter = event.currentTarget.getAttribute("data-filter");
       //Find and deselect the filter
