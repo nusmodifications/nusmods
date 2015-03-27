@@ -197,6 +197,8 @@ module.exports = Marionette.LayoutView.extend({
 
       that.modulesFilterMetaView = new ModulesFilterMetaView({
         model: new Backbone.Model({
+          //Needed to allow the view to deselect filters
+          collection: facets,
           selectedFilters: selectedFilters,
           resultsLength: that.facetsView.collection.rawFilteredCollection.length
         })

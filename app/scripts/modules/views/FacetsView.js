@@ -45,21 +45,23 @@ module.exports = Marionette.CollectionView.extend({
     });
   },
   events: {
-    'click': function () {
-      var selectedFilters = {};
-      _.each(this.collection.models, function (facet) {
-        var filters = [];
-        _.each(facet.get('filters').selected, function (filter) {
-          filters.push(filter.get('label'));
-        });
-        if (filters.length) {
-          selectedFilters[facet.get('label')] = filters;
-        }
-      });
+    'click': 'updateFilters'
+  },
 
-      this.trigger('selectedFiltersChanged', selectedFilters);
-      this.persistFilters(selectedFilters);
-    }
+  updateFilters: function () {
+    var selectedFilters = {};
+    _.each(this.collection.models, function (facet) {
+      var filters = [];
+      _.each(facet.get('filters').selected, function (filter) {
+        filters.push(filter.get('label'));
+      });
+      if (filters.length) {
+        selectedFilters[facet.get('label')] = filters;
+      }
+    });
+
+    this.trigger('selectedFiltersChanged', selectedFilters);
+    this.persistFilters(selectedFilters);
   },
 
   clearFilters: function () {
@@ -103,6 +105,8 @@ module.exports = Marionette.CollectionView.extend({
 
     this.listenTo(this.collection.filteredCollection, 'reset', this.onReset);
     App.vent.on('filterActivated', this.onFilter, this);
+    //Triggered from ModulesFilterMetaView when a filter is deselected
+    App.vent.on('filterUpdated', this.updateFilters, this);
     this.collection.onSelect();
   }
 });
