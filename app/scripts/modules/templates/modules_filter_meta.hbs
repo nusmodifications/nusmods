@@ -7,7 +7,13 @@
           {{#each selectedFiltersParsed}}
             <div class="nm-module-filter-meta-list">
               <dt><strong>{{type}}:</strong></dt>
-              <dd>{{#each options}} <button class="btn btn-primary btn-xs" data-filter="{{this}}">{{this}}</button> {{/each}}</dd>
+              <dd>
+                {{#each options}}
+                <button class="btn btn-primary btn-xs" data-filter="{{this}}">
+                  {{this}}&nbsp;<span class="fa fa-remove"></span>
+                </button>
+                {{/each}}
+              </dd>
             </div>
           {{/each}}
         {{else}}
