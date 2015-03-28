@@ -8,9 +8,11 @@ module.exports = Backbone.Collection.extend({
   model: Exam,
 
   initialize: function () {
-    this.clashCount = 0;
-    this.totalModuleCredits = 0;
-    this.listenTo(this, {add: this.onAdd, remove: this.onRemove});
+    this.clashCount = 0; 
+    this.listenTo(this, {
+      add: this.onAdd, 
+      remove: this.onRemove
+    });
   },
 
   addModule: function (module) {
@@ -26,7 +28,6 @@ module.exports = Backbone.Collection.extend({
   },
 
   onAdd: function (exam) {
-    this.totalModuleCredits += exam.get('moduleCredit');
     // Compute clashes based on keys with clustered hours.
     var clashes = this.where({key: exam.get('key')});
     if (clashes.length > 1) {
@@ -38,9 +39,7 @@ module.exports = Backbone.Collection.extend({
     }
   },
 
-  onRemove: function(exam) {
-    this.totalModuleCredits -= exam.get('moduleCredit');
-
+  onRemove: function (exam) {
     if (exam.get('clash')) {
       var clashes = this.where({key: exam.get('key')});
       if (clashes.length === 1) {
@@ -48,6 +47,13 @@ module.exports = Backbone.Collection.extend({
       }
       this.clashCount--;
     }
+  },
+
+  getTotalSemesterModuleCredits: function () {
+    var totalCount = this.reduce(function (memo, module) {
+      return memo + module.getSemesterModuleCredit();
+    }, 0);
+    return totalCount;
   },
 
   // Sort by custom key: if have exam, month then date then clustered hour,

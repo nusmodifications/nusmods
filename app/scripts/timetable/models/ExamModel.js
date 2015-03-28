@@ -25,13 +25,12 @@ module.exports = Backbone.Model.extend({
       this.set('examStr', this.defaults.time);
       this.set('key', this.id);
     }
-
-    this.set('moduleCredit', this.getModuleCredit(this));
   },
 
-  getModuleCredit: function(module) {
-    var moduleCredit = parseInt(module.get('moduleCredit'));
-    moduleCredit = module.get('ModuleTitle').match(/dissertation/i) ? moduleCredit / 2 : moduleCredit
-    return moduleCredit;
+  getSemesterModuleCredit: function () {    
+    //  For FYP/Dissertations/Thesis, should divide MC by 2.
+    //  Have to add in other modules that span across 2 semesters.
+    var moduleCredit = parseInt(this.get('moduleCredit'));
+    return this.get('ModuleTitle').match(/dissertation/i) ? moduleCredit / 2 : moduleCredit; 
   }
 });
