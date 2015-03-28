@@ -192,7 +192,8 @@
       color: #fff;
     }
   }
-  #exam-timetable > table th {
+  #exam-timetable > table th,
+  #exam-timetable > table tfoot td, {
     color: #000;
   }
   .form-control {
