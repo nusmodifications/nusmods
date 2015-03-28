@@ -25,5 +25,13 @@ module.exports = Backbone.Model.extend({
       this.set('examStr', this.defaults.time);
       this.set('key', this.id);
     }
+
+    this.set('moduleCredit', this.getModuleCredit(this));
+  },
+
+  getModuleCredit: function(module) {
+    var moduleCredit = parseInt(module.get('moduleCredit'));
+    moduleCredit = module.get('ModuleTitle').match(/dissertation/i) ? moduleCredit / 2 : moduleCredit
+    return moduleCredit;
   }
 });
