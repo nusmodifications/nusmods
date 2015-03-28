@@ -51,7 +51,7 @@ module.exports = Backbone.Collection.extend({
 
   getTotalSemesterModuleCredits: function () {
     var totalCount = this.reduce(function (memo, module) {
-      return memo + module.getSemesterModuleCredit();
+      return memo + module.get('semesterModuleCredit');
     }, 0);
     return totalCount;
   },
