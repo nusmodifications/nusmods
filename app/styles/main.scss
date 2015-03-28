@@ -691,7 +691,8 @@ colgroup.hover {
 #exam-timetable > table {
   font-weight: bold;
   border: 1px solid $gray;
-  th {
+  th,
+  tfoot td {
     border: 1px solid $gray;
     background-color: $gray-lighter;
   }
@@ -701,7 +702,7 @@ colgroup.hover {
       text-align: right;
     }
   }
-  tr {
+  tbody tr {
     &.clash {
       background-color: $gray-lighter;
     }
