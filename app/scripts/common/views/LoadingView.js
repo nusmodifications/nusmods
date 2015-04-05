@@ -1,10 +1,6 @@
 'use strict';
 
-var $ = require('jquery');
-var _ = require('underscore');
-var App = require('../../app');
 var Marionette = require('backbone.marionette');
-var analytics = require('../../analytics');
 var template = require('../templates/loading.hbs');
 var Spinner = require('spin.js');
 

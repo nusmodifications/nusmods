@@ -10,7 +10,7 @@ var BookmarksView = require('./BookmarksView');
 var _ = require('underscore');
 var analytics = require('../../analytics');
 var attachFastClick = require('fastclick');
-var corsify = require('../../cors/corsify');
+// var corsify = require('../../cors/corsify');
 var themePicker = require('../themes/themePicker');
 var academicCalendar = require('../utils/academicCalendar');
 require('bootstrap/alert');

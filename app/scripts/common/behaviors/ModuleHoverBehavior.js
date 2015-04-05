@@ -6,11 +6,11 @@ var Marionette = require('backbone.marionette');
 
 module.exports = Marionette.Behavior.extend({
   events: {
-    "mouseenter a[href^='/modules/']" : 'showDetails',
-    "click a[href^='/modules/']": 'destroyDetails'
+    'mouseenter a[href^=\'/modules/\']' : 'showDetails',
+    'click a[href^=\'/modules/\']': 'destroyDetails'
   },
 
-  showDetails: function(event) {
+  showDetails: function (event) {
     var curr = event.currentTarget;
 
     var NUSMods = require('../../nusmods');
@@ -19,20 +19,19 @@ module.exports = Marionette.Behavior.extend({
     var reqModuleCode = $(curr).text();
 
     $(curr).qtip({
-      content: function(event, api) {
-        var reqModule = NUSMods.getMod(reqModuleCode)
-          .then(function(data) {
-            var reqModuleModel = new ModuleModel(data);
+      content: function (event, api) {
+        NUSMods.getMod(reqModuleCode).then(function(data) {
+          var reqModuleModel = new ModuleModel(data);
 
-            var title = reqModuleModel.get('ModuleTitle');
-            var semesters = reqModuleModel.get('semesterNames');
-            var offeredIn = _.reduce(semesters, function(a, b) {
-              return a + ', ' + b;
-            });
-
-            api.set('content.title', '<strong>' + title + '</strong>');
-            api.set('content.text', 'Offered in: ' + offeredIn);
+          var title = reqModuleModel.get('ModuleTitle');
+          var semesters = reqModuleModel.get('semesterNames');
+          var offeredIn = _.reduce(semesters, function(a, b) {
+            return a + ', ' + b;
           });
+
+          api.set('content.title', '<strong>' + title + '</strong>');
+          api.set('content.text', 'Offered in: ' + offeredIn);
+        });
         return 'Loading...';
       },
       show: {
@@ -45,7 +44,7 @@ module.exports = Marionette.Behavior.extend({
         at: 'top center'
       },
       events: {
-        show: function(event, api) {
+        show: function (event) {
           // Prevents tags with data-no-module-qtip from loading
           if (curr.hasAttribute('data-no-module-qtip')) {
             event.preventDefault();
@@ -54,7 +53,7 @@ module.exports = Marionette.Behavior.extend({
       }
     }, event);
   },
-  destroyDetails: function(event) {
+  destroyDetails: function (event) {
     var curr = event.currentTarget;
     $(curr).qtip('destroy', true);
   }

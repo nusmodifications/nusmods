@@ -3,19 +3,19 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var template = require('../templates/reviewers.hbs');
-var itemTemplate = require('../templates/reviewers_item.hbs');
+// var itemTemplate = require('../templates/reviewers_item.hbs');
 
-var ReviewersItemView = Marionette.ItemView.extend({
-  tagName: 'div',
-  className: 'nm-ct-rev-item col-md-3 col-sm-3 col-xs-4',
-  template: itemTemplate
-});
+// var ReviewersItemView = Marionette.ItemView.extend({
+//   tagName: 'div',
+//   className: 'nm-ct-rev-item col-md-3 col-sm-3 col-xs-4',
+//   template: itemTemplate
+// });
 
-var ReviewersListView = Marionette.CollectionView.extend({
-  tagName: 'div',
-  className: 'nm-ct-revs',
-  childView: ReviewersItemView
-});
+// var ReviewersListView = Marionette.CollectionView.extend({
+//   tagName: 'div',
+//   className: 'nm-ct-revs',
+//   childView: ReviewersItemView
+// });
 
 module.exports = Marionette.LayoutView.extend({
   initialize: function () {

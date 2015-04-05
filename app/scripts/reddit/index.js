@@ -6,5 +6,5 @@ App.request('addNavigationItem', {
   name: 'Reddit@NUS',
   icon: 'reddit',
   url: 'http://www.reddit.com/r/nus',
-  target: "_blank"
+  target: '_blank'
 });
