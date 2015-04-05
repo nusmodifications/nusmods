@@ -171,10 +171,10 @@ module.exports = function (grunt) {
         srcFolder: '<%= defaults.destFolder %>',
         jsonSpace: '<%= defaults.jsonSpace %>'
       },
-      ay2014to2015sem1: {
+      ay2014to2015sem2: {
         options: {
           academicYear: '2014/2015',
-          semester: '1'
+          semester: '2'
         }
       }
     },
