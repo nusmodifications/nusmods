@@ -22,12 +22,15 @@
     "backbone.babysitter": "~0.1.6",
     "backbone.marionette": "~2.4.1",
     "backbone.wreqr": "~1.3.1",
-    "bluebird": "~2.9.24",
+    "bluebird": "~2.9.25",
     "d3": "~3.5.5",
     "fastclick": "~1.0.6",
     "jquery": "~2.1.4",
     "marked": "~0.3.3",
+    "moment": "~2.10.3",
+    "mousetrap": "~1.5.2",
     "qs": "~2.4.2",
+    "raven-js": "~1.1.18",
     "spin.js": "~2.1.0",
     "underscore": "~1.6.0",
     "zeroclipboard": "~2.2.0"
@@ -74,7 +77,6 @@
     ]
   },
   "browser": {
-    "Mousetrap": "./app/bower_components/mousetrap/mousetrap.js",
     "backbone.picky": "./app/bower_components/backbone.picky/lib/amd/backbone.picky.js",
     "bootstrap/affix": "./app/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/affix.js",
     "bootstrap/alert": "./app/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/alert.js",
@@ -94,13 +96,10 @@
     "jquery-ui/widget": "./app/bower_components/jquery.ui/ui/widget.js",
     "jquery.fileDownload": "./app/bower_components/jquery-file-download/src/Scripts/jquery.fileDownload.js",
     "localforage": "./app/bower_components/localforage/dist/localforage.nopromises.js",
-    "moment": "./app/bower_components/moment/moment.js",
     "qTip2": "./app/bower_components/qtip2/jquery.qtip.js",
-    "raven": "./app/bower_components/raven-js/dist/raven.js",
     "select2": "./app/bower_components/select2/select2.js"
   },
   "browserify-shim": {
-    "Mousetrap": "Mousetrap",
     "bootstrap/collapse": {
       "depends": [
         "bootstrap/transition"
@@ -141,7 +140,6 @@
       "depends": [
         "bluebird:Promise"
       ]
-    },
-    "raven": "Raven"
+    }
   }
 }

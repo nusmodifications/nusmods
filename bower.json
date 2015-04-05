@@ -11,10 +11,7 @@
     "jquery.ui": "~1.11.4",
     "jqueryui-touch-punch": "#4bc009145202d9c7483ba85f3a236a8f3470354d",
     "localforage": "ahbeng/localForage#2da72b902fb55866f6a4c0415970931d94d98592",
-    "moment": "~2.9.0",
-    "mousetrap": "~1.5.2",
     "qtip2": "~2.2.1",
-    "raven-js": "~1.1.18",
     "select2": "~3.5.2",
     "select2-bootstrap-css": "~1.4.6"
   },
