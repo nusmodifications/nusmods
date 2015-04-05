@@ -19,16 +19,16 @@
   ],
   "dependencies": {
     "async": "^0.9.0",
-    "graceful-fs": "^3.0.2",
+    "graceful-fs": "^3.0.6",
     "grunt": "^0.4.5",
-    "grunt-rsync": "^0.6.1",
-    "grunt-shell": "^0.7.0",
-    "jsdom": "^0.11.1",
-    "lodash": "^2.4.1",
-    "moment": "^2.7.0",
-    "request": "^2.37.0",
+    "grunt-rsync": "^0.6.2",
+    "grunt-shell": "^1.1.2",
+    "jsdom": "^4.1.0",
+    "lodash": "^3.6.0",
+    "moment": "^2.9.0",
+    "request": "^2.55.0",
     "request-replay": "^0.3.0",
-    "underscore.string": "^2.3.3"
+    "underscore.string": "^3.0.3"
   },
   "private": true
 }
