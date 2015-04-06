@@ -38,6 +38,7 @@ module.exports = function (grunt) {
         .replace(/(?:^|\s\(?|-|\/)\S/g, function(c){ return c.toUpperCase(); })
         .replace(/\bIp\b/, 'IP')
         .replace(/\bMit\b/, 'MIT')
+        .replace(/^Na$/, 'NA')
         .replace(/\bNus\b/, 'NUS');
     };
 
@@ -49,7 +50,7 @@ module.exports = function (grunt) {
           'Prerequisite', 'Preclusion', 'Corequisite');
         _.each(mod, function (value, key) {
           value = mod[key] = _.clean(value);
-          if (nullPattern.test(value)) {
+          if (key !== 'Department' && nullPattern.test(value)) {
             delete mod[key];
           }
         });
