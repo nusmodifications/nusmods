@@ -3,7 +3,6 @@
   "private": true,
   "dependencies": {
     "animate.css": "~3.2.6",
-    "backbone.picky": "~0.2.0",
     "bootstrap-sass-official": "~3.3.4",
     "font-awesome": "~4.3.0",
     "jasny-bootstrap": "~3.1.3",
