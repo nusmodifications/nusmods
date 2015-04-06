@@ -2,6 +2,7 @@
 
 var fs = require('graceful-fs');
 var path = require('path');
+var _ = require('lodash');
 var replay = require('request-replay');
 var request = require('request');
 request = request.defaults({jar: true});
@@ -22,6 +23,7 @@ var cachePath = function (urlStr, options) {
 };
 
 exports.requestCached = function (url, options, callback) {
+  var options = _.cloneDeep(options);
   var cachedPath = cachePath(url, options);
   fs.stat(cachedPath, function (statErr, stats) {
     if (!statErr && (options.maxCacheAge === -1 ||
