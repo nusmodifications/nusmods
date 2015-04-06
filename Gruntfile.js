@@ -60,29 +60,14 @@ module.exports = function (grunt) {
         destLessonTypes: 'lessonTypes.json',
         types: ['Module', 'GEM', 'SSM', 'UEM', 'CFM']
       },
-      currentSemester: {
+      regularSemester: {
         options: {
           baseUrl: 'https://myaces.nus.edu.sg/cors/jsp/report/'
         }
       },
-      lastSemester: {
-        options: {
-          baseUrl: 'https://aces01.nus.edu.sg/cors/jsp/report/'
-        }
-      },
-      penultimateSemester: {
-        options: {
-          baseUrl: 'https://sit.aces01.nus.edu.sg/cors/jsp/report/'
-        }
-      },
-      lastSpecialTerm: {
+      specialTerm: {
         options: {
           baseUrl: 'https://myaces.nus.edu.sg/sts/jsp/report/'
-        }
-      },
-      penultimateSpecialTerm: {
-        options: {
-          baseUrl: 'https://sit.aces01.nus.edu.sg/sts/jsp/report/'
         }
       }
     },
@@ -262,7 +247,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('remote', [
     'bulletinModules',
-    'cors:currentSemester',
+    'cors',
     'corsBiddingStats',
     'examTimetable',
     'moduleTimetableDelta',
