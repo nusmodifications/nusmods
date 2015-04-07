@@ -121,10 +121,11 @@ App.on('start', function () {
   require('./timetable');
   require('./modules');
   require('./venues');
-  require('./apps');
   // require('./friends');
+  require('./nuswhispers');
   require('./barenus');
   require('./preferences');
+  require('./apps');
   require('./blog');
   require('./reddit');
   // require('ivle');
