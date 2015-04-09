@@ -1,0 +1,62 @@
+[
+  {
+    "name": "Beng (Eu Beng Hee)",
+    "description": "He's Beng. Nuff' said.",
+    "link": "https://www.github.com/ahbeng",
+    "gravatar": "http://www.gravatar.com/avatar/601eddec66c2e48891195af393144c17?s=64",
+    "gravatar-alt": "Beng",
+    "facebook": "https://www.facebook.com/benghee",
+    "twitter": "https://www.twitter.com/ahbengish",
+    "github": "https://www.github.com/ahbeng",
+    "linkedin": "http://sg.linkedin.com/in/benghee"
+  },
+  {
+    "name": "Tay Yang Shun",
+    "description": "Front-end developer who loves good code, design and typography.",
+    "link": "https://www.github.com/yangshun",
+    "gravatar": "http://www.gravatar.com/avatar/66eca275a85a6a0c06b0a0f7039b074b?s=64",
+    "gravatar-alt": "Tay Yang Shun",
+    "facebook": "https://www.facebook.com/yangshun",
+    "twitter": "https://www.twitter.com/yangshunz",
+    "github": "https://www.github.com/yangshun",
+    "linkedin": "http://sg.linkedin.com/in/yangshun"
+  },
+  {
+    "name": "Ashray Jain",
+    "description": "Full stack developer who loves playing with new technologies.",
+    "link": "https://www.github.com/ashrayjain",
+    "gravatar": "http://www.gravatar.com/avatar/a9b385681eda283b3ef7596a6e3e4b00?s=64",
+    "gravatar-alt": "Ashray Jain",
+    "facebook": "https://www.facebook.com/ashray.jain.182",
+    "github": "https://www.github.com/ashrayjain",
+    "linkedin": "http://sg.linkedin.com/pub/ashray-jain/68/802/547"
+  },
+  {
+    "name": "Ang Yen Ling",
+    "description": "Bubbly girl who loves new things, matcha ice cream and marketing.",
+    "link": "https://www.facebook.com/ang.yenling",
+    "gravatar": "http://www.gravatar.com/avatar/630fe6848c11082312b57b1360a0dd09?s=64",
+    "gravatar-alt": "Ang Yen Ling",
+    "facebook": "https://www.facebook.com/ang.yenling"
+  },
+  {
+    "name": "Liu Xinan",
+    "description": "A crazy developer who likes black magic, ...and tea!",
+    "link": "https://www.github.com/xinan",
+    "gravatar": "http://www.gravatar.com/avatar/802da99824fb41330a44af89256da661.png?s=64",
+    "gravatar-alt": "Liu Xinan",
+    "facebook": "https://www.facebook.com/xinan.liu",
+    "github": "https://www.github.com/xinan"
+  },
+  {
+    "name": "Xu Bili",
+    "description": "Loves to read and write elegant code. JavaScript enthusiast.",
+    "link": "https://www.github.com/xbili",
+    "gravatar": "http://www.gravatar.com/avatar/a26e376c4bc050614f13581cf6a13e09.png?s=64",
+    "gravatar-alt": "Xu Bili",
+    "facebook": "https://www.facebook.com/xbili",
+    "twitter": "https://www.twitter.com/lantis_play",
+    "github": "https://www.github.com/xbili",
+    "linkedin": "https://sg.linkedin.com/in/xbili"
+  }
+]
