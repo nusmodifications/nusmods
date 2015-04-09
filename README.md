@@ -87,7 +87,7 @@ The development server serves the files generated in `api/app/api` under
 
 - [PHP](http://www.php.net) for export, URL shortening, redirect and Facebook API proxy scripts.
 - [YOURLS](http://yourls.org/) for URL shortening.
-- [wkhtmltopdf and wkhtmltoimage](http://code.google.com/p/wkhtmltopdf/) for pdf
+- [wkhtmltopdf and wkhtmltoimage](http://wkhtmltopdf.org/) for pdf
   and image export. Using the static binaries is suggested, as compiling with
   all the features of the static build needs a custom patched version of QT,
   which takes a *long* time to build.
