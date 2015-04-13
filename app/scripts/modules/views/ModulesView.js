@@ -110,12 +110,34 @@ module.exports = Marionette.LayoutView.extend({
         mod.Types = ['Not in CORS'];
       }
       mod.semesterNames = [];
+
       for (var i = 0; i < mod.History.length; i++) {
         var history = mod.History[i];
         var sem = history.Semester;
         mod.semesterNames.push(semesterNames[sem - 1]);
         mod['LecturePeriods' + sem] = history.LecturePeriods || ['No Lectures'];
         mod['TutorialPeriods' + sem] = history.TutorialPeriods || ['No Tutorials'];
+
+        var workloads = [];
+
+        if (mod.Workload) {
+         workloads =  _.map(mod.Workload.split('-'), function(workload) {
+            var workloadInt = parseInt(workload);
+            return _.isNumber(workloadInt) && !_.isNaN(workloadInt) ? workloadInt : 'Others';
+          });
+        }
+
+        if (workloads.length === 5) {
+          mod.lectureHours = workloads[0];
+          mod.tutorialHours = workloads[1];
+          mod.labHours = workloads[2];
+          mod.projectHours = workloads[3];
+          mod.preparationHours = workloads[4];
+        }
+        else {
+          mod.lectureHours = mod.tutorialHours = mod.labHours
+              = mod.projectHours = mod.preparationHours = 'Others';
+        }
       }
     });
 
@@ -158,6 +180,52 @@ module.exports = Marionette.LayoutView.extend({
         return +filter.label;
       }
     });
+    facets.add({
+      filteredCollection: mods,
+      key: 'lectureHours',
+      label: 'Weekly Lecture Hours',
+      slug: 'lecture-hours',
+      sortBy: function(filter) {
+        return +filter;
+      }
+    });
+    facets.add({
+      filteredCollection: mods,
+      key: 'tutorialHours',
+      label: 'Weekly Tutorial Hours',
+      slug: 'tutorial-hours',
+      sortBy: function(filter) {
+        return +filter;
+      }
+    });
+    facets.add({
+      filteredCollection: mods,
+      key: 'labHours',
+      label: 'Weekly Lab Hours',
+      slug: 'lab-hours',
+      sortBy: function(filter) {
+        return +filter;
+      }
+    });
+    facets.add({
+      filteredCollection: mods,
+      key: 'ProjectHours',
+      label: 'Weekly Project Hours',
+      slug: 'project-hours',
+      sortBy: function(filter) {
+        return +filter;
+      }
+    });
+    facets.add({
+      filteredCollection: mods,
+      key: 'PreparationHours',
+      label: 'Weekly Preparation Hours',
+      slug: 'preparation-hours',
+      sortBy: function(filter) {
+        return +filter;
+      }
+    });
+
     _.each([1, 2], function (semester) {
       facets.add(_.map(['Lecture Periods', 'Tutorial Periods'], function(label) {
         var currentLabel = 'Sem ' + semester + ' ' + label;
