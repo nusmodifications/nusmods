@@ -209,7 +209,7 @@ module.exports = Marionette.LayoutView.extend({
     });
     facets.add({
       filteredCollection: mods,
-      key: 'ProjectHours',
+      key: 'projectHours',
       label: 'Weekly Project Hours',
       slug: 'project-hours',
       sortBy: function(filter) {
@@ -218,7 +218,7 @@ module.exports = Marionette.LayoutView.extend({
     });
     facets.add({
       filteredCollection: mods,
-      key: 'PreparationHours',
+      key: 'preparationHours',
       label: 'Weekly Preparation Hours',
       slug: 'preparation-hours',
       sortBy: function(filter) {
