@@ -806,3 +806,15 @@
     @include color(#9b703f);
   }
 }
+.theme-whitescreen {
+  .color0,
+  .color1,
+  .color2,
+  .color3,
+  .color4,
+  .color5,
+  .color6,
+  .color7 {
+    @include color(#fff);
+  }
+}
