@@ -118,5 +118,9 @@
   { 
     "value": "twilight", 
     "name": "Twilight"
+  },
+  {
+    "value": "whitescreen",
+    "name": "White Screen"
   }
 ]
