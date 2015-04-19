@@ -12,7 +12,8 @@
     a {
       display: inline-block;
       width: 100%;
-      &:hover {
+      &:hover,
+      &:focus {
         text-decoration: none;
       }
     }
