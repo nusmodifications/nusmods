@@ -12,7 +12,7 @@ module.exports = Marionette.CompositeView.extend({
   },
   events: {
     'click .js-nm-module-filter-button': function (event) {
-      //Get the label of the filter that the user deselected
+      // Get the label of the filter that the user deselected
       var deselectedFilter = event.currentTarget.getAttribute('data-filter');
       //Find and deselect the filter
       _.each(this.model.get('collection').models, function (facet) {
@@ -22,7 +22,7 @@ module.exports = Marionette.CompositeView.extend({
           }
         });
       });
-      //Tell FacetsView to update selectedFilters
+      // Tell FacetsView to update selectedFilters
       App.vent.trigger('filterUpdated');
     }
   },

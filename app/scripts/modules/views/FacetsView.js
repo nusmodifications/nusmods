@@ -86,6 +86,7 @@ module.exports = Marionette.CollectionView.extend({
     var filteredModel = filteredCollection.findWhere({label: options.value});
     filteredModel.model.collection.selectNone();
     filteredModel.model.toggleSelected();
+    this.updateFilters();
   },
 
   persistFilters: function (value) {
@@ -105,7 +106,7 @@ module.exports = Marionette.CollectionView.extend({
 
     this.listenTo(this.collection.filteredCollection, 'reset', this.onReset);
     App.vent.on('filterActivated', this.onFilter, this);
-    //Triggered from ModulesFilterMetaView when a filter is deselected
+    // Triggered from ModulesFilterMetaView when a filter is deselected
     App.vent.on('filterUpdated', this.updateFilters, this);
     this.collection.onSelect();
   }
