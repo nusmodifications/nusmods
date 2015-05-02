@@ -16,12 +16,13 @@ $navmenu-width: 55px;
 #sidebar-wrapper {
   border: 0;
   height: 100%;
-  left: $navmenu-width;
+  left: 0;
   margin-left: -$navmenu-width;
-  overflow-y: auto;
+  overflow-x: visible;
+  overflow-y: visible;
   position: fixed;
   top: $navbar-height;
-  transition: width .5s ease;
+  transition: all .5s ease;
   width: 0;
   z-index: 1000;
   .nm-brand {
@@ -32,6 +33,7 @@ $navmenu-width: 55px;
 .js-toggled {
   #nm-wrapper {
     #sidebar-wrapper {
+      left: $navmenu-width;
       width: $navmenu-width;
     }
     #page-content-wrapper {
@@ -51,6 +53,7 @@ $navmenu-width: 55px;
   }
 
   #sidebar-wrapper {
+    left: $navmenu-width;
     width: $navmenu-width;
   }
   .js-toggled {

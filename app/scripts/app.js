@@ -9,6 +9,7 @@ var Promise = require('bluebird'); // jshint ignore:line
 var SelectedModulesController = require('./common/controllers/SelectedModulesController');
 var TimetableModuleCollection = require('./common/collections/TimetableModuleCollection');
 var _ = require('underscore');
+var $ = require('jquery');
 var config = require('./common/config');
 var localforage = require('localforage');
 require('qTip2');
@@ -169,6 +170,11 @@ App.on('start', function () {
       localforage.setItem(bookmarkedModulesNamespace, []);
     }
   });
+
+  // For sidebar menu
+  require('bootstrap/tooltip');
+  $('[data-toggle="tooltip"]').tooltip();
+
 });
 
 module.exports = App;
