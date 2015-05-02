@@ -3,15 +3,12 @@ $input-border-focus: $brand-primary;
 $body-bg: #f7f7f7;
 $font-family-sans-serif: "proxima-nova", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 $navbar-default-bg: $brand-primary;
-$navbar-default-link-color: #666;
+$navbar-default-link-color: #6e7276;
 $navbar-default-link-hover-color: $brand-primary;
 $navbar-default-link-active-color: $brand-primary;
 
 $navbar-default-toggle-icon-bar-bg: #fff;
 $navbar-default-toggle-border-color: #fff;
-
-$navmenu-width: 200px;
-$navmenu-minimal-width: 100px;
 
 // Core variables and mixins
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/variables";
@@ -1178,75 +1175,7 @@ colgroup.hover {
   }
 }
 
-#nm-wrapper {
-  padding-left: 0;
-  height: 100%;
-  transition: all 0.5s ease;
-}
-
-.js-toggled {
-  overflow: hidden;
-  #nm-wrapper {
-    padding-left: $navmenu-width;
-  }
-}
-
-#sidebar-wrapper {
-  border: 0;
-  height: 100%;
-  left: $navmenu-width;
-  margin-left: -$navmenu-width;
-  overflow-y: auto;
-  position: fixed;
-  top: $navbar-height;
-  transition: width .5s ease;
-  width: 0;
-  z-index: 1000;
-  .nm-brand {
-    float: left;
-  }
-}
-
-.js-toggled {
-  #nm-wrapper {
-    #sidebar-wrapper {
-      width: $navmenu-width;
-    }
-    #page-content-wrapper {
-      margin-right: -$navmenu-width;
-      position: absolute;
-    }
-  }
-}
-
-#page-content-wrapper {
-  width: 100%;
-  min-height: 100%;
-}
-
-@media(min-width:768px) {
-  #nm-wrapper {
-    padding-left: $navmenu-width;
-  }
-
-  #sidebar-wrapper {
-    width: $navmenu-width;
-  }
-  .js-toggled {
-    #nm-wrapper {
-      padding-left: 0;
-      #sidebar-wrapper {
-        width: 0;
-      }
-      #page-content-wrapper {
-        position: relative;
-        margin-right: 0;
-      }
-    }
-  }
-}
-
-
+@import "sidebar";
 @import "apps";
 @import "barenus";
 @import "contribute";
