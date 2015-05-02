@@ -9,7 +9,9 @@ $navbar-default-link-active-color: $brand-primary;
 
 $navbar-default-toggle-icon-bar-bg: #fff;
 $navbar-default-toggle-border-color: #fff;
+
 $navmenu-width: 200px;
+$navmenu-minimal-width: 100px;
 
 // Core variables and mixins
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/variables";
@@ -155,13 +157,6 @@ kbd {
   z-index: 100;
   .icon-bar {
     background-color: $brand-primary;
-  }
-}
-
-.navbar {
-  margin-left: $navmenu-width;
-  @media (max-width: $screen-sm-min) {
-    margin-left: 0;
   }
 }
 
@@ -1203,6 +1198,7 @@ colgroup.hover {
   margin-left: -$navmenu-width;
   overflow-y: auto;
   position: fixed;
+  top: $navbar-height;
   transition: width .5s ease;
   width: 0;
   z-index: 1000;
@@ -1214,7 +1210,6 @@ colgroup.hover {
 .js-toggled {
   #nm-wrapper {
     #sidebar-wrapper {
-      margin-top: 50px;
       width: $navmenu-width;
     }
     #page-content-wrapper {
