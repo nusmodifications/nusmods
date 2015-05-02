@@ -31,7 +31,19 @@ module.exports = function (grunt) {
           return done(false);
         }
 
-        moduleTimetableDelta = moduleTimetableDelta.concat(JSON.parse(data));
+        var moduleTimetableDeltaSinceLastModified = JSON.parse(data);
+
+        // If it encounters an exception, IVLE API does not seem to indicate an error via HTTP status codes but still
+        // returns data, with a stack trace as the value for ModuleCode and default values for the rest of the fields.
+        var elementsWithException = _.where(moduleTimetableDeltaSinceLastModified, {
+          LastModified: '/Date(-62135596800000)/'
+        });
+        if(elementsWithException.length) {
+          console.log(elementsWithException);
+          return done(false);
+        }
+
+        moduleTimetableDelta = moduleTimetableDelta.concat(moduleTimetableDeltaSinceLastModified);
         grunt.file.write(destPath, JSON.stringify(moduleTimetableDelta, null, options.jsonSpace));
         _.each(_.groupBy(moduleTimetableDelta, 'AcadYear'), function (deltaForAY, academicYear) {
           _.each(_.groupBy(deltaForAY, 'Semester'), function (deltaForSem, semester) {
