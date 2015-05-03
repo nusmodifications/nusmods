@@ -28,6 +28,7 @@ module.exports = function (grunt) {
         path.join(options.destFolder, options.destFileName),
         JSON.stringify(venuesData, null, options.jsonSpace)
       );
+      done();
     });
   });
 };
