@@ -10,3 +10,25 @@
   border-color: $brand-primary;
   color: $brand-primary;
 }
+
+.nm-show-hide {
+  & > .btn {
+    &:hover {
+      border-color: transparent;
+      background-color: $brand-primary;
+      color: #fff;
+    }
+  }
+
+  & > .btn-default {
+    border-color: $brand-primary;
+    background-color: #fff;
+    color: $brand-primary;
+
+    &.active {
+      border-color: transparent;
+      background-color: $brand-primary;
+      color: #fff;
+    }
+  }
+}
