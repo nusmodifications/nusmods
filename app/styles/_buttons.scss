@@ -27,6 +27,7 @@
 
     &.active {
       border-color: transparent;
+      box-shadow: none;
       background-color: $brand-primary;
       color: #fff;
     }
