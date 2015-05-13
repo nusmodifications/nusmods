@@ -1,1 +1,3 @@
-# nus-academic-calendar
+# NUSModerator
+
+A lightweight library with helpful functions for NUS-related matters.
