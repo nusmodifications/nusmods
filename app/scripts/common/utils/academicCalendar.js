@@ -2,70 +2,118 @@
 
 var moment = require('moment');
 
+var acadYearStartDates = {
+  '14/15' : new Date('August 4, 2014'),
+  '15/16' : new Date('August 3, 2015'),
+  '16/17' : new Date('August 1, 2016')
+};
+
+var oneWeekTime = 1000 * 60 * 60 * 24 * 7;
+
 module.exports = {
+
   currentAcadYear: function (date) {
-    // Return format: 'YY/YY'
-    var currYear = moment(date).year();
-    var currSem = this.currentAcadSem(date);
-    if (currSem === '1'){
-      var nextYear = currYear + 1;
-      return currYear.toString().substr(2, 3) + '/' + nextYear.toString().substr(2, 3);
-    } else if(currSem === '2'){
-      var prevYear = currYear -1;
-      return prevYear.toString().substr(2, 3) + '/' + currYear.toString().substr(2, 3);
+    var acadYear, acadYearStartDate;
+    for (var year in acadYearStartDates) {
+      if (date >= acadYearStartDates[year]) {
+        acadYear = year;
+        acadYearStartDate = acadYearStartDates[year];
+      }
+      else {
+        return {'year': acadYear, 'startDate': acadYearStartDate};
+      }
     }
   },
-  currentAcadSem: function (date) {
-    // Return '1' or '2'. We'll ignore special sem for now
-    return moment(date).month() < 7 ? '2' : '1';
-  },
+
+  /**
+   * Compute the current academic week and return in json format
+   * @param  {Date} date 
+   * @return {json} {
+                      'year': "15/16",
+                      'sem': 'Semester 1'|'Semester 2'|'Special Sem 1'|'Special Sem 2',
+                      'type': 'Instructional'|'Reading'|'Examination'|'Recess'|'Vacation'|'Orientation',
+                      'num': <weekNum>
+                    }
+   */
   currentAcadWeek: function (date) {
-    // Possible return values for week:
-    // Note: We'll exclude special sem for now
-    // - Week 0 (Only Semester 1)
-    // - Week [1 .. 6]
-    // - Recess Week
-    // - Week [7 .. 13]
-    // - Reading Week
-    // - Examination Week [1 .. 2]
-    // - Vacation Week (the rest)
-    
-    var currentAcadYear = this.currentAcadYear(date);
-    var currentSemester = this.currentAcadSem(date);
+    var currentAcad = this.currentAcadYear(date);
+    var acadYear = currentAcad['year'];
+    var acadYearStartDate = currentAcad['startDate'];
 
-    var weekOffset = currentSemester === '1' ? 32 : 2;
-    // Subtract one day because for NUS, a week starts from a Monday 
-    // while in Moment.js, a week starts on a Sunday.
-    var currentWeekOfTheSem = parseInt(moment(date).subtract({days: 1, weeks: weekOffset}).format('w'));
+    var acadWeekNumber = Math.ceil((date.getTime() - acadYearStartDate.getTime() + 1) / oneWeekTime);
+    var semester = this.currentAcadSem(acadWeekNumber);
 
-    if (currentWeekOfTheSem > 17 || (currentSemester === '2' && currentWeekOfTheSem === 0) || currentWeekOfTheSem < 0 ){
-      return 'AY20' + currentAcadYear + ', Vacation Week';
-    } else {
-      var week;
-      switch (currentWeekOfTheSem) {
-        case 7:
-          week = 'Recess Week';
+    var weekType;
+    var weekNumber = 0;
+
+    switch (semester) {
+      case 'Semester 2':
+        acadWeekNumber -= 22;
+      case 'Semester 1':
+        if (acadWeekNumber == 1){
+          weekType = 'Orientation';
           break;
-        case 15:
-          week = 'Reading Week';
-          break;
-        case 16:
-          week = 'Examination Week 1';
-          break;
-        case 17:
-          week = 'Examination Week 2';
-          break;
-        default:
-          var weekNumber = currentWeekOfTheSem;
-          if (weekNumber >= 8) {
-            // For weeks after recess week
-            weekNumber--;
+        }
+        if (acadWeekNumber > 18){
+          weekType = 'Vacation';
+          weekNumber = acadWeekNumber - 18;
+          if (weekNumber > 5) {
+            weekNumber = 0;
           }
-          week = 'Week ' + weekNumber.toString();
-      }
-            
-      return ('AY20' + currentAcadYear + ', ' + 
-              'Semester ' + currentSemester + ', ' + week);
+          break;
+        }
+        acadWeekNumber -= 1;
+        var week = this.acadWeekOfNomralSem(acadWeekNumber);
+        weekType = week['weekType'];
+        weekNumber = week['weekNumber'];
+        break;
+
+      case 'Special Sem 2':
+        acadWeekNumber -= 6;
+      case 'Special Sem 1':
+        acadWeekNumber -= 40;
+        weekType = 'Instructional';
+        weekNumber = acadWeekNumber;
+        break;
+    }
+    return {
+      'year': acadYear,
+      'sem': semester,
+      'type': weekType,
+      'num': weekNumber
+    };
+  },
+
+  currentAcadSem: function (acadWeekNumber) {
+    if (acadWeekNumber <= 23) {
+      return 'Semester 1';
+    }
+    else if (acadWeekNumber <= 40 || acadWeekNumber == 53) {
+      return 'Semester 2';
+    }
+    else if (acadWeekNumber <= 46) {
+      return 'Special Sem 1'
+    }
+    else { // acadWeekNumber <= 52
+      return 'Special Sem 2'
+    }
+  },
+
+  acadWeekOfNomralSem: function (acadWeekNumber){
+    switch (acadWeekNumber) {
+      case 7:
+        return {'weekType' : 'Recess', 'weekNumber' : 0};
+      case 15:
+        return {'weekType' : 'Reading', 'weekNumber' : 0};
+      case 16:
+      case 17:
+        return {'weekType' : 'Examination', 'weekNumber' : acadWeekNumber - 15};
+      default:
+        var weekNumber = acadWeekNumber;
+        if (weekNumber >= 8) { // For weeks after recess week
+          weekNumber--;
+        }
+        return {'weekType' : 'Instructional', 'weekNumber' : weekNumber};
     }
   }
 };
