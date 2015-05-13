@@ -1,0 +1,25 @@
+{
+  "name": "nusmoderator",
+  "version": "1.0.0",
+  "description": "A lightweight library with helpful functions for NUS-related matters",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nusmodifications/nusmoderator.git"
+  },
+  "keywords": [
+    "NUS",
+    "modifications",
+    "moderator",
+    "moderation"
+  ],
+  "author": "nusmods",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nusmodifications/nusmoderator/issues"
+  },
+  "homepage": "https://github.com/nusmodifications/nusmoderator"
+}
