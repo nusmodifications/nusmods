@@ -176,13 +176,13 @@ module.exports = Backbone.View.extend({
       // $('.cors-round-container').addClass('animated bounceInUp shown');
       // $('.js-nm-contest-alert').addClass('animated bounceInDown nm-force-show');
       var week = academicCalendar.currentAcadWeek(new Date());
-      var thisWeekText = 'AY20' + week['year'] + ', ' + week['sem'] + ', ';
-      if (week['type'] != 'Instructional'){ // hide 'Instructional'
-        thisWeekText += week['type'];
+      var thisWeekText = 'AY20' + week.year + ', ' + week.sem + ', ';
+      if (week.type != 'Instructional'){ // hide 'Instructional'
+        thisWeekText += week.type;
       }
       thisWeekText += ' Week';
-      if (week['num'] > 0) { // do not show the week number if there is only one week, eg. recess
-        thisWeekText += ' ' + week['num'];
+      if (week.num > 0) { // do not show the week number if there is only one week, eg. recess
+        thisWeekText += ' ' + week.num;
       }
       $('.js-nm-current-week-text').text(thisWeekText);
     })();
