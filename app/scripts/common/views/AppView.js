@@ -175,7 +175,16 @@ module.exports = Backbone.View.extend({
       // $('.cors-round-text').html(corsify.determineRound(Date.now()));
       // $('.cors-round-container').addClass('animated bounceInUp shown');
       // $('.js-nm-contest-alert').addClass('animated bounceInDown nm-force-show');
-      $('.js-nm-current-week-text').text(academicCalendar.currentAcadWeek(new Date()));
+      var week = academicCalendar.currentAcadWeek(new Date());
+      var thisWeekText = 'AY20' + week['year'] + ', ' + week['sem'] + ', ';
+      if (week['type'] != 'Instructional'){ // hide 'Instructional'
+        thisWeekText += week['type'];
+      }
+      thisWeekText += ' Week';
+      if (week['num'] > 0) { // do not show the week number if there is only one week, eg. recess
+        thisWeekText += ' ' + week['num'];
+      }
+      $('.js-nm-current-week-text').text(thisWeekText);
     })();
   },
 
