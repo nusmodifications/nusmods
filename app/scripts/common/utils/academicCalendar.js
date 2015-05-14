@@ -3,9 +3,9 @@
 var moment = require('moment');
 
 var acadYearStartDates = {
-  '14/15' : new Date('August 4, 2014'),
+  '16/17' : new Date('August 1, 2016'),
   '15/16' : new Date('August 3, 2015'),
-  '16/17' : new Date('August 1, 2016')
+  '14/15' : new Date('August 4, 2014')
 };
 
 var oneWeekTime = 1000 * 60 * 60 * 24 * 7;
@@ -13,14 +13,16 @@ var oneWeekTime = 1000 * 60 * 60 * 24 * 7;
 module.exports = {
 
   currentAcadYear: function (date) {
-    var acadYear, acadYearStartDate;
-    for (var year in acadYearStartDates) {
+    var acadYear;
+    var acadYearStartDate;
+
+    var years = Object.keys(acadYearStartDates);
+    years.sort().reverse();
+
+    for (var i = 0; i < years.length; i++) {
+      var year = years[i];
       if (date >= acadYearStartDates[year]) {
-        acadYear = year;
-        acadYearStartDate = acadYearStartDates[year];
-      }
-      else {
-        return {'year': acadYear, 'startDate': acadYearStartDate};
+        return {year: year, startDate: acadYearStartDates[year]};
       }
     }
   },
@@ -37,8 +39,8 @@ module.exports = {
    */
   currentAcadWeek: function (date) {
     var currentAcad = this.currentAcadYear(date);
-    var acadYear = currentAcad['year'];
-    var acadYearStartDate = currentAcad['startDate'];
+    var acadYear = currentAcad.year;
+    var acadYearStartDate = currentAcad.startDate;
 
     var acadWeekNumber = Math.ceil((date.getTime() - acadYearStartDate.getTime() + 1) / oneWeekTime);
     var semester = this.currentAcadSem(acadWeekNumber);
@@ -50,11 +52,11 @@ module.exports = {
       case 'Semester 2':
         acadWeekNumber -= 22;
       case 'Semester 1':
-        if (acadWeekNumber == 1){
+        if (acadWeekNumber === 1) {
           weekType = 'Orientation';
           break;
         }
-        if (acadWeekNumber > 18){
+        if (acadWeekNumber > 18) {
           weekType = 'Vacation';
           weekNumber = acadWeekNumber - 18;
           if (weekNumber > 5) {
@@ -63,9 +65,9 @@ module.exports = {
           break;
         }
         acadWeekNumber -= 1;
-        var week = this.acadWeekOfNomralSem(acadWeekNumber);
-        weekType = week['weekType'];
-        weekNumber = week['weekNumber'];
+        var week = this.acadWeekOfNormalSem(acadWeekNumber);
+        weekType = week.weekType;
+        weekNumber = week.weekNumber;
         break;
 
       case 'Special Sem 2':
@@ -76,44 +78,43 @@ module.exports = {
         weekNumber = acadWeekNumber;
         break;
     }
+
     return {
-      'year': acadYear,
-      'sem': semester,
-      'type': weekType,
-      'num': weekNumber
+      year: acadYear,
+      sem: semester,
+      type: weekType,
+      num: weekNumber
     };
   },
 
   currentAcadSem: function (acadWeekNumber) {
     if (acadWeekNumber <= 23) {
       return 'Semester 1';
-    }
-    else if (acadWeekNumber <= 40 || acadWeekNumber == 53) {
+    } else if (acadWeekNumber <= 40 || acadWeekNumber === 53) {
       return 'Semester 2';
-    }
-    else if (acadWeekNumber <= 46) {
-      return 'Special Sem 1'
-    }
-    else { // acadWeekNumber <= 52
-      return 'Special Sem 2'
+    } else if (acadWeekNumber <= 46) {
+      return 'Special Sem 1';
+    } else { 
+      // acadWeekNumber <= 52
+      return 'Special Sem 2';
     }
   },
 
-  acadWeekOfNomralSem: function (acadWeekNumber){
+  acadWeekOfNormalSem: function (acadWeekNumber) {
     switch (acadWeekNumber) {
       case 7:
-        return {'weekType' : 'Recess', 'weekNumber' : 0};
+        return {weekType: 'Recess', weekNumber: 0};
       case 15:
-        return {'weekType' : 'Reading', 'weekNumber' : 0};
+        return {weekType: 'Reading', weekNumber : 0};
       case 16:
       case 17:
-        return {'weekType' : 'Examination', 'weekNumber' : acadWeekNumber - 15};
+        return {weekType: 'Examination', weekNumber: acadWeekNumber - 15};
       default:
         var weekNumber = acadWeekNumber;
         if (weekNumber >= 8) { // For weeks after recess week
           weekNumber--;
         }
-        return {'weekType' : 'Instructional', 'weekNumber' : weekNumber};
+        return {weekType: 'Instructional', weekNumber: weekNumber};
     }
   }
 };
