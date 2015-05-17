@@ -1,5 +1,7 @@
 # [NUSMods](http://nusmods.com) [![Code Climate](http://img.shields.io/codeclimate/github/nusmodifications/nusmods.svg)](https://codeclimate.com/github/nusmodifications/nusmods) [![Dependency Status](http://img.shields.io/david/nusmodifications/nusmods.svg)](https://david-dm.org/nusmodifications/nusmods) [![devDependency Status](http://img.shields.io/david/dev/nusmodifications/nusmods.svg)](https://david-dm.org/nusmodifications/nusmods#info=devDependencies)
 
+[![Join the chat at https://gitter.im/nusmodifications/nusmods](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/nusmodifications/nusmods?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ## Talk to us!
 
 - Gitter: [![Join the chat at https://gitter.im/nusmodifications/nusmods](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/nusmodifications?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
