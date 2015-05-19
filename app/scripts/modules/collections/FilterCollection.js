@@ -2,13 +2,12 @@
 
 var Backbone = require('backbone');
 var Filter = require('../models/FilterModel');
-var _ = require('underscore');
-require('backbone.picky');
+require('backbone.select');
 
 module.exports = Backbone.Collection.extend({
   model: Filter,
 
-  initialize: function () {
-    _.extend(this, new Backbone.Picky.MultiSelect(this));
+  initialize: function (models) {
+    Backbone.Select.Many.applyTo(this, models);
   }
 });

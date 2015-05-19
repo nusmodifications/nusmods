@@ -3,7 +3,7 @@
 var Backbone = require('backbone');
 var $ = require('jquery');
 Backbone.$ = $;
-var Raven = require('raven');
+var Raven = require('raven-js');
 var config = require('./common/config');
 var _ = require('underscore');
 var preferencesNamespace = config.namespaces.preferences + ':';
