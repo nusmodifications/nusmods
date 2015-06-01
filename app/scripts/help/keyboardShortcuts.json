@@ -18,14 +18,19 @@
     "category": "Navigation",
     "shortcuts": [
       {
+        "title": "Timetable",
+        "keys": ["T"],
+        "description": "Pressing <kbd>T</kbd> will quickly jump you to the [Timetable](/timetable) page."
+      },
+      {
         "title": "Modules",
         "keys": ["M"],
         "description": "Pressing <kbd>M</kbd> will quickly jump you to the [Modules Catalogue](/modules) page."
       },
       {
-        "title": "Timetable",
-        "keys": ["T"],
-        "description": "Pressing <kbd>T</kbd> will quickly jump you to the [Timetable](/timetable) page."
+        "title": "Venues",
+        "keys": ["V"],
+        "description": "Pressing <kbd>V</kbd> will quickly jump you to the [Venues](/venues) page."
       },
       {
         "title": "Preferences",

@@ -83,6 +83,7 @@ module.exports = Backbone.View.extend({
       t: '/timetable',
       m: '/modules',
       p: '/preferences',
+      v: '/venues',
       '?': '/help'
     };
 
