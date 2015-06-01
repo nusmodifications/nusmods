@@ -33,6 +33,11 @@
         "description": "Pressing <kbd>V</kbd> will quickly jump you to the [Venues](/venues) page."
       },
       {
+        "title": "Jump to Venue Finder",
+        "keys": ["F"],
+        "description": "Pressing <kbd>F</kbd> will quickly jump you to the [Venue Finder](/venuesavailability) page."
+      },
+      {
         "title": "BareNUS",
         "keys": ["B"],
         "description": "Pressing <kbd>B</kbd> will quickly jump you to the [BareNUS](/bareNUS) page."
