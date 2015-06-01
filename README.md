@@ -38,7 +38,7 @@ $ bower install
 $ bundle install
 ```
 
-Make a copy of the config file. Add Facebook App credentials (needed only by `barenus.php`).
+Make a copy of the config file. If you are working on `barenus.php`, add Facebook App credentials into the file.
 ```bash
 $ cp ./app/config.json.dist ./app/config.json
 ```
