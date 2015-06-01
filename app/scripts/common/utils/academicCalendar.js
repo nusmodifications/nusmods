@@ -1,7 +1,5 @@
 'use strict';
 
-var moment = require('moment');
-
 var acadYearStartDates = {
   '16/17' : new Date('August 1, 2016'),
   '15/16' : new Date('August 3, 2015'),
@@ -13,9 +11,6 @@ var oneWeekTime = 1000 * 60 * 60 * 24 * 7;
 module.exports = {
 
   currentAcadYear: function (date) {
-    var acadYear;
-    var acadYearStartDate;
-
     var years = Object.keys(acadYearStartDates);
     years.sort().reverse();
 
@@ -24,6 +19,19 @@ module.exports = {
       if (date >= acadYearStartDates[year]) {
         return {year: year, startDate: acadYearStartDates[year]};
       }
+    }
+  },
+
+  currentAcadSem: function (acadWeekNumber) {
+    if (acadWeekNumber <= 23) {
+      return 'Semester 1';
+    } else if (acadWeekNumber <= 40 || acadWeekNumber === 53) {
+      return 'Semester 2';
+    } else if (acadWeekNumber <= 46) {
+      return 'Special Sem 1';
+    } else { 
+      // acadWeekNumber <= 52
+      return 'Special Sem 2';
     }
   },
 
@@ -69,7 +77,6 @@ module.exports = {
         weekType = week.weekType;
         weekNumber = week.weekNumber;
         break;
-
       case 'Special Sem 2':
         acadWeekNumber -= 6;
       case 'Special Sem 1':
@@ -85,19 +92,6 @@ module.exports = {
       type: weekType,
       num: weekNumber
     };
-  },
-
-  currentAcadSem: function (acadWeekNumber) {
-    if (acadWeekNumber <= 23) {
-      return 'Semester 1';
-    } else if (acadWeekNumber <= 40 || acadWeekNumber === 53) {
-      return 'Semester 2';
-    } else if (acadWeekNumber <= 46) {
-      return 'Special Sem 1';
-    } else { 
-      // acadWeekNumber <= 52
-      return 'Special Sem 2';
-    }
   },
 
   acadWeekOfNormalSem: function (acadWeekNumber) {
