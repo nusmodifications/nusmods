@@ -25,7 +25,6 @@ Once it's up, do a `vagrant ssh` to enter the development environment.
 
 ### Prerequisites
 
-- [Bundler](http://bundler.io/)
 - [Node.js](http://nodejs.org)
 
 ### Setup
@@ -35,7 +34,6 @@ Install the necessary packages.
 $ npm install -g bower grunt-cli
 $ npm install
 $ bower install
-$ bundle install
 ```
 
 Make a copy of the config file. If you are working on `barenus.php`, add Facebook App credentials into the file.
