@@ -33,9 +33,19 @@
         "description": "Pressing <kbd>V</kbd> will quickly jump you to the [Venues](/venues) page."
       },
       {
+        "title": "BareNUS",
+        "keys": ["B"],
+        "description": "Pressing <kbd>B</kbd> will quickly jump you to the [BareNUS](/bareNUS) page."
+      },
+      {
         "title": "Preferences",
         "keys": ["P"],
         "description": "Pressing <kbd>P</kbd> will quickly jump you to the [Preferences](/preferences) page."
+      },
+      {
+        "title": "Apps",
+        "keys": ["A"],
+        "description": "Pressing <kbd>A</kbd> will quickly jump you to the [Apps](/apps) page."
       }
     ]
   },
