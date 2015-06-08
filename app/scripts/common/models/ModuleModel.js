@@ -76,6 +76,7 @@ module.exports = Backbone.Model.extend({
     }
 
     _.each(this.get('History'), function (history) {
+      history.semesterName = semesterNames[history.Semester - 1];
       history.examStr = examStr(history.ExamDate);
       if (history.examStr) {
         history.examDateStr = history.examStr.slice(0, 10);
@@ -200,16 +201,14 @@ module.exports = Backbone.Model.extend({
     this.set('hasExams', false);
     var history = this.get('History');
     if (history) {
-      var semestersOffered = [{semester: 1}, {semester: 2}];
+      var semestersOffered = [{semester: 1, name: semesterNames[0]}, {semester: 2, name: semesterNames[1]}, {semester: 3, name: semesterNames[2]}, {semester: 4, name: semesterNames[3]}];
       for (var i = 0; i < history.length; i++) {
         if (history[i].ExamDate) {
           this.set('hasExams', true);
         }
         var sem = history[i].Semester;
         modSemesterNames.push(semesterNames[sem - 1]);
-        if (sem === 1 || sem === 2) {
-          semestersOffered[sem - 1].offered = true;
-        }
+        semestersOffered[sem - 1].offered = true;
       }
       this.set('semesterNames', modSemesterNames);
       this.set('semestersOffered', semestersOffered);

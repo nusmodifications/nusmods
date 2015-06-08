@@ -32,7 +32,7 @@
                     <dd>{{module.ModuleCredit}}</dd>
                     {{#each module.History}}
                       {{#if Lecturers}}
-                        <dt class="highlight">Semester {{Semester}} Lecturer(s)</dt>
+                        <dt class="highlight">{{semesterName}} Lecturer(s)</dt>
                         {{#each Lecturers}}
                           <dd class="lecturer{{#if @last}} last{{/if}}">{{this}}</dd>
                         {{/each}}
@@ -76,7 +76,7 @@
                     
                     {{#if module.hasExams}}
                       {{#each module.History}}
-                        <dt class="highlight">Semester {{Semester}} Exam Date</dt>
+                        <dt class="highlight">{{semesterName}} Exam Date</dt>
                         <dd>
                           {{#if examStr}}
                             {{examStr}}
@@ -125,7 +125,7 @@
                         {{#each module.semestersOffered}}
                           <li{{#unless offered}} class="disabled"{{/unless}}>
                             <a href="#" class="add-timetable" data-semester="{{semester}}">
-                              Add to Semester {{semester}} Timetable
+                              Add to {{name}} Timetable
                             </a>
                           </li>
                         {{/each}}
@@ -252,7 +252,7 @@
                 </li>
                 {{#each module.History}}
                   <li role="presentation">
-                    <a data-target="#nm-ls-schedule-sem{{Semester}}" aria-controls="nm-ls-schedule-sem{{Semester}}" role="tab" data-toggle="pill">Semester {{Semester}}</a>
+                    <a data-target="#nm-ls-schedule-sem{{Semester}}" aria-controls="nm-ls-schedule-sem{{Semester}}" role="tab" data-toggle="pill">{{semesterName}}</a>
                   </li>
                 {{/each}}
               </ul>
@@ -261,7 +261,7 @@
               <div class="tab-content">
                 {{#each module.History}}
                   <div role="tabpanel" class="tab-pane fade semester-schedule-tab" id="nm-ls-schedule-sem{{Semester}}">
-                  <h2>Semester {{Semester}}</h2>
+                  <h2>{{semesterName}}</h2>
                   {{#each formattedTimetable}}
                     <h3 class="highlight thin">{{LessonType}}</h3>
                     <div class="table-responsive">
