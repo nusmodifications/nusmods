@@ -65,7 +65,7 @@
       <hr>
       {{#if hasExams}}
         {{#each History}}
-          <dt>Semester {{Semester}} Exam</dt>
+          <dt>{{semesterName}} Exam</dt>
           <dd class="exam">
             {{#if examStr}}
               <span>{{examDateStr}}</span>
@@ -118,7 +118,7 @@
         {{#each semestersOffered}}
           <li{{#unless offered}} class="disabled"{{/unless}}>
             <a href="#" class="add-timetable" data-semester="{{semester}}">
-              Add to Semester {{semester}} Timetable
+              Add to {{name}} Timetable
             </a>
           </li>
         {{/each}}
