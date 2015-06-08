@@ -369,8 +369,7 @@ $panel-heading-color: #3e444c;
 
 .select2-container,
 .select2-container-active {
-  .select2-choices {
-    border-color: transparent;
+  .select2-choices {    
     box-shadow: none !important;
     &:hover,
     &:focus,
@@ -662,13 +661,6 @@ colgroup.hover {
   }
 }
 
-// Venues
-
-.nm-venue-availability-items {
-  display: inline-block;
-  width: 100px;
-}
-
 // For ZeroClipboard CSS effects
 // https://github.com/jonrohan/ZeroClipboard/blob/master/docs/instructions.md#css-effects
 #copy-to-clipboard.zeroclipboard-is-active {
@@ -725,6 +717,16 @@ colgroup.hover {
   h6 {
     font-size: 14px;
     text-align: right;
+  }
+}
+#timetable-page {
+  .semester-selector-region {
+    text-align: center;
+  }
+  .select-region {
+    input {
+      font-size: 16px;
+    }
   }
 }
 
@@ -1076,6 +1078,14 @@ colgroup.hover {
     display: inline-block;
     margin-right: 10px;
   }
+}
+
+
+// Venues
+
+.nm-venue-availability-items {
+  display: inline-block;
+  width: 100px;
 }
 
 .cors-round-container.alert {
