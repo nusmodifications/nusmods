@@ -18,21 +18,9 @@ Vagrant.configure('2') do |config|
   config.ssh.forward_agent = true
   config.vm.synced_folder '.', '/vagrant', disabled: true
 
-  # Use rbconfig to determine if we're on a windows host or not.
-  require 'rbconfig'
-  is_windows = (RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/)
-  if is_windows
-    # Provisioning configuration for shell script.
-    config.vm.provision "shell" do |sh|
-      sh.path = "provisioning/JJG-Ansible-Windows/windows.sh"
-      sh.args = "provisioning/vagrant.yml"
-    end
-  else
-    # Provisioning configuration for Ansible (for Mac/Linux hosts).
-    config.vm.provision "ansible" do |ansible|
-      ansible.playbook = 'provisioning/vagrant.yml'
-      ansible.verbose = 'v'
-    end
+  config.vm.provision 'ansible' do |ansible|
+    ansible.playbook = 'provisioning/vagrant.yml'
+    ansible.verbose = 'v'
   end
 
   config.vm.provider :digital_ocean do |provider, override|
