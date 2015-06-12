@@ -40,6 +40,7 @@
 .lesson {
   overflow: hidden;
   padding: 5px;
+  transition: background .3s;
   .code,
   .title {
     font-size: 12px;
