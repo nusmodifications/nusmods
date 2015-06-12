@@ -38,13 +38,19 @@
   border-right: 1px solid $table-border-color;
 }
 .lesson {
+  border-bottom: 3px solid;
   overflow: hidden;
   padding: 5px;
-  transition: background .3s;
+  transition: all .3s ease-out;
+  transition-property: background, transform, box-shadow;
   .code,
   .title {
     font-size: 13px;
     font-weight: bold;
+  }
+  &.ui-draggable:hover {
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    transform: translate3d(0,-3px,0);
   }
 }
 
