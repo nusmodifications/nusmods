@@ -21,7 +21,7 @@ module.exports = Backbone.View.extend({
 
   events: {
     'click a[href]:not([data-bypass])': 'hijackLinks',
-	'mouseup a[href]:not([data-bypass])' : 'removeFocus',
+    'mouseup a[href]:not([data-bypass])' : 'removeFocus',
   },
 
   hijackLinks: function (event) {
