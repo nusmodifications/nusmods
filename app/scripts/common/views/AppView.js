@@ -20,7 +20,8 @@ module.exports = Backbone.View.extend({
   el: 'body',
 
   events: {
-    'click a[href]:not([data-bypass])': 'hijackLinks'
+    'click a[href]:not([data-bypass])': 'hijackLinks',
+    'mouseup a[href]:not([data-bypass])' : 'removeFocus',
   },
 
   hijackLinks: function (event) {
@@ -49,6 +50,10 @@ module.exports = Backbone.View.extend({
       // calls this anyways.  The fragment is sliced from the root.
       this.navigateWithScrollTop(href.attr, true);
     }
+  },
+
+  removeFocus: function(event) {
+    $(event.currentTarget).blur();
   },
 
   initialize: function () {
