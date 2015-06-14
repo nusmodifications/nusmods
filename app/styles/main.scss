@@ -628,7 +628,7 @@ a.cors > .fa-fw {
 
 // Timetable
 .semester-selector-region ul {
-  margin-top: 0;
+  margin: 10px;
 }
 
 #timetable {
@@ -722,15 +722,13 @@ colgroup.hover {
     text-align: center;
   }
   .select-region {
-    margin-bottom: 20px;
     input {
       color: #000;
-      font-size: 16px;
     }
     .select2-choices {
       border-color: #ccc;
-      border-bottom-right-radius: 0;
-      border-top-right-radius: 0;
+      border-bottom-left-radius: 0;
+      border-top-left-radius: 0;
     }
   }
 }
