@@ -8,8 +8,11 @@
 #timetable {
   width: 100%;
   min-width: 1159px;
-  margin: 0 0 15px -20px;
+  margin: 0 0 15px -15px;
   table-layout: fixed;
+  th {
+    background-color: #fff;
+  }
 }
 #times div {
   margin-right: -13px;
