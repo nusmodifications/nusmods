@@ -369,7 +369,8 @@ $panel-heading-color: #3e444c;
 
 .select2-container,
 .select2-container-active {
-  .select2-choices {    
+  .select2-choices {
+    border-color: transparent;
     box-shadow: none !important;
     &:hover,
     &:focus,
@@ -632,9 +633,6 @@ a.cors > .fa-fw {
 
 #timetable {
   user-select: none;
-  th {
-    background-color: $body-bg;
-  }
 }
 
 colgroup.hover {
@@ -724,8 +722,15 @@ colgroup.hover {
     text-align: center;
   }
   .select-region {
+    margin-bottom: 20px;
     input {
+      color: #000;
       font-size: 16px;
+    }
+    .select2-choices {
+      border-color: #ccc;
+      border-bottom-right-radius: 0;
+      border-top-right-radius: 0;
     }
   }
 }
