@@ -38,9 +38,9 @@
         "description": "Pressing <kbd>F</kbd> will quickly jump you to the [Venue Finder](/venuesavailability) page."
       },
       {
-        "title": "BareNUS",
-        "keys": ["B"],
-        "description": "Pressing <kbd>B</kbd> will quickly jump you to the [BareNUS](/bareNUS) page."
+        "title": "News",
+        "keys": ["N"],
+        "description": "Pressing <kbd>N</kbd> will quickly jump you to the [News](/news) page."
       },
       {
         "title": "Preferences",
