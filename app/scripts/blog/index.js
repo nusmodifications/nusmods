@@ -4,7 +4,7 @@ var App = require('../app');
 
 App.request('addNavigationItem', {
   name: 'Blog',
-  icon: 'newspaper-o',
+  icon: 'rss',
   url: 'http://blog.nusmods.com',
   target: '_blank'
 });

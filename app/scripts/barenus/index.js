@@ -5,7 +5,7 @@ var Marionette = require('backbone.marionette');
 
 var navigationItem = App.request('addNavigationItem', {
   name: 'Bare Nusessities',
-  icon: 'photo',
+  icon: 'newspaper-o',
   url: '/news/bareNUS'
 });
 
