@@ -37,19 +37,8 @@
     background-color: $post-background;
   }
   .nm-bn-post-message-container {
-    position: relative;
     padding: 15px;
-    &:before {
-      border: 20px solid transparent;
-      border-bottom-color: $post-background;
-      content: " ";
-      height: 0;
-      position: absolute;
-      left: 15px;
-      top: -40px;
-      width: 0;
-      z-index: 100;
-    }
+    position: relative;
     .nm-bn-post-full-message {
       display: none;
     }
