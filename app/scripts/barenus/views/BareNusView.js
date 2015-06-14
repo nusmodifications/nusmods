@@ -10,10 +10,12 @@ var moment = require('moment');
 require('../../common/utils/notequals');
 
 module.exports = Marionette.LayoutView.extend({
-  initialize: function () {
-    this.model = new Backbone.Model();
+  initialize: function (data) {
     this.feedLoadedOnce = false;
-    this.model.set('feedUrl', '/news.php?fbPageId=bareNUS');
+    this.model = new Backbone.Model();
+    this.model.set('fbPageId', data.fbPageId);
+    this.model.set('feedUrl', 'http://staging.nusmods.com/news.php?fbPageId=' + this.model.get('fbPageId'));
+    // this.model.set('feedUrl', '/news.php?fbPageId=' + this.model.get('fbPageId'));
   },
   template: template,
   regions: {
@@ -51,7 +53,8 @@ module.exports = Marionette.LayoutView.extend({
         item.date = moment(item.created_time).format('DD');
 
         item.postId = item.id.split('_')[1];
-        item.postUrl = 'https://www.facebook.com/bareNUS/posts/' + item.postId;
+        item.postUrl = 'https://www.facebook.com/' + that.model.get('fbPageId') 
+                        + '/posts/' + item.postId;
 
         if (item.comments) {
           _.each(item.comments.data, function (comment) {
