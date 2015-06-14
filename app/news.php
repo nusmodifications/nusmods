@@ -6,7 +6,7 @@ use Facebook\GraphPage;
 $config = file_get_contents('./config.json');
 $configData = json_decode($config, true);
 
-define('APP_ID', 'bareNUS');
+define('FB_PAGE_ID', $_GET['fbPageId']);
 define('EDGE', 'posts');
 define('FIELDS', 'comments{comments{comments,message,id,like_count,comment_count,
   created_time,from},message,id,like_count,comment_count,created_time,from},
@@ -20,7 +20,7 @@ $fbAppSecret = $configData['facebook']['appSecret'];
 FacebookSession::setDefaultApplication($fbAppId, $fbAppSecret);
 $session = FacebookSession::newAppSession();
 
-$path = '/' . APP_ID . '/' . EDGE . '?fields=' . FIELDS . '&limit=' . $limit;
+$path = '/' . FB_PAGE_ID . '/' . EDGE . '?fields=' . FIELDS . '&limit=' . $limit;
 if (isset($_GET['since'])) {
 	$path .= '&since=' . $_GET['since'];
 } elseif (isset($_GET['until'])) {
@@ -52,7 +52,8 @@ function transformUrl($url) {
 	parse_str(parse_url($url, PHP_URL_QUERY), $query);
 	$allowed = array('limit', 'since', 'until');
 	// use array_flip + array_intersect_key to filter by key
-	$extractedQuery = http_build_query(array_intersect_key($query, array_flip($allowed))); 
+	$extractedQuery = http_build_query(array_intersect_key($query, array_flip($allowed)));
+  $extractedQuery = 'fbPageId=' . FB_PAGE_ID . '&' . $extractedQuery;
 	return (isset($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . 
           $_SERVER['PHP_SELF'] . '?' . $extractedQuery;
 }

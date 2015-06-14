@@ -1,0 +1,67 @@
+.nm-news {
+  @media (max-width: 1024px) {
+    .nm-news-logo img {
+      width: 128px;
+    }
+  }
+  .nm-news-feed-container {
+    display: none;
+    &.animated {
+      display: inherit;
+    }
+  }
+  .nm-news-post {
+    display: inline-block;
+    margin-bottom: 20px;
+  }
+  .nm-news-post-message-content {
+    color: #000;
+  }
+  .nm-news-post-date {
+    color: #666;
+    .nm-news-post-month {
+      font-size: 18px;
+      line-height: 24px;
+    }
+    .nm-news-post-day {
+      font-size: 32px;
+      line-height: 28px;
+    }
+  }
+  .nm-news-post-bar {
+    background-color: #eee;
+    padding: 5px 15px;
+  }
+  $post-background: #fff;
+  .nm-news-post-content {
+    background-color: $post-background;
+  }
+  .nm-news-post-message-container {
+    padding: 15px;
+    position: relative;
+    .nm-news-post-full-message {
+      display: none;
+    }
+    &.nm-news-show-message {
+      .nm-news-post-see-more {
+        display: none;
+      }
+      .nm-news-post-full-message {
+        display: inline;
+      }
+    }
+  }
+  .nm-news-comments {
+    display: none;
+    .nm-news-comment {
+      margin-bottom: 5px;
+    }
+    .nm-news-comment-meta {
+      color: #ccc;
+      font-size: 12px;
+    }
+    .nm-news-comment-date {
+      color: #999;
+    }
+  }
+}

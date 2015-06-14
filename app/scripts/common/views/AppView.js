@@ -90,7 +90,7 @@ module.exports = Backbone.View.extend({
       p: '/preferences',
       v: '/venues',
       f: '/venueavailability',
-      b: '/bareNUS',
+      n: '/news',
       a: '/apps',
       '?': '/help'
     };

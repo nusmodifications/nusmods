@@ -2,31 +2,57 @@
 
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
-var template = require('../templates/barenus.hbs');
+var template = require('../templates/news.hbs');
 var $ = require('jquery');
-var BareNusFeedView = require('./BareNusFeedView');
+var NewsFeedView = require('./NewsFeedView');
 var _ = require('underscore');
 var moment = require('moment');
+var newsPagesList = require('../newsPagesList.json');
+
 require('../../common/utils/notequals');
 
 module.exports = Marionette.LayoutView.extend({
-  initialize: function () {
-    this.model = new Backbone.Model();
+  initialize: function (data) {
+    var that = this;
     this.feedLoadedOnce = false;
-    this.model.set('feedUrl', '/barenus.php');
+    this.model = new Backbone.Model();
+    this.model.set('fbPageId', data.fbPageId);
+    this.model.set('feedUrl', 'http://staging.nusmods.com/news.php?fbPageId=' + this.model.get('fbPageId'));
+    // this.model.set('feedUrl', '/news.php?fbPageId=' + this.model.get('fbPageId'));
+    _.each(newsPagesList, function (item) {
+      item.url = '/news/' + item.id;
+      if (item.id === that.model.get('fbPageId')) {
+        that.model.set('activePage', item);  
+        item.active = true;
+      } else {
+        item.active = false;
+      }
+    });
+    this.model.set('newsPagesList', newsPagesList);
   },
   template: template,
   regions: {
-    feedRegion: '#nm-bn-feed-region'
+    feedRegion: '#nm-news-feed-region'
   },
   onShow: function () {
     this.feedItemsCollection = new Backbone.Collection();
-    this.feedView = new BareNusFeedView({collection: this.feedItemsCollection});
+    this.feedView = new NewsFeedView({collection: this.feedItemsCollection});
     this.feedRegion.show(this.feedView);
     this.loadPosts();
+    if (window.FB) {
+      FB.XFBML.parse();
+    } else {
+      (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.3&appId=1524196174461544";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+    }
   },
   events: {
-    'click .js-nm-bn-more-posts': 'loadPosts'
+    'click .js-nm-news-more-posts': 'loadPosts'
   },
   loadPosts: function () {
     var that = this;
@@ -51,7 +77,8 @@ module.exports = Marionette.LayoutView.extend({
         item.date = moment(item.created_time).format('DD');
 
         item.postId = item.id.split('_')[1];
-        item.postUrl = 'https://www.facebook.com/bareNUS/posts/' + item.postId;
+        item.postUrl = 'https://www.facebook.com/' + that.model.get('fbPageId') 
+                        + '/posts/' + item.postId;
 
         if (item.comments) {
           _.each(item.comments.data, function (comment) {
@@ -66,16 +93,16 @@ module.exports = Marionette.LayoutView.extend({
           });
         }
       });
-      that.feedItemsCollection.add(_.filter(feedData, function (item) {
-        return !!item.object_id;
-      }));
+
+      that.feedItemsCollection.add(feedData);
+
       if (data.paging.next) {
         that.model.set('feedUrl', data.paging.next);
       } else {
         that.model.set('feedUrl', null);
       }
       if (!this.feedLoadedOnce) {
-        $('.nm-bn-feed-container').addClass('animated fadeIn');
+        $('.nm-news-feed-container').addClass('animated fadeIn');
         this.feedLoadedOnce = true;
       }
     });

@@ -1,19 +1,19 @@
 <div class="row">
-  <div class="col-md-2 text-right nm-bn-post-date">
-    <strong class="nm-bn-post-day">{{date}}</strong><span class="hidden-xs"><br></span>
-    <span class="nm-bn-post-month">{{month}}</span>
+  <div class="col-md-2 text-right nm-news-post-date">
+    <strong class="nm-news-post-day">{{date}}</strong><span class="hidden-xs"><br></span>
+    <span class="nm-news-post-month">{{month}}</span>
   </div>
   <div class="col-md-10">
-    <div class="nm-bn-post-content">
+    <div class="nm-news-post-content">
       {{#if object_id}}
         <img class="img-responsive" src="https://graph.facebook.com/{{object_id}}/picture">
       {{/if}}
-      <div class="nm-bn-post-message-container">
+      <div class="nm-news-post-message-container">
         {{#if message }}
-          <p class="nm-bn-post-message-content">
+          <p class="nm-news-post-message-content">
             {{#if shortMessage}}
-              {{{shortMessage}}} <span class="nm-bn-post-full-message">{{{fullMessage}}}</span>
-              <span class="nm-bn-post-see-more">... <a class="js-nm-bn-post-see-more">See More</a></span>
+              {{{shortMessage}}} <span class="nm-news-post-full-message">{{{fullMessage}}}</span>
+              <span class="nm-news-post-see-more">... <a class="js-nm-news-post-see-more">See More</a></span>
             {{else}}
               {{{message}}}
             {{/if}}
@@ -21,7 +21,7 @@
         {{/if}}
         <div>
           {{#if comments}}
-            <a class="js-nm-bn-toggle-comments">Show {{comments.data.length}} comment{{#notequals comments.data.length 1}}s{{/notequals}}</a>
+            <a class="js-nm-news-toggle-comments">Show {{comments.data.length}} comment{{#notequals comments.data.length 1}}s{{/notequals}}</a>
           {{else}}
             <span class="highlight thin">No comments</span>
           {{/if}}
@@ -30,7 +30,7 @@
         </div>          
       </div>
     </div>
-    <div class="nm-bn-comments js-nm-bn-comments">
+    <div class="nm-news-comments js-nm-news-comments">
       {{#if comments}}
         <ul class="list-group">
           {{#each comments.data}}
@@ -41,10 +41,10 @@
                 </a>
                 <div class="media-body">
                   <h5 class="media-heading">
-                    <a target="_blank" href="https://www.facebook.com/{{from.id}}"><strong>{{from.name}}</strong></a>  &middot; <span class="nm-bn-comment-date">{{date}}</span>
+                    <a target="_blank" href="https://www.facebook.com/{{from.id}}"><strong>{{from.name}}</strong></a>  &middot; <span class="nm-news-comment-date">{{date}}</span>
                   </h5>
-                  <p class="nm-bn-comment">{{{message}}}</p>
-                  <div class="nm-bn-comment-meta">
+                  <p class="nm-news-comment">{{{message}}}</p>
+                  <div class="nm-news-comment-meta">
                     {{#if like_count}}
                       <span><i class="fa fa-heart"></i> {{like_count}}</span>
                     {{/if}}
@@ -56,10 +56,10 @@
                       </a>
                       <div class="media-body">
                         <h5 class="media-heading">
-                          <a target="_blank" href="https://www.facebook.com/{{from.id}}"><strong>{{from.name}}</strong></a> &middot; <span class="nm-bn-comment-date">{{date}}</span>
+                          <a target="_blank" href="https://www.facebook.com/{{from.id}}"><strong>{{from.name}}</strong></a> &middot; <span class="nm-news-comment-date">{{date}}</span>
                         </h5>
                         <p>{{{message}}}</p>
-                        <div class="nm-bn-comment-meta">
+                        <div class="nm-news-comment-meta">
                           {{#if like_count}}
                             <span><i class="fa fa-heart"></i> {{like_count}}</span>
                           {{/if}}

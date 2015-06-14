@@ -124,7 +124,7 @@ App.on('start', function () {
   require('./venues');
   // require('./friends');
   require('./nuswhispers');
-  require('./barenus');
+  require('./news');
   require('./preferences');
   require('./apps');
   require('./blog');
