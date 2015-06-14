@@ -32,7 +32,7 @@ module.exports = Marionette.LayoutView.extend({
   },
   template: template,
   regions: {
-    feedRegion: '#nm-bn-feed-region'
+    feedRegion: '#nm-news-feed-region'
   },
   onShow: function () {
     this.feedItemsCollection = new Backbone.Collection();
@@ -52,7 +52,7 @@ module.exports = Marionette.LayoutView.extend({
     }
   },
   events: {
-    'click .js-nm-bn-more-posts': 'loadPosts'
+    'click .js-nm-news-more-posts': 'loadPosts'
   },
   loadPosts: function () {
     var that = this;
@@ -102,7 +102,7 @@ module.exports = Marionette.LayoutView.extend({
         that.model.set('feedUrl', null);
       }
       if (!this.feedLoadedOnce) {
-        $('.nm-bn-feed-container').addClass('animated fadeIn');
+        $('.nm-news-feed-container').addClass('animated fadeIn');
         this.feedLoadedOnce = true;
       }
     });

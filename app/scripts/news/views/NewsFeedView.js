@@ -10,7 +10,7 @@ var EmptyView = Marionette.ItemView.extend({
 });
 
 module.exports = Marionette.CompositeView.extend({
-  className: 'nm-bn-feed',
+  className: 'nm-news-feed',
   childView: NewsFeedItemView,
   childViewContainer: 'div',
   emptyView: EmptyView,
