@@ -13,7 +13,7 @@ module.exports = Marionette.LayoutView.extend({
   initialize: function () {
     this.model = new Backbone.Model();
     this.feedLoadedOnce = false;
-    this.model.set('feedUrl', '/barenus.php');
+    this.model.set('feedUrl', '/news.php?fbPageId=bareNUS');
   },
   template: template,
   regions: {
@@ -66,9 +66,9 @@ module.exports = Marionette.LayoutView.extend({
           });
         }
       });
-      that.feedItemsCollection.add(_.filter(feedData, function (item) {
-        return !!item.object_id;
-      }));
+
+      that.feedItemsCollection.add(feedData);
+
       if (data.paging.next) {
         that.model.set('feedUrl', data.paging.next);
       } else {
