@@ -2,20 +2,33 @@
 
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
-var template = require('../templates/barenus.hbs');
+var template = require('../templates/news.hbs');
 var $ = require('jquery');
-var BareNusFeedView = require('./BareNusFeedView');
+var NewsFeedView = require('./NewsFeedView');
 var _ = require('underscore');
 var moment = require('moment');
+var newsPagesList = require('../newsPagesList.json');
+
 require('../../common/utils/notequals');
 
 module.exports = Marionette.LayoutView.extend({
   initialize: function (data) {
+    var that = this;
     this.feedLoadedOnce = false;
     this.model = new Backbone.Model();
     this.model.set('fbPageId', data.fbPageId);
     this.model.set('feedUrl', 'http://staging.nusmods.com/news.php?fbPageId=' + this.model.get('fbPageId'));
     // this.model.set('feedUrl', '/news.php?fbPageId=' + this.model.get('fbPageId'));
+    _.each(newsPagesList, function (item) {
+      item.url = '/news/' + item.id;
+      if (item.id === that.model.get('fbPageId')) {
+        that.model.set('activePage', item);  
+        item.active = true;
+      } else {
+        item.active = false;
+      }
+    });
+    this.model.set('newsPagesList', newsPagesList);
   },
   template: template,
   regions: {
@@ -23,9 +36,20 @@ module.exports = Marionette.LayoutView.extend({
   },
   onShow: function () {
     this.feedItemsCollection = new Backbone.Collection();
-    this.feedView = new BareNusFeedView({collection: this.feedItemsCollection});
+    this.feedView = new NewsFeedView({collection: this.feedItemsCollection});
     this.feedRegion.show(this.feedView);
     this.loadPosts();
+    if (window.FB) {
+      FB.XFBML.parse();
+    } else {
+      (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.3&appId=1524196174461544";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+    }
   },
   events: {
     'click .js-nm-bn-more-posts': 'loadPosts'

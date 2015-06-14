@@ -2,7 +2,7 @@
 
 var $ = require('jquery');
 var Marionette = require('backbone.marionette');
-var template = require('../templates/barenus_feed_item.hbs');
+var template = require('../templates/news_feed_item.hbs');
 
 module.exports = Marionette.ItemView.extend({
   initialize: function () {
