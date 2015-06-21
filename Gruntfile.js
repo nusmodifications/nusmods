@@ -159,12 +159,13 @@ module.exports = function (grunt) {
                 options: {
                     outputStyle: 'compressed'
                 },
-                files: {
-                    '.tmp/styles/main.css': '<%= yeoman.app %>/styles/main.scss',
-                    '.tmp/styles/themes.css': '<%= yeoman.app %>/styles/themes.scss',
-                    '.tmp/styles/modes.css': '<%= yeoman.app %>/styles/modes.scss',
-                    '.tmp/styles/exports.css': '<%= yeoman.app %>/styles/exports.scss'
-                }
+                files: [{
+                    expand: true,
+                    cwd: '<%= yeoman.app %>/styles',
+                    src: ['*.scss'],
+                    dest: '.tmp/styles',
+                    ext: '.css'
+                }]
             }
         },
 
