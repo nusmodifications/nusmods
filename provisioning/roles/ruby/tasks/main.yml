@@ -1,6 +1,0 @@
----
-- apt_repository: repo=ppa:brightbox/ruby-ng
-- apt: name={{ item }}
-  with_items:
-    - ruby2.1
-    - ruby2.1-dev

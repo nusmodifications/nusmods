@@ -18,19 +18,39 @@
     "category": "Navigation",
     "shortcuts": [
       {
-        "title": "Modules",
-        "keys": ["M"],
-        "description": "Pressing <kbd>M</kbd> will quickly jump you to the [Modules Catalogue](/modules) page."
-      },
-      {
         "title": "Timetable",
         "keys": ["T"],
         "description": "Pressing <kbd>T</kbd> will quickly jump you to the [Timetable](/timetable) page."
       },
       {
+        "title": "Modules",
+        "keys": ["M"],
+        "description": "Pressing <kbd>M</kbd> will quickly jump you to the [Modules Catalogue](/modules) page."
+      },
+      {
+        "title": "Venues",
+        "keys": ["V"],
+        "description": "Pressing <kbd>V</kbd> will quickly jump you to the [Venues](/venues) page."
+      },
+      {
+        "title": "Venue Finder",
+        "keys": ["F"],
+        "description": "Pressing <kbd>F</kbd> will quickly jump you to the [Venue Finder](/venuesavailability) page."
+      },
+      {
+        "title": "News",
+        "keys": ["N"],
+        "description": "Pressing <kbd>N</kbd> will quickly jump you to the [News](/news) page."
+      },
+      {
         "title": "Preferences",
         "keys": ["P"],
         "description": "Pressing <kbd>P</kbd> will quickly jump you to the [Preferences](/preferences) page."
+      },
+      {
+        "title": "Apps",
+        "keys": ["A"],
+        "description": "Pressing <kbd>A</kbd> will quickly jump you to the [Apps](/apps) page."
       }
     ]
   },

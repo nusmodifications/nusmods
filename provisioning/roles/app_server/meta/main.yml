@@ -1,7 +1,6 @@
 ---
 dependencies:
   - bower
-  - bundler
   - composer
   - grunt
   - mysql

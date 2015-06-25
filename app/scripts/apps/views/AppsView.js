@@ -11,7 +11,7 @@ var APPS_LIST_URL = 'http://nusmodifications.github.io/nusmods-apps/apps.json';
 module.exports = Marionette.LayoutView.extend({
   template: template,
   regions: {
-    appsListRegion: '.nm-bn-apps-container'
+    appsListRegion: '.nm-news-apps-container'
   },
   onShow: function () {
     var that = this;

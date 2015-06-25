@@ -628,14 +628,11 @@ a.cors > .fa-fw {
 
 // Timetable
 .semester-selector-region ul {
-  margin-top: 0;
+  margin: 10px;
 }
 
 #timetable {
   user-select: none;
-  th {
-    background-color: $body-bg;
-  }
 }
 
 colgroup.hover {
@@ -660,13 +657,6 @@ colgroup.hover {
   &:hover {
     cursor: move;
   }
-}
-
-// Venues
-
-.nm-venue-availability-items {
-  display: inline-block;
-  width: 100px;
 }
 
 // For ZeroClipboard CSS effects
@@ -725,6 +715,21 @@ colgroup.hover {
   h6 {
     font-size: 14px;
     text-align: right;
+  }
+}
+#nm-timetable {
+  .semester-selector-region {
+    text-align: center;
+  }
+  .select-region {
+    input {
+      color: #000;
+    }
+    .select2-choices {
+      border-color: #ccc;
+      border-bottom-left-radius: 0;
+      border-top-left-radius: 0;
+    }
   }
 }
 
@@ -1078,6 +1083,14 @@ colgroup.hover {
   }
 }
 
+
+// Venues
+
+.nm-venue-availability-items {
+  display: inline-block;
+  width: 100px;
+}
+
 .cors-round-container.alert {
   $offset: 10px;
   bottom: $offset;
@@ -1177,5 +1190,5 @@ colgroup.hover {
 
 @import "sidebar";
 @import "apps";
-@import "barenus";
+@import "news";
 @import "contribute";

@@ -1,0 +1,17 @@
+[
+  { 
+    "name": "NUStyle", 
+    "id": "nusdiscount",
+    "description": "<p>NUStyle is an exclusive discount scheme for the NUS community. Just flash your matriculation/staff card to enjoy discounts at our partner stores!</p>"
+  },
+  { 
+    "name": "NUSWhispers", 
+    "id": "nuswhispers",
+    "description": "<p>Have an interesting story to share or just need to get something off your chest? Tell us your story here! No one will know it was you.</p>"
+  },
+  {
+    "name": "Bare Nusessities", 
+    "id": "bareNUS",
+    "description": "<p>When studying gets boring, take a walk. Find someone and poke your nose into their business. What you get, will surprise you!</p><p>This project is about the diversity of the people in NUS. Peace.</p>"
+  }
+]
