@@ -17,7 +17,7 @@ module.exports = Marionette.LayoutView.extend({
     this.feedLoadedOnce = false;
     this.model = new Backbone.Model();
     this.model.set('fbPageId', data.fbPageId);
-    this.model.set('feedUrl', 'http://staging.nusmods.com/news.php?fbPageId=' + this.model.get('fbPageId'));
+    this.model.set('feedUrl', 'https://nusmods.com/news.php?fbPageId=' + this.model.get('fbPageId'));
     // this.model.set('feedUrl', '/news.php?fbPageId=' + this.model.get('fbPageId'));
     _.each(newsPagesList, function (item) {
       item.url = '/news/' + item.id;

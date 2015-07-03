@@ -100,7 +100,7 @@ module.exports = Marionette.LayoutView.extend({
   },
   getFinalTimetableUrl: function (timetableUrl, callback) {
     $.ajax({
-      url: 'http://nusmods.com/redirect.php',
+      url: 'https://nusmods.com/redirect.php',
       type: 'GET',
       crossDomain: true,
       dataType: 'json',

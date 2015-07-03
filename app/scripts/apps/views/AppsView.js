@@ -6,7 +6,7 @@ var Marionette = require('backbone.marionette');
 var template = require('../templates/apps.hbs');
 var AppsListView = require('./AppsListView');
 
-var APPS_LIST_URL = 'http://nusmodifications.github.io/nusmods-apps/apps.json';
+var APPS_LIST_URL = 'https://nusmodifications.github.io/nusmods-apps/apps.json';
 
 module.exports = Marionette.LayoutView.extend({
   template: template,
