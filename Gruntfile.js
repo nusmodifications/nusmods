@@ -58,7 +58,7 @@ module.exports = function (grunt) {
         jsonSpace: '<%= defaults.jsonSpace %>',
         destFileName: 'corsRaw.json',
         destLessonTypes: 'lessonTypes.json',
-        types: ['Module', 'GEM', 'SSM', 'UEM', 'CFM']
+        types: ['Module', 'GEM2015', 'GEM', 'SSM', 'UEM', 'CFM']
       },
       regularSemester: {
         options: {
