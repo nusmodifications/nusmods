@@ -119,6 +119,10 @@
     "value": "twilight", 
     "name": "Twilight"
   },
+  { 
+    "value": "whispers", 
+    "name": "Whispers"
+  },
   {
     "value": "whitescreen",
     "name": "White Screen"
