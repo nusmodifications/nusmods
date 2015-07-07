@@ -92,7 +92,8 @@ module.exports = Marionette.LayoutView.extend({
 
     var typeFriendlyName = {
       CFM: 'Cross-Faculty',
-      GEM: 'GEM',
+      GEM: 'GEM (Cohort ≤ 2014)',
+      GEM2015: 'GEM (Cohort ≥ 2015)',
       Module: 'Faculty',
       SSM: 'Singapore Studies',
       UEM: 'Breadth / UE'
