@@ -2,8 +2,8 @@
   "name": "NUSMods",
   "private": true,
   "dependencies": {
-    "animate.css": "~3.2.6",
-    "bootstrap-sass-official": "~3.3.4",
+    "animate.css": "~3.3.0",
+    "bootstrap-sass-official": "~3.3.5",
     "font-awesome": "~4.3.0",
     "jasny-bootstrap": "jasny/bootstrap#2bc3e6f3dc0bc3e6453943f3a2d15723f1c3f9e9",
     "jquery-file-download": "~1.4.3",
