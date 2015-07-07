@@ -57,17 +57,18 @@ module.exports = function (grunt) {
         destFolder: '<%= defaults.destFolder %>',
         jsonSpace: '<%= defaults.jsonSpace %>',
         destFileName: 'corsRaw.json',
-        destLessonTypes: 'lessonTypes.json',
-        types: ['Module', 'GEM2015', 'GEM', 'SSM', 'UEM', 'CFM']
+        destLessonTypes: 'lessonTypes.json'
       },
       regularSemester: {
         options: {
-          baseUrl: 'https://myaces.nus.edu.sg/cors/jsp/report/'
+          baseReportUrl: 'https://myaces.nus.edu.sg/cors/jsp/report/',
+          types: ['Module', 'GEM2015', 'GEM', 'SSM', 'UEM', 'CFM']
         }
       },
       specialTerm: {
         options: {
-          baseUrl: 'https://myaces.nus.edu.sg/sts/jsp/report/'
+          baseReportUrl: 'https://myaces.nus.edu.sg/sts/jsp/report/',
+          types: ['Module', 'GEM', 'SSM', 'UEM', 'CFM']
         }
       }
     },

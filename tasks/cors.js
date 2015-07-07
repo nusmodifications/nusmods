@@ -28,7 +28,7 @@ module.exports = function (grunt) {
     }
 
     async.concatSeries(options.types, function (type, callback) {
-      var url = options.baseUrl + type + 'InfoListing.jsp';
+      var url = options.baseReportUrl + type + 'InfoListing.jsp';
       helpers.requestCached(url, options, function (err, data) {
         if (err) {
           return callback(err);
@@ -42,7 +42,7 @@ module.exports = function (grunt) {
         var urlDeptPattern = /(ModuleD.+)">([^<]+)[\s\S]+?> (.*)<\/div>\s*<\/td>\s*<\/?tr/g;
         var urlDeptMatches = helpers.matches(urlDeptPattern, data);
         async.mapSeries(urlDeptMatches, function (match, callback) {
-          helpers.requestCached(options.baseUrl + match[1], options, function (err, data) {
+          helpers.requestCached(options.baseReportUrl + match[1], options, function (err, data) {
             if (err) {
               return callback(err);
             }
