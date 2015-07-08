@@ -36,10 +36,7 @@ $ npm install
 $ bower install
 ```
 
-Make a copy of the config file. If you are working on `barenus.php`, add Facebook App credentials into the file.
-```bash
-$ cp ./app/config.json.dist ./app/config.json
-```
+If you are working on `news.php`, add Facebook App credentials into the config file `/app/config.json`
 
 ## Building for Development
 
