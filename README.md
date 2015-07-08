@@ -114,7 +114,7 @@ http://api.nusmods.com/2015-2016/1/facultyDepartments.json
 }
 ```
 
-### GET /&lt;AcadYear&gt;/&lt;Semester&gt;/lessonTypes.json
+### GET /lessonTypes.json
 
 http://api.nusmods.com/lessonTypes.json
 
