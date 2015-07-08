@@ -808,28 +808,28 @@
 }
 .theme-whispers {
   .color0 {
-    @include color(#2e8fc2);
-  }
-  .color1 {
-    @include color(#95a5a6);
-  }
-  .color2 {
     @include color(#e0e0e0);
   }
-  .color3 {
+  .color1 {
     @include color(#e4f1fe);
   }
-  .color4 {
-    @include color(#54b3d9);
-  }
-  .color5 {
-    @include color(#86d2e5);
-  }
-  .color6 {
+  .color2 {
     @include color(#aec6cf);
   }
+  .color3 {
+    @include color(#95a5a6);
+  }
+  .color4 {
+    @include color(#336e7b);
+  }
+  .color5 {
+    @include color(#2e8fc2);
+  }
+  .color6 {
+    @include color(#54b3d9);
+  }
   .color7 {
-    @include color(#ffd1dc);
+    @include color(#86d2e5);
   }
 }
 .theme-whitescreen {
