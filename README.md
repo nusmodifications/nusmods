@@ -42,7 +42,7 @@ browsers is not required.
 ### jQuery Example
 
 ```js
-$.getJSON('http://api.nusmods.com/2014-2015/1/moduleList.json', function (data) {
+$.getJSON('http://api.nusmods.com/2015-2016/1/moduleList.json', function (data) {
   console.log(data);
 });
 ```
@@ -54,7 +54,7 @@ If supporting legacy browsers is required, JSONP can be used instead.
 ### jQuery Example
 
 ```js
-$.getJSON('http://api.nusmods.com/2014-2015/1/moduleList.json?callback=?', function (data) {
+$.getJSON('http://api.nusmods.com/2015-2016/1/moduleList.json?callback=?', function (data) {
   console.log(data);
 });
 ```
@@ -67,7 +67,7 @@ JSONP response.
 
 ### GET /&lt;AcadYear&gt;/&lt;Semester&gt;/moduleCodes.json
 
-http://api.nusmods.com/2014-2015/1/moduleCodes.json
+http://api.nusmods.com/2015-2016/1/moduleCodes.json
 
 ```json
 [
@@ -80,7 +80,7 @@ http://api.nusmods.com/2014-2015/1/moduleCodes.json
 
 ### GET /&lt;AcadYear&gt;/&lt;Semester&gt;/moduleList.json
 
-http://api.nusmods.com/2014-2015/1/moduleList.json
+http://api.nusmods.com/2015-2016/1/moduleList.json
 
 ```json
 {
@@ -93,7 +93,7 @@ http://api.nusmods.com/2014-2015/1/moduleList.json
 
 ### GET /&lt;AcadYear&gt;/&lt;Semester&gt;/facultyDepartments.json
 
-http://api.nusmods.com/2014-2015/1/facultyDepartments.json
+http://api.nusmods.com/2015-2016/1/facultyDepartments.json
 
 ```json
 {
@@ -116,7 +116,7 @@ http://api.nusmods.com/2014-2015/1/facultyDepartments.json
 
 ### GET /&lt;AcadYear&gt;/&lt;Semester&gt;/lessonTypes.json
 
-http://api.nusmods.com/2013-2014/1/lessonTypes.json
+http://api.nusmods.com/lessonTypes.json
 
 ```json
 {
@@ -170,7 +170,7 @@ http://api.nusmods.com/2014-2015/2/modules/FE5218.json
 
 ### GET /&lt;AcadYear&gt;/&lt;Semester&gt;/modules.json
 
-http://api.nusmods.com/2014-2015/1/modules.json
+http://api.nusmods.com/2015-2016/1/modules.json
 
 ```json
 [
@@ -182,7 +182,7 @@ http://api.nusmods.com/2014-2015/1/modules.json
 		"ModuleCredit": "4",
 		"Workload": "2-2-0-3-4",
 		"Preclusion": "Students who have passed FNA1002 are not allowed to take ACC1002.",
-		"ExamDate": "2013-11-30T13:00+0800",
+		"ExamDate": "2015-11-25T13:00+0800",
 		"Types": [
 			"Module"
 		],
@@ -194,7 +194,7 @@ http://api.nusmods.com/2014-2015/1/modules.json
 				"DayText": "WEDNESDAY",
 				"StartTime": "1000",
 				"EndTime": "1200",
-				"Venue": "UT-AUD2"
+				"Venue": "LT16"
 			},
 			...
 		]
@@ -206,7 +206,7 @@ http://api.nusmods.com/2014-2015/1/modules.json
 		"ModuleDescription": "The course provides an introduction to financial accounting. It examines accounting from an external user's perspective: an external user being an investor or a creditor. Such users would need to understand financial accounting in order to make investing or lending decisions. However, to attain a good understanding, it is also necessary to be familiar with how the information are derived. Therefore, students would learn how to prepare the reports or statements resulting from financial accounting and how to use them for decision-making.",
 		"ModuleCredit": "4",
 		"Preclusion": "Students who have passed CS1304 or EC3212 or BK1003 or BZ1002 or BH1002 or BZ1002E or BH1002E or FNA1002E or FNA1002X are not allowed to take ACC1002X.",
-		"ExamDate": "2013-12-02T09:00+0800",
+		"ExamDate": "2015-11-25T13:00+0800",
 		"Types": [
 			"Module",
 			"UEM"
