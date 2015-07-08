@@ -92,7 +92,7 @@ The development server serves the files generated in `api/app/api` under
   all the features of the static build needs a custom patched version of QT,
   which takes a *long* time to build.
 - [Facebook PHP SDK](https://github.com/facebook/facebook-php-sdk-v4) for Facebook API proxy.
-- To install the PHP dependencies, simple do:
+- To install the PHP dependencies, simply do:
 ```bash
 $ composer install
 ```
