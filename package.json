@@ -1,6 +1,6 @@
 {
   "name": "nusmoderator",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A lightweight library with helpful functions for NUS-related matters",
   "main": "main.js",
   "scripts": {
