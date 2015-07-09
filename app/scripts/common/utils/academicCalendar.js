@@ -28,10 +28,10 @@ module.exports = {
     } else if (acadWeekNumber <= 40 || acadWeekNumber === 53) {
       return 'Semester 2';
     } else if (acadWeekNumber <= 46) {
-      return 'Special Sem 1';
+      return 'Special Term I';
     } else { 
       // acadWeekNumber <= 52
-      return 'Special Sem 2';
+      return 'Special Term II';
     }
   },
 
@@ -77,9 +77,9 @@ module.exports = {
         weekType = week.weekType;
         weekNumber = week.weekNumber;
         break;
-      case 'Special Sem 2':
+      case 'Special Term I':
         acadWeekNumber -= 6;
-      case 'Special Sem 1':
+      case 'Special Term II':
         acadWeekNumber -= 40;
         weekType = 'Instructional';
         weekNumber = acadWeekNumber;
