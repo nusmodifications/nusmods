@@ -36,10 +36,7 @@ $ npm install
 $ bower install
 ```
 
-Make a copy of the config file. If you are working on `barenus.php`, add Facebook App credentials into the file.
-```bash
-$ cp ./app/config.json.dist ./app/config.json
-```
+If you are working on `news.php`, add Facebook App credentials into the config file `/app/config.json`
 
 ## Building for Development
 
@@ -95,7 +92,7 @@ The development server serves the files generated in `api/app/api` under
   all the features of the static build needs a custom patched version of QT,
   which takes a *long* time to build.
 - [Facebook PHP SDK](https://github.com/facebook/facebook-php-sdk-v4) for Facebook API proxy.
-- To install the PHP dependencies, simple do:
+- To install the PHP dependencies, simply do:
 ```bash
 $ composer install
 ```

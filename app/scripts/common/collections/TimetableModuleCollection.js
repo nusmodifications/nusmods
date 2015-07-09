@@ -115,7 +115,7 @@ module.exports = ModuleCollection.extend({
         qsObject[module.id] = '';
       }
     }, this);
-    return qs.stringify(qsObject);
+    return decodeURIComponent(qs.stringify(qsObject));
   }
 }, {
   fromQueryStringToJSON: function (queryString) {
