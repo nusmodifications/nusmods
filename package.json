@@ -17,7 +17,7 @@
     "moderation"
   ],
   "author": "nusmods",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/nusmodifications/nusmoderator/issues"
   },
