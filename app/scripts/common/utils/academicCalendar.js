@@ -6,7 +6,12 @@ var acadYearStartDates = {
   '14/15' : new Date('August 4, 2014')
 };
 
-var oneWeekTime = 1000 * 60 * 60 * 24 * 7;
+// Constants
+var ONE_WEEK_TIME = 1000 * 60 * 60 * 24 * 7;
+var SEM1 = 'Semester 1';
+var SEM2 = 'Semester 2';
+var SPECIAL1 = 'Special Term I';
+var SPECIAL2 = 'Special Term II';
 
 module.exports = {
 
@@ -24,14 +29,14 @@ module.exports = {
 
   currentAcadSem: function (acadWeekNumber) {
     if (acadWeekNumber <= 23) {
-      return 'Semester 1';
+      return SEM1;
     } else if (acadWeekNumber <= 40 || acadWeekNumber === 53) {
-      return 'Semester 2';
+      return SEM2;
     } else if (acadWeekNumber <= 46) {
-      return 'Special Term I';
+      return SPECIAL1;
     } else { 
       // acadWeekNumber <= 52
-      return 'Special Term II';
+      return SPECIAL2;
     }
   },
 
@@ -39,10 +44,10 @@ module.exports = {
    * Compute the current academic week and return in json format
    * @param  {Date} date 
    * @return {json} {
-                      'year': "15/16",
-                      'sem': 'Semester 1'|'Semester 2'|'Special Sem 1'|'Special Sem 2',
-                      'type': 'Instructional'|'Reading'|'Examination'|'Recess'|'Vacation'|'Orientation',
-                      'num': <weekNum>
+                      year: "15/16",
+                      sem: 'Semester 1'|'Semester 2'|'Special Sem 1'|'Special Sem 2',
+                      type: 'Instructional'|'Reading'|'Examination'|'Recess'|'Vacation'|'Orientation',
+                      num: <weekNum>
                     }
    */
   currentAcadWeek: function (date) {
@@ -50,16 +55,16 @@ module.exports = {
     var acadYear = currentAcad.year;
     var acadYearStartDate = currentAcad.startDate;
 
-    var acadWeekNumber = Math.ceil((date.getTime() - acadYearStartDate.getTime() + 1) / oneWeekTime);
+    var acadWeekNumber = Math.ceil((date.getTime() - acadYearStartDate.getTime() + 1) / ONE_WEEK_TIME);
     var semester = this.currentAcadSem(acadWeekNumber);
 
     var weekType;
     var weekNumber = 0;
 
     switch (semester) {
-      case 'Semester 2':
-        acadWeekNumber -= 22;
-      case 'Semester 1':
+      case SEM2: // Semester 2 starts 22 weeks after Week 1 of semester 1
+        acadWeekNumber -= 22; 
+      case SEM1:
         if (acadWeekNumber === 1) {
           weekType = 'Orientation';
           break;
@@ -67,7 +72,9 @@ module.exports = {
         if (acadWeekNumber > 18) {
           weekType = 'Vacation';
           weekNumber = acadWeekNumber - 18;
-          if (weekNumber > 5) {
+          if (weekNumber > 5) { 
+            // This means it is the 53th week of the AY, and this week is Vacation.
+            // This happens 5 times every 28 years.
             weekNumber = 0;
           }
           break;
@@ -77,9 +84,9 @@ module.exports = {
         weekType = week.weekType;
         weekNumber = week.weekNumber;
         break;
-      case 'Special Term I':
+      case SPECIAL2: // Special Term II starts 6 weeks after Special Term I
         acadWeekNumber -= 6;
-      case 'Special Term II':
+      case SPECIAL1: // Special Term I starts on week 41 of the AY
         acadWeekNumber -= 40;
         weekType = 'Instructional';
         weekNumber = acadWeekNumber;
