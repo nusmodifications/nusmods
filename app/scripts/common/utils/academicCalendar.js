@@ -6,12 +6,12 @@ var acadYearStartDates = {
   '14/15' : new Date('August 4, 2014')
 };
 
-// Constant variables
-var oneWeekTime = 1000 * 60 * 60 * 24 * 7;
-var sem1 = 'Semester 1';
-var sem2 = 'Semester 2';
-var special1 = 'Special Term I';
-var special2 = 'Special Term II';
+// Constants
+var ONE_WEEK_TIME = 1000 * 60 * 60 * 24 * 7;
+var SEM1 = 'Semester 1';
+var SEM2 = 'Semester 2';
+var SPECIAL1 = 'Special Term I';
+var SPECIAL2 = 'Special Term II';
 
 module.exports = {
 
@@ -29,14 +29,14 @@ module.exports = {
 
   currentAcadSem: function (acadWeekNumber) {
     if (acadWeekNumber <= 23) {
-      return sem1;
+      return SEM1;
     } else if (acadWeekNumber <= 40 || acadWeekNumber === 53) {
-      return sem2;
+      return SEM2;
     } else if (acadWeekNumber <= 46) {
-      return special1;
+      return SPECIAL1;
     } else { 
       // acadWeekNumber <= 52
-      return special2;
+      return SPECIAL2;
     }
   },
 
@@ -55,16 +55,16 @@ module.exports = {
     var acadYear = currentAcad.year;
     var acadYearStartDate = currentAcad.startDate;
 
-    var acadWeekNumber = Math.ceil((date.getTime() - acadYearStartDate.getTime() + 1) / oneWeekTime);
+    var acadWeekNumber = Math.ceil((date.getTime() - acadYearStartDate.getTime() + 1) / ONE_WEEK_TIME);
     var semester = this.currentAcadSem(acadWeekNumber);
 
     var weekType;
     var weekNumber = 0;
 
     switch (semester) {
-      case sem2: // Semester 2 starts 22 weeks after Week 1 of semester 1
+      case SEM2: // Semester 2 starts 22 weeks after Week 1 of semester 1
         acadWeekNumber -= 22; 
-      case sem1:
+      case SEM1:
         if (acadWeekNumber === 1) {
           weekType = 'Orientation';
           break;
@@ -84,9 +84,9 @@ module.exports = {
         weekType = week.weekType;
         weekNumber = week.weekNumber;
         break;
-      case special2: // Special Term II starts 6 weeks after Special Term I
+      case SPECIAL2: // Special Term II starts 6 weeks after Special Term I
         acadWeekNumber -= 6;
-      case special1: // Special Term I starts on week 41 of the AY
+      case SPECIAL1: // Special Term I starts on week 41 of the AY
         acadWeekNumber -= 40;
         weekType = 'Instructional';
         weekNumber = acadWeekNumber;
