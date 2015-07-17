@@ -34,7 +34,7 @@ module.exports = {
       return SEM2;
     } else if (acadWeekNumber <= 46) {
       return SPECIAL1;
-    } else { 
+    } else {
       // acadWeekNumber <= 52
       return SPECIAL2;
     }
@@ -42,10 +42,10 @@ module.exports = {
 
   /**
    * Compute the current academic week and return in json format
-   * @param  {Date} date 
+   * @param  {Date} date
    * @return {json} {
                       year: "15/16",
-                      sem: 'Semester 1'|'Semester 2'|'Special Sem 1'|'Special Sem 2',
+                      sem: 'Semester 1'|'Semester 2'|'Special Term I'|'Special Term II',
                       type: 'Instructional'|'Reading'|'Examination'|'Recess'|'Vacation'|'Orientation',
                       num: <weekNum>
                     }
@@ -63,7 +63,7 @@ module.exports = {
 
     switch (semester) {
       case SEM2: // Semester 2 starts 22 weeks after Week 1 of semester 1
-        acadWeekNumber -= 22; 
+        acadWeekNumber -= 22;
       case SEM1:
         if (acadWeekNumber === 1) {
           weekType = 'Orientation';
@@ -72,7 +72,7 @@ module.exports = {
         if (acadWeekNumber > 18) {
           weekType = 'Vacation';
           weekNumber = acadWeekNumber - 18;
-          if (weekNumber > 5) { 
+          if (weekNumber > 5) {
             // This means it is the 53th week of the AY, and this week is Vacation.
             // This happens 5 times every 28 years.
             weekNumber = 0;
