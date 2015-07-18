@@ -23,7 +23,8 @@ module.exports = Backbone.Model.extend({
     } else {
       // For modules without exam, sort alphabetically by id (code).
       this.set('examStr', this.defaults.time);
-      this.set('key', this.id);
+      // Add '00' before the module code to force the 'time' to be smaller than others
+      this.set('key', '00' + this.id);
     }
 
     var moduleCredit = this.get('moduleCredit');
