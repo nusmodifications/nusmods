@@ -30,9 +30,5 @@
     "moduleFinder": "module:finder",
     "bookmarkedModules": "module:bookmarks:bookmarkedModules",
     "user": "user"
-  },
-  "facebook": {
-    "appID": "",
-    "appSecret": ""
   }
 }

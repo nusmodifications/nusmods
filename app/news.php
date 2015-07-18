@@ -3,7 +3,7 @@ require_once 'vendor/facebook/php-sdk-v4/autoload.php';
 use Facebook\FacebookSession;
 use Facebook\FacebookRequest;
 use Facebook\GraphPage;
-$config = file_get_contents('./config.json');
+$config = file_get_contents('./config/secrets.json');
 $configData = json_decode($config, true);
 
 define('FB_PAGE_ID', $_GET['fbPageId']);

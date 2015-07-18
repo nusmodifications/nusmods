@@ -1,7 +1,7 @@
 'use strict';
 
 var _ = require('underscore');
-var config = require('../../config.json');
+var config = require('../../config/application.json');
 
 module.exports = _.extend({
   semTimetableFragment: function (semester) {
