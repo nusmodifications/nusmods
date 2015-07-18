@@ -57,9 +57,8 @@ module.exports = Backbone.Collection.extend({
   },
 
   // Sort by custom key: if have exam, month then date then clustered hour,
-  // if not, sort alphabetically by code. As the numerical keys come before
-  // the alphabetical ones, modules with no exam will appear at the bottom,
-  // as intended.
+  // if not, sort alphabetically by code. Modules without exams will be 
+  // displayed before those with exams.
   comparator: function(exam) {
     return exam.get('key');
   }
