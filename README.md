@@ -36,7 +36,7 @@ $ npm install
 $ bower install
 ```
 
-If you are working on `news.php`, add Facebook App credentials into the config file `/app/config.json`
+If you are working on `news.php`, make a copy of `/app/config/secrets.json.example` in the same directory and call it `secrets.json`. Add your Facebook App credentials into the file `secrets.json`.
 
 ## Building for Development
 
@@ -80,7 +80,7 @@ $ grunt
 ```
 
 The development server serves the files generated in `api/app/api` under
-`/api/`, so change `baseUrl` under `app/scripts/config.json` to point to
+`/api/`, so change `baseUrl` under `app/config/application.json` to point to
 `/api/`.
 
 ## Optional Dependencies
