@@ -106,6 +106,12 @@ module.exports = function (grunt) {
           academicYear: '2015/2016',
           semester: '1'
         }
+      },
+      ay2015to2016sem2: {
+        options: {
+          academicYear: '2015/2016',
+          semester: '2'
+        }
       }
     },
     ivle: {
@@ -173,6 +179,12 @@ module.exports = function (grunt) {
         options: {
           academicYear: '2015/2016',
           semester: '1'
+        }
+      },
+      ay2015to2016sem2: {
+        options: {
+          academicYear: '2015/2016',
+          semester: '2'
         }
       }
     },
