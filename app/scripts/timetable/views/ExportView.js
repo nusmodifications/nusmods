@@ -127,8 +127,9 @@ module.exports = Marionette.ItemView.extend({
     var html = '<!DOCTYPE html><title>My NUSMods.com Timetable</title><style>' +
       'html, body {min-width:1245px;}' +
       'body.mode-slate{background-color: ' + backgroundColor + '}' +
-      '#timetable-wrapper{font-size:11px;font-weight:700;line-height:13px;width:1245px}' +
-      '#timetable{margin:0 0 15px -20px;max-width:none;table-layout:fixed;width:1235px}' +
+      '#timetable-wrapper{font-size:11px;line-height:13px;width:1245px}' +
+      '#timetable{margin:0 0 15px -15px;max-width:none;table-layout:fixed;width:1235px}' +
+      '#timetable th{background-color:#fff}' +
       '.mode-slate #timetable th{color:#fff}' +
       '#times div{margin-right:-13px;text-align:right}' +
       '#exam-timetable > table{font-weight: bold;border:1px solid #555;}' +
@@ -137,13 +138,14 @@ module.exports = Marionette.ItemView.extend({
       '#exam-timetable > table td:first-child{text-align: right;}' +
       '#exam-timetable > table tr.clash{background-color: #eee; color:red !important}' +
       '.day{border-bottom:1px solid #ddd;border-top:1px solid #ddd}' +
-      '.mode-slate .day th{border-bottom:1px solid ' + backgroundColor + ';' + 
+      '.mode-slate .day th{border-bottom:1px solid ' + backgroundColor + ';' +
                           'border-top:1px solid ' + backgroundColor + '}' +
       '.day th div{line-height:15px;margin-right:-20px}' +
       '.day td{height:34px;padding:1px 0 0}' +
       '.m00{border-left:1px solid #ddd}' +
       '.m30{border-right:1px solid #ddd}' +
-      '.lesson{border:2px solid;overflow:hidden;padding:1px 3px 3px}';
+      '.lesson{border-bottom:3px solid;overflow:hidden;padding:5px}' +
+      '.lesson .code, .lesson .title{font-size:13px;font-weight:bold;}';
     var cssProperties = ['background-color', 'border-color', 'color'];
 
     for (var i = 0; i < 8; i++) {
@@ -161,7 +163,7 @@ module.exports = Marionette.ItemView.extend({
 
     html += '.hide-code .code,.hide-group .group,.hide-room .room,.hide-title .title,.hide-week .week{display:none}' +
       'table{border-collapse:collapse;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif}' +
-      '</style><body class="' + $('body').attr('class') + '">' + 
+      '</style><body class="' + $('body').attr('class') + '">' +
       '<div class="' + $('#timetable-wrapper').attr('class') +
       '" id="timetable-wrapper">' + $('#timetable-wrapper').html() + '</div></body></html>' +
       $examTimetable[0].outerHTML;
