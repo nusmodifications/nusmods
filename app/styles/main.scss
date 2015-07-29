@@ -680,9 +680,6 @@ colgroup.hover {
   }
   td {
     border: 1px solid $gray;
-    &:first-child {
-      text-align: right;
-    }
   }
   tbody tr {
     &.clash {
