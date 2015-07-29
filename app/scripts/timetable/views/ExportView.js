@@ -122,7 +122,7 @@ module.exports = Marionette.ItemView.extend({
   // timetable and embedded into template.
   htmlTimetable: function() {
     var $examTimetable = $('#exam-timetable').clone();
-    $examTimetable.find('th:last-child, td:last-child').remove();
+    $examTimetable.find('th:last-child, td:last-child[colspan!=2]').remove();
     var backgroundColor = $('body').css('background-color');
     var html = '<!DOCTYPE html><title>My NUSMods.com Timetable</title><style>' +
       'html, body {min-width:1245px;}' +
