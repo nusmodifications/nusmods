@@ -10,5 +10,5 @@ $snappy->setOption('zoom', $size);
 $description = $size == 1 ? 'Normal' : ($size == 2 ? 'Big' : 'Large');
 $filename = 'My NUSMods.com Timetable (' . $description . ').jpg';
 header('Content-Type: image/jpeg');
-header('Content-Disposition: attachment; filename=' . $filename);
+header('Content-Disposition: attachment; filename="' . $filename . '"');
 echo $snappy->getOutputFromHtml(urldecode($_POST['html']));
