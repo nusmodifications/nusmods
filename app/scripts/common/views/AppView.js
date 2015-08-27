@@ -10,7 +10,7 @@ var BookmarksView = require('./BookmarksView');
 var _ = require('underscore');
 var analytics = require('../../analytics');
 var attachFastClick = require('fastclick');
-var corsify = require('../../cors/corsify');
+// var corsify = require('../../cors/corsify');
 var themePicker = require('../themes/themePicker');
 var academicCalendar = require('../utils/academicCalendar');
 require('bootstrap/alert');
@@ -96,7 +96,7 @@ module.exports = Backbone.View.extend({
     };
 
     var that = this;
-    
+
     _.each(keyboardNavigationMappings, function (value, key) {
       Mousetrap.bind(key, function () {
         analytics.track('Navigation', 'Keyboard', value.slice(1));
@@ -122,7 +122,7 @@ module.exports = Backbone.View.extend({
         }
       });
     });
-    
+
     Mousetrap.bind(['x'], function () {
       var newMode = themePicker.toggleMode();
       analytics.track('event', 'Mode', 'Change mode using keyboard', newMode);
@@ -181,8 +181,8 @@ module.exports = Backbone.View.extend({
 
 
     (function () {
-      $('.cors-round-text').html(corsify.determineRound(Date.now()));
-      $('.cors-round-container').addClass('animated bounceInUp shown');
+      // $('.cors-round-text').html(corsify.determineRound(Date.now()));
+      // $('.cors-round-container').addClass('animated bounceInUp shown');
       // $('.js-nm-contest-alert').addClass('animated bounceInDown nm-force-show');
       var week = academicCalendar.currentAcadWeek(new Date());
       var thisWeekText = 'AY20' + week.year + ', ' + week.sem + ', ';
