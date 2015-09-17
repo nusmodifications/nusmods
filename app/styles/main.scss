@@ -348,6 +348,10 @@ $panel-heading-color: #3e444c;
 
 .alert {
   border: none;
+  a {
+    color: inherit;
+    font-weight: bold;
+  }
 }
 
 .well {
