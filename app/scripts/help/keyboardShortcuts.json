@@ -33,9 +33,9 @@
         "description": "Pressing <kbd>V</kbd> will quickly jump you to the [Venues](/venues) page."
       },
       {
-        "title": "Venue Finder",
-        "keys": ["F"],
-        "description": "Pressing <kbd>F</kbd> will quickly jump you to the [Venue Finder](/venuesavailability) page."
+        "title": "Venue Availability",
+        "keys": ["L"],
+        "description": "Pressing <kbd>L</kbd> will quickly jump you to the [Venue Availability](/venueavailability) page."
       },
       {
         "title": "News",
