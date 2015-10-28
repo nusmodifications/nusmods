@@ -8,6 +8,7 @@ var _ = require('underscore');
 var $ = require('jquery');
 var config = require('../common/config');
 var timify = require('../common/utils/timify');
+var Promise = require('bluebird');
 
 var navigationItem = App.request('addNavigationItem', {
   name: 'Venues',
@@ -16,77 +17,20 @@ var navigationItem = App.request('addNavigationItem', {
 });
 
 var loadVenueInformation = function (callback) {
-
-  // List of venues ['LT17', 'BIZ2-0118', 'COM1-0114', ...]
-  var venuesList = [];
-  var venues = {};
-
-  NUSMods.getAllTimetable(config.semester).then(function (data) {
-    // Make a deepcopy so modifications will not affect the cached timetable data
-    var timetables = $.extend(true, {}, data); 
-
-    _.each(timetables, function (module) {
-      if (module.Timetable) {
-        _.each(module.Timetable, function (lesson) {
-          var currentVenue = lesson.Venue;
-          if (!venues[currentVenue]) {
-            venues[currentVenue] = [];
-          }
-          lesson.ModuleCode = module.ModuleCode;
-          delete lesson.Venue;
-          venues[currentVenue].push(lesson);
-        });
-      }
-    });
-
-    venues = _.omit(venues, ''); // Delete empty venue string
-    
-    venuesList = _.keys(venues);
-    _.each(venuesList, function (venueName) {
-      var venueTimetable = venues[venueName];
-      var newVenueTimetable = [];
-      var days = timify.getSchoolDays();
-      _.each(days, function (day) {
-        var lessons = _.filter(venueTimetable, function (lesson) {
-          return lesson.DayText === day;
-        });
-        lessons = _.sortBy(lessons, function (lesson) {
-          return lesson.StartTime + lesson.EndTime;
-        });
-
-        var timeRange = _.range(timify.convertTimeToIndex('0800'), 
-                                timify.convertTimeToIndex('2400'));
-        var availability = _.object(_.map(timeRange, function (index) {
-          return [timify.convertIndexToTime(index), 'vacant'];
-        }));
-
-        _.each(lessons, function (lesson) {
-          var startIndex = timify.convertTimeToIndex(lesson.StartTime);
-          var endIndex = timify.convertTimeToIndex(lesson.EndTime) - 1;
-          for (var i = startIndex; i <= endIndex; i++) {
-            availability[timify.convertIndexToTime(i)] = 'occupied';
-          }
-        });
-
-        // availability: {
-        //    "0800": "vacant",
-        //    "0830": "vacant",
-        //    "0900": "occupied",
-        //    "0930": "occupied",
-        //    ...
-        //    "2330": "vacant"
-        // }
-
-        newVenueTimetable.push({
-          day: day,
-          lessons: lessons,
-          availability: availability,
-          shortDay: day.slice(0, 3)
-        });
+  Promise.all([
+    NUSMods.getVenueInformation(config.semester),
+    NUSMods.getVenues(config.semester)
+  ]).then(function (response) {
+    var venues = response[0];
+    var venuesList = response[1];
+    // TODO: Change key from classes to lessons for venues api
+    _.each(venues, function (value, key) {
+      _.each(value, function (day) {
+        if (day.classes) {
+          day.lessons = day.classes;
+        }
       });
-      venues[venueName] = newVenueTimetable;
     });
-    venuesList.sort();
     callback(venues, venuesList);
   });
 };

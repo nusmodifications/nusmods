@@ -9,7 +9,7 @@ var timify = require('../../common/utils/timify');
 module.exports = Marionette.LayoutView.extend({
   template: template,
   initialize: function () {
-    
+
   },
   events: {
     'click .js-nm-available-venue-search': 'showAvailableVenues'
