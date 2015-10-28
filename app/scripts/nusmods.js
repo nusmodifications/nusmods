@@ -6,6 +6,7 @@ var Promise = require('bluebird'); // jshint ignore:line
 var ayBaseUrl;
 var moduleInformationPromise, moduleListPromise;
 var timetablePromise;
+var venuesPromise, venueInformationPromise;
 var moduleCodes = {};
 
 module.exports = {
@@ -52,6 +53,14 @@ module.exports = {
   getCodesAndTitles: function (callback) {
     moduleListPromise = moduleListPromise || Promise.resolve($.getJSON(ayBaseUrl + 'moduleList.json'));
     return moduleListPromise.then(callback);
+  },
+  getVenues: function (semester, callback) {
+    venuesPromise = venuesPromise || Promise.resolve($.getJSON([ayBaseUrl, semester, 'venues.json'].join('/')));
+    return venuesPromise.then(callback);
+  },
+  getVenueInformation: function (semester, callback) {
+    venueInformationPromise = venueInformationPromise || Promise.resolve($.getJSON([ayBaseUrl, semester, 'venueInformation.json'].join('/')));
+    return venueInformationPromise.then(callback);
   },
   setConfig: function (config) {
     ayBaseUrl = config.baseUrl + config.academicYear.replace('/', '-') + '/';

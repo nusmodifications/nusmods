@@ -10,7 +10,7 @@ var TimetableFlexView = require('../../timetable_flex/views/TimetableFlexView');
 module.exports = Marionette.LayoutView.extend({
   template: template,
   initialize: function () {
-    
+
   },
   regions: {
     venueSearchRegion: '.nm-venue-search',
@@ -38,7 +38,7 @@ module.exports = Marionette.LayoutView.extend({
     this.render();
 
     var lessons = _.reduce(_.pluck(selectedVenue, 'lessons'), function (memo, list) {
-      return memo.concat(list); 
+      return memo.concat(list);
     }, []);
 
     var TimetableFlexModel = new Backbone.Model({
