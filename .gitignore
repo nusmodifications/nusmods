@@ -8,3 +8,4 @@ app/vendor
 dist
 node_modules
 secrets.json
+npm-debug.log
