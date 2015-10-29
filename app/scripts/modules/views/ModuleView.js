@@ -40,7 +40,7 @@ module.exports = Marionette.LayoutView.extend({
     if (!window.location.hash) {
       $('html,body').stop(true, true).animate({scrollTop: 0}, 400);
     }
-    
+
     this.formElements = {
       'faculty': '#faculty',
       'account': '#account',
@@ -117,7 +117,7 @@ module.exports = Marionette.LayoutView.extend({
 
     var code = module.ModuleCode;
     var disqusShortname = config.disqusShortname;
-    
+
     // Only reset Disqus when showing reviews section
     var url = 'https://nusmods.com/modules/' + code + '/reviews';
     var title = code + ' ' + module.ModuleTitle;
@@ -146,7 +146,7 @@ module.exports = Marionette.LayoutView.extend({
         }
       });
     }
-    
+
     (function () {
       if (typeof disqus_domain !== 'undefined') {
         DISQUSWIDGETS.domain = 'disqus.com';
@@ -184,8 +184,8 @@ module.exports = Marionette.LayoutView.extend({
       }
     });
 
-    $('body').scrollspy({ 
-      target: '.js-nm-module-nav-container' 
+    $('body').scrollspy({
+      target: '.js-nm-module-nav-container'
     });
 
     // Index 0 is "All", therefore index no. = sem no.
@@ -237,8 +237,7 @@ module.exports = Marionette.LayoutView.extend({
     event.preventDefault();
     $('html, body').animate({
       scrollTop: $(target).offset().top
-    }, 300);
-    setTimeout(function () {
+    }, 300, function () {
       window.location.hash = target;
     });
   }
