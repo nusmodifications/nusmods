@@ -82,8 +82,8 @@ App.reqres.setHandler('displayLessons', function (sem, id, display) {
 var bookmarkedModulesNamespace = config.namespaces.bookmarkedModules + ':';
 
 App.reqres.setHandler('getBookmarks', function (callback) {
-  if (!callback) { 
-    return; 
+  if (!callback) {
+    return;
   }
   localforage.getItem(bookmarkedModulesNamespace, function (modules) {
     callback(modules);
@@ -135,7 +135,7 @@ App.on('start', function () {
   require('./about');
   require('./contribute');
   require('./help');
-  require('./support');
+  require('./contact');
 
   Promise.all(_.map(_.range(1, 5), function(semester) {
     var semTimetableFragment = config.semTimetableFragment(semester);
