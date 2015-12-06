@@ -50,7 +50,6 @@ module.exports = Marionette.LayoutView.extend({
   },
   events: {
     'change #faculty, input:radio[name="student-radios"], #account': 'updatePreferences',
-    'click #show-all-stats': 'showAllStats',
     'click .js-nm-module-nav a': 'scrollToSection',
     'click .add-timetable': function (event) {
       var qtipContent;
@@ -191,10 +190,6 @@ module.exports = Marionette.LayoutView.extend({
     // Index 0 is "All", therefore index no. = sem no.
     $('.js-nm-ls-schedule-tabs a[data-target="#nm-ls-schedule-sem' + config.semester + '"]').tab('show');
   },
-  showAllStats: function () {
-    analytics.track('Module cors', 'View full stats', this.model.get('module').ModuleCode);
-    this.showBiddingStatsRegion(false);
-  },
   updatePreferences: function ($ev) {
     var $target = $($ev.target);
     $target.blur();
@@ -206,7 +201,7 @@ module.exports = Marionette.LayoutView.extend({
       this.showBiddingStatsRegion(true);
     }
   },
-  showBiddingStatsRegion: function (displayFiltered) {
+  showBiddingStatsRegion: function () {
     var biddingStatsDeepCopy = $.extend(true, {},
       this.model.attributes.module.FormattedCorsBiddingStats);
     var biddingStatsModel = new Backbone.Model({stats: biddingStatsDeepCopy});
@@ -216,7 +211,7 @@ module.exports = Marionette.LayoutView.extend({
     var accountType = this.searchPreferences.account;
     var newStudent = this.searchPreferences.student === 'true';
 
-    if (faculty && faculty !== 'default' && accountType && displayFiltered) {
+    if (faculty && faculty !== 'default' && accountType) {
       biddingStatsView.filterStats(faculty, accountType, newStudent);
       this.biddingStatsRegion.show(biddingStatsView);
     }
