@@ -108,7 +108,7 @@ module.exports = Marionette.ItemView.extend({
       that.hideDarkBackdrop();
     });
   },
-  showDarkBackdrop() {
+  showDarkBackdrop: function () {
     var $modalBackdrop = $('<div class="modal-backdrop nm-search-backdrop"></div>');
     $('body')
       .addClass('modal-open')
@@ -117,7 +117,7 @@ module.exports = Marionette.ItemView.extend({
       $modalBackdrop.addClass('in');
     }, 0);
   },
-  hideDarkBackdrop() {
+  hideDarkBackdrop: function () {
     $('body')
       .removeClass('modal-open');
     var $modalBackdrop = $('.nm-search-backdrop');

@@ -66,6 +66,8 @@ $navbar-default-toggle-border-color: #fff;
 $fa-font-path: "/bower_components/font-awesome/fonts";
 @import "font-awesome/scss/font-awesome";
 
+@import "ripple";
+
 @import "select2-bootstrap-css/lib/select2-bootstrap";
 
 @import "timetable";

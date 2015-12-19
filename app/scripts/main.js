@@ -16,6 +16,8 @@ var Promise = require('bluebird'); // jshint ignore:line
 var analytics = require('./analytics');
 var localforage = require('localforage');
 
+require('./common/utils/ripple');
+
 var $body = $('body');
 
 localforage.getItem('migratedPreferences').then(function (value) {
