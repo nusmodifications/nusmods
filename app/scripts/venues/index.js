@@ -12,7 +12,7 @@ var Promise = require('bluebird');
 
 var navigationItem = App.request('addNavigationItem', {
   name: 'Venues',
-  icon: 'location-arrow',
+  icon: 'building-o',
   url: '/venues'
 });
 
