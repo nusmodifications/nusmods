@@ -13,27 +13,22 @@ require('select2');
 module.exports = Marionette.ItemView.extend({
   className: 'form-group',
   template: template,
-
   events: {
     'select2-selecting': 'onSelect2Selecting'
   },
-
   ui: {
     'input': 'input'
   },
-
   onMouseenter: function (event) {
     var button = $(event.currentTarget);
     button.children('span').hide();
     button.children('i').removeClass('hidden');
   },
-
   onMouseleave: function (event) {
     var button = $(event.currentTarget);
     button.children('span').show();
     button.children('i').addClass('hidden');
   },
-
   onMouseup: function (event) {
     event.stopPropagation();
     var button = $(event.currentTarget);
@@ -44,21 +39,18 @@ module.exports = Marionette.ItemView.extend({
       .prop('title', (add ? 'Add to' : 'Remove from') + 'Timetable')
       .children('i').toggleClass('fa-plus fa-times');
   },
-
   onSelect2Open: function () {
     $('#select2-drop')
       .on('mouseenter', 'a', this.onMouseenter)
       .on('mouseleave', 'a', this.onMouseleave)
       .on('mouseup', 'a', this.onMouseup);
   },
-
   onSelect2Selecting: function(event) {
     event.preventDefault();
     Backbone.history.navigate('modules/' + event.val, {trigger: true});
     this.ui.input.select2('close');
     this.$(':focus').blur();
   },
-
   onShow: function () {
     _.bindAll(this, 'onMouseup', 'onSelect2Open');
 
@@ -108,7 +100,31 @@ module.exports = Marionette.ItemView.extend({
         });
       }
     });
-
     this.ui.input.one('select2-open', this.onSelect2Open);
+    var that = this;
+    this.ui.input.on('select2-open', this.showDarkBackdrop);
+    this.ui.input.on('select2-close', function () {
+      that.$(':focus').blur();
+      that.hideDarkBackdrop();
+    });
+  },
+  showDarkBackdrop() {
+    var $modalBackdrop = $('<div class="modal-backdrop nm-search-backdrop"></div>');
+    $('body')
+      .addClass('modal-open')
+      .append($modalBackdrop);
+    setTimeout(function () {
+      $modalBackdrop.addClass('in');
+    }, 0);
+  },
+  hideDarkBackdrop() {
+    $('body')
+      .removeClass('modal-open');
+    var $modalBackdrop = $('.nm-search-backdrop');
+    $modalBackdrop
+      .one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function () {
+        $modalBackdrop.remove();
+      })
+      .removeClass('in');
   }
 });

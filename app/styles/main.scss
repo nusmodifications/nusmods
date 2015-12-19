@@ -52,7 +52,7 @@ $navbar-default-toggle-border-color: #fff;
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/close";
 
 // Components w/ JavaScript
-//@import "bootstrap-sass-official/assets/stylesheets/bootstrap/modals";
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap/modals";
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/tooltip";
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/popovers";
 //@import "bootstrap-sass-official/assets/stylesheets/bootstrap/carousel";
@@ -159,6 +159,8 @@ kbd {
 
 .navbar-default {
   border: none;
+  z-index: 999; /* Just below modal */
+
   .navbar-nav > {
     li {
       a {
@@ -381,6 +383,16 @@ $panel-heading-color: #3e444c;
     &:active {
       box-shadow: none !important;
     }
+  }
+}
+
+.nm-search-backdrop {
+  opacity: 0;
+  transition: opacity .2s linear;
+  z-index: 998;
+
+  &.in {
+    opacity: 0.65;
   }
 }
 
