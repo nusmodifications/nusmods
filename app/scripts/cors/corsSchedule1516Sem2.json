@@ -1,0 +1,58 @@
+[
+    {
+        "round": "0",
+        "openBiddingStart": "December 29, 2015, 09:00:00",
+        "openBiddingEnd": "December 29, 2015, 17:00:00",
+        "closedBiddingStart": null,
+        "closedBiddingEnd": null
+    },
+    {
+        "round": "1A",
+        "openBiddingStart": "December 30, 2015, 09:00:00",
+        "openBiddingEnd": "December 31, 2015, 09:00:00",
+        "closedBiddingStart": null,
+        "closedBiddingEnd": null
+    },
+    {
+        "round": "1A",
+        "openBiddingStart": "January 4, 2016, 09:00:00",
+        "openBiddingEnd": "January 4, 2016, 13:00:00",
+        "closedBiddingStart": "January 4, 2016, 13:00:01",
+        "closedBiddingEnd": "January 4, 2016, 17:00:00"
+    },
+    {
+        "round": "1B",
+        "openBiddingStart": "January 5, 2016, 09:00:00",
+        "openBiddingEnd": "January 5, 2016, 15:00:00",
+        "closedBiddingStart": "January 5, 2016, 15:00:01",
+        "closedBiddingEnd": "January 5, 2016, 17:00:00"
+    },
+    {
+        "round": "2A",
+        "openBiddingStart": "January 6, 2016, 09:00:00",
+        "openBiddingEnd": "January 7, 2016, 13:00:00",
+        "closedBiddingStart": "January 7, 2016, 13:00:01",
+        "closedBiddingEnd": "January 7, 2016, 17:00:00"
+    },
+    {
+        "round": "2B",
+        "openBiddingStart": "January 8, 2016, 09:00:00",
+        "openBiddingEnd": "January 8, 2016, 15:00:00",
+        "closedBiddingStart": "January 8, 2016, 15:00:01",
+        "closedBiddingEnd": "January 8, 2016, 17:00:00"
+    },
+    {
+        "round": "3A",
+        "openBiddingStart": "January 11, 2016, 09:00:00",
+        "openBiddingEnd": "January 11, 2016, 15:00:00",
+        "closedBiddingStart": "January 11, 2016, 15:00:01",
+        "closedBiddingEnd": "January 11, 2016, 17:00:00"
+    },
+    {
+        "round": "3B",
+        "openBiddingStart": "January 12, 2016, 09:00:00",
+        "openBiddingEnd": "January 12, 2016, 15:00:00",
+        "closedBiddingStart": "January 12, 2016, 15:00:01",
+        "closedBiddingEnd": "January 12, 2016, 17:00:00"
+    }
+]

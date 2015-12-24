@@ -1,6 +1,6 @@
 'use strict';
 
-var corsSchedule = require('./corsSchedule1516Sem1.json');
+var corsSchedule = require('./corsSchedule1516Sem2.json');
 
 var DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
