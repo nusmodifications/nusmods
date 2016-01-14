@@ -7,8 +7,8 @@ $(function () {
 
     $ripple
       .css({
-        top: y - 100 + 'px',
-        left: x - 100 + 'px',
+        top: y - 32 + 'px',
+        left: x - 32 + 'px',
       })
       .addClass('rippling')
       .one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function () {
