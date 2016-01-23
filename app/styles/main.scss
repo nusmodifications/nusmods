@@ -775,7 +775,7 @@ colgroup.hover {
       position: relative;
     }
   }
-  .module-main-content:before {
+  .module-main-content:not(:first-child):before {
     content: ' ';
     display: block;
     height: $navbar-height + $grid-gutter-width/2;

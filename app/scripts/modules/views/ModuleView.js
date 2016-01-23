@@ -228,10 +228,10 @@ module.exports = Marionette.LayoutView.extend({
     return true;
   },
   scrollToSection: function (event) {
-    var target = $(event.currentTarget).attr('href');
     event.preventDefault();
+    var target = $(event.currentTarget).attr('href');
     $('html, body').animate({
-      scrollTop: $(target).offset().top
+      scrollTop: $(target).offset().top - (target === '#details' ? 65 : 0)
     }, 300, function () {
       window.location.hash = target;
     });
