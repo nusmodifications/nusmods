@@ -2,6 +2,7 @@
 
 var $ = require('jquery');
 var padTwo = require('../../common/utils/padTwo');
+var moment = require('moment');
 var LessonView = require('./LessonView');
 var Marionette = require('backbone.marionette');
 var _ = require('underscore');
@@ -41,10 +42,9 @@ module.exports = Marionette.CompositeView.extend({
   },
 
   updateDayTimeIndicator: function() {
-    var nowDate = new Date();
-    var day = nowDate.getDay();
-    var hour = padTwo(nowDate.getHours());
-    var minutes = nowDate.getMinutes();
+    var day = moment().format('ddd').toLowerCase();
+    var hour = padTwo(moment().hour());
+    var minutes = moment().minute();
 
     // convert the minutes to either 00 or 30
     if (minutes < 30) {
@@ -53,19 +53,8 @@ module.exports = Marionette.CompositeView.extend({
       minutes = '30';
     }
 
-    var dayMapping = [
-      'sun',
-      'mon',
-      'tue',
-      'wed',
-      'thu',
-      'fri',
-      'sat'
-    ];
-
-    console.log('#' + dayMapping[day] + ' .h' + hour + '.m' + minutes);
     this.$('#timetable .currentDayTime').removeClass('currentDayTime');
-    this.$('#' + dayMapping[day] + ' .h' + hour + '.m' + minutes).addClass('currentDayTime');
+    this.$('#' + day + ' .h' + hour + '.m' + minutes).addClass('currentDayTime');
   },
 
   mouseMove: function(evt) {
