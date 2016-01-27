@@ -32,7 +32,7 @@ module.exports = Marionette.CompositeView.extend({
     var self = this;
 
     // updates every minute thereafter
-    window.setTimeout(function() {
+    window.setInterval(function() {
       self.updateDayTimeIndicator.call(self);
     }, 60000);
 
