@@ -43,10 +43,17 @@ module.exports = Marionette.CompositeView.extend({
     var nowDate = new Date();
     var day = nowDate.getDay();
     var hour = nowDate.getHours();
+    var minutes = nowDate.getMinutes();
 
     // leading zero check
     if (hour < 10) {
       hour = '0' + hour;
+    }
+
+    if (minutes < 30) {
+      minutes = '00';
+    } else {
+      minutes = '30';
     }
 
     var dayMapping = [
@@ -60,7 +67,7 @@ module.exports = Marionette.CompositeView.extend({
     ];
 
     this.$('#timetable td').css('background', 'none');
-    this.$('#' + dayMapping[day] + ' .h' + hour).css('background', 'rgba(255, 140, 20, 0.5)');
+    this.$('#' + dayMapping[day] + ' .h' + hour + '.m' + minutes).css('background', 'rgba(255, 140, 20, 0.5)');
   },
 
   mouseMove: function(evt) {
