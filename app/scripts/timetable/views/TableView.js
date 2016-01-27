@@ -27,6 +27,42 @@ module.exports = Marionette.CompositeView.extend({
     colgroups: 'colgroup'
   },
 
+  onRender: function() {
+    var self = this;
+
+    // updates every minute thereafter
+    window.setTimeout(function() {
+      this.updateDayTimeIndicator.call(self);
+    }, 60000);
+
+    // initial updating
+    this.updateDayTimeIndicator();
+  },
+
+  updateDayTimeIndicator: function() {
+    var nowDate = new Date();
+    var day = nowDate.getDay();
+    var hour = nowDate.getHours();
+
+    // leading zero check
+    if (hour < 10) {
+      hour = '0' + hour;
+    }
+
+    var dayMapping = [
+      'sun',
+      'mon',
+      'tue',
+      'wed',
+      'thu',
+      'fri',
+      'sat'
+    ];
+
+    this.$('#timetable td').css('background', 'none');
+    this.$('#' + dayMapping[day] + ' .h' + hour).css('background', 'rgba(255, 140, 20, 0.5)');
+  },
+
   mouseMove: function(evt) {
     if (!this.colX) {
       this.colX = this.$('#times > th + th')
