@@ -1,7 +1,7 @@
 'use strict';
 
 var $ = require('jquery');
-var padTwo = require('../utils/padTwo');
+var padTwo = require('../../common/utils/padTwo');
 var LessonView = require('./LessonView');
 var Marionette = require('backbone.marionette');
 var _ = require('underscore');
@@ -46,11 +46,6 @@ module.exports = Marionette.CompositeView.extend({
     var hour = padTwo(nowDate.getHours());
     var minutes = nowDate.getMinutes();
 
-    // leading zero check
-    if (hour < 10) {
-      hour = '0' + hour;
-    }
-
     // convert the minutes to either 00 or 30
     if (minutes < 30) {
       minutes = '00';
@@ -68,8 +63,9 @@ module.exports = Marionette.CompositeView.extend({
       'sat'
     ];
 
-    $('#timetable td').css('background', 'none');
-    $('#' + dayMapping[day] + ' .h' + hour + '.m' + minutes).css('background', 'rgba(255, 140, 20, 0.5)');
+    console.log('#' + dayMapping[day] + ' .h' + hour + '.m' + minutes);
+    this.$('#timetable .currentDayTime').removeClass('currentDayTime');
+    this.$('#' + dayMapping[day] + ' .h' + hour + '.m' + minutes).addClass('currentDayTime');
   },
 
   mouseMove: function(evt) {
