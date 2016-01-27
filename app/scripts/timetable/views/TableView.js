@@ -44,17 +44,9 @@ module.exports = Marionette.CompositeView.extend({
   updateDayTimeIndicator: function() {
     var day = moment().format('ddd').toLowerCase();
     var hour = padTwo(moment().hour());
-    var minutes = moment().minute();
-
-    // convert the minutes to either 00 or 30
-    if (minutes < 30) {
-      minutes = '00';
-    } else {
-      minutes = '30';
-    }
 
     this.$('#timetable .currentDayTime').removeClass('currentDayTime');
-    this.$('#' + day + ' .h' + hour + '.m' + minutes).addClass('currentDayTime');
+    this.$('#' + day + ' .h' + hour).addClass('currentDayTime');
   },
 
   mouseMove: function(evt) {
