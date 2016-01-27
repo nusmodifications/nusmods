@@ -19,6 +19,7 @@ module.exports = Marionette.CompositeView.extend({
     };
   },
   template: template,
+  timerUpdateDayTime: null,
 
   events: {
     'mousemove': 'mouseMove',
@@ -33,12 +34,16 @@ module.exports = Marionette.CompositeView.extend({
     var self = this;
 
     // updates every minute thereafter
-    window.setInterval(function() {
+    this.timerUpdateDayTime = window.setInterval(function() {
       self.updateDayTimeIndicator.call(self);
     }, 300000); // 5 min * 60 s * 1000 ms
 
     // initial updating
     this.updateDayTimeIndicator();
+  },
+
+  onBeforeDestroy: function() {
+    this.timerUpdateDayTime = window.clearInterval(this.timerUpdateDayTime);
   },
 
   updateDayTimeIndicator: function() {
