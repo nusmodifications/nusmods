@@ -5,10 +5,8 @@ var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var NUSMods = require('../nusmods');
 var _ = require('underscore');
-var $ = require('jquery');
 var config = require('../common/config');
-var timify = require('../common/utils/timify');
-var Promise = require('bluebird');
+var _Promise = require('bluebird');
 
 var navigationItem = App.request('addNavigationItem', {
   name: 'Venues',
@@ -17,14 +15,14 @@ var navigationItem = App.request('addNavigationItem', {
 });
 
 var loadVenueInformation = function (callback) {
-  Promise.all([
+  _Promise.all([
     NUSMods.getVenueInformation(config.semester),
     NUSMods.getVenues(config.semester)
   ]).then(function (response) {
     var venues = response[0];
     var venuesList = response[1];
     // TODO: Change key from classes to lessons for venues api
-    _.each(venues, function (value, key) {
+    _.each(venues, function (value) {
       _.each(value, function (day) {
         if (day.classes) {
           day.lessons = day.classes;

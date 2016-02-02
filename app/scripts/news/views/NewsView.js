@@ -40,13 +40,13 @@ module.exports = Marionette.LayoutView.extend({
     this.feedRegion.show(this.feedView);
     this.loadPosts();
     if (window.FB) {
-      FB.XFBML.parse();
+      window.FB.XFBML.parse();
     } else {
       (function(d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
+        if (d.getElementById(id)) { return; }
         js = d.createElement(s); js.id = id;
-        js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.3&appId=1524196174461544";
+        js.src = '//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.3&appId=1524196174461544';
         fjs.parentNode.insertBefore(js, fjs);
       }(document, 'script', 'facebook-jssdk'));
     }
@@ -73,21 +73,21 @@ module.exports = Marionette.LayoutView.extend({
           }
         }
 
-        item.month = moment(item.created_time).format('MMM');
-        item.date = moment(item.created_time).format('DD');
+        item.month = moment(item.created_time).format('MMM'); // jshint ignore:line
+        item.date = moment(item.created_time).format('DD'); // jshint ignore:line
 
         item.postId = item.id.split('_')[1];
-        item.postUrl = 'https://www.facebook.com/' + that.model.get('fbPageId') 
-                        + '/posts/' + item.postId;
+        item.postUrl = 'https://www.facebook.com/' + that.model.get('fbPageId') +
+                         '/posts/' + item.postId;
 
         if (item.comments) {
           _.each(item.comments.data, function (comment) {
             comment.message = _.escape(comment.message);
-            comment.date = moment(comment.created_time).fromNow();
+            comment.date = moment(comment.created_time).fromNow(); // jshint ignore:line
             if (comment.comments) {
               _.each(comment.comments.data, function (comment) {
                 comment.message = _.escape(comment.message);
-                comment.date = moment(comment.created_time).fromNow();
+                comment.date = moment(comment.created_time).fromNow(); // jshint ignore:line
               });
             }
           });

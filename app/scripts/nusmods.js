@@ -59,7 +59,8 @@ module.exports = {
     return venuesPromise.then(callback);
   },
   getVenueInformation: function (semester, callback) {
-    venueInformationPromise = venueInformationPromise || Promise.resolve($.getJSON([ayBaseUrl, semester, 'venueInformation.json'].join('/')));
+    venueInformationPromise = venueInformationPromise || Promise.resolve(
+      $.getJSON([ayBaseUrl, semester, 'venueInformation.json'].join('/')));
     return venueInformationPromise.then(callback);
   },
   setConfig: function (config) {
