@@ -15,9 +15,17 @@
 
 ### Setup
 
+On Unix/Mac:
+
 ```bash
 $ pip install ansible
 $ vagrant up
+```
+
+On Windows:
+
+```powershell
+PS> vagrant up
 ```
 
 Once it's up, do a `vagrant ssh` to enter the development environment.
@@ -41,9 +49,19 @@ If you are working on `news.php`, make a copy of `/app/config/secrets.json.examp
 
 ## Building for Development
 
+First, SSH into the vagrant box (this command has to be run in the directory that `Vagrantfile` is in):
+
+```bash
+$ vagrant ssh
+```
+
+Run the development environment:
+
 ```bash
 $ grunt serve
 ```
+
+Visit `localhost:9000` to see your local instance of NUSMods.
 
 ## Building for Production
 
