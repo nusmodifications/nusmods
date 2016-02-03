@@ -17,6 +17,9 @@
       "url": "https://github.com/nusmodifications/nusmods/blob/master/LICENSE-MIT"
     }
   ],
+  "scripts": {
+    "test": "grunt"
+  },
   "dependencies": {
     "backbone": "~1.2.1",
     "backbone.babysitter": "~0.1.8",
