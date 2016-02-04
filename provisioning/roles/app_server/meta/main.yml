@@ -3,6 +3,7 @@ dependencies:
   - bower
   - composer
   - grunt
+  - gulp
   - mysql
   - nginx
   - wkhtmltopdf
