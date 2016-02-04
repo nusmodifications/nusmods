@@ -1,3 +1,5 @@
+'use strict';
+
 var $ = require('jquery');
 
 $(function () {
@@ -13,7 +15,7 @@ $(function () {
       .addClass('rippling')
       .one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function () {
         $(this).remove();
-      })
+      });
   }
 
   $(document).click(function(e) {

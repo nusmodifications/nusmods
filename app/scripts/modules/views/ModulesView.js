@@ -112,6 +112,11 @@ module.exports = Marionette.LayoutView.extend({
       }
       mod.semesterNames = [];
 
+      function parseWorkloadHours(workload) {
+        var workloadInt = parseInt(workload);
+        return _.isNumber(workloadInt) && !_.isNaN(workloadInt) ? workloadInt : 'Others';
+      }
+
       for (var i = 0; i < mod.History.length; i++) {
         var history = mod.History[i];
         var sem = history.Semester;
@@ -122,10 +127,7 @@ module.exports = Marionette.LayoutView.extend({
         var workloads = [];
 
         if (mod.Workload) {
-         workloads =  _.map(mod.Workload.split('-'), function(workload) {
-            var workloadInt = parseInt(workload);
-            return _.isNumber(workloadInt) && !_.isNaN(workloadInt) ? workloadInt : 'Others';
-          });
+         workloads =  _.map(mod.Workload.split('-'), parseWorkloadHours);
         }
 
         if (workloads.length === 5) {
@@ -136,8 +138,8 @@ module.exports = Marionette.LayoutView.extend({
           mod.preparationHours = workloads[4];
         }
         else {
-          mod.lectureHours = mod.tutorialHours = mod.labHours
-              = mod.projectHours = mod.preparationHours = 'Others';
+          mod.lectureHours = mod.tutorialHours = mod.labHours =
+	      mod.projectHours = mod.preparationHours = 'Others';
         }
       }
     });

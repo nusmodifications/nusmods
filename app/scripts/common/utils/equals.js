@@ -7,9 +7,9 @@ function equals(lvalue, rvalue, options) {
     throw new Error('Handlebars helper equals needs 2 parameters');
   }
   if (lvalue !== rvalue) {
-    return options.inverse(this);
+    return options.inverse(this); // jshint ignore:line
   } else {
-    return options.fn(this);
+    return options.fn(this); // jshint ignore:line
   }
 }
 Handlebars.registerHelper('equals', equals);
