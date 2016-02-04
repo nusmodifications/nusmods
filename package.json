@@ -18,7 +18,7 @@
     }
   ],
   "scripts": {
-    "test": "grunt"
+    "test": "gulp"
   },
   "dependencies": {
     "backbone": "~1.2.1",
