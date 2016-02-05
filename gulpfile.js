@@ -293,22 +293,18 @@ gulp.task('connect:test', function() {
 gulp.task('serve:dist', ['build', 'connect:dist']);
 gulp.task('serve', function() {
   runSequence(
-    'clean:server', 'sass', 'copy:styles', 'autoprefixer', 'browserify', 'connect:livereload', 'watch')
+    'clean:server', ['sass', 'copy:styles'], 'autoprefixer',
+    'browserify', 'connect:livereload', 'watch')
 });
 
 gulp.task('test', ['clean:server', 'copy:styles', 'autoprefixer']);
 gulp.task('test:watch', ['connect:test', 'mocha']);
 
-gulp.task('build', [
-  'clean:dist',
-  'copy',
-  'sass',
-  'imagemin',
-  'svgmin',
-  'autoprefixer',
-  'browserify',
-  'cssmin',
-  'usemin'
-]);
+gulp.task('build', function() {
+  runSequence(
+    'clean:dist', ['copy', 'sass', 'imagemin', 'svgmin', 'cssmin'],
+    'autoprefixer', 'browserify', 'usemin'
+  );
+});
 
 gulp.task('default', ["jshint", /* "test" */ "build"]);
