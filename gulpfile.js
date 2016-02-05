@@ -135,14 +135,6 @@ function bundle() {
     .pipe(gulp.dest('.tmp/scripts/'));
 }
 
-// Add vendor prefixed styles
-gulp.task('autoprefixer', function() {
-  var processors = [autoprefixer()];
-  return gulp.src('.tmp/styles/{,*/}*.css')
-    .pipe(postcss(processors))
-    .pipe(gulp.dest('.tmp/styles/'));
-});
-
 /* Copy files to temp or dist directories */
 
 gulp.task('copy:dist', function(cb) {
@@ -189,16 +181,22 @@ gulp.task('copy:tmp', function() {
     .pipe(gulp.dest('.tmp/'));
 });
 
+// Add vendor prefixed styles
+// we really don't need this, the only css file we have is already minified and prefixed
+gulp.task('autoprefixer', function() {
+  // var processors = [autoprefixer()];
+  // return gulp.src('.tmp/styles/{,*/}*.css')
+    // .pipe(postcss(processors))
+    // .pipe(gulp.dest('.tmp/styles/'));
+});
+
 // Compiles Sass to CSS and generates necessary files if requested
 gulp.task('sass', function() {
+  var processors = [autoprefixer()];
   return gulp.src('app/styles/*.scss', { base: 'app/styles'})
-    // TODO write sourcemaps to another location?
     .pipe(sourcemaps.init())
-    .pipe(sass({
-      includePaths: ['app/bower_components'],
-      sourcemap: true,
-      outputStyle: 'compressed'
-    }))
+    .pipe(sass({ includePaths: ['app/bower_components'] }))
+    .pipe(postcss(processors))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('.tmp/styles'))
 });
