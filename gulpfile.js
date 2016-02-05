@@ -119,26 +119,6 @@ gulp.task('browserify', function() {
     .pipe(gulp.dest('.tmp/scripts/'));
 });
 
-gulp.task('browserify:watch', bundle);
-var browserifyOpts = {
-  entries: ['app/scripts/main.js'],
-  debug: true
-};
-var opts = assign({}, watchify.args, browserifyOpts);
-var b = watchify(browserify(opts));
-b.on('update', bundle);
-b.on('log', gutil.log);
-
-function bundle() {
-  return b.bundle()
-    .pipe(source('main.js'))
-    .pipe(buffer())
-    .pipe(sourcemaps.init({loadMaps: true}))
-    .pipe(uglify())
-    .pipe(sourcemaps.write())
-    .pipe(gulp.dest('.tmp/scripts/'));
-}
-
 /* Copy files to temp or dist directories */
 
 gulp.task('copy:dist', function(cb) {
@@ -226,7 +206,7 @@ gulp.task('livereload', function() {
 });
 
 // Watches files for changes and runs tasks based on the changed files
-gulp.task('watch', ['browserify:watch'], function() {
+gulp.task('watch', function() {
   gulp.watch('test/spec/{,*/}*.js', ['test:watch']);
   gulp.watch('app/styles/{,*/}*.{scss,sass}', function() {
     runSequence('sass', 'livereload');
@@ -238,6 +218,9 @@ gulp.task('watch', ['browserify:watch'], function() {
   gulp.watch('.tmp/scripts/main.js', ['livereload']);
   gulp.watch('app/images/{,*/}*./{gif,jpeg,jpg,png,svg,webp}', ['livereload']);
   gulp.watch('package.json', ['browserify']);
+  gulp.watch('app/scripts/**/*.js', function() {
+    runSequence('browserify', 'livereload');
+  });
 });
 
 var connectMiddleware = function() {
