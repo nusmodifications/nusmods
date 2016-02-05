@@ -31,6 +31,7 @@ var autoprefixer = require('autoprefixer');
 var browserify = require('browserify');
 var watchify = require('watchify');
 var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
 var gutil = require('gulp-util');
 var assign = require('lodash.assign');
 var rev = require('gulp-rev');
@@ -69,6 +70,8 @@ gulp.task('usemin', ['copy', 'browserify', 'imagemin'], function() {
       css: [ 'concat', minifyCss, rev ],
       html: [ function() { return minifyHtml({ collapseWhitespace: true });} ],
       js: [ 'concat', uglify, rev ],
+      // don't uglify because jsmin is produced by browserify, which uglifies it
+      jsmain: [ 'concat', rev ],
       inelinejs: [ uglify ],
       inlinecss: [ minifyCss, 'concat' ]
     }))
@@ -105,24 +108,34 @@ gulp.task('imagemin', function() {
 
 /* Browserify task */
 
+gulp.task('browserify', function() {
+  var b = browserify({
+    entries: ['app/scripts/main.js'],
+  });
+  return b.bundle()
+    .pipe(source('main.js'))
+    .pipe(buffer())
+    .pipe(uglify())
+    .pipe(gulp.dest('.tmp/scripts/'));
+});
+
+gulp.task('browserify:watch', bundle);
 var browserifyOpts = {
   entries: ['app/scripts/main.js'],
   debug: true
 };
 var opts = assign({}, watchify.args, browserifyOpts);
 var b = watchify(browserify(opts));
-
-gulp.task('browserify', ['browserify:watch'], b.close);
-gulp.task('browserify:watch', bundle);
 b.on('update', bundle);
 b.on('log', gutil.log);
+
 function bundle() {
   return b.bundle()
-    .on('error', gutil.log.bind(gutil, 'Browserify Error'))
     .pipe(source('main.js'))
-    // .pipe(buffer())
-    // .pipe(sourcemaps.init({loadMaps: true}))
-    // .pipe(sourcemaps.write('./'))
+    .pipe(buffer())
+    .pipe(sourcemaps.init({loadMaps: true}))
+    .pipe(uglify())
+    .pipe(sourcemaps.write())
     .pipe(gulp.dest('.tmp/scripts/'));
 }
 
@@ -216,10 +229,10 @@ gulp.task('livereload', function() {
 gulp.task('watch', ['browserify:watch'], function() {
   gulp.watch('test/spec/{,*/}*.js', ['test:watch']);
   gulp.watch('app/styles/{,*/}*.{scss,sass}', function() {
-    runSequence('sass', 'autoprefixer', 'livereload');
+    runSequence('sass', 'livereload');
   });
   gulp.watch('app/styles/{,*/}*.css', function() {
-    runSequence('copy:styles', 'autoprefixer', 'livereload');
+    runSequence('copy:styles', 'livereload');
   });
   gulp.watch('app/{,*/}*.html', ['livereload']);
   gulp.watch('.tmp/scripts/main.js', ['livereload']);
@@ -266,17 +279,17 @@ gulp.task('connect:test', function() {
 gulp.task('serve:dist', ['build', 'connect:dist']);
 gulp.task('serve', function() {
   runSequence(
-    'clean:server', ['sass', 'copy:styles'], 'autoprefixer',
+    'clean:server', ['sass', 'copy:styles'],
     'browserify', 'connect:livereload', 'watch')
 });
 
-gulp.task('test', ['clean:server', 'copy:styles', 'autoprefixer']);
+gulp.task('test', ['clean:server', 'copy:styles']);
 gulp.task('test:watch', ['connect:test', 'mocha']);
 
 gulp.task('build', function() {
   runSequence(
-    'clean:dist', ['copy', 'sass', 'imagemin', 'svgmin', 'cssmin'],
-    'autoprefixer', 'browserify', 'usemin'
+    'clean:dist', ['copy', 'sass', 'imagemin', 'svgmin'],
+    'browserify', 'usemin'
   );
 });
 
