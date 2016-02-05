@@ -79,15 +79,6 @@ gulp.task('usemin', ['copy', 'browserify', 'imagemin'], function() {
 // The following *-min tasks produce minified files in the dist folder
 // maybe don't need cos usemin can do html minification
 
-// By default, your `index.html`'s <!-- Usemin block --> will take care of
-// minification. These next options are pre-configured if you do not wish
-// to use the Usemin blocks.
-gulp.task('cssmin', function () {
-  return gulp.src('dist/styles/exports.css')
-    .pipe(minifyCss())
-    .pipe(gulp.dest('.tmp/styles/exports.css'));
-});
-
 gulp.task('svgmin', function() {
   return gulp.src('app/images/{,*/}*.svg')
     .pipe(svgmin())
@@ -161,10 +152,9 @@ gulp.task('copy:dist', function(cb) {
   return merge(apps, zeroclipboard);
 });
 
-gulp.task('copy:styles', function(cb) {
-  gulp.src('app/styles/{,*/}*.css', { base: 'app/styles'})
+gulp.task('copy:styles', function() {
+  return gulp.src('app/styles/{,*/}*.css', { base: 'app/styles'})
     .pipe(gulp.dest('.tmp/styles/'));
-  cb();
 });
 
 // Copies remaining files to places other tasks can use
@@ -181,21 +171,12 @@ gulp.task('copy:tmp', function() {
     .pipe(gulp.dest('.tmp/'));
 });
 
-// Add vendor prefixed styles
-// we really don't need this, the only css file we have is already minified and prefixed
-gulp.task('autoprefixer', function() {
-  // var processors = [autoprefixer()];
-  // return gulp.src('.tmp/styles/{,*/}*.css')
-    // .pipe(postcss(processors))
-    // .pipe(gulp.dest('.tmp/styles/'));
-});
-
 // Compiles Sass to CSS and generates necessary files if requested
 gulp.task('sass', function() {
   var processors = [autoprefixer()];
   return gulp.src('app/styles/*.scss', { base: 'app/styles'})
     .pipe(sourcemaps.init())
-    .pipe(sass({ includePaths: ['app/bower_components'] }))
+    .pipe(sass({includePaths: ['app/bower_components']}))
     .pipe(postcss(processors))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('.tmp/styles'))
@@ -246,16 +227,18 @@ gulp.task('watch', ['browserify:watch'], function() {
   gulp.watch('package.json', ['browserify']);
 });
 
+var connectMiddleware = function() {
+  // Rewrite everything that does not contain a '.' to
+  // support pushState
+  return [modRewrite(['^[^\\.]*$ /index.html [L]'])];
+};
+
 gulp.task('connect:dist', function() {
   connect.server({
       "port": 9000,
       "livereload": false,
       "hostname": "0.0.0.0",
-      "middleware": function(connect, options) {
-        // Rewrite everything that does not contain a '.' to
-        // support pushState
-        return [modRewrite(['^[^\\.]*$ /index.html [L]'])];
-      },
+      "middleware": connectMiddleware,
       "root": ["dist", "api/app"]
   });
 });
@@ -265,11 +248,7 @@ gulp.task('connect:livereload', function() {
       "port": 9000,
       "livereload": true,
       "hostname": "0.0.0.0",
-      "middleware": function(connect, options) {
-        // Rewrite everything that does not contain a '.' to
-        // support pushState
-        return [modRewrite(['^[^\\.]*$ /index.html [L]'])];
-      },
+      "middleware": connectMiddleware,
       "root": [".tmp", "app", ".", "api/app"]
   });
 });
@@ -279,11 +258,7 @@ gulp.task('connect:test', function() {
       "port": 9001,
       "livereload": true,
       "hostname": "0.0.0.0",
-      "middleware": function(connect, options) {
-        // Rewrite everything that does not contain a '.' to
-        // support pushState
-        return [modRewrite(['^[^\\.]*$ /index.html [L]'])];
-      },
+      "middleware": connectMiddleware,
       "root": [".tmp", "test", "app", "api/app"]
   });
 });
