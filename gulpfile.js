@@ -196,7 +196,7 @@ gulp.task('clean:server', function() {
 // Make sure code styles are up to par and there are no obvious mistakes
 gulp.task('jshint', function(cb) {
   return gulp.src([
-      'Gruntfile.js',
+      'gulpfile.js',
       'app/scripts/**/*.js',
       '!app/scripts/vendor/*',
       'test/spec/{,*/}*.js'])
