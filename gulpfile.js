@@ -1,3 +1,5 @@
+'use strict';
+
 require('es6-promise').polyfill();  // needed for gulp-postcss, it uses Promise
 
 // # Globbing
@@ -31,8 +33,6 @@ var browserify = require('browserify');
 var watchify = require('watchify');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
-var gutil = require('gulp-util');
-var assign = require('lodash.assign');
 var rev = require('gulp-rev');
 var connect = require('gulp-connect');
 var modRewrite = require('connect-modrewrite');
@@ -82,14 +82,14 @@ gulp.task('usemin', ['copy', 'browserify', 'imagemin'], function() {
 gulp.task('svgmin', function() {
   return gulp.src('app/images/{,*/}*.svg')
     .pipe(svgmin())
-    .pipe(gulp.dest('dist/images/'))
+    .pipe(gulp.dest('dist/images/'));
 });
 
 var imageminOptions = {
   interlaced: true,
   optimizationLevel: 3,
   progressive: true
-}
+};
 
 gulp.task('imagemin', function() {
   // we cannot revision the logos until gulp-usemin is able to handle rev images
@@ -130,9 +130,9 @@ gulp.task('browserify:watch', function() {
 });
 
 // Copy files to temp or dist directories so other tasks can use
-gulp.task('copy', ['copy:tmp', 'copy:styles', 'copy:dist'])
+gulp.task('copy', ['copy:tmp', 'copy:styles', 'copy:dist']);
 
-gulp.task('copy:dist', function(cb) {
+gulp.task('copy:dist', function() {
   var apps = gulp.src([
     'app/*.{config,php}',
     'app/*.{ico,png,txt}',
@@ -180,7 +180,7 @@ gulp.task('sass', function() {
     .pipe(sass({includePaths: ['app/bower_components']}))
     .pipe(postcss(processors))
     .pipe(sourcemaps.write())
-    .pipe(gulp.dest('.tmp/styles'))
+    .pipe(gulp.dest('.tmp/styles'));
 });
 
 // Empties folders to start fresh
@@ -194,7 +194,7 @@ gulp.task('clean:server', function() {
 });
 
 // Make sure code styles are up to par and there are no obvious mistakes
-gulp.task('jshint', function(cb) {
+gulp.task('jshint', function() {
   return gulp.src([
       'gulpfile.js',
       'app/scripts/**/*.js',
@@ -239,31 +239,31 @@ var connectMiddleware = function() {
 
 gulp.task('connect:dist', function() {
   connect.server({
-      "port": 9000,
-      "livereload": false,
-      "hostname": "0.0.0.0",
-      "middleware": connectMiddleware,
-      "root": ["dist", "api/app"]
+      'port': 9000,
+      'livereload': false,
+      'hostname': '0.0.0.0',
+      'middleware': connectMiddleware,
+      'root': ['dist', 'api/app']
   });
 });
 
 gulp.task('connect:livereload', function() {
   connect.server({
-      "port": 9000,
-      "livereload": true,
-      "hostname": "0.0.0.0",
-      "middleware": connectMiddleware,
-      "root": [".tmp", "app", ".", "api/app"]
+      'port': 9000,
+      'livereload': true,
+      'hostname': '0.0.0.0',
+      'middleware': connectMiddleware,
+      'root': ['.tmp', 'app', '.', 'api/app']
   });
 });
 
 gulp.task('connect:test', function() {
   connect.server({
-      "port": 9001,
-      "livereload": true,
-      "hostname": "0.0.0.0",
-      "middleware": connectMiddleware,
-      "root": [".tmp", "test", "app", "api/app"]
+      'port': 9001,
+      'livereload': true,
+      'hostname': '0.0.0.0',
+      'middleware': connectMiddleware,
+      'root': ['.tmp', 'test', 'app', 'api/app']
   });
 });
 
@@ -271,7 +271,7 @@ gulp.task('serve:dist', ['build', 'connect:dist']);
 gulp.task('serve', function() {
   runSequence(
     'clean:server', ['sass', 'copy:styles'],
-    'browserify', 'connect:livereload', 'watch')
+    'browserify', 'connect:livereload', 'watch');
 });
 
 gulp.task('test', ['clean:server', 'copy:styles']);
@@ -284,4 +284,4 @@ gulp.task('build', function() {
   );
 });
 
-gulp.task('default', ["jshint", /* "test" */ "build"]);
+gulp.task('default', ['jshint', /* 'test' */ 'build']);
