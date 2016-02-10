@@ -10,3 +10,4 @@ node_modules
 secrets.json
 npm-debug.log
 *.swp
+tmp/
