@@ -45,7 +45,9 @@ var rsync = require('gulp-rsync');
 var mocha = require('gulp-mocha');
 
 // Mocha testing framework configuration options
-gulp.task('mocha', function() {
+gulp.task('test', function() {
+  return gulp.src(['test/*.js'], {read: false})
+    .pipe(mocha());
 });
 
 gulp.task('rsync', function() {
@@ -284,4 +286,4 @@ gulp.task('build', function() {
   );
 });
 
-gulp.task('default', ['jshint', /* 'test' */ 'build']);
+gulp.task('default', ['jshint', 'test', 'build']);
