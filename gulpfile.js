@@ -93,7 +93,7 @@ var imageminOptions = {
 
 gulp.task('imagemin', function() {
   // we cannot revision the logos until gulp-usemin is able to handle rev images
-  var images = gulp.src('app/images/{,*/}*.{gif.jpeg,jpg,png}')
+  var images = gulp.src('app/images/{,*/}*.{gif,jpeg,jpg,png}')
     .pipe(imagemin(imageminOptions))
     // .pipe(rev())
     .pipe(gulp.dest('dist/images'));
