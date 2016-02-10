@@ -228,7 +228,7 @@ gulp.task('watch', function() {
   gulp.watch('.tmp/scripts/main.js', ['livereload']);
   gulp.watch('app/images/{,*/}*./{gif,jpeg,jpg,png,svg,webp}', ['livereload']);
   gulp.watch('package.json', ['browserify']);
-  gulp.watch('app/scripts/**/*.js', function() {
+  gulp.watch('app/scripts/**/*.{js,hbs}', function() {
     runSequence('browserify:watch', 'livereload');
   });
 });
