@@ -1,5 +1,4 @@
 require('es6-promise').polyfill();  // needed for gulp-postcss, it uses Promise
-// TODO(ngzhian): a lot more documentation and cleanups
 
 // # Globbing
 // for performance reasons we're only matching one level down:
@@ -11,11 +10,11 @@ require('es6-promise').polyfill();  // needed for gulp-postcss, it uses Promise
 // .tmp/ (holding area)
 // dist/ (final distributed app)
 
-// Phase 1: Clean up
-// Phase 2: Copy files from app, vendor to .tmp or to dist/
-// Phase 3: Run minification
-// Phase 4: Browserify
-// Phase 5: Usemin
+// Phase 1: Clean up (clean)
+// Phase 2: Copy files from app, vendor to .tmp or to dist/ (copy)
+// Phase 3: Run minification (imagemin, svgmin), compile sass
+// Phase 4: Browserify to bundle app main.js
+// Phase 5: Usemin to insert final file name into hitml
 
 var gulp = require('gulp');
 var runSequence = require('run-sequence');
@@ -37,18 +36,17 @@ var assign = require('lodash.assign');
 var rev = require('gulp-rev');
 var connect = require('gulp-connect');
 var modRewrite = require('connect-modrewrite');
-// var batch = require('gulp-batch');
 var merge = require('merge-stream');
 var usemin = require('gulp-usemin');
 var uglify = require('gulp-uglify');
 var minifyHtml = require('gulp-htmlmin');
 var minifyCss = require('gulp-cssnano');
 var rsync = require('gulp-rsync');
-// var mocha = require('gulp-mocha');
+var mocha = require('gulp-mocha');
 
 // Mocha testing framework configuration options
-// gulp.task('mocha', function() {
-// });
+gulp.task('mocha', function() {
+});
 
 gulp.task('rsync', function() {
   gulp.src('dist/*')
@@ -80,7 +78,6 @@ gulp.task('usemin', ['copy', 'browserify', 'imagemin'], function() {
 });
 
 // The following *-min tasks produce minified files in the dist folder
-// maybe don't need cos usemin can do html minification
 
 gulp.task('svgmin', function() {
   return gulp.src('app/images/{,*/}*.svg')
@@ -106,7 +103,7 @@ gulp.task('imagemin', function() {
   return merge(images, components);
 });
 
-/* Browserify task */
+// Browserify task
 
 gulp.task('browserify', function() {
   var b = browserify({
@@ -119,7 +116,21 @@ gulp.task('browserify', function() {
     .pipe(gulp.dest('.tmp/scripts/'));
 });
 
-/* Copy files to temp or dist directories */
+var _b = browserify({
+  entries: ['app/scripts/main.js'],
+  cache: {},
+  packageCache: {},
+  plugin: [watchify]
+});
+
+gulp.task('browserify:watch', function() {
+  return _b.bundle()
+    .pipe(source('main.js'))
+    .pipe(gulp.dest('./tmp/scripts/'));
+});
+
+// Copy files to temp or dist directories so other tasks can use
+gulp.task('copy', ['copy:tmp', 'copy:styles', 'copy:dist'])
 
 gulp.task('copy:dist', function(cb) {
   var apps = gulp.src([
@@ -149,9 +160,6 @@ gulp.task('copy:styles', function() {
   return gulp.src('app/styles/{,*/}*.css', { base: 'app/styles'})
     .pipe(gulp.dest('.tmp/styles/'));
 });
-
-// Copies remaining files to places other tasks can use
-gulp.task('copy', ['copy:tmp', 'copy:styles', 'copy:dist'])
 
 gulp.task('copy:tmp', function() {
   return gulp.src([
@@ -219,7 +227,7 @@ gulp.task('watch', function() {
   gulp.watch('app/images/{,*/}*./{gif,jpeg,jpg,png,svg,webp}', ['livereload']);
   gulp.watch('package.json', ['browserify']);
   gulp.watch('app/scripts/**/*.js', function() {
-    runSequence('browserify', 'livereload');
+    runSequence('browserify:watch', 'livereload');
   });
 });
 
