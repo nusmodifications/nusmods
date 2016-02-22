@@ -128,7 +128,7 @@ var _b = browserify({
 gulp.task('browserify:watch', function() {
   return _b.bundle()
     .pipe(source('main.js'))
-    .pipe(gulp.dest('./tmp/scripts/'));
+    .pipe(gulp.dest('.tmp/scripts/'));
 });
 
 // Copy files to temp or dist directories so other tasks can use
@@ -229,7 +229,7 @@ gulp.task('watch', function() {
   gulp.watch('app/images/{,*/}*./{gif,jpeg,jpg,png,svg,webp}', ['livereload']);
   gulp.watch('package.json', ['browserify']);
   gulp.watch('app/scripts/**/*.{js,hbs}', function() {
-    runSequence('browserify:watch', 'livereload');
+    runSequence('browserify', 'livereload');
   });
 });
 
