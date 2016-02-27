@@ -94,28 +94,33 @@ gulp.task('imagemin', function() {
 
 // Browserify task
 
+// bundler can be browserify or watchify
+function bundle(bundler) {
+  return bundler
+    .on('log', function(msg) { console.log(msg); })
+    .on('error', function(msg) { console.error(msg); })
+    .bundle()
+    .pipe(source('main.js'))
+    .pipe(gulp.dest('.tmp/scripts/'));
+  runSequence('livereload');
+}
+
 gulp.task('browserify', function() {
   var b = browserify({
     entries: ['app/scripts/main.js'],
   });
-  return b.bundle()
-    .pipe(source('main.js'))
-    .pipe(buffer())
-    .pipe(plugins.uglify())
-    .pipe(gulp.dest('.tmp/scripts/'));
-});
-
-var _b = browserify({
-  entries: ['app/scripts/main.js'],
-  cache: {},
-  packageCache: {},
-  plugin: [watchify]
+  return bundle(b);
 });
 
 gulp.task('browserify:watch', function() {
-  return _b.bundle()
-    .pipe(source('main.js'))
-    .pipe(gulp.dest('.tmp/scripts/'));
+  var b = browserify({
+    entries: ['app/scripts/main.js'],
+    cache: {},
+    packageCache: {},
+    plugin: [watchify]
+  });
+  b.on('update', function() { bundle(b); });
+  return bundle(b);
 });
 
 // Copy files to temp or dist directories so other tasks can use
@@ -203,7 +208,7 @@ gulp.task('livereload', function() {
 });
 
 // Watches files for changes and runs tasks based on the changed files
-gulp.task('watch', function() {
+gulp.task('watch', ['browserify:watch'], function() {
   gulp.watch('test/spec/{,*/}*.js', ['test:watch']);
   gulp.watch('app/styles/{,*/}*.{scss,sass}', function() {
     runSequence('sass', 'livereload');
@@ -217,9 +222,6 @@ gulp.task('watch', function() {
     'app/images/{,*/}*./{gif,jpeg,jpg,png,svg,webp}'
   ], ['livereload']);
   gulp.watch('package.json', ['browserify']);
-  gulp.watch('app/scripts/**/*.{js,hbs}', function() {
-    runSequence('browserify', 'livereload');
-  });
 });
 
 var connectMiddleware = function() {
@@ -262,7 +264,7 @@ gulp.task('serve:dist', ['build', 'connect:dist']);
 gulp.task('serve', ['clean:server'], function() {
   runSequence(
     ['sass', 'copy:styles'],
-    'browserify', 'connect:livereload', 'watch');
+    'connect:livereload', 'watch');
 });
 
 gulp.task('test', ['clean:server', 'copy:styles']);
