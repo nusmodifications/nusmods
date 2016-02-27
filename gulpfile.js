@@ -211,9 +211,11 @@ gulp.task('watch', function() {
   gulp.watch('app/styles/{,*/}*.css', function() {
     runSequence('copy:styles', 'livereload');
   });
-  gulp.watch('app/{,*/}*.html', ['livereload']);
-  gulp.watch('.tmp/scripts/main.js', ['livereload']);
-  gulp.watch('app/images/{,*/}*./{gif,jpeg,jpg,png,svg,webp}', ['livereload']);
+  gulp.watch([
+    'app/{,*/}*.html',
+    '.tmp/scripts/main.js',
+    'app/images/{,*/}*./{gif,jpeg,jpg,png,svg,webp}'
+  ], ['livereload']);
   gulp.watch('package.json', ['browserify']);
   gulp.watch('app/scripts/**/*.{js,hbs}', function() {
     runSequence('browserify', 'livereload');
