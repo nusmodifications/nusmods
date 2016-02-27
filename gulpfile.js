@@ -19,40 +19,27 @@ require('es6-promise').polyfill();  // needed for gulp-postcss, it uses Promise
 // Phase 5: Usemin to insert final file name into hitml
 
 var gulp = require('gulp');
+var plugins = require('gulp-load-plugins')();
 var runSequence = require('run-sequence');
 var del = require('del');
-var jshint = require('gulp-jshint');
 var stylish = require('jshint-stylish');
-var sass = require('gulp-sass');
-var sourcemaps = require('gulp-sourcemaps');
-var imagemin = require('gulp-imagemin');
-var svgmin = require('gulp-svgmin');
-var postcss = require('gulp-postcss');
 var autoprefixer = require('autoprefixer');
 var browserify = require('browserify');
 var watchify = require('watchify');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
-var rev = require('gulp-rev');
-var connect = require('gulp-connect');
 var modRewrite = require('connect-modrewrite');
 var merge = require('merge-stream');
-var usemin = require('gulp-usemin');
-var uglify = require('gulp-uglify');
-var minifyHtml = require('gulp-htmlmin');
-var minifyCss = require('gulp-cssnano');
-var rsync = require('gulp-rsync');
-var mocha = require('gulp-mocha');
 
 // Mocha testing framework configuration options
 gulp.task('test', function() {
   return gulp.src(['test/*.js'], {read: false})
-    .pipe(mocha());
+    .pipe(plugins.mocha());
 });
 
 gulp.task('rsync', function() {
   gulp.src('dist/*')
-    .pipe(rsync({
+    .pipe(plugins.rsync({
       destination: '~/nusmods.com',
       recursive: true,
       update: true
@@ -66,14 +53,14 @@ gulp.task('rsync', function() {
 // additional tasks can operate on them
 gulp.task('usemin', ['copy', 'browserify', 'imagemin'], function() {
   return gulp.src('.tmp/index.html')
-    .pipe(usemin({
-      css: [ 'concat', minifyCss, rev ],
-      html: [ function() { return minifyHtml({ collapseWhitespace: true });} ],
-      js: [ 'concat', uglify, rev ],
+    .pipe(plugins.usemin({
+      css: [ 'concat', plugins.cssnano, plugins.rev ],
+      html: [ function() { return plugins.htmlmin({ collapseWhitespace: true });} ],
+      js: [ 'concat', plugins.uglify, plugins.rev ],
       // don't uglify because jsmin is produced by browserify, which uglifies it
-      jsmain: [ 'concat', rev ],
-      inelinejs: [ uglify ],
-      inlinecss: [ minifyCss, 'concat' ]
+      jsmain: [ 'concat', plugins.rev ],
+      inelinejs: [ plugins.uglify ],
+      inlinecss: [ plugins.cssnano, 'concat' ]
     }))
     .on('error', console.error.bind(console))
     .pipe(gulp.dest('dist/'));
@@ -83,7 +70,7 @@ gulp.task('usemin', ['copy', 'browserify', 'imagemin'], function() {
 
 gulp.task('svgmin', function() {
   return gulp.src('app/images/{,*/}*.svg')
-    .pipe(svgmin())
+    .pipe(plugins.svgmin())
     .pipe(gulp.dest('dist/images/'));
 });
 
@@ -96,11 +83,11 @@ var imageminOptions = {
 gulp.task('imagemin', function() {
   // we cannot revision the logos until gulp-usemin is able to handle rev images
   var images = gulp.src('app/images/{,*/}*.{gif,jpeg,jpg,png}')
-    .pipe(imagemin(imageminOptions))
+    .pipe(plugins.imagemin(imageminOptions))
     // .pipe(rev())
     .pipe(gulp.dest('dist/images'));
   var components = gulp.src('app/bower_components/select2/*.{gif,png}')
-    .pipe(imagemin(imageminOptions))
+    .pipe(plugins.imagemin(imageminOptions))
     .pipe(gulp.dest('dist/styles/'));
   return merge(images, components);
 });
@@ -114,7 +101,7 @@ gulp.task('browserify', function() {
   return b.bundle()
     .pipe(source('main.js'))
     .pipe(buffer())
-    .pipe(uglify())
+    .pipe(plugins.uglify())
     .pipe(gulp.dest('.tmp/scripts/'));
 });
 
@@ -178,10 +165,10 @@ gulp.task('copy:tmp', function() {
 gulp.task('sass', function() {
   var processors = [autoprefixer()];
   return gulp.src('app/styles/*.scss', { base: 'app/styles'})
-    .pipe(sourcemaps.init())
-    .pipe(sass({includePaths: ['app/bower_components']}))
-    .pipe(postcss(processors))
-    .pipe(sourcemaps.write())
+    .pipe(plugins.sourcemaps.init())
+    .pipe(plugins.sass({includePaths: ['app/bower_components']}))
+    .pipe(plugins.postcss(processors))
+    .pipe(plugins.sourcemaps.write())
     .pipe(gulp.dest('.tmp/styles'));
 });
 
@@ -202,8 +189,8 @@ gulp.task('jshint', function() {
       'app/scripts/**/*.js',
       '!app/scripts/vendor/*',
       'test/spec/{,*/}*.js'])
-    .pipe(jshint())
-    .pipe(jshint.reporter(stylish));
+    .pipe(plugins.jshint())
+    .pipe(plugins.jshint.reporter(stylish));
 });
 
 gulp.task('livereload', function() {
@@ -212,7 +199,7 @@ gulp.task('livereload', function() {
       '.tmp/scripts/main.js',
       '.tmp/styles/{,*/}*.css',
       'app/images/{,*/}*./{gif,jpeg,jpg,png,svg,webp}'])
-   .pipe(connect.reload());
+   .pipe(plugins.connect.reload());
 });
 
 // Watches files for changes and runs tasks based on the changed files
@@ -240,7 +227,7 @@ var connectMiddleware = function() {
 };
 
 gulp.task('connect:dist', function() {
-  connect.server({
+  plugins.connect.server({
       'port': 9000,
       'livereload': false,
       'hostname': '0.0.0.0',
@@ -250,7 +237,7 @@ gulp.task('connect:dist', function() {
 });
 
 gulp.task('connect:livereload', function() {
-  connect.server({
+  plugins.connect.server({
       'port': 9000,
       'livereload': true,
       'hostname': '0.0.0.0',
@@ -260,7 +247,7 @@ gulp.task('connect:livereload', function() {
 });
 
 gulp.task('connect:test', function() {
-  connect.server({
+  plugins.connect.server({
       'port': 9001,
       'livereload': true,
       'hostname': '0.0.0.0',
