@@ -259,18 +259,18 @@ gulp.task('connect:test', function() {
 });
 
 gulp.task('serve:dist', ['build', 'connect:dist']);
-gulp.task('serve', function() {
+gulp.task('serve', ['clean:server'], function() {
   runSequence(
-    'clean:server', ['sass', 'copy:styles'],
+    ['sass', 'copy:styles'],
     'browserify', 'connect:livereload', 'watch');
 });
 
 gulp.task('test', ['clean:server', 'copy:styles']);
 gulp.task('test:watch', ['connect:test', 'mocha']);
 
-gulp.task('build', function() {
+gulp.task('build', ['clean:dist'], function() {
   runSequence(
-    'clean:dist', ['copy', 'sass', 'imagemin', 'svgmin'],
+    ['copy', 'sass', 'imagemin', 'svgmin'],
     'browserify', 'usemin'
   );
 });
