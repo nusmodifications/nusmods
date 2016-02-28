@@ -106,7 +106,10 @@ function bundle() {
     .bundle()
     .pipe(source('main.js'))
     .pipe(gulp.dest('.tmp/scripts/'))
-    .pipe(browserSync.stream({once: true}));
+    .pipe(browserSync.stream({
+      once: true,
+      match: '**/*.js'
+    }));
 }
 
 gulp.task('bundle', bundle);
@@ -238,21 +241,20 @@ gulp.task('connect:test', function() {
 
 gulp.task('serve:dist', ['build', 'connect:dist']);
 gulp.task('serve', ['sass', 'copy:styles', 'browserify:watch'], function() {
-      browserSync.init({
-        port: 9000,
-        server: {
-          baseDir: ['.tmp', 'app', 'api/app', 'node_modules/zeroclipboard/dist'],
-	  // Rewrite everything that does not contain a '.' to support pushState
-          middleware: modRewrite(['^[^\\.]*$ /index.html [L]'])
-        },
-      });
+  browserSync.init({
+    port: 9000,
+    server: {
+      baseDir: ['.tmp', 'app', 'api/app', 'node_modules/zeroclipboard/dist'],
+      // Rewrite everything that does not contain a '.' to support pushState
+      middleware: modRewrite(['^[^\\.]*$ /index.html [L]'])
+    },
+  });
   gulp.watch('app/styles/{,*/}*.{scss,sass}', ['sass']);
   gulp.watch('app/styles/{,*/}*.css', ['copy:styles']);
   gulp.watch([
     'app/{,*/}*.html',
     'app/images/{,*/}*./{gif,jpeg,jpg,png,svg,webp}'
-    ],
-    reload);
+    ], reload);
   gulp.watch('test/spec/{,*/}*.js', ['test:watch']);
   gulp.watch('package.json', ['browserify']);
 });
