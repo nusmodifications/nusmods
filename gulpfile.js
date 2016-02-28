@@ -27,9 +27,10 @@ var autoprefixer = require('autoprefixer');
 var browserify = require('browserify');
 var watchify = require('watchify');
 var source = require('vinyl-source-stream');
-var buffer = require('vinyl-buffer');
 var modRewrite = require('connect-modrewrite');
 var merge = require('merge-stream');
+var browserSync = require('browser-sync').create();
+var reload = browserSync.reload;
 
 // Mocha testing framework configuration options
 gulp.task('test', function() {
@@ -94,33 +95,47 @@ gulp.task('imagemin', function() {
 
 // Browserify task
 
-// bundler can be browserify or watchify
-function bundle(bundler) {
+var bundler;
+
+function bundle() {
   return bundler
-    .on('log', function(msg) { console.log(msg); })
-    .on('error', function(msg) { console.error(msg); })
+    .on('error', function(msg) {
+      browserSync.notify(msg);
+      console.error(msg);
+    })
     .bundle()
     .pipe(source('main.js'))
-    .pipe(gulp.dest('.tmp/scripts/'));
-  runSequence('livereload');
+    .pipe(gulp.dest('.tmp/scripts/'))
+    .pipe(browserSync.stream({once: true}));
 }
 
+gulp.task('bundle', bundle);
+
 gulp.task('browserify', function() {
-  var b = browserify({
+  bundler = browserify({
     entries: ['app/scripts/main.js'],
   });
-  return bundle(b);
+  return bundle();
 });
 
 gulp.task('browserify:watch', function() {
-  var b = browserify({
+  bundler = browserify({
     entries: ['app/scripts/main.js'],
+    debug: true,
     cache: {},
     packageCache: {},
     plugin: [watchify]
   });
-  b.on('update', function() { bundle(b); });
-  return bundle(b);
+  bundler = watchify(bundler, {});
+  // this hack works around chokidar (the fs watcher watchify uses)
+  // not working on our unix guest on windows host setup
+  bundler._watcher = function(file) {
+    var watcher = gulp.watch(file);
+    watcher.close = watcher.end;
+    return watcher;
+  };
+  bundler.on('update', bundle);
+  return bundle();
 });
 
 // Copy files to temp or dist directories so other tasks can use
@@ -152,7 +167,8 @@ gulp.task('copy:dist', function() {
 
 gulp.task('copy:styles', function() {
   return gulp.src('app/styles/{,*/}*.css', { base: 'app/styles'})
-    .pipe(gulp.dest('.tmp/styles/'));
+    .pipe(gulp.dest('.tmp/styles/'))
+    .pipe(browserSync.stream({match: '**/*.css'}));
 });
 
 gulp.task('copy:tmp', function() {
@@ -174,7 +190,8 @@ gulp.task('sass', function() {
     .pipe(plugins.sass({includePaths: ['app/bower_components']}))
     .pipe(plugins.postcss(processors))
     .pipe(plugins.sourcemaps.write())
-    .pipe(gulp.dest('.tmp/styles'));
+    .pipe(gulp.dest('.tmp/styles'))
+    .pipe(browserSync.stream({match: '**/*.css'}));
 });
 
 // Empties folders to start fresh
@@ -198,77 +215,49 @@ gulp.task('jshint', function() {
     .pipe(plugins.jshint.reporter(stylish));
 });
 
-gulp.task('livereload', function() {
-  gulp.src([
-      'app/{,*/}*.html',
-      '.tmp/scripts/main.js',
-      '.tmp/styles/{,*/}*.css',
-      'app/images/{,*/}*./{gif,jpeg,jpg,png,svg,webp}'])
-   .pipe(plugins.connect.reload());
-});
-
-// Watches files for changes and runs tasks based on the changed files
-gulp.task('watch', ['browserify:watch'], function() {
-  gulp.watch('test/spec/{,*/}*.js', ['test:watch']);
-  gulp.watch('app/styles/{,*/}*.{scss,sass}', function() {
-    runSequence('sass', 'livereload');
-  });
-  gulp.watch('app/styles/{,*/}*.css', function() {
-    runSequence('copy:styles', 'livereload');
-  });
-  gulp.watch([
-    'app/{,*/}*.html',
-    '.tmp/scripts/main.js',
-    'app/images/{,*/}*./{gif,jpeg,jpg,png,svg,webp}'
-  ], ['livereload']);
-  gulp.watch('package.json', ['browserify']);
-});
-
-var connectMiddleware = function() {
-  // Rewrite everything that does not contain a '.' to
-  // support pushState
-  return [modRewrite(['^[^\\.]*$ /index.html [L]'])];
-};
-
 gulp.task('connect:dist', function() {
-  plugins.connect.server({
-      'port': 9000,
-      'livereload': false,
-      'hostname': '0.0.0.0',
-      'middleware': connectMiddleware,
-      'root': ['dist', 'api/app']
-  });
-});
-
-gulp.task('connect:livereload', function() {
-  plugins.connect.server({
-      'port': 9000,
-      'livereload': true,
-      'hostname': '0.0.0.0',
-      'middleware': connectMiddleware,
-      'root': ['.tmp', 'app', '.', 'api/app']
+  browserSync.init({
+    port: 9000,
+    server: {
+      baseDir: ['dist', 'api/app'],
+      middleware: modRewrite(['^[^\\.]*$ /index.html [l]'])
+    }
   });
 });
 
 gulp.task('connect:test', function() {
-  plugins.connect.server({
-      'port': 9001,
-      'livereload': true,
-      'hostname': '0.0.0.0',
-      'middleware': connectMiddleware,
-      'root': ['.tmp', 'test', 'app', 'api/app']
+  browserSync.init({
+    port: 9001,
+    host: '0.0.0.0',
+    server: {
+      baseDir: ['.tmp', 'test', 'app', 'api/app'],
+      middleware: modRewrite(['^[^\\.]*$ /index.html [l]'])
+    }
   });
 });
 
 gulp.task('serve:dist', ['build', 'connect:dist']);
-gulp.task('serve', ['clean:server'], function() {
-  runSequence(
-    ['sass', 'copy:styles'],
-    'connect:livereload', 'watch');
+gulp.task('serve', ['sass', 'copy:styles', 'browserify:watch'], function() {
+      browserSync.init({
+        port: 9000,
+        server: {
+          baseDir: ['.tmp', 'app', 'api/app', 'node_modules/zeroclipboard/dist'],
+	  // Rewrite everything that does not contain a '.' to support pushState
+          middleware: modRewrite(['^[^\\.]*$ /index.html [L]'])
+        },
+      });
+  gulp.watch('app/styles/{,*/}*.{scss,sass}', ['sass']);
+  gulp.watch('app/styles/{,*/}*.css', ['copy:styles']);
+  gulp.watch([
+    'app/{,*/}*.html',
+    'app/images/{,*/}*./{gif,jpeg,jpg,png,svg,webp}'
+    ],
+    reload);
+  gulp.watch('test/spec/{,*/}*.js', ['test:watch']);
+  gulp.watch('package.json', ['browserify']);
 });
 
-gulp.task('test', ['clean:server', 'copy:styles']);
-gulp.task('test:watch', ['connect:test', 'mocha']);
+gulp.task('test:watch', ['connect:test', 'test']);
 
 gulp.task('build', ['clean:dist'], function() {
   runSequence(
