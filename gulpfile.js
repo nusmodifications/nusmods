@@ -218,28 +218,6 @@ gulp.task('jshint', function() {
     .pipe(plugins.jshint.reporter(stylish));
 });
 
-gulp.task('connect:dist', function() {
-  browserSync.init({
-    port: 9000,
-    server: {
-      baseDir: ['dist', 'api/app'],
-      middleware: modRewrite(['^[^\\.]*$ /index.html [l]'])
-    }
-  });
-});
-
-gulp.task('connect:test', function() {
-  browserSync.init({
-    port: 9001,
-    host: '0.0.0.0',
-    server: {
-      baseDir: ['.tmp', 'test', 'app', 'api/app'],
-      middleware: modRewrite(['^[^\\.]*$ /index.html [l]'])
-    }
-  });
-});
-
-gulp.task('serve:dist', ['build', 'connect:dist']);
 gulp.task('serve', ['sass', 'copy:styles', 'browserify:watch'], function() {
   browserSync.init({
     port: 9000,
@@ -259,7 +237,28 @@ gulp.task('serve', ['sass', 'copy:styles', 'browserify:watch'], function() {
   gulp.watch('package.json', ['browserify']);
 });
 
-gulp.task('test:watch', ['connect:test', 'test']);
+gulp.task('serve:dist', ['build'], function() {
+  browserSync.init({
+    port: 9000,
+    server: {
+      baseDir: ['dist', 'api/app'],
+      middleware: modRewrite(['^[^\\.]*$ /index.html [l]'])
+    }
+  });
+});
+
+gulp.task('serve:test', function() {
+  browserSync.init({
+    port: 9001,
+    host: '0.0.0.0',
+    server: {
+      baseDir: ['.tmp', 'test', 'app', 'api/app'],
+      middleware: modRewrite(['^[^\\.]*$ /index.html [l]'])
+    }
+  });
+});
+
+gulp.task('test:watch', ['serve:test', 'test']);
 
 gulp.task('build', ['clean:dist'], function() {
   runSequence(
