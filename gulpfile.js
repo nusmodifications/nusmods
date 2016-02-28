@@ -267,4 +267,9 @@ gulp.task('build', ['clean:dist'], function() {
   );
 });
 
-gulp.task('default', ['jshint', 'test', 'build']);
+gulp.task('default', function() {
+  return runSequence(
+    ['jshint', 'test'],
+    'build'
+  );
+});
