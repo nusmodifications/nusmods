@@ -17,6 +17,7 @@ require('bootstrap/alert');
 require('qTip2');
 
 module.exports = Backbone.View.extend({
+  /* jshint maxlen: 140 */
   el: 'body',
 
   events: {
@@ -25,7 +26,6 @@ module.exports = Backbone.View.extend({
   },
 
   hijackLinks: function (event) {
-    /* jshint maxlen: 140 */
     // Ref: https://github.com/backbone-boilerplate/backbone-boilerplate/blob/85723839dbab6787d69eedcbbea05e1d59960eff/app/app.js#L52
 
     // Do not hijack if modifier key was pressed when the event fired.

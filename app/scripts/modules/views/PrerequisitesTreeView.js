@@ -12,6 +12,7 @@ module.exports = Marionette.LayoutView.extend({
     this.drawTree('#nm-prerequisites-tree-canvas');
   },
   drawTree: function (selector) {
+    /* jshint latedef: false */
     var prereqs = this.model.get('prereqs');
     var lockedModules = this.model.get('lockedModules');
     var modCode = this.model.get('modCode');

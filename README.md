@@ -40,7 +40,7 @@ Once it's up, do a `vagrant ssh` to enter the development environment.
 
 Install the necessary packages.
 ```bash
-$ npm install -g bower grunt-cli
+$ npm install -g bower gulp-cli
 $ npm install
 $ bower install
 ```
@@ -58,7 +58,7 @@ $ vagrant ssh
 Run the development environment:
 
 ```bash
-$ grunt serve
+$ gulp serve
 ```
 
 Visit `localhost:9000` to see your local instance of NUSMods.
@@ -68,13 +68,13 @@ Visit `localhost:9000` to see your local instance of NUSMods.
 To get a complete, minified, production build under `dist/`:
 
 ```bash
-$ grunt
+$ gulp
 ```
 
 Alternatively, a version that ignores jshint warnings:
 
 ```bash
-$ grunt build
+$ gulp build
 ```
 
 ## Deploying to Production
@@ -95,7 +95,7 @@ default. To work with a local copy of the API:
 $ git submodule update --init
 $ cd api
 $ npm install
-$ grunt
+$ gulp
 ```
 
 The development server serves the files generated in `api/app/api` under
