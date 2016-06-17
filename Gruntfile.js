@@ -112,6 +112,12 @@ module.exports = function (grunt) {
           academicYear: '2015/2016',
           semester: '2'
         }
+      },
+      ay2016to2017sem1: {
+        options: {
+          academicYear: '2016/2017',
+          semester: '1'
+        }
       }
     },
     ivle: {
@@ -186,6 +192,12 @@ module.exports = function (grunt) {
           academicYear: '2015/2016',
           semester: '2'
         }
+      },
+      ay2016to2017sem1: {
+        options: {
+          academicYear: '2016/2017',
+          semester: '1'
+        }
       }
     },
     splitSems: {
@@ -201,6 +213,11 @@ module.exports = function (grunt) {
       ay2015to2016: {
         options: {
           academicYear: '2015/2016'
+        }
+      },
+      ay2016to2017: {
+        options: {
+          academicYear: '2016/2017'
         }
       }
     },
@@ -250,7 +267,7 @@ module.exports = function (grunt) {
   };
 
   var AY_START = 2014;
-  var AY_END = 2016;
+  var AY_END = 2017;
 
   // Generate task targets.
   ['ivle', 'consolidate', 'normalize', 'split'].forEach(function (task) {
@@ -292,6 +309,7 @@ module.exports = function (grunt) {
     'joinSems',
     'shell:runPrereqParser:ay2014to2015',
     'shell:runPrereqParser:ay2015to2016',
+    'shell:runPrereqParser:ay2016to2017',
     'splitSems'
   ]);
 
