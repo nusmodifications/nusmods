@@ -39,9 +39,10 @@ gulp.task('test', function() {
 });
 
 gulp.task('rsync', function() {
-  gulp.src('dist/*')
+  gulp.src('dist')
     .pipe(plugins.rsync({
-      destination: '~/nusmods.com',
+      root: 'dist',
+      destination: '../nusmods.com',
       recursive: true,
       update: true
     }));
@@ -169,7 +170,7 @@ gulp.task('copy:dist', function() {
 });
 
 gulp.task('copy:styles', function() {
-  return gulp.src('app/styles/{,*/}*.css', { base: 'app/styles'})
+  return gulp.src('app/styles/{,*/}*.css', { base: 'app/styles' })
     .pipe(gulp.dest('.tmp/styles/'))
     .pipe(browserSync.stream({match: '**/*.css'}));
 });
