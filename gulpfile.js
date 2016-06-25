@@ -16,7 +16,7 @@ require('es6-promise').polyfill();  // needed for gulp-postcss, it uses Promise
 // Phase 2: Copy files from app, vendor to .tmp or to dist/ (copy)
 // Phase 3: Run minification (imagemin, svgmin), compile sass
 // Phase 4: Browserify to bundle app main.js
-// Phase 5: Usemin to insert final file name into hitml
+// Phase 5: Usemin to insert final file name into html
 
 var gulp = require('gulp');
 var plugins = require('gulp-load-plugins')();
@@ -54,15 +54,20 @@ gulp.task('rsync', function() {
 // concat, minify and revision files. Creates configurations in memory so
 // additional tasks can operate on them
 gulp.task('usemin', function() {
+  // cssnano stupidly changes the z-index'es
+  // See https://github.com/ben-eb/gulp-cssnano/issues/8
+  function cssnano() {
+      return plugins.cssnano({ zindex: false });
+  }
   return gulp.src('.tmp/index.html')
     .pipe(plugins.usemin({
-      css: [ 'concat', plugins.cssnano, plugins.rev ],
+      css: [ 'concat', cssnano, plugins.rev ],
       html: [ function() { return plugins.htmlmin({ collapseWhitespace: true });} ],
       js: [ 'concat', plugins.uglify, plugins.rev ],
       // don't uglify because jsmin is produced by browserify, which uglifies it
       jsmain: [ 'concat', plugins.rev ],
       inelinejs: [ plugins.uglify ],
-      inlinecss: [ plugins.cssnano, 'concat' ]
+      inlinecss: [ cssnano, 'concat' ]
     }))
     .on('error', console.error.bind(console))
     .pipe(gulp.dest('dist/'));
