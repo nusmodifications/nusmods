@@ -13,11 +13,13 @@ module.exports = Marionette.Controller.extend({
   showModules: function (id) {
     var ModulesView = require('../views/ModulesView');
     var ModuleView = require('../views/ModuleView');
+    var LoadingView = require('../../common/views/LoadingView');
     var NUSMods = require('../../nusmods');
     var ModuleModel = require('../../common/models/ModuleModel');
     var ModulePageModel = require('../models/ModulePageModel');
     var facultyList = require('../../common/faculty/facultyList.json');
     navigationItem.select();
+    App.mainRegion.show(new LoadingView());
     if (!id) {
       NUSMods.getMods().then(function (mods) {
         App.mainRegion.show(new ModulesView({mods: mods}));
