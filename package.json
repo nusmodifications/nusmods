@@ -1,0 +1,15 @@
+{
+  "name": "hall-of-fame",
+  "version": "0.0.1",
+  "description": "NUSMods Hall of Fame",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "html-webpack-plugin": "^2.22.0",
+    "webpack": "^1.13.1"
+  }
+}
