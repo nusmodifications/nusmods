@@ -4,12 +4,20 @@
   "description": "NUSMods Hall of Fame",
   "main": "index.js",
   "scripts": {
+    "start": "webpack-dev-server",
     "build": "webpack"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "css-loader": "^0.23.1",
     "html-webpack-plugin": "^2.22.0",
-    "webpack": "^1.13.1"
+    "style-loader": "^0.13.1",
+    "webpack": "^1.13.1",
+    "webpack-dev-server": "^1.14.1",
+    "webpack-merge": "^0.14.0"
+  },
+  "dependencies": {
+    "react": "^15.2.0"
   }
 }
