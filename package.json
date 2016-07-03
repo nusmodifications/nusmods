@@ -5,12 +5,16 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server",
-    "build": "webpack"
+    "build": "webpack",
+    "deploy": "gh-pages -d dist"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "clean-webpack-plugin": "^0.1.9",
     "css-loader": "^0.23.1",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "gh-pages": "^0.11.0",
     "html-webpack-plugin": "^2.22.0",
     "style-loader": "^0.13.1",
     "webpack": "^1.13.1",

@@ -2,11 +2,13 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const merge = require('webpack-merge');
 const parts = require('./libs/parts');
+const pkg = require('./package.json');
 
 const SRC = 'src';
 const BUILD = 'dist';
 const PATHS = {
   app: path.join(__dirname, SRC),
+  style: path.join(__dirname, SRC, 'styles'),
   build: path.join(__dirname, BUILD)
 };
 
@@ -23,10 +25,11 @@ const common = {
     ]
   },
   entry: {
-    app: 'main'
+    app: ['main']
   },
   output: {
     path: PATHS.build,
+    publicPath: '/hall-of-fame/',
     filename: '[name].js'
   },
   plugins: [
@@ -45,10 +48,26 @@ switch(process.env.npm_lifecycle_event) {
     config = merge(
       common,
       {
-        devtool: 'source-map'
+        devtool: 'source-map',
+        output: {
+          path: PATHS.build,
+          filename: '[name].[chunkhash].js',
+          // This is used for require.ensure. The setup
+          // will work without but this is useful to set.
+          chunkFilename: '[chunkhash].js'
+        }
       },
+      parts.clean(PATHS.build),
+      parts.setFreeVariable(
+        'process.env.NODE_ENV',
+        'production'
+      ),
+      parts.extractBundle({
+        name: 'vendor',
+        entries: Object.keys(pkg.dependencies)
+      }),
       parts.minify(),
-      parts.setupCSS(PATHS.app)
+      parts.extractCSS(PATHS.style)
     );
     break;
   default:
@@ -57,7 +76,7 @@ switch(process.env.npm_lifecycle_event) {
       {
         devtool: 'eval-source-map'
       },
-      parts.setupCSS(PATHS.app),
+      parts.setupCSS(PATHS.style),
       parts.devServer({
         // Customize host/port here if needed
         host: process.env.HOST,
