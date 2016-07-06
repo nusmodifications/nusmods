@@ -118,4 +118,4 @@ $ composer install
 
 ## License
 
-Copyright (c) 2016 NUS Modifications. Licensed under the MIT license.
+Copyright (c) 2016 NUSModifications. Licensed under the MIT license.
