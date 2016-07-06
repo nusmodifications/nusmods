@@ -35,11 +35,7 @@ const common = {
   plugins: [
     new HtmlWebpackPlugin({
       template: path.join(__dirname, 'src/index.html'),
-      hash: true,
-      inject: true,
-      chunks: [
-        'app'
-      ]
+      cache: true
     })
   ],
   module: {
@@ -64,7 +60,7 @@ const common = {
 var config;
 
 // Detect how npm is run and branch based on that
-switch(process.env.npm_lifecycle_event) {
+switch (process.env.npm_lifecycle_event) {
   case 'build':
     config = merge(
       common,
@@ -79,10 +75,7 @@ switch(process.env.npm_lifecycle_event) {
         }
       },
       parts.clean(PATHS.build),
-      parts.setFreeVariable(
-        'process.env.NODE_ENV',
-        'production'
-      ),
+      parts.setFreeVariable('process.env.NODE_ENV', 'production'),
       parts.extractBundle({
         name: 'vendor',
         entries: Object.keys(pkg.dependencies)

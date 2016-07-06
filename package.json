@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server",
-    "build": "webpack",
+    "build": "BABEL_ENV=production webpack",
     "deploy": "gh-pages -d dist"
   },
   "author": "",

@@ -103,7 +103,7 @@ exports.setFreeVariable = function (key, value) {
   };
 }
 
-exports.extractBundle = function(options) {
+exports.extractBundle = function (options) {
   const entry = {};
   entry[options.name] = options.entries;
 
@@ -120,7 +120,7 @@ exports.extractBundle = function(options) {
   };
 }
 
-exports.clean = function(path) {
+exports.clean = function (path) {
   return {
     plugins: [
       new CleanWebpackPlugin([path], {
@@ -132,14 +132,14 @@ exports.clean = function(path) {
   };
 }
 
-exports.extractCSS = function(paths) {
+exports.extractCSS = function (paths) {
   return {
     module: {
       loaders: [
         // Extract CSS during build
         {
-          test: /\.css$/,
-          loader: ExtractTextPlugin.extract('style', 'css'),
+          test: /\.scss$/,
+          loader: ExtractTextPlugin.extract(['css', 'sass']),
           include: paths
         }
       ]
