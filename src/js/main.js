@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 import HelloWorld from 'HelloWorld';
 
-require('main.css');
+require('main.scss');
 
 ReactDOM.render(
   <HelloWorld />,
