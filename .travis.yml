@@ -6,3 +6,5 @@ before_install:
   - npm install -g gulp-cli
   - npm install -g bower
   - bower install
+install:
+  - npm install --no-optional
