@@ -1,7 +1,7 @@
 {
-  "name": "hall-of-fame",
+  "name": "webpack-react-starter",
   "version": "0.0.1",
-  "description": "NUSMods Hall of Fame",
+  "description": "Webpack React Starter Kit",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server",
