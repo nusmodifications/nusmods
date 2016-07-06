@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 
-export default class HelloWorld extends Component {
+export default class NotFoundPage extends Component {
   render() {
     return (
       <div>
-        <h1>Hello World!</h1>
+        <h1>404 Not Found</h1>
       </div>
     );
   }
