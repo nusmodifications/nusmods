@@ -1,7 +1,11 @@
-require('react');
+import React, { Component, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
+
+import HelloWorld from 'HelloWorld';
 
 require('main.css');
 
-var component = require('component');
-
-document.body.appendChild(component());
+ReactDOM.render(
+  <HelloWorld />,
+  document.getElementById('app')
+);

@@ -8,10 +8,10 @@ const SRC = 'src';
 const BUILD = 'dist';
 const PATHS = {
   app: path.join(__dirname, SRC),
-  style: path.join(__dirname, SRC, 'styles'),
+  scripts: path.join(__dirname, SRC, 'js'),
+  styles: path.join(__dirname, SRC, 'styles'),
   build: path.join(__dirname, BUILD)
 };
-
 
 const common = {
   // Entry accepts a path or an object of entries.
@@ -19,24 +19,45 @@ const common = {
   // convenient with more complex configurations.
   resolve: {
     root: [
-      path.join(__dirname, 'src'),
-      path.join(__dirname, 'src/js'),
-      path.join(__dirname, 'src/styles')
-    ]
+      PATHS.app,
+      PATHS.scripts,
+      PATHS.styles
+    ],
+    extensions: ['', '.js', '.jsx']
   },
   entry: {
     app: ['main']
   },
   output: {
     path: PATHS.build,
-    publicPath: '/hall-of-fame/',
     filename: '[name].js'
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'Webpack demo'
+      template: path.join(__dirname, 'src/index.html'),
+      hash: true,
+      inject: true,
+      chunks: [
+        'app'
+      ]
     })
   ],
+  module: {
+    loaders: [
+      {
+        test: /\.jsx?$/,
+        // Enable caching for improved performance during development
+        // It uses default OS directory by default. If you need
+        // something more custom, pass a path to it.
+        // I.e., babel?cacheDirectory=<path>
+        loaders: ['babel?cacheDirectory'],
+        // Parse only app js files! Without this it will go through
+        // the entire project. In addition to being slow,
+        // that will most likely result in an error.
+        include: PATHS.scripts
+      },
+    ]
+  },
   devServer: parts.devServer
 };
 
@@ -67,7 +88,7 @@ switch(process.env.npm_lifecycle_event) {
         entries: Object.keys(pkg.dependencies)
       }),
       parts.minify(),
-      parts.extractCSS(PATHS.style)
+      parts.extractCSS(PATHS.styles)
     );
     break;
   default:
@@ -76,7 +97,7 @@ switch(process.env.npm_lifecycle_event) {
       {
         devtool: 'eval-source-map'
       },
-      parts.setupCSS(PATHS.style),
+      parts.setupCSS(PATHS.styles),
       parts.devServer({
         // Customize host/port here if needed
         host: process.env.HOST,
