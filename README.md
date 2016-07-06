@@ -11,5 +11,5 @@ $ npm start
 
 #### Build for Deployment
 ```
-$ npm build
+$ npm run build
 ```
