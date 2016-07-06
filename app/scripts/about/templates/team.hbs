@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row nm-team-page">
   <div class="col-md-6 col-md-offset-3" id="team">
     <h1 class="nm-page-heading">The Team</h1>
     <hr>
@@ -11,9 +11,9 @@
     <br>
     {{#if team}}
       {{#each team}}
-        <div class="media">
+        <div class="media nm-team-member">
           <a class="pull-left" href="{{link}}" target="_blank">
-            <img class="media-object" src="{{gravatar}}" alt="{{gravatar-alt}}">
+            <img class="media-object nm-member-thumbnail" src="{{gravatar}}" alt="{{gravatar-alt}}">
           </a>
 
           <div class="media-body">
