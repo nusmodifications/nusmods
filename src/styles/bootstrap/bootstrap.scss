@@ -1,4 +1,5 @@
 // We duplicate the _bootstrap.scss so that we can comment out components we don't need
+@import "variables";
 
 // Core variables and mixins
 @import "~bootstrap/scss/variables";
