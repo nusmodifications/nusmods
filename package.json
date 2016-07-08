@@ -29,6 +29,7 @@
     "webpack-merge": "^0.14.0"
   },
   "dependencies": {
+    "bootstrap": "^4.0.0-alpha.2",
     "react": "^15.2.0",
     "react-router": "^2.5.2"
   }
