@@ -1,7 +1,7 @@
 ---
 - hosts: all
   roles:
-    - { role: git, sudo: yes }
+    - { role: git, become: yes }
   tasks:
     - git: repo=https://github.com/nusmodifications/nusmods.git dest={{ project_dir }}
         accept_hostkey=yes
