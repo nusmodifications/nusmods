@@ -15,11 +15,11 @@
 - template:
     src=etc/nginx/sites-available/{{ item }}.j2
     dest=/etc/nginx/sites-available/{{ item }}
-  with_items: domains
+  with_items: "{{ domains }}"
   notify: reload nginx
 - file:
     src=/etc/nginx/sites-available/{{ item }}
     dest=/etc/nginx/sites-enabled/{{ item }}
     state=link
-  with_items: domains
+  with_items: "{{ domains }}"
   notify: reload nginx
