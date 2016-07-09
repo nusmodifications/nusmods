@@ -18,7 +18,7 @@
 On Unix/Mac:
 
 ```bash
-$ pip install ansible
+$ pip install ansible==2.1.0.0
 $ vagrant up
 ```
 
