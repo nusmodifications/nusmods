@@ -157,6 +157,7 @@ gulp.task('copy:dist', function() {
     'app/.htaccess',
     'app/images/{,*/}*.webp',
     'app/{,*/}*.html',
+    'app/opensearch.xml',
     'app/config/*.json',
     'app/styles/slate.min.css',
     'app/styles/*.{gif,png}',
