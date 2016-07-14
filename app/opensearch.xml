@@ -2,5 +2,5 @@
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
   <ShortName>NUSMods Module Search</ShortName>
   <Description>Search for modules on NUSMods</Description>
-  <Url type="text/html" method="get" template="/modules/{searchTerms}"/>
+  <Url type="text/html" method="get" template="https://nusmods.com/modules/{searchTerms}"/>
 </OpenSearchDescription>
