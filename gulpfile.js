@@ -225,6 +225,18 @@ gulp.task('jshint', function() {
     .pipe(plugins.jshint.reporter(stylish));
 });
 
+gulp.task('eslint', function() {
+  return gulp.src([
+      'gulpfile.js',
+      'app/scripts/**/*.js',
+      'test/spec/{,*/}*.js',
+      '!app/scripts/vendor/*',
+      '!node_modules/**/*.js',
+    ])
+    .pipe(plugins.eslint())
+    .pipe(plugins.eslint.format())
+});
+
 gulp.task('serve', ['sass', 'copy:styles', 'browserify:watch'], function() {
   browserSync.init({
     port: 9000,
