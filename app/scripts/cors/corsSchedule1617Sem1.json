@@ -1,0 +1,58 @@
+[
+    {
+        "round": "0",
+        "openBiddingStart": "July 21, 2016, 09:00:00",
+        "openBiddingEnd": "July 22, 2016, 17:00:00",
+        "closedBiddingStart": null,
+        "closedBiddingEnd": null
+    },
+    {
+        "round": "1A",
+        "openBiddingStart": "July 25, 2016, 09:00:00",
+        "openBiddingEnd": "July 26, 2016, 13:00:00",
+        "closedBiddingStart": "July 26, 2016, 13:00:01",
+        "closedBiddingEnd": "July 26, 2016, 17:00:00"
+    },
+    {
+        "round": "1B",
+        "openBiddingStart": "July 27, 2016, 09:00:00",
+        "openBiddingEnd": "July 27, 2016, 15:00:00",
+        "closedBiddingStart": "July 27, 2016, 15:00:01",
+        "closedBiddingEnd": "July 27, 2016, 17:00:00"
+    },
+    {
+        "round": "1C",
+        "openBiddingStart": "July 28, 2016, 09:00:00",
+        "openBiddingEnd": "July 29, 2016, 13:00:00",
+        "closedBiddingStart": "July 29, 2016, 13:00:01",
+        "closedBiddingEnd": "July 29, 2016, 17:00:00"
+    },
+    {
+        "round": "2A",
+        "openBiddingStart": "August 1, 2016, 09:00:00",
+        "openBiddingEnd": "August 3, 2016, 13:00:00",
+        "closedBiddingStart": "August 3, 2016, 13:00:01",
+        "closedBiddingEnd": "August 3, 2016, 17:00:00"
+    },
+    {
+        "round": "2B",
+        "openBiddingStart": "August 4, 2016, 09:00:00",
+        "openBiddingEnd": "August 4, 2016, 15:00:00",
+        "closedBiddingStart": "August 4, 2016, 15:00:01",
+        "closedBiddingEnd": "August 4, 2016, 17:00:00"
+    },
+    {
+        "round": "3A",
+        "openBiddingStart": "August 8, 2016, 09:00:00",
+        "openBiddingEnd": "August 8, 2016, 15:00:00",
+        "closedBiddingStart": "August 8, 2016, 15:00:01",
+        "closedBiddingEnd": "August 8, 2016, 17:00:00"
+    },
+    {
+        "round": "3B",
+        "openBiddingStart": "August 10, 2016, 09:00:00",
+        "openBiddingEnd": "August 10, 2016, 15:00:00",
+        "closedBiddingStart": "August 10, 2016, 15:00:01",
+        "closedBiddingEnd": "August 10, 2016, 17:00:00"
+    }
+]

@@ -10,7 +10,6 @@ var BookmarksView = require('./BookmarksView');
 var _ = require('underscore');
 var analytics = require('../../analytics');
 var attachFastClick = require('fastclick');
-// var corsify = require('../../cors/corsify');
 var themePicker = require('../themes/themePicker');
 var nusmoderator = require('nusmoderator');
 require('bootstrap/alert');
@@ -181,8 +180,12 @@ module.exports = Backbone.View.extend({
 
 
     (function () {
-      // $('.cors-round-text').html(corsify.determineRound(Date.now()));
-      // $('.cors-round-container').addClass('animated bounceInUp shown');
+      var enableCorsAlert = true;
+      if (enableCorsAlert) {
+        var corsify = require('../../cors/corsify');
+        $('.cors-round-text').html(corsify.determineRound(Date.now()));
+        $('.cors-round-container').addClass('animated bounceInUp shown');
+      }
       // $('.js-nm-contest-alert').addClass('animated bounceInDown nm-force-show');
       var week = nusmoderator.academicCalendar.currentAcadWeek(new Date());
       var thisWeekText = 'AY20' + week.year + ', ' + week.sem + ', ';
