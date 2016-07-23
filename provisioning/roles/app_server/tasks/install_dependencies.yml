@@ -1,7 +1,6 @@
 ---
 - command: bower install chdir={{ project_dir }} --allow-root
 - composer: working_dir={{ project_dir }}
-- npm: name=npm version=3.6.0 global=yes
 - npm: path={{ project_dir }}
 - npm: path={{ project_dir }}/api
 - git:
