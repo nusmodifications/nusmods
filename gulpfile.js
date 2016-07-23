@@ -18,19 +18,19 @@ require('es6-promise').polyfill();  // needed for gulp-postcss, it uses Promise
 // Phase 4: Browserify to bundle app main.js
 // Phase 5: Usemin to insert final file name into html
 
-var gulp = require('gulp');
-var plugins = require('gulp-load-plugins')();
-var runSequence = require('run-sequence');
-var del = require('del');
-var stylish = require('jshint-stylish');
-var autoprefixer = require('autoprefixer');
-var browserify = require('browserify');
-var watchify = require('watchify');
-var source = require('vinyl-source-stream');
-var modRewrite = require('connect-modrewrite');
-var merge = require('merge-stream');
-var browserSync = require('browser-sync').create();
-var reload = browserSync.reload;
+const gulp = require('gulp');
+const plugins = require('gulp-load-plugins')();
+const runSequence = require('run-sequence');
+const del = require('del');
+const stylish = require('jshint-stylish');
+const autoprefixer = require('autoprefixer');
+const browserify = require('browserify');
+const watchify = require('watchify');
+const source = require('vinyl-source-stream');
+const modRewrite = require('connect-modrewrite');
+const merge = require('merge-stream');
+const browserSync = require('browser-sync').create();
+const reload = browserSync.reload;
 
 // Mocha testing framework configuration options
 gulp.task('test', function() {
