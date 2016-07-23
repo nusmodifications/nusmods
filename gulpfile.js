@@ -1,3 +1,4 @@
+/* eslint-disable prefer-arrow-callback, func-names, strict */
 'use strict';
 
 require('es6-promise').polyfill();  // needed for gulp-postcss, it uses Promise
@@ -18,23 +19,23 @@ require('es6-promise').polyfill();  // needed for gulp-postcss, it uses Promise
 // Phase 4: Browserify to bundle app main.js
 // Phase 5: Usemin to insert final file name into html
 
-var gulp = require('gulp');
-var plugins = require('gulp-load-plugins')();
-var runSequence = require('run-sequence');
-var del = require('del');
-var stylish = require('jshint-stylish');
-var autoprefixer = require('autoprefixer');
-var browserify = require('browserify');
-var watchify = require('watchify');
-var source = require('vinyl-source-stream');
-var modRewrite = require('connect-modrewrite');
-var merge = require('merge-stream');
-var browserSync = require('browser-sync').create();
-var reload = browserSync.reload;
+const gulp = require('gulp');
+const plugins = require('gulp-load-plugins')();
+const runSequence = require('run-sequence');
+const del = require('del');
+const stylish = require('jshint-stylish');
+const autoprefixer = require('autoprefixer');
+const browserify = require('browserify');
+const watchify = require('watchify');
+const source = require('vinyl-source-stream');
+const modRewrite = require('connect-modrewrite');
+const merge = require('merge-stream');
+const browserSync = require('browser-sync').create();
+const reload = browserSync.reload;
 
 // Mocha testing framework configuration options
 gulp.task('test', function() {
-  return gulp.src(['test/*.js'], {read: false})
+  return gulp.src(['test/*.js'], { read: false })
     .pipe(plugins.mocha());
 });
 
@@ -57,19 +58,19 @@ gulp.task('usemin', function() {
   // cssnano stupidly changes the z-index'es
   // See https://github.com/ben-eb/gulp-cssnano/issues/8
   function cssnano() {
-      return plugins.cssnano({ zindex: false });
+    return plugins.cssnano({ zindex: false });
   }
   return gulp.src('.tmp/index.html')
     .pipe(plugins.usemin({
-      css: [ 'concat', cssnano, plugins.rev ],
-      html: [ function() { return plugins.htmlmin({ collapseWhitespace: true });} ],
-      js: [ 'concat', plugins.uglify, plugins.rev ],
+      css: ['concat', cssnano, plugins.rev],
+      html: [function() { return plugins.htmlmin({ collapseWhitespace: true }); }],
+      js: ['concat', plugins.uglify, plugins.rev],
       // don't uglify because jsmin is produced by browserify, which uglifies it
-      jsmain: [ 'concat', plugins.rev ],
-      inelinejs: [ plugins.uglify ],
-      inlinecss: [ cssnano, 'concat' ]
+      jsmain: ['concat', plugins.rev],
+      inelinejs: [plugins.uglify],
+      inlinecss: [cssnano, 'concat']
     }))
-    .on('error', console.error.bind(console))
+    .on('error', console.error.bind(console)) // eslint-disable-line no-console
     .pipe(gulp.dest('dist/'));
 });
 
@@ -81,7 +82,7 @@ gulp.task('svgmin', function() {
     .pipe(gulp.dest('dist/images/'));
 });
 
-var imageminOptions = {
+const imageminOptions = {
   interlaced: true,
   optimizationLevel: 3,
   progressive: true
@@ -89,11 +90,11 @@ var imageminOptions = {
 
 gulp.task('imagemin', function() {
   // we cannot revision the logos until gulp-usemin is able to handle rev images
-  var images = gulp.src('app/images/{,*/}*.{gif,jpeg,jpg,png}')
+  const images = gulp.src('app/images/{,*/}*.{gif,jpeg,jpg,png}')
     .pipe(plugins.imagemin(imageminOptions))
     // .pipe(rev())
     .pipe(gulp.dest('dist/images'));
-  var components = gulp.src('app/bower_components/select2/*.{gif,png}')
+  const components = gulp.src('app/bower_components/select2/*.{gif,png}')
     .pipe(plugins.imagemin(imageminOptions))
     .pipe(gulp.dest('dist/styles/'));
   return merge(images, components);
@@ -101,13 +102,13 @@ gulp.task('imagemin', function() {
 
 // Browserify task
 
-var bundler;
+let bundler;
 
 function bundle() {
   return bundler
     .on('error', function(msg) {
       browserSync.notify(msg);
-      console.error(msg);
+      console.error(msg); // eslint-disable-line no-console
     })
     .bundle()
     .pipe(source('main.js'))
@@ -138,8 +139,8 @@ gulp.task('browserify:watch', function() {
   bundler = watchify(bundler, {});
   // this hack works around chokidar (the fs watcher watchify uses)
   // not working on our unix guest on windows host setup
-  bundler._watcher = function(file) {
-    var watcher = gulp.watch(file);
+  bundler._watcher = function(file) {  // eslint-disable-line no-underscore-dangle
+    const watcher = gulp.watch(file);
     watcher.close = watcher.end;
     return watcher;
   };
@@ -151,7 +152,7 @@ gulp.task('browserify:watch', function() {
 gulp.task('copy', ['copy:tmp', 'copy:styles', 'copy:dist']);
 
 gulp.task('copy:dist', function() {
-  var apps = gulp.src([
+  const apps = gulp.src([
     'app/*.{config,php}',
     'app/*.{ico,png,txt}',
     'app/.htaccess',
@@ -169,7 +170,7 @@ gulp.task('copy:dist', function() {
   ], { base: 'app' })
     .pipe(gulp.dest('dist/'));
 
-  var zeroclipboard = gulp.src('node_modules/zeroclipboard/dist/ZeroClipboard.swf')
+  const zeroclipboard = gulp.src('node_modules/zeroclipboard/dist/ZeroClipboard.swf')
     .pipe(gulp.dest('dist/'));
 
   return merge(apps, zeroclipboard);
@@ -178,30 +179,30 @@ gulp.task('copy:dist', function() {
 gulp.task('copy:styles', function() {
   return gulp.src('app/styles/{,*/}*.css', { base: 'app/styles' })
     .pipe(gulp.dest('.tmp/styles/'))
-    .pipe(browserSync.stream({match: '**/*.css'}));
+    .pipe(browserSync.stream({ match: '**/*.css' }));
 });
 
 gulp.task('copy:tmp', function() {
   return gulp.src([
-      'app/bower_components/qtip2/jquery.qtip.css',
-      'app/bower_components/select2/select2.css',
-      'app/bower_components/animate.css/animate.min.css',
-      'app/index.html',
-      'app/scripts/disqus-count.js'
-    ], { base: 'app' })
-    .pipe(gulp.dest('.tmp/'));
+    'app/bower_components/qtip2/jquery.qtip.css',
+    'app/bower_components/select2/select2.css',
+    'app/bower_components/animate.css/animate.min.css',
+    'app/index.html',
+    'app/scripts/disqus-count.js'
+  ], { base: 'app' })
+  .pipe(gulp.dest('.tmp/'));
 });
 
 // Compiles Sass to CSS and generates necessary files if requested
 gulp.task('sass', function() {
-  var processors = [autoprefixer()];
-  return gulp.src('app/styles/*.scss', { base: 'app/styles'})
+  const processors = [autoprefixer()];
+  return gulp.src('app/styles/*.scss', { base: 'app/styles' })
     .pipe(plugins.sourcemaps.init())
-    .pipe(plugins.sass({includePaths: ['app/bower_components']}))
+    .pipe(plugins.sass({ includePaths: ['app/bower_components'] }))
     .pipe(plugins.postcss(processors))
     .pipe(plugins.sourcemaps.write())
     .pipe(gulp.dest('.tmp/styles'))
-    .pipe(browserSync.stream({match: '**/*.css'}));
+    .pipe(browserSync.stream({ match: '**/*.css' }));
 });
 
 // Empties folders to start fresh
@@ -217,24 +218,24 @@ gulp.task('clean:server', function() {
 // Make sure code styles are up to par and there are no obvious mistakes
 gulp.task('jshint', function() {
   return gulp.src([
-      'gulpfile.js',
-      'app/scripts/**/*.js',
-      '!app/scripts/vendor/*',
-      'test/spec/{,*/}*.js'])
+    'gulpfile.js',
+    'app/scripts/**/*.js',
+    '!app/scripts/vendor/*',
+    'test/spec/{,*/}*.js'])
     .pipe(plugins.jshint())
     .pipe(plugins.jshint.reporter(stylish));
 });
 
 gulp.task('eslint', function() {
   return gulp.src([
-      'gulpfile.js',
-      'app/scripts/**/*.js',
-      'test/spec/{,*/}*.js',
-      '!app/scripts/vendor/*',
-      '!node_modules/**/*.js',
-    ])
-    .pipe(plugins.eslint())
-    .pipe(plugins.eslint.format())
+    'gulpfile.js',
+    'app/scripts/**/*.js',
+    'test/spec/{,*/}*.js',
+    '!app/scripts/vendor/*',
+    '!node_modules/**/*.js',
+  ])
+  .pipe(plugins.eslint())
+  .pipe(plugins.eslint.format());
 });
 
 gulp.task('serve', ['sass', 'copy:styles', 'browserify:watch'], function() {
@@ -251,7 +252,7 @@ gulp.task('serve', ['sass', 'copy:styles', 'browserify:watch'], function() {
   gulp.watch([
     'app/{,*/}*.html',
     'app/images/{,*/}*./{gif,jpeg,jpg,png,svg,webp}'
-    ], reload);
+  ], reload);
   gulp.watch('test/spec/{,*/}*.js', ['test:watch']);
   gulp.watch('package.json', ['browserify']);
 });
