@@ -229,8 +229,8 @@ gulp.task('jshint', function() {
 gulp.task('eslint', function() {
   return gulp.src([
     'gulpfile.js',
-    // 'app/scripts/**/*.js',
-    // 'test/spec/{,*/}*.js',
+    'app/scripts/**/*.js',
+    'test/spec/{,*/}*.js',
     '!app/scripts/vendor/*',
     '!node_modules/**/*.js',
   ])
