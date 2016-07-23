@@ -5,6 +5,7 @@
     - php5-curl
     - php5-mysql
     - python-mysqldb  # Required for mysql ansible modules
+- npm: name=npm version=3.6.0 global=yes
 - { include: install_dependencies.yml, become: yes, become_user: "{{ user }}" }
 - cron: name='Update API data' special_time=hourly job='cd {{ project_dir }}/api && grunt default rsync --target=dist' user={{ user }}
 - mysql_db: name={{ yourls_db_name }}
