@@ -2,5 +2,9 @@
     "extends": "airbnb",
     "plugins": [
         "react"
-    ]
+    ],
+    "rules":  {
+        "space-before-function-paren": "off",
+        "comma-dangle": "off",
+    }
 }
