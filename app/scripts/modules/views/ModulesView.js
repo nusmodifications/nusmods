@@ -40,6 +40,13 @@ module.exports = Marionette.LayoutView.extend({
 
   initialize: function (options) {
     this.mods = options.mods;
+    const departmentToFaculty = {}
+    Object.keys(options.facultyDepartments).map((fac) => {
+      options.facultyDepartments[fac].map((dept) => {
+        departmentToFaculty[dept] = fac
+      })
+    })
+    this.departmentToFaculty = departmentToFaculty;
   },
 
   events: {
@@ -101,7 +108,9 @@ module.exports = Marionette.LayoutView.extend({
 
     var semesterNames = config.semesterNames;
     var mods = this.mods;
+    var departmentToFaculty = this.departmentToFaculty;
     _.each(mods, function (mod) {
+      mod.faculty = departmentToFaculty[mod.Department] || 'Others';
       mod.level = mod.ModuleCode[mod.ModuleCode.search(/\d/)] * 1000;
       if (mod.Types) {
         mod.Types = _.map(mod.Types, function (type) {
@@ -174,6 +183,12 @@ module.exports = Marionette.LayoutView.extend({
         slug: slugify(label)
       };
     }));
+    facets.add({
+      filteredCollection: mods,
+      key: 'faculty',
+      label: 'Faculty',
+      slug: 'faculty'
+    })
     facets.add({
       filteredCollection: mods,
       key: 'ModuleCredit',
