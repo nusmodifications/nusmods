@@ -106,11 +106,11 @@ let bundler;
 
 function bundle() {
   return bundler
+    .bundle()
     .on('error', function(msg) {
       browserSync.notify(msg);
       console.error(msg); // eslint-disable-line no-console
     })
-    .bundle()
     .pipe(source('main.js'))
     .pipe(gulp.dest('.tmp/scripts/'))
     .pipe(browserSync.stream({
@@ -136,7 +136,6 @@ gulp.task('browserify:watch', function() {
     packageCache: {},
     plugin: [watchify]
   });
-  bundler = watchify(bundler, {});
   // this hack works around chokidar (the fs watcher watchify uses)
   // not working on our unix guest on windows host setup
   bundler._watcher = function(file) {  // eslint-disable-line no-underscore-dangle
