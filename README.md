@@ -43,7 +43,7 @@ Install the necessary packages.
 $ npm install -g npm@3.6.0
 $ npm install -g bower@1.7.9 gulp-cli@1.2.2
 $ npm install
-$ cd api && npm install # install npm packags for api
+$ cd api && npm install && cd .. # install npm packags for api
 $ bower install
 ```
 
