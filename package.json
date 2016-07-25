@@ -18,6 +18,10 @@
     }
   ],
   "scripts": {
+    "start": "gulp serve",
+    "build": "gulp build",
+    "rsync": "gulp rsync",
+    "deploy": "gulp build && gulp rsync",
     "test": "gulp"
   },
   "dependencies": {
