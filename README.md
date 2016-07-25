@@ -34,14 +34,16 @@ Once it's up, do a `vagrant ssh` to enter the development environment.
 
 ### Prerequisites
 
-- [Node.js](http://nodejs.org)
+- [Node.js](http://nodejs.org) (we currently use v5.x, instructions [here](https://github.com/nodesource/distributions#installation-instructions))
 
 ### Setup
 
 Install the necessary packages.
 ```bash
-$ npm install -g bower gulp-cli
+$ npm install -g npm@3.6.0
+$ npm install -g bower@1.7.9 gulp-cli@1.2.2
 $ npm install
+$ cd api && npm install # install npm packags for api
 $ bower install
 ```
 
