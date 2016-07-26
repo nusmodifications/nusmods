@@ -40,12 +40,12 @@ module.exports = Marionette.LayoutView.extend({
 
   initialize: function (options) {
     this.mods = options.mods;
-    const departmentToFaculty = {}
-    Object.keys(options.facultyDepartments).map((fac) => {
-      options.facultyDepartments[fac].map((dept) => {
-        departmentToFaculty[dept] = fac
-      })
-    })
+    var departmentToFaculty = {}
+    Object.keys(options.facultyDepartments).map(function(fac) {
+      options.facultyDepartments[fac].map(function(dept) {
+        departmentToFaculty[dept] = fac;
+      });
+    });
     this.departmentToFaculty = departmentToFaculty;
   },
 
