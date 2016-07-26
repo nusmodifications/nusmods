@@ -2,6 +2,8 @@
 
 var App = require('../../app');
 var Marionette = require('backbone.marionette');
+var _Promise = require('bluebird');
+var config = require('../../common/config');
 
 var navigationItem = App.request('addNavigationItem', {
   name: 'Modules',
@@ -21,8 +23,15 @@ module.exports = Marionette.Controller.extend({
     navigationItem.select();
     App.mainRegion.show(new LoadingView());
     if (!id) {
-      NUSMods.getMods().then(function (mods) {
-        App.mainRegion.show(new ModulesView({mods: mods}));
+      _Promise.all([
+        NUSMods.getMods(),
+        NUSMods.getFacultyDepartments(config.semester)
+      ]).then(function (response) {
+        App.mainRegion.show(
+          new ModulesView({
+            mods: response[0],
+            facultyDepartments: response[1]
+          }));
       });
     } else {
       var modCode = id.toUpperCase();
