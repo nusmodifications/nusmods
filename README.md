@@ -43,7 +43,6 @@ Install the necessary packages.
 $ npm install -g npm@3.6.0
 $ npm install -g bower@1.7.9 gulp-cli@1.2.2
 $ npm install
-$ cd api && npm install && cd .. # install npm packags for api
 $ bower install
 ```
 
@@ -60,23 +59,17 @@ $ vagrant ssh
 Run the development environment:
 
 ```bash
-$ gulp serve
+$ npm start
 ```
 
 Visit `localhost:9000` to see your local instance of NUSMods.
 
 ## Building for Production
 
-To get a complete, minified, production build under `dist/`:
+To get a complete, minified, production build under `dist/` (ignores jshint warnings):
 
 ```bash
-$ gulp
-```
-
-Alternatively, a version that ignores jshint warnings:
-
-```bash
-$ gulp build
+$ npm run build
 ```
 
 ## Deploying to Production
@@ -97,12 +90,11 @@ default. To work with a local copy of the API:
 $ git submodule update --init
 $ cd api
 $ npm install
-$ gulp
+$ grunt # starts the crawling process in nusmods-api
 ```
 
-The development server serves the files generated in `api/app/api` under
-`/api/`, so change `baseUrl` under `app/config/application.json` to point to
-`/api/`.
+The development server serves the files generated in `api/app/api` under `/api/`,
+so change `baseUrl` under `app/config/application.json` to point to `/api/`.
 
 ## Optional Dependencies
 
