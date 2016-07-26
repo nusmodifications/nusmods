@@ -172,8 +172,14 @@ module.exports = Marionette.LayoutView.extend({
       label: 'Types',
       slug: 'types'
     }));
+    facets.add({
+      filteredCollection: mods,
+      key: 'faculty',
+      label: 'Faculty',
+      slug: 'faculty'
+    })
     facets.add(_.map({
-      Department: 'Faculty / Department',
+      Department: 'Department',
       level: 'Level'
     }, function(label, key) {
       return {
@@ -183,12 +189,6 @@ module.exports = Marionette.LayoutView.extend({
         slug: slugify(label)
       };
     }));
-    facets.add({
-      filteredCollection: mods,
-      key: 'faculty',
-      label: 'Faculty',
-      slug: 'faculty'
-    })
     facets.add({
       filteredCollection: mods,
       key: 'ModuleCredit',
