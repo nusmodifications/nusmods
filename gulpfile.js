@@ -273,6 +273,7 @@ gulp.task('serve', ['sass', 'copy:styles', 'copyscripts', 'browserify:watch'], f
   ], reload);
   gulp.watch('test/spec/{,*/}*.js', ['test:watch']);
   gulp.watch('package.json', ['browserify']);
+  gulp.watch('app/scripts/**/*.js', ['copyscripts'])
 });
 
 gulp.task('serve:dist', ['build'], function() {
