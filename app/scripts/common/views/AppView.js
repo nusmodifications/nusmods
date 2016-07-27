@@ -13,7 +13,7 @@ var attachFastClick = require('fastclick');
 var themePicker = require('../themes/themePicker');
 var nusmoderator = require('nusmoderator');
 require('bootstrap/alert');
-require('qTip2');
+require('qtip2');
 
 module.exports = Backbone.View.extend({
   /* jshint maxlen: 140 */
@@ -176,7 +176,14 @@ module.exports = Backbone.View.extend({
       $('body').removeClass('js-toggled');
     });
 
-    attachFastClick(document.body);
+    // somehow browserify and webpack bundles stuff differently
+    if (attachFastClick.attach) {
+      // this is for webpack
+      attachFastClick.attach(document.body);
+    } else {
+      // this is for browserify
+      attachFastClick(document.body);
+    }
 
 
     (function () {
