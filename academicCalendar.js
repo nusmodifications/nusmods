@@ -1,6 +1,9 @@
 'use strict';
 
 var acadYearStartDates = {
+  '19/20' : new Date('August 5, 2019'),
+  '18/19' : new Date('August 6, 2018'),
+  '17/18' : new Date('August 7, 2017'),
   '16/17' : new Date('August 1, 2016'),
   '15/16' : new Date('August 3, 2015'),
   '14/15' : new Date('August 4, 2014')
