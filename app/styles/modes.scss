@@ -8,16 +8,16 @@
 }
 
 .mode-slate {
-  $mode-color: #f60;
+  $mode-color: $brand-primary;
   $mode-background-color: #272b30;
   $mode-navmenu-bg-color: #1c1c1f;
-  $mode-navbar-bg-color: #3e3e40;
+  $mode-navbar-bg-color: $brand-primary;
   $mode-panel-bg-color: #222326;
 
-  body {
-    background-color: $mode-background-color;
-  }
+  background-color: $mode-background-color;
   color: #fff;
+  line-height: $line-height;
+
   h1,
   h2,
   h3,
@@ -84,6 +84,8 @@
   .navbar {
     border: none;
     background: $mode-navbar-bg-color;
+    text-shadow: none;
+    z-index: 9998; // One below select-2drop's z-index
   }
   .navbar-default {
     .navbar-nav > {
