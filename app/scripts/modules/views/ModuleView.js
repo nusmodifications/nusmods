@@ -163,6 +163,7 @@ module.exports = Marionette.LayoutView.extend({
     var that = this;
     var loadedItems = 0;
     _.each(that.formElements, function (selector, item) {
+      // TODO: Use Promises instead
       localforage.getItem(preferencesNamespace + item, function (value) {
         if (!value) {
           value = config.defaultPreferences[item];
@@ -172,7 +173,7 @@ module.exports = Marionette.LayoutView.extend({
         that.searchPreferences[item] = value;
         loadedItems++;
         if (loadedItems === _.keys(that.formElements).length) {
-          that.showBiddingStatsRegion(true);
+          that.showBiddingStatsRegion();
         }
       });
     });
@@ -198,12 +199,17 @@ module.exports = Marionette.LayoutView.extend({
     analytics.track('Module cors', 'Change ' + property, value);
     if (this.savePreference(property, value)) {
       this.searchPreferences[property] = value;
-      this.showBiddingStatsRegion(true);
+      this.showBiddingStatsRegion();
     }
   },
   showBiddingStatsRegion: function () {
-    var biddingStatsDeepCopy = $.extend(true, {},
-      this.model.attributes.module.FormattedCorsBiddingStats);
+    var moduleBiddingStats = this.model.attributes.module.FormattedCorsBiddingStats;
+    if (!this.model.attributes.module.FormattedCorsBiddingStats) {
+      // No bidding stats to show
+      return;
+    }
+
+    var biddingStatsDeepCopy = $.extend(true, {}, moduleBiddingStats);
     var biddingStatsModel = new Backbone.Model({stats: biddingStatsDeepCopy});
     var biddingStatsView = new BiddingStatsView({model: biddingStatsModel});
 
