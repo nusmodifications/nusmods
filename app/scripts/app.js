@@ -123,6 +123,7 @@ App.on('start', function () {
   require('./modules');
   require('./venues');
   // require('./friends');
+  require('./hall-of-fame');
   require('./nuswhispers');
   require('./news');
   require('./preferences');
