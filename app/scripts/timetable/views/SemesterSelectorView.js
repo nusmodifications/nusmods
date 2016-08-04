@@ -7,8 +7,8 @@ var config = require('../../common/config');
 var template = require('../templates/semester_selector.hbs');
 
 module.exports = Marionette.ItemView.extend({
-  tagName: 'ul',
-  className: 'pagination pagination-sm',
+  tagName: 'div',
+  className: 'btn-group btn-group-justified btn-group-sm',
   template: template,
 
   initialize: function (options) {

@@ -1,14 +1,4 @@
-$brand-primary: #f60;
-$input-border-focus: $brand-primary;
-$body-bg: #f7f7f7;
-$font-family-sans-serif: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
-$navbar-default-bg: $brand-primary;
-$navbar-default-link-color: #6e7276;
-$navbar-default-link-hover-color: $brand-primary;
-$navbar-default-link-active-color: $brand-primary;
-
-$navbar-default-toggle-icon-bar-bg: #fff;
-$navbar-default-toggle-border-color: #fff;
+@import "variables";
 
 // Core variables and mixins
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/variables";
@@ -631,6 +621,7 @@ a.cors > .fa-fw {
 // Loading Indicator
 .nm-loading {
   padding-top: 25%;
+
   &.nm-page-loading {
     left: 50%;
     padding-top: 0;
@@ -641,7 +632,8 @@ a.cors > .fa-fw {
 
 // Timetable
 .semester-selector-region ul {
-  margin: 10px;
+  margin: 0;
+  width: 100%;
 }
 
 #timetable {

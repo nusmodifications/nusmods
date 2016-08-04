@@ -1,4 +1,5 @@
 @import "mixins";
+@import "variables";
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/variables";
 
 #mode-options {
@@ -11,6 +12,8 @@
   $mode-background-color: #272b30;
   $mode-navmenu-bg-color: #1c1c1f;
   $mode-navbar-bg-color: #3e3e40;
+  $mode-panel-bg-color: #222326;
+
   body {
     background-color: $mode-background-color;
   }
@@ -21,7 +24,7 @@
   h4,
   h5,
   h6 {
-    font-family: "proxima-nova", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: $font-family-sans-serif;
     text-shadow: none;
   }
   a,
@@ -77,7 +80,7 @@
       color: $mode-color;
     }
   }
-  
+
   .navbar {
     border: none;
     background: $mode-navbar-bg-color;
@@ -124,10 +127,10 @@
     li > a {
       &:hover, &:focus, {
         // color: #222;
-      } 
+      }
     }
   }
-  
+
   .navbar-toggle {
     float: left;
     margin-left: 15px;
@@ -202,7 +205,7 @@
   #timetable {
     background-color: transparent;
     th {
-      background-color: $mode-background-color;
+      background-color: $mode-panel-bg-color;
     }
   }
   colgroup.hover {
@@ -255,13 +258,13 @@
     }
   }
   .panel {
-    background-color: #222326;
+    background-color: $mode-panel-bg-color;
     border: none;
     .panel-body {
-      background-color: #222326;
+      background-color: $mode-panel-bg-color;
     }
     .panel-footer {
-      background-color: #222326;
+      background-color: $mode-panel-bg-color;
     }
   }
   .nm-section-title {
