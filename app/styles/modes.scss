@@ -272,6 +272,21 @@
   .nm-section-title {
     font-size: 18px;
   }
+  .nm-prerequisites-tree {
+    #nm-prerequisites-tree-canvas {
+      border-color: #444;
+    }
+    .link {
+      fill: none;
+      stroke: #fff;
+    }
+    .rect-label {
+      fill: #fff;
+    }
+    .active-rect {
+      fill: #7e7e7e;
+    }
+  }
 }
 
 @media (max-width: 768px) {

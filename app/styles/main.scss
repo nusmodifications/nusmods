@@ -134,6 +134,10 @@ kbd {
   position: relative;
 }
 
+.js-alert-row {
+  display: none;
+}
+
 #nav {
   clear: both;
 }
@@ -856,7 +860,7 @@ colgroup.hover {
 }
 
 // Pre-requisites Tree
-.nm-prerequisites-tree{
+.nm-prerequisites-tree {
   #nm-prerequisites-tree-canvas {
     border: 2px solid #eee;
     min-height: 400px;
@@ -923,24 +927,6 @@ colgroup.hover {
   }
 }
 
-.mode-slate {
-  .nm-prerequisites-tree {
-    #nm-prerequisites-tree-canvas {
-      border-color: #444;
-    }
-    .link {
-      fill: none;
-      stroke: #fff;
-    }
-    .rect-label {
-      fill: #fff;
-    }
-    .active-rect {
-      fill: #7e7e7e;
-    }
-  }
-}
-
 // Friends
 .nm-friends-list {
   padding: 0;
@@ -985,6 +971,8 @@ colgroup.hover {
     margin-right: 5px;
   }
 }
+
+.js-nm-
 
 // Preferences
 #preferences {
