@@ -119,16 +119,16 @@ function bundle() {
 
 gulp.task('bundle', bundle);
 
-gulp.task('browserify', function() {
+gulp.task('browserify', ['copyscripts'], function() {
   bundler = browserify({
-    entries: ['app/scripts/main.js'],
+    entries: ['.tmp/modules/main.js'],
   });
   return bundle();
 });
 
-gulp.task('browserify:watch', function() {
+gulp.task('browserify:watch', ['copyscripts'], function() {
   bundler = browserify({
-    entries: ['app/scripts/main.js'],
+    entries: ['.tmp/modules/main.js'],
     debug: true,
     cache: {},
     packageCache: {},
@@ -235,7 +235,26 @@ gulp.task('eslint', function() {
   .pipe(plugins.eslint.format());
 });
 
-gulp.task('serve', ['sass', 'copy:styles', 'browserify:watch'], function() {
+gulp.task('copyscripts', function() {
+  const config = gulp.src('app/config/*.json')
+    .pipe(gulp.dest('.tmp/config'))
+
+  const hbs = gulp.src('app/scripts/**/*.hbs')
+    .pipe(gulp.dest('.tmp/modules'))
+
+  const json = gulp.src('app/scripts/**/*.json')
+    .pipe(gulp.dest('.tmp/modules'))
+
+  const scripts = gulp.src('app/scripts/**/*.js')
+    .pipe(plugins.babel({
+      presets: ['es2015']
+    }))
+    .pipe(gulp.dest('.tmp/modules'));
+
+  return merge(hbs, json, config, scripts);
+})
+
+gulp.task('serve', ['sass', 'copy:styles', 'copyscripts', 'browserify:watch'], function() {
   browserSync.init({
     port: 9000,
     server: {
@@ -252,6 +271,7 @@ gulp.task('serve', ['sass', 'copy:styles', 'browserify:watch'], function() {
   ], reload);
   gulp.watch('test/spec/{,*/}*.js', ['test:watch']);
   gulp.watch('package.json', ['browserify']);
+  gulp.watch('app/scripts/**/*.js', ['copyscripts'])
 });
 
 gulp.task('serve:dist', ['build'], function() {
