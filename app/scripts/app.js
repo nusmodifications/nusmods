@@ -176,7 +176,8 @@ App.on('start', function () {
   require('bootstrap/tooltip');
   $('[data-toggle="tooltip"]').tooltip();
 
-  if (localStorage.hideAlerts !== 'true') {
+  var showAlerts = false;
+  if (localStorage.hideAlerts !== 'true' && showAlerts) {
     $('.js-alert-row').slideDown();
   }
 });

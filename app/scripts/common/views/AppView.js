@@ -180,7 +180,7 @@ module.exports = Backbone.View.extend({
 
 
     (function () {
-      var enableCorsAlert = true;
+      var enableCorsAlert = false;
       if (enableCorsAlert) {
         var corsify = require('../../cors/corsify');
         $('.cors-round-text').html(corsify.determineRound(Date.now()));
