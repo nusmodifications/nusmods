@@ -40,7 +40,7 @@ module.exports = Marionette.LayoutView.extend({
 
   initialize: function (options) {
     this.mods = options.mods;
-    var departmentToFaculty = {}
+    var departmentToFaculty = {};
     Object.keys(options.facultyDepartments).map(function(fac) {
       options.facultyDepartments[fac].map(function(dept) {
         departmentToFaculty[dept] = fac;
@@ -177,7 +177,7 @@ module.exports = Marionette.LayoutView.extend({
       key: 'faculty',
       label: 'Faculty',
       slug: 'faculty'
-    })
+    });
     facets.add(_.map({
       Department: 'Department',
       level: 'Level'

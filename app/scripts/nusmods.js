@@ -67,7 +67,7 @@ module.exports = {
   getFacultyDepartments: function(semester, callback) {
     facultyDepartmentsPromise = facultyDepartmentsPromise || Promise.resolve(
       $.getJSON([ayBaseUrl, semester, 'facultyDepartments.json'].join('/')));
-    return facultyDepartmentsPromise.then(callback)
+    return facultyDepartmentsPromise.then(callback);
   },
   setConfig: function (config) {
     ayBaseUrl = config.baseUrl + config.academicYear.replace('/', '-') + '/';

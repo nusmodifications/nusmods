@@ -44,7 +44,7 @@ module.exports = Marionette.Controller.extend({
         });
         App.mainRegion.show(new ModuleView({model: modulePageModel}));
       }).catch(function(){
-        Backbone.history.navigate('/timetable', {trigger: true, navigate: true})
+        Backbone.history.navigate('/timetable', {trigger: true, navigate: true});
       });
     }
   }
