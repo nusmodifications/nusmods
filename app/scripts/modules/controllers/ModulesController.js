@@ -1,6 +1,7 @@
 'use strict';
 
 var App = require('../../app');
+var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var _Promise = require('bluebird');
 var config = require('../../common/config');
@@ -42,6 +43,8 @@ module.exports = Marionette.Controller.extend({
           module: moduleModel.attributes
         });
         App.mainRegion.show(new ModuleView({model: modulePageModel}));
+      }).catch(function(){
+        Backbone.history.navigate('/timetable', {trigger: true, navigate: true})
       });
     }
   }
