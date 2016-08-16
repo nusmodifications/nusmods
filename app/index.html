@@ -3,18 +3,21 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>NUSMods - NUS Timetable Builder</title>
-  <meta name="description" content="NUSMods provides students with a better way to plan their school timetables with a user-friendly timetable builder and also serves to be a complete knowledge bank of NUS modules by providing useful module-related information such as archived NUS CORS bidding statistics and community-driven module reviews and discussions.">
+  <title>NUSMods - NUS Timetable Builder and Knowledge Platform</title>
+  <meta name="description" content="NUSMods is a timetable builder and knowledge platform, providing students with a better way to plan their school timetable and useful module-related information such as archived NUS CORS bidding statistics, community-driven module reviews and discussions.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- Facebook Open Graph Meta Tags -->
-  <meta name="og:image" content="icon.png">
-  <meta name="og:url" content="http://nusmods.com">
-  <meta name="og:title" content="NUSMods - NUS Timetable Builder">
-  <meta name="og:description" content="NUSMods provides students with a better way to plan their school timetables with a user-friendly timetable builder and also serves to be a complete knowledge bank of NUS modules by providing useful module-related information such as archived NUS CORS bidding statistics and community-driven module reviews and discussions.">
-  <meta name="og:site_name" content="NUSMods">
-  <meta name="og:type" content="website">
+  <!-- Open Graph Tags -->
+  <meta property="og:url" content="https://nusmods.com">
+  <meta property="og:title" content="NUSMods - NUS Timetable Builder and Knowledge Platform">
+  <meta property="og:description" content="NUSMods is a timetable builder and knowledge platform, providing students with a better way to plan their school timetable and useful module-related information such as archived NUS CORS bidding statistics, community-driven module reviews and discussions.">
+  <meta property="og:site_name" content="NUSMods">
+  <meta property="og:type" content="website">
+  <meta property="og:image:url" content="https://nusmods.com/fb-share.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
 
+  <link type="application/opensearchdescription+xml" rel="search" href="/opensearch.xml"/>
   <link rel="image_src" href="thumbnail.png">
 
   <link rel="shortcut icon" href="/favicon.ico">
@@ -52,18 +55,14 @@
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
     ga('create', 'UA-33503218-1', 'auto');
     ga('require', 'displayfeatures');
     ga('require', 'linkid');
-    // Comment out to prevent double counting as pageview is
-    // already sent during Backbone routing.
-    // ga('send', 'pageview');
   </script>
 </head>
 <body data-spy="scroll">
   <div id="nm-wrapper">
-
     <header class="nm-navbar navbar navbar-default navbar-fixed-top" id="top" role="banner">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -93,14 +92,29 @@
 
     <div id="page-content-wrapper" class="main-container">
       <div class="main-content">
-        <!-- <div class="row">
-          <div class="col-md-8 col-md-offset-2">
-            <div class="clearfix alert alert-info alert-dismissible js-nm-contest-alert" role="alert">
+        <div class="row js-alert-row">
+          <div class="col-md-4">
+            <div class="clearfix alert alert-danger alert-dismissible" role="alert">
+              <i class="fa fa-2x fa-trophy pull-left"></i>
               <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              Congratulations on ending your exams! Why not take some time to write some module reviews on NUSMods? It only takes 5 minutes. Pay it forward this Christmas (:
+              Ever wanted to know the top students among you? Check out the <a href="http://awards.nusmods.com/" target="_blank">Hall of Fame</a>
             </div>
           </div>
-        </div> -->
+          <div class="col-md-4">
+            <div class="clearfix alert alert-warning alert-dismissible" role="alert">
+              <i class="fa fa-2x fa-star pull-left"></i>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              First you'll be appalled, then you'll be amazed by these <a href="http://blog.nusmods.com/5-nusmods-features-you-might-not-know-about" target="_blank">5 hidden NUSMods features</a>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="clearfix alert alert-info alert-dismissible" role="alert">
+              <i class="fa fa-2x fa-heart pull-left"></i>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              Are you new to university life? Kind souls on NUSWhispers <a href="http://blog.nusmods.com/tips-for-freshmen-by-nuswhispers" target="_blank">share their tips and experiences</a>
+            </div>
+          </div>
+        </div>
         <div class="content"></div>
       </div>
       <footer class="footer-container">
@@ -182,7 +196,7 @@
     <p class="cors-round-text">CORS is not available for bidding.</p>
   </div>
 
-  <!-- build:js /scripts/main.js -->
+  <!-- build:jsmain /scripts/main.js -->
   <script src="/scripts/main.js"></script>
   <!-- endbuild -->
   <!-- build:js /scripts/disqus-count.js -->

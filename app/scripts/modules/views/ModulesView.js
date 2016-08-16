@@ -40,6 +40,13 @@ module.exports = Marionette.LayoutView.extend({
 
   initialize: function (options) {
     this.mods = options.mods;
+    var departmentToFaculty = {};
+    Object.keys(options.facultyDepartments).map(function(fac) {
+      options.facultyDepartments[fac].map(function(dept) {
+        departmentToFaculty[dept] = fac;
+      });
+    });
+    this.departmentToFaculty = departmentToFaculty;
   },
 
   events: {
@@ -101,7 +108,9 @@ module.exports = Marionette.LayoutView.extend({
 
     var semesterNames = config.semesterNames;
     var mods = this.mods;
+    var departmentToFaculty = this.departmentToFaculty;
     _.each(mods, function (mod) {
+      mod.faculty = departmentToFaculty[mod.Department] || 'Others';
       mod.level = mod.ModuleCode[mod.ModuleCode.search(/\d/)] * 1000;
       if (mod.Types) {
         mod.Types = _.map(mod.Types, function (type) {
@@ -111,6 +120,11 @@ module.exports = Marionette.LayoutView.extend({
         mod.Types = ['Not in CORS'];
       }
       mod.semesterNames = [];
+
+      function parseWorkloadHours(workload) {
+        var workloadInt = parseInt(workload);
+        return _.isNumber(workloadInt) && !_.isNaN(workloadInt) ? workloadInt : 'Others';
+      }
 
       for (var i = 0; i < mod.History.length; i++) {
         var history = mod.History[i];
@@ -122,10 +136,7 @@ module.exports = Marionette.LayoutView.extend({
         var workloads = [];
 
         if (mod.Workload) {
-         workloads =  _.map(mod.Workload.split('-'), function(workload) {
-            var workloadInt = parseInt(workload);
-            return _.isNumber(workloadInt) && !_.isNaN(workloadInt) ? workloadInt : 'Others';
-          });
+         workloads =  _.map(mod.Workload.split('-'), parseWorkloadHours);
         }
 
         if (workloads.length === 5) {
@@ -136,8 +147,8 @@ module.exports = Marionette.LayoutView.extend({
           mod.preparationHours = workloads[4];
         }
         else {
-          mod.lectureHours = mod.tutorialHours = mod.labHours
-              = mod.projectHours = mod.preparationHours = 'Others';
+          mod.lectureHours = mod.tutorialHours = mod.labHours =
+	      mod.projectHours = mod.preparationHours = 'Others';
         }
       }
     });
@@ -161,8 +172,14 @@ module.exports = Marionette.LayoutView.extend({
       label: 'Types',
       slug: 'types'
     }));
+    facets.add({
+      filteredCollection: mods,
+      key: 'faculty',
+      label: 'Faculty',
+      slug: 'faculty'
+    });
     facets.add(_.map({
-      Department: 'Faculty / Department',
+      Department: 'Department',
       level: 'Level'
     }, function(label, key) {
       return {

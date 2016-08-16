@@ -123,6 +123,7 @@ App.on('start', function () {
   require('./modules');
   require('./venues');
   // require('./friends');
+  require('./hall-of-fame');
   require('./nuswhispers');
   require('./news');
   require('./preferences');
@@ -175,6 +176,10 @@ App.on('start', function () {
   require('bootstrap/tooltip');
   $('[data-toggle="tooltip"]').tooltip();
 
+  var showAlerts = false;
+  if (localStorage.hideAlerts !== 'true' && showAlerts) {
+    $('.js-alert-row').slideDown();
+  }
 });
 
 module.exports = App;

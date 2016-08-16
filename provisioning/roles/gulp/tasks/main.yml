@@ -1,0 +1,2 @@
+---
+- npm: name=gulp-cli global=yes

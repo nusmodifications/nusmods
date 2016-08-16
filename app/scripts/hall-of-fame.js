@@ -3,9 +3,9 @@
 var App = require('./app');
 
 App.request('addNavigationItem', {
-  name: 'NUSWhispers',
-  icon: 'heart',
-  url: 'https://nuswhispers.com/',
+  name: 'Hall of Fame',
+  icon: 'trophy',
+  url: 'http://awards.nusmods.com',
   target: '_blank',
   newLabel: true
 });

@@ -1,7 +1,10 @@
 'use strict';
 
 var App = require('../../app');
+var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
+var _Promise = require('bluebird');
+var config = require('../../common/config');
 
 var navigationItem = App.request('addNavigationItem', {
   name: 'Modules',
@@ -13,14 +16,23 @@ module.exports = Marionette.Controller.extend({
   showModules: function (id) {
     var ModulesView = require('../views/ModulesView');
     var ModuleView = require('../views/ModuleView');
+    var LoadingView = require('../../common/views/LoadingView');
     var NUSMods = require('../../nusmods');
     var ModuleModel = require('../../common/models/ModuleModel');
     var ModulePageModel = require('../models/ModulePageModel');
     var facultyList = require('../../common/faculty/facultyList.json');
     navigationItem.select();
+    App.mainRegion.show(new LoadingView());
     if (!id) {
-      NUSMods.getMods().then(function (mods) {
-        App.mainRegion.show(new ModulesView({mods: mods}));
+      _Promise.all([
+        NUSMods.getMods(),
+        NUSMods.getFacultyDepartments(config.semester)
+      ]).then(function (response) {
+        App.mainRegion.show(
+          new ModulesView({
+            mods: response[0],
+            facultyDepartments: response[1]
+          }));
       });
     } else {
       var modCode = id.toUpperCase();
@@ -31,6 +43,8 @@ module.exports = Marionette.Controller.extend({
           module: moduleModel.attributes
         });
         App.mainRegion.show(new ModuleView({model: modulePageModel}));
+      }).catch(function(){
+        Backbone.history.navigate('/timetable', {trigger: true, navigate: true});
       });
     }
   }

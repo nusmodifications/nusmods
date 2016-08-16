@@ -1,6 +1,6 @@
 'use strict';
 
-var corsSchedule = require('./corsSchedule1516Sem2.json');
+var corsSchedule = require('./corsSchedule1617Sem1.json');
 
 var DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
@@ -18,9 +18,9 @@ function toUTC(date) {
 function formatTime(date) {
   var startDate = date.split(', ').slice(0, 2);
   var startHour = (new Date(date)).getHours();
-  startDate.unshift((startHour < 12 ? startHour.toString() + ' am' : (startHour - 12).toString() + ' pm'));
+  startDate.unshift((startHour < 12 ? startHour.toString() + 'am' : (startHour - 12).toString() + 'pm'));
   startDate.unshift(DAYS[(new Date(date)).getDay()]);
-  return startDate.join(', ');
+  return startDate.join(' ');
 }
 
 module.exports = {

@@ -56,4 +56,4 @@ grep -q -F "alias npm='npm --no-bin-links'" /home/vagrant/.bashrc || echo "alias
 
 # Run the playbook.
 echo "Running Ansible provisioner defined in Vagrantfile."
-sudo -H -u vagrant bash -c "ansible-playbook -i 'localhost,' \"/home/vagrant/NUSMods/${ANSIBLE_PLAYBOOK}\" --extra-vars \"is_windows=true\" --connection=local"
+sudo -H -u vagrant bash -c "ansible-playbook -v -i 'localhost,' \"/home/vagrant/NUSMods/${ANSIBLE_PLAYBOOK}\" --extra-vars \"is_windows=true ansible_ssh_user=vagrant\" --connection=local"

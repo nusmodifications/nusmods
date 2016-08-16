@@ -1,14 +1,4 @@
-$brand-primary: #f60;
-$input-border-focus: $brand-primary;
-$body-bg: #f7f7f7;
-$font-family-sans-serif: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
-$navbar-default-bg: $brand-primary;
-$navbar-default-link-color: #6e7276;
-$navbar-default-link-hover-color: $brand-primary;
-$navbar-default-link-active-color: $brand-primary;
-
-$navbar-default-toggle-icon-bar-bg: #fff;
-$navbar-default-toggle-border-color: #fff;
+@import "variables";
 
 // Core variables and mixins
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/variables";
@@ -66,8 +56,6 @@ $navbar-default-toggle-border-color: #fff;
 $fa-font-path: "/bower_components/font-awesome/fonts";
 @import "font-awesome/scss/font-awesome";
 
-@import "ripple";
-
 @import "select2-bootstrap-css/lib/select2-bootstrap";
 
 @import "timetable";
@@ -97,6 +85,7 @@ html {
 body {
   padding-top: 50px;
   height: 100%;
+  line-height: $line-height;
 }
 
 a {
@@ -143,6 +132,10 @@ kbd {
   padding: 15px;
   padding-bottom: 30px;
   position: relative;
+}
+
+.js-alert-row {
+  display: none;
 }
 
 #nav {
@@ -570,9 +563,6 @@ $panel-heading-color: #3e444c;
       margin: 10px;
     }
   }
-  .nm-module-fb-like {
-    height: 23px;
-  }
 }
 
 dd.lecturer {
@@ -636,6 +626,7 @@ a.cors > .fa-fw {
 // Loading Indicator
 .nm-loading {
   padding-top: 25%;
+
   &.nm-page-loading {
     left: 50%;
     padding-top: 0;
@@ -646,7 +637,8 @@ a.cors > .fa-fw {
 
 // Timetable
 .semester-selector-region ul {
-  margin: 10px;
+  margin: 0;
+  width: 100%;
 }
 
 #timetable {
@@ -868,7 +860,7 @@ colgroup.hover {
 }
 
 // Pre-requisites Tree
-.nm-prerequisites-tree{
+.nm-prerequisites-tree {
   #nm-prerequisites-tree-canvas {
     border: 2px solid #eee;
     min-height: 400px;
@@ -935,24 +927,6 @@ colgroup.hover {
   }
 }
 
-.mode-slate {
-  .nm-prerequisites-tree {
-    #nm-prerequisites-tree-canvas {
-      border-color: #444;
-    }
-    .link {
-      fill: none;
-      stroke: #fff;
-    }
-    .rect-label {
-      fill: #fff;
-    }
-    .active-rect {
-      fill: #7e7e7e;
-    }
-  }
-}
-
 // Friends
 .nm-friends-list {
   padding: 0;
@@ -997,6 +971,8 @@ colgroup.hover {
     margin-right: 5px;
   }
 }
+
+.js-nm-
 
 // Preferences
 #preferences {
@@ -1224,5 +1200,6 @@ colgroup.hover {
 
 @import "sidebar";
 @import "apps";
+@import "team";
 @import "news";
 @import "contribute";

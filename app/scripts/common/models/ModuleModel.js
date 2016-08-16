@@ -201,7 +201,11 @@ module.exports = Backbone.Model.extend({
     this.set('hasExams', false);
     var history = this.get('History');
     if (history) {
-      var semestersOffered = [{semester: 1, name: semesterNames[0]}, {semester: 2, name: semesterNames[1]}, {semester: 3, name: semesterNames[2]}, {semester: 4, name: semesterNames[3]}];
+      var semestersOffered = [
+        {semester: 1, name: semesterNames[0]},
+        {semester: 2, name: semesterNames[1]},
+        {semester: 3, name: semesterNames[2]},
+        {semester: 4, name: semesterNames[3]}];
       for (var i = 0; i < history.length; i++) {
         if (history[i].ExamDate) {
           this.set('hasExams', true);

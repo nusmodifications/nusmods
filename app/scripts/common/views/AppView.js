@@ -10,13 +10,13 @@ var BookmarksView = require('./BookmarksView');
 var _ = require('underscore');
 var analytics = require('../../analytics');
 var attachFastClick = require('fastclick');
-// var corsify = require('../../cors/corsify');
 var themePicker = require('../themes/themePicker');
 var nusmoderator = require('nusmoderator');
 require('bootstrap/alert');
 require('qTip2');
 
 module.exports = Backbone.View.extend({
+  /* jshint maxlen: 140 */
   el: 'body',
 
   events: {
@@ -25,7 +25,6 @@ module.exports = Backbone.View.extend({
   },
 
   hijackLinks: function (event) {
-    /* jshint maxlen: 140 */
     // Ref: https://github.com/backbone-boilerplate/backbone-boilerplate/blob/85723839dbab6787d69eedcbbea05e1d59960eff/app/app.js#L52
 
     // Do not hijack if modifier key was pressed when the event fired.
@@ -181,8 +180,12 @@ module.exports = Backbone.View.extend({
 
 
     (function () {
-      // $('.cors-round-text').html(corsify.determineRound(Date.now()));
-      // $('.cors-round-container').addClass('animated bounceInUp shown');
+      var enableCorsAlert = false;
+      if (enableCorsAlert) {
+        var corsify = require('../../cors/corsify');
+        $('.cors-round-text').html(corsify.determineRound(Date.now()));
+        $('.cors-round-container').addClass('animated bounceInUp shown');
+      }
       // $('.js-nm-contest-alert').addClass('animated bounceInDown nm-force-show');
       var week = nusmoderator.academicCalendar.currentAcadWeek(new Date());
       var thisWeekText = 'AY20' + week.year + ', ' + week.sem + ', ';

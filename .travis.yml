@@ -1,0 +1,10 @@
+language: node_js
+node_js:
+  - 5.11
+before_install:
+  - npm install -g npm@3.8.6
+  - npm install -g gulp-cli
+  - npm install -g bower
+  - bower install
+install:
+  - npm install --no-optional

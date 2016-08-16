@@ -1,4 +1,4 @@
-# [NUSMods](http://nusmods.com) [![Code Climate](http://img.shields.io/codeclimate/github/nusmodifications/nusmods.svg)](https://codeclimate.com/github/nusmodifications/nusmods) [![Dependency Status](http://img.shields.io/david/nusmodifications/nusmods.svg)](https://david-dm.org/nusmodifications/nusmods) [![devDependency Status](http://img.shields.io/david/dev/nusmodifications/nusmods.svg)](https://david-dm.org/nusmodifications/nusmods#info=devDependencies)
+# [NUSMods](http://nusmods.com) [![Code Climate](http://img.shields.io/codeclimate/github/nusmodifications/nusmods.svg)](https://codeclimate.com/github/nusmodifications/nusmods) [![Dependency Status](http://img.shields.io/david/nusmodifications/nusmods.svg)](https://david-dm.org/nusmodifications/nusmods) [![devDependency Status](http://img.shields.io/david/dev/nusmodifications/nusmods.svg)](https://david-dm.org/nusmodifications/nusmods#info=devDependencies) [![Build Status](https://travis-ci.org/nusmodifications/nusmods.svg?branch=master)](https://travis-ci.org/nusmodifications/nusmods)
 [![ghit.me](https://ghit.me/badge.svg?repo=nusmodifications/nusmods)](https://ghit.me/repo/nusmodifications/nusmods)
 
 ## Talk to us!
@@ -15,9 +15,17 @@
 
 ### Setup
 
+On Unix/Mac:
+
 ```bash
-$ pip install ansible
+$ pip install ansible==2.1.0.0
 $ vagrant up
+```
+
+On Windows:
+
+```powershell
+PS> vagrant up
 ```
 
 Once it's up, do a `vagrant ssh` to enter the development environment.
@@ -26,13 +34,14 @@ Once it's up, do a `vagrant ssh` to enter the development environment.
 
 ### Prerequisites
 
-- [Node.js](http://nodejs.org)
+- [Node.js](http://nodejs.org) (we currently use v5.x, instructions [here](https://github.com/nodesource/distributions#installation-instructions))
 
 ### Setup
 
 Install the necessary packages.
 ```bash
-$ npm install -g bower grunt-cli
+$ npm install -g npm@3.6.0
+$ npm install -g bower@1.7.9 gulp-cli@1.2.2
 $ npm install
 $ bower install
 ```
@@ -41,22 +50,26 @@ If you are working on `news.php`, make a copy of `/app/config/secrets.json.examp
 
 ## Building for Development
 
+First, SSH into the vagrant box (this command has to be run in the directory that `Vagrantfile` is in):
+
 ```bash
-$ grunt serve
+$ vagrant ssh
 ```
+
+Run the development environment:
+
+```bash
+$ npm start
+```
+
+Visit `localhost:9000` to see your local instance of NUSMods.
 
 ## Building for Production
 
-To get a complete, minified, production build under `dist/`:
+To get a complete, minified, production build under `dist/` (ignores jshint warnings):
 
 ```bash
-$ grunt
-```
-
-Alternatively, a version that ignores jshint warnings:
-
-```bash
-$ grunt build
+$ npm run build
 ```
 
 ## Deploying to Production
@@ -77,12 +90,11 @@ default. To work with a local copy of the API:
 $ git submodule update --init
 $ cd api
 $ npm install
-$ grunt
+$ grunt # starts the crawling process in nusmods-api
 ```
 
-The development server serves the files generated in `api/app/api` under
-`/api/`, so change `baseUrl` under `app/config/application.json` to point to
-`/api/`.
+The development server serves the files generated in `api/app/api` under `/api/`,
+so change `baseUrl` under `app/config/application.json` to point to `/api/`.
 
 ## Optional Dependencies
 
@@ -100,4 +112,4 @@ $ composer install
 
 ## License
 
-Copyright (c) 2016 NUS Modifications. Licensed under the MIT license.
+Copyright (c) 2016 NUSModifications. Licensed under the MIT license.

@@ -1,8 +1,6 @@
 {{#each items}}
-  <li{{#if active}} class="active"{{/if}}>
-    <a href="{{url}}">
-      <span class="hidden-xxs">{{label}}</span>
-      <span class="visible-xxs-inline">{{shortLabel}}</span>
-    </a>
-  </li>
+  <a class="btn btn-default {{#if active}} active{{/if}}" href="{{url}}">
+    <span class="hidden-xxs">{{label}}</span>
+    <span class="visible-xxs-inline">{{shortLabel}}</span>
+  </a>
 {{/each}}

@@ -7,6 +7,7 @@ var ayBaseUrl;
 var moduleInformationPromise, moduleListPromise;
 var timetablePromise;
 var venuesPromise, venueInformationPromise;
+var facultyDepartmentsPromise;
 var moduleCodes = {};
 
 module.exports = {
@@ -59,8 +60,14 @@ module.exports = {
     return venuesPromise.then(callback);
   },
   getVenueInformation: function (semester, callback) {
-    venueInformationPromise = venueInformationPromise || Promise.resolve($.getJSON([ayBaseUrl, semester, 'venueInformation.json'].join('/')));
+    venueInformationPromise = venueInformationPromise || Promise.resolve(
+      $.getJSON([ayBaseUrl, semester, 'venueInformation.json'].join('/')));
     return venueInformationPromise.then(callback);
+  },
+  getFacultyDepartments: function(semester, callback) {
+    facultyDepartmentsPromise = facultyDepartmentsPromise || Promise.resolve(
+      $.getJSON([ayBaseUrl, semester, 'facultyDepartments.json'].join('/')));
+    return facultyDepartmentsPromise.then(callback);
   },
   setConfig: function (config) {
     ayBaseUrl = config.baseUrl + config.academicYear.replace('/', '-') + '/';

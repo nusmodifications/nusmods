@@ -5,7 +5,8 @@
     - php5-curl
     - php5-mysql
     - python-mysqldb  # Required for mysql ansible modules
-- { include: install_dependencies.yml, sudo: no }
+- npm: name=npm version=3.6.0 global=yes
+- { include: install_dependencies.yml, become: yes, become_user: "{{ user }}" }
 - cron: name='Update API data' special_time=hourly job='cd {{ project_dir }}/api && grunt default rsync --target=dist' user={{ user }}
 - mysql_db: name={{ yourls_db_name }}
 - mysql_user:
@@ -15,11 +16,11 @@
 - template:
     src=etc/nginx/sites-available/{{ item }}.j2
     dest=/etc/nginx/sites-available/{{ item }}
-  with_items: domains
+  with_items: "{{ domains }}"
   notify: reload nginx
 - file:
     src=/etc/nginx/sites-available/{{ item }}
     dest=/etc/nginx/sites-enabled/{{ item }}
     state=link
-  with_items: domains
+  with_items: "{{ domains }}"
   notify: reload nginx
