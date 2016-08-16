@@ -50,8 +50,8 @@ module.exports = Marionette.CompositeView.extend({
     var day = moment().format('ddd').toLowerCase();
     var hour = padTwo(moment().hour());
 
-    this.$('#timetable .currentDayTime').removeClass('currentDayTime');
-    this.$('#' + day + ' .h' + hour).addClass('currentDayTime');
+    this.$('#timetable .current-day-time').removeClass('current-day-time');
+    this.$('#' + day + ' .h' + hour).addClass('current-day-time');
   },
 
   mouseMove: function(evt) {
