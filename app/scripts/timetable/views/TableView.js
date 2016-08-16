@@ -1,6 +1,8 @@
 'use strict';
 
 var $ = require('jquery');
+var padTwo = require('../../common/utils/padTwo');
+var moment = require('moment');
 var LessonView = require('./LessonView');
 var Marionette = require('backbone.marionette');
 var _ = require('underscore');
@@ -17,6 +19,7 @@ module.exports = Marionette.CompositeView.extend({
     };
   },
   template: template,
+  timerUpdateDayTime: null,
 
   events: {
     'mousemove': 'mouseMove',
@@ -25,6 +28,30 @@ module.exports = Marionette.CompositeView.extend({
 
   ui: {
     colgroups: 'colgroup'
+  },
+
+  onRender: function() {
+    var self = this;
+
+    // updates every minute thereafter
+    this.timerUpdateDayTime = window.setInterval(function() {
+      self.updateDayTimeIndicator();
+    }, 300000); // 5 min * 60 s * 1000 ms
+
+    // initial updating
+    this.updateDayTimeIndicator();
+  },
+
+  onBeforeDestroy: function() {
+    this.timerUpdateDayTime = window.clearInterval(this.timerUpdateDayTime);
+  },
+
+  updateDayTimeIndicator: function() {
+    var day = moment().format('ddd').toLowerCase();
+    var hour = padTwo(moment().hour());
+
+    this.$('#timetable .current-day-time').removeClass('current-day-time');
+    this.$('#' + day + ' .h' + hour).addClass('current-day-time');
   },
 
   mouseMove: function(evt) {
