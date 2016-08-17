@@ -33,13 +33,17 @@ module.exports = Marionette.CompositeView.extend({
   onRender: function() {
     var self = this;
 
-    // updates every minute thereafter
-    this.timerUpdateDayTime = window.setInterval(function() {
+    var updateDayTimeIndicatorWrapper = function() {
       self.updateDayTimeIndicator();
-    }, 300000); // 5 min * 60 s * 1000 ms
+    };
+
+    // updates every minute thereafter
+    this.timerUpdateDayTime = window.setInterval(updateDayTimeIndicatorWrapper, 300000); // 5 min * 60 s * 1000 ms
 
     // initial updating
-    this.updateDayTimeIndicator();
+    window.setTimeout(function(){
+      self.updateDayTimeIndicator();
+    }, 0);
   },
 
   onBeforeDestroy: function() {
@@ -50,8 +54,8 @@ module.exports = Marionette.CompositeView.extend({
     var day = moment().format('ddd').toLowerCase();
     var hour = padTwo(moment().hour());
 
-    this.$('#timetable .current-day-time').removeClass('current-day-time');
-    this.$('#' + day + ' .h' + hour).addClass('current-day-time');
+    $('#timetable .current-day-time').removeClass('current-day-time');
+    $('#' + day + ' .h' + hour).addClass('current-day-time');
   },
 
   mouseMove: function(evt) {
