@@ -43,6 +43,10 @@ module.exports = Marionette.CompositeView.extend({
     // initial updating
     window.setTimeout(function(){
       self.updateDayTimeIndicator();
+
+      // whenever window gets focused, we update it for the user.
+      // like for switching of tabs
+      $(window).on('focus', updateDayTimeIndicatorWrapper);
     }, 0);
   },
 
