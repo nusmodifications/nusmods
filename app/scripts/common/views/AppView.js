@@ -176,15 +176,7 @@ module.exports = Backbone.View.extend({
       $('body').removeClass('js-toggled');
     });
 
-    // somehow browserify and webpack bundles stuff differently
-    if (attachFastClick.attach) {
-      // this is for webpack
-      attachFastClick.attach(document.body);
-    } else {
-      // this is for browserify
-      attachFastClick(document.body);
-    }
-
+    attachFastClick.attach(document.body);
 
     (function () {
       var enableCorsAlert = false;
