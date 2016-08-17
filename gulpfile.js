@@ -66,7 +66,7 @@ gulp.task('usemin', function() {
       html: [function() { return plugins.htmlmin({ collapseWhitespace: true }); }],
       js: ['concat', plugins.uglify, plugins.rev],
       // don't uglify because jsmin is produced by browserify, which uglifies it
-      jsmain: ['concat', plugins.rev]
+      jsmain: ['concat', plugins.uglify, plugins.rev]
     }))
     .on('error', console.error.bind(console)) // eslint-disable-line no-console
     .pipe(gulp.dest('dist/'));
