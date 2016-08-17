@@ -37,14 +37,13 @@ module.exports = Marionette.CompositeView.extend({
       self.updateDayTimeIndicator();
     };
 
-    // updates every minute thereafter
+    // updates every 5 minutes thereafter
     this.timerUpdateDayTime = window.setInterval(updateDayTimeIndicatorWrapper, 300000); // 5 min * 60 s * 1000 ms
 
     // initial updating
-    window.setTimeout(function(){
+    window.setTimeout(function() {
       self.updateDayTimeIndicator();
-
-      // whenever window gets focused, we update it for the user.
+      // whenever window comes into focus, check for latest time.
       // like for switching of tabs
       $(window).on('focus', updateDayTimeIndicatorWrapper);
     }, 0);
