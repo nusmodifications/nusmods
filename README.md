@@ -41,9 +41,8 @@ Once it's up, do a `vagrant ssh` to enter the development environment.
 Install the necessary packages.
 ```bash
 $ npm install -g npm@3.6.0
-$ npm install -g bower@1.7.9 gulp-cli@1.2.2
+$ npm install -g gulp-cli@1.2.2
 $ npm install
-$ bower install
 ```
 
 If you are working on `news.php`, make a copy of `/app/config/secrets.json.example` in the same directory and call it `secrets.json`. Add your Facebook App credentials into the file `secrets.json`.

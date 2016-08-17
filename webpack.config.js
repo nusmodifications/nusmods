@@ -129,7 +129,7 @@ const common = {
       },
       { test: /\.hbs$/, loader: "handlebars-loader" },
       { test: /\.json$/, loader: "json-loader" },
-      { test: /\.js$/, exclude: /(node_modules|bower_components)/, loader: "babel-loader" }
+      { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" }
     ]
   },
   plugins: [
@@ -151,7 +151,7 @@ const common = {
     }
   },
   sassLoader: {
-    includePaths: [path.resolve(__dirname, "./node_modules"), path.resolve(__dirname, "./app/bower_components")]
+    includePaths: [path.resolve(__dirname, "./node_modules")]
   }
 };
 
