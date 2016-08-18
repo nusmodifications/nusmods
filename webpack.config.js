@@ -129,7 +129,15 @@ const common = {
       },
       { test: /\.hbs$/, loader: "handlebars-loader" },
       { test: /\.json$/, loader: "json-loader" },
-      { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" }
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: "babel",
+        query: {
+          presets: ['es2015', 'react'],
+          plugins: ['syntax-trailing-function-commas', 'transform-object-rest-spread']
+        }
+      }
     ]
   },
   plugins: [
