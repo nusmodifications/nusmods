@@ -12,6 +12,7 @@
 
 - [Vagrant](http://www.vagrantup.com/)
 - [VirtualBox](https://www.virtualbox.org/)
+- [Python 2.7](https://www.python.org/downloads/)
 
 ### Setup
 
