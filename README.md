@@ -3,8 +3,7 @@
 
 ## Talk to us!
 
-- Gitter: [![Join the chat at https://gitter.im/nusmodifications/nusmods](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/nusmodifications/nusmods?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-- HipChat: [NUSMods Dev HipChat](https://www.hipchat.com/g3JuQhjNj)
+- Telegram: https://telegram.me/NUSMods
 
 ## Setup with Vagrant
 
