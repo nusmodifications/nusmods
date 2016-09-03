@@ -1,10 +1,10 @@
-const webpack = require('webpack');
-const path = require('path');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const merge = require('webpack-merge');
-const validate = require('webpack-validator');
+const path = require('path');
 const pkg = require('./package.json');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const validate = require('webpack-validator');
+const webpack = require('webpack');
 
 const PATHS = {
   app: path.join(__dirname, 'app/scripts/main.js'),
