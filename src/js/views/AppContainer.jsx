@@ -8,17 +8,21 @@ export default class AppContainer extends Component {
         <div className="container">
           <nav className="navbar navbar-dark bg-primary">
             <ul className="nav navbar-nav">
-              <li className="nav-item active">
+              <li className="nav-item">
                 <Link className="nav-link" to="/">Home</Link>
               </li>
               <li className="nav-item">
                 <Link className="nav-link" to="/users">Users</Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/counters">Counters</Link>
+                <Link className="nav-link" to="/counter">Counter</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/reddit">Reddit</Link>
               </li>
             </ul>
           </nav>
+          <br/>
           {this.props.children}
         </div>
       </div>

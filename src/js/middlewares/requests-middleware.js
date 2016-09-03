@@ -1,10 +1,9 @@
 import _ from 'lodash';
 import axios from 'axios';
 
-function callApi(request, accessToken, options = {}) {
+function makeRequest(request, accessToken, options = {}) {
   request.headers = {
-    'Content-Type': 'application/json',
-    Authorization: accessToken
+    'Content-Type': 'application/json'
   };
 
   return axios(request)
@@ -13,26 +12,26 @@ function callApi(request, accessToken, options = {}) {
     });
 }
 
-export const API_CALL = Symbol('Call API');
+export const API_REQUEST = Symbol('API_REQUEST');
 export const REQUEST = '_REQUEST';
 export const SUCCESS = '_SUCCESS';
 export const FAILURE = '_FAILURE';
 
 export default (store) => (next) => (action) => {
-  // get the callAPI options
-  const callAPI = action[API_CALL];
-  if (typeof callAPI === 'undefined') {
+  const apiRequest = action[API_REQUEST];
+  if (!apiRequest) {
+    // Non-api request action
     return next(action);
   }
 
   // type     is the base action type that will trigger
   // payload  is the request body to be processed
-  const { type, payload, meta } = callAPI;
+  const { type, payload, meta } = apiRequest;
 
   // swap the action content and structured api results
   function constructActionWith(data) {
     const finalAction = Object.assign({}, action, data);
-    delete finalAction[API_CALL];
+    delete finalAction[API_REQUEST];
     return finalAction;
   }
 
@@ -48,7 +47,7 @@ export default (store) => (next) => (action) => {
   let accessToken = '';
 
   // propagate the response of the request
-  return callApi(payload, accessToken, meta)
+  return makeRequest(payload, accessToken, meta)
     .then(
       (response) => next(constructActionWith({
           requestStatus: SUCCESS,

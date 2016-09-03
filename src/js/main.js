@@ -14,6 +14,7 @@ import HomePage from 'views/home/HomePage';
 import UsersContainer from 'views/users/UsersContainer';
 import UserSection from 'views/users/UserSection';
 import CountersPage from 'views/counters/CountersPage';
+import RedditPage from 'views/reddit/RedditPage';
 
 require('main.scss');
 
@@ -30,7 +31,8 @@ ReactDOM.render(
         <Route path="/users" component={UsersContainer}>
           <Route path=":userId" component={UserSection}/>
         </Route>
-        <Route path="/counters" component={CountersPage}/>
+        <Route path="/counter" component={CountersPage}/>
+        <Route path="/reddit" component={RedditPage}/>
         <Route path="*" component={NotFoundPage}/>
       </Route>
     </Router>

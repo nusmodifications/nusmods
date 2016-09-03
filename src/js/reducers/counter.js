@@ -1,8 +1,10 @@
+import { INCREMENT, DECREMENT } from 'actions/counter';
+
 function counter(state = 0, action) {
   switch (action.type) {
-    case 'INCREMENT':
+    case INCREMENT:
       return state + 1
-    case 'DECREMENT':
+    case DECREMENT:
       return state - 1
     default:
       return state

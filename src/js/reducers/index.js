@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
+import requests from './requests';
 import counter from './counter';
-import counterDouble from './counter-double';
+import reddit from './reddit';
 import { routerReducer } from 'react-router-redux';
 
 export default combineReducers({
   counter,
-  counterDouble,
+  reddit,
+  requests,
   routing: routerReducer
 });
