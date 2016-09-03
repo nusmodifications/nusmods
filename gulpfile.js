@@ -1,8 +1,6 @@
 /* eslint-disable prefer-arrow-callback, func-names, strict */
 'use strict';
 
-require('es6-promise').polyfill();  // needed for gulp-postcss, it uses Promise
-
 // # Globbing
 // for performance reasons we're only matching one level down:
 // 'test/spec/{,*/}*.js'
@@ -20,7 +18,6 @@ require('es6-promise').polyfill();  // needed for gulp-postcss, it uses Promise
 
 const gulp = require('gulp');
 const plugins = require('gulp-load-plugins')();
-const runSequence = require('run-sequence');
 const del = require('del');
 const stylish = require('jshint-stylish');
 // const webpack = require('webpack-stream');
@@ -71,8 +68,4 @@ gulp.task('eslint', function() {
   .pipe(plugins.eslint.format());
 });
 
-gulp.task('default', function() {
-  return runSequence(
-    ['jshint', 'test']
-  );
-});
+gulp.task('default', ['jshint', 'test'])
