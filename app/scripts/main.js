@@ -28,6 +28,7 @@ require('../images/logo.png');
 require('../images/logo-white.png');
 require('qtip2/dist/jquery.qtip.css');
 require('select2/select2.css');
+require('select2-bootstrap-css/select2-bootstrap.css');
 require('animate.css/animate.min.css');
 require('font-awesome/fonts/fontawesome-webfont.eot');
 require('font-awesome/fonts/fontawesome-webfont.svg');
