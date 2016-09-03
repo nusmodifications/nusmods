@@ -29,8 +29,14 @@
     "webpack-merge": "^0.14.0"
   },
   "dependencies": {
+    "axios": "^0.14.0",
     "bootstrap": "^4.0.0-alpha.2",
     "react": "^15.2.0",
-    "react-router": "^2.5.2"
+    "react-redux": "^4.4.5",
+    "react-router": "^2.5.2",
+    "react-router-redux": "^4.0.5",
+    "redux": "^3.5.2",
+    "redux-logger": "^2.6.1",
+    "redux-thunk": "^2.1.0"
   }
 }

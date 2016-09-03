@@ -14,6 +14,9 @@ export default class AppContainer extends Component {
               <li className="nav-item">
                 <Link className="nav-link" to="/users">Users</Link>
               </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/counters">Counters</Link>
+              </li>
             </ul>
           </nav>
           {this.props.children}
