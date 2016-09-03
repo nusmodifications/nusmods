@@ -19,7 +19,7 @@
   ],
   "scripts": {
     "start": "webpack-dev-server",
-    "build": "webpack",
+    "build": "webpack && cp -r app/vendor build/vendor",
     "rsync": "gulp rsync",
     "deploy": "webpack && gulp rsync",
     "test": "webpack && gulp"
