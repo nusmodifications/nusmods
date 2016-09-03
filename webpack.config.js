@@ -154,8 +154,8 @@ const common = {
   ],
   resolve: {
     alias: {
-      bootstrap: 'bootstrap-sass/assets/javascripts/bootstrap'
-      // localforage: 'localforage/src/localforage'
+      bootstrap: 'bootstrap-sass/assets/javascripts/bootstrap',
+      localforage: 'localforage/dist/localforage.nopromises.js',
     }
   },
   sassLoader: {
