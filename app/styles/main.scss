@@ -58,7 +58,10 @@
 $fa-font-path: "";
 @import "font-awesome/scss/font-awesome";
 
+@import "../../node_modules/qtip2/dist/jquery.qtip.css";
+@import "../../node_modules/select2/select2.css";
 @import "select2-bootstrap-css/lib/select2-bootstrap";
+@import "../../node_modules/animate.css/animate.min.css";
 
 @import "timetable";
 @import "timetable-flex";
