@@ -102,7 +102,7 @@ const common = {
         test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
         loader: "url?limit=10000&mimetype=image/svg+xml"
       },
-      { test: /\.otf/, loader: "file"},
+      { test: /\.otf$/, loader: "file"},
       { test: /\.swf$/, loader: "file"},
       {
         test: /\.jpe?g$|\.gif$|\.png$|\.svg$/,
@@ -120,7 +120,7 @@ const common = {
       },
       // copy php files to root
       {
-        test: /\.php/,
+        test: /\.php$/,
         loader: 'file?name=[name].[ext]'
       },
       {
