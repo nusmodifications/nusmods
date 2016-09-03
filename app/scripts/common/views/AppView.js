@@ -9,7 +9,7 @@ var SelectView = require('./SelectView');
 var BookmarksView = require('./BookmarksView');
 var _ = require('underscore');
 var analytics = require('../../analytics');
-var attachFastClick = require('fastclick');
+var fastclick = require('fastclick');
 var themePicker = require('../themes/themePicker');
 var nusmoderator = require('nusmoderator');
 require('bootstrap/alert');
@@ -176,7 +176,7 @@ module.exports = Backbone.View.extend({
       $('body').removeClass('js-toggled');
     });
 
-    attachFastClick.attach(document.body);
+    fastclick.attach(document.body);
 
     (function () {
       var enableCorsAlert = false;
