@@ -52,7 +52,6 @@
     "raven-js": "~1.1.19",
     "select2": "^3.5.1",
     "select2-bootstrap-css": "^1.4.6",
-    "select2-bootstrap-theme": "0.1.0-beta.8",
     "spin.js": "~2.3.1",
     "underscore": "~1.8.3",
     "watchify": "^3.7.0",
