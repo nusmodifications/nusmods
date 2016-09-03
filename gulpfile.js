@@ -40,7 +40,7 @@ gulp.task('rsync', function() {
 
 // Empties folders to start fresh
 
-gulp.task('clean:dist', function() {
+gulp.task('clean', function() {
   del.sync(['build/*', '!build/.git*']);
 });
 
