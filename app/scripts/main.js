@@ -46,8 +46,6 @@ require('../pdf.php');
 require('../redirect.php');
 require('../xls.php');
 
-require('./disqus-count.js');
-
 localforage.getItem('migratedPreferences').then(function (value) {
   if (!value) {
     Promise.all(_.keys(config.defaultPreferences).map(function (property) {

@@ -13,6 +13,7 @@ var analytics = require('../../analytics');
 var localforage = require('localforage');
 var template = require('../templates/module.hbs');
 var config = require('../../common/config');
+var DISQUSWIDGETS = require('../../disqus-count');
 require('bootstrap/scrollspy');
 require('bootstrap/affix');
 require('bootstrap/tab');
