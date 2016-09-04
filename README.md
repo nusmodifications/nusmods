@@ -1,7 +1,7 @@
-Webpack React Starter
+React Redux Starter
 ==
 
-From the awesome [SurviveJS Webpack Guide](http://survivejs.com/webpack/).
+Highly based off the awesome [SurviveJS Webpack Guide](http://survivejs.com/webpack/).
 
 #### Getting Started
 ```
