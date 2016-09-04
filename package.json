@@ -4,8 +4,8 @@
   "description": "Webpack React Starter Kit",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server",
-    "build": "BABEL_ENV=production webpack"
+    "start": "NODE_ENV=development webpack-dev-server",
+    "build": "NODE_ENV=production webpack"
   },
   "author": "",
   "license": "ISC",

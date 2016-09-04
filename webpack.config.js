@@ -100,7 +100,6 @@ switch (process.env.npm_lifecycle_event) {
       },
       parts.clean(PATHS.build),
       parts.setFreeVariable('process.env.NODE_ENV', environment),
-      parts.setFreeVariable('process.env.BABEL_ENV', environment),
       parts.extractBundle({
         name: 'vendor',
         entries: vendor
@@ -117,7 +116,6 @@ switch (process.env.npm_lifecycle_event) {
         devtool: 'eval-source-map'
       },
       parts.setFreeVariable('process.env.NODE_ENV', environment),
-      parts.setFreeVariable('process.env.BABEL_ENV', environment),
       parts.setupCSS(PATHS.styles),
       parts.devServer({
         // Customize host/port here if needed
