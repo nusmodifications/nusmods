@@ -3,6 +3,8 @@ import VirtualizedSelect from 'react-virtualized-select';
 import _ from 'lodash';
 import classnames from 'classnames';
 import axios from 'axios';
+import config from 'config';
+import NUSModsApi from 'utils/nusmods-api';
 
 const CELLS_COUNT = 28;
 
@@ -10,13 +12,13 @@ export default class HomePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      moduleList: {},
+      moduleList: [],
       selectedModules: [],
     };
   }
 
   componentDidMount() {
-    axios.get('https://nusmods.com/api/2016-2017/1/moduleList.json').then((response) => {
+    axios.get(NUSModsApi.moduleListUrl()).then((response) => {
       this.setState({
         moduleList: response.data,
       });
@@ -49,14 +51,15 @@ export default class HomePage extends Component {
   }
 
   render() {
-    const moduleSelectOptions = Object.keys(this.state.moduleList)
-      .filter((moduleCode) => {
-        return !_.includes(this.state.selectedModules, moduleCode);
+    const moduleSelectOptions = this.state.moduleList
+      .filter((module) => {
+        return !_.includes(this.state.selectedModules, module.ModuleCode) &&
+                _.includes(module.Semesters, config.semester);
       })
-      .map((moduleCode) => {
+      .map((module) => {
         return {
-          value: moduleCode,
-          label: `${moduleCode} ${this.state.moduleList[moduleCode]}`,
+          value: module.ModuleCode,
+          label: `${module.ModuleCode} ${module.ModuleTitle}`,
         };
       });
 
@@ -193,10 +196,13 @@ export default class HomePage extends Component {
             <table className="table table-bordered">
               <tbody>
                 {_.map(this.state.selectedModules, (moduleCode) => {
+                  const module = _.find(this.state.moduleList, (mod) => {
+                    return mod.ModuleCode === moduleCode;
+                  });
                   return (
-                    <tr key={moduleCode}>
-                      <td>{moduleCode}</td>
-                      <td>{this.state.moduleList[moduleCode]}</td>
+                    <tr key={module.ModuleCode}>
+                      <td>{module.ModuleCode}</td>
+                      <td>{module.ModuleTitle}</td>
                     </tr>
                   );
                 })}
