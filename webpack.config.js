@@ -12,6 +12,16 @@ const PATHS = {
   styles: path.join(__dirname, SRC, 'styles'),
   build: path.join(__dirname, BUILD)
 };
+const vendor = [
+  'axios',
+  'react',
+  'redux',
+  'react-redux',
+  'react-router',
+  'react-router-redux',
+  'redux-logger',
+  'redux-thunk'
+];
 
 const common = {
   // Entry accepts a path or an object of entries.
@@ -78,7 +88,7 @@ switch (process.env.npm_lifecycle_event) {
       parts.setFreeVariable('process.env.NODE_ENV', 'production'),
       parts.extractBundle({
         name: 'vendor',
-        entries: Object.keys(pkg.dependencies)
+        entries: vendor
       }),
       parts.minify(),
       parts.extractCSS(PATHS.styles)
