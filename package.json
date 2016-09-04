@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "axios": "^0.14.0",
-    "bootstrap": "^4.0.0-alpha.2",
+    "bootstrap": "^4.0.0-alpha.3",
     "lodash": "^4.15.0",
     "react": "^15.2.0",
     "react-autobind": "^1.0.6",
