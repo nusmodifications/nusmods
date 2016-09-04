@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const StyleLintPlugin = require('stylelint-webpack-plugin');
 const merge = require('webpack-merge');
 const parts = require('./libs/parts');
 const pkg = require('./package.json');
@@ -47,6 +48,9 @@ const common = {
     new HtmlWebpackPlugin({
       template: path.join(__dirname, 'src/index.html'),
       cache: true
+    }),
+    new StyleLintPlugin({
+      context: PATHS.styles
     })
   ],
   module: {
