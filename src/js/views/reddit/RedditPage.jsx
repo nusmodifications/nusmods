@@ -60,7 +60,6 @@ RedditPage.propTypes = {
 };
 
 function mapStateToProps(state) {
-  console.log(state);
   return {
     items: state.reddit,
     fetchRedditsRequest: state.requests.fetchRedditsRequest || {}
