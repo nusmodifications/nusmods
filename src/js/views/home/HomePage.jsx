@@ -130,35 +130,6 @@ export default class HomePage extends Component {
                     <div className="timetable-hour-cell"><span/></div>
                     <div className="timetable-hour-cell timetable-cell-half-hour"><span/></div>
                   </div>
-                  <div className="timetable-day-row">
-                    <div className="timetable-day-cell timetable-hour-cell"><span/></div>
-                    <div className="timetable-hour-cell timetable-hour-cell-alt"><span/></div>
-                    <div className="timetable-hour-cell timetable-hour-cell-alt"><span/></div>
-                    <div className="timetable-hour-cell"><span/></div>
-                    <div className="timetable-hour-cell"><span/></div>
-                    <div className="timetable-hour-cell"><span/></div>
-                    <div className="timetable-hour-cell timetable-cell-half-hour"><span/></div>
-                    <div className="timetable-hour-cell"><span/></div>
-                    <div className="timetable-hour-cell timetable-cell-half-hour"><span/></div>
-                    <div className="timetable-hour-cell" style={{ flexGrow: 4 }}>
-                      <div className="test-cell"/>
-                    </div>
-                    <div className="timetable-hour-cell" style={{ flexGrow: 4 }}>
-                      <div className="test-cell"/>
-                    </div>
-                    <div className="timetable-hour-cell"><span/></div>
-                    <div className="timetable-hour-cell timetable-cell-half-hour"><span/></div>
-                    <div className="timetable-hour-cell"><span/></div>
-                    <div className="timetable-hour-cell timetable-cell-half-hour"><span/></div>
-                    <div className="timetable-hour-cell"><span/></div>
-                    <div className="timetable-hour-cell timetable-cell-half-hour"><span/></div>
-                    <div className="timetable-hour-cell"><span/></div>
-                    <div className="timetable-hour-cell timetable-cell-half-hour"><span/></div>
-                    <div className="timetable-hour-cell"><span/></div>
-                    <div className="timetable-hour-cell timetable-cell-half-hour"><span/></div>
-                    <div className="timetable-hour-cell"><span/></div>
-                    <div className="timetable-hour-cell timetable-cell-half-hour"><span/></div>
-                  </div>
                 </div>
                 <div className="timetable-day">
                   {this.renderRow('Tue')}
