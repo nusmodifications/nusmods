@@ -19,10 +19,10 @@ export class AppContainer extends Component {
                 <Link className="nav-link" to="/">Home</Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/users">Users</Link>
+                <Link className="nav-link" to="/modules">Modules</Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/counter">Counter</Link>
+                <Link className="nav-link" to="/users">Users</Link>
               </li>
               <li className="nav-item">
                 <Link className="nav-link" to="/reddit">Reddit</Link>

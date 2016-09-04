@@ -11,7 +11,7 @@ import NotFoundPage from 'views/NotFoundPage';
 import HomePage from 'views/home/HomePage';
 import UsersContainer from 'views/users/UsersContainer';
 import UserSection from 'views/users/UserSection';
-import CountersPage from 'views/counters/CountersPage';
+import ModuleFinderContainer from 'views/modules/ModuleFinderContainer';
 import RedditPage from 'views/reddit/RedditPage';
 
 const store = configureStore();
@@ -28,7 +28,7 @@ export default function () {
           <Route path="/users" component={UsersContainer}>
             <Route path=":userId" component={UserSection} />
           </Route>
-          <Route path="/counter" component={CountersPage} />
+          <Route path="/modules" component={ModuleFinderContainer} />
           <Route path="/reddit" component={RedditPage} />
           <Route path="*" component={NotFoundPage} />
         </Route>

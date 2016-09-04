@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 import requests from './requests';
-import counter from './counter';
 import reddit from './reddit';
+import entities from './entities';
 
 export default combineReducers({
-  counter,
+  entities,
   reddit,
   requests,
   routing: routerReducer,
