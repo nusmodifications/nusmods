@@ -1,20 +1,20 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 
-export default class UsersContainer extends Component {
-  constructor(props, ctx) {
+class UsersContainer extends Component {
+  constructor(props) {
     super(props);
     this.state = {
       users: [
         {
           name: 'John Doe',
-          id: 1
+          id: 1,
         },
         {
           name: 'Mary Jane',
-          id: 2
-        }
-      ]
+          id: 2,
+        },
+      ],
     };
   }
 
@@ -24,7 +24,7 @@ export default class UsersContainer extends Component {
         <h1>Users</h1>
         <div className="users-page">
           <ul>
-            {this.state.users.map(user => (
+            {this.state.users.map((user) => (
               <li key={user.id}>
                 <Link to={`/users/${user.id}`}>{user.name}</Link>
               </li>
@@ -38,3 +38,9 @@ export default class UsersContainer extends Component {
     );
   }
 }
+
+UsersContainer.propTypes = {
+  children: PropTypes.object,
+};
+
+export default UsersContainer;

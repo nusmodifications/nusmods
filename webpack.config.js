@@ -14,6 +14,7 @@ const PATHS = {
 };
 const vendor = [
   'axios',
+  'lodash',
   'react',
   'redux',
   'react-redux',
@@ -49,6 +50,13 @@ const common = {
     })
   ],
   module: {
+    preLoaders: [
+      {
+        test: /\.jsx?$/,
+        loaders: ['eslint'],
+        include: PATHS.scripts
+      }
+    ],
     loaders: [
       {
         test: /\.jsx?$/,

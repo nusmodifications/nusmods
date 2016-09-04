@@ -9,17 +9,17 @@ export default function requests(state = {}, action = null) {
   const { type, requestStatus } = action;
 
   if (type === helperActions.RESET_ALL_STATE) {
-    return requestsInitialState();
+    return {};
   }
 
   // Reset request state
   if (type === helperActions.RESET_REQUEST_STATE) {
-    let newState = {};
+    const newState = {};
     _.each(action.payload, (domain) => {
       newState[_.camelCase(domain) + requestState] = {
         isPending: false,
         isSuccessful: false,
-        isFailure: false
+        isFailure: false,
       };
     });
 
@@ -35,8 +35,8 @@ export default function requests(state = {}, action = null) {
         [domain + requestState]: {
           isPending: true,
           isSuccessful: false,
-          isFailure: false
-        }
+          isFailure: false,
+        },
       });
     case requestResultCases.SUCCESS:
       domain = _.camelCase(type.replace(requestResultCases.SUCCESS, ''));
@@ -44,8 +44,8 @@ export default function requests(state = {}, action = null) {
         [domain + requestState]: {
           isPending: false,
           isSuccessful: true,
-          isFailure: false
-        }
+          isFailure: false,
+        },
       });
     case requestResultCases.FAILURE:
       domain = _.camelCase(type.replace(requestResultCases.FAILURE, ''));
@@ -53,8 +53,8 @@ export default function requests(state = {}, action = null) {
         [domain + requestState]: {
           isPending: false,
           isSuccessful: false,
-          isFailure: true
-        }
+          isFailure: true,
+        },
       });
     default:
       return state;

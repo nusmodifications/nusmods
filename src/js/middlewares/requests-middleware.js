@@ -1,15 +1,18 @@
-import _ from 'lodash';
 import axios from 'axios';
+import _ from 'lodash';
 
-function makeRequest(request, accessToken, options = {}) {
-  request.headers = {
-    'Content-Type': 'application/json'
+function makeRequest(request, accessToken) {
+  const req = _.cloneDeep(request);
+  req.headers = {
+    'Content-Type': 'application/json',
   };
 
-  return axios(request)
-    .then((response) => {
-      return response.data;
-    });
+  if (accessToken) {
+    req.headers.Authorization = accessToken;
+  }
+
+  return axios(req)
+    .then((response) => response.data);
 }
 
 export const API_REQUEST = Symbol('API_REQUEST');
@@ -40,30 +43,33 @@ export default (store) => (next) => (action) => {
     requestStatus: REQUEST,
     type: type + REQUEST,
     request: payload,
-    meta: meta
+    meta,
   }));
 
   // get the access token from store
   let accessToken = '';
+  if (_.get(store.getState(), 'user.accessToken')) {
+    accessToken = store.getState().user.accessToken;
+  }
 
   // propagate the response of the request
   return makeRequest(payload, accessToken, meta)
     .then(
       (response) => next(constructActionWith({
-          requestStatus: SUCCESS,
-          type: type + SUCCESS,
-          request: payload,
-          meta: meta,
-          response: response
-        })
+        requestStatus: SUCCESS,
+        type: type + SUCCESS,
+        request: payload,
+        meta,
+        response,
+      })
       ),
       (error) => next(constructActionWith({
-          requestStatus: FAILURE,
-          type: type + FAILURE,
-          request: payload,
-          meta: meta,
-          response: error
-        })
+        requestStatus: FAILURE,
+        type: type + FAILURE,
+        request: payload,
+        meta,
+        response: error,
+      })
       )
     );
 };

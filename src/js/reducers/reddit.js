@@ -6,7 +6,7 @@ function reddit(state = [], action) {
     case FETCH_REDDITS + RequestResultCases.SUCCESS:
       return action.response.data.children;
     default:
-      return state
+      return state;
   }
 }
 

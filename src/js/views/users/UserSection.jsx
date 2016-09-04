@@ -1,11 +1,13 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 
-export default class UserSection extends Component {
-  render() {
-    return (
-      <div>
-        <p>User Id Selected: {this.props.params.userId}</p>
-      </div>
-    )
-  }
-}
+const UserSection = (props) => (
+  <div>
+    <p>User Id Selected: {props.params.userId}</p>
+  </div>
+);
+
+UserSection.propTypes = {
+  params: PropTypes.object,
+};
+
+export default UserSection;
