@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import VirtualizedSelect from 'react-virtualized-select';
+import createFilterOptions from 'react-select-fast-filter-options';
 
 import { getModuleList } from 'actions/moduleBank';
 
@@ -11,20 +12,15 @@ export class AppContainer extends Component {
   }
 
   render() {
-    const moduleSelectOptions = this.props.moduleList
-      .map((module) => {
-        return {
-          value: module.ModuleCode,
-          label: `${module.ModuleCode} ${module.ModuleTitle}`,
-        };
-      });
+    const filterOptions = createFilterOptions({ options: this.props.moduleListSelect });
     return (
       <div className="app-container">
         <div className="container">
           <nav className="navbar navbar-light bg-faded">
             <Link className="navbar-brand" to="/">NUSMods</Link>
             <form style={{ width: '100%', maxWidth: 400, display: 'inline-block' }}>
-              <VirtualizedSelect options={moduleSelectOptions}
+              <VirtualizedSelect options={this.props.moduleListSelect}
+                filterOptions={filterOptions}
                 placeholder="Search module"
                 onChange={(moduleCode) => {
                   this.context.router.push(`/modules/${moduleCode.value}`);
@@ -52,7 +48,7 @@ export class AppContainer extends Component {
 
 AppContainer.propTypes = {
   children: PropTypes.object,
-  moduleList: PropTypes.array,
+  moduleListSelect: PropTypes.array,
   getModuleList: PropTypes.func,
   getModuleListRequest: PropTypes.object,
 };
@@ -63,7 +59,7 @@ AppContainer.contextTypes = {
 
 function mapStateToProps(state) {
   return {
-    moduleList: state.entities.moduleBank.moduleList,
+    moduleListSelect: state.entities.moduleBank.moduleListSelect,
     getModuleListRequest: state.requests.getModuleListRequest || {},
   };
 }
