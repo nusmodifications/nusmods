@@ -1,27 +1,21 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import autoBind from 'react-autobind';
 
 import { getModule } from 'actions/moduleBank';
 
-export class ModulePage extends Component {
-  constructor(props) {
-    super(props);
-    autoBind(this);
-  }
+function loadModuleInformation(props) {
+  props.getModule(props.routeParams.moduleCode);
+}
 
+export class ModulePage extends Component {
   componentDidMount() {
-    this.loadModuleInformation(this.props.routeParams.moduleCode);
+    loadModuleInformation(this.props);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.routeParams.moduleCode !== this.props.routeParams.moduleCode) {
-      this.loadModuleInformation(nextProps.routeParams.moduleCode);
+      loadModuleInformation(nextProps);
     }
-  }
-
-  loadModuleInformation(moduleCode) {
-    this.props.getModule(moduleCode);
   }
 
   render() {
