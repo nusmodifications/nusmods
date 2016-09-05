@@ -26,7 +26,7 @@ ModuleFinderContainer.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    moduleList: state.entities.moduleList,
+    moduleList: state.entities.moduleBank.moduleList,
   };
 }
 

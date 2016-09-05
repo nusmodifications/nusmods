@@ -14,7 +14,7 @@ ModulePage.propTypes = {
 };
 
 function mapStateToProps(state, ownProps) {
-  const module = _.find(state.entities.moduleList, (mod) => {
+  const module = _.find(state.entities.moduleBank.moduleList, (mod) => {
     return mod.ModuleCode === ownProps.params.moduleCode;
   });
   return {

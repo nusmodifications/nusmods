@@ -1,9 +1,7 @@
-import moduleList from './moduleList';
-// import modules from './modules';
+import moduleBank from './moduleBank';
 
 export default function entities(state = {}, action) {
   return {
-    moduleList: moduleList(state.moduleList, action),
-    // modules: modules(state.modules, action),
+    moduleBank: moduleBank(state.moduleBank, action),
   };
 }

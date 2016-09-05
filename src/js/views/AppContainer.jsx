@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 
-import { getModuleList } from 'actions/moduleList';
+import { getModuleList } from 'actions/moduleBank';
 
 export class AppContainer extends Component {
   componentDidMount() {
