@@ -65,7 +65,7 @@ export default class HomePage extends Component {
 
     return (
       <div>
-        <h1>Timetable</h1>
+        <h1 className="display-4">Timetable</h1>
         <br/>
         <div className="row">
           <div className="col-md-12">

@@ -13,8 +13,12 @@ export class AppContainer extends Component {
     return (
       <div className="app-container">
         <div className="container">
-          <nav className="navbar navbar-dark bg-primary">
-            <ul className="nav navbar-nav">
+          <nav className="navbar navbar-light bg-faded">
+            <Link className="navbar-brand" to="/">NUSMods</Link>
+            <form className="form-inline pull-xs-left">
+              <input className="form-control" type="text" placeholder="Search modules"/>
+            </form>
+            <ul className="nav navbar-nav pull-xs-right">
               <li className="nav-item">
                 <Link className="nav-link" to="/">Timetable</Link>
               </li>
