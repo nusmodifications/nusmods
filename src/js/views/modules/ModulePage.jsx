@@ -11,7 +11,17 @@ export class ModulePage extends Component {
   }
 
   componentDidMount() {
-    this.props.getModule(this.props.routeParams.moduleCode);
+    this.loadModuleInformation(this.props.routeParams.moduleCode);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.routeParams.moduleCode !== this.props.routeParams.moduleCode) {
+      this.loadModuleInformation(nextProps.routeParams.moduleCode);
+    }
+  }
+
+  loadModuleInformation(moduleCode) {
+    this.props.getModule(moduleCode);
   }
 
   render() {
@@ -22,7 +32,7 @@ export class ModulePage extends Component {
         {this.props.getModuleRequest.isFailure ? <p>Module not found</p> : null}
         {this.props.getModuleRequest.isSuccessful && module ?
           <div>
-            <h4 className="display-4">{module.ModuleCode} {module.ModuleTitle}</h4>
+            <h1 className="display-4">{module.ModuleCode} {module.ModuleTitle}</h1>
             <hr/>
             <dl className="row">
               {module.ModuleDescription ? <dt className="col-sm-3">Description</dt> : null}
@@ -47,8 +57,7 @@ export class ModulePage extends Component {
               {module.Workload ? <dt className="col-sm-3">Weekly Workload</dt> : null}
               {module.Workload ? <dd className="col-sm-9">{module.Workload}</dd> : null}
 
-              <dt className="col-sm-3">Exam Date</dt>
-              <dd className="col-sm-9">{module.ExamDate || 'No exam'}</dd>
+              {/* TODO: Add in exam date for each semester. */}
 
             </dl>
           </div> : null

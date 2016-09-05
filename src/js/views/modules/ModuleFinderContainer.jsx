@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 
 const ModuleFinderContainer = (props) => (
   <div>
-    <h1>Module Finder</h1>
+    <h1 className="display-4">Module Finder</h1>
     <hr/>
     <p>Only 30 shown for brevity.</p>
     {props.moduleList.slice(0, 30).map((module) => {

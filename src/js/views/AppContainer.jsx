@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
+import VirtualizedSelect from 'react-virtualized-select';
 
 import { getModuleList } from 'actions/moduleBank';
 
@@ -10,13 +11,25 @@ export class AppContainer extends Component {
   }
 
   render() {
+    const moduleSelectOptions = this.props.moduleList
+      .map((module) => {
+        return {
+          value: module.ModuleCode,
+          label: `${module.ModuleCode} ${module.ModuleTitle}`,
+        };
+      });
     return (
       <div className="app-container">
         <div className="container">
           <nav className="navbar navbar-light bg-faded">
             <Link className="navbar-brand" to="/">NUSMods</Link>
-            <form className="form-inline pull-xs-left">
-              <input className="form-control" type="text" placeholder="Search modules"/>
+            <form style={{ width: '100%', maxWidth: 400, display: 'inline-block' }}>
+              <VirtualizedSelect options={moduleSelectOptions}
+                placeholder="Search module"
+                onChange={(moduleCode) => {
+                  this.context.router.push(`/modules/${moduleCode.value}`);
+                }}
+              />
             </form>
             <ul className="nav navbar-nav pull-xs-right">
               <li className="nav-item">
@@ -39,12 +52,18 @@ export class AppContainer extends Component {
 
 AppContainer.propTypes = {
   children: PropTypes.object,
+  moduleList: PropTypes.array,
   getModuleList: PropTypes.func,
   getModuleListRequest: PropTypes.object,
 };
 
+AppContainer.contextTypes = {
+  router: PropTypes.object,
+};
+
 function mapStateToProps(state) {
   return {
+    moduleList: state.entities.moduleBank.moduleList,
     getModuleListRequest: state.requests.getModuleListRequest || {},
   };
 }
