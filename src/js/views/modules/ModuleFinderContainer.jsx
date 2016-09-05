@@ -6,7 +6,8 @@ const ModuleFinderContainer = (props) => (
   <div>
     <h1>Module Finder</h1>
     <hr/>
-    {props.moduleList.map((module) => {
+    <p>Only 30 shown for brevity.</p>
+    {props.moduleList.slice(0, 30).map((module) => {
       return (
         <div key={module.ModuleCode}>
           <Link to={{
