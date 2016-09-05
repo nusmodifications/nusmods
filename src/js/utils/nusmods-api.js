@@ -8,6 +8,9 @@ const NUSModsApi = {
   moduleListUrl: () => {
     return `${ayBaseUrl}/moduleList.json`;
   },
+  moduleDetailsUrl: (moduleCode, semester = config.semester) => {
+    return `${ayBaseUrl}/${semester}/modules/${moduleCode}.json`;
+  },
 };
 
 export default NUSModsApi;
