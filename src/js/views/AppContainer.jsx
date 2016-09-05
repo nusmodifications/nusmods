@@ -16,16 +16,10 @@ export class AppContainer extends Component {
           <nav className="navbar navbar-dark bg-primary">
             <ul className="nav navbar-nav">
               <li className="nav-item">
-                <Link className="nav-link" to="/">Home</Link>
+                <Link className="nav-link" to="/">Timetable</Link>
               </li>
               <li className="nav-item">
                 <Link className="nav-link" to="/modules">Modules</Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/users">Users</Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/reddit">Reddit</Link>
               </li>
             </ul>
           </nav>

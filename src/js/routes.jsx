@@ -9,11 +9,8 @@ import AppContainer from 'views/AppContainer';
 import NotFoundPage from 'views/NotFoundPage';
 
 import HomePage from 'views/home/HomePage';
-import UsersContainer from 'views/users/UsersContainer';
-import UserSection from 'views/users/UserSection';
 import ModuleFinderContainer from 'views/modules/ModuleFinderContainer';
 import ModulePage from 'views/modules/ModulePage';
-import RedditPage from 'views/reddit/RedditPage';
 
 const store = configureStore();
 const history = syncHistoryWithStore(useRouterHistory(createHistory)({
@@ -26,12 +23,8 @@ export default function () {
       <Router history={history}>
         <Route path="/" component={AppContainer}>
           <IndexRoute component={HomePage} />
-          <Route path="/users" component={UsersContainer}>
-            <Route path=":userId" component={UserSection} />
-          </Route>
           <Route path="/modules" component={ModuleFinderContainer} />
           <Route path="/modules/:moduleCode" component={ModulePage} />
-          <Route path="/reddit" component={RedditPage} />
           <Route path="*" component={NotFoundPage} />
         </Route>
       </Router>
