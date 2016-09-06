@@ -1,29 +1,21 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import VirtualizedSelect from 'react-virtualized-select';
+import createFilterOptions from 'react-select-fast-filter-options';
 import _ from 'lodash';
 import classnames from 'classnames';
-import axios from 'axios';
 import config from 'config';
-import NUSModsApi from 'utils/nusmods-api';
 
 const CELLS_COUNT = 28;
 
-export default class TimetableContainer extends Component {
+export class TimetableContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      moduleList: [],
       selectedModules: [],
     };
   }
 
-  componentDidMount() {
-    axios.get(NUSModsApi.moduleListUrl()).then((response) => {
-      this.setState({
-        moduleList: response.data,
-      });
-    });
-  }
   renderRow(day) {
     return (
       <div className="timetable-day-row">
@@ -51,10 +43,9 @@ export default class TimetableContainer extends Component {
   }
 
   render() {
-    const moduleSelectOptions = this.state.moduleList
+    const moduleSelectOptions = this.props.semesterModuleList
       .filter((module) => {
-        return !_.includes(this.state.selectedModules, module.ModuleCode) &&
-                _.includes(module.Semesters, config.semester);
+        return !_.includes(this.state.selectedModules, module.ModuleCode);
       })
       .map((module) => {
         return {
@@ -62,6 +53,7 @@ export default class TimetableContainer extends Component {
           label: `${module.ModuleCode} ${module.ModuleTitle}`,
         };
       });
+    const filterOptions = createFilterOptions({ options: moduleSelectOptions });
 
     return (
       <div>
@@ -155,6 +147,7 @@ export default class TimetableContainer extends Component {
         <div className="row">
           <div className="col-md-6 col-md-offset-3">
             <VirtualizedSelect options={moduleSelectOptions}
+              filterOptions={filterOptions}
               onChange={(module) => {
                 const selectedModules = this.state.selectedModules;
                 if (!_.includes(selectedModules, module.value)) {
@@ -167,7 +160,7 @@ export default class TimetableContainer extends Component {
             <table className="table table-bordered">
               <tbody>
                 {_.map(this.state.selectedModules, (moduleCode) => {
-                  const module = _.find(this.state.moduleList, (mod) => {
+                  const module = _.find(this.props.semesterModuleList, (mod) => {
                     return mod.ModuleCode === moduleCode;
                   });
                   return (
@@ -185,3 +178,24 @@ export default class TimetableContainer extends Component {
     );
   }
 }
+
+TimetableContainer.propTypes = {
+  semesterModuleList: PropTypes.array,
+};
+
+TimetableContainer.contextTypes = {
+  router: PropTypes.object,
+};
+
+function mapStateToProps(state) {
+  return {
+    semesterModuleList: state.entities.moduleBank.moduleList.filter((module) => {
+      return _.includes(module.Semesters, config.semester);
+    }),
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  {}
+)(TimetableContainer);
