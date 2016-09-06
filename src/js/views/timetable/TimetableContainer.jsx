@@ -5,17 +5,11 @@ import createFilterOptions from 'react-select-fast-filter-options';
 import _ from 'lodash';
 import classnames from 'classnames';
 import config from 'config';
+import { addModule, removeModule } from 'actions/timetables';
 
 const CELLS_COUNT = 28;
 
 export class TimetableContainer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedModules: [],
-    };
-  }
-
   renderRow(day) {
     return (
       <div className="timetable-day-row">
@@ -45,7 +39,7 @@ export class TimetableContainer extends Component {
   render() {
     const moduleSelectOptions = this.props.semesterModuleList
       .filter((module) => {
-        return !_.includes(this.state.selectedModules, module.ModuleCode);
+        return !this.props.semesterTimetable[module.ModuleCode];
       })
       .map((module) => {
         return {
@@ -149,17 +143,12 @@ export class TimetableContainer extends Component {
             <VirtualizedSelect options={moduleSelectOptions}
               filterOptions={filterOptions}
               onChange={(module) => {
-                const selectedModules = this.state.selectedModules;
-                if (!_.includes(selectedModules, module.value)) {
-                  this.setState({
-                    selectedModules: [...selectedModules, module.value],
-                  });
-                }
+                this.props.addModule(this.props.semester, module.value);
               }}
             />
             <table className="table table-bordered">
               <tbody>
-                {_.map(this.state.selectedModules, (moduleCode) => {
+                {_.map(Object.keys(this.props.semesterTimetable), (moduleCode) => {
                   const module = _.find(this.props.semesterModuleList, (mod) => {
                     return mod.ModuleCode === moduleCode;
                   });
@@ -167,6 +156,15 @@ export class TimetableContainer extends Component {
                     <tr key={module.ModuleCode}>
                       <td>{module.ModuleCode}</td>
                       <td>{module.ModuleTitle}</td>
+                      <td>
+                        <button className="btn btn-sm btn-danger"
+                          onClick={() => {
+                            this.props.removeModule(this.props.semester, moduleCode);
+                          }}
+                        >
+                          Remove
+                        </button>
+                      </td>
                     </tr>
                   );
                 })}
@@ -180,7 +178,11 @@ export class TimetableContainer extends Component {
 }
 
 TimetableContainer.propTypes = {
+  semester: PropTypes.number,
   semesterModuleList: PropTypes.array,
+  semesterTimetable: PropTypes.object,
+  addModule: PropTypes.func,
+  removeModule: PropTypes.func,
 };
 
 TimetableContainer.contextTypes = {
@@ -188,14 +190,20 @@ TimetableContainer.contextTypes = {
 };
 
 function mapStateToProps(state) {
+  const semester = config.semester;
   return {
+    semester,
     semesterModuleList: state.entities.moduleBank.moduleList.filter((module) => {
-      return _.includes(module.Semesters, config.semester);
+      return _.includes(module.Semesters, semester);
     }),
+    semesterTimetable: state.timetables[semester] || {},
   };
 }
 
 export default connect(
   mapStateToProps,
-  {}
+  {
+    addModule,
+    removeModule,
+  }
 )(TimetableContainer);
