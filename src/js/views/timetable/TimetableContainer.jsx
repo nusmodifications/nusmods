@@ -149,11 +149,9 @@ export class TimetableContainer extends Component {
             <table className="table table-bordered">
               <tbody>
                 {_.map(Object.keys(this.props.semesterTimetable), (moduleCode) => {
-                  const module = _.find(this.props.semesterModuleList, (mod) => {
-                    return mod.ModuleCode === moduleCode;
-                  });
+                  const module = this.props.modules[moduleCode] || {};
                   return (
-                    <tr key={module.ModuleCode}>
+                    <tr key={moduleCode}>
                       <td>{module.ModuleCode}</td>
                       <td>{module.ModuleTitle}</td>
                       <td>
@@ -181,6 +179,7 @@ TimetableContainer.propTypes = {
   semester: PropTypes.number,
   semesterModuleList: PropTypes.array,
   semesterTimetable: PropTypes.object,
+  modules: PropTypes.object,
   addModule: PropTypes.func,
   removeModule: PropTypes.func,
 };
@@ -197,6 +196,7 @@ function mapStateToProps(state) {
       return _.includes(module.Semesters, semester);
     }),
     semesterTimetable: state.timetables[semester] || {},
+    modules: state.entities.moduleBank.modules,
   };
 }
 

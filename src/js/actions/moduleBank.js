@@ -32,7 +32,7 @@ export function loadModule(moduleCode) {
   return (dispatch, getState) => {
     // Module has been fetched before and cached. Don't have to fetch again.
     if (getState().entities.moduleBank.modules[moduleCode]) {
-      return null;
+      return Promise.resolve();
     }
 
     return dispatch(fetchModule(moduleCode));

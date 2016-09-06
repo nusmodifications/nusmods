@@ -31,5 +31,4 @@ function timetables(state = defaultTimetableState, action) {
   }
 }
 
-
 export default timetables;
