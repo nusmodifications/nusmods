@@ -29,7 +29,7 @@ export class AppContainer extends Component {
             </form>
             <ul className="nav navbar-nav pull-xs-right">
               <li className="nav-item">
-                <Link className="nav-link" to="/">Timetable</Link>
+                <Link className="nav-link" to="/timetable">Timetable</Link>
               </li>
               <li className="nav-item">
                 <Link className="nav-link" to="/modules">Modules</Link>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router, Route, IndexRoute, useRouterHistory } from 'react-router';
+import { Router, Route, IndexRedirect, useRouterHistory } from 'react-router';
 import { createHistory } from 'history';
 import { Provider } from 'react-redux';
 import { syncHistoryWithStore } from 'react-router-redux';
@@ -22,10 +22,11 @@ export default function () {
     <Provider store={store}>
       <Router history={history}>
         <Route path="/" component={AppContainer}>
-          <IndexRoute component={TimetableContainer} />
-          <Route path="/modules" component={ModuleFinderContainer} />
-          <Route path="/modules/:moduleCode" component={ModulePage} />
-          <Route path="*" component={NotFoundPage} />
+          <IndexRedirect to="/timetable"/>
+          <Route path="/timetable" component={TimetableContainer}/>
+          <Route path="/modules" component={ModuleFinderContainer}/>
+          <Route path="/modules/:moduleCode" component={ModulePage}/>
+          <Route path="*" component={NotFoundPage}/>
         </Route>
       </Router>
     </Provider>
