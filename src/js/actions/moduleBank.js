@@ -16,20 +16,25 @@ export function fetchModuleList() {
 
 export const FETCH_MODULE = 'FETCH_MODULE';
 export function fetchModule(moduleCode) {
+  return (dispatch) => dispatch({
+    [API_REQUEST]: {
+      type: FETCH_MODULE,
+      payload: {
+        method: 'GET',
+        url: NUSModsApi.moduleDetailsUrl(moduleCode),
+      },
+    },
+  });
+}
+
+export const LOAD_MODULE = 'LOAD_MODULE';
+export function loadModule(moduleCode) {
   return (dispatch, getState) => {
     // Module has been fetched before and cached. Don't have to fetch again.
     if (getState().entities.moduleBank.modules[moduleCode]) {
       return null;
     }
 
-    return dispatch({
-      [API_REQUEST]: {
-        type: FETCH_MODULE,
-        payload: {
-          method: 'GET',
-          url: NUSModsApi.moduleDetailsUrl(moduleCode),
-        },
-      },
-    });
+    return dispatch(fetchModule(moduleCode));
   };
 }

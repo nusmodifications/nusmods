@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import { fetchModule } from 'actions/moduleBank';
+import { loadModule } from 'actions/moduleBank';
 
 function loadModuleInformation(props) {
-  props.fetchModule(props.routeParams.moduleCode);
+  props.loadModule(props.routeParams.moduleCode);
 }
 
 export class ModulePage extends Component {
@@ -64,7 +64,7 @@ export class ModulePage extends Component {
 ModulePage.propTypes = {
   routeParams: PropTypes.object,
   module: PropTypes.object,
-  fetchModule: PropTypes.func,
+  loadModule: PropTypes.func,
   fetchModuleRequest: PropTypes.object,
 };
 
@@ -78,6 +78,6 @@ function mapStateToProps(state, ownProps) {
 export default connect(
   mapStateToProps,
   {
-    fetchModule,
+    loadModule,
   }
 )(ModulePage);
