@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 import VirtualizedSelect from 'react-virtualized-select';
 import createFilterOptions from 'react-select-fast-filter-options';
 
-import { getModuleList } from 'actions/moduleBank';
+import { fetchModuleList } from 'actions/moduleBank';
 
 export class AppContainer extends Component {
   componentDidMount() {
-    this.props.getModuleList();
+    this.props.fetchModuleList();
   }
 
   render() {
@@ -37,9 +37,9 @@ export class AppContainer extends Component {
             </ul>
           </nav>
           <br />
-          {this.props.getModuleListRequest.isPending ? <p>Loading...</p> : null}
-          {this.props.getModuleListRequest.isFailure ? <p>An error occurred.</p> : null}
-          {this.props.getModuleListRequest.isSuccessful ? this.props.children : null}
+          {this.props.fetchModuleListRequest.isPending ? <p>Loading...</p> : null}
+          {this.props.fetchModuleListRequest.isFailure ? <p>An error occurred.</p> : null}
+          {this.props.fetchModuleListRequest.isSuccessful ? this.props.children : null}
         </div>
       </div>
     );
@@ -49,8 +49,8 @@ export class AppContainer extends Component {
 AppContainer.propTypes = {
   children: PropTypes.object,
   moduleListSelect: PropTypes.array,
-  getModuleList: PropTypes.func,
-  getModuleListRequest: PropTypes.object,
+  fetchModuleList: PropTypes.func,
+  fetchModuleListRequest: PropTypes.object,
 };
 
 AppContainer.contextTypes = {
@@ -60,13 +60,13 @@ AppContainer.contextTypes = {
 function mapStateToProps(state) {
   return {
     moduleListSelect: state.entities.moduleBank.moduleListSelect,
-    getModuleListRequest: state.requests.getModuleListRequest || {},
+    fetchModuleListRequest: state.requests.fetchModuleListRequest || {},
   };
 }
 
 export default connect(
   mapStateToProps,
   {
-    getModuleList,
+    fetchModuleList,
   }
 )(AppContainer);

@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import { getModule } from 'actions/moduleBank';
+import { fetchModule } from 'actions/moduleBank';
 
 function loadModuleInformation(props) {
-  props.getModule(props.routeParams.moduleCode);
+  props.fetchModule(props.routeParams.moduleCode);
 }
 
 export class ModulePage extends Component {
@@ -22,9 +22,9 @@ export class ModulePage extends Component {
     const module = this.props.module;
     return (
       <div>
-        {this.props.getModuleRequest.isPending ? <p>Loading...</p> : null}
-        {this.props.getModuleRequest.isFailure ? <p>Module not found</p> : null}
-        {this.props.getModuleRequest.isSuccessful && module ?
+        {this.props.fetchModuleRequest.isPending ? <p>Loading...</p> : null}
+        {this.props.fetchModuleRequest.isFailure ? <p>Module not found</p> : null}
+        {this.props.fetchModuleRequest.isSuccessful && module ?
           <div>
             <h1 className="display-4">{module.ModuleCode} {module.ModuleTitle}</h1>
             <hr/>
@@ -64,20 +64,20 @@ export class ModulePage extends Component {
 ModulePage.propTypes = {
   routeParams: PropTypes.object,
   module: PropTypes.object,
-  getModule: PropTypes.func,
-  getModuleRequest: PropTypes.object,
+  fetchModule: PropTypes.func,
+  fetchModuleRequest: PropTypes.object,
 };
 
 function mapStateToProps(state, ownProps) {
   return {
     module: state.entities.moduleBank.modules[ownProps.params.moduleCode],
-    getModuleRequest: state.requests.getModuleRequest || {},
+    fetchModuleRequest: state.requests.fetchModuleRequest || {},
   };
 }
 
 export default connect(
   mapStateToProps,
   {
-    getModule,
+    fetchModule,
   }
 )(ModulePage);
