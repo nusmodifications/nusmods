@@ -8,7 +8,7 @@ import NUSModsApi from 'utils/nusmods-api';
 
 const CELLS_COUNT = 28;
 
-export default class HomePage extends Component {
+export default class TimetableContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {

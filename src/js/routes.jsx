@@ -8,7 +8,7 @@ import configureStore from 'stores/configure-store';
 import AppContainer from 'views/AppContainer';
 import NotFoundPage from 'views/NotFoundPage';
 
-import HomePage from 'views/home/HomePage';
+import TimetableContainer from 'views/timetable/TimetableContainer';
 import ModuleFinderContainer from 'views/modules/ModuleFinderContainer';
 import ModulePage from 'views/modules/ModulePage';
 
@@ -22,7 +22,7 @@ export default function () {
     <Provider store={store}>
       <Router history={history}>
         <Route path="/" component={AppContainer}>
-          <IndexRoute component={HomePage} />
+          <IndexRoute component={TimetableContainer} />
           <Route path="/modules" component={ModuleFinderContainer} />
           <Route path="/modules/:moduleCode" component={ModulePage} />
           <Route path="*" component={NotFoundPage} />
