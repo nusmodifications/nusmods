@@ -17,13 +17,12 @@ function semesterTimetable(state = defaultSemesterTimetableState, action, entiti
           return semData.Semester === semester;
         }).Timetable;
         const lessonsInjectModuleCode = lessons.map((lesson) => {
-          return Object.assign({}, {
-            ModuleCode: moduleCode,
-          }, lesson);
+          return { ModuleCode: moduleCode, ...lesson };
         });
-        return Object.assign({}, state, {
+        return {
+          ...state,
           [moduleCode]: randomLessonConfiguration(lessonsInjectModuleCode),
-        });
+        };
       })();
     case REMOVE_MODULE:
       return _.omit(state, moduleCode);
@@ -36,10 +35,11 @@ function timetables(state = defaultTimetableState, action, entities) {
   switch (action.type) {
     case ADD_MODULE:
     case REMOVE_MODULE:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         [action.payload.semester]: semesterTimetable(state[action.payload.semester], action,
                                                       entities),
-      });
+      };
     default:
       return state;
   }

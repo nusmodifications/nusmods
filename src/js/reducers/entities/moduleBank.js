@@ -10,7 +10,8 @@ const defaultModuleBankState = {
 function moduleBank(state = defaultModuleBankState, action) {
   switch (action.type) {
     case FETCH_MODULE_LIST + RequestResultCases.SUCCESS:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         moduleList: action.response,
         moduleListSelect: action.response.map((module) => {
           return {
@@ -18,13 +19,15 @@ function moduleBank(state = defaultModuleBankState, action) {
             label: `${module.ModuleCode} ${module.ModuleTitle}`,
           };
         }),
-      });
+      };
     case FETCH_MODULE + RequestResultCases.SUCCESS:
-      return Object.assign({}, state, {
-        modules: Object.assign({}, state.modules, {
+      return {
+        ...state,
+        modules: {
+          ...state.modules,
           [action.response.ModuleCode]: action.response,
-        }),
-      });
+        },
+      };
     default:
       return state;
   }
