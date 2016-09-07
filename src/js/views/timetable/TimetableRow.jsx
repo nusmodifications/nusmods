@@ -1,31 +1,56 @@
 import React, { PropTypes } from 'react';
 import _ from 'lodash';
-import classnames from 'classnames';
 
-const FIRST_HOUR = 8;
-const LAST_HOUR = 22;
-const CELLS_COUNT = (LAST_HOUR - FIRST_HOUR) * 2;
+import { FIRST_HOUR, LAST_HOUR, LESSON_TYPE_ABBREV } from 'utils/timetable';
+import { convertIndexToTime, convertTimeToIndex } from 'utils/timify';
+
+const generateCells = (lessons) => {
+  const lessonsGroupedByStartTime = _(lessons).groupBy('StartTime').mapValues((value) => {
+    return value[0];
+  }).value();
+  const cells = [];
+  const startingIndex = FIRST_HOUR * 2;
+  const endingIndex = (LAST_HOUR + 1) * 2;
+  for (let i = startingIndex; i < endingIndex; i++) {
+    const timeForIndex = convertIndexToTime(i);
+    const lesson = lessonsGroupedByStartTime[timeForIndex];
+    if (lesson) {
+      const lessonStartIndex = i;
+      const lessonEndIndex = convertTimeToIndex(lesson.EndTime);
+      const width = lessonEndIndex - lessonStartIndex;
+      cells.push(
+        <div key={i} className="timetable-hour-cell"
+          style={{ flexGrow: width }}>
+          <div className="timetable-cell">
+            <div className="cell-module-code">{lesson.ModuleCode}</div>
+            <div>
+              <span className="cell-module-lesson-type">{LESSON_TYPE_ABBREV[lesson.LessonType]}</span>
+              <span className="cell-module-class">{' '}[{lesson.ClassNo}]</span>
+            </div>
+            <div><span className="cell-module-venue">{lesson.Venue}</span></div>
+          </div>
+        </div>
+      );
+      i += (width - 1);
+    } else {
+      cells.push(<div key={i} className="timetable-hour-cell"/>);
+    }
+  }
+  return cells;
+};
 
 const TimetableRow = (props) => {
   return (
     <div className="timetable-day-row">
       <div className="timetable-day-cell timetable-hour-cell"><span>{props.day}</span></div>
-      {_.map(_.range(CELLS_COUNT), (i) => {
-        return (
-          <div key={i}
-            className={classnames('timetable-hour-cell', {
-              'timetable-hour-cell-alt': (i % 4 < 2 && props.altBackground),
-            })}
-          />
-        );
-      })}
+      {generateCells(props.lessons)}
     </div>
   );
 };
 
 TimetableRow.propTypes = {
   day: PropTypes.string,
-  altBackground: PropTypes.bool, // Used for timetable's striped background
+  lessons: PropTypes.array,
 };
 
 export default TimetableRow;

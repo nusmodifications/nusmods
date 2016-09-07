@@ -1,0 +1,27 @@
+import React from 'react';
+import _ from 'lodash';
+import classnames from 'classnames';
+import { CELLS_COUNT } from 'utils/timetable';
+
+const TimetableBackground = () => {
+  return (
+    <div className="timetable timetable-bg">
+      <div className="timetable-day">
+        <div className="timetable-day-row">
+          <div className="timetable-day-cell timetable-hour-cell"><span/></div>
+          {_.map(_.range(CELLS_COUNT), (i) => {
+            return (
+              <div key={i}
+                className={classnames('timetable-hour-cell', {
+                  'timetable-hour-cell-alt': i % 4 < 2,
+                })}
+              />
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default TimetableBackground;
