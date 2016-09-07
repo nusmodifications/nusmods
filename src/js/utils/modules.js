@@ -41,7 +41,7 @@ export function groupLessonsByDay(lessons) {
 
 //  Determines if two lessons of the same day overlap. Only start/end time is being checked
 export function doLessonsOverlap(lesson1, lesson2) {
-  return lesson1.StartTime <= lesson2.EndTime && lesson2.StartTime <= lesson1.EndTime;
+  return lesson1.StartTime < lesson2.EndTime && lesson2.StartTime < lesson1.EndTime;
 }
 
 //  Converts a flat array of lessons *within a day* into rows:
