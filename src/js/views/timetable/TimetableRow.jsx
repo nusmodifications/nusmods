@@ -2,7 +2,9 @@ import React, { PropTypes } from 'react';
 import _ from 'lodash';
 import classnames from 'classnames';
 
-const CELLS_COUNT = 28;
+const FIRST_HOUR = 8;
+const LAST_HOUR = 22;
+const CELLS_COUNT = (LAST_HOUR - FIRST_HOUR) * 2;
 
 const TimetableRow = (props) => {
   return (
@@ -12,7 +14,7 @@ const TimetableRow = (props) => {
         return (
           <div key={i}
             className={classnames('timetable-hour-cell', {
-              'timetable-hour-cell-alt': (i % 4 <= 1 && props.altBackground),
+              'timetable-hour-cell-alt': (i % 4 < 2 && props.altBackground),
             })}
           />
         );
@@ -23,7 +25,7 @@ const TimetableRow = (props) => {
 
 TimetableRow.propTypes = {
   day: PropTypes.string,
-  altBackground: PropTypes.bool, // For different color timetable background
+  altBackground: PropTypes.bool, // Used for timetable's striped background
 };
 
 export default TimetableRow;
