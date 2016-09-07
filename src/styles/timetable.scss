@@ -7,35 +7,6 @@ $timetable-min-width: $breakpoint;
 $timetable-border: 1px solid #ccc;
 $timetable-cell-padding: 3px;
 
-.timetable-cell {
-  $smaller-text: 0.6rem;
-
-  background-color: rgba(156, 252, 92, 0.6);
-  border-left: 2px solid #63df11;
-  font-size: $font-size-xs;
-  height: 100%;
-  line-height: 0.85rem;
-  padding-left: $timetable-cell-padding;
-  padding-top: $timetable-cell-padding;
-  text-align: left;
-
-  .cell-module-code {
-    font-weight: bold;
-  }
-
-  .cell-module-lesson-type {
-    font-size: $font-size-xxs;
-  }
-
-  .cell-module-group {
-    font-size: $font-size-xxs;
-  }
-
-  .cell-module-venue {
-    font-size: $font-size-xxs;
-  }
-}
-
 .timetable-container {
   position: relative;
 }
@@ -63,7 +34,7 @@ $timetable-cell-padding: 3px;
       height: 100%;
     }
 
-    .timetable-hour-cell-alt {
+    .timetable-cell-alt {
       background-color: #f1f1f1;
     }
   }
@@ -79,7 +50,7 @@ $timetable-cell-padding: 3px;
     display: flex;
   }
 
-  .timetable-hour-cell {
+  .timetable-cell {
     flex-basis: 0;
     flex-grow: 1;
     text-align: center;
@@ -103,7 +74,7 @@ $timetable-cell-padding: 3px;
       height: $timetable-row-height;
     }
 
-    .timetable-hour-cell {
+    .timetable-cell {
       width: 0;
     }
   }
@@ -124,8 +95,37 @@ $timetable-cell-padding: 3px;
       width: 100%;
     }
 
-    .timetable-hour-cell {
+    .timetable-cell {
       width: 100%;
+    }
+  }
+
+  .timetable-module-cell {
+    $smaller-text: 0.6rem;
+
+    background-color: rgba(156, 252, 92, 0.6);
+    border-left: 2px solid #63df11;
+    font-size: $font-size-xs;
+    height: 100%;
+    line-height: 0.85rem;
+    padding-left: $timetable-cell-padding;
+    padding-top: $timetable-cell-padding;
+    text-align: left;
+
+    .cell-module-code {
+      font-weight: bold;
+    }
+
+    .cell-module-lesson-type {
+      font-size: $font-size-xxs;
+    }
+
+    .cell-module-group {
+      font-size: $font-size-xxs;
+    }
+
+    .cell-module-venue {
+      font-size: $font-size-xxs;
     }
   }
 }

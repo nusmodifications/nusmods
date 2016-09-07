@@ -12,5 +12,5 @@ export const LESSON_TYPE_ABBREV = {
   'Seminar-Style Module Class': 'SEM',
   Tutorial: 'TUT',
   'Tutorial Type 2': 'TUT2',
-  'Tutorial Type 3': 'TUT3'
+  'Tutorial Type 3': 'TUT3',
 };

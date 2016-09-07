@@ -8,12 +8,12 @@ const TimetableBackground = () => {
     <div className="timetable timetable-bg">
       <div className="timetable-day">
         <div className="timetable-day-row">
-          <div className="timetable-day-cell timetable-hour-cell"><span/></div>
+          <div className="timetable-day-cell timetable-cell"><span/></div>
           {_.map(_.range(CELLS_COUNT), (i) => {
             return (
               <div key={i}
-                className={classnames('timetable-hour-cell', {
-                  'timetable-hour-cell-alt': i % 4 < 2,
+                className={classnames('timetable-cell', {
+                  'timetable-cell-alt': i % 4 < 2,
                 })}
               />
             );
