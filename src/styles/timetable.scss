@@ -1,8 +1,10 @@
+$breakpoint: map-get($grid-breakpoints, 'md');
+
 $timetable-background: #fff;
 $timetable-row-height: 60px;
 $timetable-width: 100%;
+$timetable-min-width: $breakpoint;
 $timetable-border: 1px solid #ccc;
-$breakpoint: map-get($grid-breakpoints, 'md');
 
 .test-cell {
   background-color: rgba(62, 182, 245, 0.4);
@@ -18,6 +20,7 @@ $breakpoint: map-get($grid-breakpoints, 'md');
 .timetable {
   align-items: stretch;
   display: flex;
+  min-width: $timetable-min-width;
   width: $timetable-width;
   z-index: 1;
 
