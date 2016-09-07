@@ -9,6 +9,6 @@ export default function (state = {}, action) {
     entities: entities(state.entities, action),
     requests: requests(state.requests, action),
     timetables: timetables(state.timetables, action, state.entities),
-    routing: routerReducer,
+    routing: routerReducer(state.routing, action),
   };
 }
