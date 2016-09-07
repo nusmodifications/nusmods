@@ -16,8 +16,13 @@ function semesterTimetable(state = defaultSemesterTimetableState, action, entiti
         const lessons = _.find(module.History, (semData) => {
           return semData.Semester === semester;
         }).Timetable;
+        const lessonsInjectModuleCode = lessons.map((lesson) => {
+          return Object.assign({}, {
+            ModuleCode: moduleCode,
+          }, lesson);
+        });
         return Object.assign({}, state, {
-          [moduleCode]: randomLessonConfiguration(lessons),
+          [moduleCode]: randomLessonConfiguration(lessonsInjectModuleCode),
         });
       })();
     case REMOVE_MODULE:

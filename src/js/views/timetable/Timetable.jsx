@@ -90,7 +90,7 @@ const Timetable = () => {
 };
 
 Timetable.propTypes = {
-  timetable: PropTypes.object,
+  lessons: PropTypes.array,
 };
 
 export default Timetable;

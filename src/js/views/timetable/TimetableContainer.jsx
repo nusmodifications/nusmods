@@ -26,7 +26,9 @@ export class TimetableContainer extends Component {
       <div>
         <h1 className="display-4">Timetable</h1>
         <br/>
-        <Timetable/>
+        <Timetable lessons={_.flatMap(this.props.semesterTimetable, (lessonType) => {
+          return _.values(lessonType);
+        }, 2)}/>
         <br/>
         <div className="row">
           <div className="col-md-6 offset-md-3">
