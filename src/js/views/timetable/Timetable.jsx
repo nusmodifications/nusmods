@@ -1,9 +1,11 @@
 import React, { PropTypes } from 'react';
 // import { connect } from 'react-redux';
+import { arrangeLessonsForWeek } from 'utils/modules';
 
 import TimetableRow from './TimetableRow';
 
-const Timetable = () => {
+const Timetable = (props) => {
+  console.log(arrangeLessonsForWeek(props.lessons));
   return (
     <div className="timetable-container">
       <div className="timetable">

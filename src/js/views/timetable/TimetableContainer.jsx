@@ -6,6 +6,7 @@ import _ from 'lodash';
 import config from 'config';
 import { addModule, removeModule } from 'actions/timetables';
 
+import { timetableLessonsArray } from 'utils/modules';
 import Timetable from './Timetable';
 
 export class TimetableContainer extends Component {
@@ -22,13 +23,13 @@ export class TimetableContainer extends Component {
       });
     const filterOptions = createFilterOptions({ options: moduleSelectOptions });
 
+    const lessons = timetableLessonsArray(this.props.semesterTimetable);
+
     return (
       <div>
         <h1 className="display-4">Timetable</h1>
         <br/>
-        <Timetable lessons={_.flatMap(this.props.semesterTimetable, (lessonType) => {
-          return _.values(lessonType);
-        }, 2)}/>
+        <Timetable lessons={lessons}/>
         <br/>
         <div className="row">
           <div className="col-md-6 offset-md-3">

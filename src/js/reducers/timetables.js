@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 import { ADD_MODULE, REMOVE_MODULE } from 'actions/timetables';
-import randomLessonConfiguration from 'utils/modules';
+import { randomLessonConfiguration } from 'utils/modules';
 
 const defaultTimetableState = {}; // Map of semester to semesterTimetable.
 const defaultSemesterTimetableState = {}; // Map of ModuleCode to timetable config for module.
