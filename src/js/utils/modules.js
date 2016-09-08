@@ -2,6 +2,7 @@ import _ from 'lodash';
 
 //  Returns a random configuration of a module's timetable lessons.
 //  Used when a module is first added.
+//  TODO: Suggest a configuration that does not clash with itself.
 export function randomLessonConfiguration(lessons) {
   return _(lessons)
     .groupBy('LessonType')
