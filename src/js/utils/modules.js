@@ -46,7 +46,7 @@ export function doLessonsOverlap(lesson1, lesson2) {
 
 //  Converts a flat array of lessons *within a day* into rows:
 //  Result invariants:
-//  - Each lesson will not overlap each other.
+//  - Each lesson will not overlap with each other.
 //  [
 //    [{ ...Lesson }, { ...Lesson }, ...],
 //    [{ ...Lesson }, ...],
@@ -70,12 +70,27 @@ export function arrangeLessonsWithinDay(lessons) {
         return;
       }
     }
+    // No existing rows are available to fit this lesson in. Append a new row.
     rows.push([lesson]);
   });
 
   return rows;
 }
 
+//  Accepts a flat array of lessons and group them by day and rows with each day
+//  for rendering on the timetable.
+//  Clashes in timetable will go onto the next row within that day.
+//  {
+//    Monday: [
+//      [{ ...Lesson }, { ...Lesson }, ...],
+//    ],
+//    Tuesday: [
+//      [{ ...Lesson }, { ...Lesson }, { ...Lesson }, ...],
+//      [{ ...Lesson }, { ...Lesson },],
+//      [{ ...Lesson }, ...],
+//    ],
+//    ...
+//  }
 export function arrangeLessonsForWeek(lessons) {
   const dayLessons = groupLessonsByDay(lessons);
   return _.mapValues(dayLessons, (dayLesson) => {
