@@ -1,14 +1,14 @@
 {
-  "name": "webpack-react-starter",
+  "name": "react-redux-starter",
   "version": "0.0.1",
-  "description": "Webpack React Starter Kit",
+  "description": "Barebones React Redux starter kit on Webpack",
   "main": "index.js",
   "scripts": {
     "start": "NODE_ENV=development webpack-dev-server --open",
     "build": "NODE_ENV=production webpack"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Tay Yang Shun",
+  "license": "MIT",
   "devDependencies": {
     "babel-core": "^6.10.4",
     "babel-loader": "^6.2.4",
