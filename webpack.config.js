@@ -77,7 +77,7 @@ const common = {
       },
       {
         test: /\.(jpe?g|png|svg)$/,
-        loader: 'file?name=[path][name].[hash].[ext]',
+        loader: 'file?name=img/[name].[hash].[ext]',
         include: PATHS.images
       }
     ]
