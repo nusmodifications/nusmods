@@ -98,13 +98,18 @@ var LessonView = Marionette.ItemView.extend({
         '.m' + startTime.slice(2) + ':empty');
       if (tdStart.length) {
         var endTime = this.model.get('EndTime');
+        endTime = endTime === '2359' ? '0000' : endTime;
         var tdAfterEnd = tdStart.nextAll('.h' + endTime.slice(0, 2) +
           '.m' + endTime.slice(2));
-        // 0000 EndTime has never been seen but just in case.
         if (tdAfterEnd.length || endTime === '0000') {
           this.detached = tdStart.nextUntil(tdAfterEnd, 'td:empty');
           if (this.detached.length === this.model.get('duration') - 1) {
             tdStart.attr('colspan', this.model.get('duration')).html(this.$el);
+            this.detached.detach();
+            break;
+          // no cell beyond 0000, so lessons ending at this timing must extend themselves
+          } else if (endTime === '0000') {
+            tdStart.attr('colspan', this.model.get('duration') + 1).html(this.$el);
             this.detached.detach();
             break;
           }
