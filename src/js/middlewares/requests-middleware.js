@@ -15,7 +15,7 @@ function makeRequest(request, accessToken) {
     .then((response) => response.data);
 }
 
-export const API_REQUEST = Symbol('API_REQUEST');
+export const API_REQUEST = 'API_REQUEST';
 export const REQUEST = '_REQUEST';
 export const SUCCESS = '_SUCCESS';
 export const FAILURE = '_FAILURE';
@@ -33,7 +33,7 @@ export default (store) => (next) => (action) => {
 
   // swap the action content and structured api results
   function constructActionWith(data) {
-    const finalAction = Object.assign({}, action, data);
+    const finalAction = _.assign({}, action, data);
     delete finalAction[API_REQUEST];
     return finalAction;
   }
