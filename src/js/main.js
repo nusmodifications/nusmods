@@ -28,5 +28,5 @@ const history = syncHistoryWithStore(useRouterHistory(createHistory)({
   basename: '/',
 }), store);
 
-ReactDOM.render(routes(store, history),
+ReactDOM.render(routes({ store, history }),
   document.getElementById('app'));

@@ -9,7 +9,7 @@ import TimetableContainer from 'views/timetable/TimetableContainer';
 import ModuleFinderContainer from 'views/modules/ModuleFinderContainer';
 import ModulePageContainer from 'views/modules/ModulePageContainer';
 
-export default function (store, history) {
+export default function ({ store, history }) {
   return (
     <Provider store={store}>
       <Router history={history}>
