@@ -10,10 +10,13 @@ import { fetchModuleList, loadModule } from 'actions/moduleBank';
 export class AppContainer extends Component {
   componentDidMount() {
     this.props.fetchModuleList();
-    Object.keys(this.props.timetables[config.semester]).forEach((moduleCode) => {
-      // TODO: Handle failed loading of module.
-      this.props.loadModule(moduleCode);
-    });
+    const semesterTimetable = this.props.timetables[config.semester];
+    if (semesterTimetable) {
+      Object.keys(semesterTimetable).forEach((moduleCode) => {
+        // TODO: Handle failed loading of module.
+        this.props.loadModule(moduleCode);
+      });
+    }
   }
 
   render() {
