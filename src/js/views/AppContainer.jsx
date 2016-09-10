@@ -4,11 +4,16 @@ import { connect } from 'react-redux';
 import VirtualizedSelect from 'react-virtualized-select';
 import createFilterOptions from 'react-select-fast-filter-options';
 
-import { fetchModuleList } from 'actions/moduleBank';
+import config from 'config';
+import { fetchModuleList, loadModule } from 'actions/moduleBank';
 
 export class AppContainer extends Component {
   componentDidMount() {
     this.props.fetchModuleList();
+    Object.keys(this.props.timetables[config.semester]).forEach((moduleCode) => {
+      // TODO: Handle failed loading of module.
+      this.props.loadModule(moduleCode);
+    });
   }
 
   render() {
@@ -48,8 +53,10 @@ export class AppContainer extends Component {
 
 AppContainer.propTypes = {
   children: PropTypes.object,
-  moduleListSelect: PropTypes.array,
+  loadModule: PropTypes.func,
   fetchModuleList: PropTypes.func,
+  moduleListSelect: PropTypes.array,
+  timetables: PropTypes.object,
   fetchModuleListRequest: PropTypes.object,
 };
 
@@ -60,6 +67,7 @@ AppContainer.contextTypes = {
 function mapStateToProps(state) {
   return {
     moduleListSelect: state.entities.moduleBank.moduleListSelect,
+    timetables: state.timetables,
     fetchModuleListRequest: state.requests.fetchModuleListRequest || {},
   };
 }
@@ -68,5 +76,6 @@ export default connect(
   mapStateToProps,
   {
     fetchModuleList,
+    loadModule,
   }
 )(AppContainer);
