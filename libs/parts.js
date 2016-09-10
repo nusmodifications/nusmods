@@ -50,7 +50,7 @@ exports.setupCSS = function (paths) {
     module: {
       loaders: [
         {
-          test: /\.scss$/,
+          test: /\.s?css$/,
           loaders: ['style', 'css', 'postcss', 'sass'],
           include: paths
         }

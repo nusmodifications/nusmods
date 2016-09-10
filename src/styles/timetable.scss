@@ -54,6 +54,7 @@ $timetable-cell-padding: 3px;
     flex-basis: 0;
     flex-grow: 1;
     text-align: center;
+    height: 100%;
 
     &.timetable-day-cell {
       flex-grow: 2;
