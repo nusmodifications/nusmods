@@ -1,9 +1,6 @@
 import React from 'react';
-import { Router, Route, IndexRedirect, useRouterHistory } from 'react-router';
-import { createHistory } from 'history';
+import { Router, Route, IndexRedirect } from 'react-router';
 import { Provider } from 'react-redux';
-import { syncHistoryWithStore } from 'react-router-redux';
-import configureStore from 'stores/configure-store';
 
 import AppContainer from 'views/AppContainer';
 import NotFoundPage from 'views/NotFoundPage';
@@ -12,12 +9,7 @@ import TimetableContainer from 'views/timetable/TimetableContainer';
 import ModuleFinderContainer from 'views/modules/ModuleFinderContainer';
 import ModulePageContainer from 'views/modules/ModulePageContainer';
 
-const store = configureStore();
-const history = syncHistoryWithStore(useRouterHistory(createHistory)({
-  basename: '/',
-}), store);
-
-export default function () {
+export default function (store, history) {
   return (
     <Provider store={store}>
       <Router history={history}>
