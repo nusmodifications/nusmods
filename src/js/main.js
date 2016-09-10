@@ -15,7 +15,8 @@ const store = configureStore(persistedState);
 store.subscribe(_.throttle(() => {
   const storeState = store.getState();
   // TODO: Possibly write our own utility pickNestedKeys function to
-  //       pick out the keys from the store that we want to persist.
+  //       pick out the keys (including nested keys) from the store
+  //       that we want to persist.
   storage.saveState({
     entities: {
       moduleBank: storeState.entities.moduleBank,

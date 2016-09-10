@@ -85,6 +85,8 @@ function mapStateToProps(state) {
   const semester = config.semester;
   return {
     semester,
+    // TODO: Shift selector into reducer
+    //       https://egghead.io/lessons/javascript-redux-colocating-selectors-with-reducers
     semesterModuleList: state.entities.moduleBank.moduleList.filter((module) => {
       return _.includes(module.Semesters, semester);
     }),

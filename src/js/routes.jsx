@@ -9,6 +9,7 @@ import TimetableContainer from 'views/timetable/TimetableContainer';
 import ModuleFinderContainer from 'views/modules/ModuleFinderContainer';
 import ModulePageContainer from 'views/modules/ModulePageContainer';
 
+/* eslint-disable react/prop-types */
 export default function ({ store, history }) {
   return (
     <Provider store={store}>
