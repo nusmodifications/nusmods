@@ -5,18 +5,22 @@ import { arrangeLessonsForWeek } from 'utils/modules';
 import TimetableBackground from './TimetableBackground';
 import TimetableDayRow from './TimetableDayRow';
 
-const WEEKDAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+const SCHOOLDAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 const Timetable = (props) => {
   const arrangedLessons = arrangeLessonsForWeek(props.lessons);
   return (
     <div className="timetable-container">
       <div className="timetable">
-        {WEEKDAYS.map((weekday) => {
+        {SCHOOLDAYS.map((day) => {
+          const dayDisplayText = day.substring(0, 3);
+          if (day === 'Saturday' && !arrangedLessons.Saturday) {
+            return null;
+          }
           return (
-            <TimetableDayRow key={weekday}
-              day={weekday.substring(0, 3)}
-              dayLessonRows={arrangedLessons[weekday]}
+            <TimetableDayRow key={dayDisplayText}
+              day={dayDisplayText}
+              dayLessonRows={arrangedLessons[day]}
             />
           );
         })}
