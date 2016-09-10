@@ -1,13 +1,12 @@
 {
-  "name": "react-redux-starter",
-  "version": "0.0.1",
-  "description": "Barebones React Redux starter kit on Webpack",
-  "main": "index.js",
+  "name": "nusmods",
+  "version": "3.0.0-alpha",
+  "description": "NUSMods v3",
   "scripts": {
     "start": "NODE_ENV=development webpack-dev-server --open",
     "build": "NODE_ENV=production webpack"
   },
-  "author": "Tay Yang Shun",
+  "author": "NUSModifications",
   "license": "MIT",
   "devDependencies": {
     "babel-core": "^6.10.4",
