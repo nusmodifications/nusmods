@@ -4,7 +4,7 @@ import rootReducer from 'reducers';
 import requestsMiddleware from 'middlewares/requests-middleware';
 
 // Creates a preconfigured store for this example.
-export default function configureStore() {
+export default function configureStore(defaultState) {
   const middlewares = [thunk, requestsMiddleware];
   if (process.env.NODE_ENV === 'development') {
     /* eslint-disable */
@@ -17,5 +17,5 @@ export default function configureStore() {
     });
     middlewares.push(logger);
   }
-  return createStore(rootReducer, applyMiddleware(...middlewares));
+  return createStore(rootReducer, defaultState, applyMiddleware(...middlewares));
 }

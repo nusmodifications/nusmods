@@ -1,11 +1,6 @@
 import _ from 'lodash';
 
 import { ADD_MODULE, REMOVE_MODULE } from 'actions/timetables';
-import storage from 'storage';
-
-// Map of semester to semesterTimetable.
-// TODO: Extract timetable retrieval and persistance logic.
-const defaultTimetableState = storage.getTimetable();
 
 // Map of ModuleCode to timetable config for module.
 const defaultSemesterTimetableState = {};
@@ -25,6 +20,9 @@ function semesterTimetable(state = defaultSemesterTimetableState, action) {
   }
 }
 
+// Map of semester to semesterTimetable.
+const defaultTimetableState = {};
+
 function timetables(state = defaultTimetableState, action) {
   switch (action.type) {
     case ADD_MODULE:
@@ -34,7 +32,6 @@ function timetables(state = defaultTimetableState, action) {
           ...state,
           [action.payload.semester]: semesterTimetable(state[action.payload.semester], action),
         };
-        storage.setTimetable(newState);
         return newState;
       })();
     default:

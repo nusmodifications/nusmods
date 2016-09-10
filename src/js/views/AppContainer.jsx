@@ -45,9 +45,7 @@ export class AppContainer extends Component {
             </ul>
           </nav>
           <br />
-          {this.props.fetchModuleListRequest.isPending ? <p>Loading...</p> : null}
-          {this.props.fetchModuleListRequest.isFailure ? <p>An error occurred.</p> : null}
-          {this.props.fetchModuleListRequest.isSuccessful ? this.props.children : null}
+          {this.props.children}
         </div>
       </div>
     );

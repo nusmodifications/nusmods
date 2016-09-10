@@ -4,26 +4,45 @@ import _ from 'lodash';
 // TODO: Use an in-memory storage for environments where localStorage is not present,
 //       like private mode on Safari.
 function setItem(key, value) {
-  localStorage.setItem(key, _.isString(value) ? value : JSON.stringify(value));
+  try {
+    localStorage.setItem(key, _.isString(value) ? value : JSON.stringify(value));
+  } catch (err) {
+    // TODO: Report errors to Sentry.
+  }
 }
 
 function getItem(key) {
-  const value = localStorage.getItem(key);
+  let value;
   try {
-    return JSON.parse(value);
+    value = localStorage.getItem(key);
+    if (value && value !== '') {
+      return JSON.parse(value);
+    }
+    return undefined;
   } catch (err) {
     return value;
   }
 }
 
-const timetableKey = 'timetable';
+function removeItem(key) {
+  try {
+    localStorage.removeItem(key);
+  } catch (err) {
+    // TODO: Report errors to Sentry.
+  }
+}
+
+const stateKey = 'reduxState';
 
 const storage = {
-  getTimetable: () => {
-    return getItem(timetableKey) || {};
+  setItem,
+  getItem,
+  removeItem,
+  loadState: () => {
+    return getItem(stateKey) || {};
   },
-  setTimetable: (timetable) => {
-    setItem(timetableKey, timetable);
+  saveState: (state) => {
+    setItem(stateKey, state);
   },
 };
 
