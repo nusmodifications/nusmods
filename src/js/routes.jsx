@@ -10,7 +10,7 @@ import NotFoundPage from 'views/NotFoundPage';
 
 import TimetableContainer from 'views/timetable/TimetableContainer';
 import ModuleFinderContainer from 'views/modules/ModuleFinderContainer';
-import ModulePage from 'views/modules/ModulePage';
+import ModulePageContainer from 'views/modules/ModulePageContainer';
 
 const store = configureStore();
 const history = syncHistoryWithStore(useRouterHistory(createHistory)({
@@ -25,7 +25,7 @@ export default function () {
           <IndexRedirect to="/timetable"/>
           <Route path="/timetable" component={TimetableContainer}/>
           <Route path="/modules" component={ModuleFinderContainer}/>
-          <Route path="/modules/:moduleCode" component={ModulePage}/>
+          <Route path="/modules/:moduleCode" component={ModulePageContainer}/>
           <Route path="*" component={NotFoundPage}/>
         </Route>
       </Router>
