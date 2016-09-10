@@ -1,5 +1,5 @@
 import { API_REQUEST } from 'middlewares/requests-middleware';
-import NUSModsApi from 'utils/nusmods-api';
+import NUSModsApi from 'apis/nusmods';
 
 export const FETCH_MODULE_LIST = 'FETCH_MODULE_LIST';
 export function fetchModuleList() {
@@ -34,7 +34,6 @@ export function loadModule(moduleCode) {
     if (getState().entities.moduleBank.modules[moduleCode]) {
       return Promise.resolve();
     }
-
     return dispatch(fetchModule(moduleCode));
   };
 }
