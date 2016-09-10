@@ -33,7 +33,6 @@
     "html-webpack-plugin": "^2.22.0",
     "node-sass": "^3.8.0",
     "postcss-loader": "^0.13.0",
-    "precss": "^1.4.0",
     "sass-loader": "^4.0.0",
     "style-loader": "^0.13.1",
     "stylelint-config-standard": "^13.0.0",
