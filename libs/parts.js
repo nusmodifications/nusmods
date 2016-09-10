@@ -1,7 +1,6 @@
 const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const precss = require('precss');
 const autoprefixer = require('autoprefixer');
 
 exports.devServer = function (options) {
@@ -58,7 +57,7 @@ exports.setupCSS = function (paths) {
       ]
     },
     postcss: function () {
-      return [precss, autoprefixer];
+      return [autoprefixer];
     }
   };
 }
