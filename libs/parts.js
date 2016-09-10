@@ -1,6 +1,8 @@
 const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const precss = require('precss');
+const autoprefixer = require('autoprefixer');
 
 exports.devServer = function (options) {
   return {
@@ -50,15 +52,18 @@ exports.setupCSS = function (paths) {
       loaders: [
         {
           test: /\.scss$/,
-          loaders: ['style', 'css', 'sass'],
+          loaders: ['style', 'css', 'postcss', 'sass'],
           include: paths
         }
       ]
+    },
+    postcss: function () {
+      return [precss, autoprefixer];
     }
   };
 }
 
-exports.minify = function() {
+exports.minify = function () {
   return {
     plugins: [
       new webpack.optimize.UglifyJsPlugin({
