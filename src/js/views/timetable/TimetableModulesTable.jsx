@@ -32,7 +32,7 @@ const TimetableModulesTable = (props) => {
 };
 
 TimetableModulesTable.propTypes = {
-  semester: PropTypes.semester,
+  semester: PropTypes.number,
   modules: PropTypes.array,
 };
 
