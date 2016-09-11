@@ -103,7 +103,7 @@ export class TimetableContainer extends Component {
     });
 
     return (
-      <div onClick={() => {
+      <div className={`theme-${this.props.theme}`} onClick={() => {
         if (this.props.activeLesson) {
           this.props.cancelModifyLesson();
         }
@@ -143,6 +143,7 @@ TimetableContainer.propTypes = {
   semesterModuleList: PropTypes.array,
   semesterTimetable: PropTypes.object,
   modules: PropTypes.object,
+  theme: PropTypes.string,
   colors: PropTypes.object,
   activeLesson: PropTypes.object,
 
@@ -168,6 +169,7 @@ function mapStateToProps(state) {
     }),
     semesterTimetable: state.timetables[semester] || {},
     activeLesson: state.app.activeLesson,
+    theme: state.theme.id,
     colors: state.theme.colors,
     modules: state.entities.moduleBank.modules,
   };

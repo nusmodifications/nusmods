@@ -1,0 +1,25 @@
+.settings-container {
+  .theme-item {
+    border-radius: 6px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    transition: background-color 0.3s ease-out;
+
+    &:hover,
+    &.is-selected {
+      background-color: #eee;
+    }
+  }
+}
+
+.theme-color-list {
+  $number-colors: 8;
+
+  .theme-color-item {
+    $size: 100% / $number-colors;
+
+    display: inline-block;
+    padding-bottom: $size;
+    width: $size;
+  }
+}

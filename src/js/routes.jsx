@@ -8,6 +8,7 @@ import NotFoundPage from 'views/NotFoundPage';
 import TimetableContainer from 'views/timetable/TimetableContainer';
 import ModuleFinderContainer from 'views/modules/ModuleFinderContainer';
 import ModulePageContainer from 'views/modules/ModulePageContainer';
+import SettingsContainer from 'views/settings/SettingsContainer';
 
 /* eslint-disable react/prop-types */
 export default function ({ store, history }) {
@@ -19,6 +20,7 @@ export default function ({ store, history }) {
           <Route path="/timetable" component={TimetableContainer}/>
           <Route path="/modules" component={ModuleFinderContainer}/>
           <Route path="/modules/:moduleCode" component={ModulePageContainer}/>
+          <Route path="/settings" component={SettingsContainer}/>
           <Route path="*" component={NotFoundPage}/>
         </Route>
       </Router>

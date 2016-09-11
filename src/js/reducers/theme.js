@@ -2,12 +2,12 @@ import _ from 'lodash';
 import { ADD_MODULE, REMOVE_MODULE } from 'actions/timetables';
 
 const defaultThemeState = {
-  // Theme is defined in `themes.scss`
-  theme: 'ocean',
+  // Available themes are defined in `themes.scss`
+  id: 'ocean',
   // Mapping of module to color index [0-7]
   colors: {},
 };
-const NUM_DIFFERENT_COLORS = 8;
+export const NUM_DIFFERENT_COLORS = 8;
 
 // Returns a new index that is not present in the current color index.
 // If there are more than NUM_DIFFERENT_COLORS modules already present,

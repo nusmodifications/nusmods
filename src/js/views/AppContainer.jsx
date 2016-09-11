@@ -22,7 +22,7 @@ export class AppContainer extends Component {
   render() {
     const filterOptions = createFilterOptions({ options: this.props.moduleListSelect });
     return (
-      <div className="app-container theme-ocean">
+      <div className="app-container">
         <div className="container">
           <nav className="navbar navbar-light bg-faded">
             <Link className="navbar-brand" to="/">NUSMods</Link>
@@ -41,6 +41,9 @@ export class AppContainer extends Component {
               </li>
               <li className="nav-item">
                 <Link className="nav-link" to="/modules">Modules</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/settings">Settings</Link>
               </li>
             </ul>
           </nav>
