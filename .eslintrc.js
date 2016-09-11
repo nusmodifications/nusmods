@@ -26,6 +26,8 @@ module.exports = {
     // It just looks nicer without the space.
     "react/jsx-space-before-closing": "off",
     // TODO: Remove the following rule when eslint-config-airbnb updates to use "import/extensions rule from eslint-plugin-import"
-    "react/require-extension": "off"
+    "react/require-extension": "off",
+    // Let git handle the linebreaks instead
+    "linebreak-style": "off",
   }
 }
