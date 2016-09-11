@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import { Link } from 'react-router';
 import _ from 'lodash';
 
 import { getExamTime } from 'utils/modules';
@@ -10,8 +11,11 @@ const TimetableModulesTable = (props) => {
         {_.map(props.modules, (module) => {
           return (
             <tr key={module.ModuleCode}>
-              <td>{module.ModuleCode}</td>
-              <td>{module.ModuleTitle}</td>
+              <td>
+                <Link to={`/modules/${module.ModuleCode}`}>
+                  {module.ModuleCode} {module.ModuleTitle}
+                </Link>
+              </td>
               <td>{module.ModuleCredit}</td>
               <td>{getExamTime(module, props.semester)}</td>
               <td>
