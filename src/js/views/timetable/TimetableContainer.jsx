@@ -4,9 +4,9 @@ import VirtualizedSelect from 'react-virtualized-select';
 import createFilterOptions from 'react-select-fast-filter-options';
 import _ from 'lodash';
 import config from 'config';
-import { addModule, removeModule } from 'actions/timetables';
 
-import { timetableLessonsArray } from 'utils/timetable';
+import { addModule, removeModule } from 'actions/timetables';
+import { timetableLessonsArray, arrangeLessonsForWeek } from 'utils/timetable';
 import Timetable from './Timetable';
 
 export class TimetableContainer extends Component {
@@ -24,12 +24,12 @@ export class TimetableContainer extends Component {
     const filterOptions = createFilterOptions({ options: moduleSelectOptions });
 
     const lessons = timetableLessonsArray(this.props.semesterTimetable);
-
+    const arrangedLessons = arrangeLessonsForWeek(lessons);
     return (
       <div>
         <h1 className="display-4">Timetable</h1>
         <br/>
-        <Timetable lessons={lessons}/>
+        <Timetable lessons={arrangedLessons}/>
         <br/>
         <div className="row">
           <div className="col-md-6 offset-md-3">
