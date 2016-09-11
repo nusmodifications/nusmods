@@ -8,6 +8,7 @@ $timetable-min-width: $breakpoint;
 $timetable-border: 1px solid #ccc;
 $timetable-cell-padding: 5px;
 $timetable-module-cell-border-radius: 8px;
+$timetable-cell-opacity: 0.5;
 
 .timetable-container {
   position: relative;
@@ -124,10 +125,24 @@ $timetable-module-cell-border-radius: 8px;
     pointer-events: none;
     text-align: left;
 
-    &.is-cell-modifiable {
+    &.is-modifiable {
       border-radius: $timetable-module-cell-border-radius;
-      cursor: grab;
+      cursor: pointer;
       pointer-events: auto;
+    }
+
+    &.is-available {
+      opacity: $timetable-cell-opacity;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+
+    &.is-active {
+      animation-duration: 1.5s;
+      animation-iteration-count: infinite;
+      animation-name: pulse;
     }
 
     .cell-module-code {

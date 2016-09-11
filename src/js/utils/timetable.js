@@ -45,6 +45,11 @@ export function randomLessonConfig(lessons) {
     .value();
 }
 
+// Filters a flat array of lessons and returns the lessons corresponding to lessonType.
+export function lessonsForLessonType(lessons, lessonType) {
+  return _.filter(lessons, (lesson) => lesson.LessonType === lessonType);
+}
+
 //  Converts from timetable config format to flat array of lessons.
 //  {
 //    [ModuleCode]: {

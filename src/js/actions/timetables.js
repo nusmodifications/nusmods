@@ -40,3 +40,20 @@ export function removeModule(semester, moduleCode) {
     },
   };
 }
+
+export const MODIFY_LESSON = 'MODIFY_LESSON';
+export function modifyLesson(activeLesson) {
+  return {
+    type: MODIFY_LESSON,
+    payload: {
+      activeLesson,
+    },
+  };
+}
+
+export const CANCEL_MODIFY_LESSON = 'CANCEL_MODIFY_LESSON';
+export function cancelModifyLesson() {
+  return {
+    type: CANCEL_MODIFY_LESSON,
+  };
+}

@@ -11,10 +11,13 @@ const TimetableCell = (props) => {
     <div className="timetable-cell" style={widthStyle}>
       {lesson ?
         <div className={classnames('timetable-module-cell', {
-          'is-cell-modifiable': lesson.isModifiable,
+          'is-modifiable': lesson.isModifiable,
+          'is-available': lesson.isAvailable,
+          'is-active': lesson.isActive,
         })}
-          onClick={() => {
-            props.onModifyCell(lesson.ModuleCode, lesson.LessonType, lesson.ClassNo);
+          onClick={(event) => {
+            event.stopPropagation();
+            props.onModifyCell(lesson);
           }}
         >
           <div className="cell-module-code">{lesson.ModuleCode}</div>
