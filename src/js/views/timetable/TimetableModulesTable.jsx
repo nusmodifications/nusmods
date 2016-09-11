@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react';
 import _ from 'lodash';
 
+import { getModuleHistory } from 'utils/modules';
+
 const TimetableModulesTable = (props) => {
   return (
     <table className="table table-bordered">
@@ -10,6 +12,8 @@ const TimetableModulesTable = (props) => {
             <tr key={module.ModuleCode}>
               <td>{module.ModuleCode}</td>
               <td>{module.ModuleTitle}</td>
+              <td>{module.ModuleCredit}</td>
+              <td>{_.get(getModuleHistory(module, props.semester), 'ExamDate', '-')}</td>
               <td>
                 <button className="btn btn-sm btn-outline-danger"
                   onClick={() => {
@@ -28,6 +32,7 @@ const TimetableModulesTable = (props) => {
 };
 
 TimetableModulesTable.propTypes = {
+  semester: PropTypes.semester,
   modules: PropTypes.array,
 };
 

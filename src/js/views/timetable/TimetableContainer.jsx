@@ -107,7 +107,7 @@ export class TimetableContainer extends Component {
         />
         <br/>
         <div className="row">
-          <div className="col-md-6 offset-md-3">
+          <div className="col-md-12">
             <VirtualizedSelect options={moduleSelectOptions}
               filterOptions={filterOptions}
               onChange={(module) => {
@@ -120,6 +120,7 @@ export class TimetableContainer extends Component {
               }).map((moduleCode) => {
                 return this.props.modules[moduleCode] || {};
               })}
+              semester={this.props.semester}
               onRemoveModule={(moduleCode) => {
                 this.props.removeModule(this.props.semester, moduleCode);
               }}
