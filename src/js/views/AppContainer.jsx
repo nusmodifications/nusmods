@@ -3,6 +3,8 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import VirtualizedSelect from 'react-virtualized-select';
 import createFilterOptions from 'react-select-fast-filter-options';
+import { PrefixIndexStrategy } from 'js-search';
+import { ModulesTokenizer } from 'utils/modules-search';
 
 import config from 'config';
 import { fetchModuleList, loadModule } from 'actions/moduleBank';
@@ -20,7 +22,11 @@ export class AppContainer extends Component {
   }
 
   render() {
-    const filterOptions = createFilterOptions({ options: this.props.moduleListSelect });
+    const filterOptions = createFilterOptions({
+      options: this.props.moduleListSelect,
+      indexStrategy: new PrefixIndexStrategy(),
+      tokenizer: new ModulesTokenizer(),
+    });
     return (
       <div className="app-container">
         <div className="container">
