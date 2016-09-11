@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import _ from 'lodash';
 
-import { getExamTime } from 'utils/modules';
+import { getExamTime, modulePagePath } from 'utils/modules';
 
 const TimetableModulesTable = (props) => {
   return (
@@ -12,7 +12,7 @@ const TimetableModulesTable = (props) => {
           return (
             <tr key={module.ModuleCode}>
               <td>
-                <Link to={`/modules/${module.ModuleCode}`}>
+                <Link to={modulePagePath(module.ModuleCode)}>
                   {module.ModuleCode} {module.ModuleTitle}
                 </Link>
               </td>

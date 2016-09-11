@@ -3,6 +3,10 @@ import moment from 'moment';
 
 const DATE_FORMAT = 'Do MMM YYYY h:mm A';
 
+export function modulePagePath(moduleCode) {
+  return `/modules/${moduleCode}`;
+}
+
 // Returns semester specific details such as exam date and timetable.
 export function getModuleHistory(module, semester) {
   return _.find(module.History, (semData) => {
