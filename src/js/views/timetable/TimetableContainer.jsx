@@ -6,7 +6,11 @@ import _ from 'lodash';
 import config from 'config';
 
 import { addModule, removeModule } from 'actions/timetables';
-import { timetableLessonsArray, arrangeLessonsForWeek } from 'utils/timetable';
+import {
+  timetableLessonsArray,
+  arrangeLessonsForWeek,
+  areOtherClassesAvailable,
+} from 'utils/timetable';
 import Timetable from './Timetable';
 
 export class TimetableContainer extends Component {
@@ -25,11 +29,27 @@ export class TimetableContainer extends Component {
 
     const lessons = timetableLessonsArray(this.props.semesterTimetable);
     const arrangedLessons = arrangeLessonsForWeek(lessons);
+
+    const arrangedLessonsWithModifiableFlag = _.mapValues(arrangedLessons, (dayRows) => {
+      return _.map(dayRows, (row) => {
+        return _.map(row, (lesson) => {
+          const module = this.props.modules[lesson.ModuleCode];
+          const moduleLessons = _.find(module.History, (semData) => {
+            return semData.Semester === this.props.semester;
+          }).Timetable;
+          return {
+            ...lesson,
+            isModifiable: areOtherClassesAvailable(moduleLessons, lesson.LessonType),
+          };
+        });
+      });
+    });
+
     return (
       <div>
         <h1 className="display-4">Timetable</h1>
         <br/>
-        <Timetable lessons={arrangedLessons}/>
+        <Timetable lessons={arrangedLessonsWithModifiableFlag}/>
         <br/>
         <div className="row">
           <div className="col-md-6 offset-md-3">

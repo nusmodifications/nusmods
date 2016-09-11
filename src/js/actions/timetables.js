@@ -12,7 +12,11 @@ export function addModule(semester, moduleCode) {
         return semData.Semester === semester;
       }).Timetable;
       const lessonsIncludingModuleCode = lessons.map((lesson) => {
-        return { ModuleCode: moduleCode, ...lesson };
+        return {
+          ...lesson,
+          ModuleCode: moduleCode,
+          ModuleTitle: module.ModuleTitle,
+        };
       });
       return dispatch({
         type: ADD_MODULE,

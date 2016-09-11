@@ -128,3 +128,14 @@ export function arrangeLessonsForWeek(lessons) {
     return arrangeLessonsWithinDay(dayLesson);
   });
 }
+
+//  Determines if a lesson on the timetable can be modifiable / dragged around.
+//  Condition for this is that there are multiple ClassNo for all the lessons in a LessonType.
+export function areOtherClassesAvailable(moduleLessons, lessonType) {
+  const lessonTypeGroups = _.groupBy(moduleLessons, 'LessonType');
+  if (!lessonTypeGroups[lessonType]) {
+    // No such LessonType.
+    return false;
+  }
+  return Object.keys(_.groupBy(lessonTypeGroups[lessonType], 'ClassNo')).length > 1;
+}

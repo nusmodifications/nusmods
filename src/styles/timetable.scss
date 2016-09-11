@@ -6,7 +6,8 @@ $timetable-row-margin: 2px;
 $timetable-width: 100%;
 $timetable-min-width: $breakpoint;
 $timetable-border: 1px solid #ccc;
-$timetable-cell-padding: 3px;
+$timetable-cell-padding: 5px;
+$timetable-module-cell-border-radius: 8px;
 
 .timetable-container {
   position: relative;
@@ -54,7 +55,6 @@ $timetable-cell-padding: 3px;
   .timetable-cell {
     flex-basis: 0;
     flex-grow: 1;
-    height: 100%;
     text-align: center;
 
     &.timetable-day-cell {
@@ -73,7 +73,8 @@ $timetable-cell-padding: 3px;
 
     .timetable-day-row {
       flex-direction: row;
-      height: $timetable-row-height;
+      height: auto;
+      min-height: $timetable-row-height;
 
       &:not(:first-child) {
         margin-top: $timetable-row-margin;
@@ -115,25 +116,25 @@ $timetable-cell-padding: 3px;
 
     background-color: rgba(156, 252, 92, 0.6);
     border-left: 2px solid #63df11;
+    cursor: not-allowed;
     font-size: $font-size-xs;
     height: 100%;
     line-height: 0.85rem;
-    padding-left: $timetable-cell-padding;
-    padding-top: $timetable-cell-padding;
+    padding: $timetable-cell-padding;
     text-align: left;
+
+    &.is-cell-modifiable {
+      border-radius: $timetable-module-cell-border-radius;
+      cursor: grab;
+    }
 
     .cell-module-code {
       font-weight: bold;
     }
 
-    .cell-module-lesson-type {
-      font-size: $font-size-xxs;
-    }
-
-    .cell-module-group {
-      font-size: $font-size-xxs;
-    }
-
+    .cell-module-lesson-type,
+    .cell-module-group,
+    .cell-module-class,
     .cell-module-venue {
       font-size: $font-size-xxs;
     }
