@@ -1,14 +1,15 @@
 import _ from 'lodash';
 
-// Returns a flat array of lessons of a module for the corresponding semester.
-export function getModuleTimetable(module, semester) {
-  return _.get(getModuleHistory(module, semester), 'Timetable');
-}
-
+// Returns semester specific details such as exam date and timetable.
 export function getModuleHistory(module, semester) {
   return _.find(module.History, (semData) => {
     return semData.Semester === semester;
   });
+}
+
+// Returns a flat array of lessons of a module for the corresponding semester.
+export function getModuleTimetable(module, semester) {
+  return _.get(getModuleHistory(module, semester), 'Timetable');
 }
 
 // Do these two lessons belong to the same class?
