@@ -45,7 +45,12 @@ export class AppContainer extends Component {
             </ul>
           </nav>
           <br />
-          {this.props.children}
+          {this.props.fetchModuleListRequest.isPending && !this.props.moduleList.length ?
+            <p>Loading...</p> : null
+          }
+          {this.props.fetchModuleListRequest.isSuccessful || this.props.moduleList.length ?
+            this.props.children : null
+          }
         </div>
       </div>
     );
@@ -56,6 +61,7 @@ AppContainer.propTypes = {
   children: PropTypes.object,
   loadModule: PropTypes.func,
   fetchModuleList: PropTypes.func,
+  moduleList: PropTypes.array,
   moduleListSelect: PropTypes.array,
   timetables: PropTypes.object,
   fetchModuleListRequest: PropTypes.object,
@@ -67,6 +73,7 @@ AppContainer.contextTypes = {
 
 function mapStateToProps(state) {
   return {
+    moduleList: state.entities.moduleBank.moduleList,
     moduleListSelect: state.entities.moduleBank.moduleListSelect,
     timetables: state.timetables,
     fetchModuleListRequest: state.requests.fetchModuleListRequest || {},
