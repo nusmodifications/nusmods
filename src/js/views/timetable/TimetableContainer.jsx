@@ -20,7 +20,9 @@ import {
   areOtherClassesAvailable,
   lessonsForLessonType,
 } from 'utils/timetable';
+
 import Timetable from './Timetable';
+import TimetableModulesTable from './TimetableModulesTable';
 
 export class TimetableContainer extends Component {
   constructor(props) {
@@ -112,28 +114,16 @@ export class TimetableContainer extends Component {
                 this.props.addModule(this.props.semester, module.value);
               }}
             />
-            <table className="table table-bordered">
-              <tbody>
-                {_.map(Object.keys(this.props.semesterTimetable), (moduleCode) => {
-                  const module = this.props.modules[moduleCode] || {};
-                  return (
-                    <tr key={moduleCode}>
-                      <td>{module.ModuleCode}</td>
-                      <td>{module.ModuleTitle}</td>
-                      <td>
-                        <button className="btn btn-sm btn-danger"
-                          onClick={() => {
-                            this.props.removeModule(this.props.semester, moduleCode);
-                          }}
-                        >
-                          Remove
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+            <TimetableModulesTable modules={
+              Object.keys(this.props.semesterTimetable).sort((a, b) => {
+                return a > b;
+              }).map((moduleCode) => {
+                return this.props.modules[moduleCode] || {};
+              })}
+              onRemoveModule={(moduleCode) => {
+                this.props.removeModule(this.props.semester, moduleCode);
+              }}
+            />
           </div>
         </div>
       </div>
