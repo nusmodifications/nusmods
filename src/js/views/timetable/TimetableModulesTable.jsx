@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import _ from 'lodash';
 
-import { getModuleHistory } from 'utils/modules';
+import { getExamTime } from 'utils/modules';
 
 const TimetableModulesTable = (props) => {
   return (
@@ -13,7 +13,7 @@ const TimetableModulesTable = (props) => {
               <td>{module.ModuleCode}</td>
               <td>{module.ModuleTitle}</td>
               <td>{module.ModuleCredit}</td>
-              <td>{_.get(getModuleHistory(module, props.semester), 'ExamDate', '-')}</td>
+              <td>{getExamTime(module, props.semester)}</td>
               <td>
                 <button className="btn btn-sm btn-outline-danger"
                   onClick={() => {

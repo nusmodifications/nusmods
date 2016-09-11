@@ -1,4 +1,7 @@
 import _ from 'lodash';
+import moment from 'moment';
+
+const DATE_FORMAT = 'Do MMM YYYY h:mm A';
 
 // Returns semester specific details such as exam date and timetable.
 export function getModuleHistory(module, semester) {
@@ -17,4 +20,9 @@ export function areLessonsSameClass(lesson1, lesson2) {
   return lesson1.ModuleCode === lesson2.ModuleCode &&
     lesson1.ClassNo === lesson2.ClassNo &&
     lesson1.LessonType === lesson2.LessonType;
+}
+
+export function getExamTime(module, semester) {
+  const examDate = _.get(getModuleHistory(module, semester), 'ExamDate');
+  return examDate ? moment(examDate).format(DATE_FORMAT) : '-';
 }
