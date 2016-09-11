@@ -1,13 +1,19 @@
 .settings-container {
   .theme-item {
+    $theme-selected-bg-color: #ddd;
+    $theme-hover-bg-color: #eee;
+
     border-radius: 6px;
     cursor: pointer;
     margin-bottom: 10px;
     transition: background-color 0.3s ease-out;
 
-    &:hover,
+    &:hover {
+      background-color: $theme-hover-bg-color;
+    }
+
     &.is-selected {
-      background-color: #eee;
+      background-color: $theme-selected-bg-color;
     }
   }
 }

@@ -4,6 +4,7 @@ import _ from 'lodash';
 import classnames from 'classnames';
 
 import availableThemes from 'data/themes.json';
+import { changeTheme } from 'actions/theme';
 import { NUM_DIFFERENT_COLORS } from 'reducers/theme';
 
 const SettingsContainer = (props) => (
@@ -23,6 +24,9 @@ const SettingsContainer = (props) => (
                 'is-selected': props.theme === theme.id,
               })}
                 key={theme.id}
+                onClick={() => {
+                  props.changeTheme(theme.id);
+                }}
               >
                 <div>
                   <small>{theme.name}</small>
@@ -46,6 +50,8 @@ const SettingsContainer = (props) => (
 SettingsContainer.propTypes = {
   availableThemes: PropTypes.array,
   theme: PropTypes.string,
+
+  changeTheme: PropTypes.func,
 };
 
 function mapStateToProps(state) {
@@ -56,5 +62,8 @@ function mapStateToProps(state) {
 }
 
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  {
+    changeTheme,
+  }
 )(SettingsContainer);

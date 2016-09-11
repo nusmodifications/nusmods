@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { ADD_MODULE, REMOVE_MODULE } from 'actions/timetables';
+import { CHANGE_THEME } from 'actions/theme';
 
 const defaultThemeState = {
   // Available themes are defined in `themes.scss`
@@ -49,6 +50,11 @@ function theme(state = defaultThemeState, action) {
       return {
         ...state,
         colors: colors(state.colors, action),
+      };
+    case CHANGE_THEME:
+      return {
+        ...state,
+        id: action.payload.theme,
       };
     default:
       return state;
