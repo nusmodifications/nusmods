@@ -6,7 +6,7 @@ import _ from 'lodash';
 import config from 'config';
 import { addModule, removeModule } from 'actions/timetables';
 
-import { timetableLessonsArray } from 'utils/modules';
+import { timetableLessonsArray } from 'utils/timetable';
 import Timetable from './Timetable';
 
 export class TimetableContainer extends Component {

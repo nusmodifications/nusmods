@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 import { loadModule } from 'actions/moduleBank';
-import { randomLessonConfig } from 'utils/modules';
+import { randomLessonConfig } from 'utils/timetable';
 
 export const ADD_MODULE = 'ADD_MODULE';
 export function addModule(semester, moduleCode) {

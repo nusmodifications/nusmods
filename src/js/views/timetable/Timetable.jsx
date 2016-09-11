@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 // import { connect } from 'react-redux';
-import { arrangeLessonsForWeek } from 'utils/modules';
+import { arrangeLessonsForWeek } from 'utils/timetable';
 
 import TimetableBackground from './TimetableBackground';
 import TimetableDayRow from './TimetableDayRow';
