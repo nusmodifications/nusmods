@@ -1,16 +1,13 @@
-import _ from 'lodash';
-
 import { loadModule } from 'actions/moduleBank';
 import { randomLessonConfig } from 'utils/timetable';
+import { getModuleTimetable } from 'utils/modules';
 
 export const ADD_MODULE = 'ADD_MODULE';
 export function addModule(semester, moduleCode) {
   return (dispatch, getState) => {
     return dispatch(loadModule(moduleCode)).then(() => {
       const module = getState().entities.moduleBank.modules[moduleCode];
-      const lessons = _.find(module.History, (semData) => {
-        return semData.Semester === semester;
-      }).Timetable;
+      const lessons = getModuleTimetable(module, semester);
       const lessonsIncludingModuleCode = lessons.map((lesson) => {
         return {
           ...lesson,
@@ -47,6 +44,19 @@ export function modifyLesson(activeLesson) {
     type: MODIFY_LESSON,
     payload: {
       activeLesson,
+    },
+  };
+}
+
+export const CHANGE_LESSON = 'CHANGE_LESSON';
+export function changeLesson(semester, { ModuleCode, LessonType, ClassNo }) {
+  return {
+    type: CHANGE_LESSON,
+    payload: {
+      semester,
+      moduleCode: ModuleCode,
+      lessonType: LessonType,
+      classNo: ClassNo,
     },
   };
 }

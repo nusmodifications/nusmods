@@ -1,4 +1,4 @@
-import { MODIFY_LESSON, CANCEL_MODIFY_LESSON } from 'actions/timetables';
+import { MODIFY_LESSON, CHANGE_LESSON, CANCEL_MODIFY_LESSON } from 'actions/timetables';
 
 const defaultAppState = {
   // The lesson being modified on the timetable
@@ -14,6 +14,7 @@ function app(state = defaultAppState, action) {
         activeLesson: action.payload.activeLesson,
       };
     case CANCEL_MODIFY_LESSON:
+    case CHANGE_LESSON:
       return {
         ...state,
         activeLesson: null,

@@ -6,7 +6,13 @@ import autobind from 'react-autobind';
 import _ from 'lodash';
 import config from 'config';
 
-import { addModule, removeModule, modifyLesson, cancelModifyLesson } from 'actions/timetables';
+import {
+  addModule,
+  removeModule,
+  modifyLesson,
+  changeLesson,
+  cancelModifyLesson,
+} from 'actions/timetables';
 import { getModuleTimetable, areLessonsSameClass } from 'utils/modules';
 import {
   timetableLessonsArray,
@@ -24,8 +30,7 @@ export class TimetableContainer extends Component {
 
   modifyCell(lesson) {
     if (lesson.isAvailable) {
-      // TODO: Change to this lesson
-      console.log(lesson);
+      this.props.changeLesson(this.props.semester, lesson);
     } else if (lesson.isActive) {
       this.props.cancelModifyLesson();
     } else {
@@ -146,6 +151,7 @@ TimetableContainer.propTypes = {
   addModule: PropTypes.func,
   removeModule: PropTypes.func,
   modifyLesson: PropTypes.func,
+  changeLesson: PropTypes.func,
   cancelModifyLesson: PropTypes.func,
 };
 
@@ -174,6 +180,7 @@ export default connect(
     addModule,
     removeModule,
     modifyLesson,
+    changeLesson,
     cancelModifyLesson,
   }
 )(TimetableContainer);
