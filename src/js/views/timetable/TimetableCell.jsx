@@ -14,6 +14,7 @@ const TimetableCell = (props) => {
           'is-modifiable': lesson.isModifiable,
           'is-available': lesson.isAvailable,
           'is-active': lesson.isActive,
+          [`color-${lesson.colorIndex}`]: true,
         })}
           onClick={(event) => {
             event.stopPropagation();

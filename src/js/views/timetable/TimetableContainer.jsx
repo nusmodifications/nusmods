@@ -82,6 +82,12 @@ export class TimetableContainer extends Component {
       });
       timetableLessons = [...timetableLessons, ...otherAvailableLessons];
     }
+
+    // Inject color index into lessons.
+    timetableLessons = timetableLessons.map((lesson) => {
+      return { ...lesson, colorIndex: this.props.colors[lesson.ModuleCode] };
+    });
+
     const arrangedLessons = arrangeLessonsForWeek(timetableLessons);
     const arrangedLessonsWithModifiableFlag = _.mapValues(arrangedLessons, (dayRows) => {
       return _.map(dayRows, (row) => {
@@ -137,6 +143,7 @@ TimetableContainer.propTypes = {
   semesterModuleList: PropTypes.array,
   semesterTimetable: PropTypes.object,
   modules: PropTypes.object,
+  colors: PropTypes.object,
   activeLesson: PropTypes.object,
 
   addModule: PropTypes.func,
@@ -161,6 +168,7 @@ function mapStateToProps(state) {
     }),
     semesterTimetable: state.timetables[semester] || {},
     activeLesson: state.app.activeLesson,
+    colors: state.theme.colors,
     modules: state.entities.moduleBank.modules,
   };
 }

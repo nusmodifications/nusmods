@@ -115,8 +115,8 @@ $timetable-cell-opacity: 0.5;
   .timetable-module-cell {
     $smaller-text: 0.6rem;
 
-    background-color: rgba(156, 252, 92, 0.6);
-    border-left: 2px solid #63df11;
+    border-bottom-style: solid;
+    border-bottom-width: 2px;
     cursor: not-allowed;
     font-size: $font-size-xs;
     height: 100%;
@@ -124,6 +124,7 @@ $timetable-cell-opacity: 0.5;
     padding: $timetable-cell-padding;
     pointer-events: none;
     text-align: left;
+    transition: background-color 0.3s ease-out;
 
     &.is-modifiable {
       border-radius: $timetable-module-cell-border-radius;
