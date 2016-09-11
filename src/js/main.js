@@ -19,7 +19,10 @@ store.subscribe(_.throttle(() => {
   //       that we want to persist.
   storage.saveState({
     entities: {
-      moduleBank: storeState.entities.moduleBank,
+      moduleBank: {
+        modules: storeState.entities.moduleBank.modules,
+        moduleList: storeState.entities.moduleBank.moduleList,
+      },
     },
     timetables: storeState.timetables,
   });
