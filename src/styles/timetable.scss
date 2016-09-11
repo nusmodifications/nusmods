@@ -1,7 +1,7 @@
 $breakpoint: map-get($grid-breakpoints, 'md');
 
 $timetable-background: #fff;
-$timetable-row-height: 60px;
+$timetable-row-height: 50px;
 $timetable-row-margin: 2px;
 $timetable-width: 100%;
 $timetable-min-width: $breakpoint;
@@ -121,11 +121,13 @@ $timetable-module-cell-border-radius: 8px;
     height: 100%;
     line-height: 0.85rem;
     padding: $timetable-cell-padding;
+    pointer-events: none;
     text-align: left;
 
     &.is-cell-modifiable {
       border-radius: $timetable-module-cell-border-radius;
       cursor: grab;
+      pointer-events: auto;
     }
 
     .cell-module-code {

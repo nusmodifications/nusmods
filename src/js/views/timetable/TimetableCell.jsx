@@ -12,7 +12,11 @@ const TimetableCell = (props) => {
       {lesson ?
         <div className={classnames('timetable-module-cell', {
           'is-cell-modifiable': lesson.isModifiable,
-        })}>
+        })}
+          onClick={() => {
+            props.onModifyCell(lesson.ModuleCode, lesson.LessonType, lesson.ClassNo);
+          }}
+        >
           <div className="cell-module-code">{lesson.ModuleCode}</div>
           <div>
             <span className="cell-module-lesson-type">{LESSON_TYPE_ABBREV[lesson.LessonType]}</span>
@@ -28,6 +32,7 @@ const TimetableCell = (props) => {
 TimetableCell.propTypes = {
   lesson: PropTypes.object,
   width: PropTypes.number,
+  onModifyCell: PropTypes.func,
 };
 
 export default TimetableCell;

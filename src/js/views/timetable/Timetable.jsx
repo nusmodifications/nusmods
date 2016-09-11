@@ -17,6 +17,7 @@ const Timetable = (props) => {
           }
           return (
             <TimetableDayRow key={dayDisplayText}
+              onModifyCell={props.onModifyCell}
               day={dayDisplayText}
               dayLessonRows={props.lessons[day]}
             />
@@ -30,6 +31,7 @@ const Timetable = (props) => {
 
 Timetable.propTypes = {
   lessons: PropTypes.object,
+  onModifyCell: PropTypes.func,
 };
 
 export default Timetable;

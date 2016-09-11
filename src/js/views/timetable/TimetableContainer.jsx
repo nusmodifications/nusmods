@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import VirtualizedSelect from 'react-virtualized-select';
 import createFilterOptions from 'react-select-fast-filter-options';
+import autobind from 'react-autobind';
 import _ from 'lodash';
 import config from 'config';
 
@@ -14,6 +15,15 @@ import {
 import Timetable from './Timetable';
 
 export class TimetableContainer extends Component {
+  constructor(props) {
+    super(props);
+    autobind(this);
+  }
+
+  modifyCell(moduleCode, lessonType, classNo) {
+    console.log(moduleCode, lessonType, classNo);
+  }
+
   render() {
     const moduleSelectOptions = this.props.semesterModuleList
       .filter((module) => {
@@ -47,9 +57,9 @@ export class TimetableContainer extends Component {
 
     return (
       <div>
-        <h1 className="display-4">Timetable</h1>
-        <br/>
-        <Timetable lessons={arrangedLessonsWithModifiableFlag}/>
+        <Timetable lessons={arrangedLessonsWithModifiableFlag}
+          onModifyCell={this.modifyCell}
+        />
         <br/>
         <div className="row">
           <div className="col-md-6 offset-md-3">
