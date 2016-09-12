@@ -5,10 +5,8 @@ import createFilterOptions from 'react-select-fast-filter-options';
 import autobind from 'react-autobind';
 import _ from 'lodash';
 import config from 'config';
-import { addModule, removeModule } from 'actions/timetables';
 import { PrefixIndexStrategy } from 'js-search';
 import { ModulesSearchIndex, ModulesTokenizer } from 'utils/modules-search';
-
 import {
   addModule,
   removeModule,
@@ -58,13 +56,6 @@ export class TimetableContainer extends Component {
           label: `${module.ModuleCode} ${module.ModuleTitle}`,
         };
       });
-    const filterOptions = createFilterOptions({
-      options: moduleSelectOptions,
-      indexStrategy: new PrefixIndexStrategy(),
-      tokenizer: new ModulesTokenizer(),
-      searchIndex: new ModulesSearchIndex(),
-    });
-    const lessons = timetableLessonsArray(this.props.semesterTimetable);
 
     let timetableLessons = timetableLessonsArray(this.props.semesterTimetable);
     if (this.props.activeLesson) {
@@ -113,6 +104,14 @@ export class TimetableContainer extends Component {
           };
         });
       });
+    });
+
+    // options for virtualized select
+    const filterOptions = createFilterOptions({
+      options: moduleSelectOptions,
+      indexStrategy: new PrefixIndexStrategy(),
+      tokenizer: new ModulesTokenizer(),
+      searchIndex: new ModulesSearchIndex(),
     });
 
     return (
