@@ -5,6 +5,8 @@ import createFilterOptions from 'react-select-fast-filter-options';
 import _ from 'lodash';
 import config from 'config';
 import { addModule, removeModule } from 'actions/timetables';
+import { PrefixIndexStrategy } from 'js-search';
+import { ModulesSearchIndex, ModulesTokenizer } from 'utils/modules-search';
 
 import { timetableLessonsArray } from 'utils/modules';
 import Timetable from './Timetable';
@@ -21,8 +23,12 @@ export class TimetableContainer extends Component {
           label: `${module.ModuleCode} ${module.ModuleTitle}`,
         };
       });
-    const filterOptions = createFilterOptions({ options: moduleSelectOptions });
-
+    const filterOptions = createFilterOptions({
+      options: moduleSelectOptions,
+      indexStrategy: new PrefixIndexStrategy(),
+      tokenizer: new ModulesTokenizer(),
+      searchIndex: new ModulesSearchIndex(),
+    });
     const lessons = timetableLessonsArray(this.props.semesterTimetable);
 
     return (
