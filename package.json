@@ -53,6 +53,7 @@
     "react": "^15.2.0",
     "react-addons-shallow-compare": "^15.2.1",
     "react-autobind": "^1.0.6",
+    "react-document-title": "^2.0.2",
     "react-redux": "^4.4.5",
     "react-router": "^2.5.2",
     "react-router-redux": "^4.0.5",

@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import DocumentTitle from 'react-document-title';
 import VirtualizedSelect from 'react-virtualized-select';
 import createFilterOptions from 'react-select-fast-filter-options';
 import autobind from 'react-autobind';
@@ -115,38 +116,40 @@ export class TimetableContainer extends Component {
     });
 
     return (
-      <div className={`theme-${this.props.theme}`} onClick={() => {
-        if (this.props.activeLesson) {
-          this.props.cancelModifyLesson();
-        }
-      }}>
-        <Timetable lessons={arrangedLessonsWithModifiableFlag}
-          onModifyCell={this.modifyCell}
-        />
-        <br/>
-        <div className="row">
-          <div className="col-md-12">
-            <VirtualizedSelect options={moduleSelectOptions}
-              filterOptions={filterOptions}
-              onChange={(module) => {
-                this.props.addModule(this.props.semester, module.value);
-              }}
-            />
-            <br/>
-            <TimetableModulesTable modules={
-              Object.keys(this.props.semesterTimetable).sort((a, b) => {
-                return a > b;
-              }).map((moduleCode) => {
-                return this.props.modules[moduleCode] || {};
-              })}
-              semester={this.props.semester}
-              onRemoveModule={(moduleCode) => {
-                this.props.removeModule(this.props.semester, moduleCode);
-              }}
-            />
+      <DocumentTitle title={`Timetable - ${config.brandName}`}>
+        <div className={`theme-${this.props.theme}`} onClick={() => {
+          if (this.props.activeLesson) {
+            this.props.cancelModifyLesson();
+          }
+        }}>
+          <Timetable lessons={arrangedLessonsWithModifiableFlag}
+            onModifyCell={this.modifyCell}
+          />
+          <br/>
+          <div className="row">
+            <div className="col-md-12">
+              <VirtualizedSelect options={moduleSelectOptions}
+                filterOptions={filterOptions}
+                onChange={(module) => {
+                  this.props.addModule(this.props.semester, module.value);
+                }}
+              />
+              <br/>
+              <TimetableModulesTable modules={
+                Object.keys(this.props.semesterTimetable).sort((a, b) => {
+                  return a > b;
+                }).map((moduleCode) => {
+                  return this.props.modules[moduleCode] || {};
+                })}
+                semester={this.props.semester}
+                onRemoveModule={(moduleCode) => {
+                  this.props.removeModule(this.props.semester, moduleCode);
+                }}
+              />
+            </div>
           </div>
         </div>
-      </div>
+      </DocumentTitle>
     );
   }
 }
