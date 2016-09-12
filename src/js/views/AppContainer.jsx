@@ -43,13 +43,19 @@ export class AppContainer extends Component {
             <div className="col-md-2">
               <ul className="nav nav-pills nav-stacked">
                 <li role="presentation" className="nav-item">
-                  <Link className="nav-link"  activeClassName="active" to="/timetable">Timetable</Link>
+                  <Link className="nav-link" activeClassName="active" to="/timetable">
+                    Timetable
+                  </Link>
                 </li>
                 <li role="presentation" className="nav-item">
-                  <Link className="nav-link"  activeClassName="active" to="/modules">Modules</Link>
+                  <Link className="nav-link" activeClassName="active" to="/modules">
+                    Modules
+                  </Link>
                 </li>
                 <li role="presentation" className="nav-item">
-                  <Link className="nav-link"  activeClassName="active" to="/settings">Settings</Link>
+                  <Link className="nav-link" activeClassName="active" to="/settings">
+                    Settings
+                  </Link>
                 </li>
               </ul>
             </div>
