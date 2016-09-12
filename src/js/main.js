@@ -25,6 +25,7 @@ store.subscribe(_.throttle(() => {
       },
     },
     timetables: storeState.timetables,
+    theme: storeState.theme,
   });
 }, 1000));
 

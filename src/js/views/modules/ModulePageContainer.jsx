@@ -7,7 +7,7 @@ function loadModuleInformation(props) {
   props.loadModule(props.routeParams.moduleCode);
 }
 
-export class ModulePage extends Component {
+export class ModulePageContainer extends Component {
   componentDidMount() {
     loadModuleInformation(this.props);
   }
@@ -22,9 +22,11 @@ export class ModulePage extends Component {
     const module = this.props.module;
     return (
       <div>
-        {this.props.fetchModuleRequest.isPending ? <p>Loading...</p> : null}
+        {this.props.fetchModuleRequest.isPending && !module ?
+          <p>Loading...</p> : null
+        }
         {this.props.fetchModuleRequest.isFailure ? <p>Module not found</p> : null}
-        {this.props.fetchModuleRequest.isSuccessful && module ?
+        {this.props.fetchModuleRequest.isSuccessful || module ?
           <div>
             <h1 className="display-4">{module.ModuleCode} {module.ModuleTitle}</h1>
             <hr/>
@@ -61,7 +63,7 @@ export class ModulePage extends Component {
   }
 }
 
-ModulePage.propTypes = {
+ModulePageContainer.propTypes = {
   routeParams: PropTypes.object,
   module: PropTypes.object,
   loadModule: PropTypes.func,
@@ -80,4 +82,4 @@ export default connect(
   {
     loadModule,
   }
-)(ModulePage);
+)(ModulePageContainer);

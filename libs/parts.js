@@ -45,6 +45,10 @@ exports.devServer = function (options) {
   };
 }
 
+function postcss() {
+  return [autoprefixer];
+}
+
 exports.setupCSS = function (paths) {
   return {
     module: {
@@ -56,9 +60,27 @@ exports.setupCSS = function (paths) {
         }
       ]
     },
-    postcss: function () {
-      return [autoprefixer];
-    }
+    postcss: postcss
+  };
+}
+
+exports.extractCSS = function (paths) {
+  return {
+    module: {
+      loaders: [
+        // Extract CSS during build
+        {
+          test: /\.s?css$/,
+          loader: ExtractTextPlugin.extract(['css', 'postcss', 'sass']),
+          include: paths
+        }
+      ]
+    },
+    postcss: postcss,
+    plugins: [
+      // Output extracted CSS to a file
+      new ExtractTextPlugin('[name].[chunkhash].css')
+    ]
   };
 }
 
@@ -132,25 +154,6 @@ exports.clean = function (path) {
         // project and will fail to work.
         root: process.cwd()
       })
-    ]
-  };
-}
-
-exports.extractCSS = function (paths) {
-  return {
-    module: {
-      loaders: [
-        // Extract CSS during build
-        {
-          test: /\.scss$/,
-          loader: ExtractTextPlugin.extract(['css', 'sass']),
-          include: paths
-        }
-      ]
-    },
-    plugins: [
-      // Output extracted CSS to a file
-      new ExtractTextPlugin('[name].[chunkhash].css')
     ]
   };
 }

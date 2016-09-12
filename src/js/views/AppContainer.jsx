@@ -9,6 +9,8 @@ import { ModulesSearchIndex, ModulesTokenizer } from 'utils/modules-search';
 import config from 'config';
 import { fetchModuleList, loadModule } from 'actions/moduleBank';
 
+import Footer from './layout/Footer';
+
 export class AppContainer extends Component {
   componentDidMount() {
     this.props.fetchModuleList();
@@ -30,35 +32,51 @@ export class AppContainer extends Component {
     });
     return (
       <div className="app-container">
-        <div className="container">
-          <nav className="navbar navbar-light bg-faded">
-            <Link className="navbar-brand" to="/">NUSMods</Link>
-            <form style={{ width: '100%', maxWidth: 400, display: 'inline-block' }}>
-              <VirtualizedSelect options={this.props.moduleListSelect}
-                filterOptions={filterOptions}
-                placeholder="Search module"
-                onChange={(moduleCode) => {
-                  this.context.router.push(`/modules/${moduleCode.value}`);
-                }}
-              />
-            </form>
-            <ul className="nav navbar-nav pull-xs-right">
-              <li className="nav-item">
-                <Link className="nav-link" to="/timetable">Timetable</Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/modules">Modules</Link>
-              </li>
-            </ul>
-          </nav>
-          <br />
-          {this.props.fetchModuleListRequest.isPending && !this.props.moduleList.length ?
-            <p>Loading...</p> : null
-          }
-          {this.props.fetchModuleListRequest.isSuccessful || this.props.moduleList.length ?
-            this.props.children : null
-          }
+        <nav className="navbar navbar-light bg-faded">
+          <Link className="navbar-brand" to="/">NUSMods</Link>
+          <form style={{ width: '100%', maxWidth: 400, display: 'inline-block' }}>
+            <VirtualizedSelect options={this.props.moduleListSelect}
+              filterOptions={filterOptions}
+              placeholder="Search module"
+              onChange={(moduleCode) => {
+                this.context.router.push(`/modules/${moduleCode.value}`);
+              }}
+            />
+          </form>
+        </nav>
+        <br/>
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-md-2">
+              <ul className="nav nav-pills nav-stacked">
+                <li role="presentation" className="nav-item">
+                  <Link className="nav-link" activeClassName="active" to="/timetable">
+                    Timetable
+                  </Link>
+                </li>
+                <li role="presentation" className="nav-item">
+                  <Link className="nav-link" activeClassName="active" to="/modules">
+                    Modules
+                  </Link>
+                </li>
+                <li role="presentation" className="nav-item">
+                  <Link className="nav-link" activeClassName="active" to="/settings">
+                    Settings
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            <div className="col-md-10">
+              {this.props.fetchModuleListRequest.isPending && !this.props.moduleList.length ?
+                <p>Loading...</p> : null
+              }
+              {this.props.fetchModuleListRequest.isSuccessful || this.props.moduleList.length ?
+                this.props.children : null
+              }
+            </div>
+          </div>
         </div>
+        <Footer/>
       </div>
     );
   }

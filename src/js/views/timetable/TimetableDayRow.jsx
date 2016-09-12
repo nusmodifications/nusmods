@@ -8,7 +8,11 @@ const TimetableDayRow = (props) => {
       {props.dayLessonRows ?
         props.dayLessonRows.map((dayLessonRow, i) => {
           return (
-            <TimetableRow day={i === 0 ? props.day : ''} key={i} lessons={dayLessonRow}/>
+            <TimetableRow key={i}
+              day={i === 0 ? props.day : ''}
+              lessons={dayLessonRow}
+              onModifyCell={props.onModifyCell}
+            />
           );
         }) : <TimetableRow day={props.day}/>
       }
@@ -19,6 +23,7 @@ const TimetableDayRow = (props) => {
 TimetableDayRow.propTypes = {
   day: PropTypes.string,
   dayLessonRows: PropTypes.array,
+  onModifyCell: PropTypes.func,
 };
 
 export default TimetableDayRow;

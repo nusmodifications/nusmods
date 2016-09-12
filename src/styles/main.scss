@@ -5,4 +5,11 @@
 @import '~react-virtualized-select/styles.css';
 
 @import 'utils/hacks';
+@import 'utils/mixins';
+@import 'utils/animations';
+
+@import 'layout/footer';
+
+@import 'themes';
 @import 'timetable';
+@import 'settings';

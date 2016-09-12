@@ -6,7 +6,7 @@ import { convertIndexToTime, convertTimeToIndex } from 'utils/timify';
 
 import TimetableCell from './TimetableCell';
 
-const generateCells = (lessons) => {
+const generateCells = (lessons, onModifyCell) => {
   const lessonsGroupedByStartTime = _(lessons).groupBy('StartTime').mapValues((value) => {
     return value[0];
   }).value();
@@ -20,7 +20,13 @@ const generateCells = (lessons) => {
       const lessonStartIndex = i;
       const lessonEndIndex = convertTimeToIndex(lesson.EndTime);
       const width = lessonEndIndex - lessonStartIndex;
-      cells.push(<TimetableCell key={i} width={width} lesson={lesson}/>);
+      cells.push(
+        <TimetableCell key={i}
+          width={width}
+          lesson={lesson}
+          onModifyCell={onModifyCell}
+        />
+      );
       i += (width - 1);
     } else {
       cells.push(<TimetableCell key={i}/>);
@@ -33,7 +39,7 @@ const TimetableRow = (props) => {
   return (
     <div className="timetable-day-row">
       <div className="timetable-day-cell timetable-cell"><span>{props.day}</span></div>
-      {generateCells(props.lessons)}
+      {generateCells(props.lessons, props.onModifyCell)}
     </div>
   );
 };
@@ -41,6 +47,7 @@ const TimetableRow = (props) => {
 TimetableRow.propTypes = {
   day: PropTypes.string,
   lessons: PropTypes.array,
+  onModifyCell: PropTypes.func,
 };
 
 export default TimetableRow;

@@ -22,6 +22,7 @@ module.exports = {
     "import/no-extraneous-dependencies": "off",
     // We use webpack resolve root and this conflicts with that.
     "import/no-unresolved": "off",
+    "import/prefer-default-export": "off",
     "react/jsx-first-prop-new-line": ["error", "never"],
     // It just looks nicer without the space.
     "react/jsx-space-before-closing": "off",
