@@ -36,26 +36,32 @@ export class AppContainer extends Component {
               }}
             />
           </form>
-          <ul className="nav navbar-nav pull-xs-right">
-            <li className="nav-item">
-              <Link className="nav-link" to="/timetable">Timetable</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/modules">Modules</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/settings">Settings</Link>
-            </li>
-          </ul>
         </nav>
         <br/>
-        <div className="container">
-          {this.props.fetchModuleListRequest.isPending && !this.props.moduleList.length ?
-            <p>Loading...</p> : null
-          }
-          {this.props.fetchModuleListRequest.isSuccessful || this.props.moduleList.length ?
-            this.props.children : null
-          }
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-md-2">
+              <ul className="nav nav-pills nav-stacked">
+                <li role="presentation" className="nav-item">
+                  <Link className="nav-link"  activeClassName="active" to="/timetable">Timetable</Link>
+                </li>
+                <li role="presentation" className="nav-item">
+                  <Link className="nav-link"  activeClassName="active" to="/modules">Modules</Link>
+                </li>
+                <li role="presentation" className="nav-item">
+                  <Link className="nav-link"  activeClassName="active" to="/settings">Settings</Link>
+                </li>
+              </ul>
+            </div>
+            <div className="col-md-10">
+              {this.props.fetchModuleListRequest.isPending && !this.props.moduleList.length ?
+                <p>Loading...</p> : null
+              }
+              {this.props.fetchModuleListRequest.isSuccessful || this.props.moduleList.length ?
+                this.props.children : null
+              }
+            </div>
+          </div>
         </div>
         <Footer/>
       </div>
