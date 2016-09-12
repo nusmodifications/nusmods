@@ -120,6 +120,7 @@ export class TimetableContainer extends Component {
                 this.props.addModule(this.props.semester, module.value);
               }}
             />
+            <br/>
             <TimetableModulesTable modules={
               Object.keys(this.props.semesterTimetable).sort((a, b) => {
                 return a > b;

@@ -6,7 +6,7 @@ import { getExamTime, modulePagePath } from 'utils/modules';
 
 const TimetableModulesTable = (props) => {
   return (
-    <table className="table table-bordered">
+    <table className="table">
       <tbody>
         {_.map(props.modules, (module) => {
           return (
