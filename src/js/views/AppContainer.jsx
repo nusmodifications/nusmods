@@ -7,6 +7,8 @@ import createFilterOptions from 'react-select-fast-filter-options';
 import config from 'config';
 import { fetchModuleList, loadModule } from 'actions/moduleBank';
 
+import Footer from './layout/Footer';
+
 export class AppContainer extends Component {
   componentDidMount() {
     this.props.fetchModuleList();
@@ -55,6 +57,7 @@ export class AppContainer extends Component {
             this.props.children : null
           }
         </div>
+        <Footer/>
       </div>
     );
   }
