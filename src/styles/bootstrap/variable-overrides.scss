@@ -1,8 +1,41 @@
 // Override the default bootstrap variables in this file.
 
+// Colors
+$gray-dark:                 #222324;
+$gray:                      #69707a;
+$gray-light:                #aeb1b5;
+$gray-lighter:              #d3d6db;
+$gray-lightest:             #f5f7fa;
+
+$brand-primary:             #1fc8db;
+$brand-success:             #97cd76;
+$brand-info:                #42afe3;
+$brand-warning:             #fce473;
+$brand-danger:              #ed6c63;
+
 // Options
 $enable-flex: true;
 
 // Body
-// $body-bg: #18212d;
-// $body-color: #fff;
+$body-bg: $gray-lightest;
+$body-color: $gray;
+
+// Grid Columns
+$grid-gutter-width: 20px;
+
+// Typography
+$font-family-sans-serif: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+$font-size-xxs:   0.65rem !default;
+
+// Form states and alerts
+$state-success-text:             #fff;
+$state-success-bg:               $brand-success;
+
+$state-info-text:                #fff;
+$state-info-bg:                  $brand-info;
+
+$state-warning-text:             #fff;
+$state-warning-bg:               $brand-warning;
+
+$state-danger-text:              #fff;
+$state-danger-bg:                $brand-danger;
