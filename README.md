@@ -9,6 +9,11 @@ $ npm install
 $ npm start
 ```
 
+#### Running tests
+```
+$ npm test
+```
+
 #### Build for Deployment
 ```
 $ npm run build
