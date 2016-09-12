@@ -30,6 +30,10 @@ export class TimetableContainer extends Component {
     autobind(this);
   }
 
+  componentWillUnmount() {
+    this.props.cancelModifyLesson();
+  }
+
   modifyCell(lesson) {
     if (lesson.isAvailable) {
       this.props.changeLesson(this.props.semester, lesson);
