@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import VirtualizedSelect from 'react-virtualized-select';
 import createFilterOptions from 'react-select-fast-filter-options';
 import { PrefixIndexStrategy } from 'js-search';
-import { ModulesTokenizer } from 'utils/modules-search';
+import { ModulesSearchIndex, ModulesTokenizer } from 'utils/modules-search';
 
 import config from 'config';
 import { fetchModuleList, loadModule } from 'actions/moduleBank';
@@ -26,6 +26,7 @@ export class AppContainer extends Component {
       options: this.props.moduleListSelect,
       indexStrategy: new PrefixIndexStrategy(),
       tokenizer: new ModulesTokenizer(),
+      searchIndex: new ModulesSearchIndex(),
     });
     return (
       <div className="app-container">
