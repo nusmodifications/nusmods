@@ -128,7 +128,7 @@ $timetable-cell-opacity: 0.5;
 
     &.is-modifiable {
       border-radius: $timetable-module-cell-border-radius;
-      cursor: pointer;
+      cursor: grab;
       pointer-events: auto;
     }
 
