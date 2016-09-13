@@ -1,14 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import VirtualizedSelect from 'react-virtualized-select';
-import createFilterOptions from 'react-select-fast-filter-options';
-import { PrefixIndexStrategy } from 'js-search';
-import { ModulesSearchIndex, ModulesTokenizer } from 'utils/modules-search';
 
 import config from 'config';
 import { fetchModuleList, loadModule } from 'actions/moduleBank';
 
+import ModulesSelect from './components/ModulesSelect';
 import Footer from './layout/Footer';
 
 export class AppContainer extends Component {
@@ -24,20 +21,12 @@ export class AppContainer extends Component {
   }
 
   render() {
-    const filterOptions = createFilterOptions({
-      options: this.props.moduleListSelect,
-      indexStrategy: new PrefixIndexStrategy(),
-      tokenizer: new ModulesTokenizer(),
-      searchIndex: new ModulesSearchIndex(),
-    });
     return (
       <div className="app-container">
         <nav className="navbar navbar-light bg-faded">
           <Link className="navbar-brand" to="/">NUSMods</Link>
           <form style={{ width: '100%', maxWidth: 400, display: 'inline-block' }}>
-            <VirtualizedSelect options={this.props.moduleListSelect}
-              filterOptions={filterOptions}
-              placeholder="Search module"
+            <ModulesSelect moduleList={this.props.moduleListSelect}
               onChange={(moduleCode) => {
                 this.context.router.push(`/modules/${moduleCode.value}`);
               }}

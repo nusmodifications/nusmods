@@ -1,13 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import DocumentTitle from 'react-document-title';
-import VirtualizedSelect from 'react-virtualized-select';
-import createFilterOptions from 'react-select-fast-filter-options';
 import autobind from 'react-autobind';
 import _ from 'lodash';
 import config from 'config';
-import { PrefixIndexStrategy } from 'js-search';
-import { ModulesSearchIndex, ModulesTokenizer } from 'utils/modules-search';
 import {
   addModule,
   removeModule,
@@ -22,6 +18,7 @@ import {
   areOtherClassesAvailable,
   lessonsForLessonType,
 } from 'utils/timetable';
+import ModulesSelect from 'views/components/ModulesSelect';
 
 import Timetable from './Timetable';
 import TimetableModulesTable from './TimetableModulesTable';
@@ -29,6 +26,9 @@ import TimetableModulesTable from './TimetableModulesTable';
 export class TimetableContainer extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      isAddingModule: false,
+    };
     autobind(this);
   }
 
@@ -107,14 +107,6 @@ export class TimetableContainer extends Component {
       });
     });
 
-    // options for virtualized select
-    const filterOptions = createFilterOptions({
-      options: moduleSelectOptions,
-      indexStrategy: new PrefixIndexStrategy(),
-      tokenizer: new ModulesTokenizer(),
-      searchIndex: new ModulesSearchIndex(),
-    });
-
     return (
       <DocumentTitle title={`Timetable - ${config.brandName}`}>
         <div className={`theme-${this.props.theme}`} onClick={() => {
@@ -128,12 +120,29 @@ export class TimetableContainer extends Component {
           <br/>
           <div className="row">
             <div className="col-md-12">
-              <VirtualizedSelect options={moduleSelectOptions}
-                filterOptions={filterOptions}
-                onChange={(module) => {
-                  this.props.addModule(this.props.semester, module.value);
-                }}
-              />
+              <div className="row">
+                <div className="col-md-11">
+                  {this.state.isAddingModule &&
+                    <ModulesSelect moduleList={moduleSelectOptions}
+                      onChange={(moduleCode) => {
+                        this.setState({
+                          isAddingModule: false,
+                        }, () => {
+                          this.props.addModule(this.props.semester, moduleCode.value);
+                        });
+                      }}
+                    />
+                  }
+                </div>
+                <div className="col-md-1">
+                  <button className="btn btn-sm btn-primary btn-block" onClick={() => {
+                    // TODO: Focus on ModulesSelect input when button is clicked.
+                    this.setState({
+                      isAddingModule: !this.state.isAddingModule,
+                    });
+                  }}>{this.state.isAddingModule ? 'Cancel' : 'Add'}</button>
+                </div>
+              </div>
               <br/>
               <TimetableModulesTable modules={
                 Object.keys(this.props.semesterTimetable).sort((a, b) => {
