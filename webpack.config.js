@@ -86,6 +86,7 @@ const common = {
   },
   module: {
     loaders: [
+      // font related loaders
       {
         test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
         loader: "url?limit=10000&mimetype=application/font-woff&name=[name].[ext]"
@@ -99,10 +100,12 @@ const common = {
         test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
         loader: "file?name=[name].[ext]"
       }, {
+        test: /\.otf$/,
+        loader: "file"
+      }, {
         test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
         loader: "url?limit=10000&mimetype=image/svg+xml"
       },
-      { test: /\.otf$/, loader: "file"},
       { test: /\.swf$/, loader: "file"},
       {
         test: /\.(jpe?g|gif|png|svg)$/,
@@ -144,8 +147,7 @@ const common = {
     new webpack.ProvidePlugin({
       $: "jquery",
       jQuery: "jquery",
-      "window.jQuery": "jquery",
-      FastClick: "FastClick"
+      "window.jQuery": "jquery"
     })
   ],
   resolve: {
