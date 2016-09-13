@@ -132,11 +132,7 @@ const common = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: "babel",
-        query: {
-          presets: ['es2015', 'react'],
-          plugins: ['syntax-trailing-function-commas', 'transform-object-rest-spread']
-        }
+        loader: "babel"
       }
     ]
   },
