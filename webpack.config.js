@@ -105,7 +105,7 @@ const common = {
       { test: /\.otf$/, loader: "file"},
       { test: /\.swf$/, loader: "file"},
       {
-        test: /\.jpe?g$|\.gif$|\.png$|\.svg$/,
+        test: /\.(jpe?g|gif|png|svg)$/,
         loader: 'file?name=[path][name].[ext]'
       },
       // copy favicons to root
