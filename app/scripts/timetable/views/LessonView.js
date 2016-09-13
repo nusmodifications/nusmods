@@ -6,9 +6,10 @@ var _ = require('underscore');
 var tableRowTemplate = require('../templates/table_row.hbs');
 var template = require('../templates/lesson.hbs');
 var tooltipTemplate = require('../templates/tooltip.hbs');
+require('jquery-ui/ui/core');
+require('jquery-ui/ui/widgets/draggable');
+require('jquery-ui/ui/widgets/droppable');
 require('jquery-ui-touch-punch');
-require('jquery-ui/draggable');
-require('jquery-ui/droppable');
 
 var LessonView = Marionette.ItemView.extend({
   className: 'lesson',

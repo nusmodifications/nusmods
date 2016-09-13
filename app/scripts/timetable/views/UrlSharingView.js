@@ -5,7 +5,7 @@ var Marionette = require('backbone.marionette');
 var ZeroClipboard = require('zeroclipboard');
 var _ = require('underscore');
 var template = require('../templates/url_sharing.hbs');
-require('qTip2');
+require('qtip2');
 
 module.exports = Marionette.ItemView.extend({
   template: template,
@@ -84,7 +84,7 @@ module.exports = Marionette.ItemView.extend({
 
   initialize: function () {
     ZeroClipboard.config({
-      swfPath: '/ZeroClipboard.swf'
+      swfPath: '/' + require('zeroclipboard/dist/ZeroClipboard.swf')
     });
   },
 

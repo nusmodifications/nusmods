@@ -8,7 +8,7 @@ var analytics = require('../../analytics');
 var padTwo = require('../../common/utils/padTwo');
 var template = require('../templates/export.hbs');
 require('bootstrap/dropdown');
-require('jquery.fileDownload');
+require('jquery-file-download');
 
 var isTutorial = {
   'Design Lecture': true,

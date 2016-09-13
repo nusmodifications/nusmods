@@ -17,6 +17,31 @@ var analytics = require('./analytics');
 var localforage = require('localforage');
 
 var $body = $('body');
+require('../favicon-16.png');
+require('../favicon-32.png');
+require('../favicon-64.png');
+require('../favicon-96.png');
+require('../favicon-160.png');
+require('../favicon-196.png');
+require('../opensearch.xml');
+require('../images/logo.png');
+require('../images/logo-white.png');
+require('font-awesome/fonts/fontawesome-webfont.eot');
+require('font-awesome/fonts/fontawesome-webfont.svg');
+require('font-awesome/fonts/fontawesome-webfont.ttf');
+require('font-awesome/fonts/fontawesome-webfont.woff');
+require('font-awesome/fonts/fontawesome-webfont.woff2');
+
+require('../.htaccess');
+require('../favicon.ico');
+require('../short_url.php');
+require('../html.php');
+require('../ical.php');
+require('../jpg.php');
+require('../news.php');
+require('../pdf.php');
+require('../redirect.php');
+require('../xls.php');
 
 localforage.getItem('migratedPreferences').then(function (value) {
   if (!value) {

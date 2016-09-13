@@ -71,3 +71,5 @@ typeof DISQUSWIDGETS === 'undefined' && (DISQUSWIDGETS = function () {
   };
   return c;
 }());
+
+module.exports = DISQUSWIDGETS;

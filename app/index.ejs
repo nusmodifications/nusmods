@@ -37,19 +37,9 @@
   <link rel="apple-touch-icon" href="/favicon-57.png">
 
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400italic,500,700" />
-  <!-- build:css /styles/vendor.css -->
-  <link rel="stylesheet" href="/bower_components/qtip2/jquery.qtip.css" />
-  <!-- bower:css -->
-  <link rel="stylesheet" href="/bower_components/select2/select2.css" />
-  <link rel="stylesheet" href="/bower_components/animate.css/animate.min.css" />
-  <!-- endbower -->
-  <!-- endbuild -->
-  <!-- build:css(.tmp) /styles/main.css -->
-  <link rel="stylesheet" href="/styles/main.css">
-  <link rel="stylesheet" href="/styles/modes.css">
-  <link rel="stylesheet" href="/styles/themes.css">
-  <!-- endbuild -->
-  <link rel="stylesheet" id="mode">
+  <% for (var css in htmlWebpackPlugin.files.css) { %>
+  <link rel="stylesheet" href="/<%= htmlWebpackPlugin.files.css[css] %>">
+  <% } %>
 
   <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -92,7 +82,7 @@
 
     <div id="page-content-wrapper" class="main-container">
       <div class="main-content">
-        <div class="row js-alert-row">
+        <div class="row">
           <div class="col-md-4">
             <div class="clearfix alert alert-danger alert-dismissible" role="alert">
               <i class="fa fa-2x fa-trophy pull-left"></i>
@@ -196,12 +186,9 @@
     <p class="cors-round-text">CORS is not available for bidding.</p>
   </div>
 
-  <!-- build:jsmain /scripts/main.js -->
-  <script src="/scripts/main.js"></script>
-  <!-- endbuild -->
-  <!-- build:js /scripts/disqus-count.js -->
-  <script src="/scripts/disqus-count.js"></script>
-  <!-- endbuild -->
+  <% for (var chunk in htmlWebpackPlugin.files.chunks) { %>
+  <script src="/<%= htmlWebpackPlugin.files.chunks[chunk].entry %>"></script>
+  <% } %>
   <div id="fb-root"></div>
 </body>
 </html>
