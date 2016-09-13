@@ -1,0 +1,160 @@
+$breakpoint: map-get($grid-breakpoints, 'md');
+
+$timetable-background: #fff;
+$timetable-row-height: 50px;
+$timetable-row-margin: 2px;
+$timetable-width: 100%;
+$timetable-min-width: $breakpoint;
+$timetable-border: 1px solid #ccc;
+$timetable-cell-padding: 5px;
+$timetable-module-cell-border-radius: 8px;
+$timetable-cell-opacity: 0.5;
+
+.timetable-container {
+  position: relative;
+}
+
+.timetable {
+  align-items: stretch;
+  display: flex;
+  min-width: $timetable-min-width;
+  width: $timetable-width;
+  z-index: 1;
+
+  &.timetable-bg {
+    background-color: $timetable-background;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    z-index: -1;
+
+    .timetable-day {
+      border-bottom: none;
+    }
+
+    .timetable-day,
+    .timetable-day-row {
+      height: 100%;
+    }
+
+    .timetable-cell-alt {
+      background-color: #f1f1f1;
+    }
+  }
+
+  .timetable-day {
+    align-items: stretch;
+    display: flex;
+    flex-grow: 1;
+    width: 100%;
+  }
+
+  .timetable-day-row {
+    display: flex;
+  }
+
+  .timetable-cell {
+    flex-basis: 0;
+    flex-grow: 1;
+    text-align: center;
+
+    &.timetable-day-cell {
+      flex-grow: 2;
+    }
+  }
+
+  @media (min-width: ($breakpoint + 1px)) {
+    border-top: $timetable-border;
+    flex-direction: column;
+
+    .timetable-day {
+      border-bottom: $timetable-border;
+      flex-direction: column;
+    }
+
+    .timetable-day-row {
+      flex-direction: row;
+      height: auto;
+      min-height: $timetable-row-height;
+
+      &:not(:first-child) {
+        margin-top: $timetable-row-margin;
+      }
+    }
+
+    .timetable-cell {
+      width: 0;
+    }
+  }
+
+  @media (max-width: $breakpoint) {
+    border-left: $timetable-border;
+    flex-direction: row;
+    height: 1000px;
+
+    .timetable-day {
+      border-right: $timetable-border;
+      flex-direction: row;
+      height: auto;
+    }
+
+    .timetable-day-row {
+      flex-direction: column;
+      width: 100%;
+
+      &:not(:first-child) {
+        margin-left: $timetable-row-margin;
+      }
+    }
+
+    .timetable-cell {
+      width: 100%;
+    }
+  }
+
+  .timetable-module-cell {
+    $smaller-text: 0.6rem;
+
+    border-bottom-style: solid;
+    border-bottom-width: 2px;
+    cursor: not-allowed;
+    font-size: $font-size-xs;
+    height: 100%;
+    line-height: 0.85rem;
+    padding: $timetable-cell-padding;
+    pointer-events: none;
+    text-align: left;
+    transition: background-color 0.3s ease-out;
+
+    &.is-modifiable {
+      border-radius: $timetable-module-cell-border-radius;
+      cursor: grab;
+      pointer-events: auto;
+    }
+
+    &.is-available {
+      opacity: $timetable-cell-opacity;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+
+    &.is-active {
+      animation-duration: 1.5s;
+      animation-iteration-count: infinite;
+      animation-name: pulse;
+    }
+
+    .cell-module-code {
+      font-weight: bold;
+    }
+
+    .cell-module-lesson-type,
+    .cell-module-group,
+    .cell-module-class,
+    .cell-module-venue {
+      font-size: $font-size-xxs;
+    }
+  }
+}

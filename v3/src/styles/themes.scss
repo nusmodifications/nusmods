@@ -1,0 +1,1100 @@
+.theme-default {
+  .color-0 {
+    @include color(#f9ad81);
+  }
+
+  .color-1 {
+    @include color(#fff79a);
+  }
+
+  .color-2 {
+    @include color(#a2d39c);
+  }
+
+  .color-3 {
+    @include color(#7bcdc8);
+  }
+
+  .color-4 {
+    @include color(#7ea7d8);
+  }
+
+  .color-5 {
+    @include color(#8882be);
+  }
+
+  .color-6 {
+    @include color(#bc8dbf);
+  }
+
+  .color-7 {
+    @include color(#f6989d);
+  }
+}
+
+.theme-3024 {
+  .color-0 {
+    @include color(#db2d20);
+  }
+
+  .color-1 {
+    @include color(#e8bbd0);
+  }
+
+  .color-2 {
+    @include color(#fded02);
+  }
+
+  .color-3 {
+    @include color(#01a252);
+  }
+
+  .color-4 {
+    @include color(#b5e4f4);
+  }
+
+  .color-5 {
+    @include color(#01a0e4);
+  }
+
+  .color-6 {
+    @include color(#a16a94);
+  }
+
+  .color-7 {
+    @include color(#cdab53);
+  }
+}
+
+.theme-ashes {
+  .color-0 {
+    @include color(#c7ae95);
+  }
+
+  .color-1 {
+    @include color(#c7c795);
+  }
+
+  .color-2 {
+    @include color(#aec795);
+  }
+
+  .color-3 {
+    @include color(#95c7ae);
+  }
+
+  .color-4 {
+    @include color(#95aec7);
+  }
+
+  .color-5 {
+    @include color(#ae95c7);
+  }
+
+  .color-6 {
+    @include color(#c795ae);
+  }
+
+  .color-7 {
+    @include color(#c79595);
+  }
+}
+
+.theme-atelierdune {
+  .color-0 {
+    @include color(#d73737);
+  }
+
+  .color-1 {
+    @include color(#b65611);
+  }
+
+  .color-2 {
+    @include color(#cfb017);
+  }
+
+  .color-3 {
+    @include color(#60ac39);
+  }
+
+  .color-4 {
+    @include color(#1fad83);
+  }
+
+  .color-5 {
+    @include color(#6684e1);
+  }
+
+  .color-6 {
+    @include color(#b854d4);
+  }
+
+  .color-7 {
+    @include color(#d43552);
+  }
+}
+
+.theme-atelierforest {
+  .color-0 {
+    @include color(#f22c40);
+  }
+
+  .color-1 {
+    @include color(#df5320);
+  }
+
+  .color-2 {
+    @include color(#d5911a);
+  }
+
+  .color-3 {
+    @include color(#5ab738);
+  }
+
+  .color-4 {
+    @include color(#00ad9c);
+  }
+
+  .color-5 {
+    @include color(#407ee7);
+  }
+
+  .color-6 {
+    @include color(#6666ea);
+  }
+
+  .color-7 {
+    @include color(#c33ff3);
+  }
+}
+
+.theme-atelierheath {
+  .color-0 {
+    @include color(#ca402b);
+  }
+
+  .color-1 {
+    @include color(#a65926);
+  }
+
+  .color-2 {
+    @include color(#bb8a35);
+  }
+
+  .color-3 {
+    @include color(#379a37);
+  }
+
+  .color-4 {
+    @include color(#159393);
+  }
+
+  .color-5 {
+    @include color(#516aec);
+  }
+
+  .color-6 {
+    @include color(#7b59c0);
+  }
+
+  .color-7 {
+    @include color(#c3c);
+  }
+}
+
+.theme-atelierlakeside {
+  .color-0 {
+    @include color(#d22d72);
+  }
+
+  .color-1 {
+    @include color(#935c25);
+  }
+
+  .color-2 {
+    @include color(#8a8a0f);
+  }
+
+  .color-3 {
+    @include color(#568c3b);
+  }
+
+  .color-4 {
+    @include color(#2d8f6f);
+  }
+
+  .color-5 {
+    @include color(#257fad);
+  }
+
+  .color-6 {
+    @include color(#5d5db1);
+  }
+
+  .color-7 {
+    @include color(#b72dd2);
+  }
+}
+
+.theme-atelierseaside {
+  .color-0 {
+    @include color(#e6193c);
+  }
+
+  .color-1 {
+    @include color(#87711d);
+  }
+
+  .color-2 {
+    @include color(#c3c322);
+  }
+
+  .color-3 {
+    @include color(#29a329);
+  }
+
+  .color-4 {
+    @include color(#1999b3);
+  }
+
+  .color-5 {
+    @include color(#3d62f5);
+  }
+
+  .color-6 {
+    @include color(#ad2bee);
+  }
+
+  .color-7 {
+    @include color(#e619c3);
+  }
+}
+
+.theme-bespin {
+  .color-0 {
+    @include color(#cf6a4c);
+  }
+
+  .color-1 {
+    @include color(#cf7d34);
+  }
+
+  .color-2 {
+    @include color(#f9ee98);
+  }
+
+  .color-3 {
+    @include color(#54be0d);
+  }
+
+  .color-4 {
+    @include color(#afc4db);
+  }
+
+  .color-5 {
+    @include color(#5ea6ea);
+  }
+
+  .color-6 {
+    @include color(#9b859d);
+  }
+
+  .color-7 {
+    @include color(#937121);
+  }
+}
+
+.theme-brewer {
+  .color-0 {
+    @include color(#e31a1c);
+  }
+
+  .color-1 {
+    @include color(#e6550d);
+  }
+
+  .color-2 {
+    @include color(#dca060);
+  }
+
+  .color-3 {
+    @include color(#31a354);
+  }
+
+  .color-4 {
+    @include color(#80b1d3);
+  }
+
+  .color-5 {
+    @include color(#3182bd);
+  }
+
+  .color-6 {
+    @include color(#756bb1);
+  }
+
+  .color-7 {
+    @include color(#b15928);
+  }
+}
+
+.theme-chalk {
+  .color-0 {
+    @include color(#fb9fb1);
+  }
+
+  .color-1 {
+    @include color(#eda987);
+  }
+
+  .color-2 {
+    @include color(#ddb26f);
+  }
+
+  .color-3 {
+    @include color(#acc267);
+  }
+
+  .color-4 {
+    @include color(#12cfc0);
+  }
+
+  .color-5 {
+    @include color(#6fc2ef);
+  }
+
+  .color-6 {
+    @include color(#e1a3ee);
+  }
+
+  .color-7 {
+    @include color(#deaf8f);
+  }
+}
+
+.theme-codeschool {
+  .color-0 {
+    @include color(#2a5491);
+  }
+
+  .color-1 {
+    @include color(#43820d);
+  }
+
+  .color-2 {
+    @include color(#a03b1e);
+  }
+
+  .color-3 {
+    @include color(#237986);
+  }
+
+  .color-4 {
+    @include color(#b02f30);
+  }
+
+  .color-5 {
+    @include color(#484d79);
+  }
+
+  .color-6 {
+    @include color(#c59820);
+  }
+
+  .color-7 {
+    @include color(#c98344);
+  }
+}
+
+.theme-base16 {
+  .color-0 {
+    @include color(#ac4142);
+  }
+
+  .color-1 {
+    @include color(#d28445);
+  }
+
+  .color-2 {
+    @include color(#f4bf75);
+  }
+
+  .color-3 {
+    @include color(#90a959);
+  }
+
+  .color-4 {
+    @include color(#75b5aa);
+  }
+
+  .color-5 {
+    @include color(#6a9fb5);
+  }
+
+  .color-6 {
+    @include color(#aa759f);
+  }
+
+  .color-7 {
+    @include color(#8f5536);
+  }
+}
+
+.theme-eighties {
+  .color-0 {
+    @include color(#f2777a);
+  }
+
+  .color-1 {
+    @include color(#f99157);
+  }
+
+  .color-2 {
+    @include color(#fc6);
+  }
+
+  .color-3 {
+    @include color(#9c9);
+  }
+
+  .color-4 {
+    @include color(#6cc);
+  }
+
+  .color-5 {
+    @include color(#69c);
+  }
+
+  .color-6 {
+    @include color(#c9c);
+  }
+
+  .color-7 {
+    @include color(#d27b53);
+  }
+}
+
+.theme-embers {
+  .color-0 {
+    @include color(#826d57);
+  }
+
+  .color-1 {
+    @include color(#828257);
+  }
+
+  .color-2 {
+    @include color(#6d8257);
+  }
+
+  .color-3 {
+    @include color(#57826d);
+  }
+
+  .color-4 {
+    @include color(#576d82);
+  }
+
+  .color-5 {
+    @include color(#6d5782);
+  }
+
+  .color-6 {
+    @include color(#82576d);
+  }
+
+  .color-7 {
+    @include color(#825757);
+  }
+}
+
+.theme-google {
+  .color-0 {
+    @include color(#cc342b);
+  }
+
+  .color-1 {
+    @include color(#f96a38);
+  }
+
+  .color-2 {
+    @include color(#fba922);
+  }
+
+  .color-3 {
+    @include color(#198844);
+  }
+
+  .color-4 {
+    @include color(#3971ed);
+  }
+
+  .color-5 {
+    @include color(#3971ed);
+  }
+
+  .color-6 {
+    @include color(#a36ac7);
+  }
+
+  .color-7 {
+    @include color(#3971ed);
+  }
+}
+
+.theme-grayscale {
+  .color-0 {
+    @include color(#7c7c7c);
+  }
+
+  .color-1 {
+    @include color(#999);
+  }
+
+  .color-2 {
+    @include color(#a0a0a0);
+  }
+
+  .color-3 {
+    @include color(#8e8e8e);
+  }
+
+  .color-4 {
+    @include color(#868686);
+  }
+
+  .color-5 {
+    @include color(#686868);
+  }
+
+  .color-6 {
+    @include color(#747474);
+  }
+
+  .color-7 {
+    @include color(#5e5e5e);
+  }
+}
+
+.theme-greenscreen {
+  .color-0 {
+    @include color(#070);
+  }
+
+  .color-1 {
+    @include color(#090);
+  }
+
+  .color-2 {
+    @include color(#070);
+  }
+
+  .color-3 {
+    @include color(#0b0);
+  }
+
+  .color-4 {
+    @include color(#050);
+  }
+
+  .color-5 {
+    @include color(#090);
+  }
+
+  .color-6 {
+    @include color(#0b0);
+  }
+
+  .color-7 {
+    @include color(#050);
+  }
+}
+
+.theme-isotope {
+  .color-0 {
+    @include color(#f00);
+  }
+
+  .color-1 {
+    @include color(#f90);
+  }
+
+  .color-2 {
+    @include color(#f09);
+  }
+
+  .color-3 {
+    @include color(#3f0);
+  }
+
+  .color-4 {
+    @include color(#0ff);
+  }
+
+  .color-5 {
+    @include color(#06f);
+  }
+
+  .color-6 {
+    @include color(#c0f);
+  }
+
+  .color-7 {
+    @include color(#30f);
+  }
+}
+
+.theme-londontube {
+  .color-0 {
+    @include color(#ee2e24);
+  }
+
+  .color-1 {
+    @include color(#f386a1);
+  }
+
+  .color-2 {
+    @include color(#ffd204);
+  }
+
+  .color-3 {
+    @include color(#00853e);
+  }
+
+  .color-4 {
+    @include color(#85cebc);
+  }
+
+  .color-5 {
+    @include color(#009ddc);
+  }
+
+  .color-6 {
+    @include color(#98005d);
+  }
+
+  .color-7 {
+    @include color(#b06110);
+  }
+}
+
+.theme-marrakesh {
+  .color-0 {
+    @include color(#c35359);
+  }
+
+  .color-1 {
+    @include color(#b36144);
+  }
+
+  .color-2 {
+    @include color(#a88339);
+  }
+
+  .color-3 {
+    @include color(#18974e);
+  }
+
+  .color-4 {
+    @include color(#75a738);
+  }
+
+  .color-5 {
+    @include color(#477ca1);
+  }
+
+  .color-6 {
+    @include color(#8868b3);
+  }
+
+  .color-7 {
+    @include color(#b3588e);
+  }
+}
+
+.theme-mocha {
+  .color-0 {
+    @include color(#cb6077);
+  }
+
+  .color-1 {
+    @include color(#d28b71);
+  }
+
+  .color-2 {
+    @include color(#f4bc87);
+  }
+
+  .color-3 {
+    @include color(#beb55b);
+  }
+
+  .color-4 {
+    @include color(#7bbda4);
+  }
+
+  .color-5 {
+    @include color(#8ab3b5);
+  }
+
+  .color-6 {
+    @include color(#a89bb9);
+  }
+
+  .color-7 {
+    @include color(#bb9584);
+  }
+}
+
+.theme-monokai {
+  .color-0 {
+    @include color(#f92672);
+  }
+
+  .color-1 {
+    @include color(#fd971f);
+  }
+
+  .color-2 {
+    @include color(#f4bf75);
+  }
+
+  .color-3 {
+    @include color(#a6e22e);
+  }
+
+  .color-4 {
+    @include color(#a1efe4);
+  }
+
+  .color-5 {
+    @include color(#66d9ef);
+  }
+
+  .color-6 {
+    @include color(#ae81ff);
+  }
+
+  .color-7 {
+    @include color(#c63);
+  }
+}
+
+.theme-ocean {
+  .color-0 {
+    @include color(#bf616a);
+  }
+
+  .color-1 {
+    @include color(#d08770);
+  }
+
+  .color-2 {
+    @include color(#ebcb8b);
+  }
+
+  .color-3 {
+    @include color(#a3be8c);
+  }
+
+  .color-4 {
+    @include color(#96b5b4);
+  }
+
+  .color-5 {
+    @include color(#8fa1b3);
+  }
+
+  .color-6 {
+    @include color(#b48ead);
+  }
+
+  .color-7 {
+    @include color(#ab7967);
+  }
+}
+
+.theme-paraiso {
+  .color-0 {
+    @include color(#ef6155);
+  }
+
+  .color-1 {
+    @include color(#f99b15);
+  }
+
+  .color-2 {
+    @include color(#fec418);
+  }
+
+  .color-3 {
+    @include color(#48b685);
+  }
+
+  .color-4 {
+    @include color(#5bc4bf);
+  }
+
+  .color-5 {
+    @include color(#06b6ef);
+  }
+
+  .color-6 {
+    @include color(#815ba4);
+  }
+
+  .color-7 {
+    @include color(#e96ba8);
+  }
+}
+
+.theme-railscasts {
+  .color-0 {
+    @include color(#da4939);
+  }
+
+  .color-1 {
+    @include color(#cc7833);
+  }
+
+  .color-2 {
+    @include color(#ffc66d);
+  }
+
+  .color-3 {
+    @include color(#a5c261);
+  }
+
+  .color-4 {
+    @include color(#519f50);
+  }
+
+  .color-5 {
+    @include color(#6d9cbe);
+  }
+
+  .color-6 {
+    @include color(#b6b3eb);
+  }
+
+  .color-7 {
+    @include color(#bc9458);
+  }
+}
+
+.theme-shapeshifter {
+  .color-0 {
+    @include color(#e92f2f);
+  }
+
+  .color-1 {
+    @include color(#e09448);
+  }
+
+  .color-2 {
+    @include color(#dddd13);
+  }
+
+  .color-3 {
+    @include color(#0ed839);
+  }
+
+  .color-4 {
+    @include color(#23edda);
+  }
+
+  .color-5 {
+    @include color(#3b48e3);
+  }
+
+  .color-6 {
+    @include color(#f996e2);
+  }
+
+  .color-7 {
+    @include color(#69542d);
+  }
+}
+
+.theme-solarized {
+  .color-0 {
+    @include color(#dc322f);
+  }
+
+  .color-1 {
+    @include color(#cb4b16);
+  }
+
+  .color-2 {
+    @include color(#b58900);
+  }
+
+  .color-3 {
+    @include color(#859900);
+  }
+
+  .color-4 {
+    @include color(#2aa198);
+  }
+
+  .color-5 {
+    @include color(#268bd2);
+  }
+
+  .color-6 {
+    @include color(#6c71c4);
+  }
+
+  .color-7 {
+    @include color(#d33682);
+  }
+}
+
+.theme-spookypumpkin {
+  .color-0 {
+    @include color(#964515);
+  }
+
+  .color-1 {
+    @include color(#ff751a);
+  }
+
+  .color-2 {
+    @include color(#e55401);
+  }
+
+  .color-3 {
+    @include color(#ffbd4c);
+  }
+
+  .color-4 {
+    @include color(#ffd20d);
+  }
+
+  .color-5 {
+    @include color(#a69708);
+  }
+
+  .color-6 {
+    @include color(#6d5000);
+  }
+
+  .color-7 {
+    @include color(#88254b);
+  }
+}
+
+.theme-tomorrow {
+  .color-0 {
+    @include color(#c66);
+  }
+
+  .color-1 {
+    @include color(#de935f);
+  }
+
+  .color-2 {
+    @include color(#f0c674);
+  }
+
+  .color-3 {
+    @include color(#b5bd68);
+  }
+
+  .color-4 {
+    @include color(#8abeb7);
+  }
+
+  .color-5 {
+    @include color(#81a2be);
+  }
+
+  .color-6 {
+    @include color(#b294bb);
+  }
+
+  .color-7 {
+    @include color(#a3685a);
+  }
+}
+
+.theme-twilight {
+  .color-0 {
+    @include color(#cf6a4c);
+  }
+
+  .color-1 {
+    @include color(#cda869);
+  }
+
+  .color-2 {
+    @include color(#f9ee98);
+  }
+
+  .color-3 {
+    @include color(#8f9d6a);
+  }
+
+  .color-4 {
+    @include color(#afc4db);
+  }
+
+  .color-5 {
+    @include color(#7587a6);
+  }
+
+  .color-6 {
+    @include color(#9b859d);
+  }
+
+  .color-7 {
+    @include color(#9b703f);
+  }
+}
+
+.theme-whispers {
+  .color-0 {
+    @include color(#e0e0e0);
+  }
+
+  .color-1 {
+    @include color(#e4f1fe);
+  }
+
+  .color-2 {
+    @include color(#aec6cf);
+  }
+
+  .color-3 {
+    @include color(#95a5a6);
+  }
+
+  .color-4 {
+    @include color(#336e7b);
+  }
+
+  .color-5 {
+    @include color(#2e8fc2);
+  }
+
+  .color-6 {
+    @include color(#54b3d9);
+  }
+
+  .color-7 {
+    @include color(#86d2e5);
+  }
+}
+
+.theme-whitescreen {
+  .color-0,
+  .color-1,
+  .color-2,
+  .color-3,
+  .color-4,
+  .color-5,
+  .color-6,
+  .color-7 {
+    @include color(#fff);
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "extends": "stylelint-config-standard",
+  "rules": {
+    "declaration-block-properties-order": "alphabetical",
+    "at-rule-empty-line-before": null
+  }
+}
