@@ -102,7 +102,7 @@
     "webpack-validator": "^2.2.7"
   },
   "engines": {
-    "node": ">=0.8.0"
+    "node": ">=5.11.0"
   },
   "private": true
 }
