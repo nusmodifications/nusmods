@@ -55,8 +55,8 @@
 
 @import "jasny-bootstrap/scss/jasny-bootstrap";
 
-$fa-font-path: "";
-@import "font-awesome/scss/font-awesome";
+$fa-font-path: "~font-awesome/fonts";
+@import "~font-awesome/scss/font-awesome";
 
 @import "~qtip2/dist/jquery.qtip.css";
 @import "~select2/select2.css";
@@ -241,13 +241,13 @@ kbd {
 }
 
 .nm-logo {
-  background-image: url(/app/images/logo.png);
+  background-image: url('../images/logo.png');
   background-repeat: no-repeat;
   background-position: center center;
   background-size: 109px 18px;
   width: 139px;
   &.nm-logo-white {
-    background-image: url(/app/images/logo-white.png);
+    background-image: url('../images/logo-white.png');
   }
 }
 

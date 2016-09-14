@@ -8,7 +8,8 @@ var team = require('./team.json');
 var controller = {
   showAbout: function () {
     var AboutView = require('./views/AboutView');
-    App.mainRegion.show(new AboutView());
+    var aboutModel = new Backbone.Model({logoPath: require('../../images/logo.png')});
+    App.mainRegion.show(new AboutView({model: aboutModel}));
     App.navigationRegion.currentView.options.collection.deselect();
   },
   showTeam: function () {

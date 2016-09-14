@@ -9,7 +9,7 @@ const webpack = require('webpack');
 const PATHS = {
   app: path.join(__dirname, 'app/scripts/main.js'),
   style: path.join(__dirname, 'app', 'styles'),
-  build: path.join(__dirname, 'build')
+  build: path.join(__dirname, 'dist')
 }
 
 const devServerOpts = function(options) {
@@ -82,34 +82,48 @@ const common = {
   },
   output: {
     path: PATHS.build,
-    filename: "[name].js"
+    filename: '[name].js'
   },
   module: {
     loaders: [
       // font related loaders
       {
-        test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "url?limit=10000&mimetype=application/font-woff&name=[name].[ext]"
-      }, {
-        test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "url?limit=10000&mimetype=application/font-woff&name=[name].[ext]"
-      }, {
-        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "url?limit=10000&mimetype=application/octet-stream&name=[name].[ext]"
-      }, {
-        test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "file?name=[name].[ext]"
-      }, {
-        test: /\.otf$/,
-        loader: "file"
-      }, {
-        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "url?limit=10000&mimetype=image/svg+xml"
+        // Matches both node_modules/font-awesome/fonts and src/fonts
+        test: /fonts\/.*\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: 'file',
+        query: {
+          name: 'fonts/[name].[ext]',
+          limit: 10000,
+          mimetype: 'application/font-woff'
+        }
       },
-      { test: /\.swf$/, loader: "file"},
+      {
+        // Matches both node_modules/font-awesome/fonts and src/fonts
+        test: /fonts\/.*\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: 'file',
+        query: {
+          name: 'fonts/[name].[ext]'
+        }
+      },
+      {
+        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+        loader: 'url',
+        query: {
+          limit: 10000,
+          mimetype: 'image/svg+xml',
+          name: 'images/[path][name].[ext]'
+        }
+      },
+      {
+        test: /\.swf$/,
+        loader: 'file'
+      },
       {
         test: /\.(jpe?g|gif|png|svg)$/,
-        loader: 'file?name=[path][name].[ext]'
+        loader: 'file',
+        query: {
+          name: 'images/[md5:hash].[ext]'
+        }
       },
       // copy favicons to root
       {
@@ -119,19 +133,25 @@ const common = {
       // copy htaccess to root
       {
         test: /.htaccess$/,
-        loader: 'file?name=[name].[ext]'
+        loader: 'file'
       },
       // copy php files to root
       {
         test: /\.php$/,
-        loader: 'file?name=[name].[ext]'
+        loader: 'file'
       },
       {
         test: /\.xml$/,
-        loader: 'file?name=[name].[ext]'
+        loader: 'file'
       },
-      { test: /\.hbs$/, loader: "handlebars-loader" },
-      { test: /\.json$/, loader: "json-loader" },
+      {
+        test: /\.hbs$/,
+        loader: 'handlebars-loader'
+      },
+      {
+        test: /\.json$/,
+        loader: 'json-loader'
+      },
       {
         test: /\.js$/,
         exclude: /node_modules/,
@@ -181,10 +201,6 @@ switch(process.env.npm_lifecycle_event) {
           })
         ]
       }
-      // extractBundle({
-      //   name: 'vendor',
-      //   entries: Object.keys(pkg.dependencies)
-      // })
     );
     break;
   default:

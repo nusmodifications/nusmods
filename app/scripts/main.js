@@ -24,13 +24,6 @@ require('../favicon-96.png');
 require('../favicon-160.png');
 require('../favicon-196.png');
 require('../opensearch.xml');
-require('../images/logo.png');
-require('../images/logo-white.png');
-require('font-awesome/fonts/fontawesome-webfont.eot');
-require('font-awesome/fonts/fontawesome-webfont.svg');
-require('font-awesome/fonts/fontawesome-webfont.ttf');
-require('font-awesome/fonts/fontawesome-webfont.woff');
-require('font-awesome/fonts/fontawesome-webfont.woff2');
 
 require('../.htaccess');
 require('../favicon.ico');
