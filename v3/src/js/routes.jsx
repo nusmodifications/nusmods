@@ -6,9 +6,9 @@ import AppContainer from 'views/AppContainer';
 import NotFoundPage from 'views/NotFoundPage';
 
 import TimetableContainer from 'views/timetable/TimetableContainer';
-import ModulesContainer from 'views/modules/ModulesContainer';
-import ModuleFinderContainer from 'views/modules/ModuleFinderContainer';
-import ModulePageContainer from 'views/modules/ModulePageContainer';
+import ModulesContainer from 'views/browse/ModulesContainer';
+import ModuleFinderContainer from 'views/browse/ModuleFinderContainer';
+import ModulePageContainer from 'views/browse/ModulePageContainer';
 import SettingsContainer from 'views/settings/SettingsContainer';
 
 /* eslint-disable react/prop-types */

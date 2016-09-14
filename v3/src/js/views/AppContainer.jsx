@@ -45,7 +45,7 @@ export class AppContainer extends Component {
                 </li>
                 <li role="presentation" className="nav-item">
                   <Link className="nav-link" activeClassName="active" to="/modules">
-                    Modules
+                    Browse
                   </Link>
                 </li>
                 <li role="presentation" className="nav-item">
