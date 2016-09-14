@@ -61,7 +61,7 @@ Run the development environment:
 $ npm start
 ```
 
-Visit `localhost:9000` to see your local instance of NUSMods.
+Visit `localhost:8080` to see your local instance of NUSMods.
 
 ## Building for Production
 
