@@ -85,11 +85,12 @@ const common = {
     filename: '[name].js'
   },
   module: {
+    noParse: /[\/\\]node_modules[\/\\]localforage[\/\\]dist[\/\\].*$/,
     loaders: [
       // font related loaders
       {
         // Matches both node_modules/font-awesome/fonts and src/fonts
-        test: /fonts\/.*\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         loader: 'file',
         query: {
           name: 'fonts/[name].[ext]',
@@ -99,7 +100,7 @@ const common = {
       },
       {
         // Matches both node_modules/font-awesome/fonts and src/fonts
-        test: /fonts\/.*\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         loader: 'file',
         query: {
           name: 'fonts/[name].[ext]'
