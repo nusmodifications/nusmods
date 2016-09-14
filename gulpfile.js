@@ -29,9 +29,9 @@ gulp.task('test', function() {
 });
 
 gulp.task('rsync', function() {
-  gulp.src('build')
+  gulp.src('dist')
     .pipe(plugins.rsync({
-      root: 'build',
+      root: 'dist',
       destination: '../nusmods.com',
       recursive: true,
       update: true
@@ -41,7 +41,7 @@ gulp.task('rsync', function() {
 // Empties folders to start fresh
 
 gulp.task('clean', function() {
-  del.sync(['build/*', '!build/.git*']);
+  del.sync(['dist/*', '!dist/.git*']);
 });
 
 // Make sure code styles are up to par and there are no obvious mistakes
