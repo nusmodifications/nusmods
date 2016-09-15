@@ -34,7 +34,8 @@ const common = {
     root: [
       PATHS.app,
       PATHS.scripts,
-      PATHS.styles
+      PATHS.styles,
+      PATHS.images
     ],
     extensions: ['', '.js', '.jsx']
   },

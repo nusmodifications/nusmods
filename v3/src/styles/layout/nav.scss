@@ -1,5 +1,18 @@
 .nm-navbar {
   margin-bottom: 15px;
+
+  .nm-navbar-brand {
+    background-image: url('../img/nusmods-logo.png');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 34px;
+    width: 100px;
+
+    @media (min-width: map-get($grid-breakpoints, 'md')) {
+      margin-left: 17px;
+    }
+  }
 }
 
 .nm-nav-tabs {

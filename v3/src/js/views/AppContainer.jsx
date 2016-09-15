@@ -24,7 +24,7 @@ export class AppContainer extends Component {
     return (
       <div className="app-container">
         <nav className="navbar navbar-fixed-top navbar-light bg-faded nm-navbar">
-          <Link className="navbar-brand" to="/">NUSMods</Link>
+          <Link className="navbar-brand nm-navbar-brand" to="/"/>
           <form className="hidden-xs-down"
             style={{ width: '100%', maxWidth: 400, display: 'inline-block' }}
           >
