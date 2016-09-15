@@ -115,6 +115,7 @@ $timetable-cell-opacity: 0.5;
   .timetable-module-cell {
     $smaller-text: 0.6rem;
 
+    animation-duration: .5s;
     border-bottom-style: solid;
     border-bottom-width: 2px;
     cursor: not-allowed;
@@ -143,7 +144,6 @@ $timetable-cell-opacity: 0.5;
     &.is-active {
       animation-duration: 1.5s;
       animation-iteration-count: infinite;
-      animation-name: pulse;
     }
 
     .cell-module-code {

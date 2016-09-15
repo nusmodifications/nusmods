@@ -1,15 +1,22 @@
 @import 'bootstrap/bootstrap';
 
+// 3rd-party imports
 @import '~react-virtualized/styles.css';
 @import '~react-select/dist/react-select.css';
 @import '~react-virtualized-select/styles.css';
 
+@import '~animate.css/source/_base.css';
+@import '~animate.css/source/attention_seekers/pulse.css';
+@import '~animate.css/source/zooming_entrances/zoomIn.css';
+
+// Utils
 @import 'utils/hacks';
 @import 'utils/mixins';
-@import 'utils/animations';
 
+// Layout
 @import 'layout/footer';
 
+// Pages
 @import 'themes';
 @import 'timetable';
 @import 'settings';

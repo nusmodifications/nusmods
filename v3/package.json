@@ -49,6 +49,7 @@
     "webpack-merge": "^0.14.0"
   },
   "dependencies": {
+    "animate.css": "^3.5.2",
     "axios": "^0.14.0",
     "bootstrap": "^4.0.0-alpha.3",
     "classnames": "^2.2.5",
