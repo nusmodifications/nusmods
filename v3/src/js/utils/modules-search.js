@@ -4,11 +4,13 @@ import _ from 'lodash';
 
 export class ModulesSearchIndex {
 
+  tokenToUidToDocumentMap: Object;
+
   constructor() {
     this.tokenToUidToDocumentMap = {};
   }
 
-  indexDocument(token:string, uid:string, document:Object):void {
+  indexDocument(token: string, uid: string, document: Object): void {
     if (!this.tokenToUidToDocumentMap[token]) {
       this.tokenToUidToDocumentMap[token] = {};
     }
@@ -17,8 +19,8 @@ export class ModulesSearchIndex {
   }
 
   // eslint-disable-next-line no-unused-vars
-  search(tokens, corpus) {
-    const query = tokens[0];
+  search(tokens: Array<string>, corpus: Array<Object>): Array<Object> {
+    const query: string = tokens[0];
     let uidToDocumentMap = this.tokenToUidToDocumentMap[query] || {};
 
     for (let i = 1, numTokens = tokens.length; i < numTokens; i++) {
@@ -30,13 +32,13 @@ export class ModulesSearchIndex {
       });
     }
 
-    const lowerCaseQuery = query.toLowerCase();
+    const lowerCaseQuery: string = query.toLowerCase();
     /*
     First sort based on a case insensitive index of how early
     the query appears.
     If they are the same, sort based on the module code.
     */
-    const documents = _.values(uidToDocumentMap);
+    const documents: Array<Object> = _.values(uidToDocumentMap);
     documents.sort((a, b) => {
       const indexOfA = a.label.toLowerCase().indexOf(lowerCaseQuery);
       const indexOfB = b.label.toLowerCase().indexOf(lowerCaseQuery);
@@ -51,11 +53,11 @@ export class ModulesSearchIndex {
 }
 
 export class ModulesTokenizer {
-  tokenize(text:string):Array<string> {
-    const arrayOfTokens:Array<string> = text
+  tokenize(text: string): Array<string> {
+    const arrayOfTokens: Array<string> = text
       .split(/[^a-zA-Z0-9\-']+/)
       .filter(str => !!str); // Filter empty tokens
-    const codeWithoutPrefix:string = arrayOfTokens[0].replace(/\D+/, '');
+    const codeWithoutPrefix: string = arrayOfTokens[0].replace(/\D+/, '');
     if (codeWithoutPrefix) {
       arrayOfTokens.unshift(codeWithoutPrefix); // Prepend
     }
