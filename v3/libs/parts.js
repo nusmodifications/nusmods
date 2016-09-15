@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const FlowStatusWebpackPlugin = require('flow-status-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 
 exports.devServer = function (options) {
@@ -153,6 +154,16 @@ exports.clean = function (path) {
         // Without `root` CleanWebpackPlugin won't point to our
         // project and will fail to work.
         root: process.cwd()
+      })
+    ]
+  };
+}
+
+exports.flow = function (path) {
+  return {
+    plugins: [
+      new FlowStatusWebpackPlugin({
+        failOnError: true
       })
     ]
   };

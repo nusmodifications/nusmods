@@ -18,7 +18,6 @@
   "plugins": [
     "syntax-object-rest-spread",
     "transform-object-rest-spread",
-    "transform-es2015-destructuring",
-    "syntax-flow",
+    "transform-es2015-destructuring"
   ]
 }
