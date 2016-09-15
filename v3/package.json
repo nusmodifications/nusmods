@@ -5,6 +5,7 @@
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack-dev-server --open",
     "build": "cross-env NODE_ENV=production webpack",
+    "flow": "flow check || exit 0",
     "test": "cross-env NODE_PATH=./src/js mocha --compilers js:babel-register --recursive",
     "test:watch": "npm test -- --watch"
   },
@@ -34,6 +35,7 @@
     "eslint-plugin-react": "^6.2.0",
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.9.0",
+    "flow-bin": "^0.32.0",
     "html-webpack-plugin": "^2.22.0",
     "json-loader": "^0.5.4",
     "mocha": "^3.0.2",
