@@ -114,11 +114,13 @@ export class TimetableContainer extends Component {
             this.props.cancelModifyLesson();
           }
         }}>
-          <div onClick={() => {
+          <div className="timetable-wrapper"
+            onClick={() => {
             // TODO: Currently this onClick doesn't trigger if you click on a cell directly.
             //       Should capture the click on div too.
-            this.setState({ isAddingModule: false });
-          }}>
+              this.setState({ isAddingModule: false });
+            }}
+          >
             <Timetable lessons={arrangedLessonsWithModifiableFlag}
               onModifyCell={this.modifyCell}
             />

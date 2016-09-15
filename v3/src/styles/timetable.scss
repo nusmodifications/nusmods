@@ -14,6 +14,10 @@ $timetable-cell-opacity: 0.5;
   position: relative;
 }
 
+.timetable-wrapper {
+  overflow-x: scroll;
+}
+
 .timetable {
   align-items: stretch;
   display: flex;
