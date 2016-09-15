@@ -47,7 +47,7 @@ const TimetableCell = (props) => {
       <div className={classnames('timetable-module-cell animated', {
         'is-modifiable': lesson.isModifiable,
         'is-available': lesson.isAvailable,
-        'pulse infinite': lesson.isActive,
+        'is-active pulse': lesson.isActive,
         [`color-${lesson.colorIndex}`]: true,
         zoomIn: lesson.isAvailable,
       })}
