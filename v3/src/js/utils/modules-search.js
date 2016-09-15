@@ -1,3 +1,5 @@
+/* @flow */
+
 import _ from 'lodash';
 
 export class ModulesSearchIndex {
@@ -6,7 +8,7 @@ export class ModulesSearchIndex {
     this.tokenToUidToDocumentMap = {};
   }
 
-  indexDocument(token, uid, document) {
+  indexDocument(token:string, uid:string, document:Object):void {
     if (!this.tokenToUidToDocumentMap[token]) {
       this.tokenToUidToDocumentMap[token] = {};
     }
@@ -49,11 +51,11 @@ export class ModulesSearchIndex {
 }
 
 export class ModulesTokenizer {
-  tokenize(text) {
-    const arrayOfTokens = text
+  tokenize(text:string):Array<string> {
+    const arrayOfTokens:Array<string> = text
       .split(/[^a-zA-Z0-9\-']+/)
       .filter(str => !!str); // Filter empty tokens
-    const codeWithoutPrefix = arrayOfTokens[0].replace(/\D+/, '');
+    const codeWithoutPrefix:string = arrayOfTokens[0].replace(/\D+/, '');
     if (codeWithoutPrefix) {
       arrayOfTokens.unshift(codeWithoutPrefix); // Prepend
     }

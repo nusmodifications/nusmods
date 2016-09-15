@@ -11,7 +11,7 @@ export function convertTimeToIndex(time:string):number {
 // Reverse of convertTimeToIndex.
 // 0 -> 0000, 1 -> 0030, 2 -> 0100, ...
 export function convertIndexToTime(index:number):string {
-  const hour = parseInt(index / 2, 10);
-  const minute = (index % 2) === 0 ? '00' : '30';
+  const hour:number = parseInt(index / 2, 10);
+  const minute:string = (index % 2) === 0 ? '00' : '30';
   return (hour < 10 ? `0${hour.toString()}` : hour.toString()) + minute;
 }
