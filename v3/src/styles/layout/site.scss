@@ -1,0 +1,14 @@
+// This file contains the styles for the overall site
+body {
+  padding-top: 5rem;
+
+  @media (max-width: map-get($grid-breakpoints, 'md')) {
+    padding-top: $navbar-height * 2;
+  }
+}
+
+.main-content {
+  @media (max-width: map-get($grid-breakpoints, 'md')) {
+    padding-top: 1rem;
+  }
+}

@@ -23,9 +23,11 @@ export class AppContainer extends Component {
   render() {
     return (
       <div className="app-container">
-        <nav className="navbar navbar-light bg-faded">
+        <nav className="navbar navbar-fixed-top navbar-light bg-faded nm-navbar">
           <Link className="navbar-brand" to="/">NUSMods</Link>
-          <form style={{ width: '100%', maxWidth: 400, display: 'inline-block' }}>
+          <form className="hidden-xs-down"
+            style={{ width: '100%', maxWidth: 400, display: 'inline-block' }}
+          >
             <ModulesSelect moduleList={this.props.moduleListSelect}
               onChange={(moduleCode) => {
                 this.context.router.push(`/modules/${moduleCode.value}`);
@@ -33,29 +35,31 @@ export class AppContainer extends Component {
             />
           </form>
         </nav>
-        <br/>
         <div className="container-fluid">
           <div className="row">
             <div className="col-md-2">
-              <ul className="nav nav-pills nav-stacked">
-                <li role="presentation" className="nav-item">
+              <ul className="nm-nav-tabs">
+                <li role="presentation" className="nm-nav-item">
                   <Link className="nav-link" activeClassName="active" to="/timetable">
-                    Timetable
+                    <i className="fa fa-fw fa-lg fa-table"/>
+                    <span className="nm-link-title"> Timetable</span>
                   </Link>
                 </li>
-                <li role="presentation" className="nav-item">
+                <li role="presentation" className="nm-nav-item">
                   <Link className="nav-link" activeClassName="active" to="/modules">
-                    Browse
+                    <i className="fa fa-fw fa-lg fa-list"/>
+                    <span className="nm-link-title"> Browse</span>
                   </Link>
                 </li>
-                <li role="presentation" className="nav-item">
+                <li role="presentation" className="nm-nav-item">
                   <Link className="nav-link" activeClassName="active" to="/settings">
-                    Settings
+                    <i className="fa fa-fw fa-lg fa-gear"/>
+                    <span className="nm-link-title"> Settings</span>
                   </Link>
                 </li>
               </ul>
             </div>
-            <div className="col-md-10">
+            <div className="col-md-10 main-content">
               {this.props.fetchModuleListRequest.isPending && !this.props.moduleList.length ?
                 <p>Loading...</p> : null
               }
