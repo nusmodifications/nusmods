@@ -1,5 +1,9 @@
 module.exports = {
-  "extends": "airbnb",
+  "parser": "babel-eslint",
+  "extends": [
+    "airbnb",
+    "plugin:flowtype/recommended"
+  ],
   "env": {
     "browser": true,
     "node": true
@@ -7,7 +11,8 @@ module.exports = {
   "plugins": [
     "react",
     "jsx-a11y",
-    "import"
+    "import",
+    "flowtype"
   ],
   "parserOptions": {
     "ecmaVersion": 6,

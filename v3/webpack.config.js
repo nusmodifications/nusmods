@@ -131,6 +131,7 @@ switch (process.env.npm_lifecycle_event) {
       },
       parts.setFreeVariable('process.env.NODE_ENV', environment),
       parts.setupCSS(PATHS.styles),
+      parts.flow(),
       parts.devServer({
         // Customize host/port here if needed
         host: process.env.HOST,

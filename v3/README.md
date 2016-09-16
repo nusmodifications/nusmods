@@ -11,7 +11,11 @@ $ npm start
 
 #### Running tests
 ```
+// run tests
 $ npm test
+
+// run type checking
+$ npm run flow
 ```
 
 #### Build for Deployment

@@ -1,9 +1,11 @@
+/* @Flow */
+
 import _ from 'lodash';
 
-export const FIRST_HOUR = 8;
-export const LAST_HOUR = 22;
-export const CELLS_COUNT = ((LAST_HOUR - FIRST_HOUR) + 1) * 2;
-export const LESSON_TYPE_ABBREV = {
+export const FIRST_HOUR: number = 8;
+export const LAST_HOUR: number = 22;
+export const CELLS_COUNT: number = ((LAST_HOUR - FIRST_HOUR) + 1) * 2;
+export const LESSON_TYPE_ABBREV: Object = {
   'Design Lecture': 'DLEC',
   Laboratory: 'LAB',
   Lecture: 'LEC',
