@@ -1,4 +1,4 @@
-/* @Flow */
+/* @flow */
 
 import _ from 'lodash';
 
@@ -35,21 +35,21 @@ export const LESSON_TYPE_ABBREV: Object = {
 //    ],
 //    ...
 //  }
-export function randomLessonConfig(lessons) {
+export function randomLessonConfig(lessons: Array<Object>): Object {
   return _(lessons)
     .groupBy('LessonType')
-    .mapValues((group) => {
+    .mapValues((group: Object) => {
       return _.groupBy(group, 'ClassNo');
     })
-    .mapValues((group) => {
+    .mapValues((group: Object) => {
       return _.sample(group);
     })
     .value();
 }
 
 // Filters a flat array of lessons and returns the lessons corresponding to lessonType.
-export function lessonsForLessonType(lessons, lessonType) {
-  return _.filter(lessons, (lesson) => lesson.LessonType === lessonType);
+export function lessonsForLessonType(lessons: Array<Object>, lessonType: string): Array<Object> {
+  return _.filter(lessons, (lesson: Object) => lesson.LessonType === lessonType);
 }
 
 //  Converts from timetable config format to flat array of lessons.
@@ -62,8 +62,8 @@ export function lessonsForLessonType(lessons, lessonType) {
 //      ...
 //    }
 //  }
-export function timetableLessonsArray(timetable) {
-  return _.flatMapDepth(timetable, (lessonType) => {
+export function timetableLessonsArray(timetable: Array<Object>): Array<Object> {
+  return _.flatMapDepth(timetable, (lessonType: string) => {
     return _.values(lessonType);
   }, 2);
 }
@@ -73,12 +73,12 @@ export function timetableLessonsArray(timetable) {
 //    Monday: [{ ...Lesson }, { ...Lesson }, ...],
 //    Tuesday: [{ ...Lesson }, { ...Lesson }, ...]
 //  }
-export function groupLessonsByDay(lessons) {
+export function groupLessonsByDay(lessons: Array<Object>): Object {
   return _.groupBy(lessons, 'DayText');
 }
 
 //  Determines if two lessons of the same day overlap. Only start/end time is being checked
-export function doLessonsOverlap(lesson1, lesson2) {
+export function doLessonsOverlap(lesson1: Object, lesson2: Object): boolean {
   return lesson1.StartTime < lesson2.EndTime && lesson2.StartTime < lesson1.EndTime;
 }
 
@@ -89,15 +89,15 @@ export function doLessonsOverlap(lesson1, lesson2) {
 //    [{ ...Lesson }, { ...Lesson }, ...],
 //    [{ ...Lesson }, ...],
 //  ]
-export function arrangeLessonsWithinDay(lessons) {
-  const rows = [[]];
+export function arrangeLessonsWithinDay(lessons: Array<Object>): Array<Array<Object>> {
+  const rows: Array<Array<Object>> = [[]];
   if (_.isEmpty(lessons)) {
     return rows;
   }
 
-  lessons.forEach((lesson) => {
+  lessons.forEach((lesson: Object) => {
     for (let i = 0, length = rows.length; i < length; i++) {
-      const rowLessons = rows[i];
+      const rowLessons: Array<Object> = rows[i];
       // Search through lessons in row to look for available slots.
       const overlapTests = _.map(rowLessons, (rowLesson) => {
         return !doLessonsOverlap(rowLesson, lesson);
@@ -129,16 +129,17 @@ export function arrangeLessonsWithinDay(lessons) {
 //    ],
 //    ...
 //  }
-export function arrangeLessonsForWeek(lessons) {
-  const dayLessons = groupLessonsByDay(lessons);
-  return _.mapValues(dayLessons, (dayLesson) => {
+export function arrangeLessonsForWeek(lessons: Array<Object>): Object {
+  const dayLessons: Object = groupLessonsByDay(lessons);
+  return _.mapValues(dayLessons, (dayLesson: Array<Object>) => {
     return arrangeLessonsWithinDay(dayLesson);
   });
 }
 
 //  Determines if a lesson on the timetable can be modifiable / dragged around.
 //  Condition for this is that there are multiple ClassNo for all the lessons in a LessonType.
-export function areOtherClassesAvailable(moduleLessons, lessonType) {
+export function areOtherClassesAvailable(moduleLessons: Array<Object>,
+                                          lessonType: string): boolean {
   const lessonTypeGroups = _.groupBy(moduleLessons, 'LessonType');
   if (!lessonTypeGroups[lessonType]) {
     // No such LessonType.

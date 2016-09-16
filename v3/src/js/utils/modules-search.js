@@ -21,13 +21,13 @@ export class ModulesSearchIndex {
   // eslint-disable-next-line no-unused-vars
   search(tokens: Array<string>, corpus: Array<Object>): Array<Object> {
     const query: string = tokens[0];
-    let uidToDocumentMap = this.tokenToUidToDocumentMap[query] || {};
+    let uidToDocumentMap: Object = this.tokenToUidToDocumentMap[query] || {};
 
     for (let i = 1, numTokens = tokens.length; i < numTokens; i++) {
-      const token = tokens[i];
-      const currentUidToDocumentMap = this.tokenToUidToDocumentMap[token] || {};
+      const token: string = tokens[i];
+      const currentUidToDocumentMap: Object = this.tokenToUidToDocumentMap[token] || {};
 
-      uidToDocumentMap = _.pickBy(uidToDocumentMap, (value, key) => {
+      uidToDocumentMap = _.pickBy(uidToDocumentMap, (value: Object, key: string) => {
         return currentUidToDocumentMap[key];
       });
     }
@@ -39,10 +39,10 @@ export class ModulesSearchIndex {
     If they are the same, sort based on the module code.
     */
     const documents: Array<Object> = _.values(uidToDocumentMap);
-    documents.sort((a, b) => {
-      const indexOfA = a.label.toLowerCase().indexOf(lowerCaseQuery);
-      const indexOfB = b.label.toLowerCase().indexOf(lowerCaseQuery);
-      const difference = indexOfA - indexOfB;
+    documents.sort((a: Object, b: Object) => {
+      const indexOfA: number = a.label.toLowerCase().indexOf(lowerCaseQuery);
+      const indexOfB: number = b.label.toLowerCase().indexOf(lowerCaseQuery);
+      const difference: number = indexOfA - indexOfB;
       if (difference === 0) {
         return a.value.localeCompare(b.value);
       }
