@@ -42,15 +42,14 @@ export const LESSON_TYPE_ABBREV: LessonTypeAbbrev = {
 //    [LessonType]: [TimetableLesson, ...],
 //  }
 export function randomLessonConfig(lessons: Array<TimetableLesson>): LessonConfig {
-  return _(lessons)
-    .groupBy('LessonType')
-    .mapValues((lessonsOfSameLessonType: Array<Lesson>) => {
+  const lessonByGroups: { [key: LessonType]: Array<TimetableLesson> } = _.groupBy(lessons, 'LessonType');
+  const lessonByGroupsByClassNo: { [key: LessonType]: { [key: ClassNo]: Array<TimetableLesson> } } =
+    _.mapValues(lessonByGroups, (lessonsOfSameLessonType: Array<Lesson>) => {
       return _.groupBy(lessonsOfSameLessonType, 'ClassNo');
-    })
-    .mapValues((group: { [key: ClassNo]: Array<Lesson> }) => {
-      return _.sample(group);
-    })
-    .value();
+    });
+  return _.mapValues(lessonByGroupsByClassNo, (group: { [key: ClassNo]: Array<Lesson> }) => {
+    return _.sample(group);
+  });
 }
 
 //  Filters a flat array of lessons and returns the lessons corresponding to lessonType.
