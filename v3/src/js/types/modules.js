@@ -33,7 +33,14 @@ export type Module = {
   Preclusion?: string,
   Prerequisite?: string,
   Types: Array<string>,
-  Workload: ?string,
+  Workload?: string,
+};
+
+// This format is returned from the module list endpoint.
+export type ModuleCondensed = {
+  ModuleCode: ModuleCode,
+  ModuleTitle: ModuleTitle,
+  Semesters: Array<number>,
 };
 
 // Semester-specific information of a module.

@@ -28,7 +28,7 @@ export class AppContainer extends Component {
           <form className="hidden-xs-down"
             style={{ width: '100%', maxWidth: 400, display: 'inline-block' }}
           >
-            <ModulesSelect moduleList={this.props.moduleListSelect}
+            <ModulesSelect moduleList={this.props.moduleSelectList}
               onChange={(moduleCode) => {
                 this.context.router.push(`/modules/${moduleCode.value}`);
               }}
@@ -80,7 +80,7 @@ AppContainer.propTypes = {
   loadModule: PropTypes.func,
   fetchModuleList: PropTypes.func,
   moduleList: PropTypes.array,
-  moduleListSelect: PropTypes.array,
+  moduleSelectList: PropTypes.array,
   timetables: PropTypes.object,
   fetchModuleListRequest: PropTypes.object,
 };
@@ -92,7 +92,7 @@ AppContainer.contextTypes = {
 function mapStateToProps(state) {
   return {
     moduleList: state.entities.moduleBank.moduleList,
-    moduleListSelect: state.entities.moduleBank.moduleListSelect,
+    moduleSelectList: state.entities.moduleBank.moduleSelectList,
     timetables: state.timetables,
     fetchModuleListRequest: state.requests.fetchModuleListRequest || {},
   };

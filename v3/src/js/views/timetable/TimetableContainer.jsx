@@ -4,6 +4,7 @@ import DocumentTitle from 'react-document-title';
 import autobind from 'react-autobind';
 import _ from 'lodash';
 import config from 'config';
+import { getSemModuleSelectList } from 'reducers/entities/moduleBank';
 import {
   addModule,
   removeModule,
@@ -47,18 +48,7 @@ export class TimetableContainer extends Component {
   }
 
   render() {
-    const moduleSelectOptions = this.props.semesterModuleList
-      .filter((module) => {
-        return !this.props.semesterTimetable[module.ModuleCode];
-      })
-      .map((module) => {
-        return {
-          value: module.ModuleCode,
-          label: `${module.ModuleCode} ${module.ModuleTitle}`,
-        };
-      });
-
-    let timetableLessons = timetableLessonsArray(this.props.semesterTimetable);
+    let timetableLessons = timetableLessonsArray(this.props.semTimetable);
     if (this.props.activeLesson) {
       const activeLesson = this.props.activeLesson;
       const moduleCode = activeLesson.ModuleCode;
@@ -131,7 +121,7 @@ export class TimetableContainer extends Component {
               <div className="row">
                 <div className="col-md-11">
                   {this.state.isAddingModule &&
-                    <ModulesSelect moduleList={moduleSelectOptions}
+                    <ModulesSelect moduleList={this.props.semModuleList}
                       onChange={(moduleCode) => {
                         this.props.addModule(this.props.semester, moduleCode.value);
                       }}
@@ -149,7 +139,7 @@ export class TimetableContainer extends Component {
               </div>
               <br/>
               <TimetableModulesTable modules={
-                Object.keys(this.props.semesterTimetable).sort((a, b) => {
+                Object.keys(this.props.semTimetable).sort((a, b) => {
                   return a > b;
                 }).map((moduleCode) => {
                   return this.props.modules[moduleCode] || {};
@@ -169,8 +159,8 @@ export class TimetableContainer extends Component {
 
 TimetableContainer.propTypes = {
   semester: PropTypes.number,
-  semesterModuleList: PropTypes.array,
-  semesterTimetable: PropTypes.object,
+  semModuleList: PropTypes.array,
+  semTimetable: PropTypes.object,
   modules: PropTypes.object,
   theme: PropTypes.string,
   colors: PropTypes.object,
@@ -188,15 +178,15 @@ TimetableContainer.contextTypes = {
 };
 
 function mapStateToProps(state) {
+  console.log(state.entities.moduleBank);
   const semester = config.semester;
+  const semTimetable = state.timetables[semester] || {};
+  const semModuleList = getSemModuleSelectList(state.entities.moduleBank, semester, semTimetable);
+
   return {
     semester,
-    // TODO: Shift selector into reducer
-    //       https://egghead.io/lessons/javascript-redux-colocating-selectors-with-reducers
-    semesterModuleList: state.entities.moduleBank.moduleList.filter((module) => {
-      return _.includes(module.Semesters, semester);
-    }),
-    semesterTimetable: state.timetables[semester] || {},
+    semModuleList,
+    semTimetable,
     activeLesson: state.app.activeLesson,
     theme: state.theme.id,
     colors: state.theme.colors,
