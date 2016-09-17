@@ -4,7 +4,6 @@ import classnames from 'classnames';
 import { DragSource, DropTarget } from 'react-dnd';
 
 import { LESSON_TYPE_ABBREV } from 'utils/timetable';
-import prefixer from 'utils/prefixer';
 
 const CELL = 'CELL';
 const lessonSource = {
@@ -39,7 +38,13 @@ function dropCollect(connect, monitor) {
 
 const TimetableCell = (props) => {
   const lesson = props.lesson;
-  const widthStyle = props.width ? prefixer({ flexGrow: props.width }) : null;
+  // Postcss-js adds a freaking 2mb to the script payload; it's not worth
+  // adding it just to save the following few lines of code.
+  const widthStyle = props.width ? {
+    flexGrow: props.width,
+    WebkitBoxFlex: props.width,
+    msFlexPositive: props.width,
+  } : null;
   let cell = null;
 
   if (lesson) {
