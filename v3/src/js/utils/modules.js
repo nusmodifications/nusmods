@@ -1,7 +1,6 @@
 // @flow
 
 import _ from 'lodash';
-import moment from 'moment';
 import type {
   Lesson,
   Module,
@@ -10,8 +9,6 @@ import type {
   SemesterData,
   TimetableLesson,
 } from 'types/modules';
-
-const DATE_FORMAT: string = 'Do MMM YYYY h:mm A';
 
 export function modulePagePath(moduleCode: ModuleCode): string {
   return `/modules/${moduleCode}`;
@@ -36,8 +33,24 @@ export function areLessonsSameClass(lesson1: TimetableLesson, lesson2: Timetable
     lesson1.LessonType === lesson2.LessonType;
 }
 
-// Returns a formatted exam time for a module in that semester.
+// Convert exam in ISO format to 12-hour date/time format. We slice off the
+// SGT time zone and interpret as UTC time, then use the getUTC* methods so
+// that they will correspond to Singapore time regardless of the local time
+// zone.
 export function getExamTime(module: Module, semester: Semester): string {
+  function examStr(examDate: string): string {
+    const date: Date = new Date(`${examDate.slice(0, 16)}Z`);
+    const hours: number = date.getUTCHours();
+
+    const day: string = _.padStart(`${date.getUTCDate().toString()}`, 2, '0');
+    const month: string = _.padStart(`${date.getUTCMonth() + 1}`, 2, '0');
+    const year: number = date.getUTCFullYear();
+    const hour: number = (hours % 12 || 12);
+    const minute: string = _.padStart(`${date.getUTCMinutes()}`, 2, '0');
+    const amPm: string = (hours < 12 ? 'AM' : 'PM');
+    return `${day}-${month}-${year} ${hour}:${minute} ${amPm}`;
+  }
+
   const examDate = _.get(getModuleSemesterData(module, semester), 'ExamDate');
-  return examDate ? moment(examDate).format(DATE_FORMAT) : '-';
+  return examDate ? examStr(examDate) : '-';
 }
