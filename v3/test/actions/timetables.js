@@ -13,6 +13,6 @@ test('addModule should create an action to add a module', (t) => {
   };
   const value = actions.addModule(moduleCode);
   // not sure how to test dispatch
-  t.true(typeof value === "function");
+  t.true(typeof value === 'function');
   // t.deepEqual(value, expected);
 });

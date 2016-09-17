@@ -1,6 +1,6 @@
 import test from 'ava';
 import JsSearch from 'js-search';
-import { ModulesSearchIndex, ModulesTokenizer } from '../src/js/utils/modules-search';
+import { ModulesSearchIndex, ModulesTokenizer } from 'utils/modules-search';
 
 const one = { value: 'CS1101S', label: 'CS1101S Programming Methodology' };
 const two = { value: 'CS1010', label: 'CS1010 Programming Methodology' };
