@@ -1,10 +1,4 @@
 // @flow
-
-import _ from 'lodash';
-
-import { ADD_MODULE, REMOVE_MODULE, CHANGE_LESSON } from 'actions/timetables';
-import { getModuleTimetable } from 'utils/modules';
-
 import type { FSA } from 'redux';
 import type {
   Lesson,
@@ -16,6 +10,11 @@ import type {
   TimetableConfig,
   SemTimetableConfig,
 } from 'types/timetable';
+
+import _ from 'lodash';
+
+import { ADD_MODULE, REMOVE_MODULE, CHANGE_LESSON } from 'actions/timetables';
+import { getModuleTimetable } from 'utils/modules';
 
 // Map of LessonType to array of lessons with the same ClassNo.
 const defaultModuleLessonConfig: LessonConfig = {};
