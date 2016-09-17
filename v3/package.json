@@ -8,7 +8,7 @@
     "flow": "flow check || exit 0",
     "test": "cross-env NODE_PATH=./src/js ava test",
     "test:watch": "npm test -- --watch",
-    "coverage": "nyc npm test | coveralls"
+    "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
   },
   "author": "NUSModifications",
   "license": "MIT",
@@ -93,6 +93,9 @@
     "all": true,
     "include": [
       "src/js"
+    ],
+    "exclude": [
+      "src/js/types"
     ],
     "extension": [
       ".jsx"
