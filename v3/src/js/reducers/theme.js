@@ -15,11 +15,13 @@ type ThemeState = {
   colors: ColorMapping,
 };
 
+const defaultColorsState: ColorMapping = {};
 const defaultThemeState: ThemeState = {
   // Available themes are defined in `themes.scss`
   id: 'ocean',
-  colors: {},
+  colors: defaultColorsState,
 };
+
 export const NUM_DIFFERENT_COLORS: number = 8;
 
 // Returns a new index that is not present in the current color index.

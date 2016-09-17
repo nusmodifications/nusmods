@@ -8,10 +8,8 @@ export type Entities = {
   moduleBank: ModuleBank,
 };
 
-const defaultEntities: Entities = {
-  // $FlowFixMe: ModuleBank default is delegated to moduleBank module.
-  moduleBank: {},
-};
+// $FlowFixMe: ModuleBank default is delegated to moduleBank module.
+const defaultEntities: Entities = {};
 
 export default function entities(state: Entities = defaultEntities, action: FSA): Entities {
   return {

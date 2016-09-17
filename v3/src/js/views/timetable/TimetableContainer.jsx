@@ -178,7 +178,6 @@ TimetableContainer.contextTypes = {
 };
 
 function mapStateToProps(state) {
-  console.log(state.entities.moduleBank);
   const semester = config.semester;
   const semTimetable = state.timetables[semester] || {};
   const semModuleList = getSemModuleSelectList(state.entities.moduleBank, semester, semTimetable);
