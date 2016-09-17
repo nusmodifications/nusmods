@@ -6,13 +6,14 @@
     "start": "cross-env NODE_ENV=development webpack-dev-server --open",
     "build": "cross-env NODE_ENV=production webpack",
     "flow": "flow check || exit 0",
-    "test": "cross-env NODE_PATH=./src/js mocha --compilers js:babel-register --recursive",
+    "test": "cross-env NODE_PATH=./src/js ava test/example.js",
     "test:watch": "npm test -- --watch"
   },
   "author": "NUSModifications",
   "license": "MIT",
   "devDependencies": {
     "autoprefixer": "^6.4.1",
+    "ava": "^0.16.0",
     "babel-core": "^6.10.4",
     "babel-eslint": "^6.1.2",
     "babel-loader": "^6.2.4",
@@ -24,7 +25,6 @@
     "babel-preset-react-hmre": "^1.1.1",
     "babel-preset-react-optimize": "^1.0.1",
     "babel-register": "^6.14.0",
-    "chai": "^3.5.0",
     "clean-webpack-plugin": "^0.1.9",
     "cross-env": "^2.0.1",
     "css-loader": "^0.23.1",
@@ -41,7 +41,6 @@
     "flow-status-webpack-plugin": "^0.1.6",
     "html-webpack-plugin": "^2.22.0",
     "json-loader": "^0.5.4",
-    "mocha": "^3.0.2",
     "node-sass": "^3.8.0",
     "postcss-js": "^0.1.3",
     "postcss-loader": "^0.13.0",
@@ -75,5 +74,11 @@
     "redux": "^3.5.2",
     "redux-logger": "^2.6.1",
     "redux-thunk": "^2.1.0"
+  },
+  "ava": {
+    "babel": "inherit",
+    "require": [
+      "babel-register"
+    ]
   }
 }
