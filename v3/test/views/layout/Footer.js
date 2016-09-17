@@ -1,7 +1,6 @@
 import test from 'ava';
 import React from 'react';
-import _ from 'lodash';
-import { shallow, render } from 'enzyme';
+import { shallow } from 'enzyme';
 import Footer from 'views/layout/Footer';
 
 test('is a footer element', (t) => {
