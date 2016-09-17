@@ -9,7 +9,7 @@ import type {
 } from 'types/modules';
 import type {
   LessonConfig,
-  TimetableConfig,
+  SemTimetableConfig,
   TimetableDayFormat,
   TimetableDayArrangement,
   TimetableArrangement,
@@ -66,7 +66,7 @@ export function lessonsForLessonType(lessons: Array<TimetableLesson>,
 //      [LessonType]: [TimetableLesson, ...],
 //    }
 //  }
-export function timetableLessonsArray(timetable: TimetableConfig): Array<TimetableLesson> {
+export function timetableLessonsArray(timetable: SemTimetableConfig): Array<TimetableLesson> {
   return _.flatMapDepth(timetable, (lessonType: LessonType) => {
     return _.values(lessonType);
   }, 2);

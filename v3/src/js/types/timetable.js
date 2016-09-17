@@ -6,17 +6,23 @@ import type {
   Lesson,
   LessonType,
   ModuleCode,
+  Semester,
   TimetableLesson,
 } from 'types/modules';
 
 //  LessonConfig is a mapping of LessonType to an array of Lessons.
-//  The array of Lessons have to belong to that LessonType.
+//  The array of Lessons must belong to that LessonType.
 export type LessonConfig = {
   [key: LessonType]: Array<Lesson>,
 };
 
-// TimetableConfig is the timetable data for each semester.
+// TimetableConfig is the timetable data for the whole academic year.
 export type TimetableConfig = {
+  [key: Semester]: SemTimetableConfig,
+};
+
+// SemTimetableConfig is the timetable data for each semester.
+export type SemTimetableConfig = {
   [key: ModuleCode]: {
     [key: LessonType]: {
       [key: ClassNo]: Array<TimetableLesson>,

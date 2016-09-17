@@ -1,3 +1,5 @@
+// @flow
+
 import { API_REQUEST } from 'middlewares/requests-middleware';
 import NUSModsApi from 'apis/nusmods';
 
@@ -7,7 +9,7 @@ import type {
 
 export const FETCH_MODULE_LIST: string = 'FETCH_MODULE_LIST';
 export function fetchModuleList() {
-  return (dispatch) => dispatch({
+  return (dispatch: Function) => dispatch({
     [API_REQUEST]: {
       type: FETCH_MODULE_LIST,
       payload: {
@@ -20,7 +22,7 @@ export function fetchModuleList() {
 
 export const FETCH_MODULE: string = 'FETCH_MODULE';
 export function fetchModule(moduleCode: ModuleCode) {
-  return (dispatch) => dispatch({
+  return (dispatch: Function) => dispatch({
     [API_REQUEST]: {
       type: FETCH_MODULE,
       payload: {
@@ -33,7 +35,7 @@ export function fetchModule(moduleCode: ModuleCode) {
 
 export const LOAD_MODULE: string = 'LOAD_MODULE';
 export function loadModule(moduleCode: ModuleCode) {
-  return (dispatch, getState) => {
+  return (dispatch: Function, getState: Function) => {
     // Module has been fetched before and cached. Don't have to fetch again.
     if (getState().entities.moduleBank.modules[moduleCode]) {
       return Promise.resolve();

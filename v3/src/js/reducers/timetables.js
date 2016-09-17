@@ -1,31 +1,53 @@
+// @flow
+
 import _ from 'lodash';
 
 import { ADD_MODULE, REMOVE_MODULE, CHANGE_LESSON } from 'actions/timetables';
 import { getModuleTimetable } from 'utils/modules';
 
-// Map of LessonType to array of lessons with the same ClassNo.
-const defaultModuleLessonConfig = {};
+import type { FSA } from 'redux';
+import type {
+  ClassNo,
+  Lesson,
+  LessonType,
+  Module,
+  ModuleCode,
+  Semester,
+  TimetableLesson,
+} from 'types/modules';
+import type {
+  LessonConfig,
+  SemTimetableConfig,
+  TimetableConfig,
+} from 'types/timetable';
 
-function moduleLessonConfig(state = defaultModuleLessonConfig, action, entities) {
+// Map of LessonType to array of lessons with the same ClassNo.
+const defaultModuleLessonConfig: LessonConfig = {};
+
+function moduleLessonConfig(state: LessonConfig = defaultModuleLessonConfig,
+                            action: FSA, entities): LessonConfig {
   switch (action.type) {
     case CHANGE_LESSON:
-      return (() => {
-        const { semester, moduleCode, lessonType, classNo } = action.payload;
-        const module = entities.moduleBank.modules[moduleCode];
-        const lessons = getModuleTimetable(module, semester);
-        const newLessons = lessons.filter((lesson) => {
+      return ((): LessonConfig => {
+        const { semester, moduleCode, lessonType, classNo }:
+          { semester: Semester, moduleCode: ModuleCode, lessonType: LessonType, classNo: ClassNo }
+          = action.payload;
+        const module: Module = entities.moduleBank.modules[moduleCode];
+        const lessons: Array<Lesson> = getModuleTimetable(module, semester);
+        const newLessons: Array<Lesson> = lessons.filter((lesson: Lesson): boolean => {
           return (lesson.LessonType === lessonType && lesson.ClassNo === classNo);
         });
-        const newLessonsIncludingModuleCode = newLessons.map((lesson) => {
-          return {
-            ...lesson,
-            ModuleCode: moduleCode,
-            ModuleTitle: module.ModuleTitle,
-          };
-        });
+        const lessonsWithModuleCode: Array<TimetableLesson> =
+          newLessons.map((lesson: Lesson): TimetableLesson => {
+            return {
+              ...lesson,
+              ModuleCode: moduleCode,
+              ModuleTitle: module.ModuleTitle,
+            };
+          });
         return {
           ...state,
-          [lessonType]: newLessonsIncludingModuleCode,
+          [lessonType]: lessonsWithModuleCode,
         };
       })();
     default:
@@ -34,10 +56,11 @@ function moduleLessonConfig(state = defaultModuleLessonConfig, action, entities)
 }
 
 // Map of ModuleCode to module lesson config.
-const defaultSemesterTimetableState = {};
+const defaultSemTimetableConfig: SemTimetableConfig = {};
 
-function semesterTimetable(state = defaultSemesterTimetableState, action, entities) {
-  const moduleCode = action.payload.moduleCode;
+function semTimetable(state: SemTimetableConfig = defaultSemTimetableConfig,
+                      action: FSA, entities): SemTimetableConfig {
+  const moduleCode: ModuleCode = action.payload.moduleCode;
   switch (action.type) {
     case ADD_MODULE:
       return {
@@ -56,22 +79,19 @@ function semesterTimetable(state = defaultSemesterTimetableState, action, entiti
   }
 }
 
-// Map of semester to semesterTimetable.
-const defaultTimetableState = {};
+// Map of semester to semTimetable.
+const defaultTimetableConfig: TimetableConfig = {};
 
-function timetables(state = defaultTimetableState, action, entities) {
+function timetables(state: TimetableConfig = defaultTimetableConfig,
+                    action: FSA, entities): TimetableConfig {
   switch (action.type) {
     case ADD_MODULE:
     case REMOVE_MODULE:
     case CHANGE_LESSON:
-      return (() => {
-        const newSemTimetable = semesterTimetable(state[action.payload.semester], action, entities);
-        const newState = {
-          ...state,
-          [action.payload.semester]: newSemTimetable,
-        };
-        return newState;
-      })();
+      return {
+        ...state,
+        [action.payload.semester]: semTimetable(state[action.payload.semester], action, entities),
+      };
     default:
       return state;
   }

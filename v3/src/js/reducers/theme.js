@@ -1,25 +1,37 @@
+// @flow
+
 import _ from 'lodash';
 import { ADD_MODULE, REMOVE_MODULE } from 'actions/timetables';
 import { CHANGE_THEME } from 'actions/theme';
 
-const defaultThemeState = {
+import type { FSA } from 'redux';
+import type { ModuleCode } from 'types/modules';
+
+type ColorIndex = number;
+// Mapping of module to color index [0, NUM_DIFFERENT_COLORS)
+type ColorMapping = { [key: ModuleCode]: ColorIndex };
+type ThemeState = {
+  id: string,
+  colors: ColorMapping,
+};
+
+const defaultThemeState: ThemeState = {
   // Available themes are defined in `themes.scss`
   id: 'ocean',
-  // Mapping of module to color index [0-7]
   colors: {},
 };
-export const NUM_DIFFERENT_COLORS = 8;
+export const NUM_DIFFERENT_COLORS: number = 8;
 
 // Returns a new index that is not present in the current color index.
 // If there are more than NUM_DIFFERENT_COLORS modules already present,
 // will try to balance the color distribution.
-function getNewColor(currentColorIndices) {
-  function generateInitialIndices() {
+function getNewColor(currentColorIndices: Array<ColorIndex>): number {
+  function generateInitialIndices(): Array<number> {
     return _.range(NUM_DIFFERENT_COLORS);
   }
 
   let availableColorIndices = generateInitialIndices();
-  currentColorIndices.forEach((index) => {
+  currentColorIndices.forEach((index: ColorIndex) => {
     availableColorIndices = _.without(availableColorIndices, index);
     if (availableColorIndices.length === 0) {
       availableColorIndices = generateInitialIndices();
@@ -29,7 +41,7 @@ function getNewColor(currentColorIndices) {
   return _.sample(availableColorIndices);
 }
 
-function colors(state, action) {
+function colors(state: ColorMapping, action: FSA): ColorMapping {
   switch (action.type) {
     case ADD_MODULE:
       return {
@@ -43,7 +55,7 @@ function colors(state, action) {
   }
 }
 
-function theme(state = defaultThemeState, action) {
+function theme(state: ThemeState = defaultThemeState, action: FSA): ThemeState {
   switch (action.type) {
     case ADD_MODULE:
     case REMOVE_MODULE:
