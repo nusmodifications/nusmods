@@ -14,12 +14,6 @@ module.exports = {
     "import",
     "flowtype"
   ],
-  "parserOptions": {
-    "ecmaVersion": 6,
-    "ecmaFeatures": {
-      "experimentalObjectRestSpread": true
-    }
-  },
   "rules": {
     // Turning it on causes undecipherable errors.
     "arrow-body-style": "off",

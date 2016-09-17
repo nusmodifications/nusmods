@@ -6,7 +6,7 @@
     "start": "cross-env NODE_ENV=development webpack-dev-server --open",
     "build": "cross-env NODE_ENV=production webpack",
     "flow": "flow check || exit 0",
-    "test": "cross-env NODE_PATH=./src/js ava test/example.js",
+    "test": "cross-env NODE_PATH=./src/js ava test",
     "test:watch": "npm test -- --watch"
   },
   "author": "NUSModifications",
