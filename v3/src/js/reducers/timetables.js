@@ -7,47 +7,33 @@ import { getModuleTimetable } from 'utils/modules';
 
 import type { FSA } from 'redux';
 import type {
-  ClassNo,
-  Lesson,
-  LessonType,
-  Module,
-  ModuleCode,
-  Semester,
-  TimetableLesson,
-} from 'types/modules';
-import type {
-  LessonConfig,
-  SemTimetableConfig,
   TimetableConfig,
+  SemTimetableConfig,
 } from 'types/timetable';
 
 // Map of LessonType to array of lessons with the same ClassNo.
-const defaultModuleLessonConfig: LessonConfig = {};
+const defaultModuleLessonConfig = {};
 
-function moduleLessonConfig(state: LessonConfig = defaultModuleLessonConfig,
-                            action: FSA, entities): LessonConfig {
+function moduleLessonConfig(state = defaultModuleLessonConfig, action: FSA, entities: any) {
   switch (action.type) {
     case CHANGE_LESSON:
-      return ((): LessonConfig => {
-        const { semester, moduleCode, lessonType, classNo }:
-          { semester: Semester, moduleCode: ModuleCode, lessonType: LessonType, classNo: ClassNo }
-          = action.payload;
-        const module: Module = entities.moduleBank.modules[moduleCode];
-        const lessons: Array<Lesson> = getModuleTimetable(module, semester);
-        const newLessons: Array<Lesson> = lessons.filter((lesson: Lesson): boolean => {
+      return (() => {
+        const { semester, moduleCode, lessonType, classNo } = action.payload;
+        const module = entities.moduleBank.modules[moduleCode];
+        const lessons = getModuleTimetable(module, semester);
+        const newLessons = lessons.filter((lesson) => {
           return (lesson.LessonType === lessonType && lesson.ClassNo === classNo);
         });
-        const lessonsWithModuleCode: Array<TimetableLesson> =
-          newLessons.map((lesson: Lesson): TimetableLesson => {
-            return {
-              ...lesson,
-              ModuleCode: moduleCode,
-              ModuleTitle: module.ModuleTitle,
-            };
-          });
+        const newLessonsIncludingModuleCode = newLessons.map((lesson) => {
+          return {
+            ...lesson,
+            ModuleCode: moduleCode,
+            ModuleTitle: module.ModuleTitle,
+          };
+        });
         return {
           ...state,
-          [lessonType]: lessonsWithModuleCode,
+          [lessonType]: newLessonsIncludingModuleCode,
         };
       })();
     default:
@@ -59,8 +45,8 @@ function moduleLessonConfig(state: LessonConfig = defaultModuleLessonConfig,
 const defaultSemTimetableConfig: SemTimetableConfig = {};
 
 function semTimetable(state: SemTimetableConfig = defaultSemTimetableConfig,
-                      action: FSA, entities): SemTimetableConfig {
-  const moduleCode: ModuleCode = action.payload.moduleCode;
+                      action: FSA, entities: any): SemTimetableConfig {
+  const moduleCode = action.payload.moduleCode;
   switch (action.type) {
     case ADD_MODULE:
       return {
@@ -83,7 +69,7 @@ function semTimetable(state: SemTimetableConfig = defaultSemTimetableConfig,
 const defaultTimetableConfig: TimetableConfig = {};
 
 function timetables(state: TimetableConfig = defaultTimetableConfig,
-                    action: FSA, entities): TimetableConfig {
+                    action: FSA, entities: any): TimetableConfig {
   switch (action.type) {
     case ADD_MODULE:
     case REMOVE_MODULE:
