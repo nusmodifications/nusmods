@@ -60,7 +60,7 @@ function semTimetable(state: SemTimetableConfig = defaultSemTimetableConfig,
         [moduleCode]: action.payload.moduleLessonConfig,
       };
     case REMOVE_MODULE:
-      return _.omit(state, moduleCode);
+      return _.omit(state, [moduleCode]);
     case CHANGE_LESSON:
       return {
         ...state,

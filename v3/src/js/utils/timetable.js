@@ -42,11 +42,14 @@ export const LESSON_TYPE_ABBREV: LessonTypeAbbrev = {
 //    [LessonType]: [TimetableLesson, ...],
 //  }
 export function randomLessonConfig(lessons: Array<TimetableLesson>): LessonConfig {
-  const lessonByGroups: { [key: LessonType]: Array<TimetableLesson> } = _.groupBy(lessons, 'LessonType');
+  const lessonByGroups: { [key: LessonType]: Array<TimetableLesson> } =
+    _.groupBy(lessons, (lesson) => lesson.LessonType);
+
   const lessonByGroupsByClassNo: { [key: LessonType]: { [key: ClassNo]: Array<TimetableLesson> } } =
     _.mapValues(lessonByGroups, (lessonsOfSameLessonType: Array<Lesson>) => {
-      return _.groupBy(lessonsOfSameLessonType, 'ClassNo');
+      return _.groupBy(lessonsOfSameLessonType, (lesson) => lesson.ClassNo);
     });
+
   return _.mapValues(lessonByGroupsByClassNo, (group: { [key: ClassNo]: Array<Lesson> }) => {
     return _.sample(group);
   });
@@ -66,9 +69,13 @@ export function lessonsForLessonType(lessons: Array<TimetableLesson>,
 //    }
 //  }
 export function timetableLessonsArray(timetable: SemTimetableConfig): Array<TimetableLesson> {
-  return _.flatMapDepth(timetable, (lessonType: LessonType) => {
-    return _.values(lessonType);
-  }, 2);
+  let allLessons: Array<TimetableLesson> = [];
+  _.values(timetable).forEach((lessonTypeGroup) => {
+    _.values(lessonTypeGroup).forEach((lessons: Array<TimetableLesson>) => {
+      allLessons = allLessons.concat(lessons);
+    });
+  });
+  return allLessons;
 }
 
 //  Groups flat array of lessons by day.
@@ -77,7 +84,7 @@ export function timetableLessonsArray(timetable: SemTimetableConfig): Array<Time
 //    Tuesday: [TimetableLesson, ...],
 //  }
 export function groupLessonsByDay(lessons: Array<TimetableLesson>): TimetableDayFormat {
-  return _.groupBy(lessons, 'DayText');
+  return _.groupBy(lessons, (lesson) => lesson.DayText);
 }
 
 //  Determines if two lessons overlap:
@@ -103,10 +110,10 @@ export function arrangeLessonsWithinDay(lessons: Array<TimetableLesson>): Timeta
     for (let i = 0, length = rows.length; i < length; i++) {
       const rowLessons: Array<TimetableLesson> = rows[i];
       // Search through TimetableLesson in row to look for available slots.
-      const overlapTests = _.map(rowLessons, (rowLesson) => {
+      const overlapTests = rowLessons.map((rowLesson) => {
         return !doLessonsOverlap(rowLesson, lesson);
       });
-      if (_.every(overlapTests)) {
+      if (_.every(overlapTests, Boolean)) {
         // TimetableLesson does not overlap with any TimetableLesson in the row. Add it to row.
         rowLessons.push(lesson);
         return;
@@ -144,10 +151,10 @@ export function arrangeLessonsForWeek(lessons: Array<TimetableLesson>): Timetabl
 //  Condition: There are multiple ClassNo for all the TimetableLessons in a LessonType.
 export function areOtherClassesAvailable(lessons: Array<TimetableLesson>,
                                           lessonType: LessonType): boolean {
-  const lessonTypeGroups: Object = _.groupBy(lessons, 'LessonType');
+  const lessonTypeGroups: Object = _.groupBy(lessons, (lesson) => lesson.LessonType);
   if (!lessonTypeGroups[lessonType]) {
     // No such LessonType.
     return false;
   }
-  return Object.keys(_.groupBy(lessonTypeGroups[lessonType], 'ClassNo')).length > 1;
+  return Object.keys(_.groupBy(lessonTypeGroups[lessonType], (lesson) => lesson.ClassNo)).length > 1;
 }

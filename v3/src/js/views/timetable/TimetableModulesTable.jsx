@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
-import _ from 'lodash';
 
 import { getExamTime, modulePagePath } from 'utils/modules';
 
@@ -8,7 +7,7 @@ const TimetableModulesTable = (props) => {
   return (
     <table className="table">
       <tbody>
-        {_.map(props.modules, (module) => {
+        {props.modules.map((module) => {
           return (
             <tr key={module.ModuleCode}>
               <td>

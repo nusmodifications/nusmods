@@ -82,8 +82,8 @@ export class TimetableContainer extends Component {
 
     const arrangedLessons = arrangeLessonsForWeek(timetableLessons);
     const arrangedLessonsWithModifiableFlag = _.mapValues(arrangedLessons, (dayRows) => {
-      return _.map(dayRows, (row) => {
-        return _.map(row, (lesson) => {
+      return dayRows.map((row) => {
+        return row.map((lesson) => {
           const module = this.props.modules[lesson.ModuleCode];
           const moduleTimetable = getModuleTimetable(module, this.props.semester);
           return {

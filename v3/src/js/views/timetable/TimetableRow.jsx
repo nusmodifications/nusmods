@@ -7,9 +7,7 @@ import { convertIndexToTime, convertTimeToIndex } from 'utils/timify';
 import TimetableCell from './TimetableCell';
 
 const generateCells = (lessons, onModifyCell) => {
-  const lessonsGroupedByStartTime = _.mapValues(_.groupBy(lessons, 'StartTime'), (value) => {
-    return value[0];
-  });
+  const lessonsGroupedByStartTime = _.mapValues(_.groupBy(lessons, (lesson) => lesson.StartTime), (value) => value[0]);
 
   const cells = [];
   const startingIndex = FIRST_HOUR * 2;

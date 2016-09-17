@@ -1,9 +1,11 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const merge = require('webpack-merge');
 const parts = require('./libs/parts');
 const pkg = require('./package.json');
+const webpack = require('webpack');
 
 const SRC = 'src';
 const BUILD = 'dist';
@@ -53,7 +55,9 @@ const common = {
     }),
     new StyleLintPlugin({
       context: PATHS.styles
-    })
+    }),
+    new LodashModuleReplacementPlugin,
+    new webpack.optimize.OccurrenceOrderPlugin
   ],
   module: {
     preLoaders: [

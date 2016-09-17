@@ -9,7 +9,7 @@ const TimetableBackground = () => {
       <div className="timetable-day">
         <div className="timetable-day-row">
           <div className="timetable-day-cell timetable-cell"><span/></div>
-          {_.map(_.range(CELLS_COUNT), (i) => {
+          {_.range(CELLS_COUNT).map((i) => {
             return (
               <div key={i}
                 className={classnames('timetable-cell', {
