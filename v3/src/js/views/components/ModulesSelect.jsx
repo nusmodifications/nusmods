@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-
+import _ from 'lodash';
 import VirtualizedSelect from 'react-virtualized-select';
 import createFilterOptions from 'react-select-fast-filter-options';
 import { PrefixIndexStrategy } from 'js-search';
@@ -7,7 +7,7 @@ import { ModulesSearchIndex, ModulesTokenizer } from 'utils/modules-search';
 
 class ModulesSelect extends Component {
   shouldComponentUpdate(nextProps) {
-    return this.props.moduleList !== nextProps.moduleList;
+    return _.size(this.props.moduleList) !== _.size(nextProps.moduleList);
   }
 
   render() {
@@ -17,10 +17,11 @@ class ModulesSelect extends Component {
       tokenizer: new ModulesTokenizer(),
       searchIndex: new ModulesSearchIndex(),
     });
+
     return (
       <VirtualizedSelect options={this.props.moduleList}
         filterOptions={filterOptions}
-        placeholder="Search module"
+        placeholder={this.props.placeholder || 'Search module'}
         onChange={this.props.onChange}
       />
     );
@@ -30,6 +31,7 @@ class ModulesSelect extends Component {
 ModulesSelect.propTypes = {
   moduleList: PropTypes.array,
   onChange: PropTypes.func,
+  placeholder: PropTypes.string,
 };
 
 export default ModulesSelect;

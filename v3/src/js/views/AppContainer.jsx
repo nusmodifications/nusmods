@@ -32,6 +32,7 @@ export class AppContainer extends Component {
               onChange={(moduleCode) => {
                 this.context.router.push(`/modules/${moduleCode.value}`);
               }}
+              placeholder="Search modules"
             />
           </form>
         </nav>

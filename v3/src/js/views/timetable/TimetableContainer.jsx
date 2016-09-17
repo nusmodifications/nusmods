@@ -27,9 +27,6 @@ import TimetableModulesTable from './TimetableModulesTable';
 export class TimetableContainer extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      isAddingModule: false,
-    };
     autobind(this);
   }
 
@@ -104,39 +101,18 @@ export class TimetableContainer extends Component {
             this.props.cancelModifyLesson();
           }
         }}>
-          <div className="timetable-wrapper"
-            onClick={() => {
-            // TODO: Currently this onClick doesn't trigger if you click on a cell directly.
-            //       Should capture the click on div too.
-              this.setState({ isAddingModule: false });
-            }}
-          >
-            <Timetable lessons={arrangedLessonsWithModifiableFlag}
-              onModifyCell={this.modifyCell}
-            />
-          </div>
+          <Timetable lessons={arrangedLessonsWithModifiableFlag}
+            onModifyCell={this.modifyCell}
+          />
           <br/>
           <div className="row">
             <div className="col-md-12">
-              <div className="row">
-                <div className="col-md-11">
-                  {this.state.isAddingModule &&
-                    <ModulesSelect moduleList={this.props.semModuleList}
-                      onChange={(moduleCode) => {
-                        this.props.addModule(this.props.semester, moduleCode.value);
-                      }}
-                    />
-                  }
-                </div>
-                <div className="col-md-1">
-                  <button className="btn btn-sm btn-primary btn-block" onClick={() => {
-                    // TODO: Focus on ModulesSelect input when button is clicked.
-                    this.setState({
-                      isAddingModule: !this.state.isAddingModule,
-                    });
-                  }}>{this.state.isAddingModule ? 'Cancel' : 'Add'}</button>
-                </div>
-              </div>
+              <ModulesSelect moduleList={this.props.semModuleList}
+                onChange={(moduleCode) => {
+                  this.props.addModule(this.props.semester, moduleCode.value);
+                }}
+                placeholder="Add module to timetable"
+              />
               <br/>
               <TimetableModulesTable modules={
                 Object.keys(this.props.semTimetable).sort((a, b) => {
