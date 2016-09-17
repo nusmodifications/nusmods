@@ -9,7 +9,7 @@ import type {
   Semester,
   SemesterData,
   TimetableLesson,
-} from '../types/modules';
+} from 'types/modules';
 
 const DATE_FORMAT: string = 'Do MMM YYYY h:mm A';
 

@@ -1,11 +1,11 @@
 import { MODIFY_LESSON, CHANGE_LESSON, CANCEL_MODIFY_LESSON } from 'actions/timetables';
 
 const defaultAppState = {
-  // The lesson being modified on the timetable
+  // The lesson being modified on the timetable.
   activeLesson: null,
 };
 
-// This reducer is for storing state pertaining to the UI
+// This reducer is for storing state pertaining to the UI.
 function app(state = defaultAppState, action) {
   switch (action.type) {
     case MODIFY_LESSON:

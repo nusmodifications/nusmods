@@ -1,6 +1,6 @@
 // @flow
 
-import type { LessonTime } from '../types/modules';
+import type { LessonTime } from 'types/modules';
 
 // Converts a 24-hour format time string to an index.
 // Each index corresponds to one cell of each timetable row.

@@ -7,7 +7,7 @@ import type {
   LessonType,
   ModuleCode,
   TimetableLesson,
-} from '../types/modules';
+} from 'types/modules';
 
 //  LessonConfig is a mapping of LessonType to an array of Lessons.
 //  The array of Lessons have to belong to that LessonType.

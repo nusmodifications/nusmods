@@ -6,14 +6,14 @@ import type {
   Lesson,
   LessonType,
   TimetableLesson,
-} from '../types/modules';
+} from 'types/modules';
 import type {
   LessonConfig,
   TimetableConfig,
   TimetableDayFormat,
   TimetableDayArrangement,
   TimetableArrangement,
-} from '../types/timetable';
+} from 'types/timetable';
 
 export const FIRST_HOUR: number = 8;
 export const LAST_HOUR: number = 22;
