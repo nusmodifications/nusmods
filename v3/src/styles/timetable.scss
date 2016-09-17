@@ -15,6 +15,7 @@ $timetable-cell-opacity: 0.5;
 }
 
 .timetable-wrapper {
+  -webkit-overflow-scrolling: touch;
   overflow-x: scroll;
 }
 
