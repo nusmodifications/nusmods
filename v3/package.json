@@ -82,5 +82,17 @@
     "require": [
       "babel-register"
     ]
+  },
+  "nyc": {
+    "all": true,
+    "include": [
+      "src/js"
+    ],
+    "extension": [
+      ".jsx"
+    ],
+    "require": [
+      "babel-register"
+    ]
   }
 }
