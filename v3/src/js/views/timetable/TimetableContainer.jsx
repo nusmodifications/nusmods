@@ -101,9 +101,11 @@ export class TimetableContainer extends Component {
             this.props.cancelModifyLesson();
           }
         }}>
-          <Timetable lessons={arrangedLessonsWithModifiableFlag}
-            onModifyCell={this.modifyCell}
-          />
+          <div className="timetable-wrapper">
+            <Timetable lessons={arrangedLessonsWithModifiableFlag}
+              onModifyCell={this.modifyCell}
+            />
+          </div>
           <br/>
           <div className="row">
             <div className="col-md-12">
