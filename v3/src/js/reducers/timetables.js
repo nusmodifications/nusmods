@@ -7,24 +7,31 @@ import { getModuleTimetable } from 'utils/modules';
 
 import type { FSA } from 'redux';
 import type {
+  Lesson,
+  Module,
+  TimetableLesson,
+} from 'types/modules';
+import type {
+  LessonConfig,
   TimetableConfig,
   SemTimetableConfig,
 } from 'types/timetable';
 
 // Map of LessonType to array of lessons with the same ClassNo.
-const defaultModuleLessonConfig = {};
+const defaultModuleLessonConfig: LessonConfig = {};
 
-function moduleLessonConfig(state = defaultModuleLessonConfig, action: FSA, entities: any) {
+function moduleLessonConfig(state: LessonConfig = defaultModuleLessonConfig,
+                            action: FSA, entities: any): LessonConfig {
   switch (action.type) {
     case CHANGE_LESSON:
       return (() => {
         const { semester, moduleCode, lessonType, classNo } = action.payload;
-        const module = entities.moduleBank.modules[moduleCode];
-        const lessons = getModuleTimetable(module, semester);
-        const newLessons = lessons.filter((lesson) => {
+        const module: Module = entities.moduleBank.modules[moduleCode];
+        const lessons: Array<Lesson> = getModuleTimetable(module, semester);
+        const newLessons: Array<Lesson> = lessons.filter((lesson: Lesson): boolean => {
           return (lesson.LessonType === lessonType && lesson.ClassNo === classNo);
         });
-        const newLessonsIncludingModuleCode = newLessons.map((lesson) => {
+        const timetableLessons: Array<TimetableLesson> = newLessons.map((lesson: Lesson): TimetableLesson => {
           return {
             ...lesson,
             ModuleCode: moduleCode,
@@ -33,7 +40,7 @@ function moduleLessonConfig(state = defaultModuleLessonConfig, action: FSA, enti
         });
         return {
           ...state,
-          [lessonType]: newLessonsIncludingModuleCode,
+          [lessonType]: timetableLessons,
         };
       })();
     default:

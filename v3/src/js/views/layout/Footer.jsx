@@ -16,7 +16,21 @@ const Footer = () => {
         {/* TODO: Change team to link to internal page. */}
         {/* TODO: Change contributors link to internal page */}
         {/* TODO: Add last updated timestamp */}
-        <p>Designed and built with all the love in the world by <a href="https://github.com/nusmodifications" target="_blank" rel="noopener noreferrer">@nusmodifications</a>. Maintained by the <a href="https://github.com/orgs/nusmodifications/people" rel="noopener noreferrer">core team</a> with the help of <a href="https://github.com/nusmodifications/nusmods/graphs/contributors" rel="noopener noreferrer">our contributors</a>.</p>
+        <p>Designed and built with all the love in the world by{' '}
+          <a href="https://github.com/nusmodifications" target="_blank" rel="noopener noreferrer">
+            @nusmodifications
+          </a>.
+          Maintained by the{' '}
+          <a href="https://github.com/orgs/nusmodifications/people" rel="noopener noreferrer">
+            core team
+          </a>
+          {' '}with the help of{' '}
+          <a href="https://github.com/nusmodifications/nusmods/graphs/contributors"
+            rel="noopener noreferrer"
+          >
+            our contributors
+          </a>.
+        </p>
         <p>© Copyright 2016, NUSModifications. All rights reserved.</p>
       </div>
     </footer>
