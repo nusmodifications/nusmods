@@ -1,15 +1,19 @@
+// @flow
+
 import config from 'config';
 
-const ayBaseUrl = `${config.apiBaseUrl}/${config.academicYear.replace('/', '-')}`;
+import type { ModuleCode } from 'types/modules';
+
+const ayBaseUrl: string = `${config.apiBaseUrl}/${config.academicYear.replace('/', '-')}`;
 
 const NUSModsApi = {
-  ayBaseUrl: () => ayBaseUrl,
+  ayBaseUrl: (): string => ayBaseUrl,
   // List of modules for the entire acad year.
-  moduleListUrl: () => {
+  moduleListUrl: (): string => {
     return `${ayBaseUrl}/moduleList.json`;
   },
   // Module for that acad year. Not tied to any semester.
-  moduleDetailsUrl: (moduleCode) => {
+  moduleDetailsUrl: (moduleCode: ModuleCode): string => {
     return `${ayBaseUrl}/modules/${moduleCode}.json`;
   },
 };

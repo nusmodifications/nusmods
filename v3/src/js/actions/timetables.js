@@ -2,13 +2,20 @@ import { loadModule } from 'actions/moduleBank';
 import { randomLessonConfig } from 'utils/timetable';
 import { getModuleTimetable } from 'utils/modules';
 
-export const ADD_MODULE = 'ADD_MODULE';
-export function addModule(semester, moduleCode) {
+import type { FSA } from 'types/redux';
+import type {
+  ModuleCode,
+  Semester,
+  TimetableLesson,
+} from 'types/modules';
+
+export const ADD_MODULE: string = 'ADD_MODULE';
+export function addModule(semester: Semester, moduleCode: ModuleCode) {
   return (dispatch, getState) => {
     return dispatch(loadModule(moduleCode)).then(() => {
       const module = getState().entities.moduleBank.modules[moduleCode];
       const lessons = getModuleTimetable(module, semester);
-      const lessonsIncludingModuleCode = lessons.map((lesson) => {
+      const lessonsIncludingModuleCode = lessons.map((lesson: TimetableLesson) => {
         return {
           ...lesson,
           ModuleCode: moduleCode,
@@ -27,8 +34,8 @@ export function addModule(semester, moduleCode) {
   };
 }
 
-export const REMOVE_MODULE = 'REMOVE_MODULE';
-export function removeModule(semester, moduleCode) {
+export const REMOVE_MODULE: string = 'REMOVE_MODULE';
+export function removeModule(semester: Semester, moduleCode: ModuleCode): FSA {
   return {
     type: REMOVE_MODULE,
     payload: {
@@ -38,8 +45,8 @@ export function removeModule(semester, moduleCode) {
   };
 }
 
-export const MODIFY_LESSON = 'MODIFY_LESSON';
-export function modifyLesson(activeLesson) {
+export const MODIFY_LESSON: string = 'MODIFY_LESSON';
+export function modifyLesson(activeLesson: TimetableLesson): FSA {
   return {
     type: MODIFY_LESSON,
     payload: {
@@ -48,21 +55,21 @@ export function modifyLesson(activeLesson) {
   };
 }
 
-export const CHANGE_LESSON = 'CHANGE_LESSON';
-export function changeLesson(semester, { ModuleCode, LessonType, ClassNo }) {
+export const CHANGE_LESSON: string = 'CHANGE_LESSON';
+export function changeLesson(semester: Semester, lesson: TimetableLesson): FSA {
   return {
     type: CHANGE_LESSON,
     payload: {
       semester,
-      moduleCode: ModuleCode,
-      lessonType: LessonType,
-      classNo: ClassNo,
+      moduleCode: lesson.ModuleCode,
+      lessonType: lesson.LessonType,
+      classNo: lesson.ClassNo,
     },
   };
 }
 
-export const CANCEL_MODIFY_LESSON = 'CANCEL_MODIFY_LESSON';
-export function cancelModifyLesson() {
+export const CANCEL_MODIFY_LESSON: string = 'CANCEL_MODIFY_LESSON';
+export function cancelModifyLesson(): FSA {
   return {
     type: CANCEL_MODIFY_LESSON,
   };

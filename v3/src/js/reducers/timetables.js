@@ -1,22 +1,36 @@
+// @flow
+import type { FSA } from 'redux';
+import type {
+  Lesson,
+  Module,
+  TimetableLesson,
+} from 'types/modules';
+import type {
+  LessonConfig,
+  TimetableConfig,
+  SemTimetableConfig,
+} from 'types/timetable';
+
 import _ from 'lodash';
 
 import { ADD_MODULE, REMOVE_MODULE, CHANGE_LESSON } from 'actions/timetables';
 import { getModuleTimetable } from 'utils/modules';
 
 // Map of LessonType to array of lessons with the same ClassNo.
-const defaultModuleLessonConfig = {};
+const defaultModuleLessonConfig: LessonConfig = {};
 
-function moduleLessonConfig(state = defaultModuleLessonConfig, action, entities) {
+function moduleLessonConfig(state: LessonConfig = defaultModuleLessonConfig,
+                            action: FSA, entities: any): LessonConfig {
   switch (action.type) {
     case CHANGE_LESSON:
       return (() => {
         const { semester, moduleCode, lessonType, classNo } = action.payload;
-        const module = entities.moduleBank.modules[moduleCode];
-        const lessons = getModuleTimetable(module, semester);
-        const newLessons = lessons.filter((lesson) => {
+        const module: Module = entities.moduleBank.modules[moduleCode];
+        const lessons: Array<Lesson> = getModuleTimetable(module, semester);
+        const newLessons: Array<Lesson> = lessons.filter((lesson: Lesson): boolean => {
           return (lesson.LessonType === lessonType && lesson.ClassNo === classNo);
         });
-        const newLessonsIncludingModuleCode = newLessons.map((lesson) => {
+        const timetableLessons: Array<TimetableLesson> = newLessons.map((lesson: Lesson): TimetableLesson => {
           return {
             ...lesson,
             ModuleCode: moduleCode,
@@ -25,7 +39,7 @@ function moduleLessonConfig(state = defaultModuleLessonConfig, action, entities)
         });
         return {
           ...state,
-          [lessonType]: newLessonsIncludingModuleCode,
+          [lessonType]: timetableLessons,
         };
       })();
     default:
@@ -34,9 +48,10 @@ function moduleLessonConfig(state = defaultModuleLessonConfig, action, entities)
 }
 
 // Map of ModuleCode to module lesson config.
-const defaultSemesterTimetableState = {};
+const defaultSemTimetableConfig: SemTimetableConfig = {};
 
-function semesterTimetable(state = defaultSemesterTimetableState, action, entities) {
+function semTimetable(state: SemTimetableConfig = defaultSemTimetableConfig,
+                      action: FSA, entities: any): SemTimetableConfig {
   const moduleCode = action.payload.moduleCode;
   switch (action.type) {
     case ADD_MODULE:
@@ -56,22 +71,19 @@ function semesterTimetable(state = defaultSemesterTimetableState, action, entiti
   }
 }
 
-// Map of semester to semesterTimetable.
-const defaultTimetableState = {};
+// Map of semester to semTimetable.
+const defaultTimetableConfig: TimetableConfig = {};
 
-function timetables(state = defaultTimetableState, action, entities) {
+function timetables(state: TimetableConfig = defaultTimetableConfig,
+                    action: FSA, entities: any): TimetableConfig {
   switch (action.type) {
     case ADD_MODULE:
     case REMOVE_MODULE:
     case CHANGE_LESSON:
-      return (() => {
-        const newSemTimetable = semesterTimetable(state[action.payload.semester], action, entities);
-        const newState = {
-          ...state,
-          [action.payload.semester]: newSemTimetable,
-        };
-        return newState;
-      })();
+      return {
+        ...state,
+        [action.payload.semester]: semTimetable(state[action.payload.semester], action, entities),
+      };
     default:
       return state;
   }

@@ -1,3 +1,6 @@
+// @flow
+import type { FSA } from 'redux';
+
 import { routerReducer } from 'react-router-redux';
 
 import requests from './requests';
@@ -6,7 +9,19 @@ import timetables from './timetables';
 import app from './app';
 import theme from './theme';
 
-export default function (state = {}, action) {
+type State = {
+  entities: Object,
+  requests: Object,
+  timetables: Object,
+  routing: Object,
+  app: Object,
+  theme: Object,
+};
+
+// $FlowFixMe: State default is delegated to its child reducers.
+const defaultState: State = {};
+
+export default function (state: State = defaultState, action: FSA) {
   return {
     entities: entities(state.entities, action),
     requests: requests(state.requests, action),

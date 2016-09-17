@@ -1,11 +1,26 @@
-/* @flow */
+// @flow
 
 import _ from 'lodash';
+import type {
+  ClassNo,
+  Lesson,
+  LessonType,
+  TimetableLesson,
+} from 'types/modules';
+import type {
+  LessonConfig,
+  SemTimetableConfig,
+  TimetableDayFormat,
+  TimetableDayArrangement,
+  TimetableArrangement,
+} from 'types/timetable';
 
 export const FIRST_HOUR: number = 8;
 export const LAST_HOUR: number = 22;
 export const CELLS_COUNT: number = ((LAST_HOUR - FIRST_HOUR) + 1) * 2;
-export const LESSON_TYPE_ABBREV: Object = {
+
+type LessonTypeAbbrev = { [key: LessonType]: string };
+export const LESSON_TYPE_ABBREV: LessonTypeAbbrev = {
   'Design Lecture': 'DLEC',
   Laboratory: 'LAB',
   Lecture: 'LEC',
@@ -23,87 +38,77 @@ export const LESSON_TYPE_ABBREV: Object = {
 //  Used when a module is first added.
 //  TODO: Suggest a configuration that does not clash with itself.
 //  {
-//    [LessonType]: [
-//      {
-//        ClassNo: A,
-//        ...Lesson
-//      },
-//      {
-//        ClassNo: A,
-//        ...Lesson
-//      }
-//    ],
-//    ...
+//    [LessonType]: [TimetableLesson, TimetableLesson, ...],
+//    [LessonType]: [TimetableLesson, ...],
 //  }
-export function randomLessonConfig(lessons: Array<Object>): Object {
+export function randomLessonConfig(lessons: Array<TimetableLesson>): LessonConfig {
   return _(lessons)
     .groupBy('LessonType')
-    .mapValues((group: Object) => {
-      return _.groupBy(group, 'ClassNo');
+    .mapValues((lessonsOfSameLessonType: Array<Lesson>) => {
+      return _.groupBy(lessonsOfSameLessonType, 'ClassNo');
     })
-    .mapValues((group: Object) => {
+    .mapValues((group: { [key: ClassNo]: Array<Lesson> }) => {
       return _.sample(group);
     })
     .value();
 }
 
-// Filters a flat array of lessons and returns the lessons corresponding to lessonType.
-export function lessonsForLessonType(lessons: Array<Object>, lessonType: string): Array<Object> {
-  return _.filter(lessons, (lesson: Object) => lesson.LessonType === lessonType);
+//  Filters a flat array of lessons and returns the lessons corresponding to lessonType.
+export function lessonsForLessonType(lessons: Array<TimetableLesson>,
+                                      lessonType: LessonType): Array<TimetableLesson> {
+  return _.filter(lessons, (lesson: TimetableLesson) => lesson.LessonType === lessonType);
 }
 
 //  Converts from timetable config format to flat array of lessons.
 //  {
 //    [ModuleCode]: {
-//      [LessonType]: [
-//        { ...Lesson },
-//        { ...Lesson },
-//      ],
-//      ...
+//      [LessonType]: [TimetableLesson, TimetableLesson, ...],
+//      [LessonType]: [TimetableLesson, ...],
 //    }
 //  }
-export function timetableLessonsArray(timetable: Array<Object>): Array<Object> {
-  return _.flatMapDepth(timetable, (lessonType: string) => {
+export function timetableLessonsArray(timetable: SemTimetableConfig): Array<TimetableLesson> {
+  return _.flatMapDepth(timetable, (lessonType: LessonType) => {
     return _.values(lessonType);
   }, 2);
 }
 
 //  Groups flat array of lessons by day.
 //  {
-//    Monday: [{ ...Lesson }, { ...Lesson }, ...],
-//    Tuesday: [{ ...Lesson }, { ...Lesson }, ...]
+//    Monday: [TimetableLesson, TimetableLesson, ...],
+//    Tuesday: [TimetableLesson, ...],
 //  }
-export function groupLessonsByDay(lessons: Array<Object>): Object {
+export function groupLessonsByDay(lessons: Array<TimetableLesson>): TimetableDayFormat {
   return _.groupBy(lessons, 'DayText');
 }
 
-//  Determines if two lessons of the same day overlap. Only start/end time is being checked
-export function doLessonsOverlap(lesson1: Object, lesson2: Object): boolean {
+//  Determines if two lessons overlap:
+//  Condition: These two Lessons are of the same day.
+export function doLessonsOverlap(lesson1: Lesson, lesson2: Lesson): boolean {
   return lesson1.StartTime < lesson2.EndTime && lesson2.StartTime < lesson1.EndTime;
 }
 
-//  Converts a flat array of lessons *within a day* into rows:
+//  Converts a flat array of lessons *for ONE day* into rows of lessons within that day row.
 //  Result invariants:
 //  - Each lesson will not overlap with each other.
 //  [
-//    [{ ...Lesson }, { ...Lesson }, ...],
-//    [{ ...Lesson }, ...],
+//    [TimetableLesson, TimetableLesson, ...],
+//    [TimetableLesson, ...],
 //  ]
-export function arrangeLessonsWithinDay(lessons: Array<Object>): Array<Array<Object>> {
-  const rows: Array<Array<Object>> = [[]];
+export function arrangeLessonsWithinDay(lessons: Array<TimetableLesson>): TimetableDayArrangement {
+  const rows: TimetableDayArrangement = [[]];
   if (_.isEmpty(lessons)) {
     return rows;
   }
 
-  lessons.forEach((lesson: Object) => {
+  lessons.forEach((lesson: TimetableLesson) => {
     for (let i = 0, length = rows.length; i < length; i++) {
-      const rowLessons: Array<Object> = rows[i];
-      // Search through lessons in row to look for available slots.
+      const rowLessons: Array<TimetableLesson> = rows[i];
+      // Search through TimetableLesson in row to look for available slots.
       const overlapTests = _.map(rowLessons, (rowLesson) => {
         return !doLessonsOverlap(rowLesson, lesson);
       });
       if (_.every(overlapTests)) {
-        // Lesson does not overlap with any lessons in the row. Add it to row.
+        // TimetableLesson does not overlap with any TimetableLesson in the row. Add it to row.
         rowLessons.push(lesson);
         return;
       }
@@ -115,32 +120,32 @@ export function arrangeLessonsWithinDay(lessons: Array<Object>): Array<Array<Obj
   return rows;
 }
 
-//  Accepts a flat array of lessons and group them by day and rows with each day
+//  Accepts a flat array of lessons and groups them by day and rows with each day
 //  for rendering on the timetable.
-//  Clashes in timetable will go onto the next row within that day.
+//  Clashes in TimetableLessons will go onto the next row within that day.
 //  {
 //    Monday: [
-//      [{ ...Lesson }, { ...Lesson }, ...],
+//      [TimetableLesson, TimetableLesson, ...],
 //    ],
 //    Tuesday: [
-//      [{ ...Lesson }, { ...Lesson }, { ...Lesson }, ...],
-//      [{ ...Lesson }, { ...Lesson },],
-//      [{ ...Lesson }, ...],
+//      [TimetableLesson, TimetableLesson, TimetableLesson, ...],
+//      [TimetableLesson, TimetableLesson, ...],
+//      [TimetableLesson, ...],
 //    ],
 //    ...
 //  }
-export function arrangeLessonsForWeek(lessons: Array<Object>): Object {
+export function arrangeLessonsForWeek(lessons: Array<TimetableLesson>): TimetableArrangement {
   const dayLessons: Object = groupLessonsByDay(lessons);
-  return _.mapValues(dayLessons, (dayLesson: Array<Object>) => {
+  return _.mapValues(dayLessons, (dayLesson: Array<TimetableLesson>) => {
     return arrangeLessonsWithinDay(dayLesson);
   });
 }
 
-//  Determines if a lesson on the timetable can be modifiable / dragged around.
-//  Condition for this is that there are multiple ClassNo for all the lessons in a LessonType.
-export function areOtherClassesAvailable(moduleLessons: Array<Object>,
-                                          lessonType: string): boolean {
-  const lessonTypeGroups = _.groupBy(moduleLessons, 'LessonType');
+//  Determines if a TimetableLesson on the timetable can be modifiable / dragged around.
+//  Condition: There are multiple ClassNo for all the TimetableLessons in a LessonType.
+export function areOtherClassesAvailable(lessons: Array<TimetableLesson>,
+                                          lessonType: LessonType): boolean {
+  const lessonTypeGroups: Object = _.groupBy(lessons, 'LessonType');
   if (!lessonTypeGroups[lessonType]) {
     // No such LessonType.
     return false;

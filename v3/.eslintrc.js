@@ -23,6 +23,8 @@ module.exports = {
   "rules": {
     // Turning it on causes undecipherable errors.
     "arrow-body-style": "off",
+    // After adding flowtypes the lines are getting longer.
+    "max-len": ["error", 120],
     // We use webpack resolve root and this conflicts with that.
     "import/no-extraneous-dependencies": "off",
     // We use webpack resolve root and this conflicts with that.
@@ -31,7 +33,8 @@ module.exports = {
     "react/jsx-first-prop-new-line": ["error", "never"],
     // It just looks nicer without the space.
     "react/jsx-space-before-closing": "off",
-    // TODO: Remove the following rule when eslint-config-airbnb updates to use "import/extensions rule from eslint-plugin-import"
+    // TODO: Remove the following rule when eslint-config-airbnb updates to
+    //       use "import/extensions rule from eslint-plugin-import"
     "react/require-extension": "off",
     // Let git handle the linebreaks instead
     "linebreak-style": "off",
