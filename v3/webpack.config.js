@@ -18,13 +18,19 @@ const PATHS = {
 };
 const vendor = [
   'axios',
+  'classnames',
   'lodash',
   'react',
+  'react-addons-shallow-compare',
+  'react-autobind',
+  'react-dnd',
+  'react-document-title',
   'redux',
   'react-redux',
   'react-router',
   'react-router-redux',
-  'redux-logger',
+  'react-select-fast-filter-options',
+  'react-virtualized-select',
   'redux-thunk'
 ];
 
