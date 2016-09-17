@@ -7,7 +7,8 @@
     "build": "cross-env NODE_ENV=production webpack",
     "flow": "flow check || exit 0",
     "test": "cross-env NODE_PATH=./src/js ava test",
-    "test:watch": "npm test -- --watch"
+    "test:watch": "npm test -- --watch",
+    "coverage": "nyc npm test"
   },
   "author": "NUSModifications",
   "license": "MIT",
@@ -42,6 +43,7 @@
     "html-webpack-plugin": "^2.22.0",
     "json-loader": "^0.5.4",
     "node-sass": "^3.8.0",
+    "nyc": "^8.3.0",
     "postcss-js": "^0.1.3",
     "postcss-loader": "^0.13.0",
     "sass-loader": "^4.0.0",
