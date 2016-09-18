@@ -16,7 +16,6 @@ import {
   formatExamDate,
   getModuleSemExamDate,
 } from 'utils/modules';
-import * as moduleUtils from 'utils/modules';
 
 import cs1010s from '../mocks/modules/CS1010S.json';
 import cs3216 from '../mocks/modules/CS3216.json';
@@ -69,7 +68,8 @@ test('areLessonsSameClass should identify identity lessons as same class', (t) =
   t.true(areLessonsSameClass(mockLesson, deepClonedLesson));
 });
 
-test('areLessonsSameClass should identify lessons from the same ClassNo but with different timings as same class', (t) => {
+test('areLessonsSameClass should identify lessons from the same ClassNo but ' +
+  'with different timings as same class', (t) => {
   const otherLesson: TimetableLesson = lessonWithDifferentProperty(mockLesson, 'StartTime', '0000');
   const otherLesson2: TimetableLesson = lessonWithDifferentProperty(otherLesson, 'EndTime', '2300');
   t.true(areLessonsSameClass(mockLesson, otherLesson2));

@@ -1,4 +1,8 @@
 // @flow
+
+import test from 'ava';
+import _ from 'lodash';
+
 import type {
   LessonConfig,
   SemTimetableConfig,
@@ -15,8 +19,6 @@ import type {
   Semester,
 } from 'types/modules';
 
-import test from 'ava';
-import _ from 'lodash';
 import {
   randomLessonConfig,
   lessonsForLessonType,
@@ -32,7 +34,6 @@ import {
 } from 'utils/modules';
 
 import cs1010s from '../mocks/modules/CS1010S.json';
-import cs3216 from '../mocks/modules/CS3216.json';
 import timetable from '../mocks/sem-timetable.json';
 import lessonsArray from '../mocks/lessons-array.json';
 
@@ -40,10 +41,10 @@ import lessonsArray from '../mocks/lessons-array.json';
 function createGenericLesson(dayText: DayText, startTime: LessonTime,
                             endTime: LessonTime, lessonType?: LessonType, classNo?: ClassNo): Lesson {
   return {
-    ClassNo: classNo || "1",
-    LessonType: lessonType || "Recitation",
-    WeekText: "Every Week",
-    Venue: "VCRm",
+    ClassNo: classNo || '1',
+    LessonType: lessonType || 'Recitation',
+    WeekText: 'Every Week',
+    Venue: 'VCRm',
     DayText: dayText,
     StartTime: startTime,
     EndTime: endTime,
@@ -234,7 +235,7 @@ test('areOtherClassesAvailable', (t) => {
   t.false(areOtherClassesAvailable(lessons1, 'Tutorial'));
 
   // Lessons belong to the same ClassNo.
-  const lessons2: Array<Lesson> =  _.shuffle([
+  const lessons2: Array<Lesson> = _.shuffle([
     createGenericLesson('Monday', '1000', '1200', 'Lecture', '1'),
     createGenericLesson('Monday', '1600', '1800', 'Lecture', '1'),
     createGenericLesson('Monday', '1400', '1500', 'Lecture', '1'),
@@ -242,7 +243,7 @@ test('areOtherClassesAvailable', (t) => {
   t.false(areOtherClassesAvailable(lessons2, 'Lecture'));
 
   // Lessons belong to different LessonType.
-  const lessons3: Array<Lesson> =  _.shuffle([
+  const lessons3: Array<Lesson> = _.shuffle([
     createGenericLesson('Monday', '1000', '1200', 'Lecture', '1'),
     createGenericLesson('Monday', '1600', '1800', 'Lecture', '1'),
     createGenericLesson('Monday', '1400', '1500', 'Tutorial', '1'),
