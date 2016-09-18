@@ -62,8 +62,7 @@ const common = {
     new StyleLintPlugin({
       context: PATHS.styles
     }),
-    new LodashModuleReplacementPlugin,
-    new webpack.optimize.OccurrenceOrderPlugin
+    new LodashModuleReplacementPlugin
   ],
   module: {
     preLoaders: [
