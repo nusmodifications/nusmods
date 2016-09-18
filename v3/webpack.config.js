@@ -62,7 +62,9 @@ const common = {
     new StyleLintPlugin({
       context: PATHS.styles
     }),
-    new LodashModuleReplacementPlugin
+    new LodashModuleReplacementPlugin(),
+    new webpack.PrefetchPlugin('./src/styles/main.scss'),
+    new webpack.PrefetchPlugin('./src/js/routes.jsx'),
   ],
   module: {
     preLoaders: [
