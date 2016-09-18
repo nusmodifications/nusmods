@@ -10,6 +10,10 @@ $timetable-cell-padding: 5px;
 $timetable-module-cell-border-radius: 8px;
 $timetable-cell-opacity: 0.5;
 
+.timetable-page-container {
+  animation-name: $page-entering-animation;
+}
+
 .timetable-container {
   position: relative;
 }
@@ -145,6 +149,7 @@ $timetable-cell-opacity: 0.5;
     }
 
     &.is-available {
+      animation-name: zoomIn;
       opacity: $timetable-cell-opacity;
 
       &:hover {
@@ -153,6 +158,7 @@ $timetable-cell-opacity: 0.5;
     }
 
     &.is-active {
+      animation: pulse;
       animation-duration: 1s;
       animation-iteration-count: infinite;
     }

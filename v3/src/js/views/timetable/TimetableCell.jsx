@@ -49,12 +49,11 @@ const TimetableCell = (props) => {
 
   if (lesson) {
     const moduleCell = (
-      <div className={classnames('timetable-module-cell animated', {
+      <div className={classnames('timetable-module-cell', {
         'is-modifiable': lesson.isModifiable,
         'is-available': lesson.isAvailable,
-        'is-active pulse': lesson.isActive,
+        'is-active': lesson.isActive,
         [`color-${lesson.colorIndex}`]: true,
-        zoomIn: lesson.isAvailable,
       })}
         onClick={(event) => {
           event.stopPropagation();

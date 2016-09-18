@@ -1,4 +1,6 @@
-.settings-container {
+.settings-page-container {
+  animation-name: $page-entering-animation;
+
   .theme-item {
     $theme-selected-bg-color: #ddd;
     $theme-hover-bg-color: #eee;

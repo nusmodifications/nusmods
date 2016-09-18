@@ -12,3 +12,7 @@ body {
     padding-top: 1rem;
   }
 }
+
+.page-container {
+  animation-duration: $page-entering-duration;
+}

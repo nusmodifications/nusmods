@@ -11,7 +11,7 @@ import { NUM_DIFFERENT_COLORS } from 'reducers/theme';
 
 const SettingsContainer = (props) => (
   <DocumentTitle title={`Settings - ${config.brandName}`}>
-    <div className="settings-container">
+    <div className="settings-page-container page-container">
       <h1 className="display-4">Settings</h1>
       <hr/>
       <div className="row">

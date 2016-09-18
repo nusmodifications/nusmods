@@ -6,15 +6,15 @@
 @import '~react-select/dist/react-select.css';
 @import '~react-virtualized-select/styles.css';
 
-@import '~animate.css/source/_base.css';
-@import '~animate.css/source/attention_seekers/pulse.css';
-@import '~animate.css/source/zooming_entrances/zoomIn.css';
-
 @import 'constants';
 
 // Utils
 @import 'utils/hacks';
 @import 'utils/mixins';
+@import 'utils/animations';
+
+// Theme
+@import 'themes';
 
 // Layout
 @import 'layout/site';
@@ -22,6 +22,6 @@
 @import 'layout/footer';
 
 // Pages
-@import 'pages/themes';
 @import 'pages/timetable';
+@import 'pages/modules';
 @import 'pages/settings';

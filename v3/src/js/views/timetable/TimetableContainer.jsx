@@ -96,7 +96,7 @@ export class TimetableContainer extends Component {
 
     return (
       <DocumentTitle title={`Timetable - ${config.brandName}`}>
-        <div className={`theme-${this.props.theme}`} onClick={() => {
+        <div className={`theme-${this.props.theme} timetable-page-container page-container`} onClick={() => {
           if (this.props.activeLesson) {
             this.props.cancelModifyLesson();
           }
