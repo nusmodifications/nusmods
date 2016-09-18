@@ -37,20 +37,20 @@ export function areLessonsSameClass(lesson1: TimetableLesson, lesson2: Timetable
 // SGT time zone and interpret as UTC time, then use the getUTC* methods so
 // that they will correspond to Singapore time regardless of the local time
 // zone.
-export function getExamTime(module: Module, semester: Semester): string {
-  function examStr(examDate: string): string {
-    const date: Date = new Date(`${examDate.slice(0, 16)}Z`);
-    const hours: number = date.getUTCHours();
+export function formatExamDate(examDate: string): string {
+  const date: Date = new Date(`${examDate.slice(0, 16)}Z`);
+  const hours: number = date.getUTCHours();
 
-    const day: string = _.padStart(`${date.getUTCDate().toString()}`, 2, '0');
-    const month: string = _.padStart(`${date.getUTCMonth() + 1}`, 2, '0');
-    const year: number = date.getUTCFullYear();
-    const hour: number = (hours % 12 || 12);
-    const minute: string = _.padStart(`${date.getUTCMinutes()}`, 2, '0');
-    const amPm: string = (hours < 12 ? 'AM' : 'PM');
-    return `${day}-${month}-${year} ${hour}:${minute} ${amPm}`;
-  }
+  const day: string = _.padStart(`${date.getUTCDate().toString()}`, 2, '0');
+  const month: string = _.padStart(`${date.getUTCMonth() + 1}`, 2, '0');
+  const year: number = date.getUTCFullYear();
+  const hour: number = (hours % 12 || 12);
+  const minute: string = _.padStart(`${date.getUTCMinutes()}`, 2, '0');
+  const amPm: string = (hours < 12 ? 'AM' : 'PM');
+  return `${day}-${month}-${year} ${hour}:${minute} ${amPm}`;
+}
 
+export function getModuleSemExamDate(module: Module, semester: Semester): string {
   const examDate = _.get(getModuleSemesterData(module, semester), 'ExamDate');
-  return examDate ? examStr(examDate) : '-';
+  return examDate ? formatExamDate(examDate) : '-';
 }

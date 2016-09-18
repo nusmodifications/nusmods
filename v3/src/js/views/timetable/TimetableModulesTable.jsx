@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 
-import { getExamTime, modulePagePath } from 'utils/modules';
+import { getModuleSemExamDate, modulePagePath } from 'utils/modules';
 
 const TimetableModulesTable = (props) => {
   return (
@@ -16,7 +16,7 @@ const TimetableModulesTable = (props) => {
                 </Link>
               </td>
               <td>{module.ModuleCredit}</td>
-              <td>{getExamTime(module, props.semester)}</td>
+              <td>{getModuleSemExamDate(module, props.semester)}</td>
               <td>
                 <button className="btn btn-sm btn-outline-danger"
                   onClick={() => {

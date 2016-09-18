@@ -2,9 +2,12 @@ import test from 'ava';
 import _ from 'lodash';
 import {
   modulePagePath,
-  areLessonsSameClass,
   getModuleSemesterData,
+  areLessonsSameClass,
+  formatExamDate,
+  getModuleSemExamDate,
 } from 'utils/modules';
+import * as moduleUtils from 'utils/modules';
 
 import cs1010s from '../mocks/modules/CS1010S.json';
 import cs3216 from '../mocks/modules/CS3216.json';
@@ -77,4 +80,28 @@ test('areLessonsSameClass should identify lessons with different ClassNo as diff
 test('areLessonsSameClass should identify lessons with different LessonType as different class', (t) => {
   const otherLesson = lessonWithDifferentProperty(mockLesson, 'LessonType');
   t.false(areLessonsSameClass(mockLesson, otherLesson));
+});
+
+test('formatExamDate should format an exam date string correctly', (t) => {
+  t.is(formatExamDate('2016-11-23T09:00+0800'), '23-11-2016 9:00 AM');
+  t.is(formatExamDate('2016-01-23T09:00+0800'), '23-01-2016 9:00 AM');
+  t.is(formatExamDate('2016-11-03T09:00+0800'), '03-11-2016 9:00 AM');
+  t.is(formatExamDate('2016-11-03T19:00+0800'), '03-11-2016 7:00 PM');
+  t.is(formatExamDate('2016-11-03T19:30+0800'), '03-11-2016 7:30 PM');
+  t.is(formatExamDate('2016-11-03T08:30+0800'), '03-11-2016 8:30 AM');
+  t.is(formatExamDate('2016-01-03T08:01+0800'), '03-01-2016 8:01 AM');
+});
+
+test('getModuleSemExamDate should return the correctly formatted exam timing if it exists', (t) => {
+  const sem = 1;
+  const examTime = getModuleSemExamDate(cs1010s, sem);
+  t.is(examTime, '23-11-2016 9:00 AM');
+});
+
+test('getModuleSemExamDate should - if it does not exist', (t) => {
+  const sem1 = 1;
+  t.is(getModuleSemExamDate(cs3216, sem1), '-');
+
+  const sem2 = 2;
+  t.is(getModuleSemExamDate(cs1010s, sem2), '-');
 });
