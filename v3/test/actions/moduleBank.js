@@ -1,3 +1,5 @@
+// @flow
+
 import test from 'ava';
 import * as actions from 'actions/moduleBank';
 
@@ -6,7 +8,7 @@ test('fetchModuleList should dispatch a request', (t) => {
 });
 
 test('fetchModule should dispatch a request', (t) => {
-  t.true(typeof actions.fetchModule() === 'function');
+  t.true(typeof actions.fetchModule('CS1010S') === 'function');
 });
 
 test('loadModule should dispatch a request', (t) => {

@@ -45,11 +45,11 @@ export type ModuleCondensed = {
 
 // Semester-specific information of a module.
 export type SemesterData = {
-  ExamDate: string,
+  ExamDate?: string,
   LecturePeriods: Array<string>,
   Semester: Semester,
   Timetable: Array<Lesson>,
-  TutorialPeriods: Array<string>,
+  TutorialPeriods?: Array<string>,
 };
 
 // Lesson is a lesson time slot obtained from the API.

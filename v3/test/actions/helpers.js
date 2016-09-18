@@ -1,7 +1,8 @@
 // @flow
+import type { FSA } from 'types/redux';
+
 import test from 'ava';
 import * as actions from 'actions/helpers';
-import type { FSA } from 'types/redux';
 
 function testShouldReturnArr(t, type, action): void {
   const payload: Array<any> = [];

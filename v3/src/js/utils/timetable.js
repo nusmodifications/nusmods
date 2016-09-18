@@ -41,23 +41,23 @@ export const LESSON_TYPE_ABBREV: LessonTypeAbbrev = {
 //    [LessonType]: [TimetableLesson, TimetableLesson, ...],
 //    [LessonType]: [TimetableLesson, ...],
 //  }
-export function randomLessonConfig(lessons: Array<TimetableLesson>): LessonConfig {
-  const lessonByGroups: { [key: LessonType]: Array<TimetableLesson> } =
+export function randomLessonConfig(lessons: Array<Lesson | TimetableLesson>): LessonConfig {
+  const lessonByGroups: { [key: LessonType]: Array<Lesson | TimetableLesson> } =
     _.groupBy(lessons, (lesson) => lesson.LessonType);
 
   const lessonByGroupsByClassNo: { [key: LessonType]: { [key: ClassNo]: Array<TimetableLesson> } } =
-    _.mapValues(lessonByGroups, (lessonsOfSameLessonType: Array<Lesson>) => {
+    _.mapValues(lessonByGroups, (lessonsOfSameLessonType: Array<Lesson | TimetableLesson>) => {
       return _.groupBy(lessonsOfSameLessonType, (lesson) => lesson.ClassNo);
     });
 
-  return _.mapValues(lessonByGroupsByClassNo, (group: { [key: ClassNo]: Array<Lesson> }) => {
+  return _.mapValues(lessonByGroupsByClassNo, (group: { [key: ClassNo]: Array<Lesson | TimetableLesson> }) => {
     return _.sample(group);
   });
 }
 
 //  Filters a flat array of lessons and returns the lessons corresponding to lessonType.
-export function lessonsForLessonType(lessons: Array<TimetableLesson>,
-                                      lessonType: LessonType): Array<TimetableLesson> {
+export function lessonsForLessonType(lessons: Array<Lesson | TimetableLesson>,
+                                      lessonType: LessonType): Array<Lesson | TimetableLesson> {
   return _.filter(lessons, (lesson: TimetableLesson) => lesson.LessonType === lessonType);
 }
 
