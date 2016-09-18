@@ -1,13 +1,15 @@
+// @flow
 import test from 'ava';
 import * as actions from 'actions/helpers';
+import type { FSA } from 'types/redux';
 
-function testShouldReturnArr(t, type, action) {
-  const payload = [];
-  const expectedResult = {
+function testShouldReturnArr(t, type, action): void {
+  const payload: Array<any> = [];
+  const expectedResult: FSA = {
     type,
     payload,
   };
-  const resultOfAction = action(payload);
+  const resultOfAction: FSA = action(payload);
   t.deepEqual(resultOfAction, expectedResult);
 }
 
@@ -19,13 +21,13 @@ test('resetErrorState should return an array', (t) => {
   testShouldReturnArr(t, actions.RESET_ERROR_STATE, actions.resetErrorState);
 });
 
-function testShouldConvertArr(t, type, action) {
-  const payload = 'test';
-  const expectedResult = {
+function testShouldConvertArr(t, type, action): void {
+  const payload: string = 'test';
+  const expectedResult: FSA = {
     type,
     payload: [payload],
   };
-  const resultOfAction = action(payload);
+  const resultOfAction: FSA = action(payload);
   t.deepEqual(resultOfAction, expectedResult);
 }
 
@@ -38,9 +40,9 @@ test('resetErrorState should convert item to an array', (t) => {
 });
 
 test('resetAllState should reset state', (t) => {
-  const expectedResult = {
+  const expectedResult: FSA = {
     type: actions.RESET_ALL_STATE,
   };
-  const resultOfAction = actions.resetAllState();
+  const resultOfAction: FSA = actions.resetAllState();
   t.deepEqual(resultOfAction, expectedResult);
 });
