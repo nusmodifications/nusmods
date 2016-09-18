@@ -7,7 +7,6 @@ import type {
   LessonType,
   ModuleCode,
   Semester,
-  TimetableLesson,
 } from 'types/modules';
 
 //  LessonConfig is a mapping of LessonType to an array of Lessons.
@@ -25,18 +24,18 @@ export type TimetableConfig = {
 export type SemTimetableConfig = {
   [key: ModuleCode]: {
     [key: LessonType]: {
-      [key: ClassNo]: Array<TimetableLesson>,
+      [key: ClassNo]: Array<Lesson>,
     },
   },
 };
 
 // TimetableDayFormat is timetable data grouped by DayText.
 export type TimetableDayFormat = {
-  [key: DayText]: Array<TimetableLesson>,
+  [key: DayText]: Array<Lesson>,
 };
 
 // TimetableDayArrangement is the arrangement of lessons on the timetable within a day.
-export type TimetableDayArrangement = Array<Array<TimetableLesson>>;
+export type TimetableDayArrangement = Array<Array<Lesson>>;
 
 // TimetableArrangement is the arrangement of lessons on the timetable for a week.
 export type TimetableArrangement = {
