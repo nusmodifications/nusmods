@@ -18,8 +18,7 @@ export class ModulesSearchIndex {
     this.tokenToUidToDocumentMap[token][uid] = document;
   }
 
-  // eslint-disable-next-line no-unused-vars
-  search(tokens: Array<string>, corpus: Array<Object>): Array<Object> {
+  search(tokens: Array<string>): Array<Object> {
     const query: string = tokens[0];
     let uidToDocumentMap: Object = this.tokenToUidToDocumentMap[query] || {};
 
