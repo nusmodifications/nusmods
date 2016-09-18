@@ -1,7 +1,7 @@
 $breakpoint: map-get($grid-breakpoints, 'md');
 
 $timetable-background: #fff;
-$timetable-row-height: 50px;
+$timetable-row-height: 51px;
 $timetable-row-margin: 2px;
 $timetable-width: 100%;
 $timetable-min-width: $breakpoint;
@@ -64,6 +64,7 @@ $timetable-cell-opacity: 0.5;
     text-align: center;
 
     &.timetable-day-cell {
+      align-self: center;
       flex-grow: 2;
     }
   }
@@ -115,12 +116,17 @@ $timetable-cell-opacity: 0.5;
     .timetable-cell {
       width: 100%;
     }
+
+    .timetable-module-cell {
+      animation-duration: $entering-duration;
+      transition-duration: $entering-duration;
+    }
   }
 
   .timetable-module-cell {
     $smaller-text: 0.6rem;
 
-    animation-duration: 0.5s;
+    animation-duration: $desktop-entering-duration;
     border-bottom-style: solid;
     border-bottom-width: 2px;
     cursor: not-allowed;
@@ -130,7 +136,7 @@ $timetable-cell-opacity: 0.5;
     padding: $timetable-cell-padding;
     pointer-events: none;
     text-align: left;
-    transition: background-color 0.3s ease-out;
+    transition: background-color $desktop-entering-duration $material-deceleration-curve;
 
     &.is-modifiable {
       border-radius: $timetable-module-cell-border-radius;

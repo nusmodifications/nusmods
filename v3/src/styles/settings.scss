@@ -6,7 +6,7 @@
     border-radius: 6px;
     cursor: pointer;
     margin-bottom: 10px;
-    transition: background-color 0.3s ease-out;
+    transition: background-color $desktop-entering-duration $material-deceleration-curve;
 
     &:hover {
       background-color: $theme-hover-bg-color;
