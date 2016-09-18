@@ -134,6 +134,10 @@ test('doLessonsOverlap should correctly determine if two lessons overlap', (t) =
 });
 
 test('arrangeLessonsWithinDay', (t) => {
+  // Empty array.
+  const arrangement0: TimetableDayArrangement = arrangeLessonsWithinDay([]);
+  t.is(arrangement0.length, 1);
+
   // Can fit within one row.
   const arrangement1: TimetableDayArrangement = arrangeLessonsWithinDay(_.shuffle([
     createGenericLesson('Monday', '1000', '1200'),
