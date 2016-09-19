@@ -6,7 +6,7 @@ import type {
 
 import { MODIFY_LESSON, CHANGE_LESSON, CANCEL_MODIFY_LESSON } from 'actions/timetables';
 
-type AppState = {
+export type AppState = {
   activeLesson: ?Lesson,
 };
 

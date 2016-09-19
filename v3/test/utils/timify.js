@@ -24,12 +24,6 @@ test('convertTimeToIndex should convert non-half hour string to index', (t) => {
   t.is(actual, expected);
 });
 
-test('convertTimeToIndex should convert non-half hour string to index', (t) => {
-  const actual: number = convertTimeToIndex('2359');
-  const expected: number = 47;
-  t.is(actual, expected);
-});
-
 test('convertIndexToTime should convert time index to string', (t) => {
   for (let hour = 0; hour < 24; hour++) {
     const doubleDigitTime: string = (`0${hour % 24}`).slice(-2);
