@@ -1,9 +1,7 @@
 module.exports = {
-  "extends": [
-    "plugin:ava/recommended"
-  ],
+  "extends": "plugin:ava/recommended",
   "plugins": [
-    "ava",
+    "ava"
   ],
   "rules": {
     "react/jsx-filename-extension" : "off",

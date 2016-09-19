@@ -6,7 +6,7 @@ import reducer from 'reducers/app';
 
 import type { Semester, TimetableLesson } from 'types/modules';
 import type { FSA } from 'types/redux';
-
+import type { AppState } from 'types/reducers';
 import lessons from '../mocks/lessons-array.json';
 
 const semester: Semester = 1;
@@ -24,9 +24,7 @@ test('app should instate lesson state', (t) => {
   const action: FSA = actions.modifyLesson(lesson);
   const nextState: AppState = reducer(appHasNoLessonState, action);
 
-  t.deepEqual(nextState, {
-    activeLesson: lesson,
-  });
+  t.deepEqual(nextState, appHasLessonState);
 });
 
 test('app should switch lesson state', (t) => {

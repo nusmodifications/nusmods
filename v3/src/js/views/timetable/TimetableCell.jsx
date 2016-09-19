@@ -36,7 +36,7 @@ function dropCollect(connect, monitor) {
   };
 }
 
-const TimetableCell = (props) => {
+function TimetableCell(props) {
   const lesson = props.lesson;
   // Postcss-js adds a freaking 2mb to the script payload; it's not worth
   // adding it just to save the following few lines of code.
@@ -79,10 +79,8 @@ const TimetableCell = (props) => {
     }
   }
 
-  return (
-    <div className="timetable-cell" style={widthStyle}>{cell}</div>
-  );
-};
+  return <div className="timetable-cell" style={widthStyle}>{cell}</div>;
+}
 
 TimetableCell.propTypes = {
   lesson: PropTypes.object,

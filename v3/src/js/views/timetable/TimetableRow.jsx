@@ -6,8 +6,8 @@ import { convertIndexToTime, convertTimeToIndex } from 'utils/timify';
 
 import TimetableCell from './TimetableCell';
 
-const generateCells = (lessons, onModifyCell) => {
-  const lessonsGroupedByStartTime = _.mapValues(_.groupBy(lessons, (lesson) => lesson.StartTime), (value) => value[0]);
+function generateCells(lessons, onModifyCell) {
+  const lessonsGroupedByStartTime = _.mapValues(_.groupBy(lessons, lesson => lesson.StartTime), value => value[0]);
 
   const cells = [];
   const startingIndex = FIRST_HOUR * 2;
@@ -32,16 +32,16 @@ const generateCells = (lessons, onModifyCell) => {
     }
   }
   return cells;
-};
+}
 
-const TimetableRow = (props) => {
+function TimetableRow(props) {
   return (
     <div className="timetable-day-row">
       <div className="timetable-day-cell timetable-cell"><span>{props.day}</span></div>
       {generateCells(props.lessons, props.onModifyCell)}
     </div>
   );
-};
+}
 
 TimetableRow.propTypes = {
   day: PropTypes.string,

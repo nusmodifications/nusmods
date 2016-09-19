@@ -15,11 +15,6 @@ export type LessonConfig = {
   [key: LessonType]: Array<Lesson>,
 };
 
-// TimetableConfig is the timetable data for the whole academic year.
-export type TimetableConfig = {
-  [key: Semester]: SemTimetableConfig,
-};
-
 // SemTimetableConfig is the timetable data for each semester.
 export type SemTimetableConfig = {
   [key: ModuleCode]: {
@@ -27,6 +22,11 @@ export type SemTimetableConfig = {
       [key: ClassNo]: Array<Lesson>,
     },
   },
+};
+
+// TimetableConfig is the timetable data for the whole academic year.
+export type TimetableConfig = {
+  [key: Semester]: SemTimetableConfig,
 };
 
 // TimetableDayFormat is timetable data grouped by DayText.
