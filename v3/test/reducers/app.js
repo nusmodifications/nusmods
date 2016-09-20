@@ -20,7 +20,7 @@ test('app should return initial state', (t) => {
   t.deepEqual(nextState, appHasNoLessonState);
 });
 
-test('app should instate lesson state', (t) => {
+test('app should instantiate lesson state', (t) => {
   const action: FSA = actions.modifyLesson(lesson);
   const nextState: AppState = reducer(appHasNoLessonState, action);
 

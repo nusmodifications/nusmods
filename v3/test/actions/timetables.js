@@ -37,6 +37,7 @@ test('modifyLesson should return lesson payload', (t) => {
     },
   };
   const resultOfAction: FSA = actions.modifyLesson(activeLesson);
+
   t.deepEqual(resultOfAction, expectedResult);
 });
 
@@ -53,6 +54,7 @@ test('changeLesson should return updated information to change lesson', (t) => {
     },
   };
   const resultOfAction: FSA = actions.changeLesson(semester, lesson);
+
   t.deepEqual(resultOfAction, expectedResult);
 });
 
@@ -61,5 +63,6 @@ test('cancelModifyLesson should not have payload', (t) => {
     type: actions.CANCEL_MODIFY_LESSON,
   };
   const resultOfAction: FSA = actions.cancelModifyLesson();
+
   t.deepEqual(resultOfAction, expectedResult);
 });

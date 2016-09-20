@@ -6,14 +6,14 @@ export type AcadYear = string;     // E.g. "2016/2017"
 export type ClassNo = string;      // E.g. "1", "A"
 export type DayText = string;      // E.g. "Monday", "Tuesday"
 export type Department = string;
-export type StartTime = string;    // E.g. "1400"
-export type EndTime = string;
-export type LessonTime = StartTime | EndTime;
+export type EndTime = string;      // E.g. "1500"
 export type Faculty = string;
 export type LessonType = string;   // E.g. "Lecture", "Tutorial"
+export type LessonTime = StartTime | EndTime;
 export type ModuleCode = string;   // E.g. "CS3216"
 export type ModuleTitle = string;
 export type Semester = number;     // E.g. 1, 2
+export type StartTime = string;    // E.g. "1400"
 export type Venue = string;
 export type WeekText = string;     // E.g. "Every Week", "Odd Week"
 
@@ -43,6 +43,15 @@ export type ModuleCondensed = {
   Semesters: Array<number>,
 };
 
+// Semester-specific information of a module.
+export type SemesterData = {
+  ExamDate?: string,
+  LecturePeriods: Array<string>,
+  Semester: Semester,
+  Timetable: Array<Lesson>,
+  TutorialPeriods?: Array<string>,
+};
+
 // Lesson is a lesson time slot obtained from the API.
 // Usually ModuleCode and ModuleTitle has to be injected in before using in the timetable.
 export type Lesson = {
@@ -53,15 +62,6 @@ export type Lesson = {
   StartTime: StartTime,
   Venue: Venue,
   WeekText: WeekText,
-};
-
-// Semester-specific information of a module.
-export type SemesterData = {
-  ExamDate?: string,
-  LecturePeriods: Array<string>,
-  Semester: Semester,
-  Timetable: Array<Lesson>,
-  TutorialPeriods?: Array<string>,
 };
 
 // Lessons obtained from API does not include ModuleCode and ModuleTitle by default.
