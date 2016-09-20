@@ -42,11 +42,11 @@ export const LESSON_TYPE_ABBREV: LessonTypeAbbrev = {
 //  }
 export function randomLessonConfig(lessons: Array<Lesson>): LessonConfig {
   const lessonByGroups: { [key: LessonType]: Array<Lesson> } =
-    _.groupBy(lessons, (lesson) => lesson.LessonType);
+    _.groupBy(lessons, lesson => lesson.LessonType);
 
   const lessonByGroupsByClassNo: { [key: LessonType]: { [key: ClassNo]: Array<Lesson> } } =
     _.mapValues(lessonByGroups, (lessonsOfSameLessonType: Array<Lesson>) => {
-      return _.groupBy(lessonsOfSameLessonType, (lesson) => lesson.ClassNo);
+      return _.groupBy(lessonsOfSameLessonType, lesson => lesson.ClassNo);
     });
 
   return _.mapValues(lessonByGroupsByClassNo, (group: { [key: ClassNo]: Array<Lesson> }) => {
@@ -57,7 +57,7 @@ export function randomLessonConfig(lessons: Array<Lesson>): LessonConfig {
 //  Filters a flat array of lessons and returns the lessons corresponding to lessonType.
 export function lessonsForLessonType(lessons: Array<Lesson>,
                                       lessonType: LessonType): Array<Lesson> {
-  return _.filter(lessons, (lesson: Lesson) => lesson.LessonType === lessonType);
+  return _.filter(lessons, lesson => lesson.LessonType === lessonType);
 }
 
 //  Converts from timetable config format to flat array of lessons.
@@ -83,7 +83,7 @@ export function timetableLessonsArray(timetable: SemTimetableConfig): Array<Less
 //    Tuesday: [Lesson, ...],
 //  }
 export function groupLessonsByDay(lessons: Array<Lesson>): TimetableDayFormat {
-  return _.groupBy(lessons, (lesson) => lesson.DayText);
+  return _.groupBy(lessons, lesson => lesson.DayText);
 }
 
 //  Determines if two lessons overlap:
@@ -151,10 +151,10 @@ export function arrangeLessonsForWeek(lessons: Array<Lesson>): TimetableArrangem
 //  Condition: There are multiple ClassNo for all the Lessons in a LessonType.
 export function areOtherClassesAvailable(lessons: Array<Lesson>,
                                           lessonType: LessonType): boolean {
-  const lessonTypeGroups: Object = _.groupBy(lessons, (lesson) => lesson.LessonType);
+  const lessonTypeGroups: Object = _.groupBy(lessons, lesson => lesson.LessonType);
   if (!lessonTypeGroups[lessonType]) {
     // No such LessonType.
     return false;
   }
-  return Object.keys(_.groupBy(lessonTypeGroups[lessonType], (lesson) => lesson.ClassNo)).length > 1;
+  return Object.keys(_.groupBy(lessonTypeGroups[lessonType], lesson => lesson.ClassNo)).length > 1;
 }

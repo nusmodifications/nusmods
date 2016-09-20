@@ -3,7 +3,7 @@ import _ from 'lodash';
 import classnames from 'classnames';
 import { CELLS_COUNT } from 'utils/timetable';
 
-const TimetableBackground = () => {
+function TimetableBackground() {
   return (
     <div className="timetable timetable-bg">
       <div className="timetable-day">
@@ -22,6 +22,6 @@ const TimetableBackground = () => {
       </div>
     </div>
   );
-};
+}
 
 export default TimetableBackground;

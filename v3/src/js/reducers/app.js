@@ -1,14 +1,8 @@
 // @flow
 import type { FSA } from 'redux';
-import type {
-  Lesson,
-} from 'types/modules';
+import type { AppState } from 'types/reducers';
 
 import { MODIFY_LESSON, CHANGE_LESSON, CANCEL_MODIFY_LESSON } from 'actions/timetables';
-
-type AppState = {
-  activeLesson: ?Lesson,
-};
 
 const defaultAppState: AppState = {
   // The lesson being modified on the timetable.

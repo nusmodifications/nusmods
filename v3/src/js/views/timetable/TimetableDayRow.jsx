@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 
 import TimetableRow from './TimetableRow';
 
-const TimetableDayRow = (props) => {
+function TimetableDayRow(props) {
   return (
     <div className="timetable-day">
       {props.dayLessonRows ?
@@ -18,7 +18,7 @@ const TimetableDayRow = (props) => {
       }
     </div>
   );
-};
+}
 
 TimetableDayRow.propTypes = {
   day: PropTypes.string,

@@ -1,8 +1,9 @@
 module.exports = {
   "parser": "babel-eslint",
+  "root": true,
   "extends": [
-    "airbnb",
-    "plugin:flowtype/recommended"
+    "plugin:flowtype/recommended",
+    "airbnb"
   ],
   "env": {
     "browser": true,
@@ -17,6 +18,8 @@ module.exports = {
   "rules": {
     // Turning it on causes undecipherable errors.
     "arrow-body-style": "off",
+    // Consistent arrow parens
+    "arrow-parens": [2, "as-needed", { "requireForBlockBody": true }],
     // After adding flowtypes the lines are getting longer.
     "max-len": ["error", 120],
     // We use webpack resolve root and this conflicts with that.

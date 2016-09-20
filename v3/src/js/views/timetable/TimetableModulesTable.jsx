@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 
 import { getModuleSemExamDate, modulePagePath } from 'utils/modules';
 
-const TimetableModulesTable = (props) => {
+function TimetableModulesTable(props) {
   return (
     <table className="table">
       <tbody>
@@ -32,7 +32,7 @@ const TimetableModulesTable = (props) => {
       </tbody>
     </table>
   );
-};
+}
 
 TimetableModulesTable.propTypes = {
   semester: PropTypes.number,

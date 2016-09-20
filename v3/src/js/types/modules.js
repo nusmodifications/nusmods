@@ -1,5 +1,5 @@
 // @flow
-
+/* eslint-disable */
 // Components within a module:
 
 export type AcadYear = string;     // E.g. "2016/2017"
