@@ -33,6 +33,8 @@ module.exports = {
     // TODO: Remove the following rule when eslint-config-airbnb updates to
     //       use "import/extensions rule from eslint-plugin-import"
     "react/require-extension": "off",
+    // TODO: Replace divs with buttons, but remove all button styling
+    "jsx-a11y/no-static-element-interactions": "off",
     // Let git handle the linebreaks instead
     "linebreak-style": "off",
   }

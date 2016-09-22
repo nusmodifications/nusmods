@@ -5,15 +5,7 @@ import { ADD_MODULE, REMOVE_MODULE } from 'actions/timetables';
 import { CHANGE_THEME } from 'actions/theme';
 
 import type { FSA } from 'redux';
-import type { ModuleCode } from 'types/modules';
-
-type ColorIndex = number;
-// Mapping of module to color index [0, NUM_DIFFERENT_COLORS)
-type ColorMapping = { [key: ModuleCode]: ColorIndex };
-type ThemeState = {
-  id: string,
-  colors: ColorMapping,
-};
+import type { ColorIndex, ColorMapping, ThemeState } from 'types/reducers';
 
 const defaultColorsState: ColorMapping = {};
 const defaultThemeState: ThemeState = {

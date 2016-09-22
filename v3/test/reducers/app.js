@@ -4,13 +4,13 @@ import test from 'ava';
 import * as actions from 'actions/timetables';
 import reducer from 'reducers/app';
 
-import type { Semester, TimetableLesson } from 'types/modules';
+import type { Semester, Lesson } from 'types/modules';
 import type { FSA } from 'types/redux';
 import type { AppState } from 'types/reducers';
 import lessons from '../mocks/lessons-array.json';
 
 const semester: Semester = 1;
-const lesson: TimetableLesson = lessons[0];
+const lesson: Lesson = lessons[0];
 const appHasLessonState: AppState = { activeLesson: lesson };
 const appHasNoLessonState: AppState = { activeLesson: null };
 
@@ -28,7 +28,7 @@ test('app should instantiate lesson state', (t) => {
 });
 
 test('app should switch lesson state', (t) => {
-  const anotherLesson: TimetableLesson = lessons[1];
+  const anotherLesson: Lesson = lessons[1];
   const action: FSA = actions.modifyLesson(anotherLesson);
   const nextState: AppState = reducer(appHasLessonState, action);
 

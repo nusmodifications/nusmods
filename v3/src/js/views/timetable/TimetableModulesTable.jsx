@@ -1,9 +1,18 @@
-import React, { PropTypes } from 'react';
+// @flow
+
+import React from 'react';
 import { Link } from 'react-router';
 
 import { getModuleSemExamDate, modulePagePath } from 'utils/modules';
+import type { Module } from 'types/modules';
 
-function TimetableModulesTable(props) {
+type Props = {
+  semester: number,
+  modules: Array<Module>,
+  onRemoveModule: Function,
+};
+
+function TimetableModulesTable(props: Props) {
   return (
     <table className="table">
       <tbody>
@@ -33,10 +42,5 @@ function TimetableModulesTable(props) {
     </table>
   );
 }
-
-TimetableModulesTable.propTypes = {
-  semester: PropTypes.number,
-  modules: PropTypes.array,
-};
 
 export default TimetableModulesTable;

@@ -1,8 +1,17 @@
-import React, { PropTypes } from 'react';
+// @flow
+
+import React from 'react';
+import type { TimetableDayArrangement } from 'types/timetables';
 
 import TimetableRow from './TimetableRow';
 
-function TimetableDayRow(props) {
+type Props = {
+  day: string,
+  dayLessonRows: TimetableDayArrangement,
+  onModifyCell: Function,
+};
+
+function TimetableDay(props: Props) {
   return (
     <div className="timetable-day">
       {props.dayLessonRows ?
@@ -20,10 +29,4 @@ function TimetableDayRow(props) {
   );
 }
 
-TimetableDayRow.propTypes = {
-  day: PropTypes.string,
-  dayLessonRows: PropTypes.array,
-  onModifyCell: PropTypes.func,
-};
-
-export default TimetableDayRow;
+export default TimetableDay;

@@ -4,7 +4,7 @@ import test from 'ava';
 import { convertTimeToIndex, convertIndexToTime } from 'utils/timify';
 
 test('convertTimeToIndex should convert time string to index', (t) => {
-  for (let hour: number = 0; hour < 24; hour++) {
+  for (let hour: number = 0; hour < 24; hour += 1) {
     const doubleDigitTime: string = (`0${hour % 24}`).slice(-2);
     if (convertTimeToIndex(`${doubleDigitTime}00`) !== hour * 2) {
       t.fail();
@@ -25,7 +25,7 @@ test('convertTimeToIndex should convert non-half hour string to index', (t) => {
 });
 
 test('convertIndexToTime should convert time index to string', (t) => {
-  for (let hour = 0; hour < 24; hour++) {
+  for (let hour = 0; hour < 24; hour += 1) {
     const doubleDigitTime: string = (`0${hour % 24}`).slice(-2);
     if (convertIndexToTime(hour * 2) !== `${doubleDigitTime}00`) {
       t.fail();

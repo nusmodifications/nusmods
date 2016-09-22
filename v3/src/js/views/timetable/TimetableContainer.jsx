@@ -1,3 +1,5 @@
+// @flow
+
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import DocumentTitle from 'react-document-title';
@@ -7,10 +9,10 @@ import config from 'config';
 import { getSemModuleSelectList } from 'reducers/entities/moduleBank';
 import {
   addModule,
-  removeModule,
-  modifyLesson,
-  changeLesson,
   cancelModifyLesson,
+  changeLesson,
+  modifyLesson,
+  removeModule,
 } from 'actions/timetables';
 import { getModuleTimetable, areLessonsSameClass } from 'utils/modules';
 import {
@@ -20,12 +22,37 @@ import {
   lessonsForLessonType,
 } from 'utils/timetable';
 import ModulesSelect from 'views/components/ModulesSelect';
+import type {
+  DraggableLesson,
+  Lesson,
+  Module,
+  ModuleCondensed,
+  RawLesson,
+} from 'types/modules';
+import type { SemTimetableConfig, TimetableArrangement } from 'types/timetables';
+import type { ThemeState } from 'types/reducers';
 
 import Timetable from './Timetable';
 import TimetableModulesTable from './TimetableModulesTable';
 
+type Props = {
+  semester: number,
+  semModuleList: Array<ModuleCondensed>,
+  semTimetable: SemTimetableConfig,
+  modules: Module,
+  theme: string,
+  colors: ThemeState,
+  activeLesson: DraggableLesson,
+
+  addModule: Function,
+  removeModule: Function,
+  modifyLesson: Function,
+  changeLesson: Function,
+  cancelModifyLesson: Function,
+};
+
 export class TimetableContainer extends Component {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     autobind(this);
   }
@@ -34,7 +61,7 @@ export class TimetableContainer extends Component {
     this.props.cancelModifyLesson();
   }
 
-  modifyCell(lesson) {
+  modifyCell(lesson: DraggableLesson) {
     if (lesson.isAvailable) {
       this.props.changeLesson(this.props.semester, lesson);
     } else if (lesson.isActive) {
@@ -45,13 +72,13 @@ export class TimetableContainer extends Component {
   }
 
   render() {
-    let timetableLessons = timetableLessonsArray(this.props.semTimetable);
+    let timetableLessons: Array<Lesson | DraggableLesson> = timetableLessonsArray(this.props.semTimetable);
     if (this.props.activeLesson) {
       const activeLesson = this.props.activeLesson;
       const moduleCode = activeLesson.ModuleCode;
 
       const module = this.props.modules[moduleCode];
-      const moduleTimetable = getModuleTimetable(module, this.props.semester);
+      const moduleTimetable: Array<RawLesson> = getModuleTimetable(module, this.props.semester);
       const lessons = lessonsForLessonType(moduleTimetable, activeLesson.LessonType)
         .map((lesson) => {
           // Inject module code in
@@ -80,12 +107,12 @@ export class TimetableContainer extends Component {
       return { ...lesson, colorIndex: this.props.colors[lesson.ModuleCode] };
     });
 
-    const arrangedLessons = arrangeLessonsForWeek(timetableLessons);
-    const arrangedLessonsWithModifiableFlag = _.mapValues(arrangedLessons, (dayRows) => {
+    const arrangedLessons: TimetableArrangement = arrangeLessonsForWeek(timetableLessons);
+    const arrangedLessonsWithModifiableFlag: Array<DraggableLesson> = _.mapValues(arrangedLessons, (dayRows) => {
       return dayRows.map((row) => {
         return row.map((lesson) => {
-          const module = this.props.modules[lesson.ModuleCode];
-          const moduleTimetable = getModuleTimetable(module, this.props.semester);
+          const module: Module = this.props.modules[lesson.ModuleCode];
+          const moduleTimetable: Array<RawLesson> = getModuleTimetable(module, this.props.semester);
           return {
             ...lesson,
             isModifiable: areOtherClassesAvailable(moduleTimetable, lesson.LessonType),
@@ -118,7 +145,7 @@ export class TimetableContainer extends Component {
               <br/>
               <TimetableModulesTable modules={
                 Object.keys(this.props.semTimetable).sort((a, b) => {
-                  return a > b;
+                  return a.localeCompare(b);
                 }).map((moduleCode) => {
                   return this.props.modules[moduleCode] || {};
                 })}
@@ -134,22 +161,6 @@ export class TimetableContainer extends Component {
     );
   }
 }
-
-TimetableContainer.propTypes = {
-  semester: PropTypes.number,
-  semModuleList: PropTypes.array,
-  semTimetable: PropTypes.object,
-  modules: PropTypes.object,
-  theme: PropTypes.string,
-  colors: PropTypes.object,
-  activeLesson: PropTypes.object,
-
-  addModule: PropTypes.func,
-  removeModule: PropTypes.func,
-  modifyLesson: PropTypes.func,
-  changeLesson: PropTypes.func,
-  cancelModifyLesson: PropTypes.func,
-};
 
 TimetableContainer.contextTypes = {
   router: PropTypes.object,

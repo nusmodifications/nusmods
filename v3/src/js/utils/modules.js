@@ -5,9 +5,9 @@ import type {
   Lesson,
   Module,
   ModuleCode,
+  RawLesson,
   Semester,
   SemesterData,
-  TimetableLesson,
 } from 'types/modules';
 
 export function modulePagePath(moduleCode: ModuleCode): string {
@@ -22,12 +22,12 @@ export function getModuleSemesterData(module: Module, semester: Semester): Semes
 }
 
 // Returns a flat array of lessons of a module for the corresponding semester.
-export function getModuleTimetable(module: Module, semester: Semester): Array<Lesson> {
+export function getModuleTimetable(module: Module, semester: Semester): Array<RawLesson> {
   return _.get(getModuleSemesterData(module, semester), 'Timetable');
 }
 
 // Do these two lessons belong to the same class?
-export function areLessonsSameClass(lesson1: TimetableLesson, lesson2: TimetableLesson): boolean {
+export function areLessonsSameClass(lesson1: Lesson, lesson2: Lesson): boolean {
   return lesson1.ModuleCode === lesson2.ModuleCode &&
     lesson1.ClassNo === lesson2.ClassNo &&
     lesson1.LessonType === lesson2.LessonType;

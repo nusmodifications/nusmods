@@ -3,6 +3,7 @@
 import _ from 'lodash';
 import type {
   ClassNo,
+  RawLesson,
   Lesson,
   LessonType,
 } from 'types/modules';
@@ -12,7 +13,7 @@ import type {
   TimetableDayFormat,
   TimetableDayArrangement,
   TimetableArrangement,
-} from 'types/timetable';
+} from 'types/timetables';
 
 export const FIRST_HOUR: number = 8;
 export const LAST_HOUR: number = 22;
@@ -55,8 +56,8 @@ export function randomLessonConfig(lessons: Array<Lesson>): LessonConfig {
 }
 
 //  Filters a flat array of lessons and returns the lessons corresponding to lessonType.
-export function lessonsForLessonType(lessons: Array<Lesson>,
-                                      lessonType: LessonType): Array<Lesson> {
+export function lessonsForLessonType(lessons: Array<RawLesson | Lesson>,
+                                      lessonType: LessonType): Array<RawLesson | Lesson> {
   return _.filter(lessons, lesson => lesson.LessonType === lessonType);
 }
 
@@ -107,7 +108,7 @@ export function arrangeLessonsWithinDay(lessons: Array<Lesson>): TimetableDayArr
   }
 
   lessons.forEach((lesson: Lesson) => {
-    for (let i = 0, length = rows.length; i < length; i++) {
+    for (let i = 0, length = rows.length; i < length; i += 1) {
       const rowLessons: Array<Lesson> = rows[i];
       // Search through Lesson in row to look for available slots.
       const overlapTests = rowLessons.map((rowLesson) => {
@@ -128,7 +129,7 @@ export function arrangeLessonsWithinDay(lessons: Array<Lesson>): TimetableDayArr
 
 //  Accepts a flat array of lessons and groups them by day and rows with each day
 //  for rendering on the timetable.
-//  Clashes in Lessons will go onto the next row within that day.
+//  Clashes in Array<Lesson> will go onto the next row within that day.
 //  {
 //    Monday: [
 //      [Lesson, Lesson, ...],
@@ -148,8 +149,8 @@ export function arrangeLessonsForWeek(lessons: Array<Lesson>): TimetableArrangem
 }
 
 //  Determines if a Lesson on the timetable can be modifiable / dragged around.
-//  Condition: There are multiple ClassNo for all the Lessons in a LessonType.
-export function areOtherClassesAvailable(lessons: Array<Lesson>,
+//  Condition: There are multiple ClassNo for all the Array<Lesson> in a LessonType.
+export function areOtherClassesAvailable(lessons: Array<Lesson> | Array<RawLesson>,
                                           lessonType: LessonType): boolean {
   const lessonTypeGroups: Object = _.groupBy(lessons, lesson => lesson.LessonType);
   if (!lessonTypeGroups[lessonType]) {

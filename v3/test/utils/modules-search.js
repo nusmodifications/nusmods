@@ -3,7 +3,7 @@
 import test from 'ava';
 import JsSearch from 'js-search';
 import { ModulesSearchIndex, ModulesTokenizer } from 'utils/modules-search';
-import type { SelectOption } from 'types/modules-search';
+import type { SelectOption } from 'types/views';
 
 const one: SelectOption = { value: 'CS1101S', label: 'CS1101S Programming Methodology' };
 const two: SelectOption = { value: 'CS1010', label: 'CS1010 Programming Methodology' };

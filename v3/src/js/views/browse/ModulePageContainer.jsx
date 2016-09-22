@@ -1,24 +1,41 @@
-import React, { Component, PropTypes } from 'react';
+// @flow
+
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import DocumentTitle from 'react-document-title';
 import config from 'config';
 
 import { loadModule } from 'actions/moduleBank';
+import type { Module } from 'types/modules';
+import type { FetchRequest } from 'types/reducers';
 
-function loadModuleInformation(props) {
-  props.loadModule(props.routeParams.moduleCode);
-}
+type RouteParams = {
+  moduleCode: string,
+};
+type Props = {
+  routeParams: RouteParams,
+  module: Module,
+  loadModule: Function,
+  fetchModuleRequest: FetchRequest,
+};
 
 export class ModulePageContainer extends Component {
+
   componentDidMount() {
-    loadModuleInformation(this.props);
+    this.loadModuleInformation(this.props);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     if (nextProps.routeParams.moduleCode !== this.props.routeParams.moduleCode) {
-      loadModuleInformation(nextProps);
+      this.loadModuleInformation(nextProps);
     }
   }
+
+  loadModuleInformation(props: Props) {
+    this.props.loadModule(props.routeParams.moduleCode);
+  }
+
+  props: Props;
 
   render() {
     const module = this.props.module;
@@ -68,13 +85,6 @@ export class ModulePageContainer extends Component {
     );
   }
 }
-
-ModulePageContainer.propTypes = {
-  routeParams: PropTypes.object,
-  module: PropTypes.object,
-  loadModule: PropTypes.func,
-  fetchModuleRequest: PropTypes.object,
-};
 
 function mapStateToProps(state, ownProps) {
   return {

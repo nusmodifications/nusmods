@@ -1,14 +1,24 @@
-import React, { Component, PropTypes } from 'react';
+// @flow
+
+import React, { Component } from 'react';
 /* eslint-disable new-cap */
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
+import type { TimetableArrangement } from 'types/timetables';
 
 import TimetableBackground from './TimetableBackground';
-import TimetableDayRow from './TimetableDayRow';
+import TimetableDay from './TimetableDay';
 
 const SCHOOLDAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
+type Props = {
+  lessons: TimetableArrangement,
+  onModifyCell: Function,
+};
+
 class Timetable extends Component {
+  props: Props;
+
   render() {
     return (
       <div className="timetable-container">
@@ -19,7 +29,7 @@ class Timetable extends Component {
               return null;
             }
             return (
-              <TimetableDayRow key={dayDisplayText}
+              <TimetableDay key={dayDisplayText}
                 onModifyCell={this.props.onModifyCell}
                 day={dayDisplayText}
                 dayLessonRows={this.props.lessons[day]}
@@ -33,9 +43,5 @@ class Timetable extends Component {
   }
 }
 
-Timetable.propTypes = {
-  lessons: PropTypes.object,
-  onModifyCell: PropTypes.func,
-};
 
 export default DragDropContext(HTML5Backend)(Timetable);

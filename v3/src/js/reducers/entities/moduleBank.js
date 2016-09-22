@@ -8,21 +8,17 @@ import type {
 } from 'types/modules';
 import type {
   SemTimetableConfig,
-} from 'types/timetable';
+} from 'types/timetables';
+import type { ModuleList, ModuleSelectList, ModuleSelectListItem } from 'types/reducers';
 
 import _ from 'lodash';
 
 import { FETCH_MODULE_LIST, FETCH_MODULE } from 'actions/moduleBank';
 import * as RequestResultCases from 'middlewares/requests-middleware';
 
-type ModuleSelectListItem = {
-  label: string,
-  value: ModuleCode,
-  semesters: Array<number>
-};
 export type ModuleBank = {
-  moduleList: Array<ModuleCondensed>,
-  moduleSelectList: Array<ModuleSelectListItem>,
+  moduleList: ModuleList,
+  moduleSelectList: ModuleSelectList,
   modules: {
     [key: ModuleCode]: Module
   },
