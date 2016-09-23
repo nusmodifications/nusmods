@@ -1,14 +1,22 @@
 // @flow
 
 import React from 'react';
+import { connect } from 'react-redux';
 import DocumentTitle from 'react-document-title';
 import config from 'config';
 
+import { changeTheme } from 'actions/theme';
 import availableThemes from 'data/themes.json';
 
-import SettingsThemeSelect from './SettingsThemeSelect';
+import ThemeOption from './ThemeOption';
 
-function SettingsContainer() {
+type Props = {
+  currentThemeId: string,
+
+  changeTheme: Function,
+};
+
+function SettingsContainer(props: Props) {
   return (
     <DocumentTitle title={`Settings - ${config.brandName}`}>
       <div className="settings-page-container page-container">
@@ -21,7 +29,12 @@ function SettingsContainer() {
           <div className="col-sm-10">
             <div className="row">
               {availableThemes.map((theme) => {
-                return <SettingsThemeSelect key={theme.id} theme={theme}/>;
+                return (
+                  <ThemeOption key={theme.id}
+                    theme={theme}
+                    changeTheme={props.changeTheme}
+                    isSelected={props.currentThemeId === theme.id}
+                  />);
               })}
             </div>
           </div>
@@ -31,4 +44,15 @@ function SettingsContainer() {
   );
 }
 
-export default SettingsContainer;
+function mapStateToProps(state) {
+  return {
+    currentThemeId: state.theme.id,
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  {
+    changeTheme,
+  }
+)(SettingsContainer);

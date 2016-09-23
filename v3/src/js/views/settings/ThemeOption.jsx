@@ -1,26 +1,24 @@
 // @flow
 
 import React from 'react';
-import { connect } from 'react-redux';
 import _ from 'lodash';
 import classnames from 'classnames';
 
-import { changeTheme } from 'actions/theme';
 import { NUM_DIFFERENT_COLORS } from 'reducers/theme';
 import type { Theme } from 'types/views';
 
 type Props = {
   theme: Theme,
-  currentThemeId: string,
+  isSelected: boolean,
 
   changeTheme: Function,
 };
 
-function SettingsThemeSelect(props: Props) {
+function ThemeOption(props: Props) {
   return (
     <div className={classnames('col-sm-4 theme-item', {
       [`theme-${props.theme.id}`]: true,
-      'is-selected': props.currentThemeId === props.theme.id,
+      'is-selected': props.isSelected,
     })}
       onClick={() => {
         props.changeTheme(props.theme.id);
@@ -40,15 +38,4 @@ function SettingsThemeSelect(props: Props) {
   );
 }
 
-function mapStateToProps(state) {
-  return {
-    currentThemeId: state.theme.id,
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  {
-    changeTheme,
-  }
-)(SettingsThemeSelect);
+export default ThemeOption;
