@@ -1,10 +1,13 @@
-import React, { PropTypes } from 'react';
+// @flow
+
+import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
 import { modulePagePath } from 'utils/modules';
+import type { ModuleCondensed } from 'types/modules';
 
-function ModuleFinderContainer(props) {
+function ModuleFinderContainer(props: { moduleList: Array<ModuleCondensed> }) {
   return (
     <div>
       <h1 className="display-4">Module Finder</h1>
@@ -24,10 +27,6 @@ function ModuleFinderContainer(props) {
     </div>
   );
 }
-
-ModuleFinderContainer.propTypes = {
-  moduleList: PropTypes.array,
-};
 
 function mapStateToProps(state) {
   return {

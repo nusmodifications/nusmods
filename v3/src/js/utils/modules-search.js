@@ -22,7 +22,7 @@ export class ModulesSearchIndex {
     const query: string = tokens[0];
     let uidToDocumentMap: Object = this.tokenToUidToDocumentMap[query] || {};
 
-    for (let i = 1, numTokens = tokens.length; i < numTokens; i++) {
+    for (let i = 1, numTokens = tokens.length; i < numTokens; i += 1) {
       const token: string = tokens[i];
       const currentUidToDocumentMap: Object = this.tokenToUidToDocumentMap[token] || {};
 
@@ -52,7 +52,7 @@ export class ModulesSearchIndex {
 }
 
 export class ModulesTokenizer {
-  tokenize(text: string): Array<string> {
+  tokenize(text: string): Array<string> { // eslint-disable-line class-methods-use-this
     const arrayOfTokens: Array<string> = text
       .split(/[^a-zA-Z0-9\-']+/)
       .filter(str => !!str); // Filter empty tokens

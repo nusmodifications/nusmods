@@ -1,14 +1,25 @@
-import React, { Component, PropTypes } from 'react';
+// @flow
+
+import React, { Component } from 'react';
 import _ from 'lodash';
 import VirtualizedSelect from 'react-virtualized-select';
 import createFilterOptions from 'react-select-fast-filter-options';
 import { PrefixIndexStrategy } from 'js-search';
 import { ModulesSearchIndex, ModulesTokenizer } from 'utils/modules-search';
+import type { ModuleSelectList } from 'types/reducers';
+
+type Props = {
+  moduleList: ModuleSelectList,
+  onChange: Function,
+  placeholder: string,
+};
 
 class ModulesSelect extends Component {
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate(nextProps: Props) {
     return _.size(this.props.moduleList) !== _.size(nextProps.moduleList);
   }
+
+  props: Props;
 
   render() {
     const filterOptions = createFilterOptions({
@@ -27,11 +38,5 @@ class ModulesSelect extends Component {
     );
   }
 }
-
-ModulesSelect.propTypes = {
-  moduleList: PropTypes.array,
-  onChange: PropTypes.func,
-  placeholder: PropTypes.string,
-};
 
 export default ModulesSelect;

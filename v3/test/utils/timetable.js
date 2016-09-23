@@ -6,28 +6,29 @@ import _ from 'lodash';
 import type {
   LessonConfig,
   SemTimetableConfig,
-  TimetableDayFormat,
-  TimetableDayArrangement,
   TimetableArrangement,
-} from 'types/timetable';
+  TimetableDayArrangement,
+  TimetableDayFormat,
+} from 'types/timetables';
 import type {
   ClassNo,
   DayText,
   Lesson,
   LessonTime,
   LessonType,
+  RawLesson,
   Semester,
 } from 'types/modules';
 
 import {
-  randomLessonConfig,
-  lessonsForLessonType,
-  timetableLessonsArray,
-  groupLessonsByDay,
-  doLessonsOverlap,
-  arrangeLessonsWithinDay,
-  arrangeLessonsForWeek,
   areOtherClassesAvailable,
+  arrangeLessonsForWeek,
+  arrangeLessonsWithinDay,
+  doLessonsOverlap,
+  groupLessonsByDay,
+  lessonsForLessonType,
+  randomLessonConfig,
+  timetableLessonsArray,
 } from 'utils/timetable';
 import {
   getModuleTimetable,
@@ -41,6 +42,8 @@ import lessonsArray from '../mocks/lessons-array.json';
 function createGenericLesson(dayText: DayText, startTime: LessonTime,
                             endTime: LessonTime, lessonType?: LessonType, classNo?: ClassNo): Lesson {
   return {
+    ModuleCode: 'GC1101',
+    ModuleTitle: 'Generic Title',
     ClassNo: classNo || '1',
     LessonType: lessonType || 'Recitation',
     WeekText: 'Every Week',
@@ -53,7 +56,15 @@ function createGenericLesson(dayText: DayText, startTime: LessonTime,
 
 test('randomLessonConfig should return a random lesson config', (t) => {
   const sem: Semester = 1;
-  const lessonConfig: LessonConfig = randomLessonConfig(getModuleTimetable(cs1010s, sem));
+  const rawLessons: Array<RawLesson> = getModuleTimetable(cs1010s, sem);
+  const lessonsIncludingModuleCode: Array<Lesson> = rawLessons.map((lesson: RawLesson) => {
+    return {
+      ...lesson,
+      ModuleCode: cs1010s.moduleCode,
+      ModuleTitle: cs1010s.ModuleTitle,
+    };
+  });
+  const lessonConfig: LessonConfig = randomLessonConfig(lessonsIncludingModuleCode);
   Object.keys(lessonConfig).forEach((lessonType: LessonType) => {
     const lessons: Array<Lesson> = lessonConfig[lessonType];
     t.true(lessons.length > 0);
@@ -62,20 +73,20 @@ test('randomLessonConfig should return a random lesson config', (t) => {
 
 test('lessonsForLessonType should return all lessons belonging to a particular LessonType', (t) => {
   const sem: Semester = 1;
-  const moduleTimetable: Array<Lesson> = getModuleTimetable(cs1010s, sem);
+  const moduleTimetable: Array<RawLesson> = getModuleTimetable(cs1010s, sem);
   const lessonType: LessonType = 'Tutorial';
-  const lessons: Array<Lesson> = lessonsForLessonType(moduleTimetable, lessonType);
+  const lessons: Array<RawLesson> = lessonsForLessonType(moduleTimetable, lessonType);
   t.true(lessons.length > 0);
-  lessons.forEach((lesson: Lesson) => {
+  lessons.forEach((lesson: RawLesson) => {
     t.is(lesson.LessonType, lessonType);
   });
 });
 
 test('lessonsForLessonType should return empty array if no such LessonType is present', (t) => {
   const sem: Semester = 1;
-  const moduleTimetable: Array<Lesson> = getModuleTimetable(cs1010s, sem);
+  const moduleTimetable: Array<RawLesson> = getModuleTimetable(cs1010s, sem);
   const lessonType: LessonType = 'Dota Session';
-  const lessons: Array<Lesson> = lessonsForLessonType(moduleTimetable, lessonType);
+  const lessons: Array<RawLesson> = lessonsForLessonType(moduleTimetable, lessonType);
   t.is(lessons.length, 0);
   t.deepEqual(lessons, []);
 });

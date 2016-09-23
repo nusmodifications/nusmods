@@ -1,15 +1,15 @@
 // @flow
 import type { FSA } from 'redux';
 import type {
+  RawLesson,
   Lesson,
   Module,
-  TimetableLesson,
 } from 'types/modules';
 import type {
   LessonConfig,
   TimetableConfig,
   SemTimetableConfig,
-} from 'types/timetable';
+} from 'types/timetables';
 
 import _ from 'lodash';
 
@@ -26,11 +26,11 @@ function moduleLessonConfig(state: LessonConfig = defaultModuleLessonConfig,
       return (() => {
         const { semester, moduleCode, lessonType, classNo } = action.payload;
         const module: Module = entities.moduleBank.modules[moduleCode];
-        const lessons: Array<Lesson> = getModuleTimetable(module, semester);
-        const newLessons: Array<Lesson> = lessons.filter((lesson: Lesson): boolean => {
+        const lessons: Array<RawLesson> = getModuleTimetable(module, semester);
+        const newLessons: Array<RawLesson> = lessons.filter((lesson: RawLesson): boolean => {
           return (lesson.LessonType === lessonType && lesson.ClassNo === classNo);
         });
-        const timetableLessons: Array<TimetableLesson> = newLessons.map((lesson: Lesson): TimetableLesson => {
+        const timetableLessons: Array<Lesson> = newLessons.map((lesson: RawLesson): Lesson => {
           return {
             ...lesson,
             ModuleCode: moduleCode,

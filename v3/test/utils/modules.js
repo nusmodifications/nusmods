@@ -5,7 +5,7 @@ import test from 'ava';
 import type {
   Semester,
   SemesterData,
-  TimetableLesson,
+  Lesson,
 } from 'types/modules';
 
 import _ from 'lodash';
@@ -20,7 +20,7 @@ import {
 import cs1010s from '../mocks/modules/CS1010S.json';
 import cs3216 from '../mocks/modules/CS3216.json';
 
-const mockLesson: TimetableLesson = _.cloneDeep(cs1010s.History[0].Timetable[0]);
+const mockLesson: Lesson = _.cloneDeep(cs1010s.History[0].Timetable[0]);
 mockLesson.ModuleCode = 'CS1010S';
 mockLesson.ModuleTitle = 'Programming Methodology';
 
@@ -57,36 +57,36 @@ test('getModuleSemesterData should return undefined if semester is absent', (t) 
   t.is(actual, undefined);
 });
 
-function lessonWithDifferentProperty(lesson: TimetableLesson, property: string, newValue: any): TimetableLesson {
-  const anotherLesson: TimetableLesson = _.cloneDeep(lesson);
+function lessonWithDifferentProperty(lesson: Lesson, property: string, newValue: any): Lesson {
+  const anotherLesson: Lesson = _.cloneDeep(lesson);
   anotherLesson[property] = newValue || 'TEST';
   return anotherLesson;
 }
 
 test('areLessonsSameClass should identify identity lessons as same class', (t) => {
-  const deepClonedLesson: TimetableLesson = _.cloneDeep(mockLesson);
+  const deepClonedLesson: Lesson = _.cloneDeep(mockLesson);
   t.true(areLessonsSameClass(mockLesson, deepClonedLesson));
 });
 
 test('areLessonsSameClass should identify lessons from the same ClassNo but ' +
   'with different timings as same class', (t) => {
-  const otherLesson: TimetableLesson = lessonWithDifferentProperty(mockLesson, 'StartTime', '0000');
-  const otherLesson2: TimetableLesson = lessonWithDifferentProperty(otherLesson, 'EndTime', '2300');
+  const otherLesson: Lesson = lessonWithDifferentProperty(mockLesson, 'StartTime', '0000');
+  const otherLesson2: Lesson = lessonWithDifferentProperty(otherLesson, 'EndTime', '2300');
   t.true(areLessonsSameClass(mockLesson, otherLesson2));
 });
 
 test('areLessonsSameClass should identify lessons with different ModuleCode as different class', (t) => {
-  const otherLesson: TimetableLesson = lessonWithDifferentProperty(mockLesson, 'ModuleCode');
+  const otherLesson: Lesson = lessonWithDifferentProperty(mockLesson, 'ModuleCode');
   t.false(areLessonsSameClass(mockLesson, otherLesson));
 });
 
 test('areLessonsSameClass should identify lessons with different ClassNo as different class', (t) => {
-  const otherLesson: TimetableLesson = lessonWithDifferentProperty(mockLesson, 'ClassNo');
+  const otherLesson: Lesson = lessonWithDifferentProperty(mockLesson, 'ClassNo');
   t.false(areLessonsSameClass(mockLesson, otherLesson));
 });
 
 test('areLessonsSameClass should identify lessons with different LessonType as different class', (t) => {
-  const otherLesson: TimetableLesson = lessonWithDifferentProperty(mockLesson, 'LessonType');
+  const otherLesson: Lesson = lessonWithDifferentProperty(mockLesson, 'LessonType');
   t.false(areLessonsSameClass(mockLesson, otherLesson));
 });
 

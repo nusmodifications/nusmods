@@ -1,13 +1,24 @@
-import React, { PropTypes } from 'react';
+// @flow
+import React from 'react';
 import classnames from 'classnames';
 /* eslint-disable new-cap */
 import { DragSource, DropTarget } from 'react-dnd';
 
 import { LESSON_TYPE_ABBREV } from 'utils/timetable';
+import type { DraggableLesson } from 'types/modules';
+
+type Props = {
+  lesson: DraggableLesson,
+  width: number,
+  onModifyCell: Function,
+  connectDragSource: Function,
+  connectDropTarget: Function,
+  isDragging: boolean,
+};
 
 const CELL = 'CELL';
 const lessonSource = {
-  beginDrag(props) {
+  beginDrag(props: Props) {
     setTimeout(() => {
       // Begin dragging before showing alternative cells.
       props.onModifyCell(props.lesson);
@@ -17,7 +28,7 @@ const lessonSource = {
 };
 
 const lessonTarget = {
-  drop(props) {
+  drop(props: Props) {
     props.onModifyCell(props.lesson);
   },
 };
@@ -36,7 +47,7 @@ function dropCollect(connect, monitor) {
   };
 }
 
-function TimetableCell(props) {
+function TimetableCell(props: Props) {
   const lesson = props.lesson;
   // Postcss-js adds a freaking 2mb to the script payload; it's not worth
   // adding it just to save the following few lines of code.
@@ -81,15 +92,6 @@ function TimetableCell(props) {
 
   return <div className="timetable-cell" style={widthStyle}>{cell}</div>;
 }
-
-TimetableCell.propTypes = {
-  lesson: PropTypes.object,
-  width: PropTypes.number,
-  onModifyCell: PropTypes.func,
-  connectDragSource: PropTypes.func.isRequired,
-  connectDropTarget: PropTypes.func.isRequired,
-  isDragging: PropTypes.bool.isRequired,
-};
 
 export default DragSource(CELL, lessonSource, dragCollect)(
   DropTarget(CELL, lessonTarget, dropCollect)(TimetableCell)

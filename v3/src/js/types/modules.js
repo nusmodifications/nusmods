@@ -48,13 +48,13 @@ export type SemesterData = {
   ExamDate?: string,
   LecturePeriods: Array<string>,
   Semester: Semester,
-  Timetable: Array<Lesson>,
+  Timetable: Array<RawLesson>,
   TutorialPeriods?: Array<string>,
 };
 
-// Lesson is a lesson time slot obtained from the API.
+// RawLesson is a lesson time slot obtained from the API.
 // Usually ModuleCode and ModuleTitle has to be injected in before using in the timetable.
-export type Lesson = {
+export type RawLesson = {
   ClassNo: ClassNo,
   DayText: DayText,
   EndTime: EndTime,
@@ -64,9 +64,18 @@ export type Lesson = {
   WeekText: WeekText,
 };
 
-// Lessons obtained from API does not include ModuleCode and ModuleTitle by default.
+// RawLessons obtained from API does not include ModuleCode and ModuleTitle by default.
 // They have to be injected in before using in the timetable.
-export type TimetableLesson = Lesson & { ModuleCode?: ModuleCode, ModuleTitle?: ModuleTitle }
+export type Lesson = RawLesson & { ModuleCode: ModuleCode, ModuleTitle: ModuleTitle };
+
+// Lessons do not implement a draggable interface
+// These are implemented by DnD library
+export type DraggableLesson = Lesson & {
+  isModifiable?: boolean,
+  isAvailable?: boolean,
+  isActive?: boolean,
+  colorIndex: number,
+};
 
 // BiddingStat is CORS bidding stats for a particular round for a module.
 export type BiddingStat = {

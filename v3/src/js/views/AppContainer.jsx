@@ -1,17 +1,31 @@
-import React, { Component, PropTypes } from 'react';
-import { Link } from 'react-router';
+// @flow
+
+import React, { Component } from 'react';
+import { routerShape, Link } from 'react-router';
 import { connect } from 'react-redux';
 
 import config from 'config';
 import { fetchModuleList, loadModule } from 'actions/moduleBank';
+import type { TimetableConfig, SemTimetableConfig } from 'types/timetables';
+import type { FetchRequest, ModuleList, ModuleSelectList } from 'types/reducers';
 
 import ModulesSelect from './components/ModulesSelect';
 import Footer from './layout/Footer';
 
+type Props = {
+  children: React.Children,
+  loadModule: Function,
+  fetchModuleList: Function,
+  moduleList: ModuleList,
+  moduleSelectList: ModuleSelectList,
+  timetables: TimetableConfig,
+  fetchModuleListRequest: FetchRequest,
+};
+
 export class AppContainer extends Component {
   componentDidMount() {
     this.props.fetchModuleList();
-    const semesterTimetable = this.props.timetables[config.semester];
+    const semesterTimetable: SemTimetableConfig = this.props.timetables[config.semester];
     if (semesterTimetable) {
       Object.keys(semesterTimetable).forEach((moduleCode) => {
         // TODO: Handle failed loading of module.
@@ -20,11 +34,14 @@ export class AppContainer extends Component {
     }
   }
 
+  props: Props;
+
+  /* eslint-disable jsx-a11y/anchor-has-content */
   render() {
     return (
       <div className="app-container">
         <nav className="navbar navbar-fixed-top navbar-light bg-faded nm-navbar">
-          <Link className="navbar-brand nm-navbar-brand" to="/"/>
+          <Link className="navbar-brand nm-navbar-brand" to="/" title="Home"/>
           <form className="hidden-xs-down"
             style={{ width: '100%', maxWidth: 400, display: 'inline-block' }}
           >
@@ -76,18 +93,8 @@ export class AppContainer extends Component {
   }
 }
 
-AppContainer.propTypes = {
-  children: PropTypes.object,
-  loadModule: PropTypes.func,
-  fetchModuleList: PropTypes.func,
-  moduleList: PropTypes.array,
-  moduleSelectList: PropTypes.array,
-  timetables: PropTypes.object,
-  fetchModuleListRequest: PropTypes.object,
-};
-
 AppContainer.contextTypes = {
-  router: PropTypes.object,
+  router: routerShape,
 };
 
 function mapStateToProps(state) {
