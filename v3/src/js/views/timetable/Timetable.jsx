@@ -19,11 +19,7 @@ const SCHOOLDAYS: Array<DayText> = ['Monday', 'Tuesday', 'Wednesday', 'Thursday'
 const DEFAULT_EARLIEST_TIME: LessonTime = '0900';
 const DEFAULT_LATEST_TIME: LessonTime = '2000';
 
-function extremeLessonTimings(lessons: TimetableArrangement): { earliestTime: LessonTime, latestTime: LessonTime } {
-  let lessonsArray: Array<RawLesson> = [];
-  SCHOOLDAYS.forEach((day) => {
-    lessonsArray = lessonsArray.concat(_.flatten(lessons[day]));
-  });
+function extremeLessonTimings(lessonsArray: Array<RawLesson>): { earliestTime: LessonTime, latestTime: LessonTime } {
   const lessonsTimingsIndexArray = lessonsArray.map((lesson: RawLesson) => {
     return {
       startTimeIndex: convertTimeToIndex(lesson.StartTime),
@@ -48,7 +44,17 @@ class Timetable extends Component {
   props: Props;
 
   calculateBorderTimings(lessons: TimetableArrangement): { earliestTime: LessonTime, latestTime: LessonTime } {
-    const { earliestTime, latestTime } = extremeLessonTimings(lessons);
+    let lessonsArray: Array<RawLesson> = [];
+    SCHOOLDAYS.forEach((day) => {
+      lessonsArray = lessonsArray.concat(_.flatten(lessons[day]));
+    });
+    if (_.isEmpty(lessonsArray)) {
+      return {
+        earliestTime: DEFAULT_EARLIEST_TIME,
+        latestTime: DEFAULT_LATEST_TIME,
+      };
+    }
+    const { earliestTime, latestTime } = extremeLessonTimings(lessonsArray);
     return {
       earliestTime: DEFAULT_EARLIEST_TIME < earliestTime ? DEFAULT_EARLIEST_TIME : earliestTime,
       latestTime: DEFAULT_LATEST_TIME < latestTime ? latestTime : DEFAULT_LATEST_TIME,
