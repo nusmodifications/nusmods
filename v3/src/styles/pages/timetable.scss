@@ -43,11 +43,16 @@ $timetable-cell-height: 25px;
 
       .timetable-day {
         border-bottom: none;
+        height: 100%;
       }
 
-      .timetable-day,
       .timetable-row {
+        bottom: 0;
         height: 100%;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
       }
 
       .timetable-cell-alt {
