@@ -16,8 +16,8 @@ import TimetableTimings from './TimetableTimings';
 import TimetableDay from './TimetableDay';
 
 const SCHOOLDAYS: Array<DayText> = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-const DEFAULT_EARLIEST_TIME: LessonTime = '0900';
-const DEFAULT_LATEST_TIME: LessonTime = '2000';
+const DEFAULT_EARLIEST_TIME: LessonTime = '0800';
+const DEFAULT_LATEST_TIME: LessonTime = '1800';
 
 function extremeLessonTimings(lessonsArray: Array<RawLesson>): { earliestTime: LessonTime, latestTime: LessonTime } {
   const lessonsTimingsIndexArray = lessonsArray.map((lesson: RawLesson) => {
@@ -44,6 +44,7 @@ class Timetable extends Component {
   props: Props;
 
   calculateBorderTimings(lessons: TimetableArrangement): { earliestTime: LessonTime, latestTime: LessonTime } {
+    // TODO: https://github.com/nusmodifications/nusmods/commit/2786ede8fb950ba8d07eed632cbf0f6fce837132
     let lessonsArray: Array<RawLesson> = [];
     SCHOOLDAYS.forEach((day) => {
       lessonsArray = lessonsArray.concat(_.flatten(lessons[day]));
