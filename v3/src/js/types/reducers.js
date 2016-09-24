@@ -26,6 +26,7 @@ export type ColorMapping = { [key: ModuleCode]: ColorIndex };
 export type ThemeState = {
   id: string,
   colors: ColorMapping,
+  timetableOrientation: string,
 };
 
 /* entities/moduleBank.js */

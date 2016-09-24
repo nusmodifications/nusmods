@@ -2,16 +2,20 @@
 
 import _ from 'lodash';
 import { ADD_MODULE, REMOVE_MODULE } from 'actions/timetables';
-import { CHANGE_THEME } from 'actions/theme';
+import { CHANGE_THEME, TOGGLE_TIMETABLE_ORIENTATION } from 'actions/theme';
 
 import type { FSA } from 'redux';
 import type { ColorIndex, ColorMapping, ThemeState } from 'types/reducers';
+
+export const VERTICAL: string = 'vertical';
+export const HORIZONTAL: string = 'horizontal';
 
 const defaultColorsState: ColorMapping = {};
 const defaultThemeState: ThemeState = {
   // Available themes are defined in `themes.scss`
   id: 'ocean',
   colors: defaultColorsState,
+  timetableOrientation: HORIZONTAL,
 };
 
 export const NUM_DIFFERENT_COLORS: number = 8;
@@ -61,6 +65,11 @@ function theme(state: ThemeState = defaultThemeState, action: FSA): ThemeState {
       return {
         ...state,
         id: action.payload.theme,
+      };
+    case TOGGLE_TIMETABLE_ORIENTATION:
+      return {
+        ...state,
+        timetableOrientation: state.timetableOrientation === VERTICAL ? HORIZONTAL : VERTICAL,
       };
     default:
       return state;

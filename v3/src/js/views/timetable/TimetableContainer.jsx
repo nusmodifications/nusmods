@@ -6,6 +6,7 @@ import DocumentTitle from 'react-document-title';
 import autobind from 'react-autobind';
 import _ from 'lodash';
 import config from 'config';
+import classnames from 'classnames';
 import { getSemModuleSelectList } from 'reducers/entities/moduleBank';
 import {
   addModule,
@@ -14,6 +15,8 @@ import {
   modifyLesson,
   removeModule,
 } from 'actions/timetables';
+import { toggleTimetableOrientation } from 'actions/theme';
+import { HORIZONTAL } from 'reducers/theme';
 import { getModuleTimetable, areLessonsSameClass } from 'utils/modules';
 import {
   timetableLessonsArray,
@@ -43,12 +46,14 @@ type Props = {
   theme: string,
   colors: ThemeState,
   activeLesson: DraggableLesson,
+  timetableOrientation: string,
 
   addModule: Function,
   removeModule: Function,
   modifyLesson: Function,
   changeLesson: Function,
   cancelModifyLesson: Function,
+  toggleTimetableOrientation: Function,
 };
 
 export class TimetableContainer extends Component {
@@ -121,6 +126,8 @@ export class TimetableContainer extends Component {
       });
     });
 
+    const isHorizontalMode = this.props.timetableOrientation === HORIZONTAL;
+
     return (
       <DocumentTitle title={`Timetable - ${config.brandName}`}>
         <div className={`theme-${this.props.theme} timetable-page-container page-container`} onClick={() => {
@@ -128,32 +135,47 @@ export class TimetableContainer extends Component {
             this.props.cancelModifyLesson();
           }
         }}>
-          <div className="timetable-wrapper">
-            <Timetable lessons={arrangedLessonsWithModifiableFlag}
-              onModifyCell={this.modifyCell}
-            />
-          </div>
-          <br/>
           <div className="row">
-            <div className="col-md-12">
-              <ModulesSelect moduleList={this.props.semModuleList}
-                onChange={(moduleCode) => {
-                  this.props.addModule(this.props.semester, moduleCode.value);
-                }}
-                placeholder="Add module to timetable"
+            <div className={classnames('timetable-wrapper', {
+              'col-md-12': isHorizontalMode,
+              'col-md-8': !isHorizontalMode,
+            })}>
+              <Timetable lessons={arrangedLessonsWithModifiableFlag}
+                onModifyCell={this.modifyCell}
               />
               <br/>
-              <TimetableModulesTable modules={
-                Object.keys(this.props.semTimetable).sort((a, b) => {
-                  return a.localeCompare(b);
-                }).map((moduleCode) => {
-                  return this.props.modules[moduleCode] || {};
-                })}
-                semester={this.props.semester}
-                onRemoveModule={(moduleCode) => {
-                  this.props.removeModule(this.props.semester, moduleCode);
-                }}
-              />
+            </div>
+            <div className={classnames('timetable-wrapper', {
+              'col-md-12': isHorizontalMode,
+              'col-md-4': !isHorizontalMode,
+            })}>
+              <div className="row">
+                <div className="col-md-10">
+                  <ModulesSelect moduleList={this.props.semModuleList}
+                    onChange={(moduleCode) => {
+                      this.props.addModule(this.props.semester, moduleCode.value);
+                    }}
+                    placeholder="Add module to timetable"
+                  />
+                  <br/>
+                  <TimetableModulesTable modules={
+                    Object.keys(this.props.semTimetable).sort((a, b) => {
+                      return a.localeCompare(b);
+                    }).map((moduleCode) => {
+                      return this.props.modules[moduleCode] || {};
+                    })}
+                    semester={this.props.semester}
+                    onRemoveModule={(moduleCode) => {
+                      this.props.removeModule(this.props.semester, moduleCode);
+                    }}
+                  />
+                </div>
+                <div className="col-md-2">
+                  <button className="btn btn-primary" onClick={this.props.toggleTimetableOrientation}>
+                    <i className="fa fa-rotate-right"/>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -179,6 +201,7 @@ function mapStateToProps(state) {
     theme: state.theme.id,
     colors: state.theme.colors,
     modules: state.entities.moduleBank.modules,
+    timetableOrientation: state.theme.timetableOrientation,
   };
 }
 
@@ -190,5 +213,6 @@ export default connect(
     modifyLesson,
     changeLesson,
     cancelModifyLesson,
+    toggleTimetableOrientation,
   }
 )(TimetableContainer);

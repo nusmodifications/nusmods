@@ -29,7 +29,6 @@ $timetable-cell-height: 25px;
   }
 
   .timetable {
-    min-width: $timetable-min-width;
     width: $timetable-width;
     z-index: 1;
 
@@ -115,6 +114,7 @@ $timetable-cell-height: 25px;
   &.vertical-mode {
     .timetable {
       border-left: $timetable-border;
+      min-width: $timetable-min-width;
     }
 
     .timetable-day {

@@ -11,3 +11,10 @@ export function changeTheme(theme: string): FSA {
     },
   };
 }
+
+export const TOGGLE_TIMETABLE_ORIENTATION: string = 'TOGGLE_TIMETABLE_ORIENTATION';
+export function toggleTimetableOrientation(): FSA {
+  return {
+    type: TOGGLE_TIMETABLE_ORIENTATION,
+  };
+}
