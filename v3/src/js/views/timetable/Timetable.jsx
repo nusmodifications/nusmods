@@ -70,26 +70,28 @@ class Timetable extends Component {
         <TimetableTimings startingIndex={startingIndex}
           endingIndex={endingIndex}
         />
-        <div className="timetable-inner-container">
-          <div className="timetable">
-            {SCHOOLDAYS.map((day) => {
-              const dayDisplayText = day.substring(0, 3);
-              if (day === 'Saturday' && !this.props.lessons.Saturday) {
-                return null;
-              }
-              return (
-                <TimetableDay key={dayDisplayText}
-                  startingIndex={startingIndex}
-                  endingIndex={endingIndex}
-                  cellWidth={width}
-                  onModifyCell={this.props.onModifyCell}
-                  day={dayDisplayText}
-                  dayLessonRows={this.props.lessons[day]}
-                />
-              );
-            })}
+        <div className="">
+          <div className="timetable-inner-container">
+            <div className="timetable">
+              {SCHOOLDAYS.map((day) => {
+                const dayDisplayText = day.substring(0, 3);
+                if (day === 'Saturday' && !this.props.lessons.Saturday) {
+                  return null;
+                }
+                return (
+                  <TimetableDay key={dayDisplayText}
+                    startingIndex={startingIndex}
+                    endingIndex={endingIndex}
+                    cellWidth={width}
+                    onModifyCell={this.props.onModifyCell}
+                    day={dayDisplayText}
+                    dayLessonRows={this.props.lessons[day]}
+                  />
+                );
+              })}
+            </div>
+            <TimetableBackground numberOfCells={numberOfCells}/>
           </div>
-          <TimetableBackground numberOfCells={numberOfCells}/>
         </div>
       </div>
     );

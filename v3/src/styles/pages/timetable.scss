@@ -9,6 +9,7 @@ $timetable-border: 1px solid #ccc;
 $timetable-cell-padding: 5px;
 $timetable-module-cell-border-radius: 8px;
 $timetable-cell-opacity: 0.5;
+$timetable-day-margin: 40px;
 
 .timetable-page-container {
   animation-name: $page-entering-animation;
@@ -30,17 +31,19 @@ $timetable-cell-opacity: 0.5;
 
   &.timetable-timings {
     border-top: none;
+    padding-left: $timetable-day-margin;
 
     .timetable-cell {
       font-size: 0.8rem;
-      transform: translate(-30%, 0);
       text-align: left;
+      transform: translate(-30%, 0);
     }
   }
 
   &.timetable-bg {
     background-color: $timetable-background;
     height: 100%;
+    padding-left: $timetable-day-margin;
     position: absolute;
     top: 0;
     z-index: -1;
@@ -60,7 +63,19 @@ $timetable-cell-opacity: 0.5;
   }
 
   .timetable-day {
+    $margin: 40px;
+
+    display: table;
+    position: relative;
     width: 100%;
+
+    .timetable-day-cell {
+      display: table-cell;
+      font-size: 0.8rem;
+      vertical-align: middle;
+      text-transform: uppercase;
+      width: $margin;
+    }
   }
 
   .timetable-cell {
