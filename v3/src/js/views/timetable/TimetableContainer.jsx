@@ -126,7 +126,7 @@ export class TimetableContainer extends Component {
       });
     });
 
-    const isHorizontalMode = this.props.timetableOrientation === HORIZONTAL;
+    const isHorizontalOrientation = this.props.timetableOrientation === HORIZONTAL;
 
     return (
       <DocumentTitle title={`Timetable - ${config.brandName}`}>
@@ -137,17 +137,18 @@ export class TimetableContainer extends Component {
         }}>
           <div className="row">
             <div className={classnames('timetable-wrapper', {
-              'col-md-12': isHorizontalMode,
-              'col-md-8': !isHorizontalMode,
+              'col-md-12': isHorizontalOrientation,
+              'col-md-8': !isHorizontalOrientation,
             })}>
               <Timetable lessons={arrangedLessonsWithModifiableFlag}
+
                 onModifyCell={this.modifyCell}
               />
               <br/>
             </div>
             <div className={classnames('timetable-wrapper', {
-              'col-md-12': isHorizontalMode,
-              'col-md-4': !isHorizontalMode,
+              'col-md-12': isHorizontalOrientation,
+              'col-md-4': !isHorizontalOrientation,
             })}>
               <div className="row">
                 <div className="col-md-10">
