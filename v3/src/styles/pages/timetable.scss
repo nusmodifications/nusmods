@@ -25,7 +25,6 @@ $timetable-cell-opacity: 0.5;
 
 .timetable {
   align-items: stretch;
-  display: flex;
   min-width: $timetable-min-width;
   width: $timetable-width;
   z-index: 1;
@@ -52,39 +51,25 @@ $timetable-cell-opacity: 0.5;
   }
 
   .timetable-day {
-    align-items: stretch;
-    display: flex;
-    flex-grow: 1;
     width: 100%;
   }
 
-  .timetable-row {
-    display: flex;
-  }
-
   .timetable-cell {
-    flex-basis: 0;
-    flex-grow: 1;
+    display: inline-block;
     text-align: center;
 
     &.timetable-day-cell {
-      align-self: center;
-      flex-grow: 2;
     }
   }
 
   @media (min-width: ($breakpoint + 1px)) {
     border-top: $timetable-border;
-    flex-direction: column;
 
     .timetable-day {
       border-bottom: $timetable-border;
-      flex-direction: column;
     }
 
     .timetable-row {
-      flex-direction: row;
-      height: auto;
       min-height: $timetable-row-height;
 
       &:not(:first-child) {
@@ -93,23 +78,20 @@ $timetable-cell-opacity: 0.5;
     }
 
     .timetable-cell {
-      width: 0;
+      height: 100%;
     }
   }
 
   @media (max-width: $breakpoint) {
     border-left: $timetable-border;
-    flex-direction: row;
     height: 1000px;
 
     .timetable-day {
       border-right: $timetable-border;
-      flex-direction: row;
       height: auto;
     }
 
     .timetable-row {
-      flex-direction: column;
       width: 100%;
 
       &:not(:first-child) {

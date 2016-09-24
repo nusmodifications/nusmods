@@ -49,14 +49,11 @@ function dropCollect(connect, monitor) {
 
 function TimetableCell(props: Props) {
   const lesson = props.lesson;
-  // Postcss-js adds a freaking 2mb to the script payload; it's not worth
-  // adding it just to save the following few lines of code.
-  const widthStyle = props.width ? {
-    flexGrow: props.width,
-    WebkitBoxFlex: props.width,
-    msFlexPositive: props.width,
-  } : null;
   let cell = null;
+  const style = {};
+  if (props.width) {
+    style.width = `${props.width}%`;
+  }
 
   if (lesson) {
     const moduleCell = (
@@ -90,7 +87,7 @@ function TimetableCell(props: Props) {
     }
   }
 
-  return <div className="timetable-cell" style={widthStyle}>{cell}</div>;
+  return <span className="timetable-cell" style={style}>{cell}</span>;
 }
 
 export default DragSource(CELL, lessonSource, dragCollect)(
