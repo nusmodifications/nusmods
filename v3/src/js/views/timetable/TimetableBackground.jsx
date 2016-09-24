@@ -15,7 +15,7 @@ function TimetableBackground(props: Props) {
         <div className="timetable-row">
           {_.range(props.numberOfCells).map((i) => {
             return (
-              <div key={i}
+              <span key={i}
                 className={classnames('timetable-cell', {
                   'timetable-cell-alt': i % 4 < 2,
                 })}

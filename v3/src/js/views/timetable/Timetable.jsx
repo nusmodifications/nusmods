@@ -12,6 +12,7 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import { convertTimeToIndex, convertIndexToTime } from 'utils/timify';
 
 import TimetableBackground from './TimetableBackground';
+import TimetableTimings from './TimetableTimings';
 import TimetableDay from './TimetableDay';
 
 const SCHOOLDAYS: Array<DayText> = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -59,33 +60,37 @@ class Timetable extends Component {
     // Each cell is half an hour.
     const startingIndex = convertTimeToIndex(earliestTime);
     const endingIndex = convertTimeToIndex(latestTime);
-    const numberOfCells = (endingIndex - startingIndex) + 2;
-    console.log(numberOfCells);
+    const numberOfCells = (endingIndex - startingIndex);
     const width = 100 / numberOfCells;
     return (
       <div className="timetable-container">
         <style>
           {`.timetable .timetable-cell { width: ${width}% }`}
         </style>
-        <div className="timetable">
-          {SCHOOLDAYS.map((day) => {
-            const dayDisplayText = day.substring(0, 3);
-            if (day === 'Saturday' && !this.props.lessons.Saturday) {
-              return null;
-            }
-            return (
-              <TimetableDay key={dayDisplayText}
-                startingIndex={startingIndex}
-                endingIndex={endingIndex}
-                cellWidth={width}
-                onModifyCell={this.props.onModifyCell}
-                day={dayDisplayText}
-                dayLessonRows={this.props.lessons[day]}
-              />
-            );
-          })}
+        <TimetableTimings startingIndex={startingIndex}
+          endingIndex={endingIndex}
+        />
+        <div className="timetable-inner-container">
+          <div className="timetable">
+            {SCHOOLDAYS.map((day) => {
+              const dayDisplayText = day.substring(0, 3);
+              if (day === 'Saturday' && !this.props.lessons.Saturday) {
+                return null;
+              }
+              return (
+                <TimetableDay key={dayDisplayText}
+                  startingIndex={startingIndex}
+                  endingIndex={endingIndex}
+                  cellWidth={width}
+                  onModifyCell={this.props.onModifyCell}
+                  day={dayDisplayText}
+                  dayLessonRows={this.props.lessons[day]}
+                />
+              );
+            })}
+          </div>
+          <TimetableBackground numberOfCells={numberOfCells}/>
         </div>
-        <TimetableBackground numberOfCells={numberOfCells}/>
       </div>
     );
   }

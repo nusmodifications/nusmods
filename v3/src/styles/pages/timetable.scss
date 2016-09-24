@@ -14,7 +14,7 @@ $timetable-cell-opacity: 0.5;
   animation-name: $page-entering-animation;
 }
 
-.timetable-container {
+.timetable-inner-container {
   position: relative;
 }
 
@@ -24,10 +24,19 @@ $timetable-cell-opacity: 0.5;
 }
 
 .timetable {
-  align-items: stretch;
   min-width: $timetable-min-width;
   width: $timetable-width;
   z-index: 1;
+
+  &.timetable-timings {
+    border-top: none;
+
+    .timetable-cell {
+      font-size: 0.8rem;
+      transform: translate(-30%, 0);
+      text-align: left;
+    }
+  }
 
   &.timetable-bg {
     background-color: $timetable-background;
@@ -57,9 +66,6 @@ $timetable-cell-opacity: 0.5;
   .timetable-cell {
     display: inline-block;
     text-align: center;
-
-    &.timetable-day-cell {
-    }
   }
 
   @media (min-width: ($breakpoint + 1px)) {
