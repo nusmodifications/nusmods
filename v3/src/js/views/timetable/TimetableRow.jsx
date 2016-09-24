@@ -47,7 +47,7 @@ type Props = {
 
 function TimetableRow(props: Props) {
   return (
-    <div className="timetable-day-row">
+    <div className="timetable-row">
       <div className="timetable-day-cell timetable-cell"><span>{props.day}</span></div>
       {generateCells(props.lessons, props.onModifyCell)}
     </div>

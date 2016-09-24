@@ -9,7 +9,7 @@ function TimetableBackground() {
   return (
     <div className="timetable timetable-bg">
       <div className="timetable-day">
-        <div className="timetable-day-row">
+        <div className="timetable-row">
           <div className="timetable-day-cell timetable-cell"><span/></div>
           {_.range(CELLS_COUNT).map((i) => {
             return (

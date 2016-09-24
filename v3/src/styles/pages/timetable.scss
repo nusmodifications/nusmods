@@ -42,7 +42,7 @@ $timetable-cell-opacity: 0.5;
     }
 
     .timetable-day,
-    .timetable-day-row {
+    .timetable-row {
       height: 100%;
     }
 
@@ -58,7 +58,7 @@ $timetable-cell-opacity: 0.5;
     width: 100%;
   }
 
-  .timetable-day-row {
+  .timetable-row {
     display: flex;
   }
 
@@ -82,7 +82,7 @@ $timetable-cell-opacity: 0.5;
       flex-direction: column;
     }
 
-    .timetable-day-row {
+    .timetable-row {
       flex-direction: row;
       height: auto;
       min-height: $timetable-row-height;
@@ -108,7 +108,7 @@ $timetable-cell-opacity: 0.5;
       height: auto;
     }
 
-    .timetable-day-row {
+    .timetable-row {
       flex-direction: column;
       width: 100%;
 
