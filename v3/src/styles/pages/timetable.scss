@@ -1,93 +1,97 @@
 $breakpoint: map-get($grid-breakpoints, 'md');
 
 $timetable-background: #fff;
-$timetable-row-height: 51px;
-$timetable-row-margin: 2px;
-$timetable-width: 100%;
 $timetable-min-width: $breakpoint;
 $timetable-border: 1px solid #ccc;
 $timetable-cell-padding: 5px;
 $timetable-module-cell-border-radius: 8px;
 $timetable-cell-opacity: 0.5;
+// Horizontal mode
+$timetable-width: 100%;
 $timetable-day-margin: 40px;
+$timetable-row-height: 51px;
+$timetable-row-margin: 2px;
+// Vertical mode
+$timetable-cell-height: 25px;
 
-.timetable-page-container {
-  animation-name: $page-entering-animation;
-}
+.timetable-container {
+  .timetable-page-container {
+    animation-name: $page-entering-animation;
+  }
 
-.timetable-inner-container {
-  position: relative;
-}
+  .timetable-inner-container {
+    position: relative;
+  }
 
-.timetable-wrapper {
-  -webkit-overflow-scrolling: touch;
-  overflow-x: scroll;
-}
+  .timetable-wrapper {
+    -webkit-overflow-scrolling: touch;
+    overflow-x: scroll;
+  }
 
-.timetable {
-  min-width: $timetable-min-width;
-  width: $timetable-width;
-  z-index: 1;
+  .timetable {
+    min-width: $timetable-min-width;
+    width: $timetable-width;
+    z-index: 1;
 
-  &.timetable-timings {
-    border-top: none;
-    padding-left: $timetable-day-margin;
+    &.timetable-bg {
+      background-color: $timetable-background;
+      height: 100%;
+      padding-left: $timetable-day-margin;
+      position: absolute;
+      top: 0;
+      z-index: -1;
+
+      .timetable-day {
+        border-bottom: none;
+      }
+
+      .timetable-day,
+      .timetable-row {
+        height: 100%;
+      }
+
+      .timetable-cell-alt {
+        background-color: #f1f1f1;
+      }
+    }
 
     .timetable-cell {
-      font-size: 0.8rem;
-      text-align: left;
-      transform: translate(-30%, 0);
+      display: inline-block;
+      text-align: center;
     }
   }
 
-  &.timetable-bg {
-    background-color: $timetable-background;
-    height: 100%;
-    padding-left: $timetable-day-margin;
-    position: absolute;
-    top: 0;
-    z-index: -1;
+  &.horizontal-mode {
+    .timetable-timings {
+      border-top: none;
+      padding-left: $timetable-day-margin;
+
+      .timetable-cell {
+        font-size: 0.8rem;
+        text-align: left;
+        transform: translate(-30%, 0);
+      }
+    }
 
     .timetable-day {
-      border-bottom: none;
-    }
+      $margin: 40px;
 
-    .timetable-day,
-    .timetable-row {
-      height: 100%;
-    }
-
-    .timetable-cell-alt {
-      background-color: #f1f1f1;
-    }
-  }
-
-  .timetable-day {
-    $margin: 40px;
-
-    display: table;
-    position: relative;
-    width: 100%;
-
-    .timetable-day-cell {
-      display: table-cell;
-      font-size: 0.8rem;
-      vertical-align: middle;
-      text-transform: uppercase;
-      width: $margin;
-    }
-  }
-
-  .timetable-cell {
-    display: inline-block;
-    text-align: center;
-  }
-
-  @media (min-width: ($breakpoint + 1px)) {
-    border-top: $timetable-border;
-
-    .timetable-day {
       border-bottom: $timetable-border;
+      display: table;
+      position: relative;
+      width: 100%;
+
+      &:first-child {
+        border-top: $timetable-border;
+      }
+
+      .timetable-day-cell {
+        display: table-cell;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        vertical-align: middle;
+        width: $margin;
+      }
     }
 
     .timetable-row {
@@ -103,13 +107,14 @@ $timetable-day-margin: 40px;
     }
   }
 
-  @media (max-width: $breakpoint) {
-    border-left: $timetable-border;
-    height: 1000px;
+  &.vertical-mode {
+    .timetable {
+      border-left: $timetable-border;
+    }
 
     .timetable-day {
       border-right: $timetable-border;
-      height: auto;
+      height: 100%;
     }
 
     .timetable-row {
@@ -122,11 +127,6 @@ $timetable-day-margin: 40px;
 
     .timetable-cell {
       width: 100%;
-    }
-
-    .timetable-module-cell {
-      animation-duration: $entering-duration;
-      transition-duration: $entering-duration;
     }
   }
 

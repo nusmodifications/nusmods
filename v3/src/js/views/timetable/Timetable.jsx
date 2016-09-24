@@ -63,9 +63,9 @@ class Timetable extends Component {
     const numberOfCells = (endingIndex - startingIndex);
     const width = 100 / numberOfCells;
     return (
-      <div className="timetable-container">
+      <div className="timetable-container horizontal-mode">
         <style>
-          {`.timetable .timetable-cell { width: ${width}% }`}
+          {`.timetable-cell { width: ${width}% }`}
         </style>
         <TimetableTimings startingIndex={startingIndex}
           endingIndex={endingIndex}
