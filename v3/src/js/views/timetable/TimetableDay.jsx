@@ -41,7 +41,7 @@ function TimetableDay(props: Props) {
                 cellSize={props.cellSize}
                 cellOrientationStyleProp={props.cellOrientationStyleProp}
                 horizontalOrientation={props.horizontalOrientation}
-                proportion={100 / props.dayLessonRows.length}
+                scale={100 / props.dayLessonRows.length}
                 lessons={dayLessonRow}
                 onModifyCell={props.onModifyCell}
               />

@@ -42,7 +42,7 @@ type Props = {
   cellSize: number,
   cellOrientationStyleProp: string,
   horizontalOrientation?: boolean,
-  proportion?: number,
+  scale?: number,
   startingIndex: number,
   endingIndex: number,
   lessons?: Array<Lesson>,
@@ -51,8 +51,8 @@ type Props = {
 
 function TimetableRow(props: Props) {
   const style = {};
-  if (!props.horizontalOrientation && props.proportion) {
-    style.width = `${props.proportion}%`;
+  if (!props.horizontalOrientation && props.scale) {
+    style.width = `${props.scale}%`;
   }
   return (
     <div className="timetable-row" style={style}>
