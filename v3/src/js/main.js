@@ -4,6 +4,7 @@ import { useRouterHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { createHistory } from 'history';
 import configureStore from 'stores/configure-store';
+import "babel-polyfill";
 
 import routes from 'routes';
 import storage from 'storage';

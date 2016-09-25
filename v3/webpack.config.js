@@ -47,9 +47,7 @@ const common = {
     ],
     extensions: ['', '.js', '.jsx']
   },
-  entry: {
-    app: ['main']
-  },
+  entry: ['babel-polyfill', 'main'],
   output: {
     path: PATHS.build,
     filename: '[name].js'
