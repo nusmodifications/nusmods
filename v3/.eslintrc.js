@@ -30,6 +30,8 @@ module.exports = {
     "react/jsx-first-prop-new-line": ["error", "never"],
     // It just looks nicer without the space.
     "react/jsx-space-before-closing": "off",
+    // TODO: https://github.com/yannickcr/eslint-plugin-react/issues/861
+    "react/no-unused-prop-types": "off",
     // TODO: Remove the following rule when eslint-config-airbnb updates to
     //       use "import/extensions rule from eslint-plugin-import"
     "react/require-extension": "off",

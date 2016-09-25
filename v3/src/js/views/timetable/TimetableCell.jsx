@@ -13,7 +13,6 @@ type Props = {
   onModifyCell: Function,
   connectDragSource: Function,
   connectDropTarget: Function,
-  isDragging: boolean,
 };
 
 const CELL = 'CELL';
