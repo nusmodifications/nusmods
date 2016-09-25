@@ -287,4 +287,8 @@ $timetable-day-rows-height: calc(100% - #{$timetable-day-cell-height});
   .modules-table-row {
     margin-bottom: 10px;
   }
+
+  .btn-remove {
+    cursor: pointer;
+  }
 }

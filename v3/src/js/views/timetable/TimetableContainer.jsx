@@ -178,7 +178,10 @@ export class TimetableContainer extends Component {
                   />
                 </div>
                 <div className="col-md-2">
-                  <button className="btn btn-primary" onClick={this.props.toggleTimetableOrientation}>
+                  <button type="button"
+                    className="btn btn-sm btn-outline-primary"
+                    onClick={this.props.toggleTimetableOrientation}
+                  >
                     <i className="fa fa-rotate-right"/>
                   </button>
                 </div>
