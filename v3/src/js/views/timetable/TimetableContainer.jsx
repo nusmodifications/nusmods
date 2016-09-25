@@ -1,4 +1,20 @@
 // @flow
+/* eslint-disable no-duplicate-imports */
+import type {
+  ThemeState,
+  TimetableOrientation,
+} from 'types/reducers';
+import {
+  HORIZONTAL,
+} from 'types/reducers';
+import type {
+  DraggableLesson,
+  Lesson,
+  Module,
+  ModuleCondensed,
+  RawLesson,
+} from 'types/modules';
+import type { SemTimetableConfig, TimetableArrangement } from 'types/timetables';
 
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
@@ -16,7 +32,6 @@ import {
   removeModule,
 } from 'actions/timetables';
 import { toggleTimetableOrientation } from 'actions/theme';
-import { HORIZONTAL } from 'reducers/theme';
 import { getModuleTimetable, areLessonsSameClass } from 'utils/modules';
 import {
   timetableLessonsArray,
@@ -25,15 +40,6 @@ import {
   lessonsForLessonType,
 } from 'utils/timetable';
 import ModulesSelect from 'views/components/ModulesSelect';
-import type {
-  DraggableLesson,
-  Lesson,
-  Module,
-  ModuleCondensed,
-  RawLesson,
-} from 'types/modules';
-import type { SemTimetableConfig, TimetableArrangement } from 'types/timetables';
-import type { ThemeState } from 'types/reducers';
 
 import Timetable from './Timetable';
 import TimetableModulesTable from './TimetableModulesTable';
@@ -46,7 +52,7 @@ type Props = {
   theme: string,
   colors: ThemeState,
   activeLesson: DraggableLesson,
-  timetableOrientation: string,
+  timetableOrientation: TimetableOrientation,
 
   addModule: Function,
   removeModule: Function,
@@ -141,7 +147,7 @@ export class TimetableContainer extends Component {
               'col-md-8': !isHorizontalOrientation,
             })}>
               <Timetable lessons={arrangedLessonsWithModifiableFlag}
-
+                horizontalOrientation={isHorizontalOrientation}
                 onModifyCell={this.modifyCell}
               />
               <br/>

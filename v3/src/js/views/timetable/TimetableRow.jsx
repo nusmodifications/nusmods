@@ -7,8 +7,8 @@ import { convertIndexToTime, convertTimeToIndex } from 'utils/timify';
 import type { Lesson, LessonTime } from 'types/modules';
 import TimetableCell from './TimetableCell';
 
-function generateCells(lessons?: Array<Lesson>, cellWidth: number, onModifyCell?: Function,
-                        startingIndex: number, endingIndex: number) {
+function generateCells(lessons?: Array<Lesson>, cellSize: number, cellOrientationStyleProp: string,
+                        onModifyCell?: Function, startingIndex: number, endingIndex: number) {
   const lessonToStartTimeMap: {[time: LessonTime]: Lesson} = _.mapValues(
     _.groupBy(lessons, lesson => lesson.StartTime),
     value => value[0]
@@ -21,15 +21,16 @@ function generateCells(lessons?: Array<Lesson>, cellWidth: number, onModifyCell?
     if (lesson) {
       const lessonStartIndex: number = i;
       const lessonEndIndex: number = convertTimeToIndex(lesson.EndTime);
-      const width: number = lessonEndIndex - lessonStartIndex;
+      const size: number = lessonEndIndex - lessonStartIndex;
       cells.push(
         <TimetableCell key={i}
-          width={width * cellWidth}
+          size={size * cellSize}
+          styleProp={cellOrientationStyleProp}
           lesson={lesson}
           onModifyCell={onModifyCell}
         />
       );
-      i += (width - 1);
+      i += (size - 1);
     } else {
       cells.push(<TimetableCell key={i}/>);
     }
@@ -38,8 +39,10 @@ function generateCells(lessons?: Array<Lesson>, cellWidth: number, onModifyCell?
 }
 
 type Props = {
-  day: string,
-  cellWidth: number,
+  cellSize: number,
+  cellOrientationStyleProp: string,
+  horizontalOrientation?: boolean,
+  proportion?: number,
   startingIndex: number,
   endingIndex: number,
   lessons?: Array<Lesson>,
@@ -47,9 +50,14 @@ type Props = {
 };
 
 function TimetableRow(props: Props) {
+  const style = {};
+  if (!props.horizontalOrientation && props.proportion) {
+    style.width = `${props.proportion}%`;
+  }
   return (
-    <div className="timetable-row">
-      {generateCells(props.lessons, props.cellWidth, props.onModifyCell, props.startingIndex, props.endingIndex)}
+    <div className="timetable-row" style={style}>
+      {generateCells(props.lessons, props.cellSize, props.cellOrientationStyleProp,
+        props.onModifyCell, props.startingIndex, props.endingIndex)}
     </div>
   );
 }

@@ -10,7 +10,7 @@ type Props = {
 
 function TimetableBackground(props: Props) {
   return (
-    <div className="timetable timetable-bg">
+    <div className="timetable-bg">
       <div className="timetable-day">
         <div className="timetable-row">
           {_.range(props.numberOfCells).map((i) => {

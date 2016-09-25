@@ -9,7 +9,8 @@ import type { DraggableLesson } from 'types/modules';
 
 type Props = {
   lesson: DraggableLesson,
-  width: number,
+  size: number,
+  styleProp: string,
   onModifyCell: Function,
   connectDragSource: Function,
   connectDropTarget: Function,
@@ -51,8 +52,8 @@ function TimetableCell(props: Props) {
   const lesson = props.lesson;
   let cell = null;
   const style = {};
-  if (props.width) {
-    style.width = `${props.width}%`;
+  if (props.size) {
+    style[props.styleProp] = `${props.size}%`;
   }
 
   if (lesson) {

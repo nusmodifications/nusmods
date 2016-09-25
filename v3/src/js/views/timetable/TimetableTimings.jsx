@@ -12,7 +12,7 @@ type Props = {
 
 function TimetableTimings(props: Props) {
   return (
-    <div className="timetable timetable-timings">
+    <div className="timetable-timings">
       {_.range(props.startingIndex, props.endingIndex).map((i) => {
         return (
           <span key={i} className="timetable-cell">{i % 2 === 0 && convertIndexToTime(i)}</span>

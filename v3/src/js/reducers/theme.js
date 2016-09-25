@@ -5,10 +5,16 @@ import { ADD_MODULE, REMOVE_MODULE } from 'actions/timetables';
 import { CHANGE_THEME, TOGGLE_TIMETABLE_ORIENTATION } from 'actions/theme';
 
 import type { FSA } from 'redux';
-import type { ColorIndex, ColorMapping, ThemeState } from 'types/reducers';
-
-export const VERTICAL: string = 'vertical';
-export const HORIZONTAL: string = 'horizontal';
+/* eslint-disable no-duplicate-imports */
+import type {
+  ColorIndex,
+  ColorMapping,
+  ThemeState,
+} from 'types/reducers';
+import {
+  VERTICAL,
+  HORIZONTAL,
+} from 'types/reducers';
 
 const defaultColorsState: ColorMapping = {};
 const defaultThemeState: ThemeState = {

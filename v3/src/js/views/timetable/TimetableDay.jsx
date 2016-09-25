@@ -1,22 +1,33 @@
 // @flow
 
-import React from 'react';
 import type { TimetableDayArrangement } from 'types/timetables';
+
+import React from 'react';
 
 import TimetableRow from './TimetableRow';
 
 type Props = {
   day: string,
   dayLessonRows: TimetableDayArrangement,
-  cellWidth: number,
+  cellSize: number,
+  horizontalOrientation: boolean,
+  cellOrientationStyleProp: string,
   startingIndex: number,
   endingIndex: number,
   onModifyCell: Function,
 };
 
 function TimetableDay(props: Props) {
+  const numOfRows: number = props.dayLessonRows ? props.dayLessonRows.length : 1;
+  const style: Object = {};
+  if (!props.horizontalOrientation) {
+    style.flexGrow = numOfRows;
+    style.WebkitBoxFlex = numOfRows;
+    style.msFlexPositive = numOfRows;
+  }
+
   return (
-    <div className="timetable-day">
+    <div className="timetable-day" style={style}>
       <div className="timetable-day-cell">
         <div className="timetable-day-cell-text">{props.day}</div>
       </div>
@@ -27,8 +38,10 @@ function TimetableDay(props: Props) {
               <TimetableRow key={i}
                 startingIndex={props.startingIndex}
                 endingIndex={props.endingIndex}
-                cellWidth={props.cellWidth}
-                day={i === 0 ? props.day : ''}
+                cellSize={props.cellSize}
+                cellOrientationStyleProp={props.cellOrientationStyleProp}
+                horizontalOrientation={props.horizontalOrientation}
+                proportion={100 / props.dayLessonRows.length}
                 lessons={dayLessonRow}
                 onModifyCell={props.onModifyCell}
               />
@@ -36,7 +49,8 @@ function TimetableDay(props: Props) {
           })
           :
           <TimetableRow day={props.day}
-            cellWidth={props.cellWidth}
+            cellSize={props.cellSize}
+            cellOrientationStyleProp={props.cellOrientationStyleProp}
             startingIndex={props.startingIndex}
             endingIndex={props.endingIndex}
           />
