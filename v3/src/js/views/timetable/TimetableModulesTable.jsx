@@ -14,32 +14,28 @@ type Props = {
 
 function TimetableModulesTable(props: Props) {
   return (
-    <table className="table">
-      <tbody>
-        {props.modules.map((module) => {
-          return (
-            <tr key={module.ModuleCode}>
-              <td>
-                <Link to={modulePagePath(module.ModuleCode)}>
-                  {module.ModuleCode} {module.ModuleTitle}
-                </Link>
-              </td>
-              <td>{module.ModuleCredit}</td>
-              <td>{getModuleSemExamDate(module, props.semester)}</td>
-              <td>
-                <button className="btn btn-sm btn-outline-danger"
-                  onClick={() => {
-                    props.onRemoveModule(module.ModuleCode);
-                  }}
-                >
-                  ✖
-                </button>
-              </td>
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
+    <div className="modules-table">
+      {props.modules.map((module) => {
+        return (
+          <div className="modules-table-row row" key={module.ModuleCode}>
+            <div className="col-md-12">
+              <Link to={modulePagePath(module.ModuleCode)}>
+                {module.ModuleCode} {module.ModuleTitle}
+              </Link>
+            </div>
+            <div className="col-md-12">{module.ModuleCredit} MCs&nbsp;&middot;&nbsp;
+              {getModuleSemExamDate(module, props.semester)}
+              &nbsp;&middot;&nbsp;
+              <span onClick={() => {
+                props.onRemoveModule(module.ModuleCode);
+              }}>
+                Remove
+              </span>
+            </div>
+          </div>
+        );
+      })}
+    </div>
   );
 }
 

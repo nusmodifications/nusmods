@@ -1,49 +1,58 @@
 $breakpoint: map-get($grid-breakpoints, 'md');
 
 $timetable-background: #fff;
-$timetable-row-height: 51px;
-$timetable-row-margin: 2px;
-$timetable-width: 100%;
 $timetable-min-width: $breakpoint;
 $timetable-border: 1px solid #ccc;
+$timetable-headings-font-size: 0.8rem;
 $timetable-cell-padding: 5px;
-$timetable-module-cell-border-radius: 8px;
 $timetable-cell-opacity: 0.5;
-
-.timetable-page-container {
-  animation-name: $page-entering-animation;
-}
+$timetable-module-cell-border-radius: 8px;
+// Horizontal mode
+$timetable-width: 100%;
+$timetable-min-width: 800px;
+$timetable-day-margin: 50px;
+$timetable-row-height: 51px;
+$timetable-row-margin: 2px;
+// Vertical mode
+$timetable-height: 640px;
+$timetable-time-width: 15%;
+$timetable-day-cell-height: 40px;
+$timetable-day-rows-height: calc(100% - #{$timetable-day-cell-height});
 
 .timetable-container {
-  position: relative;
-}
+  .timetable-page-container {
+    animation-name: $page-entering-animation;
+  }
 
-.timetable-wrapper {
-  -webkit-overflow-scrolling: touch;
-  overflow-x: scroll;
-}
+  .timetable-content-container {
+    position: relative;
+  }
 
-.timetable {
-  align-items: stretch;
-  display: flex;
-  min-width: $timetable-min-width;
-  width: $timetable-width;
-  z-index: 1;
+  .timetable-wrapper {
+    -webkit-overflow-scrolling: touch;
+    overflow-x: scroll;
+  }
 
-  &.timetable-bg {
+  .timetable-bg {
     background-color: $timetable-background;
     height: 100%;
     position: absolute;
     top: 0;
+    width: $timetable-width;
     z-index: -1;
 
     .timetable-day {
       border-bottom: none;
+      height: 100%;
     }
 
-    .timetable-day,
-    .timetable-day-row {
+    .timetable-row {
+      bottom: 0;
       height: 100%;
+      left: 0;
+      position: absolute;
+      right: 0;
+      top: 0;
     }
 
     .timetable-cell-alt {
@@ -51,40 +60,56 @@ $timetable-cell-opacity: 0.5;
     }
   }
 
-  .timetable-day {
-    align-items: stretch;
-    display: flex;
-    flex-grow: 1;
-    width: 100%;
+  .timetable-timings .timetable-cell,
+  .timetable-day-cell {
+    font-size: $timetable-headings-font-size;
+    font-weight: bold;
+    text-transform: uppercase;
   }
 
-  .timetable-day-row {
-    display: flex;
+  .timetable {
+    border: $timetable-border;
   }
 
-  .timetable-cell {
-    flex-basis: 0;
-    flex-grow: 1;
-    text-align: center;
+  &.horizontal-mode {
+    overflow-y: hidden;
 
-    &.timetable-day-cell {
-      align-self: center;
-      flex-grow: 2;
+    .timetable-inner-container {
+      min-width: $timetable-min-width;
     }
-  }
 
-  @media (min-width: ($breakpoint + 1px)) {
-    border-top: $timetable-border;
-    flex-direction: column;
+    .timetable-timings {
+      border-top: none;
+      padding-left: $timetable-day-margin;
+
+      .timetable-cell {
+        text-align: left;
+        transform: translate(-30%, 0);
+      }
+    }
+
+    .timetable-bg {
+      padding-left: $timetable-day-margin;
+    }
 
     .timetable-day {
-      border-bottom: $timetable-border;
-      flex-direction: column;
+      display: table;
+      position: relative;
+      width: 100%;
+
+      &:not(:last-child) {
+        border-bottom: $timetable-border;
+      }
+
+      .timetable-day-cell {
+        display: table-cell;
+        padding-left: 10px;
+        vertical-align: middle;
+        width: $timetable-day-margin;
+      }
     }
 
-    .timetable-day-row {
-      flex-direction: row;
-      height: auto;
+    .timetable-row {
       min-height: $timetable-row-height;
 
       &:not(:first-child) {
@@ -93,43 +118,111 @@ $timetable-cell-opacity: 0.5;
     }
 
     .timetable-cell {
-      width: 0;
+      display: inline-block;
+      height: 100%;
     }
   }
 
-  @media (max-width: $breakpoint) {
-    border-left: $timetable-border;
-    flex-direction: row;
-    height: 1000px;
+  &.vertical-mode {
+    $timetable-time-width: 10%;
 
-    .timetable-day {
-      border-right: $timetable-border;
-      flex-direction: row;
-      height: auto;
+    .timetable-inner-container {
+      height: $timetable-height;
     }
 
-    .timetable-day-row {
-      flex-direction: column;
-      width: 100%;
+    .timetable-content-container {
+      float: left;
+      height: 100%;
+      overflow-x: scroll;
+      width: 100% - $timetable-time-width;
 
-      &:not(:first-child) {
-        margin-left: $timetable-row-margin;
+      .timetable-day {
+        float: left;
+
+        &:not(:last-child) {
+          border-right: $timetable-border;
+        }
       }
     }
 
-    .timetable-cell {
+    .timetable-content-inner-container {
+      height: 100%;
+      position: relative;
+    }
+
+    .timetable-timings {
+      float: left;
+      height: 100%;
+      padding-right: 10px;
+      padding-top: $timetable-day-cell-height;
+      text-align: right;
+      width: $timetable-time-width;
+
+      .timetable-cell {
+        transform: translate(0, -30%);
+      }
+    }
+
+    .timetable-bg {
+      padding-top: $timetable-day-cell-height;
+
+      .timetable-day {
+        height: 100%;
+        position: relative;
+      }
+    }
+
+    .timetable {
+      display: flex;
+      flex-direction: row;
+      height: 100%;
+
+      .timetable-day {
+        flex-basis: 0;
+        height: 100%;
+      }
+
+      .timetable-day-rows {
+        height: $timetable-day-rows-height;
+      }
+
+      .timetable-row {
+        float: left;
+      }
+    }
+
+    .timetable-day {
+      width: 100%;
+
+      .timetable-day-cell {
+        display: table;
+        height: $timetable-day-cell-height;
+        text-align: center;
+        width: 100%;
+
+        .timetable-day-cell-text {
+          display: table-cell;
+          vertical-align: middle;
+        }
+      }
+    }
+
+    .timetable-day-rows {
+      height: 100%;
+    }
+
+    .timetable-row {
+      height: 100%;
       width: 100%;
     }
 
-    .timetable-module-cell {
-      animation-duration: $entering-duration;
-      transition-duration: $entering-duration;
+    .timetable-cell {
+      display: block;
+      width: 100%;
     }
   }
 
   .timetable-module-cell {
-    $smaller-text: 0.6rem;
-
     animation-duration: $desktop-entering-duration;
     border-bottom-style: solid;
     border-bottom-width: 2px;
@@ -173,5 +266,25 @@ $timetable-cell-opacity: 0.5;
     .cell-module-venue {
       font-size: $font-size-xxs;
     }
+
+    @media (max-width: $breakpoint) {
+      font-size: 0.7rem;
+
+      .cell-module-lesson-type,
+      .cell-module-group,
+      .cell-module-class,
+      .cell-module-venue {
+        font-size: 0.55rem;
+        line-height: 0.5rem;
+      }
+    }
+  }
+}
+
+.modules-table {
+  font-size: 0.9rem;
+
+  .modules-table-row {
+    margin-bottom: 10px;
   }
 }

@@ -23,9 +23,14 @@ export type ColorIndex = number;
 // Mapping of module to color index [0, NUM_DIFFERENT_COLORS)
 export type ColorMapping = { [key: ModuleCode]: ColorIndex };
 
+export type TimetableOrientation = 'HORIZONTAL' | 'VERTICAL';
+export const VERTICAL: TimetableOrientation = 'VERTICAL';
+export const HORIZONTAL: TimetableOrientation = 'HORIZONTAL';
+
 export type ThemeState = {
   id: string,
   colors: ColorMapping,
+  timetableOrientation: TimetableOrientation,
 };
 
 /* entities/moduleBank.js */

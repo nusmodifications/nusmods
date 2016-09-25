@@ -3,17 +3,19 @@
 import React from 'react';
 import _ from 'lodash';
 import classnames from 'classnames';
-import { CELLS_COUNT } from 'utils/timetable';
 
-function TimetableBackground() {
+type Props = {
+  numberOfCells: number,
+};
+
+function TimetableBackground(props: Props) {
   return (
-    <div className="timetable timetable-bg">
+    <div className="timetable-bg">
       <div className="timetable-day">
-        <div className="timetable-day-row">
-          <div className="timetable-day-cell timetable-cell"><span/></div>
-          {_.range(CELLS_COUNT).map((i) => {
+        <div className="timetable-row">
+          {_.range(props.numberOfCells).map((i) => {
             return (
-              <div key={i}
+              <span key={i}
                 className={classnames('timetable-cell', {
                   'timetable-cell-alt': i % 4 < 2,
                 })}
