@@ -3,13 +3,14 @@ $breakpoint: map-get($grid-breakpoints, 'md');
 $timetable-background: #fff;
 $timetable-min-width: $breakpoint;
 $timetable-border: 1px solid #ccc;
+$timetable-headings-font-size: 0.8rem;
 $timetable-cell-padding: 5px;
-$timetable-module-cell-border-radius: 8px;
 $timetable-cell-opacity: 0.5;
+$timetable-module-cell-border-radius: 8px;
 // Horizontal mode
 $timetable-width: 100%;
 $timetable-min-width: 800px;
-$timetable-day-margin: 40px;
+$timetable-day-margin: 50px;
 $timetable-row-height: 51px;
 $timetable-row-margin: 2px;
 // Vertical mode
@@ -59,19 +60,19 @@ $timetable-day-rows-height: calc(100% - #{$timetable-day-cell-height});
     }
   }
 
-  .timetable-timings {
-    .timetable-cell {
-      font-size: 0.8rem;
-    }
-  }
-
+  .timetable-timings .timetable-cell,
   .timetable-day-cell {
-    font-size: 0.8rem;
+    font-size: $timetable-headings-font-size;
+    font-weight: bold;
     text-transform: uppercase;
   }
 
+  .timetable {
+    border: $timetable-border;
+  }
+
   &.horizontal-mode {
-    overflow-x: scroll;
+    overflow-y: hidden;
 
     .timetable-inner-container {
       min-width: $timetable-min-width;
@@ -92,21 +93,19 @@ $timetable-day-rows-height: calc(100% - #{$timetable-day-cell-height});
     }
 
     .timetable-day {
-      $margin: 40px;
-
-      border-bottom: $timetable-border;
       display: table;
       position: relative;
       width: 100%;
 
-      &:first-child {
-        border-top: $timetable-border;
+      &:not(:last-child) {
+        border-bottom: $timetable-border;
       }
 
       .timetable-day-cell {
         display: table-cell;
+        padding-left: 10px;
         vertical-align: middle;
-        width: $margin;
+        width: $timetable-day-margin;
       }
     }
 
@@ -138,11 +137,10 @@ $timetable-day-rows-height: calc(100% - #{$timetable-day-cell-height});
       width: 100% - $timetable-time-width;
 
       .timetable-day {
-        border-right: $timetable-border;
         float: left;
 
-        &:first-child {
-          border-left: $timetable-border;
+        &:not(:last-child) {
+          border-right: $timetable-border;
         }
       }
     }
