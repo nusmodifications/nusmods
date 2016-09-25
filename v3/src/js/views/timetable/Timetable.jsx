@@ -16,11 +16,10 @@ import TimetableBackground from './TimetableBackground';
 import TimetableTimings from './TimetableTimings';
 import TimetableDay from './TimetableDay';
 
-
 const SCHOOLDAYS: Array<DayText> = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const DEFAULT_EARLIEST_TIME: LessonTime = '0800';
 const DEFAULT_LATEST_TIME: LessonTime = '1800';
-const MINIMUM_CELL_WIDTH: number = 60;
+const MINIMUM_CELL_WIDTH: number = 70;
 
 function calculateBorderTimings(lessons: TimetableArrangement): { startingIndex: number, endingIndex: number } {
   let earliestTime: number = convertTimeToIndex(DEFAULT_EARLIEST_TIME);
