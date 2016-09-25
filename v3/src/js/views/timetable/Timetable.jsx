@@ -9,7 +9,7 @@ import _ from 'lodash';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 
-import { convertTimeToIndex, convertIndexToTime } from 'utils/timify';
+import { convertTimeToIndex } from 'utils/timify';
 
 import TimetableBackground from './TimetableBackground';
 import TimetableTimings from './TimetableTimings';
@@ -19,19 +19,19 @@ const SCHOOLDAYS: Array<DayText> = ['Monday', 'Tuesday', 'Wednesday', 'Thursday'
 const DEFAULT_EARLIEST_TIME: LessonTime = '0800';
 const DEFAULT_LATEST_TIME: LessonTime = '1800';
 
-function extremeLessonTimings(lessonsArray: Array<RawLesson>): { earliestTime: LessonTime, latestTime: LessonTime } {
-  const lessonsTimingsIndexArray = lessonsArray.map((lesson: RawLesson) => {
-    return {
-      startTimeIndex: convertTimeToIndex(lesson.StartTime),
-      endTimeIndex: convertTimeToIndex(lesson.EndTime),
-    };
+function calculateBorderTimings(lessons: TimetableArrangement): { startingIndex: number, endingIndex: number } {
+  let earliestTime: number = convertTimeToIndex(DEFAULT_EARLIEST_TIME);
+  let latestTime: number = convertTimeToIndex(DEFAULT_LATEST_TIME);
+  SCHOOLDAYS.forEach((day) => {
+    const lessonsArray: Array<RawLesson> = _.flatten(lessons[day]);
+    lessonsArray.forEach((lesson) => {
+      earliestTime = Math.min(earliestTime, convertTimeToIndex(lesson.StartTime));
+      latestTime = Math.max(latestTime, convertTimeToIndex(lesson.EndTime));
+    });
   });
-  const earliestTimeIndex: number = Math.min(...lessonsTimingsIndexArray.map(lesson => lesson.startTimeIndex));
-  const latestTimeIndex: number = Math.max(...lessonsTimingsIndexArray.map(lesson => lesson.endTimeIndex));
-
   return {
-    earliestTime: convertIndexToTime(earliestTimeIndex),
-    latestTime: convertIndexToTime(latestTimeIndex),
+    startingIndex: earliestTime,
+    endingIndex: latestTime,
   };
 }
 
@@ -43,30 +43,9 @@ type Props = {
 class Timetable extends Component {
   props: Props;
 
-  calculateBorderTimings(lessons: TimetableArrangement): { earliestTime: LessonTime, latestTime: LessonTime } {
-    // TODO: https://github.com/nusmodifications/nusmods/commit/2786ede8fb950ba8d07eed632cbf0f6fce837132
-    let lessonsArray: Array<RawLesson> = [];
-    SCHOOLDAYS.forEach((day) => {
-      lessonsArray = lessonsArray.concat(_.flatten(lessons[day]));
-    });
-    if (_.isEmpty(lessonsArray)) {
-      return {
-        earliestTime: DEFAULT_EARLIEST_TIME,
-        latestTime: DEFAULT_LATEST_TIME,
-      };
-    }
-    const { earliestTime, latestTime } = extremeLessonTimings(lessonsArray);
-    return {
-      earliestTime: DEFAULT_EARLIEST_TIME < earliestTime ? DEFAULT_EARLIEST_TIME : earliestTime,
-      latestTime: DEFAULT_LATEST_TIME < latestTime ? latestTime : DEFAULT_LATEST_TIME,
-    };
-  }
-
   render() {
-    const { earliestTime, latestTime } = this.calculateBorderTimings(this.props.lessons);
+    const { startingIndex, endingIndex } = calculateBorderTimings(this.props.lessons);
     // Each cell is half an hour.
-    const startingIndex = convertTimeToIndex(earliestTime);
-    const endingIndex = convertTimeToIndex(latestTime);
     const numberOfCells = (endingIndex - startingIndex);
     const width = 100 / numberOfCells;
     return (
