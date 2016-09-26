@@ -18,6 +18,7 @@ const PATHS = {
 };
 const vendor = [
   'axios',
+  'babel-polyfill',
   'classnames',
   'lodash',
   'react',
