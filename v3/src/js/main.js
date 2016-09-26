@@ -2,9 +2,8 @@ import ReactDOM from 'react-dom';
 import _ from 'lodash';
 import { useRouterHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
-import { createHistory } from 'history';
+import { createHistory } from 'history';  // eslint-disable-line import/no-extraneous-dependencies
 import configureStore from 'stores/configure-store';
-import 'babel-polyfill';
 
 import routes from 'routes';
 import storage from 'storage';

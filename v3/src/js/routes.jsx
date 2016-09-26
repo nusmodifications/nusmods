@@ -2,6 +2,7 @@ import React from 'react';
 import { Router, Route, IndexRoute, IndexRedirect } from 'react-router';
 import { Provider } from 'react-redux';
 
+/* eslint-disable import/no-named-as-default */
 import AppContainer from 'views/AppContainer';
 import NotFoundPage from 'views/NotFoundPage';
 
