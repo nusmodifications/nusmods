@@ -2,18 +2,18 @@ module.exports = {
   parser: 'babel-eslint',
   root: true,
   extends: [
-    'airbnb',
     'plugin:flowtype/recommended',
+    'airbnb',
   ],
   env: {
     browser: true,
     node: true,
   },
   plugins: [
-    'flowtype',
-    'import',
-    'jsx-a11y',
     'react',
+    'jsx-a11y',
+    'import',
+    'flowtype',
   ],
   settings: {
     'import/resolver': {
