@@ -18,7 +18,7 @@ module.exports = {
   settings: {
     'import/resolver': {
       webpack: {
-        config: 'webpack.dev.config.js',
+        config: 'webpack.config.js',
       },
     },
   },
@@ -26,14 +26,14 @@ module.exports = {
     // Turning it on causes undecipherable errors.
     'arrow-body-style': 'off',
     // Consistent arrow parens
-    'arrow-parens': [2, 'as-needed', { requireForBlockBody: true }],
+    'arrow-parens': ['error', 'as-needed', { requireForBlockBody: true }],
     // After adding flowtypes the lines are getting longer.
     'max-len': ['error', 120],
-    'import/no-unresolved': ['error', 'always',
+    'import/extensions': ['error', 'always',
       {
         js: 'never',
-        jsx: 'never',
-      },
+        jsx: 'never'
+      }
     ],
     'react/jsx-first-prop-new-line': ['error', 'never'],
     // It just looks nicer without the space.
