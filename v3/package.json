@@ -3,10 +3,9 @@
   "version": "3.0.0-alpha",
   "description": "NUSMods v3",
   "scripts": {
-    "start": "cross-env NODE_ENV=development webpack-dev-server",
+    "start": "cross-env NODE_ENV=development webpack-dev-server --open",
     "build": "cross-env NODE_ENV=production webpack",
     "flow": "flow check || exit 0",
-    "lint:src": "eslint webpack.config.js --fix || exit 0",
     "lint:test": "eslint test || exit 0",
     "test": "concurrently --raw \"npm run lint:test\" \"cross-env NODE_PATH=./src/js ava\"",
     "test:watch": "chokidar \"test/**/*.js\" -c \"npm test\" --initial",

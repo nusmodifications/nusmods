@@ -26,12 +26,13 @@ const vendor = [
   'react-autobind',
   'react-dnd',
   'react-document-title',
+  'react-dom',
+  'redux',
   'react-redux',
   'react-router',
   'react-router-redux',
   'react-select-fast-filter-options',
   'react-virtualized-select',
-  'redux',
   'redux-thunk',
 ];
 
