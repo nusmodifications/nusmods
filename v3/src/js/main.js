@@ -1,5 +1,6 @@
 import ReactDOM from 'react-dom';
 import _ from 'lodash';
+import 'babel-polyfill';
 import { useRouterHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { createHistory } from 'history';  // eslint-disable-line import/no-extraneous-dependencies
