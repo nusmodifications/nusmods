@@ -2,7 +2,7 @@ $breakpoint: map-get($grid-breakpoints, 'md');
 
 $timetable-background: #fff;
 $timetable-min-width: $breakpoint;
-$timetable-border: 1px solid #ccc;
+$timetable-border: 1px solid $gray-lighter;
 $timetable-headings-font-size: 0.8rem;
 $timetable-cell-padding: 5px;
 $timetable-cell-opacity: 0.5;
@@ -56,7 +56,7 @@ $timetable-day-rows-height: calc(100% - #{$timetable-day-cell-height});
     }
 
     .timetable-cell-alt {
-      background-color: #f1f1f1;
+      background-color: $gray-lightest;
     }
   }
 
