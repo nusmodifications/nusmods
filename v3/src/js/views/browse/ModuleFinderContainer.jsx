@@ -10,7 +10,7 @@ import type { ModuleCondensed } from 'types/modules';
 function ModuleFinderContainer(props: { moduleList: Array<ModuleCondensed> }) {
   return (
     <div>
-      <h1 className="display-4">Module Finder</h1>
+      <h1 className="page-title">Module Finder</h1>
       <hr/>
       <p>WIP. Only 30 shown for brevity.</p>
       <hr/>

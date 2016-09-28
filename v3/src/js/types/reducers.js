@@ -1,6 +1,7 @@
 // @flow
 
 import type {
+  Faculty,
   Lesson,
   ModuleCode,
   ModuleCondensed,
@@ -31,6 +32,12 @@ export type ThemeState = {
   id: string,
   colors: ColorMapping,
   timetableOrientation: TimetableOrientation,
+};
+
+/* settings */
+export type SettingsState = {
+  newStudent: boolean,
+  faculty: ?Faculty,
 };
 
 /* entities/moduleBank.js */

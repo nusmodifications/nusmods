@@ -50,7 +50,7 @@ export class ModulePageContainer extends Component {
           {this.props.fetchModuleRequest.isFailure ? <p>Module not found</p> : null}
           {this.props.fetchModuleRequest.isSuccessful || module ?
             <div>
-              <h1 className="display-4">{module.ModuleCode} {module.ModuleTitle}</h1>
+              <h1 className="page-title">{module.ModuleCode} {module.ModuleTitle}</h1>
               <hr/>
               <dl className="row">
                 {module.ModuleDescription ? <dt className="col-sm-3">Description</dt> : null}

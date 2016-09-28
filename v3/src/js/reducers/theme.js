@@ -2,7 +2,7 @@
 
 import _ from 'lodash';
 import { ADD_MODULE, REMOVE_MODULE } from 'actions/timetables';
-import { CHANGE_THEME, TOGGLE_TIMETABLE_ORIENTATION } from 'actions/theme';
+import { SELECT_THEME, TOGGLE_TIMETABLE_ORIENTATION } from 'actions/theme';
 
 import type { FSA } from 'redux';
 /* eslint-disable no-duplicate-imports */
@@ -19,7 +19,7 @@ import {
 const defaultColorsState: ColorMapping = {};
 const defaultThemeState: ThemeState = {
   // Available themes are defined in `themes.scss`
-  id: 'ocean',
+  id: 'eighties',
   colors: defaultColorsState,
   timetableOrientation: HORIZONTAL,
 };
@@ -67,10 +67,10 @@ function theme(state: ThemeState = defaultThemeState, action: FSA): ThemeState {
         ...state,
         colors: colors(state.colors, action),
       };
-    case CHANGE_THEME:
+    case SELECT_THEME:
       return {
         ...state,
-        id: action.payload.theme,
+        id: action.payload,
       };
     case TOGGLE_TIMETABLE_ORIENTATION:
       return {

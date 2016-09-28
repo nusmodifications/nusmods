@@ -3,6 +3,7 @@ body {
   padding-top: 5rem;
 
   @media (max-width: map-get($grid-breakpoints, 'md')) {
+    font-size: $font-size-sm;
     padding-top: $navbar-height * 2;
   }
 }
@@ -15,4 +16,9 @@ body {
 
 .page-container {
   animation-duration: $page-entering-duration;
+}
+
+.page-title {
+  font-size: $font-size-xlg;
+  margin: 2rem 0 4rem;
 }

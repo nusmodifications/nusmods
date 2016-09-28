@@ -1,5 +1,8 @@
 // @flow
 import type { FSA } from 'redux';
+import type {
+  SettingsState,
+} from 'types/reducers';
 
 import { routerReducer } from 'react-router-redux';
 
@@ -8,6 +11,7 @@ import entities from './entities';
 import timetables from './timetables';
 import app from './app';
 import theme from './theme';
+import settings from './settings';
 
 type State = {
   entities: Object,
@@ -16,6 +20,7 @@ type State = {
   routing: Object,
   app: Object,
   theme: Object,
+  settings: SettingsState,
 };
 
 // $FlowFixMe: State default is delegated to its child reducers.
@@ -29,5 +34,6 @@ export default function (state: State = defaultState, action: FSA) {
     routing: routerReducer(state.routing, action),
     app: app(state.app, action),
     theme: theme(state.theme, action),
+    settings: settings(state.settings, action),
   };
 }
