@@ -19,19 +19,23 @@ export function addModule(semester: Semester, moduleCode: ModuleCode) {
     return dispatch(loadModule(moduleCode)).then(() => {
       const module: Module = getState().entities.moduleBank.modules[moduleCode];
       const lessons: Array<RawLesson> = getModuleTimetable(module, semester);
-      const lessonsIncludingModuleCode: Array<Lesson> = lessons.map((lesson: RawLesson) => {
-        return {
-          ...lesson,
-          ModuleCode: moduleCode,
-          ModuleTitle: module.ModuleTitle,
-        };
-      });
+      let moduleLessonConfig = {};
+      if (lessons) { // Module may not have lessons.
+        const lessonsIncludingModuleCode: Array<Lesson> = lessons.map((lesson: RawLesson) => {
+          return {
+            ...lesson,
+            ModuleCode: moduleCode,
+            ModuleTitle: module.ModuleTitle,
+          };
+        });
+        moduleLessonConfig = randomLessonConfig(lessonsIncludingModuleCode);
+      }
       return dispatch({
         type: ADD_MODULE,
         payload: {
           semester,
           moduleCode,
-          moduleLessonConfig: randomLessonConfig(lessonsIncludingModuleCode),
+          moduleLessonConfig,
         },
       });
     });
