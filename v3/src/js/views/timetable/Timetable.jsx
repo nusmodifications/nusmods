@@ -34,8 +34,8 @@ function calculateBorderTimings(lessons: TimetableArrangement): { startingIndex:
     });
   });
   return {
-    startingIndex: earliestTime % 2 === 0 ? earliestTime : earliestTime, // start at earliest hour
-    endingIndex: latestTime,
+    startingIndex: earliestTime % 2 === 0 ? earliestTime : earliestTime - 1, // start at earliest hour
+    endingIndex: latestTime % 2 === 0 ? latestTime : latestTime + 1, // end at latest hour
   };
 }
 
