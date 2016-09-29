@@ -1,79 +1,19 @@
 [
   {
-    "id": "3024",
-    "name": " 3024"
-  },
-  {
     "id": "ashes",
     "name": " Ashes"
-  },
-  {
-    "id": "atelierdune",
-    "name": "Atelier Dune"
-  },
-  {
-    "id": "atelierforest",
-    "name": "Atelier Forest"
-  },
-  {
-    "id": "atelierheath",
-    "name": "Atelier Heath"
-  },
-  {
-    "id": "atelierlakeside",
-    "name": "Atelier Lakeside"
-  },
-  {
-    "id": "atelierseaside",
-    "name": "Atelier Seaside"
-  },
-  {
-    "id": "bespin",
-    "name": "Bespin"
-  },
-  {
-    "id": "brewer",
-    "name": "Brewer"
   },
   {
     "id": "chalk",
     "name": "Chalk"
   },
   {
-    "id": "codeschool",
-    "name": "Code School"
-  },
-  {
     "id": "eighties",
     "name": "Eighties"
   },
   {
-    "id": "embers",
-    "name": "Embers"
-  },
-  {
     "id": "google",
     "name": "Google"
-  },
-  {
-    "id": "grayscale",
-    "name": "Grayscale"
-  },
-  {
-    "id": "greenscreen",
-    "name": "Green Screen"
-  },
-  {
-    "id": "isotope",
-    "name": "Isotope"
-  },
-  {
-    "id": "londontube",
-    "name": "London Tube"
-  },
-  {
-    "id": "marrakesh",
-    "name": "Marrakesh"
   },
   {
     "id": "mocha",
@@ -96,31 +36,11 @@
     "name": "Railscasts"
   },
   {
-    "id": "shapeshifter",
-    "name": "Shapeshifter"
-  },
-  {
-    "id": "solarized",
-    "name": "Solarized"
-  },
-  {
-    "id": "spookypumpkin",
-    "name": "Spooky Pumpkin"
-  },
-  {
     "id": "tomorrow",
     "name": "Tomorrow"
   },
   {
     "id": "twilight",
     "name": "Twilight"
-  },
-  {
-    "id": "whispers",
-    "name": "Whispers"
-  },
-  {
-    "id": "whitescreen",
-    "name": "White Screen"
   }
 ]
