@@ -1,6 +1,9 @@
 // @flow
 
-import type { LessonTime } from 'types/modules';
+import type { DayText, LessonTime, RawLesson } from 'types/modules';
+import type { TimetableArrangement } from 'types/timetable';
+
+import _ from 'lodash';
 
 // Converts a 24-hour format time string to an index.
 // Each index corresponds to one cell of each timetable row.
@@ -19,4 +22,24 @@ export function convertIndexToTime(index: number): LessonTime {
   const hour: number = parseInt(index / 2, 10);
   const minute: string = (index % 2) === 0 ? '00' : '30';
   return (hour < 10 ? `0${hour}` : hour.toString()) + minute;
+}
+
+export const SCHOOLDAYS: Array<DayText> = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+export const DEFAULT_EARLIEST_TIME: LessonTime = '0800';
+export const DEFAULT_LATEST_TIME: LessonTime = '1800';
+
+export function calculateBorderTimings(lessons: TimetableArrangement): { startingIndex: number, endingIndex: number } {
+  let earliestTime: number = convertTimeToIndex(DEFAULT_EARLIEST_TIME);
+  let latestTime: number = convertTimeToIndex(DEFAULT_LATEST_TIME);
+  SCHOOLDAYS.forEach((day) => {
+    const lessonsArray: Array<RawLesson> = _.flatten(lessons[day]);
+    lessonsArray.forEach((lesson) => {
+      earliestTime = Math.min(earliestTime, convertTimeToIndex(lesson.StartTime));
+      latestTime = Math.max(latestTime, convertTimeToIndex(lesson.EndTime));
+    });
+  });
+  return {
+    startingIndex: earliestTime % 2 === 0 ? earliestTime : earliestTime - 1, // start at earliest hour
+    endingIndex: latestTime % 2 === 0 ? latestTime : latestTime + 1, // end at latest hour
+  };
 }

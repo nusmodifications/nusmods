@@ -8,7 +8,7 @@ import type {
 } from 'types/modules';
 import type {
   SemTimetableConfig,
-} from 'types/timetables';
+} from 'types/timetable';
 import type { ModuleList, ModuleSelectList, ModuleSelectListItem } from 'types/reducers';
 
 import _ from 'lodash';

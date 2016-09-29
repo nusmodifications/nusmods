@@ -1,6 +1,6 @@
 // @flow
 
-import type { TimetableDayArrangement } from 'types/timetables';
+import type { TimetableDayArrangement } from 'types/timetable';
 
 import React from 'react';
 

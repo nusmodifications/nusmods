@@ -9,7 +9,7 @@ import type {
   LessonConfig,
   TimetableConfig,
   SemTimetableConfig,
-} from 'types/timetables';
+} from 'types/timetable';
 
 import _ from 'lodash';
 

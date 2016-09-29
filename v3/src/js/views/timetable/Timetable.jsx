@@ -1,43 +1,25 @@
 // @flow
 
-import type { DayText, LessonTime, RawLesson } from 'types/modules';
-import type { TimetableArrangement } from 'types/timetables';
+import type { TimetableArrangement } from 'types/timetable';
 
 import React, { Component } from 'react';
-import _ from 'lodash';
 import classnames from 'classnames';
 /* eslint-disable new-cap */
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 
-import { convertTimeToIndex } from 'utils/timify';
+import {
+  SCHOOLDAYS,
+  calculateBorderTimings,
+} from 'utils/timify';
 
 import TimetableBackground from './TimetableBackground';
 import TimetableTimings from './TimetableTimings';
 import TimetableDay from './TimetableDay';
 
-const SCHOOLDAYS: Array<DayText> = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-const DEFAULT_EARLIEST_TIME: LessonTime = '0800';
-const DEFAULT_LATEST_TIME: LessonTime = '1800';
 const MINIMUM_CELL_WIDTH: number = 70;
 const MINIMUM_CELL_HEIGHT: number = 30;
-const MINIMUM_TIMETABLE_HEIGHT: number = 640; // Sync with timetable.scss
-
-function calculateBorderTimings(lessons: TimetableArrangement): { startingIndex: number, endingIndex: number } {
-  let earliestTime: number = convertTimeToIndex(DEFAULT_EARLIEST_TIME);
-  let latestTime: number = convertTimeToIndex(DEFAULT_LATEST_TIME);
-  SCHOOLDAYS.forEach((day) => {
-    const lessonsArray: Array<RawLesson> = _.flatten(lessons[day]);
-    lessonsArray.forEach((lesson) => {
-      earliestTime = Math.min(earliestTime, convertTimeToIndex(lesson.StartTime));
-      latestTime = Math.max(latestTime, convertTimeToIndex(lesson.EndTime));
-    });
-  });
-  return {
-    startingIndex: earliestTime % 2 === 0 ? earliestTime : earliestTime - 1, // start at earliest hour
-    endingIndex: latestTime % 2 === 0 ? latestTime : latestTime + 1, // end at latest hour
-  };
-}
+const MINIMUM_TIMETABLE_HEIGHT: number = 640;
 
 type Props = {
   lessons: TimetableArrangement,

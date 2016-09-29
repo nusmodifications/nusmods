@@ -9,7 +9,7 @@ import type {
   TimetableArrangement,
   TimetableDayArrangement,
   TimetableDayFormat,
-} from 'types/timetables';
+} from 'types/timetable';
 import type {
   ClassNo,
   DayText,
