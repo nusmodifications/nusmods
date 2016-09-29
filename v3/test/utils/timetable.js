@@ -39,8 +39,9 @@ import timetable from '../mocks/sem-timetable.json';
 import lessonsArray from '../mocks/lessons-array.json';
 
 // A generic lesson with some default.
-function createGenericLesson(dayText: DayText, startTime: LessonTime,
-                            endTime: LessonTime, lessonType?: LessonType, classNo?: ClassNo): Lesson {
+/* eslint-disable import/prefer-default-export */
+export function createGenericLesson(dayText: DayText, startTime: LessonTime,
+                                    endTime: LessonTime, lessonType?: LessonType, classNo?: ClassNo): Lesson {
   return {
     ModuleCode: 'GC1101',
     ModuleTitle: 'Generic Title',

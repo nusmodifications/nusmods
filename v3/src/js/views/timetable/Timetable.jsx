@@ -1,7 +1,9 @@
 // @flow
 
+import type { RawLesson } from 'types/modules';
 import type { TimetableArrangement } from 'types/timetable';
 
+import _ from 'lodash';
 import React, { Component } from 'react';
 import classnames from 'classnames';
 /* eslint-disable new-cap */
@@ -31,7 +33,12 @@ class Timetable extends Component {
   props: Props;
 
   render() {
-    const { startingIndex, endingIndex } = calculateBorderTimings(this.props.lessons);
+    const lessons: Array<RawLesson> = [];
+    SCHOOLDAYS.forEach((day) => {
+      const lessonsArray: Array<RawLesson> = _.flatten(this.props.lessons[day]);
+      lessons.push(...lessonsArray);
+    });
+    const { startingIndex, endingIndex } = calculateBorderTimings(lessons);
     // Each cell is half an hour.
     const numberOfCells: number = (endingIndex - startingIndex);
     const timetableHeight: number = Math.max(numberOfCells * MINIMUM_CELL_HEIGHT, MINIMUM_TIMETABLE_HEIGHT);
