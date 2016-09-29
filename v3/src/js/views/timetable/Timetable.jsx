@@ -20,6 +20,8 @@ const SCHOOLDAYS: Array<DayText> = ['Monday', 'Tuesday', 'Wednesday', 'Thursday'
 const DEFAULT_EARLIEST_TIME: LessonTime = '0800';
 const DEFAULT_LATEST_TIME: LessonTime = '1800';
 const MINIMUM_CELL_WIDTH: number = 70;
+const MINIMUM_CELL_HEIGHT: number = 30;
+const MINIMUM_TIMETABLE_HEIGHT: number = 640; // Sync with timetable.scss
 
 function calculateBorderTimings(lessons: TimetableArrangement): { startingIndex: number, endingIndex: number } {
   let earliestTime: number = convertTimeToIndex(DEFAULT_EARLIEST_TIME);
@@ -32,7 +34,7 @@ function calculateBorderTimings(lessons: TimetableArrangement): { startingIndex:
     });
   });
   return {
-    startingIndex: earliestTime,
+    startingIndex: earliestTime % 2 === 0 ? earliestTime : earliestTime, // start at earliest hour
     endingIndex: latestTime,
   };
 }
@@ -50,6 +52,7 @@ class Timetable extends Component {
     const { startingIndex, endingIndex } = calculateBorderTimings(this.props.lessons);
     // Each cell is half an hour.
     const numberOfCells: number = (endingIndex - startingIndex);
+    const timetableHeight: number = Math.max(numberOfCells * MINIMUM_CELL_HEIGHT, MINIMUM_TIMETABLE_HEIGHT);
     const value: number = 100 / numberOfCells;
     const orientationStyleProp: string = this.props.horizontalOrientation ? 'width' : 'height';
     let numRows: number = 0;
@@ -74,11 +77,12 @@ class Timetable extends Component {
         'horizontal-mode': this.props.horizontalOrientation,
         'vertical-mode': !this.props.horizontalOrientation,
       })}>
+        <style>{`
+          .vertical-mode .timetable-inner-container { height: ${timetableHeight}px; }
+          .timetable-cell { ${orientationStyleProp}: ${value}%; }
+          .timetable-content-inner-container { min-width: ${minWidth}px; }
+        `}</style>
         <div className="timetable-inner-container">
-          <style>{`
-            .timetable-cell { ${orientationStyleProp}: ${value}%; }
-            .timetable-content-inner-container { min-width: ${minWidth}px; }
-          `}</style>
           <TimetableTimings startingIndex={startingIndex}
             endingIndex={endingIndex}
           />

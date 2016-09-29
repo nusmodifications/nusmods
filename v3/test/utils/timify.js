@@ -20,7 +20,7 @@ test('convertTimeToIndex should convert time string to index', (t) => {
 
 test('convertTimeToIndex should convert non-half hour string to index', (t) => {
   const actual: number = convertTimeToIndex('2359');
-  const expected: number = 47;
+  const expected: number = 48;
   t.is(actual, expected);
 });
 

@@ -7,7 +7,10 @@ import type { LessonTime } from 'types/modules';
 // Each row may not start from index 0, it depends on the config's starting time.
 // 0000 -> 0, 0030 -> 1, 0100 -> 2, ...
 export function convertTimeToIndex(time: LessonTime): number {
-  return (parseInt(time.substring(0, 2), 10) * 2) + (time.substring(2) === '00' ? 0 : 1);
+  const hour: number = parseInt(time.substring(0, 2), 10);
+  const minute: string = time.substring(2);
+
+  return (hour * 2) + { '00': 0, 30: 1, 59: 2 }[minute];
 }
 
 // Reverse of convertTimeToIndex.

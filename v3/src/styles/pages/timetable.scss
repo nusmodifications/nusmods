@@ -14,7 +14,6 @@ $timetable-day-margin: 50px;
 $timetable-row-height: 51px;
 $timetable-row-margin: 2px;
 // Vertical mode
-$timetable-height: 640px;
 $timetable-time-width: 15%;
 $timetable-day-cell-height: 40px;
 $timetable-day-rows-height: calc(100% - #{$timetable-day-cell-height});
@@ -109,11 +108,13 @@ $timetable-day-rows-height: calc(100% - #{$timetable-day-cell-height});
       }
     }
 
-    .timetable-row {
-      min-height: $timetable-row-height;
+    .timetable {
+      .timetable-row {
+        height: $timetable-row-height;
 
-      &:not(:first-child) {
-        margin-top: $timetable-row-margin;
+        &:not(:first-child) {
+          margin-top: $timetable-row-margin;
+        }
       }
     }
 
@@ -125,10 +126,6 @@ $timetable-day-rows-height: calc(100% - #{$timetable-day-cell-height});
 
   &.vertical-mode {
     $timetable-time-width: 10%;
-
-    .timetable-inner-container {
-      height: $timetable-height;
-    }
 
     .timetable-content-container {
       float: left;
@@ -230,6 +227,7 @@ $timetable-day-rows-height: calc(100% - #{$timetable-day-cell-height});
     font-size: $font-size-xs;
     height: 100%;
     line-height: 0.85rem;
+    overflow: hidden;
     padding: $timetable-cell-padding;
     pointer-events: none;
     text-align: left;
