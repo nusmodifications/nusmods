@@ -3,8 +3,8 @@
 import type { RawLesson } from 'types/modules';
 import type { TimetableArrangement } from 'types/timetable';
 
-import _ from 'lodash';
 import React, { Component } from 'react';
+import _ from 'lodash';
 import classnames from 'classnames';
 /* eslint-disable new-cap */
 import { DragDropContext } from 'react-dnd';
