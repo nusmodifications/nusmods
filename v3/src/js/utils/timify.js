@@ -25,6 +25,8 @@ export const SCHOOLDAYS: Array<DayText> = ['Monday', 'Tuesday', 'Wednesday', 'Th
 export const DEFAULT_EARLIEST_TIME: LessonTime = '1000';
 export const DEFAULT_LATEST_TIME: LessonTime = '1800';
 
+// Given an array of lessons, we calculate the earliest and latest timings based on the lesson timings.
+// This bounds will then be used to decide the starting and ending hours of the timetable.
 export function calculateBorderTimings(lessons: Array<RawLesson>): { startingIndex: number, endingIndex: number } {
   let earliestTime: number = convertTimeToIndex(DEFAULT_EARLIEST_TIME);
   let latestTime: number = convertTimeToIndex(DEFAULT_LATEST_TIME);
@@ -33,7 +35,7 @@ export function calculateBorderTimings(lessons: Array<RawLesson>): { startingInd
     latestTime = Math.max(latestTime, convertTimeToIndex(lesson.EndTime));
   });
   return {
-    startingIndex: earliestTime % 2 === 0 ? earliestTime : earliestTime - 1, // start at earliest hour
-    endingIndex: latestTime % 2 === 0 ? latestTime : latestTime + 1, // end at latest hour
+    startingIndex: earliestTime % 2 === 0 ? earliestTime : earliestTime - 1, // floor to earliest hour.
+    endingIndex: latestTime % 2 === 0 ? latestTime : latestTime + 1, // ceil to latest hour.
   };
 }
