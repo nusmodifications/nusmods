@@ -20,8 +20,8 @@ import TimetableTimings from './TimetableTimings';
 import TimetableDay from './TimetableDay';
 
 const MINIMUM_CELL_WIDTH: number = 70;
-const MINIMUM_CELL_HEIGHT: number = 30;
-const MINIMUM_TIMETABLE_HEIGHT: number = 640;
+const MINIMUM_CELL_HEIGHT: number = 1.5; // rem
+const MINIMUM_TIMETABLE_HEIGHT: number = 48; // rem
 
 type Props = {
   lessons: TimetableArrangement,
@@ -67,7 +67,7 @@ class Timetable extends Component {
         'vertical-mode': !this.props.horizontalOrientation,
       })}>
         <style>{`
-          .vertical-mode .timetable-inner-container { height: ${timetableHeight}px; }
+          .vertical-mode .timetable-inner-container { height: ${timetableHeight}rem; }
           .timetable-cell { ${orientationStyleProp}: ${value}%; }
           .timetable-content-inner-container { min-width: ${minWidth}px; }
         `}</style>
