@@ -171,6 +171,7 @@ export class TimetableContainer extends Component {
                     }).map((moduleCode) => {
                       return this.props.modules[moduleCode] || {};
                     })}
+                    horizontalOrientation={isHorizontalOrientation}
                     semester={this.props.semester}
                     onRemoveModule={(moduleCode) => {
                       this.props.removeModule(this.props.semester, moduleCode);
@@ -179,10 +180,10 @@ export class TimetableContainer extends Component {
                 </div>
                 <div className="col-md-2">
                   <button type="button"
-                    className="btn btn-sm btn-outline-primary"
+                    className="btn btn-outline-primary"
                     onClick={this.props.toggleTimetableOrientation}
                   >
-                    <i className="fa fa-rotate-right"/>
+                    <i className="fa fa-exchange"/>
                   </button>
                 </div>
               </div>

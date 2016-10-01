@@ -1,33 +1,41 @@
 // @flow
+import type { Module } from 'types/modules';
 
 import React from 'react';
 import { Link } from 'react-router';
+import classnames from 'classnames';
 
 import { getModuleSemExamDate, modulePagePath } from 'utils/modules';
-import type { Module } from 'types/modules';
 
 type Props = {
   semester: number,
   modules: Array<Module>,
   onRemoveModule: Function,
+  horizontalOrientation: boolean,
 };
 
 function TimetableModulesTable(props: Props) {
   return (
-    <div className="modules-table">
+    <div className="modules-table row">
       {props.modules.length ?
         props.modules.map((module) => {
           return (
-            <div className="modules-table-row row" key={module.ModuleCode}>
-              <div className="col-md-12">
+            <div className={classnames('modules-table-row', {
+              'col-md-4': props.horizontalOrientation,
+              'col-md-12': !props.horizontalOrientation,
+            })}
+              key={module.ModuleCode}
+            >
+              <div>
                 <Link to={modulePagePath(module.ModuleCode)}>
                   {module.ModuleCode} {module.ModuleTitle}
                 </Link>
               </div>
-              <div className="col-md-12">
+              <div>
                 <small>
-                  {module.ModuleCredit} MCs&nbsp;&middot;&nbsp;
-                  {getModuleSemExamDate(module, props.semester)}
+                  Exam: {getModuleSemExamDate(module, props.semester)}
+                  &nbsp;&middot;&nbsp;
+                  {module.ModuleCredit} MCs
                   &nbsp;&middot;&nbsp;
                   <span className="btn-remove text-muted" onClick={() => {
                     props.onRemoveModule(module.ModuleCode);
