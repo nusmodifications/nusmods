@@ -4,12 +4,12 @@ import test from 'ava';
 import _ from 'lodash';
 
 import type {
-  LessonConfig,
+  ModuleLessonConfig,
   SemTimetableConfig,
   TimetableArrangement,
   TimetableDayArrangement,
   TimetableDayFormat,
-} from 'types/timetable';
+} from 'types/timetables';
 import type {
   ClassNo,
   DayText,
@@ -26,10 +26,11 @@ import {
   arrangeLessonsWithinDay,
   doLessonsOverlap,
   groupLessonsByDay,
+  hydrateSemTimetableWithLessons,
   lessonsForLessonType,
-  randomLessonConfig,
+  randomModuleLessonConfig,
   timetableLessonsArray,
-} from 'utils/timetable';
+} from 'utils/timetables';
 import {
   getModuleTimetable,
 } from 'utils/modules';
@@ -55,21 +56,34 @@ export function createGenericLesson(dayText: DayText, startTime: LessonTime,
   };
 }
 
-test('randomLessonConfig should return a random lesson config', (t) => {
+test('randomModuleLessonConfig should return a random lesson config', (t) => {
   const sem: Semester = 1;
   const rawLessons: Array<RawLesson> = getModuleTimetable(cs1010s, sem);
-  const lessonsIncludingModuleCode: Array<Lesson> = rawLessons.map((lesson: RawLesson) => {
-    return {
-      ...lesson,
-      ModuleCode: cs1010s.moduleCode,
-      ModuleTitle: cs1010s.ModuleTitle,
-    };
-  });
-  const lessonConfig: LessonConfig = randomLessonConfig(lessonsIncludingModuleCode);
+  const lessonConfig: ModuleLessonConfig = randomModuleLessonConfig(rawLessons);
   Object.keys(lessonConfig).forEach((lessonType: LessonType) => {
-    const lessons: Array<Lesson> = lessonConfig[lessonType];
-    t.true(lessons.length > 0);
+    t.truthy(lessonConfig[lessonType]);
   });
+});
+
+test('hydrateSemTimetableWithLessons should replace ClassNo with lessons', (t) => {
+  const sem: Semester = 1;
+  const modules: ModulesMap = {
+    CS1010S: cs1010s,
+  };
+  const TutorialClassNo: ClassNo = '8';
+  const RecitationClassNo: ClassNo = '4';
+  const LectureClassNo: ClassNo = '1';
+  const config: SemTimetableConfig = {
+    CS1010S: {
+      Tutorial: '8',
+      Recitation: '4',
+      Lecture: '1',
+    },
+  };
+  const configWithLessons: SemTimetableConfigWithLessons = hydrateSemTimetableWithLessons(config, modules, sem);
+  t.is(configWithLessons.CS1010S.Tutorial[0].ClassNo, TutorialClassNo);
+  t.is(configWithLessons.CS1010S.Recitation[0].ClassNo, RecitationClassNo);
+  t.is(configWithLessons.CS1010S.Lecture[0].ClassNo, LectureClassNo);
 });
 
 test('lessonsForLessonType should return all lessons belonging to a particular LessonType', (t) => {

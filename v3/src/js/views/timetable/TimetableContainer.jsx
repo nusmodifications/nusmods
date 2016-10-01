@@ -14,7 +14,7 @@ import type {
   ModuleCondensed,
   RawLesson,
 } from 'types/modules';
-import type { SemTimetableConfig, TimetableArrangement } from 'types/timetable';
+import type { SemTimetableConfig, TimetableArrangement } from 'types/timetables';
 
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
@@ -35,10 +35,11 @@ import { toggleTimetableOrientation } from 'actions/theme';
 import { getModuleTimetable, areLessonsSameClass } from 'utils/modules';
 import {
   timetableLessonsArray,
+  hydrateSemTimetableWithLessons,
   arrangeLessonsForWeek,
   areOtherClassesAvailable,
   lessonsForLessonType,
-} from 'utils/timetable';
+} from 'utils/timetables';
 import ModulesSelect from 'views/components/ModulesSelect';
 
 import Timetable from './Timetable';
@@ -47,7 +48,7 @@ import TimetableModulesTable from './TimetableModulesTable';
 type Props = {
   semester: number,
   semModuleList: Array<ModuleCondensed>,
-  semTimetable: SemTimetableConfig,
+  semTimetableWithLessons: SemTimetableConfig,
   modules: Module,
   theme: string,
   colors: ThemeState,
@@ -83,7 +84,7 @@ export class TimetableContainer extends Component {
   }
 
   render() {
-    let timetableLessons: Array<Lesson | DraggableLesson> = timetableLessonsArray(this.props.semTimetable);
+    let timetableLessons: Array<Lesson | DraggableLesson> = timetableLessonsArray(this.props.semTimetableWithLessons);
     if (this.props.activeLesson) {
       const activeLesson = this.props.activeLesson;
       const moduleCode = activeLesson.ModuleCode;
@@ -166,7 +167,7 @@ export class TimetableContainer extends Component {
                   />
                   <br/>
                   <TimetableModulesTable modules={
-                    Object.keys(this.props.semTimetable).sort((a, b) => {
+                    Object.keys(this.props.semTimetableWithLessons).sort((a, b) => {
                       return a.localeCompare(b);
                     }).map((moduleCode) => {
                       return this.props.modules[moduleCode] || {};
@@ -200,18 +201,20 @@ TimetableContainer.contextTypes = {
 };
 
 function mapStateToProps(state) {
+  const modules = state.entities.moduleBank.modules;
   const semester = config.semester;
   const semTimetable = state.timetables[semester] || {};
   const semModuleList = getSemModuleSelectList(state.entities.moduleBank, semester, semTimetable);
+  const semTimetableWithLessons = hydrateSemTimetableWithLessons(semTimetable, modules, semester);
 
   return {
     semester,
     semModuleList,
-    semTimetable,
+    semTimetableWithLessons,
+    modules,
     activeLesson: state.app.activeLesson,
     theme: state.theme.id,
     colors: state.theme.colors,
-    modules: state.entities.moduleBank.modules,
     timetableOrientation: state.theme.timetableOrientation,
   };
 }

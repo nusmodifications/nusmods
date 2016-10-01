@@ -4,7 +4,7 @@ import classnames from 'classnames';
 /* eslint-disable new-cap */
 import { DragSource, DropTarget } from 'react-dnd';
 
-import { LESSON_TYPE_ABBREV } from 'utils/timetable';
+import { LESSON_TYPE_ABBREV } from 'utils/timetables';
 import type { DraggableLesson } from 'types/modules';
 
 type Props = {

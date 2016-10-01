@@ -1,7 +1,8 @@
 // @flow
+import type { ModuleLessonConfig } from 'types/timetables';
 
 import { loadModule } from 'actions/moduleBank';
-import { randomLessonConfig } from 'utils/timetable';
+import { randomModuleLessonConfig } from 'utils/timetables';
 import { getModuleTimetable } from 'utils/modules';
 
 import type { FSA } from 'types/redux';
@@ -19,16 +20,9 @@ export function addModule(semester: Semester, moduleCode: ModuleCode) {
     return dispatch(loadModule(moduleCode)).then(() => {
       const module: Module = getState().entities.moduleBank.modules[moduleCode];
       const lessons: Array<RawLesson> = getModuleTimetable(module, semester);
-      let moduleLessonConfig = {};
+      let moduleLessonConfig: ModuleLessonConfig = {};
       if (lessons) { // Module may not have lessons.
-        const lessonsIncludingModuleCode: Array<Lesson> = lessons.map((lesson: RawLesson) => {
-          return {
-            ...lesson,
-            ModuleCode: moduleCode,
-            ModuleTitle: module.ModuleTitle,
-          };
-        });
-        moduleLessonConfig = randomLessonConfig(lessonsIncludingModuleCode);
+        moduleLessonConfig = randomModuleLessonConfig(lessons);
       }
       return dispatch({
         type: ADD_MODULE,
