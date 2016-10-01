@@ -67,23 +67,24 @@ test('randomModuleLessonConfig should return a random lesson config', (t) => {
 
 test('hydrateSemTimetableWithLessons should replace ClassNo with lessons', (t) => {
   const sem: Semester = 1;
+  const moduleCode: ModuleCode = 'CS1010S';
   const modules: ModulesMap = {
-    CS1010S: cs1010s,
+    [moduleCode]: cs1010s,
   };
-  const TutorialClassNo: ClassNo = '8';
-  const RecitationClassNo: ClassNo = '4';
-  const LectureClassNo: ClassNo = '1';
+  const tutorialClassNo: ClassNo = '8';
+  const recitationClassNo: ClassNo = '4';
+  const lectureClassNo: ClassNo = '1';
   const config: SemTimetableConfig = {
-    CS1010S: {
+    [moduleCode]: {
       Tutorial: '8',
       Recitation: '4',
       Lecture: '1',
     },
   };
   const configWithLessons: SemTimetableConfigWithLessons = hydrateSemTimetableWithLessons(config, modules, sem);
-  t.is(configWithLessons.CS1010S.Tutorial[0].ClassNo, TutorialClassNo);
-  t.is(configWithLessons.CS1010S.Recitation[0].ClassNo, RecitationClassNo);
-  t.is(configWithLessons.CS1010S.Lecture[0].ClassNo, LectureClassNo);
+  t.is(configWithLessons[moduleCode].Tutorial[0].ClassNo, tutorialClassNo);
+  t.is(configWithLessons[moduleCode].Recitation[0].ClassNo, recitationClassNo);
+  t.is(configWithLessons[moduleCode].Lecture[0].ClassNo, lectureClassNo);
 });
 
 test('lessonsForLessonType should return all lessons belonging to a particular LessonType', (t) => {
