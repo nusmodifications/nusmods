@@ -6,6 +6,7 @@ import _ from 'lodash';
 import type {
   ModuleLessonConfig,
   SemTimetableConfig,
+  SemTimetableConfigWithLessons,
   TimetableArrangement,
   TimetableDayArrangement,
   TimetableDayFormat,
@@ -16,9 +17,11 @@ import type {
   Lesson,
   LessonTime,
   LessonType,
+  ModuleCode,
   RawLesson,
   Semester,
 } from 'types/modules';
+import type { ModulesMap } from 'reducers/entities/moduleBank';
 
 import {
   areOtherClassesAvailable,
