@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 import config from 'config';
 import { fetchModuleList, loadModule } from 'actions/moduleBank';
-import type { TimetableConfig, SemTimetableConfig } from 'types/timetables';
+import type { TimetableConfig, SemTimetableConfig } from 'types/timetable';
 import type { FetchRequest, ModuleList, ModuleSelectList } from 'types/reducers';
 
 import ModulesSelect from './components/ModulesSelect';

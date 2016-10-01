@@ -14,7 +14,7 @@ import type {
   ModuleCondensed,
   RawLesson,
 } from 'types/modules';
-import type { SemTimetableConfig, TimetableArrangement } from 'types/timetables';
+import type { SemTimetableConfig, TimetableArrangement } from 'types/timetable';
 
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';

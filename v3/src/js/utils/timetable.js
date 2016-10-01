@@ -13,7 +13,7 @@ import type {
   TimetableDayFormat,
   TimetableDayArrangement,
   TimetableArrangement,
-} from 'types/timetables';
+} from 'types/timetable';
 
 type LessonTypeAbbrev = { [key: LessonType]: string };
 export const LESSON_TYPE_ABBREV: LessonTypeAbbrev = {

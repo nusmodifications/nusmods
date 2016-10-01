@@ -4,19 +4,18 @@ $timetable-background: #fff;
 $timetable-min-width: $breakpoint;
 $timetable-border: 1px solid $gray-lighter;
 $timetable-headings-font-size: 0.8rem;
-$timetable-cell-padding: 5px;
+$timetable-cell-padding: 0.3rem;
 $timetable-cell-opacity: 0.5;
 $timetable-module-cell-border-radius: 8px;
 // Horizontal mode
 $timetable-width: 100%;
-$timetable-min-width: 800px;
-$timetable-day-margin: 50px;
-$timetable-row-height: 51px;
+$timetable-min-width: 64rem;
+$timetable-day-margin: 3.5rem;
+$timetable-row-height: 3.5rem;
 $timetable-row-margin: 2px;
 // Vertical mode
-$timetable-height: 640px;
 $timetable-time-width: 15%;
-$timetable-day-cell-height: 40px;
+$timetable-day-cell-height: 2.5rem;
 $timetable-day-rows-height: calc(100% - #{$timetable-day-cell-height});
 
 .timetable-container {
@@ -103,17 +102,19 @@ $timetable-day-rows-height: calc(100% - #{$timetable-day-cell-height});
 
       .timetable-day-cell {
         display: table-cell;
-        padding-left: 10px;
+        padding-left: 0.7rem;
         vertical-align: middle;
         width: $timetable-day-margin;
       }
     }
 
-    .timetable-row {
-      min-height: $timetable-row-height;
+    .timetable {
+      .timetable-row {
+        height: $timetable-row-height;
 
-      &:not(:first-child) {
-        margin-top: $timetable-row-margin;
+        &:not(:first-child) {
+          margin-top: $timetable-row-margin;
+        }
       }
     }
 
@@ -125,10 +126,6 @@ $timetable-day-rows-height: calc(100% - #{$timetable-day-cell-height});
 
   &.vertical-mode {
     $timetable-time-width: 10%;
-
-    .timetable-inner-container {
-      height: $timetable-height;
-    }
 
     .timetable-content-container {
       float: left;
@@ -153,7 +150,7 @@ $timetable-day-rows-height: calc(100% - #{$timetable-day-cell-height});
     .timetable-timings {
       float: left;
       height: 100%;
-      padding-right: 10px;
+      padding-right: 0.7rem;
       padding-top: $timetable-day-cell-height;
       text-align: right;
       width: $timetable-time-width;
@@ -230,6 +227,7 @@ $timetable-day-rows-height: calc(100% - #{$timetable-day-cell-height});
     font-size: $font-size-xs;
     height: 100%;
     line-height: 0.85rem;
+    overflow: hidden;
     padding: $timetable-cell-padding;
     pointer-events: none;
     text-align: left;
@@ -285,7 +283,7 @@ $timetable-day-rows-height: calc(100% - #{$timetable-day-cell-height});
   font-size: 0.9rem;
 
   .modules-table-row {
-    margin-bottom: 10px;
+    margin-bottom: 0.7rem;
   }
 
   .btn-remove {

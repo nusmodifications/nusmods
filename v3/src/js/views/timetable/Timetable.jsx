@@ -1,7 +1,7 @@
 // @flow
 
-import type { DayText, LessonTime, RawLesson } from 'types/modules';
-import type { TimetableArrangement } from 'types/timetables';
+import type { RawLesson } from 'types/modules';
+import type { TimetableArrangement } from 'types/timetable';
 
 import React, { Component } from 'react';
 import _ from 'lodash';
@@ -10,32 +10,18 @@ import classnames from 'classnames';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 
-import { convertTimeToIndex } from 'utils/timify';
+import {
+  SCHOOLDAYS,
+  calculateBorderTimings,
+} from 'utils/timify';
 
 import TimetableBackground from './TimetableBackground';
 import TimetableTimings from './TimetableTimings';
 import TimetableDay from './TimetableDay';
 
-const SCHOOLDAYS: Array<DayText> = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-const DEFAULT_EARLIEST_TIME: LessonTime = '0800';
-const DEFAULT_LATEST_TIME: LessonTime = '1800';
 const MINIMUM_CELL_WIDTH: number = 70;
-
-function calculateBorderTimings(lessons: TimetableArrangement): { startingIndex: number, endingIndex: number } {
-  let earliestTime: number = convertTimeToIndex(DEFAULT_EARLIEST_TIME);
-  let latestTime: number = convertTimeToIndex(DEFAULT_LATEST_TIME);
-  SCHOOLDAYS.forEach((day) => {
-    const lessonsArray: Array<RawLesson> = _.flatten(lessons[day]);
-    lessonsArray.forEach((lesson) => {
-      earliestTime = Math.min(earliestTime, convertTimeToIndex(lesson.StartTime));
-      latestTime = Math.max(latestTime, convertTimeToIndex(lesson.EndTime));
-    });
-  });
-  return {
-    startingIndex: earliestTime,
-    endingIndex: latestTime,
-  };
-}
+const MINIMUM_CELL_HEIGHT: number = 1.5; // rem
+const MINIMUM_TIMETABLE_HEIGHT: number = 48; // rem
 
 type Props = {
   lessons: TimetableArrangement,
@@ -47,9 +33,15 @@ class Timetable extends Component {
   props: Props;
 
   render() {
-    const { startingIndex, endingIndex } = calculateBorderTimings(this.props.lessons);
+    const lessons: Array<RawLesson> = [];
+    SCHOOLDAYS.forEach((day) => {
+      const lessonsArray: Array<RawLesson> = _.flatten(this.props.lessons[day]);
+      lessons.push(...lessonsArray);
+    });
+    const { startingIndex, endingIndex } = calculateBorderTimings(lessons);
     // Each cell is half an hour.
     const numberOfCells: number = (endingIndex - startingIndex);
+    const timetableHeight: number = Math.max(numberOfCells * MINIMUM_CELL_HEIGHT, MINIMUM_TIMETABLE_HEIGHT);
     const value: number = 100 / numberOfCells;
     const orientationStyleProp: string = this.props.horizontalOrientation ? 'width' : 'height';
     let numRows: number = 0;
@@ -74,11 +66,12 @@ class Timetable extends Component {
         'horizontal-mode': this.props.horizontalOrientation,
         'vertical-mode': !this.props.horizontalOrientation,
       })}>
+        <style>{`
+          .vertical-mode .timetable-inner-container { height: ${timetableHeight}rem; }
+          .timetable-cell { ${orientationStyleProp}: ${value}%; }
+          .timetable-content-inner-container { min-width: ${minWidth}px; }
+        `}</style>
         <div className="timetable-inner-container">
-          <style>{`
-            .timetable-cell { ${orientationStyleProp}: ${value}%; }
-            .timetable-content-inner-container { min-width: ${minWidth}px; }
-          `}</style>
           <TimetableTimings startingIndex={startingIndex}
             endingIndex={endingIndex}
           />
