@@ -1,19 +1,25 @@
 // @flow
-
-import _ from 'lodash';
 import type {
   ClassNo,
-  RawLesson,
   Lesson,
   LessonType,
+  Module,
+  ModuleCode,
+  RawLesson,
+  Semester,
 } from 'types/modules';
 import type {
-  LessonConfig,
+  ModuleLessonConfig,
+  SemTimetableConfigWithLessons,
   SemTimetableConfig,
   TimetableDayFormat,
   TimetableDayArrangement,
   TimetableArrangement,
-} from 'types/timetable';
+} from 'types/timetables';
+import type { ModulesMap } from 'reducers/entities/moduleBank';
+
+import _ from 'lodash';
+import { getModuleTimetable } from 'utils/modules';
 
 type LessonTypeAbbrev = { [key: LessonType]: string };
 export const LESSON_TYPE_ABBREV: LessonTypeAbbrev = {
@@ -34,20 +40,42 @@ export const LESSON_TYPE_ABBREV: LessonTypeAbbrev = {
 //  Used when a module is first added.
 //  TODO: Suggest a configuration that does not clash with itself.
 //  {
-//    [LessonType]: [Lesson, Lesson, ...],
-//    [LessonType]: [Lesson, ...],
+//    [LessonType]: ClassNo,
 //  }
-export function randomLessonConfig(lessons: Array<Lesson>): LessonConfig {
-  const lessonByGroups: { [key: LessonType]: Array<Lesson> } =
+export function randomModuleLessonConfig(lessons: Array<RawLesson>): ModuleLessonConfig {
+  const lessonByGroups: { [key: LessonType]: Array<RawLesson> } =
     _.groupBy(lessons, lesson => lesson.LessonType);
 
-  const lessonByGroupsByClassNo: { [key: LessonType]: { [key: ClassNo]: Array<Lesson> } } =
-    _.mapValues(lessonByGroups, (lessonsOfSameLessonType: Array<Lesson>) => {
+  const lessonByGroupsByClassNo: { [key: LessonType]: { [key: ClassNo]: Array<RawLesson> } } =
+    _.mapValues(lessonByGroups, (lessonsOfSameLessonType: Array<RawLesson>) => {
       return _.groupBy(lessonsOfSameLessonType, lesson => lesson.ClassNo);
     });
 
-  return _.mapValues(lessonByGroupsByClassNo, (group: { [key: ClassNo]: Array<Lesson> }) => {
-    return _.sample(group);
+  return _.mapValues(lessonByGroupsByClassNo, (group: { [key: ClassNo]: Array<RawLesson> }) => {
+    return _.sample(group)[0].ClassNo;
+  });
+}
+
+// Replaces ClassNo in SemTimetableConfig with Array<Lesson>
+export function hydrateSemTimetableWithLessons(semTimetableConfig: SemTimetableConfig, modules: ModulesMap,
+                                                semester: Semester): SemTimetableConfigWithLessons {
+  return _.mapValues(semTimetableConfig, (moduleLessonConfig: ModuleLessonConfig, moduleCode: ModuleCode) => {
+    const module: Module = modules[moduleCode];
+    // TODO: Split this part into a smaller function: hydrateModuleConfigWithLessons.
+    return _.mapValues(moduleLessonConfig, (classNo: ClassNo, lessonType: LessonType) => {
+      const lessons: Array<RawLesson> = getModuleTimetable(module, semester);
+      const newLessons: Array<RawLesson> = lessons.filter((lesson: RawLesson): boolean => {
+        return (lesson.LessonType === lessonType && lesson.ClassNo === classNo);
+      });
+      const timetableLessons: Array<Lesson> = newLessons.map((lesson: RawLesson): Lesson => {
+        return {
+          ...lesson,
+          ModuleCode: moduleCode,
+          ModuleTitle: module.ModuleTitle,
+        };
+      });
+      return timetableLessons;
+    });
   });
 }
 

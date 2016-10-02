@@ -1,7 +1,7 @@
 // @flow
 
 import type { RawLesson } from 'types/modules';
-import type { TimetableArrangement } from 'types/timetable';
+import type { TimetableArrangement } from 'types/timetables';
 
 import React, { Component } from 'react';
 import _ from 'lodash';

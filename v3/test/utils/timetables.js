@@ -4,21 +4,24 @@ import test from 'ava';
 import _ from 'lodash';
 
 import type {
-  LessonConfig,
+  ModuleLessonConfig,
   SemTimetableConfig,
+  SemTimetableConfigWithLessons,
   TimetableArrangement,
   TimetableDayArrangement,
   TimetableDayFormat,
-} from 'types/timetable';
+} from 'types/timetables';
 import type {
   ClassNo,
   DayText,
   Lesson,
   LessonTime,
   LessonType,
+  ModuleCode,
   RawLesson,
   Semester,
 } from 'types/modules';
+import type { ModulesMap } from 'reducers/entities/moduleBank';
 
 import {
   areOtherClassesAvailable,
@@ -26,10 +29,11 @@ import {
   arrangeLessonsWithinDay,
   doLessonsOverlap,
   groupLessonsByDay,
+  hydrateSemTimetableWithLessons,
   lessonsForLessonType,
-  randomLessonConfig,
+  randomModuleLessonConfig,
   timetableLessonsArray,
-} from 'utils/timetable';
+} from 'utils/timetables';
 import {
   getModuleTimetable,
 } from 'utils/modules';
@@ -55,21 +59,35 @@ export function createGenericLesson(dayText: DayText, startTime: LessonTime,
   };
 }
 
-test('randomLessonConfig should return a random lesson config', (t) => {
+test('randomModuleLessonConfig should return a random lesson config', (t) => {
   const sem: Semester = 1;
   const rawLessons: Array<RawLesson> = getModuleTimetable(cs1010s, sem);
-  const lessonsIncludingModuleCode: Array<Lesson> = rawLessons.map((lesson: RawLesson) => {
-    return {
-      ...lesson,
-      ModuleCode: cs1010s.moduleCode,
-      ModuleTitle: cs1010s.ModuleTitle,
-    };
-  });
-  const lessonConfig: LessonConfig = randomLessonConfig(lessonsIncludingModuleCode);
+  const lessonConfig: ModuleLessonConfig = randomModuleLessonConfig(rawLessons);
   Object.keys(lessonConfig).forEach((lessonType: LessonType) => {
-    const lessons: Array<Lesson> = lessonConfig[lessonType];
-    t.true(lessons.length > 0);
+    t.truthy(lessonConfig[lessonType]);
   });
+});
+
+test('hydrateSemTimetableWithLessons should replace ClassNo with lessons', (t) => {
+  const sem: Semester = 1;
+  const moduleCode: ModuleCode = 'CS1010S';
+  const modules: ModulesMap = {
+    [moduleCode]: cs1010s,
+  };
+  const tutorialClassNo: ClassNo = '8';
+  const recitationClassNo: ClassNo = '4';
+  const lectureClassNo: ClassNo = '1';
+  const config: SemTimetableConfig = {
+    [moduleCode]: {
+      Tutorial: '8',
+      Recitation: '4',
+      Lecture: '1',
+    },
+  };
+  const configWithLessons: SemTimetableConfigWithLessons = hydrateSemTimetableWithLessons(config, modules, sem);
+  t.is(configWithLessons[moduleCode].Tutorial[0].ClassNo, tutorialClassNo);
+  t.is(configWithLessons[moduleCode].Recitation[0].ClassNo, recitationClassNo);
+  t.is(configWithLessons[moduleCode].Lecture[0].ClassNo, lectureClassNo);
 });
 
 test('lessonsForLessonType should return all lessons belonging to a particular LessonType', (t) => {

@@ -8,7 +8,7 @@ import {
   DEFAULT_EARLIEST_TIME,
   DEFAULT_LATEST_TIME,
 } from 'utils/timify';
-import { createGenericLesson } from './timetable';
+import { createGenericLesson } from './timetables';
 
 test('convertTimeToIndex should convert time string to index', (t) => {
   for (let hour: number = 0; hour < 24; hour += 1) {

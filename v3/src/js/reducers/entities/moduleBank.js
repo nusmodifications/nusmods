@@ -8,7 +8,7 @@ import type {
 } from 'types/modules';
 import type {
   SemTimetableConfig,
-} from 'types/timetable';
+} from 'types/timetables';
 import type { ModuleList, ModuleSelectList, ModuleSelectListItem } from 'types/reducers';
 
 import _ from 'lodash';
@@ -16,12 +16,13 @@ import _ from 'lodash';
 import { FETCH_MODULE_LIST, FETCH_MODULE } from 'actions/moduleBank';
 import * as RequestResultCases from 'middlewares/requests-middleware';
 
+export type ModulesMap = {
+  [key: ModuleCode]: Module,
+};
 export type ModuleBank = {
   moduleList: ModuleList,
   moduleSelectList: ModuleSelectList,
-  modules: {
-    [key: ModuleCode]: Module
-  },
+  modules: ModulesMap,
 };
 
 const defaultModuleBankState: ModuleBank = {
