@@ -69,6 +69,15 @@
   .color-6 { @include color(#b48ead); }
   .color-7 { @include color(#ab7967); }
 }
+.theme-oceanic-next {
+  .color-0 { @include color(#ec5f67); }
+  .color-1 { @include color(#f99157); }
+  .color-2 { @include color(#fac863); }
+  .color-3 { @include color(#99c794); }
+  .color-4 { @include color(#5fb3b3); }
+  .color-5 { @include color(#6699cc); }
+  .color-6 { @include color(#c594c5); }
+  .color-7 { @include color(#ab7967); }
 }
 .theme-paraiso {
   .color-0 { @include color(#ef6155); }
