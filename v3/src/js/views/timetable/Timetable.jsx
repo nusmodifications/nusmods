@@ -20,8 +20,8 @@ import TimetableTimings from './TimetableTimings';
 import TimetableDay from './TimetableDay';
 
 const MINIMUM_CELL_WIDTH: number = 70;
-const MINIMUM_CELL_HEIGHT: number = 1; // rem
-const MINIMUM_TIMETABLE_HEIGHT: number = 36; // rem
+const MINIMUM_CELL_HEIGHT: number = 1.25; // rem
+const MINIMUM_TIMETABLE_HEIGHT: number = 45; // rem
 
 type Props = {
   lessons: TimetableArrangement,
