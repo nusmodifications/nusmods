@@ -1,373 +1,112 @@
+/* stylelint-disable */
 .theme-ashes {
-  .color-0 {
-    @include color(#c7ae95);
-  }
-
-  .color-1 {
-    @include color(#c7c795);
-  }
-
-  .color-2 {
-    @include color(#aec795);
-  }
-
-  .color-3 {
-    @include color(#95c7ae);
-  }
-
-  .color-4 {
-    @include color(#95aec7);
-  }
-
-  .color-5 {
-    @include color(#ae95c7);
-  }
-
-  .color-6 {
-    @include color(#c795ae);
-  }
-
-  .color-7 {
-    @include color(#c79595);
-  }
+  .color-0 { @include color(#c7ae95); }
+  .color-1 { @include color(#c7c795); }
+  .color-2 { @include color(#aec795); }
+  .color-3 { @include color(#95c7ae); }
+  .color-4 { @include color(#95aec7); }
+  .color-5 { @include color(#ae95c7); }
+  .color-6 { @include color(#c795ae); }
+  .color-7 { @include color(#c79595); }
 }
-
 .theme-chalk {
-  .color-0 {
-    @include color(#fb9fb1);
-  }
-
-  .color-1 {
-    @include color(#eda987);
-  }
-
-  .color-2 {
-    @include color(#ddb26f);
-  }
-
-  .color-3 {
-    @include color(#acc267);
-  }
-
-  .color-4 {
-    @include color(#12cfc0);
-  }
-
-  .color-5 {
-    @include color(#6fc2ef);
-  }
-
-  .color-6 {
-    @include color(#e1a3ee);
-  }
-
-  .color-7 {
-    @include color(#deaf8f);
-  }
+  .color-0 { @include color(#fb9fb1); }
+  .color-1 { @include color(#eda987); }
+  .color-2 { @include color(#ddb26f); }
+  .color-3 { @include color(#acc267); }
+  .color-4 { @include color(#12cfc0); }
+  .color-5 { @include color(#6fc2ef); }
+  .color-6 { @include color(#e1a3ee); }
+  .color-7 { @include color(#deaf8f); }
 }
-
 .theme-eighties {
-  .color-0 {
-    @include color(#f2777a);
-  }
-
-  .color-1 {
-    @include color(#f99157);
-  }
-
-  .color-2 {
-    @include color(#fc6);
-  }
-
-  .color-3 {
-    @include color(#9c9);
-  }
-
-  .color-4 {
-    @include color(#6cc);
-  }
-
-  .color-5 {
-    @include color(#69c);
-  }
-
-  .color-6 {
-    @include color(#c9c);
-  }
-
-  .color-7 {
-    @include color(#d27b53);
-  }
+  .color-0 { @include color(#f2777a); }
+  .color-1 { @include color(#f99157); }
+  .color-2 { @include color(#fc6); }
+  .color-3 { @include color(#9c9); }
+  .color-4 { @include color(#6cc); }
+  .color-5 { @include color(#69c); }
+  .color-6 { @include color(#c9c); }
+  .color-7 { @include color(#d27b53); }
 }
-
 .theme-google {
-  .color-0 {
-    @include color(#cc342b);
-  }
-
-  .color-1 {
-    @include color(#f96a38);
-  }
-
-  .color-2 {
-    @include color(#fba922);
-  }
-
-  .color-3 {
-    @include color(#198844);
-  }
-
-  .color-4 {
-    @include color(#3971ed);
-  }
-
-  .color-5 {
-    @include color(#3971ed);
-  }
-
-  .color-6 {
-    @include color(#a36ac7);
-  }
-
-  .color-7 {
-    @include color(#3971ed);
-  }
+  .color-0 { @include color(#cc342b); }
+  .color-1 { @include color(#f96a38); }
+  .color-2 { @include color(#fba922); }
+  .color-3 { @include color(#198844); }
+  .color-4 { @include color(#3971ed); }
+  .color-5 { @include color(#3971ed); }
+  .color-6 { @include color(#a36ac7); }
+  .color-7 { @include color(#3971ed); }
 }
-
 .theme-mocha {
-  .color-0 {
-    @include color(#cb6077);
-  }
-
-  .color-1 {
-    @include color(#d28b71);
-  }
-
-  .color-2 {
-    @include color(#f4bc87);
-  }
-
-  .color-3 {
-    @include color(#beb55b);
-  }
-
-  .color-4 {
-    @include color(#7bbda4);
-  }
-
-  .color-5 {
-    @include color(#8ab3b5);
-  }
-
-  .color-6 {
-    @include color(#a89bb9);
-  }
-
-  .color-7 {
-    @include color(#bb9584);
-  }
+  .color-0 { @include color(#cb6077); }
+  .color-1 { @include color(#d28b71); }
+  .color-2 { @include color(#f4bc87); }
+  .color-3 { @include color(#beb55b); }
+  .color-4 { @include color(#7bbda4); }
+  .color-5 { @include color(#8ab3b5); }
+  .color-6 { @include color(#a89bb9); }
+  .color-7 { @include color(#bb9584); }
 }
-
 .theme-monokai {
-  .color-0 {
-    @include color(#f92672);
-  }
-
-  .color-1 {
-    @include color(#fd971f);
-  }
-
-  .color-2 {
-    @include color(#f4bf75);
-  }
-
-  .color-3 {
-    @include color(#a6e22e);
-  }
-
-  .color-4 {
-    @include color(#a1efe4);
-  }
-
-  .color-5 {
-    @include color(#66d9ef);
-  }
-
-  .color-6 {
-    @include color(#ae81ff);
-  }
-
-  .color-7 {
-    @include color(#c63);
-  }
+  .color-0 { @include color(#f92672); }
+  .color-1 { @include color(#fd971f); }
+  .color-2 { @include color(#f4bf75); }
+  .color-3 { @include color(#a6e22e); }
+  .color-4 { @include color(#a1efe4); }
+  .color-5 { @include color(#66d9ef); }
+  .color-6 { @include color(#ae81ff); }
+  .color-7 { @include color(#c63); }
 }
-
 .theme-ocean {
-  .color-0 {
-    @include color(#bf616a);
-  }
-
-  .color-1 {
-    @include color(#d08770);
-  }
-
-  .color-2 {
-    @include color(#ebcb8b);
-  }
-
-  .color-3 {
-    @include color(#a3be8c);
-  }
-
-  .color-4 {
-    @include color(#96b5b4);
-  }
-
-  .color-5 {
-    @include color(#8fa1b3);
-  }
-
-  .color-6 {
-    @include color(#b48ead);
-  }
-
-  .color-7 {
-    @include color(#ab7967);
-  }
+  .color-0 { @include color(#bf616a); }
+  .color-1 { @include color(#d08770); }
+  .color-2 { @include color(#ebcb8b); }
+  .color-3 { @include color(#a3be8c); }
+  .color-4 { @include color(#96b5b4); }
+  .color-5 { @include color(#8fa1b3); }
+  .color-6 { @include color(#b48ead); }
+  .color-7 { @include color(#ab7967); }
 }
-
+}
 .theme-paraiso {
-  .color-0 {
-    @include color(#ef6155);
-  }
-
-  .color-1 {
-    @include color(#f99b15);
-  }
-
-  .color-2 {
-    @include color(#fec418);
-  }
-
-  .color-3 {
-    @include color(#48b685);
-  }
-
-  .color-4 {
-    @include color(#5bc4bf);
-  }
-
-  .color-5 {
-    @include color(#06b6ef);
-  }
-
-  .color-6 {
-    @include color(#815ba4);
-  }
-
-  .color-7 {
-    @include color(#e96ba8);
-  }
+  .color-0 { @include color(#ef6155); }
+  .color-1 { @include color(#f99b15); }
+  .color-2 { @include color(#fec418); }
+  .color-3 { @include color(#48b685); }
+  .color-4 { @include color(#5bc4bf); }
+  .color-5 { @include color(#06b6ef); }
+  .color-6 { @include color(#815ba4); }
+  .color-7 { @include color(#e96ba8); }
 }
-
 .theme-railscasts {
-  .color-0 {
-    @include color(#da4939);
-  }
-
-  .color-1 {
-    @include color(#cc7833);
-  }
-
-  .color-2 {
-    @include color(#ffc66d);
-  }
-
-  .color-3 {
-    @include color(#a5c261);
-  }
-
-  .color-4 {
-    @include color(#519f50);
-  }
-
-  .color-5 {
-    @include color(#6d9cbe);
-  }
-
-  .color-6 {
-    @include color(#b6b3eb);
-  }
-
-  .color-7 {
-    @include color(#bc9458);
-  }
+  .color-0 { @include color(#da4939); }
+  .color-1 { @include color(#cc7833); }
+  .color-2 { @include color(#ffc66d); }
+  .color-3 { @include color(#a5c261); }
+  .color-4 { @include color(#519f50); }
+  .color-5 { @include color(#6d9cbe); }
+  .color-6 { @include color(#b6b3eb); }
+  .color-7 { @include color(#bc9458); }
 }
-
 .theme-tomorrow {
-  .color-0 {
-    @include color(#c66);
-  }
-
-  .color-1 {
-    @include color(#de935f);
-  }
-
-  .color-2 {
-    @include color(#f0c674);
-  }
-
-  .color-3 {
-    @include color(#b5bd68);
-  }
-
-  .color-4 {
-    @include color(#8abeb7);
-  }
-
-  .color-5 {
-    @include color(#81a2be);
-  }
-
-  .color-6 {
-    @include color(#b294bb);
-  }
-
-  .color-7 {
-    @include color(#a3685a);
-  }
+  .color-0 { @include color(#c66); }
+  .color-1 { @include color(#de935f); }
+  .color-2 { @include color(#f0c674); }
+  .color-3 { @include color(#b5bd68); }
+  .color-4 { @include color(#8abeb7); }
+  .color-5 { @include color(#81a2be); }
+  .color-6 { @include color(#b294bb); }
+  .color-7 { @include color(#a3685a); }
 }
-
 .theme-twilight {
-  .color-0 {
-    @include color(#cf6a4c);
-  }
-
-  .color-1 {
-    @include color(#cda869);
-  }
-
-  .color-2 {
-    @include color(#f9ee98);
-  }
-
-  .color-3 {
-    @include color(#8f9d6a);
-  }
-
-  .color-4 {
-    @include color(#afc4db);
-  }
-
-  .color-5 {
-    @include color(#7587a6);
-  }
-
-  .color-6 {
-    @include color(#9b859d);
-  }
-
-  .color-7 {
-    @include color(#9b703f);
-  }
+  .color-0 { @include color(#cf6a4c); }
+  .color-1 { @include color(#cda869); }
+  .color-2 { @include color(#f9ee98); }
+  .color-3 { @include color(#8f9d6a); }
+  .color-4 { @include color(#afc4db); }
+  .color-5 { @include color(#7587a6); }
+  .color-6 { @include color(#9b859d); }
+  .color-7 { @include color(#9b703f); }
 }
