@@ -1,5 +1,16 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# dependencies
 node_modules
-dist
-npm-debug.log
+
+# testing
 coverage
 .nyc_output
+
+# production
+dist
+
+# misc
+.DS_Store
+.env
+npm-debug.log
