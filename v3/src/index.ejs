@@ -8,5 +8,10 @@
 </head>
 <body>
   <div id="app"></div>
+  <% if (htmlWebpackPlugin.options.dll) { %>
+    <% htmlWebpackPlugin.options.dll.paths.forEach(function (path) { %>
+      <script src="<%= path %>"></script>
+    <% }) %>
+  <% } %>
 </body>
 </html>
