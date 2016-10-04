@@ -6,6 +6,8 @@ node_modules
 # testing
 coverage
 .nyc_output
+# dll
+dll
 
 # production
 dist
