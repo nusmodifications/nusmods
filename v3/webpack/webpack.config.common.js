@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const HappyPack = require('happypack');
 const path = require('path');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
@@ -68,6 +69,8 @@ const common = {
     filename: '[name].js',
   },
   plugins: [
+    new HappyPack({ id: 'js' }),
+    new HappyPack({ id: 'styles' }),
     new StyleLintPlugin({
       context: PATHS.styles,
     }),
@@ -105,6 +108,7 @@ const common = {
           // i.e., cacheDirectory: <path>
           cacheDirectory: true
         },
+        happy: { id: 'js' },
       },
       {
         // JSON is not enabled by default in Webpack but both Node and Browserify

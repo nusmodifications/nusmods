@@ -94,6 +94,7 @@ exports.setupCSS = function (paths) {
           test: /\.(css|scss)$/,
           loaders: ['style', 'css', 'postcss', 'sass'],
           include: paths,
+          happy: { id: 'styles' },
         },
       ],
     },
