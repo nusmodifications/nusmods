@@ -28,10 +28,6 @@ module.exports = function (options) {
       // unlike default `localhost`.
       host: options.host, // Defaults to `localhost`
       port: options.port, // Defaults to 8080
-      // quiet: false,
-      // noInfo: false,
-      stats: { colors: true },
-      debug: true,
     },
     plugins: [
       // Enable multi-pass compilation for enhanced performance
