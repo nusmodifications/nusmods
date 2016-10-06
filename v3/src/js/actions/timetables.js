@@ -1,10 +1,5 @@
 // @flow
 import type { ModuleLessonConfig } from 'types/timetables';
-
-import { loadModule } from 'actions/moduleBank';
-import { randomModuleLessonConfig } from 'utils/timetables';
-import { getModuleTimetable } from 'utils/modules';
-
 import type { FSA } from 'types/redux';
 import type {
   Module,
@@ -13,6 +8,10 @@ import type {
   RawLesson,
   Lesson,
 } from 'types/modules';
+
+import { loadModule } from 'actions/moduleBank';
+import { randomModuleLessonConfig } from 'utils/timetables';
+import { getModuleTimetable } from 'utils/modules';
 
 export const ADD_MODULE: string = 'ADD_MODULE';
 export function addModule(semester: Semester, moduleCode: ModuleCode) {

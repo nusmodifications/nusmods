@@ -1,5 +1,4 @@
 // @flow
-
 import type { RawLesson } from 'types/modules';
 import type { TimetableArrangement } from 'types/timetables';
 

@@ -1,6 +1,4 @@
 // @flow
-
-import _ from 'lodash';
 import type {
   Lesson,
   Module,
@@ -9,6 +7,8 @@ import type {
   Semester,
   SemesterData,
 } from 'types/modules';
+
+import _ from 'lodash';
 
 export function modulePagePath(moduleCode: ModuleCode): string {
   return `/modules/${moduleCode}`;

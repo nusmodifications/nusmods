@@ -1,9 +1,4 @@
 // @flow
-
-import _ from 'lodash';
-import { ADD_MODULE, REMOVE_MODULE } from 'actions/timetables';
-import { SELECT_THEME, TOGGLE_TIMETABLE_ORIENTATION } from 'actions/theme';
-
 import type { FSA } from 'redux';
 /* eslint-disable no-duplicate-imports */
 import type {
@@ -11,6 +6,11 @@ import type {
   ColorMapping,
   ThemeState,
 } from 'types/reducers';
+
+import _ from 'lodash';
+import { ADD_MODULE, REMOVE_MODULE } from 'actions/timetables';
+import { SELECT_THEME, TOGGLE_TIMETABLE_ORIENTATION } from 'actions/theme';
+
 import {
   VERTICAL,
   HORIZONTAL,

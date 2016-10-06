@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const FlowStatusWebpackPlugin = require('flow-status-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 
@@ -119,5 +120,15 @@ exports.extractCSS = function (paths) {
       // Output extracted CSS to a file.
       new ExtractTextPlugin('[name].[chunkhash].css'),
     ],
+  };
+}
+
+exports.flow = function (path) {
+  return {
+    plugins: [
+      new FlowStatusWebpackPlugin({
+        failOnError: true
+      })
+    ]
   };
 }

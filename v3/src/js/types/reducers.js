@@ -1,5 +1,4 @@
 // @flow
-
 import type {
   Faculty,
   Lesson,

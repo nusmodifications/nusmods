@@ -1,10 +1,10 @@
 // @flow
+import type { Lesson, LessonTime } from 'types/modules';
 
 import React from 'react';
 import _ from 'lodash';
 
 import { convertIndexToTime, convertTimeToIndex } from 'utils/timify';
-import type { Lesson, LessonTime } from 'types/modules';
 import TimetableCell from './TimetableCell';
 
 function generateCells(lessons?: Array<Lesson>, cellSize: number, cellOrientationStyleProp: string,

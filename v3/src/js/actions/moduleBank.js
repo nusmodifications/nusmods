@@ -1,11 +1,10 @@
 // @flow
-
-import { API_REQUEST } from 'middlewares/requests-middleware';
-import NUSModsApi from 'apis/nusmods';
-
 import type {
   ModuleCode,
 } from 'types/modules';
+
+import { API_REQUEST } from 'middlewares/requests-middleware';
+import NUSModsApi from 'apis/nusmods';
 
 export const FETCH_MODULE_LIST: string = 'FETCH_MODULE_LIST';
 export function fetchModuleList() {

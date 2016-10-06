@@ -1,12 +1,14 @@
+// @flow
+import type { FetchRequest } from 'types/reducers';
+
 import _ from 'lodash';
 
 import * as helperActions from 'actions/helpers';
 import * as requestResultCases from 'middlewares/requests-middleware';
-import type { FetchRequest } from 'types/reducers';
 
 const requestState = 'Request';
 
-export default function requests(state = {}, action = null): FetchRequest {
+export default function requests(state: Object = {}, action: Object): FetchRequest {
   const { type, requestStatus } = action;
 
   if (type === helperActions.RESET_ALL_STATE) {

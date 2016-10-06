@@ -1,5 +1,4 @@
 // @flow
-
 import type { FSA } from 'types/redux';
 import type { Faculty } from 'types/modules';
 

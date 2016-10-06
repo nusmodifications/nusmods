@@ -1,7 +1,6 @@
 // @flow
-/* eslint-disable */
-// Components within a module:
 
+// Components within a module:
 export type AcadYear = string;     // E.g. "2016/2017"
 export type ClassNo = string;      // E.g. "1", "A"
 export type DayText = string;      // E.g. "Monday", "Tuesday"

@@ -1,5 +1,4 @@
 // @flow
-
 import type { DayText, LessonTime, RawLesson } from 'types/modules';
 
 // Converts a 24-hour format time string to an index.

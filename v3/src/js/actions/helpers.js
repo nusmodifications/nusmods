@@ -1,8 +1,7 @@
 // @flow
+import type { FSA } from 'types/redux';
 
 import _ from 'lodash';
-
-import type { FSA } from 'types/redux';
 
 export const RESET_REQUEST_STATE: string = 'RESET_REQUEST_STATE';
 export function resetRequestState(domain: string | Array<string>): FSA {

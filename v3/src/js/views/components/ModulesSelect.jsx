@@ -1,4 +1,5 @@
 // @flow
+import type { ModuleSelectList } from 'types/reducers';
 
 import React, { Component } from 'react';
 import _ from 'lodash';
@@ -6,7 +7,6 @@ import VirtualizedSelect from 'react-virtualized-select';
 import createFilterOptions from 'react-select-fast-filter-options';
 import { PrefixIndexStrategy } from 'js-search';
 import { ModulesSearchIndex, ModulesTokenizer } from 'utils/modules-search';
-import type { ModuleSelectList } from 'types/reducers';
 
 type Props = {
   moduleList: ModuleSelectList,

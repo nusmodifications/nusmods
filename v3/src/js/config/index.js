@@ -1,5 +1,4 @@
 // @flow
-
 import type { Semester } from 'types/modules';
 
 import appConfig from './app-config.json';

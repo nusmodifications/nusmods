@@ -1,11 +1,12 @@
 // @flow
+import type { DraggableLesson } from 'types/modules';
+
 import React from 'react';
 import classnames from 'classnames';
 /* eslint-disable new-cap */
 import { DragSource, DropTarget } from 'react-dnd';
 
 import { LESSON_TYPE_ABBREV } from 'utils/timetables';
-import type { DraggableLesson } from 'types/modules';
 
 type Props = {
   lesson: DraggableLesson,

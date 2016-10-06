@@ -1,8 +1,7 @@
 // @flow
+import type { ModuleCode } from 'types/modules';
 
 import config from 'config';
-
-import type { ModuleCode } from 'types/modules';
 
 const ayBaseUrl: string = `${config.apiBaseUrl}/${config.academicYear.replace('/', '-')}`;
 

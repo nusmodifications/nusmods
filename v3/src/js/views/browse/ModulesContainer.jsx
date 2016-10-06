@@ -1,5 +1,4 @@
 // @flow
-
 import React from 'react';
 import DocumentTitle from 'react-document-title';
 import config from 'config';

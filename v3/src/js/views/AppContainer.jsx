@@ -1,4 +1,6 @@
 // @flow
+import type { TimetableConfig, SemTimetableConfig } from 'types/timetables';
+import type { FetchRequest, ModuleList, ModuleSelectList } from 'types/reducers';
 
 import React, { Component } from 'react';
 import { routerShape, Link } from 'react-router';
@@ -6,8 +8,6 @@ import { connect } from 'react-redux';
 
 import config from 'config';
 import { fetchModuleList, loadModule } from 'actions/moduleBank';
-import type { TimetableConfig, SemTimetableConfig } from 'types/timetables';
-import type { FetchRequest, ModuleList, ModuleSelectList } from 'types/reducers';
 
 import ModulesSelect from './components/ModulesSelect';
 import Footer from './layout/Footer';

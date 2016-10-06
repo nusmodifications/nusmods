@@ -1,10 +1,10 @@
 // @flow
-
-import { SELECT_NEW_STUDENT, SELECT_FACULTY } from 'actions/settings';
 import type { FSA } from 'redux';
 import type {
   SettingsState,
 } from 'types/reducers';
+
+import { SELECT_NEW_STUDENT, SELECT_FACULTY } from 'actions/settings';
 
 const defaultSettingsState: SettingsState = {
   newStudent: false,
