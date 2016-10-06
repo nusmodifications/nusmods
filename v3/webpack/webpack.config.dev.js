@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const merge = require('webpack-merge');
+const HappyPack = require('happypack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
