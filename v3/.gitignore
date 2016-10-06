@@ -6,8 +6,10 @@ node_modules
 # testing
 coverage
 .nyc_output
-# dll
+
+# caching
 dll
+.happypack
 
 # production
 dist

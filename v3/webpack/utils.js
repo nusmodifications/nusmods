@@ -72,7 +72,6 @@ exports.clean = function (path) {
 }
 
 // CSS-related utils
-
 function postcss() {
   return [
     autoprefixer({

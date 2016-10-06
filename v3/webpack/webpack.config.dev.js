@@ -37,6 +37,7 @@ const config = merge(
   {
     devtool: 'eval-source-map',
     plugins: [].concat(
+      new HappyPack({ id: 'styles' }),
       new HtmlWebpackPlugin(Object.assign({},
         {
           // We use ejs because there's custom logic to include the dll script tags.

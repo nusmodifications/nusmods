@@ -70,7 +70,6 @@ const common = {
   },
   plugins: [
     new HappyPack({ id: 'js' }),
-    new HappyPack({ id: 'styles' }),
     new StyleLintPlugin({
       context: PATHS.styles,
     }),
