@@ -72,7 +72,6 @@ exports.clean = function (path) {
 }
 
 // CSS-related utils
-
 function postcss() {
   return [
     autoprefixer({
@@ -94,6 +93,7 @@ exports.setupCSS = function (paths) {
           test: /\.(css|scss)$/,
           loaders: ['style', 'css', 'postcss', 'sass'],
           include: paths,
+          happy: { id: 'styles' },
         },
       ],
     },
