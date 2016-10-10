@@ -69,7 +69,12 @@ const common = {
     filename: '[name].js',
   },
   plugins: [
-    new HappyPack({ id: 'js' }),
+    new HappyPack({
+      id: 'js',
+      cacheContext: {
+        env: process.env.NODE_ENV,
+      },
+    }),
     new StyleLintPlugin({
       context: PATHS.styles,
     }),
