@@ -34,13 +34,13 @@ Once it's up, do a `vagrant ssh` to enter the development environment.
 
 ### Prerequisites
 
-- [Node.js](http://nodejs.org) (we currently use v5.x, instructions [here](https://github.com/nodesource/distributions#installation-instructions))
+- [Node.js](http://nodejs.org) (we currently use v6.x, instructions [here](https://github.com/nodesource/distributions#installation-instructions))
 
 ### Setup
 
 Install the necessary packages.
 ```bash
-$ npm install -g npm@3.6.0
+$ npm install -g npm@3.10.3
 $ npm install -g gulp-cli@1.2.2
 $ npm install
 ```
