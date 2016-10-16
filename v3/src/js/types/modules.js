@@ -67,9 +67,8 @@ export type RawLesson = {
 // They have to be injected in before using in the timetable.
 export type Lesson = RawLesson & { ModuleCode: ModuleCode, ModuleTitle: ModuleTitle };
 
-// Lessons do not implement a draggable interface
-// These are implemented by DnD library
-export type DraggableLesson = Lesson & {
+// Lessons do not implement a modifiable interface.
+export type ModifiableLesson = Lesson & {
   isModifiable?: boolean,
   isAvailable?: boolean,
   isActive?: boolean,

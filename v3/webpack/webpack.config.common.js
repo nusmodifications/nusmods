@@ -29,7 +29,6 @@ const VENDOR = [
   'react',
   'react-addons-shallow-compare',
   'react-autobind',
-  'react-dnd',
   'react-document-title',
   'react-dom',
   'redux',
