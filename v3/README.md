@@ -4,11 +4,13 @@ NUSMods v3[![Coverage Status](https://coveralls.io/repos/github/nusmodifications
 Highly based off the awesome [SurviveJS Webpack Guide](http://survivejs.com/webpack/).
 
 #### Getting Started
+Install [NodeJS 6+](https://nodejs.org/en/)
+Install [Yarn](https://yarnpkg.com/en/docs/install)
 
 ```
-$ npm install
-$ npm run build:dll # Do this whenever you update dependencies or change vendor bundle
-$ npm start
+$ yarn
+$ yarn run build:dll # Do this whenever you update dependencies or change vendor bundle
+$ yarn start
 ```
 
 #### Development
@@ -17,34 +19,34 @@ Using the awesome `webpack.DllPlugin`, build (and rebuild) speeds can be increas
 to generate the dll file.
 
 ```
-$ npm run build:dll
-$ npm start
+$ yarn run build:dll
+$ yarn start
 ```
 
 If you want to run the build for development without dll (why would you want to do that?), use the `-no-dll` flag.
 
 ```
-$ npm start -- -no-dll
+$ yarn start -- -no-dll
 ```
 
 #### Running tests
 ```
 // run tests
-$ npm test
+$ yarn test
 
 // writing tests with watch
-$ npm run test:watch
+$ yarn run test:watch
 
 // run type checking
-$ npm run flow
+$ yarn run flow
 ```
 
 #### Check code coverage
 ```
-$ npm run coverage
+$ yarn run coverage
 ```
 
 #### Build for Deployment
 ```
-$ npm run build
+$ yarn run build
 ```
