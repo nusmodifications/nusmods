@@ -235,7 +235,7 @@ $timetable-day-rows-height: calc(100% - #{$timetable-day-cell-height});
 
     &.is-modifiable {
       border-radius: $timetable-module-cell-border-radius;
-      cursor: grab;
+      cursor: pointer;
       pointer-events: auto;
     }
 

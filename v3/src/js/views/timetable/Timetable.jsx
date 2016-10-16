@@ -5,9 +5,6 @@ import type { TimetableArrangement } from 'types/timetables';
 import React, { Component } from 'react';
 import _ from 'lodash';
 import classnames from 'classnames';
-/* eslint-disable new-cap */
-import { DragDropContext } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
 
 import {
   SCHOOLDAYS,
@@ -106,4 +103,4 @@ class Timetable extends Component {
 }
 
 
-export default DragDropContext(HTML5Backend)(Timetable);
+export default Timetable;

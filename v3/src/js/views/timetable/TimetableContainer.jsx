@@ -8,7 +8,7 @@ import {
   HORIZONTAL,
 } from 'types/reducers';
 import type {
-  DraggableLesson,
+  ModifiableLesson,
   Lesson,
   Module,
   ModuleCondensed,
@@ -52,7 +52,7 @@ type Props = {
   modules: Module,
   theme: string,
   colors: ThemeState,
-  activeLesson: DraggableLesson,
+  activeLesson: ModifiableLesson,
   timetableOrientation: TimetableOrientation,
 
   addModule: Function,
@@ -73,7 +73,7 @@ export class TimetableContainer extends Component {
     this.props.cancelModifyLesson();
   }
 
-  modifyCell(lesson: DraggableLesson) {
+  modifyCell(lesson: ModifiableLesson) {
     if (lesson.isAvailable) {
       this.props.changeLesson(this.props.semester, lesson);
     } else if (lesson.isActive) {
@@ -84,7 +84,7 @@ export class TimetableContainer extends Component {
   }
 
   render() {
-    let timetableLessons: Array<Lesson | DraggableLesson> = timetableLessonsArray(this.props.semTimetableWithLessons);
+    let timetableLessons: Array<Lesson | ModifiableLesson> = timetableLessonsArray(this.props.semTimetableWithLessons);
     if (this.props.activeLesson) {
       const activeLesson = this.props.activeLesson;
       const moduleCode = activeLesson.ModuleCode;
@@ -120,7 +120,7 @@ export class TimetableContainer extends Component {
     });
 
     const arrangedLessons: TimetableArrangement = arrangeLessonsForWeek(timetableLessons);
-    const arrangedLessonsWithModifiableFlag: Array<DraggableLesson> = _.mapValues(arrangedLessons, (dayRows) => {
+    const arrangedLessonsWithModifiableFlag: TimetableArrangement = _.mapValues(arrangedLessons, (dayRows) => {
       return dayRows.map((row) => {
         return row.map((lesson) => {
           const module: Module = this.props.modules[lesson.ModuleCode];

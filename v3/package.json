@@ -78,8 +78,6 @@
     "react": "^15.3.2",
     "react-addons-shallow-compare": "^15.3.2",
     "react-autobind": "^1.0.6",
-    "react-dnd": "^2.1.4",
-    "react-dnd-html5-backend": "^2.1.2",
     "react-document-title": "^2.0.2",
     "react-dom": "^15.3.2",
     "react-redux": "^4.4.5",
