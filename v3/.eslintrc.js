@@ -35,6 +35,7 @@ module.exports = {
         jsx: 'never'
       }
     ],
+    'react/jsx-closing-bracket-location': 'off',
     'react/jsx-first-prop-new-line': ['error', 'never'],
     // It just looks nicer without the space.
     'react/jsx-space-before-closing': 'off',
