@@ -65,15 +65,20 @@ export type RawLesson = {
 
 // RawLessons obtained from API does not include ModuleCode and ModuleTitle by default.
 // They have to be injected in before using in the timetable.
-export type Lesson = RawLesson & { ModuleCode: ModuleCode, ModuleTitle: ModuleTitle };
+export type Lesson = RawLesson & {
+  ModuleCode: ModuleCode,
+  ModuleTitle: ModuleTitle,
+};
 
-// Lessons do not implement a modifiable interface.
-export type ModifiableLesson = Lesson & {
+type Modifiable = {
   isModifiable?: boolean,
   isAvailable?: boolean,
   isActive?: boolean,
   colorIndex: number,
 };
+
+// Lessons do not implement a modifiable interface.
+export type ModifiableLesson = Lesson & Modifiable;
 
 // BiddingStat is CORS bidding stats for a particular round for a module.
 export type BiddingStat = {

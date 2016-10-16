@@ -1,5 +1,5 @@
 // @flow
-import type { Lesson, LessonTime } from 'types/modules';
+import type { Lesson, LessonTime, ModifiableLesson } from 'types/modules';
 
 import React from 'react';
 import _ from 'lodash';
@@ -7,9 +7,10 @@ import _ from 'lodash';
 import { convertIndexToTime, convertTimeToIndex } from 'utils/timify';
 import TimetableCell from './TimetableCell';
 
-function generateCells(lessons?: Array<Lesson>, cellSize: number, cellOrientationStyleProp: string,
+function generateCells(lessons?: Array<ModifiableLesson | Lesson>,
+                        cellSize: number, cellOrientationStyleProp: string,
                         onModifyCell?: Function, startingIndex: number, endingIndex: number) {
-  const lessonToStartTimeMap: {[time: LessonTime]: Lesson} = _.mapValues(
+  const lessonToStartTimeMap: {[time: LessonTime]: ModifiableLesson} = _.mapValues(
     _.groupBy(lessons, lesson => lesson.StartTime),
     value => value[0]
   );
@@ -17,7 +18,7 @@ function generateCells(lessons?: Array<Lesson>, cellSize: number, cellOrientatio
   const cells = [];
   for (let i = startingIndex; i < endingIndex; i += 1) {
     const timeForIndex: LessonTime = convertIndexToTime(i);
-    const lesson: Lesson = lessonToStartTimeMap[timeForIndex];
+    const lesson: ModifiableLesson = lessonToStartTimeMap[timeForIndex];
     if (lesson) {
       const lessonStartIndex: number = i;
       const lessonEndIndex: number = convertTimeToIndex(lesson.EndTime);
@@ -45,7 +46,7 @@ type Props = {
   scale?: number,
   startingIndex: number,
   endingIndex: number,
-  lessons?: Array<Lesson>,
+  lessons?: Array<ModifiableLesson | Lesson>,
   onModifyCell?: Function,
 };
 

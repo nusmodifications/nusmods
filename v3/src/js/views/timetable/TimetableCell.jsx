@@ -6,17 +6,17 @@ import classnames from 'classnames';
 import { LESSON_TYPE_ABBREV } from 'utils/timetables';
 
 type Props = {
-  lesson: ModifiableLesson,
-  size: number,
-  styleProp: string,
-  onModifyCell: Function,
+  lesson?: ModifiableLesson,
+  size?: number,
+  styleProp?: string,
+  onModifyCell?: Function,
 };
 
 function TimetableCell(props: Props) {
   const lesson = props.lesson;
   let cell = null;
   const style = {};
-  if (props.size) {
+  if (props.size && props.styleProp) {
     style[props.styleProp] = `${props.size}%`;
   }
 
@@ -30,7 +30,9 @@ function TimetableCell(props: Props) {
       })}
         onClick={(event) => {
           event.stopPropagation();
-          props.onModifyCell(lesson);
+          if (props.onModifyCell) {
+            props.onModifyCell(lesson);
+          }
         }}
       >
         <div className="cell-module-code">{lesson.ModuleCode}</div>

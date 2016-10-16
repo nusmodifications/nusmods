@@ -120,7 +120,7 @@ export class TimetableContainer extends Component {
     });
 
     const arrangedLessons: TimetableArrangement = arrangeLessonsForWeek(timetableLessons);
-    const arrangedLessonsWithModifiableFlag: Array<ModifiableLesson> = _.mapValues(arrangedLessons, (dayRows) => {
+    const arrangedLessonsWithModifiableFlag: TimetableArrangement = _.mapValues(arrangedLessons, (dayRows) => {
       return dayRows.map((row) => {
         return row.map((lesson) => {
           const module: Module = this.props.modules[lesson.ModuleCode];
