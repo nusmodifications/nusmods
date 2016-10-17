@@ -38,6 +38,7 @@ const VENDOR = [
   'react-select-fast-filter-options',
   'react-virtualized-select',
   'redux-thunk',
+  'nusmoderator',
 ];
 
 const common = {

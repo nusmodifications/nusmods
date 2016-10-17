@@ -75,6 +75,7 @@
     "classnames": "^2.2.5",
     "js-search": "^1.3.2",
     "lodash": "^4.15.0",
+    "nusmoderator": "^2.0.0",
     "react": "^15.3.2",
     "react-addons-shallow-compare": "^15.3.2",
     "react-autobind": "^1.0.6",
