@@ -6,7 +6,7 @@
     "nusmods"
   ],
   "description": "A lightweight library with helpful functions for NUS-related matters.",
-  "main": "main.js",
+  "main": "lib/index.js",
   "keywords": [
     "NUS",
     "modifications",
