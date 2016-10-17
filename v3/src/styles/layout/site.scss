@@ -1,0 +1,24 @@
+// This file contains the styles for the overall site
+body {
+  padding-top: 5rem;
+
+  @media (max-width: map-get($grid-breakpoints, 'md')) {
+    font-size: $font-size-sm;
+    padding-top: $navbar-height * 2;
+  }
+}
+
+.main-content {
+  @media (max-width: map-get($grid-breakpoints, 'md')) {
+    padding-top: 1rem;
+  }
+}
+
+.page-container {
+  animation-duration: $page-entering-duration;
+}
+
+.page-title {
+  font-size: $font-size-xlg;
+  margin: 2rem 0 4rem;
+}

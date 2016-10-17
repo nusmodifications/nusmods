@@ -1,6 +1,5 @@
 ---
 dependencies:
-  - bower
   - composer
   - gulp
   - mysql

@@ -1,0 +1,65 @@
+.nm-navbar {
+  margin-bottom: 15px;
+
+  .nm-navbar-brand {
+    background-image: url('../img/nusmods-logo.png');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 34px;
+    width: 100px;
+
+    @media (min-width: map-get($grid-breakpoints, 'md')) {
+      margin-left: 17px;
+    }
+  }
+}
+
+.nm-nav-tabs {
+  padding-left: 10px;
+
+  .nav-link {
+    color: $gray-light;
+    display: block;
+    padding: 10px;
+
+    &.active {
+      color: $brand-primary;
+    }
+  }
+
+  .nm-nav-item {
+    list-style: none;
+  }
+
+  @media (max-width: map-get($grid-breakpoints, 'md')) {
+    $gutter: -$grid-gutter-width/2;
+
+    background-color: #fff;
+    box-shadow: 0 0 15px -3px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: row;
+    height: $navbar-height;
+    margin-left: $gutter;
+    margin-right: $gutter;
+    padding-left: 0;
+    position: fixed;
+    top: $navbar-height;
+    width: 100%;
+    z-index: 1;
+
+    .nm-nav-item {
+      flex-grow: 1;
+    }
+
+    .nav-link {
+      display: block;
+      padding: 15px 0;
+      text-align: center;
+    }
+
+    .nm-link-title {
+      display: none;
+    }
+  }
+}

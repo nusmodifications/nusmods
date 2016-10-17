@@ -1,0 +1,17 @@
+// Layout
+$navbar-height: 50px;
+
+// Animations
+$fullscreen-duration: 0.375s;
+$exiting-duration: 0.195s;
+$entering-duration: 0.225s;
+$desktop-fullscreen-duration: 0.275s;
+$desktop-exiting-duration: 0.175s;
+$desktop-entering-duration: 0.195s;
+$material-standard-curve: cubic-bezier(0.4, 0, 0.2, 1);
+$material-deceleration-curve: cubic-bezier(0, 0, 0.2, 1);
+$material-acceleration-curve: cubic-bezier(0.4, 0, 1, 1);
+$material-sharp-curve: cubic-bezier(0.4, 0, 0.6, 1);
+
+$page-entering-duration: $fullscreen-duration;
+$page-entering-animation: fadeIn;

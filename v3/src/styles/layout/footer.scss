@@ -1,0 +1,37 @@
+.nm-footer {
+  background-color: $gray-lightest;
+  font-size: 0.85rem;
+  margin-top: 4rem;
+  padding: 4rem 0;
+  text-align: center;
+
+  a {
+    color: $gray;
+    font-weight: 500;
+
+    &:hover {
+      color: $link-color;
+    }
+  }
+
+  p {
+    margin-bottom: 0;
+  }
+
+  @include media-breakpoint-up(sm) {
+    text-align: left;
+  }
+}
+
+.nm-footer-links {
+  margin-bottom: 1rem;
+  padding-left: 0;
+
+  li {
+    display: inline-block;
+
+    + li {
+      margin-left: 1rem;
+    }
+  }
+}

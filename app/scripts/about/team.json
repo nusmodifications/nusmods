@@ -43,6 +43,16 @@
     "linkedin": "https://www.linkedin.com/in/ngzhian"
   },
   {
+    "name": "Li Kai",
+    "description": "Happy to help.",
+    "link": "https://www.github.com/li-kai",
+    "gravatar": "https://www.gravatar.com/avatar/3d2bcece0409c7578b2e9d87f0c1b6d7?s=256",
+    "gravatar-alt": "Li Kai",
+    "facebook": "https://www.facebook.com/falconets",
+    "twitter": "https://twitter.com/falconets",
+    "github": "https://www.github.com/li-kai"
+  },
+  {
     "name": "Xu Bili",
     "description": "Loves to read and write elegant code. JavaScript enthusiast.",
     "link": "https://www.github.com/xbili",
@@ -54,16 +64,6 @@
     "linkedin": "https://www.linkedin.com/in/xbili"
   },
   {
-    "name": "Ashray Jain",
-    "description": "Full stack developer who loves playing with new technologies.",
-    "link": "https://www.github.com/ashrayjain",
-    "gravatar": "https://www.gravatar.com/avatar/a9b385681eda283b3ef7596a6e3e4b00?s=256",
-    "gravatar-alt": "Ashray Jain",
-    "facebook": "https://www.facebook.com/ashray.jain.182",
-    "github": "https://www.github.com/ashrayjain",
-    "linkedin": "https://www.linkedin.com/in/ashray-jain-54780268"
-  },
-  {
     "name": "Ang Yen Ling",
     "description": "Bubbly girl who loves new things, matcha ice cream and marketing.",
     "link": "https://www.facebook.com/ang.yenling",
@@ -71,5 +71,5 @@
     "gravatar-alt": "Ang Yen Ling",
     "facebook": "https://www.facebook.com/ang.yenling",
     "linkedin": "https://www.linkedin.com/in/yen-ling-ang-a56158b6"
-  },
+  }
 ]

@@ -12,7 +12,7 @@ var _ = require('underscore');
 var $ = require('jquery');
 var config = require('./common/config');
 var localforage = require('localforage');
-require('qTip2');
+require('qtip2');
 
 // Set Backbone.History.initialRoute to allow route handlers to find out if they
 // were called from the initial route.

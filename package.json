@@ -18,28 +18,40 @@
     }
   ],
   "scripts": {
-    "start": "gulp serve",
-    "build": "gulp build",
+    "start": "webpack-dev-server",
+    "build": "webpack && cp -r app/vendor dist/vendor",
     "rsync": "gulp rsync",
-    "deploy": "gulp build && gulp rsync",
-    "test": "gulp"
+    "deploy": "webpack && gulp rsync",
+    "test": "webpack && gulp"
   },
   "dependencies": {
+    "animate.css": "^3.4.0",
     "backbone": "~1.2.1",
     "backbone.babysitter": "~0.1.8",
     "backbone.marionette": "~2.4.2",
     "backbone.select": "~1.3.1",
     "backbone.wreqr": "~1.3.3",
     "bluebird": "~2.9.32",
+    "bootstrap-sass": "^3.3.6",
     "d3": "~3.5.6",
     "fastclick": "~1.0.6",
+    "font-awesome": "^4.3.0",
     "gulp-rsync": "0.0.5",
+    "jasny-bootstrap": "jasny/bootstrap#2bc3e6f3dc0bc3e6453943f3a2d15723f1c3f9e9",
     "jquery": "~2.1.4",
+    "jquery-file-download": "^1.4.5",
+    "jquery-ui": "^1.12.0",
+    "jquery-ui-touch-punch": "^0.2.3",
+    "localforage": "^1.4.2",
     "marked": "~0.3.3",
     "moment": "~2.10.3",
     "mousetrap": "~1.5.3",
+    "nusmoderator": "^1.1.1",
     "qs": "~4.0.0",
+    "qtip2": "^3.0.0",
     "raven-js": "~1.1.19",
+    "select2": "^3.5.1",
+    "select2-bootstrap-css": "^1.4.6",
     "spin.js": "~2.3.1",
     "underscore": "~1.8.3",
     "watchify": "^3.7.0",
@@ -47,119 +59,50 @@
   },
   "devDependencies": {
     "autoprefixer": "^6.3.1",
+    "babel-core": "^6.11.4",
+    "babel-loader": "^6.2.4",
+    "babel-plugin-syntax-trailing-function-commas": "^6.13.0",
+    "babel-plugin-transform-object-rest-spread": "^6.8.0",
+    "babel-preset-es2015": "^6.13.2",
+    "babel-preset-react": "^6.11.1",
     "browser-sync": "^2.11.1",
     "browserify": "^10.2.6",
     "browserify-shim": "~3.8.9",
-    "connect-modrewrite": "^0.8.5",
+    "css-loader": "^0.23.1",
     "del": "^2.2.0",
-    "es6-promise": "^3.0.2",
     "eslint": "^2.10.0",
     "eslint-config-airbnb": "^9.0.1",
     "eslint-plugin-import": "^1.11.1",
     "eslint-plugin-jsx-a11y": "^1.2.2",
     "eslint-plugin-react": "^5.2.2",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "file-loader": "^0.9.0",
     "gulp": "^3.9.0",
-    "gulp-autoprefixer": "^3.1.0",
-    "gulp-batch": "^1.0.5",
-    "gulp-cssmin": "^0.1.7",
-    "gulp-cssnano": "^2.1.0",
     "gulp-eslint": "^2.1.0",
-    "gulp-htmlmin": "^1.3.0",
-    "gulp-imagemin": "^2.4.0",
     "gulp-jshint": "^2.0.0",
     "gulp-load-plugins": "^1.2.0",
     "gulp-mocha": "^2.2.0",
-    "gulp-postcss": "^6.0.1",
-    "gulp-rev": "^6.0.1",
-    "gulp-sass": "^2.1.1",
-    "gulp-sourcemaps": "^1.6.0",
     "gulp-svgmin": "^1.2.1",
-    "gulp-uglify": "^1.5.1",
-    "gulp-usemin": "^0.3.20",
-    "gulp-util": "^3.0.7",
     "handlebars": "~3.0.3",
+    "handlebars-loader": "^1.3.0",
     "hbsfy": "~2.2.1",
+    "html-webpack-plugin": "^2.22.0",
     "jshint": "^2.9.1",
     "jshint-stylish": "~2.0.1",
-    "lodash.assign": "^4.0.1",
-    "merge-stream": "^1.0.0",
-    "run-sequence": "^1.1.5",
-    "vinyl-source-stream": "^1.1.0"
+    "json-loader": "^0.5.4",
+    "node-sass": "^3.8.0",
+    "sass-loader": "^4.0.0",
+    "style-loader": "^0.13.1",
+    "url-loader": "^0.5.7",
+    "vinyl-source-stream": "^1.1.0",
+    "webpack": "^1.13.1",
+    "webpack-dev-server": "^1.14.1",
+    "webpack-merge": "^0.14.1",
+    "webpack-stream": "^3.2.0",
+    "webpack-validator": "^2.2.7"
   },
   "engines": {
-    "node": ">=0.8.0"
+    "node": ">=5.11.0"
   },
-  "private": true,
-  "browserify": {
-    "transform": [
-      "browserify-shim",
-      "hbsfy"
-    ]
-  },
-  "browser": {
-    "bootstrap/affix": "./app/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/affix.js",
-    "bootstrap/alert": "./app/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/alert.js",
-    "bootstrap/button": "./app/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/button.js",
-    "bootstrap/collapse": "./app/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/collapse.js",
-    "bootstrap/dropdown": "./app/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/dropdown.js",
-    "bootstrap/popover": "./app/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/popover.js",
-    "bootstrap/scrollspy": "./app/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/scrollspy.js",
-    "bootstrap/tab": "./app/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tab.js",
-    "bootstrap/tooltip": "./app/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tooltip.js",
-    "bootstrap/transition": "./app/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/transition.js",
-    "jquery-ui-touch-punch": "./app/bower_components/jqueryui-touch-punch/jquery.ui.touch-punch.js",
-    "jquery-ui/core": "./app/bower_components/jquery.ui/ui/core.js",
-    "jquery-ui/draggable": "./app/bower_components/jquery.ui/ui/draggable.js",
-    "jquery-ui/droppable": "./app/bower_components/jquery.ui/ui/droppable.js",
-    "jquery-ui/mouse": "./app/bower_components/jquery.ui/ui/mouse.js",
-    "jquery-ui/widget": "./app/bower_components/jquery.ui/ui/widget.js",
-    "jquery.fileDownload": "./app/bower_components/jquery-file-download/src/Scripts/jquery.fileDownload.js",
-    "localforage": "./app/bower_components/localforage/dist/localforage.nopromises.js",
-    "nusmoderator": "./app/bower_components/nusmoderator/main.js",
-    "qTip2": "./app/bower_components/qtip2/jquery.qtip.js",
-    "select2": "./app/bower_components/select2/select2.js"
-  },
-  "browserify-shim": {
-    "bootstrap/collapse": {
-      "depends": [
-        "bootstrap/transition"
-      ]
-    },
-    "bootstrap/transition": {
-      "depends": [
-        "jquery:jQuery"
-      ]
-    },
-    "jquery-ui/draggable": {
-      "depends": [
-        "jquery-ui/core",
-        "jquery-ui/mouse",
-        "jquery-ui/widget"
-      ]
-    },
-    "jquery-ui/droppable": {
-      "depends": [
-        "jquery-ui/core",
-        "jquery-ui/widget",
-        "jquery-ui/mouse",
-        "jquery-ui/draggable"
-      ]
-    },
-    "jquery-ui/mouse": {
-      "depends": [
-        "jquery-ui/widget"
-      ]
-    },
-    "jquery-ui-touch-punch": {
-      "depends": [
-        "jquery-ui/mouse"
-      ]
-    },
-    "localforage": {
-      "exports": "localforage",
-      "depends": [
-        "bluebird:Promise"
-      ]
-    }
-  }
+  "private": true
 }

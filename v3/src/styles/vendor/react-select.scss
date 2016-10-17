@@ -1,0 +1,22 @@
+.Select {
+  $font-size: 0.8em;
+
+  .Select-control {
+    font-size: $font-size;
+
+    &:hover {
+      box-shadow: none;
+    }
+  }
+
+  .Select-menu-outer {
+    cursor: pointer;
+    font-size: $font-size;
+  }
+}
+
+.navbar {
+  .Select-control {
+    border-color: transparent;
+  }
+}

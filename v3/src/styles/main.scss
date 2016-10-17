@@ -1,0 +1,27 @@
+@import 'bootstrap/bootstrap';
+
+// 3rd-party imports
+@import '~react-virtualized/styles.css';
+@import 'vendor/react-select';
+@import '~react-select/dist/react-select.css';
+@import '~react-virtualized-select/styles.css';
+
+@import 'constants';
+
+// Utils
+@import 'utils/hacks';
+@import 'utils/mixins';
+@import 'utils/animations';
+
+// Theme
+@import 'themes';
+
+// Layout
+@import 'layout/site';
+@import 'layout/nav';
+@import 'layout/footer';
+
+// Pages
+@import 'pages/timetable';
+@import 'pages/modules';
+@import 'pages/settings';

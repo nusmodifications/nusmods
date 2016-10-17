@@ -1,0 +1,23 @@
+{
+  "presets": [
+    "es2015",
+    "react",
+  ],
+  "env": {
+    "development": {
+      "presets": [
+        "react-hmre",
+      ],
+    },
+    "production": {
+      "presets": [
+        "react-optimize",
+      ],
+    },
+  },
+  "plugins": [
+    "lodash",
+    "syntax-object-rest-spread",
+    "transform-object-rest-spread",
+  ],
+}

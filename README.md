@@ -34,16 +34,15 @@ Once it's up, do a `vagrant ssh` to enter the development environment.
 
 ### Prerequisites
 
-- [Node.js](http://nodejs.org) (we currently use v5.x, instructions [here](https://github.com/nodesource/distributions#installation-instructions))
+- [Node.js](http://nodejs.org) (we currently use v6.x, instructions [here](https://github.com/nodesource/distributions#installation-instructions))
 
 ### Setup
 
 Install the necessary packages.
 ```bash
-$ npm install -g npm@3.6.0
-$ npm install -g bower@1.7.9 gulp-cli@1.2.2
+$ npm install -g npm@3.10.3
+$ npm install -g gulp-cli@1.2.2
 $ npm install
-$ bower install
 ```
 
 If you are working on `news.php`, make a copy of `/app/config/secrets.json.example` in the same directory and call it `secrets.json`. Add your Facebook App credentials into the file `secrets.json`.
@@ -62,7 +61,7 @@ Run the development environment:
 $ npm start
 ```
 
-Visit `localhost:9000` to see your local instance of NUSMods.
+Visit `localhost:8080` to see your local instance of NUSMods.
 
 ## Building for Production
 
