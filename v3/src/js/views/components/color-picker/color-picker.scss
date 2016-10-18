@@ -1,6 +1,7 @@
 $background-color: #f6f6f6;
 $height: 70px;
 $width: 120px;
+$padding: 5px;
 $arrow-width: 20px;
 $arrow-height: 15px;
 
@@ -11,10 +12,10 @@ $arrow-height: 15px;
   .color-picker {
     background: $background-color;
     border-radius: 5px;
-    box-shadow: 0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24);
+    box-shadow: 0 13px 13px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24);
     margin-left: -($width - $arrow-width)/2;
     margin-top: $arrow-height;
-    padding: 5px;
+    padding: $padding;
     position: absolute;
     height: $height;
     width: $width;
@@ -31,6 +32,14 @@ $arrow-height: 15px;
       left: ($width - $arrow-width)/2;
       position: absolute;
       top: -$arrow-height;
+    }
+
+    @media(max-width: 768px) {
+      left: 50px;
+
+      &:before {
+        left: 0;
+      }
     }
   }
 
