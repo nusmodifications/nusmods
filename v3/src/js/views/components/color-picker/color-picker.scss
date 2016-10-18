@@ -1,0 +1,49 @@
+$background-color: #f6f6f6;
+$height: 70px;
+$width: 120px;
+$arrow-width: 20px;
+$arrow-height: 15px;
+
+.color-picker-container {
+  float: left;
+  position: relative;
+
+  .color-picker {
+    background: $background-color;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24);
+    margin-left: -($width - $arrow-width)/2;
+    margin-top: $arrow-height;
+    padding: 5px;
+    position: absolute;
+    height: $height;
+    width: $width;
+    z-index: 1;
+
+    // arrowtip
+    &:before {
+      content: ' ';
+      border: $arrow-width/2 solid darken($background-color, 5%);
+      border-left-color: transparent;
+      border-right-color: transparent;
+      border-top-width: 0;
+      height: $arrow-height;
+      left: ($width - $arrow-width)/2;
+      position: absolute;
+      top: -$arrow-height;
+    }
+  }
+
+  .color-option {
+    cursor: pointer;
+    display: inline-block;
+    padding: 5px;
+    width: 25%;
+
+    &:after {
+      content: '';
+      display: block;
+      padding-bottom: 100%;
+    }
+  }
+}
