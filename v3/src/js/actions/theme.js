@@ -1,6 +1,7 @@
 // @flow
 import type { FSA } from 'types/redux';
 import type { ModuleCode } from 'types/modules';
+import type { ColorIndex } from 'types/reducers';
 
 export const SELECT_THEME: string = 'SELECT_THEME';
 export function selectTheme(theme: string): FSA {
@@ -28,7 +29,7 @@ export function cancelModifyModuleColor(): FSA {
 }
 
 export const SELECT_MODULE_COLOR: string = 'SELECT_MODULE_COLOR';
-export function selectModuleColor(moduleCode: ModuleCode, colorIndex: number): FSA {
+export function selectModuleColor(moduleCode: ModuleCode, colorIndex: ColorIndex): FSA {
   return {
     type: SELECT_MODULE_COLOR,
     payload: {

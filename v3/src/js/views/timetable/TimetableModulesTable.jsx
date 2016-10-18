@@ -1,5 +1,6 @@
 // @flow
 import type { ModuleWithColor, ModuleCode } from 'types/modules';
+import type { ColorIndex } from 'types/reducers';
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -51,7 +52,7 @@ class TimetableModulesTable extends Component {
                         }
                       }}/>
                     {this.props.activeModule === module.ModuleCode &&
-                      <ColorPicker onChooseColor={(colorIndex: number) => {
+                      <ColorPicker onChooseColor={(colorIndex: ColorIndex) => {
                         this.props.selectModuleColor(module.ModuleCode, colorIndex);
                       }}/>
                     }
