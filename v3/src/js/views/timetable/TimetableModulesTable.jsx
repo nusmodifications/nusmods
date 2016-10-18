@@ -1,5 +1,5 @@
 // @flow
-import type { Module } from 'types/modules';
+import type { ModuleWithColor } from 'types/modules';
 
 import React from 'react';
 import { Link } from 'react-router';
@@ -9,7 +9,7 @@ import { getModuleSemExamDate, modulePagePath } from 'utils/modules';
 
 type Props = {
   semester: number,
-  modules: Array<Module>,
+  modules: Array<ModuleWithColor>,
   onRemoveModule: Function,
   horizontalOrientation: boolean,
 };
@@ -26,23 +26,28 @@ function TimetableModulesTable(props: Props) {
             })}
               key={module.ModuleCode}
             >
-              <div>
-                <Link to={modulePagePath(module.ModuleCode)}>
-                  {module.ModuleCode} {module.ModuleTitle}
-                </Link>
-              </div>
-              <div>
-                <small>
-                  Exam: {getModuleSemExamDate(module, props.semester)}
-                  &nbsp;&middot;&nbsp;
-                  {module.ModuleCredit} MCs
-                  &nbsp;&middot;&nbsp;
-                  <span className="btn-remove text-muted" onClick={() => {
-                    props.onRemoveModule(module.ModuleCode);
-                  }}>
-                    Remove
-                  </span>
-                </small>
+              <div className="modules-table-row-inner">
+                <div className="color-column">
+                  <div className={`modules-table-color color-${module.colorIndex}`}/>
+                </div>
+                <div className="module-details-column">
+                  <Link to={modulePagePath(module.ModuleCode)}>
+                    {module.ModuleCode} {module.ModuleTitle}
+                  </Link>
+                  <div>
+                    <small>
+                      Exam: {getModuleSemExamDate(module, props.semester)}
+                      &nbsp;&middot;&nbsp;
+                      {module.ModuleCredit} MCs
+                      &nbsp;&middot;&nbsp;
+                      <span className="btn-remove" onClick={() => {
+                        props.onRemoveModule(module.ModuleCode);
+                      }}>
+                        Remove
+                      </span>
+                    </small>
+                  </div>
+                </div>
               </div>
             </div>
           );

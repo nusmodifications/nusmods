@@ -35,6 +35,8 @@ export type Module = {
   Workload?: string,
 };
 
+export type ModuleWithColor = Module & { colorIndex: number };
+
 // This format is returned from the module list endpoint.
 export type ModuleCondensed = {
   ModuleCode: ModuleCode,

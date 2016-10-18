@@ -18,10 +18,8 @@ $timetable-time-width: 15%;
 $timetable-day-cell-height: 2.5rem;
 $timetable-day-rows-height: calc(100% - #{$timetable-day-cell-height});
 
-.timetable-container {
-  .timetable-page-container {
-    animation-name: $page-entering-animation;
-  }
+.timetable-page-container {
+  animation-name: $page-entering-animation;
 
   .timetable-content-container {
     position: relative;
@@ -70,152 +68,154 @@ $timetable-day-rows-height: calc(100% - #{$timetable-day-cell-height});
     border: $timetable-border;
   }
 
-  &.horizontal-mode {
-    overflow-y: hidden;
+  .timetable-container {
+    &.horizontal-mode {
+      overflow-y: hidden;
 
-    .timetable-inner-container {
-      min-width: $timetable-min-width;
-    }
-
-    .timetable-timings {
-      border-top: none;
-      padding-left: $timetable-day-margin;
-
-      .timetable-cell {
-        text-align: left;
-        transform: translate(-30%, 0);
-      }
-    }
-
-    .timetable-bg {
-      padding-left: $timetable-day-margin;
-    }
-
-    .timetable-day {
-      display: table;
-      position: relative;
-      width: 100%;
-
-      &:not(:last-child) {
-        border-bottom: $timetable-border;
+      .timetable-inner-container {
+        min-width: $timetable-min-width;
       }
 
-      .timetable-day-cell {
-        display: table-cell;
-        padding-left: 0.7rem;
-        vertical-align: middle;
-        width: $timetable-day-margin;
-      }
-    }
+      .timetable-timings {
+        border-top: none;
+        padding-left: $timetable-day-margin;
 
-    .timetable {
-      .timetable-row {
-        height: $timetable-row-height;
-
-        &:not(:first-child) {
-          margin-top: $timetable-row-margin;
+        .timetable-cell {
+          text-align: left;
+          transform: translate(-30%, 0);
         }
       }
-    }
 
-    .timetable-cell {
-      display: inline-block;
-      height: 100%;
-    }
-  }
-
-  &.vertical-mode {
-    $timetable-time-width: 10%;
-
-    .timetable-content-container {
-      float: left;
-      height: 100%;
-      overflow-x: scroll;
-      width: 100% - $timetable-time-width;
+      .timetable-bg {
+        padding-left: $timetable-day-margin;
+      }
 
       .timetable-day {
-        float: left;
+        display: table;
+        position: relative;
+        width: 100%;
 
         &:not(:last-child) {
-          border-right: $timetable-border;
+          border-bottom: $timetable-border;
+        }
+
+        .timetable-day-cell {
+          display: table-cell;
+          padding-left: 0.7rem;
+          vertical-align: middle;
+          width: $timetable-day-margin;
         }
       }
-    }
 
-    .timetable-content-inner-container {
-      height: 100%;
-      position: relative;
-    }
+      .timetable {
+        .timetable-row {
+          height: $timetable-row-height;
 
-    .timetable-timings {
-      float: left;
-      height: 100%;
-      padding-right: 0.7rem;
-      padding-top: $timetable-day-cell-height;
-      text-align: right;
-      width: $timetable-time-width;
+          &:not(:first-child) {
+            margin-top: $timetable-row-margin;
+          }
+        }
+      }
 
       .timetable-cell {
-        transform: translate(0, -30%);
+        display: inline-block;
+        height: 100%;
       }
     }
 
-    .timetable-bg {
-      padding-top: $timetable-day-cell-height;
+    &.vertical-mode {
+      $timetable-time-width: 10%;
 
-      .timetable-day {
+      .timetable-content-container {
+        float: left;
+        height: 100%;
+        overflow-x: scroll;
+        width: 100% - $timetable-time-width;
+
+        .timetable-day {
+          float: left;
+
+          &:not(:last-child) {
+            border-right: $timetable-border;
+          }
+        }
+      }
+
+      .timetable-content-inner-container {
         height: 100%;
         position: relative;
       }
-    }
 
-    .timetable {
-      display: flex;
-      flex-direction: row;
-      height: 100%;
+      .timetable-timings {
+        float: left;
+        height: 100%;
+        padding-right: 0.7rem;
+        padding-top: $timetable-day-cell-height;
+        text-align: right;
+        width: $timetable-time-width;
+
+        .timetable-cell {
+          transform: translate(0, -30%);
+        }
+      }
+
+      .timetable-bg {
+        padding-top: $timetable-day-cell-height;
+
+        .timetable-day {
+          height: 100%;
+          position: relative;
+        }
+      }
+
+      .timetable {
+        display: flex;
+        flex-direction: row;
+        height: 100%;
+
+        .timetable-day {
+          flex-basis: 0;
+          height: 100%;
+        }
+
+        .timetable-day-rows {
+          height: $timetable-day-rows-height;
+        }
+
+        .timetable-row {
+          float: left;
+        }
+      }
 
       .timetable-day {
-        flex-basis: 0;
-        height: 100%;
+        width: 100%;
+
+        .timetable-day-cell {
+          display: table;
+          height: $timetable-day-cell-height;
+          text-align: center;
+          width: 100%;
+
+          .timetable-day-cell-text {
+            display: table-cell;
+            vertical-align: middle;
+          }
+        }
       }
 
       .timetable-day-rows {
-        height: $timetable-day-rows-height;
+        height: 100%;
       }
 
       .timetable-row {
-        float: left;
-      }
-    }
-
-    .timetable-day {
-      width: 100%;
-
-      .timetable-day-cell {
-        display: table;
-        height: $timetable-day-cell-height;
-        text-align: center;
+        height: 100%;
         width: 100%;
-
-        .timetable-day-cell-text {
-          display: table-cell;
-          vertical-align: middle;
-        }
       }
-    }
 
-    .timetable-day-rows {
-      height: 100%;
-    }
-
-    .timetable-row {
-      height: 100%;
-      width: 100%;
-    }
-
-    .timetable-cell {
-      display: block;
-      width: 100%;
+      .timetable-cell {
+        display: block;
+        width: 100%;
+      }
     }
   }
 
@@ -277,6 +277,10 @@ $timetable-day-rows-height: calc(100% - #{$timetable-day-cell-height});
       }
     }
   }
+
+  .timetable-action-row {
+    margin-bottom: 10px;
+  }
 }
 
 .modules-table {
@@ -286,7 +290,38 @@ $timetable-day-rows-height: calc(100% - #{$timetable-day-cell-height});
     margin-bottom: 0.7rem;
   }
 
-  .btn-remove {
+  .modules-table-row-inner {
+    position: relative;
+  }
+
+  .color-column {
+    display: table-cell;
+    vertical-align: top;
+  }
+
+  .module-details-column {
+    display: table-cell;
+    vertical-align: top;
+    width: 10000px;
+  }
+
+  .modules-table-color {
+    $size: 20px;
+
+    border-radius: 3px;
     cursor: pointer;
+    height: $size;
+    margin-right: 10px;
+    margin-top: 2px;
+    width: $size;
+  }
+
+  .btn-remove {
+    color: $gray-light;
+    cursor: pointer;
+
+    &:hover {
+      color: inherit;
+    }
   }
 }
