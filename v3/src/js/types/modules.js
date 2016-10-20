@@ -1,4 +1,5 @@
 // @flow
+import type { ColorIndex } from 'types/reducers';
 
 // Components within a module:
 export type AcadYear = string;     // E.g. "2016/2017"
@@ -34,6 +35,8 @@ export type Module = {
   Types: Array<string>,
   Workload?: string,
 };
+
+export type ModuleWithColor = Module & { colorIndex: ColorIndex };
 
 // This format is returned from the module list endpoint.
 export type ModuleCondensed = {

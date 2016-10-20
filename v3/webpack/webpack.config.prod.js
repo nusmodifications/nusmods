@@ -38,7 +38,7 @@ const config = merge(
     entries: common.VENDOR,
   }),
   utils.minify(),
-  utils.extractCSS(common.PATHS.styles)
+  utils.extractCSS(common.PATHS.app)
 );
 
 module.exports = config;

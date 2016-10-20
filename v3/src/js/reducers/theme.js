@@ -9,7 +9,7 @@ import type {
 
 import _ from 'lodash';
 import { ADD_MODULE, REMOVE_MODULE } from 'actions/timetables';
-import { SELECT_THEME, TOGGLE_TIMETABLE_ORIENTATION } from 'actions/theme';
+import { SELECT_THEME, SELECT_MODULE_COLOR, TOGGLE_TIMETABLE_ORIENTATION } from 'actions/theme';
 
 import {
   VERTICAL,
@@ -54,6 +54,11 @@ function colors(state: ColorMapping, action: FSA): ColorMapping {
       };
     case REMOVE_MODULE:
       return _.omit(state, action.payload.moduleCode);
+    case SELECT_MODULE_COLOR:
+      return {
+        ...state,
+        [action.payload.moduleCode]: action.payload.colorIndex,
+      };
     default:
       return state;
   }
@@ -63,6 +68,7 @@ function theme(state: ThemeState = defaultThemeState, action: FSA): ThemeState {
   switch (action.type) {
     case ADD_MODULE:
     case REMOVE_MODULE:
+    case SELECT_MODULE_COLOR:
       return {
         ...state,
         colors: colors(state.colors, action),

@@ -1,0 +1,58 @@
+$background-color: #f6f6f6;
+$height: 4.6rem;
+$width: 8rem;
+$padding: 0.3rem;
+$arrow-width: 1rem;
+$arrow-height: 1.5rem;
+
+.color-picker-container {
+  float: left;
+  position: relative;
+
+  .color-picker {
+    background: $background-color;
+    border-radius: 5px;
+    box-shadow: 0 13px 13px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24);
+    margin-left: -$width/2 + $arrow-width/2 + 0.15rem;
+    margin-top: $arrow-height;
+    padding: $padding;
+    position: absolute;
+    height: $height;
+    width: $width;
+    z-index: 1;
+
+    // arrowtip
+    &:before {
+      content: '';
+      border: $arrow-width solid darken($background-color, 5%);
+      border-left-color: transparent;
+      border-right-color: transparent;
+      border-top-width: 0;
+      height: $arrow-height;
+      left: $width/2 - $arrow-width;
+      position: absolute;
+      top: -$arrow-height;
+    }
+
+    @media(max-width: 768px) {
+      left: 3.2rem;
+
+      &:before {
+        left: 0;
+      }
+    }
+  }
+
+  .color-option {
+    cursor: pointer;
+    display: inline-block;
+    padding: 5px;
+    width: 25%;
+
+    &:after {
+      content: '';
+      display: block;
+      padding-bottom: 100%;
+    }
+  }
+}

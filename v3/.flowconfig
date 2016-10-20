@@ -7,4 +7,5 @@
 
 [options]
 module.name_mapper='^\(actions\|apis\|config\|data\|middlewares\|reducers\|storage\|types\|utils\|views\)\/?\(.*\)$' -> '<PROJECT_ROOT>/src/js/\1/\2'
+module.file_ext=.scss
 suppress_comment= \\(.\\|\n\\)*\\$FlowFixMe
