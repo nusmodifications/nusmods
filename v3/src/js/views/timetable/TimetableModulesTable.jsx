@@ -66,12 +66,12 @@ class TimetableModulesTable extends Component {
                         Exam: {getModuleSemExamDate(module, this.props.semester)}
                         &nbsp;&middot;&nbsp;
                         {module.ModuleCredit} MCs
-                        &nbsp;&middot;&nbsp;
-                        <span className="btn-remove" onClick={() => {
+                        &nbsp;&middot;
+                        <button className="btn-link btn-remove" onClick={() => {
                           this.props.onRemoveModule(module.ModuleCode);
                         }}>
                           Remove
-                        </span>
+                        </button>
                       </small>
                     </div>
                   </div>
