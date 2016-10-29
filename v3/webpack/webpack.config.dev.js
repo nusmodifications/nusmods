@@ -54,7 +54,7 @@ const config = merge(
     ),
   },
   utils.setFreeVariable('process.env.NODE_ENV', 'development'),
-  utils.setupCSS(common.PATHS.styles),
+  utils.setupCSS(common.PATHS.app),
   utils.flow(),
   devServer({
     // Customize host/port here if needed

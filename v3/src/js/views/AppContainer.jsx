@@ -5,6 +5,7 @@ import type { FetchRequest, ModuleList, ModuleSelectList } from 'types/reducers'
 import React, { Component } from 'react';
 import { routerShape, Link } from 'react-router';
 import { connect } from 'react-redux';
+import NUSModerator from 'nusmoderator';
 
 import config from 'config';
 import { fetchModuleList, loadModule } from 'actions/moduleBank';
@@ -21,6 +22,20 @@ type Props = {
   timetables: TimetableConfig,
   fetchModuleListRequest: FetchRequest,
 };
+
+// Put outside render because this only needs to computed on page load.
+const weekText = (() => {
+  const week = NUSModerator.academicCalendar.getAcadWeekInfo(new Date());
+  let thisWeekText = `AY20${week.year}, ${week.sem}, `;
+  if (week.type !== 'Instructional') { // hide 'Instructional'
+    thisWeekText += week.type;
+  }
+  thisWeekText += ' Week';
+  if (week.num > 0) { // do not show the week number if there is only one week, eg. recess
+    thisWeekText += ` ${week.num}`;
+  }
+  return thisWeekText;
+})();
 
 export class AppContainer extends Component {
   componentDidMount() {
@@ -52,6 +67,7 @@ export class AppContainer extends Component {
               placeholder="Search modules"
             />
           </form>
+          <p className="pull-xs-right hidden-xs-down"><small>{weekText}</small></p>
         </nav>
         <div className="container-fluid">
           <div className="row">

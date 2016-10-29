@@ -153,12 +153,20 @@ export class TimetableContainer extends Component {
               />
               <br/>
             </div>
-            <div className={classnames('timetable-wrapper', {
+            <div className={classnames({
               'col-md-12': isHorizontalOrientation,
               'col-md-4': !isHorizontalOrientation,
             })}>
+              <div className="timetable-action-row text-xs-right">
+                <button type="button"
+                  className="btn btn-outline-primary"
+                  onClick={this.props.toggleTimetableOrientation}
+                >
+                  <i className="fa fa-exchange"/>
+                </button>
+              </div>
               <div className="row">
-                <div className="col-md-10">
+                <div className="col-md-12">
                   <ModulesSelect moduleList={this.props.semModuleList}
                     onChange={(moduleCode) => {
                       this.props.addModule(this.props.semester, moduleCode.value);
@@ -170,7 +178,10 @@ export class TimetableContainer extends Component {
                     Object.keys(this.props.semTimetableWithLessons).sort((a, b) => {
                       return a.localeCompare(b);
                     }).map((moduleCode) => {
-                      return this.props.modules[moduleCode] || {};
+                      const module = this.props.modules[moduleCode] || {};
+                      // Inject color index.
+                      module.colorIndex = this.props.colors[moduleCode];
+                      return module;
                     })}
                     horizontalOrientation={isHorizontalOrientation}
                     semester={this.props.semester}
@@ -178,14 +189,6 @@ export class TimetableContainer extends Component {
                       this.props.removeModule(this.props.semester, moduleCode);
                     }}
                   />
-                </div>
-                <div className="col-md-2">
-                  <button type="button"
-                    className="btn btn-outline-primary"
-                    onClick={this.props.toggleTimetableOrientation}
-                  >
-                    <i className="fa fa-exchange"/>
-                  </button>
                 </div>
               </div>
             </div>

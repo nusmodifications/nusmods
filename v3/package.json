@@ -3,7 +3,7 @@
   "version": "3.0.0-alpha",
   "description": "NUSMods v3",
   "scripts": {
-    "start": "cross-env NODE_ENV=development webpack-dev-server --config=webpack/webpack.config.dev.js --open",
+    "start": "cross-env NODE_ENV=development webpack-dev-server --config=webpack/webpack.config.dev.js --port=9000 --open",
     "build": "cross-env NODE_ENV=production webpack --config=webpack/webpack.config.prod.js",
     "build:dll": "cross-env NODE_ENV=development webpack --config=webpack/webpack.config.dll.js",
     "postinstall": "npm run build:dll",
@@ -75,6 +75,7 @@
     "classnames": "^2.2.5",
     "js-search": "^1.3.2",
     "lodash": "^4.15.0",
+    "nusmoderator": "^2.0.0",
     "react": "^15.3.2",
     "react-addons-shallow-compare": "^15.3.2",
     "react-autobind": "^1.0.6",
