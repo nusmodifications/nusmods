@@ -89,22 +89,16 @@ module.exports = function (grunt) {
         jquery: 'jquery.min.js',
         destFileName: 'examTimetableRaw.json'
       },
-      ay2015to2016sem1: {
-        options: {
-          academicYear: '2015/2016',
-          semester: '1'
-        }
-      },
-      ay2015to2016sem2: {
-        options: {
-          academicYear: '2015/2016',
-          semester: '2'
-        }
-      },
       ay2016to2017sem1: {
         options: {
           academicYear: '2016/2017',
           semester: '1'
+        }
+      },
+      ay2016to2017sem2: {
+        options: {
+          academicYear: '2016/2017',
+          semester: '2'
         }
       }
     },
@@ -163,22 +157,16 @@ module.exports = function (grunt) {
         srcFolder: '<%= defaults.destFolder %>',
         jsonSpace: '<%= defaults.jsonSpace %>'
       },
-      ay2015to2016sem1: {
-        options: {
-          academicYear: '2015/2016',
-          semester: '1'
-        }
-      },
-      ay2015to2016sem2: {
-        options: {
-          academicYear: '2015/2016',
-          semester: '2'
-        }
-      },
       ay2016to2017sem1: {
         options: {
           academicYear: '2016/2017',
           semester: '1'
+        }
+      },
+      ay2016to2017sem2: {
+        options: {
+          academicYear: '2016/2017',
+          semester: '2'
         }
       }
     },
@@ -186,11 +174,6 @@ module.exports = function (grunt) {
       options: {
         srcFolder: '<%= defaults.destFolder %>',
         jsonSpace: '<%= defaults.jsonSpace %>'
-      },
-      ay2015to2016: {
-        options: {
-          academicYear: '2015/2016'
-        }
       },
       ay2016to2017: {
         options: {
@@ -243,7 +226,7 @@ module.exports = function (grunt) {
     }
   };
 
-  var AY_START = 2015;
+  var AY_START = 2016;
   var AY_END = 2017;
 
   // Generate task targets.
@@ -284,7 +267,6 @@ module.exports = function (grunt) {
     'normalize',
     'split',
     'joinSems',
-    'shell:runPrereqParser:ay2015to2016',
     'shell:runPrereqParser:ay2016to2017',
     'splitSems'
   ]);
