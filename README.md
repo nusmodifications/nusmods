@@ -221,8 +221,9 @@ http://api.nusmods.com/2015-2016/1/modules.json
 
 ## Initial Setup
 
-[Node.js](http://nodejs.org) and [npm](http://npmjs.org), which
-comes with Node.js, are required.
+Get an API key from [IVLE](http://ivle.nus.edu.sg/LAPI/default.aspx) and put it in [ivleApi.json](ivleApi.json).
+
+Download and install [Node.js](http://nodejs.org) and [npm](http://npmjs.org).
 
 ```bash
 $ npm install -g grunt-cli
@@ -235,7 +236,7 @@ $ npm install
 $ grunt
 ```
 
-The default grunt task is aliased to the `ay2013to2014sem1` task. A few tasks
+The default grunt task is aliased to the `ay2016to2017sem1` task. A few tasks
 are set up by default as examples of what can be accomplished by aliasing
 tasks.
 

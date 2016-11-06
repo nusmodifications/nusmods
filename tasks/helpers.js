@@ -5,6 +5,7 @@ var path = require('path');
 var _ = require('lodash');
 var replay = require('request-replay');
 var request = require('request');
+const isBinaryPath = require('is-binary-path');
 request = request.defaults({jar: true});
 
 // Convert URL to equivalent valid filename.
@@ -28,12 +29,16 @@ exports.requestCached = function (url, options, callback) {
   fs.stat(cachedPath, function (statErr, stats) {
     if (!statErr && (options.maxCacheAge === -1 ||
       stats.mtime > Date.now() - options.maxCacheAge * 1000)) {
-      fs.readFile(cachedPath, 'utf8', callback);
+      fs.readFile(cachedPath, callback);
     } else {
       options.url = url;
       if (!statErr) {
         options.headers = options.headers || {};
         options.headers['if-modified-since'] = (new Date(stats.mtime)).toUTCString();
+      }
+      if (isBinaryPath(url)) {
+        // this makes request return body as a buffer instead of string
+        options.encoding = null;
       }
       replay(request(options, function (err, response, body) {
         if (err) {
@@ -42,11 +47,14 @@ exports.requestCached = function (url, options, callback) {
         switch (response.statusCode) {
           case 200:
             fs.writeFile(cachedPath, body, function (err) {
+              if (err) {
+                console.log('error');
+              }
               callback(err, body);
             });
             break;
           case 304:
-            fs.readFile(cachedPath, 'utf8', callback);
+            fs.readFile(cachedPath, callback);
             break;
           default:
             callback(new Error(response.statusCode + ' while fetching ' + url));
