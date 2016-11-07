@@ -35,7 +35,7 @@ module.exports = Marionette.LayoutView.extend({
   },
   regions: {
     biddingStatsRegion: '#bidding-stats',
-    prerequisitesTreeRegion: '.nm-prerequisites-tree'
+    // prerequisitesTreeRegion: '.nm-prerequisites-tree'
   },
   initialize: function () {
     if (!window.location.hash) {
@@ -98,14 +98,14 @@ module.exports = Marionette.LayoutView.extend({
       for (var i = 0; i < module.LockedModules.length; i++) {
         lockedModules.children.push({'name': module.LockedModules[i], 'children': []});
       }
-      this.prerequisitesTreeRegion.show(
-        new PrerequisitesTreeView({
-          model: new Backbone.Model({
-            prereqs: module.ModmavenTree,
-            lockedModules: lockedModules,
-            modCode: module.ModuleCode
-          })
-      }));
+      // this.prerequisitesTreeRegion.show(
+      //   new PrerequisitesTreeView({
+      //     model: new Backbone.Model({
+      //       prereqs: module.ModmavenTree,
+      //       lockedModules: lockedModules,
+      //       modCode: module.ModuleCode
+      //     })
+      // }));
     }
 
     this.$('.nm-help').qtip({
