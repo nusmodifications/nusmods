@@ -3,6 +3,7 @@
 var fs = require('graceful-fs');
 var path = require('path');
 var _ = require('lodash');
+var parse5 = require('parse5');
 var replay = require('request-replay');
 var request = require('request');
 const isBinaryPath = require('is-binary-path');
@@ -36,7 +37,8 @@ exports.requestCached = function (url, options, callback) {
         options.headers = options.headers || {};
         options.headers['if-modified-since'] = (new Date(stats.mtime)).toUTCString();
       }
-      if (isBinaryPath(url)) {
+      const isBinaryFile = isBinaryPath(url);
+      if (isBinaryFile) {
         // this makes request return body as a buffer instead of string
         options.encoding = null;
       }
@@ -46,6 +48,11 @@ exports.requestCached = function (url, options, callback) {
         }
         switch (response.statusCode) {
           case 200:
+            if (!isBinaryFile) {
+              // fix html before saving
+              const doc = parse5.parse(body);
+              body = parse5.serialize(doc);
+            }
             fs.writeFile(cachedPath, body, function (err) {
               if (err) {
                 console.log('error');

@@ -7,97 +7,104 @@ module.exports = function (grunt) {
     if (this.flags.refresh) {
       options.maxCacheAge = 0;
     }
-
     var path = require('path');
     var _ = require('lodash');
     var async = require('async');
     var helpers = require('./helpers');
+    var cheerio = require('cheerio');
 
     _.str = require('underscore.string');
     _.mixin(_.str.exports());
 
-    var keys = ['ModuleTitle', 'ModuleDescription', '', 'ExamDate',
-      'ModuleCredit', 'Prerequisite', 'Preclusion', 'Workload'];
+    let academicYear, semester;
 
-    var academicYear, semester;
-
-    var lessonTypes = {};
+    let lessonTypes = {};
     var lessonTypesPath = path.join(options.destFolder, options.destLessonTypes);
     if (grunt.file.exists(lessonTypesPath)) {
       lessonTypes = grunt.file.readJSON(lessonTypesPath);
     }
 
-    async.concatSeries(options.types, function (type, callback) {
-      var url = options.baseReportUrl + type + 'InfoListing.jsp';
-      helpers.requestCached(url, options, function (err, data) {
+    async.concatSeries(options.types, (type, callback) => {
+      const url = options.baseReportUrl + type + 'InfoListing.jsp';
+      helpers.requestCached(url, options, (err, webpage) => {
         if (err) {
           return callback(err);
         }
+        const $ = cheerio.load(webpage);
+        const listingInfo = $('h2').text().split(':');
 
-        var academicYearSemesterPattern = /Academic Year : (\d{4}\/\d{4}) Semester : (1|2|3|4)/;
-        var match = academicYearSemesterPattern.exec(data);
-        academicYear = match[1];
-        semester = match[2];
+        academicYear = listingInfo[1].match(/\d{4}\/\d{4}/).shift();
+        semester = listingInfo[2].match(/\d/).shift();
 
-        var urlDeptPattern = /(ModuleD.+)">([^<]+)[\s\S]+?> (.*)<\/div>\s*<\/td>\s*<\/?tr/g;
-        var urlDeptMatches = helpers.matches(urlDeptPattern, data);
-        async.mapSeries(urlDeptMatches, function (match, callback) {
-          helpers.requestCached(options.baseReportUrl + match[1], options, function (err, data) {
+        const listOfModuleInfo = $('tr[valign="top"]').map((i, row) => {
+          const hyperlink = $('div > a', row);
+          return {
+            url: hyperlink.prop('href'),
+            moduleCode: hyperlink.html().trim(),
+            department: $('td div', row).last().text(),
+          };
+        }).get();
+
+        async.mapSeries(listOfModuleInfo, (moduleInfo, callback) => {
+          const url = options.baseReportUrl + moduleInfo.url;
+          helpers.requestCached(url, options, (err, webpage) => {
             if (err) {
               return callback(err);
             }
+            const $ = cheerio.load(webpage);
 
-            var mod = {
+            const timestamp = $('h2').text().match(/Correct as at ([^<]+)/).pop();
+
+            // first table consist of details of the module
+            const moduleDetails = $('.tableframe').first().find('tr td:nth-child(2)');
+            const module = {
               Type: type,
-              ModuleCode: match[2],
-              Department: match[3],
-              CorrectAsAt: /Correct as at ([^<]+)</.exec(data)[1]
+              ModuleCode: moduleInfo.moduleCode,
+              Department: moduleInfo.department,
+              CorrectAsAt: timestamp,
+              ModuleTitle: moduleDetails.eq(1).text(),
+              ModuleDescription: moduleDetails.eq(2).text(),
+              ExamDate: moduleDetails.eq(4).text().trim(),
+              ModuleCredit: moduleDetails.eq(5).text(),
+              Prerequisite: moduleDetails.eq(6).text(),
+              Preclusion: moduleDetails.eq(7).text(),
+              Workload: moduleDetails.eq(8).text(),
+              Timetable: [],
             };
 
-            var tdPattern = /<td (?:valign=top )?colspan="2">([\s\S]*?)(?:<br>\s*)?<\/td>/g;
-            keys.forEach(function (key) {
-              var field = _.clean(tdPattern.exec(data)[1]);
-              if (key) {
-                mod[key] = field;
-              }
-            });
-
-            mod.Timetable = [];
-            var tableMatches = helpers.matches(
-              /(Lecture|Tutorial) Time Table([\s\S]+?)^<\/table>/gm,
-              data);
-            tableMatches.forEach(function (tableMatch) {
-              var trMatches = helpers.matches(
-                /<tr bgcolor="#[ef]{6}">([\s\S]+?)<\/tr>/g, tableMatch[2]);
-
-              trMatches.forEach(function (trMatch) {
-                var tdMatches = helpers.matches(/<td>([^<]*)/g, trMatch);
-
-                if (tdMatches.length > 6) {
-                  lessonTypes[tdMatches[1]] = tableMatch[1];
-                  mod.Timetable.push({
-                    ClassNo: tdMatches[0].trim(),
-                    LessonType: tdMatches[1],
-                    WeekText: tdMatches[2],
-                    DayText: tdMatches[3],
-                    StartTime: tdMatches[4],
-                    EndTime: tdMatches[5],
-                    Venue: tdMatches[6]
-                  });
-                }
+            // get the timetable info
+            const timetableTables = $('.tableframe').find('tr table');
+            timetableTables.each((i, table) => {
+              // remove header and empty rows
+              const rows = $('tr', table).slice(1).filter((i, el) => {
+                return $('td', el).length > 6;
               });
-            });
 
-            callback(null, mod);
+              // get all the relevant information
+              const timetableDetails = rows.map((i, el) => {
+                const row = $('td', el);
+                return {
+                  ClassNo: row.eq(0).text().trim(),
+                  LessonType: row.eq(1).text(),
+                  WeekText: row.eq(2).text(),
+                  DayText: row.eq(3).text(),
+                  StartTime: row.eq(4).text(),
+                  EndTime: row.eq(5).text(),
+                  Venue: row.eq(6).text()
+                };
+              }).get();
+
+              module.Timetable.push(...timetableDetails);
+            });
+            callback(null, module);
           });
         }, callback);
       });
-    }, function (err, results) {
+    }, (err, results) => {
       if (err) {
         console.log(err);
         return done(false);
       }
-
       grunt.file.write(
         path.join(options.destFolder, options.destLessonTypes),
         JSON.stringify(helpers.sortByKey(lessonTypes), null, options.jsonSpace)
