@@ -85,20 +85,20 @@ App.reqres.setHandler('getBookmarks', function (callback) {
   if (!callback) {
     return;
   }
-  localforage.getItem(bookmarkedModulesNamespace, function (modules) {
+  localforage.getItem(bookmarkedModulesNamespace).then(modules => {
     callback(modules);
   });
 });
 App.reqres.setHandler('addBookmark', function (id) {
-  localforage.getItem(bookmarkedModulesNamespace, function (modules) {
+  localforage.getItem(bookmarkedModulesNamespace).then(modules => {
     if (!_.contains(modules, id)) {
       modules.push(id);
     }
     localforage.setItem(bookmarkedModulesNamespace, modules);
-  });
+  })
 });
 App.reqres.setHandler('deleteBookmark', function (id) {
-  localforage.getItem(bookmarkedModulesNamespace, function (modules) {
+  localforage.getItem(bookmarkedModulesNamespace).then(modules => {
     var index = modules.indexOf(id);
     if (index > -1) {
       modules.splice(index, 1);
@@ -165,7 +165,7 @@ App.on('start', function () {
     Backbone.history.start({pushState: true});
   });
 
-  localforage.getItem(bookmarkedModulesNamespace, function (modules) {
+  localforage.getItem(bookmarkedModulesNamespace).then(modules => {
     if (!modules) {
       localforage.setItem(bookmarkedModulesNamespace, []);
     }
