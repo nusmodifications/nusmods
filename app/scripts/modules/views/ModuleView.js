@@ -8,6 +8,7 @@ var GoToTopBehavior = require('../../common/behaviors/GoToTopBehavior');
 var ModuleHoverBehavior = require('../../common/behaviors/ModuleHoverBehavior');
 var Marionette = require('backbone.marionette');
 var PrerequisitesTreeView = require('./PrerequisitesTreeView');
+var PrerequisitesUnavailableView = require('./PrerequisitesUnavailableView');
 var _ = require('underscore');
 var analytics = require('../../analytics');
 var localforage = require('localforage');
@@ -35,7 +36,7 @@ module.exports = Marionette.LayoutView.extend({
   },
   regions: {
     biddingStatsRegion: '#bidding-stats',
-    // prerequisitesTreeRegion: '.nm-prerequisites-tree'
+    prerequisitesTreeRegion: '.nm-prerequisites-tree'
   },
   initialize: function () {
     if (!window.location.hash) {
@@ -98,14 +99,16 @@ module.exports = Marionette.LayoutView.extend({
       for (var i = 0; i < module.LockedModules.length; i++) {
         lockedModules.children.push({'name': module.LockedModules[i], 'children': []});
       }
-      // this.prerequisitesTreeRegion.show(
-      //   new PrerequisitesTreeView({
-      //     model: new Backbone.Model({
-      //       prereqs: module.ModmavenTree,
-      //       lockedModules: lockedModules,
-      //       modCode: module.ModuleCode
-      //     })
-      // }));
+      this.prerequisitesTreeRegion.show(
+        new PrerequisitesTreeView({
+          model: new Backbone.Model({
+            prereqs: module.ModmavenTree,
+            lockedModules: lockedModules,
+            modCode: module.ModuleCode
+          })
+      }));
+    } else {
+      this.prerequisitesTreeRegion.show(new PrerequisitesUnavailableView());
     }
 
     this.$('.nm-help').qtip({
