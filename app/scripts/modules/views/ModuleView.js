@@ -108,9 +108,7 @@ module.exports = Marionette.LayoutView.extend({
           })
       }));
     } else {
-      this.prerequisitesTreeRegion.show(
-        new PrerequisitesUnavailableView()
-      )
+      this.prerequisitesTreeRegion.show(new PrerequisitesUnavailableView());
     }
 
     this.$('.nm-help').qtip({
