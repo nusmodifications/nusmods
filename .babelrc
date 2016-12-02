@@ -1,0 +1,8 @@
+{
+  "presets": [
+    ["eslatest-node6", { "loose": true }]
+  ],
+  "plugins": [
+    "transform-flow-strip-types"
+  ],
+}
