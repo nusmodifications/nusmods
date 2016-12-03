@@ -8,6 +8,7 @@
     "email": "beng@benghee.eu"
   },
   "scripts": {
+    "test": "jest",
     "lint": "eslint gulpfile.babel.js gulp-tasks",
     "lint:fix": "eslint gulpfile.babel.js gulp-tasks --fix"
   },
@@ -27,15 +28,23 @@
     "babel-cli": "^6.16.0",
     "babel-core": "^6.8.0",
     "babel-eslint": "^7.1.1",
+    "babel-jest": "^17.0.2",
+    "babel-plugin-transform-es2015-destructuring": "^6.19.0",
+    "babel-plugin-transform-es2015-parameters": "^6.18.0",
     "babel-plugin-transform-flow-strip-types": "^6.14.0",
+    "babel-plugin-transform-object-rest-spread": "^6.19.0",
     "babel-polyfill": "^6.16.0",
     "babel-preset-eslatest-node6": "^1.0.1",
     "babel-register": "^6.18.0",
+    "bunyan": "^1.8.5",
     "cheerio": "^0.22.0",
     "eslint": "^3.8.0",
     "eslint-config-airbnb-base": "^10.0.1",
     "eslint-import-resolver-node": "^0.2.3",
     "eslint-plugin-import": "^2.2.0",
+    "filenamify-url": "^1.0.0",
+    "fs-promise": "^1.0.0",
+    "got": "^6.6.3",
     "graceful-fs": "^4.1.2",
     "grunt": "^0.4.5",
     "grunt-rsync": "^0.6.2",
@@ -43,12 +52,23 @@
     "gulp": "gulpjs/gulp.git#4.0",
     "gulp-cli": "^1.2.2",
     "is-binary-path": "^2.0.0",
+    "jest": "^17.0.3",
     "lodash": "^3.10.0",
     "moment": "^2.10.3",
     "parse5": "^2.2.3",
     "pdfjs-dist": "^1.6.297",
+    "ramda": "^0.22.1",
     "request": "^2.78.0",
     "request-replay": "^0.3.0",
     "underscore.string": "^3.1.1"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testPathIgnorePatterns": [
+      ".eslintrc.js"
+    ],
+    "testPathDirs": [
+      "<rootDir>/__tests__"
+    ]
   }
 }
