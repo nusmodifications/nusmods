@@ -21,7 +21,7 @@
     "start": "webpack-dev-server",
     "build": "webpack && cp -r app/vendor dist/vendor",
     "rsync": "gulp rsync",
-    "deploy": "webpack && gulp rsync",
+    "deploy": "npm run build && npm run rsync",
     "test": "webpack && gulp"
   },
   "dependencies": {

@@ -34,7 +34,7 @@ Once it's up, do a `vagrant ssh` to enter the development environment.
 
 ### Prerequisites
 
-- [Node.js](http://nodejs.org) (we currently use v6.x, instructions [here](https://github.com/nodesource/distributions#installation-instructions))
+- [Node.js](http://nodejs.org) (we currently use v6.6.0, instructions [here](https://github.com/nodesource/distributions#installation-instructions))
 
 ### Setup
 
@@ -65,7 +65,7 @@ Visit `localhost:8080` to see your local instance of NUSMods.
 
 ## Building for Production
 
-To get a complete, minified, production build under `dist/` (ignores jshint warnings):
+To get a complete, minified, production build under `dist/`:
 
 ```bash
 $ npm run build
