@@ -58,10 +58,9 @@ module.exports = function (grunt) {
             if (ps.length === 9) {
               moduleCode = $(ps[0]).text();
               group = $(ps[1]).text();
-              statsArray = ps.slice(2).map((i, el) => $(el).text())
-            } else {
-              statsArray = ps.slice(1).map((i, el) => $(el).text())
             }
+
+            statsArray = ps.slice(ps.length-7).map((i, el) => $(el).text())
 
             biddingStats.push(_.extend({
               AcadYear: match[1] + '/' + (+match[1] + 1),
