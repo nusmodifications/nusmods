@@ -12,7 +12,7 @@ module.exports = function (grunt) {
     var _ = require('lodash');
     var async = require('async');
     var helpers = require('./helpers');
-    var parse5 = require('parse5');
+    var cheerio = require('cheerio');
 
     var CORS_URL = 'http://www.nus.edu.sg/cors/';
     var CORS_ARCHIVE_URL = CORS_URL + 'archive.html';
@@ -21,39 +21,6 @@ module.exports = function (grunt) {
       'HighestBid', 'Faculty', 'StudentAcctType'];
 
     var biddingStats = [];
-
-    function findTbody(doc) {
-      // BFS to find tbody
-      // some pages have 2 tbody, we want the one which is closer to the root
-      var q = [doc];
-      while (q.length > 0) {
-        const node = q.shift()
-        if (node.nodeName == 'tbody') {
-          return node;
-        }
-        if (typeof node.childNodes !== 'undefined') {
-          q = q.concat(node.childNodes)
-        }
-      }
-      return null;
-    }
-
-    function moduleCodeFromTr(tr) {
-      return tr.childNodes[1].childNodes[0].childNodes[0].value
-    }
-
-    function lessonGroupFromTr(tr) {
-      return tr.childNodes[3].childNodes[0].childNodes[0].value
-    }
-
-    function getBiddingStatistics(tr) {
-      const n = tr.childNodes.length;
-      // get the last 7 columns
-      const stats = [7, 6, 5, 4, 3, 2, 1].map(
-        i => parse5.serialize(tr.childNodes[n-i].childNodes[0]))
-
-      return _.object(statsKeys, stats);
-    }
 
     helpers.requestCached(CORS_ARCHIVE_URL, options, function (err, data) {
       if (err) {
@@ -70,27 +37,30 @@ module.exports = function (grunt) {
             return callback(err);
           }
 
-          const doc = parse5.parse(String(data));
-          const tbody = findTbody(doc)
+          var $ = cheerio.load(String(data));
+          // some pages have 2 tables, we want the table that is a direct descendant of body
+          // this selector get rids of all non-data tr (such as headers)
+          // cors should really use th for headers...
+          const trs = $('body > table > tr[valign=top]');
 
           var moduleCode;
           var group;
+          var statsArray;
 
-          tbody.childNodes.forEach((cn) => {
-            // skip header and random text nodes
-            if (cn.nodeName !== 'tr' || cn.attrs.length === 0) {
-              return
-            }
+          trs.map((i, tr) => {
+            var ps = $('p', tr)
 
-            const tr = cn;
             // there are 2 kinds of rows
-            // 1. rows with module code (which has 12 childNodes)
-            // 2. rows without belong to a previous row that has a module code (8 childNodes)
+            // 1. rows with module code (which has 9 p nodes)
+            // 2. rows without belong to a previous row that has a module code (8 p nodes)
             // when we meet row of kind 1, we store the module and group info to be used
             // by rows of type 2 that follows it
-            if (tr.childNodes.length === 12) {
-              moduleCode = moduleCodeFromTr(tr);
-              group = lessonGroupFromTr(tr);
+            if (ps.length === 9) {
+              moduleCode = $(ps[0]).text();
+              group = $(ps[1]).text();
+              statsArray = ps.slice(2).map((i, el) => $(el).text())
+            } else {
+              statsArray = ps.slice(1).map((i, el) => $(el).text())
             }
 
             biddingStats.push(_.extend({
@@ -99,7 +69,7 @@ module.exports = function (grunt) {
               Round: match[3],
               ModuleCode: moduleCode,
               Group: group,
-            }, getBiddingStatistics(tr)));
+            }, _.object(statsKeys, statsArray)));
           })
 
           callback();
