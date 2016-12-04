@@ -16,7 +16,8 @@ module.exports = function (grunt) {
 
     var CORS_URL = 'http://www.nus.edu.sg/cors/';
     var CORS_ARCHIVE_URL = CORS_URL + 'archive.html';
-    var biddingSummaryUrlPattern = /Archive\/(\d{4})\d{2}_Sem(\d)\/successbid_(\d[A-F])_\d{4,8}s\d\.html/g;
+    var BID_RESULTS_LINK_SELECTOR = 'a[href*="successbid"]';
+    var BID_RESULTS_ROW_SELECTOR = 'body > table > tr[valign=top]';
     var statsKeys = ['Quota', 'Bidders', 'LowestBid', 'LowestSuccessfulBid',
       'HighestBid', 'Faculty', 'StudentAcctType'];
 
@@ -28,20 +29,22 @@ module.exports = function (grunt) {
         return done(false);
       }
 
-      var urls = helpers.matches(biddingSummaryUrlPattern, data);
+      var $ = cheerio.load(data);
+      var urls = $(BID_RESULTS_LINK_SELECTOR);
+
       async.forEachSeries(urls, function (match, callback) {
-        var url = CORS_URL + match[0];
+        var url = `${CORS_URL}${match.attribs.href}`;
 
         helpers.requestCached(url, options, function (err, data) {
           if (err) {
             return callback(err);
           }
 
-          var $ = cheerio.load(String(data));
+          var $ = cheerio.load(data);
           // some pages have 2 tables, we want the table that is a direct descendant of body
           // this selector get rids of all non-data tr (such as headers)
           // cors should really use th for headers...
-          const trs = $('body > table > tr[valign=top]');
+          const trs = $(BID_RESULTS_ROW_SELECTOR);
 
           var moduleCode;
           var group;
