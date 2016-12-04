@@ -18,6 +18,7 @@ module.exports = function (grunt) {
     var CORS_ARCHIVE_URL = CORS_URL + 'archive.html';
     var BID_RESULTS_LINK_SELECTOR = 'a[href*="successbid"]';
     var BID_RESULTS_ROW_SELECTOR = 'body > table > tr[valign=top]';
+    var biddingSummaryUrlPattern = /Archive\/(\d{4})\d{2}_Sem(\d)\/successbid_(\d[A-F])_\d{4,8}s\d\.html/;
     var statsKeys = ['Quota', 'Bidders', 'LowestBid', 'LowestSuccessfulBid',
       'HighestBid', 'Faculty', 'StudentAcctType'];
 
@@ -32,8 +33,10 @@ module.exports = function (grunt) {
       var $ = cheerio.load(data);
       var urls = $(BID_RESULTS_LINK_SELECTOR);
 
-      async.forEachSeries(urls, function (match, callback) {
-        var url = `${CORS_URL}${match.attribs.href}`;
+      async.forEachSeries(urls, function (anchor, callback) {
+        var href = anchor.attribs.href;
+        var url = href.startsWith(".") ? `${CORS_URL}${href}`: href;
+        var urlMatch = biddingSummaryUrlPattern.exec(url);
 
         helpers.requestCached(url, options, function (err, data) {
           if (err) {
@@ -66,9 +69,9 @@ module.exports = function (grunt) {
             statsArray = ps.slice(ps.length-7).map((i, el) => $(el).text())
 
             biddingStats.push(_.extend({
-              AcadYear: match[1] + '/' + (+match[1] + 1),
-              Semester: match[2],
-              Round: match[3],
+              AcadYear: urlMatch[1] + '/' + (+urlMatch[1] + 1),
+              Semester: urlMatch[2],
+              Round: urlMatch[3],
               ModuleCode: moduleCode,
               Group: group,
             }, _.object(statsKeys, statsArray)));
