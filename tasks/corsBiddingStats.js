@@ -50,7 +50,8 @@ module.exports = function (grunt) {
       const n = tr.childNodes.length;
       // get the last 7 columns
       const stats = [7, 6, 5, 4, 3, 2, 1].map(
-        i => tr.childNodes[n-i].childNodes[0].childNodes[0].value)
+        i => parse5.serialize(tr.childNodes[n-i].childNodes[0]))
+
       return _.object(statsKeys, stats);
     }
 
