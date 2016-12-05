@@ -55,6 +55,7 @@
     "jest": "^17.0.3",
     "lodash": "^3.10.0",
     "moment": "^2.10.3",
+    "nusmoderator": "^2.0.0",
     "parse5": "^2.2.3",
     "pdfjs-dist": "^1.6.297",
     "ramda": "^0.22.1",

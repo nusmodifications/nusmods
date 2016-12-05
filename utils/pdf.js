@@ -9,9 +9,12 @@ async function getPagesFromPdf(fileData) {
   return pages;
 }
 
-const getTextFromPage = R.pipeP(R.invoker(0, 'getTextContent'), R.prop('items'), R.pluck('str'));
-
 async function getTextFromPages(pages) {
+  const getTextFromPage = R.pipeP(
+    R.invoker(0, 'getTextContent'),
+    R.prop('items'),
+    R.pluck('str'),
+  );
   return Promise.all(R.map(getTextFromPage, pages));
 }
 
