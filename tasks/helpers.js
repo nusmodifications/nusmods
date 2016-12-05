@@ -37,8 +37,7 @@ exports.requestCached = function (url, options, callback) {
         options.headers = options.headers || {};
         options.headers['if-modified-since'] = (new Date(stats.mtime)).toUTCString();
       }
-      const isBinaryFile = isBinaryPath(url);
-      if (isBinaryFile) {
+      if (isBinaryPath(url)) {
         // this makes request return body as a buffer instead of string
         options.encoding = null;
       }
@@ -48,12 +47,10 @@ exports.requestCached = function (url, options, callback) {
         }
         switch (response.statusCode) {
           case 200:
-            if (!isBinaryFile) {
-              if (response.headers['content-type'] === 'text/html') {
-                // fix html before saving
-                const doc = parse5.parse(body);
-                body = parse5.serialize(doc);
-              }
+            if (response.headers['content-type'] === 'text/html') {
+              // fix html before saving
+              const doc = parse5.parse(body);
+              body = parse5.serialize(doc);
             }
             fs.writeFile(cachedPath, body, function (err) {
               if (err) {

@@ -78,7 +78,6 @@ module.exports = function (grunt) {
   grunt.registerMultiTask('examTimetable', function () {
     const done = this.async();
     const options = this.options();
-    console.log(options);
     if (this.flags.refresh) {
       options.maxCacheAge = 0;
     }
