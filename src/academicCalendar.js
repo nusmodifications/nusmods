@@ -42,8 +42,9 @@ export function getAcadYear(date) {
 /**
   * Computes the current academic semester.
   * Expects a week number of a year.
-  * @param  {Number} acadWeekNumber - 3
+  * @param  {Number} acadWeekNumber
   * @return {String} semester - "Semester 1"
+  * @example acadWeekNumber(3)
   */
 export function getAcadSem(acadWeekNumber) {
   const earliestSupportedWeek = 1;
@@ -69,8 +70,9 @@ export function getAcadSem(acadWeekNumber) {
 /**
   * Computes the current academic week of the semester
   * Expects a week number of a semester.
-  * @param  {Number} acadWeekNumber - 3
+  * @param  {Number} acadWeekNumber
   * @return {String} semester - "Recess" | "Reading" | "Examination"
+  * @example acadWeekNumber(3)
   */
 export function getAcadWeekName(acadWeekNumber) {
   switch (acadWeekNumber) {
