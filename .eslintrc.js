@@ -21,7 +21,9 @@ module.exports = {
         js: 'never',
       }
     ],
+    'max-len': ['error', 100, { 'ignoreComments': true }],
     // Let git handle the linebreaks instead
     'linebreak-style': 'off',
+    'no-shadow': ['error', { 'allow': ['i'] }],
   },
 };
