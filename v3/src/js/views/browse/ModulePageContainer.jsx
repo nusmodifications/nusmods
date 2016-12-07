@@ -5,9 +5,13 @@ import DocumentTitle from 'react-document-title';
 import config from 'config';
 
 import { loadModule } from 'actions/moduleBank';
+import { addModule, removeModule } from 'actions/timetables';
 import type { Module } from 'types/modules';
 import type { FetchRequest } from 'types/reducers';
 import { dateForDisplay } from 'utils/date';
+import type { TimetableConfig } from 'types/timetables';
+import AddModuleButton from './AddModuleButton';
+import RemoveModuleButton from './RemoveModuleButton';
 
 type RouteParams = {
   moduleCode: string,
@@ -17,6 +21,9 @@ type Props = {
   module: Module,
   loadModule: Function,
   fetchModuleRequest: FetchRequest,
+  timetables: TimetableConfig,
+  addModule: Function,
+  removeModule: Function,
 };
 
 export class ModulePageContainer extends Component {
@@ -52,6 +59,14 @@ export class ModulePageContainer extends Component {
       : [];
   }
 
+  moduleHasBeenAdded(module: Module, semester: num): boolean {
+    const timetables = this.props.timetables;
+    return (
+      timetables[semester] &&
+      typeof timetables[semester][module.ModuleCode] !== 'undefined'
+    );
+  }
+
   props: Props;
 
   render() {
@@ -62,7 +77,7 @@ export class ModulePageContainer extends Component {
     const corsLink = `${config.corsUrl}${module.ModuleCode}`;
 
     const renderExaminations = this.examinations().map(exam =>
-      <span>
+      <span key={exam.semester}>
         <dt className="col-sm-3">Semester {exam.semester} Exam</dt>
         <dd className="col-sm-9">{dateForDisplay(exam.date)}</dd>
       </span>
@@ -71,6 +86,23 @@ export class ModulePageContainer extends Component {
     const semsOffered = this.semestersOffered()
       .map(sem => `Semester ${sem}`)
       .join(', ');
+
+    const addOrRemoveToTimetableLinks = this.semestersOffered().map(
+      semester => (
+        this.moduleHasBeenAdded(module, semester) ?
+          (
+            <RemoveModuleButton key={semester} semester={semester} onClick={() =>
+              this.props.removeModule(semester, module.ModuleCode)
+            }/>
+          )
+          :
+          (
+            <AddModuleButton key={semester} semester={semester} onClick={() =>
+              this.props.addModule(semester, module.ModuleCode)
+            }/>
+          )
+        )
+    );
 
     return (
       <DocumentTitle title={documentTitle}>
@@ -119,6 +151,10 @@ export class ModulePageContainer extends Component {
                   </ul>
                 </dd>
 
+                <div>
+                  {addOrRemoveToTimetableLinks}
+                </div>
+
               </dl>
             </div> : null
           }
@@ -129,15 +165,19 @@ export class ModulePageContainer extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
+  const timetables = state.timetables;
   return {
     module: state.entities.moduleBank.modules[ownProps.params.moduleCode],
     fetchModuleRequest: state.requests.fetchModuleRequest || {},
+    timetables,
   };
 }
 
 export default connect(
   mapStateToProps,
   {
+    addModule,
     loadModule,
+    removeModule,
   }
 )(ModulePageContainer);
