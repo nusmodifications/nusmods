@@ -35,14 +35,43 @@ export class ModulePageContainer extends Component {
     this.props.loadModule(props.routeParams.moduleCode);
   }
 
+  semestersOffered(): number[] {
+    return this.props.module.History ? (
+      this.props.module.History
+        .sort((a, b) => a.Semester - b.Semester)
+        .map(h => h.Semester))
+      : [];
+  }
+
+  examinations(): {semester: num, date: string}[] {
+    return this.props.module.History ? (
+      this.props.module.History
+        .filter(h => h.ExamDate != null)
+        .sort((a, b) => a.Semester - b.Semester)
+        .map(h => ({ semester: h.Semester, date: h.ExamDate })))
+      : [];
+  }
+
   props: Props;
 
   render() {
     const module = this.props.module;
     const documentTitle = module ?
       `${module.ModuleCode} ${module.ModuleTitle} - ${config.brandName}` : 'Not found';
-    const sem1History = module.History.find(h => h.Semester === 1);
-    const sem2History = module.History.find(h => h.Semester === 2);
+    const ivleLink = config.ivleUrl.replace('<ModuleCode>', module.ModuleCode);
+    const corsLink = `${config.corsUrl}${module.ModuleCode}`;
+
+    const renderExaminations = this.examinations().map(exam =>
+      <span>
+        <dt className="col-sm-3">Semester {exam.semester} Exam</dt>
+        <dd className="col-sm-9">{dateForDisplay(exam.date)}</dd>
+      </span>
+    );
+
+    const semsOffered = this.semestersOffered()
+      .map(sem => `Semester ${sem}`)
+      .join(', ');
+
     return (
       <DocumentTitle title={documentTitle}>
         <div className="module-container">
@@ -77,13 +106,18 @@ export class ModulePageContainer extends Component {
                 {module.Workload ? <dt className="col-sm-3">Weekly Workload</dt> : null}
                 {module.Workload ? <dd className="col-sm-9">{module.Workload}</dd> : null}
 
-                {sem1History ? <dt className="col-sm-3">Semester 1 Exam</dt> : null}
-                {sem1History ? <dd className="col-sm-9">{dateForDisplay(sem1History.ExamDate)}</dd> : null}
+                {renderExaminations}
 
-                {sem2History ? <dt className="col-sm-3">Semester 2 Exam</dt> : null}
-                {sem2History ? <dd className="col-sm-9">{dateForDisplay(sem2History.ExamDate)}</dd> : null}
+                <dt className="col-sm-3">Semesters Offered</dt>
+                <dd className="col-sm-9">{semsOffered}</dd>
 
-                {/* TODO: Add in exam date for each semester. */}
+                <dt className="col-sm-3">Offical Links</dt>
+                <dd className="col-sm-9">
+                  <ul className="nm-footer-links">
+                    <li><a href={ivleLink}>IVLE</a></li>
+                    <li><a href={corsLink}>CORS</a></li>
+                  </ul>
+                </dd>
 
               </dl>
             </div> : null
