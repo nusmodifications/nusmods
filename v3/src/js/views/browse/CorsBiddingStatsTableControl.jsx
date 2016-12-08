@@ -6,12 +6,15 @@ import _ from 'lodash';
 import { selectNewStudent, selectFaculty } from 'actions/settings';
 import FacultySelect from 'views/components/FacultySelect';
 import AccountSelect from 'views/components/AccountSelect';
+import { BiddingStat, Faculty } from 'types/modules';
+import CorsBiddingStatsTable from './CorsBiddingStatsTable';
 
-// import { BiddingStat } from 'types/modules';
 
-// type Props = {
-//   stats: Array<BiddingStat>,
-// }
+type Props = {
+  stats: Array<BiddingStat>,
+  faculty: Faculty,
+  selectFaculty: Function,
+}
 
 const sameFaculty = (stat, student) => (stat.Faculty === student.faculty);
 const isNew = student => (student.newStudent);
@@ -47,48 +50,9 @@ function isStatRelevantForStudent(stat, student) {
   }
 }
 
-function StatsTable(props) {
-  const stats = props.stats;
-  const rows = stats.map((s, i) =>
-    <tr key={i}>
-      <td>{s.Faculty}</td>
-      <td>{s.Group}</td>
-      <td>{s.Round}</td>
-      <td>{s.Quota}</td>
-      <td>{s.Bidders}</td>
-      <td>{s.LowestBid}</td>
-      <td>{s.LowestSuccessfulBid}</td>
-      <td>{s.HighestBid}</td>
-      <td>{s.StudentAcctType}</td>
-    </tr>
-  );
-
-  return (
-    <div className="table-responsive">
-      <table className="table table-sm">
-        <thead>
-          <tr>
-            <th>Faculty</th>
-            <th>Group</th>
-            <th>Round</th>
-            <th>Quota</th>
-            <th>Bidders</th>
-            <th>Lowest Bid</th>
-            <th>Lowest Succ Bid</th>
-            <th>Highest Bid</th>
-            <th>Student Acct Type</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows}
-        </tbody>
-      </table>
-    </div>
-  );
-}
 
 class CorsBiddingStatsTableControl extends Component {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       accountType: 'G',
@@ -107,7 +71,7 @@ class CorsBiddingStatsTableControl extends Component {
 
   onSelectAySem(aySem) {
     this.setState({
-      aySem
+      aySem,
     });
   }
 
@@ -121,31 +85,22 @@ class CorsBiddingStatsTableControl extends Component {
     const grouped = _.groupBy(relevantStats, s => `${s.AcadYear} Sem ${s.Semester}`);
     const aySemKeys = Object.keys(grouped);
 
-    const navTabs = aySemKeys.map(a =>
-      <button onClick={event => this.onSelectAySem(a)}
+    const aySemSelector = aySemKeys.map(a =>
+      <button onClick={() => this.onSelectAySem(a)}
         type="button"
         className="btn btn-secondary">
         {a}
       </button>
     );
 
-    var tabContent = null;
-    if (aySemKeys.includes(this.state.aySem)) {
-      console.log('goingto render content')
-      tabContent = (
-        <StatsTable stats={grouped[this.state.aySem]} />
-      )
-    }
-
     return (
       <div>
         <FacultySelect faculty={this.props.faculty} onChange={this.props.selectFaculty} />
         <AccountSelect accountType={this.state.accountType} onChange={this.onAccountTypeChange} />
-        <p>CorsBiddingStatsTableControl</p>
         <div className="btn-group btn-group-sm" role="group" aria-label="Ay Sems">
-          {navTabs}
+          {aySemSelector}
         </div>
-        {tabContent}
+        <CorsBiddingStatsTable stats={grouped[this.state.aySem]} />
       </div>
     );
   }
