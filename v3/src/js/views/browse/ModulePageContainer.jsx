@@ -8,7 +8,7 @@ import { loadModule } from 'actions/moduleBank';
 import { addModule, removeModule } from 'actions/timetables';
 import type { Module } from 'types/modules';
 import type { FetchRequest } from 'types/reducers';
-import { dateForDisplay } from 'utils/date';
+import { formatExamDate } from 'utils/modules';
 import type { TimetableConfig } from 'types/timetables';
 import AddModuleButton from './AddModuleButton';
 import RemoveModuleButton from './RemoveModuleButton';
@@ -79,7 +79,7 @@ export class ModulePageContainer extends Component {
     const renderExaminations = this.examinations().map(exam =>
       <span key={exam.semester}>
         <dt className="col-sm-3">Semester {exam.semester} Exam</dt>
-        <dd className="col-sm-9">{dateForDisplay(exam.date)}</dd>
+        <dd className="col-sm-9">{formatExamDate(exam.date)}</dd>
       </span>
     );
 
