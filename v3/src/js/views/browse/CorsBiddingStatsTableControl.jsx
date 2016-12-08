@@ -8,7 +8,7 @@ import { selectNewStudent, selectFaculty } from 'actions/settings';
 import AccountSelect from 'views/components/AccountSelect';
 import FacultySelect from 'views/components/FacultySelect';
 import NewStudentSelect from 'views/components/NewStudentSelect';
-import { BiddingStat, Faculty } from 'types/modules';
+import { AccountType, BiddingStat, Faculty } from 'types/modules';
 import CorsBiddingStatsTable from './CorsBiddingStatsTable';
 
 
@@ -19,10 +19,6 @@ type Props = {
   selectNewStudent: Function,
   stats: Array<BiddingStat>,
 };
-
-type GeneralAccount = string;
-type ProgrammeAccount = string;
-type AccountType = GeneralAccount | ProgrammeAccount;
 
 type Student = {
   newStudent: boolean,

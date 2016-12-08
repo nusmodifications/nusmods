@@ -97,3 +97,7 @@ export type BiddingStat = {
   Semester: string, // Note that this semester type is different from that in SemesterData.
   StudentAcctType: string,
 };
+
+export type GeneralAccount = string;
+export type ProgrammeAccount = string;
+export type AccountType = GeneralAccount | ProgrammeAccount;
