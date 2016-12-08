@@ -8,7 +8,7 @@ import AccountSelect from 'views/components/AccountSelect';
 import FacultySelect from 'views/components/FacultySelect';
 import NewStudentSelect from 'views/components/NewStudentSelect';
 import { AccountType, BiddingStat, Faculty } from 'types/modules';
-import AySemSelector from './AySemSelector';
+import ButtonGroupSelector from 'views/components/ButtonGroupSelector';
 import CorsBiddingStatsTable from './CorsBiddingStatsTable';
 
 type Props = {
@@ -121,9 +121,9 @@ class CorsBiddingStatsTableControl extends Component {
           </div>
         </div>
 
-        <AySemSelector aySems={Object.keys(statsByAySem)}
-          selectedAySem={selectedAySem}
-          onSelectAySem={this.onSelectAySem}
+        <ButtonGroupSelector choices={Object.keys(statsByAySem)}
+          selectedChoice={selectedAySem}
+          onChoiceSelect={this.onSelectAySem}
         />
 
         <CorsBiddingStatsTable stats={statsByAySem[selectedAySem]} />
