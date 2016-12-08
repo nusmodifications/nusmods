@@ -5,8 +5,13 @@ import DocumentTitle from 'react-document-title';
 import config from 'config';
 
 import { loadModule } from 'actions/moduleBank';
+import { addModule, removeModule } from 'actions/timetables';
 import type { Module } from 'types/modules';
 import type { FetchRequest } from 'types/reducers';
+import { formatExamDate } from 'utils/modules';
+import type { TimetableConfig } from 'types/timetables';
+import AddModuleButton from './AddModuleButton';
+import RemoveModuleButton from './RemoveModuleButton';
 
 type RouteParams = {
   moduleCode: string,
@@ -16,6 +21,9 @@ type Props = {
   module: Module,
   loadModule: Function,
   fetchModuleRequest: FetchRequest,
+  timetables: TimetableConfig,
+  addModule: Function,
+  removeModule: Function,
 };
 
 export class ModulePageContainer extends Component {
@@ -34,12 +42,61 @@ export class ModulePageContainer extends Component {
     this.props.loadModule(props.routeParams.moduleCode);
   }
 
+  semestersOffered(): number[] {
+    return this.props.module.History ? (
+      this.props.module.History
+        .sort((a, b) => a.Semester - b.Semester)
+        .map(h => h.Semester))
+      : [];
+  }
+
+  examinations(): {semester: num, date: string}[] {
+    return this.props.module.History ? (
+      this.props.module.History
+        .filter(h => h.ExamDate != null)
+        .sort((a, b) => a.Semester - b.Semester)
+        .map(h => ({ semester: h.Semester, date: h.ExamDate })))
+      : [];
+  }
+
+  moduleHasBeenAdded(module: Module, semester: num): boolean {
+    const timetables = this.props.timetables;
+    return timetables[semester] && !!timetables[semester][module.ModuleCode];
+  }
+
   props: Props;
 
   render() {
     const module = this.props.module;
     const documentTitle = module ?
       `${module.ModuleCode} ${module.ModuleTitle} - ${config.brandName}` : 'Not found';
+    const ivleLink = config.ivleUrl.replace('<ModuleCode>', module.ModuleCode);
+    const corsLink = `${config.corsUrl}${module.ModuleCode}`;
+
+    const renderExaminations = this.examinations().map(exam =>
+      <span key={exam.semester}>
+        <dt className="col-sm-3">Semester {exam.semester} Exam</dt>
+        <dd className="col-sm-9">{formatExamDate(exam.date)}</dd>
+      </span>
+    );
+
+    const semsOffered = this.semestersOffered()
+      .map(sem => `Semester ${sem}`)
+      .join(', ');
+
+    const addOrRemoveToTimetableLinks = this.semestersOffered().map(
+      semester => (
+        this.moduleHasBeenAdded(module, semester) ?
+          <RemoveModuleButton key={semester} semester={semester} onClick={() =>
+            this.props.removeModule(semester, module.ModuleCode)
+          }/>
+          :
+            <AddModuleButton key={semester} semester={semester} onClick={() =>
+              this.props.addModule(semester, module.ModuleCode)
+            }/>
+        )
+    );
+
     return (
       <DocumentTitle title={documentTitle}>
         <div className="module-container">
@@ -74,7 +131,22 @@ export class ModulePageContainer extends Component {
                 {module.Workload ? <dt className="col-sm-3">Weekly Workload</dt> : null}
                 {module.Workload ? <dd className="col-sm-9">{module.Workload}</dd> : null}
 
-                {/* TODO: Add in exam date for each semester. */}
+                {renderExaminations}
+
+                <dt className="col-sm-3">Semesters Offered</dt>
+                <dd className="col-sm-9">{semsOffered}</dd>
+
+                <dt className="col-sm-3">Offical Links</dt>
+                <dd className="col-sm-9">
+                  <ul className="nm-footer-links">
+                    <li><a href={ivleLink}>IVLE</a></li>
+                    <li><a href={corsLink}>CORS</a></li>
+                  </ul>
+                </dd>
+
+                <div>
+                  {addOrRemoveToTimetableLinks}
+                </div>
 
               </dl>
             </div> : null
@@ -86,15 +158,19 @@ export class ModulePageContainer extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
+  const timetables = state.timetables;
   return {
     module: state.entities.moduleBank.modules[ownProps.params.moduleCode],
     fetchModuleRequest: state.requests.fetchModuleRequest || {},
+    timetables,
   };
 }
 
 export default connect(
   mapStateToProps,
   {
+    addModule,
     loadModule,
+    removeModule,
   }
 )(ModulePageContainer);
