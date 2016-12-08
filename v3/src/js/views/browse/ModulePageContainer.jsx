@@ -61,10 +61,7 @@ export class ModulePageContainer extends Component {
 
   moduleHasBeenAdded(module: Module, semester: num): boolean {
     const timetables = this.props.timetables;
-    return (
-      timetables[semester] &&
-      typeof timetables[semester][module.ModuleCode] !== 'undefined'
-    );
+    return timetables[semester] && !!timetables[semester][module.ModuleCode];
   }
 
   props: Props;
@@ -90,17 +87,13 @@ export class ModulePageContainer extends Component {
     const addOrRemoveToTimetableLinks = this.semestersOffered().map(
       semester => (
         this.moduleHasBeenAdded(module, semester) ?
-          (
-            <RemoveModuleButton key={semester} semester={semester} onClick={() =>
-              this.props.removeModule(semester, module.ModuleCode)
-            }/>
-          )
+          <RemoveModuleButton key={semester} semester={semester} onClick={() =>
+            this.props.removeModule(semester, module.ModuleCode)
+          }/>
           :
-          (
             <AddModuleButton key={semester} semester={semester} onClick={() =>
               this.props.addModule(semester, module.ModuleCode)
             }/>
-          )
         )
     );
 
