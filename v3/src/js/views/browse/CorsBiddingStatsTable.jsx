@@ -22,26 +22,27 @@ export default function CorsBiddingStatsTable(props: Props) {
     </tr>
   );
 
-  return (
-    <div className="table-responsive">
-      <table className="table table-sm">
-        <thead>
-          <tr>
-            <th>Faculty</th>
-            <th>Group</th>
-            <th>Round</th>
-            <th>Quota</th>
-            <th>Bidders</th>
-            <th>Lowest Bid</th>
-            <th>Lowest Succ Bid</th>
-            <th>Highest Bid</th>
-            <th>Student Acct Type</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows}
-        </tbody>
-      </table>
-    </div>
-  );
+  return rows.length === 0 ?
+    <p>No bidding stats available</p>
+    :
+      <div className="table-responsive">
+        <table className="table table-sm">
+          <thead>
+            <tr>
+              <th>Faculty</th>
+              <th>Group</th>
+              <th>Round</th>
+              <th>Quota</th>
+              <th>Bidders</th>
+              <th>Lowest Bid</th>
+              <th>Lowest Succ Bid</th>
+              <th>Highest Bid</th>
+              <th>Student Acct Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows}
+          </tbody>
+        </table>
+      </div>;
 }

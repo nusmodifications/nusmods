@@ -18,42 +18,51 @@ type Props = {
   selectFaculty: Function,
   selectNewStudent: Function,
   stats: Array<BiddingStat>,
+};
+
+type GeneralAccount = string;
+type ProgrammeAccount = string;
+type AccountType = GeneralAccount | ProgrammeAccount;
+
+type Student = {
+  newStudent: boolean,
+  faculty: Faculty,
+  accountType: AccountType,
 }
 
-const sameFaculty = (stat, student) => (stat.Faculty === student.faculty);
+const sameFaculty = (stat: BiddingStat, student: Student): boolean => (stat.Faculty === student.faculty);
 const isNew = student => (student.newStudent);
 const PROGRAMME = 'P';
 const GENERAL = 'G';
-const programmeAccount = student => (student.accountType === PROGRAMME);
-const generalAccount = student => (student.accountType === GENERAL);
+const isProgrammeAccount = student => (student.accountType === PROGRAMME);
+const isGeneralAccount = student => (student.accountType === GENERAL);
 
 function isStatRelevantForStudent(stat, student) {
   switch (stat.StudentAcctType) {
     case 'Returning Students [P]':
-      return sameFaculty(stat, student) && programmeAccount(student) && !isNew(student);
+      return sameFaculty(stat, student) && isProgrammeAccount(student) && !isNew(student);
     case 'New Students [P]':
-      return sameFaculty(stat, student) && programmeAccount(student) && isNew(student);
+      return sameFaculty(stat, student) && isProgrammeAccount(student) && isNew(student);
     case 'NUS Students [P]':
-      return sameFaculty(stat, student) && programmeAccount(student);
+      return sameFaculty(stat, student) && isProgrammeAccount(student);
     case 'Returning Students and New Students [P]':
-      return sameFaculty(stat, student) && programmeAccount(student);
+      return sameFaculty(stat, student) && isProgrammeAccount(student);
     case 'NUS Students [G]':
-      return generalAccount(student);
+      return isGeneralAccount(student);
     case 'Returning Students [P] and NUS Students [G]':
-      return (sameFaculty(stat, student) && programmeAccount(student) && !isNew(student))
-        || (!sameFaculty(stat, student) && generalAccount(student));
+      return (sameFaculty(stat, student) && isProgrammeAccount(student) && !isNew(student))
+        || (!sameFaculty(stat, student) && isGeneralAccount(student));
     case 'NUS Students [P, G]':
-      return (sameFaculty(stat, student) && programmeAccount(student))
-        || (!sameFaculty(stat, student) && generalAccount(student));
+      return (sameFaculty(stat, student) && isProgrammeAccount(student))
+        || (!sameFaculty(stat, student) && isGeneralAccount(student));
     case 'Reserved for [G] in later round':
-      return !sameFaculty(stat, student) && generalAccount(student);
+      return !sameFaculty(stat, student) && isGeneralAccount(student);
     case 'Not Available for [G]':
-      return sameFaculty(stat, student) && programmeAccount(student);
+      return sameFaculty(stat, student) && isProgrammeAccount(student);
     default:
-      return false;
+      throw Error(`unknown StudentAcctType ${stat.StudentAcctType}`);
   }
 }
-
 
 class CorsBiddingStatsTableControl extends Component {
   constructor(props: Props) {
@@ -66,7 +75,7 @@ class CorsBiddingStatsTableControl extends Component {
     this.onSelectAySem = this.onSelectAySem.bind(this);
   }
 
-  onAccountTypeChange(accountType) {
+  onAccountTypeChange(accountType: AccountType) {
     this.setState({ accountType });
   }
 
@@ -80,9 +89,14 @@ class CorsBiddingStatsTableControl extends Component {
       faculty,
       newStudent,
     } = this.props;
+    const {
+      aySem,
+      accountType,
+    } = this.state;
 
-    const student = {
-      ...this.state,
+    const student: Student = {
+      accountType,
+      newStudent,
       faculty,
     };
 
@@ -92,8 +106,8 @@ class CorsBiddingStatsTableControl extends Component {
       <button key={a} onClick={() => this.onSelectAySem(a)}
         type="button"
         className={classnames('btn', {
-          'btn-primary': this.state.aySem === a,
-          'btn-secondary': !(this.state.aySem === a),
+          'btn-primary': aySem === a,
+          'btn-secondary': aySem !== a,
         })}
       >
         {a}
@@ -103,20 +117,29 @@ class CorsBiddingStatsTableControl extends Component {
     return (
       <div>
         <div className="row">
-          <div className="col-sm-5 text-xs-right">
+          <div className="col-sm-1">
+            <label className="col-form-label" htmlFor="faculty-select">Faculty</label>
+          </div>
+          <div className="col-sm-4">
             <FacultySelect faculty={faculty} onChange={this.props.selectFaculty} />
           </div>
-          <div className="col-sm-4 text-xs-right">
-            <AccountSelect accountType={this.state.accountType} onChange={this.onAccountTypeChange} />
+          <div className="col-sm-1">
+            <label className="col-form-label" htmlFor="account-select">Account</label>
           </div>
-          <div className="col-sm-2 text-xs-right">
+          <div className="col-sm-3">
+            <AccountSelect accountType={accountType} onChange={this.onAccountTypeChange} />
+          </div>
+          <div className="col-sm-1">
+            <label className="col-form-label" htmlFor="new-student-select">New student</label>
+          </div>
+          <div className="col-sm-2">
             <NewStudentSelect newStudent={newStudent} onSelectNewStudent={this.props.selectNewStudent} />
           </div>
         </div>
         <div className="btn-group btn-group-sm" role="group" aria-label="Ay Sems">
           {aySemSelector}
         </div>
-        <CorsBiddingStatsTable stats={grouped[this.state.aySem]} />
+        <CorsBiddingStatsTable stats={grouped[aySem]} />
       </div>
     );
   }

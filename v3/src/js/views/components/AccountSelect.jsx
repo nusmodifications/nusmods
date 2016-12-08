@@ -14,6 +14,7 @@ export default function AccountSelect(props: Props) {
 
   return (
     <select className="form-control"
+      name="account-select"
       value={selectedAccountType}
       onChange={event => onChange(event.target.value)}
     >
