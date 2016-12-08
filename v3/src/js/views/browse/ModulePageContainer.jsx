@@ -12,6 +12,7 @@ import { formatExamDate } from 'utils/modules';
 import type { TimetableConfig } from 'types/timetables';
 import AddModuleButton from './AddModuleButton';
 import RemoveModuleButton from './RemoveModuleButton';
+import CorsBiddingStatsTableControl from './CorsBiddingStatsTableControl';
 
 type RouteParams = {
   moduleCode: string,
@@ -147,6 +148,8 @@ export class ModulePageContainer extends Component {
                 <div>
                   {addOrRemoveToTimetableLinks}
                 </div>
+
+                <CorsBiddingStatsTableControl stats={module.CorsBiddingStats} />
 
               </dl>
             </div> : null
