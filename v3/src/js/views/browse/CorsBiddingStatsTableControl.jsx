@@ -2,15 +2,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import classnames from 'classnames';
 
 import { selectNewStudent, selectFaculty } from 'actions/settings';
 import AccountSelect from 'views/components/AccountSelect';
 import FacultySelect from 'views/components/FacultySelect';
 import NewStudentSelect from 'views/components/NewStudentSelect';
 import { AccountType, BiddingStat, Faculty } from 'types/modules';
+import AySemSelector from './AySemSelector';
 import CorsBiddingStatsTable from './CorsBiddingStatsTable';
-
 
 type Props = {
   faculty: Faculty,
@@ -65,7 +64,7 @@ class CorsBiddingStatsTableControl extends Component {
     super(props);
     this.state = {
       accountType: 'G',
-      aySem: null,
+      selectedAySem: null,
     };
     this.onAccountTypeChange = this.onAccountTypeChange.bind(this);
     this.onSelectAySem = this.onSelectAySem.bind(this);
@@ -75,8 +74,8 @@ class CorsBiddingStatsTableControl extends Component {
     this.setState({ accountType });
   }
 
-  onSelectAySem(aySem) {
-    this.setState({ aySem });
+  onSelectAySem(selectedAySem) {
+    this.setState({ selectedAySem });
   }
 
   render() {
@@ -86,7 +85,7 @@ class CorsBiddingStatsTableControl extends Component {
       newStudent,
     } = this.props;
     const {
-      aySem,
+      selectedAySem,
       accountType,
     } = this.state;
 
@@ -97,18 +96,7 @@ class CorsBiddingStatsTableControl extends Component {
     };
 
     const relevantStats = stats.filter(s => isStatRelevantForStudent(s, student));
-    const grouped = _.groupBy(relevantStats, s => `${s.AcadYear} Sem ${s.Semester}`);
-    const aySemSelector = Object.keys(grouped).map(a =>
-      <button key={a} onClick={() => this.onSelectAySem(a)}
-        type="button"
-        className={classnames('btn', {
-          'btn-primary': aySem === a,
-          'btn-secondary': aySem !== a,
-        })}
-      >
-        {a}
-      </button>
-    );
+    const statsByAySem = _.groupBy(relevantStats, s => `${s.AcadYear} Sem ${s.Semester}`);
 
     return (
       <div>
@@ -132,10 +120,13 @@ class CorsBiddingStatsTableControl extends Component {
             <NewStudentSelect newStudent={newStudent} onSelectNewStudent={this.props.selectNewStudent} />
           </div>
         </div>
-        <div className="btn-group btn-group-sm" role="group" aria-label="Ay Sems">
-          {aySemSelector}
-        </div>
-        <CorsBiddingStatsTable stats={grouped[aySem]} />
+
+        <AySemSelector aySems={Object.keys(statsByAySem)}
+          selectedAySem={selectedAySem}
+          onSelectAySem={this.onSelectAySem}
+        />
+
+        <CorsBiddingStatsTable stats={statsByAySem[selectedAySem]} />
       </div>
     );
   }
