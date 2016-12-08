@@ -13,6 +13,7 @@ import type { TimetableConfig } from 'types/timetables';
 import AddModuleButton from './AddModuleButton';
 import RemoveModuleButton from './RemoveModuleButton';
 import CorsBiddingStatsTableControl from './CorsBiddingStatsTableControl';
+import LessonTimetableControl from './LessonTimetableControl';
 
 type RouteParams = {
   moduleCode: string,
@@ -154,6 +155,9 @@ export class ModulePageContainer extends Component {
               <hr/>
 
               <CorsBiddingStatsTableControl stats={module.CorsBiddingStats} />
+
+              <LessonTimetableControl semestersOffered={this.semestersOffered()}
+                history={module.History}/>
 
             </div> : null
           }
