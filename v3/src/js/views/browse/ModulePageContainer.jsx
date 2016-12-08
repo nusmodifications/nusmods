@@ -149,9 +149,12 @@ export class ModulePageContainer extends Component {
                   {addOrRemoveToTimetableLinks}
                 </div>
 
-                <CorsBiddingStatsTableControl stats={module.CorsBiddingStats} />
-
               </dl>
+
+              <hr/>
+
+              <CorsBiddingStatsTableControl stats={module.CorsBiddingStats} />
+
             </div> : null
           }
         </div>

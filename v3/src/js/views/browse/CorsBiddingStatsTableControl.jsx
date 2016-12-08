@@ -2,18 +2,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import classnames from 'classnames';
 
 import { selectNewStudent, selectFaculty } from 'actions/settings';
-import FacultySelect from 'views/components/FacultySelect';
 import AccountSelect from 'views/components/AccountSelect';
+import FacultySelect from 'views/components/FacultySelect';
+import NewStudentSelect from 'views/components/NewStudentSelect';
 import { BiddingStat, Faculty } from 'types/modules';
 import CorsBiddingStatsTable from './CorsBiddingStatsTable';
 
 
 type Props = {
-  stats: Array<BiddingStat>,
   faculty: Faculty,
+  newStudent: boolean,
   selectFaculty: Function,
+  selectNewStudent: Function,
+  stats: Array<BiddingStat>,
 }
 
 const sameFaculty = (stat, student) => (stat.Faculty === student.faculty);
@@ -56,7 +60,6 @@ class CorsBiddingStatsTableControl extends Component {
     super(props);
     this.state = {
       accountType: 'G',
-      isNewStudent: false,
       aySem: null,
     };
     this.onAccountTypeChange = this.onAccountTypeChange.bind(this);
@@ -64,39 +67,52 @@ class CorsBiddingStatsTableControl extends Component {
   }
 
   onAccountTypeChange(accountType) {
-    this.setState({
-      accountType,
-    });
+    this.setState({ accountType });
   }
 
   onSelectAySem(aySem) {
-    this.setState({
-      aySem,
-    });
+    this.setState({ aySem });
   }
 
   render() {
-    const stats = this.props.stats;
+    const {
+      stats,
+      faculty,
+      newStudent,
+    } = this.props;
+
     const student = {
       ...this.state,
-      faculty: this.props.faculty,
+      faculty,
     };
+
     const relevantStats = stats.filter(s => isStatRelevantForStudent(s, student));
     const grouped = _.groupBy(relevantStats, s => `${s.AcadYear} Sem ${s.Semester}`);
-    const aySemKeys = Object.keys(grouped);
-
-    const aySemSelector = aySemKeys.map(a =>
-      <button onClick={() => this.onSelectAySem(a)}
+    const aySemSelector = Object.keys(grouped).map(a =>
+      <button key={a} onClick={() => this.onSelectAySem(a)}
         type="button"
-        className="btn btn-secondary">
+        className={classnames('btn', {
+          'btn-primary': this.state.aySem === a,
+          'btn-secondary': !(this.state.aySem === a),
+        })}
+      >
         {a}
       </button>
     );
 
     return (
       <div>
-        <FacultySelect faculty={this.props.faculty} onChange={this.props.selectFaculty} />
-        <AccountSelect accountType={this.state.accountType} onChange={this.onAccountTypeChange} />
+        <div className="row">
+          <div className="col-sm-5 text-xs-right">
+            <FacultySelect faculty={faculty} onChange={this.props.selectFaculty} />
+          </div>
+          <div className="col-sm-4 text-xs-right">
+            <AccountSelect accountType={this.state.accountType} onChange={this.onAccountTypeChange} />
+          </div>
+          <div className="col-sm-2 text-xs-right">
+            <NewStudentSelect newStudent={newStudent} onSelectNewStudent={this.props.selectNewStudent} />
+          </div>
+        </div>
         <div className="btn-group btn-group-sm" role="group" aria-label="Ay Sems">
           {aySemSelector}
         </div>
