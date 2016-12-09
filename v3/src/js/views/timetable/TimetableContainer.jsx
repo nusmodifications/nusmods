@@ -126,9 +126,7 @@ export class TimetableContainer extends Component {
     });
 
     // inject hidden into lessons.
-    timetableLessons = timetableLessons.filter((lesson) => {
-      return !this.isHiddenInTimetable(lesson.ModuleCode);
-    });
+    timetableLessons = timetableLessons.filter(lesson => !this.isHiddenInTimetable(lesson.ModuleCode));
 
     const arrangedLessons: TimetableArrangement = arrangeLessonsForWeek(timetableLessons);
     const arrangedLessonsWithModifiableFlag: TimetableArrangement = _.mapValues(arrangedLessons, (dayRows) => {
