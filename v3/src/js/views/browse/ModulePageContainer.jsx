@@ -14,6 +14,7 @@ import AddModuleButton from './AddModuleButton';
 import RemoveModuleButton from './RemoveModuleButton';
 import CorsBiddingStatsTableControl from './CorsBiddingStatsTableControl';
 import LessonTimetableControl from './LessonTimetableControl';
+import ModuleTree from './ModuleTree';
 
 type RouteParams = {
   moduleCode: string,
@@ -153,6 +154,8 @@ export class ModulePageContainer extends Component {
               </dl>
 
               <hr/>
+
+              <ModuleTree module={module} />
 
               <CorsBiddingStatsTableControl stats={module.CorsBiddingStats} />
 
