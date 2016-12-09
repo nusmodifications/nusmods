@@ -11,6 +11,7 @@ import type {
   ModifiableLesson,
   Lesson,
   Module,
+  ModuleCode,
   ModuleCondensed,
   RawLesson,
 } from 'types/modules';
@@ -54,6 +55,7 @@ type Props = {
   colors: ThemeState,
   activeLesson: ModifiableLesson,
   timetableOrientation: TimetableOrientation,
+  hiddenInTimetable: Array<ModuleCode>,
 
   addModule: Function,
   removeModule: Function,
@@ -71,6 +73,10 @@ export class TimetableContainer extends Component {
 
   componentWillUnmount() {
     this.props.cancelModifyLesson();
+  }
+
+  isHiddenInTimetable(moduleCode: ModuleCode) {
+    return this.props.hiddenInTimetable.includes(moduleCode);
   }
 
   modifyCell(lesson: ModifiableLesson) {
@@ -117,6 +123,11 @@ export class TimetableContainer extends Component {
     // Inject color index into lessons.
     timetableLessons = timetableLessons.map((lesson) => {
       return { ...lesson, colorIndex: this.props.colors[lesson.ModuleCode] };
+    });
+
+    // inject hidden into lessons.
+    timetableLessons = timetableLessons.filter((lesson) => {
+      return !this.isHiddenInTimetable(lesson.ModuleCode);
     });
 
     const arrangedLessons: TimetableArrangement = arrangeLessonsForWeek(timetableLessons);
@@ -181,6 +192,7 @@ export class TimetableContainer extends Component {
                       const module = this.props.modules[moduleCode] || {};
                       // Inject color index.
                       module.colorIndex = this.props.colors[moduleCode];
+                      module.hiddenInTimetable = this.isHiddenInTimetable(moduleCode);
                       return module;
                     })}
                     horizontalOrientation={isHorizontalOrientation}
@@ -209,6 +221,7 @@ function mapStateToProps(state) {
   const semTimetable = state.timetables[semester] || {};
   const semModuleList = getSemModuleSelectList(state.entities.moduleBank, semester, semTimetable);
   const semTimetableWithLessons = hydrateSemTimetableWithLessons(semTimetable, modules, semester);
+  const hiddenInTimetable = state.settings.hiddenInTimetable || [];
 
   return {
     semester,
@@ -219,6 +232,7 @@ function mapStateToProps(state) {
     theme: state.theme.id,
     colors: state.theme.colors,
     timetableOrientation: state.theme.timetableOrientation,
+    hiddenInTimetable,
   };
 }
 

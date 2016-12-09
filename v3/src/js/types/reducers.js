@@ -38,6 +38,7 @@ export type ThemeState = {
 export type SettingsState = {
   newStudent: boolean,
   faculty: ?Faculty,
+  hiddenInTimetable: Array<ModuleCode>,
 };
 
 /* entities/moduleBank.js */

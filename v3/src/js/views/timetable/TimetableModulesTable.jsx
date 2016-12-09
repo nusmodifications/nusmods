@@ -9,6 +9,7 @@ import classnames from 'classnames';
 import ColorPicker from 'views/components/color-picker/ColorPicker';
 
 import { selectModuleColor, modifyModuleColor, cancelModifyModuleColor } from 'actions/theme';
+import { hideLessonInTimetable, showLessonInTimetable } from 'actions/settings';
 import { getModuleSemExamDate, modulePagePath } from 'utils/modules';
 
 type Props = {
@@ -16,6 +17,8 @@ type Props = {
   selectModuleColor: Function,
   modifyModuleColor: Function,
   cancelModifyModuleColor: Function,
+  hideLessonInTimetable: Function,
+  showLessonInTimetable: Function,
   semester: number,
   modules: Array<ModuleWithColor>,
   onRemoveModule: Function,
@@ -25,6 +28,26 @@ type Props = {
 class TimetableModulesTable extends Component {
   componentWillUnmount() {
     this.props.cancelModifyModuleColor();
+  }
+
+  showButton(module) {
+    return (
+      <button className="btn-link" onClick={() => {
+        this.props.showLessonInTimetable(module.ModuleCode);
+      }}>
+        Show
+      </button>
+    );
+  }
+
+  hideButton(module) {
+    return (
+      <button className="btn-link" onClick={() => {
+        this.props.hideLessonInTimetable(module.ModuleCode);
+      }}>
+        Hide
+      </button>
+    );
   }
 
   props: Props;
@@ -43,7 +66,10 @@ class TimetableModulesTable extends Component {
               >
                 <div className="modules-table-row-inner">
                   <div className="color-column">
-                    <div className={`modules-table-color color-${module.colorIndex}`}
+                    <div className={classnames('modules-table-color', {
+                      [`color-${module.colorIndex}`]: !module.hiddenInTimetable,
+                      'color-muted': module.hiddenInTimetable,
+                    })}
                       onClick={() => {
                         if (this.props.activeModule === module.ModuleCode) {
                           this.props.cancelModifyModuleColor();
@@ -61,6 +87,7 @@ class TimetableModulesTable extends Component {
                     <Link to={modulePagePath(module.ModuleCode)}>
                       {module.ModuleCode} {module.ModuleTitle}
                     </Link>
+                    {module.hiddenInTimetable ? this.showButton(module) : this.hideButton(module)}
                     <div>
                       <small>
                         Exam: {getModuleSemExamDate(module, this.props.semester)}
@@ -98,5 +125,7 @@ export default connect(
     selectModuleColor,
     modifyModuleColor,
     cancelModifyModuleColor,
+    hideLessonInTimetable,
+    showLessonInTimetable,
   }
 )(TimetableModulesTable);
