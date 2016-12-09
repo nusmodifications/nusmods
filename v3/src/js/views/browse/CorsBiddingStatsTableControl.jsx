@@ -126,7 +126,11 @@ class CorsBiddingStatsTableControl extends Component {
           onChoiceSelect={this.onSelectAySem}
         />
 
-        <CorsBiddingStatsTable aySem={selectedAySem} stats={statsByAySem[selectedAySem]} />
+        {selectedAySem ?
+          <CorsBiddingStatsTable aySem={selectedAySem} stats={statsByAySem[selectedAySem]} />
+          :
+            <p>Select a semester to view its bidding statistics</p>
+        }
       </div>
     );
   }
