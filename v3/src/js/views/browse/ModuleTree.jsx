@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import d3 from 'd3/d3';
-// import _ from 'lodash';
+import _ from 'lodash';
 
 type Props = {
   module: Module,
@@ -8,17 +8,20 @@ type Props = {
 export default class ModuleTree extends Component {
 
   componentDidMount() {
-    function isOrAnd(d) { return (d.name === 'or' || d.name === 'and'); }
-    function modsFilter(d) { return !isOrAnd(d); }
-    function andOrFilter(d) { return isOrAnd(d); }
-    function getHeight(d) { return isOrAnd(d) ? 35 : 60; }
-    function getWidth(d) { return isOrAnd(d) ? 50 : 120; }
-    function getX(d) { return isOrAnd(d) ? -25 : -60; }
-    function getY(d) { return isOrAnd(d) ? -17.5 : -35; }
+    const isOrAnd = d => d.name === 'or' || d.name === 'and';
+    const modsFilter = d => !isOrAnd(d);
+    const andOrFilter = d => isOrAnd(d);
+    const getHeight = d => (isOrAnd(d) ? 35 : 60);
+    const getWidth = d => (isOrAnd(d) ? 50 : 120);
+    const getX = d => (isOrAnd(d) ? -25 : -60);
+    const getY = d => (isOrAnd(d) ? -17.5 : -35);
 
+    const SVGHeight = 400;
+    let SVGWidth = this.prereqRoot.clientWidth;
     let rectangles;
     let interact;
-    let SVGWidth = this.prereqRoot.clientWidth;
+
+    const getDefaultTranslation = () => [(SVGWidth) / 2, 180];
 
     function mouseOver(d) {
       if (!isOrAnd(d)) {
@@ -29,21 +32,20 @@ export default class ModuleTree extends Component {
           .classed({ 'active-rect': true, opaque: true, translucent: false });
       }
     }
+
     function mouseOut() {
       rectangles.filter(modsFilter)
         .classed({ 'active-rect': false, opaque: true, translucent: false });
     }
+
     function clicked(d) {
       if (!isOrAnd(d)) {
         window.location.href = `/modules/${d.name}`;
       }
     }
-    function getDefaultTranslation() {
-      return [(SVGWidth) / 2, 180];
-    }
-    const prereqRoot = this.prereqRoot;
+
     function resized() {
-      SVGWidth = prereqRoot.clientWidth;
+      SVGWidth = this.prereqRoot.clientWidth;
       d3.select('#svg').attr('width', SVGWidth);
 
       interact.translate(getDefaultTranslation());
@@ -53,7 +55,6 @@ export default class ModuleTree extends Component {
         .attr('transform', `translate(${getDefaultTranslation()}) scale(${interact.scale()})`);
     }
 
-    const SVGHeight = 400;
     let canvas = d3.select(this.prereqRoot)
       .append('svg')
       .attr('id', 'svg')
@@ -68,8 +69,8 @@ export default class ModuleTree extends Component {
         d3.select('#drawarea')
           .attr('transform', `translate(${d3.event.translate}) scale(${d3.event.scale})`)
       ));
-    // window.on('resize', _.debounce(resized, 100));
-    resized();
+    window.addEventListener('resize', _.debounce(resized.bind(this), 100));
+    resized.bind(this)();
     interact(d3.select('svg'));
     const module = this.props.module;
 
