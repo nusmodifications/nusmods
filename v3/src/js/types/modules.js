@@ -101,3 +101,9 @@ export type BiddingStat = {
 export type GeneralAccount = string;
 export type ProgrammeAccount = string;
 export type AccountType = GeneralAccount | ProgrammeAccount;
+// used for checking if cors bidding stat is relevant for this student profile
+export type Student = {
+  newStudent: boolean,
+  faculty: Faculty,
+  accountType: AccountType,
+}
