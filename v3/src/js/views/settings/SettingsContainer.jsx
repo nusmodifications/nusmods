@@ -10,7 +10,7 @@ import config from 'config';
 import { selectTheme } from 'actions/theme';
 import { selectNewStudent, selectFaculty } from 'actions/settings';
 import availableThemes from 'data/themes.json';
-import facultyList from 'data/faculty-list.json';
+import FacultySelect from 'views/components/FacultySelect';
 
 import ThemeOption from './ThemeOption';
 
@@ -70,17 +70,7 @@ function SettingsContainer(props: Props) {
                 unique nature of their course.</p>
               </div>
               <div className="col-sm-4 offset-sm-1 text-xs-right">
-                <select className="form-control"
-                  value={props.faculty}
-                  onChange={(event) => {
-                    props.selectFaculty(event.target.value);
-                  }}
-                >
-                  <option disabled value=""> -- Select a faculty -- </option>
-                  {facultyList.map((faculty) => {
-                    return <option key={faculty.value} value={faculty.value}>{faculty.name}</option>;
-                  })}
-                </select>
+                <FacultySelect faculty={props.faculty} onChange={props.selectFaculty} />
               </div>
             </div>
             <hr/>
