@@ -8,18 +8,19 @@ type Props = {
   stats: BiddingStat[],
 }
 
+const headers = [
+  'Faculty',
+  'Group',
+  'Round',
+  'Quota',
+  'Bidders',
+  'Lowest Bid',
+  'Lowest Succ Bid',
+  'Highest Bid',
+  'Student Acct Type',
+];
+
 export default function CorsBiddingStatsTable(props: Props) {
-  const headers = [
-    'Faculty',
-    'Group',
-    'Round',
-    'Quota',
-    'Bidders',
-    'Lowest Bid',
-    'Lowest Succ Bid',
-    'Highest Bid',
-    'Student Acct Type',
-  ];
   const data = (props.stats || []).map(s =>
     [
       s.Faculty,
