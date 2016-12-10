@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import { Link } from 'react-router';
 
 function Footer() {
   return (
@@ -11,8 +12,8 @@ function Footer() {
           <li><a href="https://twitter.com/nusmods">Twitter</a></li>
           <li><a href="http://blog.nusmods.com/">Blog</a></li>
           <li><a href="https://github.com/nusmodifications/nusmods-api">API</a></li>
-          <li><a href="/about">About</a></li>
-          <li><a href="/faq">FAQ</a></li>
+          <li><Link to="/about">About</Link></li>
+          <li><Link to="/faq">FAQ</Link></li>
         </ul>
         {/* TODO: Change team to link to internal page. */}
         {/* TODO: Change contributors link to internal page */}

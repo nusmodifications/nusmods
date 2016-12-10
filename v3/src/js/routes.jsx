@@ -6,6 +6,8 @@ import { Provider } from 'react-redux';
 import AppContainer from 'views/AppContainer';
 import NotFoundPage from 'views/NotFoundPage';
 
+import AboutContainer from 'views/static/AboutContainer';
+import FaqContainer from 'views/static/FaqContainer';
 import TimetableContainer from 'views/timetable/TimetableContainer';
 import ModulesContainer from 'views/browse/ModulesContainer';
 import ModuleFinderContainer from 'views/browse/ModuleFinderContainer';
@@ -19,6 +21,8 @@ export default function ({ store, history }) {
       <Router history={history}>
         <Route path="/" component={AppContainer}>
           <IndexRedirect to="/timetable"/>
+          <Route path="/about" component={AboutContainer}/>
+          <Route path="/faq" component={FaqContainer}/>
           <Route path="/timetable" component={TimetableContainer}/>
           <Route path="/modules" component={ModulesContainer}>
             <IndexRoute component={ModuleFinderContainer}/>
