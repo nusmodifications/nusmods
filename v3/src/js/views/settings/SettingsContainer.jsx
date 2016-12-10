@@ -4,13 +4,13 @@ import type { Faculty } from 'types/modules';
 import React from 'react';
 import { connect } from 'react-redux';
 import DocumentTitle from 'react-document-title';
-import classnames from 'classnames';
 import config from 'config';
 
 import { selectTheme } from 'actions/theme';
 import { selectNewStudent, selectFaculty } from 'actions/settings';
 import availableThemes from 'data/themes.json';
 import FacultySelect from 'views/components/FacultySelect';
+import NewStudentSelect from 'views/components/NewStudentSelect';
 
 import ThemeOption from './ThemeOption';
 
@@ -38,28 +38,9 @@ function SettingsContainer(props: Props) {
                 recognizing that new students do not have as many points as some of the seniors.</p>
               </div>
               <div className="col-sm-4 offset-sm-1 col-xs-5 text-xs-right">
-                <div className="btn-group" role="group">
-                  <button type="button"
-                    className={classnames('btn', {
-                      'btn-primary': props.newStudent,
-                      'btn-secondary': !props.newStudent,
-                    })}
-                    onClick={() => {
-                      props.selectNewStudent(true);
-                    }}
-                  >Yes
-                  </button>
-                  <button type="button"
-                    className={classnames('btn', {
-                      'btn-primary': !props.newStudent,
-                      'btn-secondary': props.newStudent,
-                    })}
-                    onClick={() => {
-                      props.selectNewStudent(false);
-                    }}
-                  >No
-                  </button>
-                </div>
+                <NewStudentSelect newStudent={props.newStudent}
+                  onSelectNewStudent={props.selectNewStudent}
+                />
               </div>
             </div>
             <hr/>
