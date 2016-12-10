@@ -1,5 +1,7 @@
 /* stylelint-disable */
-.color-muted { @include color(#eeeeee); }
+.color-muted {
+  border: 1px solid #ccc;
+}
 .theme-ashes {
   .color-0 { @include color(#c7ae95); }
   .color-1 { @include color(#c7c795); }

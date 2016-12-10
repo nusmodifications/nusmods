@@ -30,22 +30,18 @@ class TimetableModulesTable extends Component {
     this.props.cancelModifyModuleColor();
   }
 
-  showButton(module) {
+  showButton(moduleCode) {
     return (
-      <button className="btn-link" onClick={() => {
-        this.props.showLessonInTimetable(module.ModuleCode);
-      }}>
-        Show
+      <button className="btn-link btn-remove" onClick={() => this.props.showLessonInTimetable(moduleCode)}>
+        <i className="fa fa-eye-slash" />
       </button>
     );
   }
 
-  hideButton(module) {
+  hideButton(moduleCode) {
     return (
-      <button className="btn-link" onClick={() => {
-        this.props.hideLessonInTimetable(module.ModuleCode);
-      }}>
-        Hide
+      <button className="btn-link btn-remove" onClick={() => this.props.hideLessonInTimetable(moduleCode)}>
+        <i className="fa fa-eye" />
       </button>
     );
   }
@@ -87,7 +83,6 @@ class TimetableModulesTable extends Component {
                     <Link to={modulePagePath(module.ModuleCode)}>
                       {module.ModuleCode} {module.ModuleTitle}
                     </Link>
-                    {module.hiddenInTimetable ? this.showButton(module) : this.hideButton(module)}
                     <div>
                       <small>
                         Exam: {getModuleSemExamDate(module, this.props.semester)}
@@ -99,6 +94,8 @@ class TimetableModulesTable extends Component {
                         }}>
                           Remove
                         </button>
+                        {module.hiddenInTimetable ?
+                          this.showButton(module.ModuleCode) : this.hideButton(module.ModuleCode)}
                       </small>
                     </div>
                   </div>
