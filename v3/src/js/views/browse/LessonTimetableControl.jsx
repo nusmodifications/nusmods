@@ -40,10 +40,14 @@ export default class LessonTimetableControl extends Component {
     let lessonsTimetable = null;
     if (historyForSemester) {
       const timetableByLessonType = _.groupBy(historyForSemester.Timetable, t => t.LessonType);
-      lessonsTimetable = _.map(
-        timetableByLessonType,
-        (lessons, lessonType) =>
-          <LessonTimetable key={lessonType} lessonType={lessonType} lessons={lessons} />);
+      if (_.isEmpty(timetableByLessonType)) {
+        lessonsTimetable = <p>No timetable information available</p>;
+      } else {
+        lessonsTimetable = _.map(
+          timetableByLessonType,
+          (lessons, lessonType) =>
+            <LessonTimetable key={lessonType} lessonType={lessonType} lessons={lessons} />);
+      }
     } else {
       lessonsTimetable = <p>Select a semester to view timetable</p>;
     }
