@@ -9,6 +9,7 @@ import classnames from 'classnames';
 import ColorPicker from 'views/components/color-picker/ColorPicker';
 
 import { selectModuleColor, modifyModuleColor, cancelModifyModuleColor } from 'actions/theme';
+import { hideLessonInTimetable, showLessonInTimetable } from 'actions/settings';
 import { getModuleSemExamDate, modulePagePath } from 'utils/modules';
 
 type Props = {
@@ -16,6 +17,8 @@ type Props = {
   selectModuleColor: Function,
   modifyModuleColor: Function,
   cancelModifyModuleColor: Function,
+  hideLessonInTimetable: Function,
+  showLessonInTimetable: Function,
   semester: number,
   modules: Array<ModuleWithColor>,
   onRemoveModule: Function,
@@ -25,6 +28,22 @@ type Props = {
 class TimetableModulesTable extends Component {
   componentWillUnmount() {
     this.props.cancelModifyModuleColor();
+  }
+
+  showButton(moduleCode) {
+    return (
+      <button className="btn-link btn-remove" onClick={() => this.props.showLessonInTimetable(moduleCode)}>
+        <i className="fa fa-eye-slash" />
+      </button>
+    );
+  }
+
+  hideButton(moduleCode) {
+    return (
+      <button className="btn-link btn-remove" onClick={() => this.props.hideLessonInTimetable(moduleCode)}>
+        <i className="fa fa-eye" />
+      </button>
+    );
   }
 
   props: Props;
@@ -43,7 +62,10 @@ class TimetableModulesTable extends Component {
               >
                 <div className="modules-table-row-inner">
                   <div className="color-column">
-                    <div className={`modules-table-color color-${module.colorIndex}`}
+                    <div className={classnames('modules-table-color', {
+                      [`color-${module.colorIndex}`]: !module.hiddenInTimetable,
+                      'color-muted': module.hiddenInTimetable,
+                    })}
                       onClick={() => {
                         if (this.props.activeModule === module.ModuleCode) {
                           this.props.cancelModifyModuleColor();
@@ -72,6 +94,8 @@ class TimetableModulesTable extends Component {
                         }}>
                           Remove
                         </button>
+                        {module.hiddenInTimetable ?
+                          this.showButton(module.ModuleCode) : this.hideButton(module.ModuleCode)}
                       </small>
                     </div>
                   </div>
@@ -98,5 +122,7 @@ export default connect(
     selectModuleColor,
     modifyModuleColor,
     cancelModifyModuleColor,
+    hideLessonInTimetable,
+    showLessonInTimetable,
   }
 )(TimetableModulesTable);
