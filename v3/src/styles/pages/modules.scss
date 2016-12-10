@@ -1,3 +1,78 @@
 .modules-page-container {
   animation-name: $page-entering-animation;
 }
+
+// Pre-requisites Tree
+.nm-prerequisites-tree {
+  #nm-prerequisites-tree-canvas {
+    border: 2px solid #eee;
+    min-height: 400px;
+  }
+
+  #svg {
+    cursor: move;
+  }
+
+  .opaque {
+    opacity: 1;
+  }
+
+  .transparent {
+    opacity: 0;
+  }
+
+  .translucent {
+    opacity: 0.3;
+  }
+
+  .opacity-transition {
+    transition: opacity 0.5s ease-in-out;
+  }
+
+  .link {
+    fill: none;
+    stroke: #000;
+  }
+
+  .rect {
+    stroke: black;
+    stroke-width: 1.5;
+  }
+
+  .mod-rect {
+    fill: $brand-primary;
+    transition: opacity 0.25s ease, fill 0.25s ease;
+  }
+
+  .andor-rect {
+    cursor: default;
+    opacity: 0 !important;
+  }
+
+  .current-mod-rect {
+    fill: #6930ff;
+  }
+
+  .active-rect {
+    fill: #ccc;
+  }
+
+  .rect-label {
+    fill: #000;
+    font-weight: bold;
+    pointer-events: none;
+    text-anchor: middle;
+  }
+
+  .andor-label {
+    font-size: 50px !important;
+  }
+
+  .linkable-mod {
+    cursor: pointer;
+  }
+
+  .non-linkable-mod {
+    cursor: not-allowed;
+  }
+}
