@@ -46,7 +46,7 @@ export class ModulePageContainer extends Component {
   }
 
   semestersOffered(): number[] {
-    return this.props.module.History ? (
+    return this.props.module && this.props.module.History ? (
       this.props.module.History
         .sort((a, b) => a.Semester - b.Semester)
         .map(h => h.Semester))
@@ -54,7 +54,7 @@ export class ModulePageContainer extends Component {
   }
 
   examinations(): {semester: num, date: string}[] {
-    return this.props.module.History ? (
+    return this.props.module && this.props.module.History ? (
       this.props.module.History
         .filter(h => h.ExamDate != null)
         .sort((a, b) => a.Semester - b.Semester)
@@ -63,6 +63,9 @@ export class ModulePageContainer extends Component {
   }
 
   moduleHasBeenAdded(module: Module, semester: num): boolean {
+    if (!module) {
+      return false;
+    }
     const timetables = this.props.timetables;
     return timetables[semester] && !!timetables[semester][module.ModuleCode];
   }
@@ -73,8 +76,8 @@ export class ModulePageContainer extends Component {
     const module = this.props.module;
     const documentTitle = module ?
       `${module.ModuleCode} ${module.ModuleTitle} - ${config.brandName}` : 'Not found';
-    const ivleLink = config.ivleUrl.replace('<ModuleCode>', module.ModuleCode);
-    const corsLink = `${config.corsUrl}${module.ModuleCode}`;
+    const ivleLink = module ? config.ivleUrl.replace('<ModuleCode>', module.ModuleCode) : null;
+    const corsLink = module ? `${config.corsUrl}${module.ModuleCode}` : null;
 
     const renderExaminations = this.examinations().map(exam =>
       <span key={exam.semester}>
@@ -142,8 +145,8 @@ export class ModulePageContainer extends Component {
                 <dt className="col-sm-3">Offical Links</dt>
                 <dd className="col-sm-9">
                   <ul className="nm-footer-links">
-                    <li><a href={ivleLink}>IVLE</a></li>
-                    <li><a href={corsLink}>CORS</a></li>
+                    {ivleLink ? <li><a href={ivleLink}>IVLE</a></li> : null}
+                    {corsLink ? <li><a href={corsLink}>CORS</a></li> : null}
                   </ul>
                 </dd>
 
@@ -157,7 +160,10 @@ export class ModulePageContainer extends Component {
 
               <ModuleTree module={module} />
 
-              <CorsBiddingStatsTableControl stats={module.CorsBiddingStats} />
+              {module.CorsBiddingStats ?
+                <CorsBiddingStatsTableControl stats={module.CorsBiddingStats} />
+                : null
+              }
 
               <LessonTimetableControl semestersOffered={this.semestersOffered()}
                 history={module.History}/>
