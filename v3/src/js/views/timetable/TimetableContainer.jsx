@@ -159,6 +159,7 @@ export class TimetableContainer extends Component {
               <Timetable lessons={arrangedLessonsWithModifiableFlag}
                 horizontalOrientation={isHorizontalOrientation}
                 onModifyCell={this.modifyCell}
+                ref={r => (this.timetableDom = r && r.timetableDom)}
               />
               <br/>
             </div>

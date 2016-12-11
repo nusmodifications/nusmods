@@ -67,7 +67,9 @@ class Timetable extends Component {
           .timetable-cell { ${orientationStyleProp}: ${value}%; }
           .timetable-content-inner-container { min-width: ${minWidth}px; }
         `}</style>
-        <div className="timetable-inner-container">
+        <div className="timetable-inner-container"
+          ref={r => (this.timetableDom = r)}
+        >
           <TimetableTimings startingIndex={startingIndex}
             endingIndex={endingIndex}
           />
