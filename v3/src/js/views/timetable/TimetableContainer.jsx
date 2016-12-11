@@ -25,6 +25,7 @@ import _ from 'lodash';
 import config from 'config';
 import classnames from 'classnames';
 import { getSemModuleSelectList } from 'reducers/entities/moduleBank';
+import { downloadAsJpeg } from 'actions/export';
 import {
   addModule,
   cancelModifyLesson,
@@ -63,6 +64,7 @@ type Props = {
   changeLesson: Function,
   cancelModifyLesson: Function,
   toggleTimetableOrientation: Function,
+  downloadAsJpeg: Function,
 };
 
 export class TimetableContainer extends Component {
@@ -174,6 +176,12 @@ export class TimetableContainer extends Component {
                 >
                   <i className="fa fa-exchange"/>
                 </button>
+                <button type="button"
+                  className="btn btn-outline-primary"
+                  onClick={() => this.props.downloadAsJpeg(this.timetableDom)}
+                >
+                  <i className="fa fa-image"/>
+                </button>
               </div>
               <div className="row">
                 <div className="col-md-12">
@@ -244,5 +252,6 @@ export default connect(
     changeLesson,
     cancelModifyLesson,
     toggleTimetableOrientation,
+    downloadAsJpeg,
   }
 )(TimetableContainer);
