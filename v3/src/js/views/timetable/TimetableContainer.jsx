@@ -25,7 +25,7 @@ import _ from 'lodash';
 import config from 'config';
 import classnames from 'classnames';
 import { getSemModuleSelectList } from 'reducers/entities/moduleBank';
-import { downloadAsJpeg } from 'actions/export';
+import { downloadAsJpeg, downloadAsIcal } from 'actions/export';
 import {
   addModule,
   cancelModifyLesson,
@@ -65,6 +65,7 @@ type Props = {
   cancelModifyLesson: Function,
   toggleTimetableOrientation: Function,
   downloadAsJpeg: Function,
+  downloadAsIcal: Function,
 };
 
 export class TimetableContainer extends Component {
@@ -185,6 +186,13 @@ export class TimetableContainer extends Component {
                 >
                   <i className="fa fa-image"/>
                 </button>
+                <button type="button"
+                  className="btn btn-outline-primary"
+                  onClick={() => this.props.downloadAsIcal(
+                    this.props.semester, this.props.semTimetableWithLessons, this.props.modules)}
+                >
+                  <i className="fa fa-calendar"/>
+                </button>
               </div>
               <div className="row">
                 <div className="col-md-12">
@@ -256,5 +264,6 @@ export default connect(
     cancelModifyLesson,
     toggleTimetableOrientation,
     downloadAsJpeg,
+    downloadAsIcal,
   }
 )(TimetableContainer);

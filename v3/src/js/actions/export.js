@@ -1,5 +1,6 @@
 // @flow
 import domtoimage from 'dom-to-image';
+import { iCalForTimetable } from 'utils/ical';
 
 export const DOWNLOAD_AS_JPEG = 'DOWNLOAD_AS_JPEG';
 export function downloadAsJpeg(domElement: Element) {
@@ -25,5 +26,14 @@ export function downloadAsJpeg(domElement: Element) {
           type: `${DOWNLOAD_AS_JPEG}_FAILURE`,
         });
       });
+  };
+}
+
+export const DOWNLOAD_AS_ICAL = 'DOWNLOAD_AS_ICAL';
+export function downloadAsIcal(semester, timetable, moduleData) {
+  const results = iCalForTimetable(semester, timetable, moduleData);
+  return {
+    type: DOWNLOAD_AS_ICAL,
+    payload: results,
   };
 }
