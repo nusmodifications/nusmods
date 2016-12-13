@@ -1,5 +1,5 @@
 // @flow
-import type { DayText, LessonTime, RawLesson } from 'types/modules';
+import type { DayText, LessonTime, Lesson } from 'types/modules';
 
 // Converts a 24-hour format time string to an index.
 // Each index corresponds to one cell of each timetable row.
@@ -26,7 +26,7 @@ export const DEFAULT_LATEST_TIME: LessonTime = '1800';
 
 // Given an array of lessons, we calculate the earliest and latest timings based on the lesson timings.
 // This bounds will then be used to decide the starting and ending hours of the timetable.
-export function calculateBorderTimings(lessons: Array<RawLesson>): { startingIndex: number, endingIndex: number } {
+export function calculateBorderTimings(lessons: Array<Lesson>): { startingIndex: number, endingIndex: number } {
   let earliestTime: number = convertTimeToIndex(DEFAULT_EARLIEST_TIME);
   let latestTime: number = convertTimeToIndex(DEFAULT_LATEST_TIME);
   lessons.forEach((lesson) => {

@@ -1,5 +1,5 @@
 // @flow
-import type { RawLesson } from 'types/modules';
+import type { Lesson } from 'types/modules';
 import type { TimetableArrangement } from 'types/timetables';
 
 import React, { Component } from 'react';
@@ -30,9 +30,9 @@ class Timetable extends Component {
   timetableDom: Element
 
   render() {
-    const lessons: Array<RawLesson> = [];
+    const lessons: Array<Lesson> = [];
     SCHOOLDAYS.forEach((day) => {
-      const lessonsArray: Array<RawLesson> = _.flatten(this.props.lessons[day]);
+      const lessonsArray: Array<Lesson> = _.flatten(this.props.lessons[day]);
       lessons.push(...lessonsArray);
     });
     const { startingIndex, endingIndex } = calculateBorderTimings(lessons);
