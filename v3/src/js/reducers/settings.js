@@ -19,6 +19,9 @@ const defaultSettingsState: SettingsState = {
 };
 
 function hidden(state = [], action: FSA) {
+  if (!action.payload) {
+    return state;
+  }
   switch (action.type) {
     case HIDE_LESSON_IN_TIMETABLE:
       return [action.payload, ...state];

@@ -46,6 +46,9 @@ function getNewColor(currentColorIndices: Array<ColorIndex>): number {
 }
 
 function colors(state: ColorMapping, action: FSA): ColorMapping {
+  if (!(action.payload && action.payload.moduleCode)) {
+    return state;
+  }
   switch (action.type) {
     case ADD_MODULE:
       return {

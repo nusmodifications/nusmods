@@ -26,12 +26,12 @@ function app(state: AppState = defaultAppState, action: FSA): AppState {
     case MODIFY_LESSON:
       return {
         ...state,
-        activeLesson: action.payload.activeLesson,
+        activeLesson: action.payload && action.payload.activeLesson,
       };
     case MODIFY_MODULE_COLOR:
       return {
         ...state,
-        activeModule: action.payload.activeModule,
+        activeModule: action.payload && action.payload.activeModule,
       };
     case CANCEL_MODIFY_LESSON:
     case CHANGE_LESSON:

@@ -21,8 +21,14 @@ function moduleLessonConfig(state: ModuleLessonConfig = defaultModuleLessonConfi
   switch (action.type) {
     case CHANGE_LESSON:
       return (() => {
+        if (!action.payload) {
+          return state;
+        }
         const classNo: ClassNo = action.payload.classNo;
         const lessonType: LessonType = action.payload.lessonType;
+        if (!(classNo && lessonType)) {
+          return state;
+        }
         return {
           ...state,
           [lessonType]: classNo,
@@ -37,7 +43,13 @@ function moduleLessonConfig(state: ModuleLessonConfig = defaultModuleLessonConfi
 const defaultSemTimetableConfig: SemTimetableConfig = {};
 
 function semTimetable(state: SemTimetableConfig = defaultSemTimetableConfig, action: FSA): SemTimetableConfig {
+  if (!action.payload) {
+    return state;
+  }
   const moduleCode = action.payload.moduleCode;
+  if (!moduleCode) {
+    return state;
+  }
   switch (action.type) {
     case ADD_MODULE:
       return {
@@ -60,6 +72,9 @@ function semTimetable(state: SemTimetableConfig = defaultSemTimetableConfig, act
 const defaultTimetableConfig: TimetableConfig = {};
 
 function timetables(state: TimetableConfig = defaultTimetableConfig, action: FSA): TimetableConfig {
+  if (!action.payload) {
+    return state;
+  }
   switch (action.type) {
     case ADD_MODULE:
     case REMOVE_MODULE:
