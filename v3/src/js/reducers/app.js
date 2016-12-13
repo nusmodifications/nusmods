@@ -1,5 +1,5 @@
 // @flow
-import type { FSA } from 'redux';
+import type { FSA } from 'types/redux';
 import type { AppState } from 'types/reducers';
 
 import {
