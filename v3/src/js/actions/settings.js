@@ -1,6 +1,6 @@
 // @flow
 import type { FSA } from 'types/redux';
-import type { Faculty } from 'types/modules';
+import type { Faculty, ModuleCode } from 'types/modules';
 
 export const SELECT_NEW_STUDENT: string = 'SELECT_NEW_STUDENT';
 export function selectNewStudent(newStudent: boolean): FSA {

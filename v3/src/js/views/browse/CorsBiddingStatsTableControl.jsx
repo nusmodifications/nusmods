@@ -7,7 +7,7 @@ import { selectNewStudent, selectFaculty } from 'actions/settings';
 import AccountSelect from 'views/components/AccountSelect';
 import FacultySelect from 'views/components/FacultySelect';
 import NewStudentSelect from 'views/components/NewStudentSelect';
-import { AccountType, BiddingStat, Faculty, Student } from 'types/modules';
+import type { AccountType, BiddingStat, Faculty, Student } from 'types/modules';
 import ButtonGroupSelector from 'views/components/ButtonGroupSelector';
 import { isStatRelevantForStudent } from 'utils/cors';
 import CorsBiddingStatsTable from './CorsBiddingStatsTable';
@@ -20,6 +20,11 @@ type Props = {
   stats: Array<BiddingStat>,
 };
 
+type State = {
+  accountType: AccountType,
+  selectedAySem: ?string,
+}
+
 class CorsBiddingStatsTableControl extends Component {
   constructor(props: Props) {
     super(props);
@@ -30,6 +35,10 @@ class CorsBiddingStatsTableControl extends Component {
     this.onAccountTypeChange = this.onAccountTypeChange.bind(this);
     this.onSelectAySem = this.onSelectAySem.bind(this);
   }
+
+  state: State
+  onAccountTypeChange: Function
+  onSelectAySem: Function
 
   onAccountTypeChange(accountType: AccountType) {
     this.setState({ accountType });
@@ -85,6 +94,7 @@ class CorsBiddingStatsTableControl extends Component {
         <ButtonGroupSelector choices={Object.keys(statsByAySem)}
           selectedChoice={selectedAySem}
           onChoiceSelect={this.onSelectAySem}
+          ariaLabel="Select academic year and semester"
         />
 
         {selectedAySem ?

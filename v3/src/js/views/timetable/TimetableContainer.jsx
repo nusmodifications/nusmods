@@ -68,6 +68,7 @@ type Props = {
 };
 
 export class TimetableContainer extends Component {
+
   constructor(props: Props) {
     super(props);
     autobind(this);
@@ -76,6 +77,8 @@ export class TimetableContainer extends Component {
   componentWillUnmount() {
     this.props.cancelModifyLesson();
   }
+
+  timetableDom: Element
 
   isHiddenInTimetable(moduleCode: ModuleCode) {
     return this.props.hiddenInTimetable.includes(moduleCode);

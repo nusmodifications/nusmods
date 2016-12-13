@@ -5,9 +5,9 @@ import classnames from 'classnames';
 
 type Props = {
   choices: string[],
-  selectedChoice: string,
+  selectedChoice: ?string,
   onChoiceSelect: Function,
-  ariaLabel: string | void,
+  ariaLabel: ?string,
 }
 
 export default function ButtonGroupSelector(props: Props) {

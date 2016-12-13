@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 
-import { LessonType, RawLesson } from 'types/modules';
+import type { LessonType, RawLesson } from 'types/modules';
 import Table from 'views/components/Table';
 
 type Props = {

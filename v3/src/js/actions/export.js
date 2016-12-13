@@ -2,7 +2,7 @@
 import domtoimage from 'dom-to-image';
 
 export const DOWNLOAD_AS_JPEG = 'DOWNLOAD_AS_JPEG';
-export function downloadAsJpeg(domElement) {
+export function downloadAsJpeg(domElement: Element) {
   return (dispatch: Function) => {
     dispatch({
       type: `${DOWNLOAD_AS_JPEG}_PENDING`,

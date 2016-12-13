@@ -2,14 +2,18 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 
-import { SemesterData } from 'types/modules';
+import type { SemesterData } from 'types/modules';
 import ButtonGroupSelector from 'views/components/ButtonGroupSelector';
 import LessonTimetable from './LessonTimetable';
 
 type Props = {
-  semestersOffered: num[],
+  semestersOffered: number[],
   history: Array<SemesterData>,
 };
+
+type State = {
+  selectedSem: ?string,
+}
 
 export default class LessonTimetableControl extends Component {
   constructor(props: Props) {
@@ -20,7 +24,10 @@ export default class LessonTimetableControl extends Component {
     this.onSelectSem = this.onSelectSem.bind(this);
   }
 
-  onSelectSem(selectedSem) {
+  state: State
+  onSelectSem: Function
+
+  onSelectSem(selectedSem: string): void {
     this.setState({ selectedSem });
   }
 
@@ -57,6 +64,7 @@ export default class LessonTimetableControl extends Component {
         <ButtonGroupSelector choices={semesters}
           selectedChoice={selectedSem}
           onChoiceSelect={this.onSelectSem}
+          ariaLabel="Select a semester"
         />
         {lessonsTimetable}
       </div>

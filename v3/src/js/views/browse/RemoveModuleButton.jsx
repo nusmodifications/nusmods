@@ -3,7 +3,7 @@ import React from 'react';
 
 type Props = {
   onClick: Function,
-  semester: num,
+  semester: number,
 }
 
 export default function RemoveModuleButton(props: Props) {

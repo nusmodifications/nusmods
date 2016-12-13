@@ -53,16 +53,16 @@ export class ModulePageContainer extends Component {
       : [];
   }
 
-  examinations(): {semester: num, date: string}[] {
+  examinations(): {semester: number, date: string}[] {
     return this.props.module && this.props.module.History ? (
       this.props.module.History
         .filter(h => h.ExamDate != null)
         .sort((a, b) => a.Semester - b.Semester)
-        .map(h => ({ semester: h.Semester, date: h.ExamDate })))
+        .map(h => ({ semester: h.Semester, date: h.ExamDate || '' })))
       : [];
   }
 
-  moduleHasBeenAdded(module: Module, semester: num): boolean {
+  moduleHasBeenAdded(module: Module, semester: number): boolean {
     if (!module) {
       return false;
     }

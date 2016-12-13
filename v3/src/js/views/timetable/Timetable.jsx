@@ -27,6 +27,7 @@ type Props = {
 
 class Timetable extends Component {
   props: Props;
+  timetableDom: Element
 
   render() {
     const lessons: Array<RawLesson> = [];

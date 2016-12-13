@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { BiddingStat } from 'types/modules';
+import type { BiddingStat } from 'types/modules';
 import Table from 'views/components/Table';
 
 type Props = {
