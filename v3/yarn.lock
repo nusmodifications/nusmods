@@ -2479,6 +2479,10 @@ dom-serializer@0, dom-serializer@~0.1.0:
     domelementtype "~1.1.1"
     entities "~1.1.1"
 
+dom-to-image@^2.5.2:
+  version "2.5.2"
+  resolved "https://registry.yarnpkg.com/dom-to-image/-/dom-to-image-2.5.2.tgz#6476b9f43c27c00b76ce4f164d20e5eeab032497"
+
 dom-walk@^0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/dom-walk/-/dom-walk-0.1.1.tgz#672226dc74c8f799ad35307df936aba11acd6018"
