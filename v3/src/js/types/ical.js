@@ -3,15 +3,15 @@
 export type Repeating = {
   freq: string,
   count: number,
-  byDay: string,
+  byDay: string[],
   exclude: ?Array<Date>,
 }
 
 export type IcalEvent = {
-  start: string,
-  end: string,
+  start: Date,
+  end: Date,
   summary: string,
   description: string,
   url: string,
-  repeating: ?Repeating,
+  repeating?: Repeating,
 }
