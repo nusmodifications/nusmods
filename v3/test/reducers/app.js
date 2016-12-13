@@ -18,7 +18,7 @@ const appHasActiveLessonState: AppState = { ...appInitialState, activeLesson: le
 const appHasActiveModuleState: AppState = { ...appInitialState, activeModule: moduleCode };
 
 test('app should return initial state', (t) => {
-  const nextState: AppState = reducer(undefined, {});
+  const nextState: AppState = reducer(undefined, {type: 'INIT'});
 
   t.deepEqual(nextState, appInitialState);
 });
