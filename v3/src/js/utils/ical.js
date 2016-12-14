@@ -2,12 +2,12 @@
 import _ from 'lodash';
 
 import { getModuleSemesterData } from 'utils/modules';
+import type { EventOption } from 'ical-generator';
 import type { RawLesson, Module, ModuleCode, Semester } from 'types/modules';
 import type {
   ModuleLessonConfigWithLessons,
   SemTimetableConfigWithLessons
 } from 'types/timetables';
-import type { IcalEvent } from 'types/ical';
 import config from 'config/app-config.json';
 import academicCalendar from 'config/academic-calendar.json';
 
@@ -26,7 +26,7 @@ export function daysAfter(startDate: Date, days: number): Date {
   return result;
 }
 
-export function examIcalEvent(module: Module, semester: Semester): IcalEvent {
+export function examIcalEvent(module: Module, semester: Semester): EventOption {
   const examDate = new Date(getExamDate(module, semester));
   return {
     start: examDate,
@@ -90,7 +90,7 @@ function calculateExclusion(lesson: RawLesson, start: Date) {
 
 // strategy is to generate a weekly event, then exclude recess week,
 // and take care of odd/even weeks
-function iCalEventForLesson(lesson: RawLesson, module: Module, semester: Semester, firstDayOfSchool: Date): IcalEvent {
+function iCalEventForLesson(lesson: RawLesson, module: Module, semester: Semester, firstDayOfSchool: Date): EventOption {
   // TODO deal with non weekly
   const freq = 'WEEKLY';
   const count = NUM_WEEKS_IN_A_SEM;
@@ -122,7 +122,7 @@ function iCalEventForLesson(lesson: RawLesson, module: Module, semester: Semeste
 
 export function iCalForTimetable(
     semester: Semester, timetable: SemTimetableConfigWithLessons,
-    moduleData: { [key: ModuleCode]: Module }, year: string = config.academicYear): Array<IcalEvent> {
+    moduleData: { [key: ModuleCode]: Module }, year: string = config.academicYear): Array<EventOption> {
   const firstDayOfSchool = new Date(academicCalendar[year][semester].start);
   const events = _.flatMap(timetable, (lessonConfig: ModuleLessonConfigWithLessons, moduleCode: ModuleCode) =>
     _.flatMap(lessonConfig, lessons =>

@@ -1,7 +1,7 @@
 // @flow
 import test from 'ava';
 
-import type { IcalEvent } from 'types/ical';
+import type { EventOption } from 'ical-generator';
 import type { LessonType, RawLesson } from 'types/modules';
 import {
   iCalForTimetable,
@@ -58,8 +58,8 @@ test('daysAfter should create a date days after', (t) => {
 });
 
 test('examIcalEvent should generate event', (t) => {
-  const actual: IcalEvent = examIcalEvent(cs1010s, 1);
-  const expected: IcalEvent = {
+  const actual: EventOption = examIcalEvent(cs1010s, 1);
+  const expected: EventOption = {
     start: new Date('2016-11-23T09:00+0800'),
     end: new Date('2016-11-23T11:00+0800'),
     summary: 'CS1010S Exam',
