@@ -1,6 +1,9 @@
 language: node_js
 node_js:
   - 6.6
+# from https://github.com/travis-ci/travis-ci/issues/6720#issuecomment-254988120
+# yarn is supported by default but not when you have an install hook, so we have to do this
+# until we only use yarn
 before_install:
   # Repo for Yarn
   - sudo apt-key adv --keyserver pgp.mit.edu --recv D101F7899D41F3C3
