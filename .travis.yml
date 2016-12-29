@@ -6,5 +6,5 @@ before_install:
   - npm install -g gulp-cli
 install:
   - npm install --no-optional
-  - cd v3 && npm install
+  - cd v3 && yarn && yarn run build:dll
 after_success: npm run coverage
