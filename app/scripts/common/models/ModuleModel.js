@@ -103,7 +103,8 @@ module.exports = Backbone.Model.extend({
           'Tutorial Type 3',
           'Design Lecture',
           'Laboratory',
-          'Recitation'
+          'Recitation',
+          'Workshop',
         ];
 
         var PLURALIZED_LESSON_TYPES = {
@@ -117,7 +118,8 @@ module.exports = Backbone.Model.extend({
           'Tutorial Type 3': 'Tutorial Type 3',
           'Design Lecture': 'Design Lectures',
           'Laboratory': 'Laboratories',
-          'Recitation': 'Recitations'
+          'Recitation': 'Recitations',
+          'Workshop': 'Workshops',
         };
 
         timetableTypes = _.sortBy(timetableTypes, function (type) {
