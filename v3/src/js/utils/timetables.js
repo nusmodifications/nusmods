@@ -34,6 +34,7 @@ export const LESSON_TYPE_ABBREV: LessonTypeAbbrev = {
   Tutorial: 'TUT',
   'Tutorial Type 2': 'TUT2',
   'Tutorial Type 3': 'TUT3',
+  Workshop: 'WS',
 };
 
 //  Returns a random configuration of a module's timetable lessons.
