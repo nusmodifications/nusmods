@@ -23,7 +23,8 @@ var typeAbbrev = {
   'Seminar-Style Module Class': 'SEM',
   Tutorial: 'TUT',
   'Tutorial Type 2': 'TUT2',
-  'Tutorial Type 3': 'TUT3'
+  'Tutorial Type 3': 'TUT3',
+  'Workshop': 'WS',
 };
 
 // Common terminology throughout project is to refer to lessons instead of
