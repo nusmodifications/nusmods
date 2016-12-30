@@ -6,7 +6,7 @@ import type { EventOption } from 'ical-generator';
 import type { RawLesson, Module, ModuleCode, Semester } from 'types/modules';
 import type {
   ModuleLessonConfigWithLessons,
-  SemTimetableConfigWithLessons
+  SemTimetableConfigWithLessons,
 } from 'types/timetables';
 import config from 'config/app-config.json';
 import academicCalendar from 'config/academic-calendar.json';
@@ -90,7 +90,8 @@ function calculateExclusion(lesson: RawLesson, start: Date) {
 
 // strategy is to generate a weekly event, then exclude recess week,
 // and take care of odd/even weeks
-function iCalEventForLesson(lesson: RawLesson, module: Module, semester: Semester, firstDayOfSchool: Date): EventOption {
+function iCalEventForLesson(
+  lesson: RawLesson, module: Module, semester: Semester, firstDayOfSchool: Date): EventOption {
   // TODO deal with non weekly
   const freq = 'WEEKLY';
   const count = NUM_WEEKS_IN_A_SEM;
