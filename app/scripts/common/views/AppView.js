@@ -179,7 +179,7 @@ module.exports = Backbone.View.extend({
     fastclick.attach(document.body);
 
     (function () {
-      var enableCorsAlert = false;
+      var enableCorsAlert = true;
       if (enableCorsAlert) {
         var corsify = require('../../cors/corsify');
         $('.cors-round-text').html(corsify.determineRound(Date.now()));
@@ -188,7 +188,7 @@ module.exports = Backbone.View.extend({
       // $('.js-nm-contest-alert').addClass('animated bounceInDown nm-force-show');
       var week = nusmoderator.academicCalendar.currentAcadWeek(new Date());
       var thisWeekText = 'AY20' + week.year + ', ' + week.sem + ', ';
-      if (week.type !== 'Instructional'){ // hide 'Instructional'
+      if (week.type !== 'Instructional') { // hide 'Instructional'
         thisWeekText += week.type;
       }
       thisWeekText += ' Week';
