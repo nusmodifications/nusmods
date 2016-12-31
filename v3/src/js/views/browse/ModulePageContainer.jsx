@@ -158,7 +158,11 @@ export class ModulePageContainer extends Component {
 
               <hr/>
 
-              <ModuleTree module={module} />
+              {module.ModmavenTree ?
+                <ModuleTree module={module} />
+                :
+                <p>Prerequisites are not available.</p>
+              }
 
               {module.CorsBiddingStats ?
                 <CorsBiddingStatsTableControl stats={module.CorsBiddingStats} />
