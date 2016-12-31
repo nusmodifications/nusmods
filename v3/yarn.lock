@@ -5893,6 +5893,10 @@ react-deep-force-update@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/react-deep-force-update/-/react-deep-force-update-1.0.1.tgz#f911b5be1d2a6fe387507dd6e9a767aa2924b4c7"
 
+react-disqus-thread@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/react-disqus-thread/-/react-disqus-thread-0.4.0.tgz#7fd63786ea5034fb5df25facd7f4c49d1204ad03"
+
 react-document-title@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/react-document-title/-/react-document-title-2.0.2.tgz#1e42b672d300f8f90d8d05544b0d71f0ca7860aa"

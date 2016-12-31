@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import ReactDisqusThread from 'react-disqus-thread';
 import DocumentTitle from 'react-document-title';
 import config from 'config';
 
@@ -171,6 +172,12 @@ export class ModulePageContainer extends Component {
 
               <LessonTimetableControl semestersOffered={this.semestersOffered()}
                 history={module.History}/>
+
+              <ReactDisqusThread shortname="nusmods-prod"
+                identifier={module.ModuleCode}
+                title={`${module.ModuleCode} ${module.ModuleTitle}`}
+                url={`https://nusmods.com/modules/${module.ModuleCode}/reviews`}
+              />
 
             </div> : null
           }
