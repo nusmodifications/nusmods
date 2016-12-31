@@ -55,6 +55,13 @@ export default class ModuleTree extends Component {
         .attr('transform', `translate(${getDefaultTranslation()}) scale(${interact.scale()})`);
     }
 
+    const module = this.props.module;
+
+    // early return so we don't draw a huge blank canvas
+    if (!module.ModmavenTree) {
+      return;
+    }
+
     let canvas = d3.select(this.prereqRoot)
       .append('svg')
       .attr('id', 'svg')
@@ -72,11 +79,6 @@ export default class ModuleTree extends Component {
     window.addEventListener('resize', _.debounce(resized.bind(this), 100));
     resized.bind(this)();
     interact(d3.select('svg'));
-    const module = this.props.module;
-
-    if (!module.ModmavenTree) {
-      return;
-    }
 
     const modCode = module.ModuleCode;
     const lockedModules = {
