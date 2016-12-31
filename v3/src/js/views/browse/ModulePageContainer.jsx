@@ -162,7 +162,7 @@ export class ModulePageContainer extends Component {
               {module.ModmavenTree ?
                 <ModuleTree module={module} />
                 :
-                <p>Prerequisites are not available.</p>
+                  <p>Prerequisites are not available.</p>
               }
 
               {module.CorsBiddingStats ?
@@ -173,7 +173,7 @@ export class ModulePageContainer extends Component {
               <LessonTimetableControl semestersOffered={this.semestersOffered()}
                 history={module.History}/>
 
-              <ReactDisqusThread shortname="nusmods-prod"
+              <ReactDisqusThread shortname={config.disqusShortname}
                 identifier={module.ModuleCode}
                 title={`${module.ModuleCode} ${module.ModuleTitle}`}
                 url={`https://nusmods.com/modules/${module.ModuleCode}/reviews`}
