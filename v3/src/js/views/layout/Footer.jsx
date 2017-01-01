@@ -33,7 +33,7 @@ function Footer() {
             our contributors
           </a>.
         </p>
-        <p>© Copyright 2016, NUSModifications. All rights reserved.</p>
+        <p>© Copyright 2017, NUSModifications. All rights reserved.</p>
       </div>
     </footer>
   );
