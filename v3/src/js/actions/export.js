@@ -41,9 +41,17 @@ export function downloadAsIcal(
   const events = iCalForTimetable(semester, timetable, moduleData);
   const cal = ical({
     domain: 'nusmods.com',
-    prodId: 'nusmods.com',
+    prodId: '//NUSMods//NUSMods//EN',
     events,
   });
+
+  const blob = new Blob([cal.toString()], { type: 'text/plain' });
+  const objectUrl = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.download = 'nusmods_calendar.ics';
+  link.href = objectUrl;
+  link.click();
+  URL.revokeObjectURL(objectUrl);
 
   return {
     type: DOWNLOAD_AS_ICAL,
