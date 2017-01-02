@@ -3,6 +3,7 @@ import fs from 'fs-promise';
 import bunyan from 'bunyan';
 import R from 'ramda';
 import genReqTree from './genReqTree';
+import mergeModuleFields from '../utils/mergeModuleFields';
 
 /**
  * Consolidates all information and generates the
@@ -12,17 +13,25 @@ import genReqTree from './genReqTree';
  * See genReqTree for the generation of the tree.
  */
 
-// fields that will cause problems if differences in values arises
-const DIFFERENCES_KEYS = [
+const MODULE_GENERAL_KEYS = [
+  'ModuleCode',
   'ModuleTitle',
+  'AcadYear',
   'Department',
   'ModuleDescription',
-  'CrossModule',
   'ModuleCredit',
   'Workload',
-  'Prerequisite',
-  'Preclusion',
+  'Types',
+  'CrossModule',
   'Corequisite',
+  'Prerequisite',
+  'ParsedPrerequisite',
+  'Preclusion',
+  'ParsedPreclusion',
+  'ModmavenTree',
+  'LockedModules',
+  'CorsBiddingStats',
+  'History',
 ];
 
 const SEMESTER_SPECIFIC_KEYS = [
@@ -64,26 +73,21 @@ async function consolidateForYear(config) {
         AcadYear: acadYear,
         Semester: semester,
       };
-      const moduleCode = module.ModuleCode;
-      modules[moduleCode] = modules[moduleCode] || {};
-      modules[moduleCode][acadYear + semester] = module;
+      const code = module.ModuleCode;
+      modules[code] = modules[code] || {};
+      modules[code][acadYear + semester] = module;
     });
   }));
 
-  const joined = Object.entries(modules).map(([code, mods]) => {
-    // Just log differences between sems for now. May have to take further
-    // action if important data like ModuleCredit changes between sems.
-    DIFFERENCES_KEYS.forEach((key) => {
-      const values = R.pluck(key, Object.values(mods));
-      if (new Set(values).size !== 1) {
-        log.warn(`Module ${code}'s ${key} is not consistent, got: ${values}`);
-      }
-    });
+  const joined = Object.entries(modules).map(([moduleCode, mods]) => {
+    const mergeModule = mergeModuleFields(subLog, moduleCode);
     const modulesInAcadYear = Object.values(mods);
-
-    const baseMod = R.last(modulesInAcadYear);
+    let baseMod = {};
+    modulesInAcadYear.forEach((mod) => {
+      baseMod = mergeModule(baseMod, R.pick(MODULE_GENERAL_KEYS, mod));
+    });
     baseMod.History = modulesInAcadYear.map(R.pick(SEMESTER_SPECIFIC_KEYS));
-    return R.omit(SEMESTER_SPECIFIC_KEYS, baseMod);
+    return baseMod;
   });
 
   const reqTree = await genReqTree(joined, config);

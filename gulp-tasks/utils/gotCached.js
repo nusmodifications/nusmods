@@ -37,14 +37,17 @@ async function getFileModifiedTime(cachedPath, urlStr) {
 
 async function gotCached(urlStr, config) {
   const cachedPath = getCachePath(urlStr, config.cachePath);
-  const modifiedTime = await getFileModifiedTime(cachedPath, urlStr);
+  function returnCached() {
+    log.info(`returning cached file for ${urlStr}`);
+    return fs.readFile(cachedPath);
+  }
 
+  const modifiedTime = await getFileModifiedTime(cachedPath, urlStr);
   const maxCacheAge = config.maxCacheAge;
   const isCachedFileValid = modifiedTime &&
     (maxCacheAge === -1 || modifiedTime > Date.now() - (maxCacheAge * 1000));
   if (isCachedFileValid) {
-    log.info(`returning cached file for ${urlStr}`);
-    return await fs.readFile(cachedPath);
+    return await returnCached();
   }
 
   const options = {
@@ -70,7 +73,7 @@ async function gotCached(urlStr, config) {
     return body;
   } catch (error) {
     if (error.statusCode === 304) {
-      return await fs.readFile(cachedPath);
+      return await returnCached();
     }
     if (error.statusCode) {
       throw new Error(`got http ${error.statusCode} while fetching ${urlStr}`);

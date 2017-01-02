@@ -6,7 +6,7 @@ import moment from 'moment';
 import clean from 'underscore.string/clean';
 import { DATE_FORMAT as EXAM_DATE_FORMAT } from '../remote/examTimetable';
 import { DATE_FORMAT as CORS_DATE_FORMAT } from '../remote/cors';
-import diffStrings from '../utils/diffStrings';
+import mergeModuleFields from '../utils/mergeModuleFields';
 import titleize from '../utils/titleize';
 
 /**
@@ -16,28 +16,30 @@ import titleize from '../utils/titleize';
  *   - venues.json
  */
 
-const NULL_REGEX = /^(^$|--|n[/.]?a\.?|nil|none\.?|null)$/i;
 const MODULE_FIELDS = [
   'ModuleCode',
   'ModuleTitle',
   'Department',
   'ModuleDescription',
-  'CrossModule',
   'ModuleCredit',
   'Workload',
+  'Types',
+  'CrossModule',
+  'Corequisite',
   'Prerequisite',
   'Preclusion',
-  'Corequisite',
   'ExamDate',
-  'ExamOpenBook',
   'ExamDuration',
+  'ExamOpenBook',
   'ExamVenue',
-  'Types',
-  'Lecturers',
-  'IVLE',
   'Timetable',
+  'IVLE',
+  'LecturePeriods',
+  'Lecturers',
+  'TutorialPeriods',
   'CorsBiddingStats',
 ];
+
 const LESSON_FIELDS = [
   'LessonType',
   'ClassNo',
@@ -126,7 +128,6 @@ function normalize(data, subLog) {
         corsMods[code] = corsMods[code] || R.omit(['Type'], mod);
         corsMods[code].ModuleCode = code;
         corsMods[code].Types = R.union(corsMods[code].Types, mod.Types);
-        corsMods[code].Preclusion = corsMods[code].Preclusion.replace(code, '');
       });
     });
     return corsMods;
@@ -146,8 +147,8 @@ function normalize(data, subLog) {
     return removeRedundant(timetableDelta);
   }
 
-  function normalizeCorsBiddingStats(corsBiddingStats) {
-    const processModuleBiddingStats = R.map(R.pipe(
+  function normalizeSingleCorsBiddingStats(corsBiddingStats) {
+    return corsBiddingStats.map(R.pipe(
       R.omit(['ModuleCode']),
       R.evolve({
         Group: titleize,
@@ -155,7 +156,6 @@ function normalize(data, subLog) {
         StudentAcctType: R.replace('<br>', ''),
       }),
     ));
-    return R.map(processModuleBiddingStats, corsBiddingStats);
   }
 
   function normalizeSingleExam(exam) {
@@ -177,7 +177,7 @@ function normalize(data, subLog) {
 
   const normalizeData = R.evolve({
     cors: normalizeCors,
-    corsBiddingStats: normalizeCorsBiddingStats,
+    corsBiddingStats: R.map(normalizeSingleCorsBiddingStats),
     examTimetable: R.map(normalizeSingleExam),
     moduleTimetableDelta: R.map(normalizeSingleTimetableDelta),
   });
@@ -258,7 +258,6 @@ function parseModule(rawModule, lessonTypes) {
   });
   module.LecturePeriods = [...periods.Lecture];
   module.TutorialPeriods = [...periods.Tutorial];
-
   return R.pipe(
     R.pick(MODULE_FIELDS),
     R.pickBy(val => val && !R.isEmpty(val)),
@@ -271,39 +270,17 @@ function parseModule(rawModule, lessonTypes) {
  * No First object               Second object
  * ====================================================
  * 1) cors           merge       bulletinModules
- * 2) Module         merge       examTimetable
+ * 2) examTimetable  merge       Module
  * 3) Module         merge       ivle
  * 4) Module         merge       corsBiddingStats
  * 5) Module         concat      moduleTimetableDelta
  */
 function merge(consolidated, lessonTypes, subLog) {
   const merged = Object.entries(consolidated).map(([moduleCode, module]) => {
-    const mergeModuleFields = R.mergeWithKey((key, x, y) => {
-      const xIsNullData = NULL_REGEX.test(x);
-      const yIsNullData = NULL_REGEX.test(y);
-      if (xIsNullData && yIsNullData) {
-        return '';
-      } else if (yIsNullData) {
-        return x;
-      } else if (xIsNullData) {
-        return y;
-      }
-      // Module description differences are ignored
-      // Any differences in data is output to log with level `warn`.
-      const isConflictingData = key !== 'ModuleDescription' && x !== y;
-      if (isConflictingData) {
-        const differences = diffStrings(x, y);
-        if (differences) {
-          subLog.warn(`module ${moduleCode}'s ${key} is not the same, changes:\n${differences}`);
-        }
-      }
-      return y;
-    });
+    const mergeModule = mergeModuleFields(subLog, moduleCode);
 
-    // Merge cors with bulletin data, by default prefering bulletin
-    // unless cors contains data when bulletin has none.
-    const base = mergeModuleFields(module.cors || {}, module.bulletinModules || {});
-    const mergedModule = mergeModuleFields(base, module.examTimetable || {});
+    const base = mergeModule(module.cors || {}, module.bulletinModules || {});
+    const mergedModule = mergeModule(module.examTimetable || {}, base);
     mergedModule.IVLE = module.ivle;
     mergedModule.CorsBiddingStats = module.corsBiddingStats;
     mergedModule.Timetable = mergedModule.Timetable || module.moduleTimetableDelta || [];
@@ -336,6 +313,7 @@ async function consolidateForSem(config) {
   ];
 
   const data = {};
+  const missingFiles = [];
   async function readFile(category) {
     const filePath = path.join(
       config[category].destFolder,
@@ -343,14 +321,19 @@ async function consolidateForSem(config) {
       `${semester}`,
       config[category].destFileName,
     );
-    const listOfModules = await fs.readJson(filePath).catch(() => {
-      subLog.info(`${filePath} is not found, continuing with consolidating.`);
+    const catData = await fs.readJson(filePath).catch(() => {
+      missingFiles.push(config[category].destFileName);
       return [];
     });
-    const func = category === 'moduleTimetableDelta' ? R.groupBy : R.indexBy;
-    data[category] = func(R.prop('ModuleCode'), listOfModules);
+    const isCategoryDataArray = category === 'moduleTimetableDelta' ||
+      category === 'corsBiddingStats';
+    const func = isCategoryDataArray ? R.groupBy : R.indexBy;
+    data[category] = func(R.prop('ModuleCode'), catData);
   }
   await Promise.all(R.map(readFile, dataCategories));
+  if (missingFiles.length > 0) {
+    subLog.info(`${missingFiles.join(', ')} are not found, continuing with consolidating.`);
+  }
 
   const lessonTypesPath = path.join(config.cors.destFolder, config.cors.destLessonTypes);
   const lessonTypes = await fs.readJson(lessonTypesPath).catch(() => {
@@ -377,6 +360,7 @@ async function consolidateForSem(config) {
   }
 
   await Promise.all([
+    write('consolidated.json', consolidated),
     write(thisConfig.destFileName, modules),
     write(thisConfig.destVenues, venuesList),
   ]);
