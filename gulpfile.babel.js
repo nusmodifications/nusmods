@@ -86,18 +86,13 @@ gulp.task('moduleTimetableDelta', () => tasks.moduleTimetableDelta(config.module
 
 gulp.task('venues', () => tasks.venues(config.venues));
 
-gulp.task('remote', gulp.series(
-  gulp.parallel(
-    'bulletinModules',
-    'cors',
-    'corsBiddingStats',
-    'examTimetable',
-    'venues',
-  ),
-  gulp.parallel(
-    'ivle',
-    'moduleTimetableDelta',
-  ),
+gulp.task('remote', gulp.parallel(
+  'bulletinModules',
+  'cors',
+  'corsBiddingStats',
+  'examTimetable',
+  'venues',
+  'moduleTimetableDelta',
 ));
 
 gulp.task('consolidateForSem', () => {
@@ -151,5 +146,5 @@ gulp.task('local', gulp.series(
   'splitForYear',
 ));
 
-gulp.task('default', gulp.series('local'));
+gulp.task('default', gulp.series('remote', 'local'));
 

@@ -30,11 +30,11 @@ const PRUNE_LIMIT = 100;
  * @returns {Object} output - The merged module.
  */
 function mergeModuleFields(log, moduleCode, module, anotherModule) {
-  if (module.ModuleCode && anotherModule.ModuleCode && module.ModuleCode !== anotherModule.ModuleCode) {
+  if (module.ModuleCode && anotherModule.ModuleCode &&
+    module.ModuleCode !== anotherModule.ModuleCode) {
     throw new Error('Different modules cannot be merged.');
   }
-	return R.mergeWithKey((key, x, y) => {
-    if (typeof x !== 'string') console.log(key);
+  return R.mergeWithKey((key, x, y) => {
     if (x === y) {
       return y;
     }
@@ -56,8 +56,8 @@ function mergeModuleFields(log, moduleCode, module, anotherModule) {
       return x;
     }
     const level = CRITICAL_FIELDS.includes(key) ? 'warn' : 'info';
-    let strX = key === 'ModuleDescription' ? prune(x, PRUNE_LIMIT) : x;
-    let strY = key === 'ModuleDescription' ? prune(y, PRUNE_LIMIT) : y;
+    const strX = key === 'ModuleDescription' ? prune(x, PRUNE_LIMIT) : x;
+    const strY = key === 'ModuleDescription' ? prune(y, PRUNE_LIMIT) : y;
     log[level](`module ${moduleCode}'s ${key} is not the same, got:\n1) '${strX}'\n2) '${strY}'`);
     return y;
   }, module, anotherModule);

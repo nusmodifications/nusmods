@@ -153,11 +153,12 @@ async function processListings(rootUrl, type, lessonTypes, config) {
     const moduleData = await processModulePage(page, moduleInfo);
     return moduleData;
   }
-
+  const modules = await Promise.map(listOfModuleInfo, processModuleInfo,
+    { concurrency: config.concurrency });
   return {
     academicYear,
     semester,
-    modules: await Promise.map(listOfModuleInfo, processModuleInfo, config),
+    modules,
   };
 }
 

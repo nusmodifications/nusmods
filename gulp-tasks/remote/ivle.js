@@ -7,6 +7,8 @@ import Promise from 'bluebird';
 import gotCached from '../utils/gotCached';
 
 /**
+ * Deprecated: ivle api seems to have not worked last year.
+ *
  * Outputs ivle data for one semester.
  * Fetches all modules individually, thus requiring
  * module codes from all other data sources.
@@ -74,17 +76,22 @@ async function ivle(config) {
 
   async function processModule(moduleCode) {
     const query = querystring.stringify({
-      APIKey: config.ivle.ivleApi.key,
+      APIKey: thisConfig.ivleApi.key,
       AcadYear: `${year}/${year + 1}`,
       IncludeAllInfo: true,
       ModuleCode: moduleCode,
       Semester: `Semester ${semester}`,
-      AuthToken: config.ivle.ivleApi.token,
+      AuthToken: thisConfig.ivleApi.token,
     });
-    const url = `${config.ivle.ivleApi.baseUrl}Modules_Search?${query}`;
-    const fileData = await gotCached(url, config.ivle);
+    const url = `${thisConfig.ivleApi.baseUrl}Modules_Search?${query}`;
 
-    const results = JSON.parse(fileData).Results;
+    let results = [];
+    try {
+      const fileData = await gotCached(url, thisConfig);
+      results = JSON.parse(fileData).Results;
+    } catch (err) {
+      log.error(moduleCode);
+    }
 
     const modules = [];
     results.forEach((result) => {
@@ -96,7 +103,8 @@ async function ivle(config) {
     });
     return modules;
   }
-  const ivleModules = await Promise.map(moduleCodes, processModule, thisConfig);
+  const ivleModules = await Promise.map(moduleCodes, processModule,
+    { concurrency: thisConfig.concurrency });
   subLog.info(`parsed ${ivleModules.length} bidding stats`);
 
   const pathToWrite = path.join(
