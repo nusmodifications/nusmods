@@ -91,7 +91,7 @@ test('iCalEventForLesson generates exclusion for comma separated weeks', (t) => 
     },
     bfs1001,
     1,
-    new Date('2016-08-08T14:00+0800'),
+    new Date('2016-08-08T08:00+0800'),
   );
   const expected: EventOption = {
     start: new Date('2016-08-08T14:00+0800'),
