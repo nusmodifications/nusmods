@@ -162,7 +162,7 @@ function normalize(data, subLog) {
     const examMoment = moment.utc(exam.Date.slice(0, 11) + exam.Time, `${EXAM_DATE_FORMAT} h:mm a`);
     const examString = `${examMoment.toISOString().slice(0, 16)}+0800`;
 
-    let duration = '';
+    let duration;
     if (exam.Duration) {
       duration = `P${exam.Duration.replace(/\s/g, '').toUpperCase().slice(0, 5)}`;
     }
@@ -170,8 +170,8 @@ function normalize(data, subLog) {
       ModuleCode: exam.ModuleCode,
       ExamDate: examString,
       ExamDuration: duration,
-      ExamOpenBook: exam[''] ? exam[''] === '*' : '',
-      ExamVenue: exam.Venue || '',
+      ExamOpenBook: exam[''] ? exam[''] === '*' : undefined,
+      ExamVenue: exam.Venue || undefined,
     };
   }
 
@@ -220,10 +220,24 @@ function parseModule(rawModule, lessonTypes) {
   function cleanIfString(val) {
     return typeof val === 'string' ? clean(val) : val;
   }
+  function sortLessons(a, b) {
+    const week = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    for (let i = 0; i < LESSON_FIELDS.length; i += 1) {
+      const key = LESSON_FIELDS[i];
+      if (a[key] !== b[key]) {
+        if (key === 'DayText') {
+          return week.indexOf(a[key]) - week.indexOf(b[key]);
+        }
+        return a[key].localeCompare(b[key]);
+      }
+    }
+    return 0;
+  }
   const module = R.pipe(
     R.evolve({
       Department: titleize,
       ModuleTitle: titleizeIfAllCaps,
+      Timetable: R.sort(sortLessons),
     }),
     R.map(cleanIfString),
   )(rawModule);
@@ -315,19 +329,30 @@ async function consolidateForSem(config) {
   const data = {};
   const missingFiles = [];
   async function readFile(category) {
-    const filePath = path.join(
+    const basePath = path.join(
       config[category].destFolder,
       `${year}-${year + 1}`,
+    );
+    let func = R.indexBy; // func to apply to data
+    let filePath = path.join(
+      basePath,
       `${semester}`,
       config[category].destFileName,
     );
+    if (category === 'corsBiddingStats') {
+      filePath = path.join(
+        basePath,
+        config[category].destFileName,
+      );
+      func = R.groupBy;
+    } else if (category === 'moduleTimetableDelta') {
+      func = R.groupBy;
+    }
+
     const catData = await fs.readJson(filePath).catch(() => {
       missingFiles.push(config[category].destFileName);
       return [];
     });
-    const isCategoryDataArray = category === 'moduleTimetableDelta' ||
-      category === 'corsBiddingStats';
-    const func = isCategoryDataArray ? R.groupBy : R.indexBy;
     data[category] = func(R.prop('ModuleCode'), catData);
   }
   await Promise.all(R.map(readFile, dataCategories));

@@ -95,6 +95,16 @@ gulp.task('remote', gulp.parallel(
   'moduleTimetableDelta',
 ));
 
+gulp.task('mergeCorsBiddingStats', () => {
+  const toMerge = iterateSems({
+    from: 2010,
+    to: yearEnd,
+    semesters: [1, 2],
+    config: config.corsBiddingStats,
+  });
+  return tasks.mergeCorsBiddingStats(toMerge);
+});
+
 gulp.task('consolidateForSem', () => {
   const subtasks = iterateSems({
     from: yearStart,
@@ -140,6 +150,7 @@ gulp.task('splitForYear', () => {
 });
 
 gulp.task('local', gulp.series(
+  'mergeCorsBiddingStats',
   'consolidateForSem',
   'splitForSem',
   'consolidateForYear',

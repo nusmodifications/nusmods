@@ -5,6 +5,7 @@ import examTimetable from './remote/examTimetable';
 import ivle from './remote/ivle';
 import moduleTimetableDelta from './remote/moduleTimetableDelta';
 import venues from './remote/venues';
+import mergeCorsBiddingStats from './local/mergeCorsBiddingStats';
 import consolidateForSem from './local/consolidateForSem';
 import consolidateForYear from './local/consolidateForYear';
 import splitForSem from './local/splitForSem';
@@ -18,6 +19,7 @@ export default {
   ivle,
   moduleTimetableDelta,
   venues,
+  mergeCorsBiddingStats,
   consolidateForSem,
   splitForSem,
   consolidateForYear,
