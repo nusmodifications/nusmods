@@ -91,10 +91,11 @@ function calculateExclusion(lesson: RawLesson, start: Date) {
       break;
     case 'Every Week':
       break;
-    default: // comma-separated weeks
+    default: { // comma-separated weeks
       const weeksWithClasses = lesson.WeekText.split(',').map(w => parseInt(w, 10));
-      excludes = _.union(excludes, _.difference(ALL_WEEKS, weeksWithClasses))
+      excludes = _.union(excludes, _.difference(ALL_WEEKS, weeksWithClasses));
       break;
+    }
   }
 
   // sort in ascending order so we get nicer dates, recess will be the first
