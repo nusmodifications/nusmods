@@ -104,17 +104,22 @@ function calculateExclusion(lesson: RawLesson, start: Date) {
   return excludes.map(_.partial(datesForAcademicWeeks, start));
 }
 
+function newDateWithUTCHourSetToSgHour(date: Date, sgHour: number) {
+  const d = new Date(date);
+  d.setUTCHours(d.getUTCHours() + sgHour);
+  return d;
+}
+
 /* Strategy is to generate a weekly event,
  * then calculate exclusion for special cases in calculateExclusion.
  */
 export function iCalEventForLesson(
   lesson: RawLesson, module: Module, semester: Semester, firstDayOfSchool: Date): EventOption {
-  // set start date and time
-  const start = daysAfter(firstDayOfSchool, dayIndex(lesson.DayText));
-  start.setHours(parseInt(lesson.StartTime.slice(0, 2), 10));
-  // set end time
-  const end = new Date(start.getTime());
-  end.setHours(parseInt(lesson.EndTime.slice(0, 2), 10));
+  // set start date and time, end date and time
+  const startDay = daysAfter(firstDayOfSchool, dayIndex(lesson.DayText));
+  const start = newDateWithUTCHourSetToSgHour(startDay, parseInt(lesson.StartTime.slice(0, 2), 10));
+  const end = newDateWithUTCHourSetToSgHour(startDay, parseInt(lesson.EndTime.slice(0, 2), 10));
+
   const exclude = calculateExclusion(lesson, start);
 
   return {
@@ -139,7 +144,8 @@ export function iCalForTimetable(
     timetable: SemTimetableConfigWithLessons,
     moduleData: { [key: ModuleCode]: Module },
     year: string = config.academicYear): Array<EventOption> {
-  const firstDayOfSchool = new Date(Date.UTC(...academicCalendar[year][semester].start));
+  const start = academicCalendar[year][semester].start;
+  const firstDayOfSchool = new Date(`${start[0]}-${start[1] + 1}-${start[2]}T00:00+0800`);
   const events = _.flatMap(
     timetable,
     (lessonConfig: ModuleLessonConfigWithLessons, moduleCode: ModuleCode) =>
