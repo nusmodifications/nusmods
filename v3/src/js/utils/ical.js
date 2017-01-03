@@ -139,7 +139,7 @@ export function iCalForTimetable(
     timetable: SemTimetableConfigWithLessons,
     moduleData: { [key: ModuleCode]: Module },
     year: string = config.academicYear): Array<EventOption> {
-  const firstDayOfSchool = new Date(academicCalendar[year][semester].start);
+  const firstDayOfSchool = new Date(...academicCalendar[year][semester].start);
   const events = _.flatMap(
     timetable,
     (lessonConfig: ModuleLessonConfigWithLessons, moduleCode: ModuleCode) =>
