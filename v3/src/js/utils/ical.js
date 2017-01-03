@@ -104,7 +104,7 @@ function calculateExclusion(lesson: RawLesson, start: Date) {
   return excludes.map(_.partial(datesForAcademicWeeks, start));
 }
 
-function newDateWithUTCHourSetToSgHour(date: Date, sgHour: number) {
+function hoursAfter(date: Date, sgHour: number) {
   const d = new Date(date);
   d.setUTCHours(d.getUTCHours() + sgHour);
   return d;
@@ -116,9 +116,9 @@ function newDateWithUTCHourSetToSgHour(date: Date, sgHour: number) {
 export function iCalEventForLesson(
   lesson: RawLesson, module: Module, semester: Semester, firstDayOfSchool: Date): EventOption {
   // set start date and time, end date and time
-  const startDay = daysAfter(firstDayOfSchool, dayIndex(lesson.DayText));
-  const start = newDateWithUTCHourSetToSgHour(startDay, parseInt(lesson.StartTime.slice(0, 2), 10));
-  const end = newDateWithUTCHourSetToSgHour(startDay, parseInt(lesson.EndTime.slice(0, 2), 10));
+  const lessonDayMidnight = daysAfter(firstDayOfSchool, dayIndex(lesson.DayText));
+  const start = hoursAfter(lessonDayMidnight, parseInt(lesson.StartTime.slice(0, 2), 10));
+  const end = hoursAfter(lessonDayMidnight, parseInt(lesson.EndTime.slice(0, 2), 10));
 
   const exclude = calculateExclusion(lesson, start);
 
