@@ -86,7 +86,7 @@ module.exports = function (grunt) {
                 return {
                   ClassNo: row.eq(0).text().trim(),
                   LessonType: row.eq(1).text(),
-                  WeekText: row.eq(2).text(),
+                  WeekText: row.eq(2).text().replace(/\u00a0/g, ' '),
                   DayText: row.eq(3).text(),
                   StartTime: row.eq(4).text(),
                   EndTime: row.eq(5).text(),
