@@ -329,19 +329,16 @@ async function consolidateForSem(config) {
   const data = {};
   const missingFiles = [];
   async function readFile(category) {
-    const basePath = path.join(
-      config[category].destFolder,
-      `${year}-${year + 1}`,
-    );
     let func = R.indexBy; // func to apply to data
     let filePath = path.join(
-      basePath,
+      config[category].destFolder,
+      `${year}-${year + 1}`,
       `${semester}`,
       config[category].destFileName,
     );
     if (category === 'corsBiddingStats') {
       filePath = path.join(
-        basePath,
+        config[category].destFolder,
         config[category].destFileName,
       );
       func = R.groupBy;

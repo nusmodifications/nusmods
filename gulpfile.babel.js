@@ -97,7 +97,7 @@ gulp.task('remote', gulp.parallel(
 
 gulp.task('mergeCorsBiddingStats', () => {
   const toMerge = iterateSems({
-    from: 2010,
+    from: yearStart - 7,  // merge at most 7 years of bidding stats
     to: yearEnd,
     semesters: [1, 2],
     config: config.corsBiddingStats,
