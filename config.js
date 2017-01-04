@@ -92,6 +92,7 @@ export default {
     jsonSpace: defaults.jsonSpace,
     destFileName: 'modules.json',
     destVenues: 'venues.json',
+    destConsolidated: 'consolidateRaw.json',
   },
   split: {
     destFolder: defaults.destFolder,

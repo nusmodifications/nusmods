@@ -53,7 +53,7 @@ function getAllDays() {
 
 /**
  * List of all days in a school days,
- * current means Sunday is not a school day.
+ * currently means Sunday is not a school day.
  */
 function getSchoolDays() {
   return DAYS.slice(0, -1);

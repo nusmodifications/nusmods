@@ -35,9 +35,6 @@ function mergeModuleFields(log, moduleCode, module, anotherModule) {
     throw new Error('Different modules cannot be merged.');
   }
   return R.mergeWithKey((key, x, y) => {
-    if (x === y) {
-      return y;
-    }
     // return whichever side that has data
     const xIsNullData = NULL_REGEX.test(x);
     const yIsNullData = NULL_REGEX.test(y);
@@ -46,6 +43,9 @@ function mergeModuleFields(log, moduleCode, module, anotherModule) {
     } else if (yIsNullData) {
       return x;
     } else if (xIsNullData) {
+      return y;
+    }
+    if (x === y) {
       return y;
     }
     // diff by words and return whichever side that has purely more data

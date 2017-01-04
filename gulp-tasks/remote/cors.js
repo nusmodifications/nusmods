@@ -102,7 +102,6 @@ function processModulePage(webpage, moduleInfo) {
 
 function processLessonTypes(webpage, lessonTypes) {
   const $ = cheerio.load(webpage);
-  // get the timetable info
 
   const timetableTables = $('.tableframe').find('tr table');
   timetableTables.each((i, table) => {
