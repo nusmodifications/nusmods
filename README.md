@@ -22,7 +22,7 @@ principle of least astonishment.
 
 To be respectful to NUS servers, and reduce waiting while developing, the
 crawlers use simple local filesystem caching and HTTP `if-modified-since`
-headers. They are modular, being written as separate Grunt tasks, so if only a
+headers. They are modular, being written as separate gulp tasks, so if only a
 subset of information is required, it can be specified down to individual
 semesters.
 
@@ -221,141 +221,38 @@ http://api.nusmods.com/2015-2016/1/modules.json
 
 ## Initial Setup
 
-Get an API key from [IVLE](http://ivle.nus.edu.sg/LAPI/default.aspx) and put it in [ivleApi.json](ivleApi.json).
+Get an API key from [IVLE](http://ivle.nus.edu.sg/LAPI/default.aspx) and set it as an environment variable under the name `IVLE_API_KEY`.
 
-Download and install [Node.js](http://nodejs.org) and [npm](http://npmjs.org).
+Download and install [Node.js](http://nodejs.org), [npm](http://npmjs.org) as well as [yarn](https://yarnpkg.com/en/docs/install). Then run the following command:
 
 ```bash
-$ npm install -g grunt-cli
-$ npm install
+$ yarn
 ```
 
 ## Updating Module Information
 
 ```bash
-$ grunt
+$ yarn start
 ```
 
-The default grunt task is aliased to the `ay2016to2017sem1` task. A few tasks
-are set up by default as examples of what can be accomplished by aliasing
-tasks.
+The default gulp task is set to scrape the semester data in the upcoming month. The following commands are valid:
 
 ```js
-grunt.registerTask('ay2012to2013sem2', [
-  'bulletinModules:semester2',
-  'cors:previousSemester',
-  'corsBiddingStats',
-  'examTimetable:ay2012to2013sem2',
-  'ivle:ay2012to2013sem2',
-  'moduleTimetableDelta',
-  'consolidate:ay2012to2013sem2',
-  'normalize:ay2012to2013sem2',
-  'split:ay2012to2013sem2',
-  'backwardCompatibility:ay2012to2013sem2'
-]);
-
-grunt.registerTask('ay2013to2014sem1', [
-  'bulletinModules:semester1',
-  'cors:currentSemester',
-  'examTimetable:ay2013to2014sem1',
-  'ivle:ay2013to2014sem1',
-  'moduleTimetableDelta',
-  'consolidate:ay2013to2014sem1',
-  'normalize:ay2013to2014sem1',
-  'split:ay2013to2014sem1',
-  'backwardCompatibility:ay2013to2014sem1'
-]);
-
-grunt.registerTask('ay2013to2014sem2', [
-  'bulletinModules:semester2',
-  'examTimetable:ay2013to2014sem2',
-  'ivle:ay2013to2014sem2',
-  'moduleTimetableDelta',
-  'consolidate:ay2013to2014sem2',
-  'normalize:ay2013to2014sem2',
-  'split:ay2013to2014sem2'
-]);
-
-grunt.registerTask('ay2013to2014', [
-  'ay2013to2014sem1',
-  'ay2013to2014sem2'
-]);
-
-grunt.registerTask('default', 'ay2013to2014sem1');
+yarn start // production use
+yarn start:dev // development use
 ```
 
-They may be run by invoking `grunt ay2013to2014`, `grunt ay2013to2014sem1`,
-etc. `grunt ay2013to2014sem2` would be equivalent to invoking
+Invoking sub-tasks would involve calling the task by changing the commands in `package.json`, or through installing `gulp-cli` globally. For example:
 
 ```bash
-$ grunt bulletinModules:semester2 examTimetable:ay2013to2014sem2 ivle:ay2013to2014sem2 moduleTimetableDelta consolidate:ay2013to2014sem2 normalize:ay2013to2014sem2 split:ay2013to2014sem2
+$ gulp examTimetable
 ```
 
 ## Task Configuration and Targets
 
-Many of the tasks have multiple targets, and can have more defined if necessary.
-The `examTimetable` task below has `ay2012to2013sem1` and `ay2013to2014sem1`
-targets. Specifying both a task and target like
-`grunt examTimetable:ay2013to2014sem1` will process just the specified target's
-configuration, while running `grunt examTimetable` will iterate over all
-targets, processing each in turn.
+Many of the tasks have multiple targets, and can have more defined if necessary. In order to configure file-paths and runtime settings, take a look at `config.js`.
 
-```js
-grunt.initConfig({
-  defaults: {
-    cachePath: 'cache',
-    // Maximum cache age in seconds. Can be set to 0 to force refresh every
-    // time. If set to -1, cached files never expire and are always used.
-    maxCacheAge: 6 * 60 * 60,
-    destFolder: 'json',
-    // Pretty-print JSON with '\t', uglify JSON with ''.
-    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#space_argument
-    jsonSpace: '\t'
-  },
-  ...
-  examTimetable: {
-    options: {
-      cachePath: '<%= defaults.cachePath %>',
-      maxCacheAge: '<%= defaults.maxCacheAge %>',
-      destFolder: '<%= defaults.destFolder %>',
-      jsonSpace: '<%= defaults.jsonSpace %>',
-      jquery: 'jquery.min.js',
-      destFileName: 'examTimetableRaw.json'
-    },
-    ay2012to2013sem1: {
-      options: {
-        maxCacheAge: -1,
-        academicYear: '2012/2013',
-        semester: '1'
-      }
-    },
-    ay2013to2014sem1: {
-      options: {
-        academicYear: '2013/2014',
-        semester: '1'
-      }
-    },
-    ...
-```
-
-Inside a task configuration, an options property may be specified to override
-built-in defaults. In addition, each target may have an options property which
-is specific to that target. Target-level options will override task-level
-options.
-
-In the example above, the `examTimetable` task derives some of its default
-options from the `defaults` property above, while `ay2012to2013sem1` overrides
-the `maxCacheAge` option to never expire, while `ay2013to2014sem1` would inherit
-the default task-level value of 6 hours.
-
-## Force Refreshing Data
-
-The `refresh` flag can be appended to any crawling task to force it to use fresh
-data instead of using the cache.
-
-```bash
-$ grunt ivle:ay2013to2014sem1:refresh
-```
+If if you want to parse a specific year or semester, take a look at `gulpfile.babel.js`.
 
 ## License
 
