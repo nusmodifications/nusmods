@@ -12,6 +12,7 @@ import config from 'config/app-config.json';
 import academicCalendar from 'config/academic-calendar.json';
 import { getModuleSemesterData } from 'utils/modules';
 
+const SG_UTC_TIME_DIFF_MS = 8 * 60 * 60 * 1000;
 export const RECESS_WEEK = -1;
 const NUM_WEEKS_IN_A_SEM = 14; // including reading week
 const ODD_WEEKS = [1, 3, 5, 7, 9, 11, 13];
@@ -145,7 +146,7 @@ export function iCalForTimetable(
     moduleData: { [key: ModuleCode]: Module },
     year: string = config.academicYear): Array<EventOption> {
   const start = academicCalendar[year][semester].start;
-  const firstDayOfSchool = new Date(`${start[0]}-${start[1] + 1}-${start[2]}T00:00+0800`);
+  const firstDayOfSchool = new Date(Date.UTC(start[0], start[1], start[2]) - SG_UTC_TIME_DIFF_MS);
   const events = _.flatMap(
     timetable,
     (lessonConfig: ModuleLessonConfigWithLessons, moduleCode: ModuleCode) =>
