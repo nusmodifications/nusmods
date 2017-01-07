@@ -1,5 +1,10 @@
 // @flow
 import domtoimage from 'dom-to-image';
+import ical from 'ical-generator';
+
+import type { ModuleCode, Module, Semester } from 'types/modules';
+import type { SemTimetableConfigWithLessons } from 'types/timetables';
+import { iCalForTimetable } from 'utils/ical';
 
 export const DOWNLOAD_AS_JPEG = 'DOWNLOAD_AS_JPEG';
 export function downloadAsJpeg(domElement: Element) {
@@ -25,5 +30,31 @@ export function downloadAsJpeg(domElement: Element) {
           type: `${DOWNLOAD_AS_JPEG}_FAILURE`,
         });
       });
+  };
+}
+
+export const DOWNLOAD_AS_ICAL = 'DOWNLOAD_AS_ICAL';
+export function downloadAsIcal(
+    semester: Semester,
+    timetable: SemTimetableConfigWithLessons,
+    moduleData: { [key: ModuleCode]: Module }) {
+  const events = iCalForTimetable(semester, timetable, moduleData);
+  const cal = ical({
+    domain: 'nusmods.com',
+    prodId: '//NUSMods//NUSMods//EN',
+    events,
+  });
+
+  const blob = new Blob([cal.toString()], { type: 'text/plain' });
+  const objectUrl = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.download = 'nusmods_calendar.ics';
+  link.href = objectUrl;
+  link.click();
+  URL.revokeObjectURL(objectUrl);
+
+  return {
+    type: DOWNLOAD_AS_ICAL,
+    payload: cal.toString(),
   };
 }
