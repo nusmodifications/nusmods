@@ -178,7 +178,9 @@ export class TimetableContainer extends Component {
                   className="btn btn-outline-primary"
                   onClick={this.props.toggleTimetableOrientation}
                 >
-                  <i className="fa fa-exchange"/>
+                  <i className={classnames('fa', 'fa-exchange', {
+                    'fa-rotate-90': isHorizontalOrientation,
+                  })}/>
                 </button>
                 <button type="button"
                   className="btn btn-outline-primary"
