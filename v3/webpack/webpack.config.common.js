@@ -64,6 +64,7 @@ const common = {
   entry: {
     // This will build an app.js file from the `main` module.
     app: ['babel-polyfill', 'main'],
+    manifestjson: ['manifest.json'],
   },
   output: {
     path: PATHS.build,
@@ -119,7 +120,15 @@ const common = {
         // JSON is not enabled by default in Webpack but both Node and Browserify
         // allow it implicitly so we also enable it.
         test: /\.json$/,
+        exclude: /manifest\.json$/,
         loader: 'json'
+      },
+      {
+        test: /manifest\.json$/,
+        loader: 'file',
+        query: {
+          name: '[name].[ext]',
+        },
       },
       {
         // Works like file-loader but if the file size is below the specified limit
