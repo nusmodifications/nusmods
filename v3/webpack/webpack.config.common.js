@@ -26,6 +26,7 @@ const VENDOR = [
   'babel-polyfill',
   'classnames',
   'lodash',
+  'ical-generator',
   'react',
   'react-addons-shallow-compare',
   'react-autobind',
