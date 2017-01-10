@@ -8,6 +8,8 @@ import configureStore from 'stores/configure-store';
 import routes from 'routes';
 import storage from 'storage';
 
+require('file?name=[name].[ext]!data/webmanifest.json');
+
 require('main.scss');
 
 const persistedState = storage.loadState();
