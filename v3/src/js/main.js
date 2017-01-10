@@ -8,7 +8,7 @@ import configureStore from 'stores/configure-store';
 import routes from 'routes';
 import storage from 'storage';
 
-require('file?name=[name].[ext]!data/webmanifest.json');
+require('file?name=[name].[ext]!../manifest.json');
 
 require('main.scss');
 
