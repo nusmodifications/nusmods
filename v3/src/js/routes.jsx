@@ -13,6 +13,7 @@ import ModulesContainer from 'views/browse/ModulesContainer';
 import ModuleFinderContainer from 'views/browse/ModuleFinderContainer';
 import ModulePageContainer from 'views/browse/ModulePageContainer';
 import SettingsContainer from 'views/settings/SettingsContainer';
+import TeamContainer from 'views/static/TeamContainer';
 
 /* eslint-disable react/prop-types */
 export default function ({ store, history }) {
@@ -29,6 +30,7 @@ export default function ({ store, history }) {
             <Route path=":moduleCode" component={ModulePageContainer}/>
           </Route>
           <Route path="/settings" component={SettingsContainer}/>
+          <Route path="/team" component={TeamContainer}/>
           <Route path="*" component={NotFoundPage}/>
         </Route>
       </Router>
