@@ -1,7 +1,7 @@
 import React from 'react';
 import DocumentTitle from 'react-document-title';
 
-const teamInfo = require('../../data/team.json');
+import teamInfo from 'data/team.json';
 
 export default function TeamContainer() {
   return (
@@ -29,26 +29,26 @@ export default function TeamContainer() {
                   <h3>{teamMember.name}</h3>
                   <p>{teamMember.description}</p>
                   <div className="row">
-                    {teamMember.facebook ?
+                    {teamMember.facebook &&
                       <div className="col-sm-1 col-xs-3">
                         <a href={teamMember.facebook}><i className="fa fa-facebook-square fa-lg" /></a>
                       </div>
-                    : false}
-                    {teamMember.twitter ?
+                    }
+                    {teamMember.twitter &&
                       <div className="col-sm-1 col-xs-3">
                         <a href={teamMember.twitter}><i className="fa fa-twitter fa-lg" /></a>
                       </div>
-                    : false}
-                    {teamMember.linkedin ?
+                    }
+                    {teamMember.linkedin &&
                       <div className="col-sm-1 col-xs-3">
                         <a href={teamMember.linkedin}><i className="fa fa-linkedin fa-lg" /></a>
                       </div>
-                    : false}
-                    {teamMember.github ?
+                    }
+                    {teamMember.github &&
                       <div className="col-sm-1 col-xs-3">
                         <a href={teamMember.github}><i className="fa fa-github-square fa-lg"/></a>
                       </div>
-                    : false}
+                    }
                   </div>
                 </div>
               </div>
