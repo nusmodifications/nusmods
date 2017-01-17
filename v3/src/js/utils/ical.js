@@ -18,7 +18,7 @@ const NUM_WEEKS_IN_A_SEM = 14; // including reading week
 const ODD_WEEKS = [1, 3, 5, 7, 9, 11, 13];
 const EVEN_WEEKS = [2, 4, 6, 8, 10, 12];
 const ALL_WEEKS = [...ODD_WEEKS, ...EVEN_WEEKS];
-const WEEKS_WITHOUT_TUTORIALS = [1, 2, 3];
+const WEEKS_WITHOUT_TUTORIALS = [1, 2];
 const EXAM_DURATION_MS = 2 * 60 * 60 * 1000; // 2 hours
 const tutorialLessonTypes = ['Design Lecture', 'Laboratory', 'Recitation'];
 
