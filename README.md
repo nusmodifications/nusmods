@@ -5,7 +5,7 @@ A lightweight library with helpful functions for NUS-related matters.
 ## Installation
 
 ```sh
-npm i nusmoderator --S
+npm i nusmoderator -S
 # or if you use yarn:
 yarn add nusmoderator
 ```
