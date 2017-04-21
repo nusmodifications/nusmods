@@ -54,9 +54,6 @@ Promise.all(['theme', 'mode'].map(function (property) {
     value = value ? value : config.defaultPreferences[property];
     $body.addClass(property + '-' + value);
     $body.attr('data-' + property, value);
-    if (property === 'mode' && value !== 'default') {
-      $('#mode').attr('href', '/styles/' + value + '.min.css');
-    }
   });
 })).then(analytics.flush);
 

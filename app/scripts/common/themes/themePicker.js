@@ -50,9 +50,6 @@ module.exports = {
       $modeRadios.val([newMode]);
     }
 
-    var cssFile = newMode !== 'default' ? '/styles/' + newMode + '.min.css' : '';
-    $('#mode').attr('href', cssFile);
-
     this.updateAppearance('mode', newMode);
     return newMode;
   },
