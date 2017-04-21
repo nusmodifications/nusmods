@@ -13,6 +13,7 @@
   $mode-navmenu-bg-color: #1c1c1f;
   $mode-navbar-bg-color: $brand-primary;
   $mode-panel-bg-color: #222326;
+  $table-bg-accent: $mode-background-color;
 
   background-color: $mode-background-color;
   color: #fff;
@@ -285,6 +286,11 @@
     }
     .active-rect {
       fill: #7e7e7e;
+    }
+  }
+  .table-striped {
+    > tbody > tr:nth-of-type(odd) {
+      background-color: $table-bg-accent;
     }
   }
 }
