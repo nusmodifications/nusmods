@@ -118,7 +118,7 @@ http://api.nusmods.com/2015-2016/1/facultyDepartments.json
 
 http://api.nusmods.com/lessonTypes.json
 
-```ks
+```js
 {
 	"DESIGN LECTURE": "Tutorial",
 	"LABORATORY": "Tutorial",
