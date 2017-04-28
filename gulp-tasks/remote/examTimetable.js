@@ -1,5 +1,5 @@
 import path from 'path';
-import fs from 'fs-promise';
+import fs from 'fs-extra';
 import moment from 'moment';
 import R from 'ramda';
 import bunyan from 'bunyan';

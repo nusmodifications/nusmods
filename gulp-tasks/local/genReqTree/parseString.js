@@ -1,5 +1,5 @@
 import {
-  Token,
+  createToken,
   Lexer,
   Parser,
 } from 'chevrotain';
@@ -13,32 +13,25 @@ import { OPERATORS, MODULE_REGEX, AND_OR_REGEX } from './constants';
  *
  * Library used for lexing/parsing is chevrotain:
  * https://github.com/SAP/chevrotain
- * The code is extremely similar to the following example:
- * https://github.com/SAP/chevrotain/blob/master/examples/grammars/calculator/calculator.js
  */
 
-class Module extends Token {}
-Module.PATTERN = MODULE_REGEX;
+const Module = createToken({ name: 'Module', pattern: MODULE_REGEX });
+const And = createToken({ name: 'And', pattern: 'and' });
+const Or = createToken({ name: 'Or', pattern: 'or' });
 
-class And extends Token {}
-And.PATTERN = /and/;
+const LeftBracket = createToken({ name: 'LeftBracket', pattern: /\(/ });
+const RightBracket = createToken({ name: 'RightBracket', pattern: /\)/ });
 
-class Or extends Token {}
-Or.PATTERN = /or/;
-
-class LeftBracket extends Token {}
-LeftBracket.PATTERN = /\(/;
-
-class RightBracket extends Token {}
-RightBracket.PATTERN = /\)/;
-
-class IrrelevantWord extends Token {}
-IrrelevantWord.PATTERN = /[^\s()]+/;
-IrrelevantWord.GROUP = Lexer.SKIPPED;
-
-class WhiteSpace extends Token {}
-WhiteSpace.PATTERN = /\s+/;
-WhiteSpace.GROUP = Lexer.SKIPPED;
+const WhiteSpace = createToken({
+  name: 'WhiteSpace',
+  pattern: /\s+/,
+  group: Lexer.SKIPPED,
+});
+const IrrelevantWord = createToken({
+  name: 'IrrelevantWord',
+  pattern: /[^\s()]+/,
+  group: Lexer.SKIPPED,
+});
 
 const allTokens = [
   WhiteSpace,
@@ -60,6 +53,11 @@ function generateOrBranch(modules) {
   return { or: children };
 }
 
+/**
+ * ReqTreeParser, works to parse string and tokenize the product.
+ * The code is extremely similar to the following example:
+ * @see https://github.com/SAP/chevrotain/blob/master/examples/grammars/calculator/calculator_embedded_actions.js
+ */
 class ReqTreeParser extends Parser {
 
   constructor(input) {
@@ -179,6 +177,12 @@ function cleanOperators(tokens) {
   return removedDuplicates;
 }
 
+/**
+ * Parses the prerequisite string to produce the tokenized form.
+ * @see __tests__/genReqTree.test.js
+ * @param {String} pre The prerequisite string
+ * @param {bunyan} log The bunyan logger
+ */
 function parseString(pre, log) {
   const findModules = R.match(new RegExp(MODULE_REGEX, 'g'));
   const moduleMatches = findModules(pre);

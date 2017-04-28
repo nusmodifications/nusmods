@@ -1,4 +1,4 @@
-import fs from 'fs-promise';
+import fs from 'fs-extra';
 import {
   parseExamPdf,
   DATE_REGEX,

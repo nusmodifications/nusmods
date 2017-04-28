@@ -1,5 +1,5 @@
 import path from 'path';
-import fs from 'fs-promise';
+import fs from 'fs-extra';
 import bunyan from 'bunyan';
 import R from 'ramda';
 import genReqTree from './genReqTree';

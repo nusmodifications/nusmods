@@ -1,6 +1,6 @@
 import path from 'path';
 import querystring from 'querystring';
-import fs from 'fs-promise';
+import fs from 'fs-extra';
 import bunyan from 'bunyan';
 import R from 'ramda';
 import Promise from 'bluebird';

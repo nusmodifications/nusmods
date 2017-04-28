@@ -1,4 +1,4 @@
-import fs from 'fs-promise';
+import fs from 'fs-extra';
 import { getPagesFromPdf, getPagesTextFromPdf } from '../gulp-tasks/utils/pdf';
 
 /**
