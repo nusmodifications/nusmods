@@ -69,7 +69,7 @@ JSONP response.
 
 http://api.nusmods.com/2015-2016/1/moduleCodes.json
 
-```
+```js
 [
 	"ACC1002",
 	"ACC1002X",
@@ -82,7 +82,7 @@ http://api.nusmods.com/2015-2016/1/moduleCodes.json
 
 http://api.nusmods.com/2015-2016/1/moduleList.json
 
-```
+```js
 {
 	"ACC1002": "Financial Accounting",
 	"ACC1002X": "Financial Accounting",
@@ -95,7 +95,7 @@ http://api.nusmods.com/2015-2016/1/moduleList.json
 
 http://api.nusmods.com/2015-2016/1/facultyDepartments.json
 
-```
+```js
 {
 	"ARTS & SOCIAL SCIENCES": [
 		"CENTRE FOR LANGUAGE STUDIES",
@@ -118,7 +118,7 @@ http://api.nusmods.com/2015-2016/1/facultyDepartments.json
 
 http://api.nusmods.com/lessonTypes.json
 
-```
+```ks
 {
 	"DESIGN LECTURE": "Tutorial",
 	"LABORATORY": "Tutorial",
@@ -140,7 +140,7 @@ http://api.nusmods.com/lessonTypes.json
 
 http://api.nusmods.com/2014-2015/2/modules/FE5218.json
 
-```
+```js
 {
 	"ModuleCode": "FE5218",
 	"ModuleTitle": "Credit Risk",
@@ -172,7 +172,7 @@ http://api.nusmods.com/2014-2015/2/modules/FE5218.json
 
 http://api.nusmods.com/2015-2016/1/modules.json
 
-```
+```js
 [
 	{
 		"ModuleCode": "ACC1002",
@@ -253,7 +253,7 @@ $ gulp --tasks
 
 Many of the tasks have multiple targets, and can have more defined if necessary. In order to configure file-paths and runtime settings, take a look at `config.js`.
 
-If if you want to parse a specific year or semester, take a look at `gulpfile.babel.js`. Each task will look something like below:
+If you want to parse a specific year or semester, take a look at `gulpfile.babel.js`. Each task will look something like below:
 
 ```js
 gulp.task('bulletinModules', () => {
@@ -271,4 +271,4 @@ gulp.task('bulletinModules', () => {
 
 ## License
 
-Copyright (c) 2016 NUS Modifications. Licensed under the MIT license.
+Copyright (c) 2017 NUSModifications. Licensed under the MIT license.
