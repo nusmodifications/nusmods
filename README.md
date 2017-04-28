@@ -69,7 +69,7 @@ JSONP response.
 
 http://api.nusmods.com/2015-2016/1/moduleCodes.json
 
-```json
+```
 [
 	"ACC1002",
 	"ACC1002X",
@@ -82,7 +82,7 @@ http://api.nusmods.com/2015-2016/1/moduleCodes.json
 
 http://api.nusmods.com/2015-2016/1/moduleList.json
 
-```json
+```
 {
 	"ACC1002": "Financial Accounting",
 	"ACC1002X": "Financial Accounting",
@@ -95,7 +95,7 @@ http://api.nusmods.com/2015-2016/1/moduleList.json
 
 http://api.nusmods.com/2015-2016/1/facultyDepartments.json
 
-```json
+```
 {
 	"ARTS & SOCIAL SCIENCES": [
 		"CENTRE FOR LANGUAGE STUDIES",
@@ -118,7 +118,7 @@ http://api.nusmods.com/2015-2016/1/facultyDepartments.json
 
 http://api.nusmods.com/lessonTypes.json
 
-```json
+```
 {
 	"DESIGN LECTURE": "Tutorial",
 	"LABORATORY": "Tutorial",
@@ -140,7 +140,7 @@ http://api.nusmods.com/lessonTypes.json
 
 http://api.nusmods.com/2014-2015/2/modules/FE5218.json
 
-```json
+```
 {
 	"ModuleCode": "FE5218",
 	"ModuleTitle": "Credit Risk",
@@ -172,7 +172,7 @@ http://api.nusmods.com/2014-2015/2/modules/FE5218.json
 
 http://api.nusmods.com/2015-2016/1/modules.json
 
-```json
+```
 [
 	{
 		"ModuleCode": "ACC1002",
@@ -223,17 +223,13 @@ http://api.nusmods.com/2015-2016/1/modules.json
 
 Get an API key from [IVLE](http://ivle.nus.edu.sg/LAPI/default.aspx) and set it as an environment variable under the name `IVLE_API_KEY`.
 
-Download and install [Node.js](http://nodejs.org), [npm](http://npmjs.org) as well as [yarn](https://yarnpkg.com/en/docs/install). Then run the following command:
+Download and install [Node.js](http://nodejs.org), [npm](http://npmjs.org), and optionally [yarn](https://yarnpkg.com/en/docs/install). Then run the following command to install dependencies:
 
 ```bash
-$ yarn
+$ yarn # if you're using yarn
 ```
 
 ## Updating Module Information
-
-```bash
-$ yarn start
-```
 
 The default gulp task is set to scrape the semester data in the upcoming month. The following commands are valid:
 
@@ -242,17 +238,36 @@ yarn start // production use
 yarn start:dev // development use
 ```
 
-Invoking sub-tasks would involve calling the task by changing the commands in `package.json`, or through installing `gulp-cli` globally. For example:
+Invoking sub-tasks would involve calling the task by changing the commands in `package.json`, or through installing `gulp-cli` globally. For example, to run the `examTimetable` task specifically:
 
 ```bash
 $ gulp examTimetable
+```
+For a list of all tasks available run
+
+```bash
+$ gulp --tasks
 ```
 
 ## Task Configuration and Targets
 
 Many of the tasks have multiple targets, and can have more defined if necessary. In order to configure file-paths and runtime settings, take a look at `config.js`.
 
-If if you want to parse a specific year or semester, take a look at `gulpfile.babel.js`.
+If if you want to parse a specific year or semester, take a look at `gulpfile.babel.js`. Each task will look something like below:
+
+```js
+gulp.task('bulletinModules', () => {
+  const subtasks = iterateSems({
+    from: 2017, // change this to year you want to start from
+    to: 2018,	// year to end parsing
+    semesters: [1, 2, 3, 4],	// sem 1, 2 and the 2 special semesters
+    config: config.bulletinModules,	// configuration as found in config.js
+  });
+
+  const bulletinModules = R.map(tasks.bulletinModules, subtasks);
+  return Promise.all(bulletinModules);
+});
+```
 
 ## License
 
