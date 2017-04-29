@@ -30,9 +30,12 @@ const PRUNE_LIMIT = 100;
  * @returns {Object} output - The merged module.
  */
 function mergeModuleFields(log, moduleCode, thisModule, anotherModule) {
-  if (thisModule.ModuleCode && anotherModule.ModuleCode &&
-    thisModule.ModuleCode !== anotherModule.ModuleCode) {
-    throw new Error('Different modules cannot be merged.');
+  const differentModuleError = new Error('Different modules cannot be merged.');
+  if (thisModule.ModuleCode && thisModule.ModuleCode !== moduleCode) {
+    throw differentModuleError;
+  }
+  if (anotherModule.ModuleCode && anotherModule.ModuleCode !== moduleCode) {
+    throw differentModuleError;
   }
   return R.mergeWithKey((key, x, y) => {
     // return whichever side that has data
