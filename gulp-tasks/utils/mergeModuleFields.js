@@ -1,5 +1,5 @@
 import R from 'ramda';
-import { diffWords } from 'diff';
+import { diffWords, diffJson } from 'diff';
 import prune from 'underscore.string/prune';
 
 // values that are recognised as null
@@ -29,10 +29,13 @@ const PRUNE_LIMIT = 100;
  * @param {string} anotherModule - The module to be merged, whose field will be used in case of conflict.
  * @returns {Object} output - The merged module.
  */
-function mergeModuleFields(log, moduleCode, module, anotherModule) {
-  if (module.ModuleCode && anotherModule.ModuleCode &&
-    module.ModuleCode !== anotherModule.ModuleCode) {
-    throw new Error('Different modules cannot be merged.');
+function mergeModuleFields(log, moduleCode, thisModule, anotherModule) {
+  const differentModuleError = new Error('Different modules cannot be merged.');
+  if (thisModule.ModuleCode && thisModule.ModuleCode !== moduleCode) {
+    throw differentModuleError;
+  }
+  if (anotherModule.ModuleCode && anotherModule.ModuleCode !== moduleCode) {
+    throw differentModuleError;
   }
   return R.mergeWithKey((key, x, y) => {
     // return whichever side that has data
@@ -48,8 +51,9 @@ function mergeModuleFields(log, moduleCode, module, anotherModule) {
     if (x === y) {
       return y;
     }
-    // diff by words and return whichever side that has purely more data
-    const diffs = diffWords(x, y);
+    // diff and return whichever side that has strictly more data
+    const diffFunc = typeof x === 'string' ? diffWords : diffJson;
+    const diffs = diffFunc(x, y);
     if (diffs.filter(diff => diff.removed).length === 0) {
       return y;
     } else if (diffs.filter(diff => diff.added).length === 0) {
@@ -60,7 +64,7 @@ function mergeModuleFields(log, moduleCode, module, anotherModule) {
     const strY = key === 'ModuleDescription' ? prune(y, PRUNE_LIMIT) : y;
     log[level](`module ${moduleCode}'s ${key} is not the same, got:\n1) '${strX}'\n2) '${strY}'`);
     return y;
-  }, module, anotherModule);
+  }, thisModule, anotherModule);
 }
 
 export default R.curry(mergeModuleFields);
