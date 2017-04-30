@@ -95,7 +95,7 @@ App.reqres.setHandler('addBookmark', function (id) {
       modules.push(id);
     }
     localforage.setItem(bookmarkedModulesNamespace, modules);
-  })
+  });
 });
 App.reqres.setHandler('deleteBookmark', function (id) {
   localforage.getItem(bookmarkedModulesNamespace).then(modules => {
