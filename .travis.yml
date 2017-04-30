@@ -6,7 +6,7 @@ env:
     - PROJECT="v2"
     - PROJECT="v3"
 script:
-  - ./ci.sh
+  - sh ./ci.sh
 cache:
   directories:
   - $HOME/.yarn-cache
