@@ -1,17 +1,17 @@
 {
-  "name": "nusmodsapi",
+  "name": "nusmods-api",
   "description": "NUSMods API",
   "version": "0.0.1",
   "homepage": "http://api.nusmods.com",
   "author": {
-    "name": "Eu Beng Hee",
-    "email": "beng@benghee.eu"
+    "name": "NUSModifications",
+    "email": "mods@nusmods.com"
   },
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon server --exec \"node --require babel-register\" | bunyan -o short",
     "start": "cross-env NODE_ENV=production gulp | bunyan -o short",
     "start:dev": "cross-env NODE_ENV=development gulp | bunyan -l debug -o short",
-    "test": "jest",
+    "test": "jest --coverage",
     "test:watch": "jest --watch",
     "lint": "eslint gulpfile.babel.js gulp-tasks",
     "lint:fix": "eslint gulpfile.babel.js gulp-tasks --fix"
