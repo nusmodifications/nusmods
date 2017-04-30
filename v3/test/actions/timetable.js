@@ -8,7 +8,7 @@ import * as actions from 'actions/timetables';
 import lessons from '../mocks/lessons-array.json';
 
 // see: https://github.com/reactjs/redux/blob/master/docs/recipes/WritingTests.md#example-1
-test.todo('write addModule test with nock and mockStore...');
+// TODO: write addModule test with nock and mockStore.
 test('addModule should create an action to add a module', (t) => {
   const moduleCode: ModuleCode = 'CS1010';
   const semester: Semester = 1;
@@ -61,6 +61,7 @@ test('changeLesson should return updated information to change lesson', (t) => {
 test('cancelModifyLesson should not have payload', (t) => {
   const expectedResult: FSA = {
     type: actions.CANCEL_MODIFY_LESSON,
+    payload: null,
   };
   const resultOfAction: FSA = actions.cancelModifyLesson();
 

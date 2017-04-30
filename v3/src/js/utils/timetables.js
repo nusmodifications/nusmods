@@ -59,7 +59,7 @@ export function randomModuleLessonConfig(lessons: Array<RawLesson>): ModuleLesso
 
 // Replaces ClassNo in SemTimetableConfig with Array<Lesson>
 export function hydrateSemTimetableWithLessons(semTimetableConfig: SemTimetableConfig, modules: ModulesMap,
-                                                semester: Semester): SemTimetableConfigWithLessons {
+  semester: Semester): SemTimetableConfigWithLessons {
   return _.mapValues(semTimetableConfig, (moduleLessonConfig: ModuleLessonConfig, moduleCode: ModuleCode) => {
     const module: Module = modules[moduleCode];
     // TODO: Split this part into a smaller function: hydrateModuleConfigWithLessons.
@@ -82,7 +82,7 @@ export function hydrateSemTimetableWithLessons(semTimetableConfig: SemTimetableC
 
 //  Filters a flat array of lessons and returns the lessons corresponding to lessonType.
 export function lessonsForLessonType(lessons: Array<RawLesson | Lesson>,
-                                      lessonType: LessonType): Array<RawLesson | Lesson> {
+  lessonType: LessonType): Array<RawLesson | Lesson> {
   return _.filter(lessons, lesson => lesson.LessonType === lessonType);
 }
 
@@ -175,8 +175,8 @@ export function arrangeLessonsForWeek(lessons: Array<Lesson>): TimetableArrangem
 
 //  Determines if a Lesson on the timetable can be modifiable / dragged around.
 //  Condition: There are multiple ClassNo for all the Array<Lesson> in a LessonType.
-export function areOtherClassesAvailable(lessons: Array<Lesson> | Array<RawLesson>,
-                                          lessonType: LessonType): boolean {
+export function areOtherClassesAvailable(lessons: Array<RawLesson>,
+  lessonType: LessonType): boolean {
   const lessonTypeGroups: Object = _.groupBy(lessons, lesson => lesson.LessonType);
   if (!lessonTypeGroups[lessonType]) {
     // No such LessonType.

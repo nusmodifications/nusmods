@@ -73,5 +73,6 @@ export const CANCEL_MODIFY_LESSON: string = 'CANCEL_MODIFY_LESSON';
 export function cancelModifyLesson(): FSA {
   return {
     type: CANCEL_MODIFY_LESSON,
+    payload: null,
   };
 }

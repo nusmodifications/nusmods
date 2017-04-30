@@ -23,5 +23,6 @@ export const RESET_ALL_STATE: string = 'RESET_ALL_STATE';
 export function resetAllState(): FSA {
   return {
     type: RESET_ALL_STATE,
+    payload: null,
   };
 }

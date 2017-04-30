@@ -46,11 +46,11 @@ function TimetableDay(props: Props) {
               />
             );
           }) :
-            <TimetableRow day={props.day}
-              cellSize={props.cellSize}
-              cellOrientationStyleProp={props.cellOrientationStyleProp}
-              startingIndex={props.startingIndex}
-              endingIndex={props.endingIndex}
+          <TimetableRow day={props.day}
+            cellSize={props.cellSize}
+            cellOrientationStyleProp={props.cellOrientationStyleProp}
+            startingIndex={props.startingIndex}
+            endingIndex={props.endingIndex}
             />
         }
       </div>

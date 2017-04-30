@@ -36,9 +36,9 @@ function moduleBank(state: ModuleBank = defaultModuleBankState, action: FSA): Mo
     case FETCH_MODULE_LIST + RequestResultCases.SUCCESS:
       return {
         ...state,
-        moduleList: action.response,
+        moduleList: action.payload,
         // Precompute this in reducer because putting this inside render is very expensive (5k modules!)
-        moduleSelectList: action.response.map((module: ModuleCondensed): ModuleSelectListItem => {
+        moduleSelectList: action.payload.map((module: ModuleCondensed): ModuleSelectListItem => {
           return {
             semesters: module.Semesters,
             value: module.ModuleCode,
@@ -51,7 +51,7 @@ function moduleBank(state: ModuleBank = defaultModuleBankState, action: FSA): Mo
         ...state,
         modules: {
           ...state.modules,
-          [action.response.ModuleCode]: action.response,
+          [action.payload.ModuleCode]: action.payload,
         },
       };
     default:
@@ -60,7 +60,7 @@ function moduleBank(state: ModuleBank = defaultModuleBankState, action: FSA): Mo
 }
 
 export function getSemModuleSelectList(state: ModuleBank, semester: Semester,
-                                        semTimetableConfig: SemTimetableConfig): Array<ModuleSelectListItem> {
+  semTimetableConfig: SemTimetableConfig): Array<ModuleSelectListItem> {
   if (!state.moduleSelectList) {
     return [];
   }

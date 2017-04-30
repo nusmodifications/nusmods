@@ -32,7 +32,7 @@ export default function CorsBiddingStatsTable(props: Props) {
       s.LowestSuccessfulBid,
       s.HighestBid,
       s.StudentAcctType,
-    ]
+    ],
   );
 
   return (

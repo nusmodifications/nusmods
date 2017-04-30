@@ -15,47 +15,63 @@ function makeRequest(request, accessToken) {
     .then(response => response.data);
 }
 
-export const API_REQUEST = 'API_REQUEST';
+export const API_REQUEST = Symbol('API_REQUEST');
 export const REQUEST = '_REQUEST';
 export const SUCCESS = '_SUCCESS';
 export const FAILURE = '_FAILURE';
 
-// swap the action content and structured api results
-function constructActionWith(action, requestStatus, apiRequest, response) {
-  const finalAction = _.assign({
-    requestStatus,
-    type: apiRequest.type + requestStatus,
-    request: apiRequest.payload,
-    meta: apiRequest.meta,
-    response,
-  }, action);
-  delete finalAction[API_REQUEST];
-  return finalAction;
-}
-
-// currying, essentially function(store, nextion, action)
 export default store => next => (action) => {
-  const apiRequest = action[API_REQUEST];
-  if (!apiRequest) {
+  if (!action.meta || !action.meta[API_REQUEST]) {
     // Non-api request action
     return next(action);
   }
 
+  // type     is the base action type that will trigger
   // payload  is the request body to be processed
-  const { payload, meta } = apiRequest;
+  const { type, payload, meta } = action;
 
-  // propagate the start of the request
-  next(constructActionWith(action, REQUEST, apiRequest));
+  // Swap the action content and structured api results
+  function constructActionWith(data) {
+    const finalAction = Object.assign({}, action, data);
+    delete finalAction[API_REQUEST];
+    return finalAction;
+  }
 
-  // get the access token from store
+  // Propagate the start of the request
+  next(constructActionWith({
+    type: type + REQUEST,
+    payload,
+    meta: {
+      ...meta,
+      requestStatus: REQUEST,
+    },
+  }));
+
+  // Get the access token from store.
   let accessToken = '';
   if (_.get(store.getState(), 'user.accessToken')) {
     accessToken = store.getState().user.accessToken;
   }
 
-  // propagate the response of the request
-  return makeRequest(payload, accessToken, meta)
-    .then(response => next(constructActionWith(action, SUCCESS, apiRequest, response)))
-    .catch(error => next(constructActionWith(action, FAILURE, apiRequest, error))
-  );
+  // Propagate the response of the request.
+  return makeRequest(payload, accessToken)
+    .then(response => next(constructActionWith({
+      type: type + SUCCESS,
+      payload: response,
+      meta: {
+        ...meta,
+        requestStatus: SUCCESS,
+        request: payload,
+      },
+    })),
+    error => next(constructActionWith({
+      type: type + FAILURE,
+      payload: error,
+      meta: {
+        ...meta,
+        requestStatus: FAILURE,
+        request: payload,
+      },
+    })),
+    );
 };

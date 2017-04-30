@@ -96,7 +96,7 @@ class Timetable extends Component {
                   );
                 })}
               </div>
-              <TimetableBackground numberOfCells={numberOfCells}/>
+              <TimetableBackground numberOfCells={numberOfCells} />
             </div>
           </div>
         </div>
