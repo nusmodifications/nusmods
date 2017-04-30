@@ -167,7 +167,7 @@ export class TimetableContainer extends Component {
                 onModifyCell={this.modifyCell}
                 ref={r => (this.timetableDom = r && r.timetableDom)}
               />
-              <br/>
+              <br />
             </div>
             <div className={classnames({
               'col-md-12': isHorizontalOrientation,
@@ -180,20 +180,20 @@ export class TimetableContainer extends Component {
                 >
                   <i className={classnames('fa', 'fa-exchange', {
                     'fa-rotate-90': isHorizontalOrientation,
-                  })}/>
+                  })} />
                 </button>
                 <button type="button"
                   className="btn btn-outline-primary"
                   onClick={() => this.props.downloadAsJpeg(this.timetableDom)}
                 >
-                  <i className="fa fa-image"/>
+                  <i className="fa fa-image" />
                 </button>
                 <button type="button"
                   className="btn btn-outline-primary"
                   onClick={() => this.props.downloadAsIcal(
                     this.props.semester, this.props.semTimetableWithLessons, this.props.modules)}
                 >
-                  <i className="fa fa-calendar"/>
+                  <i className="fa fa-calendar" />
                 </button>
               </div>
               <div className="row">
@@ -204,7 +204,7 @@ export class TimetableContainer extends Component {
                     }}
                     placeholder="Add module to timetable"
                   />
-                  <br/>
+                  <br />
                   <TimetableModulesTable modules={
                     Object.keys(this.props.semTimetableWithLessons).sort((a, b) => {
                       return a.localeCompare(b);
@@ -267,5 +267,5 @@ export default connect(
     toggleTimetableOrientation,
     downloadAsJpeg,
     downloadAsIcal,
-  }
+  },
 )(TimetableContainer);

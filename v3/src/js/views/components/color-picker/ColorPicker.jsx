@@ -22,7 +22,7 @@ function ColorPicker(props: Props) {
               key={index}
               onClick={() => {
                 props.onChooseColor(index);
-              }}/>
+              }} />
           );
         })}
       </div>

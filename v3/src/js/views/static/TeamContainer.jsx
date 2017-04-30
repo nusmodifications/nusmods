@@ -46,13 +46,13 @@ export default function TeamContainer() {
                     }
                     {teamMember.github &&
                       <div className="col-sm-1 col-xs-3">
-                        <a href={teamMember.github}><i className="fa fa-github-square fa-lg"/></a>
+                        <a href={teamMember.github}><i className="fa fa-github-square fa-lg" /></a>
                       </div>
                     }
                   </div>
                 </div>
               </div>
-            </div>
+            </div>,
           )}
         </div>
       </div>

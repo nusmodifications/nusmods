@@ -45,7 +45,7 @@ import lessonsArray from '../mocks/lessons-array.json';
 // A generic lesson with some default.
 /* eslint-disable import/prefer-default-export */
 export function createGenericLesson(dayText: DayText, startTime: LessonTime,
-                                    endTime: LessonTime, lessonType?: LessonType, classNo?: ClassNo): Lesson {
+  endTime: LessonTime, lessonType?: LessonType, classNo?: ClassNo): Lesson {
   return {
     ModuleCode: 'GC1101',
     ModuleTitle: 'Generic Title',
@@ -256,7 +256,7 @@ test('arrangeLessonsForWeek', (t) => {
 
 test('areOtherClassesAvailable', (t) => {
   // Lessons belong to different ClassNo.
-  const lessons1: Array<Lesson> = _.shuffle([
+  const lessons1: Array<RawLesson> = _.shuffle([
     createGenericLesson('Monday', '1000', '1200', 'Lecture', '1'),
     createGenericLesson('Monday', '1600', '1800', 'Lecture', '2'),
     createGenericLesson('Monday', '1400', '1500', 'Lecture', '3'),
@@ -265,7 +265,7 @@ test('areOtherClassesAvailable', (t) => {
   t.false(areOtherClassesAvailable(lessons1, 'Tutorial'));
 
   // Lessons belong to the same ClassNo.
-  const lessons2: Array<Lesson> = _.shuffle([
+  const lessons2: Array<RawLesson> = _.shuffle([
     createGenericLesson('Monday', '1000', '1200', 'Lecture', '1'),
     createGenericLesson('Monday', '1600', '1800', 'Lecture', '1'),
     createGenericLesson('Monday', '1400', '1500', 'Lecture', '1'),
@@ -273,7 +273,7 @@ test('areOtherClassesAvailable', (t) => {
   t.false(areOtherClassesAvailable(lessons2, 'Lecture'));
 
   // Lessons belong to different LessonType.
-  const lessons3: Array<Lesson> = _.shuffle([
+  const lessons3: Array<RawLesson> = _.shuffle([
     createGenericLesson('Monday', '1000', '1200', 'Lecture', '1'),
     createGenericLesson('Monday', '1600', '1800', 'Lecture', '1'),
     createGenericLesson('Monday', '1400', '1500', 'Tutorial', '1'),

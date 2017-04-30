@@ -27,7 +27,7 @@ export default function LessonTimetable(props: Props) {
       lesson.StartTime,
       lesson.EndTime,
       lesson.Venue,
-    ]
+    ],
   );
 
   return (

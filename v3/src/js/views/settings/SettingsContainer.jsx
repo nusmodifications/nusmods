@@ -43,7 +43,7 @@ function SettingsContainer(props: Props) {
                 />
               </div>
             </div>
-            <hr/>
+            <hr />
             <h4>Faculty</h4>
             <div className="row">
               <div className="col-sm-7">
@@ -54,7 +54,7 @@ function SettingsContainer(props: Props) {
                 <FacultySelect faculty={props.faculty} onChange={props.selectFaculty} />
               </div>
             </div>
-            <hr/>
+            <hr />
             <h4>Theme</h4>
             <div>
               {availableThemes.map((theme) => {
@@ -89,5 +89,5 @@ export default connect(
     selectTheme,
     selectNewStudent,
     selectFaculty,
-  }
+  },
 )(SettingsContainer);

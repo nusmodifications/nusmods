@@ -10,16 +10,16 @@ function ModuleFinderContainer(props: { moduleList: Array<ModuleCondensed> }) {
   return (
     <div>
       <h1 className="page-title">Module Finder</h1>
-      <hr/>
+      <hr />
       <p>WIP. Only 30 shown for brevity.</p>
-      <hr/>
+      <hr />
       {props.moduleList.slice(0, 30).map((module) => {
         return (
           <div key={module.ModuleCode}>
             <Link to={modulePagePath(module.ModuleCode)}>
               {module.ModuleCode} {module.ModuleTitle}
             </Link>
-            <hr/>
+            <hr />
           </div>
         );
       })}
@@ -34,5 +34,5 @@ function mapStateToProps(state) {
 }
 
 export default connect(
-  mapStateToProps
+  mapStateToProps,
 )(ModuleFinderContainer);

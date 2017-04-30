@@ -25,7 +25,7 @@ export function downloadAsJpeg(domElement: Element) {
         });
       })
       .catch((err) => {
-        console.error(err);
+        console.error(err); // eslint-disable-line
         dispatch({
           type: `${DOWNLOAD_AS_JPEG}_FAILURE`,
         });
@@ -35,9 +35,9 @@ export function downloadAsJpeg(domElement: Element) {
 
 export const DOWNLOAD_AS_ICAL = 'DOWNLOAD_AS_ICAL';
 export function downloadAsIcal(
-    semester: Semester,
-    timetable: SemTimetableConfigWithLessons,
-    moduleData: { [key: ModuleCode]: Module }) {
+  semester: Semester,
+  timetable: SemTimetableConfigWithLessons,
+  moduleData: { [key: ModuleCode]: Module }) {
   const events = iCalForTimetable(semester, timetable, moduleData);
   const cal = ical({
     domain: 'nusmods.com',

@@ -56,7 +56,7 @@ export class AppContainer extends Component {
     return (
       <div className="app-container">
         <nav className="navbar navbar-fixed-top navbar-light bg-faded nm-navbar">
-          <Link className="navbar-brand nm-navbar-brand" to="/" title="Home"/>
+          <Link className="navbar-brand nm-navbar-brand" to="/" title="Home" />
           <form className="hidden-xs-down"
             style={{ width: '100%', maxWidth: 400, display: 'inline-block' }}
           >
@@ -75,19 +75,19 @@ export class AppContainer extends Component {
               <ul className="nm-nav-tabs">
                 <li role="presentation" className="nm-nav-item">
                   <Link className="nav-link" activeClassName="active" to="/timetable">
-                    <i className="fa fa-fw fa-lg fa-table"/>
+                    <i className="fa fa-fw fa-lg fa-table" />
                     <span className="nm-link-title"> Timetable</span>
                   </Link>
                 </li>
                 <li role="presentation" className="nm-nav-item">
                   <Link className="nav-link" activeClassName="active" to="/modules">
-                    <i className="fa fa-fw fa-lg fa-list"/>
+                    <i className="fa fa-fw fa-lg fa-list" />
                     <span className="nm-link-title"> Browse</span>
                   </Link>
                 </li>
                 <li role="presentation" className="nm-nav-item">
                   <Link className="nav-link" activeClassName="active" to="/settings">
-                    <i className="fa fa-fw fa-lg fa-gear"/>
+                    <i className="fa fa-fw fa-lg fa-gear" />
                     <span className="nm-link-title"> Settings</span>
                   </Link>
                 </li>
@@ -103,7 +103,7 @@ export class AppContainer extends Component {
             </div>
           </div>
         </div>
-        <Footer/>
+        <Footer />
       </div>
     );
   }
@@ -127,5 +127,5 @@ export default connect(
   {
     fetchModuleList,
     loadModule,
-  }
+  },
 )(AppContainer);

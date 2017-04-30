@@ -1,4 +1,5 @@
-import { BiddingStat, Student } from 'types/modules';
+// @flow
+import type { BiddingStat, Student } from 'types/modules';
 
 const sameFaculty = (stat: BiddingStat, student: Student): boolean => (stat.Faculty === student.faculty);
 const isNew = student => (student.newStudent);
@@ -7,7 +8,7 @@ const GENERAL = 'G';
 const isProgrammeAccount = student => (student.accountType === PROGRAMME);
 const isGeneralAccount = student => (student.accountType === GENERAL);
 
-export function isStatRelevantForStudent(stat, student) {
+export function isStatRelevantForStudent(stat: BiddingStat, student: Student) {
   switch (stat.StudentAcctType) {
     case 'Returning Students [P]':
       return sameFaculty(stat, student) && isProgrammeAccount(student) && !isNew(student);

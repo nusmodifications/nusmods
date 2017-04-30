@@ -25,6 +25,7 @@ export const CANCEL_MODIFY_MODULE_COLOR: string = 'CANCEL_MODIFY_MODULE_COLOR';
 export function cancelModifyModuleColor(): FSA {
   return {
     type: CANCEL_MODIFY_MODULE_COLOR,
+    payload: null,
   };
 }
 
@@ -43,5 +44,6 @@ export const TOGGLE_TIMETABLE_ORIENTATION: string = 'TOGGLE_TIMETABLE_ORIENTATIO
 export function toggleTimetableOrientation(): FSA {
   return {
     type: TOGGLE_TIMETABLE_ORIENTATION,
+    payload: null,
   };
 }

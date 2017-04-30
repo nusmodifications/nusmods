@@ -1,25 +1,24 @@
 // @flow
 import React from 'react';
 
-
 type Props = {
   title: string | void,
   data: Array<Array<any>>,
   headers: string[],
   noDataText: string,
-}
+};
 
 export default function Table(props: Props) {
   const tableBody = (
     <tbody>
-      {props.data.map((s, i) =>
-        <tr key={i}>
-          {s.map((d, j) =>
-            <td key={j}>
+      {props.data.map(s =>
+        <tr key={s}>
+          {s.map(d =>
+            <td key={d}>
               {d}
-            </td>
+            </td>,
           )}
-        </tr>
+        </tr>,
       )}
     </tbody>
   );
@@ -35,11 +34,11 @@ export default function Table(props: Props) {
   return props.data.length === 0 ?
     <p>{props.noDataText}</p>
     :
-      <div className="table-responsive">
-        {props.title ? <h3 className="table-title">{props.title}</h3> : null }
-        <table className="table table-sm">
-          {tableHeader}
-          {tableBody}
-        </table>
-      </div>;
+    <div className="table-responsive">
+      {props.title ? <h3 className="table-title">{props.title}</h3> : null }
+      <table className="table table-sm">
+        {tableHeader}
+        {tableBody}
+      </table>
+    </div>;
 }
