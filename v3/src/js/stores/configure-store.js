@@ -8,12 +8,13 @@ export default function configureStore(defaultState) {
   const middlewares = [thunk, requestsMiddleware];
   if (process.env.NODE_ENV === 'development') {
     /* eslint-disable */
-    const createLogger = require('redux-logger');
+    const { createLogger } = require('redux-logger');
     /* eslint-enable */
     const logger = createLogger({
       level: 'info',
       collapsed: true,
       duration: true,
+      diff: true,
     });
     middlewares.push(logger);
   }
