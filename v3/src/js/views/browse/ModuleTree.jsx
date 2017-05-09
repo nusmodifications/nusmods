@@ -1,12 +1,15 @@
+// @flow
+import type { Module } from 'types/modules';
+
 import React, { Component } from 'react';
-import d3 from 'd3/d3';
+import d3 from 'd3/build/d3';
 import _ from 'lodash';
 
 type Props = {
   module: Module,
-}
-export default class ModuleTree extends Component {
+};
 
+export default class ModuleTree extends Component {
   componentDidMount() {
     const isOrAnd = d => d.name === 'or' || d.name === 'and';
     const modsFilter = d => !isOrAnd(d);
@@ -21,7 +24,7 @@ export default class ModuleTree extends Component {
     let rectangles;
     let interact;
 
-    const getDefaultTranslation = () => [(SVGWidth) / 2, 180];
+    const getDefaultTranslation = () => [(SVGWidth) / 2, 180].join(',');
 
     function mouseOver(d) {
       if (!isOrAnd(d)) {
@@ -40,6 +43,7 @@ export default class ModuleTree extends Component {
 
     function clicked(d) {
       if (!isOrAnd(d)) {
+        // TODO: Use React Router to navigate.
         window.location.href = `/modules/${d.name}`;
       }
     }
@@ -81,11 +85,14 @@ export default class ModuleTree extends Component {
     interact(d3.select('svg'));
 
     const modCode = module.ModuleCode;
+    // $FlowFixMe: Suppressing this error until we change the Module type.
+    const modmavenTree = module.ModmavenTree;
     const lockedModules = {
-      name: module.ModmavenTree.name,
+      name: modmavenTree.name,
+      // $FlowFixMe: Suppressing this error until we change the Module type.
       children: module.LockedModules.map(lm => ({ name: lm, children: [] })),
     };
-    const prereqs = module.ModmavenTree;
+    const prereqs = modmavenTree;
     const tree = d3.layout.tree().nodeSize([130, 130]);
     const nodes = tree.nodes(prereqs);
     const links = tree.links(nodes);
@@ -177,6 +184,6 @@ export default class ModuleTree extends Component {
   props: Props;
 
   render() {
-    return <div ref={div => (this.prereqRoot = div)} className="nm-prerequisites-tree"/>;
+    return <div ref={div => (this.prereqRoot = div)} className="nm-prerequisites-tree" />;
   }
 }

@@ -23,7 +23,7 @@ export default function FacultySelect(props: Props) {
     >
       <option disabled value=""> -- Select a faculty -- </option>
       {facultyList.map(
-        faculty => <option key={faculty.value} value={faculty.value}>{faculty.name}</option>
+        faculty => <option key={faculty.value} value={faculty.value}>{faculty.name}</option>,
       )}
     </select>
   );

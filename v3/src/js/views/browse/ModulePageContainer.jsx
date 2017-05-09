@@ -84,7 +84,7 @@ export class ModulePageContainer extends Component {
       <span key={exam.semester}>
         <dt className="col-sm-3">Semester {exam.semester} Exam</dt>
         <dd className="col-sm-9">{formatExamDate(exam.date)}</dd>
-      </span>
+      </span>,
     );
 
     const semsOffered = this.semestersOffered()
@@ -96,12 +96,12 @@ export class ModulePageContainer extends Component {
         this.moduleHasBeenAdded(module, semester) ?
           <RemoveModuleButton key={semester} semester={semester} onClick={() =>
             this.props.removeModule(semester, module.ModuleCode)
-          }/>
+          } />
           :
-            <AddModuleButton key={semester} semester={semester} onClick={() =>
+          <AddModuleButton key={semester} semester={semester} onClick={() =>
               this.props.addModule(semester, module.ModuleCode)
-            }/>
-        )
+            } />
+        ),
     );
 
     return (
@@ -114,7 +114,7 @@ export class ModulePageContainer extends Component {
           {this.props.fetchModuleRequest.isSuccessful || module ?
             <div>
               <h1 className="page-title">{module.ModuleCode} {module.ModuleTitle}</h1>
-              <hr/>
+              <hr />
               <dl className="row">
                 {module.ModuleDescription ? <dt className="col-sm-3">Description</dt> : null}
                 {module.ModuleDescription ?
@@ -157,12 +157,12 @@ export class ModulePageContainer extends Component {
 
               </dl>
 
-              <hr/>
+              <hr />
 
               {module.ModmavenTree ?
                 <ModuleTree module={module} />
                 :
-                  <p>Prerequisites are not available.</p>
+                <p>Prerequisites are not available.</p>
               }
 
               {module.CorsBiddingStats ?
@@ -171,7 +171,7 @@ export class ModulePageContainer extends Component {
               }
 
               <LessonTimetableControl semestersOffered={this.semestersOffered()}
-                history={module.History}/>
+                history={module.History} />
 
               <ReactDisqusThread shortname={config.disqusShortname}
                 identifier={module.ModuleCode}
@@ -202,5 +202,5 @@ export default connect(
     addModule,
     loadModule,
     removeModule,
-  }
+  },
 )(ModulePageContainer);

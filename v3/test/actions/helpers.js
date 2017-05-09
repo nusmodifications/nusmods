@@ -43,6 +43,7 @@ test('resetErrorState should convert item to an array', (t) => {
 test('resetAllState should reset state', (t) => {
   const expectedResult: FSA = {
     type: actions.RESET_ALL_STATE,
+    payload: null,
   };
   const resultOfAction: FSA = actions.resetAllState();
   t.deepEqual(resultOfAction, expectedResult);

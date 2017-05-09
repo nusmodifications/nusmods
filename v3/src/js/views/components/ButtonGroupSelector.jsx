@@ -27,7 +27,7 @@ export default function ButtonGroupSelector(props: Props) {
       })}
     >
       {choice}
-    </button>
+    </button>,
   );
 
   return (

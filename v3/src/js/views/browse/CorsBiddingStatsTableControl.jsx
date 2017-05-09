@@ -100,7 +100,7 @@ class CorsBiddingStatsTableControl extends Component {
         {selectedAySem ?
           <CorsBiddingStatsTable aySem={selectedAySem} stats={statsByAySem[selectedAySem]} />
           :
-            <p>Select a semester to view its bidding statistics</p>
+          <p>Select a semester to view its bidding statistics</p>
         }
       </div>
     );
@@ -119,5 +119,5 @@ export default connect(
   {
     selectNewStudent,
     selectFaculty,
-  }
+  },
 )(CorsBiddingStatsTableControl);

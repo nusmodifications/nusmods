@@ -68,4 +68,4 @@ gulp.task('eslint', function() {
   .pipe(plugins.eslint.format());
 });
 
-gulp.task('default', ['jshint', 'test'])
+gulp.task('default', ['jshint', 'test']);

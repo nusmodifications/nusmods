@@ -72,11 +72,11 @@ class TimetableModulesTable extends Component {
                         } else {
                           this.props.modifyModuleColor(module.ModuleCode);
                         }
-                      }}/>
+                      }} />
                     {this.props.activeModule === module.ModuleCode &&
                       <ColorPicker onChooseColor={(colorIndex: ColorIndex) => {
                         this.props.selectModuleColor(module.ModuleCode, colorIndex);
-                      }}/>
+                      }} />
                     }
                   </div>
                   <div className="module-details-column">
@@ -124,5 +124,5 @@ export default connect(
     cancelModifyModuleColor,
     hideLessonInTimetable,
     showLessonInTimetable,
-  }
+  },
 )(TimetableModulesTable);

@@ -21,17 +21,17 @@ export default function ({ store, history }) {
     <Provider store={store}>
       <Router history={history}>
         <Route path="/" component={AppContainer}>
-          <IndexRedirect to="/timetable"/>
-          <Route path="/about" component={AboutContainer}/>
-          <Route path="/faq" component={FaqContainer}/>
-          <Route path="/timetable" component={TimetableContainer}/>
+          <IndexRedirect to="/timetable" />
+          <Route path="/about" component={AboutContainer} />
+          <Route path="/faq" component={FaqContainer} />
+          <Route path="/timetable" component={TimetableContainer} />
           <Route path="/modules" component={ModulesContainer}>
-            <IndexRoute component={ModuleFinderContainer}/>
-            <Route path=":moduleCode" component={ModulePageContainer}/>
+            <IndexRoute component={ModuleFinderContainer} />
+            <Route path=":moduleCode" component={ModulePageContainer} />
           </Route>
-          <Route path="/settings" component={SettingsContainer}/>
-          <Route path="/team" component={TeamContainer}/>
-          <Route path="*" component={NotFoundPage}/>
+          <Route path="/settings" component={SettingsContainer} />
+          <Route path="/team" component={TeamContainer} />
+          <Route path="*" component={NotFoundPage} />
         </Route>
       </Router>
     </Provider>

@@ -30,7 +30,7 @@ function ThemeOption(props: Props) {
       <ul className="list-unstyled theme-color-list">
         {_.range(NUM_DIFFERENT_COLORS).map((index) => {
           return (
-            <li key={index} className={`theme-color-item color-${index}`}/>
+            <li key={index} className={`theme-color-item color-${index}`} />
           );
         })}
       </ul>

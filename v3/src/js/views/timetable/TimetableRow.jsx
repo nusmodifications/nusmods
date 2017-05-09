@@ -8,11 +8,11 @@ import { convertIndexToTime, convertTimeToIndex } from 'utils/timify';
 import TimetableCell from './TimetableCell';
 
 function generateCells(lessons?: Array<ModifiableLesson | Lesson>,
-                        cellSize: number, cellOrientationStyleProp: string,
-                        onModifyCell?: Function, startingIndex: number, endingIndex: number) {
+  cellSize: number, cellOrientationStyleProp: string,
+  onModifyCell?: Function, startingIndex: number, endingIndex: number) {
   const lessonToStartTimeMap: {[time: LessonTime]: ModifiableLesson} = _.mapValues(
     _.groupBy(lessons, lesson => lesson.StartTime),
-    value => value[0]
+    value => value[0],
   );
 
   const cells = [];
@@ -29,11 +29,11 @@ function generateCells(lessons?: Array<ModifiableLesson | Lesson>,
           styleProp={cellOrientationStyleProp}
           lesson={lesson}
           onModifyCell={onModifyCell}
-        />
+        />,
       );
       i += (size - 1);
     } else {
-      cells.push(<TimetableCell key={i}/>);
+      cells.push(<TimetableCell key={i} />);
     }
   }
   return cells;
