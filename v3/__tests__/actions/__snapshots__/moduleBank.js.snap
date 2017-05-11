@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`fetchModule should return a request action 1`] = `
+Object {
+  "meta": Object {
+    Symbol(API_REQUEST): true,
+  },
+  "payload": Object {
+    "method": "GET",
+    "url": "https://nusmods.com/api/2016-2017/modules/CS1010S.json",
+  },
+  "type": "FETCH_MODULE",
+}
+`;
+
+exports[`fetchModuleList should return a request action 1`] = `
+Object {
+  "meta": Object {
+    Symbol(API_REQUEST): true,
+  },
+  "payload": Object {
+    "method": "GET",
+    "url": "https://nusmods.com/api/2016-2017/moduleList.json",
+  },
+  "type": "FETCH_MODULE_LIST",
+}
+`;

@@ -1,7 +1,6 @@
 // @flow
 
-import test from 'ava';
-import JsSearch from 'js-search';
+import { Search } from 'js-search';
 import { ModulesSearchIndex, ModulesTokenizer } from 'utils/modules-search';
 import type { SelectOption } from 'types/views';
 
@@ -11,39 +10,39 @@ const three: SelectOption = { value: 'CS2020', label: 'CS2020 Algorithms and Dat
 const four: SelectOption = { value: 'CA1004', label: 'GEH1004 Chinese Heritage: Hist & Lit' };
 
 function initSearch() {
-  const search = new JsSearch.Search('label');
+  const search = new Search('label');
   search.searchIndex = new ModulesSearchIndex();
   search.addIndex('value');
   search.addDocuments([one, two, three, four]);
   return search;
 }
 
-test('search should find out correct query', (t) => {
+test('search should find out correct query', () => {
   const search = initSearch();
 
   const query: string = 'CS1010';
   const expected: Array<SelectOption> = [two];
-  t.deepEqual(search.search(query), expected);
+  expect(search.search(query)).toEqual(expected);
 });
 
-test('search index lexicographically first by alphnumerics then by numbers', (t) => {
+test('search index lexicographically first by alphnumerics then by numbers', () => {
   const search = initSearch();
 
   const query: string = 'C';
   const expected: Array<SelectOption> = [two, one, three, four];
-  t.deepEqual(search.search(query), expected);
+  expect(search.search(query)).toEqual(expected);
 });
 
-test('tokenize should split a string to array of tokens', (t) => {
+test('tokenize should split a string to array of tokens', () => {
   const tokenizer = new ModulesTokenizer();
   const text: string = 'test 1 2 3';
   const expected: Array<string> = ['test', '1', '2', '3'];
-  t.deepEqual(tokenizer.tokenize(text), expected);
+  expect(tokenizer.tokenize(text)).toEqual(expected);
 });
 
-test('tokenize should create a new token without the prefix', (t) => {
+test('tokenize should create a new token without the prefix', () => {
   const tokenizer = new ModulesTokenizer();
   const text: string = 'CS1101S 1 2 3  ';
   const expected: Array<string> = ['1101S', 'CS1101S', '1', '2', '3'];
-  t.deepEqual(tokenizer.tokenize(text), expected);
+  expect(tokenizer.tokenize(text)).toEqual(expected);
 });
