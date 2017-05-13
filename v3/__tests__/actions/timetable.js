@@ -1,15 +1,12 @@
 // @flow
 import type { FSA } from 'types/redux';
 import type { ModuleCode, Semester, Lesson } from 'types/modules';
-// import nock from 'nock';
-
-import test from 'ava';
 import * as actions from 'actions/timetables';
 import lessons from '../mocks/lessons-array.json';
 
 // see: https://github.com/reactjs/redux/blob/master/docs/recipes/WritingTests.md#example-1
 // TODO: write addModule test with nock and mockStore.
-test('addModule should create an action to add a module', (t) => {
+test('addModule should create an action to add a module', () => {
   const moduleCode: ModuleCode = 'CS1010';
   const semester: Semester = 1;
 
@@ -24,11 +21,11 @@ test('addModule should create an action to add a module', (t) => {
   */
   const value: Function = actions.addModule(semester, moduleCode);
   // TODO
-  t.true(typeof value === 'function');
+  expect(typeof value === 'function').toBe(true);
   // t.deepEqual(value, expected);
 });
 
-test('modifyLesson should return lesson payload', (t) => {
+test('modifyLesson should return lesson payload', () => {
   const activeLesson: Lesson = lessons[0];
   const expectedResult: FSA = {
     type: actions.MODIFY_LESSON,
@@ -38,10 +35,10 @@ test('modifyLesson should return lesson payload', (t) => {
   };
   const resultOfAction: FSA = actions.modifyLesson(activeLesson);
 
-  t.deepEqual(resultOfAction, expectedResult);
+  expect(resultOfAction).toEqual(expectedResult);
 });
 
-test('changeLesson should return updated information to change lesson', (t) => {
+test('changeLesson should return updated information to change lesson', () => {
   const semester: Semester = 1;
   const lesson: Lesson = lessons[1];
   const expectedResult: FSA = {
@@ -55,15 +52,15 @@ test('changeLesson should return updated information to change lesson', (t) => {
   };
   const resultOfAction: FSA = actions.changeLesson(semester, lesson);
 
-  t.deepEqual(resultOfAction, expectedResult);
+  expect(resultOfAction).toEqual(expectedResult);
 });
 
-test('cancelModifyLesson should not have payload', (t) => {
+test('cancelModifyLesson should not have payload', () => {
   const expectedResult: FSA = {
     type: actions.CANCEL_MODIFY_LESSON,
     payload: null,
   };
   const resultOfAction: FSA = actions.cancelModifyLesson();
 
-  t.deepEqual(resultOfAction, expectedResult);
+  expect(resultOfAction).toEqual(expectedResult);
 });

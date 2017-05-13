@@ -1,6 +1,5 @@
 // @flow
 
-import test from 'ava';
 import _ from 'lodash';
 
 import type {
@@ -59,16 +58,16 @@ export function createGenericLesson(dayText: DayText, startTime: LessonTime,
   };
 }
 
-test('randomModuleLessonConfig should return a random lesson config', (t) => {
+test('randomModuleLessonConfig should return a random lesson config', () => {
   const sem: Semester = 1;
   const rawLessons: Array<RawLesson> = getModuleTimetable(cs1010s, sem);
   const lessonConfig: ModuleLessonConfig = randomModuleLessonConfig(rawLessons);
   Object.keys(lessonConfig).forEach((lessonType: LessonType) => {
-    t.truthy(lessonConfig[lessonType]);
+    expect(lessonConfig[lessonType]).toBeTruthy();
   });
 });
 
-test('hydrateSemTimetableWithLessons should replace ClassNo with lessons', (t) => {
+test('hydrateSemTimetableWithLessons should replace ClassNo with lessons', () => {
   const sem: Semester = 1;
   const moduleCode: ModuleCode = 'CS1010S';
   const modules: ModulesMap = {
@@ -85,89 +84,89 @@ test('hydrateSemTimetableWithLessons should replace ClassNo with lessons', (t) =
     },
   };
   const configWithLessons: SemTimetableConfigWithLessons = hydrateSemTimetableWithLessons(config, modules, sem);
-  t.is(configWithLessons[moduleCode].Tutorial[0].ClassNo, tutorialClassNo);
-  t.is(configWithLessons[moduleCode].Recitation[0].ClassNo, recitationClassNo);
-  t.is(configWithLessons[moduleCode].Lecture[0].ClassNo, lectureClassNo);
+  expect(configWithLessons[moduleCode].Tutorial[0].ClassNo).toBe(tutorialClassNo);
+  expect(configWithLessons[moduleCode].Recitation[0].ClassNo).toBe(recitationClassNo);
+  expect(configWithLessons[moduleCode].Lecture[0].ClassNo).toBe(lectureClassNo);
 });
 
-test('lessonsForLessonType should return all lessons belonging to a particular LessonType', (t) => {
+test('lessonsForLessonType should return all lessons belonging to a particular LessonType', () => {
   const sem: Semester = 1;
   const moduleTimetable: Array<RawLesson> = getModuleTimetable(cs1010s, sem);
   const lessonType: LessonType = 'Tutorial';
   const lessons: Array<RawLesson> = lessonsForLessonType(moduleTimetable, lessonType);
-  t.true(lessons.length > 0);
+  expect(lessons.length > 0).toBe(true);
   lessons.forEach((lesson: RawLesson) => {
-    t.is(lesson.LessonType, lessonType);
+    expect(lesson.LessonType).toBe(lessonType);
   });
 });
 
-test('lessonsForLessonType should return empty array if no such LessonType is present', (t) => {
+test('lessonsForLessonType should return empty array if no such LessonType is present', () => {
   const sem: Semester = 1;
   const moduleTimetable: Array<RawLesson> = getModuleTimetable(cs1010s, sem);
   const lessonType: LessonType = 'Dota Session';
   const lessons: Array<RawLesson> = lessonsForLessonType(moduleTimetable, lessonType);
-  t.is(lessons.length, 0);
-  t.deepEqual(lessons, []);
+  expect(lessons.length).toBe(0);
+  expect(lessons).toEqual([]);
 });
 
-test('timetableLessonsArray should return a flat array of lessons', (t) => {
+test('timetableLessonsArray should return a flat array of lessons', () => {
   const someTimetable: SemTimetableConfig = timetable;
   const lessons: Array<Lesson> = timetableLessonsArray(someTimetable);
-  t.is(lessons.length, 6);
+  expect(lessons.length).toBe(6);
 });
 
-test('groupLessonsByDay should group lessons by DayText', (t) => {
+test('groupLessonsByDay should group lessons by DayText', () => {
   const lessons: Array<Lesson> = lessonsArray;
   const lessonsGroupedByDay: TimetableDayFormat = groupLessonsByDay(lessons);
-  t.is(lessonsGroupedByDay.Monday.length, 2);
-  t.is(lessonsGroupedByDay.Tuesday.length, 1);
-  t.is(lessonsGroupedByDay.Wednesday.length, 1);
-  t.is(lessonsGroupedByDay.Thursday.length, 2);
+  expect(lessonsGroupedByDay.Monday.length).toBe(2);
+  expect(lessonsGroupedByDay.Tuesday.length).toBe(1);
+  expect(lessonsGroupedByDay.Wednesday.length).toBe(1);
+  expect(lessonsGroupedByDay.Thursday.length).toBe(2);
 });
 
-test('doLessonsOverlap should correctly determine if two lessons overlap', (t) => {
+test('doLessonsOverlap should correctly determine if two lessons overlap', () => {
   // Same day same time.
-  t.true(doLessonsOverlap(createGenericLesson('Wednesday', '1000', '1200'),
-                          createGenericLesson('Wednesday', '1000', '1200')));
+  expect(doLessonsOverlap(createGenericLesson('Wednesday', '1000', '1200'),
+                          createGenericLesson('Wednesday', '1000', '1200'))).toBe(true);
   // Same day with no overlapping time.
-  t.false(doLessonsOverlap(createGenericLesson('Wednesday', '1000', '1200'),
-                          createGenericLesson('Wednesday', '1200', '1400')));
-  t.false(doLessonsOverlap(createGenericLesson('Wednesday', '1200', '1400'),
-                          createGenericLesson('Wednesday', '1000', '1200')));
+  expect(doLessonsOverlap(createGenericLesson('Wednesday', '1000', '1200'),
+                          createGenericLesson('Wednesday', '1200', '1400'))).toBe(false);
+  expect(doLessonsOverlap(createGenericLesson('Wednesday', '1200', '1400'),
+                          createGenericLesson('Wednesday', '1000', '1200'))).toBe(false);
   // Same day with overlapping time.
-  t.true(doLessonsOverlap(createGenericLesson('Wednesday', '1000', '1200'),
-                          createGenericLesson('Wednesday', '1100', '1300')));
-  t.true(doLessonsOverlap(createGenericLesson('Wednesday', '1100', '1300'),
-                          createGenericLesson('Wednesday', '1000', '1200')));
+  expect(doLessonsOverlap(createGenericLesson('Wednesday', '1000', '1200'),
+                          createGenericLesson('Wednesday', '1100', '1300'))).toBe(true);
+  expect(doLessonsOverlap(createGenericLesson('Wednesday', '1100', '1300'),
+                          createGenericLesson('Wednesday', '1000', '1200'))).toBe(true);
   // Same day with one lesson totally within another lesson.
-  t.true(doLessonsOverlap(createGenericLesson('Wednesday', '1000', '1200'),
-                          createGenericLesson('Wednesday', '0900', '1300')));
-  t.true(doLessonsOverlap(createGenericLesson('Wednesday', '0900', '1300'),
-                          createGenericLesson('Wednesday', '1000', '1200')));
+  expect(doLessonsOverlap(createGenericLesson('Wednesday', '1000', '1200'),
+                          createGenericLesson('Wednesday', '0900', '1300'))).toBe(true);
+  expect(doLessonsOverlap(createGenericLesson('Wednesday', '0900', '1300'),
+                          createGenericLesson('Wednesday', '1000', '1200'))).toBe(true);
   // Different day same time.
-  t.false(doLessonsOverlap(createGenericLesson('Wednesday', '1000', '1200'),
-                          createGenericLesson('Thursday', '1000', '1200')));
+  expect(doLessonsOverlap(createGenericLesson('Wednesday', '1000', '1200'),
+                          createGenericLesson('Thursday', '1000', '1200'))).toBe(false);
   // Different day with no overlapping time.
-  t.false(doLessonsOverlap(createGenericLesson('Wednesday', '1000', '1200'),
-                          createGenericLesson('Thursday', '1200', '1400')));
-  t.false(doLessonsOverlap(createGenericLesson('Wednesday', '1200', '1400'),
-                          createGenericLesson('Thursday', '1000', '1200')));
+  expect(doLessonsOverlap(createGenericLesson('Wednesday', '1000', '1200'),
+                          createGenericLesson('Thursday', '1200', '1400'))).toBe(false);
+  expect(doLessonsOverlap(createGenericLesson('Wednesday', '1200', '1400'),
+                          createGenericLesson('Thursday', '1000', '1200'))).toBe(false);
   // Different day with overlapping time.
-  t.false(doLessonsOverlap(createGenericLesson('Wednesday', '1000', '1200'),
-                          createGenericLesson('Thursday', '1100', '1300')));
-  t.false(doLessonsOverlap(createGenericLesson('Wednesday', '1100', '1300'),
-                          createGenericLesson('Thursday', '1000', '1200')));
+  expect(doLessonsOverlap(createGenericLesson('Wednesday', '1000', '1200'),
+                          createGenericLesson('Thursday', '1100', '1300'))).toBe(false);
+  expect(doLessonsOverlap(createGenericLesson('Wednesday', '1100', '1300'),
+                          createGenericLesson('Thursday', '1000', '1200'))).toBe(false);
   // Different day with one lesson totally within another lesson.
-  t.false(doLessonsOverlap(createGenericLesson('Wednesday', '1000', '1200'),
-                          createGenericLesson('Thursday', '0900', '1300')));
-  t.false(doLessonsOverlap(createGenericLesson('Wednesday', '0900', '1300'),
-                          createGenericLesson('Thursday', '1000', '1200')));
+  expect(doLessonsOverlap(createGenericLesson('Wednesday', '1000', '1200'),
+                          createGenericLesson('Thursday', '0900', '1300'))).toBe(false);
+  expect(doLessonsOverlap(createGenericLesson('Wednesday', '0900', '1300'),
+                          createGenericLesson('Thursday', '1000', '1200'))).toBe(false);
 });
 
-test('arrangeLessonsWithinDay', (t) => {
+test('arrangeLessonsWithinDay', () => {
   // Empty array.
   const arrangement0: TimetableDayArrangement = arrangeLessonsWithinDay([]);
-  t.is(arrangement0.length, 1);
+  expect(arrangement0.length).toBe(1);
 
   // Can fit within one row.
   const arrangement1: TimetableDayArrangement = arrangeLessonsWithinDay(_.shuffle([
@@ -175,7 +174,7 @@ test('arrangeLessonsWithinDay', (t) => {
     createGenericLesson('Monday', '1600', '1800'),
     createGenericLesson('Monday', '1400', '1500'),
   ]));
-  t.is(arrangement1.length, 1);
+  expect(arrangement1.length).toBe(1);
 
   // Two rows.
   const arrangement2: TimetableDayArrangement = arrangeLessonsWithinDay(_.shuffle([
@@ -183,7 +182,7 @@ test('arrangeLessonsWithinDay', (t) => {
     createGenericLesson('Monday', '1600', '1800'),
     createGenericLesson('Monday', '1500', '1700'),
   ]));
-  t.is(arrangement2.length, 2);
+  expect(arrangement2.length).toBe(2);
 
   // Three rows.
   const arrangement3: TimetableDayArrangement = arrangeLessonsWithinDay(_.shuffle([
@@ -191,16 +190,16 @@ test('arrangeLessonsWithinDay', (t) => {
     createGenericLesson('Monday', '1100', '1300'),
     createGenericLesson('Monday', '1000', '1300'),
   ]));
-  t.is(arrangement3.length, 3);
+  expect(arrangement3.length).toBe(3);
 });
 
-test('arrangeLessonsForWeek', (t) => {
+test('arrangeLessonsForWeek', () => {
   const arrangement0: TimetableArrangement = arrangeLessonsForWeek(_.shuffle([
     createGenericLesson('Monday', '1000', '1200'),
     createGenericLesson('Monday', '1600', '1800'),
     createGenericLesson('Monday', '1400', '1500'),
   ]));
-  t.is(arrangement0.Monday.length, 1);
+  expect(arrangement0.Monday.length).toBe(1);
 
   const arrangement1: TimetableArrangement = arrangeLessonsForWeek(_.shuffle([
     createGenericLesson('Monday', '1000', '1200'),
@@ -209,8 +208,8 @@ test('arrangeLessonsForWeek', (t) => {
     createGenericLesson('Tuesday', '1400', '1500'),
     createGenericLesson('Tuesday', '1400', '1500'),
   ]));
-  t.is(arrangement1.Monday.length, 1);
-  t.is(arrangement1.Tuesday.length, 2);
+  expect(arrangement1.Monday.length).toBe(1);
+  expect(arrangement1.Tuesday.length).toBe(2);
 
   const arrangement2: TimetableArrangement = arrangeLessonsForWeek(_.shuffle([
     createGenericLesson('Monday', '1000', '1200'),
@@ -219,17 +218,17 @@ test('arrangeLessonsForWeek', (t) => {
     createGenericLesson('Tuesday', '1400', '1500'),
     createGenericLesson('Tuesday', '1600', '1800'),
   ]));
-  t.is(arrangement2.Monday.length, 1);
-  t.is(arrangement2.Tuesday.length, 1);
+  expect(arrangement2.Monday.length).toBe(1);
+  expect(arrangement2.Tuesday.length).toBe(1);
 
   const arrangement3: TimetableArrangement = arrangeLessonsForWeek(_.shuffle([
     createGenericLesson('Monday', '1000', '1200'),
     createGenericLesson('Tuesday', '1100', '1300'),
     createGenericLesson('Wednesday', '1000', '1300'),
   ]));
-  t.is(arrangement3.Monday.length, 1);
-  t.is(arrangement3.Tuesday.length, 1);
-  t.is(arrangement3.Wednesday.length, 1);
+  expect(arrangement3.Monday.length).toBe(1);
+  expect(arrangement3.Tuesday.length).toBe(1);
+  expect(arrangement3.Wednesday.length).toBe(1);
 
   const arrangement4: TimetableArrangement = arrangeLessonsForWeek(_.shuffle([
     createGenericLesson('Monday', '1000', '1200'),
@@ -237,9 +236,9 @@ test('arrangeLessonsForWeek', (t) => {
     createGenericLesson('Tuesday', '1100', '1300'),
     createGenericLesson('Wednesday', '1000', '1300'),
   ]));
-  t.is(arrangement4.Monday.length, 1);
-  t.is(arrangement4.Tuesday.length, 1);
-  t.is(arrangement4.Wednesday.length, 1);
+  expect(arrangement4.Monday.length).toBe(1);
+  expect(arrangement4.Tuesday.length).toBe(1);
+  expect(arrangement4.Wednesday.length).toBe(1);
 
   const arrangement5: TimetableArrangement = arrangeLessonsForWeek(_.shuffle([
     createGenericLesson('Monday', '1000', '1200'),
@@ -249,20 +248,20 @@ test('arrangeLessonsForWeek', (t) => {
     createGenericLesson('Wednesday', '1000', '1300'),
     createGenericLesson('Wednesday', '1100', '1400'),
   ]));
-  t.is(arrangement5.Monday.length, 1);
-  t.is(arrangement5.Tuesday.length, 2);
-  t.is(arrangement5.Wednesday.length, 2);
+  expect(arrangement5.Monday.length).toBe(1);
+  expect(arrangement5.Tuesday.length).toBe(2);
+  expect(arrangement5.Wednesday.length).toBe(2);
 });
 
-test('areOtherClassesAvailable', (t) => {
+test('areOtherClassesAvailable', () => {
   // Lessons belong to different ClassNo.
   const lessons1: Array<RawLesson> = _.shuffle([
     createGenericLesson('Monday', '1000', '1200', 'Lecture', '1'),
     createGenericLesson('Monday', '1600', '1800', 'Lecture', '2'),
     createGenericLesson('Monday', '1400', '1500', 'Lecture', '3'),
   ]);
-  t.true(areOtherClassesAvailable(lessons1, 'Lecture'));
-  t.false(areOtherClassesAvailable(lessons1, 'Tutorial'));
+  expect(areOtherClassesAvailable(lessons1, 'Lecture')).toBe(true);
+  expect(areOtherClassesAvailable(lessons1, 'Tutorial')).toBe(false);
 
   // Lessons belong to the same ClassNo.
   const lessons2: Array<RawLesson> = _.shuffle([
@@ -270,7 +269,7 @@ test('areOtherClassesAvailable', (t) => {
     createGenericLesson('Monday', '1600', '1800', 'Lecture', '1'),
     createGenericLesson('Monday', '1400', '1500', 'Lecture', '1'),
   ]);
-  t.false(areOtherClassesAvailable(lessons2, 'Lecture'));
+  expect(areOtherClassesAvailable(lessons2, 'Lecture')).toBe(false);
 
   // Lessons belong to different LessonType.
   const lessons3: Array<RawLesson> = _.shuffle([
@@ -279,6 +278,6 @@ test('areOtherClassesAvailable', (t) => {
     createGenericLesson('Monday', '1400', '1500', 'Tutorial', '1'),
     createGenericLesson('Monday', '1400', '1500', 'Tutorial', '2'),
   ]);
-  t.false(areOtherClassesAvailable(lessons3, 'Lecture'));
-  t.true(areOtherClassesAvailable(lessons3, 'Tutorial'));
+  expect(areOtherClassesAvailable(lessons3, 'Lecture')).toBe(false);
+  expect(areOtherClassesAvailable(lessons3, 'Tutorial')).toBe(true);
 });
