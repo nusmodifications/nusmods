@@ -1,66 +1,84 @@
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const HappyPack = require('happypack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
 
-const common = require('./webpack.config.common');
-const dll = require('./webpack.config.dll');
-const utils = require('./utils');
-const devServer = require('./dev-server');
+const commonConfig = require('./webpack.config.common');
+const parts = require('./webpack.parts');
 
 let dllPlugins = [];
 let dllHtmlWebpackConfig = {};
 const args = process.argv.slice(2);
 
+// DLL stands for Dynamically Linked Libraries. These are here to make webpack faster.
 // Disable using of dll if -no-dll is present.
-if (args.indexOf('-no-dll') === -1) {
-  dllPlugins = dllPlugins.concat(Object.keys(dll.DLL_ENTRIES).map(function (entryName) {
+if (!args.includes('-no-dll')) {
+  dllPlugins = Object.keys(parts.DLL.ENTRIES).map((entryName) => {
+    const manifestFileName = parts.DLL.MANIFEST_FILE_FORMAT.replace(/\[name\]/g, entryName);
     return new webpack.DllReferencePlugin({
       context: '.',
-      manifest: require(path.join(common.PATHS.dll, dll.DLL_MANIFEST_FILE_FORMAT.replace(/\[name\]/g, entryName)))
+      manifest: require(path.join(parts.PATHS.dll, manifestFileName)),  // eslint-disable-line
     });
-  }));
+  });
   // `dll` is a self-defined option to pass the paths of the built dll files
   // to the template. The dll JavaScript files are loaded in <script> tags
   // within the template and are available to the application.
   dllHtmlWebpackConfig = {
     dll: {
-      paths: Object.keys(dll.DLL_ENTRIES).map(function (entryName) {
-        return path.join(common.DLL, dll.DLL_FILE_FORMAT.replace(/\[name\]/g, entryName));
+      paths: Object.keys(parts.DLL.ENTRIES).map((entryName) => {
+        return path.join(parts.DLL.NAME, parts.DLL.FILE_FORMAT.replace(/\[name\]/g, entryName));
       }),
-    }
+    },
   };
 }
 
-const config = merge(
-  common,
+const developmentConfig = merge([
+  parts.setFreeVariable('process.env.NODE_ENV', 'development'),
+  commonConfig,
   {
-    devtool: 'eval-source-map',
-    plugins: [].concat(
-      new HappyPack({ id: 'styles' }),
-      new HtmlWebpackPlugin(Object.assign({},
-        {
-          // We use ejs because there's custom logic to include the dll script tags.
-          template: path.join(common.PATHS.app, 'index.ejs'),
-          cache: true,
-          chunks: [
-            'app',
-          ],
-        },
-        dllHtmlWebpackConfig
-      )),
-      dllPlugins
-    ),
+    // Use a fast source map for good-enough debugging usage
+    // https://webpack.js.org/configuration/devtool/#devtool
+    devtool: 'cheap-module-eval-source-map',
+    // Modify entry for hot module reload to work
+    // See: https://survivejs.com/webpack/appendices/hmr/#setting-wds-entry-points-manually
+    entry: [
+      `${require.resolve('webpack-dev-server/client')}?/`,
+      require.resolve('webpack/hot/dev-server'),
+      'main',
+    ],
+    plugins: [
+      // If you require a missing module and then `npm install` it, you still have
+      // to restart the development server for Webpack to discover it. This plugin
+      // makes the discovery automatic so you don't have to restart.
+      new WatchMissingNodeModulesPlugin(parts.PATHS.node),
+      new HtmlWebpackPlugin({
+        ...dllHtmlWebpackConfig,
+        template: path.join(parts.PATHS.app, 'index.ejs'),
+        cache: true,
+      }),
+      // Ignore node_modules so CPU usage with poll watching drops significantly.
+      new webpack.WatchIgnorePlugin([
+        parts.PATHS.node,
+        parts.PATHS.build,
+      ]),
+      // Enable multi-pass compilation for enhanced performance
+      // in larger projects. Good default.
+      new webpack.HotModuleReplacementPlugin({
+        multiStep: true,
+      }),
+      // prints more readable module names in the browser console on HMR updates
+      new webpack.NamedModulesPlugin(),
+      ...dllPlugins,
+    ],
   },
-  utils.setFreeVariable('process.env.NODE_ENV', 'development'),
-  utils.setupCSS(common.PATHS.app),
-  utils.flow(),
-  devServer({
-    // Customize host/port here if needed
-    host: process.env.HOST,
-    port: process.env.PORT,
-  })
-);
+  parts.loadImages({
+    include: parts.PATHS.images,
+  }),
+  parts.loadCSS({
+    include: parts.PATHS.app,
+  }),
+  parts.flow({ failOnError: false }),
+]);
 
-module.exports = config;
+module.exports = developmentConfig;
