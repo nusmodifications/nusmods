@@ -1,6 +1,4 @@
 // @flow
-import test from 'ava';
-
 import type { EventOption } from 'ical-generator';
 import {
   RECESS_WEEK,
@@ -30,43 +28,33 @@ const rawLessonOfType = lessonType => (
   }
 );
 
-test('isTutorial should return true for tutorials', (t) => {
-  t.true(isTutorial(rawLessonOfType('Design Lecture')));
-  t.true(isTutorial(rawLessonOfType('Laboratory')));
-  t.true(isTutorial(rawLessonOfType('Recitation')));
-  t.true(isTutorial(rawLessonOfType('Tutorial')));
-  t.true(isTutorial(rawLessonOfType('Tutorial Type 2')));
-  t.true(isTutorial(rawLessonOfType('Tutorial Type 3')));
-  t.false(isTutorial(rawLessonOfType('Lecture')));
+test('isTutorial should return true for tutorials', () => {
+  expect(isTutorial(rawLessonOfType('Design Lecture'))).toBe(true);
+  expect(isTutorial(rawLessonOfType('Laboratory'))).toBe(true);
+  expect(isTutorial(rawLessonOfType('Recitation'))).toBe(true);
+  expect(isTutorial(rawLessonOfType('Tutorial'))).toBe(true);
+  expect(isTutorial(rawLessonOfType('Tutorial Type 2'))).toBe(true);
+  expect(isTutorial(rawLessonOfType('Tutorial Type 3'))).toBe(true);
+  expect(isTutorial(rawLessonOfType('Lecture'))).toBe(false);
 });
 
-test('datesForAcademicWeeks should return correct dates', (t) => {
-  t.deepEqual(
-    datesForAcademicWeeks(new Date('2016-08-10T10:00+0800'), 1),
-    new Date('2016-08-10T10:00+0800'));
+test('datesForAcademicWeeks should return correct dates', () => {
+  expect(datesForAcademicWeeks(new Date('2016-08-10T10:00+0800'), 1)).toEqual(new Date('2016-08-10T10:00+0800'));
 
-  t.deepEqual(
-    datesForAcademicWeeks(new Date('2016-08-10T10:00+0800'), 3),
-      new Date('2016-08-24T10:00+0800'));
+  expect(datesForAcademicWeeks(new Date('2016-08-10T10:00+0800'), 3)).toEqual(new Date('2016-08-24T10:00+0800'));
 
   // recess week
-  t.deepEqual(
-    datesForAcademicWeeks(new Date('2016-08-10T10:00+0800'), RECESS_WEEK),
-      new Date('2016-09-21T10:00+0800'));
+  expect(datesForAcademicWeeks(new Date('2016-08-10T10:00+0800'), RECESS_WEEK)).toEqual(new Date('2016-09-21T10:00+0800'));
 
   // week 7 is after recess week, so it is 8 weeks after the start
-  t.deepEqual(
-    datesForAcademicWeeks(new Date('2016-08-10T10:00+0800'), 7),
-      new Date('2016-09-28T10:00+0800'));
+  expect(datesForAcademicWeeks(new Date('2016-08-10T10:00+0800'), 7)).toEqual(new Date('2016-09-28T10:00+0800'));
 });
 
-test('daysAfter should create a date days after', (t) => {
-  t.deepEqual(
-    daysAfter(new Date('2016-11-23T09:00+0800'), 1),
-    new Date('2016-11-24T09:00+0800'));
+test('daysAfter should create a date days after', () => {
+  expect(daysAfter(new Date('2016-11-23T09:00+0800'), 1)).toEqual(new Date('2016-11-24T09:00+0800'));
 });
 
-test('iCalEventForExam should generate event', (t) => {
+test('iCalEventForExam should generate event', () => {
   const actual: ?EventOption = iCalEventForExam(cs1010s, 1);
   const expected: EventOption = {
     start: new Date('2016-11-23T09:00+0800'),
@@ -75,10 +63,10 @@ test('iCalEventForExam should generate event', (t) => {
     description: 'Programming Methodology',
     url: 'http://www.nus.edu.sg/registrar/event/examschedule-sem1.html',
   };
-  t.deepEqual(actual, expected);
+  expect(actual).toEqual(expected);
 });
 
-test('iCalEventForLesson generates exclusion for comma separated weeks', (t) => {
+test('iCalEventForLesson generates exclusion for comma separated weeks', () => {
   const actual: EventOption = iCalEventForLesson(
     {
       ClassNo: 'A1',
@@ -117,15 +105,15 @@ test('iCalEventForLesson generates exclusion for comma separated weeks', (t) => 
       ],
     },
   };
-  t.deepEqual(actual, expected);
+  expect(actual).toEqual(expected);
 });
 
-test('icalForTimetable', (t) => {
+test('icalForTimetable', () => {
   const moduleData = {
     CS1010S: cs1010s,
     CS3216: cs3216,
   };
   const actual = iCalForTimetable(1, mockTimetable, moduleData);
   // 5 lesson types for cs1010s, 1 for cs3216, 1 exam for cs1010s
-  t.true(actual.length === 7);
+  expect(actual.length === 7).toBe(true);
 });

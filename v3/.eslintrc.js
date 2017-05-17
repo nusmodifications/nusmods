@@ -23,7 +23,7 @@ module.exports = {
     },
   },
   rules: {
-    // Turning it on causes undecipherable errors.
+    // Body style is more troublesome than it's worth
     'arrow-body-style': 'off',
     // Consistent arrow parens.
     'arrow-parens': ['error', 'as-needed', { requireForBlockBody: true }],
@@ -40,12 +40,9 @@ module.exports = {
     'react/jsx-first-prop-new-line': ['error', 'never'],
     // It just looks nicer without the space.
     'react/jsx-space-before-closing': 'off',
-    // TODO: https://github.com/yannickcr/eslint-plugin-react/issues/861
+    // SEE: https://github.com/yannickcr/eslint-plugin-react/issues
     'react/no-unused-prop-types': 'off',
     'react/require-default-props': 'off',
-    // TODO: Remove the following rule when eslint-config-airbnb updates to
-    //       use 'import/extensions rule from eslint-plugin-import'.
-    'react/require-extension': 'off',
     // TODO: Replace divs with buttons, but remove all button styling.
     'jsx-a11y/no-static-element-interactions': 'off',
     // Let git handle the linebreaks instead.

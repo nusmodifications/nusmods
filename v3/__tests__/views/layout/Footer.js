@@ -1,16 +1,15 @@
-import test from 'ava';
 import React from 'react';
 import { shallow } from 'enzyme';
 import Footer from 'views/layout/Footer';
 
-test('is a footer element', (t) => {
+test('is a footer element', () => {
   const actual = shallow(<Footer />);
-  t.is(actual.type(), 'footer');
+  expect(actual.type()).toBe('footer');
 });
 
 // check for noopener noreferrer if target_blank was used
 // see: https://www.jitbit.com/alexblog/256-targetblank---the-most-underestimated-vulnerability-ever/
-test('contains guards against target_blank', (t) => {
+test('contains guards against target_blank', () => {
   const footer = shallow(<Footer />);
   const links = footer.find('a');
   let result = true;
@@ -19,5 +18,5 @@ test('contains guards against target_blank', (t) => {
       result = a.prop('rel') === 'noopener noreferrer';
     }
   });
-  t.true(result);
+  expect(result).toBe(true);
 });

@@ -1,44 +1,63 @@
-const webpack = require('webpack');
-const merge = require('webpack-merge');
 const path = require('path');
+const merge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const common = require('./webpack.config.common');
-const utils = require('./utils');
+const commonConfig = require('./webpack.config.common');
+const parts = require('./webpack.parts');
 
-const config = merge(
-  common,
+const productionConfig = merge([
+  parts.setFreeVariable('process.env.NODE_ENV', 'production'),
+  commonConfig,
   {
     // Don't attempt to continue if there are any errors.
     bail: true,
     // We generate sourcemaps in production. This is slow but gives good results.
     // You can exclude the *.map files from the build during deployment.
     devtool: 'source-map',
-    plugins: [
-      new HtmlWebpackPlugin({
-        template: path.join(common.PATHS.app, 'index.ejs'),
-        cache: true,
-      })
-    ],
     output: {
       // The build folder.
-      path: common.PATHS.build,
+      path: parts.PATHS.build,
       filename: '[name].[chunkhash].js',
       // This is used for require.ensure. The setup
       // will work without but this is useful to set.
       chunkFilename: '[chunkhash].js',
     },
+    plugins: [
+      new HtmlWebpackPlugin({
+        template: path.join(parts.PATHS.app, 'index.ejs'),
+      }),
+    ],
   },
-  // Delete the build folder.
-  // TODO: Use create-react-app's way of building that shows file size differences.
-  utils.clean(common.PATHS.build),
-  utils.setFreeVariable('process.env.NODE_ENV', 'production'),
-  utils.extractBundle({
+  parts.clean(parts.PATHS.build),
+  parts.extractBundle({
     name: 'vendor',
-    entries: common.VENDOR,
+    entries: parts.VENDOR,
   }),
-  utils.minify(),
-  utils.extractCSS(common.PATHS.app)
-);
+  parts.minifyJavascript(),
+  parts.minifyCSS({
+    options: {
+      discardComments: {
+        removeAll: true,
+      },
+      // Run cssnano in safe mode to avoid
+      // potentially unsafe transformations.
+      safe: true,
+    },
+  }),
+  // If the file size is below the specified limit
+  // the file is converted into a data URL and inlined to avoid requests.
+  parts.loadImages({
+    include: parts.PATHS.images,
+    options: {
+      limit: 15000,
+      name: 'img/[name].[hash].[ext]',
+    },
+  }),
+  parts.extractCSS({
+    include: parts.PATHS.app,
+  }),
+  // Fail for CI
+  parts.flow({ failOnError: true }),
+]);
 
-module.exports = config;
+module.exports = productionConfig;
