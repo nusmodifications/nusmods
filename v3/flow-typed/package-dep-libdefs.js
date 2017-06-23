@@ -8,6 +8,10 @@ declare module 'react-dom' {
   declare module.exports: any;
 }
 
+declare module 'react-hot-loader' {
+  declare module.exports: any;
+}
+
 declare module 'react-router-dom' {
   declare module.exports: any;
 }
