@@ -1,27 +1,58 @@
 .nm-navbar {
-  margin-bottom: 15px;
+  $vert-padding: 0.5rem;
+  $form-width: 26rem;
+
+  align-items: center;
+  background: $gray-lightest;
+  display: flex;
+  flex-direction: row;
+  min-height: $navbar-height;
+  padding: $vert-padding 1rem;
+
+  @include media-breakpoint-up(md) {
+    padding: $vert-padding 2rem;
+  }
 
   .nm-navbar-brand {
+    $image-height: 130;
+    $image-width: 789;
+    $unit: 0.01rem;
+
     background-image: url('../img/nusmods-logo.png');
     background-position: center center;
     background-repeat: no-repeat;
     background-size: contain;
-    height: 34px;
-    width: 100px;
+    height: $image-height * $unit;
+    margin-right: 1rem;
+    width: $image-width * $unit;
+  }
 
-    @media (min-width: map-get($grid-breakpoints, 'md')) {
-      margin-left: 17px;
-    }
+  .nm-navbar-logo {
+    align-items: center;
+    display: flex;
+    height: 1rem;
+  }
+
+  .nm-navbar-form {
+    display: inline-block;
+    flex: 0 1 $form-width;
+  }
+
+  .nm-navbar-text {
+    flex: 1 1 auto;
+    text-align: right;
   }
 }
 
 .nm-nav-tabs {
-  padding-left: 10px;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
 
   .nav-link {
     color: $gray-light;
     display: block;
-    padding: 10px;
+    padding: 0.7rem;
 
     &.active {
       color: $brand-primary;
@@ -33,16 +64,11 @@
   }
 
   @media (max-width: map-get($grid-breakpoints, 'md')) {
-    $gutter: -$grid-gutter-width/2;
-
     background-color: #fff;
     box-shadow: 0 0 15px -3px rgba(0, 0, 0, 0.4);
-    display: flex;
     flex-direction: row;
     height: $navbar-height;
-    margin-left: $gutter;
-    margin-right: $gutter;
-    padding-left: 0;
+    left: 0;
     position: fixed;
     top: $navbar-height;
     width: 100%;
@@ -54,7 +80,7 @@
 
     .nav-link {
       display: block;
-      padding: 15px 0;
+      padding: 1rem 0;
       text-align: center;
     }
 

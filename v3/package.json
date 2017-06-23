@@ -3,7 +3,7 @@
   "version": "3.0.0-alpha",
   "description": "NUSMods v3",
   "scripts": {
-  "start": "cross-env NODE_ENV=development babel-node scripts/start",
+    "start": "cross-env NODE_ENV=development babel-node scripts/start",
     "build": "cross-env NODE_ENV=production babel-node scripts/build",
     "build:dll": "cross-env NODE_ENV=development webpack --config=webpack/webpack.config.dll.js",
     "postinstall": "npm run build:dll && flow-scripts stub",
@@ -74,7 +74,7 @@
   "dependencies": {
     "axios": "^0.14.0",
     "babel-polyfill": "^6.23.0",
-    "bootstrap": "4.0.0-alpha.4",
+    "bootstrap": "4.0.0-alpha.6",
     "classnames": "^2.2.5",
     "d3": "^4.4.0",
     "dom-to-image": "^2.5.2",

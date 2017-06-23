@@ -55,10 +55,9 @@ export class AppContainer extends Component {
   render() {
     return (
       <div className="app-container">
-        <nav className="navbar navbar-fixed-top navbar-light bg-faded nm-navbar">
-          <Link className="navbar-brand nm-navbar-brand" to="/" title="Home" />
-          <form className="hidden-xs-down"
-            style={{ width: '100%', maxWidth: 400, display: 'inline-block' }}
+        <nav className="nm-navbar fixed-top">
+          <Link className="nm-navbar-brand" to="/" title="Home" />
+          <form className="nm-navbar-form hidden-xs-down"
           >
             <ModulesSelect moduleList={this.props.moduleSelectList}
               onChange={(moduleCode) => {
@@ -67,7 +66,7 @@ export class AppContainer extends Component {
               placeholder="Search modules"
             />
           </form>
-          <p className="pull-xs-right hidden-xs-down"><small>{weekText}</small></p>
+          <span className="nm-navbar-text hidden-xs-down"><small>{weekText}</small></span>
         </nav>
         <div className="container-fluid">
           <div className="row">
