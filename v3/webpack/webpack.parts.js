@@ -37,8 +37,7 @@ const VENDOR = [
   'react-dom',
   'redux',
   'react-redux',
-  'react-router',
-  'react-router-redux',
+  'react-router-dom',
   'react-select-fast-filter-options',
   'react-virtualized-select',
   'redux-thunk',
@@ -104,6 +103,10 @@ exports.extractBundle = ({ name, entries }) => {
       // needed for reliable caching.
       new webpack.optimize.CommonsChunkPlugin({
         names: [name],
+      }),
+      new webpack.optimize.CommonsChunkPlugin({
+        names: 'manifest',
+        minChunks: Infinity,
       }),
     ],
   };
