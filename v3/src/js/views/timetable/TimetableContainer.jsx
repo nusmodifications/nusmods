@@ -17,7 +17,7 @@ import type {
 } from 'types/modules';
 import type { SemTimetableConfig, TimetableArrangement } from 'types/timetables';
 
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import DocumentTitle from 'react-document-title';
 import autobind from 'react-autobind';
@@ -68,7 +68,7 @@ type Props = {
   downloadAsIcal: Function,
 };
 
-export class TimetableContainer extends Component {
+class TimetableContainer extends Component {
 
   constructor(props: Props) {
     super(props);
@@ -230,10 +230,6 @@ export class TimetableContainer extends Component {
     );
   }
 }
-
-TimetableContainer.contextTypes = {
-  router: PropTypes.object,
-};
 
 function mapStateToProps(state) {
   const modules = state.entities.moduleBank.modules;

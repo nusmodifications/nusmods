@@ -1,11 +1,8 @@
 import ReactDOM from 'react-dom';
 import _ from 'lodash';
-import { useRouterHistory } from 'react-router';
-import { syncHistoryWithStore } from 'react-router-redux';
-import { createHistory } from 'history';  // eslint-disable-line import/no-extraneous-dependencies
 import configureStore from 'stores/configure-store';
 
-import routes from 'routes';
+import App from 'App';
 import storage from 'storage';
 
 import '../manifest.json';
@@ -32,9 +29,5 @@ store.subscribe(_.throttle(() => {
   });
 }, 1000));
 
-const history = syncHistoryWithStore(useRouterHistory(createHistory)({
-  basename: '/',
-}), store);
-
-ReactDOM.render(routes({ store, history }),
+ReactDOM.render(App({ store }),
   document.getElementById('app'));

@@ -4,7 +4,7 @@ import type { ColorIndex } from 'types/reducers';
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 import ColorPicker from 'views/components/color-picker/ColorPicker';
 
