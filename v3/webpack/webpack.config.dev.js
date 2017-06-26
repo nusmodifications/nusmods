@@ -45,7 +45,7 @@ const developmentConfig = merge([
       // Modify entry for hot module reload to work
       // See: https://survivejs.com/webpack/appendices/hmr/#setting-wds-entry-points-manually
       'webpack-dev-server/client?http://localhost:8080',
-      'webpack/hot/dev-server',
+      'webpack/hot/only-dev-server',
       'main',
     ],
     plugins: [
@@ -70,6 +70,8 @@ const developmentConfig = merge([
       }),
       // prints more readable module names in the browser console on HMR updates
       new webpack.NamedModulesPlugin(),
+     // do not emit compiled assets that include errors
+      new webpack.NoEmitOnErrorsPlugin(),
       ...dllPlugins,
     ],
   },
