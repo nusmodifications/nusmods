@@ -32,8 +32,6 @@ const VENDOR = [
   'd3',
   'ical-generator',
   'react',
-  'react-addons-shallow-compare',
-  'react-autobind',
   'react-document-title',
   'react-dom',
   'redux',

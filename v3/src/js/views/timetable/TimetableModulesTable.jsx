@@ -29,7 +29,13 @@ class TimetableModulesTable extends Component {
   props: Props;
 
   componentWillUnmount() {
-    this.props.cancelModifyModuleColor();
+    this.cancelModifyModuleColor();
+  }
+
+  cancelModifyModuleColor = () => {
+    if (this.props.activeModule) {
+      this.props.cancelModifyModuleColor();
+    }
   }
 
   showButton(moduleCode) {
