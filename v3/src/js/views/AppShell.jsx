@@ -40,7 +40,7 @@ const weekText = (() => {
   return thisWeekText;
 })();
 
-export class AppContainer extends Component {
+export class AppShell extends Component {
   componentDidMount() {
     this.props.fetchModuleList();
     const semesterTimetable: SemTimetableConfig = this.props.timetables[config.semester];
@@ -124,5 +124,5 @@ export default withRouter(
   connect(mapStateToProps, {
     fetchModuleList,
     loadModule,
-  })(AppContainer),
+  })(AppShell),
 );

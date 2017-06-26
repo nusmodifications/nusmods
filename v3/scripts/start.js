@@ -21,11 +21,13 @@ function runDevServer(host, port, protocol) {
     // Enable history API fallback so HTML5 History API based
     // routing works. Good for complex setups.
     historyApiFallback: true,
-    // Enable hot reloading server. Note that only changes
-    // to CSS are currently hot reloaded. JS changes will refresh the browser.
-    hot: true,
+    // Enable hot reloading server.
+    hotOnly: true,
     // Overlay compiler errors, useful when something breaks
-    overlay: true,
+    overlay: {
+      warnings: false,
+      errors: true,
+    },
     // Display only time, warning and errors
     stats: {
       colors: true,

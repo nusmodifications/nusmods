@@ -40,11 +40,12 @@ const developmentConfig = merge([
     // Use a fast source map for good-enough debugging usage
     // https://webpack.js.org/configuration/devtool/#devtool
     devtool: 'cheap-module-eval-source-map',
-    // Modify entry for hot module reload to work
-    // See: https://survivejs.com/webpack/appendices/hmr/#setting-wds-entry-points-manually
     entry: [
-      `${require.resolve('webpack-dev-server/client')}?/`,
-      require.resolve('webpack/hot/dev-server'),
+      'react-hot-loader/patch',
+      // Modify entry for hot module reload to work
+      // See: https://survivejs.com/webpack/appendices/hmr/#setting-wds-entry-points-manually
+      'webpack-dev-server/client?http://localhost:8080',
+      'webpack/hot/only-dev-server',
       'main',
     ],
     plugins: [
@@ -69,6 +70,8 @@ const developmentConfig = merge([
       }),
       // prints more readable module names in the browser console on HMR updates
       new webpack.NamedModulesPlugin(),
+     // do not emit compiled assets that include errors
+      new webpack.NoEmitOnErrorsPlugin(),
       ...dllPlugins,
     ],
   },

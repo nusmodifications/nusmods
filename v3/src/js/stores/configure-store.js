@@ -6,6 +6,7 @@ import requestsMiddleware from 'middlewares/requests-middleware';
 // Creates a preconfigured store for this example.
 export default function configureStore(defaultState) {
   const middlewares = [thunk, requestsMiddleware];
+
   if (process.env.NODE_ENV === 'development') {
     /* eslint-disable */
     const { createLogger } = require('redux-logger');
@@ -18,5 +19,16 @@ export default function configureStore(defaultState) {
     });
     middlewares.push(logger);
   }
-  return createStore(rootReducer, defaultState, applyMiddleware(...middlewares));
+
+  const store = createStore(rootReducer, defaultState, applyMiddleware(...middlewares));
+
+  if (module.hot) {
+    // Enable webpack hot module replacement for reducers
+    module.hot.accept(
+      '../reducers',
+      () => store.replaceReducer(rootReducer),
+    );
+  }
+
+  return store;
 }

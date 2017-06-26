@@ -12,6 +12,7 @@ const SRC = 'src';
 const DLL = 'dll';
 
 const PATHS = {
+  root: ROOT,
   node: path.join(ROOT, 'node_modules'),
   app: path.join(ROOT, SRC),
   scripts: path.join(ROOT, SRC, 'js'),
@@ -75,9 +76,9 @@ exports.setFreeVariable = (key, value) => {
  *
  * @see https://survivejs.com/webpack/building/tidying-up/#setting-up-cleanwebpackplugin-
  */
-exports.clean = pathCleaned => ({
+exports.clean = (...pathsToBeCleaned) => ({
   plugins: [
-    new CleanWebpackPlugin([pathCleaned], {
+    new CleanWebpackPlugin([...pathsToBeCleaned], {
       // Without `root` CleanWebpackPlugin won't point to our
       // project and will fail to work.
       root: process.cwd(),
