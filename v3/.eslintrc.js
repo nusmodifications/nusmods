@@ -42,6 +42,17 @@ module.exports = {
     'react/jsx-space-before-closing': 'off',
     // SEE: https://github.com/yannickcr/eslint-plugin-react/issues
     'react/no-unused-prop-types': 'off',
+    // Enables typing to be placed above lifecycle
+    "react/sort-comp": ['error', {
+      order: [
+        'type-annotations',
+        'static-methods',
+        'lifecycle',
+        '/^on.+$/',
+        'everything-else',
+        'render',
+      ],
+    }],
     'react/require-default-props': 'off',
     // TODO: Replace divs with buttons, but remove all button styling.
     'jsx-a11y/no-static-element-interactions': 'off',

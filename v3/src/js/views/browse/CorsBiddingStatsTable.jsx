@@ -6,7 +6,7 @@ import Table from 'views/components/Table';
 type Props = {
   aySem: string,
   stats: BiddingStat[],
-}
+};
 
 const headers = [
   'Faculty',

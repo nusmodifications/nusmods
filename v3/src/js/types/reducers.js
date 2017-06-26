@@ -22,7 +22,7 @@ export type FetchRequest = {
 /* theme.js */
 export type ColorIndex = number;
 // Mapping of module to color index [0, NUM_DIFFERENT_COLORS)
-export type ColorMapping = { [key: ModuleCode]: ColorIndex };
+export type ColorMapping = { [ModuleCode]: ColorIndex };
 
 export type TimetableOrientation = 'HORIZONTAL' | 'VERTICAL';
 export const VERTICAL: TimetableOrientation = 'VERTICAL';

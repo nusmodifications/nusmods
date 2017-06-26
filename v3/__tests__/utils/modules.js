@@ -26,7 +26,7 @@ test('modulePagePath should generate route correctly', () => {
 
 test('getModuleSemesterData should return semester data if semester is present', () => {
   const sem: Semester = 1;
-  const actual: SemesterData = getModuleSemesterData(cs3216, sem);
+  const actual: ?SemesterData = getModuleSemesterData(cs3216, sem);
   const expected = {
     Semester: 1,
     Timetable: [
@@ -47,7 +47,7 @@ test('getModuleSemesterData should return semester data if semester is present',
 
 test('getModuleSemesterData should return undefined if semester is absent', () => {
   const sem: Semester = 2;
-  const actual: SemesterData = getModuleSemesterData(cs3216, sem);
+  const actual: ?SemesterData = getModuleSemesterData(cs3216, sem);
   expect(actual).toBe(undefined);
 });
 

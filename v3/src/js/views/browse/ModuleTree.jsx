@@ -10,6 +10,9 @@ type Props = {
 };
 
 export default class ModuleTree extends Component {
+  props: Props;
+  prereqRoot: HTMLDivElement;
+
   componentDidMount() {
     const isOrAnd = d => d.name === 'or' || d.name === 'and';
     const modsFilter = d => !isOrAnd(d);
@@ -180,8 +183,6 @@ export default class ModuleTree extends Component {
     nodeAll.on('mouseout', mouseOut);
     nodeAll.on('click', clicked);
   }
-
-  props: Props;
 
   render() {
     return <div ref={div => (this.prereqRoot = div)} className="nm-prerequisites-tree" />;

@@ -21,7 +21,7 @@ import type { ModulesMap } from 'reducers/entities/moduleBank';
 import _ from 'lodash';
 import { getModuleTimetable } from 'utils/modules';
 
-type LessonTypeAbbrev = { [key: LessonType]: string };
+type LessonTypeAbbrev = { [LessonType]: string };
 export const LESSON_TYPE_ABBREV: LessonTypeAbbrev = {
   'Design Lecture': 'DLEC',
   Laboratory: 'LAB',
@@ -44,15 +44,15 @@ export const LESSON_TYPE_ABBREV: LessonTypeAbbrev = {
 //    [LessonType]: ClassNo,
 //  }
 export function randomModuleLessonConfig(lessons: Array<RawLesson>): ModuleLessonConfig {
-  const lessonByGroups: { [key: LessonType]: Array<RawLesson> } =
+  const lessonByGroups: { [LessonType]: Array<RawLesson> } =
     _.groupBy(lessons, lesson => lesson.LessonType);
 
-  const lessonByGroupsByClassNo: { [key: LessonType]: { [key: ClassNo]: Array<RawLesson> } } =
+  const lessonByGroupsByClassNo: { [LessonType]: { [ClassNo]: Array<RawLesson> } } =
     _.mapValues(lessonByGroups, (lessonsOfSameLessonType: Array<RawLesson>) => {
       return _.groupBy(lessonsOfSameLessonType, lesson => lesson.ClassNo);
     });
 
-  return _.mapValues(lessonByGroupsByClassNo, (group: { [key: ClassNo]: Array<RawLesson> }) => {
+  return _.mapValues(lessonByGroupsByClassNo, (group: { [ClassNo]: Array<RawLesson> }) => {
     return _.sample(group)[0].ClassNo;
   });
 }

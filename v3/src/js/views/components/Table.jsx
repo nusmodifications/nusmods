@@ -11,14 +11,15 @@ type Props = {
 export default function Table(props: Props) {
   const tableBody = (
     <tbody>
-      {props.data.map(s =>
+      {props.data.map(s => (
         <tr key={s}>
           {s.map(d =>
-            <td key={d}>
+            (<td key={d}>
               {d}
-            </td>,
+            </td>),
           )}
-        </tr>,
+        </tr>
+        ),
       )}
     </tbody>
   );

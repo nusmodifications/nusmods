@@ -7,7 +7,7 @@ import facultyList from 'data/faculty-list.json';
 type Props = {
   faculty: Faculty | void,
   onChange: Function, // will be called with the selected faculty when option changes
-}
+};
 
 export default function FacultySelect(props: Props) {
   const {

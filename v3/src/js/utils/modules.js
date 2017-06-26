@@ -15,7 +15,7 @@ export function modulePagePath(moduleCode: ModuleCode): string {
 }
 
 // Returns semester specific details such as exam date and timetable.
-export function getModuleSemesterData(module: Module, semester: Semester): SemesterData {
+export function getModuleSemesterData(module: Module, semester: Semester): ?SemesterData {
   return _.find(module.History, (semData: SemesterData) => {
     return semData.Semester === semester;
   });

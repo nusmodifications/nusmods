@@ -15,13 +15,14 @@ export default function TeamContainer() {
           We hope to involve more developers and contributors in making NUSMods even better.
           Please reach out to us if you are interested in helping!</em></p>
           <p>These are the members of our core team:</p>
-          {teamInfo.map((teamMember, index) =>
+          {teamInfo.map((teamMember, index) => (
             <div key={index}>
               <hr />
               <div className="row">
                 <div className="col-sm-3 col-xs-12">
                   <a href={teamMember.github}>
-                    <img className="img-fluid" src={teamMember.gravatar}
+                    <img className="img-fluid"
+                      src={teamMember.gravatar}
                       alt={teamMember.gravatarAlt} />
                   </a>
                 </div>
@@ -52,7 +53,7 @@ export default function TeamContainer() {
                   </div>
                 </div>
               </div>
-            </div>,
+            </div>),
           )}
         </div>
       </div>
