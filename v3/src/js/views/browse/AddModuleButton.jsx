@@ -4,7 +4,7 @@ import React from 'react';
 type Props = {
   onClick: Function,
   semester: number,
-}
+};
 
 export default function AddModuleButton(props: Props) {
   const {

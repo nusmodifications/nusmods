@@ -8,18 +8,14 @@ type Props = {
   selectedChoice: ?string,
   onChoiceSelect: Function,
   ariaLabel: ?string,
-}
+};
 
 export default function ButtonGroupSelector(props: Props) {
-  const {
-    choices,
-    selectedChoice,
-    onChoiceSelect,
-    ariaLabel = 'Choices',
-  } = props;
+  const { choices, selectedChoice, onChoiceSelect, ariaLabel = 'Choices' } = props;
 
   const buttons = choices.map(choice =>
-    <button key={choice} onClick={() => onChoiceSelect(choice)}
+    (<button key={choice}
+      onClick={() => onChoiceSelect(choice)}
       type="button"
       className={classnames('btn', {
         'btn-primary': selectedChoice === choice,
@@ -27,7 +23,7 @@ export default function ButtonGroupSelector(props: Props) {
       })}
     >
       {choice}
-    </button>,
+    </button>),
   );
 
   return (

@@ -1,8 +1,8 @@
 // @flow
-/* eslint-disable no-duplicate-imports */
 import type {
   ThemeState,
   TimetableOrientation,
+  ModuleSelectList,
 } from 'types/reducers';
 import {
   HORIZONTAL,
@@ -12,8 +12,8 @@ import type {
   Lesson,
   Module,
   ModuleCode,
-  ModuleCondensed,
   RawLesson,
+  Semester,
 } from 'types/modules';
 import type { SemTimetableConfig, TimetableArrangement } from 'types/timetables';
 
@@ -48,8 +48,8 @@ import Timetable from './Timetable';
 import TimetableModulesTable from './TimetableModulesTable';
 
 type Props = {
-  semester: number,
-  semModuleList: Array<ModuleCondensed>,
+  semester: Semester,
+  semModuleList: ModuleSelectList,
   semTimetableWithLessons: SemTimetableConfig,
   modules: Module,
   theme: string,
@@ -69,6 +69,8 @@ type Props = {
 };
 
 class TimetableContainer extends Component {
+  props: Props
+  timetableDom: Element
 
   constructor(props: Props) {
     super(props);
@@ -78,8 +80,6 @@ class TimetableContainer extends Component {
   componentWillUnmount() {
     this.props.cancelModifyLesson();
   }
-
-  timetableDom: Element
 
   isHiddenInTimetable(moduleCode: ModuleCode) {
     return this.props.hiddenInTimetable.includes(moduleCode);
@@ -152,11 +152,12 @@ class TimetableContainer extends Component {
 
     return (
       <DocumentTitle title={`Timetable - ${config.brandName}`}>
-        <div className={`theme-${this.props.theme} timetable-page-container page-container`} onClick={() => {
-          if (this.props.activeLesson) {
-            this.props.cancelModifyLesson();
-          }
-        }}>
+        <div className={`theme-${this.props.theme} timetable-page-container page-container`}
+          onClick={() => {
+            if (this.props.activeLesson) {
+              this.props.cancelModifyLesson();
+            }
+          }}>
           <div className="row">
             <div className={classnames('timetable-wrapper', {
               'col-md-12': isHorizontalOrientation,

@@ -1,5 +1,5 @@
 // @flow
-import type { ModuleWithColor, ModuleCode } from 'types/modules';
+import type { ModuleWithColor, ModuleCode, Semester } from 'types/modules';
 import type { ColorIndex } from 'types/reducers';
 
 import React, { Component } from 'react';
@@ -19,13 +19,15 @@ type Props = {
   cancelModifyModuleColor: Function,
   hideLessonInTimetable: Function,
   showLessonInTimetable: Function,
-  semester: number,
+  semester: Semester,
   modules: Array<ModuleWithColor>,
   onRemoveModule: Function,
   horizontalOrientation: boolean,
 };
 
 class TimetableModulesTable extends Component {
+  props: Props;
+
   componentWillUnmount() {
     this.props.cancelModifyModuleColor();
   }
@@ -45,8 +47,6 @@ class TimetableModulesTable extends Component {
       </button>
     );
   }
-
-  props: Props;
 
   render() {
     return (
@@ -89,9 +89,10 @@ class TimetableModulesTable extends Component {
                         &nbsp;&middot;&nbsp;
                         {module.ModuleCredit} MCs
                         &nbsp;&middot;
-                        <button className="btn-link btn-remove" onClick={() => {
-                          this.props.onRemoveModule(module.ModuleCode);
-                        }}>
+                        <button className="btn-link btn-remove"
+                          onClick={() => {
+                            this.props.onRemoveModule(module.ModuleCode);
+                          }}>
                           Remove
                         </button>
                         {module.hiddenInTimetable ?

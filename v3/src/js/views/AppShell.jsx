@@ -41,6 +41,8 @@ const weekText = (() => {
 })();
 
 export class AppShell extends Component {
+  props: Props;
+
   componentDidMount() {
     this.props.fetchModuleList();
     const semesterTimetable: SemTimetableConfig = this.props.timetables[config.semester];
@@ -51,8 +53,6 @@ export class AppShell extends Component {
       });
     }
   }
-
-  props: Props;
 
   /* eslint-disable jsx-a11y/anchor-has-content */
   render() {

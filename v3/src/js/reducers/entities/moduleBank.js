@@ -17,7 +17,7 @@ import { FETCH_MODULE_LIST, FETCH_MODULE } from 'actions/moduleBank';
 import * as RequestResultCases from 'middlewares/requests-middleware';
 
 export type ModulesMap = {
-  [key: ModuleCode]: Module,
+  [ModuleCode]: Module,
 };
 export type ModuleBank = {
   moduleList: ModuleList,

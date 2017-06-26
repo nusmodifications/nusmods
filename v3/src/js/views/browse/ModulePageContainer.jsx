@@ -29,6 +29,7 @@ type Props = {
 };
 
 export class ModulePageContainer extends Component {
+  props: Props;
 
   componentDidMount() {
     this.loadModuleInformation(this.props);
@@ -69,8 +70,6 @@ export class ModulePageContainer extends Component {
     return timetables[semester] && !!timetables[semester][module.ModuleCode];
   }
 
-  props: Props;
-
   render() {
     const module = this.props.module;
     const documentTitle = module ?
@@ -78,11 +77,12 @@ export class ModulePageContainer extends Component {
     const ivleLink = module ? config.ivleUrl.replace('<ModuleCode>', module.ModuleCode) : null;
     const corsLink = module ? `${config.corsUrl}${module.ModuleCode}` : null;
 
-    const renderExaminations = this.examinations().map(exam =>
+    const renderExaminations = this.examinations().map(exam => (
       <span key={exam.semester}>
         <dt className="col-sm-3">Semester {exam.semester} Exam</dt>
         <dd className="col-sm-9">{formatExamDate(exam.date)}</dd>
-      </span>,
+      </span>
+      ),
     );
 
     const semsOffered = this.semestersOffered()
@@ -92,11 +92,15 @@ export class ModulePageContainer extends Component {
     const addOrRemoveToTimetableLinks = this.semestersOffered().map(
       semester => (
         this.moduleHasBeenAdded(module, semester) ?
-          <RemoveModuleButton key={semester} semester={semester} onClick={() =>
+          <RemoveModuleButton key={semester}
+            semester={semester}
+            onClick={() =>
             this.props.removeModule(semester, module.ModuleCode)
           } />
           :
-          <AddModuleButton key={semester} semester={semester} onClick={() =>
+          <AddModuleButton key={semester}
+            semester={semester}
+            onClick={() =>
               this.props.addModule(semester, module.ModuleCode)
             } />
         ),

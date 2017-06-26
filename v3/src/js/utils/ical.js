@@ -143,7 +143,7 @@ export function iCalEventForLesson(
 export function iCalForTimetable(
   semester: Semester,
   timetable: SemTimetableConfigWithLessons,
-  moduleData: { [key: ModuleCode]: Module },
+  moduleData: { [ModuleCode]: Module },
   year: string = config.academicYear): Array<EventOption> {
   const start = academicCalendar[year][semester].start;
   const firstDayOfSchool = new Date(Date.UTC(start[0], start[1], start[2]) - SG_UTC_TIME_DIFF_MS);

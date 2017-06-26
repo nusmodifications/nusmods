@@ -23,9 +23,14 @@ type Props = {
 type State = {
   accountType: AccountType,
   selectedAySem: ?string,
-}
+};
 
 class CorsBiddingStatsTableControl extends Component {
+  props: Props;
+  state: State;
+  onAccountTypeChange: Function;
+  onSelectAySem: Function;
+
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -35,10 +40,6 @@ class CorsBiddingStatsTableControl extends Component {
     this.onAccountTypeChange = this.onAccountTypeChange.bind(this);
     this.onSelectAySem = this.onSelectAySem.bind(this);
   }
-
-  state: State
-  onAccountTypeChange: Function
-  onSelectAySem: Function
 
   onAccountTypeChange(accountType: AccountType) {
     this.setState({ accountType });

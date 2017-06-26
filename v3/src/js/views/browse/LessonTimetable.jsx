@@ -7,7 +7,7 @@ import Table from 'views/components/Table';
 type Props = {
   lessonType: LessonType,
   lessons: RawLesson[],
-}
+};
 
 const headers = [
   'Class No',

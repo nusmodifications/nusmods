@@ -4,7 +4,7 @@ import React from 'react';
 type Props = {
   accountType: string | void,
   onChange: Function, // will be called with the selected faculty when option changes
-}
+};
 
 export default function AccountSelect(props: Props) {
   const {
