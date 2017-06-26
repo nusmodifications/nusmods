@@ -8,15 +8,13 @@
     "build:dll": "cross-env NODE_ENV=development webpack --config=webpack/webpack.config.dll.js",
     "postinstall": "npm run build:dll && flow-scripts stub",
     "flow": "flow check",
-    "flow-auto": "flow --help",
     "lint": "eslint test src/js/**/*.{js,jsx} webpack scripts",
     "lint:src": "eslint src/js/**/*.{js,jsx}",
     "lint:test": "eslint test",
     "lint:scripts": "eslint webpack scripts",
-    "test": "jest --config jest.config.js",
+    "test": "jest --config jest.config.js --coverage",
     "test:watch": "jest --config jest.config.js --watch",
-    "test:cov": "jest --config jest.config.js --coverage",
-    "ci": "npm run lint && npm run build && npm run test:cov && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
+    "ci": "npm run lint && npm run test && npm run build "
   },
   "author": "NUSModifications",
   "license": "MIT",
