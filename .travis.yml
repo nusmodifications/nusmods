@@ -1,12 +1,16 @@
 language: node_js
-node_js:
-  - 6.6
+dist: trusty
+sudo: false
 env:
   matrix:
     - PROJECT="v2"
     - PROJECT="v3"
+cache:
+  yarn: true
+  directories:
+    - node_modules
+    - v3/node_modules
 script:
   - bash ./ci.sh
-cache:
-  directories:
-  - $HOME/.yarn-cache
+after_success:
+  cat ./v3/coverage/lcov.info | ./v3/node_modules/coveralls/bin/coveralls.js
