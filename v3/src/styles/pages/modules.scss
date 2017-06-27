@@ -2,6 +2,33 @@
   animation-name: $page-entering-animation;
 }
 
+.modules-list {
+  display: inline-block;
+  list-style: none;
+  padding: 0;
+
+  .modules-item {
+    border-bottom: 1px solid $gray-lighter;
+    margin: 0.5rem 0;
+    padding: 1rem 0;
+  }
+
+  .modules-title {
+    font-size: 1.25rem;
+    font-weight: normal;
+  }
+
+  .modules-semesters-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .modules-semesters-item {
+    display: inline-block;
+    margin: 0 0.1rem;
+  }
+}
+
 // Pre-requisites Tree
 .nm-prerequisites-tree {
   #nm-prerequisites-tree-canvas {
