@@ -20,7 +20,6 @@ import type { SemTimetableConfig, TimetableArrangement } from 'types/timetables'
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import DocumentTitle from 'react-document-title';
-import autobind from 'react-autobind';
 import _ from 'lodash';
 import config from 'config';
 import classnames from 'classnames';
@@ -72,20 +71,21 @@ class TimetableContainer extends Component {
   props: Props
   timetableDom: Element
 
-  constructor(props: Props) {
-    super(props);
-    autobind(this);
-  }
-
   componentWillUnmount() {
-    this.props.cancelModifyLesson();
+    this.cancelModifyLesson();
   }
 
-  isHiddenInTimetable(moduleCode: ModuleCode) {
+  cancelModifyLesson = () => {
+    if (this.props.activeLesson) {
+      this.props.cancelModifyLesson();
+    }
+  }
+
+  isHiddenInTimetable = (moduleCode: ModuleCode) => {
     return this.props.hiddenInTimetable.includes(moduleCode);
   }
 
-  modifyCell(lesson: ModifiableLesson) {
+  modifyCell = (lesson: ModifiableLesson) => {
     if (lesson.isAvailable) {
       this.props.changeLesson(this.props.semester, lesson);
     } else if (lesson.isActive) {
@@ -153,11 +153,7 @@ class TimetableContainer extends Component {
     return (
       <DocumentTitle title={`Timetable - ${config.brandName}`}>
         <div className={`theme-${this.props.theme} timetable-page-container page-container`}
-          onClick={() => {
-            if (this.props.activeLesson) {
-              this.props.cancelModifyLesson();
-            }
-          }}>
+          onClick={this.cancelModifyLesson}>
           <div className="row">
             <div className={classnames('timetable-wrapper', {
               'col-md-12': isHorizontalOrientation,
