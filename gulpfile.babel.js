@@ -9,9 +9,9 @@ import tasks from './gulp-tasks';
 import iterateSems from './gulp-tasks/utils/iterateSems';
 import { REGULAR_SEMESTER, SPECIAL_SEMESTER } from './gulp-tasks/remote/cors';
 
-const aMonthAgo = moment().subtract(1, 'months');
-const acadObj = nusmoderator.academicCalendar.getAcadYear(aMonthAgo.toDate());
-const schoolSem = nusmoderator.academicCalendar.getAcadSem(aMonthAgo.week());
+const monthsAhead = moment().add(2, 'months');
+const acadObj = nusmoderator.academicCalendar.getAcadYear(monthsAhead.toDate());
+const schoolSem = nusmoderator.academicCalendar.getAcadSem(monthsAhead.week());
 const schoolYear = 2000 + parseInt(acadObj.year.substr(0, 2), 10);
 
 const yearStart = config.defaults.year || schoolYear;
