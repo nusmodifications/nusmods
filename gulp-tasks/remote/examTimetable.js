@@ -127,10 +127,10 @@ async function examTimetable(config) {
 
   let url = `https://webrb.nus.edu.sg/examtt/Exam${year}`;
   if (semester < 3) {
-    url += `/Semester ${semester}/Semester_${semester}_by_Date.pdf`;
+    url += `/Semester ${semester}/Semester_${semester}_By_Date.pdf`;
   } else {
     const specialSem = semester - 2;
-    url += `/Special Term Part ${specialSem}/Special_Term_Part${specialSem}_by_Date.pdf`;
+    url += `/Special Term Part ${specialSem}/Special_Term_Part${specialSem}_By_Date.pdf`;
   }
   const pdf = await gotCached(url, config);
   const data = await parseExamPdf(pdf, subLog);

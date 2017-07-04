@@ -103,8 +103,12 @@ function processModulePage(webpage, moduleInfo) {
 function processLessonTypes(webpage, lessonTypes) {
   const $ = cheerio.load(webpage);
 
-  const timetableTables = $('.tableframe').find('tr table');
-  timetableTables.each((i, table) => {
+  const tableframes = $('.tableframe').slice(1);
+  tableframes.each((i, tableframe) => {
+    const tables = $(tableframe).find('tr table');
+    if (tables.empty()) return;
+    const table = tables[0];
+
     const lessonType = LESSON_TYPES[i];
     // remove inner header and empty rows
     const rows = $('tr', table)
