@@ -3652,9 +3652,9 @@ pause-stream@0.0.11:
   dependencies:
     through "~2.3"
 
-pdfjs-dist@^1.6.297:
-  version "1.8.275"
-  resolved "https://registry.yarnpkg.com/pdfjs-dist/-/pdfjs-dist-1.8.275.tgz#667f97d8c478b88da7517a79c30ff0eb24a8488b"
+pdfjs-dist@^1.8.514:
+  version "1.8.514"
+  resolved "https://registry.yarnpkg.com/pdfjs-dist/-/pdfjs-dist-1.8.514.tgz#0cc6e6985e143a8354e6dbfe40bb6813b6c9d8c9"
   dependencies:
     node-ensure "^0.0.0"
     worker-loader "^0.8.0"

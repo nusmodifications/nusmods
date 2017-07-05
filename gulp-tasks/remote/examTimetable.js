@@ -18,12 +18,15 @@ const DATE_FORMAT = 'D/M/YYYY';
 
 // arbitrary delimiter chosen due to highly unlikely chance of occuring
 const NON_WORD_DELIMITER = '`';
-// matches dd/mm/yyyy or d/m/yy with any non-word delimiters
+// matches dd/mm/yyyy or d/m/yy or d/m/yy (day)
 const DATE_REGEX = /\d{1,2}\W\d{1,2}\W[20]{0,2}\d{2}/;
+// matches Mon or mon or any 3 letter words
+const DAY_REGEX = /\(\w{3}\)/;
 // matches 0900AM, 900PM or 9:00 PM
-const TIME_REGEX = /[0-2]?[1-9]\W?[0-5]\d\s?[AM|PM]{2}/;
-// matches 2 or 3 capital alphabets followed by 4 numerics and 1 or 2 letters
-const CODE_REGEX = /[A-Z]{2,3}[0-9]{4}(?:[A-Z]|[A-Z]R)?/;
+const TIME_REGEX = /[0-2]?[1-9]\W?[0-5]\d\W?(?:AM|PM)?/;
+// matches 2 or 3 capital alphabets mixed with whitespace
+// followed by 4 numerics and 1 or 2 letters
+const CODE_REGEX = /[A-Z|\W]{2,4}[0-9]{4}(?:[A-Z]|[A-Z]R)?/;
 // matches multiple words in all caps with symbols and roman numerals I, V
 const TITLE_REGEX = /[^`a-z]+[IV]*/;
 // first letter must be caps
@@ -33,7 +36,9 @@ const FACULTY_REGEX = /[A-Z].*/;
 const MODULE_REGEX = new RegExp([
   '(',
   DATE_REGEX.source,
-  ').*(',
+  ')\\W?(?:',
+  DAY_REGEX.source,
+  ')?.*(',
   TIME_REGEX.source,
   ')\\W*(',
   CODE_REGEX.source,
@@ -132,7 +137,14 @@ async function examTimetable(config) {
     const specialSem = semester - 2;
     url += `/Special Term Part ${specialSem}/Special_Term_Part${specialSem}_By_Date.pdf`;
   }
-  const pdf = await gotCached(url, config);
+  let pdf;
+  try {
+    pdf = await gotCached(url, config);
+  } catch (e) {
+    log.error(e);
+    log.info('Unable to download pdf file, continuing...');
+    return null;
+  }
   const data = await parseExamPdf(pdf, subLog);
 
   subLog.info(`parsed ${data.length} exam timetables`);
