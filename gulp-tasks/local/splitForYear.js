@@ -52,7 +52,6 @@ async function splitForYear(config) {
 
   modules.forEach((mod) => {
     const pathToWrite = path.join(
-      basePath,
       config.split.destSubfolder,
       `${mod.ModuleCode}.json`,
     );
@@ -84,7 +83,6 @@ async function splitForYear(config) {
     moduleInformation.push(info);
 
     const pathToWriteInformation = path.join(
-      basePath,
       config.split.destSubfolder,
       mod.ModuleCode,
       'index.json',

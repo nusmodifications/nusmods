@@ -18,7 +18,7 @@ const DATE_FORMAT = 'D/M/YYYY';
 
 // arbitrary delimiter chosen due to highly unlikely chance of occuring
 const NON_WORD_DELIMITER = '`';
-// matches dd/mm/yyyy or d/m/yy or d/m/yy (day)
+// matches dd/mm/yyyy or d/m/yy or d/m/yy
 const DATE_REGEX = /\d{1,2}\W\d{1,2}\W[20]{0,2}\d{2}/;
 // matches Mon or mon or any 3 letter words
 const DAY_REGEX = /\(\w{3}\)/;
@@ -38,7 +38,7 @@ const MODULE_REGEX = new RegExp([
   DATE_REGEX.source,
   ')\\W?(?:',
   DAY_REGEX.source,
-  ')?.*(',
+  ')?\\W*(',
   TIME_REGEX.source,
   ')\\W*(',
   CODE_REGEX.source,

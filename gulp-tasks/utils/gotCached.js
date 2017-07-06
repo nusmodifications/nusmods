@@ -44,9 +44,8 @@ async function gotCached(urlStr, config) {
 
   const modifiedTime = await getFileModifiedTime(cachedPath, urlStr);
   const maxCacheAge = config.maxCacheAge;
-  const isCachedFileValid = modifiedTime &&
-    (maxCacheAge === -1 || modifiedTime > Date.now() - (maxCacheAge * 1000));
-  if (isCachedFileValid) {
+  const isCachedFileValid = modifiedTime && (modifiedTime > Date.now() - (maxCacheAge * 1000));
+  if (maxCacheAge === -1 || isCachedFileValid) {
     return returnCached();
   }
 
