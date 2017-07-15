@@ -54,12 +54,15 @@ describe('time regex', () => {
     passRegex(TIME_REGEX, '09:00AM');
     passRegex(TIME_REGEX, '900 AM');
     passRegex(TIME_REGEX, '1400PM');
+    passRegex(TIME_REGEX, '0900');
   });
 
-  it('fails with wrong period', failRegex(TIME_REGEX, '0900BM'));
+  it('matches only timing in case of wrong period', () => {
+    const match = TIME_REGEX.exec('0900BM')[0];
+    expect(match).toBe('0900');
+  });
   it('fails with no digits', failRegex(TIME_REGEX, '00PM'));
   it('fails with wrong digits', failRegex(TIME_REGEX, '0000PM'));
-  it('fails with no period', failRegex(TIME_REGEX, '0900'));
 });
 
 describe('code regex', () => {
