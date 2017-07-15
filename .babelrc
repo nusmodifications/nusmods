@@ -1,11 +1,8 @@
 {
   "presets": [
-    ["eslatest-node6", { "loose": true }]
+    ["env", { "targets": { "node": "current" }, "loose": true }],
+    "flow",
+    "bluebird"
   ],
-  "plugins": [
-    "transform-flow-strip-types",
-    "transform-es2015-destructuring",
-    "transform-es2015-parameters",
-    ["transform-object-rest-spread", { "useBuiltIns": true }]
-  ],
+  "plugins": [["transform-object-rest-spread", { "useBuiltIns": true }]]
 }

@@ -26,6 +26,7 @@ const WhiteSpace = createToken({
   name: 'WhiteSpace',
   pattern: /\s+/,
   group: Lexer.SKIPPED,
+  line_breaks: true,
 });
 const IrrelevantWord = createToken({
   name: 'IrrelevantWord',
