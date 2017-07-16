@@ -10,6 +10,8 @@ import {
 import examDataFile1 from './test-files/examData1.json';
 import examDataFile2 from './test-files/examData2.json';
 
+jest.unmock('fs-extra');
+
 const testFile1 = fs.readFileSync('__tests__/test-files/test1.pdf');
 const testFile2 = fs.readFileSync('__tests__/test-files/test2.pdf');
 

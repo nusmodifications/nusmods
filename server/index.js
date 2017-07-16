@@ -1,4 +1,3 @@
-import 'babel-polyfill';
 import Koa from 'koa';
 
 import Router from 'koa-router';
@@ -30,8 +29,8 @@ router.get('/graphiql', graphiqlKoa({ endpointURL: '/graphql' }));
 app.use(router.routes());
 app.use(router.allowedMethods({
   throw: true,
-  notImplemented: () => new Boom.notImplemented(),
-  methodNotAllowed: () => new Boom.methodNotAllowed(),
+  notImplemented: () => new Boom.notImplemented(),  // eslint-disable-line new-cap
+  methodNotAllowed: () => new Boom.methodNotAllowed(),  // eslint-disable-line new-cap
 }));
 
 log.info('current environment: %s', process.env.NODE_ENV);

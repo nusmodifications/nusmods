@@ -1,4 +1,4 @@
-// When modifying this, copy this over to '__mocks__' as well!
+// When modifying this, copy this over to '__tests__' as well!
 module.exports = {
   env: {
     jest: true,

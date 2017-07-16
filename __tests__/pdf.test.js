@@ -1,6 +1,8 @@
 import fs from 'fs-extra';
 import { getPagesFromPdf, getPagesTextFromPdf } from '../gulp-tasks/utils/pdf';
 
+jest.unmock('fs-extra');
+
 /**
  * More files should be included as time passes to maintain compatability
  * with previous years' pdfs.
