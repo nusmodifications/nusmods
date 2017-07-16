@@ -5,27 +5,27 @@ import {
   TIME_REGEX,
   CODE_REGEX,
   TITLE_REGEX,
-  FACULTY_REGEX,
+  // Regex too simple to justify testing
+  FACULTY_REGEX, // eslint-disable-line
 } from '../gulp-tasks/remote/examTimetable';
-import examDataFile1 from './test-files/examData1.json';
-import examDataFile2 from './test-files/examData2.json';
 
 jest.unmock('fs-extra');
 
-const testFile1 = fs.readFileSync('__tests__/test-files/test1.pdf');
-const testFile2 = fs.readFileSync('__tests__/test-files/test2.pdf');
-
 describe('parseExamPdf', () => {
   const sublog = { warn: jest.fn() };
-  it('scrapes all the modules', async () => {
-    const examData1 = await parseExamPdf(testFile1, sublog);
-    expect(examData1).toEqual(examDataFile1);
-  });
+  function matchPdfOutput(filePath) {
+    return fs
+      .readFile(filePath)
+      .then(fileContent => parseExamPdf(fileContent, sublog))
+      .then((result) => {
+        expect(result).toMatchSnapshot();
+      });
+  }
 
-  it('scrapes all the modules', async () => {
-    const examData2 = await parseExamPdf(testFile2, sublog);
-    expect(examData2).toEqual(examDataFile2);
-  });
+  it('scrapes all the modules for 2016 sem 1', () =>
+    matchPdfOutput('__tests__/test-files/test1.pdf'));
+  it('scrapes all the modules for 2017 sem 1', () =>
+    matchPdfOutput('__tests__/test-files/test2.pdf'));
 });
 
 function passRegex(regex, str) {
@@ -77,6 +77,18 @@ describe('code regex', () => {
   it('fails with wrong digits', failRegex(CODE_REGEX, 'CS10'));
   it('fails with no digits', failRegex(CODE_REGEX, 'CS'));
   it('fails with no prefix', failRegex(CODE_REGEX, '1010'));
+});
+
+describe('title regex', () => {
+  it('captures title-like sequences', () => {
+    passRegex(TITLE_REGEX, 'TEST()');
+    passRegex(TITLE_REGEX, 'TEST[]');
+    passRegex(TITLE_REGEX, '1TEST:');
+    passRegex(TITLE_REGEX, 'TEST');
+  });
+
+  it('fails with no uppercase', failRegex(TITLE_REGEX, 'test'));
+  it('fails with empty string', failRegex(TITLE_REGEX, ''));
 });
 
 describe('title regex', () => {

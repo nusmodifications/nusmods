@@ -7,7 +7,7 @@ jest.unmock('fs-extra');
  * More files should be included as time passes to maintain compatability
  * with previous years' pdfs.
  */
-const fileData = fs.readFileSync('__tests__/test-files/test.pdf');
+const fileData = fs.readFileSync('__tests__/test-files/test1.pdf');
 
 describe('pdf', () => {
   it('getPagesFromPdf gets pages from pdf', async () => {
@@ -18,6 +18,6 @@ describe('pdf', () => {
   it('getPagesTextFromPdf gets pages\' text from pdf', async () => {
     const textPages = await getPagesTextFromPdf(fileData);
     expect(textPages.length).toBe(1);
-    expect(textPages[0].length).toBe(271);
+    expect(textPages[0].length).toBe(77);
   });
 });

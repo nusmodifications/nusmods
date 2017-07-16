@@ -10,25 +10,23 @@ async function getPagesFromPdf(fileData) {
 }
 
 async function getTextFromPages(pages) {
-  function normalizeWords(page) {
-    const sentences = [];
-    let isPreviousDelimiter = false;
-    page.forEach((word) => {
-      const isWord = /\w+/.test(word);
-      if (isWord && !isPreviousDelimiter && word.length > 1) {
-        sentences.push('');
-      }
-      isPreviousDelimiter = !isWord;
-      sentences[sentences.length - 1] += word;
-    });
-    return sentences;
+  function joinStrings(arrayOfObj) {
+    let yPos = arrayOfObj[0].width;
+    return arrayOfObj.reduce((str, obj) => {
+      const previousYPos = yPos;
+      yPos = obj.transform[4] - obj.width;
+
+      // don't add space if they're too close
+      const separator = (yPos - previousYPos <= 0) ? '' : ' ';
+      return str + separator + obj.str;
+    }, '');
   }
 
   const getTextFromPage = R.pipeP(
     page => page.getTextContent(),
     R.prop('items'),
-    R.pluck('str'),
-    normalizeWords,
+    R.groupWith((a, b) => a.transform[5] === b.transform[5]),
+    R.map(joinStrings),
   );
 
   return Promise.all(R.map(getTextFromPage, pages));

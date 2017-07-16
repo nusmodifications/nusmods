@@ -16,57 +16,56 @@ import { getPagesTextFromPdf } from '../utils/pdf';
 
 const DATE_FORMAT = 'D/M/YYYY';
 
-// arbitrary delimiter chosen due to highly unlikely chance of occuring
-const NON_WORD_DELIMITER = '`';
 // matches dd/mm/yyyy or d/m/yy or d/m/yy
 const DATE_REGEX = /\d{1,2}\W\d{1,2}\W[20]{0,2}\d{2}/;
 // matches Mon or mon or any 3 letter words
 const DAY_REGEX = /\(\w{3}\)/;
 // matches 0900AM, 900PM or 9:00 PM
-const TIME_REGEX = /[0-2]?[1-9]\W?[0-5]\d\W?(?:AM|PM)?/;
+const TIME_REGEX = /[0-2]?[1-9]\W?[0-5]\d\s?(?:AM|PM)?/;
 // matches 2 or 3 capital alphabets mixed with whitespace
 // followed by 4 numerics and 1 or 2 letters
 const CODE_REGEX = /[A-Z|\W]{2,4}[0-9]{4}(?:[A-Z]|[A-Z]R)?/;
 // matches multiple words in all caps with symbols and roman numerals I, V
-const TITLE_REGEX = /[^`a-z]+[IV]*/;
-// first letter must be caps
-const FACULTY_REGEX = /[A-Z].*/;
+const TITLE_REGEX = /[^a-z]+[IV]*/;
+// matches rest of any non digit word(s)
+const FACULTY_REGEX = /[^\d]+/;
 
 // combined to give us this using capture groups and delimiter allowances
-const MODULE_REGEX = new RegExp([
-  '(',
-  DATE_REGEX.source,
-  ')\\W?(?:',
-  DAY_REGEX.source,
-  ')?\\W*(',
-  TIME_REGEX.source,
-  ')\\W*(',
-  CODE_REGEX.source,
-  ')\\W*(',
-  TITLE_REGEX.source,
-  ')\\W*(',
-  FACULTY_REGEX.source,
-  ')',
-].join(''));
+const MODULE_REGEX = new RegExp(
+  [
+    '(',
+    DATE_REGEX.source,
+    ')\\s?(?:',
+    DAY_REGEX.source,
+    ')?\\s*(',
+    TIME_REGEX.source,
+    ')\\s*(',
+    CODE_REGEX.source,
+    ')\\s*(',
+    TITLE_REGEX.source,
+    ')\\b(',
+    FACULTY_REGEX.source,
+    ')$',
+  ].join(''),
+);
 
 const log = bunyan.createLogger({ name: 'examTimetable' });
 
 function parseModule(module, subLog) {
   const moduleArr = R.pipe(
-    R.join(NON_WORD_DELIMITER),
     R.match(MODULE_REGEX),
     R.map(R.replace(/\s/g, ' ')), // normalize whitespace
   )(module);
 
   if (!moduleArr.length) {
-    subLog.warn(`'${module.join(' ')}' is not a valid module`);
+    subLog.warn(`'${module}' is not a valid module`);
     return {};
   }
 
-  const date = moduleArr[1].replace(/\W/g, '/');  // replace delimiters to '/'
-  const time = moduleArr[2].replace(' ', '');     // remove whitespace
+  const date = moduleArr[1].replace(/\W/g, '/'); // replace delimiters to '/'
+  const time = moduleArr[2].replace(' ', ''); // remove whitespace
   const code = moduleArr[3];
-  const title = moduleArr[4];
+  const title = moduleArr[4].trim();
   const faculty = moduleArr[5];
 
   if (!moment(date, DATE_FORMAT, true).isValid()) {
@@ -82,18 +81,6 @@ function parseModule(module, subLog) {
   };
 }
 
-function modulesFromText(strings) {
-  const modules = [];
-  strings.forEach((str) => {
-    if (DATE_REGEX.test(str)) {
-      // create new module
-      modules.push([]);
-    }
-    modules[modules.length - 1].push(str);
-  });
-  return modules;
-}
-
 async function parseExamPdf(fileData, subLog) {
   function removeHeadersAndPageNum(pages) {
     return pages.map((page, index) => {
@@ -102,26 +89,37 @@ async function parseExamPdf(fileData, subLog) {
 
       if (startOfData === -1 || endOfData === -1) {
         // eslint-disable-next-line max-len
-        subLog.warn(`page ${index + 1} of pdf has no data, please visually check if this is correct`);
+        subLog.warn(
+          `page ${index + 1} of pdf has no data, please visually check if this is correct`,
+        );
         return [];
       }
       return page.slice(startOfData, endOfData);
     });
   }
 
-  const splitByWhitespace = R.chain(R.split(/\s{2,}/));
-  const removeFalsy = R.filter(R.identity);
-  const textArrFromPages = R.pipe(
-    R.map(splitByWhitespace),
+  function modulesFromText(strings) {
+    const modules = [];
+    strings.forEach((str) => {
+      if (DATE_REGEX.test(str)) {
+        // create new module
+        modules.push(str);
+      } else {
+        modules[modules.length - 1] += str;
+      }
+    });
+    return modules;
+  }
+
+  const modulesArrFromPages = R.pipe(
     removeHeadersAndPageNum,
     R.flatten,
-    R.map(R.trim),
-    removeFalsy,
+    R.map(str => str.replace(/\s{2,}/g, ' ').replace(/ ‐/, '-')),
+    modulesFromText,
   );
 
   const pagesOfText = await getPagesTextFromPdf(fileData);
-  const strings = textArrFromPages(pagesOfText);
-  const modulesArr = modulesFromText(strings);
+  const modulesArr = modulesArrFromPages(pagesOfText);
   const filterEmptyObject = R.reject(R.isEmpty);
   return filterEmptyObject(modulesArr.map(module => parseModule(module, subLog)));
 }
