@@ -10,6 +10,7 @@ import ModuleFinderContainer from 'views/browse/ModuleFinderContainer';
 import ModulesContainer from 'views/browse/ModulePageContainer';
 import SettingsContainer from 'views/settings/SettingsContainer';
 import TeamContainer from 'views/static/TeamContainer';
+import DevelopersContainer from 'views/static/DevelopersContainer';
 
 export default function Routes() {
   return (
@@ -22,6 +23,7 @@ export default function Routes() {
       <Route path="/modules/:moduleCode" component={ModulesContainer} />
       <Route path="/settings" component={SettingsContainer} />
       <Route path="/team" component={TeamContainer} />
+      <Route path="/developers" component={DevelopersContainer} />
       <Route component={NotFoundPage} />
     </Switch>
   );

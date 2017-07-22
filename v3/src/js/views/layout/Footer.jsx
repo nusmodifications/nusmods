@@ -14,6 +14,7 @@ function Footer() {
           <li><a href="https://github.com/nusmodifications/nusmods-api">API</a></li>
           <li><Link to="/about">About</Link></li>
           <li><Link to="/team">Team</Link></li>
+          <li><Link to="/developers">Developers</Link></li>
           <li><Link to="/faq">FAQ</Link></li>
         </ul>
         {/* TODO: Change team to link to internal page. */}
