@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import DocumentTitle from 'react-document-title';
 import axios from 'axios';
 
-export const DEVELOPERS_URL = 'https://api.github.com/repos/NUSModifications/NUSMods/contributors';
+const DEVELOPERS_URL = 'https://api.github.com/repos/NUSModifications/NUSMods/contributors';
 
 class DevelopersContainer extends Component {
   constructor() {
