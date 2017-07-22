@@ -37,7 +37,7 @@ export const DOWNLOAD_AS_ICAL = 'DOWNLOAD_AS_ICAL';
 export function downloadAsIcal(
   semester: Semester,
   timetable: SemTimetableConfigWithLessons,
-  moduleData: { [key: ModuleCode]: Module }) {
+  moduleData: { [ModuleCode]: Module }) {
   const events = iCalForTimetable(semester, timetable, moduleData);
   const cal = ical({
     domain: 'nusmods.com',

@@ -6,7 +6,7 @@ import type { ColorIndex } from 'types/reducers';
 import _ from 'lodash';
 import { NUM_DIFFERENT_COLORS } from 'reducers/theme';
 
-require('./color-picker.scss');
+import './color-picker.scss';
 
 type Props = {
   onChooseColor: Function,

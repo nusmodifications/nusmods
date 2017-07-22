@@ -13,7 +13,34 @@ test('fetchModule should return a request action', () => {
   expect(resultOfAction).toMatchSnapshot();
 });
 
-// TODO: Find out how to test this using snapshots
-test('loadModule should dispatch a request', () => {
-  expect(typeof actions.loadModule('test') === 'function').toBe(true);
+test('loadModule should dispatch a request if module is not found', () => {
+  const dispatch = jest.fn();
+  const getState = () => {
+    return {
+      entities: {
+        moduleBank: {
+          modules: {},
+        },
+      },
+    };
+  };
+  actions.loadModule('test')(dispatch, getState);
+  expect(dispatch.mock.calls[0][0]).toMatchSnapshot();
+});
+
+test('loadModule should resolve immediately if module is found', () => {
+  const dispatch = jest.fn();
+  const getState = () => {
+    return {
+      entities: {
+        moduleBank: {
+          modules: {
+            test: {},
+          },
+        },
+      },
+    };
+  };
+  actions.loadModule('test')(dispatch, getState);
+  expect(dispatch).not.toHaveBeenCalled();
 });

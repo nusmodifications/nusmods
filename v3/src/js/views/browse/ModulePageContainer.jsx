@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import ReactDisqusThread from 'react-disqus-thread';
 import DocumentTitle from 'react-document-title';
 import config from 'config';
@@ -17,11 +18,8 @@ import CorsBiddingStatsTableControl from './CorsBiddingStatsTableControl';
 import LessonTimetableControl from './LessonTimetableControl';
 import ModuleTree from './ModuleTree';
 
-type RouteParams = {
-  moduleCode: string,
-};
 type Props = {
-  routeParams: RouteParams,
+  moduleCode: string,
   module: Module,
   loadModule: Function,
   fetchModuleRequest: FetchRequest,
@@ -31,19 +29,20 @@ type Props = {
 };
 
 export class ModulePageContainer extends Component {
+  props: Props;
 
   componentDidMount() {
     this.loadModuleInformation(this.props);
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    if (nextProps.routeParams.moduleCode !== this.props.routeParams.moduleCode) {
+    if (nextProps.moduleCode !== this.props.moduleCode) {
       this.loadModuleInformation(nextProps);
     }
   }
 
   loadModuleInformation(props: Props) {
-    this.props.loadModule(props.routeParams.moduleCode);
+    this.props.loadModule(props.moduleCode);
   }
 
   semestersOffered(): number[] {
@@ -71,8 +70,6 @@ export class ModulePageContainer extends Component {
     return timetables[semester] && !!timetables[semester][module.ModuleCode];
   }
 
-  props: Props;
-
   render() {
     const module = this.props.module;
     const documentTitle = module ?
@@ -80,11 +77,12 @@ export class ModulePageContainer extends Component {
     const ivleLink = module ? config.ivleUrl.replace('<ModuleCode>', module.ModuleCode) : null;
     const corsLink = module ? `${config.corsUrl}${module.ModuleCode}` : null;
 
-    const renderExaminations = this.examinations().map(exam =>
+    const renderExaminations = this.examinations().map(exam => (
       <span key={exam.semester}>
         <dt className="col-sm-3">Semester {exam.semester} Exam</dt>
         <dd className="col-sm-9">{formatExamDate(exam.date)}</dd>
-      </span>,
+      </span>
+      ),
     );
 
     const semsOffered = this.semestersOffered()
@@ -94,11 +92,15 @@ export class ModulePageContainer extends Component {
     const addOrRemoveToTimetableLinks = this.semestersOffered().map(
       semester => (
         this.moduleHasBeenAdded(module, semester) ?
-          <RemoveModuleButton key={semester} semester={semester} onClick={() =>
+          <RemoveModuleButton key={semester}
+            semester={semester}
+            onClick={() =>
             this.props.removeModule(semester, module.ModuleCode)
           } />
           :
-          <AddModuleButton key={semester} semester={semester} onClick={() =>
+          <AddModuleButton key={semester}
+            semester={semester}
+            onClick={() =>
               this.props.addModule(semester, module.ModuleCode)
             } />
         ),
@@ -189,18 +191,19 @@ export class ModulePageContainer extends Component {
 
 function mapStateToProps(state, ownProps) {
   const timetables = state.timetables;
+  const moduleCode = ownProps.match.params.moduleCode;
   return {
-    module: state.entities.moduleBank.modules[ownProps.params.moduleCode],
+    moduleCode,
+    module: state.entities.moduleBank.modules[moduleCode],
     fetchModuleRequest: state.requests.fetchModuleRequest || {},
     timetables,
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
+export default withRouter(
+  connect(mapStateToProps, {
     addModule,
     loadModule,
     removeModule,
-  },
-)(ModulePageContainer);
+  })(ModulePageContainer),
+);

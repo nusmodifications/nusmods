@@ -26,7 +26,7 @@ type Props = {
 };
 
 class Timetable extends Component {
-  props: Props;
+  props: Props
   timetableDom: Element
 
   render() {

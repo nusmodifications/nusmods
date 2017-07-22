@@ -1,10 +1,10 @@
 // @flow
-import type { ModuleWithColor, ModuleCode } from 'types/modules';
+import type { ModuleWithColor, ModuleCode, Semester } from 'types/modules';
 import type { ColorIndex } from 'types/reducers';
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 import ColorPicker from 'views/components/color-picker/ColorPicker';
 
@@ -19,15 +19,23 @@ type Props = {
   cancelModifyModuleColor: Function,
   hideLessonInTimetable: Function,
   showLessonInTimetable: Function,
-  semester: number,
+  semester: Semester,
   modules: Array<ModuleWithColor>,
   onRemoveModule: Function,
   horizontalOrientation: boolean,
 };
 
 class TimetableModulesTable extends Component {
+  props: Props;
+
   componentWillUnmount() {
-    this.props.cancelModifyModuleColor();
+    this.cancelModifyModuleColor();
+  }
+
+  cancelModifyModuleColor = () => {
+    if (this.props.activeModule) {
+      this.props.cancelModifyModuleColor();
+    }
   }
 
   showButton(moduleCode) {
@@ -45,8 +53,6 @@ class TimetableModulesTable extends Component {
       </button>
     );
   }
-
-  props: Props;
 
   render() {
     return (
@@ -89,9 +95,10 @@ class TimetableModulesTable extends Component {
                         &nbsp;&middot;&nbsp;
                         {module.ModuleCredit} MCs
                         &nbsp;&middot;
-                        <button className="btn-link btn-remove" onClick={() => {
-                          this.props.onRemoveModule(module.ModuleCode);
-                        }}>
+                        <button className="btn-link btn-remove"
+                          onClick={() => {
+                            this.props.onRemoveModule(module.ModuleCode);
+                          }}>
                           Remove
                         </button>
                         {module.hiddenInTimetable ?

@@ -12,6 +12,7 @@ const SRC = 'src';
 const DLL = 'dll';
 
 const PATHS = {
+  root: ROOT,
   node: path.join(ROOT, 'node_modules'),
   app: path.join(ROOT, SRC),
   scripts: path.join(ROOT, SRC, 'js'),
@@ -31,14 +32,11 @@ const VENDOR = [
   'd3',
   'ical-generator',
   'react',
-  'react-addons-shallow-compare',
-  'react-autobind',
   'react-document-title',
   'react-dom',
   'redux',
   'react-redux',
-  'react-router',
-  'react-router-redux',
+  'react-router-dom',
   'react-select-fast-filter-options',
   'react-virtualized-select',
   'redux-thunk',
@@ -76,9 +74,9 @@ exports.setFreeVariable = (key, value) => {
  *
  * @see https://survivejs.com/webpack/building/tidying-up/#setting-up-cleanwebpackplugin-
  */
-exports.clean = pathCleaned => ({
+exports.clean = (...pathsToBeCleaned) => ({
   plugins: [
-    new CleanWebpackPlugin([pathCleaned], {
+    new CleanWebpackPlugin([...pathsToBeCleaned], {
       // Without `root` CleanWebpackPlugin won't point to our
       // project and will fail to work.
       root: process.cwd(),
@@ -104,6 +102,10 @@ exports.extractBundle = ({ name, entries }) => {
       // needed for reliable caching.
       new webpack.optimize.CommonsChunkPlugin({
         names: [name],
+      }),
+      new webpack.optimize.CommonsChunkPlugin({
+        names: 'manifest',
+        minChunks: Infinity,
       }),
     ],
   };

@@ -1,29 +1,26 @@
 // @flow
 import React from 'react';
+import DocumentTitle from 'react-document-title';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { withRouter } from 'react-router-dom';
 
-import { modulePagePath } from 'utils/modules';
+import ModuleFinderItem from 'views/components/ModuleFinderItem';
+
+import config from 'config';
 import type { ModuleCondensed } from 'types/modules';
 
 function ModuleFinderContainer(props: { moduleList: Array<ModuleCondensed> }) {
   return (
-    <div>
-      <h1 className="page-title">Module Finder</h1>
-      <hr />
-      <p>WIP. Only 30 shown for brevity.</p>
-      <hr />
-      {props.moduleList.slice(0, 30).map((module) => {
-        return (
-          <div key={module.ModuleCode}>
-            <Link to={modulePagePath(module.ModuleCode)}>
-              {module.ModuleCode} {module.ModuleTitle}
-            </Link>
-            <hr />
-          </div>
-        );
-      })}
-    </div>
+    <DocumentTitle title={`Modules - ${config.brandName}`}>
+      <div className="modules-page-container page-container">
+        <h1 className="page-title">Module Finder</h1>
+        <ul className="modules-list">
+          {props.moduleList.slice(0, 30).map((module) => {
+            return <ModuleFinderItem module={module} />;
+          })}
+        </ul>
+      </div>
+    </DocumentTitle>
   );
 }
 
@@ -33,6 +30,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-)(ModuleFinderContainer);
+export default withRouter(connect(mapStateToProps)(ModuleFinderContainer));

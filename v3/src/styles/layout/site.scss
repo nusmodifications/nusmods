@@ -1,6 +1,6 @@
 // This file contains the styles for the overall site
 body {
-  padding-top: 5rem;
+  padding-top: 4rem;
 
   @media (max-width: map-get($grid-breakpoints, 'md')) {
     font-size: $font-size-sm;

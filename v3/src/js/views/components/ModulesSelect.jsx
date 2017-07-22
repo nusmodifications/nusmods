@@ -15,11 +15,11 @@ type Props = {
 };
 
 class ModulesSelect extends Component {
+  props: Props;
+
   shouldComponentUpdate(nextProps: Props) {
     return _.size(this.props.moduleList) !== _.size(nextProps.moduleList);
   }
-
-  props: Props;
 
   render() {
     const filterOptions = createFilterOptions({

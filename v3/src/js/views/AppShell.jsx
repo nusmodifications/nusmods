@@ -3,15 +3,16 @@ import type { TimetableConfig, SemTimetableConfig } from 'types/timetables';
 import type { FetchRequest, ModuleList, ModuleSelectList } from 'types/reducers';
 
 import React, { Component } from 'react';
-import { routerShape, Link } from 'react-router';
+import { NavLink, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import NUSModerator from 'nusmoderator';
 
 import config from 'config';
 import { fetchModuleList, loadModule } from 'actions/moduleBank';
 
-import ModulesSelect from './components/ModulesSelect';
-import Footer from './layout/Footer';
+import Routes from 'views/Routes';
+import ModulesSelect from 'views/components/ModulesSelect';
+import Footer from 'views/layout/Footer';
 
 type Props = {
   children: React.Children,
@@ -27,17 +28,21 @@ type Props = {
 const weekText = (() => {
   const week = NUSModerator.academicCalendar.getAcadWeekInfo(new Date());
   let thisWeekText = `AY20${week.year}, ${week.sem}, `;
-  if (week.type !== 'Instructional') { // hide 'Instructional'
+  if (week.type !== 'Instructional') {
+    // hide 'Instructional'
     thisWeekText += week.type;
   }
   thisWeekText += ' Week';
-  if (week.num > 0) { // do not show the week number if there is only one week, eg. recess
+  if (week.num > 0) {
+    // do not show the week number if there is only one week, eg. recess
     thisWeekText += ` ${week.num}`;
   }
   return thisWeekText;
 })();
 
-export class AppContainer extends Component {
+export class AppShell extends Component {
+  props: Props;
+
   componentDidMount() {
     this.props.fetchModuleList();
     const semesterTimetable: SemTimetableConfig = this.props.timetables[config.semester];
@@ -49,17 +54,13 @@ export class AppContainer extends Component {
     }
   }
 
-  props: Props;
-
   /* eslint-disable jsx-a11y/anchor-has-content */
   render() {
     return (
       <div className="app-container">
-        <nav className="navbar navbar-fixed-top navbar-light bg-faded nm-navbar">
-          <Link className="navbar-brand nm-navbar-brand" to="/" title="Home" />
-          <form className="hidden-xs-down"
-            style={{ width: '100%', maxWidth: 400, display: 'inline-block' }}
-          >
+        <nav className="nm-navbar fixed-top">
+          <NavLink className="nm-navbar-brand" to="/" title="Home" />
+          <form className="nm-navbar-form hidden-xs-down">
             <ModulesSelect moduleList={this.props.moduleSelectList}
               onChange={(moduleCode) => {
                 this.context.router.push(`/modules/${moduleCode.value}`);
@@ -67,29 +68,29 @@ export class AppContainer extends Component {
               placeholder="Search modules"
             />
           </form>
-          <p className="pull-xs-right hidden-xs-down"><small>{weekText}</small></p>
+          <span className="nm-navbar-text hidden-xs-down"><small>{weekText}</small></span>
         </nav>
         <div className="container-fluid">
           <div className="row">
             <div className="col-md-2">
               <ul className="nm-nav-tabs">
                 <li role="presentation" className="nm-nav-item">
-                  <Link className="nav-link" activeClassName="active" to="/timetable">
+                  <NavLink className="nav-link" activeClassName="active" to="/timetable">
                     <i className="fa fa-fw fa-lg fa-table" />
                     <span className="nm-link-title"> Timetable</span>
-                  </Link>
+                  </NavLink>
                 </li>
                 <li role="presentation" className="nm-nav-item">
-                  <Link className="nav-link" activeClassName="active" to="/modules">
+                  <NavLink className="nav-link" activeClassName="active" to="/modules">
                     <i className="fa fa-fw fa-lg fa-list" />
                     <span className="nm-link-title"> Browse</span>
-                  </Link>
+                  </NavLink>
                 </li>
                 <li role="presentation" className="nm-nav-item">
-                  <Link className="nav-link" activeClassName="active" to="/settings">
+                  <NavLink className="nav-link" activeClassName="active" to="/settings">
                     <i className="fa fa-fw fa-lg fa-gear" />
                     <span className="nm-link-title"> Settings</span>
-                  </Link>
+                  </NavLink>
                 </li>
               </ul>
             </div>
@@ -100,6 +101,7 @@ export class AppContainer extends Component {
               {this.props.fetchModuleListRequest.isSuccessful || this.props.moduleList.length ?
                 this.props.children : null
               }
+              <Routes />
             </div>
           </div>
         </div>
@@ -108,10 +110,6 @@ export class AppContainer extends Component {
     );
   }
 }
-
-AppContainer.contextTypes = {
-  router: routerShape,
-};
 
 function mapStateToProps(state) {
   return {
@@ -122,10 +120,9 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
+export default withRouter(
+  connect(mapStateToProps, {
     fetchModuleList,
     loadModule,
-  },
-)(AppContainer);
+  })(AppShell),
+);

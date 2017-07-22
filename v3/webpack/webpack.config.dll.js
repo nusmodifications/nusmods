@@ -8,7 +8,7 @@ const config = merge([
   // We only use dlls for development builds. Technically possible to
   // use for production builds but will need more tweaking.
   parts.setFreeVariable('process.env.NODE_ENV', 'development'),
-  parts.clean(parts.PATHS.dll),
+  parts.clean(parts.PATHS.dll, path.join(parts.PATHS.root, '.cache-loader')),
   {
     entry: parts.DLL.ENTRIES,
     output: {

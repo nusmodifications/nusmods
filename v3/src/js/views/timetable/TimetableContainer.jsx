@@ -1,8 +1,8 @@
 // @flow
-/* eslint-disable no-duplicate-imports */
 import type {
   ThemeState,
   TimetableOrientation,
+  ModuleSelectList,
 } from 'types/reducers';
 import {
   HORIZONTAL,
@@ -12,15 +12,14 @@ import type {
   Lesson,
   Module,
   ModuleCode,
-  ModuleCondensed,
   RawLesson,
+  Semester,
 } from 'types/modules';
 import type { SemTimetableConfig, TimetableArrangement } from 'types/timetables';
 
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import DocumentTitle from 'react-document-title';
-import autobind from 'react-autobind';
 import _ from 'lodash';
 import config from 'config';
 import classnames from 'classnames';
@@ -48,8 +47,8 @@ import Timetable from './Timetable';
 import TimetableModulesTable from './TimetableModulesTable';
 
 type Props = {
-  semester: number,
-  semModuleList: Array<ModuleCondensed>,
+  semester: Semester,
+  semModuleList: ModuleSelectList,
   semTimetableWithLessons: SemTimetableConfig,
   modules: Module,
   theme: string,
@@ -68,24 +67,25 @@ type Props = {
   downloadAsIcal: Function,
 };
 
-export class TimetableContainer extends Component {
-
-  constructor(props: Props) {
-    super(props);
-    autobind(this);
-  }
-
-  componentWillUnmount() {
-    this.props.cancelModifyLesson();
-  }
-
+class TimetableContainer extends Component {
+  props: Props
   timetableDom: Element
 
-  isHiddenInTimetable(moduleCode: ModuleCode) {
+  componentWillUnmount() {
+    this.cancelModifyLesson();
+  }
+
+  cancelModifyLesson = () => {
+    if (this.props.activeLesson) {
+      this.props.cancelModifyLesson();
+    }
+  }
+
+  isHiddenInTimetable = (moduleCode: ModuleCode) => {
     return this.props.hiddenInTimetable.includes(moduleCode);
   }
 
-  modifyCell(lesson: ModifiableLesson) {
+  modifyCell = (lesson: ModifiableLesson) => {
     if (lesson.isAvailable) {
       this.props.changeLesson(this.props.semester, lesson);
     } else if (lesson.isActive) {
@@ -152,11 +152,8 @@ export class TimetableContainer extends Component {
 
     return (
       <DocumentTitle title={`Timetable - ${config.brandName}`}>
-        <div className={`theme-${this.props.theme} timetable-page-container page-container`} onClick={() => {
-          if (this.props.activeLesson) {
-            this.props.cancelModifyLesson();
-          }
-        }}>
+        <div className={`theme-${this.props.theme} timetable-page-container page-container`}
+          onClick={this.cancelModifyLesson}>
           <div className="row">
             <div className={classnames('timetable-wrapper', {
               'col-md-12': isHorizontalOrientation,
@@ -230,10 +227,6 @@ export class TimetableContainer extends Component {
     );
   }
 }
-
-TimetableContainer.contextTypes = {
-  router: PropTypes.object,
-};
 
 function mapStateToProps(state) {
   const modules = state.entities.moduleBank.modules;

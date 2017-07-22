@@ -1,6 +1,5 @@
 // @flow
 import type { FSA } from 'types/redux';
-/* eslint-disable no-duplicate-imports */
 import type { ModuleBank } from './moduleBank';
 
 import moduleBank from './moduleBank';

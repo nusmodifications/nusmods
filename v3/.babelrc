@@ -1,27 +1,30 @@
 {
   "presets": [
-    [ "env", {
-      "targets": {
-        "browsers": [
-          "last 2 versions",
-          "iOS >= 9",
-          "Safari >= 9",
-          "not ie <= 11"
-        ],
-        // We currently minify with uglify
-        // Remove after https://github.com/mishoo/UglifyJS2/issues/448
-        "uglify": true,
-      },
-      // Enable tree-shaking for webpack
-      "modules": false,
-      "useBuiltIns": true,
-    }],
+    [
+      "env",
+      {
+        "targets": {
+          "browsers": [
+            "last 2 versions",
+            "iOS >= 9",
+            "Safari >= 9",
+            "not ie <= 11"
+          ],
+          // We currently minify with uglify
+          // Remove after https://github.com/mishoo/UglifyJS2/issues/448
+          "uglify": true,
+        },
+        // Enable tree-shaking for webpack
+        "modules": false,
+        "useBuiltIns": true,
+      }
+    ],
     "react",
   ],
   "env": {
     "development": {
-      "presets": [
-        "react-hmre",
+      "plugins": [
+        "react-hot-loader/babel",
       ],
     },
     "production": {
@@ -30,11 +33,14 @@
       ],
     },
     "test": {
-      "plugins": ["transform-es2015-modules-commonjs"],
+      "plugins": [
+        "transform-es2015-modules-commonjs"
+      ],
     },
   },
   "plugins": [
     "lodash",
     "transform-object-rest-spread",
+    "transform-class-properties",
   ],
 }

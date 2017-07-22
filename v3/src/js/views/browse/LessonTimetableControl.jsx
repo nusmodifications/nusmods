@@ -13,9 +13,13 @@ type Props = {
 
 type State = {
   selectedSem: ?string,
-}
+};
 
 export default class LessonTimetableControl extends Component {
+  props: Props;
+  state: State;
+  onSelectSem: Function;
+
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -23,9 +27,6 @@ export default class LessonTimetableControl extends Component {
     };
     this.onSelectSem = this.onSelectSem.bind(this);
   }
-
-  state: State
-  onSelectSem: Function
 
   onSelectSem(selectedSem: string): void {
     this.setState({ selectedSem });

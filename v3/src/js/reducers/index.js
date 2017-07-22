@@ -4,8 +4,6 @@ import type {
   SettingsState,
 } from 'types/reducers';
 
-import { routerReducer } from 'react-router-redux';
-
 import requests from './requests';
 import entities from './entities';
 import timetables from './timetables';
@@ -30,8 +28,7 @@ export default function (state: State = defaultState, action: FSA) {
   return {
     entities: entities(state.entities, action),
     requests: requests(state.requests, action),
-    timetables: timetables(state.timetables, action, state.entities),
-    routing: routerReducer(state.routing, action),
+    timetables: timetables(state.timetables, action),
     app: app(state.app, action),
     theme: theme(state.theme, action),
     settings: settings(state.settings, action),

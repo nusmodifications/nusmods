@@ -5,7 +5,7 @@ import classnames from 'classnames';
 type Props = {
   newStudent: boolean,
   onSelectNewStudent: Function, // will be called with the selected faculty when option changes
-}
+};
 
 export default function NewStudentSelect(props: Props) {
   const {
