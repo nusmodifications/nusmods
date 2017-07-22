@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import DocumentTitle from 'react-document-title';
+import axios from 'axios';
 
 export const DEVELOPERS_URL = 'https://api.github.com/repos/NUSModifications/NUSMods/contributors';
 
@@ -13,13 +14,9 @@ class DevelopersContainer extends Component {
   }
 
   componentDidMount() {
-    const self = this;
-
-    fetch('https://api.github.com/repos/NUSModifications/NUSMods/contributors').then(response => (
-      response.json()
-    )).then((json) => {
-      self.setState({
-        developersData: json,
+    axios.get(DEVELOPERS_URL).then((response) => {
+      this.setState({
+        developersData: response.data,
         isLoading: false,
       });
     });
@@ -28,13 +25,13 @@ class DevelopersContainer extends Component {
   render() {
     let renderComponent = '';
 
-    if (this.state.isLoading) {
+    this.state.isLoading ? (
       renderComponent = (
         <div className="col-2 offset-md-5">
           <i className="fa fa-circle-o-notch fa-spin" style={{ fontSize: '50px' }} />;
         </div>
-      );
-    } else {
+      )
+    ) : (
       renderComponent = this.state.developersData.map(developer => (
         <div className="col-3 text-center" key={developer.id}>
           <a href={developer.html_url}>
@@ -43,8 +40,9 @@ class DevelopersContainer extends Component {
           <h5>{developer.login}</h5>
           <p>{`${developer.contributions} commits`}</p>
         </div>
-      ));
-    }
+      ))
+    );
+
     return (
       <DocumentTitle title="Developers">
         <div className="row">
