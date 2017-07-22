@@ -221,7 +221,9 @@ http://api.nusmods.com/2015-2016/1/modules.json
 
 ## Initial Setup
 
-Get an API key from [IVLE](http://ivle.nus.edu.sg/LAPI/default.aspx) and set it as an environment variable under the name `IVLE_API_KEY`.
+Copy `.env.example` to a file named `.env`.
+
+Get an API key from [IVLE](http://ivle.nus.edu.sg/LAPI/default.aspx) and put it in `.env` under `IVLE_API_KEY`.
 
 Download and install [Node.js](http://nodejs.org), [npm](http://npmjs.org), and optionally [yarn](https://yarnpkg.com/en/docs/install). Then run the following command to install dependencies:
 
@@ -234,8 +236,8 @@ $ yarn # if you're using yarn
 The default gulp task is set to scrape the semester data in the upcoming month. The following commands are valid:
 
 ```js
-yarn start // production use
-yarn start:dev // development use
+yarn build:scraper && yarn scrape // production use
+yarn scrape:dev // development use
 ```
 
 Invoking sub-tasks would involve calling the task by changing the commands in `package.json`, or through installing `gulp-cli` globally. For example, to run the `examTimetable` task specifically:

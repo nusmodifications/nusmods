@@ -1,5 +1,5 @@
 import {
-  createToken,
+  Token,
   Lexer,
   Parser,
 } from 'chevrotain';
@@ -14,25 +14,26 @@ import { OPERATORS, MODULE_REGEX, AND_OR_REGEX } from './constants';
  * Library used for lexing/parsing is chevrotain:
  * https://github.com/SAP/chevrotain
  */
+class Module extends Token {}
+Module.PATTERN = MODULE_REGEX;
+class And extends Token {}
+And.PATTERN = 'and';
+class Or extends Token {}
+Or.PATTERN = 'or';
 
-const Module = createToken({ name: 'Module', pattern: MODULE_REGEX });
-const And = createToken({ name: 'And', pattern: 'and' });
-const Or = createToken({ name: 'Or', pattern: 'or' });
+class LeftBracket extends Token {}
+LeftBracket.PATTERN = /\(/;
+class RightBracket extends Token {}
+RightBracket.PATTERN = /\)/;
 
-const LeftBracket = createToken({ name: 'LeftBracket', pattern: /\(/ });
-const RightBracket = createToken({ name: 'RightBracket', pattern: /\)/ });
+class WhiteSpace extends Token {}
+WhiteSpace.PATTERN = /\s+/;
+WhiteSpace.GROUP = Lexer.SKIPPED;
+WhiteSpace.LINE_BREAKS = true;
 
-const WhiteSpace = createToken({
-  name: 'WhiteSpace',
-  pattern: /\s+/,
-  group: Lexer.SKIPPED,
-  line_breaks: true,
-});
-const IrrelevantWord = createToken({
-  name: 'IrrelevantWord',
-  pattern: /[^\s()]+/,
-  group: Lexer.SKIPPED,
-});
+class IrrelevantWord extends Token {}
+IrrelevantWord.PATTERN = /[^\s()]+/;
+IrrelevantWord.GROUP = Lexer.SKIPPED;
 
 const allTokens = [
   WhiteSpace,
