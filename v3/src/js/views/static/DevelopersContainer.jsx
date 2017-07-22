@@ -23,26 +23,6 @@ class DevelopersContainer extends Component {
   }
 
   render() {
-    let renderComponent = '';
-
-    this.state.isLoading ? (
-      renderComponent = (
-        <div className="col-2 offset-md-5">
-          <i className="fa fa-circle-o-notch fa-spin" style={{ fontSize: '50px' }} />;
-        </div>
-      )
-    ) : (
-      renderComponent = this.state.developersData.map(developer => (
-        <div className="col-3 text-center" key={developer.id}>
-          <a href={developer.html_url}>
-            <img src={developer.avatar_url} alt={`${developer.login}'s avatar`} style={{ width: '100%' }} />
-          </a>
-          <h5>{developer.login}</h5>
-          <p>{`${developer.contributions} commits`}</p>
-        </div>
-      ))
-    );
-
     return (
       <DocumentTitle title="Developers">
         <div className="row">
@@ -59,7 +39,20 @@ class DevelopersContainer extends Component {
             <br /><br />
 
             <div className="row">
-              {renderComponent}
+              {this.state.isLoading ?
+                <div className="col-2 offset-md-5">
+                  <i className="fa fa-circle-o-notch fa-spin" style={{ fontSize: '50px' }} />;
+                </div> :
+                this.state.developersData.map(developer => (
+                  <div className="col-3 text-center" key={developer.id}>
+                    <a href={developer.html_url}>
+                      <img src={developer.avatar_url} alt={`${developer.login}'s avatar`} style={{ width: '100%' }} />
+                    </a>
+                    <h5>{developer.login}</h5>
+                    <p>{`${developer.contributions} commits`}</p>
+                  </div>
+                ))
+              }
             </div>
           </div>
         </div>

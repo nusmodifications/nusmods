@@ -58,8 +58,5 @@ module.exports = {
     'jsx-a11y/no-static-element-interactions': 'off',
     // Let git handle the linebreaks instead.
     'linebreak-style': 'off',
-    'no-unused-expressions': {
-      'allowTernary': true,
-    }
   },
 };
