@@ -51,7 +51,7 @@ function TimetableDay(props: Props) {
             cellOrientationStyleProp={props.cellOrientationStyleProp}
             startingIndex={props.startingIndex}
             endingIndex={props.endingIndex}
-            />
+          />
         }
       </div>
     </div>

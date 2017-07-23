@@ -19,7 +19,7 @@ export default function Table(props: Props) {
             </td>),
           )}
         </tr>
-        ),
+      ),
       )}
     </tbody>
   );

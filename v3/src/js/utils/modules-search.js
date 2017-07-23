@@ -3,7 +3,6 @@
 import _ from 'lodash';
 
 export class ModulesSearchIndex {
-
   tokenToUidToDocumentMap: Object;
 
   constructor() {

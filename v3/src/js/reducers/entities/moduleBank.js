@@ -26,9 +26,9 @@ export type ModuleBank = {
 };
 
 const defaultModuleBankState: ModuleBank = {
-  moduleList: [],     // List of modules
+  moduleList: [], // List of modules
   moduleSelectList: [],
-  modules: {},       // Object of ModuleCode -> ModuleDetails
+  modules: {}, // Object of ModuleCode -> ModuleDetails
 };
 
 function moduleBank(state: ModuleBank = defaultModuleBankState, action: FSA): ModuleBank {

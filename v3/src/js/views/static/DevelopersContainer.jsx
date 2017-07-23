@@ -19,22 +19,22 @@ class DevelopersContainer extends Component {
 
   componentDidMount() {
     axios.get(DEVELOPERS_URL)
-    .then((response) => {
-      this.setState({
-        developersData: response.data,
+      .then((response) => {
+        this.setState({
+          developersData: response.data,
+        });
+      })
+      .catch((err) => {
+        this.setState({
+          isError: true,
+          errorMessage: err.message,
+        });
+      })
+      .then(() => {
+        this.setState({
+          isLoading: false,
+        });
       });
-    })
-    .catch((err) => {
-      this.setState({
-        isError: true,
-        errorMessage: err.message,
-      });
-    })
-    .then(() => {
-      this.setState({
-        isLoading: false,
-      });
-    });
   }
 
   render() {
@@ -47,7 +47,7 @@ class DevelopersContainer extends Component {
             <p><em>NUSMods is an 100% open source project that relies on the continuous support
             of its individual contributors and NUS student community. Many student hackers have
             reported issues, suggested improvements, or even better, write code and contribute patches!
-            <br /><br />
+              <br /><br />
             Please reach out to us if you are interested in helping!
             Join us and make NUS a better place for its students (your friends)!
             </em></p>
