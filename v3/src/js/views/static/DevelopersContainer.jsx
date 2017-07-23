@@ -1,3 +1,4 @@
+// TODO: Add Flow here
 import React, { Component } from 'react';
 import DocumentTitle from 'react-document-title';
 import axios from 'axios';
@@ -5,18 +6,32 @@ import axios from 'axios';
 const DEVELOPERS_URL = 'https://api.github.com/repos/NUSModifications/NUSMods/contributors';
 
 class DevelopersContainer extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+
     this.state = {
       developersData: null,
       isLoading: true,
+      isError: false,
+      errorMessage: '',
     };
   }
 
   componentDidMount() {
-    axios.get(DEVELOPERS_URL).then((response) => {
+    axios.get(DEVELOPERS_URL)
+    .then((response) => {
       this.setState({
         developersData: response.data,
+      });
+    })
+    .catch((err) => {
+      this.setState({
+        isError: true,
+        errorMessage: err.message,
+      });
+    })
+    .then(() => {
+      this.setState({
         isLoading: false,
       });
     });
@@ -41,7 +56,14 @@ class DevelopersContainer extends Component {
             <div className="row">
               {this.state.isLoading ?
                 <div className="col-2 offset-md-5">
-                  <i className="fa fa-circle-o-notch fa-spin" style={{ fontSize: '50px' }} />;
+                  <i className="fa fa-circle-o-notch fa-spin" style={{ fontSize: '4rem' }} />;
+                </div> :
+              this.state.isError ?
+                <div className="col-12">
+                  <div className="alert alert-danger">
+                    <strong>Something went wrong!</strong>
+                    {this.state.errorMessage}
+                  </div>
                 </div> :
                 this.state.developersData.map(developer => (
                   <div className="col-3 text-center" key={developer.id}>
