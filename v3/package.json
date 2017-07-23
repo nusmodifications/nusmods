@@ -8,7 +8,7 @@
     "build:dll": "cross-env NODE_ENV=development webpack --config=webpack/webpack.config.dll.js",
     "postinstall": "npm run build:dll && flow-scripts stub",
     "flow": "flow check",
-    "lint": "npm run lint:src && npm run lint:test && npm run lint:scripts",
+    "lint": "npm run lint:src && npm run flow && npm run lint:test && npm run lint:scripts",
     "lint:src": "eslint src/js/**/*.{js,jsx} --cache",
     "lint:test": "eslint test --cache",
     "lint:scripts": "eslint webpack scripts --cache",
