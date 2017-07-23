@@ -28,23 +28,12 @@ type Props = {
 class TimetableModulesTable extends Component {
   props: Props;
 
-  constructor() {
-    super();
-    this.handleEscKeyDown = this.handleEscKeyDown.bind(this);
-  }
-
   componentWillUnmount() {
     this.cancelModifyModuleColor();
   }
 
   cancelModifyModuleColor = () => {
     if (this.props.activeModule) {
-      this.props.cancelModifyModuleColor();
-    }
-  }
-
-  handleEscKeyDown(e) {
-    if (e.key === 'Escape') {
       this.props.cancelModifyModuleColor();
     }
   }
@@ -94,7 +83,7 @@ class TimetableModulesTable extends Component {
                       <ColorPicker onChooseColor={(colorIndex: ColorIndex) => {
                         this.props.selectModuleColor(module.ModuleCode, colorIndex);
                       }}
-                        handleEscKeyDown={this.handleEscKeyDown} />
+                        onDismiss={this.props.cancelModifyModuleColor} />
                     }
                   </div>
                   <div className="module-details-column">

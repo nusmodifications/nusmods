@@ -10,18 +10,24 @@ import './color-picker.scss';
 
 type Props = {
   onChooseColor: Function,
-  handleEscKeyDown: Function,
+  onDismiss: Function,
 };
 
 class ColorPicker extends Component {
   props: Props;
 
   componentWillMount() {
-    window.addEventListener('keydown', this.props.handleEscKeyDown);
+    window.addEventListener('keydown', this.handleKeyDown);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('keydown', this.props.handleEscKeyDown);
+    window.removeEventListener('keydown', this.handleKeyDown);
+  }
+
+  handleKeyDown = (event) => {
+    if (event.key === 'Escape') {
+      this.props.onDismiss();
+    }
   }
 
   render() {
