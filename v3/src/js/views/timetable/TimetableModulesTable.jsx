@@ -83,7 +83,7 @@ class TimetableModulesTable extends Component {
                       <ColorPicker onChooseColor={(colorIndex: ColorIndex) => {
                         this.props.selectModuleColor(module.ModuleCode, colorIndex);
                       }}
-                        onDismiss={this.props.cancelModifyModuleColor} />
+                        onDismiss={this.cancelModifyModuleColor} />
                     }
                   </div>
                   <div className="module-details-column">
