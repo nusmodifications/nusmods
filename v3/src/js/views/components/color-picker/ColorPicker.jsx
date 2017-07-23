@@ -8,6 +8,8 @@ import { NUM_DIFFERENT_COLORS } from 'reducers/theme';
 
 import './color-picker.scss';
 
+const ESCAPE_KEYCODE = 27;
+
 type Props = {
   onChooseColor: Function,
   onDismiss: Function,
@@ -25,7 +27,7 @@ class ColorPicker extends Component {
   }
 
   handleKeyDown = (event) => {
-    if (event.key === 'Escape') {
+    if (event.key === 'Escape' || event.keyCode === ESCAPE_KEYCODE) {
       this.props.onDismiss();
     }
   }
