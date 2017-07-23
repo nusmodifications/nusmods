@@ -6,12 +6,11 @@ export default function AboutContainer() {
     <DocumentTitle title="About NUSMods">
       <div className="row">
         <div className="col-md-8 offset-md-1">
-          <h3>A brief history</h3>
+          <h3>A Brief History</h3>
 
           <p>
-            NUS Modifications (NUSMods) was founded in 2012 by
-            <a href="http://benghee.eu/"> Beng </a>
-            to provide a better way for students to plan their school timetables.
+            NUSModifications (NUSMods) was founded in 2012 by <a href="http://benghee.eu/">Beng</a> to
+            provide a better way for students to plan their school timetables.
             Over time, more features have been added to improve the lives of NUS students.
             Besides timetable planning, NUSMods also serves to be a complete knowledge bank of NUS modules
             by providing useful module-related information such as archived CORS bidding statistics
@@ -30,19 +29,16 @@ export default function AboutContainer() {
             As an app built by students for students,
             NUSMods hopes to encourage fellow students to experiment and create original,
             community-engaging work that also improves the lives of NUS students.
-            Examples of such initiatives are
-            <a href="http://cloudsync.ivle.nus.edu.sg/"> IVLE Cloud Sync </a>
-            and
-            <a href="http://www.corspedia.com/"> Corspedia </a>
-            (which has been integrated into NUSMods as of July 2014).
+            Examples of such initiatives IVLE Cloud Sync and
+            Corspedia (which has been integrated into NUSMods as of July 2014).
           </p>
 
           <h3>Connect with Us!</h3>
 
           <p>
             We would love to hear your feedback and suggestions on how to make NUSMods even better.
-            Please let us know them by leaving a comment on our
-            <a href="https://www.facebook.com/NUSMods"> Facebook page</a>.
+            Please let us know them by leaving a comment
+            on our <a href="https://www.facebook.com/NUSMods">Facebook page</a>.
           </p>
 
           <p>- NUSMods Team</p>

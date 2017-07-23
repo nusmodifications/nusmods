@@ -12,8 +12,8 @@
     "lint:src": "eslint src/js/**/*.{js,jsx}",
     "lint:test": "eslint test",
     "lint:scripts": "eslint webpack scripts",
-    "test": "jest --config jest.config.js --coverage",
-    "test:watch": "jest --config jest.config.js --watch",
+    "test": "jest --coverage",
+    "test:watch": "jest --watch",
     "ci": "npm run lint && npm run test && npm run build "
   },
   "author": "NUSModifications",
@@ -62,6 +62,7 @@
     "react-dev-utils": "^0.5.2",
     "react-hot-loader": "3.0.0-beta.7",
     "react-test-renderer": "^15.6.1",
+    "redux-logger": "^3.0.6",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.18.2",
     "stylelint-config-standard": "^16.0.0",
@@ -91,7 +92,6 @@
     "react-select-fast-filter-options": "^0.2.2",
     "react-virtualized-select": "^3.0.1",
     "redux": "^3.7.0",
-    "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0"
   },
   "browserslist": [

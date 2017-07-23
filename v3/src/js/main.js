@@ -34,8 +34,12 @@ const render = (Component) => {
   ReactDOM.render(Component, document.getElementById('app'));
 };
 
-render(App({ store }));
+const init = () => {
+  render(App({ store }));
+};
 
 if (module.hot) {
-  module.hot.accept('App', () => render(App({ store })));
+  module.hot.accept('App', () => init);
 }
+
+init();

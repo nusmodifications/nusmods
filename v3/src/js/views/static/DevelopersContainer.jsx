@@ -55,19 +55,21 @@ class DevelopersContainer extends Component {
 
             <div className="row">
               {this.state.isLoading &&
-                <div className="col-2 offset-md-5">
-                  <i className="fa fa-circle-o-notch fa-spin" style={{ fontSize: '4rem' }} />;
-                </div>}
+                <div className="col-12 text-center">
+                  <i className="fa fa-circle-o-notch fa-spin" style={{ fontSize: '4rem' }} />
+                </div>
+              }
               {this.state.isError &&
                 <div className="col-12">
                   <div className="alert alert-danger">
                     <strong>Something went wrong!</strong>
                     {this.state.errorMessage}
                   </div>
-                </div>}
+                </div>
+              }
               {!this.state.isLoading && !this.state.isError &&
                 this.state.developersData.map(developer => (
-                  <div className="col-3 text-center" key={developer.id}>
+                  <div className="col-md-3 text-center" key={developer.id}>
                     <a href={developer.html_url}>
                       <img src={developer.avatar_url} alt={`${developer.login}'s avatar`} style={{ width: '100%' }} />
                     </a>
