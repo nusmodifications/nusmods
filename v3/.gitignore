@@ -10,6 +10,7 @@ coverage
 # caching
 dll
 .cache-loader
+.eslintcache
 
 # production
 dist
