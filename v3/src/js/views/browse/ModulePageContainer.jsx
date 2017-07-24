@@ -82,7 +82,7 @@ export class ModulePageContainer extends Component {
         <dt className="col-sm-3">Semester {exam.semester} Exam</dt>
         <dd className="col-sm-9">{formatExamDate(exam.date)}</dd>
       </span>
-      ),
+    ),
     );
 
     const semsOffered = this.semestersOffered()
@@ -95,15 +95,15 @@ export class ModulePageContainer extends Component {
           <RemoveModuleButton key={semester}
             semester={semester}
             onClick={() =>
-            this.props.removeModule(semester, module.ModuleCode)
-          } />
+              this.props.removeModule(semester, module.ModuleCode)
+            } />
           :
           <AddModuleButton key={semester}
             semester={semester}
             onClick={() =>
               this.props.addModule(semester, module.ModuleCode)
             } />
-        ),
+      ),
     );
 
     return (

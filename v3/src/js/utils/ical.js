@@ -154,9 +154,9 @@ export function iCalForTimetable(
         _.flatMap(
           lessonConfig,
           lessons =>
-          lessons.map(
-            lesson => iCalEventForLesson(
-              lesson, moduleData[moduleCode], semester, firstDayOfSchool)),
+            lessons.map(
+              lesson => iCalEventForLesson(
+                lesson, moduleData[moduleCode], semester, firstDayOfSchool)),
         ),
         iCalEventForExam(moduleData[moduleCode], semester) || [],
       ),

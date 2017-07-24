@@ -1,5 +1,4 @@
 // @flow
-/* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
 import type { ColorIndex } from 'types/reducers';
 
@@ -26,7 +25,7 @@ class ColorPicker extends Component {
     window.removeEventListener('keydown', this.handleKeyDown);
   }
 
-  handleKeyDown = (event) => {
+  handleKeyDown = (event: KeyboardEvent) => {
     if (event.key === 'Escape' || event.keyCode === ESCAPE_KEYCODE) {
       this.props.onDismiss();
     }

@@ -2,20 +2,20 @@
 import type { ColorIndex } from 'types/reducers';
 
 // Components within a module:
-export type AcadYear = string;     // E.g. "2016/2017"
-export type ClassNo = string;      // E.g. "1", "A"
-export type DayText = string;      // E.g. "Monday", "Tuesday"
+export type AcadYear = string; // E.g. "2016/2017"
+export type ClassNo = string; // E.g. "1", "A"
+export type DayText = string; // E.g. "Monday", "Tuesday"
 export type Department = string;
-export type StartTime = string;    // E.g. "1400"
-export type EndTime = string;      // E.g. "1500"
+export type StartTime = string; // E.g. "1400"
+export type EndTime = string; // E.g. "1500"
 export type Faculty = string;
-export type LessonType = string;   // E.g. "Lecture", "Tutorial"
+export type LessonType = string; // E.g. "Lecture", "Tutorial"
 export type LessonTime = StartTime | EndTime;
-export type ModuleCode = string;   // E.g. "CS3216"
+export type ModuleCode = string; // E.g. "CS3216"
 export type ModuleTitle = string;
 export type Semester = number;
 export type Venue = string;
-export type WeekText = string;     // E.g. "Every Week", "Odd Week"
+export type WeekText = string; // E.g. "Every Week", "Odd Week"
 
 // BiddingStat is CORS bidding stats for a particular round for a module.
 export type BiddingStat = {
