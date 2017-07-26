@@ -1,13 +1,15 @@
 // @flow
+import 'dotenv/config';
 import * as webpack from 'webpack';
 import nodeExternals from 'webpack-node-externals';
 import BabiliPlugin from 'babili-webpack-plugin';
-import DotenvPlugin from 'dotenv-webpack';
 import path from 'path';
+import assert from 'assert';
 
-// Redefine environment variables
-process.env.BABEL_ENV = 'production';
-process.env.NODE_ENV = 'production';
+// Undefine compilation environment
+delete process.env.BABEL_ENV;
+
+assert.equal(process.env.NODE_ENV, 'production', 'Not compiling in production environment');
 
 const config: webpack.Configuration = {
   entry: './gulpfile.babel.js',
@@ -30,7 +32,7 @@ const config: webpack.Configuration = {
     ],
   },
   plugins: [
-    new DotenvPlugin(),
+    new webpack.EnvironmentPlugin(['NODE_ENV']),
     new webpack.optimize.ModuleConcatenationPlugin(),
     new BabiliPlugin(),
   ],

@@ -1,3 +1,5 @@
+import 'dotenv/config';
+
 const ivleApi = {
   baseUrl: 'https://ivle.nus.edu.sg/api/Lapi.svc/',
   key: process.env.IVLE_API_KEY,

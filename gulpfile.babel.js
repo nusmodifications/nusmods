@@ -1,5 +1,4 @@
 import 'babel-polyfill';
-import 'dotenv/config';
 import gulp from 'gulp';
 import bunyan from 'bunyan';
 import moment from 'moment';
