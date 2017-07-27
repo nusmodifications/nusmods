@@ -40,7 +40,7 @@ module.exports = Marionette.LayoutView.extend({
     }
 
     var availableVenues = _.filter(venuesList, function (venueName) {
-      var availability = venues[venueName][dayIndex].availability;
+      var availability = venues[venueName][dayIndex].Availability;
       for (var i = startIndex; i <= endIndex; i++) {
         if (availability[timify.convertIndexToTime(i)] === 'occupied') {
           return false;

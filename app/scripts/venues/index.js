@@ -20,12 +20,13 @@ var loadVenueInformation = function (callback) {
     NUSMods.getVenues(config.semester)
   ]).then(function (response) {
     var venues = response[0];
-    var venuesList = response[1];
+    var venuesList = response[1].filter(_.identity);
     // TODO: Change key from classes to lessons for venues api
     _.each(venues, function (value) {
       _.each(value, function (day) {
-        if (day.classes) {
-          day.lessons = day.classes;
+        if (day.Classes) {
+          day.lessons = day.Classes;
+          delete day.Classes;
         }
       });
     });
