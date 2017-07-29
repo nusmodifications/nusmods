@@ -122,7 +122,7 @@ request(CORS_URL, (error, response, body) => {
   });
 
   // Write to file.
-  const jsonArray = JSON.stringify(roundsData, null, 4);
+  const jsonArray = JSON.stringify(roundsData, null, 4) + '\n';
   console.log(jsonArray);
   fs.writeFile(fileName, jsonArray, (error) => {
     if (error) {
