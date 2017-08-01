@@ -1,7 +1,7 @@
 // @flow
 import type { ModuleCode, Semester, Lesson } from 'types/modules';
 import * as actions from 'actions/timetables';
-import lessons from '../mocks/lessons-array.json';
+import lessons from '__mocks__/lessons-array.json';
 
 // see: https://github.com/reactjs/redux/blob/master/docs/recipes/WritingTests.md#example-1
 // TODO: write addModule test with nock and mockStore.

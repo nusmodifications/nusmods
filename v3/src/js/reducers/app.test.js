@@ -7,7 +7,7 @@ import reducer from 'reducers/app';
 import type { Lesson, ModuleCode, Semester } from 'types/modules';
 import type { FSA } from 'types/redux';
 import type { AppState } from 'types/reducers';
-import lessons from '../mocks/lessons-array.json';
+import lessons from '__mocks__/lessons-array.json';
 
 const semester: Semester = 1;
 const lesson: Lesson = lessons[0];

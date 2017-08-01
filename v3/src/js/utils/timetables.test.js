@@ -37,9 +37,9 @@ import {
   getModuleTimetable,
 } from 'utils/modules';
 
-import cs1010s from '../mocks/modules/CS1010S.json';
-import timetable from '../mocks/sem-timetable.json';
-import lessonsArray from '../mocks/lessons-array.json';
+import cs1010s from '__mocks__/modules/CS1010S.json';
+import timetable from '__mocks__/sem-timetable.json';
+import lessonsArray from '__mocks__/lessons-array.json';
 
 // A generic lesson with some default.
 /* eslint-disable import/prefer-default-export */
