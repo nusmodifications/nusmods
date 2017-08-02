@@ -29,7 +29,8 @@ function Footer() {
             core team
           </a>
           {' '}with the help of{' '}
-          <a href="https://github.com/nusmodifications/nusmods/graphs/contributors"
+          <a
+            href="https://github.com/nusmodifications/nusmods/graphs/contributors"
             rel="noopener noreferrer"
           >
             our contributors

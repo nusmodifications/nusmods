@@ -92,7 +92,8 @@ class CorsBiddingStatsTableControl extends Component {
           </div>
         </div>
 
-        <ButtonGroupSelector choices={Object.keys(statsByAySem)}
+        <ButtonGroupSelector
+          choices={Object.keys(statsByAySem)}
           selectedChoice={selectedAySem}
           onChoiceSelect={this.onSelectAySem}
           ariaLabel="Select academic year and semester"

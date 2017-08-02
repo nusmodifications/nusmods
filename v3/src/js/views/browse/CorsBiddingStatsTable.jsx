@@ -36,7 +36,8 @@ export default function CorsBiddingStatsTable(props: Props) {
   );
 
   return (
-    <Table title={props.aySem}
+    <Table
+      title={props.aySem}
       headers={headers}
       data={data}
       noDataText="No rows"

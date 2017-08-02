@@ -16,7 +16,8 @@ export default function FacultySelect(props: Props) {
   } = props;
 
   return (
-    <select className="form-control"
+    <select
+      className="form-control"
       name="faculty-select"
       value={selectedFaculty}
       onChange={event => onChange(event.target.value)}

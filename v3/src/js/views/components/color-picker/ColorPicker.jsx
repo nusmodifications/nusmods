@@ -37,11 +37,13 @@ class ColorPicker extends Component {
         <div className="color-picker">
           {_.range(NUM_DIFFERENT_COLORS).map((index: ColorIndex) => {
             return (
-              <span className={`color-option color-${index}`}
+              <span
+                className={`color-option color-${index}`}
                 key={index}
                 onClick={() => {
                   this.props.onChooseColor(index);
-                }} />
+                }}
+              />
             );
           })}
         </div>

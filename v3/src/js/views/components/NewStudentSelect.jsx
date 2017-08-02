@@ -15,7 +15,8 @@ export default function NewStudentSelect(props: Props) {
 
   return (
     <div className="btn-group" role="group">
-      <button type="button"
+      <button
+        type="button"
         className={classnames('btn', {
           'btn-primary': newStudent,
           'btn-secondary': !newStudent,
@@ -23,7 +24,8 @@ export default function NewStudentSelect(props: Props) {
         onClick={() => onSelectNewStudent(true)}
       >Yes
       </button>
-      <button type="button"
+      <button
+        type="button"
         className={classnames('btn', {
           'btn-primary': !newStudent,
           'btn-secondary': newStudent,

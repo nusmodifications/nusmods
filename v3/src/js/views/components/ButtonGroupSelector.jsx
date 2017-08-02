@@ -14,7 +14,8 @@ export default function ButtonGroupSelector(props: Props) {
   const { choices, selectedChoice, onChoiceSelect, ariaLabel = 'Choices' } = props;
 
   const buttons = choices.map(choice =>
-    (<button key={choice}
+    (<button
+      key={choice}
       onClick={() => onChoiceSelect(choice)}
       type="button"
       className={classnames('btn', {

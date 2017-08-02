@@ -24,7 +24,8 @@ function generateCells(lessons?: Array<ModifiableLesson | Lesson>,
       const lessonEndIndex: number = convertTimeToIndex(lesson.EndTime);
       const size: number = lessonEndIndex - lessonStartIndex;
       cells.push(
-        <TimetableCell key={i}
+        <TimetableCell
+          key={i}
           size={size * cellSize}
           styleProp={cellOrientationStyleProp}
           lesson={lesson}

@@ -62,16 +62,19 @@ class Timetable extends Component {
       <div className={classnames('timetable-container', {
         'horizontal-mode': this.props.horizontalOrientation,
         'vertical-mode': !this.props.horizontalOrientation,
-      })}>
+      })}
+      >
         <style>{`
           .vertical-mode .timetable-inner-container { height: ${timetableHeight}rem; }
           .timetable-cell { ${orientationStyleProp}: ${value}%; }
           .timetable-content-inner-container { min-width: ${minWidth}px; }
         `}</style>
-        <div className="timetable-inner-container"
-          ref={r => (this.timetableDom = r)}
+        <div
+          className="timetable-inner-container"
+          ref={(r) => { this.timetableDom = r; }}
         >
-          <TimetableTimings startingIndex={startingIndex}
+          <TimetableTimings
+            startingIndex={startingIndex}
             endingIndex={endingIndex}
           />
           <div className="timetable-content-container">
@@ -83,7 +86,8 @@ class Timetable extends Component {
                     return null;
                   }
                   return (
-                    <TimetableDay key={dayDisplayText}
+                    <TimetableDay
+                      key={dayDisplayText}
                       startingIndex={startingIndex}
                       endingIndex={endingIndex}
                       cellSize={value}
