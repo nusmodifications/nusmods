@@ -45,7 +45,7 @@ test('datesForAcademicWeeks should return correct dates', () => {
 
   // recess week
   expect(datesForAcademicWeeks(new Date('2016-08-10T10:00+0800'), RECESS_WEEK))
-  .toEqual(new Date('2016-09-21T10:00+0800'));
+    .toEqual(new Date('2016-09-21T10:00+0800'));
 
   // week 7 is after recess week, so it is 8 weeks after the start
   expect(datesForAcademicWeeks(new Date('2016-08-10T10:00+0800'), 7)).toEqual(new Date('2016-09-28T10:00+0800'));

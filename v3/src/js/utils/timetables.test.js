@@ -43,6 +43,7 @@ import lessonsArray from '__mocks__/lessons-array.json';
 
 // A generic lesson with some default.
 /* eslint-disable import/prefer-default-export */
+/* eslint-disable indent */
 export function createGenericLesson(dayText: DayText, startTime: LessonTime,
   endTime: LessonTime, lessonType?: LessonType, classNo?: ClassNo): Lesson {
   return {

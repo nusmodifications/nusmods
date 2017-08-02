@@ -78,7 +78,7 @@ test('app should accept module color change and unset active module', () => {
 
 test('app should cancel and unset active module', () => {
   const nextState: AppState = reducer(appHasActiveModuleState,
-                                      themeActions.cancelModifyModuleColor());
+    themeActions.cancelModifyModuleColor());
 
   expect(nextState).toEqual(appInitialState);
 });
