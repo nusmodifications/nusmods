@@ -38,7 +38,8 @@ function SettingsContainer(props: Props) {
                 recognizing that new students do not have as many points as some of the seniors.</p>
               </div>
               <div className="col-sm-4 offset-sm-1 col-xs-5 text-xs-right">
-                <NewStudentSelect newStudent={props.newStudent}
+                <NewStudentSelect
+                  newStudent={props.newStudent}
                   onSelectNewStudent={props.selectNewStudent}
                 />
               </div>
@@ -60,7 +61,8 @@ function SettingsContainer(props: Props) {
               {availableThemes.map((theme) => {
                 return (
                   <div className="theme-option-container"key={theme.id}>
-                    <ThemeOption theme={theme}
+                    <ThemeOption
+                      theme={theme}
                       isSelected={props.currentThemeId === theme.id}
                       onSelectTheme={props.selectTheme}
                     />

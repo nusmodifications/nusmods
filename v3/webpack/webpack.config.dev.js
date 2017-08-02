@@ -71,7 +71,7 @@ const developmentConfig = merge([
       }),
       // prints more readable module names in the browser console on HMR updates
       new webpack.NamedModulesPlugin(),
-     // do not emit compiled assets that include errors
+      // do not emit compiled assets that include errors
       new webpack.NoEmitOnErrorsPlugin(),
       ...dllPlugins,
     ],

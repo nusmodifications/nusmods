@@ -10,10 +10,10 @@ import {
   isTutorial,
 } from 'utils/ical';
 
-import bfs1001 from '../mocks/modules/BFS1001.json';
-import cs1010s from '../mocks/modules/CS1010S.json';
-import cs3216 from '../mocks/modules/CS3216.json';
-import mockTimetable from '../mocks/sem-timetable.json';
+import bfs1001 from '__mocks__/modules/BFS1001.json';
+import cs1010s from '__mocks__/modules/CS1010S.json';
+import cs3216 from '__mocks__/modules/CS3216.json';
+import mockTimetable from '__mocks__/sem-timetable.json';
 
 /* Build a RawLesson of a given type */
 const rawLessonOfType = lessonType => (
@@ -44,7 +44,8 @@ test('datesForAcademicWeeks should return correct dates', () => {
   expect(datesForAcademicWeeks(new Date('2016-08-10T10:00+0800'), 3)).toEqual(new Date('2016-08-24T10:00+0800'));
 
   // recess week
-  expect(datesForAcademicWeeks(new Date('2016-08-10T10:00+0800'), RECESS_WEEK)).toEqual(new Date('2016-09-21T10:00+0800'));
+  expect(datesForAcademicWeeks(new Date('2016-08-10T10:00+0800'), RECESS_WEEK))
+    .toEqual(new Date('2016-09-21T10:00+0800'));
 
   // week 7 is after recess week, so it is 8 weeks after the start
   expect(datesForAcademicWeeks(new Date('2016-08-10T10:00+0800'), 7)).toEqual(new Date('2016-09-28T10:00+0800'));

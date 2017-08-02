@@ -62,7 +62,8 @@ export default class LessonTimetableControl extends Component {
 
     return (
       <div>
-        <ButtonGroupSelector choices={semesters}
+        <ButtonGroupSelector
+          choices={semesters}
           selectedChoice={selectedSem}
           onChoiceSelect={this.onSelectSem}
           ariaLabel="Select a semester"

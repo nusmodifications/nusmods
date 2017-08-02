@@ -34,7 +34,8 @@ function TimetableDay(props: Props) {
         {props.dayLessonRows ?
           props.dayLessonRows.map((dayLessonRow, i) => {
             return (
-              <TimetableRow key={i}
+              <TimetableRow
+                key={i}
                 startingIndex={props.startingIndex}
                 endingIndex={props.endingIndex}
                 cellSize={props.cellSize}
@@ -46,7 +47,8 @@ function TimetableDay(props: Props) {
               />
             );
           }) :
-          <TimetableRow day={props.day}
+          <TimetableRow
+            day={props.day}
             cellSize={props.cellSize}
             cellOrientationStyleProp={props.cellOrientationStyleProp}
             startingIndex={props.startingIndex}

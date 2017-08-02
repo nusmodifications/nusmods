@@ -11,8 +11,8 @@ import {
   getModuleSemExamDate,
 } from 'utils/modules';
 
-import cs1010s from '../mocks/modules/CS1010S.json';
-import cs3216 from '../mocks/modules/CS3216.json';
+import cs1010s from '__mocks__/modules/CS1010S.json';
+import cs3216 from '__mocks__/modules/CS3216.json';
 
 const mockLesson: Lesson = _.cloneDeep(cs1010s.History[0].Timetable[0]);
 mockLesson.ModuleCode = 'CS1010S';

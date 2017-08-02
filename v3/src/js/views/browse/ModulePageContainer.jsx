@@ -92,17 +92,21 @@ export class ModulePageContainer extends Component {
     const addOrRemoveToTimetableLinks = this.semestersOffered().map(
       semester => (
         this.moduleHasBeenAdded(module, semester) ?
-          <RemoveModuleButton key={semester}
+          <RemoveModuleButton
+            key={semester}
             semester={semester}
             onClick={() =>
               this.props.removeModule(semester, module.ModuleCode)
-            } />
+            }
+          />
           :
-          <AddModuleButton key={semester}
+          <AddModuleButton
+            key={semester}
             semester={semester}
             onClick={() =>
               this.props.addModule(semester, module.ModuleCode)
-            } />
+            }
+          />
       ),
     );
 
@@ -172,10 +176,13 @@ export class ModulePageContainer extends Component {
                 : null
               }
 
-              <LessonTimetableControl semestersOffered={this.semestersOffered()}
-                history={module.History} />
+              <LessonTimetableControl
+                semestersOffered={this.semestersOffered()}
+                history={module.History}
+              />
 
-              <ReactDisqusThread shortname={config.disqusShortname}
+              <ReactDisqusThread
+                shortname={config.disqusShortname}
                 identifier={module.ModuleCode}
                 title={`${module.ModuleCode} ${module.ModuleTitle}`}
                 url={`https://nusmods.com/modules/${module.ModuleCode}/reviews`}

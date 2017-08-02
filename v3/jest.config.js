@@ -7,6 +7,9 @@ module.exports = {
     'node_modules',
     '<rootDir>/src/js',
   ],
+  modulePaths: [
+    '<rootDir>',
+  ],
   testPathIgnorePatterns: [
     '.eslintrc.js',
   ],

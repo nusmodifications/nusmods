@@ -223,7 +223,7 @@ const cssConfig = [
   {
     loader: 'postcss-loader',
     options: {
-      plugins: () => [  // eslint-disable-next-line global-require
+      plugins: () => [ // eslint-disable-next-line global-require
         require('autoprefixer'),
       ],
     },

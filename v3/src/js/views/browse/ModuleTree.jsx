@@ -185,6 +185,6 @@ export default class ModuleTree extends Component {
   }
 
   render() {
-    return <div ref={div => (this.prereqRoot = div)} className="nm-prerequisites-tree" />;
+    return <div ref={(div) => { this.prereqRoot = div; }} className="nm-prerequisites-tree" />;
   }
 }

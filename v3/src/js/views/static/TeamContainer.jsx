@@ -21,9 +21,11 @@ export default function TeamContainer() {
               <div className="row">
                 <div className="col-sm-3 col-xs-12">
                   <a href={teamMember.github}>
-                    <img className="img-fluid"
+                    <img
+                      className="img-fluid"
                       src={teamMember.gravatar}
-                      alt={teamMember.gravatarAlt} />
+                      alt={teamMember.gravatarAlt}
+                    />
                   </a>
                 </div>
                 <div className="col-sm-9 col-xs-12">
