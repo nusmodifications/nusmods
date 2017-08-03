@@ -1,5 +1,6 @@
 const path = require('path');
 const merge = require('webpack-merge');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const commonConfig = require('./webpack.config.common');
@@ -24,8 +25,11 @@ const productionConfig = merge([
     },
     plugins: [
       new HtmlWebpackPlugin({
-        template: path.join(parts.PATHS.app, 'index.ejs'),
+        title: 'NUSMods',
+        template: path.join(parts.PATHS.app, 'index.html'),
       }),
+      // SEE: https://medium.com/webpack/brief-introduction-to-scope-hoisting-in-webpack-8435084c171f
+      new webpack.optimize.ModuleConcatenationPlugin(),
     ],
   },
   parts.clean(parts.PATHS.build),
