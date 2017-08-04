@@ -45,17 +45,6 @@ const commonConfig = merge([
         paths: true,
       }),
     ],
-    module: {
-      rules: [
-        {
-          test: /manifest\.json$/,
-          loader: 'file-loader',
-          options: {
-            name: '[name].[ext]',
-          },
-        },
-      ],
-    },
   },
   parts.lintJavaScript({
     include: parts.PATHS.app,

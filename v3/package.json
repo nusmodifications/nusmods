@@ -33,6 +33,7 @@
     "babel-register": "^6.24.1",
     "cache-loader": "^1.0.3",
     "clean-webpack-plugin": "^0.1.16",
+    "copy-webpack-plugin": "^4.0.1",
     "coveralls": "^2.13.1",
     "cross-env": "^5.0.1",
     "css-loader": "^0.28.4",

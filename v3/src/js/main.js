@@ -6,7 +6,6 @@ import storage from 'storage';
 import App from 'App';
 
 import '../styles/main.scss';
-import '../manifest.json';
 
 const persistedState = storage.loadState();
 const store = configureStore(persistedState);
