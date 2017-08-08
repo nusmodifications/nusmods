@@ -16,10 +16,11 @@ type Props = {
 
 function ThemeOption(props: Props) {
   return (
-    <div className={classnames('theme-option', {
-      [`theme-${props.theme.id}`]: true,
-      'is-selected': props.isSelected,
-    })}
+    <div
+      className={classnames('theme-option', {
+        [`theme-${props.theme.id}`]: true,
+        'is-selected': props.isSelected,
+      })}
       onClick={() => {
         props.onSelectTheme(props.theme.id);
       }}

@@ -60,30 +60,35 @@ class TimetableModulesTable extends Component {
         {this.props.modules.length ?
           this.props.modules.map((module) => {
             return (
-              <div className={classnames('modules-table-row', {
-                'col-md-4': this.props.horizontalOrientation,
-                'col-md-12': !this.props.horizontalOrientation,
-              })}
+              <div
+                className={classnames('modules-table-row', {
+                  'col-md-4': this.props.horizontalOrientation,
+                  'col-md-12': !this.props.horizontalOrientation,
+                })}
                 key={module.ModuleCode}
               >
                 <div className="modules-table-row-inner">
                   <div className="color-column">
-                    <div className={classnames('modules-table-color', {
-                      [`color-${module.colorIndex}`]: !module.hiddenInTimetable,
-                      'color-muted': module.hiddenInTimetable,
-                    })}
+                    <div
+                      className={classnames('modules-table-color', {
+                        [`color-${module.colorIndex}`]: !module.hiddenInTimetable,
+                        'color-muted': module.hiddenInTimetable,
+                      })}
                       onClick={() => {
                         if (this.props.activeModule === module.ModuleCode) {
                           this.props.cancelModifyModuleColor();
                         } else {
                           this.props.modifyModuleColor(module.ModuleCode);
                         }
-                      }} />
-                    {this.props.activeModule === module.ModuleCode &&
-                      <ColorPicker onChooseColor={(colorIndex: ColorIndex) => {
-                        this.props.selectModuleColor(module.ModuleCode, colorIndex);
                       }}
-                        onDismiss={this.cancelModifyModuleColor} />
+                    />
+                    {this.props.activeModule === module.ModuleCode &&
+                      <ColorPicker
+                        onChooseColor={(colorIndex: ColorIndex) => {
+                          this.props.selectModuleColor(module.ModuleCode, colorIndex);
+                        }}
+                        onDismiss={this.cancelModifyModuleColor}
+                      />
                     }
                   </div>
                   <div className="module-details-column">
@@ -96,10 +101,12 @@ class TimetableModulesTable extends Component {
                         &nbsp;&middot;&nbsp;
                         {module.ModuleCredit} MCs
                         &nbsp;&middot;
-                        <button className="btn-link btn-remove"
+                        <button
+                          className="btn-link btn-remove"
                           onClick={() => {
                             this.props.onRemoveModule(module.ModuleCode);
-                          }}>
+                          }}
+                        >
                           Remove
                         </button>
                         {module.hiddenInTimetable ?

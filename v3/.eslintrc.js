@@ -7,7 +7,6 @@ module.exports = {
   ],
   env: {
     browser: true,
-    node: true,
   },
   plugins: [
     'flowtype',
@@ -22,6 +21,21 @@ module.exports = {
       },
     },
   },
+  overrides: [
+    {
+      files: '**/*.test.{js,jsx}',
+      env: {
+        jest: true,
+      },
+      rules: {
+        // Much more lenient linting for tests
+        'max-len': ['error', 120, {
+          ignoreStrings: true,
+          ignoreTemplateLiterals: true,
+        }],
+      },
+    },
+  ],
   rules: {
     // Body style is more troublesome than it's worth
     'arrow-body-style': 'off',
@@ -36,10 +50,6 @@ module.exports = {
       }
     ],
     'react/no-array-index-key': 'off',
-    'react/jsx-closing-bracket-location': 'off',
-    'react/jsx-first-prop-new-line': ['error', 'never'],
-    // It just looks nicer without the space.
-    'react/jsx-space-before-closing': 'off',
     // SEE: https://github.com/yannickcr/eslint-plugin-react/issues
     'react/no-unused-prop-types': 'off',
     // Enables typing to be placed above lifecycle

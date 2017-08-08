@@ -7,9 +7,9 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const cssnano = require('cssnano');
 const FlowStatusWebpackPlugin = require('flow-status-webpack-plugin');
 
+const IS_DEV = process.env.NODE_ENV === 'development';
 const ROOT = path.join(__dirname, '..');
 const SRC = 'src';
-const DLL = 'dll';
 
 const PATHS = {
   root: ROOT,
@@ -19,7 +19,6 @@ const PATHS = {
   styles: path.join(ROOT, SRC, 'styles'),
   images: path.join(ROOT, SRC, 'img'),
   build: path.join(ROOT, 'dist'),
-  dll: path.join(ROOT, DLL),
 };
 
 // These dependencies will be extracted out into `vendor.js` in production build.
@@ -43,14 +42,16 @@ const VENDOR = [
   'nusmoderator',
 ];
 
-const DLL_PROPERTIES = {
-  NAME: DLL,
+const DLL = {
   ENTRIES: {
     vendor: VENDOR,
   },
   FILE_FORMAT: '[name].dll.js',
-  MANIFEST_FILE_FORMAT: '[name]-manifest.json',
 };
+
+function insertIf(condition, element) {
+  return condition ? [element] : [];
+}
 
 /**
  * Set environment variables (and more).
@@ -137,7 +138,7 @@ exports.lintJavaScript = ({ include, exclude, options }) => ({
         enforce: 'pre',
 
         use: [
-          'cache-loader',
+          ...insertIf(IS_DEV, 'cache-loader'),
           { loader: 'eslint-loader', options },
         ],
       },
@@ -160,7 +161,7 @@ exports.transpileJavascript = ({ include, exclude, options }) => ({
         exclude,
 
         use: [
-          'cache-loader',
+          ...insertIf(IS_DEV, 'cache-loader'),
           { loader: 'babel-loader', options },
         ],
       },
@@ -218,12 +219,12 @@ exports.minifyJavascript = () => {
 };
 
 const cssConfig = [
-  'cache-loader', // Because css-loader is slow
+  ...insertIf(IS_DEV, 'cache-loader'), // Because css-loader is slow
   'css-loader',
   {
     loader: 'postcss-loader',
     options: {
-      plugins: () => [  // eslint-disable-next-line global-require
+      plugins: () => [ // eslint-disable-next-line global-require
         require('autoprefixer'),
       ],
     },
@@ -352,4 +353,4 @@ exports.mockNode = () => ({
 
 exports.PATHS = PATHS;
 exports.VENDOR = VENDOR;
-exports.DLL = DLL_PROPERTIES;
+exports.DLL = DLL;

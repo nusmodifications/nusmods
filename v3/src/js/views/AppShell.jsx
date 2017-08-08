@@ -72,7 +72,8 @@ export class AppShell extends Component {
         <nav className="nm-navbar fixed-top">
           <NavLink className="nm-navbar-brand" to="/" title="Home" />
           <form className="nm-navbar-form hidden-xs-down">
-            <ModulesSelect moduleList={this.props.moduleSelectList}
+            <ModulesSelect
+              moduleList={this.props.moduleSelectList}
               onChange={(moduleCode) => {
                 this.context.router.push(`/modules/${moduleCode.value}`);
               }}

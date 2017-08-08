@@ -31,7 +31,8 @@ export default function LessonTimetable(props: Props) {
   );
 
   return (
-    <Table title={props.lessonType}
+    <Table
+      title={props.lessonType}
       data={data}
       headers={headers}
       noDataText="No timetable information"

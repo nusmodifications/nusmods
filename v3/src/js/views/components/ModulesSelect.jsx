@@ -30,7 +30,8 @@ class ModulesSelect extends Component {
     });
 
     return (
-      <VirtualizedSelect options={this.props.moduleList}
+      <VirtualizedSelect
+        options={this.props.moduleList}
         filterOptions={filterOptions}
         placeholder={this.props.placeholder || 'Search module'}
         onChange={this.props.onChange}

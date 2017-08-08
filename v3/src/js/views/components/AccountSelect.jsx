@@ -13,7 +13,8 @@ export default function AccountSelect(props: Props) {
   } = props;
 
   return (
-    <select className="form-control"
+    <select
+      className="form-control"
       name="account-select"
       value={selectedAccountType}
       onChange={event => onChange(event.target.value)}
