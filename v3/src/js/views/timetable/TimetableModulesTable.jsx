@@ -118,7 +118,9 @@ class TimetableModulesTable extends Component {
               </div>
             );
           })
-          : <p className="text-sm-center">No modules added.</p>
+          : <div className="col-sm-12">
+            <p className="text-sm-center">No modules added.</p>
+          </div>
         }
       </div>
     );
