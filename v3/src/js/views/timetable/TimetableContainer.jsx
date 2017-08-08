@@ -179,27 +179,35 @@ class TimetableContainer extends Component {
                 <button
                   type="button"
                   className="btn btn-outline-primary"
+                  title={isHorizontalOrientation ? 'Vertical Mode' : 'Horizontal mode'}
+                  aria-label={isHorizontalOrientation ? 'Vertical Mode' : 'Horizontal mode'}
                   onClick={this.props.toggleTimetableOrientation}
                 >
-                  <i className={classnames('fa', 'fa-exchange', {
-                    'fa-rotate-90': isHorizontalOrientation,
-                  })}
+                  <i
+                    className={classnames('fa', 'fa-exchange', {
+                      'fa-rotate-90': isHorizontalOrientation,
+                    })}
+                    aria-hidden="true"
                   />
                 </button>
                 <button
                   type="button"
+                  title="Download as Image"
+                  aria-label="Download as Image"
                   className="btn btn-outline-primary"
                   onClick={() => this.props.downloadAsJpeg(this.timetableDom)}
                 >
-                  <i className="fa fa-image" />
+                  <i className="fa fa-image" aria-hidden="true" />
                 </button>
                 <button
                   type="button"
+                  title="Download as iCal"
+                  aria-label="Download as iCal"
                   className="btn btn-outline-primary"
                   onClick={() => this.props.downloadAsIcal(
                     this.props.semester, this.props.semTimetableWithLessons, this.props.modules)}
                 >
-                  <i className="fa fa-calendar" />
+                  <i className="fa fa-calendar" aria-hidden="true" />
                 </button>
               </div>
               <div className="row">
