@@ -3,6 +3,7 @@ const merge = require('webpack-merge');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const AutoDllPlugin = require('autodll-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
 
 const commonConfig = require('./webpack.config.common');
@@ -39,17 +40,16 @@ const developmentConfig = merge([
         filename: parts.DLL.FILE_FORMAT,
         entry: parts.DLL.ENTRIES,
       }),
+      // Copy files from static folder over (in-memory)
+      new CopyWebpackPlugin([{ from: 'static' }]),
       // Ignore node_modules so CPU usage with poll watching drops significantly.
-      new webpack.WatchIgnorePlugin([
-        parts.PATHS.node,
-        parts.PATHS.build,
-      ]),
+      new webpack.WatchIgnorePlugin([parts.PATHS.node, parts.PATHS.build]),
       // Enable multi-pass compilation for enhanced performance
       // in larger projects. Good default.
       // Waiting on: https://github.com/jantimon/html-webpack-plugin/issues/533
-      new webpack.HotModuleReplacementPlugin({
-        // multiStep: true,
-      }),
+      new webpack.HotModuleReplacementPlugin(
+        // { multiStep: true }
+      ),
       // prints more readable module names in the browser console on HMR updates
       new webpack.NamedModulesPlugin(),
       // do not emit compiled assets that include errors
