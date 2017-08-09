@@ -44,7 +44,7 @@ function insertPostFixAsStandalone(string) {
     const p = args.slice(0, -2); // last two are offset and string
     const modules = [
       module,
-      ...p.map(postfix => `${module}${postfix.slice(1)}`),  // remove '/' sign
+      ...p.map(postfix => `${module}${postfix.slice(1)}`), // remove '/' sign
     ];
     return modules.join(OPERATORS.or);
   });

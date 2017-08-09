@@ -1,9 +1,8 @@
 module.exports = {
   roots: [
-    '<rootDir>/__tests__',
     '<rootDir>/__mocks__',
     '<rootDir>/gulp-tasks',
-    '<rootDir>/server',
+    '<rootDir>/src',
   ],
   testPathIgnorePatterns: [
     '.eslintrc.js',

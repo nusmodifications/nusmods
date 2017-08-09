@@ -1,4 +1,4 @@
-import sortByKey from '../gulp-tasks/utils/sortByKey';
+import sortByKey from './sortByKey';
 
 describe('sortByKey', () => {
   it('sorts object in ascending order', () => {

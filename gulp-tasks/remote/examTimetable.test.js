@@ -7,7 +7,7 @@ import {
   TITLE_REGEX,
   // Regex too simple to justify testing
   FACULTY_REGEX, // eslint-disable-line
-} from '../gulp-tasks/remote/examTimetable';
+} from './examTimetable';
 
 jest.unmock('fs-extra');
 
@@ -23,9 +23,9 @@ describe('parseExamPdf', () => {
   }
 
   it('scrapes all the modules for 2016 sem 1', () =>
-    matchPdfOutput('__tests__/test-files/test1.pdf'));
+    matchPdfOutput('__mocks__/fixtures/test1.pdf'));
   it('scrapes all the modules for 2017 sem 1', () =>
-    matchPdfOutput('__tests__/test-files/test2.pdf'));
+    matchPdfOutput('__mocks__/fixtures/test2.pdf'));
 });
 
 function passRegex(regex, str) {

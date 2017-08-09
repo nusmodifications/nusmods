@@ -1,6 +1,6 @@
 import parseString, {
   cleanOperators,
-} from '../gulp-tasks/local/genReqTree/parseString';
+} from './parseString';
 
 describe('cleanOperators', () => {
   const andToken = { image: 'and' };

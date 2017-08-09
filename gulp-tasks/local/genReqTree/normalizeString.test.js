@@ -1,4 +1,4 @@
-import { normalize } from '../gulp-tasks/local/genReqTree/normalizeString';
+import { normalize } from './normalizeString';
 
 /* eslint-disable max-len */
 describe('normalizeString', () => {

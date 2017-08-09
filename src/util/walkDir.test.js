@@ -1,6 +1,6 @@
 import path from 'path';
 import fs from 'fs-extra';
-import { walkJsonDir, walkJsonDirSync } from '../server/util/walkDir';
+import { walkJsonDir, walkJsonDirSync } from './walkDir';
 
 jest.mock('fs-extra');
 

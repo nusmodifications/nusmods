@@ -29,8 +29,8 @@ router.get('/graphiql', graphiqlKoa({ endpointURL: '/graphql' }));
 app.use(router.routes());
 app.use(router.allowedMethods({
   throw: true,
-  notImplemented: () => new Boom.notImplemented(),  // eslint-disable-line new-cap
-  methodNotAllowed: () => new Boom.methodNotAllowed(),  // eslint-disable-line new-cap
+  notImplemented: () => new Boom.notImplemented(), // eslint-disable-line new-cap
+  methodNotAllowed: () => new Boom.methodNotAllowed(), // eslint-disable-line new-cap
 }));
 
 log.info('current environment: %s', process.env.NODE_ENV);

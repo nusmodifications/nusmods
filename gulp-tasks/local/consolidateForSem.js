@@ -208,7 +208,7 @@ function consolidate(data, subLog) {
     dataTypes.forEach((type) => {
       module[type] = data[type][moduleCode];
     });
-    return [moduleCode, module];  // fromPairs turns [key, val] to { key: val }
+    return [moduleCode, module]; // fromPairs turns [key, val] to { key: val }
   }));
   return consolidated;
 }

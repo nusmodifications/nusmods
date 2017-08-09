@@ -1,5 +1,5 @@
-import parseString from '../gulp-tasks/local/genReqTree/parseString';
-import { normalize } from '../gulp-tasks/local/genReqTree/normalizeString';
+import parseString from './parseString';
+import { normalize } from './normalizeString';
 
 /* eslint-disable max-len */
 

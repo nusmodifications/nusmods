@@ -61,7 +61,6 @@ function generateOrBranch(modules) {
  * @see https://github.com/SAP/chevrotain/blob/master/examples/grammars/calculator/calculator_embedded_actions.js
  */
 class ReqTreeParser extends Parser {
-
   constructor(input) {
     super(input, allTokens, { recoveryEnabled: true });
     this.RULE('parse', () => this.SUBRULE(this.andExpression));
@@ -121,7 +120,7 @@ class ReqTreeParser extends Parser {
   }
 
   // avoids inserting module literals as these can have multiple(and infinite) semantic values
-  canTokenTypeBeInsertedInRecovery(tokClass) {  // eslint-disable-line class-methods-use-this
+  canTokenTypeBeInsertedInRecovery(tokClass) { // eslint-disable-line class-methods-use-this
     return tokClass !== Module;
   }
 }

@@ -1,4 +1,4 @@
-import mapKeysDeep from '../server/util/mapKeysDeep';
+import mapKeysDeep from './mapKeysDeep';
 
 describe('mapKeysDeep', () => {
   const appendXToKeys = mapKeysDeep(key => `${key}X`);

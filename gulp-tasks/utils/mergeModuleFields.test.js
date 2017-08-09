@@ -1,4 +1,4 @@
-import mergeModuleFields from '../gulp-tasks/utils/mergeModuleFields';
+import mergeModuleFields from './mergeModuleFields';
 
 describe('mergeModuleFields', () => {
   const mockLog = {
