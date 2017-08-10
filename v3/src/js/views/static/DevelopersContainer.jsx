@@ -56,7 +56,8 @@ class DevelopersContainer extends Component {
             <div className="row">
               {this.state.isLoading &&
                 <div className="col-12 text-center">
-                  <i className="fa fa-circle-o-notch fa-spin" style={{ fontSize: '4rem' }} />
+                  <i className="fa fa-circle-o-notch fa-spin" style={{ fontSize: '4rem' }} aria-hidden="true" />
+                  <span className="sr-only">Loading</span>
                 </div>
               }
               {this.state.isError &&

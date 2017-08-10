@@ -6,7 +6,6 @@ import storage from 'storage';
 import App from 'App';
 
 import '../styles/main.scss';
-import '../manifest.json';
 
 const persistedState = storage.loadState();
 const store = configureStore(persistedState);
@@ -30,16 +29,12 @@ store.subscribe(
   }, 1000),
 );
 
-const render = (Component) => {
-  ReactDOM.render(Component, document.getElementById('app'));
-};
-
-const init = () => {
-  render(App({ store }));
+const render = () => {
+  ReactDOM.render(App({ store }), document.getElementById('app'));
 };
 
 if (module.hot) {
-  module.hot.accept('App', () => init);
+  module.hot.accept('App', render);
 }
 
-init();
+render();

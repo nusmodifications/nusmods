@@ -36,20 +36,30 @@ class TimetableModulesTable extends Component {
     if (this.props.activeModule) {
       this.props.cancelModifyModuleColor();
     }
-  }
+  };
 
   showButton(moduleCode) {
     return (
-      <button className="btn-link btn-remove" onClick={() => this.props.showLessonInTimetable(moduleCode)}>
-        <i className="fa fa-eye-slash" />
+      <button
+        className="btn-link btn-remove"
+        title="Hide"
+        aria-label="Hide"
+        onClick={() => this.props.showLessonInTimetable(moduleCode)}
+      >
+        <i className="fa fa-eye-slash" aria-hidden="true" />
       </button>
     );
   }
 
   hideButton(moduleCode) {
     return (
-      <button className="btn-link btn-remove" onClick={() => this.props.hideLessonInTimetable(moduleCode)}>
-        <i className="fa fa-eye" />
+      <button
+        className="btn-link btn-remove"
+        title="Show"
+        aria-label="Show"
+        onClick={() => this.props.hideLessonInTimetable(moduleCode)}
+      >
+        <i className="fa fa-eye" aria-hidden="true" />
       </button>
     );
   }
@@ -118,7 +128,9 @@ class TimetableModulesTable extends Component {
               </div>
             );
           })
-          : <p className="text-sm-center">No modules added.</p>
+          : <div className="col-sm-12">
+            <p className="text-sm-center">No modules added.</p>
+          </div>
         }
       </div>
     );
