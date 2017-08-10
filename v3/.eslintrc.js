@@ -66,6 +66,11 @@ module.exports = {
     'react/require-default-props': 'off',
     // TODO: Replace divs with buttons, but remove all button styling.
     'jsx-a11y/no-static-element-interactions': 'off',
+    'jsx-a11y/label-has-for': ['error', {
+      required: {
+        some: ['nesting', 'id'],
+      },
+    }],
     // Let git handle the linebreaks instead.
     'linebreak-style': 'off',
   },
