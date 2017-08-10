@@ -1,16 +1,25 @@
 // @flow
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
+import Loadable from 'react-loadable';
 
-import NotFoundPage from 'views/NotFoundPage';
-import AboutContainer from 'views/static/AboutContainer';
-import FaqContainer from 'views/static/FaqContainer';
 import TimetableContainer from 'views/timetable/TimetableContainer';
 import ModuleFinderContainer from 'views/browse/ModuleFinderContainer';
-import ModulesContainer from 'views/browse/ModulePageContainer';
 import SettingsContainer from 'views/settings/SettingsContainer';
+import AboutContainer from 'views/static/AboutContainer';
 import TeamContainer from 'views/static/TeamContainer';
 import DevelopersContainer from 'views/static/DevelopersContainer';
+import FaqContainer from 'views/static/FaqContainer';
+import NotFoundPage from 'views/NotFoundPage';
+
+import Loader from 'views/Loader';
+
+// Define Async components using react-loadable
+const ModulesContainer = Loadable({
+  loader: () => import('views/browse/ModulePageContainer'),
+  loading: Loader,
+  delay: 2000,
+});
 
 export default function Routes() {
   return (

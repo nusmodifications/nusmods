@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import DocumentTitle from 'react-document-title';
 import axios from 'axios';
 
+import Loader from 'views/Loader';
+
 const DEVELOPERS_URL = 'https://api.github.com/repos/NUSModifications/NUSMods/contributors';
 
 class DevelopersContainer extends Component {
@@ -53,23 +55,18 @@ class DevelopersContainer extends Component {
             </em></p>
             <br /><br />
 
-            <div className="row">
-              {this.state.isLoading &&
-                <div className="col-12 text-center">
-                  <i className="fa fa-circle-o-notch fa-spin" style={{ fontSize: '4rem' }} aria-hidden="true" />
-                  <span className="sr-only">Loading</span>
-                </div>
-              }
-              {this.state.isError &&
-                <div className="col-12">
-                  <div className="alert alert-danger">
-                    <strong>Something went wrong!</strong>
-                    {this.state.errorMessage}
-                  </div>
-                </div>
-              }
-              {!this.state.isLoading && !this.state.isError &&
-                this.state.developersData.map(developer => (
+            {this.state.isLoading &&
+              Loader
+            }
+            {this.state.isError &&
+              <div className="alert alert-danger">
+                <strong>Something went wrong!</strong>
+                {this.state.errorMessage}
+              </div>
+            }
+            {!this.state.isLoading && !this.state.isError &&
+              <div className="row">
+                {this.state.developersData.map(developer => (
                   <div className="col-md-3 text-center" key={developer.id}>
                     <a href={developer.html_url}>
                       <img src={developer.avatar_url} alt={`${developer.login}'s avatar`} style={{ width: '100%' }} />
@@ -77,9 +74,9 @@ class DevelopersContainer extends Component {
                     <h5>{developer.login}</h5>
                     <p>{`${developer.contributions} commits`}</p>
                   </div>
-                ))
-              }
-            </div>
+                ))}
+              </div>
+            }
           </div>
         </div>
       </DocumentTitle>
