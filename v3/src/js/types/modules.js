@@ -17,6 +17,30 @@ export type Semester = number;
 export type Venue = string;
 export type WeekText = string; // E.g. "Every Week", "Odd Week"
 
+// Auxiliary data types
+const DaysOfWeekEnum = {
+  Monday: 'Monday',
+  Tuesday: 'Tuesday',
+  Wednesday: 'Wednesday',
+  Thursday: 'Thursday',
+  Friday: 'Friday',
+  Saturday: 'Saturday',
+};
+
+export const DaysOfWeek = Object.keys(DaysOfWeekEnum);
+export type Day = $Keys<typeof DaysOfWeekEnum>;
+
+const TimesOfDayEnum = {
+  Morning: 'Morning',
+  Afternoon: 'Afternoon',
+  Evening: 'Evening',
+};
+
+export const TimesOfDay = Object.keys(TimesOfDayEnum);
+export type Time = $Keys<typeof TimesOfDayEnum>;
+
+export type ModuleLevel = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+
 // BiddingStat is CORS bidding stats for a particular round for a module.
 export type BiddingStat = {
   AcadYear: AcadYear,
