@@ -28,7 +28,6 @@ const VENDOR = [
   'axios',
   'babel-polyfill',
   'classnames',
-  'd3',
   'ical-generator',
   'react',
   'react-document-title',
