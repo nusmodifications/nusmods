@@ -1,4 +1,5 @@
 // @flow
+import FilterGroup from 'utils/filters/FilterGroup';
 
 /* components/ModulesSelect.jsx */
 export type SelectOption = { label: string, value: string };
@@ -8,3 +9,6 @@ export type Theme = {
   id: string,
   name: string,
 };
+
+/* browse/ModuleFinderContainer */
+export type OnFilterChange = FilterGroup<*> => void;
