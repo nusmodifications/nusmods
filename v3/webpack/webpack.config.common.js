@@ -6,7 +6,8 @@ const parts = require('./webpack.parts');
 
 const commonConfig = merge([
   {
-    // This tells Webpack where to look for modules.
+    // This tells Webpack where to look for modules. Remember to update the
+    // corresponding entry in .flowconfig if you're updating these
     resolve: {
       // Specify a few root paths when importing our own modules,
       // so that we can use absolute paths in our imports.
@@ -17,9 +18,14 @@ const commonConfig = merge([
         parts.PATHS.app,
         parts.PATHS.styles,
         parts.PATHS.node,
-        // Only include path for access to __mocks__
-        ...(process.env.NODE_ENV === 'test' ? [parts.PATHS.root] : []),
       ],
+      // Maps specific modules, similar to modules above, except in this case
+      // we map the folders directly - for instance we only want __mocks__ and not
+      // any of the other folders under root to be imported from root, so we use
+      // this instead of modules
+      alias: {
+        __mocks__: parts.PATHS.fixtures,
+      },
       // Importing modules from these files will not require the extension.
       extensions: ['.js', '.jsx', '.json'],
     },
