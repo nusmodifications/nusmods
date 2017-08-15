@@ -9,11 +9,11 @@
     "flow": "flow check",
     "lint": "npm run lint:src && npm run flow && npm run lint:test && npm run lint:scripts",
     "lint:src": "eslint 'src/js/**/!(*.test).{js,jsx}' --cache",
-    "lint:test": "cross-env NODE_ENV=test eslint __tests__ 'src/js/**/*.test.{js,jsx}' --cache",
+    "lint:test": "cross-env BABEL_ENV=test eslint __tests__ 'src/js/**/*.test.{js,jsx}' --cache",
     "lint:scripts": "eslint webpack scripts --cache",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
-    "ci": "npm run lint && npm run test && npm run build"
+    "ci": "cross-env NODE_ENV=production npm run lint && npm run test && npm run build"
   },
   "author": "NUSModifications",
   "license": "MIT",
