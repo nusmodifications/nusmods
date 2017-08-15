@@ -13,7 +13,7 @@ import type { ModuleList, ModuleSelectList, ModuleSelectListItem } from 'types/r
 
 import _ from 'lodash';
 
-import { FETCH_MODULE_LIST, FETCH_MODULE, FETCH_ALL_MODULES } from 'actions/moduleBank';
+import { FETCH_MODULE_LIST, FETCH_MODULE } from 'actions/moduleBank';
 import * as RequestResultCases from 'middlewares/requests-middleware';
 
 export type ModulesMap = {
@@ -53,12 +53,6 @@ function moduleBank(state: ModuleBank = defaultModuleBankState, action: FSA): Mo
           ...state.modules,
           [action.payload.ModuleCode]: action.payload,
         },
-      };
-
-    case FETCH_ALL_MODULES + RequestResultCases.SUCCESS:
-      return {
-        ...state,
-        modules: _.keyBy(action.payload, module => module.ModuleCode),
       };
 
     default:

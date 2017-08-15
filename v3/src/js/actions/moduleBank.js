@@ -45,17 +45,3 @@ export function loadModule(moduleCode: ModuleCode) {
     return dispatch(fetchModule(moduleCode));
   };
 }
-
-export const FETCH_ALL_MODULES = 'FETCH_ALL_MODULES';
-export function fetchAllModules(): FSA {
-  return {
-    type: FETCH_ALL_MODULES,
-    payload: {
-      method: 'GET',
-      url: NUSModsApi.modulesUrl(),
-    },
-    meta: {
-      [API_REQUEST]: true,
-    },
-  };
-}

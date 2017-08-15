@@ -1,12 +1,10 @@
 // @flow
 import React from 'react';
 import DocumentTitle from 'react-document-title';
-import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import axios from 'axios';
 import update from 'immutability-helper';
 
-import type { ModulesMap } from 'reducers/entities/moduleBank';
-import { fetchAllModules } from 'actions/moduleBank';
 import ModuleFinderItem from 'views/components/ModuleFinderItem';
 import ChecklistFilters from 'views/components/filters/ChecklistFilters';
 import {
@@ -17,17 +15,18 @@ import {
 } from 'views/browse/module-filters';
 
 import config from 'config';
+import nusmods from 'apis/nusmods';
 import FilterGroup from 'utils/filters/FilterGroup';
 import type { Module } from 'types/modules';
 
 class ModuleFinderContainer extends React.Component {
-  props: {
-    fetchAllModules: () => Promise<Array<Module>>,
-    modules: ModulesMap,
-  };
-
-  state = {
+  state: {
+    loading: boolean,
+    modules: Array<Module>,
+    filterGroups: { [string]: FilterGroup<any> },
+  } = {
     loading: true,
+    modules: [],
     filterGroups: {
       levels,
       moduleCredits,
@@ -37,9 +36,12 @@ class ModuleFinderContainer extends React.Component {
   };
 
   componentDidMount() {
-    this.props.fetchAllModules()
-      .then(() => {
-        this.setState({ loading: false });
+    axios.get(nusmods.modulesUrl())
+      .then(({ data }) => {
+        this.setState({
+          modules: data,
+          loading: false,
+        });
       });
   }
 
@@ -52,8 +54,7 @@ class ModuleFinderContainer extends React.Component {
   }
 
   render() {
-    const { filterGroups } = this.state;
-    const moduleList = Object.values(this.props.modules);
+    const { filterGroups, modules } = this.state;
 
     return (
       <DocumentTitle title={`Modules - ${config.brandName}`}>
@@ -62,7 +63,7 @@ class ModuleFinderContainer extends React.Component {
             <div className="col-md-8">
               <h1 className="page-title">Module Finder</h1>
               <ul className="modules-list">
-                {moduleList.slice(0, 30).map((module) => {
+                {modules.slice(0, 30).map((module) => {
                   return <ModuleFinderItem module={module} />;
                 })}
               </ul>
@@ -72,7 +73,7 @@ class ModuleFinderContainer extends React.Component {
               {Object.entries(filterGroups).map(([key, collection]) => {
                 return (<ChecklistFilters
                   collection={collection}
-                  modules={moduleList}
+                  modules={modules}
                   onFilterChange={this.onFilterToggle(key)}
                 />);
               })}
@@ -84,12 +85,4 @@ class ModuleFinderContainer extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    modules: state.entities.moduleBank.modules,
-  };
-}
-
-export default withRouter(connect(mapStateToProps, {
-  fetchAllModules,
-})(ModuleFinderContainer));
+export default withRouter(ModuleFinderContainer);
