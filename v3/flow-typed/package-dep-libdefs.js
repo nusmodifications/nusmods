@@ -7,3 +7,7 @@ declare module 'react' {
 declare module 'react-dom' {
   declare module.exports: any;
 }
+
+declare module 'react-loadable' {
+  declare module.exports: any;
+}
