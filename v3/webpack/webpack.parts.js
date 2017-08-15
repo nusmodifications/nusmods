@@ -19,6 +19,7 @@ const PATHS = {
   styles: path.join(ROOT, SRC, 'styles'),
   images: path.join(ROOT, SRC, 'img'),
   build: path.join(ROOT, 'dist'),
+  fixtures: path.join(ROOT, '__mocks__'),
 };
 
 // These dependencies will be extracted out into `vendor.js` in production build.
