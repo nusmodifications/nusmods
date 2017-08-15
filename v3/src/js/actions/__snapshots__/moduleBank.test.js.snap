@@ -7,7 +7,7 @@ Object {
   },
   "payload": Object {
     "method": "GET",
-    "url": "https://nusmods.com/api/2016-2017/modules/CS1010S.json",
+    "url": "https://nusmods.com/api/2017-2018/modules/CS1010S.json",
   },
   "type": "FETCH_MODULE",
 }
@@ -20,7 +20,7 @@ Object {
   },
   "payload": Object {
     "method": "GET",
-    "url": "https://nusmods.com/api/2016-2017/moduleList.json",
+    "url": "https://nusmods.com/api/2017-2018/moduleList.json",
   },
   "type": "FETCH_MODULE_LIST",
 }
@@ -33,7 +33,7 @@ Object {
   },
   "payload": Object {
     "method": "GET",
-    "url": "https://nusmods.com/api/2016-2017/modules/test.json",
+    "url": "https://nusmods.com/api/2017-2018/modules/test.json",
   },
   "type": "FETCH_MODULE",
 }

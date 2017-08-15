@@ -8,7 +8,7 @@ import type {
   SemTimetableConfigWithLessons,
 } from 'types/timetables';
 
-import config from 'config/app-config.json';
+import config from 'config';
 import academicCalendar from 'config/academic-calendar.json';
 import { getModuleSemesterData } from 'utils/modules';
 
@@ -144,9 +144,11 @@ export function iCalForTimetable(
   semester: Semester,
   timetable: SemTimetableConfigWithLessons,
   moduleData: { [ModuleCode]: Module },
-  year: string = config.academicYear): Array<EventOption> {
-  const start = academicCalendar[year][semester].start;
-  const firstDayOfSchool = new Date(Date.UTC(start[0], start[1], start[2]) - SG_UTC_TIME_DIFF_MS);
+  academicYear: string = config.academicYear,
+): Array<EventOption> {
+  const [year, month, day] = academicCalendar[academicYear][semester].start;
+  // 'month - 1' because JS months are zero indexed
+  const firstDayOfSchool = new Date(Date.UTC(year, month - 1, day) - SG_UTC_TIME_DIFF_MS);
   const events = _.flatMap(
     timetable,
     (lessonConfig: ModuleLessonConfigWithLessons, moduleCode: ModuleCode) =>
