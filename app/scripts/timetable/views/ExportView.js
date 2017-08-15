@@ -129,7 +129,6 @@ module.exports = Marionette.ItemView.extend({
       'body.mode-slate{background-color: ' + backgroundColor + '}' +
       '#timetable-wrapper{font-size:11px;line-height:13px;width:1245px}' +
       '#timetable{margin:0 0 15px -15px;max-width:none;table-layout:fixed;width:1235px}' +
-      '#timetable th{background-color:#fff}' +
       '.mode-slate #timetable th{color:#fff}' +
       '#times div{margin-right:-13px;text-align:right}' +
       '#exam-timetable > table{font-weight: bold;border:1px solid #555;}' +
