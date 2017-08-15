@@ -18,7 +18,7 @@ const commonConfig = merge([
         parts.PATHS.styles,
         parts.PATHS.node,
         // Only include path for access to __mocks__
-        ...(process.env.NODE_ENV === 'test' ? [parts.PATHS.root] : []),
+        ...(process.env.NODE_ENV === 'test' || process.env.BABEL_ENV === 'test' ? [parts.PATHS.root] : []),
       ],
       // Importing modules from these files will not require the extension.
       extensions: ['.js', '.jsx', '.json'],
