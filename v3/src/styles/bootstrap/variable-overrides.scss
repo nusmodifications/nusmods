@@ -9,11 +9,13 @@ $gray-lightest:             #f5f7fa;
 
 $theme-colors: (
   primary:                  #ff5138,
-  secondary:                $gray-lightest,
+  secondary:                $gray,
   success:                  #97cd76,
   info:                     #42afe3,
   warning:                  #fce473,
   danger:                   #ed6c63,
+  light:                    $gray-lightest,
+  dark:                     $gray-dark,
 );
 
 // Options

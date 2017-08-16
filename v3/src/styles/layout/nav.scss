@@ -63,7 +63,7 @@
     list-style: none;
   }
 
-  @media (max-width: map-get($grid-breakpoints, 'md')) {
+  @include media-breakpoint-down(sm) {
     background-color: #fff;
     box-shadow: 0 0 15px -3px rgba(0, 0, 0, 0.4);
     flex-direction: row;
