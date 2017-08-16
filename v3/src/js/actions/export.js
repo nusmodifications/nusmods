@@ -17,9 +17,14 @@ export function downloadAsJpeg(domElement: Element) {
     return domtoimage.toJpeg(domElement, { bgcolor: '#fff', style })
       .then((dataUrl) => {
         const link = document.createElement('a');
+        const body = document.body;
         link.download = 'timetable.jpeg';
         link.href = dataUrl;
-        link.click();
+        if (body) {
+          body.appendChild(link);
+          link.click();
+          body.removeChild(link);
+        }
         dispatch({
           type: `${DOWNLOAD_AS_JPEG}_SUCCESS`,
         });
@@ -48,9 +53,14 @@ export function downloadAsIcal(
   const blob = new Blob([cal.toString()], { type: 'text/plain' });
   const objectUrl = URL.createObjectURL(blob);
   const link = document.createElement('a');
+  const body = document.body;
   link.download = 'nusmods_calendar.ics';
   link.href = objectUrl;
-  link.click();
+  if (body) {
+    body.appendChild(link);
+    link.click();
+    body.removeChild(link);
+  }
   URL.revokeObjectURL(objectUrl);
 
   return {
