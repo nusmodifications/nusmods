@@ -69,13 +69,16 @@ class ModuleFinderContainer extends React.Component {
             </div>
 
             <div className="col-md-4">
-              {Object.entries(filterGroups).map(([key, group]) => {
-                return (<ChecklistFilters
-                  group={group}
-                  modules={modules}
-                  onFilterChange={this.onFilterToggle(key)}
-                />);
-              })}
+              <div className="module-filters">
+                <h3>Search Options</h3>
+                {Object.entries(filterGroups).map(([key, group]) => {
+                  return (<ChecklistFilters
+                    group={group}
+                    modules={modules}
+                    onFilterChange={this.onFilterToggle(key)}
+                  />);
+                })}
+              </div>
             </div>
           </div>
         </div>

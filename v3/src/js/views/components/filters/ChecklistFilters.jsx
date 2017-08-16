@@ -17,7 +17,7 @@ export default function ChecklistFilters(props: Props) {
 
   return (
     <div>
-      <h3>{ group.label }</h3>
+      <h4>{ group.label }</h4>
       <ul className="list-unstyled">
         {values(group.filters).map((filter: ModuleFilter) => (
           <li key={filter.label}>
