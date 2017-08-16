@@ -6,6 +6,19 @@ import type { ModuleCode, Module, Semester } from 'types/modules';
 import type { SemTimetableConfigWithLessons } from 'types/timetables';
 import { iCalForTimetable } from 'utils/ical';
 
+function downloadUrl(url: string, filename: string) {
+  const link = document.createElement('a');
+  const body = document.body;
+  if (!body) return;
+
+  link.download = filename;
+  link.href = url;
+
+  body.appendChild(link);
+  link.click();
+  body.removeChild(link);
+}
+
 export const DOWNLOAD_AS_JPEG = 'DOWNLOAD_AS_JPEG';
 export function downloadAsJpeg(domElement: Element) {
   return (dispatch: Function) => {
@@ -16,10 +29,7 @@ export function downloadAsJpeg(domElement: Element) {
     const style = { margin: '0', marginLeft: '-0.25em' };
     return domtoimage.toJpeg(domElement, { bgcolor: '#fff', style })
       .then((dataUrl) => {
-        const link = document.createElement('a');
-        link.download = 'timetable.jpeg';
-        link.href = dataUrl;
-        link.click();
+        downloadUrl(dataUrl, 'timetable.jpeg');
         dispatch({
           type: `${DOWNLOAD_AS_JPEG}_SUCCESS`,
         });
@@ -47,10 +57,7 @@ export function downloadAsIcal(
 
   const blob = new Blob([cal.toString()], { type: 'text/plain' });
   const objectUrl = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.download = 'nusmods_calendar.ics';
-  link.href = objectUrl;
-  link.click();
+  downloadUrl(objectUrl, 'nusmods_calendar.ics');
   URL.revokeObjectURL(objectUrl);
 
   return {
