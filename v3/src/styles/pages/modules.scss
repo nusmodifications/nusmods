@@ -67,7 +67,7 @@
   }
 
   .mod-rect {
-    fill: $brand-primary;
+    fill: theme-color('primary');
     transition: opacity 0.25s ease, fill 0.25s ease;
   }
 

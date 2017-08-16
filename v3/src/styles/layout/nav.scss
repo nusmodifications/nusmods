@@ -55,7 +55,7 @@
     padding: 0.7rem;
 
     &.active {
-      color: $brand-primary;
+      color: theme-color('primary');
     }
   }
 
