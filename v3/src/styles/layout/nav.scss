@@ -42,6 +42,13 @@
     flex: 1 1 auto;
     text-align: right;
   }
+
+  @include media-breakpoint-down('xs') {
+    .nm-navbar-text,
+    .nm-navbar-form {
+      display: none;
+    }
+  }
 }
 
 .nm-nav-tabs {
