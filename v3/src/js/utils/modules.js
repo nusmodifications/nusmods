@@ -6,6 +6,7 @@ import type {
   RawLesson,
   Semester,
   SemesterData,
+  WorkloadComponent,
 } from 'types/modules';
 import _ from 'lodash';
 import config from 'config';
@@ -63,4 +64,28 @@ export function getFirstAvailableSemester(
 ): Semester {
   const availableSemesters = semesters.map(semesterData => semesterData.Semester);
   return availableSemesters.includes(current) ? current : _.min(availableSemesters);
+}
+
+// Parse the workload string into individual components
+export function parseWorkload(workloadString: ?string): { [WorkloadComponent]: number } {
+  if (!workloadString) return {};
+  // Workload string is formatted as A-B-C-D-E where
+  // A: no. of lecture hours per week
+  // B: no. of tutorial hours per week
+  // C: no. of laboratory hours per week
+  // D: no. of hours for projects, assignments, fieldwork etc per week
+  // E: no. of hours for preparatory work by a student per week
+  // Taken from CORS:
+  // https://myaces.nus.edu.sg/cors/jsp/report/ModuleDetailedInfo.jsp?acad_y=2017/2018&sem_c=1&mod_c=CS2105
+  const hours = workloadString.split(/\s*-\s*/);
+  const components = ['Lecture', 'Tutorial', 'Laboratory', 'Project', 'Preparation'];
+
+  const workload = {};
+  _.zip(components, hours).forEach(([component, hourString]) => {
+    const hour = parseInt(hourString, 10);
+    if (!hour) return;
+    workload[component] = hour;
+  });
+
+  return workload;
 }

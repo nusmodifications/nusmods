@@ -10,9 +10,12 @@ import {
   formatExamDate,
   getModuleSemExamDate,
   getFirstAvailableSemester,
+  parseWorkload,
 } from 'utils/modules';
 
+/** @var {Module} */
 import cs1010s from '__mocks__/modules/CS1010S.json';
+/** @var {Module} */
 import cs3216 from '__mocks__/modules/CS3216.json';
 
 const mockLesson: Lesson = _.cloneDeep(cs1010s.History[0].Timetable[0]);
@@ -138,5 +141,22 @@ describe('getFirstAvailableSemester', () => {
     expect(getFirstAvailableSemester([sem1Data], 3)).toEqual(1);
     expect(getFirstAvailableSemester([sem2Data], 3)).toEqual(2);
     expect(getFirstAvailableSemester([sem2Data, sem1Data], 3)).toEqual(1);
+  });
+});
+
+test('parseWorkload should break workload down to components', () => {
+  expect(parseWorkload(cs3216.Workload)).toEqual({
+    Lecture: 2,
+    Tutorial: 1,
+    Project: 8,
+    Preparation: 2,
+  });
+
+  expect(parseWorkload(cs1010s.Workload)).toEqual({
+    Lecture: 2,
+    Tutorial: 1,
+    Laboratory: 1,
+    Project: 3,
+    Preparation: 3,
   });
 });

@@ -42,6 +42,8 @@ export type Time = $Keys<typeof TimesOfDayEnum>;
 export type ModuleLevel = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 export const Semesters = [1, 2, 3, 4];
 
+export type WorkloadComponent = 'Lecture' | 'Tutorial' | 'Laboratory' | 'Project' | 'Preparation';
+
 // BiddingStat is CORS bidding stats for a particular round for a module.
 export type BiddingStat = {
   AcadYear: AcadYear,
