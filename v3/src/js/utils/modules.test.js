@@ -9,6 +9,7 @@ import {
   areLessonsSameClass,
   formatExamDate,
   getModuleSemExamDate,
+  getFirstAvailableSemester,
 } from 'utils/modules';
 
 import cs1010s from '__mocks__/modules/CS1010S.json';
@@ -106,4 +107,36 @@ test('getModuleSemExamDate should return - if it does not exist', () => {
 
   const sem2: Semester = 2;
   expect(getModuleSemExamDate(cs1010s, sem2)).toBe('-');
+});
+
+describe('getFirstAvailableSemester', () => {
+  function createSemesterData(semester: Semester): SemesterData {
+    return {
+      Semester: semester,
+      LecturePeriods: [],
+      Timetable: [],
+    };
+  }
+
+  const sem1Data = createSemesterData(1);
+  const sem2Data = createSemesterData(2);
+  const sem3Data = createSemesterData(3);
+
+  test('should return the current semester if it is available', () => {
+    expect(getFirstAvailableSemester([sem1Data], 1)).toEqual(1);
+    expect(getFirstAvailableSemester([sem2Data, sem3Data, sem1Data], 1)).toEqual(1);
+
+    expect(getFirstAvailableSemester([sem2Data], 2)).toEqual(2);
+    expect(getFirstAvailableSemester([sem1Data, sem2Data, sem3Data], 2)).toEqual(2);
+  });
+
+  test('should return the first semester if the current semester is not available', () => {
+    expect(getFirstAvailableSemester([sem3Data], 1)).toEqual(3);
+    expect(getFirstAvailableSemester([sem2Data], 1)).toEqual(2);
+    expect(getFirstAvailableSemester([sem3Data, sem2Data], 1)).toEqual(2);
+
+    expect(getFirstAvailableSemester([sem1Data], 3)).toEqual(1);
+    expect(getFirstAvailableSemester([sem2Data], 3)).toEqual(2);
+    expect(getFirstAvailableSemester([sem2Data, sem1Data], 3)).toEqual(1);
+  });
 });

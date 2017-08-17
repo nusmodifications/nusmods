@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { modulePagePath } from 'utils/modules';
 import type { Module } from 'types/modules';
+import ModuleSemesterInfo from './module-info/ModuleSemesterInfo';
 
 type Props = {
   module: Module,
@@ -20,17 +21,15 @@ export default function ModuleFinderItem(props: Props) {
             {module.ModuleCode} {module.ModuleTitle}
           </Link>
         </h2>
-
-        Semesters offered:&nbsp;
-        <ol className="modules-semesters-list list-unstyled list-inline">
-          {module.History.map((semesterData) => (
-            <li className="modules-semesters-item list-inline-item" key={semesterData.Semester}>
-              {semesterData.Semester}</li>
-          ))}
-        </ol>
       </header>
-
-      <p>{ module.ModuleDescription }</p>
+      <div className="row">
+        <div className="col-sm-8">
+          <p>{ module.ModuleDescription }</p>
+        </div>
+        <div className="col-sm-4">
+          <ModuleSemesterInfo semesters={module.History} />
+        </div>
+      </div>
 
       <footer>
         <p>

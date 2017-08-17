@@ -7,8 +7,8 @@ import type {
   Semester,
   SemesterData,
 } from 'types/modules';
-
 import _ from 'lodash';
+import config from 'config';
 
 export function modulePagePath(moduleCode: ModuleCode): string {
   return `/modules/${moduleCode}`;
@@ -53,4 +53,14 @@ export function formatExamDate(examDate: string): string {
 export function getModuleSemExamDate(module: Module, semester: Semester): string {
   const examDate = _.get(getModuleSemesterData(module, semester), 'ExamDate');
   return examDate ? formatExamDate(examDate) : '-';
+}
+
+// Returns the current semester if it is found in semesters, or the first semester
+// where it is available
+export function getFirstAvailableSemester(
+  semesters: SemesterData[],
+  current: Semester = config.semester, // For testing only
+): Semester {
+  const availableSemesters = semesters.map(semesterData => semesterData.Semester);
+  return availableSemesters.includes(current) ? current : _.min(availableSemesters);
 }
