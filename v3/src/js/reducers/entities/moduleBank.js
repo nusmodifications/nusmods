@@ -54,6 +54,7 @@ function moduleBank(state: ModuleBank = defaultModuleBankState, action: FSA): Mo
           [action.payload.ModuleCode]: action.payload,
         },
       };
+
     default:
       return state;
   }

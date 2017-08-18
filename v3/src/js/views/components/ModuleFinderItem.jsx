@@ -3,10 +3,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { modulePagePath } from 'utils/modules';
-import type { ModuleCondensed } from 'types/modules';
+import type { Module } from 'types/modules';
 
 type Props = {
-  module: ModuleCondensed,
+  module: Module,
 };
 
 export default function ModuleFinderItem(props: Props) {
@@ -21,9 +21,9 @@ export default function ModuleFinderItem(props: Props) {
       </h2>
       <ol className="modules-semesters-list">
         Semesters offered:&nbsp;
-        {
-          module.Semesters.map(num => <li className="modules-semesters-item">{num}</li>)
-        }
+        {module.History.map(semesterData => (
+          <li className="modules-semesters-item">{semesterData.Semester}</li>
+        ))}
       </ol>
     </li>
   );
