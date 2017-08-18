@@ -7,7 +7,7 @@ import Combinatorics from 'js-combinatorics';
 import { DaysOfWeek, TimesOfDay } from 'types/modules';
 import type { Semester } from 'types/modules';
 import TimeslotFilter, { TimeslotTypes } from './TimeslotFilter';
-import { testFilter } from './test-filter';
+import { testFilter } from './filter-test-helpers';
 
 test('test should filter modules according to their lecture timeslot', () => {
   // Generate all possible combinations of parameters to test against

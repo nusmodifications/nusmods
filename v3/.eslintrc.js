@@ -82,6 +82,8 @@ module.exports = {
     'react/require-default-props': 'off',
     // TODO: Replace divs with buttons, but remove all button styling.
     'jsx-a11y/no-static-element-interactions': 'off',
+    // The default option requires BOTH id and nesting, which is excessive,
+    // especially with checkboxes and radiobuttons. This changes it to EITHER
     'jsx-a11y/label-has-for': ['error', {
       required: {
         some: ['nesting', 'id'],

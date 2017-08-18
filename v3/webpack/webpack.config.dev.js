@@ -55,9 +55,6 @@ const developmentConfig = merge([
       // do not emit compiled assets that include errors
       new webpack.NoEmitOnErrorsPlugin(),
     ],
-    watchOptions: {
-      aggregateTimeout: 2000,
-    },
   },
   parts.loadImages({
     include: parts.PATHS.images,
