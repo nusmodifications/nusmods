@@ -60,7 +60,7 @@ class ModuleFinderContainer extends React.Component {
       <DocumentTitle title={`Modules - ${config.brandName}`}>
         <div className="modules-page-container page-container">
           <div className="row">
-            <div className="col-md-8">
+            <div className="col-md-9">
               <h1 className="page-title">Module Finder</h1>
               <ModuleFinderList
                 filterGroups={Object.values(filterGroups)}
@@ -68,7 +68,7 @@ class ModuleFinderContainer extends React.Component {
               />
             </div>
 
-            <div className="col-md-4">
+            <div className="col-md-3">
               <div className="module-filters">
                 <h3>Search Options</h3>
                 {Object.entries(filterGroups).map(([key, group]) => {

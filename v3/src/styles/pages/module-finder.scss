@@ -22,13 +22,52 @@
   padding: 0;
 
   .modules-item {
-    border-bottom: 1px solid $gray-lighter;
     margin: 0.5rem 0;
     padding: 1rem 0;
+
+    footer {
+      border-top: 1px solid $gray-lighter;
+      padding-top: 0.8rem;
+      margin-top: 0.8rem;
+    }
   }
 
   .modules-title {
     font-size: 1.25rem;
     font-weight: normal;
+  }
+}
+
+.module-workload-container {
+  margin-bottom: 1rem;
+
+  h4 {
+    font-size: 1rem;
+    margin-bottom: 0;
+  }
+}
+
+.module-workload {
+  display: flex;
+  flex-wrap: wrap;
+
+  .module-workload-component {
+    overflow: hidden;
+  }
+
+  .module-workload-label {
+    font-weight: bold;
+    font-size: $font-size-xs;
+  }
+
+  .module-workload-blocks {
+    display: flex;
+    margin-bottom: 1px;
+
+    div {
+      flex: 1 auto;
+      height: 30px;
+      margin-right: 1px;
+    }
   }
 }

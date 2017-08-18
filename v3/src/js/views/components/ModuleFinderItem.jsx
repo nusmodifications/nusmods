@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { modulePagePath } from 'utils/modules';
 import type { Module } from 'types/modules';
 import ModuleSemesterInfo from './module-info/ModuleSemesterInfo';
+import ModuleWorkload from './module-info/ModuleWorkload';
 
 type Props = {
   module: Module,
@@ -23,10 +24,24 @@ export default function ModuleFinderItem(props: Props) {
         </h2>
       </header>
       <div className="row">
-        <div className="col-sm-8">
+        <div className="col-lg-8 col-md-12 col-sm-8">
           <p>{ module.ModuleDescription }</p>
+          <dl>
+            { module.Preclusion && ([
+              <dt>Preclusions</dt>,
+              <dd>{module.Preclusion}</dd>,
+            ]) }
+
+            { module.Prerequisite && ([
+              <dt>Prerequisite</dt>,
+              <dd>{module.Prerequisite}</dd>,
+            ]) }
+          </dl>
+
         </div>
-        <div className="col-sm-4">
+
+        <div className="col-lg-4 col-md-12 col-sm-4">
+          <ModuleWorkload workload={module.Workload} />
           <ModuleSemesterInfo semesters={module.History} />
         </div>
       </div>
