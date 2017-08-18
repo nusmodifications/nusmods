@@ -19,7 +19,7 @@ export default function NewStudentSelect(props: Props) {
         type="button"
         className={classnames('btn', {
           'btn-primary': newStudent,
-          'btn-secondary': !newStudent,
+          'btn-outline-primary': !newStudent,
         })}
         onClick={() => onSelectNewStudent(true)}
       >Yes
@@ -28,7 +28,7 @@ export default function NewStudentSelect(props: Props) {
         type="button"
         className={classnames('btn', {
           'btn-primary': !newStudent,
-          'btn-secondary': newStudent,
+          'btn-outline-primary': newStudent,
         })}
         onClick={() => onSelectNewStudent(false)}
       >No

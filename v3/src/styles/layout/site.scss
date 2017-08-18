@@ -2,14 +2,14 @@
 body {
   padding-top: 4rem;
 
-  @media (max-width: map-get($grid-breakpoints, 'md')) {
+  @include media-breakpoint-down(sm) {
     font-size: $font-size-sm;
     padding-top: $navbar-height * 2;
   }
 }
 
 .main-content {
-  @media (max-width: map-get($grid-breakpoints, 'md')) {
+  @include media-breakpoint-down(sm) {
     padding-top: 1rem;
   }
 }
@@ -21,4 +21,17 @@ body {
 .page-title {
   font-size: $font-size-xlg;
   margin: 2rem 0 4rem;
+}
+
+// Recreate Bootstrap v3 offsets
+@include media-breakpoint-up('md') {
+  .offset-md-1 {
+    margin-left: percentage(1 / $grid-columns);
+  }
+}
+
+@include media-breakpoint-up('sm') {
+  .offset-sm-1 {
+    margin-left: percentage(1 / $grid-columns);
+  }
 }

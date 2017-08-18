@@ -71,7 +71,7 @@ export class AppShell extends Component {
       <div className="app-container">
         <nav className="nm-navbar fixed-top">
           <NavLink className="nm-navbar-brand" to="/" title="Home" />
-          <form className="nm-navbar-form hidden-xs-down">
+          <form className="nm-navbar-form">
             <ModulesSelect
               moduleList={this.props.moduleSelectList}
               onChange={(moduleCode) => {
@@ -80,7 +80,7 @@ export class AppShell extends Component {
               placeholder="Search modules"
             />
           </form>
-          <span className="nm-navbar-text hidden-xs-down"><small>{weekText}</small></span>
+          <span className="nm-navbar-text"><small>{weekText}</small></span>
         </nav>
         <div className="container-fluid">
           <div className="row">

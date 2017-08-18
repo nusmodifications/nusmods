@@ -78,7 +78,7 @@
   "dependencies": {
     "axios": "^0.16.2",
     "babel-polyfill": "^6.23.0",
-    "bootstrap": "4.0.0-alpha.6",
+    "bootstrap": "4.0.0-beta",
     "classnames": "^2.2.5",
     "d3": "^4.10.0",
     "dom-to-image": "^2.5.2",

@@ -10,7 +10,7 @@
     margin-bottom: $theme-option-gap;
     width: 25%;
 
-    @media (max-width: map-get($grid-breakpoints, 'md')) {
+    @include media-breakpoint-down('sm') {
       width: 50%;
     }
   }

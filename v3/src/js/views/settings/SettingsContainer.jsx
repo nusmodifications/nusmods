@@ -29,7 +29,7 @@ function SettingsContainer(props: Props) {
     <DocumentTitle title={`Settings - ${config.brandName}`}>
       <div className="settings-page-container page-container">
         <div className="row">
-          <div className="col-md-8 offset-md-1">
+          <div className="col-lg-8 offset-lg-1">
             <h1 className="page-title">Settings</h1>
             <h4>New Student</h4>
             <div className="row">
