@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import DocumentTitle from 'react-document-title';
 import axios from 'axios';
 
-import Loader from 'views/Loader';
+import Loader from 'views/LoadingSpinner';
 
 const DEVELOPERS_URL = 'https://api.github.com/repos/NUSModifications/NUSMods/contributors';
 

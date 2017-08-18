@@ -22,6 +22,9 @@
 @import 'layout/nav';
 @import 'layout/footer';
 
+// Components
+@import 'components/loading-spinner';
+
 // Pages
 @import 'pages/timetable';
 @import 'pages/modules';

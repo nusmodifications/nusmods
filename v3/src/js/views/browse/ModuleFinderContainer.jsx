@@ -7,6 +7,8 @@ import update from 'immutability-helper';
 
 import ModuleFinderList from 'views/browse/ModuleFinderList';
 import ChecklistFilters from 'views/components/filters/ChecklistFilters';
+import LoadingSpinner from 'views/LoadingSpinner';
+
 import {
   levels,
   moduleCredits,
@@ -54,7 +56,7 @@ class ModuleFinderContainer extends React.Component {
   }
 
   render() {
-    const { filterGroups, modules } = this.state;
+    const { filterGroups, modules, loading } = this.state;
 
     return (
       <DocumentTitle title={`Modules - ${config.brandName}`}>
@@ -62,10 +64,10 @@ class ModuleFinderContainer extends React.Component {
           <div className="row">
             <div className="col-md-9">
               <h1 className="page-title">Module Finder</h1>
-              <ModuleFinderList
+              {loading ? <LoadingSpinner /> : <ModuleFinderList
                 filterGroups={Object.values(filterGroups)}
                 modules={modules}
-              />
+              />}
             </div>
 
             <div className="col-md-3">
