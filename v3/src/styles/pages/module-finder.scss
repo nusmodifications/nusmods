@@ -38,12 +38,28 @@
   }
 }
 
+// Semester Info
+.module-semester-container {
+  margin-bottom: 1rem;
+
+  .btn-group {
+    display: flex;
+
+    .btn {
+      flex: 1 auto;
+      font-size: $font-size-xs;
+    }
+  }
+}
+
+// Workload
 .module-workload-container {
   margin-bottom: 1rem;
 
   h4 {
     font-size: 1rem;
     margin-bottom: 0;
+    font-weight: bold;
   }
 }
 

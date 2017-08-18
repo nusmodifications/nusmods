@@ -23,47 +23,56 @@ export default class ModuleSemesterInfo extends React.Component {
   constructor(props: Props) {
     super(props);
 
+    const selectedSem = getFirstAvailableSemester(this.props.semesters);
     this.state = {
-      selected: semesterNames[getFirstAvailableSemester(this.props.semesters)],
+      selected: semesterNames[selectedSem],
     };
   }
 
-  selectSemester(semester: string) {
-    this.setState({ selected: semester });
+  semesterMap(): { [string]: ?SemesterData } {
+    const map = {};
+    const { semesters } = this.props;
+
+    _.each(semesterNames, (name: string, semester: string) => {
+      map[name] = semesters.find(data => String(data.Semester) === semester);
+    });
+
+    return map;
   }
 
-  buttonAttrs(choices: string[]) {
-    const availableSems = this.props.semesters
-      .map(semesterData => semesterNames[semesterData.Semester]);
+  selectSemester(selected: string) {
+    this.setState({ selected });
+  }
 
+  buttonAttrs() {
+    const semesterMap = this.semesterMap();
     const attrs = {};
-    _.difference(choices, availableSems).forEach((disabledChoice) => {
-      attrs[disabledChoice] = { disabled: true };
+    _.each(semesterNames, (name: string) => {
+      if (!semesterMap[name]) attrs[name] = { disabled: true };
     });
 
     return { attrs };
   }
 
-  selectedSemester(): ?SemesterData {
-    const [selected] = _.entries(semesterNames)
-      .find(([, name]) => name === this.state.selected) || [];
-    return this.props.semesters
-      .find(semesterData => semesterData.Semester === selected);
-  }
-
   render() {
-    // Button labels are short semester names
-    const choices = _.values(config.shortSemesterNames);
+    const { selected } = this.state;
+    const semesterMap = this.semesterMap();
+    const selectedSemester = semesterMap[selected];
 
     return (
-      <div>
+      <div className="module-semester-container">
         <ButtonGroupSelector
-          {...this.buttonAttrs(choices)}
+          {...this.buttonAttrs()}
           size="sm"
-          choices={choices}
-          selectedChoice={this.state.selected}
+          choices={Object.keys(semesterMap)}
+          selectedChoice={selected}
           onChoiceSelect={choice => this.selectSemester(choice)}
         />
+        {selectedSemester && (<div className="module-semester-info">
+          { selectedSemester.ExamDate }
+          { selectedSemester.LecturePeriods }
+          { selectedSemester.TutorialPeriods }
+        </div>)}
       </div>
     );
   }

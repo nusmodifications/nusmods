@@ -16,15 +16,16 @@ export default function ModuleFinderItem(props: Props) {
 
   return (
     <li className="modules-item">
-      <header>
-        <h2 className="modules-title">
-          <Link to={modulePagePath(module.ModuleCode)}>
-            {module.ModuleCode} {module.ModuleTitle}
-          </Link>
-        </h2>
-      </header>
       <div className="row">
         <div className="col-lg-8 col-md-12 col-sm-8">
+          <header>
+            <h2 className="modules-title">
+              <Link to={modulePagePath(module.ModuleCode)}>
+                {module.ModuleCode} {module.ModuleTitle}
+              </Link>
+            </h2>
+          </header>
+
           <p>{ module.ModuleDescription }</p>
           <dl>
             { module.Preclusion && ([
@@ -41,8 +42,8 @@ export default function ModuleFinderItem(props: Props) {
         </div>
 
         <div className="col-lg-4 col-md-12 col-sm-4">
-          <ModuleWorkload workload={module.Workload} />
           <ModuleSemesterInfo semesters={module.History} />
+          <ModuleWorkload workload={module.Workload} />
         </div>
       </div>
 
