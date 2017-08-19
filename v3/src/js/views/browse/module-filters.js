@@ -8,7 +8,7 @@ import FilterGroup from 'utils/filters/FilterGroup';
 import { DaysOfWeek, TimesOfDay } from 'types/modules';
 import type { Day, Time } from 'types/modules';
 
-const timeslots: Array<[Day, Time]> = _.flatMap(DaysOfWeek, (day): Array<[Day, Time]> => {
+const timeslots: [Day, Time][] = _.flatMap(DaysOfWeek, (day): [Day, Time][] => {
   return TimesOfDay.map(time => [day, time]);
 });
 

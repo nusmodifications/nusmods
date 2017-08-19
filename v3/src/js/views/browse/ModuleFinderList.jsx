@@ -6,8 +6,8 @@ import type { Module } from 'types/modules';
 import ModuleFinderItem from 'views/components/ModuleFinderItem';
 
 type Props = {
-  modules: Array<Module>,
-  filterGroups: Array<FilterGroup<any>>,
+  modules: Module[],
+  filterGroups: FilterGroup<any>[],
 };
 
 export default function ModuleFinderList(props: Props) {

@@ -9,9 +9,9 @@ export default class FilterGroup<Filter: ModuleFilter> {
   filters: { [string]: Filter };
 
   // Memoized array of filters that are enabled
-  activeFilters: Array<Filter>;
+  activeFilters: Filter[];
 
-  constructor(label: string, filters: Array<Filter>) {
+  constructor(label: string, filters: Filter[]) {
     this.filters = _.keyBy(filters, filter => filter.label);
     this.label = label;
 
@@ -42,7 +42,7 @@ export default class FilterGroup<Filter: ModuleFilter> {
     return !!this.activeFilters.length;
   }
 
-  static apply(modules: Array<Module>, filterGroups: Array<FilterGroup<any>>): Array<Module> {
+  static apply(modules: Module[], filterGroups: FilterGroup<any>[]): Module[] {
     // Only consider filter groups with at least one filter active
     const activeGroups = filterGroups.filter(group => group.isActive());
     if (!activeGroups.length) return modules;

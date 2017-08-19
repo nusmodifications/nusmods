@@ -9,7 +9,7 @@ import ModuleFilter from 'utils/filters/ModuleFilter';
 type Props = {
   onFilterChange: OnFilterChange,
   group: FilterGroup<*>,
-  modules: Array<Module>,
+  modules: Module[],
 };
 
 export default function ChecklistFilters(props: Props) {
