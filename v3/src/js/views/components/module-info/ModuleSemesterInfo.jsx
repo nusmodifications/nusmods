@@ -4,8 +4,10 @@ import React from 'react';
 import _ from 'lodash';
 import config from 'config';
 import type { SemesterData } from 'types/modules';
-import { getFirstAvailableSemester } from 'utils/modules';
+import { getFirstAvailableSemester, formatExamDate } from 'utils/modules';
 import ButtonGroupSelector from 'views/components/ButtonGroupSelector';
+import TimeslotTable from './TimeslotTable';
+import type { TimeslotChildrenSupplier } from './TimeslotTable';
 
 const semesterNames = config.shortSemesterNames;
 
@@ -40,10 +42,6 @@ export default class ModuleSemesterInfo extends React.Component {
     return map;
   }
 
-  selectSemester(selected: string) {
-    this.setState({ selected });
-  }
-
   buttonAttrs() {
     const semesterMap = this.semesterMap();
     const attrs = {};
@@ -54,10 +52,40 @@ export default class ModuleSemesterInfo extends React.Component {
     return { attrs };
   }
 
+  selectedSemester(): ?SemesterData {
+    return this.semesterMap()[this.state.selected];
+  }
+
+  timeslotChildren(): TimeslotChildrenSupplier {
+    const semester = this.selectedSemester() || {};
+    const {
+      LecturePeriods: lectures = [],
+      TutorialPeriods: tutorials = [],
+    } = semester;
+
+    return (day, time) => {
+      const timeslot = `${day} ${time}`;
+      const children = [];
+      if (lectures.includes(timeslot)) children.push(<div className="workload-lecture-bg" />);
+      if (tutorials.includes(timeslot)) children.push(<div className="workload-tutorial-bg" />);
+      return children;
+    };
+  }
+
+  showTimeslots() {
+    const semester = this.selectedSemester();
+    if (!semester) return false;
+    return !_.isEmpty(semester.LecturePeriods) || !_.isEmpty(semester.TutorialPeriods);
+  }
+
+  selectSemester(selected: string) {
+    this.setState({ selected });
+  }
+
   render() {
     const { selected } = this.state;
     const semesterMap = this.semesterMap();
-    const selectedSemester = semesterMap[selected];
+    const semester = this.selectedSemester();
 
     return (
       <div className="module-semester-container">
@@ -68,11 +96,20 @@ export default class ModuleSemesterInfo extends React.Component {
           selectedChoice={selected}
           onChoiceSelect={choice => this.selectSemester(choice)}
         />
-        {selectedSemester && (<div className="module-semester-info">
-          { selectedSemester.ExamDate }
-          { selectedSemester.LecturePeriods }
-          { selectedSemester.TutorialPeriods }
-        </div>)}
+
+        {semester && <div className="module-semester-info">
+          { semester.ExamDate && <section className="module-exam">
+            <h4>Exam</h4>
+            { formatExamDate(semester.ExamDate) }
+          </section>}
+
+          { this.showTimeslots() && <section className="module-timeslots">
+            <h4>Timetable</h4>
+            <TimeslotTable
+              childrenFor={this.timeslotChildren()}
+            />
+          </section>}
+        </div>}
       </div>
     );
   }

@@ -1,5 +1,7 @@
 // @flow
+import React from 'react';
 import FilterGroup from 'utils/filters/FilterGroup';
+import type { Day, Time } from './modules';
 
 /* components/ModulesSelect.jsx */
 export type SelectOption = { label: string, value: string };
