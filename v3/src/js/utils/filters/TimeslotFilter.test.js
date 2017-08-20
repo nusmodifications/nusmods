@@ -1,6 +1,8 @@
 // @flow
 
+/** @var {Module} */
 import cs1010s from '__mocks__/modules/CS1010S.json';
+/** @var {Module} */
 import cs3216 from '__mocks__/modules/CS3216.json';
 
 import Combinatorics from 'js-combinatorics';

@@ -24,6 +24,7 @@ export default class FilterGroup<Filter: ModuleFilter> {
   }
 
   test(module: Module): boolean {
+    if (!this.isActive()) return true;
     return this.activeFilters.some(filter => filter.test(module));
   }
 
