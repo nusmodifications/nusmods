@@ -17,7 +17,7 @@ export default function ModuleFinderList(props: Props) {
   return (
     <ul className="modules-list">
       {filteredModules.slice(0, 30).map((module) => {
-        return <ModuleFinderItem module={module} />;
+        return <ModuleFinderItem key={module.ModuleCode} module={module} />;
       })}
     </ul>
   );

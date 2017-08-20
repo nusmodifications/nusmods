@@ -27,16 +27,22 @@ export default function ModuleFinderItem(props: Props) {
           </header>
 
           <p>{ module.ModuleDescription }</p>
+
           <dl>
             { module.Preclusion && ([
               <dt>Preclusions</dt>,
               <dd>{module.Preclusion}</dd>,
-            ]) }
+            ])}
 
             { module.Prerequisite && ([
               <dt>Prerequisite</dt>,
               <dd>{module.Prerequisite}</dd>,
-            ]) }
+            ])}
+
+            { module.Corequisite && ([
+              <dt>Corequisite</dt>,
+              <dd>{module.Corequisite}</dd>,
+            ])}
           </dl>
 
         </div>

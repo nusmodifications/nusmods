@@ -3,11 +3,10 @@
 import React from 'react';
 import _ from 'lodash';
 import config from 'config';
-import type { SemesterData } from 'types/modules';
+import type { SemesterData, Day, Time } from 'types/modules';
 import { getFirstAvailableSemester, formatExamDate } from 'utils/modules';
 import ButtonGroupSelector from 'views/components/ButtonGroupSelector';
 import TimeslotTable from './TimeslotTable';
-import type { TimeslotChildrenSupplier } from './TimeslotTable';
 
 const semesterNames = config.shortSemesterNames;
 
@@ -56,20 +55,18 @@ export default class ModuleSemesterInfo extends React.Component {
     return this.semesterMap()[this.state.selected];
   }
 
-  timeslotChildren(): TimeslotChildrenSupplier {
+  timeslotChildren(day: Day, time: Time): React.Component {
     const semester = this.selectedSemester() || {};
     const {
       LecturePeriods: lectures = [],
       TutorialPeriods: tutorials = [],
     } = semester;
 
-    return (day, time) => {
-      const timeslot = `${day} ${time}`;
-      const children = [];
-      if (lectures.includes(timeslot)) children.push(<div className="workload-lecture-bg" />);
-      if (tutorials.includes(timeslot)) children.push(<div className="workload-tutorial-bg" />);
-      return children;
-    };
+    const timeslot = `${day} ${time}`;
+    const children = [];
+    if (lectures.includes(timeslot)) children.push(<div className="workload-lecture-bg" />);
+    if (tutorials.includes(timeslot)) children.push(<div className="workload-tutorial-bg" />);
+    return children;
   }
 
   showTimeslots() {
@@ -105,9 +102,7 @@ export default class ModuleSemesterInfo extends React.Component {
 
           { this.showTimeslots() && <section className="module-timeslots">
             <h4>Timetable</h4>
-            <TimeslotTable
-              childrenFor={this.timeslotChildren()}
-            />
+            <TimeslotTable>{({ day, time }) => this.timeslotChildren(day, time)}</TimeslotTable>
           </section>}
         </div>}
       </div>

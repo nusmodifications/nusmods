@@ -8,7 +8,7 @@ import type { Day, Time } from 'types/modules';
 export type TimeslotChildrenSupplier = (Day, Time) => ?React.Component;
 
 type Props = {
-  childrenFor: (day: Day, time: Time) => ?React.Component,
+  children: (props: { day: Day, time: Time }) => ?React.Component,
 };
 
 const timeLabels: { [Time]: string } = {
@@ -18,40 +18,43 @@ const timeLabels: { [Time]: string } = {
 };
 
 export default function TimeslotTable(props: Props) {
-  const { childrenFor } = props;
   const times = clone(TimesOfDay);
   const days = clone(DaysOfWeek);
 
   const hasChildren = (day, time) => {
-    const children = childrenFor(day, time);
-    return React.Children.count(children) === 0;
+    const children = props.children({ day, time });
+    return React.Children.count(children) > 0;
   };
 
   // Remove Saturday if there are no children on Sat
-  if (times.every(time => hasChildren('Saturday', time))) {
+  if (times.every(time => !hasChildren('Saturday', time))) {
     days.pop();
   }
 
-  if (days.every(day => hasChildren(day, 'Evening'))) {
+  if (days.every(day => !hasChildren(day, 'Evening'))) {
     times.pop();
   }
 
   return (
     <table className="module-timeslot-table">
-      <tr className="module-timeslot-row">
-        <th />
-        {days.map(day => (
-          <th className="module-timeslot-day-label">{ day[0] }</th>
-        ))}
-      </tr>
-      {times.map(time => (
+      <thead>
         <tr className="module-timeslot-row">
-          <th className="module-timeslot-time-label">{ timeLabels[time] }</th>
+          <th />
           {days.map(day => (
-            <td>{ childrenFor(day, time) }</td>
+            <th key={`heading-${day}`} className="module-timeslot-day-label">{ day[0] }</th>
           ))}
         </tr>
-      ))}
+      </thead>
+      <tbody>
+        {times.map(time => (
+          <tr className="module-timeslot-row" key={`row-${time}`}>
+            <th className="module-timeslot-time-label">{ timeLabels[time] }</th>
+            {days.map(day => (
+              <td key={`cell-${day}-${time}`}>{ props.children({ day, time }) }</td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
     </table>
   );
 }
