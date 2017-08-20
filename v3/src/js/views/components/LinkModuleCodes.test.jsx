@@ -17,23 +17,25 @@ describe('LinkModuleCodesComponent', () => {
 
   test('should convert module codes to links', () => {
     const modules = ['CS1010FC', 'CS1020', 'ACC1000', 'BMA5000A'];
-    const component = create('CS1010FC, CS1020, ACC1000, BMA5000A', modules);
+    const component = create('CS1010FC, CS1020, ACC1000, BMA 5000A', modules);
     const links = component.find('Link');
     expect(links).toHaveLength(4);
 
     links.forEach((a, index) => {
-      expect(a.text()).toEqual(modules[index]);
+      expect(a.text().replace(' ', '')).toEqual(modules[index]);
       expect(a.prop('to')).toContain(modules[index]);
     });
   });
 
   test('should keep text unchanged', () => {
-    const noModules = create('This text does not contain module codes');
-    expect(noModules.text()).toEqual('This text does not contain module codes');
+    const noModulesText = 'This text does not contain module codes';
+    const noModules = create(noModulesText);
+    expect(noModules.text()).toEqual(noModulesText);
 
-    const mixedModules = create('LSM1000This text has CS1010S random module coPS1101Edes in it',
+    const mixedModulesText = 'LSM1000This text has CS 1010S random module coPS1101Edes in it';
+    const mixedModules = create(mixedModulesText,
       ['LSM1000', 'CS1010S', 'PS1101E']);
-    expect(mixedModules.text()).toEqual('LSM1000This text has CS1010S random module coPS1101Edes in it');
+    expect(mixedModules.text()).toEqual(mixedModulesText);
   });
 
   test('should check words only', () => {
