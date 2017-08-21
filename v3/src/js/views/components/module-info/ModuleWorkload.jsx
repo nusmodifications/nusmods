@@ -27,7 +27,10 @@ type WorkloadBlock = {
 };
 
 export default function (props: Props) {
-  const workload = _.entries(parseWorkload(props.workload));
+  const workloadMap = parseWorkload(props.workload);
+  if (typeof workloadMap === 'string') return workloadMap;
+
+  const workload = _.entries(workloadMap);
   const total = _.sumBy(workload, ([, hours]) => hours);
 
   if (!props.workload || !total) return null;

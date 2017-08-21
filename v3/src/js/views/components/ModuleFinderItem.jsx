@@ -49,7 +49,9 @@ export default function ModuleFinderItem(props: Props) {
 
         <div className="col-lg-4 col-md-12 col-sm-4">
           <ModuleSemesterInfo semesters={module.History} />
-          <ModuleWorkload workload={module.Workload} />
+          {module.Workload &&
+            <ModuleWorkload workload={module.Workload} />
+          }
         </div>
       </div>
 

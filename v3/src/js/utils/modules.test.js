@@ -160,3 +160,59 @@ test('parseWorkload should break workload down to components', () => {
     Preparation: 3,
   });
 });
+
+test('parseWorkload should parse decimal workloads', () => {
+  expect(parseWorkload('2.5-0.5-0-3-4')).toEqual({
+    Lecture: 2.5,
+    Tutorial: 0.5,
+    Project: 3,
+    Preparation: 4,
+  });
+
+  expect(parseWorkload('0-1-0-0-0.25')).toEqual({
+    Tutorial: 1,
+    Preparation: 0.25,
+  });
+
+  expect(parseWorkload('0.0-0.0-0.0-20.0-0.0')).toEqual({
+    Project: 20,
+  });
+});
+
+test('parseWorkload should handle unusual workload strings', () => {
+  // Extract all workload strings using jq
+  // cat moduleInformation.json | jq '.[] | [.ModuleCode, .Workload] | join(": ")'
+
+  // HY5660 / HY6660
+  expect(parseWorkload('NA-NA-NA-NA-10')).toEqual({
+    Preparation: 10,
+  });
+
+  // MKT3402A/B
+  expect(parseWorkload('3-0-0-5-3 (tentative)')).toEqual({
+    Lecture: 3,
+    Project: 5,
+    Preparation: 3,
+  });
+
+  expect(parseWorkload('3(sectional)-0-0-4-3')).toEqual({
+    Lecture: 3,
+    Project: 4,
+    Preparation: 3,
+  });
+});
+
+test('parseWorkload should return input string as is if it cannot be parse', () => {
+  const invalidInputs = [
+    '',
+    'approximately 120 hours of independent study and research and consultation with a NUS lecturer.',
+    'Varies depending on individual student with their supervisor',
+    '16 weeks of industrial attachment',
+    'See remarks',
+    'Lectures: 450 hours, Clinics: 3150 hours, Seminars/Tutorial: 450 hours,Technique/Practical: 450 hou',
+  ];
+
+  invalidInputs.forEach((input) => {
+    expect(parseWorkload(input)).toEqual(input);
+  });
+});

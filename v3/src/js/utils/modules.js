@@ -67,8 +67,14 @@ export function getFirstAvailableSemester(
 }
 
 // Parse the workload string into individual components
-export function parseWorkload(workloadString: ?string): { [WorkloadComponent]: number } {
-  if (!workloadString) return {};
+export type Workload = { [WorkloadComponent]: number } | string;
+export function parseWorkload(workloadString: string): Workload {
+  const cleanedWorkloadString = workloadString
+    .replace(/\(.*?\)/g, '') // Remove stuff in parenthesis
+    .replace(/NA/g, '0') // Replace 'NA' with 0
+    .replace(/\s+/g, ''); // Remove whitespace
+
+  if (!/((^|-)([\d.]+)){5}/.test(cleanedWorkloadString)) return workloadString;
   // Workload string is formatted as A-B-C-D-E where
   // A: no. of lecture hours per week
   // B: no. of tutorial hours per week
@@ -77,12 +83,12 @@ export function parseWorkload(workloadString: ?string): { [WorkloadComponent]: n
   // E: no. of hours for preparatory work by a student per week
   // Taken from CORS:
   // https://myaces.nus.edu.sg/cors/jsp/report/ModuleDetailedInfo.jsp?acad_y=2017/2018&sem_c=1&mod_c=CS2105
-  const hours = workloadString.split(/\s*-\s*/);
+  const hours = workloadString.split('-');
   const components = ['Lecture', 'Tutorial', 'Laboratory', 'Project', 'Preparation'];
 
   const workload = {};
   _.zip(components, hours).forEach(([component, hourString]) => {
-    const hour = parseInt(hourString, 10);
+    const hour = parseFloat(hourString);
     if (!hour) return;
     workload[component] = hour;
   });
