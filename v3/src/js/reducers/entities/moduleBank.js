@@ -21,31 +21,39 @@ export type ModulesMap = {
 };
 export type ModuleBank = {
   moduleList: ModuleList,
-  moduleSelectList: ModuleSelectList,
   modules: ModulesMap,
+  moduleSelectList: ModuleSelectList,
+  moduleCodes: Set<ModuleCode>,
 };
 
 const defaultModuleBankState: ModuleBank = {
   moduleList: [], // List of modules
-  moduleSelectList: [],
   modules: {}, // Object of ModuleCode -> ModuleDetails
+  moduleSelectList: [],
+  moduleCodes: new Set(),
 };
 
 function moduleBank(state: ModuleBank = defaultModuleBankState, action: FSA): ModuleBank {
   switch (action.type) {
-    case FETCH_MODULE_LIST + RequestResultCases.SUCCESS:
+    case FETCH_MODULE_LIST + RequestResultCases.SUCCESS: {
+      // Cache a Set of all module codes for linking
+      const moduleCodes = new Set();
+      action.payload.forEach((module: ModuleCondensed) => moduleCodes.add(module.ModuleCode));
+
+      // Precompute this in reducer because putting this inside render is very expensive (5k modules!)
+      const moduleSelectList = action.payload.map((module: ModuleCondensed) => ({
+        semesters: module.Semesters,
+        value: module.ModuleCode,
+        label: `${module.ModuleCode} ${module.ModuleTitle}`,
+      }));
+
       return {
         ...state,
+        moduleSelectList,
+        moduleCodes,
         moduleList: action.payload,
-        // Precompute this in reducer because putting this inside render is very expensive (5k modules!)
-        moduleSelectList: action.payload.map((module: ModuleCondensed): ModuleSelectListItem => {
-          return {
-            semesters: module.Semesters,
-            value: module.ModuleCode,
-            label: `${module.ModuleCode} ${module.ModuleTitle}`,
-          };
-        }),
       };
+    }
     case FETCH_MODULE + RequestResultCases.SUCCESS:
       return {
         ...state,

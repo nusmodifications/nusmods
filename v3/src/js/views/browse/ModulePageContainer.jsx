@@ -12,6 +12,7 @@ import type { Module } from 'types/modules';
 import type { FetchRequest } from 'types/reducers';
 import { formatExamDate } from 'utils/modules';
 import type { TimetableConfig } from 'types/timetables';
+import LinkModuleCodes from 'views/components/LinkModuleCodes';
 import AddModuleButton from './AddModuleButton';
 import RemoveModuleButton from './RemoveModuleButton';
 import CorsBiddingStatsTableControl from './CorsBiddingStatsTableControl';
@@ -116,33 +117,52 @@ export class ModulePageContainer extends Component {
           {this.props.fetchModuleRequest.isPending && !module ?
             <p>Loading...</p> : null
           }
-          {this.props.fetchModuleRequest.isFailure ? <p>Module not found</p> : null}
-          {this.props.fetchModuleRequest.isSuccessful || module ?
+          {this.props.fetchModuleRequest.isFailure && <p>Module not found</p> }
+          {(this.props.fetchModuleRequest.isSuccessful || module) &&
             <div>
               <h1 className="page-title">{module.ModuleCode} {module.ModuleTitle}</h1>
               <hr />
               <dl className="row">
-                {module.ModuleDescription ? <dt className="col-sm-3">Description</dt> : null}
-                {module.ModuleDescription ?
-                  <dd className="col-sm-9">{module.ModuleDescription}</dd> : null}
+                {module.ModuleDescription && [
+                  <dt className="col-sm-3">Description</dt>,
+                  <dd className="col-sm-9">{module.ModuleDescription}</dd>,
+                ]}
 
-                {module.ModuleCredit ? <dt className="col-sm-3">Module Credits (MCs)</dt> : null}
-                {module.ModuleCredit ? <dd className="col-sm-9">{module.ModuleCredit}</dd> : null}
+                {module.ModuleCredit && [
+                  <dt className="col-sm-3">Module Credits (MCs)</dt>,
+                  <dd className="col-sm-9">{module.ModuleCredit}</dd>,
+                ]}
 
-                {module.Prerequisite ? <dt className="col-sm-3">Prerequisite(s)</dt> : null}
-                {module.Prerequisite ? <dd className="col-sm-9">{module.Prerequisite}</dd> : null}
+                {module.Prerequisite && [
+                  <dt className="col-sm-3">Prerequisite(s)</dt>,
+                  <dd className="col-sm-9">
+                    <LinkModuleCodes>{module.Prerequisite}</LinkModuleCodes>
+                  </dd>,
+                ]}
 
-                {module.Corequisite ? <dt className="col-sm-3">Corequisite(s)</dt> : null}
-                {module.Corequisite ? <dd className="col-sm-9">{module.Corequisite}</dd> : null}
+                {module.Corequisite && [
+                  <dt className="col-sm-3">Corequisite(s)</dt>,
+                  <dd className="col-sm-9">
+                    <LinkModuleCodes>{module.Corequisite}</LinkModuleCodes>
+                  </dd>,
+                ]}
 
-                {module.Preclusion ? <dt className="col-sm-3">Preclusion(s)</dt> : null}
-                {module.Preclusion ? <dd className="col-sm-9">{module.Preclusion}</dd> : null}
+                {module.Preclusion && [
+                  <dt className="col-sm-3">Preclusion(s)</dt>,
+                  <dd className="col-sm-9">
+                    <LinkModuleCodes>{module.Preclusion}</LinkModuleCodes>
+                  </dd>,
+                ]}
 
-                {module.Department ? <dt className="col-sm-3">Department</dt> : null}
-                {module.Department ? <dd className="col-sm-9">{module.Department}</dd> : null}
+                {module.Department && [
+                  <dt className="col-sm-3">Department</dt>,
+                  <dd className="col-sm-9">{module.Department}</dd>,
+                ]}
 
-                {module.Workload ? <dt className="col-sm-3">Weekly Workload</dt> : null}
-                {module.Workload ? <dd className="col-sm-9">{module.Workload}</dd> : null}
+                {module.Workload && [
+                  <dt className="col-sm-3">Weekly Workload</dt>,
+                  <dd className="col-sm-9">{module.Workload}</dd>,
+                ]}
 
                 {renderExaminations}
 
@@ -171,9 +191,8 @@ export class ModulePageContainer extends Component {
                 <p>Prerequisites are not available.</p>
               }
 
-              {module.CorsBiddingStats ?
+              {module.CorsBiddingStats &&
                 <CorsBiddingStatsTableControl stats={module.CorsBiddingStats} />
-                : null
               }
 
               <LessonTimetableControl
@@ -188,7 +207,7 @@ export class ModulePageContainer extends Component {
                 url={`https://nusmods.com/modules/${module.ModuleCode}/reviews`}
               />
 
-            </div> : null
+            </div>
           }
         </div>
       </DocumentTitle>

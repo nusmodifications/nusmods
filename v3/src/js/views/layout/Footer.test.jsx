@@ -12,11 +12,9 @@ test('is a footer element', () => {
 test('contains guards against target_blank', () => {
   const footer = shallow(<Footer />);
   const links = footer.find('a');
-  let result = true;
   links.forEach((a) => {
-    if (result && a.prop('target') === '_blank') {
-      result = a.prop('rel') === 'noopener noreferrer';
+    if (a.prop('target') === '_blank') {
+      expect(a.prop('rel')).toEqual('noopener noreferrer');
     }
   });
-  expect(result).toBe(true);
 });
