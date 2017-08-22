@@ -8,7 +8,7 @@ import config from 'config';
 
 import { loadModule } from 'actions/moduleBank';
 import { addModule, removeModule } from 'actions/timetables';
-import type { Module } from 'types/modules';
+import type { Module, Semester } from 'types/modules';
 import type { FetchRequest } from 'types/reducers';
 import { formatExamDate } from 'utils/modules';
 import type { TimetableConfig } from 'types/timetables';
@@ -46,7 +46,7 @@ export class ModulePageContainer extends Component {
     this.props.loadModule(props.moduleCode);
   }
 
-  semestersOffered(): number[] {
+  semestersOffered(): Semester[] {
     return this.props.module && this.props.module.History ? (
       this.props.module.History
         .sort((a, b) => a.Semester - b.Semester)
@@ -63,7 +63,7 @@ export class ModulePageContainer extends Component {
       : [];
   }
 
-  moduleHasBeenAdded(module: Module, semester: number): boolean {
+  moduleHasBeenAdded(module: Module, semester: Semester): boolean {
     if (!module) {
       return false;
     }

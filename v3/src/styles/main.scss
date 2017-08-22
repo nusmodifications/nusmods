@@ -12,6 +12,7 @@
 @import 'utils/hacks';
 @import 'utils/mixins';
 @import 'utils/animations';
+@import 'utils/workload';
 
 // Theme
 @import 'themes';
@@ -21,7 +22,11 @@
 @import 'layout/nav';
 @import 'layout/footer';
 
+// Components
+@import 'components/loading-spinner';
+
 // Pages
 @import 'pages/timetable';
 @import 'pages/modules';
+@import 'pages/module-finder';
 @import 'pages/settings';

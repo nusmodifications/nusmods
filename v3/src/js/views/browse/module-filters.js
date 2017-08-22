@@ -8,7 +8,7 @@ import FilterGroup from 'utils/filters/FilterGroup';
 import { DaysOfWeek, TimesOfDay } from 'types/modules';
 import type { Day, Time } from 'types/modules';
 
-const timeslots: Array<[Day, Time]> = _.flatMap(DaysOfWeek, (day): Array<[Day, Time]> => {
+const timeslots: [Day, Time][] = _.flatMap(DaysOfWeek, (day): [Day, Time][] => {
   return TimesOfDay.map(time => [day, time]);
 });
 
@@ -28,11 +28,11 @@ export const tutorialTimeslots = new FilterGroup(
 );
 
 export const moduleCredits = new FilterGroup('Module Credit', [
-  new Filter('0-3', module => parseInt(module.ModuleCredit, 10) <= 3),
-  new Filter('4', module => module.ModuleCredit === '4'),
-  new Filter('5-8', (module) => {
+  new Filter('0-3 MC', module => parseInt(module.ModuleCredit, 10) <= 3),
+  new Filter('4 MC', module => module.ModuleCredit === '4'),
+  new Filter('5-8 MC', (module) => {
     const credits = parseInt(module.ModuleCredit, 10);
     return credits >= 5 && credits <= 8;
   }),
-  new Filter('> 8', module => parseInt(module.ModuleCredit, 10) > 8),
+  new Filter('More than 8 MC', module => parseInt(module.ModuleCredit, 10) > 8),
 ]);

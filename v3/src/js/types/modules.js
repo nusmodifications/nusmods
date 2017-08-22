@@ -13,7 +13,7 @@ export type LessonType = string; // E.g. "Lecture", "Tutorial"
 export type LessonTime = StartTime | EndTime;
 export type ModuleCode = string; // E.g. "CS3216"
 export type ModuleTitle = string;
-export type Semester = number;
+export type Semester = 1 | 2 | 3 | 4;
 export type Venue = string;
 export type WeekText = string; // E.g. "Every Week", "Odd Week"
 
@@ -40,6 +40,9 @@ export const TimesOfDay = Object.keys(TimesOfDayEnum);
 export type Time = $Keys<typeof TimesOfDayEnum>;
 
 export type ModuleLevel = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+export const Semesters = [1, 2, 3, 4];
+
+export type WorkloadComponent = 'Lecture' | 'Tutorial' | 'Laboratory' | 'Project' | 'Preparation';
 
 // BiddingStat is CORS bidding stats for a particular round for a module.
 export type BiddingStat = {

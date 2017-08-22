@@ -1,0 +1,150 @@
+.modules-page-container {
+  animation-name: $page-entering-animation;
+}
+
+.module-filters {
+  h3 {
+    font-size: $font-size-lg;
+  }
+
+  h4 {
+    font-size: $font-size-sm;
+  }
+
+  label {
+    font-size: $font-size-xs;
+  }
+}
+
+.modules-list {
+  display: inline-block;
+  list-style: none;
+  padding: 0;
+
+  .modules-item {
+    margin: 0.5rem 0;
+    padding: 1rem 0;
+
+    footer {
+      border-top: 1px solid $gray-lighter;
+      padding-top: 0.8rem;
+      margin-top: 0.8rem;
+    }
+  }
+
+  .modules-title {
+    font-size: 1.25rem;
+    font-weight: normal;
+  }
+}
+
+// Semester Info
+.module-semester-container {
+  margin-bottom: 1rem;
+
+  section {
+    margin-bottom: 1rem;
+  }
+
+  .btn-group {
+    display: flex;
+    margin-bottom: 1rem;
+
+    .btn {
+      flex: 1 auto;
+      font-size: $font-size-xs;
+    }
+  }
+
+  h4 {
+    font-size: $font-size-sm;
+    margin-bottom: 0;
+    font-weight: bold;
+  }
+}
+
+// Workload
+.module-workload-container {
+  margin-bottom: 1rem;
+
+  h4 {
+    font-size: $font-size-sm;
+    margin-bottom: 0;
+    font-weight: bold;
+  }
+}
+
+.module-workload {
+  display: flex;
+  flex-wrap: wrap;
+
+  .module-workload-component {
+    overflow: hidden;
+  }
+
+  .module-workload-label {
+    font-weight: bold;
+    font-size: $font-size-xs;
+  }
+
+  .module-workload-blocks {
+    display: flex;
+    margin-bottom: 1px;
+
+    div {
+      flex: 1 auto;
+      height: 30px;
+      margin-right: 1px;
+    }
+  }
+}
+
+// Timeslot
+.module-timeslot-table {
+  width: 100%;
+  table-layout: fixed;
+
+  th {
+    font-size: $font-size-xs;
+    font-weight: normal;
+
+    &:first-child {
+      border-right: 1px solid $gray-light;
+    }
+  }
+
+  thead th {
+    border-bottom: 1px solid $gray-light;
+  }
+
+  .module-timeslot-time-label {
+    text-align: right;
+    padding-right: 0.2rem;
+  }
+
+  .module-timeslot-day-label {
+    text-align: center;
+  }
+
+  td {
+    position: relative;
+    border: 1px solid $white;
+    overflow: hidden;
+
+    div {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      left: 0;
+
+      // Timeslot has both lecture and tutorial - we create a split cell effect
+      // with a skew to show that it is on the same day (if the edge is straight
+      // it may look like the edge of a cell)
+      &.workload-lecture-bg + .workload-tutorial-bg {
+        z-index: 1;
+        transform: skewX(-45deg) translateX(50%);
+      }
+    }
+  }
+}

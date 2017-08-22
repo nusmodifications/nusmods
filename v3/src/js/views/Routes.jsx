@@ -12,12 +12,12 @@ import DevelopersContainer from 'views/static/DevelopersContainer';
 import FaqContainer from 'views/static/FaqContainer';
 import NotFoundPage from 'views/NotFoundPage';
 
-import Loader from 'views/Loader';
+import LoadingSpinner from 'views/LoadingSpinner';
 
 // Define Async components using react-loadable
 const ModulesContainer = Loadable({
   loader: () => import('views/browse/ModulePageContainer'),
-  loading: Loader,
+  loading: LoadingSpinner,
   delay: 2000,
 });
 

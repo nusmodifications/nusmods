@@ -8,7 +8,7 @@ import type { DayText, LessonTime, Lesson } from 'types/modules';
 export function convertTimeToIndex(time: LessonTime): number {
   const hour: number = parseInt(time.substring(0, 2), 10);
   const minute: string = time.substring(2);
-  /* eslint-disable quote-props */
+  // eslint-disable-next-line quote-props
   return (hour * 2) + { '00': 0, '30': 1, '59': 2 }[minute];
 }
 

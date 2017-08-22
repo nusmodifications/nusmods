@@ -1,18 +1,18 @@
 // @flow
 
+/** @var {Module} */
 import cs1010s from '__mocks__/modules/CS1010S.json';
+/** @var {Module} */
 import cs3216 from '__mocks__/modules/CS3216.json';
 
 import Combinatorics from 'js-combinatorics';
-import { DaysOfWeek, TimesOfDay } from 'types/modules';
-import type { Semester } from 'types/modules';
+import { DaysOfWeek, TimesOfDay, Semesters } from 'types/modules';
 import TimeslotFilter, { TimeslotTypes } from './TimeslotFilter';
 import { testFilter } from './filter-test-helpers';
 
 test('test should filter modules according to their lecture timeslot', () => {
   // Generate all possible combinations of parameters to test against
-  const semesters: Array<Semester> = [1, 2, 3, 4];
-  const possibleArgs = Combinatorics.cartesianProduct(DaysOfWeek, TimesOfDay, TimeslotTypes, semesters);
+  const possibleArgs = Combinatorics.cartesianProduct(DaysOfWeek, TimesOfDay, TimeslotTypes, Semesters);
 
   testFilter(TimeslotFilter, cs1010s, possibleArgs, [
     ['Wednesday', 'Morning', 'Lecture', 1],

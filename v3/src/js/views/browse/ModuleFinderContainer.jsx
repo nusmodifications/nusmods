@@ -5,8 +5,10 @@ import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 import update from 'immutability-helper';
 
-import ModuleFinderItem from 'views/components/ModuleFinderItem';
+import ModuleFinderList from 'views/browse/ModuleFinderList';
 import ChecklistFilters from 'views/components/filters/ChecklistFilters';
+import LoadingSpinner from 'views/LoadingSpinner';
+
 import {
   levels,
   moduleCredits,
@@ -54,29 +56,32 @@ class ModuleFinderContainer extends React.Component {
   }
 
   render() {
-    const { filterGroups, modules } = this.state;
+    const { filterGroups, modules, loading } = this.state;
 
     return (
       <DocumentTitle title={`Modules - ${config.brandName}`}>
         <div className="modules-page-container page-container">
           <div className="row">
-            <div className="col-md-8">
+            <div className="col-md-9">
               <h1 className="page-title">Module Finder</h1>
-              <ul className="modules-list">
-                {modules.slice(0, 30).map((module) => {
-                  return <ModuleFinderItem module={module} />;
-                })}
-              </ul>
+              {loading ? <LoadingSpinner /> : <ModuleFinderList
+                filterGroups={Object.values(filterGroups)}
+                modules={modules}
+              />}
             </div>
 
-            <div className="col-md-4">
-              {Object.entries(filterGroups).map(([key, collection]) => {
-                return (<ChecklistFilters
-                  collection={collection}
-                  modules={modules}
-                  onFilterChange={this.onFilterToggle(key)}
-                />);
-              })}
+            <div className="col-md-3">
+              <div className="module-filters">
+                <h3>Search Options</h3>
+                {Object.entries(filterGroups).map(([key, group]) => {
+                  return (<ChecklistFilters
+                    key={key}
+                    group={group}
+                    modules={modules}
+                    onFilterChange={this.onFilterToggle(key)}
+                  />);
+                })}
+              </div>
             </div>
           </div>
         </div>

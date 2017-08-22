@@ -8,25 +8,25 @@ import ModuleFilter from 'utils/filters/ModuleFilter';
 
 type Props = {
   onFilterChange: OnFilterChange,
-  collection: FilterGroup<*>,
-  modules: Array<Module>,
+  group: FilterGroup<*>,
+  modules: Module[],
 };
 
 export default function ChecklistFilters(props: Props) {
-  const { collection, modules, onFilterChange } = props;
+  const { group, modules, onFilterChange } = props;
 
   return (
     <div>
-      <h3>{ collection.label }</h3>
+      <h4>{ group.label }</h4>
       <ul className="list-unstyled">
-        {values(collection.filters).map((filter: ModuleFilter) => (
+        {values(group.filters).map((filter: ModuleFilter) => (
           <li key={filter.label}>
             <label className="form-check-label">
               <input
                 className="form-check-input"
                 type="checkbox"
                 checked={filter.enabled}
-                onChange={() => onFilterChange(collection.toggle(filter.label))}
+                onChange={() => onFilterChange(group.toggle(filter.label))}
               />
               {filter.label} <span className="text-muted">({filter.count(modules)})</span>
             </label>

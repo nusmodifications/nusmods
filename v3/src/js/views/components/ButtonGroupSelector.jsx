@@ -3,32 +3,50 @@
 import React from 'react';
 import classnames from 'classnames';
 
+type ButtonChoice = string;
+
 type Props = {
-  choices: string[],
-  selectedChoice: ?string,
+  choices: ButtonChoice[],
+  attrs?: { [ButtonChoice]: Object },
+  classNames?: { [ButtonChoice]: string[] },
+  size?: string,
+  selectedChoice?: ButtonChoice,
   onChoiceSelect: Function,
-  ariaLabel: ?string,
+  ariaLabel?: string,
 };
 
 export default function ButtonGroupSelector(props: Props) {
-  const { choices, selectedChoice, onChoiceSelect, ariaLabel = 'Choices' } = props;
+  const {
+    choices,
+    selectedChoice,
+    onChoiceSelect,
+    classNames = {},
+    attrs = {},
+    ariaLabel = 'Choices',
+  } = props;
 
-  const buttons = choices.map(choice =>
-    (<button
+  const buttons = choices.map((choice) => {
+    const attr = attrs[choice] || {};
+    const className = classNames[choice] || [];
+
+    return (<button
+      {...attr}
       key={choice}
       onClick={() => onChoiceSelect(choice)}
       type="button"
-      className={classnames('btn', {
+      className={classnames('btn', ...className, {
         'btn-primary': selectedChoice === choice,
-        'btn-secondary': selectedChoice !== choice,
+        'btn-outline-primary': selectedChoice !== choice,
       })}
     >
       {choice}
-    </button>),
-  );
+    </button>);
+  });
+
+  const sizeClassName = props.size ? `btn-group-${props.size}` : null;
 
   return (
-    <div className="btn-group btn-group-sm" role="group" aria-label={ariaLabel}>
+    <div className={classnames('btn-group', sizeClassName)} role="group" aria-label={ariaLabel}>
       {buttons}
     </div>
   );
