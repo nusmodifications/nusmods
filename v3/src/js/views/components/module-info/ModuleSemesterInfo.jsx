@@ -1,9 +1,10 @@
 // @flow
 
 import React from 'react';
+import type { Node } from 'react';
 import _ from 'lodash';
 import config from 'config';
-import type { SemesterData, Day, Time } from 'types/modules';
+import type { SemesterData } from 'types/modules';
 import { getFirstAvailableSemester, formatExamDate } from 'utils/modules';
 import ButtonGroupSelector from 'views/components/ButtonGroupSelector';
 import TimeslotTable from './TimeslotTable';
@@ -55,17 +56,27 @@ export default class ModuleSemesterInfo extends React.Component {
     return this.semesterMap()[this.state.selected];
   }
 
-  timeslotChildren(day: Day, time: Time): React.Component {
+  timeslotChildren(): Map<string, Node> {
     const semester = this.selectedSemester() || {};
     const {
       LecturePeriods: lectures = [],
       TutorialPeriods: tutorials = [],
     } = semester;
 
-    const timeslot = `${day} ${time}`;
-    const children = [];
-    if (lectures.includes(timeslot)) children.push(<div className="workload-lecture-bg" />);
-    if (tutorials.includes(timeslot)) children.push(<div className="workload-tutorial-bg" />);
+    const children = new Map();
+    const addChild = (timeslot, component) => {
+      let child = children.get(timeslot);
+      if (!child) {
+        child = [];
+        children.set(timeslot, child);
+      }
+
+      child.push(component);
+    };
+
+    lectures.forEach(timeslot => addChild(timeslot, <div className="workload-lecture-bg" key="lecture" />));
+    tutorials.forEach(timeslot => addChild(timeslot, <div className="workload-tutorial-bg" key="tutorial" />));
+
     return children;
   }
 
@@ -102,7 +113,7 @@ export default class ModuleSemesterInfo extends React.Component {
 
           { this.showTimeslots() && <section className="module-timeslots">
             <h4>Timetable</h4>
-            <TimeslotTable>{({ day, time }) => this.timeslotChildren(day, time)}</TimeslotTable>
+            <TimeslotTable>{ this.timeslotChildren() }</TimeslotTable>
           </section>}
         </div>}
       </div>

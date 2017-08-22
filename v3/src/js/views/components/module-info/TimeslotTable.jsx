@@ -1,14 +1,14 @@
 // @flow
 
 import React from 'react';
+import type { Node } from 'react';
 import { clone } from 'lodash';
 import { DaysOfWeek, TimesOfDay } from 'types/modules';
-import type { Day, Time } from 'types/modules';
-
-export type TimeslotChildrenSupplier = (Day, Time) => ?React.Component;
+import type { Time } from 'types/modules';
+import { getTimeslot } from 'utils/modules';
 
 type Props = {
-  children: (props: { day: Day, time: Time }) => ?React.Component,
+  children: Map<string, Node>,
 };
 
 const timeLabels: { [Time]: string } = {
@@ -22,15 +22,16 @@ export default function TimeslotTable(props: Props) {
   const days = clone(DaysOfWeek);
 
   const hasChildren = (day, time) => {
-    const children = props.children({ day, time });
-    return React.Children.count(children) > 0;
+    const timeslot = getTimeslot(day, time);
+    return React.Children.count(props.children.get(timeslot)) > 0;
   };
 
-  // Remove Saturday if there are no children on Sat
+  // Remove Saturday if there are no children on Saturday
   if (times.every(time => !hasChildren('Saturday', time))) {
     days.pop();
   }
 
+  // Remove evening if there are no evening children
   if (days.every(day => !hasChildren(day, 'Evening'))) {
     times.pop();
   }
@@ -50,7 +51,7 @@ export default function TimeslotTable(props: Props) {
           <tr className="module-timeslot-row" key={`row-${time}`}>
             <th className="module-timeslot-time-label">{ timeLabels[time] }</th>
             {days.map(day => (
-              <td key={`cell-${day}-${time}`}>{ props.children({ day, time }) }</td>
+              <td key={`cell-${day}-${time}`}>{ props.children.get(getTimeslot(day, time)) }</td>
             ))}
           </tr>
         ))}

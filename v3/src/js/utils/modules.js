@@ -7,6 +7,8 @@ import type {
   Semester,
   SemesterData,
   WorkloadComponent,
+  Time,
+  Day,
 } from 'types/modules';
 import _ from 'lodash';
 import config from 'config';
@@ -94,4 +96,8 @@ export function parseWorkload(workloadString: string): Workload {
   });
 
   return workload;
+}
+
+export function getTimeslot(day: Day, time: Time): string {
+  return `${day} ${time}`;
 }

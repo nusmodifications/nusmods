@@ -1,13 +1,26 @@
 // @flow
 
 import React from 'react';
+import type { Node } from 'react';
 import { shallow } from 'enzyme';
+import { cartesianProduct } from 'js-combinatorics';
 
+import { DaysOfWeek, TimesOfDay } from 'types/modules';
+import type { Day, Time } from 'types/modules';
+import { getTimeslot } from 'utils/modules';
 import TimeslotTable from './TimeslotTable';
+
+function buildChildren(mapper: (day: Day, time: Time) => Node) {
+  const children = new Map();
+  cartesianProduct(DaysOfWeek, TimesOfDay).forEach(([day, time]) => {
+    children.set(getTimeslot(day, time), mapper(day, time));
+  });
+  return children;
+}
 
 test('should show children', () => {
   const table = shallow(
-    <TimeslotTable>{ ({ day, time }) => `${day} ${time}` }</TimeslotTable>,
+    <TimeslotTable>{ buildChildren((day, time) => getTimeslot(day, time)) }</TimeslotTable>,
   );
   const tr = table.find('tr');
 
@@ -22,13 +35,8 @@ test('should show children', () => {
 });
 
 test('should not show Saturday column if it has no content', () => {
-  const children = ({ day }) => {
-    if (day !== 'Saturday') return day;
-    return null;
-  };
-
   const table = shallow(
-    <TimeslotTable>{ children }</TimeslotTable>,
+    <TimeslotTable>{ buildChildren(day => (day === 'Saturday' ? null : day)) }</TimeslotTable>,
   );
 
   // Each row should have 1 th + 6 td (no Saturday)
@@ -36,13 +44,8 @@ test('should not show Saturday column if it has no content', () => {
 });
 
 test('should not show Evening row if it has no content', () => {
-  const children = ({ time }) => {
-    if (time !== 'Evening') return time;
-    return null;
-  };
-
   const table = shallow(
-    <TimeslotTable>{ children }</TimeslotTable>,
+    <TimeslotTable>{ buildChildren((day, time) => (time === 'Evening' ? null : time)) }</TimeslotTable>,
   );
 
   // Table should have 3 rows (no Evening)
