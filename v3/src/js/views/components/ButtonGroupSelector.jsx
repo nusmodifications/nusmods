@@ -1,10 +1,8 @@
 // @flow
-
 import React from 'react';
 import classnames from 'classnames';
 
 type ButtonChoice = string;
-
 type Props = {
   choices: ButtonChoice[],
   attrs?: { [ButtonChoice]: Object },

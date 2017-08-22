@@ -3,11 +3,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
+import type { AccountType, BiddingStat, Faculty, Student } from 'types/modules';
+
 import { selectNewStudent, selectFaculty } from 'actions/settings';
 import AccountSelect from 'views/components/AccountSelect';
 import FacultySelect from 'views/components/FacultySelect';
 import NewStudentSelect from 'views/components/NewStudentSelect';
-import type { AccountType, BiddingStat, Faculty, Student } from 'types/modules';
 import ButtonGroupSelector from 'views/components/ButtonGroupSelector';
 import { isStatRelevantForStudent } from 'utils/cors';
 import CorsBiddingStatsTable from './CorsBiddingStatsTable';

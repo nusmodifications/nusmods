@@ -2,6 +2,7 @@
 import React from 'react';
 
 import type { LessonType, RawLesson } from 'types/modules';
+
 import Table from 'views/components/Table';
 
 type Props = {

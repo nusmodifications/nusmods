@@ -6,12 +6,13 @@ import ReactDisqusThread from 'react-disqus-thread';
 import DocumentTitle from 'react-document-title';
 import config from 'config';
 
-import { loadModule } from 'actions/moduleBank';
-import { addModule, removeModule } from 'actions/timetables';
 import type { Module, Semester } from 'types/modules';
 import type { FetchRequest } from 'types/reducers';
-import { formatExamDate } from 'utils/modules';
 import type { TimetableConfig } from 'types/timetables';
+
+import { loadModule } from 'actions/moduleBank';
+import { addModule, removeModule } from 'actions/timetables';
+import { formatExamDate } from 'utils/modules';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
 import AddModuleButton from './AddModuleButton';
 import RemoveModuleButton from './RemoveModuleButton';
@@ -114,10 +115,8 @@ export class ModulePageContainer extends Component {
     return (
       <DocumentTitle title={documentTitle}>
         <div className="module-container">
-          {this.props.fetchModuleRequest.isPending && !module ?
-            <p>Loading...</p> : null
-          }
-          {this.props.fetchModuleRequest.isFailure && <p>Module not found</p> }
+          {this.props.fetchModuleRequest.isPending && !module && <p>Loading...</p>}
+          {this.props.fetchModuleRequest.isFailure && <p>Module not found</p>}
           {(this.props.fetchModuleRequest.isSuccessful || module) &&
             <div>
               <h1 className="page-title">{module.ModuleCode} {module.ModuleTitle}</h1>
@@ -127,86 +126,69 @@ export class ModulePageContainer extends Component {
                   <dt className="col-sm-3">Description</dt>,
                   <dd className="col-sm-9">{module.ModuleDescription}</dd>,
                 ]}
-
                 {module.ModuleCredit && [
                   <dt className="col-sm-3">Module Credits (MCs)</dt>,
                   <dd className="col-sm-9">{module.ModuleCredit}</dd>,
                 ]}
-
                 {module.Prerequisite && [
                   <dt className="col-sm-3">Prerequisite(s)</dt>,
                   <dd className="col-sm-9">
                     <LinkModuleCodes>{module.Prerequisite}</LinkModuleCodes>
                   </dd>,
                 ]}
-
                 {module.Corequisite && [
                   <dt className="col-sm-3">Corequisite(s)</dt>,
                   <dd className="col-sm-9">
                     <LinkModuleCodes>{module.Corequisite}</LinkModuleCodes>
                   </dd>,
                 ]}
-
                 {module.Preclusion && [
                   <dt className="col-sm-3">Preclusion(s)</dt>,
                   <dd className="col-sm-9">
                     <LinkModuleCodes>{module.Preclusion}</LinkModuleCodes>
                   </dd>,
                 ]}
-
                 {module.Department && [
                   <dt className="col-sm-3">Department</dt>,
                   <dd className="col-sm-9">{module.Department}</dd>,
                 ]}
-
                 {module.Workload && [
                   <dt className="col-sm-3">Weekly Workload</dt>,
                   <dd className="col-sm-9">{module.Workload}</dd>,
                 ]}
-
                 {renderExaminations}
-
                 <dt className="col-sm-3">Semesters Offered</dt>
                 <dd className="col-sm-9">{semsOffered}</dd>
-
-                <dt className="col-sm-3">Offical Links</dt>
+                <dt className="col-sm-3">Official Links</dt>
                 <dd className="col-sm-9">
                   <ul className="nm-footer-links">
                     {ivleLink ? <li><a href={ivleLink}>IVLE</a></li> : null}
                     {corsLink ? <li><a href={corsLink}>CORS</a></li> : null}
                   </ul>
                 </dd>
-
                 <div>
                   {addOrRemoveToTimetableLinks}
                 </div>
-
               </dl>
-
               <hr />
-
               {module.ModmavenTree ?
                 <ModuleTree module={module} />
                 :
                 <p>Prerequisites are not available.</p>
               }
-
               {module.CorsBiddingStats &&
                 <CorsBiddingStatsTableControl stats={module.CorsBiddingStats} />
               }
-
               <LessonTimetableControl
                 semestersOffered={this.semestersOffered()}
                 history={module.History}
               />
-
               <ReactDisqusThread
                 shortname={config.disqusShortname}
                 identifier={module.ModuleCode}
                 title={`${module.ModuleCode} ${module.ModuleTitle}`}
                 url={`https://nusmods.com/modules/${module.ModuleCode}/reviews`}
               />
-
             </div>
           }
         </div>

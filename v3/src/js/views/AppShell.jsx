@@ -1,11 +1,11 @@
 // @flow
-import type { TimetableConfig, SemTimetableConfig } from 'types/timetables';
-import type { FetchRequest, ModuleList, ModuleSelectList } from 'types/reducers';
-
 import React, { Component } from 'react';
 import { NavLink, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import NUSModerator from 'nusmoderator';
+
+import type { TimetableConfig, SemTimetableConfig } from 'types/timetables';
+import type { FetchRequest, ModuleList, ModuleSelectList } from 'types/reducers';
 
 import config from 'config';
 import { fetchModuleList, loadModule } from 'actions/moduleBank';

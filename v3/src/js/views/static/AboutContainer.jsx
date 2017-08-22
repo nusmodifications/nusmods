@@ -7,7 +7,6 @@ export default function AboutContainer() {
       <div className="row">
         <div className="col-md-8 offset-md-1">
           <h3>A Brief History</h3>
-
           <p>
             NUSModifications (NUSMods) was founded in 2012 by <a href="http://benghee.eu/">Beng</a> to
             provide a better way for students to plan their school timetables.
@@ -18,7 +17,6 @@ export default function AboutContainer() {
           </p>
 
           <h3>Goals</h3>
-
           <p>
             In the long term, NUSMods strives to enhance the quality of students&apos;
             lives in school by serving as a one-stop platform that provides useful
@@ -34,7 +32,6 @@ export default function AboutContainer() {
           </p>
 
           <h3>Connect with Us!</h3>
-
           <p>
             We would love to hear your feedback and suggestions on how to make NUSMods even better.
             Please let us know them by leaving a comment

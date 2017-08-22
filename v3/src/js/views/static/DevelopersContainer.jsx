@@ -55,9 +55,7 @@ class DevelopersContainer extends Component {
             </em></p>
             <br /><br />
 
-            {this.state.isLoading &&
-              Loader
-            }
+            {this.state.isLoading && <Loader />}
             {this.state.isError &&
               <div className="alert alert-danger">
                 <strong>Something went wrong!</strong>

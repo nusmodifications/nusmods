@@ -1,10 +1,11 @@
 // @flow
-
 import React from 'react';
 import classnames from 'classnames';
 import _ from 'lodash';
-import { parseWorkload } from 'utils/modules';
+
 import type { WorkloadComponent } from 'types/modules';
+
+import { parseWorkload } from 'utils/modules';
 
 const ROW_MAX = 10;
 

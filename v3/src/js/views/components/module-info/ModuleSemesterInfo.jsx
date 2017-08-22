@@ -1,19 +1,20 @@
 // @flow
-
 import React from 'react';
-import type { Node } from 'react';
 import _ from 'lodash';
-import config from 'config';
+
+import type { Node } from 'react';
 import type { SemesterData } from 'types/modules';
+
+import config from 'config';
 import { getFirstAvailableSemester, formatExamDate } from 'utils/modules';
 import ButtonGroupSelector from 'views/components/ButtonGroupSelector';
 import TimeslotTable from './TimeslotTable';
 
-const semesterNames = config.shortSemesterNames;
-
 type Props = {
   semesters: SemesterData[],
 };
+
+const semesterNames = config.shortSemesterNames;
 
 export default class ModuleSemesterInfo extends React.Component {
   props: Props;

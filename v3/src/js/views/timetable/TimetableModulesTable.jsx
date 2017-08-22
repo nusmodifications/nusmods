@@ -1,13 +1,14 @@
 // @flow
-import type { ModuleWithColor, ModuleCode, Semester } from 'types/modules';
-import type { ColorIndex } from 'types/reducers';
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
-import ColorPicker from 'views/components/color-picker/ColorPicker';
 
+import type { ModuleWithColor, ModuleCode, Semester } from 'types/modules';
+import type { ColorIndex } from 'types/reducers';
+
+import ColorPicker from 'views/components/color-picker/ColorPicker';
 import { selectModuleColor, modifyModuleColor, cancelModifyModuleColor } from 'actions/theme';
 import { hideLessonInTimetable, showLessonInTimetable } from 'actions/settings';
 import { getModuleSemExamDate, modulePagePath } from 'utils/modules';

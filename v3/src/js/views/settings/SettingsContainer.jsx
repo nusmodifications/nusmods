@@ -1,17 +1,16 @@
 // @flow
-import type { Faculty } from 'types/modules';
-
 import React from 'react';
 import { connect } from 'react-redux';
 import DocumentTitle from 'react-document-title';
-import config from 'config';
 
+import type { Faculty } from 'types/modules';
+
+import config from 'config';
 import { selectTheme } from 'actions/theme';
 import { selectNewStudent, selectFaculty } from 'actions/settings';
 import availableThemes from 'data/themes.json';
 import FacultySelect from 'views/components/FacultySelect';
 import NewStudentSelect from 'views/components/NewStudentSelect';
-
 import ThemeOption from './ThemeOption';
 
 type Props = {

@@ -1,12 +1,13 @@
 // @flow
-
 import _ from 'lodash';
+
+import type { Day, Time } from 'types/modules';
+
 import LevelFilter from 'utils/filters/LevelFilter';
 import TimeslotFilter from 'utils/filters/TimeslotFilter';
 import Filter from 'utils/filters/ModuleFilter';
 import FilterGroup from 'utils/filters/FilterGroup';
 import { DaysOfWeek, TimesOfDay } from 'types/modules';
-import type { Day, Time } from 'types/modules';
 
 const timeslots: [Day, Time][] = _.flatMap(DaysOfWeek, (day): [Day, Time][] => {
   return TimesOfDay.map(time => [day, time]);

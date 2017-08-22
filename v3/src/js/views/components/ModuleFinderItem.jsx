@@ -2,8 +2,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { modulePagePath } from 'utils/modules';
 import type { Module } from 'types/modules';
+
+import { modulePagePath } from 'utils/modules';
 import ModuleSemesterInfo from './module-info/ModuleSemesterInfo';
 import ModuleWorkload from './module-info/ModuleWorkload';
 
@@ -25,28 +26,28 @@ export default function ModuleFinderItem(props: Props) {
               </Link>
             </h2>
           </header>
-
-          <p>{ module.ModuleDescription }</p>
-
+          <p>
+            <a>{module.Department}</a> &middot;&nbsp;
+            <a>{module.ModuleCredit} MCs</a>
+          </p>
+          <p>{module.ModuleDescription}</p>
           <dl>
-            { module.Preclusion && ([
+            {module.Preclusion && ([
               <dt key="preclusions-dt">Preclusions</dt>,
               <dd key="preclusions-dd">{module.Preclusion}</dd>,
             ])}
 
-            { module.Prerequisite && ([
+            {module.Prerequisite && ([
               <dt key="prerequisite-dt">Prerequisite</dt>,
               <dd key="prerequisite-dd">{module.Prerequisite}</dd>,
             ])}
 
-            { module.Corequisite && ([
+            {module.Corequisite && ([
               <dt key="corequisite-dt">Corequisite</dt>,
               <dd key="corequisite-dd">{module.Corequisite}</dd>,
             ])}
           </dl>
-
         </div>
-
         <div className="col-lg-4 col-md-12 col-sm-4">
           <ModuleSemesterInfo semesters={module.History} />
           {module.Workload &&
@@ -54,13 +55,6 @@ export default function ModuleFinderItem(props: Props) {
           }
         </div>
       </div>
-
-      <footer>
-        <p>
-          <a>{ module.Department }</a> &middot;&nbsp;
-          <a>{ module.ModuleCredit } MC</a>
-        </p>
-      </footer>
     </li>
   );
 }
