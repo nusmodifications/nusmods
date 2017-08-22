@@ -74,14 +74,20 @@ export default function (props: Props) {
     <div className="module-workload-container">
       <h4>Workload - { total } hrs</h4>
       <div className="module-workload">
-        {blocks.map(({ showLabel, component, count }) => (
-          <div className="module-workload-component" style={{ width: `${count * blockWidth}%` }}>
+        {blocks.map(({ showLabel, component, count }, index) => (
+          <div
+            key={index}
+            className="module-workload-component"
+            style={{ width: `${count * blockWidth}%` }}
+          >
             { showLabel &&
             <span className={classnames('module-workload-label', `workload-${component.toLowerCase()}-text`)}>
               { count > 3 ? component : shortComponentNames[component] }
             </span>}
             <div className="module-workload-blocks">
-              {_.range(count).map(() => <div className={`workload-${component.toLowerCase()}-bg`} />)}
+              {_.range(count).map(i => (
+                <div key={i} className={`workload-${component.toLowerCase()}-bg`} />
+              ))}
             </div>
           </div>
         ))}

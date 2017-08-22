@@ -75,6 +75,7 @@ class ModuleFinderContainer extends React.Component {
                 <h3>Search Options</h3>
                 {Object.entries(filterGroups).map(([key, group]) => {
                   return (<ChecklistFilters
+                    key={key}
                     group={group}
                     modules={modules}
                     onFilterChange={this.onFilterToggle(key)}

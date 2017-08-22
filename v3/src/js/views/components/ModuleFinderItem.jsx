@@ -30,18 +30,18 @@ export default function ModuleFinderItem(props: Props) {
 
           <dl>
             { module.Preclusion && ([
-              <dt>Preclusions</dt>,
-              <dd>{module.Preclusion}</dd>,
+              <dt key="preclusions-dt">Preclusions</dt>,
+              <dd key="preclusions-dd">{module.Preclusion}</dd>,
             ])}
 
             { module.Prerequisite && ([
-              <dt>Prerequisite</dt>,
-              <dd>{module.Prerequisite}</dd>,
+              <dt key="prerequisite-dt">Prerequisite</dt>,
+              <dd key="prerequisite-dd">{module.Prerequisite}</dd>,
             ])}
 
             { module.Corequisite && ([
-              <dt>Corequisite</dt>,
-              <dd>{module.Corequisite}</dd>,
+              <dt key="corequisite-dt">Corequisite</dt>,
+              <dd key="corequisite-dd">{module.Corequisite}</dd>,
             ])}
           </dl>
 
