@@ -4,8 +4,9 @@ import type { Module } from 'types/modules';
 import update from 'immutability-helper';
 import ModuleFilter from './ModuleFilter';
 
+export type FilterGroupLabel = string;
 export default class FilterGroup<Filter: ModuleFilter> {
-  label: string;
+  label: FilterGroupLabel;
   filters: { [string]: Filter };
 
   // Memoized array of filters that are enabled

@@ -2,7 +2,7 @@
 
 import _ from 'lodash';
 import FilterGroup from 'utils/filters/FilterGroup';
-import * as groups from './module-filters';
+import groups from './module-filters';
 
 test('groups should have unique label', () => {
   const labels = _.values(groups).map((group: FilterGroup<*>) => group.label);

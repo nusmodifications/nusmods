@@ -14,6 +14,27 @@
   label {
     font-size: $font-size-xs;
   }
+
+  .module-filters-timeslot {
+    margin-bottom: 1rem;
+
+    label {
+      padding: 0.2rem 0;
+      margin: 0;
+      display: block;
+      text-align: center;
+      border: 1px solid transparent;
+
+      &.filter-selected {
+        color: #fff;
+        background: theme-color();
+      }
+
+      &:hover {
+        border-color: theme-color();
+      }
+    }
+  }
 }
 
 .modules-list {
@@ -130,6 +151,7 @@
     position: relative;
     border: 1px solid $white;
     overflow: hidden;
+    padding: 0;
 
     div {
       position: absolute;

@@ -18,12 +18,13 @@ const timeLabels: { [Time]: string } = {
 };
 
 export default function TimeslotTable(props: Props) {
+  const { children } = props;
   const times = clone(TimesOfDay);
   const days = clone(DaysOfWeek);
 
   const hasChildren = (day, time) => {
     const timeslot = getTimeslot(day, time);
-    return React.Children.count(props.children.get(timeslot)) > 0;
+    return React.Children.count(children.get(timeslot)) > 0;
   };
 
   // Remove Saturday if there are no children on Saturday
@@ -51,7 +52,7 @@ export default function TimeslotTable(props: Props) {
           <tr className="module-timeslot-row" key={`row-${time}`}>
             <th className="module-timeslot-time-label">{ timeLabels[time] }</th>
             {days.map(day => (
-              <td key={`cell-${day}-${time}`}>{ props.children.get(getTimeslot(day, time)) }</td>
+              <td key={`cell-${day}-${time}`}>{ children.get(getTimeslot(day, time)) }</td>
             ))}
           </tr>
         ))}

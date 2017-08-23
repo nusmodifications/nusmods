@@ -1,5 +1,6 @@
 // @flow
 import type { ColorIndex } from 'types/reducers';
+import { flatMap } from 'lodash';
 
 // Components within a module:
 export type AcadYear = string; // E.g. "2016/2017"
@@ -38,6 +39,10 @@ const TimesOfDayEnum = {
 
 export const TimesOfDay = Object.keys(TimesOfDayEnum);
 export type Time = $Keys<typeof TimesOfDayEnum>;
+
+export const Timeslots: [Day, Time][] = flatMap(DaysOfWeek, (day): [Day, Time][] => {
+  return TimesOfDay.map(time => [day, time]);
+});
 
 export type ModuleLevel = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 export const Semesters = [1, 2, 3, 4];

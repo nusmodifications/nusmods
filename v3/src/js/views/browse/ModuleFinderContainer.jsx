@@ -7,34 +7,31 @@ import update from 'immutability-helper';
 
 import ModuleFinderList from 'views/browse/ModuleFinderList';
 import ChecklistFilters from 'views/components/filters/ChecklistFilters';
+import TimeslotFilters from 'views/components/filters/TimeslotFilters';
 import LoadingSpinner from 'views/LoadingSpinner';
 
-import {
-  levels,
-  moduleCredits,
-  tutorialTimeslots,
-  lectureTimeslots,
+import filterGroups, {
+  LEVELS,
+  LECTURE_TIMESLOTS,
+  TUTORIAL_TIMESLOTS,
+  MODULE_CREDITS,
 } from 'views/browse/module-filters';
 
 import config from 'config';
 import nusmods from 'apis/nusmods';
 import FilterGroup from 'utils/filters/FilterGroup';
+import type { FilterGroupLabel } from 'utils/filters/FilterGroup';
 import type { Module } from 'types/modules';
 
 class ModuleFinderContainer extends React.Component {
   state: {
     loading: boolean,
     modules: Array<Module>,
-    filterGroups: { [string]: FilterGroup<any> },
+    filterGroups: { [FilterGroupLabel]: FilterGroup<any> },
   } = {
     loading: true,
     modules: [],
-    filterGroups: {
-      levels,
-      moduleCredits,
-      tutorialTimeslots,
-      lectureTimeslots,
-    },
+    filterGroups,
   };
 
   componentDidMount() {
@@ -47,40 +44,54 @@ class ModuleFinderContainer extends React.Component {
       });
   }
 
-  onFilterToggle(key: string) {
-    return (newCollection: FilterGroup<*>) => {
-      this.setState(update(this.state, {
-        filterGroups: { [key]: { $set: newCollection } },
-      }));
-    };
-  }
+  onFilterChange = (newGroup: FilterGroup<*>) => {
+    this.setState(update(this.state, {
+      filterGroups: { [newGroup.label]: { $set: newGroup } },
+    }));
+  };
 
   render() {
-    const { filterGroups, modules, loading } = this.state;
+    const { filterGroups: groups, modules, loading } = this.state;
 
     return (
       <DocumentTitle title={`Modules - ${config.brandName}`}>
         <div className="modules-page-container page-container">
           <div className="row">
-            <div className="col-md-9">
+            <div className="col-md-8 col-lg-9">
               <h1 className="page-title">Module Finder</h1>
               {loading ? <LoadingSpinner /> : <ModuleFinderList
-                filterGroups={Object.values(filterGroups)}
+                filterGroups={Object.values(groups)}
                 modules={modules}
               />}
             </div>
 
-            <div className="col-md-3">
+            <div className="col-md-4 col-lg-3">
               <div className="module-filters">
                 <h3>Search Options</h3>
-                {Object.entries(filterGroups).map(([key, group]) => {
-                  return (<ChecklistFilters
-                    key={key}
-                    group={group}
-                    modules={modules}
-                    onFilterChange={this.onFilterToggle(key)}
-                  />);
-                })}
+
+                <ChecklistFilters
+                  group={groups[LEVELS]}
+                  modules={modules}
+                  onFilterChange={this.onFilterChange}
+                />
+
+                <ChecklistFilters
+                  group={groups[MODULE_CREDITS]}
+                  modules={modules}
+                  onFilterChange={this.onFilterChange}
+                />
+
+                <TimeslotFilters
+                  group={groups[LECTURE_TIMESLOTS]}
+                  modules={modules}
+                  onFilterChange={this.onFilterChange}
+                />
+
+                <TimeslotFilters
+                  group={groups[TUTORIAL_TIMESLOTS]}
+                  modules={modules}
+                  onFilterChange={this.onFilterChange}
+                />
               </div>
             </div>
           </div>

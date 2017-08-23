@@ -1,6 +1,6 @@
 // @flow
 import config from 'config';
-import { getModuleSemesterData } from 'utils/modules';
+import { getModuleSemesterData, getTimeslot } from 'utils/modules';
 import ModuleFilter from 'utils/filters/ModuleFilter';
 import type { Semester, Time, Day } from 'types/modules';
 
@@ -27,7 +27,7 @@ export default class TimeslotFilter extends ModuleFilter {
 
   constructor(day: Day, time: Time, type: TimeslotType, semester: Semester = config.semester) {
     const timeslotProperty = timeslotProperties[type];
-    const timeslot = `${day} ${time}`;
+    const timeslot = getTimeslot(day, time);
 
     super(timeslot, (module) => {
       const lesson = getModuleSemesterData(module, semester);
