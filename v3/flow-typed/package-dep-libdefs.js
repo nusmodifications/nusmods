@@ -4,6 +4,26 @@ declare module 'immutability-helper' {
   declare module.exports: any;
 }
 
+declare module 'query-string' {
+  declare type ArrayFormat = 'none' | 'index' | 'bracket';
+
+  declare type ParseOptions = {
+    arrayFormat: ArrayFormat,
+  };
+
+  declare type StringifyOptions = {
+    strict: boolean,
+    encode: boolean,
+    arrayFormat: ArrayFormat,
+  };
+
+  declare module.exports: {
+    parse(string: string, options: ?ParseOptions): Object,
+    stringify(object: Object, options: ?StringifyOptions): string,
+    extract(string: string): string,
+  };
+}
+
 declare module 'react' {
   declare module.exports: any;
 }
