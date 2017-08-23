@@ -1,9 +1,10 @@
 // @flow
-
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { mount } from 'enzyme';
+
 import type { ModuleCode } from 'types/modules';
+
 import { LinkModuleCodesComponent } from './LinkModuleCodes';
 
 describe('LinkModuleCodesComponent', () => {

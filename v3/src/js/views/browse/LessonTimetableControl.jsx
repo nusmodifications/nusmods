@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 
 import type { SemesterData } from 'types/modules';
+
 import ButtonGroupSelector from 'views/components/ButtonGroupSelector';
 import LessonTimetable from './LessonTimetable';
 

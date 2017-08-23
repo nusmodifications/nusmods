@@ -1,10 +1,11 @@
 // @flow
-
 import React from 'react';
-import type { Node } from 'react';
 import { clone } from 'lodash';
-import { DaysOfWeek, TimesOfDay } from 'types/modules';
+
+import type { Node } from 'react';
 import type { Time } from 'types/modules';
+
+import { DaysOfWeek, TimesOfDay } from 'types/modules';
 import { getTimeslot } from 'utils/modules';
 
 type Props = {

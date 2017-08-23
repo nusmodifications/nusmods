@@ -1,5 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+
 import Footer from 'views/layout/Footer';
 
 test('is a footer element', () => {

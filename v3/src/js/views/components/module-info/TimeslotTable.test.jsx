@@ -1,12 +1,12 @@
 // @flow
-
 import React from 'react';
-import type { Node } from 'react';
 import { shallow } from 'enzyme';
 import { cartesianProduct } from 'js-combinatorics';
 
-import { DaysOfWeek, TimesOfDay } from 'types/modules';
+import type { Node } from 'react';
 import type { Day, Time } from 'types/modules';
+
+import { DaysOfWeek, TimesOfDay } from 'types/modules';
 import { getTimeslot } from 'utils/modules';
 import TimeslotTable from './TimeslotTable';
 

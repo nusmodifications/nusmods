@@ -1,8 +1,8 @@
 // @flow
-import type { Lesson, LessonTime, ModifiableLesson } from 'types/modules';
-
 import React from 'react';
 import _ from 'lodash';
+
+import type { Lesson, LessonTime, ModifiableLesson } from 'types/modules';
 
 import { convertIndexToTime, convertTimeToIndex } from 'utils/timify';
 import TimetableCell from './TimetableCell';

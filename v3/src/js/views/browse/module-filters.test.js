@@ -1,6 +1,6 @@
 // @flow
-
 import _ from 'lodash';
+
 import FilterGroup from 'utils/filters/FilterGroup';
 import * as groups from './module-filters';
 

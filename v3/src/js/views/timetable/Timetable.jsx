@@ -1,10 +1,10 @@
 // @flow
-import type { Lesson } from 'types/modules';
-import type { TimetableArrangement } from 'types/timetables';
-
 import React, { Component } from 'react';
 import _ from 'lodash';
 import classnames from 'classnames';
+
+import type { Lesson } from 'types/modules';
+import type { TimetableArrangement } from 'types/timetables';
 
 import {
   SCHOOLDAYS,

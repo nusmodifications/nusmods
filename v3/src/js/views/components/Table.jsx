@@ -36,7 +36,7 @@ export default function Table(props: Props) {
     <p>{props.noDataText}</p>
     :
     <div className="table-responsive">
-      {props.title ? <h3 className="table-title">{props.title}</h3> : null }
+      {props.title && <h3 className="table-title">{props.title}</h3>}
       <table className="table table-sm">
         {tableHeader}
         {tableBody}

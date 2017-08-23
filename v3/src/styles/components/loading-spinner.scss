@@ -2,12 +2,12 @@
   color: theme-color();
   text-align: center;
 
-  i.fa {
+  .fa {
     margin-bottom: 0.5rem;
   }
 
   .loading-text {
-    font-weight: bold;
     font-size: 1.4rem;
+    font-weight: bold;
   }
 }
