@@ -162,8 +162,8 @@ export class ModulePageContainer extends Component {
                 <dt className="col-sm-3">Official Links</dt>
                 <dd className="col-sm-9">
                   <ul className="nm-footer-links">
-                    {ivleLink ? <li><a href={ivleLink}>IVLE</a></li> : null}
-                    {corsLink ? <li><a href={corsLink}>CORS</a></li> : null}
+                    {ivleLink && <li><a href={ivleLink}>IVLE</a></li>}
+                    {corsLink && <li><a href={corsLink}>CORS</a></li>}
                   </ul>
                 </dd>
                 <div>

@@ -25,11 +25,11 @@ export default function ModuleFinderItem(props: Props) {
                 {module.ModuleCode} {module.ModuleTitle}
               </Link>
             </h2>
+            <p>
+              <a>{module.Department}</a> &middot;&nbsp;
+              <a>{module.ModuleCredit} MCs</a>
+            </p>
           </header>
-          <p>
-            <a>{module.Department}</a> &middot;&nbsp;
-            <a>{module.ModuleCredit} MCs</a>
-          </p>
           <p>{module.ModuleDescription}</p>
           <dl>
             {module.Preclusion && ([
