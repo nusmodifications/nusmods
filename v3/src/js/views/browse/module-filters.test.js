@@ -1,17 +1,32 @@
 // @flow
 import _ from 'lodash';
 
-import FilterGroup from 'utils/filters/FilterGroup';
-import groups from './module-filters';
+import FilterGroup, { ID_DELIMINATOR } from 'utils/filters/FilterGroup';
+import filterGroups from './module-filters';
 
-test('groups should have unique label', () => {
-  const labels = _.values(groups).map((group: FilterGroup<*>) => group.label);
-  expect(Array.from(new Set(labels))).toEqual(labels);
+const groups: FilterGroup<*>[] = _.values(filterGroups);
+
+function expectUnique<T>(arr: T[]) {
+  // Set in JS iterates over elements in insertion order
+  expect(Array.from(new Set(arr))).toEqual(arr);
+}
+
+test('groups should have unique id and label', () => {
+  expectUnique(groups.map((group: FilterGroup<*>) => group.id));
+  expectUnique(groups.map((group: FilterGroup<*>) => group.label));
 });
 
-test('filters should have unique label', () => {
-  _.values(groups).forEach((group: FilterGroup<*>) => {
-    const labels = _.values(group.filters).map(filter => filter.label);
-    expect(Array.from(new Set(labels))).toEqual(labels);
+test('filters should have unique id', () => {
+  groups.forEach((group: FilterGroup<*>) => {
+    expectUnique(_.values(group.filters).map(filter => filter.id));
+    expectUnique(_.values(group.filters).map(filter => filter.label));
+  });
+});
+
+test('filter ID should not contain deliminator', () => {
+  groups.forEach((group: FilterGroup<*>) => {
+    _.values(group.filters).forEach((filter) => {
+      expect(filter.id).not.toContain(ID_DELIMINATOR);
+    });
   });
 });

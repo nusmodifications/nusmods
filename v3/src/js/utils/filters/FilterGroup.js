@@ -6,7 +6,7 @@ import type { Module } from 'types/modules';
 
 import ModuleFilter from './ModuleFilter';
 
-const ID_DELIMINATOR = ',';
+export const ID_DELIMINATOR = ',';
 
 export type FilterGroupId = string;
 export default class FilterGroup<Filter: ModuleFilter> {
