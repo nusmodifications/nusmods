@@ -2,8 +2,11 @@
 import React from 'react';
 import DocumentTitle from 'react-document-title';
 import { withRouter } from 'react-router-dom';
+import type { Location, RouterHistory } from 'react-router-dom';
 import axios from 'axios';
 import update from 'immutability-helper';
+import _ from 'lodash';
+import qs from 'query-string';
 
 import ModuleFinderList from 'views/browse/ModuleFinderList';
 import ChecklistFilters from 'views/components/filters/ChecklistFilters';
@@ -19,23 +22,41 @@ import filterGroups, {
 
 import config from 'config';
 import nusmods from 'apis/nusmods';
-import FilterGroup from 'utils/filters/FilterGroup';
-import type { FilterGroupLabel } from 'utils/filters/FilterGroup';
+import type { FilterGroupId } from 'utils/filters/FilterGroup';
 import type { Module } from 'types/modules';
+import FilterGroup from 'utils/filters/FilterGroup';
+
+type Props = {
+  location: Location,
+  history: RouterHistory,
+};
 
 class ModuleFinderContainer extends React.Component {
+  props: Props;
+
+  constructor(props: Props) {
+    super(props);
+
+    // Parse out query params from URL and use that to initialize filter groups
+    const params = qs.parse(props.location.search);
+    this.state.filterGroups = _.mapValues(filterGroups, (group: FilterGroup<*>) => {
+      return group.fromQueryString(params[group.id]);
+    });
+  }
+
   state: {
     loading: boolean,
     modules: Array<Module>,
-    filterGroups: { [FilterGroupLabel]: FilterGroup<any> },
+    filterGroups: { [FilterGroupId]: FilterGroup<any> },
   } = {
     loading: true,
     modules: [],
-    filterGroups,
+    filterGroups: {},
   };
 
   componentDidMount() {
     axios.get(nusmods.modulesUrl())
+      // TODO: Handle error
       .then(({ data }) => {
         this.setState({
           modules: data,
@@ -46,8 +67,16 @@ class ModuleFinderContainer extends React.Component {
 
   onFilterChange = (newGroup: FilterGroup<*>) => {
     this.setState(update(this.state, {
-      filterGroups: { [newGroup.label]: { $set: newGroup } },
-    }));
+      filterGroups: { [newGroup.id]: { $set: newGroup } },
+    }), () => {
+      const { history, location } = this.props;
+      const pairs = _.values(this.state.filterGroups)
+        .map((group: FilterGroup<*>) => group.toQueryString())
+        .filter(_.identity);
+      const query = qs.stringify(_.fromPairs(pairs));
+
+      history.push(`${location.pathname}?${query}`);
+    });
   };
 
   render() {

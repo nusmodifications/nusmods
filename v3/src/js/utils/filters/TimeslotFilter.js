@@ -19,6 +19,10 @@ const timeslotProperties: { [TimeslotType]: string } = {
   Tutorial: 'TutorialPeriods',
 };
 
+export function labelToId(label: string): string {
+  return label.toLowerCase().replace(' ', '-');
+}
+
 export default class TimeslotFilter extends ModuleFilter {
   semester: Semester;
   type: TimeslotType;
@@ -28,8 +32,9 @@ export default class TimeslotFilter extends ModuleFilter {
   constructor(day: Day, time: Time, type: TimeslotType, semester: Semester = config.semester) {
     const timeslotProperty = timeslotProperties[type];
     const timeslot = getTimeslot(day, time);
+    const id = labelToId(timeslot);
 
-    super(timeslot, (module) => {
+    super(id, timeslot, (module) => {
       const lesson = getModuleSemesterData(module, semester);
       if (!lesson) return false;
       const timeslots = lesson[timeslotProperty];

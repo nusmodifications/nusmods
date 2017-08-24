@@ -3,7 +3,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import TimeslotTable from 'views/components/module-info/TimeslotTable';
-import TimeslotFilter from 'utils/filters/TimeslotFilter';
+import TimeslotFilter, { labelToId } from 'utils/filters/TimeslotFilter';
 import FilterGroup from 'utils/filters/FilterGroup';
 import { Timeslots } from 'types/modules';
 import type { OnFilterChange } from 'types/views';
@@ -22,7 +22,7 @@ export default function TimeslotFilters(props: Props) {
   const children = new Map();
   Timeslots.forEach(([day, time]) => {
     const timeslot = getTimeslot(day, time);
-    const filter = group.filters[timeslot];
+    const filter = group.filters[labelToId(timeslot)];
     const count = filter.count(modules);
 
     children.set(timeslot,
@@ -36,7 +36,7 @@ export default function TimeslotFilters(props: Props) {
           className="sr-only"
           type="checkbox"
           checked={filter.enabled}
-          onChange={() => onFilterChange(group.toggle(filter.label))}
+          onChange={() => onFilterChange(group.toggle(filter))}
         />
       </label>);
   });

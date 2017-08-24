@@ -5,6 +5,7 @@ import type { Module } from 'types/modules';
 export default class ModuleFilter {
   enabled = false;
 
+  id: string;
   label: string;
   test: Module => boolean;
 
@@ -12,7 +13,8 @@ export default class ModuleFilter {
   memoizedCount: number;
   prevModules: Module[];
 
-  constructor(label: string, test: Module => boolean) {
+  constructor(id: string, label: string, test: Module => boolean) {
+    this.id = id;
     this.label = label;
     this.test = test;
   }
