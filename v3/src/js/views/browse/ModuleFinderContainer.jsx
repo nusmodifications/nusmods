@@ -25,6 +25,7 @@ import filterGroups, {
 import config from 'config';
 import nusmods from 'apis/nusmods';
 import FilterGroup from 'utils/filters/FilterGroup';
+import HistoryDebouncer from 'utils/HistoryDebouncer';
 
 type Props = {
   location: Location,
@@ -34,11 +35,14 @@ type Props = {
 class ModuleFinderContainer extends Component {
   props: Props;
 
+  history: HistoryDebouncer;
+
   constructor(props: Props) {
     super(props);
 
     // Parse out query params from URL and use that to initialize filter groups
     const params = qs.parse(props.location.search);
+    this.history = new HistoryDebouncer(props.history);
     this.state.filterGroups = _.mapValues(filterGroups, (group: FilterGroup<*>) => {
       return group.fromQueryString(params[group.id]);
     });
@@ -69,13 +73,16 @@ class ModuleFinderContainer extends Component {
     this.setState(update(this.state, {
       filterGroups: { [newGroup.id]: { $set: newGroup } },
     }), () => {
-      const { history, location } = this.props;
+      const { location } = this.props;
       const pairs = _.values(this.state.filterGroups)
         .map((group: FilterGroup<*>) => group.toQueryString())
         .filter(_.identity);
       const query = qs.stringify(_.fromPairs(pairs));
 
-      history.push(`${location.pathname}?${query}`);
+      this.history.push({
+        pathname: location.pathname,
+        search: `?${query}`,
+      });
     });
   };
 
