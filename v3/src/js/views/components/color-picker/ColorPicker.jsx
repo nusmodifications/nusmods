@@ -1,13 +1,15 @@
 // @flow
 import React, { Component } from 'react';
+import _ from 'lodash';
+
 import type { ColorIndex } from 'types/reducers';
 
-import _ from 'lodash';
 import { NUM_DIFFERENT_COLORS } from 'reducers/theme';
 
 import './color-picker.scss';
 
 const ESCAPE_KEYCODE = 27;
+const EVENT_TYPE = 'keydown';
 
 type Props = {
   onChooseColor: Function,
@@ -18,11 +20,11 @@ class ColorPicker extends Component {
   props: Props;
 
   componentWillMount() {
-    window.addEventListener('keydown', this.handleKeyDown);
+    window.addEventListener(EVENT_TYPE, this.handleKeyDown);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('keydown', this.handleKeyDown);
+    window.removeEventListener(EVENT_TYPE, this.handleKeyDown);
   }
 
   handleKeyDown = (event: KeyboardEvent) => {

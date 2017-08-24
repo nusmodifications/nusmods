@@ -1,8 +1,10 @@
 // @flow
 import React from 'react';
 import { values } from 'lodash';
+
 import type { Module } from 'types/modules';
 import type { OnFilterChange } from 'types/views';
+
 import FilterGroup from 'utils/filters/FilterGroup';
 import ModuleFilter from 'utils/filters/ModuleFilter';
 
@@ -17,7 +19,7 @@ export default function ChecklistFilters(props: Props) {
 
   return (
     <div>
-      <h4>{ group.label }</h4>
+      <h4>{group.label}</h4>
       <ul className="list-unstyled">
         {values(group.filters).map((filter: ModuleFilter) => (
           <li key={filter.label}>

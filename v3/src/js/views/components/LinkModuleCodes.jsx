@@ -3,7 +3,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+
 import type { ModuleCode } from 'types/modules';
+
 import { modulePagePath } from 'utils/modules';
 
 type Props = {

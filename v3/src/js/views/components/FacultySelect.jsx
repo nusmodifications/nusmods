@@ -2,6 +2,7 @@
 import React from 'react';
 
 import type { Faculty } from 'types/modules';
+
 import facultyList from 'data/faculty-list.json';
 
 type Props = {

@@ -1,8 +1,9 @@
 // @flow
-import type { ModifiableLesson } from 'types/modules';
-
 import React from 'react';
 import classnames from 'classnames';
+
+import type { ModifiableLesson } from 'types/modules';
+
 import { LESSON_TYPE_ABBREV } from 'utils/timetables';
 
 type Props = {

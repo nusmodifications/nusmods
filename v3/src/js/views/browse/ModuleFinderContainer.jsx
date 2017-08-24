@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { Component } from 'react';
 import DocumentTitle from 'react-document-title';
 import { withRouter } from 'react-router-dom';
 import type { Location, RouterHistory } from 'react-router-dom';
@@ -7,6 +7,9 @@ import axios from 'axios';
 import update from 'immutability-helper';
 import _ from 'lodash';
 import qs from 'query-string';
+
+import type { Module } from 'types/modules';
+import type { FilterGroupId } from 'utils/filters/FilterGroup';
 
 import ModuleFinderList from 'views/browse/ModuleFinderList';
 import ChecklistFilters from 'views/components/filters/ChecklistFilters';
@@ -22,8 +25,6 @@ import filterGroups, {
 
 import config from 'config';
 import nusmods from 'apis/nusmods';
-import type { FilterGroupId } from 'utils/filters/FilterGroup';
-import type { Module } from 'types/modules';
 import FilterGroup from 'utils/filters/FilterGroup';
 
 type Props = {
@@ -31,7 +32,7 @@ type Props = {
   history: RouterHistory,
 };
 
-class ModuleFinderContainer extends React.Component {
+class ModuleFinderContainer extends Component {
   props: Props;
 
   constructor(props: Props) {
@@ -85,13 +86,17 @@ class ModuleFinderContainer extends React.Component {
     return (
       <DocumentTitle title={`Modules - ${config.brandName}`}>
         <div className="modules-page-container page-container">
+          <h1 className="page-title">Module Finder</h1>
           <div className="row">
-            <div className="col-md-8 col-lg-9">
-              <h1 className="page-title">Module Finder</h1>
-              {loading ? <LoadingSpinner /> : <ModuleFinderList
-                filterGroups={Object.values(groups)}
-                modules={modules}
-              />}
+            <div className="col-md-9">
+              {loading ?
+                <LoadingSpinner />
+                :
+                <ModuleFinderList
+                  filterGroups={Object.values(groups)}
+                  modules={modules}
+                />
+              }
             </div>
 
             <div className="col-md-4 col-lg-3">

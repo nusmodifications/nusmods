@@ -1,8 +1,9 @@
 // @flow
-
 import React from 'react';
-import FilterGroup from 'utils/filters/FilterGroup';
+
 import type { Module } from 'types/modules';
+
+import FilterGroup from 'utils/filters/FilterGroup';
 import ModuleFinderItem from 'views/components/ModuleFinderItem';
 
 type Props = {
@@ -16,9 +17,9 @@ export default function ModuleFinderList(props: Props) {
 
   return (
     <ul className="modules-list">
-      {filteredModules.slice(0, 30).map((module) => {
-        return <ModuleFinderItem key={module.ModuleCode} module={module} />;
-      })}
+      {filteredModules.slice(0, 30).map(module =>
+        <ModuleFinderItem key={module.ModuleCode} module={module} />,
+      )}
     </ul>
   );
 }

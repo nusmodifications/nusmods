@@ -1,4 +1,10 @@
 // @flow
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import DocumentTitle from 'react-document-title';
+import _ from 'lodash';
+import config from 'config';
+
 import type {
   ThemeState,
   TimetableOrientation,
@@ -17,11 +23,6 @@ import type {
 } from 'types/modules';
 import type { SemTimetableConfig, TimetableArrangement } from 'types/timetables';
 
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import DocumentTitle from 'react-document-title';
-import _ from 'lodash';
-import config from 'config';
 import classnames from 'classnames';
 import { getSemModuleSelectList } from 'reducers/entities/moduleBank';
 import { downloadAsJpeg, downloadAsIcal } from 'actions/export';

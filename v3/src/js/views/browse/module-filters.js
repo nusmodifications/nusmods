@@ -1,10 +1,10 @@
 // @flow
+import type { FilterGroupId } from 'utils/filters/FilterGroup';
 
 import LevelFilter from 'utils/filters/LevelFilter';
 import TimeslotFilter from 'utils/filters/TimeslotFilter';
 import Filter from 'utils/filters/ModuleFilter';
 import FilterGroup from 'utils/filters/FilterGroup';
-import type { FilterGroupId } from 'utils/filters/FilterGroup';
 import { Timeslots } from 'types/modules';
 
 export const LEVELS = 'level';

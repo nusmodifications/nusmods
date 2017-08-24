@@ -8,6 +8,12 @@ body {
   }
 }
 
+a {
+  &:hover {
+    text-decoration: none;
+  }
+}
+
 .main-content {
   @include media-breakpoint-down(sm) {
     padding-top: 1rem;

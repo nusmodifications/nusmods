@@ -1,9 +1,10 @@
 // @flow
-import type { Module } from 'types/modules';
 
 import React, { Component } from 'react';
-import d3 from 'd3/build/d3';
 import _ from 'lodash';
+import d3 from 'd3/build/d3';
+
+import type { Module } from 'types/modules';
 
 type Props = {
   module: Module,
