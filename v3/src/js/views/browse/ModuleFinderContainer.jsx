@@ -87,7 +87,7 @@ class ModuleFinderContainer extends Component {
         <div className="modules-page-container page-container">
           <h1 className="page-title">Module Finder</h1>
           <div className="row">
-            <div className="col-md-9">
+            <div className="col-md-8 col-lg-9">
               {loading ?
                 <LoadingSpinner />
                 :
