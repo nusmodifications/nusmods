@@ -1,4 +1,6 @@
 // @flow
+import _ from 'lodash';
+
 import type {
   Lesson,
   Module,
@@ -10,7 +12,7 @@ import type {
   Time,
   Day,
 } from 'types/modules';
-import _ from 'lodash';
+
 import config from 'config';
 
 export function modulePagePath(moduleCode: ModuleCode): string {

@@ -1,7 +1,9 @@
 // @flow
 import { keyBy, values } from 'lodash';
-import type { Module } from 'types/modules';
 import update from 'immutability-helper';
+
+import type { Module } from 'types/modules';
+
 import ModuleFilter from './ModuleFilter';
 
 const ID_DELIMINATOR = ',';

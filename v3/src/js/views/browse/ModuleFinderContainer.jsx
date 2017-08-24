@@ -1,8 +1,9 @@
 // @flow
+import type { Location, RouterHistory } from 'react-router-dom';
+
 import React, { Component } from 'react';
 import DocumentTitle from 'react-document-title';
 import { withRouter } from 'react-router-dom';
-import type { Location, RouterHistory } from 'react-router-dom';
 import axios from 'axios';
 import update from 'immutability-helper';
 import _ from 'lodash';
@@ -15,14 +16,12 @@ import ModuleFinderList from 'views/browse/ModuleFinderList';
 import ChecklistFilters from 'views/components/filters/ChecklistFilters';
 import TimeslotFilters from 'views/components/filters/TimeslotFilters';
 import LoadingSpinner from 'views/LoadingSpinner';
-
 import filterGroups, {
   LEVELS,
   LECTURE_TIMESLOTS,
   TUTORIAL_TIMESLOTS,
   MODULE_CREDITS,
 } from 'views/browse/module-filters';
-
 import config from 'config';
 import nusmods from 'apis/nusmods';
 import FilterGroup from 'utils/filters/FilterGroup';

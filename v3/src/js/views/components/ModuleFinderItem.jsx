@@ -7,6 +7,7 @@ import type { Module } from 'types/modules';
 import { modulePagePath } from 'utils/modules';
 import ModuleSemesterInfo from './module-info/ModuleSemesterInfo';
 import ModuleWorkload from './module-info/ModuleWorkload';
+import LinkModuleCodes from './LinkModuleCodes';
 
 type Props = {
   module: Module,
@@ -34,25 +35,29 @@ export default function ModuleFinderItem(props: Props) {
           <dl>
             {module.Preclusion && ([
               <dt key="preclusions-dt">Preclusions</dt>,
-              <dd key="preclusions-dd">{module.Preclusion}</dd>,
+              <dd key="preclusions-dd">
+                <LinkModuleCodes>{module.Preclusion}</LinkModuleCodes>
+              </dd>,
             ])}
 
             {module.Prerequisite && ([
               <dt key="prerequisite-dt">Prerequisite</dt>,
-              <dd key="prerequisite-dd">{module.Prerequisite}</dd>,
+              <dd key="prerequisite-dd">
+                <LinkModuleCodes>{module.Prerequisite}</LinkModuleCodes>
+              </dd>,
             ])}
 
             {module.Corequisite && ([
               <dt key="corequisite-dt">Corequisite</dt>,
-              <dd key="corequisite-dd">{module.Corequisite}</dd>,
+              <dd key="corequisite-dd">
+                <LinkModuleCodes>{module.Corequisite}</LinkModuleCodes>
+              </dd>,
             ])}
           </dl>
         </div>
         <div className="col-lg-4 col-md-12 col-sm-4">
           <ModuleSemesterInfo semesters={module.History} />
-          {module.Workload &&
-            <ModuleWorkload workload={module.Workload} />
-          }
+          {module.Workload && <ModuleWorkload workload={module.Workload} />}
         </div>
       </div>
     </li>

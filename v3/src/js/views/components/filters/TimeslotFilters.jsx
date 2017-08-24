@@ -2,13 +2,15 @@
 
 import React from 'react';
 import classnames from 'classnames';
-import TimeslotTable from 'views/components/module-info/TimeslotTable';
-import TimeslotFilter, { labelToId } from 'utils/filters/TimeslotFilter';
-import FilterGroup from 'utils/filters/FilterGroup';
-import { Timeslots } from 'types/modules';
+
 import type { OnFilterChange } from 'types/views';
 import type { Module } from 'types/modules';
-import { getTimeslot } from '../../../utils/modules';
+
+import TimeslotTable from 'views/components/module-info/TimeslotTable';
+import TimeslotFilter from 'utils/filters/TimeslotFilter';
+import FilterGroup from 'utils/filters/FilterGroup';
+import { getTimeslot } from 'utils/modules';
+import { Timeslots } from 'types/modules';
 
 type Props = {
   onFilterChange: OnFilterChange,
@@ -22,7 +24,7 @@ export default function TimeslotFilters(props: Props) {
   const children = new Map();
   Timeslots.forEach(([day, time]) => {
     const timeslot = getTimeslot(day, time);
-    const filter = group.filters[labelToId(timeslot)];
+    const filter = group.filters[TimeslotFilter.labelToId(timeslot)];
     const count = filter.count(modules);
 
     children.set(timeslot,

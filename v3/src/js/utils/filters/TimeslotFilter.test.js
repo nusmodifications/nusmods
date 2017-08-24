@@ -7,7 +7,7 @@ import cs3216 from '__mocks__/modules/CS3216.json';
 
 import Combinatorics from 'js-combinatorics';
 import { DaysOfWeek, TimesOfDay, Semesters, Timeslots } from 'types/modules';
-import TimeslotFilter, { TimeslotTypes, labelToId } from './TimeslotFilter';
+import TimeslotFilter, { TimeslotTypes } from './TimeslotFilter';
 import { testFilter } from './filter-test-helpers';
 
 test('test() should filter modules according to their lecture timeslot', () => {
@@ -34,7 +34,7 @@ test('test() should filter modules according to their lecture timeslot', () => {
 test('labelToId should be unique for all timeslots', () => {
   const idSet = new Set();
   Timeslots.forEach(([day, time]) => {
-    const id = labelToId(`${day} ${time}`);
+    const id = TimeslotFilter.labelToId(`${day} ${time}`);
     expect(idSet).not.toContain(id);
     idSet.add(id);
   });
