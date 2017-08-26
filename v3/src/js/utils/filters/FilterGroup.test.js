@@ -113,14 +113,14 @@ describe('#toQueryString()', () => {
       new Filter('c', 'label 3', () => false),
     ]);
 
-    expect(enable(group, []).toQueryString()).toEqual(null);
-    expect(enable(group, ['a']).toQueryString()).toEqual(['g', 'a']);
-    expect(enable(group, ['a', 'b']).toQueryString()).toEqual(['g', 'a,b']);
+    expect(enable(group, []).toQueryString()).toEqual('');
+    expect(enable(group, ['a']).toQueryString()).toEqual('a');
+    expect(enable(group, ['a', 'b']).toQueryString()).toEqual('a,b');
   });
 });
 
 describe('#fromQueryString()', () => {
-  function filterIdsFrom(group: Group<*>): string[] {
+  function filterIds(group: Group<*>): string[] {
     return group.activeFilters.map(filter => filter.id);
   }
 
@@ -131,15 +131,27 @@ describe('#fromQueryString()', () => {
       new Filter('c', 'label 3', () => false),
     ]);
 
-    expect(filterIdsFrom(group.fromQueryString(''))).toEqual([]);
-    expect(filterIdsFrom(group.fromQueryString('a'))).toEqual(['a']);
-    expect(filterIdsFrom(group.fromQueryString('a,b'))).toEqual(['a', 'b']);
-    expect(filterIdsFrom(group.fromQueryString('a,b,c'))).toEqual(['a', 'b', 'c']);
+    expect(filterIds(group.fromQueryString(''))).toEqual([]);
+    expect(filterIds(group.fromQueryString('a'))).toEqual(['a']);
+    expect(filterIds(group.fromQueryString('a,b'))).toEqual(['a', 'b']);
+    expect(filterIds(group.fromQueryString('a,b,c'))).toEqual(['a', 'b', 'c']);
+  });
+
+  test('should disable filters based on query string', () => {
+    const group = new Group('g', 'group', [
+      new Filter('a', 'label 1', () => false),
+      new Filter('b', 'label 2', () => false),
+      new Filter('c', 'label 3', () => false),
+    ]);
+
+    expect(filterIds(enable(group, ['a']).fromQueryString('a'))).toEqual(['a']);
+    expect(filterIds(enable(group, ['a']).fromQueryString('b'))).toEqual(['b']);
+    expect(filterIds(enable(group, ['a', 'b', 'c']).fromQueryString('a,b'))).toEqual(['a', 'b']);
   });
 
   test('should ignore ids that do not exist', () => {
     const group = new Group('g', 'group', [new Filter('a', 'label 1', () => false)]);
 
-    expect(filterIdsFrom(group.fromQueryString('d'))).toEqual([]);
+    expect(filterIds(group.fromQueryString('d'))).toEqual([]);
   });
 });

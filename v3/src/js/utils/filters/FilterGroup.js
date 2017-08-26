@@ -38,8 +38,8 @@ export default class FilterGroup<Filter: ModuleFilter> {
   toggle(idOrFilter: string | Filter, value: ?boolean): FilterGroup<Filter> {
     const id = idOrFilter instanceof ModuleFilter ? idOrFilter.id : idOrFilter;
     if (!this.filters[id]) return this;
-    const newValue = typeof value === 'boolean' ? value : !this.filters[id].enabled;
 
+    const newValue = typeof value === 'boolean' ? value : !this.filters[id].enabled;
     const updated = update(this, {
       filters: { [id]: { enabled: { $set: newValue } } },
     });
@@ -54,18 +54,19 @@ export default class FilterGroup<Filter: ModuleFilter> {
 
   // Query string (de)serialization - this allows the currently enabled filters to be
   // embedded directly
-  toQueryString(): ?[string, string] {
-    if (!this.activeFilters.length) return null;
+  toQueryString(): string {
+    if (!this.isActive()) return '';
 
-    const filterIds = this.activeFilters.map(filter => filter.id);
-    return [this.id, filterIds.join(ID_DELIMINATOR)];
+    return this.activeFilters
+      .map(filter => filter.id)
+      .join(ID_DELIMINATOR);
   }
 
-  fromQueryString(filterIds: ?string): FilterGroup<Filter> {
-    if (!filterIds) return this;
-
-    return filterIds.split(ID_DELIMINATOR)
-      .reduce((group, id) => group.toggle(id, true), this);
+  fromQueryString(filterIds: string = ''): FilterGroup<Filter> {
+    const enabled = new Set(filterIds.split(ID_DELIMINATOR));
+    return values(this.filters)
+      .map((filter: Filter) => filter.id)
+      .reduce((group, id) => group.toggle(id, enabled.has(id)), this);
   }
 
   static apply(modules: Module[], filterGroups: FilterGroup<any>[]): Module[] {

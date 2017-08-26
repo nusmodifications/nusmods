@@ -32,25 +32,29 @@ type Props = {
   history: RouterHistory,
 };
 
-class ModuleFinderContainer extends Component {
+export class ModuleFinderContainerComponent extends Component {
   props: Props;
 
   history: HistoryDebouncer;
+  unlisten: () => void;
 
   constructor(props: Props) {
     super(props);
 
     // Parse out query params from URL and use that to initialize filter groups
     const params = qs.parse(props.location.search);
-    this.history = new HistoryDebouncer(props.history);
     this.state.filterGroups = _.mapValues(filterGroups, (group: FilterGroup<*>) => {
       return group.fromQueryString(params[group.id]);
     });
+
+    // Set up history debouncer and history listener
+    this.history = new HistoryDebouncer(props.history);
+    this.unlisten = props.history.listen(location => this.onQueryStringChange(location.search));
   }
 
   state: {
     loading: boolean,
-    modules: Array<Module>,
+    modules: Module[],
     filterGroups: { [FilterGroupId]: FilterGroup<any> },
   } = {
     loading: true,
@@ -69,22 +73,45 @@ class ModuleFinderContainer extends Component {
       });
   }
 
+  componentWillUnmount() {
+    this.unlisten();
+  }
+
+  onQueryStringChange(query: string) {
+    const params = qs.parse(query);
+    const updater = {};
+    this.filterGroups().forEach((group) => {
+      const currentQuery = group.toQueryString();
+      if (currentQuery === params[group.id] || (!params[group.id] && !currentQuery)) return;
+      updater[group.id] = { $set: group.fromQueryString(params[group.id]) };
+    });
+
+    if (!_.isEmpty(updater)) {
+      this.setState(update(this.state, {
+        filterGroups: updater,
+      }));
+    }
+  }
+
   onFilterChange = (newGroup: FilterGroup<*>) => {
     this.setState(update(this.state, {
       filterGroups: { [newGroup.id]: { $set: newGroup } },
     }), () => {
-      const { location } = this.props;
-      const pairs = _.values(this.state.filterGroups)
-        .map((group: FilterGroup<*>) => group.toQueryString())
-        .filter(_.identity);
-      const query = qs.stringify(_.fromPairs(pairs));
-
-      this.history.push({
-        pathname: location.pathname,
-        search: `?${query}`,
+      // Update query string after state is updated
+      const query = {};
+      this.filterGroups().forEach((group) => {
+        const value = group.toQueryString();
+        if (!value) return;
+        query[group.id] = value;
       });
+
+      this.history.push({ search: qs.stringify(query) });
     });
   };
+
+  filterGroups(): FilterGroup<any>[] {
+    return _.values(this.state.filterGroups);
+  }
 
   render() {
     const { filterGroups: groups, modules, loading } = this.state;
@@ -99,7 +126,7 @@ class ModuleFinderContainer extends Component {
                 <LoadingSpinner />
                 :
                 <ModuleFinderList
-                  filterGroups={Object.values(groups)}
+                  filterGroups={_.values(groups)}
                   modules={modules}
                 />
               }
@@ -141,4 +168,4 @@ class ModuleFinderContainer extends Component {
   }
 }
 
-export default withRouter(ModuleFinderContainer);
+export default withRouter(ModuleFinderContainerComponent);
