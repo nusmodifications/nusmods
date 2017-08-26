@@ -32,9 +32,9 @@ const groups: { [FilterGroupId]: FilterGroup<any> } = {
   ),
 
   [MODULE_CREDITS]: new FilterGroup(MODULE_CREDITS, 'Module Credit', [
-    new Filter('0-3', '0-3 MC', module => parseInt(module.ModuleCredit, 10) <= 3),
+    new Filter('0', '0-3 MC', module => parseInt(module.ModuleCredit, 10) <= 3),
     new Filter('4', '4 MC', module => module.ModuleCredit === '4'),
-    new Filter('5-8', '5-8 MC', (module) => {
+    new Filter('5', '5-8 MC', (module) => {
       const credits = parseInt(module.ModuleCredit, 10);
       return credits >= 5 && credits <= 8;
     }),
