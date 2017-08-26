@@ -11,7 +11,7 @@ function createHistoryMock() {
 
 beforeEach(() => {
   jest.spyOn(Date, 'now')
-    .mockImplementation(() => 0);
+    .mockReturnValue(0);
 });
 
 afterEach(() => {
@@ -23,7 +23,7 @@ test('HistoryDebouncer should call history.push() at the leading edge', () => {
   const history = new HistoryDebouncer(mock);
 
   history.push('test-1');
-  Date.now.mockImplementation(() => 30.1 * 1000);
+  Date.now.mockReturnValue(30.1 * 1000);
   history.push('test-2', { test: 'state' });
 
   expect(mock.push.mock.calls).toEqual([
@@ -39,13 +39,13 @@ test('HistoryDebouncer should call history.replace() within wait', () => {
 
   history.push('test-1');
 
-  Date.now.mockImplementation(() => 2 * 1000);
+  Date.now.mockReturnValue(2 * 1000);
   history.push('test-2', { test: 'state' });
 
-  Date.now.mockImplementation(() => 30.1 * 1000);
+  Date.now.mockReturnValue(30.1 * 1000);
   history.push('test-3');
 
-  Date.now.mockImplementation(() => 62.2 * 1000);
+  Date.now.mockReturnValue(62.2 * 1000);
   history.push('test-4');
 
   expect(mock.push.mock.calls).toEqual([
@@ -64,7 +64,7 @@ test('HistoryDebouncer should accept a wait time as second parameter', () => {
   const history = new HistoryDebouncer(mock, 10 * 1000);
 
   history.push('test-1');
-  Date.now.mockImplementation(() => 10.1 * 1000);
+  Date.now.mockReturnValue(10.1 * 1000);
   history.push('test-2');
 
   expect(mock.push.mock.calls).toEqual([
