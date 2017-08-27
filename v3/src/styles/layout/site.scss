@@ -1,4 +1,14 @@
 // This file contains the styles for the overall site
+html,
+body,
+#app,
+.app-container {
+  // Ensures the page always fill the height of the page. Combined with the
+  // flexbox on .app-container, this allows the footer to be aligned to the
+  // page bottom when there's insufficient page content
+  height: 100%;
+}
+
 body {
   padding-top: 4rem;
 
@@ -14,14 +24,48 @@ a {
   }
 }
 
-.main-content {
+.app-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.main-container {
+  $side-nav-width-md: 4rem;
+  $side-nav-width-lg: 10rem;
+
+  flex: 1 auto;
+
   @include media-breakpoint-down(sm) {
-    padding-top: 1rem;
+    .main-content {
+      padding-top: 1rem;
+    }
+  }
+
+  @include media-breakpoint-up(md) {
+    > nav {
+      width: calc(#{$side-nav-width-md} + #{($grid-gutter-width / 2)});
+    }
+
+    .main-content {
+      padding-left: $side-nav-width-md;
+    }
+  }
+
+  @include media-breakpoint-up(lg) {
+    > nav {
+      width: $side-nav-width-lg;
+    }
+
+    .main-content {
+      padding-left: $side-nav-width-lg;
+    }
   }
 }
 
 .page-container {
   animation-duration: $page-entering-duration;
+
+  @extend .container-fluid;
 }
 
 .page-title {
@@ -30,14 +74,20 @@ a {
 }
 
 // Recreate Bootstrap v3 offsets
-@include media-breakpoint-up('md') {
+@include media-breakpoint-up(sm) {
+  .offset-sm-1 {
+    margin-left: percentage(1 / $grid-columns);
+  }
+}
+
+@include media-breakpoint-up(md) {
   .offset-md-1 {
     margin-left: percentage(1 / $grid-columns);
   }
 }
 
-@include media-breakpoint-up('sm') {
-  .offset-sm-1 {
+@include media-breakpoint-up(lg) {
+  .offset-lg-1 {
     margin-left: percentage(1 / $grid-columns);
   }
 }

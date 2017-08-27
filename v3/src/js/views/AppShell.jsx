@@ -27,28 +27,24 @@ type Props = {
 // Put outside render because this only needs to computed on page load.
 const weekText = (() => {
   const acadWeekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(new Date());
-  const year = `AY20${acadWeekInfo.year}`;
-  let semester = '';
-  let semesterType = '';
-  let week = '';
+  const parts = [`AY20${acadWeekInfo.year}`];
 
   // Check for null value (ie. during vacation)
   if (acadWeekInfo.sem) {
-    semester = `, ${acadWeekInfo.sem}`;
+    parts.push(acadWeekInfo.sem);
   }
 
   // Hide semester if semester type is 'Instructional'
   if (acadWeekInfo.type !== 'Instructional') {
-    semesterType = `, ${acadWeekInfo.type} Week`;
+    parts.push(`${acadWeekInfo.type} Week`);
   }
 
   // Do not show the week number if there is only one week, eg. recess
   if (acadWeekInfo.num > 0) {
-    week = `, Week ${acadWeekInfo.num}`;
+    parts.push(`Week ${acadWeekInfo.num}`);
   }
 
-  const acadWeekString = `${year}${semester}${semesterType}${week}`;
-  return acadWeekString;
+  return parts.join(', ');
 })();
 
 export class AppShell extends Component {
@@ -65,12 +61,16 @@ export class AppShell extends Component {
     }
   }
 
-  /* eslint-disable jsx-a11y/anchor-has-content */
   render() {
+    const isModuleListLoading = this.props.fetchModuleListRequest.isPending && !this.props.moduleList.length;
+    const isModuleListReady = this.props.fetchModuleListRequest.isSuccessful || this.props.moduleList.length;
+
     return (
       <div className="app-container">
         <nav className="nm-navbar fixed-top">
-          <NavLink className="nm-navbar-brand" to="/" title="Home" />
+          <NavLink className="nm-navbar-brand" to="/" title="Home">
+            <span className="sr-only">NUSMods</span>
+          </NavLink>
           <form className="nm-navbar-form">
             <ModulesSelect
               moduleList={this.props.moduleSelectList}
@@ -82,41 +82,31 @@ export class AppShell extends Component {
           </form>
           <span className="nm-navbar-text"><small>{weekText}</small></span>
         </nav>
-        <div className="container-fluid">
-          <div className="row">
-            <div className="col-md-2">
-              <ul className="nm-nav-tabs">
-                <li role="presentation" className="nm-nav-item">
-                  <NavLink className="nav-link" activeClassName="active" to="/timetable">
-                    <i className="fa fa-fw fa-lg fa-table" />
-                    <span className="nm-link-title"> Timetable</span>
-                  </NavLink>
-                </li>
-                <li role="presentation" className="nm-nav-item">
-                  <NavLink className="nav-link" activeClassName="active" to="/modules">
-                    <i className="fa fa-fw fa-lg fa-list" />
-                    <span className="nm-link-title"> Browse</span>
-                  </NavLink>
-                </li>
-                <li role="presentation" className="nm-nav-item">
-                  <NavLink className="nav-link" activeClassName="active" to="/settings">
-                    <i className="fa fa-fw fa-lg fa-gear" />
-                    <span className="nm-link-title"> Settings</span>
-                  </NavLink>
-                </li>
-              </ul>
-            </div>
-            <div className="col-md-10 main-content">
-              {this.props.fetchModuleListRequest.isPending && !this.props.moduleList.length ?
-                <p>Loading...</p> : null
-              }
-              {this.props.fetchModuleListRequest.isSuccessful || this.props.moduleList.length ?
-                this.props.children : null
-              }
-              <Routes />
-            </div>
-          </div>
+
+        <div className="main-container">
+          <nav className="nm-nav-tabs">
+            <NavLink className="nav-link" activeClassName="active" to="/timetable">
+              <i className="fa fa-fw fa-lg fa-table" />
+              <span className="nm-link-title">Timetable</span>
+            </NavLink>
+            <NavLink className="nav-link" activeClassName="active" to="/modules">
+              <i className="fa fa-fw fa-lg fa-list" />
+              <span className="nm-link-title">Browse</span>
+            </NavLink>
+            <NavLink className="nav-link" activeClassName="active" to="/settings">
+              <i className="fa fa-fw fa-lg fa-gear" />
+              <span className="nm-link-title">Settings</span>
+            </NavLink>
+          </nav>
+
+          <main className="main-content">
+            {isModuleListLoading && <p>Loading...</p>}
+
+            {isModuleListReady && this.props.children}
+            <Routes />
+          </main>
         </div>
+
         <Footer />
       </div>
     );

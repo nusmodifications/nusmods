@@ -40,10 +40,12 @@
 
   .nm-navbar-text {
     flex: 1 1 auto;
+    line-height: 1.15;
+    padding-left: $grid-gutter-width / 2;
     text-align: right;
   }
 
-  @include media-breakpoint-down('xs') {
+  @include media-breakpoint-down(xs) {
     .nm-navbar-text,
     .nm-navbar-form {
       display: none;
@@ -52,47 +54,77 @@
 }
 
 .nm-nav-tabs {
+  // See site.scss for width on md and lg sizes
   display: flex;
   flex-direction: column;
-  padding: 0;
+  padding: 2rem 0 0;
+  position: fixed;
+  top: $navbar-height;
 
   .nav-link {
     color: $gray-light;
     display: block;
-    padding: 0.7rem;
 
     &.active {
-      color: theme-color('primary');
+      color: theme-color(primary);
+    }
+
+    &:hover .nm-link-title {
+      text-decoration: underline;
     }
   }
 
-  .nm-nav-item {
-    list-style: none;
-  }
-
+  // For breakpoint-sm and below (phones), show the links as icon tabs fixed
+  // below the top navbar
   @include media-breakpoint-down(sm) {
     background-color: #fff;
-    box-shadow: 0 0 15px -3px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 15px -3px rgba(#000, 0.4);
     flex-direction: row;
     height: $navbar-height;
     left: 0;
-    position: fixed;
-    top: $navbar-height;
+    padding: 0;
     width: 100%;
     z-index: 1;
 
-    .nm-nav-item {
-      flex-grow: 1;
-    }
-
     .nav-link {
-      display: block;
+      flex: 1 auto;
       padding: 1rem 0;
       text-align: center;
     }
 
     .nm-link-title {
       display: none;
+    }
+  }
+
+  // For breakpoint-md (tablets), show the links as compact buttons with labels
+  // below icons.
+  @include media-breakpoint-only(md) {
+    .nav-link {
+      font-size: 0.7rem;
+      padding: 1rem 0;
+      text-align: center;
+
+      .fa {
+        font-size: 1.6rem;
+        margin-bottom: 0.2rem;
+      }
+
+      .nm-link-title {
+        display: block;
+      }
+    }
+  }
+
+  // For breakpoint-lg (desktop), show the links as traditional link with icon
+  // to the left
+  @include media-breakpoint-up(lg) {
+    .nav-link {
+      padding: 0.7rem 0 0.7rem 2rem;
+    }
+
+    .nm-link-title {
+      margin-left: 0.3rem;
     }
   }
 }
