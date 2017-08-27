@@ -3,6 +3,9 @@ html,
 body,
 #app,
 .app-container {
+  // Ensures the page always fill the height of the page. Combined with the
+  // flexbox on .app-container, this allows the footer to be aligned to the
+  // page bottom when there's insufficient page content
   height: 100%;
 }
 

@@ -69,7 +69,10 @@ $timetable-day-rows-height: calc(100% - #{$timetable-day-cell-height});
 
   .timetable-container {
     &.horizontal-mode {
+      // On Chrome this provides space for the horizontal scrollbar's height,
+      // otherwise there will be a ugly vertical scrollbar
       overflow-y: hidden;
+      padding-bottom: 5px;
 
       .timetable-inner-container {
         min-width: $timetable-min-width;
@@ -128,7 +131,6 @@ $timetable-day-rows-height: calc(100% - #{$timetable-day-cell-height});
       .timetable-content-container {
         float: left;
         height: 100%;
-        overflow-x: scroll;
         width: 100% - $timetable-time-width;
 
         .timetable-day {

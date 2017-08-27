@@ -114,7 +114,7 @@ export class ModulePageContainer extends Component {
 
     return (
       <DocumentTitle title={documentTitle}>
-        <div className="module-container">
+        <div className="module-container page-container">
           {this.props.fetchModuleRequest.isPending && !module && <p>Loading...</p>}
           {this.props.fetchModuleRequest.isFailure && <p>Module not found</p>}
           {(this.props.fetchModuleRequest.isSuccessful || module) &&
