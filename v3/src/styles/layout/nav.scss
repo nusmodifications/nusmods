@@ -41,9 +41,10 @@
   .nm-navbar-text {
     flex: 1 1 auto;
     text-align: right;
+    line-height: 1.15;
   }
 
-  @include media-breakpoint-down('xs') {
+  @include media-breakpoint-down(xs) {
     .nm-navbar-text,
     .nm-navbar-form {
       display: none;
@@ -54,7 +55,9 @@
 .nm-nav-tabs {
   display: flex;
   flex-direction: column;
-  padding: 0;
+  padding: 2rem 0 0;
+  position: fixed;
+  top: $navbar-height;
 
   .nav-link {
     color: $gray-light;
@@ -62,12 +65,12 @@
     padding: 0.7rem;
 
     &.active {
-      color: theme-color('primary');
+      color: theme-color(primary);
     }
-  }
 
-  .nm-nav-item {
-    list-style: none;
+    &:hover .nm-link-title {
+      text-decoration: underline;
+    }
   }
 
   @include media-breakpoint-down(sm) {
@@ -76,23 +79,42 @@
     flex-direction: row;
     height: $navbar-height;
     left: 0;
-    position: fixed;
-    top: $navbar-height;
+    padding: 0;
     width: 100%;
     z-index: 1;
 
-    .nm-nav-item {
-      flex-grow: 1;
-    }
-
     .nav-link {
       display: block;
+      flex: 1 auto;
       padding: 1rem 0;
       text-align: center;
     }
 
     .nm-link-title {
       display: none;
+    }
+  }
+
+  @include media-breakpoint-only(md) {
+    .nav-link {
+      text-align: center;
+      font-size: 0.7rem;
+      padding: 1rem 0;
+
+      .fa {
+        font-size: 1.6rem;
+        margin-bottom: 0.2rem;
+      }
+
+      .nm-link-title {
+        display: block;
+      }
+    }
+  }
+
+  @include media-breakpoint-up(lg) {
+    .nm-link-title {
+      margin-left: 0.3rem;
     }
   }
 }

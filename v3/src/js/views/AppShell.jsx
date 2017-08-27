@@ -82,41 +82,34 @@ export class AppShell extends Component {
           </form>
           <span className="nm-navbar-text"><small>{weekText}</small></span>
         </nav>
-        <div className="container-fluid">
-          <div className="row">
-            <div className="col-md-2">
-              <ul className="nm-nav-tabs">
-                <li role="presentation" className="nm-nav-item">
-                  <NavLink className="nav-link" activeClassName="active" to="/timetable">
-                    <i className="fa fa-fw fa-lg fa-table" />
-                    <span className="nm-link-title"> Timetable</span>
-                  </NavLink>
-                </li>
-                <li role="presentation" className="nm-nav-item">
-                  <NavLink className="nav-link" activeClassName="active" to="/modules">
-                    <i className="fa fa-fw fa-lg fa-list" />
-                    <span className="nm-link-title"> Browse</span>
-                  </NavLink>
-                </li>
-                <li role="presentation" className="nm-nav-item">
-                  <NavLink className="nav-link" activeClassName="active" to="/settings">
-                    <i className="fa fa-fw fa-lg fa-gear" />
-                    <span className="nm-link-title"> Settings</span>
-                  </NavLink>
-                </li>
-              </ul>
-            </div>
-            <div className="col-md-10 main-content">
-              {this.props.fetchModuleListRequest.isPending && !this.props.moduleList.length ?
-                <p>Loading...</p> : null
-              }
-              {this.props.fetchModuleListRequest.isSuccessful || this.props.moduleList.length ?
-                this.props.children : null
-              }
-              <Routes />
-            </div>
-          </div>
+
+        <div className="main-container">
+          <nav className="nm-nav-tabs">
+            <NavLink className="nav-link" activeClassName="active" to="/timetable">
+              <i className="fa fa-fw fa-lg fa-table" />
+              <span className="nm-link-title">Timetable</span>
+            </NavLink>
+            <NavLink className="nav-link" activeClassName="active" to="/modules">
+              <i className="fa fa-fw fa-lg fa-list" />
+              <span className="nm-link-title">Browse</span>
+            </NavLink>
+            <NavLink className="nav-link" activeClassName="active" to="/settings">
+              <i className="fa fa-fw fa-lg fa-gear" />
+              <span className="nm-link-title">Settings</span>
+            </NavLink>
+          </nav>
+
+          <main className="main-content">
+            {this.props.fetchModuleListRequest.isPending && !this.props.moduleList.length ?
+              <p>Loading...</p> : null
+            }
+            {this.props.fetchModuleListRequest.isSuccessful || this.props.moduleList.length ?
+              this.props.children : null
+            }
+            <Routes />
+          </main>
         </div>
+
         <Footer />
       </div>
     );
