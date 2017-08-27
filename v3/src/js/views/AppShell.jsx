@@ -61,12 +61,16 @@ export class AppShell extends Component {
     }
   }
 
-  /* eslint-disable jsx-a11y/anchor-has-content */
   render() {
+    const isModuleListLoading = this.props.fetchModuleListRequest.isPending && !this.props.moduleList.length;
+    const isModuleListReady = this.props.fetchModuleListRequest.isSuccessful || this.props.moduleList.length;
+
     return (
       <div className="app-container">
         <nav className="nm-navbar fixed-top">
-          <NavLink className="nm-navbar-brand" to="/" title="Home" />
+          <NavLink className="nm-navbar-brand" to="/" title="Home">
+            <span className="sr-only">NUSMods</span>
+          </NavLink>
           <form className="nm-navbar-form">
             <ModulesSelect
               moduleList={this.props.moduleSelectList}
@@ -96,12 +100,9 @@ export class AppShell extends Component {
           </nav>
 
           <main className="main-content">
-            {this.props.fetchModuleListRequest.isPending && !this.props.moduleList.length ?
-              <p>Loading...</p> : null
-            }
-            {this.props.fetchModuleListRequest.isSuccessful || this.props.moduleList.length ?
-              this.props.children : null
-            }
+            {isModuleListLoading && <p>Loading...</p>}
+
+            {isModuleListReady && this.props.children}
             <Routes />
           </main>
         </div>
