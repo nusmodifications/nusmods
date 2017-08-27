@@ -62,7 +62,6 @@
   .nav-link {
     color: $gray-light;
     display: block;
-    padding: 0.7rem;
 
     &.active {
       color: theme-color(primary);
@@ -113,6 +112,10 @@
   }
 
   @include media-breakpoint-up(lg) {
+    .nav-link {
+      padding: 0.7rem 0 0.7rem 2rem;
+    }
+
     .nm-link-title {
       margin-left: 0.3rem;
     }
