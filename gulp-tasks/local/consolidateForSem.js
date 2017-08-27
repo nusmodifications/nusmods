@@ -1,6 +1,7 @@
 import path from 'path';
 import fs from 'fs-extra';
 import bunyan from 'bunyan';
+import Promise from 'bluebird';
 import R from 'ramda';
 import moment from 'moment';
 import clean from 'underscore.string/clean';
@@ -381,11 +382,9 @@ async function consolidateForSem(config) {
     await fs.outputJson(pathToWrite, content, { spaces: thisConfig.jsonSpace });
   }
 
-  await Promise.all([
-    write(thisConfig.destConsolidated, consolidated),
-    write(thisConfig.destFileName, modules),
-    write(thisConfig.destVenues, venuesList),
-  ]);
+  await write(thisConfig.destConsolidated, consolidated);
+  await write(thisConfig.destFileName, modules);
+  await write(thisConfig.destVenues, venuesList);
 }
 
 export default consolidateForSem;

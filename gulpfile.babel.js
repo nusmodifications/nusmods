@@ -1,5 +1,6 @@
 import 'babel-polyfill';
 import gulp from 'gulp';
+import Promise from 'bluebird';
 import bunyan from 'bunyan';
 import moment from 'moment';
 import nusmoderator from 'nusmoderator';
@@ -112,8 +113,7 @@ gulp.task('consolidateForSem', () => {
     semesters: [1, 2, 3, 4],
     config,
   });
-  const consolidateForSem = R.map(tasks.consolidateForSem, subtasks);
-  return Promise.all(consolidateForSem);
+  return Promise.each(subtasks, tasks.consolidateForSem);
 });
 
 gulp.task('splitForSem', () => {
@@ -123,8 +123,7 @@ gulp.task('splitForSem', () => {
     semesters: [1, 2, 3, 4],
     config,
   });
-  const splitForSem = R.map(tasks.splitForSem, subtasks);
-  return Promise.all(splitForSem);
+  return Promise.each(subtasks, tasks.splitForSem);
 });
 
 gulp.task('consolidateForYear', () => {
@@ -134,8 +133,7 @@ gulp.task('consolidateForYear', () => {
     semesters: [schoolSem],
     config: config.consolidate,
   });
-  const consolidateForYear = R.map(tasks.consolidateForYear, subtasks);
-  return Promise.all(consolidateForYear);
+  return Promise.each(subtasks, tasks.consolidateForYear);
 });
 
 gulp.task('splitForYear', () => {
@@ -145,8 +143,7 @@ gulp.task('splitForYear', () => {
     semesters: [schoolSem],
     config,
   });
-  const splitForYear = R.map(tasks.splitForYear, subtasks);
-  return Promise.all(splitForYear);
+  return Promise.each(subtasks, tasks.splitForYear);
 });
 
 gulp.task('local', gulp.series(
