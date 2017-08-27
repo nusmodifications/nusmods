@@ -71,14 +71,20 @@ a {
 }
 
 // Recreate Bootstrap v3 offsets
-@include media-breakpoint-up('md') {
+@include media-breakpoint-up(sm) {
+  .offset-sm-1 {
+    margin-left: percentage(1 / $grid-columns);
+  }
+}
+
+@include media-breakpoint-up(md) {
   .offset-md-1 {
     margin-left: percentage(1 / $grid-columns);
   }
 }
 
-@include media-breakpoint-up('sm') {
-  .offset-sm-1 {
+@include media-breakpoint-up(lg) {
+  .offset-lg-1 {
     margin-left: percentage(1 / $grid-columns);
   }
 }
