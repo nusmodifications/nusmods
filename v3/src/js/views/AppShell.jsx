@@ -27,28 +27,24 @@ type Props = {
 // Put outside render because this only needs to computed on page load.
 const weekText = (() => {
   const acadWeekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(new Date());
-  const year = `AY20${acadWeekInfo.year}`;
-  let semester = '';
-  let semesterType = '';
-  let week = '';
+  const parts = [`AY20${acadWeekInfo.year}`];
 
   // Check for null value (ie. during vacation)
   if (acadWeekInfo.sem) {
-    semester = `, ${acadWeekInfo.sem}`;
+    parts.push(acadWeekInfo.sem);
   }
 
   // Hide semester if semester type is 'Instructional'
   if (acadWeekInfo.type !== 'Instructional') {
-    semesterType = `, ${acadWeekInfo.type} Week`;
+    parts.push(`${acadWeekInfo.type} Week`);
   }
 
   // Do not show the week number if there is only one week, eg. recess
   if (acadWeekInfo.num > 0) {
-    week = `, Week ${acadWeekInfo.num}`;
+    parts.push(`Week ${acadWeekInfo.num}`);
   }
 
-  const acadWeekString = `${year}${semester}${semesterType}${week}`;
-  return acadWeekString;
+  return parts.join(', ');
 })();
 
 export class AppShell extends Component {
