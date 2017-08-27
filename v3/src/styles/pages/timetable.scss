@@ -27,7 +27,6 @@ $timetable-day-rows-height: calc(100% - #{$timetable-day-cell-height});
 
   .timetable-wrapper {
     -webkit-overflow-scrolling: touch;
-    overflow-x: scroll;
   }
 
   .timetable-bg {
