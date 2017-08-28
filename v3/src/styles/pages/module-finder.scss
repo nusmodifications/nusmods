@@ -19,9 +19,9 @@
     margin-bottom: 1rem;
 
     label {
+      display: block;
       padding: 0.2rem 0;
       margin: 0;
-      display: block;
       text-align: center;
       border: 1px solid transparent;
 
@@ -39,17 +39,17 @@
 
 .modules-list {
   display: inline-block;
-  list-style: none;
   padding: 0;
+  list-style: none;
 
   .modules-item {
-    margin: 0.5rem 0;
     padding: 1rem 0;
+    margin: 0.5rem 0;
 
     footer {
-      border-top: 1px solid $gray-lighter;
-      margin-top: 0.8rem;
       padding-top: 0.8rem;
+      margin-top: 0.8rem;
+      border-top: 1px solid $gray-lighter;
     }
   }
 
@@ -77,9 +77,9 @@
   }
 
   h4 {
-    font-size: $font-size-sm;
-    font-weight: bold;
     margin-bottom: 0;
+    font-weight: bold;
+    font-size: $font-size-sm;
   }
 }
 
@@ -88,9 +88,9 @@
   margin-bottom: 1rem;
 
   h4 {
-    font-size: $font-size-sm;
-    font-weight: bold;
     margin-bottom: 0;
+    font-weight: bold;
+    font-size: $font-size-sm;
   }
 }
 
@@ -103,8 +103,8 @@
   }
 
   .module-workload-label {
-    font-size: $font-size-xs;
     font-weight: bold;
+    font-size: $font-size-xs;
   }
 
   .module-workload-blocks {
@@ -125,8 +125,8 @@
   table-layout: fixed;
 
   th {
-    font-size: $font-size-xs;
     font-weight: normal;
+    font-size: $font-size-xs;
 
     &:first-child {
       border-right: 1px solid $gray-light;
@@ -138,8 +138,8 @@
   }
 
   .module-timeslot-time-label {
-    text-align: right;
     padding-right: 0.2rem;
+    text-align: right;
   }
 
   .module-timeslot-day-label {
@@ -148,23 +148,23 @@
 
   td {
     position: relative;
-    border: 1px solid $white;
-    overflow: hidden;
     padding: 0;
+    overflow: hidden;
+    border: 1px solid $white;
 
     div {
       position: absolute;
       top: 0;
-      bottom: 0;
       right: 0;
+      bottom: 0;
       left: 0;
 
       // Timeslot has both lecture and tutorial - we create a split cell effect
       // with a skew to show that it is on the same day (if the edge is straight
       // it may look like the edge of a cell)
       &.workload-lecture-bg + .workload-tutorial-bg {
-        transform: skewX(-45deg) translateX(50%);
         z-index: 1;
+        transform: skewX(-45deg) translateX(50%);
       }
     }
   }

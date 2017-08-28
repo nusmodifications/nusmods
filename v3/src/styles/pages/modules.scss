@@ -3,8 +3,8 @@
 // Pre-requisites Tree
 .nm-prerequisites-tree {
   #nm-prerequisites-tree-canvas {
-    border: 2px solid #eee;
     min-height: 400px;
+    border: 2px solid #eee;
   }
 
   #svg {
@@ -38,13 +38,13 @@
   }
 
   .mod-rect {
-    fill: theme-color('primary');
     transition: opacity 0.25s ease, fill 0.25s ease;
+    fill: theme-color('primary');
   }
 
   .andor-rect {
-    cursor: default;
     opacity: 0 !important;
+    cursor: default;
   }
 
   .current-mod-rect {
@@ -56,9 +56,9 @@
   }
 
   .rect-label {
-    fill: #000;
     font-weight: bold;
     pointer-events: none;
+    fill: #000;
     text-anchor: middle;
   }
 

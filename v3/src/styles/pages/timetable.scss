@@ -30,25 +30,25 @@ $timetable-day-rows-height: calc(100% - #{$timetable-day-cell-height});
   }
 
   .timetable-bg {
-    background-color: $timetable-background;
-    height: 100%;
     position: absolute;
     top: 0;
-    width: $timetable-width;
     z-index: -1;
+    width: $timetable-width;
+    height: 100%;
+    background-color: $timetable-background;
 
     .timetable-day {
-      border-bottom: none;
       height: 100%;
+      border-bottom: none;
     }
 
     .timetable-row {
-      bottom: 0;
-      height: 100%;
-      left: 0;
       position: absolute;
-      right: 0;
       top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      height: 100%;
     }
 
     .timetable-cell-alt {
@@ -58,8 +58,8 @@ $timetable-day-rows-height: calc(100% - #{$timetable-day-cell-height});
 
   .timetable-timings .timetable-cell,
   .timetable-day-cell {
-    font-size: $timetable-headings-font-size;
     font-weight: bold;
+    font-size: $timetable-headings-font-size;
     text-transform: uppercase;
   }
 
@@ -69,18 +69,18 @@ $timetable-day-rows-height: calc(100% - #{$timetable-day-cell-height});
 
   .timetable-container {
     &.horizontal-mode {
+      padding-bottom: 5px;
       // On Chrome this provides space for the horizontal scrollbar's height,
       // otherwise there will be a ugly vertical scrollbar
       overflow-y: hidden;
-      padding-bottom: 5px;
 
       .timetable-inner-container {
         min-width: $timetable-min-width;
       }
 
       .timetable-timings {
-        border-top: none;
         padding-left: $timetable-day-margin;
+        border-top: none;
 
         .timetable-cell {
           text-align: left;
@@ -93,8 +93,8 @@ $timetable-day-rows-height: calc(100% - #{$timetable-day-cell-height});
       }
 
       .timetable-day {
-        display: table;
         position: relative;
+        display: table;
         width: 100%;
 
         &:not(:last-child) {
@@ -103,9 +103,9 @@ $timetable-day-rows-height: calc(100% - #{$timetable-day-cell-height});
 
         .timetable-day-cell {
           display: table-cell;
+          width: $timetable-day-margin;
           padding-left: 0.7rem;
           vertical-align: middle;
-          width: $timetable-day-margin;
         }
       }
 
@@ -130,8 +130,8 @@ $timetable-day-rows-height: calc(100% - #{$timetable-day-cell-height});
 
       .timetable-content-container {
         float: left;
-        height: 100%;
         width: 100% - $timetable-time-width;
+        height: 100%;
 
         .timetable-day {
           float: left;
@@ -143,17 +143,17 @@ $timetable-day-rows-height: calc(100% - #{$timetable-day-cell-height});
       }
 
       .timetable-content-inner-container {
-        height: 100%;
         position: relative;
+        height: 100%;
       }
 
       .timetable-timings {
         float: left;
-        height: 100%;
-        padding-right: 0.7rem;
-        padding-top: $timetable-day-cell-height;
-        text-align: right;
         width: $timetable-time-width;
+        height: 100%;
+        padding-top: $timetable-day-cell-height;
+        padding-right: 0.7rem;
+        text-align: right;
 
         .timetable-cell {
           transform: translate(0, -30%);
@@ -164,8 +164,8 @@ $timetable-day-rows-height: calc(100% - #{$timetable-day-cell-height});
         padding-top: $timetable-day-cell-height;
 
         .timetable-day {
-          height: 100%;
           position: relative;
+          height: 100%;
         }
       }
 
@@ -193,9 +193,9 @@ $timetable-day-rows-height: calc(100% - #{$timetable-day-cell-height});
 
         .timetable-day-cell {
           display: table;
+          width: 100%;
           height: $timetable-day-cell-height;
           text-align: center;
-          width: 100%;
 
           .timetable-day-cell-text {
             display: table-cell;
@@ -209,8 +209,8 @@ $timetable-day-rows-height: calc(100% - #{$timetable-day-cell-height});
       }
 
       .timetable-row {
-        height: 100%;
         width: 100%;
+        height: 100%;
       }
 
       .timetable-cell {
@@ -221,28 +221,28 @@ $timetable-day-rows-height: calc(100% - #{$timetable-day-cell-height});
   }
 
   .timetable-module-cell {
-    animation-duration: $desktop-entering-duration;
-    border-bottom-style: solid;
-    border-bottom-width: 2px;
-    cursor: not-allowed;
-    font-size: $font-size-xs;
     height: 100%;
-    line-height: 0.85rem;
-    overflow: hidden;
     padding: $timetable-cell-padding;
-    pointer-events: none;
+    overflow: hidden;
+    font-size: $font-size-xs;
+    line-height: 0.85rem;
     text-align: left;
+    border-bottom-width: 2px;
+    border-bottom-style: solid;
+    pointer-events: none;
+    cursor: not-allowed;
     transition: background-color $desktop-entering-duration $material-deceleration-curve;
+    animation-duration: $desktop-entering-duration;
 
     &.is-modifiable {
       border-radius: $timetable-module-cell-border-radius;
-      cursor: pointer;
       pointer-events: auto;
+      cursor: pointer;
     }
 
     &.is-available {
-      animation-name: zoomIn;
       opacity: $timetable-cell-opacity;
+      animation-name: zoomIn;
 
       &:hover {
         opacity: 1;
@@ -302,19 +302,19 @@ $timetable-day-rows-height: calc(100% - #{$timetable-day-cell-height});
 
   .module-details-column {
     display: table-cell;
-    vertical-align: top;
     width: 10000px;
+    vertical-align: top;
   }
 
   .modules-table-color {
     $size: 20px;
 
+    width: $size;
+    height: $size;
+    margin-top: 2px;
+    margin-right: 10px;
     border-radius: 3px;
     cursor: pointer;
-    height: $size;
-    margin-right: 10px;
-    margin-top: 2px;
-    width: $size;
   }
 
   .btn-remove {

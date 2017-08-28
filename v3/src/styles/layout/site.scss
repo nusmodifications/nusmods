@@ -13,8 +13,8 @@ body {
   padding-top: 4rem;
 
   @include media-breakpoint-down(sm) {
-    font-size: $font-size-sm;
     padding-top: $navbar-height * 2;
+    font-size: $font-size-sm;
   }
 }
 
@@ -69,8 +69,8 @@ a {
 }
 
 .page-title {
-  font-size: $font-size-xlg;
   margin: 2rem 0 4rem;
+  font-size: $font-size-xlg;
 }
 
 // Recreate Bootstrap v3 offsets

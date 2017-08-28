@@ -2,6 +2,7 @@
 .color-muted {
   border: 1px solid #ccc;
 }
+
 .theme-ashes {
   .color-0 { @include color(#c7ae95); }
   .color-1 { @include color(#c7c795); }
@@ -12,6 +13,7 @@
   .color-6 { @include color(#c795ae); }
   .color-7 { @include color(#c79595); }
 }
+
 .theme-chalk {
   .color-0 { @include color(#fb9fb1); }
   .color-1 { @include color(#eda987); }
@@ -22,6 +24,7 @@
   .color-6 { @include color(#e1a3ee); }
   .color-7 { @include color(#deaf8f); }
 }
+
 .theme-eighties {
   .color-0 { @include color(#f2777a); }
   .color-1 { @include color(#f99157); }
@@ -32,6 +35,7 @@
   .color-6 { @include color(#c9c); }
   .color-7 { @include color(#d27b53); }
 }
+
 .theme-google {
   .color-0 { @include color(#cc342b); }
   .color-1 { @include color(#f96a38); }
@@ -42,6 +46,7 @@
   .color-6 { @include color(#a36ac7); }
   .color-7 { @include color(#3971ed); }
 }
+
 .theme-mocha {
   .color-0 { @include color(#cb6077); }
   .color-1 { @include color(#d28b71); }
@@ -52,6 +57,7 @@
   .color-6 { @include color(#a89bb9); }
   .color-7 { @include color(#bb9584); }
 }
+
 .theme-monokai {
   .color-0 { @include color(#f92672); }
   .color-1 { @include color(#fd971f); }
@@ -62,6 +68,7 @@
   .color-6 { @include color(#ae81ff); }
   .color-7 { @include color(#c63); }
 }
+
 .theme-ocean {
   .color-0 { @include color(#bf616a); }
   .color-1 { @include color(#d08770); }
@@ -72,6 +79,7 @@
   .color-6 { @include color(#b48ead); }
   .color-7 { @include color(#ab7967); }
 }
+
 .theme-oceanic-next {
   .color-0 { @include color(#ec5f67); }
   .color-1 { @include color(#f99157); }
@@ -82,6 +90,7 @@
   .color-6 { @include color(#c594c5); }
   .color-7 { @include color(#ab7967); }
 }
+
 .theme-paraiso {
   .color-0 { @include color(#ef6155); }
   .color-1 { @include color(#f99b15); }
@@ -92,6 +101,7 @@
   .color-6 { @include color(#815ba4); }
   .color-7 { @include color(#e96ba8); }
 }
+
 .theme-railscasts {
   .color-0 { @include color(#da4939); }
   .color-1 { @include color(#cc7833); }
@@ -102,6 +112,7 @@
   .color-6 { @include color(#b6b3eb); }
   .color-7 { @include color(#bc9458); }
 }
+
 .theme-tomorrow {
   .color-0 { @include color(#c66); }
   .color-1 { @include color(#de935f); }
@@ -112,6 +123,7 @@
   .color-6 { @include color(#b294bb); }
   .color-7 { @include color(#a3685a); }
 }
+
 .theme-twilight {
   .color-0 { @include color(#cf6a4c); }
   .color-1 { @include color(#cda869); }
