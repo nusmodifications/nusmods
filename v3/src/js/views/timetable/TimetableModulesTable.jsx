@@ -26,7 +26,7 @@ type Props = {
   horizontalOrientation: boolean,
 };
 
-class TimetableModulesTable extends Component {
+class TimetableModulesTable extends Component<Props> {
   props: Props;
 
   componentWillUnmount() {

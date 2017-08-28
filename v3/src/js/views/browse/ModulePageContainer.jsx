@@ -30,7 +30,7 @@ type Props = {
   removeModule: Function,
 };
 
-export class ModulePageContainer extends Component {
+class ModulePageContainer extends Component<Props> {
   props: Props;
 
   componentDidMount() {

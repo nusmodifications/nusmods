@@ -8,8 +8,8 @@ type Props = {
   attrs?: { [ButtonChoice]: Object },
   classNames?: { [ButtonChoice]: string[] },
   size?: string,
-  selectedChoice?: ButtonChoice,
-  onChoiceSelect: Function,
+  selectedChoice: ?ButtonChoice,
+  onChoiceSelect: (string) => void,
   ariaLabel?: string,
 };
 

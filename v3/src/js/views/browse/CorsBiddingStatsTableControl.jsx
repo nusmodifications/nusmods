@@ -26,7 +26,7 @@ type State = {
   selectedAySem: ?string,
 };
 
-class CorsBiddingStatsTableControl extends Component {
+class CorsBiddingStatsTableControl extends Component<Props, State> {
   props: Props;
   state: State;
   onAccountTypeChange: Function;

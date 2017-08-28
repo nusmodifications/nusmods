@@ -68,9 +68,9 @@ type Props = {
   downloadAsIcal: Function,
 };
 
-class TimetableContainer extends Component {
-  props: Props
-  timetableDom: Element
+class TimetableContainer extends Component<Props> {
+  props: Props;
+  timetableDom: ?HTMLElement;
 
   componentWillUnmount() {
     this.cancelModifyLesson();
@@ -80,11 +80,11 @@ class TimetableContainer extends Component {
     if (this.props.activeLesson) {
       this.props.cancelModifyLesson();
     }
-  }
+  };
 
   isHiddenInTimetable = (moduleCode: ModuleCode) => {
     return this.props.hiddenInTimetable.includes(moduleCode);
-  }
+  };
 
   modifyCell = (lesson: ModifiableLesson) => {
     if (lesson.isAvailable) {
@@ -94,7 +94,7 @@ class TimetableContainer extends Component {
     } else {
       this.props.modifyLesson(lesson);
     }
-  }
+  };
 
   render() {
     let timetableLessons: Array<Lesson | ModifiableLesson> = timetableLessonsArray(this.props.semTimetableWithLessons);

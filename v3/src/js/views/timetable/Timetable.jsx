@@ -25,9 +25,9 @@ type Props = {
   onModifyCell: Function,
 };
 
-class Timetable extends Component {
-  props: Props
-  timetableDom: Element
+class Timetable extends Component<Props> {
+  props: Props;
+  timetableDom: ?HTMLDivElement;
 
   render() {
     const lessons: Array<Lesson> = [];

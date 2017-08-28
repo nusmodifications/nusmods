@@ -11,8 +11,8 @@ type Props = {
 export default function Table(props: Props) {
   const tableBody = (
     <tbody>
-      {props.data.map(s => (
-        <tr key={s}>
+      {props.data.map((s, i) => (
+        <tr key={i}>
           {s.map(d =>
             (<td key={d}>
               {d}

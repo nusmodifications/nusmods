@@ -1,5 +1,5 @@
 // @flow
-import type { Location, RouterHistory } from 'react-router-dom';
+import type { ContextRouter } from 'react-router-dom';
 
 import React, { Component } from 'react';
 import DocumentTitle from 'react-document-title';
@@ -27,12 +27,15 @@ import nusmods from 'apis/nusmods';
 import FilterGroup from 'utils/filters/FilterGroup';
 import HistoryDebouncer from 'utils/HistoryDebouncer';
 
-type Props = {
-  location: Location,
-  history: RouterHistory,
+type Props = ContextRouter;
+
+type State = {
+  loading: boolean,
+  modules: Module[],
+  filterGroups: { [FilterGroupId]: FilterGroup<any> },
 };
 
-export class ModuleFinderContainerComponent extends Component {
+export class ModuleFinderContainerComponent extends Component<Props, State> {
   props: Props;
 
   history: HistoryDebouncer;
@@ -52,11 +55,7 @@ export class ModuleFinderContainerComponent extends Component {
     this.unlisten = props.history.listen(location => this.onQueryStringChange(location.search));
   }
 
-  state: {
-    loading: boolean,
-    modules: Module[],
-    filterGroups: { [FilterGroupId]: FilterGroup<any> },
-  } = {
+  state: State = {
     loading: true,
     modules: [],
     filterGroups: {},

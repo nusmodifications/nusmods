@@ -2,13 +2,13 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 
-import type { SemesterData } from 'types/modules';
+import type { Semester, SemesterData } from 'types/modules';
 
 import ButtonGroupSelector from 'views/components/ButtonGroupSelector';
 import LessonTimetable from './LessonTimetable';
 
 type Props = {
-  semestersOffered: number[],
+  semestersOffered: Semester[],
   history: Array<SemesterData>,
 };
 
@@ -16,7 +16,7 @@ type State = {
   selectedSem: ?string,
 };
 
-export default class LessonTimetableControl extends Component {
+export default class LessonTimetableControl extends Component<Props, State> {
   props: Props;
   state: State;
   onSelectSem: Function;

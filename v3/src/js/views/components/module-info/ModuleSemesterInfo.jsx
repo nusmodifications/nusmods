@@ -1,8 +1,7 @@
 // @flow
-import React from 'react';
+import React, { Component } from 'react';
 import _ from 'lodash';
 
-import type { Node } from 'react';
 import type { SemesterData } from 'types/modules';
 
 import config from 'config';
@@ -14,14 +13,16 @@ type Props = {
   semesters: SemesterData[],
 };
 
+type State = {
+  selected: string,
+};
+
 const semesterNames = config.shortSemesterNames;
 
-export default class ModuleSemesterInfo extends React.Component {
+export default class ModuleSemesterInfo extends Component<Props, State> {
   props: Props;
 
-  state: {
-    selected: string,
-  };
+  state: State;
 
   constructor(props: Props) {
     super(props);
@@ -57,7 +58,7 @@ export default class ModuleSemesterInfo extends React.Component {
     return this.semesterMap()[this.state.selected];
   }
 
-  timeslotChildren(): Map<string, Node> {
+  timeslotChildren() {
     const semester = this.selectedSemester() || {};
     const {
       LecturePeriods: lectures = [],
@@ -72,6 +73,7 @@ export default class ModuleSemesterInfo extends React.Component {
         children.set(timeslot, child);
       }
 
+      // $FlowFixMe Can't convince Flow that this is a Node[] :/
       child.push(component);
     };
 

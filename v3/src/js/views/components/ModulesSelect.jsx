@@ -15,7 +15,7 @@ type Props = {
   placeholder: string,
 };
 
-class ModulesSelect extends Component {
+class ModulesSelect extends Component<Props> {
   props: Props;
 
   shouldComponentUpdate(nextProps: Props) {

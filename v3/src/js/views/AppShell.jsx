@@ -1,4 +1,6 @@
 // @flow
+import type { Node } from 'react';
+
 import React, { Component } from 'react';
 import { NavLink, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -15,7 +17,7 @@ import ModulesSelect from 'views/components/ModulesSelect';
 import Footer from 'views/layout/Footer';
 
 type Props = {
-  children: React.Children,
+  children: Node,
   loadModule: Function,
   fetchModuleList: Function,
   moduleList: ModuleList,
@@ -47,7 +49,7 @@ const weekText = (() => {
   return parts.join(', ');
 })();
 
-export class AppShell extends Component {
+export class AppShell extends Component<Props> {
   props: Props;
 
   componentDidMount() {
