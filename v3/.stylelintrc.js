@@ -16,7 +16,7 @@ module.exports = {
     // tldr; Rules follow a logical, semantic ordering to prevent
     // readers from resetting their context of styles being applied
     'order/properties-order': [
-      "composes",
+      'composes',
       'content',
 
       'position',
