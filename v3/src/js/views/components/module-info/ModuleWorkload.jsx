@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import type { Node } from 'react';
 import classnames from 'classnames';
 import _ from 'lodash';
 
@@ -27,9 +28,11 @@ type WorkloadBlock = {
   count: number,
 };
 
-export default function (props: Props) {
+export default function ModuleWorkload(props: Props): Node {
   const workloadMap = parseWorkload(props.workload);
-  if (typeof workloadMap === 'string') return workloadMap;
+  if (typeof workloadMap === 'string') {
+    return <p>{ workloadMap }</p>;
+  }
 
   const workload = _.entries(workloadMap);
   const total = _.sumBy(workload, ([, hours]) => hours);

@@ -28,7 +28,7 @@ export default function ChecklistFilters(props: Props) {
                 className="form-check-input"
                 type="checkbox"
                 checked={filter.enabled}
-                onChange={() => onFilterChange(group.toggle(filter.label))}
+                onChange={() => onFilterChange(group.toggle(filter))}
               />
               {filter.label} <span className="text-muted">({filter.count(modules)})</span>
             </label>

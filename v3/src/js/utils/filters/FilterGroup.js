@@ -1,25 +1,32 @@
 // @flow
-import _ from 'lodash';
-import type { Module } from 'types/modules';
+import { keyBy, values } from 'lodash';
 import update from 'immutability-helper';
+
+import type { Module } from 'types/modules';
+
 import ModuleFilter from './ModuleFilter';
 
+export const ID_DELIMITER = ',';
+
+export type FilterGroupId = string;
 export default class FilterGroup<Filter: ModuleFilter> {
+  id: FilterGroupId;
   label: string;
   filters: { [string]: Filter };
 
   // Memoized array of filters that are enabled
   activeFilters: Filter[];
 
-  constructor(label: string, filters: Filter[]) {
-    this.filters = _.keyBy(filters, filter => filter.label);
+  constructor(id: FilterGroupId, label: string, filters: Filter[]) {
+    this.filters = keyBy(filters, filter => filter.id);
+    this.id = id;
     this.label = label;
 
     this.updateActiveFilters();
   }
 
   updateActiveFilters() {
-    this.activeFilters = _.values(this.filters)
+    this.activeFilters = values(this.filters)
       .filter(filter => filter.enabled);
   }
 
@@ -28,11 +35,13 @@ export default class FilterGroup<Filter: ModuleFilter> {
     return this.activeFilters.some(filter => filter.test(module));
   }
 
-  toggle(label: string): FilterGroup<Filter> {
-    const enabled = this.filters[label].enabled;
+  toggle(idOrFilter: string | Filter, value: ?boolean): FilterGroup<Filter> {
+    const id = idOrFilter instanceof ModuleFilter ? idOrFilter.id : idOrFilter;
+    if (!this.filters[id]) return this;
 
+    const newValue = typeof value === 'boolean' ? value : !this.filters[id].enabled;
     const updated = update(this, {
-      filters: { [label]: { enabled: { $set: !enabled } } },
+      filters: { [id]: { enabled: { $set: newValue } } },
     });
     updated.updateActiveFilters();
 
@@ -41,6 +50,21 @@ export default class FilterGroup<Filter: ModuleFilter> {
 
   isActive(): boolean {
     return !!this.activeFilters.length;
+  }
+
+  // Query string (de)serialization - this allows the currently enabled filters to be
+  // embedded directly
+  toQueryString(): string {
+    return this.activeFilters
+      .map(filter => filter.id)
+      .join(ID_DELIMITER);
+  }
+
+  fromQueryString(filterIds: string = ''): FilterGroup<Filter> {
+    const enabled = new Set(filterIds.split(ID_DELIMITER));
+    return values(this.filters)
+      .map((filter: Filter) => filter.id)
+      .reduce((group, id) => group.toggle(id, enabled.has(id)), this);
   }
 
   static apply(modules: Module[], filterGroups: FilterGroup<any>[]): Module[] {

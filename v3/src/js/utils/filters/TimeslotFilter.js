@@ -1,6 +1,6 @@
 // @flow
 import config from 'config';
-import { getModuleSemesterData } from 'utils/modules';
+import { getModuleSemesterData, getTimeslot } from 'utils/modules';
 import ModuleFilter from 'utils/filters/ModuleFilter';
 import type { Semester, Time, Day } from 'types/modules';
 
@@ -27,9 +27,10 @@ export default class TimeslotFilter extends ModuleFilter {
 
   constructor(day: Day, time: Time, type: TimeslotType, semester: Semester = config.semester) {
     const timeslotProperty = timeslotProperties[type];
-    const timeslot = `${day} ${time}`;
+    const timeslot = getTimeslot(day, time);
+    const id = TimeslotFilter.labelToId(timeslot);
 
-    super(timeslot, (module) => {
+    super(id, timeslot, (module) => {
       const lesson = getModuleSemesterData(module, semester);
       if (!lesson) return false;
       const timeslots = lesson[timeslotProperty];
@@ -40,5 +41,9 @@ export default class TimeslotFilter extends ModuleFilter {
     this.time = time;
     this.type = type;
     this.semester = semester;
+  }
+
+  static labelToId(label: string): string {
+    return label.toLowerCase().replace(' ', '-');
   }
 }

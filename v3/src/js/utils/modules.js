@@ -1,4 +1,6 @@
 // @flow
+import _ from 'lodash';
+
 import type {
   Lesson,
   Module,
@@ -10,7 +12,7 @@ import type {
   Time,
   Day,
 } from 'types/modules';
-import _ from 'lodash';
+
 import config from 'config';
 
 export function modulePagePath(moduleCode: ModuleCode): string {
@@ -19,7 +21,7 @@ export function modulePagePath(moduleCode: ModuleCode): string {
 
 // Returns semester specific details such as exam date and timetable.
 export function getModuleSemesterData(module: Module, semester: Semester): ?SemesterData {
-  return _.find(module.History, (semData: SemesterData) => {
+  return module.History.find((semData: SemesterData) => {
     return semData.Semester === semester;
   });
 }
