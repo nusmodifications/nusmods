@@ -1,13 +1,14 @@
 // @flow
 import _ from 'lodash';
 
-import FilterGroup, { ID_DELIMINATOR } from 'utils/filters/FilterGroup';
+import FilterGroup, { ID_DELIMITER } from 'utils/filters/FilterGroup';
 import filterGroups from './module-filters';
 
 const groups: FilterGroup<*>[] = _.values(filterGroups);
 
 function expectUnique<T>(arr: T[]) {
-  // Set in JS iterates over elements in insertion order
+  // Set in JS iterates over elements in insertion order, so we can use them for
+  // uniqueness test
   expect(Array.from(new Set(arr))).toEqual(arr);
 }
 
@@ -31,10 +32,10 @@ describe('filters should have unique id', () => {
   });
 });
 
-describe('filter ID should not contain deliminator', () => {
+describe('filter ID should not contain delimiter', () => {
   testGroups((group) => {
     _.values(group.filters).forEach((filter) => {
-      expect(filter.id).not.toContain(ID_DELIMINATOR);
+      expect(filter.id).not.toContain(ID_DELIMITER);
     });
   });
 });
@@ -57,7 +58,9 @@ describe('either all or none of filter ID in a group should be integer', () => {
     if (isInteger) {
       const numeric = keys.map(key => parseInt(key, 10));
       // Also check that numeric keys are incrementing to ensure order is correct
-      expect(numeric.slice(1).every((key, i) => key - numeric[i] > 0)).toBe(true);
+      numeric.slice(1).forEach((key, i) => {
+        expect(numeric[i]).toBeLessThan(key);
+      });
     }
   });
 });

@@ -12,10 +12,12 @@ import qs from 'query-string';
 // version desync between the version depended on by react-router-dom
 import createHistory from 'history/createMemoryHistory'; // eslint-disable-line import/no-extraneous-dependencies
 
+import type { FilterGroupId } from 'utils/filters/FilterGroup';
+
 import FilterGroup from 'utils/filters/FilterGroup';
 import { ModuleFinderContainerComponent } from './ModuleFinderContainer';
 
-type ActiveFilters = { [FilterGroup<any>]: string[] };
+type ActiveFilters = { [FilterGroupId]: string[] };
 type Container = { component: ShallowWrapper, history: RouterHistory };
 
 // Mock axios to stop it from firing API requests
@@ -29,8 +31,8 @@ afterEach(() => {
 });
 
 function activeFilters({ component }: Container): ActiveFilters {
-  // Helper function to extract ID of active filters, which is an easier structure to
-  // assert against
+  // Helper function to extract a mapping of ID of active filters, which is an easier
+  // data structure to assert against
   const active = {};
 
   _.values(component.state().filterGroups)
@@ -102,8 +104,9 @@ test('should update filter state when query string changes', () => {
 });
 
 test('#updateQueryString() should update query string', () => {
-  // Mock the two history manipulation methods by redirecting their outputs to
-  // an array so we can assert against it
+  // Mock the two history manipulation methods by redirecting their inputs to
+  // an array so we can assert against them to check that the filter state is
+  // updated when the query string changes
   const container = createContainer();
   const calls = [];
   jest.spyOn(container.history, 'push')

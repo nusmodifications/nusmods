@@ -6,7 +6,7 @@ import type { Module } from 'types/modules';
 
 import ModuleFilter from './ModuleFilter';
 
-export const ID_DELIMINATOR = ',';
+export const ID_DELIMITER = ',';
 
 export type FilterGroupId = string;
 export default class FilterGroup<Filter: ModuleFilter> {
@@ -55,15 +55,13 @@ export default class FilterGroup<Filter: ModuleFilter> {
   // Query string (de)serialization - this allows the currently enabled filters to be
   // embedded directly
   toQueryString(): string {
-    if (!this.isActive()) return '';
-
     return this.activeFilters
       .map(filter => filter.id)
-      .join(ID_DELIMINATOR);
+      .join(ID_DELIMITER);
   }
 
   fromQueryString(filterIds: string = ''): FilterGroup<Filter> {
-    const enabled = new Set(filterIds.split(ID_DELIMINATOR));
+    const enabled = new Set(filterIds.split(ID_DELIMITER));
     return values(this.filters)
       .map((filter: Filter) => filter.id)
       .reduce((group, id) => group.toggle(id, enabled.has(id)), this);
