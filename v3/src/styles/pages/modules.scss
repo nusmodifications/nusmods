@@ -38,8 +38,8 @@
   }
 
   .mod-rect {
-    transition: opacity 0.25s ease, fill 0.25s ease;
     fill: theme-color('primary');
+    transition: opacity 0.25s ease, fill 0.25s ease;
   }
 
   .andor-rect {
@@ -57,8 +57,8 @@
 
   .rect-label {
     font-weight: bold;
-    pointer-events: none;
     fill: #000;
+    pointer-events: none;
     text-anchor: middle;
   }
 
