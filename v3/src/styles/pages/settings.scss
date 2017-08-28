@@ -7,8 +7,8 @@
 
   .theme-option-container {
     float: left;
-    margin-bottom: $theme-option-gap;
     width: 25%;
+    margin-bottom: $theme-option-gap;
 
     @include media-breakpoint-down('sm') {
       width: 50%;
@@ -16,9 +16,9 @@
   }
 
   .theme-option {
+    padding: $theme-option-gap;
     border-radius: 6px;
     cursor: pointer;
-    padding: $theme-option-gap;
     transition: background-color $desktop-entering-duration $material-deceleration-curve;
 
     &:hover {
@@ -38,7 +38,7 @@
     $size: 100% / $number-colors;
 
     display: inline-block;
-    padding-bottom: $size;
     width: $size;
+    padding-bottom: $size;
   }
 }

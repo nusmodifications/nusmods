@@ -1,13 +1,13 @@
 .loading-spinner {
-  color: theme-color();
   text-align: center;
+  color: theme-color();
 
   .fa {
     margin-bottom: 0.5rem;
   }
 
   .loading-text {
-    font-size: 1.4rem;
     font-weight: bold;
+    font-size: 1.4rem;
   }
 }

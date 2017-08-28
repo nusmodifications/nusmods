@@ -1,13 +1,13 @@
 .nm-footer {
-  background-color: $gray-lightest;
-  font-size: 0.85rem;
-  margin-top: 4rem;
   padding: 4rem 0;
+  margin-top: 4rem;
+  font-size: 0.85rem;
   text-align: center;
+  background-color: $gray-lightest;
 
   a {
-    color: $gray;
     font-weight: 500;
+    color: $gray;
 
     &:hover {
       color: $link-color;
@@ -24,8 +24,8 @@
 }
 
 .nm-footer-links {
-  margin-bottom: 1rem;
   padding-left: 0;
+  margin-bottom: 1rem;
 
   li {
     display: inline-block;

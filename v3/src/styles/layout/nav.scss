@@ -2,34 +2,30 @@
   $vert-padding: 0.5rem;
   $form-width: 26rem;
 
-  align-items: center;
-  background: $gray-lightest;
   display: flex;
   flex-direction: row;
+  align-items: center;
   min-height: $navbar-height;
   padding: $vert-padding 1rem;
-
-  @include media-breakpoint-up(md) {
-    padding: $vert-padding 2rem;
-  }
+  background: $gray-lightest;
 
   .nm-navbar-brand {
     $image-height: 130;
     $image-width: 789;
     $unit: 0.01rem;
 
-    background-image: url('../img/nusmods-logo.png');
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: contain;
+    width: $image-width * $unit;
     height: $image-height * $unit;
     margin-right: 1rem;
-    width: $image-width * $unit;
+    background-image: url('../img/nusmods-logo.png');
+    background-position: center center;
+    background-size: contain;
+    background-repeat: no-repeat;
   }
 
   .nm-navbar-logo {
-    align-items: center;
     display: flex;
+    align-items: center;
     height: 1rem;
   }
 
@@ -40,9 +36,13 @@
 
   .nm-navbar-text {
     flex: 1 1 auto;
-    line-height: 1.15;
     padding-left: $grid-gutter-width / 2;
+    line-height: 1.15;
     text-align: right;
+  }
+
+  @include media-breakpoint-up(md) {
+    padding: $vert-padding 2rem;
   }
 
   @include media-breakpoint-down(xs) {
@@ -54,16 +54,16 @@
 }
 
 .nm-nav-tabs {
+  position: fixed;
+  top: $navbar-height;
   // See site.scss for width on md and lg sizes
   display: flex;
   flex-direction: column;
   padding: 2rem 0 0;
-  position: fixed;
-  top: $navbar-height;
 
   .nav-link {
-    color: $gray-light;
     display: block;
+    color: $gray-light;
 
     &.active {
       color: theme-color(primary);
@@ -77,14 +77,14 @@
   // For breakpoint-sm and below (phones), show the links as icon tabs fixed
   // below the top navbar
   @include media-breakpoint-down(sm) {
+    left: 0;
+    z-index: 1;
+    flex-direction: row;
+    width: 100%;
+    height: $navbar-height;
+    padding: 0;
     background-color: #fff;
     box-shadow: 0 0 15px -3px rgba(#000, 0.4);
-    flex-direction: row;
-    height: $navbar-height;
-    left: 0;
-    padding: 0;
-    width: 100%;
-    z-index: 1;
 
     .nav-link {
       flex: 1 auto;
@@ -101,13 +101,13 @@
   // below icons.
   @include media-breakpoint-only(md) {
     .nav-link {
-      font-size: 0.7rem;
       padding: 1rem 0;
+      font-size: 0.7rem;
       text-align: center;
 
       .fa {
-        font-size: 1.6rem;
         margin-bottom: 0.2rem;
+        font-size: 1.6rem;
       }
 
       .nm-link-title {
