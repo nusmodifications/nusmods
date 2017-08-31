@@ -1,4 +1,6 @@
 // @flow
+import type { Node } from 'react';
+
 import React, { Component } from 'react';
 import _ from 'lodash';
 
@@ -58,7 +60,7 @@ export default class ModuleSemesterInfo extends Component<Props, State> {
     return this.semesterMap()[this.state.selected];
   }
 
-  timeslotChildren() {
+  timeslotChildren(): Map<string, Node> {
     const semester = this.selectedSemester() || {};
     const {
       LecturePeriods: lectures = [],
@@ -73,8 +75,8 @@ export default class ModuleSemesterInfo extends Component<Props, State> {
         children.set(timeslot, child);
       }
 
-      // $FlowFixMe Can't convince Flow that this is a Node[] :/
-      child.push(component);
+      // This type check makes Flow happy
+      if (typeof child.push === 'function') child.push(component);
     };
 
     lectures.forEach(timeslot => addChild(timeslot, <div className="workload-lecture-bg" key="lecture" />));
