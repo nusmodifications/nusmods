@@ -2958,9 +2958,9 @@ flow-bin@^0.53.1:
   version "0.53.1"
   resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.53.1.tgz#9b22b63a23c99763ae533ebbab07f88c88c97d84"
 
-flow-scripts@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/flow-scripts/-/flow-scripts-0.3.0.tgz#b79561958c8d8404a0b2c712b3477d1db89b0491"
+flow-scripts@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/flow-scripts/-/flow-scripts-0.4.0.tgz#57c192ba92de3b4664917ac6a4cc5f7c91bd99dd"
   dependencies:
     commander "^2.9.0"
     glob "^7.1.2"
