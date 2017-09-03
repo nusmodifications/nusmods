@@ -1,8 +1,9 @@
 // @flow
-import React from 'react';
+import type { Node } from 'react';
+
+import React, { Component } from 'react';
 import _ from 'lodash';
 
-import type { Node } from 'react';
 import type { SemesterData } from 'types/modules';
 
 import config from 'config';
@@ -14,14 +15,16 @@ type Props = {
   semesters: SemesterData[],
 };
 
+type State = {
+  selected: string,
+};
+
 const semesterNames = config.shortSemesterNames;
 
-export default class ModuleSemesterInfo extends React.Component {
+export default class ModuleSemesterInfo extends Component<Props, State> {
   props: Props;
 
-  state: {
-    selected: string,
-  };
+  state: State;
 
   constructor(props: Props) {
     super(props);
@@ -72,7 +75,8 @@ export default class ModuleSemesterInfo extends React.Component {
         children.set(timeslot, child);
       }
 
-      child.push(component);
+      // This type check makes Flow happy
+      if (typeof child.push === 'function') child.push(component);
     };
 
     lectures.forEach(timeslot => addChild(timeslot, <div className="workload-lecture-bg" key="lecture" />));

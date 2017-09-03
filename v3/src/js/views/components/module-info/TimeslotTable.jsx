@@ -1,8 +1,9 @@
 // @flow
+import type { Node } from 'react';
+
 import React from 'react';
 import { clone } from 'lodash';
 
-import type { Node } from 'react';
 import type { Time } from 'types/modules';
 
 import { DaysOfWeek, TimesOfDay } from 'types/modules';

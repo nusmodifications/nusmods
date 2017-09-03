@@ -10,9 +10,9 @@ type Props = {
   module: Module,
 };
 
-export default class ModuleTree extends Component {
+export default class ModuleTree extends Component<Props> {
   props: Props;
-  prereqRoot: HTMLDivElement;
+  prereqRoot: ?HTMLDivElement;
 
   componentDidMount() {
     const isOrAnd = d => d.name === 'or' || d.name === 'and';
@@ -23,8 +23,11 @@ export default class ModuleTree extends Component {
     const getX = d => (isOrAnd(d) ? -25 : -60);
     const getY = d => (isOrAnd(d) ? -17.5 : -35);
 
+    const prereqRoot = this.prereqRoot;
+    if (!prereqRoot) return;
+
     const SVGHeight = 400;
-    let SVGWidth = this.prereqRoot.clientWidth;
+    let SVGWidth = prereqRoot.clientWidth;
     let rectangles;
     let interact;
 
@@ -53,7 +56,7 @@ export default class ModuleTree extends Component {
     }
 
     function resized() {
-      SVGWidth = this.prereqRoot.clientWidth;
+      SVGWidth = prereqRoot.clientWidth;
       d3.select('#svg').attr('width', SVGWidth);
 
       interact.translate(getDefaultTranslation());

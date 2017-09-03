@@ -46,6 +46,12 @@ function activeFilters({ component }: Container): ActiveFilters {
 
 function createContainer(initialEntries?: Array<LocationShape | string>): Container {
   const history = createHistory({ initialEntries });
+  const mockMatch = {
+    path: '/',
+    url: '/',
+    isExact: true,
+    params: {},
+  };
 
   return {
     history,
@@ -53,6 +59,7 @@ function createContainer(initialEntries?: Array<LocationShape | string>): Contai
       <ModuleFinderContainerComponent
         history={history}
         location={history.location}
+        match={mockMatch}
       />,
     ),
   };

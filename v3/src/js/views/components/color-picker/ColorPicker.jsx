@@ -16,7 +16,7 @@ type Props = {
   onDismiss: Function,
 };
 
-class ColorPicker extends Component {
+class ColorPicker extends Component<Props> {
   props: Props;
 
   componentWillMount() {
@@ -31,7 +31,7 @@ class ColorPicker extends Component {
     if (event.key === 'Escape' || event.keyCode === ESCAPE_KEYCODE) {
       this.props.onDismiss();
     }
-  }
+  };
 
   render() {
     return (

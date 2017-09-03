@@ -2962,13 +2962,13 @@ flatten@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/flatten/-/flatten-1.0.2.tgz#dae46a9d78fbe25292258cc1e780a41d95c03782"
 
-flow-bin@^0.51.0:
-  version "0.51.0"
-  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.51.0.tgz#97a3c511a17caa25d8fad58fc17aaabcb86319fe"
+flow-bin@^0.54.0:
+  version "0.54.0"
+  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.54.0.tgz#f2fb0478e9e99702b623c9ed84079a39903bba77"
 
-flow-scripts@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/flow-scripts/-/flow-scripts-0.3.0.tgz#b79561958c8d8404a0b2c712b3477d1db89b0491"
+flow-scripts@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/flow-scripts/-/flow-scripts-0.4.0.tgz#57c192ba92de3b4664917ac6a4cc5f7c91bd99dd"
   dependencies:
     commander "^2.9.0"
     glob "^7.1.2"

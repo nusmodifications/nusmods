@@ -68,9 +68,9 @@ type Props = {
   downloadAsIcal: Function,
 };
 
-class TimetableContainer extends Component {
-  props: Props
-  timetableDom: Element
+class TimetableContainer extends Component<Props> {
+  props: Props;
+  timetableDom: ?HTMLElement;
 
   componentWillUnmount() {
     this.cancelModifyLesson();
@@ -80,11 +80,11 @@ class TimetableContainer extends Component {
     if (this.props.activeLesson) {
       this.props.cancelModifyLesson();
     }
-  }
+  };
 
   isHiddenInTimetable = (moduleCode: ModuleCode) => {
     return this.props.hiddenInTimetable.includes(moduleCode);
-  }
+  };
 
   modifyCell = (lesson: ModifiableLesson) => {
     if (lesson.isAvailable) {
@@ -94,7 +94,7 @@ class TimetableContainer extends Component {
     } else {
       this.props.modifyLesson(lesson);
     }
-  }
+  };
 
   render() {
     let timetableLessons: Array<Lesson | ModifiableLesson> = timetableLessonsArray(this.props.semTimetableWithLessons);
@@ -105,24 +105,19 @@ class TimetableContainer extends Component {
       const module = this.props.modules[moduleCode];
       const moduleTimetable: Array<RawLesson> = getModuleTimetable(module, this.props.semester);
       const lessons = lessonsForLessonType(moduleTimetable, activeLesson.LessonType)
-        .map((lesson) => {
-          // Inject module code in
-          return { ...lesson, ModuleCode: moduleCode };
-        });
-      const otherAvailableLessons = lessons
-        .filter((lesson) => {
-          // Exclude the lesson being modified.
-          return !areLessonsSameClass(lesson, activeLesson);
-        })
-        .map((lesson) => {
-          return { ...lesson, isAvailable: true };
-        });
+        // Inject module code in
+        .map(lesson => ({ ...lesson, ModuleCode: moduleCode }));
+
+      const otherAvailableLessons: Array<Lesson | ModifiableLesson> = lessons
+        // Exclude the lesson being modified.
+        .filter(lesson => !areLessonsSameClass(lesson, activeLesson))
+        .map(lesson => ({ ...lesson, isAvailable: true }));
+
       timetableLessons = timetableLessons.map((lesson) => {
         // Identify the current lesson being modified.
-        if (areLessonsSameClass(lesson, activeLesson)) {
-          return { ...lesson, isActive: true };
-        }
-        return lesson;
+        return areLessonsSameClass(lesson, activeLesson) ?
+          // $FlowFixMe Explicitly annotating lesson also does not work
+          { ...lesson, isActive: true } : lesson;
       });
       timetableLessons = [...timetableLessons, ...otherAvailableLessons];
     }
