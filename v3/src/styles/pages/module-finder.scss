@@ -3,16 +3,29 @@
 }
 
 .module-filters {
+  position: fixed;
+  top: $navbar-height + 1rem;
+  bottom: 0;
+  overflow: auto;
+
   h3 {
+    margin-bottom: 1rem;
     font-size: $font-size-lg;
+    color: $gray-light;
   }
 
   h4 {
-    font-size: $font-size-sm;
+    margin-bottom: 0;
+    font-weight: bold;
+    font-size: $font-size-xs;
   }
 
   label {
     font-size: $font-size-xs;
+
+    &:hover {
+      color: theme-color();
+    }
   }
 
   .module-filters-timeslot {
@@ -34,6 +47,68 @@
         border-color: theme-color();
       }
     }
+  }
+
+  @include media-breakpoint-down(sm) {
+    top: auto;
+    right: 0;
+    left: 0;
+    z-index: $module-finder-z-index;
+    height: 3rem;
+    padding: 1rem $grid-gutter-width / 2;
+    overflow: hidden;
+    background: $body-bg;
+    box-shadow: 0 0 15px -3px rgba(#000, 0.4);
+
+    &:hover {
+      top: $navbar-height + 5rem;
+      height: auto;
+    }
+  }
+}
+
+.module-filters-active {
+  margin-bottom: 1rem;
+  color: $gray;
+  border-bottom: 1px solid $gray-light;
+
+  h3 {
+    margin-bottom: 1rem;
+    font-weight: bold;
+    font-size: $font-size-sm;
+
+    span {
+      padding-right: 0.2rem;
+      background: $body-bg;
+    }
+
+    &::after {
+      content: '';
+      display: block;
+      margin-top: -0.6rem;
+      border-bottom: 1px solid $gray-light;
+    }
+  }
+
+  ul {
+    margin-bottom: 1rem;
+  }
+
+  li {
+    line-height: 1.6;
+  }
+
+  h4 {
+    display: inline-block;
+    margin-right: 0.3rem;
+    font-weight: bold;
+    font-size: $font-size-xs;
+  }
+
+  button {
+    padding: 0.08rem 0.3rem;
+    margin-right: 0.2rem;
+    font-size: $font-size-xs;
   }
 }
 
@@ -121,7 +196,10 @@
 
 // Timeslot
 .module-timeslot-table {
-  width: 100%;
+  // HACK: -1px is for Blink (Chrome/Chromium), which incorrectly calculates width
+  // by including the border-right width on the th below, causing the table to have
+  // a width of 100% + 1px and thus overflowing
+  width: calc(100% - 1px);
   table-layout: fixed;
 
   th {
@@ -129,12 +207,12 @@
     font-size: $font-size-xs;
 
     &:first-child {
-      border-right: 1px solid $gray-light;
+      border-right: 1px solid $gray-lighter;
     }
   }
 
   thead th {
-    border-bottom: 1px solid $gray-light;
+    border-bottom: 1px solid $gray-lighter;
   }
 
   .module-timeslot-time-label {
@@ -163,7 +241,6 @@
       // with a skew to show that it is on the same day (if the edge is straight
       // it may look like the edge of a cell)
       &.workload-lecture-bg + .workload-tutorial-bg {
-        z-index: 1;
         transform: skewX(-45deg) translateX(50%);
       }
     }

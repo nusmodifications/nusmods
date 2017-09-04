@@ -28,3 +28,6 @@ $workload-colors: (
 @function workload($key) {
   @return map-get($workload-colors, $key);
 }
+
+// Z-index
+$module-finder-z-index: 200;
