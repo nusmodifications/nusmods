@@ -1,6 +1,7 @@
 module.exports = {
   extends: 'stylelint-config-standard',
   plugins: ['stylelint-order'],
+  defaultSeverity: process.env.NODE_ENV === 'production' ? 'error' : 'warning',
   rules: {
     'at-rule-empty-line-before': null,
     'at-rule-no-unknown': null,
