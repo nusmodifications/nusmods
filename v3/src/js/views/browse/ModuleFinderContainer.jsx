@@ -115,6 +115,7 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
 
   render() {
     const { filterGroups: groups, modules, loading } = this.state;
+    const filteredModules = FilterGroup.apply(modules, this.filterGroups());
 
     return (
       <DocumentTitle title={`Modules - ${config.brandName}`}>
@@ -125,10 +126,7 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
               {loading ?
                 <LoadingSpinner />
                 :
-                <ModuleFinderList
-                  filterGroups={_.values(groups)}
-                  modules={modules}
-                />
+                <ModuleFinderList modules={filteredModules} />
               }
             </div>
 
