@@ -142,12 +142,29 @@
   }
 
   .btn-group {
+    // Make the btn-group children fill up all available space
     display: flex;
     margin-bottom: 1rem;
 
     .btn {
       flex: 1 auto;
+      padding-right: 0;
+      padding-bottom: 0.1rem;
+      padding-left: 0;
+      margin-right: 3px;
       font-size: $font-size-xs;
+      border-width: 0 0 3px;
+      border-radius: 0;
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+      &:disabled {
+        color: $gray;
+        border-color: $gray-light;
+        cursor: not-allowed;
+      }
     }
   }
 
@@ -155,6 +172,15 @@
     margin-bottom: 0;
     font-weight: bold;
     font-size: $font-size-sm;
+  }
+
+  @include media-breakpoint-only(md) {
+    margin-top: 2rem;
+  }
+
+  @include media-breakpoint-down(xs) {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
   }
 }
 
