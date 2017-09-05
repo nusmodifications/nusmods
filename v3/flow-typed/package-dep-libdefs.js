@@ -3,7 +3,3 @@
 declare module 'react-loadable' {
   declare module.exports: any;
 }
-
-declare module 'react-waypoint' {
-  declare module.exports: any;
-}
