@@ -77,6 +77,7 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
     this.unlisten();
   }
 
+  // Event handlers
   onQueryStringChange(query: string) {
     const params = qs.parse(query);
     const updater = {};
@@ -105,12 +106,28 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
         query[group.id] = value;
       });
 
-      this.history.push({ search: qs.stringify(query) });
+      this.history.push({
+        ...this.props.location,
+        search: qs.stringify(query),
+      });
     });
   };
 
+  onPageChange = (page: number) => {
+    this.history.push({
+      ...this.props.location,
+      hash: page ? `page=${page}` : '',
+    });
+  };
+
+  // Getters
   filterGroups(): FilterGroup<any>[] {
     return _.values(this.state.filterGroups);
+  }
+
+  startingPage(): number {
+    const hashMatch = this.props.location.hash.match(/page=(\d+)/);
+    return hashMatch ? parseInt(hashMatch[1], 10) : 0;
   }
 
   render() {
@@ -126,7 +143,11 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
               {loading ?
                 <LoadingSpinner />
                 :
-                <ModuleFinderList modules={filteredModules} />
+                <ModuleFinderList
+                  modules={filteredModules}
+                  startingPage={this.startingPage()}
+                  onPageChange={this.onPageChange}
+                />
               }
             </div>
 
