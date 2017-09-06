@@ -15,7 +15,6 @@ import type { FilterGroupId } from 'utils/filters/FilterGroup';
 import ModuleFinderList from 'views/browse/ModuleFinderList';
 import ChecklistFilters from 'views/components/filters/ChecklistFilters';
 import TimeslotFilters from 'views/components/filters/TimeslotFilters';
-import ActiveFilters from 'views/components/ActiveFilters';
 import LoadingSpinner from 'views/LoadingSpinner';
 import filterGroups, {
   LEVELS,
@@ -155,10 +154,6 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
               <div className="module-filters">
                 <header>
                   <h3>Refine by</h3>
-                  <ActiveFilters
-                    filterGroups={groups}
-                    onFilterChange={this.onFilterChange}
-                  />
                 </header>
 
                 <ChecklistFilters

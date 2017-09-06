@@ -22,9 +22,27 @@
 
   label {
     font-size: $font-size-xs;
+    cursor: pointer;
 
     &:hover {
       color: theme-color();
+    }
+
+    &.filter-selected {
+      font-weight: bold;
+      color: theme-color();
+    }
+
+    .text-muted {
+      font-weight: normal;
+    }
+  }
+
+  .module-filters-checklist {
+    label {
+      display: block;
+      padding-top: 0.1rem;
+      padding-bottom: 0.1rem;
     }
   }
 
@@ -64,51 +82,6 @@
       top: $navbar-height + 5rem;
       height: auto;
     }
-  }
-}
-
-.module-filters-active {
-  margin-bottom: 1rem;
-  color: $gray;
-  border-bottom: 1px solid $gray-light;
-
-  h3 {
-    margin-bottom: 1rem;
-    font-weight: bold;
-    font-size: $font-size-sm;
-
-    span {
-      padding-right: 0.2rem;
-      background: $body-bg;
-    }
-
-    &::after {
-      content: '';
-      display: block;
-      margin-top: -0.6rem;
-      border-bottom: 1px solid $gray-light;
-    }
-  }
-
-  ul {
-    margin-bottom: 1rem;
-  }
-
-  li {
-    line-height: 1.6;
-  }
-
-  h4 {
-    display: inline-block;
-    margin-right: 0.3rem;
-    font-weight: bold;
-    font-size: $font-size-xs;
-  }
-
-  button {
-    padding: 0.08rem 0.3rem;
-    margin-right: 0.2rem;
-    font-size: $font-size-xs;
   }
 }
 
@@ -169,6 +142,7 @@
       font-size: $font-size-xs;
       border-width: 0 0 3px;
       border-radius: 0;
+      cursor: pointer;
 
       &:last-child {
         margin-right: 0;
