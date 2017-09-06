@@ -61,9 +61,18 @@ export default class ModuleFinderList extends Component<Props, State> {
     return _.chunk(this.props.modules, MODULES_PER_PAGE);
   }
 
+  start(page: number) {
+    return (page + this.state.startingPage) * MODULES_PER_PAGE;
+  }
+
+  end(page: number) {
+    return this.start(page) + MODULES_PER_PAGE;
+  }
+
   render() {
     const { startingPage, shownPages } = this.state;
     const pages = this.pages().slice(startingPage, startingPage + shownPages);
+    const total = this.props.modules.length;
 
     return (
       <div>
@@ -75,6 +84,10 @@ export default class ModuleFinderList extends Component<Props, State> {
           <div key={getPageKey(page)}>
             <Waypoint onEnter={() => this.onEnterPage(i)}>
               <div>
+                {startingPage + i !== 0 &&
+                  <div className="module-page-divider">
+                    {this.start(i)}-{this.end(i)} of {total} modules
+                  </div>}
                 <ModuleFinderPage page={page} />
               </div>
             </Waypoint>

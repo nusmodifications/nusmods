@@ -133,6 +133,20 @@
   }
 }
 
+.module-page-divider {
+  padding: 0.2rem;
+  margin: 3rem 0 1rem;
+  font-size: $font-size-sm;
+  text-align: right;
+  color: $gray-light;
+  border-bottom: 1px solid $gray-lighter;
+}
+
+.btn + div .module-page-divider {
+  // Reduce top gap when the divider is the first thing below a 'previous page' button
+  margin-top: 1rem;
+}
+
 // Semester Info
 .module-semester-container {
   margin-bottom: 1rem;
