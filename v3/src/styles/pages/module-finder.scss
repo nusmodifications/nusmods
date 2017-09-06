@@ -1,4 +1,6 @@
 .modules-page-container {
+  max-width: 75rem;
+  margin-left: 0;
   animation-name: $page-entering-animation;
 }
 
@@ -6,6 +8,7 @@
   position: fixed;
   top: $navbar-height + 1rem;
   bottom: 0;
+  max-width: 20rem;
   overflow: auto;
 
   h3 {
@@ -49,6 +52,10 @@
   .module-filters-timeslot {
     margin-bottom: 1rem;
 
+    th {
+      color: $gray-light;
+    }
+
     label {
       display: block;
       padding: 0.2rem 0;
@@ -68,19 +75,61 @@
   }
 
   @include media-breakpoint-down(sm) {
+    $v-padding: 0.6rem;
+    $h-padding: $grid-gutter-width / 2;
+
     top: auto;
     right: 0;
-    left: 0;
     z-index: $module-finder-z-index;
-    height: 3rem;
-    padding: 1rem $grid-gutter-width / 2;
+    height: $font-size-lg + 2rem;
     overflow: hidden;
     background: $body-bg;
     box-shadow: 0 0 15px -3px rgba(#000, 0.4);
 
+    header {
+      padding: 1rem $h-padding;
+    }
+
+    h3 {
+      margin-bottom: 0;
+      color: $gray;
+    }
+
+    h4 {
+      padding: $v-padding $h-padding;
+      font-size: $font-size-sm;
+      border-bottom: 1px solid $gray-lighter;
+    }
+
+    label {
+      font-size: $font-size-sm;
+    }
+
+    .module-filters-checklist {
+      label {
+        padding: $v-padding $h-padding $v-padding ($h-padding + 20px);
+        border-bottom: 1px solid $gray-lighter;
+      }
+    }
+
+    .module-filters-timeslot {
+      h4 {
+        border-bottom: 0;
+      }
+
+      th {
+        font-size: $font-size-sm;
+      }
+
+      label {
+        padding: $v-padding 0;
+      }
+    }
+
     &:hover {
       top: $navbar-height + 5rem;
       height: auto;
+      overflow: auto;
     }
   }
 }
@@ -91,8 +140,7 @@
   list-style: none;
 
   .modules-item {
-    padding: 1rem 0;
-    margin: 0.5rem 0;
+    margin-bottom: 3rem;
 
     footer {
       padding-top: 0.8rem;
@@ -102,13 +150,14 @@
   }
 
   .modules-title {
-    font-size: 1.25rem;
+    margin-top: 0.15rem; // align baseline with semester switcher
+    font-size: $font-size-lg;
   }
 }
 
 .module-page-divider {
   padding: 0.2rem;
-  margin: 3rem 0 1rem;
+  margin: 1rem 0;
   font-size: $font-size-sm;
   text-align: right;
   color: $gray-light;
@@ -135,12 +184,10 @@
 
     .btn {
       flex: 1 auto;
-      padding-right: 0;
-      padding-bottom: 0.1rem;
-      padding-left: 0;
+      padding: 0.4rem 0 0.3rem;
       margin-right: 3px;
       font-size: $font-size-xs;
-      border-width: 0 0 3px;
+      border-width: 0 0 0.1rem;
       border-radius: 0;
       cursor: pointer;
 
@@ -162,6 +209,7 @@
     font-size: $font-size-sm;
   }
 
+  // Add a little space above the
   @include media-breakpoint-only(md) {
     margin-top: 2rem;
   }
