@@ -4,20 +4,16 @@ import Waypoint from 'react-waypoint';
 import _ from 'lodash';
 
 import type { Module } from 'types/modules';
+import type { PageRange, PageRangeDiff, OnPageChange } from 'types/views';
 
 import ModuleFinderPage from './ModuleFinderPage';
 
 const MODULES_PER_PAGE = 10;
 
 type Props = {
-  startingPage?: number,
+  page: PageRange,
   modules: Module[],
-  onPageChange: (page: number) => void,
-};
-
-type State = {
-  startingPage: number,
-  shownPages: number,
+  onPageChange: OnPageChange,
 };
 
 function getPageKey(modules: Module[]): string {
@@ -25,36 +21,23 @@ function getPageKey(modules: Module[]): string {
   return `${getId(_.head(modules))}-${getId(_.last(modules))}`;
 }
 
-export default class ModuleFinderList extends Component<Props, State> {
+export default class ModuleFinderList extends Component<Props> {
   props: Props;
 
-  constructor(props: Props) {
-    super(props);
+  onEnterPage(current: number) {
+    const diff: PageRangeDiff = { current };
 
-    if (props.startingPage) this.state.startingPage = props.startingPage;
-  }
-
-  state = {
-    shownPages: 2,
-    startingPage: 0,
-  };
-
-  onEnterPage(currentPage: number) {
     // If we are one page away from the bottom, load the next page
-    if (currentPage + 1 >= this.state.shownPages) {
-      this.setState(prevState => ({
-        shownPages: Math.min(prevState.shownPages + 1, this.pages().length),
-      }));
-    }
+    if (current + 1 >= this.props.page.pages) diff.pages = 1;
 
-    this.props.onPageChange(this.state.startingPage + currentPage);
+    this.props.onPageChange(diff);
   }
 
   onShowPreviousPage = () => {
-    this.setState(prevState => ({
-      startingPage: prevState.startingPage - 1,
-      shownPages: prevState.shownPages + 1,
-    }));
+    this.props.onPageChange({
+      start: -1,
+      pages: 1,
+    });
   };
 
   pages() {
@@ -62,7 +45,7 @@ export default class ModuleFinderList extends Component<Props, State> {
   }
 
   start(page: number) {
-    return (page + this.state.startingPage) * MODULES_PER_PAGE;
+    return (page + this.props.page.start) * MODULES_PER_PAGE;
   }
 
   end(page: number) {
@@ -70,21 +53,21 @@ export default class ModuleFinderList extends Component<Props, State> {
   }
 
   render() {
-    const { startingPage, shownPages } = this.state;
-    const pages = this.pages().slice(startingPage, startingPage + shownPages);
+    const { start, pages: shownPages } = this.props.page;
+    const pages = this.pages().slice(start, start + shownPages);
     const total = this.props.modules.length;
 
     return (
       <div>
-        {startingPage !== 0 && <button onClick={this.onShowPreviousPage} className="btn btn-outline-primary btn-block">
+        {start !== 0 && <button onClick={this.onShowPreviousPage} className="btn btn-outline-primary btn-block">
           Show previous page
         </button>}
 
         {pages.map((page, i) => (
           <div key={getPageKey(page)}>
-            <Waypoint onEnter={() => this.onEnterPage(i)}>
+            <Waypoint onEnter={() => this.onEnterPage(i + start)}>
               <div>
-                {startingPage + i !== 0 &&
+                {start + i !== 0 &&
                   <div className="module-page-divider">
                     {this.start(i)}-{this.end(i)} of {total} modules
                   </div>}

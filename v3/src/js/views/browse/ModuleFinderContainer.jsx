@@ -10,13 +10,14 @@ import _ from 'lodash';
 import qs from 'query-string';
 
 import type { Module } from 'types/modules';
+import type { PageRange, PageRangeDiff } from 'types/views';
 import type { FilterGroupId } from 'utils/filters/FilterGroup';
 
 import ModuleFinderList from 'views/browse/ModuleFinderList';
 import ChecklistFilters from 'views/components/filters/ChecklistFilters';
 import TimeslotFilters from 'views/components/filters/TimeslotFilters';
 import LoadingSpinner from 'views/LoadingSpinner';
-import filterGroups, {
+import moduleFilters, {
   LEVELS,
   LECTURE_TIMESLOTS,
   TUTORIAL_TIMESLOTS,
@@ -31,12 +32,28 @@ type Props = ContextRouter;
 
 type State = {
   loading: boolean,
+  page: PageRange,
   modules: Module[],
   filterGroups: { [FilterGroupId]: FilterGroup<any> },
 };
 
+export function mergePageRange(prev: PageRange, diff: PageRangeDiff): PageRange {
+  const next = _.clone(prev);
+
+  // Current page is SET from the diff object
+  if (diff.current != null) next.current = diff.current;
+
+  // Start and pages are ADDED from the diff object
+  ['start', 'pages'].forEach((key) => {
+    if (diff[key] != null) next[key] += diff[key];
+  });
+
+  return next;
+}
+
 export class ModuleFinderContainerComponent extends Component<Props, State> {
   props: Props;
+  state: State;
 
   history: HistoryDebouncer;
   unlisten: () => void;
@@ -46,20 +63,27 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
 
     // Parse out query params from URL and use that to initialize filter groups
     const params = qs.parse(props.location.search);
-    this.state.filterGroups = _.mapValues(filterGroups, (group: FilterGroup<*>) => {
+    const filterGroups = _.mapValues(moduleFilters, (group: FilterGroup<*>) => {
       return group.fromQueryString(params[group.id]);
     });
 
     // Set up history debouncer and history listener
     this.history = new HistoryDebouncer(props.history);
     this.unlisten = props.history.listen(location => this.onQueryStringChange(location.search));
-  }
 
-  state: State = {
-    loading: true,
-    modules: [],
-    filterGroups: {},
-  };
+    const start = this.startingPage();
+
+    this.state = {
+      filterGroups,
+      page: {
+        start,
+        current: start,
+        pages: 1,
+      },
+      loading: true,
+      modules: [],
+    };
+  }
 
   componentDidMount() {
     axios.get(nusmods.modulesUrl())
@@ -96,6 +120,7 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
   onFilterChange = (newGroup: FilterGroup<*>) => {
     this.setState(update(this.state, {
       filterGroups: { [newGroup.id]: { $set: newGroup } },
+      page: { $merge: { start: 0, current: 0 } },
     }), () => {
       // Update query string after state is updated
       const query = {};
@@ -109,17 +134,27 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
         ...this.props.location,
         search: qs.stringify(query),
       });
+
+      // Scroll back to the top
+      window.scrollTo(0, 0);
     });
   };
 
-  onPageChange = (page: number) => {
-    this.history.push({
-      ...this.props.location,
-      hash: page ? `page=${page}` : '',
+  onPageChange = (diff: PageRangeDiff) => {
+    this.setState(prevState => ({
+      page: mergePageRange(prevState.page, diff),
+    }), () => {
+      // Update the location hash so that users can share the URL and go back to the
+      // correct page when the going back in history
+      const { current } = this.state.page;
+      this.history.push({
+        ...this.props.location,
+        hash: current ? `page=${current}` : '',
+      });
     });
   };
 
-  // Getters
+  // Getters and helper functions
   filterGroups(): FilterGroup<any>[] {
     return _.values(this.state.filterGroups);
   }
@@ -130,7 +165,7 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
   }
 
   render() {
-    const { filterGroups: groups, modules, loading } = this.state;
+    const { filterGroups: groups, modules, loading, page } = this.state;
     const filteredModules = FilterGroup.apply(modules, this.filterGroups());
 
     return (
@@ -144,7 +179,7 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
                 :
                 <ModuleFinderList
                   modules={filteredModules}
-                  startingPage={this.startingPage()}
+                  page={page}
                   onPageChange={this.onPageChange}
                 />
               }
