@@ -30,6 +30,7 @@ const VENDOR = [
   'babel-polyfill',
   'classnames',
   'ical-generator',
+  'raven-js',
   'react',
   'react-document-title',
   'react-dom',
