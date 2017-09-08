@@ -219,26 +219,34 @@ exports.minifyJavascript = () => {
   };
 };
 
-const cssConfig = [
-  ...insertIf(IS_DEV, 'cache-loader'), // Because css-loader is slow
-  'css-loader',
-  {
-    loader: 'postcss-loader',
-    options: {
-      plugins: () => [ // eslint-disable-next-line global-require
-        require('autoprefixer'),
-      ],
+function getCSSConfig({ useCSSModules = false, localIdentName }) {
+  return [
+    ...insertIf(IS_DEV, 'cache-loader'), // Because css-loader is slow
+    {
+      loader: 'css-loader',
+      options: {
+        modules: useCSSModules,
+        localIdentName: localIdentName || '[name]-[local]_[hash:base64:5]',
+      },
     },
-  },
-  'sass-loader',
-];
+    {
+      loader: 'postcss-loader',
+      options: {
+        plugins: () => [ // eslint-disable-next-line global-require
+          require('autoprefixer'),
+        ],
+      },
+    },
+    'sass-loader',
+  ];
+}
 
 /**
  * Enables importing CSS with Javascript. This is all in-memory.
  *
  * @see https://survivejs.com/webpack/styling/loading/
  */
-exports.loadCSS = ({ include, exclude } = {}) => ({
+exports.loadCSS = ({ include, exclude, useCSSModules } = {}) => ({
   module: {
     rules: [
       {
@@ -246,7 +254,7 @@ exports.loadCSS = ({ include, exclude } = {}) => ({
         include,
         exclude,
 
-        use: [].concat('style-loader', cssConfig),
+        use: [].concat('style-loader', getCSSConfig({ useCSSModules })),
       },
     ],
   },
@@ -258,7 +266,7 @@ exports.loadCSS = ({ include, exclude } = {}) => ({
  * @see https://webpack.js.org/guides/code-splitting-css/
  * @see https://survivejs.com/webpack/styling/separating-css/
  */
-exports.extractCSS = ({ include, exclude } = {}) => {
+exports.extractCSS = ({ include, exclude, useCSSModules } = {}) => {
   // Output extracted CSS to a file
   const plugin = new ExtractTextPlugin('[name].[chunkhash].css');
 
@@ -271,7 +279,7 @@ exports.extractCSS = ({ include, exclude } = {}) => {
           exclude,
 
           use: plugin.extract({
-            use: cssConfig,
+            use: getCSSConfig({ useCSSModules, localIdentName: '[hash:base64:8]' }),
             fallback: 'style-loader',
           }),
         },

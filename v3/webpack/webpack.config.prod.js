@@ -30,7 +30,7 @@ const productionConfig = merge([
         template: path.join(parts.PATHS.app, 'index.html'),
       }),
       // Copy files from static folder over to dist
-      new CopyWebpackPlugin([{ from: 'static' }], { copyUnmodified: true }),
+      new CopyWebpackPlugin([{ from: 'static', context: parts.PATHS.root }], { copyUnmodified: true }),
       // SEE: https://medium.com/webpack/brief-introduction-to-scope-hoisting-in-webpack-8435084c171f
       new webpack.optimize.ModuleConcatenationPlugin(),
     ],

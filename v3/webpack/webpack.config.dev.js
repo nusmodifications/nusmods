@@ -41,7 +41,7 @@ const developmentConfig = merge([
         entry: parts.DLL.ENTRIES,
       }),
       // Copy files from static folder over (in-memory)
-      new CopyWebpackPlugin([{ from: 'static' }]),
+      new CopyWebpackPlugin([{ from: 'static', context: parts.PATHS.root }]),
       // Ignore node_modules so CPU usage with poll watching drops significantly.
       new webpack.WatchIgnorePlugin([parts.PATHS.node, parts.PATHS.build]),
       // Enable multi-pass compilation for enhanced performance
@@ -60,7 +60,12 @@ const developmentConfig = merge([
     include: parts.PATHS.images,
   }),
   parts.loadCSS({
-    include: parts.PATHS.app,
+    include: parts.PATHS.styles,
+    useCSSModules: false,
+  }),
+  parts.loadCSS({
+    include: parts.PATHS.scripts,
+    useCSSModules: true,
   }),
   parts.flow({ failOnError: false }),
 ]);
