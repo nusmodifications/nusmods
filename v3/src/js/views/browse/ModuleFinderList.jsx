@@ -45,11 +45,11 @@ export default class ModuleFinderList extends Component<Props> {
   }
 
   start(page: number) {
-    return (page + this.props.page.start) * MODULES_PER_PAGE;
+    return ((page + this.props.page.start) * MODULES_PER_PAGE) + 1;
   }
 
   end(page: number) {
-    return this.start(page) + MODULES_PER_PAGE;
+    return this.start(page) + (MODULES_PER_PAGE - 1);
   }
 
   render() {
@@ -64,17 +64,14 @@ export default class ModuleFinderList extends Component<Props> {
         </button>}
 
         {pages.map((page, i) => (
-          <div key={getPageKey(page)}>
-            <Waypoint onEnter={() => this.onEnterPage(i + start)}>
-              <div>
-                {start + i !== 0 &&
-                  <div className="module-page-divider">
-                    {this.start(i)}-{this.end(i)} of {total} modules
-                  </div>}
-                <ModuleFinderPage page={page} />
+          <Waypoint key={getPageKey(page)} onEnter={() => this.onEnterPage(i + start)}>
+            <div>
+              <div className="module-page-divider">
+                {this.start(i)}-{this.end(i)} of {total} modules
               </div>
-            </Waypoint>
-          </div>
+              <ModuleFinderPage page={page} />
+            </div>
+          </Waypoint>
         ))}
       </div>
     );
