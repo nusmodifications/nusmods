@@ -214,7 +214,7 @@
   }
 
   .module-timeslots {
-    .module-timeslot-time-label {
+    .module-timeslot-time {
       line-height: 2;
     }
 
@@ -297,18 +297,22 @@
     &:first-child {
       border-right: 1px solid $gray-lighter;
     }
+
+    &.module-timeslot-hover {
+      color: theme-color();
+    }
   }
 
   thead th {
     border-bottom: 1px solid $gray-lighter;
   }
 
-  .module-timeslot-time-label {
+  .module-timeslot-time {
     padding-right: 0.2rem;
     text-align: right;
   }
 
-  .module-timeslot-day-label {
+  .module-timeslot-day {
     text-align: center;
   }
 

@@ -1,11 +1,11 @@
 // @flow
 import type { Node } from 'react';
 
-import React from 'react';
+import React, { Component } from 'react';
 import classnames from 'classnames';
 import { clone } from 'lodash';
 
-import type { Time } from 'types/modules';
+import type { Day, Time } from 'types/modules';
 
 import { DaysOfWeek, TimesOfDay } from 'types/modules';
 import { getTimeslot } from 'utils/modules';
@@ -15,52 +15,92 @@ type Props = {
   className?: string,
 };
 
+type State = {
+  hover: {
+    day: ?Day,
+    time: ?Time,
+  },
+};
+
+// Null object representing
+const EMPTY_HOVER = {
+  day: null,
+  time: null,
+};
+
 const timeLabels: { [Time]: string } = {
   Morning: 'A.M.',
   Afternoon: 'P.M.',
   Evening: 'Night',
 };
 
-export default function TimeslotTable(props: Props) {
-  const { children, className } = props;
-  const times = clone(TimesOfDay);
-  const days = clone(DaysOfWeek);
+export default class TimeslotTable extends Component<Props, State> {
+  props: Props;
+  state: State = { hover: EMPTY_HOVER };
 
-  const hasChildren = (day, time) => {
-    const timeslot = getTimeslot(day, time);
-    return React.Children.count(children.get(timeslot)) > 0;
+  onHoverEnter = (day: Day, time: Time) => {
+    this.setState({ hover: { day, time } });
   };
 
-  // Remove Saturday if there are no children on Saturday
-  if (times.every(time => !hasChildren('Saturday', time))) {
-    days.pop();
-  }
+  onHoverClear = () => {
+    this.setState({ hover: EMPTY_HOVER });
+  };
 
-  // Remove evening if there are no evening children
-  if (days.every(day => !hasChildren(day, 'Evening'))) {
-    times.pop();
-  }
+  render() {
+    const { children, className } = this.props;
+    const { hover } = this.state;
+    const times = clone(TimesOfDay);
+    const days = clone(DaysOfWeek);
 
-  return (
-    <table className="module-timeslot-table">
-      <thead>
-        <tr className="module-timeslot-row">
-          <th />
-          {days.map(day => (
-            <th key={`heading-${day}`} className="module-timeslot-day-label">{ day[0] }</th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {times.map(time => (
-          <tr className={classnames('module-timeslot-row', className)} key={`row-${time}`}>
-            <th className="module-timeslot-time-label">{ timeLabels[time] }</th>
+    const hasChildren = (day, time) => {
+      const timeslot = getTimeslot(day, time);
+      return React.Children.count(children.get(timeslot)) > 0;
+    };
+
+    // Remove Saturday if there are no children on Saturday
+    if (times.every(time => !hasChildren('Saturday', time))) {
+      days.pop();
+    }
+
+    // Remove evening if there are no evening children
+    if (days.every(day => !hasChildren(day, 'Evening'))) {
+      times.pop();
+    }
+
+    return (
+      <table className={classnames('module-timeslot-table', className)}>
+        <thead>
+          <tr className="module-timeslot-row">
+            <th />
             {days.map(day => (
-              <td key={`cell-${day}-${time}`}>{ children.get(getTimeslot(day, time)) }</td>
+              <th
+                key={`heading-${day}`}
+                className={classnames('module-timeslot-day', {
+                  'module-timeslot-hover': day === hover.day,
+                })}
+              >{day.slice(0, 3)}</th>
             ))}
           </tr>
-        ))}
-      </tbody>
-    </table>
-  );
+        </thead>
+        <tbody>
+          {times.map(time => (
+            <tr className="module-timeslot-row" key={`row-${time}`}>
+              <th
+                className={classnames('module-timeslot-time', {
+                  'module-timeslot-hover': time === hover.time,
+                })}
+              >{timeLabels[time]}</th>
+              {days.map(day => (
+                <td
+                  key={`cell-${day}-${time}`}
+                  onMouseEnter={() => this.onHoverEnter(day, time)}
+                  onMouseLeave={this.onHoverClear}
+                >{children.get(getTimeslot(day, time))}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
+  }
 }
