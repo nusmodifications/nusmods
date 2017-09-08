@@ -2,6 +2,7 @@
 import type { Node } from 'react';
 
 import React from 'react';
+import classnames from 'classnames';
 import { clone } from 'lodash';
 
 import type { Time } from 'types/modules';
@@ -11,6 +12,7 @@ import { getTimeslot } from 'utils/modules';
 
 type Props = {
   children: Map<string, Node>,
+  className?: string,
 };
 
 const timeLabels: { [Time]: string } = {
@@ -20,7 +22,7 @@ const timeLabels: { [Time]: string } = {
 };
 
 export default function TimeslotTable(props: Props) {
-  const { children } = props;
+  const { children, className } = props;
   const times = clone(TimesOfDay);
   const days = clone(DaysOfWeek);
 
@@ -51,7 +53,7 @@ export default function TimeslotTable(props: Props) {
       </thead>
       <tbody>
         {times.map(time => (
-          <tr className="module-timeslot-row" key={`row-${time}`}>
+          <tr className={classnames('module-timeslot-row', className)} key={`row-${time}`}>
             <th className="module-timeslot-time-label">{ timeLabels[time] }</th>
             {days.map(day => (
               <td key={`cell-${day}-${time}`}>{ children.get(getTimeslot(day, time)) }</td>

@@ -8,7 +8,7 @@
   position: fixed;
   top: $navbar-height + 1rem;
   bottom: 0;
-  max-width: 20rem;
+  max-width: 16rem;
   overflow: auto;
 
   h3 {
@@ -81,6 +81,7 @@
     top: auto;
     right: 0;
     z-index: $module-finder-z-index;
+    max-width: 20rem;
     height: $font-size-lg + 2rem;
     overflow: hidden;
     background: $body-bg;
@@ -209,6 +210,28 @@
     font-size: $font-size-sm;
   }
 
+  .module-timeslots {
+    .module-timeslot-time-label {
+      line-height: 2;
+    }
+
+    div {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      min-height: 2rem;
+
+      // Timeslot has both lecture and tutorial - we create a split cell effect
+      // with a skew to show that it is on the same day (if the edge is straight
+      // it may look like the edge of a cell)
+      &.workload-lecture-bg + .workload-tutorial-bg {
+        transform: skewX(-45deg) translateX(50%);
+      }
+    }
+  }
+
   // Add a little space above the
   @include media-breakpoint-only(md) {
     margin-top: 2rem;
@@ -291,20 +314,5 @@
     padding: 0;
     overflow: hidden;
     border: 1px solid $white;
-
-    div {
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-
-      // Timeslot has both lecture and tutorial - we create a split cell effect
-      // with a skew to show that it is on the same day (if the edge is straight
-      // it may look like the edge of a cell)
-      &.workload-lecture-bg + .workload-tutorial-bg {
-        transform: skewX(-45deg) translateX(50%);
-      }
-    }
   }
 }
