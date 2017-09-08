@@ -1,0 +1,23 @@
+@import './_variables.scss';
+
+$timetable-min-width: $timetable-row-height * 16;
+
+.container {
+  min-width: $timetable-min-width;
+}
+
+:global .verticalMode {
+  display: flex;
+  min-width: auto;
+}
+
+.days {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+:global(.verticalMode) .days {
+  display: flex;
+  flex: 1 0 auto;
+}

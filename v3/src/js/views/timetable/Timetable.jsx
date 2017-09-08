@@ -23,6 +23,7 @@ type Props = {
 
 class Timetable extends PureComponent<Props> {
   props: Props;
+  timetableDom: ?HTMLDivElement;
 
   render() {
     const schoolDays = SCHOOLDAYS.filter(day => day !== 'Saturday' || this.props.lessons.Saturday);
@@ -31,9 +32,11 @@ class Timetable extends PureComponent<Props> {
     const { startingIndex, endingIndex } = calculateBorderTimings(lessons);
 
     return (
-      <div className={classnames(styles.container, {
-        verticalMode: this.props.isVerticalOrientation,
-      })}
+      <div
+        className={classnames(styles.container, {
+          verticalMode: this.props.isVerticalOrientation,
+        })}
+        ref={(r) => { this.timetableDom = r; }}
       >
         <TimetableTimings
           startingIndex={startingIndex}

@@ -132,6 +132,7 @@ export function arrangeLessonsWithinDay(lessons: Array<Lesson>): TimetableDayArr
     return rows;
   }
 
+  lessons.sort((a, b) => Number(a.StartTime < b.StartTime));
   lessons.forEach((lesson: Lesson) => {
     for (let i = 0, length = rows.length; i < length; i += 1) {
       const rowLessons: Array<Lesson> = rows[i];

@@ -6,48 +6,50 @@ import type { ModifiableLesson } from 'types/modules';
 
 import { LESSON_TYPE_ABBREV } from 'utils/timetables';
 
+import styles from './TimetableCell.scss';
+
 type Props = {
-  lesson?: ModifiableLesson,
-  size?: number,
-  styleProp?: string,
-  onModifyCell?: Function,
+  lesson: ModifiableLesson,
+  style: Object,
+  onModifyCell: Function,
 };
 
 function TimetableCell(props: Props) {
   const lesson = props.lesson;
-  let cell = null;
-  const style = {};
-  if (props.size && props.styleProp) {
-    style[props.styleProp] = `${props.size}%`;
-  }
-
-  if (lesson) {
-    cell = (
-      <div
-        className={classnames('timetable-module-cell', {
-          'is-modifiable': lesson.isModifiable,
-          'is-available': lesson.isAvailable,
-          'is-active': lesson.isActive,
-          [`color-${lesson.colorIndex}`]: true,
-        })}
-        onClick={(event) => {
-          event.stopPropagation();
-          if (props.onModifyCell) {
-            props.onModifyCell(lesson);
-          }
-        }}
-      >
-        <div className="cell-module-code">{lesson.ModuleCode}</div>
-        <div>
-          <span className="cell-module-lesson-type">{LESSON_TYPE_ABBREV[lesson.LessonType]}</span>
-          <span className="cell-module-class">{' '}[{lesson.ClassNo}]</span>
-        </div>
-        <div><span className="cell-module-venue">{lesson.Venue}</span></div>
+  return (
+    <button
+      className={classnames(styles.cell, {
+        [styles.cellIsModifiable]: lesson.isModifiable,
+        [styles.cellIsAvailable]: lesson.isAvailable,
+        [styles.cellIsActive]: lesson.isActive,
+        [`color-${lesson.colorIndex}`]: true,
+      })}
+      onClick={(event) => {
+        event.stopPropagation();
+        if (props.onModifyCell) {
+          props.onModifyCell(lesson);
+        }
+      }}
+      style={props.style}
+    >
+      <div className={styles.moduleCode}>
+        {lesson.ModuleCode}
       </div>
-    );
-  }
-
-  return <span className="timetable-cell" style={style}>{cell}</span>;
+      <div>
+        <span>
+          {LESSON_TYPE_ABBREV[lesson.LessonType]}
+        </span>
+        <span>
+          {' '}[{lesson.ClassNo}]
+        </span>
+      </div>
+      <div>
+        <span>
+          {lesson.Venue}
+        </span>
+      </div>
+    </button>
+  );
 }
 
 export default TimetableCell;

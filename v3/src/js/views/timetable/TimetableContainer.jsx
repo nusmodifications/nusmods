@@ -44,7 +44,9 @@ import {
 } from 'utils/timetables';
 import ModulesSelect from 'views/components/ModulesSelect';
 
+import styles from './TimetableContainer.scss';
 import Timetable from './Timetable';
+import TimetableActions from './TimetableActions';
 import TimetableModulesTable from './TimetableModulesTable';
 
 type Props = {
@@ -81,6 +83,11 @@ class TimetableContainer extends Component<Props> {
       this.props.cancelModifyLesson();
     }
   };
+
+  downloadAsJpeg = () => this.props.downloadAsJpeg(this.timetableDom);
+
+  downloadAsIcal = () => this.props.downloadAsIcal(
+    this.props.semester, this.props.semTimetableWithLessons, this.props.modules);
 
   isHiddenInTimetable = (moduleCode: ModuleCode) => {
     return this.props.hiddenInTimetable.includes(moduleCode);
@@ -144,7 +151,7 @@ class TimetableContainer extends Component<Props> {
       });
     });
 
-    const isHorizontalOrientation = this.props.timetableOrientation === HORIZONTAL;
+    const isVerticalOrientation = this.props.timetableOrientation !== HORIZONTAL;
 
     return (
       <div
@@ -155,59 +162,30 @@ class TimetableContainer extends Component<Props> {
           <title>Timetable - {config.brandName}</title>
         </Helmet>
         <div className="row">
-          <div className={classnames('timetable-wrapper', {
-            'col-md-12': isHorizontalOrientation,
-            'col-md-8': !isHorizontalOrientation,
+          <div className={classnames(styles.timetableWrapper, {
+            'col-md-12': !isVerticalOrientation,
+            'col-md-8': isVerticalOrientation,
           })}
           >
             <Timetable
               lessons={arrangedLessonsWithModifiableFlag}
-              horizontalOrientation={isHorizontalOrientation}
+              isVerticalOrientation={isVerticalOrientation}
               onModifyCell={this.modifyCell}
               ref={(r) => { this.timetableDom = r && r.timetableDom; }}
             />
             <br />
           </div>
           <div className={classnames({
-            'col-md-12': isHorizontalOrientation,
-            'col-md-4': !isHorizontalOrientation,
+            'col-md-12': !isVerticalOrientation,
+            'col-md-4': isVerticalOrientation,
           })}
           >
-            <div className="timetable-action-row text-xs-right">
-              <button
-                type="button"
-                className="btn btn-outline-primary"
-                title={isHorizontalOrientation ? 'Vertical Mode' : 'Horizontal mode'}
-                aria-label={isHorizontalOrientation ? 'Vertical Mode' : 'Horizontal mode'}
-                onClick={this.props.toggleTimetableOrientation}
-              >
-                <i
-                  className={classnames('fa', 'fa-exchange', {
-                    'fa-rotate-90': isHorizontalOrientation,
-                  })}
-                  aria-hidden="true"
-                />
-              </button>
-              <button
-                type="button"
-                title="Download as Image"
-                aria-label="Download as Image"
-                className="btn btn-outline-primary"
-                onClick={() => this.props.downloadAsJpeg(this.timetableDom)}
-              >
-                <i className="fa fa-image" aria-hidden="true" />
-              </button>
-              <button
-                type="button"
-                title="Download as iCal"
-                aria-label="Download as iCal"
-                className="btn btn-outline-primary"
-                onClick={() => this.props.downloadAsIcal(
-                  this.props.semester, this.props.semTimetableWithLessons, this.props.modules)}
-              >
-                <i className="fa fa-calendar" aria-hidden="true" />
-              </button>
-            </div>
+            <TimetableActions
+              isVerticalOrientation={!isVerticalOrientation}
+              toggleTimetableOrientation={this.props.toggleTimetableOrientation}
+              downloadAsJpeg={this.downloadAsJpeg}
+              downloadAsIcal={this.downloadAsIcal}
+            />
             <div className="row">
               <div className="col-md-12">
                 <ModulesSelect
@@ -229,7 +207,7 @@ class TimetableContainer extends Component<Props> {
                       module.hiddenInTimetable = this.isHiddenInTimetable(moduleCode);
                       return module;
                     })}
-                  horizontalOrientation={isHorizontalOrientation}
+                  horizontalOrientation={!isVerticalOrientation}
                   semester={this.props.semester}
                   onRemoveModule={(moduleCode) => {
                     this.props.removeModule(this.props.semester, moduleCode);

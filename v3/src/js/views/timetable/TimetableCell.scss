@@ -1,0 +1,54 @@
+@import './_variables.scss';
+@import '../../../styles/utils/animations.scss';
+
+$cell-padding: 0.3rem;
+$cell-opacity: 0.5;
+$cell-border-radius: 8px;
+
+.cell {
+  display: inline-flex;
+  flex-direction: column;
+  padding: $cell-padding;
+  vertical-align: top;
+  text-align: left;
+  overflow: hidden;
+  font-size: $font-size-xxs;
+  line-height: 0.85rem;
+  border: 0;
+  border-bottom: 2px solid;
+
+  &:hover, &:focus {
+    outline: none;
+  }
+}
+
+:global(.verticalMode) .cell {
+  position: absolute;
+  width: 100%;
+}
+
+.cellIsModifiable {
+  border-radius: $cell-border-radius;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.cellIsAvailable {
+  opacity: $cell-opacity;
+  animation-name: zoomIn;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.cellIsActive {
+  animation: pulse;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+}
+
+.moduleCode {
+  font-size: $font-size-xs;
+  font-weight: bold;
+}

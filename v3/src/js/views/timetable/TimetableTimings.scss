@@ -1,0 +1,21 @@
+@import './_variables.scss';
+
+.timings {
+  display: flex;
+  margin-left: $timetable-day-horizontal-size;
+  justify-content: space-between;
+}
+
+:global(.verticalMode) .timings {
+  flex-direction: column;
+  flex: 0 0 2.3rem;
+  margin: $timetable-day-vertical-size 0 0 0;
+}
+
+.time {
+  transform: translateX(-50%);
+}
+
+:global(.verticalMode) .time {
+  transform: translateY(-50%);
+}

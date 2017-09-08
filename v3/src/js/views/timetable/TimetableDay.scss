@@ -1,0 +1,50 @@
+@import './_variables.scss';
+
+.day {
+  display: flex;
+  flex: 1 0 auto;
+  min-height: $timetable-row-height;
+  border: $timetable-border;
+
+  & ~ & {
+    border-top: 0;
+  }
+}
+
+:global(.verticalMode) .day {
+  flex-direction: column;
+  min-height: 45rem;
+  border-top: $timetable-border;
+
+  ~ .day {
+    border-left: 0;
+  }
+}
+
+.dayName {
+  flex: 0 0 $timetable-day-horizontal-size;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+:global(.verticalMode) .dayName {
+  flex: 0 0 $timetable-day-vertical-size;
+}
+
+.dayRows {
+  flex: 1 0 auto;
+  min-width: $timetable-col-width;
+  padding-bottom: 0.3rem;
+  background: linear-gradient(to right, $gray-lightest 50%, transparent 50%);
+}
+
+:global(.verticalMode) .dayRows {
+  display: flex;
+  padding-bottom: 0;
+  padding-right: 0.1rem;
+}
+
+:global(.verticalMode) .dayRows {
+  background: linear-gradient(to bottom, $gray-lightest 50%, transparent 50%);
+}
