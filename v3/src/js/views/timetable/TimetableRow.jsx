@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 
-import type { ModifiableLesson } from 'types/modules';
+import type { Lesson } from 'types/modules';
 
 import { convertTimeToIndex } from 'utils/timify';
 import styles from './TimetableRow.scss';
@@ -11,7 +11,7 @@ type Props = {
   verticalMode: boolean,
   startingIndex: number,
   endingIndex: number,
-  lessons: Array<ModifiableLesson>,
+  lessons: Array<Lesson>,
   onModifyCell: Function,
 };
 
@@ -48,7 +48,14 @@ function TimetableRow(props: Props) {
           [dirStyle]: `${(dirValue / totalCols) * 100}%`,
           [sizeStyle]: `${(size / totalCols) * 100}%`,
         };
-        return <TimetableCell key={lesson.ClassNo} style={style} lesson={lesson} onModifyCell={onModifyCell} />;
+        return (
+          <TimetableCell
+            key={lesson.ModuleCode + lesson.ClassNo}
+            style={style}
+            lesson={lesson}
+            onModifyCell={onModifyCell}
+          />
+        );
       })}
     </div>
   );

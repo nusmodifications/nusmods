@@ -4,7 +4,6 @@ import classnames from 'classnames';
 
 type Props = {
   isVerticalOrientation: boolean,
-  timetableDom: ?HTMLElement,
   toggleTimetableOrientation: Function,
   downloadAsJpeg: Function,
   downloadAsIcal: Function,

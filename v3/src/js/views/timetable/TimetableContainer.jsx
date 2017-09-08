@@ -10,11 +10,8 @@ import type {
   TimetableOrientation,
   ModuleSelectList,
 } from 'types/reducers';
-import {
-  HORIZONTAL,
-} from 'types/reducers';
+import { HORIZONTAL } from 'types/reducers';
 import type {
-  ModifiableLesson,
   Lesson,
   Module,
   ModuleCode,
@@ -56,7 +53,7 @@ type Props = {
   modules: Module,
   theme: string,
   colors: ThemeState,
-  activeLesson: ModifiableLesson,
+  activeLesson: Lesson,
   timetableOrientation: TimetableOrientation,
   hiddenInTimetable: Array<ModuleCode>,
 
@@ -86,14 +83,15 @@ class TimetableContainer extends Component<Props> {
 
   downloadAsJpeg = () => this.props.downloadAsJpeg(this.timetableDom);
 
-  downloadAsIcal = () => this.props.downloadAsIcal(
-    this.props.semester, this.props.semTimetableWithLessons, this.props.modules);
+  downloadAsIcal = () =>
+    this.props.downloadAsIcal(this.props.semester, this.props.semTimetableWithLessons, this.props.modules);
 
   isHiddenInTimetable = (moduleCode: ModuleCode) => {
     return this.props.hiddenInTimetable.includes(moduleCode);
   };
 
-  modifyCell = (lesson: ModifiableLesson) => {
+  modifyCell = (lesson: Lesson) => {
+    // $FlowFixMe When object spread type actually works
     if (lesson.isAvailable) {
       this.props.changeLesson(this.props.semester, lesson);
     } else if (lesson.isActive) {
@@ -104,38 +102,37 @@ class TimetableContainer extends Component<Props> {
   };
 
   render() {
-    let timetableLessons: Array<Lesson | ModifiableLesson> = timetableLessonsArray(this.props.semTimetableWithLessons);
+    let timetableLessons: Array<Lesson> = timetableLessonsArray(this.props.semTimetableWithLessons)
+      // Do not process hidden modules
+      .filter(lesson => !this.isHiddenInTimetable(lesson.ModuleCode));
+
     if (this.props.activeLesson) {
       const activeLesson = this.props.activeLesson;
       const moduleCode = activeLesson.ModuleCode;
+      // Remove activeLesson because it will appear again
+      timetableLessons = timetableLessons.filter(lesson => !areLessonsSameClass(lesson, activeLesson));
 
       const module = this.props.modules[moduleCode];
       const moduleTimetable: Array<RawLesson> = getModuleTimetable(module, this.props.semester);
-      const lessons = lessonsForLessonType(moduleTimetable, activeLesson.LessonType)
-        // Inject module code in
-        .map(lesson => ({ ...lesson, ModuleCode: moduleCode }));
-
-      const otherAvailableLessons: Array<Lesson | ModifiableLesson> = lessons
-        // Exclude the lesson being modified.
-        .filter(lesson => !areLessonsSameClass(lesson, activeLesson))
-        .map(lesson => ({ ...lesson, isAvailable: true }));
-
-      timetableLessons = timetableLessons.map((lesson) => {
-        // Identify the current lesson being modified.
-        return areLessonsSameClass(lesson, activeLesson) ?
-          // $FlowFixMe Explicitly annotating lesson also does not work
-          { ...lesson, isActive: true } : lesson;
+      lessonsForLessonType(moduleTimetable, activeLesson.LessonType).forEach((lesson) => {
+        const modifiableLesson = {
+          ...lesson,
+          // Inject module code in
+          ModuleCode: moduleCode,
+          ModuleTitle: module.ModuleTitle,
+        };
+        if (areLessonsSameClass(modifiableLesson, activeLesson)) {
+          modifiableLesson.isActive = true;
+        } else if (lesson.LessonType === activeLesson.LessonType) {
+          modifiableLesson.isAvailable = true;
+        }
+        timetableLessons.push(modifiableLesson);
       });
-      timetableLessons = [...timetableLessons, ...otherAvailableLessons];
     }
-
-    // Inject color index into lessons.
-    timetableLessons = timetableLessons.map((lesson) => {
+    // Inject color into module
+    timetableLessons = timetableLessons.map((lesson): Lesson => {
       return { ...lesson, colorIndex: this.props.colors[lesson.ModuleCode] };
     });
-
-    // inject hidden into lessons.
-    timetableLessons = timetableLessons.filter(lesson => !this.isHiddenInTimetable(lesson.ModuleCode));
 
     const arrangedLessons: TimetableArrangement = arrangeLessonsForWeek(timetableLessons);
     const arrangedLessonsWithModifiableFlag: TimetableArrangement = _.mapValues(arrangedLessons, (dayRows) => {
@@ -162,23 +159,27 @@ class TimetableContainer extends Component<Props> {
           <title>Timetable - {config.brandName}</title>
         </Helmet>
         <div className="row">
-          <div className={classnames(styles.timetableWrapper, {
-            'col-md-12': !isVerticalOrientation,
-            'col-md-8': isVerticalOrientation,
-          })}
+          <div
+            className={classnames(styles.timetableWrapper, {
+              'col-md-12': !isVerticalOrientation,
+              'col-md-8': isVerticalOrientation,
+            })}
           >
             <Timetable
               lessons={arrangedLessonsWithModifiableFlag}
               isVerticalOrientation={isVerticalOrientation}
               onModifyCell={this.modifyCell}
-              ref={(r) => { this.timetableDom = r && r.timetableDom; }}
+              ref={(r) => {
+                this.timetableDom = r && r.timetableDom;
+              }}
             />
             <br />
           </div>
-          <div className={classnames({
-            'col-md-12': !isVerticalOrientation,
-            'col-md-4': isVerticalOrientation,
-          })}
+          <div
+            className={classnames({
+              'col-md-12': !isVerticalOrientation,
+              'col-md-4': isVerticalOrientation,
+            })}
           >
             <TimetableActions
               isVerticalOrientation={!isVerticalOrientation}
@@ -198,15 +199,17 @@ class TimetableContainer extends Component<Props> {
                 <br />
                 <TimetableModulesTable
                   modules={
-                    Object.keys(this.props.semTimetableWithLessons).sort((a, b) => {
-                      return a.localeCompare(b);
-                    }).map((moduleCode) => {
-                      const module = this.props.modules[moduleCode] || {};
-                      // Inject color index.
-                      module.colorIndex = this.props.colors[moduleCode];
-                      module.hiddenInTimetable = this.isHiddenInTimetable(moduleCode);
-                      return module;
-                    })}
+                    Object.keys(this.props.semTimetableWithLessons)
+                      .sort((a, b) => {
+                        return a.localeCompare(b);
+                      })
+                      .map((moduleCode) => {
+                        const module = this.props.modules[moduleCode] || {};
+                        // Inject color index.
+                        module.colorIndex = this.props.colors[moduleCode];
+                        module.hiddenInTimetable = this.isHiddenInTimetable(moduleCode);
+                        return module;
+                      })}
                   horizontalOrientation={!isVerticalOrientation}
                   semester={this.props.semester}
                   onRemoveModule={(moduleCode) => {
@@ -243,16 +246,13 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    addModule,
-    removeModule,
-    modifyLesson,
-    changeLesson,
-    cancelModifyLesson,
-    toggleTimetableOrientation,
-    downloadAsJpeg,
-    downloadAsIcal,
-  },
-)(TimetableContainer);
+export default connect(mapStateToProps, {
+  addModule,
+  removeModule,
+  modifyLesson,
+  changeLesson,
+  cancelModifyLesson,
+  toggleTimetableOrientation,
+  downloadAsJpeg,
+  downloadAsIcal,
+})(TimetableContainer);

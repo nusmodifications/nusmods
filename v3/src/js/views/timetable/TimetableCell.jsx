@@ -2,14 +2,14 @@
 import React from 'react';
 import classnames from 'classnames';
 
-import type { ModifiableLesson } from 'types/modules';
+import type { Lesson } from 'types/modules';
 
 import { LESSON_TYPE_ABBREV } from 'utils/timetables';
 
 import styles from './TimetableCell.scss';
 
 type Props = {
-  lesson: ModifiableLesson,
+  lesson: Lesson,
   style: Object,
   onModifyCell: Function,
 };
@@ -19,9 +19,13 @@ function TimetableCell(props: Props) {
   return (
     <button
       className={classnames(styles.cell, {
+        // $FlowFixMe When object spread type actually works
         [styles.cellIsModifiable]: lesson.isModifiable,
+        // $FlowFixMe When object spread type actually works
         [styles.cellIsAvailable]: lesson.isAvailable,
+        // $FlowFixMe When object spread type actually works
         [styles.cellIsActive]: lesson.isActive,
+        // $FlowFixMe When object spread type actually works
         [`color-${lesson.colorIndex}`]: true,
       })}
       onClick={(event) => {
