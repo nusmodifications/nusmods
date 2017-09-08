@@ -49,7 +49,7 @@ export default class ModuleFinderList extends Component<Props> {
   }
 
   end(page: number) {
-    return this.start(page) + (MODULES_PER_PAGE - 1);
+    return Math.min(this.props.modules.length, this.start(page) + (MODULES_PER_PAGE - 1));
   }
 
   render() {
