@@ -21,13 +21,13 @@ const groups: { [FilterGroupId]: FilterGroup<any> } = {
 
   [LECTURE_TIMESLOTS]: new FilterGroup(
     LECTURE_TIMESLOTS,
-    'Lecture Time',
+    'With Lectures At',
     Timeslots.map(([day, time]) => new TimeslotFilter(day, time, 'Lecture')),
   ),
 
   [TUTORIAL_TIMESLOTS]: new FilterGroup(
     TUTORIAL_TIMESLOTS,
-    'Tutorial Time',
+    'With Tutorials At',
     Timeslots.map(([day, time]) => new TimeslotFilter(day, time, 'Tutorial')),
   ),
 
