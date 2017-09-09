@@ -22,7 +22,7 @@ type State = {
   },
 };
 
-// Null object representing
+// Null object for when no cell is being hovered over
 const EMPTY_HOVER = {
   day: null,
   time: null,

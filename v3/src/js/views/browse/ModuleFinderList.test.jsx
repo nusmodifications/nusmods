@@ -6,15 +6,12 @@ import { noop } from 'lodash';
 
 import cs1010s from '__mocks__/modules/CS1010S.json';
 
-import type { PageRange } from 'types/views';
-
 import ModuleFinderList from './ModuleFinderList';
 
-function makePage(current = 0, start = 0, pages = 5): PageRange {
-  return { current, start, pages };
-}
-
-function makeInstance(modules = [], pages = makePage()): ModuleFinderList {
+function makeInstance(
+  modules = [],
+  pages = { current: 0, start: 0, loaded: 5 },
+): ModuleFinderList {
   const wrapper = shallow(
     <ModuleFinderList
       modules={modules}

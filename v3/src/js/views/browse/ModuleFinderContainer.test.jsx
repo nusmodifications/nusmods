@@ -146,7 +146,7 @@ describe('mergePageRange()', () => {
     prev = {
       current: 4,
       start: 3,
-      pages: 2,
+      loaded: 2,
     };
   });
 
@@ -158,9 +158,9 @@ describe('mergePageRange()', () => {
     expect(mergePageRange(prev, { start: 1 })).toMatchObject({ start: 4 });
     expect(mergePageRange(prev, { start: 2 })).toMatchObject({ start: 5 });
 
-    expect(mergePageRange(prev, { pages: 1 })).toMatchObject({ pages: 3 });
-    expect(mergePageRange(prev, { pages: 2 })).toMatchObject({ pages: 4 });
+    expect(mergePageRange(prev, { loaded: 1 })).toMatchObject({ loaded: 3 });
+    expect(mergePageRange(prev, { loaded: 2 })).toMatchObject({ loaded: 4 });
 
-    expect(mergePageRange(prev, { start: 1, pages: 2 })).toMatchObject({ start: 4, pages: 4 });
+    expect(mergePageRange(prev, { start: 1, loaded: 2 })).toMatchObject({ start: 4, loaded: 4 });
   });
 });

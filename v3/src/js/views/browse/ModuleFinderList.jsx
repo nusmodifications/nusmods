@@ -28,7 +28,7 @@ export default class ModuleFinderList extends Component<Props> {
     const diff: PageRangeDiff = { current };
 
     // If we are one page away from the bottom, load the next page
-    if (current + 1 >= this.props.page.pages) diff.pages = 1;
+    if (current + 1 >= this.props.page.loaded) diff.loaded = 1;
 
     this.props.onPageChange(diff);
   }
@@ -53,7 +53,7 @@ export default class ModuleFinderList extends Component<Props> {
   }
 
   render() {
-    const { start, pages: shownPages } = this.props.page;
+    const { start, loaded: shownPages } = this.props.page;
     const pages = this.pages().slice(start, start + shownPages);
     const total = this.props.modules.length;
 

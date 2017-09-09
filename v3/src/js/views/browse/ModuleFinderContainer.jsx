@@ -44,7 +44,7 @@ export function mergePageRange(prev: PageRange, diff: PageRangeDiff): PageRange 
   if (diff.current != null) next.current = diff.current;
 
   // Start and pages are ADDED from the diff object
-  ['start', 'pages'].forEach((key) => {
+  ['start', 'loaded'].forEach((key) => {
     if (diff[key] != null) next[key] += diff[key];
   });
 
@@ -71,15 +71,9 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
     this.history = new HistoryDebouncer(props.history);
     this.unlisten = props.history.listen(location => this.onQueryStringChange(location.search));
 
-    const start = this.startingPage();
-
     this.state = {
       filterGroups,
-      page: {
-        start,
-        current: start,
-        pages: 1,
-      },
+      page: this.startingPageRange(),
       loading: true,
       modules: [],
     };
@@ -159,9 +153,15 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
     return _.values(this.state.filterGroups);
   }
 
-  startingPage(): number {
+  startingPageRange(): PageRange {
     const hashMatch = this.props.location.hash.match(/page=(\d+)/);
-    return hashMatch ? parseInt(hashMatch[1], 10) : 0;
+    const start = hashMatch ? parseInt(hashMatch[1], 10) : 0;
+
+    return {
+      start,
+      current: start,
+      loaded: 1,
+    };
   }
 
   render() {
