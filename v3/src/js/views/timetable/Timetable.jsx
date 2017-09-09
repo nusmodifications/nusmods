@@ -51,7 +51,7 @@ class Timetable extends PureComponent<Props> {
               endingIndex={endingIndex}
               onModifyCell={this.props.onModifyCell}
               verticalMode={this.props.isVerticalOrientation}
-              dayLessonRows={this.props.lessons[day]}
+              dayLessonRows={this.props.lessons[day] || [[]]}
             />
           ))}
         </ol>

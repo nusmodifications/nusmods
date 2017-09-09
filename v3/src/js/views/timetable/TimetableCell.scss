@@ -1,5 +1,4 @@
 @import './_variables.scss';
-@import '../../../styles/utils/animations.scss';
 
 $cell-padding: 0.3rem;
 $cell-opacity: 0.5;
@@ -9,15 +8,18 @@ $cell-border-radius: 8px;
   display: inline-flex;
   flex-direction: column;
   padding: $cell-padding;
-  vertical-align: top;
-  text-align: left;
   overflow: hidden;
   font-size: $font-size-xxs;
   line-height: 0.85rem;
+  text-align: left;
+  vertical-align: top;
   border: 0;
   border-bottom: 2px solid;
+  transition: background-color $desktop-entering-duration $material-deceleration-curve;
+  animation-duration: $desktop-entering-duration;
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     outline: none;
   }
 }
@@ -35,7 +37,10 @@ $cell-border-radius: 8px;
 
 .cellIsAvailable {
   opacity: $cell-opacity;
-  animation-name: zoomIn;
+
+  :global {
+    animation-name: zoomIn;
+  }
 
   &:hover {
     opacity: 1;
@@ -43,12 +48,15 @@ $cell-border-radius: 8px;
 }
 
 .cellIsActive {
-  animation: pulse;
   animation-duration: 1s;
   animation-iteration-count: infinite;
+
+  :global {
+    animation-name: pulse;
+  }
 }
 
 .moduleCode {
-  font-size: $font-size-xs;
   font-weight: bold;
+  font-size: $font-size-xs;
 }

@@ -152,7 +152,7 @@ class TimetableContainer extends Component<Props> {
 
     return (
       <div
-        className={`theme-${this.props.theme} timetable-page-container page-container`}
+        className={`theme-${this.props.theme} ${styles.container} page-container`}
         onClick={this.cancelModifyLesson}
       >
         <Helmet>

@@ -1,3 +1,11 @@
+@import './_variables.scss';
+
+.container {
+  :global {
+    animation-name: $page-entering-animation;
+  }
+}
+
 .timetableWrapper {
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;

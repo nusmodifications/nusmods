@@ -26,7 +26,7 @@ function TimetableDay(props: Props) {
         {props.day.substring(0, 3)}
       </div>
       <div className={styles.dayRows} style={rowStyle}>
-        {props.dayLessonRows ?
+        {
           props.dayLessonRows.map((dayLessonRow, i) => {
             return (
               <TimetableRow
@@ -38,7 +38,7 @@ function TimetableDay(props: Props) {
                 onModifyCell={props.onModifyCell}
               />
             );
-          }) : null
+          })
         }
       </div>
     </li>

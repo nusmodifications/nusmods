@@ -5,54 +5,56 @@ $padding: 0.3rem;
 $arrow-width: 1rem;
 $arrow-height: 1.5rem;
 
-.color-picker-container {
-  float: left;
-  position: relative;
+:global {
+  .color-picker-container {
+    position: relative;
+    float: left;
 
-  .color-picker {
-    background: $background-color;
-    border-radius: 5px;
-    box-shadow: 0 13px 13px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24);
-    margin-left: -$width/2 + $arrow-width/2 + 0.15rem;
-    margin-top: $arrow-height;
-    padding: $padding;
-    position: absolute;
-    height: $height;
-    width: $width;
-    z-index: 1;
-
-    // arrowtip
-    &:before {
-      content: '';
-      border: $arrow-width solid darken($background-color, 5%);
-      border-left-color: transparent;
-      border-right-color: transparent;
-      border-top-width: 0;
-      height: $arrow-height;
-      left: $width/2 - $arrow-width;
+    .color-picker {
       position: absolute;
-      top: -$arrow-height;
-    }
+      z-index: 1;
+      width: $width;
+      height: $height;
+      padding: $padding;
+      margin-top: $arrow-height;
+      margin-left: -$width/2 + $arrow-width/2 + 0.15rem;
+      border-radius: 5px;
+      background: $background-color;
+      box-shadow: 0 13px 13px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 
-    @media(max-width: 768px) {
-      left: 3.2rem;
+      // arrowtip
+      &::before {
+        content: '';
+        position: absolute;
+        top: -$arrow-height;
+        left: $width/2 - $arrow-width;
+        height: $arrow-height;
+        border: $arrow-width solid darken($background-color, 5%);
+        border-top-width: 0;
+        border-right-color: transparent;
+        border-left-color: transparent;
+      }
 
-      &:before {
-        left: 0;
+      @media (max-width: 768px) {
+        left: 3.2rem;
+
+        &::before {
+          left: 0;
+        }
       }
     }
-  }
 
-  .color-option {
-    cursor: pointer;
-    display: inline-block;
-    padding: 5px;
-    width: 25%;
+    .color-option {
+      display: inline-block;
+      width: 25%;
+      padding: 5px;
+      cursor: pointer;
 
-    &:after {
-      content: '';
-      display: block;
-      padding-bottom: 100%;
+      &::after {
+        content: '';
+        display: block;
+        padding-bottom: 100%;
+      }
     }
   }
 }

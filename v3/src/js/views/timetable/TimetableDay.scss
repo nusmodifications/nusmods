@@ -22,10 +22,10 @@
 }
 
 .dayName {
-  flex: 0 0 $timetable-day-horizontal-size;
   display: flex;
-  justify-content: center;
+  flex: 0 0 $timetable-day-horizontal-size;
   align-items: center;
+  justify-content: center;
 }
 
 :global(.verticalMode) .dayName {
@@ -35,14 +35,15 @@
 .dayRows {
   flex: 1 0 auto;
   min-width: $timetable-col-width;
+  min-height: $timetable-row-height;
   padding-bottom: 0.3rem;
   background: linear-gradient(to right, $gray-lightest 50%, transparent 50%);
 }
 
 :global(.verticalMode) .dayRows {
   display: flex;
-  padding-bottom: 0;
   padding-right: 0.1rem;
+  padding-bottom: 0;
 }
 
 :global(.verticalMode) .dayRows {

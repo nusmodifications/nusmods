@@ -131,24 +131,25 @@ export function arrangeLessonsWithinDay(lessons: Array<Lesson>): TimetableDayArr
   if (_.isEmpty(lessons)) {
     return rows;
   }
+  lessons
+    .sort((a, b) => a.StartTime.localeCompare(b.StartTime))
+    .forEach((lesson: Lesson) => {
+      for (let i = 0, length = rows.length; i < length; i += 1) {
+        const rowLessons: Array<Lesson> = rows[i];
+        // Search through Lesson in row to look for available slots.
+        const overlapTests = rowLessons.every((rowLesson) => {
+          return !doLessonsOverlap(rowLesson, lesson);
+        });
 
-  lessons.sort((a, b) => Number(a.StartTime < b.StartTime));
-  lessons.forEach((lesson: Lesson) => {
-    for (let i = 0, length = rows.length; i < length; i += 1) {
-      const rowLessons: Array<Lesson> = rows[i];
-      // Search through Lesson in row to look for available slots.
-      const overlapTests = rowLessons.map((rowLesson) => {
-        return !doLessonsOverlap(rowLesson, lesson);
-      });
-      if (_.every(overlapTests, Boolean)) {
+        if (overlapTests) {
         // Lesson does not overlap with any Lesson in the row. Add it to row.
-        rowLessons.push(lesson);
-        return;
+          rowLessons.push(lesson);
+          return;
+        }
       }
-    }
-    // No existing rows are available to fit this lesson in. Append a new row.
-    rows.push([lesson]);
-  });
+      // No existing rows are available to fit this lesson in. Append a new row.
+      rows.push([lesson]);
+    });
 
   return rows;
 }
