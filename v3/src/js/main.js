@@ -5,6 +5,7 @@ import configureStore from 'stores/configure-store';
 import storage from 'storage';
 import App from 'App';
 
+import 'utils/sentry';
 import '../styles/main.scss';
 
 const persistedState = storage.loadState();

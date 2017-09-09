@@ -91,6 +91,7 @@
     "lodash": "^4.17.4",
     "nusmoderator": "^2.0.0",
     "query-string": "^5.0.0",
+    "raven-js": "^3.17.0",
     "react": "^15.6.1",
     "react-disqus-thread": "^0.4.0",
     "react-document-title": "^2.0.3",
