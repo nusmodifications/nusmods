@@ -20,7 +20,13 @@ const devServerOpts = function(options) {
       inline: true,
       stats: 'errors-only',
       host: options.host,
-      port: options.port
+      port: options.port,
+      proxy: {
+        '/short_url.php': {
+          target: 'https://nusmods.com',
+          changeOrigin: true,
+        },
+      }
     },
     plugins: [
       new webpack.HotModuleReplacementPlugin({
