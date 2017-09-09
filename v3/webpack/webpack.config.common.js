@@ -43,7 +43,7 @@ const commonConfig = merge([
     },
     plugins: [
       new StyleLintPlugin({
-        context: parts.PATHS.styles,
+        context: parts.PATHS.app,
       }),
       new LodashModuleReplacementPlugin({
         caching: true,

@@ -61,11 +61,13 @@ const developmentConfig = merge([
   }),
   parts.loadCSS({
     include: parts.PATHS.styles,
-    useCSSModules: false,
   }),
   parts.loadCSS({
     include: parts.PATHS.scripts,
-    useCSSModules: true,
+    options: {
+      modules: true,
+      localIdentName: '[name]-[local]_[hash:base64:4]',
+    },
   }),
   parts.flow({ failOnError: false }),
 ]);

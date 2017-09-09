@@ -2,7 +2,6 @@ const path = require('path');
 const webpack = require('webpack');
 
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const cssnano = require('cssnano');
 const FlowStatusWebpackPlugin = require('flow-status-webpack-plugin');
@@ -219,15 +218,12 @@ exports.minifyJavascript = () => {
   };
 };
 
-function getCSSConfig({ useCSSModules = false, localIdentName }) {
+exports.getCSSConfig = ({ options } = {}) => {
   return [
     ...insertIf(IS_DEV, 'cache-loader'), // Because css-loader is slow
     {
       loader: 'css-loader',
-      options: {
-        modules: useCSSModules,
-        localIdentName: localIdentName || '[name]-[local]_[hash:base64:5]',
-      },
+      options,
     },
     {
       loader: 'postcss-loader',
@@ -239,14 +235,14 @@ function getCSSConfig({ useCSSModules = false, localIdentName }) {
     },
     'sass-loader',
   ];
-}
+};
 
 /**
  * Enables importing CSS with Javascript. This is all in-memory.
  *
  * @see https://survivejs.com/webpack/styling/loading/
  */
-exports.loadCSS = ({ include, exclude, useCSSModules } = {}) => ({
+exports.loadCSS = ({ include, exclude, options } = {}) => ({
   module: {
     rules: [
       {
@@ -254,40 +250,11 @@ exports.loadCSS = ({ include, exclude, useCSSModules } = {}) => ({
         include,
         exclude,
 
-        use: [].concat('style-loader', getCSSConfig({ useCSSModules })),
+        use: [].concat('style-loader', exports.getCSSConfig({ options })),
       },
     ],
   },
 });
-
-/**
- * Extracts css into their own file.
- *
- * @see https://webpack.js.org/guides/code-splitting-css/
- * @see https://survivejs.com/webpack/styling/separating-css/
- */
-exports.extractCSS = ({ include, exclude, useCSSModules } = {}) => {
-  // Output extracted CSS to a file
-  const plugin = new ExtractTextPlugin('[name].[chunkhash].css');
-
-  return {
-    module: {
-      rules: [
-        {
-          test: /\.(css|scss)$/,
-          include,
-          exclude,
-
-          use: plugin.extract({
-            use: getCSSConfig({ useCSSModules, localIdentName: '[hash:base64:8]' }),
-            fallback: 'style-loader',
-          }),
-        },
-      ],
-    },
-    plugins: [plugin],
-  };
-};
 
 /**
  * Minifies CSS to make it super small.
