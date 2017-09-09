@@ -2,8 +2,8 @@
 
 var $ = require('jquery');
 var Marionette = require('backbone.marionette');
-var ZeroClipboard = require('zeroclipboard');
 var _ = require('underscore');
+var Clipboard = require('clipboard');
 var template = require('../templates/url_sharing.hbs');
 require('qtip2');
 
@@ -12,7 +12,8 @@ module.exports = Marionette.ItemView.extend({
 
   ui: {
     copyToClipboard: '#copy-to-clipboard',
-    input: 'input',
+    copyToClipboardGroup: '.copy-to-clipboard-group',
+    input: '#short-url',
     shareEmail: '#share-email',
     shareFacebook: '#share-facebook',
     shareTwitter: '#share-twitter'
@@ -35,14 +36,6 @@ module.exports = Marionette.ItemView.extend({
       // Prevent the mouseup event from unselecting the selection
       event.preventDefault();
     },
-    'mousedown @ui.copyToClipboard': function () {
-      // Have to get short URL synchronously in order to maintain the
-      // temporarily elevated permissions granted by the user's click event:
-      // https://github.com/zeroclipboard/zeroclipboard/blob/master/docs/instructions.md#synchronicity-required-during-copy
-      this.getShortURL(true).then(_.bind(function (shortURL) {
-        this.clip.setText(shortURL);
-      }, this));
-    },
     'click @ui.shareEmail': function () {
       this.getShortURL().then(function (shortURL) {
         window.location.href = 'mailto:?subject=My%20NUSMods.com%20Timetable&' +
@@ -63,34 +56,32 @@ module.exports = Marionette.ItemView.extend({
     }
   },
 
-  getShortURL: function (sync) {
-    if (!this.shortUrlPromise ||
-      (sync && this.shortUrlPromise.state() !== 'resolved')) {
+  getShortURL: function () {
+    if (!this.shortUrlPromise || this.shortUrlPromise.state() !== 'resolved') {
       var jqxhr = $.ajax('/short_url.php', {
-        async: !sync,
         data: {
           url: location.href
         },
         dataType: 'json'
       });
-      this.shortUrlPromise = (sync ? $.when(jqxhr.responseJSON) : jqxhr)
+
+      this.shortUrlPromise = jqxhr
         .then(_.bind(function (data) {
           this.ui.input.val(data.shorturl);
+          if (Clipboard.isSupported()) {
+            this.ui.copyToClipboardGroup.show();
+          }
           return data.shorturl;
         }, this));
     }
-    return this.shortUrlPromise;
-  },
 
-  initialize: function () {
-    ZeroClipboard.config({
-      swfPath: '/' + require('zeroclipboard/dist/ZeroClipboard.swf')
-    });
+    return this.shortUrlPromise;
   },
 
   modulesChanged: function () {
     this.shortUrlPromise = null;
     this.ui.input.val('');
+    this.ui.copyToClipboardGroup.hide();
   },
 
   onShow: function () {
@@ -98,10 +89,16 @@ module.exports = Marionette.ItemView.extend({
     this.listenTo(this.collection.timetable, 'change', this.modulesChanged);
 
     var ui = this.ui;
+    var copyTarget = this.ui.input.get(0);
+    this.clip = new Clipboard(this.ui.copyToClipboard.get(0), {
+      target: function() { return copyTarget; }
+    });
 
-    this.clip = new ZeroClipboard(ui.copyToClipboard);
-    this.clip.on('aftercopy', function () {
+    this.ui.copyToClipboardGroup.hide();
+
+    this.clip.on('success', function () {
       ui.copyToClipboard.qtip('option', 'content.text', 'Copied!');
+      window.getSelection().removeAllRanges();
     });
 
     var CLIPBOARD_TOOLTIP = 'Copy to Clipboard';
