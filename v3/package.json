@@ -14,7 +14,7 @@
     "lint:styles": "stylelint \"src/styles/**/*.scss\" --syntax scss",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
-    "ci": "cross-env NODE_ENV=production npm run lint && npm test && npm run build"
+    "ci": "cross-env NODE_ENV=production npm run lint && npm test && npm rebuild node-sass && npm run build"
   },
   "author": "NUSModifications",
   "license": "MIT",
