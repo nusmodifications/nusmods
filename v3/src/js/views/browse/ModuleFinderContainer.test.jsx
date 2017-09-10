@@ -13,9 +13,10 @@ import qs from 'query-string';
 import createHistory from 'history/createMemoryHistory'; // eslint-disable-line import/no-extraneous-dependencies
 
 import type { FilterGroupId } from 'utils/filters/FilterGroup';
+import type { PageRange } from 'types/views';
 
 import FilterGroup from 'utils/filters/FilterGroup';
-import { ModuleFinderContainerComponent } from './ModuleFinderContainer';
+import { ModuleFinderContainerComponent, mergePageRange } from './ModuleFinderContainer';
 
 type ActiveFilters = { [FilterGroupId]: string[] };
 type Container = { component: ShallowWrapper, history: RouterHistory };
@@ -136,4 +137,30 @@ test('#updateQueryString() should update query string', () => {
     'level=1,2&mc=0',
     'level=1,2',
   ]);
+});
+
+describe('mergePageRange()', () => {
+  let prev: PageRange;
+
+  beforeEach(() => {
+    prev = {
+      current: 4,
+      start: 3,
+      loaded: 2,
+    };
+  });
+
+  test('should set current page', () => {
+    expect(mergePageRange(prev, { current: 5 })).toMatchObject({ current: 5 });
+  });
+
+  test('should update start and pages', () => {
+    expect(mergePageRange(prev, { start: 1 })).toMatchObject({ start: 4 });
+    expect(mergePageRange(prev, { start: 2 })).toMatchObject({ start: 5 });
+
+    expect(mergePageRange(prev, { loaded: 1 })).toMatchObject({ loaded: 3 });
+    expect(mergePageRange(prev, { loaded: 2 })).toMatchObject({ loaded: 4 });
+
+    expect(mergePageRange(prev, { start: 1, loaded: 2 })).toMatchObject({ start: 4, loaded: 4 });
+  });
 });

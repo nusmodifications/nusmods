@@ -23,7 +23,6 @@ const semesterNames = config.shortSemesterNames;
 
 export default class ModuleSemesterInfo extends Component<Props, State> {
   props: Props;
-
   state: State;
 
   constructor(props: Props) {
@@ -35,6 +34,7 @@ export default class ModuleSemesterInfo extends Component<Props, State> {
     };
   }
 
+  // Map semester name to semester data, if available
   semesterMap(): { [string]: ?SemesterData } {
     const map = {};
     const { semesters } = this.props;
@@ -46,11 +46,18 @@ export default class ModuleSemesterInfo extends Component<Props, State> {
     return map;
   }
 
+  // Disable and add title for buttons representing modules not available in the
+  // particular semester
   buttonAttrs() {
     const semesterMap = this.semesterMap();
     const attrs = {};
     _.each(semesterNames, (name: string) => {
-      if (!semesterMap[name]) attrs[name] = { disabled: true };
+      if (!semesterMap[name]) {
+        attrs[name] = {
+          disabled: true,
+          title: `This module is not available in ${name}`,
+        };
+      }
     });
 
     return { attrs };

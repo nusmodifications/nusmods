@@ -10,13 +10,14 @@ import _ from 'lodash';
 import qs from 'query-string';
 
 import type { Module } from 'types/modules';
+import type { PageRange, PageRangeDiff } from 'types/views';
 import type { FilterGroupId } from 'utils/filters/FilterGroup';
 
 import ModuleFinderList from 'views/browse/ModuleFinderList';
 import ChecklistFilters from 'views/components/filters/ChecklistFilters';
 import TimeslotFilters from 'views/components/filters/TimeslotFilters';
 import LoadingSpinner from 'views/LoadingSpinner';
-import filterGroups, {
+import moduleFilters, {
   LEVELS,
   LECTURE_TIMESLOTS,
   TUTORIAL_TIMESLOTS,
@@ -31,12 +32,32 @@ type Props = ContextRouter;
 
 type State = {
   loading: boolean,
+  page: PageRange,
   modules: Module[],
   filterGroups: { [FilterGroupId]: FilterGroup<any> },
 };
 
+export function mergePageRange(prev: PageRange, diff: PageRangeDiff): PageRange {
+  const next = _.clone(prev);
+
+  // Current page is SET from the diff object
+  if (diff.current != null) {
+    next.current = diff.current;
+  }
+
+  // Start and pages are ADDED from the diff object
+  ['start', 'loaded'].forEach((key) => {
+    if (diff[key] != null) {
+      next[key] += diff[key];
+    }
+  });
+
+  return next;
+}
+
 export class ModuleFinderContainerComponent extends Component<Props, State> {
   props: Props;
+  state: State;
 
   history: HistoryDebouncer;
   unlisten: () => void;
@@ -46,20 +67,21 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
 
     // Parse out query params from URL and use that to initialize filter groups
     const params = qs.parse(props.location.search);
-    this.state.filterGroups = _.mapValues(filterGroups, (group: FilterGroup<*>) => {
+    const filterGroups = _.mapValues(moduleFilters, (group: FilterGroup<*>) => {
       return group.fromQueryString(params[group.id]);
     });
 
     // Set up history debouncer and history listener
     this.history = new HistoryDebouncer(props.history);
     this.unlisten = props.history.listen(location => this.onQueryStringChange(location.search));
-  }
 
-  state: State = {
-    loading: true,
-    modules: [],
-    filterGroups: {},
-  };
+    this.state = {
+      filterGroups,
+      page: this.startingPageRange(),
+      loading: true,
+      modules: [],
+    };
+  }
 
   componentDidMount() {
     axios.get(nusmods.modulesUrl())
@@ -76,6 +98,7 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
     this.unlisten();
   }
 
+  // Event handlers
   onQueryStringChange(query: string) {
     const params = qs.parse(query);
     const updater = {};
@@ -95,6 +118,7 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
   onFilterChange = (newGroup: FilterGroup<*>) => {
     this.setState(update(this.state, {
       filterGroups: { [newGroup.id]: { $set: newGroup } },
+      page: { $merge: { start: 0, current: 0 } },
     }), () => {
       // Update query string after state is updated
       const query = {};
@@ -104,16 +128,51 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
         query[group.id] = value;
       });
 
-      this.history.push({ search: qs.stringify(query) });
+      this.history.push({
+        ...this.props.location,
+        search: qs.stringify(query),
+      });
+
+      // Scroll back to the top
+      window.scrollTo(0, 0);
     });
   };
 
+  onPageChange = (diff: PageRangeDiff) => {
+    this.setState(prevState => ({
+      page: mergePageRange(prevState.page, diff),
+    }), this.updatePageHash);
+  };
+
+  updatePageHash = () => {
+    // Update the location hash so that users can share the URL and go back to the
+    // correct page when the going back in history
+    const { current } = this.state.page;
+    this.history.push({
+      ...this.props.location,
+      hash: current ? `page=${current}` : '',
+    });
+  };
+
+  // Getters and helper functions
   filterGroups(): FilterGroup<any>[] {
     return _.values(this.state.filterGroups);
   }
 
+  startingPageRange(): PageRange {
+    const hashMatch = this.props.location.hash.match(/page=(\d+)/);
+    const start = hashMatch ? parseInt(hashMatch[1], 10) : 0;
+
+    return {
+      start,
+      current: start,
+      loaded: 1,
+    };
+  }
+
   render() {
-    const { filterGroups: groups, modules, loading } = this.state;
+    const { filterGroups: groups, modules, loading, page } = this.state;
+    const filteredModules = FilterGroup.apply(modules, this.filterGroups());
 
     return (
       <DocumentTitle title={`Modules - ${config.brandName}`}>
@@ -125,15 +184,18 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
                 <LoadingSpinner />
                 :
                 <ModuleFinderList
-                  filterGroups={_.values(groups)}
-                  modules={modules}
+                  modules={filteredModules}
+                  page={page}
+                  onPageChange={this.onPageChange}
                 />
               }
             </div>
 
             <div className="col-md-4 col-lg-3">
               <div className="module-filters">
-                <h3>Search Options</h3>
+                <header>
+                  <h3>Refine by</h3>
+                </header>
 
                 <ChecklistFilters
                   group={groups[LEVELS]}

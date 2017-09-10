@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import classnames from 'classnames';
 import { values } from 'lodash';
 
 import type { Module } from 'types/modules';
@@ -18,12 +19,12 @@ export default function ChecklistFilters(props: Props) {
   const { group, modules, onFilterChange } = props;
 
   return (
-    <div>
+    <div className="module-filters-checklist">
       <h4>{group.label}</h4>
       <ul className="list-unstyled">
         {values(group.filters).map((filter: ModuleFilter) => (
           <li key={filter.label}>
-            <label className="form-check-label">
+            <label className={classnames('form-check-label', { 'filter-selected': filter.enabled })}>
               <input
                 className="form-check-input"
                 type="checkbox"

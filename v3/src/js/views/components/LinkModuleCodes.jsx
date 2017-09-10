@@ -26,7 +26,7 @@ export function LinkModuleCodesComponent(props: Props) {
   const parts = children.split(MODULE_CODE_REGEX);
 
   // We want to ensure the resulting array always has ModuleCode at even position
-  // eg. ['Some text ', 'CS1010S', ' more text ', 'CS3216', 'more text'].
+  // eg. ['Some text ', 'CS1010S', ' more text ', 'CS3216', 'more text']
   // This allows us to replace the even position elements with <Link> components.
   // However, if the string starts with a module code, then the first element will be a module
   // so we add in an empty string to pad module codes to even positions
@@ -37,7 +37,7 @@ export function LinkModuleCodesComponent(props: Props) {
       if (i % 2 === 0) return part;
       const code = part.replace(/\s*/g, '');
       if (!moduleCodes.has(code)) return part;
-      return <Link to={modulePagePath(code)} key={code}>{part}</Link>;
+      return <Link to={modulePagePath(code)} key={i}>{part}</Link>;
     })}</span>
   );
 }

@@ -1,22 +1,60 @@
 .modules-page-container {
+  max-width: 75rem;
+  margin-left: 0;
   animation-name: $page-entering-animation;
 }
 
 .module-filters {
+  position: fixed;
+  top: $navbar-height + 1rem;
+  bottom: 0;
+  max-width: 16rem;
+  overflow: auto;
+
   h3 {
+    margin-bottom: 1rem;
     font-size: $font-size-lg;
+    color: $gray-light;
   }
 
   h4 {
-    font-size: $font-size-sm;
+    margin-bottom: 0;
+    font-weight: bold;
+    font-size: $font-size-xs;
   }
 
   label {
     font-size: $font-size-xs;
+    cursor: pointer;
+
+    &:hover {
+      color: theme-color();
+    }
+
+    &.filter-selected {
+      font-weight: bold;
+      color: theme-color();
+    }
+
+    .text-muted {
+      font-weight: normal;
+    }
+  }
+
+  .module-filters-checklist {
+    label {
+      display: block;
+      padding-top: 0.1rem;
+      padding-bottom: 0.1rem;
+    }
   }
 
   .module-filters-timeslot {
     margin-bottom: 1rem;
+
+    th {
+      color: $gray-light;
+    }
 
     label {
       display: block;
@@ -35,16 +73,75 @@
       }
     }
   }
+
+  @include media-breakpoint-down(sm) {
+    $v-padding: 0.6rem;
+    $h-padding: $grid-gutter-width / 2;
+
+    top: auto;
+    right: 0;
+    z-index: $module-finder-z-index;
+    max-width: 20rem;
+    height: $font-size-lg + 2rem;
+    overflow: hidden;
+    background: $body-bg;
+    box-shadow: 0 0 15px -3px rgba(#000, 0.4);
+
+    header {
+      padding: 1rem $h-padding;
+    }
+
+    h3 {
+      margin-bottom: 0;
+      color: $gray;
+    }
+
+    h4 {
+      padding: $v-padding $h-padding;
+      font-size: $font-size-sm;
+      border-bottom: 1px solid $gray-lighter;
+    }
+
+    label {
+      font-size: $font-size-sm;
+    }
+
+    .module-filters-checklist {
+      label {
+        padding: $v-padding $h-padding $v-padding ($h-padding + 20px);
+        border-bottom: 1px solid $gray-lighter;
+      }
+    }
+
+    .module-filters-timeslot {
+      h4 {
+        border-bottom: 0;
+      }
+
+      th {
+        font-size: $font-size-sm;
+      }
+
+      label {
+        padding: $v-padding 0;
+      }
+    }
+
+    &:hover {
+      top: $navbar-height + 5rem;
+      height: auto;
+      overflow: auto;
+    }
+  }
 }
 
 .modules-list {
-  display: inline-block;
   padding: 0;
+  margin: 0;
   list-style: none;
 
   .modules-item {
-    padding: 1rem 0;
-    margin: 0.5rem 0;
+    margin-bottom: 3rem;
 
     footer {
       padding-top: 0.8rem;
@@ -54,7 +151,25 @@
   }
 
   .modules-title {
-    font-size: 1.25rem;
+    margin-top: 0.15rem; // align baseline with semester switcher
+    font-size: $font-size-lg;
+  }
+}
+
+.module-page-divider {
+  position: sticky;
+  top: $navbar-height;
+  z-index: $module-page-divider-z-index;
+  padding: 0.6rem;
+  margin: 1rem 0;
+  font-size: $font-size-sm;
+  text-align: right;
+  color: $gray;
+  border-bottom: 1px solid $gray-lighter;
+  background: $body-bg;
+
+  @include media-breakpoint-down(sm) {
+    top: $navbar-height + 3rem;
   }
 }
 
@@ -67,12 +182,28 @@
   }
 
   .btn-group {
+    // Make the btn-group children fill up all available space
     display: flex;
     margin-bottom: 1rem;
 
     .btn {
       flex: 1 auto;
+      padding: 0.4rem 0 0.3rem;
+      margin-right: 3px;
       font-size: $font-size-xs;
+      border-width: 0 0 0.1rem;
+      border-radius: 0;
+      cursor: pointer;
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+      &:disabled {
+        color: $gray;
+        border-color: $gray-light;
+        cursor: not-allowed;
+      }
     }
   }
 
@@ -80,6 +211,38 @@
     margin-bottom: 0;
     font-weight: bold;
     font-size: $font-size-sm;
+  }
+
+  .module-timeslots {
+    .module-timeslot-time {
+      line-height: 2;
+    }
+
+    div {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      min-height: 2rem;
+
+      // Timeslot has both lecture and tutorial - we create a split cell effect
+      // with a skew to show that it is on the same day (if the edge is straight
+      // it may look like the edge of a cell)
+      &.workload-lecture-bg + .workload-tutorial-bg {
+        transform: skewX(-45deg) translateX(50%);
+      }
+    }
+  }
+
+  // Add a little space above the
+  @include media-breakpoint-only(md) {
+    margin-top: 2rem;
+  }
+
+  @include media-breakpoint-down(xs) {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
   }
 }
 
@@ -121,7 +284,10 @@
 
 // Timeslot
 .module-timeslot-table {
-  width: 100%;
+  // HACK: -1px is for Blink (Chrome/Chromium), which incorrectly calculates width
+  // by including the border-right width on the th below, causing the table to have
+  // a width of 100% + 1px and thus overflowing
+  width: calc(100% - 1px);
   table-layout: fixed;
 
   th {
@@ -129,20 +295,24 @@
     font-size: $font-size-xs;
 
     &:first-child {
-      border-right: 1px solid $gray-light;
+      border-right: 1px solid $gray-lighter;
+    }
+
+    &.module-timeslot-hover {
+      color: theme-color();
     }
   }
 
   thead th {
-    border-bottom: 1px solid $gray-light;
+    border-bottom: 1px solid $gray-lighter;
   }
 
-  .module-timeslot-time-label {
+  .module-timeslot-time {
     padding-right: 0.2rem;
     text-align: right;
   }
 
-  .module-timeslot-day-label {
+  .module-timeslot-day {
     text-align: center;
   }
 
@@ -151,21 +321,5 @@
     padding: 0;
     overflow: hidden;
     border: 1px solid $white;
-
-    div {
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-
-      // Timeslot has both lecture and tutorial - we create a split cell effect
-      // with a skew to show that it is on the same day (if the edge is straight
-      // it may look like the edge of a cell)
-      &.workload-lecture-bg + .workload-tutorial-bg {
-        z-index: 1;
-        transform: skewX(-45deg) translateX(50%);
-      }
-    }
   }
 }
