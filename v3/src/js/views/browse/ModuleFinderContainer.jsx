@@ -41,11 +41,15 @@ export function mergePageRange(prev: PageRange, diff: PageRangeDiff): PageRange 
   const next = _.clone(prev);
 
   // Current page is SET from the diff object
-  if (diff.current != null) next.current = diff.current;
+  if (diff.current != null) {
+    next.current = diff.current;
+  }
 
   // Start and pages are ADDED from the diff object
   ['start', 'loaded'].forEach((key) => {
-    if (diff[key] != null) next[key] += diff[key];
+    if (diff[key] != null) {
+      next[key] += diff[key];
+    }
   });
 
   return next;
@@ -137,14 +141,16 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
   onPageChange = (diff: PageRangeDiff) => {
     this.setState(prevState => ({
       page: mergePageRange(prevState.page, diff),
-    }), () => {
-      // Update the location hash so that users can share the URL and go back to the
-      // correct page when the going back in history
-      const { current } = this.state.page;
-      this.history.push({
-        ...this.props.location,
-        hash: current ? `page=${current}` : '',
-      });
+    }), this.updatePageHash);
+  };
+
+  updatePageHash = () => {
+    // Update the location hash so that users can share the URL and go back to the
+    // correct page when the going back in history
+    const { current } = this.state.page;
+    this.history.push({
+      ...this.props.location,
+      hash: current ? `page=${current}` : '',
     });
   };
 
