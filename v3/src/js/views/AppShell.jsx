@@ -11,7 +11,7 @@ import type { FetchRequest, ModuleList, ModuleSelectList } from 'types/reducers'
 
 import config from 'config';
 import { fetchModuleList, loadModule } from 'actions/moduleBank';
-
+import { noBreak } from 'utils/react';
 import Routes from 'views/Routes';
 import ModulesSelect from 'views/components/ModulesSelect';
 import Footer from 'views/layout/Footer';
@@ -33,17 +33,17 @@ const weekText = (() => {
 
   // Check for null value (ie. during vacation)
   if (acadWeekInfo.sem) {
-    parts.push(acadWeekInfo.sem);
+    parts.push(noBreak(acadWeekInfo.sem));
   }
 
   // Hide semester if semester type is 'Instructional'
   if (acadWeekInfo.type !== 'Instructional') {
-    parts.push(`${acadWeekInfo.type} Week`);
+    parts.push(noBreak(`${acadWeekInfo.type} Week`));
   }
 
   // Do not show the week number if there is only one week, eg. recess
   if (acadWeekInfo.num > 0) {
-    parts.push(`Week ${acadWeekInfo.num}`);
+    parts.push(noBreak(`Week ${acadWeekInfo.num}`));
   }
 
   return parts.join(', ');

@@ -33,3 +33,12 @@ export function replace( // eslint-disable-line import/prefer-default-export
     return replacement(part, (i - 1) / 2);
   });
 }
+
+/**
+ * Replaces all spaces in a string with U+00A0 non-breaking spaces
+ * @param text
+ * @returns {string}
+ */
+export function noBreak(text: string): string {
+  return text.replace(/ /g, '\u00a0');
+}
