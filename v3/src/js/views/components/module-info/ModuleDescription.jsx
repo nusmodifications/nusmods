@@ -9,10 +9,10 @@ type Props = {
 export default function (props: Props) {
   // Decode some HTML entities
   const description = props.children
-    .replace('&amp;', '&')
-    .replace('&quot;', '"')
-    .replace('&gt;', '>')
-    .replace('&lt;', '<');
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"')
+    .replace(/&gt;/g, '>')
+    .replace(/&lt;/g, '<');
 
   return (<span>{description}</span>);
 }
