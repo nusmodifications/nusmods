@@ -87,8 +87,8 @@ class ModulePageContainer extends Component<Props> {
     ));
 
     const officialLinks = module ? [
-      <a href={config.ivleUrl.replace('<ModuleCode>', module.ModuleCode)}>IVLE</a>,
-      <a href={config.corsUrl + module.ModuleCode}>CORS</a>,
+      <a key="ivle" href={config.ivleUrl.replace('<ModuleCode>', module.ModuleCode)}>IVLE</a>,
+      <a key="cors" href={config.corsUrl + module.ModuleCode}>CORS</a>,
     ] : [];
 
     const addOrRemoveToTimetableLinks = this.semestersOffered().map(
@@ -147,28 +147,28 @@ class ModulePageContainer extends Component<Props> {
 
                   <dl>
                     {module.Prerequisite && [
-                      <dt>Prerequisite</dt>,
-                      <dd>
+                      <dt key="prerequisite-dt">Prerequisite</dt>,
+                      <dd key="prerequisite-dd">
                         <LinkModuleCodes>{module.Prerequisite}</LinkModuleCodes>
                       </dd>,
                     ]}
 
                     {module.Corequisite && [
-                      <dt>Corequisite</dt>,
-                      <dd>
+                      <dt key="corequisite-dt">Corequisite</dt>,
+                      <dd key="corequisite-dd">
                         <LinkModuleCodes>{module.Corequisite}</LinkModuleCodes>
                       </dd>,
                     ]}
 
                     {module.Preclusion && [
-                      <dt>Preclusion</dt>,
-                      <dd>
+                      <dt key="preclusions-dt">Preclusion</dt>,
+                      <dd key="preclusions-dd">
                         <LinkModuleCodes>{module.Preclusion}</LinkModuleCodes>
                       </dd>,
                     ]}
                   </dl>
-
                 </div>
+
                 <div className="col-md-4">
                   <div>
                     {addOrRemoveToTimetableLinks}
@@ -177,8 +177,7 @@ class ModulePageContainer extends Component<Props> {
                   { officialLinks.length && <div>
                     <h2>Official Links</h2>
                     { join(officialLinks) }
-                  </div>
-                  }
+                  </div>}
                 </div>
               </div>
 
@@ -192,8 +191,7 @@ class ModulePageContainer extends Component<Props> {
               {module.CorsBiddingStats && <div>
                 <h2>CORS Bidding Stats</h2>
                 <CorsBiddingStatsTableControl stats={module.CorsBiddingStats} />
-              </div>
-              }
+              </div>}
 
               <div>
                 <h2>Timetable</h2>
