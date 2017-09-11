@@ -2,6 +2,8 @@
 
 import type { Node } from 'react';
 
+import { flatMap } from 'lodash';
+
 /**
  * Replace substring matching the provided regex with React nodes. This is
  * basically the React version of replacing bits of strings with HTML tags,
@@ -32,6 +34,17 @@ export function replace( // eslint-disable-line import/prefer-default-export
     if (i % 2 === 0) return part;
     return replacement(part, (i - 1) / 2);
   });
+}
+
+/**
+ * Returns the given
+ *
+ * @param {Node[]} nodes
+ * @param {string} glue
+ * @returns {Node}
+ */
+export function join(nodes: Node[], glue: string = ' • '): Node {
+  return flatMap(nodes, (node): Node => [node, glue]).slice(0, -1);
 }
 
 /**
