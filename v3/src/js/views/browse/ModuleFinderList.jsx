@@ -24,11 +24,16 @@ function getPageKey(modules: Module[]): string {
 export default class ModuleFinderList extends Component<Props> {
   props: Props;
 
-  onEnterPage(current: number) {
-    const diff: PageRangeDiff = { current };
+  onEnterPage(fromStart: number) {
+    const { start, loaded } = this.props.page;
+
+    // Update current page to the new page
+    const diff: PageRangeDiff = { current: fromStart + start };
 
     // If we are one page away from the bottom, load the next page
-    if (current + 1 >= this.props.page.loaded) diff.loaded = 1;
+    if (fromStart + 1 >= loaded) {
+      diff.loaded = 1;
+    }
 
     this.props.onPageChange(diff);
   }
@@ -64,7 +69,7 @@ export default class ModuleFinderList extends Component<Props> {
         </button>}
 
         {pages.map((page, i) => (
-          <Waypoint key={getPageKey(page)} onEnter={() => this.onEnterPage(i + start)}>
+          <Waypoint key={getPageKey(page)} onEnter={() => this.onEnterPage(i)}>
             <div>
               <div className="module-page-divider">
                 {this.start(i)}-{this.end(i)} of {total} modules
