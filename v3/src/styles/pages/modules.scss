@@ -33,6 +33,26 @@
   dt {
     font-size: $font-size-sm;
   }
+
+  @include media-breakpoint-down(sm) {
+    .page-title,
+    .page-title-module-code {
+      font-size: $font-size-xlg * $sm-font-size-ratio;
+    }
+
+    header {
+      margin: 0.4rem 0 1rem;
+    }
+
+    h2,
+    h3 {
+      font-size: 1rem * $sm-font-size-ratio;
+    }
+
+    h2 {
+      padding-bottom: 0.3rem;
+    }
+  }
 }
 
 // Pre-requisites Tree

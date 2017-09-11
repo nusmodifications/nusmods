@@ -14,7 +14,7 @@ body {
 
   @include media-breakpoint-down(sm) {
     padding-top: $navbar-height * 2;
-    font-size: $font-size-sm;
+    font-size: 1rem * $sm-font-size-ratio;
   }
 }
 

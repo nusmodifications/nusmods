@@ -17,8 +17,6 @@ import { join } from 'utils/react';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
 import ModuleDescription from 'views/components/module-info/ModuleDescription';
 
-import AddModuleButton from './AddModuleButton';
-import RemoveModuleButton from './RemoveModuleButton';
 import CorsBiddingStatsTableControl from './CorsBiddingStatsTableControl';
 import LessonTimetableControl from './LessonTimetableControl';
 import ModuleTree from './ModuleTree';
@@ -51,16 +49,17 @@ class ModulePageContainer extends Component<Props> {
   }
 
   semestersOffered(): Semester[] {
-    if (!this.props.module || !this.props.module.History) return [];
-    return this.props.module.History
+    const module = this.props.module;
+    if (!module || !module.History) return [];
+    return module.History
       .map(h => h.Semester)
       .sort();
   }
 
-  examinations(): {semester: number, date: string}[] {
-    if (!this.props.module || !this.props.module.History) return [];
-
-    return this.props.module.History
+  examinations(): {semester: Semester, date: string}[] {
+    const module = this.props.module;
+    if (!module || !module.History) return [];
+    return module.History
       .filter(h => h.ExamDate != null)
       .sort((a, b) => a.Semester - b.Semester)
       .map(h => ({ semester: h.Semester, date: h.ExamDate || '' }));
@@ -75,42 +74,9 @@ class ModulePageContainer extends Component<Props> {
   }
 
   render() {
-    const module = this.props.module;
+    const { module } = this.props;
     const documentTitle = module ?
       `${module.ModuleCode} ${module.ModuleTitle} - ${config.brandName}` : 'Not found';
-
-    const renderExaminations = this.examinations().map(exam => (
-      <span key={exam.semester}>
-        <dt className="col-sm-3">Semester {exam.semester} Exam</dt>
-        <dd className="col-sm-9">{formatExamDate(exam.date)}</dd>
-      </span>
-    ));
-
-    const officialLinks = module ? [
-      <a key="ivle" href={config.ivleUrl.replace('<ModuleCode>', module.ModuleCode)}>IVLE</a>,
-      <a key="cors" href={config.corsUrl + module.ModuleCode}>CORS</a>,
-    ] : [];
-
-    const addOrRemoveToTimetableLinks = this.semestersOffered().map(
-      semester => (
-        this.moduleHasBeenAdded(module, semester) ?
-          <RemoveModuleButton
-            key={semester}
-            semester={semester}
-            onClick={() =>
-              this.props.removeModule(semester, module.ModuleCode)
-            }
-          />
-          :
-          <AddModuleButton
-            key={semester}
-            semester={semester}
-            onClick={() =>
-              this.props.addModule(semester, module.ModuleCode)
-            }
-          />
-      ),
-    );
 
     return (
       <div className="module-container page-container">
@@ -138,9 +104,9 @@ class ModulePageContainer extends Component<Props> {
               </header>
             </div>
 
-            <div className="col-lg-9">
+            <div className="col-xl-9">
               <div className="row">
-                <div className="col-md-8">
+                <div className="col-sm-9 col-lg-8">
                   { module.ModuleDescription && <p>
                     <ModuleDescription>{module.ModuleDescription}</ModuleDescription>
                   </p> }
@@ -169,15 +135,44 @@ class ModulePageContainer extends Component<Props> {
                   </dl>
                 </div>
 
-                <div className="col-md-4">
+                <div className="col-sm-3 col-lg-4 module-page-sidebar">
                   <div>
-                    {addOrRemoveToTimetableLinks}
+                    {this.semestersOffered().map(
+                      semester => (
+                        this.moduleHasBeenAdded(module, semester) ?
+                          <button
+                            key={semester}
+                            className="btn btn-outline-primary"
+                            onClick={() => this.props.removeModule(semester, module.ModuleCode)}
+                          >
+                            Remove from {config.semesterNames[semester]}
+                          </button>
+                          :
+                          <button
+                            key={semester}
+                            className="btn btn-outline-primary"
+                            onClick={() => this.props.addModule(semester, module.ModuleCode)}
+                          >
+                            Add to {config.semesterNames[semester]}
+                          </button>
+                      ),
+                    )}
                   </div>
 
-                  { officialLinks.length && <div>
-                    <h2>Official Links</h2>
-                    { join(officialLinks) }
-                  </div>}
+                  {this.examinations().map(exam => (
+                    <div>
+                      <h3>{config.semesterNames[exam.semester]} Exam</h3>
+                      <p>{formatExamDate(exam.date)}</p>
+                    </div>
+                  ))}
+
+                  <div>
+                    <h3>Official Links</h3>
+                    { join([
+                      <a key="ivle" href={config.ivleUrl.replace('<ModuleCode>', module.ModuleCode)}>IVLE</a>,
+                      <a key="cors" href={config.corsUrl + module.ModuleCode}>CORS</a>,
+                    ]) }
+                  </div>
                 </div>
               </div>
 
