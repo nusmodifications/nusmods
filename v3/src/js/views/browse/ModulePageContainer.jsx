@@ -6,7 +6,7 @@ import ReactDisqusThread from 'react-disqus-thread';
 import DocumentTitle from 'react-document-title';
 import config from 'config';
 
-import type { Module, Semester } from 'types/modules';
+import type { Module, Semester, ModuleCode } from 'types/modules';
 import type { FetchRequest } from 'types/reducers';
 import type { TimetableConfig } from 'types/timetables';
 
@@ -14,6 +14,7 @@ import { loadModule } from 'actions/moduleBank';
 import { addModule, removeModule } from 'actions/timetables';
 import { formatExamDate } from 'utils/modules';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
+import ModuleDescription from 'views/components/module-info/ModuleDescription';
 import AddModuleButton from './AddModuleButton';
 import RemoveModuleButton from './RemoveModuleButton';
 import CorsBiddingStatsTableControl from './CorsBiddingStatsTableControl';
@@ -23,7 +24,7 @@ import ModuleTree from './ModuleTree';
 type Props = {
   moduleCode: string,
   module: Module,
-  loadModule: Function,
+  loadModule: (ModuleCode) => void,
   fetchModuleRequest: FetchRequest,
   timetables: TimetableConfig,
   addModule: Function,
@@ -43,8 +44,8 @@ class ModulePageContainer extends Component<Props> {
     }
   }
 
-  loadModuleInformation(props: Props) {
-    this.props.loadModule(props.moduleCode);
+  loadModuleInformation({ moduleCode }: Props) {
+    this.props.loadModule(moduleCode);
   }
 
   semestersOffered(): Semester[] {
@@ -84,8 +85,7 @@ class ModulePageContainer extends Component<Props> {
         <dt className="col-sm-3">Semester {exam.semester} Exam</dt>
         <dd className="col-sm-9">{formatExamDate(exam.date)}</dd>
       </span>
-    ),
-    );
+    ));
 
     const semsOffered = this.semestersOffered()
       .map(sem => `Semester ${sem}`)
@@ -124,7 +124,9 @@ class ModulePageContainer extends Component<Props> {
               <dl className="row">
                 {module.ModuleDescription && [
                   <dt className="col-sm-3">Description</dt>,
-                  <dd className="col-sm-9">{module.ModuleDescription}</dd>,
+                  <dd className="col-sm-9">
+                    <ModuleDescription>{module.ModuleDescription}</ModuleDescription>
+                  </dd>,
                 ]}
                 {module.ModuleCredit && [
                   <dt className="col-sm-3">Module Credits (MCs)</dt>,

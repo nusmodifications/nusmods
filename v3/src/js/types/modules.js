@@ -96,7 +96,7 @@ export type Module = {
   History: Array<SemesterData>,
   ModuleCode: ModuleCode,
   ModuleCredit: string,
-  ModuleDescription: string,
+  ModuleDescription?: string,
   ModuleTitle: ModuleTitle,
   Preclusion?: string,
   Prerequisite?: string,
