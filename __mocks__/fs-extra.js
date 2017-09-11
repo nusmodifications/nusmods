@@ -7,9 +7,15 @@ const fs = jest.genMockFromModule('fs-extra');
 // what the files on the "mock" filesystem should look like when any of the
 // `fs` APIs are used.
 let mockFiles = {};
-fs.setMock = (mockFileSystem) => {
+let mockFilesMeta = {};
+fs.setMock = (mockFileSystem, mockFilesSystemMeta) => {
   mockFiles = mockFileSystem;
+  mockFilesMeta = mockFilesSystemMeta;
 };
+
+fs.readFileSync = filePath => mockFiles[filePath];
+
+fs.readFile = async filePath => fs.readFileSync(filePath);
 
 // A custom version of `readdirSync` that reads from the special mocked out
 // file list set via setMock
@@ -45,6 +51,17 @@ fs.readJson = async (directoryPath) => {
 fs.readJsonSync = (directoryPath) => {
   const pathArr = directoryPath.split(path.sep);
   return JSON.parse(R.path(pathArr, mockFiles));
+};
+
+/**
+ * Mocks and fakes meta data for the file
+ */
+fs.stat = async (filePath) => {
+  const meta = mockFilesMeta[filePath];
+  if (!meta) {
+    throw new Error('No such file');
+  }
+  return meta;
 };
 
 module.exports = fs;

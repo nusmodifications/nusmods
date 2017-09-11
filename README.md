@@ -225,19 +225,24 @@ Copy `.env.example` to a file named `.env`.
 
 Get an API key from [IVLE](http://ivle.nus.edu.sg/LAPI/default.aspx) and put it in `.env` under `IVLE_API_KEY`.
 
-Download and install [Node.js](http://nodejs.org), [npm](http://npmjs.org), and optionally [yarn](https://yarnpkg.com/en/docs/install). Then run the following command to install dependencies:
+Download and install [Node.js](http://nodejs.org), [npm](http://npmjs.org), [yarn](https://yarnpkg.com/en/docs/install) and [sqlite3](https://www.sqlite.org/download.html).
+
+
+Then run the following commands:
 
 ```bash
-$ yarn # if you're using yarn
+$ yarn # install node dependencies
+$ npx knex migrate:latest # set up db tables
+$ npx knex seed:run # set up basic information
 ```
 
 ## Updating Module Information
 
 The default gulp task is set to scrape the semester data in the upcoming month. The following commands are valid:
 
-```js
-yarn build:scraper && yarn scrape // production use
-yarn scrape:dev // development use
+```bash
+yarn build:scraper && yarn scrape # production use
+yarn scrape:dev # development use
 ```
 
 Invoking sub-tasks would involve calling the task by changing the commands in `package.json`, or through installing `gulp-cli` globally. For example, to run the `examTimetable` task specifically:

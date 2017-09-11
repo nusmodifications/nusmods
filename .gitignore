@@ -4,3 +4,4 @@ node_modules
 coverage
 .env
 *.compiled.js
+*.sqlite3

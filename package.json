@@ -29,6 +29,7 @@
   ],
   "private": true,
   "dependencies": {
+    "axios": "^0.16.2",
     "babel-polyfill": "^6.16.0",
     "bluebird": "^3.4.7",
     "boom": "^5.1.0",
@@ -46,6 +47,7 @@
     "gulp": "gulpjs/gulp.git#4.0",
     "gulp-cli": "^1.2.2",
     "is-binary-path": "^2.0.0",
+    "knex": "^0.13.0",
     "koa": "^2.2.0",
     "koa-bodyparser": "^4.2.0",
     "koa-bunyan-logger": "^2.0.0",
@@ -58,7 +60,10 @@
     "pdfjs-dist": "^1.8.552",
     "ramda": "^0.24.1",
     "romanify": "^1.0.0",
-    "underscore.string": "^3.3.4"
+    "sanitize-filename": "^1.6.1",
+    "sqlite3": "^3.1.9",
+    "underscore.string": "^3.3.4",
+    "uuid": "^3.1.0"
   },
   "devDependencies": {
     "babel-cli": "^6.16.0",
@@ -77,6 +82,7 @@
     "eslint-plugin-import": "^2.7.0",
     "jest": "^20.0.4",
     "mock-fs": "^4.2.0",
+    "nock": "^9.0.14",
     "nodemon": "^1.11.0",
     "webpack": "^3.3.0",
     "webpack-node-externals": "^1.6.0"
