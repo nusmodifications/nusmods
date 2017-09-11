@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import ReactDisqusThread from 'react-disqus-thread';
-import DocumentTitle from 'react-document-title';
+import Helmet from 'react-helmet';
 import config from 'config';
 
 import type { Module, Semester, ModuleCode } from 'types/modules';
@@ -113,88 +113,90 @@ class ModulePageContainer extends Component<Props> {
     );
 
     return (
-      <DocumentTitle title={documentTitle}>
-        <div className="module-container page-container">
-          {this.props.fetchModuleRequest.isPending && !module && <p>Loading...</p>}
-          {this.props.fetchModuleRequest.isFailure && <p>Module not found</p>}
-          {(this.props.fetchModuleRequest.isSuccessful || module) &&
-            <div>
-              <h1 className="page-title">{module.ModuleCode} {module.ModuleTitle}</h1>
-              <hr />
-              <dl className="row">
-                {module.ModuleDescription && [
-                  <dt className="col-sm-3">Description</dt>,
-                  <dd className="col-sm-9">
-                    <ModuleDescription>{module.ModuleDescription}</ModuleDescription>
-                  </dd>,
-                ]}
-                {module.ModuleCredit && [
-                  <dt className="col-sm-3">Module Credits (MCs)</dt>,
-                  <dd className="col-sm-9">{module.ModuleCredit}</dd>,
-                ]}
-                {module.Prerequisite && [
-                  <dt className="col-sm-3">Prerequisite(s)</dt>,
-                  <dd className="col-sm-9">
-                    <LinkModuleCodes>{module.Prerequisite}</LinkModuleCodes>
-                  </dd>,
-                ]}
-                {module.Corequisite && [
-                  <dt className="col-sm-3">Corequisite(s)</dt>,
-                  <dd className="col-sm-9">
-                    <LinkModuleCodes>{module.Corequisite}</LinkModuleCodes>
-                  </dd>,
-                ]}
-                {module.Preclusion && [
-                  <dt className="col-sm-3">Preclusion(s)</dt>,
-                  <dd className="col-sm-9">
-                    <LinkModuleCodes>{module.Preclusion}</LinkModuleCodes>
-                  </dd>,
-                ]}
-                {module.Department && [
-                  <dt className="col-sm-3">Department</dt>,
-                  <dd className="col-sm-9">{module.Department}</dd>,
-                ]}
-                {module.Workload && [
-                  <dt className="col-sm-3">Weekly Workload</dt>,
-                  <dd className="col-sm-9">{module.Workload}</dd>,
-                ]}
-                {renderExaminations}
-                <dt className="col-sm-3">Semesters Offered</dt>
-                <dd className="col-sm-9">{semsOffered}</dd>
-                <dt className="col-sm-3">Official Links</dt>
+      <div className="module-container page-container">
+        <Helmet>
+          <title>{ documentTitle }</title>
+        </Helmet>
+
+        {this.props.fetchModuleRequest.isPending && !module && <p>Loading...</p>}
+        {this.props.fetchModuleRequest.isFailure && <p>Module not found</p>}
+        {(this.props.fetchModuleRequest.isSuccessful || module) &&
+          <div>
+            <h1 className="page-title">{module.ModuleCode} {module.ModuleTitle}</h1>
+            <hr />
+            <dl className="row">
+              {module.ModuleDescription && [
+                <dt className="col-sm-3">Description</dt>,
                 <dd className="col-sm-9">
-                  <ul className="nm-footer-links">
-                    {ivleLink && <li><a href={ivleLink}>IVLE</a></li>}
-                    {corsLink && <li><a href={corsLink}>CORS</a></li>}
-                  </ul>
-                </dd>
-                <div>
-                  {addOrRemoveToTimetableLinks}
-                </div>
-              </dl>
-              <hr />
-              {module.ModmavenTree ?
-                <ModuleTree module={module} />
-                :
-                <p>Prerequisites are not available.</p>
-              }
-              {module.CorsBiddingStats &&
-                <CorsBiddingStatsTableControl stats={module.CorsBiddingStats} />
-              }
-              <LessonTimetableControl
-                semestersOffered={this.semestersOffered()}
-                history={module.History}
-              />
-              <ReactDisqusThread
-                shortname={config.disqusShortname}
-                identifier={module.ModuleCode}
-                title={`${module.ModuleCode} ${module.ModuleTitle}`}
-                url={`https://nusmods.com/modules/${module.ModuleCode}/reviews`}
-              />
-            </div>
-          }
-        </div>
-      </DocumentTitle>
+                  <ModuleDescription>{module.ModuleDescription}</ModuleDescription>
+                </dd>,
+              ]}
+              {module.ModuleCredit && [
+                <dt className="col-sm-3">Module Credits (MCs)</dt>,
+                <dd className="col-sm-9">{module.ModuleCredit}</dd>,
+              ]}
+              {module.Prerequisite && [
+                <dt className="col-sm-3">Prerequisite(s)</dt>,
+                <dd className="col-sm-9">
+                  <LinkModuleCodes>{module.Prerequisite}</LinkModuleCodes>
+                </dd>,
+              ]}
+              {module.Corequisite && [
+                <dt className="col-sm-3">Corequisite(s)</dt>,
+                <dd className="col-sm-9">
+                  <LinkModuleCodes>{module.Corequisite}</LinkModuleCodes>
+                </dd>,
+              ]}
+              {module.Preclusion && [
+                <dt className="col-sm-3">Preclusion(s)</dt>,
+                <dd className="col-sm-9">
+                  <LinkModuleCodes>{module.Preclusion}</LinkModuleCodes>
+                </dd>,
+              ]}
+              {module.Department && [
+                <dt className="col-sm-3">Department</dt>,
+                <dd className="col-sm-9">{module.Department}</dd>,
+              ]}
+              {module.Workload && [
+                <dt className="col-sm-3">Weekly Workload</dt>,
+                <dd className="col-sm-9">{module.Workload}</dd>,
+              ]}
+              {renderExaminations}
+              <dt className="col-sm-3">Semesters Offered</dt>
+              <dd className="col-sm-9">{semsOffered}</dd>
+              <dt className="col-sm-3">Official Links</dt>
+              <dd className="col-sm-9">
+                <ul className="nm-footer-links">
+                  {ivleLink && <li><a href={ivleLink}>IVLE</a></li>}
+                  {corsLink && <li><a href={corsLink}>CORS</a></li>}
+                </ul>
+              </dd>
+              <div>
+                {addOrRemoveToTimetableLinks}
+              </div>
+            </dl>
+            <hr />
+            {module.ModmavenTree ?
+              <ModuleTree module={module} />
+              :
+              <p>Prerequisites are not available.</p>
+            }
+            {module.CorsBiddingStats &&
+              <CorsBiddingStatsTableControl stats={module.CorsBiddingStats} />
+            }
+            <LessonTimetableControl
+              semestersOffered={this.semestersOffered()}
+              history={module.History}
+            />
+            <ReactDisqusThread
+              shortname={config.disqusShortname}
+              identifier={module.ModuleCode}
+              title={`${module.ModuleCode} ${module.ModuleTitle}`}
+              url={`https://nusmods.com/modules/${module.ModuleCode}/reviews`}
+            />
+          </div>
+        }
+      </div>
     );
   }
 }

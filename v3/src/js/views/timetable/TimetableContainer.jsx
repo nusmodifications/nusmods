@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import DocumentTitle from 'react-document-title';
+import Helmet from 'react-helmet';
 import _ from 'lodash';
 import config from 'config';
 
@@ -147,98 +147,99 @@ class TimetableContainer extends Component<Props> {
     const isHorizontalOrientation = this.props.timetableOrientation === HORIZONTAL;
 
     return (
-      <DocumentTitle title={`Timetable - ${config.brandName}`}>
-        <div
-          className={`theme-${this.props.theme} timetable-page-container page-container`}
-          onClick={this.cancelModifyLesson}
-        >
-          <div className="row">
-            <div className={classnames('timetable-wrapper', {
-              'col-md-12': isHorizontalOrientation,
-              'col-md-8': !isHorizontalOrientation,
-            })}
-            >
-              <Timetable
-                lessons={arrangedLessonsWithModifiableFlag}
-                horizontalOrientation={isHorizontalOrientation}
-                onModifyCell={this.modifyCell}
-                ref={(r) => { this.timetableDom = r && r.timetableDom; }}
-              />
-              <br />
+      <div
+        className={`theme-${this.props.theme} timetable-page-container page-container`}
+        onClick={this.cancelModifyLesson}
+      >
+        <Helmet>
+          <title>Timetable - {config.brandName}</title>
+        </Helmet>
+        <div className="row">
+          <div className={classnames('timetable-wrapper', {
+            'col-md-12': isHorizontalOrientation,
+            'col-md-8': !isHorizontalOrientation,
+          })}
+          >
+            <Timetable
+              lessons={arrangedLessonsWithModifiableFlag}
+              horizontalOrientation={isHorizontalOrientation}
+              onModifyCell={this.modifyCell}
+              ref={(r) => { this.timetableDom = r && r.timetableDom; }}
+            />
+            <br />
+          </div>
+          <div className={classnames({
+            'col-md-12': isHorizontalOrientation,
+            'col-md-4': !isHorizontalOrientation,
+          })}
+          >
+            <div className="timetable-action-row text-xs-right">
+              <button
+                type="button"
+                className="btn btn-outline-primary"
+                title={isHorizontalOrientation ? 'Vertical Mode' : 'Horizontal mode'}
+                aria-label={isHorizontalOrientation ? 'Vertical Mode' : 'Horizontal mode'}
+                onClick={this.props.toggleTimetableOrientation}
+              >
+                <i
+                  className={classnames('fa', 'fa-exchange', {
+                    'fa-rotate-90': isHorizontalOrientation,
+                  })}
+                  aria-hidden="true"
+                />
+              </button>
+              <button
+                type="button"
+                title="Download as Image"
+                aria-label="Download as Image"
+                className="btn btn-outline-primary"
+                onClick={() => this.props.downloadAsJpeg(this.timetableDom)}
+              >
+                <i className="fa fa-image" aria-hidden="true" />
+              </button>
+              <button
+                type="button"
+                title="Download as iCal"
+                aria-label="Download as iCal"
+                className="btn btn-outline-primary"
+                onClick={() => this.props.downloadAsIcal(
+                  this.props.semester, this.props.semTimetableWithLessons, this.props.modules)}
+              >
+                <i className="fa fa-calendar" aria-hidden="true" />
+              </button>
             </div>
-            <div className={classnames({
-              'col-md-12': isHorizontalOrientation,
-              'col-md-4': !isHorizontalOrientation,
-            })}
-            >
-              <div className="timetable-action-row text-xs-right">
-                <button
-                  type="button"
-                  className="btn btn-outline-primary"
-                  title={isHorizontalOrientation ? 'Vertical Mode' : 'Horizontal mode'}
-                  aria-label={isHorizontalOrientation ? 'Vertical Mode' : 'Horizontal mode'}
-                  onClick={this.props.toggleTimetableOrientation}
-                >
-                  <i
-                    className={classnames('fa', 'fa-exchange', {
-                      'fa-rotate-90': isHorizontalOrientation,
+            <div className="row">
+              <div className="col-md-12">
+                <ModulesSelect
+                  moduleList={this.props.semModuleList}
+                  onChange={(moduleCode) => {
+                    this.props.addModule(this.props.semester, moduleCode.value);
+                  }}
+                  placeholder="Add module to timetable"
+                />
+                <br />
+                <TimetableModulesTable
+                  modules={
+                    Object.keys(this.props.semTimetableWithLessons).sort((a, b) => {
+                      return a.localeCompare(b);
+                    }).map((moduleCode) => {
+                      const module = this.props.modules[moduleCode] || {};
+                      // Inject color index.
+                      module.colorIndex = this.props.colors[moduleCode];
+                      module.hiddenInTimetable = this.isHiddenInTimetable(moduleCode);
+                      return module;
                     })}
-                    aria-hidden="true"
-                  />
-                </button>
-                <button
-                  type="button"
-                  title="Download as Image"
-                  aria-label="Download as Image"
-                  className="btn btn-outline-primary"
-                  onClick={() => this.props.downloadAsJpeg(this.timetableDom)}
-                >
-                  <i className="fa fa-image" aria-hidden="true" />
-                </button>
-                <button
-                  type="button"
-                  title="Download as iCal"
-                  aria-label="Download as iCal"
-                  className="btn btn-outline-primary"
-                  onClick={() => this.props.downloadAsIcal(
-                    this.props.semester, this.props.semTimetableWithLessons, this.props.modules)}
-                >
-                  <i className="fa fa-calendar" aria-hidden="true" />
-                </button>
-              </div>
-              <div className="row">
-                <div className="col-md-12">
-                  <ModulesSelect
-                    moduleList={this.props.semModuleList}
-                    onChange={(moduleCode) => {
-                      this.props.addModule(this.props.semester, moduleCode.value);
-                    }}
-                    placeholder="Add module to timetable"
-                  />
-                  <br />
-                  <TimetableModulesTable
-                    modules={
-                      Object.keys(this.props.semTimetableWithLessons).sort((a, b) => {
-                        return a.localeCompare(b);
-                      }).map((moduleCode) => {
-                        const module = this.props.modules[moduleCode] || {};
-                        // Inject color index.
-                        module.colorIndex = this.props.colors[moduleCode];
-                        module.hiddenInTimetable = this.isHiddenInTimetable(moduleCode);
-                        return module;
-                      })}
-                    horizontalOrientation={isHorizontalOrientation}
-                    semester={this.props.semester}
-                    onRemoveModule={(moduleCode) => {
-                      this.props.removeModule(this.props.semester, moduleCode);
-                    }}
-                  />
-                </div>
+                  horizontalOrientation={isHorizontalOrientation}
+                  semester={this.props.semester}
+                  onRemoveModule={(moduleCode) => {
+                    this.props.removeModule(this.props.semester, moduleCode);
+                  }}
+                />
               </div>
             </div>
           </div>
         </div>
-      </DocumentTitle>
+      </div>
     );
   }
 }

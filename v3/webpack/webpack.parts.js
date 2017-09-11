@@ -32,7 +32,7 @@ const VENDOR = [
   'ical-generator',
   'raven-js',
   'react',
-  'react-document-title',
+  'react-helmet',
   'react-dom',
   'redux',
   'react-redux',

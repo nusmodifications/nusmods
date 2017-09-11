@@ -2,7 +2,7 @@
 import type { ContextRouter } from 'react-router-dom';
 
 import React, { Component } from 'react';
-import DocumentTitle from 'react-document-title';
+import Helmet from 'react-helmet';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 import update from 'immutability-helper';
@@ -175,56 +175,58 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
     const filteredModules = FilterGroup.apply(modules, this.filterGroups());
 
     return (
-      <DocumentTitle title={`Modules - ${config.brandName}`}>
-        <div className="modules-page-container page-container">
-          <h1 className="page-title">Module Finder</h1>
-          <div className="row">
-            <div className="col-md-8 col-lg-9">
-              {loading ?
-                <LoadingSpinner />
-                :
-                <ModuleFinderList
-                  modules={filteredModules}
-                  page={page}
-                  onPageChange={this.onPageChange}
-                />
-              }
-            </div>
+      <div className="modules-page-container page-container">
+        <Helmet>
+          <title>Modules - {config.brandName}</title>
+        </Helmet>
 
-            <div className="col-md-4 col-lg-3">
-              <div className="module-filters">
-                <header>
-                  <h3>Refine by</h3>
-                </header>
+        <h1 className="page-title">Module Finder</h1>
+        <div className="row">
+          <div className="col-md-8 col-lg-9">
+            {loading ?
+              <LoadingSpinner />
+              :
+              <ModuleFinderList
+                modules={filteredModules}
+                page={page}
+                onPageChange={this.onPageChange}
+              />
+            }
+          </div>
 
-                <ChecklistFilters
-                  group={groups[LEVELS]}
-                  modules={modules}
-                  onFilterChange={this.onFilterChange}
-                />
+          <div className="col-md-4 col-lg-3">
+            <div className="module-filters">
+              <header>
+                <h3>Refine by</h3>
+              </header>
 
-                <ChecklistFilters
-                  group={groups[MODULE_CREDITS]}
-                  modules={modules}
-                  onFilterChange={this.onFilterChange}
-                />
+              <ChecklistFilters
+                group={groups[LEVELS]}
+                modules={modules}
+                onFilterChange={this.onFilterChange}
+              />
 
-                <TimeslotFilters
-                  group={groups[LECTURE_TIMESLOTS]}
-                  modules={modules}
-                  onFilterChange={this.onFilterChange}
-                />
+              <ChecklistFilters
+                group={groups[MODULE_CREDITS]}
+                modules={modules}
+                onFilterChange={this.onFilterChange}
+              />
 
-                <TimeslotFilters
-                  group={groups[TUTORIAL_TIMESLOTS]}
-                  modules={modules}
-                  onFilterChange={this.onFilterChange}
-                />
-              </div>
+              <TimeslotFilters
+                group={groups[LECTURE_TIMESLOTS]}
+                modules={modules}
+                onFilterChange={this.onFilterChange}
+              />
+
+              <TimeslotFilters
+                group={groups[TUTORIAL_TIMESLOTS]}
+                modules={modules}
+                onFilterChange={this.onFilterChange}
+              />
             </div>
           </div>
         </div>
-      </DocumentTitle>
+      </div>
     );
   }
 }
