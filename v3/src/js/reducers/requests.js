@@ -33,7 +33,7 @@ export default function requests(state: Requests = {}, action: FSA): Requests {
 
     case RESET_REQUEST_STATE: {
       const newState: Requests = {};
-      _.each(action.payload, (domain) => {
+      action.payload.forEach((domain) => {
         newState[getRequestName(domain)] = NULL_FETCH_REQUEST;
       });
 
@@ -59,7 +59,7 @@ export default function requests(state: Requests = {}, action: FSA): Requests {
       return {
         ...state,
         [getRequestName(type)]: {
-          NULL_FETCH_REQUEST,
+          ...NULL_FETCH_REQUEST,
           isSuccessful: true,
         },
       };
@@ -67,7 +67,7 @@ export default function requests(state: Requests = {}, action: FSA): Requests {
     case FAILURE:
       return _.merge({}, state, {
         [getRequestName(type)]: {
-          NULL_FETCH_REQUEST,
+          ...NULL_FETCH_REQUEST,
           isFailure: true,
         },
       });

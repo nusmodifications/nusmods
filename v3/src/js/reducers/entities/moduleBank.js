@@ -33,27 +33,30 @@ const defaultModuleBankState: ModuleBank = {
   moduleCodes: new Set(),
 };
 
+function precomputeFromModuleList(moduleList: ModuleList) {
+  // Cache a Set of all module codes for fast module existence checking
+  const moduleCodes = new Set();
+  moduleList.forEach((module: ModuleCondensed) => moduleCodes.add(module.ModuleCode));
+
+  // Precompute this in reducer because putting this inside render is very expensive (5k modules!)
+  const moduleSelectList = moduleList.map((module: ModuleCondensed) => ({
+    semesters: module.Semesters,
+    value: module.ModuleCode,
+    label: `${module.ModuleCode} ${module.ModuleTitle}`,
+  }));
+
+  return { moduleCodes, moduleSelectList };
+}
+
 function moduleBank(state: ModuleBank = defaultModuleBankState, action: FSA): ModuleBank {
   switch (action.type) {
-    case FETCH_MODULE_LIST + RequestResultCases.SUCCESS: {
-      // Cache a Set of all module codes for linking
-      const moduleCodes = new Set();
-      action.payload.forEach((module: ModuleCondensed) => moduleCodes.add(module.ModuleCode));
-
-      // Precompute this in reducer because putting this inside render is very expensive (5k modules!)
-      const moduleSelectList = action.payload.map((module: ModuleCondensed) => ({
-        semesters: module.Semesters,
-        value: module.ModuleCode,
-        label: `${module.ModuleCode} ${module.ModuleTitle}`,
-      }));
-
+    case FETCH_MODULE_LIST + RequestResultCases.SUCCESS:
       return {
         ...state,
-        moduleSelectList,
-        moduleCodes,
+        ...precomputeFromModuleList(action.payload),
         moduleList: action.payload,
       };
-    }
+
     case FETCH_MODULE + RequestResultCases.SUCCESS:
       return {
         ...state,
@@ -64,15 +67,23 @@ function moduleBank(state: ModuleBank = defaultModuleBankState, action: FSA): Mo
       };
 
     default:
+      // FIXME: HACK - Temporary solution to not having a specific dehydration action
+      if (!state.moduleCodes && state.moduleList) {
+        return {
+          ...state,
+          ...precomputeFromModuleList(state.moduleList),
+        };
+      }
+
       return state;
   }
 }
 
-export function getSemModuleSelectList(state: ModuleBank, semester: Semester,
-  semTimetableConfig: SemTimetableConfig): Array<ModuleSelectListItem> {
-  if (!state.moduleSelectList) {
-    return [];
-  }
+export function getSemModuleSelectList(
+  state: ModuleBank,
+  semester: Semester,
+  semTimetableConfig: SemTimetableConfig,
+): ModuleSelectListItem[] {
   return state.moduleSelectList.filter((item: ModuleSelectListItem): boolean => {
     // In specified semester and not within the timetable.
     return _.includes(item.semesters, semester) && !semTimetableConfig[item.value];
