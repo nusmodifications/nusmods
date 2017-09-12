@@ -65,12 +65,18 @@ class ModulePageContentComponent extends Component<Props> {
                 {ModuleTitle}
               </h1>
 
-              <p>{ join([
-                <a key="department">{module.Department}</a>,
-                <a key="mc">{module.ModuleCredit} MCs</a>,
-                ...this.semestersOffered().map(semester =>
-                  <a key={semester}>{ config.semesterNames[semester] }</a>),
-              ]) }</p>
+              <p>
+                {join([
+                  <a key="department">{module.Department}</a>,
+                  <a key="mc">{module.ModuleCredit} MCs</a>,
+                ])}
+              </p>
+
+              <p>
+                {join(this.semestersOffered().map(semester => (
+                  <a key={semester}>{ config.semesterNames[semester] }</a>
+                )))}
+              </p>
             </header>
           </div>
 
@@ -104,6 +110,13 @@ class ModulePageContentComponent extends Component<Props> {
               </div>
 
               <div className="col-sm-3 col-lg-4 module-page-sidebar">
+                {this.examinations().map(exam => (
+                  <div key={`exam-${exam.semester}`}>
+                    <h3>{config.semesterNames[exam.semester]} Exam</h3>
+                    <p>{formatExamDate(exam.date)}</p>
+                  </div>
+                ))}
+
                 <div>
                   {this.semestersOffered().map(
                     semester => (
@@ -126,13 +139,6 @@ class ModulePageContentComponent extends Component<Props> {
                     ),
                   )}
                 </div>
-
-                {this.examinations().map(exam => (
-                  <div key={`exam-${exam.semester}`}>
-                    <h3>{config.semesterNames[exam.semester]} Exam</h3>
-                    <p>{formatExamDate(exam.date)}</p>
-                  </div>
-                ))}
 
                 <div>
                   <h3>Official Links</h3>

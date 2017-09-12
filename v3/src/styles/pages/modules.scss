@@ -1,7 +1,12 @@
 .module-container {
   header {
+    padding-bottom: 1rem;
     margin: 1rem 0 2rem;
     border-bottom: 1px solid $gray-lighter;
+
+    p {
+      margin-bottom: 0;
+    }
   }
 
   .page-title {
@@ -26,6 +31,7 @@
   }
 
   h3 {
+    margin-bottom: 0;
     font-weight: bold;
     font-size: 1rem;
   }
