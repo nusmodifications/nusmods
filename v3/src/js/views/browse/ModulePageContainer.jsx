@@ -6,7 +6,8 @@ import { withRouter } from 'react-router-dom';
 import type { FetchRequest } from 'types/reducers';
 import type { Module, ModuleCode } from 'types/modules';
 
-import { loadModule } from 'actions/moduleBank';
+import { loadModule, FETCH_MODULE } from 'actions/moduleBank';
+import { getRequestName } from 'reducers/requests';
 import NotFoundPage from 'views/NotFoundPage';
 import LoadingSpinner from 'views/LoadingSpinner';
 
@@ -14,7 +15,7 @@ type Props = {
   moduleCode: ModuleCode,
   loadModule: (ModuleCode) => void,
   module: ?Module,
-  fetchModuleRequest: ?FetchRequest,
+  request: ?FetchRequest,
 };
 
 type State = {
@@ -59,13 +60,13 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
 
   render() {
     const { ModulePageContent } = this.state;
-    const { module, fetchModuleRequest, moduleCode } = this.props;
+    const { module, request, moduleCode } = this.props;
 
     if (module && ModulePageContent) {
       return <ModulePageContent moduleCode={moduleCode} />;
     }
 
-    if (fetchModuleRequest && fetchModuleRequest.isFailure) {
+    if (request && request.isFailure) {
       return <NotFoundPage />;
     }
 
@@ -75,11 +76,12 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
 
 const mapStateToProps = (state, ownState) => {
   const moduleCode = ownState.match.params.moduleCode;
+  const requestName = getRequestName(FETCH_MODULE);
 
   return {
     moduleCode,
     module: state.entities.moduleBank.modules[moduleCode],
-    fetchModuleRequest: state.requests.fetchModuleRequest || {},
+    request: state.requests[requestName],
   };
 };
 
