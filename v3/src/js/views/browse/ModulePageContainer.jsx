@@ -13,9 +13,10 @@ import LoadingSpinner from 'views/LoadingSpinner';
 
 type Props = {
   moduleCode: ModuleCode,
-  loadModule: (ModuleCode) => void,
+  moduleCodes: Set<ModuleCode>,
   module: ?Module,
   request: ?FetchRequest,
+  loadModule: (ModuleCode) => void,
 };
 
 type State = {
@@ -26,16 +27,16 @@ type State = {
  * Wrapper component that loads both module data and the module page component
  * simultaneously, and displays the correct component depending on the state.
  *
- * - Module data is loaded when the the data exists in the module bank
+ * - Module data is considered to be loaded when the the data exists in
+ *   the module bank
  * - Component is loaded when the dynamic import() Promise resolves
  *
- * We then dispatch the correct component based on the status
+ * We then render the correct component based on the status
  *
+ * - Not found: moduleCode not in module list (this is checked synchronously)
+ * - Error: Either requests failed
  * - Loading: Either requests are pending
- * - Not found: fetchModuleRequest failed with 404
  * - Loaded: Both requests are successfully loaded
- * TODO: Implement this last state
- * - Error: Either request did not complete, and fetchModuleRequest did not fail with 404
  */
 export class ModulePageContainerComponent extends PureComponent<Props, State> {
   props: Props;
@@ -45,29 +46,44 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
   };
 
   componentWillMount() {
-    this.props.loadModule(this.props.moduleCode);
+    this.loadModule(this.props.moduleCode);
 
     import('views/browse/ModulePageContent')
-    // TODO: Error handling
+      // TODO: Error handling
       .then(module => this.setState({ ModulePageContent: module.default }));
   }
 
   componentWillReceiveProps(nextProps: Props) {
     if (nextProps.moduleCode !== this.props.moduleCode) {
-      this.props.loadModule(nextProps.moduleCode);
+      this.loadModule(nextProps.moduleCode);
     }
+  }
+
+  loadModule(moduleCode: ModuleCode) {
+    if (!this.doesModuleExist(moduleCode)) {
+      this.props.loadModule(moduleCode);
+    }
+  }
+
+  doesModuleExist(moduleCode: ModuleCode) {
+    return this.props.moduleCodes.has(moduleCode);
   }
 
   render() {
     const { ModulePageContent } = this.state;
     const { module, request, moduleCode } = this.props;
 
-    if (module && ModulePageContent) {
-      return <ModulePageContent moduleCode={moduleCode} />;
+    if (!this.doesModuleExist(moduleCode)) {
+      return <NotFoundPage />;
     }
 
     if (request && request.isFailure) {
+      // TODO: Display a proper error page here
       return <NotFoundPage />;
+    }
+
+    if (module && ModulePageContent) {
+      return <ModulePageContent moduleCode={moduleCode} />;
     }
 
     return <LoadingSpinner />;
@@ -80,6 +96,7 @@ const mapStateToProps = (state, ownState) => {
 
   return {
     moduleCode,
+    moduleCodes: state.entities.moduleBank.moduleCodes,
     module: state.entities.moduleBank.modules[moduleCode],
     request: state.requests[requestName],
   };
