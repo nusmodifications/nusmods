@@ -7,7 +7,6 @@ import type { Module } from 'types/modules';
 import { modulePagePath } from 'utils/modules';
 import ModuleSemesterInfo from './module-info/ModuleSemesterInfo';
 import ModuleWorkload from './module-info/ModuleWorkload';
-import ModuleDescription from './module-info/ModuleDescription';
 import LinkModuleCodes from './LinkModuleCodes';
 
 type Props = {
@@ -35,9 +34,7 @@ export default class ModuleFinderItem extends PureComponent<Props> {
                 <a>{module.ModuleCredit} MCs</a>
               </p>
             </header>
-            {module.ModuleDescription && <p>
-              <ModuleDescription>{module.ModuleDescription}</ModuleDescription>
-            </p>}
+            {module.ModuleDescription && <p>{module.ModuleDescription}</p>}
             <dl>
               {module.Preclusion && ([
                 <dt key="preclusions-dt">Preclusions</dt>,

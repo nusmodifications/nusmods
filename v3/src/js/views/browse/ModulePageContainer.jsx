@@ -15,7 +15,6 @@ import { addModule, removeModule } from 'actions/timetables';
 import { formatExamDate } from 'utils/modules';
 import { join } from 'utils/react';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
-import ModuleDescription from 'views/components/module-info/ModuleDescription';
 
 import CorsBiddingStatsTableControl from './CorsBiddingStatsTableControl';
 import LessonTimetableControl from './LessonTimetableControl';
@@ -107,9 +106,7 @@ class ModulePageContainer extends Component<Props> {
             <div className="col-xl-9">
               <div className="row">
                 <div className="col-sm-9 col-lg-8">
-                  { module.ModuleDescription && <p>
-                    <ModuleDescription>{module.ModuleDescription}</ModuleDescription>
-                  </p> }
+                  { module.ModuleDescription && <p>{module.ModuleDescription}</p> }
 
                   <dl>
                     {module.Prerequisite && [
