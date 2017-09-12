@@ -1,64 +1,77 @@
 // @flow
-import type { FetchRequest } from 'types/reducers';
-
 import _ from 'lodash';
 
-import * as helperActions from 'actions/helpers';
-import * as requestResultCases from 'middlewares/requests-middleware';
+import type { FSA } from 'types/redux';
+import type { Requests, RequestType, FetchRequest } from 'types/reducers';
+
+import { RESET_ALL_STATE, RESET_REQUEST_STATE } from 'actions/helpers';
+import { REQUEST, SUCCESS, FAILURE } from 'middlewares/requests-middleware';
+
+const NULL_FETCH_REQUEST: FetchRequest = {
+  isPending: false,
+  isSuccessful: false,
+  isFailure: false,
+};
 
 const requestState = 'Request';
 
-export default function requests(state: Object = {}, action: Object): FetchRequest {
-  const { type, requestStatus } = action;
+export function getRequestName(type: string): RequestType {
+  const normalizedType = type
+    .replace(REQUEST, '')
+    .replace(SUCCESS, '')
+    .replace(FAILURE, '');
 
-  if (type === helperActions.RESET_ALL_STATE) {
-    return {};
-  }
+  return _.camelCase(normalizedType) + requestState;
+}
 
-  // Reset request state
-  if (type === helperActions.RESET_REQUEST_STATE) {
-    const newState = {};
-    _.each(action.payload, (domain) => {
-      newState[_.camelCase(domain) + requestState] = {
-        isPending: false,
-        isSuccessful: false,
-        isFailure: false,
-      };
-    });
+export default function requests(state: Requests = {}, action: FSA): Requests {
+  const { type, meta } = action;
 
-    return _.merge({}, state, newState);
+  switch (type) {
+    case RESET_ALL_STATE:
+      return {};
+
+    case RESET_REQUEST_STATE: {
+      const newState: Requests = {};
+      _.each(action.payload, (domain) => {
+        newState[getRequestName(domain)] = NULL_FETCH_REQUEST;
+      });
+
+      return { ...state, ...newState };
+    }
+
+    default: // Fallthrough
   }
 
   // requestStatus is a field specially designed and owned by api request actions
-  let domain = '';
-  switch (requestStatus) {
-    case requestResultCases.REQUEST:
-      domain = _.camelCase(type.replace(requestResultCases.REQUEST, ''));
-      return _.merge({}, state, {
-        [domain + requestState]: {
+  if (!meta || !meta.requestStatus) return state;
+  switch (meta.requestStatus) {
+    case REQUEST:
+      return {
+        ...state,
+        [getRequestName(type)]: {
+          ...NULL_FETCH_REQUEST,
           isPending: true,
-          isSuccessful: false,
-          isFailure: false,
         },
-      });
-    case requestResultCases.SUCCESS:
-      domain = _.camelCase(type.replace(requestResultCases.SUCCESS, ''));
-      return _.merge({}, state, {
-        [domain + requestState]: {
-          isPending: false,
+      };
+
+    case SUCCESS:
+      return {
+        ...state,
+        [getRequestName(type)]: {
+          NULL_FETCH_REQUEST,
           isSuccessful: true,
-          isFailure: false,
         },
-      });
-    case requestResultCases.FAILURE:
-      domain = _.camelCase(type.replace(requestResultCases.FAILURE, ''));
+      };
+
+    case FAILURE:
       return _.merge({}, state, {
-        [domain + requestState]: {
-          isPending: false,
-          isSuccessful: false,
+        [getRequestName(type)]: {
+          NULL_FETCH_REQUEST,
           isFailure: true,
         },
       });
+
     default:
       return state;
   }

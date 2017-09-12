@@ -13,11 +13,15 @@ export type AppState = {
 };
 
 /* requests.js */
+export type RequestType = string;
+
 export type FetchRequest = {
-  isPending?: boolean,
-  isSuccessful?: boolean,
-  isFailure?: boolean,
+  isPending: boolean,
+  isSuccessful: boolean,
+  isFailure: boolean,
 };
+
+export type Requests = { [RequestType]: FetchRequest };
 
 /* theme.js */
 export type ColorIndex = number;
