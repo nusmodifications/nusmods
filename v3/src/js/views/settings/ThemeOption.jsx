@@ -15,25 +15,22 @@ type Props = {
 };
 
 function ThemeOption(props: Props) {
+  const { theme, isSelected, onSelectTheme } = props;
+
   return (
     <div
-      className={classnames('theme-option', {
-        [`theme-${props.theme.id}`]: true,
-        'is-selected': props.isSelected,
+      className={classnames('theme-option', `theme-${theme.id}`, {
+        'is-selected': isSelected,
       })}
-      onClick={() => {
-        props.onSelectTheme(props.theme.id);
-      }}
+      onClick={() => onSelectTheme(theme.id)}
     >
       <div>
-        <small>{props.theme.name}</small>
+        <small>{theme.name}</small>
       </div>
       <ul className="list-unstyled theme-color-list">
-        {_.range(NUM_DIFFERENT_COLORS).map((index) => {
-          return (
-            <li key={index} className={`theme-color-item color-${index}`} />
-          );
-        })}
+        {_.range(NUM_DIFFERENT_COLORS).map(index => (
+          <li key={index} className={`theme-color-item color-${index}`} />
+        ))}
       </ul>
     </div>
   );

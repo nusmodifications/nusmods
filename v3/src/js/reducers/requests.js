@@ -1,5 +1,5 @@
 // @flow
-import _ from 'lodash';
+import { camelCase } from 'lodash';
 
 import type { FSA } from 'types/redux';
 import type { Requests, RequestType, FetchRequest } from 'types/reducers';
@@ -21,7 +21,7 @@ export function getRequestName(type: string): RequestType {
     .replace(SUCCESS, '')
     .replace(FAILURE, '');
 
-  return _.camelCase(normalizedType) + requestState;
+  return camelCase(normalizedType) + requestState;
 }
 
 export default function requests(state: Requests = {}, action: FSA): Requests {
@@ -65,12 +65,13 @@ export default function requests(state: Requests = {}, action: FSA): Requests {
       };
 
     case FAILURE:
-      return _.merge({}, state, {
+      return {
+        ...state,
         [getRequestName(type)]: {
           ...NULL_FETCH_REQUEST,
           isFailure: true,
         },
-      });
+      };
 
     default:
       return state;

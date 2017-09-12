@@ -115,13 +115,11 @@ export class AppShell extends Component<Props> {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    moduleList: state.entities.moduleBank.moduleList,
-    moduleSelectList: state.entities.moduleBank.moduleSelectList,
-    timetables: state.timetables,
-  };
-}
+const mapStateToProps = state => ({
+  moduleList: state.entities.moduleBank.moduleList,
+  moduleSelectList: state.entities.moduleBank.moduleSelectList,
+  timetables: state.timetables,
+});
 
 export default withRouter(
   connect(mapStateToProps, {
