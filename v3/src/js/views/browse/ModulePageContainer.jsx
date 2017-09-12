@@ -60,7 +60,7 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
   }
 
   loadModule(moduleCode: ModuleCode) {
-    if (!this.doesModuleExist(moduleCode)) {
+    if (this.doesModuleExist(moduleCode)) {
       this.props.loadModule(moduleCode);
     }
   }

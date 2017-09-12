@@ -16,7 +16,7 @@ import { flatMap } from 'lodash';
  * @param replacement
  * @returns {Node}
  */
-export function replace( // eslint-disable-line import/prefer-default-export
+export function replace(
   str: string,
   regex: RegExp,
   replacement: (match: string, index: number) => Node,
@@ -37,7 +37,9 @@ export function replace( // eslint-disable-line import/prefer-default-export
 }
 
 /**
- * Returns the given
+ * Returns the given array of React nodes joined by a glue string. This
+ * allows eg. inline lists to be created where links are separated by
+ * dots.
  *
  * @param {Node[]} nodes
  * @param {string} glue
@@ -48,8 +50,12 @@ export function join(nodes: Node[], glue: string = ' • '): Node {
 }
 
 /**
- * Replaces all spaces in a string with U+00A0 non-breaking spaces
- * @param text
+ * Replaces all spaces in a string with U+00A0 non-breaking spaces. This
+ * avoids the browser inserting a page break between text that are part
+ * of the same logical unit in the UI, such as 'Semester 1' or 'Week 13'.
+ * Avoid using this for content.
+ *
+ * @param {string} text
  * @returns {string}
  */
 export function noBreak(text: string): string {

@@ -29,9 +29,11 @@ function SettingsContainer(props: Props) {
       <Helmet>
         <title>Settings - {config.brandName}</title>
       </Helmet>
+
       <div className="row">
         <div className="col-lg-8 offset-lg-1">
           <h1 className="page-title">Settings</h1>
+
           <h4>New Student</h4>
           <div className="row">
             <div className="col-sm-7 col-xs-7">
@@ -46,6 +48,7 @@ function SettingsContainer(props: Props) {
             </div>
           </div>
           <hr />
+
           <h4>Faculty</h4>
           <div className="row">
             <div className="col-sm-7">
@@ -57,19 +60,18 @@ function SettingsContainer(props: Props) {
             </div>
           </div>
           <hr />
+
           <h4>Theme</h4>
           <div>
-            {availableThemes.map((theme) => {
-              return (
-                <div className="theme-option-container"key={theme.id}>
-                  <ThemeOption
-                    theme={theme}
-                    isSelected={props.currentThemeId === theme.id}
-                    onSelectTheme={props.selectTheme}
-                  />
-                </div>
-              );
-            })}
+            {availableThemes.map(theme => (
+              <div className="theme-option-container" key={theme.id}>
+                <ThemeOption
+                  theme={theme}
+                  isSelected={props.currentThemeId === theme.id}
+                  onSelectTheme={props.selectTheme}
+                />
+              </div>
+            ))}
           </div>
         </div>
       </div>
