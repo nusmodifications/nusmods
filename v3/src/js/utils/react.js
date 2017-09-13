@@ -2,7 +2,9 @@
 
 import type { Node } from 'react';
 
-import { flatMap } from 'lodash';
+// Define some useful Unicode characters as constants
+export const NBSP = '\u00a0';
+export const BULLET = ' • ';
 
 /**
  * Replace substring matching the provided regex with React nodes. This is
@@ -16,7 +18,7 @@ import { flatMap } from 'lodash';
  * @param replacement
  * @returns {Node}
  */
-export function replace(
+export function replaceWithNode(
   str: string,
   regex: RegExp,
   replacement: (match: string, index: number) => Node,
@@ -37,19 +39,6 @@ export function replace(
 }
 
 /**
- * Returns the given array of React nodes joined by a glue string. This
- * allows eg. inline lists to be created where links are separated by
- * dots.
- *
- * @param {Node[]} nodes
- * @param {string} glue
- * @returns {Node}
- */
-export function join(nodes: Node[], glue: string = ' • '): Node {
-  return flatMap(nodes, (node): Node => [node, glue]).slice(0, -1);
-}
-
-/**
  * Replaces all spaces in a string with U+00A0 non-breaking spaces. This
  * avoids the browser inserting a page break between text that are part
  * of the same logical unit in the UI, such as 'Semester 1' or 'Week 13'.
@@ -59,5 +48,5 @@ export function join(nodes: Node[], glue: string = ' • '): Node {
  * @returns {string}
  */
 export function noBreak(text: string): string {
-  return text.replace(/ /g, '\u00a0');
+  return text.replace(/ /g, NBSP);
 }

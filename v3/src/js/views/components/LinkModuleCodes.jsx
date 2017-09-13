@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import type { ModuleCode } from 'types/modules';
 
 import { modulePagePath } from 'utils/modules';
-import { replace } from 'utils/react';
+import { replaceWithNode } from 'utils/react';
 
 type Props = {
   children: string,
@@ -24,7 +24,7 @@ const MODULE_CODE_REGEX = /\b(\w{2,3}\s*\d{4}\w{0,2})\b/g;
 export function LinkModuleCodesComponent(props: Props) {
   const { children, moduleCodes } = props;
 
-  return (<span>{replace(children, MODULE_CODE_REGEX, (part, i) => {
+  return (<span>{replaceWithNode(children, MODULE_CODE_REGEX, (part, i) => {
     const code = part.replace(/\s*/g, '');
     if (!moduleCodes.has(code)) return part;
     return <Link to={modulePagePath(code)} key={i}>{part}</Link>;

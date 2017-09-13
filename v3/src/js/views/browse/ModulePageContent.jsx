@@ -10,7 +10,8 @@ import type { TimetableConfig } from 'types/timetables';
 import config from 'config';
 import { addModule, removeModule } from 'actions/timetables';
 import { formatExamDate } from 'utils/modules';
-import { join } from 'utils/react';
+import { intersperse } from 'utils/array';
+import { BULLET } from 'utils/react';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
 
 import CorsBiddingStatsTableControl from './CorsBiddingStatsTableControl';
@@ -66,16 +67,16 @@ class ModulePageContentComponent extends Component<Props> {
               </h1>
 
               <p>
-                {join([
+                {intersperse([
                   <a key="department">{module.Department}</a>,
                   <a key="mc">{module.ModuleCredit} MCs</a>,
-                ])}
+                ], BULLET)}
               </p>
 
               <p>
-                {join(this.semestersOffered().map(semester => (
+                {intersperse(this.semestersOffered().map(semester => (
                   <a key={semester}>{ config.semesterNames[semester] }</a>
-                )))}
+                )), BULLET)}
               </p>
             </header>
           </div>
@@ -142,10 +143,10 @@ class ModulePageContentComponent extends Component<Props> {
 
                 <div>
                   <h3>Official Links</h3>
-                  { join([
+                  {intersperse([
                     <a key="ivle" href={config.ivleUrl.replace('<ModuleCode>', ModuleCode)}>IVLE</a>,
                     <a key="cors" href={config.corsUrl + ModuleCode}>CORS</a>,
-                  ]) }
+                  ], BULLET)}
                 </div>
               </div>
             </div>
