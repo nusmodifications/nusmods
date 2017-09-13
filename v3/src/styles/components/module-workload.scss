@@ -1,0 +1,24 @@
+.module-workload {
+  display: flex;
+  flex-wrap: wrap;
+
+  .module-workload-component {
+    overflow: hidden;
+  }
+
+  .module-workload-label {
+    font-weight: bold;
+    font-size: $font-size-xs;
+  }
+
+  .module-workload-blocks {
+    display: flex;
+    margin-bottom: 1px;
+
+    div {
+      flex: 1 auto;
+      height: 30px;
+      margin-right: 1px;
+    }
+  }
+}
