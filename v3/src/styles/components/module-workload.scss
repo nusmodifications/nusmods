@@ -1,24 +1,44 @@
-.module-workload {
-  display: flex;
-  flex-wrap: wrap;
+.module-workload-container {
+  h4 {
+    margin-bottom: 0.4rem;
+  }
+
+  .module-workload-fallback {
+    font-size: $font-size-sm;
+  }
+
+  .module-workload {
+    display: flex;
+    flex-wrap: wrap;
+  }
 
   .module-workload-component {
+    margin-bottom: 0.4rem;
+    // Avoid label from overflowing when they are too long
     overflow: hidden;
   }
 
-  .module-workload-label {
+  h5 {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 0 0.1rem;
     font-weight: bold;
     font-size: $font-size-xs;
+
+    abbr {
+      text-decoration: none;
+      border-bottom: 0;
+    }
   }
 
   .module-workload-blocks {
     display: flex;
-    margin-bottom: 1px;
+    flex-wrap: wrap;
 
     div {
-      flex: 1 auto;
-      height: 30px;
-      margin-right: 1px;
+      height: 2rem; // Also update ModuleWorkload.jsx if this is updated
+      margin: 0 0 1px;
+      border-right: 1px solid $body-bg;
     }
   }
 }
