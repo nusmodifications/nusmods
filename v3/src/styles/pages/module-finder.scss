@@ -52,7 +52,7 @@
   .module-filters-timeslot {
     margin-bottom: 1rem;
 
-    th {
+    th:not(.module-timeslot-hover) {
       color: $gray-light;
     }
 
