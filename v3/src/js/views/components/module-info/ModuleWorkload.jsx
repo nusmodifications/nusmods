@@ -72,7 +72,8 @@ function workloadBlocks(component: WorkloadComponent, hours: number): Node {
 
 function sortWorkload(workload: { [WorkloadComponent]: number }): Array<[WorkloadComponent, number]> {
   // Push longer components (those that take up more than one row) down
-  const components = _.entries(workload);
+  // $FlowFixMe: lodash libdef incorrectly marks the return type of _.entries as any[][]
+  const components: Array<[WorkloadComponent, number]> = _.entries(workload);
   const [long, short] = _.partition(components, ([, hours]) => Math.ceil(hours) > ROW_MAX);
   return short.concat(long);
 }
