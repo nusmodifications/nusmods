@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import type { ModuleCode } from 'types/modules';
 
 import { modulePagePath } from 'utils/modules';
+import { replaceWithNode } from 'utils/react';
 
 type Props = {
   children: string,
@@ -23,23 +24,11 @@ const MODULE_CODE_REGEX = /\b(\w{2,3}\s*\d{4}\w{0,2})\b/g;
 export function LinkModuleCodesComponent(props: Props) {
   const { children, moduleCodes } = props;
 
-  const parts = children.split(MODULE_CODE_REGEX);
-
-  // We want to ensure the resulting array always has ModuleCode at even position
-  // eg. ['Some text ', 'CS1010S', ' more text ', 'CS3216', 'more text']
-  // This allows us to replace the even position elements with <Link> components.
-  // However, if the string starts with a module code, then the first element will be a module
-  // so we add in an empty string to pad module codes to even positions
-  if (parts.length && MODULE_CODE_REGEX.test(parts[0])) parts.unshift('');
-
-  return (
-    <span>{parts.map((part, i) => {
-      if (i % 2 === 0) return part;
-      const code = part.replace(/\s*/g, '');
-      if (!moduleCodes.has(code)) return part;
-      return <Link to={modulePagePath(code)} key={i}>{part}</Link>;
-    })}</span>
-  );
+  return (<span>{replaceWithNode(children, MODULE_CODE_REGEX, (part, i) => {
+    const code = part.replace(/\s*/g, '');
+    if (!moduleCodes.has(code)) return part;
+    return <Link to={modulePagePath(code)} key={i}>{part}</Link>;
+  })}</span>);
 }
 
 export default connect(state => ({

@@ -29,9 +29,9 @@ export default class LessonTimetableControl extends Component<Props, State> {
     this.onSelectSem = this.onSelectSem.bind(this);
   }
 
-  onSelectSem(selectedSem: string): void {
+  onSelectSem = (selectedSem: string) => {
     this.setState({ selectedSem });
-  }
+  };
 
   render() {
     const {

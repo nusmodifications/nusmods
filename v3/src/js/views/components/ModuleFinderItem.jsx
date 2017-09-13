@@ -34,7 +34,7 @@ export default class ModuleFinderItem extends PureComponent<Props> {
                 <a>{module.ModuleCredit} MCs</a>
               </p>
             </header>
-            <p>{module.ModuleDescription}</p>
+            {module.ModuleDescription && <p>{module.ModuleDescription}</p>}
             <dl>
               {module.Preclusion && ([
                 <dt key="preclusions-dt">Preclusions</dt>,

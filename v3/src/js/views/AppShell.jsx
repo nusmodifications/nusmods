@@ -6,24 +6,24 @@ import { NavLink, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import NUSModerator from 'nusmoderator';
 
-import type { TimetableConfig, SemTimetableConfig } from 'types/timetables';
-import type { FetchRequest, ModuleList, ModuleSelectList } from 'types/reducers';
+import type { TimetableConfig } from 'types/timetables';
+import type { ModuleList, ModuleSelectList } from 'types/reducers';
+import type { ModuleCode } from 'types/modules';
 
 import config from 'config';
 import { fetchModuleList, loadModule } from 'actions/moduleBank';
-
-import Routes from 'views/Routes';
+import { noBreak } from 'utils/react';
 import ModulesSelect from 'views/components/ModulesSelect';
 import Footer from 'views/layout/Footer';
+import LoadingSpinner from './LoadingSpinner';
 
 type Props = {
   children: Node,
-  loadModule: Function,
-  fetchModuleList: Function,
+  loadModule: (ModuleCode) => void,
+  fetchModuleList: () => void,
   moduleList: ModuleList,
   moduleSelectList: ModuleSelectList,
   timetables: TimetableConfig,
-  fetchModuleListRequest: FetchRequest,
 };
 
 // Put outside render because this only needs to computed on page load.
@@ -33,17 +33,17 @@ const weekText = (() => {
 
   // Check for null value (ie. during vacation)
   if (acadWeekInfo.sem) {
-    parts.push(acadWeekInfo.sem);
+    parts.push(noBreak(acadWeekInfo.sem));
   }
 
   // Hide semester if semester type is 'Instructional'
   if (acadWeekInfo.type !== 'Instructional') {
-    parts.push(`${acadWeekInfo.type} Week`);
+    parts.push(noBreak(`${acadWeekInfo.type} Week`));
   }
 
   // Do not show the week number if there is only one week, eg. recess
   if (acadWeekInfo.num > 0) {
-    parts.push(`Week ${acadWeekInfo.num}`);
+    parts.push(noBreak(`Week ${acadWeekInfo.num}`));
   }
 
   return parts.join(', ');
@@ -52,9 +52,12 @@ const weekText = (() => {
 export class AppShell extends Component<Props> {
   props: Props;
 
-  componentDidMount() {
+  componentWillMount() {
+    // TODO: This always refetch the entire modules list. Consider a better strategy for this
     this.props.fetchModuleList();
-    const semesterTimetable: SemTimetableConfig = this.props.timetables[config.semester];
+
+    const semesterTimetable = this.props.timetables[config.semester];
+
     if (semesterTimetable) {
       Object.keys(semesterTimetable).forEach((moduleCode) => {
         // TODO: Handle failed loading of module.
@@ -64,8 +67,8 @@ export class AppShell extends Component<Props> {
   }
 
   render() {
-    const isModuleListLoading = this.props.fetchModuleListRequest.isPending && !this.props.moduleList.length;
-    const isModuleListReady = this.props.fetchModuleListRequest.isSuccessful || this.props.moduleList.length;
+    // TODO: Handle failed loading of module list
+    const isModuleListReady = this.props.moduleList.length;
 
     return (
       <div className="app-container">
@@ -102,10 +105,7 @@ export class AppShell extends Component<Props> {
           </nav>
 
           <main className="main-content">
-            {isModuleListLoading && <p>Loading...</p>}
-
-            {isModuleListReady && this.props.children}
-            <Routes />
+            {isModuleListReady ? this.props.children : <LoadingSpinner />}
           </main>
         </div>
 
@@ -115,14 +115,11 @@ export class AppShell extends Component<Props> {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    moduleList: state.entities.moduleBank.moduleList,
-    moduleSelectList: state.entities.moduleBank.moduleSelectList,
-    timetables: state.timetables,
-    fetchModuleListRequest: state.requests.fetchModuleListRequest || {},
-  };
-}
+const mapStateToProps = state => ({
+  moduleList: state.entities.moduleBank.moduleList,
+  moduleSelectList: state.entities.moduleBank.moduleSelectList,
+  timetables: state.timetables,
+});
 
 export default withRouter(
   connect(mapStateToProps, {

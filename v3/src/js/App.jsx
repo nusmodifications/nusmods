@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 
 // eslint-disable-next-line import/no-named-as-default
 import AppShell from 'views/AppShell';
+import Routes from 'views/Routes';
 
 /* eslint-disable react/prop-types */
 export default function App({ store }) {
@@ -12,7 +13,7 @@ export default function App({ store }) {
     <AppContainer>
       <Provider store={store}>
         <Router>
-          <AppShell />
+          <AppShell><Routes /></AppShell>
         </Router>
       </Provider>
     </AppContainer>

@@ -1,4 +1,65 @@
+.module-container {
+  header {
+    padding-bottom: 1rem;
+    margin: 1rem 0 2rem;
+    border-bottom: 1px solid $gray-lighter;
 
+    p {
+      margin-bottom: 0;
+    }
+  }
+
+  .page-title {
+    margin: 0 0 0.5rem;
+    font-size: $font-size-xlg;
+  }
+
+  .page-title-module-code {
+    display: block;
+    margin-bottom: 0.2rem;
+    font-weight: bold;
+    font-size: $font-size-xlg * 1.2;
+    color: theme-color();
+  }
+
+  h2 {
+    padding-bottom: 0.4rem;
+    margin: 3rem 0 0.4rem;
+    font-weight: bold;
+    font-size: 1rem;
+    border-bottom: 1px solid $gray-lighter;
+  }
+
+  h3 {
+    margin-bottom: 0;
+    font-weight: bold;
+    font-size: 1rem;
+  }
+
+  dt {
+    font-size: $font-size-sm;
+  }
+
+  @include media-breakpoint-down(sm) {
+    .page-title,
+    .page-title-module-code {
+      font-size: $font-size-xlg * $sm-font-size-ratio;
+    }
+
+    header {
+      margin: 0.4rem 0 1rem;
+    }
+
+    h2,
+    h3 {
+      font-size: 1rem * $sm-font-size-ratio;
+    }
+
+    h2 {
+      padding-bottom: 0.3rem;
+    }
+  }
+}
 
 // Pre-requisites Tree
 .nm-prerequisites-tree {

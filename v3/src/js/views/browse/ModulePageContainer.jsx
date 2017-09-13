@@ -1,217 +1,107 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import ReactDisqusThread from 'react-disqus-thread';
-import DocumentTitle from 'react-document-title';
-import config from 'config';
 
-import type { Module, Semester } from 'types/modules';
 import type { FetchRequest } from 'types/reducers';
-import type { TimetableConfig } from 'types/timetables';
+import type { Module, ModuleCode } from 'types/modules';
 
-import { loadModule } from 'actions/moduleBank';
-import { addModule, removeModule } from 'actions/timetables';
-import { formatExamDate } from 'utils/modules';
-import LinkModuleCodes from 'views/components/LinkModuleCodes';
-import AddModuleButton from './AddModuleButton';
-import RemoveModuleButton from './RemoveModuleButton';
-import CorsBiddingStatsTableControl from './CorsBiddingStatsTableControl';
-import LessonTimetableControl from './LessonTimetableControl';
-import ModuleTree from './ModuleTree';
+import { loadModule, FETCH_MODULE } from 'actions/moduleBank';
+import { getRequestName } from 'reducers/requests';
+import NotFoundPage from 'views/NotFoundPage';
+import LoadingSpinner from 'views/LoadingSpinner';
 
 type Props = {
-  moduleCode: string,
-  module: Module,
-  loadModule: Function,
-  fetchModuleRequest: FetchRequest,
-  timetables: TimetableConfig,
-  addModule: Function,
-  removeModule: Function,
+  moduleCode: ModuleCode,
+  moduleCodes: Set<ModuleCode>,
+  module: ?Module,
+  request: ?FetchRequest,
+  loadModule: (ModuleCode) => void,
 };
 
-class ModulePageContainer extends Component<Props> {
+type State = {
+  ModulePageContent: ?ComponentType<*>;
+}
+
+/**
+ * Wrapper component that loads both module data and the module page component
+ * simultaneously, and displays the correct component depending on the state.
+ *
+ * - Module data is considered to be loaded when the the data exists in
+ *   the module bank
+ * - Component is loaded when the dynamic import() Promise resolves
+ *
+ * We then render the correct component based on the status
+ *
+ * - Not found: moduleCode not in module list (this is checked synchronously)
+ * - Error: Either requests failed
+ * - Loading: Either requests are pending
+ * - Loaded: Both requests are successfully loaded
+ */
+export class ModulePageContainerComponent extends PureComponent<Props, State> {
   props: Props;
 
-  componentDidMount() {
-    this.loadModuleInformation(this.props);
+  state: State = {
+    ModulePageContent: null,
+  };
+
+  componentWillMount() {
+    this.loadModule(this.props.moduleCode);
+
+    import('views/browse/ModulePageContent')
+      // TODO: Error handling
+      .then(module => this.setState({ ModulePageContent: module.default }));
   }
 
   componentWillReceiveProps(nextProps: Props) {
     if (nextProps.moduleCode !== this.props.moduleCode) {
-      this.loadModuleInformation(nextProps);
+      this.loadModule(nextProps.moduleCode);
     }
   }
 
-  loadModuleInformation(props: Props) {
-    this.props.loadModule(props.moduleCode);
-  }
-
-  semestersOffered(): Semester[] {
-    return this.props.module && this.props.module.History ? (
-      this.props.module.History
-        .sort((a, b) => a.Semester - b.Semester)
-        .map(h => h.Semester))
-      : [];
-  }
-
-  examinations(): {semester: number, date: string}[] {
-    return this.props.module && this.props.module.History ? (
-      this.props.module.History
-        .filter(h => h.ExamDate != null)
-        .sort((a, b) => a.Semester - b.Semester)
-        .map(h => ({ semester: h.Semester, date: h.ExamDate || '' })))
-      : [];
-  }
-
-  moduleHasBeenAdded(module: Module, semester: Semester): boolean {
-    if (!module) {
-      return false;
+  loadModule(moduleCode: ModuleCode) {
+    if (this.doesModuleExist(moduleCode)) {
+      this.props.loadModule(moduleCode);
     }
-    const timetables = this.props.timetables;
-    return timetables[semester] && !!timetables[semester][module.ModuleCode];
+  }
+
+  doesModuleExist(moduleCode: ModuleCode) {
+    return this.props.moduleCodes.has(moduleCode);
   }
 
   render() {
-    const module = this.props.module;
-    const documentTitle = module ?
-      `${module.ModuleCode} ${module.ModuleTitle} - ${config.brandName}` : 'Not found';
-    const ivleLink = module ? config.ivleUrl.replace('<ModuleCode>', module.ModuleCode) : null;
-    const corsLink = module ? `${config.corsUrl}${module.ModuleCode}` : null;
+    const { ModulePageContent } = this.state;
+    const { module, request, moduleCode } = this.props;
 
-    const renderExaminations = this.examinations().map(exam => (
-      <span key={exam.semester}>
-        <dt className="col-sm-3">Semester {exam.semester} Exam</dt>
-        <dd className="col-sm-9">{formatExamDate(exam.date)}</dd>
-      </span>
-    ),
-    );
+    if (!this.doesModuleExist(moduleCode)) {
+      return <NotFoundPage />;
+    }
 
-    const semsOffered = this.semestersOffered()
-      .map(sem => `Semester ${sem}`)
-      .join(', ');
+    if (request && request.isFailure) {
+      // TODO: Display a proper error page here
+      return <NotFoundPage />;
+    }
 
-    const addOrRemoveToTimetableLinks = this.semestersOffered().map(
-      semester => (
-        this.moduleHasBeenAdded(module, semester) ?
-          <RemoveModuleButton
-            key={semester}
-            semester={semester}
-            onClick={() =>
-              this.props.removeModule(semester, module.ModuleCode)
-            }
-          />
-          :
-          <AddModuleButton
-            key={semester}
-            semester={semester}
-            onClick={() =>
-              this.props.addModule(semester, module.ModuleCode)
-            }
-          />
-      ),
-    );
+    if (module && ModulePageContent) {
+      return <ModulePageContent moduleCode={moduleCode} />;
+    }
 
-    return (
-      <DocumentTitle title={documentTitle}>
-        <div className="module-container page-container">
-          {this.props.fetchModuleRequest.isPending && !module && <p>Loading...</p>}
-          {this.props.fetchModuleRequest.isFailure && <p>Module not found</p>}
-          {(this.props.fetchModuleRequest.isSuccessful || module) &&
-            <div>
-              <h1 className="page-title">{module.ModuleCode} {module.ModuleTitle}</h1>
-              <hr />
-              <dl className="row">
-                {module.ModuleDescription && [
-                  <dt className="col-sm-3">Description</dt>,
-                  <dd className="col-sm-9">{module.ModuleDescription}</dd>,
-                ]}
-                {module.ModuleCredit && [
-                  <dt className="col-sm-3">Module Credits (MCs)</dt>,
-                  <dd className="col-sm-9">{module.ModuleCredit}</dd>,
-                ]}
-                {module.Prerequisite && [
-                  <dt className="col-sm-3">Prerequisite(s)</dt>,
-                  <dd className="col-sm-9">
-                    <LinkModuleCodes>{module.Prerequisite}</LinkModuleCodes>
-                  </dd>,
-                ]}
-                {module.Corequisite && [
-                  <dt className="col-sm-3">Corequisite(s)</dt>,
-                  <dd className="col-sm-9">
-                    <LinkModuleCodes>{module.Corequisite}</LinkModuleCodes>
-                  </dd>,
-                ]}
-                {module.Preclusion && [
-                  <dt className="col-sm-3">Preclusion(s)</dt>,
-                  <dd className="col-sm-9">
-                    <LinkModuleCodes>{module.Preclusion}</LinkModuleCodes>
-                  </dd>,
-                ]}
-                {module.Department && [
-                  <dt className="col-sm-3">Department</dt>,
-                  <dd className="col-sm-9">{module.Department}</dd>,
-                ]}
-                {module.Workload && [
-                  <dt className="col-sm-3">Weekly Workload</dt>,
-                  <dd className="col-sm-9">{module.Workload}</dd>,
-                ]}
-                {renderExaminations}
-                <dt className="col-sm-3">Semesters Offered</dt>
-                <dd className="col-sm-9">{semsOffered}</dd>
-                <dt className="col-sm-3">Official Links</dt>
-                <dd className="col-sm-9">
-                  <ul className="nm-footer-links">
-                    {ivleLink && <li><a href={ivleLink}>IVLE</a></li>}
-                    {corsLink && <li><a href={corsLink}>CORS</a></li>}
-                  </ul>
-                </dd>
-                <div>
-                  {addOrRemoveToTimetableLinks}
-                </div>
-              </dl>
-              <hr />
-              {module.ModmavenTree ?
-                <ModuleTree module={module} />
-                :
-                <p>Prerequisites are not available.</p>
-              }
-              {module.CorsBiddingStats &&
-                <CorsBiddingStatsTableControl stats={module.CorsBiddingStats} />
-              }
-              <LessonTimetableControl
-                semestersOffered={this.semestersOffered()}
-                history={module.History}
-              />
-              <ReactDisqusThread
-                shortname={config.disqusShortname}
-                identifier={module.ModuleCode}
-                title={`${module.ModuleCode} ${module.ModuleTitle}`}
-                url={`https://nusmods.com/modules/${module.ModuleCode}/reviews`}
-              />
-            </div>
-          }
-        </div>
-      </DocumentTitle>
-    );
+    return <LoadingSpinner />;
   }
 }
 
-function mapStateToProps(state, ownProps) {
-  const timetables = state.timetables;
-  const moduleCode = ownProps.match.params.moduleCode;
+const mapStateToProps = (state, ownState) => {
+  const moduleCode = ownState.match.params.moduleCode;
+  const requestName = getRequestName(FETCH_MODULE);
+
   return {
     moduleCode,
+    moduleCodes: state.entities.moduleBank.moduleCodes,
     module: state.entities.moduleBank.modules[moduleCode],
-    fetchModuleRequest: state.requests.fetchModuleRequest || {},
-    timetables,
+    request: state.requests[requestName],
   };
-}
+};
 
 export default withRouter(
-  connect(mapStateToProps, {
-    addModule,
-    loadModule,
-    removeModule,
-  })(ModulePageContainer),
+  connect(mapStateToProps, { loadModule })(ModulePageContainerComponent),
 );
