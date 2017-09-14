@@ -71,7 +71,7 @@ export function getFirstAvailableSemester(
 }
 
 // Workload components as defined by CORS, in their correct positions (see below).
-const COMPONENTS: WorkloadComponent[] = ['Lecture', 'Tutorial', 'Laboratory', 'Project', 'Preparation'];
+export const WORKLOAD_COMPONENTS: WorkloadComponent[] = ['Lecture', 'Tutorial', 'Laboratory', 'Project', 'Preparation'];
 export type Workload = { [WorkloadComponent]: number } | string;
 
 // Parse the workload string into a mapping of individual components to their hours.
@@ -94,7 +94,7 @@ export function parseWorkload(workloadString: string): Workload {
   const hours = workloadString.split('-');
 
   const workload = {};
-  _.zip(COMPONENTS, hours).forEach(([component, hourString]) => {
+  _.zip(WORKLOAD_COMPONENTS, hours).forEach(([component, hourString]) => {
     const hour = parseFloat(hourString);
     if (!hour) return;
     workload[component] = hour;
