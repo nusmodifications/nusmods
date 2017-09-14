@@ -14,8 +14,7 @@
 
   .module-workload-component {
     margin-bottom: 0.4rem;
-    // Avoid label from overflowing when they are too long
-    overflow: hidden;
+    overflow: hidden; // Avoid label from overflowing when they are too long
   }
 
   h5 {
@@ -36,9 +35,20 @@
     flex-wrap: wrap;
 
     div {
-      height: 2rem; // Also update ModuleWorkload.jsx if this is updated
+      flex: 1 auto;
+      height: 2rem;
       margin: 0 0 1px;
       border-right: 1px solid $body-bg;
+
+      &.remainder {
+        z-index: -1;
+        transform: skew(-30deg) translateX(-50%);
+      }
+    }
+
+    &.blocks-fixed div {
+      flex: 0 auto;
+      width: 10%;
     }
   }
 }

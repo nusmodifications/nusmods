@@ -1,15 +1,14 @@
 // @flow
 import type { Node } from 'react';
 import React, { PureComponent } from 'react';
+import classnames from 'classnames';
 import _ from 'lodash';
 
 import type { WorkloadComponent } from 'types/modules';
 
 import { parseWorkload } from 'utils/modules';
 
-// Also update styles/components/module-workload.scss if
 const ROW_MAX = 10;
-const BLOCK_HEIGHT_REM = 2;
 
 const shortComponentNames: { [WorkloadComponent]: string } = {
   Lecture: 'Lec',
@@ -32,6 +31,7 @@ function workloadLabel(component: WorkloadComponent, hours: number): Node {
   if (Math.ceil(hours) >= 5) {
     return [
       <span key="title">{component}</span>,
+      ' ',
       <span key="count">{hours} hrs</span>,
     ];
   }
@@ -46,25 +46,13 @@ function workloadLabel(component: WorkloadComponent, hours: number): Node {
 }
 
 function workloadBlocks(component: WorkloadComponent, hours: number): Node {
-  const itemWidth = 100 / Math.min(ROW_MAX, Math.ceil(hours));
-  const style = { width: `${itemWidth}%` };
-
   const blocks: Node[] = _.range(Math.floor(hours)).map(hour => (
-    <div
-      key={hour}
-      className={bgClass(component)}
-      style={style}
-    />
+    <div key={hour} className={bgClass(component)} />
   ));
 
   // Remainders (for non-integer workloads) are displayed as vertical half-blocks
-  const remainder = hours % 1;
-  if (remainder) {
-    blocks.push(<div
-      key="remainder"
-      className={bgClass(component)}
-      style={{ ...style, height: `${remainder * BLOCK_HEIGHT_REM}rem` }}
-    />);
+  if (hours % 1) {
+    blocks.push(<div key="remainder" className={classnames('remainder', bgClass(component))} />);
   }
 
   return blocks;
@@ -74,7 +62,7 @@ function sortWorkload(workload: { [WorkloadComponent]: number }): Array<[Workloa
   // Push longer components (those that take up more than one row) down
   // $FlowFixMe: lodash libdef incorrectly marks the return type of _.entries as any[][]
   const components: Array<[WorkloadComponent, number]> = _.entries(workload);
-  const [long, short] = _.partition(components, ([, hours]) => Math.ceil(hours) > ROW_MAX);
+  const [long, short] = _.partition(components, ([, hours]) => Math.ceil(hours) >= ROW_MAX);
   return short.concat(long);
 }
 
@@ -115,7 +103,11 @@ export default class ModuleWorkload extends PureComponent<Props> {
                 {workloadLabel(component, hours)}
               </h5>
 
-              <div className="module-workload-blocks">
+              <div
+                className={classnames('module-workload-blocks', {
+                  'blocks-fixed': Math.ceil(hours) > ROW_MAX,
+                })}
+              >
                 {workloadBlocks(component, hours)}
               </div>
             </div>
