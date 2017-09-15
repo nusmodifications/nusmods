@@ -1,7 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
 import _ from 'lodash';
-import classnames from 'classnames';
 
 import type { Lesson } from 'types/modules';
 import type { TimetableArrangement } from 'types/timetables';
@@ -33,9 +32,7 @@ class Timetable extends PureComponent<Props> {
 
     return (
       <div
-        className={classnames(styles.container, {
-          verticalMode: this.props.isVerticalOrientation,
-        })}
+        className={styles.container}
         ref={(r) => { this.timetableDom = r; }}
       >
         <TimetableTimings

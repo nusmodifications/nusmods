@@ -4,4 +4,13 @@
   position: relative;
   flex: 1 0 auto;
   min-width: $timetable-col-width;
+
+  &:empty {
+    // Special case for iPhone 5 users
+    min-width: 0;
+
+    @media (min-width: 321px) {
+      min-width: $timetable-col-width * 0.8;
+    }
+  }
 }

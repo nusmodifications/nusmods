@@ -36,21 +36,23 @@ function TimetableCell(props: Props) {
       }}
       style={props.style}
     >
-      <div className={styles.moduleCode}>
-        {lesson.ModuleCode}
-      </div>
-      <div>
-        <span>
-          {LESSON_TYPE_ABBREV[lesson.LessonType]}
-        </span>
-        <span>
-          {' '}[{lesson.ClassNo}]
-        </span>
-      </div>
-      <div>
-        <span>
-          {lesson.Venue}
-        </span>
+      <div className={styles.cellContainer}>
+        <div className={styles.moduleCode}>
+          {lesson.ModuleCode}
+        </div>
+        <div>
+          <span>
+            {LESSON_TYPE_ABBREV[lesson.LessonType]}
+          </span>
+          <span>
+            {' '}[{lesson.ClassNo}]
+          </span>
+        </div>
+        <div>
+          <span>
+            {lesson.Venue}
+          </span>
+        </div>
       </div>
     </button>
   );

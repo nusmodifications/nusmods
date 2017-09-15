@@ -12,7 +12,11 @@ type Props = {
 function TimetableActions(props: Props) {
   const { isVerticalOrientation } = props;
   return (
-    <div className="timetable-action-row text-xs-right">
+    <div
+      className="timetable-action-row btn-group text-xs-right"
+      role="group"
+      aria-label="Timetable utilities"
+    >
       <button
         type="button"
         className="btn btn-outline-primary"

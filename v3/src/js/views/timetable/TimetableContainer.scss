@@ -7,6 +7,14 @@
 }
 
 .timetableWrapper {
-  overflow-y: scroll;
+  composes: mb-4 from global;
+  overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+}
+
+// Higher specificity to override bootstrap
+:global(.verticalMode).timetableWrapper {
+  @include media-breakpoint-down(sm) {
+    padding: 0 2% 0 0;
+  }
 }

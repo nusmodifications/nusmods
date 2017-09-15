@@ -18,7 +18,7 @@ type Props = {
 function TimetableDay(props: Props) {
   const columns = props.endingIndex - props.startingIndex;
   const rowStyle = {
-    backgroundSize: `${400 / columns}%`,
+    backgroundSize: `${100 / (columns / 4)}%`,
   };
   return (
     <li className={styles.day}>

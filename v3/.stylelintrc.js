@@ -12,6 +12,13 @@ module.exports = {
         ignorePseudoClasses: ['global', 'local'],
       },
     ],
+    // Enable composes keyword for css modules
+    'property-no-unknown': [
+      true,
+      {
+        ignoreProperties: ['composes'],
+      },
+    ],
     // https://github.com/hudochenkov/stylelint-order/blob/master/rules/order/README.md#options
     'order/order': ['custom-properties', 'dollar-variables', 'declarations', 'rules', 'at-rules'],
     // https://github.com/hudochenkov/stylelint-order/blob/master/rules/properties-order/README.md

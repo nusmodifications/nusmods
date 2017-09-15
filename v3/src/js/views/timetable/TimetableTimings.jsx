@@ -16,11 +16,14 @@ function TimetableTimings(props: Props) {
     <div className={styles.timings}>
       {range.map((i) => {
         const time = convertIndexToTime(i);
-        return i % 2 === 0 && i !== props.endingIndex
-          ? <time key={time} className={styles.time}>
-            {time}
-          </time>
-          : <span key={time} />;
+        if (i % 2 === 0 && i !== props.endingIndex) {
+          return (
+            <time key={time} className={styles.time}>
+              {time}
+            </time>
+          );
+        }
+        return <span key={time} />;
       })}
     </div>
   );

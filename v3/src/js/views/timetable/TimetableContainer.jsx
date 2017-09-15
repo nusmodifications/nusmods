@@ -163,6 +163,7 @@ class TimetableContainer extends Component<Props> {
             className={classnames(styles.timetableWrapper, {
               'col-md-12': !isVerticalOrientation,
               'col-md-8': isVerticalOrientation,
+              verticalMode: isVerticalOrientation,
             })}
           >
             <Timetable
@@ -173,7 +174,6 @@ class TimetableContainer extends Component<Props> {
                 this.timetableDom = r && r.timetableDom;
               }}
             />
-            <br />
           </div>
           <div
             className={classnames({
@@ -187,7 +187,7 @@ class TimetableContainer extends Component<Props> {
               downloadAsJpeg={this.downloadAsJpeg}
               downloadAsIcal={this.downloadAsIcal}
             />
-            <div className="row">
+            <div className="row mt-2">
               <div className="col-md-12">
                 <ModulesSelect
                   moduleList={this.props.semModuleList}
@@ -200,9 +200,7 @@ class TimetableContainer extends Component<Props> {
                 <TimetableModulesTable
                   modules={
                     Object.keys(this.props.semTimetableWithLessons)
-                      .sort((a, b) => {
-                        return a.localeCompare(b);
-                      })
+                      .sort((a, b) => a.localeCompare(b))
                       .map((moduleCode) => {
                         const module = this.props.modules[moduleCode] || {};
                         // Inject color index.

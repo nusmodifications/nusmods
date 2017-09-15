@@ -40,7 +40,6 @@ const productionConfig = merge([
         {
           test: /\.(css|scss)$/,
           include: parts.PATHS.styles,
-
           use: extractTextPlugin.extract({
             use: parts.getCSSConfig(),
             fallback: 'style-loader',
@@ -49,7 +48,6 @@ const productionConfig = merge([
         {
           test: /\.(css|scss)$/,
           include: parts.PATHS.scripts,
-
           use: extractTextPlugin.extract({
             use: parts.getCSSConfig({
               options: {
