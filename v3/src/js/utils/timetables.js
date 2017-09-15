@@ -131,15 +131,12 @@ export function arrangeLessonsWithinDay(lessons: Array<Lesson>): TimetableDayArr
   if (_.isEmpty(lessons)) {
     return rows;
   }
-
-  lessons.forEach((lesson: Lesson) => {
-    for (let i = 0, length = rows.length; i < length; i += 1) {
+  const sortedLessons = _.sortBy(lessons, lesson => lesson.StartTime);
+  sortedLessons.forEach((lesson: Lesson) => {
+    for (let i = 0, length = rows.length; i < length; i++) {
       const rowLessons: Array<Lesson> = rows[i];
-      // Search through Lesson in row to look for available slots.
-      const overlapTests = rowLessons.map((rowLesson) => {
-        return !doLessonsOverlap(rowLesson, lesson);
-      });
-      if (_.every(overlapTests, Boolean)) {
+      const previousLesson = _.last(rowLessons);
+      if (!previousLesson || !doLessonsOverlap(previousLesson, lesson)) {
         // Lesson does not overlap with any Lesson in the row. Add it to row.
         rowLessons.push(lesson);
         return;

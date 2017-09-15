@@ -1,0 +1,30 @@
+@import './_variables.scss';
+
+.timings {
+  display: flex;
+  justify-content: space-between;
+  margin-left: $timetable-day-horizontal-size;
+  font-weight: 600;
+  font-size: $font-size-s;
+}
+
+:global(.verticalMode) .timings {
+  flex: 0 0 auto;
+  flex-direction: column;
+  padding: 0 0.15rem;
+  padding-left: 1vw;
+  margin: $timetable-day-vertical-size 0 0 0;
+  text-align: right;
+
+  @include media-breakpoint-up(sm) {
+    padding-right: 0.25rem;
+  }
+}
+
+.time {
+  transform: translateX(-50%);
+}
+
+:global(.verticalMode) .time {
+  transform: translateY(-50%);
+}

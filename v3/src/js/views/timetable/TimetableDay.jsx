@@ -3,60 +3,45 @@ import React from 'react';
 
 import type { TimetableDayArrangement } from 'types/timetables';
 
+import styles from './TimetableDay.scss';
 import TimetableRow from './TimetableRow';
 
 type Props = {
   day: string,
   dayLessonRows: TimetableDayArrangement,
-  cellSize: number,
-  horizontalOrientation: boolean,
-  cellOrientationStyleProp: string,
+  verticalMode: boolean,
   startingIndex: number,
   endingIndex: number,
   onModifyCell: Function,
 };
 
 function TimetableDay(props: Props) {
-  const numOfRows: number = props.dayLessonRows ? props.dayLessonRows.length : 1;
-  const style: Object = {};
-  if (!props.horizontalOrientation) {
-    style.flexGrow = numOfRows;
-    style.WebkitBoxFlex = numOfRows;
-    style.msFlexPositive = numOfRows;
-  }
-
+  const columns = props.endingIndex - props.startingIndex;
+  const rowStyle = {
+    backgroundSize: `${100 / (columns / 4)}%`,
+  };
   return (
-    <div className="timetable-day" style={style}>
-      <div className="timetable-day-cell">
-        <div className="timetable-day-cell-text">{props.day}</div>
+    <li className={styles.day}>
+      <div className={styles.dayName}>
+        {props.day.substring(0, 3)}
       </div>
-      <div className="timetable-day-rows">
-        {props.dayLessonRows ?
+      <div className={styles.dayRows} style={rowStyle}>
+        {
           props.dayLessonRows.map((dayLessonRow, i) => {
             return (
               <TimetableRow
                 key={i}
                 startingIndex={props.startingIndex}
                 endingIndex={props.endingIndex}
-                cellSize={props.cellSize}
-                cellOrientationStyleProp={props.cellOrientationStyleProp}
-                horizontalOrientation={props.horizontalOrientation}
-                scale={100 / props.dayLessonRows.length}
+                verticalMode={props.verticalMode}
                 lessons={dayLessonRow}
                 onModifyCell={props.onModifyCell}
               />
             );
-          }) :
-          <TimetableRow
-            day={props.day}
-            cellSize={props.cellSize}
-            cellOrientationStyleProp={props.cellOrientationStyleProp}
-            startingIndex={props.startingIndex}
-            endingIndex={props.endingIndex}
-          />
+          })
         }
       </div>
-    </div>
+    </li>
   );
 }
 

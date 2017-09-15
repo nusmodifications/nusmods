@@ -36,13 +36,14 @@ const commonConfig = merge([
       // This will build an app.js file from the `main` module.
       app: ['babel-polyfill', 'main'],
     },
+    context: parts.PATHS.app,
     output: {
       path: parts.PATHS.build,
       filename: '[name].js',
     },
     plugins: [
       new StyleLintPlugin({
-        context: parts.PATHS.styles,
+        context: parts.PATHS.app,
       }),
       new LodashModuleReplacementPlugin({
         caching: true,

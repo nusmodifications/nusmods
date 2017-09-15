@@ -1,0 +1,65 @@
+@import './_variables.scss';
+
+$cell-padding: 0.3rem;
+$cell-opacity: 0.5;
+$cell-border-radius: 8px;
+
+.cell {
+  padding: $cell-padding;
+  font-size: $font-size-xxs;
+  line-height: 0.85rem;
+  text-align: left;
+  vertical-align: top;
+  border: 0;
+  border-bottom: 2px solid;
+  transition: background-color $desktop-entering-duration $material-deceleration-curve;
+  animation-duration: $desktop-entering-duration;
+  overflow-wrap: break-word;
+
+  &:hover,
+  &:focus {
+    outline: none;
+  }
+}
+
+.cellContainer {
+  width: 100%;
+  height: 100%;
+}
+
+:global(.verticalMode) .cell {
+  position: absolute;
+  width: 100%;
+}
+
+.cellIsModifiable {
+  border-radius: $cell-border-radius;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.cellIsAvailable {
+  opacity: $cell-opacity;
+
+  :global {
+    animation-name: zoomIn;
+  }
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.cellIsActive {
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+
+  :global {
+    animation-name: pulse;
+  }
+}
+
+.moduleCode {
+  font-weight: 600;
+  font-size: $font-size-xs;
+}

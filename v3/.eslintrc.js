@@ -64,6 +64,8 @@ module.exports = {
         jsx: 'never',
       }
     ],
+    // Enable i++ in for loops
+    'no-plusplus': ['error', { 'allowForLoopAfterthoughts': true }],
 
     'react/no-array-index-key': 'off',
     // SEE: https://github.com/yannickcr/eslint-plugin-react/issues

@@ -2,7 +2,6 @@ const path = require('path');
 const webpack = require('webpack');
 
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const cssnano = require('cssnano');
 const FlowStatusWebpackPlugin = require('flow-status-webpack-plugin');
@@ -219,26 +218,31 @@ exports.minifyJavascript = () => {
   };
 };
 
-const cssConfig = [
-  ...insertIf(IS_DEV, 'cache-loader'), // Because css-loader is slow
-  'css-loader',
-  {
-    loader: 'postcss-loader',
-    options: {
-      plugins: () => [ // eslint-disable-next-line global-require
-        require('autoprefixer'),
-      ],
+exports.getCSSConfig = ({ options } = {}) => {
+  return [
+    ...insertIf(IS_DEV, 'cache-loader'), // Because css-loader is slow
+    {
+      loader: 'css-loader',
+      options,
     },
-  },
-  'sass-loader',
-];
+    {
+      loader: 'postcss-loader',
+      options: {
+        plugins: () => [ // eslint-disable-next-line global-require
+          require('autoprefixer'),
+        ],
+      },
+    },
+    'sass-loader',
+  ];
+};
 
 /**
  * Enables importing CSS with Javascript. This is all in-memory.
  *
  * @see https://survivejs.com/webpack/styling/loading/
  */
-exports.loadCSS = ({ include, exclude } = {}) => ({
+exports.loadCSS = ({ include, exclude, options } = {}) => ({
   module: {
     rules: [
       {
@@ -246,40 +250,11 @@ exports.loadCSS = ({ include, exclude } = {}) => ({
         include,
         exclude,
 
-        use: [].concat('style-loader', cssConfig),
+        use: [].concat('style-loader', exports.getCSSConfig({ options })),
       },
     ],
   },
 });
-
-/**
- * Extracts css into their own file.
- *
- * @see https://webpack.js.org/guides/code-splitting-css/
- * @see https://survivejs.com/webpack/styling/separating-css/
- */
-exports.extractCSS = ({ include, exclude } = {}) => {
-  // Output extracted CSS to a file
-  const plugin = new ExtractTextPlugin('[name].[chunkhash].css');
-
-  return {
-    module: {
-      rules: [
-        {
-          test: /\.(css|scss)$/,
-          include,
-          exclude,
-
-          use: plugin.extract({
-            use: cssConfig,
-            fallback: 'style-loader',
-          }),
-        },
-      ],
-    },
-    plugins: [plugin],
-  };
-};
 
 /**
  * Minifies CSS to make it super small.

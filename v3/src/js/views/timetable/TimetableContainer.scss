@@ -1,0 +1,20 @@
+@import './_variables.scss';
+
+.container {
+  :global {
+    animation-name: $page-entering-animation;
+  }
+}
+
+.timetableWrapper {
+  composes: mb-4 from global;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+// Higher specificity to override bootstrap
+:global(.verticalMode).timetableWrapper {
+  @include media-breakpoint-down(sm) {
+    padding: 0 2% 0 0;
+  }
+}
