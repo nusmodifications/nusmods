@@ -202,9 +202,12 @@ test('parseWorkload should handle unusual workload strings', () => {
   });
 });
 
-test('parseWorkload should return input string as is if it cannot be parse', () => {
+test('parseWorkload should return input string as is if it cannot be parsed', () => {
   const invalidInputs = [
     '',
+    '\n',
+    '2-2-2-2-3-4', // CE1101 (six components)
+    '2-4-5-4', // CE1102 (four components)
     'approximately 120 hours of independent study and research and consultation with a NUS lecturer.',
     'Varies depending on individual student with their supervisor',
     '16 weeks of industrial attachment',
