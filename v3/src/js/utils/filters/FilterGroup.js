@@ -2,13 +2,16 @@
 import { keyBy, values } from 'lodash';
 import update from 'immutability-helper';
 
-import type { Module } from 'types/modules';
+import type { Module, ModuleCode } from 'types/modules';
+import type { ReadOnlySet } from 'utils/set';
 
+import { intersection, partitionUnion } from 'utils/set';
 import ModuleFilter from './ModuleFilter';
 
 export const ID_DELIMITER = ',';
 
 export type FilterGroupId = string;
+
 export default class FilterGroup<Filter: ModuleFilter> {
   id: FilterGroupId;
   label: string;
@@ -25,14 +28,18 @@ export default class FilterGroup<Filter: ModuleFilter> {
     this.updateActiveFilters();
   }
 
+  initFilters(modules: Module[]) {
+    values(this.filters).forEach(filter => filter.initCount(modules));
+  }
+
   updateActiveFilters() {
     this.activeFilters = values(this.filters)
       .filter(filter => filter.enabled);
   }
 
-  test(module: Module): boolean {
-    if (!this.isActive()) return true;
-    return this.activeFilters.some(filter => filter.test(module));
+  filteredModules(): ReadOnlySet<ModuleCode> {
+    // Within each FilterGroup, modules are
+    return partitionUnion(...this.activeFilters.map(filter => filter.filteredModules));
   }
 
   toggle(idOrFilter: string | Filter, value: ?boolean): FilterGroup<Filter> {
@@ -67,14 +74,35 @@ export default class FilterGroup<Filter: ModuleFilter> {
       .reduce((group, id) => group.toggle(id, enabled.has(id)), this);
   }
 
-  static apply(modules: Module[], filterGroups: FilterGroup<any>[]): Module[] {
-    // Only consider filter groups with at least one filter active
-    const activeGroups = filterGroups.filter(group => group.isActive());
-    if (!activeGroups.length) return modules;
+  /**
+   * Get the ModuleCode of all modules that match the enabled filters in the provided
+   * filter group. If no filters are active, returns null.
+   *
+   * @param {FilterGroup<any>[]} filterGroups
+   * @param {FilterGroup<any>} [exclude] - exclude this FilterGroup - useful for calculating
+   * @returns {?Set<ModuleCode>}
+   */
+  static union(filterGroups: FilterGroup<any>[], exclude?: FilterGroup<any>): ?Set<ModuleCode> {
+    const excludedId = exclude ? exclude.id : null;
+    const modules = filterGroups
+      .filter(group => group.isActive() && group.id !== excludedId);
 
-    // Each module must pass SOME filter in EVERY filter group
-    // eg. If level 1000, level 2000 and 4 MC filters are selected, the user most likely want
-    // level 1000 OR level 2000 modules that ALSO have 4 MC
-    return modules.filter(module => activeGroups.every(group => group.test(module)));
+    if (modules.length === 0) return null;
+
+    return intersection(...modules.map(group => group.filteredModules()));
+  }
+
+  /**
+   * Apply filter groups onto an array of modules. The returned array contains modules that
+   * matches the enabled filters, or all modules if no filters are active.
+   *
+   * @param {Module[]} modules
+   * @param {FilterGroup<any>[]} filterGroups
+   * @returns {Module[]}
+   */
+  static apply(modules: Module[], filterGroups: FilterGroup<any>[]): Module[] {
+    const filteredModuleCodes = FilterGroup.union(filterGroups);
+    if (!filteredModuleCodes) return modules;
+    return modules.filter(module => filteredModuleCodes.has(module.ModuleCode));
   }
 }

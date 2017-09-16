@@ -1,6 +1,7 @@
 // @flow
 
-import type { Module } from 'types/modules';
+import type { Module, ModuleCode } from 'types/modules';
+import { intersectionCount } from 'utils/set';
 
 export default class ModuleFilter {
   enabled = false;
@@ -9,9 +10,8 @@ export default class ModuleFilter {
   label: string;
   test: Module => boolean;
 
-  // Recounting is expensive. Only update it when the list of modules have changed.
-  memoizedCount: number;
-  prevModules: Module[];
+  // ModuleCode of modules that this filter matches
+  filteredModules: Set<ModuleCode>;
 
   constructor(id: string, label: string, test: Module => boolean) {
     this.id = id;
@@ -19,10 +19,27 @@ export default class ModuleFilter {
     this.test = test;
   }
 
-  count(modules: Module[]) {
-    if (this.prevModules === modules && this.memoizedCount) return this.memoizedCount;
-    this.memoizedCount = modules.reduce((total, module) => total + this.test(module), 0);
-    this.prevModules = modules;
-    return this.memoizedCount;
+  initCount(modules: Module[]) {
+    this.filteredModules = new Set();
+
+    modules
+      .filter(module => this.test(module))
+      .forEach(module => this.filteredModules.add(module.ModuleCode));
+  }
+
+  /**
+   * Return a count of modules that pass this module which intersect with the provided
+   * set of modules
+   *
+   * @param {?Set<ModuleCode>} modules - if null, returns all modules that passes this filter
+   * @returns {number}
+   */
+  count(modules: ?Set<ModuleCode>) {
+    if (!this.filteredModules) {
+      throw new Error(`count() method called before initCount() on filter ${this.label} (${this.id})`);
+    }
+
+    if (!modules) return this.filteredModules.size;
+    return intersectionCount(modules, this.filteredModules);
   }
 }

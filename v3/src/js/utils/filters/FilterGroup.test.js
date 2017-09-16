@@ -1,26 +1,34 @@
 // @flow
+import type { Module } from 'types/modules';
+import type { ReadOnlySet } from 'utils/set';
 
-/** @var {Module} */
-import cs1010s from '__mocks__/modules/CS1010S.json';
-/** @var {Module} */
-import cs3216 from '__mocks__/modules/CS3216.json';
-/** @var {Module} */
-import pc1222 from '__mocks__/modules/PC1222.json';
-
+import { createModule } from './ModuleFilter.test';
 import Group from './FilterGroup';
 import Filter from './ModuleFilter';
+
+const cs1010s = createModule('CS1010S');
+const cs3216 = createModule('CS3216');
+const pc1222 = createModule('PC1222');
 
 // Call toggle on multiple filters together
 function enable(group: Group<*>, ids: string[]): Group<*> {
   return ids.reduce((g, id) => g.toggle(id), group);
 }
 
+function initModules(groups: Group<*>[], modules: Module[]) {
+  groups.forEach(group => group.initFilters(modules));
+}
+
+function moduleCodeFilter(str: string): Filter {
+  return new Filter(str, str, module => module.ModuleCode.includes(str));
+}
+
+const f1 = new Filter('f1', 'f1', () => false);
+const f2 = new Filter('f2', 'f2', () => false);
+
 describe('#isActive()', () => {
   test('should return true if any test is enabled', () => {
-    const group = new Group('test group', 'test group', [
-      new Filter('f1', 'f1', () => true),
-      new Filter('f2', 'f2', () => true),
-    ]);
+    const group = new Group('test group', 'test group', [f1, f2]);
 
     expect(group.isActive()).toBe(false);
     expect(enable(group, ['f1']).isActive()).toBe(true);
@@ -30,7 +38,7 @@ describe('#isActive()', () => {
 
 describe('#toggle()', () => {
   test('should toggle filter immutably', () => {
-    const group = new Group('test group', 'test group', [new Filter('f1', 'f1', () => false)]);
+    const group = new Group('test group', 'test group', [f1]);
 
     expect(group.toggle('f1').filters.f1.enabled).toBe(true);
     expect(group.filters.f1.enabled).toBe(false);
@@ -38,68 +46,82 @@ describe('#toggle()', () => {
   });
 
   test('should toggle filters between enabled and disabled', () => {
-    const group = new Group('test group', 'test group', [new Filter('f1', 'f1', () => false)]);
+    const group = new Group('test group', 'test group', [f1]);
     expect(group.toggle('f1').toggle('f1').filters.f1.enabled).toBe(false);
   });
 
   test('should set filters to state in second parameter', () => {
-    const group = new Group('test group', 'test group', [new Filter('f1', 'f1', () => false)]);
-    expect((group.toggle('f1', false)).filters.f1.enabled).toBe(false);
-    expect((group.toggle('f1').toggle('f1', false)).filters.f1.enabled).toBe(false);
+    const group = new Group('test group', 'test group', [f1]);
+    expect(group.toggle('f1', false).filters.f1.enabled).toBe(false);
+    expect(group.toggle('f1').toggle('f1', false).filters.f1.enabled).toBe(false);
   });
 
   test('should accept filter objects as the first parameter', () => {
-    const filter = new Filter('f1', 'f1', () => false);
-    const group = new Group('g', 'g', [filter]);
-    expect(group.toggle(filter).filters.f1.enabled).toBe(true);
+    const group = new Group('g', 'g', [f1]);
+    expect(group.toggle(f1).filters.f1.enabled).toBe(true);
   });
 });
 
-describe('#test()', () => {
-  test('should return true if all tests are disabled', () => {
-    const group = new Group('test group', 'test group', [
-      new Filter('f1', 'f1', () => false),
-      new Filter('f2', 'f2', () => false),
-    ]);
+describe('.union()', () => {
+  const modules = [cs1010s, cs3216, pc1222];
 
-    expect(group.test(cs1010s)).toBe(true);
+  function toSet(s: ?ReadOnlySet<*>) {
+    if (!s) return s;
+    const newSet = new Set();
+    s.forEach(v => newSet.add(v));
+    return newSet;
+  }
+
+  test('should return null if no group has active filters', () => {
+    const g1 = new Group('g1', 'g1', [f1]);
+    const g2 = new Group('g2', 'g2', [f2]);
+    initModules([g1, g2], modules);
+
+    expect(Group.union([g1, g2])).toBeNull();
+    expect(Group.union([g1.toggle('f1'), g2], g1)).toBeNull();
   });
 
-  test('should return true if any tests return true', () => {
-    const group = new Group('test group', 'test group', [
-      new Filter('f1', 'f1', () => true),
-      new Filter('f2', 'f2', () => true),
-      new Filter('f3', 'f3', () => false),
-      new Filter('f4', 'f4', () => false),
-    ]);
+  test('should return a union of the ModuleCodes of modules that tested true', () => {
+    const g1 = new Group('g1', 'g1', [moduleCodeFilter('CS')]);
+    const g2 = new Group('g2', 'g2', [moduleCodeFilter('1'), moduleCodeFilter('2')]);
+    initModules([g1, g2], [cs1010s, cs3216, pc1222]);
 
-    expect(enable(group, ['f1', 'f2']).test(cs1010s)).toBe(true);
-    expect(enable(group, ['f1', 'f3']).test(cs1010s)).toBe(true);
-    expect(enable(group, ['f3']).test(cs1010s)).toBe(false);
-    expect(enable(group, ['f3', 'f4']).test(cs1010s)).toBe(false);
+    expect(toSet(
+      Group.union([g1.toggle('CS'), g2]),
+    )).toEqual(new Set(['CS1010S', 'CS3216']));
+
+    expect(toSet(
+      Group.union([g1.toggle('CS'), g2.toggle('2')]),
+    )).toEqual(new Set(['CS3216']));
+
+    expect(toSet(
+      Group.union([g1.toggle('CS'), g2.toggle('1').toggle('2')]),
+    )).toEqual(new Set(['CS1010S', 'CS3216']));
   });
 });
 
 describe('.apply()', () => {
   test('should return list of modules as is if no filters are enabled', () => {
-    const g1 = new Group('g1', 'g1', [new Filter('f1', 'f1', () => false)]);
-    const g2 = new Group('g2', 'g2', [new Filter('f2', 'f2', () => false)]);
+    const g1 = new Group('g1', 'g1', [f1]);
+    const g2 = new Group('g2', 'g2', [f2]);
+    initModules([g1, g2], [cs1010s, cs3216]);
 
-    expect(Group.apply([cs1010s, cs3216], [g1, g2])).toHaveLength(2);
+    expect(Group.apply([cs1010s, cs3216], [g1, g2])).toEqual([cs1010s, cs3216]);
   });
 
   test('should return list of modules that fulfill all groups', () => {
-    const g1 = new Group('g1', 'g1', [new Filter('contains 2', 'contains 2', module => module.ModuleCode.includes('2'))]);
-    const g2 = new Group('g2', 'g2', [new Filter('contains 3', 'contains 3', module => module.ModuleCode.includes('3'))]);
+    const g1 = new Group('g1', 'g1', [moduleCodeFilter('2')]);
+    const g2 = new Group('g2', 'g2', [moduleCodeFilter('3')]);
+    initModules([g1, g2], [cs1010s, cs3216, pc1222]);
 
     expect(Group.apply(
       [cs1010s, pc1222, cs3216],
-      [g1.toggle('contains 2'), g2],
+      [g1.toggle('2'), g2],
     )).toEqual([pc1222, cs3216]);
 
     expect(Group.apply(
       [cs1010s, pc1222, cs3216],
-      [g1.toggle('contains 2'), g2.toggle('contains 3')],
+      [g1.toggle('2'), g2.toggle('3')],
     )).toEqual([cs3216]);
   });
 });
