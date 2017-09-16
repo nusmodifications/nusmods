@@ -15,6 +15,7 @@ type Props = {
 
 export default function ButtonGroupSelector(props: Props) {
   const {
+    size,
     choices,
     selectedChoice,
     onChoiceSelect,
@@ -22,6 +23,8 @@ export default function ButtonGroupSelector(props: Props) {
     attrs = {},
     ariaLabel = 'Choices',
   } = props;
+
+  const sizeClassName = size ? `btn-group-${size}` : null;
 
   const buttons = choices.map((choice) => {
     const attr = attrs[choice] || {};
@@ -40,8 +43,6 @@ export default function ButtonGroupSelector(props: Props) {
       {choice}
     </button>);
   });
-
-  const sizeClassName = props.size ? `btn-group-${props.size}` : null;
 
   return (
     <div className={classnames('btn-group', sizeClassName)} role="group" aria-label={ariaLabel}>
