@@ -163,11 +163,10 @@ export function arrangeLessonsWithinDay(lessons: Array<Lesson>): TimetableDayArr
 //    ],
 //    ...
 //  }
-export function arrangeLessonsForWeek(lessons: Array<Lesson>): TimetableArrangement {
-  const dayLessons: Object = groupLessonsByDay(lessons);
-  return _.mapValues(dayLessons, (dayLesson: Array<Lesson>) => {
-    return arrangeLessonsWithinDay(dayLesson);
-  });
+// $FlowFixMe - Flow refuses to accept 'extra' properties on Lesson object
+export function arrangeLessonsForWeek(lessons: Lesson[]): TimetableArrangement {
+  const dayLessons = groupLessonsByDay(lessons);
+  return _.mapValues(dayLessons, (dayLesson: Lesson[]) => arrangeLessonsWithinDay(dayLesson));
 }
 
 //  Determines if a Lesson on the timetable can be modifiable / dragged around.
@@ -180,4 +179,17 @@ export function areOtherClassesAvailable(lessons: Array<RawLesson>,
     return false;
   }
   return Object.keys(_.groupBy(lessonTypeGroups[lessonType], lesson => lesson.ClassNo)).length > 1;
+}
+
+export function colorLessonsByType(lessons: Lesson[]) {
+  const types = new Map();
+  return lessons.map((lesson) => {
+    let colorIndex = types.get(lesson.LessonType);
+    if (!types.has(lesson.LessonType)) {
+      colorIndex = types.size;
+      types.set(lesson.LessonType, colorIndex);
+    }
+
+    return { ...lesson, colorIndex };
+  });
 }
