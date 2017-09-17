@@ -35,7 +35,7 @@ export default class ModuleSemesterInfo extends Component<Props, State> {
   };
 
   selectedSemester(): ?SemesterData {
-    return this.props.semesters[this.state.selected];
+    return this.props.semesters.find(data => data.Semester === this.state.selected);
   }
 
   timeslotChildren(): Map<string, Node> {
@@ -71,11 +71,12 @@ export default class ModuleSemesterInfo extends Component<Props, State> {
 
   render() {
     const semester = this.selectedSemester();
+    const semesters = this.props.semesters.map(data => data.Semester);
 
     return (
       <div className="module-semester-container">
         <SemesterPicker
-          semesters={this.props.semesters}
+          semesters={semesters}
           selectedSemester={this.state.selected}
           size="sm"
           onSelectSemester={this.onSelectSemester}

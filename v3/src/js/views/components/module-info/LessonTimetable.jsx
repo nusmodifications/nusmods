@@ -59,15 +59,14 @@ export default class LessonTimetableControl extends PureComponent<Props, State> 
   }
 
   render() {
-    const { history } = this.props;
-    const { selectedSem } = this.state;
+    const semesters = this.props.history.map(data => data.Semester);
 
     return (
       <div>
         {history.length > 1 &&
           <SemesterPicker
-            semesters={history}
-            selectedSemester={selectedSem}
+            semesters={semesters}
+            selectedSemester={this.state.selectedSem}
             onSelectSemester={this.onSelectSemester}
           />}
 

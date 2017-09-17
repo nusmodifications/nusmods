@@ -14,7 +14,7 @@ export type LessonType = string; // E.g. "Lecture", "Tutorial"
 export type LessonTime = StartTime | EndTime;
 export type ModuleCode = string; // E.g. "CS3216"
 export type ModuleTitle = string;
-export type Semester = 1 | 2 | 3 | 4;
+export type Semester = number;
 export type Venue = string;
 export type WeekText = string; // E.g. "Every Week", "Odd Week"
 

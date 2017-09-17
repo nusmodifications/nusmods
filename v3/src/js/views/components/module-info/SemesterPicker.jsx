@@ -3,19 +3,19 @@
 import React, { PureComponent } from 'react';
 import _ from 'lodash';
 
-import type { Semester, SemesterData } from 'types/modules';
+import type { Semester } from 'types/modules';
 
 import config from 'config';
 import ButtonGroupSelector from 'views/components/ButtonGroupSelector';
 
 type Props = {
-  semesters: SemesterData[],
+  semesters: Semester[],
   showDisabled?: boolean,
   useShortNames?: boolean,
   size?: string,
 
   selectedSemester: ?Semester,
-  onSelectSemester: (semester?: Semester, semesterData?: SemesterData) => void,
+  onSelectSemester: (semester: Semester) => void,
 };
 
 export default class SemesterPicker extends PureComponent<Props> {
@@ -30,29 +30,21 @@ export default class SemesterPicker extends PureComponent<Props> {
     const chosen = this.semesterMap()[choice];
 
     if (chosen) {
-      // This makes Flow happy
-      const semester = Number(chosen.semester);
-      if (semester === 1 || semester === 2 || semester === 3 || semester === 4) {
-        this.props.onSelectSemester(semester, chosen.semesterData);
-      }
-    } else {
-      this.props.onSelectSemester();
+      this.props.onSelectSemester(Number(chosen));
     }
   };
 
   /**
-   * Map button labels (semester names) to semester data
+   * Map button labels (semester names) to semesters
    * @returns {{}}
    */
-  semesterMap(): { [string]: ?{ semester: Semester, semesterData: SemesterData } } {
+  semesterMap(): { [string]: ?Semester } {
     const map = {};
     const { semesters, showDisabled } = this.props;
 
-    _.each(this.semesterNames(), (name: string, semester: string) => {
-      const semesterData = semesters.find(data => String(data.Semester) === semester);
-      if (semesterData || showDisabled) {
-        map[name] = { semester, semesterData };
-      }
+    _.each(this.semesterNames(), (name: string, key: string) => {
+      const semester = semesters.find(sem => String(sem) === key);
+      if (semester || showDisabled) map[name] = semester;
     });
 
     return map;
@@ -64,7 +56,7 @@ export default class SemesterPicker extends PureComponent<Props> {
     const attrs = {};
 
     _.each(this.semesterNames(), (name: string) => {
-      if (!_.get(semesterMap, [name, 'semesterData'])) {
+      if (!semesterMap[name]) {
         attrs[name] = {
           disabled: true,
           title: `This module is not available in ${name}`,
