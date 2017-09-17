@@ -17,8 +17,10 @@ type Props = {
 
 function TimetableDay(props: Props) {
   const columns = props.endingIndex - props.startingIndex;
+  const size = 100 / (columns / 4);
   const rowStyle = {
-    backgroundSize: `${100 / (columns / 4)}%`,
+    // Firefox defaults the second value (width) to auto if not specified
+    backgroundSize: `${size}% ${size}%`,
   };
   return (
     <li className={styles.day}>
