@@ -51,7 +51,6 @@ type Props = {
   semModuleList: ModuleSelectList,
   semTimetableWithLessons: SemTimetableConfig,
   modules: Module,
-  theme: string,
   colors: ThemeState,
   activeLesson: Lesson,
   timetableOrientation: TimetableOrientation,
@@ -152,7 +151,7 @@ class TimetableContainer extends Component<Props> {
 
     return (
       <div
-        className={`theme-${this.props.theme} ${styles.container} page-container`}
+        className={`${styles.container} page-container`}
         onClick={this.cancelModifyLesson}
       >
         <Helmet>
@@ -237,7 +236,6 @@ function mapStateToProps(state) {
     semTimetableWithLessons,
     modules,
     activeLesson: state.app.activeLesson,
-    theme: state.theme.id,
     colors: state.theme.colors,
     timetableOrientation: state.theme.timetableOrientation,
     hiddenInTimetable,
