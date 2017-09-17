@@ -19,11 +19,13 @@ import LoadingSpinner from './LoadingSpinner';
 
 type Props = {
   children: Node,
-  loadModule: (ModuleCode) => void,
-  fetchModuleList: () => void,
   moduleList: ModuleList,
   moduleSelectList: ModuleSelectList,
   timetables: TimetableConfig,
+  theme: string,
+
+  loadModule: (ModuleCode) => void,
+  fetchModuleList: () => void,
 };
 
 // Put outside render because this only needs to computed on page load.
@@ -104,7 +106,7 @@ export class AppShell extends Component<Props> {
             </NavLink>
           </nav>
 
-          <main className="main-content">
+          <main className={`main-content theme-${this.props.theme}`}>
             {isModuleListReady ? this.props.children : <LoadingSpinner />}
           </main>
         </div>
@@ -119,6 +121,7 @@ const mapStateToProps = state => ({
   moduleList: state.entities.moduleBank.moduleList,
   moduleSelectList: state.entities.moduleBank.moduleSelectList,
   timetables: state.timetables,
+  theme: state.theme.id,
 });
 
 export default withRouter(
