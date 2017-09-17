@@ -37,18 +37,16 @@
 }
 
 .dayRows {
+  display: flex;
   flex: 1 0 auto;
+  flex-direction: column;
   min-height: $timetable-row-height;
-  padding-bottom: 0.3rem;
   background: linear-gradient(to right, $gray-lightest 50%, transparent 50%);
 }
 
 :global(.verticalMode) .dayRows {
-  display: flex;
-  padding-right: 0.1rem;
+  flex-direction: row;
+  min-width: 4.5rem;
   padding-bottom: 0;
-}
-
-:global(.verticalMode) .dayRows {
   background: linear-gradient(to bottom, $gray-lightest 50%, transparent 50%);
 }

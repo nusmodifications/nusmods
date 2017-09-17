@@ -2,8 +2,15 @@
 
 .timetableRow {
   position: relative;
+  display: flex;
   flex: 1 0 auto;
+  align-items: stretch;
   min-width: $timetable-col-width;
+  margin-bottom: 1px;
+
+  &:first-child {
+    margin-top: 1px;
+  }
 
   &:empty {
     // Special case for iPhone 5 users
@@ -12,5 +19,16 @@
     @media (min-width: 321px) {
       min-width: $timetable-col-width * 0.8;
     }
+  }
+}
+
+:global(.verticalMode) .timetableRow {
+  height: auto;
+  margin-top: 0;
+  margin-right: 1px;
+  margin-bottom: 0;
+
+  &:first-child {
+    margin-left: 1px;
   }
 }

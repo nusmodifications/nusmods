@@ -5,13 +5,14 @@ $cell-opacity: 0.5;
 $cell-border-radius: 8px;
 
 .cell {
+  display: flex;
+  flex-direction: column;
   padding: $cell-padding;
   font-size: $font-size-xxs;
   line-height: 0.85rem;
   text-align: left;
-  vertical-align: top;
-  border: 0;
-  border-bottom: 2px solid;
+  border-width: 0 0 2px;
+  border-style: solid;
   transition: background-color $desktop-entering-duration $material-deceleration-curve;
   animation-duration: $desktop-entering-duration;
   overflow-wrap: break-word;
@@ -25,6 +26,7 @@ $cell-border-radius: 8px;
 .cellContainer {
   width: 100%;
   height: 100%;
+  padding: 0;
 }
 
 :global(.verticalMode) .cell {

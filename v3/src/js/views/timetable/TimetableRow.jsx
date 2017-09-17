@@ -45,8 +45,8 @@ function TimetableRow(props: Props) {
         const dirValue: number = lessonStartIndex - (verticalMode ? startingIndex : lastStartIndex);
         lastStartIndex = lessonEndIndex;
         const style = {
-          [dirStyle]: `${(dirValue / totalCols) * 100}%`,
-          [sizeStyle]: `${(size / totalCols) * 100}%`,
+          [dirStyle]: `calc(${(dirValue / totalCols) * 100}% + 1px)`,
+          [sizeStyle]: `calc(${(size / totalCols) * 100}% - 1px)`,
         };
         return (
           <TimetableCell

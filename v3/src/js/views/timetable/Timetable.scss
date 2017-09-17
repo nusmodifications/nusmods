@@ -11,7 +11,7 @@ $timetable-min-height: $timetable-col-width * 10;
   $breakpoint: map-get($grid-breakpoints, md);
 
   display: flex;
-  min-width: auto;
+  min-width: 0;
   min-height: $timetable-min-height;
 
   @media (min-width: $breakpoint) and (orientation: landscape) {
