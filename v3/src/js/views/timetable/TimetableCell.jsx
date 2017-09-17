@@ -37,22 +37,13 @@ function TimetableCell(props: Props) {
       style={props.style}
     >
       <div className={styles.cellContainer}>
-        <div className={styles.moduleCode}>
-          {lesson.ModuleCode}
-        </div>
+        <div className={styles.moduleCode}>{lesson.ModuleCode}</div>
         <div>
-          <span>
-            {LESSON_TYPE_ABBREV[lesson.LessonType]}
-          </span>
-          <span>
-            {' '}[{lesson.ClassNo}]
-          </span>
+          {LESSON_TYPE_ABBREV[lesson.LessonType]} [{lesson.ClassNo}]
         </div>
-        <div>
-          <span>
-            {lesson.Venue}
-          </span>
-        </div>
+        <div>{lesson.Venue}</div>
+        {lesson.WeekText !== 'Every Week' &&
+          <div>{lesson.WeekText}</div>}
       </div>
     </button>
   );
