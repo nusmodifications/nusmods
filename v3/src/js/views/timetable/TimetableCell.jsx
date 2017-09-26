@@ -11,7 +11,7 @@ import styles from './TimetableCell.scss';
 type Props = {
   lesson: Lesson,
   style: Object,
-  onModifyCell: Function,
+  onModifyCell?: Function,
 };
 
 function TimetableCell(props: Props) {

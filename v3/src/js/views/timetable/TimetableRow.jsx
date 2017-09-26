@@ -50,10 +50,11 @@ function TimetableRow(props: Props) {
         };
         return (
           <TimetableCell
-            key={lesson.ModuleCode + lesson.ClassNo}
+            key={lesson.StartTime}
             style={style}
             lesson={lesson}
-            onModifyCell={onModifyCell}
+            // $FlowFixMe When object spread type actually works
+            {...lesson.isModifiable && { onModifyCell }}
           />
         );
       })}
