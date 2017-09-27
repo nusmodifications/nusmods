@@ -2,52 +2,51 @@
 import React from 'react';
 import classnames from 'classnames';
 
-import type { ModifiableLesson } from 'types/modules';
+import type { Lesson } from 'types/modules';
 
 import { LESSON_TYPE_ABBREV } from 'utils/timetables';
 
+import styles from './TimetableCell.scss';
+
 type Props = {
-  lesson?: ModifiableLesson,
-  size?: number,
-  styleProp?: string,
+  lesson: Lesson,
+  style: Object,
   onModifyCell?: Function,
 };
 
 function TimetableCell(props: Props) {
   const lesson = props.lesson;
-  let cell = null;
-  const style = {};
-  if (props.size && props.styleProp) {
-    style[props.styleProp] = `${props.size}%`;
-  }
-
-  if (lesson) {
-    cell = (
-      <div
-        className={classnames('timetable-module-cell', {
-          'is-modifiable': lesson.isModifiable,
-          'is-available': lesson.isAvailable,
-          'is-active': lesson.isActive,
-          [`color-${lesson.colorIndex}`]: true,
-        })}
-        onClick={(event) => {
-          event.stopPropagation();
-          if (props.onModifyCell) {
-            props.onModifyCell(lesson);
-          }
-        }}
-      >
-        <div className="cell-module-code">{lesson.ModuleCode}</div>
+  return (
+    <button
+      className={classnames(styles.cell, {
+        // $FlowFixMe When object spread type actually works
+        [styles.cellIsModifiable]: lesson.isModifiable,
+        // $FlowFixMe When object spread type actually works
+        [styles.cellIsAvailable]: lesson.isAvailable,
+        // $FlowFixMe When object spread type actually works
+        [styles.cellIsActive]: lesson.isActive,
+        // $FlowFixMe When object spread type actually works
+        [`color-${lesson.colorIndex}`]: true,
+      })}
+      onClick={(event) => {
+        event.stopPropagation();
+        if (props.onModifyCell) {
+          props.onModifyCell(lesson);
+        }
+      }}
+      style={props.style}
+    >
+      <div className={styles.cellContainer}>
+        <div className={styles.moduleCode}>{lesson.ModuleCode}</div>
         <div>
-          <span className="cell-module-lesson-type">{LESSON_TYPE_ABBREV[lesson.LessonType]}</span>
-          <span className="cell-module-class">{' '}[{lesson.ClassNo}]</span>
+          {LESSON_TYPE_ABBREV[lesson.LessonType]} [{lesson.ClassNo}]
         </div>
-        <div><span className="cell-module-venue">{lesson.Venue}</span></div>
+        <div>{lesson.Venue}</div>
+        {lesson.WeekText !== 'Every Week' &&
+          <div>{lesson.WeekText}</div>}
       </div>
-    );
-  }
-
-  return <span className="timetable-cell" style={style}>{cell}</span>;
+    </button>
+  );
 }
 
 export default TimetableCell;

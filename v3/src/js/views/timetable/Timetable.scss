@@ -1,0 +1,31 @@
+@import './_variables.scss';
+
+$timetable-min-width: $timetable-row-height * 16;
+$timetable-min-height: $timetable-col-width * 10;
+
+.container {
+  min-width: $timetable-min-width;
+}
+
+:global(.verticalMode) .container {
+  $breakpoint: map-get($grid-breakpoints, md);
+
+  display: flex;
+  min-width: auto;
+  min-height: $timetable-min-height;
+
+  @media (min-width: $breakpoint) and (orientation: landscape) {
+    min-height: 90vh;
+  }
+}
+
+.days {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+:global(.verticalMode) .days {
+  display: flex;
+  flex: 1 0 auto;
+}

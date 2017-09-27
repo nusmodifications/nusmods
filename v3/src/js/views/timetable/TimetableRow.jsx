@@ -1,65 +1,64 @@
 // @flow
 import React from 'react';
-import _ from 'lodash';
 
-import type { Lesson, LessonTime, ModifiableLesson } from 'types/modules';
+import type { Lesson } from 'types/modules';
 
-import { convertIndexToTime, convertTimeToIndex } from 'utils/timify';
+import { convertTimeToIndex } from 'utils/timify';
+import styles from './TimetableRow.scss';
 import TimetableCell from './TimetableCell';
 
-function generateCells(lessons?: Array<ModifiableLesson | Lesson>,
-  cellSize: number, cellOrientationStyleProp: string,
-  onModifyCell?: Function, startingIndex: number, endingIndex: number) {
-  const lessonToStartTimeMap: {[time: LessonTime]: ModifiableLesson} = _.mapValues(
-    _.groupBy(lessons, lesson => lesson.StartTime),
-    value => value[0],
-  );
-
-  const cells = [];
-  for (let i = startingIndex; i < endingIndex; i += 1) {
-    const timeForIndex: LessonTime = convertIndexToTime(i);
-    const lesson: ModifiableLesson = lessonToStartTimeMap[timeForIndex];
-    if (lesson) {
-      const lessonStartIndex: number = i;
-      const lessonEndIndex: number = convertTimeToIndex(lesson.EndTime);
-      const size: number = lessonEndIndex - lessonStartIndex;
-      cells.push(
-        <TimetableCell
-          key={i}
-          size={size * cellSize}
-          styleProp={cellOrientationStyleProp}
-          lesson={lesson}
-          onModifyCell={onModifyCell}
-        />,
-      );
-      i += (size - 1);
-    } else {
-      cells.push(<TimetableCell key={i} />);
-    }
-  }
-  return cells;
-}
-
 type Props = {
-  cellSize: number,
-  cellOrientationStyleProp: string,
-  horizontalOrientation?: boolean,
-  scale?: number,
+  verticalMode: boolean,
   startingIndex: number,
   endingIndex: number,
-  lessons?: Array<ModifiableLesson | Lesson>,
-  onModifyCell?: Function,
+  lessons: Array<Lesson>,
+  onModifyCell: Function,
 };
 
+/**
+ * Position the lessons properly on the row.
+ * In horizontal mode, we use margin to insert space for elements,
+ * which are relative to each other.
+ * In vertical mode, we use absolute positioning to place lessons
+ * relative to the parent.
+ *
+ * Reasoning for doing so is that we need rows to resize according to their
+ * children's height, in which absolute positioning would not allow.
+ *
+ * @param {Props} props
+ * @returns
+ */
 function TimetableRow(props: Props) {
-  const style = {};
-  if (!props.horizontalOrientation && props.scale) {
-    style.width = `${props.scale}%`;
-  }
+  const { startingIndex, endingIndex, lessons, onModifyCell, verticalMode } = props;
+  const totalCols = endingIndex - startingIndex;
+  const dirStyle = verticalMode ? 'top' : 'marginLeft';
+  const sizeStyle = verticalMode ? 'height' : 'width';
+
+  let lastStartIndex = startingIndex;
   return (
-    <div className="timetable-row" style={style}>
-      {generateCells(props.lessons, props.cellSize, props.cellOrientationStyleProp,
-        props.onModifyCell, props.startingIndex, props.endingIndex)}
+    <div className={styles.timetableRow}>
+      {lessons.map((lesson) => {
+        const lessonStartIndex: number = convertTimeToIndex(lesson.StartTime);
+        const lessonEndIndex: number = convertTimeToIndex(lesson.EndTime);
+        const size: number = lessonEndIndex - lessonStartIndex;
+
+        const dirValue: number = lessonStartIndex - (verticalMode ? startingIndex : lastStartIndex);
+        lastStartIndex = lessonEndIndex;
+        const style = {
+          [dirStyle]: `${(dirValue / totalCols) * 100}%`,
+          [sizeStyle]: `${(size / totalCols) * 100}%`,
+        };
+        // $FlowFixMe When object spread type actually works
+        const conditionalProps = lesson.isModifiable ? { onModifyCell } : {};
+        return (
+          <TimetableCell
+            key={lesson.StartTime}
+            style={style}
+            lesson={lesson}
+            {...conditionalProps}
+          />
+        );
+      })}
     </div>
   );
 }

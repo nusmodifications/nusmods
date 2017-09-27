@@ -13,9 +13,8 @@ import { formatExamDate } from 'utils/modules';
 import { intersperse } from 'utils/array';
 import { BULLET } from 'utils/react';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
-
+import LessonTimetable from 'views/components/module-info/LessonTimetable';
 import CorsBiddingStatsTableControl from './CorsBiddingStatsTableControl';
-import LessonTimetableControl from './LessonTimetableControl';
 import ModuleTree from './ModuleTree';
 
 type Props = {
@@ -165,7 +164,7 @@ class ModulePageContentComponent extends Component<Props> {
 
             <div>
               <h2>Timetable</h2>
-              <LessonTimetableControl
+              <LessonTimetable
                 semestersOffered={this.semestersOffered()}
                 history={module.History}
               />

@@ -4,11 +4,10 @@ import type { Node } from 'react';
 import React, { Component } from 'react';
 import _ from 'lodash';
 
-import type { SemesterData } from 'types/modules';
+import type { Semester, SemesterData } from 'types/modules';
 
-import config from 'config';
 import { getFirstAvailableSemester, formatExamDate } from 'utils/modules';
-import ButtonGroupSelector from 'views/components/ButtonGroupSelector';
+import SemesterPicker from './SemesterPicker';
 import TimeslotTable from './TimeslotTable';
 
 type Props = {
@@ -16,10 +15,8 @@ type Props = {
 };
 
 type State = {
-  selected: string,
+  selected: Semester,
 };
-
-const semesterNames = config.shortSemesterNames;
 
 export default class ModuleSemesterInfo extends Component<Props, State> {
   props: Props;
@@ -28,43 +25,17 @@ export default class ModuleSemesterInfo extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    const selectedSem = getFirstAvailableSemester(this.props.semesters);
-    this.state = {
-      selected: semesterNames[selectedSem],
-    };
+    this.state = { selected: getFirstAvailableSemester(this.props.semesters) };
   }
 
-  // Map semester name to semester data, if available
-  semesterMap(): { [string]: ?SemesterData } {
-    const map = {};
-    const { semesters } = this.props;
-
-    _.each(semesterNames, (name: string, semester: string) => {
-      map[name] = semesters.find(data => String(data.Semester) === semester);
-    });
-
-    return map;
-  }
-
-  // Disable and add title for buttons representing modules not available in the
-  // particular semester
-  buttonAttrs() {
-    const semesterMap = this.semesterMap();
-    const attrs = {};
-    _.each(semesterNames, (name: string) => {
-      if (!semesterMap[name]) {
-        attrs[name] = {
-          disabled: true,
-          title: `This module is not available in ${name}`,
-        };
-      }
-    });
-
-    return { attrs };
-  }
+  onSelectSemester = (selected: ?Semester) => {
+    if (selected) {
+      this.setState({ selected });
+    }
+  };
 
   selectedSemester(): ?SemesterData {
-    return this.semesterMap()[this.state.selected];
+    return this.props.semesters.find(data => data.Semester === this.state.selected);
   }
 
   timeslotChildren(): Map<string, Node> {
@@ -98,23 +69,19 @@ export default class ModuleSemesterInfo extends Component<Props, State> {
     return !_.isEmpty(semester.LecturePeriods) || !_.isEmpty(semester.TutorialPeriods);
   }
 
-  selectSemester(selected: string) {
-    this.setState({ selected });
-  }
-
   render() {
-    const { selected } = this.state;
-    const semesterMap = this.semesterMap();
     const semester = this.selectedSemester();
+    const semesters = this.props.semesters.map(data => data.Semester);
 
     return (
       <div className="module-semester-container">
-        <ButtonGroupSelector
-          {...this.buttonAttrs()}
+        <SemesterPicker
+          semesters={semesters}
+          selectedSemester={this.state.selected}
           size="sm"
-          choices={Object.keys(semesterMap)}
-          selectedChoice={selected}
-          onChoiceSelect={choice => this.selectSemester(choice)}
+          onSelectSemester={this.onSelectSemester}
+          useShortNames
+          showDisabled
         />
 
         {semester && <div className="module-semester-info">
