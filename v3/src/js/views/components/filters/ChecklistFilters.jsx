@@ -3,7 +3,6 @@ import React from 'react';
 import classnames from 'classnames';
 import { values } from 'lodash';
 
-import type { Module } from 'types/modules';
 import type { OnFilterChange } from 'types/views';
 
 import FilterGroup from 'utils/filters/FilterGroup';
@@ -11,12 +10,13 @@ import ModuleFilter from 'utils/filters/ModuleFilter';
 
 type Props = {
   onFilterChange: OnFilterChange,
+  groups: FilterGroup<any>[],
   group: FilterGroup<*>,
-  modules: Module[],
 };
 
 export default function ChecklistFilters(props: Props) {
-  const { group, modules, onFilterChange } = props;
+  const { group, groups, onFilterChange } = props;
+  const moduleCodes = FilterGroup.union(groups, group);
 
   return (
     <div className="module-filters-checklist">
@@ -31,7 +31,7 @@ export default function ChecklistFilters(props: Props) {
                 checked={filter.enabled}
                 onChange={() => onFilterChange(group.toggle(filter))}
               />
-              {filter.label} <span className="text-muted">({filter.count(modules)})</span>
+              {filter.label} <span className="text-muted">({filter.count(moduleCodes)})</span>
             </label>
           </li>
         ))}
