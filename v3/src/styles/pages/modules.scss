@@ -6,9 +6,9 @@
   }
 
   header {
+    border-bottom: 1px solid $gray-lighter;
     padding-bottom: 1rem;
     margin-bottom: 2rem;
-    border-bottom: 1px solid $gray-lighter;
 
     p {
       margin-bottom: 0;
@@ -30,7 +30,7 @@
 
   h2 {
     padding-bottom: 0.4rem;
-    margin: 3rem 0 0.4rem;
+    margin: 0 0 0.4rem;
     font-weight: bold;
     font-size: 1rem;
     border-bottom: 1px solid $gray-lighter;
@@ -50,6 +50,9 @@
     // Account for the fixed header's height. If this is not done, when side menu links are
     // clicked a portion of the content will be clipped by the fixed header.
     padding-top: $navbar-height + 1rem;
+  }
+
+  #details {
     margin-top: -($navbar-height + 1rem);
   }
 
