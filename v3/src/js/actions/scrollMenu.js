@@ -30,10 +30,18 @@ export function clearMenuState(menuId: ScrollMenuId): FSA {
   };
 }
 
-export const UPDATE_MENU_STATE = 'UPDATE_MENU_STATE';
-export function updateMenuState(menuId: ScrollMenuId, itemId: ScrollMenuItemId): FSA {
+export const NEXT_MENU_ITEM = 'NEXT_MENU_ITEM';
+export function nextMenuItem(menuId: ScrollMenuId, after: ScrollMenuItemId): FSA {
   return {
-    type: UPDATE_MENU_STATE,
-    payload: { menuId, itemId },
+    type: NEXT_MENU_ITEM,
+    payload: { menuId, after },
+  };
+}
+
+export const PREV_MENU_ITEM = 'PREV_MENU_ITEM';
+export function prevMenuItem(menuId: ScrollMenuId, before: ScrollMenuItemId): FSA {
+  return {
+    type: PREV_MENU_ITEM,
+    payload: { menuId, before },
   };
 }

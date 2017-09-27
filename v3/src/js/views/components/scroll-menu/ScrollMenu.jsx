@@ -2,26 +2,39 @@
 
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import type { ScrollMenu } from 'types/reducers';
+import classnames from 'classnames';
+
+import type { ScrollMenu, ScrollMenuId } from 'types/reducers';
+import { clearMenuState } from 'actions/scrollMenu';
 
 type Props = {
-  menu: ScrollMenu,
+  menu: ?ScrollMenu,
+
+  clearMenuState: (ScrollMenuId) => void,
 };
 
 export class ScrollMenuComponent extends PureComponent<Props> {
   props: Props;
 
+  componentWillUnmount() {
+    const { menu } = this.props;
+    if (menu) this.props.clearMenuState(menu.id);
+  }
+
   render() {
     const { menu } = this.props;
 
-    console.log('Rendering menu', menu);
-
-    if (!menu) return null;
+    if (!menu) {
+      return null;
+    }
 
     return (
       <ul>
-        {menu.items.map(item => (
-          <li>
+        {menu.items.map((item, index) => (
+          <li
+            key={item.id}
+            className={classnames({ 'scroll-menu-link-active': index === menu.currentIndex })}
+          >
             <a href={`#${item.id}`}>{item.label}</a>
           </li>
         ))}
@@ -36,4 +49,4 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-export default connect(mapStateToProps)(ScrollMenuComponent);
+export default connect(mapStateToProps, { clearMenuState })(ScrollMenuComponent);

@@ -1,7 +1,6 @@
 // @flow
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import ReactDisqusThread from 'react-disqus-thread';
 import Helmet from 'react-helmet';
 
 import type { Module, Semester } from 'types/modules';
@@ -17,9 +16,9 @@ import LessonTimetable from 'views/components/module-info/LessonTimetable';
 import ScrollMenu from 'views/components/scroll-menu/ScrollMenu';
 import ScrollItem from 'views/components/scroll-menu/ScrollItem';
 import CorsBiddingStatsTableControl from './CorsBiddingStatsTableControl';
-import ModuleTree from './ModuleTree';
 
 const MENU_ID = 'module-page';
+const TOP_OFFSET = 30;
 
 type Props = {
   module: Module,
@@ -62,7 +61,7 @@ class ModulePageContentComponent extends Component<Props> {
         </Helmet>
 
         <div className="row">
-          <div className="col-sm-12">
+          <div className="col-md-9">
             <header>
               <h1 className="page-title">
                 <span className="page-title-module-code">{ModuleCode}</span>
@@ -82,11 +81,9 @@ class ModulePageContentComponent extends Component<Props> {
                 )), BULLET)}
               </p>
             </header>
-          </div>
 
-          <div className="col-xl-9">
-            <ScrollItem menuId={MENU_ID} label="Details" className="row">
-              <div className="col-sm-9 col-lg-8">
+            <ScrollItem menuId={MENU_ID} label="Details" topOffset={TOP_OFFSET} className="row">
+              <div className="col-sm-8">
                 { module.ModuleDescription && <p>{module.ModuleDescription}</p> }
 
                 <dl>
@@ -113,7 +110,7 @@ class ModulePageContentComponent extends Component<Props> {
                 </dl>
               </div>
 
-              <div className="col-sm-3 col-lg-4 module-page-sidebar">
+              <div className="col-sm-4 module-page-sidebar">
                 {this.examinations().map(exam => (
                   <div key={`exam-${exam.semester}`}>
                     <h3>{config.semesterNames[exam.semester]} Exam</h3>
@@ -154,17 +151,17 @@ class ModulePageContentComponent extends Component<Props> {
               </div>
             </ScrollItem>
 
-            <ScrollItem menuId={MENU_ID} label="Prerequisites">
+            <ScrollItem menuId={MENU_ID} topOffset={TOP_OFFSET} label="Prerequisites">
               <h2>Prerequisite Tree</h2>
 
             </ScrollItem>
 
-            {module.CorsBiddingStats && <ScrollItem menuId={MENU_ID} label="Bidding Stats">
+            {module.CorsBiddingStats && <ScrollItem menuId={MENU_ID} topOffset={TOP_OFFSET} label="Bidding Stats">
               <h2>CORS Bidding Stats</h2>
               <CorsBiddingStatsTableControl stats={module.CorsBiddingStats} />
             </ScrollItem>}
 
-            <ScrollItem menuId={MENU_ID} label="Timetable">
+            <ScrollItem menuId={MENU_ID} topOffset={TOP_OFFSET} label="Timetable">
               <h2>Timetable</h2>
               <LessonTimetable
                 semestersOffered={this.semestersOffered()}
@@ -172,11 +169,13 @@ class ModulePageContentComponent extends Component<Props> {
               />
             </ScrollItem>
 
-            <h2>Review and Discussion</h2>
+            <ScrollItem menuId={MENU_ID} label="Reviews">
+              <h2>Review and Discussion</h2>
+            </ScrollItem>
           </div>
 
-          <aside className="col-xl-3">
-            <nav>
+          <aside className="col-md-3">
+            <nav className="module-side-menu">
               <ScrollMenu menuId={MENU_ID} />
             </nav>
           </aside>

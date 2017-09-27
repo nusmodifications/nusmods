@@ -1,11 +1,9 @@
 // @flow
 
-import update from 'immutability-helper';
-
 import type { FSA } from 'types/redux';
-import type { ScrollMenuState, ScrollMenu, ScrollMenuItem, ScrollMenuId } from 'types/reducers';
-import { ADD_MENU_ITEM, CLEAR_MENU_STATE, UPDATE_MENU_STATE } from '../actions/scrollMenu';
-
+import { clamp } from 'lodash';
+import type { ScrollMenuState, ScrollMenu, ScrollMenuItem, ScrollMenuId, ScrollMenuItemId } from 'types/reducers';
+import { ADD_MENU_ITEM, CLEAR_MENU_STATE, NEXT_MENU_ITEM, PREV_MENU_ITEM } from 'actions/scrollMenu';
 
 const defaultState: ScrollMenuState = {};
 
@@ -13,7 +11,7 @@ function updateOrCreateMenu(id: ScrollMenuId, menu: ScrollMenu, item: ScrollMenu
   if (!menu) {
     return {
       id,
-      current: item.id,
+      currentIndex: 0,
       items: [item],
     };
   }
@@ -25,6 +23,18 @@ function updateOrCreateMenu(id: ScrollMenuId, menu: ScrollMenu, item: ScrollMenu
   return {
     ...menu,
     items: menu.items.concat([item]),
+  };
+}
+
+function offsetMenuCurrentItem(menu: ScrollMenu, itemId: ScrollMenuItemId, offset: number): ScrollMenu {
+  const reference = menu.items.findIndex(item => item.id === itemId);
+  if (reference == null) {
+    return menu;
+  }
+
+  return {
+    ...menu,
+    currentIndex: clamp(reference + offset, 0, menu.items.length - 1),
   };
 }
 
@@ -45,16 +55,26 @@ export default function scrollMenu(state: ScrollMenuState = defaultState, action
         [action.payload.menuId]: null,
       };
 
-    case UPDATE_MENU_STATE:
-      if (!state[action.payload.menuId]) return state;
+    case NEXT_MENU_ITEM: {
+      const menu = state[action.payload.menuId];
+      if (!menu) return state;
 
-      return update(state, {
-        [action.payload.menuId]: {
-          current: {
-            $set: action.payload.itemId,
-          },
-        },
-      });
+      return {
+        ...state,
+        [action.payload.menuId]: offsetMenuCurrentItem(menu, action.payload.after, 1),
+      };
+    }
+
+    case PREV_MENU_ITEM: {
+      const menu = state[action.payload.menuId];
+      if (!menu) return state;
+
+      return {
+        ...state,
+        [action.payload.menuId]: offsetMenuCurrentItem(menu, action.payload.before, -1),
+      };
+    }
+
 
     default:
       return state;

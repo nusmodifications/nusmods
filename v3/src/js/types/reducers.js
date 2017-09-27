@@ -64,7 +64,7 @@ export type ScrollMenuItem = {
 }
 
 export type ScrollMenu = {
-  current: ?ScrollMenuItemId,
+  currentIndex: number,
   id: ScrollMenuId,
   items: ScrollMenuItem[],
 };

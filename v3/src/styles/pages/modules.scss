@@ -1,7 +1,13 @@
 .module-container {
+  $header-margin-top: 1rem;
+
+  .header-row {
+    margin-top: $header-margin-top;
+  }
+
   header {
     padding-bottom: 1rem;
-    margin: 1rem 0 2rem;
+    margin-bottom: 2rem;
     border-bottom: 1px solid $gray-lighter;
 
     p {
@@ -38,6 +44,42 @@
 
   dt {
     font-size: $font-size-sm;
+  }
+
+  .scroll-menu-item-wrapper {
+    // Account for the fixed header's height. If this is not done, when side menu links are
+    // clicked a portion of the content will be clipped by the fixed header.
+    padding-top: $navbar-height + 1rem;
+    margin-top: -($navbar-height + 1rem);
+  }
+
+  .module-side-menu {
+    position: sticky;
+    top: $navbar-height + 1rem;
+    margin-top: 0.4rem;
+
+    ul {
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    a {
+      display: block;
+      padding: 0.4rem 0 0.4rem 1rem;
+      color: $gray-light;
+      border-left: 0.3rem solid $gray-lighter;
+    }
+
+    .scroll-menu-link-active a {
+      font-weight: bold;
+      color: theme-color();
+      border-color: theme-color();
+    }
+
+    @include media-breakpoint-down(sm) {
+      display: none;
+    }
   }
 
   @include media-breakpoint-down(sm) {

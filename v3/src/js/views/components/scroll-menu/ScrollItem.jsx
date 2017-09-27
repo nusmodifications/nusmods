@@ -2,22 +2,43 @@
 
 import type { Node } from 'react';
 import React, { PureComponent } from 'react';
+import classnames from 'classnames';
 import { connect } from 'react-redux';
 import Waypoint from 'react-waypoint';
 import { omit } from 'lodash';
 
 import type { ScrollMenuItem, ScrollMenuId, ScrollMenuItemId } from 'types/reducers';
-import { createMenuItem, addMenuItem, updateMenuState } from 'actions/scrollMenu';
+import { createMenuItem, addMenuItem, nextMenuItem, prevMenuItem } from 'actions/scrollMenu';
 
 type Props = {
   children: Node,
   menuId: string,
   label: string,
+  topOffset?: number | string,
+  bottomOffset?: number | string,
+  className?: string,
   id?: string,
 
-  updateMenuState: (menuId: ScrollMenuId, itemId: ScrollMenuItemId) => void,
-  addMenuItem: (menuId: ScrollMenuId, itemOrLabel: string | ScrollMenuItem) => void,
+  addMenuItem: (ScrollMenuId, string | ScrollMenuItem) => void,
+  nextMenuItem: (ScrollMenuId, ScrollMenuItemId) => void,
+  prevMenuItem: (ScrollMenuId, ScrollMenuItemId) => void,
 };
+
+const mapDispatchToProps = {
+  addMenuItem,
+  nextMenuItem,
+  prevMenuItem,
+};
+
+const ownProps = [
+  'children',
+  'menuId',
+  'label',
+  'id',
+  'className',
+  'topOffset',
+  'bottomOffset',
+].concat(Object.keys(mapDispatchToProps));
 
 export class ScrollItemComponent extends PureComponent<Props> {
   props: Props;
@@ -26,8 +47,14 @@ export class ScrollItemComponent extends PureComponent<Props> {
     this.props.addMenuItem(this.props.menuId, this.menuItem());
   }
 
-  updateMenu = () => {
-    this.props.updateMenuState(this.props.menuId, this.menuItem().id);
+  updateMenu = ({ currentPosition, previousPosition }: Waypoint.CallbackArgs) => {
+    if (currentPosition === Waypoint.above && previousPosition === Waypoint.inside) {
+      this.props.nextMenuItem(this.props.menuId, this.menuItem().id);
+    }
+
+    if (currentPosition === Waypoint.inside && previousPosition === Waypoint.above) {
+      this.props.prevMenuItem(this.props.menuId, this.menuItem().id);
+    }
   };
 
   menuItem() {
@@ -37,14 +64,24 @@ export class ScrollItemComponent extends PureComponent<Props> {
 
   render() {
     const item = this.menuItem();
-    const otherProps = omit(this.props, ['children', 'menuId', 'label', 'id', 'updateMenuState', 'addMenuItem']);
+    const otherProps = omit(this.props, ownProps);
 
     return (
-      <Waypoint onEnter={this.updateMenu}>
-        <div id={item.id} {...otherProps}>{this.props.children}</div>
+      <Waypoint
+        onPositionChange={this.updateMenu}
+        topOffset={this.props.topOffset}
+        bottomOffset={this.props.bottomOffset}
+      >
+        <div
+          id={item.id}
+          className={classnames(this.props.className, 'scroll-menu-item-wrapper')}
+          {...otherProps}
+        >
+          {this.props.children}
+        </div>
       </Waypoint>
     );
   }
 }
 
-export default connect(null, { updateMenuState, addMenuItem })(ScrollItemComponent);
+export default connect(null, mapDispatchToProps)(ScrollItemComponent);
