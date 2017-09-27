@@ -1,6 +1,5 @@
 // @flow
 import type { Module } from 'types/modules';
-import type { ReadOnlySet } from 'utils/set';
 
 import { createModule } from './ModuleFilter.test';
 import Group from './FilterGroup';
@@ -65,13 +64,6 @@ describe('#toggle()', () => {
 describe('.union()', () => {
   const modules = [cs1010s, cs3216, pc1222];
 
-  function toSet(s: ?ReadOnlySet<*>) {
-    if (!s) return s;
-    const newSet = new Set();
-    s.forEach(v => newSet.add(v));
-    return newSet;
-  }
-
   test('should return null if no group has active filters', () => {
     const g1 = new Group('g1', 'g1', [f1]);
     const g2 = new Group('g2', 'g2', [f2]);
@@ -86,17 +78,14 @@ describe('.union()', () => {
     const g2 = new Group('g2', 'g2', [moduleCodeFilter('1'), moduleCodeFilter('2')]);
     initModules([g1, g2], [cs1010s, cs3216, pc1222]);
 
-    expect(toSet(
-      Group.union([g1.toggle('CS'), g2]),
-    )).toEqual(new Set(['CS1010S', 'CS3216']));
+    expect(Group.union([g1.toggle('CS'), g2]))
+      .toEqual(new Set(['CS1010S', 'CS3216']));
 
-    expect(toSet(
-      Group.union([g1.toggle('CS'), g2.toggle('2')]),
-    )).toEqual(new Set(['CS3216']));
+    expect(Group.union([g1.toggle('CS'), g2.toggle('2')]))
+      .toEqual(new Set(['CS3216']));
 
-    expect(toSet(
-      Group.union([g1.toggle('CS'), g2.toggle('1').toggle('2')]),
-    )).toEqual(new Set(['CS1010S', 'CS3216']));
+    expect(Group.union([g1.toggle('CS'), g2.toggle('1').toggle('2')]))
+      .toEqual(new Set(['CS1010S', 'CS3216']));
   });
 });
 

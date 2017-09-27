@@ -1,23 +1,16 @@
 // @flow
-import type { ReadOnlySet } from './set';
-import { intersection, intersectionCount, partitionUnion } from './set';
+import { intersection, intersectionCount, union } from './set';
 
 function s<T>(...args: T[]): Set<T> {
   return new Set(args);
 }
 
-function toSet<T>(set: ReadOnlySet<T>): Set<T> {
-  const newSet = new Set();
-  set.forEach(v => newSet.add(v));
-  return newSet;
-}
-
 test('partitionUnion() should return a read-only union of the provided sets', () => {
-  expect(toSet(partitionUnion())).toEqual(s());
-  expect(toSet(partitionUnion(s(1, 2, 3)))).toEqual(s(1, 2, 3));
-  expect(toSet(partitionUnion(s(1), s(2)))).toEqual(s(1, 2));
-  expect(toSet(partitionUnion(s(1), s(2, 3, 4)))).toEqual(s(1, 2, 3, 4));
-  expect(toSet(partitionUnion(s(1), s(2, 3, 4), s(5), s(6)))).toEqual(s(1, 2, 3, 4, 5, 6));
+  expect(union()).toEqual(s());
+  expect(union(s(1, 2, 3))).toEqual(s(1, 2, 3));
+  expect(union(s(1), s(2))).toEqual(s(1, 2));
+  expect(union(s(1), s(2, 3, 4))).toEqual(s(1, 2, 3, 4));
+  expect(union(s(1), s(2, 3, 4), s(5), s(6))).toEqual(s(1, 2, 3, 4, 5, 6));
 });
 
 test('intersection() should return an intersection of the provided sets', () => {

@@ -3,15 +3,36 @@ import { keyBy, values } from 'lodash';
 import update from 'immutability-helper';
 
 import type { Module, ModuleCode } from 'types/modules';
-import type { ReadOnlySet } from 'utils/set';
 
-import { intersection, partitionUnion } from 'utils/set';
+import { intersection, union } from 'utils/set';
 import ModuleFilter from './ModuleFilter';
 
 export const ID_DELIMITER = ',';
 
 export type FilterGroupId = string;
 
+/**
+ * A filter group is a collection of module filters. A module filter is a simple function
+ * that returns true or false given a module, and when applied to an array of modules,
+ * returns all modules that matches the criteria. For performance, this matching is done
+ * when the filters are initialized, so an array of all modules should be passed to
+ * initFilters() before filteredModules() is accessed.
+ *
+ * If no filters are enabled, the group is considered inactive and does not affect the inputs.
+ * If multiple filters within a group is enabled, the result is the union of the modules
+ * matched by each individual filter. This is because filters often form a partition over the
+ * set of all modules, so it makes sense to union the results.
+ *
+ * When multiple filter groups are active, the result is the intersection of each group's
+ * results. This allows relatively complex filters to be easily composed, such as
+ * "All level 4000 modules in Computing with lectures on Mondays or Tuesdays".
+ *
+ * Filter groups are immutable - when a filter is toggled on and off, a new filter group
+ * is returned instead of mutating the original.
+ *
+ * Every filter group is serializable to and from query string value. This allows the page
+ * URL to be updated when filters are turned on and off.
+ */
 export default class FilterGroup<Filter: ModuleFilter> {
   id: FilterGroupId;
   label: string;
@@ -37,9 +58,9 @@ export default class FilterGroup<Filter: ModuleFilter> {
       .filter(filter => filter.enabled);
   }
 
-  filteredModules(): ReadOnlySet<ModuleCode> {
-    // Within each FilterGroup, modules are
-    return partitionUnion(...this.activeFilters.map(filter => filter.filteredModules));
+  filteredModules(): Set<ModuleCode> {
+    // Within each FilterGroup, we take the union of the results from all active filters
+    return union(...this.activeFilters.map(filter => filter.filteredModules));
   }
 
   toggle(idOrFilter: string | Filter, value: ?boolean): FilterGroup<Filter> {
@@ -80,6 +101,7 @@ export default class FilterGroup<Filter: ModuleFilter> {
    *
    * @param {FilterGroup<any>[]} filterGroups
    * @param {FilterGroup<any>} [exclude] - exclude this FilterGroup - useful for calculating
+   *   module count for a given filter
    * @returns {?Set<ModuleCode>}
    */
   static union(filterGroups: FilterGroup<any>[], exclude?: FilterGroup<any>): ?Set<ModuleCode> {
@@ -88,7 +110,6 @@ export default class FilterGroup<Filter: ModuleFilter> {
       .filter(group => group.isActive() && group.id !== excludedId);
 
     if (modules.length === 0) return null;
-
     return intersection(...modules.map(group => group.filteredModules()));
   }
 
