@@ -4,6 +4,10 @@ const StyleLintPlugin = require('stylelint-webpack-plugin');
 
 const parts = require('./webpack.parts');
 
+// Used by Webpack to resolve the path to assets on the client side
+// See: https://webpack.js.org/guides/public-path/
+const publicPath = process.env.PUBLIC_PATH || '/';
+
 const commonConfig = merge([
   {
     // This tells Webpack where to look for modules. Remember to update the
@@ -38,6 +42,7 @@ const commonConfig = merge([
     },
     context: parts.PATHS.app,
     output: {
+      publicPath,
       path: parts.PATHS.build,
       filename: '[name].js',
     },
