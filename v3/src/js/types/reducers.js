@@ -53,3 +53,22 @@ export type ModuleSelectListItem = {
 };
 export type ModuleList = Array<ModuleCondensed>;
 export type ModuleSelectList = Array<ModuleSelectListItem>;
+
+/* scrollMenu.js */
+export type ScrollMenuId = string;
+export type ScrollMenuItemId = string;
+
+export type ScrollMenuItem = {
+  id: ScrollMenuItemId,
+  label: string,
+}
+
+export type ScrollMenu = {
+  current: ?ScrollMenuItemId,
+  id: ScrollMenuId,
+  items: ScrollMenuItem[],
+};
+
+export type ScrollMenuState = {
+  [ScrollMenuId]: ScrollMenu,
+};

@@ -4,6 +4,7 @@ import type {
   Requests,
   SettingsState,
   AppState,
+  ScrollMenuState,
 } from 'types/reducers';
 
 import requests from './requests';
@@ -12,6 +13,7 @@ import timetables from './timetables';
 import app from './app';
 import theme from './theme';
 import settings from './settings';
+import scrollMenu from './scrollMenu';
 
 type State = {
   entities: Object,
@@ -20,6 +22,7 @@ type State = {
   app: AppState,
   theme: Object,
   settings: SettingsState,
+  scrollMenu: ScrollMenuState,
 };
 
 // $FlowFixMe: State default is delegated to its child reducers.
@@ -33,5 +36,6 @@ export default function (state: State = defaultState, action: FSA): State {
     app: app(state.app, action),
     theme: theme(state.theme, action),
     settings: settings(state.settings, action),
+    scrollMenu: scrollMenu(state.scrollMenu, action),
   };
 }

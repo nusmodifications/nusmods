@@ -14,8 +14,12 @@ import { intersperse } from 'utils/array';
 import { BULLET } from 'utils/react';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
 import LessonTimetable from 'views/components/module-info/LessonTimetable';
+import ScrollMenu from 'views/components/scroll-menu/ScrollMenu';
+import ScrollItem from 'views/components/scroll-menu/ScrollItem';
 import CorsBiddingStatsTableControl from './CorsBiddingStatsTableControl';
 import ModuleTree from './ModuleTree';
+
+const MENU_ID = 'module-page';
 
 type Props = {
   module: Module,
@@ -81,7 +85,7 @@ class ModulePageContentComponent extends Component<Props> {
           </div>
 
           <div className="col-xl-9">
-            <div className="row">
+            <ScrollItem menuId={MENU_ID} label="Details" className="row">
               <div className="col-sm-9 col-lg-8">
                 { module.ModuleDescription && <p>{module.ModuleDescription}</p> }
 
@@ -148,36 +152,34 @@ class ModulePageContentComponent extends Component<Props> {
                   ], BULLET)}
                 </div>
               </div>
-            </div>
+            </ScrollItem>
 
-            <h2>Prerequisite Tree</h2>
-            {module.ModmavenTree ?
-              <ModuleTree module={module} />
-              :
-              <p>Prerequisites are not available.</p>
-            }
+            <ScrollItem menuId={MENU_ID} label="Prerequisites">
+              <h2>Prerequisite Tree</h2>
 
-            {module.CorsBiddingStats && <div>
+            </ScrollItem>
+
+            {module.CorsBiddingStats && <ScrollItem menuId={MENU_ID} label="Bidding Stats">
               <h2>CORS Bidding Stats</h2>
               <CorsBiddingStatsTableControl stats={module.CorsBiddingStats} />
-            </div>}
+            </ScrollItem>}
 
-            <div>
+            <ScrollItem menuId={MENU_ID} label="Timetable">
               <h2>Timetable</h2>
               <LessonTimetable
                 semestersOffered={this.semestersOffered()}
                 history={module.History}
               />
-            </div>
+            </ScrollItem>
 
             <h2>Review and Discussion</h2>
-            <ReactDisqusThread
-              shortname={config.disqusShortname}
-              identifier={ModuleCode}
-              title={`${ModuleCode} ${ModuleTitle}`}
-              url={`https://nusmods.com/modules/${ModuleCode}/reviews`}
-            />
           </div>
+
+          <aside className="col-xl-3">
+            <nav>
+              <ScrollMenu menuId={MENU_ID} />
+            </nav>
+          </aside>
         </div>
       </div>
     );
