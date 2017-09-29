@@ -16,7 +16,7 @@ import { noBreak } from 'utils/react';
 import ModulesSelect from 'views/components/ModulesSelect';
 import Footer from 'views/layout/Footer';
 import Navtabs from 'views/layout/Navtabs';
-import LoadingSpinner from './LoadingSpinner';
+import LoadingSpinner from './components/LoadingSpinner';
 
 type Props = {
   children: Node,
