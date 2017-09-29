@@ -8,7 +8,7 @@ import type { PageRange, PageRangeDiff, OnPageChange } from 'types/views';
 
 import ModuleFinderPage from './ModuleFinderPage';
 
-const MODULES_PER_PAGE = 10;
+const MODULES_PER_PAGE = 5;
 
 type Props = {
   page: PageRange,

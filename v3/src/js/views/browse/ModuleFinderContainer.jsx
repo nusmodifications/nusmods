@@ -14,6 +14,7 @@ import type { PageRange, PageRangeDiff } from 'types/views';
 import type { FilterGroupId } from 'utils/filters/FilterGroup';
 
 import ModuleFinderList from 'views/browse/ModuleFinderList';
+import ModuleSearchBox from 'views/browse/ModuleSearchBox';
 import ChecklistFilters from 'views/components/filters/ChecklistFilters';
 import TimeslotFilters from 'views/components/filters/TimeslotFilters';
 import LoadingSpinner from 'views/LoadingSpinner';
@@ -23,6 +24,7 @@ import moduleFilters, {
   TUTORIAL_TIMESLOTS,
   MODULE_CREDITS,
 } from 'views/browse/module-filters';
+import moduleSearch from 'views/browse/module-search';
 import config from 'config';
 import nusmods from 'apis/nusmods';
 import FilterGroup from 'utils/filters/FilterGroup';
@@ -117,14 +119,14 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
     });
 
     if (!_.isEmpty(updater)) {
-      this.setState(update(this.state, {
+      this.setState(state => update(state, {
         filterGroups: updater,
       }));
     }
   }
 
-  onFilterChange = (newGroup: FilterGroup<*>) => {
-    this.setState(update(this.state, {
+  onFilterChange = (newGroup: FilterGroup<*>, resetScroll: boolean = true) => setImmediate(() => {
+    this.setState(state => update(state, {
       filterGroups: { [newGroup.id]: { $set: newGroup } },
       page: { $merge: { start: 0, current: 0 } },
     }), () => {
@@ -142,14 +144,21 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
       });
 
       // Scroll back to the top
-      window.scrollTo(0, 0);
+      if (resetScroll) window.scrollTo(0, 0);
     });
-  };
+  });
 
   onPageChange = (diff: PageRangeDiff) => {
     this.setState(prevState => ({
       page: mergePageRange(prevState.page, diff),
     }), this.updatePageHash);
+  };
+
+  onSearch = (searchTerm: string) => {
+    const filter = moduleSearch(searchTerm);
+    filter.initFilters(this.state.modules);
+
+    this.onFilterChange(filter, false);
   };
 
   updatePageHash = () => {
@@ -198,11 +207,13 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
         {pageHead}
 
         <div className="row">
-          <div className="col-sm-12">
-            <h1 className="page-title">Module Finder</h1>
-          </div>
-
           <div className="col-md-8 col-lg-9">
+            <header>
+              <h1 className="sr-only">Module Finder</h1>
+
+              <ModuleSearchBox onSearch={this.onSearch} />
+            </header>
+
             <ModuleFinderList
               modules={filteredModules}
               page={page}
