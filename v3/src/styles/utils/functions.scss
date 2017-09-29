@@ -1,0 +1,7 @@
+@function workload($key) {
+  @return map-get($workload-colors, $key);
+}
+
+@function nusmods-theme($theme, $n: 0) {
+  @return nth(map_get($theme), $n);
+}
