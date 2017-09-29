@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Calendar, Search, Settings } from 'react-feather';
+import { Calendar, Search, Settings } from 'views/components/icons/index';
 
 import styles from './Navtabs.scss';
 

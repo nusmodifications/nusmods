@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { Sidebar, Image, Calendar } from 'react-feather';
+import { Sidebar, Image, Calendar } from 'views/components/icons/index';
 import classnames from 'classnames';
 
 import styles from './TimetableActions.scss';
