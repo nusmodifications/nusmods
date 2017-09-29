@@ -1,0 +1,11 @@
+@import './_variables.scss';
+
+:global(.btn).btn {
+  height: 1.25rem;
+  padding: 0.15rem 0.4rem;
+  font-size: 1em;
+}
+
+.eyeIcon {
+  height: 100%;
+}

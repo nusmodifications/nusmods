@@ -1,0 +1,14 @@
+@import './_variables.scss';
+
+.actionIcon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.verticalMode {
+  transform: rotate(180deg);
+}
+
+.horizontalMode {
+  transform: rotate(-90deg);
+}

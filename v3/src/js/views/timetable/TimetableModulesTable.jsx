@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Eye, EyeOff } from 'react-feather';
 import classnames from 'classnames';
 
 import type { ModuleWithColor, ModuleCode, Semester } from 'types/modules';
@@ -12,6 +13,8 @@ import ColorPicker from 'views/components/color-picker/ColorPicker';
 import { selectModuleColor, modifyModuleColor, cancelModifyModuleColor } from 'actions/theme';
 import { hideLessonInTimetable, showLessonInTimetable } from 'actions/settings';
 import { getModuleSemExamDate, modulePagePath } from 'utils/modules';
+
+import styles from './TimetableModulesTable.scss';
 
 type Props = {
   activeModule: ModuleCode,
@@ -42,12 +45,12 @@ class TimetableModulesTable extends Component<Props> {
   showButton(moduleCode) {
     return (
       <button
-        className="btn-link btn-remove"
+        className={`btn btn-link btn-remove ${styles.btn}`}
         title="Hide"
         aria-label="Hide"
         onClick={() => this.props.showLessonInTimetable(moduleCode)}
       >
-        <i className="fa fa-eye-slash" aria-hidden="true" />
+        <EyeOff className={styles.eyeIcon} />
       </button>
     );
   }
@@ -55,12 +58,12 @@ class TimetableModulesTable extends Component<Props> {
   hideButton(moduleCode) {
     return (
       <button
-        className="btn-link btn-remove"
+        className={`btn btn-link btn-remove ${styles.btn}`}
         title="Show"
         aria-label="Show"
         onClick={() => this.props.hideLessonInTimetable(moduleCode)}
       >
-        <i className="fa fa-eye" aria-hidden="true" />
+        <Eye className={styles.eyeIcon} />
       </button>
     );
   }
@@ -113,7 +116,7 @@ class TimetableModulesTable extends Component<Props> {
                         {module.ModuleCredit} MCs
                         &nbsp;&middot;
                         <button
-                          className="btn-link btn-remove"
+                          className={`btn btn-link btn-remove ${styles.btn}`}
                           onClick={() => {
                             this.props.onRemoveModule(module.ModuleCode);
                           }}
