@@ -1,22 +1,16 @@
 @import './_variables.scss';
 
 $timetable-min-width: $timetable-row-height * 16;
-$timetable-min-height: $timetable-col-width * 10;
+$timetable-height: $timetable-col-width * 12;
 
 .container {
   min-width: $timetable-min-width;
 }
 
 :global(.verticalMode) .container {
-  $breakpoint: map-get($grid-breakpoints, md);
-
   display: flex;
   min-width: 0;
-  min-height: $timetable-min-height;
-
-  @media (min-width: $breakpoint) and (orientation: landscape) {
-    min-height: 90vh;
-  }
+  height: $timetable-height;
 }
 
 .days {

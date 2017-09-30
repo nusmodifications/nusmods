@@ -8,10 +8,6 @@
   min-width: $timetable-col-width;
   margin-bottom: 1px;
 
-  &:first-child {
-    margin-top: 1px;
-  }
-
   &:empty {
     // Special case for iPhone 5 users
     min-width: 0;
@@ -23,12 +19,11 @@
 }
 
 :global(.verticalMode) .timetableRow {
+  min-width: 4.8rem;
   height: auto;
-  margin-top: 0;
-  margin-right: 1px;
-  margin-bottom: 0;
+  margin: 0 1px 0 0;
 
-  &:first-child {
-    margin-left: 1px;
+  &:empty {
+    min-width: 4rem;
   }
 }
