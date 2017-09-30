@@ -15,13 +15,19 @@ type Props = {
   onModifyCell: Function,
 };
 
+// Height of timetable per hour in vertical mode
+const VERTICAL_HEIGHT = 2;
+
 function TimetableDay(props: Props) {
   const columns = props.endingIndex - props.startingIndex;
   const size = 100 / (columns / 4);
-  const rowStyle = {
+  const rowStyle: Object = {
     // Firefox defaults the second value (width) to auto if not specified
     backgroundSize: `${size}% ${size}%`,
   };
+
+  if (props.verticalMode) rowStyle.height = `${VERTICAL_HEIGHT * columns}rem`;
+
   return (
     <li className={styles.day}>
       <div className={styles.dayName}>

@@ -1,7 +1,6 @@
 @import './_variables.scss';
 
 $timetable-min-width: $timetable-row-height * 16;
-$timetable-height: $timetable-col-width * 12;
 
 .container {
   min-width: $timetable-min-width;
@@ -10,7 +9,6 @@ $timetable-height: $timetable-col-width * 12;
 :global(.verticalMode) .container {
   display: flex;
   min-width: 0;
-  height: $timetable-height;
 }
 
 .days {
