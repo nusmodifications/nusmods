@@ -1,20 +1,30 @@
 module.exports = {
   roots: [
-    '<rootDir>/__tests__',
     '<rootDir>/src',
   ],
   moduleDirectories: [
     'node_modules',
-    '<rootDir>/src/js',
+    'src/js',
   ],
   modulePaths: [
     '<rootDir>',
   ],
   testPathIgnorePatterns: [
-    '.eslintrc.js',
+    '<rootDir>/.eslintrc.js',
   ],
   collectCoverageFrom: [
     'src/**/*.{js|jsx}',
+  ],
+  setupFiles: ['<rootDir>/scripts/test.js'],
+  moduleNameMapper: {
+    // Mock non js files for jest to process
+    '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': '<rootDir>/__mocks__/fileMock.js',
+    '\\.(css|scss)$': 'identity-obj-proxy',
+  },
+  // Allow us to directly use enzyme wrappers for snapshotting
+  // Usage: expect(enzyme.shallow(<div/>)).toMatchSnapshot();
+  snapshotSerializers: [
+    '<rootDir>/node_modules/enzyme-to-json/serializer',
   ],
   // Only write lcov files in CIs
   coverageReporters: ['text'].concat(process.env.CI ? 'lcov' : []),
