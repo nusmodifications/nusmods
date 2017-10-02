@@ -15,7 +15,6 @@ $cell-border-radius: 8px;
   border-style: solid;
   transition: background-color $desktop-entering-duration $material-deceleration-curve;
   animation-duration: $desktop-entering-duration;
-  overflow-wrap: break-word;
 
   &:hover,
   &:focus {
