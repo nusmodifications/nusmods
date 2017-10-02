@@ -19,11 +19,10 @@
 }
 
 :global(.verticalMode) .timetableRow {
-  min-width: 4.8rem;
   height: auto;
   margin: 0 1px 0 0;
 
   &:empty {
-    min-width: 4rem;
+    min-width: 2.5rem;
   }
 }

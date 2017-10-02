@@ -16,7 +16,7 @@ type Props = {
 };
 
 // Height of timetable per hour in vertical mode
-const VERTICAL_HEIGHT = 2;
+const VERTICAL_HEIGHT = 2.2;
 
 function TimetableDay(props: Props) {
   const columns = props.endingIndex - props.startingIndex;
@@ -31,7 +31,7 @@ function TimetableDay(props: Props) {
   return (
     <li className={styles.day}>
       <div className={styles.dayName}>
-        {props.day.substring(0, 3)}
+        <span>{props.day.substring(0, 3)}</span>
       </div>
       <div className={styles.dayRows} style={rowStyle}>
         {

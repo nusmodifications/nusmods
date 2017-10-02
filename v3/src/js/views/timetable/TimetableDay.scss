@@ -1,11 +1,12 @@
 @import './_variables.scss';
 
 .day {
+  position: relative;
   display: flex;
   flex: 1 0 auto;
   min-height: $timetable-row-height;
   border: $timetable-border;
-  border-top: 0;
+  border-width: 0 1px 1px 0;
 
   &:first-child {
     border-top: $timetable-border;
@@ -23,6 +24,9 @@
 }
 
 .dayName {
+  position: sticky;
+  left: 0;
+  z-index: 1;
   display: flex;
   flex: 0 0 $timetable-day-horizontal-size;
   align-items: center;
@@ -30,10 +34,29 @@
   font-weight: 600;
   font-size: $font-size-s;
   text-transform: uppercase;
+  border: $timetable-border;
+  border-width: 0 1px;
+  background: $body-bg;
+
+  @include media-breakpoint-down(sm) {
+    flex: 0 0 1.5rem;
+    overflow: hidden;
+
+    span {
+      font-size: $font-size-xs;
+      transform: rotate(-90deg);
+      transform-origin: center center;
+    }
+  }
 }
 
 :global(.verticalMode) .dayName {
   flex: 0 0 $timetable-day-vertical-size;
+  border: 0;
+
+  span {
+    transform: none;
+  }
 }
 
 .dayRows {
