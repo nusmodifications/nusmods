@@ -37,13 +37,17 @@ test('should update the correct menu item correctly', () => {
     },
   };
 
+  const afterItem1 = nextMenuItem('test', 'test-item-1');
   const afterItem2 = nextMenuItem('test', 'test-item-2');
-  expect(reducer(state, afterItem2).test.currentIndex).toEqual(2);
   const afterItem3 = nextMenuItem('test', 'test-item-3');
+  expect(reducer(state, afterItem1).test.currentIndex).toEqual(1);
+  expect(reducer(state, afterItem2).test.currentIndex).toEqual(2);
   expect(reducer(state, afterItem3).test.currentIndex).toEqual(2);
 
-  const beforeItem2 = setMenuItem('test', 'test-item-2');
-  expect(reducer(state, beforeItem2).test.currentIndex).toEqual(0);
-  const beforeItem1 = setMenuItem('test', 'test-item-1');
-  expect(reducer(state, beforeItem1).test.currentIndex).toEqual(0);
+  const setToItem1 = setMenuItem('test', 'test-item-1');
+  const setToItem2 = setMenuItem('test', 'test-item-2');
+  const setToItem3 = setMenuItem('test', 'test-item-3');
+  expect(reducer(state, setToItem1).test.currentIndex).toEqual(0);
+  expect(reducer(state, setToItem2).test.currentIndex).toEqual(1);
+  expect(reducer(state, setToItem3).test.currentIndex).toEqual(2);
 });
