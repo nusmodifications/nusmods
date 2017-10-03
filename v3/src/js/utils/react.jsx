@@ -1,6 +1,8 @@
 // @flow
 
 import type { Node } from 'react';
+import React from 'react';
+import { escapeRegExp } from 'lodash';
 
 // Define some useful Unicode characters as constants
 export const NBSP = '\u00a0';
@@ -36,6 +38,12 @@ export function replaceWithNode(
     if (i % 2 === 0) return part;
     return replacement(part, (i - 1) / 2);
   });
+}
+
+export function highlight(str: string, search: string, Tag: string = 'mark'): Node {
+  if (!search) return str;
+  const regex = new RegExp(`(${escapeRegExp(search)})`, 'ig');
+  return replaceWithNode(str, regex, (match, i) => <Tag key={i}>{match}</Tag>);
 }
 
 /**

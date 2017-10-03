@@ -51,6 +51,7 @@ module.exports = {
     'no-unused-vars': warnInDevelopment,
     'comma-dangle': warnInDevelopment,
     'comma-spacing': [warnInDevelopment, { before: false, after: true }],
+    'quotes': [warnInDevelopment, 'single'],
 
     // Allow debugger and console statement in development
     'no-debugger': warnInDevelopment,
@@ -71,7 +72,7 @@ module.exports = {
     // SEE: https://github.com/yannickcr/eslint-plugin-react/issues
     'react/no-unused-prop-types': 'off',
     // Enables typing to be placed above lifecycle
-    'react/sort-comp': ['error', {
+    'react/sort-comp': [warnInDevelopment, {
       order: [
         'type-annotations',
         'static-methods',

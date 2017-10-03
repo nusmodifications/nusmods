@@ -1,35 +1,33 @@
 // @flow
-
+import type { ContextRouter } from 'react-router-dom';
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { throttle } from 'lodash';
+import qs from 'query-string';
 
-type Props = {
+import { searchModules } from 'actions/module-finder';
+
+type Props = ContextRouter & {
   throttle: number,
+  onSearch?: (string) => void,
 
-  onSearch: (searchTerm: string) => void,
+  searchModules: (string) => void,
 };
 
 type State = {
   searchTerm: string,
 };
 
-export default class ModuleSearchBox extends PureComponent<Props, State> {
+export class ModuleSearchBoxComponent extends PureComponent<Props, State> {
   props: Props;
-
-  throttledSearch: (string) => void;
 
   static defaultProps = {
     throttle: 300,
   };
 
-  constructor(props: Props) {
-    super(props);
-
-    this.throttledSearch = throttle(this.props.onSearch, this.props.throttle, { leading: false });
-  }
-
   state: State = {
-    searchTerm: '',
+    searchTerm: qs.parse(this.props.location.search).q || '',
   };
 
   onSearchInput = (evt: Event) => {
@@ -40,6 +38,14 @@ export default class ModuleSearchBox extends PureComponent<Props, State> {
     }
   };
 
+  search = (input: string) => {
+    const searchTerm = input.trim();
+    if (this.props.onSearch) this.props.onSearch(searchTerm);
+    this.props.searchModules(searchTerm);
+  };
+
+  throttledSearch = throttle(this.search, this.props.throttle, { leading: false });
+
   render() {
     return (
       <div>
@@ -47,9 +53,14 @@ export default class ModuleSearchBox extends PureComponent<Props, State> {
           className="form-control form-control-lg"
           type="search"
           value={this.state.searchTerm}
-          onInput={this.onSearchInput}
+          onChange={this.onSearchInput}
+          spellCheck
         />
       </div>
     );
   }
 }
+
+export default withRouter(
+  connect(null, { searchModules })(ModuleSearchBoxComponent),
+);

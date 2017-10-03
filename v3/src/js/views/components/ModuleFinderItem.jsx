@@ -1,20 +1,28 @@
 // @flow
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import type { Module } from 'types/modules';
 
 import { modulePagePath } from 'utils/modules';
+import { highlight } from 'utils/react';
 import ModuleSemesterInfo from './module-info/ModuleSemesterInfo';
 import ModuleWorkload from './module-info/ModuleWorkload';
 import LinkModuleCodes from './LinkModuleCodes';
 
 type Props = {
   module: Module,
+  searchTerm: string,
 };
 
-export default class ModuleFinderItem extends PureComponent<Props> {
+export class ModuleFinderItemComponent extends PureComponent<Props> {
   props: Props;
+
+  highlight(content: string) {
+    if (!this.props.searchTerm) return content;
+    return highlight(content, this.props.searchTerm);
+  }
 
   render() {
     const { module } = this.props;
@@ -26,7 +34,7 @@ export default class ModuleFinderItem extends PureComponent<Props> {
             <header>
               <h2 className="modules-title">
                 <Link to={modulePagePath(module.ModuleCode)}>
-                  {module.ModuleCode} {module.ModuleTitle}
+                  {module.ModuleCode} {this.highlight(module.ModuleTitle)}
                 </Link>
               </h2>
               <p>
@@ -34,7 +42,7 @@ export default class ModuleFinderItem extends PureComponent<Props> {
                 <a>{module.ModuleCredit} MCs</a>
               </p>
             </header>
-            {module.ModuleDescription && <p>{module.ModuleDescription}</p>}
+            {module.ModuleDescription && <p>{this.highlight(module.ModuleDescription)}</p>}
             <dl>
               {module.Preclusion && ([
                 <dt key="preclusions-dt">Preclusions</dt>,
@@ -67,3 +75,7 @@ export default class ModuleFinderItem extends PureComponent<Props> {
     );
   }
 }
+
+export default connect(state => ({
+  searchTerm: state.moduleFinder.searchTerm,
+}))(ModuleFinderItemComponent);
