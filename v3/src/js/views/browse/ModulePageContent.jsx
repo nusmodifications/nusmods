@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
+import ScrollSpy from 'react-scrollspy';
 
 import type { Module, Semester } from 'types/modules';
 import type { TimetableConfig } from 'types/timetables';
@@ -13,13 +14,7 @@ import { intersperse } from 'utils/array';
 import { BULLET } from 'utils/react';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
 import LessonTimetable from 'views/components/module-info/LessonTimetable';
-import ScrollMenu from 'views/components/scroll-menu/ScrollMenu';
-import ScrollItem from 'views/components/scroll-menu/ScrollItem';
-import ScrollMenuContainer from 'views/components/scroll-menu/ScrollMenuContainer';
 import CorsBiddingStatsTableControl from './CorsBiddingStatsTableControl';
-
-const MENU_ID = 'module-page';
-const TOP_OFFSET = 30;
 
 type Props = {
   module: Module,
@@ -61,128 +56,135 @@ class ModulePageContentComponent extends Component<Props> {
           <title>{ModuleCode} {ModuleTitle} - {config.brandName}</title>
         </Helmet>
 
-        <ScrollMenuContainer menuId={MENU_ID}>
-          <div className="row">
-            <div className="col-md-9">
-              <header>
-                <h1 className="page-title">
-                  <span className="page-title-module-code">{ModuleCode}</span>
-                  {ModuleTitle}
-                </h1>
+        <div className="row">
+          <div className="col-md-9">
+            <header>
+              <h1 className="page-title">
+                <span className="page-title-module-code">{ModuleCode}</span>
+                {ModuleTitle}
+              </h1>
 
-                <p>
-                  {intersperse([
-                    <a key="department">{module.Department}</a>,
-                    <a key="mc">{module.ModuleCredit} MCs</a>,
-                  ], BULLET)}
-                </p>
+              <p>
+                {intersperse([
+                  <a key="department">{module.Department}</a>,
+                  <a key="mc">{module.ModuleCredit} MCs</a>,
+                ], BULLET)}
+              </p>
 
-                <p>
-                  {intersperse(this.semestersOffered().map(semester => (
-                    <a key={semester}>{ config.semesterNames[semester] }</a>
-                  )), BULLET)}
-                </p>
-              </header>
+              <p>
+                {intersperse(this.semestersOffered().map(semester => (
+                  <a key={semester}>{ config.semesterNames[semester] }</a>
+                )), BULLET)}
+              </p>
+            </header>
 
-              <ScrollItem label="Details" topOffset={TOP_OFFSET} className="row">
-                <div className="col-sm-8">
-                  { module.ModuleDescription && <p>{module.ModuleDescription}</p> }
+            <section id="details" className="row">
+              <div className="col-sm-8">
+                { module.ModuleDescription && <p>{module.ModuleDescription}</p> }
 
-                  <dl>
-                    {module.Prerequisite && [
-                      <dt key="prerequisite-dt">Prerequisite</dt>,
-                      <dd key="prerequisite-dd">
-                        <LinkModuleCodes>{module.Prerequisite}</LinkModuleCodes>
-                      </dd>,
-                    ]}
+                <dl>
+                  {module.Prerequisite && [
+                    <dt key="prerequisite-dt">Prerequisite</dt>,
+                    <dd key="prerequisite-dd">
+                      <LinkModuleCodes>{module.Prerequisite}</LinkModuleCodes>
+                    </dd>,
+                  ]}
 
-                    {module.Corequisite && [
-                      <dt key="corequisite-dt">Corequisite</dt>,
-                      <dd key="corequisite-dd">
-                        <LinkModuleCodes>{module.Corequisite}</LinkModuleCodes>
-                      </dd>,
-                    ]}
+                  {module.Corequisite && [
+                    <dt key="corequisite-dt">Corequisite</dt>,
+                    <dd key="corequisite-dd">
+                      <LinkModuleCodes>{module.Corequisite}</LinkModuleCodes>
+                    </dd>,
+                  ]}
 
-                    {module.Preclusion && [
-                      <dt key="preclusions-dt">Preclusion</dt>,
-                      <dd key="preclusions-dd">
-                        <LinkModuleCodes>{module.Preclusion}</LinkModuleCodes>
-                      </dd>,
-                    ]}
-                  </dl>
-                </div>
+                  {module.Preclusion && [
+                    <dt key="preclusions-dt">Preclusion</dt>,
+                    <dd key="preclusions-dd">
+                      <LinkModuleCodes>{module.Preclusion}</LinkModuleCodes>
+                    </dd>,
+                  ]}
+                </dl>
+              </div>
 
-                <div className="col-sm-4 module-page-sidebar">
-                  {this.examinations().map(exam => (
-                    <div key={`exam-${exam.semester}`}>
-                      <h3>{config.semesterNames[exam.semester]} Exam</h3>
-                      <p>{formatExamDate(exam.date)}</p>
-                    </div>
-                  ))}
+              <div className="col-sm-4 module-page-sidebar">
+                {this.examinations().map(exam => (
+                  <div key={`exam-${exam.semester}`}>
+                    <h3>{config.semesterNames[exam.semester]} Exam</h3>
+                    <p>{formatExamDate(exam.date)}</p>
+                  </div>
+                ))}
 
-                  <div>
-                    {this.semestersOffered().map(
-                      semester => (
-                        this.moduleHasBeenAdded(module, semester) ?
-                          <button
-                            key={semester}
-                            className="btn btn-outline-primary"
-                            onClick={() => this.props.removeModule(semester, ModuleCode)}
-                          >
+                <div>
+                  {this.semestersOffered().map(
+                    semester => (
+                      this.moduleHasBeenAdded(module, semester) ?
+                        <button
+                          key={semester}
+                          className="btn btn-outline-primary"
+                          onClick={() => this.props.removeModule(semester, ModuleCode)}
+                        >
                           Remove from {config.semesterNames[semester]}
-                          </button>
-                          :
-                          <button
-                            key={semester}
-                            className="btn btn-outline-primary"
-                            onClick={() => this.props.addModule(semester, ModuleCode)}
-                          >
+                        </button>
+                        :
+                        <button
+                          key={semester}
+                          className="btn btn-outline-primary"
+                          onClick={() => this.props.addModule(semester, ModuleCode)}
+                        >
                           Add to {config.semesterNames[semester]}
-                          </button>
-                      ),
-                    )}
-                  </div>
-
-                  <div>
-                    <h3>Official Links</h3>
-                    {intersperse([
-                      <a key="ivle" href={config.ivleUrl.replace('<ModuleCode>', ModuleCode)}>IVLE</a>,
-                      <a key="cors" href={config.corsUrl + ModuleCode}>CORS</a>,
-                    ], BULLET)}
-                  </div>
+                        </button>
+                    ),
+                  )}
                 </div>
-              </ScrollItem>
 
-              <ScrollItem topOffset={TOP_OFFSET} label="Prerequisites">
-                <h2>Prerequisite Tree</h2>
+                <div>
+                  <h3>Official Links</h3>
+                  {intersperse([
+                    <a key="ivle" href={config.ivleUrl.replace('<ModuleCode>', ModuleCode)}>IVLE</a>,
+                    <a key="cors" href={config.corsUrl + ModuleCode}>CORS</a>,
+                  ], BULLET)}
+                </div>
+              </div>
+            </section>
 
-              </ScrollItem>
+            <section id="prerequisites">
+              <h2>Prerequisite Tree</h2>
 
-              {module.CorsBiddingStats && <ScrollItem topOffset={TOP_OFFSET} label="Bidding Stats">
-                <h2>CORS Bidding Stats</h2>
-                <CorsBiddingStatsTableControl stats={module.CorsBiddingStats} />
-              </ScrollItem>}
+            </section>
 
-              <ScrollItem topOffset={TOP_OFFSET} label="Timetable">
-                <h2>Timetable</h2>
-                <LessonTimetable
-                  semestersOffered={this.semestersOffered()}
-                  history={module.History}
-                />
-              </ScrollItem>
+            {module.CorsBiddingStats && <section id="bidding-stats">
+              <h2>CORS Bidding Stats</h2>
+              <CorsBiddingStatsTableControl stats={module.CorsBiddingStats} />
+            </section>}
 
-              <ScrollItem label="Reviews">
-                <h2>Review and Discussion</h2>
-              </ScrollItem>
-            </div>
+            <section id="timetable">
+              <h2>Timetable</h2>
+              <LessonTimetable
+                semestersOffered={this.semestersOffered()}
+                history={module.History}
+              />
+            </section>
 
-            <aside className="col-md-3">
-              <nav className="module-side-menu">
-                <ScrollMenu />
-              </nav>
-            </aside>
+            <section id="reviews">
+              <h2>Review and Discussion</h2>
+            </section>
           </div>
-        </ScrollMenuContainer>
+
+          <aside className="col-md-3">
+            <nav className="module-side-menu">
+              <ScrollSpy
+                items={['details', 'prerequisites', 'bidding-stats', 'timetable', 'reviews']}
+                currentClassName="scroll-menu-link-active"
+              >
+                <li><a href="#details">Details</a></li>
+                <li><a href="#prerequisites">Prerequisites</a></li>
+                <li><a href="#bidding-stats">Bidding Stats</a></li>
+                <li><a href="#timetable">Timetable</a></li>
+                <li><a href="#reviews">Reviews</a></li>
+              </ScrollSpy>
+            </nav>
+          </aside>
+        </div>
       </div>
     );
   }
