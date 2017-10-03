@@ -7,6 +7,7 @@ import { throttle } from 'lodash';
 import qs from 'query-string';
 
 import { searchModules } from 'actions/module-finder';
+import { SEARCH_QUERY_KEY } from './module-search';
 
 type Props = ContextRouter & {
   throttle: number,
@@ -27,8 +28,12 @@ export class ModuleSearchBoxComponent extends PureComponent<Props, State> {
   };
 
   state: State = {
-    searchTerm: qs.parse(this.props.location.search).q || '',
+    searchTerm: qs.parse(this.props.location.search)[SEARCH_QUERY_KEY] || '',
   };
+
+  componentWillMount() {
+    this.search(this.state.searchTerm);
+  }
 
   onSearchInput = (evt: Event) => {
     if (evt.target instanceof HTMLInputElement) {

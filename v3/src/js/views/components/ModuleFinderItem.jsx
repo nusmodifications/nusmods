@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import type { Module } from 'types/modules';
+import type { ModuleSearch } from 'types/reducers';
 
 import { modulePagePath } from 'utils/modules';
 import { highlight } from 'utils/react';
@@ -13,15 +14,15 @@ import LinkModuleCodes from './LinkModuleCodes';
 
 type Props = {
   module: Module,
-  searchTerm: string,
+  search: ModuleSearch,
 };
 
 export class ModuleFinderItemComponent extends PureComponent<Props> {
   props: Props;
 
   highlight(content: string) {
-    if (!this.props.searchTerm) return content;
-    return highlight(content, this.props.searchTerm);
+    if (!this.props.search.term) return content;
+    return highlight(content, this.props.search.tokens);
   }
 
   render() {
@@ -34,7 +35,7 @@ export class ModuleFinderItemComponent extends PureComponent<Props> {
             <header>
               <h2 className="modules-title">
                 <Link to={modulePagePath(module.ModuleCode)}>
-                  {module.ModuleCode} {this.highlight(module.ModuleTitle)}
+                  {this.highlight(`${module.ModuleCode} ${module.ModuleTitle}`)}
                 </Link>
               </h2>
               <p>
@@ -77,5 +78,5 @@ export class ModuleFinderItemComponent extends PureComponent<Props> {
 }
 
 export default connect(state => ({
-  searchTerm: state.moduleFinder.searchTerm,
+  search: state.moduleFinder.search,
 }))(ModuleFinderItemComponent);

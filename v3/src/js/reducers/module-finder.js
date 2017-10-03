@@ -1,11 +1,15 @@
 // @flow
 import type { ModuleFinderState } from 'types/reducers';
 import type { FSA } from 'types/redux';
-
+import update from 'immutability-helper';
 import { SEARCH_MODULES, RESET_MODULE_FINDER } from 'actions/module-finder';
+import { tokenize } from 'views/browse/module-search';
 
 const defaultState: ModuleFinderState = {
-  searchTerm: '',
+  search: {
+    term: '',
+    tokens: [],
+  },
 };
 
 export default function moduleFinder(state: ModuleFinderState = defaultState, action: FSA): ModuleFinderState {
@@ -13,11 +17,15 @@ export default function moduleFinder(state: ModuleFinderState = defaultState, ac
     case RESET_MODULE_FINDER:
       return defaultState;
 
-    case SEARCH_MODULES:
-      return {
-        ...state,
-        searchTerm: action.payload.searchTerm,
-      };
+    case SEARCH_MODULES: {
+      const term = action.payload.searchTerm;
+      return update(state, {
+        search: {
+          term: { $set: term },
+          tokens: { $set: tokenize(term) },
+        },
+      });
+    }
 
     default:
       return state;

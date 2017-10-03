@@ -24,7 +24,7 @@ import moduleFilters, {
   TUTORIAL_TIMESLOTS,
   MODULE_CREDITS,
 } from 'views/browse/module-filters';
-import moduleSearch from 'views/browse/module-search';
+import moduleSearch, { SEARCH_QUERY_KEY } from 'views/browse/module-search';
 import config from 'config';
 import nusmods from 'apis/nusmods';
 import FilterGroup from 'utils/filters/FilterGroup';
@@ -89,11 +89,13 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
       loading: true,
       modules: [],
     };
+  }
 
-    // Initialize search query after state has been set up. This is done here
-    // instead of in ModuleSearchBox because doing the latter is too slow, and
-    // results in
-    if (params.q) this.onSearch(params.q);
+  componentWillMount() {
+    // Initialize search query. This is done here instead of in ModuleSearchBox because doing
+    // the latter is too slow, and results in a flash of unfiltered results
+    const params = qs.parse(this.props.location.search);
+    if (params[SEARCH_QUERY_KEY]) this.onSearch(params[SEARCH_QUERY_KEY]);
   }
 
   componentDidMount() {
@@ -130,7 +132,7 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
     }
   }
 
-  onFilterChange = (newGroup: FilterGroup<*>, resetScroll: boolean = true) => setImmediate(() => {
+  onFilterChange = (newGroup: FilterGroup<*>, resetScroll: boolean = true) => {
     this.setState(state => update(state, {
       filterGroups: { [newGroup.id]: { $set: newGroup } },
       page: { $merge: { start: 0, current: 0 } },
@@ -151,7 +153,7 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
       // Scroll back to the top
       if (resetScroll) window.scrollTo(0, 0);
     });
-  });
+  };
 
   onPageChange = (diff: PageRangeDiff) => {
     this.setState(prevState => ({

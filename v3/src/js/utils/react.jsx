@@ -2,7 +2,7 @@
 
 import type { Node } from 'react';
 import React from 'react';
-import { escapeRegExp } from 'lodash';
+import { escapeRegExp, castArray } from 'lodash';
 
 // Define some useful Unicode characters as constants
 export const NBSP = '\u00a0';
@@ -40,9 +40,10 @@ export function replaceWithNode(
   });
 }
 
-export function highlight(str: string, search: string, Tag: string = 'mark'): Node {
-  if (!search) return str;
-  const regex = new RegExp(`(${escapeRegExp(search)})`, 'ig');
+export function highlight(str: string, search: string | string[], Tag: string = 'mark'): Node {
+  const terms = castArray(search).filter(Boolean);
+  if (!terms.length) return str;
+  const regex = new RegExp(`(${terms.map(escapeRegExp).join('|')})`, 'ig');
   return replaceWithNode(str, regex, (match, i) => <Tag key={i}>{match}</Tag>);
 }
 
