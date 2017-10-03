@@ -1,7 +1,7 @@
 // @flow
 
 import type { ScrollMenuState } from 'types/reducers';
-import { addMenuItem, createMenuItem, nextMenuItem, prevMenuItem } from 'actions/scrollMenu';
+import { addMenuItem, createMenuItem, nextMenuItem, setMenuItem } from 'actions/scrollMenu';
 
 import reducer from './scrollMenu';
 
@@ -42,8 +42,8 @@ test('should update the correct menu item correctly', () => {
   const afterItem3 = nextMenuItem('test', 'test-item-3');
   expect(reducer(state, afterItem3).test.currentIndex).toEqual(2);
 
-  const beforeItem2 = prevMenuItem('test', 'test-item-2');
+  const beforeItem2 = setMenuItem('test', 'test-item-2');
   expect(reducer(state, beforeItem2).test.currentIndex).toEqual(0);
-  const beforeItem1 = prevMenuItem('test', 'test-item-1');
+  const beforeItem1 = setMenuItem('test', 'test-item-1');
   expect(reducer(state, beforeItem1).test.currentIndex).toEqual(0);
 });

@@ -1,6 +1,6 @@
 // @flow
 
-import type { Node } from 'react';
+import type { Node, ComponentType } from 'react';
 
 // Define some useful Unicode characters as constants
 export const NBSP = '\u00a0';
@@ -49,4 +49,10 @@ export function replaceWithNode(
  */
 export function noBreak(text: string): string {
   return text.replace(/ /g, NBSP);
+}
+
+export function getDisplayName(WrappedComponent: ComponentType, wrapperName?: string) {
+  const name = WrappedComponent.displayName || WrappedComponent.name || 'Component';
+  if (wrapperName) return `${wrapperName}(${name})`;
+  return name;
 }

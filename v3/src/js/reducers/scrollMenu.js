@@ -3,7 +3,7 @@
 import type { FSA } from 'types/redux';
 import { clamp } from 'lodash';
 import type { ScrollMenuState, ScrollMenu, ScrollMenuItem, ScrollMenuId, ScrollMenuItemId } from 'types/reducers';
-import { ADD_MENU_ITEM, CLEAR_MENU_STATE, NEXT_MENU_ITEM, PREV_MENU_ITEM } from 'actions/scrollMenu';
+import { ADD_MENU_ITEM, CLEAR_MENU_STATE, NEXT_MENU_ITEM, SET_MENU_ITEM } from 'actions/scrollMenu';
 
 const defaultState: ScrollMenuState = {};
 
@@ -26,7 +26,11 @@ function updateOrCreateMenu(id: ScrollMenuId, menu: ScrollMenu, item: ScrollMenu
   };
 }
 
-function offsetMenuCurrentItem(menu: ScrollMenu, itemId: ScrollMenuItemId, offset: number): ScrollMenu {
+function setCurrentMenuItem(
+  menu: ScrollMenu,
+  itemId: ScrollMenuItemId,
+  offset: number = 0,
+): ScrollMenu {
   const reference = menu.items.findIndex(item => item.id === itemId);
   if (reference == null) {
     return menu;
@@ -61,20 +65,19 @@ export default function scrollMenu(state: ScrollMenuState = defaultState, action
 
       return {
         ...state,
-        [action.payload.menuId]: offsetMenuCurrentItem(menu, action.payload.after, 1),
+        [action.payload.menuId]: setCurrentMenuItem(menu, action.payload.after, 1),
       };
     }
 
-    case PREV_MENU_ITEM: {
+    case SET_MENU_ITEM: {
       const menu = state[action.payload.menuId];
       if (!menu) return state;
 
       return {
         ...state,
-        [action.payload.menuId]: offsetMenuCurrentItem(menu, action.payload.before, -1),
+        [action.payload.menuId]: setCurrentMenuItem(menu, action.payload.itemId),
       };
     }
-
 
     default:
       return state;

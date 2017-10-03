@@ -6,6 +6,7 @@ import classnames from 'classnames';
 
 import type { ScrollMenu, ScrollMenuId } from 'types/reducers';
 import { clearMenuState } from 'actions/scrollMenu';
+import withScrollMenu from './withScrollMenu';
 
 type Props = {
   menu: ?ScrollMenu,
@@ -23,10 +24,7 @@ export class ScrollMenuComponent extends PureComponent<Props> {
 
   render() {
     const { menu } = this.props;
-
-    if (!menu) {
-      return null;
-    }
+    if (!menu) return null;
 
     return (
       <ul>
@@ -43,10 +41,10 @@ export class ScrollMenuComponent extends PureComponent<Props> {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    menu: state.scrollMenu[ownProps.menuId],
-  };
-};
+const mapStateToProps = (state, ownProps) => ({
+  menu: state.scrollMenu[ownProps.menuId],
+});
 
-export default connect(mapStateToProps, { clearMenuState })(ScrollMenuComponent);
+export default withScrollMenu(
+  connect(mapStateToProps, { clearMenuState })(ScrollMenuComponent),
+);
