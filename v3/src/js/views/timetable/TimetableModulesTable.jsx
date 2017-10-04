@@ -45,9 +45,9 @@ class TimetableModulesTable extends Component<Props> {
   showButton(moduleCode) {
     return (
       <button
-        className={`btn btn-link btn-remove ${styles.btn}`}
-        title="Hide"
-        aria-label="Hide"
+        className={`btn btn-link ${styles.moduleAction}`}
+        title="Show"
+        aria-label="Show"
         onClick={() => this.props.showLessonInTimetable(moduleCode)}
       >
         <EyeOff className={styles.eyeIcon} />
@@ -58,9 +58,9 @@ class TimetableModulesTable extends Component<Props> {
   hideButton(moduleCode) {
     return (
       <button
-        className={`btn btn-link btn-remove ${styles.btn}`}
-        title="Show"
-        aria-label="Show"
+        className={`btn btn-link ${styles.moduleAction}`}
+        title="Hide"
+        aria-label="Hide"
         onClick={() => this.props.hideLessonInTimetable(moduleCode)}
       >
         <Eye className={styles.eyeIcon} />
@@ -116,10 +116,8 @@ class TimetableModulesTable extends Component<Props> {
                         {module.ModuleCredit} MCs
                         &nbsp;&middot;
                         <button
-                          className={`btn btn-link btn-remove ${styles.btn}`}
-                          onClick={() => {
-                            this.props.onRemoveModule(module.ModuleCode);
-                          }}
+                          className={`btn btn-link ${styles.moduleAction}`}
+                          onClick={() => this.props.onRemoveModule(module.ModuleCode)}
                         >
                           Remove
                         </button>

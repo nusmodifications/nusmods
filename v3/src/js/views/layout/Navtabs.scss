@@ -14,7 +14,7 @@
   display: flex;
   align-items: center;
   justify-content: space-around;
-  height: $navbar-height;
+  height: $navtab-height;
   background-color: #fff;
   box-shadow: 0 0 15px -3px rgba(#000, 0.4);
 
@@ -29,8 +29,8 @@
 
 .link {
   flex: 1 0 auto;
-  padding: 0.5rem;
   margin: 0.5rem 0;
+  line-height: 1;
   text-align: center;
   color: $gray-light;
 
@@ -42,20 +42,16 @@
     text-decoration: underline;
   }
 
+  @include media-breakpoint-up(sm) {
+    padding: 0.5rem;
+  }
+
   @include media-breakpoint-up(lg) {
     display: flex;
     align-items: center;
-    padding-left: 2rem;
+    padding: 0.8rem 0 0.8rem 2rem;
     margin: 0;
     text-align: left;
-  }
-}
-
-.icon {
-  font-size: 1.4rem;
-
-  @include media-breakpoint-up(md) {
-    font-size: 1.6rem;
   }
 }
 
@@ -65,7 +61,6 @@
 
   @include media-breakpoint-up(md) {
     display: block;
-    line-height: 0.6rem;
   }
 
   @include media-breakpoint-up(lg) {
