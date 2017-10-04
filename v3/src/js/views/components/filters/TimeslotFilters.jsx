@@ -4,7 +4,6 @@ import React from 'react';
 import classnames from 'classnames';
 
 import type { OnFilterChange } from 'types/views';
-import type { Module } from 'types/modules';
 
 import TimeslotTable from 'views/components/module-info/TimeslotTable';
 import TimeslotFilter from 'utils/filters/TimeslotFilter';
@@ -15,17 +14,18 @@ import { Timeslots } from 'types/modules';
 type Props = {
   onFilterChange: OnFilterChange,
   group: FilterGroup<TimeslotFilter>,
-  modules: Module[],
+  groups: FilterGroup<any>[],
 };
 
 export default function TimeslotFilters(props: Props) {
-  const { group, modules, onFilterChange } = props;
+  const { group, groups, onFilterChange } = props;
+  const moduleCodes = FilterGroup.union(groups, group);
 
   const children = new Map();
   Timeslots.forEach(([day, time]) => {
     const timeslot = getTimeslot(day, time);
     const filter = group.filters[TimeslotFilter.labelToId(timeslot)];
-    const count = filter.count(modules);
+    const count = filter.count(moduleCodes);
 
     children.set(timeslot,
       <label

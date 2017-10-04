@@ -37,6 +37,12 @@ type State = {
   filterGroups: { [FilterGroupId]: FilterGroup<any> },
 };
 
+const pageHead = (
+  <Helmet>
+    <title>Modules - {config.brandName}</title>
+  </Helmet>
+);
+
 export function mergePageRange(prev: PageRange, diff: PageRangeDiff): PageRange {
   const next = _.clone(prev);
 
@@ -87,6 +93,8 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
     axios.get(nusmods.modulesUrl())
       // TODO: Handle error
       .then(({ data }) => {
+        this.filterGroups().forEach(group => group.initFilters(data));
+
         this.setState({
           modules: data,
           loading: false,
@@ -172,26 +180,34 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
 
   render() {
     const { filterGroups: groups, modules, loading, page } = this.state;
+
+    if (loading) {
+      return (
+        <div>
+          {pageHead}
+          <LoadingSpinner />
+        </div>
+      );
+    }
+
+    // Set up filter groups
     const filteredModules = FilterGroup.apply(modules, this.filterGroups());
 
     return (
       <div className="modules-page-container page-container">
-        <Helmet>
-          <title>Modules - {config.brandName}</title>
-        </Helmet>
+        {pageHead}
 
-        <h1 className="page-title">Module Finder</h1>
         <div className="row">
+          <div className="col-sm-12">
+            <h1 className="page-title">Module Finder</h1>
+          </div>
+
           <div className="col-md-8 col-lg-9">
-            {loading ?
-              <LoadingSpinner />
-              :
-              <ModuleFinderList
-                modules={filteredModules}
-                page={page}
-                onPageChange={this.onPageChange}
-              />
-            }
+            <ModuleFinderList
+              modules={filteredModules}
+              page={page}
+              onPageChange={this.onPageChange}
+            />
           </div>
 
           <div className="col-md-4 col-lg-3">
@@ -202,25 +218,25 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
 
               <ChecklistFilters
                 group={groups[LEVELS]}
-                modules={modules}
+                groups={this.filterGroups()}
                 onFilterChange={this.onFilterChange}
               />
 
               <ChecklistFilters
                 group={groups[MODULE_CREDITS]}
-                modules={modules}
+                groups={this.filterGroups()}
                 onFilterChange={this.onFilterChange}
               />
 
               <TimeslotFilters
                 group={groups[LECTURE_TIMESLOTS]}
-                modules={modules}
+                groups={this.filterGroups()}
                 onFilterChange={this.onFilterChange}
               />
 
               <TimeslotFilters
                 group={groups[TUTORIAL_TIMESLOTS]}
-                modules={modules}
+                groups={this.filterGroups()}
                 onFilterChange={this.onFilterChange}
               />
             </div>
