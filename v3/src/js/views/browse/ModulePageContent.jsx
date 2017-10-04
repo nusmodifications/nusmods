@@ -149,7 +149,7 @@ class ModulePageContentComponent extends Component<Props> {
 
             <section id="prerequisites">
               <h2>Prerequisite Tree</h2>
-
+              {/* TODO: Add in prereq tree when it is ready */}
             </section>
 
             {module.CorsBiddingStats && <section id="bidding-stats">
@@ -167,6 +167,7 @@ class ModulePageContentComponent extends Component<Props> {
 
             <section id="reviews">
               <h2>Review and Discussion</h2>
+              {/* TODO: Use disqus-react when it is ready */}
             </section>
           </div>
 

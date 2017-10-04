@@ -1,5 +1,6 @@
 .module-container {
   $header-margin-top: 1rem;
+  $sticky-top: $navbar-height + $header-margin-top;
 
   .header-row {
     margin-top: $header-margin-top;
@@ -49,16 +50,16 @@
   section {
     // Account for the fixed header's height. If this is not done, when side menu links are
     // clicked a portion of the content will be clipped by the fixed header.
-    padding-top: $navbar-height + 1rem;
+    padding-top: $sticky-top;
   }
 
   #details {
-    margin-top: -($navbar-height + 1rem);
+    margin-top: -($sticky-top);
   }
 
   .module-side-menu {
     position: sticky;
-    top: $navbar-height + 1rem;
+    top: $sticky-top;
     margin-top: 0.4rem;
 
     ul {
