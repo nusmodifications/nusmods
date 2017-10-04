@@ -16,7 +16,7 @@ type Props = {
 };
 
 // Height of timetable per hour in vertical mode
-const VERTICAL_HEIGHT = 2.2;
+const VERTICAL_HEIGHT = 2;
 
 function TimetableDay(props: Props) {
   const columns = props.endingIndex - props.startingIndex;
@@ -34,20 +34,16 @@ function TimetableDay(props: Props) {
         <span>{props.day.substring(0, 3)}</span>
       </div>
       <div className={styles.dayRows} style={rowStyle}>
-        {
-          props.dayLessonRows.map((dayLessonRow, i) => {
-            return (
-              <TimetableRow
-                key={i}
-                startingIndex={props.startingIndex}
-                endingIndex={props.endingIndex}
-                verticalMode={props.verticalMode}
-                lessons={dayLessonRow}
-                onModifyCell={props.onModifyCell}
-              />
-            );
-          })
-        }
+        {props.dayLessonRows.map((dayLessonRow, i) => (
+          <TimetableRow
+            key={i}
+            startingIndex={props.startingIndex}
+            endingIndex={props.endingIndex}
+            verticalMode={props.verticalMode}
+            lessons={dayLessonRow}
+            onModifyCell={props.onModifyCell}
+          />
+        ))}
       </div>
     </li>
   );

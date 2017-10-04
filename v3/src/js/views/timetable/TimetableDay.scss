@@ -43,9 +43,16 @@
     overflow: hidden;
 
     span {
+      width: 75%;
       font-size: $font-size-xs;
-      transform: rotate(-90deg);
-      transform-origin: center center;
+      text-orientation: upright;
+      writing-mode: vertical-lr;
+
+      @supports not (text-orientation: upright) {
+        width: 0.4rem;
+        line-height: 1.1;
+        word-break: break-all;
+      }
     }
   }
 }
@@ -55,7 +62,8 @@
   border: 0;
 
   span {
-    transform: none;
+    width: auto;
+    writing-mode: horizontal-tb;
   }
 }
 
@@ -64,6 +72,7 @@
   flex: 1 0 auto;
   flex-direction: column;
   min-height: $timetable-row-height;
+  padding-bottom: 0.3rem;
   background: linear-gradient(to right, $gray-lightest 50%, transparent 50%);
 }
 
