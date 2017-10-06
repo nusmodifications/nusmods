@@ -4,6 +4,7 @@ import type { ContextRouter } from 'react-router-dom';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import axios from 'axios';
 import update from 'immutability-helper';
 import _ from 'lodash';
@@ -27,10 +28,13 @@ import moduleFilters, {
 import moduleSearch, { SEARCH_QUERY_KEY } from 'views/browse/module-search';
 import config from 'config';
 import nusmods from 'apis/nusmods';
+import { resetModuleFinder } from 'actions/module-finder';
 import FilterGroup from 'utils/filters/FilterGroup';
 import HistoryDebouncer from 'utils/HistoryDebouncer';
 
-type Props = ContextRouter;
+type Props = ContextRouter & {
+  resetModuleFinder: () => any,
+};
 
 type State = {
   loading: boolean,
@@ -112,6 +116,7 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
   }
 
   componentWillUnmount() {
+    this.props.resetModuleFinder();
     this.unlisten();
   }
 
@@ -265,4 +270,6 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
   }
 }
 
-export default withRouter(ModuleFinderContainerComponent);
+export default connect(null, { resetModuleFinder })(
+  withRouter(ModuleFinderContainerComponent),
+);
