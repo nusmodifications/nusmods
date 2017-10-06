@@ -11,7 +11,7 @@ import '../styles/main.scss';
 const persistedState = storage.loadState();
 const store = configureStore(persistedState);
 store.subscribe(
-  _.throttle(() => {
+  _.debounce(() => {
     const storeState = store.getState();
     // TODO: Possibly write our own utility pickNestedKeys function to
     //       pick out the keys (including nested keys) from the store
@@ -27,7 +27,7 @@ store.subscribe(
       theme: storeState.theme,
       settings: storeState.settings,
     });
-  }, 1000),
+  }, 5000),
 );
 
 const render = () => {
