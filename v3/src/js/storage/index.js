@@ -1,14 +1,13 @@
 import _ from 'lodash';
+import Raven from 'raven-js';
 
 // Simple wrapper around localStorage to automagically parse and stringify payloads.
 // TODO: Use an in-memory storage for environments where localStorage is not present,
 //       like private mode on Safari.
 function setItem(key, value) {
-  try {
+  Raven.context(() => {
     localStorage.setItem(key, _.isString(value) ? value : JSON.stringify(value));
-  } catch (err) {
-    // TODO: Report errors to Sentry.
-  }
+  });
 }
 
 function getItem(key) {
@@ -20,16 +19,15 @@ function getItem(key) {
     }
     return undefined;
   } catch (err) {
+    Raven.captureException(err);
     return value;
   }
 }
 
 function removeItem(key) {
-  try {
+  Raven.context(() => {
     localStorage.removeItem(key);
-  } catch (err) {
-    // TODO: Report errors to Sentry.
-  }
+  });
 }
 
 const stateKey = 'reduxState';

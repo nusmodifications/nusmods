@@ -13,7 +13,7 @@ import app from './app';
 import theme from './theme';
 import settings from './settings';
 
-type State = {
+export type State = {
   entities: Object,
   requests: Requests,
   timetables: Object,
