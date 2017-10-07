@@ -55,7 +55,7 @@ export class ModuleSearchBoxComponent extends PureComponent<Props, State> {
     return (
       <div>
         <input
-          className="form-control form-control-lg"
+          className="form-control form-control-lg mb-2"
           type="search"
           value={this.state.searchTerm}
           onChange={this.onSearchInput}
@@ -67,5 +67,8 @@ export class ModuleSearchBoxComponent extends PureComponent<Props, State> {
 }
 
 export default withRouter(
-  connect(null, { searchModules })(ModuleSearchBoxComponent),
+  connect(
+    state => ({ searchDescription: state.moduleFinder.search.searchDescription }),
+    { searchModules },
+  )(ModuleSearchBoxComponent),
 );

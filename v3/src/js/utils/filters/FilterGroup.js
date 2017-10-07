@@ -51,6 +51,7 @@ export default class FilterGroup<Filter: ModuleFilter> {
 
   initFilters(modules: Module[]) {
     values(this.filters).forEach(filter => filter.initCount(modules));
+    return this;
   }
 
   updateActiveFilters() {

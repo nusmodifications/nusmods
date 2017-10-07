@@ -25,14 +25,16 @@ import moduleFilters, {
   TUTORIAL_TIMESLOTS,
   MODULE_CREDITS,
 } from 'views/browse/module-filters';
-import moduleSearch, { SEARCH_QUERY_KEY } from 'views/browse/module-search';
+import { createSearchFilter, sortModules, SEARCH_QUERY_KEY } from 'views/browse/module-search';
 import config from 'config';
 import nusmods from 'apis/nusmods';
 import { resetModuleFinder } from 'actions/module-finder';
 import FilterGroup from 'utils/filters/FilterGroup';
 import HistoryDebouncer from 'utils/HistoryDebouncer';
+import { defer } from 'utils/react';
 
 type Props = ContextRouter & {
+  searchTerm: string,
   resetModuleFinder: () => any,
 };
 
@@ -115,6 +117,12 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
       });
   }
 
+  componentWillReceiveProps(nextProps: Props) {
+    if (this.props.searchTerm !== nextProps.searchTerm) {
+      this.onSearch(nextProps.searchTerm);
+    }
+  }
+
   componentWillUnmount() {
     this.props.resetModuleFinder();
     this.unlisten();
@@ -166,12 +174,14 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
     }), this.updatePageHash);
   };
 
-  onSearch = (searchTerm: string) => {
-    const filter = moduleSearch(searchTerm);
-    filter.initFilters(this.state.modules);
+  onSearch(searchTerm: string) {
+    const filter = createSearchFilter(searchTerm)
+      .initFilters(this.state.modules);
 
-    this.onFilterChange(filter, false);
-  };
+    defer(() => {
+      this.onFilterChange(filter, false);
+    });
+  }
 
   updatePageHash = () => {
     // Update the location hash so that users can share the URL and go back to the
@@ -212,7 +222,10 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
     }
 
     // Set up filter groups
-    const filteredModules = FilterGroup.apply(modules, this.filterGroups());
+    let filteredModules = FilterGroup.apply(modules, this.filterGroups());
+    if (this.props.searchTerm) {
+      filteredModules = sortModules(this.props.searchTerm, filteredModules);
+    }
 
     return (
       <div className="modules-page-container page-container">
@@ -223,7 +236,7 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
             <header>
               <h1 className="sr-only">Module Finder</h1>
 
-              <ModuleSearchBox onSearch={this.onSearch} />
+              <ModuleSearchBox />
             </header>
 
             <ModuleFinderList
@@ -270,6 +283,10 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
   }
 }
 
-export default connect(null, { resetModuleFinder })(
+const mapStateToProps = state => ({
+  searchTerm: state.moduleFinder.search.term,
+});
+
+export default connect(mapStateToProps, { resetModuleFinder })(
   withRouter(ModuleFinderContainerComponent),
 );

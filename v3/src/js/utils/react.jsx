@@ -59,3 +59,9 @@ export function highlight(str: string, search: string | string[], Tag: string = 
 export function noBreak(text: string): string {
   return text.replace(/ /g, NBSP);
 }
+
+export function defer(task: () => any) {
+  window.requestAnimationFrame(() => {
+    window.requestAnimationFrame(task);
+  });
+}
