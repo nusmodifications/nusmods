@@ -233,11 +233,9 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
 
         <div className="row">
           <div className="col-md-8 col-lg-9">
-            <header>
-              <h1 className="sr-only">Module Finder</h1>
+            <h1 className="sr-only">Module Finder</h1>
 
-              <ModuleSearchBox />
-            </header>
+            <ModuleSearchBox />
 
             <ModuleFinderList
               modules={filteredModules}

@@ -8,6 +8,7 @@ import qs from 'query-string';
 
 import { searchModules } from 'actions/module-finder';
 import { SEARCH_QUERY_KEY } from './module-search';
+import styles from './ModuleSearchBox.scss';
 
 type Props = ContextRouter & {
   throttle: number,
@@ -53,12 +54,15 @@ export class ModuleSearchBoxComponent extends PureComponent<Props, State> {
 
   render() {
     return (
-      <div>
+      <div className={styles.searchBox}>
+        <label htmlFor="module-search" className="sr-only">Search</label>
         <input
-          className="form-control form-control-lg mb-2"
+          id="module-search"
+          className="form-control form-control-lg"
           type="search"
           value={this.state.searchTerm}
           onChange={this.onSearchInput}
+          placeholder="Module code, names and descriptions"
           spellCheck
         />
       </div>
