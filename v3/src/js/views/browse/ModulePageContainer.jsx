@@ -1,7 +1,9 @@
 // @flow
+import type { ContextRouter } from 'react-router-dom';
+
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
 
 import type { FetchRequest } from 'types/reducers';
 import type { Module, ModuleCode } from 'types/modules';
@@ -10,8 +12,9 @@ import { loadModule, FETCH_MODULE } from 'actions/moduleBank';
 import { getRequestName } from 'reducers/requests';
 import NotFoundPage from 'views/NotFoundPage';
 import LoadingSpinner from 'views/LoadingSpinner';
+import { modulePagePath } from 'utils/modules';
 
-type Props = {
+type Props = ContextRouter & {
   moduleCode: ModuleCode,
   moduleCodes: Set<ModuleCode>,
   module: ?Module,
@@ -69,9 +72,14 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
     return this.props.moduleCodes.has(moduleCode);
   }
 
+  canonicalUrl() {
+    if (!this.props.module) throw new Error('canonicalUrl() called before module is loaded');
+    return modulePagePath(this.props.moduleCode, this.props.module.ModuleTitle);
+  }
+
   render() {
     const { ModulePageContent } = this.state;
-    const { module, request, moduleCode } = this.props;
+    const { module, request, moduleCode, match } = this.props;
 
     if (!this.doesModuleExist(moduleCode)) {
       return <NotFoundPage />;
@@ -80,6 +88,10 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
     if (request && request.isFailure) {
       // TODO: Display a proper error page here
       return <NotFoundPage />;
+    }
+
+    if (module && match.url !== this.canonicalUrl()) {
+      return <Redirect to={this.canonicalUrl()} />;
     }
 
     if (module && ModulePageContent) {

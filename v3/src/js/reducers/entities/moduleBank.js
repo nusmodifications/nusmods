@@ -23,20 +23,20 @@ export type ModuleBank = {
   moduleList: ModuleList,
   modules: ModulesMap,
   moduleSelectList: ModuleSelectList,
-  moduleCodes: Set<ModuleCode>,
+  moduleCodes: Map<ModuleCode, ModuleCondensed>,
 };
 
 const defaultModuleBankState: ModuleBank = {
   moduleList: [], // List of modules
   modules: {}, // Object of ModuleCode -> ModuleDetails
   moduleSelectList: [],
-  moduleCodes: new Set(),
+  moduleCodes: new Map(),
 };
 
 function precomputeFromModuleList(moduleList: ModuleList) {
   // Cache a Set of all module codes for fast module existence checking
-  const moduleCodes = new Set();
-  moduleList.forEach((module: ModuleCondensed) => moduleCodes.add(module.ModuleCode));
+  const moduleCodes = new Map();
+  moduleList.forEach((module: ModuleCondensed) => moduleCodes.set(module.ModuleCode, module));
 
   // Precompute this in reducer because putting this inside render is very expensive (5k modules!)
   const moduleSelectList = moduleList.map((module: ModuleCondensed) => ({

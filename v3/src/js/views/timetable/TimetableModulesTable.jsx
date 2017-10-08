@@ -103,7 +103,7 @@ class TimetableModulesTable extends Component<Props> {
                     }
                   </div>
                   <div className="module-details-column">
-                    <Link to={modulePagePath(module.ModuleCode)}>
+                    <Link to={modulePagePath(module.ModuleCode, module.ModuleTitle)}>
                       {module.ModuleCode} {module.ModuleTitle}
                     </Link>
                     <div>

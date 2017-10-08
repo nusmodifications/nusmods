@@ -13,14 +13,9 @@ export default function Table(props: Props) {
     <tbody>
       {props.data.map((s, i) => (
         <tr key={i}>
-          {s.map(d =>
-            (<td key={d}>
-              {d}
-            </td>),
-          )}
+          {s.map((d, j) => <td key={j}>{d}</td>)}
         </tr>
-      ),
-      )}
+      ))}
     </tbody>
   );
 
