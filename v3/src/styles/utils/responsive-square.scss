@@ -1,0 +1,18 @@
+.responsive-square {
+  position: relative;
+  display: block;
+
+  &::after {
+    content: '';
+    display: block;
+    padding-bottom: 100%;
+  }
+}
+
+.responsive-square-content {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
