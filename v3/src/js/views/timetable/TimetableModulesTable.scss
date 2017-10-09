@@ -1,0 +1,18 @@
+@import './_variables.scss';
+
+// :global(.btn) for additional specificity
+:global(.btn).moduleAction {
+  height: 1.25rem;
+  padding: 0.15rem 0.4rem;
+  font-size: 1em;
+  color: $gray-light;
+  cursor: pointer;
+
+  &:hover {
+    color: inherit;
+  }
+}
+
+.eyeIcon {
+  height: 100%;
+}

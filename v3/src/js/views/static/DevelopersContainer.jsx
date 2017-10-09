@@ -5,7 +5,7 @@ import Helmet from 'react-helmet';
 import axios from 'axios';
 
 import config from 'config';
-import Loader from 'views/LoadingSpinner';
+import Loader from 'views/components/LoadingSpinner';
 
 import StaticPage from './StaticPage';
 
