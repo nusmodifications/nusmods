@@ -107,7 +107,7 @@ const mapStateToProps = (state, ownState) => {
   const requestName = getRequestName(FETCH_MODULE);
 
   return {
-    moduleCode,
+    moduleCode: moduleCode.toUpperCase(),
     moduleCodes: state.entities.moduleBank.moduleCodes,
     module: state.entities.moduleBank.modules[moduleCode],
     request: state.requests[requestName],
