@@ -1,0 +1,70 @@
+@import '~styles/utils/modules-entry.scss';
+
+/*
+  For breakpoint-md (tablets), show the links as compact buttons with labels below icons.
+  For breakpoint-lg (desktop), show the links as traditional link with icon to the left.
+*/
+.nav {
+  position: fixed;
+  top: $navbar-height;
+  right: 0;
+  left: 0;
+  z-index: $nm-nav-tabs-z-index;
+  // See site.scss for width on md and lg sizes
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: $navtab-height;
+  background-color: #fff;
+  box-shadow: 0 0 15px -3px rgba(#000, 0.4);
+
+  @include media-breakpoint-up(md) {
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    margin-top: 2rem;
+    box-shadow: none;
+  }
+}
+
+.link {
+  flex: 1 0 auto;
+  margin: 0.5rem 0;
+  line-height: 1;
+  text-align: center;
+  color: $gray-light;
+
+  &.linkActive {
+    color: theme-color(primary);
+  }
+
+  &:hover .title {
+    text-decoration: underline;
+  }
+
+  @include media-breakpoint-up(sm) {
+    padding: 0.5rem;
+  }
+
+  @include media-breakpoint-up(lg) {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem 0 0.8rem 2rem;
+    margin: 0;
+    text-align: left;
+  }
+}
+
+.title {
+  display: none;
+  font-size: 0.7rem;
+
+  @include media-breakpoint-up(md) {
+    display: block;
+  }
+
+  @include media-breakpoint-up(lg) {
+    margin-left: 0.4rem;
+    font-size: 1rem;
+  }
+}
