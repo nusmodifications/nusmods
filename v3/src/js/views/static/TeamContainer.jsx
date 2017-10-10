@@ -2,6 +2,8 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import config from 'config';
 
+import { Facebook, LinkedIn, Github, Twitter } from 'views/components/icons';
+
 import teamInfo from 'data/team.json';
 
 export default function TeamContainer() {
@@ -38,28 +40,28 @@ export default function TeamContainer() {
                   {teamMember.facebook &&
                   <div className="col-sm-1 col-xs-3">
                     <a href={teamMember.facebook} title="Facebook profile" aria-label="Facebook profile">
-                      <i className="fa fa-facebook-square fa-lg" aria-hidden="true" />
+                      <Facebook />
                     </a>
                   </div>
                   }
                   {teamMember.twitter &&
                   <div className="col-sm-1 col-xs-3">
                     <a href={teamMember.twitter} title="Twitter feed" aria-label="Twitter feed">
-                      <i className="fa fa-twitter fa-lg" aria-hidden="true" />
-                    </a>
-                  </div>
-                  }
-                  {teamMember.linkedin &&
-                  <div className="col-sm-1 col-xs-3">
-                    <a href={teamMember.linkedin} title="LinkedIn profile" aria-label="LinkedIn profile">
-                      <i className="fa fa-linkedin fa-lg" aria-hidden="true" />
+                      <Twitter />
                     </a>
                   </div>
                   }
                   {teamMember.github &&
                   <div className="col-sm-1 col-xs-3">
                     <a href={teamMember.github} title="GitHub profile" aria-label="GitHub profile" >
-                      <i className="fa fa-github-square fa-lg" aria-hidden="true" />
+                      <Github />
+                    </a>
+                  </div>
+                  }
+                  {teamMember.linkedin &&
+                  <div className="col-sm-1 col-xs-3">
+                    <a href={teamMember.linkedin} >
+                      <LinkedIn />
                     </a>
                   </div>
                   }
@@ -68,6 +70,9 @@ export default function TeamContainer() {
             </div>
           </div>),
         )}
+
+        <hr />
+        <small>LinkedIn icon from <a href="https://icons8.com/">Icons8</a></small>
       </div>
     </div>
   );

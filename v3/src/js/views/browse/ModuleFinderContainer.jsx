@@ -16,7 +16,7 @@ import type { FilterGroupId } from 'utils/filters/FilterGroup';
 import ModuleFinderList from 'views/browse/ModuleFinderList';
 import ChecklistFilters from 'views/components/filters/ChecklistFilters';
 import TimeslotFilters from 'views/components/filters/TimeslotFilters';
-import LoadingSpinner from 'views/LoadingSpinner';
+import LoadingSpinner from 'views/components/LoadingSpinner';
 import moduleFilters, {
   LEVELS,
   LECTURE_TIMESLOTS,

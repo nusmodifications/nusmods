@@ -5,7 +5,7 @@ import config from 'config';
 
 import axios from 'axios';
 
-import Loader from 'views/LoadingSpinner';
+import Loader from 'views/components/LoadingSpinner';
 
 const DEVELOPERS_URL = 'https://api.github.com/repos/NUSModifications/NUSMods/contributors';
 

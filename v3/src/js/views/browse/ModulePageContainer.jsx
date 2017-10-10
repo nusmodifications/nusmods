@@ -11,7 +11,7 @@ import type { Module, ModuleCode } from 'types/modules';
 import { loadModule, FETCH_MODULE } from 'actions/moduleBank';
 import { getRequestName } from 'reducers/requests';
 import NotFoundPage from 'views/NotFoundPage';
-import LoadingSpinner from 'views/LoadingSpinner';
+import LoadingSpinner from 'views/components/LoadingSpinner';
 import { modulePagePath } from 'utils/modules';
 
 type Props = ContextRouter & {
