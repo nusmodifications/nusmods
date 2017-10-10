@@ -9,12 +9,15 @@
 }
 
 :global(.verticalMode) .timings {
+  position: sticky;
+  left: 0;
+  z-index: $timetable-timing-z-index;
   flex: 0 0 auto;
   flex-direction: column;
-  padding: 0 0.15rem;
-  padding-left: 1vw;
+  padding: 0;
   margin: $timetable-day-vertical-size 0 0 0;
   text-align: right;
+  pointer-events: none;
 
   @include media-breakpoint-up(sm) {
     padding-right: 0.25rem;
@@ -26,5 +29,8 @@
 }
 
 :global(.verticalMode) .time {
+  display: inline-block;
+  padding: 0 0.2rem;
+  background: rgba($body-bg, 0.75);
   transform: translateY(-50%);
 }
