@@ -59,6 +59,7 @@
 }
 
 :global(.verticalMode) .dayName {
+  z-index: auto; // Reset z-index to prevent modules from clipping header
   flex: 0 0 $timetable-day-v-size;
   border: 0;
 
