@@ -31,7 +31,7 @@ function TimetableDay(props: Props) {
   return (
     <li className={styles.day}>
       <div className={styles.dayName}>
-        <span>{props.day.substring(0, 3)}</span>
+        <span className={styles.dayNameText}>{props.day.substring(0, 3)}</span>
       </div>
       <div className={styles.dayRows} style={rowStyle}>
         {props.dayLessonRows.map((dayLessonRow, i) => (

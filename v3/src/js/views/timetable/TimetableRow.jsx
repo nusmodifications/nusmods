@@ -45,6 +45,7 @@ function TimetableRow(props: Props) {
         const dirValue: number = lessonStartIndex - (verticalMode ? startingIndex : lastStartIndex);
         lastStartIndex = lessonEndIndex;
         const style = {
+          // calc() adds a 1px gap between cells
           [dirStyle]: `calc(${(dirValue / totalCols) * 100}% + 1px)`,
           [sizeStyle]: `calc(${(size / totalCols) * 100}% - 1px)`,
         };

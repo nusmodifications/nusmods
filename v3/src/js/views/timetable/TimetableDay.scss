@@ -26,7 +26,7 @@
 .dayName {
   position: sticky;
   left: 0;
-  z-index: 1;
+  z-index: $timetable-day-z-index;
   display: flex;
   flex: 0 0 $timetable-day-horizontal-size;
   align-items: center;
@@ -42,9 +42,10 @@
     flex: 0 0 1.5rem;
     overflow: hidden;
 
-    span {
-      width: 75%;
+    .dayNameText {
+      width: 80%;
       font-size: $font-size-xs;
+      // On small screens, display the day names vertically
       text-orientation: upright;
       writing-mode: vertical-lr;
 
@@ -61,7 +62,7 @@
   flex: 0 0 $timetable-day-vertical-size;
   border: 0;
 
-  span {
+  .dayNameText {
     width: auto;
     writing-mode: horizontal-tb;
   }
@@ -78,6 +79,6 @@
 
 :global(.verticalMode) .dayRows {
   flex-direction: row;
-  padding-bottom: 0;
+  padding: 0 0.1rem 0 0;
   background: linear-gradient(to bottom, $gray-lightest 50%, transparent 50%);
 }
