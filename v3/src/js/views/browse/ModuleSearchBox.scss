@@ -6,24 +6,50 @@
   z-index: $module-finder-search-z-index;
   padding: 0 0 1rem;
   background: linear-gradient(to bottom, $body-bg 3rem, rgba($body-bg, 0));
+}
+
+.searchWrapper {
+  position: relative;
 
   input {
-    padding: 0.8rem 1rem;
+    padding: 0.8rem 1rem 0.8rem 2rem;
     border-width: 0 0 1px;
     border-radius: 0;
   }
+}
 
-  @include media-breakpoint-down(sm) {
-    top: $navbar-height * 2;
+.searchIcon {
+  position: absolute;
+  height: 100%;
+  transition: color 0.3s;
+}
+
+.searchBoxFocused {
+  .searchIcon {
+    color: theme-color();
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .searchBox {
+    top: $navbar-height + $navtab-height;
     padding: 0 0 0.4rem;
     margin: -1rem (-$grid-gutter-width / 2) 0;
     border-top: 1px solid mix(#000, $body-bg, 15);
     background: linear-gradient(to bottom, $body-bg 2rem, rgba(#000, 0.5) 2rem, rgba(#000, 0));
+  }
 
+  .searchWrapper {
     input {
-      padding: 0.8rem ($grid-gutter-width / 2);
+      padding: 0.8rem 0 0.8rem 2.2rem;
       font-size: 1rem;
       border: 0;
     }
+  }
+
+  .searchIcon {
+    left: $grid-gutter-width / 2;
+    width: 1rem;
+    padding-bottom: 0.1rem; // Visual alignment
   }
 }

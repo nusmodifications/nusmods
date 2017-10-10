@@ -3,9 +3,11 @@ import type { ContextRouter } from 'react-router-dom';
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import classnames from 'classnames';
 import { throttle } from 'lodash';
 import qs from 'query-string';
 
+import { Search } from 'views/components/icons';
 import { searchModules } from 'actions/module-finder';
 import { SEARCH_QUERY_KEY } from './module-search';
 import styles from './ModuleSearchBox.scss';
@@ -19,6 +21,7 @@ type Props = ContextRouter & {
 
 type State = {
   searchTerm: string,
+  isFocused: boolean,
 };
 
 export class ModuleSearchBoxComponent extends PureComponent<Props, State> {
@@ -29,6 +32,7 @@ export class ModuleSearchBoxComponent extends PureComponent<Props, State> {
   };
 
   state: State = {
+    isFocused: false,
     searchTerm: qs.parse(this.props.location.search)[SEARCH_QUERY_KEY] || '',
   };
 
@@ -54,17 +58,22 @@ export class ModuleSearchBoxComponent extends PureComponent<Props, State> {
 
   render() {
     return (
-      <div className={styles.searchBox}>
+      <div className={classnames(styles.searchBox, { [styles.searchBoxFocused]: this.state.isFocused })}>
         <label htmlFor="module-search" className="sr-only">Search</label>
-        <input
-          id="module-search"
-          className="form-control form-control-lg"
-          type="search"
-          value={this.state.searchTerm}
-          onChange={this.onSearchInput}
-          placeholder="Module code, names and descriptions"
-          spellCheck
-        />
+        <div className={styles.searchWrapper}>
+          <Search className={styles.searchIcon} />
+          <input
+            id="module-search"
+            className="form-control form-control-lg"
+            type="search"
+            value={this.state.searchTerm}
+            onChange={this.onSearchInput}
+            onFocus={() => this.setState({ isFocused: true })}
+            onBlur={() => this.setState({ isFocused: false })}
+            placeholder="Module code, names and descriptions"
+            spellCheck
+          />
+        </div>
       </div>
     );
   }
