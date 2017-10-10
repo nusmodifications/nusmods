@@ -1,6 +1,9 @@
 // @flow
 import React from 'react';
+import { Sidebar, Image, Calendar } from 'views/components/icons/index';
 import classnames from 'classnames';
+
+import styles from './TimetableActions.scss';
 
 type Props = {
   isVerticalOrientation: boolean,
@@ -24,11 +27,11 @@ function TimetableActions(props: Props) {
         aria-label={isVerticalOrientation ? 'Vertical Mode' : 'Horizontal mode'}
         onClick={props.toggleTimetableOrientation}
       >
-        <i
-          className={classnames('fa', 'fa-exchange', {
-            'fa-rotate-90': isVerticalOrientation,
+        <Sidebar
+          className={classnames(styles.actionIcon, {
+            [styles.verticalMode]: isVerticalOrientation,
+            [styles.horizontalMode]: !isVerticalOrientation,
           })}
-          aria-hidden="true"
         />
       </button>
       <button
@@ -38,7 +41,7 @@ function TimetableActions(props: Props) {
         className="btn btn-outline-primary"
         onClick={props.downloadAsJpeg}
       >
-        <i className="fa fa-image" aria-hidden="true" />
+        <Image className={styles.actionIcon} />
       </button>
       <button
         type="button"
@@ -47,7 +50,7 @@ function TimetableActions(props: Props) {
         className="btn btn-outline-primary"
         onClick={props.downloadAsIcal}
       >
-        <i className="fa fa-calendar" aria-hidden="true" />
+        <Calendar className={styles.actionIcon} />
       </button>
     </div>
   );

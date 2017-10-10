@@ -1,0 +1,15 @@
+// Responsive square - useful for creating rectangles that scale proportionately with width
+// From https://spin.atomicobject.com/2015/07/14/css-responsive-square/
+.responsive-square {
+  position: relative;
+  display: block;
+  padding-bottom: 100%;
+
+  .responsive-square-content {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+}

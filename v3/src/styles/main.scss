@@ -10,11 +10,11 @@
 
 // Utils
 @import 'utils/mixins';
+@import 'utils/functions';
 @import 'utils/animations';
 @import 'utils/workload';
-
-// Theme
-@import 'themes';
+@import 'utils/themes';
+@import 'utils/responsive-square';
 
 // Layout
 @import 'layout/site';

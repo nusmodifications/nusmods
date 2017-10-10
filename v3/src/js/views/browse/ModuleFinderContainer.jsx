@@ -18,7 +18,7 @@ import ModuleFinderList from 'views/browse/ModuleFinderList';
 import ModuleSearchBox from 'views/browse/ModuleSearchBox';
 import ChecklistFilters from 'views/components/filters/ChecklistFilters';
 import TimeslotFilters from 'views/components/filters/TimeslotFilters';
-import LoadingSpinner from 'views/LoadingSpinner';
+import LoadingSpinner from 'views/components/LoadingSpinner';
 import moduleFilters, {
   LEVELS,
   LECTURE_TIMESLOTS,

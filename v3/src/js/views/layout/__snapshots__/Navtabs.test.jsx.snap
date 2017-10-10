@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders into nav element 1`] = `
+<nav
+  className="nav"
+>
+  <NavLink
+    activeClassName="linkActive"
+    className="link"
+    to="/timetable"
+  >
+    <Calendar
+      className="icon"
+      color="currentColor"
+      size="24"
+    />
+    <span
+      className="title"
+    >
+      Timetable
+    </span>
+  </NavLink>
+  <NavLink
+    activeClassName="linkActive"
+    className="link"
+    to="/modules"
+  >
+    <Search
+      className="icon"
+      color="currentColor"
+      size="24"
+    />
+    <span
+      className="title"
+    >
+      Browse
+    </span>
+  </NavLink>
+  <NavLink
+    activeClassName="linkActive"
+    className="link"
+    to="/settings"
+  >
+    <Settings
+      className="icon"
+      color="currentColor"
+      size="24"
+    />
+    <span
+      className="title"
+    >
+      Settings
+    </span>
+  </NavLink>
+</nav>
+`;

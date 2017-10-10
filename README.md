@@ -39,6 +39,7 @@ Once it's up, do a `vagrant ssh` to enter the development environment.
 ### Setup
 
 Install the necessary packages.
+
 ```bash
 $ npm install -g npm@3.10.3
 $ npm install -g gulp-cli@1.2.2
