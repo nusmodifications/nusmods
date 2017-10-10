@@ -11,9 +11,9 @@ type Props = {
 export default function Table(props: Props) {
   const tableBody = (
     <tbody>
-      {props.data.map((s, i) => (
-        <tr key={i}>
-          {s.map((d, j) => <td key={j}>{d}</td>)}
+      {props.data.map((rowData, rowIndex) => (
+        <tr key={rowIndex}>
+          {rowData.map((cellData, cellIndex) => <td key={cellIndex}>{cellData}</td>)}
         </tr>
       ))}
     </tbody>
@@ -22,7 +22,7 @@ export default function Table(props: Props) {
   const tableHeader = (
     <thead>
       <tr>
-        {props.headers.map(h => <th key={h}>{h}</th>)}
+        {props.headers.map((headerData, index) => <th key={index}>{headerData}</th>)}
       </tr>
     </thead>
   );
