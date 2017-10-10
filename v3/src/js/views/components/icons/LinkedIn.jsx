@@ -18,6 +18,7 @@ export default class LinkedIn extends PureComponent<Props> {
     const { size, color } = this.props;
 
     /* eslint-disable max-len */
+    // SVG from https://icons8.com/icon/set/linkedin/all
     return (
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" version="1.1" width={size} height={size} fill={color}>
         <g id="surface1">
