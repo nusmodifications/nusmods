@@ -6,6 +6,7 @@ import _ from 'lodash';
 import type { Module } from 'types/modules';
 import type { PageRange, PageRangeDiff, OnPageChange } from 'types/views';
 
+import { AlertTriangle } from 'views/components/icons';
 import ModuleFinderPage from './ModuleFinderPage';
 
 const MODULES_PER_PAGE = 5;
@@ -61,6 +62,15 @@ export default class ModuleFinderList extends Component<Props> {
     const { start, loaded: shownPages } = this.props.page;
     const pages = this.pages().slice(start, start + shownPages);
     const total = this.props.modules.length;
+
+    if (total === 0) {
+      return (
+        <div className="text-center mt-4">
+          <AlertTriangle size="3rem" className="text-primary" />
+          <h4>No modules found</h4>
+        </div>
+      );
+    }
 
     return (
       <div>

@@ -1,4 +1,5 @@
 // @flow
+import AlertTriangle from 'react-feather/dist/icons/alert-triangle';
 import Calendar from 'react-feather/dist/icons/calendar';
 import Eye from 'react-feather/dist/icons/eye';
 import EyeOff from 'react-feather/dist/icons/eye-off';
@@ -13,6 +14,7 @@ import Twitter from 'react-feather/dist/icons/twitter';
 import LinkedIn from './LinkedIn';
 
 export {
+  AlertTriangle,
   Calendar,
   Eye,
   EyeOff,
