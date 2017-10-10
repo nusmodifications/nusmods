@@ -74,6 +74,9 @@ export default function TeamContainer() {
           </div>
         </div>
       ))}
+
+      <hr />
+      <small>LinkedIn icon from <a href="https://icons8.com/">Icons8</a></small>
     </StaticPage>
   );
 }
