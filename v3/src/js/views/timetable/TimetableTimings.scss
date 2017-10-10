@@ -3,9 +3,13 @@
 .timings {
   display: flex;
   justify-content: space-between;
-  margin-left: $timetable-day-horizontal-size;
+  margin-left: $timetable-day-h-size;
   font-weight: 600;
   font-size: $font-size-xs;
+
+  @include media-breakpoint-down(sm) {
+    margin-left: $timetable-day-h-size-sm;
+  }
 }
 
 :global(.verticalMode) .timings {
@@ -15,7 +19,7 @@
   flex: 0 0 auto;
   flex-direction: column;
   padding: 0;
-  margin: $timetable-day-vertical-size 0 0 0;
+  margin: $timetable-day-v-size 0 0 0;
   text-align: right;
   pointer-events: none;
 
