@@ -15,7 +15,8 @@ import { fetchModuleList, loadModule } from 'actions/moduleBank';
 import { noBreak } from 'utils/react';
 import ModulesSelect from 'views/components/ModulesSelect';
 import Footer from 'views/layout/Footer';
-import LoadingSpinner from './LoadingSpinner';
+import Navtabs from 'views/layout/Navtabs';
+import LoadingSpinner from './components/LoadingSpinner';
 
 type Props = {
   children: Node,
@@ -91,21 +92,7 @@ export class AppShell extends Component<Props> {
         </nav>
 
         <div className="main-container">
-          <nav className="nm-nav-tabs">
-            <NavLink className="nav-link" activeClassName="active" to="/timetable">
-              <i className="fa fa-fw fa-lg fa-table" />
-              <span className="nm-link-title">Timetable</span>
-            </NavLink>
-            <NavLink className="nav-link" activeClassName="active" to="/modules">
-              <i className="fa fa-fw fa-lg fa-list" />
-              <span className="nm-link-title">Browse</span>
-            </NavLink>
-            <NavLink className="nav-link" activeClassName="active" to="/settings">
-              <i className="fa fa-fw fa-lg fa-gear" />
-              <span className="nm-link-title">Settings</span>
-            </NavLink>
-          </nav>
-
+          <Navtabs />
           <main className={`main-content theme-${this.props.theme}`}>
             {isModuleListReady ? this.props.children : <LoadingSpinner />}
           </main>

@@ -1,0 +1,12 @@
+@import "~utils/modules-entry";
+
+.portrait {
+  max-width: 256px;
+  margin: 0 auto 1rem;
+}
+
+@include media-breakpoint-down(xs) {
+  .teamMember {
+    text-align: center;
+  }
+}

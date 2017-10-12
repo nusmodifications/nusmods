@@ -2,16 +2,15 @@
 <html lang="en">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,height=device-height,user-scalable=no,initial-scale=1,minimum-scale=1">
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#ff5138">
-  <!--[if IE]><link rel="shortcut icon" href="/favicon.ico"><![endif]-->
+  <link rel="apple-touch-icon" sizes="180x180" href="${htmlWebpackPlugin.files.publicPath}apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="${htmlWebpackPlugin.files.publicPath}favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="${htmlWebpackPlugin.files.publicPath}favicon-16x16.png">
+  <link rel="mask-icon" href="${htmlWebpackPlugin.files.publicPath}safari-pinned-tab.svg" color="#ff5138">
+  <!--[if IE]><link rel="shortcut icon" href="${htmlWebpackPlugin.files.publicPath}favicon.ico"><![endif]-->
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
-  <link rel="manifest" href="/manifest.json">
-  <base href="/">
+  <link rel="manifest" href="${htmlWebpackPlugin.files.publicPath}manifest.json">
 </head>
 <body>
-  <div id="app" />
+  <div id="app"></div>
 </body>
 </html>

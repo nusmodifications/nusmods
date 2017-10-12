@@ -1,8 +1,8 @@
 // @flow
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import ReactDisqusThread from 'react-disqus-thread';
 import Helmet from 'react-helmet';
+import ScrollSpy from 'react-scrollspy';
 
 import type { Module, Semester } from 'types/modules';
 import type { TimetableConfig } from 'types/timetables';
@@ -15,7 +15,6 @@ import { BULLET } from 'utils/react';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
 import LessonTimetable from 'views/components/module-info/LessonTimetable';
 import CorsBiddingStatsTableControl from './CorsBiddingStatsTableControl';
-import ModuleTree from './ModuleTree';
 
 type Props = {
   module: Module,
@@ -58,7 +57,7 @@ class ModulePageContentComponent extends Component<Props> {
         </Helmet>
 
         <div className="row">
-          <div className="col-sm-12">
+          <div className="col-md-9">
             <header>
               <h1 className="page-title">
                 <span className="page-title-module-code">{ModuleCode}</span>
@@ -78,11 +77,9 @@ class ModulePageContentComponent extends Component<Props> {
                 )), BULLET)}
               </p>
             </header>
-          </div>
 
-          <div className="col-xl-9">
-            <div className="row">
-              <div className="col-sm-9 col-lg-8">
+            <section id="details" className="row">
+              <div className="col-sm-8">
                 { module.ModuleDescription && <p>{module.ModuleDescription}</p> }
 
                 <dl>
@@ -109,7 +106,7 @@ class ModulePageContentComponent extends Component<Props> {
                 </dl>
               </div>
 
-              <div className="col-sm-3 col-lg-4 module-page-sidebar">
+              <div className="col-sm-4 module-page-sidebar">
                 {this.examinations().map(exam => (
                   <div key={`exam-${exam.semester}`}>
                     <h3>{config.semesterNames[exam.semester]} Exam</h3>
@@ -148,36 +145,46 @@ class ModulePageContentComponent extends Component<Props> {
                   ], BULLET)}
                 </div>
               </div>
-            </div>
+            </section>
 
-            <h2>Prerequisite Tree</h2>
-            {module.ModmavenTree ?
-              <ModuleTree module={module} />
-              :
-              <p>Prerequisites are not available.</p>
-            }
+            <section id="prerequisites">
+              <h2>Prerequisite Tree</h2>
+              {/* TODO: Add in prereq tree when it is ready */}
+            </section>
 
-            {module.CorsBiddingStats && <div>
+            {module.CorsBiddingStats && <section id="bidding-stats">
               <h2>CORS Bidding Stats</h2>
               <CorsBiddingStatsTableControl stats={module.CorsBiddingStats} />
-            </div>}
+            </section>}
 
-            <div>
+            <section id="timetable">
               <h2>Timetable</h2>
               <LessonTimetable
                 semestersOffered={this.semestersOffered()}
                 history={module.History}
               />
-            </div>
+            </section>
 
-            <h2>Review and Discussion</h2>
-            <ReactDisqusThread
-              shortname={config.disqusShortname}
-              identifier={ModuleCode}
-              title={`${ModuleCode} ${ModuleTitle}`}
-              url={`https://nusmods.com/modules/${ModuleCode}/reviews`}
-            />
+            <section id="reviews">
+              <h2>Review and Discussion</h2>
+              {/* TODO: Use disqus-react when it is ready */}
+            </section>
           </div>
+
+          <aside className="col-md-3">
+            <nav className="module-side-menu">
+              <ScrollSpy
+                items={['details', 'prerequisites', 'bidding-stats', 'timetable', 'reviews']}
+                currentClassName="scroll-menu-link-active"
+              >
+                <li><a href="#details">Details</a></li>
+                <li><a href="#prerequisites">Prerequisites</a></li>
+                <li><a href="#bidding-stats">Bidding Stats</a></li>
+                <li><a href="#timetable">Timetable</a></li>
+                <li><a href="#reviews">Reviews</a></li>
+              </ScrollSpy>
+            </nav>
+          </aside>
         </div>
       </div>
     );

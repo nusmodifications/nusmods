@@ -8,7 +8,7 @@ Install [NodeJS 6+](https://nodejs.org/en/)
 Install [Yarn](https://yarnpkg.com/en/docs/install)
 then run the following command:
 
-```
+```sh
 $ yarn
 ```
 
@@ -16,12 +16,13 @@ $ yarn
 
 To run the development build, simply run:
 
-```
+```sh
 $ yarn start
 ```
 
 #### Running tests
-```
+
+```sh
 // run tests
 $ yarn test
 
@@ -33,11 +34,13 @@ $ yarn flow
 ```
 
 #### Check code coverage
-```
+
+```sh
 $ yarn coverage
 ```
 
 #### Build for Deployment
-```
+
+```sh
 $ yarn build
 ```
