@@ -12,7 +12,9 @@ const SRC = 'src';
 
 const PATHS = {
   root: ROOT,
-  node: path.join(ROOT, 'node_modules'),
+  // Using an absolute path will cause transient dependencies to be resolved to OUR
+  // version of the same module, so this is kept relative
+  node: 'node_modules',
   app: path.join(ROOT, SRC),
   scripts: path.join(ROOT, SRC, 'js'),
   styles: path.join(ROOT, SRC, 'styles'),
