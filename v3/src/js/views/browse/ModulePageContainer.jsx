@@ -9,8 +9,8 @@ import type { Module, ModuleCode } from 'types/modules';
 
 import { loadModule, FETCH_MODULE } from 'actions/moduleBank';
 import { getRequestName } from 'reducers/requests';
-import NotFoundPage from 'views/NotFoundPage';
-import ErrorPage from 'views/ErrorPage';
+import NotFoundPage from 'views/errors/NotFoundPage';
+import ErrorPage from 'views/errors/ErrorPage';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 
 type Props = {

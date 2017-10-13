@@ -3,10 +3,10 @@ import type { Node } from 'react';
 
 import React, { PureComponent } from 'react';
 import Helmet from 'react-helmet';
-import { Link } from 'react-router-dom';
 import Raven from 'raven-js';
 
-import config from 'config';
+import config from 'config/index';
+import styles from './ErrorPage.scss';
 
 type Props = {
   children?: Node,
@@ -39,7 +39,7 @@ export default class NotFoundPage extends PureComponent<Props> {
             {showRefresh &&
             <p>
               <button
-                className="btn-link p-0"
+                className={styles.link}
                 onClick={() => window.location.reload(true)}
               >Refreshing the page</button> may help
             </p>}
@@ -48,7 +48,7 @@ export default class NotFoundPage extends PureComponent<Props> {
             <p>
               An error report has been made and we will look into this.
               <button
-                className="btn-link p-0"
+                className={styles.link}
                 onClick={() => Raven.showReportDialog({ eventId })}
               >
                 Tell us more about what happened so we can
