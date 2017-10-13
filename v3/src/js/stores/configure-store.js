@@ -1,10 +1,19 @@
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import rootReducer from 'reducers';
 import requestsMiddleware from 'middlewares/requests-middleware';
 import ravenMiddleware from 'middlewares/raven-middleware';
 
-// Creates a preconfigured store for this example.
+/* eslint-disable no-underscore-dangle */
+// For redux-devtools-extensions - see
+// https://github.com/zalmoxisus/redux-devtools-extension
+const composeEnhancers =
+  typeof window === 'object' &&
+  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+      // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
+    }) : compose;
+
 export default function configureStore(defaultState) {
   const middlewares = [thunk, requestsMiddleware, ravenMiddleware];
 
@@ -21,7 +30,11 @@ export default function configureStore(defaultState) {
     middlewares.push(logger);
   }
 
-  const store = createStore(rootReducer, defaultState, applyMiddleware(...middlewares));
+  const store = createStore(
+    rootReducer,
+    defaultState,
+    composeEnhancers(applyMiddleware(...middlewares)),
+  );
 
   if (module.hot) {
     // Enable webpack hot module replacement for reducers
