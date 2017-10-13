@@ -11,3 +11,7 @@ declare module 'react-helmet' {
 declare module 'react-loadable' {
   declare module.exports: any;
 }
+
+declare module 'react-scrollspy' {
+  declare module.exports: any;
+}
