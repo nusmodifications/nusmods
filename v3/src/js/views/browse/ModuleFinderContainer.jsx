@@ -189,7 +189,7 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
     const { filterGroups: groups, modules, loading, page, error } = this.state;
 
     if (error) {
-      return <ErrorPage error="cannot load modules" eventId={Raven.lastEventId()} />;
+      return <ErrorPage error="cannot load modules info" eventId={Raven.lastEventId()} />;
     }
 
     if (loading) {

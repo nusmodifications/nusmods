@@ -34,8 +34,8 @@ export default class NotFoundPage extends PureComponent<Props> {
 
         <div className="page-container">
           <div className="ml-md-5 mt-3">
-            <p className="mb-0 h1 text-primary">Uh oh...</p>
-            <h1 className="mb-4">{error}</h1>
+            <p className="mb-0 h2 text-primary">Uh oh...</p>
+            <h1 className="h2 mb-4">{error}</h1>
             {showRefresh &&
             <p>
               <button
@@ -51,7 +51,7 @@ export default class NotFoundPage extends PureComponent<Props> {
                 className={styles.link}
                 onClick={() => Raven.showReportDialog({ eventId })}
               >
-                Tell us more about what happened so we can
+                Tell us more about what happened so we can better fix this.
               </button>
             </p>}
           </div>
