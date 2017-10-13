@@ -32,6 +32,7 @@ import { resetModuleFinder } from 'actions/module-finder';
 import FilterGroup from 'utils/filters/FilterGroup';
 import HistoryDebouncer from 'utils/HistoryDebouncer';
 import { defer } from 'utils/react';
+import {breakpointUp} from "../../utils/react";
 
 type Props = ContextRouter & {
   searchTerm: string,
@@ -44,6 +45,9 @@ type State = {
   modules: Module[],
   filterGroups: { [FilterGroupId]: FilterGroup<any> },
 };
+
+// Min amount of time it takes
+const INSTANT_SEARCH_THRESHOLD = 150;
 
 const pageHead = (
   <Helmet>
@@ -108,7 +112,10 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
     axios.get(nusmods.modulesUrl())
       // TODO: Handle error
       .then(({ data }) => {
+        const start = window.performance.now();
         this.filterGroups().forEach(group => group.initFilters(data));
+        this.useInstantSearch = breakpointUp('md').matches
+          && ((window.performance.now() - start) < INSTANT_SEARCH_THRESHOLD);
 
         this.setState({
           modules: data,
@@ -182,6 +189,8 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
       this.onFilterChange(filter, false);
     });
   }
+
+  useInstantSearch = false;
 
   updatePageHash = () => {
     // Update the location hash so that users can share the URL and go back to the
