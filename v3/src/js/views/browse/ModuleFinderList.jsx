@@ -8,6 +8,7 @@ import type { PageRange, PageRangeDiff, OnPageChange } from 'types/views';
 
 import { AlertTriangle } from 'views/components/icons';
 import ModuleFinderPage from './ModuleFinderPage';
+import styles from './ModuleFinderList.scss';
 
 const MODULES_PER_PAGE = 5;
 
@@ -66,7 +67,7 @@ export default class ModuleFinderList extends Component<Props> {
     if (total === 0) {
       return (
         <div className="text-center mt-4">
-          <AlertTriangle size="3rem" className="text-primary" />
+          <AlertTriangle className={styles.noModulesIcon} />
           <h4>No modules found</h4>
         </div>
       );
