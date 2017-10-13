@@ -67,12 +67,11 @@ type Props = {
 };
 
 class TimetableContainer extends Component<Props> {
-  props: Props;
-  timetableDom: ?HTMLElement;
+    timetableDom: ?HTMLElement;
 
-  componentWillUnmount() {
-    this.cancelModifyLesson();
-  }
+    componentWillUnmount() {
+      this.cancelModifyLesson();
+    }
 
   cancelModifyLesson = () => {
     if (this.props.activeLesson) {

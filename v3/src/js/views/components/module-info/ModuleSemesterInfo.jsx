@@ -19,9 +19,6 @@ type State = {
 };
 
 export default class ModuleSemesterInfo extends Component<Props, State> {
-  props: Props;
-  state: State;
-
   constructor(props: Props) {
     super(props);
 

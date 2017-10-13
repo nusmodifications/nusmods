@@ -39,55 +39,53 @@ type State = {
  * - Loaded: Both requests are successfully loaded
  */
 export class ModulePageContainerComponent extends PureComponent<Props, State> {
-  props: Props;
+    state: State = {
+      ModulePageContent: null,
+    };
 
-  state: State = {
-    ModulePageContent: null,
-  };
-
-  componentWillMount() {
-    this.loadModule(this.props.moduleCode);
+    componentWillMount() {
+      this.loadModule(this.props.moduleCode);
 
     import('views/browse/ModulePageContent')
       // TODO: Error handling
       .then(module => this.setState({ ModulePageContent: module.default }));
-  }
-
-  componentWillReceiveProps(nextProps: Props) {
-    if (nextProps.moduleCode !== this.props.moduleCode) {
-      this.loadModule(nextProps.moduleCode);
-    }
-  }
-
-  loadModule(moduleCode: ModuleCode) {
-    if (this.doesModuleExist(moduleCode)) {
-      this.props.loadModule(moduleCode);
-    }
-  }
-
-  doesModuleExist(moduleCode: ModuleCode) {
-    return this.props.moduleCodes.has(moduleCode);
-  }
-
-  render() {
-    const { ModulePageContent } = this.state;
-    const { module, request, moduleCode } = this.props;
-
-    if (!this.doesModuleExist(moduleCode)) {
-      return <NotFoundPage />;
     }
 
-    if (request && request.isFailure) {
+    componentWillReceiveProps(nextProps: Props) {
+      if (nextProps.moduleCode !== this.props.moduleCode) {
+        this.loadModule(nextProps.moduleCode);
+      }
+    }
+
+    loadModule(moduleCode: ModuleCode) {
+      if (this.doesModuleExist(moduleCode)) {
+        this.props.loadModule(moduleCode);
+      }
+    }
+
+    doesModuleExist(moduleCode: ModuleCode) {
+      return this.props.moduleCodes.has(moduleCode);
+    }
+
+    render() {
+      const { ModulePageContent } = this.state;
+      const { module, request, moduleCode } = this.props;
+
+      if (!this.doesModuleExist(moduleCode)) {
+        return <NotFoundPage />;
+      }
+
+      if (request && request.isFailure) {
       // TODO: Display a proper error page here
-      return <NotFoundPage />;
-    }
+        return <NotFoundPage />;
+      }
 
-    if (module && ModulePageContent) {
-      return <ModulePageContent moduleCode={moduleCode} />;
-    }
+      if (module && ModulePageContent) {
+        return <ModulePageContent moduleCode={moduleCode} />;
+      }
 
-    return <LoadingSpinner />;
-  }
+      return <LoadingSpinner />;
+    }
 }
 
 const mapStateToProps = (state, ownState) => {

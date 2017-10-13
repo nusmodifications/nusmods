@@ -19,12 +19,10 @@ type Props = {
 };
 
 export default class SemesterPicker extends PureComponent<Props> {
-  props: Props;
-
-  static defaultProps = {
-    showDisabled: false,
-    useShortNames: false,
-  };
+    static defaultProps = {
+      showDisabled: false,
+      useShortNames: false,
+    };
 
   onSelectSemester = (choice: string) => {
     const chosen = this.semesterMap()[choice];

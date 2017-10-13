@@ -35,8 +35,7 @@ const timeLabels: { [Time]: string } = {
 };
 
 export default class TimeslotTable extends Component<Props, State> {
-  props: Props;
-  state: State = { hover: EMPTY_HOVER };
+    state: State = { hover: EMPTY_HOVER };
 
   onHoverEnter = (day: Day, time: Time) => {
     this.setState({ hover: { day, time } });

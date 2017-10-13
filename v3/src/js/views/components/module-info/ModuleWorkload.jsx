@@ -71,8 +71,6 @@ type Props = {
 };
 
 export default class ModuleWorkload extends PureComponent<Props> {
-  props: Props;
-
   renderFallback(): Node {
     // Workload cannot be parsed - so we just display it without any visualization
     return (

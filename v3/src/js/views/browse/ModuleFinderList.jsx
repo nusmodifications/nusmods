@@ -22,8 +22,6 @@ function getPageKey(modules: Module[]): string {
 }
 
 export default class ModuleFinderList extends Component<Props> {
-  props: Props;
-
   onEnterPage(fromStart: number) {
     const { start, loaded } = this.props.page;
 

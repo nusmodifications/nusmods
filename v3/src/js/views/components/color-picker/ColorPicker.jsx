@@ -17,8 +17,6 @@ type Props = {
 };
 
 class ColorPicker extends Component<Props> {
-  props: Props;
-
   componentWillMount() {
     window.addEventListener(EVENT_TYPE, this.handleKeyDown);
   }

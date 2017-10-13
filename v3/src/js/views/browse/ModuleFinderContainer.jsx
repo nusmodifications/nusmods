@@ -62,9 +62,6 @@ export function mergePageRange(prev: PageRange, diff: PageRangeDiff): PageRange 
 }
 
 export class ModuleFinderContainerComponent extends Component<Props, State> {
-  props: Props;
-  state: State;
-
   history: HistoryDebouncer;
   unlisten: () => void;
 
