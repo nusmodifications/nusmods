@@ -21,39 +21,39 @@ type Props = {
 };
 
 class Timetable extends PureComponent<Props> {
-    timetableDom: ?HTMLDivElement;
+  timetableDom: ?HTMLDivElement;
 
-    render() {
-      const schoolDays = SCHOOLDAYS.filter(day => day !== 'Saturday' || this.props.lessons.Saturday);
+  render() {
+    const schoolDays = SCHOOLDAYS.filter(day => day !== 'Saturday' || this.props.lessons.Saturday);
 
-      const lessons: Array<Lesson> = _.flattenDeep(Object.values(this.props.lessons));
-      const { startingIndex, endingIndex } = calculateBorderTimings(lessons);
+    const lessons: Array<Lesson> = _.flattenDeep(Object.values(this.props.lessons));
+    const { startingIndex, endingIndex } = calculateBorderTimings(lessons);
 
-      return (
-        <div
-          className={styles.container}
-          ref={(r) => { this.timetableDom = r; }}
-        >
-          <TimetableTimings
-            startingIndex={startingIndex}
-            endingIndex={endingIndex}
-          />
-          <ol className={styles.days}>
-            {schoolDays.map(day => (
-              <TimetableDay
-                key={day}
-                day={day}
-                startingIndex={startingIndex}
-                endingIndex={endingIndex}
-                onModifyCell={this.props.onModifyCell}
-                verticalMode={this.props.isVerticalOrientation}
-                dayLessonRows={this.props.lessons[day] || [[]]}
-              />
-            ))}
-          </ol>
-        </div>
-      );
-    }
+    return (
+      <div
+        className={styles.container}
+        ref={(r) => { this.timetableDom = r; }}
+      >
+        <TimetableTimings
+          startingIndex={startingIndex}
+          endingIndex={endingIndex}
+        />
+        <ol className={styles.days}>
+          {schoolDays.map(day => (
+            <TimetableDay
+              key={day}
+              day={day}
+              startingIndex={startingIndex}
+              endingIndex={endingIndex}
+              onModifyCell={this.props.onModifyCell}
+              verticalMode={this.props.isVerticalOrientation}
+              dayLessonRows={this.props.lessons[day] || [[]]}
+            />
+          ))}
+        </ol>
+      </div>
+    );
+  }
 }
 
 export default Timetable;
