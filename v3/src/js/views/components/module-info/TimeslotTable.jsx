@@ -11,7 +11,7 @@ import { DaysOfWeek, TimesOfDay } from 'types/modules';
 import { getTimeslot } from 'utils/modules';
 
 type Props = {
-  children: Map<string, Node>,
+  children: Map<string, Node> | Map<string, Node[]>,
   className?: string,
 };
 

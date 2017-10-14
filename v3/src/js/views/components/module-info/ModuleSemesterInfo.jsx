@@ -35,7 +35,7 @@ export default class ModuleSemesterInfo extends Component<Props, State> {
     return this.props.semesters.find(data => data.Semester === this.state.selected);
   }
 
-  timeslotChildren(): Map<string, Node> {
+  timeslotChildren(): Map<string, Node[]> {
     const semester = this.selectedSemester() || {};
     const {
       LecturePeriods: lectures = [],
@@ -44,14 +44,9 @@ export default class ModuleSemesterInfo extends Component<Props, State> {
 
     const children = new Map();
     const addChild = (timeslot, component) => {
-      let child = children.get(timeslot);
-      if (!child) {
-        child = [];
-        children.set(timeslot, child);
-      }
-
-      // This type check makes Flow happy
-      if (typeof child.push === 'function') child.push(component);
+      if (!children.has(timeslot)) children.set(timeslot, []);
+      const child = children.get(timeslot) || [];
+      child.push(component);
     };
 
     lectures.forEach(timeslot => addChild(timeslot, <div className="workload-lecture-bg" key="lecture" />));
