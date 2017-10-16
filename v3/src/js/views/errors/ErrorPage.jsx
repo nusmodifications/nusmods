@@ -10,7 +10,7 @@ import styles from './ErrorPage.scss';
 
 type Props = {
   children?: Node,
-  error: string,
+  error?: string,
   eventId?: string,
   showRefresh: boolean,
 };
@@ -23,8 +23,14 @@ export default class NotFoundPage extends PureComponent<Props> {
     showRefresh: true,
   };
 
+  errorMessage() {
+    let message = 'something went wrong';
+    if (this.props.error) message = `${message} - ${this.props.error}`;
+    return message;
+  }
+
   render() {
-    const { error, showRefresh, eventId } = this.props;
+    const { showRefresh, eventId } = this.props;
 
     return (
       <div>
@@ -35,24 +41,25 @@ export default class NotFoundPage extends PureComponent<Props> {
         <div className="page-container">
           <div className="ml-md-5 mt-3">
             <p className="mb-0 h2 text-primary">Uh oh...</p>
-            <h1 className="h2 mb-4">{error}</h1>
+            <h1 className="h2 mb-4">{this.errorMessage()}</h1>
+
             {showRefresh &&
             <p>
               <button
                 className={styles.link}
                 onClick={() => window.location.reload(true)}
-              >Refreshing the page</button> may help
+              >Refreshing the page</button> may help.
             </p>}
 
             {eventId &&
             <p>
               An error report has been made and we will look into this.
-              <button
+              We would really appreciate it if you could <button
                 className={styles.link}
                 onClick={() => Raven.showReportDialog({ eventId })}
               >
-                Tell us more about what happened so we can better fix this.
-              </button>
+                tell us more about what happened</button> so we can
+              better fix this.
             </p>}
           </div>
         </div>

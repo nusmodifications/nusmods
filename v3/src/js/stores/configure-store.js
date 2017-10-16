@@ -4,15 +4,16 @@ import rootReducer from 'reducers';
 import requestsMiddleware from 'middlewares/requests-middleware';
 import ravenMiddleware from 'middlewares/raven-middleware';
 
-/* eslint-disable no-underscore-dangle */
 // For redux-devtools-extensions - see
 // https://github.com/zalmoxisus/redux-devtools-extension
+/* eslint-disable no-underscore-dangle */
 const composeEnhancers =
   typeof window === 'object' &&
   window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
       // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
     }) : compose;
+/* eslint-enable no-underscore-dangle */
 
 export default function configureStore(defaultState) {
   const middlewares = [thunk, requestsMiddleware, ravenMiddleware];

@@ -5,9 +5,11 @@ import Raven from 'raven-js';
 // TODO: Use an in-memory storage for environments where localStorage is not present,
 //       like private mode on Safari.
 function setItem(key, value) {
-  Raven.context(() => {
+  try {
     localStorage.setItem(key, _.isString(value) ? value : JSON.stringify(value));
-  });
+  } catch (e) {
+    Raven.captureException(e);
+  }
 }
 
 function getItem(key) {
@@ -18,16 +20,18 @@ function getItem(key) {
       return JSON.parse(value);
     }
     return undefined;
-  } catch (err) {
-    Raven.captureException(err);
+  } catch (e) {
+    Raven.captureException(e);
     return value;
   }
 }
 
 function removeItem(key) {
-  Raven.context(() => {
+  try {
     localStorage.removeItem(key);
-  });
+  } catch (e) {
+    Raven.captureException(e);
+  }
 }
 
 const stateKey = 'reduxState';
