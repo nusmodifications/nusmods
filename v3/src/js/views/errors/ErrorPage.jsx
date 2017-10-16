@@ -19,7 +19,6 @@ export default class NotFoundPage extends PureComponent<Props> {
   props: Props;
 
   static defaultProps = {
-    error: 'something went wrong',
     showRefresh: true,
   };
 
