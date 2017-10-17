@@ -21,7 +21,6 @@ type Props = {
 };
 
 class Timetable extends PureComponent<Props> {
-  props: Props;
   timetableDom: ?HTMLDivElement;
 
   render() {

@@ -15,7 +15,7 @@ import theme from './theme';
 import settings from './settings';
 import moduleFinder from './module-finder';
 
-type State = {
+export type State = {
   entities: Object,
   requests: Requests,
   timetables: Object,

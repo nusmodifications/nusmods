@@ -19,6 +19,7 @@ export type FetchRequest = {
   isPending: boolean,
   isSuccessful: boolean,
   isFailure: boolean,
+  error?: any,
 };
 
 export type Requests = { [RequestType]: FetchRequest };

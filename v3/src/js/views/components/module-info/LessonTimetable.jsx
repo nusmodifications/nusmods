@@ -21,9 +21,6 @@ type State = {
 };
 
 export default class LessonTimetableControl extends PureComponent<Props, State> {
-  props: Props;
-  state: State;
-
   constructor(props: Props) {
     super(props);
     this.state = {

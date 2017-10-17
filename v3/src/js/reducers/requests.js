@@ -70,6 +70,7 @@ export default function requests(state: Requests = {}, action: FSA): Requests {
         [getRequestName(type)]: {
           ...NULL_FETCH_REQUEST,
           isFailure: true,
+          error: action.payload,
         },
       };
 

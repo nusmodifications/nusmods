@@ -7,8 +7,9 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import update from 'immutability-helper';
-import _ from 'lodash';
 import qs from 'query-string';
+import Raven from 'raven-js';
+import _ from 'lodash';
 
 import type { Module } from 'types/modules';
 import type { PageRange, PageRangeDiff } from 'types/views';
@@ -18,7 +19,9 @@ import ModuleFinderList from 'views/browse/ModuleFinderList';
 import ModuleSearchBox from 'views/browse/ModuleSearchBox';
 import ChecklistFilters from 'views/components/filters/ChecklistFilters';
 import TimeslotFilters from 'views/components/filters/TimeslotFilters';
+import ErrorPage from 'views/errors/ErrorPage';
 import LoadingSpinner from 'views/components/LoadingSpinner';
+
 import moduleFilters, {
   LEVELS,
   LECTURE_TIMESLOTS,
@@ -44,6 +47,7 @@ type State = {
   page: PageRange,
   modules: Module[],
   filterGroups: { [FilterGroupId]: FilterGroup<any> },
+  error?: any,
 };
 
 // Min amount of time it takes
@@ -74,9 +78,6 @@ export function mergePageRange(prev: PageRange, diff: PageRangeDiff): PageRange 
 }
 
 export class ModuleFinderContainerComponent extends Component<Props, State> {
-  props: Props;
-  state: State;
-
   history: HistoryDebouncer;
   unlisten: () => void;
 
@@ -110,7 +111,6 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
 
   componentDidMount() {
     axios.get(nusmods.modulesUrl())
-      // TODO: Handle error
       .then(({ data }) => {
         const start = window.performance.now();
         this.filterGroups().forEach(group => group.initFilters(data));
@@ -121,6 +121,10 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
           modules: data,
           loading: false,
         });
+      })
+      .catch((error) => {
+        Raven.captureException(error);
+        this.setState({ error });
       });
   }
 
@@ -219,7 +223,11 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
   }
 
   render() {
-    const { filterGroups: groups, modules, loading, page } = this.state;
+    const { filterGroups: groups, modules, loading, page, error } = this.state;
+
+    if (error) {
+      return <ErrorPage error="cannot load modules info" eventId={Raven.lastEventId()} />;
+    }
 
     if (loading) {
       return (

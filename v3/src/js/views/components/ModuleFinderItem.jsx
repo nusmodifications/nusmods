@@ -1,7 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { connect, type MapStateToProps } from 'react-redux';
 
 import type { Module } from 'types/modules';
 import type { ModuleSearch } from 'types/reducers';
@@ -18,8 +18,6 @@ type Props = {
 };
 
 export class ModuleFinderItemComponent extends PureComponent<Props> {
-  props: Props;
-
   highlight(content: string) {
     if (!this.props.search.term) return content;
     return highlight(content, this.props.search.tokens);
@@ -77,6 +75,8 @@ export class ModuleFinderItemComponent extends PureComponent<Props> {
   }
 }
 
-export default connect(state => ({
+const mapStateToProps: MapStateToProps<*, *, *> = state => ({
   search: state.moduleFinder.search,
-}))(ModuleFinderItemComponent);
+});
+
+export default connect(mapStateToProps)(ModuleFinderItemComponent);
