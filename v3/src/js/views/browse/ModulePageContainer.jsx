@@ -42,8 +42,6 @@ type State = {
  * - Loaded: Both requests are successfully loaded
  */
 export class ModulePageContainerComponent extends PureComponent<Props, State> {
-  props: Props;
-
   state: State = {
     ModulePageContent: null,
   };

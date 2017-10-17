@@ -16,8 +16,6 @@ type Props = {
 };
 
 class ModulesSelect extends Component<Props> {
-  props: Props;
-
   shouldComponentUpdate(nextProps: Props) {
     return _.size(this.props.moduleList) !== _.size(nextProps.moduleList);
   }

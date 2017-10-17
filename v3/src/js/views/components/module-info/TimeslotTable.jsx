@@ -11,7 +11,7 @@ import { DaysOfWeek, TimesOfDay } from 'types/modules';
 import { getTimeslot } from 'utils/modules';
 
 type Props = {
-  children: Map<string, Node>,
+  children: Map<string, Node> | Map<string, Node[]>,
   className?: string,
 };
 
@@ -35,8 +35,7 @@ const timeLabels: { [Time]: string } = {
 };
 
 export default class TimeslotTable extends Component<Props, State> {
-  props: Props;
-  state: State = { hover: EMPTY_HOVER };
+    state: State = { hover: EMPTY_HOVER };
 
   onHoverEnter = (day: Day, time: Time) => {
     this.setState({ hover: { day, time } });

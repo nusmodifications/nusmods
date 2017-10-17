@@ -21,9 +21,6 @@ type State = {
 };
 
 class DevelopersContainer extends Component<Props, State> {
-  props: Props;
-  state: State;
-
   constructor(props: Props) {
     super(props);
 

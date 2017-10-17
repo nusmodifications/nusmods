@@ -27,8 +27,6 @@ type State = {
 };
 
 class CorsBiddingStatsTableControl extends Component<Props, State> {
-  props: Props;
-  state: State;
   onAccountTypeChange: Function;
   onSelectAySem: Function;
 

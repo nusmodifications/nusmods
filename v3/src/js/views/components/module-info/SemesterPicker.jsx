@@ -19,8 +19,6 @@ type Props = {
 };
 
 export default class SemesterPicker extends PureComponent<Props> {
-  props: Props;
-
   static defaultProps = {
     showDisabled: false,
     useShortNames: false,

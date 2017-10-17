@@ -6,9 +6,8 @@ type Props = {
   color?: string,
   size?: number | string,
 }
-export default class LinkedIn extends PureComponent<Props> {
-  props: Props;
 
+export default class LinkedIn extends PureComponent<Props> {
   static defaultProps = {
     color: 'currentColor',
     size: 24,
