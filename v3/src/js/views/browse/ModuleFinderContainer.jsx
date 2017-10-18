@@ -34,12 +34,12 @@ import nusmods from 'apis/nusmods';
 import { resetModuleFinder } from 'actions/module-finder';
 import FilterGroup from 'utils/filters/FilterGroup';
 import HistoryDebouncer from 'utils/HistoryDebouncer';
-import { defer } from 'utils/react';
-import {breakpointUp} from "../../utils/react";
+import { defer, breakpointUp } from 'utils/react';
 
-type Props = ContextRouter & {
+type Props = {
   searchTerm: string,
   resetModuleFinder: () => any,
+  ...ContextRouter,
 };
 
 type State = {
@@ -114,8 +114,11 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
       .then(({ data }) => {
         const start = window.performance.now();
         this.filterGroups().forEach(group => group.initFilters(data));
-        this.useInstantSearch = breakpointUp('md').matches
-          && ((window.performance.now() - start) < INSTANT_SEARCH_THRESHOLD);
+        const time = window.performance.now() - start;
+
+        this.useInstantSearch = breakpointUp('md').matches && (time < INSTANT_SEARCH_THRESHOLD);
+        console.log(`${time}ms taken to init filters`); // eslint-disable-line
+        console.log(this.useInstantSearch ? 'Instant search on' : 'Instant search off'); // eslint-disable-line
 
         this.setState({
           modules: data,
@@ -252,7 +255,7 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
           <div className="col-md-8 col-lg-9">
             <h1 className="sr-only">Module Finder</h1>
 
-            <ModuleSearchBox />
+            <ModuleSearchBox useInstantSearch={this.useInstantSearch} />
 
             <ModuleFinderList
               modules={filteredModules}
