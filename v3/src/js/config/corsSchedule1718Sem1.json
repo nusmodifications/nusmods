@@ -1,0 +1,58 @@
+[
+    {
+        "round": "0",
+        "openBiddingStart": "2017-07-27T01:00:00.000Z",
+        "openBiddingEnd": "2017-07-28T09:00:00.000Z",
+        "closedBiddingStart": null,
+        "closedBiddingEnd": null
+    },
+    {
+        "round": "1A",
+        "openBiddingStart": "2017-07-31T01:00:00.000Z",
+        "openBiddingEnd": "2017-08-01T05:00:00.000Z",
+        "closedBiddingStart": "2017-08-01T05:00:01.000Z",
+        "closedBiddingEnd": "2017-08-01T09:00:00.000Z"
+    },
+    {
+        "round": "1B",
+        "openBiddingStart": "2017-08-02T01:00:00.000Z",
+        "openBiddingEnd": "2017-08-02T07:00:00.000Z",
+        "closedBiddingStart": "2017-08-02T07:00:01.000Z",
+        "closedBiddingEnd": "2017-08-02T09:00:00.000Z"
+    },
+    {
+        "round": "1C",
+        "openBiddingStart": "2017-08-03T01:00:00.000Z",
+        "openBiddingEnd": "2017-08-04T05:00:00.000Z",
+        "closedBiddingStart": "2016-08-04T05:00:01.000Z",
+        "closedBiddingEnd": "2016-08-04T09:00:00.000Z"
+    },
+    {
+        "round": "2A",
+        "openBiddingStart": "2017-08-07T01:00:00.000Z",
+        "openBiddingEnd": "2017-08-10T05:00:00.000Z",
+        "closedBiddingStart": "2017-08-10T05:00:01.000Z",
+        "closedBiddingEnd": "2017-08-10T09:00:00.000Z"
+    },
+    {
+        "round": "2B",
+        "openBiddingStart": "2017-08-11T01:00:00.000Z",
+        "openBiddingEnd": "2017-08-11T07:00:00.000Z",
+        "closedBiddingStart": "2017-08-11T07:00:01.000Z",
+        "closedBiddingEnd": "2017-08-11T09:00:00.000Z"
+    },
+    {
+        "round": "3A",
+        "openBiddingStart": "2017-08-14T01:00:00.000Z",
+        "openBiddingEnd": "2017-08-14T07:00:00.000Z",
+        "closedBiddingStart": "2017-08-14T07:00:01.000Z",
+        "closedBiddingEnd": "2017-08-14T09:00:00.000Z"
+    },
+    {
+        "round": "3B",
+        "openBiddingStart": "2017-08-15T01:00:00.000Z",
+        "openBiddingEnd": "2017-08-15T07:00:00.000Z",
+        "closedBiddingStart": "2017-08-15T07:00:01.000Z",
+        "closedBiddingEnd": "2017-08-15T09:00:00.000Z"
+    }
+]
