@@ -24,8 +24,6 @@ type Props = {
 };
 
 class ModulePageContentComponent extends Component<Props> {
-  props: Props;
-
   semestersOffered(): Semester[] {
     return this.props.module.History
       .map(h => h.Semester)

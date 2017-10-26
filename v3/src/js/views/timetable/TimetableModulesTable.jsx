@@ -30,8 +30,6 @@ type Props = {
 };
 
 class TimetableModulesTable extends Component<Props> {
-  props: Props;
-
   componentWillUnmount() {
     this.cancelModifyModuleColor();
   }

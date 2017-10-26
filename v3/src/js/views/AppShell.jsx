@@ -53,8 +53,6 @@ const weekText = (() => {
 })();
 
 export class AppShell extends Component<Props> {
-  props: Props;
-
   componentWillMount() {
     // TODO: This always refetch the entire modules list. Consider a better strategy for this
     this.props.fetchModuleList();

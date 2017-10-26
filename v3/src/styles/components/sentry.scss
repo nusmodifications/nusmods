@@ -1,0 +1,6 @@
+// Override Sentry error reporting styles
+
+// body is added to override embedded specificity
+body .sentry-error-embed-wrapper {
+  z-index: $sentry-z-index;
+}
