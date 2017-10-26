@@ -4,6 +4,7 @@ $timetable-min-width: $timetable-row-height * 16;
 
 .container {
   min-width: $timetable-min-width;
+  padding-right: $timetable-right-padding;
 }
 
 :global(.verticalMode) .container {
@@ -13,7 +14,7 @@ $timetable-min-width: $timetable-row-height * 16;
 }
 
 .days {
-  padding: 0 2vw 0 0;
+  padding: 0;
   margin: 0;
   list-style: none;
 }
