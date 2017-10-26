@@ -7,10 +7,12 @@
   min-width: $timetable-col-width;
   margin-bottom: 1px;
 
+  // Allow empty days to collapse...
   &:empty {
-    // Special case for iPhone 5 users
+    // ...entirely on iPhone 5, since the screen is very small...
     min-width: 0;
 
+    // ...and only a little bit for devices larger than iPhone 5
     @media (min-width: 321px) {
       min-width: $timetable-col-width * 0.8;
     }
@@ -20,8 +22,4 @@
 :global(.verticalMode) .timetableRow {
   height: auto;
   margin: 0 1px 0 0;
-
-  &:empty {
-    min-width: 2.5rem;
-  }
 }
