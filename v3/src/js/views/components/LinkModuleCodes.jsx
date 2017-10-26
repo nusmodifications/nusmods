@@ -1,9 +1,11 @@
 // @flow
+import type { MapStateToProps } from 'react-redux';
 
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import type { State } from 'reducers';
 import type { ModuleCode } from 'types/modules';
 
 import { modulePagePath } from 'utils/modules';
@@ -31,6 +33,9 @@ export function LinkModuleCodesComponent(props: Props) {
   })}</span>);
 }
 
-export default connect(state => ({
+// Type annotation is workaround for https://github.com/flowtype/flow-typed/issues/1269
+const mapStateToProps: MapStateToProps<*, *, *> = (state: State) => ({
   moduleCodes: state.entities.moduleBank.moduleCodes,
-}))(LinkModuleCodesComponent);
+});
+
+export default connect(mapStateToProps)(LinkModuleCodesComponent);

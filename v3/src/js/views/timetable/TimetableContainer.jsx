@@ -67,7 +67,6 @@ type Props = {
 };
 
 class TimetableContainer extends Component<Props> {
-  props: Props;
   timetableDom: ?HTMLElement;
 
   componentWillUnmount() {

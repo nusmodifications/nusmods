@@ -10,8 +10,6 @@ type Props = {
 };
 
 export default class ModuleFinderPage extends PureComponent<Props> {
-  props: Props;
-
   render() {
     const { page } = this.props;
 

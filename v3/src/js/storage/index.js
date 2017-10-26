@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import Raven from 'raven-js';
 
 // Simple wrapper around localStorage to automagically parse and stringify payloads.
 // TODO: Use an in-memory storage for environments where localStorage is not present,
@@ -6,8 +7,8 @@ import _ from 'lodash';
 function setItem(key, value) {
   try {
     localStorage.setItem(key, _.isString(value) ? value : JSON.stringify(value));
-  } catch (err) {
-    // TODO: Report errors to Sentry.
+  } catch (e) {
+    Raven.captureException(e);
   }
 }
 
@@ -19,7 +20,8 @@ function getItem(key) {
       return JSON.parse(value);
     }
     return undefined;
-  } catch (err) {
+  } catch (e) {
+    Raven.captureException(e);
     return value;
   }
 }
@@ -27,8 +29,8 @@ function getItem(key) {
 function removeItem(key) {
   try {
     localStorage.removeItem(key);
-  } catch (err) {
-    // TODO: Report errors to Sentry.
+  } catch (e) {
+    Raven.captureException(e);
   }
 }
 
