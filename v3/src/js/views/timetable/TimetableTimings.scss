@@ -5,7 +5,7 @@
   justify-content: space-between;
   margin-left: $timetable-day-h-size;
   font-weight: 600;
-  font-size: $font-size-xs;
+  font-size: $font-size-s;
 
   @include media-breakpoint-down(sm) {
     margin-left: $timetable-day-h-size-sm;

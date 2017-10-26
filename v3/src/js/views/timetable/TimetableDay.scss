@@ -43,17 +43,11 @@
     overflow: hidden;
 
     .dayNameText {
-      width: 80%;
-      font-size: $font-size-xs;
       // On small screens, display the day names vertically
-      text-orientation: upright;
-      writing-mode: vertical-lr;
-
-      @supports not (text-orientation: upright) {
-        width: 0.4rem;
-        line-height: 1.1;
-        word-break: break-all;
-      }
+      width: 0.6rem;
+      font-size: $font-size-s;
+      line-height: 1.1;
+      word-break: break-all;
     }
   }
 }
