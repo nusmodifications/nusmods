@@ -73,7 +73,7 @@ class TimetableModulesTable extends Component<Props> {
           this.props.modules.map((module) => {
             return (
               <div
-                className={classnames('modules-table-row', {
+                className={classnames('modules-table-row', 'col-sm-6', {
                   'col-md-4': this.props.horizontalOrientation,
                   'col-md-12': !this.props.horizontalOrientation,
                 })}

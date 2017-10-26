@@ -150,7 +150,7 @@ class TimetableContainer extends Component<Props> {
 
     return (
       <div
-        className={`${styles.container} page-container`}
+        className={classnames(styles.container, 'page-container')}
         onClick={this.cancelModifyLesson}
       >
         <Helmet>
@@ -158,20 +158,22 @@ class TimetableContainer extends Component<Props> {
         </Helmet>
         <div className="row">
           <div
-            className={classnames(styles.timetableWrapper, {
+            className={classnames({
               'col-md-12': !isVerticalOrientation,
               'col-md-8': isVerticalOrientation,
               verticalMode: isVerticalOrientation,
             })}
           >
-            <Timetable
-              lessons={arrangedLessonsWithModifiableFlag}
-              isVerticalOrientation={isVerticalOrientation}
-              onModifyCell={this.modifyCell}
-              ref={(r) => {
-                this.timetableDom = r && r.timetableDom;
-              }}
-            />
+            <div className={styles.timetableWrapper}>
+              <Timetable
+                lessons={arrangedLessonsWithModifiableFlag}
+                isVerticalOrientation={isVerticalOrientation}
+                onModifyCell={this.modifyCell}
+                ref={(r) => {
+                  this.timetableDom = r && r.timetableDom;
+                }}
+              />
+            </div>
           </div>
           <div
             className={classnames({
