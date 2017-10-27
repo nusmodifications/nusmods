@@ -3,129 +3,107 @@ const cheerio = require('cheerio');
 const moment = require('moment');
 const fs = require('graceful-fs');
 const path = require('path');
+const assert = require('assert');
 
 const CORS_URL = 'http://www.nus.edu.sg/cors/schedule.html';
 const ROUND_NAMES = ['0', '1A', '1B', '1C', '2A', '2B', '3A', '3B'];
+const TIME_FORMAT = 'dddd Do MMMM, ha'; // eg. Friday 27th October, 12pm
+const OUT_DIR = 'src/js/config';
 
-function formatDateTime(date, time, isStartOfClosedBidding) {
+function formatDateTime(date, time) {
   const dateTime = moment(`${date} ${time}`, 'DD/MM/YYYY HH:mm', true);
-  if (!dateTime.isValid()) {
-    throw new Error(`${date} ${time} is not a valid date`);
-  }
-
-  // Closed bidding round should start 1 sec after the stated time.
-  // This stops it from clashing with the end of the open bidding period.
-  if (isStartOfClosedBidding) {
-    dateTime.add(1, 'seconds');
-  }
-
-  return dateTime.toISOString();
+  assert(dateTime.isValid(), `${date} ${time} is not a valid date`);
+  return dateTime;
 }
 
-function formatRoundWithoutClosedBidding(infoArray) {
-  const openStart = formatDateTime(infoArray[0], infoArray[1], false);
-  let openEnd;
-  const closedStart = null;
-  const closedEnd = null;
-  // Open bidding period starts and ends on different dates.
-  if (infoArray.length === 6) {
-    openEnd = formatDateTime(infoArray[3], infoArray[4], false);
-  } else {
-    // Open bidding period starts and ends on the same date.
-    openEnd = formatDateTime(infoArray[0], infoArray[3], false);
-  }
-
-  return [openStart, openEnd, closedStart, closedEnd];
-}
-
-function formatRoundTwoOpenBidding(infoArray) {
-  // Historically, all rounds with 2 open bidding periods fit this format,
-  // but this may change in the future.
-  const openStart = formatDateTime(infoArray[0], infoArray[1], false);
-  const openEnd = formatDateTime(infoArray[8], infoArray[9], false);
-  const closedStart = formatDateTime(infoArray[10], infoArray[11], true);
-  const closedEnd = formatDateTime(infoArray[10], infoArray[13], false);
-  return [openStart, openEnd, closedStart, closedEnd];
-}
-
-function formatGeneral(infoArray) {
-  const openStart = formatDateTime(infoArray[0], infoArray[1], false);
-  let openEnd;
-  let closedStart;
-  let closedEnd;
-  // Open bidding period starts and ends on different dates
-  if (infoArray.length === 9) {
-    openEnd = formatDateTime(infoArray[3], infoArray[4], false);
-    closedStart = formatDateTime(infoArray[5], infoArray[6], true);
-    closedEnd = formatDateTime(infoArray[5], infoArray[8], false);
-  } else {
-    // Open bidding period starts and ends on the same date
-    openEnd = formatDateTime(infoArray[0], infoArray[3], false);
-    closedStart = formatDateTime(infoArray[4], infoArray[5], true);
-    closedEnd = formatDateTime(infoArray[4], infoArray[7], false);
-  }
-  return [openStart, openEnd, closedStart, closedEnd];
-}
-
-function processRoundRow(textArray) {
-  const roundName = textArray.shift();
-  const roundInfo = textArray;
-  const roundType = roundInfo.filter(text => text === 'to').length;
-  let timingArray;
-  switch (roundType) {
-    case 1:
-      // This means that the round has no closed bidding period.
-      timingArray = formatRoundWithoutClosedBidding(roundInfo);
-      break;
-    case 3:
-      // This means that the round has 2 open bidding periods.
-      timingArray = formatRoundTwoOpenBidding(roundInfo);
-      break;
-    default:
-      // General case.
-      timingArray = formatGeneral(roundInfo);
-      break;
-  }
-
+function createPeriod(type, start, end) {
   return {
-    round: roundName,
-    openBiddingStart: timingArray[0],
-    openBiddingEnd: timingArray[1],
-    closedBiddingStart: timingArray[2],
-    closedBiddingEnd: timingArray[3],
+    type,
+    // start/end are human readable datetime, while startTs/endTs are machine readable ISO 8601 timestamps
+    // This allows us to avoid having to do messy date formatting on the client-side
+    start: start.format(TIME_FORMAT),
+    startTs: start.toISOString(),
+    end: end.format(TIME_FORMAT),
+    endTs: end.toISOString(),
   };
+}
+
+function processRound(type, text) {
+  // Clean the text and split into periods
+  return text
+    .trim() // Clean text
+    .split(/\s*\n\s*/g) // Split into periods (eg. 27/07/2017 09:00 to 28/07/2017 17:00)
+    .filter(period => period.includes('to')) // Remove things that don't look like periods (eg. 'N/A')
+    .map((period) => {
+      const chunks = period.split(/\s+/g);
+
+      const start = formatDateTime(chunks[0], chunks[1]);
+      let end;
+      // Bidding period starts and ends on different dates.
+      // eg. 27/07/2017 09:00 to 28/07/2017 17:00
+      // So end = 28/07/2017 17:00
+      if (chunks.length === 5) {
+        end = formatDateTime(chunks[3], chunks[4]);
+      } else if (chunks.length === 4) {
+        // Open bidding period starts and ends on the same date.
+        // eg. 02/08/2017 09:00 to 15:00
+        // So end = 02/08/2017 15:00
+        end = formatDateTime(chunks[0], chunks[3]);
+      } else {
+        assert.fail(`Unexpected number of chunks in a period - ${period}`);
+      }
+
+      return createPeriod(type, start, end);
+    });
 }
 
 console.log(`Fetching page ${CORS_URL}...`);
 axios.get(CORS_URL, { responseType: 'responseType' })
   .then(({ data }) => {
     const $page = cheerio.load(data);
-    const roundsData = [];
 
-    // Retrieve the academic year and semester for the file name.
+    // 1. Retrieve the academic year and semester for the file name.
     const rawHeader = $page('span.middletabletext:has(span.scheduleheader1)').text().trim();
     const semInfo = rawHeader.replace(/\s+|Bidding Schedule|\(AY|20|\/|Semester|\)/g, '').split(',');
-    const dirName = 'src/js/config';
+
+    // Output file config
     const fileName = `corsSchedule${semInfo[0]}Sem${semInfo[1]}.json`;
 
-    // Extract the bidding schedules.
-    $page('tbody:has(td.tableheader) > tr').each((index, element) => {
-      const rawText = $page(element).text().trim();
-      // Clean up all the white space from the text.
-      const text = rawText.replace(/(\r\n\t\t\t\t|\r\n|\n|\r)/g, ' ')
-        .replace(/\s+/g, ' ');
-      const textArray = text.split(' ');
-      // Check if this is a bidding round.
-      if (ROUND_NAMES.indexOf(textArray[0]) !== -1) {
-        const newEntry = processRoundRow(textArray);
-        roundsData.push(newEntry);
-      }
-    });
+    // 2. Extract the bidding schedules table
+    const table = $page('.scheduleheader1')
+      .filter((index, element) => $page(element).text().includes('Bidding Periods'))
+      .next('table');
 
-    // Write to file.
-    const jsonArray = `${JSON.stringify(roundsData, null, 4)}\n`;
+    assert.equal(table.length, 1, 'Unexpected bidding schedule table found - ' +
+      'check that the selector for the bidding schedule table is specific enough');
+
+    // 3. Extract the rows containing round data
+    const roundsData = table
+      .find('tr')
+      .slice(1) // Ignore header row
+      .map((index, element) => {
+        // 4. Extract round name
+        const cells = $page(element).find('td');
+        const round = cells.first().text();
+        assert(ROUND_NAMES.includes(round), `Unknown CORS bidding round found - ${round}`);
+
+        // 5. Extract open and closed bidding data
+        const periods = [
+          ...processRound('open', cells.eq(1).text()),
+          ...processRound('closed', cells.eq(2).text()),
+        ];
+
+        return {
+          round,
+          periods,
+        };
+      }).get(); // .get() remove the cheerio wrapper
+    assert.equal(roundsData.length, ROUND_NAMES.length, 'Unexpected number of CORS bidding rounds');
+
+    // 6. Write to file
+    const jsonArray = JSON.stringify(roundsData, null, 2);
     console.log(jsonArray);
-    fs.writeFileSync(path.join(dirName, fileName), jsonArray);
+    fs.writeFileSync(path.join(OUT_DIR, fileName), jsonArray);
     console.log(`Successfully written to ${fileName}.`);
   })
   .catch(e => console.error(e));
