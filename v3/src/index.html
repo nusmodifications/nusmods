@@ -1,13 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,height=device-height,user-scalable=no,initial-scale=1,minimum-scale=1">
-  <link rel="apple-touch-icon" sizes="180x180" href="${htmlWebpackPlugin.files.publicPath}apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="${htmlWebpackPlugin.files.publicPath}favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="${htmlWebpackPlugin.files.publicPath}favicon-16x16.png">
-  <link rel="mask-icon" href="${htmlWebpackPlugin.files.publicPath}safari-pinned-tab.svg" color="#ff5138">
-  <!--[if IE]><link rel="shortcut icon" href="${htmlWebpackPlugin.files.publicPath}favicon.ico"><![endif]-->
-  <link rel="manifest" href="${htmlWebpackPlugin.files.publicPath}manifest.json">
+  <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1">
+  <link href="${htmlWebpackPlugin.files.publicPath}apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180">
+  <link href="${htmlWebpackPlugin.files.publicPath}favicon-32x32.png" rel="icon" type="image/png" sizes="32x32">
+  <link href="${htmlWebpackPlugin.files.publicPath}favicon-16x16.png" rel="icon" type="image/png" sizes="16x16">
+  <link href="${htmlWebpackPlugin.files.publicPath}safari-pinned-tab.svg" rel="mask-icon" color="#ff5138">
+  <!--[if IE]><link href="${htmlWebpackPlugin.files.publicPath}favicon.ico" rel="shortcut icon"><![endif]-->
+  <link href="${htmlWebpackPlugin.files.publicPath}manifest.json" rel="manifest">
+  <title>NUSMods</title>
+  <meta name="description" content="NUSMods is a timetable builder and knowledge platform, providing students with a better way to plan their school timetable and useful module-related information that are community-driven.">
+  <!-- Open Graph general (Facebook, Pinterest & Google+) -->
+  <meta name="og:title" content="NUSMods">
+  <meta name="og:description" content="NUSMods is a timetable builder and knowledge platform, providing students with a better way to plan their school timetable and useful module-related information that are community-driven.">
+  <meta name="og:image" content="${htmlWebpackPlugin.files.publicPath}fb-share.png">
+  <meta name="og:site_name" content="NUSMods">
+  <meta name="og:type" content="website">
+  <!-- Open Search -->
+  <link href="${htmlWebpackPlugin.files.publicPath}opensearch.xml" rel="search" type="application/opensearchdescription+xml">
 </head>
 <body>
   <div id="app"></div>

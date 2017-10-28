@@ -62,8 +62,12 @@ const productionConfig = merge([
     },
     plugins: [
       new HtmlWebpackPlugin({
-        title: 'NUSMods',
         template: path.join(parts.PATHS.app, 'index.html'),
+        minify: {
+          removeComments: true,
+          removeRedundantAttributes: true,
+          collapseWhitespace: true,
+        },
       }),
       extractTextPlugin,
       // Copy files from static folder over to dist

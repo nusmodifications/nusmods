@@ -30,8 +30,6 @@ const developmentConfig = merge([
       // makes the discovery automatic so you don't have to restart.
       new WatchMissingNodeModulesPlugin(parts.PATHS.node),
       new HtmlWebpackPlugin({
-        title: 'NUSMods',
-        inject: true,
         template: path.join(parts.PATHS.app, 'index.html'),
         cache: true,
       }),
