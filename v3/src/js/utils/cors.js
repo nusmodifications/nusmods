@@ -1,5 +1,5 @@
 // @flow
-import { last } from 'lodash';
+import { first, last } from 'lodash';
 
 import type { BiddingStat, Student } from 'types/modules';
 import type { CorsRound } from 'config';
@@ -36,6 +36,10 @@ export function isStatRelevantForStudent(stat: BiddingStat, student: Student) {
     default:
       throw Error(`unknown StudentAcctType ${stat.StudentAcctType}`);
   }
+}
+
+export function roundStart(round: CorsRound): Date {
+  return first(round.periods).startDate;
 }
 
 export function roundEnd(round: CorsRound): Date {

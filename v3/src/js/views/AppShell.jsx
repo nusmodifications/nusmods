@@ -2,9 +2,10 @@
 import type { Node } from 'react';
 
 import React, { Component } from 'react';
-import { NavLink, withRouter } from 'react-router-dom';
+import { NavLink, withRouter, type ContextRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import NUSModerator from 'nusmoderator';
+import qs from 'query-string';
 
 import type { TimetableConfig } from 'types/timetables';
 import type { ModuleList, ModuleSelectList } from 'types/reducers';
@@ -13,12 +14,18 @@ import type { ModuleCode } from 'types/modules';
 import config from 'config';
 import { fetchModuleList, loadModule } from 'actions/moduleBank';
 import { noBreak } from 'utils/react';
+import { roundStart } from 'utils/cors';
 import ModulesSelect from 'views/components/ModulesSelect';
 import Footer from 'views/layout/Footer';
 import Navtabs from 'views/layout/Navtabs';
 import LoadingSpinner from './components/LoadingSpinner';
+import CorsNotification from './components/cors-info/CorsNotification';
+
+const NOW = new Date(); // Cache a current date object to stop CorsNotification from rerendering
 
 type Props = {
+  ...ContextRouter,
+
   children: Node,
   moduleList: ModuleList,
   moduleSelectList: ModuleSelectList,
@@ -67,6 +74,17 @@ export class AppShell extends Component<Props> {
     }
   }
 
+  currentTime() {
+    // For testing
+    const param = qs.parse(this.props.location.search);
+    if (param.round) {
+      const round = config.corsSchedule.find(r => r.round === param.round);
+      if (round) return roundStart(round);
+    }
+
+    return NOW;
+  }
+
   render() {
     // TODO: Handle failed loading of module list
     const isModuleListReady = this.props.moduleList.length;
@@ -91,6 +109,9 @@ export class AppShell extends Component<Props> {
 
         <div className="main-container">
           <Navtabs />
+
+          <CorsNotification time={this.currentTime()} />
+
           <main className={`main-content theme-${this.props.theme}`}>
             {isModuleListReady ? this.props.children : <LoadingSpinner />}
           </main>
