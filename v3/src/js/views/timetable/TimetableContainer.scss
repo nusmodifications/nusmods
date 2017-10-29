@@ -7,7 +7,7 @@
 }
 
 .timetableWrapper {
-  composes: mb-4 from global;
+  margin-bottom: 1rem;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 
@@ -16,4 +16,9 @@
     margin-right: -($grid-gutter-width / 2);
     margin-left: -($grid-gutter-width / 2);
   }
+}
+
+.tableContainer {
+  composes: row from global;
+  margin-top: 0.5rem;
 }
