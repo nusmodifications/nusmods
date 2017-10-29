@@ -5,6 +5,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
+const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 
 const commonConfig = require('./webpack.config.common');
 const parts = require('./webpack.parts');
@@ -71,6 +72,10 @@ const productionConfig = merge([
           removeRedundantAttributes: true,
           collapseWhitespace: true,
         },
+      }),
+      new ScriptExtHtmlWebpackPlugin({
+        inline: /manifest/,
+        preload: /\.js$/,
       }),
       extractTextPlugin,
       // Copy files from static folder over to dist
