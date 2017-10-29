@@ -13,6 +13,10 @@ type Props = {
 };
 
 export default class CorsNotification extends PureComponent<Props> {
+  static defaultProps = {
+    time: new Date(),
+  };
+
   currentCorsRound() {
     return config.corsSchedule.find(round => roundEnd(round) > this.props.time);
   }

@@ -3,7 +3,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import moment from 'moment';
 
-import config, { type CorsRound } from 'config';
+import config, { type CorsRound, type CorsPeriod, type CorsPeriodType } from 'config';
 import CorsNotification from './CorsNotification';
 
 // Save the original CORS schedule for this test and restore it afterwards
@@ -19,8 +19,8 @@ afterAll(() => {
 function corsPeriod(
   start: moment,
   durationInHours: number = 1,
-  type: 'open' | 'closed' = 'open',
-) {
+  type: CorsPeriodType = 'open',
+): CorsPeriod {
   const end = start.clone().add(durationInHours, 'hour');
 
   return {

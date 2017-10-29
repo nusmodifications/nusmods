@@ -4,8 +4,10 @@ import type { Semester, AcadYear } from 'types/modules';
 import appConfig from './app-config.json';
 import corsData from './corsSchedule1718Sem1.json';
 
-type CorsPeriod = {
-  type: 'open' | 'closed',
+export type CorsPeriodType = 'open' | 'closed';
+
+export type CorsPeriod = {
+  type: CorsPeriodType,
   start: string,
   startDate: Date,
   end: string,

@@ -21,7 +21,9 @@ import Navtabs from 'views/layout/Navtabs';
 import LoadingSpinner from './components/LoadingSpinner';
 import CorsNotification from './components/cors-info/CorsNotification';
 
-const NOW = new Date(); // Cache a current date object to stop CorsNotification from rerendering
+// Cache a current date object to stop CorsNotification from rerendering - if this was in
+// render(), a new Date object is created, forcing rerender
+const NOW = new Date();
 
 type Props = {
   ...ContextRouter,
@@ -75,7 +77,7 @@ export class AppShell extends Component<Props> {
   }
 
   currentTime() {
-    // For testing
+    // For manual testing - add ?round=1A (or other round names) to trigger the notification
     const param = qs.parse(this.props.location.search);
     if (param.round) {
       const round = config.corsSchedule.find(r => r.round === param.round);
