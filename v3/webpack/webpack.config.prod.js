@@ -77,7 +77,7 @@ const productionConfig = merge([
       new CopyWebpackPlugin([{ from: 'static', context: parts.PATHS.root }], { copyUnmodified: true }),
       new WorkboxPlugin({
         globDirectory: parts.PATHS.build,
-        globPatterns: ['**/*.{html,js,css}'],
+        globPatterns: ['**/*.{html,js,css,png,svg}'],
         swDest: path.join(parts.PATHS.build, 'sw.js'),
       }),
     ],
