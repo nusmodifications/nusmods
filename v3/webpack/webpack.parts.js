@@ -26,23 +26,26 @@ const PATHS = {
 // These dependencies will be extracted out into `vendor.js` in production build.
 // App bundle changes more often than vendor bundle and splitting app bundle from
 // 3rd-party vendor bundle allows the vendor bundle to be cached.
+// Only require general names, e.g. 'react' will catch 'react-redux'
 const VENDOR = [
+  'lodash',
+  'core-js',
   'axios',
-  'babel-polyfill',
-  'classnames',
-  'ical-generator',
-  'raven-js',
-  'raven-for-redux',
   'react',
-  'react-helmet',
-  'react-dom',
   'redux',
-  'react-redux',
-  'react-router-dom',
-  'react-select-fast-filter-options',
-  'react-virtualized-select',
-  'redux-thunk',
+  'history',
+  'classnames',
+  'raven',
+  'immutability-helper',
   'nusmoderator',
+  'js-search',
+  'dom-to-image',
+  'ical-generator',
+  'fbjs',
+  'loader',
+  'prop-types',
+  'query-string',
+  'equal',
 ];
 
 const DLL = {
@@ -93,19 +96,21 @@ exports.clean = (...pathsToBeCleaned) => ({
  *
  * @see https://webpack.js.org/plugins/commons-chunk-plugin/#options
  * @see https://survivejs.com/webpack/building/bundle-splitting/
+ * @see https://survivejs.com/webpack/building/bundle-splitting/#loading-dependencies-to-a-vendor-bundle-automatically
  */
 exports.extractBundle = ({ name, entries }) => {
-  const entry = {};
-  entry[name] = entries;
-
   return {
-    // Define an entry point needed for splitting.
-    entry,
     plugins: [
       // Extract bundle and manifest files. Manifest is
       // needed for reliable caching.
       new webpack.optimize.CommonsChunkPlugin({
         names: [name],
+        minChunks: ({ resource }) => {
+          return resource &&
+            resource.includes('node_modules') &&
+            resource.match(/\.js$/) &&
+            entries.some(entry => resource.includes(entry));
+        },
       }),
       new webpack.optimize.CommonsChunkPlugin({
         names: 'manifest',
@@ -113,17 +118,6 @@ exports.extractBundle = ({ name, entries }) => {
       }),
     ],
   };
-};
-
-/**
- * Function to identify vendor chunks.
- *
- * @see https://survivejs.com/webpack/building/bundle-splitting/#loading-dependencies-to-a-vendor-bundle-automatically
- */
-exports.isVendor = ({ resource }) => {
-  return resource &&
-    resource.indexOf('node_modules') >= 0 &&
-    resource.match(/\.js$/);
 };
 
 /**
