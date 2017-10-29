@@ -4,6 +4,7 @@ const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const WorkboxPlugin = require('workbox-webpack-plugin');
 
 const commonConfig = require('./webpack.config.common');
 const parts = require('./webpack.parts');
@@ -61,6 +62,8 @@ const productionConfig = merge([
       ],
     },
     plugins: [
+      // SEE: https://medium.com/webpack/brief-introduction-to-scope-hoisting-in-webpack-8435084c171f
+      new webpack.optimize.ModuleConcatenationPlugin(),
       new HtmlWebpackPlugin({
         template: path.join(parts.PATHS.app, 'index.html'),
         minify: {
@@ -72,8 +75,11 @@ const productionConfig = merge([
       extractTextPlugin,
       // Copy files from static folder over to dist
       new CopyWebpackPlugin([{ from: 'static', context: parts.PATHS.root }], { copyUnmodified: true }),
-      // SEE: https://medium.com/webpack/brief-introduction-to-scope-hoisting-in-webpack-8435084c171f
-      new webpack.optimize.ModuleConcatenationPlugin(),
+      new WorkboxPlugin({
+        globDirectory: parts.PATHS.build,
+        globPatterns: ['**/*.{html,js,css}'],
+        swDest: path.join(parts.PATHS.build, 'sw.js'),
+      }),
     ],
   },
   parts.clean(parts.PATHS.build),

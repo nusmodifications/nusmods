@@ -85,7 +85,8 @@
     "url-loader": "^0.5.9",
     "webpack": "^3.8.1",
     "webpack-dev-server": "^2.9.4",
-    "webpack-merge": "^4.1.0"
+    "webpack-merge": "^4.1.0",
+    "workbox-webpack-plugin": "^2.1.0"
   },
   "dependencies": {
     "axios": "^0.16.2",
