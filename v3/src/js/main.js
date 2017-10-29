@@ -1,3 +1,5 @@
+import 'utils/polyfill';
+
 import ReactDOM from 'react-dom';
 import _ from 'lodash';
 import Raven from 'raven-js';
