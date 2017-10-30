@@ -75,10 +75,9 @@ export function isTutorial(lesson: RawLesson): boolean {
     lesson.LessonType.toLowerCase().includes('tutorial'));
 }
 
-export function holidaysForYear(year: number, hourOffset: number = 0) {
+export function holidaysForYear(hourOffset: number = 0) {
   return config.holidays
     .map(date => new Date(date.valueOf() - SG_UTC_TIME_DIFF_MS)) // Convert to local time
-    .filter(holiday => holiday.getFullYear() === year)
     .map(holiday => hoursAfter(holiday, hourOffset));
 }
 
@@ -136,7 +135,7 @@ export function calculateExclusion(lesson: RawLesson, firstLesson: Date) {
     // 5. Convert the academic weeks into dates
     ...excludedWeeks.map(week => datesForAcademicWeeks(firstLesson, week)),
     // 6. Exclude holidays
-    ...holidaysForYear(firstLesson.getFullYear(), getTimeHour(lesson.StartTime)),
+    ...holidaysForYear(getTimeHour(lesson.StartTime)),
   ];
 }
 

@@ -158,6 +158,7 @@ test('calculateExclusion generates exclusions for holidays', () => {
     new Date('2016-08-08T14:00+0800'),
   );
 
+  // 2016 holidays
   expect(actual).toEqual(expect.arrayContaining([
     new Date('2016-01-01T14:00+0800'),
     new Date('2016-02-08T14:00+0800'),
