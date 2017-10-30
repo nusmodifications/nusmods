@@ -17,8 +17,6 @@ function Footer() {
           <li><Link to="/developers">Developers</Link></li>
           <li><Link to="/faq">FAQ</Link></li>
         </ul>
-        {/* TODO: Change team to link to internal page. */}
-        {/* TODO: Change contributors link to internal page */}
         {/* TODO: Add last updated timestamp */}
         <p>Designed and built with all the love in the world by{' '}
           <a
