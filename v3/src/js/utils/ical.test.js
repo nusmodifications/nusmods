@@ -189,7 +189,7 @@ test('iCalEventForLesson generates correct output', () => {
     new Date('2016-08-08T00:00+0800'),
   );
 
-  const expected = expect.objectContaining({
+  const expected = {
     start: new Date('2016-08-08T14:00+0800'),
     end: new Date('2016-08-08T17:00+0800'),
     summary: 'BFS1001 Sectional Teaching',
@@ -203,7 +203,7 @@ test('iCalEventForLesson generates correct output', () => {
       byDay: ['Mo'],
       exclude: expect.arrayContaining([]), // Tested in previous tests
     },
-  });
+  };
 
   expect(actual).toEqual(expected);
 });

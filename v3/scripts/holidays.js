@@ -12,6 +12,7 @@ const inputs = fs.readdirSync(IN_DIR);
 const holidays = [];
 
 inputs.forEach((file) => {
+  console.log(`Reading holidays from ${file}`);
   fs.readFileSync(path.join(IN_DIR, file), 'utf-8')
     .trim()
     .split('\n')
@@ -20,4 +21,5 @@ inputs.forEach((file) => {
     .forEach(date => holidays.push(date));
 });
 
+console.log(`Writing ${holidays.length} holidays to ${OUT_FILE}`);
 fs.writeFileSync(OUT_FILE, JSON.stringify(holidays, null, 2));
