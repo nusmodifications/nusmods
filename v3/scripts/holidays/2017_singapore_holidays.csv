@@ -1,0 +1,12 @@
+Date,Name,Day,Observance,Observance Strategy
+2017-01-01,New Year's Day,Sunday,2017-01-02,next_monday
+2017-01-28,Chinese New Year Day 1,Saturday,2017-01-28,actual_day
+2017-01-29,Chinese New Year Day 2,Sunday,2017-01-30,next_monday
+2017-04-14,Good Friday,Friday,2017-04-14,actual_day
+2017-01-05,Labour Day,Monday,2017-01-05,actual_day
+2017-05-10,Vesak Day,Wednesday,2017-05-10,actual_day
+2017-06-25,Hari Raya Puasa,Sunday,2017-06-26,next_monday
+2017-08-09,National Day,Wednesday,2017-08-09,actual_day
+2017-09-01,Hari Raya Haji,Friday,2017-09-01,actual_day
+2017-10-18,Deepavali,Wednesday,2017-10-18,actual_day
+2017-12-25,Christmas Day,Monday,2017-12-25,actual_day

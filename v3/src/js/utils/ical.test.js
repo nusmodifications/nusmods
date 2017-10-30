@@ -8,6 +8,7 @@ import {
   daysAfter,
   iCalEventForExam,
   isTutorial,
+  calculateExclusion,
 } from 'utils/ical';
 
 import bfs1001 from '__mocks__/modules/BFS1001.json';
@@ -15,18 +16,27 @@ import cs1010s from '__mocks__/modules/CS1010S.json';
 import cs3216 from '__mocks__/modules/CS3216.json';
 import mockTimetable from '__mocks__/sem-timetable.json';
 
+const rawLesson = override => ({
+  ClassNo: 'A1',
+  DayText: 'Monday',
+  EndTime: '1700',
+  LessonType: 'Sectional Teaching',
+  StartTime: '1400',
+  Venue: 'BIZ1-0303',
+  WeekText: '1,2,3,4,5,6',
+  ...override,
+});
+
 /* Build a RawLesson of a given type */
-const rawLessonOfType = lessonType => (
-  {
-    ClassNo: '1',
-    DayText: 'Monday',
-    EndTime: '1600',
-    LessonType: lessonType,
-    StartTime: '1400',
-    Venue: 'SR1',
-    WeekText: 'Every Week',
-  }
-);
+const rawLessonOfType = lessonType => ({
+  ClassNo: '1',
+  DayText: 'Monday',
+  EndTime: '1600',
+  LessonType: lessonType,
+  StartTime: '1400',
+  Venue: 'SR1',
+  WeekText: 'Every Week',
+});
 
 test('isTutorial should return true for tutorials', () => {
   expect(isTutorial(rawLessonOfType('Design Lecture'))).toBe(true);
@@ -67,7 +77,103 @@ test('iCalEventForExam should generate event', () => {
   expect(actual).toEqual(expected);
 });
 
-test('iCalEventForLesson generates exclusion for comma separated weeks', () => {
+//     August 2016            September 2016         October 2016
+// Wk Mo Tu We Th Fr Sa | Wk Mo Tu We Th Fr Sa | Wk Mo Tu We Th Fr Sa
+//     2  3  4  5  6    | 04        1  2  3    | 07                 1
+// 01  8  9 10 11 12 13 | 05  5  6  7  8  9 10 | 08  3  4  5  6  7  8
+// 02 15 16 17 18 19 20 | 06 12 13 14 15 16 17 | 09 10 11 12 13 14 15
+// 03 22 23 24 25 26 27 | Re 19 20 21 22 23 24 | 10 17 18 19 20 21 22
+// 04 29 30 31          | 07 26 27 28 29 30    | 11 24 25 26 27 28 29
+//                      |                      | 12 31
+//
+//     November 2016    |
+// Wk Mo Tu We Th Fr Sa |
+// 12     1  2  3  4  5 |
+// 13  7  8  9 10 11 12 |
+// Re 14 15 16 17 18 19 |
+// E1 21 22 23 24 25 26 |
+// E2 28 29 30          |
+
+test('calculateExclusion generates exclusion for comma separated weeks', () => {
+  const actual: EventOption = calculateExclusion(rawLesson(), new Date('2016-08-08T14:00+0800'));
+
+  expect(actual).toEqual(expect.arrayContaining([
+    new Date('2016-09-19T14:00+0800'), // Recess
+    new Date('2016-09-26T14:00+0800'), // 7
+    new Date('2016-10-03T14:00+0800'), // 8
+    new Date('2016-10-10T14:00+0800'), // 9
+    new Date('2016-10-17T14:00+0800'), // 10
+    new Date('2016-10-24T14:00+0800'), // 11
+    new Date('2016-10-31T14:00+0800'), // 12
+    new Date('2016-11-07T14:00+0800'), // 13
+  ]));
+});
+
+test('calculateExclusion generates exclusion for even weeks', () => {
+  const actual: EventOption = calculateExclusion(
+    rawLesson({
+      WeekText: 'Even Week',
+    }),
+    new Date('2016-08-08T14:00+0800'),
+  );
+
+  // Exclusions should be odd week lessons
+  expect(actual).toEqual(expect.arrayContaining([
+    new Date('2016-08-08T14:00+0800'), // 1
+    new Date('2016-08-22T14:00+0800'), // 3
+    new Date('2016-09-05T14:00+0800'), // 5
+    new Date('2016-09-19T14:00+0800'), // Recess
+    new Date('2016-09-26T14:00+0800'), // 7
+    new Date('2016-10-10T14:00+0800'), // 9
+    new Date('2016-10-24T14:00+0800'), // 11
+    new Date('2016-11-07T14:00+0800'), // 13
+  ]));
+});
+
+test('calculateExclusion generates exclusion for odd weeks', () => {
+  const actual: EventOption = calculateExclusion(
+    rawLesson({
+      WeekText: 'Odd Week',
+    }),
+    new Date('2016-08-08T14:00+0800'),
+  );
+
+  // Exclusions should be even week lessons
+  expect(actual).toEqual(expect.arrayContaining([
+    new Date('2016-08-15T14:00+0800'), // 2
+    new Date('2016-08-29T14:00+0800'), // 4
+    new Date('2016-09-12T14:00+0800'), // 6
+    new Date('2016-09-19T14:00+0800'), // Recess
+    new Date('2016-10-03T14:00+0800'), // 8
+    new Date('2016-10-17T14:00+0800'), // 10
+    new Date('2016-10-31T14:00+0800'), // 12
+  ]));
+});
+
+test('calculateExclusion generates exclusions for holidays', () => {
+  const actual: EventOption = calculateExclusion(
+    rawLesson({
+      WeekText: 'Every Week',
+    }),
+    new Date('2016-08-08T14:00+0800'),
+  );
+
+  expect(actual).toEqual(expect.arrayContaining([
+    new Date('2016-01-01T14:00+0800'),
+    new Date('2016-02-08T14:00+0800'),
+    new Date('2016-02-09T14:00+0800'),
+    new Date('2016-03-25T14:00+0800'),
+    new Date('2016-05-01T14:00+0800'),
+    new Date('2016-05-21T14:00+0800'),
+    new Date('2016-07-06T14:00+0800'),
+    new Date('2016-08-09T14:00+0800'),
+    new Date('2016-09-12T14:00+0800'),
+    new Date('2016-10-29T14:00+0800'),
+    new Date('2016-12-25T14:00+0800'),
+  ]));
+});
+
+test('iCalEventForLesson generates correct output', () => {
   const actual: EventOption = iCalEventForLesson(
     {
       ClassNo: 'A1',
@@ -82,34 +188,27 @@ test('iCalEventForLesson generates exclusion for comma separated weeks', () => {
     1,
     new Date('2016-08-08T00:00+0800'),
   );
-  const expected: EventOption = {
+
+  const expected = expect.objectContaining({
     start: new Date('2016-08-08T14:00+0800'),
     end: new Date('2016-08-08T17:00+0800'),
     summary: 'BFS1001 Sectional Teaching',
     description: 'Personal Development & Career Management\nSectional Teaching Group A1',
     location: 'BIZ1-0303',
     url: 'https://myaces.nus.edu.sg/cors/jsp/report/ModuleDetailedInfo.jsp?' +
-      'acad_y=2016/2017&sem_c=1&mod_c=BFS1001',
+    'acad_y=2016/2017&sem_c=1&mod_c=BFS1001',
     repeating: {
       freq: 'WEEKLY',
       count: 14,
       byDay: ['Mo'],
-      exclude: [
-        new Date('2016-09-19T14:00+0800'),
-        new Date('2016-09-26T14:00+0800'),
-        new Date('2016-10-03T14:00+0800'),
-        new Date('2016-10-10T14:00+0800'),
-        new Date('2016-10-17T14:00+0800'),
-        new Date('2016-10-24T14:00+0800'),
-        new Date('2016-10-31T14:00+0800'),
-        new Date('2016-11-07T14:00+0800'),
-      ],
+      exclude: expect.arrayContaining([]), // Tested in previous tests
     },
-  };
+  });
+
   expect(actual).toEqual(expected);
 });
 
-test('icalForTimetable', () => {
+test('iCalForTimetable', () => {
   const moduleData = {
     CS1010S: cs1010s,
     CS3216: cs3216,

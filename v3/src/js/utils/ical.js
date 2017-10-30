@@ -26,22 +26,40 @@ function dayIndex(weekday: string) {
   return ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'].indexOf(weekday.toLowerCase());
 }
 
+/**
+ * Parse out the hour component from a time string in the format of hh:mm
+ */
+function getTimeHour(time: string) {
+  return parseInt(time.slice(0, 2), 10);
+}
+
 // needed cos the utils method formats the date for display
 function getExamDate(module: Module, semester: Semester): string {
   return _.get(getModuleSemesterData(module, semester), 'ExamDate');
 }
 
+/**
+ * Return a copy of the original Date incremented by the given number of days
+ */
 export function daysAfter(startDate: Date, days: number): Date {
-  const result = new Date(startDate.getTime());
-  result.setUTCDate(result.getUTCDate() + days);
-  return result;
+  const d = new Date(startDate.valueOf());
+  d.setUTCDate(d.getUTCDate() + days);
+  return d;
+}
+
+/**
+ * Return a copy of the original Date incremented by the given number of hours
+ */
+function hoursAfter(date: Date, sgHour: number) {
+  const d = new Date(date.valueOf());
+  d.setUTCHours(d.getUTCHours() + sgHour);
+  return d;
 }
 
 export function iCalEventForExam(module: Module, semester: Semester): ?EventOption {
   const examDate = new Date(getExamDate(module, semester));
-  if (isNaN(examDate.getTime())) {
-    return null;
-  }
+  if (isNaN(examDate.getTime())) return null;
+
   return {
     start: examDate,
     end: new Date(examDate.valueOf() + EXAM_DURATION_MS),
@@ -57,6 +75,12 @@ export function isTutorial(lesson: RawLesson): boolean {
     lesson.LessonType.toLowerCase().includes('tutorial'));
 }
 
+export function holidaysForYear(year: number, hourOffset: number = 0) {
+  return config.holidays
+    .filter(holiday => holiday.getFullYear() === year)
+    .map(holiday => hoursAfter(holiday, hourOffset));
+}
+
 // given academic weeks in semester and a start date in week 1,
 // return dates corresponding to the respective weeks
 export function datesForAcademicWeeks(start: Date, week: number): Date {
@@ -69,57 +93,66 @@ export function datesForAcademicWeeks(start: Date, week: number): Date {
     (week <= 6 ? week - 1 : week) * 7);
 }
 
-/* Calculates the dates that should be excluded for lesson
- * 1. exclude recess week from all
- * 2. odd/even weeks get appropriate exclusions
- * 3. tutorials have week 1, 2, and 3 excluded
- * 4. if comma separated weeks specified, exclude unspecified weeks
+/**
+ * Calculates the dates that should be excluded for lesson
+ *
+ * - Exclude entire weeks that do not apply for the lesson
+ * - Exclude all holidays
+ *
+ * Exclusions are represented by datetime when the event will start, so we calculate
+ * excluded weeks by simply offsetting the first lesson's date by seven days per week
  */
-function calculateExclusion(lesson: RawLesson, start: Date) {
-  let excludes = _.union(
-    // always exclude recess
-    [RECESS_WEEK],
-    // specific exclusion for lessons (tutorials)
-    isTutorial(lesson) ? WEEKS_WITHOUT_TUTORIALS : [],
-  );
+export function calculateExclusion(lesson: RawLesson, firstLesson: Date) {
+  // 1. Always exclude recess week
+  let excludedWeeks = [RECESS_WEEK];
+
+  // 2. Exclude weeks 1 and 2 if this is a tutorial
+  if (isTutorial(lesson)) {
+    excludedWeeks = excludedWeeks.concat(WEEKS_WITHOUT_TUTORIALS);
+  }
 
   switch (lesson.WeekText) {
+    // 3. Exclude odd/even weeks for even/odd week lessons
     case 'Odd Week':
-      excludes = _.union(excludes, EVEN_WEEKS);
+      excludedWeeks = _.union(excludedWeeks, EVEN_WEEKS);
       break;
     case 'Even Week':
-      excludes = _.union(excludes, ODD_WEEKS);
+      excludedWeeks = _.union(excludedWeeks, ODD_WEEKS);
       break;
     case 'Every Week':
       break;
-    default: { // comma-separated weeks
+
+    // 4. If WeekText is not any of the above, then assume it consists of a list of weeks
+    //    with lessons, so we exclude weeks without lessons
+    default: {
       const weeksWithClasses = lesson.WeekText.split(',').map(w => parseInt(w, 10));
-      excludes = _.union(excludes, _.difference(ALL_WEEKS, weeksWithClasses));
+      excludedWeeks = _.union(excludedWeeks, _.difference(ALL_WEEKS, weeksWithClasses));
       break;
     }
   }
 
-  // sort in ascending order so we get nicer dates, recess will be the first
-  excludes.sort((a, b) => a - b);
-  // convert the academic weeks into dates
-  return excludes.map(_.partial(datesForAcademicWeeks, start));
+  return [
+    // 5. Convert the academic weeks into dates
+    ...excludedWeeks.map(week => datesForAcademicWeeks(firstLesson, week)),
+    // 6. Exclude holidays
+    ...holidaysForYear(firstLesson.getFullYear(), getTimeHour(lesson.StartTime)),
+  ];
 }
 
-function hoursAfter(date: Date, sgHour: number) {
-  const d = new Date(date);
-  d.setUTCHours(d.getUTCHours() + sgHour);
-  return d;
-}
-
-/* Strategy is to generate a weekly event,
+/**
+ * Strategy is to generate a weekly event,
  * then calculate exclusion for special cases in calculateExclusion.
  */
 export function iCalEventForLesson(
-  lesson: RawLesson, module: Module, semester: Semester, firstDayOfSchool: Date): EventOption {
+  lesson: RawLesson,
+  module: Module,
+  semester: Semester,
+  firstDayOfSchool: Date,
+): EventOption {
   // set start date and time, end date and time
   const lessonDayMidnight = daysAfter(firstDayOfSchool, dayIndex(lesson.DayText));
-  const start = hoursAfter(lessonDayMidnight, parseInt(lesson.StartTime.slice(0, 2), 10));
-  const end = hoursAfter(lessonDayMidnight, parseInt(lesson.EndTime.slice(0, 2), 10));
+  const start = hoursAfter(lessonDayMidnight, getTimeHour(lesson.StartTime));
+  const end = hoursAfter(lessonDayMidnight, getTimeHour(lesson.EndTime));
 
   const exclude = calculateExclusion(lesson, start);
 
@@ -145,7 +178,7 @@ export function iCalForTimetable(
   timetable: SemTimetableConfigWithLessons,
   moduleData: { [ModuleCode]: Module },
   academicYear: string = config.academicYear,
-): Array<EventOption> {
+): EventOption[] {
   const [year, month, day] = academicCalendar[academicYear][semester].start;
   // 'month - 1' because JS months are zero indexed
   const firstDayOfSchool = new Date(Date.UTC(year, month - 1, day) - SG_UTC_TIME_DIFF_MS);
