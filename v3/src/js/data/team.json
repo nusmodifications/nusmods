@@ -2,6 +2,7 @@
   {
     "name": "Beng (Eu Beng Hee)",
     "description": "He's Beng. Nuff' said.",
+    "active": false,
     "link": "https://www.github.com/ahbeng",
     "gravatar": "https://www.gravatar.com/avatar/601eddec66c2e48891195af393144c17?s=256",
     "gravatar-alt": "Beng",
@@ -11,9 +12,10 @@
     "linkedin": "https://www.linkedin.com/in/benghee"
   },
   {
-    "name": "Tay Yang Shun",
+    "name": "Yangshun Tay",
     "description": "Front-end developer who loves good code, design and typography.",
-    "link": "https://www.github.com/yangshun",
+    "active": false,
+    "link": "http://yangshun.im",
     "gravatar": "https://www.gravatar.com/avatar/66eca275a85a6a0c06b0a0f7039b074b?s=256",
     "gravatar-alt": "Tay Yang Shun",
     "facebook": "https://www.facebook.com/yangshun",
@@ -24,6 +26,7 @@
   {
     "name": "Liu Xinan",
     "description": "A crazy developer who likes magic, ...and tea!",
+    "active": false,
     "link": "https://www.github.com/xinan",
     "gravatar": "https://www.gravatar.com/avatar/802da99824fb41330a44af89256da661.png?s=256",
     "gravatar-alt": "Liu Xinan",
@@ -34,7 +37,8 @@
   {
     "name": "Ng Zhi An",
     "description": "undefined is not a function",
-    "link": "https://www.github.com/ngzhian",
+    "active": false,
+    "link": "https://www.ngzhian.com",
     "gravatar": "https://www.gravatar.com/avatar/959333b0fda0517060c9750f8c49ead0?s=256",
     "gravatar-alt": "Ng Zhi An",
     "facebook": "https://www.facebook.com/ngzhian",
@@ -45,6 +49,7 @@
   {
     "name": "Li Kai",
     "description": "Happy to help.",
+    "active": true,
     "link": "https://www.github.com/li-kai",
     "gravatar": "https://www.gravatar.com/avatar/3d2bcece0409c7578b2e9d87f0c1b6d7?s=256",
     "gravatar-alt": "Li Kai",
@@ -55,6 +60,7 @@
   {
     "name": "Xu Bili",
     "description": "Loves to read and write elegant code. JavaScript enthusiast.",
+    "active": false,
     "link": "https://www.github.com/xbili",
     "gravatar": "https://www.gravatar.com/avatar/a26e376c4bc050614f13581cf6a13e09.png?s=256",
     "gravatar-alt": "Xu Bili",
@@ -66,6 +72,7 @@
   {
     "name": "Ang Yen Ling",
     "description": "Bubbly girl who loves new things, matcha ice cream and marketing.",
+    "active": false,
     "link": "https://www.facebook.com/ang.yenling",
     "gravatar": "https://www.gravatar.com/avatar/630fe6848c11082312b57b1360a0dd09?s=256",
     "gravatar-alt": "Ang Yen Ling",
@@ -75,10 +82,11 @@
   {
     "name": "Zhang Yijiang",
     "description": "Fan of pretty purple pony princesses",
-    "link": "https://meebleforp.com/",
+    "active": true,
+    "link": "https://meebleforp.com",
     "gravatar": "https://gravatar.com/avatar/263859aefe62ee6cc1aa993e8e2293e0?s=256",
     "gravatar-alt": "Zhang Yijiang",
     "facebook": "https://www.facebook.com/zhangyijiang",
-    "github": "https://github.com/ZhangYiJiang/"
+    "github": "https://github.com/ZhangYiJiang"
   }
 ]
