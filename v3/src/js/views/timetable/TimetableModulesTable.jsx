@@ -94,8 +94,8 @@ class TimetableModulesTable extends Component<Props> {
                   <div className={styles.moduleActionColumn}>
                     <div className="btn-group">
                       <button
-                        className={`btn btn-outline-secondary ${styles.moduleAction}
-                          ${timetableActionsStyles.actionButton}`}
+                        className={classnames('btn btn-outline-secondary', styles.moduleAction,
+                          timetableActionsStyles.actionButton)}
                         onClick={() => {
                           if (confirm(`Are you sure you want to remove ${module.ModuleCode}?`)) {
                             this.props.onRemoveModule(module.ModuleCode);
@@ -106,8 +106,8 @@ class TimetableModulesTable extends Component<Props> {
                       </button>
                       <button
                         type="button"
-                        className={`btn btn-outline-secondary ${styles.moduleAction}
-                          ${timetableActionsStyles.actionButton}`}
+                        className={classnames('btn btn-outline-secondary', styles.moduleAction,
+                          timetableActionsStyles.actionButton)}
                         title={label}
                         aria-label={label}
                         onClick={() => {
