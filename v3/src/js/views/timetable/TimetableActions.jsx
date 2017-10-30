@@ -22,9 +22,9 @@ function TimetableActions(props: Props) {
     >
       <button
         type="button"
-        className="btn btn-outline-primary"
-        title={isVerticalOrientation ? 'Vertical Mode' : 'Horizontal mode'}
-        aria-label={isVerticalOrientation ? 'Vertical Mode' : 'Horizontal mode'}
+        className={`btn btn-outline-primary ${styles.actionButton}`}
+        title={isVerticalOrientation ? 'Vertical Mode' : 'Horizontal Mode'}
+        aria-label={isVerticalOrientation ? 'Vertical Mode' : 'Horizontal Mode'}
         onClick={props.toggleTimetableOrientation}
       >
         <Sidebar
@@ -36,18 +36,18 @@ function TimetableActions(props: Props) {
       </button>
       <button
         type="button"
+        className={`btn btn-outline-primary ${styles.actionButton}`}
         title="Download as Image"
         aria-label="Download as Image"
-        className="btn btn-outline-primary"
         onClick={props.downloadAsJpeg}
       >
         <Image className={styles.actionIcon} />
       </button>
       <button
         type="button"
+        className={`btn btn-outline-primary ${styles.actionButton}`}
         title="Download as iCal"
         aria-label="Download as iCal"
-        className="btn btn-outline-primary"
         onClick={props.downloadAsIcal}
       >
         <Calendar className={styles.actionIcon} />
