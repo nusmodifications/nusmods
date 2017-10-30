@@ -21,20 +21,15 @@ function Footer() {
         {/* TODO: Change contributors link to internal page */}
         {/* TODO: Add last updated timestamp */}
         <p>Designed and built with all the love in the world by{' '}
-          <a href="https://github.com/nusmodifications" target="_blank" rel="noopener noreferrer">
-            @nusmodifications
-          </a>.
-          Maintained by the{' '}
-          <a href="https://github.com/orgs/nusmodifications/people" rel="noopener noreferrer">
-            core team
-          </a>
-          {' '}with the help of{' '}
           <a
-            href="https://github.com/nusmodifications/nusmods/graphs/contributors"
+            href="https://github.com/nusmodifications"
+            target="_blank"
             rel="noopener noreferrer"
           >
-            our contributors
+            @nusmodifications
           </a>.
+          Maintained by the <Link to="/team">core team</Link> with the help
+          of <Link to="/developers">our contributors</Link>.
         </p>
         <p>© Copyright 2017, NUSModifications. All rights reserved.</p>
       </div>
