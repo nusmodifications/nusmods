@@ -14,7 +14,7 @@ function renderTeamMember(member) {
   return (
     <section className={styles.teamMember} key={member.name}>
       <div className="row">
-        <div className="col-sm-2 text-center-md">
+        <div className="col-lg-2 col-sm-3 text-center-md">
           <a href={member.github} className={`${styles.portrait}`}>
             <img
               className="rounded-circle img-fluid img-thumbnail"
@@ -23,7 +23,7 @@ function renderTeamMember(member) {
             />
           </a>
         </div>
-        <div className="col-sm-10">
+        <div className="col-lg-10 col-sm-9">
           <h4>{member.name}</h4>
           <p>{member.description}</p>
           <div className="row">
