@@ -23,7 +23,7 @@ export default function FaqContainer() {
       <div className={styles.question}>
         <h5>NUSMods is cool, where do you guys come from?</h5>
         <p>
-          NUSMods is a student-run initiative and does not have any affiliations with
+          NUSMods is a student-run initiative and does not have any affiliations with the
           National University of Singapore. NUSMods was born out of the frustration of a
           lack of usable NUS timetable planners (the official one makes anyone who uses it want to pull their hair out).
           It seems like NUS does not have any intentions to improve it anytime soon anyways.
@@ -33,8 +33,8 @@ export default function FaqContainer() {
 
         <p>NUSMods does not get to make decisions regarding your curriculum, module availablity and module timetable.
           If you have questions regarding your curriculum, CORS bidding, IVLE or anything unrelated to NUSMods,
-          maybe it would be better to contact your faculty and department or just{' '}
-          <a href="https://www.google.com/">Google</a> it.</p>
+          maybe it would be better to contact your faculty and department or
+          just <a href="https://www.google.com/">Google</a> it.</p>
       </div>
 
       <div className={styles.question}>
