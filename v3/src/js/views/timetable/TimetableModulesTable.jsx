@@ -119,9 +119,9 @@ class TimetableModulesTable extends Component<Props> {
                         }}
                       >
                         {module.hiddenInTimetable ?
-                          <EyeOff className={timetableActionsStyles.actionIcon} />
-                          :
                           <Eye className={timetableActionsStyles.actionIcon} />
+                          :
+                          <EyeOff className={timetableActionsStyles.actionIcon} />
                         }
                       </button>
                     </div>
