@@ -77,6 +77,7 @@ export function isTutorial(lesson: RawLesson): boolean {
 
 export function holidaysForYear(year: number, hourOffset: number = 0) {
   return config.holidays
+    .map(date => new Date(date.valueOf() - SG_UTC_TIME_DIFF_MS)) // Convert to local time
     .filter(holiday => holiday.getFullYear() === year)
     .map(holiday => hoursAfter(holiday, hourOffset));
 }
