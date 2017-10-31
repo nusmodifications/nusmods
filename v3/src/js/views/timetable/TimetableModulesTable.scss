@@ -24,7 +24,6 @@
 }
 
 .moduleColorColumn {
-  padding-right: 1rem;
   vertical-align: top;
 }
 
@@ -45,6 +44,7 @@
     button {
       padding: 0.5rem;
       border: 0;
+      border-radius: 0;
     }
   }
 }
