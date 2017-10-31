@@ -50,7 +50,7 @@ class TimetableModulesTable extends Component<Props> {
             return (
               <div
                 className={classnames(styles.modulesTableRow, 'col-sm-6', {
-                  'col-md-4': this.props.horizontalOrientation,
+                  'col-lg-4': this.props.horizontalOrientation,
                   'col-md-12': !this.props.horizontalOrientation,
                 })}
                 key={module.ModuleCode}
@@ -79,51 +79,54 @@ class TimetableModulesTable extends Component<Props> {
                       />
                     }
                   </div>
+
                   <div className={classnames(styles.moduleActionColumn, styles.moduleDetailsColumn)}>
+                    <div className={styles.moduleActionButtons}>
+                      <div className="btn-group">
+                        <button
+                          className={classnames('btn btn-outline-secondary', styles.moduleAction,
+                            timetableActionsStyles.actionButton)}
+                          onClick={() => {
+                            if (confirm(`Are you sure you want to remove ${module.ModuleCode}?`)) {
+                              this.props.onRemoveModule(module.ModuleCode);
+                            }
+                          }}
+                        >
+                          <Trash2 className={timetableActionsStyles.actionIcon} />
+                        </button>
+                        <button
+                          type="button"
+                          className={classnames('btn btn-outline-secondary', styles.moduleAction,
+                            timetableActionsStyles.actionButton)}
+                          title={label}
+                          aria-label={label}
+                          onClick={() => {
+                            if (module.hiddenInTimetable) {
+                              this.props.showLessonInTimetable(module.ModuleCode);
+                            } else {
+                              this.props.hideLessonInTimetable(module.ModuleCode);
+                            }
+                          }}
+                        >
+                          {module.hiddenInTimetable ?
+                            <Eye className={timetableActionsStyles.actionIcon} />
+                            :
+                            <EyeOff className={timetableActionsStyles.actionIcon} />
+                          }
+                        </button>
+                      </div>
+                    </div>
+
                     <Link to={modulePagePath(module.ModuleCode)}>
                       {module.ModuleCode} {module.ModuleTitle}
                     </Link>
                     <div>
+
                       <small>
                         Exam: {getModuleSemExamDate(module, this.props.semester)}
                         &nbsp;&middot;&nbsp;
                         {module.ModuleCredit} MCs
                       </small>
-                    </div>
-                  </div>
-                  <div className={styles.moduleActionColumn}>
-                    <div className="btn-group">
-                      <button
-                        className={classnames('btn btn-outline-secondary', styles.moduleAction,
-                          timetableActionsStyles.actionButton)}
-                        onClick={() => {
-                          if (confirm(`Are you sure you want to remove ${module.ModuleCode}?`)) {
-                            this.props.onRemoveModule(module.ModuleCode);
-                          }
-                        }}
-                      >
-                        <Trash2 className={timetableActionsStyles.actionIcon} />
-                      </button>
-                      <button
-                        type="button"
-                        className={classnames('btn btn-outline-secondary', styles.moduleAction,
-                          timetableActionsStyles.actionButton)}
-                        title={label}
-                        aria-label={label}
-                        onClick={() => {
-                          if (module.hiddenInTimetable) {
-                            this.props.showLessonInTimetable(module.ModuleCode);
-                          } else {
-                            this.props.hideLessonInTimetable(module.ModuleCode);
-                          }
-                        }}
-                      >
-                        {module.hiddenInTimetable ?
-                          <Eye className={timetableActionsStyles.actionIcon} />
-                          :
-                          <EyeOff className={timetableActionsStyles.actionIcon} />
-                        }
-                      </button>
                     </div>
                   </div>
                 </div>

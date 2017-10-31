@@ -24,15 +24,27 @@
 }
 
 .moduleColorColumn {
+  padding-right: 1rem;
   vertical-align: top;
 }
 
 .moduleDetailsColumn {
-  width: 10000px; // So that the module details stretches as wide as possible.
-  padding-right: 1rem;
+  width: 100%;
   vertical-align: top;
 }
 
 .moduleActionColumn {
   display: table-cell;
+}
+
+.moduleActionButtons {
+  float: right;
+  margin-left: 0.2rem;
+
+  @include media-breakpoint-up(md) {
+    button {
+      padding: 0.5rem;
+      border: 0;
+    }
+  }
 }
