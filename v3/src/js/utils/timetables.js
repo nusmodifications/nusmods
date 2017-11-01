@@ -1,4 +1,7 @@
 // @flow
+import _ from 'lodash';
+import qs from 'query-string';
+
 import type {
   ClassNo,
   Lesson,
@@ -18,7 +21,6 @@ import type {
 } from 'types/timetables';
 import type { ModulesMap } from 'reducers/entities/moduleBank';
 
-import _ from 'lodash';
 import { getModuleTimetable } from 'utils/modules';
 
 type LessonTypeAbbrev = { [LessonType]: string };
@@ -36,6 +38,11 @@ export const LESSON_TYPE_ABBREV: LessonTypeAbbrev = {
   'Tutorial Type 3': 'TUT3',
   Workshop: 'WS',
 };
+
+// Used for module config serialization - these must be query string safe
+// See: https://stackoverflow.com/a/31300627
+export const LESSON_TYPE_SEP = ':';
+export const LESSON_SEP = ',';
 
 //  Returns a random configuration of a module's timetable lessons.
 //  Used when a module is first added.
@@ -192,4 +199,46 @@ export function colorLessonsByType(lessons: Lesson[]) {
 
     return { ...lesson, colorIndex };
   });
+}
+
+function serializeModuleConfig(config: ModuleLessonConfig): string {
+  // eg. { Lecture: 1, Laboratory: 2 } => LEC=1,LAB=2
+  return _.map(config, (classNo, lessonType) =>
+    [LESSON_TYPE_ABBREV[lessonType], encodeURIComponent(classNo)].join(LESSON_TYPE_SEP))
+    .join(LESSON_SEP);
+}
+
+function parseModuleConfig(serialized: string): ModuleLessonConfig {
+  const config = {};
+
+  serialized.split(LESSON_SEP)
+    .forEach((lesson) => {
+      const [lessonTypeAbbr, classNo] = lesson.split(LESSON_TYPE_SEP);
+      const lessonType = _.findKey(LESSON_TYPE_ABBREV, abbr => abbr === lessonTypeAbbr);
+      // Ignore unparsable/invalid keys
+      if (!lessonType) return;
+      config[lessonType] = classNo;
+    });
+
+  return config;
+}
+
+// Converts a timetable config to query string
+// eg:
+// {
+//   CS2104: { Lecture: '1', Tutorial: '2' },
+//   CS2107: { Lecture: '1', Tutorial: '8' },
+// }
+// => CS2104=LEC:1,Tut:2&CS2107=LEC:1,Tut:8
+export function serializeTimetable(timetable: SemTimetableConfig): string {
+  // We are using query string safe characters, so this encoding is unnecessary
+  return qs.stringify(_.mapValues(timetable, serializeModuleConfig), { encode: false });
+}
+
+export function deserializeTimetable(serialized: string): SemTimetableConfig {
+  return _.mapValues(qs.parse(serialized), parseModuleConfig);
+}
+
+export function isSameTimetableConfig(t1: SemTimetableConfig, t2: SemTimetableConfig): boolean {
+  return _.isEqual(t1, t2);
 }

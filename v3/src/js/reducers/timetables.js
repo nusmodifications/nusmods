@@ -19,21 +19,19 @@ const defaultModuleLessonConfig: ModuleLessonConfig = {};
 
 function moduleLessonConfig(state: ModuleLessonConfig = defaultModuleLessonConfig, action: FSA): ModuleLessonConfig {
   switch (action.type) {
-    case CHANGE_LESSON:
-      return (() => {
-        if (!action.payload) {
-          return state;
-        }
-        const classNo: ClassNo = action.payload.classNo;
-        const lessonType: LessonType = action.payload.lessonType;
-        if (!(classNo && lessonType)) {
-          return state;
-        }
-        return {
-          ...state,
-          [lessonType]: classNo,
-        };
-      })();
+    case CHANGE_LESSON: {
+      if (!action.payload) return state;
+      const classNo: ClassNo = action.payload.classNo;
+
+      const lessonType: LessonType = action.payload.lessonType;
+
+      if (!(classNo && lessonType)) return state;
+
+      return {
+        ...state,
+        [lessonType]: classNo,
+      };
+    }
     default:
       return state;
   }

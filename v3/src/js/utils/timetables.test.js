@@ -32,6 +32,9 @@ import {
   lessonsForLessonType,
   randomModuleLessonConfig,
   timetableLessonsArray,
+  serializeTimetable,
+  deserializeTimetable,
+  isSameTimetableConfig,
 } from 'utils/timetables';
 import {
   getModuleTimetable,
@@ -281,4 +284,65 @@ test('areOtherClassesAvailable', () => {
   ]);
   expect(areOtherClassesAvailable(lessons3, 'Lecture')).toBe(false);
   expect(areOtherClassesAvailable(lessons3, 'Tutorial')).toBe(true);
+});
+
+test('timetable serialization/deserialization', () => {
+  const configs: SemTimetableConfig[] = [
+    {},
+    {
+      GER1000: { Tutorial: 'B01' },
+    },
+    {
+      CS2104: { Lecture: '1', Tutorial: '2' },
+      CS2105: { Lecture: '1', Tutorial: '1' },
+      CS2107: { Lecture: '1', Tutorial: '8' },
+      CS4212: { Lecture: '1', Tutorial: '1' },
+      CS4243: { Laboratory: '2', Lecture: '1' },
+      GER1000: { Tutorial: 'B01' },
+    },
+  ];
+
+  configs.forEach((config) => {
+    expect(deserializeTimetable(serializeTimetable(config))).toEqual(config);
+  });
+});
+
+test('isSameTimetableConfig', () => {
+  // Empty timetable
+  expect(isSameTimetableConfig({}, {})).toBe(true);
+
+  // Change lessonType order
+  expect(isSameTimetableConfig(
+    { CS2104: { Tutorial: '1', Lecture: '2' } },
+    { CS2104: { Lecture: '2', Tutorial: '1' } },
+  )).toBe(true);
+
+  // Change module order
+  expect(isSameTimetableConfig(
+    {
+      CS2104: { Lecture: '1', Tutorial: '2' },
+      CS2105: { Lecture: '1', Tutorial: '1' },
+    },
+    {
+      CS2105: { Lecture: '1', Tutorial: '1' },
+      CS2104: { Lecture: '1', Tutorial: '2' },
+    },
+  )).toBe(true);
+
+  // Different values
+  expect(isSameTimetableConfig(
+    { CS2104: { Lecture: '1', Tutorial: '2' } },
+    { CS2104: { Lecture: '2', Tutorial: '1' } },
+  )).toBe(false);
+
+  // One is subset of the other
+  expect(isSameTimetableConfig(
+    {
+      CS2104: { Tutorial: '1', Lecture: '2' },
+    },
+    {
+      CS2104: { Tutorial: '1', Lecture: '2' },
+      CS2105: { Lecture: '1', Tutorial: '1' },
+    },
+  )).toBe(false);
 });
