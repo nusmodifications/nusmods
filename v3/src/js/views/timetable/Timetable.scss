@@ -4,7 +4,10 @@ $timetable-min-width: $timetable-row-height * 16;
 
 .container {
   min-width: $timetable-min-width;
-  padding-right: $timetable-right-padding;
+
+  @include media-breakpoint-down(sm) {
+    padding-right: $timetable-right-padding;
+  }
 }
 
 :global(.verticalMode) .container {

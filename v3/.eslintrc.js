@@ -56,6 +56,8 @@ module.exports = {
     'no-debugger': warnInDevelopment,
     'no-console': warnInDevelopment,
 
+    'no-alert': 'off',
+
     // After adding flowtypes the lines are getting longer.
     'max-len': [warnInDevelopment, 120],
     'import/extensions': [warnInDevelopment, 'always',

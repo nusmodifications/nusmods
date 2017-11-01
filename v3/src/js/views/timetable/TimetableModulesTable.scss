@@ -1,18 +1,48 @@
 @import './_variables.scss';
 
-// :global(.btn) for additional specificity
-:global(.btn).moduleAction {
-  height: 1.25rem;
-  padding: 0.15rem 0.4rem;
-  font-size: 1em;
-  color: $gray-light;
-  cursor: pointer;
-
-  &:hover {
-    color: inherit;
-  }
+.modulesTable {
+  font-size: 0.9rem;
 }
 
-.eyeIcon {
-  height: 100%;
+.modulesTableRow {
+  margin-bottom: 0.7rem;
+}
+
+.modulesTableRowInner {
+  position: relative;
+}
+
+.moduleColor {
+  $size: 20px;
+
+  display: block;
+  width: $size;
+  height: $size;
+  margin-top: 2px;
+  margin-right: 10px;
+  border: 0;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.moduleDetailsColumn {
+  width: 100%;
+  vertical-align: top;
+}
+
+.moduleActionColumn {
+  display: table-cell;
+}
+
+.moduleActionButtons {
+  float: right;
+  margin-left: 0.2rem;
+
+  @include media-breakpoint-up(md) {
+    button {
+      padding: 0.5rem;
+      border: 0;
+      border-radius: 0;
+    }
+  }
 }

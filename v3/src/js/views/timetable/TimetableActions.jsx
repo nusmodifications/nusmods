@@ -12,19 +12,24 @@ type Props = {
   downloadAsIcal: Function,
 };
 
+const VERTICAL_MODE_TEXT = 'Vertical Mode';
+const HORIZONTAL_MODE_TEXT = 'Horizontal Mode';
+const DOWNLOAD_IMAGE_TEXT = 'Download as Image';
+const DOWNLOAD_ICAL_TEXT = 'Download as iCal';
+
 function TimetableActions(props: Props) {
   const { isVerticalOrientation } = props;
   return (
     <div
-      className="timetable-action-row btn-group text-xs-right"
+      className="timetable-action-row btn-group"
       role="group"
       aria-label="Timetable utilities"
     >
       <button
         type="button"
-        className="btn btn-outline-primary"
-        title={isVerticalOrientation ? 'Vertical Mode' : 'Horizontal mode'}
-        aria-label={isVerticalOrientation ? 'Vertical Mode' : 'Horizontal mode'}
+        className={classnames('btn btn-outline-primary', styles.actionButton)}
+        title={isVerticalOrientation ? VERTICAL_MODE_TEXT : HORIZONTAL_MODE_TEXT}
+        aria-label={isVerticalOrientation ? VERTICAL_MODE_TEXT : HORIZONTAL_MODE_TEXT}
         onClick={props.toggleTimetableOrientation}
       >
         <Sidebar
@@ -36,18 +41,18 @@ function TimetableActions(props: Props) {
       </button>
       <button
         type="button"
-        title="Download as Image"
-        aria-label="Download as Image"
-        className="btn btn-outline-primary"
+        className={classnames('btn btn-outline-primary', styles.actionButton)}
+        title={DOWNLOAD_IMAGE_TEXT}
+        aria-label={DOWNLOAD_IMAGE_TEXT}
         onClick={props.downloadAsJpeg}
       >
         <Image className={styles.actionIcon} />
       </button>
       <button
         type="button"
-        title="Download as iCal"
-        aria-label="Download as iCal"
-        className="btn btn-outline-primary"
+        className={classnames('btn btn-outline-primary', styles.actionButton)}
+        title={DOWNLOAD_ICAL_TEXT}
+        aria-label={DOWNLOAD_ICAL_TEXT}
         onClick={props.downloadAsIcal}
       >
         <Calendar className={styles.actionIcon} />
