@@ -34,14 +34,3 @@ export function fetchModule(moduleCode: ModuleCode): FSA {
     },
   };
 }
-
-export const LOAD_MODULE: string = 'LOAD_MODULE';
-export function loadModule(moduleCode: ModuleCode) {
-  return (dispatch: Function, getState: Function): Promise<*> => {
-    // Module has been fetched before and cached. Don't have to fetch again.
-    if (getState().entities.moduleBank.modules[moduleCode]) {
-      return Promise.resolve();
-    }
-    return dispatch(fetchModule(moduleCode));
-  };
-}

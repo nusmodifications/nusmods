@@ -7,7 +7,7 @@ import Raven from 'raven-js';
 import type { FetchRequest } from 'types/reducers';
 import type { Module, ModuleCode } from 'types/modules';
 
-import { loadModule, FETCH_MODULE } from 'actions/moduleBank';
+import { fetchModule, FETCH_MODULE } from 'actions/moduleBank';
 import { getRequestName } from 'reducers/requests';
 import NotFoundPage from 'views/errors/NotFoundPage';
 import ErrorPage from 'views/errors/ErrorPage';
@@ -18,7 +18,7 @@ type Props = {
   moduleCodes: Set<ModuleCode>,
   module: ?Module,
   request: ?FetchRequest,
-  loadModule: (ModuleCode) => void,
+  fetchModule: (ModuleCode) => void,
 };
 
 type State = {
@@ -47,7 +47,7 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
   };
 
   componentWillMount() {
-    this.loadModule(this.props.moduleCode);
+    this.fetchModule(this.props.moduleCode);
 
     import('views/browse/ModulePageContent')
       .then(module => this.setState({ ModulePageContent: module.default }))
@@ -59,13 +59,13 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
 
   componentWillReceiveProps(nextProps: Props) {
     if (nextProps.moduleCode !== this.props.moduleCode) {
-      this.loadModule(nextProps.moduleCode);
+      this.fetchModule(nextProps.moduleCode);
     }
   }
 
-  loadModule(moduleCode: ModuleCode) {
+  fetchModule(moduleCode: ModuleCode) {
     if (this.doesModuleExist(moduleCode)) {
-      this.props.loadModule(moduleCode);
+      this.props.fetchModule(moduleCode);
     }
   }
 
@@ -106,5 +106,5 @@ const mapStateToProps = (state, ownState) => {
 };
 
 export default withRouter(
-  connect(mapStateToProps, { loadModule })(ModulePageContainerComponent),
+  connect(mapStateToProps, { fetchModule })(ModulePageContainerComponent),
 );

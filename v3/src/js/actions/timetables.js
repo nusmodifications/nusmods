@@ -9,14 +9,14 @@ import type {
   Lesson,
 } from 'types/modules';
 
-import { loadModule } from 'actions/moduleBank';
+import { fetchModule } from 'actions/moduleBank';
 import { randomModuleLessonConfig } from 'utils/timetables';
 import { getModuleTimetable } from 'utils/modules';
 
 export const ADD_MODULE: string = 'ADD_MODULE';
 export function addModule(semester: Semester, moduleCode: ModuleCode) {
   return (dispatch: Function, getState: Function) => {
-    return dispatch(loadModule(moduleCode)).then(() => {
+    return dispatch(fetchModule(moduleCode)).then(() => {
       const module: Module = getState().entities.moduleBank.modules[moduleCode];
       const lessons: Array<RawLesson> = getModuleTimetable(module, semester);
       let moduleLessonConfig: ModuleLessonConfig = {};

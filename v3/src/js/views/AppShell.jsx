@@ -12,7 +12,7 @@ import type { ModuleList, ModuleSelectList } from 'types/reducers';
 import type { ModuleCode } from 'types/modules';
 
 import config from 'config';
-import { fetchModuleList, loadModule } from 'actions/moduleBank';
+import { fetchModuleList, fetchModule } from 'actions/moduleBank';
 import { noBreak } from 'utils/react';
 import { roundStart } from 'utils/cors';
 import ModulesSelect from 'views/components/ModulesSelect';
@@ -34,7 +34,7 @@ type Props = {
   timetables: TimetableConfig,
   theme: string,
 
-  loadModule: (ModuleCode) => void,
+  fetchModule: (ModuleCode) => void,
   fetchModuleList: () => void,
 };
 
@@ -67,11 +67,10 @@ export class AppShell extends Component<Props> {
     this.props.fetchModuleList();
 
     const semesterTimetable = this.props.timetables[config.semester];
-
     if (semesterTimetable) {
       Object.keys(semesterTimetable).forEach((moduleCode) => {
         // TODO: Handle failed loading of module.
-        this.props.loadModule(moduleCode);
+        this.props.fetchModule(moduleCode);
       });
     }
   }
@@ -135,6 +134,6 @@ const mapStateToProps = state => ({
 export default withRouter(
   connect(mapStateToProps, {
     fetchModuleList,
-    loadModule,
+    fetchModule,
   })(AppShell),
 );
