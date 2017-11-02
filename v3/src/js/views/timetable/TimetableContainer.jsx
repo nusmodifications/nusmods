@@ -1,10 +1,12 @@
 // @flow
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter, type ContextRouter } from 'react-router-dom';
 import Helmet from 'react-helmet';
 import _ from 'lodash';
-import config from 'config';
+import classnames from 'classnames';
 
+import type { ModulesMap } from 'reducers/entities/moduleBank';
 import type {
   ThemeState,
   TimetableOrientation,
@@ -15,12 +17,11 @@ import type {
   Lesson,
   Module,
   ModuleCode,
-  RawLesson,
   Semester,
 } from 'types/modules';
-import type { SemTimetableConfig, TimetableArrangement } from 'types/timetables';
+import type { SemTimetableConfig, SemTimetableConfigWithLessons, TimetableArrangement } from 'types/timetables';
 
-import classnames from 'classnames';
+import config from 'config';
 import { getSemModuleSelectList } from 'reducers/entities/moduleBank';
 import { downloadAsJpeg, downloadAsIcal } from 'actions/export';
 import {
@@ -29,15 +30,20 @@ import {
   changeLesson,
   modifyLesson,
   removeModule,
+  setTimetable,
 } from 'actions/timetables';
 import { toggleTimetableOrientation } from 'actions/theme';
 import { getModuleTimetable, areLessonsSameClass } from 'utils/modules';
+import { fetchModule } from 'actions/moduleBank';
 import {
   timetableLessonsArray,
   hydrateSemTimetableWithLessons,
   arrangeLessonsForWeek,
   areOtherClassesAvailable,
   lessonsForLessonType,
+  serializeTimetable,
+  deserializeTimetable,
+  isSameTimetableConfig,
 } from 'utils/timetables';
 import ModulesSelect from 'views/components/ModulesSelect';
 
@@ -47,27 +53,50 @@ import TimetableActions from './TimetableActions';
 import TimetableModulesTable from './TimetableModulesTable';
 
 type Props = {
+  ...ContextRouter,
+
   semester: Semester,
   semModuleList: ModuleSelectList,
-  semTimetableWithLessons: SemTimetableConfig,
-  modules: Module,
+  timetable: SemTimetableConfig,
+  timetableWithLessons: SemTimetableConfigWithLessons,
+  modules: ModulesMap,
   colors: ThemeState,
   activeLesson: Lesson,
   timetableOrientation: TimetableOrientation,
-  hiddenInTimetable: Array<ModuleCode>,
+  hiddenInTimetable: ModuleCode[],
 
   addModule: Function,
   removeModule: Function,
+  fetchModule: Function,
   modifyLesson: Function,
   changeLesson: Function,
   cancelModifyLesson: Function,
   toggleTimetableOrientation: Function,
   downloadAsJpeg: Function,
   downloadAsIcal: Function,
+  setTimetable: (Semester, SemTimetableConfig) => void,
 };
 
 class TimetableContainer extends Component<Props> {
   timetableDom: ?HTMLElement;
+
+  componentWillMount() {
+    const importedTimetable = deserializeTimetable(this.props.location.search);
+
+    if (!_.isEmpty(importedTimetable)) {
+      if (_.isEmpty(this.props.timetable)) {
+        // If there's no existing timetable, we do a clean import
+        this.props.setTimetable(config.semester, importedTimetable);
+      } else if (!isSameTimetableConfig(this.props.timetable, importedTimetable)) {
+        // If there is an existing timetable, and it doesn't match the imported one, we
+        // check with the user if they want to import
+        _.difference(Object.keys(this.props.timetable), Object.keys(importedTimetable))
+          .forEach(moduleCode => this.props.fetchModule(moduleCode));
+
+        // TODO: Actually show the dialog box
+      }
+    }
+  }
 
   componentWillUnmount() {
     this.cancelModifyLesson();
@@ -82,16 +111,16 @@ class TimetableContainer extends Component<Props> {
   downloadAsJpeg = () => this.props.downloadAsJpeg(this.timetableDom);
 
   downloadAsIcal = () =>
-    this.props.downloadAsIcal(this.props.semester, this.props.semTimetableWithLessons, this.props.modules);
+    this.props.downloadAsIcal(this.props.semester, this.props.timetableWithLessons, this.props.modules);
 
-  isHiddenInTimetable = (moduleCode: ModuleCode) => {
-    return this.props.hiddenInTimetable.includes(moduleCode);
-  };
+  isHiddenInTimetable = (moduleCode: ModuleCode) =>
+    this.props.hiddenInTimetable.includes(moduleCode);
 
   modifyCell = (lesson: Lesson) => {
     // $FlowFixMe When object spread type actually works
     if (lesson.isAvailable) {
       this.props.changeLesson(this.props.semester, lesson);
+      this.updateQueryString();
     } else if (lesson.isActive) {
       this.props.cancelModifyLesson();
     } else {
@@ -99,19 +128,27 @@ class TimetableContainer extends Component<Props> {
     }
   };
 
+  updateQueryString() {
+    this.props.history.replace({
+      ...this.props.location,
+      search: serializeTimetable(this.props.timetable),
+    });
+  }
+
   render() {
-    let timetableLessons: Array<Lesson> = timetableLessonsArray(this.props.semTimetableWithLessons)
+    const { timetable, semester, modules, colors, activeLesson, timetableOrientation } = this.props;
+
+    let timetableLessons: Lesson[] = timetableLessonsArray(this.props.timetableWithLessons)
       // Do not process hidden modules
       .filter(lesson => !this.isHiddenInTimetable(lesson.ModuleCode));
 
-    if (this.props.activeLesson) {
-      const activeLesson = this.props.activeLesson;
+    if (activeLesson) {
       const moduleCode = activeLesson.ModuleCode;
       // Remove activeLesson because it will appear again
       timetableLessons = timetableLessons.filter(lesson => !areLessonsSameClass(lesson, activeLesson));
 
-      const module = this.props.modules[moduleCode];
-      const moduleTimetable: Array<RawLesson> = getModuleTimetable(module, this.props.semester);
+      const module = modules[moduleCode];
+      const moduleTimetable = getModuleTimetable(module, semester);
       lessonsForLessonType(moduleTimetable, activeLesson.LessonType).forEach((lesson) => {
         const modifiableLesson = {
           ...lesson,
@@ -129,24 +166,22 @@ class TimetableContainer extends Component<Props> {
     }
     // Inject color into module
     timetableLessons = timetableLessons.map((lesson): Lesson => {
-      return { ...lesson, colorIndex: this.props.colors[lesson.ModuleCode] };
+      return { ...lesson, colorIndex: colors[lesson.ModuleCode] };
     });
 
-    const arrangedLessons: TimetableArrangement = arrangeLessonsForWeek(timetableLessons);
-    const arrangedLessonsWithModifiableFlag: TimetableArrangement = _.mapValues(arrangedLessons, (dayRows) => {
-      return dayRows.map((row) => {
-        return row.map((lesson) => {
-          const module: Module = this.props.modules[lesson.ModuleCode];
-          const moduleTimetable: Array<RawLesson> = getModuleTimetable(module, this.props.semester);
+    const arrangedLessons = arrangeLessonsForWeek(timetableLessons);
+    const arrangedLessonsWithModifiableFlag: TimetableArrangement = _.mapValues(arrangedLessons, dayRows =>
+      dayRows.map(row =>
+        row.map((lesson) => {
+          const module: Module = modules[lesson.ModuleCode];
+          const moduleTimetable = getModuleTimetable(module, semester);
           return {
             ...lesson,
             isModifiable: areOtherClassesAvailable(moduleTimetable, lesson.LessonType),
           };
-        });
-      });
-    });
+        })));
 
-    const isVerticalOrientation = this.props.timetableOrientation !== HORIZONTAL;
+    const isVerticalOrientation = timetableOrientation !== HORIZONTAL;
 
     return (
       <div
@@ -192,26 +227,25 @@ class TimetableContainer extends Component<Props> {
                 <ModulesSelect
                   moduleList={this.props.semModuleList}
                   onChange={(moduleCode) => {
-                    this.props.addModule(this.props.semester, moduleCode.value);
+                    this.props.addModule(semester, moduleCode.value);
                   }}
                   placeholder="Add module to timetable"
                 />
                 <br />
                 <TimetableModulesTable
                   modules={
-                    Object.keys(this.props.semTimetableWithLessons)
+                    Object.keys(timetable)
                       .sort((a, b) => a.localeCompare(b))
-                      .map((moduleCode) => {
-                        const module = this.props.modules[moduleCode] || {};
-                        // Inject color index.
-                        module.colorIndex = this.props.colors[moduleCode];
-                        module.hiddenInTimetable = this.isHiddenInTimetable(moduleCode);
-                        return module;
-                      })}
+                      .map(moduleCode => ({
+                        ...modules[moduleCode],
+                        colorIndex: colors[moduleCode],
+                        hiddenInTimetable: this.isHiddenInTimetable(moduleCode),
+                      }))
+                  }
                   horizontalOrientation={!isVerticalOrientation}
-                  semester={this.props.semester}
+                  semester={semester}
                   onRemoveModule={(moduleCode) => {
-                    this.props.removeModule(this.props.semester, moduleCode);
+                    this.props.removeModule(semester, moduleCode);
                   }}
                 />
               </div>
@@ -226,15 +260,16 @@ class TimetableContainer extends Component<Props> {
 function mapStateToProps(state) {
   const modules = state.entities.moduleBank.modules;
   const semester = config.semester;
-  const semTimetable = state.timetables[semester] || {};
-  const semModuleList = getSemModuleSelectList(state.entities.moduleBank, semester, semTimetable);
-  const semTimetableWithLessons = hydrateSemTimetableWithLessons(semTimetable, modules, semester);
+  const timetable = state.timetables[semester] || {};
+  const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
+  const semModuleList = getSemModuleSelectList(state.entities.moduleBank, semester, timetable);
   const hiddenInTimetable = state.settings.hiddenInTimetable || [];
 
   return {
     semester,
     semModuleList,
-    semTimetableWithLessons,
+    timetable,
+    timetableWithLessons,
     modules,
     activeLesson: state.app.activeLesson,
     colors: state.theme.colors,
@@ -243,13 +278,17 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, {
-  addModule,
-  removeModule,
-  modifyLesson,
-  changeLesson,
-  cancelModifyLesson,
-  toggleTimetableOrientation,
-  downloadAsJpeg,
-  downloadAsIcal,
-})(TimetableContainer);
+export default withRouter(
+  connect(mapStateToProps, {
+    addModule,
+    removeModule,
+    modifyLesson,
+    changeLesson,
+    cancelModifyLesson,
+    fetchModule,
+    setTimetable,
+    toggleTimetableOrientation,
+    downloadAsJpeg,
+    downloadAsIcal,
+  })(TimetableContainer),
+);

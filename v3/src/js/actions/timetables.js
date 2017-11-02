@@ -1,11 +1,12 @@
 // @flow
-import type { ModuleLessonConfig } from 'types/timetables';
+import { map, isEmpty } from 'lodash';
+
+import type { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
 import type { FSA } from 'types/redux';
 import type {
   Module,
   ModuleCode,
   Semester,
-  RawLesson,
   Lesson,
 } from 'types/modules';
 
@@ -14,15 +15,18 @@ import { randomModuleLessonConfig } from 'utils/timetables';
 import { getModuleTimetable } from 'utils/modules';
 
 export const ADD_MODULE: string = 'ADD_MODULE';
-export function addModule(semester: Semester, moduleCode: ModuleCode) {
-  return (dispatch: Function, getState: Function) => {
-    return dispatch(loadModule(moduleCode)).then(() => {
+export function addModule(
+  semester: Semester,
+  moduleCode: ModuleCode,
+  lessonConfig: ModuleLessonConfig = {},
+) {
+  return (dispatch: Function, getState: Function) =>
+    dispatch(loadModule(moduleCode)).then(() => {
       const module: Module = getState().entities.moduleBank.modules[moduleCode];
-      const lessons: Array<RawLesson> = getModuleTimetable(module, semester);
-      let moduleLessonConfig: ModuleLessonConfig = {};
-      if (lessons) { // Module may not have lessons.
-        moduleLessonConfig = randomModuleLessonConfig(lessons);
-      }
+      const lessons = getModuleTimetable(module, semester);
+      const moduleLessonConfig = lessons && isEmpty(lessonConfig) ?
+        randomModuleLessonConfig(lessons) : lessonConfig;
+
       return dispatch({
         type: ADD_MODULE,
         payload: {
@@ -32,7 +36,6 @@ export function addModule(semester: Semester, moduleCode: ModuleCode) {
         },
       });
     });
-  };
 }
 
 export const REMOVE_MODULE: string = 'REMOVE_MODULE';
@@ -75,4 +78,18 @@ export function cancelModifyLesson(): FSA {
     type: CANCEL_MODIFY_LESSON,
     payload: null,
   };
+}
+
+export const SET_LESSON_CONFIG = 'SET_LESSON_CONFIG';
+export function setLessonConfig(semester: Semester, config: ModuleLessonConfig): FSA {
+  return {
+    type: SET_LESSON_CONFIG,
+    payload: { semester, config },
+  };
+}
+
+export function setTimetable(semester: Semester, timetable: SemTimetableConfig) {
+  return (dispatch: Function) =>
+    Promise.all(map(timetable, (lessons, moduleCode) =>
+      dispatch(addModule(semester, moduleCode, lessons))));
 }

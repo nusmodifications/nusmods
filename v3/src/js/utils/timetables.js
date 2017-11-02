@@ -65,8 +65,11 @@ export function randomModuleLessonConfig(lessons: Array<RawLesson>): ModuleLesso
 }
 
 // Replaces ClassNo in SemTimetableConfig with Array<Lesson>
-export function hydrateSemTimetableWithLessons(semTimetableConfig: SemTimetableConfig, modules: ModulesMap,
-  semester: Semester): SemTimetableConfigWithLessons {
+export function hydrateSemTimetableWithLessons(
+  semTimetableConfig: SemTimetableConfig,
+  modules: ModulesMap,
+  semester: Semester,
+): SemTimetableConfigWithLessons {
   return _.mapValues(semTimetableConfig, (moduleLessonConfig: ModuleLessonConfig, moduleCode: ModuleCode) => {
     const module: Module = modules[moduleCode];
     // TODO: Split this part into a smaller function: hydrateModuleConfigWithLessons.
@@ -100,14 +103,8 @@ export function lessonsForLessonType(lessons: Array<RawLesson | Lesson>,
 //      [LessonType]: [Lesson, ...],
 //    }
 //  }
-export function timetableLessonsArray(timetable: SemTimetableConfig): Array<Lesson> {
-  let allLessons: Array<Lesson> = [];
-  _.values(timetable).forEach((lessonTypeGroup) => {
-    _.values(lessonTypeGroup).forEach((lessons: Array<Lesson>) => {
-      allLessons = allLessons.concat(lessons);
-    });
-  });
-  return allLessons;
+export function timetableLessonsArray(timetable: SemTimetableConfigWithLessons): Array<Lesson> {
+  return _.flatMapDeep(timetable, _.values);
 }
 
 //  Groups flat array of lessons by day.
