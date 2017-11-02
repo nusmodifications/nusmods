@@ -1,6 +1,7 @@
 // @flow
 import type { FSA } from 'types/redux';
 import type { AppState } from 'types/reducers';
+import config from 'config';
 
 import {
   MODIFY_LESSON,
@@ -12,8 +13,13 @@ import {
   CANCEL_MODIFY_MODULE_COLOR,
   SELECT_MODULE_COLOR,
 } from 'actions/theme';
+import {
+  SELECT_SEMESTER,
+} from 'actions/settings';
 
 const defaultAppState: AppState = {
+  // Set default semester to config's.
+  activeSemester: config.semester,
   // The lesson being modified on the timetable.
   activeLesson: null,
   // The module being color-picked in the module table.
@@ -23,6 +29,11 @@ const defaultAppState: AppState = {
 // This reducer is for storing state pertaining to the UI.
 function app(state: AppState = defaultAppState, action: FSA): AppState {
   switch (action.type) {
+    case SELECT_SEMESTER:
+      return {
+        ...state,
+        activeSemester: action.payload && action.payload,
+      };
     case MODIFY_LESSON:
       return {
         ...state,

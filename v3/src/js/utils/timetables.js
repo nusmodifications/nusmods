@@ -8,6 +8,7 @@ import type {
   RawLesson,
   Semester,
 } from 'types/modules';
+import type { Config } from 'config';
 import type {
   ModuleLessonConfig,
   SemTimetableConfigWithLessons,
@@ -36,6 +37,18 @@ export const LESSON_TYPE_ABBREV: LessonTypeAbbrev = {
   'Tutorial Type 3': 'TUT3',
   Workshop: 'WS',
 };
+
+type SemesterNameMapping = { [Semester]: string };
+export const SEMESTER_NAME_MAPPING: SemesterMapping = {
+  1: 'Semester 1',
+  2: 'Semester 2',
+  3: 'Special Term I',
+  4: 'Special Term II',
+};
+
+export function formatSemesterName(semester: Semester, config: Config): string {
+  return SEMESTER_NAME_MAPPING[semester] || config.semester;
+}
 
 //  Returns a random configuration of a module's timetable lessons.
 //  Used when a module is first added.

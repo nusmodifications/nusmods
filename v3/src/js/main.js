@@ -26,6 +26,7 @@ store.subscribe(
       timetables: storeState.timetables,
       theme: storeState.theme,
       settings: storeState.settings,
+      // Don't ever store app key as app state should be ephemeral.
     });
   }, 1000),
 );
