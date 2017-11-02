@@ -27,7 +27,7 @@ function TimetableActions(props: Props) {
     >
       <button
         type="button"
-        className={classnames('btn btn-outline-primary', styles.actionButton)}
+        className="btn btn-outline-primary"
         title={isVerticalOrientation ? VERTICAL_MODE_TEXT : HORIZONTAL_MODE_TEXT}
         aria-label={isVerticalOrientation ? VERTICAL_MODE_TEXT : HORIZONTAL_MODE_TEXT}
         onClick={props.toggleTimetableOrientation}
@@ -41,7 +41,7 @@ function TimetableActions(props: Props) {
       </button>
       <button
         type="button"
-        className={classnames('btn btn-outline-primary', styles.actionButton)}
+        className="btn btn-outline-primary"
         title={DOWNLOAD_IMAGE_TEXT}
         aria-label={DOWNLOAD_IMAGE_TEXT}
         onClick={props.downloadAsJpeg}
@@ -50,7 +50,7 @@ function TimetableActions(props: Props) {
       </button>
       <button
         type="button"
-        className={classnames('btn btn-outline-primary', styles.actionButton)}
+        className="btn btn-outline-primary"
         title={DOWNLOAD_ICAL_TEXT}
         aria-label={DOWNLOAD_ICAL_TEXT}
         onClick={props.downloadAsIcal}

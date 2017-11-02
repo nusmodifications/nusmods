@@ -26,7 +26,6 @@ export function selectFaculty(faculty: Faculty): FSA {
   };
 }
 
-// TODO: Shift this action to actions/timetables.
 export const HIDE_LESSON_IN_TIMETABLE: string = 'HIDE_LESSON_IN_TIMETABLE';
 export function hideLessonInTimetable(moduleCode: ModuleCode): FSA {
   return {
@@ -35,7 +34,6 @@ export function hideLessonInTimetable(moduleCode: ModuleCode): FSA {
   };
 }
 
-// TODO: Shift this action to actions/timetables.
 export const SHOW_LESSON_IN_TIMETABLE: string = 'SHOW_LESSON_IN_TIMETABLE';
 export function showLessonInTimetable(moduleCode: ModuleCode): FSA {
   return {
