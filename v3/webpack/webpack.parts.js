@@ -6,6 +6,8 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const cssnano = require('cssnano');
 const FlowStatusWebpackPlugin = require('flow-status-webpack-plugin');
 
+const packageJson = require('../package.json');
+
 const IS_DEV = process.env.NODE_ENV === 'development';
 const ROOT = path.join(__dirname, '..');
 const SRC = 'src';
@@ -26,26 +28,14 @@ const PATHS = {
 // These dependencies will be extracted out into `vendor.js` in production build.
 // App bundle changes more often than vendor bundle and splitting app bundle from
 // 3rd-party vendor bundle allows the vendor bundle to be cached.
-// Only require general names, e.g. 'react' will catch 'react-redux'
 const VENDOR = [
-  'lodash',
-  'core-js',
-  'axios',
-  'react',
-  'redux',
-  'history',
-  'classnames',
-  'raven',
-  'immutability-helper',
-  'nusmoderator',
-  'js-search',
-  'dom-to-image',
-  'ical-generator',
-  'fbjs',
-  'loader',
-  'prop-types',
-  'query-string',
-  'equal',
+  ...Object.keys(packageJson.dependencies),
+  // Secondary dependencies
+  'history', // History module used by router
+  'fbjs', // facebook deps
+  'prop-types', // gone but not forgotten
+  'loader', // style loader fallbacks
+  'equal', // various comparison libs used by deps
 ];
 
 const DLL = {
