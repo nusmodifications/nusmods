@@ -67,7 +67,6 @@ export class AppShell extends Component<Props> {
     this.props.fetchModuleList();
 
     const semesterTimetable = this.props.timetables[config.semester];
-    console.log('semesterTimetable', semesterTimetable);
     if (semesterTimetable) {
       Object.keys(semesterTimetable).forEach((moduleCode) => {
         // TODO: Handle failed loading of module.
