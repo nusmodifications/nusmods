@@ -31,10 +31,10 @@ async function fetchPublicHolidaysIcs(year) {
   return res.data;
 }
 
-years.split(',').map(s => s.trim()).forEach(year => {
-  fetchPublicHolidaysIcs(year).then(icsData => {
+years.split(',').map(s => s.trim()).forEach((year) => {
+  fetchPublicHolidaysIcs(year).then((icsData) => {
     // This trailing newline is needed by the parser else it's an invalid format.
-    const ical = icalendar.parse_calendar(icsData + '\n');
+    const ical = icalendar.parse_calendar(`${icsData}\n`);
     const calendarEvents = ical.events().map(event => ({
       date: moment(event.getPropertyValue('DTSTART').valueOf()),
       name: event.getPropertyValue('SUMMARY'),
@@ -54,7 +54,7 @@ years.split(',').map(s => s.trim()).forEach(year => {
         i < calendarEvents.length &&
         calendarEvents[i + 1].name !== 'Chinese New Year') {
         actualDay = false;
-        i++; // Skip because the next event is the observance event.
+        i += 1; // Skip because the next event is the observance event.
       }
       data.push({
         date: date.format(DATE_FORMAT),
@@ -67,13 +67,13 @@ years.split(',').map(s => s.trim()).forEach(year => {
 
     const HEADERS = ['Date', 'Name', 'Day', 'Observance', 'Observance Strategy'];
     const rows = [HEADERS];
-    data.forEach(row => {
+    data.forEach((row) => {
       rows.push([row.date, row.name, row.day, row.observance, row.observance_strategy]);
     });
     const outPath = path.join(OUT_DIR, `${year}_singapore_holidays.csv`);
     console.log(`Writing holidays CSV for ${year} to ${outPath}`);
-    fs.writeFileSync(outPath, rows.join('\n') + '\n');
-  }).catch(err => {
+    fs.writeFileSync(outPath, `${rows.join('\n')}\n`);
+  }).catch((err) => {
     console.error(err);
   });
 });
