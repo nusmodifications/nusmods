@@ -1,7 +1,7 @@
 // @flow
 import type { Semester } from 'types/modules';
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import config from 'config';
 
 import { ChevronLeft, ChevronRight } from 'views/components/icons';
@@ -15,7 +15,7 @@ type Props = {
   onSelectSemester: Function,
 };
 
-class SemesterSwitcher extends Component<Props> {
+class SemesterSwitcher extends PureComponent<Props> {
   switchSemester = (offset: number) => {
     const newSemester: Semester = this.props.semester + offset;
     if (!isValidSemester(newSemester)) {

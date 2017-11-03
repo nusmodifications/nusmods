@@ -18,7 +18,7 @@ import {
 } from 'actions/settings';
 
 const defaultAppState: AppState = {
-  // Set default semester to config's.
+  // Default to the current semester from config.
   activeSemester: config.semester,
   // The lesson being modified on the timetable.
   activeLesson: null,
