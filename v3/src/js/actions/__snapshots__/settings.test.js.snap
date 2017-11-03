@@ -27,3 +27,10 @@ Object {
   "type": "SELECT_NEW_STUDENT",
 }
 `;
+
+exports[`should dispatch a select of a semester value 1`] = `
+Object {
+  "payload": 1,
+  "type": "SELECT_SEMESTER",
+}
+`;

@@ -1,7 +1,12 @@
 // @flow
-import type { Faculty, ModuleCode } from 'types/modules';
+import type { Faculty, ModuleCode, Semester } from 'types/modules';
 
 import * as actions from 'actions/settings';
+
+test('should dispatch a select of a semester value', () => {
+  const semester: Semester = 1;
+  expect(actions.selectSemester(semester)).toMatchSnapshot();
+});
 
 test('should dispatch a select of a newStudent value', () => {
   const newStudent = false;

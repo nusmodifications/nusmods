@@ -4,10 +4,12 @@ import type {
   Lesson,
   ModuleCode,
   ModuleCondensed,
+  Semester,
 } from 'types/modules';
 
 /* app.js */
 export type AppState = {
+  activeSemester: Semester,
   activeLesson: ?Lesson,
   activeModule: ?ModuleCode,
 };
