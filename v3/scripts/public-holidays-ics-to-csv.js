@@ -33,7 +33,8 @@ async function fetchPublicHolidaysIcs(year) {
 
 years.split(',').map(s => s.trim()).forEach(year => {
   fetchPublicHolidaysIcs(year).then(icsData => {
-    const ical = icalendar.parse_calendar(icsData + '\n'); // This trailing newline is needed by the parser else it's an invalid format.
+    // This trailing newline is needed by the parser else it's an invalid format.
+    const ical = icalendar.parse_calendar(icsData + '\n');
     const calendarEvents = ical.events().map(event => ({
       date: moment(event.getPropertyValue('DTSTART').valueOf()),
       name: event.getPropertyValue('SUMMARY'),
