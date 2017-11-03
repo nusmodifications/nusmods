@@ -20,7 +20,7 @@ export default function Routes() {
       <Route path="/faq" component={FaqContainer} />
       <Route path="/timetable" component={TimetableContainer} />
       <Route exact path="/modules" component={ModuleFinderContainer} />
-      <Route path="/modules/:moduleCode" component={ModulePageContainer} />
+      <Route path="/modules/:moduleCode/:slug?" component={ModulePageContainer} />
       <Route path="/settings" component={SettingsContainer} />
       <Route path="/team" component={TeamContainer} />
       <Route path="/developers" component={DevelopersContainer} />

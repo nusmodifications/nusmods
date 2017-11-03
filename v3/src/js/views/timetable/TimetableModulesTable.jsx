@@ -82,8 +82,7 @@ class TimetableModulesTable extends Component<Props> {
         <div className="btn-group">
           <button
             type="button"
-            className={classnames('btn btn-outline-secondary', styles.moduleAction,
-              timetableActionsStyles.actionButton)}
+            className={classnames('btn btn-outline-secondary', styles.moduleAction)}
             title={removeBtnLabel}
             aria-label={removeBtnLabel}
             onClick={() => {
@@ -96,8 +95,7 @@ class TimetableModulesTable extends Component<Props> {
           </button>
           <button
             type="button"
-            className={classnames('btn btn-outline-secondary', styles.moduleAction,
-              timetableActionsStyles.actionButton)}
+            className={classnames('btn btn-outline-secondary', styles.moduleAction)}
             title={hideBtnLabel}
             aria-label={hideBtnLabel}
             onClick={() => {
@@ -146,7 +144,7 @@ class TimetableModulesTable extends Component<Props> {
               <div className={classnames(styles.moduleActionColumn, styles.moduleDetailsColumn)}>
                 {this.renderModuleActions(module)}
 
-                <Link to={modulePagePath(module.ModuleCode)}>
+                <Link to={modulePagePath(module.ModuleCode, module.ModuleTitle)}>
                   {module.ModuleCode} {module.ModuleTitle}
                 </Link>
 

@@ -1,18 +1,18 @@
 // @flow
 import type { Node } from 'react';
+import type { TimetableConfig } from 'types/timetables';
+import type { ModuleList, ModuleSelectList } from 'types/reducers';
+import type { ModuleCode, Semester } from 'types/modules';
 
 import React, { Component } from 'react';
 import { NavLink, withRouter, type ContextRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import NUSModerator from 'nusmoderator';
 import qs from 'query-string';
-
-import type { TimetableConfig } from 'types/timetables';
-import type { ModuleList, ModuleSelectList } from 'types/reducers';
-import type { ModuleCode } from 'types/modules';
+import classnames from 'classnames';
 
 import config from 'config';
-import { fetchModuleList, loadModule } from 'actions/moduleBank';
+import { fetchModuleList, fetchModule } from 'actions/moduleBank';
 import { noBreak } from 'utils/react';
 import { roundStart } from 'utils/cors';
 import ModulesSelect from 'views/components/ModulesSelect';
@@ -21,8 +21,8 @@ import Navtabs from 'views/layout/Navtabs';
 import LoadingSpinner from './components/LoadingSpinner';
 import CorsNotification from './components/cors-info/CorsNotification';
 
-// Cache a current date object to stop CorsNotification from rerendering - if this was in
-// render(), a new Date object is created, forcing rerender
+// Cache a current date object to stop CorsNotification from re-rendering - if this was in
+// render(), a new Date object is created, forcing re-render.
 const NOW = new Date();
 
 type Props = {
@@ -33,8 +33,9 @@ type Props = {
   moduleSelectList: ModuleSelectList,
   timetables: TimetableConfig,
   theme: string,
+  activeSemester: Semester,
 
-  loadModule: (ModuleCode) => void,
+  fetchModule: (ModuleCode) => void,
   fetchModuleList: () => void,
 };
 
@@ -53,7 +54,7 @@ const weekText = (() => {
     parts.push(noBreak(`${acadWeekInfo.type} Week`));
   }
 
-  // Do not show the week number if there is only one week, eg. recess
+  // Do not show the week number if there is only one week, e.g. recess
   if (acadWeekInfo.num > 0) {
     parts.push(noBreak(`Week ${acadWeekInfo.num}`));
   }
@@ -63,15 +64,14 @@ const weekText = (() => {
 
 export class AppShell extends Component<Props> {
   componentWillMount() {
-    // TODO: This always refetch the entire modules list. Consider a better strategy for this
+    // TODO: This always re-fetch the entire modules list. Consider a better strategy for this
     this.props.fetchModuleList();
 
-    const semesterTimetable = this.props.timetables[config.semester];
-
+    const semesterTimetable = this.props.timetables[this.props.activeSemester];
     if (semesterTimetable) {
       Object.keys(semesterTimetable).forEach((moduleCode) => {
         // TODO: Handle failed loading of module.
-        this.props.loadModule(moduleCode);
+        this.props.fetchModule(moduleCode);
       });
     }
   }
@@ -115,7 +115,7 @@ export class AppShell extends Component<Props> {
 
           <CorsNotification time={this.currentTime()} />
 
-          <main className={`main-content theme-${this.props.theme}`}>
+          <main className={classnames('main-content', `theme-${this.props.theme}`)}>
             {isModuleListReady ? this.props.children : <LoadingSpinner />}
           </main>
         </div>
@@ -131,11 +131,12 @@ const mapStateToProps = state => ({
   moduleSelectList: state.entities.moduleBank.moduleSelectList,
   timetables: state.timetables,
   theme: state.theme.id,
+  activeSemester: state.app.activeSemester,
 });
 
 export default withRouter(
   connect(mapStateToProps, {
     fetchModuleList,
-    loadModule,
+    fetchModule,
   })(AppShell),
 );

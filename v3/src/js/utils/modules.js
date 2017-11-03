@@ -5,6 +5,7 @@ import type {
   Lesson,
   Module,
   ModuleCode,
+  ModuleTitle,
   RawLesson,
   Semester,
   SemesterData,
@@ -15,8 +16,8 @@ import type {
 
 import config from 'config';
 
-export function modulePagePath(moduleCode: ModuleCode): string {
-  return `/modules/${moduleCode}`;
+export function modulePagePath(moduleCode: ModuleCode, moduleTitle: ModuleTitle): string {
+  return `/modules/${moduleCode}/${_.kebabCase(moduleTitle)}`;
 }
 
 // Returns semester specific details such as exam date and timetable.

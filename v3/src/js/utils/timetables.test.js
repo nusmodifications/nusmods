@@ -1,7 +1,4 @@
 // @flow
-
-import _ from 'lodash';
-
 import type {
   ModuleLessonConfig,
   SemTimetableConfig,
@@ -22,6 +19,7 @@ import type {
 } from 'types/modules';
 import type { ModulesMap } from 'reducers/entities/moduleBank';
 
+import _ from 'lodash';
 import {
   areOtherClassesAvailable,
   arrangeLessonsForWeek,
@@ -29,6 +27,7 @@ import {
   doLessonsOverlap,
   groupLessonsByDay,
   hydrateSemTimetableWithLessons,
+  isValidSemester,
   lessonsForLessonType,
   randomModuleLessonConfig,
   timetableLessonsArray,
@@ -61,6 +60,20 @@ export function createGenericLesson(dayText: DayText, startTime: LessonTime,
     EndTime: endTime,
   };
 }
+
+describe('isValidSemester', () => {
+  test('semesters 1-4 are valid', () => {
+    expect(isValidSemester(1)).toBe(true);
+    expect(isValidSemester(2)).toBe(true);
+    expect(isValidSemester(3)).toBe(true);
+    expect(isValidSemester(4)).toBe(true);
+  });
+
+  test('non 1-4 are invalid', () => {
+    expect(isValidSemester(0)).toBe(false);
+    expect(isValidSemester(5)).toBe(false);
+  });
+});
 
 test('randomModuleLessonConfig should return a random lesson config', () => {
   const sem: Semester = 1;

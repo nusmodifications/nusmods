@@ -35,6 +35,7 @@ import {
 import { toggleTimetableOrientation } from 'actions/theme';
 import { getModuleTimetable, areLessonsSameClass } from 'utils/modules';
 import { fetchModule } from 'actions/moduleBank';
+import { selectSemester } from 'actions/settings';
 import {
   timetableLessonsArray,
   hydrateSemTimetableWithLessons,
@@ -46,6 +47,7 @@ import {
   isSameTimetableConfig,
 } from 'utils/timetables';
 import ModulesSelect from 'views/components/ModulesSelect';
+import SemesterSwitcher from 'views/components/semester-switcher/SemesterSwitcher';
 
 import styles from './TimetableContainer.scss';
 import Timetable from './Timetable';
@@ -74,6 +76,7 @@ type Props = {
   toggleTimetableOrientation: Function,
   downloadAsJpeg: Function,
   downloadAsIcal: Function,
+  selectSemester: Function,
   setTimetable: (Semester, SemTimetableConfig) => void,
 };
 
@@ -191,6 +194,12 @@ class TimetableContainer extends Component<Props> {
         <Helmet>
           <title>Timetable - {config.brandName}</title>
         </Helmet>
+        <div>
+          <SemesterSwitcher
+            semester={semester}
+            onSelectSemester={this.props.selectSemester}
+          />
+        </div>
         <div className="row">
           <div
             className={classnames({
@@ -259,7 +268,7 @@ class TimetableContainer extends Component<Props> {
 
 function mapStateToProps(state) {
   const modules = state.entities.moduleBank.modules;
-  const semester = config.semester;
+  const semester = state.app.activeSemester;
   const timetable = state.timetables[semester] || {};
   const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
   const semModuleList = getSemModuleSelectList(state.entities.moduleBank, semester, timetable);
@@ -287,6 +296,7 @@ export default withRouter(
     cancelModifyLesson,
     fetchModule,
     setTimetable,
+    selectSemester,
     toggleTimetableOrientation,
     downloadAsJpeg,
     downloadAsIcal,

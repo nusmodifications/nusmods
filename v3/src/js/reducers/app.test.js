@@ -2,6 +2,7 @@
 
 import * as actions from 'actions/timetables';
 import * as themeActions from 'actions/theme';
+import * as settingsActions from 'actions/settings';
 import reducer from 'reducers/app';
 
 import type { Lesson, ModuleCode, Semester } from 'types/modules';
@@ -10,9 +11,15 @@ import type { AppState } from 'types/reducers';
 import lessons from '__mocks__/lessons-array.json';
 
 const semester: Semester = 1;
+const anotherSemester: Semester = 2;
 const lesson: Lesson = lessons[0];
 const moduleCode: ModuleCode = 'CS1010S';
-const appInitialState: AppState = { activeLesson: null, activeModule: null };
+const appInitialState: AppState = {
+  activeSemester: semester,
+  activeLesson: null,
+  activeModule: null,
+};
+const appHasSemesterTwoState: AppState = { ...appInitialState, activeSemester: anotherSemester };
 const appHasActiveLessonState: AppState = { ...appInitialState, activeLesson: lesson };
 const appHasActiveModuleState: AppState = { ...appInitialState, activeModule: moduleCode };
 
@@ -22,8 +29,15 @@ test('app should return initial state', () => {
   expect(nextState).toEqual(appInitialState);
 });
 
-// Test for active lesson.
+// Tests for active semester.
+test('app should set active semester', () => {
+  const action: FSA = settingsActions.selectSemester(anotherSemester);
+  const nextState: AppState = reducer(appInitialState, action);
 
+  expect(nextState).toEqual(appHasSemesterTwoState);
+});
+
+// Tests for active lesson.
 test('app should instantiate active lesson', () => {
   const action: FSA = actions.modifyLesson(lesson);
   const nextState: AppState = reducer(appInitialState, action);
@@ -52,8 +66,7 @@ test('app should cancel and unset active lesson', () => {
   expect(nextState).toEqual(appInitialState);
 });
 
-// Test for active module.
-
+// Tests for active module.
 test('app should instantiate active module', () => {
   const action: FSA = themeActions.modifyModuleColor(moduleCode);
   const nextState: AppState = reducer(appInitialState, action);

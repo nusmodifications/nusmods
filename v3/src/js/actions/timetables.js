@@ -10,7 +10,7 @@ import type {
   Lesson,
 } from 'types/modules';
 
-import { loadModule } from 'actions/moduleBank';
+import { fetchModule } from 'actions/moduleBank';
 import { randomModuleLessonConfig } from 'utils/timetables';
 import { getModuleTimetable } from 'utils/modules';
 
@@ -21,7 +21,7 @@ export function addModule(
   lessonConfig: ModuleLessonConfig = {},
 ) {
   return (dispatch: Function, getState: Function) =>
-    dispatch(loadModule(moduleCode)).then(() => {
+    dispatch(fetchModule(moduleCode)).then(() => {
       const module: Module = getState().entities.moduleBank.modules[moduleCode];
       const lessons = getModuleTimetable(module, semester);
       const moduleLessonConfig = lessons && isEmpty(lessonConfig) ?

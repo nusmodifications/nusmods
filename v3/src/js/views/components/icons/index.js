@@ -1,5 +1,8 @@
 // @flow
+// Refer to https://feathericons.com/ for full list.
 import Calendar from 'react-feather/dist/icons/calendar';
+import ChevronLeft from 'react-feather/dist/icons/chevron-left';
+import ChevronRight from 'react-feather/dist/icons/chevron-right';
 import Eye from 'react-feather/dist/icons/eye';
 import EyeOff from 'react-feather/dist/icons/eye-off';
 import Facebook from 'react-feather/dist/icons/facebook';
@@ -15,6 +18,8 @@ import LinkedIn from './LinkedIn';
 
 export {
   Calendar,
+  ChevronLeft,
+  ChevronRight,
   Eye,
   EyeOff,
   Facebook,
