@@ -114,9 +114,8 @@ test('lessonsForLessonType should return empty array if no such LessonType is pr
 });
 
 test('timetableLessonsArray should return a flat array of lessons', () => {
-  const someTimetable: SemTimetableConfig = timetable;
-  const lessons: Array<Lesson> = timetableLessonsArray(someTimetable);
-  expect(lessons.length).toBe(6);
+  const someTimetable = timetable;
+  expect(timetableLessonsArray(someTimetable).length).toBe(6);
 });
 
 test('groupLessonsByDay should group lessons by DayText', () => {
