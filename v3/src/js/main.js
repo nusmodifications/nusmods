@@ -27,7 +27,7 @@ store.subscribe(
       theme: storeState.theme,
       settings: storeState.settings,
     });
-  }, 5000),
+  }, 1000),
 );
 
 const render = () => {

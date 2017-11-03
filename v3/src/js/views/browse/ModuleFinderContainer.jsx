@@ -50,7 +50,10 @@ type State = {
   error?: any,
 };
 
-// Min amount of time it takes
+// Threshold to enable instant search based on the amount of time it takes
+// to run the filters on initial render. This is only an estimate since only
+// ~50% of the time is spent on filters (the other 50% on rendering), so
+// err on using a lower threshold
 const INSTANT_SEARCH_THRESHOLD = 150;
 
 const pageHead = (
@@ -117,8 +120,8 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
         const time = window.performance.now() - start;
 
         this.useInstantSearch = breakpointUp('md').matches && (time < INSTANT_SEARCH_THRESHOLD);
-        console.log(`${time}ms taken to init filters`); // eslint-disable-line
-        console.log(this.useInstantSearch ? 'Instant search on' : 'Instant search off'); // eslint-disable-line
+        console.info(`${time}ms taken to init filters`); // eslint-disable-line
+        console.info(this.useInstantSearch ? 'Instant search on' : 'Instant search off'); // eslint-disable-line
 
         this.setState({
           modules: data,
