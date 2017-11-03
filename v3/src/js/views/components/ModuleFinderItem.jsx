@@ -32,7 +32,7 @@ export class ModuleFinderItemComponent extends PureComponent<Props> {
           <div className="col-lg-8 col-md-12 col-sm-8">
             <header>
               <h2 className="modules-title">
-                <Link to={modulePagePath(module.ModuleCode)}>
+                <Link to={modulePagePath(module.ModuleCode, module.ModuleTitle)}>
                   {this.highlight(`${module.ModuleCode} ${module.ModuleTitle}`)}
                 </Link>
               </h2>

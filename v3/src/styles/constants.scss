@@ -155,6 +155,11 @@ $nusmods-theme-colors: (
 
 // Z-index
 $sentry-z-index: 2000;
+$cors-notification-z-index: 500;
 $module-finder-z-index: 200;
 $nm-nav-tabs-z-index: 100;
 $module-finder-search-z-index: 250;
+$timetable-timing-z-index: 95;
+$timetable-day-z-index: 90;
+$timetable-selected-cell-z-index: 75;
+$module-page-divider-z-index: 50;

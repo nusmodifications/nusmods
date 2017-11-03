@@ -3,18 +3,26 @@
 .timings {
   display: flex;
   justify-content: space-between;
-  margin-left: $timetable-day-horizontal-size;
+  margin-left: $timetable-day-h-size;
   font-weight: 600;
   font-size: $font-size-s;
+
+  @include media-breakpoint-down(sm) {
+    margin-left: $timetable-day-h-size-sm;
+  }
 }
 
 :global(.verticalMode) .timings {
+  position: sticky;
+  left: 0;
+  z-index: $timetable-timing-z-index;
   flex: 0 0 auto;
   flex-direction: column;
-  padding: 0 0.15rem;
-  padding-left: 1vw;
-  margin: $timetable-day-vertical-size 0 0 0;
+  padding: 0;
+  margin: $timetable-day-v-size 0 0 0;
   text-align: right;
+  background: rgba($body-bg, 0.7);
+  pointer-events: none;
 
   @include media-breakpoint-up(sm) {
     padding-right: 0.25rem;
@@ -26,5 +34,8 @@
 }
 
 :global(.verticalMode) .time {
-  transform: translateY(-50%);
+  display: inline-block;
+  padding: 0.1rem 0.2rem;
+  background: rgba($body-bg, 0.75);
+  transform: none;
 }

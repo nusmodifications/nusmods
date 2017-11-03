@@ -1,24 +1,27 @@
 // @flow
+import type { ContextRouter } from 'react-router-dom';
+
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
 import Raven from 'raven-js';
 
-import type { FetchRequest } from 'types/reducers';
+import type { FetchRequest, ModuleCodeMap } from 'types/reducers';
 import type { Module, ModuleCode } from 'types/modules';
 
-import { loadModule, FETCH_MODULE } from 'actions/moduleBank';
+import { fetchModule, FETCH_MODULE } from 'actions/moduleBank';
 import { getRequestName } from 'reducers/requests';
 import NotFoundPage from 'views/errors/NotFoundPage';
 import ErrorPage from 'views/errors/ErrorPage';
 import LoadingSpinner from 'views/components/LoadingSpinner';
+import { modulePagePath } from 'utils/modules';
 
-type Props = {
+type Props = ContextRouter & {
   moduleCode: ModuleCode,
-  moduleCodes: Set<ModuleCode>,
+  moduleCodes: ModuleCodeMap,
   module: ?Module,
   request: ?FetchRequest,
-  loadModule: (ModuleCode) => void,
+  fetchModule: (ModuleCode) => void,
 };
 
 type State = {
@@ -47,7 +50,7 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
   };
 
   componentWillMount() {
-    this.loadModule(this.props.moduleCode);
+    this.fetchModule(this.props.moduleCode);
 
     import('views/browse/ModulePageContent')
       .then(module => this.setState({ ModulePageContent: module.default }))
@@ -59,23 +62,28 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
 
   componentWillReceiveProps(nextProps: Props) {
     if (nextProps.moduleCode !== this.props.moduleCode) {
-      this.loadModule(nextProps.moduleCode);
+      this.fetchModule(nextProps.moduleCode);
     }
   }
 
-  loadModule(moduleCode: ModuleCode) {
+  fetchModule(moduleCode: ModuleCode) {
     if (this.doesModuleExist(moduleCode)) {
-      this.props.loadModule(moduleCode);
+      this.props.fetchModule(moduleCode);
     }
   }
 
-  doesModuleExist(moduleCode: ModuleCode) {
-    return this.props.moduleCodes.has(moduleCode);
+  doesModuleExist(moduleCode: ModuleCode): boolean {
+    return !!this.props.moduleCodes[moduleCode];
+  }
+
+  canonicalUrl() {
+    if (!this.props.module) throw new Error('canonicalUrl() called before module is loaded');
+    return modulePagePath(this.props.moduleCode, this.props.module.ModuleTitle);
   }
 
   render() {
     const { ModulePageContent, error } = this.state;
-    const { module, request, moduleCode } = this.props;
+    const { module, request, moduleCode, match } = this.props;
 
     if (!this.doesModuleExist(moduleCode)) {
       return <NotFoundPage />;
@@ -83,6 +91,10 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
 
     if (error || (request && request.isFailure)) {
       return <ErrorPage eventId={Raven.lastEventId()} />;
+    }
+
+    if (module && match.url !== this.canonicalUrl()) {
+      return <Redirect to={this.canonicalUrl()} />;
     }
 
     if (module && ModulePageContent) {
@@ -98,7 +110,7 @@ const mapStateToProps = (state, ownState) => {
   const requestName = getRequestName(FETCH_MODULE);
 
   return {
-    moduleCode,
+    moduleCode: moduleCode.toUpperCase(),
     moduleCodes: state.entities.moduleBank.moduleCodes,
     module: state.entities.moduleBank.modules[moduleCode],
     request: state.requests[requestName],
@@ -106,5 +118,5 @@ const mapStateToProps = (state, ownState) => {
 };
 
 export default withRouter(
-  connect(mapStateToProps, { loadModule })(ModulePageContainerComponent),
+  connect(mapStateToProps, { fetchModule })(ModulePageContainerComponent),
 );

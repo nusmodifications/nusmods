@@ -5,16 +5,18 @@ $cell-opacity: 0.5;
 $cell-border-radius: 8px;
 
 .cell {
+  // Flex to ensure cell content sticks to top, because browsers tend to
+  // vertical align middle button content
+  display: flex;
+  flex-direction: column;
   padding: $cell-padding;
   font-size: $font-size-xxs;
   line-height: 0.85rem;
   text-align: left;
-  vertical-align: top;
-  border: 0;
-  border-bottom: 2px solid;
+  border-width: 0 0 0.2rem;
+  border-style: solid;
   transition: background-color $desktop-entering-duration $material-deceleration-curve;
   animation-duration: $desktop-entering-duration;
-  overflow-wrap: break-word;
 
   &:hover,
   &:focus {
@@ -25,6 +27,7 @@ $cell-border-radius: 8px;
 .cellContainer {
   width: 100%;
   height: 100%;
+  padding: 0;
 }
 
 :global(.verticalMode) .cell {
@@ -51,6 +54,7 @@ $cell-border-radius: 8px;
 }
 
 .cellIsActive {
+  z-index: $timetable-selected-cell-z-index;
   animation-duration: 1s;
   animation-iteration-count: infinite;
 

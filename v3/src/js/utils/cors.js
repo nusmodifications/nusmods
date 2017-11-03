@@ -1,5 +1,8 @@
 // @flow
+import { first, last } from 'lodash';
+
 import type { BiddingStat, Student } from 'types/modules';
+import type { CorsRound } from 'config';
 
 const sameFaculty = (stat: BiddingStat, student: Student): boolean => (stat.Faculty === student.faculty);
 const isNew = student => (student.newStudent);
@@ -35,4 +38,10 @@ export function isStatRelevantForStudent(stat: BiddingStat, student: Student) {
   }
 }
 
-export function dummy() {}
+export function roundStart(round: CorsRound): Date {
+  return first(round.periods).startDate;
+}
+
+export function roundEnd(round: CorsRound): Date {
+  return last(round.periods).endDate;
+}

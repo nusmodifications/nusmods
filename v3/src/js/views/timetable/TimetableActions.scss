@@ -1,9 +1,11 @@
 @import './_variables.scss';
 
 .actionIcon {
+  $size: 1rem;
+
   display: block;
-  width: 1.25rem;
-  height: 1.25rem;
+  width: $size;
+  height: $size;
 }
 
 .verticalMode {

@@ -22,6 +22,7 @@ import type { SemTimetableConfig, TimetableArrangement } from 'types/timetables'
 
 import classnames from 'classnames';
 import { getSemModuleSelectList } from 'reducers/entities/moduleBank';
+import { selectSemester } from 'actions/settings';
 import { downloadAsJpeg, downloadAsIcal } from 'actions/export';
 import {
   addModule,
@@ -40,6 +41,7 @@ import {
   lessonsForLessonType,
 } from 'utils/timetables';
 import ModulesSelect from 'views/components/ModulesSelect';
+import SemesterSwitcher from 'views/components/semester-switcher/SemesterSwitcher';
 
 import styles from './TimetableContainer.scss';
 import Timetable from './Timetable';
@@ -64,6 +66,7 @@ type Props = {
   toggleTimetableOrientation: Function,
   downloadAsJpeg: Function,
   downloadAsIcal: Function,
+  selectSemester: Function,
 };
 
 class TimetableContainer extends Component<Props> {
@@ -150,28 +153,36 @@ class TimetableContainer extends Component<Props> {
 
     return (
       <div
-        className={`${styles.container} page-container`}
+        className={classnames(styles.container, 'page-container')}
         onClick={this.cancelModifyLesson}
       >
         <Helmet>
           <title>Timetable - {config.brandName}</title>
         </Helmet>
+        <div>
+          <SemesterSwitcher
+            semester={this.props.semester}
+            onSelectSemester={this.props.selectSemester}
+          />
+        </div>
         <div className="row">
           <div
-            className={classnames(styles.timetableWrapper, {
+            className={classnames({
               'col-md-12': !isVerticalOrientation,
               'col-md-8': isVerticalOrientation,
               verticalMode: isVerticalOrientation,
             })}
           >
-            <Timetable
-              lessons={arrangedLessonsWithModifiableFlag}
-              isVerticalOrientation={isVerticalOrientation}
-              onModifyCell={this.modifyCell}
-              ref={(r) => {
-                this.timetableDom = r && r.timetableDom;
-              }}
-            />
+            <div className={styles.timetableWrapper}>
+              <Timetable
+                lessons={arrangedLessonsWithModifiableFlag}
+                isVerticalOrientation={isVerticalOrientation}
+                onModifyCell={this.modifyCell}
+                ref={(r) => {
+                  this.timetableDom = r && r.timetableDom;
+                }}
+              />
+            </div>
           </div>
           <div
             className={classnames({
@@ -223,7 +234,7 @@ class TimetableContainer extends Component<Props> {
 
 function mapStateToProps(state) {
   const modules = state.entities.moduleBank.modules;
-  const semester = config.semester;
+  const semester = state.app.activeSemester;
   const semTimetable = state.timetables[semester] || {};
   const semModuleList = getSemModuleSelectList(state.entities.moduleBank, semester, semTimetable);
   const semTimetableWithLessons = hydrateSemTimetableWithLessons(semTimetable, modules, semester);
@@ -250,4 +261,5 @@ export default connect(mapStateToProps, {
   toggleTimetableOrientation,
   downloadAsJpeg,
   downloadAsIcal,
+  selectSemester,
 })(TimetableContainer);

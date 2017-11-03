@@ -15,31 +15,35 @@ type Props = {
   onModifyCell: Function,
 };
 
+// Height of timetable per hour in vertical mode
+const VERTICAL_HEIGHT = 2;
+
 function TimetableDay(props: Props) {
   const columns = props.endingIndex - props.startingIndex;
-  const rowStyle = {
-    backgroundSize: `${100 / (columns / 4)}%`,
+  const size = 100 / (columns / 4);
+  const rowStyle: Object = {
+    // Firefox defaults the second value (width) to auto if not specified
+    backgroundSize: `${size}% ${size}%`,
   };
+
+  if (props.verticalMode) rowStyle.height = `${VERTICAL_HEIGHT * columns}rem`;
+
   return (
     <li className={styles.day}>
       <div className={styles.dayName}>
-        {props.day.substring(0, 3)}
+        <span className={styles.dayNameText}>{props.day.substring(0, 3)}</span>
       </div>
       <div className={styles.dayRows} style={rowStyle}>
-        {
-          props.dayLessonRows.map((dayLessonRow, i) => {
-            return (
-              <TimetableRow
-                key={i}
-                startingIndex={props.startingIndex}
-                endingIndex={props.endingIndex}
-                verticalMode={props.verticalMode}
-                lessons={dayLessonRow}
-                onModifyCell={props.onModifyCell}
-              />
-            );
-          })
-        }
+        {props.dayLessonRows.map((dayLessonRow, i) => (
+          <TimetableRow
+            key={i}
+            startingIndex={props.startingIndex}
+            endingIndex={props.endingIndex}
+            verticalMode={props.verticalMode}
+            lessons={dayLessonRow}
+            onModifyCell={props.onModifyCell}
+          />
+        ))}
       </div>
     </li>
   );
