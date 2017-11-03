@@ -1,4 +1,8 @@
 // Usage: $ node public-holidays-ics-to-csv.js 2016,2017,2018
+// Since 2017, MOM's public ics has been changed to break up
+// holidays that span across multiple days into single-day events.
+// This scraper assumes that format and that all public holidays
+// are no longer than a single day.
 
 const fs = require('fs');
 const path = require('path');
@@ -19,10 +23,11 @@ if (!fs.existsSync(OUT_DIR)) {
 }
 
 async function fetchPublicHolidaysIcs(year) {
+  console.log(`Fetching ICS for ${year}...`);
   const URL = 'http://www.mom.gov.sg/~/media/mom/documents/employment-practices/' +
    `public-holidays/public-holidays-sg-${year}.ics`;
-
   const res = await axios.get(URL);
+  console.log(`Fetched ICS for ${year}...`);
   return res.data;
 }
 
@@ -43,16 +48,16 @@ years.split(',').map(s => s.trim()).forEach(year => {
       const event = calendarEvents[i];
       const { name, date } = event;
       let actualDay = true;
+      // Sunday that is not first day of CNY.
       if (date.format('dddd') === 'Sunday' &&
         i < calendarEvents.length &&
         calendarEvents[i + 1].name !== 'Chinese New Year') {
-        // Sunday that is not first day of CNY.
         actualDay = false;
         i++; // Skip because the next event is the observance event.
       }
       data.push({
         date: date.format(DATE_FORMAT),
-        name: name,
+        name,
         day: date.format('dddd'), // The day in text, e.g. Monday.
         observance: date.add(actualDay ? 0 : 1, 'day').format(DATE_FORMAT),
         observance_strategy: actualDay ? 'actual_day' : 'next_monday',
@@ -64,7 +69,9 @@ years.split(',').map(s => s.trim()).forEach(year => {
     data.forEach(row => {
       rows.push([row.date, row.name, row.day, row.observance, row.observance_strategy]);
     });
-    fs.writeFileSync(path.join(OUT_DIR, `${year}_singapore_holidays.csv`), rows.join('\n') + '\n');
+    const outPath = path.join(OUT_DIR, `${year}_singapore_holidays.csv`);
+    console.log(`Writing holidays CSV for ${year} to ${outPath}`);
+    fs.writeFileSync(outPath, rows.join('\n') + '\n');
   }).catch(err => {
     console.error(err);
   });
