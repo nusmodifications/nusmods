@@ -38,8 +38,13 @@ export class ModuleSearchBoxComponent extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    const throttleFn = this.props.useInstantSearch ? throttle : debounce;
-    this.throttledSearch = throttleFn(this.search, this.props.throttle, { leading: false });
+    // Cannot use ternary operator here because Jest (or Istanbul) has a bug that
+    // incorrectly transforms this - https://github.com/facebook/jest/issues/4271
+    if (this.props.useInstantSearch) {
+      this.throttledSearch = throttle(this.search, this.props.throttle, { leading: false });
+    } else {
+      this.throttledSearch = debounce(this.search, this.props.throttle, { leading: false });
+    }
   }
 
   state: State = {
