@@ -11,7 +11,6 @@ type Props = {
 };
 
 export default class ModuleTree extends Component<Props> {
-  props: Props;
   prereqRoot: ?HTMLDivElement;
 
   componentDidMount() {
@@ -50,7 +49,7 @@ export default class ModuleTree extends Component<Props> {
 
     function clicked(d) {
       if (!isOrAnd(d)) {
-        // TODO: Use React Router to navigate.
+      // TODO: Use React Router to navigate.
         window.location.href = `/modules/${d.name}`;
       }
     }

@@ -2,8 +2,24 @@
 import type { Semester, AcadYear } from 'types/modules';
 
 import appConfig from './app-config.json';
+import corsData from './corsSchedule1718Sem1.json';
 
-type Config = {
+export type CorsPeriodType = 'open' | 'closed';
+
+export type CorsPeriod = {
+  type: CorsPeriodType,
+  start: string,
+  startDate: Date,
+  end: string,
+  endDate: Date,
+}
+
+export type CorsRound = {
+  round: string,
+  periods: CorsPeriod[],
+};
+
+export type Config = {
   brandName: string,
   academicYear: AcadYear,
   semester: Semester,
@@ -25,11 +41,28 @@ type Config = {
     account: string,
   },
 
+  corsSchedule: CorsRound[],
+
   semTimetableFragment: (Semester) => string,
 };
 
+function convertCorsDate(roundData: Object): CorsRound {
+  return {
+    ...roundData,
+    periods: roundData.periods.map(period => ({
+      ...period,
+      // Convert timestamps to date objects
+      startDate: new Date(period.startTs),
+      endDate: new Date(period.endTs),
+    })),
+  };
+}
+
 const augmentedConfig: Config = {
   ...appConfig,
+
+  corsSchedule: corsData.map(convertCorsDate),
+
   semTimetableFragment: (semester: Semester = appConfig.semester): string => {
     // For use in the URL: E.g. `timetable/2016-2017/sem1`
     const acadYear = appConfig.academicYear.replace('/', '-');

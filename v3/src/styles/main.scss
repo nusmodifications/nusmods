@@ -14,7 +14,6 @@
 @import 'utils/animations';
 @import 'utils/workload';
 @import 'utils/themes';
-@import 'utils/responsive-square';
 
 // Layout
 @import 'layout/site';
@@ -25,9 +24,10 @@
 @import 'components/loading-spinner';
 @import 'components/timeslot-table';
 @import 'components/module-workload';
+@import 'components/sentry';
+@import 'components/buttons';
 
 // Pages
-@import 'pages/timetable';
 @import 'pages/modules';
 @import 'pages/module-finder';
 @import 'pages/settings';

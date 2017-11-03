@@ -9,12 +9,13 @@ import type { ModuleWithColor, ModuleCode, Semester } from 'types/modules';
 import type { ColorIndex } from 'types/reducers';
 
 import ColorPicker from 'views/components/color-picker/ColorPicker';
-import { Eye, EyeOff } from 'views/components/icons/index';
+import { Eye, EyeOff, Trash2 } from 'views/components/icons/index';
 import { selectModuleColor, modifyModuleColor, cancelModifyModuleColor } from 'actions/theme';
 import { hideLessonInTimetable, showLessonInTimetable } from 'actions/settings';
 import { getModuleSemExamDate, modulePagePath } from 'utils/modules';
 
 import styles from './TimetableModulesTable.scss';
+import timetableActionsStyles from './TimetableActions.scss';
 
 type Props = {
   activeModule: ModuleCode,
@@ -29,9 +30,8 @@ type Props = {
   horizontalOrientation: boolean,
 };
 
-class TimetableModulesTable extends Component<Props> {
-  props: Props;
 
+class TimetableModulesTable extends Component<Props> {
   componentWillUnmount() {
     this.cancelModifyModuleColor();
   }
@@ -42,98 +42,123 @@ class TimetableModulesTable extends Component<Props> {
     }
   };
 
-  showButton(moduleCode) {
+  renderColorPicker(module) {
+    const label = `Change ${module.ModuleCode} timetable color`;
+
     return (
-      <button
-        className={`btn btn-link ${styles.moduleAction}`}
-        title="Show"
-        aria-label="Show"
-        onClick={() => this.props.showLessonInTimetable(moduleCode)}
-      >
-        <EyeOff className={styles.eyeIcon} />
-      </button>
+      <div className={classnames(styles.moduleActionColumn)}>
+        <button
+          title={label}
+          aria-label={label}
+          className={classnames(styles.moduleColor, {
+            [`color-${module.colorIndex}`]: !module.hiddenInTimetable,
+            'color-muted': module.hiddenInTimetable,
+          })}
+          onClick={() => {
+            if (this.props.activeModule === module.ModuleCode) {
+              this.props.cancelModifyModuleColor();
+            } else {
+              this.props.modifyModuleColor(module.ModuleCode);
+            }
+          }}
+        />
+        {this.props.activeModule === module.ModuleCode &&
+        <ColorPicker
+          onChooseColor={(colorIndex: ColorIndex) => {
+            this.props.selectModuleColor(module.ModuleCode, colorIndex);
+          }}
+          onDismiss={this.cancelModifyModuleColor}
+        />}
+      </div>
     );
   }
 
-  hideButton(moduleCode) {
+  renderModuleActions(module) {
+    const hideBtnLabel = `${module.hiddenInTimetable ? 'Show' : 'Hide'} ${module.ModuleCode}`;
+    const removeBtnLabel = `Remove ${module.ModuleCode} from timetable`;
+
     return (
-      <button
-        className={`btn btn-link ${styles.moduleAction}`}
-        title="Hide"
-        aria-label="Hide"
-        onClick={() => this.props.hideLessonInTimetable(moduleCode)}
-      >
-        <Eye className={styles.eyeIcon} />
-      </button>
+      <div className={styles.moduleActionButtons}>
+        <div className="btn-group">
+          <button
+            type="button"
+            className={classnames('btn btn-outline-secondary', styles.moduleAction)}
+            title={removeBtnLabel}
+            aria-label={removeBtnLabel}
+            onClick={() => {
+              if (confirm(`Are you sure you want to remove ${module.ModuleCode}?`)) {
+                this.props.onRemoveModule(module.ModuleCode);
+              }
+            }}
+          >
+            <Trash2 className={timetableActionsStyles.actionIcon} />
+          </button>
+          <button
+            type="button"
+            className={classnames('btn btn-outline-secondary', styles.moduleAction)}
+            title={hideBtnLabel}
+            aria-label={hideBtnLabel}
+            onClick={() => {
+              if (module.hiddenInTimetable) {
+                this.props.showLessonInTimetable(module.ModuleCode);
+              } else {
+                this.props.hideLessonInTimetable(module.ModuleCode);
+              }
+            }}
+          >
+            {module.hiddenInTimetable ?
+              <Eye className={timetableActionsStyles.actionIcon} />
+              :
+              <EyeOff className={timetableActionsStyles.actionIcon} />
+            }
+          </button>
+        </div>
+      </div>
     );
   }
 
   render() {
-    return (
-      <div className="modules-table row">
-        {this.props.modules.length ?
-          this.props.modules.map((module) => {
-            return (
-              <div
-                className={classnames('modules-table-row', {
-                  'col-md-4': this.props.horizontalOrientation,
-                  'col-md-12': !this.props.horizontalOrientation,
-                })}
-                key={module.ModuleCode}
-              >
-                <div className="modules-table-row-inner">
-                  <div className="color-column">
-                    <div
-                      className={classnames('modules-table-color', {
-                        [`color-${module.colorIndex}`]: !module.hiddenInTimetable,
-                        'color-muted': module.hiddenInTimetable,
-                      })}
-                      onClick={() => {
-                        if (this.props.activeModule === module.ModuleCode) {
-                          this.props.cancelModifyModuleColor();
-                        } else {
-                          this.props.modifyModuleColor(module.ModuleCode);
-                        }
-                      }}
-                    />
-                    {this.props.activeModule === module.ModuleCode &&
-                      <ColorPicker
-                        onChooseColor={(colorIndex: ColorIndex) => {
-                          this.props.selectModuleColor(module.ModuleCode, colorIndex);
-                        }}
-                        onDismiss={this.cancelModifyModuleColor}
-                      />
-                    }
-                  </div>
-                  <div className="module-details-column">
-                    <Link to={modulePagePath(module.ModuleCode, module.ModuleTitle)}>
-                      {module.ModuleCode} {module.ModuleTitle}
-                    </Link>
-                    <div>
-                      <small>
-                        Exam: {getModuleSemExamDate(module, this.props.semester)}
-                        &nbsp;&middot;&nbsp;
-                        {module.ModuleCredit} MCs
-                        &nbsp;&middot;
-                        <button
-                          className={`btn btn-link ${styles.moduleAction}`}
-                          onClick={() => this.props.onRemoveModule(module.ModuleCode)}
-                        >
-                          Remove
-                        </button>
-                        {module.hiddenInTimetable ?
-                          this.showButton(module.ModuleCode) : this.hideButton(module.ModuleCode)}
-                      </small>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })
-          : <div className="col-sm-12">
+    if (!this.props.modules.length) {
+      return (
+        <div className="row">
+          <div className="col-sm-12">
             <p className="text-sm-center">No modules added.</p>
           </div>
-        }
+        </div>
+      );
+    }
+
+    return (
+      <div className={classnames(styles.modulesTable, 'row')}>
+        {this.props.modules.map(module => (
+          <div
+            className={classnames(styles.modulesTableRow, 'col-sm-6', {
+              'col-lg-4': this.props.horizontalOrientation,
+              'col-md-12': !this.props.horizontalOrientation,
+            })}
+            key={module.ModuleCode}
+          >
+            <div className={styles.modulesTableRowInner}>
+              {this.renderColorPicker(module)}
+
+              <div className={classnames(styles.moduleActionColumn, styles.moduleDetailsColumn)}>
+                {this.renderModuleActions(module)}
+
+                <Link to={modulePagePath(module.ModuleCode, module.ModuleTitle)}>
+                  {module.ModuleCode} {module.ModuleTitle}
+                </Link>
+
+                <div>
+                  <small>
+                    Exam: {getModuleSemExamDate(module, this.props.semester)}
+                    &nbsp;&middot;&nbsp;
+                    {module.ModuleCredit} MCs
+                  </small>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     );
   }

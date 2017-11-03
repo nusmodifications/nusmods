@@ -4,13 +4,15 @@ import type { ContextRouter } from 'react-router-dom';
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Redirect, withRouter } from 'react-router-dom';
+import Raven from 'raven-js';
 
 import type { FetchRequest } from 'types/reducers';
 import type { Module, ModuleCode } from 'types/modules';
 
-import { loadModule, FETCH_MODULE } from 'actions/moduleBank';
+import { fetchModule, FETCH_MODULE } from 'actions/moduleBank';
 import { getRequestName } from 'reducers/requests';
-import NotFoundPage from 'views/NotFoundPage';
+import NotFoundPage from 'views/errors/NotFoundPage';
+import ErrorPage from 'views/errors/ErrorPage';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import { modulePagePath } from 'utils/modules';
 
@@ -19,11 +21,12 @@ type Props = ContextRouter & {
   moduleCodes: Set<ModuleCode>,
   module: ?Module,
   request: ?FetchRequest,
-  loadModule: (ModuleCode) => void,
+  fetchModule: (ModuleCode) => void,
 };
 
 type State = {
-  ModulePageContent: ?ComponentType<*>;
+  ModulePageContent: ?ComponentType<*>,
+  error?: any,
 }
 
 /**
@@ -42,29 +45,30 @@ type State = {
  * - Loaded: Both requests are successfully loaded
  */
 export class ModulePageContainerComponent extends PureComponent<Props, State> {
-  props: Props;
-
   state: State = {
     ModulePageContent: null,
   };
 
   componentWillMount() {
-    this.loadModule(this.props.moduleCode);
+    this.fetchModule(this.props.moduleCode);
 
     import('views/browse/ModulePageContent')
-      // TODO: Error handling
-      .then(module => this.setState({ ModulePageContent: module.default }));
+      .then(module => this.setState({ ModulePageContent: module.default }))
+      .catch((error) => {
+        Raven.captureException(error);
+        this.setState({ error });
+      });
   }
 
   componentWillReceiveProps(nextProps: Props) {
     if (nextProps.moduleCode !== this.props.moduleCode) {
-      this.loadModule(nextProps.moduleCode);
+      this.fetchModule(nextProps.moduleCode);
     }
   }
 
-  loadModule(moduleCode: ModuleCode) {
+  fetchModule(moduleCode: ModuleCode) {
     if (this.doesModuleExist(moduleCode)) {
-      this.props.loadModule(moduleCode);
+      this.props.fetchModule(moduleCode);
     }
   }
 
@@ -78,16 +82,15 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
   }
 
   render() {
-    const { ModulePageContent } = this.state;
+    const { ModulePageContent, error } = this.state;
     const { module, request, moduleCode, match } = this.props;
 
     if (!this.doesModuleExist(moduleCode)) {
       return <NotFoundPage />;
     }
 
-    if (request && request.isFailure) {
-      // TODO: Display a proper error page here
-      return <NotFoundPage />;
+    if (error || (request && request.isFailure)) {
+      return <ErrorPage eventId={Raven.lastEventId()} />;
     }
 
     if (module && match.url !== this.canonicalUrl()) {
@@ -115,5 +118,5 @@ const mapStateToProps = (state, ownState) => {
 };
 
 export default withRouter(
-  connect(mapStateToProps, { loadModule })(ModulePageContainerComponent),
+  connect(mapStateToProps, { fetchModule })(ModulePageContainerComponent),
 );

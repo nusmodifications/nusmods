@@ -10,7 +10,7 @@ import AboutContainer from 'views/static/AboutContainer';
 import TeamContainer from 'views/static/TeamContainer';
 import DevelopersContainer from 'views/static/DevelopersContainer';
 import FaqContainer from 'views/static/FaqContainer';
-import NotFoundPage from 'views/NotFoundPage';
+import NotFoundPage from 'views/errors/NotFoundPage';
 
 export default function Routes() {
   return (

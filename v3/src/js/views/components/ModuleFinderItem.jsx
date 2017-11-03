@@ -14,8 +14,6 @@ type Props = {
 };
 
 export default class ModuleFinderItem extends PureComponent<Props> {
-  props: Props;
-
   render() {
     const { module } = this.props;
 
