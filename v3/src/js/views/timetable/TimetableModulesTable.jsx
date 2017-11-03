@@ -144,7 +144,7 @@ class TimetableModulesTable extends Component<Props> {
               <div className={classnames(styles.moduleActionColumn, styles.moduleDetailsColumn)}>
                 {this.renderModuleActions(module)}
 
-                <Link to={modulePagePath(module.ModuleCode)}>
+                <Link to={modulePagePath(module.ModuleCode, module.ModuleTitle)}>
                   {module.ModuleCode} {module.ModuleTitle}
                 </Link>
 

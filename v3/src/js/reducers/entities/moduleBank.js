@@ -9,7 +9,12 @@ import type {
 import type {
   SemTimetableConfig,
 } from 'types/timetables';
-import type { ModuleList, ModuleSelectList, ModuleSelectListItem } from 'types/reducers';
+import type {
+  ModuleList,
+  ModuleSelectList,
+  ModuleSelectListItem,
+  ModuleCodeMap,
+} from 'types/reducers';
 
 import _ from 'lodash';
 
@@ -23,20 +28,22 @@ export type ModuleBank = {
   moduleList: ModuleList,
   modules: ModulesMap,
   moduleSelectList: ModuleSelectList,
-  moduleCodes: Set<ModuleCode>,
+  moduleCodes: ModuleCodeMap,
 };
 
 const defaultModuleBankState: ModuleBank = {
   moduleList: [], // List of modules
   modules: {}, // Object of ModuleCode -> ModuleDetails
   moduleSelectList: [],
-  moduleCodes: new Set(),
+  moduleCodes: {},
 };
 
 function precomputeFromModuleList(moduleList: ModuleList) {
-  // Cache a Set of all module codes for fast module existence checking
-  const moduleCodes = new Set();
-  moduleList.forEach((module: ModuleCondensed) => moduleCodes.add(module.ModuleCode));
+  // Cache a mapping of all module codes to module data for fast module data lookup
+  const moduleCodes = _.zipObject(
+    moduleList.map(module => module.ModuleCode),
+    moduleList,
+  );
 
   // Precompute this in reducer because putting this inside render is very expensive (5k modules!)
   const moduleSelectList = moduleList.map((module: ModuleCondensed) => ({

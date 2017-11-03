@@ -23,9 +23,8 @@ mockLesson.ModuleCode = 'CS1010S';
 mockLesson.ModuleTitle = 'Programming Methodology';
 
 test('modulePagePath should generate route correctly', () => {
-  const actual: string = modulePagePath('CS1010S');
-  const expected: string = '/modules/CS1010S';
-  expect(actual).toBe(expected);
+  expect(modulePagePath('CS1010S', 'Programming Methodology'))
+    .toBe('/modules/CS1010S/programming-methodology');
 });
 
 test('getModuleSemesterData should return semester data if semester is present', () => {
