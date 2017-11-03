@@ -61,6 +61,7 @@
     "flow-status-webpack-plugin": "^0.1.6",
     "graceful-fs": "^4.1.11",
     "html-webpack-plugin": "^2.30.1",
+    "icalendar": "^0.7.1",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^21.2.1",
     "js-combinatorics": "^0.5.2",
