@@ -39,7 +39,7 @@ const defaultModuleBankState: ModuleBank = {
 };
 
 function precomputeFromModuleList(moduleList: ModuleList) {
-  // Cache a Set of all module codes for fast module existence checking
+  // Cache a mapping of all module codes to module data for fast module data lookup
   const moduleCodes = _.zipObject(
     moduleList.map(module => module.ModuleCode),
     moduleList,
