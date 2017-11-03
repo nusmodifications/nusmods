@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { Redirect, withRouter } from 'react-router-dom';
 import Raven from 'raven-js';
 
-import type { FetchRequest } from 'types/reducers';
+import type { FetchRequest, ModuleCodeMap } from 'types/reducers';
 import type { Module, ModuleCode } from 'types/modules';
 
 import { fetchModule, FETCH_MODULE } from 'actions/moduleBank';
@@ -18,7 +18,7 @@ import { modulePagePath } from 'utils/modules';
 
 type Props = ContextRouter & {
   moduleCode: ModuleCode,
-  moduleCodes: Set<ModuleCode>,
+  moduleCodes: ModuleCodeMap,
   module: ?Module,
   request: ?FetchRequest,
   fetchModule: (ModuleCode) => void,
@@ -72,8 +72,8 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
     }
   }
 
-  doesModuleExist(moduleCode: ModuleCode) {
-    return this.props.moduleCodes.has(moduleCode);
+  doesModuleExist(moduleCode: ModuleCode): boolean {
+    return !!this.props.moduleCodes[moduleCode];
   }
 
   canonicalUrl() {

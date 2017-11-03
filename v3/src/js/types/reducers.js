@@ -56,3 +56,4 @@ export type ModuleSelectListItem = {
 };
 export type ModuleList = Array<ModuleCondensed>;
 export type ModuleSelectList = Array<ModuleSelectListItem>;
+export type ModuleCodeMap = { [ModuleCode]: ModuleCondensed };

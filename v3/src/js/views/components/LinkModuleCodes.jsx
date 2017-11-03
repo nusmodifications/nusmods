@@ -6,14 +6,14 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import type { State } from 'reducers';
-import type { ModuleCode, ModuleCondensed } from 'types/modules';
+import type { ModuleCodeMap } from 'types/reducers';
 
 import { modulePagePath } from 'utils/modules';
 import { replaceWithNode } from 'utils/react';
 
 type Props = {
   children: string,
-  moduleCodes: Map<ModuleCode, ModuleCondensed>,
+  moduleCodes: ModuleCodeMap,
 };
 
 // Look for strings that look like module codes - eg.
@@ -28,7 +28,7 @@ export function LinkModuleCodesComponent(props: Props) {
 
   return (<span>{replaceWithNode(children, MODULE_CODE_REGEX, (part, i) => {
     const code = part.replace(/\s*/g, '');
-    const module = moduleCodes.get(code);
+    const module = moduleCodes[code];
     if (!module) return part;
     return <Link to={modulePagePath(code, module.ModuleTitle)} key={i}>{part}</Link>;
   })}</span>);
