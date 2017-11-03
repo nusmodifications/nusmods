@@ -1,19 +1,13 @@
 // @flow
 
 import React from 'react';
-import Helmet from 'react-helmet';
-import config from 'config';
 
 import StaticPage from './StaticPage';
 import styles from './FaqContainer.scss';
 
 export default function FaqContainer() {
   return (
-    <StaticPage>
-      <Helmet>
-        <title>FAQ - {config.brandName}</title>
-      </Helmet>
-
+    <StaticPage title="FAQ">
       <h2>Frequently Asked Questions</h2>
       <hr />
       <p>Hi there! Before contacting us, please read the following FAQ (Frequently Asked Questions) first.

@@ -1,18 +1,12 @@
 // @flow
 
 import React from 'react';
-import Helmet from 'react-helmet';
-import config from 'config';
 
 import StaticPage from './StaticPage';
 
 export default function AboutContainer() {
   return (
-    <StaticPage>
-      <Helmet>
-        <title>About - {config.brandName}</title>
-      </Helmet>
-
+    <StaticPage title="About">
       <h3>A Brief History</h3>
       <p>
         NUSModifications (NUSMods) was founded in 2012 by <a href="http://benghee.eu/">Beng</a> to
