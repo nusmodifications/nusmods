@@ -3570,6 +3570,10 @@ ical-generator@^0.2.9:
   version "0.2.9"
   resolved "https://registry.yarnpkg.com/ical-generator/-/ical-generator-0.2.9.tgz#67312e484a8681c7abc1bbe77237b13faa5b1eb8"
 
+icalendar@^0.7.1:
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/icalendar/-/icalendar-0.7.1.tgz#d0d3486795f8f1c5cf4f8cafac081b4b4e7a32ae"
+
 iconv-lite@0.4, iconv-lite@^0.4.17, iconv-lite@~0.4.13:
   version "0.4.17"
   resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.17.tgz#4fdaa3b38acbc2c031b045d0edcdfe1ecab18c8d"
