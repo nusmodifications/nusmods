@@ -12,10 +12,10 @@
   },
   {
     "name": "Yangshun Tay",
-    "description": "Front-end developer who loves good code, design and typography.",
+    "description": "Front End developer who loves good code, design and typography.",
     "link": "http://yangshun.im",
     "gravatar": "66eca275a85a6a0c06b0a0f7039b074b",
-    "gravatarAlt": "Tay Yang Shun",
+    "gravatarAlt": "Yangshun Tay",
     "facebook": "yangshun",
     "twitter": "yangshunz",
     "github": "yangshun",
@@ -33,7 +33,7 @@
   },
   {
     "name": "Ng Zhi An",
-    "description": "undefined is not a function",
+    "description": "undefined is not a function.",
     "link": "https://www.ngzhian.com",
     "gravatar": "959333b0fda0517060c9750f8c49ead0",
     "gravatarAlt": "Ng Zhi An",
@@ -75,7 +75,7 @@
   },
   {
     "name": "Zhang Yijiang",
-    "description": "Fan of pretty purple pony princesses",
+    "description": "Fan of pretty purple pony princesses.",
     "active": true,
     "link": "https://meebleforp.com",
     "gravatar": "263859aefe62ee6cc1aa993e8e2293e0",
