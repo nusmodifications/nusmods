@@ -1,10 +1,8 @@
 // @flow
 
 import React, { Component } from 'react';
-import Helmet from 'react-helmet';
 import axios from 'axios';
 
-import config from 'config';
 import Loader from 'views/components/LoadingSpinner';
 
 import StaticPage from './StaticPage';
@@ -32,21 +30,18 @@ class DevelopersContainer extends Component<Props, State> {
     };
   }
 
-  componentDidMount() {
+  componentWillMount() {
     axios.get(DEVELOPERS_URL)
       .then((response) => {
         this.setState({
           developersData: response.data,
+          isLoading: false,
         });
       })
       .catch((err) => {
         this.setState({
           isError: true,
           errorMessage: err.message,
-        });
-      })
-      .then(() => {
-        this.setState({
           isLoading: false,
         });
       });
@@ -54,10 +49,7 @@ class DevelopersContainer extends Component<Props, State> {
 
   render() {
     return (
-      <StaticPage>
-        <Helmet>
-          <title>Developers - {config.brandName}</title>
-        </Helmet>
+      <StaticPage title="Developers">
         <h2>Developers</h2>
         <hr />
         <p>NUSMods is an 100% open source project that relies on the continuous support
