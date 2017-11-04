@@ -31,7 +31,9 @@ type Props = {
 /**
  * Manages the semester and deconflicts stored timetable with imported timetable.
  *
- * - Checks if the semester path param is valid
+ * - Checks if the semester path param is valid and display a 404 page if it is not
+ * - Import timetable data from query string if there's no existing timetable
+ * - Update query string when the timetable changes
  */
 export class TimetableContainerComponent extends PureComponent<Props> {
   importedTimetable: ?SemTimetableConfig;
@@ -102,7 +104,6 @@ export class TimetableContainerComponent extends PureComponent<Props> {
   render() {
     const { timetable, semester } = this.props;
 
-    // Validate semester
     if (semester == null || !timetable) return <NotFoundPage />;
 
     return (

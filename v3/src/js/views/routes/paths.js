@@ -4,7 +4,7 @@ import type { ModuleCode, ModuleTitle, Semester } from 'types/modules';
 import config from 'config';
 
 // Cache semester -> path and path -> semester mappings
-const fromSemester: { [Semester]: string } = {};
+export const fromSemester: { [Semester]: string } = {};
 const toSemester: { [string]: Semester } = {};
 each(config.shortSemesterNames, (name, semester) => {
   const path = kebabCase(name);
