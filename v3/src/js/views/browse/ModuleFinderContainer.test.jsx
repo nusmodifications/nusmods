@@ -3,7 +3,7 @@ import type { LocationShape, RouterHistory } from 'react-router-dom';
 
 import React from 'react';
 import axios from 'axios';
-import { ShallowWrapper, shallow } from 'enzyme';
+import { type ShallowWrapper, shallow } from 'enzyme';
 import _ from 'lodash';
 import qs from 'query-string';
 

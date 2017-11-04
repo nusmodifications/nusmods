@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import type { Module } from 'types/modules';
 
-import { modulePagePath } from 'utils/modules';
+import { modulePage } from 'views/routes/paths';
 import ModuleSemesterInfo from './module-info/ModuleSemesterInfo';
 import ModuleWorkload from './module-info/ModuleWorkload';
 import LinkModuleCodes from './LinkModuleCodes';
@@ -23,7 +23,7 @@ export default class ModuleFinderItem extends PureComponent<Props> {
           <div className="col-lg-8 col-md-12 col-sm-8">
             <header>
               <h2 className="modules-title">
-                <Link to={modulePagePath(module.ModuleCode, module.ModuleTitle)}>
+                <Link to={modulePage(module.ModuleCode, module.ModuleTitle)}>
                   {module.ModuleCode} {module.ModuleTitle}
                 </Link>
               </h2>
