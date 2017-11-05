@@ -1,5 +1,6 @@
 // @flow
 import type { EventOption } from 'ical-generator';
+import config from 'config';
 import {
   RECESS_WEEK,
   iCalEventForLesson,
@@ -36,6 +37,16 @@ const rawLessonOfType = lessonType => ({
   StartTime: '1400',
   Venue: 'SR1',
   WeekText: 'Every Week',
+});
+
+let originalHolidays;
+beforeAll(() => {
+  originalHolidays = config.holidays;
+  config.holidays = [new Date('2016-01-01')];
+});
+
+afterAll(() => {
+  config.holidays = originalHolidays;
 });
 
 test('isTutorial should return true for tutorials', () => {
@@ -161,16 +172,6 @@ test('calculateExclusion generates exclusions for holidays', () => {
   // 2016 holidays
   expect(actual).toEqual(expect.arrayContaining([
     new Date('2016-01-01T14:00+0800'),
-    new Date('2016-02-08T14:00+0800'),
-    new Date('2016-02-09T14:00+0800'),
-    new Date('2016-03-25T14:00+0800'),
-    new Date('2016-05-01T14:00+0800'),
-    new Date('2016-05-21T14:00+0800'),
-    new Date('2016-07-06T14:00+0800'),
-    new Date('2016-08-09T14:00+0800'),
-    new Date('2016-09-12T14:00+0800'),
-    new Date('2016-10-29T14:00+0800'),
-    new Date('2016-12-25T14:00+0800'),
   ]));
 });
 

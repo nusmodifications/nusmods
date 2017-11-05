@@ -1,7 +1,6 @@
+// Usage: $ node holidays-csv-to-json.js
 // Pulls out Singapore public holidays from a set of CSV files and export
 // just the dates to a JSON file.
-
-// Data from https://github.com/rjchow/singapore_public_holidays
 const fs = require('fs');
 const path = require('path');
 
@@ -16,8 +15,12 @@ inputs.forEach((file) => {
   fs.readFileSync(path.join(IN_DIR, file), 'utf-8')
     .trim()
     .split('\n')
+    // Remove header row
     .slice(1)
-    .map(line => line.split(',')[0])
+    // Headers: ['Date', 'Name', 'Day', 'Observance', 'Observance Strategy']
+    // We're looking for Observance - the date at which the holiday is actually
+    // observed
+    .map(line => line.split(',')[3])
     .forEach(date => holidays.push(date));
 });
 
