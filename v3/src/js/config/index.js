@@ -20,7 +20,7 @@ export type CorsRound = {
   periods: CorsPeriod[],
 };
 
-type Config = {
+export type Config = {
   brandName: string,
   academicYear: AcadYear,
   semester: Semester,

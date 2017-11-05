@@ -37,6 +37,10 @@ export const LESSON_TYPE_ABBREV: LessonTypeAbbrev = {
   Workshop: 'WS',
 };
 
+export function isValidSemester(semester: Semester): boolean {
+  return semester >= 1 && semester <= 4;
+}
+
 //  Returns a random configuration of a module's timetable lessons.
 //  Used when a module is first added.
 //  TODO: Suggest a configuration that does not clash with itself.

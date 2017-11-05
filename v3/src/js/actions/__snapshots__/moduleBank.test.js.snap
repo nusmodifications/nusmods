@@ -25,16 +25,3 @@ Object {
   "type": "FETCH_MODULE_LIST",
 }
 `;
-
-exports[`loadModule should dispatch a request if module is not found 1`] = `
-Object {
-  "meta": Object {
-    Symbol(API_REQUEST): true,
-  },
-  "payload": Object {
-    "method": "GET",
-    "url": "https://nusmods.com/api/2017-2018/modules/test.json",
-  },
-  "type": "FETCH_MODULE",
-}
-`;
