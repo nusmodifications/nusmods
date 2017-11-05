@@ -17,6 +17,8 @@ import NotFoundPage from 'views/errors/NotFoundPage';
 import SemesterSwitcher from 'views/components/semester-switcher/SemesterSwitcher';
 import TimetableContent from './TimetableContent';
 
+const EMPTY_OBJECT = {};
+
 type Props = {
   ...ContextRouter,
 
@@ -118,7 +120,7 @@ export class TimetableContainerComponent extends PureComponent<Props> {
 
 const mapStateToProps = (state, ownProps) => {
   const semester = semesterForTimetablePage(ownProps.match.params.semester);
-  const timetable = state.timetables[semester];
+  const timetable = state.timetables[semester] || EMPTY_OBJECT;
 
   return {
     semester,
