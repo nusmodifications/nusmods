@@ -4,21 +4,21 @@
 
 - Telegram: https://telegram.me/NUSMods
 
-NUSMods v3 is built using [React][react], [Redux][redux], [Bootstrap][bootstrap] and is designed to be fast, modern and responsive. 
+NUSMods v3 is built using [React][react], [Redux][redux], [Bootstrap][bootstrap] and is designed to be **fast, modern and responsive**. 
 
-### Browser support 
+## Browser support 
 
 Desktop browsers: 
 
-- Last two versions of all evergreen desktop browsers 
+- Last two versions of all evergreen desktop browsers (Chrome, Firefox, Edge, Safari) 
 - IE is completely **unsupported** 
 
 Mobile browsers: 
 
 - iOS 9 and above 
-- Chrome last two versions 
+- Chrome Mobile last two versions 
 
-### Getting Started
+## Getting Started
 
 Install [NodeJS 8+](https://nodejs.org/en/) and [Yarn](https://yarnpkg.com/en/docs/install) then run the following command:
 
@@ -28,7 +28,7 @@ $ yarn
 
 This will install all of the dependencies you need. 
 
-#### Development
+### Development
 
 To run the development build, simply run:
 
@@ -36,11 +36,15 @@ To run the development build, simply run:
 $ yarn start
 ```
 
-This will start Webpack dev server, which will automatically rebuild and reload any code and components that you have changed. 
+This will start Webpack dev server, which will automatically rebuild and reload any code and components that you have changed. We recommend the following development tools to help speed up your work 
 
-#### Running tests and linter
+- React developer tool ([Chrome](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi), [Firefox](https://addons.mozilla.org/firefox/addon/react-devtools/))
+- [Redux developer tool](http://extension.remotedev.io/#installation)
+- [Firefox Developer Edition](https://www.mozilla.org/en-US/firefox/developer/)
 
-We use [Jest] with [Enzyme][enzyme] to test our code and React components. 
+### Running tests and linter
+
+We use [Jest][jest] with [Enzyme][enzyme] to test our code and React components, and [Flow][flow], [Stylelint][stylelint] and [ESLint][eslint] using [AirBnB config][eslint-airbnb] for linting. 
 
 ```sh
 # Run all tests once with code coverage
@@ -62,7 +66,7 @@ $ yarn lint:scripts
 $ yarn flow
 ```
 
-#### Build for Deployment
+### Build for Deployment
 
 ```sh
 $ yarn build
@@ -70,7 +74,7 @@ $ yarn build
 
 This will package and optimize the app for deployment. The files will be placed in the `/dist` directory.  
 
-### Project structure 
+## Project structure 
 
 ```
 ├── scripts                 - Command line scripts to help with development
@@ -88,7 +92,7 @@ This will package and optimize the app for deployment. The files will be placed 
 │   │   ├── types           - Flow type definitions
 │   │   ├── utils           - Utility functions and classes 
 │   │   └── views
-│   │       ├── browse      - Module finder related components
+│   │       ├── browse      - Module info and module finder related components
 │   │       ├── components  - Reusable components 
 │   │       ├── errors      - Error pages 
 │   │       ├── layout      - Global layout components
@@ -108,9 +112,9 @@ This will package and optimize the app for deployment. The files will be placed 
 └── webpack                 - Webpack config 
 ```
 
-#### Colocation 
+### Colocation 
 
-Components should keep their styles and tests in the same directory with the same name. For instance, if I have a component called `MyComponent`, the files should look like 
+Components should keep their styles and tests in the same directory with the same name. For instance, if you have a component called `MyComponent`, the files should look like 
 
 ```
 ├── MyComponent.jsx         - Defines the component MyComponent 
@@ -118,8 +122,14 @@ Components should keep their styles and tests in the same directory with the sam
 └── MyComponent.scss        - Styles for MyComponent 
 ```
 
+
+
 [react]: https://reactjs.org/
 [redux]: http://redux.js.org/
 [bootstrap]: https://getbootstrap.com/
 [jest]: https://facebook.github.io/jest/
 [enzyme]: http://airbnb.io/enzyme/
+[flow]: https://flow.org/
+[eslint]: https://eslint.org/
+[eslint-airbnb]: https://www.npmjs.com/package/eslint-config-airbnb
+[stylelint]: https://stylelint.io/
