@@ -3,5 +3,5 @@
   <Description>Search for modules on NUSMods</Description>
   <Url type="text/html" method="get" template="https://nusmods.com/modules/{searchTerms}"/>
   <Image height="16" width="16" type="image/x-icon">https://nusmods.com/favicon.ico</Image>
-   <Contact>mods@nusmods.com</Contact>
+  <Contact>mods@nusmods.com</Contact>
 </OpenSearchDescription>

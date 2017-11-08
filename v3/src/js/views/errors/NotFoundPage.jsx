@@ -5,8 +5,7 @@ import { Link } from 'react-router-dom';
 import Raven from 'raven-js';
 
 import config from 'config/index';
-import errorPgStyles from './ErrorPage.scss';
-import styles from './NotFoundPage.scss';
+import styles from './ErrorPage.scss';
 
 export default function NotFoundPage() {
   Raven.captureMessage('404 - Page Not Found');
@@ -18,14 +17,14 @@ export default function NotFoundPage() {
         <title>Page Not Found - {config.brandName}</title>
       </Helmet>
 
-      <div className={errorPgStyles.container}>
-        <h1 className={errorPgStyles.header}>
-          <span className={errorPgStyles.expr}>Oops...</span>
+      <div className={styles.container}>
+        <h1 className={styles.header}>
+          <span className={styles.expr}>Oops...</span>
           page not found.
         </h1>
         <p>
           If you think something <em>should</em> be here, <button
-            className={errorPgStyles.link}
+            className={styles.link}
             onClick={() => Raven.showReportDialog({ eventId })}
           >
             do tell us
