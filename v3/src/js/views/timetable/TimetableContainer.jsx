@@ -196,7 +196,7 @@ class TimetableContainer extends Component<Props> {
               downloadAsJpeg={this.downloadAsJpeg}
               downloadAsIcal={this.downloadAsIcal}
             />
-            <div className="row mt-2">
+            <div className={styles.tableContainer}>
               <div className="col-md-12">
                 <ModulesSelect
                   moduleList={this.props.semModuleList}
