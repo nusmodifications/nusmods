@@ -1,7 +1,10 @@
+import 'utils/polyfill';
+
 import ReactDOM from 'react-dom';
 import _ from 'lodash';
-import configureStore from 'stores/configure-store';
+import Raven from 'raven-js';
 
+import configureStore from 'stores/configure-store';
 import storage from 'storage';
 import App from 'App';
 
@@ -40,3 +43,12 @@ if (module.hot) {
 }
 
 render();
+
+if (process.env.NODE_ENV === 'production') {
+  if (navigator.serviceWorker) {
+    navigator.serviceWorker.register('/sw.js')
+      .catch((e) => {
+        Raven.captureException(e);
+      });
+  }
+}
