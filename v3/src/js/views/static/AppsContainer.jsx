@@ -47,6 +47,7 @@ function AppEntry({ app }: AppEntryProps) {
         <div className="col-lg-10 col-sm-9">
           <h4>{app.name}</h4>
           <p>{app.description}</p>
+          {app.tags.map(tag => <span><span className="badge badge-info">{tag}</span> </span>)}
         </div>
       </div>
     </section>
