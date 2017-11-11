@@ -2,25 +2,16 @@
 
 import React, { Component } from 'react';
 import axios from 'axios';
+import classnames from 'classnames';
 
 import Loader from 'views/components/LoadingSpinner';
 
 import StaticPage from './StaticPage';
 import styles from './AppsContainer.scss';
 
-const APPS_URL = 'https://nusmodifications.github.io/nusmods-apps/apps.json';
+const APPS_URL = 'https://nusmodifications.github.io/nusmods-apps/apps-raw.json';
 
-type Props = {};
-
-type State = {
-  appsData: ?[Object],
-  isLoading: boolean,
-  isError: boolean,
-  errorMessage: string,
-};
-
-type AppEntryProps = {
-  app: {
+type AppInfo = {
     name: string,
     description: string,
     author: string,
@@ -28,15 +19,27 @@ type AppEntryProps = {
     repository_url?: string,
     icon_url: string,
     tags: Array<string>,
-  },
+}
+
+type AppEntryProps = {
+  app: AppInfo,
+};
+
+type Props = {};
+
+type State = {
+  appsData: ?[AppInfo],
+  isLoading: boolean,
+  isError: boolean,
+  errorMessage: string,
 };
 
 function AppEntry({ app }: AppEntryProps) {
   return (
-    <section className={styles.appEntry} key={app.name}>
+    <section className={styles.appEntry}>
       <div className="row">
         <div className="col-lg-2 col-sm-3 text-center-md">
-          <a href={app.url} className={styles.appIcon}>
+          <a href={app.url} className={styles.appIcon} target="_blank" rel="noopener noreferrer">
             <img
               className="rounded-circle img-fluid img-thumbnail"
               src={app.icon_url}
@@ -45,9 +48,12 @@ function AppEntry({ app }: AppEntryProps) {
           </a>
         </div>
         <div className="col-lg-10 col-sm-9">
-          <h4>{app.name}</h4>
+          <a href={app.url} className={styles.appIcon} target="_blank" rel="noopener noreferrer">
+            <h4>{app.name}</h4>
+          </a>
           <p>{app.description}</p>
-          {app.tags.map(tag => <span><span className="badge badge-info">{tag}</span> </span>)}
+          {app.tags.map(tag =>
+            <span key={app.name + tag} className={classnames('badge', 'badge-info', styles.tagBadge)}>{tag}</span>)}
         </div>
       </div>
     </section>
@@ -55,40 +61,15 @@ function AppEntry({ app }: AppEntryProps) {
 }
 
 class AppsContainer extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      appsData: null,
-      isLoading: true,
-      isError: false,
-      errorMessage: '',
-    };
-  }
+  state: State = {
+    appsData: null,
+    isLoading: true,
+    isError: false,
+    errorMessage: '',
+  };
 
   componentWillMount() {
-    const config = {
-      transformResponse: [
-        (data) => {
-          // Remove "callback(" prefix and ")" suffix in apps "json" file
-          // so that resulting string is parsable JSON. Then parse it.
-
-          if (!(typeof data === 'string' || data instanceof String)) {
-            // Not a string. Maybe the json file is actually json now?
-            return data;
-          }
-
-          const prefix = 'callback(';
-          const suffix = ')';
-          let trimmedData = data.trim(); // data might have a trailing newline
-          if (trimmedData.startsWith(prefix)) trimmedData = trimmedData.slice(prefix.length);
-          if (trimmedData.endsWith(suffix)) trimmedData = trimmedData.slice(0, -suffix.length);
-          return JSON.parse(trimmedData);
-        },
-      ],
-    };
-
-    axios.get(APPS_URL, config)
+    axios.get(APPS_URL)
       .then((response) => {
         this.setState({
           appsData: response.data,
