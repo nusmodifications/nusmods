@@ -12,6 +12,7 @@ function Footer() {
           <li><a href="https://twitter.com/nusmods">Twitter</a></li>
           <li><a href="http://blog.nusmods.com/">Blog</a></li>
           <li><a href="https://github.com/nusmodifications/nusmods-api">API</a></li>
+          <li><Link to="/apps">Apps</Link></li>
           <li><Link to="/about">About</Link></li>
           <li><Link to="/team">Team</Link></li>
           <li><Link to="/developers">Developers</Link></li>
