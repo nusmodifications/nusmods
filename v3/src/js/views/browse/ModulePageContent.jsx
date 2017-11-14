@@ -13,6 +13,7 @@ import { formatExamDate } from 'utils/modules';
 import { intersperse } from 'utils/array';
 import { BULLET } from 'utils/react';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
+import DisqusComments from 'views/components/DisqusComments';
 import LessonTimetable from 'views/components/module-info/LessonTimetable';
 import CorsBiddingStatsTableControl from './CorsBiddingStatsTableControl';
 
@@ -48,10 +49,12 @@ class ModulePageContentComponent extends Component<Props> {
     const { module } = this.props;
     const { ModuleCode, ModuleTitle } = module;
 
+    const pageTitle = `${ModuleCode} ${ModuleTitle}`;
+
     return (
       <div className="module-container page-container">
         <Helmet>
-          <title>{ModuleCode} {ModuleTitle} - {config.brandName}</title>
+          <title>{pageTitle} - {config.brandName}</title>
         </Helmet>
 
         <div className="row">
@@ -165,7 +168,11 @@ class ModulePageContentComponent extends Component<Props> {
 
             <section id="reviews">
               <h2>Review and Discussion</h2>
-              {/* TODO: Use disqus-react when it is ready */}
+              <DisqusComments
+                url={`https://nusmods.com/modules/${ModuleCode}/reviews`}
+                identifier={ModuleCode}
+                title={pageTitle}
+              />
             </section>
           </div>
 

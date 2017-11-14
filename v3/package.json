@@ -105,7 +105,6 @@
     "raven-for-redux": "^1.1.1",
     "raven-js": "^3.17.0",
     "react": "^15.6.1",
-    "react-disqus-thread": "^0.4.0",
     "react-dom": "^15.6.1",
     "react-feather": "^1.0.7",
     "react-helmet": "^5.2.0",
