@@ -31,12 +31,19 @@ import {
   lessonsForLessonType,
   randomModuleLessonConfig,
   timetableLessonsArray,
+  findExamClashes,
 } from 'utils/timetables';
 import {
   getModuleTimetable,
 } from 'utils/modules';
 
+/** @var {Module} */
 import cs1010s from '__mocks__/modules/CS1010S.json';
+/** @var {Module} */
+import cs3216 from '__mocks__/modules/CS3216.json';
+/** @var {Module} */
+import pc1222 from '__mocks__/modules/PC1222.json';
+
 import timetable from '__mocks__/sem-timetable.json';
 import lessonsArray from '__mocks__/lessons-array.json';
 
@@ -295,3 +302,17 @@ test('areOtherClassesAvailable', () => {
   expect(areOtherClassesAvailable(lessons3, 'Lecture')).toBe(false);
   expect(areOtherClassesAvailable(lessons3, 'Tutorial')).toBe(true);
 });
+
+test('findExamClashes should return non-empty object if exams clash', () => {
+  const sem: Semester = 1;
+  const examClashes = findExamClashes([cs1010s, pc1222, cs3216], sem);
+  expect(Object.keys(examClashes)).toHaveLength(1);
+  expect(examClashes).toMatchSnapshot();
+});
+
+test('findExamClashes should return empty object if exams do not clash', () => {
+  const sem: Semester = 2;
+  const examClashes = findExamClashes([cs1010s, pc1222, cs3216], sem);
+  expect(examClashes).toEqual({});
+});
+
