@@ -19,7 +19,7 @@ import type {
 import type { ModulesMap } from 'reducers/entities/moduleBank';
 
 import _ from 'lodash';
-import { getModuleTimetable, getModuleSemExamDate } from 'utils/modules';
+import { getModuleTimetable, getModuleSemesterData } from 'utils/modules';
 
 type LessonTypeAbbrev = { [LessonType]: string };
 export const LESSON_TYPE_ABBREV: LessonTypeAbbrev = {
@@ -201,21 +201,7 @@ export function colorLessonsByType(lessons: Lesson[]) {
 // Find all exam clashes between modules in semester
 // Returns object associating exam dates with the modules clashing on those dates
 export function findExamClashes(modules: Array<Module>, semester: Semester): { string: Array<Module> } {
-  const examDates = modules
-    .map(module => getModuleSemExamDate(module, semester))
-    .filter(date => date !== '-');
-  const uniqueExamDates = _.uniq(examDates);
-
-  // Iteratively remove unique exam dates from exam dates.
-  // Not using library/lodash diff functions since they remove
-  // _all_ instances of a unique exam date from examDates.
-  const duplicateDates = examDates; // Array eventually containing clashing exam dates
-  for (let i = 0; i < uniqueExamDates.length; i++) {
-    _.pullAt(duplicateDates, duplicateDates.indexOf(uniqueExamDates[i]));
-  }
-
-  // Fetch modules having exams on the clash dates
-  const clashingModules = duplicateDates.map(date =>
-    modules.filter(module => date === getModuleSemExamDate(module, semester)));
-  return _.zipObject(duplicateDates, clashingModules);
+  const groupedModules = _.groupBy(modules, module => _.get(getModuleSemesterData(module, semester), 'ExamDate'));
+  delete groupedModules.undefined; // Remove modules without exams
+  return _.omitBy(groupedModules, mods => mods.length === 1); // Remove non-clashing mods
 }
