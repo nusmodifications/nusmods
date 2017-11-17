@@ -35,6 +35,7 @@ import {
 } from 'utils/timetables';
 import {
   getModuleTimetable,
+  getModuleSemesterData,
 } from 'utils/modules';
 
 /** @var {Module} */
@@ -306,8 +307,8 @@ test('areOtherClassesAvailable', () => {
 test('findExamClashes should return non-empty object if exams clash', () => {
   const sem: Semester = 1;
   const examClashes = findExamClashes([cs1010s, pc1222, cs3216], sem);
-  expect(Object.keys(examClashes)).toHaveLength(1);
-  expect(examClashes).toMatchSnapshot();
+  const examDate = _.get(getModuleSemesterData(cs1010s, sem), 'ExamDate');
+  expect(examClashes).toEqual({ [examDate]: [cs1010s, pc1222] });
 });
 
 test('findExamClashes should return empty object if exams do not clash', () => {
