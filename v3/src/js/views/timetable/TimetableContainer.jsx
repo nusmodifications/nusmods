@@ -32,7 +32,7 @@ import {
   removeModule,
 } from 'actions/timetables';
 import { toggleTimetableOrientation } from 'actions/theme';
-import { getModuleTimetable, areLessonsSameClass } from 'utils/modules';
+import { getModuleTimetable, areLessonsSameClass, formatExamDate } from 'utils/modules';
 import {
   timetableLessonsArray,
   hydrateSemTimetableWithLessons,
@@ -157,20 +157,17 @@ class TimetableContainer extends Component<Props> {
     const nonClashingTable = renderModuleTable(moduleSections[NO_CLASH_SECTION_KEY]);
     delete moduleSections[NO_CLASH_SECTION_KEY];
 
-    // Render sections of clashing modules, with clashing dates in their headers
-    const clashingSections = Object.keys(moduleSections).sort().map(clashDate => (
-      <div key={clashDate}>
-        <h5>Clash on {clashDate}</h5>
-        {renderModuleTable(moduleSections[clashDate])}
-      </div>
-    ));
-
     return (
       <div>
         <div className="alert alert-danger" role="alert">
           <h4>Exam Clashes</h4>
           <p>There are <strong className="clash">clashes</strong> in your exam timetable.</p>
-          {clashingSections}
+          {Object.keys(moduleSections).sort().map(clashDate => (
+            <div key={clashDate}>
+              <h5>Clash on {formatExamDate(clashDate)}</h5>
+              {renderModuleTable(moduleSections[clashDate])}
+            </div>
+          ))}
         </div>
         {nonClashingTable}
       </div>
