@@ -49,8 +49,6 @@ import Timetable from './Timetable';
 import TimetableActions from './TimetableActions';
 import TimetableModulesTable from './TimetableModulesTable';
 
-const NO_CLASH_SECTION_KEY = 'NO_CLASH_SECTION_KEY';
-
 type Props = {
   semester: Semester,
   semModuleList: ModuleSelectList,
@@ -113,24 +111,6 @@ class TimetableContainer extends Component<Props> {
     return _.compact(modules);
   }
 
-  // Separate added modules into sections of clashing modules
-  // Returns array of added modules if there are no exam clashes
-  // Else returns object associating exam dates with the modules clashing on those dates
-  moduleSections(): Array<Module> | { [string]: Array<Module> } {
-    const modules = this.addedModules();
-    const clashes = findExamClashes(modules, this.props.semester);
-    const clashingMods = _.flatten(_.values(clashes));
-    if (clashingMods.length === 0) {
-      return modules;
-    }
-
-    const nonClashingMods = _.difference(modules, clashingMods);
-    return {
-      ...clashes,
-      [NO_CLASH_SECTION_KEY]: nonClashingMods,
-    };
-  }
-
   // Returns component with table(s) of modules
   renderModuleSections(horizontalOrientation) {
     const renderModuleTable = modules => (
@@ -146,30 +126,26 @@ class TimetableContainer extends Component<Props> {
       />
     );
 
-    const moduleSections = this.moduleSections();
-
-    // Simply render one table if there are no clashes
-    if (Array.isArray(moduleSections)) {
-      return renderModuleTable(moduleSections);
-    }
-
-    // Render table of modules that don't clash
-    const nonClashingTable = renderModuleTable(moduleSections[NO_CLASH_SECTION_KEY]);
-    delete moduleSections[NO_CLASH_SECTION_KEY];
+    // Separate added modules into sections of clashing modules
+    const modules = this.addedModules();
+    const clashes: { [string]: Array<Module> } = findExamClashes(modules, this.props.semester);
+    const nonClashingMods: Array<Module> = _.difference(modules, _.flatten(_.values(clashes)));
 
     return (
       <div>
-        <div className="alert alert-danger" role="alert">
-          <h4>Exam Clashes</h4>
-          <p>There are <strong className="clash">clashes</strong> in your exam timetable.</p>
-          {Object.keys(moduleSections).sort().map(clashDate => (
-            <div key={clashDate}>
-              <h5>Clash on {formatExamDate(clashDate)}</h5>
-              {renderModuleTable(moduleSections[clashDate])}
-            </div>
-          ))}
-        </div>
-        {nonClashingTable}
+        {_.isEmpty(clashes) ? null : (
+          <div className="alert alert-danger" role="alert">
+            <h4>Exam Clashes</h4>
+            <p>There are <strong className="clash">clashes</strong> in your exam timetable.</p>
+            {Object.keys(clashes).sort().map(clashDate => (
+              <div key={clashDate}>
+                <h5>Clash on {formatExamDate(clashDate)}</h5>
+                {renderModuleTable(clashes[clashDate])}
+              </div>
+            ))}
+          </div>
+        )}
+        {renderModuleTable(nonClashingMods)}
       </div>
     );
   }
