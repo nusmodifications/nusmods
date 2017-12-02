@@ -115,11 +115,17 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
   componentDidMount() {
     axios.get(nusmods.modulesUrl())
       .then(({ data }) => {
+        const params = qs.parse(this.props.location.search);
         const start = window.performance.now();
         this.filterGroups().forEach(group => group.initFilters(data));
         const time = window.performance.now() - start;
 
-        this.useInstantSearch = breakpointUp('md').matches && (time < INSTANT_SEARCH_THRESHOLD);
+        if ('instant' in params) {
+          this.useInstantSearch = params.instant === '1';
+        } else {
+          this.useInstantSearch = breakpointUp('md').matches && (time < INSTANT_SEARCH_THRESHOLD);
+        }
+
         console.info(`${time}ms taken to init filters`); // eslint-disable-line
         console.info(this.useInstantSearch ? 'Instant search on' : 'Instant search off'); // eslint-disable-line
 
