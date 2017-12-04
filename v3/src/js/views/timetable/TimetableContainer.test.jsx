@@ -1,6 +1,7 @@
 // @flow
 
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import { shallow } from 'enzyme';
 import type { Semester } from 'types/modules';
 import type { SemTimetableConfig } from 'types/timetables';
@@ -21,14 +22,24 @@ const TIMETABLE: SemTimetableConfig = {
 };
 /* eslint-enable */
 
-function create(semester: Semester, timetable: SemTimetableConfig) {
+function create(semester: ?Semester, timetable: SemTimetableConfig) {
   const history = createHistory();
-  const path = timetablePage(semester);
+  let path;
+  let params;
+
+  if (semester == null) {
+    path = '/timetable';
+    params = {};
+  } else {
+    path = timetablePage(semester);
+    params = { semester: fromSemester[semester] };
+  }
+
   const match = {
     path,
+    params,
     url: path,
     isExact: true,
-    params: { semester: fromSemester[semester] },
   };
 
   return {
@@ -38,6 +49,7 @@ function create(semester: Semester, timetable: SemTimetableConfig) {
         history={history}
         location={history.location}
         match={match}
+        activeSemester={1}
         semester={semester}
         timetable={timetable}
         selectSemester={jest.fn()}
@@ -47,6 +59,15 @@ function create(semester: Semester, timetable: SemTimetableConfig) {
     ),
   };
 }
+
+test('should redirect to activeSemester when semester is empty', () => {
+  const wrapper = create(null, {}).wrapper;
+
+  expect(wrapper.type()).toEqual(Redirect);
+  expect(wrapper.props()).toMatchObject({
+    to: timetablePage(1),
+  });
+});
 
 test('should not have query string when there are no modules selected', () => {
   expect(create(1, {}).history.location.search).toBe('');
