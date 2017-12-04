@@ -1,19 +1,28 @@
 // @flow
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
+import { connect, type MapStateToProps } from 'react-redux';
 
 import type { Module } from 'types/modules';
+import type { ModuleSearch } from 'types/reducers';
 
 import { modulePage } from 'views/routes/paths';
+import { highlight } from 'utils/react';
 import ModuleSemesterInfo from './module-info/ModuleSemesterInfo';
 import ModuleWorkload from './module-info/ModuleWorkload';
 import LinkModuleCodes from './LinkModuleCodes';
 
 type Props = {
   module: Module,
+  search: ModuleSearch,
 };
 
-export default class ModuleFinderItem extends PureComponent<Props> {
+export class ModuleFinderItemComponent extends PureComponent<Props> {
+  highlight(content: string) {
+    if (!this.props.search.term) return content;
+    return highlight(content, this.props.search.tokens);
+  }
+
   render() {
     const { module } = this.props;
 
@@ -24,7 +33,7 @@ export default class ModuleFinderItem extends PureComponent<Props> {
             <header>
               <h2 className="modules-title">
                 <Link to={modulePage(module.ModuleCode, module.ModuleTitle)}>
-                  {module.ModuleCode} {module.ModuleTitle}
+                  {this.highlight(`${module.ModuleCode} ${module.ModuleTitle}`)}
                 </Link>
               </h2>
               <p>
@@ -32,7 +41,7 @@ export default class ModuleFinderItem extends PureComponent<Props> {
                 <a>{module.ModuleCredit} MCs</a>
               </p>
             </header>
-            {module.ModuleDescription && <p>{module.ModuleDescription}</p>}
+            {module.ModuleDescription && <p>{this.highlight(module.ModuleDescription)}</p>}
             <dl>
               {module.Preclusion && ([
                 <dt key="preclusions-dt">Preclusions</dt>,
@@ -65,3 +74,9 @@ export default class ModuleFinderItem extends PureComponent<Props> {
     );
   }
 }
+
+const mapStateToProps: MapStateToProps<*, *, *> = state => ({
+  search: state.moduleFinder.search,
+});
+
+export default connect(mapStateToProps)(ModuleFinderItemComponent);

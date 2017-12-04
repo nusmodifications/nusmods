@@ -16,9 +16,9 @@ export default class ModuleFinderPage extends PureComponent<Props> {
     return (
       <div>
         <ul className="modules-list">
-          {page.map((module) => {
-            return <ModuleFinderItem key={module.ModuleCode} module={module} />;
-          })}
+          {page.map(module => (
+            <ModuleFinderItem key={module.ModuleCode} module={module} />
+          ))}
         </ul>
       </div>
     );

@@ -21,7 +21,7 @@ import type {
 } from 'types/timetables';
 import type { ModulesMap } from 'reducers/entities/moduleBank';
 
-import { getModuleTimetable } from 'utils/modules';
+import { getModuleTimetable, getModuleSemesterData } from 'utils/modules';
 
 type LessonTypeAbbrev = { [LessonType]: string };
 export const LESSON_TYPE_ABBREV: LessonTypeAbbrev = {
@@ -200,6 +200,14 @@ export function colorLessonsByType(lessons: Lesson[]) {
 
     return { ...lesson, colorIndex };
   });
+}
+
+// Find all exam clashes between modules in semester
+// Returns object associating exam dates with the modules clashing on those dates
+export function findExamClashes(modules: Array<Module>, semester: Semester): { string: Array<Module> } {
+  const groupedModules = _.groupBy(modules, module => _.get(getModuleSemesterData(module, semester), 'ExamDate'));
+  delete groupedModules.undefined; // Remove modules without exams
+  return _.omitBy(groupedModules, mods => mods.length === 1); // Remove non-clashing mods
 }
 
 function serializeModuleConfig(config: ModuleLessonConfig): string {

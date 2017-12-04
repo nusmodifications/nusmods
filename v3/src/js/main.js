@@ -1,7 +1,10 @@
+import 'utils/polyfill';
+
 import ReactDOM from 'react-dom';
 import _ from 'lodash';
-import configureStore from 'stores/configure-store';
+import Raven from 'raven-js';
 
+import configureStore from 'stores/configure-store';
 import storage from 'storage';
 import App from 'App';
 
@@ -11,7 +14,7 @@ import '../styles/main.scss';
 const persistedState = storage.loadState();
 const store = configureStore(persistedState);
 store.subscribe(
-  _.throttle(() => {
+  _.debounce(() => {
     const storeState = store.getState();
     // TODO: Possibly write our own utility pickNestedKeys function to
     //       pick out the keys (including nested keys) from the store
@@ -40,3 +43,12 @@ if (module.hot) {
 }
 
 render();
+
+if (process.env.NODE_ENV === 'production') {
+  if (navigator.serviceWorker && window.location.protocol === 'https:') {
+    navigator.serviceWorker.register('/sw.js')
+      .catch((e) => {
+        Raven.captureException(e);
+      });
+  }
+}

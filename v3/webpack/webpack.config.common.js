@@ -38,7 +38,7 @@ const commonConfig = merge([
     // convenient with more complex configurations.
     entry: {
       // This will build an app.js file from the `main` module.
-      app: ['babel-polyfill', 'main'],
+      app: ['main'],
     },
     context: parts.PATHS.app,
     output: {

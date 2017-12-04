@@ -4,6 +4,7 @@ import type { Node } from 'react';
 import React, { PureComponent } from 'react';
 import Helmet from 'react-helmet';
 import Raven from 'raven-js';
+import classnames from 'classnames';
 
 import config from 'config/index';
 import styles from './ErrorPage.scss';
@@ -16,8 +17,6 @@ type Props = {
 };
 
 export default class NotFoundPage extends PureComponent<Props> {
-  props: Props;
-
   static defaultProps = {
     showRefresh: true,
   };
@@ -37,12 +36,13 @@ export default class NotFoundPage extends PureComponent<Props> {
           <title>Uh oh... - {config.brandName}</title>
         </Helmet>
 
-        <div className="page-container">
-          <div className="ml-md-5 mt-3">
-            <p className="mb-0 h2 text-primary">Uh oh...</p>
-            <h1 className="h2 mb-4">{this.errorMessage()}</h1>
+        <div className={styles.container}>
+          <h1 className={classnames('h2', styles.header)}>
+            <span className={styles.expr}>Uh oh...</span>
+            {this.errorMessage()}
+          </h1>
 
-            {showRefresh &&
+          {showRefresh &&
             <p>
               <button
                 className={styles.link}
@@ -50,7 +50,7 @@ export default class NotFoundPage extends PureComponent<Props> {
               >Refreshing the page</button> may help.
             </p>}
 
-            {eventId &&
+          {eventId &&
             <p>
               An error report has been made and we will look into this.
               We would really appreciate it if you could <button
@@ -60,7 +60,6 @@ export default class NotFoundPage extends PureComponent<Props> {
                 tell us more about what happened</button> so we can
               better fix this.
             </p>}
-          </div>
         </div>
       </div>
     );

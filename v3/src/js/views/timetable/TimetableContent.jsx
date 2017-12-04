@@ -1,10 +1,9 @@
 // @flow
 import React, { Component, type Node } from 'react';
 import { connect } from 'react-redux';
-import { withRouter, type ContextRouter } from 'react-router-dom';
 import Helmet from 'react-helmet';
 import _ from 'lodash';
-import classnames from 'classnames';
+import config from 'config';
 
 import type { ModulesMap } from 'reducers/entities/moduleBank';
 import type {
@@ -21,7 +20,7 @@ import type {
 } from 'types/modules';
 import type { SemTimetableConfig, SemTimetableConfigWithLessons, TimetableArrangement } from 'types/timetables';
 
-import config from 'config';
+import classnames from 'classnames';
 import { getSemModuleSelectList } from 'reducers/entities/moduleBank';
 import { downloadAsJpeg, downloadAsIcal } from 'actions/export';
 import {
@@ -32,13 +31,14 @@ import {
   removeModule,
 } from 'actions/timetables';
 import { toggleTimetableOrientation } from 'actions/theme';
-import { getModuleTimetable, areLessonsSameClass } from 'utils/modules';
+import { getModuleTimetable, areLessonsSameClass, formatExamDate } from 'utils/modules';
 import {
   timetableLessonsArray,
   hydrateSemTimetableWithLessons,
   arrangeLessonsForWeek,
   areOtherClassesAvailable,
   lessonsForLessonType,
+  findExamClashes,
 } from 'utils/timetables';
 import ModulesSelect from 'views/components/ModulesSelect';
 
@@ -48,8 +48,6 @@ import TimetableActions from './TimetableActions';
 import TimetableModulesTable from './TimetableModulesTable';
 
 type Props = {
-  ...ContextRouter,
-
   header: Node,
   semester: Semester,
   semModuleList: ModuleSelectList,
@@ -103,8 +101,55 @@ class TimetableContainer extends Component<Props> {
     }
   };
 
+  // Returns modules currently in the timetable
+  addedModules(): Array<Module> {
+    const modules = _.keys(this.props.timetableWithLessons)
+      .sort((a, b) => a.localeCompare(b))
+      .map(moduleCode => this.props.modules[moduleCode]);
+    return _.compact(modules);
+  }
+
+  // Returns component with table(s) of modules
+  renderModuleSections(horizontalOrientation) {
+    const renderModuleTable = modules => (
+      <TimetableModulesTable
+        modules={modules.map(module => ({
+          ...module,
+          colorIndex: this.props.colors[module.ModuleCode],
+          hiddenInTimetable: this.isHiddenInTimetable(module.ModuleCode),
+        }))}
+        horizontalOrientation={horizontalOrientation}
+        semester={this.props.semester}
+        onRemoveModule={moduleCode => this.props.removeModule(this.props.semester, moduleCode)}
+      />
+    );
+
+    // Separate added modules into sections of clashing modules
+    const modules = this.addedModules();
+    const clashes: { [string]: Array<Module> } = findExamClashes(modules, this.props.semester);
+    const nonClashingMods: Array<Module> = _.difference(modules, _.flatten(_.values(clashes)));
+
+    return (
+      <div>
+        {_.isEmpty(clashes) ? null : (
+          <div className="alert alert-danger" role="alert">
+            <h4>Exam Clashes</h4>
+            <p>There are <strong className="clash">clashes</strong> in your exam timetable.</p>
+            {Object.keys(clashes).sort().map(clashDate => (
+              <div key={clashDate}>
+                <h5>Clash on {formatExamDate(clashDate)}</h5>
+                {renderModuleTable(clashes[clashDate])}
+              </div>
+            ))}
+          </div>
+        )}
+        {renderModuleTable(nonClashingMods)}
+      </div>
+    );
+  }
+
   render() {
-    const { timetable, semester, modules, colors, activeLesson, timetableOrientation } = this.props;
+    const { semester, modules, colors, activeLesson, timetableOrientation } = this.props;
 
     let timetableLessons: Lesson[] = timetableLessonsArray(this.props.timetableWithLessons)
       // Do not process hidden modules
@@ -193,7 +238,7 @@ class TimetableContainer extends Component<Props> {
               downloadAsJpeg={this.downloadAsJpeg}
               downloadAsIcal={this.downloadAsIcal}
             />
-            <div className="row mt-2">
+            <div className={styles.tableContainer}>
               <div className="col-md-12">
                 <ModulesSelect
                   moduleList={this.props.semModuleList}
@@ -203,22 +248,7 @@ class TimetableContainer extends Component<Props> {
                   placeholder="Add module to timetable"
                 />
                 <br />
-                <TimetableModulesTable
-                  modules={
-                    Object.keys(timetable)
-                      .sort((a, b) => a.localeCompare(b))
-                      .map(moduleCode => ({
-                        ...modules[moduleCode],
-                        colorIndex: colors[moduleCode],
-                        hiddenInTimetable: this.isHiddenInTimetable(moduleCode),
-                      }))
-                  }
-                  horizontalOrientation={!isVerticalOrientation}
-                  semester={semester}
-                  onRemoveModule={(moduleCode) => {
-                    this.props.removeModule(semester, moduleCode);
-                  }}
-                />
+                {this.renderModuleSections(!isVerticalOrientation)}
               </div>
             </div>
           </div>
@@ -236,6 +266,7 @@ function mapStateToProps(state, ownProps) {
   const hiddenInTimetable = state.settings.hiddenInTimetable || [];
 
   return {
+    semester,
     semModuleList,
     timetable,
     timetableWithLessons,
@@ -247,15 +278,13 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default withRouter(
-  connect(mapStateToProps, {
-    addModule,
-    removeModule,
-    modifyLesson,
-    changeLesson,
-    cancelModifyLesson,
-    toggleTimetableOrientation,
-    downloadAsJpeg,
-    downloadAsIcal,
-  })(TimetableContainer),
-);
+export default connect(mapStateToProps, {
+  addModule,
+  removeModule,
+  modifyLesson,
+  changeLesson,
+  cancelModifyLesson,
+  toggleTimetableOrientation,
+  downloadAsJpeg,
+  downloadAsIcal,
+})(TimetableContainer);
