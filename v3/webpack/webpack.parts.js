@@ -187,8 +187,6 @@ exports.minifyJavascript = () => {
         // Compression specific options.
         compress: {
           warnings: false,
-          // Drop `console` statements.
-          drop_console: true,
         },
         sourceMap: true,
         // Mangling specific options.

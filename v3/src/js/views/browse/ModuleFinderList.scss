@@ -1,0 +1,9 @@
+@import "~styles/utils/modules-entry";
+
+.noModulesIcon {
+  $size: 3rem;
+
+  width: $size;
+  height: $size;
+  color: theme-color();
+}

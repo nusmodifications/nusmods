@@ -61,6 +61,8 @@ function createContainer(initialEntries?: Array<LocationShape | string>): Contai
         history={history}
         location={history.location}
         match={mockMatch}
+        resetModuleFinder={_.noop}
+        searchTerm=""
       />,
     ),
   };

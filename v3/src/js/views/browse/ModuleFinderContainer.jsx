@@ -4,6 +4,7 @@ import type { ContextRouter } from 'react-router-dom';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import axios from 'axios';
 import update from 'immutability-helper';
 import qs from 'query-string';
@@ -15,6 +16,7 @@ import type { PageRange, PageRangeDiff } from 'types/views';
 import type { FilterGroupId } from 'utils/filters/FilterGroup';
 
 import ModuleFinderList from 'views/browse/ModuleFinderList';
+import ModuleSearchBox from 'views/browse/ModuleSearchBox';
 import ChecklistFilters from 'views/components/filters/ChecklistFilters';
 import TimeslotFilters from 'views/components/filters/TimeslotFilters';
 import ErrorPage from 'views/errors/ErrorPage';
@@ -26,12 +28,19 @@ import moduleFilters, {
   TUTORIAL_TIMESLOTS,
   MODULE_CREDITS,
 } from 'views/browse/module-filters';
+import { createSearchFilter, sortModules, SEARCH_QUERY_KEY } from 'views/browse/module-search';
 import config from 'config';
 import nusmods from 'apis/nusmods';
+import { resetModuleFinder } from 'actions/module-finder';
 import FilterGroup from 'utils/filters/FilterGroup';
 import HistoryDebouncer from 'utils/HistoryDebouncer';
+import { defer, breakpointUp } from 'utils/react';
 
-type Props = ContextRouter;
+type Props = {
+  searchTerm: string,
+  resetModuleFinder: () => any,
+  ...ContextRouter,
+};
 
 type State = {
   loading: boolean,
@@ -40,6 +49,12 @@ type State = {
   filterGroups: { [FilterGroupId]: FilterGroup<any> },
   error?: any,
 };
+
+// Threshold to enable instant search based on the amount of time it takes
+// to run the filters on initial render. This is only an estimate since only
+// ~50% of the time is spent on filters (the other 50% on rendering), so
+// err on using a lower threshold
+const INSTANT_SEARCH_THRESHOLD = 150;
 
 const pageHead = (
   <Helmet>
@@ -90,10 +105,29 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
     };
   }
 
+  componentWillMount() {
+    // Initialize search query. This is done here instead of in ModuleSearchBox because doing
+    // the latter is too slow, and results in a flash of unfiltered results
+    const params = qs.parse(this.props.location.search);
+    if (params[SEARCH_QUERY_KEY]) this.onSearch(params[SEARCH_QUERY_KEY]);
+  }
+
   componentDidMount() {
     axios.get(nusmods.modulesUrl())
       .then(({ data }) => {
+        const params = qs.parse(this.props.location.search);
+        const start = window.performance.now();
         this.filterGroups().forEach(group => group.initFilters(data));
+        const time = window.performance.now() - start;
+
+        if ('instant' in params) {
+          this.useInstantSearch = params.instant === '1';
+        } else {
+          this.useInstantSearch = breakpointUp('md').matches && (time < INSTANT_SEARCH_THRESHOLD);
+        }
+
+        console.info(`${time}ms taken to init filters`); // eslint-disable-line
+        console.info(this.useInstantSearch ? 'Instant search on' : 'Instant search off'); // eslint-disable-line
 
         this.setState({
           modules: data,
@@ -106,7 +140,14 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
       });
   }
 
+  componentWillReceiveProps(nextProps: Props) {
+    if (this.props.searchTerm !== nextProps.searchTerm) {
+      this.onSearch(nextProps.searchTerm);
+    }
+  }
+
   componentWillUnmount() {
+    this.props.resetModuleFinder();
     this.unlisten();
   }
 
@@ -121,14 +162,14 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
     });
 
     if (!_.isEmpty(updater)) {
-      this.setState(update(this.state, {
+      this.setState(state => update(state, {
         filterGroups: updater,
       }));
     }
   }
 
-  onFilterChange = (newGroup: FilterGroup<*>) => {
-    this.setState(update(this.state, {
+  onFilterChange = (newGroup: FilterGroup<*>, resetScroll: boolean = true) => {
+    this.setState(state => update(state, {
       filterGroups: { [newGroup.id]: { $set: newGroup } },
       page: { $merge: { start: 0, current: 0 } },
     }), () => {
@@ -146,7 +187,7 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
       });
 
       // Scroll back to the top
-      window.scrollTo(0, 0);
+      if (resetScroll) window.scrollTo(0, 0);
     });
   };
 
@@ -155,6 +196,17 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
       page: mergePageRange(prevState.page, diff),
     }), this.updatePageHash);
   };
+
+  onSearch(searchTerm: string) {
+    const filter = createSearchFilter(searchTerm)
+      .initFilters(this.state.modules);
+
+    defer(() => {
+      this.onFilterChange(filter, false);
+    });
+  }
+
+  useInstantSearch = false;
 
   updatePageHash = () => {
     // Update the location hash so that users can share the URL and go back to the
@@ -199,18 +251,21 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
     }
 
     // Set up filter groups
-    const filteredModules = FilterGroup.apply(modules, this.filterGroups());
+    let filteredModules = FilterGroup.apply(modules, this.filterGroups());
+    if (this.props.searchTerm) {
+      filteredModules = sortModules(this.props.searchTerm, filteredModules);
+    }
 
     return (
       <div className="modules-page-container page-container">
         {pageHead}
 
         <div className="row">
-          <div className="col-sm-12">
-            <h1 className="page-title">Module Finder</h1>
-          </div>
-
           <div className="col-md-8 col-lg-9">
+            <h1 className="sr-only">Module Finder</h1>
+
+            <ModuleSearchBox useInstantSearch={this.useInstantSearch} />
+
             <ModuleFinderList
               modules={filteredModules}
               page={page}
@@ -255,4 +310,10 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
   }
 }
 
-export default withRouter(ModuleFinderContainerComponent);
+const mapStateToProps = state => ({
+  searchTerm: state.moduleFinder.search.term,
+});
+
+export default connect(mapStateToProps, { resetModuleFinder })(
+  withRouter(ModuleFinderContainerComponent),
+);

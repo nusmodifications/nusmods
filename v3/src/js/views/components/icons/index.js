@@ -1,5 +1,6 @@
 // @flow
 // Refer to https://feathericons.com/ for full list.
+import AlertTriangle from 'react-feather/dist/icons/alert-triangle';
 import Calendar from 'react-feather/dist/icons/calendar';
 import ChevronLeft from 'react-feather/dist/icons/chevron-left';
 import ChevronRight from 'react-feather/dist/icons/chevron-right';
@@ -17,6 +18,7 @@ import Trash2 from 'react-feather/dist/icons/trash-2';
 import LinkedIn from './LinkedIn';
 
 export {
+  AlertTriangle,
   Calendar,
   ChevronLeft,
   ChevronRight,

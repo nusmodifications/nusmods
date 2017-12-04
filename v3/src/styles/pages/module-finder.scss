@@ -140,14 +140,14 @@
   margin: 0;
   list-style: none;
 
+  mark {
+    padding: 0.2em 0;
+    color: inherit;
+    border-bottom: 1px solid $yellow;
+  }
+
   .modules-item {
     margin-bottom: 3rem;
-
-    footer {
-      padding-top: 0.8rem;
-      margin-top: 0.8rem;
-      border-top: 1px solid $gray-lighter;
-    }
   }
 
   .modules-title {
@@ -157,20 +157,12 @@
 }
 
 .module-page-divider {
-  position: sticky;
-  top: $navbar-height;
-  z-index: $module-page-divider-z-index;
   padding: 0.6rem;
   margin: 1rem 0;
   font-size: $font-size-sm;
   text-align: right;
   color: $gray;
   border-bottom: 1px solid $gray-lighter;
-  background: $body-bg;
-
-  @include media-breakpoint-down(sm) {
-    top: $navbar-height + 3rem;
-  }
 }
 
 // Semester Info

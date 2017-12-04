@@ -11,7 +11,7 @@ export type Theme = {
 };
 
 /* browse/ModuleFinderContainer */
-export type OnFilterChange = FilterGroup<*> => void;
+export type OnFilterChange = FilterGroup<*> => any;
 
 export type PageRange = {
   current: number,
