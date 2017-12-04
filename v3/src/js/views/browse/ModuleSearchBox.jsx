@@ -4,7 +4,7 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import classnames from 'classnames';
-import { throttle, debounce } from 'lodash';
+import { debounce } from 'lodash';
 import qs from 'query-string';
 
 import { Search } from 'views/components/icons';
@@ -15,7 +15,6 @@ import styles from './ModuleSearchBox.scss';
 type Props = ContextRouter & {
   throttle: number,
   useInstantSearch: boolean,
-  onSearch?: (string) => void,
 
   searchModules: (string) => void,
 };
@@ -23,11 +22,11 @@ type Props = ContextRouter & {
 type State = {
   searchTerm: string,
   isFocused: boolean,
+  hasChanges: boolean,
 };
 
 export class ModuleSearchBoxComponent extends PureComponent<Props, State> {
   props: Props;
-  throttledSearch: (string) => void;
   searchElement: ?HTMLInputElement;
 
   static defaultProps = {
@@ -35,51 +34,41 @@ export class ModuleSearchBoxComponent extends PureComponent<Props, State> {
     throttle: 300,
   };
 
-  constructor(props: Props) {
-    super(props);
-
-    // Cannot use ternary operator here because Jest (or Istanbul) has a bug that
-    // incorrectly transforms this - https://github.com/facebook/jest/issues/4271
-    if (this.props.useInstantSearch) {
-      this.throttledSearch = throttle(this.search, this.props.throttle, { leading: false });
-    } else {
-      this.throttledSearch = debounce(this.search, this.props.throttle, { leading: false });
-    }
-  }
-
   state: State = {
     isFocused: false,
     searchTerm: qs.parse(this.props.location.search)[SEARCH_QUERY_KEY] || '',
+    hasChanges: false,
   };
 
   componentWillMount() {
     this.search(this.state.searchTerm);
   }
 
-  onSearchInput = (evt: Event) => {
-    if (evt.target instanceof HTMLInputElement) {
-      const searchTerm = evt.target.value;
-      this.setState({ searchTerm });
-      this.throttledSearch(searchTerm);
-    }
-  };
-
-  onSubmit = (evt: Event) => {
+  onSubmit = () => {
     if (this.searchElement) {
       const searchTerm = this.searchElement.value;
       this.setState({ searchTerm });
-      this.throttledSearch(searchTerm);
-      this.throttledSearch.flush();
-    }
 
-    evt.preventDefault();
+      this.debouncedSearch(searchTerm);
+      this.debouncedSearch.flush();
+    }
+  };
+
+  onInput = (evt: Event) => {
+    if (evt.target instanceof HTMLInputElement) {
+      const searchTerm = evt.target.value;
+      this.setState({ searchTerm, hasChanges: true });
+
+      if (this.props.useInstantSearch) this.debouncedSearch(searchTerm);
+    }
   };
 
   search = (input: string) => {
-    const searchTerm = input.trim();
-    if (this.props.onSearch) this.props.onSearch(searchTerm);
-    this.props.searchModules(searchTerm);
+    this.setState({ hasChanges: false });
+    this.props.searchModules(input.trim());
   };
+
+  debouncedSearch: (string) => void = debounce(this.search, this.props.throttle, { leading: false });
 
   render() {
     return (
@@ -87,7 +76,10 @@ export class ModuleSearchBoxComponent extends PureComponent<Props, State> {
         <label htmlFor="module-search" className="sr-only">Search</label>
         <form
           className={styles.searchWrapper}
-          onSubmit={this.onSubmit}
+          onSubmit={(evt) => {
+            this.onSubmit();
+            evt.preventDefault();
+          }}
         >
           <Search className={styles.searchIcon} />
           <input
@@ -96,13 +88,20 @@ export class ModuleSearchBoxComponent extends PureComponent<Props, State> {
             type="search"
             ref={(e) => { this.searchElement = e; }}
             value={this.state.searchTerm}
-            onChange={this.onSearchInput}
+            onChange={this.onInput}
             onFocus={() => this.setState({ isFocused: true })}
-            onBlur={() => this.setState({ isFocused: false })}
+            onBlur={() => {
+              this.setState({ isFocused: false });
+              this.onSubmit();
+            }}
             placeholder="Module code, names and descriptions"
             spellCheck
           />
         </form>
+
+        {!this.props.useInstantSearch && this.state.hasChanges && <p className={styles.searchHelp}>
+          Press enter to search
+        </p>}
       </div>
     );
   }
