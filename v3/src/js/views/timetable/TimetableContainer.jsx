@@ -2,7 +2,7 @@
 
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { withRouter, type ContextRouter } from 'react-router-dom';
+import { withRouter, Redirect, type ContextRouter } from 'react-router-dom';
 import { isEmpty, difference } from 'lodash';
 
 import type { Semester, ModuleCode } from 'types/modules';
@@ -23,6 +23,7 @@ type Props = {
   ...ContextRouter,
 
   semester: ?Semester,
+  activeSemester: Semester,
   timetable: ?SemTimetableConfig,
 
   selectSemester: (Semester) => void,
@@ -104,9 +105,18 @@ export class TimetableContainerComponent extends PureComponent<Props> {
   }
 
   render() {
-    const { timetable, semester } = this.props;
+    const { timetable, semester, activeSemester, match } = this.props;
 
-    if (semester == null || !timetable) return <NotFoundPage />;
+    // Redirect to activeSemester if no semester was given in the URL
+    if (!match.params.semester) {
+      return <Redirect to={timetablePage(activeSemester)} />;
+    }
+
+    // Otherwise if the semester is null, then the semester is invalid, so we
+    // display the 404 error page
+    if (semester == null || !timetable) {
+      return <NotFoundPage />;
+    }
 
     return (
       <TimetableContent
@@ -125,6 +135,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     semester,
     timetable,
+    activeSemester: state.app.activeSemester,
   };
 };
 
