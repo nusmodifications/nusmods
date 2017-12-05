@@ -18,15 +18,14 @@ function TimetableCell(props: Props) {
   const lesson = props.lesson;
   return (
     <button
-      className={classnames(styles.cell, {
+      // $FlowFixMe When object spread type actually works
+      className={classnames(styles.cell, `color-${lesson.colorIndex}`, {
         // $FlowFixMe When object spread type actually works
         [styles.cellIsModifiable]: lesson.isModifiable,
         // $FlowFixMe When object spread type actually works
         [styles.cellIsAvailable]: lesson.isAvailable,
         // $FlowFixMe When object spread type actually works
         [styles.cellIsActive]: lesson.isActive,
-        // $FlowFixMe When object spread type actually works
-        [`color-${lesson.colorIndex}`]: true,
       })}
       onClick={(event) => {
         event.stopPropagation();
@@ -42,8 +41,7 @@ function TimetableCell(props: Props) {
           {LESSON_TYPE_ABBREV[lesson.LessonType]} [{lesson.ClassNo}]
         </div>
         <div>{lesson.Venue}</div>
-        {lesson.WeekText !== 'Every Week' &&
-          <div>{lesson.WeekText}</div>}
+        {lesson.WeekText !== 'Every Week' && <div>{lesson.WeekText}</div>}
       </div>
     </button>
   );
