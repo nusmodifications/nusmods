@@ -135,7 +135,10 @@ export function arrangeLessonsWithinDay(lessons: Array<Lesson>): TimetableDayArr
   if (_.isEmpty(lessons)) {
     return rows;
   }
-  const sortedLessons = _.sortBy(lessons, lesson => lesson.StartTime);
+  const sortedLessons = lessons.sort((a, b) => {
+    const timeDiff = a.StartTime.localeCompare(b.StartTime);
+    return timeDiff !== 0 ? timeDiff : a.ClassNo.localeCompare(b.ClassNo);
+  });
   sortedLessons.forEach((lesson: Lesson) => {
     for (let i = 0, length = rows.length; i < length; i++) {
       const rowLessons: Array<Lesson> = rows[i];
