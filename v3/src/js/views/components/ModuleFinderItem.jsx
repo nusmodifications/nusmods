@@ -66,7 +66,7 @@ export class ModuleFinderItemComponent extends PureComponent<Props> {
             </dl>
           </div>
           <div className="col-lg-4 col-md-12 col-sm-4">
-            <ModuleSemesterInfo semesters={module.History} />
+            <ModuleSemesterInfo semesters={module.History} moduleCode={module.ModuleCode} />
             {module.Workload && <ModuleWorkload workload={module.Workload} />}
           </div>
         </div>

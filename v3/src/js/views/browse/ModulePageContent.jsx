@@ -15,6 +15,7 @@ import { BULLET } from 'utils/react';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
 import DisqusComments from 'views/components/DisqusComments';
 import LessonTimetable from 'views/components/module-info/LessonTimetable';
+import ModuleExamClash from 'views/components/module-info/ModuleExamClash';
 import CorsBiddingStatsTableControl from './CorsBiddingStatsTableControl';
 
 type Props = {
@@ -112,6 +113,12 @@ class ModulePageContentComponent extends Component<Props> {
                   <div key={`exam-${exam.semester}`}>
                     <h3>{config.semesterNames[exam.semester]} Exam</h3>
                     <p>{formatExamDate(exam.date)}</p>
+
+                    <ModuleExamClash
+                      semester={exam.semester}
+                      examDate={exam.date}
+                      moduleCode={ModuleCode}
+                    />
                   </div>
                 ))}
 

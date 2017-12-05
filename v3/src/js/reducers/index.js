@@ -1,5 +1,6 @@
 // @flow
 import type { FSA } from 'types/redux';
+import type { TimetableConfig } from 'types/timetables';
 import type {
   Requests,
   SettingsState,
@@ -18,7 +19,7 @@ import moduleFinder from './module-finder';
 export type State = {
   entities: Object,
   requests: Requests,
-  timetables: Object,
+  timetables: TimetableConfig,
   app: AppState,
   theme: Object,
   settings: SettingsState,

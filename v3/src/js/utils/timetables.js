@@ -205,3 +205,8 @@ export function findExamClashes(modules: Array<Module>, semester: Semester): { s
   delete groupedModules.undefined; // Remove modules without exams
   return _.omitBy(groupedModules, mods => mods.length === 1); // Remove non-clashing mods
 }
+
+// Get information for all modules present in a semester timetable config
+export function getSemesterModules(timetable: SemTimetableConfig, modules: ModulesMap): Module[] {
+  return _.values(_.pick(modules, Object.keys(timetable)));
+}
