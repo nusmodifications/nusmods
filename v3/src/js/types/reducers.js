@@ -57,3 +57,13 @@ export type ModuleSelectListItem = {
 export type ModuleList = Array<ModuleCondensed>;
 export type ModuleSelectList = Array<ModuleSelectListItem>;
 export type ModuleCodeMap = { [ModuleCode]: ModuleCondensed };
+
+/* module-finder.js */
+export type ModuleSearch = {
+  term: string,
+  tokens: string[],
+};
+
+export type ModuleFinderState = {
+  search: ModuleSearch,
+}

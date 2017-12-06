@@ -32,13 +32,14 @@ import {
   removeModule,
 } from 'actions/timetables';
 import { toggleTimetableOrientation } from 'actions/theme';
-import { getModuleTimetable, areLessonsSameClass } from 'utils/modules';
+import { getModuleTimetable, areLessonsSameClass, formatExamDate } from 'utils/modules';
 import {
   timetableLessonsArray,
   hydrateSemTimetableWithLessons,
   arrangeLessonsForWeek,
   areOtherClassesAvailable,
   lessonsForLessonType,
+  findExamClashes,
 } from 'utils/timetables';
 import ModulesSelect from 'views/components/ModulesSelect';
 import SemesterSwitcher from 'views/components/semester-switcher/SemesterSwitcher';
@@ -101,6 +102,53 @@ class TimetableContainer extends Component<Props> {
       this.props.modifyLesson(lesson);
     }
   };
+
+  // Returns modules currently in the timetable
+  addedModules(): Array<Module> {
+    const modules = _.keys(this.props.semTimetableWithLessons)
+      .sort((a, b) => a.localeCompare(b))
+      .map(moduleCode => this.props.modules[moduleCode]);
+    return _.compact(modules);
+  }
+
+  // Returns component with table(s) of modules
+  renderModuleSections(horizontalOrientation) {
+    const renderModuleTable = modules => (
+      <TimetableModulesTable
+        modules={modules.map(module => ({
+          ...module,
+          colorIndex: this.props.colors[module.ModuleCode],
+          hiddenInTimetable: this.isHiddenInTimetable(module.ModuleCode),
+        }))}
+        horizontalOrientation={horizontalOrientation}
+        semester={this.props.semester}
+        onRemoveModule={moduleCode => this.props.removeModule(this.props.semester, moduleCode)}
+      />
+    );
+
+    // Separate added modules into sections of clashing modules
+    const modules = this.addedModules();
+    const clashes: { [string]: Array<Module> } = findExamClashes(modules, this.props.semester);
+    const nonClashingMods: Array<Module> = _.difference(modules, _.flatten(_.values(clashes)));
+
+    return (
+      <div>
+        {_.isEmpty(clashes) ? null : (
+          <div className="alert alert-danger" role="alert">
+            <h4>Exam Clashes</h4>
+            <p>There are <strong className="clash">clashes</strong> in your exam timetable.</p>
+            {Object.keys(clashes).sort().map(clashDate => (
+              <div key={clashDate}>
+                <h5>Clash on {formatExamDate(clashDate)}</h5>
+                {renderModuleTable(clashes[clashDate])}
+              </div>
+            ))}
+          </div>
+        )}
+        {renderModuleTable(nonClashingMods)}
+      </div>
+    );
+  }
 
   render() {
     let timetableLessons: Array<Lesson> = timetableLessonsArray(this.props.semTimetableWithLessons)
@@ -196,7 +244,7 @@ class TimetableContainer extends Component<Props> {
               downloadAsJpeg={this.downloadAsJpeg}
               downloadAsIcal={this.downloadAsIcal}
             />
-            <div className="row mt-2">
+            <div className={styles.tableContainer}>
               <div className="col-md-12">
                 <ModulesSelect
                   moduleList={this.props.semModuleList}
@@ -206,23 +254,7 @@ class TimetableContainer extends Component<Props> {
                   placeholder="Add module to timetable"
                 />
                 <br />
-                <TimetableModulesTable
-                  modules={
-                    Object.keys(this.props.semTimetableWithLessons)
-                      .sort((a, b) => a.localeCompare(b))
-                      .map((moduleCode) => {
-                        const module = this.props.modules[moduleCode] || {};
-                        // Inject color index.
-                        module.colorIndex = this.props.colors[moduleCode];
-                        module.hiddenInTimetable = this.isHiddenInTimetable(moduleCode);
-                        return module;
-                      })}
-                  horizontalOrientation={!isVerticalOrientation}
-                  semester={this.props.semester}
-                  onRemoveModule={(moduleCode) => {
-                    this.props.removeModule(this.props.semester, moduleCode);
-                  }}
-                />
+                {this.renderModuleSections(!isVerticalOrientation)}
               </div>
             </div>
           </div>

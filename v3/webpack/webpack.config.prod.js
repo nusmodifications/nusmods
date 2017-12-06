@@ -4,6 +4,8 @@ const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const WorkboxPlugin = require('workbox-webpack-plugin');
+const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 
 const commonConfig = require('./webpack.config.common');
 const parts = require('./webpack.parts');
@@ -61,15 +63,28 @@ const productionConfig = merge([
       ],
     },
     plugins: [
+      // SEE: https://medium.com/webpack/brief-introduction-to-scope-hoisting-in-webpack-8435084c171f
+      new webpack.optimize.ModuleConcatenationPlugin(),
       new HtmlWebpackPlugin({
-        title: 'NUSMods',
         template: path.join(parts.PATHS.app, 'index.html'),
+        minify: {
+          removeComments: true,
+          removeRedundantAttributes: true,
+          collapseWhitespace: true,
+        },
+      }),
+      new ScriptExtHtmlWebpackPlugin({
+        inline: /manifest/,
+        preload: /\.js$/,
       }),
       extractTextPlugin,
       // Copy files from static folder over to dist
       new CopyWebpackPlugin([{ from: 'static', context: parts.PATHS.root }], { copyUnmodified: true }),
-      // SEE: https://medium.com/webpack/brief-introduction-to-scope-hoisting-in-webpack-8435084c171f
-      new webpack.optimize.ModuleConcatenationPlugin(),
+      new WorkboxPlugin({
+        globDirectory: parts.PATHS.build,
+        globPatterns: ['**/*.{html,js,css,png,svg}'],
+        swDest: path.join(parts.PATHS.build, 'sw.js'),
+      }),
     ],
   },
   parts.clean(parts.PATHS.build),
