@@ -91,7 +91,7 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
-    "bootstrap": "4.0.0-beta",
+    "bootstrap": "4.0.0-beta.2",
     "classnames": "^2.2.5",
     "core-js": "^2.5.1",
     "d3": "^4.10.0",
