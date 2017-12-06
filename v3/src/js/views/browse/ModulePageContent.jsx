@@ -18,6 +18,8 @@ import LessonTimetable from 'views/components/module-info/LessonTimetable';
 import ModuleExamClash from 'views/components/module-info/ModuleExamClash';
 import CorsBiddingStatsTableControl from './CorsBiddingStatsTableControl';
 
+import styles from './ModulePageContent.scss';
+
 type Props = {
   module: Module,
   timetables: TimetableConfig,
@@ -110,7 +112,7 @@ class ModulePageContentComponent extends Component<Props> {
 
               <div className="col-sm-4 module-page-sidebar">
                 {this.examinations().map(exam => (
-                  <div key={`exam-${exam.semester}`}>
+                  <div key={`exam-${exam.semester}`} className={styles.exam}>
                     <h3>{config.semesterNames[exam.semester]} Exam</h3>
                     <p>{formatExamDate(exam.date)}</p>
 
