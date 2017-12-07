@@ -212,11 +212,7 @@ exports.getCSSConfig = ({ options } = {}) => {
     },
     {
       loader: 'postcss-loader',
-      options: {
-        plugins: () => [ // eslint-disable-next-line global-require
-          require('autoprefixer'),
-        ],
-      },
+      // See .postcssrc.js for plugin and plugin config
     },
     'sass-loader',
   ];
