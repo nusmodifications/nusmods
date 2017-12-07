@@ -15,6 +15,10 @@
     padding: 0.8rem 1rem 0.8rem 2rem;
     border-width: 0 0 1px;
     border-radius: 0;
+
+    &:focus {
+      box-shadow: none;
+    }
   }
 }
 
