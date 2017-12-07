@@ -14,7 +14,7 @@
   h3 {
     margin-bottom: 1rem;
     font-size: $font-size-lg;
-    color: $gray-light;
+    color: var(--gray-light);
   }
 
   h4 {
@@ -53,7 +53,7 @@
     margin-bottom: 1rem;
 
     th:not(.module-timeslot-hover) {
-      color: $gray-light;
+      color: var(--gray-light);
     }
 
     label {
@@ -84,7 +84,7 @@
     max-width: 20rem;
     height: $font-size-lg + 2rem;
     overflow: hidden;
-    background: $body-bg;
+    background: var(--body-bg);
     box-shadow: 0 0 15px -3px rgba(#000, 0.4);
 
     header {
@@ -93,13 +93,13 @@
 
     h3 {
       margin-bottom: 0;
-      color: $gray;
+      color: var(--gray);
     }
 
     h4 {
       padding: $v-padding $h-padding;
       font-size: $font-size-sm;
-      border-bottom: 1px solid $gray-lighter;
+      border-bottom: 1px solid var(--gray-lighter);
     }
 
     label {
@@ -109,7 +109,7 @@
     .module-filters-checklist {
       label {
         padding: $v-padding $h-padding $v-padding ($h-padding + 20px);
-        border-bottom: 1px solid $gray-lighter;
+        border-bottom: 1px solid var(--gray-lighter);
       }
     }
 
@@ -161,8 +161,8 @@
   margin: 1rem 0;
   font-size: $font-size-sm;
   text-align: right;
-  color: $gray;
-  border-bottom: 1px solid $gray-lighter;
+  color: var(--gray);
+  border-bottom: 1px solid var(--gray-lighter);
 }
 
 // Semester Info
@@ -192,8 +192,8 @@
       }
 
       &:disabled {
-        color: $gray;
-        border-color: $gray-light;
+        color: var(--gray);
+        border-color: var(--gray-light);
         cursor: not-allowed;
       }
     }
