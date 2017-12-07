@@ -1,0 +1,11 @@
+// Override Bootstrap's styles
+body {
+  color: var(--body-color);
+  background: var(--body-bg);
+}
+
+.form-control,
+.form-control:focus {
+  color: var(--body-color);
+  background: var(--body-bg);
+}

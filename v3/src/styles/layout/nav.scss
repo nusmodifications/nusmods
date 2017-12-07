@@ -7,7 +7,7 @@
   align-items: center;
   min-height: $navbar-height;
   padding: $vert-padding 1rem;
-  background: $gray-lightest;
+  background: var(--gray-lightest);
 
   .nm-navbar-brand {
     $image-height: 130;

@@ -3,11 +3,11 @@
   margin-top: 4rem;
   font-size: 0.85rem;
   text-align: center;
-  background-color: $gray-lightest;
+  background-color: var(--gray-lightest);
 
   a {
     font-weight: 500;
-    color: $gray;
+    color: var(--gray);
 
     &:hover {
       color: $link-color;
