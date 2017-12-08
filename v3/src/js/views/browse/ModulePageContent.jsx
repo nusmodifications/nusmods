@@ -184,7 +184,7 @@ class ModulePageContentComponent extends Component<Props> {
               >
                 <li><a href="#details">Details</a></li>
                 <li><a href="#prerequisites">Prerequisites</a></li>
-                <li><a href="#bidding-stats">Bidding Stats</a></li>
+                {module.CorsBiddingStats && <li><a href="#bidding-stats">Bidding Stats</a></li>}
                 <li><a href="#timetable">Timetable</a></li>
                 <li><a href="#reviews">Reviews</a></li>
               </ScrollSpy>
