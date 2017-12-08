@@ -23,10 +23,6 @@ export class ModuleSearchBoxComponent extends PureComponent<Props> {
     throttle: 300,
   };
 
-  search = (input: string) => {
-    this.props.searchModules(input);
-  };
-
   render() {
     return (
       <SearchBox
@@ -34,7 +30,7 @@ export class ModuleSearchBoxComponent extends PureComponent<Props> {
         useInstantSearch={this.props.useInstantSearch}
         initialSearchTerm={this.props.initialSearchTerm}
         placeholder="Module code, names and descriptions"
-        onSearch={this.search}
+        onSearch={this.props.searchModules}
       />
     );
   }
