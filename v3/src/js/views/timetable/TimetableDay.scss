@@ -36,7 +36,7 @@
   text-transform: uppercase;
   border: $timetable-border;
   border-width: 0 1px;
-  background: $body-bg;
+  background: var(--body-bg);
 
   @include media-breakpoint-down(sm) {
     flex: 0 0 $timetable-day-h-size-sm;
@@ -69,11 +69,11 @@
   flex-direction: column;
   min-height: $timetable-row-height;
   padding-bottom: 0.3rem;
-  background: linear-gradient(to right, $gray-lightest 50%, transparent 50%);
+  background: linear-gradient(to right, var(--gray-lightest) 50%, transparent 50%);
 }
 
 :global(.verticalMode) .dayRows {
   flex-direction: row;
   padding: 0 0.1rem 0 0;
-  background: linear-gradient(to bottom, $gray-lightest 50%, transparent 50%);
+  background: linear-gradient(to bottom, var(--gray-lightest) 50%, transparent 50%);
 }

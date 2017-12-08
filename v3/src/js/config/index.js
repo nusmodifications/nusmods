@@ -1,6 +1,7 @@
 // @flow
 import type { Semester, AcadYear } from 'types/modules';
 
+import holidays from 'data/holidays.json';
 import appConfig from './app-config.json';
 import corsData from './corsSchedule1718Sem1.json';
 
@@ -41,6 +42,8 @@ export type Config = {
     account: string,
   },
 
+  holidays: Date[],
+
   corsSchedule: CorsRound[],
 
   semTimetableFragment: (Semester) => string,
@@ -60,6 +63,8 @@ function convertCorsDate(roundData: Object): CorsRound {
 
 const augmentedConfig: Config = {
   ...appConfig,
+
+  holidays: holidays.map(date => new Date(date)),
 
   corsSchedule: corsData.map(convertCorsDate),
 

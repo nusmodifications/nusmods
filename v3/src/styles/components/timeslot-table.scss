@@ -10,7 +10,7 @@
     font-size: $font-size-xs;
 
     &:first-child {
-      border-right: 1px solid $gray-lighter;
+      border-right: 1px solid var(--gray-lighter);
     }
 
     &.module-timeslot-hover {
@@ -19,7 +19,7 @@
   }
 
   thead th {
-    border-bottom: 1px solid $gray-lighter;
+    border-bottom: 1px solid var(--gray-lighter);
   }
 
   .module-timeslot-time {
@@ -35,6 +35,6 @@
     position: relative;
     padding: 0;
     overflow: hidden;
-    border: 1px solid $white;
+    border: 1px solid var(--body-bg);
   }
 }
