@@ -1,6 +1,6 @@
 // @flow
 import type { ContextRouter } from 'react-router-dom';
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import qs from 'query-string';
@@ -17,24 +17,22 @@ type Props = ContextRouter & {
   searchModules: (string) => void,
 };
 
-export class ModuleSearchBoxComponent extends PureComponent<Props> {
-  static defaultProps = {
-    useInstantSearch: false,
-    throttle: 300,
-  };
-
-  render() {
-    return (
-      <SearchBox
-        throttle={this.props.throttle}
-        useInstantSearch={this.props.useInstantSearch}
-        initialSearchTerm={this.props.initialSearchTerm}
-        placeholder="Module code, names and descriptions"
-        onSearch={this.props.searchModules}
-      />
-    );
-  }
+export function ModuleSearchBoxComponent(props: Props) {
+  return (
+    <SearchBox
+      throttle={props.throttle}
+      useInstantSearch={props.useInstantSearch}
+      initialSearchTerm={props.initialSearchTerm}
+      placeholder="Module code, names and descriptions"
+      onSearch={props.searchModules}
+    />
+  );
 }
+
+ModuleSearchBoxComponent.defaultProps = {
+  useInstantSearch: false,
+  throttle: 300,
+};
 
 export default withRouter(
   connect(
