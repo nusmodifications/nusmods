@@ -1,5 +1,6 @@
 // @flow
 import FilterGroup from 'utils/filters/FilterGroup';
+import type { AcadYear, Faculty } from './modules';
 
 /* components/ModulesSelect.jsx */
 export type SelectOption = { label: string, value: string };
@@ -29,3 +30,39 @@ export type PageRangeDiff = {
 };
 
 export type OnPageChange = PageRangeDiff => void;
+
+/* components/CorsStats */
+
+export type StudentType = number;
+export const NEW_STUDENT = 1;
+export const RETURNING_STUDENT = 2;
+export const GENERAL_ACCOUNT = 4;
+
+// Simplified version of BiddingStat
+export type GroupedBiddingStat = {
+  AcadYear: AcadYear,
+  Faculty: Faculty,
+  Semester: string,
+  StudentAcctType: string,
+  Round: string,
+  Quota: number,
+  Bidders: number,
+  LowestSuccessfulBid: number,
+};
+
+export type BiddingSummary = {
+  [Faculty]: {
+    [StudentType]: {
+      minBid: number,
+      round: string,
+    },
+  }
+};
+
+export type SemesterStats = {
+  quota: number,
+  bids: number,
+  faculties: Set<Faculty>,
+  stats: GroupedBiddingStat[],
+  summary: BiddingSummary,
+};

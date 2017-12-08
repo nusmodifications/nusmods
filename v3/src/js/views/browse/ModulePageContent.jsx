@@ -15,7 +15,7 @@ import { BULLET } from 'utils/react';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
 import DisqusComments from 'views/components/DisqusComments';
 import LessonTimetable from 'views/components/module-info/LessonTimetable';
-import CorsBiddingStatsTableControl from './CorsBiddingStatsTableControl';
+import CorsStats from 'views/components/module-info/CorsStats';
 
 type Props = {
   module: Module,
@@ -155,7 +155,7 @@ class ModulePageContentComponent extends Component<Props> {
 
             {module.CorsBiddingStats && <section id="bidding-stats">
               <h2>CORS Bidding Stats</h2>
-              <CorsBiddingStatsTableControl stats={module.CorsBiddingStats} />
+              <CorsStats stats={module.CorsBiddingStats} />
             </section>}
 
             <section id="timetable">

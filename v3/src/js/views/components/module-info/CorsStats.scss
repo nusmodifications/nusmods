@@ -1,0 +1,57 @@
+@import "~styles/utils/modules-entry";
+
+.semester {
+  margin-bottom: 4rem;
+
+  .semHeading {
+    margin-bottom: 0.4rem;
+    font-weight: normal;
+    font-size: 1.3rem;
+  }
+
+  .roundHeading {
+    padding-bottom: 0.2rem;
+    margin-bottom: 0.2rem;
+    font-weight: bold;
+    font-size: 1rem;
+    border-bottom: 1px solid var(--gray-lighter);
+  }
+}
+
+.facultyHeading {
+  margin-bottom: 0.2rem;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+}
+
+.typeHeading {
+  margin-bottom: 0;
+  font-size: 0.8rem;
+}
+
+.facultyRow {
+  margin-bottom: 1rem;
+}
+
+.summary {
+  h4 {
+    margin-bottom: 0.4rem;
+    font-weight: bold;
+    font-size: 1rem;
+    border-bottom: 1px solid var(--gray-lighter);
+  }
+
+  p {
+    line-height: 1.2;
+  }
+
+  .minBid {
+    font-size: 1.3rem;
+  }
+
+  .roundInfo {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--gray-light);
+  }
+}
