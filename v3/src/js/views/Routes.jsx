@@ -5,6 +5,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import TimetableContainer from 'views/timetable/TimetableContainer';
 import ModulePageContainer from 'views/browse/ModulePageContainer';
 import ModuleFinderContainer from 'views/browse/ModuleFinderContainer';
+import VenuesContainer from 'views/venues/VenuesContainer';
 import SettingsContainer from 'views/settings/SettingsContainer';
 import AboutContainer from 'views/static/AboutContainer';
 import TeamContainer from 'views/static/TeamContainer';
@@ -22,6 +23,7 @@ export default function Routes() {
       <Route path="/timetable" component={TimetableContainer} />
       <Route exact path="/modules" component={ModuleFinderContainer} />
       <Route path="/modules/:moduleCode/:slug?" component={ModulePageContainer} />
+      <Route path="/venues" component={VenuesContainer} />
       <Route path="/settings" component={SettingsContainer} />
       <Route path="/team" component={TeamContainer} />
       <Route path="/developers" component={DevelopersContainer} />
