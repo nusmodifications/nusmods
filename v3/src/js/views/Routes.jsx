@@ -23,7 +23,7 @@ export default function Routes() {
       <Route path="/timetable" component={TimetableContainer} />
       <Route exact path="/modules" component={ModuleFinderContainer} />
       <Route path="/modules/:moduleCode/:slug?" component={ModulePageContainer} />
-      <Route path="/venues" component={VenuesContainer} />
+      <Route path="/venues/:venue?" component={VenuesContainer} />
       <Route path="/settings" component={SettingsContainer} />
       <Route path="/team" component={TeamContainer} />
       <Route path="/developers" component={DevelopersContainer} />

@@ -43,7 +43,7 @@ export default class VenueDetailRow extends PureComponent<Props> {
 
     return (
       <div>
-        <h4><a onClick={onClick}>{name}</a></h4>
+        <h4 className={styles.venueName}><a onClick={onClick}>{name}</a></h4>
         {lessons ? (
           <div className={styles.venueTimetable}>
             <Timetable
