@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VenuesContainer #filteredVenues() should filter venues correctly 1`] = `
+Array [
+  "LT17",
+  "CQT/SR0315",
+  "S11-0302",
+  "LT170",
+  "CQT/SR0622",
+]
+`;

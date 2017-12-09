@@ -1,0 +1,125 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VenueDetailRow it displays an anchor tag and a timetable when expanded 1`] = `
+<li
+  className="venueDetailRow"
+>
+  <h4>
+    <a
+      href="/venues/CQT%2FSR0315"
+      onClick={[Function]}
+    >
+      CQT/SR0315
+    </a>
+  </h4>
+  <div
+    className="venueTimetable"
+  >
+    <Timetable
+      isVerticalOrientation={false}
+      lessons={
+        Object {
+          "Friday": Array [
+            Array [
+              Object {
+                "ClassNo": "1",
+                "DayText": "Friday",
+                "EndTime": "1500",
+                "LessonType": "Lecture",
+                "ModuleCode": "QT5201N",
+                "ModuleTitle": "",
+                "StartTime": "1300",
+                "WeekText": "Every Week",
+                "colorIndex": 0,
+              },
+            ],
+          ],
+          "Monday": Array [
+            Array [
+              Object {
+                "ClassNo": "1",
+                "DayText": "Monday",
+                "EndTime": "1200",
+                "LessonType": "Lecture",
+                "ModuleCode": "QT5101",
+                "ModuleTitle": "",
+                "StartTime": "1000",
+                "WeekText": "Every Week",
+                "colorIndex": 0,
+              },
+              Object {
+                "ClassNo": "1",
+                "DayText": "Monday",
+                "EndTime": "1630",
+                "LessonType": "Lecture",
+                "ModuleCode": "QT5201P",
+                "ModuleTitle": "",
+                "StartTime": "1330",
+                "WeekText": "Every Week",
+                "colorIndex": 0,
+              },
+            ],
+          ],
+          "Thursday": Array [
+            Array [
+              Object {
+                "ClassNo": "1",
+                "DayText": "Thursday",
+                "EndTime": "1200",
+                "LessonType": "Lecture",
+                "ModuleCode": "QT5101",
+                "ModuleTitle": "",
+                "StartTime": "1000",
+                "WeekText": "Every Week",
+                "colorIndex": 0,
+              },
+            ],
+          ],
+          "Wednesday": Array [
+            Array [
+              Object {
+                "ClassNo": "T11",
+                "DayText": "Wednesday",
+                "EndTime": "1000",
+                "LessonType": "Tutorial",
+                "ModuleCode": "PC1222",
+                "ModuleTitle": "",
+                "StartTime": "0900",
+                "WeekText": "Every Week",
+                "colorIndex": 1,
+              },
+              Object {
+                "ClassNo": "1",
+                "DayText": "Wednesday",
+                "EndTime": "1200",
+                "LessonType": "Lecture",
+                "ModuleCode": "QT5201N",
+                "ModuleTitle": "",
+                "StartTime": "1000",
+                "WeekText": "Every Week",
+                "colorIndex": 0,
+              },
+            ],
+          ],
+        }
+      }
+      onModifyCell={[Function]}
+    />
+  </div>
+</li>
+`;
+
+exports[`VenueDetailRow it displays an anchor tag when not expanded 1`] = `
+<li
+  className="venueDetailRow"
+>
+  <h4>
+    <a
+      href="/venues/CQT%2FSR0315"
+      onClick={[Function]}
+    >
+      CQT/SR0315
+    </a>
+  </h4>
+</li>
+`;

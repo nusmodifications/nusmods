@@ -19,9 +19,10 @@ import SearchBox from 'views/components/SearchBox';
 import config from 'config';
 import nusmods from 'apis/nusmods';
 
-type Props = ContextRouter & {
+type Props = {
+  ...ContextRouter,
   activeSemester: Semester,
-  urlVenue: Venue,
+  urlVenue: ?Venue,
 };
 
 type State = {
