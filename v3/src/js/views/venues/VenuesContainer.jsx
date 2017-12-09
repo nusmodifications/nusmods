@@ -83,7 +83,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
   filteredVenues() {
     const { venues, searchTerm } = this.state;
     if (!venues) {
-      return [];
+      return {};
     }
 
     if (searchTerm === '') {

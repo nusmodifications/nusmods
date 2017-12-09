@@ -13,7 +13,7 @@ type Props = {
   name: Venue,
   availability: DayAvailability[],
   expanded: boolean,
-  onClick: () => void,
+  onClick: (Venue, string) => void,
 }
 
 export default class VenueDetailRow extends PureComponent<Props> {
@@ -40,10 +40,19 @@ export default class VenueDetailRow extends PureComponent<Props> {
   render() {
     const { name, onClick } = this.props;
     const lessons = this.arrangedLessons();
+    const venueHref = `/venues/${encodeURIComponent(name)}`;
 
     return (
-      <div>
-        <h4 className={styles.venueName}><a onClick={onClick}>{name}</a></h4>
+      <li className={styles.venueDetailRow}>
+        <h4>
+          <a
+            href={venueHref}
+            onClick={(e) => {
+              e.preventDefault();
+              onClick(name, venueHref);
+            }}
+          >{name}</a>
+        </h4>
         {lessons ? (
           <div className={styles.venueTimetable}>
             <Timetable
@@ -53,7 +62,7 @@ export default class VenueDetailRow extends PureComponent<Props> {
             />
           </div>
         ) : null}
-      </div>
+      </li>
     );
   }
 }

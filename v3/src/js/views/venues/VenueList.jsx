@@ -1,35 +1,32 @@
 // @flow
 import React from 'react';
-import { withRouter } from 'react-router-dom';
 import { map } from 'lodash';
 import VenueDetailRow from 'views/venues/VenueDetailRow';
 
-import type { ContextRouter } from 'react-router-dom';
 import type { VenueInfo } from 'types/venues';
 import type { Venue } from 'types/modules';
 
-type Props = ContextRouter & {
+import styles from './VenueList.scss';
+
+type Props = {
   venues: VenueInfo,
-  initialExpandedVenue: Venue,
   expandedVenue: Venue,
-  onSelect: (Venue) => void;
+  onSelect: (Venue, string) => void; // Called with venue name and venue URL (/venues/<venue>)
 };
 
-function VenueList(props: Props) {
+export default function VenueList(props: Props) {
   const lowercaseExpandedVenue = props.expandedVenue.toLowerCase();
   return (
-    <div>
+    <ul className={styles.venueList}>
       {map(props.venues, (availability, name) => (
         <VenueDetailRow
           key={name}
           name={name}
           availability={availability}
           expanded={name.toLowerCase() === lowercaseExpandedVenue}
-          onClick={() => props.onSelect(name)}
+          onClick={props.onSelect}
         />
       ))}
-    </div>
+    </ul>
   );
 }
-
-export default withRouter(VenueList);

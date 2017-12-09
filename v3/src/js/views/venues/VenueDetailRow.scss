@@ -1,8 +1,22 @@
-.venueTimetable {
-  margin-bottom: 2rem;
-  overflow: auto;
+@import "~styles/bootstrap/variable-overrides.scss";
+
+.venueDetailRow {
+  margin-top: 1rem;
+
+  &:first-child {
+    margin-top: 0.25rem;
+  }
+
+  &:not(:last-child) {
+    border-bottom: 1px $gray-lighter solid;
+  }
+
+  a {
+    width: 100%;
+  }
 }
 
-.venueName {
-  cursor: pointer;
+.venueTimetable {
+  margin-bottom: 1rem;
+  overflow: auto;
 }
