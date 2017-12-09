@@ -15,6 +15,10 @@
   margin-bottom: 1rem;
 }
 
+.quota {
+  font-weight: bold;
+}
+
 .semester {
   margin-bottom: 4rem;
 
@@ -26,7 +30,7 @@
 
   .roundHeading {
     padding-bottom: 0.2rem;
-    margin-bottom: 0.2rem;
+    margin-bottom: 0.4rem;
     font-weight: bold;
     font-size: 1rem;
     border-bottom: 1px solid var(--gray-lighter);
@@ -70,13 +74,18 @@
     border-top: 0;
   }
 
-  :global(.table) {
+  table {
+    margin-bottom: 0;
     font-size: 0.9rem;
     line-height: 1;
 
     th {
       font-weight: normal;
       color: var(--gray-light);
+    }
+
+    th, td {
+      border-bottom: 1px solid var(--gray-light);
     }
   }
 

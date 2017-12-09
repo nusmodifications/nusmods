@@ -10,6 +10,7 @@ import { analyseStats } from 'utils/cors';
 
 import CorsRound from './CorsRound';
 import CorsSummary from './CorsSummary';
+import CorsQuota from './CorsQuota';
 import styles from './CorsStats.scss';
 
 type Props = {
@@ -34,10 +35,11 @@ export default class CorsStats extends PureComponent<Props> {
             <div className={classnames('row', styles.summary)}>
               <div className="col-sm-3">
                 <h4>Quota</h4>
-                <p className={styles.quota}>
-                  <span className={styles.bidders}>{semesterStat.bids}</span>
-                  <span className={styles.slash}>/</span>
-                  <span className={styles.available}>{semesterStat.quota}</span>
+                <p>
+                  <CorsQuota
+                    bidders={semesterStat.bids}
+                    quota={semesterStat.quota}
+                  />
                 </p>
               </div>
 

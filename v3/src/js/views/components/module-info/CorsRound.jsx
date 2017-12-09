@@ -7,6 +7,7 @@ import type { Faculty } from 'types/modules';
 import type { GroupedBiddingStat } from 'types/views';
 
 import { GENERAL_ACCOUNT, NEW_STUDENT, RETURNING_STUDENT } from 'types/views';
+import CorsQuota from './CorsQuota';
 import styles from './CorsStats.scss';
 
 type Props = {
@@ -28,10 +29,13 @@ function renderBidRow(stats: GroupedBiddingStat) {
   }
 
   return [
-    <td className={styles.quota} key="quota">
-      {stats.Bidders}/{stats.Quota}
+    <td key="quota">
+      <CorsQuota
+        bidders={stats.Bidders}
+        quota={stats.Quota}
+      />
     </td>,
-    <td className={styles.bidPoints} key="bids">
+    <td key="bids">
       {stats.LowestSuccessfulBid}
     </td>,
   ];
