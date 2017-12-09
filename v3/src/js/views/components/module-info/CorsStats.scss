@@ -4,7 +4,7 @@
   margin-bottom: 4rem;
 
   .semHeading {
-    margin-bottom: 0.4rem;
+    margin: 1rem 0 0.4rem;
     font-weight: normal;
     font-size: 1.3rem;
   }
@@ -16,6 +16,11 @@
     font-size: 1rem;
     border-bottom: 1px solid var(--gray-lighter);
   }
+}
+
+.details {
+  padding: 1rem 1rem 0.4rem;
+  background: var(--gray-lightest);
 }
 
 .facultyHeading {
@@ -31,6 +36,10 @@
 
 .facultyRow {
   margin-bottom: 1rem;
+}
+
+.quota {
+
 }
 
 .summary {

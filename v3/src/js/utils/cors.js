@@ -1,48 +1,14 @@
 // @flow
 import { first, groupBy, head, last, map, mapValues, min, sumBy } from 'lodash';
 
-import type { BiddingStat, Student } from 'types/modules';
+import type { BiddingStat } from 'types/modules';
 import type { CorsRound } from 'config';
 import type { GroupedBiddingStat, SemesterStats, StudentType, BiddingSummary } from 'types/views';
 import { NEW_STUDENT, RETURNING_STUDENT, GENERAL_ACCOUNT } from 'types/views';
 import config from 'config';
 
-const sameFaculty = (stat: BiddingStat, student: Student): boolean => (stat.Faculty === student.faculty);
-const isNew = student => (student.newStudent);
-const PROGRAMME = 'P';
-const GENERAL = 'G';
-const isProgrammeAccount = student => (student.accountType === PROGRAMME);
-const isGeneralAccount = student => (student.accountType === GENERAL);
-
-export function isStatRelevantForStudent(stat: BiddingStat, student: Student) {
-  switch (stat.StudentAcctType) {
-    case 'Returning Students [P]':
-      return sameFaculty(stat, student) && isProgrammeAccount(student) && !isNew(student);
-    case 'New Students [P]':
-      return sameFaculty(stat, student) && isProgrammeAccount(student) && isNew(student);
-    case 'NUS Students [P]':
-      return sameFaculty(stat, student) && isProgrammeAccount(student);
-    case 'Returning Students and New Students [P]':
-      return sameFaculty(stat, student) && isProgrammeAccount(student);
-    case 'NUS Students [G]':
-      return isGeneralAccount(student);
-    case 'Returning Students [P] and NUS Students [G]':
-      return (sameFaculty(stat, student) && isProgrammeAccount(student) && !isNew(student))
-        || (!sameFaculty(stat, student) && isGeneralAccount(student));
-    case 'NUS Students [P, G]':
-      return (sameFaculty(stat, student) && isProgrammeAccount(student))
-        || (!sameFaculty(stat, student) && isGeneralAccount(student));
-    case 'Reserved for [G] in later round':
-      return !sameFaculty(stat, student) && isGeneralAccount(student);
-    case 'Not Available for [G]':
-      return sameFaculty(stat, student) && isProgrammeAccount(student);
-    default:
-      throw Error(`unknown StudentAcctType ${stat.StudentAcctType}`);
-  }
-}
-
-function appliesTo(stats: GroupedBiddingStat): StudentType {
-  switch (stats.StudentAcctType) {
+function appliesTo(studentAccountType: string): StudentType {
+  switch (studentAccountType) {
     case 'Returning Students [P]':
       return RETURNING_STUDENT;
     case 'New Students [P]':
@@ -60,7 +26,7 @@ function appliesTo(stats: GroupedBiddingStat): StudentType {
     case 'Not Available for [G]':
       return 0;
     default:
-      throw Error(`unknown StudentAcctType ${stats.StudentAcctType}`);
+      throw Error(`unknown StudentAcctType ${studentAccountType}`);
   }
 }
 
@@ -85,11 +51,10 @@ export function biddingSummary(stats: GroupedBiddingStat[]): BiddingSummary {
 
   stats.forEach((stat) => {
     if (stat.Bidders === 0) return;
-    const studentTypes = appliesTo(stat);
 
-    if (studentTypes & NEW_STUDENT) updateSummary(stat, NEW_STUDENT);
-    if (studentTypes & RETURNING_STUDENT) updateSummary(stat, RETURNING_STUDENT);
-    if (studentTypes & GENERAL_ACCOUNT) updateSummary(stat, GENERAL_ACCOUNT);
+    if (stat.StudentType & NEW_STUDENT) updateSummary(stat, NEW_STUDENT);
+    if (stat.StudentType & RETURNING_STUDENT) updateSummary(stat, RETURNING_STUDENT);
+    if (stat.StudentType & GENERAL_ACCOUNT) updateSummary(stat, GENERAL_ACCOUNT);
   });
 
   return summary;
@@ -103,21 +68,19 @@ export function analyseStats(biddingStats: BiddingStat[]): { [string]: SemesterS
   const mergedStats = map(groupedStats, (statsGroup: BiddingStat[]): GroupedBiddingStat => {
     // eslint-disable-next-line no-shadow
     const { AcadYear, Faculty, Semester, Round, StudentAcctType } = head(statsGroup);
-    const Quota = sumBy(statsGroup, stats => Number(stats.Quota));
-    const Bidders = sumBy(statsGroup, stats => Number(stats.Bidders));
-    const LowestSuccessfulBid = min(statsGroup.map(stats => Number(stats.LowestSuccessfulBid)));
 
     return {
       AcadYear,
       Faculty,
       Semester,
       Round,
-      StudentAcctType,
-      Quota,
-      Bidders,
-      LowestSuccessfulBid,
+
+      StudentType: appliesTo(StudentAcctType),
+      Quota: sumBy(statsGroup, stats => Number(stats.Quota)),
+      Bidders: sumBy(statsGroup, stats => Number(stats.Bidders)),
+      LowestSuccessfulBid: min(statsGroup.map(stats => Number(stats.LowestSuccessfulBid))),
     };
-  });
+  }).filter(stat => stat.StudentType !== 0);
 
   // Group by year and semester
   const groupedBySem = groupBy(mergedStats, (stats: GroupedBiddingStat) =>

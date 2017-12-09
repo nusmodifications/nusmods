@@ -43,7 +43,7 @@ export type GroupedBiddingStat = {
   AcadYear: AcadYear,
   Faculty: Faculty,
   Semester: string,
-  StudentAcctType: string,
+  StudentType: StudentType,
   Round: string,
   Quota: number,
   Bidders: number,
