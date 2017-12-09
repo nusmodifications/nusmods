@@ -153,17 +153,25 @@ class ModulePageContentComponent extends Component<Props> {
               {/* TODO: Add in prereq tree when it is ready */}
             </section>
 
-            {module.CorsBiddingStats && <section id="bidding-stats">
-              <h2>CORS Bidding Stats</h2>
-              <CorsStats stats={module.CorsBiddingStats} />
-            </section>}
-
             <section id="timetable">
               <h2>Timetable</h2>
               <LessonTimetable
                 semestersOffered={this.semestersOffered()}
                 history={module.History}
               />
+            </section>
+
+            <section id="bidding-stats">
+              <h2>CORS Bidding Stats</h2>
+              {module.CorsBiddingStats ?
+                <div>
+                  <CorsStats stats={module.CorsBiddingStats} />
+                </div>
+                :
+                <div>
+                  No CORS bidding data available. This may be because the module is new,
+                  or the module is not available from CORS.
+                </div>}
             </section>
 
             <section id="reviews">
@@ -184,7 +192,7 @@ class ModulePageContentComponent extends Component<Props> {
               >
                 <li><a href="#details">Details</a></li>
                 <li><a href="#prerequisites">Prerequisites</a></li>
-                {module.CorsBiddingStats && <li><a href="#bidding-stats">Bidding Stats</a></li>}
+                <li><a href="#bidding-stats">Bidding Stats</a></li>
                 <li><a href="#timetable">Timetable</a></li>
                 <li><a href="#reviews">Reviews</a></li>
               </ScrollSpy>
