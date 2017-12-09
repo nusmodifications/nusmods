@@ -30,6 +30,43 @@ function appliesTo(studentAccountType: string): StudentType {
   }
 }
 
+export function mergeBiddingStats(biddingStats: BiddingStat[]) {
+  // Merge quotas and data from each lecture/sectional group - these groups are interchangeable
+  // so its better to take their combined statistics instead
+  const groupedStats = groupBy(biddingStats, (stats: BiddingStat) =>
+    [stats.AcadYear, stats.Semester, stats.Faculty, stats.Round, stats.StudentAcctType].join('-'));
+  return map(groupedStats, (statsGroup: BiddingStat[]): GroupedBiddingStat => {
+    // eslint-disable-next-line no-shadow
+    const { AcadYear, Faculty, Semester, Round, StudentAcctType } = head(statsGroup);
+
+    if (!StudentAcctType) console.log(head(statsGroup), `${AcadYear} ${Semester} ${Round}`);
+
+    return {
+      AcadYear,
+      Faculty,
+      Semester,
+      Round,
+
+      StudentType: appliesTo(StudentAcctType),
+      Quota: sumBy(statsGroup, stats => Number(stats.Quota)),
+      Bidders: sumBy(statsGroup, stats => Number(stats.Bidders)),
+      LowestSuccessfulBid: min(statsGroup.map(stats => Number(stats.LowestSuccessfulBid))),
+    };
+  }).filter(stat => stat.StudentType !== 0);
+}
+
+export function findQuota(stats: GroupedBiddingStat[]): number {
+  const firstRound = min(stats.map(stat => stat.Round));
+  return sumBy(stats, (stat) => {
+    if (stat.Round === firstRound) return stat.Quota;
+
+    // Also include quota from any 1C rounds for new students
+    if (stat.Round === '1C' && stat.StudentType & NEW_STUDENT) return stat.Quota;
+
+    return 0;
+  });
+}
+
 export function biddingSummary(stats: GroupedBiddingStat[]): BiddingSummary {
   // Find the minimum bid amount for each type of student (new, returning program, returning general)
   // and the round at which it occurred at for each faculty
@@ -61,26 +98,7 @@ export function biddingSummary(stats: GroupedBiddingStat[]): BiddingSummary {
 }
 
 export function analyseStats(biddingStats: BiddingStat[]): { [string]: SemesterStats } {
-  // Merge quotas and data from each lecture/sectional group - these groups are interchangeable
-  // so its better to take their combined numbers instead
-  const groupedStats = groupBy(biddingStats, (stats: BiddingStat) =>
-    [stats.AcadYear, stats.Semester, stats.Faculty, stats.Round, stats.StudentAcctType].join('-'));
-  const mergedStats = map(groupedStats, (statsGroup: BiddingStat[]): GroupedBiddingStat => {
-    // eslint-disable-next-line no-shadow
-    const { AcadYear, Faculty, Semester, Round, StudentAcctType } = head(statsGroup);
-
-    return {
-      AcadYear,
-      Faculty,
-      Semester,
-      Round,
-
-      StudentType: appliesTo(StudentAcctType),
-      Quota: sumBy(statsGroup, stats => Number(stats.Quota)),
-      Bidders: sumBy(statsGroup, stats => Number(stats.Bidders)),
-      LowestSuccessfulBid: min(statsGroup.map(stats => Number(stats.LowestSuccessfulBid))),
-    };
-  }).filter(stat => stat.StudentType !== 0);
+  const mergedStats = mergeBiddingStats(biddingStats);
 
   // Group by year and semester
   const groupedBySem = groupBy(mergedStats, (stats: GroupedBiddingStat) =>
@@ -91,16 +109,10 @@ export function analyseStats(biddingStats: BiddingStat[]): { [string]: SemesterS
     const faculties = new Set();
     stats.forEach(stat => faculties.add(stat.Faculty));
 
-    // We assume the total quota is reflected in the number of places available
-    // in rounds 1A and 1C
-    const quota = sumBy(stats, (stat) => {
-      if (stat.Round === '1A' || stat.Round === '1C') return Number(stat.Quota);
-      return 0;
-    });
-
     // Find out how many people have managed to take the module to get a rough idea of
-    // heavily subscribed a module is. This number may be higher than quota because
+    // heavily subscribed a module is. This number of bidders may be higher than quota because
     // students can drop modules during bidding, so we cap it at quota
+    const quota = findQuota(stats);
     const bids = Math.min(quota, sumBy(stats, stat => Math.min(Number(stat.Bidders), Number(stat.Quota))));
 
     const summary = biddingSummary(stats);
