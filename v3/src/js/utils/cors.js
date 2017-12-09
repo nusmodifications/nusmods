@@ -39,8 +39,6 @@ export function mergeBiddingStats(biddingStats: BiddingStat[]) {
     // eslint-disable-next-line no-shadow
     const { AcadYear, Faculty, Semester, Round, StudentAcctType } = head(statsGroup);
 
-    if (!StudentAcctType) console.log(head(statsGroup), `${AcadYear} ${Semester} ${Round}`);
-
     return {
       AcadYear,
       Faculty,
