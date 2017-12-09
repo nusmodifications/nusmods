@@ -19,6 +19,7 @@ type Props = {
 export default class CorsStats extends PureComponent<Props> {
   render() {
     // Reverse chronological order and only take the first three
+    // $FlowFixMe Incorrect libdef for _.entries
     const sortedStats: [string, SemesterStats][] = entries(analyseStats(this.props.stats))
       .reverse().slice(0, 3);
 
@@ -33,7 +34,11 @@ export default class CorsStats extends PureComponent<Props> {
             <div className={classnames('row', styles.summary)}>
               <div className="col-sm-3">
                 <h4>Quota</h4>
-                <p>{semesterStat.bids} / {semesterStat.quota}</p>
+                <p className={styles.quota}>
+                  <span className={styles.bidders}>{semesterStat.bids}</span>
+                  <span className={styles.slash}>/</span>
+                  <span className={styles.available}>{semesterStat.quota}</span>
+                </p>
               </div>
 
               <div className="col-sm-9">

@@ -1,5 +1,20 @@
 @import "~styles/utils/modules-entry";
 
+.facultyHeading {
+  margin-bottom: 0.2rem;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+}
+
+.typeHeading {
+  margin-bottom: 0;
+  font-size: 0.8rem;
+}
+
+.facultyRow {
+  margin-bottom: 1rem;
+}
+
 .semester {
   margin-bottom: 4rem;
 
@@ -16,30 +31,6 @@
     font-size: 1rem;
     border-bottom: 1px solid var(--gray-lighter);
   }
-}
-
-.details {
-  padding: 1rem 1rem 0.4rem;
-  background: var(--gray-lightest);
-}
-
-.facultyHeading {
-  margin-bottom: 0.2rem;
-  font-size: 0.9rem;
-  text-transform: uppercase;
-}
-
-.typeHeading {
-  margin-bottom: 0;
-  font-size: 0.8rem;
-}
-
-.facultyRow {
-  margin-bottom: 1rem;
-}
-
-.quota {
-
 }
 
 .summary {
@@ -62,5 +53,40 @@
     display: block;
     font-size: 0.8rem;
     color: var(--gray-light);
+  }
+
+  .quota {
+    font-size: 1.5rem;
+  }
+}
+
+.details {
+  padding: 1rem 1rem 0.4rem;
+  background: var(--gray-lightest);
+
+  thead th {
+    padding-bottom: 0.1rem;
+    font-size: 0.8rem;
+    border-top: 0;
+  }
+
+  :global(.table) {
+    font-size: 0.9rem;
+    line-height: 1;
+
+    th {
+      font-weight: normal;
+      color: var(--gray-light);
+    }
+  }
+
+  .noBids {
+    font-style: italic;
+    color: var(--gray-light);
+  }
+
+  .typeHeading {
+    margin-top: 0.4rem;
+    font-weight: bold;
   }
 }

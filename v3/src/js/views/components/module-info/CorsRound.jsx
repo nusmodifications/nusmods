@@ -22,9 +22,50 @@ const STUDENT_TYPE_LABELS = {
   [NEW_STUDENT | RETURNING_STUDENT | GENERAL_ACCOUNT]: 'All students',
 };
 
+function renderBidRow(stats: GroupedBiddingStat) {
+  if (!stats.Bidders) {
+    return <td className={styles.noBids} colSpan="2">No bids</td>;
+  }
+
+  return [
+    <td className={styles.quota} key="quota">
+      {stats.Bidders}/{stats.Quota}
+    </td>,
+    <td className={styles.bidPoints} key="bids">
+      {stats.LowestSuccessfulBid}
+    </td>,
+  ];
+}
+
+function renderBidTable(groupedStats: GroupedBiddingStat[]) {
+  return (
+    <table className="table table-sm">
+      <thead>
+        <tr className={styles.headerRow}>
+          <th />
+          <th>Quota</th>
+          <th>Bid</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {groupedStats.map((stats: GroupedBiddingStat) => (
+          <tr key={stats.Round}>
+            <th className={styles.roundName}>{stats.Round.charAt(1)}</th>
+            {renderBidRow(stats)}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
+
 export default function (props: Props) {
   const groupedByFaculty = groupBy(props.stats, stats => stats.Faculty);
-  if (!size(groupedByFaculty)) return <div>No bidding during this round</div>;
+
+  if (!size(groupedByFaculty)) {
+    return <div className={styles.noBids}>No bidding during this round</div>;
+  }
 
   return (
     <div>
@@ -35,24 +76,12 @@ export default function (props: Props) {
           <div key={faculty} className={styles.facultyRow}>
             {size(groupedByFaculty) > 1 && <h5 className={styles.facultyHeading}>{faculty}</h5>}
 
-            {map(groupedByLabel, (grouped: GroupedBiddingStat[], label: string) => {
-              if (label === 'null') return null;
-
-              return (
-                <div key={label}>
-                  {size(groupedByLabel) > 1 && <h6 className={styles.typeHeading}>{label}</h6>}
-                  {grouped.map((stats: GroupedBiddingStat) => (
-                    <div key={stats.Round}>
-                      <span>{stats.Round.charAt(1)}</span>
-                      {stats.Bidders ?
-                        <span>{stats.Bidders}/{stats.Quota} - <strong>{stats.LowestSuccessfulBid}pt</strong></span> :
-                        <span>No bids</span>
-                      }
-                    </div>
-                  ))}
-                </div>
-              );
-            })}
+            {map(groupedByLabel, (stats: GroupedBiddingStat[], label: string) => (
+              <div key={label}>
+                {size(groupedByLabel) > 1 && <h6 className={styles.typeHeading}>{label}</h6>}
+                {renderBidTable(stats)}
+              </div>
+            ))}
           </div>
         );
       })}
