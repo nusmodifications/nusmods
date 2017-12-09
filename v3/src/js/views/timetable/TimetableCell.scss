@@ -15,9 +15,9 @@ $cell-border-radius: 8px;
   text-align: left;
   border-width: 0 0 0.2rem;
   border-style: solid;
+  pointer-events: none;
   transition: background-color $desktop-entering-duration $material-deceleration-curve;
   animation-duration: $desktop-entering-duration;
-  pointer-events: none;
 
   &:hover,
   &:focus {
