@@ -12,6 +12,7 @@ import styles from './CorsStats.scss';
 
 type Props = {
   stats: GroupedBiddingStat[],
+  showFaculty: boolean,
 };
 
 const STUDENT_TYPE_LABELS = {
@@ -64,7 +65,7 @@ function renderBidTable(groupedStats: GroupedBiddingStat[]) {
   );
 }
 
-export default function (props: Props) {
+function CorsRound(props: Props) {
   const groupedByFaculty = groupBy(props.stats, stats => stats.Faculty);
 
   if (!size(groupedByFaculty)) {
@@ -78,11 +79,12 @@ export default function (props: Props) {
 
         return (
           <div key={faculty} className={styles.facultyRow}>
-            {size(groupedByFaculty) > 1 && <h5 className={styles.facultyHeading}>{faculty}</h5>}
+            {props.showFaculty && <h5 className={styles.facultyHeading}>{faculty}</h5>}
 
             {map(groupedByLabel, (stats: GroupedBiddingStat[], label: string) => (
               <div key={label}>
-                {size(groupedByLabel) > 1 && <h6 className={styles.typeHeading}>{label}</h6>}
+                {size(groupedByLabel) > 1 &&
+                  <h6 className={styles.typeHeading}>{label}</h6>}
                 {renderBidTable(stats)}
               </div>
             ))}
@@ -92,3 +94,5 @@ export default function (props: Props) {
     </div>
   );
 }
+
+export default CorsRound;

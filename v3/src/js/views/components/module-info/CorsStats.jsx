@@ -54,15 +54,15 @@ export default class CorsStats extends PureComponent<Props> {
               <div className="row">
                 <div className="col-md">
                   <h4 className={styles.roundHeading}>Round 1 <small>Program account only</small></h4>
-                  <CorsRound stats={roundStats[1]} />
+                  <CorsRound stats={roundStats[1]} showFaculty={semesterStat.faculties.size > 1} />
                 </div>
                 <div className="col-md">
                   <h4 className={styles.roundHeading}>Round 2 <small>Program and general account</small></h4>
-                  <CorsRound stats={roundStats[2]} />
+                  <CorsRound stats={roundStats[2]} showFaculty={semesterStat.faculties.size > 1} />
                 </div>
                 <div className="col-md">
                   <h4 className={styles.roundHeading}>Round 3 <small>All students</small></h4>
-                  <CorsRound stats={roundStats[3]} />
+                  <CorsRound stats={roundStats[3]} showFaculty={semesterStat.faculties.size > 1} />
                 </div>
               </div>
             </div>
