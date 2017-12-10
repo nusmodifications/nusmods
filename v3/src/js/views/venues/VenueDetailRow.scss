@@ -1,14 +1,12 @@
-@import "~styles/bootstrap/variable-overrides.scss";
+@import "~styles/utils/modules-entry.scss";
 
 .venueDetailRow {
-  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px $gray-lighter solid;
 
   &:first-child {
-    margin-top: 0.25rem;
-  }
-
-  &:not(:last-child) {
-    border-bottom: 1px $gray-lighter solid;
+    padding-top: 0.25rem;
+    border-top: 0;
   }
 
   a {
