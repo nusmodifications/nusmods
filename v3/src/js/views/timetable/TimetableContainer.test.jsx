@@ -15,12 +15,10 @@ import { timetablePage, fromSemester } from 'views/routes/paths';
 import { TimetableContainerComponent } from './TimetableContainer';
 import { deserializeTimetable } from '../../utils/timetables';
 
-/* eslint-disable no-useless-computed-key */
 const TIMETABLE: SemTimetableConfig = {
   CS2104: { Lecture: '1' },
   CS2105: { Lecture: '1' },
 };
-/* eslint-enable */
 
 function create(semester: ?Semester, timetable: SemTimetableConfig) {
   const history = createHistory();
