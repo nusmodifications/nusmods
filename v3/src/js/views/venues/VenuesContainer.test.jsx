@@ -46,8 +46,8 @@ describe('VenuesContainer', () => {
     expect(Object.keys(component.filteredVenues())).toEqual(['S11-0302']);
 
     // Substring
-    component.setState({ searchTerm: 'QT/' });
-    expect(Object.keys(component.filteredVenues())).toEqual(['CQT/SR0315', 'CQT/SR0622']);
+    component.setState({ searchTerm: 'T1' });
+    expect(Object.keys(component.filteredVenues())).toEqual(['LT17', 'LT1']);
 
     // Venue which does not exist
     component.setState({ searchTerm: 'covfefe' });

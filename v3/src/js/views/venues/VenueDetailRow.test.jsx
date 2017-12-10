@@ -5,8 +5,8 @@ import venueInfo from '__mocks__/venueInformation.json';
 import VenueDetailRow from './VenueDetailRow';
 
 const minProps = {
-  name: 'CQT/SR0315',
-  availability: venueInfo['CQT/SR0315'],
+  name: 'CQT/SR0622',
+  availability: venueInfo['CQT/SR0622'],
 };
 
 describe('VenueDetailRow', () => {

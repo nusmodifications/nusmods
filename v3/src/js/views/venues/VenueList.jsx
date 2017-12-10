@@ -1,6 +1,5 @@
 // @flow
 import React from 'react';
-import { map } from 'lodash';
 import VenueDetailRow from 'views/venues/VenueDetailRow';
 
 import type { VenueInfo } from 'types/venues';
@@ -15,16 +14,22 @@ type Props = {
 };
 
 export default function VenueList(props: Props) {
-  const lowercaseExpandedVenue = props.expandedVenue.toLowerCase();
+  const { venues, expandedVenue, onSelect } = props;
+  const lowercaseExpandedVenue = expandedVenue.toLowerCase();
+
+  // Case-insensitive, natural sort of venue names
+  const sortedVenueNames = Object.keys(venues).sort((a, b) =>
+    a.toLowerCase().localeCompare(b.toLowerCase(), 'en', { numeric: true }));
+
   return (
     <ul className={styles.venueList}>
-      {map(props.venues, (availability, name) => (
+      {sortedVenueNames.map(name => (
         <VenueDetailRow
           key={name}
           name={name}
-          availability={availability}
+          availability={venues[name]}
           expanded={name.toLowerCase() === lowercaseExpandedVenue}
-          onClick={props.onSelect}
+          onClick={onSelect}
         />
       ))}
     </ul>

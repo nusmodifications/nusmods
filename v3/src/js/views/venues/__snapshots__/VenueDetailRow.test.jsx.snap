@@ -6,10 +6,10 @@ exports[`VenueDetailRow it displays an anchor tag and a timetable when expanded 
 >
   <h4>
     <a
-      href="/venues/CQT%2FSR0315"
+      href="/venues/CQT%2FSR0622"
       onClick={[Function]}
     >
-      CQT/SR0315
+      CQT/SR0622
     </a>
   </h4>
   <div
@@ -19,57 +19,27 @@ exports[`VenueDetailRow it displays an anchor tag and a timetable when expanded 
       isVerticalOrientation={false}
       lessons={
         Object {
-          "Friday": Array [
-            Array [
-              Object {
-                "ClassNo": "1",
-                "DayText": "Friday",
-                "EndTime": "1500",
-                "LessonType": "Lecture",
-                "ModuleCode": "QT5201N",
-                "ModuleTitle": "",
-                "StartTime": "1300",
-                "WeekText": "Every Week",
-                "colorIndex": 0,
-              },
-            ],
-          ],
-          "Monday": Array [
-            Array [
-              Object {
-                "ClassNo": "1",
-                "DayText": "Monday",
-                "EndTime": "1200",
-                "LessonType": "Lecture",
-                "ModuleCode": "QT5101",
-                "ModuleTitle": "",
-                "StartTime": "1000",
-                "WeekText": "Every Week",
-                "colorIndex": 0,
-              },
-              Object {
-                "ClassNo": "1",
-                "DayText": "Monday",
-                "EndTime": "1630",
-                "LessonType": "Lecture",
-                "ModuleCode": "QT5201P",
-                "ModuleTitle": "",
-                "StartTime": "1330",
-                "WeekText": "Every Week",
-                "colorIndex": 0,
-              },
-            ],
-          ],
           "Thursday": Array [
             Array [
               Object {
-                "ClassNo": "1",
+                "ClassNo": "ST4",
                 "DayText": "Thursday",
-                "EndTime": "1200",
-                "LessonType": "Lecture",
-                "ModuleCode": "QT5101",
+                "EndTime": "1500",
+                "LessonType": "Tutorial",
+                "ModuleCode": "PC2132",
                 "ModuleTitle": "",
-                "StartTime": "1000",
+                "StartTime": "1400",
+                "WeekText": "Every Week",
+                "colorIndex": 0,
+              },
+              Object {
+                "ClassNo": "ST5",
+                "DayText": "Thursday",
+                "EndTime": "1600",
+                "LessonType": "Tutorial",
+                "ModuleCode": "PC2132",
+                "ModuleTitle": "",
+                "StartTime": "1500",
                 "WeekText": "Every Week",
                 "colorIndex": 0,
               },
@@ -78,24 +48,35 @@ exports[`VenueDetailRow it displays an anchor tag and a timetable when expanded 
           "Wednesday": Array [
             Array [
               Object {
-                "ClassNo": "T11",
+                "ClassNo": "ST1",
                 "DayText": "Wednesday",
-                "EndTime": "1000",
+                "EndTime": "1100",
                 "LessonType": "Tutorial",
-                "ModuleCode": "PC1222",
-                "ModuleTitle": "",
-                "StartTime": "0900",
-                "WeekText": "Every Week",
-                "colorIndex": 1,
-              },
-              Object {
-                "ClassNo": "1",
-                "DayText": "Wednesday",
-                "EndTime": "1200",
-                "LessonType": "Lecture",
-                "ModuleCode": "QT5201N",
+                "ModuleCode": "PC4241",
                 "ModuleTitle": "",
                 "StartTime": "1000",
+                "WeekText": "Every Week",
+                "colorIndex": 0,
+              },
+              Object {
+                "ClassNo": "ST2",
+                "DayText": "Wednesday",
+                "EndTime": "1400",
+                "LessonType": "Tutorial",
+                "ModuleCode": "PC2132",
+                "ModuleTitle": "",
+                "StartTime": "1300",
+                "WeekText": "Every Week",
+                "colorIndex": 0,
+              },
+              Object {
+                "ClassNo": "ST3",
+                "DayText": "Wednesday",
+                "EndTime": "1700",
+                "LessonType": "Tutorial",
+                "ModuleCode": "PC4241",
+                "ModuleTitle": "",
+                "StartTime": "1600",
                 "WeekText": "Every Week",
                 "colorIndex": 0,
               },
@@ -115,10 +96,10 @@ exports[`VenueDetailRow it displays an anchor tag when not expanded 1`] = `
 >
   <h4>
     <a
-      href="/venues/CQT%2FSR0315"
+      href="/venues/CQT%2FSR0622"
       onClick={[Function]}
     >
-      CQT/SR0315
+      CQT/SR0622
     </a>
   </h4>
 </li>

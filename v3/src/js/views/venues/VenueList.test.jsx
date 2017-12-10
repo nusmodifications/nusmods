@@ -13,7 +13,14 @@ const minProps = {
 describe('VenueList', () => {
   test('it renders all venues as VenueDetailRows', () => {
     const wrapper = mount(<VenueList {...minProps} />);
-    expect(wrapper.find('VenueDetailRow')).toHaveLength(Object.keys(venueInfo).length);
+    const rows = wrapper.find('VenueDetailRow');
+    expect(rows).toHaveLength(Object.keys(venueInfo).length);
+
+    // Case insensitive, natural sort
+    const orderedNames = rows.map(r => r.prop('name'));
+    expect(orderedNames).toContain('LT1'); // else orderedNames.indexOf('LT1') = -1, which may break test
+    expect(orderedNames.indexOf('LT1')).toBeLessThan(orderedNames.indexOf('lt2'));
+    expect(orderedNames.indexOf('lt2')).toBeLessThan(orderedNames.indexOf('LT17'));
   });
 
   test('it expands venues appropriately', () => {
@@ -28,12 +35,12 @@ describe('VenueList', () => {
     expect(wrapper.find('VenueDetailRow').filterWhere(r => r.prop('expanded'))).toHaveLength(0);
 
     // Expands a valid venue
-    wrapper = mount(<VenueList {...minProps} expandedVenue="LT17" />);
+    wrapper = mount(<VenueList {...minProps} expandedVenue="LT1" />);
     expect(wrapper.find('VenueDetailRow').filterWhere(r => r.prop('expanded'))).toHaveLength(1);
-    expect(wrapper.find('VenueDetailRow').filterWhere(r => r.prop('name') === 'LT17').first().prop('expanded')).toBe(true);
+    expect(wrapper.find('VenueDetailRow').filterWhere(r => r.prop('name') === 'LT1').first().prop('expanded')).toBe(true);
 
     // Does not expand partial match
-    expect(wrapper.find('VenueDetailRow').filterWhere(r => r.prop('name') === 'LT170').first().prop('expanded')).toBe(false);
+    expect(wrapper.find('VenueDetailRow').filterWhere(r => r.prop('name') === 'LT17').first().prop('expanded')).toBe(false);
 
     // Venue name case insensitivity
     wrapper = mount(<VenueList {...minProps} expandedVenue="cqt/SR0622" />);
