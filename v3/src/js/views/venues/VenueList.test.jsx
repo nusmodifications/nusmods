@@ -54,6 +54,6 @@ describe('VenueList', () => {
     const lt17Row = wrapper.find('VenueDetailRow').filterWhere(r => r.prop('name') === 'LT17').first();
     lt17Row.find('a').simulate('click');
     expect(mockOnSelect.mock.calls).toHaveLength(1);
-    expect(mockOnSelect.mock.calls[0]).toEqual(['LT17', '/venues/LT17']);
+    expect(mockOnSelect.mock.calls[0]).toMatchSnapshot();
   });
 });

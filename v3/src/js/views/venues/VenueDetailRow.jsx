@@ -43,7 +43,7 @@ export default class VenueDetailRow extends PureComponent<Props> {
     const { name, onClick } = this.props;
     const lessons = this.arrangedLessons();
     const venueHref = `/venues/${encodeURIComponent(name)}`;
-    const rootNodeRef: Function = this.props.rootNodeRef || noop;
+    const rootNodeRef: Function = this.props.rootNodeRef || (() => {});
 
     return (
       <li className={styles.venueDetailRow} ref={rootNodeRef}>

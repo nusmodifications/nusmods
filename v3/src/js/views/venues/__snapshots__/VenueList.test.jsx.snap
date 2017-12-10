@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VenueList it calls onSelect when a row is clicked 1`] = `
+Array [
+  "LT17",
+  "/venues/LT17",
+  <li
+    class="venueDetailRow"
+  >
+    <h4>
+      <a
+        href="/venues/LT17"
+      >
+        LT17
+      </a>
+    </h4>
+  </li>,
+]
+`;
