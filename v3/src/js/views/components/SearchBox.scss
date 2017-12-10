@@ -5,7 +5,7 @@
   top: $navbar-height;
   z-index: $module-finder-search-z-index;
   padding: 0 0 1rem;
-  background: linear-gradient(to bottom, $body-bg 3rem, rgba($body-bg, 0));
+  background: linear-gradient(to bottom, var(--body-bg) 3rem, var(--body-bg-transparent));
 }
 
 .searchWrapper {
@@ -15,6 +15,10 @@
     padding: 0.8rem 1rem 0.8rem 2rem;
     border-width: 0 0 1px;
     border-radius: 0;
+
+    &:focus {
+      box-shadow: none;
+    }
   }
 }
 
@@ -35,7 +39,7 @@
   top: calc(50% - 0.9rem);
   right: 0.5rem;
   font-size: 0.9rem;
-  color: $gray-light;
+  color: var(--gray-light);
 }
 
 @include media-breakpoint-down(sm) {
@@ -43,8 +47,8 @@
     top: $navbar-height + $navtab-height;
     padding: 0 0 0.4rem;
     margin: -1rem (-$grid-gutter-width / 2) 0;
-    border-top: 1px solid mix(#000, $body-bg, 15);
-    background: linear-gradient(to bottom, $body-bg 2rem, rgba(#000, 0.5) 2rem, rgba(#000, 0));
+    border-top: 1px solid var(--gray-lighter);
+    background: linear-gradient(to bottom, var(--body-bg) 2rem, rgba(#000, 0.5) 2rem, rgba(#000, 0));
   }
 
   .searchWrapper {

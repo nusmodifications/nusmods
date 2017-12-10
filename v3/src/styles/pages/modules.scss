@@ -9,7 +9,7 @@
   header {
     padding-bottom: 1rem;
     margin-bottom: 2rem;
-    border-bottom: 1px solid $gray-lighter;
+    border-bottom: 1px solid var(--gray-lighter);
 
     p {
       margin-bottom: 0;
@@ -34,7 +34,7 @@
     margin: 0 0 0.4rem;
     font-weight: bold;
     font-size: 1rem;
-    border-bottom: 1px solid $gray-lighter;
+    border-bottom: 1px solid var(--gray-lighter);
   }
 
   h3 {
@@ -71,8 +71,8 @@
     a {
       display: block;
       padding: 0.4rem 0 0.4rem 1rem;
-      color: $gray-light;
-      border-left: 0.3rem solid $gray-lighter;
+      color: var(--gray-light);
+      border-left: 0.3rem solid var(--gray-lighter);
     }
 
     .scroll-menu-link-active a {

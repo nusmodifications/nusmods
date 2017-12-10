@@ -1,0 +1,53 @@
+// Root and dark mode CSS variable declaration
+:root {
+  // Body background
+  --body-bg: $body-bg;
+  --body-bg-70: rgba($body-bg, 0.7);
+  --body-bg-transparent: rgba($body-bg, 0);
+
+  // Body font color
+  --body-color: $body-color;
+
+  // Shade of grays
+  --gray: $gray;
+  --gray-light: $gray-light;
+  --gray-lighter: $gray-lighter;
+  --gray-lightest: $gray-lightest;
+  --gray-dark: $gray-dark;
+
+  // Yellow
+  --yellow: $yellow;
+  --yellow-light: $mark-bg;
+
+  // Workload colors
+  @each $name, $color in $workload-colors {
+    --workload-#{$name}-bg: $color;
+    --workload-#{$name}-color: darken($color, 50);
+  }
+}
+
+body.dark {
+  --body-bg: $gray-dark;
+  --body-bg-70: rgba($gray-dark, 0.7);
+  --body-bg-transparent: rgba($gray-dark, 0);
+
+  // Body font color
+  --body-color: #aaa;
+
+  // Shade of grays
+  --gray: #aaa;
+  --gray-light: #666;
+  --gray-lighter: #474747;
+  --gray-lightest: #333;
+  --gray-dark: invert($gray-dark);
+
+  // Yellow
+  --yellow: darken($yellow, 20);
+  --yellow-light: darken($mark-bg, 75);
+
+  // Workload colors
+  @each $name, $color in $workload-colors {
+    --workload-#{$name}-bg: darken($color, 65);
+    --workload-#{$name}-color: darken($color, 30);
+  }
+}

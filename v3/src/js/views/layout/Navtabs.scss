@@ -15,7 +15,7 @@
   align-items: center;
   justify-content: space-around;
   height: $navtab-height;
-  background-color: #fff;
+  background-color: var(--body-bg);
   box-shadow: 0 0 15px -3px rgba(#000, 0.4);
 
   @include media-breakpoint-up(md) {
@@ -32,7 +32,7 @@
   margin: 0.5rem 0;
   line-height: 1;
   text-align: center;
-  color: $gray-light;
+  color: var(--gray-light);
 
   &.linkActive {
     color: theme-color(primary);

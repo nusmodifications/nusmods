@@ -16,7 +16,9 @@ import ErrorPage from 'views/errors/ErrorPage';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import { modulePage } from 'views/routes/paths';
 
-type Props = ContextRouter & {
+type Props = {
+  ...ContextRouter,
+
   moduleCode: ModuleCode,
   moduleCodes: ModuleCodeMap,
   module: ?Module,
@@ -106,11 +108,11 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
 }
 
 const mapStateToProps = (state, ownState) => {
-  const moduleCode = ownState.match.params.moduleCode;
+  const moduleCode = ownState.match.params.moduleCode.toUpperCase();
   const requestName = getRequestName(FETCH_MODULE);
 
   return {
-    moduleCode: moduleCode.toUpperCase(),
+    moduleCode,
     moduleCodes: state.entities.moduleBank.moduleCodes,
     module: state.entities.moduleBank.modules[moduleCode],
     request: state.requests[requestName],

@@ -1,9 +1,9 @@
 @each $name, $color in $workload-colors {
   .workload-#{$name}-bg {
-    background: $color;
+    background: var(--workload-#{$name}-bg);
   }
 
   .workload-#{$name}-text {
-    color: darken($color, 50);
+    color: var(--workload-#{$name}-color);
   }
 }

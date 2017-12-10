@@ -21,7 +21,7 @@
   padding: 0;
   margin: $timetable-day-v-size 0 0 0;
   text-align: right;
-  background: rgba($body-bg, 0.7);
+  background: var(--body-bg-70);
   pointer-events: none;
 
   @include media-breakpoint-up(sm) {
@@ -36,6 +36,6 @@
 :global(.verticalMode) .time {
   display: inline-block;
   padding: 0.1rem 0.2rem;
-  background: rgba($body-bg, 0.75);
+  background: var(--body-bg-70);
   transform: none;
 }
