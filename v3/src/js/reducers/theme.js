@@ -1,12 +1,12 @@
 // @flow
 import type { FSA } from 'types/redux';
 import type {
-  ColorIndex,
   ColorMapping,
   ThemeState,
 } from 'types/reducers';
 
 import _ from 'lodash';
+import { getNewColor } from 'utils/colors';
 import { ADD_MODULE, REMOVE_MODULE } from 'actions/timetables';
 import { SELECT_THEME, SELECT_MODULE_COLOR, TOGGLE_TIMETABLE_ORIENTATION } from 'actions/theme';
 
@@ -22,27 +22,6 @@ const defaultThemeState: ThemeState = {
   colors: defaultColorsState,
   timetableOrientation: HORIZONTAL,
 };
-
-export const NUM_DIFFERENT_COLORS: number = 8;
-
-// Returns a new index that is not present in the current color index.
-// If there are more than NUM_DIFFERENT_COLORS modules already present,
-// will try to balance the color distribution.
-function getNewColor(currentColorIndices: Array<ColorIndex>): number {
-  function generateInitialIndices(): Array<number> {
-    return _.range(NUM_DIFFERENT_COLORS);
-  }
-
-  let availableColorIndices = generateInitialIndices();
-  currentColorIndices.forEach((index: ColorIndex) => {
-    availableColorIndices = _.without(availableColorIndices, index);
-    if (availableColorIndices.length === 0) {
-      availableColorIndices = generateInitialIndices();
-    }
-  });
-
-  return _.sample(availableColorIndices);
-}
 
 function colors(state: ColorMapping, action: FSA): ColorMapping {
   if (!(action.payload && action.payload.moduleCode)) {

@@ -56,7 +56,7 @@ exports[`VenueDetailRow it displays an anchor tag and a timetable when expanded 
                 "ModuleTitle": "",
                 "StartTime": "1000",
                 "WeekText": "Every Week",
-                "colorIndex": 0,
+                "colorIndex": 1,
               },
               Object {
                 "ClassNo": "ST2",
@@ -78,7 +78,7 @@ exports[`VenueDetailRow it displays an anchor tag and a timetable when expanded 
                 "ModuleTitle": "",
                 "StartTime": "1600",
                 "WeekText": "Every Week",
-                "colorIndex": 0,
+                "colorIndex": 1,
               },
             ],
           ],

@@ -4,7 +4,7 @@ import _ from 'lodash';
 
 import type { ColorIndex } from 'types/reducers';
 
-import { NUM_DIFFERENT_COLORS } from 'reducers/theme';
+import { NUM_DIFFERENT_COLORS } from 'utils/colors';
 
 import './color-picker.scss';
 

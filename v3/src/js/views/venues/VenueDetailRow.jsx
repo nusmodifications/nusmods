@@ -1,7 +1,8 @@
 // @flow
 import React, { PureComponent } from 'react';
 import { flatten, noop } from 'lodash';
-import { arrangeLessonsForWeek, colorLessonsByType } from 'utils/timetables';
+import { arrangeLessonsForWeek } from 'utils/timetables';
+import { colorLessonsByKey } from 'utils/colors';
 import Timetable from 'views/timetable/Timetable';
 
 import type { DayAvailability } from 'types/venues';
@@ -33,7 +34,7 @@ export default class VenueDetailRow extends PureComponent<Props> {
     // const lessons = flatMap(availability, a => a.Classes) // Not using flatMap as it results in a Flow error
     const lessons = flatten(availability.map(dayAvail => dayAvail.Classes))
       .map(venueLesson => ({ ...venueLesson, ModuleTitle: '' }));
-    const coloredLessons = colorLessonsByType(lessons);
+    const coloredLessons = colorLessonsByKey(lessons, 'ModuleCode');
     return arrangeLessonsForWeek(coloredLessons);
   }
 
