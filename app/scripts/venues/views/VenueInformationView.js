@@ -25,7 +25,7 @@ module.exports = Marionette.LayoutView.extend({
   },
   showAvailabilityForVenue: function (venueName) {
     if (venueName !== '') {
-      Backbone.history.navigate('venues/' + venueName);
+      Backbone.history.navigate('venues/' + encodeURIComponent(venueName));
     }
 
     var selectedVenue = null;
