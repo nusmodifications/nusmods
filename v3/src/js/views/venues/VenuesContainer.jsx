@@ -31,6 +31,7 @@ type State = {
   error?: any,
   searchTerm: string,
   selectedVenue: Venue,
+  selectedVenueElement: ?HTMLElement,
 };
 
 const pageHead = (
@@ -45,6 +46,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
     venues: {},
     searchTerm: this.props.urlVenue || '',
     selectedVenue: this.props.urlVenue || '',
+    selectedVenueElement: undefined,
   }
 
   componentDidMount() {
@@ -76,9 +78,16 @@ export class VenuesContainerComponent extends Component<Props, State> {
     }
   }
 
-  onVenueSelect = (selectedVenue: Venue, venueURL: string) => {
+  componentDidUpdate() {
+    if (this.state.selectedVenueElement) {
+      // Non-futureproof and hacky way to move element below the search box
+      window.scrollTo(0, this.state.selectedVenueElement.offsetTop - 40);
+    }
+  }
+
+  onVenueSelect = (selectedVenue: Venue, venueURL: string, selectedVenueElement: HTMLElement) => {
     this.props.history.push(venueURL);
-    this.setState({ selectedVenue });
+    this.setState({ selectedVenue, selectedVenueElement });
   }
 
   filteredVenues() {
