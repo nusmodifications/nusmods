@@ -11,24 +11,6 @@ export function selectTheme(theme: string): FSA {
   };
 }
 
-export const MODIFY_MODULE_COLOR: string = 'MODIFY_MODULE_COLOR';
-export function modifyModuleColor(moduleCode: ModuleCode): FSA {
-  return {
-    type: MODIFY_MODULE_COLOR,
-    payload: {
-      activeModule: moduleCode,
-    },
-  };
-}
-
-export const CANCEL_MODIFY_MODULE_COLOR: string = 'CANCEL_MODIFY_MODULE_COLOR';
-export function cancelModifyModuleColor(): FSA {
-  return {
-    type: CANCEL_MODIFY_MODULE_COLOR,
-    payload: null,
-  };
-}
-
 export const SELECT_MODULE_COLOR: string = 'SELECT_MODULE_COLOR';
 export function selectModuleColor(moduleCode: ModuleCode, colorIndex: ColorIndex): FSA {
   return {

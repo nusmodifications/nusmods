@@ -8,9 +8,9 @@ import classnames from 'classnames';
 import type { ModuleWithColor, ModuleCode, Semester } from 'types/modules';
 import type { ColorIndex } from 'types/reducers';
 
-import ColorPicker from 'views/components/color-picker/ColorPicker';
+import ColorPicker from 'views/components/ColorPicker';
 import { Eye, EyeOff, Trash2 } from 'views/components/icons/index';
-import { selectModuleColor, modifyModuleColor, cancelModifyModuleColor } from 'actions/theme';
+import { selectModuleColor } from 'actions/theme';
 import { hideLessonInTimetable, showLessonInTimetable } from 'actions/settings';
 import { getModuleSemExamDate } from 'utils/modules';
 import { modulePage } from 'views/routes/paths';
@@ -42,37 +42,6 @@ class TimetableModulesTable extends Component<Props> {
       this.props.cancelModifyModuleColor();
     }
   };
-
-  renderColorPicker(module) {
-    const label = `Change ${module.ModuleCode} timetable color`;
-
-    return (
-      <div className={classnames(styles.moduleActionColumn)}>
-        <button
-          title={label}
-          aria-label={label}
-          className={classnames(styles.moduleColor, {
-            [`color-${module.colorIndex}`]: !module.hiddenInTimetable,
-            'color-muted': module.hiddenInTimetable,
-          })}
-          onClick={() => {
-            if (this.props.activeModule === module.ModuleCode) {
-              this.props.cancelModifyModuleColor();
-            } else {
-              this.props.modifyModuleColor(module.ModuleCode);
-            }
-          }}
-        />
-        {this.props.activeModule === module.ModuleCode &&
-        <ColorPicker
-          onChooseColor={(colorIndex: ColorIndex) => {
-            this.props.selectModuleColor(module.ModuleCode, colorIndex);
-          }}
-          onDismiss={this.cancelModifyModuleColor}
-        />}
-      </div>
-    );
-  }
 
   renderModuleActions(module) {
     const hideBtnLabel = `${module.hiddenInTimetable ? 'Show' : 'Hide'} ${module.ModuleCode}`;
@@ -140,7 +109,13 @@ class TimetableModulesTable extends Component<Props> {
             key={module.ModuleCode}
           >
             <div className={styles.modulesTableRowInner}>
-              {this.renderColorPicker(module)}
+              <ColorPicker
+                label={`Change ${module.ModuleCode} timetable color`}
+                color={module.colorIndex}
+                onChooseColor={(colorIndex: ColorIndex) => {
+                  this.props.selectModuleColor(module.ModuleCode, colorIndex);
+                }}
+              />
 
               <div className={classnames(styles.moduleActionColumn, styles.moduleDetailsColumn)}>
                 {this.renderModuleActions(module)}
@@ -175,8 +150,6 @@ export default connect(
   mapStateToProps,
   {
     selectModuleColor,
-    modifyModuleColor,
-    cancelModifyModuleColor,
     hideLessonInTimetable,
     showLessonInTimetable,
   },
