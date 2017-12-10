@@ -80,8 +80,12 @@ export class VenuesContainerComponent extends Component<Props, State> {
 
   componentDidUpdate() {
     if (this.state.selectedVenueElement) {
-      // Non-futureproof and hacky way to move element below the search box
-      window.scrollTo(0, this.state.selectedVenueElement.offsetTop - 40);
+      // Scroll selected venue's row to just below the search box
+      let scrollTargetY = this.state.selectedVenueElement.offsetTop;
+      if (this.searchBoxRootElement) {
+        scrollTargetY -= this.searchBoxRootElement.offsetHeight;
+      }
+      window.scrollTo(0, scrollTargetY);
     }
   }
 
@@ -89,6 +93,9 @@ export class VenuesContainerComponent extends Component<Props, State> {
     this.props.history.push(venueURL);
     this.setState({ selectedVenue, selectedVenueElement });
   }
+
+  // Store ref to search box root element so that we can access its height
+  searchBoxRootElement: ?HTMLElement = undefined;
 
   filteredVenues() {
     const { venues, searchTerm } = this.state;
@@ -135,6 +142,11 @@ export class VenuesContainerComponent extends Component<Props, State> {
               initialSearchTerm={this.state.searchTerm}
               placeholder="Venues"
               onSearch={searchTerm => this.setState({ searchTerm })}
+              rootElementRef={(element) => {
+                if (element) {
+                  this.searchBoxRootElement = element;
+                }
+              }}
             />
             <VenueList
               venues={venues}

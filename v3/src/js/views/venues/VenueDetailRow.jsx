@@ -15,7 +15,7 @@ type Props = {
   availability: DayAvailability[],
   expanded: boolean,
   onClick: (Venue, string) => void,
-  rootNodeRef?: (HTMLElement) => void, // For parent components to obtain a ref to the root HTMLElement
+  rootElementRef?: (HTMLElement) => void, // For parent components to obtain a ref to the root HTMLElement
 }
 
 export default class VenueDetailRow extends PureComponent<Props> {
@@ -43,10 +43,10 @@ export default class VenueDetailRow extends PureComponent<Props> {
     const { name, onClick } = this.props;
     const lessons = this.arrangedLessons();
     const venueHref = `/venues/${encodeURIComponent(name)}`;
-    const rootNodeRef: Function = this.props.rootNodeRef || (() => {});
+    const rootElementRef: Function = this.props.rootElementRef || (() => {});
 
     return (
-      <li className={styles.venueDetailRow} ref={rootNodeRef}>
+      <li className={styles.venueDetailRow} ref={rootElementRef}>
         <h4>
           <a
             href={venueHref}

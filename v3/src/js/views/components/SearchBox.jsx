@@ -12,6 +12,7 @@ type Props = {
   initialSearchTerm: ?string,
   placeholder: string,
   onSearch: (string) => void,
+  rootElementRef?: (HTMLElement) => void, // For parent components to obtain a ref to the root HTMLElement
 };
 
 type State = {
@@ -66,8 +67,12 @@ export default class SearchBox extends PureComponent<Props, State> {
   debouncedSearch: (string) => void = debounce(this.search, this.props.throttle, { leading: false });
 
   render() {
+    const rootElementRef: Function = this.props.rootElementRef || (() => {}); // noop crashes here on Node 6.6
     return (
-      <div className={classnames(styles.searchBox, { [styles.searchBoxFocused]: this.state.isFocused })}>
+      <div
+        className={classnames(styles.searchBox, { [styles.searchBoxFocused]: this.state.isFocused })}
+        ref={rootElementRef}
+      >
         <label htmlFor="search-box" className="sr-only">Search</label>
         <form
           className={styles.searchWrapper}

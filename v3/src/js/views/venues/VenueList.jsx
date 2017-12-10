@@ -30,7 +30,7 @@ export default function VenueList(props: Props) {
           name={name}
           availability={venues[name]}
           expanded={name.toLowerCase() === lowercaseExpandedVenue}
-          rootNodeRef={(row) => {
+          rootElementRef={(row) => {
             if (row) {
               rowRefs[name] = row;
             }
