@@ -93,7 +93,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
 
     const lowercaseSearchStr = searchTerm.toLowerCase();
     return pick(venues, Object.keys(venues).filter(name =>
-      name.toLowerCase().indexOf(lowercaseSearchStr) !== -1));
+      name.toLowerCase().includes(lowercaseSearchStr)));
   }
 
   render() {
