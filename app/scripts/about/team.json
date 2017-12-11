@@ -88,5 +88,17 @@
     "gravatar-alt": "Zhang Yijiang",
     "facebook": "https://www.facebook.com/zhangyijiang",
     "github": "https://github.com/ZhangYiJiang"
+  },
+  {
+    "name": "E-Liang Tan",
+    "description": "makers gotta make",
+    "active": true,
+    "link": "https://www.eliangtan.com/",
+    "gravatar": "https://gravatar.com/avatar/3064783701c7bb1b4451c79318e1b536?s=256",
+    "gravatarAlt": "E-Liang Tan",
+    "facebook": "https://www.facebook.com/taneliang",
+    "twitter": "https://twitter.com/taneliang",
+    "github": "https://github.com/taneliang",
+    "linkedin": "https://www.linkedin.com/in/taneliang"
   }
 ]
