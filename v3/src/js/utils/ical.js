@@ -9,7 +9,7 @@ import type {
 } from 'types/timetables';
 
 import config from 'config';
-import academicCalendar from 'config/academic-calendar.json';
+import academicCalendar from 'data/academic-calendar.json';
 import { getModuleSemesterData } from 'utils/modules';
 
 const SG_UTC_TIME_DIFF_MS = 8 * 60 * 60 * 1000;
