@@ -1,6 +1,5 @@
 // @flow
 import FilterGroup from 'utils/filters/FilterGroup';
-import type { AcadYear, Faculty } from './modules';
 
 /* components/ModulesSelect.jsx */
 export type SelectOption = { label: string, value: string };
