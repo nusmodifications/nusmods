@@ -1,7 +1,7 @@
 // @flow
 import { roundEnd } from 'utils/cors';
 import config from './index';
-import academicCalendar from './academic-calendar.json';
+import academicCalendar from 'data/academic-calendar.json';
 
 function isSorted(arr: Array<*>) {
   return arr.slice(1).every((item, index) => item >= arr[index]);
