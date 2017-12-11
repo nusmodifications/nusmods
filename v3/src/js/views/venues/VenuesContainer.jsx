@@ -37,7 +37,7 @@ type State = {
   error?: any,
   searchTerm: string,
   selectedVenue: Venue,
-  selectedVenueElement: ?HTMLElement,
+  selectedVenueElement?: HTMLElement,
 };
 
 const pageHead = (
@@ -55,15 +55,14 @@ export class VenuesContainerComponent extends Component<Props, State> {
     super(props);
 
     const params = qs.parse(props.location.search);
-    this.history = new HistoryDebouncer(props.history);
-    this.searchBoxRootElement = undefined;
+    const selectedVenue = this.props.urlVenue || '';
 
+    this.history = new HistoryDebouncer(props.history);
     this.state = {
+      selectedVenue,
       loading: true,
       venues: {},
-      searchTerm: params.q || this.props.urlVenue || '',
-      selectedVenue: this.props.urlVenue || '',
-      selectedVenueElement: undefined,
+      searchTerm: params.q || selectedVenue,
     };
   }
 
@@ -99,18 +98,15 @@ export class VenuesContainerComponent extends Component<Props, State> {
   }
 
   onVenueSelect = (selectedVenue: Venue, venueURL: string, selectedVenueElement: HTMLElement) => {
-    this.setState({ selectedVenue, selectedVenueElement }, () => {
-      this.updateURL(venueURL);
-    });
-  }
+    this.setState({ selectedVenue, selectedVenueElement },
+      () => this.updateURL(venueURL));
+  };
 
   onSearch = (searchTerm: string) => {
-    this.setState({ searchTerm }, () => {
-      this.updateURL();
-    });
-  }
+    this.setState({ searchTerm }, () => this.updateURL());
+  };
 
-  updateURL(path: ?string = undefined) {
+  updateURL(path?: string) {
     const { searchTerm } = this.state;
     const query = {};
     if (searchTerm) {
@@ -160,7 +156,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
     const venues = this.filteredVenues();
 
     return (
-      <div className={classnames('page-container', styles.venuesPageContainer)}>
+      <div className={classnames('page-container', styles.pageContainer)}>
         {pageHead}
 
         <div className="row">
@@ -169,7 +165,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
               throttle={0}
               useInstantSearch
               initialSearchTerm={this.state.searchTerm}
-              placeholder="Search for venues. E.g. LT27"
+              placeholder="Search for venues, e.g. LT27"
               onSearch={this.onSearch}
               rootElementRef={(element) => {
                 if (element) {

@@ -14,15 +14,16 @@ type Props = {
   onSelect: (Venue, string, HTMLElement) => void; // Called with venue name and venue URL (/venues/<venue>)
 };
 
+// $FlowFixMe: Flow doesn't have Intl typedefs https://github.com/facebook/flow/issues/1270
+const collator = new Intl.Collator('en', { sensitivity: 'base', numeric: true });
+
 export default function VenueList(props: Props) {
   const rowRefs: { [Venue]: HTMLElement } = {};
   const { venues, expandedVenue, onSelect } = props;
   const lowercaseExpandedVenue = expandedVenue.toLowerCase();
 
   // Case-insensitive, natural sort of venue names
-  const sortedVenueNames = Object.keys(venues).sort((a, b) =>
-    a.toLowerCase().localeCompare(b.toLowerCase(), 'en', { numeric: true }));
-
+  const sortedVenueNames = Object.keys(venues).sort(collator.compare);
   if (sortedVenueNames.length === 0) {
     return <Warning message="No matching venues found" />;
   }
