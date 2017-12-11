@@ -1,13 +1,12 @@
 // @flow
 import React, { PureComponent } from 'react';
 import classnames from 'classnames';
+import Downshift from 'downshift';
 import _ from 'lodash';
 
 import type { ColorIndex } from 'types/reducers';
 
-import { NUM_DIFFERENT_COLORS } from 'reducers/theme';
-
-import Downshift from 'downshift';
+import { NUM_DIFFERENT_COLORS } from 'utils/colors';
 import styles from './ColorPicker.scss';
 
 type Props = {

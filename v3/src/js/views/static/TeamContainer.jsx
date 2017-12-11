@@ -27,7 +27,7 @@ function TeamMember({ member }: Props) {
     <section className={styles.teamMember} key={member.name}>
       <div className="row">
         <div className="col-lg-2 col-sm-3 text-center-md">
-          <a href={member.github} className={styles.portrait}>
+          <a href={member.link} className={styles.portrait}>
             <img
               className="rounded-circle img-fluid img-thumbnail"
               src={`https://www.gravatar.com/avatar/${member.gravatar}?s=256`}

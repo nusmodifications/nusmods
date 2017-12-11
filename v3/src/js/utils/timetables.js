@@ -192,25 +192,17 @@ export function areOtherClassesAvailable(lessons: Array<RawLesson>,
   return Object.keys(_.groupBy(lessonTypeGroups[lessonType], lesson => lesson.ClassNo)).length > 1;
 }
 
-export function colorLessonsByType(lessons: Lesson[]) {
-  const types = new Map();
-  return lessons.map((lesson) => {
-    let colorIndex = types.get(lesson.LessonType);
-    if (!types.has(lesson.LessonType)) {
-      colorIndex = types.size;
-      types.set(lesson.LessonType, colorIndex);
-    }
-
-    return { ...lesson, colorIndex };
-  });
-}
-
 // Find all exam clashes between modules in semester
 // Returns object associating exam dates with the modules clashing on those dates
 export function findExamClashes(modules: Array<Module>, semester: Semester): { string: Array<Module> } {
   const groupedModules = _.groupBy(modules, module => _.get(getModuleSemesterData(module, semester), 'ExamDate'));
   delete groupedModules.undefined; // Remove modules without exams
   return _.omitBy(groupedModules, mods => mods.length === 1); // Remove non-clashing mods
+}
+
+// Get information for all modules present in a semester timetable config
+export function getSemesterModules(timetable: SemTimetableConfig, modules: ModulesMap): Module[] {
+  return _.values(_.pick(modules, Object.keys(timetable)));
 }
 
 function serializeModuleConfig(config: ModuleLessonConfig): string {

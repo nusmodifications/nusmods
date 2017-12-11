@@ -26,7 +26,7 @@ class Timetable extends PureComponent<Props> {
   render() {
     const schoolDays = SCHOOLDAYS.filter(day => day !== 'Saturday' || this.props.lessons.Saturday);
 
-    const lessons: Array<Lesson> = _.flattenDeep(Object.values(this.props.lessons));
+    const lessons: Array<Lesson> = _.flattenDeep(_.values(this.props.lessons));
     const { startingIndex, endingIndex } = calculateBorderTimings(lessons);
 
     return (

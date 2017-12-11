@@ -2,7 +2,7 @@
 import _ from 'lodash';
 
 import FilterGroup, { ID_DELIMITER } from 'utils/filters/FilterGroup';
-import filterGroups from './module-filters';
+import filterGroups from './moduleFilters';
 
 const groups: FilterGroup<*>[] = _.values(filterGroups);
 

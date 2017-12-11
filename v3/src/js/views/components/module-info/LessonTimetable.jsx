@@ -8,7 +8,8 @@ import type { Semester, SemesterData } from 'types/modules';
 
 import Timetable from 'views/timetable/Timetable';
 import SemesterPicker from 'views/components/module-info/SemesterPicker';
-import { arrangeLessonsForWeek, colorLessonsByType } from 'utils/timetables';
+import { arrangeLessonsForWeek } from 'utils/timetables';
+import { colorLessonsByKey } from 'utils/colors';
 import { getFirstAvailableSemester } from 'utils/modules';
 import styles from './LessonTimetable.scss';
 
@@ -43,7 +44,7 @@ export default class LessonTimetableControl extends PureComponent<Props, State> 
     const lessons = semester.Timetable.map(lesson => ({
       ...lesson, ModuleCode: '', ModuleTitle: '',
     }));
-    const coloredLessons = colorLessonsByType(lessons);
+    const coloredLessons = colorLessonsByKey(lessons, 'LessonType');
     const arrangedLessons = arrangeLessonsForWeek(coloredLessons);
 
     return (

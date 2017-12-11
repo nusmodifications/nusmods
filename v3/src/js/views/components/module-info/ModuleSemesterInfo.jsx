@@ -4,13 +4,15 @@ import type { Node } from 'react';
 import React, { Component } from 'react';
 import _ from 'lodash';
 
-import type { Semester, SemesterData } from 'types/modules';
+import type { ModuleCode, Semester, SemesterData } from 'types/modules';
 
 import { getFirstAvailableSemester, formatExamDate } from 'utils/modules';
 import SemesterPicker from './SemesterPicker';
 import TimeslotTable from './TimeslotTable';
+import ModuleExamClash from './ModuleExamClash';
 
 type Props = {
+  moduleCode: ModuleCode,
   semesters: SemesterData[],
 };
 
@@ -80,6 +82,12 @@ export default class ModuleSemesterInfo extends Component<Props, State> {
           { semester.ExamDate && <section className="module-exam">
             <h4>Exam</h4>
             { formatExamDate(semester.ExamDate) }
+
+            <ModuleExamClash
+              semester={semester.Semester}
+              examDate={semester.ExamDate}
+              moduleCode={this.props.moduleCode}
+            />
           </section>}
 
           { this.showTimeslots() && <section className="module-timeslots">

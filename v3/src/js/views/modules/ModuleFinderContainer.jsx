@@ -15,23 +15,24 @@ import type { Module } from 'types/modules';
 import type { PageRange, PageRangeDiff } from 'types/views';
 import type { FilterGroupId } from 'utils/filters/FilterGroup';
 
-import ModuleFinderList from 'views/browse/ModuleFinderList';
-import ModuleSearchBox from 'views/browse/ModuleSearchBox';
+import ModuleFinderList from 'views/modules/ModuleFinderList';
+import ModuleSearchBox from 'views/modules/ModuleSearchBox';
 import ChecklistFilters from 'views/components/filters/ChecklistFilters';
 import TimeslotFilters from 'views/components/filters/TimeslotFilters';
 import ErrorPage from 'views/errors/ErrorPage';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 
 import moduleFilters, {
+  SEMESTER,
   LEVELS,
   LECTURE_TIMESLOTS,
   TUTORIAL_TIMESLOTS,
   MODULE_CREDITS,
-} from 'views/browse/module-filters';
-import { createSearchFilter, sortModules, SEARCH_QUERY_KEY } from 'views/browse/module-search';
+} from 'utils/moduleFilters';
+import { createSearchFilter, sortModules, SEARCH_QUERY_KEY } from 'utils/moduleSearch';
 import config from 'config';
 import nusmods from 'apis/nusmods';
-import { resetModuleFinder } from 'actions/module-finder';
+import { resetModuleFinder } from 'actions/moduleFinder';
 import FilterGroup from 'utils/filters/FilterGroup';
 import HistoryDebouncer from 'utils/HistoryDebouncer';
 import { defer, breakpointUp } from 'utils/react';
@@ -278,6 +279,12 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
               <header>
                 <h3>Refine by</h3>
               </header>
+
+              <ChecklistFilters
+                group={groups[SEMESTER]}
+                groups={this.filterGroups()}
+                onFilterChange={this.onFilterChange}
+              />
 
               <ChecklistFilters
                 group={groups[LEVELS]}
