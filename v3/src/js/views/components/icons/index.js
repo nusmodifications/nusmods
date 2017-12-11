@@ -9,6 +9,8 @@ import EyeOff from 'react-feather/dist/icons/eye-off';
 import Facebook from 'react-feather/dist/icons/facebook';
 import GitHub from 'react-feather/dist/icons/github';
 import Image from 'react-feather/dist/icons/image';
+import MinusSquare from 'react-feather/dist/icons/minus-square';
+import PlusSquare from 'react-feather/dist/icons/plus-square';
 import Settings from 'react-feather/dist/icons/settings';
 import Search from 'react-feather/dist/icons/search';
 import Sidebar from 'react-feather/dist/icons/sidebar';
@@ -28,6 +30,8 @@ export {
   GitHub,
   Image,
   LinkedIn,
+  MinusSquare,
+  PlusSquare,
   Search,
   Settings,
   Sidebar,

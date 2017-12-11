@@ -64,6 +64,16 @@
   }
 }
 
+.detailsHeading {
+  padding: 0;
+  font-size: 1rem;
+
+  svg {
+    width: 1rem;
+    vertical-align: middle;
+  }
+}
+
 .details {
   padding: 1rem 1rem 0.4rem;
   background: var(--gray-lightest);
