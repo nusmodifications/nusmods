@@ -45,7 +45,7 @@ test('it should render workload correctly', () => {
     .toHaveLength(10);
 });
 
-it('should render non-integer workloads correctly', () => {
+test('it should render non-integer workloads correctly', () => {
   const component = make({
     Lecture: 1.5, // 2 blocks
     Laboratory: 0.25, // 1 block

@@ -1,18 +1,32 @@
 // @flow
+import { entries } from 'lodash';
+
 import type { FilterGroupId } from 'utils/filters/FilterGroup';
 
+import { Timeslots } from 'types/modules';
+import config from 'config';
 import LevelFilter from 'utils/filters/LevelFilter';
 import TimeslotFilter from 'utils/filters/TimeslotFilter';
 import Filter from 'utils/filters/ModuleFilter';
 import FilterGroup from 'utils/filters/FilterGroup';
-import { Timeslots } from 'types/modules';
+import { getModuleSemesterData } from 'utils/modules';
 
 export const LEVELS = 'level';
 export const LECTURE_TIMESLOTS = 'lecture';
 export const TUTORIAL_TIMESLOTS = 'tutorial';
 export const MODULE_CREDITS = 'mc';
+export const SEMESTER = 'sem';
 
 const groups: { [FilterGroupId]: FilterGroup<any> } = {
+  [SEMESTER]: new FilterGroup(
+    SEMESTER,
+    'Available In',
+    entries(config.semesterNames).map(([semesterStr, name]) => {
+      const semester = parseInt(semesterStr, 10);
+      return new Filter(semesterStr, name, module => !!getModuleSemesterData(module, semester));
+    }),
+  ),
+
   [LEVELS]: new FilterGroup(
     LEVELS,
     'Levels',

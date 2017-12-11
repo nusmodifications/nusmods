@@ -54,7 +54,7 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
   componentWillMount() {
     this.fetchModule(this.props.moduleCode);
 
-    import('views/browse/ModulePageContent')
+    import('views/modules/ModulePageContent')
       .then(module => this.setState({ ModulePageContent: module.default }))
       .catch((error) => {
         Raven.captureException(error);

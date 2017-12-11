@@ -1,3 +1,4 @@
+// This script has to be run from v3 directory, via `npm run cors`.
 const axios = require('axios');
 const cheerio = require('cheerio');
 const moment = require('moment');
@@ -8,7 +9,7 @@ const assert = require('assert');
 const CORS_URL = 'http://www.nus.edu.sg/cors/schedule.html';
 const ROUND_NAMES = ['0', '1A', '1B', '1C', '2A', '2B', '3A', '3B'];
 const TIME_FORMAT = 'dddd Do MMMM, ha'; // eg. Friday 27th October, 12pm
-const OUT_DIR = 'src/js/config';
+const OUT_DIR = 'src/js/data';
 
 function formatDateTime(date, time) {
   const dateTime = moment(`${date} ${time}`, 'DD/MM/YYYY HH:mm', true);
@@ -64,10 +65,9 @@ axios.get(CORS_URL, { responseType: 'responseType' })
 
     // 1. Retrieve the academic year and semester for the file name.
     const rawHeader = $page('span.middletabletext:has(span.scheduleheader1)').text().trim();
-    const semInfo = rawHeader.replace(/\s+|Bidding Schedule|\(AY|20|\/|Semester|\)/g, '').split(',');
-
+    const [acadYear, semester] = rawHeader.replace(/\s+|Bidding Schedule|\(AY|20|\/|Semester|\)/g, '').split(',');
     // Output file config
-    const fileName = `corsSchedule${semInfo[0]}Sem${semInfo[1]}.json`;
+    const fileName = `cors-schedule-ay${acadYear}-sem${semester}.json`;
 
     // 2. Extract the bidding schedules table
     const table = $page('.scheduleheader1')
@@ -98,10 +98,11 @@ axios.get(CORS_URL, { responseType: 'responseType' })
           periods,
         };
       }).get(); // .get() remove the cheerio wrapper
-    assert.equal(roundsData.length, ROUND_NAMES.length, 'Unexpected number of CORS bidding rounds');
+    const numRounds = +semester === 2 ? ROUND_NAMES.length - 1 : ROUND_NAMES.length; // Sem 2 has no Round 1C.
+    assert.equal(roundsData.length, numRounds, 'Unexpected number of CORS bidding rounds');
 
     // 6. Write to file
-    const jsonArray = JSON.stringify(roundsData, null, 2);
+    const jsonArray = `${JSON.stringify(roundsData, null, 2)}\n`;
     console.log(jsonArray);
     fs.writeFileSync(path.join(OUT_DIR, fileName), jsonArray);
     console.log(`Successfully written to ${fileName}.`);

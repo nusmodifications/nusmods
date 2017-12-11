@@ -1,7 +1,7 @@
 // @flow
 
 import { Search } from 'js-search';
-import { ModulesSearchIndex, ModulesTokenizer } from 'utils/modules-search';
+import { ModulesSearchIndex, ModulesTokenizer } from 'utils/modulesSearch';
 import type { SelectOption } from 'types/views';
 
 const one: SelectOption = { value: 'CS1101S', label: 'CS1101S Programming Methodology' };
