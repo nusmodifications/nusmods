@@ -3,8 +3,8 @@
 import React from 'react';
 import { map, size } from 'lodash';
 
-import type { BiddingSummary } from 'types/views';
-import { GENERAL_ACCOUNT, NEW_STUDENT, RETURNING_STUDENT } from 'types/views';
+import type { BiddingSummary } from 'types/cors';
+import { GENERAL_ACCOUNT, NEW_STUDENT, RETURNING_STUDENT } from 'types/cors';
 import styles from './styles.scss';
 
 type Props = {

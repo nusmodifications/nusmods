@@ -4,7 +4,7 @@ import React, { PureComponent } from 'react';
 import classnames from 'classnames';
 import { groupBy } from 'lodash';
 
-import type { SemesterStats } from 'types/views';
+import type { SemesterStats } from 'types/cors';
 
 import { PlusSquare, MinusSquare } from 'views/components/icons/index';
 import CorsRound from './CorsRound';

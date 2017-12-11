@@ -3,8 +3,7 @@
 import React, { PureComponent } from 'react';
 import { entries } from 'lodash';
 
-import type { BiddingStat } from 'types/modules';
-import type { SemesterStats } from 'types/views';
+import type { BiddingStat, SemesterStats } from 'types/cors';
 import { analyseStats } from 'utils/cors';
 import CorsSemester from './CorsSemester';
 

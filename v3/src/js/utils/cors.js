@@ -1,10 +1,9 @@
 // @flow
 import { first, groupBy, head, last, map, mapValues, min, sumBy } from 'lodash';
 
-import type { BiddingStat } from 'types/modules';
 import type { CorsRound } from 'config';
-import type { GroupedBiddingStat, SemesterStats, StudentType, BiddingSummary } from 'types/views';
-import { NEW_STUDENT, RETURNING_STUDENT, GENERAL_ACCOUNT } from 'types/views';
+import type { BiddingStat, GroupedBiddingStat, SemesterStats, StudentType, BiddingSummary } from 'types/cors';
+import { studentTypes, NON_BIDDING, NEW_STUDENT, RETURNING_STUDENT, GENERAL_ACCOUNT } from 'types/cors';
 import config from 'config';
 
 function appliesTo(studentAccountType: string): StudentType {
@@ -50,7 +49,7 @@ export function mergeBiddingStats(biddingStats: BiddingStat[]) {
       Bidders: sumBy(statsGroup, stats => Number(stats.Bidders)),
       LowestSuccessfulBid: min(statsGroup.map(stats => Number(stats.LowestSuccessfulBid))),
     };
-  }).filter(stat => stat.StudentType !== 0);
+  }).filter(stat => stat.StudentType !== NON_BIDDING);
 }
 
 export function findQuota(stats: GroupedBiddingStat[]): number {
@@ -87,9 +86,9 @@ export function biddingSummary(stats: GroupedBiddingStat[]): BiddingSummary {
   stats.forEach((stat) => {
     if (stat.Bidders === 0) return;
 
-    if (stat.StudentType & NEW_STUDENT) updateSummary(stat, NEW_STUDENT);
-    if (stat.StudentType & RETURNING_STUDENT) updateSummary(stat, RETURNING_STUDENT);
-    if (stat.StudentType & GENERAL_ACCOUNT) updateSummary(stat, GENERAL_ACCOUNT);
+    studentTypes.forEach((type) => {
+      if (stat.StudentType & type) updateSummary(stat, type);
+    });
   });
 
   return summary;

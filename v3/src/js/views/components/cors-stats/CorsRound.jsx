@@ -4,9 +4,9 @@ import React from 'react';
 import { groupBy, map, size } from 'lodash';
 
 import type { Faculty } from 'types/modules';
-import type { GroupedBiddingStat } from 'types/views';
+import type { GroupedBiddingStat } from 'types/cors';
 
-import { GENERAL_ACCOUNT, NEW_STUDENT, RETURNING_STUDENT } from 'types/views';
+import { GENERAL_ACCOUNT, NEW_STUDENT, RETURNING_STUDENT } from 'types/cors';
 import CorsQuota from './CorsQuota';
 import styles from './styles.scss';
 

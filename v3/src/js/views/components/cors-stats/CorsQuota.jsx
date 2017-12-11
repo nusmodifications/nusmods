@@ -11,12 +11,12 @@ type Props = {
 };
 
 export default function ({ bidders, quota }: Props) {
-  let color = 'success';
-  if (bidders / quota > 0.85) color = 'warning';
-  if (bidders / quota >= 1) color = 'danger';
+  let color = 'text-success';
+  if (bidders / quota > 0.85) color = 'text-warning';
+  if (bidders / quota >= 1) color = 'text-danger';
 
   return (
-    <span className={classnames(`text-${color}`, styles.quota)}>
+    <span className={classnames(color, styles.quota)}>
       <span className={styles.bidders}>{bidders}</span>
       <span className={styles.slash}>/</span>
       <span className={styles.available}>{quota}</span>
