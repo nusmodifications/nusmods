@@ -7,7 +7,7 @@ import { PrefixIndexStrategy } from 'js-search';
 
 import type { ModuleSelectList } from 'types/reducers';
 
-import { ModulesSearchIndex, ModulesTokenizer } from 'utils/modules-search';
+import { ModulesSearchIndex, ModulesTokenizer } from 'utils/modulesSearch';
 
 type Props = {
   moduleList: ModuleSelectList,

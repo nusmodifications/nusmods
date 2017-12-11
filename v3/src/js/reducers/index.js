@@ -14,7 +14,7 @@ import timetables from './timetables';
 import app from './app';
 import theme from './theme';
 import settings from './settings';
-import moduleFinder from './module-finder';
+import moduleFinder from './moduleFinder';
 
 export type State = {
   entities: Object,

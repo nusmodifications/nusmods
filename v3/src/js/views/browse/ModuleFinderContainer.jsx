@@ -28,11 +28,11 @@ import moduleFilters, {
   LECTURE_TIMESLOTS,
   TUTORIAL_TIMESLOTS,
   MODULE_CREDITS,
-} from 'views/browse/module-filters';
-import { createSearchFilter, sortModules, SEARCH_QUERY_KEY } from 'views/browse/module-search';
+} from 'views/browse/moduleFilters';
+import { createSearchFilter, sortModules, SEARCH_QUERY_KEY } from 'views/browse/moduleSearch';
 import config from 'config';
 import nusmods from 'apis/nusmods';
-import { resetModuleFinder } from 'actions/module-finder';
+import { resetModuleFinder } from 'actions/moduleFinder';
 import FilterGroup from 'utils/filters/FilterGroup';
 import HistoryDebouncer from 'utils/HistoryDebouncer';
 import { defer, breakpointUp } from 'utils/react';
