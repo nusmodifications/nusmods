@@ -183,7 +183,7 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
       });
 
       this.history.push({
-        ...this.props.location,
+        ...this.props.history.location,
         search: qs.stringify(query),
       });
 
@@ -214,7 +214,7 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
     // correct page when the going back in history
     const { current } = this.state.page;
     this.history.push({
-      ...this.props.location,
+      ...this.props.history.location,
       hash: current ? `page=${current}` : '',
     });
   };

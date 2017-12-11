@@ -4,8 +4,6 @@ import _ from 'lodash';
 import type {
   Lesson,
   Module,
-  ModuleCode,
-  ModuleTitle,
   RawLesson,
   Semester,
   SemesterData,
@@ -16,10 +14,6 @@ import type {
 
 import config from 'config';
 
-export function modulePagePath(moduleCode: ModuleCode, moduleTitle: ModuleTitle): string {
-  return `/modules/${moduleCode}/${_.kebabCase(moduleTitle)}`;
-}
-
 // Returns semester specific details such as exam date and timetable.
 export function getModuleSemesterData(module: Module, semester: Semester): ?SemesterData {
   return module.History.find((semData: SemesterData) => semData.Semester === semester);
@@ -27,7 +21,7 @@ export function getModuleSemesterData(module: Module, semester: Semester): ?Seme
 
 // Returns a flat array of lessons of a module for the corresponding semester.
 export function getModuleTimetable(module: Module, semester: Semester): Array<RawLesson> {
-  return _.get(getModuleSemesterData(module, semester), 'Timetable');
+  return _.get(getModuleSemesterData(module, semester), 'Timetable', []);
 }
 
 // Do these two lessons belong to the same class?

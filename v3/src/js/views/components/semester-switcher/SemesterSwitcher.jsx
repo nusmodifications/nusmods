@@ -22,7 +22,7 @@ class SemesterSwitcher extends PureComponent<Props> {
       return;
     }
     this.props.onSelectSemester(newSemester);
-  }
+  };
 
   render() {
     return (

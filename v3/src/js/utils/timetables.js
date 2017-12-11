@@ -1,4 +1,7 @@
 // @flow
+import _ from 'lodash';
+import qs from 'query-string';
+
 import type {
   ClassNo,
   Lesson,
@@ -18,7 +21,6 @@ import type {
 } from 'types/timetables';
 import type { ModulesMap } from 'reducers/entities/moduleBank';
 
-import _ from 'lodash';
 import { getModuleTimetable, getModuleSemesterData } from 'utils/modules';
 
 type LessonTypeAbbrev = { [LessonType]: string };
@@ -36,6 +38,11 @@ export const LESSON_TYPE_ABBREV: LessonTypeAbbrev = {
   'Tutorial Type 3': 'TUT3',
   Workshop: 'WS',
 };
+
+// Used for module config serialization - these must be query string safe
+// See: https://stackoverflow.com/a/31300627
+export const LESSON_TYPE_SEP = ':';
+export const LESSON_SEP = ',';
 
 export function isValidSemester(semester: Semester): boolean {
   return semester >= 1 && semester <= 4;
@@ -62,8 +69,11 @@ export function randomModuleLessonConfig(lessons: Array<RawLesson>): ModuleLesso
 }
 
 // Replaces ClassNo in SemTimetableConfig with Array<Lesson>
-export function hydrateSemTimetableWithLessons(semTimetableConfig: SemTimetableConfig, modules: ModulesMap,
-  semester: Semester): SemTimetableConfigWithLessons {
+export function hydrateSemTimetableWithLessons(
+  semTimetableConfig: SemTimetableConfig,
+  modules: ModulesMap,
+  semester: Semester,
+): SemTimetableConfigWithLessons {
   return _.mapValues(semTimetableConfig, (moduleLessonConfig: ModuleLessonConfig, moduleCode: ModuleCode) => {
     const module: Module = modules[moduleCode];
     // TODO: Split this part into a smaller function: hydrateModuleConfigWithLessons.
@@ -97,14 +107,8 @@ export function lessonsForLessonType(lessons: Array<RawLesson | Lesson>,
 //      [LessonType]: [Lesson, ...],
 //    }
 //  }
-export function timetableLessonsArray(timetable: SemTimetableConfig): Array<Lesson> {
-  let allLessons: Array<Lesson> = [];
-  _.values(timetable).forEach((lessonTypeGroup) => {
-    _.values(lessonTypeGroup).forEach((lessons: Array<Lesson>) => {
-      allLessons = allLessons.concat(lessons);
-    });
-  });
-  return allLessons;
+export function timetableLessonsArray(timetable: SemTimetableConfigWithLessons): Array<Lesson> {
+  return _.flatMapDeep(timetable, _.values);
 }
 
 //  Groups flat array of lessons by day.
@@ -135,7 +139,10 @@ export function arrangeLessonsWithinDay(lessons: Array<Lesson>): TimetableDayArr
   if (_.isEmpty(lessons)) {
     return rows;
   }
-  const sortedLessons = _.sortBy(lessons, lesson => lesson.StartTime);
+  const sortedLessons = lessons.sort((a, b) => {
+    const timeDiff = a.StartTime.localeCompare(b.StartTime);
+    return timeDiff !== 0 ? timeDiff : a.ClassNo.localeCompare(b.ClassNo);
+  });
   sortedLessons.forEach((lesson: Lesson) => {
     for (let i = 0, length = rows.length; i < length; i++) {
       const rowLessons: Array<Lesson> = rows[i];
@@ -209,4 +216,46 @@ export function findExamClashes(modules: Array<Module>, semester: Semester): { s
 // Get information for all modules present in a semester timetable config
 export function getSemesterModules(timetable: SemTimetableConfig, modules: ModulesMap): Module[] {
   return _.values(_.pick(modules, Object.keys(timetable)));
+}
+
+function serializeModuleConfig(config: ModuleLessonConfig): string {
+  // eg. { Lecture: 1, Laboratory: 2 } => LEC=1,LAB=2
+  return _.map(config, (classNo, lessonType) =>
+    [LESSON_TYPE_ABBREV[lessonType], encodeURIComponent(classNo)].join(LESSON_TYPE_SEP))
+    .join(LESSON_SEP);
+}
+
+function parseModuleConfig(serialized: string): ModuleLessonConfig {
+  const config = {};
+
+  serialized.split(LESSON_SEP)
+    .forEach((lesson) => {
+      const [lessonTypeAbbr, classNo] = lesson.split(LESSON_TYPE_SEP);
+      const lessonType = _.findKey(LESSON_TYPE_ABBREV, abbr => abbr === lessonTypeAbbr);
+      // Ignore unparsable/invalid keys
+      if (!lessonType) return;
+      config[lessonType] = classNo;
+    });
+
+  return config;
+}
+
+// Converts a timetable config to query string
+// eg:
+// {
+//   CS2104: { Lecture: '1', Tutorial: '2' },
+//   CS2107: { Lecture: '1', Tutorial: '8' },
+// }
+// => CS2104=LEC:1,Tut:2&CS2107=LEC:1,Tut:8
+export function serializeTimetable(timetable: SemTimetableConfig): string {
+  // We are using query string safe characters, so this encoding is unnecessary
+  return qs.stringify(_.mapValues(timetable, serializeModuleConfig), { encode: false });
+}
+
+export function deserializeTimetable(serialized: string): SemTimetableConfig {
+  return _.mapValues(qs.parse(serialized), parseModuleConfig);
+}
+
+export function isSameTimetableConfig(t1: SemTimetableConfig, t2: SemTimetableConfig): boolean {
+  return _.isEqual(t1, t2);
 }

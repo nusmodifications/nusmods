@@ -17,9 +17,10 @@ export default function Routes() {
   return (
     <Switch>
       <Redirect exact from="/" to="/timetable" />
+
       <Route path="/about" component={AboutContainer} />
       <Route path="/faq" component={FaqContainer} />
-      <Route path="/timetable" component={TimetableContainer} />
+      <Route path="/timetable/:semester?" component={TimetableContainer} />
       <Route exact path="/modules" component={ModuleFinderContainer} />
       <Route path="/modules/:moduleCode/:slug?" component={ModulePageContainer} />
       <Route path="/settings" component={SettingsContainer} />
