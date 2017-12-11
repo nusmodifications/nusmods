@@ -88,5 +88,17 @@
     "gravatar-alt": "Zhang Yijiang",
     "facebook": "https://www.facebook.com/zhangyijiang",
     "github": "https://github.com/ZhangYiJiang"
+  },
+  {
+    "name": "E-Liang Tan",
+    "description": "",
+    "active": true,
+    "link": "https://www.eliangtan.com/",
+    "gravatar": "",
+    "gravatar-alt": "E-Liang Tan",
+    "facebook": "https://www.facebook.com/taneliang",
+    "twitter": "",
+    "github": "https://github.com/taneliang",
+    "linkedin": ""
   }
 ]
