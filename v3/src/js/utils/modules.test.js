@@ -4,7 +4,6 @@ import type { Semester, SemesterData, Lesson } from 'types/modules';
 
 import _ from 'lodash';
 import {
-  modulePagePath,
   getModuleSemesterData,
   areLessonsSameClass,
   formatExamDate,
@@ -21,11 +20,6 @@ import cs3216 from '__mocks__/modules/CS3216.json';
 const mockLesson: Lesson = _.cloneDeep(cs1010s.History[0].Timetable[0]);
 mockLesson.ModuleCode = 'CS1010S';
 mockLesson.ModuleTitle = 'Programming Methodology';
-
-test('modulePagePath should generate route correctly', () => {
-  expect(modulePagePath('CS1010S', 'Programming Methodology'))
-    .toBe('/modules/CS1010S/programming-methodology');
-});
 
 test('getModuleSemesterData should return semester data if semester is present', () => {
   const sem: Semester = 1;

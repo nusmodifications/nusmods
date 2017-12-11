@@ -12,7 +12,8 @@ import ColorPicker from 'views/components/color-picker/ColorPicker';
 import { Eye, EyeOff, Trash2 } from 'views/components/icons/index';
 import { selectModuleColor, modifyModuleColor, cancelModifyModuleColor } from 'actions/theme';
 import { hideLessonInTimetable, showLessonInTimetable } from 'actions/settings';
-import { getModuleSemExamDate, modulePagePath } from 'utils/modules';
+import { getModuleSemExamDate } from 'utils/modules';
+import { modulePage } from 'views/routes/paths';
 
 import styles from './TimetableModulesTable.scss';
 import timetableActionsStyles from './TimetableActions.scss';
@@ -144,7 +145,7 @@ class TimetableModulesTable extends Component<Props> {
               <div className={classnames(styles.moduleActionColumn, styles.moduleDetailsColumn)}>
                 {this.renderModuleActions(module)}
 
-                <Link to={modulePagePath(module.ModuleCode, module.ModuleTitle)}>
+                <Link to={modulePage(module.ModuleCode, module.ModuleTitle)}>
                   {module.ModuleCode} {module.ModuleTitle}
                 </Link>
 

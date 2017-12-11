@@ -77,10 +77,11 @@ export class AppShell extends Component<Props> {
   }
 
   currentTime() {
+    const debugRound = qs.parse(this.props.location.search).round;
+
     // For manual testing - add ?round=1A (or other round names) to trigger the notification
-    const param = qs.parse(this.props.location.search);
-    if (param.round) {
-      const round = config.corsSchedule.find(r => r.round === param.round);
+    if (debugRound) {
+      const round = config.corsSchedule.find(r => r.round === debugRound);
       if (round) return roundStart(round);
     }
 

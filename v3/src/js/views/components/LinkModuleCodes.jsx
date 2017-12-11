@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import type { State } from 'reducers';
 import type { ModuleCodeMap } from 'types/reducers';
 
-import { modulePagePath } from 'utils/modules';
+import { modulePage } from 'views/routes/paths';
 import { replaceWithNode } from 'utils/react';
 
 type Props = {
@@ -30,7 +30,7 @@ export function LinkModuleCodesComponent(props: Props) {
     const code = part.replace(/\s*/g, '');
     const module = moduleCodes[code];
     if (!module) return part;
-    return <Link to={modulePagePath(code, module.ModuleTitle)} key={i}>{part}</Link>;
+    return <Link to={modulePage(code, module.ModuleTitle)} key={i}>{part}</Link>;
   })}</span>);
 }
 
