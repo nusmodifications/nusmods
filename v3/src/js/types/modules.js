@@ -90,7 +90,10 @@ export type Module = {
   Workload?: string,
 };
 
-export type ModuleWithColor = Module & { colorIndex: ColorIndex } & { hiddenInTimetable: boolean };
+export type ModuleWithColor = Module & {
+  colorIndex: ColorIndex,
+  hiddenInTimetable: boolean,
+};
 
 // This format is returned from the module list endpoint.
 export type ModuleCondensed = {

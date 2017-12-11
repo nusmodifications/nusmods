@@ -1,297 +1,148 @@
 // @flow
-import React, { Component } from 'react';
+
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import Helmet from 'react-helmet';
-import _ from 'lodash';
-import config from 'config';
+import { withRouter, Redirect, type ContextRouter } from 'react-router-dom';
+import { isEmpty, difference } from 'lodash';
 
-import type {
-  ThemeState,
-  TimetableOrientation,
-  ModuleSelectList,
-} from 'types/reducers';
-import { HORIZONTAL } from 'types/reducers';
-import type {
-  Lesson,
-  Module,
-  ModuleCode,
-  RawLesson,
-  Semester,
-} from 'types/modules';
-import type { SemTimetableConfig, TimetableArrangement } from 'types/timetables';
+import type { Semester, ModuleCode } from 'types/modules';
+import type { SemTimetableConfig } from 'types/timetables';
 
-import classnames from 'classnames';
-import { getSemModuleSelectList } from 'reducers/entities/moduleBank';
 import { selectSemester } from 'actions/settings';
-import { downloadAsJpeg, downloadAsIcal } from 'actions/export';
-import {
-  addModule,
-  cancelModifyLesson,
-  changeLesson,
-  modifyLesson,
-  removeModule,
-} from 'actions/timetables';
-import { toggleTimetableOrientation } from 'actions/theme';
-import { getModuleTimetable, areLessonsSameClass, formatExamDate } from 'utils/modules';
-import {
-  timetableLessonsArray,
-  hydrateSemTimetableWithLessons,
-  arrangeLessonsForWeek,
-  areOtherClassesAvailable,
-  lessonsForLessonType,
-  findExamClashes,
-} from 'utils/timetables';
-import ModulesSelect from 'views/components/ModulesSelect';
+import { setTimetable } from 'actions/timetables';
+import { fetchModule } from 'actions/moduleBank';
+import { serializeTimetable, deserializeTimetable, isSameTimetableConfig } from 'utils/timetables';
+import { semesterForTimetablePage, timetablePage } from 'views/routes/paths';
+import NotFoundPage from 'views/errors/NotFoundPage';
 import SemesterSwitcher from 'views/components/semester-switcher/SemesterSwitcher';
+import TimetableContent from './TimetableContent';
 
-import styles from './TimetableContainer.scss';
-import Timetable from './Timetable';
-import TimetableActions from './TimetableActions';
-import TimetableModulesTable from './TimetableModulesTable';
+const EMPTY_OBJECT = {};
 
 type Props = {
-  semester: Semester,
-  semModuleList: ModuleSelectList,
-  semTimetableWithLessons: SemTimetableConfig,
-  modules: Module,
-  colors: ThemeState,
-  activeLesson: Lesson,
-  timetableOrientation: TimetableOrientation,
-  hiddenInTimetable: Array<ModuleCode>,
+  ...ContextRouter,
 
-  addModule: Function,
-  removeModule: Function,
-  modifyLesson: Function,
-  changeLesson: Function,
-  cancelModifyLesson: Function,
-  toggleTimetableOrientation: Function,
-  downloadAsJpeg: Function,
-  downloadAsIcal: Function,
-  selectSemester: Function,
+  semester: ?Semester,
+  activeSemester: Semester,
+  timetable: ?SemTimetableConfig,
+
+  selectSemester: (Semester) => void,
+  setTimetable: (Semester, SemTimetableConfig) => void,
+  fetchModule: (ModuleCode) => void,
 };
 
-class TimetableContainer extends Component<Props> {
-  timetableDom: ?HTMLElement;
+/**
+ * Manages the semester and deconflicts stored timetable with imported timetable.
+ *
+ * - Checks if the semester path param is valid and display a 404 page if it is not
+ * - Import timetable data from query string if there's no existing timetable
+ * - Update query string when the timetable changes
+ */
+export class TimetableContainerComponent extends PureComponent<Props> {
+  importedTimetable: ?SemTimetableConfig;
 
-  componentWillUnmount() {
-    this.cancelModifyLesson();
+  componentDidMount() {
+    const { timetable, semester } = this.props;
+    if (semester == null || !timetable) return;
+
+    const importedTimetable = deserializeTimetable(this.props.location.search);
+
+    if (!isEmpty(importedTimetable)) {
+      if (isEmpty(timetable)) {
+        // If there's no existing timetable, we do a clean import
+        this.props.setTimetable(semester, importedTimetable);
+      } else if (!isSameTimetableConfig(timetable, importedTimetable)) {
+        this.importedTimetable = importedTimetable;
+
+        // If there is an existing timetable, and it doesn't match the imported one, we
+        // check with the user if they want to import
+        difference(Object.keys(timetable), Object.keys(importedTimetable))
+          .forEach(moduleCode => this.props.fetchModule(moduleCode));
+
+        // TODO: Actually show the dialog box
+      }
+    }
+
+    if (!this.importedTimetable) {
+      this.updateQueryString(timetable);
+    }
   }
 
-  cancelModifyLesson = () => {
-    if (this.props.activeLesson) {
-      this.props.cancelModifyLesson();
+  componentWillReceiveProps(nextProps: Props) {
+    const { timetable, semester } = nextProps;
+    if (semester != null && timetable) {
+      this.updateQueryString(timetable);
     }
-  };
-
-  downloadAsJpeg = () => this.props.downloadAsJpeg(this.timetableDom);
-
-  downloadAsIcal = () =>
-    this.props.downloadAsIcal(this.props.semester, this.props.semTimetableWithLessons, this.props.modules);
-
-  isHiddenInTimetable = (moduleCode: ModuleCode) => {
-    return this.props.hiddenInTimetable.includes(moduleCode);
-  };
-
-  modifyCell = (lesson: Lesson) => {
-    // $FlowFixMe When object spread type actually works
-    if (lesson.isAvailable) {
-      this.props.changeLesson(this.props.semester, lesson);
-    } else if (lesson.isActive) {
-      this.props.cancelModifyLesson();
-    } else {
-      this.props.modifyLesson(lesson);
-    }
-  };
-
-  // Returns modules currently in the timetable
-  addedModules(): Array<Module> {
-    const modules = _.keys(this.props.semTimetableWithLessons)
-      .sort((a, b) => a.localeCompare(b))
-      .map(moduleCode => this.props.modules[moduleCode]);
-    return _.compact(modules);
   }
 
-  // Returns component with table(s) of modules
-  renderModuleSections(horizontalOrientation) {
-    const renderModuleTable = modules => (
-      <TimetableModulesTable
-        modules={modules.map(module => ({
-          ...module,
-          colorIndex: this.props.colors[module.ModuleCode],
-          hiddenInTimetable: this.isHiddenInTimetable(module.ModuleCode),
-        }))}
-        horizontalOrientation={horizontalOrientation}
-        semester={this.props.semester}
-        onRemoveModule={moduleCode => this.props.removeModule(this.props.semester, moduleCode)}
+  timetableHeader(semester: Semester) {
+    return (
+      <SemesterSwitcher
+        semester={semester}
+        onSelectSemester={this.selectSemester}
       />
     );
+  }
 
-    // Separate added modules into sections of clashing modules
-    const modules = this.addedModules();
-    const clashes: { [string]: Array<Module> } = findExamClashes(modules, this.props.semester);
-    const nonClashingMods: Array<Module> = _.difference(modules, _.flatten(_.values(clashes)));
+  selectSemester = (semester: Semester) => {
+    this.props.selectSemester(semester);
 
-    return (
-      <div>
-        {_.isEmpty(clashes) ? null : (
-          <div className="alert alert-danger" role="alert">
-            <h4>Exam Clashes</h4>
-            <p>There are <strong className="clash">clashes</strong> in your exam timetable.</p>
-            {Object.keys(clashes).sort().map(clashDate => (
-              <div key={clashDate}>
-                <h5>Clash on {formatExamDate(clashDate)}</h5>
-                {renderModuleTable(clashes[clashDate])}
-              </div>
-            ))}
-          </div>
-        )}
-        {renderModuleTable(nonClashingMods)}
-      </div>
-    );
+    this.props.history.push({
+      ...this.props.history.location,
+      pathname: timetablePage(semester),
+    });
+  };
+
+  updateQueryString(timetable: SemTimetableConfig) {
+    const queryTimetable = deserializeTimetable(this.props.location.search);
+
+    if (!isSameTimetableConfig(queryTimetable, timetable)) {
+      this.props.history.replace({
+        ...this.props.history.location,
+        search: serializeTimetable(timetable),
+      });
+    }
   }
 
   render() {
-    let timetableLessons: Array<Lesson> = timetableLessonsArray(this.props.semTimetableWithLessons)
-      // Do not process hidden modules
-      .filter(lesson => !this.isHiddenInTimetable(lesson.ModuleCode));
+    const { timetable, semester, activeSemester, match } = this.props;
 
-    if (this.props.activeLesson) {
-      const activeLesson = this.props.activeLesson;
-      const moduleCode = activeLesson.ModuleCode;
-      // Remove activeLesson because it will appear again
-      timetableLessons = timetableLessons.filter(lesson => !areLessonsSameClass(lesson, activeLesson));
-
-      const module = this.props.modules[moduleCode];
-      const moduleTimetable: Array<RawLesson> = getModuleTimetable(module, this.props.semester);
-      lessonsForLessonType(moduleTimetable, activeLesson.LessonType).forEach((lesson) => {
-        const modifiableLesson = {
-          ...lesson,
-          // Inject module code in
-          ModuleCode: moduleCode,
-          ModuleTitle: module.ModuleTitle,
-        };
-        if (areLessonsSameClass(modifiableLesson, activeLesson)) {
-          modifiableLesson.isActive = true;
-        } else if (lesson.LessonType === activeLesson.LessonType) {
-          modifiableLesson.isAvailable = true;
-        }
-        timetableLessons.push(modifiableLesson);
-      });
+    // Redirect to activeSemester if no semester was given in the URL
+    if (!match.params.semester) {
+      return <Redirect to={timetablePage(activeSemester)} />;
     }
-    // Inject color into module
-    timetableLessons = timetableLessons.map((lesson): Lesson => {
-      return { ...lesson, colorIndex: this.props.colors[lesson.ModuleCode] };
-    });
 
-    const arrangedLessons: TimetableArrangement = arrangeLessonsForWeek(timetableLessons);
-    const arrangedLessonsWithModifiableFlag: TimetableArrangement = _.mapValues(arrangedLessons, (dayRows) => {
-      return dayRows.map((row) => {
-        return row.map((lesson) => {
-          const module: Module = this.props.modules[lesson.ModuleCode];
-          const moduleTimetable: Array<RawLesson> = getModuleTimetable(module, this.props.semester);
-          return {
-            ...lesson,
-            isModifiable: areOtherClassesAvailable(moduleTimetable, lesson.LessonType),
-          };
-        });
-      });
-    });
-
-    const isVerticalOrientation = this.props.timetableOrientation !== HORIZONTAL;
+    // Otherwise if the semester is null, then the semester is invalid, so we
+    // display the 404 error page
+    if (semester == null || !timetable) {
+      return <NotFoundPage />;
+    }
 
     return (
-      <div
-        className={classnames(styles.container, 'page-container')}
-        onClick={this.cancelModifyLesson}
-      >
-        <Helmet>
-          <title>Timetable - {config.brandName}</title>
-        </Helmet>
-        <div>
-          <SemesterSwitcher
-            semester={this.props.semester}
-            onSelectSemester={this.props.selectSemester}
-          />
-        </div>
-        <div className="row">
-          <div
-            className={classnames({
-              'col-md-12': !isVerticalOrientation,
-              'col-md-8': isVerticalOrientation,
-              verticalMode: isVerticalOrientation,
-            })}
-          >
-            <div className={styles.timetableWrapper}>
-              <Timetable
-                lessons={arrangedLessonsWithModifiableFlag}
-                isVerticalOrientation={isVerticalOrientation}
-                onModifyCell={this.modifyCell}
-                ref={(r) => {
-                  this.timetableDom = r && r.timetableDom;
-                }}
-              />
-            </div>
-          </div>
-          <div
-            className={classnames({
-              'col-md-12': !isVerticalOrientation,
-              'col-md-4': isVerticalOrientation,
-            })}
-          >
-            <TimetableActions
-              isVerticalOrientation={!isVerticalOrientation}
-              toggleTimetableOrientation={this.props.toggleTimetableOrientation}
-              downloadAsJpeg={this.downloadAsJpeg}
-              downloadAsIcal={this.downloadAsIcal}
-            />
-            <div className={styles.tableContainer}>
-              <div className="col-md-12">
-                <ModulesSelect
-                  moduleList={this.props.semModuleList}
-                  onChange={(moduleCode) => {
-                    this.props.addModule(this.props.semester, moduleCode.value);
-                  }}
-                  placeholder="Add module to timetable"
-                />
-                <br />
-                {this.renderModuleSections(!isVerticalOrientation)}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <TimetableContent
+        semester={semester}
+        timetable={timetable}
+        header={this.timetableHeader(semester)}
+      />
     );
   }
 }
 
-function mapStateToProps(state) {
-  const modules = state.entities.moduleBank.modules;
-  const semester = state.app.activeSemester;
-  const semTimetable = state.timetables[semester] || {};
-  const semModuleList = getSemModuleSelectList(state.entities.moduleBank, semester, semTimetable);
-  const semTimetableWithLessons = hydrateSemTimetableWithLessons(semTimetable, modules, semester);
-  const hiddenInTimetable = state.settings.hiddenInTimetable || [];
+const mapStateToProps = (state, ownProps) => {
+  const semester = semesterForTimetablePage(ownProps.match.params.semester);
+  const timetable = state.timetables[semester] || EMPTY_OBJECT;
 
   return {
     semester,
-    semModuleList,
-    semTimetableWithLessons,
-    modules,
-    activeLesson: state.app.activeLesson,
-    colors: state.theme.colors,
-    timetableOrientation: state.theme.timetableOrientation,
-    hiddenInTimetable,
+    timetable,
+    activeSemester: state.app.activeSemester,
   };
-}
+};
 
-export default connect(mapStateToProps, {
-  addModule,
-  removeModule,
-  modifyLesson,
-  changeLesson,
-  cancelModifyLesson,
-  toggleTimetableOrientation,
-  downloadAsJpeg,
-  downloadAsIcal,
-  selectSemester,
-})(TimetableContainer);
+export default withRouter(
+  connect(mapStateToProps, {
+    selectSemester,
+    setTimetable,
+    fetchModule,
+  })(TimetableContainerComponent),
+);

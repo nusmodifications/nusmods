@@ -14,9 +14,11 @@ import { getRequestName } from 'reducers/requests';
 import NotFoundPage from 'views/errors/NotFoundPage';
 import ErrorPage from 'views/errors/ErrorPage';
 import LoadingSpinner from 'views/components/LoadingSpinner';
-import { modulePagePath } from 'utils/modules';
+import { modulePage } from 'views/routes/paths';
 
-type Props = ContextRouter & {
+type Props = {
+  ...ContextRouter,
+
   moduleCode: ModuleCode,
   moduleCodes: ModuleCodeMap,
   module: ?Module,
@@ -78,7 +80,7 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
 
   canonicalUrl() {
     if (!this.props.module) throw new Error('canonicalUrl() called before module is loaded');
-    return modulePagePath(this.props.moduleCode, this.props.module.ModuleTitle);
+    return modulePage(this.props.moduleCode, this.props.module.ModuleTitle);
   }
 
   render() {
@@ -106,11 +108,11 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
 }
 
 const mapStateToProps = (state, ownState) => {
-  const moduleCode = ownState.match.params.moduleCode;
+  const moduleCode = ownState.match.params.moduleCode.toUpperCase();
   const requestName = getRequestName(FETCH_MODULE);
 
   return {
-    moduleCode: moduleCode.toUpperCase(),
+    moduleCode,
     moduleCodes: state.entities.moduleBank.moduleCodes,
     module: state.entities.moduleBank.modules[moduleCode],
     request: state.requests[requestName],

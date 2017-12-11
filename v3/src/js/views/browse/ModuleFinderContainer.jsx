@@ -23,6 +23,7 @@ import ErrorPage from 'views/errors/ErrorPage';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 
 import moduleFilters, {
+  SEMESTER,
   LEVELS,
   LECTURE_TIMESLOTS,
   TUTORIAL_TIMESLOTS,
@@ -182,7 +183,7 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
       });
 
       this.history.push({
-        ...this.props.location,
+        ...this.props.history.location,
         search: qs.stringify(query),
       });
 
@@ -213,7 +214,7 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
     // correct page when the going back in history
     const { current } = this.state.page;
     this.history.push({
-      ...this.props.location,
+      ...this.props.history.location,
       hash: current ? `page=${current}` : '',
     });
   };
@@ -278,6 +279,12 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
               <header>
                 <h3>Refine by</h3>
               </header>
+
+              <ChecklistFilters
+                group={groups[SEMESTER]}
+                groups={this.filterGroups()}
+                onFilterChange={this.onFilterChange}
+              />
 
               <ChecklistFilters
                 group={groups[LEVELS]}
