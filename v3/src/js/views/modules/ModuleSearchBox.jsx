@@ -7,7 +7,7 @@ import qs from 'query-string';
 
 import SearchBox from 'views/components/SearchBox';
 import { searchModules } from 'actions/moduleFinder';
-import { SEARCH_QUERY_KEY } from './moduleSearch';
+import { SEARCH_QUERY_KEY } from 'utils/moduleSearch';
 
 type Props = ContextRouter & {
   throttle: number,

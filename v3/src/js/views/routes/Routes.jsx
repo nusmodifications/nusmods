@@ -3,8 +3,8 @@ import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 import TimetableContainer from 'views/timetable/TimetableContainer';
-import ModulePageContainer from 'views/browse/ModulePageContainer';
-import ModuleFinderContainer from 'views/browse/ModuleFinderContainer';
+import ModulePageContainer from 'views/modules/ModulePageContainer';
+import ModuleFinderContainer from 'views/modules/ModuleFinderContainer';
 import SettingsContainer from 'views/settings/SettingsContainer';
 import AboutContainer from 'views/static/AboutContainer';
 import TeamContainer from 'views/static/TeamContainer';

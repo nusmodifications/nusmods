@@ -1,6 +1,5 @@
 // @flow
-
-import _ from 'lodash';
+import { pickBy, values } from 'lodash';
 
 export class ModulesSearchIndex {
   tokenToUidToDocumentMap: Object;
@@ -25,7 +24,7 @@ export class ModulesSearchIndex {
       const token: string = tokens[i];
       const currentUidToDocumentMap: Object = this.tokenToUidToDocumentMap[token] || {};
 
-      uidToDocumentMap = _.pickBy(uidToDocumentMap, (value: Object, key: string) => {
+      uidToDocumentMap = pickBy(uidToDocumentMap, (value: Object, key: string) => {
         return currentUidToDocumentMap[key];
       });
     }
@@ -36,7 +35,7 @@ export class ModulesSearchIndex {
     the query appears.
     If they are the same, sort based on the module code.
     */
-    const documents: Array<Object> = _.values(uidToDocumentMap);
+    const documents: Array<Object> = values(uidToDocumentMap);
     documents.sort((a: Object, b: Object) => {
       const indexOfA: number = a.label.toLowerCase().indexOf(lowerCaseQuery);
       const indexOfB: number = b.label.toLowerCase().indexOf(lowerCaseQuery);
