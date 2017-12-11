@@ -97,11 +97,11 @@ axios.get(CORS_URL, { responseType: 'responseType' })
           periods,
         };
       }).get(); // .get() remove the cheerio wrapper
-    const numRounds = +semester == 2 ? ROUND_NAMES.length - 1: ROUND_NAMES.length; // Sem 2 has no Round 1C.
+    const numRounds = +semester === 2 ? ROUND_NAMES.length - 1 : ROUND_NAMES.length; // Sem 2 has no Round 1C.
     assert.equal(roundsData.length, numRounds, 'Unexpected number of CORS bidding rounds');
 
     // 6. Write to file
-    const jsonArray = JSON.stringify(roundsData, null, 2) + '\n';
+    const jsonArray = `${JSON.stringify(roundsData, null, 2)}\n`;
     console.log(jsonArray);
     fs.writeFileSync(path.join(OUT_DIR, fileName), jsonArray);
     console.log(`Successfully written to ${fileName}.`);
