@@ -9,8 +9,10 @@ import EyeOff from 'react-feather/dist/icons/eye-off';
 import Facebook from 'react-feather/dist/icons/facebook';
 import GitHub from 'react-feather/dist/icons/github';
 import Image from 'react-feather/dist/icons/image';
+import Repeat from 'react-feather/dist/icons/repeat';
 import Settings from 'react-feather/dist/icons/settings';
 import Search from 'react-feather/dist/icons/search';
+import Share from 'react-feather/dist/icons/share-2';
 import Sidebar from 'react-feather/dist/icons/sidebar';
 import Twitter from 'react-feather/dist/icons/twitter';
 import Trash2 from 'react-feather/dist/icons/trash-2';
@@ -28,8 +30,10 @@ export {
   GitHub,
   Image,
   LinkedIn,
+  Repeat,
   Search,
   Settings,
+  Share,
   Sidebar,
   Twitter,
   Trash2,
