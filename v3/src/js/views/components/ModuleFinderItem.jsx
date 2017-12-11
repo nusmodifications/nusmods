@@ -6,7 +6,7 @@ import { connect, type MapStateToProps } from 'react-redux';
 import type { Module } from 'types/modules';
 import type { ModuleSearch } from 'types/reducers';
 
-import { modulePagePath } from 'utils/modules';
+import { modulePage } from 'views/routes/paths';
 import { highlight } from 'utils/react';
 import ModuleSemesterInfo from './module-info/ModuleSemesterInfo';
 import ModuleWorkload from './module-info/ModuleWorkload';
@@ -32,7 +32,7 @@ export class ModuleFinderItemComponent extends PureComponent<Props> {
           <div className="col-lg-8 col-md-12 col-sm-8">
             <header>
               <h2 className="modules-title">
-                <Link to={modulePagePath(module.ModuleCode, module.ModuleTitle)}>
+                <Link to={modulePage(module.ModuleCode, module.ModuleTitle)}>
                   {this.highlight(`${module.ModuleCode} ${module.ModuleTitle}`)}
                 </Link>
               </h2>
@@ -66,7 +66,7 @@ export class ModuleFinderItemComponent extends PureComponent<Props> {
             </dl>
           </div>
           <div className="col-lg-4 col-md-12 col-sm-4">
-            <ModuleSemesterInfo semesters={module.History} />
+            <ModuleSemesterInfo semesters={module.History} moduleCode={module.ModuleCode} />
             {module.Workload && <ModuleWorkload workload={module.Workload} />}
           </div>
         </div>

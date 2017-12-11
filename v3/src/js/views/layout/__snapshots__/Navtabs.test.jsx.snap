@@ -33,7 +33,7 @@ exports[`renders into nav element 1`] = `
     <span
       className="title"
     >
-      Browse
+      Modules
     </span>
   </NavLink>
   <NavLink

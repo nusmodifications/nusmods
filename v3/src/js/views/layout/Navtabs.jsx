@@ -14,7 +14,7 @@ function Navtabs() {
       </NavLink>
       <NavLink className={styles.link} activeClassName={styles.linkActive} to="/modules">
         <Search className={styles.icon} />
-        <span className={styles.title}>Browse</span>
+        <span className={styles.title}>Modules</span>
       </NavLink>
       <NavLink className={styles.link} activeClassName={styles.linkActive} to="/venues">
         <Map className={styles.icon} />

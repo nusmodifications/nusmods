@@ -2,8 +2,8 @@
 import type { ModuleFinderState } from 'types/reducers';
 import type { FSA } from 'types/redux';
 import update from 'immutability-helper';
-import { SEARCH_MODULES, RESET_MODULE_FINDER } from 'actions/module-finder';
-import { tokenize } from 'views/browse/module-search';
+import { SEARCH_MODULES, RESET_MODULE_FINDER } from 'actions/moduleFinder';
+import { tokenize } from 'utils/moduleSearch';
 
 const defaultState: ModuleFinderState = {
   search: {

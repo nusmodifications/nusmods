@@ -14,7 +14,7 @@ import { getRequestName } from 'reducers/requests';
 import NotFoundPage from 'views/errors/NotFoundPage';
 import ErrorPage from 'views/errors/ErrorPage';
 import LoadingSpinner from 'views/components/LoadingSpinner';
-import { modulePagePath } from 'utils/modules';
+import { modulePage } from 'views/routes/paths';
 
 type Props = {
   ...ContextRouter,
@@ -54,7 +54,7 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
   componentWillMount() {
     this.fetchModule(this.props.moduleCode);
 
-    import('views/browse/ModulePageContent')
+    import('views/modules/ModulePageContent')
       .then(module => this.setState({ ModulePageContent: module.default }))
       .catch((error) => {
         Raven.captureException(error);
@@ -80,7 +80,7 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
 
   canonicalUrl() {
     if (!this.props.module) throw new Error('canonicalUrl() called before module is loaded');
-    return modulePagePath(this.props.moduleCode, this.props.module.ModuleTitle);
+    return modulePage(this.props.moduleCode, this.props.module.ModuleTitle);
   }
 
   render() {

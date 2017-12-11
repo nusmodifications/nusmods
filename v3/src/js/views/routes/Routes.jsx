@@ -3,8 +3,8 @@ import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 import TimetableContainer from 'views/timetable/TimetableContainer';
-import ModulePageContainer from 'views/browse/ModulePageContainer';
-import ModuleFinderContainer from 'views/browse/ModuleFinderContainer';
+import ModulePageContainer from 'views/modules/ModulePageContainer';
+import ModuleFinderContainer from 'views/modules/ModuleFinderContainer';
 import VenuesContainer from 'views/venues/VenuesContainer';
 import SettingsContainer from 'views/settings/SettingsContainer';
 import AboutContainer from 'views/static/AboutContainer';
@@ -18,9 +18,10 @@ export default function Routes() {
   return (
     <Switch>
       <Redirect exact from="/" to="/timetable" />
+
       <Route path="/about" component={AboutContainer} />
       <Route path="/faq" component={FaqContainer} />
-      <Route path="/timetable" component={TimetableContainer} />
+      <Route path="/timetable/:semester?" component={TimetableContainer} />
       <Route exact path="/modules" component={ModuleFinderContainer} />
       <Route path="/modules/:moduleCode/:slug?" component={ModulePageContainer} />
       <Route path="/venues/:venue?" component={VenuesContainer} />
