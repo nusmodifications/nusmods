@@ -2339,6 +2339,10 @@ domutils@1.5.1, domutils@^1.5.1:
     dom-serializer "0"
     domelementtype "1"
 
+downshift@^1.22.1:
+  version "1.22.1"
+  resolved "https://registry.yarnpkg.com/downshift/-/downshift-1.22.1.tgz#93ba5576f40e9bf83a10bac9806c5b71078776d3"
+
 duplexer@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/duplexer/-/duplexer-0.1.1.tgz#ace6ff808c1ce66b57d1ebf97977acb02334cfc1"
