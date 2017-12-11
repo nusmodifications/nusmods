@@ -1,3 +1,4 @@
+// This script has to be run from v3 directory, via `npm run cors`.
 const axios = require('axios');
 const cheerio = require('cheerio');
 const moment = require('moment');
