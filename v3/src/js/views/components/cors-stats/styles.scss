@@ -16,7 +16,7 @@
 }
 
 .quota {
-  font-weight: bold;
+  font-weight: $font-weight-bold;
 }
 
 .semester {
@@ -31,7 +31,7 @@
   .roundHeading {
     padding-bottom: 0.2rem;
     margin-bottom: 0.4rem;
-    font-weight: bold;
+    font-weight: $font-weight-bold;
     font-size: 1rem;
     border-bottom: 1px solid var(--gray-lighter);
   }
@@ -40,7 +40,7 @@
 .summary {
   h4 {
     margin-bottom: 0.4rem;
-    font-weight: bold;
+    font-weight: $font-weight-bold;
     font-size: 1rem;
     border-bottom: 1px solid var(--gray-lighter);
   }
@@ -90,7 +90,7 @@
     line-height: 1;
 
     th {
-      font-weight: normal;
+      font-weight: $font-weight-base;
       color: var(--gray-light);
     }
 
@@ -107,6 +107,6 @@
 
   .typeHeading {
     margin-top: 0.4rem;
-    font-weight: bold;
+    font-weight: $font-weight-bold;
   }
 }
