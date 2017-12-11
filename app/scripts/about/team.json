@@ -91,14 +91,14 @@
   },
   {
     "name": "E-Liang Tan",
-    "description": "",
+    "description": "makers gotta make",
     "active": true,
     "link": "https://www.eliangtan.com/",
-    "gravatar": "",
-    "gravatar-alt": "E-Liang Tan",
+    "gravatar": "https://gravatar.com/avatar/3064783701c7bb1b4451c79318e1b536?s=256",
+    "gravatarAlt": "E-Liang Tan",
     "facebook": "https://www.facebook.com/taneliang",
-    "twitter": "taneliang",
+    "twitter": "https://twitter.com/taneliang",
     "github": "https://github.com/taneliang",
-    "linkedin": ""
+    "linkedin": "https://www.linkedin.com/in/taneliang"
   }
 ]
