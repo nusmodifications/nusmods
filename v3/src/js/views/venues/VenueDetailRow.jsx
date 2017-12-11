@@ -5,7 +5,7 @@ import { arrangeLessonsForWeek } from 'utils/timetables';
 import { colorLessonsByKey } from 'utils/colors';
 import Timetable from 'views/timetable/Timetable';
 
-import type { DayAvailability } from 'types/venues';
+import type { DayAvailability, VenueLesson } from 'types/venues';
 import type { Venue } from 'types/modules';
 
 import styles from './VenueDetailRow.scss';
@@ -32,8 +32,7 @@ export default class VenueDetailRow extends PureComponent<Props> {
     }
 
     const availability: DayAvailability[] = this.props.availability;
-    // $FlowFixMe
-    const lessons = flatMap(availability, a => a.Classes)
+    const lessons = flatMap(availability, (day): VenueLesson[] => day.Classes)
       .map(venueLesson => ({ ...venueLesson, ModuleTitle: '' }));
     const coloredLessons = colorLessonsByKey(lessons, 'ModuleCode');
     return arrangeLessonsForWeek(coloredLessons);

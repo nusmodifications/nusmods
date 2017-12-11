@@ -27,7 +27,7 @@ describe('#getNewColor()', () => {
         .toContain(getNewColor(currentColors, true));
     }
 
-    for (let i = 0; i < 100; i++) {
+    range(100).forEach(() => {
       // When there are no current colors
       expectValidIndex([], []);
       // When there are colors that have not been picked
@@ -36,7 +36,7 @@ describe('#getNewColor()', () => {
       expectValidIndex([], range(NUM_DIFFERENT_COLORS));
       // When all the colors have been picked once or more
       expectValidIndex([5, 3], [...range(NUM_DIFFERENT_COLORS), 5, 3]);
-    }
+    });
   });
 });
 

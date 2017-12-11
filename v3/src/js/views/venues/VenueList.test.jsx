@@ -2,6 +2,9 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import venueInfo from '__mocks__/venueInformation.json';
+
+import type { Venue } from 'types/modules';
+
 import VenueList from './VenueList';
 
 const minProps = {
@@ -26,26 +29,34 @@ describe('VenueList', () => {
   test('it expands venues appropriately', () => {
     let wrapper;
 
+    function expectNumberExpandedRows(num: number) {
+      return expect(wrapper.find('VenueDetailRow').filterWhere(r => r.prop('expanded'))).toHaveLength(num);
+    }
+
+    function expectExpandedVenue(venue: Venue, isExpanded: boolean = true) {
+      expect(wrapper.find('VenueDetailRow').filterWhere(r => r.prop('name') === venue).first().prop('expanded')).toBe(isExpanded);
+    }
+
     // Does not expand when there is no expandedVenue
     wrapper = mount(<VenueList {...minProps} />);
-    expect(wrapper.find('VenueDetailRow').filterWhere(r => r.prop('expanded'))).toHaveLength(0);
+    expectNumberExpandedRows(0);
 
     // Does not expand when no venue names match
     wrapper = mount(<VenueList {...minProps} expandedVenue="covfefe" />);
-    expect(wrapper.find('VenueDetailRow').filterWhere(r => r.prop('expanded'))).toHaveLength(0);
+    expectNumberExpandedRows(0);
 
     // Expands a valid venue
     wrapper = mount(<VenueList {...minProps} expandedVenue="LT1" />);
-    expect(wrapper.find('VenueDetailRow').filterWhere(r => r.prop('expanded'))).toHaveLength(1);
-    expect(wrapper.find('VenueDetailRow').filterWhere(r => r.prop('name') === 'LT1').first().prop('expanded')).toBe(true);
+    expectNumberExpandedRows(1);
+    expectExpandedVenue('LT1');
 
     // Does not expand partial match
-    expect(wrapper.find('VenueDetailRow').filterWhere(r => r.prop('name') === 'LT17').first().prop('expanded')).toBe(false);
+    expectExpandedVenue('LT17', false);
 
     // Venue name case insensitivity
     wrapper = mount(<VenueList {...minProps} expandedVenue="cqt/SR0622" />);
-    expect(wrapper.find('VenueDetailRow').filterWhere(r => r.prop('expanded'))).toHaveLength(1);
-    expect(wrapper.find('VenueDetailRow').filterWhere(r => r.prop('name') === 'CQT/SR0622').first().prop('expanded')).toBe(true);
+    expectNumberExpandedRows(1);
+    expectExpandedVenue('CQT/SR0622');
   });
 
   test('it calls onSelect when a row is clicked', () => {

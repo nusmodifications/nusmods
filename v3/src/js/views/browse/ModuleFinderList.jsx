@@ -63,12 +63,6 @@ export default class ModuleFinderList extends Component<Props> {
 
     if (total === 0) {
       return <Warning message="No modules found" />;
-      // return (
-      // <div className="text-center mt-4">
-      // <AlertTriangle className={styles.noModulesIcon} />
-      // <h4>No modules found</h4>
-      // </div>
-      // );
     }
 
     return (

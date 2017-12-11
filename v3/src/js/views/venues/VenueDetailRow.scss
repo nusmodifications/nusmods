@@ -2,7 +2,7 @@
 
 .venueDetailRow {
   padding-top: 1rem;
-  border-top: 1px $gray-lighter solid;
+  border-top: 1px var(--gray-lighter) solid;
 
   &:first-child {
     padding-top: 0.25rem;
