@@ -15,7 +15,7 @@ import { BULLET } from 'utils/react';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
 import DisqusComments from 'views/components/DisqusComments';
 import LessonTimetable from 'views/components/module-info/LessonTimetable';
-import CorsStats from 'views/components/module-info/CorsStats';
+import CorsStats from 'views/components/cors-stats/CorsStats';
 
 type Props = {
   module: Module,

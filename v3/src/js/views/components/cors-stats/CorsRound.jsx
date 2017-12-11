@@ -8,7 +8,7 @@ import type { GroupedBiddingStat } from 'types/views';
 
 import { GENERAL_ACCOUNT, NEW_STUDENT, RETURNING_STUDENT } from 'types/views';
 import CorsQuota from './CorsQuota';
-import styles from './CorsStats.scss';
+import styles from './styles.scss';
 
 type Props = {
   stats: GroupedBiddingStat[],

@@ -6,11 +6,11 @@ import { groupBy } from 'lodash';
 
 import type { SemesterStats } from 'types/views';
 
-import { PlusSquare, MinusSquare } from 'views/components/icons';
+import { PlusSquare, MinusSquare } from 'views/components/icons/index';
 import CorsRound from './CorsRound';
 import CorsSummary from './CorsSummary';
 import CorsQuota from './CorsQuota';
-import styles from './CorsStats.scss';
+import styles from './styles.scss';
 
 type Props = {
   semester: string,

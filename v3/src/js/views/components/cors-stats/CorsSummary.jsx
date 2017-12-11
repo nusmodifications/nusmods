@@ -5,7 +5,7 @@ import { map, size } from 'lodash';
 
 import type { BiddingSummary } from 'types/views';
 import { GENERAL_ACCOUNT, NEW_STUDENT, RETURNING_STUDENT } from 'types/views';
-import styles from './CorsStats.scss';
+import styles from './styles.scss';
 
 type Props = {
   summary: BiddingSummary,

@@ -3,7 +3,7 @@
 import React from 'react';
 import classnames from 'classnames';
 
-import styles from './CorsStats.scss';
+import styles from './styles.scss';
 
 type Props = {
   bidders: number,
