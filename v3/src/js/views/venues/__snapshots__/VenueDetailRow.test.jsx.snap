@@ -4,14 +4,14 @@ exports[`VenueDetailRow it displays an anchor tag and a timetable when expanded 
 <li
   className="venueDetailRow"
 >
-  <h4>
-    <a
-      href="/venues/CQT%2FSR0622"
-      onClick={[Function]}
-    >
+  <a
+    href="/venues/CQT%2FSR0622"
+    onClick={[Function]}
+  >
+    <h4>
       CQT/SR0622
-    </a>
-  </h4>
+    </h4>
+  </a>
   <div
     className="venueTimetable"
   >
@@ -94,13 +94,13 @@ exports[`VenueDetailRow it displays an anchor tag when not expanded 1`] = `
 <li
   className="venueDetailRow"
 >
-  <h4>
-    <a
-      href="/venues/CQT%2FSR0622"
-      onClick={[Function]}
-    >
+  <a
+    href="/venues/CQT%2FSR0622"
+    onClick={[Function]}
+  >
+    <h4>
       CQT/SR0622
-    </a>
-  </h4>
+    </h4>
+  </a>
 </li>
 `;

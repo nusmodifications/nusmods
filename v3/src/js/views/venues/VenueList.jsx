@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import VenueDetailRow from 'views/venues/VenueDetailRow';
+import Warning from 'views/errors/Warning';
 
 import type { VenueInfo } from 'types/venues';
 import type { Venue } from 'types/modules';
@@ -22,23 +23,26 @@ export default function VenueList(props: Props) {
   const sortedVenueNames = Object.keys(venues).sort((a, b) =>
     a.toLowerCase().localeCompare(b.toLowerCase(), 'en', { numeric: true }));
 
+  let venueRows = sortedVenueNames.map(name => (
+    <VenueDetailRow
+      key={name}
+      name={name}
+      availability={venues[name]}
+      expanded={name.toLowerCase() === lowercaseExpandedVenue}
+      rootElementRef={(row) => {
+        if (row) {
+          rowRefs[name] = row;
+        }
+      }}
+      onClick={(selectedVenue, venueURL) => onSelect(selectedVenue, venueURL, rowRefs[name])}
+    />
+  ));
+
+  if (venueRows.length === 0) {
+    venueRows = <Warning message="No matching venues found" />;
+  }
+
   return (
-    <ul className={styles.venueList}>
-      {sortedVenueNames.map(name => (
-        <VenueDetailRow
-          key={name}
-          name={name}
-          availability={venues[name]}
-          expanded={name.toLowerCase() === lowercaseExpandedVenue}
-          rootElementRef={(row) => {
-            if (row) {
-              rowRefs[name] = row;
-            }
-          }}
-          onClick={(selectedVenue, venueURL) => onSelect(selectedVenue, venueURL, rowRefs[name])}
-        />
-      ))}
-    </ul>
+    <ul className={styles.venueList}> {venueRows} </ul>
   );
-  // }
 }

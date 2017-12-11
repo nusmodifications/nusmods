@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
-import { flatten, noop } from 'lodash';
+import { flatMap, noop } from 'lodash';
 import { arrangeLessonsForWeek } from 'utils/timetables';
 import { colorLessonsByKey } from 'utils/colors';
 import Timetable from 'views/timetable/Timetable';
@@ -32,8 +32,8 @@ export default class VenueDetailRow extends PureComponent<Props> {
     }
 
     const availability: DayAvailability[] = this.props.availability;
-    // const lessons = flatMap(availability, a => a.Classes) // Not using flatMap as it results in a Flow error
-    const lessons = flatten(availability.map(dayAvail => dayAvail.Classes))
+    // $FlowFixMe
+    const lessons = flatMap(availability, a => a.Classes)
       .map(venueLesson => ({ ...venueLesson, ModuleTitle: '' }));
     const coloredLessons = colorLessonsByKey(lessons, 'ModuleCode');
     return arrangeLessonsForWeek(coloredLessons);
@@ -47,16 +47,14 @@ export default class VenueDetailRow extends PureComponent<Props> {
 
     return (
       <li className={styles.venueDetailRow} ref={rootElementRef}>
-        <h4>
-          <a
-            href={venueHref}
-            onClick={(e) => {
-              e.preventDefault();
-              onClick(name, venueHref);
-            }}
-          >{name}</a>
-        </h4>
-        {lessons ? (
+        <a
+          href={venueHref}
+          onClick={(e) => {
+            e.preventDefault();
+            onClick(name, venueHref);
+          }}
+        ><h4>{name}</h4></a>
+        {lessons && (
           <div className={styles.venueTimetable}>
             <Timetable
               lessons={lessons}
@@ -64,7 +62,7 @@ export default class VenueDetailRow extends PureComponent<Props> {
               onModifyCell={noop}
             />
           </div>
-        ) : null}
+        )}
       </li>
     );
   }

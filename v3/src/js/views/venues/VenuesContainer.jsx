@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
+import classnames from 'classnames';
 import axios from 'axios';
 import qs from 'query-string';
 import Raven from 'raven-js';
@@ -21,6 +22,8 @@ import SearchBox from 'views/components/SearchBox';
 import config from 'config';
 import nusmods from 'apis/nusmods';
 import HistoryDebouncer from 'utils/HistoryDebouncer';
+
+import styles from './VenuesContainer.scss';
 
 type Props = {
   ...ContextRouter,
@@ -157,7 +160,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
     const venues = this.filteredVenues();
 
     return (
-      <div className="modules-page-container page-container">
+      <div className={classnames('page-container', styles.venuesPageContainer)}>
         {pageHead}
 
         <div className="row">
@@ -166,7 +169,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
               throttle={0}
               useInstantSearch
               initialSearchTerm={this.state.searchTerm}
-              placeholder="Venues"
+              placeholder="Search for venues. E.g. LT27"
               onSearch={this.onSearch}
               rootElementRef={(element) => {
                 if (element) {

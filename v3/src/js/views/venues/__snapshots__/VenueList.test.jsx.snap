@@ -7,13 +7,13 @@ Array [
   <li
     class="venueDetailRow"
   >
-    <h4>
-      <a
-        href="/venues/LT17"
-      >
+    <a
+      href="/venues/LT17"
+    >
+      <h4>
         LT17
-      </a>
-    </h4>
+      </h4>
+    </a>
   </li>,
 ]
 `;
