@@ -192,19 +192,6 @@ export function areOtherClassesAvailable(lessons: Array<RawLesson>,
   return Object.keys(_.groupBy(lessonTypeGroups[lessonType], lesson => lesson.ClassNo)).length > 1;
 }
 
-export function colorLessonsByType(lessons: Lesson[]) {
-  const types = new Map();
-  return lessons.map((lesson) => {
-    let colorIndex = types.get(lesson.LessonType);
-    if (!types.has(lesson.LessonType)) {
-      colorIndex = types.size;
-      types.set(lesson.LessonType, colorIndex);
-    }
-
-    return { ...lesson, colorIndex };
-  });
-}
-
 // Find all exam clashes between modules in semester
 // Returns object associating exam dates with the modules clashing on those dates
 export function findExamClashes(modules: Array<Module>, semester: Semester): { string: Array<Module> } {
