@@ -31,7 +31,6 @@ type Props = {
   horizontalOrientation: boolean,
 };
 
-
 class TimetableModulesTable extends Component<Props> {
   componentWillUnmount() {
     this.cancelModifyModuleColor();
@@ -76,11 +75,11 @@ class TimetableModulesTable extends Component<Props> {
               }
             }}
           >
-            {module.hiddenInTimetable ?
+            {module.hiddenInTimetable ? (
               <Eye className={timetableActionsStyles.actionIcon} />
-              :
+            ) : (
               <EyeOff className={timetableActionsStyles.actionIcon} />
-            }
+            )}
           </button>
         </div>
       </div>
@@ -108,7 +107,7 @@ class TimetableModulesTable extends Component<Props> {
             })}
             key={module.ModuleCode}
           >
-            <div className={styles.modulesTableRowInner}>
+            <div className={styles.moduleColor}>
               <ColorPicker
                 label={`Change ${module.ModuleCode} timetable color`}
                 color={module.colorIndex}
@@ -116,22 +115,17 @@ class TimetableModulesTable extends Component<Props> {
                   this.props.selectModuleColor(module.ModuleCode, colorIndex);
                 }}
               />
-
-              <div className={classnames(styles.moduleActionColumn, styles.moduleDetailsColumn)}>
-                {this.renderModuleActions(module)}
-
-                <Link to={modulePage(module.ModuleCode, module.ModuleTitle)}>
-                  {module.ModuleCode} {module.ModuleTitle}
-                </Link>
-
-                <div>
-                  <small>
-                    Exam: {getModuleSemExamDate(module, this.props.semester)}
-                    &nbsp;&middot;&nbsp;
-                    {module.ModuleCredit} MCs
-                  </small>
-                </div>
-              </div>
+            </div>
+            <div className={styles.moduleInfo}>
+              {this.renderModuleActions(module)}
+              <Link to={modulePage(module.ModuleCode, module.ModuleTitle)}>
+                {module.ModuleCode} {module.ModuleTitle}
+              </Link>
+              <small className={styles.moduleExam}>
+                Exam: {getModuleSemExamDate(module, this.props.semester)}
+                &nbsp;&middot;&nbsp;
+                {module.ModuleCredit} MCs
+              </small>
             </div>
           </div>
         ))}
@@ -140,17 +134,8 @@ class TimetableModulesTable extends Component<Props> {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    activeModule: state.app.activeModule,
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  {
-    selectModuleColor,
-    hideLessonInTimetable,
-    showLessonInTimetable,
-  },
-)(TimetableModulesTable);
+export default connect(null, {
+  selectModuleColor,
+  hideLessonInTimetable,
+  showLessonInTimetable,
+})(TimetableModulesTable);
