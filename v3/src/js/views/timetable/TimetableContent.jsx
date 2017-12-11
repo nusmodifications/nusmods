@@ -46,6 +46,7 @@ import styles from './TimetableContent.scss';
 import Timetable from './Timetable';
 import TimetableActions from './TimetableActions';
 import TimetableModulesTable from './TimetableModulesTable';
+import ShareTimetable from './ShareTimetable';
 
 type Props = {
   header: Node,
@@ -232,12 +233,23 @@ class TimetableContainer extends Component<Props> {
               'col-md-4': isVerticalOrientation,
             })}
           >
-            <TimetableActions
-              isVerticalOrientation={!isVerticalOrientation}
-              toggleTimetableOrientation={this.props.toggleTimetableOrientation}
-              downloadAsJpeg={this.downloadAsJpeg}
-              downloadAsIcal={this.downloadAsIcal}
-            />
+            <div className="row justify-content-between">
+              <div className="col-auto">
+                <TimetableActions
+                  isVerticalOrientation={!isVerticalOrientation}
+                  toggleTimetableOrientation={this.props.toggleTimetableOrientation}
+                  downloadAsJpeg={this.downloadAsJpeg}
+                  downloadAsIcal={this.downloadAsIcal}
+                />
+              </div>
+
+              <div className="col-auto">
+                <ShareTimetable
+                  semester={semester}
+                  timetable={this.props.timetable}
+                />
+              </div>
+            </div>
             <div className={styles.tableContainer}>
               <div className="col-md-12">
                 <ModulesSelect

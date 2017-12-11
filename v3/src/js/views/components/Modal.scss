@@ -1,0 +1,27 @@
+@import "~styles/utils/modules-entry.scss";
+
+.modal {
+  position: absolute;
+  top: 10%;
+  right: 1rem;
+  left: 1rem;
+  max-width: 40rem;
+  padding: 2rem;
+  margin: 0 auto;
+  background: var(--body-bg);
+  box-shadow: 0 3px 18px rgba(#000, 0.3);
+
+  @include media-breakpoint-down(sm) {
+    top: 4rem;
+  }
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: $modal-z-index;
+  background: var(--body-bg-70);
+}

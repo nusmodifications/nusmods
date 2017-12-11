@@ -1,6 +1,9 @@
 // @flow
 import { kebabCase, each } from 'lodash';
 import type { ModuleCode, ModuleTitle, Semester } from 'types/modules';
+import type { TimetableAction } from 'types/views';
+import type { SemTimetableConfig } from 'types/timetables';
+import { serializeTimetable } from 'utils/timetables';
 import config from 'config';
 
 // Cache semester -> path and path -> semester mappings
@@ -15,6 +18,14 @@ each(config.shortSemesterNames, (name, semester) => {
 // Semester -> Timetable path
 export function timetablePage(semester: Semester): string {
   return `/timetable/${fromSemester[semester]}`;
+}
+
+export function timetableAction(
+  semester: Semester,
+  action: TimetableAction,
+  timetable: SemTimetableConfig,
+): string {
+  return `${timetablePage(semester)}/${action}?${serializeTimetable(timetable)}`;
 }
 
 // Timetable path -> Semester
