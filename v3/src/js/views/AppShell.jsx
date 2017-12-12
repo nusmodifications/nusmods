@@ -71,7 +71,7 @@ export class AppShell extends Component<Props> {
     if (semesterTimetable) {
       // TODO: Handle failed loading of module.
       Object.keys(semesterTimetable)
-        .forEach(this.props.fetchModule);
+        .forEach(moduleCode => this.props.fetchModule(moduleCode));
     }
   }
 

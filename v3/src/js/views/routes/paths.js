@@ -20,7 +20,7 @@ export function timetablePage(semester: Semester): string {
 }
 
 export const TIMETABLE_SHARE = 'share';
-export function timetableAction(
+export function timetableShare(
   semester: Semester,
   timetable: SemTimetableConfig,
 ): string {

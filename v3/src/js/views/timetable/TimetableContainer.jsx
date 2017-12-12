@@ -63,10 +63,10 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (this.state.importedTimetable) {
       Object.keys(this.state.importedTimetable)
-        .forEach(this.props.fetchModule);
+        .forEach(moduleCode => this.props.fetchModule(moduleCode));
     }
   }
 

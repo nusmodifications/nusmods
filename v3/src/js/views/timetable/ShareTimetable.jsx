@@ -7,7 +7,7 @@ import select from 'select';
 import type { SemTimetableConfig } from 'types/timetables';
 import type { Semester } from 'types/modules';
 
-import { absolutePath, timetableAction } from 'views/routes/paths';
+import { absolutePath, timetableShare } from 'views/routes/paths';
 import { Repeat, Copy } from 'views/components/icons';
 import Modal from 'views/components/Modal';
 
@@ -44,7 +44,7 @@ export default class ShareTimetable extends PureComponent<Props, State> {
   render() {
     const { isOpen } = this.state;
     const { semester, timetable } = this.props;
-    const url = absolutePath(timetableAction(semester, timetable));
+    const url = absolutePath(timetableShare(semester, timetable));
 
     return (
       <div>
@@ -54,16 +54,16 @@ export default class ShareTimetable extends PureComponent<Props, State> {
           onClick={this.openModal}
         >
           <Repeat className={actionStyles.actionIcon} />
-          Share
+          Share/Sync
         </button>
 
         <Modal isOpen={isOpen} onRequestClose={this.closeModal}>
           <div className={styles.header}>
             <Repeat />
 
-            <h3>Share or Sync Your Timetable</h3>
-            <p>Send this link to your friends to share your timetable
-              or to yourself to keep your timetable synced on all devices.</p>
+            <h3>Share/Sync Your Timetable</h3>
+            <p>Send this link to your friends to share your timetable or <br />
+              to yourself to keep your timetable synced on all devices.</p>
           </div>
 
           <div className="input-group input-group-lg">
