@@ -69,25 +69,30 @@ export function biddingSummary(stats: GroupedBiddingStat[]): BiddingSummary {
   // and the round at which it occurred at for each faculty
   const summary = {};
 
-  function updateSummary(stat, type) {
+  function updateMinimumBid(stat, type) {
     if (!summary[stat.Faculty]) {
       summary[stat.Faculty] = {};
     }
 
-    if (!summary[stat.Faculty][type] ||
-        stat.LowestSuccessfulBid < summary[stat.Faculty][type].minBid) {
+    // If there are no bidders for a round, we assume anyone could have gotten it for 1 pt
+    // (even though nobody actually bid for it)
+    const minBid = stat.Bidders ? stat.LowestSuccessfulBid : 1;
+
+    // Update the summary with the new minimum bid
+    if (!summary[stat.Faculty][type] || minBid < summary[stat.Faculty][type].minBid) {
       summary[stat.Faculty][type] = {
-        minBid: stat.LowestSuccessfulBid,
+        minBid,
         round: stat.Round,
       };
     }
   }
 
   stats.forEach((stat) => {
-    if (stat.Bidders === 0) return;
+    // Ignore non-bidding rounds
+    if (stat.StudentType & NON_BIDDING) return;
 
     studentTypes.forEach((type) => {
-      if (stat.StudentType & type) updateSummary(stat, type);
+      if (stat.StudentType & type) updateMinimumBid(stat, type);
     });
   });
 

@@ -15,6 +15,8 @@ type Props = {
   showFaculty: boolean,
 };
 
+// Labels are not reused from CorsSummary because their length need to be shorter here
+// to fit into the space available
 const STUDENT_TYPE_LABELS = {
   [NEW_STUDENT]: 'New students',
   [RETURNING_STUDENT]: 'Returning students',
@@ -24,7 +26,7 @@ const STUDENT_TYPE_LABELS = {
   [NEW_STUDENT | RETURNING_STUDENT | GENERAL_ACCOUNT]: 'All students',
 };
 
-function renderBidRow(stats: GroupedBiddingStat) {
+function renderBidTableRow(stats: GroupedBiddingStat) {
   if (!stats.Bidders) {
     return <td className={styles.noBids} colSpan="2">No bids</td>;
   }
@@ -57,7 +59,7 @@ function renderBidTable(groupedStats: GroupedBiddingStat[]) {
         {groupedStats.map((stats: GroupedBiddingStat) => (
           <tr key={stats.Round}>
             <th className={styles.roundName}>{stats.Round.charAt(1)}</th>
-            {renderBidRow(stats)}
+            {renderBidTableRow(stats)}
           </tr>
         ))}
       </tbody>
@@ -65,6 +67,10 @@ function renderBidTable(groupedStats: GroupedBiddingStat[]) {
   );
 }
 
+/**
+ * Detailed bidding info for a single round. We first group by faculty then group
+ * by studentType.
+ */
 function CorsRound(props: Props) {
   const groupedByFaculty = groupBy(props.stats, stats => stats.Faculty);
 
@@ -75,16 +81,16 @@ function CorsRound(props: Props) {
   return (
     <div>
       {map(groupedByFaculty, (groupedStats: GroupedBiddingStat[], faculty: Faculty) => {
-        const groupedByLabel = groupBy(groupedStats, stats => STUDENT_TYPE_LABELS[stats.StudentType]);
+        const groupedByType = groupBy(groupedStats, stats => stats.StudentType);
 
         return (
           <div key={faculty} className={styles.facultyRow}>
             {props.showFaculty && <h5 className={styles.facultyHeading}>{faculty}</h5>}
 
-            {map(groupedByLabel, (stats: GroupedBiddingStat[], label: string) => (
-              <div key={label}>
-                {size(groupedByLabel) > 1 &&
-                  <h6 className={styles.typeHeading}>{label}</h6>}
+            {map(groupedByType, (stats: GroupedBiddingStat[], type: string) => (
+              <div key={type}>
+                {size(groupedByType) > 1 &&
+                  <h6 className={styles.typeHeading}>{STUDENT_TYPE_LABELS[type]}</h6>}
                 {renderBidTable(stats)}
               </div>
             ))}

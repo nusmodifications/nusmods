@@ -23,7 +23,7 @@ export default class CorsStats extends PureComponent<Props, State> {
   render() {
     const { semestersShown } = this.state;
 
-    // Reverse chronological order and only take the first three
+    // Reverse chronological order
     const sortedStats: [string, SemesterStats][] = entries(analyseStats(this.props.stats))
       .reverse();
 

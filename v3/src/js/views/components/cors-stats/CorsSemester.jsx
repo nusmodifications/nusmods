@@ -21,6 +21,10 @@ type State = {
   showDetails: boolean,
 }
 
+/**
+ * CORS bidding stats for a single semester, containing the summary statistics and
+ * the detailed bidding info for each round
+ */
 export default class CorsSemester extends PureComponent<Props, State> {
   state: State = {
     showDetails: false,
