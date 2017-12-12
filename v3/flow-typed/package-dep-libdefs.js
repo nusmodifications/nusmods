@@ -4,6 +4,10 @@ declare module 'core-js' {
   declare module.exports: any;
 }
 
+declare module 'downshift' {
+  declare module.exports: any;
+}
+
 declare module 'raven-for-redux' {
   declare module.exports: any;
 }

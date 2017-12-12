@@ -1,0 +1,16 @@
+@import "~styles/utils/modules-entry.scss";
+
+.venueDetailRow {
+  padding-top: 1rem;
+  border-top: 1px var(--gray-lighter) solid;
+
+  &:first-child {
+    padding-top: 0.25rem;
+    border-top: 0;
+  }
+}
+
+.venueTimetable {
+  margin-bottom: 1rem;
+  overflow: auto;
+}

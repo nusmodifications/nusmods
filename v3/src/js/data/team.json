@@ -82,5 +82,17 @@
     "gravatarAlt": "Zhang Yijiang",
     "facebook": "zhangyijiang",
     "github": "ZhangYiJiang"
+  },
+  {
+    "name": "E-Liang Tan",
+    "description": "makers gotta make",
+    "active": true,
+    "link": "https://www.eliangtan.com/",
+    "gravatar": "3064783701c7bb1b4451c79318e1b536",
+    "gravatarAlt": "E-Liang Tan",
+    "facebook": "taneliang",
+    "twitter": "taneliang",
+    "github": "taneliang",
+    "linkedin": "taneliang"
   }
 ]

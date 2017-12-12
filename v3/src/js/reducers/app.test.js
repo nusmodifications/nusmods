@@ -1,11 +1,10 @@
 // @flow
 
 import * as actions from 'actions/timetables';
-import * as themeActions from 'actions/theme';
 import * as settingsActions from 'actions/settings';
 import reducer from 'reducers/app';
 
-import type { Lesson, ModuleCode, Semester } from 'types/modules';
+import type { Lesson, Semester } from 'types/modules';
 import type { FSA } from 'types/redux';
 import type { AppState } from 'types/reducers';
 import lessons from '__mocks__/lessons-array.json';
@@ -13,15 +12,12 @@ import lessons from '__mocks__/lessons-array.json';
 const semester: Semester = 1;
 const anotherSemester: Semester = 2;
 const lesson: Lesson = lessons[0];
-const moduleCode: ModuleCode = 'CS1010S';
 const appInitialState: AppState = {
   activeSemester: semester,
   activeLesson: null,
-  activeModule: null,
 };
 const appHasSemesterTwoState: AppState = { ...appInitialState, activeSemester: anotherSemester };
 const appHasActiveLessonState: AppState = { ...appInitialState, activeLesson: lesson };
-const appHasActiveModuleState: AppState = { ...appInitialState, activeModule: moduleCode };
 
 test('app should return initial state', () => {
   const nextState: AppState = reducer(undefined, { type: 'INIT', payload: null });
@@ -62,36 +58,6 @@ test('app should accept lesson change and unset active lesson', () => {
 
 test('app should cancel and unset active lesson', () => {
   const nextState: AppState = reducer(appHasActiveLessonState, actions.cancelModifyLesson());
-
-  expect(nextState).toEqual(appInitialState);
-});
-
-// Tests for active module.
-test('app should instantiate active module', () => {
-  const action: FSA = themeActions.modifyModuleColor(moduleCode);
-  const nextState: AppState = reducer(appInitialState, action);
-
-  expect(nextState).toEqual(appHasActiveModuleState);
-});
-
-test('app should set active module', () => {
-  const anotherModuleCode: ModuleCode = 'CS3216';
-  const action: FSA = themeActions.modifyModuleColor(anotherModuleCode);
-  const nextState: AppState = reducer(appInitialState, action);
-
-  expect(nextState).toEqual({ ...appInitialState, activeModule: anotherModuleCode });
-});
-
-test('app should accept module color change and unset active module', () => {
-  const action: FSA = themeActions.selectModuleColor(moduleCode, 1);
-  const nextState: AppState = reducer(appHasActiveModuleState, action);
-
-  expect(nextState).toEqual(appInitialState);
-});
-
-test('app should cancel and unset active module', () => {
-  const nextState: AppState = reducer(appHasActiveModuleState,
-    themeActions.cancelModifyModuleColor());
 
   expect(nextState).toEqual(appInitialState);
 });

@@ -11,7 +11,6 @@ import type {
 export type AppState = {
   activeSemester: Semester,
   activeLesson: ?Lesson,
-  activeModule: ?ModuleCode,
 };
 
 /* requests.js */

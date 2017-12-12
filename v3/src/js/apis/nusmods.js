@@ -1,5 +1,5 @@
 // @flow
-import type { ModuleCode } from 'types/modules';
+import type { ModuleCode, Semester } from 'types/modules';
 
 import config from 'config';
 
@@ -21,6 +21,11 @@ const NUSModsApi = {
   // List of all modules for the entire acad year
   modulesUrl: (): string => {
     return `${ayBaseUrl}/moduleInformation.json`;
+  },
+
+  // List of all venue's info for one semester in the current acad year
+  venuesUrl: (semester: Semester): string => {
+    return `${ayBaseUrl}/${semester}/venueInformation.json`;
   },
 };
 
