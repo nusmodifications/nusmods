@@ -97,11 +97,12 @@ export function resetTimetable(semester: Semester): FSA {
 }
 
 export function setTimetable(semester: Semester, timetable: SemTimetableConfig) {
-  return (dispatch: Function): Promise<*> =>
-    dispatch(resetTimetable(semester))
-      .then(() =>
-        // ...then add all of the new ones from the new timetable
-        Promise.all(map(timetable, (lessons, moduleCode) =>
-          dispatch(addModule(semester, moduleCode, lessons)))),
-      );
+  return (dispatch: Function) => {
+    // Reset timetable...
+    dispatch(resetTimetable(semester));
+
+    // ...then add all of the new ones from the new timetable
+    return Promise.all(map(timetable, (lessons, moduleCode) =>
+      dispatch(addModule(semester, moduleCode, lessons))));
+  };
 }
