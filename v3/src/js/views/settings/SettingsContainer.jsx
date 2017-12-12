@@ -4,23 +4,27 @@ import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 
 import type { Faculty } from 'types/modules';
+import type { Mode } from 'types/settings';
 
 import config from 'config';
 import { selectTheme } from 'actions/theme';
-import { selectNewStudent, selectFaculty } from 'actions/settings';
+import { selectNewStudent, selectFaculty, selectMode } from 'actions/settings';
 import availableThemes from 'data/themes.json';
 import FacultySelect from 'views/components/FacultySelect';
 import NewStudentSelect from 'views/components/NewStudentSelect';
 import ThemeOption from './ThemeOption';
+import ModeSelect from './ModeSelect';
 
 type Props = {
   newStudent: boolean,
   faculty: Faculty,
   currentThemeId: string,
+  mode: Mode,
 
   selectTheme: Function,
   selectNewStudent: Function,
   selectFaculty: Function,
+  selectMode: Function,
 };
 
 function SettingsContainer(props: Props) {
@@ -61,6 +65,19 @@ function SettingsContainer(props: Props) {
           </div>
           <hr />
 
+          <h4>Night Mode</h4>
+          <div className="row">
+            <div className="col-sm-7">
+              <p>Night mode turns the light surfaces of the page dark, creating an
+              experience ideal for the dark. Try it out!</p>
+            </div>
+            <div className="col-sm-4 offset-sm-1 text-xs-right">
+              <ModeSelect mode={props.mode} onSelectMode={props.selectMode} />
+            </div>
+          </div>
+          <hr />
+
+
           <h4>Theme</h4>
           <div>
             {availableThemes.map(theme => (
@@ -83,6 +100,7 @@ function mapStateToProps(state) {
   return {
     newStudent: state.settings.newStudent,
     faculty: state.settings.faculty,
+    mode: state.settings.mode,
     currentThemeId: state.theme.id,
   };
 }
@@ -93,5 +111,6 @@ export default connect(
     selectTheme,
     selectNewStudent,
     selectFaculty,
+    selectMode,
   },
 )(SettingsContainer);
