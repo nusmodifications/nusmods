@@ -1,0 +1,53 @@
+@import '~styles/utils/modules-entry';
+$input-height: 2.75rem;
+$option-shown: 5;
+$option-height: 2.5rem;
+
+.container {
+  position: relative;
+}
+
+.input {
+  height: $input-height;
+}
+
+.selectList {
+  position: absolute;
+  top: $input-height;
+  right: 0;
+  left: 0;
+  z-index: $module-select-z-index;
+  max-height: $option-shown * $option-height;
+  padding: 0;
+  margin: 0;
+  overflow-y: auto;
+  list-style: none;
+  border: $input-btn-border-width solid $input-border-color;
+  border-width: 0 $input-btn-border-width $input-btn-border-width;
+  border-radius: 0 0 $btn-border-radius $btn-border-radius;
+  -webkit-overflow-scrolling: touch;
+}
+
+.option,
+.defaultPanel {
+  width: 100%;
+  height: $option-height;
+  font-size: 0.9rem;
+  text-align: left;
+  color: var(--body-color);
+  border: 0;
+  border-radius: 0;
+  background: var(--body-bg);
+}
+
+.option:hover,
+.optionSelected {
+  text-decoration: none;
+  color: $link-hover-color;
+  background: var(--gray-lightest);
+}
+
+.defaultPanel {
+  height: $option-height;
+  padding: 0.5rem;
+}
