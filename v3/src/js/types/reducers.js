@@ -6,6 +6,9 @@ import type {
   ModuleCondensed,
   Semester,
 } from 'types/modules';
+import type {
+  Mode,
+} from 'types/settings';
 
 /* app.js */
 export type AppState = {
@@ -44,6 +47,7 @@ export type ThemeState = {
 export type SettingsState = {
   newStudent: boolean,
   faculty: ?Faculty,
+  mode: Mode,
   hiddenInTimetable: Array<ModuleCode>,
 };
 
