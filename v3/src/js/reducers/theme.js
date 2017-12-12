@@ -5,7 +5,7 @@ import type {
   ThemeState,
 } from 'types/reducers';
 
-import _ from 'lodash';
+import { omit, values } from 'lodash';
 import { getNewColor } from 'utils/colors';
 import { ADD_MODULE, REMOVE_MODULE } from 'actions/timetables';
 import { SELECT_THEME, SELECT_MODULE_COLOR, TOGGLE_TIMETABLE_ORIENTATION } from 'actions/theme';
@@ -28,13 +28,18 @@ function colors(state: ColorMapping, action: FSA): ColorMapping {
     return state;
   }
   switch (action.type) {
-    case ADD_MODULE:
+    case ADD_MODULE: {
+      const colorIndex = typeof action.payload.colorIndex === 'number'
+        ? action.payload.colorIndex
+        : getNewColor(values(state));
+
       return {
         ...state,
-        [action.payload.moduleCode]: getNewColor(_.values(state)),
+        [action.payload.moduleCode]: colorIndex,
       };
+    }
     case REMOVE_MODULE:
-      return _.omit(state, action.payload.moduleCode);
+      return omit(state, action.payload.moduleCode);
     case SELECT_MODULE_COLOR:
       return {
         ...state,

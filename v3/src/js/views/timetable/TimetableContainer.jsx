@@ -8,12 +8,14 @@ import { size } from 'lodash';
 
 import type { Semester, ModuleCode } from 'types/modules';
 import type { SemTimetableConfig } from 'types/timetables';
+import type { ColorMapping } from 'types/reducers';
 import type { ModulesMap } from 'reducers/entities/moduleBank';
 
 import { selectSemester } from 'actions/settings';
 import { setTimetable } from 'actions/timetables';
 import { fetchModule } from 'actions/moduleBank';
 import { getSemesterModules, deserializeTimetable } from 'utils/timetables';
+import { fillColorMapping } from 'utils/colors';
 import { semesterForTimetablePage, timetablePage, TIMETABLE_SHARE } from 'views/routes/paths';
 import { Repeat } from 'views/components/icons';
 import NotFoundPage from 'views/errors/NotFoundPage';
@@ -31,9 +33,10 @@ type Props = {
   semester: ?Semester,
   activeSemester: Semester,
   timetable: SemTimetableConfig,
+  colors: ColorMapping,
 
   selectSemester: (Semester) => void,
-  setTimetable: (Semester, SemTimetableConfig) => Promise<*>,
+  setTimetable: (Semester, SemTimetableConfig, ColorMapping) => Promise<*>,
   fetchModule: (ModuleCode) => void,
 };
 
@@ -85,8 +88,10 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
     return loadedModules.length < size(importedTimetable);
   }
 
-  displayedTimetable() {
-    return this.state.importedTimetable || this.props.timetable;
+  importTimetable(semester: Semester, timetable: SemTimetableConfig) {
+    const colors = fillColorMapping(timetable, this.props.colors);
+    this.props.setTimetable(semester, timetable, colors)
+      .then(this.afterImport);
   }
 
   afterImport = () => {
@@ -113,9 +118,7 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
             <button
               className="btn btn-success"
               type="button"
-              onClick={() =>
-                this.props.setTimetable(semester, timetable)
-                  .then(this.afterImport)}
+              onClick={() => this.importTimetable(semester, timetable)}
             >
               Import shared timetable
             </button>
@@ -143,7 +146,7 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
   }
 
   render() {
-    const { semester, activeSemester, match } = this.props;
+    const { timetable, semester, activeSemester, match } = this.props;
     const { importedTimetable } = this.state;
     const action = match.params.action;
 
@@ -166,7 +169,11 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
       return <LoadingSpinner />;
     }
 
-    // 4. If there is an imported timetable, we show the sharing header which
+    // 4. Construct the color map
+    const displayedTimetable = importedTimetable || timetable;
+    const colors = fillColorMapping(displayedTimetable, this.props.colors);
+
+    // 5. If there is an imported timetable, we show the sharing header which
     //    asks the user if they want to import the shared timetable
     const header = importedTimetable
       ? this.sharingHeader(semester, importedTimetable)
@@ -175,7 +182,8 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
     return (
       <TimetableContent
         semester={semester}
-        timetable={this.displayedTimetable()}
+        timetable={displayedTimetable}
+        colors={colors}
         header={header}
       />
     );
@@ -189,6 +197,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     semester,
     timetable,
+    colors: state.theme.colors,
     modules: state.entities.moduleBank.modules,
     activeSemester: state.app.activeSemester,
   };

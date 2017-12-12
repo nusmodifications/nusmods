@@ -40,7 +40,6 @@ import {
   lessonsForLessonType,
   findExamClashes,
 } from 'utils/timetables';
-import { fillColorMapping } from 'utils/colors';
 import ModulesSelect from 'views/components/ModulesSelect';
 
 import styles from './TimetableContent.scss';
@@ -277,7 +276,6 @@ function mapStateToProps(state, ownProps) {
   const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
   const semModuleList = getSemModuleSelectList(state.entities.moduleBank, semester, timetable);
   const hiddenInTimetable = state.settings.hiddenInTimetable || [];
-  const colors = fillColorMapping(timetable, state.theme.colors);
 
   return {
     semester,
@@ -285,7 +283,6 @@ function mapStateToProps(state, ownProps) {
     timetable,
     timetableWithLessons,
     modules,
-    colors,
     activeLesson: state.app.activeLesson,
     timetableOrientation: state.theme.timetableOrientation,
     hiddenInTimetable,

@@ -44,8 +44,9 @@ export function colorLessonsByKey(lessons: Lesson[], key: string) {
   });
 }
 
-// Fill up missing color slots given a timetable. This is useful when importing
-// timetables since these modules do not have any pre-defined colors
+// Fill up missing color slots given a timetable deterministically. This is useful
+// when importing timetables since imported modules do not have any colors defined
+// in the store
 export function fillColorMapping(
   timetable: SemTimetableConfig,
   original: ColorMapping,
