@@ -88,8 +88,20 @@ export function setLessonConfig(semester: Semester, config: ModuleLessonConfig):
   };
 }
 
+export const RESET_TIMETABLE = 'RESET_TIMETABLE';
+export function resetTimetable(semester: Semester): FSA {
+  return {
+    type: RESET_TIMETABLE,
+    payload: { semester },
+  };
+}
+
 export function setTimetable(semester: Semester, timetable: SemTimetableConfig) {
-  return (dispatch: Function) =>
-    Promise.all(map(timetable, (lessons, moduleCode) =>
-      dispatch(addModule(semester, moduleCode, lessons))));
+  return (dispatch: Function): Promise<*> =>
+    dispatch(resetTimetable(semester))
+      .then(() =>
+        // ...then add all of the new ones from the new timetable
+        Promise.all(map(timetable, (lessons, moduleCode) =>
+          dispatch(addModule(semester, moduleCode, lessons)))),
+      );
 }
