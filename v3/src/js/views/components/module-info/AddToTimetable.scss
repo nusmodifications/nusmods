@@ -1,0 +1,7 @@
+.button {
+  // Long selector for specificity
+  :global(.dropdown-toggle.dropdown-toggle-split) {
+    // Add a line separator between toggle and button
+    margin-left: 1px;
+  }
+}

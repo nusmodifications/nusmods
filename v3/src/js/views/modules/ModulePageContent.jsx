@@ -1,14 +1,12 @@
 // @flow
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { connect, type MapStateToProps } from 'react-redux';
 import Helmet from 'react-helmet';
 import ScrollSpy from 'react-scrollspy';
 
 import type { Module, Semester } from 'types/modules';
-import type { TimetableConfig } from 'types/timetables';
 
 import config from 'config';
-import { addModule, removeModule } from 'actions/timetables';
 import { formatExamDate } from 'utils/modules';
 import { intersperse } from 'utils/array';
 import { BULLET } from 'utils/react';
@@ -16,15 +14,14 @@ import LinkModuleCodes from 'views/components/LinkModuleCodes';
 import DisqusComments from 'views/components/DisqusComments';
 import LessonTimetable from 'views/components/module-info/LessonTimetable';
 import ModuleExamClash from 'views/components/module-info/ModuleExamClash';
+import AddToTimetable from 'views/components/module-info/AddToTimetable';
+
 import CorsBiddingStatsTableControl from './CorsBiddingStatsTableControl';
 
 import styles from './ModulePageContent.scss';
 
 type Props = {
   module: Module,
-  timetables: TimetableConfig,
-  addModule: Function,
-  removeModule: Function,
 };
 
 class ModulePageContentComponent extends Component<Props> {
@@ -41,11 +38,6 @@ class ModulePageContentComponent extends Component<Props> {
       .filter(h => h.ExamDate != null)
       .sort((a, b) => a.Semester - b.Semester)
       .map(h => ({ semester: h.Semester, date: h.ExamDate || '' }));
-  }
-
-  moduleHasBeenAdded(module: Module, semester: Semester): boolean {
-    const timetables = this.props.timetables;
-    return timetables[semester] && !!timetables[semester][module.ModuleCode];
   }
 
   render() {
@@ -124,27 +116,12 @@ class ModulePageContentComponent extends Component<Props> {
                   </div>
                 ))}
 
-                <div>
-                  {this.semestersOffered().map(
-                    semester => (
-                      this.moduleHasBeenAdded(module, semester) ?
-                        <button
-                          key={semester}
-                          className="btn btn-outline-primary"
-                          onClick={() => this.props.removeModule(semester, ModuleCode)}
-                        >
-                          Remove from {config.semesterNames[semester]}
-                        </button>
-                        :
-                        <button
-                          key={semester}
-                          className="btn btn-outline-primary"
-                          onClick={() => this.props.addModule(semester, ModuleCode)}
-                        >
-                          Add to {config.semesterNames[semester]}
-                        </button>
-                    ),
-                  )}
+                <div className={styles.addTimetable}>
+                  <AddToTimetable
+                    module={module}
+                    className="btn-group-sm"
+                    block
+                  />
                 </div>
 
                 <div>
@@ -205,9 +182,8 @@ class ModulePageContentComponent extends Component<Props> {
   }
 }
 
-const mapStateToProps = (state, ownProps) => ({
-  timetables: state.timetables,
+const mapStateToProps: MapStateToProps<*, *, *> = (state, ownProps) => ({
   module: state.entities.moduleBank.modules[ownProps.moduleCode],
 });
 
-export default connect(mapStateToProps, { addModule, removeModule })(ModulePageContentComponent);
+export default connect(mapStateToProps)(ModulePageContentComponent);
