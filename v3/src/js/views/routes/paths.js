@@ -1,7 +1,6 @@
 // @flow
 import { kebabCase, each } from 'lodash';
 import type { ModuleCode, ModuleTitle, Semester } from 'types/modules';
-import type { TimetableAction } from 'types/views';
 import type { SemTimetableConfig } from 'types/timetables';
 import { serializeTimetable } from 'utils/timetables';
 import config from 'config';
@@ -20,12 +19,12 @@ export function timetablePage(semester: Semester): string {
   return `/timetable/${fromSemester[semester]}`;
 }
 
+export const TIMETABLE_SHARE = 'share';
 export function timetableAction(
   semester: Semester,
-  action: TimetableAction,
   timetable: SemTimetableConfig,
 ): string {
-  return `${timetablePage(semester)}/${action}?${serializeTimetable(timetable)}`;
+  return `${timetablePage(semester)}/${TIMETABLE_SHARE}?${serializeTimetable(timetable)}`;
 }
 
 // Timetable path -> Semester
@@ -37,4 +36,9 @@ export function semesterForTimetablePage(semStr: ?string): ?Semester {
 // Module Code, Module Title -> Module page path
 export function modulePage(moduleCode: ModuleCode, moduleTitle: ModuleTitle): string {
   return `/modules/${moduleCode}/${kebabCase(moduleTitle)}`;
+}
+
+// Creates an absolute URL from a relative path
+export function absolutePath(path: string): string {
+  return `${location.protocol}//${location.host}${path}`;
 }

@@ -3,15 +3,12 @@
 import React, { PureComponent } from 'react';
 import classnames from 'classnames';
 import select from 'select';
-import { capitalize } from 'lodash';
 
-import type { TimetableAction } from 'types/views';
 import type { SemTimetableConfig } from 'types/timetables';
 import type { Semester } from 'types/modules';
 
-import { TIMETABLE_SHARE } from 'types/views';
-import { timetableAction } from 'views/routes/paths';
-import { Share, Repeat, Copy } from 'views/components/icons';
+import { absolutePath, timetableAction } from 'views/routes/paths';
+import { Repeat, Copy } from 'views/components/icons';
 import Modal from 'views/components/Modal';
 
 import styles from './ShareTimetable.scss';
@@ -24,7 +21,6 @@ type Props = {
 
 type State = {
   isOpen: boolean,
-  action: TimetableAction,
 };
 
 export default class ShareTimetable extends PureComponent<Props, State> {
@@ -35,16 +31,8 @@ export default class ShareTimetable extends PureComponent<Props, State> {
     action: 'sync',
   };
 
-  openModal(action: TimetableAction) {
-    this.setState({
-      isOpen: true,
-      action,
-    });
-  }
-
-  closeModal = () => {
-    this.setState({ isOpen: false });
-  };
+  openModal = () => this.setState({ isOpen: true });
+  closeModal = () => this.setState({ isOpen: false });
 
   copyText = () => {
     if (this.urlInput) {
@@ -54,44 +42,28 @@ export default class ShareTimetable extends PureComponent<Props, State> {
   };
 
   render() {
-    const { isOpen, action } = this.state;
+    const { isOpen } = this.state;
     const { semester, timetable } = this.props;
-
-    const url = `${location.protocol}//${location.host}${timetableAction(semester, action, timetable)}`;
-    const isSharing = action === TIMETABLE_SHARE;
+    const url = absolutePath(timetableAction(semester, timetable));
 
     return (
       <div>
-        <div className="btn-group btn-group-sm" role="group" aria-label="Timetable sharing">
-          <button
-            type="button"
-            className="btn btn-outline-primary"
-            onClick={() => this.openModal('share')}
-          >
-            <Share className={actionStyles.actionIcon} />
-            Share
-          </button>
-
-          <button
-            type="button"
-            className="btn btn-outline-primary"
-            onClick={() => this.openModal('sync')}
-          >
-            <Repeat className={actionStyles.actionIcon} />
-            Sync
-          </button>
-        </div>
-
-        <Modal
-          isOpen={isOpen}
-          className={classnames(action)}
-          onRequestClose={this.closeModal}
+        <button
+          type="button"
+          className="btn btn-sm btn-outline-primary"
+          onClick={this.openModal}
         >
-          <div className={styles.header}>
-            {isSharing ? <Share /> : <Repeat />}
+          <Repeat className={actionStyles.actionIcon} />
+          Share
+        </button>
 
-            <h3>{capitalize(action)} Your Timetable</h3>
-            <p>Send this link to {isSharing ? 'your friends' : 'yourself'}</p>
+        <Modal isOpen={isOpen} onRequestClose={this.closeModal}>
+          <div className={styles.header}>
+            <Repeat />
+
+            <h3>Share or Sync Your Timetable</h3>
+            <p>Send this link to your friends to share your timetable
+              or to yourself to keep your timetable synced on all devices.</p>
           </div>
 
           <div className="input-group input-group-lg">
@@ -112,7 +84,6 @@ export default class ShareTimetable extends PureComponent<Props, State> {
               </button>
             </span>
           </div>
-
         </Modal>
       </div>
     );

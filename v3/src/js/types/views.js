@@ -29,8 +29,3 @@ export type PageRangeDiff = {
 };
 
 export type OnPageChange = PageRangeDiff => void;
-
-/* timetable/TimetableContainer.jsx */
-export type TimetableAction = 'sync' | 'share';
-export const TIMETABLE_SYNC: TimetableAction = 'sync';
-export const TIMETABLE_SHARE: TimetableAction = 'share';

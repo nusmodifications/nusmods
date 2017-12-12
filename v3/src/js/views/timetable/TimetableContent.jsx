@@ -70,7 +70,7 @@ type Props = {
   downloadAsIcal: Function,
 };
 
-class TimetableContainer extends Component<Props> {
+class TimetableContent extends Component<Props> {
   timetableDom: ?HTMLElement;
 
   componentWillUnmount() {
@@ -299,4 +299,4 @@ export default connect(mapStateToProps, {
   toggleTimetableOrientation,
   downloadAsJpeg,
   downloadAsIcal,
-})(TimetableContainer);
+})(TimetableContent);

@@ -14,9 +14,8 @@ import { selectSemester } from 'actions/settings';
 import { setTimetable } from 'actions/timetables';
 import { fetchModule } from 'actions/moduleBank';
 import { getSemesterModules, deserializeTimetable } from 'utils/timetables';
-import { TIMETABLE_SYNC, TIMETABLE_SHARE } from 'types/views';
-import { semesterForTimetablePage, timetablePage } from 'views/routes/paths';
-import { Repeat, Share } from 'views/components/icons';
+import { semesterForTimetablePage, timetablePage, TIMETABLE_SHARE } from 'views/routes/paths';
+import { Repeat } from 'views/components/icons';
 import NotFoundPage from 'views/errors/NotFoundPage';
 import SemesterSwitcher from 'views/components/semester-switcher/SemesterSwitcher';
 import LoadingSpinner from 'views/components/LoadingSpinner';
@@ -91,72 +90,50 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
   }
 
   afterImport = () => {
-    if (this.props.semester) {
-      this.props.history.push(timetablePage(this.props.semester));
+    const { semester } = this.props;
+    if (semester) {
+      this.setState({ importedTimetable: null },
+        () => this.props.history.push(timetablePage(semester)));
     }
   };
 
+  sharingHeader(semester: Semester, timetable: SemTimetableConfig) {
+    return (
+      <div className={classnames('alert', 'alert-success', styles.importAlert)}>
+        <Repeat />
+
+        <div className="row justify-content-between">
+          <div className="col-auto">
+            <h3>This timetable was shared with you</h3>
+            <p>Clicking import will <strong>replace</strong> your saved timetable with
+              the one below.</p>
+          </div>
+
+          <div className={classnames('col-auto', styles.actions)}>
+            <button
+              className="btn btn-success"
+              type="button"
+              onClick={() =>
+                this.props.setTimetable(semester, timetable)
+                  .then(this.afterImport)}
+            >
+              Import shared timetable
+            </button>
+
+            <button
+              className="btn btn-link"
+              type="button"
+              onClick={this.afterImport}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   timetableHeader(semester: Semester) {
-    const { importedTimetable } = this.state;
-
-    if (importedTimetable) {
-      const action = this.props.match.params.action;
-
-      if (action === TIMETABLE_SYNC) {
-        return (
-          <div className={classnames('alert', 'alert-success', styles.importAlert)}>
-            <Repeat />
-
-            <div className="row">
-              <div className="col-md-7">
-                <h3>Syncing your timetable</h3>
-                <p>This will replace your saved timetable with the one below.</p>
-              </div>
-
-              <div className={classnames('col-md-5', styles.actions)}>
-                <button
-                  className="btn btn-success"
-                  onClick={() => {
-                    this.props.setTimetable(semester, importedTimetable)
-                      .then(this.afterImport);
-                  }}
-                >Replace</button>
-
-                <button
-                  className="btn btn-link"
-                  onClick={this.afterImport}
-                >Cancel</button>
-              </div>
-            </div>
-          </div>
-        );
-      }
-
-      if (action === TIMETABLE_SHARE) {
-        return (
-          <div className={classnames('alert', 'alert-info', styles.importAlert)}>
-            <Share />
-
-            <div className="row">
-              <div className="col-md-7">
-                <h3>Viewing a shared timetable</h3>
-                <p>You&apos;re looking at a timetable that was shared with you.</p>
-              </div>
-
-              <div className={classnames('col-md-5', styles.actions)}>
-                <button
-                  className="btn btn-info"
-                  onClick={this.afterImport}
-                >
-                  View my timetable
-                </button>
-              </div>
-            </div>
-          </div>
-        );
-      }
-    }
-
     return (
       <SemesterSwitcher
         semester={semester}
@@ -167,6 +144,7 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
 
   render() {
     const { semester, activeSemester, match } = this.props;
+    const { importedTimetable } = this.state;
     const action = match.params.action;
 
     // 1. Redirect to activeSemester if no semester was given in the URL. We do
@@ -178,21 +156,27 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
 
     // 2. If the semester is null or the action is not recognized, then the URL
     //    is invalid, so we display a 404 page
-    if (semester == null || (action && action !== TIMETABLE_SYNC && action !== TIMETABLE_SHARE)) {
+    if (semester == null || (action && action !== TIMETABLE_SHARE)) {
       return <NotFoundPage />;
     }
 
     // 3. If we are importing a timetable, check that all imported modules are
-    //    loaded first, and display a spinner if they're not
+    //    loaded first, and display a spinner if they're not.
     if (this.isLoading()) {
       return <LoadingSpinner />;
     }
+
+    // 4. If there is an imported timetable, we show the sharing header which
+    //    asks the user if they want to import the shared timetable
+    const header = importedTimetable
+      ? this.sharingHeader(semester, importedTimetable)
+      : this.timetableHeader(semester);
 
     return (
       <TimetableContent
         semester={semester}
         timetable={this.displayedTimetable()}
-        header={this.timetableHeader(semester)}
+        header={header}
       />
     );
   }
