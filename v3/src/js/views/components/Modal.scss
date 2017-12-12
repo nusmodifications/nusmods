@@ -9,7 +9,7 @@
   padding: 2rem;
   margin: 0 auto;
   background: var(--body-bg);
-  box-shadow: 0 3px 18px rgba(#000, 0.3);
+  box-shadow: 0 6px 24px rgba(#000, 0.18);
 
   @include media-breakpoint-down(sm) {
     top: 4rem;

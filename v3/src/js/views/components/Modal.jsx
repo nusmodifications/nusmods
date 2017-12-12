@@ -7,28 +7,29 @@ import styles from './Modal.scss';
 
 type Props = {
   overlayClassName?: string,
-  classnames?: string,
+  className?: string,
   onRequestClose: Function,
   children: Node,
 };
 
-export default function (props: Props) {
+export default function ({ className, overlayClassName, children, onRequestClose, ...rest }: Props) {
   return (
     <ReactModal
-      {...props}
-      overlayClassName={classnames(styles.overlay, props.overlayClassName)}
-      className={classnames(styles.modal, props.classnames)}
+      onRequestClose={onRequestClose}
+      overlayClassName={classnames(styles.overlay, overlayClassName)}
+      className={classnames(styles.modal, className)}
+      {...rest}
     >
       <button
         className="close"
         type="button"
-        onClick={props.onRequestClose}
+        onClick={onRequestClose}
         aria-label="Close"
       >
         &times;
       </button>
 
-      {props.children}
+      {children}
     </ReactModal>
   );
 }
