@@ -29,7 +29,7 @@ export type BiddingStat = {
 // See http://www.alanzucconi.com/2015/07/26/enum-flags-and-bitwise-operators/
 // for more info on bitmasks
 export type StudentType = number;
-export const NON_BIDDING: StudentType = 0; // Non-open bidding round (eg. reserved quota for next rounds)
+export const NON_BIDDING: StudentType = 0; // Non-bidding round (eg. reserved quota for next rounds)
 export const NEW_STUDENT: StudentType = 1 << 0;
 export const RETURNING_STUDENT: StudentType = 1 << 1;
 export const GENERAL_ACCOUNT: StudentType = 1 << 2;
