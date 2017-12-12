@@ -59,6 +59,7 @@ type Props = {
   activeLesson: Lesson,
   timetableOrientation: TimetableOrientation,
   hiddenInTimetable: ModuleCode[],
+  readOnly: boolean,
 
   addModule: Function,
   removeModule: Function,
@@ -112,6 +113,8 @@ class TimetableContent extends Component<Props> {
 
   // Returns component with table(s) of modules
   renderModuleSections(horizontalOrientation) {
+    const { readOnly } = this.props;
+
     const renderModuleTable = modules => (
       <TimetableModulesTable
         modules={modules.map(module => ({
@@ -122,6 +125,7 @@ class TimetableContent extends Component<Props> {
         horizontalOrientation={horizontalOrientation}
         semester={this.props.semester}
         onRemoveModule={moduleCode => this.props.removeModule(this.props.semester, moduleCode)}
+        readOnly={readOnly}
       />
     );
 
@@ -150,7 +154,7 @@ class TimetableContent extends Component<Props> {
   }
 
   render() {
-    const { semester, modules, colors, activeLesson, timetableOrientation } = this.props;
+    const { semester, modules, colors, activeLesson, timetableOrientation, readOnly } = this.props;
 
     let timetableLessons: Lesson[] = timetableLessonsArray(this.props.timetableWithLessons)
       // Do not process hidden modules
@@ -189,9 +193,10 @@ class TimetableContent extends Component<Props> {
         row.map((lesson) => {
           const module: Module = modules[lesson.ModuleCode];
           const moduleTimetable = getModuleTimetable(module, semester);
+
           return {
             ...lesson,
-            isModifiable: areOtherClassesAvailable(moduleTimetable, lesson.LessonType),
+            isModifiable: !readOnly && areOtherClassesAvailable(moduleTimetable, lesson.LessonType),
           };
         })));
 
@@ -252,13 +257,14 @@ class TimetableContent extends Component<Props> {
             </div>
             <div className={styles.tableContainer}>
               <div className="col-md-12">
-                <ModulesSelect
-                  moduleList={this.props.semModuleList}
-                  onChange={(moduleCode) => {
-                    this.props.addModule(semester, moduleCode.value);
-                  }}
-                  placeholder="Add module to timetable"
-                />
+                {!readOnly &&
+                  <ModulesSelect
+                    moduleList={this.props.semModuleList}
+                    onChange={(moduleCode) => {
+                      this.props.addModule(semester, moduleCode.value);
+                    }}
+                    placeholder="Add module to timetable"
+                  />}
                 <br />
                 {this.renderModuleSections(!isVerticalOrientation)}
               </div>

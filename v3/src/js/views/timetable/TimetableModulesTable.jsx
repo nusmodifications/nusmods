@@ -29,6 +29,7 @@ type Props = {
   modules: Array<ModuleWithColor>,
   onRemoveModule: Function,
   horizontalOrientation: boolean,
+  readOnly: boolean,
 };
 
 class TimetableModulesTable extends Component<Props> {
@@ -117,7 +118,7 @@ class TimetableModulesTable extends Component<Props> {
               />
             </div>
             <div className={styles.moduleInfo}>
-              {this.renderModuleActions(module)}
+              {!this.props.readOnly && this.renderModuleActions(module)}
               <Link to={modulePage(module.ModuleCode, module.ModuleTitle)}>
                 {module.ModuleCode} {module.ModuleTitle}
               </Link>

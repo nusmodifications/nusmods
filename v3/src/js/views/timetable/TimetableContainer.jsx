@@ -91,10 +91,10 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
   importTimetable(semester: Semester, timetable: SemTimetableConfig) {
     const colors = fillColorMapping(timetable, this.props.colors);
     this.props.setTimetable(semester, timetable, colors)
-      .then(this.afterImport);
+      .then(this.clearImportedTimetable);
   }
 
-  afterImport = () => {
+  clearImportedTimetable = () => {
     const { semester } = this.props;
     if (semester) {
       this.setState({ importedTimetable: null },
@@ -126,7 +126,7 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
             <button
               className="btn btn-link"
               type="button"
-              onClick={this.afterImport}
+              onClick={this.clearImportedTimetable}
             >
               Cancel
             </button>
@@ -185,6 +185,7 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
         timetable={displayedTimetable}
         colors={colors}
         header={header}
+        readOnly={!!importedTimetable}
       />
     );
   }
