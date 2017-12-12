@@ -23,8 +23,20 @@
     height: 8rem;
   }
 
+  .text {
+    flex: 0 1 auto;
+  }
+
   .actions {
     text-align: right;
+  }
+
+  @include media-breakpoint-up(md) {
+    .row {
+      flex-wrap: nowrap;
+      align-items: center;
+      justify-content: space-between;
+    }
   }
 
   @include media-breakpoint-down(sm) {

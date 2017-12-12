@@ -107,14 +107,14 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
       <div className={classnames('alert', 'alert-success', styles.importAlert)}>
         <Repeat />
 
-        <div className="row justify-content-between">
-          <div className="col-auto">
+        <div className={classnames('row', styles.row)}>
+          <div className={classnames('col-md-auto', styles.text)}>
             <h3>This timetable was shared with you</h3>
             <p>Clicking import will <strong>replace</strong> your saved timetable with
               the one below.</p>
           </div>
 
-          <div className={classnames('col-auto', styles.actions)}>
+          <div className={classnames('col-md-auto', styles.actions)}>
             <button
               className="btn btn-success"
               type="button"
