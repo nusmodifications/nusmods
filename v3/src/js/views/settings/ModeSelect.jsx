@@ -13,12 +13,12 @@ type ModeOption = { value: Mode, label: string };
 
 const MODES: Array<ModeOption> = [
   {
-    label: 'Light',
-    value: LIGHT_MODE,
+    label: 'On',
+    value: DARK_MODE,
   },
   {
-    label: 'Dark',
-    value: DARK_MODE,
+    label: 'Off',
+    value: LIGHT_MODE,
   },
 ];
 
