@@ -1,7 +1,8 @@
 // @flow
 import { range, without, sample } from 'lodash';
 
-import type { ColorIndex } from 'types/reducers';
+import type { SemTimetableConfig } from 'types/timetables';
+import type { ColorIndex, ColorMapping } from 'types/reducers';
 import type { Lesson } from 'types/modules';
 
 export const NUM_DIFFERENT_COLORS: number = 8;
@@ -41,4 +42,22 @@ export function colorLessonsByKey(lessons: Lesson[], key: string) {
 
     return { ...lesson, colorIndex };
   });
+}
+
+// Fill up missing color slots given a timetable. This is useful when importing
+// timetables since these modules do not have any pre-defined colors
+export function fillColorMapping(
+  timetable: SemTimetableConfig,
+  original: ColorMapping,
+): ColorMapping {
+  const colorMap = {};
+  const colorsUsed = [];
+
+  Object.keys(timetable).forEach((moduleCode) => {
+    const color = original[moduleCode] || getNewColor(colorsUsed, false);
+    colorMap[moduleCode] = color;
+    colorsUsed.push(color);
+  });
+
+  return colorMap;
 }

@@ -7,7 +7,7 @@ import config from 'config';
 
 import type { ModulesMap } from 'reducers/entities/moduleBank';
 import type {
-  ThemeState,
+  ColorMapping,
   TimetableOrientation,
   ModuleSelectList,
 } from 'types/reducers';
@@ -40,6 +40,7 @@ import {
   lessonsForLessonType,
   findExamClashes,
 } from 'utils/timetables';
+import { fillColorMapping } from 'utils/colors';
 import ModulesSelect from 'views/components/ModulesSelect';
 
 import styles from './TimetableContent.scss';
@@ -55,7 +56,7 @@ type Props = {
   timetable: SemTimetableConfig,
   timetableWithLessons: SemTimetableConfigWithLessons,
   modules: ModulesMap,
-  colors: ThemeState,
+  colors: ColorMapping,
   activeLesson: Lesson,
   timetableOrientation: TimetableOrientation,
   hiddenInTimetable: ModuleCode[],
@@ -178,10 +179,10 @@ class TimetableContent extends Component<Props> {
         timetableLessons.push(modifiableLesson);
       });
     }
+
     // Inject color into module
-    timetableLessons = timetableLessons.map((lesson): Lesson => {
-      return { ...lesson, colorIndex: colors[lesson.ModuleCode] };
-    });
+    timetableLessons = timetableLessons.map((lesson): Lesson =>
+      ({ ...lesson, colorIndex: colors[lesson.ModuleCode] }));
 
     const arrangedLessons = arrangeLessonsForWeek(timetableLessons);
     const arrangedLessonsWithModifiableFlag: TimetableArrangement = _.mapValues(arrangedLessons, dayRows =>
@@ -276,6 +277,7 @@ function mapStateToProps(state, ownProps) {
   const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
   const semModuleList = getSemModuleSelectList(state.entities.moduleBank, semester, timetable);
   const hiddenInTimetable = state.settings.hiddenInTimetable || [];
+  const colors = fillColorMapping(timetable, state.theme.colors);
 
   return {
     semester,
@@ -283,8 +285,8 @@ function mapStateToProps(state, ownProps) {
     timetable,
     timetableWithLessons,
     modules,
+    colors,
     activeLesson: state.app.activeLesson,
-    colors: state.theme.colors,
     timetableOrientation: state.theme.timetableOrientation,
     hiddenInTimetable,
   };
