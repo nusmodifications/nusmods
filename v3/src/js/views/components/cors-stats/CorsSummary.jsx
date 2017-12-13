@@ -29,6 +29,7 @@ export default function (props: Props) {
       {map(summary, (facultyStats, name) => (
         <div key={name}>
           {size(summary) > 1 && <h5 className={styles.facultyHeading}>{name}</h5>}
+
           <div className="row">
             {map(facultyStats, ({ minBid, round }, type) => (
               <div key={type} className="col-4">

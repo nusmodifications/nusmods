@@ -30,7 +30,11 @@ export default class CorsStats extends PureComponent<Props, State> {
     return (
       <div>
         {sortedStats.slice(0, semestersShown).map(([semester, semesterStat]) => (
-          <CorsSemester semester={semester} stats={semesterStat} />
+          <CorsSemester
+            key={semester}
+            semester={semester}
+            stats={semesterStat}
+          />
         ))}
 
         {semestersShown < sortedStats.length &&

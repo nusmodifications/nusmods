@@ -110,7 +110,7 @@ class ModulePageContentComponent extends Component<Props> {
 
               <div className="col-sm-4 module-page-sidebar">
                 {this.examinations().map(exam => (
-                  <div key={`exam-${exam.semester}`}>
+                  <div key={exam.semester}>
                     <h3>{config.semesterNames[exam.semester]} Exam</h3>
                     <p>{formatExamDate(exam.date)}</p>
 
@@ -199,8 +199,8 @@ class ModulePageContentComponent extends Component<Props> {
               >
                 <li><a href="#details">Details</a></li>
                 <li><a href="#prerequisites">Prerequisites</a></li>
-                <li><a href="#bidding-stats">Bidding Stats</a></li>
                 <li><a href="#timetable">Timetable</a></li>
+                <li><a href="#bidding-stats">Bidding Stats</a></li>
                 <li><a href="#reviews">Reviews</a></li>
               </ScrollSpy>
             </nav>
