@@ -1,11 +1,11 @@
 // @flow
+import type { Theme } from 'types/settings';
+
 import React from 'react';
 import _ from 'lodash';
 import classnames from 'classnames';
 
-import type { Theme } from 'types/views';
-
-import { NUM_DIFFERENT_COLORS } from 'reducers/theme';
+import { NUM_DIFFERENT_COLORS } from 'utils/colors';
 
 type Props = {
   theme: Theme,

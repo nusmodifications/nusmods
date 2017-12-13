@@ -1,6 +1,7 @@
 // @flow
 import type { FSA } from 'types/redux';
 import type { Faculty, ModuleCode, Semester } from 'types/modules';
+import type { Mode } from 'types/settings';
 
 export const SELECT_SEMESTER: string = 'SELECT_SEMESTER';
 export function selectSemester(semester: Semester): FSA {
@@ -23,6 +24,14 @@ export function selectFaculty(faculty: Faculty): FSA {
   return {
     type: SELECT_FACULTY,
     payload: faculty,
+  };
+}
+
+export const SELECT_MODE: string = 'SELECT_MODE';
+export function selectMode(mode: Mode): FSA {
+  return {
+    type: SELECT_MODE,
+    payload: mode,
   };
 }
 

@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Calendar, Search, Settings } from 'views/components/icons/index';
+import { Calendar, Map, Search, Settings } from 'views/components/icons/index';
 
 import styles from './Navtabs.scss';
 
@@ -14,7 +14,11 @@ function Navtabs() {
       </NavLink>
       <NavLink className={styles.link} activeClassName={styles.linkActive} to="/modules">
         <Search className={styles.icon} />
-        <span className={styles.title}>Browse</span>
+        <span className={styles.title}>Modules</span>
+      </NavLink>
+      <NavLink className={styles.link} activeClassName={styles.linkActive} to="/venues">
+        <Map className={styles.icon} />
+        <span className={styles.title}>Venues</span>
       </NavLink>
       <NavLink className={styles.link} activeClassName={styles.linkActive} to="/settings">
         <Settings className={styles.icon} />

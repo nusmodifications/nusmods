@@ -8,7 +8,7 @@ import cs3216 from '__mocks__/modules/CS3216.json';
 import Combinatorics from 'js-combinatorics';
 import { DaysOfWeek, TimesOfDay, Semesters, Timeslots } from 'types/modules';
 import TimeslotFilter, { TimeslotTypes } from './TimeslotFilter';
-import { testFilter } from './filter-test-helpers';
+import { testFilter } from './filterTestHelpers';
 
 test('test() should filter modules according to their lecture timeslot', () => {
   // Generate all possible combinations of parameters to test against

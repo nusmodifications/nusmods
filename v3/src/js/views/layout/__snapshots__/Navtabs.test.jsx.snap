@@ -33,7 +33,23 @@ exports[`renders into nav element 1`] = `
     <span
       className="title"
     >
-      Browse
+      Modules
+    </span>
+  </NavLink>
+  <NavLink
+    activeClassName="linkActive"
+    className="link"
+    to="/venues"
+  >
+    <Map
+      className="icon"
+      color="currentColor"
+      size="24"
+    />
+    <span
+      className="title"
+    >
+      Venues
     </span>
   </NavLink>
   <NavLink

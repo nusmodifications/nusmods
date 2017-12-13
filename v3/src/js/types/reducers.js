@@ -6,12 +6,14 @@ import type {
   ModuleCondensed,
   Semester,
 } from 'types/modules';
+import type {
+  Mode,
+} from 'types/settings';
 
 /* app.js */
 export type AppState = {
   activeSemester: Semester,
   activeLesson: ?Lesson,
-  activeModule: ?ModuleCode,
 };
 
 /* requests.js */
@@ -45,6 +47,7 @@ export type ThemeState = {
 export type SettingsState = {
   newStudent: boolean,
   faculty: ?Faculty,
+  mode: Mode,
   hiddenInTimetable: Array<ModuleCode>,
 };
 
@@ -58,7 +61,7 @@ export type ModuleList = Array<ModuleCondensed>;
 export type ModuleSelectList = Array<ModuleSelectListItem>;
 export type ModuleCodeMap = { [ModuleCode]: ModuleCondensed };
 
-/* module-finder.js */
+/* moduleFinder.js */
 export type ModuleSearch = {
   term: string,
   tokens: string[],
