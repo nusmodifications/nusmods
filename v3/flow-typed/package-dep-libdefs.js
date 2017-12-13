@@ -8,6 +8,10 @@ declare module 'downshift' {
   declare module.exports: any;
 }
 
+declare module 'localforage' {
+  declare module.exports: any;
+}
+
 declare module 'raven-for-redux' {
   declare module.exports: any;
 }
