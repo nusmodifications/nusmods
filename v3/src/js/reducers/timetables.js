@@ -80,7 +80,7 @@ function timetables(state: TimetableConfig = defaultTimetableConfig, action: FSA
     case RESET_TIMETABLE:
       return {
         ...state,
-        [action.payload.semester]: {},
+        [action.payload.semester]: defaultSemTimetableConfig,
       };
 
     case ADD_MODULE:

@@ -16,7 +16,6 @@ import MinusSquare from 'react-feather/dist/icons/minus-square';
 import PlusSquare from 'react-feather/dist/icons/plus-square';
 import Settings from 'react-feather/dist/icons/settings';
 import Search from 'react-feather/dist/icons/search';
-import Share from 'react-feather/dist/icons/share-2';
 import Sidebar from 'react-feather/dist/icons/sidebar';
 import Twitter from 'react-feather/dist/icons/twitter';
 import Trash2 from 'react-feather/dist/icons/trash-2';
@@ -41,7 +40,6 @@ export {
   PlusSquare,
   Search,
   Settings,
-  Share,
   Sidebar,
   Twitter,
   Trash2,
