@@ -1,0 +1,82 @@
+@import "~styles/utils/modules-entry.scss";
+
+$v-padding: 0.6rem;
+$h-padding: $grid-gutter-width / 2;
+
+.heading {
+  margin-bottom: 0;
+  font-weight: bold;
+  font-size: $font-size-xs;
+
+  @include media-breakpoint-down(sm) {
+    padding: $v-padding $h-padding;
+    font-size: $font-size-sm;
+    border-bottom: 1px solid var(--gray-lighter);
+  }
+}
+
+.label {
+  font-size: $font-size-xs;
+  cursor: pointer;
+
+  &:hover {
+    color: theme-color();
+  }
+
+  &.selected {
+    font-weight: bold;
+    color: theme-color();
+  }
+
+  :global(.text-muted) {
+    font-weight: normal;
+  }
+
+  @include media-breakpoint-down(sm) {
+    font-size: $font-size-sm;
+  }
+}
+
+.checklist {
+  .label {
+    display: block;
+    padding-top: 0.1rem;
+    padding-bottom: 0.1rem;
+
+    @include media-breakpoint-down(sm) {
+      padding: $v-padding $h-padding $v-padding ($h-padding + 20px);
+      border-bottom: 1px solid var(--gray-lighter);
+    }
+  }
+}
+
+.timeslot {
+  margin-bottom: 1rem;
+
+  .label {
+    display: block;
+    padding: 0.2rem 0;
+    margin: 0;
+    text-align: center;
+    border: 1px solid transparent;
+
+    &.selected {
+      color: #fff;
+      background: theme-color();
+    }
+
+    &:hover {
+      border-color: theme-color();
+    }
+  }
+
+  @include media-breakpoint-down(sm) {
+    th {
+      font-size: $font-size-sm;
+    }
+
+    .label {
+      padding: $v-padding 0;
+    }
+  }
+}

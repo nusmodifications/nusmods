@@ -8,6 +8,7 @@ import Close from 'react-feather/dist/icons/x';
 import Eye from 'react-feather/dist/icons/eye';
 import EyeOff from 'react-feather/dist/icons/eye-off';
 import Facebook from 'react-feather/dist/icons/facebook';
+import Filter from 'react-feather/dist/icons/filter';
 import GitHub from 'react-feather/dist/icons/github';
 import Image from 'react-feather/dist/icons/image';
 import Map from 'react-feather/dist/icons/map';
@@ -31,6 +32,7 @@ export {
   Eye,
   EyeOff,
   Facebook,
+  Filter,
   GitHub,
   Image,
   Map,

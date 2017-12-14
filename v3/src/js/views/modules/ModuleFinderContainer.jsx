@@ -21,6 +21,8 @@ import ChecklistFilters from 'views/components/filters/ChecklistFilters';
 import TimeslotFilters from 'views/components/filters/TimeslotFilters';
 import ErrorPage from 'views/errors/ErrorPage';
 import LoadingSpinner from 'views/components/LoadingSpinner';
+import SideMenu, { OPEN_MENU_LABEL } from 'views/components/SideMenu';
+import { Filter } from 'views/components/icons';
 
 import moduleFilters, {
   SEMESTER,
@@ -36,6 +38,7 @@ import { resetModuleFinder } from 'actions/moduleFinder';
 import FilterGroup from 'utils/filters/FilterGroup';
 import HistoryDebouncer from 'utils/HistoryDebouncer';
 import { defer, breakpointUp } from 'utils/react';
+import styles from './ModuleFinderContainer.scss';
 
 type Props = {
   searchTerm: string,
@@ -275,41 +278,43 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
           </div>
 
           <div className="col-md-4 col-lg-3">
-            <div className="module-filters">
-              <header>
-                <h3>Refine by</h3>
-              </header>
+            <SideMenu openIcon={<Filter aria-label={OPEN_MENU_LABEL} />}>
+              <div className={styles.moduleFilters}>
+                <header>
+                  <h3>Refine by</h3>
+                </header>
 
-              <ChecklistFilters
-                group={groups[SEMESTER]}
-                groups={this.filterGroups()}
-                onFilterChange={this.onFilterChange}
-              />
+                <ChecklistFilters
+                  group={groups[SEMESTER]}
+                  groups={this.filterGroups()}
+                  onFilterChange={this.onFilterChange}
+                />
 
-              <ChecklistFilters
-                group={groups[LEVELS]}
-                groups={this.filterGroups()}
-                onFilterChange={this.onFilterChange}
-              />
+                <ChecklistFilters
+                  group={groups[LEVELS]}
+                  groups={this.filterGroups()}
+                  onFilterChange={this.onFilterChange}
+                />
 
-              <ChecklistFilters
-                group={groups[MODULE_CREDITS]}
-                groups={this.filterGroups()}
-                onFilterChange={this.onFilterChange}
-              />
+                <ChecklistFilters
+                  group={groups[MODULE_CREDITS]}
+                  groups={this.filterGroups()}
+                  onFilterChange={this.onFilterChange}
+                />
 
-              <TimeslotFilters
-                group={groups[LECTURE_TIMESLOTS]}
-                groups={this.filterGroups()}
-                onFilterChange={this.onFilterChange}
-              />
+                <TimeslotFilters
+                  group={groups[LECTURE_TIMESLOTS]}
+                  groups={this.filterGroups()}
+                  onFilterChange={this.onFilterChange}
+                />
 
-              <TimeslotFilters
-                group={groups[TUTORIAL_TIMESLOTS]}
-                groups={this.filterGroups()}
-                onFilterChange={this.onFilterChange}
-              />
-            </div>
+                <TimeslotFilters
+                  group={groups[TUTORIAL_TIMESLOTS]}
+                  groups={this.filterGroups()}
+                  onFilterChange={this.onFilterChange}
+                />
+              </div>
+            </SideMenu>
           </div>
         </div>
       </div>
@@ -321,6 +326,6 @@ const mapStateToProps = state => ({
   searchTerm: state.moduleFinder.search.term,
 });
 
-export default connect(mapStateToProps, { resetModuleFinder })(
-  withRouter(ModuleFinderContainerComponent),
-);
+const ModuleFinderContainerWithRouter = withRouter(ModuleFinderContainerComponent);
+const ModuleFinderContainer = connect(mapStateToProps, { resetModuleFinder })(ModuleFinderContainerWithRouter);
+export default ModuleFinderContainer;

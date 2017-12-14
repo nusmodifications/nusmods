@@ -1,7 +1,7 @@
 @import "~styles/utils/modules-entry";
 
 $header-margin-top: 1rem;
-$sticky-top: $navbar-height + $header-margin-top;
+$sticky-top: $navbar-height + $navtab-height;
 
 // Side menu styles
 //  - md and above, display as sticky side menu
@@ -12,6 +12,8 @@ $sticky-top: $navbar-height + $header-margin-top;
 
 .sideMenu {
   position: fixed;
+  max-height: calc(100% - #{$sticky-top});
+  overflow: auto;
 }
 
 @include media-breakpoint-down(sm) {
