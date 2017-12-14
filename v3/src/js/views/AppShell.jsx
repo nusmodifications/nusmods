@@ -3,6 +3,7 @@ import type { Node } from 'react';
 import type { TimetableConfig } from 'types/timetables';
 import type { ModuleList, ModuleSelectList } from 'types/reducers';
 import type { ModuleCode, Semester } from 'types/modules';
+import type { Mode } from 'types/settings';
 
 import React, { Component } from 'react';
 import { NavLink, withRouter, type ContextRouter } from 'react-router-dom';
@@ -18,6 +19,7 @@ import { roundStart } from 'utils/cors';
 import ModulesSelect from 'views/components/ModulesSelect';
 import Footer from 'views/layout/Footer';
 import Navtabs from 'views/layout/Navtabs';
+import { DARK_MODE } from 'types/settings';
 import LoadingSpinner from './components/LoadingSpinner';
 import CorsNotification from './components/cors-info/CorsNotification';
 
@@ -33,6 +35,7 @@ type Props = {
   moduleSelectList: ModuleSelectList,
   timetables: TimetableConfig,
   theme: string,
+  mode: Mode,
   activeSemester: Semester,
 
   fetchModule: (ModuleCode) => void,
@@ -62,8 +65,21 @@ const weekText = (() => {
   return parts.join(', ');
 })();
 
+function setMode(mode: Mode) {
+  if (!document.body) {
+    return;
+  }
+
+  if (mode === DARK_MODE) {
+    document.body.classList.add('mode-dark');
+    return;
+  }
+  document.body.classList.remove('mode-dark');
+}
+
 export class AppShell extends Component<Props> {
   componentWillMount() {
+    setMode(this.props.mode);
     // TODO: This always re-fetch the entire modules list. Consider a better strategy for this
     this.props.fetchModuleList();
 
@@ -73,6 +89,10 @@ export class AppShell extends Component<Props> {
       Object.keys(semesterTimetable)
         .forEach(moduleCode => this.props.fetchModule(moduleCode));
     }
+  }
+
+  componentWillUpdate(nextProps: Props) {
+    setMode(nextProps.mode);
   }
 
   currentTime() {
@@ -130,6 +150,7 @@ const mapStateToProps = state => ({
   moduleSelectList: state.entities.moduleBank.moduleSelectList,
   timetables: state.timetables,
   theme: state.theme.id,
+  mode: state.settings.mode,
   activeSemester: state.app.activeSemester,
 });
 

@@ -7,14 +7,16 @@ import type {
 import {
   SELECT_NEW_STUDENT,
   SELECT_FACULTY,
-
+  SELECT_MODE,
   HIDE_LESSON_IN_TIMETABLE,
   SHOW_LESSON_IN_TIMETABLE,
 } from 'actions/settings';
+import { LIGHT_MODE } from 'types/settings';
 
 const defaultSettingsState: SettingsState = {
   newStudent: false,
   faculty: '',
+  mode: LIGHT_MODE,
   hiddenInTimetable: [],
 };
 
@@ -43,6 +45,11 @@ function settings(state: SettingsState = defaultSettingsState, action: FSA): Set
       return {
         ...state,
         faculty: action.payload,
+      };
+    case SELECT_MODE:
+      return {
+        ...state,
+        mode: action.payload,
       };
     case HIDE_LESSON_IN_TIMETABLE:
     case SHOW_LESSON_IN_TIMETABLE:

@@ -12,6 +12,8 @@ import GitHub from 'react-feather/dist/icons/github';
 import Image from 'react-feather/dist/icons/image';
 import Map from 'react-feather/dist/icons/map';
 import Repeat from 'react-feather/dist/icons/repeat';
+import MinusSquare from 'react-feather/dist/icons/minus-square';
+import PlusSquare from 'react-feather/dist/icons/plus-square';
 import Settings from 'react-feather/dist/icons/settings';
 import Search from 'react-feather/dist/icons/search';
 import Share from 'react-feather/dist/icons/share-2';
@@ -35,6 +37,8 @@ export {
   Map,
   LinkedIn,
   Repeat,
+  MinusSquare,
+  PlusSquare,
   Search,
   Settings,
   Share,
