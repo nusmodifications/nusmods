@@ -11,6 +11,9 @@ $sticky-top: $navbar-height + $header-margin-top;
   }
 }
 
+// Side menu styles
+//  - md and above, display as sticky side menu
+//  - sm and below, display as FAB + menu drawer appearing from below
 .fab {
   display: none;
 }

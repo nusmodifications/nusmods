@@ -217,8 +217,8 @@ exports.getCSSConfig = ({ options } = {}) => {
     {
       loader: 'sass-loader',
       options: {
-        // @material packages uses '@material' directly as part of their import
-        // without this those imports will not resolve
+        // @material packages uses '@material' directly as part of their import paths.
+        // Without this those imports will not resolve properly
         includePaths: [PATHS.node],
       },
     },
