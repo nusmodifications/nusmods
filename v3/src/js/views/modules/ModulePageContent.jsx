@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import ScrollSpy from 'react-scrollspy';
-import classnames from 'classnames';
 
 import type { Module, Semester } from 'types/modules';
 import type { TimetableConfig } from 'types/timetables';
@@ -13,13 +12,12 @@ import { addModule, removeModule } from 'actions/timetables';
 import { formatExamDate } from 'utils/modules';
 import { intersperse } from 'utils/array';
 import { BULLET } from 'utils/react';
-import { Close, Menu } from 'views/components/icons';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
 import DisqusComments from 'views/components/DisqusComments';
+import SideMenu from 'views/components/SideMenu';
 import LessonTimetable from 'views/components/module-info/LessonTimetable';
 import ModuleExamClash from 'views/components/module-info/ModuleExamClash';
 import CorsStats from 'views/components/cors-stats/CorsStats';
-import Fab from 'views/components/Fab';
 
 import styles from './ModulePageContent.scss';
 
@@ -30,15 +28,7 @@ type Props = {
   removeModule: Function,
 };
 
-type State = {
-  isMenuOpen: boolean,
-}
-
-class ModulePageContentComponent extends Component<Props, State> {
-  state: State = {
-    isMenuOpen: false,
-  };
-
+class ModulePageContentComponent extends Component<Props> {
   semestersOffered(): Semester[] {
     return this.props.module.History
       .map(h => h.Semester)
@@ -59,10 +49,7 @@ class ModulePageContentComponent extends Component<Props, State> {
     return timetables[semester] && !!timetables[semester][module.ModuleCode];
   }
 
-  closeMenu = () => this.setState({ isMenuOpen: false });
-
   render() {
-    const { isMenuOpen } = this.state;
     const { module } = this.props;
     const { ModuleCode, ModuleTitle } = module;
 
@@ -208,25 +195,20 @@ class ModulePageContentComponent extends Component<Props, State> {
           </div>
 
           <aside className="col-md-3">
-            <Fab
-              className={styles.fab}
-              onClick={() => this.setState({ isMenuOpen: !isMenuOpen })}
-            >
-              {isMenuOpen ? <Close aria-label="Close Menu" /> : <Menu aria-label="Open Menu" />}
-            </Fab>
-
-            <nav className={classnames(styles.sideMenu, { [styles.isOpen]: isMenuOpen })}>
-              <ScrollSpy
-                items={['details', 'prerequisites', 'bidding-stats', 'timetable', 'reviews']}
-                currentClassName={styles.activeMenuItem}
-              >
-                <li><a onClick={this.closeMenu} href="#details">Details</a></li>
-                <li><a onClick={this.closeMenu} href="#prerequisites">Prerequisites</a></li>
-                <li><a onClick={this.closeMenu} href="#timetable">Timetable</a></li>
-                <li><a onClick={this.closeMenu} href="#bidding-stats">Bidding Stats</a></li>
-                <li><a onClick={this.closeMenu} href="#reviews">Reviews</a></li>
-              </ScrollSpy>
-            </nav>
+            <SideMenu>{({ closeMenu }) => (
+              <nav className={styles.sideMenu}>
+                <ScrollSpy
+                  items={['details', 'prerequisites', 'bidding-stats', 'timetable', 'reviews']}
+                  currentClassName={styles.activeMenuItem}
+                >
+                  <li><a onClick={closeMenu} href="#details">Details</a></li>
+                  <li><a onClick={closeMenu} href="#prerequisites">Prerequisites</a></li>
+                  <li><a onClick={closeMenu} href="#timetable">Timetable</a></li>
+                  <li><a onClick={closeMenu} href="#bidding-stats">Bidding Stats</a></li>
+                  <li><a onClick={closeMenu} href="#reviews">Reviews</a></li>
+                </ScrollSpy>
+              </nav>
+            )}</SideMenu>
           </aside>
         </div>
       </div>

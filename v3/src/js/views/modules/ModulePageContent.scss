@@ -11,18 +11,7 @@ $sticky-top: $navbar-height + $header-margin-top;
   }
 }
 
-// Side menu styles
-//  - md and above, display as sticky side menu
-//  - sm and below, display as FAB + menu drawer appearing from below
-.fab {
-  display: none;
-}
-
 .sideMenu {
-  position: sticky;
-  top: $sticky-top;
-  margin-top: 0.4rem;
-
   ul {
     padding: 0;
     margin: 0;
@@ -41,30 +30,8 @@ $sticky-top: $navbar-height + $header-margin-top;
     color: theme-color();
     border-color: theme-color();
   }
-}
 
-@include media-breakpoint-down(sm) {
-  .fab {
-    display: block;
-  }
-
-  .sideMenu {
-    position: fixed;
-    top: auto;
-    bottom: 0;
-    left: 0;
-    z-index: $drawer-z-index;
-    width: 100%;
-    padding: 1rem 1rem 3rem;
-    background: var(--body-bg);
-    box-shadow: 0 -10px 20px rgba(#000, 0.18);
-    transform: translateY(100%);
-    transition: transform 0.3s;
-
-    &.isOpen {
-      transform: translateY(0);
-    }
-
+  @include media-breakpoint-down(sm) {
     a {
       padding: 0.7rem 0 0.7rem 1.3rem;
       font-size: 1.2rem;
