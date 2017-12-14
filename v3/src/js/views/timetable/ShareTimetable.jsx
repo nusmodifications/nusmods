@@ -1,6 +1,7 @@
 // @flow
 
 import React, { PureComponent } from 'react';
+import { QRCode } from 'react-qr-svg';
 import classnames from 'classnames';
 
 import type { SemTimetableConfig } from 'types/timetables';
@@ -90,6 +91,22 @@ export default class ShareTimetable extends PureComponent<Props, State> {
                 <Copy className={styles.copyIcon} />
               </button>
             </span>
+          </div>
+
+          <div className="row">
+            <div className="col-sm-4">
+              <h3 className={styles.shareHeading}>QR Code</h3>
+
+              <div className={styles.qrCode}>
+                <QRCode value={url} />
+              </div>
+            </div>
+            <div className="col-sm-4">
+              <h3 className={styles.shareHeading}>Via email</h3>
+            </div>
+            <div className="col-sm-4">
+              <h3 className={styles.shareHeading}>Via messaging apps</h3>
+            </div>
           </div>
         </Modal>
       </div>

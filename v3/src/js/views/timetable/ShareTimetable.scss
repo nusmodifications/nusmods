@@ -13,8 +13,33 @@
     font-weight: $font-weight-bold;
     font-size: 1.4rem;
   }
+
+  @include media-breakpoint-down(sm) {
+    br {
+      display: none;
+    }
+  }
 }
 
 .copyIcon {
   vertical-align: middle;
+}
+
+.shareHeading {
+  margin: 1rem 0 0.5rem;
+  font-weight: bold;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.qrCode {
+  max-width: 12rem;
+  padding: 0.2rem;
+  margin: 0 auto;
+  background: #fff;
+
+  svg {
+    display: block;
+    margin: 0;
+  }
 }
