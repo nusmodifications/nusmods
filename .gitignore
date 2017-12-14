@@ -3,7 +3,7 @@
 .tmp
 .vagrant
 app/bower_components
-vendor
+# vendor
 app/vendor
 dist
 node_modules
