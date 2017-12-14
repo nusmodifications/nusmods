@@ -59,6 +59,8 @@ class ModulePageContentComponent extends Component<Props, State> {
     return timetables[semester] && !!timetables[semester][module.ModuleCode];
   }
 
+  closeMenu = () => this.setState({ isMenuOpen: false });
+
   render() {
     const { isMenuOpen } = this.state;
     const { module } = this.props;
@@ -218,11 +220,11 @@ class ModulePageContentComponent extends Component<Props, State> {
                 items={['details', 'prerequisites', 'bidding-stats', 'timetable', 'reviews']}
                 currentClassName={styles.activeMenuItem}
               >
-                <li><a href="#details">Details</a></li>
-                <li><a href="#prerequisites">Prerequisites</a></li>
-                <li><a href="#timetable">Timetable</a></li>
-                <li><a href="#bidding-stats">Bidding Stats</a></li>
-                <li><a href="#reviews">Reviews</a></li>
+                <li><a onClick={this.closeMenu} href="#details">Details</a></li>
+                <li><a onClick={this.closeMenu} href="#prerequisites">Prerequisites</a></li>
+                <li><a onClick={this.closeMenu} href="#timetable">Timetable</a></li>
+                <li><a onClick={this.closeMenu} href="#bidding-stats">Bidding Stats</a></li>
+                <li><a onClick={this.closeMenu} href="#reviews">Reviews</a></li>
               </ScrollSpy>
             </nav>
           </aside>
