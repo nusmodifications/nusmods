@@ -4,12 +4,14 @@ import AlertTriangle from 'react-feather/dist/icons/alert-triangle';
 import Calendar from 'react-feather/dist/icons/calendar';
 import ChevronLeft from 'react-feather/dist/icons/chevron-left';
 import ChevronRight from 'react-feather/dist/icons/chevron-right';
+import Close from 'react-feather/dist/icons/x';
 import Eye from 'react-feather/dist/icons/eye';
 import EyeOff from 'react-feather/dist/icons/eye-off';
 import Facebook from 'react-feather/dist/icons/facebook';
 import GitHub from 'react-feather/dist/icons/github';
 import Image from 'react-feather/dist/icons/image';
 import Map from 'react-feather/dist/icons/map';
+import Menu from 'react-feather/dist/icons/menu';
 import MinusSquare from 'react-feather/dist/icons/minus-square';
 import PlusSquare from 'react-feather/dist/icons/plus-square';
 import Settings from 'react-feather/dist/icons/settings';
@@ -25,12 +27,14 @@ export {
   Calendar,
   ChevronLeft,
   ChevronRight,
+  Close,
   Eye,
   EyeOff,
   Facebook,
   GitHub,
   Image,
   Map,
+  Menu,
   LinkedIn,
   MinusSquare,
   PlusSquare,

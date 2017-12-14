@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import ScrollSpy from 'react-scrollspy';
+import classnames from 'classnames';
 
 import type { Module, Semester } from 'types/modules';
 import type { TimetableConfig } from 'types/timetables';
@@ -12,11 +13,15 @@ import { addModule, removeModule } from 'actions/timetables';
 import { formatExamDate } from 'utils/modules';
 import { intersperse } from 'utils/array';
 import { BULLET } from 'utils/react';
+import { Close, Menu } from 'views/components/icons';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
 import DisqusComments from 'views/components/DisqusComments';
 import LessonTimetable from 'views/components/module-info/LessonTimetable';
 import ModuleExamClash from 'views/components/module-info/ModuleExamClash';
 import CorsStats from 'views/components/cors-stats/CorsStats';
+import Fab from 'views/components/Fab';
+
+import styles from './ModulePageContent.scss';
 
 type Props = {
   module: Module,
@@ -25,7 +30,15 @@ type Props = {
   removeModule: Function,
 };
 
-class ModulePageContentComponent extends Component<Props> {
+type State = {
+  isMenuOpen: boolean,
+}
+
+class ModulePageContentComponent extends Component<Props, State> {
+  state: State = {
+    isMenuOpen: false,
+  };
+
   semestersOffered(): Semester[] {
     return this.props.module.History
       .map(h => h.Semester)
@@ -47,6 +60,7 @@ class ModulePageContentComponent extends Component<Props> {
   }
 
   render() {
+    const { isMenuOpen } = this.state;
     const { module } = this.props;
     const { ModuleCode, ModuleTitle } = module;
 
@@ -110,7 +124,7 @@ class ModulePageContentComponent extends Component<Props> {
 
               <div className="col-sm-4 module-page-sidebar">
                 {this.examinations().map(exam => (
-                  <div key={exam.semester}>
+                  <div key={exam.semester} className={styles.exam}>
                     <h3>{config.semesterNames[exam.semester]} Exam</h3>
                     <p>{formatExamDate(exam.date)}</p>
 
@@ -192,10 +206,17 @@ class ModulePageContentComponent extends Component<Props> {
           </div>
 
           <aside className="col-md-3">
-            <nav className="module-side-menu">
+            <Fab
+              className={styles.fab}
+              onClick={() => this.setState({ isMenuOpen: !isMenuOpen })}
+            >
+              {isMenuOpen ? <Close aria-label="Close Menu" /> : <Menu aria-label="Open Menu" />}
+            </Fab>
+
+            <nav className={classnames(styles.sideMenu, { [styles.isOpen]: isMenuOpen })}>
               <ScrollSpy
                 items={['details', 'prerequisites', 'bidding-stats', 'timetable', 'reviews']}
-                currentClassName="scroll-menu-link-active"
+                currentClassName={styles.activeMenuItem}
               >
                 <li><a href="#details">Details</a></li>
                 <li><a href="#prerequisites">Prerequisites</a></li>

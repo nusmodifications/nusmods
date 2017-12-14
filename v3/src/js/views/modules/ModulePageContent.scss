@@ -1,9 +1,70 @@
 @import "~styles/utils/modules-entry";
 
+$header-margin-top: 1rem;
+$sticky-top: $navbar-height + $header-margin-top;
+
 .exam {
   margin-bottom: 1rem;
 
   p {
     margin-bottom: 0;
+  }
+}
+
+.fab {
+  display: none;
+}
+
+.sideMenu {
+  position: sticky;
+  top: $sticky-top;
+  margin-top: 0.4rem;
+
+  ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  a {
+    display: block;
+    padding: 0.4rem 0 0.4rem 1rem;
+    color: var(--gray-light);
+    border-left: 0.3rem solid var(--gray-lighter);
+  }
+
+  .activeMenuItem a {
+    font-weight: bold;
+    color: theme-color();
+    border-color: theme-color();
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .fab {
+    display: block;
+  }
+
+  .sideMenu {
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    z-index: $drawer-z-index;
+    width: 100%;
+    padding: 1rem 1rem 3rem;
+    background: var(--body-bg);
+    box-shadow: 0 -10px 20px rgba(#000, 0.18);
+    transform: translateY(100%);
+    transition: transform 0.3s;
+
+    &.isOpen {
+      transform: translateY(0);
+    }
+
+    a {
+      padding: 0.7rem 0 0.7rem 1.3rem;
+      font-size: 1.2rem;
+    }
   }
 }
