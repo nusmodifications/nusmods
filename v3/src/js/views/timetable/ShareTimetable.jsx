@@ -2,7 +2,6 @@
 
 import React, { PureComponent } from 'react';
 import classnames from 'classnames';
-import select from 'select';
 
 import type { SemTimetableConfig } from 'types/timetables';
 import type { Semester } from 'types/modules';
@@ -28,16 +27,24 @@ export default class ShareTimetable extends PureComponent<Props, State> {
 
   state: State = {
     isOpen: false,
-    action: 'sync',
   };
 
   openModal = () => this.setState({ isOpen: true });
   closeModal = () => this.setState({ isOpen: false });
 
   copyText = () => {
-    if (this.urlInput) {
-      select(this.urlInput);
-      document.execCommand('copy');
+    const input = this.urlInput;
+
+    if (input) {
+      input.select();
+      input.setSelectionRange(0, input.value.length);
+
+      // TODO: Inform the user copy succeeded through the UI, and prompt the user
+      // to manually copy if execCommand fails. Mobile Safari currently doesn't support
+      // execCommand('copy')
+      if (document.execCommand('copy')) {
+        input.blur();
+      }
     }
   };
 
