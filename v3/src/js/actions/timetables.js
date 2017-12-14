@@ -3,6 +3,7 @@ import { map, isEmpty } from 'lodash';
 
 import type { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
 import type { FSA } from 'types/redux';
+import type { ColorMapping, ColorIndex } from 'types/reducers';
 import type {
   Module,
   ModuleCode,
@@ -19,6 +20,7 @@ export function addModule(
   semester: Semester,
   moduleCode: ModuleCode,
   lessonConfig: ModuleLessonConfig = {},
+  colorIndex?: ColorIndex,
 ) {
   return (dispatch: Function, getState: Function) =>
     dispatch(fetchModule(moduleCode)).then(() => {
@@ -33,6 +35,7 @@ export function addModule(
           semester,
           moduleCode,
           moduleLessonConfig,
+          colorIndex,
         },
       });
     });
@@ -88,8 +91,25 @@ export function setLessonConfig(semester: Semester, config: ModuleLessonConfig):
   };
 }
 
-export function setTimetable(semester: Semester, timetable: SemTimetableConfig) {
-  return (dispatch: Function) =>
-    Promise.all(map(timetable, (lessons, moduleCode) =>
-      dispatch(addModule(semester, moduleCode, lessons))));
+export const RESET_TIMETABLE = 'RESET_TIMETABLE';
+export function resetTimetable(semester: Semester): FSA {
+  return {
+    type: RESET_TIMETABLE,
+    payload: { semester },
+  };
+}
+
+export function setTimetable(
+  semester: Semester,
+  timetable: SemTimetableConfig,
+  colors: ColorMapping = {},
+) {
+  return (dispatch: Function) => {
+    // Reset timetable...
+    dispatch(resetTimetable(semester));
+
+    // ...then add all of the new ones from the new timetable
+    return Promise.all(map(timetable, (lessons, moduleCode) =>
+      dispatch(addModule(semester, moduleCode, lessons, colors[moduleCode]))));
+  };
 }
