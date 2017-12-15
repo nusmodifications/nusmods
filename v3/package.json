@@ -113,6 +113,7 @@
     "react-helmet": "^5.2.0",
     "react-loadable": "^4.0.4",
     "react-modal": "^3.1.7",
+    "react-qr-svg": "^2.1.0",
     "react-redux": "^5.0.5",
     "react-router-dom": "^4.1.2",
     "react-scrollspy": "^3.3.4",
@@ -120,8 +121,7 @@
     "react-virtualized-select": "^3.1.0",
     "react-waypoint": "^7.0.4",
     "redux": "^3.7.2",
-    "redux-thunk": "^2.2.0",
-    "select": "^1.1.2"
+    "redux-thunk": "^2.2.0"
   },
   "browserslist": [
     "last 2 versions",

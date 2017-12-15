@@ -24,10 +24,10 @@ declare module 'react-modal' {
   declare module.exports: any;
 }
 
-declare module 'react-scrollspy' {
+declare module 'react-qr-svg' {
   declare module.exports: any;
 }
 
-declare module 'select' {
+declare module 'react-scrollspy' {
   declare module.exports: any;
 }

@@ -6,13 +6,16 @@
   right: 1rem;
   left: 1rem;
   max-width: 40rem;
+  max-height: calc(90%);
   padding: 2rem;
   margin: 0 auto;
+  overflow: auto;
   background: var(--body-bg);
   box-shadow: 0 6px 24px rgba(#000, 0.18);
 
   @include media-breakpoint-down(sm) {
-    top: 4rem;
+    top: 1rem;
+    padding: 1rem;
   }
 }
 
