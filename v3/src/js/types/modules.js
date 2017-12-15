@@ -1,6 +1,7 @@
 // @flow
 import type { ColorIndex } from 'types/reducers';
 import { flatMap } from 'lodash';
+import type { BiddingStat } from './cors';
 
 // Components within a module:
 export type AcadYear = string; // E.g. "2016/2017"
@@ -48,21 +49,6 @@ export type ModuleLevel = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 export const Semesters = [1, 2, 3, 4];
 
 export type WorkloadComponent = 'Lecture' | 'Tutorial' | 'Laboratory' | 'Project' | 'Preparation';
-
-// BiddingStat is CORS bidding stats for a particular round for a module.
-export type BiddingStat = {
-  AcadYear: AcadYear,
-  Bidders: string,
-  Faculty: Faculty,
-  Group: string,
-  HighestBid: string,
-  LowestBid: string,
-  LowestSuccessfulBid: string,
-  Quota: string,
-  Round: string,
-  Semester: string, // Note that this semester type is different from that in SemesterData.
-  StudentAcctType: string,
-};
 
 // RawLesson is a lesson time slot obtained from the API.
 // Usually ModuleCode and ModuleTitle has to be injected in before using in the timetable.
@@ -132,13 +118,3 @@ type Modifiable = {
 
 // Lessons do not implement a modifiable interface.
 export type ModifiableLesson = Lesson & Modifiable;
-
-export type GeneralAccount = string;
-export type ProgrammeAccount = string;
-export type AccountType = GeneralAccount | ProgrammeAccount;
-// used for checking if cors bidding stat is relevant for this student profile
-export type Student = {
-  newStudent: boolean,
-  faculty: Faculty,
-  accountType: AccountType,
-}

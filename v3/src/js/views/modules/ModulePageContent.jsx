@@ -15,9 +15,7 @@ import DisqusComments from 'views/components/DisqusComments';
 import LessonTimetable from 'views/components/module-info/LessonTimetable';
 import ModuleExamClash from 'views/components/module-info/ModuleExamClash';
 import AddToTimetableDropdown from 'views/components/module-info/AddModuleDropdown';
-
-import CorsBiddingStatsTableControl from './CorsBiddingStatsTableControl';
-
+import CorsStats from 'views/components/cors-stats/CorsStats';
 import styles from './ModulePageContent.scss';
 
 type Props = {
@@ -99,7 +97,7 @@ class ModulePageContentComponent extends Component<Props> {
 
               <div className="col-sm-4 module-page-sidebar">
                 {this.examinations().map(exam => (
-                  <div key={`exam-${exam.semester}`} className={styles.exam}>
+                  <div key={exam.semester}>
                     <h3>{config.semesterNames[exam.semester]} Exam</h3>
                     <p>{formatExamDate(exam.date)}</p>
 
@@ -134,17 +132,25 @@ class ModulePageContentComponent extends Component<Props> {
               {/* TODO: Add in prereq tree when it is ready */}
             </section>
 
-            {module.CorsBiddingStats && <section id="bidding-stats">
-              <h2>CORS Bidding Stats</h2>
-              <CorsBiddingStatsTableControl stats={module.CorsBiddingStats} />
-            </section>}
-
             <section id="timetable">
               <h2>Timetable</h2>
               <LessonTimetable
                 semestersOffered={semesters}
                 history={module.History}
               />
+            </section>
+
+            <section id="bidding-stats">
+              <h2>CORS Bidding Stats</h2>
+              {module.CorsBiddingStats ?
+                <div>
+                  <CorsStats stats={module.CorsBiddingStats} />
+                </div>
+                :
+                <div>
+                  No CORS bidding data available. This may be because the module is new,
+                  or the module is not available from CORS.
+                </div>}
             </section>
 
             <section id="reviews">
@@ -165,8 +171,8 @@ class ModulePageContentComponent extends Component<Props> {
               >
                 <li><a href="#details">Details</a></li>
                 <li><a href="#prerequisites">Prerequisites</a></li>
-                <li><a href="#bidding-stats">Bidding Stats</a></li>
                 <li><a href="#timetable">Timetable</a></li>
+                <li><a href="#bidding-stats">Bidding Stats</a></li>
                 <li><a href="#reviews">Reviews</a></li>
               </ScrollSpy>
             </nav>

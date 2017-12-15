@@ -7,7 +7,7 @@ import config from 'config';
 
 import type { ModulesMap } from 'reducers/entities/moduleBank';
 import type {
-  ThemeState,
+  ColorMapping,
   TimetableOrientation,
   ModuleSelectList,
 } from 'types/reducers';
@@ -46,6 +46,7 @@ import styles from './TimetableContent.scss';
 import Timetable from './Timetable';
 import TimetableActions from './TimetableActions';
 import TimetableModulesTable from './TimetableModulesTable';
+import ShareTimetable from './ShareTimetable';
 
 type Props = {
   header: Node,
@@ -54,10 +55,11 @@ type Props = {
   timetable: SemTimetableConfig,
   timetableWithLessons: SemTimetableConfigWithLessons,
   modules: ModulesMap,
-  colors: ThemeState,
+  colors: ColorMapping,
   activeLesson: Lesson,
   timetableOrientation: TimetableOrientation,
   hiddenInTimetable: ModuleCode[],
+  readOnly: boolean,
 
   addModule: Function,
   removeModule: Function,
@@ -69,7 +71,7 @@ type Props = {
   downloadAsIcal: Function,
 };
 
-class TimetableContainer extends Component<Props> {
+class TimetableContent extends Component<Props> {
   timetableDom: ?HTMLElement;
 
   componentWillUnmount() {
@@ -111,6 +113,8 @@ class TimetableContainer extends Component<Props> {
 
   // Returns component with table(s) of modules
   renderModuleSections(horizontalOrientation) {
+    const { readOnly } = this.props;
+
     const renderModuleTable = modules => (
       <TimetableModulesTable
         modules={modules.map(module => ({
@@ -121,6 +125,7 @@ class TimetableContainer extends Component<Props> {
         horizontalOrientation={horizontalOrientation}
         semester={this.props.semester}
         onRemoveModule={moduleCode => this.props.removeModule(this.props.semester, moduleCode)}
+        readOnly={readOnly}
       />
     );
 
@@ -149,7 +154,7 @@ class TimetableContainer extends Component<Props> {
   }
 
   render() {
-    const { semester, modules, colors, activeLesson, timetableOrientation } = this.props;
+    const { semester, modules, colors, activeLesson, timetableOrientation, readOnly } = this.props;
 
     let timetableLessons: Lesson[] = timetableLessonsArray(this.props.timetableWithLessons)
       // Do not process hidden modules
@@ -177,10 +182,10 @@ class TimetableContainer extends Component<Props> {
         timetableLessons.push(modifiableLesson);
       });
     }
+
     // Inject color into module
-    timetableLessons = timetableLessons.map((lesson): Lesson => {
-      return { ...lesson, colorIndex: colors[lesson.ModuleCode] };
-    });
+    timetableLessons = timetableLessons.map((lesson): Lesson =>
+      ({ ...lesson, colorIndex: colors[lesson.ModuleCode] }));
 
     const arrangedLessons = arrangeLessonsForWeek(timetableLessons);
     const arrangedLessonsWithModifiableFlag: TimetableArrangement = _.mapValues(arrangedLessons, dayRows =>
@@ -188,9 +193,10 @@ class TimetableContainer extends Component<Props> {
         row.map((lesson) => {
           const module: Module = modules[lesson.ModuleCode];
           const moduleTimetable = getModuleTimetable(module, semester);
+
           return {
             ...lesson,
-            isModifiable: areOtherClassesAvailable(moduleTimetable, lesson.LessonType),
+            isModifiable: !readOnly && areOtherClassesAvailable(moduleTimetable, lesson.LessonType),
           };
         })));
 
@@ -232,21 +238,33 @@ class TimetableContainer extends Component<Props> {
               'col-md-4': isVerticalOrientation,
             })}
           >
-            <TimetableActions
-              isVerticalOrientation={!isVerticalOrientation}
-              toggleTimetableOrientation={this.props.toggleTimetableOrientation}
-              downloadAsJpeg={this.downloadAsJpeg}
-              downloadAsIcal={this.downloadAsIcal}
-            />
+            <div className="row justify-content-between">
+              <div className="col-auto">
+                <TimetableActions
+                  isVerticalOrientation={!isVerticalOrientation}
+                  toggleTimetableOrientation={this.props.toggleTimetableOrientation}
+                  downloadAsJpeg={this.downloadAsJpeg}
+                  downloadAsIcal={this.downloadAsIcal}
+                />
+              </div>
+
+              <div className="col-auto">
+                <ShareTimetable
+                  semester={semester}
+                  timetable={this.props.timetable}
+                />
+              </div>
+            </div>
             <div className={styles.tableContainer}>
               <div className="col-md-12">
-                <ModulesSelect
-                  moduleList={this.props.semModuleList}
-                  onChange={(moduleCode) => {
-                    this.props.addModule(semester, moduleCode.value);
-                  }}
-                  placeholder="Add module to timetable"
-                />
+                {!readOnly &&
+                  <ModulesSelect
+                    moduleList={this.props.semModuleList}
+                    onChange={(moduleCode) => {
+                      this.props.addModule(semester, moduleCode.value);
+                    }}
+                    placeholder="Add module to timetable"
+                  />}
                 <br />
                 {this.renderModuleSections(!isVerticalOrientation)}
               </div>
@@ -272,7 +290,6 @@ function mapStateToProps(state, ownProps) {
     timetableWithLessons,
     modules,
     activeLesson: state.app.activeLesson,
-    colors: state.theme.colors,
     timetableOrientation: state.theme.timetableOrientation,
     hiddenInTimetable,
   };
@@ -287,4 +304,4 @@ export default connect(mapStateToProps, {
   toggleTimetableOrientation,
   downloadAsJpeg,
   downloadAsIcal,
-})(TimetableContainer);
+})(TimetableContent);
