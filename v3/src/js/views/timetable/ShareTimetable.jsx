@@ -4,14 +4,17 @@ import React, { PureComponent } from 'react';
 import { QRCode } from 'react-qr-svg';
 import classnames from 'classnames';
 import qs from 'query-string';
+import axios from 'axios';
 
 import type { SemTimetableConfig } from 'types/timetables';
 import type { Semester } from 'types/modules';
 
+import config from 'config';
 import { absolutePath, timetableShare } from 'views/routes/paths';
 import { Repeat, Copy, Mail } from 'views/components/icons';
 import Modal from 'views/components/Modal';
-import config from 'config';
+import LoadingSpinner from 'views/components/LoadingSpinner';
+
 import styles from './ShareTimetable.scss';
 import actionStyles from './TimetableActions.scss';
 
@@ -22,16 +25,29 @@ type Props = {
 
 type State = {
   isOpen: boolean,
+  shortUrl: ?string,
 };
+
+function shareUrl(semester: Semester, timetable: SemTimetableConfig): string {
+  return absolutePath(timetableShare(semester, timetable));
+}
 
 export default class ShareTimetable extends PureComponent<Props, State> {
   urlInput: ?HTMLInputElement;
+  url: ?string;
 
   state: State = {
     isOpen: false,
+    shortUrl: null,
   };
 
-  openModal = () => this.setState({ isOpen: true });
+  loadShortUrl(url: string) {
+    return axios.get('https://nusmods.com/short_url.php', { data: { url } })
+      .then(({ data }) => this.setState({ shortUrl: data.shortUrl }))
+      // Cannot get short URL - just use long URL instead
+      .catch(() => this.setState({ shortUrl: url }));
+  }
+
   closeModal = () => this.setState({ isOpen: false });
 
   copyText = () => {
@@ -50,21 +66,88 @@ export default class ShareTimetable extends PureComponent<Props, State> {
     }
   };
 
-  render() {
-    const { isOpen } = this.state;
+  renderSharing(url: string) {
+    const { semester } = this.props;
+
+    return (
+      <div>
+        <div className="input-group input-group-lg">
+          <input
+            value={url}
+            className={classnames('form-control', styles.url)}
+            ref={(r) => { this.urlInput = r; }}
+            readOnly
+          />
+          <span className="input-group-btn">
+            <button
+              className="btn btn-primary"
+              type="button"
+              aria-label="Copy URL"
+              onClick={this.copyText}
+            >
+              <Copy className={styles.icon} />
+            </button>
+          </span>
+        </div>
+
+        <div className="row">
+          <div className="col-sm-4">
+            <h3 className={styles.shareHeading}>QR Code</h3>
+
+            <div className={styles.qrCode}>
+              <QRCode value={url} />
+            </div>
+          </div>
+          <div className="col-sm-4">
+            <h3 className={styles.shareHeading}>Via email</h3>
+
+            <a
+              className="btn btn-outline-primary btn-block"
+              href={`mailto:?${qs.stringify({
+                subject: 'NUSMods timetable',
+                body: `My timetable for ${config.academicYear} ${config.semesterNames[semester]}` +
+                ` can be found at ${url}`,
+              })}`}
+            ><Mail className={styles.icon} /> Send Email</a>
+          </div>
+          <div className="col-sm-4">
+            <h3 className={styles.shareHeading}>Via messaging apps</h3>
+
+            <a
+              className="btn btn-outline-primary btn-block"
+              href={`https://api.whatsapp.com/send?${qs.stringify({ text: `My timetable: ${url}` })}`}
+              target="_blank"
+              rel="noreferrer noopener"
+            >WhatsApp</a>
+
+            <a
+              className="btn btn-outline-primary btn-block"
+              href={`https://t.me/share/url?${qs.stringify({ url })}`}
+              target="_blank"
+              rel="noreferrer noopener"
+            >Telegram</a>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Event handlers
+  openModal = () => {
     const { semester, timetable } = this.props;
-    const url = absolutePath(timetableShare(semester, timetable));
+    const nextUrl = shareUrl(semester, timetable);
 
-    const mailto = `mailto:?${qs.stringify({
-      subject: 'NUSMods timetable',
-      body: `My timetable for ${config.academicYear} ${config.semesterNames[semester]} can be found at ${url}`,
-    })}`;
+    if (this.url !== nextUrl) {
+      this.url = nextUrl;
+      this.loadShortUrl(nextUrl);
+      this.setState({ shortUrl: null });
+    }
 
-    const whatsApp = `https://api.whatsapp.com/send?${qs.stringify({
-      text: `My timetable: ${url}`,
-    })}`;
+    this.setState({ isOpen: true });
+  };
 
-    const telegram = `https://t.me/share/url?${qs.stringify({ url })}`;
+  render() {
+    const { isOpen, shortUrl } = this.state;
 
     return (
       <div>
@@ -86,59 +169,7 @@ export default class ShareTimetable extends PureComponent<Props, State> {
               to yourself to keep your timetable synced on all devices.</p>
           </div>
 
-          <div className="input-group input-group-lg">
-            <input
-              value={url}
-              className={classnames('form-control', styles.url)}
-              ref={(r) => { this.urlInput = r; }}
-              readOnly
-            />
-            <span className="input-group-btn">
-              <button
-                className="btn btn-primary"
-                type="button"
-                aria-label="Copy URL"
-                onClick={this.copyText}
-              >
-                <Copy className={styles.icon} />
-              </button>
-            </span>
-          </div>
-
-          <div className="row">
-            <div className="col-sm-4">
-              <h3 className={styles.shareHeading}>QR Code</h3>
-
-              <div className={styles.qrCode}>
-                <QRCode value={url} />
-              </div>
-            </div>
-            <div className="col-sm-4">
-              <h3 className={styles.shareHeading}>Via email</h3>
-
-              <a
-                className="btn btn-outline-primary btn-block"
-                href={mailto}
-              ><Mail className={styles.icon} /> Send Email</a>
-            </div>
-            <div className="col-sm-4">
-              <h3 className={styles.shareHeading}>Via messaging apps</h3>
-
-              <a
-                className="btn btn-outline-primary btn-block"
-                href={whatsApp}
-                target="_blank"
-                rel="noreferrer noopener"
-              >WhatsApp</a>
-
-              <a
-                className="btn btn-outline-primary btn-block"
-                href={telegram}
-                target="_blank"
-                rel="noreferrer noopener"
-              >Telegram</a>
-            </div>
-          </div>
+          {shortUrl ? this.renderSharing(shortUrl) : <LoadingSpinner />}
         </Modal>
       </div>
     );
