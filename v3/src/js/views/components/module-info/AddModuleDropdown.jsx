@@ -4,15 +4,16 @@ import React, { PureComponent } from 'react';
 import Downshift from 'downshift';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
+import { get } from 'lodash';
 
 import type { Module, ModuleCode, Semester } from 'types/modules';
 import type { TimetableConfig } from 'types/timetables';
 
 import { addModule, removeModule } from 'actions/timetables';
-import { getFirstAvailableSemester } from 'utils/modules';
+import { getFirstAvailableSemester, getSemestersOffered } from 'utils/modules';
 import config from 'config';
 
-import styles from './AddToTimetable.scss';
+import styles from './AddModuleDropdown.scss';
 
 type Props = {
   module: Module,
@@ -24,10 +25,10 @@ type Props = {
   removeModule: (Semester, ModuleCode) => void,
 };
 
-export class AddToTimetableComponent extends PureComponent<Props> {
+export class AddModuleDropdownComponent extends PureComponent<Props> {
   onSelect(semester: Semester) {
     const { module } = this.props;
-    const action = this.moduleHasBeenAdded(semester)
+    const action = this.moduleOnTimetable(semester)
       ? this.props.removeModule
       : this.props.addModule;
 
@@ -35,21 +36,22 @@ export class AddToTimetableComponent extends PureComponent<Props> {
   }
 
   buttonLabel(semester: Semester) {
-    return this.moduleHasBeenAdded(semester)
-      ? `Remove ${config.semesterNames[semester]}`
-      : `Add to ${config.semesterNames[semester]}`;
-  }
-
-  moduleHasBeenAdded(semester: Semester): boolean {
-    const { timetables } = this.props;
-    return timetables[semester] && !!timetables[semester][this.props.module.ModuleCode];
+    return this.moduleOnTimetable(semester)
+      ? <span>Remove from <br />
+        <strong>{config.semesterNames[semester]}</strong></span>
+      : <span>Add to <br />
+        <strong>{config.semesterNames[semester]}</strong></span>;
   }
 
   otherSemesters(exclude: Semester): Semester[] {
-    return this.props.module.History
-      .map(h => h.Semester)
+    return getSemestersOffered(this.props.module)
       .filter(semester => semester !== exclude)
       .sort();
+  }
+
+  moduleOnTimetable(semester: Semester): boolean {
+    const { module, timetables } = this.props;
+    return !!get(timetables, [String(semester), module.ModuleCode]);
   }
 
   render() {
@@ -74,13 +76,13 @@ export class AddToTimetableComponent extends PureComponent<Props> {
             </label>
 
             <div
-              className={classnames('btn-group', styles.button, className, {
+              className={classnames('btn-group', styles.buttonGroup, className, {
                 'btn-block': block,
               })}
             >
               <button
                 type="button"
-                className={classnames('btn btn-primary', {
+                className={classnames('btn btn-outline-primary', {
                   'btn-block': block,
                 })}
                 onClick={() => this.onSelect(defaultSemester)}
@@ -92,7 +94,7 @@ export class AddToTimetableComponent extends PureComponent<Props> {
                 <button
                   id={id}
                   type="button"
-                  className="btn btn-primary dropdown-toggle dropdown-toggle-split"
+                  className="btn btn-outline-primary dropdown-toggle dropdown-toggle-split"
                   onClick={toggleMenu}
                   data-toggle="dropdown"
                   aria-haspopup="true"
@@ -102,12 +104,12 @@ export class AddToTimetableComponent extends PureComponent<Props> {
                 </button>}
 
               {isOpen &&
-                <div className="dropdown-menu show">
+                <div className={classnames('dropdown-menu show', styles.dropdownMenu)}>
                   {otherSemesters.map(semester => (
                     <button
                       {...getItemProps({ item: semester })}
                       key={semester}
-                      className="dropdown-item"
+                      className={classnames('dropdown-item', styles.dropdownItem)}
                       onClick={() => this.onSelect(semester)}
                     >
                       {this.buttonLabel(semester)}
@@ -122,6 +124,8 @@ export class AddToTimetableComponent extends PureComponent<Props> {
   }
 }
 
-export default connect(state => ({
+const AddModuleDropdownConnected = connect(state => ({
   timetables: state.timetables,
-}), { addModule, removeModule })(AddToTimetableComponent);
+}), { addModule, removeModule })(AddModuleDropdownComponent);
+
+export default AddModuleDropdownConnected;

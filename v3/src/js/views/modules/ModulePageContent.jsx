@@ -7,14 +7,14 @@ import ScrollSpy from 'react-scrollspy';
 import type { Module, Semester } from 'types/modules';
 
 import config from 'config';
-import { formatExamDate } from 'utils/modules';
+import { formatExamDate, getSemestersOffered } from 'utils/modules';
 import { intersperse } from 'utils/array';
 import { BULLET } from 'utils/react';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
 import DisqusComments from 'views/components/DisqusComments';
 import LessonTimetable from 'views/components/module-info/LessonTimetable';
 import ModuleExamClash from 'views/components/module-info/ModuleExamClash';
-import AddToTimetable from 'views/components/module-info/AddToTimetable';
+import AddToTimetableDropdown from 'views/components/module-info/AddModuleDropdown';
 
 import CorsBiddingStatsTableControl from './CorsBiddingStatsTableControl';
 
@@ -25,12 +25,6 @@ type Props = {
 };
 
 class ModulePageContentComponent extends Component<Props> {
-  semestersOffered(): Semester[] {
-    return this.props.module.History
-      .map(h => h.Semester)
-      .sort();
-  }
-
   examinations(): {semester: Semester, date: string}[] {
     const history = this.props.module.History;
     if (!history) return [];
@@ -45,6 +39,7 @@ class ModulePageContentComponent extends Component<Props> {
     const { ModuleCode, ModuleTitle } = module;
 
     const pageTitle = `${ModuleCode} ${ModuleTitle}`;
+    const semesters = getSemestersOffered(module);
 
     return (
       <div className="module-container page-container">
@@ -68,7 +63,7 @@ class ModulePageContentComponent extends Component<Props> {
               </p>
 
               <p>
-                {intersperse(this.semestersOffered().map(semester => (
+                {intersperse(semesters.map(semester => (
                   <a key={semester}>{ config.semesterNames[semester] }</a>
                 )), BULLET)}
               </p>
@@ -117,7 +112,7 @@ class ModulePageContentComponent extends Component<Props> {
                 ))}
 
                 <div className={styles.addTimetable}>
-                  <AddToTimetable
+                  <AddToTimetableDropdown
                     module={module}
                     className="btn-group-sm"
                     block
@@ -147,7 +142,7 @@ class ModulePageContentComponent extends Component<Props> {
             <section id="timetable">
               <h2>Timetable</h2>
               <LessonTimetable
-                semestersOffered={this.semestersOffered()}
+                semestersOffered={semesters}
                 history={module.History}
               />
             </section>

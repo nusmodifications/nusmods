@@ -1,0 +1,37 @@
+@import "~styles/utils/modules-entry";
+
+.buttonGroup {
+  :global(.btn) {
+    line-height: 1.2;
+  }
+
+  strong {
+    font-size: 1.2em;
+  }
+
+  @include media-breakpoint-down(sm) {
+    // Long selector for specificity
+    :global(.dropdown-toggle.dropdown-toggle-split) {
+      width: 3rem;
+    }
+  }
+}
+
+.dropdownMenu {
+  width: 100%;
+  padding: 0.1rem 0;
+  box-shadow: 0 2px 6px rgba(#000, 0.25);
+}
+
+.dropdownItem {
+  padding: 0.4rem 0;
+  text-align: center;
+
+  br {
+    display: none;
+  }
+
+  strong {
+    font-size: 1em;
+  }
+}
