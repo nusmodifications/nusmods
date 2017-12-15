@@ -18,6 +18,7 @@ import SideMenu from 'views/components/SideMenu';
 import LessonTimetable from 'views/components/module-info/LessonTimetable';
 import ModuleExamClash from 'views/components/module-info/ModuleExamClash';
 import CorsStats from 'views/components/cors-stats/CorsStats';
+import CorsNotification from 'views/components/cors-info/CorsNotification';
 
 import styles from './ModulePageContent.scss';
 
@@ -60,6 +61,8 @@ class ModulePageContentComponent extends Component<Props> {
         <Helmet>
           <title>{pageTitle} - {config.brandName}</title>
         </Helmet>
+
+        <CorsNotification />
 
         <div className="row">
           <div className="col-md-9">

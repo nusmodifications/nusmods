@@ -1,7 +1,8 @@
 // @flow
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import moment from 'moment';
+import { MemoryRouter } from 'react-router-dom';
 
 import config, { type CorsRound, type CorsPeriod, type CorsPeriodType } from 'config';
 import CorsNotification from './CorsNotification';
@@ -36,13 +37,17 @@ function setSchedule(schedule: CorsRound[]) {
   config.corsSchedule = schedule;
 }
 
-function make(now: moment = moment()) {
-  return shallow(<CorsNotification time={now.toDate()} />);
+function make() {
+  return mount(
+    <MemoryRouter>
+      <CorsNotification />
+    </MemoryRouter>,
+  );
 }
 
 test('should not show up if there is no CORS bidding data', () => {
   setSchedule([]);
-  expect(make().type()).toBeNull();
+  expect(make().html()).toBeNull();
 });
 
 test('should not show up if CORS bidding is over', () => {
@@ -51,7 +56,7 @@ test('should not show up if CORS bidding is over', () => {
     periods: [corsPeriod(moment().subtract(2, 'hour'))],
   }]);
 
-  expect(make().type()).toBeNull();
+  expect(make().html()).toBeNull();
 });
 
 test('should show next round when it has not started yet', () => {
@@ -82,7 +87,7 @@ test('should show next round when in between the current round', () => {
 test('should show current round when it is active', () => {
   setSchedule([{
     round: '0',
-    periods: [corsPeriod(moment())],
+    periods: [corsPeriod(moment().subtract(1, 'second'))],
   }]);
 
   const content = make().text();
