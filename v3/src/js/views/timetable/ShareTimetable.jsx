@@ -18,7 +18,10 @@ import LoadingSpinner from 'views/components/LoadingSpinner';
 import styles from './ShareTimetable.scss';
 import actionStyles from './TimetableActions.scss';
 
-type CopyState = 'not copied' | 'success' | 'fail';
+type CopyState = 'NOT_COPIED' | 'COPY_SUCCESS' | 'COPY_FAIL';
+const NOT_COPIED: CopyState = 'NOT_COPIED';
+const COPY_SUCCESS: CopyState = 'COPY_SUCCESS';
+const COPY_FAIL: CopyState = 'COPY_FAIL';
 
 type Props = {
   semester: Semester,
@@ -41,18 +44,17 @@ export default class ShareTimetable extends PureComponent<Props, State> {
 
   state: State = {
     isOpen: false,
-    urlCopied: 'not copied',
+    urlCopied: NOT_COPIED,
     shortUrl: null,
   };
 
   loadShortUrl(url: string) {
-    return axios.get('https://nusmods.com/short_url.php', { data: { url } })
+    return axios.get('https://nusmods.com/short_url.php', { data: { url }, timeout: 2000 })
       .then(({ data }) => this.setState({ shortUrl: data.shortUrl }))
       // Cannot get short URL - just use long URL instead
       .catch(() => this.setState({ shortUrl: url }));
   }
 
-  // Event handlers
   openModal = () => {
     const { semester, timetable } = this.props;
     const nextUrl = shareUrl(semester, timetable);
@@ -68,7 +70,7 @@ export default class ShareTimetable extends PureComponent<Props, State> {
 
   closeModal = () => this.setState({
     isOpen: false,
-    urlCopied: 'not copied',
+    urlCopied: NOT_COPIED,
   });
 
   copyText = () => {
@@ -80,9 +82,9 @@ export default class ShareTimetable extends PureComponent<Props, State> {
 
       if (document.execCommand('copy')) {
         input.blur();
-        this.setState({ urlCopied: 'success' });
+        this.setState({ urlCopied: COPY_SUCCESS });
       } else {
-        this.setState({ urlCopied: 'fail' });
+        this.setState({ urlCopied: COPY_FAIL });
       }
     }
   };
@@ -110,8 +112,10 @@ export default class ShareTimetable extends PureComponent<Props, State> {
             </button>
           </span>
 
-          {this.state.urlCopied === 'success' && <p className={styles.copyStatus}>Link copied!</p>}
-          {this.state.urlCopied === 'fail' && <p className={styles.copyStatus}>Press Cmd + C to copy</p>}
+          {this.state.urlCopied === COPY_SUCCESS &&
+            <p className={styles.copyStatus}>Link copied!</p>}
+          {this.state.urlCopied === COPY_FAIL &&
+            <p className={styles.copyStatus}>Press Cmd/Ctrl + C to copy</p>}
         </div>
 
         <div className="row">
