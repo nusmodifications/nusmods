@@ -3,14 +3,15 @@
 import React, { PureComponent } from 'react';
 import { QRCode } from 'react-qr-svg';
 import classnames from 'classnames';
+import qs from 'query-string';
 
 import type { SemTimetableConfig } from 'types/timetables';
 import type { Semester } from 'types/modules';
 
 import { absolutePath, timetableShare } from 'views/routes/paths';
-import { Repeat, Copy } from 'views/components/icons';
+import { Repeat, Copy, Mail } from 'views/components/icons';
 import Modal from 'views/components/Modal';
-
+import config from 'config';
 import styles from './ShareTimetable.scss';
 import actionStyles from './TimetableActions.scss';
 
@@ -54,6 +55,17 @@ export default class ShareTimetable extends PureComponent<Props, State> {
     const { semester, timetable } = this.props;
     const url = absolutePath(timetableShare(semester, timetable));
 
+    const mailto = `mailto:?${qs.stringify({
+      subject: 'NUSMods timetable',
+      body: `My timetable for ${config.academicYear} ${config.semesterNames[semester]} can be found at ${url}`,
+    })}`;
+
+    const whatsApp = `https://api.whatsapp.com/send?${qs.stringify({
+      text: `My timetable: ${url}`,
+    })}`;
+
+    const telegram = `https://t.me/share/url?${qs.stringify({ url })}`;
+
     return (
       <div>
         <button
@@ -88,7 +100,7 @@ export default class ShareTimetable extends PureComponent<Props, State> {
                 aria-label="Copy URL"
                 onClick={this.copyText}
               >
-                <Copy className={styles.copyIcon} />
+                <Copy className={styles.icon} />
               </button>
             </span>
           </div>
@@ -103,9 +115,28 @@ export default class ShareTimetable extends PureComponent<Props, State> {
             </div>
             <div className="col-sm-4">
               <h3 className={styles.shareHeading}>Via email</h3>
+
+              <a
+                className="btn btn-outline-primary btn-block"
+                href={mailto}
+              ><Mail className={styles.icon} /> Send Email</a>
             </div>
             <div className="col-sm-4">
               <h3 className={styles.shareHeading}>Via messaging apps</h3>
+
+              <a
+                className="btn btn-outline-primary btn-block"
+                href={whatsApp}
+                target="_blank"
+                rel="noreferrer noopener"
+              >WhatsApp</a>
+
+              <a
+                className="btn btn-outline-primary btn-block"
+                href={telegram}
+                target="_blank"
+                rel="noreferrer noopener"
+              >Telegram</a>
             </div>
           </div>
         </Modal>
