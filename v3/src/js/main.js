@@ -1,6 +1,7 @@
 import 'utils/polyfill';
 
 import ReactDOM from 'react-dom';
+import ReactModal from 'react-modal';
 import _ from 'lodash';
 import Raven from 'raven-js';
 
@@ -34,6 +35,7 @@ store.subscribe(
   }, 1000),
 );
 
+ReactModal.setAppElement('#app');
 const render = () => {
   ReactDOM.render(App({ store }), document.getElementById('app'));
 };
