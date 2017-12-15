@@ -6,6 +6,7 @@
   svg {
     width: 5rem;
     height: 5rem;
+    color: theme-color('success');
   }
 
   h3 {
@@ -18,6 +19,25 @@
     br {
       display: none;
     }
+  }
+}
+
+.linkInputGroup {
+  // Leave some space for the copy status
+  margin-bottom: 2rem;
+}
+
+.copyStatus {
+  position: absolute;
+  right: 0;
+  bottom: -2rem;
+  left: 0;
+  margin: 0;
+  text-align: center;
+  color: theme-color('success');
+
+  :global {
+    animation: fadeIn 0.2s forwards;
   }
 }
 

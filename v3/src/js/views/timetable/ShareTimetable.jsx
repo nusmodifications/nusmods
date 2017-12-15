@@ -18,6 +18,8 @@ import LoadingSpinner from 'views/components/LoadingSpinner';
 import styles from './ShareTimetable.scss';
 import actionStyles from './TimetableActions.scss';
 
+type CopyState = 'not copied' | 'success' | 'fail';
+
 type Props = {
   semester: Semester,
   timetable: SemTimetableConfig,
@@ -25,6 +27,7 @@ type Props = {
 
 type State = {
   isOpen: boolean,
+  urlCopied: CopyState,
   shortUrl: ?string,
 };
 
@@ -38,6 +41,7 @@ export default class ShareTimetable extends PureComponent<Props, State> {
 
   state: State = {
     isOpen: false,
+    urlCopied: 'not copied',
     shortUrl: null,
   };
 
@@ -48,7 +52,24 @@ export default class ShareTimetable extends PureComponent<Props, State> {
       .catch(() => this.setState({ shortUrl: url }));
   }
 
-  closeModal = () => this.setState({ isOpen: false });
+  // Event handlers
+  openModal = () => {
+    const { semester, timetable } = this.props;
+    const nextUrl = shareUrl(semester, timetable);
+
+    if (this.url !== nextUrl) {
+      this.url = nextUrl;
+      this.loadShortUrl(nextUrl);
+      this.setState({ shortUrl: null });
+    }
+
+    this.setState({ isOpen: true });
+  };
+
+  closeModal = () => this.setState({
+    isOpen: false,
+    urlCopied: 'not copied',
+  });
 
   copyText = () => {
     const input = this.urlInput;
@@ -57,11 +78,11 @@ export default class ShareTimetable extends PureComponent<Props, State> {
       input.select();
       input.setSelectionRange(0, input.value.length);
 
-      // TODO: Inform the user copy succeeded through the UI, and prompt the user
-      // to manually copy if execCommand fails. Mobile Safari currently doesn't support
-      // execCommand('copy')
       if (document.execCommand('copy')) {
         input.blur();
+        this.setState({ urlCopied: 'success' });
+      } else {
+        this.setState({ urlCopied: 'fail' });
       }
     }
   };
@@ -71,7 +92,7 @@ export default class ShareTimetable extends PureComponent<Props, State> {
 
     return (
       <div>
-        <div className="input-group input-group-lg">
+        <div className={classnames('input-group input-group-lg', styles.linkInputGroup)}>
           <input
             value={url}
             className={classnames('form-control', styles.url)}
@@ -88,6 +109,9 @@ export default class ShareTimetable extends PureComponent<Props, State> {
               <Copy className={styles.icon} />
             </button>
           </span>
+
+          {this.state.urlCopied === 'success' && <p className={styles.copyStatus}>Link copied!</p>}
+          {this.state.urlCopied === 'fail' && <p className={styles.copyStatus}>Press Cmd + C to copy</p>}
         </div>
 
         <div className="row">
@@ -131,20 +155,6 @@ export default class ShareTimetable extends PureComponent<Props, State> {
       </div>
     );
   }
-
-  // Event handlers
-  openModal = () => {
-    const { semester, timetable } = this.props;
-    const nextUrl = shareUrl(semester, timetable);
-
-    if (this.url !== nextUrl) {
-      this.url = nextUrl;
-      this.loadShortUrl(nextUrl);
-      this.setState({ shortUrl: null });
-    }
-
-    this.setState({ isOpen: true });
-  };
 
   render() {
     const { isOpen, shortUrl } = this.state;
