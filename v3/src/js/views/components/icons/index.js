@@ -11,7 +11,7 @@ import Facebook from 'react-feather/dist/icons/facebook';
 import GitHub from 'react-feather/dist/icons/github';
 import Image from 'react-feather/dist/icons/image';
 import Map from 'react-feather/dist/icons/map';
-import Mail from 'react-feather/dist/icons/mail'
+import Mail from 'react-feather/dist/icons/mail';
 import MinusSquare from 'react-feather/dist/icons/minus-square';
 import PlusSquare from 'react-feather/dist/icons/plus-square';
 import Repeat from 'react-feather/dist/icons/repeat';
