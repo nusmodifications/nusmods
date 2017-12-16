@@ -42,8 +42,8 @@ function SettingsContainer(props: Props) {
           <h4>New Student</h4>
           <div className="row">
             <div className="col-sm-7 col-xs-7">
-              <p>For certain modules, places are reserved for new students in CORS Bidding Rounds 1 and 2,
-                recognizing that new students do not have as many points as some of the seniors.</p>
+              <p>For certain modules, places are reserved for new students in CORS Bidding Rounds
+                1 and 2. Enabling this will highlight those numbers and rounds.</p>
             </div>
             <div className="col-sm-4 offset-sm-1 col-xs-5 text-xs-right">
               <NewStudentSelect
@@ -57,6 +57,9 @@ function SettingsContainer(props: Props) {
           <h4>Faculty</h4>
           <div className="row">
             <div className="col-sm-7">
+              <p>Certain modules have places reserved for students in different faculties in rounds
+                1 and 2. Selecting your faculty will highlight those numbers and rounds.</p>
+
               <p>CEG Students are to select <strong>Joint Multi-Disciplinary Program</strong> due to the
                 unique nature of their course.</p>
             </div>
