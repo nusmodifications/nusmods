@@ -4,7 +4,6 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Redirect, type ContextRouter } from 'react-router-dom';
 import classnames from 'classnames';
-import { size } from 'lodash';
 
 import type { Semester, ModuleCode } from 'types/modules';
 import type { SemTimetableConfig } from 'types/timetables';
@@ -14,7 +13,7 @@ import type { ModulesMap } from 'reducers/entities/moduleBank';
 import { selectSemester } from 'actions/settings';
 import { setTimetable } from 'actions/timetables';
 import { fetchModule } from 'actions/moduleBank';
-import { getSemesterModules, deserializeTimetable } from 'utils/timetables';
+import { deserializeTimetable } from 'utils/timetables';
 import { fillColorMapping } from 'utils/colors';
 import { semesterForTimetablePage, timetablePage, TIMETABLE_SHARE } from 'views/routes/paths';
 import { Repeat } from 'views/components/icons';
@@ -80,12 +79,19 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
   };
 
   isLoading() {
+    // Check that all modules are fully loaded into the ModuleBank
+    const { modules, timetable } = this.props;
     const { importedTimetable } = this.state;
-    if (!importedTimetable) return false;
+
+    const moduleCodes = new Set(Object.keys(timetable));
+    if (importedTimetable) {
+      Object.keys(importedTimetable)
+        .forEach(moduleCode => moduleCodes.add(moduleCode));
+    }
 
     // TODO: Account for loading error
-    const loadedModules = getSemesterModules(importedTimetable, this.props.modules);
-    return loadedModules.length < size(importedTimetable);
+    return Array.from(moduleCodes)
+      .some(moduleCode => !modules[moduleCode]);
   }
 
   importTimetable(semester: Semester, timetable: SemTimetableConfig) {

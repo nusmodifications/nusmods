@@ -117,7 +117,7 @@ test('should display imported timetable', () => {
 
 test('should display saved timetable when there is no imported timetable', () => {
   const semester = 1;
-  const timetable = { CS2105: { Lecture: '1' } };
+  const timetable = { CS1010S: { Lecture: '1' } };
 
   const wrapper = create(timetablePage(semester), { semester: 'sem-1' }, timetable).wrapper;
 

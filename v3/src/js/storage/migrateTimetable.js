@@ -1,13 +1,11 @@
 // @flow
 
-import type { Store } from 'redux';
 import localforage from 'localforage';
 import qs from 'query-string';
 import { invert, each } from 'lodash';
 
 import type { SemTimetableConfig } from 'types/timetables';
 import type { Semester, LessonType } from 'types/modules';
-import { setTimetable } from 'actions/timetables';
 import { LESSON_TYPE_ABBREV } from 'utils/timetables';
 
 const LESSON_TYPES: { [string]: LessonType } = invert(LESSON_TYPE_ABBREV);
@@ -15,6 +13,8 @@ const LESSON_TYPES: { [string]: LessonType } = invert(LESSON_TYPE_ABBREV);
 const migratedKeys: [Semester, string][] = [
   [1, 'timetable/2017-2018/sem1:queryString'],
   [2, 'timetable/2017-2018/sem2:queryString'],
+  [3, 'timetable/2017-2018/sem3:queryString'],
+  [4, 'timetable/2017-2018/sem4:queryString'],
 ];
 
 export function parseQueryString(queryString: string): SemTimetableConfig {
@@ -36,7 +36,7 @@ export function parseQueryString(queryString: string): SemTimetableConfig {
   return timetable;
 }
 
-export default function migrateTimetable(store: Store<*, *, *>) {
+export default function migrateTimetable(setTimetable: (Semester, SemTimetableConfig) => Promise<*>) {
   const promises = migratedKeys.map(([semester, key]) =>
     localforage.getItem(key)
       .then((queryString) => {
@@ -44,7 +44,7 @@ export default function migrateTimetable(store: Store<*, *, *>) {
         if (!queryString) return null;
 
         const timetable = parseQueryString(queryString);
-        return store.dispatch(setTimetable(semester, timetable))
+        return setTimetable(semester, timetable)
           .then(() => localforage.removeItem(key));
       }));
 

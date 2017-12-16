@@ -1,6 +1,6 @@
 // @flow
 import type { Node } from 'react';
-import type { TimetableConfig } from 'types/timetables';
+import type { TimetableConfig, SemTimetableConfig } from 'types/timetables';
 import type { ModuleList, ModuleSelectList } from 'types/reducers';
 import type { ModuleCode, Semester } from 'types/modules';
 import type { Mode } from 'types/settings';
@@ -11,11 +11,14 @@ import { connect } from 'react-redux';
 import NUSModerator from 'nusmoderator';
 import qs from 'query-string';
 import classnames from 'classnames';
+import { each } from 'lodash';
 
 import config from 'config';
 import { fetchModuleList, fetchModule } from 'actions/moduleBank';
+import { setTimetable } from 'actions/timetables';
 import { noBreak } from 'utils/react';
 import { roundStart } from 'utils/cors';
+import migrateTimetable from 'storage/migrateTimetable';
 import ModulesSelect from 'views/components/ModulesSelect';
 import Footer from 'views/layout/Footer';
 import Navtabs from 'views/layout/Navtabs';
@@ -40,6 +43,7 @@ type Props = {
 
   fetchModule: (ModuleCode) => void,
   fetchModuleList: () => void,
+  setTimetable: (Semester, SemTimetableConfig) => Promise<*>,
 };
 
 // Put outside render because this only needs to computed on page load.
@@ -79,16 +83,22 @@ function setMode(mode: Mode) {
 
 export class AppShell extends Component<Props> {
   componentWillMount() {
-    setMode(this.props.mode);
+    const { mode, timetables } = this.props;
+    setMode(mode);
+
+    // Retrieve module list
     // TODO: This always re-fetch the entire modules list. Consider a better strategy for this
     this.props.fetchModuleList();
 
-    const semesterTimetable = this.props.timetables[this.props.activeSemester];
-    if (semesterTimetable) {
-      // TODO: Handle failed loading of module.
-      Object.keys(semesterTimetable)
-        .forEach(moduleCode => this.props.fetchModule(moduleCode));
-    }
+    // Fetch all module data that are on timetable
+    const moduleCodes = new Set();
+    each(timetables, timetable =>
+      Object.keys(timetable).forEach(moduleCode => moduleCodes.add(moduleCode)));
+    moduleCodes.forEach(this.props.fetchModule);
+
+    // Handle migration from v2
+    // TODO: Remove this once sem 2 is over
+    migrateTimetable(this.props.setTimetable);
   }
 
   componentWillUpdate(nextProps: Props) {
@@ -158,5 +168,6 @@ export default withRouter(
   connect(mapStateToProps, {
     fetchModuleList,
     fetchModule,
+    setTimetable,
   })(AppShell),
 );
