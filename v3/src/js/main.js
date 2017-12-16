@@ -7,6 +7,7 @@ import Raven from 'raven-js';
 
 import configureStore from 'stores/configure-store';
 import storage from 'storage';
+import migrateTimetable from 'storage/migrateTimetable';
 import App from 'App';
 
 import 'utils/sentry';
@@ -35,7 +36,12 @@ store.subscribe(
   }, 1000),
 );
 
+// v2 data migration
+migrateTimetable(store);
+
+// Initialize ReactModal
 ReactModal.setAppElement('#app');
+
 const render = () => {
   ReactDOM.render(App({ store }), document.getElementById('app'));
 };
