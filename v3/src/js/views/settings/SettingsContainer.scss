@@ -28,6 +28,14 @@
   }
 }
 
+.preview {
+  clear: both;
+  padding: 1rem 0;
+  margin: 1rem 0;
+  overflow: auto;
+  border: 1px solid var(--gray-light);
+}
+
 .themeOption {
   float: left;
   width: 25%;

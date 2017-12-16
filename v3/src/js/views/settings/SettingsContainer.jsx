@@ -13,10 +13,13 @@ import { selectNewStudent, selectFaculty, selectMode } from 'actions/settings';
 import availableThemes from 'data/themes.json';
 import FacultySelect from 'views/components/FacultySelect';
 import NewStudentSelect from 'views/components/NewStudentSelect';
+import Timetable from 'views/timetable/Timetable';
 import { supportsCSSVariables } from 'utils/react';
+
 import ThemeOption from './ThemeOption';
 import ModeSelect from './ModeSelect';
 import styles from './SettingsContainer.scss';
+import previewTimetable from './previewTimetable';
 
 type Props = {
   newStudent: boolean,
@@ -29,6 +32,7 @@ type Props = {
   selectFaculty: Function,
   selectMode: Function,
 };
+
 
 function SettingsContainer(props: Props) {
   return (
@@ -85,6 +89,11 @@ function SettingsContainer(props: Props) {
       </div>}
 
       <h4>Theme</h4>
+
+      <div className={styles.preview}>
+        <Timetable lessons={previewTimetable} />
+      </div>
+
       <div className="theme-options">
         {availableThemes.map(theme => (
           <ThemeOption
@@ -96,18 +105,17 @@ function SettingsContainer(props: Props) {
           />
         ))}
       </div>
+
     </div>
   );
 }
 
-function mapStateToProps(state) {
-  return {
-    newStudent: state.settings.newStudent,
-    faculty: state.settings.faculty,
-    mode: state.settings.mode,
-    currentThemeId: state.theme.id,
-  };
-}
+const mapStateToProps = state => ({
+  newStudent: state.settings.newStudent,
+  faculty: state.settings.faculty,
+  mode: state.settings.mode,
+  currentThemeId: state.theme.id,
+});
 
 export default connect(
   mapStateToProps,
