@@ -70,13 +70,16 @@ $ yarn lint:scripts
 $ yarn flow
 ```
 
-### Build for Deployment
+### Deployment
 
 ```sh
-$ yarn build
+$ yarn build # Build only
+$ yarn deploy # Build and deploy
 ```
 
-This will package and optimize the app for deployment. The files will be placed in the `/dist` directory.
+`yarn build` will package and optimize the app for deployment. The files will be placed in the `/dist` directory.
+
+`yarn deploy` will run `yarn build` and copy the resulting files to the `../../beta.nusmods.com` directory (a directory on the same level as the `nusmods` source root).
 
 ## Project structure
 
