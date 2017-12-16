@@ -38,7 +38,7 @@ export function parseQueryString(queryString: string): SemTimetableConfig {
 
 export default function migrateTimetable(store: Store<*, *, *>) {
   return Promise.all(
-    migratedKeys.map(async ([semester, key]) => {
+    migratedKeys.map(([semester, key]) => {
       let timetable;
 
       return localforage.getItem(key)
