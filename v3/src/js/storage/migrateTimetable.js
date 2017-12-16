@@ -37,17 +37,16 @@ export function parseQueryString(queryString: string): SemTimetableConfig {
 }
 
 export default function migrateTimetable(store: Store<*, *, *>) {
-  return Promise.all(
-    migratedKeys.map(([semester, key]) => {
-      let timetable;
+  const promises = migratedKeys.map(([semester, key]) =>
+    localforage.getItem(key)
+      .then((queryString) => {
+        // Do nothing if there's no data
+        if (!queryString) return null;
 
-      return localforage.getItem(key)
-        .then((queryString) => {
-          timetable = parseQueryString(queryString);
-          return store.dispatch(setTimetable(semester, timetable));
-        })
-        .then(() => localforage.removeItem(key))
-        .then(() => [semester, key, timetable]);
-    }),
-  );
+        const timetable = parseQueryString(queryString);
+        return store.dispatch(setTimetable(semester, timetable))
+          .then(() => localforage.removeItem(key));
+      }));
+
+  return Promise.all(promises);
 }
