@@ -36,6 +36,12 @@ export default class SideMenu extends PureComponent<Props> {
           {isOpen ? closeIcon : openIcon}
         </Fab>
 
+        {isOpen &&
+          <div
+            className={styles.overlay}
+            onClick={() => toggleMenu(false)}
+          />}
+
         <div className={classnames(styles.sideMenu, { [styles.isOpen]: isOpen })}>
           {children}
         </div>

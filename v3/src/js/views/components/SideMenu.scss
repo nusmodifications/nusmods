@@ -2,6 +2,7 @@
 
 $header-margin-top: 1rem;
 $sticky-top: $navbar-height + $navtab-height;
+$animation-duration: 0.3s;
 
 // Side menu styles
 //  - md and above, display as sticky side menu
@@ -16,6 +17,20 @@ $sticky-top: $navbar-height + $navtab-height;
   overflow: auto;
 }
 
+.overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: $side-menu-overlay-z-index;
+  background: rgba(#000, 0.4);
+
+  :global {
+    animation: fadeIn $animation-duration;
+  }
+}
+
 @include media-breakpoint-down(sm) {
   .fab {
     display: block;
@@ -26,13 +41,13 @@ $sticky-top: $navbar-height + $navtab-height;
     top: auto;
     bottom: 0;
     left: 0;
-    z-index: $drawer-z-index;
+    z-index: $side-menu-z-index;
     width: 100%;
     padding: 1rem 1rem 3rem;
     background: var(--body-bg);
     box-shadow: 0 -10px 20px rgba(#000, 0.18);
     transform: translateY(100%);
-    transition: transform 0.3s;
+    transition: transform $animation-duration;
 
     &.isOpen {
       transform: translateY(0);
