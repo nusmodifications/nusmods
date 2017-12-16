@@ -194,8 +194,9 @@ class ModulePageContentComponent extends Component<Props> {
           <aside className="col-md-3">
             <nav className="module-side-menu">
               <ScrollSpy
-                items={['details', 'prerequisites', 'bidding-stats', 'timetable', 'reviews']}
+                items={['details', 'prerequisites', 'timetable', 'bidding-stats', 'reviews']}
                 currentClassName="scroll-menu-link-active"
+                offset={-130}
               >
                 <li><a href="#details">Details</a></li>
                 <li><a href="#prerequisites">Prerequisites</a></li>
