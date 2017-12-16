@@ -113,6 +113,8 @@
     "react-feather": "^1.0.7",
     "react-helmet": "^5.2.0",
     "react-loadable": "^4.0.4",
+    "react-modal": "^3.1.7",
+    "react-qr-svg": "^2.1.0",
     "react-redux": "^5.0.5",
     "react-router-dom": "^4.1.2",
     "react-scrollspy": "^3.3.4",

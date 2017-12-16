@@ -85,10 +85,9 @@ export class AppShell extends Component<Props> {
 
     const semesterTimetable = this.props.timetables[this.props.activeSemester];
     if (semesterTimetable) {
-      Object.keys(semesterTimetable).forEach((moduleCode) => {
-        // TODO: Handle failed loading of module.
-        this.props.fetchModule(moduleCode);
-      });
+      // TODO: Handle failed loading of module.
+      Object.keys(semesterTimetable)
+        .forEach(moduleCode => this.props.fetchModule(moduleCode));
     }
   }
 
@@ -122,7 +121,7 @@ export class AppShell extends Component<Props> {
             <ModulesSelect
               moduleList={this.props.moduleSelectList}
               onChange={(moduleCode) => {
-                this.context.router.push(`/modules/${moduleCode.value}`);
+                this.props.history.push(`/modules/${moduleCode.value}`);
               }}
               placeholder="Search modules"
             />
