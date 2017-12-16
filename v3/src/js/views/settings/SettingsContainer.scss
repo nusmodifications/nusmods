@@ -14,17 +14,18 @@
 }
 
 @include media-breakpoint-down(xs) {
+  // Styles nested for specificity
   .toggleRow {
     flex-wrap: nowrap;
-  }
 
-  .toggleDescription {
-    flex: 1 1 auto;
-  }
+    .toggleDescription {
+      flex: 1 1 auto;
+    }
 
-  .toggle {
-    flex: 0 0 auto;
-    width: auto;
+    .toggle {
+      flex: 0 0 auto;
+      width: auto;
+    }
   }
 }
 
