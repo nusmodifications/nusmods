@@ -1,7 +1,7 @@
 @import '~styles/utils/modules-entry';
 
-.settingsPage {
-  max-width: 50rem;
+:global(.page-container).settingsPage {
+  max-width: 60rem;
   margin-left: 0;
 
   :global {
@@ -29,11 +29,10 @@
 }
 
 .preview {
+  position: relative;
   clear: both;
-  padding: 1rem 0;
-  margin: 1rem 0;
+  margin: 1rem 0 2rem;
   overflow: auto;
-  border: 1px solid var(--gray-light);
 }
 
 .themeOption {

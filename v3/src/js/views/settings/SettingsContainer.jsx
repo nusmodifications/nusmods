@@ -90,6 +90,8 @@ function SettingsContainer(props: Props) {
 
       <h4>Theme</h4>
 
+      <p>Liven up your timetable with different color schemes!</p>
+
       <div className={styles.preview}>
         <Timetable lessons={previewTimetable} />
       </div>
