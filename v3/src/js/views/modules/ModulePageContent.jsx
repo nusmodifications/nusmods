@@ -29,7 +29,15 @@ type Props = {
   removeModule: Function,
 };
 
-class ModulePageContentComponent extends Component<Props> {
+type State = {
+  isMenuOpen: boolean,
+}
+
+class ModulePageContentComponent extends Component<Props, State> {
+  state: State = {
+    isMenuOpen: false,
+  };
+
   semestersOffered(): Semester[] {
     return this.props.module.History
       .map(h => h.Semester)
@@ -49,6 +57,8 @@ class ModulePageContentComponent extends Component<Props> {
     const timetables = this.props.timetables;
     return timetables[semester] && !!timetables[semester][module.ModuleCode];
   }
+
+  toggleMenu = (isMenuOpen: boolean) => this.setState({ isMenuOpen });
 
   render() {
     const { module } = this.props;
@@ -198,20 +208,20 @@ class ModulePageContentComponent extends Component<Props> {
           </div>
 
           <aside className="col-md-3">
-            <SideMenu>{({ closeMenu }) => (
+            <SideMenu isOpen={this.state.isMenuOpen} toggleMenu={this.toggleMenu}>
               <nav className={styles.sideMenu}>
                 <ScrollSpy
                   items={['details', 'prerequisites', 'bidding-stats', 'timetable', 'reviews']}
                   currentClassName={styles.activeMenuItem}
                 >
-                  <li><a onClick={closeMenu} href="#details">Details</a></li>
-                  <li><a onClick={closeMenu} href="#prerequisites">Prerequisites</a></li>
-                  <li><a onClick={closeMenu} href="#timetable">Timetable</a></li>
-                  <li><a onClick={closeMenu} href="#bidding-stats">Bidding Stats</a></li>
-                  <li><a onClick={closeMenu} href="#reviews">Reviews</a></li>
+                  <li><a onClick={() => this.toggleMenu(false)} href="#details">Details</a></li>
+                  <li><a onClick={() => this.toggleMenu(false)} href="#prerequisites">Prerequisites</a></li>
+                  <li><a onClick={() => this.toggleMenu(false)} href="#timetable">Timetable</a></li>
+                  <li><a onClick={() => this.toggleMenu(false)} href="#bidding-stats">Bidding Stats</a></li>
+                  <li><a onClick={() => this.toggleMenu(false)} href="#reviews">Reviews</a></li>
                 </ScrollSpy>
               </nav>
-            )}</SideMenu>
+            </SideMenu>
           </aside>
         </div>
       </div>

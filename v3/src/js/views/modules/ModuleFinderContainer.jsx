@@ -51,6 +51,7 @@ type State = {
   page: PageRange,
   modules: Module[],
   filterGroups: { [FilterGroupId]: FilterGroup<any> },
+  isMenuOpen: boolean,
   error?: any,
 };
 
@@ -106,6 +107,7 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
       page: this.startingPageRange(),
       loading: true,
       modules: [],
+      isMenuOpen: false,
     };
   }
 
@@ -207,6 +209,7 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
 
     defer(() => {
       this.onFilterChange(filter, false);
+      this.toggleMenu(false);
     });
   }
 
@@ -221,6 +224,8 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
       hash: current ? `page=${current}` : '',
     });
   };
+
+  toggleMenu = (isMenuOpen: boolean) => this.setState({ isMenuOpen });
 
   // Getters and helper functions
   filterGroups(): FilterGroup<any>[] {
@@ -239,7 +244,7 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
   }
 
   render() {
-    const { filterGroups: groups, modules, loading, page, error } = this.state;
+    const { filterGroups: groups, isMenuOpen, modules, loading, page, error } = this.state;
 
     if (error) {
       return <ErrorPage error="cannot load modules info" eventId={Raven.lastEventId()} />;
@@ -278,7 +283,11 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
           </div>
 
           <div className="col-md-4 col-lg-3">
-            <SideMenu openIcon={<Filter aria-label={OPEN_MENU_LABEL} />}>
+            <SideMenu
+              isOpen={isMenuOpen}
+              toggleMenu={this.toggleMenu}
+              openIcon={<Filter aria-label={OPEN_MENU_LABEL} />}
+            >
               <div className={styles.moduleFilters}>
                 <header>
                   <h3>Refine by</h3>
