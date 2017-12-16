@@ -1,5 +1,6 @@
 // @flow
 import type { DayText, LessonTime, Lesson } from 'types/modules';
+import { padStart } from 'lodash';
 
 // Converts a 24-hour format time string to an index.
 // Each index corresponds to one cell of each timetable row.
@@ -18,6 +19,10 @@ export function convertIndexToTime(index: number): LessonTime {
   const hour: number = parseInt(index / 2, 10);
   const minute: string = (index % 2) === 0 ? '00' : '30';
   return (hour < 10 ? `0${hour}` : hour.toString()) + minute;
+}
+
+export function hourTimestamp(time: number): LessonTime {
+  return padStart(String(time), 4, '0');
 }
 
 export const SCHOOLDAYS: Array<DayText> = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];

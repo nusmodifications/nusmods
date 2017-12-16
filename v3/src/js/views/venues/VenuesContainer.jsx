@@ -7,7 +7,6 @@ import classnames from 'classnames';
 import axios from 'axios';
 import qs from 'query-string';
 import Raven from 'raven-js';
-import { pick } from 'lodash';
 
 import type { MapStateToProps } from 'react-redux';
 import type { ContextRouter } from 'react-router-dom';
@@ -22,6 +21,7 @@ import SearchBox from 'views/components/SearchBox';
 import config from 'config';
 import nusmods from 'apis/nusmods';
 import HistoryDebouncer from 'utils/HistoryDebouncer';
+import { filterVenue } from 'utils/venues';
 
 import styles from './VenuesContainer.scss';
 
@@ -122,21 +122,6 @@ export class VenuesContainerComponent extends Component<Props, State> {
     });
   }
 
-  filteredVenues() {
-    const { venues, searchTerm } = this.state;
-    if (!venues) {
-      return {};
-    }
-
-    if (searchTerm === '') {
-      return venues;
-    }
-
-    const lowercaseSearchStr = searchTerm.toLowerCase();
-    return pick(venues, Object.keys(venues).filter(name =>
-      name.toLowerCase().includes(lowercaseSearchStr)));
-  }
-
   render() {
     const { loading, error } = this.state;
 
@@ -153,7 +138,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
       );
     }
 
-    const venues = this.filteredVenues();
+    const venues = filterVenue(this.state.venues, this.state.searchTerm);
 
     return (
       <div className={classnames('page-container', styles.pageContainer)}>
