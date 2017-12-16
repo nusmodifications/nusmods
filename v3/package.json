@@ -5,7 +5,7 @@
   "scripts": {
     "start": "cross-env NODE_ENV=development node scripts/start",
     "build": "cross-env NODE_ENV=production node scripts/build",
-    "deploy": "npm run build && rsync -avu --delete-after dist/ ../beta.nusmods.com",
+    "deploy": "npm run build && rsync -avu --delete-after dist/ ../../beta.nusmods.com",
     "postinstall": "flow-scripts stub",
     "flow": "flow check",
     "lint": "npm run lint:src && npm run flow && npm run lint:test && npm run lint:scripts && npm run lint:styles",
