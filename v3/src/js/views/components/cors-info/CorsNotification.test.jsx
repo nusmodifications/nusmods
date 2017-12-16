@@ -87,7 +87,7 @@ test('should show next round when in between the current round', () => {
 test('should show current round when it is active', () => {
   setSchedule([{
     round: '0',
-    periods: [corsPeriod(moment().subtract(1, 'second'))],
+    periods: [corsPeriod(moment().subtract(1, 'minute'))],
   }]);
 
   const content = make().text();
