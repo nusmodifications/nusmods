@@ -41,13 +41,15 @@ export default class SearchBox extends PureComponent<Props, State> {
   }
 
   onSubmit = () => {
-    if (this.searchElement) {
-      const searchTerm = this.searchElement.value;
+    const { searchElement } = this;
+
+    if (searchElement) {
+      const searchTerm = searchElement.value;
       this.setState({ searchTerm });
 
       this.debouncedSearch(searchTerm);
       this.debouncedSearch.flush();
-      this.searchElement.blur();
+      searchElement.blur();
     }
   };
 
