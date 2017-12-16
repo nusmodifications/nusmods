@@ -71,8 +71,13 @@ $h-padding: $grid-gutter-width / 2;
   }
 
   @include media-breakpoint-down(sm) {
+    .heading {
+      border-bottom: 0;
+    }
+
     th {
       font-size: $font-size-sm;
+      color: var(--gray-light);
     }
 
     .label {

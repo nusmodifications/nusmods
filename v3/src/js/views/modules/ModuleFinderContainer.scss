@@ -12,6 +12,9 @@
   }
 
   @include media-breakpoint-down(sm) {
+    // Avoid overlapping with the FAB
+    padding-bottom: 4rem;
+
     header {
       padding: 3rem ($grid-gutter-width / 2) 0.6rem;
     }

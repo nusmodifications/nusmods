@@ -32,7 +32,10 @@ $sticky-top: $navbar-height + $header-margin-top;
   }
 
   @include media-breakpoint-down(sm) {
+    padding: 0 1rem;
+
     a {
+      // Make the links a little larger on mobile so they're easier to tap
       padding: 0.7rem 0 0.7rem 1.3rem;
       font-size: 1.2rem;
     }

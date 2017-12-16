@@ -43,7 +43,7 @@ $animation-duration: 0.3s;
     left: 0;
     z-index: $side-menu-z-index;
     width: 100%;
-    padding: 1rem 1rem 3rem;
+    padding: 1rem 0 3rem;
     background: var(--body-bg);
     box-shadow: 0 -10px 20px rgba(#000, 0.18);
     transform: translateY(100%);
