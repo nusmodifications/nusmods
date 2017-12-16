@@ -37,9 +37,7 @@ export default function VenueList(props: Props) {
           availability={venues[name]}
           expanded={name.toLowerCase() === lowercaseExpandedVenue}
           rootElementRef={(row) => {
-            if (row) {
-              rowRefs[name] = row;
-            }
+            if (row) rowRefs[name] = row;
           }}
           onClick={(selectedVenue, venueURL) => onSelect(selectedVenue, venueURL, rowRefs[name])}
         />
