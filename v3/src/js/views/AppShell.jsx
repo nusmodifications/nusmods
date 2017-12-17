@@ -1,8 +1,8 @@
 // @flow
 import type { Node } from 'react';
 import type { TimetableConfig, SemTimetableConfig } from 'types/timetables';
-import type { ModuleList, ModuleSelectList } from 'types/reducers';
-import type { Semester } from 'types/modules';
+import type { ModuleList } from 'types/reducers';
+import type { ModuleCode, Semester } from 'types/modules';
 import type { Mode } from 'types/settings';
 
 import React, { Component } from 'react';
@@ -28,7 +28,6 @@ type Props = {
 
   children: Node,
   moduleList: ModuleList,
-  moduleSelectList: ModuleSelectList,
   timetables: TimetableConfig,
   theme: string,
   mode: Mode,
@@ -88,9 +87,9 @@ export class AppShell extends Component<Props> {
 
     // Handle migration from v2
     // TODO: Remove this once sem 2 is over
-    migrateTimetable(this.props.setTimetable)
-      .then(migratedTimetables =>
-        this.props.fetchTimetableModules(migratedTimetables.filter(Boolean)));
+    migrateTimetable(this.props.setTimetable).then(migratedTimetables =>
+      this.props.fetchTimetableModules(migratedTimetables.filter(Boolean)),
+    );
   }
 
   componentWillUpdate(nextProps: Props) {
@@ -107,17 +106,10 @@ export class AppShell extends Component<Props> {
           <NavLink className={styles.brand} to="/" title="Home">
             <span className="sr-only">NUSMods</span>
           </NavLink>
-
-          <form className={styles.form}>
-            <ModulesSelect
-              moduleList={this.props.moduleSelectList}
-              onChange={(moduleCode) => {
-                this.props.history.push(`/modules/${moduleCode.value}`);
-              }}
-              placeholder="Search modules"
-            />
-          </form>
-          <span className={styles.weekText}><small>{weekText}</small></span>
+          <form className="nm-navbar-form" />
+          <span className="nm-navbar-text">
+            <small>{weekText}</small>
+          </span>
         </nav>
 
         <div className="main-container">
@@ -136,7 +128,6 @@ export class AppShell extends Component<Props> {
 
 const mapStateToProps = state => ({
   moduleList: state.entities.moduleBank.moduleList,
-  moduleSelectList: state.entities.moduleBank.moduleSelectList,
   timetables: state.timetables,
   theme: state.theme.id,
   mode: state.settings.mode,

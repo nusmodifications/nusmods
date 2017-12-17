@@ -1,53 +1,85 @@
 @import '~styles/utils/modules-entry';
 $input-height: 2.75rem;
-$option-shown: 5;
-$option-height: 2.5rem;
+$module-list-height: 13.5rem;
 
 .container {
   position: relative;
 }
 
+.isOpen {
+  @include media-breakpoint-down(sm) {
+    position: fixed;
+    top: $navbar-height;
+    right: 0;
+    left: 0;
+    z-index: $modal-z-index;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background: var(--body-bg);
+  }
+}
+
 .input {
   height: $input-height;
+
+  &:focus {
+    box-shadow: none;
+  }
+}
+
+.close {
+  composes: close from global;
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: $input-height;
+  width:$input-height;
 }
 
 .selectList {
-  position: absolute;
-  top: $input-height;
-  right: 0;
-  left: 0;
-  z-index: $module-select-z-index;
-  max-height: $option-shown * $option-height;
+  max-height: calc(100% - #{$navbar-height});
   padding: 0;
   margin: 0;
-  overflow-y: auto;
+  overflow-y: scroll;
   list-style: none;
   border: $input-btn-border-width solid $input-border-color;
   border-width: 0 $input-btn-border-width $input-btn-border-width;
   border-radius: 0 0 $btn-border-radius $btn-border-radius;
   -webkit-overflow-scrolling: touch;
+  @include media-breakpoint-up(sm) {
+    position: absolute;
+    top: $input-height;
+    right: 0;
+    left: 0;
+    z-index: $module-select-z-index;
+    max-height: $module-list-height;
+    overflow-y: auto;
+  }
 }
 
-.option,
-.defaultPanel {
+.item {
   width: 100%;
-  height: $option-height;
+  padding: 0.6rem 0.5rem;
   font-size: 0.9rem;
-  text-align: left;
   color: var(--body-color);
-  border: 0;
-  border-radius: 0;
   background: var(--body-bg);
 }
 
-.option:hover,
+.option {
+  composes: item;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
 .optionSelected {
-  text-decoration: none;
   color: $link-hover-color;
   background: var(--gray-lightest);
 }
 
-.defaultPanel {
-  height: $option-height;
-  padding: 0.5rem;
+.optionDisabled {
+  display: flex;
+  justify-content: space-between;
+  color: var(--gray-light);
+  cursor: default;
 }
