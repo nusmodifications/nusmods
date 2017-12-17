@@ -1,18 +1,19 @@
 // @flow
 import React, { PureComponent } from 'react';
 import classnames from 'classnames';
-import { debounce } from 'lodash';
+import { debounce, noop } from 'lodash';
 
 import { Search } from 'views/components/icons';
 import styles from './SearchBox.scss';
 
 type Props = {
+  className?: string,
   throttle: number,
   useInstantSearch: boolean,
   initialSearchTerm: ?string,
   placeholder: string,
   onSearch: (string) => void,
-  rootElementRef?: (HTMLElement) => void, // For parent components to obtain a ref to the root HTMLElement
+  rootElementRef: (?HTMLElement) => void, // For parent components to obtain a ref to the root HTMLElement
 };
 
 type State = {
@@ -26,8 +27,7 @@ export default class SearchBox extends PureComponent<Props, State> {
   searchElement: ?HTMLInputElement;
 
   static defaultProps = {
-    useInstantSearch: false,
-    throttle: 300,
+    rootElementRef: noop,
   };
 
   state: State = {
@@ -67,11 +67,10 @@ export default class SearchBox extends PureComponent<Props, State> {
   debouncedSearch: (string) => void = debounce(this.search, this.props.throttle, { leading: false });
 
   render() {
-    const rootElementRef: Function = this.props.rootElementRef || (() => {}); // noop crashes here on Node 6.6
     return (
       <div
-        className={classnames(styles.searchBox, { [styles.searchBoxFocused]: this.state.isFocused })}
-        ref={rootElementRef}
+        className={classnames(this.props.className, { [styles.searchBoxFocused]: this.state.isFocused })}
+        ref={this.props.rootElementRef}
       >
         <label htmlFor="search-box" className="sr-only">Search</label>
         <form

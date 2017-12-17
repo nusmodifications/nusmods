@@ -8,6 +8,7 @@ import qs from 'query-string';
 import SearchBox from 'views/components/SearchBox';
 import { searchModules } from 'actions/moduleFinder';
 import { SEARCH_QUERY_KEY } from 'utils/moduleSearch';
+import styles from './ModuleSearchBox.scss';
 
 type Props = ContextRouter & {
   throttle: number,
@@ -20,6 +21,7 @@ type Props = ContextRouter & {
 export function ModuleSearchBoxComponent(props: Props) {
   return (
     <SearchBox
+      className={styles.searchBox}
       throttle={props.throttle}
       useInstantSearch={props.useInstantSearch}
       initialSearchTerm={props.initialSearchTerm}
