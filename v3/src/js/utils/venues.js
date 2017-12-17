@@ -5,7 +5,7 @@ import { range, pick, pickBy } from 'lodash';
 import { OCCUPIED } from 'types/venues';
 
 import { tokenize } from './moduleSearch';
-import { hourTimestamp } from './timify';
+import { timestamp, SCHOOLDAYS } from './timify';
 
 /* eslint-disable import/prefer-default-export */
 
@@ -28,13 +28,13 @@ export function filterVenue(venues: VenueInfo, search: string, options?: VenueSe
   if (options) {
     const { day, time, duration } = options;
     foundVenues = pickBy(foundVenues, (venue: DayAvailability[]) => {
-      const start = Number(time);
-      const dayAvailability = venue.find(availability => availability.Day === day);
+      const start = time * 100;
+      const dayAvailability = venue.find(availability => availability.Day === SCHOOLDAYS[day]);
       if (!dayAvailability) return false;
 
       // Check that all half-hour slots within the time requested are vacant
       for (let i = 0; i < duration * 2; i++) {
-        const timeString = hourTimestamp(start + hourDifference[i]);
+        const timeString = timestamp(start + hourDifference[i]);
         if (dayAvailability.Availability[timeString] === OCCUPIED) {
           return false;
         }

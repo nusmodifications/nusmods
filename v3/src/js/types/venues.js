@@ -26,7 +26,7 @@ export type DayAvailability = {
 export type VenueInfo = { [Venue]: DayAvailability[] };
 
 export type VenueSearchOptions = {
-  day: DayText,
-  time: LessonTime,
+  day: number, // Day of week (ie. 0 = Monday, 1 = Tuesday etc.)
+  time: number, // in hours (ie. 9 = 9am, 13 = 1pm etc.)
   duration: number, // in hours
 };

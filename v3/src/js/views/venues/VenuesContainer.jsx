@@ -10,12 +10,13 @@ import Raven from 'raven-js';
 
 import type { MapStateToProps } from 'react-redux';
 import type { ContextRouter } from 'react-router-dom';
-import type { VenueInfo } from 'types/venues';
+import type { VenueInfo, VenueSearchOptions } from 'types/venues';
 import type { Semester, Venue } from 'types/modules';
 
 import ErrorPage from 'views/errors/ErrorPage';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import VenueList from 'views/venues/VenueList';
+import AvailabilitySearch, { defaultSearchOptions } from 'views/venues/AvailabilitySearch';
 import SearchBox from 'views/components/SearchBox';
 
 import config from 'config';
@@ -33,11 +34,17 @@ type Props = {
 
 type State = {
   loading: boolean,
-  venues: VenueInfo,
   error?: any,
-  searchTerm: string,
+  venues: VenueInfo,
+
+  // Selected venue
   selectedVenue: Venue,
   selectedVenueElement?: HTMLElement,
+
+  // Search state
+  searchTerm: string,
+  isAvailabilityEnabled: boolean,
+  searchOptions: VenueSearchOptions,
 };
 
 const pageHead = (
@@ -63,6 +70,8 @@ export class VenuesContainerComponent extends Component<Props, State> {
       loading: true,
       venues: {},
       searchTerm: params.q || selectedVenue,
+      isAvailabilityEnabled: false,
+      searchOptions: defaultSearchOptions(),
     };
   }
 
@@ -106,6 +115,10 @@ export class VenuesContainerComponent extends Component<Props, State> {
     this.setState({ searchTerm }, () => this.updateURL());
   };
 
+  onAvailabilityUpdate = (isAvailabilityEnabled: boolean, searchOptions: VenueSearchOptions) => {
+    this.setState({ isAvailabilityEnabled, searchOptions });
+  };
+
   updateURL(path?: string) {
     const { searchTerm } = this.state;
     const query = {};
@@ -123,7 +136,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
   }
 
   render() {
-    const { loading, error } = this.state;
+    const { loading, error, isAvailabilityEnabled, searchOptions } = this.state;
 
     if (error) {
       return <ErrorPage error="cannot load venues info" eventId={Raven.lastEventId()} />;
@@ -158,6 +171,13 @@ export class VenuesContainerComponent extends Component<Props, State> {
                 }
               }}
             />
+
+            <AvailabilitySearch
+              isEnabled={isAvailabilityEnabled}
+              searchOptions={searchOptions}
+              onUpdate={this.onAvailabilityUpdate}
+            />
+
             <VenueList
               venues={venues}
               expandedVenue={this.state.selectedVenue}

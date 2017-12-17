@@ -21,7 +21,7 @@ export function convertIndexToTime(index: number): LessonTime {
   return (hour < 10 ? `0${hour}` : hour.toString()) + minute;
 }
 
-export function hourTimestamp(time: number): LessonTime {
+export function timestamp(time: number): LessonTime {
   return padStart(String(time), 4, '0');
 }
 

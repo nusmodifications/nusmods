@@ -41,35 +41,35 @@ describe('filterVenue()', () => {
 
   test('should find venues based on search options', () => {
     expect(filterVenue(venueInfo, '', {
-      day: 'Monday',
-      time: '1000',
-      duration: 1,
+      day: 0, // Monday
+      time: 10, // 10am
+      duration: 1, // 1 hour
     })).toEqual(venues('LT1', 'CQT/SR0622'));
 
     expect(filterVenue(venueInfo, '', {
-      day: 'Monday',
-      time: '0900',
+      day: 0,
+      time: 9,
       duration: 1,
     })).toEqual(venues('LT1', 'LT17', 'lt2', 'CQT/SR0622'));
 
     // Two hours duration
     expect(filterVenue(venueInfo, '', {
-      day: 'Monday',
-      time: '0900',
+      day: 0,
+      time: 9,
       duration: 2,
     })).toEqual(venues('LT1', 'CQT/SR0622'));
 
     // Fourteen hour duration (whole day)
     expect(filterVenue(venueInfo, '', {
-      day: 'Monday',
-      time: '0900',
+      day: 0,
+      time: 9,
       duration: 14,
     })).toEqual(venues('CQT/SR0622'));
 
     // Combined with search term
     expect(filterVenue(venueInfo, 'lt', {
-      day: 'Monday',
-      time: '0900',
+      day: 0,
+      time: 9,
       duration: 1,
     })).toEqual(venues('LT1', 'LT17', 'lt2'));
   });
