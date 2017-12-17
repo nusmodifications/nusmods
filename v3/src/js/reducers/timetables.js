@@ -17,7 +17,7 @@ import {
   REMOVE_MODULE,
   CHANGE_LESSON,
   SET_LESSON_CONFIG,
-  RESET_TIMETABLE,
+  SET_TIMETABLE,
 } from 'actions/timetables';
 
 // Map of LessonType to ClassNo.
@@ -77,10 +77,10 @@ function timetables(state: TimetableConfig = defaultTimetableConfig, action: FSA
   }
 
   switch (action.type) {
-    case RESET_TIMETABLE:
+    case SET_TIMETABLE:
       return {
         ...state,
-        [action.payload.semester]: defaultSemTimetableConfig,
+        [action.payload.semester]: action.payload.timetable || defaultSemTimetableConfig,
       };
 
     case ADD_MODULE:

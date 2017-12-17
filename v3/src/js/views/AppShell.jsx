@@ -2,7 +2,7 @@
 import type { Node } from 'react';
 import type { TimetableConfig, SemTimetableConfig } from 'types/timetables';
 import type { ModuleList, ModuleSelectList } from 'types/reducers';
-import type { ModuleCode, Semester } from 'types/modules';
+import type { Semester } from 'types/modules';
 import type { Mode } from 'types/settings';
 
 import React, { Component } from 'react';
@@ -11,11 +11,11 @@ import { connect } from 'react-redux';
 import NUSModerator from 'nusmoderator';
 import qs from 'query-string';
 import classnames from 'classnames';
-import { each } from 'lodash';
+import { values } from 'lodash';
 
 import config from 'config';
-import { fetchModuleList, fetchModule } from 'actions/moduleBank';
-import { setTimetable } from 'actions/timetables';
+import { fetchModuleList } from 'actions/moduleBank';
+import { fetchTimetableModules, setTimetable } from 'actions/timetables';
 import { noBreak } from 'utils/react';
 import { roundStart } from 'utils/cors';
 import migrateTimetable from 'storage/migrateTimetable';
@@ -41,9 +41,9 @@ type Props = {
   mode: Mode,
   activeSemester: Semester,
 
-  fetchModule: (ModuleCode) => void,
   fetchModuleList: () => void,
-  setTimetable: (Semester, SemTimetableConfig) => Promise<*>,
+  fetchTimetableModules: (SemTimetableConfig[]) => void,
+  setTimetable: (Semester, SemTimetableConfig) => void,
 };
 
 // Put outside render because this only needs to computed on page load.
@@ -91,14 +91,13 @@ export class AppShell extends Component<Props> {
     this.props.fetchModuleList();
 
     // Fetch all module data that are on timetable
-    const moduleCodes = new Set();
-    each(timetables, timetable =>
-      Object.keys(timetable).forEach(moduleCode => moduleCodes.add(moduleCode)));
-    moduleCodes.forEach(this.props.fetchModule);
+    this.props.fetchTimetableModules(values(timetables));
 
     // Handle migration from v2
     // TODO: Remove this once sem 2 is over
-    migrateTimetable(this.props.setTimetable);
+    migrateTimetable(this.props.setTimetable)
+      .then(migratedTimetables =>
+        this.props.fetchTimetableModules(migratedTimetables.filter(Boolean)));
   }
 
   componentWillUpdate(nextProps: Props) {
@@ -167,7 +166,7 @@ const mapStateToProps = state => ({
 export default withRouter(
   connect(mapStateToProps, {
     fetchModuleList,
-    fetchModule,
+    fetchTimetableModules,
     setTimetable,
   })(AppShell),
 );

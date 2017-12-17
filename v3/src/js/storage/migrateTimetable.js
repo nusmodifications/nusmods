@@ -36,7 +36,9 @@ export function parseQueryString(queryString: string): SemTimetableConfig {
   return timetable;
 }
 
-export default function migrateTimetable(setTimetable: (Semester, SemTimetableConfig) => Promise<*>) {
+export default function migrateTimetable(
+  setTimetable: (Semester, SemTimetableConfig) => void,
+): Promise<Array<?SemTimetableConfig>> {
   const promises = migratedKeys.map(([semester, key]) =>
     localforage.getItem(key)
       .then((queryString) => {
@@ -44,8 +46,9 @@ export default function migrateTimetable(setTimetable: (Semester, SemTimetableCo
         if (!queryString) return null;
 
         const timetable = parseQueryString(queryString);
-        return setTimetable(semester, timetable)
-          .then(() => localforage.removeItem(key));
+        setTimetable(semester, timetable);
+        return localforage.removeItem(key)
+          .then(() => timetable);
       }));
 
   return Promise.all(promises);
