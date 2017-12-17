@@ -35,6 +35,10 @@ export function breakpointUp(size: Breakpoint): MediaQueryList {
   return window.matchMedia(`(min-width: ${breakpoints[size]}px)`);
 }
 
+export function supportsCSSVariables() {
+  return window.CSS.supports && window.CSS.supports('--var', 'red');
+}
+
 /**
  * Replace substring matching the provided regex with React nodes. This is
  * basically the React version of replacing bits of strings with HTML tags,

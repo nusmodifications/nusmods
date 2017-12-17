@@ -41,12 +41,15 @@ export default class SearchBox extends PureComponent<Props, State> {
   }
 
   onSubmit = () => {
-    if (this.searchElement) {
-      const searchTerm = this.searchElement.value;
+    const { searchElement } = this;
+
+    if (searchElement) {
+      const searchTerm = searchElement.value;
       this.setState({ searchTerm });
 
       this.debouncedSearch(searchTerm);
       this.debouncedSearch.flush();
+      searchElement.blur();
     }
   };
 
@@ -65,6 +68,13 @@ export default class SearchBox extends PureComponent<Props, State> {
   };
 
   debouncedSearch: (string) => void = debounce(this.search, this.props.throttle, { leading: false });
+
+  showSubmitHelp() {
+    return !this.props.useInstantSearch
+      && this.state.hasChanges
+      && this.searchElement
+      && this.searchElement.value;
+  }
 
   render() {
     const rootElementRef: Function = this.props.rootElementRef || (() => {}); // noop crashes here on Node 6.6
@@ -99,9 +109,8 @@ export default class SearchBox extends PureComponent<Props, State> {
           />
         </form>
 
-        {!this.props.useInstantSearch && this.state.hasChanges && <p className={styles.searchHelp}>
-          Press enter to search
-        </p>}
+        {this.showSubmitHelp() &&
+          <p className={styles.searchHelp}>Press enter to search</p>}
       </div>
     );
   }

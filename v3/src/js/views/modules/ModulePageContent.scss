@@ -1,9 +1,43 @@
 @import "~styles/utils/modules-entry";
 
+$header-margin-top: 1rem;
+$sticky-top: $navbar-height + $header-margin-top;
+
 .exam {
   margin-bottom: 1rem;
 
   p {
     margin-bottom: 0;
+  }
+}
+
+.sideMenu {
+  ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  a {
+    display: block;
+    padding: 0.4rem 0 0.4rem 1rem;
+    color: var(--gray-light);
+    border-left: 0.3rem solid var(--gray-lighter);
+  }
+
+  .activeMenuItem a {
+    font-weight: bold;
+    color: theme-color();
+    border-color: theme-color();
+  }
+
+  @include media-breakpoint-down(sm) {
+    padding: 0 1rem;
+
+    a {
+      // Make the links a little larger on mobile so they're easier to tap
+      padding: 0.7rem 0 0.7rem 1.3rem;
+      font-size: 1.2rem;
+    }
   }
 }

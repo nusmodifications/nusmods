@@ -2,6 +2,7 @@
 body {
   color: var(--body-color);
   background: var(--body-bg);
+  transition: color, background 0.2s;
 }
 
 .form-control,

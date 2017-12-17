@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
-import _ from 'lodash';
+import { values, flattenDeep, noop } from 'lodash';
 
 import type { Lesson } from 'types/modules';
 import type { TimetableArrangement } from 'types/timetables';
@@ -23,10 +23,15 @@ type Props = {
 class Timetable extends PureComponent<Props> {
   timetableDom: ?HTMLDivElement;
 
+  static defaultProps = {
+    isVerticalOrientation: false,
+    onModifyCell: noop,
+  };
+
   render() {
     const schoolDays = SCHOOLDAYS.filter(day => day !== 'Saturday' || this.props.lessons.Saturday);
 
-    const lessons: Array<Lesson> = _.flattenDeep(_.values(this.props.lessons));
+    const lessons: Array<Lesson> = flattenDeep(values(this.props.lessons));
     const { startingIndex, endingIndex } = calculateBorderTimings(lessons);
 
     return (

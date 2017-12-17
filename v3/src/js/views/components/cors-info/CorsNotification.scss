@@ -9,14 +9,14 @@
   background: var(--body-bg);
 
   @include media-breakpoint-down(sm) {
-    margin: 1rem ($grid-gutter-width / 2) 0;
+    margin: 0.5rem 0;
 
     br {
       display: none;
     }
   }
 
-  @include media-breakpoint-up(sm) {
+  @include media-breakpoint-up(md) {
     position: fixed;
     bottom: 2rem;
     left: 2rem;
