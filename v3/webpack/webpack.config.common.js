@@ -1,6 +1,7 @@
 const merge = require('webpack-merge');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
+const childProcess = require('child_process');
 
 const parts = require('./webpack.parts');
 
@@ -65,6 +66,8 @@ const commonConfig = merge([
     include: parts.PATHS.scripts,
   }),
   parts.mockNode(),
+  parts.setFreeVariable('process.env.COMMITHASH',
+    childProcess.execSync('git rev-parse --short HEAD').toString()),
 ]);
 
 module.exports = commonConfig;

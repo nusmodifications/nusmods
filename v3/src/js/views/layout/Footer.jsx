@@ -3,6 +3,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 function Footer() {
+  const commitHash = process.env.COMMITHASH;
+
   return (
     <footer className="nm-footer text-muted">
       <div className="container">
@@ -18,8 +20,15 @@ function Footer() {
           <li><Link to="/developers">Developers</Link></li>
           <li><Link to="/faq">FAQ</Link></li>
         </ul>
-        {/* TODO: Add last updated timestamp */}
-        <p>Designed and built with all the love in the world by{' '}
+        <p>Designed and{' '}
+          <a
+            href={commitHash && `https://github.com/nusmodifications/nusmods/commit/${commitHash}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            built
+          </a>
+          {' '}with all the love in the world by{' '}
           <a
             href="https://github.com/nusmodifications"
             target="_blank"
