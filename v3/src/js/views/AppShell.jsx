@@ -9,23 +9,15 @@ import React, { Component } from 'react';
 import { NavLink, withRouter, type ContextRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import NUSModerator from 'nusmoderator';
-import qs from 'query-string';
 import classnames from 'classnames';
 
-import config from 'config';
 import { fetchModuleList, fetchModule } from 'actions/moduleBank';
 import { noBreak } from 'utils/react';
-import { roundStart } from 'utils/cors';
 import ModulesSelect from 'views/components/ModulesSelect';
 import Footer from 'views/layout/Footer';
 import Navtabs from 'views/layout/Navtabs';
 import { DARK_MODE } from 'types/settings';
 import LoadingSpinner from './components/LoadingSpinner';
-import CorsNotification from './components/cors-info/CorsNotification';
-
-// Cache a current date object to stop CorsNotification from re-rendering - if this was in
-// render(), a new Date object is created, forcing re-render.
-const NOW = new Date();
 
 type Props = {
   ...ContextRouter,
@@ -72,9 +64,9 @@ function setMode(mode: Mode) {
 
   if (mode === DARK_MODE) {
     document.body.classList.add('mode-dark');
-    return;
+  } else {
+    document.body.classList.remove('mode-dark');
   }
-  document.body.classList.remove('mode-dark');
 }
 
 export class AppShell extends Component<Props> {
@@ -95,18 +87,6 @@ export class AppShell extends Component<Props> {
     setMode(nextProps.mode);
   }
 
-  currentTime() {
-    const debugRound = qs.parse(this.props.location.search).round;
-
-    // For manual testing - add ?round=1A (or other round names) to trigger the notification
-    if (debugRound) {
-      const round = config.corsSchedule.find(r => r.round === debugRound);
-      if (round) return roundStart(round);
-    }
-
-    return NOW;
-  }
-
   render() {
     // TODO: Handle failed loading of module list
     const isModuleListReady = this.props.moduleList.length;
@@ -121,7 +101,7 @@ export class AppShell extends Component<Props> {
             <ModulesSelect
               moduleList={this.props.moduleSelectList}
               onChange={(moduleCode) => {
-                this.context.router.push(`/modules/${moduleCode.value}`);
+                this.props.history.push(`/modules/${moduleCode.value}`);
               }}
               placeholder="Search modules"
             />
@@ -131,8 +111,6 @@ export class AppShell extends Component<Props> {
 
         <div className="main-container">
           <Navtabs />
-
-          <CorsNotification time={this.currentTime()} />
 
           <main className={classnames('main-content', `theme-${this.props.theme}`)}>
             {isModuleListReady ? this.props.children : <LoadingSpinner />}
@@ -154,6 +132,10 @@ const mapStateToProps = state => ({
   activeSemester: state.app.activeSemester,
 });
 
+// withRouter here is used to ensure re-render when routes change, since
+// connect implements shouldComponentUpdate based purely on props. If it
+// is removed, connect not detect prop changes when route is changed and
+// thus the pages are not re-rendered
 export default withRouter(
   connect(mapStateToProps, {
     fetchModuleList,

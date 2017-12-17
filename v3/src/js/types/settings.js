@@ -1,6 +1,8 @@
 // @flow
+export type ThemeId = string;
+
 export type Theme = {
-  id: string,
+  id: ThemeId,
   name: string,
 };
 

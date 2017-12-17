@@ -70,13 +70,21 @@ $ yarn lint:scripts
 $ yarn flow
 ```
 
-### Build for Deployment
+### Deployment
+
+Our staging is served from the `./dist` directory, which is generated using `yarn build`. From there, it can be promoted to production using `yarn promote-staging`. This flow is summarized below:
 
 ```sh
-$ yarn build
+$ yarn # Install dependencies
+$ yarn test # Ensure all unit tests pass
+$ yarn build # Build to staging ./dist directory
+# Manually ensure staging build works.
+$ yarn promote-staging # Promote ./dist to production
 ```
 
-This will package and optimize the app for deployment. The files will be placed in the `/dist` directory.
+- `yarn build` packages and optimizes the app for deployment. The files will be placed in the `./dist` directory.
+- `yarn promote-staging` deploys `./dist` to the production folder, currently `../../beta.nusmods.com`. It is designed to be safe, executing a dry run and asking for confirmation before deployment.
+- `yarn rsync <dest-dir>` syncs `./dist` to the specified destination folder `<dest-dir>`. It is mainly used by `yarn promote-staging` but could be used to sync `./dist` to any folder.
 
 ## Project structure
 
