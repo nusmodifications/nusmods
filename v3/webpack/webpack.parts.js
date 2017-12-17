@@ -5,6 +5,8 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const cssnano = require('cssnano');
 const FlowStatusWebpackPlugin = require('flow-status-webpack-plugin');
+const childProcess = require('child_process');
+const moment = require('moment');
 
 const packageJson = require('../package.json');
 
@@ -214,7 +216,14 @@ exports.getCSSConfig = ({ options } = {}) => {
       loader: 'postcss-loader',
       // See .postcssrc.js for plugin and plugin config
     },
-    'sass-loader',
+    {
+      loader: 'sass-loader',
+      options: {
+        // @material packages uses '@material' directly as part of their import paths.
+        // Without this those imports will not resolve properly
+        includePaths: [PATHS.node],
+      },
+    },
   ];
 };
 
@@ -307,6 +316,18 @@ exports.mockNode = () => ({
     tls: 'empty',
   },
 });
+
+/**
+ * Generates an app version string using the git commit hash and current date.
+ *
+ * @returns Object with keys `commitHash` and `versionStr`.
+ */
+exports.appVersion = () => {
+  const commitHash = childProcess.execSync('git rev-parse HEAD').toString().trim();
+  // Version format: <YYYYMMDD date>-<7-char hash substring>
+  const versionStr = commitHash && `${moment().format('YYYYMMDD')}-${commitHash.substring(0, 7)}`;
+  return { commitHash, versionStr };
+};
 
 exports.PATHS = PATHS;
 exports.VENDOR = VENDOR;

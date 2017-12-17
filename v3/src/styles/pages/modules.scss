@@ -57,35 +57,6 @@
     margin-top: -($sticky-top);
   }
 
-  .module-side-menu {
-    position: sticky;
-    top: $sticky-top;
-    margin-top: 0.4rem;
-
-    ul {
-      padding: 0;
-      margin: 0;
-      list-style: none;
-    }
-
-    a {
-      display: block;
-      padding: 0.4rem 0 0.4rem 1rem;
-      color: var(--gray-light);
-      border-left: 0.3rem solid var(--gray-lighter);
-    }
-
-    .scroll-menu-link-active a {
-      font-weight: bold;
-      color: theme-color();
-      border-color: theme-color();
-    }
-
-    @include media-breakpoint-down(sm) {
-      display: none;
-    }
-  }
-
   @include media-breakpoint-down(sm) {
     .page-title,
     .page-title-module-code {

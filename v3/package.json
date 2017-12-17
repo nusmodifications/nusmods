@@ -123,7 +123,8 @@
     "react-virtualized-select": "^3.1.0",
     "react-waypoint": "^7.0.4",
     "redux": "^3.7.2",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "rmwc": "^0.0.1-rc11"
   },
   "browserslist": [
     "last 2 versions",
