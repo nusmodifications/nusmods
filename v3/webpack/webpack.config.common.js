@@ -12,7 +12,7 @@ const publicPath = process.env.PUBLIC_PATH || '/';
 
 // Used to inject versioning info into the bundle
 const commitHash = childProcess.execSync('git rev-parse --short=7 HEAD').toString().trim();
-const versionStr = commitHash && `${moment().format('YYMMDD')}-${commitHash}`; // Version format: <date>-<hash>
+const versionStr = commitHash && `${moment().format('YYYYMMDD')}-${commitHash}`; // Version format: <date>-<hash>
 console.log('Building version', versionStr); // eslint-disable-line no-console
 
 const commonConfig = merge([
