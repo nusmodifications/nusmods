@@ -2,12 +2,18 @@ const merge = require('webpack-merge');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const childProcess = require('child_process');
+const moment = require('moment');
 
 const parts = require('./webpack.parts');
 
 // Used by Webpack to resolve the path to assets on the client side
 // See: https://webpack.js.org/guides/public-path/
 const publicPath = process.env.PUBLIC_PATH || '/';
+
+// Used to inject versioning info into the bundle
+const commitHash = childProcess.execSync('git rev-parse --short=7 HEAD').toString().trim();
+const versionStr = commitHash && `${moment().format('YYMMDD')}-${commitHash}`; // Version format: <date>-<hash>
+console.log('Building version', versionStr); // eslint-disable-line no-console
 
 const commonConfig = merge([
   {
@@ -66,8 +72,7 @@ const commonConfig = merge([
     include: parts.PATHS.scripts,
   }),
   parts.mockNode(),
-  parts.setFreeVariable('process.env.COMMITHASH',
-    childProcess.execSync('git rev-parse --short HEAD').toString()),
+  parts.setFreeVariable('process.env', { commitHash, versionStr }),
 ]);
 
 module.exports = commonConfig;
