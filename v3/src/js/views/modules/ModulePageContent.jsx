@@ -14,9 +14,13 @@ import { intersperse } from 'utils/array';
 import { BULLET } from 'utils/react';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
 import DisqusComments from 'views/components/DisqusComments';
+import SideMenu from 'views/components/SideMenu';
 import LessonTimetable from 'views/components/module-info/LessonTimetable';
 import ModuleExamClash from 'views/components/module-info/ModuleExamClash';
 import CorsStats from 'views/components/cors-stats/CorsStats';
+import CorsNotification from 'views/components/cors-info/CorsNotification';
+
+import styles from './ModulePageContent.scss';
 
 type Props = {
   module: Module,
@@ -25,7 +29,15 @@ type Props = {
   removeModule: Function,
 };
 
-class ModulePageContentComponent extends Component<Props> {
+type State = {
+  isMenuOpen: boolean,
+}
+
+class ModulePageContentComponent extends Component<Props, State> {
+  state: State = {
+    isMenuOpen: false,
+  };
+
   semestersOffered(): Semester[] {
     return this.props.module.History
       .map(h => h.Semester)
@@ -46,6 +58,8 @@ class ModulePageContentComponent extends Component<Props> {
     return timetables[semester] && !!timetables[semester][module.ModuleCode];
   }
 
+  toggleMenu = (isMenuOpen: boolean) => this.setState({ isMenuOpen });
+
   render() {
     const { module } = this.props;
     const { ModuleCode, ModuleTitle } = module;
@@ -57,6 +71,8 @@ class ModulePageContentComponent extends Component<Props> {
         <Helmet>
           <title>{pageTitle} - {config.brandName}</title>
         </Helmet>
+
+        <CorsNotification />
 
         <div className="row">
           <div className="col-md-9">
@@ -110,7 +126,7 @@ class ModulePageContentComponent extends Component<Props> {
 
               <div className="col-sm-4 module-page-sidebar">
                 {this.examinations().map(exam => (
-                  <div key={exam.semester}>
+                  <div key={exam.semester} className={styles.exam}>
                     <h3>{config.semesterNames[exam.semester]} Exam</h3>
                     <p>{formatExamDate(exam.date)}</p>
 
@@ -192,18 +208,20 @@ class ModulePageContentComponent extends Component<Props> {
           </div>
 
           <aside className="col-md-3">
-            <nav className="module-side-menu">
-              <ScrollSpy
-                items={['details', 'prerequisites', 'bidding-stats', 'timetable', 'reviews']}
-                currentClassName="scroll-menu-link-active"
-              >
-                <li><a href="#details">Details</a></li>
-                <li><a href="#prerequisites">Prerequisites</a></li>
-                <li><a href="#timetable">Timetable</a></li>
-                <li><a href="#bidding-stats">Bidding Stats</a></li>
-                <li><a href="#reviews">Reviews</a></li>
-              </ScrollSpy>
-            </nav>
+            <SideMenu isOpen={this.state.isMenuOpen} toggleMenu={this.toggleMenu}>
+              <nav className={styles.sideMenu}>
+                <ScrollSpy
+                  items={['details', 'prerequisites', 'bidding-stats', 'timetable', 'reviews']}
+                  currentClassName={styles.activeMenuItem}
+                >
+                  <li><a onClick={() => this.toggleMenu(false)} href="#details">Details</a></li>
+                  <li><a onClick={() => this.toggleMenu(false)} href="#prerequisites">Prerequisites</a></li>
+                  <li><a onClick={() => this.toggleMenu(false)} href="#timetable">Timetable</a></li>
+                  <li><a onClick={() => this.toggleMenu(false)} href="#bidding-stats">Bidding Stats</a></li>
+                  <li><a onClick={() => this.toggleMenu(false)} href="#reviews">Reviews</a></li>
+                </ScrollSpy>
+              </nav>
+            </SideMenu>
           </aside>
         </div>
       </div>

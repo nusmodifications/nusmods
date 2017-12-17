@@ -41,6 +41,7 @@ import {
   findExamClashes,
 } from 'utils/timetables';
 import ModulesSelect from 'views/components/ModulesSelect';
+import CorsNotification from 'views/components/cors-info/CorsNotification';
 
 import styles from './TimetableContent.scss';
 import Timetable from './Timetable';
@@ -210,9 +211,13 @@ class TimetableContent extends Component<Props> {
         <Helmet>
           <title>Timetable - {config.brandName}</title>
         </Helmet>
+
+        <CorsNotification />
+
         <div>
           {this.props.header}
         </div>
+
         <div className="row">
           <div
             className={classnames({
