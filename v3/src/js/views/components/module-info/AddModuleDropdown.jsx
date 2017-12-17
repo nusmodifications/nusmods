@@ -25,18 +25,43 @@ type Props = {
   removeModule: (Semester, ModuleCode) => void,
 };
 
-export class AddModuleDropdownComponent extends PureComponent<Props> {
-  onSelect(semester: Semester) {
-    const { module } = this.props;
-    const action = this.moduleOnTimetable(semester)
-      ? this.props.removeModule
-      : this.props.addModule;
+type State = {
+  loading: ?Semester,
+};
 
-    action(semester, module.ModuleCode);
+export class AddModuleDropdownComponent extends PureComponent<Props, State> {
+  state: State = {
+    loading: null,
+  };
+
+  componentWillReceiveProps(nextProps: Props) {
+    if (this.state.loading != null &&
+        this.moduleOnTimetable(this.state.loading, nextProps.timetables)) {
+      this.setState({ loading: null });
+    }
+  }
+
+  onSelect(semester: Semester) {
+    const { module, timetables } = this.props;
+    if (this.moduleOnTimetable(semester, timetables)) {
+      this.props.removeModule(semester, module.ModuleCode);
+    } else {
+      this.setState({ loading: semester });
+      this.props.addModule(semester, module.ModuleCode);
+    }
   }
 
   buttonLabel(semester: Semester) {
-    return this.moduleOnTimetable(semester)
+    if (this.state.loading === semester) {
+      return (
+        <span>
+          Adding...<br />
+          <strong>{config.semesterNames[semester]}</strong>
+        </span>
+      );
+    }
+
+    return this.moduleOnTimetable(semester, this.props.timetables)
       ? <span>Remove from <br />
         <strong>{config.semesterNames[semester]}</strong></span>
       : <span>Add to <br />
@@ -49,8 +74,8 @@ export class AddModuleDropdownComponent extends PureComponent<Props> {
       .sort();
   }
 
-  moduleOnTimetable(semester: Semester): boolean {
-    const { module, timetables } = this.props;
+  moduleOnTimetable(semester: Semester, timetables: TimetableConfig): boolean {
+    const { module } = this.props;
     return !!get(timetables, [String(semester), module.ModuleCode]);
   }
 
