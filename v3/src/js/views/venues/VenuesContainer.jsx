@@ -22,7 +22,7 @@ import SearchBox from 'views/components/SearchBox';
 import config from 'config';
 import nusmods from 'apis/nusmods';
 import HistoryDebouncer from 'utils/HistoryDebouncer';
-import { filterVenue } from 'utils/venues';
+import { searchVenue, filterAvailability } from 'utils/venues';
 
 import styles from './VenuesContainer.scss';
 
@@ -151,9 +151,10 @@ export class VenuesContainerComponent extends Component<Props, State> {
       );
     }
 
-    const venues = isAvailabilityEnabled
-      ? filterVenue(this.state.venues, this.state.searchTerm, searchOptions)
-      : filterVenue(this.state.venues, this.state.searchTerm);
+    let venues = searchVenue(this.state.venues, this.state.searchTerm);
+    if (isAvailabilityEnabled) {
+      venues = filterAvailability(venues, searchOptions);
+    }
 
     return (
       <div className={classnames('page-container', styles.pageContainer)}>

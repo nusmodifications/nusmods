@@ -13,7 +13,7 @@ import { timestamp, SCHOOLDAYS } from './timify';
 // eg. 900 + hourDifference[2] // (9am + 2 * 30 minutes = 10am)
 const hourDifference = range(48).map(i => (Math.floor(i / 2) * 100) + ((i % 2) * 30));
 
-export function filterVenue(venues: VenueInfo, search: string, options?: VenueSearchOptions): VenueInfo {
+export function searchVenue(venues: VenueInfo, search: string): VenueInfo {
   let foundVenues = venues;
 
   // Search by name
@@ -24,25 +24,25 @@ export function filterVenue(venues: VenueInfo, search: string, options?: VenueSe
     foundVenues = pick(foundVenues, matches);
   });
 
-  // Search by time
-  if (options) {
-    const { day, time, duration } = options;
-    foundVenues = pickBy(foundVenues, (venue: DayAvailability[]) => {
-      const start = time * 100;
-      const dayAvailability = venue.find(availability => availability.Day === SCHOOLDAYS[day]);
-      if (!dayAvailability) return false;
-
-      // Check that all half-hour slots within the time requested are vacant
-      for (let i = 0; i < duration * 2; i++) {
-        const timeString = timestamp(start + hourDifference[i]);
-        if (dayAvailability.Availability[timeString] === OCCUPIED) {
-          return false;
-        }
-      }
-
-      return true;
-    });
-  }
-
   return foundVenues;
+}
+
+export function filterAvailability(venues: VenueInfo, options: VenueSearchOptions): VenueInfo {
+  const { day, time, duration } = options;
+
+  return pickBy(venues, (venue: DayAvailability[]) => {
+    const start = time * 100;
+    const dayAvailability = venue.find(availability => availability.Day === SCHOOLDAYS[day]);
+    if (!dayAvailability) return false;
+
+    // Check that all half-hour slots within the time requested are vacant
+    for (let i = 0; i < duration * 2; i++) {
+      const timeString = timestamp(start + hourDifference[i]);
+      if (dayAvailability.Availability[timeString] === OCCUPIED) {
+        return false;
+      }
+    }
+
+    return true;
+  });
 }
