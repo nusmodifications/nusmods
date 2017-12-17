@@ -1,8 +1,10 @@
 // @flow
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import classnames from 'classnames';
 import Helmet from 'react-helmet';
 import ScrollSpy from 'react-scrollspy';
+import { map, mapValues, kebabCase, values } from 'lodash';
 
 import type { Module, Semester } from 'types/modules';
 import type { TimetableConfig } from 'types/timetables';
@@ -31,9 +33,20 @@ type Props = {
 
 type State = {
   isMenuOpen: boolean,
-}
+};
 
-class ModulePageContentComponent extends Component<Props, State> {
+export const SIDE_MENU_LABELS = {
+  details: 'Details',
+  // TODO: Remove this when the prerequisite tree is ready
+  // prerequisites: 'Prerequisites',
+  timetable: 'Timetable',
+  cors: 'Bidding Stats',
+  reviews: 'Reviews',
+};
+
+export const SIDE_MENU_ITEMS = mapValues(SIDE_MENU_LABELS, kebabCase);
+
+export class ModulePageContentComponent extends Component<Props, State> {
   state: State = {
     isMenuOpen: false,
   };
@@ -76,9 +89,9 @@ class ModulePageContentComponent extends Component<Props, State> {
 
         <div className="row">
           <div className="col-md-9">
-            <header>
-              <h1 className="page-title">
-                <span className="page-title-module-code">{ModuleCode}</span>
+            <header className={styles.header}>
+              <h1 className={styles.pageTitle}>
+                <span className={styles.moduleCodeTitle}>{ModuleCode}</span>
                 {ModuleTitle}
               </h1>
 
@@ -96,7 +109,10 @@ class ModulePageContentComponent extends Component<Props, State> {
               </p>
             </header>
 
-            <section id="details" className="row">
+            <section
+              id={SIDE_MENU_ITEMS.details}
+              className={classnames('row', styles.section, styles.firstSection)}
+            >
               <div className="col-sm-8">
                 { module.ModuleDescription && <p>{module.ModuleDescription}</p> }
 
@@ -124,10 +140,10 @@ class ModulePageContentComponent extends Component<Props, State> {
                 </dl>
               </div>
 
-              <div className="col-sm-4 module-page-sidebar">
+              <div className="col-sm-4">
                 {this.examinations().map(exam => (
                   <div key={exam.semester} className={styles.exam}>
-                    <h3>{config.semesterNames[exam.semester]} Exam</h3>
+                    <h3 className={styles.descriptionHeading}>{config.semesterNames[exam.semester]} Exam</h3>
                     <p>{formatExamDate(exam.date)}</p>
 
                     <ModuleExamClash
@@ -162,7 +178,7 @@ class ModulePageContentComponent extends Component<Props, State> {
                 </div>
 
                 <div>
-                  <h3>Official Links</h3>
+                  <h3 className={styles.descriptionHeading}>Official Links</h3>
                   {intersperse([
                     <a key="ivle" href={config.ivleUrl.replace('<ModuleCode>', ModuleCode)}>IVLE</a>,
                     <a key="cors" href={config.corsUrl + ModuleCode}>CORS</a>,
@@ -170,22 +186,22 @@ class ModulePageContentComponent extends Component<Props, State> {
                 </div>
               </div>
             </section>
-
-            <section id="prerequisites">
-              <h2>Prerequisite Tree</h2>
-              {/* TODO: Add in prereq tree when it is ready */}
+            {/* TODO: Add in prereq tree when it is ready
+            <section className={styles.section} id={SIDE_MENU_ITEMS.prerequisites}>
+              <h2 className={styles.sectionHeading}>Prerequisite Tree</h2>
             </section>
+            */}
 
-            <section id="timetable">
-              <h2>Timetable</h2>
+            <section className={styles.section} id="timetable">
+              <h2 className={styles.sectionHeading}>Timetable</h2>
               <LessonTimetable
                 semestersOffered={this.semestersOffered()}
                 history={module.History}
               />
             </section>
 
-            <section id="bidding-stats">
-              <h2>CORS Bidding Stats</h2>
+            <section className={styles.section} id={SIDE_MENU_ITEMS.cors}>
+              <h2 className={styles.sectionHeading}>CORS Bidding Stats</h2>
               {module.CorsBiddingStats ?
                 <div>
                   <CorsStats stats={module.CorsBiddingStats} />
@@ -197,8 +213,8 @@ class ModulePageContentComponent extends Component<Props, State> {
                 </div>}
             </section>
 
-            <section id="reviews">
-              <h2>Review and Discussion</h2>
+            <section className={styles.section} id={SIDE_MENU_ITEMS.reviews}>
+              <h2 className={styles.sectionHeading}>Review and Discussion</h2>
               <DisqusComments
                 url={`https://nusmods.com/modules/${ModuleCode}/reviews`}
                 identifier={ModuleCode}
@@ -208,17 +224,23 @@ class ModulePageContentComponent extends Component<Props, State> {
           </div>
 
           <aside className="col-md-3">
-            <SideMenu isOpen={this.state.isMenuOpen} toggleMenu={this.toggleMenu}>
+            <SideMenu
+              isOpen={this.state.isMenuOpen}
+              toggleMenu={this.toggleMenu}
+            >
               <nav className={styles.sideMenu}>
                 <ScrollSpy
-                  items={['details', 'prerequisites', 'bidding-stats', 'timetable', 'reviews']}
+                  items={values(SIDE_MENU_ITEMS)}
                   currentClassName={styles.activeMenuItem}
                 >
-                  <li><a onClick={() => this.toggleMenu(false)} href="#details">Details</a></li>
-                  <li><a onClick={() => this.toggleMenu(false)} href="#prerequisites">Prerequisites</a></li>
-                  <li><a onClick={() => this.toggleMenu(false)} href="#timetable">Timetable</a></li>
-                  <li><a onClick={() => this.toggleMenu(false)} href="#bidding-stats">Bidding Stats</a></li>
-                  <li><a onClick={() => this.toggleMenu(false)} href="#reviews">Reviews</a></li>
+                  {map(SIDE_MENU_LABELS, (label, key) => (
+                    <li key={label}>
+                      <a
+                        onClick={() => this.toggleMenu(false)}
+                        href={`#${SIDE_MENU_ITEMS[key]}`}
+                      >{label}</a>
+                    </li>
+                  ))}
                 </ScrollSpy>
               </nav>
             </SideMenu>
@@ -234,4 +256,5 @@ const mapStateToProps = (state, ownProps) => ({
   module: state.entities.moduleBank.modules[ownProps.moduleCode],
 });
 
-export default connect(mapStateToProps, { addModule, removeModule })(ModulePageContentComponent);
+const ModulePageContent = connect(mapStateToProps, { addModule, removeModule })(ModulePageContentComponent);
+export default ModulePageContent;
