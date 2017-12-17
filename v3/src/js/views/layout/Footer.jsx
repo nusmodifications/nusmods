@@ -3,13 +3,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 function Footer() {
-  const { commitHash, versionStr } = process.env || {};
+  const commitHash = process.env.commitHash;
+  const versionStr = process.env.versionStr;
 
   const versionSpan = commitHash && versionStr && (
     <span>
       Version{' '}
       <a
-        href={commitHash && `https://github.com/nusmodifications/nusmods/commit/${commitHash}`}
+        href={`https://github.com/nusmodifications/nusmods/commit/${commitHash}`}
         target="_blank"
         rel="noopener noreferrer"
       >
