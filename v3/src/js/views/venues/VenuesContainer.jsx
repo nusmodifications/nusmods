@@ -7,6 +7,7 @@ import classnames from 'classnames';
 import axios from 'axios';
 import qs from 'query-string';
 import Raven from 'raven-js';
+import { pick, mapValues } from 'lodash';
 
 import type { MapStateToProps } from 'react-redux';
 import type { ContextRouter } from 'react-router-dom';
@@ -64,14 +65,19 @@ export class VenuesContainerComponent extends Component<Props, State> {
     const params = qs.parse(props.location.search);
     const selectedVenue = this.props.urlVenue || '';
 
+    const isAvailabilityEnabled = params.time && params.day && params.duration;
+    const searchOptions = isAvailabilityEnabled
+      ? mapValues(pick(params, ['time', 'day', 'duration']), i => parseInt(i, 10))
+      : defaultSearchOptions();
+
     this.history = new HistoryDebouncer(props.history);
     this.state = {
       selectedVenue,
+      searchOptions,
+      isAvailabilityEnabled,
       loading: true,
       venues: {},
       searchTerm: params.q || selectedVenue,
-      isAvailabilityEnabled: false,
-      searchOptions: defaultSearchOptions(),
     };
   }
 
@@ -206,4 +212,5 @@ export const mapStateToProps: MapStateToProps<*, *, *> = (state, ownProps) => {
   };
 };
 
-export default connect(mapStateToProps)(withRouter(VenuesContainerComponent));
+const VenuesContainerWithRouter = withRouter(VenuesContainerComponent);
+export default connect(mapStateToProps)(VenuesContainerWithRouter);
