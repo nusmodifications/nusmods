@@ -214,7 +214,14 @@ exports.getCSSConfig = ({ options } = {}) => {
       loader: 'postcss-loader',
       // See .postcssrc.js for plugin and plugin config
     },
-    'sass-loader',
+    {
+      loader: 'sass-loader',
+      options: {
+        // @material packages uses '@material' directly as part of their import paths.
+        // Without this those imports will not resolve properly
+        includePaths: [PATHS.node],
+      },
+    },
   ];
 };
 
