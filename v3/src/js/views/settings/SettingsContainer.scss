@@ -1,0 +1,47 @@
+@import '~styles/utils/modules-entry';
+
+:global(.page-container).settingsPage {
+  max-width: 60rem;
+  margin-left: 0;
+
+  :global {
+    animation-name: $page-entering-animation;
+  }
+}
+
+.setting {
+  border-bottom: 1px solid var(--gray-light);
+}
+
+@include media-breakpoint-down(xs) {
+  // Styles nested for specificity
+  .toggleRow {
+    flex-wrap: nowrap;
+
+    .toggleDescription {
+      flex: 1 1 auto;
+    }
+
+    .toggle {
+      flex: 0 0 auto;
+      width: auto;
+    }
+  }
+}
+
+.preview {
+  position: relative;
+  clear: both;
+  margin: 1rem 0 2rem;
+  overflow: auto;
+}
+
+.themeOption {
+  float: left;
+  width: 25%;
+  margin-bottom: 0.4rem;
+
+  @include media-breakpoint-down('sm') {
+    width: 50%;
+  }
+}

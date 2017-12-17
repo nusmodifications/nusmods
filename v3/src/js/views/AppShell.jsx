@@ -99,7 +99,7 @@ export class AppShell extends Component<Props> {
             <ModulesSelect
               moduleList={this.props.moduleSelectList}
               onChange={(moduleCode) => {
-                this.context.router.push(`/modules/${moduleCode.value}`);
+                this.props.history.push(`/modules/${moduleCode.value}`);
               }}
               placeholder="Search modules"
             />
