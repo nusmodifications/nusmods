@@ -6,7 +6,7 @@ import type { ModuleCode, Semester } from 'types/modules';
 import type { Mode } from 'types/settings';
 
 import React, { Component } from 'react';
-import { NavLink, withRouter } from 'react-router-dom';
+import { NavLink, withRouter, type ContextRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import NUSModerator from 'nusmoderator';
 import classnames from 'classnames';
@@ -20,6 +20,8 @@ import { DARK_MODE } from 'types/settings';
 import LoadingSpinner from './components/LoadingSpinner';
 
 type Props = {
+  ...ContextRouter,
+
   children: Node,
   moduleList: ModuleList,
   moduleSelectList: ModuleSelectList,
