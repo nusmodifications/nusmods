@@ -112,19 +112,19 @@ export class VenuesContainerComponent extends Component<Props, State> {
   };
 
   onSearch = (searchTerm: string) => {
-    this.setState({ searchTerm }, () => this.updateURL());
+    this.setState({ searchTerm }, this.updateURL);
   };
 
   onAvailabilityUpdate = (isAvailabilityEnabled: boolean, searchOptions: VenueSearchOptions) => {
-    this.setState({ isAvailabilityEnabled, searchOptions });
+    this.setState({ isAvailabilityEnabled, searchOptions }, this.updateURL);
   };
 
-  updateURL(path?: string) {
-    const { searchTerm } = this.state;
-    const query = {};
-    if (searchTerm) {
-      query.q = searchTerm;
-    }
+  updateURL = (path?: string) => {
+    const { searchTerm, isAvailabilityEnabled, searchOptions } = this.state;
+    let query = {};
+
+    if (searchTerm) query.q = searchTerm;
+    if (isAvailabilityEnabled) query = { ...query, ...searchOptions };
 
     const pathname = path || this.props.location.pathname;
 
@@ -133,7 +133,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
       search: qs.stringify(query),
       pathname,
     });
-  }
+  };
 
   render() {
     const { loading, error, isAvailabilityEnabled, searchOptions } = this.state;
@@ -151,7 +151,9 @@ export class VenuesContainerComponent extends Component<Props, State> {
       );
     }
 
-    const venues = filterVenue(this.state.venues, this.state.searchTerm);
+    const venues = isAvailabilityEnabled
+      ? filterVenue(this.state.venues, this.state.searchTerm, searchOptions)
+      : filterVenue(this.state.venues, this.state.searchTerm);
 
     return (
       <div className={classnames('page-container', styles.pageContainer)}>
