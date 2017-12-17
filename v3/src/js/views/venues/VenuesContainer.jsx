@@ -117,13 +117,8 @@ export class VenuesContainerComponent extends Component<Props, State> {
       () => this.updateURL(venueURL));
   };
 
-  onSearch = (searchTerm: string) => {
-    this.setState({ searchTerm }, this.updateURL);
-  };
-
-  onAvailabilityUpdate = (isAvailabilityEnabled: boolean, searchOptions: VenueSearchOptions) => {
-    this.setState({ isAvailabilityEnabled, searchOptions }, this.updateURL);
-  };
+  onSearch = (searchTerm: string) => this.setState({ searchTerm }, this.updateURL);
+  onAvailabilityUpdate = (searchOptions: VenueSearchOptions) => this.setState({ searchOptions }, this.updateURL);
 
   updateURL = (path?: string) => {
     const { searchTerm, isAvailabilityEnabled, searchOptions } = this.state;
@@ -166,34 +161,45 @@ export class VenuesContainerComponent extends Component<Props, State> {
       <div className={classnames('page-container', styles.pageContainer)}>
         {pageHead}
 
-        <div className="row">
-          <div className="col-sm-12">
-            <SearchBox
-              throttle={0}
-              useInstantSearch
-              initialSearchTerm={this.state.searchTerm}
-              placeholder="Search for venues, e.g. LT27"
-              onSearch={this.onSearch}
-              rootElementRef={(element) => {
-                if (element) {
-                  this.searchBoxRootElement = element;
-                }
-              }}
-            />
+        <div className={styles.searchPanel}>
+          <div className={classnames('row align-items-center', styles.searchRow)}>
+            <div className="col">
+              <SearchBox
+                className={styles.searchBox}
+                throttle={0}
+                useInstantSearch
+                initialSearchTerm={this.state.searchTerm}
+                placeholder="Search for venues, e.g. LT27"
+                onSearch={this.onSearch}
+                rootElementRef={(element) => {
+                  if (element) this.searchBoxRootElement = element;
+                }}
+              />
+            </div>
 
-            <AvailabilitySearch
-              isEnabled={isAvailabilityEnabled}
-              searchOptions={searchOptions}
-              onUpdate={this.onAvailabilityUpdate}
-            />
-
-            <VenueList
-              venues={venues}
-              expandedVenue={this.state.selectedVenue}
-              onSelect={this.onVenueSelect}
-            />
+            <div className="col-auto">
+              <button
+                className={classnames('btn', isAvailabilityEnabled ? 'btn-primary' : 'btn-outline-primary')}
+                onClick={() => this.setState({ isAvailabilityEnabled: !isAvailabilityEnabled })}
+              >Find free rooms</button>
+            </div>
           </div>
+
+          {isAvailabilityEnabled &&
+            <div className={styles.availabilityRow}>
+              <AvailabilitySearch
+                isEnabled={isAvailabilityEnabled}
+                searchOptions={searchOptions}
+                onUpdate={this.onAvailabilityUpdate}
+              />
+            </div>}
         </div>
+
+        <VenueList
+          venues={venues}
+          expandedVenue={this.state.selectedVenue}
+          onSelect={this.onVenueSelect}
+        />
       </div>
     );
   }

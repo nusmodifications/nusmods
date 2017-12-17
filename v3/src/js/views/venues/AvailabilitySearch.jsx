@@ -1,14 +1,18 @@
 // @flow
 
 import React, { PureComponent } from 'react';
+import classnames from 'classnames';
 import { range } from 'lodash';
+
 import type { VenueSearchOptions } from 'types/venues';
 import { SCHOOLDAYS, timestamp } from 'utils/timify';
+import styles from './AvailabilitySearch.scss';
 
 type Props = {
+  className?: string,
   isEnabled: boolean,
   searchOptions: VenueSearchOptions,
-  onUpdate: (boolean, VenueSearchOptions) => void,
+  onUpdate: (VenueSearchOptions) => void,
 };
 
 // Classes start at 8am
@@ -35,8 +39,8 @@ export function defaultSearchOptions(): VenueSearchOptions {
 export default class AvailabilitySearch extends PureComponent<Props> {
   onUpdate = (event: Event, key: $Keys<VenueSearchOptions>) => {
     if (typeof event.target.value !== 'undefined') {
-      const { isEnabled, searchOptions, onUpdate } = this.props;
-      onUpdate(isEnabled, {
+      const { searchOptions, onUpdate } = this.props;
+      onUpdate({
         ...searchOptions,
         [key]: +event.target.value,
       });
@@ -44,60 +48,51 @@ export default class AvailabilitySearch extends PureComponent<Props> {
   };
 
   render() {
-    const { isEnabled, searchOptions, onUpdate } = this.props;
+    const { searchOptions, className } = this.props;
 
     return (
-      <div>
-        <button
-          className="btn btn-outline-primary"
-          onClick={() => onUpdate(!isEnabled, searchOptions)}
-        >Find free rooms</button>
-        {isEnabled &&
-          <div>
-            <div className="row">
-              <div className="col form-group">
-                <label htmlFor="venue-day">Day</label>
-                <select
-                  id="venue-day"
-                  className="form-control"
-                  value={searchOptions.day}
-                  onChange={evt => this.onUpdate(evt, 'day')}
-                >
-                  {SCHOOLDAYS.map((name, day) => (
-                    <option key={day} value={day}>{name}</option>
-                  ))}
-                </select>
-              </div>
+      <div className={classnames('form-row', className, styles.search)}>
+        <div className="col form-group">
+          <label htmlFor="venue-day">Day</label>
+          <select
+            id="venue-day"
+            className="form-control"
+            value={searchOptions.day}
+            onChange={evt => this.onUpdate(evt, 'day')}
+          >
+            {SCHOOLDAYS.map((name, day) => (
+              <option key={day} value={day}>{name}</option>
+            ))}
+          </select>
+        </div>
 
-              <div className="col form-group">
-                <label htmlFor="venue-time">From</label>
-                <select
-                  id="venue-time"
-                  className="form-control"
-                  value={searchOptions.time}
-                  onChange={evt => this.onUpdate(evt, 'time')}
-                >
-                  {range(CLASS_START_HOUR, 24).map(hour => (
-                    <option key={hour} value={hour}>{timestamp(hour * 100)}</option>
-                  ))}
-                </select>
-              </div>
+        <div className="col form-group">
+          <label htmlFor="venue-time">From</label>
+          <select
+            id="venue-time"
+            className="form-control"
+            value={searchOptions.time}
+            onChange={evt => this.onUpdate(evt, 'time')}
+          >
+            {range(CLASS_START_HOUR, 24).map(hour => (
+              <option key={hour} value={hour}>{timestamp(hour * 100)}</option>
+            ))}
+          </select>
+        </div>
 
-              <div className="col form-group">
-                <label htmlFor="venue-duration">To</label>
-                <select
-                  id="venue-duration"
-                  className="form-control"
-                  value={searchOptions.duration}
-                  onChange={evt => this.onUpdate(evt, 'duration')}
-                >
-                  {range(1, 25 - searchOptions.time).map(hour => (
-                    <option key={hour} value={hour}>{timestamp((searchOptions.time + hour) * 100)} ({hour} hr)</option>
-                  ))}
-                </select>
-              </div>
-            </div>
-          </div>}
+        <div className="col form-group">
+          <label htmlFor="venue-duration">To</label>
+          <select
+            id="venue-duration"
+            className="form-control"
+            value={searchOptions.duration}
+            onChange={evt => this.onUpdate(evt, 'duration')}
+          >
+            {range(1, 25 - searchOptions.time).map(hour => (
+              <option key={hour} value={hour}>{timestamp((searchOptions.time + hour) * 100)} ({hour} hr)</option>
+            ))}
+          </select>
+        </div>
       </div>
     );
   }
