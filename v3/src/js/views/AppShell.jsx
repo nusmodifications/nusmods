@@ -94,7 +94,7 @@ export class AppShell extends Component<Props> {
 
     return (
       <div className="app-container">
-        <nav className={classnames(styles.navbar, 'fixed-top')}>
+        <nav className={styles.navbar}>
           <NavLink className={styles.brand} to="/" title="Home">
             <span className="sr-only">NUSMods</span>
           </NavLink>

@@ -44,7 +44,6 @@
 
 @include media-breakpoint-down(sm) {
   .searchBox {
-    top: $navbar-height + $navtab-height;
     padding: 0 0 0.4rem;
     margin: -1rem (-$grid-gutter-width / 2) 0;
     border-top: 1px solid var(--gray-lighter);

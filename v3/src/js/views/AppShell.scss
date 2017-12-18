@@ -5,6 +5,11 @@ $form-width: 26rem;
 .navbar {
   $vert-padding: 0.5rem;
 
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: $navbar-z-index;
   display: flex;
   flex-direction: row;
   align-items: center;
