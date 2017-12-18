@@ -35,15 +35,13 @@
     // Fake shadow - can't use box shadow because they will appear on top of the
     // top nav bar
     &::after {
-      $shadow-height: 1rem;
-
       content: '';
       position: absolute;
       right: 0;
-      bottom: -$shadow-height;
+      bottom: -$navtab-shadow-height;
       left: 0;
-      height: $shadow-height;
-      background: linear-gradient(to bottom, rgba(#000, 0.1), rgba(#000, 0));
+      height: $navtab-shadow-height;
+      background: linear-gradient(to bottom, $navtab-shadow-color, rgba(#000, 0));
       pointer-events: none;
     }
   }
