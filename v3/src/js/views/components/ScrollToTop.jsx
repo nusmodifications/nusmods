@@ -1,17 +1,15 @@
 // @flow
-import type { Location } from 'react-router-dom';
+import type { ContextRouter, Location } from 'react-router-dom';
 
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 
-type Options = {
-  onComponentWillMount?: boolean,
-  onComponentDidUpdate?: boolean,
-};
-
 type Props = {
+  ...ContextRouter,
   location: Location,
-} & Options;
+  onComponentWillMount: boolean,
+  onComponentDidUpdate: boolean,
+};
 
 function scrollToTop() {
   window.scrollTo(0, 0);
