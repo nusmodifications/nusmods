@@ -137,10 +137,10 @@ class TimetableContent extends Component<Props> {
 
     return (
       <div>
-        {_.isEmpty(clashes) ? null : (
+        {!_.isEmpty(clashes) && (
           <div className="alert alert-danger" role="alert">
             <h4>Exam Clashes</h4>
-            <p>There are <strong className="clash">clashes</strong> in your exam timetable.</p>
+            <p>There are <strong>clashes</strong> in your exam timetable.</p>
             {Object.keys(clashes).sort().map(clashDate => (
               <div key={clashDate}>
                 <h5>Clash on {formatExamDate(clashDate)}</h5>
@@ -244,7 +244,7 @@ class TimetableContent extends Component<Props> {
             })}
           >
             <div className="row justify-content-between">
-              <div className="col-auto">
+              <div className={classnames('col-auto', styles.timetableActions)}>
                 <TimetableActions
                   isVerticalOrientation={!isVerticalOrientation}
                   toggleTimetableOrientation={this.props.toggleTimetableOrientation}
@@ -253,7 +253,7 @@ class TimetableContent extends Component<Props> {
                 />
               </div>
 
-              <div className="col-auto">
+              <div className={classnames('col-auto', styles.timetableActions)}>
                 <ShareTimetable
                   semester={semester}
                   timetable={this.props.timetable}
