@@ -212,6 +212,6 @@ export default withRouter(
       selectSemester,
       setTimetable,
       fetchModule,
-    })(TimetableContainerComponent)
+    })(TimetableContainerComponent),
   ),
 );

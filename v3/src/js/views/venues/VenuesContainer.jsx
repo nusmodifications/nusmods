@@ -202,5 +202,5 @@ export const mapStateToProps: MapStateToProps<*, *, *> = (state, ownProps) => {
 export default connect(mapStateToProps)(
   withScrollToTop(withRouter(VenuesContainerComponent), {
     onComponentDidUpdate: false,
-  })
+  }),
 );

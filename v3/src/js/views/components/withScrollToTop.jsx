@@ -1,18 +1,17 @@
 // @flow
-import type { LocationShape } from 'react-router-dom';
+import type { Location } from 'react-router-dom';
+import type { ComponentType } from 'react';
 
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 
 type Props = {
-  path: string,
-  location: LocationShape,
-  component: React.Node,
+  location: Location,
 };
 
 type Options = {
-  onComponentWillMount: boolean,
-  onComponentDidUpdate: boolean,
+  onComponentWillMount?: boolean,
+  onComponentDidUpdate?: boolean,
 };
 
 const defaultOptions: Options = {
@@ -24,8 +23,8 @@ function scrollToTop() {
   window.scrollTo(0, 0);
 }
 
-const withScrollToTop = (WrappedComponent: React.Node, options: Options = defaultOptions) => {
-  return class extends Component {
+const withScrollToTop = (WrappedComponent: ComponentType, options: Options = defaultOptions) => {
+  return class withScrollToTopComponent extends Component<Props> {
     props: Props;
 
     componentWillMount() {
@@ -47,6 +46,6 @@ const withScrollToTop = (WrappedComponent: React.Node, options: Options = defaul
   };
 };
 
-export default (component, options: Options) => {
-  return withRouter(withScrollToTop(component, options));
+export default (WrappedComponent: ComponentType, options?: Options) => {
+  return withRouter(withScrollToTop(WrappedComponent, options));
 };
