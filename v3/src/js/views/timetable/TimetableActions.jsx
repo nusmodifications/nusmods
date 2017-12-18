@@ -14,6 +14,8 @@ type Props = {
 
 function TimetableActions(props: Props) {
   const { isVerticalOrientation } = props;
+  const buttonClassName = classnames(styles.actionIcon, styles.labelIcon);
+
   return (
     <div
       className="btn-group btn-group-sm"
@@ -26,7 +28,7 @@ function TimetableActions(props: Props) {
         onClick={props.toggleTimetableOrientation}
       >
         <Sidebar
-          className={classnames(styles.actionIcon, {
+          className={classnames(buttonClassName, {
             [styles.verticalMode]: isVerticalOrientation,
             [styles.horizontalMode]: !isVerticalOrientation,
           })}
@@ -38,7 +40,7 @@ function TimetableActions(props: Props) {
         className="btn btn-outline-primary"
         onClick={props.downloadAsJpeg}
       >
-        <Image className={styles.actionIcon} />
+        <Image className={buttonClassName} />
         Export image
       </button>
       <button
@@ -46,7 +48,7 @@ function TimetableActions(props: Props) {
         className="btn btn-outline-primary"
         onClick={props.downloadAsIcal}
       >
-        <Calendar className={styles.actionIcon} />
+        <Calendar className={buttonClassName} />
         Export iCal
       </button>
     </div>
