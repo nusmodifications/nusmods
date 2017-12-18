@@ -2,14 +2,14 @@
 
 import localforage from 'localforage';
 import qs from 'query-string';
-import { invert, each } from 'lodash';
+import { each } from 'lodash';
 
 import type { SemTimetableConfig } from 'types/timetables';
-import type { Semester, LessonType } from 'types/modules';
-import { LESSON_TYPE_ABBREV } from 'utils/timetables';
+import type { Semester } from 'types/modules';
+import { LESSON_ABBREV_TYPE } from 'utils/timetables';
 
-const LESSON_TYPES: { [string]: LessonType } = invert(LESSON_TYPE_ABBREV);
-
+// TODO: Remove this file when sem 2 is over and v2 migration is done
+//       also remember to remove localforage
 const migratedKeys: [Semester, string][] = [
   [1, 'timetable/2017-2018/sem1:queryString'],
   [2, 'timetable/2017-2018/sem2:queryString'],
@@ -29,7 +29,7 @@ export function parseQueryString(queryString: string): SemTimetableConfig {
     }
 
     if (lessonTypeAbbrev) {
-      timetable[moduleCode][LESSON_TYPES[lessonTypeAbbrev]] = classNo;
+      timetable[moduleCode][LESSON_ABBREV_TYPE[lessonTypeAbbrev]] = classNo;
     }
   });
 
