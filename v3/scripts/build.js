@@ -17,6 +17,7 @@ function printErrors(summary, errors) {
 
 // Create the production build and print the deployment instructions.
 function build(previousFileSizes) {
+  console.log('Building version', chalk.cyan(parts.appVersion().versionStr));
   console.log(chalk.cyan('Creating an optimized production build...'));
   console.log();
 
