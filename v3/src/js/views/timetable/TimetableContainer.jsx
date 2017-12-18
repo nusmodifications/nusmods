@@ -21,7 +21,9 @@ import { Repeat } from 'views/components/icons';
 import NotFoundPage from 'views/errors/NotFoundPage';
 import SemesterSwitcher from 'views/components/semester-switcher/SemesterSwitcher';
 import LoadingSpinner from 'views/components/LoadingSpinner';
+import withScrollToTop from 'views/components/withScrollToTop';
 import TimetableContent from './TimetableContent';
+
 import styles from './TimetableContainer.scss';
 
 const EMPTY_OBJECT = {};
@@ -205,9 +207,11 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 export default withRouter(
-  connect(mapStateToProps, {
-    selectSemester,
-    setTimetable,
-    fetchModule,
-  })(TimetableContainerComponent),
+  withScrollToTop(
+    connect(mapStateToProps, {
+      selectSemester,
+      setTimetable,
+      fetchModule,
+    })(TimetableContainerComponent)
+  ),
 );

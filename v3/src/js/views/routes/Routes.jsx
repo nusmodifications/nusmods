@@ -2,8 +2,6 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
-import ScrollToTopRoute from 'views/routes/ScrollToTopRoute';
-
 import TimetableContainer from 'views/timetable/TimetableContainer';
 import ModulePageContainer from 'views/modules/ModulePageContainer';
 import ModuleFinderContainer from 'views/modules/ModuleFinderContainer';
@@ -20,17 +18,16 @@ export default function Routes() {
   return (
     <Switch>
       <Redirect exact from="/" to="/timetable" />
+      <Route path="/timetable/:semester?/:action?" component={TimetableContainer} />
       <Route exact path="/modules" component={ModuleFinderContainer} />
       <Route path="/modules/:moduleCode/:slug?" component={ModulePageContainer} />
       <Route path="/venues/:venue?" component={VenuesContainer} />
-      {/* Routes that need to scroll to the top upon navigation */}
-      <ScrollToTopRoute path="/timetable/:semester?/:action?" component={TimetableContainer} />
-      <ScrollToTopRoute path="/about" component={AboutContainer} />
-      <ScrollToTopRoute path="/faq" component={FaqContainer} />
-      <ScrollToTopRoute path="/settings" component={SettingsContainer} />
-      <ScrollToTopRoute path="/team" component={TeamContainer} />
-      <ScrollToTopRoute path="/developers" component={DevelopersContainer} />
-      <ScrollToTopRoute path="/apps" component={AppsContainer} />
+      <Route path="/about" component={AboutContainer} />
+      <Route path="/faq" component={FaqContainer} />
+      <Route path="/settings" component={SettingsContainer} />
+      <Route path="/team" component={TeamContainer} />
+      <Route path="/developers" component={DevelopersContainer} />
+      <Route path="/apps" component={AppsContainer} />
       <Route component={NotFoundPage} />
     </Switch>
   );

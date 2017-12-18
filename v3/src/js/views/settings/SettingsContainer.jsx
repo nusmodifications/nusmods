@@ -14,6 +14,7 @@ import availableThemes from 'data/themes.json';
 import FacultySelect from 'views/components/FacultySelect';
 import NewStudentSelect from 'views/components/NewStudentSelect';
 import Timetable from 'views/timetable/Timetable';
+import withScrollToTop from 'views/components/withScrollToTop';
 import { supportsCSSVariables } from 'utils/react';
 
 import ThemeOption from './ThemeOption';
@@ -127,4 +128,4 @@ export default connect(
     selectFaculty,
     selectMode,
   },
-)(SettingsContainer);
+)(withScrollToTop(SettingsContainer));

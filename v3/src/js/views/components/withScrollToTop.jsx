@@ -15,29 +15,38 @@ type Options = {
   onComponentDidUpdate: boolean,
 };
 
-// Taken from https://stackoverflow.com/a/44438949/1751946
-const ScrollToTop = (component: React.Node, options: Options) => {
-  return class ScrollToTopComponent extends Component {
+const defaultOptions: Options = {
+  onComponentWillMount: true,
+  onComponentDidUpdate: true,
+};
+
+function scrollToTop() {
+  window.scrollTo(0, 0);
+}
+
+const withScrollToTop = (WrappedComponent: React.Node, options: Options = defaultOptions) => {
+  return class extends Component {
     props: Props;
 
     componentWillMount() {
       if (options.onComponentWillMount) {
-        window.scrollTo(0, 0);
+        scrollToTop();
       }
     }
 
     componentDidUpdate(prevProps: Props) {
       if (options.onComponentDidUpdate &&
-        this.props.path === this.props.location.pathname &&
         this.props.location.pathname !== prevProps.location.pathname) {
-        window.scrollTo(0, 0);
+        scrollToTop();
       }
     }
 
     render() {
-      return <component {...this.props} />;
+      return <WrappedComponent {...this.props} />;
     }
   };
-}
+};
 
-export default withRouter(ScrollToTopRoute);
+export default (component, options: Options) => {
+  return withRouter(withScrollToTop(component, options));
+};

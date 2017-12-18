@@ -18,6 +18,7 @@ import ErrorPage from 'views/errors/ErrorPage';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import VenueList from 'views/venues/VenueList';
 import SearchBox from 'views/components/SearchBox';
+import withScrollToTop from 'views/components/withScrollToTop';
 
 import config from 'config';
 import nusmods from 'apis/nusmods';
@@ -198,4 +199,8 @@ export const mapStateToProps: MapStateToProps<*, *, *> = (state, ownProps) => {
   };
 };
 
-export default connect(mapStateToProps)(withRouter(VenuesContainerComponent));
+export default connect(mapStateToProps)(
+  withScrollToTop(withRouter(VenuesContainerComponent), {
+    onComponentDidUpdate: false,
+  })
+);
