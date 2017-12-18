@@ -15,6 +15,7 @@ function scrollToTop() {
   window.scrollTo(0, 0);
 }
 
+// $FlowFixMe - https://github.com/flowtype/flow-typed/issues/1179
 class ScrollToTopComponent extends Component<Props> {
   static defaultProps = {
     onComponentWillMount: true,
