@@ -16,7 +16,6 @@ import { fetchModuleList } from 'actions/moduleBank';
 import { fetchTimetableModules, setTimetable } from 'actions/timetables';
 import { noBreak } from 'utils/react';
 import migrateTimetable from 'storage/migrateTimetable';
-import ModulesSelect from 'views/components/ModulesSelect';
 import Footer from 'views/layout/Footer';
 import Navtabs from 'views/layout/Navtabs';
 import { DARK_MODE } from 'types/settings';

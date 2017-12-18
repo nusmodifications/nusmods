@@ -2,13 +2,12 @@
 import type { FSA } from 'types/redux';
 import type { Module, ModuleCode, Semester } from 'types/modules';
 import type { SemTimetableConfig } from 'types/timetables';
-import type { ModuleList, ModuleSelectList, ModuleSelectListItem, ModuleCodeMap } from 'types/reducers';
+import type { ModuleList, ModuleSelectListItem, ModuleCodeMap } from 'types/reducers';
 
 import _ from 'lodash';
 
 import { FETCH_MODULE_LIST, FETCH_MODULE } from 'actions/moduleBank';
 import * as RequestResultCases from 'middlewares/requests-middleware';
-import { ModuleCondensed } from '../../types/modules';
 
 export type ModulesMap = {
   [ModuleCode]: Module,

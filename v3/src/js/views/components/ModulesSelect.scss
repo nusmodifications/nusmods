@@ -21,9 +21,11 @@ $module-list-height: 13.5rem;
 }
 
 .input {
+  composes: form-control from global;
   height: $input-height;
 
-  &:focus {
+  // Remove bootstrap's box-shadow
+  &:global(.form-control):focus {
     box-shadow: none;
   }
 }
@@ -33,8 +35,8 @@ $module-list-height: 13.5rem;
   position: absolute;
   top: 0;
   right: 0;
+  width: $input-height;
   height: $input-height;
-  width:$input-height;
 }
 
 .selectList {

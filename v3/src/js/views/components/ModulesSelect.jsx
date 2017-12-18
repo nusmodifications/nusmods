@@ -4,6 +4,8 @@ import _ from 'lodash';
 import Downshift from 'downshift';
 import classnames from 'classnames';
 
+import { createSearchFilter, sortModules } from 'utils/moduleSearch';
+
 import type { ModuleSelectList } from 'types/reducers';
 
 import styles from './ModulesSelect.scss';
@@ -25,24 +27,17 @@ class ModulesSelect extends Component<Props> {
     return selection && this.props.onChange(selection);
   };
 
-  getFilteredModules = (inputValue: string) => {
+  getFilteredModules = (inputValue: string): ModuleSelectList => {
     if (!inputValue) {
       return [];
     }
-
-    // Match only start of words, case insensitively
-    const reg = RegExp(`\\b${inputValue}`, 'i');
-    const codeMatches = [];
-    const titleMatches = [];
-
-    this.props.moduleList.forEach((mod) => {
-      if (reg.test(mod.ModuleCode)) {
-        codeMatches.push(mod);
-      } else if (reg.test(mod.ModuleTitle)) {
-        titleMatches.push(mod);
-      }
+    // $FlowFixMe
+    const moduleCodes = createSearchFilter(inputValue).initFilters(this.props.moduleList).filteredModules();
+    const results = this.props.moduleList.filter((mod) => {
+      return moduleCodes.has(mod.ModuleCode);
     });
-    return codeMatches.concat(titleMatches).slice(0, 500);
+    // $FlowFixMe why don't width subtyping help here?
+    return sortModules(inputValue, results.slice(0, 500));
   };
 
   /* eslint-disable jsx-a11y/label-has-for */
@@ -63,7 +58,7 @@ class ModulesSelect extends Component<Props> {
           <label className="sr-only" {...getLabelProps()}>
             {placeholder}
           </label>
-          <input className={classnames(styles.input, 'form-control')} {...getInputProps({ placeholder })} />
+          <input className={styles.input} {...getInputProps({ placeholder })} />
           {inputValue && (
             <button className={styles.close} onClick={clearSelection} aria-label="clear selection">
               &times;
