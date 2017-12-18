@@ -64,3 +64,9 @@
     padding-bottom: 0.1rem; // Visual alignment
   }
 }
+
+@include mobile-landscape {
+  .searchBox {
+    top: 0;
+  }
+}
