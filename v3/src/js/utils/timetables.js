@@ -39,6 +39,9 @@ export const LESSON_TYPE_ABBREV: LessonTypeAbbrev = {
   Workshop: 'WS',
 };
 
+// Reverse lookup map of LESSON_TYPE_ABBREV
+export const LESSON_ABBREV_TYPE: { [string]: LessonType } = _.invert(LESSON_TYPE_ABBREV);
+
 // Used for module config serialization - these must be query string safe
 // See: https://stackoverflow.com/a/31300627
 export const LESSON_TYPE_SEP = ':';
@@ -218,7 +221,7 @@ function parseModuleConfig(serialized: string): ModuleLessonConfig {
   serialized.split(LESSON_SEP)
     .forEach((lesson) => {
       const [lessonTypeAbbr, classNo] = lesson.split(LESSON_TYPE_SEP);
-      const lessonType = _.findKey(LESSON_TYPE_ABBREV, abbr => abbr === lessonTypeAbbr);
+      const lessonType = LESSON_ABBREV_TYPE[lessonTypeAbbr];
       // Ignore unparsable/invalid keys
       if (!lessonType) return;
       config[lessonType] = classNo;

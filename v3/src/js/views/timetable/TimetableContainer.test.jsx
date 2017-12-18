@@ -39,13 +39,13 @@ function create(
 
   const selectSemester = jest.fn();
   const setTimetable = jest.fn();
-  const fetchModule = jest.fn();
+  const fetchTimetableModules = jest.fn();
 
   return {
     history,
     selectSemester,
     setTimetable,
-    fetchModule,
+    fetchTimetableModules,
 
     wrapper: shallow(
       <TimetableContainerComponent
@@ -61,7 +61,7 @@ function create(
 
         selectSemester={selectSemester}
         setTimetable={setTimetable}
-        fetchModule={fetchModule}
+        fetchTimetableModules={fetchTimetableModules}
       />,
     ),
   };
@@ -93,8 +93,9 @@ test('should show 404 when the URL is invalid', () => {
 });
 
 test('should load modules from imported timetable', () => {
-  const container = createWithImport({ CS2105: { Lecture: '1' } });
-  expect(container.fetchModule).toBeCalledWith('CS2105');
+  const timetable = { CS2105: { Lecture: '1' } };
+  const container = createWithImport(timetable);
+  expect(container.fetchTimetableModules).toBeCalledWith([timetable]);
 });
 
 test('should display spinner when loading modules', () => {
@@ -117,7 +118,7 @@ test('should display imported timetable', () => {
 
 test('should display saved timetable when there is no imported timetable', () => {
   const semester = 1;
-  const timetable = { CS2105: { Lecture: '1' } };
+  const timetable = { CS1010S: { Lecture: '1' } };
 
   const wrapper = create(timetablePage(semester), { semester: 'sem-1' }, timetable).wrapper;
 
