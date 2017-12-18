@@ -13,7 +13,9 @@ export default function App({ store }) {
     <AppContainer>
       <Provider store={store}>
         <Router>
-          <AppShell><Routes /></AppShell>
+          <AppShell>
+            <Routes />
+          </AppShell>
         </Router>
       </Provider>
     </AppContainer>
