@@ -170,7 +170,7 @@ export default class ShareTimetable extends PureComponent<Props, State> {
           className="btn btn-sm btn-outline-primary"
           onClick={this.openModal}
         >
-          <Repeat className={actionStyles.actionIcon} />
+          <Repeat className={classnames(actionStyles.labelIcon, actionStyles.actionIcon)} />
           Share/Sync
         </button>
 
