@@ -31,6 +31,12 @@ test('it searches multiword terms', () => {
   expect(filtered).toEqual(['CS1010S']);
 });
 
+test('its searches get more specific with more keywords', () => {
+  const filter = createSearchFilter('to by').initFilters(moduleList);
+  const filtered = [...filter.filteredModules()];
+  expect(filtered).toEqual([]);
+});
+
 test('it sorts by prefering module prefix', () => {
   const modules = sortModules('cs', moduleList).map(m => m.ModuleCode);
   expect(modules).toEqual(['CS1010S', 'CS3216', 'ACC2002', 'BFS1001', 'PC1222']);

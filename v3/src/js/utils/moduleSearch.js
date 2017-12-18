@@ -3,7 +3,7 @@
 import { sortBy } from 'lodash';
 import FilterGroup from 'utils/filters/FilterGroup';
 import ModuleFilter from 'utils/filters/ModuleFilter';
-import type { Module, ModuleCode, ModuleTitle } from 'types/modules';
+import type { ModuleCode, ModuleTitle } from 'types/modules';
 
 // Subset of Module object that contains the properties that are
 // needed for module search
@@ -11,7 +11,7 @@ type SearchableModule = {
   ModuleCode: ModuleCode,
   ModuleTitle: ModuleTitle,
   ModuleDescription?: string,
-}
+};
 
 // The query string key used for the search term eg. ?q=Search+Term
 export const SEARCH_QUERY_KEY = 'q';
@@ -22,11 +22,11 @@ export function tokenize(str: string): string[] {
 
 // Match only start of words, case insensitively
 export function regexify(str: string): RegExp {
-  const terms = str.split(/[^\w]+/g).filter(Boolean);
-  return RegExp(`\\b${terms.join('|')}`, 'i');
+  const terms = str.replace(/[\W]+/g, '\\W+');
+  return RegExp(`\\b${terms}`, 'i');
 }
 
-export function createSearchPredicate(searchTerm: string): (SearchableModule) => boolean {
+export function createSearchPredicate(searchTerm: string): SearchableModule => boolean {
   const searchRegex = regexify(searchTerm);
 
   return function predicate(module: SearchableModule): boolean {
