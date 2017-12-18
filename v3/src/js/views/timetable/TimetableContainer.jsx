@@ -64,6 +64,10 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
     };
   }
 
+  componentWillMount() {
+    window.scrollTo(0, 0);
+  }
+
   componentDidMount() {
     if (this.state.importedTimetable) {
       Object.keys(this.state.importedTimetable)
