@@ -32,8 +32,9 @@
 .preview {
   position: relative;
   clear: both;
+  height: 13.8rem;
   margin: 1rem 0 2rem;
-  overflow: auto;
+  overflow-y: hidden;
 }
 
 .themeOption {
