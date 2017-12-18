@@ -13,7 +13,7 @@ $form-width: 26rem;
   display: flex;
   flex-direction: row;
   align-items: center;
-  min-height: $navbar-height;
+  height: $navbar-height;
   padding: $vert-padding 1rem;
   background: var(--gray-lightest);
 
