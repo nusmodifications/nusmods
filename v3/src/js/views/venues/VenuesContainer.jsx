@@ -65,6 +65,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
     const params = qs.parse(props.location.search);
     const selectedVenue = this.props.urlVenue || '';
 
+    // Extract searchOptions from the query string if they are present
     const isAvailabilityEnabled = params.time && params.day && params.duration;
     const searchOptions = isAvailabilityEnabled
       ? mapValues(pick(params, ['time', 'day', 'duration']), i => parseInt(i, 10))
@@ -180,7 +181,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
             <div className="col-auto">
               <button
                 className={classnames('btn', isAvailabilityEnabled ? 'btn-primary' : 'btn-outline-primary')}
-                onClick={() => this.setState({ isAvailabilityEnabled: !isAvailabilityEnabled })}
+                onClick={() => this.setState({ isAvailabilityEnabled: !isAvailabilityEnabled }, this.updateURL)}
               >Find free rooms</button>
             </div>
           </div>
