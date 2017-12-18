@@ -1,5 +1,5 @@
 // @flow
-import type { Faculty, Lesson, ModuleCode, ModuleCondensed, Semester } from 'types/modules';
+import type { Faculty, Lesson, ModuleCode, SearchableModule, ModuleCondensed, Semester } from 'types/modules';
 import type { Mode } from 'types/settings';
 
 /* app.js */
@@ -44,11 +44,10 @@ export type SettingsState = {
 };
 
 /* entities/moduleBank.js */
-export type ModuleSelectListItem = ModuleCondensed & {
+export type ModuleSelectListItem = SearchableModule & {
   isAdded: boolean,
 };
 export type ModuleList = ModuleCondensed[];
-// $FlowFixMe Flow subtyping is annoying
 export type ModuleSelectList = ModuleSelectListItem[];
 export type ModuleCodeMap = { [ModuleCode]: ModuleCondensed };
 

@@ -27,7 +27,7 @@ class ModulesSelect extends Component<Props> {
     return selection && this.props.onChange(selection);
   };
 
-  getFilteredModules = (inputValue: string): ModuleSelectList => {
+  getFilteredModules = (inputValue: string) => {
     if (!inputValue) {
       return [];
     }

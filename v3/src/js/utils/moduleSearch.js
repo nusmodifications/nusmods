@@ -1,17 +1,7 @@
 // @flow
-
-import { sortBy } from 'lodash';
 import FilterGroup from 'utils/filters/FilterGroup';
 import ModuleFilter from 'utils/filters/ModuleFilter';
-import type { ModuleCode, ModuleTitle } from 'types/modules';
-
-// Subset of Module object that contains the properties that are
-// needed for module search
-type SearchableModule = {
-  ModuleCode: ModuleCode,
-  ModuleTitle: ModuleTitle,
-  ModuleDescription?: string,
-};
+import type { SearchableModule } from 'types/modules';
 
 // The query string key used for the search term eg. ?q=Search+Term
 export const SEARCH_QUERY_KEY = 'q';
@@ -55,7 +45,7 @@ export function createSearchFilter(searchTerm: string): FilterGroup<ModuleFilter
 export function sortModules<T: SearchableModule>(searchTerm: string, modules: T[]): T[] {
   const searchRegex = regexify(searchTerm);
 
-  return sortBy(modules, (module) => {
+  return modules.sort((module) => {
     if (searchRegex.test(module.ModuleCode) || searchRegex.test(module.ModuleCode.replace(/\D+/, ''))) {
       return 1;
     }
