@@ -13,8 +13,8 @@ import { selectNewStudent, selectFaculty, selectMode } from 'actions/settings';
 import availableThemes from 'data/themes.json';
 import FacultySelect from 'views/components/FacultySelect';
 import NewStudentSelect from 'views/components/NewStudentSelect';
+import ScrollToTop from 'views/components/ScrollToTop';
 import Timetable from 'views/timetable/Timetable';
-import withScrollToTop from 'views/components/withScrollToTop';
 import { supportsCSSVariables } from 'utils/react';
 
 import ThemeOption from './ThemeOption';
@@ -34,10 +34,10 @@ type Props = {
   selectMode: Function,
 };
 
-
 function SettingsContainer(props: Props) {
   return (
     <div className={classnames(styles.settingsPage, 'page-container')}>
+      <ScrollToTop />
       <Helmet>
         <title>Settings - {config.brandName}</title>
       </Helmet>
@@ -120,8 +120,6 @@ const mapStateToProps = state => ({
   currentThemeId: state.theme.id,
 });
 
-// Explicitly declare top level components for React hot reloading to work.
-const scrollToTopSettingsContainer = withScrollToTop(SettingsContainer);
 export default connect(
   mapStateToProps,
   {
@@ -130,4 +128,4 @@ export default connect(
     selectFaculty,
     selectMode,
   },
-)(scrollToTopSettingsContainer);
+)(SettingsContainer);

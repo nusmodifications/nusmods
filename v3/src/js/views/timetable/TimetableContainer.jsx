@@ -21,6 +21,7 @@ import { Repeat } from 'views/components/icons';
 import NotFoundPage from 'views/errors/NotFoundPage';
 import SemesterSwitcher from 'views/components/semester-switcher/SemesterSwitcher';
 import LoadingSpinner from 'views/components/LoadingSpinner';
+import ScrollToTop from 'views/components/ScrollToTop';
 import TimetableContent from './TimetableContent';
 
 import styles from './TimetableContainer.scss';
@@ -62,10 +63,6 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
     this.state = {
       importedTimetable,
     };
-  }
-
-  componentWillMount() {
-    window.scrollTo(0, 0);
   }
 
   componentDidMount() {
@@ -185,13 +182,16 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
       : this.timetableHeader(semester);
 
     return (
-      <TimetableContent
-        semester={semester}
-        timetable={displayedTimetable}
-        colors={colors}
-        header={header}
-        readOnly={!!importedTimetable}
-      />
+      <div>
+        <TimetableContent
+          semester={semester}
+          timetable={displayedTimetable}
+          colors={colors}
+          header={header}
+          readOnly={!!importedTimetable}
+        />
+        <ScrollToTop onComponentDidUpdate={false} />
+      </div>
     );
   }
 }
