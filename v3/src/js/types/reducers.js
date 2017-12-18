@@ -48,6 +48,7 @@ export type ModuleSelectListItem = ModuleCondensed & {
   isAdded: boolean,
 };
 export type ModuleList = ModuleCondensed[];
+// $FlowFixMe Flow subtyping is annoying
 export type ModuleSelectList = ModuleSelectListItem[];
 export type ModuleCodeMap = { [ModuleCode]: ModuleCondensed };
 

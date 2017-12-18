@@ -3,7 +3,15 @@
 import { sortBy } from 'lodash';
 import FilterGroup from 'utils/filters/FilterGroup';
 import ModuleFilter from 'utils/filters/ModuleFilter';
-import type { Module } from 'types/modules';
+import type { Module, ModuleCode, ModuleTitle } from 'types/modules';
+
+// Subset of Module object that contains the properties that are
+// needed for module search
+type SearchableModule = {
+  ModuleCode: ModuleCode,
+  ModuleTitle: ModuleTitle,
+  ModuleDescription?: string,
+}
 
 // The query string key used for the search term eg. ?q=Search+Term
 export const SEARCH_QUERY_KEY = 'q';
@@ -18,10 +26,10 @@ export function regexify(str: string): RegExp {
   return RegExp(`\\b${terms.join('|')}`, 'i');
 }
 
-export function createSearchFilter(searchTerm: string): FilterGroup<ModuleFilter> {
+export function createSearchPredicate(searchTerm: string): (SearchableModule) => boolean {
   const searchRegex = regexify(searchTerm);
 
-  const filter = new ModuleFilter(searchTerm, searchTerm, (module) => {
+  return function predicate(module: SearchableModule): boolean {
     if (
       searchRegex.test(module.ModuleCode) ||
       searchRegex.test(module.ModuleTitle) ||
@@ -33,13 +41,18 @@ export function createSearchFilter(searchTerm: string): FilterGroup<ModuleFilter
     if (module.ModuleDescription) {
       return searchRegex.test(module.ModuleDescription);
     }
-    return false;
-  });
 
+    return false;
+  };
+}
+
+export function createSearchFilter(searchTerm: string): FilterGroup<ModuleFilter> {
+  const predicate = createSearchPredicate(searchTerm);
+  const filter = new ModuleFilter(searchTerm, searchTerm, predicate);
   return new FilterGroup(SEARCH_QUERY_KEY, 'Search', [filter]).toggle(filter);
 }
 
-export function sortModules(searchTerm: string, modules: Module[]): Module[] {
+export function sortModules<T: SearchableModule>(searchTerm: string, modules: T[]): T[] {
   const searchRegex = regexify(searchTerm);
 
   return sortBy(modules, (module) => {

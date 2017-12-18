@@ -4,7 +4,7 @@ import _ from 'lodash';
 import Downshift from 'downshift';
 import classnames from 'classnames';
 
-import { createSearchFilter, sortModules } from 'utils/moduleSearch';
+import { createSearchPredicate, sortModules } from 'utils/moduleSearch';
 
 import type { ModuleSelectList } from 'types/reducers';
 
@@ -31,12 +31,10 @@ class ModulesSelect extends Component<Props> {
     if (!inputValue) {
       return [];
     }
-    // $FlowFixMe
-    const moduleCodes = createSearchFilter(inputValue).initFilters(this.props.moduleList).filteredModules();
-    const results = this.props.moduleList.filter((mod) => {
-      return moduleCodes.has(mod.ModuleCode);
-    });
-    // $FlowFixMe why don't width subtyping help here?
+
+    const predicate = createSearchPredicate(inputValue);
+    const results = this.props.moduleList.filter(predicate);
+
     return sortModules(inputValue, results.slice(0, 500));
   };
 
