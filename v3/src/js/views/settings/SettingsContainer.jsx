@@ -120,6 +120,8 @@ const mapStateToProps = state => ({
   currentThemeId: state.theme.id,
 });
 
+// Explicitly declare top level components for React hot reloading to work.
+const scrollToTopSettingsContainer = withScrollToTop(SettingsContainer);
 export default connect(
   mapStateToProps,
   {
@@ -128,4 +130,4 @@ export default connect(
     selectFaculty,
     selectMode,
   },
-)(withScrollToTop(SettingsContainer));
+)(scrollToTopSettingsContainer);

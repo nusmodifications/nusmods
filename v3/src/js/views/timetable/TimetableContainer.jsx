@@ -21,7 +21,6 @@ import { Repeat } from 'views/components/icons';
 import NotFoundPage from 'views/errors/NotFoundPage';
 import SemesterSwitcher from 'views/components/semester-switcher/SemesterSwitcher';
 import LoadingSpinner from 'views/components/LoadingSpinner';
-import withScrollToTop from 'views/components/withScrollToTop';
 import TimetableContent from './TimetableContent';
 
 import styles from './TimetableContainer.scss';
@@ -206,12 +205,10 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-export default withRouter(
-  withScrollToTop(
-    connect(mapStateToProps, {
-      selectSemester,
-      setTimetable,
-      fetchModule,
-    })(TimetableContainerComponent),
-  ),
-);
+// Explicitly declare top level components for React hot reloading to work.
+const connectedTimetableContainer = connect(mapStateToProps, {
+  selectSemester,
+  setTimetable,
+  fetchModule,
+})(TimetableContainerComponent);
+export default withRouter(connectedTimetableContainer);
