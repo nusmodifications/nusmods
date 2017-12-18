@@ -2,7 +2,6 @@
 import type { Node } from 'react';
 
 import React, { PureComponent } from 'react';
-import { noop } from 'lodash';
 
 import type { Semester, SemesterData } from 'types/modules';
 
@@ -48,11 +47,7 @@ export default class LessonTimetableControl extends PureComponent<Props, State> 
     const arrangedLessons = arrangeLessonsForWeek(coloredLessons);
 
     return (
-      <Timetable
-        lessons={arrangedLessons}
-        isVerticalOrientation={false}
-        onModifyCell={noop}
-      />
+      <Timetable lessons={arrangedLessons} />
     );
   }
 

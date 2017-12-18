@@ -1,0 +1,32 @@
+@import '~styles/utils/modules-entry';
+
+$theme-selected-bg-color: var(--gray-lighter);
+$theme-hover-bg-color: var(--gray-lightest);
+$theme-option-gap: 0.7rem;
+
+.option {
+  padding: $theme-option-gap;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color $desktop-entering-duration $material-deceleration-curve;
+
+  &:hover {
+    background-color: $theme-hover-bg-color;
+  }
+
+  &.isSelected {
+    background-color: $theme-selected-bg-color;
+  }
+}
+
+.colorList {
+  $number-colors: 8;
+
+  .colorItem {
+    $size: 100% / $number-colors;
+
+    display: inline-block;
+    width: $size;
+    padding-bottom: $size;
+  }
+}

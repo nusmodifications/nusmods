@@ -55,11 +55,7 @@ export default class VenueDetailRow extends PureComponent<Props> {
         ><h4>{name}</h4></a>
         {lessons && (
           <div className={styles.venueTimetable}>
-            <Timetable
-              lessons={lessons}
-              isVerticalOrientation={false}
-              onModifyCell={noop}
-            />
+            <Timetable lessons={lessons} />
           </div>
         )}
       </li>

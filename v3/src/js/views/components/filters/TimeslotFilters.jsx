@@ -10,6 +10,7 @@ import TimeslotFilter from 'utils/filters/TimeslotFilter';
 import FilterGroup from 'utils/filters/FilterGroup';
 import { getTimeslot } from 'utils/modules';
 import { Timeslots } from 'types/modules';
+import styles from './styles.scss';
 
 type Props = {
   onFilterChange: OnFilterChange,
@@ -29,7 +30,7 @@ export default function TimeslotFilters(props: Props) {
 
     children.set(timeslot,
       <label
-        className={classnames({ 'filter-selected': filter.enabled })}
+        className={classnames(styles.label, { [styles.selected]: filter.enabled })}
         title={`${count} modules with lessons on ${timeslot}`}
       >
         <span className="sr-only">{ timeslot }</span>
@@ -44,8 +45,8 @@ export default function TimeslotFilters(props: Props) {
   });
 
   return (
-    <div className="module-filters-timeslot">
-      <h4>{group.label}</h4>
+    <div className={styles.timeslot}>
+      <h4 className={styles.heading}>{group.label}</h4>
       <TimeslotTable>{children}</TimeslotTable>
     </div>
   );
