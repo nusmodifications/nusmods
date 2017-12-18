@@ -7,26 +7,26 @@
   :global {
     animation-name: $page-entering-animation;
   }
+
+  // Styles nested for specificity
+  @include media-breakpoint-down(xs) {
+    .toggleRow {
+      flex-wrap: nowrap;
+
+      .toggleDescription {
+        flex: 1 1 auto;
+      }
+
+      .toggle {
+        flex: 0 0 auto;
+        width: auto;
+      }
+    }
+  }
 }
 
 .setting {
   border-bottom: 1px solid var(--gray-light);
-}
-
-@include media-breakpoint-down(xs) {
-  // Styles nested for specificity
-  .toggleRow {
-    flex-wrap: nowrap;
-
-    .toggleDescription {
-      flex: 1 1 auto;
-    }
-
-    .toggle {
-      flex: 0 0 auto;
-      width: auto;
-    }
-  }
 }
 
 .preview {
