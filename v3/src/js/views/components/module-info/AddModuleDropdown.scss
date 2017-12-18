@@ -9,9 +9,11 @@
     font-size: 1.2em;
   }
 
-  @include media-breakpoint-down(sm) {
-    // Long selector for specificity
-    :global(.dropdown-toggle.dropdown-toggle-split) {
+  :global(.dropdown-toggle.dropdown-toggle-split) {
+    width: 2rem;
+
+    @include media-breakpoint-down(sm) {
+      // Long selector for specificity
       width: 3rem;
     }
   }
