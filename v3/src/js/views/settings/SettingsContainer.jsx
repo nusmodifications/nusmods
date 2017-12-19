@@ -42,7 +42,7 @@ function SettingsContainer(props: Props) {
         <title>Settings - {config.brandName}</title>
       </Helmet>
 
-      <h1 className="page-title">Settings</h1>
+      <h1 className={styles.title}>Settings</h1>
 
       <h4>New Student</h4>
       <div className={classnames(styles.toggleRow, 'row')}>

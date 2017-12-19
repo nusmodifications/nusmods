@@ -7,7 +7,7 @@ import type {
 
 import { omit, values } from 'lodash';
 import { getNewColor } from 'utils/colors';
-import { ADD_MODULE, REMOVE_MODULE } from 'actions/timetables';
+import { ADD_MODULE, REMOVE_MODULE, SET_TIMETABLE } from 'actions/timetables';
 import { SELECT_THEME, SELECT_MODULE_COLOR, TOGGLE_TIMETABLE_ORIENTATION } from 'actions/theme';
 
 import {
@@ -38,6 +38,13 @@ function colors(state: ColorMapping, action: FSA): ColorMapping {
         [action.payload.moduleCode]: colorIndex,
       };
     }
+    case SET_TIMETABLE:
+      if (action.payload.colors) return state;
+
+      return {
+        ...state,
+        ...action.payload.colors,
+      };
     case REMOVE_MODULE:
       return omit(state, action.payload.moduleCode);
     case SELECT_MODULE_COLOR:
@@ -55,6 +62,7 @@ function theme(state: ThemeState = defaultThemeState, action: FSA): ThemeState {
     case ADD_MODULE:
     case REMOVE_MODULE:
     case SELECT_MODULE_COLOR:
+    case SET_TIMETABLE:
       return {
         ...state,
         colors: colors(state.colors, action),

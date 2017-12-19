@@ -3,6 +3,22 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 function Footer() {
+  const commitHash = process.env.commitHash;
+  const versionStr = process.env.versionStr;
+
+  const versionSpan = commitHash && versionStr && (
+    <span>
+      Version{' '}
+      <a
+        href={`https://github.com/nusmodifications/nusmods/commit/${commitHash}`}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {versionStr}
+      </a>.
+    </span>
+  );
+
   return (
     <footer className="nm-footer text-muted">
       <div className="container">
@@ -18,7 +34,7 @@ function Footer() {
           <li><Link to="/developers">Developers</Link></li>
           <li><Link to="/faq">FAQ</Link></li>
         </ul>
-        {/* TODO: Add last updated timestamp */}
+        {/* TODO: Add API data last updated timestamp */}
         <p>Designed and built with all the love in the world by{' '}
           <a
             href="https://github.com/nusmodifications"
@@ -30,7 +46,8 @@ function Footer() {
           Maintained by the <Link to="/team">core team</Link> with the help
           of <Link to="/developers">our contributors</Link>.
         </p>
-        <p>© Copyright 2017, NUSModifications. All rights reserved.</p>
+        <p>© Copyright 2017, NUSModifications. All rights reserved. {versionSpan}
+        </p>
       </div>
     </footer>
   );

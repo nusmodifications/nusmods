@@ -1,31 +1,27 @@
 // @flow
 import type { Node } from 'react';
-import type { TimetableConfig } from 'types/timetables';
+import type { TimetableConfig, SemTimetableConfig } from 'types/timetables';
 import type { ModuleList, ModuleSelectList } from 'types/reducers';
-import type { ModuleCode, Semester } from 'types/modules';
+import type { Semester } from 'types/modules';
 import type { Mode } from 'types/settings';
 
 import React, { Component } from 'react';
 import { NavLink, withRouter, type ContextRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import NUSModerator from 'nusmoderator';
-import qs from 'query-string';
 import classnames from 'classnames';
+import { values } from 'lodash';
 
-import config from 'config';
-import { fetchModuleList, fetchModule } from 'actions/moduleBank';
+import { fetchModuleList } from 'actions/moduleBank';
+import { fetchTimetableModules, setTimetable } from 'actions/timetables';
 import { noBreak } from 'utils/react';
-import { roundStart } from 'utils/cors';
+import migrateTimetable from 'storage/migrateTimetable';
 import ModulesSelect from 'views/components/ModulesSelect';
 import Footer from 'views/layout/Footer';
 import Navtabs from 'views/layout/Navtabs';
 import { DARK_MODE } from 'types/settings';
 import LoadingSpinner from './components/LoadingSpinner';
-import CorsNotification from './components/cors-info/CorsNotification';
-
-// Cache a current date object to stop CorsNotification from re-rendering - if this was in
-// render(), a new Date object is created, forcing re-render.
-const NOW = new Date();
+import styles from './AppShell.scss';
 
 type Props = {
   ...ContextRouter,
@@ -38,8 +34,9 @@ type Props = {
   mode: Mode,
   activeSemester: Semester,
 
-  fetchModule: (ModuleCode) => void,
   fetchModuleList: () => void,
+  fetchTimetableModules: (SemTimetableConfig[]) => void,
+  setTimetable: (Semester, SemTimetableConfig) => void,
 };
 
 // Put outside render because this only needs to computed on page load.
@@ -72,39 +69,32 @@ function setMode(mode: Mode) {
 
   if (mode === DARK_MODE) {
     document.body.classList.add('mode-dark');
-    return;
+  } else {
+    document.body.classList.remove('mode-dark');
   }
-  document.body.classList.remove('mode-dark');
 }
 
 export class AppShell extends Component<Props> {
   componentWillMount() {
-    setMode(this.props.mode);
+    const { mode, timetables } = this.props;
+    setMode(mode);
+
+    // Retrieve module list
     // TODO: This always re-fetch the entire modules list. Consider a better strategy for this
     this.props.fetchModuleList();
 
-    const semesterTimetable = this.props.timetables[this.props.activeSemester];
-    if (semesterTimetable) {
-      // TODO: Handle failed loading of module.
-      Object.keys(semesterTimetable)
-        .forEach(moduleCode => this.props.fetchModule(moduleCode));
-    }
+    // Fetch all module data that are on timetable
+    this.props.fetchTimetableModules(values(timetables));
+
+    // Handle migration from v2
+    // TODO: Remove this once sem 2 is over
+    migrateTimetable(this.props.setTimetable)
+      .then(migratedTimetables =>
+        this.props.fetchTimetableModules(migratedTimetables.filter(Boolean)));
   }
 
   componentWillUpdate(nextProps: Props) {
     setMode(nextProps.mode);
-  }
-
-  currentTime() {
-    const debugRound = qs.parse(this.props.location.search).round;
-
-    // For manual testing - add ?round=1A (or other round names) to trigger the notification
-    if (debugRound) {
-      const round = config.corsSchedule.find(r => r.round === debugRound);
-      if (round) return roundStart(round);
-    }
-
-    return NOW;
   }
 
   render() {
@@ -113,11 +103,12 @@ export class AppShell extends Component<Props> {
 
     return (
       <div className="app-container">
-        <nav className="nm-navbar fixed-top">
-          <NavLink className="nm-navbar-brand" to="/" title="Home">
+        <nav className={styles.navbar}>
+          <NavLink className={styles.brand} to="/" title="Home">
             <span className="sr-only">NUSMods</span>
           </NavLink>
-          <form className="nm-navbar-form">
+
+          <form className={styles.form}>
             <ModulesSelect
               moduleList={this.props.moduleSelectList}
               onChange={(moduleCode) => {
@@ -126,13 +117,11 @@ export class AppShell extends Component<Props> {
               placeholder="Search modules"
             />
           </form>
-          <span className="nm-navbar-text"><small>{weekText}</small></span>
+          <span className={styles.weekText}><small>{weekText}</small></span>
         </nav>
 
         <div className="main-container">
           <Navtabs />
-
-          <CorsNotification time={this.currentTime()} />
 
           <main className={classnames('main-content', `theme-${this.props.theme}`)}>
             {isModuleListReady ? this.props.children : <LoadingSpinner />}
@@ -154,9 +143,14 @@ const mapStateToProps = state => ({
   activeSemester: state.app.activeSemester,
 });
 
+// withRouter here is used to ensure re-render when routes change, since
+// connect implements shouldComponentUpdate based purely on props. If it
+// is removed, connect not detect prop changes when route is changed and
+// thus the pages are not re-rendered
 export default withRouter(
   connect(mapStateToProps, {
     fetchModuleList,
-    fetchModule,
+    fetchTimetableModules,
+    setTimetable,
   })(AppShell),
 );

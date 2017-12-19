@@ -1,36 +1,38 @@
 // @flow
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { connect, type MapStateToProps } from 'react-redux';
 import Helmet from 'react-helmet';
 import ScrollSpy from 'react-scrollspy';
 
 import type { Module, Semester } from 'types/modules';
-import type { TimetableConfig } from 'types/timetables';
 
 import config from 'config';
-import { addModule, removeModule } from 'actions/timetables';
-import { formatExamDate } from 'utils/modules';
+import { formatExamDate, getSemestersOffered } from 'utils/modules';
 import { intersperse } from 'utils/array';
 import { BULLET } from 'utils/react';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
 import DisqusComments from 'views/components/DisqusComments';
+import SideMenu from 'views/components/SideMenu';
 import LessonTimetable from 'views/components/module-info/LessonTimetable';
 import ModuleExamClash from 'views/components/module-info/ModuleExamClash';
+import AddToTimetableDropdown from 'views/components/module-info/AddModuleDropdown';
 import CorsStats from 'views/components/cors-stats/CorsStats';
+import CorsNotification from 'views/components/cors-info/CorsNotification';
+
+import styles from './ModulePageContent.scss';
 
 type Props = {
   module: Module,
-  timetables: TimetableConfig,
-  addModule: Function,
-  removeModule: Function,
 };
 
-class ModulePageContentComponent extends Component<Props> {
-  semestersOffered(): Semester[] {
-    return this.props.module.History
-      .map(h => h.Semester)
-      .sort();
-  }
+type State = {
+  isMenuOpen: boolean,
+};
+
+class ModulePageContentComponent extends Component<Props, State> {
+  state: State = {
+    isMenuOpen: false,
+  };
 
   examinations(): {semester: Semester, date: string}[] {
     const history = this.props.module.History;
@@ -41,22 +43,22 @@ class ModulePageContentComponent extends Component<Props> {
       .map(h => ({ semester: h.Semester, date: h.ExamDate || '' }));
   }
 
-  moduleHasBeenAdded(module: Module, semester: Semester): boolean {
-    const timetables = this.props.timetables;
-    return timetables[semester] && !!timetables[semester][module.ModuleCode];
-  }
+  toggleMenu = (isMenuOpen: boolean) => this.setState({ isMenuOpen });
 
   render() {
     const { module } = this.props;
     const { ModuleCode, ModuleTitle } = module;
 
     const pageTitle = `${ModuleCode} ${ModuleTitle}`;
+    const semesters = getSemestersOffered(module);
 
     return (
       <div className="module-container page-container">
         <Helmet>
           <title>{pageTitle} - {config.brandName}</title>
         </Helmet>
+
+        <CorsNotification />
 
         <div className="row">
           <div className="col-md-9">
@@ -74,7 +76,7 @@ class ModulePageContentComponent extends Component<Props> {
               </p>
 
               <p>
-                {intersperse(this.semestersOffered().map(semester => (
+                {intersperse(semesters.map(semester => (
                   <a key={semester}>{ config.semesterNames[semester] }</a>
                 )), BULLET)}
               </p>
@@ -110,7 +112,7 @@ class ModulePageContentComponent extends Component<Props> {
 
               <div className="col-sm-4 module-page-sidebar">
                 {this.examinations().map(exam => (
-                  <div key={exam.semester}>
+                  <div key={exam.semester} className={styles.exam}>
                     <h3>{config.semesterNames[exam.semester]} Exam</h3>
                     <p>{formatExamDate(exam.date)}</p>
 
@@ -122,27 +124,12 @@ class ModulePageContentComponent extends Component<Props> {
                   </div>
                 ))}
 
-                <div>
-                  {this.semestersOffered().map(
-                    semester => (
-                      this.moduleHasBeenAdded(module, semester) ?
-                        <button
-                          key={semester}
-                          className="btn btn-outline-primary"
-                          onClick={() => this.props.removeModule(semester, ModuleCode)}
-                        >
-                          Remove from {config.semesterNames[semester]}
-                        </button>
-                        :
-                        <button
-                          key={semester}
-                          className="btn btn-outline-primary"
-                          onClick={() => this.props.addModule(semester, ModuleCode)}
-                        >
-                          Add to {config.semesterNames[semester]}
-                        </button>
-                    ),
-                  )}
+                <div className={styles.addToTimetable}>
+                  <AddToTimetableDropdown
+                    module={module}
+                    className="btn-group-sm"
+                    block
+                  />
                 </div>
 
                 <div>
@@ -163,7 +150,7 @@ class ModulePageContentComponent extends Component<Props> {
             <section id="timetable">
               <h2>Timetable</h2>
               <LessonTimetable
-                semestersOffered={this.semestersOffered()}
+                semestersOffered={semesters}
                 history={module.History}
               />
             </section>
@@ -192,18 +179,20 @@ class ModulePageContentComponent extends Component<Props> {
           </div>
 
           <aside className="col-md-3">
-            <nav className="module-side-menu">
-              <ScrollSpy
-                items={['details', 'prerequisites', 'bidding-stats', 'timetable', 'reviews']}
-                currentClassName="scroll-menu-link-active"
-              >
-                <li><a href="#details">Details</a></li>
-                <li><a href="#prerequisites">Prerequisites</a></li>
-                <li><a href="#timetable">Timetable</a></li>
-                <li><a href="#bidding-stats">Bidding Stats</a></li>
-                <li><a href="#reviews">Reviews</a></li>
-              </ScrollSpy>
-            </nav>
+            <SideMenu isOpen={this.state.isMenuOpen} toggleMenu={this.toggleMenu}>
+              <nav className={styles.sideMenu}>
+                <ScrollSpy
+                  items={['details', 'prerequisites', 'bidding-stats', 'timetable', 'reviews']}
+                  currentClassName={styles.activeMenuItem}
+                >
+                  <li><a onClick={() => this.toggleMenu(false)} href="#details">Details</a></li>
+                  <li><a onClick={() => this.toggleMenu(false)} href="#prerequisites">Prerequisites</a></li>
+                  <li><a onClick={() => this.toggleMenu(false)} href="#timetable">Timetable</a></li>
+                  <li><a onClick={() => this.toggleMenu(false)} href="#bidding-stats">Bidding Stats</a></li>
+                  <li><a onClick={() => this.toggleMenu(false)} href="#reviews">Reviews</a></li>
+                </ScrollSpy>
+              </nav>
+            </SideMenu>
           </aside>
         </div>
       </div>
@@ -211,9 +200,8 @@ class ModulePageContentComponent extends Component<Props> {
   }
 }
 
-const mapStateToProps = (state, ownProps) => ({
-  timetables: state.timetables,
+const mapStateToProps: MapStateToProps<*, *, *> = (state, ownProps) => ({
   module: state.entities.moduleBank.modules[ownProps.moduleCode],
 });
 
-export default connect(mapStateToProps, { addModule, removeModule })(ModulePageContentComponent);
+export default connect(mapStateToProps)(ModulePageContentComponent);

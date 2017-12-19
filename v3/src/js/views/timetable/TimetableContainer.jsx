@@ -4,17 +4,15 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Redirect, type ContextRouter } from 'react-router-dom';
 import classnames from 'classnames';
-import { size } from 'lodash';
 
-import type { Semester, ModuleCode } from 'types/modules';
+import type { Semester } from 'types/modules';
 import type { SemTimetableConfig } from 'types/timetables';
 import type { ColorMapping } from 'types/reducers';
 import type { ModulesMap } from 'reducers/entities/moduleBank';
 
 import { selectSemester } from 'actions/settings';
-import { setTimetable } from 'actions/timetables';
-import { fetchModule } from 'actions/moduleBank';
-import { getSemesterModules, deserializeTimetable } from 'utils/timetables';
+import { setTimetable, fetchTimetableModules } from 'actions/timetables';
+import { deserializeTimetable } from 'utils/timetables';
 import { fillColorMapping } from 'utils/colors';
 import { semesterForTimetablePage, timetablePage, TIMETABLE_SHARE } from 'views/routes/paths';
 import { Repeat } from 'views/components/icons';
@@ -38,8 +36,8 @@ type Props = {
   colors: ColorMapping,
 
   selectSemester: (Semester) => void,
-  setTimetable: (Semester, SemTimetableConfig, ColorMapping) => Promise<*>,
-  fetchModule: (ModuleCode) => void,
+  setTimetable: (Semester, SemTimetableConfig, ColorMapping) => void,
+  fetchTimetableModules: (SemTimetableConfig[]) => void,
 };
 
 type State = {
@@ -67,8 +65,7 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
 
   componentDidMount() {
     if (this.state.importedTimetable) {
-      Object.keys(this.state.importedTimetable)
-        .forEach(moduleCode => this.props.fetchModule(moduleCode));
+      this.props.fetchTimetableModules([this.state.importedTimetable]);
     }
   }
 
@@ -82,18 +79,25 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
   };
 
   isLoading() {
+    // Check that all modules are fully loaded into the ModuleBank
+    const { modules, timetable } = this.props;
     const { importedTimetable } = this.state;
-    if (!importedTimetable) return false;
+
+    const moduleCodes = new Set(Object.keys(timetable));
+    if (importedTimetable) {
+      Object.keys(importedTimetable)
+        .forEach(moduleCode => moduleCodes.add(moduleCode));
+    }
 
     // TODO: Account for loading error
-    const loadedModules = getSemesterModules(importedTimetable, this.props.modules);
-    return loadedModules.length < size(importedTimetable);
+    return Array.from(moduleCodes)
+      .some(moduleCode => !modules[moduleCode]);
   }
 
   importTimetable(semester: Semester, timetable: SemTimetableConfig) {
     const colors = fillColorMapping(timetable, this.props.colors);
-    this.props.setTimetable(semester, timetable, colors)
-      .then(this.clearImportedTimetable);
+    this.props.setTimetable(semester, timetable, colors);
+    this.clearImportedTimetable();
   }
 
   clearImportedTimetable = () => {
@@ -215,6 +219,6 @@ const mapStateToProps = (state, ownProps) => {
 const connectedTimetableContainer = connect(mapStateToProps, {
   selectSemester,
   setTimetable,
-  fetchModule,
+  fetchTimetableModules,
 })(TimetableContainerComponent);
 export default withRouter(connectedTimetableContainer);
