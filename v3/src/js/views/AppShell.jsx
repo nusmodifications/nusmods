@@ -1,8 +1,8 @@
 // @flow
 import type { Node } from 'react';
-import type { TimetableConfig } from 'types/timetables';
+import type { TimetableConfig, SemTimetableConfig } from 'types/timetables';
 import type { ModuleList, ModuleSelectList } from 'types/reducers';
-import type { ModuleCode, Semester } from 'types/modules';
+import type { Semester } from 'types/modules';
 import type { Mode } from 'types/settings';
 
 import React, { Component } from 'react';
@@ -10,9 +10,12 @@ import { NavLink, withRouter, type ContextRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import NUSModerator from 'nusmoderator';
 import classnames from 'classnames';
+import { values } from 'lodash';
 
-import { fetchModuleList, fetchModule } from 'actions/moduleBank';
+import { fetchModuleList } from 'actions/moduleBank';
+import { fetchTimetableModules, setTimetable } from 'actions/timetables';
 import { noBreak } from 'utils/react';
+import migrateTimetable from 'storage/migrateTimetable';
 import ModulesSelect from 'views/components/ModulesSelect';
 import Footer from 'views/layout/Footer';
 import Navtabs from 'views/layout/Navtabs';
@@ -31,8 +34,9 @@ type Props = {
   mode: Mode,
   activeSemester: Semester,
 
-  fetchModule: (ModuleCode) => void,
   fetchModuleList: () => void,
+  fetchTimetableModules: (SemTimetableConfig[]) => void,
+  setTimetable: (Semester, SemTimetableConfig) => void,
 };
 
 // Put outside render because this only needs to computed on page load.
@@ -72,16 +76,21 @@ function setMode(mode: Mode) {
 
 export class AppShell extends Component<Props> {
   componentWillMount() {
-    setMode(this.props.mode);
+    const { mode, timetables } = this.props;
+    setMode(mode);
+
+    // Retrieve module list
     // TODO: This always re-fetch the entire modules list. Consider a better strategy for this
     this.props.fetchModuleList();
 
-    const semesterTimetable = this.props.timetables[this.props.activeSemester];
-    if (semesterTimetable) {
-      // TODO: Handle failed loading of module.
-      Object.keys(semesterTimetable)
-        .forEach(moduleCode => this.props.fetchModule(moduleCode));
-    }
+    // Fetch all module data that are on timetable
+    this.props.fetchTimetableModules(values(timetables));
+
+    // Handle migration from v2
+    // TODO: Remove this once sem 2 is over
+    migrateTimetable(this.props.setTimetable)
+      .then(migratedTimetables =>
+        this.props.fetchTimetableModules(migratedTimetables.filter(Boolean)));
   }
 
   componentWillUpdate(nextProps: Props) {
@@ -141,6 +150,7 @@ const mapStateToProps = state => ({
 export default withRouter(
   connect(mapStateToProps, {
     fetchModuleList,
-    fetchModule,
+    fetchTimetableModules,
+    setTimetable,
   })(AppShell),
 );
