@@ -1,12 +1,7 @@
 // @flow
 
-import type { LocationShape } from 'react-router-dom';
-
-// A subset of RouterHistory from react-router-dom
-type HistoryManipulator = {
-  push(path: string | LocationShape, state?: any): void,
-  replace(path: string | LocationShape, state?: any): void,
-};
+import type { LocationShape, RouterHistory } from 'react-router-dom';
+import { createPath } from 'history'; // eslint-disable-line import/no-extraneous-dependencies
 
 /**
  * Wrapper around `RouterHistory` that converts `history.push()` to `history.replace()` if
@@ -18,17 +13,21 @@ type HistoryManipulator = {
  * and resets the timer. Once the timer expires, the next call will use `history.push()` again.
  */
 export default class HistoryDebouncer {
-  history: HistoryManipulator;
+  history: RouterHistory;
   wait: number;
   lastPush: number;
 
-  constructor(history: HistoryManipulator, wait: number = 30 * 1000) {
+  constructor(history: RouterHistory, wait: number = 30 * 1000) {
     this.history = history;
     this.wait = wait;
     this.lastPush = -wait - 1;
   }
 
   push(path: string | LocationShape, state?: any) {
+    // Do not navigate if the path object matches
+    const nextPath = typeof path === 'string' ? path : createPath(path);
+    if (nextPath === createPath(this.history.location)) return;
+
     if (Date.now() - this.lastPush > this.wait) {
       this.history.push(path, state);
     } else {
