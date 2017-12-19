@@ -157,7 +157,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
       <div className={classnames('page-container', styles.pageContainer)}>
         {pageHead}
 
-        <div className={styles.searchPanel}>
+        <div className="search-panel">
           <div className={classnames('row align-items-center', styles.searchRow)}>
             <div className="col">
               <SearchBox

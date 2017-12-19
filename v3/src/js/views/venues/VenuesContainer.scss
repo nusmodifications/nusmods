@@ -6,22 +6,6 @@
   }
 }
 
-.searchPanel {
-  position: sticky;
-  top: $navbar-height;
-  z-index: $module-finder-search-z-index;
-  padding: 0 0 1rem;
-  background: linear-gradient(to bottom, var(--body-bg) calc(100% - 1rem), var(--body-bg-transparent));
-
-  @include media-breakpoint-down(sm) {
-    top: $navbar-height + $navtab-height;
-    padding: 0 0 0.6rem;
-    margin: -1rem (-$grid-gutter-width / 2) 0;
-    border-top: 1px solid var(--gray-lighter);
-    background: linear-gradient(to bottom, var(--body-bg) calc(100% - 0.5rem), rgba(#000, 0.15) calc(100% - 0.5rem), rgba(#000, 0));
-  }
-}
-
 .searchRow {
   background: var(--body-bg);
 }
