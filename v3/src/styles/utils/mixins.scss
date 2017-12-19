@@ -7,3 +7,11 @@
     background-color: darken($color, 10%);
   }
 }
+
+@mixin mobile-landscape() {
+  @include media-breakpoint-down(sm) {
+    @media (max-height: 15rem) {
+      @content;
+    }
+  }
+}

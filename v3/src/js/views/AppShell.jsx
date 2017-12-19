@@ -21,6 +21,7 @@ import Footer from 'views/layout/Footer';
 import Navtabs from 'views/layout/Navtabs';
 import { DARK_MODE } from 'types/settings';
 import LoadingSpinner from './components/LoadingSpinner';
+import styles from './AppShell.scss';
 
 type Props = {
   ...ContextRouter,
@@ -102,11 +103,12 @@ export class AppShell extends Component<Props> {
 
     return (
       <div className="app-container">
-        <nav className="nm-navbar fixed-top">
-          <NavLink className="nm-navbar-brand" to="/" title="Home">
+        <nav className={styles.navbar}>
+          <NavLink className={styles.brand} to="/" title="Home">
             <span className="sr-only">NUSMods</span>
           </NavLink>
-          <form className="nm-navbar-form">
+
+          <form className={styles.form}>
             <ModulesSelect
               moduleList={this.props.moduleSelectList}
               onChange={(moduleCode) => {
@@ -115,7 +117,7 @@ export class AppShell extends Component<Props> {
               placeholder="Search modules"
             />
           </form>
-          <span className="nm-navbar-text"><small>{weekText}</small></span>
+          <span className={styles.weekText}><small>{weekText}</small></span>
         </nav>
 
         <div className="main-container">

@@ -1,7 +1,6 @@
 @import "~styles/utils/modules-entry";
 
 $header-margin-top: 1rem;
-$sticky-top: $navbar-height + $navtab-height;
 $animation-duration: 0.3s;
 
 // Side menu styles
@@ -13,7 +12,7 @@ $animation-duration: 0.3s;
 
 .sideMenu {
   position: fixed;
-  max-height: calc(100% - #{$sticky-top});
+  max-height: calc(100% - #{$navbar-height});
   overflow: auto;
 }
 
