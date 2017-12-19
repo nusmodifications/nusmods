@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const cssnano = require('cssnano');
@@ -181,24 +182,19 @@ exports.minifyJavascript = () => {
   */
   return {
     plugins: [
-      new webpack.optimize.UglifyJsPlugin({
-        // Don't beautify output (enable for neater output).
-        beautify: false,
-        // Eliminate comments.
-        comments: false,
-        // Compression specific options.
-        compress: {
-          warnings: false,
-        },
+      new UglifyJsPlugin({
         sourceMap: true,
-        // Mangling specific options.
-        mangle: {
-          // Don't mangle $.
-          except: ['$'],
-          // Don't care about IE8 because React doesn't support IE8.
-          screw_ie8: true,
-          // Don't mangle function names.
-          keep_fnames: true,
+        // See: https://github.com/mishoo/UglifyJS2/tree/harmony
+        uglifyOptions: {
+          // Don't beautify output (enable for neater output).
+          beautify: false,
+          // Eliminate comments.
+          comments: false,
+          // Compression specific options.
+          compress: {
+            // Two passes yield the most optimal results
+            passes: 2,
+          },
         },
       }),
     ],

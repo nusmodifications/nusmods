@@ -6,8 +6,12 @@
   display: inline-block;
   width: $size;
   height: $size;
-  margin: -0.1rem 0.2rem 0 0;
+  margin-top: -0.1rem;
   vertical-align: middle;
+}
+
+.labelIcon {
+  margin-right: 0.2rem;
 }
 
 .verticalMode {

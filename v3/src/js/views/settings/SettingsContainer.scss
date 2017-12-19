@@ -9,22 +9,27 @@
   }
 }
 
-.setting {
-  border-bottom: 1px solid var(--gray-light);
+.title {
+  margin: 1rem 0 4rem;
+  font-size: $font-size-xlg;
 }
 
-@include media-breakpoint-down(xs) {
+.setting {
+  border-bottom: 1px solid var(--gray-light);
+
   // Styles nested for specificity
-  .toggleRow {
-    flex-wrap: nowrap;
+  @include media-breakpoint-down(xs) {
+    .toggleRow {
+      flex-wrap: nowrap;
 
-    .toggleDescription {
-      flex: 1 1 auto;
-    }
+      .toggleDescription {
+        flex: 1 1 auto;
+      }
 
-    .toggle {
-      flex: 0 0 auto;
-      width: auto;
+      .toggle {
+        flex: 0 0 auto;
+        width: auto;
+      }
     }
   }
 }
@@ -32,8 +37,9 @@
 .preview {
   position: relative;
   clear: both;
+  height: 13.8rem;
   margin: 1rem 0 2rem;
-  overflow: auto;
+  overflow-y: hidden;
 }
 
 .themeOption {

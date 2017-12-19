@@ -1,5 +1,5 @@
 // @flow
-import { map, isEmpty } from 'lodash';
+import { flatMap, isEmpty } from 'lodash';
 
 import type { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
 import type { FSA } from 'types/redux';
@@ -91,25 +91,22 @@ export function setLessonConfig(semester: Semester, config: ModuleLessonConfig):
   };
 }
 
-export const RESET_TIMETABLE = 'RESET_TIMETABLE';
-export function resetTimetable(semester: Semester): FSA {
+export const SET_TIMETABLE = 'SET_TIMETABLE';
+export function setTimetable(
+  semester: Semester,
+  timetable?: SemTimetableConfig,
+  colors?: ColorMapping,
+): FSA {
   return {
-    type: RESET_TIMETABLE,
-    payload: { semester },
+    type: SET_TIMETABLE,
+    payload: { semester, timetable, colors },
   };
 }
 
-export function setTimetable(
-  semester: Semester,
-  timetable: SemTimetableConfig,
-  colors: ColorMapping = {},
-) {
+export function fetchTimetableModules(timetables: SemTimetableConfig[]) {
   return (dispatch: Function) => {
-    // Reset timetable...
-    dispatch(resetTimetable(semester));
-
-    // ...then add all of the new ones from the new timetable
-    return Promise.all(map(timetable, (lessons, moduleCode) =>
-      dispatch(addModule(semester, moduleCode, lessons, colors[moduleCode]))));
+    const moduleCodes = new Set(flatMap(timetables, Object.keys));
+    return Promise.all(Array.from(moduleCodes)
+      .map(moduleCode => dispatch(fetchModule(moduleCode))));
   };
 }

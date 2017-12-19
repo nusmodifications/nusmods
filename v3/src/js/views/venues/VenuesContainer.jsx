@@ -55,8 +55,6 @@ const pageHead = (
 );
 
 export class VenuesContainerComponent extends Component<Props, State> {
-  // Store ref to search box root element so that we can access its height
-  searchBoxRootElement: ?HTMLElement;
   history: HistoryDebouncer;
 
   constructor(props: Props) {
@@ -105,10 +103,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
   componentDidUpdate() {
     if (this.state.selectedVenueElement) {
       // Scroll selected venue's row to just below the search box
-      let scrollTargetY = this.state.selectedVenueElement.offsetTop;
-      if (this.searchBoxRootElement) {
-        scrollTargetY -= this.searchBoxRootElement.offsetHeight;
-      }
+      const scrollTargetY = this.state.selectedVenueElement.offsetTop;
       window.scrollTo(0, scrollTargetY);
     }
   }
@@ -172,9 +167,6 @@ export class VenuesContainerComponent extends Component<Props, State> {
                 initialSearchTerm={this.state.searchTerm}
                 placeholder="Search for venues, e.g. LT27"
                 onSearch={this.onSearch}
-                rootElementRef={(element) => {
-                  if (element) this.searchBoxRootElement = element;
-                }}
               />
             </div>
 
