@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import { range } from 'lodash';
 
 import type { VenueSearchOptions } from 'types/venues';
-import { SCHOOLDAYS, timestamp } from 'utils/timify';
+import { SCHOOLDAYS, formatTime } from 'utils/timify';
 import styles from './AvailabilitySearch.scss';
 
 type Props = {
@@ -15,8 +15,9 @@ type Props = {
   onUpdate: (VenueSearchOptions) => void,
 };
 
-// Classes start at 8am
+// The starting time of lessons
 const CLASS_START_HOUR = 8;
+const CLASS_END_HOUR = 22;
 
 export function defaultSearchOptions(): VenueSearchOptions {
   const now = new Date();
@@ -74,8 +75,8 @@ export default class AvailabilitySearch extends PureComponent<Props> {
             value={searchOptions.time}
             onChange={evt => this.onUpdate(evt, 'time')}
           >
-            {range(CLASS_START_HOUR, 24).map(hour => (
-              <option key={hour} value={hour}>{timestamp(hour * 100)}</option>
+            {range(CLASS_START_HOUR, CLASS_END_HOUR - 1).map(hour => (
+              <option key={hour} value={hour}>{formatTime(hour)}</option>
             ))}
           </select>
         </div>
@@ -88,8 +89,8 @@ export default class AvailabilitySearch extends PureComponent<Props> {
             value={searchOptions.duration}
             onChange={evt => this.onUpdate(evt, 'duration')}
           >
-            {range(1, 25 - searchOptions.time).map(hour => (
-              <option key={hour} value={hour}>{timestamp((searchOptions.time + hour) * 100)} ({hour} hr)</option>
+            {range(1, CLASS_END_HOUR - searchOptions.time).map(hour => (
+              <option key={hour} value={hour}>{formatTime(searchOptions.time + hour)} ({hour} hr)</option>
             ))}
           </select>
         </div>

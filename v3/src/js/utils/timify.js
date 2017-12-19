@@ -25,6 +25,13 @@ export function timestamp(time: number): LessonTime {
   return padStart(String(time), 4, '0');
 }
 
+export function formatTime(hour: number): string {
+  if (hour === 12) return '12 noon';
+  if (hour === 24) return '12 midnight';
+  if (hour < 12) return `${hour}am`;
+  return `${hour - 12}pm`;
+}
+
 export const SCHOOLDAYS: Array<DayText> = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 export const DEFAULT_EARLIEST_TIME: LessonTime = '1000';
 export const DEFAULT_LATEST_TIME: LessonTime = '1800';
