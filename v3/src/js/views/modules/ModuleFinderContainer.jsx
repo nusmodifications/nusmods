@@ -55,10 +55,10 @@ type State = {
   error?: any,
 };
 
-// Threshold to enable instant search based on the amount of time it takes
-// to run the filters on initial render. This is only an estimate since only
-// ~50% of the time is spent on filters (the other 50% on rendering), so
-// err on using a lower threshold
+// Threshold to enable instant search based on the amount of time it takes to
+// run the filters on initial render. This is only an estimate since only
+// ~50% of the time is spent on filters (the other 50% on rendering), and we can
+// only benchmark filtering, not rendering, so we err on using a lower threshold
 const INSTANT_SEARCH_THRESHOLD = 150;
 
 const pageHead = (
@@ -117,16 +117,24 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
   }
 
   componentDidMount() {
+    // Load module data
     axios.get(nusmods.modulesUrl())
       .then(({ data }) => {
         const params = qs.parse(this.props.location.search);
+
+        // Benchmark the amount of time taken to run the filters to determine if we can
+        // use instant search
         const start = window.performance.now();
         this.filterGroups().forEach(group => group.initFilters(data));
         const time = window.performance.now() - start;
 
         if ('instant' in params) {
+          // Manual override - use 'instant=1' to force instant search, and
+          // 'instant=0' to force non-instant search
           this.useInstantSearch = params.instant === '1';
         } else {
+          // By default, only turn on instant search for desktop and if the
+          // benchmark earlier is fast enough
           this.useInstantSearch = breakpointUp('md').matches && (time < INSTANT_SEARCH_THRESHOLD);
         }
 
@@ -257,7 +265,7 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
       );
     }
 
-    // Set up filter groups
+    // Set up filter groups and sort by relevance if search is active
     let filteredModules = FilterGroup.apply(modules, this.filterGroups());
     if (this.props.searchTerm) {
       filteredModules = sortModules(this.props.searchTerm, filteredModules);
@@ -333,6 +341,7 @@ const mapStateToProps = state => ({
   searchTerm: state.moduleFinder.search.term,
 });
 
+// Explicitly naming the components to make HMR work
 const ModuleFinderContainerWithRouter = withRouter(ModuleFinderContainerComponent);
 const ModuleFinderContainer = connect(mapStateToProps, { resetModuleFinder })(ModuleFinderContainerWithRouter);
 export default ModuleFinderContainer;
