@@ -5,21 +5,25 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import config from 'config';
 
+import ScrollToTop from 'views/components/ScrollToTop';
+
 type Props = {
   title: string,
   children: Node,
 };
 
-export default function StaticPage(props: Props) {
+function StaticPage(props: Props) {
   return (
     <div className="page-container">
+      <ScrollToTop onComponentWillMount />
       <Helmet>
         <title>{props.title} - {config.brandName}</title>
       </Helmet>
-
       <div className="row">
         <div className="col-md-8 offset-md-1">{props.children}</div>
       </div>
     </div>
   );
 }
+
+export default StaticPage;

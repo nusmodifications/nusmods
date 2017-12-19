@@ -13,6 +13,7 @@ import { selectNewStudent, selectFaculty, selectMode } from 'actions/settings';
 import availableThemes from 'data/themes.json';
 import FacultySelect from 'views/components/FacultySelect';
 import NewStudentSelect from 'views/components/NewStudentSelect';
+import ScrollToTop from 'views/components/ScrollToTop';
 import Timetable from 'views/timetable/Timetable';
 import { supportsCSSVariables } from 'utils/react';
 
@@ -36,6 +37,7 @@ type Props = {
 function SettingsContainer(props: Props) {
   return (
     <div className={classnames(styles.settingsPage, 'page-container')}>
+      <ScrollToTop onComponentWillMount />
       <Helmet>
         <title>Settings - {config.brandName}</title>
       </Helmet>
