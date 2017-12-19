@@ -16,7 +16,8 @@ type Props = {
   placeholder: string,
 };
 
-const downshiftFlags = { resetInputOnSelection: true };
+const RESULTS_LIMIT = 500;
+const DOWNSHIFT_FLAGS = { resetInputOnSelection: true };
 
 class ModulesSelect extends Component<Props> {
   shouldComponentUpdate(nextProps: Props) {
@@ -35,7 +36,7 @@ class ModulesSelect extends Component<Props> {
     const predicate = createSearchPredicate(inputValue);
     const results = this.props.moduleList.filter(predicate);
 
-    return sortModules(inputValue, results.slice(0, 500));
+    return sortModules(inputValue, results.slice(0, RESULTS_LIMIT));
   };
 
   /* eslint-disable jsx-a11y/label-has-for */
@@ -93,7 +94,8 @@ class ModulesSelect extends Component<Props> {
               );
             })}
             <li className={styles.item}>
-              Try CS1010 or Programming. Searching <strong>{this.props.moduleList.length}</strong> modules.
+              Try &quot;CS1010&quot; or &quot;Programming&quot;. Searching{' '}
+              <strong>{this.props.moduleList.length}</strong> modules.
             </li>
           </ol>
         )}
@@ -104,7 +106,7 @@ class ModulesSelect extends Component<Props> {
   render() {
     return (
       <Downshift
-        breakingChanges={downshiftFlags}
+        breakingChanges={DOWNSHIFT_FLAGS}
         selectedItem={''}
         onChange={this.onChange}
         render={this.renderModuleSelect}

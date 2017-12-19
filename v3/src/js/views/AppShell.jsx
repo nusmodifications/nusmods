@@ -2,7 +2,7 @@
 import type { Node } from 'react';
 import type { TimetableConfig, SemTimetableConfig } from 'types/timetables';
 import type { ModuleList } from 'types/reducers';
-import type { ModuleCode, Semester } from 'types/modules';
+import type { Semester } from 'types/modules';
 import type { Mode } from 'types/settings';
 
 import React, { Component } from 'react';
@@ -105,10 +105,7 @@ export class AppShell extends Component<Props> {
           <NavLink className={styles.brand} to="/" title="Home">
             <span className="sr-only">NUSMods</span>
           </NavLink>
-          <form className="nm-navbar-form" />
-          <span className="nm-navbar-text">
-            <small>{weekText}</small>
-          </span>
+          <span className="nm-navbar-text"><small>{weekText}</small></span>
         </nav>
 
         <div className="main-container">

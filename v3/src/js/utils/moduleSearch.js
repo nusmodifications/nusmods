@@ -1,4 +1,5 @@
 // @flow
+import { sortBy } from 'lodash';
 import FilterGroup from 'utils/filters/FilterGroup';
 import ModuleFilter from 'utils/filters/ModuleFilter';
 import type { SearchableModule } from 'types/modules';
@@ -12,7 +13,7 @@ export function tokenize(str: string): string[] {
 
 // Match only start of words, case insensitively
 export function regexify(str: string): RegExp {
-  const terms = str.replace(/[\W]+/g, '\\W+');
+  const terms = str.trim().replace(/\W+/g, '\\W+');
   return RegExp(`\\b${terms}`, 'i');
 }
 
@@ -45,7 +46,7 @@ export function createSearchFilter(searchTerm: string): FilterGroup<ModuleFilter
 export function sortModules<T: SearchableModule>(searchTerm: string, modules: T[]): T[] {
   const searchRegex = regexify(searchTerm);
 
-  return modules.sort((module) => {
+  return sortBy(modules, (module) => {
     if (searchRegex.test(module.ModuleCode) || searchRegex.test(module.ModuleCode.replace(/\D+/, ''))) {
       return 1;
     }

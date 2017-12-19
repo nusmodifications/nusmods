@@ -68,16 +68,12 @@ export function getSemModuleSelectList(
   semTimetableConfig: SemTimetableConfig,
 ): ModuleSelectListItem[] {
   return state.moduleList
-    .filter((item) => {
-      // In specified semester and not within the timetable.
-      return item.Semesters.includes(semester);
-    })
-    .map((mod) => {
-      return {
-        ...mod,
-        isAdded: mod.ModuleCode in semTimetableConfig,
-      };
-    });
+    // In specified semester and not within the timetable.
+    .filter(item => item.Semesters.includes(semester))
+    .map(mod => ({
+      ...mod,
+      isAdded: mod.ModuleCode in semTimetableConfig,
+    }));
 }
 
 export default moduleBank;

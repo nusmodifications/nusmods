@@ -10,7 +10,7 @@ test('it searches by module prefix', () => {
 test('it searches by module code', () => {
   const filter = createSearchFilter('10').initFilters(moduleList);
   const filtered = [...filter.filteredModules()];
-  expect(filtered).toEqual(['BFS1001', 'CS1010S']);
+  expect(filtered).toEqual(['BFS1001', 'CS1010S', 'GES1021']);
 });
 
 test('it searches by module title', () => {
@@ -38,16 +38,16 @@ test('its searches get more specific with more keywords', () => {
 });
 
 test('it sorts by prefering module prefix', () => {
-  const modules = sortModules('cs', moduleList).map(m => m.ModuleCode);
-  expect(modules).toEqual(['CS1010S', 'CS3216', 'ACC2002', 'BFS1001', 'PC1222']);
+  const [first, second] = sortModules('cs', moduleList).map(m => m.ModuleCode);
+  expect([first, second]).toEqual(['CS1010S', 'CS3216']);
 });
 
 test('it sorts by prefering module code', () => {
-  const modules = sortModules('10', moduleList).map(m => m.ModuleCode);
-  expect(modules).toEqual(['BFS1001', 'CS1010S', 'ACC2002', 'CS3216', 'PC1222']);
+  const [one, two, three] = sortModules('10', moduleList).map(m => m.ModuleCode);
+  expect([one, two, three]).toEqual(['BFS1001', 'CS1010S', 'GES1021']);
 });
 
 test('it sorts by prefering title second', () => {
-  const modules = sortModules('managerial', moduleList).map(m => m.ModuleCode);
-  expect(modules).toEqual(['ACC2002', 'BFS1001', 'CS1010S', 'CS3216', 'PC1222']);
+  const [first] = sortModules('managerial', moduleList).map(m => m.ModuleCode);
+  expect(first).toBe('ACC2002');
 });
