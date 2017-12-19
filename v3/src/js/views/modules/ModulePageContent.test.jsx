@@ -3,6 +3,7 @@
 import React from 'react';
 import ScrollSpy from 'react-scrollspy';
 import { shallow } from 'enzyme';
+import { noop } from 'lodash';
 
 import type { Module } from 'types/modules';
 import type { TimetableConfig } from 'types/timetables';
@@ -10,9 +11,6 @@ import type { TimetableConfig } from 'types/timetables';
 import CS1010S from '__mocks__/modules/CS1010S.json';
 
 import { ModulePageContentComponent } from './ModulePageContent';
-
-// Cannot use _.noop - https://github.com/istanbuljs/babel-plugin-istanbul/issues/116
-const noop = () => {};
 
 describe('<ModulePageContent>', () => {
   function make(module: Module = CS1010S, timetables: TimetableConfig = {}) {
