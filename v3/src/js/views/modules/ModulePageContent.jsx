@@ -12,6 +12,7 @@ import config from 'config';
 import { formatExamDate, getSemestersOffered } from 'utils/modules';
 import { intersperse } from 'utils/array';
 import { BULLET } from 'utils/react';
+import { NAVTAB_HEIGHT } from 'views/layout/Navtabs';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
 import DisqusComments from 'views/components/DisqusComments';
 import SideMenu from 'views/components/SideMenu';
@@ -203,6 +204,7 @@ export class ModulePageContentComponent extends Component<Props, State> {
                 <ScrollSpy
                   items={values(SIDE_MENU_ITEMS)}
                   currentClassName={styles.activeMenuItem}
+                  offset={-NAVTAB_HEIGHT}
                 >
                   {map(SIDE_MENU_LABELS, (label, key) => (
                     <li key={label}>

@@ -5,6 +5,8 @@ import { Calendar, Map, Search, Settings } from 'views/components/icons/index';
 
 import styles from './Navtabs.scss';
 
+export const NAVTAB_HEIGHT = 48;
+
 function Navtabs() {
   return (
     <nav className={styles.nav}>
