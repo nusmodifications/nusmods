@@ -183,6 +183,9 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
 
     return (
       <div>
+        <ScrollToTop
+          onComponentWillMount
+        />
         <TimetableContent
           semester={semester}
           timetable={displayedTimetable}
@@ -190,7 +193,6 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
           header={header}
           readOnly={!!importedTimetable}
         />
-        <ScrollToTop onComponentDidUpdate={false} />
       </div>
     );
   }

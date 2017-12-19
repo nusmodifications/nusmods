@@ -8,7 +8,7 @@ type Props = {
   ...ContextRouter,
   location: Location,
   onComponentWillMount: boolean,
-  onComponentDidUpdate: boolean,
+  onPathChange: boolean,
 };
 
 function scrollToTop() {
@@ -16,10 +16,10 @@ function scrollToTop() {
 }
 
 // $FlowFixMe - https://github.com/flowtype/flow-typed/issues/1179
-class ScrollToTopComponent extends Component<Props> {
+export class ScrollToTopComponent extends Component<Props> {
   static defaultProps = {
-    onComponentWillMount: true,
-    onComponentDidUpdate: true,
+    onComponentWillMount: false,
+    onPathChange: false,
   };
 
   componentWillMount() {
@@ -29,7 +29,7 @@ class ScrollToTopComponent extends Component<Props> {
   }
 
   componentDidUpdate(prevProps: Props) {
-    if (this.props.onComponentDidUpdate &&
+    if (this.props.onPathChange &&
       this.props.location.pathname !== prevProps.location.pathname) {
       scrollToTop();
     }

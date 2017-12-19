@@ -37,7 +37,7 @@ type Props = {
 function SettingsContainer(props: Props) {
   return (
     <div className={classnames(styles.settingsPage, 'page-container')}>
-      <ScrollToTop />
+      <ScrollToTop onComponentWillMount />
       <Helmet>
         <title>Settings - {config.brandName}</title>
       </Helmet>

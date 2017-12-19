@@ -15,7 +15,7 @@ type Props = {
 function StaticPage(props: Props) {
   return (
     <div className="page-container">
-      <ScrollToTop />
+      <ScrollToTop onComponentWillMount />
       <Helmet>
         <title>{props.title} - {config.brandName}</title>
       </Helmet>
