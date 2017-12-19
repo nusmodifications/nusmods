@@ -15,7 +15,7 @@ export function tokenize(str: string): string[] {
 export function createSearchFilter(searchTerm: string): FilterGroup<ModuleFilter> {
   const normalizedTerm = tokenize(searchTerm.toUpperCase());
 
-  const filter = new ModuleFilter(searchTerm, searchTerm, (module) => {
+  const filter = new ModuleFilter(encodeURIComponent(searchTerm), searchTerm, (module) => {
     return normalizedTerm.every((term) => {
       if (module.ModuleCode.includes(term) || module.ModuleTitle.toUpperCase().includes(term)) {
         return true;

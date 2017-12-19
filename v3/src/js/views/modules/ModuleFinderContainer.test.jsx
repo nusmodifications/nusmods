@@ -22,11 +22,16 @@ type ActiveFilters = { [FilterGroupId]: string[] };
 type Container = { component: ShallowWrapper, history: RouterHistory };
 
 describe('<ModuleFinderContainer', () => {
-// Mock axios to stop it from firing API requests
   beforeEach(() => {
+    // Mock some of the DOM environment functions
     global.performance = { now: jest.fn() };
     global.matchMedia = jest.fn(() => ({ matches: jest.fn() }));
+    global.requestAnimationFrame = jest.fn(fn => fn());
 
+    jest.spyOn(console, 'info')
+      .mockImplementation(_.noop);
+
+    // Mock axios to stop it from firing API requests
     jest.spyOn(axios, 'get')
       .mockImplementation((url) => {
         return url.includes('facultyDepartments')
@@ -37,21 +42,8 @@ describe('<ModuleFinderContainer', () => {
 
   afterEach(() => {
     axios.get.mockRestore();
+    console.info.mockRestore(); // eslint-disable-line no-console
   });
-
-  function activeFilters({ component }: Container): ActiveFilters {
-  // Helper function to extract a mapping of ID of active filters, which is an easier
-  // data structure to assert against
-    const active = {};
-
-    _.values(component.state().filterGroups)
-      .forEach((group: FilterGroup<*>) => {
-        const filters = group.activeFilters.map(filter => filter.id);
-        if (filters.length) active[group.id] = filters;
-      });
-
-    return active;
-  }
 
   async function createContainer(initialEntries?: Array<LocationShape | string>): Promise<Container> {
     const history = createHistory({ initialEntries });
@@ -80,11 +72,34 @@ describe('<ModuleFinderContainer', () => {
   }
 
   function extractQueryString(location: LocationShape | string): string {
-    const query = typeof location === 'string' ?
-      qs.extract(location) :
-      (location.search || '').replace(/^\?/, '');
+    const query = typeof location === 'string'
+      ? qs.extract(location)
+      : (location.search || '').replace(/^\?/, '');
 
     return decodeURIComponent(query);
+  }
+
+  function activeFilters({ component }: Container): ActiveFilters {
+    // Helper function to extract a mapping of ID of active filters, which is an easier
+    // data structure to assert against
+    const active = {};
+
+    _.values(component.state().filterGroups)
+      .forEach((group: FilterGroup<*>) => {
+        const filters = group.activeFilters.map(filter => filter.id);
+        if (filters.length) active[group.id] = filters;
+      });
+
+    return active;
+  }
+
+  function interceptRouteChanges(history: RouterHistory): string[] {
+    const calls = [];
+    jest.spyOn(history, 'push')
+      .mockImplementation(location => calls.push(location));
+    jest.spyOn(history, 'replace')
+      .mockImplementation(location => calls.push(location));
+    return calls;
   }
 
   test('should read initial filter state from query string', async () => {
@@ -125,15 +140,11 @@ describe('<ModuleFinderContainer', () => {
   });
 
   test('#updateQueryString() should update query string', async () => {
-  // Mock the two history manipulation methods by redirecting their inputs to
-  // an array so we can assert against them to check that the filter state is
-  // updated when the query string changes
+    // Mock the two history manipulation methods by redirecting their inputs to
+    // an array so we can assert against them to check that the filter state is
+    // updated when the query string changes
     const container = await createContainer();
-    const calls = [];
-    jest.spyOn(container.history, 'push')
-      .mockImplementation(location => calls.push(location));
-    jest.spyOn(container.history, 'replace')
-      .mockImplementation(location => calls.push(location));
+    const calls = interceptRouteChanges(container.history);
 
     const instance = container.component.instance();
     if (!(instance instanceof ModuleFinderContainerComponent)) return; // Make Flow happy
@@ -149,6 +160,19 @@ describe('<ModuleFinderContainer', () => {
       'level=2&mc=0',
       'level=1,2&mc=0',
       'level=1,2',
+    ]);
+  });
+
+  test('searches should update query string', async () => {
+    // Mock the two history manipulation methods by redirecting their inputs to
+    // an array so we can assert against them to check that the filter state is
+    // updated when the query string changes
+    const container = await createContainer();
+    const calls = interceptRouteChanges(container.history);
+
+    container.component.setProps({ searchTerm: 'new search' });
+    expect(calls.map(extractQueryString)).toEqual([
+      'q=new search',
     ]);
   });
 });
