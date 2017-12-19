@@ -35,7 +35,9 @@ store.subscribe(
   }, 1000),
 );
 
+// Initialize ReactModal
 ReactModal.setAppElement('#app');
+
 const render = () => {
   ReactDOM.render(App({ store }), document.getElementById('app'));
 };

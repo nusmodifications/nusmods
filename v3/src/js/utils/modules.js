@@ -63,6 +63,12 @@ export function getFirstAvailableSemester(
   return availableSemesters.includes(current) ? current : _.min(availableSemesters);
 }
 
+export function getSemestersOffered(module: Module): Semester[] {
+  return module.History
+    .map(semesterData => semesterData.Semester)
+    .sort();
+}
+
 // Workload components as defined by CORS, in their correct positions (see below).
 export const WORKLOAD_COMPONENTS: WorkloadComponent[] = ['Lecture', 'Tutorial', 'Laboratory', 'Project', 'Preparation'];
 export type Workload = { [WorkloadComponent]: number } | string;
