@@ -109,13 +109,11 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
       modules: [],
       isMenuOpen: false,
     };
-  }
 
-  componentWillMount() {
-    // Initialize search query. This is done here instead of in ModuleSearchBox because doing
-    // the latter is too slow, and results in a flash of unfiltered results
-    const params = qs.parse(this.props.location.search);
-    if (params[SEARCH_QUERY_KEY]) this.onSearch(params[SEARCH_QUERY_KEY]);
+    // Initialize search query. Must be done after this.state is initialized.
+    if (params[SEARCH_QUERY_KEY]) {
+      this.onSearch(params[SEARCH_QUERY_KEY]);
+    }
   }
 
   componentDidMount() {
