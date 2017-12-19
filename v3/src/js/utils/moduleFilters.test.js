@@ -2,9 +2,9 @@
 import _ from 'lodash';
 
 import FilterGroup, { ID_DELIMITER } from 'utils/filters/FilterGroup';
-import filterGroups from './moduleFilters';
+import { defaultGroups } from './moduleFilters';
 
-const groups: FilterGroup<*>[] = _.values(filterGroups);
+const groups: FilterGroup<*>[] = _.values(defaultGroups({}));
 
 function expectUnique<T>(arr: T[]) {
   // Set in JS iterates over elements in insertion order, so we can use them for

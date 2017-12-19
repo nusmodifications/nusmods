@@ -38,7 +38,7 @@ export default function ChecklistFilters(props: Props) {
                 checked={filter.enabled}
                 onChange={() => onFilterChange(group.toggle(filter))}
               />
-              {filter.label} <span className="text-muted">({filter.count(moduleCodes)})</span>
+              {filter.label}&nbsp;<span className="text-muted">({filter.count(moduleCodes)})</span>
             </label>
           </li>
         ))}

@@ -9,12 +9,12 @@ import axios from 'axios';
 import update from 'immutability-helper';
 import qs from 'query-string';
 import Raven from 'raven-js';
-import _ from 'lodash';
+import { clone, each, values } from 'lodash';
 
 import type { Module } from 'types/modules';
-import type { PageRange, PageRangeDiff } from 'types/views';
-import type { FilterGroupId } from 'utils/filters/FilterGroup';
+import type { PageRange, PageRangeDiff, FilterGroupId } from 'types/views';
 
+import { Semesters } from 'types/modules';
 import ModuleFinderList from 'views/modules/ModuleFinderList';
 import ModuleSearchBox from 'views/modules/ModuleSearchBox';
 import ChecklistFilters from 'views/components/filters/ChecklistFilters';
@@ -24,14 +24,19 @@ import LoadingSpinner from 'views/components/LoadingSpinner';
 import SideMenu, { OPEN_MENU_LABEL } from 'views/components/SideMenu';
 import { Filter } from 'views/components/icons';
 
-import moduleFilters, {
+import {
+  defaultGroups,
+  updateGroups,
+  serializeGroups,
+  invertFacultyDepartments,
+
   SEMESTER,
   LEVELS,
   LECTURE_TIMESLOTS,
   TUTORIAL_TIMESLOTS,
   MODULE_CREDITS,
 } from 'utils/moduleFilters';
-import { createSearchFilter, sortModules, SEARCH_QUERY_KEY } from 'utils/moduleSearch';
+import { createSearchFilter, sortModules } from 'utils/moduleSearch';
 import config from 'config';
 import nusmods from 'apis/nusmods';
 import { resetModuleFinder } from 'actions/moduleFinder';
@@ -68,7 +73,7 @@ const pageHead = (
 );
 
 export function mergePageRange(prev: PageRange, diff: PageRangeDiff): PageRange {
-  const next = _.clone(prev);
+  const next = clone(prev);
 
   // Current page is SET from the diff object
   if (diff.current != null) {
@@ -92,40 +97,43 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    // Parse out query params from URL and use that to initialize filter groups
-    const params = qs.parse(props.location.search);
-    const filterGroups = _.mapValues(moduleFilters, (group: FilterGroup<*>) => {
-      return group.fromQueryString(params[group.id]);
-    });
-
     // Set up history debouncer and history listener
     this.history = new HistoryDebouncer(props.history);
     this.unlisten = props.history.listen(location => this.onQueryStringChange(location.search));
 
     this.state = {
-      filterGroups,
+      filterGroups: {},
       page: this.startingPageRange(),
       loading: true,
       modules: [],
       isMenuOpen: false,
     };
-
-    // Initialize search query. Must be done after this.state is initialized.
-    if (params[SEARCH_QUERY_KEY]) {
-      this.onSearch(params[SEARCH_QUERY_KEY]);
-    }
   }
 
   componentDidMount() {
     // Load module data
-    axios.get(nusmods.modulesUrl())
-      .then(({ data }) => {
+    const modulesRequest = axios.get(nusmods.modulesUrl())
+      .then(({ data }) => data);
+
+    // Load faculty-department mapping
+    const makeFacultyRequest = semester =>
+      axios.get(nusmods.facultyDepartmentsUrl(semester))
+        .then(({ data }) => invertFacultyDepartments(data));
+
+    const facultiesRequest = Promise.all(Semesters.map(makeFacultyRequest))
+      // Then merge all of the mappings together
+      .then(mappings => Object.assign({}, ...mappings));
+
+    // Finally initialize everything
+    Promise.all([modulesRequest, facultiesRequest])
+      .then(([modules, faculties]) => {
         const params = qs.parse(this.props.location.search);
+        const filterGroups = defaultGroups(faculties, this.props.location.search);
 
         // Benchmark the amount of time taken to run the filters to determine if we can
         // use instant search
         const start = window.performance.now();
-        this.filterGroups().forEach(group => group.initFilters(data));
+        each(filterGroups, group => group.initFilters(modules));
         const time = window.performance.now() - start;
 
         if ('instant' in params) {
@@ -142,7 +150,8 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
         console.info(this.useInstantSearch ? 'Instant search on' : 'Instant search off'); // eslint-disable-line
 
         this.setState({
-          modules: data,
+          filterGroups,
+          modules,
           loading: false,
         });
       })
@@ -165,37 +174,22 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
 
   // Event handlers
   onQueryStringChange(query: string) {
-    const params = qs.parse(query);
-    const updater = {};
-    this.filterGroups().forEach((group) => {
-      const currentQuery = group.toQueryString();
-      if (currentQuery === params[group.id] || (!params[group.id] && !currentQuery)) return;
-      updater[group.id] = { $set: group.fromQueryString(params[group.id]) };
-    });
-
-    if (!_.isEmpty(updater)) {
-      this.setState(state => update(state, {
-        filterGroups: updater,
-      }));
-    }
+    this.setState(state => ({
+      filterGroups: updateGroups(state.filterGroups, query),
+    }));
   }
 
   onFilterChange = (newGroup: FilterGroup<*>, resetScroll: boolean = true) => {
     this.setState(state => update(state, {
+      // Update filter group with its new state
       filterGroups: { [newGroup.id]: { $set: newGroup } },
+      // Reset back to the first page
       page: { $merge: { start: 0, current: 0 } },
     }), () => {
       // Update query string after state is updated
-      const query = {};
-      this.filterGroups().forEach((group) => {
-        const value = group.toQueryString();
-        if (!value) return;
-        query[group.id] = value;
-      });
-
       this.history.push({
         ...this.props.history.location,
-        search: qs.stringify(query),
+        search: serializeGroups(this.state.filterGroups),
       });
 
       // Scroll back to the top
@@ -233,9 +227,8 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
 
   toggleMenu = (isMenuOpen: boolean) => this.setState({ isMenuOpen });
 
-  // Getters and helper functions
   filterGroups(): FilterGroup<any>[] {
-    return _.values(this.state.filterGroups);
+    return values(this.state.filterGroups);
   }
 
   startingPageRange(): PageRange {
