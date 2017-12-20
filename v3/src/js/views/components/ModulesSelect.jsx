@@ -4,10 +4,10 @@ import _ from 'lodash';
 import Downshift from 'downshift';
 import classnames from 'classnames';
 
-import { breakpointUp } from 'utils/react';
 import { createSearchPredicate, sortModules } from 'utils/moduleSearch';
+import makeResponsive from 'views/hocs/makeResponsive';
 import Modal from 'views/components/Modal';
-import appConfig from 'config';
+import CloseButton from 'views/components/CloseButton';
 import type { ModuleSelectList } from 'types/reducers';
 
 import styles from './ModulesSelect.scss';
@@ -16,56 +16,39 @@ type Props = {
   moduleList: ModuleSelectList,
   onChange: Function,
   placeholder: string,
+  isMatchBreakpoint: boolean,
 };
 
 type State = {
   isModalOpen: boolean,
-  isDesktop: boolean,
+  isFocused: boolean,
 };
 
 const RESULTS_LIMIT = 500;
 const DOWNSHIFT_FLAGS = { resetInputOnSelection: true };
 
 class ModulesSelect extends Component<Props, State> {
-  mql: ?MediaQueryList;
   state = {
     isModalOpen: false,
-    isDesktop: false,
+    isFocused: false,
   };
 
-  componentDidMount() {
-    const mql = breakpointUp('md');
-    mql.addListener(e => this.updateMediaQuery(e));
-    this.updateMediaQuery(mql);
-    this.mql = mql;
-  }
-
   shouldComponentUpdate(nextProps: Props, nextState: State) {
-    return _.size(this.props.moduleList) !== _.size(nextProps.moduleList) || !_.isEqual(this.state, nextState);
-  }
-
-  componentWillUnmount() {
-    if (this.mql) {
-      this.mql.removeListener(this.updateMediaQuery);
-    }
+    return (
+      _.size(this.props.moduleList) !== _.size(nextProps.moduleList) ||
+      this.props.isMatchBreakpoint !== nextProps.isMatchBreakpoint ||
+      !_.isEqual(this.state, nextState)
+    );
   }
 
   onChange = (selection: any) => {
     return selection && this.props.onChange(selection);
   };
 
-  openModal = () => {
-    this.setState({ isModalOpen: true });
-  };
-  closeModal = () => {
-    this.setState({ isModalOpen: false });
-  };
-  updateMediaQuery = (e: MediaQueryListEvent | MediaQueryList) => {
-    if (e.matches === this.state.isDesktop) {
-      return;
-    }
-    this.setState({ isDesktop: e.matches });
-  };
+  onFocus = () => this.setState({ isFocused: true });
+  onBlur = () => this.setState({ isFocused: false });
+  openModal = () => this.setState({ isModalOpen: true });
+  closeModal = () => this.setState({ isModalOpen: false });
 
   getFilteredModules = (inputValue: string) => {
     if (!inputValue) {
@@ -82,15 +65,26 @@ class ModulesSelect extends Component<Props, State> {
   // TODO: Inject types from downshift when https://github.com/paypal/downshift/pull/180 is implemented
   renderDropdown = ({ getLabelProps, getInputProps, getItemProps, isOpen, inputValue, highlightedIndex }: any) => {
     const { placeholder } = this.props;
+    const { isModalOpen, isFocused } = this.state;
+    const results = this.getFilteredModules(inputValue);
+    const showResults = isOpen && results.length > 0;
+    const showTip = isFocused && !results.length;
     return (
       <div className={styles.container}>
         <label className="sr-only" {...getLabelProps()}>
           {placeholder}
         </label>
-        <input autoFocus={this.state.isModalOpen} className={styles.input} {...getInputProps({ placeholder })} />
-        {isOpen && (
+        <input
+          autoFocus={isModalOpen}
+          className={styles.input}
+          {...getInputProps({ placeholder })}
+          onFocus={this.onFocus}
+          onBlur={this.onBlur}
+        />
+        {isModalOpen && <CloseButton className={styles.close} onClick={this.closeModal} />}
+        {showResults && (
           <ol className={styles.selectList}>
-            {this.getFilteredModules(inputValue).map((module, index) => {
+            {results.map((module, index) => {
               const props = module.isAdded
                 ? {
                   key: module.ModuleCode,
@@ -108,37 +102,40 @@ class ModulesSelect extends Component<Props, State> {
                     [styles.optionDisabled]: module.isAdded,
                   })}
                 >
-                  {module.ModuleCode} {module.ModuleTitle}
+                  {`${module.ModuleCode} ${module.ModuleTitle}`}
                   {module.isAdded && (
-                    <div className={styles.badgeContainer}>
+                    <div>
                       <span className="badge badge-info">Added</span>
                     </div>
                   )}
                 </li>
               );
             })}
-            <li className={styles.item}>
-              Try &quot;GER1000&quot; or &quot;Reasoning&quot;. Searching{' '}
-              <strong>{this.props.moduleList.length}</strong> modules.
-            </li>
           </ol>
+        )}
+        {showTip && (
+          <div className={styles.tip}>
+            Try &quot;GER1000&quot; or &quot;Reasoning&quot;.
+            Searching <strong>{this.props.moduleList.length}</strong>{' '}modules.
+          </div>
         )}
       </div>
     );
   };
 
   render() {
-    const { isDesktop, isModalOpen } = this.state;
+    const { isModalOpen } = this.state;
+    const { isMatchBreakpoint } = this.props;
     const downshiftComponent = (
       <Downshift
         breakingChanges={DOWNSHIFT_FLAGS}
         selectedItem={''}
         onChange={this.onChange}
         render={this.renderDropdown}
-        defaultIsOpen={!isDesktop}
+        defaultIsOpen={!isMatchBreakpoint}
       />
     );
-    return isDesktop ? (
+    return isMatchBreakpoint ? (
       downshiftComponent
     ) : (
       <div>
@@ -146,7 +143,6 @@ class ModulesSelect extends Component<Props, State> {
           {this.props.placeholder}
         </button>
         <Modal isOpen={isModalOpen} onRequestClose={this.closeModal} className={styles.modal}>
-          <h3 className="h4">Semester {appConfig.semester}</h3>
           {downshiftComponent}
         </Modal>
       </div>
@@ -154,4 +150,4 @@ class ModulesSelect extends Component<Props, State> {
   }
 }
 
-export default ModulesSelect;
+export default makeResponsive(ModulesSelect, 'md');

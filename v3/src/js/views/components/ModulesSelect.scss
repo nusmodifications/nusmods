@@ -4,7 +4,10 @@ $module-list-height: 13.5rem;
 
 .container {
   position: relative;
-  height: calc(100% - 4rem);
+
+  @include media-breakpoint-down(sm) {
+    height: 100%;
+  }
 }
 
 .input {
@@ -18,6 +21,19 @@ $module-list-height: 13.5rem;
   }
 }
 
+.modal .input {
+  border-width: 0 0 1px;
+  border-radius: 0;
+}
+
+.close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: $input-height;
+  height: $input-height;
+}
+
 // Override offsets in Modal.scss
 .modal {
   @include media-breakpoint-down(sm) {
@@ -26,6 +42,7 @@ $module-list-height: 13.5rem;
     bottom: 0;
     left: 0;
     max-height: 100%;
+    padding: 0;
   }
 }
 
@@ -35,11 +52,12 @@ $module-list-height: 13.5rem;
   margin: 0;
   overflow-y: scroll;
   list-style: none;
-  border: $input-btn-border-width solid $input-border-color;
-  border-width: 0 $input-btn-border-width $input-btn-border-width;
-  border-radius: 0 0 $btn-border-radius $btn-border-radius;
   -webkit-overflow-scrolling: touch;
-  @include media-breakpoint-up(sm) {
+}
+
+@include media-breakpoint-up(sm) {
+  .selectList,
+  .tip {
     position: absolute;
     top: $input-height;
     right: 0;
@@ -47,10 +65,14 @@ $module-list-height: 13.5rem;
     z-index: $module-select-z-index;
     max-height: $module-list-height;
     overflow-y: auto;
+    border: $input-btn-border-width solid $input-border-color;
+    border-width: 0 $input-btn-border-width $input-btn-border-width;
+    border-radius: 0 0 $btn-border-radius $btn-border-radius;
   }
 }
 
-.item {
+.item,
+.tip {
   width: 100%;
   padding: 0.6rem 0.5rem;
   font-size: 0.9rem;
@@ -60,6 +82,9 @@ $module-list-height: 13.5rem;
 
 .option {
   composes: item;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   cursor: pointer;
   touch-action: manipulation;
 }
@@ -72,8 +97,4 @@ $module-list-height: 13.5rem;
 .optionDisabled {
   color: var(--gray-light);
   cursor: default;
-}
-
-.badgeContainer {
-  float: right;
 }

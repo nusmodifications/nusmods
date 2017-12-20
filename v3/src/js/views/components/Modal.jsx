@@ -3,7 +3,6 @@
 import React, { type Node } from 'react';
 import ReactModal from 'react-modal';
 import classnames from 'classnames';
-import CloseButton from 'views/components/CloseButton';
 import styles from './Modal.scss';
 
 type Props = {
@@ -21,7 +20,6 @@ export default function ({ className, overlayClassName, children, onRequestClose
       className={classnames(styles.modal, className)}
       {...rest}
     >
-      <CloseButton onClick={onRequestClose} />
       {children}
     </ReactModal>
   );
