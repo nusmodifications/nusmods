@@ -1,11 +1,11 @@
 // @flow
 
 import type { VenueInfo, VenueSearchOptions, DayAvailability } from 'types/venues';
-import { range, pick, pickBy } from 'lodash';
+import { range, pick, pickBy, padStart } from 'lodash';
 import { OCCUPIED } from 'types/venues';
 
 import { tokenize } from './moduleSearch';
-import { timestamp, SCHOOLDAYS } from './timify';
+import { SCHOOLDAYS } from './timify';
 
 /* eslint-disable import/prefer-default-export */
 
@@ -37,7 +37,7 @@ export function filterAvailability(venues: VenueInfo, options: VenueSearchOption
 
     // Check that all half-hour slots within the time requested are vacant
     for (let i = 0; i < duration * 2; i++) {
-      const timeString = timestamp(start + hourDifference[i]);
+      const timeString = padStart(String(start + hourDifference[i]), 4, '0');
       if (dayAvailability.Availability[timeString] === OCCUPIED) {
         return false;
       }

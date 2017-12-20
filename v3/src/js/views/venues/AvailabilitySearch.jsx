@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import { range } from 'lodash';
 
 import type { VenueSearchOptions } from 'types/venues';
-import { SCHOOLDAYS, formatTime } from 'utils/timify';
+import { SCHOOLDAYS, formatHour } from 'utils/timify';
 import styles from './AvailabilitySearch.scss';
 
 type Props = {
@@ -15,9 +15,10 @@ type Props = {
   onUpdate: (VenueSearchOptions) => void,
 };
 
-// The starting time of lessons
-const CLASS_START_HOUR = 8;
-const CLASS_END_HOUR = 22;
+// The first and last starting time of lessons
+const FIRST_CLASS_HOUR = 8;
+const LAST_CLASS_HOUR = 22;
+const CLASS_START_HOURS = range(FIRST_CLASS_HOUR, LAST_CLASS_HOUR + 1);
 
 export function defaultSearchOptions(): VenueSearchOptions {
   const now = new Date();
@@ -28,7 +29,7 @@ export function defaultSearchOptions(): VenueSearchOptions {
 
   // Set time - if the current time is outside class hours, set it to the
   // time of the earliest lesson
-  const time = Math.max(now.getHours(), CLASS_START_HOUR);
+  const time = Math.max(now.getHours(), FIRST_CLASS_HOUR);
 
   return {
     time,
@@ -62,7 +63,7 @@ export default class AvailabilitySearch extends PureComponent<Props> {
             onChange={evt => this.onUpdate(evt, 'day')}
           >
             {SCHOOLDAYS.map((name, day) => (
-              <option key={day} value={day}>{name}</option>
+              <option key={day} value={day}>{name}s</option>
             ))}
           </select>
         </div>
@@ -75,8 +76,8 @@ export default class AvailabilitySearch extends PureComponent<Props> {
             value={searchOptions.time}
             onChange={evt => this.onUpdate(evt, 'time')}
           >
-            {range(CLASS_START_HOUR, CLASS_END_HOUR - 1).map(hour => (
-              <option key={hour} value={hour}>{formatTime(hour)}</option>
+            {CLASS_START_HOURS.map(hour => (
+              <option key={hour} value={hour}>{formatHour(hour)}</option>
             ))}
           </select>
         </div>
@@ -89,8 +90,10 @@ export default class AvailabilitySearch extends PureComponent<Props> {
             value={searchOptions.duration}
             onChange={evt => this.onUpdate(evt, 'duration')}
           >
-            {range(1, CLASS_END_HOUR - searchOptions.time).map(hour => (
-              <option key={hour} value={hour}>{formatTime(searchOptions.time + hour)} ({hour} hr)</option>
+            {range(1, (LAST_CLASS_HOUR + 3) - searchOptions.time).map(hour => (
+              <option key={hour} value={hour}>
+                {formatHour(searchOptions.time + hour)} ({hour} {hour === 1 ? 'hr' : 'hrs'})
+              </option>
             ))}
           </select>
         </div>
