@@ -18,7 +18,7 @@ type Props = {
 
 export default class NotFoundPage extends PureComponent<Props> {
   static defaultProps = {
-    showRefresh: navigator.onLine,
+    showRefresh: true,
   };
 
   errorMessage() {
@@ -42,7 +42,7 @@ export default class NotFoundPage extends PureComponent<Props> {
             {this.errorMessage()}
           </h1>
 
-          {showRefresh &&
+          {showRefresh && navigator.onLine &&
             <p>
               <button
                 className={styles.link}
