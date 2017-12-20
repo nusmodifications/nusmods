@@ -211,5 +211,6 @@ export const mapStateToProps: MapStateToProps<*, *, *> = (state, ownProps) => {
   };
 };
 
-const VenuesContainerWithRouter = withRouter(VenuesContainerComponent);
-export default connect(mapStateToProps)(VenuesContainerWithRouter);
+// Explicitly declare top level components for React hot reloading to work.
+const venuesContainerWithRouter = withRouter(VenuesContainerComponent);
+export default connect(mapStateToProps)(venuesContainerWithRouter);
