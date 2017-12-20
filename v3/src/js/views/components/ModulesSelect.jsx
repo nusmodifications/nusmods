@@ -85,29 +85,28 @@ class ModulesSelect extends Component<Props, State> {
         {showResults && (
           <ol className={styles.selectList}>
             {results.map((module, index) => {
-              const props = module.isAdded
-                ? {
-                  key: module.ModuleCode,
-                }
-                : getItemProps({
-                  key: module.ModuleCode,
-                  item: module.ModuleCode,
-                  index,
-                });
-              return (
+              return module.isAdded ? (
                 <li
-                  {...props}
+                  key={module.ModuleCode}
+                  className={classnames(styles.option, styles.optionDisabled)}
+                >
+                  {`${module.ModuleCode} ${module.ModuleTitle}`}
+                  <div>
+                    <span className="badge badge-info">Added</span>
+                  </div>
+                </li>
+              ) : (
+                <li
+                  {...getItemProps({
+                    key: module.ModuleCode,
+                    item: module.ModuleCode,
+                    index,
+                  })}
                   className={classnames(styles.option, {
                     [styles.optionSelected]: highlightedIndex === index,
-                    [styles.optionDisabled]: module.isAdded,
                   })}
                 >
                   {`${module.ModuleCode} ${module.ModuleTitle}`}
-                  {module.isAdded && (
-                    <div>
-                      <span className="badge badge-info">Added</span>
-                    </div>
-                  )}
                 </li>
               );
             })}

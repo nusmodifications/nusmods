@@ -32,10 +32,9 @@ function makeResponsive<Props: {}>(
     }
 
     updateMediaQuery = (e: MediaQueryListEvent | MediaQueryList) => {
-      if (e.matches === this.state.isMatchBreakpoint) {
-        return;
+      if (e.matches !== this.state.isMatchBreakpoint) {
+        this.setState({ isMatchBreakpoint: e.matches });
       }
-      this.setState({ isMatchBreakpoint: e.matches });
     };
 
     render() {
