@@ -7,7 +7,7 @@ import classnames from 'classnames';
 import axios from 'axios';
 import qs from 'query-string';
 import Raven from 'raven-js';
-import { pick, mapValues } from 'lodash';
+import { pick, mapValues, size } from 'lodash';
 
 import type { MapStateToProps } from 'react-redux';
 import type { ContextRouter } from 'react-router-dom';
@@ -15,10 +15,12 @@ import type { VenueInfo, VenueSearchOptions } from 'types/venues';
 import type { Semester, Venue } from 'types/modules';
 
 import ErrorPage from 'views/errors/ErrorPage';
+import Warning from 'views/errors/Warning';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import VenueList from 'views/venues/VenueList';
 import AvailabilitySearch, { defaultSearchOptions } from 'views/venues/AvailabilitySearch';
 import SearchBox from 'views/components/SearchBox';
+import { Clock } from 'views/components/icons';
 
 import config from 'config';
 import nusmods from 'apis/nusmods';
@@ -55,6 +57,7 @@ const pageHead = (
 );
 
 export class VenuesContainerComponent extends Component<Props, State> {
+  searchPanel: ?HTMLElement;
   history: HistoryDebouncer;
 
   constructor(props: Props) {
@@ -103,7 +106,10 @@ export class VenuesContainerComponent extends Component<Props, State> {
   componentDidUpdate() {
     if (this.state.selectedVenueElement) {
       // Scroll selected venue's row to just below the search box
-      const scrollTargetY = this.state.selectedVenueElement.offsetTop;
+      let scrollTargetY = this.state.selectedVenueElement.offsetTop;
+      if (this.searchPanel) {
+        scrollTargetY -= this.searchPanel.clientHeight;
+      }
       window.scrollTo(0, scrollTargetY);
     }
   }
@@ -134,6 +140,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
 
   render() {
     const { loading, error, isAvailabilityEnabled, searchOptions } = this.state;
+    const { searchTerm, selectedVenue } = this.state;
 
     if (error) {
       return <ErrorPage error="cannot load venues info" eventId={Raven.lastEventId()} />;
@@ -148,7 +155,9 @@ export class VenuesContainerComponent extends Component<Props, State> {
       );
     }
 
-    let venues = searchVenue(this.state.venues, this.state.searchTerm);
+    let venues = searchVenue(this.state.venues, searchTerm);
+    const unfilteredCount = size(venues);
+
     if (isAvailabilityEnabled) {
       venues = filterAvailability(venues, searchOptions);
     }
@@ -157,14 +166,17 @@ export class VenuesContainerComponent extends Component<Props, State> {
       <div className={classnames('page-container', styles.pageContainer)}>
         {pageHead}
 
-        <div className="search-panel">
+        <div
+          className="search-panel"
+          ref={(r) => { this.searchPanel = r; }}
+        >
           <div className={classnames('row align-items-center', styles.searchRow)}>
             <div className="col">
               <SearchBox
                 className={styles.searchBox}
                 throttle={0}
                 useInstantSearch
-                initialSearchTerm={this.state.searchTerm}
+                initialSearchTerm={searchTerm}
                 placeholder="Search for venues, e.g. LT27"
                 onSearch={this.onSearch}
               />
@@ -174,7 +186,9 @@ export class VenuesContainerComponent extends Component<Props, State> {
               <button
                 className={classnames('btn', isAvailabilityEnabled ? 'btn-primary' : 'btn-outline-primary')}
                 onClick={() => this.setState({ isAvailabilityEnabled: !isAvailabilityEnabled }, this.updateURL)}
-              >Find free rooms</button>
+              >
+                <Clock className={styles.freeRoomIcon} /> Find free rooms
+              </button>
             </div>
           </div>
 
@@ -188,11 +202,29 @@ export class VenuesContainerComponent extends Component<Props, State> {
             </div>}
         </div>
 
-        <VenueList
-          venues={venues}
-          expandedVenue={this.state.selectedVenue}
-          onSelect={this.onVenueSelect}
-        />
+        {size(venues) === 0 ?
+          <div>
+            <Warning message="No matching venues found" />
+            <p className="text-center text-muted">
+              There {unfilteredCount === 1
+                ? 'is a venue that is'
+                : `are ${unfilteredCount} venues that are`} not shown
+              because of they are not free. <br />
+              <button
+                type="button"
+                className="btn btn-link"
+                onClick={() => this.setState({ isAvailabilityEnabled: false })}
+              >
+                Cancel free room search?
+              </button>
+            </p>
+          </div>
+          :
+          <VenueList
+            venues={venues}
+            expandedVenue={selectedVenue}
+            onSelect={this.onVenueSelect}
+          />}
       </div>
     );
   }
