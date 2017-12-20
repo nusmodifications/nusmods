@@ -15,6 +15,10 @@ module.exports = {
   collectCoverageFrom: [
     'src/**/*.{js|jsx}',
   ],
+  coveragePathIgnorePatterns: [
+    // Code in this file triggers this bug - https://github.com/istanbuljs/babel-plugin-istanbul/issues/116
+    'src/js/views/modules/ModulePageContent.jsx',
+  ],
   setupFiles: ['<rootDir>/scripts/test.js'],
   moduleNameMapper: {
     // Mock non js files for jest to process
