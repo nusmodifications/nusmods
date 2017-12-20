@@ -9,6 +9,7 @@ const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 
 const commonConfig = require('./webpack.config.common');
 const parts = require('./webpack.parts');
+const config = require('../src/js/config/app-config.json');
 
 /**
  * Extracts css into their own file.
@@ -72,6 +73,8 @@ const productionConfig = merge([
           removeRedundantAttributes: true,
           collapseWhitespace: true,
         },
+        // For use as a variable under htmlWebpackPlugin.options in the template
+        apiBaseUrl: config.apiBaseUrl,
       }),
       new ScriptExtHtmlWebpackPlugin({
         inline: /manifest/,
@@ -91,7 +94,7 @@ const productionConfig = merge([
         // Cache all NUSMods API requests
         runtimeCaching: [
           {
-            urlPattern: new RegExp('https://nusmods.com/api'),
+            urlPattern: new RegExp(config.apiBaseUrl),
             handler: 'staleWhileRevalidate',
           },
         ],
