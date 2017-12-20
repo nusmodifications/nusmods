@@ -29,7 +29,7 @@ export default function ChecklistFilters(props: Props) {
               className={classnames(
                 'form-check-label',
                 styles.label,
-                { [styles.selected]: filter.enabled },
+                { [styles.enabled]: filter.enabled },
               )}
             >
               <input

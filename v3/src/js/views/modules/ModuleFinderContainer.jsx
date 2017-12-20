@@ -19,6 +19,7 @@ import ModuleFinderList from 'views/modules/ModuleFinderList';
 import ModuleSearchBox from 'views/modules/ModuleSearchBox';
 import ChecklistFilters from 'views/components/filters/ChecklistFilters';
 import TimeslotFilters from 'views/components/filters/TimeslotFilters';
+import DropdownListFilters from 'views/components/filters/DropdownListFilters';
 import ErrorPage from 'views/errors/ErrorPage';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import SideMenu, { OPEN_MENU_LABEL } from 'views/components/SideMenu';
@@ -30,6 +31,8 @@ import {
   serializeGroups,
   invertFacultyDepartments,
 
+  FACULTY,
+  DEPARTMENT,
   SEMESTER,
   LEVELS,
   LECTURE_TIMESLOTS,
@@ -306,6 +309,18 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
 
                 <ChecklistFilters
                   group={groups[MODULE_CREDITS]}
+                  groups={this.filterGroups()}
+                  onFilterChange={this.onFilterChange}
+                />
+
+                <DropdownListFilters
+                  group={groups[FACULTY]}
+                  groups={this.filterGroups()}
+                  onFilterChange={this.onFilterChange}
+                />
+
+                <DropdownListFilters
+                  group={groups[DEPARTMENT]}
                   groups={this.filterGroups()}
                   onFilterChange={this.onFilterChange}
                 />
