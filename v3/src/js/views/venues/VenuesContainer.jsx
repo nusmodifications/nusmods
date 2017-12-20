@@ -7,7 +7,7 @@ import classnames from 'classnames';
 import axios from 'axios';
 import qs from 'query-string';
 import Raven from 'raven-js';
-import { pick, mapValues, size } from 'lodash';
+import { pick, mapValues, size, isEqual } from 'lodash';
 
 import type { MapStateToProps } from 'react-redux';
 import type { ContextRouter } from 'react-router-dom';
@@ -113,15 +113,23 @@ export class VenuesContainerComponent extends Component<Props, State> {
     }
   }
 
-  onVenueSelect = (selectedVenue: Venue, venueURL: string, selectedVenueElement: HTMLElement) => {
+  onVenueSelect = (selectedVenue: Venue, venueURL: string, selectedVenueElement: HTMLElement) =>
     this.setState({ selectedVenue, selectedVenueElement },
-      () => this.updateURL(venueURL));
+      () => this.updateURL(venueURL, false));
+
+  onSearch = (searchTerm: string) => {
+    if (searchTerm !== this.state.searchTerm) {
+      this.setState({ searchTerm }, this.updateURL);
+    }
   };
 
-  onSearch = (searchTerm: string) => this.setState({ searchTerm }, this.updateURL);
-  onAvailabilityUpdate = (searchOptions: VenueSearchOptions) => this.setState({ searchOptions }, this.updateURL);
+  onAvailabilityUpdate = (searchOptions: VenueSearchOptions) => {
+    if (!isEqual(searchOptions, this.state.searchOptions)) {
+      this.setState({ searchOptions }, this.updateURL);
+    }
+  };
 
-  updateURL = (path?: string) => {
+  updateURL = (path?: string, debounce: boolean = true) => {
     const { searchTerm, isAvailabilityEnabled, searchOptions } = this.state;
     let query = {};
 
@@ -129,8 +137,8 @@ export class VenuesContainerComponent extends Component<Props, State> {
     if (isAvailabilityEnabled) query = { ...query, ...searchOptions };
 
     const pathname = path || this.props.location.pathname;
-
-    this.history.push({
+    const history = debounce ? this.history : this.props.history;
+    history.push({
       ...this.props.location,
       search: qs.stringify(query),
       pathname,
