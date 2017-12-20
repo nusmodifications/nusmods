@@ -84,6 +84,7 @@ const productionConfig = merge([
         globDirectory: parts.PATHS.build,
         globPatterns: ['**/*.{html,js,css,png,svg}'],
         swDest: path.join(parts.PATHS.build, 'sw.js'),
+        navigateFallback: 'index.html',
         runtimeCaching: [
           {
             urlPattern: new RegExp('https://nusmods.com/api'),
