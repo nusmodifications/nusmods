@@ -16,7 +16,7 @@
   h3 {
     margin-bottom: 0;
     font-weight: $font-weight-bold;
-    font-size: 1.2rem;
+    font-size: $font-size-lg;
   }
 
   @include media-breakpoint-down(sm) {

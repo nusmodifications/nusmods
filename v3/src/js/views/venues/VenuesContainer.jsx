@@ -146,8 +146,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
   };
 
   render() {
-    const { loading, error, isAvailabilityEnabled, searchOptions } = this.state;
-    const { isMenuOpen, searchTerm, selectedVenue } = this.state;
+    const { isMenuOpen, searchTerm, selectedVenue, loading, error, isAvailabilityEnabled, searchOptions } = this.state;
 
     if (error) {
       return <ErrorPage error="cannot load venues info" eventId={Raven.lastEventId()} />;
