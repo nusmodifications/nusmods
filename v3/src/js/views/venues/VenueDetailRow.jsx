@@ -15,7 +15,7 @@ type Props = {
   availability: DayAvailability[],
   expanded: boolean,
   onClick: (Venue, string) => void,
-  rootElementRef?: (HTMLElement) => void, // For parent components to obtain a ref to the root HTMLElement
+  rootElementRef?: (?HTMLElement) => void, // For parent components to obtain a ref to the root HTMLElement
 }
 
 export default class VenueDetailRow extends PureComponent<Props> {

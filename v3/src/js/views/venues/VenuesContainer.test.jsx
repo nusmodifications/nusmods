@@ -5,7 +5,6 @@ import createHistory from 'history/createMemoryHistory'; // eslint-disable-line 
 
 import type { Venue } from 'types/modules';
 
-import venueInfo from '__mocks__/venueInformation.json';
 import { VenuesContainerComponent, mapStateToProps } from './VenuesContainer';
 
 function createComponent(urlVenue: ?Venue) {
@@ -29,31 +28,6 @@ function createComponent(urlVenue: ?Venue) {
 }
 
 describe('VenuesContainer', () => {
-  test('#filteredVenues() should filter venues correctly', () => {
-    const component = createComponent().instance();
-    component.setState({ venues: venueInfo });
-
-    // No filter
-    component.setState({ searchTerm: '' });
-    expect(Object.keys(component.filteredVenues())).toMatchSnapshot();
-
-    // Unique venue
-    component.setState({ searchTerm: 'S11-0302' });
-    expect(Object.keys(component.filteredVenues())).toEqual(['S11-0302']);
-
-    // Unique venue with wrong case
-    component.setState({ searchTerm: 's11-0302' });
-    expect(Object.keys(component.filteredVenues())).toEqual(['S11-0302']);
-
-    // Substring
-    component.setState({ searchTerm: 'T1' });
-    expect(Object.keys(component.filteredVenues())).toEqual(['LT17', 'LT1']);
-
-    // Venue which does not exist
-    component.setState({ searchTerm: 'covfefe' });
-    expect(Object.keys(component.filteredVenues())).toEqual([]);
-  });
-
   test('#onVenueSelect() should change the URL when a venue is clicked', () => {
     const component = createComponent().instance();
     component.onVenueSelect('LT17', '/venues/LT17');

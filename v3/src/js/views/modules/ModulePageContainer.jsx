@@ -29,7 +29,7 @@ type Props = {
 type State = {
   ModulePageContent: ?ComponentType<*>,
   error?: any,
-}
+};
 
 /**
  * Wrapper component that loads both module data and the module page component
@@ -119,6 +119,5 @@ const mapStateToProps = (state, ownState) => {
   };
 };
 
-export default withRouter(
-  connect(mapStateToProps, { fetchModule })(ModulePageContainerComponent),
-);
+const connectedModulePageContainer = connect(mapStateToProps, { fetchModule })(ModulePageContainerComponent);
+export default withRouter(connectedModulePageContainer);
