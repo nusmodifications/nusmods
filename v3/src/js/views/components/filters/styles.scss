@@ -68,6 +68,11 @@ $h-padding: $grid-gutter-width / 2;
       left: 0;
       width: $icon-size;
       height: $icon-size;
+      transition: $transition-base;
+    }
+
+    &.focused svg {
+      color: theme-color();
     }
   }
 

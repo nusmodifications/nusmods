@@ -20,6 +20,7 @@ type Props = {
 };
 
 type State = {
+  isFocused: boolean,
   searchedFilters: string[],
 }
 
@@ -28,6 +29,7 @@ export default class DropdownListFilters extends PureComponent<Props, State> {
     super(props);
 
     this.state = {
+      isFocused: false,
       searchedFilters: values(props.group.filters)
         .filter(filter => filter.enabled)
         .map(filter => filter.id),
@@ -60,15 +62,21 @@ export default class DropdownListFilters extends PureComponent<Props, State> {
           render={({
             getInputProps,
             getItemProps,
+            openMenu,
             isOpen,
             inputValue,
             highlightedIndex,
           }) => (
             <div className="dropdown">
-              <div className={styles.searchWrapper}>
+              <div className={classnames(styles.searchWrapper, { [styles.focused]: this.state.isFocused })}>
                 <Search />
                 <input
                   {...getInputProps({
+                    onFocus: () => {
+                      this.setState({ isFocused: true });
+                      openMenu();
+                    },
+                    onBlur: () => this.setState({ isFocused: false }),
                     className: classnames('form-control form-control-sm', styles.searchInput),
                     placeholder: `Search ${group.label.toLowerCase()}...`,
                   })}
