@@ -80,17 +80,30 @@ const productionConfig = merge([
       extractTextPlugin,
       // Copy files from static folder over to dist
       new CopyWebpackPlugin([{ from: 'static', context: parts.PATHS.root }], { copyUnmodified: true }),
+      // See this for how to configure Workbox service workers
+      // https://developers.google.com/web/tools/workbox/reference-docs/latest/module-workbox-build.html#.Configuration
       new WorkboxPlugin({
+        // Files matching these will be precached
         globDirectory: parts.PATHS.build,
         globPatterns: ['**/*.{html,js,css,png,svg}'],
         swDest: path.join(parts.PATHS.build, 'sw.js'),
-        navigateFallback: 'index.html',
+
+        // Cache all NUSMods API requests
         runtimeCaching: [
           {
             urlPattern: new RegExp('https://nusmods.com/api'),
             handler: 'staleWhileRevalidate',
           },
         ],
+
+        // Always serve index.html since we're a SPA using HTML5 history
+        navigateFallback: 'index.html',
+
+        // Since our build system already adds hashes to our CSS and JS, we don't need
+        // to bust cache for these files
+        dontCacheBustUrlsMatching: /\.\w{20}\.(css|js)/,
+
+        skipWaiting: true,
       }),
     ],
   },
