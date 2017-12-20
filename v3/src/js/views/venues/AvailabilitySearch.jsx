@@ -52,9 +52,9 @@ export default class AvailabilitySearch extends PureComponent<Props> {
     const { searchOptions, className } = this.props;
 
     return (
-      <div className={classnames('form-row', className, styles.search)}>
-        <div className="col form-group">
-          <label htmlFor="venue-day">Day</label>
+      <div className={classnames(className, styles.search)}>
+        <div className="form-group">
+          <label htmlFor="venue-day">On</label>
           <select
             id="venue-day"
             className="form-control"
@@ -67,7 +67,7 @@ export default class AvailabilitySearch extends PureComponent<Props> {
           </select>
         </div>
 
-        <div className="col form-group">
+        <div className="form-group">
           <label htmlFor="venue-time">From</label>
           <select
             id="venue-time"
@@ -81,7 +81,7 @@ export default class AvailabilitySearch extends PureComponent<Props> {
           </select>
         </div>
 
-        <div className="col form-group">
+        <div className="form-group">
           <label htmlFor="venue-duration">To</label>
           <select
             id="venue-duration"

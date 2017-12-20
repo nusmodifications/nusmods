@@ -20,7 +20,7 @@ import LoadingSpinner from 'views/components/LoadingSpinner';
 import VenueList from 'views/venues/VenueList';
 import AvailabilitySearch, { defaultSearchOptions } from 'views/venues/AvailabilitySearch';
 import SearchBox from 'views/components/SearchBox';
-import { Clock } from 'views/components/icons';
+import { Clock, Search } from 'views/components/icons';
 
 import config from 'config';
 import nusmods from 'apis/nusmods';
@@ -28,6 +28,7 @@ import HistoryDebouncer from 'utils/HistoryDebouncer';
 import { searchVenue, filterAvailability } from 'utils/venues';
 
 import styles from './VenuesContainer.scss';
+import SideMenu from '../components/SideMenu';
 
 type Props = {
   ...ContextRouter,
@@ -45,6 +46,7 @@ type State = {
   selectedVenueElement?: HTMLElement,
 
   // Search state
+  isMenuOpen: boolean,
   searchTerm: string,
   isAvailabilityEnabled: boolean,
   searchOptions: VenueSearchOptions,
@@ -57,7 +59,6 @@ const pageHead = (
 );
 
 export class VenuesContainerComponent extends Component<Props, State> {
-  searchPanel: ?HTMLElement;
   history: HistoryDebouncer;
 
   constructor(props: Props) {
@@ -77,6 +78,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
       selectedVenue,
       searchOptions,
       isAvailabilityEnabled,
+      isMenuOpen: false,
       loading: true,
       venues: {},
       searchTerm: params.q || selectedVenue,
@@ -106,10 +108,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
   componentDidUpdate() {
     if (this.state.selectedVenueElement) {
       // Scroll selected venue's row to just below the search box
-      let scrollTargetY = this.state.selectedVenueElement.offsetTop;
-      if (this.searchPanel) {
-        scrollTargetY -= this.searchPanel.clientHeight;
-      }
+      const scrollTargetY = this.state.selectedVenueElement.offsetTop;
       window.scrollTo(0, scrollTargetY);
     }
   }
@@ -140,7 +139,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
 
   render() {
     const { loading, error, isAvailabilityEnabled, searchOptions } = this.state;
-    const { searchTerm, selectedVenue } = this.state;
+    const { isMenuOpen, searchTerm, selectedVenue } = this.state;
 
     if (error) {
       return <ErrorPage error="cannot load venues info" eventId={Raven.lastEventId()} />;
@@ -166,65 +165,71 @@ export class VenuesContainerComponent extends Component<Props, State> {
       <div className={classnames('page-container', styles.pageContainer)}>
         {pageHead}
 
-        <div
-          className="search-panel"
-          ref={(r) => { this.searchPanel = r; }}
-        >
-          <div className={classnames('row align-items-center', styles.searchRow)}>
-            <div className="col">
-              <SearchBox
-                className={styles.searchBox}
-                throttle={0}
-                useInstantSearch
-                initialSearchTerm={searchTerm}
-                placeholder="Search for venues, e.g. LT27"
-                onSearch={this.onSearch}
-              />
-            </div>
-
-            <div className="col-auto">
-              <button
-                className={classnames('btn', isAvailabilityEnabled ? 'btn-primary' : 'btn-outline-primary')}
-                onClick={() => this.setState({ isAvailabilityEnabled: !isAvailabilityEnabled }, this.updateURL)}
-              >
-                <Clock className={styles.freeRoomIcon} /> Find free rooms
-              </button>
-            </div>
+        <div className="row">
+          <div className="col-md-8 col-lg-9">
+            {size(venues) === 0 ?
+              <div>
+                <Warning message="No matching venues found" />
+                <p className="text-center text-muted">
+                  There {unfilteredCount === 1
+                    ? 'is a venue that is'
+                    : `are ${unfilteredCount} venues that are`} not shown
+                  because of they are not free. <br />
+                  <button
+                    type="button"
+                    className="btn btn-link"
+                    onClick={() => this.setState({ isAvailabilityEnabled: false })}
+                  >
+                    Cancel free room search?
+                  </button>
+                </p>
+              </div>
+              :
+              <VenueList
+                venues={venues}
+                expandedVenue={selectedVenue}
+                onSelect={this.onVenueSelect}
+              />}
           </div>
+          <div className="col-md-4 col-lg-3">
+            <SideMenu
+              isOpen={isMenuOpen}
+              openIcon={<Search aria-label="Search venues" />}
+              toggleMenu={isOpen => this.setState({ isMenuOpen: isOpen })}
+            >
+              <div className={styles.venueSearch}>
+                <h3>Venue Search</h3>
 
-          {isAvailabilityEnabled &&
-            <div className={styles.availabilityRow}>
-              <AvailabilitySearch
-                isEnabled={isAvailabilityEnabled}
-                searchOptions={searchOptions}
-                onUpdate={this.onAvailabilityUpdate}
-              />
-            </div>}
+                <SearchBox
+                  className={styles.searchBox}
+                  throttle={0}
+                  useInstantSearch
+                  initialSearchTerm={searchTerm}
+                  placeholder="e.g. LT27"
+                  onSearch={this.onSearch}
+                />
+
+                <button
+                  className={classnames(
+                    'btn btn-block',
+                    styles.availabilityToggle,
+                    isAvailabilityEnabled ? 'btn-primary' : 'btn-outline-primary',
+                  )}
+                  onClick={() => this.setState({ isAvailabilityEnabled: !isAvailabilityEnabled }, this.updateURL)}
+                >
+                  <Clock className={styles.freeRoomIcon} /> Find free rooms
+                </button>
+
+                {isAvailabilityEnabled &&
+                  <AvailabilitySearch
+                    isEnabled={isAvailabilityEnabled}
+                    searchOptions={searchOptions}
+                    onUpdate={this.onAvailabilityUpdate}
+                  />}
+              </div>
+            </SideMenu>
+          </div>
         </div>
-
-        {size(venues) === 0 ?
-          <div>
-            <Warning message="No matching venues found" />
-            <p className="text-center text-muted">
-              There {unfilteredCount === 1
-                ? 'is a venue that is'
-                : `are ${unfilteredCount} venues that are`} not shown
-              because of they are not free. <br />
-              <button
-                type="button"
-                className="btn btn-link"
-                onClick={() => this.setState({ isAvailabilityEnabled: false })}
-              >
-                Cancel free room search?
-              </button>
-            </p>
-          </div>
-          :
-          <VenueList
-            venues={venues}
-            expandedVenue={selectedVenue}
-            onSelect={this.onVenueSelect}
-          />}
       </div>
     );
   }
