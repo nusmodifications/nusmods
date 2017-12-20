@@ -51,10 +51,13 @@ export default class DropdownListFilters extends PureComponent<Props, State> {
   render() {
     const { group, groups, onFilterChange } = this.props;
     const moduleCodes = FilterGroup.union(groups, group);
+    const htmlId = `dropdown-filter-${group.id}`;
 
     return (
       <div className={styles.dropdown}>
-        <h4 className={styles.heading}>{group.label}</h4>
+        <h4 className={styles.heading}>
+          <label htmlFor={htmlId}>{group.label}</label>
+        </h4>
 
         <Downshift
           breakingChanges={{ resetInputOnSelection: true }}
@@ -79,6 +82,7 @@ export default class DropdownListFilters extends PureComponent<Props, State> {
                     onBlur: () => this.setState({ isFocused: false }),
                     className: classnames('form-control form-control-sm', styles.searchInput),
                     placeholder: `Search ${group.label.toLowerCase()}...`,
+                    id: htmlId,
                   })}
                 />
               </div>

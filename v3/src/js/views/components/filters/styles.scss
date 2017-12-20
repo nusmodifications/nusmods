@@ -55,12 +55,17 @@ $h-padding: $grid-gutter-width / 2;
 .dropdown {
   $icon-size: 1rem;
 
+  h4 label {
+    margin-bottom: 0;
+  }
+
   .label {
     white-space: normal;
   }
 
   .searchWrapper {
     position: relative;
+    margin-right: ($grid-gutter-width / 2);
 
     svg {
       position: absolute;
