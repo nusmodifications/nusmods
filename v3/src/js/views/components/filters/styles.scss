@@ -88,7 +88,7 @@ $h-padding: $grid-gutter-width / 2;
 
   :global(.dropdown-menu) {
     width: calc(100% - 0.2rem);
-    max-height: 18rem;
+    max-height: 17rem;
     padding: 0;
     margin: 0;
     overflow: auto;
@@ -102,7 +102,6 @@ $h-padding: $grid-gutter-width / 2;
 
   mark {
     padding: 0;
-    color: inherit;
     border-bottom: 1px solid var(--yellow);
   }
 

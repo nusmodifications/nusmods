@@ -67,7 +67,7 @@ type State = {
 // run the filters on initial render. This is only an estimate since only
 // ~50% of the time is spent on filters (the other 50% on rendering), and we can
 // only benchmark filtering, not rendering, so we err on using a lower threshold
-const INSTANT_SEARCH_THRESHOLD = 150;
+const INSTANT_SEARCH_THRESHOLD = 300;
 
 const pageHead = (
   <Helmet>
