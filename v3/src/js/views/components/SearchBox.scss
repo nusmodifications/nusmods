@@ -1,13 +1,5 @@
 @import "~styles/utils/modules-entry.scss";
 
-.searchBox {
-  position: sticky;
-  top: $navbar-height;
-  z-index: $module-finder-search-z-index;
-  padding: 0 0 1rem;
-  background: linear-gradient(to bottom, var(--body-bg) 3rem, var(--body-bg-transparent));
-}
-
 .searchWrapper {
   position: relative;
 
@@ -43,19 +35,6 @@
 }
 
 @include media-breakpoint-down(sm) {
-  .searchBox {
-    padding: 0 0 $navtab-shadow-height;
-    margin: -1rem (-$grid-gutter-width / 2) 0;
-    border-top: 1px solid var(--gray-lighter);
-    background:
-      linear-gradient(
-        to bottom,
-        var(--body-bg) calc(100% - #{$navtab-shadow-height}),
-        $navtab-shadow-color calc(100% - #{$navtab-shadow-height}),
-        rgba(#000, 0)
-      );
-  }
-
   .searchWrapper {
     input {
       padding: 0.8rem 0 0.8rem 2.2rem;

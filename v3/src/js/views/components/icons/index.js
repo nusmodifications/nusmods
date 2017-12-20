@@ -5,6 +5,7 @@ import Calendar from 'react-feather/dist/icons/calendar';
 import ChevronLeft from 'react-feather/dist/icons/chevron-left';
 import ChevronRight from 'react-feather/dist/icons/chevron-right';
 import Close from 'react-feather/dist/icons/x';
+import Clock from 'react-feather/dist/icons/clock';
 import Copy from 'react-feather/dist/icons/copy';
 import Eye from 'react-feather/dist/icons/eye';
 import EyeOff from 'react-feather/dist/icons/eye-off';
@@ -32,6 +33,7 @@ export {
   ChevronLeft,
   ChevronRight,
   Close,
+  Clock,
   Copy,
   Eye,
   EyeOff,

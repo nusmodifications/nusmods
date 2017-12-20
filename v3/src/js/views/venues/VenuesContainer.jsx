@@ -7,23 +7,28 @@ import classnames from 'classnames';
 import axios from 'axios';
 import qs from 'query-string';
 import Raven from 'raven-js';
-import { pick } from 'lodash';
+import { pick, mapValues, size, isEqual } from 'lodash';
 
 import type { MapStateToProps } from 'react-redux';
 import type { ContextRouter } from 'react-router-dom';
-import type { VenueInfo } from 'types/venues';
+import type { VenueInfo, VenueSearchOptions } from 'types/venues';
 import type { Semester, Venue } from 'types/modules';
 
 import ErrorPage from 'views/errors/ErrorPage';
+import Warning from 'views/errors/Warning';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import VenueList from 'views/venues/VenueList';
+import AvailabilitySearch, { defaultSearchOptions } from 'views/venues/AvailabilitySearch';
 import SearchBox from 'views/components/SearchBox';
+import { Clock, Search } from 'views/components/icons';
 
 import config from 'config';
 import nusmods from 'apis/nusmods';
 import HistoryDebouncer from 'utils/HistoryDebouncer';
+import { searchVenue, filterAvailability } from 'utils/venues';
 
 import styles from './VenuesContainer.scss';
+import SideMenu from '../components/SideMenu';
 
 type Props = {
   ...ContextRouter,
@@ -33,11 +38,18 @@ type Props = {
 
 type State = {
   loading: boolean,
-  venues: VenueInfo,
   error?: any,
-  searchTerm: string,
+  venues: VenueInfo,
+
+  // Selected venue
   selectedVenue: Venue,
   selectedVenueElement?: HTMLElement,
+
+  // Search state
+  isMenuOpen: boolean,
+  searchTerm: string,
+  isAvailabilityEnabled: boolean,
+  searchOptions: VenueSearchOptions,
 };
 
 const pageHead = (
@@ -55,9 +67,18 @@ export class VenuesContainerComponent extends Component<Props, State> {
     const params = qs.parse(props.location.search);
     const selectedVenue = this.props.urlVenue || '';
 
+    // Extract searchOptions from the query string if they are present
+    const isAvailabilityEnabled = params.time && params.day && params.duration;
+    const searchOptions = isAvailabilityEnabled
+      ? mapValues(pick(params, ['time', 'day', 'duration']), i => parseInt(i, 10))
+      : defaultSearchOptions();
+
     this.history = new HistoryDebouncer(props.history);
     this.state = {
       selectedVenue,
+      searchOptions,
+      isAvailabilityEnabled,
+      isMenuOpen: false,
       loading: true,
       venues: {},
       searchTerm: params.q || selectedVenue,
@@ -92,48 +113,40 @@ export class VenuesContainerComponent extends Component<Props, State> {
     }
   }
 
-  onVenueSelect = (selectedVenue: Venue, venueURL: string, selectedVenueElement: HTMLElement) => {
+  onVenueSelect = (selectedVenue: Venue, venueURL: string, selectedVenueElement: HTMLElement) =>
     this.setState({ selectedVenue, selectedVenueElement },
-      () => this.updateURL(venueURL));
-  };
+      () => this.updateURL(venueURL, false));
 
   onSearch = (searchTerm: string) => {
-    this.setState({ searchTerm }, () => this.updateURL());
+    if (searchTerm !== this.state.searchTerm) {
+      this.setState({ searchTerm }, this.updateURL);
+    }
   };
 
-  updateURL(path?: string) {
-    const { searchTerm } = this.state;
-    const query = {};
-    if (searchTerm) {
-      query.q = searchTerm;
+  onAvailabilityUpdate = (searchOptions: VenueSearchOptions) => {
+    if (!isEqual(searchOptions, this.state.searchOptions)) {
+      this.setState({ searchOptions }, this.updateURL);
     }
+  };
+
+  updateURL = (path?: string, debounce: boolean = true) => {
+    const { searchTerm, isAvailabilityEnabled, searchOptions } = this.state;
+    let query = {};
+
+    if (searchTerm) query.q = searchTerm;
+    if (isAvailabilityEnabled) query = { ...query, ...searchOptions };
 
     const pathname = path || this.props.location.pathname;
-
-    this.history.push({
+    const history = debounce ? this.history : this.props.history;
+    history.push({
       ...this.props.location,
       search: qs.stringify(query),
       pathname,
     });
-  }
-
-  filteredVenues() {
-    const { venues, searchTerm } = this.state;
-    if (!venues) {
-      return {};
-    }
-
-    if (searchTerm === '') {
-      return venues;
-    }
-
-    const lowercaseSearchStr = searchTerm.toLowerCase();
-    return pick(venues, Object.keys(venues).filter(name =>
-      name.toLowerCase().includes(lowercaseSearchStr)));
-  }
+  };
 
   render() {
-    const { loading, error } = this.state;
+    const { isMenuOpen, searchTerm, selectedVenue, loading, error, isAvailabilityEnabled, searchOptions } = this.state;
 
     if (error) {
       return <ErrorPage error="cannot load venues info" eventId={Raven.lastEventId()} />;
@@ -148,26 +161,80 @@ export class VenuesContainerComponent extends Component<Props, State> {
       );
     }
 
-    const venues = this.filteredVenues();
+    let venues = searchVenue(this.state.venues, searchTerm);
+    const unfilteredCount = size(venues);
+
+    if (isAvailabilityEnabled) {
+      venues = filterAvailability(venues, searchOptions);
+    }
 
     return (
       <div className={classnames('page-container', styles.pageContainer)}>
         {pageHead}
 
         <div className="row">
-          <div className="col-sm-12">
-            <SearchBox
-              throttle={0}
-              useInstantSearch
-              initialSearchTerm={this.state.searchTerm}
-              placeholder="Search for venues, e.g. LT27"
-              onSearch={this.onSearch}
-            />
-            <VenueList
-              venues={venues}
-              expandedVenue={this.state.selectedVenue}
-              onSelect={this.onVenueSelect}
-            />
+          <div className="col-md-8 col-lg-9">
+            {size(venues) === 0 ?
+              <div>
+                <Warning message="No matching venues found" />
+                <p className="text-center text-muted">
+                  There {unfilteredCount === 1
+                    ? 'is a venue that is'
+                    : `are ${unfilteredCount} venues that are`} not shown
+                  because of they are not free. <br />
+                  <button
+                    type="button"
+                    className="btn btn-link"
+                    onClick={() => this.setState({ isAvailabilityEnabled: false })}
+                  >
+                    Cancel free room search?
+                  </button>
+                </p>
+              </div>
+              :
+              <VenueList
+                venues={venues}
+                expandedVenue={selectedVenue}
+                onSelect={this.onVenueSelect}
+              />}
+          </div>
+          <div className="col-md-4 col-lg-3">
+            <SideMenu
+              isOpen={isMenuOpen}
+              openIcon={<Search aria-label="Search venues" />}
+              toggleMenu={isOpen => this.setState({ isMenuOpen: isOpen })}
+            >
+              <div className={styles.venueSearch}>
+                <h3>Venue Search</h3>
+
+                <SearchBox
+                  className={styles.searchBox}
+                  throttle={0}
+                  useInstantSearch
+                  initialSearchTerm={searchTerm}
+                  placeholder="e.g. LT27"
+                  onSearch={this.onSearch}
+                />
+
+                <button
+                  className={classnames(
+                    'btn btn-block',
+                    styles.availabilityToggle,
+                    isAvailabilityEnabled ? 'btn-primary' : 'btn-outline-primary',
+                  )}
+                  onClick={() => this.setState({ isAvailabilityEnabled: !isAvailabilityEnabled }, this.updateURL)}
+                >
+                  <Clock className={styles.freeRoomIcon} /> Find free rooms
+                </button>
+
+                {isAvailabilityEnabled &&
+                  <AvailabilitySearch
+                    isEnabled={isAvailabilityEnabled}
+                    searchOptions={searchOptions}
+                    onUpdate={this.onAvailabilityUpdate}
+                  />}
+              </div>
+            </SideMenu>
           </div>
         </div>
       </div>

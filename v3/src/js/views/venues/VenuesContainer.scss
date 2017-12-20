@@ -5,3 +5,33 @@
     animation-name: $page-entering-animation;
   }
 }
+
+.freeRoomIcon {
+  vertical-align: middle;
+}
+
+.venueSearch {
+  padding-right: ($grid-gutter-width / 2);
+
+  h3 {
+    margin-bottom: 0;
+    font-weight: $font-weight-bold;
+    font-size: $font-size-lg;
+  }
+
+  @include media-breakpoint-down(sm) {
+    padding: 0.5rem ($grid-gutter-width / 2) 2.5rem;
+  }
+}
+
+.availabilityToggle {
+  margin-bottom: 0.5rem;
+}
+
+.searchBox {
+  margin-bottom: 1rem;
+
+  @include media-breakpoint-down(sm) {
+    border-bottom: 1px solid var(--gray-light);
+  }
+}
