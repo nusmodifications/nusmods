@@ -51,7 +51,7 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
     ModulePageContent: null,
   };
 
-  componentWillMount() {
+  componentDidMount() {
     this.fetchModule(this.props.moduleCode);
 
     import('views/modules/ModulePageContent')

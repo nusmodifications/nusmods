@@ -61,8 +61,14 @@ export default class ShareTimetable extends PureComponent<Props, State> {
 
     if (this.url !== nextUrl) {
       this.url = nextUrl;
-      this.loadShortUrl(nextUrl);
-      this.setState({ shortUrl: null });
+
+      // Only try to retrieve shortUrl if the user is online
+      if (navigator.onLine) {
+        this.setState({ shortUrl: null });
+        this.loadShortUrl(nextUrl);
+      } else {
+        this.setState({ shortUrl: nextUrl });
+      }
     }
 
     this.setState({ isOpen: true });
