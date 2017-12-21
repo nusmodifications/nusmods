@@ -15,6 +15,7 @@ import { BULLET } from 'utils/react';
 import { NAVTAB_HEIGHT } from 'views/layout/Navtabs';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
 import DisqusComments from 'views/components/DisqusComments';
+import Online from 'views/components/Online';
 import SideMenu from 'views/components/SideMenu';
 import LessonTimetable from 'views/components/module-info/LessonTimetable';
 import ModuleExamClash from 'views/components/module-info/ModuleExamClash';
@@ -187,11 +188,13 @@ export class ModulePageContentComponent extends Component<Props, State> {
 
             <section className={styles.section} id={SIDE_MENU_ITEMS.reviews}>
               <h2 className={styles.sectionHeading}>Review and Discussion</h2>
-              <DisqusComments
-                url={`https://nusmods.com/modules/${ModuleCode}/reviews`}
-                identifier={ModuleCode}
-                title={pageTitle}
-              />
+              <Online isLive={false}>
+                <DisqusComments
+                  url={`https://nusmods.com/modules/${ModuleCode}/reviews`}
+                  identifier={ModuleCode}
+                  title={pageTitle}
+                />
+              </Online>
             </section>
           </div>
 

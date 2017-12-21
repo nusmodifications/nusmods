@@ -6,7 +6,8 @@ import Helmet from 'react-helmet';
 import Raven from 'raven-js';
 import classnames from 'classnames';
 
-import config from 'config/index';
+import config from 'config';
+import Online from 'views/components/Online';
 import styles from './ErrorPage.scss';
 
 type Props = {
@@ -42,24 +43,28 @@ export default class NotFoundPage extends PureComponent<Props> {
             {this.errorMessage()}
           </h1>
 
-          {showRefresh && navigator.onLine &&
-            <p>
-              <button
-                className={styles.link}
-                onClick={() => window.location.reload(true)}
-              >Refreshing the page</button> may help.
-            </p>}
+          {showRefresh &&
+            <Online>
+              <p>
+                <button
+                  className={styles.link}
+                  onClick={() => window.location.reload(true)}
+                >Refreshing the page</button> may help.
+              </p>
+            </Online>}
 
           {eventId &&
-            <p>
-              An error report has been made and we will look into this.
-              We would really appreciate it if you could <button
-                className={styles.link}
-                onClick={() => Raven.showReportDialog({ eventId })}
-              >
-                tell us more about what happened</button> so we can
-              better fix this.
-            </p>}
+            <Online isLive={false}>
+              <p>
+                An error report has been made and we will look into this.
+                We would really appreciate it if you could <button
+                  className={styles.link}
+                  onClick={() => Raven.showReportDialog({ eventId })}
+                >
+                  tell us more about what happened</button> so we can
+                better fix this.
+              </p>
+            </Online>}
         </div>
       </div>
     );
