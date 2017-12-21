@@ -153,6 +153,7 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
             {this.displayedFilters()
               .map(([filter, count]) => (
                 <option key={filter.id} value={filter.id}>
+                  {filter.enabled && '☑ '}
                   {filter.label} ({count})
                 </option>
               ))}
