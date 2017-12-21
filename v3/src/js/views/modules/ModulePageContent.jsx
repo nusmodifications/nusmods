@@ -70,7 +70,7 @@ export class ModulePageContentComponent extends Component<Props, State> {
     const semesters = getSemestersOffered(module);
 
     return (
-      <div className="module-container page-container">
+      <div className={classnames('page-container', styles.moduleInfoPage)}>
         <Helmet>
           <title>{pageTitle} - {config.brandName}</title>
         </Helmet>
@@ -196,11 +196,25 @@ export class ModulePageContentComponent extends Component<Props, State> {
               <h2 className={styles.sectionHeading}>Review and Discussion</h2>
               <Online isLive={false}>{isOnline => (
                 isOnline ?
-                  <DisqusComments
-                    url={`https://nusmods.com/modules/${ModuleCode}/reviews`}
-                    identifier={ModuleCode}
-                    title={pageTitle}
-                  />
+                  <div className={styles.reviews}>
+                    <div className={classnames('alert alert-warning', styles.reviewsBanner)}>
+                      <h3>Hi There!</h3>
+                      <p>We would like to encourage everyone who enjoyed using NUSMods to
+                        contribute back to the community by writing reviews for modules
+                        that you have taken before. Your efforts will go a long way in
+                        building up a vibrant and rich NUS community.</p>
+                      <p><strong>Please note:</strong> Because the experience of each module
+                        will differ according to the professor teaching the module, at the
+                        start of your review, please state the semester taken and the name
+                        of the professor who taught the module in that semester.</p>
+                    </div>
+
+                    <DisqusComments
+                      url={`https://nusmods.com/modules/${ModuleCode}/reviews`}
+                      identifier={ModuleCode}
+                      title={pageTitle}
+                    />
+                  </div>
                   :
                   <Warning
                     message="Comments not available while offline. Make sure you are
@@ -243,5 +257,4 @@ const mapStateToProps: MapStateToProps<*, *, *> = (state, ownProps) => ({
   module: state.entities.moduleBank.modules[ownProps.moduleCode],
 });
 
-const ModulePageContent = connect(mapStateToProps)(ModulePageContentComponent);
-export default ModulePageContent;
+export default connect(mapStateToProps)(ModulePageContentComponent);

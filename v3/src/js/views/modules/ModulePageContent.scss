@@ -8,6 +8,15 @@ $sticky-top: $navbar-height + $header-margin-top;
   font-size: $font-size-xlg;
 }
 
+.moduleInfoPage {
+  max-width: 80rem;
+  margin-left: 0;
+
+  :global {
+    animation-name: $page-entering-animation;
+  }
+}
+
 .moduleCodeTitle {
   display: block;
   margin-bottom: 0.2rem;
@@ -27,10 +36,10 @@ $sticky-top: $navbar-height + $header-margin-top;
 }
 
 .sectionHeading {
-  padding-bottom: 0.4rem;
-  margin: 0 0 0.4rem;
-  font-weight: bold;
-  font-size: 1rem;
+  padding: 0.6rem 0;
+  margin: 0 0 0.6rem;
+  font-weight: $font-weight-bold;
+  font-size: $font-size-lg;
   border-bottom: 1px solid var(--gray-lighter);
 }
 
@@ -60,13 +69,12 @@ $sticky-top: $navbar-height + $header-margin-top;
     font-size: $font-size-xlg * $sm-font-size-ratio;
   }
 
-  .sectionHeading,
   .descriptionHeading {
     font-size: 1rem * $sm-font-size-ratio;
   }
 
   .sectionHeading {
-    padding-bottom: 0.3rem;
+    font-size: $font-size-lg * $sm-font-size-ratio;
   }
 }
 
@@ -80,6 +88,25 @@ $sticky-top: $navbar-height + $header-margin-top;
 
 .addToTimetable {
   margin-bottom: 1rem;
+}
+
+.reviews {
+  max-width: 40rem;
+}
+
+.reviewsBanner {
+  $bottom-margin: 0.5rem;
+
+  h3 {
+    margin-bottom: $bottom-margin;
+    font-weight: $font-weight-bold;
+    font-size: 1rem;
+  }
+
+  p {
+    margin-bottom: $bottom-margin;
+    font-size: $font-size-sm;
+  }
 }
 
 .sideMenu {
