@@ -13,6 +13,7 @@ import config from 'config';
 import { absolutePath, timetableShare } from 'views/routes/paths';
 import { Repeat, Copy, Mail } from 'views/components/icons';
 import Modal from 'views/components/Modal';
+import CloseButton from 'views/components/CloseButton';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 
 import styles from './ShareTimetable.scss';
@@ -181,6 +182,7 @@ export default class ShareTimetable extends PureComponent<Props, State> {
         </button>
 
         <Modal isOpen={isOpen} onRequestClose={this.closeModal}>
+          <CloseButton onClick={this.closeModal} />
           <div className={styles.header}>
             <Repeat />
 

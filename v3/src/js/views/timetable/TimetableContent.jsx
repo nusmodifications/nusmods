@@ -266,7 +266,7 @@ class TimetableContent extends Component<Props> {
                   <ModulesSelect
                     moduleList={this.props.semModuleList}
                     onChange={(moduleCode) => {
-                      this.props.addModule(semester, moduleCode.value);
+                      this.props.addModule(semester, moduleCode);
                     }}
                     placeholder="Add module to timetable"
                   />}
