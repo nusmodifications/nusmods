@@ -6,11 +6,10 @@ import { connect } from 'react-redux';
 import { Redirect, withRouter } from 'react-router-dom';
 import Raven from 'raven-js';
 
-import type { FetchRequest, ModuleCodeMap } from 'types/reducers';
+import type { ModuleCodeMap } from 'types/reducers';
 import type { Module, ModuleCode } from 'types/modules';
 
-import { fetchModule, FETCH_MODULE } from 'actions/moduleBank';
-import { getRequestName } from 'reducers/requests';
+import { fetchModule } from 'actions/moduleBank';
 import NotFoundPage from 'views/errors/NotFoundPage';
 import ErrorPage from 'views/errors/ErrorPage';
 import LoadingSpinner from 'views/components/LoadingSpinner';
@@ -22,7 +21,6 @@ type Props = {
   moduleCode: ModuleCode,
   moduleCodes: ModuleCodeMap,
   module: ?Module,
-  request: ?FetchRequest,
   fetchModule: (ModuleCode) => void,
 };
 
@@ -85,13 +83,13 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
 
   render() {
     const { ModulePageContent, error } = this.state;
-    const { module, request, moduleCode, match } = this.props;
+    const { module, moduleCode, match } = this.props;
 
     if (!this.doesModuleExist(moduleCode)) {
       return <NotFoundPage />;
     }
 
-    if (error || (request && request.isFailure)) {
+    if (error) {
       return <ErrorPage eventId={Raven.lastEventId()} />;
     }
 
@@ -109,13 +107,11 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
 
 const mapStateToProps = (state, ownState) => {
   const moduleCode = ownState.match.params.moduleCode.toUpperCase();
-  const requestName = getRequestName(FETCH_MODULE);
 
   return {
     moduleCode,
     moduleCodes: state.entities.moduleBank.moduleCodes,
     module: state.entities.moduleBank.modules[moduleCode],
-    request: state.requests[requestName],
   };
 };
 
