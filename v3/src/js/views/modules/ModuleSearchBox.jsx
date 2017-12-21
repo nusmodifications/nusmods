@@ -20,6 +20,7 @@ type Props = ContextRouter & {
 export function ModuleSearchBoxComponent(props: Props) {
   return (
     <SearchBox
+      className="search-panel"
       throttle={props.throttle}
       useInstantSearch={props.useInstantSearch}
       initialSearchTerm={props.initialSearchTerm}

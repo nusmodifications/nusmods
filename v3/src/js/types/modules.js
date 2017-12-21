@@ -102,6 +102,14 @@ export type ModuleCondensed = {
   Semesters: Array<number>,
 };
 
+// Subset of Module object that contains the properties that are
+// needed for module search
+export type SearchableModule = {
+  ModuleCode: ModuleCode,
+  ModuleTitle: ModuleTitle,
+  ModuleDescription?: string,
+};
+
 // RawLessons obtained from API does not include ModuleCode and ModuleTitle by default.
 // They have to be injected in before using in the timetable.
 export type Lesson = RawLesson & {

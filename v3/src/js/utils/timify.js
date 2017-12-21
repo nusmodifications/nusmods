@@ -20,6 +20,13 @@ export function convertIndexToTime(index: number): LessonTime {
   return (hour < 10 ? `0${hour}` : hour.toString()) + minute;
 }
 
+export function formatHour(hour: number): string {
+  if (hour === 12) return '12 noon';
+  if (hour === 0 || hour === 24) return '12 midnight';
+  if (hour < 12) return `${hour}am`;
+  return `${hour - 12}pm`;
+}
+
 export const SCHOOLDAYS: Array<DayText> = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 export const DEFAULT_EARLIEST_TIME: LessonTime = '1000';
 export const DEFAULT_LATEST_TIME: LessonTime = '1800';

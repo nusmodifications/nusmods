@@ -1,0 +1,13 @@
+@import "~styles/utils/modules-entry";
+
+.search {
+  label {
+    margin-bottom: 0;
+    font-weight: $font-weight-bold;
+    font-size: $font-size-s;
+  }
+
+  :global(.form-group) {
+    margin-bottom: 0;
+  }
+}

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 
-import type { ModuleWithColor, ModuleCode, Semester } from 'types/modules';
+import type { ModuleWithColor, Semester } from 'types/modules';
 import type { ColorIndex } from 'types/reducers';
 
 import ColorPicker from 'views/components/ColorPicker';
@@ -19,10 +19,7 @@ import styles from './TimetableModulesTable.scss';
 import timetableActionsStyles from './TimetableActions.scss';
 
 type Props = {
-  activeModule: ModuleCode,
   selectModuleColor: Function,
-  modifyModuleColor: Function,
-  cancelModifyModuleColor: Function,
   hideLessonInTimetable: Function,
   showLessonInTimetable: Function,
   semester: Semester,
@@ -33,16 +30,6 @@ type Props = {
 };
 
 class TimetableModulesTable extends Component<Props> {
-  componentWillUnmount() {
-    this.cancelModifyModuleColor();
-  }
-
-  cancelModifyModuleColor = () => {
-    if (this.props.activeModule) {
-      this.props.cancelModifyModuleColor();
-    }
-  };
-
   renderModuleActions(module) {
     const hideBtnLabel = `${module.hiddenInTimetable ? 'Show' : 'Hide'} ${module.ModuleCode}`;
     const removeBtnLabel = `Remove ${module.ModuleCode} from timetable`;
@@ -56,7 +43,7 @@ class TimetableModulesTable extends Component<Props> {
             title={removeBtnLabel}
             aria-label={removeBtnLabel}
             onClick={() => {
-              if (confirm(`Are you sure you want to remove ${module.ModuleCode}?`)) {
+              if (window.confirm(`Are you sure you want to remove ${module.ModuleCode}?`)) {
                 this.props.onRemoveModule(module.ModuleCode);
               }
             }}

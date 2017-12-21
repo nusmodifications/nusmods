@@ -9,7 +9,7 @@ export const NBSP = '\u00a0';
 export const BULLET = ' • ';
 
 // Define media breakpoints
-type Breakpoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+export type Breakpoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 const breakpoints: { [Breakpoint]: number } = {
   xs: 0,
   sm: 576,
