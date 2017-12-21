@@ -2,12 +2,14 @@
 
 import React, { PureComponent } from 'react';
 import { connect, type MapStateToProps } from 'react-redux';
+import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 import { get } from 'lodash';
 
 import type { State } from 'reducers';
 import type { Module, Semester, ModuleCode } from 'types/modules';
 
+import { modulePage } from 'views/routes/paths';
 import { AlertTriangle } from 'views/components/icons';
 import { getModuleSemesterData } from 'utils/modules';
 import { getSemesterModules } from 'utils/timetables';
@@ -40,7 +42,12 @@ export class ModuleExamClashComponent extends PureComponent<Props> {
     if (!clashes.length) return null;
 
     const useSingular = clashes.length === 1;
-    const clashLinks = clashes.map(module => module.ModuleCode);
+    const clashLinks = clashes.map(module => (
+      <Link
+        key={module.ModuleCode}
+        to={modulePage(module.ModuleCode, module.ModuleTitle)}
+      >{module.ModuleCode}</Link>
+    ));
 
     return (
       <div className={classnames('text-danger', styles.alert)}>
