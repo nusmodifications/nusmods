@@ -8,7 +8,8 @@
     <link href="${htmlWebpackPlugin.files.publicPath}favicon-16x16.png" rel="icon" type="image/png" sizes="16x16">
     <link href="${htmlWebpackPlugin.files.publicPath}safari-pinned-tab.svg" rel="mask-icon" color="#ff5138">
     <link href="${htmlWebpackPlugin.files.publicPath}manifest.json" rel="manifest">
-    <link href="${htmlWebpackPlugin.options.apiBaseUrl}/moduleList.json" rel="preload" as="fetch">
+    <link href="${htmlWebpackPlugin.options.moduleListUrl}" rel="preload" as="fetch">
+    <link href="${htmlWebpackPlugin.options.venuesUrl}" rel="prefetch">
     <title>NUSMods</title>
     <meta name="description" content="NUSMods is a timetable builder and knowledge platform, providing students with a better way to plan their school timetable and useful module-related information that are community-driven.">
     <!-- Open Graph general (Facebook, Pinterest & Google+) -->

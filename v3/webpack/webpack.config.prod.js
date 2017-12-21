@@ -78,7 +78,8 @@ const productionConfig = merge([
           collapseWhitespace: true,
         },
         // For use as a variable under htmlWebpackPlugin.options in the template
-        apiBaseUrl: config.apiBaseUrl,
+        moduleListUrl: nusmods.moduleListUrl(),
+        venuesUrl: nusmods.venuesUrl(config.semester),
       }),
       new ScriptExtHtmlWebpackPlugin({
         inline: /manifest/,

@@ -4,7 +4,7 @@
 
 /*:: import type { ModuleCode, Semester } from 'types/modules'; */
 
-const config = require('config/app-config.json');
+const config = require('../config/app-config.json');
 
 const ayBaseUrl /*: string */ = `${config.apiBaseUrl}/${config.academicYear.replace('/', '-')}`;
 
@@ -22,7 +22,7 @@ const NUSModsApi = {
   },
 
   // List of all modules for the entire acad year
-  modulesUrl: (): string => {
+  modulesUrl: ()/*: string */ => {
     return `${ayBaseUrl}/moduleInformation.json`;
   },
 
