@@ -1,6 +1,7 @@
 const path = require('path');
 const merge = require('webpack-merge');
 const webpack = require('webpack');
+const _ = require('lodash');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -9,6 +10,8 @@ const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 
 const commonConfig = require('./webpack.config.common');
 const parts = require('./webpack.parts');
+const nusmods = require('../src/js/apis/nusmods');
+const config = require('../src/js/config/app-config.json');
 
 /**
  * Extracts css into their own file.
@@ -19,6 +22,12 @@ const parts = require('./webpack.parts');
 const extractTextPlugin = new ExtractTextPlugin('[name].[chunkhash].css', {
   allChunks: true,
 });
+
+const ONE_MONTH = 30 * 24 * 60 * 60;
+const staleWhileRevalidatePaths = [
+  nusmods.venuesUrl(config.semester),
+  nusmods.modulesUrl(),
+];
 
 const productionConfig = merge([
   parts.setFreeVariable('process.env.NODE_ENV', 'production'),
@@ -72,6 +81,9 @@ const productionConfig = merge([
           removeRedundantAttributes: true,
           collapseWhitespace: true,
         },
+        // For use as a variable under htmlWebpackPlugin.options in the template
+        moduleListUrl: nusmods.moduleListUrl(),
+        venuesUrl: nusmods.venuesUrl(config.semester),
       }),
       new ScriptExtHtmlWebpackPlugin({
         inline: /manifest/,
@@ -80,10 +92,46 @@ const productionConfig = merge([
       extractTextPlugin,
       // Copy files from static folder over to dist
       new CopyWebpackPlugin([{ from: 'static', context: parts.PATHS.root }], { copyUnmodified: true }),
+      // See this for how to configure Workbox service workers
+      // https://developers.google.com/web/tools/workbox/reference-docs/latest/module-workbox-build.html#.Configuration
       new WorkboxPlugin({
+        // Files matching these will be precached
         globDirectory: parts.PATHS.build,
         globPatterns: ['**/*.{html,js,css,png,svg}'],
         swDest: path.join(parts.PATHS.build, 'sw.js'),
+
+        // Cache NUSMods API requests so that pages which depend on them can be
+        // viewed offline
+        runtimeCaching: [
+          // Module and venue info are served from cache first, because they are
+          // large, so this will improve perceived performance
+          {
+            urlPattern: new RegExp(staleWhileRevalidatePaths.map(_.escapeRegExp).join('|')),
+            handler: 'staleWhileRevalidate',
+            cacheExpiration: {
+              maxAgeSeconds: ONE_MONTH,
+            },
+          },
+          // Everything else (module info, module list) uses network first because
+          // they are relatively small and needs to be as updated as possible
+          {
+            urlPattern: new RegExp(_.escapeRegExp(nusmods.ayBaseUrl())),
+            handler: 'networkFirst',
+            cacheExpiration: {
+              maxEntries: 500,
+              maxAgeSeconds: ONE_MONTH,
+            },
+          },
+        ],
+
+        // Always serve index.html since we're a SPA using HTML5 history
+        navigateFallback: 'index.html',
+
+        // Since our build system already adds hashes to our CSS and JS, we don't need
+        // to bust cache for these files
+        dontCacheBustUrlsMatching: /\w{20}\.(css|js)$/,
+
+        skipWaiting: true,
       }),
     ],
   },
