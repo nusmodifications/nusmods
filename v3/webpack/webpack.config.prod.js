@@ -24,6 +24,10 @@ const extractTextPlugin = new ExtractTextPlugin('[name].[chunkhash].css', {
 });
 
 const ONE_MONTH = 30 * 24 * 60 * 60;
+const staleWhileRevalidatePaths = [
+  nusmods.venuesUrl(config.semester),
+  nusmods.modulesUrl(),
+];
 
 const productionConfig = merge([
   parts.setFreeVariable('process.env.NODE_ENV', 'production'),
@@ -96,17 +100,13 @@ const productionConfig = merge([
         globPatterns: ['**/*.{html,js,css,png,svg}'],
         swDest: path.join(parts.PATHS.build, 'sw.js'),
 
-        // Cache all NUSMods API requests
-
+        // Cache NUSMods API requests so that pages which depend on them can be
+        // viewed offline
         runtimeCaching: [
           // Module and venue info are served from cache first, because they are
           // large, so this will improve perceived performance
           {
-            urlPattern: new RegExp(
-              [nusmods.venuesUrl(config.semester), nusmods.modulesUrl()]
-                .map(_.escapeRegExp)
-                .join('|'),
-            ),
+            urlPattern: new RegExp(staleWhileRevalidatePaths.map(_.escapeRegExp).join('|')),
             handler: 'staleWhileRevalidate',
             cacheExpiration: {
               maxAgeSeconds: ONE_MONTH,
