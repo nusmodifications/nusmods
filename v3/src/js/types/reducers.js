@@ -14,6 +14,7 @@ import type {
 export type AppState = {
   activeSemester: Semester,
   activeLesson: ?Lesson,
+  isOnline: boolean,
 };
 
 /* requests.js */
