@@ -13,6 +13,7 @@ import { formatExamDate, getSemestersOffered } from 'utils/modules';
 import { intersperse } from 'utils/array';
 import { BULLET } from 'utils/react';
 import { NAVTAB_HEIGHT } from 'views/layout/Navtabs';
+import ModuleTree from 'views/modules/ModuleTree';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
 import DisqusComments from 'views/components/DisqusComments';
 import Online from 'views/components/Online';
@@ -36,8 +37,7 @@ type State = {
 
 export const SIDE_MENU_LABELS = {
   details: 'Details',
-  // TODO: Remove this when the prerequisite tree is ready
-  // prerequisites: 'Prerequisites',
+  prerequisites: 'Prerequisites',
   timetable: 'Timetable',
   cors: 'Bidding Stats',
   reviews: 'Reviews',
@@ -163,11 +163,11 @@ export class ModulePageContentComponent extends Component<Props, State> {
                 </div>
               </div>
             </section>
-            {/* TODO: Add in prereq tree when it is ready
-            <section className={styles.section} id={SIDE_MENU_ITEMS.prerequisites}>
-              <h2 className={styles.sectionHeading}>Prerequisite Tree</h2>
+
+            <section id="prerequisites">
+              <h2>Prerequisite Tree</h2>
+              <ModuleTree module={module} />
             </section>
-            */}
 
             <section className={styles.section} id="timetable">
               <h2 className={styles.sectionHeading}>Timetable</h2>
