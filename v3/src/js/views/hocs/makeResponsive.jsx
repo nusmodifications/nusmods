@@ -5,7 +5,7 @@ import { breakpointUp } from 'utils/react';
 import type { Breakpoint } from 'utils/react';
 
 type State = {
-  isMatchBreakpoint: boolean,
+  matchBreakpoint: boolean,
 };
 
 function makeResponsive<Props: {}>(
@@ -15,7 +15,7 @@ function makeResponsive<Props: {}>(
   return class extends Component<Props, State> {
     mql: ?MediaQueryList;
     state = {
-      isMatchBreakpoint: false,
+      matchBreakpoint: false,
     };
 
     componentDidMount() {
@@ -32,13 +32,13 @@ function makeResponsive<Props: {}>(
     }
 
     updateMediaQuery = (e: MediaQueryListEvent | MediaQueryList) => {
-      if (e.matches !== this.state.isMatchBreakpoint) {
-        this.setState({ isMatchBreakpoint: e.matches });
+      if (e.matches !== this.state.matchBreakpoint) {
+        this.setState({ matchBreakpoint: e.matches });
       }
     };
 
     render() {
-      return <WrappedComponent isMatchBreakpoint={this.state.isMatchBreakpoint} {...this.props} />;
+      return <WrappedComponent matchBreakpoint={this.state.matchBreakpoint} {...this.props} />;
     }
   };
 }

@@ -17,7 +17,7 @@ type Props = {
   moduleList: ModuleSelectList,
   onChange: Function,
   placeholder: string,
-  isMatchBreakpoint: boolean,
+  matchBreakpoint: boolean,
 };
 
 type State = {
@@ -37,7 +37,7 @@ class ModulesSelect extends Component<Props, State> {
   shouldComponentUpdate(nextProps: Props, nextState: State) {
     return (
       !_.isEqual(this.state, nextState) ||
-      this.props.isMatchBreakpoint !== nextProps.isMatchBreakpoint ||
+      this.props.matchBreakpoint !== nextProps.matchBreakpoint ||
       _.size(this.props.moduleList) !== _.size(nextProps.moduleList)
     );
   }
@@ -68,6 +68,7 @@ class ModulesSelect extends Component<Props, State> {
     return sortModules(inputValue, results.slice(0, RESULTS_LIMIT));
   };
 
+  // downshift attaches label for us; autofocus only applies to modal
   /* eslint-disable jsx-a11y/label-has-for, jsx-a11y/no-autofocus */
   // TODO: Inject types from downshift when https://github.com/paypal/downshift/pull/180 is implemented
   renderDropdown = ({ getLabelProps, getInputProps, getItemProps, isOpen, inputValue, highlightedIndex }: any) => {
@@ -136,7 +137,7 @@ class ModulesSelect extends Component<Props, State> {
 
   render() {
     const { isModalOpen, isOpen } = this.state;
-    const { isMatchBreakpoint } = this.props;
+    const { matchBreakpoint } = this.props;
     const downshiftComponent = (
       <Downshift
         isOpen={isModalOpen || isOpen}
@@ -148,7 +149,7 @@ class ModulesSelect extends Component<Props, State> {
         selectedItem={''}
       />
     );
-    return isMatchBreakpoint ? (
+    return matchBreakpoint ? (
       downshiftComponent
     ) : (
       <div>
