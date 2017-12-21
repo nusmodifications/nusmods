@@ -49,6 +49,8 @@ class ModulesSelect extends Component<Props, State> {
   };
 
   onFocus = () => this.setState({ isOpen: true });
+  /* Prevent iOS "Done" button from resetting input */
+  onBlur = (e: Event) => { e.preventDefault(); };
   onOuterClick = () => this.setState({ isOpen: false });
   toggleModal = () => {
     noScroll.toggle();
@@ -87,13 +89,19 @@ class ModulesSelect extends Component<Props, State> {
           className={styles.input}
           {...getInputProps({ placeholder })}
           onFocus={this.onFocus}
+          onBlur={this.onBlur}
         />
         {isModalOpen && <CloseButton className={styles.close} onClick={this.toggleModal} />}
         {showResults && (
           <ol className={styles.selectList}>
             {results.map((module, index) => {
               return module.isAdded ? (
-                <li key={module.ModuleCode} className={classnames(styles.option, styles.optionDisabled)}>
+                <li
+                  key={module.ModuleCode}
+                  className={classnames(styles.option, styles.optionDisabled, {
+                    [styles.optionSelected]: highlightedIndex === index,
+                  })}
+                >
                   {`${module.ModuleCode} ${module.ModuleTitle}`}
                   <div>
                     <span className="badge badge-info">Added</span>
