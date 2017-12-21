@@ -1,20 +1,8 @@
 // @flow
 import type { FSA } from 'types/redux';
-import type {
-  Module,
-  ModuleCode,
-  ModuleCondensed,
-  Semester,
-} from 'types/modules';
-import type {
-  SemTimetableConfig,
-} from 'types/timetables';
-import type {
-  ModuleList,
-  ModuleSelectList,
-  ModuleSelectListItem,
-  ModuleCodeMap,
-} from 'types/reducers';
+import type { Module, ModuleCode, Semester } from 'types/modules';
+import type { SemTimetableConfig } from 'types/timetables';
+import type { ModuleList, ModuleSelectListItem, ModuleCodeMap } from 'types/reducers';
 
 import _ from 'lodash';
 
@@ -27,32 +15,20 @@ export type ModulesMap = {
 export type ModuleBank = {
   moduleList: ModuleList,
   modules: ModulesMap,
-  moduleSelectList: ModuleSelectList,
   moduleCodes: ModuleCodeMap,
 };
 
 const defaultModuleBankState: ModuleBank = {
   moduleList: [], // List of modules
   modules: {}, // Object of ModuleCode -> ModuleDetails
-  moduleSelectList: [],
   moduleCodes: {},
 };
 
 function precomputeFromModuleList(moduleList: ModuleList) {
   // Cache a mapping of all module codes to module data for fast module data lookup
-  const moduleCodes = _.zipObject(
-    moduleList.map(module => module.ModuleCode),
-    moduleList,
-  );
+  const moduleCodes = _.zipObject(moduleList.map(module => module.ModuleCode), moduleList);
 
-  // Precompute this in reducer because putting this inside render is very expensive (5k modules!)
-  const moduleSelectList = moduleList.map((module: ModuleCondensed) => ({
-    semesters: module.Semesters,
-    value: module.ModuleCode,
-    label: `${module.ModuleCode} ${module.ModuleTitle}`,
-  }));
-
-  return { moduleCodes, moduleSelectList };
+  return { moduleCodes };
 }
 
 function moduleBank(state: ModuleBank = defaultModuleBankState, action: FSA): ModuleBank {
@@ -91,10 +67,13 @@ export function getSemModuleSelectList(
   semester: Semester,
   semTimetableConfig: SemTimetableConfig,
 ): ModuleSelectListItem[] {
-  return state.moduleSelectList.filter((item: ModuleSelectListItem): boolean => {
+  return state.moduleList
     // In specified semester and not within the timetable.
-    return _.includes(item.semesters, semester) && !semTimetableConfig[item.value];
-  });
+    .filter(item => item.Semesters.includes(semester))
+    .map(mod => ({
+      ...mod,
+      isAdded: mod.ModuleCode in semTimetableConfig,
+    }));
 }
 
 export default moduleBank;
