@@ -3,11 +3,12 @@
 import React, { PureComponent } from 'react';
 import Downshift from 'downshift';
 import classnames from 'classnames';
-import { values, uniq } from 'lodash';
+import { values, uniq, map } from 'lodash';
 
 import type { OnFilterChange } from 'types/views';
 
 import { Search } from 'views/components/icons';
+import makeResponsive from 'views/hocs/makeResponsive';
 import FilterGroup from 'utils/filters/FilterGroup';
 import ModuleFilter from 'utils/filters/ModuleFilter';
 import { highlight } from 'utils/react';
@@ -17,6 +18,7 @@ type Props = {
   onFilterChange: OnFilterChange,
   groups: FilterGroup<any>[],
   group: FilterGroup<*>,
+  matchBreakpoint: boolean,
 };
 
 type State = {
@@ -24,7 +26,7 @@ type State = {
   searchedFilters: string[],
 }
 
-export default class DropdownListFilters extends PureComponent<Props, State> {
+export class DropdownListFiltersComponent extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
 
@@ -36,10 +38,14 @@ export default class DropdownListFilters extends PureComponent<Props, State> {
     };
   }
 
-  onChange = (selectedItem: string, { clearSelection }: Object) => {
+  onSelectItem(selectedItem: string) {
     const { group, onFilterChange } = this.props;
     onFilterChange(group.toggle(selectedItem));
     this.setState({ searchedFilters: uniq([...this.state.searchedFilters, selectedItem]) });
+  }
+
+  onChange = (selectedItem: string, { clearSelection }: Object) => {
+    this.onSelectItem(selectedItem);
     clearSelection();
   };
 
@@ -49,7 +55,7 @@ export default class DropdownListFilters extends PureComponent<Props, State> {
   }
 
   render() {
-    const { group, groups, onFilterChange } = this.props;
+    const { group, groups, onFilterChange, matchBreakpoint } = this.props;
     const moduleCodes = FilterGroup.union(groups, group);
     const htmlId = `dropdown-filter-${group.id}`;
 
@@ -59,35 +65,36 @@ export default class DropdownListFilters extends PureComponent<Props, State> {
           <label htmlFor={htmlId}>{group.label}</label>
         </h4>
 
-        <Downshift
-          breakingChanges={{ resetInputOnSelection: true }}
-          onChange={this.onChange}
-          render={({
-            getInputProps,
-            getItemProps,
-            openMenu,
-            isOpen,
-            inputValue,
-            highlightedIndex,
-          }) => (
-            <div className="dropdown">
-              <div className={classnames(styles.searchWrapper, { [styles.focused]: this.state.isFocused })}>
-                <Search />
-                <input
-                  {...getInputProps({
-                    onFocus: () => {
-                      this.setState({ isFocused: true });
-                      openMenu();
-                    },
-                    onBlur: () => this.setState({ isFocused: false }),
-                    className: classnames('form-control form-control-sm', styles.searchInput),
-                    placeholder: `Search ${group.label.toLowerCase()}...`,
-                    id: htmlId,
-                  })}
-                />
-              </div>
+        {matchBreakpoint ?
+          <Downshift
+            breakingChanges={{ resetInputOnSelection: true }}
+            onChange={this.onChange}
+            render={({
+              getInputProps,
+              getItemProps,
+              openMenu,
+              isOpen,
+              inputValue,
+              highlightedIndex,
+            }) => (
+              <div className="dropdown">
+                <div className={classnames(styles.searchWrapper, { [styles.focused]: this.state.isFocused })}>
+                  <Search />
+                  <input
+                    {...getInputProps({
+                      onFocus: () => {
+                        this.setState({ isFocused: true });
+                        openMenu();
+                      },
+                      onBlur: () => this.setState({ isFocused: false }),
+                      className: classnames('form-control form-control-sm', styles.searchInput),
+                      placeholder: `Search ${group.label.toLowerCase()}...`,
+                      id: htmlId,
+                    })}
+                  />
+                </div>
 
-              {isOpen &&
+                {isOpen &&
                 <div className="dropdown-menu show">
                   {this.displayedFilters(inputValue)
                     .map((filter: ModuleFilter, index: number) => (
@@ -112,9 +119,20 @@ export default class DropdownListFilters extends PureComponent<Props, State> {
                       </label>
                     ))}
                 </div>}
-            </div>
-          )}
-        />
+              </div>
+            )}
+          />
+          :
+          <select
+            className="form-control"
+            onChange={evt => this.onSelectItem(evt.target.value)}
+          >
+            {map(group.filters, filter => (
+              <option key={filter.id} value={filter.id}>
+                {filter.label} ({filter.count(moduleCodes)})
+              </option>
+            ))}
+          </select>}
 
         <ul className="list-unstyled">
           {this.state.searchedFilters.map((filterId) => {
@@ -146,3 +164,5 @@ export default class DropdownListFilters extends PureComponent<Props, State> {
     );
   }
 }
+
+export default makeResponsive(DropdownListFiltersComponent, 'md');
