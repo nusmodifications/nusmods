@@ -14,16 +14,18 @@ import {
 import {
   SELECT_SEMESTER,
 } from 'actions/settings';
+import { SET_ONLINE_STATUS } from 'actions/online';
 
-const defaultAppState: AppState = {
+const defaultAppState = (): AppState => ({
   // Default to the current semester from config.
   activeSemester: config.semester,
   // The lesson being modified on the timetable.
   activeLesson: null,
-};
+  isOnline: navigator.onLine,
+});
 
 // This reducer is for storing state pertaining to the UI.
-function app(state: AppState = defaultAppState, action: FSA): AppState {
+function app(state: AppState = defaultAppState(), action: FSA): AppState {
   switch (action.type) {
     case SELECT_SEMESTER:
       return {
@@ -40,6 +42,11 @@ function app(state: AppState = defaultAppState, action: FSA): AppState {
       return {
         ...state,
         activeLesson: null,
+      };
+    case SET_ONLINE_STATUS:
+      return {
+        ...state,
+        isOnline: action.payload.isOnline,
       };
     case SELECT_MODULE_COLOR:
     default:

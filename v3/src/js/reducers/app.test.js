@@ -1,7 +1,9 @@
 // @flow
 
-import * as actions from 'actions/timetables';
-import * as settingsActions from 'actions/settings';
+import { modifyLesson, changeLesson, cancelModifyLesson } from 'actions/timetables';
+import { setOnlineStatus } from 'actions/online';
+import { selectSemester } from 'actions/settings';
+
 import reducer from 'reducers/app';
 
 import type { Lesson, Semester } from 'types/modules';
@@ -15,6 +17,7 @@ const lesson: Lesson = lessons[0];
 const appInitialState: AppState = {
   activeSemester: semester,
   activeLesson: null,
+  isOnline: true,
 };
 const appHasSemesterTwoState: AppState = { ...appInitialState, activeSemester: anotherSemester };
 const appHasActiveLessonState: AppState = { ...appInitialState, activeLesson: lesson };
@@ -27,7 +30,7 @@ test('app should return initial state', () => {
 
 // Tests for active semester.
 test('app should set active semester', () => {
-  const action: FSA = settingsActions.selectSemester(anotherSemester);
+  const action: FSA = selectSemester(anotherSemester);
   const nextState: AppState = reducer(appInitialState, action);
 
   expect(nextState).toEqual(appHasSemesterTwoState);
@@ -35,7 +38,7 @@ test('app should set active semester', () => {
 
 // Tests for active lesson.
 test('app should instantiate active lesson', () => {
-  const action: FSA = actions.modifyLesson(lesson);
+  const action: FSA = modifyLesson(lesson);
   const nextState: AppState = reducer(appInitialState, action);
 
   expect(nextState).toEqual(appHasActiveLessonState);
@@ -43,21 +46,28 @@ test('app should instantiate active lesson', () => {
 
 test('app should set active lesson', () => {
   const anotherLesson: Lesson = lessons[1];
-  const action: FSA = actions.modifyLesson(anotherLesson);
+  const action: FSA = modifyLesson(anotherLesson);
   const nextState: AppState = reducer(appHasActiveLessonState, action);
 
   expect(nextState).toEqual({ ...appInitialState, activeLesson: anotherLesson });
 });
 
 test('app should accept lesson change and unset active lesson', () => {
-  const action: FSA = actions.changeLesson(semester, lesson);
+  const action: FSA = changeLesson(semester, lesson);
   const nextState: AppState = reducer(appInitialState, action);
 
   expect(nextState).toEqual(appInitialState);
 });
 
 test('app should cancel and unset active lesson', () => {
-  const nextState: AppState = reducer(appHasActiveLessonState, actions.cancelModifyLesson());
+  const nextState: AppState = reducer(appHasActiveLessonState, cancelModifyLesson());
 
   expect(nextState).toEqual(appInitialState);
+});
+
+test('app should subscribe to online status action', () => {
+  const nextState = reducer(appInitialState, setOnlineStatus(false));
+  expect(nextState).toHaveProperty('isOnline', false);
+  expect(reducer(nextState, setOnlineStatus(true)))
+    .toHaveProperty('isOnline', true);
 });
