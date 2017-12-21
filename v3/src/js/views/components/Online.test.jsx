@@ -20,7 +20,7 @@ describe('<Online>', () => {
 
   test('should call render function with isOnline status', () => {
     const render = jest.fn().mockReturnValue(null);
-    const wrapper = shallow(<OnlineComponent isOnline>{render}</OnlineComponent>)
+    const wrapper = shallow(<OnlineComponent isOnline>{render}</OnlineComponent>);
 
     expect(render).toHaveBeenLastCalledWith(true);
     wrapper.setProps({ isOnline: false });
