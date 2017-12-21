@@ -1,19 +1,12 @@
 // @flow
-import type {
-  Faculty,
-  Lesson,
-  ModuleCode,
-  ModuleCondensed,
-  Semester,
-} from 'types/modules';
-import type {
-  Mode,
-} from 'types/settings';
+import type { Faculty, Lesson, ModuleCode, SearchableModule, ModuleCondensed, Semester } from 'types/modules';
+import type { Mode } from 'types/settings';
 
 /* app.js */
 export type AppState = {
   activeSemester: Semester,
   activeLesson: ?Lesson,
+  isOnline: boolean,
 };
 
 /* requests.js */
@@ -48,17 +41,15 @@ export type SettingsState = {
   newStudent: boolean,
   faculty: ?Faculty,
   mode: Mode,
-  hiddenInTimetable: Array<ModuleCode>,
+  hiddenInTimetable: ModuleCode[],
 };
 
 /* entities/moduleBank.js */
-export type ModuleSelectListItem = {
-  label: string,
-  value: ModuleCode,
-  semesters: Array<number>
+export type ModuleSelectListItem = SearchableModule & {
+  isAdded: boolean,
 };
-export type ModuleList = Array<ModuleCondensed>;
-export type ModuleSelectList = Array<ModuleSelectListItem>;
+export type ModuleList = ModuleCondensed[];
+export type ModuleSelectList = ModuleSelectListItem[];
 export type ModuleCodeMap = { [ModuleCode]: ModuleCondensed };
 
 /* moduleFinder.js */
@@ -69,4 +60,4 @@ export type ModuleSearch = {
 
 export type ModuleFinderState = {
   search: ModuleSearch,
-}
+};

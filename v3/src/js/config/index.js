@@ -45,8 +45,6 @@ export type Config = {
   holidays: Date[],
 
   corsSchedule: CorsRound[],
-
-  semTimetableFragment: (Semester) => string,
 };
 
 function convertCorsDate(roundData: Object): CorsRound {
@@ -67,12 +65,6 @@ const augmentedConfig: Config = {
   holidays: holidays.map(date => new Date(date)),
 
   corsSchedule: corsData.map(convertCorsDate),
-
-  semTimetableFragment: (semester: Semester = appConfig.semester): string => {
-    // For use in the URL: E.g. `timetable/2016-2017/sem1`
-    const acadYear = appConfig.academicYear.replace('/', '-');
-    return `timetable/${acadYear}/sem${semester}`;
-  },
 };
 
 export default augmentedConfig;

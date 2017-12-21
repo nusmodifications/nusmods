@@ -20,15 +20,6 @@ export default function ({ className, overlayClassName, children, onRequestClose
       className={classnames(styles.modal, className)}
       {...rest}
     >
-      <button
-        className="close"
-        type="button"
-        onClick={onRequestClose}
-        aria-label="Close"
-      >
-        &times;
-      </button>
-
       {children}
     </ReactModal>
   );
