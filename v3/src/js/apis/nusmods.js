@@ -1,20 +1,23 @@
 // @flow
-import type { ModuleCode, Semester } from 'types/modules';
+// This file uses comment type because we want to import it in Webpack configs
+/* eslint-disable spaced-comment */
 
-import config from 'config';
+/*:: import type { ModuleCode, Semester } from 'types/modules'; */
 
-const ayBaseUrl: string = `${config.apiBaseUrl}/${config.academicYear.replace('/', '-')}`;
+const config = require('config/app-config.json');
+
+const ayBaseUrl /*: string */ = `${config.apiBaseUrl}/${config.academicYear.replace('/', '-')}`;
 
 const NUSModsApi = {
-  ayBaseUrl: (): string => ayBaseUrl,
+  ayBaseUrl: ()/*: string */ => ayBaseUrl,
 
   // List of modules for the entire acad year.
-  moduleListUrl: (): string => {
+  moduleListUrl: ()/*: string */ => {
     return `${ayBaseUrl}/moduleList.json`;
   },
 
   // Module for that acad year. Not tied to any semester.
-  moduleDetailsUrl: (moduleCode: ModuleCode): string => {
+  moduleDetailsUrl: (moduleCode /*: ModuleCode */)/*: string */ => {
     return `${ayBaseUrl}/modules/${moduleCode}.json`;
   },
 
@@ -24,9 +27,9 @@ const NUSModsApi = {
   },
 
   // List of all venue's info for one semester in the current acad year
-  venuesUrl: (semester: Semester): string => {
+  venuesUrl: (semester/*: Semester */)/*: string */ => {
     return `${ayBaseUrl}/${semester}/venueInformation.json`;
   },
 };
 
-export default NUSModsApi;
+module.exports = NUSModsApi;

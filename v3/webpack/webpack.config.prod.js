@@ -1,6 +1,7 @@
 const path = require('path');
 const merge = require('webpack-merge');
 const webpack = require('webpack');
+const _ = require('lodash');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -9,6 +10,7 @@ const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 
 const commonConfig = require('./webpack.config.common');
 const parts = require('./webpack.parts');
+const nusmods = require('../src/js/apis/nusmods');
 const config = require('../src/js/config/app-config.json');
 
 /**
@@ -20,6 +22,8 @@ const config = require('../src/js/config/app-config.json');
 const extractTextPlugin = new ExtractTextPlugin('[name].[chunkhash].css', {
   allChunks: true,
 });
+
+const ONE_MONTH = 30 * 24 * 60 * 60;
 
 const productionConfig = merge([
   parts.setFreeVariable('process.env.NODE_ENV', 'production'),
@@ -92,10 +96,30 @@ const productionConfig = merge([
         swDest: path.join(parts.PATHS.build, 'sw.js'),
 
         // Cache all NUSMods API requests
+
         runtimeCaching: [
+          // Module and venue info are served from cache first, because they are
+          // large, so this will improve perceived performance
           {
-            urlPattern: new RegExp(config.apiBaseUrl),
+            urlPattern: new RegExp(
+              [nusmods.venuesUrl(config.semester), nusmods.modulesUrl()]
+                .map(_.escapeRegExp)
+                .join('|'),
+            ),
             handler: 'staleWhileRevalidate',
+            cacheExpiration: {
+              maxAgeSeconds: ONE_MONTH,
+            },
+          },
+          // Everything else (module info, module list) uses network first because
+          // they are relatively small and needs to be as updated as possible
+          {
+            urlPattern: new RegExp(_.escapeRegExp(nusmods.ayBaseUrl())),
+            handler: 'networkFirst',
+            cacheExpiration: {
+              maxEntries: 500,
+              maxAgeSeconds: ONE_MONTH,
+            },
           },
         ],
 
@@ -104,7 +128,7 @@ const productionConfig = merge([
 
         // Since our build system already adds hashes to our CSS and JS, we don't need
         // to bust cache for these files
-        dontCacheBustUrlsMatching: /\.\w{20}\.(css|js)/,
+        dontCacheBustUrlsMatching: /\w{20}\.(css|js)$/,
 
         skipWaiting: true,
       }),
