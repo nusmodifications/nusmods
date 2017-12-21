@@ -7,7 +7,7 @@ import { each, values, uniq } from 'lodash';
 
 import type { OnFilterChange } from 'types/views';
 
-import { Search } from 'views/components/icons';
+import { Search, ChevronDown } from 'views/components/icons';
 import makeResponsive from 'views/hocs/makeResponsive';
 import FilterGroup from 'utils/filters/FilterGroup';
 import ModuleFilter from 'utils/filters/ModuleFilter';
@@ -27,6 +27,8 @@ type State = {
 }
 
 export class DropdownListFiltersComponent extends PureComponent<Props, State> {
+  searchInput: ?HTMLInputElement;
+
   constructor(props: Props) {
     super(props);
 
@@ -38,12 +40,16 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
     };
   }
 
-  onSelectItem(selectedItem: string) {
+  onSelectItem = (selectedItem: string) => {
     if (!selectedItem) return;
     const { group, onFilterChange } = this.props;
     onFilterChange(group.toggle(selectedItem));
     this.setState({ searchedFilters: uniq([...this.state.searchedFilters, selectedItem]) });
-  }
+  };
+
+  focusInput = () => {
+    if (this.searchInput) this.searchInput.focus();
+  };
 
   displayedFilters(inputValue?: string): [ModuleFilter, number][] {
     const { group, groups } = this.props;
@@ -96,8 +102,12 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
             }) => (
               <div className="dropdown">
                 <div className={classnames(styles.searchWrapper, { [styles.focused]: this.state.isFocused })}>
-                  <Search />
+                  <Search
+                    className={styles.searchIcon}
+                    onClick={this.focusInput}
+                  />
                   <input
+                    ref={(r) => { this.searchInput = r; }}
                     {...getInputProps({
                       onFocus: () => {
                         this.setState({ isFocused: true });
@@ -109,32 +119,34 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
                       id: htmlId,
                     })}
                   />
+                  <ChevronDown
+                    className={styles.openIcon}
+                    onClick={openMenu}
+                  />
                 </div>
 
                 {isOpen &&
                   <div className="dropdown-menu show">
-                    {this.displayedFilters(inputValue)
-                      .map(([filter, count], index) => (
-                        <label
-                          key={filter.id}
-                          {...getItemProps({
-                            item: filter.id,
-                            className: classnames('dropdown-item', styles.label, {
-                              [styles.selected]: index === highlightedIndex,
-                              [styles.enabled]: filter.enabled,
-                            }),
-                          })}
-                        >
-                          <input
-                            className="form-check-input"
-                            type="checkbox"
-                            defaultChecked={filter.enabled}
-                          />
-                          {highlight(filter.label, inputValue)}
-                          &nbsp;
-                          <span className="text-muted">({count})</span>
-                        </label>
-                      ))}
+                    {this.displayedFilters(inputValue).map(([filter, count], index) => (
+                      <label
+                        key={filter.id}
+                        {...getItemProps({
+                          item: filter.id,
+                          className: classnames('dropdown-item', styles.label, {
+                            [styles.selected]: index === highlightedIndex,
+                            [styles.enabled]: filter.enabled,
+                          }),
+                        })}
+                      >
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          defaultChecked={filter.enabled}
+                        />
+                        {highlight(filter.label, inputValue)}
+                        &nbsp;
+                        <span className="text-muted">({count})</span>
+                      </label>))}
                   </div>}
               </div>
             )}
@@ -150,13 +162,12 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
             }}
           >
             <option>{placeholder}</option>
-            {this.displayedFilters()
-              .map(([filter, count]) => (
-                <option key={filter.id} value={filter.id}>
-                  {filter.enabled && '☑ '}
-                  {filter.label} ({count})
-                </option>
-              ))}
+            {this.displayedFilters().map(([filter, count]) => (
+              <option key={filter.id} value={filter.id}>
+                {filter.enabled && '☑ '}
+                {filter.label} ({count})
+              </option>
+            ))}
           </select>}
 
         <ul className="list-unstyled">

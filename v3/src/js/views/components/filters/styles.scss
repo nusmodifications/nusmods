@@ -70,10 +70,18 @@ $h-padding: $grid-gutter-width / 2;
     svg {
       position: absolute;
       top: 0.35rem;
-      left: 0;
       width: $icon-size;
       height: $icon-size;
+      cursor: pointer;
       transition: $transition-base;
+    }
+
+    .searchIcon {
+      left: 0;
+    }
+
+    .openIcon {
+      right: 0;
     }
 
     &.focused svg {
