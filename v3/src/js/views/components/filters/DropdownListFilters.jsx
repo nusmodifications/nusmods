@@ -13,6 +13,7 @@ import FilterGroup from 'utils/filters/FilterGroup';
 import ModuleFilter from 'utils/filters/ModuleFilter';
 import { highlight } from 'utils/react';
 import styles from './styles.scss';
+import Checklist from './Checklist';
 
 type Props = {
   onFilterChange: OnFilterChange,
@@ -75,8 +76,12 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
   render() {
     const { group, groups, onFilterChange, matchBreakpoint } = this.props;
     const moduleCodes = FilterGroup.union(groups, group);
+
     const htmlId = `dropdown-filter-${group.id}`;
     const placeholder = `Add ${group.label.toLowerCase()} filter...`;
+
+    const searchedFilters = this.state.searchedFilters
+      .map(filterId => group.filters[filterId]);
 
     return (
       <div className={styles.dropdown}>
@@ -158,44 +163,27 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
             id={htmlId}
             onChange={(evt) => {
               this.onSelectItem(evt.target.value);
+              // Reset selection to the first placeholder item so that the last selected item
+              // is not left selected in the <select>
               evt.target.selectedIndex = 0; // eslint-disable-line no-param-reassign
             }}
           >
             <option>{placeholder}</option>
             {this.displayedFilters().map(([filter, count]) => (
               <option key={filter.id} value={filter.id}>
+                {/* Use a unicode checkbox to indicate to the user filters that are already enabled */}
                 {filter.enabled && '☑ '}
                 {filter.label} ({count})
               </option>
             ))}
           </select>}
 
-        <ul className="list-unstyled">
-          {this.state.searchedFilters.map((filterId) => {
-            const filter = group.filters[filterId];
-            if (!filter) return null;
-
-            return (
-              <li key={filter.id}>
-                <label
-                  className={classnames(
-                    'form-check-label',
-                    styles.label,
-                    { [styles.enabled]: filter.enabled },
-                  )}
-                >
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    checked={filter.enabled}
-                    onChange={() => onFilterChange(group.toggle(filter))}
-                  />
-                  {filter.label}&nbsp;<span className="text-muted">({filter.count(moduleCodes)})</span>
-                </label>
-              </li>
-            );
-          })}
-        </ul>
+        {/* Show all filters that have been selected at some point */}
+        <Checklist
+          filters={searchedFilters}
+          onChange={filter => onFilterChange(group.toggle(filter))}
+          getCount={filter => filter.count(moduleCodes)}
+        />
       </div>
     );
   }
