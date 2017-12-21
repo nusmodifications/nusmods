@@ -41,7 +41,8 @@ $sticky-top: $navbar-height + $header-margin-top;
 }
 
 .details {
-  dt {
+  dt,
+  h4 {
     font-size: $font-size-sm;
   }
 }

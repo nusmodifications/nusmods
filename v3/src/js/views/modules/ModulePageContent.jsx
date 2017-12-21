@@ -18,6 +18,7 @@ import DisqusComments from 'views/components/DisqusComments';
 import SideMenu from 'views/components/SideMenu';
 import LessonTimetable from 'views/components/module-info/LessonTimetable';
 import ModuleExamClash from 'views/components/module-info/ModuleExamClash';
+import ModuleWorkload from 'views/components/module-info/ModuleWorkload';
 import AddToTimetableDropdown from 'views/components/module-info/AddModuleDropdown';
 import CorsStats from 'views/components/cors-stats/CorsStats';
 import CorsNotification from 'views/components/cors-info/CorsNotification';
@@ -98,7 +99,7 @@ export class ModulePageContentComponent extends Component<Props, State> {
 
             <section
               id={SIDE_MENU_ITEMS.details}
-              className={classnames('row', styles.section, styles.firstSection)}
+              className={classnames('row', styles.section, styles.details)}
             >
               <div className="col-sm-8">
                 { module.ModuleDescription && <p>{module.ModuleDescription}</p> }
@@ -125,6 +126,10 @@ export class ModulePageContentComponent extends Component<Props, State> {
                     </dd>,
                   ]}
                 </dl>
+
+                {module.Workload
+                  ? <ModuleWorkload workload={module.Workload} />
+                  : <p>Workload not available</p>}
               </div>
 
               <div className="col-sm-4">
@@ -228,4 +233,5 @@ const mapStateToProps: MapStateToProps<*, *, *> = (state, ownProps) => ({
   module: state.entities.moduleBank.modules[ownProps.moduleCode],
 });
 
-export default connect(mapStateToProps)(ModulePageContentComponent);
+const ModulePageContent = connect(mapStateToProps)(ModulePageContentComponent);
+export default ModulePageContent;
