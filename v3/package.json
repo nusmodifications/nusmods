@@ -106,6 +106,7 @@
     "immutability-helper": "^2.3.1",
     "localforage": "^1.5.5",
     "lodash": "^4.17.4",
+    "no-scroll": "^2.1.0",
     "nusmoderator": "^2.0.0",
     "query-string": "^5.0.0",
     "raven-for-redux": "^1.1.1",

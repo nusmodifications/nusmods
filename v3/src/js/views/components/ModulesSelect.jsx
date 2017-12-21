@@ -1,5 +1,6 @@
 // @flow
 import React, { Component } from 'react';
+import noScroll from 'no-scroll';
 import _ from 'lodash';
 import Downshift from 'downshift';
 import classnames from 'classnames';
@@ -21,34 +22,38 @@ type Props = {
 
 type State = {
   isModalOpen: boolean,
-  isFocused: boolean,
+  isOpen: boolean,
 };
 
 const RESULTS_LIMIT = 500;
-const DOWNSHIFT_FLAGS = { resetInputOnSelection: true };
 
 class ModulesSelect extends Component<Props, State> {
+  input: ?HTMLInputElement;
   state = {
+    isOpen: false,
     isModalOpen: false,
-    isFocused: false,
   };
 
   shouldComponentUpdate(nextProps: Props, nextState: State) {
     return (
-      _.size(this.props.moduleList) !== _.size(nextProps.moduleList) ||
+      !_.isEqual(this.state, nextState) ||
       this.props.isMatchBreakpoint !== nextProps.isMatchBreakpoint ||
-      !_.isEqual(this.state, nextState)
+      _.size(this.props.moduleList) !== _.size(nextProps.moduleList)
     );
   }
 
   onChange = (selection: any) => {
-    return selection && this.props.onChange(selection);
+    // Refocus after choosing a module
+    if (this.input) this.input.focus();
+    if (selection) this.props.onChange(selection);
   };
 
-  onFocus = () => this.setState({ isFocused: true });
-  onBlur = () => this.setState({ isFocused: false });
-  openModal = () => this.setState({ isModalOpen: true });
-  closeModal = () => this.setState({ isModalOpen: false });
+  onFocus = () => this.setState({ isOpen: true });
+  onOuterClick = () => this.setState({ isOpen: false });
+  toggleModal = () => {
+    noScroll.toggle();
+    this.setState({ isModalOpen: !this.state.isModalOpen });
+  };
 
   getFilteredModules = (inputValue: string) => {
     if (!inputValue) {
@@ -65,31 +70,30 @@ class ModulesSelect extends Component<Props, State> {
   // TODO: Inject types from downshift when https://github.com/paypal/downshift/pull/180 is implemented
   renderDropdown = ({ getLabelProps, getInputProps, getItemProps, isOpen, inputValue, highlightedIndex }: any) => {
     const { placeholder } = this.props;
-    const { isModalOpen, isFocused } = this.state;
+    const { isModalOpen } = this.state;
     const results = this.getFilteredModules(inputValue);
     const showResults = isOpen && results.length > 0;
-    const showTip = isFocused && !results.length;
+    const showTip = isModalOpen ? !results.length : isOpen && !results.length;
     return (
       <div className={styles.container}>
         <label className="sr-only" {...getLabelProps()}>
           {placeholder}
         </label>
         <input
+          ref={(input) => {
+            this.input = input;
+          }}
           autoFocus={isModalOpen}
           className={styles.input}
           {...getInputProps({ placeholder })}
           onFocus={this.onFocus}
-          onBlur={this.onBlur}
         />
-        {isModalOpen && <CloseButton className={styles.close} onClick={this.closeModal} />}
+        {isModalOpen && <CloseButton className={styles.close} onClick={this.toggleModal} />}
         {showResults && (
           <ol className={styles.selectList}>
             {results.map((module, index) => {
               return module.isAdded ? (
-                <li
-                  key={module.ModuleCode}
-                  className={classnames(styles.option, styles.optionDisabled)}
-                >
+                <li key={module.ModuleCode} className={classnames(styles.option, styles.optionDisabled)}>
                   {`${module.ModuleCode} ${module.ModuleTitle}`}
                   <div>
                     <span className="badge badge-info">Added</span>
@@ -114,8 +118,8 @@ class ModulesSelect extends Component<Props, State> {
         )}
         {showTip && (
           <div className={styles.tip}>
-            Try &quot;GER1000&quot; or &quot;Reasoning&quot;.
-            Searching <strong>{this.props.moduleList.length}</strong>{' '}modules.
+            Try &quot;GER1000&quot; or &quot;Quantative Reasoning&quot;. Searching{' '}
+            <strong>{this.props.moduleList.length}</strong> modules.
           </div>
         )}
       </div>
@@ -123,25 +127,27 @@ class ModulesSelect extends Component<Props, State> {
   };
 
   render() {
-    const { isModalOpen } = this.state;
+    const { isModalOpen, isOpen } = this.state;
     const { isMatchBreakpoint } = this.props;
     const downshiftComponent = (
       <Downshift
-        breakingChanges={DOWNSHIFT_FLAGS}
-        selectedItem={''}
+        isOpen={isModalOpen || isOpen}
+        onOuterClick={this.onOuterClick}
         onChange={this.onChange}
         render={this.renderDropdown}
-        defaultIsOpen={!isMatchBreakpoint}
+        /* Hack to force item selection to be empty */
+        itemToString={_.stubString}
+        selectedItem={''}
       />
     );
     return isMatchBreakpoint ? (
       downshiftComponent
     ) : (
       <div>
-        <button className={styles.input} onClick={this.openModal}>
+        <button className={styles.input} onClick={this.toggleModal}>
           {this.props.placeholder}
         </button>
-        <Modal isOpen={isModalOpen} onRequestClose={this.closeModal} className={styles.modal}>
+        <Modal isOpen={isModalOpen} onRequestClose={this.toggleModal} className={styles.modal}>
           {downshiftComponent}
         </Modal>
       </div>
