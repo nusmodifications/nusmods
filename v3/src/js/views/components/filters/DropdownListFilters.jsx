@@ -3,7 +3,7 @@
 import React, { PureComponent } from 'react';
 import Downshift from 'downshift';
 import classnames from 'classnames';
-import { values, uniq, map } from 'lodash';
+import { each, values, uniq } from 'lodash';
 
 import type { OnFilterChange } from 'types/views';
 
@@ -39,25 +39,38 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
   }
 
   onSelectItem(selectedItem: string) {
+    if (!selectedItem) return;
     const { group, onFilterChange } = this.props;
     onFilterChange(group.toggle(selectedItem));
     this.setState({ searchedFilters: uniq([...this.state.searchedFilters, selectedItem]) });
   }
 
-  onChange = (selectedItem: string, { clearSelection }: Object) => {
-    this.onSelectItem(selectedItem);
-    clearSelection();
-  };
+  displayedFilters(inputValue?: string): [ModuleFilter, number][] {
+    const { group, groups } = this.props;
+    const moduleCodes = FilterGroup.union(groups, group);
 
-  displayedFilters(inputValue: string) {
-    return values(this.props.group.filters)
-      .filter(filter => filter.label.toLowerCase().includes(inputValue.toLowerCase()));
+    // Pick out filters that match the search which have at least one matching module
+    const filterCount: Map<string, number> = new Map();
+    each(group.filters, (filter) => {
+      if (inputValue && !filter.label.toLowerCase().includes(inputValue.toLowerCase())) {
+        return;
+      }
+
+      const count = filter.count(moduleCodes);
+      if (count) filterCount.set(filter.id, count);
+    });
+
+    // Sort by name in alphabetical order and return together with count
+    return Array.from(filterCount.entries())
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([id, count]) => [group.filters[id], count]);
   }
 
   render() {
     const { group, groups, onFilterChange, matchBreakpoint } = this.props;
     const moduleCodes = FilterGroup.union(groups, group);
     const htmlId = `dropdown-filter-${group.id}`;
+    const placeholder = `Add ${group.label.toLowerCase()} filter...`;
 
     return (
       <div className={styles.dropdown}>
@@ -65,10 +78,14 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
           <label htmlFor={htmlId}>{group.label}</label>
         </h4>
 
+        {/* Use a search-select combo dropdown on desktop */}
         {matchBreakpoint ?
           <Downshift
             breakingChanges={{ resetInputOnSelection: true }}
-            onChange={this.onChange}
+            onChange={(selectedItem, { clearSelection }) => {
+              this.onSelectItem(selectedItem);
+              clearSelection();
+            }}
             render={({
               getInputProps,
               getItemProps,
@@ -88,50 +105,57 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
                       },
                       onBlur: () => this.setState({ isFocused: false }),
                       className: classnames('form-control form-control-sm', styles.searchInput),
-                      placeholder: `Search ${group.label.toLowerCase()}...`,
+                      placeholder,
                       id: htmlId,
                     })}
                   />
                 </div>
 
                 {isOpen &&
-                <div className="dropdown-menu show">
-                  {this.displayedFilters(inputValue)
-                    .map((filter: ModuleFilter, index: number) => (
-                      <label
-                        key={filter.id}
-                        {...getItemProps({
-                          item: filter.id,
-                          className: classnames('dropdown-item', styles.label, {
-                            [styles.selected]: index === highlightedIndex,
-                            [styles.enabled]: filter.enabled,
-                          }),
-                        })}
-                      >
-                        <input
-                          className="form-check-input"
-                          type="checkbox"
-                          defaultChecked={filter.enabled}
-                        />
-                        {highlight(filter.label, inputValue)}
-                        &nbsp;
-                        <span className="text-muted">({filter.count(moduleCodes)})</span>
-                      </label>
-                    ))}
-                </div>}
+                  <div className="dropdown-menu show">
+                    {this.displayedFilters(inputValue)
+                      .map(([filter, count], index) => (
+                        <label
+                          key={filter.id}
+                          {...getItemProps({
+                            item: filter.id,
+                            className: classnames('dropdown-item', styles.label, {
+                              [styles.selected]: index === highlightedIndex,
+                              [styles.enabled]: filter.enabled,
+                            }),
+                          })}
+                        >
+                          <input
+                            className="form-check-input"
+                            type="checkbox"
+                            defaultChecked={filter.enabled}
+                          />
+                          {highlight(filter.label, inputValue)}
+                          &nbsp;
+                          <span className="text-muted">({count})</span>
+                        </label>
+                      ))}
+                  </div>}
               </div>
             )}
           />
           :
+          /* Use a native select for mobile devices */
           <select
             className="form-control"
-            onChange={evt => this.onSelectItem(evt.target.value)}
+            id={htmlId}
+            onChange={(evt) => {
+              this.onSelectItem(evt.target.value);
+              evt.target.selectedIndex = 0; // eslint-disable-line no-param-reassign
+            }}
           >
-            {map(group.filters, filter => (
-              <option key={filter.id} value={filter.id}>
-                {filter.label} ({filter.count(moduleCodes)})
-              </option>
-            ))}
+            <option>{placeholder}</option>
+            {this.displayedFilters()
+              .map(([filter, count]) => (
+                <option key={filter.id} value={filter.id}>
+                  {filter.label} ({count})
+                </option>
+              ))}
           </select>}
 
         <ul className="list-unstyled">

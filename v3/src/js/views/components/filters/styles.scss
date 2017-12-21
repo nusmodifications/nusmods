@@ -90,10 +90,6 @@ $h-padding: $grid-gutter-width / 2;
     &:focus {
       box-shadow: none;
     }
-
-    @include media-breakpoint-down(sm) {
-      padding: 0.5rem ($grid-gutter-width / 2);
-    }
   }
 
   :global(.dropdown-menu) {
@@ -118,6 +114,11 @@ $h-padding: $grid-gutter-width / 2;
   .selected {
     color: theme-color();
     background: var(--gray-lightest);
+  }
+
+  select {
+    width: calc(100% - #{$grid-gutter-width});
+    margin: 0.5rem ($grid-gutter-width / 2);
   }
 }
 
