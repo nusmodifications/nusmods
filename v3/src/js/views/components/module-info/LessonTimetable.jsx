@@ -1,7 +1,7 @@
 // @flow
 import type { Node } from 'react';
 
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 
 import type { Semester, SemesterData } from 'types/modules';
 
@@ -55,7 +55,7 @@ export default class LessonTimetableControl extends PureComponent<Props, State> 
     const semesters = this.props.history.map(data => data.Semester);
 
     return (
-      <div>
+      <Fragment>
         {history.length > 1 &&
           <SemesterPicker
             semesters={semesters}
@@ -66,7 +66,7 @@ export default class LessonTimetableControl extends PureComponent<Props, State> 
         <div className={styles.lessonTimetable}>
           {this.renderTimetable()}
         </div>
-      </div>
+      </Fragment>
     );
   }
 }

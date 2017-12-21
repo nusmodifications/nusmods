@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent, type Node } from 'react';
+import React, { PureComponent, type Node, Fragment } from 'react';
 import classnames from 'classnames';
 import { Menu, Close } from 'views/components/icons';
 
@@ -28,7 +28,7 @@ export default class SideMenu extends PureComponent<Props> {
     const { isOpen, toggleMenu, children, openIcon, closeIcon } = this.props;
 
     return (
-      <div>
+      <Fragment>
         <Fab
           className={styles.fab}
           onClick={() => toggleMenu(!isOpen)}
@@ -45,7 +45,7 @@ export default class SideMenu extends PureComponent<Props> {
         <div className={classnames(styles.sideMenu, { [styles.isOpen]: isOpen })}>
           {children}
         </div>
-      </div>
+      </Fragment>
     );
   }
 }

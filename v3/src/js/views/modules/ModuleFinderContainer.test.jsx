@@ -23,6 +23,8 @@ type Container = { component: ShallowWrapper, history: RouterHistory };
 
 // Mock axios to stop it from firing API requests
 beforeEach(() => {
+  window.scrollTo = jest.fn();
+
   jest.spyOn(axios, 'get')
     .mockReturnValue(Promise.resolve({ data: [] }));
 });

@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
@@ -175,7 +175,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
         <div className="row">
           <div className="col-md-8 col-lg-9">
             {size(venues) === 0 ?
-              <div>
+              <Fragment>
                 <Warning message="No matching venues found" />
                 <p className="text-center text-muted">
                   There {unfilteredCount === 1
@@ -190,7 +190,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
                     Cancel free room search?
                   </button>
                 </p>
-              </div>
+              </Fragment>
               :
               <VenueList
                 venues={venues}
