@@ -6,6 +6,7 @@ exports[`renders into nav element 1`] = `
 >
   <NavLink
     activeClassName="linkActive"
+    ariaCurrent="true"
     className="link"
     to="/timetable"
   >
@@ -22,6 +23,7 @@ exports[`renders into nav element 1`] = `
   </NavLink>
   <NavLink
     activeClassName="linkActive"
+    ariaCurrent="true"
     className="link"
     to="/modules"
   >
@@ -38,6 +40,7 @@ exports[`renders into nav element 1`] = `
   </NavLink>
   <NavLink
     activeClassName="linkActive"
+    ariaCurrent="true"
     className="link"
     to="/venues"
   >
@@ -54,6 +57,7 @@ exports[`renders into nav element 1`] = `
   </NavLink>
   <NavLink
     activeClassName="linkActive"
+    ariaCurrent="true"
     className="link"
     to="/settings"
   >
