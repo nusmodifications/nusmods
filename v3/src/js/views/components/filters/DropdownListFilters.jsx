@@ -43,6 +43,7 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
 
   onSelectItem = (selectedItem: string) => {
     if (!selectedItem) return;
+
     const { group, onFilterChange } = this.props;
     onFilterChange(group.toggle(selectedItem));
     this.setState({ searchedFilters: uniq([...this.state.searchedFilters, selectedItem]) });
@@ -173,7 +174,8 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
               <option key={filter.id} value={filter.id}>
                 {/* Use a unicode checkbox to indicate to the user filters that are already enabled */}
                 {filter.enabled && '☑ '}
-                {filter.label} ({count})
+                {/* Extra layer of interpolation to workaround https://github.com/facebook/react/issues/11911 */}
+                {`${filter.label} (${count})`}
               </option>
             ))}
           </select>}
