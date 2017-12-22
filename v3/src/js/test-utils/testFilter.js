@@ -1,7 +1,8 @@
 /* global expect */
 
-// eslint-disable-next-line import/prefer-default-export
-export function testFilter(Filter, module, combinations, valid) {
+// This file is deliberately untyped. Typed filter helper functions should go to
+// filterHelpers.js
+export default function testFilter(Filter, module, combinations, valid) {
   // Checks every possible combination of arguments for a Filter class
   // against ones that should return true
   combinations.forEach((...args) => {
