@@ -13,7 +13,8 @@ $animation-duration: 0.3s;
 .sideMenu {
   position: fixed;
   max-height: calc(100% - #{$navbar-height});
-  overflow: auto;
+
+  @include scrollable;
 }
 
 .overlay {

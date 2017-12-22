@@ -1,3 +1,5 @@
+@import "~styles/utils/modules-entry.scss";
+
 .lessonTimetable {
-  overflow: auto;
+  @include scrollable;
 }

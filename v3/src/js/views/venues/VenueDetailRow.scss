@@ -12,5 +12,6 @@
 
 .venueTimetable {
   margin-bottom: 1rem;
-  overflow: auto;
+
+  @include scrollable;
 }

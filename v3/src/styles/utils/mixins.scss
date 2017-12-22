@@ -15,3 +15,12 @@
     }
   }
 }
+
+@mixin scrollable() {
+  overflow: auto;
+
+  @supports (-webkit-overflow-scrolling: touch) {
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
+}

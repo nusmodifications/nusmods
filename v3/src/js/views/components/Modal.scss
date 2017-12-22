@@ -22,9 +22,10 @@
   max-height: calc(100% - #{2 * $spacing});
   padding: 1rem;
   margin: 0 auto;
-  overflow: auto;
   background: var(--body-bg);
   box-shadow: 0 6px 24px rgba(#000, 0.18);
+
+  @include scrollable;
 
   @include media-breakpoint-up(md) {
     top: 10%;
