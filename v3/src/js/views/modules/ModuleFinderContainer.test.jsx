@@ -14,7 +14,7 @@ import createHistory from 'history/createMemoryHistory'; // eslint-disable-line 
 
 import type { FilterGroupId, PageRange } from 'types/views';
 
-import { nextTick } from 'test-utils/async';
+import { nextTick, waitFor } from 'test-utils/async';
 import mockDom from 'test-utils/mockDom';
 import FilterGroup from 'utils/filters/FilterGroup';
 import { ModuleFinderContainerComponent, mergePageRange } from './ModuleFinderContainer';
@@ -170,6 +170,8 @@ describe('<ModuleFinderContainer', () => {
     const calls = interceptRouteChanges(container.history);
 
     container.component.setProps({ searchTerm: 'new search' });
+    await waitFor(() => calls.length); // Wait until the route has changed
+
     expect(calls.map(extractQueryString)).toEqual([
       'q=new search',
     ]);

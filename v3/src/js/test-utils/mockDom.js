@@ -6,5 +6,4 @@ export default function mockDom() {
   window.scrollTo = jest.fn();
   global.performance = { now: jest.fn() };
   global.matchMedia = jest.fn(() => ({ matches: jest.fn() }));
-  global.requestAnimationFrame = jest.fn(fn => fn());
 }
