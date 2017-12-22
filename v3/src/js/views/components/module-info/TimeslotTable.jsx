@@ -9,6 +9,7 @@ import type { Day, Time } from 'types/modules';
 
 import { DaysOfWeek, TimesOfDay } from 'types/modules';
 import { getTimeslot } from 'utils/modules';
+import styles from './TimeslotTable.scss';
 
 type Props = {
   children: Map<string, Node> | Map<string, Node[]>,
@@ -67,16 +68,16 @@ export default class TimeslotTable extends Component<Props, State> {
     }
 
     return (
-      <table className={classnames('module-timeslot-table', className)}>
+      <table className={classnames(styles.table, className)}>
         <thead>
-          <tr className="module-timeslot-row">
+          <tr>
             <th />
 
             {days.map(day => (
               <th
                 key={`heading-${day}`}
-                className={classnames('module-timeslot-day', {
-                  'module-timeslot-hover': day === hover.day,
+                className={classnames(styles.day, {
+                  [styles.hover]: day === hover.day,
                 })}
               >
                 {day.slice(0, 3)}
@@ -86,10 +87,10 @@ export default class TimeslotTable extends Component<Props, State> {
         </thead>
         <tbody>
           {times.map(time => (
-            <tr className="module-timeslot-row" key={`row-${time}`}>
+            <tr key={`row-${time}`}>
               <th
-                className={classnames('module-timeslot-time', {
-                  'module-timeslot-hover': time === hover.time,
+                className={classnames(styles.time, {
+                  [styles.hover]: time === hover.time,
                 })}
               >
                 {timeLabels[time]}
