@@ -106,6 +106,10 @@ $sticky-top: $navbar-height + $header-margin-top;
   p {
     margin-bottom: $bottom-margin;
     font-size: $font-size-sm;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 }
 

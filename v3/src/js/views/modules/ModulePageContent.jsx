@@ -134,7 +134,11 @@ export class ModulePageContentComponent extends Component<Props, State> {
 
                 {module.Workload
                   ? <ModuleWorkload workload={module.Workload} />
-                  : <p>Workload not available</p>}
+                  :
+                  <Fragment>
+                    <h4>Workload</h4>
+                    <p>Workload not available</p>
+                  </Fragment>}
               </div>
 
               <div className="col-sm-4">
@@ -199,24 +203,27 @@ export class ModulePageContentComponent extends Component<Props, State> {
               <h2 className={styles.sectionHeading}>Review and Discussion</h2>
               <Online isLive={false}>{isOnline => (
                 isOnline ?
-                  <div className={styles.reviews}>
-                    <div className={classnames('alert alert-warning', styles.reviewsBanner)}>
-                      <h3>Hi There!</h3>
-                      <p>We would like to encourage everyone who enjoyed using NUSMods to
-                        contribute back to the community by writing reviews for modules
-                        that you have taken before. Your efforts will go a long way in
-                        building up a vibrant and rich NUS community.</p>
-                      <p><strong>Please note:</strong> Because the experience of each module
-                        will differ according to the professor teaching the module, at the
-                        start of your review, please state the semester taken and the name
-                        of the professor who taught the module in that semester.</p>
+                  <div className="row">
+                    <div className="col-xl-4">
+                      <div className={classnames('alert alert-warning', styles.reviewsBanner)}>
+                        <h3>Hi There!</h3>
+                        <p>We would like to encourage everyone who enjoyed using NUSMods to
+                          contribute back to the community by writing reviews for modules
+                          that you have taken before. Your efforts will go a long way in
+                          building up a vibrant and rich NUS community.</p>
+                        <p><strong>Please note:</strong> Because the experience of each module
+                          will differ according to the professor teaching the module, at the
+                          start of your review, please state the semester taken and the name
+                          of the professor who taught the module in that semester.</p>
+                      </div>
                     </div>
-
-                    <DisqusComments
-                      url={`https://nusmods.com/modules/${ModuleCode}/reviews`}
-                      identifier={ModuleCode}
-                      title={pageTitle}
-                    />
+                    <div className="col-xl-8 order-xl-first">
+                      <DisqusComments
+                        url={`https://nusmods.com/modules/${ModuleCode}/reviews`}
+                        identifier={ModuleCode}
+                        title={pageTitle}
+                      />
+                    </div>
                   </div>
                   :
                   <Warning
