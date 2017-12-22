@@ -17,12 +17,14 @@ $timetable-min-width: $timetable-row-height * 16;
 }
 
 .days {
-  padding: 0;
-  margin: 0;
-  list-style: none;
+  composes: list-unstyled from global;
+  border: $timetable-border;
+  border-left-width: 0;
+  border-radius: $btn-border-radius;
 }
 
 :global(.verticalMode) .days {
   display: flex;
   flex: 1 0 auto;
+  border-left-width: 1px;
 }
