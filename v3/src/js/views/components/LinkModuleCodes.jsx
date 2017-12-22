@@ -24,14 +24,14 @@ type Props = {
 const MODULE_CODE_REGEX = /\b(\w{2,3}\s*\d{4}\w{0,2})\b/g;
 
 export function LinkModuleCodesComponent(props: Props) {
-  const { children, moduleCodes } = props;
+  const { children, moduleCodes, ...otherProps } = props;
 
-  return (<span>{replaceWithNode(children, MODULE_CODE_REGEX, (part, i) => {
+  return replaceWithNode(children, MODULE_CODE_REGEX, (part, i) => {
     const code = part.replace(/\s*/g, '');
     const module = moduleCodes[code];
     if (!module) return part;
-    return <Link to={modulePage(code, module.ModuleTitle)} key={i}>{part}</Link>;
-  })}</span>);
+    return <Link {...otherProps} to={modulePage(code, module.ModuleTitle)} key={i}>{part}</Link>;
+  });
 }
 
 // Type annotation is workaround for https://github.com/flowtype/flow-typed/issues/1269

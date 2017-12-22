@@ -71,6 +71,13 @@ export type SemesterData = {
   TutorialPeriods?: Array<string>,
 };
 
+// Recursive definition for walking a module tree
+export type TreeFragment = {
+  name: string,
+  // TreeFragment[] will result in infinite loop
+  children: Array<TreeFragment>,
+};
+
 // Information for a module for a particular academic year.
 // This is probably the only model you need to be concerned with.
 // For some reason es6 object literal property value shorthand is not recognized >_<
@@ -88,6 +95,8 @@ export type Module = {
   Prerequisite?: string,
   Types: Array<string>,
   Workload?: string,
+  ModmavenTree: TreeFragment,
+  LockedModules?: Array<ModuleCode>,
 };
 
 export type ModuleWithColor = Module & {
