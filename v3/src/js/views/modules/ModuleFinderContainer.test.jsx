@@ -15,6 +15,7 @@ import createHistory from 'history/createMemoryHistory'; // eslint-disable-line 
 import type { FilterGroupId, PageRange } from 'types/views';
 
 import { nextTick } from 'test-utils/async';
+import mockDom from 'test-utils/mockDom';
 import FilterGroup from 'utils/filters/FilterGroup';
 import { ModuleFinderContainerComponent, mergePageRange } from './ModuleFinderContainer';
 
@@ -23,12 +24,9 @@ type Container = { component: ShallowWrapper, history: RouterHistory };
 
 describe('<ModuleFinderContainer', () => {
   beforeEach(() => {
-    // Mock some of the DOM environment functions
-    window.scrollTo = jest.fn();
-    global.performance = { now: jest.fn() };
-    global.matchMedia = jest.fn(() => ({ matches: jest.fn() }));
-    global.requestAnimationFrame = jest.fn(fn => fn());
+    mockDom();
 
+    // Silence console.info calls
     jest.spyOn(console, 'info')
       .mockImplementation(_.noop);
 
