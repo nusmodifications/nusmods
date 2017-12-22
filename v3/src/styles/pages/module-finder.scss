@@ -75,6 +75,10 @@
     font-size: $font-size-sm;
   }
 
+  .module-exam p {
+    margin-bottom: 0;
+  }
+
   .module-timeslots {
     .module-timeslot-time {
       line-height: 2;

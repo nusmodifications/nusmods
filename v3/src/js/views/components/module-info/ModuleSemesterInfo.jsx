@@ -109,17 +109,18 @@ export default class ModuleSemesterInfo extends Component<Props, State> {
 
         {semester &&
           <div className="module-semester-info">
-            {semester.ExamDate &&
-              <section className="module-exam">
-                <h4>Exam</h4>
-                {formatExamDate(semester.ExamDate)}
+            <section className="module-exam">
+              <h4>Exam</h4>
+              <p>{semester.ExamDate
+                ? formatExamDate(semester.ExamDate)
+                : 'No Exams'}</p>
 
-                <ModuleExamClash
-                  semester={semester.Semester}
-                  examDate={semester.ExamDate}
-                  moduleCode={this.props.moduleCode}
-                />
-              </section>}
+              <ModuleExamClash
+                semester={semester.Semester}
+                examDate={semester.ExamDate}
+                moduleCode={this.props.moduleCode}
+              />
+            </section>
 
             {this.showTimeslots() &&
               <section className="module-timeslots">

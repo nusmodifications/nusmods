@@ -52,6 +52,7 @@ $sticky-top: $navbar-height + $header-margin-top;
 .details {
   dt,
   h4 {
+    font-weight: bold;
     font-size: $font-size-sm;
   }
 }

@@ -52,9 +52,11 @@ export class ModuleExamClashComponent extends PureComponent<Props> {
     return (
       <div className={classnames('text-danger', styles.alert)}>
         <AlertTriangle className={styles.icon} />
-        <p className={styles.warning}>Your {useSingular ? 'module' : 'modules'} <strong>
-          {intersperse(clashLinks, ',')}
-        </strong> {useSingular ? 'has' : 'have'} exams at the same time</p>
+        <p className={styles.warning}>
+          Your {useSingular ? 'module' : 'modules'}{' '}
+          {intersperse(clashLinks, ',')}{' '}
+          {useSingular ? 'has' : 'have'} exams at the same time
+        </p>
       </div>
     );
   }
