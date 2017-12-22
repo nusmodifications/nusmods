@@ -101,7 +101,6 @@ $h-padding: $grid-gutter-width / 2;
   }
 
   :global(.dropdown-menu) {
-    composes: scrollable from global;
     width: calc(100% - 0.2rem);
     max-height: 17rem;
     padding: 0;

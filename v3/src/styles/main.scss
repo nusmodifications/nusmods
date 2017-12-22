@@ -1,14 +1,15 @@
+// Define our own mixins, functions and constants first
+@import 'utils/mixins';
+@import 'utils/functions';
+@import 'constants';
+
 @import 'bootstrap/bootstrap';
 @import 'bootstrap/style-override';
 
 // 3rd-party imports
 @import "material/material";
 
-@import 'constants';
-
 // Utils
-@import 'utils/mixins';
-@import 'utils/functions';
 @import 'utils/animations';
 @import 'utils/workload';
 @import 'utils/themes';
