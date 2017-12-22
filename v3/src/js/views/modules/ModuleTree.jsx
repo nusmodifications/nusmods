@@ -36,10 +36,10 @@ function Branch({ layer, branches }: { layer: number, branches: TreeDisplay[] })
   return (
     <ul className={styles.tree}>
       {branches.map((child) => {
-        return _.castArray(child).map((subchild, i) => {
+        return _.castArray(child).map((subchild) => {
           return (
             <Tree
-              key={i}
+              key={subchild.name}
               layer={incrementLayer(layer, subchild.name)}
               name={subchild.name}
               branches={subchild.children}
@@ -83,7 +83,7 @@ function ModuleTree(props: Props) {
     <div className={styles.container}>
       {isPrereq && (
         <ul className={styles.prereqTree}>
-          {lockedModules.map(name => <Tree layer={0} name={name} branches={null} isPrereq />)}
+          {lockedModules.map(name => <Tree key={name} layer={0} name={name} branches={null} isPrereq />)}
         </ul>
       )}
       {isPrereq && <div className={classnames(styles.node, styles.conditional)}>needs</div>}
@@ -95,3 +95,5 @@ function ModuleTree(props: Props) {
 }
 
 export default ModuleTree;
+// For testing
+export { incrementLayer };
