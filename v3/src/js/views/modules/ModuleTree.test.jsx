@@ -6,7 +6,7 @@ import { render } from 'enzyme';
 import ModuleTree, { incrementLayer } from './ModuleTree';
 
 jest.mock('views/components/LinkModuleCodes', () => {
-  return 'MockedLink';
+  return 'mockedlink';
 });
 
 describe('<ModuleTree>', () => {

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ACC1002 1`] = `
+exports[`<ModuleTree> should render prereq tree of module: ACC1002 1`] = `
 <div
   class="container"
 >
@@ -218,7 +218,7 @@ exports[`ACC1002 1`] = `
 </div>
 `;
 
-exports[`CS3244 1`] = `
+exports[`<ModuleTree> should render prereq tree of module: CS3244 1`] = `
 <div
   class="container"
 >
