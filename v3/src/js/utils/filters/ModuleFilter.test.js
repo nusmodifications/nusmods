@@ -1,23 +1,8 @@
 // @flow
 
-import type { Module, ModuleCode } from 'types/modules';
+import { createModule } from 'test-utils/filterHelpers';
 
 import Filter from './ModuleFilter';
-
-// eslint-disable-next-line import/prefer-default-export
-export function createModule(code: ModuleCode): Module {
-  return {
-    ModuleCode: code,
-    ModuleTitle: 'Test Module',
-    History: [],
-    Types: [],
-    Department: 'Test Department',
-    ModuleCredit: '4',
-    AcadYear: '16/17',
-    CorsBiddingStats: [],
-    ModmavenTree: { name: 'Test Module', children: [] },
-  };
-}
 
 describe('count()', () => {
   const modules = ['CS1010S', 'CS1231', 'GET1025', 'GET1029'].map(createModule);

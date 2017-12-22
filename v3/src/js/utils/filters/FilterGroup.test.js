@@ -1,7 +1,7 @@
 // @flow
 import type { Module } from 'types/modules';
 
-import { createModule } from './ModuleFilter.test';
+import { createModule } from 'test-utils/filterHelpers';
 import Group from './FilterGroup';
 import Filter from './ModuleFilter';
 
