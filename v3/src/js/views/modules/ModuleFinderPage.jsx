@@ -14,13 +14,11 @@ export default class ModuleFinderPage extends PureComponent<Props> {
     const { page } = this.props;
 
     return (
-      <div>
-        <ul className="modules-list">
-          {page.map(module => (
-            <ModuleFinderItem key={module.ModuleCode} module={module} />
-          ))}
-        </ul>
-      </div>
+      <ul className="modules-list">
+        {page.map(module => (
+          <ModuleFinderItem key={module.ModuleCode} module={module} />
+        ))}
+      </ul>
     );
   }
 }

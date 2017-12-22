@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import React, { Fragment } from 'react';
 import { groupBy, map, size } from 'lodash';
 
 import type { Faculty } from 'types/modules';
@@ -31,17 +31,19 @@ function renderBidTableRow(stats: GroupedBiddingStat) {
     return <td className={styles.noBids} colSpan="2">No bids</td>;
   }
 
-  return [
-    <td key="quota">
-      <CorsQuota
-        bidders={stats.Bidders}
-        quota={stats.Quota}
-      />
-    </td>,
-    <td key="bids">
-      {stats.LowestSuccessfulBid}
-    </td>,
-  ];
+  return (
+    <Fragment>
+      <td>
+        <CorsQuota
+          bidders={stats.Bidders}
+          quota={stats.Quota}
+        />
+      </td>
+      <td>
+        {stats.LowestSuccessfulBid}
+      </td>
+    </Fragment>
+  );
 }
 
 function renderBidTable(groupedStats: GroupedBiddingStat[]) {
@@ -78,27 +80,23 @@ function CorsRound(props: Props) {
     return <div className={styles.noBids}>No bidding during this round</div>;
   }
 
-  return (
-    <div>
-      {map(groupedByFaculty, (groupedStats: GroupedBiddingStat[], faculty: Faculty) => {
-        const groupedByType = groupBy(groupedStats, stats => stats.StudentType);
+  return map(groupedByFaculty, (groupedStats: GroupedBiddingStat[], faculty: Faculty) => {
+    const groupedByType = groupBy(groupedStats, stats => stats.StudentType);
 
-        return (
-          <div key={faculty} className={styles.facultyRow}>
-            {props.showFaculty && <h5 className={styles.facultyHeading}>{faculty}</h5>}
+    return (
+      <div key={faculty} className={styles.facultyRow}>
+        {props.showFaculty && <h5 className={styles.facultyHeading}>{faculty}</h5>}
 
-            {map(groupedByType, (stats: GroupedBiddingStat[], type: string) => (
-              <div key={type}>
-                {size(groupedByType) > 1 &&
-                  <h6 className={styles.typeHeading}>{STUDENT_TYPE_LABELS[type]}</h6>}
-                {renderBidTable(stats)}
-              </div>
-            ))}
+        {map(groupedByType, (stats: GroupedBiddingStat[], type: string) => (
+          <div key={type}>
+            {size(groupedByType) > 1 &&
+            <h6 className={styles.typeHeading}>{STUDENT_TYPE_LABELS[type]}</h6>}
+            {renderBidTable(stats)}
           </div>
-        );
-      })}
-    </div>
-  );
+        ))}
+      </div>
+    );
+  });
 }
 
 export default CorsRound;

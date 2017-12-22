@@ -1,6 +1,6 @@
 // @flow
 import type { Node } from 'react';
-import React, { PureComponent } from 'react';
+import React, { Fragment, PureComponent } from 'react';
 import classnames from 'classnames';
 import _ from 'lodash';
 
@@ -29,11 +29,11 @@ function textClass(component: WorkloadComponent): string {
 function workloadLabel(component: WorkloadComponent, hours: number): Node {
   // For components with lots of hours, we show a count to make it more glanceable
   if (Math.ceil(hours) >= 5) {
-    return [
-      <span key="title">{component}</span>,
-      ' ',
-      <span key="count">{hours} hrs</span>,
-    ];
+    return (
+      <Fragment>
+        <span>{component}</span> <span>{hours} hrs</span>
+      </Fragment>
+    );
   }
 
   // Only show the full component name if there's enough space
