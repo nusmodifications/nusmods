@@ -4,6 +4,7 @@ import AlertTriangle from 'react-feather/dist/icons/alert-triangle';
 import Calendar from 'react-feather/dist/icons/calendar';
 import ChevronLeft from 'react-feather/dist/icons/chevron-left';
 import ChevronRight from 'react-feather/dist/icons/chevron-right';
+import ChevronDown from 'react-feather/dist/icons/chevron-down';
 import Close from 'react-feather/dist/icons/x';
 import Clock from 'react-feather/dist/icons/clock';
 import Copy from 'react-feather/dist/icons/copy';
@@ -32,6 +33,7 @@ export {
   Calendar,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
   Close,
   Clock,
   Copy,

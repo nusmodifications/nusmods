@@ -1,16 +1,13 @@
 // @flow
 import React from 'react';
 import { mount } from 'enzyme';
+import mockDom from 'test-utils/mockDom';
 
 import { ScrollToTopComponent } from './ScrollToTop';
 
 describe('ScrollToTopComponent', () => {
   beforeEach(() => {
-    jest.spyOn(window, 'scrollTo');
-  });
-
-  afterEach(() => {
-    window.scrollTo.mockRestore();
+    mockDom();
   });
 
   test('default behavior does not to anything', () => {

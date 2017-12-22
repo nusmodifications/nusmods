@@ -38,7 +38,7 @@ export default class CorsSemester extends PureComponent<Props, State> {
     const showFaculty = stats.faculties.size > 1;
 
     return (
-      <div key={semester} className={styles.semester}>
+      <div className={styles.semester}>
         <h3 className={styles.semHeading}>{semester}</h3>
 
         <div className={classnames('row', styles.summary)}>

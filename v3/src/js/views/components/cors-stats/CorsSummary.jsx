@@ -24,27 +24,23 @@ const STUDENT_TYPE_LABELS = {
 export default function (props: Props) {
   const { summary } = props;
 
-  return (
-    <div>
-      {map(summary, (facultyStats, name) => (
-        <div key={name}>
-          {size(summary) > 1 && <h5 className={styles.facultyHeading}>{name}</h5>}
+  return map(summary, (facultyStats, name) => (
+    <div key={name}>
+      {size(summary) > 1 && <h5 className={styles.facultyHeading}>{name}</h5>}
 
-          <div className="row">
-            {map(facultyStats, ({ minBid, round }, type) => (
-              <div key={type} className="col-4">
-                <h6 className={styles.typeHeading}>{STUDENT_TYPE_LABELS[type]}</h6>
-                <p>
-                  <strong className={styles.minBid}>
-                    {minBid}
-                  </strong> {minBid === 1 ? 'point' : 'points'}
-                  <span className={styles.roundInfo}>Round {round}</span>
-                </p>
-              </div>
-            ))}
+      <div className="row">
+        {map(facultyStats, ({ minBid, round }, type) => (
+          <div key={type} className="col-4">
+            <h6 className={styles.typeHeading}>{STUDENT_TYPE_LABELS[type]}</h6>
+            <p>
+              <strong className={styles.minBid}>
+                {minBid}
+              </strong> {minBid === 1 ? 'point' : 'points'}
+              <span className={styles.roundInfo}>Round {round}</span>
+            </p>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
-  );
+  ));
 }

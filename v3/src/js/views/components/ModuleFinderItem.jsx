@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { connect, type MapStateToProps } from 'react-redux';
 
@@ -43,26 +43,29 @@ export class ModuleFinderItemComponent extends PureComponent<Props> {
             </header>
             {module.ModuleDescription && <p>{this.highlight(module.ModuleDescription)}</p>}
             <dl>
-              {module.Preclusion && ([
-                <dt key="preclusions-dt">Preclusions</dt>,
-                <dd key="preclusions-dd">
-                  <LinkModuleCodes>{module.Preclusion}</LinkModuleCodes>
-                </dd>,
-              ])}
+              {module.Preclusion &&
+                <Fragment>
+                  <dt>Preclusions</dt>,
+                  <dd>
+                    <LinkModuleCodes>{module.Preclusion}</LinkModuleCodes>
+                  </dd>
+                </Fragment>}
 
-              {module.Prerequisite && ([
-                <dt key="prerequisite-dt">Prerequisite</dt>,
-                <dd key="prerequisite-dd">
-                  <LinkModuleCodes>{module.Prerequisite}</LinkModuleCodes>
-                </dd>,
-              ])}
+              {module.Prerequisite &&
+                <Fragment>
+                  <dt>Prerequisite</dt>
+                  <dd>
+                    <LinkModuleCodes>{module.Prerequisite}</LinkModuleCodes>
+                  </dd>
+                </Fragment>}
 
-              {module.Corequisite && ([
-                <dt key="corequisite-dt">Corequisite</dt>,
-                <dd key="corequisite-dd">
-                  <LinkModuleCodes>{module.Corequisite}</LinkModuleCodes>
-                </dd>,
-              ])}
+              {module.Corequisite &&
+                <Fragment>
+                  <dt>Corequisite</dt>
+                  <dd>
+                    <LinkModuleCodes>{module.Corequisite}</LinkModuleCodes>
+                  </dd>
+                </Fragment>}
             </dl>
           </div>
           <div className="col-lg-4 col-md-12 col-sm-4">

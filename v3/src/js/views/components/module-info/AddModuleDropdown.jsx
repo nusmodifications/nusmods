@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent } from 'react';
+import React, { Fragment, PureComponent } from 'react';
 import Downshift from 'downshift';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
@@ -54,18 +54,18 @@ export class AddModuleDropdownComponent extends PureComponent<Props, State> {
   buttonLabel(semester: Semester) {
     if (this.state.loading === semester) {
       return (
-        <span>
+        <Fragment>
           Adding...<br />
           <strong>{config.semesterNames[semester]}</strong>
-        </span>
+        </Fragment>
       );
     }
 
     return this.moduleOnTimetable(semester, this.props.timetables)
-      ? <span>Remove from <br />
-        <strong>{config.semesterNames[semester]}</strong></span>
-      : <span>Add to <br />
-        <strong>{config.semesterNames[semester]}</strong></span>;
+      ? <Fragment>Remove from <br />
+        <strong>{config.semesterNames[semester]}</strong></Fragment>
+      : <Fragment>Add to <br />
+        <strong>{config.semesterNames[semester]}</strong></Fragment>;
   }
 
   otherSemesters(exclude: Semester): Semester[] {
@@ -129,7 +129,7 @@ export class AddModuleDropdownComponent extends PureComponent<Props, State> {
                 </button>}
 
               {isOpen &&
-                <div className={classnames('dropdown-menu show', styles.dropdownMenu)}>
+                <div className="dropdown-menu show">
                   {otherSemesters.map(semester => (
                     <button
                       {...getItemProps({ item: semester })}

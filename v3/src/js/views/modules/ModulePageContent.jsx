@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import classnames from 'classnames';
 import { connect, type MapStateToProps } from 'react-redux';
 import Helmet from 'react-helmet';
@@ -107,26 +107,29 @@ export class ModulePageContentComponent extends Component<Props, State> {
                 { module.ModuleDescription && <p>{module.ModuleDescription}</p> }
 
                 <dl>
-                  {module.Prerequisite && [
-                    <dt key="prerequisite-dt">Prerequisite</dt>,
-                    <dd key="prerequisite-dd">
-                      <LinkModuleCodes>{module.Prerequisite}</LinkModuleCodes>
-                    </dd>,
-                  ]}
+                  {module.Prerequisite &&
+                    <Fragment>
+                      <dt>Prerequisite</dt>
+                      <dd>
+                        <LinkModuleCodes>{module.Prerequisite}</LinkModuleCodes>
+                      </dd>
+                    </Fragment>}
 
-                  {module.Corequisite && [
-                    <dt key="corequisite-dt">Corequisite</dt>,
-                    <dd key="corequisite-dd">
-                      <LinkModuleCodes>{module.Corequisite}</LinkModuleCodes>
-                    </dd>,
-                  ]}
+                  {module.Corequisite &&
+                    <Fragment>
+                      <dt>Corequisite</dt>
+                      <dd>
+                        <LinkModuleCodes>{module.Corequisite}</LinkModuleCodes>
+                      </dd>
+                    </Fragment>}
 
-                  {module.Preclusion && [
-                    <dt key="preclusions-dt">Preclusion</dt>,
-                    <dd key="preclusions-dd">
-                      <LinkModuleCodes>{module.Preclusion}</LinkModuleCodes>
-                    </dd>,
-                  ]}
+                  {module.Preclusion &&
+                    <Fragment>
+                      <dt>Preclusion</dt>
+                      <dd>
+                        <LinkModuleCodes>{module.Preclusion}</LinkModuleCodes>
+                      </dd>
+                    </Fragment>}
                 </dl>
 
                 {module.Workload
