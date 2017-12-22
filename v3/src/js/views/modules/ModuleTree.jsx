@@ -68,7 +68,7 @@ function Tree({ layer, name, branches, isPrereq = false }: TreeDisplay) {
       >
         {isConditional ? formatConditional(name) : <LinkModuleCodes className={styles.link}>{name}</LinkModuleCodes>}
       </div>
-      {branches && <Branch layer={incrementLayer(layer, name)} branches={branches} />}
+      {branches && branches.length > 0 && <Branch layer={incrementLayer(layer, name)} branches={branches} />}
     </li>
   );
 }

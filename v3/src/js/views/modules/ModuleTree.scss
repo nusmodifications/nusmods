@@ -41,7 +41,6 @@ $connector-size: 0.75rem;
   justify-content: center;
   padding: 0.125rem 0.25rem;
   margin: 0 0 1px $connector-size;
-  border: 1px solid $gray-light;
   border-radius: $btn-border-radius;
 
   &::before {
@@ -53,6 +52,8 @@ $connector-size: 0.75rem;
 }
 
 .link {
+  display: block;
+  width: 100%;
   color: currentColor;
 
   &:hover {
