@@ -39,7 +39,7 @@ export function createSearchPredicate(searchTerm: string): SearchableModule => b
 
 export function createSearchFilter(searchTerm: string): FilterGroup<ModuleFilter> {
   const predicate = createSearchPredicate(searchTerm);
-  const filter = new ModuleFilter(searchTerm, searchTerm, predicate);
+  const filter = new ModuleFilter(encodeURIComponent(searchTerm), searchTerm, predicate);
   return new FilterGroup(SEARCH_QUERY_KEY, 'Search', [filter]).toggle(filter);
 }
 

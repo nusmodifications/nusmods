@@ -3,13 +3,12 @@ import { keyBy, values } from 'lodash';
 import update from 'immutability-helper';
 
 import type { Module, ModuleCode } from 'types/modules';
+import type { FilterGroupId } from 'types/views';
 
 import { intersection, union } from 'utils/set';
 import ModuleFilter from './ModuleFilter';
 
 export const ID_DELIMITER = ',';
-
-export type FilterGroupId = string;
 
 /**
  * A filter group is a collection of module filters. A module filter is a simple function

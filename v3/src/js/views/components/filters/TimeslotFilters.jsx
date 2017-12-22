@@ -30,7 +30,7 @@ export default function TimeslotFilters(props: Props) {
 
     children.set(timeslot,
       <label
-        className={classnames(styles.label, { [styles.selected]: filter.enabled })}
+        className={classnames(styles.label, { [styles.enabled]: filter.enabled })}
         title={`${count} modules with lessons on ${timeslot}`}
       >
         <span className="sr-only">{ timeslot }</span>

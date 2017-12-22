@@ -1,10 +1,12 @@
 language: node_js
 dist: trusty
 sudo: false
-env:
-  matrix:
-    - PROJECT="v2"
-    - PROJECT="v3"
+matrix:
+  include:
+  - env: PROJECT="v2"
+    node_js: 6
+  - env: PROJECT="v3"
+    node_js: lts/*
 cache:
   yarn: true
   directories:
