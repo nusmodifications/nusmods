@@ -6,6 +6,7 @@ import _ from 'lodash';
 import Raven from 'raven-js';
 
 import configureStore from 'stores/configure-store';
+import subscribeOnlineEvents from 'stores/subscribeOnlineEvents';
 import storage from 'storage';
 import App from 'App';
 
@@ -13,6 +14,7 @@ import 'utils/sentry';
 import '../styles/main.scss';
 
 const persistedState = storage.loadState();
+
 const store = configureStore(persistedState);
 store.subscribe(
   _.debounce(() => {
@@ -34,6 +36,8 @@ store.subscribe(
     });
   }, 1000),
 );
+
+subscribeOnlineEvents(store);
 
 // Initialize ReactModal
 ReactModal.setAppElement('#app');

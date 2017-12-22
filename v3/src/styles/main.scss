@@ -1,4 +1,5 @@
 @import 'bootstrap/bootstrap';
+@import 'bootstrap/style-override';
 
 // 3rd-party imports
 @import "material/material";
@@ -12,7 +13,6 @@
 @import 'utils/workload';
 @import 'utils/themes';
 @import 'utils/css-variables';
-@import 'utils/bootstrap-override';
 
 // Layout
 @import 'layout/site';
