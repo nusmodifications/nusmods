@@ -70,7 +70,7 @@ describe('LinkModuleCodesComponent', () => {
     const noModules = create(noModulesText, testModules);
     expect(noModules.text()).toEqual(noModulesText);
 
-    const mixedModulesText = 'ACC1002This text has CS 1010S random module coPS1101Edes in it';
+    const mixedModulesText = 'ACC1002This text has CS-1010S random module coPS1101Edes in it';
     const mixedModules = create(mixedModulesText, testModules);
     expect(mixedModules.text()).toEqual(mixedModulesText);
   });

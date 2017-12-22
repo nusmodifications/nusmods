@@ -98,7 +98,6 @@
     "bootstrap": "4.0.0-beta.2",
     "classnames": "^2.2.5",
     "core-js": "^2.5.1",
-    "d3": "^4.10.0",
     "dom-to-image": "^2.5.2",
     "downshift": "^1.22.3",
     "ical-generator": "^0.2.9",
