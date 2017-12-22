@@ -12,7 +12,7 @@ import { getTimeslot } from 'utils/modules';
 import styles from './TimeslotTable.scss';
 
 type Props = {
-  children: Map<string, Node> | Map<string, Node[]>,
+  children: Map<string, Node>,
   className?: string,
 };
 

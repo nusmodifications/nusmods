@@ -20,6 +20,38 @@ type State = {
   selected: Semester,
 };
 
+const HAS_LECTURE = 1 << 0;
+const HAS_TUTORIAL = 1 << 1;
+
+function getTimeslotContent(timeslot, flags) {
+  switch (flags) {
+    case HAS_LECTURE:
+      return (
+        <div
+          title={`This module has lectures on ${timeslot}`}
+          className="workload-lecture-bg"
+        />
+      );
+
+    case HAS_TUTORIAL:
+      return (
+        <div
+          title={`This module has tutorials on ${timeslot}`}
+          className="workload-tutorial-bg"
+        />
+      );
+
+    case HAS_TUTORIAL | HAS_LECTURE:
+    default:
+      return (
+        <div title={`This module has lectures and tutorials on ${timeslot}`}>
+          <div className="workload-lecture-bg" />
+          <div className="workload-tutorial-bg" />
+        </div>
+      );
+  }
+}
+
 export default class ModuleSemesterInfo extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
@@ -37,24 +69,21 @@ export default class ModuleSemesterInfo extends Component<Props, State> {
     return this.props.semesters.find(data => data.Semester === this.state.selected);
   }
 
-  timeslotChildren(): Map<string, Node[]> {
+  timeslotChildren(): Map<string, Node> {
     const semester = this.selectedSemester() || {};
     const {
       LecturePeriods: lectures = [],
       TutorialPeriods: tutorials = [],
     } = semester;
 
-    const children = new Map();
-    const addChild = (timeslot, component) => {
-      if (!children.has(timeslot)) children.set(timeslot, []);
-      const child = children.get(timeslot) || [];
-      child.push(component);
-    };
+    const timeslots: Map<string, number> = new Map();
+    const setTimeslot = (timeslot, flag) => timeslots.set(timeslot, (timeslots.get(timeslot) || 0) | flag);
+    lectures.forEach(timeslot => setTimeslot(timeslot, HAS_LECTURE));
+    tutorials.forEach(timeslot => setTimeslot(timeslot, HAS_TUTORIAL));
 
-    lectures.forEach(timeslot => addChild(timeslot, <div className="workload-lecture-bg" key="lecture" />));
-    tutorials.forEach(timeslot => addChild(timeslot, <div className="workload-tutorial-bg" key="tutorial" />));
-
-    return children;
+    const nodes = new Map();
+    timeslots.forEach((flags, timeslot) => nodes.set(timeslot, getTimeslotContent(timeslot, flags)));
+    return nodes;
   }
 
   showTimeslots() {
@@ -78,23 +107,26 @@ export default class ModuleSemesterInfo extends Component<Props, State> {
           showDisabled
         />
 
-        {semester && <div className="module-semester-info">
-          { semester.ExamDate && <section className="module-exam">
-            <h4>Exam</h4>
-            { formatExamDate(semester.ExamDate) }
+        {semester &&
+          <div className="module-semester-info">
+            {semester.ExamDate &&
+              <section className="module-exam">
+                <h4>Exam</h4>
+                { formatExamDate(semester.ExamDate) }
 
-            <ModuleExamClash
-              semester={semester.Semester}
-              examDate={semester.ExamDate}
-              moduleCode={this.props.moduleCode}
-            />
-          </section>}
+                <ModuleExamClash
+                  semester={semester.Semester}
+                  examDate={semester.ExamDate}
+                  moduleCode={this.props.moduleCode}
+                />
+              </section>}
 
-          { this.showTimeslots() && <section className="module-timeslots">
-            <h4>Timetable</h4>
-            <TimeslotTable>{ this.timeslotChildren() }</TimeslotTable>
-          </section>}
-        </div>}
+            {this.showTimeslots() &&
+              <section className="module-timeslots">
+                <h4>Timetable</h4>
+                <TimeslotTable>{this.timeslotChildren()}</TimeslotTable>
+              </section>}
+          </div>}
       </div>
     );
   }

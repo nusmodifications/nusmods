@@ -80,13 +80,16 @@
       line-height: 2;
     }
 
+    td {
+      height: 1.8rem;
+    }
+
     div {
       position: absolute;
       top: 0;
       right: 0;
       bottom: 0;
       left: 0;
-      min-height: 2rem;
 
       // Timeslot has both lecture and tutorial - we create a split cell effect
       // with a skew to show that it is on the same day (if the edge is straight
