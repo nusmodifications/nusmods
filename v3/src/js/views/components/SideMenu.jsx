@@ -2,8 +2,10 @@
 
 import React, { PureComponent, type Node, Fragment } from 'react';
 import classnames from 'classnames';
+
 import { Menu, Close } from 'views/components/icons';
 import makeResponsive from 'views/hocs/makeResponsive';
+import noScroll from 'utils/no-scroll';
 import Fab from './Fab';
 
 import styles from './SideMenu.scss';
@@ -25,6 +27,10 @@ export class SideMenuComponent extends PureComponent<Props> {
     openIcon: <Menu aria-label={OPEN_MENU_LABEL} />,
     closeIcon: <Close aria-label={CLOSE_MENU_LABEL} />,
   };
+
+  componentDidUpdate() {
+    noScroll(this.props.isOpen);
+  }
 
   render() {
     const { isOpen, matchBreakpoint, toggleMenu, children, openIcon, closeIcon } = this.props;

@@ -1,15 +1,15 @@
 // @flow
 import React, { Component } from 'react';
-import noScroll from 'no-scroll';
 import _ from 'lodash';
 import Downshift from 'downshift';
 import classnames from 'classnames';
 
+import type { ModuleSelectList } from 'types/reducers';
 import { createSearchPredicate, sortModules } from 'utils/moduleSearch';
 import makeResponsive from 'views/hocs/makeResponsive';
 import Modal from 'views/components/Modal';
 import CloseButton from 'views/components/CloseButton';
-import type { ModuleSelectList } from 'types/reducers';
+import noScroll from 'utils/no-scroll';
 
 import styles from './ModulesSelect.scss';
 
@@ -53,8 +53,8 @@ class ModulesSelect extends Component<Props, State> {
   onBlur = (e: Event) => { e.preventDefault(); };
   onOuterClick = () => this.setState({ isOpen: false });
   toggleModal = () => {
-    noScroll.toggle();
-    this.setState({ isModalOpen: !this.state.isModalOpen });
+    const isModalOpen = !this.state.isModalOpen;
+    this.setState({ isModalOpen }, () => noScroll(isModalOpen));
   };
 
   getFilteredModules = (inputValue: string) => {
