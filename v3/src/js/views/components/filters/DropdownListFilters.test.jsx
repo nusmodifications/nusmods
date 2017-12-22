@@ -43,17 +43,47 @@ describe('<DropdownListFilters>', () => {
 
     expect(wrapper.find('select').exists()).toBe(true);
     expect(wrapper.find('option')).toHaveLength(3); // One placeholder and two options
+
+    expect(wrapper.find('ul.list-unstyled input')).toHaveLength(0);
   });
 
   test('change value when <select> value changes', () => {
     const group = createGroup(modules);
     const { wrapper, onFilterChange } = make(group, [group], false);
 
+    // Simulate selecting an <option> in the <select>
     wrapper.find('select').simulate('change', { target: { value: 'a' } });
-    const [[nextGroup]] = onFilterChange.mock.calls;
-    expect(nextGroup).toEqual(group.toggle('a'));
+    const [[nextGroup1]] = onFilterChange.mock.calls;
+    expect(nextGroup1).toEqual(group.toggle('a'));
 
-    wrapper.setProps({ group: nextGroup });
+    wrapper.setProps({ group: nextGroup1 });
+
+    // Should render the option inside the <select> with a checkmark
     expect(wrapper.find('option').at(1).text()).toMatch(CHECKBOX);
+
+    // Should render the item in the checklist outside
+    const checklist = wrapper.find('ul.list-unstyled input');
+    expect(checklist).toHaveLength(1);
+    expect(checklist.at(0).prop('checked')).toBe(true);
+  });
+
+  test('render a list of previously selected items outside the <select>', () => {
+    const group = createGroup(modules).toggle('a');
+    const { wrapper, onFilterChange } = make(group, [group], false);
+
+    // Should render the item in the checklist outside
+    const checklist1 = wrapper.find('ul.list-unstyled input');
+    expect(checklist1).toHaveLength(1);
+    expect(checklist1.at(0).prop('checked')).toBe(true);
+
+    // Simulate unchecking the checkbox on the checklist outside
+    checklist1.simulate('change', { target: { value: false } });
+    const [[nextGroup1]] = onFilterChange.mock.calls;
+    expect(nextGroup1).toEqual(group.toggle('a'));
+
+    wrapper.setProps({ group: nextGroup1 });
+    const checklist2 = wrapper.find('ul.list-unstyled input');
+    expect(checklist2).toHaveLength(1);
+    expect(checklist2.at(0).prop('checked')).toBe(false);
   });
 });

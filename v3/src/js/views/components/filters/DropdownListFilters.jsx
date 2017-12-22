@@ -172,10 +172,11 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
             <option>{placeholder}</option>
             {this.displayedFilters().map(([filter, count]) => (
               <option key={filter.id} value={filter.id}>
-                {/* Use a unicode checkbox to indicate to the user filters that are already enabled */}
-                {filter.enabled && '☑ '}
                 {/* Extra layer of interpolation to workaround https://github.com/facebook/react/issues/11911 */}
-                {`${filter.label} (${count})`}
+                {/* Use a unicode checkbox to indicate to the user filters that are already enabled */}
+                {filter.enabled
+                  ? `☑ ${filter.label} (${count})`
+                  : `${filter.label} (${count})`}
               </option>
             ))}
           </select>}
