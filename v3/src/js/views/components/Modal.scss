@@ -14,6 +14,7 @@
 .modal {
   $spacing: 1rem;
 
+  composes: scrollable from global;
   position: absolute;
   top: $spacing;
   right: $spacing;
@@ -24,8 +25,6 @@
   margin: 0 auto;
   background: var(--body-bg);
   box-shadow: 0 6px 24px rgba(#000, 0.18);
-
-  @include scrollable;
 
   @include media-breakpoint-up(md) {
     top: 10%;
