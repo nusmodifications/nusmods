@@ -210,9 +210,6 @@ exports[`<ModuleTree> should render prereq tree of module: ACC1002 1`] = `
           ACC1002
         </mockedlink>
       </div>
-      <ul
-        class="tree"
-      />
     </li>
   </ul>
 </div>
@@ -322,9 +319,6 @@ exports[`<ModuleTree> should render prereq tree of module: CS3244 1`] = `
                       CS2010
                     </mockedlink>
                   </div>
-                  <ul
-                    class="tree"
-                  />
                 </li>
                 <li
                   class="branch"
@@ -338,9 +332,6 @@ exports[`<ModuleTree> should render prereq tree of module: CS3244 1`] = `
                       CS2020
                     </mockedlink>
                   </div>
-                  <ul
-                    class="tree"
-                  />
                 </li>
                 <li
                   class="branch"
@@ -354,9 +345,6 @@ exports[`<ModuleTree> should render prereq tree of module: CS3244 1`] = `
                       CS2040
                     </mockedlink>
                   </div>
-                  <ul
-                    class="tree"
-                  />
                 </li>
                 <li
                   class="branch"
@@ -370,9 +358,6 @@ exports[`<ModuleTree> should render prereq tree of module: CS3244 1`] = `
                       CS2040C
                     </mockedlink>
                   </div>
-                  <ul
-                    class="tree"
-                  />
                 </li>
               </ul>
             </li>
@@ -399,9 +384,6 @@ exports[`<ModuleTree> should render prereq tree of module: CS3244 1`] = `
                       ESP1107
                     </mockedlink>
                   </div>
-                  <ul
-                    class="tree"
-                  />
                 </li>
                 <li
                   class="branch"
@@ -415,9 +397,6 @@ exports[`<ModuleTree> should render prereq tree of module: CS3244 1`] = `
                       ESP2107
                     </mockedlink>
                   </div>
-                  <ul
-                    class="tree"
-                  />
                 </li>
                 <li
                   class="branch"
@@ -431,9 +410,6 @@ exports[`<ModuleTree> should render prereq tree of module: CS3244 1`] = `
                       ST1232
                     </mockedlink>
                   </div>
-                  <ul
-                    class="tree"
-                  />
                 </li>
                 <li
                   class="branch"
@@ -447,9 +423,6 @@ exports[`<ModuleTree> should render prereq tree of module: CS3244 1`] = `
                       ST2131
                     </mockedlink>
                   </div>
-                  <ul
-                    class="tree"
-                  />
                 </li>
                 <li
                   class="branch"
@@ -463,9 +436,6 @@ exports[`<ModuleTree> should render prereq tree of module: CS3244 1`] = `
                       ST2132
                     </mockedlink>
                   </div>
-                  <ul
-                    class="tree"
-                  />
                 </li>
                 <li
                   class="branch"
@@ -479,9 +449,6 @@ exports[`<ModuleTree> should render prereq tree of module: CS3244 1`] = `
                       ST2334
                     </mockedlink>
                   </div>
-                  <ul
-                    class="tree"
-                  />
                 </li>
               </ul>
             </li>
@@ -508,9 +475,6 @@ exports[`<ModuleTree> should render prereq tree of module: CS3244 1`] = `
                       MA1101R
                     </mockedlink>
                   </div>
-                  <ul
-                    class="tree"
-                  />
                 </li>
                 <li
                   class="branch"
@@ -524,9 +488,6 @@ exports[`<ModuleTree> should render prereq tree of module: CS3244 1`] = `
                       MA1311
                     </mockedlink>
                   </div>
-                  <ul
-                    class="tree"
-                  />
                 </li>
                 <li
                   class="branch"
@@ -540,9 +501,6 @@ exports[`<ModuleTree> should render prereq tree of module: CS3244 1`] = `
                       MA1506
                     </mockedlink>
                   </div>
-                  <ul
-                    class="tree"
-                  />
                 </li>
               </ul>
             </li>
@@ -569,9 +527,6 @@ exports[`<ModuleTree> should render prereq tree of module: CS3244 1`] = `
                       MA1102R
                     </mockedlink>
                   </div>
-                  <ul
-                    class="tree"
-                  />
                 </li>
                 <li
                   class="branch"
@@ -585,9 +540,6 @@ exports[`<ModuleTree> should render prereq tree of module: CS3244 1`] = `
                       MA1505
                     </mockedlink>
                   </div>
-                  <ul
-                    class="tree"
-                  />
                 </li>
                 <li
                   class="branch"
@@ -601,9 +553,6 @@ exports[`<ModuleTree> should render prereq tree of module: CS3244 1`] = `
                       MA1521
                     </mockedlink>
                   </div>
-                  <ul
-                    class="tree"
-                  />
                 </li>
               </ul>
             </li>
