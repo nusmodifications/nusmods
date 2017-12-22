@@ -164,8 +164,8 @@ export class ModulePageContentComponent extends Component<Props, State> {
               </div>
             </section>
 
-            <section id="prerequisites">
-              <h2>Prerequisite Tree</h2>
+            <section className={styles.section} id={SIDE_MENU_ITEMS.prerequisites}>
+              <h2 className={styles.sectionHeading}>Prerequisite Tree</h2>
               <ModuleTree module={module} />
             </section>
 
