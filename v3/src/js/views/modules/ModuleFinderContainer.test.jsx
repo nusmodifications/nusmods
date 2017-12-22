@@ -170,7 +170,7 @@ describe('<ModuleFinderContainer', () => {
     const calls = interceptRouteChanges(container.history);
 
     container.component.setProps({ searchTerm: 'new search' });
-    await waitFor(() => calls.length); // Wait until the route has changed
+    await waitFor(() => calls.length > 0); // Wait until the route has changed
 
     expect(calls.map(extractQueryString)).toEqual([
       'q=new search',
