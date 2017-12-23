@@ -1,7 +1,8 @@
 // @flow
 import React, { Component, Fragment } from 'react';
-import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import deferComponentRender from 'views/hocs/deferComponentRender';
 import Helmet from 'react-helmet';
 import classnames from 'classnames';
 import axios from 'axios';
@@ -256,5 +257,6 @@ export const mapStateToProps: MapStateToProps<*, *, *> = (state, ownProps) => {
 };
 
 // Explicitly declare top level components for React hot reloading to work.
-const venuesContainerWithRouter = withRouter(VenuesContainerComponent);
-export default connect(mapStateToProps)(venuesContainerWithRouter);
+const connectedVenuesContainer = connect(mapStateToProps)(VenuesContainerComponent);
+const routedVenuesContainer = withRouter(connectedVenuesContainer);
+export default deferComponentRender(routedVenuesContainer);

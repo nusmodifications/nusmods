@@ -4,6 +4,7 @@ import type { ContextRouter } from 'react-router-dom';
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Redirect, withRouter } from 'react-router-dom';
+import deferComponentRender from 'views/hocs/deferComponentRender';
 import Raven from 'raven-js';
 
 import type { ModuleCodeMap } from 'types/reducers';
@@ -21,7 +22,7 @@ type Props = {
   moduleCode: ModuleCode,
   moduleCodes: ModuleCodeMap,
   module: ?Module,
-  fetchModule: (ModuleCode) => void,
+  fetchModule: ModuleCode => void,
 };
 
 type State = {
@@ -116,4 +117,5 @@ const mapStateToProps = (state, ownState) => {
 };
 
 const connectedModulePageContainer = connect(mapStateToProps, { fetchModule })(ModulePageContainerComponent);
-export default withRouter(connectedModulePageContainer);
+const routedModulePageContainer = withRouter(connectedModulePageContainer);
+export default deferComponentRender(routedModulePageContainer);

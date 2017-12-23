@@ -3,6 +3,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Redirect, type ContextRouter } from 'react-router-dom';
+import deferComponentRender from 'views/hocs/deferComponentRender';
 import classnames from 'classnames';
 
 import type { Semester } from 'types/modules';
@@ -221,4 +222,5 @@ const connectedTimetableContainer = connect(mapStateToProps, {
   setTimetable,
   fetchTimetableModules,
 })(TimetableContainerComponent);
-export default withRouter(connectedTimetableContainer);
+const routedTimetableContainer = withRouter(connectedTimetableContainer);
+export default deferComponentRender(routedTimetableContainer);
