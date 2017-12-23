@@ -23,3 +23,11 @@
       );
   }
 }
+
+:global(.no-scroll) .search-panel {
+  position: fixed;
+  top: $navbar-height;
+  right: 0;
+  left: 0;
+  margin: 0;
+}

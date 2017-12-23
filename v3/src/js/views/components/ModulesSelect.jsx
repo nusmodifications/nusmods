@@ -9,7 +9,6 @@ import { createSearchPredicate, sortModules } from 'utils/moduleSearch';
 import makeResponsive from 'views/hocs/makeResponsive';
 import Modal from 'views/components/Modal';
 import CloseButton from 'views/components/CloseButton';
-import noScroll from 'utils/no-scroll';
 
 import styles from './ModulesSelect.scss';
 
@@ -54,7 +53,7 @@ class ModulesSelect extends Component<Props, State> {
   onOuterClick = () => this.setState({ isOpen: false });
   toggleModal = () => {
     const isModalOpen = !this.state.isModalOpen;
-    this.setState({ isModalOpen }, () => noScroll(isModalOpen));
+    this.setState({ isModalOpen });
   };
 
   getFilteredModules = (inputValue: string) => {

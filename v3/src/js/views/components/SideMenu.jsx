@@ -28,12 +28,20 @@ export class SideMenuComponent extends PureComponent<Props> {
     closeIcon: <Close aria-label={CLOSE_MENU_LABEL} />,
   };
 
+  componentDidMount() {
+    noScroll(this.isSideMenuShown());
+  }
+
   componentDidUpdate() {
-    noScroll(this.props.isOpen);
+    noScroll(this.isSideMenuShown());
+  }
+
+  isSideMenuShown() {
+    return this.props.isOpen && !this.props.matchBreakpoint;
   }
 
   render() {
-    const { isOpen, matchBreakpoint, toggleMenu, children, openIcon, closeIcon } = this.props;
+    const { isOpen, toggleMenu, children, openIcon, closeIcon } = this.props;
 
     return (
       <Fragment>
@@ -44,7 +52,7 @@ export class SideMenuComponent extends PureComponent<Props> {
           {isOpen ? closeIcon : openIcon}
         </Fab>
 
-        {isOpen && !matchBreakpoint &&
+        {this.isSideMenuShown() &&
           <div
             className={styles.overlay}
             onClick={() => toggleMenu(false)}
