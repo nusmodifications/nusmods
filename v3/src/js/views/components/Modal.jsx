@@ -3,8 +3,9 @@
 import React, { type Node, Component } from 'react';
 import ReactModal from 'react-modal';
 import classnames from 'classnames';
+
+import noScroll from 'utils/no-scroll';
 import styles from './Modal.scss';
-import noScroll from '../../utils/no-scroll';
 
 type Props = {
   isOpen: boolean,
