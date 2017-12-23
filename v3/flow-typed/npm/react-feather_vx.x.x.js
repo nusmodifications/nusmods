@@ -144,6 +144,10 @@ declare module 'react-feather/dist/icons/book' {
   declare module.exports: ComponentType;
 }
 
+declare module 'react-feather/dist/icons/book-open' {
+  declare module.exports: ComponentType;
+}
+
 declare module 'react-feather/dist/icons/bookmark' {
   declare module.exports: ComponentType;
 }
@@ -481,6 +485,10 @@ declare module 'react-feather/dist/icons/link-2' {
 }
 
 declare module 'react-feather/dist/icons/link' {
+  declare module.exports: ComponentType;
+}
+
+declare module 'react-feather/dist/icons/linkedin' {
   declare module.exports: ComponentType;
 }
 

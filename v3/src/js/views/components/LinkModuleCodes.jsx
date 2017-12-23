@@ -13,7 +13,6 @@ import { replaceWithNode } from 'utils/react';
 
 type Props = {
   children: string,
-  dispatch: Function,
   moduleCodes: ModuleCodeMap,
 };
 
@@ -26,7 +25,7 @@ const MODULE_CODE_REGEX = /\b(\w{2,3}\s*\d{4}\w{0,2})\b/g;
 
 export function LinkModuleCodesComponent(props: Props) {
   // Exclude dispatch from props
-  const { children, moduleCodes, dispatch, ...otherProps } = props;
+  const { children, moduleCodes, ...otherProps } = props;
 
   return replaceWithNode(children, MODULE_CODE_REGEX, (part, i) => {
     const code = part.replace(/\s*/g, '');
@@ -41,4 +40,4 @@ const mapStateToProps: MapStateToProps<*, *, *> = (state: State) => ({
   moduleCodes: state.entities.moduleBank.moduleCodes,
 });
 
-export default connect(mapStateToProps)(LinkModuleCodesComponent);
+export default connect(mapStateToProps, null)(LinkModuleCodesComponent);

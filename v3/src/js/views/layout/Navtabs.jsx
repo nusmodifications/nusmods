@@ -15,7 +15,7 @@ type Props = {
   activeSemester: Semester,
 };
 
-export function Navtabs(props: Props) {
+export function NavtabsComponent(props: Props) {
   const tabProps = {
     className: styles.link,
     activeClassName: styles.linkActive,
@@ -50,5 +50,5 @@ const mapStateToProps: MapStateToProps<*, *, *> = (state: State) => {
   };
 };
 
-const connectedNavtabs = connect(mapStateToProps)(Navtabs);
+const connectedNavtabs = connect(mapStateToProps)(NavtabsComponent);
 export default withRouter(connectedNavtabs);
