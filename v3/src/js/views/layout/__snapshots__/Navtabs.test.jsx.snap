@@ -8,7 +8,7 @@ exports[`renders into nav element 1`] = `
     activeClassName="linkActive"
     ariaCurrent="page"
     className="link"
-    to="/timetable"
+    to="/timetable/sem-1"
   >
     <Calendar
       color="currentColor"

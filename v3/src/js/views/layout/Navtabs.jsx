@@ -1,13 +1,21 @@
 // @flow
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { withRouter, NavLink } from 'react-router-dom';
 import { Calendar, Map, BookOpen, Settings } from 'views/components/icons/index';
+import type { MapStateToProps } from 'react-redux';
+import type { State } from 'reducers';
+import type { Semester } from 'types/modules';
 
 import styles from './Navtabs.scss';
 
 export const NAVTAB_HEIGHT = 48;
 
-function Navtabs() {
+type Props = {
+  activeSemester: Semester,
+};
+
+export function Navtabs(props: Props) {
   const tabProps = {
     className: styles.link,
     activeClassName: styles.linkActive,
@@ -16,7 +24,7 @@ function Navtabs() {
 
   return (
     <nav className={styles.nav}>
-      <NavLink {...tabProps} to="/timetable">
+      <NavLink {...tabProps} to={`/timetable/sem-${props.activeSemester}`}>
         <Calendar />
         <span className={styles.title}>Timetable</span>
       </NavLink>
@@ -36,4 +44,11 @@ function Navtabs() {
   );
 }
 
-export default Navtabs;
+const mapStateToProps: MapStateToProps<*, *, *> = (state: State) => {
+  return {
+    activeSemester: state.app.activeSemester,
+  };
+};
+
+const connectedNavtabs = connect(mapStateToProps)(Navtabs);
+export default withRouter(connectedNavtabs);
