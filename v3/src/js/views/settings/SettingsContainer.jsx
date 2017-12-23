@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import { connect } from 'react-redux';
+import deferComponentRender from 'views/hocs/deferComponentRender';
 import classnames from 'classnames';
 import Helmet from 'react-helmet';
 
@@ -120,7 +121,7 @@ const mapStateToProps = state => ({
   currentThemeId: state.theme.id,
 });
 
-export default connect(
+const connectedSettings = connect(
   mapStateToProps,
   {
     selectTheme,
@@ -129,3 +130,4 @@ export default connect(
     selectMode,
   },
 )(SettingsContainer);
+export default deferComponentRender(connectedSettings);
