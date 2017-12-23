@@ -4,7 +4,7 @@ import React, { type Node, Component } from 'react';
 import ReactModal from 'react-modal';
 import classnames from 'classnames';
 
-import noScroll from 'utils/no-scroll';
+import noScroll from 'utils/noScroll';
 import styles from './Modal.scss';
 
 type Props = {

@@ -5,7 +5,7 @@ import classnames from 'classnames';
 
 import { Menu, Close } from 'views/components/icons';
 import makeResponsive from 'views/hocs/makeResponsive';
-import noScroll from 'utils/no-scroll';
+import noScroll from 'utils/noScroll';
 import Fab from './Fab';
 
 import styles from './SideMenu.scss';
