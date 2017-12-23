@@ -1,6 +1,6 @@
 // @flow
 
-import { type Node, PureComponent } from 'react';
+import { type Node, Component } from 'react';
 import { connect, type MapStateToProps } from 'react-redux';
 import type { State } from 'reducers';
 
@@ -11,7 +11,7 @@ type Props = {
   isLive: boolean,
 };
 
-export class OnlineComponent extends PureComponent<Props> {
+export class OnlineComponent extends Component<Props> {
   static defaultProps = {
     isLive: true,
   };
