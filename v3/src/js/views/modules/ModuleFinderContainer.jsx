@@ -9,7 +9,7 @@ import axios from 'axios';
 import update from 'immutability-helper';
 import qs from 'query-string';
 import Raven from 'raven-js';
-import { clone, each, values } from 'lodash';
+import { clone, each, mapValues, values } from 'lodash';
 
 import type { Module } from 'types/modules';
 import type { PageRange, PageRangeDiff, FilterGroupId } from 'types/views';
@@ -297,8 +297,18 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
               openIcon={<Filter aria-label={OPEN_MENU_LABEL} />}
             >
               <div className={styles.moduleFilters}>
-                <header>
+                <header className={styles.filterHeader}>
                   <h3>Refine by</h3>
+                  {this.filterGroups().some(group => group.isActive()) &&
+                    <button
+                      className="btn btn-link btn-sm"
+                      type="button"
+                      onClick={() => this.setState({
+                        filterGroups: mapValues(groups, (group: FilterGroup<*>) => group.reset()),
+                      })}
+                    >
+                      Clear Filters
+                    </button>}
                 </header>
 
                 <ChecklistFilters
