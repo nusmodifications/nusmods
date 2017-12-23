@@ -1,4 +1,4 @@
-@import './_variables.scss';
+@import '~styles/utils/modules-entry';
 
 .container {
   :global {
@@ -7,9 +7,8 @@
 }
 
 .timetableWrapper {
+  composes: scrollable from global;
   margin-bottom: 1rem;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
 
   @include media-breakpoint-down(sm) {
     // Maximize the space taken by the timetable by overflowing into the grid gutters

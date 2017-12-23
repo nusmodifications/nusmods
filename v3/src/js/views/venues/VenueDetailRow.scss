@@ -11,6 +11,6 @@
 }
 
 .venueTimetable {
+  composes: scrollable from global;
   margin-bottom: 1rem;
-  overflow: auto;
 }

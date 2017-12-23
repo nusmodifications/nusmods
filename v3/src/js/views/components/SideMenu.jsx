@@ -2,8 +2,10 @@
 
 import React, { PureComponent, type Node, Fragment } from 'react';
 import classnames from 'classnames';
+
 import { Menu, Close } from 'views/components/icons';
 import makeResponsive from 'views/hocs/makeResponsive';
+import noScroll from 'utils/no-scroll';
 import Fab from './Fab';
 
 import styles from './SideMenu.scss';
@@ -26,8 +28,20 @@ export class SideMenuComponent extends PureComponent<Props> {
     closeIcon: <Close aria-label={CLOSE_MENU_LABEL} />,
   };
 
+  componentDidMount() {
+    noScroll(this.isSideMenuShown());
+  }
+
+  componentDidUpdate() {
+    noScroll(this.isSideMenuShown());
+  }
+
+  isSideMenuShown() {
+    return this.props.isOpen && !this.props.matchBreakpoint;
+  }
+
   render() {
-    const { isOpen, matchBreakpoint, toggleMenu, children, openIcon, closeIcon } = this.props;
+    const { isOpen, toggleMenu, children, openIcon, closeIcon } = this.props;
 
     return (
       <Fragment>
@@ -38,7 +52,7 @@ export class SideMenuComponent extends PureComponent<Props> {
           {isOpen ? closeIcon : openIcon}
         </Fab>
 
-        {isOpen && !matchBreakpoint &&
+        {this.isSideMenuShown() &&
           <div
             className={styles.overlay}
             onClick={() => toggleMenu(false)}

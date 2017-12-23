@@ -1,15 +1,14 @@
 // @flow
 import React, { Component } from 'react';
-import noScroll from 'no-scroll';
 import _ from 'lodash';
 import Downshift from 'downshift';
 import classnames from 'classnames';
 
+import type { ModuleSelectList } from 'types/reducers';
 import { createSearchPredicate, sortModules } from 'utils/moduleSearch';
 import makeResponsive from 'views/hocs/makeResponsive';
 import Modal from 'views/components/Modal';
 import CloseButton from 'views/components/CloseButton';
-import type { ModuleSelectList } from 'types/reducers';
 
 import styles from './ModulesSelect.scss';
 
@@ -52,10 +51,7 @@ class ModulesSelect extends Component<Props, State> {
   /* Prevent iOS "Done" button from resetting input */
   onBlur = (e: Event) => { e.preventDefault(); };
   onOuterClick = () => this.setState({ isOpen: false });
-  toggleModal = () => {
-    noScroll.toggle();
-    this.setState({ isModalOpen: !this.state.isModalOpen });
-  };
+  toggleModal = () => this.setState({ isModalOpen: !this.state.isModalOpen });
 
   getFilteredModules = (inputValue: string) => {
     if (!inputValue) {

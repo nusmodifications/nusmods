@@ -15,3 +15,15 @@
     }
   }
 }
+
+@mixin scrollable() {
+  overflow: auto;
+
+  // @supports is used here because Safari requires overflow: scroll to be used in conjunction with
+  // -webkit-overflow-scrolling: touch to ensure smooth scrolling on iOS, but this causes ugly
+  // scrollbars to appear in other browsers
+  @supports (-webkit-overflow-scrolling: touch) {
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
+}
