@@ -20,10 +20,12 @@ type State = {
   selected: Semester,
 };
 
-const HAS_LECTURE = 1 << 0;
-const HAS_TUTORIAL = 1 << 1;
+// Using a bitmask to indicate what the timeslot contains - lecture, tutorial, or both
+type TimeslotFlag = number;
+const HAS_LECTURE: TimeslotFlag = 1 << 0;
+const HAS_TUTORIAL: TimeslotFlag = 1 << 1;
 
-function getTimeslotContent(timeslot, flags) {
+function getTimeslotContent(timeslot: string, flags: TimeslotFlag) {
   switch (flags) {
     case HAS_LECTURE:
       return (
@@ -76,11 +78,13 @@ export default class ModuleSemesterInfo extends Component<Props, State> {
       TutorialPeriods: tutorials = [],
     } = semester;
 
-    const timeslots: Map<string, number> = new Map();
+    // Create a mapping of timeslot to flags
+    const timeslots: Map<string, TimeslotFlag> = new Map();
     const setTimeslot = (timeslot, flag) => timeslots.set(timeslot, (timeslots.get(timeslot) || 0) | flag);
     lectures.forEach(timeslot => setTimeslot(timeslot, HAS_LECTURE));
     tutorials.forEach(timeslot => setTimeslot(timeslot, HAS_TUTORIAL));
 
+    // Then convert the flags to content
     const nodes = new Map();
     timeslots.forEach((flags, timeslot) => nodes.set(timeslot, getTimeslotContent(timeslot, flags)));
     return nodes;
