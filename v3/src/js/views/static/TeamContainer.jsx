@@ -107,10 +107,6 @@ export default function TeamContainer() {
       <h4 className={styles.heading}>NUSMods Alumni</h4>
       {teamMembers.filter(member => !member.active).map(member => <TeamMember key={member.name} member={member} />)}
       <hr />
-
-      <small>
-        LinkedIn icon from <a href="https://icons8.com/">Icons8</a>
-      </small>
     </StaticPage>
   );
 }

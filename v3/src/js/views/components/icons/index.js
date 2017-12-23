@@ -1,6 +1,7 @@
 // @flow
 // Refer to https://feathericons.com/ for full list.
 import AlertTriangle from 'react-feather/dist/icons/alert-triangle';
+import BookOpen from 'react-feather/dist/icons/book-open';
 import Calendar from 'react-feather/dist/icons/calendar';
 import ChevronLeft from 'react-feather/dist/icons/chevron-left';
 import ChevronRight from 'react-feather/dist/icons/chevron-right';
@@ -14,6 +15,7 @@ import Facebook from 'react-feather/dist/icons/facebook';
 import Filter from 'react-feather/dist/icons/filter';
 import GitHub from 'react-feather/dist/icons/github';
 import Image from 'react-feather/dist/icons/image';
+import LinkedIn from 'react-feather/dist/icons/linkedin';
 import Map from 'react-feather/dist/icons/map';
 import Menu from 'react-feather/dist/icons/menu';
 import Mail from 'react-feather/dist/icons/mail';
@@ -26,10 +28,9 @@ import Sidebar from 'react-feather/dist/icons/sidebar';
 import Twitter from 'react-feather/dist/icons/twitter';
 import Trash2 from 'react-feather/dist/icons/trash-2';
 
-import LinkedIn from './LinkedIn';
-
 export {
   AlertTriangle,
+  BookOpen,
   Calendar,
   ChevronLeft,
   ChevronRight,

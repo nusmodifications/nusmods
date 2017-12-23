@@ -27,7 +27,7 @@ exports[`renders into nav element 1`] = `
     className="link"
     to="/modules"
   >
-    <Search
+    <BookOpen
       className="icon"
       color="currentColor"
       size="24"
