@@ -266,7 +266,7 @@ export class ModulePageContentComponent extends Component<Props, State> {
 }
 
 const mapStateToProps: MapStateToProps<*, *, *> = (state, ownProps) => ({
-  module: state.entities.moduleBank.modules[ownProps.moduleCode],
+  module: state.moduleBank.modules[ownProps.moduleCode],
 });
 
 export default connect(mapStateToProps)(ModulePageContentComponent);

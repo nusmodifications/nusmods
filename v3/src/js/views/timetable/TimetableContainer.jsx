@@ -9,7 +9,7 @@ import classnames from 'classnames';
 import type { Semester } from 'types/modules';
 import type { SemTimetableConfig } from 'types/timetables';
 import type { ColorMapping } from 'types/reducers';
-import type { ModulesMap } from 'reducers/entities/moduleBank';
+import type { ModulesMap } from 'reducers/moduleBank';
 
 import { selectSemester } from 'actions/settings';
 import { setTimetable, fetchTimetableModules } from 'actions/timetables';
@@ -211,7 +211,7 @@ const mapStateToProps = (state, ownProps) => {
     semester,
     timetable,
     colors: state.theme.colors,
-    modules: state.entities.moduleBank.modules,
+    modules: state.moduleBank.modules,
     activeSemester: state.app.activeSemester,
   };
 };

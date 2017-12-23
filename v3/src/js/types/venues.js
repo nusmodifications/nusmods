@@ -1,12 +1,14 @@
 // @flow
-import type { Venue, RawLesson, ModuleCode, DayText, LessonTime } from 'types/modules';
+import type { RawLesson, ModuleCode, DayText, LessonTime } from 'types/modules';
 
+export type Venue = string;
+export type VenueList = Venue[];
 // Components within a venue availability class:
 export type VenueOccupiedState = 'vacant' | 'occupied';
 export const VACANT: VenueOccupiedState = 'vacant';
 export const OCCUPIED: VenueOccupiedState = 'occupied';
 
-export type Availability = { [LessonTime]: VenueOccupiedState } // E.g. { "1000": "vacant", "1030": "occupied", ... }
+export type Availability = { [LessonTime]: VenueOccupiedState }; // E.g. { "1000": "vacant", "1030": "occupied", ... }
 
 // Raw lessons obtained from venue info API includes ModuleCode by default
 export type VenueLesson = RawLesson & {
@@ -19,7 +21,7 @@ export type DayAvailability = {
   Day: DayText,
   Classes: VenueLesson[],
   Availability: Availability,
-}
+};
 
 // Describes venueInformation.json
 // E.g. { "LT16": [DayAvailability1, DayAvailability2, ...], "LT17": [...], ... }

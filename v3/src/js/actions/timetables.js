@@ -24,7 +24,7 @@ export function addModule(
 ) {
   return (dispatch: Function, getState: Function) =>
     dispatch(fetchModule(moduleCode)).then(() => {
-      const module: Module = getState().entities.moduleBank.modules[moduleCode];
+      const module: Module = getState().moduleBank.modules[moduleCode];
       const lessons = getModuleTimetable(module, semester);
       const moduleLessonConfig = lessons && isEmpty(lessonConfig) ?
         randomModuleLessonConfig(lessons) : lessonConfig;

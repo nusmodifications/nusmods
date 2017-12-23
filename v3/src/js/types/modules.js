@@ -2,6 +2,7 @@
 import type { ColorIndex } from 'types/reducers';
 import { flatMap } from 'lodash';
 import type { BiddingStat } from './cors';
+import type { Venue } from './venues';
 
 // Components within a module:
 export type AcadYear = string; // E.g. "2016/2017"
@@ -16,7 +17,6 @@ export type LessonTime = StartTime | EndTime;
 export type ModuleCode = string; // E.g. "CS3216"
 export type ModuleTitle = string;
 export type Semester = number; // E.g. 0/1/2/3/4. 3 and 4 means special sem i and ii.
-export type Venue = string;
 export type WeekText = string; // E.g. "Every Week", "Odd Week"
 
 // Auxiliary data types

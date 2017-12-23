@@ -23,11 +23,9 @@ store.subscribe(
     //       pick out the keys (including nested keys) from the store
     //       that we want to persist.
     storage.saveState({
-      entities: {
-        moduleBank: {
-          modules: storeState.entities.moduleBank.modules,
-          moduleList: storeState.entities.moduleBank.moduleList,
-        },
+      moduleBank: {
+        modules: storeState.moduleBank.modules,
+        moduleList: storeState.moduleBank.moduleList,
       },
       timetables: storeState.timetables,
       theme: storeState.theme,
