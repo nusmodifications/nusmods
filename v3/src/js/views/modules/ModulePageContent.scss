@@ -1,7 +1,7 @@
 @import "~styles/utils/modules-entry";
 
 $header-margin-top: 1rem;
-$sticky-top: $navbar-height + $header-margin-top;
+$sticky-top: $navbar-height;
 
 .pageTitle {
   margin: 0 0 0.5rem;
@@ -27,7 +27,7 @@ $sticky-top: $navbar-height + $header-margin-top;
 
 .header {
   padding: 0 0 1rem;
-  margin-bottom: 1.5rem - $sticky-top;
+  margin-bottom: 1rem;
   border-bottom: 1px solid var(--gray-lighter);
 
   p {
@@ -61,7 +61,10 @@ $sticky-top: $navbar-height + $header-margin-top;
   // Account for the fixed header's height. If this is not done, when side menu links are
   // clicked a portion of the content will be clipped by the fixed header.
   padding-top: $sticky-top;
-  margin-top: 2rem - $sticky-top;
+
+  &.firstSection {
+    margin-top: -$sticky-top;
+  }
 }
 
 @include media-breakpoint-down(sm) {

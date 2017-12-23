@@ -79,99 +79,102 @@ export class ModulePageContentComponent extends Component<Props, State> {
 
         <div className="row">
           <div className="col-md-9">
-            <header className={styles.header}>
-              <h1 className={styles.pageTitle}>
-                <span className={styles.moduleCodeTitle}>{ModuleCode}</span>
-                {ModuleTitle}
-              </h1>
-
-              <p>
-                {intersperse([
-                  <a key="department">{module.Department}</a>,
-                  <a key="mc">{module.ModuleCredit} MCs</a>,
-                ], BULLET)}
-              </p>
-
-              <p>
-                {intersperse(semesters.map(semester => (
-                  <a key={semester}>{ config.semesterNames[semester] }</a>
-                )), BULLET)}
-              </p>
-            </header>
-
-            <section
+            <div
               id={SIDE_MENU_ITEMS.details}
-              className={classnames('row', styles.section, styles.details)}
+              className={classnames(styles.section, styles.firstSection)}
             >
-              <div className="col-sm-8">
-                { module.ModuleDescription && <p>{module.ModuleDescription}</p> }
+              <header className={styles.header}>
+                <h1 className={styles.pageTitle}>
+                  <span className={styles.moduleCodeTitle}>{ModuleCode}</span>
+                  {ModuleTitle}
+                </h1>
 
-                <dl>
-                  {module.Prerequisite &&
+                <p>
+                  {intersperse([
+                    <a key="department">{module.Department}</a>,
+                    <a key="mc">{module.ModuleCredit} MCs</a>,
+                  ], BULLET)}
+                </p>
+
+                <p>
+                  {intersperse(semesters.map(semester => (
+                    <a key={semester}>{ config.semesterNames[semester] }</a>
+                  )), BULLET)}
+                </p>
+              </header>
+
+              <section className={classnames('row', styles.details)}>
+                <div className="col-sm-8">
+                  {module.ModuleDescription && <p>{module.ModuleDescription}</p>}
+
+                  <dl>
+                    {module.Prerequisite &&
+                      <Fragment>
+                        <dt>Prerequisite</dt>
+                        <dd>
+                          <LinkModuleCodes>{module.Prerequisite}</LinkModuleCodes>
+                        </dd>
+                      </Fragment>}
+
+                    {module.Corequisite &&
+                      <Fragment>
+                        <dt>Corequisite</dt>
+                        <dd>
+                          <LinkModuleCodes>{module.Corequisite}</LinkModuleCodes>
+                        </dd>
+                      </Fragment>}
+
+                    {module.Preclusion &&
+                      <Fragment>
+                        <dt>Preclusion</dt>
+                        <dd>
+                          <LinkModuleCodes>{module.Preclusion}</LinkModuleCodes>
+                        </dd>
+                      </Fragment>}
+                  </dl>
+
+                  {module.Workload
+                    ? <ModuleWorkload workload={module.Workload} />
+                    :
                     <Fragment>
-                      <dt>Prerequisite</dt>
-                      <dd>
-                        <LinkModuleCodes>{module.Prerequisite}</LinkModuleCodes>
-                      </dd>
+                      <h4>Workload</h4>
+                      <p>Workload not available</p>
                     </Fragment>}
+                </div>
 
-                  {module.Corequisite &&
-                    <Fragment>
-                      <dt>Corequisite</dt>
-                      <dd>
-                        <LinkModuleCodes>{module.Corequisite}</LinkModuleCodes>
-                      </dd>
-                    </Fragment>}
+                <div className="col-sm-4">
+                  {this.examinations().map(exam => (
+                    <div key={exam.semester} className={styles.exam}>
+                      <h3 className={styles.descriptionHeading}>{config.semesterNames[exam.semester]} Exam</h3>
+                      <p>{formatExamDate(exam.date)}</p>
 
-                  {module.Preclusion &&
-                    <Fragment>
-                      <dt>Preclusion</dt>
-                      <dd>
-                        <LinkModuleCodes>{module.Preclusion}</LinkModuleCodes>
-                      </dd>
-                    </Fragment>}
-                </dl>
+                      <ModuleExamClash
+                        semester={exam.semester}
+                        examDate={exam.date}
+                        moduleCode={ModuleCode}
+                      />
+                    </div>
+                  ))}
 
-                {module.Workload
-                  ? <ModuleWorkload workload={module.Workload} />
-                  :
-                  <Fragment>
-                    <h4>Workload</h4>
-                    <p>Workload not available</p>
-                  </Fragment>}
-              </div>
-
-              <div className="col-sm-4">
-                {this.examinations().map(exam => (
-                  <div key={exam.semester} className={styles.exam}>
-                    <h3 className={styles.descriptionHeading}>{config.semesterNames[exam.semester]} Exam</h3>
-                    <p>{formatExamDate(exam.date)}</p>
-
-                    <ModuleExamClash
-                      semester={exam.semester}
-                      examDate={exam.date}
-                      moduleCode={ModuleCode}
+                  <div className={styles.addToTimetable}>
+                    <AddToTimetableDropdown
+                      module={module}
+                      className="btn-group-sm"
+                      block
                     />
                   </div>
-                ))}
 
-                <div className={styles.addToTimetable}>
-                  <AddToTimetableDropdown
-                    module={module}
-                    className="btn-group-sm"
-                    block
-                  />
+                  <div>
+                    <h3 className={styles.descriptionHeading}>Official Links</h3>
+                    {intersperse([
+                      <a key="ivle" href={config.ivleUrl.replace('<ModuleCode>', ModuleCode)}>IVLE</a>,
+                      <a key="cors" href={config.corsUrl + ModuleCode}>CORS</a>,
+                    ], BULLET)}
+                  </div>
                 </div>
+              </section>
+            </div>
 
-                <div>
-                  <h3 className={styles.descriptionHeading}>Official Links</h3>
-                  {intersperse([
-                    <a key="ivle" href={config.ivleUrl.replace('<ModuleCode>', ModuleCode)}>IVLE</a>,
-                    <a key="cors" href={config.corsUrl + ModuleCode}>CORS</a>,
-                  ], BULLET)}
-                </div>
-              </div>
-            </section>
             {/* TODO: Add in prereq tree when it is ready
             <section className={styles.section} id={SIDE_MENU_ITEMS.prerequisites}>
               <h2 className={styles.sectionHeading}>Prerequisite Tree</h2>
