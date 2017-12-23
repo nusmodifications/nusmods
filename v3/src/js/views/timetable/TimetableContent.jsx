@@ -40,7 +40,7 @@ import {
   lessonsForLessonType,
   findExamClashes,
 } from 'utils/timetables';
-import ModulesSelect from 'views/components/ModulesSelect';
+import ModulesSelect from 'views/timetable/ModulesSelect';
 import CorsNotification from 'views/components/cors-info/CorsNotification';
 
 import styles from './TimetableContent.scss';
