@@ -51,10 +51,7 @@ class ModulesSelect extends Component<Props, State> {
   /* Prevent iOS "Done" button from resetting input */
   onBlur = (e: Event) => { e.preventDefault(); };
   onOuterClick = () => this.setState({ isOpen: false });
-  toggleModal = () => {
-    const isModalOpen = !this.state.isModalOpen;
-    this.setState({ isModalOpen });
-  };
+  toggleModal = () => this.setState({ isModalOpen: !this.state.isModalOpen });
 
   getFilteredModules = (inputValue: string) => {
     if (!inputValue) {

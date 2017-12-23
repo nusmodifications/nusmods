@@ -19,8 +19,11 @@ export default class Modal extends Component<Props> {
     noScroll(this.props.isOpen);
   }
 
-  componentDidUpdate() {
-    noScroll(this.props.isOpen);
+  // noScroll must trigger before actual opening of modal
+  componentWillUpdate(nextProps: Props) {
+    if (this.props.isOpen !== nextProps.isOpen) {
+      noScroll(nextProps.isOpen);
+    }
   }
 
   render() {
