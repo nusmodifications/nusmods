@@ -206,7 +206,7 @@ exports.getCSSConfig = ({ options } = {}) => {
     ...insertIf(IS_DEV, 'cache-loader'), // Because css-loader is slow
     {
       loader: 'css-loader',
-      options,
+      options: { ...options, importLoaders: 2 },
     },
     {
       loader: 'postcss-loader',

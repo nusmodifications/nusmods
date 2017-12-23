@@ -11,7 +11,6 @@ exports[`renders into nav element 1`] = `
     to="/timetable"
   >
     <Calendar
-      className="icon"
       color="currentColor"
       size="24"
     />
@@ -28,7 +27,6 @@ exports[`renders into nav element 1`] = `
     to="/modules"
   >
     <BookOpen
-      className="icon"
       color="currentColor"
       size="24"
     />
@@ -45,7 +43,6 @@ exports[`renders into nav element 1`] = `
     to="/venues"
   >
     <Map
-      className="icon"
       color="currentColor"
       size="24"
     />
@@ -62,7 +59,6 @@ exports[`renders into nav element 1`] = `
     to="/settings"
   >
     <Settings
-      className="icon"
       color="currentColor"
       size="24"
     />

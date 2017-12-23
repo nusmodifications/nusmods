@@ -17,19 +17,19 @@ function Navtabs() {
   return (
     <nav className={styles.nav}>
       <NavLink {...tabProps} to="/timetable">
-        <Calendar className={styles.icon} />
+        <Calendar />
         <span className={styles.title}>Timetable</span>
       </NavLink>
       <NavLink {...tabProps} to="/modules">
-        <BookOpen className={styles.icon} />
+        <BookOpen />
         <span className={styles.title}>Modules</span>
       </NavLink>
       <NavLink {...tabProps} to="/venues">
-        <Map className={styles.icon} />
+        <Map />
         <span className={styles.title}>Venues</span>
       </NavLink>
       <NavLink {...tabProps} to="/settings">
-        <Settings className={styles.icon} />
+        <Settings />
         <span className={styles.title}>Settings</span>
       </NavLink>
     </nav>

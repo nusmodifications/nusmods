@@ -218,13 +218,13 @@ export class VenuesContainerComponent extends Component<Props, State> {
 
                 <button
                   className={classnames(
-                    'btn btn-block',
+                    'btn btn-block btn-svg',
                     styles.availabilityToggle,
                     isAvailabilityEnabled ? 'btn-primary' : 'btn-outline-primary',
                   )}
                   onClick={() => this.setState({ isAvailabilityEnabled: !isAvailabilityEnabled }, this.updateURL)}
                 >
-                  <Clock className={styles.freeRoomIcon} /> Find free rooms
+                  <Clock className="svg" /> Find free rooms
                 </button>
 
                 {isAvailabilityEnabled &&

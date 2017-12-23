@@ -19,7 +19,7 @@ type Props = {
 
 type State = {
   showDetails: boolean,
-}
+};
 
 /**
  * CORS bidding stats for a single semester, containing the summary statistics and
@@ -60,10 +60,13 @@ export default class CorsSemester extends PureComponent<Props, State> {
         </div>
 
         <button
-          className={classnames('btn', 'btn-link', styles.detailsHeading)}
+          className={classnames('btn btn-link btn-svg', styles.detailsHeading)}
           onClick={() => this.setState({ showDetails: !showDetails })}
         >
-          {showDetails ? <MinusSquare /> : <PlusSquare />} Detailed bidding information
+          {showDetails ?
+            <MinusSquare className="svg svg-small" /> :
+            <PlusSquare className="svg svg-small" />}
+          Detailed bidding information
         </button>
 
         {showDetails &&
