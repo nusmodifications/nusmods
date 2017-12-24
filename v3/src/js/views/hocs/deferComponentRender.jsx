@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { defer } from 'utils/react';
+import { defer, wrapComponentName } from 'utils/react';
 
 type State = {
   shouldRender: boolean,
@@ -14,6 +14,8 @@ type State = {
  */
 function deferComponentRender<Props: {}>(WrappedComponent: ComponentType<Props>): ComponentType<$Diff<Props, State>> {
   return class extends Component<Props, State> {
+    static displayName = wrapComponentName(WrappedComponent, deferComponentRender.name);
+
     state = {
       shouldRender: false,
     };

@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 
-import { breakpointUp } from 'utils/react';
+import { breakpointUp, wrapComponentName } from 'utils/react';
 import type { Breakpoint } from 'utils/react';
 
 type State = {
@@ -14,6 +14,9 @@ function makeResponsive<Props: {}>(
 ): ComponentType<$Diff<Props, State>> {
   return class extends Component<Props, State> {
     mql: ?MediaQueryList;
+
+    static displayName = wrapComponentName(WrappedComponent, makeResponsive.name);
+
     state = {
       matchBreakpoint: false,
     };
