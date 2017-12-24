@@ -24,5 +24,12 @@
     "faculty": "default",
     "student": "false",
     "account": "P"
+  },
+  "contact": {
+    "email": "nusmods@googlegroups.com",
+    "facebook": "nusmods",
+    "githubOrg": "nusmodifications",
+    "githubRepo": "nusmods",
+    "twitter": "nusmods"
   }
 }

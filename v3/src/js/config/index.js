@@ -42,6 +42,14 @@ export type Config = {
     account: string,
   },
 
+  contact: {
+    email: string,
+    facebook: string,
+    githubOrg: string,
+    githubRepo: string,
+    twitter: string,
+  },
+
   holidays: Date[],
 
   corsSchedule: CorsRound[],

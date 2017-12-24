@@ -106,7 +106,6 @@ export default function TeamContainer() {
 
       <h4 className={styles.heading}>NUSMods Alumni</h4>
       {teamMembers.filter(member => !member.active).map(member => <TeamMember key={member.name} member={member} />)}
-      <hr />
     </StaticPage>
   );
 }
