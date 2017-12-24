@@ -166,3 +166,13 @@ describe('#fromQueryString()', () => {
     expect(filterIds(group.fromQueryString('d'))).toEqual([]);
   });
 });
+
+describe('#reset()', () => {
+  test('should disable all enabled filters', () => {
+    const group = new Group('test group', 'test group', [f1, f2]);
+
+    expect(group.reset().isActive()).toBe(false);
+    expect(enable(group, ['f1']).reset().isActive()).toBe(false);
+    expect(enable(group, ['f1', 'f2']).reset().isActive()).toBe(false);
+  });
+});
