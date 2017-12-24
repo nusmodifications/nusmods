@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent } from 'react';
+import React, { Fragment, PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Redirect, type ContextRouter } from 'react-router-dom';
 import classnames from 'classnames';
@@ -142,11 +142,12 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
     );
   }
 
-  timetableHeader(semester: Semester) {
+  timetableHeader(semester: Semester, readOnly?: boolean) {
     return (
       <SemesterSwitcher
         semester={semester}
         onSelectSemester={this.selectSemester}
+        readOnly={readOnly}
       />
     );
   }
@@ -182,7 +183,10 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
     // 5. If there is an imported timetable, we show the sharing header which
     //    asks the user if they want to import the shared timetable
     const header = importedTimetable
-      ? this.sharingHeader(semester, importedTimetable)
+      ? (<Fragment>
+        {this.sharingHeader(semester, importedTimetable)}
+        {this.timetableHeader(semester, true)}
+      </Fragment>)
       : this.timetableHeader(semester);
 
     return (
