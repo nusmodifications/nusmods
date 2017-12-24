@@ -30,6 +30,8 @@ export type Config = {
   ivleUrl: string,
 
   disqusShortname: string,
+  facebookAppId: string,
+  facebookPageId: string,
 
   semesterNames: { [Semester]: string },
   shortSemesterNames: { [Semester]: string },

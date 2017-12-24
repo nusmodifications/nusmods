@@ -6773,6 +6773,12 @@ react-loadable@^4.0.4:
     is-webpack-bundle "^1.0.0"
     webpack-require-weak "^1.0.1"
 
+react-messenger-customer-chat@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/react-messenger-customer-chat/-/react-messenger-customer-chat-0.3.0.tgz#027db7a9c9ccb797a588199c1d4026f30f853a69"
+  dependencies:
+    prop-types "^15.6.0"
+
 react-modal@^3.1.7:
   version "3.1.7"
   resolved "https://registry.yarnpkg.com/react-modal/-/react-modal-3.1.7.tgz#21feb937c95cd722bf2d375cada751fdc8189c0e"
