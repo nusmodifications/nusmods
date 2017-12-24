@@ -10,6 +10,7 @@ import {
   SELECT_MODE,
   HIDE_LESSON_IN_TIMETABLE,
   SHOW_LESSON_IN_TIMETABLE,
+  TIMETABLE_MIGRATION_COMPLETE,
 } from 'actions/settings';
 import { LIGHT_MODE } from 'types/settings';
 
@@ -18,7 +19,7 @@ const defaultSettingsState: SettingsState = {
   faculty: '',
   mode: LIGHT_MODE,
   hiddenInTimetable: [],
-  migratedTimetable: false,
+  isV2TimetableMigrated: false,
 };
 
 function hidden(state = [], action: FSA) {
@@ -57,6 +58,11 @@ function settings(state: SettingsState = defaultSettingsState, action: FSA): Set
       return {
         ...state,
         hiddenInTimetable: hidden(state.hiddenInTimetable, action),
+      };
+    case TIMETABLE_MIGRATION_COMPLETE:
+      return {
+        ...state,
+        isV2TimetableMigrated: true,
       };
     default:
       return state;
