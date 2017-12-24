@@ -22,7 +22,11 @@ import type { SemTimetableConfig, SemTimetableConfigWithLessons, TimetableArrang
 
 import classnames from 'classnames';
 import { getSemModuleSelectList } from 'reducers/entities/moduleBank';
-import { downloadAsJpeg, downloadAsIcal } from 'actions/export';
+import {
+  downloadAsJpeg,
+  downloadAsIcal,
+  TIMETABLE_EXPORT_HIDE_CLASS,
+} from 'actions/export';
 import {
   addModule,
   cancelModifyLesson,
@@ -72,9 +76,9 @@ type Props = {
   downloadAsIcal: Function,
 };
 
-class TimetableContent extends Component<Props> {
-  timetableDom: ?HTMLElement;
+const TIMETABLE_EXPORT_CONTAINER_ID = 'timetable-export-container';
 
+class TimetableContent extends Component<Props> {
   componentWillUnmount() {
     this.cancelModifyLesson();
   }
@@ -85,7 +89,7 @@ class TimetableContent extends Component<Props> {
     }
   };
 
-  downloadAsJpeg = () => this.props.downloadAsJpeg(this.timetableDom);
+  downloadAsJpeg = () => this.props.downloadAsJpeg(document.getElementById(TIMETABLE_EXPORT_CONTAINER_ID));
 
   downloadAsIcal = () =>
     this.props.downloadAsIcal(this.props.semester, this.props.timetableWithLessons, this.props.modules);
@@ -218,7 +222,7 @@ class TimetableContent extends Component<Props> {
           {this.props.header}
         </div>
 
-        <div className="row">
+        <div className="row" id={TIMETABLE_EXPORT_CONTAINER_ID}>
           <div
             className={classnames({
               'col-md-12': !isVerticalOrientation,
@@ -231,9 +235,6 @@ class TimetableContent extends Component<Props> {
                 lessons={arrangedLessonsWithModifiableFlag}
                 isVerticalOrientation={isVerticalOrientation}
                 onModifyCell={this.modifyCell}
-                ref={(r) => {
-                  this.timetableDom = r && r.timetableDom;
-                }}
               />
             </div>
           </div>
@@ -243,7 +244,7 @@ class TimetableContent extends Component<Props> {
               'col-md-4': isVerticalOrientation,
             })}
           >
-            <div className="row justify-content-between">
+            <div className={classnames('row justify-content-between', TIMETABLE_EXPORT_HIDE_CLASS)}>
               <div className={classnames('col-auto', styles.timetableActions)}>
                 <TimetableActions
                   isVerticalOrientation={!isVerticalOrientation}
@@ -263,13 +264,16 @@ class TimetableContent extends Component<Props> {
             <div className={styles.tableContainer}>
               <div className="col-md-12">
                 {!readOnly &&
-                  <ModulesSelect
-                    moduleList={this.props.semModuleList}
-                    onChange={(moduleCode) => {
-                      this.props.addModule(semester, moduleCode);
-                    }}
-                    placeholder="Add module to timetable"
-                  />}
+                  <div className={TIMETABLE_EXPORT_HIDE_CLASS}>
+                    <ModulesSelect
+                      moduleList={this.props.semModuleList}
+                      onChange={(moduleCode) => {
+                        this.props.addModule(semester, moduleCode);
+                      }}
+                      placeholder="Add module to timetable"
+                    />
+                  </div>
+                }
                 <br />
                 {this.renderModuleSections(!isVerticalOrientation)}
               </div>

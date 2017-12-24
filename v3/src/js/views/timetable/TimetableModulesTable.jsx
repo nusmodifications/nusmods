@@ -13,6 +13,7 @@ import { Eye, EyeOff, Trash2 } from 'views/components/icons/index';
 import { selectModuleColor } from 'actions/theme';
 import { hideLessonInTimetable, showLessonInTimetable } from 'actions/settings';
 import { getModuleSemExamDate } from 'utils/modules';
+import { TIMETABLE_EXPORT_HIDE_CLASS } from 'actions/export';
 import { modulePage } from 'views/routes/paths';
 
 import styles from './TimetableModulesTable.scss';
@@ -36,7 +37,7 @@ class TimetableModulesTable extends Component<Props> {
 
     return (
       <div className={styles.moduleActionButtons}>
-        <div className="btn-group">
+        <div className={classnames('btn-group', TIMETABLE_EXPORT_HIDE_CLASS)}>
           <button
             type="button"
             className={classnames('btn btn-outline-secondary', styles.moduleAction)}
