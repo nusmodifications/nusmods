@@ -2,6 +2,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import styles from './Footer.scss';
+
 function Footer() {
   const commitHash = process.env.commitHash;
   const versionStr = process.env.versionStr;
@@ -20,9 +22,9 @@ function Footer() {
   );
 
   return (
-    <footer className="nm-footer text-muted">
+    <footer className={styles.footer}>
       <div className="container">
-        <ul className="nm-footer-links">
+        <ul className={styles.footerLinks}>
           <li><a href="https://github.com/nusmodifications/nusmods">GitHub</a></li>
           <li><a href="https://www.facebook.com/nusmods">Facebook</a></li>
           <li><a href="https://twitter.com/nusmods">Twitter</a></li>

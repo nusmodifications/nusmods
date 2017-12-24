@@ -1,6 +1,6 @@
 // @flow
 
-import type { Node } from 'react';
+import type { Node, ComponentType } from 'react';
 import React from 'react';
 import { escapeRegExp, castArray, entries } from 'lodash';
 
@@ -36,7 +36,8 @@ export function breakpointUp(size: Breakpoint): MediaQueryList {
 }
 
 export function supportsCSSVariables() {
-  return window.CSS.supports && window.CSS.supports('--var', 'red');
+  // Safari does not support supports('--var', 'red')
+  return window.CSS.supports && window.CSS.supports('(--var: red)');
 }
 
 /**
@@ -95,4 +96,8 @@ export function defer(task: () => any) {
   window.requestAnimationFrame(() => {
     window.requestAnimationFrame(task);
   });
+}
+
+export function wrapComponentName(Component: ComponentType, wrapper: string): string {
+  return `${wrapper}(${Component.displayName || Component.name || 'Component'})`;
 }

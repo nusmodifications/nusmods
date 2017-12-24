@@ -35,6 +35,7 @@ class ColorPicker extends PureComponent<Props> {
             title: this.props.label,
           })}
           className={classnames(
+            'btn btn-block',
             `color-${this.props.color}`,
             styles.moduleColor,
           )}

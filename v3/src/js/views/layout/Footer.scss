@@ -1,4 +1,7 @@
-.nm-footer {
+@import '~styles/utils/modules-entry.scss';
+
+.footer {
+  composes: text-muted from global;
   padding: 4rem 0;
   margin-top: 4rem;
   font-size: 0.85rem;
@@ -23,7 +26,7 @@
   }
 }
 
-.nm-footer-links {
+.footerLinks {
   padding-left: 0;
   margin-bottom: 1rem;
 

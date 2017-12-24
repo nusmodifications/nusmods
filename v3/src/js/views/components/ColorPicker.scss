@@ -12,15 +12,13 @@ $arrow-height: 1.5rem;
   position: relative;
 }
 
-.moduleColor {
+:global(.btn).moduleColor {
   $button-size: 1.25rem;
 
-  display: block;
   width: $button-size;
   height: $button-size;
+  padding: 0;
   border: 0;
-  border-radius: 3px;
-  cursor: pointer;
 }
 
 .palette {

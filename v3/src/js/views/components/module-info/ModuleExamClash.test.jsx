@@ -1,7 +1,8 @@
 // @flow
 
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
+import { MemoryRouter, Link } from 'react-router-dom';
 
 import type { Module, ModuleCode } from 'types/modules';
 
@@ -15,37 +16,42 @@ const MODULES = [
 ];
 
 function make(moduleCode: ModuleCode, examDate: ?string, modules: Module[] = MODULES) {
-  return shallow(
-    <ModuleExamClashComponent
-      moduleCode={moduleCode}
-      modules={modules}
-      examDate={examDate}
-      semester={1}
-    />,
+  return mount(
+    <MemoryRouter>
+      <ModuleExamClashComponent
+        moduleCode={moduleCode}
+        modules={modules}
+        examDate={examDate}
+        semester={1}
+      />
+    </MemoryRouter>,
   );
 }
 
 test('should return nothing if there are no existing modules', () => {
   const component = make('CS1010S', '2016-11-23T09:00+0800', []);
-  expect(component.type()).toBeNull();
+  expect(component.html()).toBeNull();
 });
 
 test('should return nothing if the current module has no exams', () => {
   const component = make('CS3217', null);
-  expect(component.type()).toBeNull();
+  expect(component.html()).toBeNull();
 });
 
 test('should return nothing if there are no clashes', () => {
   const component = make('CS2107', '2016-11-23T13:00+0800');
-  expect(component.type()).toBeNull();
+  expect(component.html()).toBeNull();
 });
 
 test('should ignore modules that are already on the timetable', () => {
   const component = make('CS1010S', '2016-11-23T09:00+0800');
-  expect(component.type()).toBeNull();
+  expect(component.html()).toBeNull();
 });
 
 test('should return all conflicting modules', () => {
   const component = make('CS1010E', '2016-11-23T09:00+0800');
-  expect(component.text()).toMatch('CS1010S');
+  const link = component.find(Link);
+  expect(link).toHaveLength(1);
+  expect(link.text()).toMatch('CS1010S');
+  expect(link.prop('to')).toMatch('CS1010S');
 });
