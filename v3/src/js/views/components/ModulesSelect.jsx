@@ -126,7 +126,7 @@ class ModulesSelect extends Component<Props, State> {
 
   render() {
     const { isModalOpen, isOpen } = this.state;
-    const { matchBreakpoint } = this.props;
+    const { matchBreakpoint, disabled } = this.props;
     const downshiftComponent = (
       <Downshift
         isOpen={isModalOpen || isOpen}
@@ -142,10 +142,10 @@ class ModulesSelect extends Component<Props, State> {
       downshiftComponent
     ) : (
       <div>
-        <button className={styles.input} onClick={this.toggleModal}>
+        <button className={styles.input} onClick={this.toggleModal} disabled={disabled}>
           {this.props.placeholder}
         </button>
-        <Modal isOpen={isModalOpen} onRequestClose={this.toggleModal} className={styles.modal}>
+        <Modal isOpen={!disabled && isModalOpen} onRequestClose={this.toggleModal} className={styles.modal}>
           {downshiftComponent}
         </Modal>
       </div>
