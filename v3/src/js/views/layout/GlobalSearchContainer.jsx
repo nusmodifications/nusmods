@@ -20,7 +20,7 @@ type Props = {
 
 const RESULTS_LIMIT = 7;
 
-export class SearchComponent extends Component<Props> {
+export class SearchContainerComponent extends Component<Props> {
   componentDidMount() {
     this.props.fetchVenueList();
   }
@@ -43,7 +43,7 @@ export class SearchComponent extends Component<Props> {
     const regex = regexify(inputValue);
     const venues = [];
     venueList.forEach((venue) => {
-      if (venues.length > RESULTS_LIMIT) {
+      if (venues.length >= RESULTS_LIMIT) {
         return;
       }
       if (regex.test(venue)) {
@@ -53,25 +53,23 @@ export class SearchComponent extends Component<Props> {
     const predicate = createSearchPredicate(inputValue);
     const filteredModules = [];
     moduleList.forEach((module) => {
-      if (filteredModules.length > RESULTS_LIMIT) {
+      if (filteredModules.length >= RESULTS_LIMIT) {
         return;
       }
       if (predicate({ ...module })) {
         filteredModules.push(module);
       }
     });
-    const modules = sortModules(inputValue, filteredModules.slice(0, RESULTS_LIMIT));
+    const modules = sortModules(inputValue, filteredModules.slice());
 
     // Plentiful of modules and venues, show 4 modules, 3 venues
-    if (modules.length >= RESULTS_LIMIT && venues.length >= RESULTS_LIMIT) {
+    if (modules.length >= 4 && venues.length >= 3) {
       return [modules.slice(0, 4), venues.slice(0, 3)];
-      // Some venues, show as many of them as possible as they are rare
-    } else if (venues.length > 0 && venues.length <= RESULTS_LIMIT) {
-      return [modules.slice(0, venues.length), venues];
-    } else if (modules.length >= RESULTS_LIMIT) {
-      return [modules.slice(0, RESULTS_LIMIT), []];
+    // Some venues, show as many of them as possible as they are rare
+    } else if (venues.length > 0) {
+      return [modules.slice(0, RESULTS_LIMIT - venues.length), venues];
     }
-    return [modules, venues];
+    return [modules.slice(0, RESULTS_LIMIT), []];
   };
 
   render() {
@@ -84,5 +82,5 @@ const mapStateToProps: MapStateToProps<*, *, *> = (state: State) => ({
   moduleList: state.moduleBank.moduleList,
   venueList: state.venueBank.venueList,
 });
-const connectedSearchComponent = connect(mapStateToProps, { fetchVenueList })(SearchComponent);
-export default makeResponsive(connectedSearchComponent, 'md');
+const connectedSearchContainer = connect(mapStateToProps, { fetchVenueList })(SearchContainerComponent);
+export default makeResponsive(connectedSearchContainer, 'md');

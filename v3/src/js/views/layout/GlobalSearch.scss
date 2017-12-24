@@ -25,17 +25,17 @@ $input-width: 13rem;
 .input {
   composes: form-control from global;
   height: 100%;
-  padding: 0;
   transform: scaleX(1);
   transform-origin: right;
-  transition: transform 0.3s;
 
-  // Remove bootstrap's box-shadow
+  // Remove bootstrap's styling
   &:global(.form-control) {
     width: $input-width;
+    padding: 0;
     font-size: $font-size-s;
     border: 0;
     background: transparent;
+    transition: transform 0.3s;
 
     &:focus {
       background: transparent;
@@ -49,7 +49,7 @@ $input-width: 13rem;
   transform: scaleX(0);
 }
 
-.selectList {
+.tip, .selectList {
   composes: list-unstyled from global;
   position: absolute;
   top: $navbar-height - 0.5rem;
@@ -61,7 +61,7 @@ $input-width: 13rem;
   border-radius: 0 0 $btn-border-radius $btn-border-radius;
 }
 
-.item {
+.tip .item {
   width: 100%;
   padding: 0.6rem 0.5rem;
   font-size: 0.9rem;
@@ -74,10 +74,6 @@ $input-width: 13rem;
   padding: 0.3rem 0.5;
   color: var(--body-bg);
   background: var(--gray);
-}
-
-.tip {
-  composes: selectList item;
 }
 
 .option {
