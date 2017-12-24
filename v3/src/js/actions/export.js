@@ -1,5 +1,5 @@
 // @flow
-import domtoimage from 'dom-to-image';
+import html2canvas from 'html2canvas';
 import ical from 'ical-generator';
 
 import type { ModuleCode, Module, Semester } from 'types/modules';
@@ -26,20 +26,19 @@ export function downloadAsJpeg(domElement: Element) {
       type: `${DOWNLOAD_AS_JPEG}_PENDING`,
     });
 
-    const style = { margin: '0', marginLeft: '-0.25em' };
-    return domtoimage.toJpeg(domElement, { bgcolor: '#fff', style })
-      .then((dataUrl) => {
-        downloadUrl(dataUrl, 'timetable.jpeg');
-        dispatch({
-          type: `${DOWNLOAD_AS_JPEG}_SUCCESS`,
-        });
-      })
-      .catch((err) => {
-        console.error(err); // eslint-disable-line
-        dispatch({
-          type: `${DOWNLOAD_AS_JPEG}_FAILURE`,
-        });
+    const config = { foreignObjectRendering: true, logging: process.env.NODE_ENV === 'development' };
+    return html2canvas(domElement, config).then((canvas) => {
+      const dataUrl = canvas.toDataURL('image/png');
+      downloadUrl(dataUrl, 'timetable.jpeg');
+      dispatch({
+        type: `${DOWNLOAD_AS_JPEG}_SUCCESS`,
       });
+    }).catch((err) => {
+      console.error(err); // eslint-disable-line
+      dispatch({
+        type: `${DOWNLOAD_AS_JPEG}_FAILURE`,
+      });
+    });
   };
 }
 

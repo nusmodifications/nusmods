@@ -214,11 +214,13 @@ class TimetableContent extends Component<Props> {
 
         <CorsNotification />
 
-        <div>
-          {this.props.header}
-        </div>
-
-        <div className="row">
+        <div
+          className="row"
+          ref={(r) => { this.timetableDom = r; }}
+        >
+          <div className="col-12">
+            {this.props.header}
+          </div>
           <div
             className={classnames({
               'col-md-12': !isVerticalOrientation,
@@ -231,9 +233,6 @@ class TimetableContent extends Component<Props> {
                 lessons={arrangedLessonsWithModifiableFlag}
                 isVerticalOrientation={isVerticalOrientation}
                 onModifyCell={this.modifyCell}
-                ref={(r) => {
-                  this.timetableDom = r && r.timetableDom;
-                }}
               />
             </div>
           </div>
@@ -243,7 +242,7 @@ class TimetableContent extends Component<Props> {
               'col-md-4': isVerticalOrientation,
             })}
           >
-            <div className="row justify-content-between">
+            <div data-html2canvas-ignore className="row justify-content-between">
               <div className={classnames('col-auto', styles.timetableActions)}>
                 <TimetableActions
                   isVerticalOrientation={!isVerticalOrientation}
@@ -261,7 +260,7 @@ class TimetableContent extends Component<Props> {
               </div>
             </div>
             <div className={styles.tableContainer}>
-              <div className="col-md-12">
+              <div data-html2canvas-ignore className="col-md-12">
                 {!readOnly &&
                   <ModulesSelect
                     moduleList={this.props.semModuleList}
@@ -270,7 +269,8 @@ class TimetableContent extends Component<Props> {
                     }}
                     placeholder="Add module to timetable"
                   />}
-                <br />
+              </div>
+              <div className="col-md-12" style={{ margin: '1rem 0' }}>
                 {this.renderModuleSections(!isVerticalOrientation)}
               </div>
             </div>
