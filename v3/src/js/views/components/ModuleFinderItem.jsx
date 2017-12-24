@@ -45,7 +45,7 @@ export class ModuleFinderItemComponent extends PureComponent<Props> {
             <dl>
               {module.Preclusion &&
                 <Fragment>
-                  <dt>Preclusions</dt>,
+                  <dt>Preclusions</dt>
                   <dd>
                     <LinkModuleCodes>{module.Preclusion}</LinkModuleCodes>
                   </dd>
