@@ -11,6 +11,7 @@ const settingsInitialState: SettingsState = {
   faculty: '',
   mode: LIGHT_MODE,
   hiddenInTimetable: [],
+  migratedTimetable: false,
 };
 const settingsWithNewStudent: SettingsState = { ...settingsInitialState, newStudent: true };
 const faculty = 'School of Computing';

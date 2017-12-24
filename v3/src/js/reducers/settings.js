@@ -18,6 +18,7 @@ const defaultSettingsState: SettingsState = {
   faculty: '',
   mode: LIGHT_MODE,
   hiddenInTimetable: [],
+  migratedTimetable: false,
 };
 
 function hidden(state = [], action: FSA) {
