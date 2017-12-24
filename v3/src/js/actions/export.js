@@ -20,14 +20,33 @@ function downloadUrl(url: string, filename: string) {
 }
 
 export const DOWNLOAD_AS_JPEG = 'DOWNLOAD_AS_JPEG';
+export const TIMETABLE_EXPORT_HIDE_CLASS = 'timetable-export-hidden';
 export function downloadAsJpeg(domElement: Element) {
   return (dispatch: Function) => {
     dispatch({
       type: `${DOWNLOAD_AS_JPEG}_PENDING`,
     });
 
-    const style = { margin: '0', marginLeft: '-0.25em' };
-    return domtoimage.toJpeg(domElement, { bgcolor: '#fff', style })
+    // Temporarily add a stylesheet to hide the elements that we don't want
+    // to show in the exported image.
+    const style: HTMLStyleElement = document.createElement('style');
+    style.appendChild(document.createTextNode('')); // WebKit hack :(
+    const head = document.head;
+    if (!head) return null;
+    head.appendChild(style);
+    if (style.sheet) {
+      // $FlowFixMe - https://github.com/facebook/flow/issues/2696
+      style.sheet.insertRule(`.${TIMETABLE_EXPORT_HIDE_CLASS} { display: none; }`, 0);
+    }
+
+    return domtoimage.toJpeg(domElement,
+      {
+        bgcolor: '#fff',
+        style: {
+          margin: '0',
+          marginLeft: '-0.25em',
+        },
+      })
       .then((dataUrl) => {
         downloadUrl(dataUrl, 'timetable.jpeg');
         dispatch({
@@ -39,6 +58,9 @@ export function downloadAsJpeg(domElement: Element) {
         dispatch({
           type: `${DOWNLOAD_AS_JPEG}_FAILURE`,
         });
+      })
+      .then(() => {
+        head.removeChild(style);
       });
   };
 }
