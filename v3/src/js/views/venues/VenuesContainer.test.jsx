@@ -3,7 +3,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import createHistory from 'history/createMemoryHistory'; // eslint-disable-line import/no-extraneous-dependencies
 
-import type { Venue } from 'types/modules';
+import type { Venue } from 'types/venues';
 
 import { VenuesContainerComponent, mapStateToProps } from './VenuesContainer';
 

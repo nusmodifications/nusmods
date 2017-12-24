@@ -18,7 +18,7 @@ import { noBreak } from 'utils/react';
 import migrateTimetable from 'storage/migrateTimetable';
 import Footer from 'views/layout/Footer';
 import Navtabs from 'views/layout/Navtabs';
-import Search from 'views/layout/Search';
+import GlobalSearchContainer from 'views/layout/GlobalSearchContainer';
 import { DARK_MODE } from 'types/settings';
 import LoadingSpinner from './components/LoadingSpinner';
 import styles from './AppShell.scss';
@@ -106,10 +106,10 @@ export class AppShell extends Component<Props> {
           <NavLink className={styles.brand} to="/" title="Home">
             <span className="sr-only">NUSMods</span>
           </NavLink>
-          <Search />
-          <span className="nm-navbar-text">
-            <small>{weekText}</small>
+          <span className={styles.weekText}>
+            {weekText}
           </span>
+          <GlobalSearchContainer />
         </nav>
 
         <div className="main-container">

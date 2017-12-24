@@ -1,0 +1,93 @@
+@import '~styles/utils/modules-entry';
+$icon-size: $font-size-lg;
+$input-width: 13rem;
+
+.container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
+  padding-left: 0.5rem;
+  border-left: 1px solid var(--gray-lighter);
+}
+
+.icon {
+  width: $icon-size;
+  height: $icon-size;
+  margin-right: 0.42rem;
+  transition: color 0.3s;
+}
+
+.iconOpen {
+  color: theme-color();
+}
+
+.input {
+  composes: form-control from global;
+  height: 100%;
+  padding: 0;
+  transform: scaleX(1);
+  transform-origin: right;
+  transition: transform 0.3s;
+
+  // Remove bootstrap's box-shadow
+  &:global(.form-control) {
+    width: $input-width;
+    font-size: $font-size-s;
+    border: 0;
+    background: transparent;
+
+    &:focus {
+      background: transparent;
+      box-shadow: none;
+    }
+  }
+}
+
+.inputHidden {
+  composes: sr-only from global;
+  transform: scaleX(0);
+}
+
+.selectList {
+  composes: list-unstyled from global;
+  position: absolute;
+  top: $navbar-height - 0.5rem;
+  right: 0;
+  left: 0;
+  z-index: $module-select-z-index;
+  border: $input-btn-border-width solid $input-border-color;
+  border-width: 0 $input-btn-border-width $input-btn-border-width;
+  border-radius: 0 0 $btn-border-radius $btn-border-radius;
+}
+
+.item {
+  width: 100%;
+  padding: 0.6rem 0.5rem;
+  font-size: 0.9rem;
+  color: var(--body-color);
+  background: var(--body-bg);
+}
+
+.selectHeader {
+  composes: item;
+  padding: 0.3rem 0.5;
+  color: var(--body-bg);
+  background: var(--gray);
+}
+
+.tip {
+  composes: selectList item;
+}
+
+.option {
+  composes: item;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.optionSelected {
+  color: $link-hover-color;
+  background: var(--gray-lightest);
+}

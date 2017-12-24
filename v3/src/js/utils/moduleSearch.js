@@ -17,10 +17,10 @@ export function regexify(str: string): RegExp {
   return RegExp(`\\b${terms}`, 'i');
 }
 
-export function createSearchPredicate(searchTerm: string): SearchableModule => boolean {
+export function createSearchPredicate(searchTerm: string) {
   const searchRegex = regexify(searchTerm);
 
-  return function predicate(module: SearchableModule): boolean {
+  return function predicate<T: SearchableModule>(module: T): boolean {
     if (
       searchRegex.test(module.ModuleCode) ||
       searchRegex.test(module.ModuleTitle) ||
@@ -43,7 +43,10 @@ export function createSearchFilter(searchTerm: string): FilterGroup<ModuleFilter
   return new FilterGroup(SEARCH_QUERY_KEY, 'Search', [filter]).toggle(filter);
 }
 
-export function sortModules<T: SearchableModule>(searchTerm: string, modules: T[]): T[] {
+export function sortModules<T: { ModuleCode: string, ModuleTitle: string }>(
+  searchTerm: string,
+  modules: T[],
+): T[] {
   const searchRegex = regexify(searchTerm);
 
   return sortBy(modules, (module) => {

@@ -1,7 +1,5 @@
 @import "~styles/utils/modules-entry.scss";
 
-$form-width: 26rem;
-
 .navbar {
   $vert-padding: 0.5rem;
 
@@ -36,21 +34,16 @@ $form-width: 26rem;
   background-repeat: no-repeat;
 }
 
-.form {
-  display: inline-block;
-  flex: 0 1 $form-width;
-}
-
 .weekText {
   flex: 1 1 auto;
-  padding-left: $grid-gutter-width / 2;
+  padding: 0 $grid-gutter-width / 2;
+  font-size: $font-size-xs;
   line-height: 1.15;
   text-align: right;
 }
 
 @include media-breakpoint-down(xs) {
-  .weekText,
-  .form {
+  .weekText {
     display: none;
   }
 }
