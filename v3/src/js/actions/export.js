@@ -29,10 +29,15 @@ export function downloadAsJpeg(domElement: Element) {
 
     // Temporarily add a stylesheet to hide the elements that we don't want
     // to show in the exported image.
-    const style = document.createElement('style');
+    const style: HTMLStyleElement = document.createElement('style');
     style.appendChild(document.createTextNode('')); // WebKit hack :(
-    document.head.appendChild(style);
-    style.sheet.insertRule(`.${TIMETABLE_EXPORT_HIDE_CLASS} { display: none; }`, 0);
+    const head = document.head;
+    if (!head) return null;
+    head.appendChild(style);
+    if (style.sheet) {
+      // $FlowFixMe - https://github.com/facebook/flow/issues/2696
+      style.sheet.insertRule(`.${TIMETABLE_EXPORT_HIDE_CLASS} { display: none; }`, 0);
+    }
 
     return domtoimage.toJpeg(domElement,
       {
@@ -55,7 +60,7 @@ export function downloadAsJpeg(domElement: Element) {
         });
       })
       .then(() => {
-        document.head.removeChild(style);
+        head.removeChild(style);
       });
   };
 }
