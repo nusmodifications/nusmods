@@ -11,6 +11,7 @@ import { isValidSemester } from 'utils/timetables';
 import styles from './SemesterSwitcher.scss';
 
 type Props = {
+  readOnly?: boolean,
   semester: Semester,
   onSelectSemester: Function,
 };
@@ -25,34 +26,38 @@ class SemesterSwitcher extends PureComponent<Props> {
   };
 
   render() {
+    const { readOnly } = this.props;
+
     return (
       <div className={styles.semesterSwitcher}>
-        <button
-          className="btn btn-link"
-          type="button"
-          aria-label="Previous Semester"
-          onClick={() => {
-            this.switchSemester(-1);
-          }}
-          disabled={!isValidSemester(this.props.semester - 1)}
-        >
-          <ChevronLeft />
-        </button>
+        {!readOnly &&
+          <button
+            className="btn btn-link"
+            type="button"
+            aria-label="Previous Semester"
+            onClick={() => {
+              this.switchSemester(-1);
+            }}
+            disabled={!isValidSemester(this.props.semester - 1)}
+          >
+            <ChevronLeft />
+          </button>}
         <span className="sr-only">Current semester:</span>
         <span className={styles.semesterName}>
           {config.semesterNames[this.props.semester]}
         </span>
-        <button
-          className="btn btn-link"
-          type="button"
-          aria-label="Next Semester"
-          onClick={() => {
-            this.switchSemester(1);
-          }}
-          disabled={!isValidSemester(this.props.semester + 1)}
-        >
-          <ChevronRight />
-        </button>
+        {!readOnly &&
+          <button
+            className="btn btn-link"
+            type="button"
+            aria-label="Next Semester"
+            onClick={() => {
+              this.switchSemester(1);
+            }}
+            disabled={!isValidSemester(this.props.semester + 1)}
+          >
+            <ChevronRight />
+          </button>}
       </div>
     );
   }

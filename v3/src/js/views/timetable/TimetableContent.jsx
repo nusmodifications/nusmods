@@ -42,12 +42,12 @@ import {
 } from 'utils/timetables';
 import ModulesSelect from 'views/components/ModulesSelect';
 import CorsNotification from 'views/components/cors-info/CorsNotification';
-
-import styles from './TimetableContent.scss';
+import Online from 'views/components/Online';
 import Timetable from './Timetable';
 import TimetableActions from './TimetableActions';
 import TimetableModulesTable from './TimetableModulesTable';
 import ShareTimetable from './ShareTimetable';
+import styles from './TimetableContent.scss';
 
 type Props = {
   header: Node,
@@ -263,13 +263,16 @@ class TimetableContent extends Component<Props> {
             <div className={styles.tableContainer}>
               <div className="col-md-12">
                 {!readOnly &&
-                  <ModulesSelect
-                    moduleList={this.props.semModuleList}
-                    onChange={(moduleCode) => {
-                      this.props.addModule(semester, moduleCode);
-                    }}
-                    placeholder="Add module to timetable"
-                  />}
+                  <Online>{isOnline => (
+                    <ModulesSelect
+                      moduleList={this.props.semModuleList}
+                      onChange={(moduleCode) => {
+                        this.props.addModule(semester, moduleCode);
+                      }}
+                      placeholder={isOnline ? 'Add module to timetable' : 'You need to be online to add modules'}
+                      disabled={!isOnline}
+                    />
+                  )}</Online>}
                 <br />
                 {this.renderModuleSections(!isVerticalOrientation)}
               </div>

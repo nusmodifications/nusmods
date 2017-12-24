@@ -29,6 +29,10 @@
 
   .actions {
     text-align: right;
+
+    :global(.btn) {
+      margin-left: 0.5rem;
+    }
   }
 
   @include media-breakpoint-up(md) {
@@ -43,6 +47,11 @@
     .actions {
       margin-top: 1rem;
       text-align: left;
+
+      :global(.btn) {
+        margin-right: 0.5rem;
+        margin-left: 0;
+      }
     }
   }
 }
