@@ -14,7 +14,6 @@ type Props = {
 
 function TimetableActions(props: Props) {
   const { isVerticalOrientation } = props;
-  const buttonClassName = classnames(styles.actionIcon, styles.labelIcon);
 
   return (
     <div
@@ -24,11 +23,11 @@ function TimetableActions(props: Props) {
     >
       <button
         type="button"
-        className="btn btn-outline-primary"
+        className="btn btn-outline-primary btn-svg"
         onClick={props.toggleTimetableOrientation}
       >
         <Sidebar
-          className={classnames(buttonClassName, {
+          className={classnames('svg svg-small', {
             [styles.verticalMode]: isVerticalOrientation,
             [styles.horizontalMode]: !isVerticalOrientation,
           })}
@@ -37,18 +36,18 @@ function TimetableActions(props: Props) {
       </button>
       <button
         type="button"
-        className="btn btn-outline-primary"
+        className="btn btn-outline-primary btn-svg"
         onClick={props.downloadAsJpeg}
       >
-        <Image className={buttonClassName} />
+        <Image className="svg svg-small" />
         Export image
       </button>
       <button
         type="button"
-        className="btn btn-outline-primary"
+        className="btn btn-outline-primary btn-svg"
         onClick={props.downloadAsIcal}
       >
-        <Calendar className={buttonClassName} />
+        <Calendar className="svg svg-small" />
         Export iCal
       </button>
     </div>

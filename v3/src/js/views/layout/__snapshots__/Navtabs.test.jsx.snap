@@ -8,10 +8,9 @@ exports[`renders into nav element 1`] = `
     activeClassName="linkActive"
     ariaCurrent="page"
     className="link"
-    to="/timetable"
+    to="/timetable/sem-1"
   >
     <Calendar
-      className="icon"
       color="currentColor"
       size="24"
     />
@@ -27,8 +26,7 @@ exports[`renders into nav element 1`] = `
     className="link"
     to="/modules"
   >
-    <Search
-      className="icon"
+    <BookOpen
       color="currentColor"
       size="24"
     />
@@ -45,7 +43,6 @@ exports[`renders into nav element 1`] = `
     to="/venues"
   >
     <Map
-      className="icon"
       color="currentColor"
       size="24"
     />
@@ -62,7 +59,6 @@ exports[`renders into nav element 1`] = `
     to="/settings"
   >
     <Settings
-      className="icon"
       color="currentColor"
       size="24"
     />

@@ -5,21 +5,30 @@
   display: flex;
   flex: 1 0 auto;
   min-height: $timetable-row-height;
-  border: $timetable-border;
-  border-width: 0 1px 1px 0;
+  border-bottom: $timetable-border;
 
   &:first-child {
-    border-top: $timetable-border;
+    > .dayName {
+      border-top-left-radius: $btn-border-radius;
+    }
+  }
+
+  &:last-child {
+    border-bottom: 0;
+
+    > .dayName {
+      border-bottom-left-radius: $btn-border-radius;
+    }
   }
 }
 
 :global(.verticalMode) .day {
   flex-direction: column;
-  border: $timetable-border;
-  border-left: 0;
+  border-bottom: 0;
+  border-left: $timetable-border;
 
   &:first-child {
-    border-left: $timetable-border;
+    border-left: 0;
   }
 }
 

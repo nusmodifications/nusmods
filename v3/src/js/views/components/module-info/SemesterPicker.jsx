@@ -1,7 +1,7 @@
 // @flow
 
 import React, { PureComponent } from 'react';
-import _ from 'lodash';
+import { each } from 'lodash';
 
 import type { Semester } from 'types/modules';
 
@@ -40,7 +40,7 @@ export default class SemesterPicker extends PureComponent<Props> {
     const map = {};
     const { semesters, showDisabled } = this.props;
 
-    _.each(this.semesterNames(), (name: string, key: string) => {
+    each(this.semesterNames(), (name: string, key: string) => {
       const semester = semesters.find(sem => String(sem) === key);
       if (semester || showDisabled) map[name] = semester;
     });
@@ -53,7 +53,7 @@ export default class SemesterPicker extends PureComponent<Props> {
     const semesterMap = this.semesterMap();
     const attrs = {};
 
-    _.each(this.semesterNames(), (name: string) => {
+    each(this.semesterNames(), (name: string) => {
       if (!semesterMap[name]) {
         attrs[name] = {
           disabled: true,

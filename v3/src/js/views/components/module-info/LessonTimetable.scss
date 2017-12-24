@@ -2,4 +2,5 @@
 
 .lessonTimetable {
   composes: scrollable from global;
+  margin-top: 0.5rem;
 }

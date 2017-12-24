@@ -39,4 +39,5 @@ const mapStateToProps: MapStateToProps<*, *, *> = (state: State) => ({
   moduleCodes: state.entities.moduleBank.moduleCodes,
 });
 
-export default connect(mapStateToProps)(LinkModuleCodesComponent);
+// Exclude dispatch from props
+export default connect(mapStateToProps, null)(LinkModuleCodesComponent);
