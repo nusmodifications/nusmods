@@ -9,7 +9,7 @@ import axios from 'axios';
 import update from 'immutability-helper';
 import qs from 'query-string';
 import Raven from 'raven-js';
-import { clone, each, values } from 'lodash';
+import { clone, each, mapValues, values } from 'lodash';
 
 import type { Module } from 'types/modules';
 import type { PageRange, PageRangeDiff, FilterGroupId } from 'types/views';
@@ -31,13 +31,14 @@ import {
   serializeGroups,
   invertFacultyDepartments,
 
-  FACULTY,
   DEPARTMENT,
-  SEMESTER,
+  EXAMS,
+  FACULTY,
   LEVELS,
   LECTURE_TIMESLOTS,
-  TUTORIAL_TIMESLOTS,
   MODULE_CREDITS,
+  SEMESTER,
+  TUTORIAL_TIMESLOTS,
 } from 'utils/moduleFilters';
 import { createSearchFilter, sortModules } from 'utils/moduleSearch';
 import config from 'config';
@@ -267,6 +268,11 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
       filteredModules = sortModules(this.props.searchTerm, filteredModules);
     }
 
+    const filterProps = {
+      groups: values(groups),
+      onFilterChange: this.onFilterChange,
+    };
+
     return (
       <div className="modules-page-container page-container">
         {pageHead}
@@ -291,50 +297,58 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
               openIcon={<Filter aria-label={OPEN_MENU_LABEL} />}
             >
               <div className={styles.moduleFilters}>
-                <header>
+                <header className={styles.filterHeader}>
                   <h3>Refine by</h3>
+                  {this.filterGroups().some(group => group.isActive()) &&
+                    <button
+                      className="btn btn-link btn-sm"
+                      type="button"
+                      onClick={() => this.setState({
+                        filterGroups: mapValues(groups, (group: FilterGroup<*>) => group.reset()),
+                      })}
+                    >
+                      Clear Filters
+                    </button>}
                 </header>
 
                 <ChecklistFilters
                   group={groups[SEMESTER]}
-                  groups={this.filterGroups()}
-                  onFilterChange={this.onFilterChange}
+                  {...filterProps}
                 />
 
                 <ChecklistFilters
                   group={groups[LEVELS]}
-                  groups={this.filterGroups()}
-                  onFilterChange={this.onFilterChange}
+                  {...filterProps}
+                />
+
+                <ChecklistFilters
+                  group={groups[EXAMS]}
+                  {...filterProps}
                 />
 
                 <ChecklistFilters
                   group={groups[MODULE_CREDITS]}
-                  groups={this.filterGroups()}
-                  onFilterChange={this.onFilterChange}
+                  {...filterProps}
                 />
 
                 <DropdownListFilters
                   group={groups[FACULTY]}
-                  groups={this.filterGroups()}
-                  onFilterChange={this.onFilterChange}
+                  {...filterProps}
                 />
 
                 <DropdownListFilters
                   group={groups[DEPARTMENT]}
-                  groups={this.filterGroups()}
-                  onFilterChange={this.onFilterChange}
+                  {...filterProps}
                 />
 
                 <TimeslotFilters
                   group={groups[LECTURE_TIMESLOTS]}
-                  groups={this.filterGroups()}
-                  onFilterChange={this.onFilterChange}
+                  {...filterProps}
                 />
 
                 <TimeslotFilters
                   group={groups[TUTORIAL_TIMESLOTS]}
-                  groups={this.filterGroups()}
-                  onFilterChange={this.onFilterChange}
+                  {...filterProps}
                 />
               </div>
             </SideMenu>

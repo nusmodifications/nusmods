@@ -22,6 +22,7 @@ export const MODULE_CREDITS = 'mc';
 export const SEMESTER = 'sem';
 export const FACULTY = 'faculty';
 export const DEPARTMENT = 'department';
+export const EXAMS = 'exam';
 
 /**
  * Invert the { [Faculty]: Departments[] } mapping to { [Department]: Faculty }
@@ -89,6 +90,17 @@ function makeDepartmentFilter(faculties: DepartmentFaculty) {
   );
 }
 
+function makeExamFilter() {
+  return new FilterGroup(
+    EXAMS,
+    'Exams',
+    [
+      new Filter('no-exam', 'No Exams', (module: Module) =>
+        module.History.every(semesterData => !semesterData.ExamDate)),
+    ],
+  );
+}
+
 export function defaultGroups(faculties: DepartmentFaculty, query: string = ''): FilterGroups {
   const params = qs.parse(query);
 
@@ -133,6 +145,8 @@ export function defaultGroups(faculties: DepartmentFaculty, query: string = ''):
     [DEPARTMENT]: makeDepartmentFilter(faculties),
 
     [FACULTY]: makeFacultyFilter(faculties),
+
+    [EXAMS]: makeExamFilter(),
   };
 
   // Search query group
