@@ -1,10 +1,14 @@
-# NUSMods v3 [![Coverage Status](https://coveralls.io/repos/github/nusmodifications/nusmods/badge.svg?branch=master)](https://coveralls.io/github/nusmodifications/nusmods?branch=master) [![Build Status](https://travis-ci.org/nusmodifications/nusmods.svg?branch=hello-team-yijiang)](https://travis-ci.org/nusmodifications/nusmods)
+# NUSMods R [![Coverage Status](https://coveralls.io/repos/github/nusmodifications/nusmods/badge.svg?branch=master)](https://coveralls.io/github/nusmodifications/nusmods?branch=master) [![Build Status](https://travis-ci.org/nusmodifications/nusmods.svg?branch=hello-team-yijiang)](https://travis-ci.org/nusmodifications/nusmods)
 
 **Talk to us!**
 
-- Telegram: https://telegram.me/NUSMods
+- Telegram: https://telegram.me/nusmods
+- Facebook: https://www.facebook.com/nusmods
+- Messenger: https://www.m.me/nusmods
+- Twitter: https://twitter.com/nusmods
+- Email: nusmods@googlegroups.com
 
-NUSMods v3 is built using [React][react], [Redux][redux], [Bootstrap][bootstrap] and is designed to be **fast, modern and responsive**.
+NUSMods R is built using [React][react], [Redux][redux], [Bootstrap][bootstrap] and is designed to be **fast, modern and responsive**.
 
 ## Browser support
 
@@ -40,15 +44,15 @@ To run the development build, simply run:
 $ yarn start
 ```
 
-This will start Webpack dev server, which will automatically rebuild and reload any code and components that you have changed. We recommend the following development tools to help speed up your work
+This will start webpack dev server, which will automatically rebuild and reload any code and components that you have changed. We recommend the following development tools to help speed up your work
 
-- React developer tool ([Chrome](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi), [Firefox](https://addons.mozilla.org/firefox/addon/react-devtools/))
-- [Redux developer tool](http://extension.remotedev.io/#installation)
+- React Developer Tools ([Chrome](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi), [Firefox](https://addons.mozilla.org/firefox/addon/react-devtools/))
+- [Redux DevTools](http://extension.remotedev.io/#installation)
 - [Firefox Developer Edition](https://www.mozilla.org/en-US/firefox/developer/)
 
-### Running tests and linter
+### Testing and Linting
 
-We use [Jest][jest] with [Enzyme][enzyme] to test our code and React components, and [Flow][flow], [Stylelint][stylelint] and [ESLint][eslint] using [AirBnB config][eslint-airbnb] for linting.
+We use [Jest][jest] with [Enzyme][enzyme] to test our code and React components, and [Flow][flow], [Stylelint][stylelint] and [ESLint][eslint] using [Airbnb config][eslint-airbnb] for typechecking and linting.
 
 ```sh
 # Run all tests once with code coverage
@@ -86,7 +90,7 @@ $ yarn promote-staging # Promote ./dist to production
 - `yarn promote-staging` deploys `./dist` to the production folder, currently `../../beta.nusmods.com`. It is designed to be safe, executing a dry run and asking for confirmation before deployment.
 - `yarn rsync <dest-dir>` syncs `./dist` to the specified destination folder `<dest-dir>`. It is mainly used by `yarn promote-staging` but could be used to sync `./dist` to any folder.
 
-## Project structure
+## Project Structure
 
 ```
 ├── scripts                 - Command line scripts to help with development
@@ -121,7 +125,7 @@ $ yarn promote-staging # Promote ./dist to production
 │       └── vendor          - External vendor styles
 ├── static                  - Static assets, eg. favicons
 |                             These will be copied directly into /dist
-└── webpack                 - Webpack config
+└── webpack                 - webpack config
 ```
 
 ### Colocation
@@ -133,8 +137,6 @@ Components should keep their styles and tests in the same directory with the sam
 ├── MyComponent.test.jsx    - Tests for MyComponent
 └── MyComponent.scss        - Styles for MyComponent
 ```
-
-
 
 [react]: https://reactjs.org/
 [redux]: http://redux.js.org/
