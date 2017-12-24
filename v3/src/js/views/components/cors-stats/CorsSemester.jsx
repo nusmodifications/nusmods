@@ -63,9 +63,9 @@ export default class CorsSemester extends PureComponent<Props, State> {
           className={classnames('btn btn-link btn-svg', styles.detailsHeading)}
           onClick={() => this.setState({ showDetails: !showDetails })}
         >
-          {showDetails ?
-            <MinusSquare className="svg svg-small" /> :
-            <PlusSquare className="svg svg-small" />}
+          {showDetails
+            ? <MinusSquare className="svg svg-small" />
+            : <PlusSquare className="svg svg-small" />}
           Detailed bidding information
         </button>
 
