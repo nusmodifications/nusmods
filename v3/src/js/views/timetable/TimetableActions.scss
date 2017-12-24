@@ -1,19 +1,5 @@
 @import './_variables.scss';
 
-.actionIcon {
-  $size: 1.1rem;
-
-  display: inline-block;
-  width: $size;
-  height: $size;
-  margin-top: -0.1rem;
-  vertical-align: middle;
-}
-
-.labelIcon {
-  margin-right: 0.2rem;
-}
-
 .verticalMode {
   transform: rotate(180deg);
 }

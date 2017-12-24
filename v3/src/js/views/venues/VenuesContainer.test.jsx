@@ -129,6 +129,7 @@ describe('VenuesContainer', () => {
   test('#mapStateToProps() should set semester and decode URL venue', () => {
     const state = { app: { activeSemester: 1 } };
     const ownProps = { match: { params: { venue: 'Cdat%2FoverThar1%21' } } };
+    // $FlowFixMe ignore missing router props
     const mappedProps = mapStateToProps(state, ownProps);
     expect(mappedProps).toMatchObject(ownProps);
     // Should set activeSemester

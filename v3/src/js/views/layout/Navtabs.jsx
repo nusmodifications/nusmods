@@ -1,13 +1,22 @@
 // @flow
 import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { Calendar, Map, Search, Settings } from 'views/components/icons/index';
+import { connect, type MapStateToProps } from 'react-redux';
+import { withRouter, NavLink } from 'react-router-dom';
+
+import type { State } from 'reducers';
+import type { Semester } from 'types/modules';
+import { Calendar, Map, BookOpen, Settings } from 'views/components/icons';
+import { timetablePage } from 'views/routes/paths';
 
 import styles from './Navtabs.scss';
 
 export const NAVTAB_HEIGHT = 48;
 
-function Navtabs() {
+type Props = {
+  activeSemester: Semester,
+};
+
+export function NavtabsComponent(props: Props) {
   const tabProps = {
     className: styles.link,
     activeClassName: styles.linkActive,
@@ -16,24 +25,29 @@ function Navtabs() {
 
   return (
     <nav className={styles.nav}>
-      <NavLink {...tabProps} to="/timetable">
-        <Calendar className={styles.icon} />
+      <NavLink {...tabProps} to={timetablePage(props.activeSemester)}>
+        <Calendar />
         <span className={styles.title}>Timetable</span>
       </NavLink>
       <NavLink {...tabProps} to="/modules">
-        <Search className={styles.icon} />
+        <BookOpen />
         <span className={styles.title}>Modules</span>
       </NavLink>
       <NavLink {...tabProps} to="/venues">
-        <Map className={styles.icon} />
+        <Map />
         <span className={styles.title}>Venues</span>
       </NavLink>
       <NavLink {...tabProps} to="/settings">
-        <Settings className={styles.icon} />
+        <Settings />
         <span className={styles.title}>Settings</span>
       </NavLink>
     </nav>
   );
 }
 
-export default Navtabs;
+const mapStateToProps: MapStateToProps<*, *, *> = (state: State) => ({
+  activeSemester: state.app.activeSemester,
+});
+
+const connectedNavtabs = connect(mapStateToProps)(NavtabsComponent);
+export default withRouter(connectedNavtabs);

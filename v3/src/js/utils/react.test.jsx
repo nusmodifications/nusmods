@@ -1,7 +1,7 @@
 // @flow
-import React from 'react';
+import React, { Component, PureComponent } from 'react';
 import { render } from 'enzyme';
-import { highlight } from './react';
+import { highlight, wrapComponentName } from './react';
 
 describe('highlight()', () => {
   const h = (...args) => render(<p>{highlight(...args)}</p>);
@@ -27,5 +27,30 @@ describe('highlight()', () => {
     expect(h(shakespeare, ['some']).find('mark')).toHaveLength(3);
     expect(h(shakespeare, ['some', 'born']).find('mark')).toHaveLength(4);
     expect(h(shakespeare, ['some', 'born', 'great']).find('mark')).toHaveLength(7);
+  });
+});
+
+describe('wrapComponentName()', () => {
+  /* eslint-disable react/prefer-stateless-function, react/no-multi-comp */
+  class TestComponent extends Component<{}> {}
+  class TestPureComponent extends PureComponent<{}> {}
+  class TestComponentWithDisplayName extends Component<{}> {
+    static displayName = 'TestComponentName';
+  }
+  function FunctionalComponent() {}
+  function FunctionalComponentWithDisplayName() {}
+  FunctionalComponentWithDisplayName.displayName = 'FunctionalComponentDisplayName';
+
+  test('should infer component name from provided component', () => {
+    expect(wrapComponentName(TestComponent, 'wrapper'))
+      .toEqual('wrapper(TestComponent)');
+    expect(wrapComponentName(TestPureComponent, 'wrapper'))
+      .toEqual('wrapper(TestPureComponent)');
+    expect(wrapComponentName(TestComponentWithDisplayName, 'wrapper'))
+      .toEqual('wrapper(TestComponentName)');
+    expect(wrapComponentName(FunctionalComponent, 'wrapper'))
+      .toEqual('wrapper(FunctionalComponent)');
+    expect(wrapComponentName(FunctionalComponentWithDisplayName, 'wrapper'))
+      .toEqual('wrapper(FunctionalComponentDisplayName)');
   });
 });

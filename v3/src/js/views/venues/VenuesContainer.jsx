@@ -1,7 +1,8 @@
 // @flow
 import React, { Component, Fragment } from 'react';
-import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import deferComponentRender from 'views/hocs/deferComponentRender';
 import Helmet from 'react-helmet';
 import classnames from 'classnames';
 import axios from 'axios';
@@ -218,13 +219,13 @@ export class VenuesContainerComponent extends Component<Props, State> {
 
                 <button
                   className={classnames(
-                    'btn btn-block',
+                    'btn btn-block btn-svg',
                     styles.availabilityToggle,
                     isAvailabilityEnabled ? 'btn-primary' : 'btn-outline-primary',
                   )}
                   onClick={() => this.setState({ isAvailabilityEnabled: !isAvailabilityEnabled }, this.updateURL)}
                 >
-                  <Clock className={styles.freeRoomIcon} /> Find free rooms
+                  <Clock className="svg" /> Find free rooms
                 </button>
 
                 {isAvailabilityEnabled &&
@@ -256,5 +257,6 @@ export const mapStateToProps: MapStateToProps<*, *, *> = (state, ownProps) => {
 };
 
 // Explicitly declare top level components for React hot reloading to work.
-const venuesContainerWithRouter = withRouter(VenuesContainerComponent);
-export default connect(mapStateToProps)(venuesContainerWithRouter);
+const connectedVenuesContainer = connect(mapStateToProps)(VenuesContainerComponent);
+const routedVenuesContainer = withRouter(connectedVenuesContainer);
+export default deferComponentRender(routedVenuesContainer);

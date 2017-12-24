@@ -16,7 +16,6 @@ import { getModuleSemExamDate } from 'utils/modules';
 import { modulePage } from 'views/routes/paths';
 
 import styles from './TimetableModulesTable.scss';
-import timetableActionsStyles from './TimetableActions.scss';
 
 type Props = {
   selectModuleColor: Function,
@@ -39,7 +38,7 @@ class TimetableModulesTable extends Component<Props> {
         <div className="btn-group">
           <button
             type="button"
-            className={classnames('btn btn-outline-secondary', styles.moduleAction)}
+            className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
             title={removeBtnLabel}
             aria-label={removeBtnLabel}
             onClick={() => {
@@ -48,11 +47,11 @@ class TimetableModulesTable extends Component<Props> {
               }
             }}
           >
-            <Trash2 className={timetableActionsStyles.actionIcon} />
+            <Trash2 className={styles.actionIcon} />
           </button>
           <button
             type="button"
-            className={classnames('btn btn-outline-secondary', styles.moduleAction)}
+            className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
             title={hideBtnLabel}
             aria-label={hideBtnLabel}
             onClick={() => {
@@ -64,9 +63,9 @@ class TimetableModulesTable extends Component<Props> {
             }}
           >
             {module.hiddenInTimetable ? (
-              <Eye className={timetableActionsStyles.actionIcon} />
+              <Eye className={styles.actionIcon} />
             ) : (
-              <EyeOff className={timetableActionsStyles.actionIcon} />
+              <EyeOff className={styles.actionIcon} />
             )}
           </button>
         </div>

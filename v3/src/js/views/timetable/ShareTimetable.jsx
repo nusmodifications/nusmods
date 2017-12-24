@@ -17,7 +17,6 @@ import CloseButton from 'views/components/CloseButton';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 
 import styles from './ShareTimetable.scss';
-import actionStyles from './TimetableActions.scss';
 
 type CopyState = 'NOT_COPIED' | 'COPY_SUCCESS' | 'COPY_FAIL';
 const NOT_COPIED: CopyState = 'NOT_COPIED';
@@ -110,12 +109,12 @@ export default class ShareTimetable extends PureComponent<Props, State> {
           />
           <span className="input-group-btn">
             <button
-              className="btn btn-primary"
+              className="btn btn-primary btn-svg"
               type="button"
               aria-label="Copy URL"
               onClick={this.copyText}
             >
-              <Copy className={styles.icon} />
+              <Copy />
             </button>
           </span>
 
@@ -137,13 +136,13 @@ export default class ShareTimetable extends PureComponent<Props, State> {
             <h3 className={styles.shareHeading}>Via email</h3>
 
             <a
-              className="btn btn-outline-primary btn-block"
+              className="btn btn-outline-primary btn-block btn-svg"
               href={`mailto:?${qs.stringify({
                 subject: 'NUSMods timetable',
                 body: `My timetable for ${config.academicYear} ${config.semesterNames[semester]}` +
                 ` can be found at ${url}`,
               })}`}
-            ><Mail className={styles.icon} /> Send Email</a>
+            ><Mail className="svg" /> Send Email</a>
           </div>
           <div className="col-sm-4">
             <h3 className={styles.shareHeading}>Via messaging apps</h3>
@@ -174,10 +173,10 @@ export default class ShareTimetable extends PureComponent<Props, State> {
       <div>
         <button
           type="button"
-          className="btn btn-sm btn-outline-primary"
+          className="btn btn-sm btn-outline-primary btn-svg"
           onClick={this.openModal}
         >
-          <Repeat className={classnames(actionStyles.labelIcon, actionStyles.actionIcon)} />
+          <Repeat className="svg svg-small" />
           Share/Sync
         </button>
 
