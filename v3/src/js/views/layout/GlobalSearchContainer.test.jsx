@@ -38,30 +38,37 @@ test('fetches venue list', () => {
   expect(mock).toHaveBeenCalled();
 });
 
-test('shows at most 7 choices when search returns plentiful', () => {
+test('shows at no choices when search is too short', () => {
   const instance = make().instance();
   const [mods, venues] = instance.getResults('1');
+  expect(mods).toHaveLength(0);
+  expect(venues).toHaveLength(0);
+});
+
+test('shows at most 7 choices when search returns plentiful', () => {
+  const instance = make().instance();
+  const [mods, venues] = instance.getResults('1 ');
   expect(mods).toHaveLength(4);
   expect(venues).toHaveLength(3);
 });
 
 test('shows at most 7 choices when there are many venues', () => {
   const instance = make({ moduleList: MODULES.slice(0, 2), venueList: VENUES.slice(0, 4) }).instance();
-  const [mods, venues] = instance.getResults('1');
+  const [mods, venues] = instance.getResults('1 ');
   expect(mods).toHaveLength(2);
   expect(venues).toHaveLength(4);
 });
 
 test('shows at most 7 choices when there are many modules', () => {
   const instance = make({ venueList: VENUES.slice(0, 2) }).instance();
-  const [mods, venues] = instance.getResults('1');
+  const [mods, venues] = instance.getResults('1 ');
   expect(mods).toHaveLength(5);
   expect(venues).toHaveLength(2);
 });
 
 test('shows all results when there are few', () => {
   const instance = make().instance();
-  const [mods, venues] = instance.getResults('A');
+  const [mods, venues] = instance.getResults('A ');
   expect(mods).toHaveLength(1);
   expect(venues).toHaveLength(1);
 });

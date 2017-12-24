@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import _ from 'lodash';
 import { Link } from 'react-router-dom';
 import Downshift from 'downshift';
@@ -22,14 +22,12 @@ type State = {
 const PLACEHOLDER = 'Search modules & venues';
 
 class GlobalSearch extends Component<Props, State> {
-  input: ?HTMLInputElement;
   state = {
     isOpen: false,
   };
 
   onOpen = () => {
     this.setState({ isOpen: true });
-    if (this.input) this.input.focus();
   };
   onClose = () => {
     this.setState({ isOpen: false });
@@ -41,68 +39,64 @@ class GlobalSearch extends Component<Props, State> {
   renderDropdown = ({ getLabelProps, getInputProps, getItemProps, isOpen, inputValue, highlightedIndex }: any) => {
     const [modules, venues] = this.props.getResults(inputValue);
     const hasResults = modules.length > 0 || venues.length > 0;
-    const showResults = isOpen && hasResults;
     const showTip = isOpen && !hasResults;
     return (
-      <div className={styles.container} onClick={this.onOpen}>
-        <Search
-          className={classnames(styles.icon, {
-            [styles.iconOpen]: isOpen,
-          })}
-        />
+      <div className={styles.container}>
+        <Search className={classnames(styles.icon, { [styles.iconOpen]: isOpen })} />
         <label className="sr-only" {...getLabelProps()}>
           {PLACEHOLDER}
         </label>
         <input
-          ref={(input) => {
-            this.input = input;
-          }}
-          className={classnames(styles.input, {
-            [styles.inputHidden]: !isOpen,
-          })}
+          className={classnames(styles.input, { [styles.inputOpen]: isOpen })}
           {...getInputProps({ placeholder: PLACEHOLDER })}
           onFocus={this.onOpen}
         />
-        {showResults && (
-          <div className={styles.selectList}>
-            <div className={styles.selectHeader}>Modules</div>
-            {modules.map((module, index) => (
-              <Link
-                {...getItemProps({
-                  key: module.ModuleCode,
-                  item: module.ModuleCode,
-                  index,
-                })}
-                className={classnames(styles.option, {
-                  [styles.optionSelected]: highlightedIndex === index,
-                })}
-                to={modulePage(module.ModuleCode, module.ModuleTitle)}
-              >
-                {`${module.ModuleCode} ${module.ModuleTitle}`}
-              </Link>
-            ))}
-            <div className={styles.selectHeader}>Venues</div>
-            {venues.map((venue, index) => {
-              const combinedIndex = modules.length + index;
-              return (
+        <div className={styles.selectList}>
+          {modules.length > 0 && (
+            <Fragment>
+              <div className={styles.selectHeader}>Modules</div>
+              {modules.map((module, index) => (
                 <Link
                   {...getItemProps({
-                    key: venue,
-                    item: venue,
-                    index: combinedIndex,
+                    key: module.ModuleCode,
+                    item: module.ModuleCode,
+                    index,
                   })}
                   className={classnames(styles.option, {
-                    [styles.optionSelected]: highlightedIndex === combinedIndex,
+                    [styles.optionSelected]: highlightedIndex === index,
                   })}
-                  to={venuePage(venue)}
+                  to={modulePage(module.ModuleCode, module.ModuleTitle)}
                 >
-                  {venue}
+                  {`${module.ModuleCode} ${module.ModuleTitle}`}
                 </Link>
-              );
-            })}
-          </div>
-        )}
-        {showTip && <div className={styles.tip}>Try &quot;GER1000&quot; or &quot;LT&quot;.</div>}
+              ))}
+            </Fragment>
+          )}
+          {venues.length > 0 && (
+            <Fragment>
+              <div className={styles.selectHeader}>Venues</div>
+              {venues.map((venue, index) => {
+                const combinedIndex = modules.length + index;
+                return (
+                  <Link
+                    {...getItemProps({
+                      key: venue,
+                      item: venue,
+                      index: combinedIndex,
+                    })}
+                    className={classnames(styles.option, {
+                      [styles.optionSelected]: highlightedIndex === combinedIndex,
+                    })}
+                    to={venuePage(venue)}
+                  >
+                    {venue}
+                  </Link>
+                );
+              })}
+            </Fragment>
+          )}
+          {showTip && <div className={styles.item}>Try &quot;GER1000&quot; or &quot;LT&quot;.</div>}
+        </div>
       </div>
     );
   };

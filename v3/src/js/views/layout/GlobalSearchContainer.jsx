@@ -19,6 +19,7 @@ type Props = {
 };
 
 const RESULTS_LIMIT = 7;
+const MIN_INPUT_LENGTH = 2;
 
 export class SearchContainerComponent extends Component<Props> {
   componentDidMount() {
@@ -34,7 +35,7 @@ export class SearchContainerComponent extends Component<Props> {
   }
 
   getResults = (inputValue: string) => {
-    if (!inputValue) {
+    if (!inputValue || inputValue.length < MIN_INPUT_LENGTH) {
       return [[], []];
     }
     const { moduleList, venueList } = this.props;

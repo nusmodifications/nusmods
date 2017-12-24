@@ -1,72 +1,77 @@
 @import '~styles/utils/modules-entry';
 $icon-size: $font-size-lg;
-$input-width: 13rem;
+$input-width: 2rem;
+$input-width-open: 13rem;
+$container-padding: 0.5rem;
 
 .container {
+  composes: btn-svg from global;
   position: relative;
-  display: inline-flex;
-  align-items: center;
   height: 100%;
-  padding-left: 0.5rem;
-  border-left: 1px solid var(--gray-lighter);
+  padding-right: $container-padding;
+  margin-left: auto;
+  font-size: 0.9rem;
+  border-right: 1px solid var(--gray-lighter);
 }
 
+$icon-dist: $input-width-open - $input-width;
+
 .icon {
+  position: absolute;
+  right: $icon-dist + $container-padding;
   width: $icon-size;
   height: $icon-size;
-  margin-right: 0.42rem;
-  transition: color 0.3s;
+  transform: translate($icon-dist - 0.25rem);
+  transition: transform 0.3s;
 }
 
 .iconOpen {
-  color: theme-color();
+  transform: translate(0);
 }
 
 .input {
-  composes: form-control from global;
+  position: absolute;
+  right: $input-width-open + $container-padding;
+  opacity: 0.2;
+  width: $input-width;
   height: 100%;
-  transform: scaleX(1);
-  transform-origin: right;
+  padding-left: $input-width;
+  font-size: $font-size-s;
+  border: 0;
+  background: transparent;
+  transform: translate($input-width-open);
+  transition: transform 0.3s, opacity 0.3s;
 
-  // Remove bootstrap's styling
-  &:global(.form-control) {
-    width: $input-width;
-    padding: 0;
-    font-size: $font-size-s;
-    border: 0;
+  &:focus {
     background: transparent;
-    transition: transform 0.3s;
-
-    &:focus {
-      background: transparent;
-      box-shadow: none;
-    }
+    outline: none;
+    box-shadow: none;
   }
 }
 
-.inputHidden {
-  composes: sr-only from global;
-  transform: scaleX(0);
+.inputOpen {
+  right: 0;
+  opacity: 1;
+  width: $input-width-open;
+  transform: translate(0);
 }
 
-.tip, .selectList {
+.selectList {
   composes: list-unstyled from global;
   position: absolute;
   top: $navbar-height - 0.5rem;
   right: 0;
-  left: 0;
   z-index: $module-select-z-index;
+  color: var(--body-color);
   border: $input-btn-border-width solid $input-border-color;
   border-width: 0 $input-btn-border-width $input-btn-border-width;
   border-radius: 0 0 $btn-border-radius $btn-border-radius;
+  background: var(--body-bg);
 }
 
-.tip .item {
-  width: 100%;
+.item {
+  width: $input-width-open;
   padding: 0.6rem 0.5rem;
-  font-size: 0.9rem;
-  color: var(--body-color);
-  background: var(--body-bg);
 }
 
 .selectHeader {

@@ -106,10 +106,10 @@ export class AppShell extends Component<Props> {
           <NavLink className={styles.brand} to="/" title="Home">
             <span className="sr-only">NUSMods</span>
           </NavLink>
+          <GlobalSearchContainer />
           <span className={styles.weekText}>
             {weekText}
           </span>
-          <GlobalSearchContainer />
         </nav>
 
         <div className="main-container">
