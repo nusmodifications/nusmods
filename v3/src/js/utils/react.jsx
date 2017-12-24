@@ -36,7 +36,8 @@ export function breakpointUp(size: Breakpoint): MediaQueryList {
 }
 
 export function supportsCSSVariables() {
-  return window.CSS.supports && window.CSS.supports('--var', 'red');
+  // Safari does not support supports('--var', 'red')
+  return window.CSS.supports && window.CSS.supports('(--var: red)');
 }
 
 /**
