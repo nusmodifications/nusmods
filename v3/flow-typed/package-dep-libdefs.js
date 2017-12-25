@@ -28,6 +28,10 @@ declare module 'react-loadable' {
   declare module.exports: any;
 }
 
+declare module 'react-messenger-customer-chat' {
+  declare module.exports: any;
+}
+
 declare module 'react-modal' {
   declare module.exports: any;
 }
