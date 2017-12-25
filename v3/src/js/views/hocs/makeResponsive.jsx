@@ -1,6 +1,8 @@
 // @flow
 import React, { Component } from 'react';
+import json2mq from 'json2mq';
 
+import type { QueryObject } from 'utils/css';
 import { wrapComponentName } from 'utils/react';
 
 type State = {
@@ -9,8 +11,10 @@ type State = {
 
 function makeResponsive<Props: {}>(
   WrappedComponent: ComponentType<Props>,
-  mediaQuery: string,
+  mediaQuery: string | QueryObject,
 ): ComponentType<$Diff<Props, State>> {
+  const media = typeof mediaQuery === 'string' ? mediaQuery : json2mq(mediaQuery);
+
   return class extends Component<Props, State> {
     mql: ?MediaQueryList;
 
@@ -21,7 +25,7 @@ function makeResponsive<Props: {}>(
     };
 
     componentDidMount() {
-      const mql = window.matchMedia(mediaQuery);
+      const mql = window.matchMedia(media);
       mql.addListener(this.updateMediaQuery);
       this.updateMediaQuery(mql);
       this.mql = mql;

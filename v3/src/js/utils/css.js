@@ -4,6 +4,8 @@
 import { entries } from 'lodash';
 
 export type Breakpoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+export type QueryObject = { [string]: string | number | boolean } | QueryObject[];
+
 const breakpoints: { [Breakpoint]: number } = {
   xs: 0,
   sm: 576,
@@ -19,18 +21,18 @@ function nextBreakpoint(size: Breakpoint): ?Breakpoint {
   return breakpointEntries[nextBreakpointIndex][1];
 }
 
-export function breakpointDown(size: Breakpoint): string {
+export function breakpointDown(size: Breakpoint): QueryObject {
   const nextSize = nextBreakpoint(size);
-  if (nextSize == null) return 'all';
-  return `(max-width: ${breakpoints[nextSize] - 1}px )`;
+  if (nextSize == null) return { all: true };
+  return { maxWidth: breakpoints[nextSize] - 1 };
 }
 
-export function breakpointUp(size: Breakpoint): string {
-  return `(min-width: ${breakpoints[size]}px)`;
+export function breakpointUp(size: Breakpoint): QueryObject {
+  return { minWidth: breakpoints[size] };
 }
 
-export function touchScreenOnly(): string {
-  return '(pointer: coarse)';
+export function touchScreenOnly(): QueryObject {
+  return { pointer: 'coarse' };
 }
 
 export function supportsCSSVariables() {
