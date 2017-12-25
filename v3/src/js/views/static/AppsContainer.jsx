@@ -60,6 +60,8 @@ function AppEntry({ app }: AppEntryProps) {
   );
 }
 
+const title = 'Apps';
+
 class AppsContainer extends Component<Props, State> {
   state: State = {
     appsData: null,
@@ -87,8 +89,8 @@ class AppsContainer extends Component<Props, State> {
 
   render() {
     return (
-      <StaticPage title="Apps">
-        <h2>Apps</h2>
+      <StaticPage title={title}>
+        <h2>{title}</h2>
         <hr />
         <p>A collection of NUS-related apps that may come in handy.</p>
         <p>Have an NUS app that you want added to the list? Simply add it to

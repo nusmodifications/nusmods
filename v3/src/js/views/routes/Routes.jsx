@@ -9,7 +9,7 @@ import VenuesContainer from 'views/venues/VenuesContainer';
 import SettingsContainer from 'views/settings/SettingsContainer';
 import AboutContainer from 'views/static/AboutContainer';
 import TeamContainer from 'views/static/TeamContainer';
-import DevelopersContainer from 'views/static/DevelopersContainer';
+import ContributorsContainer from 'views/static/ContributorsContainer';
 import FaqContainer from 'views/static/FaqContainer';
 import AppsContainer from 'views/static/AppsContainer';
 import NotFoundPage from 'views/errors/NotFoundPage';
@@ -24,9 +24,10 @@ export default function Routes() {
       <Route path="/venues/:venue?" component={VenuesContainer} />
       <Route path="/about" component={AboutContainer} />
       <Route path="/faq" component={FaqContainer} />
+      <Route path="/contact" component={FaqContainer} />
       <Route path="/settings" component={SettingsContainer} />
       <Route path="/team" component={TeamContainer} />
-      <Route path="/developers" component={DevelopersContainer} />
+      <Route path="/contributors" component={ContributorsContainer} />
       <Route path="/apps" component={AppsContainer} />
       <Route component={NotFoundPage} />
     </Switch>

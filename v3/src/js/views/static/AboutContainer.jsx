@@ -2,6 +2,7 @@
 
 import React from 'react';
 
+import config from 'config';
 import StaticPage from './StaticPage';
 
 export default function AboutContainer() {
@@ -36,7 +37,7 @@ export default function AboutContainer() {
       <p>
         We would love to hear your feedback and suggestions on how to make NUSMods even better.
         Please let us know them by leaving a comment
-        on our <a href="https://www.facebook.com/NUSMods">Facebook page</a>.
+        on our <a href={config.contact.facebook}>Facebook page</a>.
       </p>
 
       <p><em>- NUSMods Team</em></p>
