@@ -2,11 +2,14 @@
 import localforage from 'localforage';
 import type { ModuleCode, Semester, Lesson } from 'types/modules';
 import lessons from '__mocks__/lessons-array.json';
-import { nextTick } from 'test-utils/async';
-import { TIMETABLE_MIGRATION_COMPLETE } from './settings';
+import storage from 'storage';
 import * as actions from './timetables';
 
-jest.mock('localforage');
+jest.mock('localforage', () => ({ getItem: jest.fn() }));
+jest.mock('storage', () => ({
+  getItem: jest.fn(),
+  setItem: jest.fn(),
+}));
 
 // see: https://github.com/reactjs/redux/blob/master/docs/recipes/WritingTests.md#example-1
 // TODO: write addModule test with nock and mockStore.
@@ -41,48 +44,51 @@ test('cancelModifyLesson should not have payload', () => {
 });
 
 describe('migrateTimetable()', () => {
+  const migrationKey = 'v2Migration';
   const action = actions.migrateTimetable();
-  const dispatch = jest.fn().mockReturnValue(Promise.resolve());
-  const state = { settings: { isV2TimetableMigrated: false } };
+  const dispatch = jest.fn()
+    .mockReturnValue(Promise.resolve());
 
   afterEach(() => {
     dispatch.mockReset();
+    storage.setItem.mockReset();
   });
 
   test('not migrate if the timetable has already been migrated', async () => {
-    action(dispatch, () => ({ settings: { isV2TimetableMigrated: true } }));
-    await nextTick();
+    storage.getItem.mockReturnValue(true);
+
+    await action(dispatch);
 
     expect(localforage.getItem).not.toHaveBeenCalled();
   });
 
   test('not migrate if old data is not present', async () => {
-    localforage.getItem = jest.fn(() => Promise.resolve());
-    action(dispatch, () => state);
-    await nextTick();
+    storage.getItem.mockReturnValue();
+    localforage.getItem.mockReturnValue(Promise.resolve());
+    await action(dispatch);
 
-    expect(dispatch).toHaveBeenCalledTimes(1);
-
-    const [[dispatchedAction]] = dispatch.mock.calls;
-    expect(dispatchedAction).toHaveProperty('type', TIMETABLE_MIGRATION_COMPLETE);
+    expect(dispatch).not.toHaveBeenCalled();
+    expect(storage.setItem).toHaveBeenCalledTimes(1);
+    expect(storage.setItem).toHaveBeenCalledWith(migrationKey, true);
   });
 
   test('to migrate timetable', async () => {
+    storage.getItem.mockReturnValue();
     // Just mock one semester
-    localforage.getItem = jest.fn((key) => {
+    localforage.getItem.mockImplementation((key) => {
       if (key.includes('sem1')) return Promise.resolve('CS5331=');
       return Promise.resolve();
     });
 
-    action(dispatch, () => state);
-    await nextTick();
+    await action(dispatch);
 
-    expect(dispatch).toHaveBeenCalledTimes(3);
+    expect(dispatch).toHaveBeenCalledTimes(2);
 
-    const [[firstAction], [secondAction], [thirdAction]] = dispatch.mock.calls;
-
+    const [[firstAction], [secondAction]] = dispatch.mock.calls;
     expect(firstAction).toHaveProperty('type', actions.SET_TIMETABLE);
     expect(secondAction).toBeInstanceOf(Function);
-    expect(thirdAction).toHaveProperty('type', TIMETABLE_MIGRATION_COMPLETE);
+
+    expect(storage.setItem).toHaveBeenCalledTimes(1);
+    expect(storage.setItem).toHaveBeenCalledWith(migrationKey, true);
   });
 });

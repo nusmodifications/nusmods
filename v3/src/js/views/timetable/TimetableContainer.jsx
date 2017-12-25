@@ -35,7 +35,6 @@ type Props = {
   activeSemester: Semester,
   timetable: SemTimetableConfig,
   colors: ColorMapping,
-  isV2TimetableMigrated: boolean,
 
   selectSemester: (Semester) => void,
   setTimetable: (Semester, SemTimetableConfig, ColorMapping) => void,
@@ -82,12 +81,8 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
 
   isLoading() {
     // Check that all modules are fully loaded into the ModuleBank
-    const { modules, timetable, isV2TimetableMigrated } = this.props;
+    const { modules, timetable } = this.props;
     const { importedTimetable } = this.state;
-
-    if (!isV2TimetableMigrated) {
-      return true;
-    }
 
     const moduleCodes = new Set(Object.keys(timetable));
     if (importedTimetable) {
@@ -218,7 +213,6 @@ const mapStateToProps = (state, ownProps) => {
     colors: state.theme.colors,
     modules: state.entities.moduleBank.modules,
     activeSemester: state.app.activeSemester,
-    isV2TimetableMigrated: state.settings.isV2TimetableMigrated,
   };
 };
 

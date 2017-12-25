@@ -42,7 +42,6 @@ export type SettingsState = {
   faculty: ?Faculty,
   mode: Mode,
   hiddenInTimetable: ModuleCode[],
-  isV2TimetableMigrated: boolean,
 };
 
 /* entities/moduleBank.js */

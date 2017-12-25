@@ -50,11 +50,3 @@ export function showLessonInTimetable(moduleCode: ModuleCode): FSA {
     payload: moduleCode,
   };
 }
-
-export const TIMETABLE_MIGRATION_COMPLETE = 'TIMETABLE_MIGRATION_COMPLETE';
-export function timetableMigrationComplete(): FSA {
-  return {
-    type: TIMETABLE_MIGRATION_COMPLETE,
-    payload: {},
-  };
-}

@@ -11,7 +11,6 @@ const settingsInitialState: SettingsState = {
   faculty: '',
   mode: LIGHT_MODE,
   hiddenInTimetable: [],
-  isV2TimetableMigrated: false,
 };
 const settingsWithNewStudent: SettingsState = { ...settingsInitialState, newStudent: true };
 const faculty = 'School of Computing';
@@ -44,10 +43,5 @@ describe('settings', () => {
     const action2: FSA = actions.selectMode(LIGHT_MODE);
     const nextState2: SettingsState = reducer(nextState, action2);
     expect(nextState2).toEqual(settingsInitialState);
-  });
-
-  test('can complete timetable migration', () => {
-    const nextState = reducer(settingsInitialState, actions.timetableMigrationComplete());
-    expect(nextState).toHaveProperty('isV2TimetableMigrated', true);
   });
 });

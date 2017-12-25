@@ -15,8 +15,10 @@ import type {
 import { fetchModule } from 'actions/moduleBank';
 import { randomModuleLessonConfig } from 'utils/timetables';
 import { getModuleTimetable } from 'utils/modules';
+import storage from 'storage';
 import { MIGRATION_KEYS, parseQueryString } from 'storage/migrateTimetable';
-import { timetableMigrationComplete } from './settings';
+
+const V2_MIGRATION_KEY = 'v2Migration';
 
 export const ADD_MODULE: string = 'ADD_MODULE';
 export function addModule(
@@ -107,9 +109,9 @@ export function fetchTimetableModules(timetables: SemTimetableConfig[]) {
 }
 
 export function migrateTimetable() {
-  return (dispatch: Function, getState: Function): Promise<*> => {
-    if (getState().settings.isV2TimetableMigrated) {
-      return Promise.resolve([]);
+  return (dispatch: Function): Promise<*> => {
+    if (storage.getItem(V2_MIGRATION_KEY)) {
+      return Promise.resolve();
     }
 
     const promises = MIGRATION_KEYS.map(([semester, key]) =>
@@ -124,6 +126,6 @@ export function migrateTimetable() {
         }));
 
     return Promise.all(promises)
-      .then(() => dispatch(timetableMigrationComplete()));
+      .then(() => storage.setItem(V2_MIGRATION_KEY, true));
   };
 }
