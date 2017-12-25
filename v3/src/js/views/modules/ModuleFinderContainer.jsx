@@ -178,9 +178,14 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
 
   // Event handlers
   onQueryStringChange(query: string) {
-    this.setState(state => ({
-      filterGroups: updateGroups(state.filterGroups, query),
-    }));
+    const { filterGroups } = this.state;
+
+    // Trim the starting '?' character
+    if (query.replace(/^\?/, '') !== serializeGroups(filterGroups)) {
+      this.setState({
+        filterGroups: updateGroups(filterGroups, query),
+      });
+    }
   }
 
   onFilterChange = (newGroup: FilterGroup<*>, resetScroll: boolean = true) => {
