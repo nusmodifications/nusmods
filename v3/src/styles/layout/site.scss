@@ -51,7 +51,7 @@ a {
     }
   }
 
-  @include media-breakpoint-up(lg) {
+  @include media-breakpoint-up(xl) {
     > nav {
       width: $side-nav-width-lg;
     }
