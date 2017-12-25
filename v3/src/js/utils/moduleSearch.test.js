@@ -31,7 +31,8 @@ test('searches multiword terms', () => {
 });
 
 test('searches get more specific with more keywords', () => {
-  testSearchTerm('to by', []);
+  testSearchTerm('fund problem', ['CS1010S']);
+  testSearchTerm('prod eng', ['CS3216']);
 });
 
 test('sorts by preferring module prefix', () => {

@@ -8,7 +8,7 @@ import type { SearchableModule } from 'types/modules';
 export const SEARCH_QUERY_KEY = 'q';
 
 export function tokenize(str: string): string[] {
-  return str.trim().split(/[\s,.]+/g);
+  return str.trim().split(/\W+/g);
 }
 
 // Match only start of words, case insensitively
@@ -18,22 +18,24 @@ export function regexify(str: string): RegExp {
 }
 
 export function createSearchPredicate(searchTerm: string): SearchableModule => boolean {
-  const searchRegex = regexify(searchTerm);
+  const searchRegexes = tokenize(searchTerm).map(regexify);
 
   return function predicate(module: SearchableModule): boolean {
-    if (
-      searchRegex.test(module.ModuleCode) ||
-      searchRegex.test(module.ModuleTitle) ||
-      searchRegex.test(module.ModuleCode.replace(/\D+/, ''))
-    ) {
-      return true;
-    }
+    return searchRegexes.every((regex) => {
+      if (
+        regex.test(module.ModuleCode) ||
+        regex.test(module.ModuleTitle) ||
+        regex.test(module.ModuleCode.replace(/\D+/, ''))
+      ) {
+        return true;
+      }
 
-    if (module.ModuleDescription) {
-      return searchRegex.test(module.ModuleDescription);
-    }
+      if (module.ModuleDescription) {
+        return regex.test(module.ModuleDescription);
+      }
 
-    return false;
+      return false;
+    });
   };
 }
 
@@ -48,7 +50,8 @@ export function sortModules<T: SearchableModule>(searchTerm: string, modules: T[
   const searchRegex = regexify(searchTerm);
 
   return sortBy(modules, (module) => {
-    if (searchRegex.test(module.ModuleCode) || searchRegex.test(module.ModuleCode.replace(/\D+/, ''))) {
+    if (searchRegex.test(module.ModuleCode) ||
+        searchRegex.test(module.ModuleCode.replace(/\D+/, ''))) {
       return 1;
     }
     if (searchRegex.test(module.ModuleTitle)) {
