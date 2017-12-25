@@ -11,6 +11,14 @@ export function selectTheme(theme: string): FSA {
   };
 }
 
+export const CYCLE_THEME: string = 'CYCLE_THEME';
+export function cycleTheme(offset: number): FSA {
+  return {
+    type: CYCLE_THEME,
+    payload: offset,
+  };
+}
+
 export const SELECT_MODULE_COLOR: string = 'SELECT_MODULE_COLOR';
 export function selectModuleColor(moduleCode: ModuleCode, colorIndex: ColorIndex): FSA {
   return {

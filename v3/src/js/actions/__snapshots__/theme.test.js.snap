@@ -1,8 +1,49 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`should dispatch a select of theme 1`] = `
+exports[`theme should dispatch a cycle of select of module color 1`] = `
+Object {
+  "payload": Object {
+    "colorIndex": 0,
+    "moduleCode": "CS1010S",
+  },
+  "type": "SELECT_MODULE_COLOR",
+}
+`;
+
+exports[`theme should dispatch a cycle of select of module color 2`] = `
+Object {
+  "payload": Object {
+    "colorIndex": 1,
+    "moduleCode": "CS3216",
+  },
+  "type": "SELECT_MODULE_COLOR",
+}
+`;
+
+exports[`theme should dispatch a cycle of theme 1`] = `
+Object {
+  "payload": 1,
+  "type": "CYCLE_THEME",
+}
+`;
+
+exports[`theme should dispatch a cycle of theme 2`] = `
+Object {
+  "payload": -1,
+  "type": "CYCLE_THEME",
+}
+`;
+
+exports[`theme should dispatch a select of theme 1`] = `
 Object {
   "payload": "test",
   "type": "SELECT_THEME",
+}
+`;
+
+exports[`theme should dispatch a toggle of timetable orientation 1`] = `
+Object {
+  "payload": null,
+  "type": "TOGGLE_TIMETABLE_ORIENTATION",
 }
 `;
