@@ -106,7 +106,7 @@ export default function FaqContainer() {
       <p>
         Congratulations for making it to the end! If you are still bent on contacting us,
         you may reach us via email at nusmods&#123;at&#125;googlegroups[dot]com or via{' '}
-        <a href={`https://m.me/${config.contact.facebook}`} target="_blank" rel="noopener noreferrer">
+        <a href={config.contact.messenger} target="_blank" rel="noopener noreferrer">
           Messenger
         </a>.
         Please allow up to 90 working days for a reply.

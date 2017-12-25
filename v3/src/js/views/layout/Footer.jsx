@@ -26,11 +26,11 @@ function Footer() {
     <footer className={styles.footer}>
       <div className="container">
         <ul className={styles.footerLinks}>
-          <li><a href={`https://github.com/${config.contact.githubOrg}/${config.contact.githubRepo}`}>GitHub</a></li>
-          <li><a href={`https://facebook.com/${config.contact.facebook}`}>Facebook</a></li>
-          <li><a href={`https://m.me/${config.contact.facebook}`}>Messenger</a></li>
-          <li><a href={`https://twitter.com/${config.contact.twitter}`}>Twitter</a></li>
-          <li><a href="http://blog.nusmods.com/">Blog</a></li>
+          <li><a href={config.contact.githubRepo}>GitHub</a></li>
+          <li><a href={config.contact.facebook}>Facebook</a></li>
+          <li><a href={config.contact.messenger}>Messenger</a></li>
+          <li><a href={config.contact.twitter}>Twitter</a></li>
+          <li><a href={config.contact.blog}>Blog</a></li>
           <li><a href="https://github.com/nusmodifications/nusmods-api">API</a></li>
           <li><Link to="/apps">Apps</Link></li>
           <li><Link to="/about">About</Link></li>
@@ -41,7 +41,7 @@ function Footer() {
         {/* TODO: Add API data last updated timestamp */}
         <p>Designed and built with all the love in the world by{' '}
           <a
-            href={`https://github.com/${config.contact.githubOrg}`}
+            href={config.contact.githubOrg}
             target="_blank"
             rel="noopener noreferrer"
           >
