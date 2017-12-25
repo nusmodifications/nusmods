@@ -24,7 +24,7 @@
     box-shadow: none;
   }
 
-  @include media-breakpoint-up(lg) {
+  @include media-breakpoint-up(xl) {
     margin-top: 1rem;
   }
 
@@ -83,7 +83,7 @@
     padding: 1rem 0.5rem;
   }
 
-  @include media-breakpoint-up(lg) {
+  @include media-breakpoint-up(xl) {
     display: flex;
     align-items: center;
     padding: 0.8rem 0 0.8rem 2rem;
@@ -99,7 +99,7 @@
     display: block;
   }
 
-  @include media-breakpoint-up(lg) {
+  @include media-breakpoint-up(xl) {
     margin-left: 0.4rem;
     font-size: 1rem;
   }
