@@ -14,7 +14,10 @@ import {
 import {
   SELECT_SEMESTER,
 } from 'actions/settings';
-import { SET_ONLINE_STATUS } from 'actions/online';
+import {
+  SET_ONLINE_STATUS,
+  TOGGLE_FEEDBACK_MODAL,
+} from 'actions/app';
 
 const defaultAppState = (): AppState => ({
   // Default to the current semester from config.
@@ -22,6 +25,7 @@ const defaultAppState = (): AppState => ({
   // The lesson being modified on the timetable.
   activeLesson: null,
   isOnline: navigator.onLine,
+  isFeedbackModalOpen: false,
 });
 
 // This reducer is for storing state pertaining to the UI.
@@ -47,6 +51,11 @@ function app(state: AppState = defaultAppState(), action: FSA): AppState {
       return {
         ...state,
         isOnline: action.payload.isOnline,
+      };
+    case TOGGLE_FEEDBACK_MODAL:
+      return {
+        ...state,
+        isFeedbackModalOpen: !state.isFeedbackModalOpen,
       };
     case SELECT_MODULE_COLOR:
     default:
