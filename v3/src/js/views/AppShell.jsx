@@ -11,9 +11,7 @@ import { connect } from 'react-redux';
 import NUSModerator from 'nusmoderator';
 import classnames from 'classnames';
 import { values } from 'lodash';
-import MessengerCustomerChat from 'react-messenger-customer-chat';
 
-import config from 'config';
 import { fetchModuleList } from 'actions/moduleBank';
 import { fetchTimetableModules, setTimetable } from 'actions/timetables';
 import { noBreak } from 'utils/react';
@@ -117,10 +115,7 @@ export class AppShell extends Component<Props> {
             {isModuleListReady ? this.props.children : <LoadingSpinner />}
           </main>
         </div>
-        <MessengerCustomerChat
-          appId={config.facebookAppId}
-          pageId={config.facebookPageId}
-        />
+
         <Footer />
       </div>
     );
