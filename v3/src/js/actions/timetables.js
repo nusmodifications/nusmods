@@ -1,5 +1,6 @@
 // @flow
 import { flatMap, isEmpty } from 'lodash';
+import localforage from 'localforage';
 
 import type { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
 import type { FSA } from 'types/redux';
@@ -14,6 +15,10 @@ import type {
 import { fetchModule } from 'actions/moduleBank';
 import { randomModuleLessonConfig } from 'utils/timetables';
 import { getModuleTimetable } from 'utils/modules';
+import storage from 'storage';
+import { MIGRATION_KEYS, parseQueryString } from 'storage/migrateTimetable';
+
+const V2_MIGRATION_KEY = 'v2Migration';
 
 export const ADD_MODULE: string = 'ADD_MODULE';
 export function addModule(
@@ -83,14 +88,6 @@ export function cancelModifyLesson(): FSA {
   };
 }
 
-export const SET_LESSON_CONFIG = 'SET_LESSON_CONFIG';
-export function setLessonConfig(semester: Semester, config: ModuleLessonConfig): FSA {
-  return {
-    type: SET_LESSON_CONFIG,
-    payload: { semester, config },
-  };
-}
-
 export const SET_TIMETABLE = 'SET_TIMETABLE';
 export function setTimetable(
   semester: Semester,
@@ -108,5 +105,27 @@ export function fetchTimetableModules(timetables: SemTimetableConfig[]) {
     const moduleCodes = new Set(flatMap(timetables, Object.keys));
     return Promise.all(Array.from(moduleCodes)
       .map(moduleCode => dispatch(fetchModule(moduleCode))));
+  };
+}
+
+export function migrateTimetable() {
+  return (dispatch: Function): Promise<*> => {
+    if (storage.getItem(V2_MIGRATION_KEY)) {
+      return Promise.resolve();
+    }
+
+    const promises = MIGRATION_KEYS.map(([semester, key]) =>
+      localforage.getItem(key)
+        .then((queryString) => {
+          // Do nothing if there's no data
+          if (!queryString) return null;
+
+          const timetable = parseQueryString(queryString);
+          dispatch(setTimetable(semester, timetable));
+          return dispatch(fetchTimetableModules([timetable]));
+        }));
+
+    return Promise.all(promises)
+      .then(() => storage.setItem(V2_MIGRATION_KEY, true));
   };
 }

@@ -11,13 +11,10 @@ import { connect } from 'react-redux';
 import NUSModerator from 'nusmoderator';
 import classnames from 'classnames';
 import { values } from 'lodash';
-import MessengerCustomerChat from 'react-messenger-customer-chat';
 
-import config from 'config';
 import { fetchModuleList } from 'actions/moduleBank';
-import { fetchTimetableModules, setTimetable } from 'actions/timetables';
+import { fetchTimetableModules, setTimetable, migrateTimetable } from 'actions/timetables';
 import { noBreak } from 'utils/react';
-import migrateTimetable from 'storage/migrateTimetable';
 import Footer from 'views/layout/Footer';
 import Navtabs from 'views/layout/Navtabs';
 import { DARK_MODE } from 'types/settings';
@@ -35,6 +32,7 @@ type Props = {
   activeSemester: Semester,
 
   fetchModuleList: () => void,
+  migrateTimetable: () => void,
   fetchTimetableModules: (SemTimetableConfig[]) => void,
   setTimetable: (Semester, SemTimetableConfig) => void,
 };
@@ -88,9 +86,7 @@ export class AppShell extends Component<Props> {
 
     // Handle migration from v2
     // TODO: Remove this once sem 2 is over
-    migrateTimetable(this.props.setTimetable).then(migratedTimetables =>
-      this.props.fetchTimetableModules(migratedTimetables.filter(Boolean)),
-    );
+    this.props.migrateTimetable();
   }
 
   componentWillUpdate(nextProps: Props) {
@@ -117,10 +113,7 @@ export class AppShell extends Component<Props> {
             {isModuleListReady ? this.props.children : <LoadingSpinner />}
           </main>
         </div>
-        <MessengerCustomerChat
-          appId={config.facebookAppId}
-          pageId={config.facebookPageId}
-        />
+
         <Footer />
       </div>
     );
@@ -144,5 +137,6 @@ export default withRouter(
     fetchModuleList,
     fetchTimetableModules,
     setTimetable,
+    migrateTimetable,
   })(AppShell),
 );

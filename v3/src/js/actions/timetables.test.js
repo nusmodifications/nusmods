@@ -1,7 +1,15 @@
 // @flow
+import localforage from 'localforage';
 import type { ModuleCode, Semester, Lesson } from 'types/modules';
-import * as actions from 'actions/timetables';
 import lessons from '__mocks__/lessons-array.json';
+import storage from 'storage';
+import * as actions from './timetables';
+
+jest.mock('localforage', () => ({ getItem: jest.fn() }));
+jest.mock('storage', () => ({
+  getItem: jest.fn(),
+  setItem: jest.fn(),
+}));
 
 // see: https://github.com/reactjs/redux/blob/master/docs/recipes/WritingTests.md#example-1
 // TODO: write addModule test with nock and mockStore.
@@ -33,4 +41,54 @@ test('changeLesson should return updated information to change lesson', () => {
 
 test('cancelModifyLesson should not have payload', () => {
   expect(actions.cancelModifyLesson()).toMatchSnapshot();
+});
+
+describe('migrateTimetable()', () => {
+  const migrationKey = 'v2Migration';
+  const action = actions.migrateTimetable();
+  const dispatch = jest.fn()
+    .mockReturnValue(Promise.resolve());
+
+  afterEach(() => {
+    dispatch.mockReset();
+    storage.setItem.mockReset();
+  });
+
+  test('not migrate if the timetable has already been migrated', async () => {
+    storage.getItem.mockReturnValue(true);
+
+    await action(dispatch);
+
+    expect(localforage.getItem).not.toHaveBeenCalled();
+  });
+
+  test('not migrate if old data is not present', async () => {
+    storage.getItem.mockReturnValue();
+    localforage.getItem.mockReturnValue(Promise.resolve());
+    await action(dispatch);
+
+    expect(dispatch).not.toHaveBeenCalled();
+    expect(storage.setItem).toHaveBeenCalledTimes(1);
+    expect(storage.setItem).toHaveBeenCalledWith(migrationKey, true);
+  });
+
+  test('to migrate timetable', async () => {
+    storage.getItem.mockReturnValue();
+    // Just mock one semester
+    localforage.getItem.mockImplementation((key) => {
+      if (key.includes('sem1')) return Promise.resolve('CS5331=');
+      return Promise.resolve();
+    });
+
+    await action(dispatch);
+
+    expect(dispatch).toHaveBeenCalledTimes(2);
+
+    const [[firstAction], [secondAction]] = dispatch.mock.calls;
+    expect(firstAction).toHaveProperty('type', actions.SET_TIMETABLE);
+    expect(secondAction).toBeInstanceOf(Function);
+
+    expect(storage.setItem).toHaveBeenCalledTimes(1);
+    expect(storage.setItem).toHaveBeenCalledWith(migrationKey, true);
+  });
 });
