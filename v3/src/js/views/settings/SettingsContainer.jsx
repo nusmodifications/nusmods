@@ -81,7 +81,9 @@ function SettingsContainer(props: Props) {
         <div className={classnames(styles.toggleRow, 'row')}>
           <div className={classnames(styles.toggleDescription, 'col-sm-7')}>
             <p>Night mode turns the light surfaces of the page dark, creating an
-                    experience ideal for the dark. Try it out!</p>
+                    experience ideal for the dark. Try it out!
+            </p>
+            <p>Protip: Press &quot;X&quot; to toggle modes anywhere on NUSMods.</p>
           </div>
           <div className={classnames('col-sm-4 offset-sm-1', styles.toggle)}>
             <ModeSelect mode={props.mode} onSelectMode={props.selectMode} />
@@ -93,6 +95,7 @@ function SettingsContainer(props: Props) {
       <h4>Theme</h4>
 
       <p>Liven up your timetable with different color schemes!</p>
+      <p>Protip: Press &quot;Z&quot;/&quot;C&quot; to cycle through the themes anywhere on NUSMods.</p>
 
       <div className={styles.preview}>
         <Timetable lessons={previewTimetable} />
