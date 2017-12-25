@@ -8,10 +8,11 @@ import {
   SELECT_NEW_STUDENT,
   SELECT_FACULTY,
   SELECT_MODE,
+  TOGGLE_MODE,
   HIDE_LESSON_IN_TIMETABLE,
   SHOW_LESSON_IN_TIMETABLE,
 } from 'actions/settings';
-import { LIGHT_MODE } from 'types/settings';
+import { LIGHT_MODE, DARK_MODE } from 'types/settings';
 
 const defaultSettingsState: SettingsState = {
   newStudent: false,
@@ -50,6 +51,11 @@ function settings(state: SettingsState = defaultSettingsState, action: FSA): Set
       return {
         ...state,
         mode: action.payload,
+      };
+    case TOGGLE_MODE:
+      return {
+        ...state,
+        mode: state.mode === LIGHT_MODE ? DARK_MODE : LIGHT_MODE,
       };
     case HIDE_LESSON_IN_TIMETABLE:
     case SHOW_LESSON_IN_TIMETABLE:
