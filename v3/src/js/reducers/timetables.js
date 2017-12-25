@@ -16,7 +16,6 @@ import {
   ADD_MODULE,
   REMOVE_MODULE,
   CHANGE_LESSON,
-  SET_LESSON_CONFIG,
   SET_TIMETABLE,
 } from 'actions/timetables';
 
@@ -89,12 +88,6 @@ function timetables(state: TimetableConfig = defaultTimetableConfig, action: FSA
       return {
         ...state,
         [action.payload.semester]: semTimetable(state[action.payload.semester], action),
-      };
-
-    case SET_LESSON_CONFIG:
-      return {
-        ...state,
-        [action.payload.semester]: action.payload.timetable,
       };
 
     default:
