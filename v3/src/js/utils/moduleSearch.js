@@ -1,5 +1,5 @@
 // @flow
-import { sortBy, sumBy } from 'lodash';
+import { sortBy } from 'lodash';
 import FilterGroup from 'utils/filters/FilterGroup';
 import ModuleFilter from 'utils/filters/ModuleFilter';
 import type { SearchableModule } from 'types/modules';
@@ -49,14 +49,19 @@ export function createSearchFilter(searchTerm: string): FilterGroup<ModuleFilter
 export function sortModules<T: SearchableModule>(searchTerm: string, modules: T[]): T[] {
   const searchRegexes = tokenize(searchTerm).map(regexify);
 
-  return sortBy(modules, module => sumBy(searchRegexes, (regex) => {
-    if (regex.test(module.ModuleCode) ||
-        regex.test(module.ModuleCode.replace(/\D+/, ''))) {
-      return 1;
+  return sortBy(modules, (module) => {
+    let sum = 0;
+    for (let i = 0; i < searchRegexes.length; i++) {
+      if (searchRegexes[i].test(module.ModuleCode) ||
+          searchRegexes[i].test(module.ModuleCode.replace(/\D+/, ''))) {
+        sum += 1;
+      } else if (searchRegexes[i].test(module.ModuleTitle)) {
+        sum += 2;
+      } else {
+        sum += 3;
+      }
     }
-    if (regex.test(module.ModuleTitle)) {
-      return 2;
-    }
-    return 3;
-  }));
+
+    return sum;
+  });
 }
