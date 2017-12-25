@@ -11,8 +11,29 @@ const CONTRIBUTORS_URL = 'https://api.github.com/repos/NUSModifications/NUSMods/
 
 type Props = {};
 
+type Contributor = {
+  avatar_url: string,
+  contributions: number,
+  events_url: string,
+  followers_url: string,
+  following_url: string,
+  gists_url: string,
+  gravatar_id: string,
+  html_url: string,
+  id: number,
+  login: string,
+  organizations_ur: string,
+  received_events_ur: string,
+  repos_ur: string,
+  site_admin: boolean,
+  starred_ur: string,
+  subscriptions_ur: string,
+  type: string,
+  url: string,
+};
+
 type State = {
-  contributors: ?[Object],
+  contributors: ?Array<Contributor>,
   isLoading: boolean,
   isError: boolean,
   errorMessage: string,
@@ -59,8 +80,7 @@ class ContributorsContainer extends Component<Props, State> {
           reported issues, suggested improvements, or even better, write code and contribute patches!</p>
         <p>Please reach out to us if you are interested in helping!
           Join us and make NUS a better place for its students (your friends)!</p>
-        <br /><br />
-
+        <br />
         {this.state.isLoading && <Loader />}
         {this.state.isError &&
           <div className="alert alert-danger">
@@ -71,7 +91,7 @@ class ContributorsContainer extends Component<Props, State> {
         {this.state.contributors && <div className="row">
           {this.state.contributors.map(contributor => (
             <div className="col-md-3 col-6 text-center" key={contributor.id}>
-              <div className="mb-2">
+              <div>
                 <a href={contributor.html_url}>
                   <img
                     src={contributor.avatar_url}
@@ -80,7 +100,7 @@ class ContributorsContainer extends Component<Props, State> {
                   />
                 </a>
               </div>
-              <h5 className="mb-0 font-weight-bold">
+              <div className="font-weight-bold">
                 <a
                   href={contributor.html_url}
                   target="_blank"
@@ -88,7 +108,7 @@ class ContributorsContainer extends Component<Props, State> {
                 >
                   {contributor.login}
                 </a>
-              </h5>
+              </div>
               <p>
                 <a
                   className="text-muted"
