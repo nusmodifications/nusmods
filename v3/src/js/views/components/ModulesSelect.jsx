@@ -17,6 +17,7 @@ type Props = {
   onChange: Function,
   placeholder: string,
   matchBreakpoint: boolean,
+  disabled?: boolean,
 };
 
 type State = {
@@ -32,14 +33,6 @@ class ModulesSelect extends Component<Props, State> {
     isOpen: false,
     isModalOpen: false,
   };
-
-  shouldComponentUpdate(nextProps: Props, nextState: State) {
-    return (
-      !_.isEqual(this.state, nextState) ||
-      this.props.matchBreakpoint !== nextProps.matchBreakpoint ||
-      _.size(this.props.moduleList) !== _.size(nextProps.moduleList)
-    );
-  }
 
   onChange = (selection: any) => {
     // Refocus after choosing a module
@@ -66,7 +59,7 @@ class ModulesSelect extends Component<Props, State> {
   /* eslint-disable jsx-a11y/label-has-for, jsx-a11y/no-autofocus */
   // TODO: Inject types from downshift when https://github.com/paypal/downshift/pull/180 is implemented
   renderDropdown = ({ getLabelProps, getInputProps, getItemProps, isOpen, inputValue, highlightedIndex }: any) => {
-    const { placeholder } = this.props;
+    const { placeholder, disabled } = this.props;
     const { isModalOpen } = this.state;
     const results = this.getFilteredModules(inputValue);
     const showResults = isOpen && results.length > 0;
@@ -83,6 +76,7 @@ class ModulesSelect extends Component<Props, State> {
           autoFocus={isModalOpen}
           className={styles.input}
           {...getInputProps({ placeholder })}
+          disabled={disabled}
           onFocus={this.onFocus}
           /* Also prevents iOS "Done" button from resetting input */
           onBlur={() => { if (!inputValue && isModalOpen) this.toggleModal(); }}
@@ -132,7 +126,7 @@ class ModulesSelect extends Component<Props, State> {
 
   render() {
     const { isModalOpen, isOpen } = this.state;
-    const { matchBreakpoint } = this.props;
+    const { matchBreakpoint, disabled } = this.props;
     const downshiftComponent = (
       <Downshift
         isOpen={isModalOpen || isOpen}
@@ -141,17 +135,17 @@ class ModulesSelect extends Component<Props, State> {
         render={this.renderDropdown}
         /* Hack to force item selection to be empty */
         itemToString={_.stubString}
-        selectedItem={''}
+        selectedItem=""
       />
     );
     return matchBreakpoint ? (
       downshiftComponent
     ) : (
       <div>
-        <button className={styles.input} onClick={this.toggleModal}>
+        <button className={styles.input} onClick={this.toggleModal} disabled={disabled}>
           {this.props.placeholder}
         </button>
-        <Modal isOpen={isModalOpen} onRequestClose={this.toggleModal} className={styles.modal}>
+        <Modal isOpen={!disabled && isModalOpen} onRequestClose={this.toggleModal} className={styles.modal}>
           {downshiftComponent}
         </Modal>
       </div>

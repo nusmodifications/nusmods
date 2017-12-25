@@ -76,6 +76,13 @@ export default class FilterGroup<Filter: ModuleFilter> {
     return updated;
   }
 
+  reset(): FilterGroup<Filter> {
+    let group = this;
+    this.activeFilters
+      .forEach((filter) => { group = group.toggle(filter); });
+    return group;
+  }
+
   isActive(): boolean {
     return !!this.activeFilters.length;
   }

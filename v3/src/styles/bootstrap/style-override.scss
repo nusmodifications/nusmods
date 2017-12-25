@@ -11,6 +11,10 @@ body {
   background: var(--body-bg);
 }
 
+.form-control:disabled {
+  background: var(--body-bg);
+}
+
 .dropdown-menu {
   width: 100%;
   padding: 0.1rem 0;
