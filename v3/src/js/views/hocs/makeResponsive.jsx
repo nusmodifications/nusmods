@@ -1,8 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 
-import { breakpointUp, wrapComponentName } from 'utils/react';
-import type { Breakpoint } from 'utils/react';
+import { wrapComponentName } from 'utils/react';
 
 type State = {
   matchBreakpoint: boolean,
@@ -10,7 +9,7 @@ type State = {
 
 function makeResponsive<Props: {}>(
   WrappedComponent: ComponentType<Props>,
-  breakpoint: Breakpoint,
+  mediaQuery: string,
 ): ComponentType<$Diff<Props, State>> {
   return class extends Component<Props, State> {
     mql: ?MediaQueryList;
@@ -22,8 +21,8 @@ function makeResponsive<Props: {}>(
     };
 
     componentDidMount() {
-      const mql = breakpointUp(breakpoint);
-      mql.addListener(e => this.updateMediaQuery(e));
+      const mql = window.matchMedia(mediaQuery);
+      mql.addListener(this.updateMediaQuery);
       this.updateMediaQuery(mql);
       this.mql = mql;
     }

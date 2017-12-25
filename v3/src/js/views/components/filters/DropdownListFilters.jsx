@@ -12,6 +12,7 @@ import makeResponsive from 'views/hocs/makeResponsive';
 import FilterGroup from 'utils/filters/FilterGroup';
 import ModuleFilter from 'utils/filters/ModuleFilter';
 import { highlight } from 'utils/react';
+import { breakpointUp } from 'utils/css';
 import styles from './styles.scss';
 import Checklist from './Checklist';
 
@@ -192,4 +193,4 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
   }
 }
 
-export default makeResponsive(DropdownListFiltersComponent, 'md');
+export default makeResponsive(DropdownListFiltersComponent, breakpointUp('md'));

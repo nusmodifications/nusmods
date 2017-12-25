@@ -46,7 +46,8 @@ import nusmods from 'apis/nusmods';
 import { resetModuleFinder } from 'actions/moduleFinder';
 import FilterGroup from 'utils/filters/FilterGroup';
 import HistoryDebouncer from 'utils/HistoryDebouncer';
-import { defer, breakpointUp } from 'utils/react';
+import { defer } from 'utils/react';
+import { breakpointUp } from 'utils/css';
 import styles from './ModuleFinderContainer.scss';
 
 type Props = {
@@ -147,7 +148,7 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
         } else {
           // By default, only turn on instant search for desktop and if the
           // benchmark earlier is fast enough
-          this.useInstantSearch = breakpointUp('md').matches && (time < INSTANT_SEARCH_THRESHOLD);
+          this.useInstantSearch = window.matchMedia(breakpointUp('md')).matches && (time < INSTANT_SEARCH_THRESHOLD);
         }
 
         console.info(`${time}ms taken to init filters`); // eslint-disable-line
