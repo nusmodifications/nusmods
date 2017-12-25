@@ -17,7 +17,7 @@ describe('<DropdownListFilters>', () => {
   function make(
     filterGroup: FilterGroup<*>,
     groups: FilterGroup<any>[] = [filterGroup],
-    matchBreakpoint: boolean = true,
+    matchBreakpoint: boolean = false,
   ) {
     const onFilterChange = jest.fn();
 
@@ -39,7 +39,7 @@ describe('<DropdownListFilters>', () => {
   //       to ensure values in both match
   test('use native <select> element on mobile', () => {
     const group = createGroup(modules);
-    const { wrapper } = make(group, [group], false);
+    const { wrapper } = make(group, [group], true);
 
     expect(wrapper.find('select').exists()).toBe(true);
     expect(wrapper.find('option')).toHaveLength(3); // One placeholder and two options
@@ -49,7 +49,7 @@ describe('<DropdownListFilters>', () => {
 
   test('change value when <select> value changes', () => {
     const group = createGroup(modules);
-    const { wrapper, onFilterChange } = make(group, [group], false);
+    const { wrapper, onFilterChange } = make(group, [group], true);
 
     // Simulate selecting an <option> in the <select>
     wrapper.find('select').simulate('change', { target: { value: 'a' } });
@@ -69,7 +69,7 @@ describe('<DropdownListFilters>', () => {
 
   test('render a list of previously selected items outside the <select>', () => {
     const group = createGroup(modules).toggle('a');
-    const { wrapper, onFilterChange } = make(group, [group], false);
+    const { wrapper, onFilterChange } = make(group, [group], true);
 
     // Should render the item in the checklist outside
     const checklist1 = wrapper.find('ul.list-unstyled input');
