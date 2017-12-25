@@ -1,0 +1,65 @@
+@import "~styles/utils/modules-entry";
+
+.content {
+  text-align: center;
+
+  h1 {
+    margin-bottom: 0.5rem;
+    font-size: $font-size-xlg;
+  }
+}
+
+.topIcon {
+  width: 8rem;
+  height: 8rem;
+  margin: 0 auto;
+  color: #f31c25;
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+
+  a {
+    flex: 1 0 31%;
+    height: 8rem;
+    padding: 1rem;
+    margin: 0 1% 0.5rem;
+    font-weight: bold;
+    line-height: 1.2;
+    color: #fff;
+    transition: $transition-base;
+
+    &.messenger {
+      background: #0084ff;
+
+      &:hover {
+        background: lighten(#0084ff, 10);
+      }
+    }
+
+    &.github {
+      background: #000;
+
+      &:hover {
+        background: #333;
+      }
+    }
+
+    &.form {
+      background: theme-color();
+
+      &:hover {
+        background: lighten(theme-color(), 10);
+      }
+    }
+  }
+
+  svg {
+    display: block;
+    width: 3.5rem;
+    height: 3.5rem;
+    margin: 0.5rem auto 0.1rem;
+  }
+}

@@ -2,13 +2,17 @@
 
 import React, { PureComponent } from 'react';
 import classnames from 'classnames';
+import { connect } from 'react-redux';
 
 import storage from 'storage';
+import { toggleFeedback } from 'actions/app';
 import { Heart } from 'views/components/icons';
 import CloseButton from 'views/components/CloseButton';
 import styles from './Announcements.scss';
 
-type Props = {};
+type Props = {
+  toggleFeedback: Function,
+};
 type State = {
   isOpen: boolean,
 };
@@ -26,7 +30,7 @@ const STORAGE_KEY = 'nusmods-r-announcement';
 
 const KEY = `${STORAGE_PREFIX}${STORAGE_KEY}`;
 
-export default class Announcements extends PureComponent<Props, State> {
+class Announcements extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
 
@@ -51,7 +55,11 @@ export default class Announcements extends PureComponent<Props, State> {
           <h3>Welcome to NUSMods R!</h3>
           <p>New and improved, just in time for the second semester.{' '}
             <a href="">Check out what&apos;s new</a>, and{' '}
-            <a href="">tell us what you think</a>.</p>
+            <button
+              className="btn btn-link"
+              type="button"
+              onClick={this.props.toggleFeedback}
+            >tell us what you think</button>.</p>
         </div>
 
         {STORAGE_KEY &&
@@ -63,3 +71,5 @@ export default class Announcements extends PureComponent<Props, State> {
     );
   }
 }
+
+export default connect(null, { toggleFeedback })(Announcements);
