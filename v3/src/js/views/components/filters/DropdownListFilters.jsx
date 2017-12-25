@@ -12,7 +12,7 @@ import makeResponsive from 'views/hocs/makeResponsive';
 import FilterGroup from 'utils/filters/FilterGroup';
 import ModuleFilter from 'utils/filters/ModuleFilter';
 import { highlight } from 'utils/react';
-import { breakpointUp } from 'utils/css';
+import { breakpointDown, touchScreenOnly } from 'utils/css';
 import styles from './styles.scss';
 import Checklist from './Checklist';
 
@@ -92,7 +92,30 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
         </h4>
 
         {/* Use a search-select combo dropdown on desktop */}
+        {/* Use a native select for mobile devices */}
         {matchBreakpoint ?
+          <select
+            className="form-control"
+            id={htmlId}
+            onChange={(evt) => {
+              this.onSelectItem(evt.target.value);
+              // Reset selection to the first placeholder item so that the last selected item
+              // is not left selected in the <select>
+              evt.target.selectedIndex = 0; // eslint-disable-line no-param-reassign
+            }}
+          >
+            <option>{placeholder}</option>
+            {this.displayedFilters().map(([filter, count]) => (
+              <option key={filter.id} value={filter.id}>
+                {/* Extra layer of interpolation to workaround https://github.com/facebook/react/issues/11911 */}
+                {/* Use a unicode checkbox to indicate to the user filters that are already enabled */}
+                {filter.enabled
+                  ? `☑ ${filter.label} (${count})`
+                  : `${filter.label} (${count})`}
+              </option>
+            ))}
+          </select>
+          :
           <Downshift
             breakingChanges={{ resetInputOnSelection: true }}
             onChange={(selectedItem, { clearSelection }) => {
@@ -157,30 +180,7 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
                   </div>}
               </div>
             )}
-          />
-          :
-          /* Use a native select for mobile devices */
-          <select
-            className="form-control"
-            id={htmlId}
-            onChange={(evt) => {
-              this.onSelectItem(evt.target.value);
-              // Reset selection to the first placeholder item so that the last selected item
-              // is not left selected in the <select>
-              evt.target.selectedIndex = 0; // eslint-disable-line no-param-reassign
-            }}
-          >
-            <option>{placeholder}</option>
-            {this.displayedFilters().map(([filter, count]) => (
-              <option key={filter.id} value={filter.id}>
-                {/* Extra layer of interpolation to workaround https://github.com/facebook/react/issues/11911 */}
-                {/* Use a unicode checkbox to indicate to the user filters that are already enabled */}
-                {filter.enabled
-                  ? `☑ ${filter.label} (${count})`
-                  : `${filter.label} (${count})`}
-              </option>
-            ))}
-          </select>}
+          />}
 
         {/* Show all filters that have been selected at some point */}
         <Checklist
@@ -193,4 +193,4 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
   }
 }
 
-export default makeResponsive(DropdownListFiltersComponent, breakpointUp('md'));
+export default makeResponsive(DropdownListFiltersComponent, [breakpointDown('sm'), touchScreenOnly()]);

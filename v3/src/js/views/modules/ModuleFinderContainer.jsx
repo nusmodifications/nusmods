@@ -279,7 +279,7 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
         {pageHead}
 
         <div className="row">
-          <div className="col-md-8 col-lg-9">
+          <div className="col">
             <h1 className="sr-only">Module Finder</h1>
 
             <ModuleSearchBox useInstantSearch={this.useInstantSearch} />
