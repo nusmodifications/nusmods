@@ -35,6 +35,14 @@ export function selectMode(mode: Mode): FSA {
   };
 }
 
+export const TOGGLE_MODE: string = 'TOGGLE_MODE';
+export function toggleMode(): FSA {
+  return {
+    type: TOGGLE_MODE,
+    payload: null,
+  };
+}
+
 export const HIDE_LESSON_IN_TIMETABLE: string = 'HIDE_LESSON_IN_TIMETABLE';
 export function hideLessonInTimetable(moduleCode: ModuleCode): FSA {
   return {
