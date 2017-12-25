@@ -1,4 +1,4 @@
-# NUSMods R [![Coverage Status](https://coveralls.io/repos/github/nusmodifications/nusmods/badge.svg?branch=master)](https://coveralls.io/github/nusmodifications/nusmods?branch=master) [![Build Status](https://travis-ci.org/nusmodifications/nusmods.svg?branch=hello-team-yijiang)](https://travis-ci.org/nusmodifications/nusmods)
+# NUSMods R [![Coverage Status](https://coveralls.io/repos/github/nusmodifications/nusmods/badge.svg?branch=master)](https://coveralls.io/github/nusmodifications/nusmods?branch=master) [![Build Status](https://travis-ci.org/nusmodifications/nusmods.svg?branch=master)](https://travis-ci.org/nusmodifications/nusmods)
 
 **Talk to us!**
 
@@ -49,6 +49,44 @@ This will start webpack dev server, which will automatically rebuild and reload 
 - React Developer Tools ([Chrome](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi), [Firefox](https://addons.mozilla.org/firefox/addon/react-devtools/))
 - [Redux DevTools](http://extension.remotedev.io/#installation)
 - [Firefox Developer Edition](https://www.mozilla.org/en-US/firefox/developer/)
+
+### Writing styles 
+
+We uses [CSS Modules][css-modules] to structure styles. This means that with the exception of a few global styles, styles for each component lives beside their source files (see [colocation](#colocation)). This allows us to write short, semantic names for styles without worrying about collision.
+
+```
+// MyComponent.scss 
+import "~styles/utils/modules-entry"; // Import variables, mixins 
+
+.myComponent {
+  // .col will be included in the class name whenever .myComponent is used 
+  composes: col from global; 
+  color: theme-color();
+  
+  :global(.btn) {
+    // Selects all child .btn elements
+  }
+  
+  :global {
+    // :global is required for animation since animations are defined globally 
+    animation: fadeIn 0.3s;
+  }
+}
+
+// MyComponent.jsx 
+import styles from './MyComponent.scss'; 
+
+// To use styles from MyComponent.scss: 
+<div className={styles.myComponent}>
+```
+
+Note that specificity still matters. This is important if you are trying to override Bootstrap styles.
+
+#### SCSS variables vs. CSS custom properties 
+
+Both SCSS and CSS variables (aka. custom properties) are used. In most cases, **prefer SCSS variables** as they can be used with SCSS mixins and functions, and integrate with Bootstrap. CSS variable generates more code (since we need to include a fallback for browsers that don't support it), and doesn't play well with SCSS. 
+
+Currently CSS variables are used only for colors that change under night mode. 
 
 ### Testing and Linting
 
@@ -105,27 +143,31 @@ $ yarn promote-staging # Promote ./dist to production
 │   │   ├── reducers        - Redux reducers
 │   │   ├── storage         - Persistance layer for Redux
 │   │   ├── stores          - Redux store config
+│   │   ├── test-utils      - Utilities for testing - this directory is not counted 
+│   │   │                     for test coverage 
 │   │   ├── types           - Flow type definitions
 │   │   ├── utils           - Utility functions and classes
 │   │   └── views
 │   │       ├── browse      - Module info and module finder related components
 │   │       ├── components  - Reusable components
 │   │       ├── errors      - Error pages
+│   │       ├── hocs        - Higher order components
 │   │       ├── layout      - Global layout components
+│   │       ├── modules     - Module finder and module info components
+│   │       ├── routes      - Routing related components 
 │   │       ├── settings    - Settings page component
 │   │       ├── static      - Static pages like /team and /developers
 │   │       └── timetable   - Timetable builder related components
 │   └── styles
 │       ├── bootstrap       - Bootstraping, uh, Bootstrap
 │       ├── components      - Legacy component styles
-|       |                     (new components should colocate their styles)
+│       │                     (new components should colocate their styles)
 │       ├── layout          - Site-wide layout styles
 │       ├── pages           - Page specific styles
-│       ├── utils           - Utility classes, mixins, functions
-│       └── vendor          - External vendor styles
+│       └── utils           - Utility classes, mixins, functions
 ├── static                  - Static assets, eg. favicons
 |                             These will be copied directly into /dist
-└── webpack                 - webpack config
+└── webpack                 - Webpack config
 ```
 
 ### Colocation
@@ -148,3 +190,4 @@ Components should keep their styles and tests in the same directory with the sam
 [eslint-airbnb]: https://www.npmjs.com/package/eslint-config-airbnb
 [stylelint]: https://stylelint.io/
 [zames-guide]: https://medium.com/@zameschua/getting-my-feet-wet-my-experience-with-open-source-and-nusmods-f1381450517e
+[css-modules]: https://github.com/css-modules/css-modules
