@@ -30,6 +30,7 @@ export type Config = {
   ivleUrl: string,
 
   disqusShortname: string,
+  googleAnalyticsId: string,
 
   semesterNames: { [Semester]: string },
   shortSemesterNames: { [Semester]: string },

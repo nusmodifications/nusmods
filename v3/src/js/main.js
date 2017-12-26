@@ -13,6 +13,7 @@ import App from 'App';
 import { toggleMode } from 'actions/settings';
 import { cycleTheme } from 'actions/theme';
 import 'utils/sentry';
+import initializeGA from 'utils/google-analytics';
 import KeyboardShortcuts from 'utils/KeyboardShortcuts';
 
 import '../styles/main.scss';
@@ -72,4 +73,5 @@ if (process.env.NODE_ENV === 'production') {
         Raven.captureException(e);
       });
   }
+  initializeGA();
 }
