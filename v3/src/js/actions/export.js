@@ -8,16 +8,13 @@ import { iCalForTimetable } from 'utils/ical';
 
 function downloadUrl(url: string, filename: string) {
   const link = document.createElement('a');
-  const body = document.body;
-  if (!body) return;
 
   link.download = filename;
   link.href = url;
-
-  body.appendChild(link);
-  link.click();
-  body.removeChild(link);
+  link.dispatchEvent(new MouseEvent('click'));
 }
+
+export const SUPPORTS_DOWNLOAD = 'download' in document.createElement('a');
 
 export const DOWNLOAD_AS_JPEG = 'DOWNLOAD_AS_JPEG';
 export function downloadAsJpeg(domElement: Element) {
@@ -27,9 +24,9 @@ export function downloadAsJpeg(domElement: Element) {
     });
 
     const style = { margin: '0', marginLeft: '-0.25em' };
-    return domtoimage.toJpeg(domElement, { bgcolor: '#fff', style })
+    return domtoimage.toPng(domElement, { bgcolor: '#fff', style })
       .then((dataUrl) => {
-        downloadUrl(dataUrl, 'timetable.jpeg');
+        downloadUrl(dataUrl, 'timetable.png');
         dispatch({
           type: `${DOWNLOAD_AS_JPEG}_SUCCESS`,
         });
