@@ -136,6 +136,16 @@ class TimetableContent extends Component<Props> {
     const clashes: { [string]: Array<Module> } = findExamClashes(modules, this.props.semester);
     const nonClashingMods: Array<Module> = _.difference(modules, _.flatten(_.values(clashes)));
 
+    if (_.isEmpty(clashes) && _.isEmpty(nonClashingMods)) {
+      return (
+        <div className="row">
+          <div className="col-sm-12">
+            <p className="text-sm-center">No modules added.</p>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div>
         {!_.isEmpty(clashes) && (
@@ -150,8 +160,7 @@ class TimetableContent extends Component<Props> {
             ))}
           </div>
         )}
-        {/* Do not render no modules added message if there are clashing mods and all mods clash */}
-        {!(!_.isEmpty(clashes) && _.isEmpty(nonClashingMods)) && renderModuleTable(nonClashingMods)}
+        {renderModuleTable(nonClashingMods)}
       </div>
     );
   }

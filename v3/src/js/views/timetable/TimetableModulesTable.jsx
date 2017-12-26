@@ -75,13 +75,7 @@ class TimetableModulesTable extends Component<Props> {
 
   render() {
     if (!this.props.modules.length) {
-      return (
-        <div className="row">
-          <div className="col-sm-12">
-            <p className="text-sm-center">No modules added.</p>
-          </div>
-        </div>
-      );
+      return null;
     }
 
     return (
