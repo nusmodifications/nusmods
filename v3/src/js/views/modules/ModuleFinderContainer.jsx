@@ -148,7 +148,7 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
         } else {
           // By default, only turn on instant search for desktop and if the
           // benchmark earlier is fast enough
-          this.useInstantSearch = window.matchMedia(breakpointUp('md')).matches && (time < INSTANT_SEARCH_THRESHOLD);
+          this.useInstantSearch = window.matchMedia(breakpointUp('sm')).matches && (time < INSTANT_SEARCH_THRESHOLD);
         }
 
         console.info(`${time}ms taken to init filters`); // eslint-disable-line

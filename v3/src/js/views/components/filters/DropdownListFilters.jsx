@@ -91,7 +91,6 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
           <label htmlFor={htmlId}>{group.label}</label>
         </h4>
 
-        {/* Use a search-select combo dropdown on desktop */}
         {/* Use a native select for mobile devices */}
         {matchBreakpoint ?
           <select
@@ -115,7 +114,7 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
               </option>
             ))}
           </select>
-          :
+          : /* Use a search-select combo dropdown on desktop */
           <Downshift
             breakingChanges={{ resetInputOnSelection: true }}
             onChange={(selectedItem, { clearSelection }) => {
