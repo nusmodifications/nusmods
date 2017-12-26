@@ -1,7 +1,5 @@
 @import "~styles/utils/modules-entry.scss";
 
-$form-width: 26rem;
-
 .navbar {
   $vert-padding: 0.5rem;
 
@@ -13,12 +11,13 @@ $form-width: 26rem;
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
   height: $navbar-height;
-  padding: $vert-padding 1rem;
+  padding: $vert-padding $grid-gutter-width/2;
   background: var(--gray-lightest);
 
-  @include media-breakpoint-up(md) {
-    padding: $vert-padding 2rem;
+  @include media-breakpoint-up(xl) {
+    padding: $vert-padding $grid-gutter-width/2 $vert-padding 2rem;
   }
 }
 
@@ -36,21 +35,15 @@ $form-width: 26rem;
   background-repeat: no-repeat;
 }
 
-.form {
-  display: inline-block;
-  flex: 0 1 $form-width;
-}
-
 .weekText {
-  flex: 1 1 auto;
-  padding-left: $grid-gutter-width / 2;
+  padding-left: $grid-gutter-width/2;
+  font-size: $font-size-xs;
   line-height: 1.15;
   text-align: right;
 }
 
 @include media-breakpoint-down(xs) {
-  .weekText,
-  .form {
+  .weekText {
     display: none;
   }
 }

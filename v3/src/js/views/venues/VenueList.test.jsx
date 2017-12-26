@@ -3,7 +3,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import venueInfo from '__mocks__/venueInformation.json';
 
-import type { Venue } from 'types/modules';
+import type { Venue } from 'types/venues';
 
 import VenueList from './VenueList';
 

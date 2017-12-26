@@ -5,7 +5,7 @@ import Helmet from 'react-helmet';
 import _ from 'lodash';
 import config from 'config';
 
-import type { ModulesMap } from 'reducers/entities/moduleBank';
+import type { ModulesMap } from 'reducers/moduleBank';
 import type {
   ColorMapping,
   TimetableOrientation,
@@ -21,7 +21,7 @@ import type {
 import type { SemTimetableConfig, SemTimetableConfigWithLessons, TimetableArrangement } from 'types/timetables';
 
 import classnames from 'classnames';
-import { getSemModuleSelectList } from 'reducers/entities/moduleBank';
+import { getSemModuleSelectList } from 'reducers/moduleBank';
 import { downloadAsJpeg, downloadAsIcal } from 'actions/export';
 import {
   addModule,
@@ -40,7 +40,7 @@ import {
   lessonsForLessonType,
   findExamClashes,
 } from 'utils/timetables';
-import ModulesSelect from 'views/components/ModulesSelect';
+import ModulesSelect from 'views/timetable/ModulesSelect';
 import CorsNotification from 'views/components/cors-info/CorsNotification';
 import Announcements from 'views/components/Announcements';
 import Online from 'views/components/Online';
@@ -290,9 +290,9 @@ class TimetableContent extends Component<Props> {
 
 function mapStateToProps(state, ownProps) {
   const { semester, timetable } = ownProps;
-  const modules = state.entities.moduleBank.modules;
+  const modules = state.moduleBank.modules;
   const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
-  const semModuleList = getSemModuleSelectList(state.entities.moduleBank, semester, timetable);
+  const semModuleList = getSemModuleSelectList(state.moduleBank, semester, timetable);
   const hiddenInTimetable = state.settings.hiddenInTimetable || [];
 
   return {

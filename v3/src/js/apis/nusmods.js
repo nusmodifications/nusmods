@@ -23,6 +23,10 @@ const NUSModsApi = {
   modulesUrl: ()/*: string */ =>
     `${ayBaseUrl}/moduleInformation.json`,
 
+  // List of all venues for one semester in the current acad year
+  // TODO: implement api for all venues available
+  venueListUrl: (semester /*: Semester */)/*: string */ => `${ayBaseUrl}/${semester}/venues.json`,
+
   // List of all venue's info for one semester in the current acad year
   venuesUrl: (semester/*: Semester */)/*: string */ =>
     `${ayBaseUrl}/${semester}/venueInformation.json`,
