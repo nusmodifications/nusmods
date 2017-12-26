@@ -1,14 +1,12 @@
 // @flow
 import type { State } from 'reducers';
-import type { MapStateToProps } from 'react-redux';
-import type { ContextRouter } from 'react-router-dom';
 import type { Module } from 'types/modules';
 import type { Venue } from 'types/venues';
 import type { ModuleList, VenueList } from 'types/reducers';
 
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { connect, type MapStateToProps } from 'react-redux';
+import { withRouter, type ContextRouter } from 'react-router-dom';
 import GlobalSearch from 'views/layout/GlobalSearch';
 import { modulePage, venuePage } from 'views/routes/paths';
 

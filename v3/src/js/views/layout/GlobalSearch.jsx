@@ -32,17 +32,19 @@ class GlobalSearch extends Component<Props, State> {
   onOpen = () => {
     this.setState({ isOpen: true });
   };
+
   onClose = () => {
     this.setState({ isOpen: false }, () => {
       if (this.input) this.input.blur();
     });
   };
+
   onChange = (item: Venue | Module) => {
     this.props.onChange(item);
     this.onClose();
   };
 
-  // downshift attaches label for us; autofocus only applies to modal
+  // Downshift attaches label for us, so we can ignore ESLint here
   /* eslint-disable jsx-a11y/label-has-for */
   // TODO: Inject types from downshift when https://github.com/paypal/downshift/pull/180 is implemented
   renderDropdown = ({ getLabelProps, getInputProps, getItemProps, isOpen, inputValue, highlightedIndex }: any) => {
