@@ -13,6 +13,7 @@ import App from 'App';
 import { toggleMode } from 'actions/settings';
 import { cycleTheme } from 'actions/theme';
 import 'utils/sentry';
+import 'utils/google-analytics';
 import KeyboardShortcuts from 'utils/KeyboardShortcuts';
 
 import '../styles/main.scss';

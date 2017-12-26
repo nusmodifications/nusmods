@@ -94,6 +94,7 @@
     "workbox-webpack-plugin": "^2.1.0"
   },
   "dependencies": {
+    "autotrack": "^2.4.1",
     "axios": "^0.16.2",
     "bootstrap": "4.0.0-beta.2",
     "classnames": "^2.2.5",
