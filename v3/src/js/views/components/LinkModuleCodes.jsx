@@ -32,6 +32,7 @@ export function LinkModuleCodesComponent(props: Props) {
     return (
       <Link
         className={className}
+        title={module.ModuleTitle}
         to={modulePage(code, module.ModuleTitle)}
         key={i}
       >{part}</Link>
