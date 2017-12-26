@@ -6,7 +6,7 @@
   "corsUrl": "https://myaces.nus.edu.sg/cors/jsp/report/ModuleDetailedInfo.jsp?acad_y=2016/2017&sem_c=2&mod_c=",
   "ivleUrl": "http://ivle.nus.edu.sg/lms/public/list_course_public.aspx?code=<ModuleCode>",
   "disqusShortname": "nusmods-prod",
-  "googleAnalyticsId": "UA-33503218-1",
+  "googleAnalyticsId": "UA-33503218-6",
   "semesterNames": {
     "1": "Semester 1",
     "2": "Semester 2",
