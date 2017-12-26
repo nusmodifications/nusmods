@@ -50,7 +50,7 @@ export default class ShareTimetable extends PureComponent<Props, State> {
 
   loadShortUrl(url: string) {
     return axios.get('https://nusmods.com/short_url.php', { params: { url }, timeout: 2000 })
-      .then(({ data }) => this.setState({ shortUrl: data.shortUrl }))
+      .then(({ data }) => this.setState({ shortUrl: data.shorturl }))
       // Cannot get short URL - just use long URL instead
       .catch(() => this.setState({ shortUrl: url }));
   }
