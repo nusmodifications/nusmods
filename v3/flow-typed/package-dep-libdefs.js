@@ -8,6 +8,10 @@ declare module 'downshift' {
   declare module.exports: any;
 }
 
+declare module 'json2mq' {
+  declare module.exports: any;
+}
+
 declare module 'localforage' {
   declare module.exports: any;
 }

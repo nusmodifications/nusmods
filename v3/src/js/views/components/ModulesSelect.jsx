@@ -6,6 +6,7 @@ import classnames from 'classnames';
 
 import type { ModuleSelectList } from 'types/reducers';
 import { createSearchPredicate, sortModules } from 'utils/moduleSearch';
+import { breakpointUp } from 'utils/css';
 import makeResponsive from 'views/hocs/makeResponsive';
 import Modal from 'views/components/Modal';
 import CloseButton from 'views/components/CloseButton';
@@ -153,4 +154,4 @@ class ModulesSelect extends Component<Props, State> {
   }
 }
 
-export default makeResponsive(ModulesSelect, 'md');
+export default makeResponsive(ModulesSelect, breakpointUp('md'));
