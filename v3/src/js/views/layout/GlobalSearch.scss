@@ -78,7 +78,7 @@ $icon-dist: $input-width-open - $input-width;
 .selectHeader {
   composes: item;
   padding: 0.2rem $container-padding;
-  color: var(--body-bg);
+  color: #fff;
   background: var(--gray);
 }
 
