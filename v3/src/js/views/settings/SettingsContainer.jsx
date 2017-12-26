@@ -12,8 +12,8 @@ import config from 'config';
 import { selectTheme } from 'actions/theme';
 import { selectNewStudent, selectFaculty, selectMode } from 'actions/settings';
 import availableThemes from 'data/themes.json';
-import FacultySelect from 'views/components/FacultySelect';
-import NewStudentSelect from 'views/components/NewStudentSelect';
+// import FacultySelect from 'views/components/FacultySelect';
+// import NewStudentSelect from 'views/components/NewStudentSelect';
 import ScrollToTop from 'views/components/ScrollToTop';
 import Timetable from 'views/timetable/Timetable';
 import { supportsCSSVariables } from 'utils/css';
@@ -45,6 +45,7 @@ function SettingsContainer(props: Props) {
 
       <h1 className={styles.title}>Settings</h1>
 
+      {/* TODO: Finish the CORS bidding stats filter feature and re-enable this
       <h4>New Student</h4>
       <div className={classnames(styles.toggleRow, 'row')}>
         <div className={classnames(styles.toggleDescription, 'col-sm-7')}>
@@ -74,7 +75,7 @@ function SettingsContainer(props: Props) {
         </div>
       </div>
       <hr />
-
+      */}
       {supportsCSSVariables() &&
       <div>
         <h4>Night Mode</h4>
