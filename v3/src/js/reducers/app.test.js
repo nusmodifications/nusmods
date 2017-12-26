@@ -1,7 +1,7 @@
 // @flow
 
 import { modifyLesson, changeLesson, cancelModifyLesson } from 'actions/timetables';
-import { setOnlineStatus } from 'actions/online';
+import { setOnlineStatus } from 'actions/app';
 import { selectSemester } from 'actions/settings';
 
 import reducer from 'reducers/app';
@@ -18,6 +18,7 @@ const appInitialState: AppState = {
   activeSemester: semester,
   activeLesson: null,
   isOnline: true,
+  isFeedbackModalOpen: false,
 };
 const appHasSemesterTwoState: AppState = { ...appInitialState, activeSemester: anotherSemester };
 const appHasActiveLessonState: AppState = { ...appInitialState, activeLesson: lesson };

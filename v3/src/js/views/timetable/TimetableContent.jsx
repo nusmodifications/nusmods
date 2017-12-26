@@ -42,6 +42,7 @@ import {
 } from 'utils/timetables';
 import ModulesSelect from 'views/components/ModulesSelect';
 import CorsNotification from 'views/components/cors-info/CorsNotification';
+import Announcements from 'views/components/Announcements';
 import Online from 'views/components/Online';
 import Timetable from './Timetable';
 import TimetableActions from './TimetableActions';
@@ -213,6 +214,8 @@ class TimetableContent extends Component<Props> {
         </Helmet>
 
         <CorsNotification />
+
+        <Announcements />
 
         <div>
           {this.props.header}
