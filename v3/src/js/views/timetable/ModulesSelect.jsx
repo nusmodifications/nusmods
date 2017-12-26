@@ -117,7 +117,7 @@ class ModulesSelect extends Component<Props, State> {
         )}
         {showTip && (
           <div className={styles.tip}>
-            Try &quot;GER1000&quot; or &quot;Quantative Reasoning&quot;. Searching{' '}
+            Try &quot;GER1000&quot; or &quot;Quantitative Reasoning&quot;. Searching{' '}
             <strong>{this.props.moduleList.length}</strong> modules.
           </div>
         )}
