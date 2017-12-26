@@ -12,7 +12,7 @@ type Props = {
   toggleFeedback: Function,
 };
 
-function Footer(props: Props) {
+export function FooterComponent(props: Props) {
   const commitHash = process.env.commitHash;
   const versionStr = process.env.versionStr;
 
@@ -73,4 +73,4 @@ function Footer(props: Props) {
   );
 }
 
-export default connect(null, { toggleFeedback })(Footer);
+export default connect(null, { toggleFeedback })(FooterComponent);
