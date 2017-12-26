@@ -2,7 +2,10 @@
 import localforage from 'localforage';
 import type { ModuleCode, Semester, Lesson } from 'types/modules';
 import lessons from '__mocks__/lessons-array.json';
+
+/** @var {Module} */
 import CS1010S from '__mocks__/modules/CS1010S.json';
+/** @var {Module} */
 import CS3216 from '__mocks__/modules/CS3216.json';
 
 import storage from 'storage';
@@ -100,7 +103,6 @@ describe('migrateTimetable()', () => {
 });
 
 describe('fillTimetableBlanks', () => {
-  /* eslint-disable no-useless-computed-key */
   const moduleBank = { modules: { CS1010S, CS3216 } };
   const semester = 1;
   const action = actions.fillTimetableBlanks(semester);
@@ -129,12 +131,13 @@ describe('fillTimetableBlanks', () => {
       },
       CS3216: {},
     };
-
     const state = { timetables: { [semester]: timetable }, moduleBank };
     const dispatch = jest.fn();
+
     action(dispatch, () => state);
 
     expect(dispatch).toHaveBeenCalledTimes(2);
+
     const [[firstAction], [secondAction]] = dispatch.mock.calls;
     expect(firstAction).toMatchObject({
       type: actions.CHANGE_LESSON,
