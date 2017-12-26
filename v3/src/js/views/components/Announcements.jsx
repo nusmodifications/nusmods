@@ -54,7 +54,13 @@ class Announcements extends PureComponent<Props, State> {
         <div className={styles.body}>
           <h3>Welcome to NUSMods R!</h3>
           <p>New and improved, just in time for the second semester.{' '}
-            <a href="">Check out what&apos;s new</a>, and{' '}
+            <a
+              href="http://blog.nusmods.com/nusmods-r-rethought-redesigned-rewritten-reborn"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Check out what&apos;s new
+            </a>, and{' '}
             <button
               className="btn btn-inline"
               type="button"

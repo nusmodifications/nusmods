@@ -28,7 +28,7 @@ export class FeedbackModalComponent extends PureComponent<Props> {
         <CloseButton onClick={this.props.toggleFeedback} />
         <div className={styles.content}>
           <Heart className={styles.topIcon} />
-          <h1>Talk to us!</h1>
+          <h1>Let us know what you think!</h1>
           <p>Thank you for your time! You can talk to us on Messenger, file
             an issue on GitHub, or fill up a feedback form</p>
 
