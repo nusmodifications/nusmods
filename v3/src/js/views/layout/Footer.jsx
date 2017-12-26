@@ -33,15 +33,6 @@ export function FooterComponent(props: Props) {
     <footer className={styles.footer}>
       <div className="container">
         <ul className={styles.footerLinks}>
-          <li>
-            <button
-              type="button"
-              onClick={props.toggleFeedback}
-              className={classnames('btn btn-inline', styles.feedbackBtn)}
-            >
-              Feedback Welcome!
-            </button>
-          </li>
           <li><a href={config.contact.githubRepo}>GitHub</a></li>
           <li><a href={config.contact.facebook}>Facebook</a></li>
           <li><a href={config.contact.messenger}>Messenger</a></li>
@@ -55,6 +46,15 @@ export function FooterComponent(props: Props) {
           <li><Link to="/team">Team</Link></li>
           <li><Link to="/contributors">Contributors</Link></li>
           <li><Link to="/faq">FAQ</Link></li>
+          <li>
+            <button
+              type="button"
+              onClick={props.toggleFeedback}
+              className={classnames('btn btn-inline', styles.feedbackBtn)}
+            >
+              Feedback Welcome!
+            </button>
+          </li>
         </ul>
         {/* TODO: Add API data last updated timestamp */}
         <p>Designed and built with all the love in the world by{' '}
