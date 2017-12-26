@@ -15,6 +15,7 @@ import { modulePage, venuePage } from 'views/routes/paths';
 import { fetchVenueList } from 'actions/venueBank';
 import { regexify, createSearchPredicate, sortModules } from 'utils/moduleSearch';
 import { breakpointUp } from 'utils/css';
+import { takeUntil } from 'utils/array';
 import makeResponsive from 'views/hocs/makeResponsive';
 
 type Props = {
@@ -55,25 +56,11 @@ export class SearchContainerComponent extends Component<Props> {
 
     // Filter venues
     const regex = regexify(inputValue);
-    const venues = [];
-    venueList.forEach((venue) => {
-      if (venues.length >= RESULTS_LIMIT) {
-        return;
-      }
-      if (regex.test(venue)) {
-        venues.push(venue);
-      }
-    });
+    const venues = takeUntil(venueList, RESULTS_LIMIT, venue => regex.test(venue));
+
+    // Filter modules
     const predicate = createSearchPredicate(inputValue);
-    const filteredModules = [];
-    moduleList.forEach((module) => {
-      if (filteredModules.length >= RESULTS_LIMIT) {
-        return;
-      }
-      if (predicate({ ...module })) {
-        filteredModules.push(module);
-      }
-    });
+    const filteredModules = takeUntil(moduleList, RESULTS_LIMIT, module => predicate({ ...module }));
     const modules = sortModules(inputValue, filteredModules.slice());
 
     // Plentiful of modules and venues, show 4 modules, 3 venues
