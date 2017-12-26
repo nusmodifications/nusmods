@@ -111,8 +111,8 @@ const mapStateToProps = (state, ownState) => {
 
   return {
     moduleCode,
-    moduleCodes: state.entities.moduleBank.moduleCodes,
-    module: state.entities.moduleBank.modules[moduleCode],
+    moduleCodes: state.moduleBank.moduleCodes,
+    module: state.moduleBank.modules[moduleCode],
   };
 };
 

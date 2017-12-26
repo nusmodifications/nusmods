@@ -4,7 +4,7 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { shallow } from 'enzyme';
 import type { SemTimetableConfig } from 'types/timetables';
-import type { ModulesMap } from 'reducers/entities/moduleBank';
+import type { ModulesMap } from 'reducers/moduleBank';
 
 // react-router-dom internal dependency, used here to construct the history
 // object needed for testing. This is not added as a dev dependency to avoid

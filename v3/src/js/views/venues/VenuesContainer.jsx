@@ -12,8 +12,8 @@ import { pick, mapValues, size, isEqual } from 'lodash';
 
 import type { MapStateToProps } from 'react-redux';
 import type { ContextRouter } from 'react-router-dom';
-import type { VenueInfo, VenueSearchOptions } from 'types/venues';
-import type { Semester, Venue } from 'types/modules';
+import type { Venue, VenueInfo, VenueSearchOptions } from 'types/venues';
+import type { Semester } from 'types/modules';
 
 import ErrorPage from 'views/errors/ErrorPage';
 import Warning from 'views/errors/Warning';

@@ -4,7 +4,7 @@ import Raven from 'raven-js';
 import createRavenMiddleware from 'raven-for-redux';
 
 import type { State } from 'reducers/index';
-import type { ModuleBank } from 'reducers/entities/moduleBank';
+import type { ModuleBank } from 'reducers/moduleBank';
 
 function stringifyModuleBank(moduleBank: ModuleBank): string {
   return `${moduleBank.moduleList.length} modules`;
@@ -15,7 +15,7 @@ export default createRavenMiddleware(Raven, {
     return {
       ...state,
       entities: {
-        moduleBank: stringifyModuleBank(state.entities.moduleBank),
+        moduleBank: stringifyModuleBank(state.moduleBank),
       },
     };
   },
