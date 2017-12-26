@@ -16,12 +16,14 @@ export type ModuleBank = {
   moduleList: ModuleList,
   modules: ModulesMap,
   moduleCodes: ModuleCodeMap,
+  apiLastUpdatedTimestamp: ?string,
 };
 
 const defaultModuleBankState: ModuleBank = {
   moduleList: [], // List of modules
   modules: {}, // Object of ModuleCode -> ModuleDetails
   moduleCodes: {},
+  apiLastUpdatedTimestamp: undefined,
 };
 
 function precomputeFromModuleList(moduleList: ModuleList) {
@@ -38,6 +40,7 @@ function moduleBank(state: ModuleBank = defaultModuleBankState, action: FSA): Mo
         ...state,
         ...precomputeFromModuleList(action.payload),
         moduleList: action.payload,
+        apiLastUpdatedTimestamp: action.meta && action.meta.headers['last-modified'],
       };
 
     case FETCH_MODULE + RequestResultCases.SUCCESS:
