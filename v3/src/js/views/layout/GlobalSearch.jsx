@@ -4,6 +4,7 @@ import _ from 'lodash';
 import Downshift from 'downshift';
 import classnames from 'classnames';
 
+import { highlight } from 'utils/react';
 import { Search } from 'views/components/icons';
 import type { Module } from 'types/modules';
 import type { Venue } from 'types/venues';
@@ -20,9 +21,10 @@ type State = {
   isOpen: boolean,
 };
 
-const PLACEHOLDER = 'Search modules & venues';
+const PLACEHOLDER = 'Search modules & venues. Try "GER1000" or "LT".';
 
 class GlobalSearch extends Component<Props, State> {
+  input: ?HTMLInputElement;
   state = {
     isOpen: false,
   };
@@ -31,7 +33,9 @@ class GlobalSearch extends Component<Props, State> {
     this.setState({ isOpen: true });
   };
   onClose = () => {
-    this.setState({ isOpen: false });
+    this.setState({ isOpen: false }, () => {
+      if (this.input) this.input.blur();
+    });
   };
   onChange = (item: Venue | Module) => {
     this.props.onChange(item);
@@ -43,8 +47,6 @@ class GlobalSearch extends Component<Props, State> {
   // TODO: Inject types from downshift when https://github.com/paypal/downshift/pull/180 is implemented
   renderDropdown = ({ getLabelProps, getInputProps, getItemProps, isOpen, inputValue, highlightedIndex }: any) => {
     const [modules, venues] = this.props.getResults(inputValue);
-    const hasResults = modules.length > 0 || venues.length > 0;
-    const showTip = isOpen && !hasResults;
     return (
       <div className={styles.container}>
         <Search className={classnames(styles.icon, { [styles.iconOpen]: isOpen })} />
@@ -52,6 +54,9 @@ class GlobalSearch extends Component<Props, State> {
           {PLACEHOLDER}
         </label>
         <input
+          ref={(input) => {
+            this.input = input;
+          }}
           className={classnames(styles.input, { [styles.inputOpen]: isOpen })}
           {...getInputProps({ placeholder: PLACEHOLDER })}
           onFocus={this.onOpen}
@@ -71,7 +76,7 @@ class GlobalSearch extends Component<Props, State> {
                     [styles.optionSelected]: highlightedIndex === index,
                   })}
                 >
-                  {`${module.ModuleCode} ${module.ModuleTitle}`}
+                  {highlight(`${module.ModuleCode} ${module.ModuleTitle}`, inputValue)}
                 </div>
               ))}
             </Fragment>
@@ -92,13 +97,12 @@ class GlobalSearch extends Component<Props, State> {
                       [styles.optionSelected]: highlightedIndex === combinedIndex,
                     })}
                   >
-                    {venue}
+                    {highlight(venue, inputValue)}
                   </div>
                 );
               })}
             </Fragment>
           )}
-          {showTip && <div className={styles.item}>Try &quot;GER1000&quot; or &quot;LT&quot;.</div>}
         </div>
       </div>
     );
