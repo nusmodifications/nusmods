@@ -1,5 +1,5 @@
 // @flow
-import { flatMap, isEmpty } from 'lodash';
+import { flatMap, isEmpty, each } from 'lodash';
 import localforage from 'localforage';
 
 import type { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
@@ -10,6 +10,8 @@ import type {
   ModuleCode,
   Semester,
   Lesson,
+  ClassNo,
+  LessonType,
 } from 'types/modules';
 
 import { fetchModule } from 'actions/moduleBank';
@@ -68,16 +70,25 @@ export function modifyLesson(activeLesson: Lesson): FSA {
 }
 
 export const CHANGE_LESSON: string = 'CHANGE_LESSON';
-export function changeLesson(semester: Semester, lesson: Lesson): FSA {
+export function setLesson(
+  semester: Semester,
+  moduleCode: ModuleCode,
+  lessonType: LessonType,
+  classNo: ClassNo,
+): FSA {
   return {
     type: CHANGE_LESSON,
     payload: {
       semester,
-      moduleCode: lesson.ModuleCode,
-      lessonType: lesson.LessonType,
-      classNo: lesson.ClassNo,
+      moduleCode,
+      lessonType,
+      classNo,
     },
   };
+}
+
+export function changeLesson(semester: Semester, lesson: Lesson): FSA {
+  return setLesson(semester, lesson.ModuleCode, lesson.LessonType, lesson.ClassNo);
 }
 
 export const CANCEL_MODIFY_LESSON: string = 'CANCEL_MODIFY_LESSON';
@@ -97,6 +108,32 @@ export function setTimetable(
   return {
     type: SET_TIMETABLE,
     payload: { semester, timetable, colors },
+  };
+}
+
+export function fillTimetableBlanks(semester: Semester) {
+  return (dispatch: Function, getState: Function) => {
+    const { timetables, moduleBank } = getState();
+
+    // Extract the timetable and the modules for the semester
+    const timetable = timetables[semester];
+    if (!timetable) return;
+
+    // Check that all lessons for each module is filled, if they are not, use the
+    // randomly generated config to fill them in
+    each(timetable, (lessonConfig: ModuleLessonConfig, moduleCode: ModuleCode) => {
+      const module = moduleBank.modules[moduleCode];
+      if (!module) return;
+
+      const lessons = getModuleTimetable(module, semester);
+      const randomLessonConfig = randomModuleLessonConfig(lessons);
+
+      each(randomLessonConfig, (classNo: ClassNo, lessonType: LessonType) => {
+        if (!lessonConfig[lessonType]) {
+          dispatch(setLesson(semester, moduleCode, lessonType, classNo));
+        }
+      });
+    });
   };
 }
 
@@ -122,7 +159,8 @@ export function migrateTimetable() {
 
           const timetable = parseQueryString(queryString);
           dispatch(setTimetable(semester, timetable));
-          return dispatch(fetchTimetableModules([timetable]));
+          return dispatch(fetchTimetableModules([timetable]))
+            .then(() => dispatch(fillTimetableBlanks(semester)));
         }));
 
     return Promise.all(promises)
