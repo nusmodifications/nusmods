@@ -1,18 +1,19 @@
 // @flow
 import React, { Component, Fragment } from 'react';
 import _ from 'lodash';
-import { Link } from 'react-router-dom';
 import Downshift from 'downshift';
 import classnames from 'classnames';
 
-import { modulePage, venuePage } from 'views/routes/paths';
 import { Search } from 'views/components/icons';
+import type { Module } from 'types/modules';
+import type { Venue } from 'types/venues';
 import type { ModuleList, VenueList } from 'types/reducers';
 
 import styles from './GlobalSearch.scss';
 
 type Props = {
   getResults: string => [ModuleList, VenueList],
+  onChange: (Venue | Module) => void,
 };
 
 type State = {
@@ -31,6 +32,10 @@ class GlobalSearch extends Component<Props, State> {
   };
   onClose = () => {
     this.setState({ isOpen: false });
+  };
+  onChange = (item: Venue | Module) => {
+    this.props.onChange(item);
+    this.onClose();
   };
 
   // downshift attaches label for us; autofocus only applies to modal
@@ -56,19 +61,18 @@ class GlobalSearch extends Component<Props, State> {
             <Fragment>
               <div className={styles.selectHeader}>Modules</div>
               {modules.map((module, index) => (
-                <Link
+                <div
                   {...getItemProps({
                     key: module.ModuleCode,
-                    item: module.ModuleCode,
+                    item: module,
                     index,
                   })}
                   className={classnames(styles.option, {
                     [styles.optionSelected]: highlightedIndex === index,
                   })}
-                  to={modulePage(module.ModuleCode, module.ModuleTitle)}
                 >
                   {`${module.ModuleCode} ${module.ModuleTitle}`}
-                </Link>
+                </div>
               ))}
             </Fragment>
           )}
@@ -78,7 +82,7 @@ class GlobalSearch extends Component<Props, State> {
               {venues.map((venue, index) => {
                 const combinedIndex = modules.length + index;
                 return (
-                  <Link
+                  <div
                     {...getItemProps({
                       key: venue,
                       item: venue,
@@ -87,10 +91,9 @@ class GlobalSearch extends Component<Props, State> {
                     className={classnames(styles.option, {
                       [styles.optionSelected]: highlightedIndex === combinedIndex,
                     })}
-                    to={venuePage(venue)}
                   >
                     {venue}
-                  </Link>
+                  </div>
                 );
               })}
             </Fragment>
@@ -108,7 +111,7 @@ class GlobalSearch extends Component<Props, State> {
         isOpen={isOpen}
         onOuterClick={this.onClose}
         render={this.renderDropdown}
-        onChange={this.onClose}
+        onChange={this.onChange}
         /* Hack to force item selection to be empty */
         itemToString={_.stubString}
         selectedItem={''}
