@@ -39,6 +39,8 @@
 }
 
 .themeOption {
+  // See utils/themes.scss - used as a specificity override
+  composes: theme-option from global;
   float: left;
   width: 25%;
   margin-bottom: 0.4rem;

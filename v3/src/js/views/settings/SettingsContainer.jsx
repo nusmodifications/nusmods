@@ -102,7 +102,7 @@ function SettingsContainer(props: Props) {
         <Timetable lessons={previewTimetable} />
       </div>
 
-      <div className="theme-options">
+      <div>
         {availableThemes.map(theme => (
           <ThemeOption
             key={theme.id}
@@ -113,7 +113,6 @@ function SettingsContainer(props: Props) {
           />
         ))}
       </div>
-
     </div>
   );
 }
