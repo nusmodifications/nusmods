@@ -67,7 +67,7 @@ if (module.hot) {
 render();
 
 if (process.env.NODE_ENV === 'production') {
-  if (navigator.serviceWorker && window.location.protocol === 'https:') {
+  if ('serviceWorker' in navigator && window.location.protocol === 'https:') {
     navigator.serviceWorker.register('/sw.js')
       .catch((e) => {
         Raven.captureException(e);
