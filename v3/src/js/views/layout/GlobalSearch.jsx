@@ -1,6 +1,6 @@
 // @flow
 import React, { Component, Fragment } from 'react';
-import _ from 'lodash';
+import { stubString } from 'lodash';
 import Downshift from 'downshift';
 import classnames from 'classnames';
 
@@ -49,6 +49,7 @@ class GlobalSearch extends Component<Props, State> {
     const [modules, venues] = this.props.getResults(inputValue);
     const hasModules = modules.length > 0;
     const hasVenues = venues.length > 0;
+
     return (
       <div className={styles.container}>
         <Search className={classnames(styles.icon, { [styles.iconOpen]: isOpen })} />
@@ -56,13 +57,12 @@ class GlobalSearch extends Component<Props, State> {
           {PLACEHOLDER}
         </label>
         <input
-          ref={(input) => {
-            this.input = input;
-          }}
+          ref={(input) => { this.input = input; }}
           className={classnames(styles.input, { [styles.inputOpen]: isOpen })}
           {...getInputProps({ placeholder: PLACEHOLDER })}
           onFocus={this.onOpen}
         />
+
         {(hasModules || hasVenues) &&
           <div className={styles.selectList}>
             {hasModules && (
@@ -121,8 +121,8 @@ class GlobalSearch extends Component<Props, State> {
         render={this.renderDropdown}
         onChange={this.onChange}
         /* Hack to force item selection to be empty */
-        itemToString={_.stubString}
-        selectedItem={''}
+        itemToString={stubString}
+        selectedItem=""
       />
     );
   }
