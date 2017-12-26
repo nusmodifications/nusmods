@@ -1,9 +1,80 @@
 @import './_variables.scss';
 
-.verticalMode {
+.sidebarIcon {
+  composes: svg svg-small from global;
   transform: rotate(180deg);
 }
 
-.horizontalMode {
-  transform: rotate(-90deg);
+:global(.verticalMode) {
+  .sidebarIcon {
+    transform: rotate(-90deg);
+  }
+}
+
+/*
+  Button groups are complicated because there are total of 5 scenarios to consider
+  1. 320px down (smaller than xs)
+  2. sm down (mobile)
+  3. sm up (horizontal)
+  4. md up (vertical)
+  5. lg up (vertical)
+*/
+
+.leftButtonGroup {
+  composes: btn-group btn-group-sm from global;
+
+  // Scenario 2
+  @include media-breakpoint-down(sm) {
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+.rightButtonGroup {
+  composes: btn-group btn-group-sm from global;
+
+  // Override specificity
+  > :global(.btn.btn-svg) {
+    flex: 1 1 auto;
+  }
+
+  // Scenario 1
+  @media (max-width: 320px) {
+    flex-direction: column;
+    width: 100%;
+
+    & > :global(.btn):not(:last-child) {
+      border-bottom: 0;
+    }
+  }
+
+  // Scenario 2
+  @include media-breakpoint-down(sm) {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+}
+
+:global(.verticalMode) {
+  // Scenario 4 & 5
+  .leftButtonGroup {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  // Scenario 4 & 5
+  .rightButtonGroup {
+    width: 100%;
+    margin-top: 0.5rem;
+
+    // Scenario 4 only
+    @include media-breakpoint-between(md, lg) {
+      flex-direction: column;
+      width: 100%;
+
+      & > :global(.btn):not(:last-child) {
+        border-bottom: 0;
+      }
+    }
+  }
 }

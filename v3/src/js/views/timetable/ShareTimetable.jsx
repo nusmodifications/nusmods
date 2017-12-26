@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import { QRCode } from 'react-qr-svg';
 import classnames from 'classnames';
 import qs from 'query-string';
@@ -170,7 +170,7 @@ export default class ShareTimetable extends PureComponent<Props, State> {
     const { isOpen, shortUrl } = this.state;
 
     return (
-      <div>
+      <Fragment>
         <button
           type="button"
           className="btn btn-sm btn-outline-primary btn-svg"
@@ -192,7 +192,7 @@ export default class ShareTimetable extends PureComponent<Props, State> {
 
           {shortUrl ? this.renderSharing(shortUrl) : <LoadingSpinner />}
         </Modal>
-      </div>
+      </Fragment>
     );
   }
 }
