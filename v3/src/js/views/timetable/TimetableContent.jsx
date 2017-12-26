@@ -141,7 +141,7 @@ class TimetableContent extends Component<Props> {
         {!_.isEmpty(clashes) && (
           <div className="alert alert-danger" role="alert">
             <h4>Exam Clashes</h4>
-            <p>There are <strong>clashes</strong> in your exam timetable.</p>
+            <p>These modules have clashing exams.</p>
             {Object.keys(clashes).sort().map(clashDate => (
               <div key={clashDate}>
                 <h5>Clash on {formatExamDate(clashDate)}</h5>
@@ -150,7 +150,8 @@ class TimetableContent extends Component<Props> {
             ))}
           </div>
         )}
-        {renderModuleTable(nonClashingMods)}
+        {/* Do not render no modules added message if there are clashing mods and all mods clash */}
+        {!(!_.isEmpty(clashes) && _.isEmpty(nonClashingMods)) && renderModuleTable(nonClashingMods)}
       </div>
     );
   }
