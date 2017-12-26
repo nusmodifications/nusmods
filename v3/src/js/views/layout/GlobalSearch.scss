@@ -1,7 +1,7 @@
 @import '~styles/utils/modules-entry';
 $icon-size: $font-size-lg;
 $input-width: 2rem;
-$input-width-open: 13rem;
+$input-width-open: 26rem;
 $container-padding: 0.5rem;
 
 .container {
@@ -22,7 +22,7 @@ $icon-dist: $input-width-open - $input-width;
   width: $icon-size;
   height: $icon-size;
   transform: translate($icon-dist - 0.25rem);
-  transition: transform 0.3s;
+  transition: transform $desktop-entering-duration $material-deceleration-curve;
 }
 
 .iconOpen {
@@ -32,7 +32,7 @@ $icon-dist: $input-width-open - $input-width;
 .input {
   position: absolute;
   right: $input-width-open + $container-padding;
-  opacity: 0.2;
+  opacity: 0;
   width: $input-width;
   height: 100%;
   padding-left: $input-width;
@@ -40,7 +40,7 @@ $icon-dist: $input-width-open - $input-width;
   border: 0;
   background: transparent;
   transform: translate($input-width-open);
-  transition: transform 0.3s, opacity 0.3s;
+  transition: transform $desktop-entering-duration $material-deceleration-curve, opacity $desktop-entering-duration $material-deceleration-curve 75ms;
 
   &:focus {
     background: transparent;
@@ -83,9 +83,7 @@ $icon-dist: $input-width-open - $input-width;
 
 .option {
   composes: item;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  cursor: pointer;
 }
 
 .optionSelected {

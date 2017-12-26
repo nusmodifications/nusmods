@@ -1,27 +1,30 @@
 // @flow
 import React, { Component, Fragment } from 'react';
 import _ from 'lodash';
-import { Link } from 'react-router-dom';
 import Downshift from 'downshift';
 import classnames from 'classnames';
 
-import { modulePage, venuePage } from 'views/routes/paths';
+import { highlight } from 'utils/react';
 import { Search } from 'views/components/icons';
+import type { Module } from 'types/modules';
+import type { Venue } from 'types/venues';
 import type { ModuleList, VenueList } from 'types/reducers';
 
 import styles from './GlobalSearch.scss';
 
 type Props = {
   getResults: string => [ModuleList, VenueList],
+  onChange: (Venue | Module) => void,
 };
 
 type State = {
   isOpen: boolean,
 };
 
-const PLACEHOLDER = 'Search modules & venues';
+const PLACEHOLDER = 'Search modules & venues. Try "GER1000" or "LT".';
 
 class GlobalSearch extends Component<Props, State> {
+  input: ?HTMLInputElement;
   state = {
     isOpen: false,
   };
@@ -30,7 +33,13 @@ class GlobalSearch extends Component<Props, State> {
     this.setState({ isOpen: true });
   };
   onClose = () => {
-    this.setState({ isOpen: false });
+    this.setState({ isOpen: false }, () => {
+      if (this.input) this.input.blur();
+    });
+  };
+  onChange = (item: Venue | Module) => {
+    this.props.onChange(item);
+    this.onClose();
   };
 
   // downshift attaches label for us; autofocus only applies to modal
@@ -38,8 +47,6 @@ class GlobalSearch extends Component<Props, State> {
   // TODO: Inject types from downshift when https://github.com/paypal/downshift/pull/180 is implemented
   renderDropdown = ({ getLabelProps, getInputProps, getItemProps, isOpen, inputValue, highlightedIndex }: any) => {
     const [modules, venues] = this.props.getResults(inputValue);
-    const hasResults = modules.length > 0 || venues.length > 0;
-    const showTip = isOpen && !hasResults;
     return (
       <div className={styles.container}>
         <Search className={classnames(styles.icon, { [styles.iconOpen]: isOpen })} />
@@ -47,6 +54,9 @@ class GlobalSearch extends Component<Props, State> {
           {PLACEHOLDER}
         </label>
         <input
+          ref={(input) => {
+            this.input = input;
+          }}
           className={classnames(styles.input, { [styles.inputOpen]: isOpen })}
           {...getInputProps({ placeholder: PLACEHOLDER })}
           onFocus={this.onOpen}
@@ -56,19 +66,18 @@ class GlobalSearch extends Component<Props, State> {
             <Fragment>
               <div className={styles.selectHeader}>Modules</div>
               {modules.map((module, index) => (
-                <Link
+                <div
                   {...getItemProps({
                     key: module.ModuleCode,
-                    item: module.ModuleCode,
+                    item: module,
                     index,
                   })}
                   className={classnames(styles.option, {
                     [styles.optionSelected]: highlightedIndex === index,
                   })}
-                  to={modulePage(module.ModuleCode, module.ModuleTitle)}
                 >
-                  {`${module.ModuleCode} ${module.ModuleTitle}`}
-                </Link>
+                  {highlight(`${module.ModuleCode} ${module.ModuleTitle}`, inputValue)}
+                </div>
               ))}
             </Fragment>
           )}
@@ -78,7 +87,7 @@ class GlobalSearch extends Component<Props, State> {
               {venues.map((venue, index) => {
                 const combinedIndex = modules.length + index;
                 return (
-                  <Link
+                  <div
                     {...getItemProps({
                       key: venue,
                       item: venue,
@@ -87,15 +96,13 @@ class GlobalSearch extends Component<Props, State> {
                     className={classnames(styles.option, {
                       [styles.optionSelected]: highlightedIndex === combinedIndex,
                     })}
-                    to={venuePage(venue)}
                   >
-                    {venue}
-                  </Link>
+                    {highlight(venue, inputValue)}
+                  </div>
                 );
               })}
             </Fragment>
           )}
-          {showTip && <div className={styles.item}>Try &quot;GER1000&quot; or &quot;LT&quot;.</div>}
         </div>
       </div>
     );
@@ -108,7 +115,7 @@ class GlobalSearch extends Component<Props, State> {
         isOpen={isOpen}
         onOuterClick={this.onClose}
         render={this.renderDropdown}
-        onChange={this.onClose}
+        onChange={this.onChange}
         /* Hack to force item selection to be empty */
         itemToString={_.stubString}
         selectedItem={''}
