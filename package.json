@@ -1,6 +1,6 @@
 {
   "name": "nusmods",
-  "version": "0.3.0",
+  "version": "2.0.0",
   "description": "NUS CORS Module Finder & Timetable Builder (Unofficial)",
   "homepage": "https://github.com/nusmodifications/nusmods",
   "author": {
@@ -104,7 +104,7 @@
     "webpack-validator": "^2.2.7"
   },
   "engines": {
-    "node": ">=5.11.0"
+    "node": ">=6.6.0"
   },
   "private": true
 }
