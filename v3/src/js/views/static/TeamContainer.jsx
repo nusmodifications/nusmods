@@ -22,6 +22,9 @@ type Props = {
     linkedin?: string,
   },
 };
+
+const title = 'Team';
+
 function TeamMember({ member }: Props) {
   return (
     <section className={styles.teamMember} key={member.name}>
@@ -91,8 +94,8 @@ function TeamMember({ member }: Props) {
 
 export default function TeamContainer() {
   return (
-    <StaticPage title="Team">
-      <h2>Team</h2>
+    <StaticPage title={title}>
+      <h2>{title}</h2>
       <hr />
       <p>
         NUSMods is an open source project that relies on the continuous support of its individual contributors and NUS
@@ -106,7 +109,6 @@ export default function TeamContainer() {
 
       <h4 className={styles.heading}>NUSMods Alumni</h4>
       {teamMembers.filter(member => !member.active).map(member => <TeamMember key={member.name} member={member} />)}
-      <hr />
     </StaticPage>
   );
 }

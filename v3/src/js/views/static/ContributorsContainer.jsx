@@ -7,23 +7,46 @@ import Loader from 'views/components/LoadingSpinner';
 
 import StaticPage from './StaticPage';
 
-const DEVELOPERS_URL = 'https://api.github.com/repos/NUSModifications/NUSMods/contributors';
+const CONTRIBUTORS_URL = 'https://api.github.com/repos/NUSModifications/NUSMods/contributors';
 
 type Props = {};
 
+type Contributor = {
+  avatar_url: string,
+  contributions: number,
+  events_url: string,
+  followers_url: string,
+  following_url: string,
+  gists_url: string,
+  gravatar_id: string,
+  html_url: string,
+  id: number,
+  login: string,
+  organizations_ur: string,
+  received_events_ur: string,
+  repos_ur: string,
+  site_admin: boolean,
+  starred_ur: string,
+  subscriptions_ur: string,
+  type: string,
+  url: string,
+};
+
 type State = {
-  developersData: ?[Object],
+  contributors: ?Array<Contributor>,
   isLoading: boolean,
   isError: boolean,
   errorMessage: string,
 };
 
-class DevelopersContainer extends Component<Props, State> {
+const title = 'Contributors';
+
+class ContributorsContainer extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
     this.state = {
-      developersData: null,
+      contributors: null,
       isLoading: true,
       isError: false,
       errorMessage: '',
@@ -31,10 +54,10 @@ class DevelopersContainer extends Component<Props, State> {
   }
 
   componentWillMount() {
-    axios.get(DEVELOPERS_URL)
+    axios.get(CONTRIBUTORS_URL)
       .then((response) => {
         this.setState({
-          developersData: response.data,
+          contributors: response.data,
           isLoading: false,
         });
       })
@@ -49,16 +72,15 @@ class DevelopersContainer extends Component<Props, State> {
 
   render() {
     return (
-      <StaticPage title="Developers">
-        <h2>Developers</h2>
+      <StaticPage title={title}>
+        <h2>{title}</h2>
         <hr />
         <p>NUSMods is an 100% open source project that relies on the continuous support
           of its individual contributors and NUS student community. Many student hackers have
           reported issues, suggested improvements, or even better, write code and contribute patches!</p>
         <p>Please reach out to us if you are interested in helping!
           Join us and make NUS a better place for its students (your friends)!</p>
-        <br /><br />
-
+        <br />
         {this.state.isLoading && <Loader />}
         {this.state.isError &&
           <div className="alert alert-danger">
@@ -66,35 +88,35 @@ class DevelopersContainer extends Component<Props, State> {
             {this.state.errorMessage}
           </div>
         }
-        {this.state.developersData && <div className="row">
-          {this.state.developersData.map(developer => (
-            <div className="col-md-3 col-6 text-center" key={developer.id}>
-              <div className="mb-2">
-                <a href={developer.html_url}>
+        {this.state.contributors && <div className="row">
+          {this.state.contributors.map(contributor => (
+            <div className="col-md-3 col-6 text-center" key={contributor.id}>
+              <div>
+                <a href={contributor.html_url}>
                   <img
-                    src={developer.avatar_url}
-                    alt={`${developer.login} thumbnail`}
+                    src={contributor.avatar_url}
+                    alt={`${contributor.login} thumbnail`}
                     className="rounded-circle img-fluid img-thumbnail"
                   />
                 </a>
               </div>
-              <h5 className="mb-0 font-weight-bold">
+              <div className="font-weight-bold">
                 <a
-                  href={developer.html_url}
+                  href={contributor.html_url}
                   target="_blank"
                   rel="noreferrer noopener"
                 >
-                  {developer.login}
+                  {contributor.login}
                 </a>
-              </h5>
+              </div>
               <p>
                 <a
                   className="text-muted"
-                  href={`https://github.com/nusmodifications/nusmods/commits?author=${developer.login}`}
+                  href={`https://github.com/nusmodifications/nusmods/commits?author=${contributor.login}`}
                   target="_blank"
                   rel="noreferrer noopener"
                 >
-                  {developer.contributions} commits
+                  {contributor.contributions} commits
                 </a>
               </p>
             </div>
@@ -105,4 +127,4 @@ class DevelopersContainer extends Component<Props, State> {
   }
 }
 
-export default DevelopersContainer;
+export default ContributorsContainer;

@@ -8,6 +8,7 @@ export type AppState = {
   activeSemester: Semester,
   activeLesson: ?Lesson,
   isOnline: boolean,
+  isFeedbackModalOpen: boolean,
 };
 
 /* requests.js */

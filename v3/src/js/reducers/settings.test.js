@@ -15,7 +15,7 @@ const settingsInitialState: SettingsState = {
 const settingsWithNewStudent: SettingsState = { ...settingsInitialState, newStudent: true };
 const faculty = 'School of Computing';
 const settingsWithFaculty: SettingsState = { ...settingsInitialState, faculty };
-const settingsWithMode: SettingsState = { ...settingsInitialState, mode: DARK_MODE };
+const settingsWithDarkMode: SettingsState = { ...settingsInitialState, mode: DARK_MODE };
 
 describe('settings', () => {
   test('settings should return initial state', () => {
@@ -38,10 +38,19 @@ describe('settings', () => {
   test('can select mode', () => {
     const action: FSA = actions.selectMode(DARK_MODE);
     const nextState: SettingsState = reducer(settingsInitialState, action);
-    expect(nextState).toEqual(settingsWithMode);
+    expect(nextState).toEqual(settingsWithDarkMode);
 
     const action2: FSA = actions.selectMode(LIGHT_MODE);
     const nextState2: SettingsState = reducer(nextState, action2);
+    expect(nextState2).toEqual(settingsInitialState);
+  });
+
+  test('can toggle mode', () => {
+    const action: FSA = actions.toggleMode();
+    const nextState: SettingsState = reducer(settingsInitialState, action);
+    expect(nextState).toEqual(settingsWithDarkMode);
+
+    const nextState2: SettingsState = reducer(nextState, action);
     expect(nextState2).toEqual(settingsInitialState);
   });
 });

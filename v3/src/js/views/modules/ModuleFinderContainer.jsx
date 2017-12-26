@@ -46,7 +46,8 @@ import nusmods from 'apis/nusmods';
 import { resetModuleFinder } from 'actions/moduleFinder';
 import FilterGroup from 'utils/filters/FilterGroup';
 import HistoryDebouncer from 'utils/HistoryDebouncer';
-import { defer, breakpointUp } from 'utils/react';
+import { defer } from 'utils/react';
+import { breakpointUp, queryMatch } from 'utils/css';
 import styles from './ModuleFinderContainer.scss';
 
 type Props = {
@@ -147,7 +148,7 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
         } else {
           // By default, only turn on instant search for desktop and if the
           // benchmark earlier is fast enough
-          this.useInstantSearch = breakpointUp('md').matches && (time < INSTANT_SEARCH_THRESHOLD);
+          this.useInstantSearch = queryMatch(breakpointUp('sm')).matches && (time < INSTANT_SEARCH_THRESHOLD);
         }
 
         console.info(`${time}ms taken to init filters`); // eslint-disable-line
@@ -178,9 +179,14 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
 
   // Event handlers
   onQueryStringChange(query: string) {
-    this.setState(state => ({
-      filterGroups: updateGroups(state.filterGroups, query),
-    }));
+    const { filterGroups } = this.state;
+
+    // Trim the starting '?' character
+    if (query.replace(/^\?/, '') !== serializeGroups(filterGroups)) {
+      this.setState({
+        filterGroups: updateGroups(filterGroups, query),
+      });
+    }
   }
 
   onFilterChange = (newGroup: FilterGroup<*>, resetScroll: boolean = true) => {
@@ -278,7 +284,7 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
         {pageHead}
 
         <div className="row">
-          <div className="col-md-8 col-lg-9">
+          <div className="col">
             <h1 className="sr-only">Module Finder</h1>
 
             <ModuleSearchBox useInstantSearch={this.useInstantSearch} />

@@ -14,6 +14,7 @@ $animation-duration: 0.3s;
   composes: scrollable from global;
   position: fixed;
   max-height: calc(100% - #{$navbar-height});
+  overscroll-behavior: contain; // stylelint-disable-line property-no-unknown
 }
 
 .overlay {

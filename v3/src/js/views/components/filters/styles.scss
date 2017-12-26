@@ -8,7 +8,7 @@ $h-padding: $grid-gutter-width / 2;
   font-weight: bold;
   font-size: $font-size-xs;
 
-  @include media-breakpoint-down(sm) {
+  @include touchscreen-only {
     padding: $v-padding $h-padding;
     font-size: $font-size-sm;
     border-bottom: 1px solid var(--gray-lighter);
@@ -33,7 +33,7 @@ $h-padding: $grid-gutter-width / 2;
     font-weight: normal;
   }
 
-  @include media-breakpoint-down(sm) {
+  @include touchscreen-only {
     font-size: $font-size-sm;
   }
 }
@@ -45,7 +45,7 @@ $h-padding: $grid-gutter-width / 2;
     padding-top: 0.1rem;
     padding-bottom: 0.1rem;
 
-    @include media-breakpoint-down(sm) {
+    @include touchscreen-only {
       padding: $v-padding $h-padding $v-padding ($h-padding + 20px);
       border-bottom: 1px solid var(--gray-lighter);
     }
@@ -124,8 +124,14 @@ $h-padding: $grid-gutter-width / 2;
   }
 
   select {
-    width: calc(100% - #{$grid-gutter-width});
-    margin: 0.5rem ($grid-gutter-width / 2);
+    width: calc(100% - 3px);
+  }
+
+  @include media-breakpoint-down(sm) {
+    select {
+      width: calc(100% - #{$grid-gutter-width});
+      margin: 0.5rem ($grid-gutter-width / 2);
+    }
   }
 }
 
@@ -149,7 +155,7 @@ $h-padding: $grid-gutter-width / 2;
     }
   }
 
-  @include media-breakpoint-down(sm) {
+  @include touchscreen-only {
     .heading {
       border-bottom: 0;
     }

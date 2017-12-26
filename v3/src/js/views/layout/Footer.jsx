@@ -1,10 +1,18 @@
 // @flow
 import React from 'react';
+import classnames from 'classnames';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import config from 'config';
+import { toggleFeedback } from 'actions/app';
 import styles from './Footer.scss';
 
-function Footer() {
+type Props = {
+  toggleFeedback: Function,
+};
+
+export function FooterComponent(props: Props) {
   const commitHash = process.env.commitHash;
   const versionStr = process.env.versionStr;
 
@@ -25,28 +33,38 @@ function Footer() {
     <footer className={styles.footer}>
       <div className="container">
         <ul className={styles.footerLinks}>
-          <li><a href="https://github.com/nusmodifications/nusmods">GitHub</a></li>
-          <li><a href="https://www.facebook.com/nusmods">Facebook</a></li>
-          <li><a href="https://twitter.com/nusmods">Twitter</a></li>
-          <li><a href="http://blog.nusmods.com/">Blog</a></li>
+          <li>
+            <button
+              type="button"
+              onClick={props.toggleFeedback}
+              className={classnames('btn btn-inline', styles.feedbackBtn)}
+            >
+              Feedback Welcome!
+            </button>
+          </li>
+          <li><a href={config.contact.githubRepo}>GitHub</a></li>
+          <li><a href={config.contact.facebook}>Facebook</a></li>
+          <li><a href={config.contact.messenger}>Messenger</a></li>
+          <li><a href={config.contact.twitter}>Twitter</a></li>
+          <li><a href={config.contact.blog}>Blog</a></li>
           <li><a href="https://github.com/nusmodifications/nusmods-api">API</a></li>
           <li><Link to="/apps">Apps</Link></li>
           <li><Link to="/about">About</Link></li>
           <li><Link to="/team">Team</Link></li>
-          <li><Link to="/developers">Developers</Link></li>
+          <li><Link to="/contributors">Contributors</Link></li>
           <li><Link to="/faq">FAQ</Link></li>
         </ul>
         {/* TODO: Add API data last updated timestamp */}
         <p>Designed and built with all the love in the world by{' '}
           <a
-            href="https://github.com/nusmodifications"
+            href={config.contact.githubOrg}
             target="_blank"
             rel="noopener noreferrer"
           >
             @nusmodifications
           </a>.
           Maintained by the <Link to="/team">core team</Link> with the help
-          of <Link to="/developers">our contributors</Link>.
+          of <Link to="/contributors">our contributors</Link>.
         </p>
         <p>© Copyright 2017, NUSModifications. All rights reserved. {versionSpan}
         </p>
@@ -55,4 +73,4 @@ function Footer() {
   );
 }
 
-export default Footer;
+export default connect(null, { toggleFeedback })(FooterComponent);

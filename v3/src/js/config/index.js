@@ -30,6 +30,7 @@ export type Config = {
   ivleUrl: string,
 
   disqusShortname: string,
+  googleAnalyticsId: string,
 
   semesterNames: { [Semester]: string },
   shortSemesterNames: { [Semester]: string },
@@ -40,6 +41,16 @@ export type Config = {
     faculty: string,
     student: string,
     account: string,
+  },
+
+  contact: {
+    blog: string,
+    email: string,
+    facebook: string,
+    githubOrg: string,
+    githubRepo: string,
+    messenger: string,
+    twitter: string,
   },
 
   holidays: Date[],

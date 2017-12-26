@@ -14,10 +14,12 @@ import EyeOff from 'react-feather/dist/icons/eye-off';
 import Facebook from 'react-feather/dist/icons/facebook';
 import Filter from 'react-feather/dist/icons/filter';
 import GitHub from 'react-feather/dist/icons/github';
+import Heart from 'react-feather/dist/icons/heart';
 import Image from 'react-feather/dist/icons/image';
 import LinkedIn from 'react-feather/dist/icons/linkedin';
 import Map from 'react-feather/dist/icons/map';
 import Menu from 'react-feather/dist/icons/menu';
+import MessageCircle from 'react-feather/dist/icons/message-circle';
 import Mail from 'react-feather/dist/icons/mail';
 import MinusSquare from 'react-feather/dist/icons/minus-square';
 import PlusSquare from 'react-feather/dist/icons/plus-square';
@@ -43,12 +45,14 @@ export {
   Facebook,
   Filter,
   GitHub,
+  Heart,
   Image,
   Map,
   Menu,
   Mail,
   LinkedIn,
   Repeat,
+  MessageCircle,
   MinusSquare,
   PlusSquare,
   Search,

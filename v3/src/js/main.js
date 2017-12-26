@@ -10,7 +10,12 @@ import subscribeOnlineEvents from 'stores/subscribeOnlineEvents';
 import storage from 'storage';
 import App from 'App';
 
+import { toggleMode } from 'actions/settings';
+import { cycleTheme } from 'actions/theme';
 import 'utils/sentry';
+import initializeGA from 'utils/google-analytics';
+import KeyboardShortcuts from 'utils/KeyboardShortcuts';
+
 import '../styles/main.scss';
 
 const persistedState = storage.loadState();
@@ -37,6 +42,15 @@ store.subscribe(
 
 subscribeOnlineEvents(store);
 
+// Keyboard shortcuts.
+const kb = new KeyboardShortcuts(document.body, store);
+const KEY_X = 88;
+kb.bindKey(KEY_X, () => store.dispatch(toggleMode()));
+const KEY_Z = 90;
+kb.bindKey(KEY_Z, () => store.dispatch(cycleTheme(-1)));
+const KEY_C = 67;
+kb.bindKey(KEY_C, () => store.dispatch(cycleTheme(1)));
+
 // Initialize ReactModal
 ReactModal.setAppElement('#app');
 
@@ -57,4 +71,5 @@ if (process.env.NODE_ENV === 'production') {
         Raven.captureException(e);
       });
   }
+  initializeGA();
 }
