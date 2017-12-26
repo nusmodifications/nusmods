@@ -1,11 +1,18 @@
 // @flow
 import React from 'react';
+import classnames from 'classnames';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import config from 'config';
+import { toggleFeedback } from 'actions/app';
 import styles from './Footer.scss';
 
-function Footer() {
+type Props = {
+  toggleFeedback: Function,
+};
+
+function Footer(props: Props) {
   const commitHash = process.env.commitHash;
   const versionStr = process.env.versionStr;
 
@@ -26,6 +33,15 @@ function Footer() {
     <footer className={styles.footer}>
       <div className="container">
         <ul className={styles.footerLinks}>
+          <li>
+            <button
+              type="button"
+              onClick={props.toggleFeedback}
+              className={classnames('btn btn-inline', styles.feedbackBtn)}
+            >
+              Feedback Welcome!
+            </button>
+          </li>
           <li><a href={config.contact.githubRepo}>GitHub</a></li>
           <li><a href={config.contact.facebook}>Facebook</a></li>
           <li><a href={config.contact.messenger}>Messenger</a></li>
@@ -57,4 +73,4 @@ function Footer() {
   );
 }
 
-export default Footer;
+export default connect(null, { toggleFeedback })(Footer);
