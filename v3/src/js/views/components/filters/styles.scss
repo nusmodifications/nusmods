@@ -123,6 +123,10 @@ $h-padding: $grid-gutter-width / 2;
     background: var(--gray-lightest);
   }
 
+  select {
+    width: calc(100% - 3px);
+  }
+
   @include media-breakpoint-down(sm) {
     select {
       width: calc(100% - #{$grid-gutter-width});
