@@ -25,6 +25,7 @@ import ModuleWorkload from 'views/components/module-info/ModuleWorkload';
 import AddToTimetableDropdown from 'views/components/module-info/AddModuleDropdown';
 import CorsStats from 'views/components/cors-stats/CorsStats';
 import CorsNotification from 'views/components/cors-info/CorsNotification';
+import Announcements from 'views/components/Announcements';
 
 import styles from './ModulePageContent.scss';
 
@@ -74,6 +75,8 @@ export class ModulePageContentComponent extends Component<Props, State> {
         <Helmet>
           <title>{pageTitle} - {config.brandName}</title>
         </Helmet>
+
+        <Announcements />
 
         <CorsNotification />
 

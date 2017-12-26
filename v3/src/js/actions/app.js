@@ -9,3 +9,11 @@ export function setOnlineStatus(isOnline: boolean): FSA {
     payload: { isOnline },
   };
 }
+
+export const TOGGLE_FEEDBACK_MODAL = 'TOGGLE_FEEDBACK_MODAL';
+export function toggleFeedback(): FSA {
+  return {
+    type: TOGGLE_FEEDBACK_MODAL,
+    payload: null,
+  };
+}
