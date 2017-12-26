@@ -40,8 +40,8 @@ type Props = {
 
 type AcadWeekInfo = {
   year: string,
-  sem: string,
-  type: string,
+  sem: 'Semester 1' | 'Semester 2' | 'Special Sem 1' | 'Special Sem 2',
+  type: 'Instructional' | 'Reading' | 'Examination' | 'Recess' | 'Vacation' | 'Orientation',
   num: ?number,
 };
 
