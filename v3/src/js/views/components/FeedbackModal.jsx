@@ -53,7 +53,7 @@ export class FeedbackModalComponent extends PureComponent<Props> {
             </a>
             <a
               className={styles.form}
-              href=""
+              href="https://goo.gl/forms/iZd8uVXAiJfu8D6e2"
               target="_blank"
               rel="noreferrer noopener"
             >
