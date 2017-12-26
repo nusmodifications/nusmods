@@ -66,11 +66,10 @@ export class SearchContainerComponent extends Component<Props> {
     // Plentiful of modules and venues, show 4 modules, 3 venues
     if (modules.length >= 4 && venues.length >= 3) {
       return [modules.slice(0, 4), venues.slice(0, 3)];
-      // Some venues, show as many of them as possible as they are rare
-    } else if (venues.length > 0) {
-      return [modules.slice(0, RESULTS_LIMIT - venues.length), venues];
     }
-    return [modules.slice(0, RESULTS_LIMIT), []];
+
+    // Some venues, show as many of them as possible as they are rare
+    return [modules.slice(0, RESULTS_LIMIT - venues.length), venues];
   };
 
   render() {
