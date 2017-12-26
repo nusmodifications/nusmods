@@ -2,6 +2,12 @@
 import localforage from 'localforage';
 import type { ModuleCode, Semester, Lesson } from 'types/modules';
 import lessons from '__mocks__/lessons-array.json';
+
+/** @var {Module} */
+import CS1010S from '__mocks__/modules/CS1010S.json';
+/** @var {Module} */
+import CS3216 from '__mocks__/modules/CS3216.json';
+
 import storage from 'storage';
 import * as actions from './timetables';
 
@@ -46,15 +52,15 @@ test('cancelModifyLesson should not have payload', () => {
 describe('migrateTimetable()', () => {
   const migrationKey = 'v2Migration';
   const action = actions.migrateTimetable();
-  const dispatch = jest.fn()
+  const makeDispatch = () => jest.fn()
     .mockReturnValue(Promise.resolve());
 
   afterEach(() => {
-    dispatch.mockReset();
     storage.setItem.mockReset();
   });
 
   test('not migrate if the timetable has already been migrated', async () => {
+    const dispatch = makeDispatch();
     storage.getItem.mockReturnValue(true);
 
     await action(dispatch);
@@ -63,6 +69,8 @@ describe('migrateTimetable()', () => {
   });
 
   test('not migrate if old data is not present', async () => {
+    const dispatch = makeDispatch();
+
     storage.getItem.mockReturnValue();
     localforage.getItem.mockReturnValue(Promise.resolve());
     await action(dispatch);
@@ -73,6 +81,7 @@ describe('migrateTimetable()', () => {
   });
 
   test('to migrate timetable', async () => {
+    const dispatch = makeDispatch();
     storage.getItem.mockReturnValue();
     // Just mock one semester
     localforage.getItem.mockImplementation((key) => {
@@ -82,7 +91,7 @@ describe('migrateTimetable()', () => {
 
     await action(dispatch);
 
-    expect(dispatch).toHaveBeenCalledTimes(2);
+    expect(dispatch).toHaveBeenCalledTimes(3);
 
     const [[firstAction], [secondAction]] = dispatch.mock.calls;
     expect(firstAction).toHaveProperty('type', actions.SET_TIMETABLE);
@@ -90,5 +99,64 @@ describe('migrateTimetable()', () => {
 
     expect(storage.setItem).toHaveBeenCalledTimes(1);
     expect(storage.setItem).toHaveBeenCalledWith(migrationKey, true);
+  });
+});
+
+describe('fillTimetableBlanks', () => {
+  const moduleBank = { modules: { CS1010S, CS3216 } };
+  const semester = 1;
+  const action = actions.fillTimetableBlanks(semester);
+
+  test('do nothing if timetable is already full', () => {
+    const timetable = {
+      CS1010S: {
+        Lecture: '1',
+        Tutorial: '1',
+        Recitation: '1',
+      },
+    };
+
+    const state = { timetables: { [semester]: timetable }, moduleBank };
+    const dispatch = jest.fn();
+    action(dispatch, () => state);
+
+    expect(dispatch).not.toHaveBeenCalled();
+  });
+
+  test('fill missing lessons with randomly generated modules', () => {
+    const timetable = {
+      CS1010S: {
+        Lecture: '1',
+        Tutorial: '1',
+      },
+      CS3216: {},
+    };
+    const state = { timetables: { [semester]: timetable }, moduleBank };
+    const dispatch = jest.fn();
+
+    action(dispatch, () => state);
+
+    expect(dispatch).toHaveBeenCalledTimes(2);
+
+    const [[firstAction], [secondAction]] = dispatch.mock.calls;
+    expect(firstAction).toMatchObject({
+      type: actions.CHANGE_LESSON,
+      payload: {
+        semester,
+        moduleCode: 'CS1010S',
+        lessonType: 'Recitation',
+        classNo: expect.any(String),
+      },
+    });
+
+    expect(secondAction).toMatchObject({
+      type: actions.CHANGE_LESSON,
+      payload: {
+        semester,
+        moduleCode: 'CS3216',
+        lessonType: 'Lecture',
+        classNo: '1',
+      },
+    });
   });
 });
