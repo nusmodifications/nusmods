@@ -204,7 +204,7 @@ export function findExamClashes(modules: Array<Module>, semester: Semester): { s
 }
 
 // Get information for all modules present in a semester timetable config
-export function getSemesterModules(timetable: SemTimetableConfig, modules: ModulesMap): Module[] {
+export function getSemesterModules(timetable: { [ModuleCode]: any }, modules: ModulesMap): Module[] {
   return _.values(_.pick(modules, Object.keys(timetable)));
 }
 

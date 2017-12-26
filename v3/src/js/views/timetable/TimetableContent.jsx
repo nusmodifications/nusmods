@@ -31,7 +31,7 @@ import {
   removeModule,
 } from 'actions/timetables';
 import { toggleTimetableOrientation } from 'actions/theme';
-import { getModuleTimetable, areLessonsSameClass, formatExamDate } from 'utils/modules';
+import { getModuleTimetable, areLessonsSameClass, formatExamDate, getModuleExamDate } from 'utils/modules';
 import {
   timetableLessonsArray,
   hydrateSemTimetableWithLessons,
@@ -39,6 +39,7 @@ import {
   areOtherClassesAvailable,
   lessonsForLessonType,
   findExamClashes,
+  getSemesterModules,
 } from 'utils/timetables';
 import ModulesSelect from 'views/timetable/ModulesSelect';
 import CorsNotification from 'views/components/cors-info/CorsNotification';
@@ -107,10 +108,8 @@ class TimetableContent extends Component<Props> {
 
   // Returns modules currently in the timetable
   addedModules(): Array<Module> {
-    const modules = _.keys(this.props.timetableWithLessons)
-      .sort((a, b) => a.localeCompare(b))
-      .map(moduleCode => this.props.modules[moduleCode]);
-    return _.compact(modules);
+    const modules = getSemesterModules(this.props.timetableWithLessons, this.props.modules);
+    return _.sortBy(modules, (module: Module) => getModuleExamDate(module, this.props.semester));
   }
 
   // Returns component with table(s) of modules
