@@ -35,27 +35,26 @@ class Timetable extends PureComponent<Props> {
     const { startingIndex, endingIndex } = calculateBorderTimings(lessons);
 
     return (
-      <div
-        className={styles.container}
-        ref={(r) => { this.timetableDom = r; }}
-      >
-        <TimetableTimings
-          startingIndex={startingIndex}
-          endingIndex={endingIndex}
-        />
-        <ol className={styles.days}>
-          {schoolDays.map(day => (
-            <TimetableDay
-              key={day}
-              day={day}
-              startingIndex={startingIndex}
-              endingIndex={endingIndex}
-              onModifyCell={this.props.onModifyCell}
-              verticalMode={this.props.isVerticalOrientation}
-              dayLessonRows={this.props.lessons[day] || [[]]}
-            />
-          ))}
-        </ol>
+      <div ref={(r) => { this.timetableDom = r; }}>
+        <div className={styles.container}>
+          <TimetableTimings
+            startingIndex={startingIndex}
+            endingIndex={endingIndex}
+          />
+          <ol className={styles.days}>
+            {schoolDays.map(day => (
+              <TimetableDay
+                key={day}
+                day={day}
+                startingIndex={startingIndex}
+                endingIndex={endingIndex}
+                onModifyCell={this.props.onModifyCell}
+                verticalMode={this.props.isVerticalOrientation}
+                dayLessonRows={this.props.lessons[day] || [[]]}
+              />
+            ))}
+          </ol>
+        </div>
       </div>
     );
   }

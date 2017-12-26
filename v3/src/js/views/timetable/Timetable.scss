@@ -4,6 +4,7 @@ $timetable-min-width: $timetable-row-height * 16;
 
 .container {
   min-width: $timetable-min-width;
+  background: var(--body-bg); // For timetable export
 
   @include media-breakpoint-down(sm) {
     padding-right: $timetable-right-padding;
