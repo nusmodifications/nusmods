@@ -48,7 +48,7 @@ class Announcements extends PureComponent<Props, State> {
     if (!this.state.isOpen) return null;
 
     return (
-      <div className={classnames('alert alert-success', styles.announcement)}>
+      <div className={classnames('alert alert-warning', styles.announcement)}>
         <Heart className={styles.backgroundIcon} />
 
         <div className={styles.body}>
@@ -56,7 +56,7 @@ class Announcements extends PureComponent<Props, State> {
           <p>New and improved, just in time for the second semester.{' '}
             <a href="">Check out what&apos;s new</a>, and{' '}
             <button
-              className="btn btn-link"
+              className="btn btn-inline"
               type="button"
               onClick={this.props.toggleFeedback}
             >tell us what you think</button>.</p>
