@@ -1,4 +1,11 @@
 // @flow
+import type { State } from 'reducers';
+import type { MapStateToProps } from 'react-redux';
+import type { ContextRouter } from 'react-router-dom';
+import type { Module } from 'types/modules';
+import type { Venue } from 'types/venues';
+import type { ModuleList, VenueList } from 'types/reducers';
+
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -7,13 +14,8 @@ import { modulePage, venuePage } from 'views/routes/paths';
 
 import { fetchVenueList } from 'actions/venueBank';
 import { regexify, createSearchPredicate, sortModules } from 'utils/moduleSearch';
+import { breakpointUp } from 'utils/css';
 import makeResponsive from 'views/hocs/makeResponsive';
-import type { State } from 'reducers';
-import type { MapStateToProps } from 'react-redux';
-import type { ContextRouter } from 'react-router-dom';
-import type { Module } from 'types/modules';
-import type { Venue } from 'types/venues';
-import type { ModuleList, VenueList } from 'types/reducers';
 
 type Props = {
   ...ContextRouter,
@@ -96,4 +98,4 @@ const mapStateToProps: MapStateToProps<*, *, *> = (state: State) => ({
 });
 const routedSearchContainer = withRouter(SearchContainerComponent);
 const connectedSearchContainer = connect(mapStateToProps, { fetchVenueList })(routedSearchContainer);
-export default makeResponsive(connectedSearchContainer, 'md');
+export default makeResponsive(connectedSearchContainer, breakpointUp('md'));

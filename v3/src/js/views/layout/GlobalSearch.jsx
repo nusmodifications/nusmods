@@ -47,6 +47,8 @@ class GlobalSearch extends Component<Props, State> {
   // TODO: Inject types from downshift when https://github.com/paypal/downshift/pull/180 is implemented
   renderDropdown = ({ getLabelProps, getInputProps, getItemProps, isOpen, inputValue, highlightedIndex }: any) => {
     const [modules, venues] = this.props.getResults(inputValue);
+    const hasModules = modules.length > 0;
+    const hasVenues = venues.length > 0;
     return (
       <div className={styles.container}>
         <Search className={classnames(styles.icon, { [styles.iconOpen]: isOpen })} />
@@ -61,49 +63,51 @@ class GlobalSearch extends Component<Props, State> {
           {...getInputProps({ placeholder: PLACEHOLDER })}
           onFocus={this.onOpen}
         />
-        <div className={styles.selectList}>
-          {modules.length > 0 && (
-            <Fragment>
-              <div className={styles.selectHeader}>Modules</div>
-              {modules.map((module, index) => (
-                <div
-                  {...getItemProps({
-                    key: module.ModuleCode,
-                    item: module,
-                    index,
-                  })}
-                  className={classnames(styles.option, {
-                    [styles.optionSelected]: highlightedIndex === index,
-                  })}
-                >
-                  {highlight(`${module.ModuleCode} ${module.ModuleTitle}`, inputValue)}
-                </div>
-              ))}
-            </Fragment>
-          )}
-          {venues.length > 0 && (
-            <Fragment>
-              <div className={styles.selectHeader}>Venues</div>
-              {venues.map((venue, index) => {
-                const combinedIndex = modules.length + index;
-                return (
+        {(hasModules || hasVenues) &&
+          <div className={styles.selectList}>
+            {hasModules && (
+              <Fragment>
+                <div className={styles.selectHeader}>Modules</div>
+                {modules.map((module, index) => (
                   <div
                     {...getItemProps({
-                      key: venue,
-                      item: venue,
-                      index: combinedIndex,
+                      key: module.ModuleCode,
+                      item: module,
+                      index,
                     })}
                     className={classnames(styles.option, {
-                      [styles.optionSelected]: highlightedIndex === combinedIndex,
+                      [styles.optionSelected]: highlightedIndex === index,
                     })}
                   >
-                    {highlight(venue, inputValue)}
+                    {highlight(`${module.ModuleCode} ${module.ModuleTitle}`, inputValue)}
                   </div>
-                );
-              })}
-            </Fragment>
-          )}
-        </div>
+                ))}
+              </Fragment>
+            )}
+            {hasVenues && (
+              <Fragment>
+                <div className={styles.selectHeader}>Venues</div>
+                {venues.map((venue, index) => {
+                  const combinedIndex = modules.length + index;
+                  return (
+                    <div
+                      {...getItemProps({
+                        key: venue,
+                        item: venue,
+                        index: combinedIndex,
+                      })}
+                      className={classnames(styles.option, {
+                        [styles.optionSelected]: highlightedIndex === combinedIndex,
+                      })}
+                    >
+                      {highlight(venue, inputValue)}
+                    </div>
+                  );
+                })}
+              </Fragment>
+            )}
+          </div>
+        }
       </div>
     );
   };

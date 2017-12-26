@@ -1,7 +1,7 @@
 @import '~styles/utils/modules-entry';
 $icon-size: $font-size-lg;
 $input-width: 2rem;
-$input-width-open: 26rem;
+$input-width-open: 24rem;
 $container-padding: 0.5rem;
 
 .container {
@@ -41,6 +41,7 @@ $icon-dist: $input-width-open - $input-width;
   background: transparent;
   transform: translate($input-width-open);
   transition: transform $desktop-entering-duration $material-deceleration-curve, opacity $desktop-entering-duration $material-deceleration-curve 75ms;
+  color: var(--body-color);
 
   &:focus {
     background: transparent;
@@ -71,12 +72,12 @@ $icon-dist: $input-width-open - $input-width;
 
 .item {
   width: $input-width-open;
-  padding: 0.6rem 0.5rem;
+  padding: 0.6rem $container-padding;
 }
 
 .selectHeader {
   composes: item;
-  padding: 0.3rem 0.5;
+  padding: 0.2rem $container-padding;
   color: var(--body-bg);
   background: var(--gray);
 }
