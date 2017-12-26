@@ -7,15 +7,6 @@
   :global {
     animation-name: $page-entering-animation;
   }
-}
-
-.title {
-  margin: 1rem 0 4rem;
-  font-size: $font-size-xlg;
-}
-
-.setting {
-  border-bottom: 1px solid var(--gray-light);
 
   // Styles nested for specificity
   @include media-breakpoint-down(xs) {
@@ -32,6 +23,11 @@
       }
     }
   }
+}
+
+.title {
+  margin: 1rem 0 4rem;
+  font-size: $font-size-xlg;
 }
 
 .preview {
