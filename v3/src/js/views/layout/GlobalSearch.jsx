@@ -21,7 +21,7 @@ type State = {
   isOpen: boolean,
 };
 
-const PLACEHOLDER = 'Search modules & venues. Try "GER1000" or "LT".';
+const PLACEHOLDER = 'Search modules & venues. Try "GER" or "LT".';
 
 class GlobalSearch extends Component<Props, State> {
   input: ?HTMLInputElement;
