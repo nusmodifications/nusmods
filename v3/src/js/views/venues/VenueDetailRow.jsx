@@ -3,10 +3,10 @@ import React, { PureComponent } from 'react';
 import { flatMap, noop } from 'lodash';
 import { arrangeLessonsForWeek } from 'utils/timetables';
 import { colorLessonsByKey } from 'utils/colors';
+import { venuePage } from 'views/routes/paths';
 import Timetable from 'views/timetable/Timetable';
 
-import type { DayAvailability, VenueLesson } from 'types/venues';
-import type { Venue } from 'types/modules';
+import type { Venue, DayAvailability, VenueLesson } from 'types/venues';
 
 import styles from './VenueDetailRow.scss';
 
@@ -41,7 +41,7 @@ export default class VenueDetailRow extends PureComponent<Props> {
   render() {
     const { name, onClick } = this.props;
     const lessons = this.arrangedLessons();
-    const venueHref = `/venues/${encodeURIComponent(name)}`;
+    const venueHref = venuePage(name);
     const rootElementRef: Function = this.props.rootElementRef || (() => {});
 
     return (

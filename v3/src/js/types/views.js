@@ -2,9 +2,6 @@
 import FilterGroup from 'utils/filters/FilterGroup';
 import type { Department, Faculty } from './modules';
 
-/* components/ModulesSelect.jsx */
-export type SelectOption = { label: string, value: string };
-
 /* browse/ModuleFinderContainer */
 export type FilterGroupId = string;
 

@@ -2,15 +2,14 @@
 import React from 'react';
 import VenueDetailRow from 'views/venues/VenueDetailRow';
 
-import type { VenueInfo } from 'types/venues';
-import type { Venue } from 'types/modules';
+import type { Venue, VenueInfo } from 'types/venues';
 
 import styles from './VenueList.scss';
 
 type Props = {
   venues: VenueInfo,
   expandedVenue: Venue,
-  onSelect: (Venue, string, HTMLElement) => void; // Called with venue name and venue URL (/venues/<venue>)
+  onSelect: (Venue, string, HTMLElement) => void, // Called with venue name and venue URL (/venues/<venue>)
 };
 
 // $FlowFixMe: Flow doesn't have Intl typedefs https://github.com/facebook/flow/issues/1270

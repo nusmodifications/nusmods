@@ -18,6 +18,7 @@ $timetable-min-width: $timetable-row-height * 16;
 
 .days {
   composes: list-unstyled from global;
+  margin: 0;
   border: $timetable-border;
   border-left-width: 0;
   border-radius: $btn-border-radius;

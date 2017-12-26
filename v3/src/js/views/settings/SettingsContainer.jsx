@@ -12,8 +12,8 @@ import config from 'config';
 import { selectTheme } from 'actions/theme';
 import { selectNewStudent, selectFaculty, selectMode } from 'actions/settings';
 import availableThemes from 'data/themes.json';
-import FacultySelect from 'views/components/FacultySelect';
-import NewStudentSelect from 'views/components/NewStudentSelect';
+// import FacultySelect from 'views/components/FacultySelect';
+// import NewStudentSelect from 'views/components/NewStudentSelect';
 import ScrollToTop from 'views/components/ScrollToTop';
 import Timetable from 'views/timetable/Timetable';
 import { supportsCSSVariables } from 'utils/css';
@@ -45,6 +45,7 @@ function SettingsContainer(props: Props) {
 
       <h1 className={styles.title}>Settings</h1>
 
+      {/* TODO: Finish the CORS bidding stats filter feature and re-enable this
       <h4>New Student</h4>
       <div className={classnames(styles.toggleRow, 'row')}>
         <div className={classnames(styles.toggleDescription, 'col-sm-7')}>
@@ -74,23 +75,23 @@ function SettingsContainer(props: Props) {
         </div>
       </div>
       <hr />
-
+      */}
       {supportsCSSVariables() &&
-      <div>
-        <h4>Night Mode</h4>
-        <div className={classnames(styles.toggleRow, 'row')}>
-          <div className={classnames(styles.toggleDescription, 'col-sm-7')}>
-            <p>Night mode turns the light surfaces of the page dark, creating an
-                    experience ideal for the dark. Try it out!
-            </p>
-            <p>Protip: Press <kbd>X</kbd> to toggle modes anywhere on NUSMods.</p>
+        <div>
+          <h4>Night Mode</h4>
+          <div className={classnames(styles.toggleRow, 'row')}>
+            <div className={classnames(styles.toggleDescription, 'col-sm-7')}>
+              <p>Night mode turns the light surfaces of the page dark, creating an
+                      experience ideal for the dark. Try it out!
+              </p>
+              <p>Protip: Press <kbd>X</kbd> to toggle modes anywhere on NUSMods.</p>
+            </div>
+            <div className={classnames('col-sm-4 offset-sm-1', styles.toggle)}>
+              <ModeSelect mode={props.mode} onSelectMode={props.selectMode} />
+            </div>
           </div>
-          <div className={classnames('col-sm-4 offset-sm-1', styles.toggle)}>
-            <ModeSelect mode={props.mode} onSelectMode={props.selectMode} />
-          </div>
-        </div>
-        <hr />
-      </div>}
+          <hr />
+        </div>}
 
       <h4>Theme</h4>
 
@@ -101,7 +102,7 @@ function SettingsContainer(props: Props) {
         <Timetable lessons={previewTimetable} />
       </div>
 
-      <div className="theme-options">
+      <div>
         {availableThemes.map(theme => (
           <ThemeOption
             key={theme.id}
@@ -112,7 +113,6 @@ function SettingsContainer(props: Props) {
           />
         ))}
       </div>
-
     </div>
   );
 }

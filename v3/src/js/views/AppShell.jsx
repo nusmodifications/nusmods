@@ -17,6 +17,7 @@ import { fetchTimetableModules, setTimetable, migrateTimetable } from 'actions/t
 import { noBreak } from 'utils/react';
 import Footer from 'views/layout/Footer';
 import Navtabs from 'views/layout/Navtabs';
+import GlobalSearchContainer from 'views/layout/GlobalSearchContainer';
 import { DARK_MODE } from 'types/settings';
 import LoadingSpinner from './components/LoadingSpinner';
 import FeedbackModal from './components/FeedbackModal';
@@ -38,27 +39,31 @@ type Props = {
   setTimetable: (Semester, SemTimetableConfig) => void,
 };
 
+type AcadWeekInfo = {
+  year: string,
+  sem: 'Semester 1' | 'Semester 2' | 'Special Sem 1' | 'Special Sem 2',
+  type: 'Instructional' | 'Reading' | 'Examination' | 'Recess' | 'Vacation' | 'Orientation',
+  num: ?number,
+};
+
 // Put outside render because this only needs to computed on page load.
 const weekText = (() => {
-  const acadWeekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(new Date());
-  const parts = [`AY20${acadWeekInfo.year}`];
+  const acadWeekInfo: AcadWeekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(new Date());
+  const parts: Array<string> = [`AY20${acadWeekInfo.year}`];
 
   // Check for null value (ie. during vacation)
   if (acadWeekInfo.sem) {
     parts.push(noBreak(acadWeekInfo.sem));
   }
 
-  // Hide semester if semester type is 'Instructional'
+  // Hide week if week type is 'Instructional'
   if (acadWeekInfo.type !== 'Instructional') {
-    parts.push(noBreak(`${acadWeekInfo.type} Week`));
+    // Do not show the week number if there is only one week, e.g. recess
+    const weekNumber = acadWeekInfo.num || '';
+    parts.push(noBreak(`${acadWeekInfo.type} Week ${weekNumber}`));
   }
 
-  // Do not show the week number if there is only one week, e.g. recess
-  if (acadWeekInfo.num > 0) {
-    parts.push(noBreak(`Week ${acadWeekInfo.num}`));
-  }
-
-  return parts.join(', ');
+  return parts.join(', ').trim();
 })();
 
 function setMode(mode: Mode) {
@@ -104,7 +109,8 @@ export class AppShell extends Component<Props> {
           <NavLink className={styles.brand} to="/" title="Home">
             <span className="sr-only">NUSMods</span>
           </NavLink>
-          <span className="nm-navbar-text"><small>{weekText}</small></span>
+          <GlobalSearchContainer />
+          <div className={styles.weekText}>{weekText}</div>
         </nav>
 
         <div className="main-container">
@@ -124,7 +130,7 @@ export class AppShell extends Component<Props> {
 }
 
 const mapStateToProps = state => ({
-  moduleList: state.entities.moduleBank.moduleList,
+  moduleList: state.moduleBank.moduleList,
   timetables: state.timetables,
   theme: state.theme.id,
   mode: state.settings.mode,

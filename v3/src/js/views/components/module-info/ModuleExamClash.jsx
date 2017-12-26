@@ -54,7 +54,7 @@ export class ModuleExamClashComponent extends PureComponent<Props> {
         <AlertTriangle className={styles.icon} />
         <p className={styles.warning}>
           Your {useSingular ? 'module' : 'modules'}{' '}
-          {intersperse(clashLinks, ',')}{' '}
+          {intersperse(clashLinks, ', ')}{' '}
           {useSingular ? 'has' : 'have'} exams at the same time
         </p>
       </div>
@@ -64,7 +64,7 @@ export class ModuleExamClashComponent extends PureComponent<Props> {
 
 const mapStateToProps: MapStateToProps<*, *, *> = (state: State, ownProps) => {
   const timetable = state.timetables[ownProps.semester] || {};
-  const modulesMap = state.entities.moduleBank.modules;
+  const modulesMap = state.moduleBank.modules;
   return { modules: getSemesterModules(timetable, modulesMap) };
 };
 

@@ -2,7 +2,7 @@
 import { sortBy } from 'lodash';
 import FilterGroup from 'utils/filters/FilterGroup';
 import ModuleFilter from 'utils/filters/ModuleFilter';
-import type { SearchableModule } from 'types/modules';
+import type { ModuleCode, ModuleTitle, SearchableModule } from 'types/modules';
 
 // The query string key used for the search term eg. ?q=Search+Term
 export const SEARCH_QUERY_KEY = 'q';
@@ -46,14 +46,16 @@ export function createSearchFilter(searchTerm: string): FilterGroup<ModuleFilter
     .toggle(filter, !!searchTerm);
 }
 
-export function sortModules<T: SearchableModule>(searchTerm: string, modules: T[]): T[] {
+export function sortModules<T: { ModuleCode: ModuleCode, ModuleTitle: ModuleTitle }>(
+  searchTerm: string,
+  modules: T[],
+): T[] {
   const searchRegexes = tokenize(searchTerm).map(regexify);
 
   return sortBy(modules, (module) => {
     let sum = 0;
     for (let i = 0; i < searchRegexes.length; i++) {
-      if (searchRegexes[i].test(module.ModuleCode) ||
-          searchRegexes[i].test(module.ModuleCode.replace(/\D+/, ''))) {
+      if (searchRegexes[i].test(module.ModuleCode) || searchRegexes[i].test(module.ModuleCode.replace(/\D+/, ''))) {
         sum += 1;
       } else if (searchRegexes[i].test(module.ModuleTitle)) {
         sum += 2;

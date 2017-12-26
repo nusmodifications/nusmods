@@ -5,7 +5,7 @@ import Helmet from 'react-helmet';
 import _ from 'lodash';
 import config from 'config';
 
-import type { ModulesMap } from 'reducers/entities/moduleBank';
+import type { ModulesMap } from 'reducers/moduleBank';
 import type {
   ColorMapping,
   TimetableOrientation,
@@ -21,7 +21,7 @@ import type {
 import type { SemTimetableConfig, SemTimetableConfigWithLessons, TimetableArrangement } from 'types/timetables';
 
 import classnames from 'classnames';
-import { getSemModuleSelectList } from 'reducers/entities/moduleBank';
+import { getSemModuleSelectList } from 'reducers/moduleBank';
 import { downloadAsJpeg, downloadAsIcal } from 'actions/export';
 import {
   addModule,
@@ -40,7 +40,7 @@ import {
   lessonsForLessonType,
   findExamClashes,
 } from 'utils/timetables';
-import ModulesSelect from 'views/components/ModulesSelect';
+import ModulesSelect from 'views/timetable/ModulesSelect';
 import CorsNotification from 'views/components/cors-info/CorsNotification';
 import Announcements from 'views/components/Announcements';
 import Online from 'views/components/Online';
@@ -136,12 +136,22 @@ class TimetableContent extends Component<Props> {
     const clashes: { [string]: Array<Module> } = findExamClashes(modules, this.props.semester);
     const nonClashingMods: Array<Module> = _.difference(modules, _.flatten(_.values(clashes)));
 
+    if (_.isEmpty(clashes) && _.isEmpty(nonClashingMods)) {
+      return (
+        <div className="row">
+          <div className="col-sm-12">
+            <p className="text-sm-center">No modules added.</p>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div>
         {!_.isEmpty(clashes) && (
           <div className="alert alert-danger" role="alert">
             <h4>Exam Clashes</h4>
-            <p>There are <strong>clashes</strong> in your exam timetable.</p>
+            <p>These modules have clashing exams.</p>
             {Object.keys(clashes).sort().map(clashDate => (
               <div key={clashDate}>
                 <h5>Clash on {formatExamDate(clashDate)}</h5>
@@ -289,9 +299,9 @@ class TimetableContent extends Component<Props> {
 
 function mapStateToProps(state, ownProps) {
   const { semester, timetable } = ownProps;
-  const modules = state.entities.moduleBank.modules;
+  const modules = state.moduleBank.modules;
   const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
-  const semModuleList = getSemModuleSelectList(state.entities.moduleBank, semester, timetable);
+  const semModuleList = getSemModuleSelectList(state.moduleBank, semester, timetable);
   const hiddenInTimetable = state.settings.hiddenInTimetable || [];
 
   return {
