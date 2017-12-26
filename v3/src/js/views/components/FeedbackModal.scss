@@ -1,5 +1,11 @@
 @import "~styles/utils/modules-entry";
 
+.modal {
+  :global {
+    animation: zoomIn 0.2s;
+  }
+}
+
 .content {
   text-align: center;
 
@@ -14,6 +20,10 @@
   height: 8rem;
   margin: 0 auto;
   color: #f31c25;
+
+  :global {
+    animation: pulse 1.5s infinite;
+  }
 }
 
 .links {
@@ -31,27 +41,37 @@
     color: #fff;
     transition: $transition-base;
 
+    &:hover {
+      color: #fff;
+    }
+
     &.messenger {
-      background: #0084ff;
+      $button-bg: #0084ff;
+
+      background: $button-bg;
 
       &:hover {
-        background: lighten(#0084ff, 10);
+        background: lighten($button-bg, 10);
       }
     }
 
     &.github {
-      background: #000;
+      $button-bg: #000;
+
+      background: $button-bg;
 
       &:hover {
-        background: #333;
+        background: lighten($button-bg, 30);
       }
     }
 
     &.form {
-      background: theme-color();
+      $button-bg: theme-color();
+
+      background: $button-bg;
 
       &:hover {
-        background: lighten(theme-color(), 10);
+        background: lighten($button-bg, 10);
       }
     }
   }
