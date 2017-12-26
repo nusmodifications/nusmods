@@ -16,7 +16,7 @@ import FacultySelect from 'views/components/FacultySelect';
 import NewStudentSelect from 'views/components/NewStudentSelect';
 import ScrollToTop from 'views/components/ScrollToTop';
 import Timetable from 'views/timetable/Timetable';
-import { supportsCSSVariables } from 'utils/react';
+import { supportsCSSVariables } from 'utils/css';
 
 import ThemeOption from './ThemeOption';
 import ModeSelect from './ModeSelect';

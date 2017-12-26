@@ -19,6 +19,7 @@ import Footer from 'views/layout/Footer';
 import Navtabs from 'views/layout/Navtabs';
 import { DARK_MODE } from 'types/settings';
 import LoadingSpinner from './components/LoadingSpinner';
+import FeedbackModal from './components/FeedbackModal';
 import styles from './AppShell.scss';
 
 type Props = {
@@ -113,6 +114,8 @@ export class AppShell extends Component<Props> {
             {isModuleListReady ? this.props.children : <LoadingSpinner />}
           </main>
         </div>
+
+        <FeedbackModal />
 
         <Footer />
       </div>

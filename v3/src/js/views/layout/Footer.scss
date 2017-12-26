@@ -8,7 +8,8 @@
   text-align: center;
   background-color: var(--gray-lightest);
 
-  a {
+  a,
+  button {
     font-weight: 500;
     color: var(--gray);
 
@@ -32,9 +33,14 @@
 
   li {
     display: inline-block;
+    margin-right: 1rem;
 
-    + li {
-      margin-left: 1rem;
+    &:last-child {
+      margin-right: 0;
     }
+  }
+
+  .feedbackBtn {
+    font-weight: $font-weight-bold;
   }
 }

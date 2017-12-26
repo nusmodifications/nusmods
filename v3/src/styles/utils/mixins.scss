@@ -8,7 +8,7 @@
   }
 }
 
-@mixin mobile-landscape() {
+@mixin mobile-landscape {
   @include media-breakpoint-down(sm) {
     @media (max-height: 15rem) {
       @content;
@@ -16,7 +16,7 @@
   }
 }
 
-@mixin scrollable() {
+@mixin scrollable {
   overflow: auto;
 
   // @supports is used here because Safari requires overflow: scroll to be used in conjunction with
@@ -25,5 +25,11 @@
   @supports (-webkit-overflow-scrolling: touch) {
     overflow: scroll;
     -webkit-overflow-scrolling: touch;
+  }
+}
+
+@mixin touchscreen-only() {
+  @media (pointer: coarse) {
+    @content;
   }
 }

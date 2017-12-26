@@ -6,6 +6,7 @@ import classnames from 'classnames';
 import { Menu, Close } from 'views/components/icons';
 import makeResponsive from 'views/hocs/makeResponsive';
 import noScroll from 'utils/noScroll';
+import { breakpointUp } from 'utils/css';
 import Fab from './Fab';
 
 import styles from './SideMenu.scss';
@@ -66,4 +67,4 @@ export class SideMenuComponent extends PureComponent<Props> {
   }
 }
 
-export default makeResponsive(SideMenuComponent, 'md');
+export default makeResponsive(SideMenuComponent, breakpointUp('md'));
