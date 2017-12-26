@@ -54,7 +54,7 @@ export class ModuleExamClashComponent extends PureComponent<Props> {
         <AlertTriangle className={styles.icon} />
         <p className={styles.warning}>
           Your {useSingular ? 'module' : 'modules'}{' '}
-          {intersperse(clashLinks, ',')}{' '}
+          {intersperse(clashLinks, ', ')}{' '}
           {useSingular ? 'has' : 'have'} exams at the same time
         </p>
       </div>

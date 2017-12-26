@@ -5,7 +5,7 @@
 @each $name, $colors in $nusmods-theme-colors {
   .theme-#{$name},
   // Specificity override for the theme settings page
-  .theme-options .theme-#{$name} {
+  .theme-option.theme-#{$name} {
     $index: 0;
 
     @each $color in $colors {

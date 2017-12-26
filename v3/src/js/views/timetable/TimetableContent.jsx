@@ -136,12 +136,22 @@ class TimetableContent extends Component<Props> {
     const clashes: { [string]: Array<Module> } = findExamClashes(modules, this.props.semester);
     const nonClashingMods: Array<Module> = _.difference(modules, _.flatten(_.values(clashes)));
 
+    if (_.isEmpty(clashes) && _.isEmpty(nonClashingMods)) {
+      return (
+        <div className="row">
+          <div className="col-sm-12">
+            <p className="text-sm-center">No modules added.</p>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div>
         {!_.isEmpty(clashes) && (
           <div className="alert alert-danger" role="alert">
             <h4>Exam Clashes</h4>
-            <p>There are <strong>clashes</strong> in your exam timetable.</p>
+            <p>These modules have clashing exams.</p>
             {Object.keys(clashes).sort().map(clashDate => (
               <div key={clashDate}>
                 <h5>Clash on {formatExamDate(clashDate)}</h5>

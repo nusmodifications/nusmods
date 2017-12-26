@@ -1,8 +1,6 @@
 // @flow
-import type { MapStateToProps } from 'react-redux';
-
 import React from 'react';
-import { connect } from 'react-redux';
+import { connect, type MapStateToProps } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import type { State } from 'reducers';
@@ -14,6 +12,7 @@ import { replaceWithNode } from 'utils/react';
 type Props = {
   children: string,
   moduleCodes: ModuleCodeMap,
+  className?: string,
 };
 
 // Look for strings that look like module codes - eg.
@@ -24,13 +23,20 @@ type Props = {
 const MODULE_CODE_REGEX = /\b(\w{2,3}\s*\d{4}\w{0,2})\b/g;
 
 export function LinkModuleCodesComponent(props: Props) {
-  const { children, moduleCodes, ...otherProps } = props;
+  const { children, moduleCodes, className } = props;
 
   return replaceWithNode(children, MODULE_CODE_REGEX, (part, i) => {
     const code = part.replace(/\s*/g, '');
     const module = moduleCodes[code];
     if (!module) return part;
-    return <Link {...otherProps} to={modulePage(code, module.ModuleTitle)} key={i}>{part}</Link>;
+    return (
+      <Link
+        className={className}
+        title={module.ModuleTitle}
+        to={modulePage(code, module.ModuleTitle)}
+        key={i}
+      >{part}</Link>
+    );
   });
 }
 
