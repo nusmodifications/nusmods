@@ -102,14 +102,14 @@ class TimetableModulesTable extends Component<Props> {
               <Link to={modulePage(module.ModuleCode, module.ModuleTitle)}>
                 {module.ModuleCode} {module.ModuleTitle}
               </Link>
-              <small className={styles.moduleExam}>
+              <div className={styles.moduleExam}>
                 {getModuleExamDate(module, this.props.semester)
                   ? `Exam: ${getFormattedModuleExamDate(module, this.props.semester)}`
                   : 'No Exam'
                 }
                 &nbsp;&middot;&nbsp;
                 {module.ModuleCredit} MCs
-              </small>
+              </div>
             </div>
           </div>
         ))}
