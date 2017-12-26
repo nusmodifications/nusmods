@@ -106,9 +106,9 @@ export class AppShell extends Component<Props> {
             <span className="sr-only">NUSMods</span>
           </NavLink>
           <GlobalSearchContainer />
-          <span className={styles.weekText}>
-            {weekText}
-          </span>
+          <div className={styles.weekTextContainer}>
+            <span className={styles.weekText}>{weekText}</span>
+          </div>
         </nav>
 
         <div className="main-container">

@@ -12,11 +12,12 @@
   flex-direction: row;
   align-items: center;
   height: $navbar-height;
-  padding: $vert-padding 1rem;
+  padding: $vert-padding $grid-gutter-width/2;
   background: var(--gray-lightest);
+  justify-content: space-between;
 
   @include media-breakpoint-up(md) {
-    padding: $vert-padding 2rem;
+    padding: $vert-padding $grid-gutter-width/2 $vert-padding 2rem;
   }
 }
 
@@ -34,8 +35,8 @@
   background-repeat: no-repeat;
 }
 
-.weekText {
-  padding: 0 $grid-gutter-width / 2;
+.weekTextContainer {
+  padding-left: $grid-gutter-width;
   font-size: $font-size-xs;
   line-height: 1.15;
   text-align: right;
