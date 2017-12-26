@@ -37,11 +37,11 @@ $icon-dist: $input-width-open - $input-width;
   height: 100%;
   padding-left: $input-width;
   font-size: $font-size-s;
+  color: var(--body-color);
   border: 0;
   background: transparent;
   transform: translate($input-width-open);
   transition: transform $desktop-entering-duration $material-deceleration-curve, opacity $desktop-entering-duration $material-deceleration-curve 75ms;
-  color: var(--body-color);
 
   &:focus {
     background: transparent;

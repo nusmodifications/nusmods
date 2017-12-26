@@ -11,10 +11,10 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
   height: $navbar-height;
   padding: $vert-padding $grid-gutter-width/2;
   background: var(--gray-lightest);
-  justify-content: space-between;
 
   @include media-breakpoint-up(xl) {
     padding: $vert-padding $grid-gutter-width/2 $vert-padding 2rem;
@@ -35,7 +35,7 @@
   background-repeat: no-repeat;
 }
 
-.weekText{
+.weekText {
   padding-left: $grid-gutter-width/2;
   font-size: $font-size-xs;
   line-height: 1.15;
