@@ -47,7 +47,9 @@ export function FooterComponent(props: Props) {
           <li><a href={config.contact.messenger}>Messenger</a></li>
           <li><a href={config.contact.twitter}>Twitter</a></li>
           <li><a href={config.contact.blog}>Blog</a></li>
-          <li><a href="https://github.com/nusmodifications/nusmods-api">API</a></li>
+          <li>
+            <a href="https://github.com/nusmodifications/nusmods-api" target="_blank" rel="noopener noreferrer">API</a>
+          </li>
           <li><Link to="/apps">Apps</Link></li>
           <li><Link to="/about">About</Link></li>
           <li><Link to="/team">Team</Link></li>
@@ -56,13 +58,7 @@ export function FooterComponent(props: Props) {
         </ul>
         {/* TODO: Add API data last updated timestamp */}
         <p>Designed and built with all the love in the world by{' '}
-          <a
-            href={config.contact.githubOrg}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            @nusmodifications
-          </a>.
+          <a href={config.contact.githubOrg} target="_blank" rel="noopener noreferrer">@nusmodifications</a>.
           Maintained by the <Link to="/team">core team</Link> with the help
           of <Link to="/contributors">our contributors</Link>.
         </p>
