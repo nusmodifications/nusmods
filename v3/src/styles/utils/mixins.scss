@@ -28,8 +28,14 @@
   }
 }
 
-@mixin touchscreen-only() {
+@mixin touchscreen-only {
   @media (pointer: coarse) {
+    @content;
+  }
+}
+
+@mixin night-mode-only {
+  :global(.mode-dark) {
     @content;
   }
 }
