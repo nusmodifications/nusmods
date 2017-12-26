@@ -17,7 +17,7 @@ import type {
   RawLesson,
   Semester,
 } from 'types/modules';
-import type { ModulesMap } from 'reducers/entities/moduleBank';
+import type { ModulesMap } from 'reducers/moduleBank';
 
 import _ from 'lodash';
 import {

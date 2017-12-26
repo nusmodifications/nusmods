@@ -36,7 +36,7 @@ export function LinkModuleCodesComponent(props: Props) {
 
 // Type annotation is workaround for https://github.com/flowtype/flow-typed/issues/1269
 const mapStateToProps: MapStateToProps<*, *, *> = (state: State) => ({
-  moduleCodes: state.entities.moduleBank.moduleCodes,
+  moduleCodes: state.moduleBank.moduleCodes,
 });
 
 // Exclude dispatch from props

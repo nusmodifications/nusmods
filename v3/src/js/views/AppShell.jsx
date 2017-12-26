@@ -17,6 +17,7 @@ import { fetchTimetableModules, setTimetable, migrateTimetable } from 'actions/t
 import { noBreak } from 'utils/react';
 import Footer from 'views/layout/Footer';
 import Navtabs from 'views/layout/Navtabs';
+import GlobalSearchContainer from 'views/layout/GlobalSearchContainer';
 import { DARK_MODE } from 'types/settings';
 import LoadingSpinner from './components/LoadingSpinner';
 import FeedbackModal from './components/FeedbackModal';
@@ -104,7 +105,8 @@ export class AppShell extends Component<Props> {
           <NavLink className={styles.brand} to="/" title="Home">
             <span className="sr-only">NUSMods</span>
           </NavLink>
-          <span className="nm-navbar-text"><small>{weekText}</small></span>
+          <GlobalSearchContainer />
+          <div className={styles.weekText}>{weekText}</div>
         </nav>
 
         <div className="main-container">
@@ -124,7 +126,7 @@ export class AppShell extends Component<Props> {
 }
 
 const mapStateToProps = state => ({
-  moduleList: state.entities.moduleBank.moduleList,
+  moduleList: state.moduleBank.moduleList,
   timetables: state.timetables,
   theme: state.theme.id,
   mode: state.settings.mode,

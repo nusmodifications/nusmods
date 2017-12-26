@@ -1,6 +1,7 @@
 // @flow
 import { kebabCase, each } from 'lodash';
 import type { ModuleCode, ModuleTitle, Semester } from 'types/modules';
+import type { Venue } from 'types/venues';
 import type { SemTimetableConfig } from 'types/timetables';
 import { serializeTimetable } from 'utils/timetables';
 import config from 'config';
@@ -36,6 +37,11 @@ export function semesterForTimetablePage(semStr: ?string): ?Semester {
 // Module Code, Module Title -> Module page path
 export function modulePage(moduleCode: ModuleCode, moduleTitle: ModuleTitle): string {
   return `/modules/${moduleCode}/${kebabCase(moduleTitle)}`;
+}
+
+// Venue -> Venue page path
+export function venuePage(venue: Venue): string {
+  return `/venues/${encodeURIComponent(venue)}`;
 }
 
 // Creates an absolute URL from a relative path

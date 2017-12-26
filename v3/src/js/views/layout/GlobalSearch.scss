@@ -1,0 +1,93 @@
+@import '~styles/utils/modules-entry';
+$icon-size: $font-size-lg;
+$input-width: 2rem;
+$input-width-open: 24rem;
+$container-padding: 0.5rem;
+
+.container {
+  composes: btn-svg from global;
+  position: relative;
+  height: 100%;
+  padding-right: $container-padding;
+  margin-left: auto;
+  font-size: 0.9rem;
+  border-right: 1px solid var(--gray-lighter);
+}
+
+$icon-dist: $input-width-open - $input-width;
+
+.icon {
+  position: absolute;
+  right: $icon-dist + $container-padding;
+  width: $icon-size;
+  height: $icon-size;
+  transform: translate($icon-dist - 0.25rem);
+  transition: transform $desktop-entering-duration $material-deceleration-curve;
+}
+
+.iconOpen {
+  transform: translate(0);
+}
+
+.input {
+  position: absolute;
+  right: $input-width-open + $container-padding;
+  opacity: 0;
+  width: $input-width;
+  height: 100%;
+  padding-left: $input-width;
+  font-size: $font-size-s;
+  color: var(--body-color);
+  border: 0;
+  background: transparent;
+  transform: translate($input-width-open);
+  transition: transform $desktop-entering-duration $material-deceleration-curve, opacity $desktop-entering-duration $material-deceleration-curve 75ms;
+
+  &:focus {
+    background: transparent;
+    outline: none;
+    box-shadow: none;
+  }
+}
+
+.inputOpen {
+  right: 0;
+  opacity: 1;
+  width: $input-width-open;
+  transform: translate(0);
+}
+
+.selectList {
+  composes: list-unstyled from global;
+  position: absolute;
+  top: $navbar-height - 0.5rem;
+  right: 0;
+  z-index: $module-select-z-index;
+  color: var(--body-color);
+  border: $input-btn-border-width solid $input-border-color;
+  border-width: 0 $input-btn-border-width $input-btn-border-width;
+  border-radius: 0 0 $btn-border-radius $btn-border-radius;
+  background: var(--body-bg);
+}
+
+.item {
+  width: $input-width-open;
+  padding: 0.6rem $container-padding;
+}
+
+.selectHeader {
+  composes: item;
+  padding: 0.2rem $container-padding;
+  color: #fff;
+  background: var(--gray);
+}
+
+.option {
+  composes: item;
+  cursor: pointer;
+}
+
+.optionSelected {
+  color: $link-hover-color;
+  background: var(--gray-lightest);
+}

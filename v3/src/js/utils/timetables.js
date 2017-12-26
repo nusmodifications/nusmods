@@ -19,7 +19,7 @@ import type {
   TimetableDayArrangement,
   TimetableArrangement,
 } from 'types/timetables';
-import type { ModulesMap } from 'reducers/entities/moduleBank';
+import type { ModulesMap } from 'reducers/moduleBank';
 
 import { getModuleTimetable, getModuleSemesterData } from 'utils/modules';
 
