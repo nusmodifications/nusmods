@@ -12,7 +12,7 @@ import ColorPicker from 'views/components/ColorPicker';
 import { Eye, EyeOff, Trash2 } from 'views/components/icons/index';
 import { selectModuleColor } from 'actions/theme';
 import { hideLessonInTimetable, showLessonInTimetable } from 'actions/settings';
-import { getModuleSemExamDate } from 'utils/modules';
+import { getModuleExamDate, getFormattedModuleExamDate } from 'utils/modules';
 import { modulePage } from 'views/routes/paths';
 
 import styles from './TimetableModulesTable.scss';
@@ -109,7 +109,10 @@ class TimetableModulesTable extends Component<Props> {
                 {module.ModuleCode} {module.ModuleTitle}
               </Link>
               <small className={styles.moduleExam}>
-                Exam: {getModuleSemExamDate(module, this.props.semester)}
+                {getModuleExamDate(module, this.props.semester)
+                  ? `Exam: ${getFormattedModuleExamDate(module, this.props.semester)}`
+                  : 'No Exam'
+                }
                 &nbsp;&middot;&nbsp;
                 {module.ModuleCredit} MCs
               </small>

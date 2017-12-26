@@ -48,8 +48,12 @@ export function formatExamDate(examDate: string): string {
   return `${day}-${month}-${year} ${hour}:${minute} ${amPm}`;
 }
 
-export function getModuleSemExamDate(module: Module, semester: Semester): string {
-  const examDate = _.get(getModuleSemesterData(module, semester), 'ExamDate');
+export function getModuleExamDate(module: Module, semester: Semester): string {
+  return _.get(getModuleSemesterData(module, semester), 'ExamDate');
+}
+
+export function getFormattedModuleExamDate(module: Module, semester: Semester): string {
+  const examDate = getModuleExamDate(module, semester);
   return examDate ? formatExamDate(examDate) : '-';
 }
 
