@@ -183,13 +183,13 @@ export class VenuesContainerComponent extends Component<Props, State> {
                     There {unfilteredCount === 1
                       ? 'is a venue that is'
                       : `are ${unfilteredCount} venues that are`} not shown
-                    because they are not free. <br />
+                    because they are not free.<br />
                     <button
                       type="button"
                       className="btn btn-link"
                       onClick={() => this.setState({ isAvailabilityEnabled: false })}
                     >
-                      Cancel free room search?
+                      Cancel free room search
                     </button>
                   </p>}
               </Fragment>

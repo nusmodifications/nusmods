@@ -31,7 +31,7 @@ export class FeedbackModalComponent extends PureComponent<Props> {
           <h1>Let us know what you think!</h1>
           <p>Thank you for your time! You can talk to us on Messenger, file
             an issue on GitHub, or fill up a short feedback form
-            (takes you less than 3 minutes)
+            (takes you less than 3 minutes).
           </p>
           <div className={styles.links}>
             <a
