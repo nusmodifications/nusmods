@@ -16,6 +16,10 @@ declare module 'localforage' {
   declare module.exports: any;
 }
 
+declare module 'mousetrap' {
+  declare module.exports: any;
+}
+
 declare module 'no-scroll' {
   declare module.exports: any;
 }
