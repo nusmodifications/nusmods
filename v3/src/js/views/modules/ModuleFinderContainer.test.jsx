@@ -7,15 +7,12 @@ import { type ShallowWrapper, shallow } from 'enzyme';
 import _ from 'lodash';
 import qs from 'query-string';
 
-// react-router-dom internal dependency, used here to construct the history
-// object needed for testing. This is not added as a dev dependency to avoid
-// version desync between the version depended on by react-router-dom
-import createHistory from 'history/createMemoryHistory'; // eslint-disable-line import/no-extraneous-dependencies
 
 import type { FilterGroupId, PageRange } from 'types/views';
 
-import { nextTick, waitFor } from 'test-utils/async';
 import mockDom from 'test-utils/mockDom';
+import createHistory from 'test-utils/createHistory';
+import { nextTick, waitFor } from 'test-utils/async';
 import FilterGroup from 'utils/filters/FilterGroup';
 import { ModuleFinderContainerComponent, mergePageRange } from './ModuleFinderContainer';
 
@@ -44,24 +41,16 @@ describe('<ModuleFinderContainer', () => {
     console.info.mockRestore(); // eslint-disable-line no-console
   });
 
-  async function createContainer(initialEntries?: Array<LocationShape | string>): Promise<Container> {
-    const history = createHistory({ initialEntries });
-    const mockMatch = {
-      path: '/',
-      url: '/',
-      isExact: true,
-      params: {},
-    };
+  async function createContainer(initialEntries?: Array<string>): Promise<Container> {
+    const router = createHistory(initialEntries);
 
     const container = {
-      history,
+      history: router.history,
       component: shallow(
         <ModuleFinderContainerComponent
-          history={history}
-          location={history.location}
-          match={mockMatch}
           resetModuleFinder={_.noop}
           searchTerm=""
+          {...router}
         />,
       ),
     };

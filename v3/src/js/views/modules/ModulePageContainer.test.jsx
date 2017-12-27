@@ -5,8 +5,7 @@ import { shallow } from 'enzyme';
 import { noop } from 'lodash';
 import { Redirect } from 'react-router-dom';
 
-import createHistory from 'history/createMemoryHistory'; // eslint-disable-line import/no-extraneous-dependencies
-
+import createHistory from 'test-utils/createHistory';
 import type { ModuleCodeMap, FetchRequest } from 'types/reducers';
 import type { Module, ModuleCode } from 'types/modules';
 
@@ -32,14 +31,6 @@ function make(
   request: ?FetchRequest = null,
   fetchModule: (ModuleCode) => void = noop,
 ) {
-  const history = createHistory();
-  const mockMatch = {
-    url,
-    path: url,
-    isExact: true,
-    params: {},
-  };
-
   return shallow(
     <ModulePageContainerComponent
       moduleCode={moduleCode}
@@ -48,9 +39,7 @@ function make(
       request={request}
       fetchModule={fetchModule}
 
-      history={history}
-      location={history.location}
-      match={mockMatch}
+      {...createHistory()}
     />,
   );
 }

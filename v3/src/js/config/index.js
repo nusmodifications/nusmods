@@ -24,6 +24,7 @@ export type Config = {
   brandName: string,
   academicYear: AcadYear,
   semester: Semester,
+  getSemesterKey: () => string,
 
   apiBaseUrl: string,
   corsUrl: string,
@@ -76,6 +77,13 @@ const augmentedConfig: Config = {
   holidays: holidays.map(date => new Date(date)),
 
   corsSchedule: corsData.map(convertCorsDate),
+
+  /**
+   * Returns a unique key for every acad year + semester
+   */
+  getSemesterKey: (): string => {
+    return `${augmentedConfig.academicYear} ${augmentedConfig.semesterNames[augmentedConfig.semester]}`;
+  },
 };
 
 export default augmentedConfig;

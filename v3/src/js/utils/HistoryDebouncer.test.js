@@ -1,11 +1,11 @@
 // @flow
 
-import createHistory from 'history/createMemoryHistory'; // eslint-disable-line import/no-extraneous-dependencies
+import createHistory from 'test-utils/createHistory';
 import HistoryDebouncer from './HistoryDebouncer';
 
 describe('HistoryDebouncer', () => {
-  function createHistoryMock(initialEntries = []) {
-    const history = createHistory(initialEntries);
+  function createHistoryMock(initialEntries = ['/']) {
+    const { history } = createHistory(initialEntries);
     jest.spyOn(history, 'push');
     jest.spyOn(history, 'replace');
 

@@ -1,28 +1,18 @@
 // @flow
 import React from 'react';
 import { shallow } from 'enzyme';
-import createHistory from 'history/createMemoryHistory'; // eslint-disable-line import/no-extraneous-dependencies
 
 import type { Venue } from 'types/venues';
 
+import createHistory from 'test-utils/createHistory';
 import { VenuesContainerComponent, mapStateToProps } from './VenuesContainer';
 
 function createComponent(urlVenue: ?Venue) {
-  const history = createHistory();
-  const mockMatch = {
-    path: '/',
-    url: '/',
-    isExact: true,
-    params: {},
-  };
-
   return shallow(
     <VenuesContainerComponent
-      history={history}
-      location={history.location}
-      match={mockMatch}
       urlVenue={urlVenue}
       activeSemester={1}
+      {...createHistory()}
     />,
   );
 }

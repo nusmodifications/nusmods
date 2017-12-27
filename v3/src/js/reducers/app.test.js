@@ -9,6 +9,7 @@ import reducer from 'reducers/app';
 import type { Lesson, Semester } from 'types/modules';
 import type { FSA } from 'types/redux';
 import type { AppState } from 'types/reducers';
+import { initAction } from 'test-utils/redux';
 import lessons from '__mocks__/lessons-array.json';
 
 const semester: Semester = 1;
@@ -24,7 +25,7 @@ const appHasSemesterTwoState: AppState = { ...appInitialState, activeSemester: a
 const appHasActiveLessonState: AppState = { ...appInitialState, activeLesson: lesson };
 
 test('app should return initial state', () => {
-  const nextState: AppState = reducer(undefined, { type: 'INIT', payload: null });
+  const nextState: AppState = reducer(undefined, initAction());
 
   expect(nextState).toEqual(appInitialState);
 });
