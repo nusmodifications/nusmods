@@ -68,8 +68,10 @@ describe('settings', () => {
     const nextState2: SettingsState = reducer(nextState, action);
     expect(nextState2).toEqual(initialState);
   });
+});
 
-  test('will clear out dismissed notifications when semester changes', () => {
+describe('corsNotification settings', () => {
+  test('clear out dismissed notifications when semester changes', () => {
     config.getSemesterKey = () => '2017/2018 Semester 2';
 
     const nextState: SettingsState = reducer(settingsWithDismissedNotifications, initAction());
@@ -80,12 +82,31 @@ describe('settings', () => {
     });
   });
 
-  test('will not clear disabled when semester changes', () => {
+  test('not clear disabled when semester changes', () => {
     config.getSemesterKey = () => '2017/2018 Semester 2';
     const settingsState = _.cloneDeep(settingsWithDismissedNotifications);
     settingsState.corsNotification.enabled = false;
 
     const nextState: SettingsState = reducer(settingsState, initAction());
     expect(nextState.corsNotification).toHaveProperty('enabled', false);
+  });
+
+  test('dismiss CORS notification', () => {
+    const state1 = reducer(initialState, actions.dismissCorsNotification('1A'));
+    expect(state1.corsNotification.dismissed).toEqual(['1A']);
+
+    const state2 = reducer(state1, actions.dismissCorsNotification('1B'));
+    expect(state2.corsNotification.dismissed).toEqual(['1A', '1B']);
+
+    const state3 = reducer(state2, actions.dismissCorsNotification('1B'));
+    expect(state3.corsNotification.dismissed).toEqual(['1A', '1B']);
+  });
+
+  test('toggle CORS notification globally', () => {
+    const state1 = reducer(initialState, actions.toggleCorsNotificationGlobally(true));
+    expect(state1.corsNotification.enabled).toEqual(true);
+
+    const state2 = reducer(initialState, actions.toggleCorsNotificationGlobally(false));
+    expect(state2.corsNotification.enabled).toEqual(false);
   });
 });

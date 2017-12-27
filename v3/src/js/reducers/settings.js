@@ -1,6 +1,8 @@
 // @flow
-import type { FSA } from 'types/redux';
+import { uniq } from 'lodash';
 import update from 'immutability-helper';
+
+import type { FSA } from 'types/redux';
 import type {
   SettingsState,
 } from 'types/reducers';
@@ -12,6 +14,8 @@ import {
   TOGGLE_MODE,
   HIDE_LESSON_IN_TIMETABLE,
   SHOW_LESSON_IN_TIMETABLE,
+  DISMISS_CORS_NOTIFICATION,
+  TOGGLE_CORS_NOTIFICATION_GLOBALLY,
 } from 'actions/settings';
 import { LIGHT_MODE, DARK_MODE } from 'types/settings';
 import config from 'config';
@@ -72,6 +76,21 @@ function settings(state: SettingsState = defaultSettingsState, action: FSA): Set
         ...state,
         hiddenInTimetable: hidden(state.hiddenInTimetable, action),
       };
+
+    case TOGGLE_CORS_NOTIFICATION_GLOBALLY:
+      return update(state, {
+        corsNotification: {
+          enabled: { $set: action.payload.enabled },
+        },
+      });
+
+    case DISMISS_CORS_NOTIFICATION:
+      return update(state, {
+        corsNotification: {
+          dismissed: rounds => uniq([...rounds, action.payload.round]),
+        },
+      });
+
     default:
       // Rehydrating from store - check that the key is the same, and if not,
       // return to default state since the old dismissed notification settings is stale
