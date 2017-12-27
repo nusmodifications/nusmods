@@ -1,43 +1,47 @@
 // @flow
 import domtoimage from 'dom-to-image';
 import ical from 'ical-generator';
+import Raven from 'raven-js';
 
 import type { ModuleCode, Module, Semester } from 'types/modules';
 import type { SemTimetableConfigWithLessons } from 'types/timetables';
 import { iCalForTimetable } from 'utils/ical';
 
-function downloadUrl(url: string, filename: string) {
+function downloadUrl(blob: Blob, filename: string) {
   const link = document.createElement('a');
-  const body = document.body;
-  if (!body) return;
-
-  link.download = filename;
-  link.href = url;
-
-  body.appendChild(link);
-  link.click();
-  body.removeChild(link);
+  if (window.navigator.msSaveOrOpenBlob) {
+    window.navigator.msSaveOrOpenBlob(blob, filename);
+  } else {
+    const objectUrl = URL.createObjectURL(blob);
+    link.download = filename;
+    link.href = objectUrl;
+    link.dispatchEvent(new MouseEvent('click'));
+    URL.revokeObjectURL(objectUrl);
+  }
 }
 
-export const DOWNLOAD_AS_JPEG = 'DOWNLOAD_AS_JPEG';
-export function downloadAsJpeg(domElement: Element) {
+export const SUPPORTS_DOWNLOAD = 'download' in document.createElement('a');
+
+export const DOWNLOAD_AS_IMAGE = 'DOWNLOAD_AS_IMAGE';
+export function downloadAsImage(domElement: Element) {
   return (dispatch: Function) => {
     dispatch({
-      type: `${DOWNLOAD_AS_JPEG}_PENDING`,
+      type: `${DOWNLOAD_AS_IMAGE}_PENDING`,
     });
 
     const style = { margin: '0', marginLeft: '-0.25em' };
-    return domtoimage.toJpeg(domElement, { bgcolor: '#fff', style })
-      .then((dataUrl) => {
-        downloadUrl(dataUrl, 'timetable.jpeg');
+    return domtoimage
+      .toBlob(domElement, { bgcolor: '#fff', style })
+      .then((blob) => {
+        downloadUrl(blob, 'timetable.png');
         dispatch({
-          type: `${DOWNLOAD_AS_JPEG}_SUCCESS`,
+          type: `${DOWNLOAD_AS_IMAGE}_SUCCESS`,
         });
       })
-      .catch((err) => {
-        console.error(err); // eslint-disable-line
+      .catch((e) => {
+        Raven.captureException(e);
         dispatch({
-          type: `${DOWNLOAD_AS_JPEG}_FAILURE`,
+          type: `${DOWNLOAD_AS_IMAGE}_FAILURE`,
         });
       });
   };
@@ -57,9 +61,7 @@ export function downloadAsIcal(
   });
 
   const blob = new Blob([cal.toString()], { type: 'text/plain' });
-  const objectUrl = URL.createObjectURL(blob);
-  downloadUrl(objectUrl, 'nusmods_calendar.ics');
-  URL.revokeObjectURL(objectUrl);
+  downloadUrl(blob, 'nusmods_calendar.ics');
 
   return {
     type: DOWNLOAD_AS_ICAL,
