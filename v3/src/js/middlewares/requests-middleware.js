@@ -19,7 +19,7 @@ export const REQUEST = '_REQUEST';
 export const SUCCESS = '_SUCCESS';
 export const FAILURE = '_FAILURE';
 
-export default store => next => (action) => {
+export default (store) => (next) => (action) => {
   if (!action.meta || !action.meta[API_REQUEST]) {
     // Non-api request action
     return next(action);
@@ -37,14 +37,16 @@ export default store => next => (action) => {
   }
 
   // Propagate the start of the request
-  next(constructActionWith({
-    type: type + REQUEST,
-    payload,
-    meta: {
-      ...meta,
-      requestStatus: REQUEST,
-    },
-  }));
+  next(
+    constructActionWith({
+      type: type + REQUEST,
+      payload,
+      meta: {
+        ...meta,
+        requestStatus: REQUEST,
+      },
+    }),
+  );
 
   // Get the access token from store.
   let accessToken = '';
@@ -53,25 +55,31 @@ export default store => next => (action) => {
   }
 
   // Propagate the response of the request.
-  return makeRequest(payload, accessToken)
-    .then(response => next(constructActionWith({
-      type: type + SUCCESS,
-      payload: response.data,
-      meta: {
-        ...meta,
-        requestStatus: SUCCESS,
-        request: payload,
-        responseHeaders: response.headers,
-      },
-    })),
-    error => next(constructActionWith({
-      type: type + FAILURE,
-      payload: error,
-      meta: {
-        ...meta,
-        requestStatus: FAILURE,
-        request: payload,
-      },
-    })),
-    );
+  return makeRequest(payload, accessToken).then(
+    (response) =>
+      next(
+        constructActionWith({
+          type: type + SUCCESS,
+          payload: response.data,
+          meta: {
+            ...meta,
+            requestStatus: SUCCESS,
+            request: payload,
+            responseHeaders: response.headers,
+          },
+        }),
+      ),
+    (error) =>
+      next(
+        constructActionWith({
+          type: type + FAILURE,
+          payload: error,
+          meta: {
+            ...meta,
+            requestStatus: FAILURE,
+            request: payload,
+          },
+        }),
+      ),
+  );
 };

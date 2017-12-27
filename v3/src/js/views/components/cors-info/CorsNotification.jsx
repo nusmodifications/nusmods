@@ -40,7 +40,10 @@ export function corsNotificationText(
 
   return (
     <Fragment>
-      {isRoundOpen ? 'Current' : 'Next'} CORS round: <strong>{round.round} ({capitalize(period.type)})</strong>
+      {isRoundOpen ? 'Current' : 'Next'} CORS round:{' '}
+      <strong>
+        {round.round} ({capitalize(period.type)})
+      </strong>
       {isRoundOpen ? ' till' : ' at'} {useLineBreaks && <br />}
       <strong>{isRoundOpen ? period.end : period.start}</strong>
     </Fragment>
@@ -53,7 +56,7 @@ export class CorsNotificationComponent extends PureComponent<Props> {
 
     // For manual testing - add ?round=1A (or other round names) to trigger the notification
     if (debugRound) {
-      const round = config.corsSchedule.find(r => r.round === debugRound);
+      const round = config.corsSchedule.find((r) => r.round === debugRound);
       if (round) return roundStart(round);
     }
 
@@ -76,15 +79,21 @@ export class CorsNotificationComponent extends PureComponent<Props> {
 
     return (
       <div className={styles.wrapper}>
-        <a href="https://myaces.nus.edu.sg/cors/StudentLogin" target="_blank" rel="noopener noreferrer">
-          <div className={styles.notification}>{corsNotificationText(true, round, this.currentTime())}</div>
+        <a
+          href="https://myaces.nus.edu.sg/cors/StudentLogin"
+          target="_blank"
+          rel="noopener noreferrer">
+          <div className={styles.notification}>
+            {corsNotificationText(true, round, this.currentTime())}
+          </div>
         </a>
 
-        {!hideCloseButton &&
+        {!hideCloseButton && (
           <CloseButton
             className={styles.close}
             onClick={() => this.props.dismissCorsNotification(round.round)}
-          />}
+          />
+        )}
       </div>
     );
   }
@@ -95,6 +104,8 @@ const mapStateToProps = (state: State) => ({
   dismissedRounds: state.settings.corsNotification.dismissed,
 });
 
-const withStoreCorsNotification = connect(mapStateToProps, { dismissCorsNotification })(CorsNotificationComponent);
+const withStoreCorsNotification = connect(mapStateToProps, { dismissCorsNotification })(
+  CorsNotificationComponent,
+);
 const CorsNotification = withRouter(withStoreCorsNotification);
 export default CorsNotification;

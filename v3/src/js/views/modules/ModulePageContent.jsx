@@ -52,13 +52,13 @@ export class ModulePageContentComponent extends Component<Props, State> {
     isMenuOpen: false,
   };
 
-  examinations(): {semester: Semester, date: string}[] {
+  examinations(): { semester: Semester, date: string }[] {
     const history = this.props.module.History;
     if (!history) return [];
     return history
-      .filter(h => h.ExamDate != null)
+      .filter((h) => h.ExamDate != null)
       .sort((a, b) => a.Semester - b.Semester)
-      .map(h => ({ semester: h.Semester, date: h.ExamDate || '' }));
+      .map((h) => ({ semester: h.Semester, date: h.ExamDate || '' }));
   }
 
   toggleMenu = (isMenuOpen: boolean) => this.setState({ isMenuOpen });
@@ -73,7 +73,9 @@ export class ModulePageContentComponent extends Component<Props, State> {
     return (
       <div className={classnames('page-container', styles.moduleInfoPage)}>
         <Helmet>
-          <title>{pageTitle} - {config.brandName}</title>
+          <title>
+            {pageTitle} - {config.brandName}
+          </title>
         </Helmet>
 
         <Announcements />
@@ -84,8 +86,7 @@ export class ModulePageContentComponent extends Component<Props, State> {
           <div className="col-md-9">
             <div
               id={SIDE_MENU_ITEMS.details}
-              className={classnames(styles.section, styles.firstSection)}
-            >
+              className={classnames(styles.section, styles.firstSection)}>
               <header className={styles.header}>
                 <h1 className={styles.pageTitle}>
                   <span className={styles.moduleCodeTitle}>{ModuleCode}</span>
@@ -93,16 +94,22 @@ export class ModulePageContentComponent extends Component<Props, State> {
                 </h1>
 
                 <p>
-                  {intersperse([
-                    <a key="department">{module.Department}</a>,
-                    <a key="mc">{module.ModuleCredit} MCs</a>,
-                  ], BULLET)}
+                  {intersperse(
+                    [
+                      <a key="department">{module.Department}</a>,
+                      <a key="mc">{module.ModuleCredit} MCs</a>,
+                    ],
+                    BULLET,
+                  )}
                 </p>
 
                 <p>
-                  {intersperse(semesters.map(semester => (
-                    <a key={semester}>{ config.semesterNames[semester] }</a>
-                  )), BULLET)}
+                  {intersperse(
+                    semesters.map((semester) => (
+                      <a key={semester}>{config.semesterNames[semester]}</a>
+                    )),
+                    BULLET,
+                  )}
                 </p>
               </header>
 
@@ -111,44 +118,50 @@ export class ModulePageContentComponent extends Component<Props, State> {
                   {module.ModuleDescription && <p>{module.ModuleDescription}</p>}
 
                   <dl>
-                    {module.Prerequisite &&
+                    {module.Prerequisite && (
                       <Fragment>
                         <dt>Prerequisite</dt>
                         <dd>
                           <LinkModuleCodes>{module.Prerequisite}</LinkModuleCodes>
                         </dd>
-                      </Fragment>}
+                      </Fragment>
+                    )}
 
-                    {module.Corequisite &&
+                    {module.Corequisite && (
                       <Fragment>
                         <dt>Corequisite</dt>
                         <dd>
                           <LinkModuleCodes>{module.Corequisite}</LinkModuleCodes>
                         </dd>
-                      </Fragment>}
+                      </Fragment>
+                    )}
 
-                    {module.Preclusion &&
+                    {module.Preclusion && (
                       <Fragment>
                         <dt>Preclusion</dt>
                         <dd>
                           <LinkModuleCodes>{module.Preclusion}</LinkModuleCodes>
                         </dd>
-                      </Fragment>}
+                      </Fragment>
+                    )}
                   </dl>
 
-                  {module.Workload
-                    ? <ModuleWorkload workload={module.Workload} />
-                    :
+                  {module.Workload ? (
+                    <ModuleWorkload workload={module.Workload} />
+                  ) : (
                     <Fragment>
                       <h4>Workload</h4>
                       <p>Workload not available</p>
-                    </Fragment>}
+                    </Fragment>
+                  )}
                 </div>
 
                 <div className="col-sm-4">
-                  {this.examinations().map(exam => (
+                  {this.examinations().map((exam) => (
                     <div key={exam.semester} className={styles.exam}>
-                      <h3 className={styles.descriptionHeading}>{config.semesterNames[exam.semester]} Exam</h3>
+                      <h3 className={styles.descriptionHeading}>
+                        {config.semesterNames[exam.semester]} Exam
+                      </h3>
                       <p>{formatExamDate(exam.date)}</p>
 
                       <ModuleExamClash
@@ -160,19 +173,22 @@ export class ModulePageContentComponent extends Component<Props, State> {
                   ))}
 
                   <div className={styles.addToTimetable}>
-                    <AddToTimetableDropdown
-                      module={module}
-                      className="btn-group-sm"
-                      block
-                    />
+                    <AddToTimetableDropdown module={module} className="btn-group-sm" block />
                   </div>
 
                   <div>
                     <h3 className={styles.descriptionHeading}>Official Links</h3>
-                    {intersperse([
-                      <a key="ivle" href={config.ivleUrl.replace('<ModuleCode>', ModuleCode)}>IVLE</a>,
-                      <a key="cors" href={config.corsUrl + ModuleCode}>CORS</a>,
-                    ], BULLET)}
+                    {intersperse(
+                      [
+                        <a key="ivle" href={config.ivleUrl.replace('<ModuleCode>', ModuleCode)}>
+                          IVLE
+                        </a>,
+                        <a key="cors" href={config.corsUrl + ModuleCode}>
+                          CORS
+                        </a>,
+                      ],
+                      BULLET,
+                    )}
                   </div>
                 </div>
               </section>
@@ -185,77 +201,75 @@ export class ModulePageContentComponent extends Component<Props, State> {
 
             <section className={styles.section} id="timetable">
               <h2 className={styles.sectionHeading}>Timetable</h2>
-              <LessonTimetable
-                semestersOffered={semesters}
-                history={module.History}
-              />
+              <LessonTimetable semestersOffered={semesters} history={module.History} />
             </section>
 
             <section className={styles.section} id={SIDE_MENU_ITEMS.cors}>
               <h2 className={styles.sectionHeading}>CORS Bidding Stats</h2>
-              {module.CorsBiddingStats ?
+              {module.CorsBiddingStats ? (
                 <div>
                   <CorsStats stats={module.CorsBiddingStats} />
                 </div>
-                :
+              ) : (
                 <div>
-                  No CORS bidding data available. This may be because the module is new,
-                  or the module is not available from CORS.
-                </div>}
+                  No CORS bidding data available. This may be because the module is new, or the
+                  module is not available from CORS.
+                </div>
+              )}
             </section>
 
             <section className={styles.section} id={SIDE_MENU_ITEMS.reviews}>
               <h2 className={styles.sectionHeading}>Review and Discussion</h2>
-              <Online isLive={false}>{isOnline => (
-                isOnline ?
-                  <div className="row">
-                    <div className="col-xl-4">
-                      <div className={classnames('alert alert-warning', styles.reviewsBanner)}>
-                        <h3>Hi There!</h3>
-                        <p>We would like to encourage everyone who enjoyed using NUSMods to
-                          contribute back to the community by writing reviews for modules
-                          that you have taken before. Your efforts will go a long way in
-                          building up a vibrant and rich NUS community.</p>
-                        <p><strong>Please note:</strong> Because the experience of each module
-                          will differ according to the professor teaching the module, at the
-                          start of your review, please state the semester taken and the name
-                          of the professor who taught the module in that semester.</p>
+              <Online isLive={false}>
+                {(isOnline) =>
+                  isOnline ? (
+                    <div className="row">
+                      <div className="col-xl-4">
+                        <div className={classnames('alert alert-warning', styles.reviewsBanner)}>
+                          <h3>Hi There!</h3>
+                          <p>
+                            We would like to encourage everyone who enjoyed using NUSMods to
+                            contribute back to the community by writing reviews for modules that you
+                            have taken before. Your efforts will go a long way in building up a
+                            vibrant and rich NUS community.
+                          </p>
+                          <p>
+                            <strong>Please note:</strong> Because the experience of each module will
+                            differ according to the professor teaching the module, at the start of
+                            your review, please state the semester taken and the name of the
+                            professor who taught the module in that semester.
+                          </p>
+                        </div>
+                      </div>
+                      <div className="col-xl-8 order-xl-first">
+                        <DisqusComments
+                          url={`https://nusmods.com/modules/${ModuleCode}/reviews`}
+                          identifier={ModuleCode}
+                          title={pageTitle}
+                        />
                       </div>
                     </div>
-                    <div className="col-xl-8 order-xl-first">
-                      <DisqusComments
-                        url={`https://nusmods.com/modules/${ModuleCode}/reviews`}
-                        identifier={ModuleCode}
-                        title={pageTitle}
-                      />
-                    </div>
-                  </div>
-                  :
-                  <Warning
-                    message="Comments not available while offline. Make sure you are
-                             online and refresh to view comments."
-                  />
-              )}</Online>
+                  ) : (
+                    <Warning message="Comments not available while offline. Make sure you are
+                             online and refresh to view comments." />
+                  )
+                }
+              </Online>
             </section>
           </div>
 
           <aside className="col-md-3">
-            <SideMenu
-              isOpen={this.state.isMenuOpen}
-              toggleMenu={this.toggleMenu}
-            >
+            <SideMenu isOpen={this.state.isMenuOpen} toggleMenu={this.toggleMenu}>
               <nav className={styles.sideMenu}>
                 <ScrollSpy
                   items={values(SIDE_MENU_ITEMS)}
                   currentClassName={styles.activeMenuItem}
-                  offset={-NAVTAB_HEIGHT}
-                >
+                  offset={-NAVTAB_HEIGHT}>
                   {map(SIDE_MENU_LABELS, (label, key) => (
                     <li key={label}>
-                      <a
-                        onClick={() => this.toggleMenu(false)}
-                        href={`#${SIDE_MENU_ITEMS[key]}`}
-                      >{label}</a>
+                      <a onClick={() => this.toggleMenu(false)} href={`#${SIDE_MENU_ITEMS[key]}`}>
+                        {label}
+                      </a>
                     </li>
                   ))}
                 </ScrollSpy>

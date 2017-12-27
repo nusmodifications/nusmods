@@ -12,7 +12,7 @@ type Props = {
   useInstantSearch: boolean,
   initialSearchTerm: ?string,
   placeholder: string,
-  onSearch: (string) => void,
+  onSearch: string => void,
   rootElementRef: (?HTMLElement) => void, // For parent components to obtain a ref to the root HTMLElement
 };
 
@@ -67,35 +67,41 @@ export default class SearchBox extends PureComponent<Props, State> {
     this.props.onSearch(input.trim());
   };
 
-  debouncedSearch: (string) => void = debounce(this.search, this.props.throttle, { leading: false });
+  debouncedSearch: string => void = debounce(this.search, this.props.throttle, { leading: false });
 
   showSubmitHelp() {
-    return !this.props.useInstantSearch
-      && this.state.hasChanges
-      && this.searchElement
-      && this.searchElement.value;
+    return (
+      !this.props.useInstantSearch &&
+      this.state.hasChanges &&
+      this.searchElement &&
+      this.searchElement.value
+    );
   }
 
   render() {
     return (
       <div
-        className={classnames(this.props.className, { [styles.searchBoxFocused]: this.state.isFocused })}
-        ref={this.props.rootElementRef}
-      >
-        <label htmlFor="search-box" className="sr-only">Search</label>
+        className={classnames(this.props.className, {
+          [styles.searchBoxFocused]: this.state.isFocused,
+        })}
+        ref={this.props.rootElementRef}>
+        <label htmlFor="search-box" className="sr-only">
+          Search
+        </label>
         <form
           className={styles.searchWrapper}
           onSubmit={(evt) => {
             this.onSubmit();
             evt.preventDefault();
-          }}
-        >
+          }}>
           <Search className={styles.searchIcon} />
           <input
             id="search-box"
             className="form-control form-control-lg"
             type="search"
-            ref={(e) => { this.searchElement = e; }}
+            ref={(e) => {
+              this.searchElement = e;
+            }}
             value={this.state.searchTerm}
             onChange={this.onInput}
             onFocus={() => this.setState({ isFocused: true })}
@@ -108,8 +114,7 @@ export default class SearchBox extends PureComponent<Props, State> {
           />
         </form>
 
-        {this.showSubmitHelp() &&
-          <p className={styles.searchHelp}>Press enter to search</p>}
+        {this.showSubmitHelp() && <p className={styles.searchHelp}>Press enter to search</p>}
       </div>
     );
   }

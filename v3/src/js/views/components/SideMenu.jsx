@@ -17,7 +17,7 @@ type Props = {
   closeIcon: Node,
   isOpen: boolean,
   matchBreakpoint: boolean,
-  toggleMenu: (boolean) => void,
+  toggleMenu: boolean => void,
 };
 
 export const OPEN_MENU_LABEL = 'Open menu';
@@ -46,22 +46,15 @@ export class SideMenuComponent extends PureComponent<Props> {
 
     return (
       <Fragment>
-        <Fab
-          className={styles.fab}
-          onClick={() => toggleMenu(!isOpen)}
-        >
+        <Fab className={styles.fab} onClick={() => toggleMenu(!isOpen)}>
           {isOpen ? closeIcon : openIcon}
         </Fab>
 
-        {this.isSideMenuShown() &&
-          <div
-            className={styles.overlay}
-            onClick={() => toggleMenu(false)}
-          />}
+        {this.isSideMenuShown() && (
+          <div className={styles.overlay} onClick={() => toggleMenu(false)} />
+        )}
 
-        <div className={classnames(styles.sideMenu, { [styles.isOpen]: isOpen })}>
-          {children}
-        </div>
+        <div className={classnames(styles.sideMenu, { [styles.isOpen]: isOpen })}>{children}</div>
       </Fragment>
     );
   }

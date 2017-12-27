@@ -23,8 +23,8 @@ export default function ChecklistFilters(props: Props) {
       <h4 className={styles.heading}>{group.label}</h4>
       <Checklist
         filters={values(group.filters)}
-        onChange={filter => onFilterChange(group.toggle(filter))}
-        getCount={filter => filter.count(moduleCodes)}
+        onChange={(filter) => onFilterChange(group.toggle(filter))}
+        getCount={(filter) => filter.count(moduleCodes)}
       />
     </div>
   );

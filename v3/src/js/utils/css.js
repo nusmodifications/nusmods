@@ -17,7 +17,8 @@ const breakpoints: { [Breakpoint]: number } = {
 
 function nextBreakpoint(size: Breakpoint): ?Breakpoint {
   const breakpointEntries = entries(breakpoints);
-  const nextBreakpointIndex = breakpointEntries.findIndex(([breakpoint]) => breakpoint === size) + 1;
+  const nextBreakpointIndex =
+    breakpointEntries.findIndex(([breakpoint]) => breakpoint === size) + 1;
   if (nextBreakpointIndex >= breakpointEntries.length) return null;
   return breakpointEntries[nextBreakpointIndex][1];
 }

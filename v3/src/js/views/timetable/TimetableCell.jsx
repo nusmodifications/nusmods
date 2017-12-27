@@ -33,8 +33,7 @@ function TimetableCell(props: Props) {
           props.onModifyCell(lesson);
         }
       }}
-      style={props.style}
-    >
+      style={props.style}>
       <div className={styles.cellContainer}>
         <div className={styles.moduleCode}>{lesson.ModuleCode}</div>
         <div>

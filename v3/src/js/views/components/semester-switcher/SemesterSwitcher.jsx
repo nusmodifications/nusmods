@@ -30,7 +30,7 @@ class SemesterSwitcher extends PureComponent<Props> {
 
     return (
       <div className={styles.semesterSwitcher}>
-        {!readOnly &&
+        {!readOnly && (
           <button
             className="btn btn-link"
             type="button"
@@ -38,15 +38,13 @@ class SemesterSwitcher extends PureComponent<Props> {
             onClick={() => {
               this.switchSemester(-1);
             }}
-            disabled={!isValidSemester(this.props.semester - 1)}
-          >
+            disabled={!isValidSemester(this.props.semester - 1)}>
             <ChevronLeft />
-          </button>}
+          </button>
+        )}
         <span className="sr-only">Current semester:</span>
-        <span className={styles.semesterName}>
-          {config.semesterNames[this.props.semester]}
-        </span>
-        {!readOnly &&
+        <span className={styles.semesterName}>{config.semesterNames[this.props.semester]}</span>
+        {!readOnly && (
           <button
             className="btn btn-link"
             type="button"
@@ -54,10 +52,10 @@ class SemesterSwitcher extends PureComponent<Props> {
             onClick={() => {
               this.switchSemester(1);
             }}
-            disabled={!isValidSemester(this.props.semester + 1)}
-          >
+            disabled={!isValidSemester(this.props.semester + 1)}>
             <ChevronRight />
-          </button>}
+          </button>
+        )}
       </div>
     );
   }

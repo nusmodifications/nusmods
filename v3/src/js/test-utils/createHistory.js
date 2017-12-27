@@ -10,8 +10,8 @@ import createMemoryHistory from 'history/createMemoryHistory'; // eslint-disable
 
 type MatchShape = {
   params?: { [string]: ?string },
-  isExact?: boolean
-}
+  isExact?: boolean,
+};
 
 export default function createHistory(
   initialEntries: string | string[] = '/',

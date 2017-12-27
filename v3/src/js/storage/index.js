@@ -40,9 +40,7 @@ const storage = {
   setItem,
   getItem,
   removeItem,
-  loadState: () => {
-    return getItem(stateKey) || {};
-  },
+  loadState: () => getItem(stateKey) || {},
   saveState: (state) => {
     setItem(stateKey, state);
   },

@@ -30,7 +30,6 @@ import {
   updateGroups,
   serializeGroups,
   invertFacultyDepartments,
-
   DEPARTMENT,
   EXAMS,
   FACULTY,
@@ -104,7 +103,7 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
 
     // Set up history debouncer and history listener
     this.history = new HistoryDebouncer(props.history);
-    this.unlisten = props.history.listen(location => this.onQueryStringChange(location.search));
+    this.unlisten = props.history.listen((location) => this.onQueryStringChange(location.search));
 
     this.state = {
       filterGroups: {},
@@ -117,17 +116,17 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
 
   componentDidMount() {
     // Load module data
-    const modulesRequest = axios.get(nusmods.modulesUrl())
-      .then(({ data }) => data);
+    const modulesRequest = axios.get(nusmods.modulesUrl()).then(({ data }) => data);
 
     // Load faculty-department mapping
-    const makeFacultyRequest = semester =>
-      axios.get(nusmods.facultyDepartmentsUrl(semester))
+    const makeFacultyRequest = (semester) =>
+      axios
+        .get(nusmods.facultyDepartmentsUrl(semester))
         .then(({ data }) => invertFacultyDepartments(data));
 
     const facultiesRequest = Promise.all(Semesters.map(makeFacultyRequest))
       // Then merge all of the mappings together
-      .then(mappings => Object.assign({}, ...mappings));
+      .then((mappings) => Object.assign({}, ...mappings));
 
     // Finally initialize everything
     Promise.all([modulesRequest, facultiesRequest])
@@ -138,7 +137,7 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
         // Benchmark the amount of time taken to run the filters to determine if we can
         // use instant search
         const start = performance.now();
-        each(filterGroups, group => group.initFilters(modules));
+        each(filterGroups, (group) => group.initFilters(modules));
         const time = performance.now() - start;
 
         if ('instant' in params) {
@@ -148,7 +147,8 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
         } else {
           // By default, only turn on instant search for desktop and if the
           // benchmark earlier is fast enough
-          this.useInstantSearch = queryMatch(breakpointUp('sm')).matches && (time < INSTANT_SEARCH_THRESHOLD);
+          this.useInstantSearch =
+            queryMatch(breakpointUp('sm')).matches && time < INSTANT_SEARCH_THRESHOLD;
         }
 
         console.info(`${time}ms taken to init filters`); // eslint-disable-line
@@ -190,32 +190,38 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
   }
 
   onFilterChange = (newGroup: FilterGroup<*>, resetScroll: boolean = true) => {
-    this.setState(state => update(state, {
-      // Update filter group with its new state
-      filterGroups: { [newGroup.id]: { $set: newGroup } },
-      // Reset back to the first page
-      page: { $merge: { start: 0, current: 0 } },
-    }), () => {
-      // Update query string after state is updated
-      this.history.push({
-        ...this.props.history.location,
-        search: serializeGroups(this.state.filterGroups),
-      });
+    this.setState(
+      (state) =>
+        update(state, {
+          // Update filter group with its new state
+          filterGroups: { [newGroup.id]: { $set: newGroup } },
+          // Reset back to the first page
+          page: { $merge: { start: 0, current: 0 } },
+        }),
+      () => {
+        // Update query string after state is updated
+        this.history.push({
+          ...this.props.history.location,
+          search: serializeGroups(this.state.filterGroups),
+        });
 
-      // Scroll back to the top
-      if (resetScroll) window.scrollTo(0, 0);
-    });
+        // Scroll back to the top
+        if (resetScroll) window.scrollTo(0, 0);
+      },
+    );
   };
 
   onPageChange = (diff: PageRangeDiff) => {
-    this.setState(prevState => ({
-      page: mergePageRange(prevState.page, diff),
-    }), this.updatePageHash);
+    this.setState(
+      (prevState) => ({
+        page: mergePageRange(prevState.page, diff),
+      }),
+      this.updatePageHash,
+    );
   };
 
   onSearch(searchTerm: string) {
-    const filter = createSearchFilter(searchTerm)
-      .initFilters(this.state.modules);
+    const filter = createSearchFilter(searchTerm).initFilters(this.state.modules);
 
     defer(() => {
       this.onFilterChange(filter, false);
@@ -300,62 +306,39 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
             <SideMenu
               isOpen={isMenuOpen}
               toggleMenu={this.toggleMenu}
-              openIcon={<Filter aria-label={OPEN_MENU_LABEL} />}
-            >
+              openIcon={<Filter aria-label={OPEN_MENU_LABEL} />}>
               <div className={styles.moduleFilters}>
                 <header className={styles.filterHeader}>
                   <h3>Refine by</h3>
-                  {this.filterGroups().some(group => group.isActive()) &&
+                  {this.filterGroups().some((group) => group.isActive()) && (
                     <button
                       className="btn btn-link btn-sm"
                       type="button"
-                      onClick={() => this.setState({
-                        filterGroups: mapValues(groups, (group: FilterGroup<*>) => group.reset()),
-                      })}
-                    >
+                      onClick={() =>
+                        this.setState({
+                          filterGroups: mapValues(groups, (group: FilterGroup<*>) => group.reset()),
+                        })
+                      }>
                       Clear Filters
-                    </button>}
+                    </button>
+                  )}
                 </header>
 
-                <ChecklistFilters
-                  group={groups[SEMESTER]}
-                  {...filterProps}
-                />
+                <ChecklistFilters group={groups[SEMESTER]} {...filterProps} />
 
-                <ChecklistFilters
-                  group={groups[LEVELS]}
-                  {...filterProps}
-                />
+                <ChecklistFilters group={groups[LEVELS]} {...filterProps} />
 
-                <ChecklistFilters
-                  group={groups[EXAMS]}
-                  {...filterProps}
-                />
+                <ChecklistFilters group={groups[EXAMS]} {...filterProps} />
 
-                <ChecklistFilters
-                  group={groups[MODULE_CREDITS]}
-                  {...filterProps}
-                />
+                <ChecklistFilters group={groups[MODULE_CREDITS]} {...filterProps} />
 
-                <DropdownListFilters
-                  group={groups[FACULTY]}
-                  {...filterProps}
-                />
+                <DropdownListFilters group={groups[FACULTY]} {...filterProps} />
 
-                <DropdownListFilters
-                  group={groups[DEPARTMENT]}
-                  {...filterProps}
-                />
+                <DropdownListFilters group={groups[DEPARTMENT]} {...filterProps} />
 
-                <TimeslotFilters
-                  group={groups[LECTURE_TIMESLOTS]}
-                  {...filterProps}
-                />
+                <TimeslotFilters group={groups[LECTURE_TIMESLOTS]} {...filterProps} />
 
-                <TimeslotFilters
-                  group={groups[TUTORIAL_TIMESLOTS]}
-                  {...filterProps}
-                />
+                <TimeslotFilters group={groups[TUTORIAL_TIMESLOTS]} {...filterProps} />
               </div>
             </SideMenu>
           </div>
@@ -365,11 +348,13 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   searchTerm: state.moduleFinder.search.term,
 });
 
 // Explicitly naming the components to make HMR work
 const ModuleFinderContainerWithRouter = withRouter(ModuleFinderContainerComponent);
-const ModuleFinderContainer = connect(mapStateToProps, { resetModuleFinder })(ModuleFinderContainerWithRouter);
+const ModuleFinderContainer = connect(mapStateToProps, { resetModuleFinder })(
+  ModuleFinderContainerWithRouter,
+);
 export default ModuleFinderContainer;

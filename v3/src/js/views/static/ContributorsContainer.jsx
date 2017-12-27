@@ -54,7 +54,8 @@ class ContributorsContainer extends Component<Props, State> {
   }
 
   componentWillMount() {
-    axios.get(CONTRIBUTORS_URL)
+    axios
+      .get(CONTRIBUTORS_URL)
       .then((response) => {
         this.setState({
           contributors: response.data,
@@ -75,53 +76,56 @@ class ContributorsContainer extends Component<Props, State> {
       <StaticPage title={title}>
         <h2>{title}</h2>
         <hr />
-        <p>NUSMods is an 100% open source project that relies on the continuous support
-          of its individual contributors and NUS student community. Many student hackers have
-          reported issues, suggested improvements, or even better, write code and contribute patches!</p>
-        <p>Please reach out to us if you are interested in helping!
-          Join us and make NUS a better place for its students (your friends)!</p>
+        <p>
+          NUSMods is an 100% open source project that relies on the continuous support of its
+          individual contributors and NUS student community. Many student hackers have reported
+          issues, suggested improvements, or even better, write code and contribute patches!
+        </p>
+        <p>
+          Please reach out to us if you are interested in helping! Join us and make NUS a better
+          place for its students (your friends)!
+        </p>
         <br />
         {this.state.isLoading && <Loader />}
-        {this.state.isError &&
+        {this.state.isError && (
           <div className="alert alert-danger">
             <strong>Something went wrong!</strong>
             {this.state.errorMessage}
           </div>
-        }
-        {this.state.contributors && <div className="row">
-          {this.state.contributors.map(contributor => (
-            <div className="col-md-3 col-6 text-center" key={contributor.id}>
-              <div>
-                <a href={contributor.html_url}>
-                  <img
-                    src={contributor.avatar_url}
-                    alt={`${contributor.login} thumbnail`}
-                    className="rounded-circle img-fluid img-thumbnail"
-                  />
-                </a>
+        )}
+        {this.state.contributors && (
+          <div className="row">
+            {this.state.contributors.map((contributor) => (
+              <div className="col-md-3 col-6 text-center" key={contributor.id}>
+                <div>
+                  <a href={contributor.html_url}>
+                    <img
+                      src={contributor.avatar_url}
+                      alt={`${contributor.login} thumbnail`}
+                      className="rounded-circle img-fluid img-thumbnail"
+                    />
+                  </a>
+                </div>
+                <div className="font-weight-bold">
+                  <a href={contributor.html_url} target="_blank" rel="noreferrer noopener">
+                    {contributor.login}
+                  </a>
+                </div>
+                <p>
+                  <a
+                    className="text-muted"
+                    href={`https://github.com/nusmodifications/nusmods/commits?author=${
+                      contributor.login
+                    }`}
+                    target="_blank"
+                    rel="noreferrer noopener">
+                    {contributor.contributions} commits
+                  </a>
+                </p>
               </div>
-              <div className="font-weight-bold">
-                <a
-                  href={contributor.html_url}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                >
-                  {contributor.login}
-                </a>
-              </div>
-              <p>
-                <a
-                  className="text-muted"
-                  href={`https://github.com/nusmodifications/nusmods/commits?author=${contributor.login}`}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                >
-                  {contributor.contributions} commits
-                </a>
-              </p>
-            </div>
-          ))}
-        </div>}
+            ))}
+          </div>
+        )}
       </StaticPage>
     );
   }

@@ -23,23 +23,21 @@ export class FeedbackModalComponent extends PureComponent<Props> {
       <Modal
         isOpen={this.props.isOpen}
         onRequestClose={this.props.toggleFeedback}
-        className={styles.modal}
-      >
+        className={styles.modal}>
         <CloseButton onClick={this.props.toggleFeedback} />
         <div className={styles.content}>
           <Heart className={styles.topIcon} />
           <h1>Let us know what you think!</h1>
-          <p>Thank you for your time! You can talk to us on Messenger, file
-            an issue on GitHub, or fill up a short feedback form
-            (takes you less than 3 minutes).
+          <p>
+            Thank you for your time! You can talk to us on Messenger, file an issue on GitHub, or
+            fill up a short feedback form (takes you less than 3 minutes).
           </p>
           <div className={styles.links}>
             <a
               className={styles.messenger}
               href={config.contact.messenger}
               target="_blank"
-              rel="noreferrer noopener"
-            >
+              rel="noreferrer noopener">
               <Facebook />
               Messenger
             </a>
@@ -47,8 +45,7 @@ export class FeedbackModalComponent extends PureComponent<Props> {
               className={styles.github}
               href={config.contact.githubRepo}
               target="_blank"
-              rel="noreferrer noopener"
-            >
+              rel="noreferrer noopener">
               <GitHub />
               GitHub
             </a>
@@ -56,8 +53,7 @@ export class FeedbackModalComponent extends PureComponent<Props> {
               className={styles.form}
               href="https://goo.gl/forms/iZd8uVXAiJfu8D6e2"
               target="_blank"
-              rel="noreferrer noopener"
-            >
+              rel="noreferrer noopener">
               <Mail />
               Feedback Form
             </a>
@@ -68,6 +64,9 @@ export class FeedbackModalComponent extends PureComponent<Props> {
   }
 }
 
-export default connect((state: State) => ({
-  isOpen: state.app.isFeedbackModalOpen,
-}), { toggleFeedback })(FeedbackModalComponent);
+export default connect(
+  (state: State) => ({
+    isOpen: state.app.isFeedbackModalOpen,
+  }),
+  { toggleFeedback },
+)(FeedbackModalComponent);

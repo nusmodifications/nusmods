@@ -9,30 +9,28 @@ const config = require('../config/app-config.json');
 const ayBaseUrl /*: string */ = `${config.apiBaseUrl}/${config.academicYear.replace('/', '-')}`;
 
 const NUSModsApi = {
-  ayBaseUrl: ()/*: string */ => ayBaseUrl,
+  ayBaseUrl: () => /*: string */ ayBaseUrl,
 
   // List of modules for the entire acad year.
-  moduleListUrl: ()/*: string */ =>
-    `${ayBaseUrl}/moduleList.json`,
+  moduleListUrl: () => /*: string */ `${ayBaseUrl}/moduleList.json`,
 
   // Module for that acad year. Not tied to any semester.
-  moduleDetailsUrl: (moduleCode /*: ModuleCode */)/*: string */ =>
+  moduleDetailsUrl: (moduleCode /*: ModuleCode */ /*: string */) =>
     `${ayBaseUrl}/modules/${moduleCode}.json`,
 
   // List of all modules for the entire acad year
-  modulesUrl: ()/*: string */ =>
-    `${ayBaseUrl}/moduleInformation.json`,
+  modulesUrl: () => /*: string */ `${ayBaseUrl}/moduleInformation.json`,
 
   // List of all venues for one semester in the current acad year
   // TODO: implement api for all venues available
-  venueListUrl: (semester /*: Semester */)/*: string */ => `${ayBaseUrl}/${semester}/venues.json`,
+  venueListUrl: (semester /*: Semester */ /*: string */) => `${ayBaseUrl}/${semester}/venues.json`,
 
   // List of all venue's info for one semester in the current acad year
-  venuesUrl: (semester/*: Semester */)/*: string */ =>
+  venuesUrl: (semester /*: Semester */ /*: string */) =>
     `${ayBaseUrl}/${semester}/venueInformation.json`,
 
   // List of departments mapped to faculties
-  facultyDepartmentsUrl: (semester/*: Semester */)/*: string */ =>
+  facultyDepartmentsUrl: (semester /*: Semester */ /*: string */) =>
     `${ayBaseUrl}/${semester}/facultyDepartments.json`,
 };
 

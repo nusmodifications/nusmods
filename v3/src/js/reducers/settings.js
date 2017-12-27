@@ -3,9 +3,7 @@ import { uniq, without } from 'lodash';
 import update from 'immutability-helper';
 
 import type { FSA } from 'types/redux';
-import type {
-  SettingsState,
-} from 'types/reducers';
+import type { SettingsState } from 'types/reducers';
 
 import {
   SELECT_NEW_STUDENT,
@@ -43,7 +41,7 @@ function hidden(state = [], action: FSA) {
     case HIDE_LESSON_IN_TIMETABLE:
       return [action.payload, ...state];
     case SHOW_LESSON_IN_TIMETABLE:
-      return state.filter(c => c !== action.payload);
+      return state.filter((c) => c !== action.payload);
     default:
       return state;
   }
@@ -88,14 +86,14 @@ function settings(state: SettingsState = defaultSettingsState, action: FSA): Set
     case DISMISS_CORS_NOTIFICATION:
       return update(state, {
         corsNotification: {
-          dismissed: rounds => uniq([...rounds, action.payload.round]),
+          dismissed: (rounds) => uniq([...rounds, action.payload.round]),
         },
       });
 
     case ENABLE_CORS_NOTIFICATION:
       return update(state, {
         corsNotification: {
-          dismissed: rounds => without(rounds, action.payload.round),
+          dismissed: (rounds) => without(rounds, action.payload.round),
         },
       });
 

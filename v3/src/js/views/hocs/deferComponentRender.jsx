@@ -12,7 +12,9 @@ type State = {
  * Referenced from
  * https://medium.com/@paularmstrong/twitter-lite-and-high-performance-react-progressive-web-apps-at-scale-d28a00e780a3
  */
-function deferComponentRender<Props: {}>(WrappedComponent: ComponentType<Props>): ComponentType<$Diff<Props, State>> {
+function deferComponentRender<Props: {}>(
+  WrappedComponent: ComponentType<Props>,
+): ComponentType<$Diff<Props, State>> {
   return class extends Component<Props, State> {
     static displayName = wrapComponentName(WrappedComponent, deferComponentRender.name);
 

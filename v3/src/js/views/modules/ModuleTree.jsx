@@ -35,18 +35,16 @@ function incrementLayer(layer: number, name: string) {
 function Branch({ layer, branches }: { layer: number, branches: TreeDisplay[] }) {
   return (
     <ul className={styles.tree}>
-      {branches.map((child) => {
-        return _.castArray(child).map((subchild) => {
-          return (
-            <Tree
-              key={subchild.name}
-              layer={incrementLayer(layer, subchild.name)}
-              name={subchild.name}
-              branches={subchild.children}
-            />
-          );
-        });
-      })}
+      {branches.map((child) =>
+        _.castArray(child).map((subchild) => (
+          <Tree
+            key={subchild.name}
+            layer={incrementLayer(layer, subchild.name)}
+            name={subchild.name}
+            branches={subchild.children}
+          />
+        )),
+      )}
     </ul>
   );
 }
@@ -57,18 +55,21 @@ function Tree({ layer, name, branches, isPrereq = false }: TreeDisplay) {
     <li
       className={classnames(styles.branch, {
         [styles.prereqBranch]: isPrereq,
-      })}
-    >
+      })}>
       <div
         className={classnames(styles.node, {
           [`color-${layer}`]: !isConditional,
           [styles.conditional]: isConditional,
           [styles.prereqNode]: isPrereq,
-        })}
-      >
-        {isConditional ? formatConditional(name) : <LinkModuleCodes className={styles.link}>{name}</LinkModuleCodes>}
+        })}>
+        {isConditional ? (
+          formatConditional(name)
+        ) : (
+          <LinkModuleCodes className={styles.link}>{name}</LinkModuleCodes>
+        )}
       </div>
-      {branches && branches.length > 0 && <Branch layer={incrementLayer(layer, name)} branches={branches} />}
+      {branches &&
+        branches.length > 0 && <Branch layer={incrementLayer(layer, name)} branches={branches} />}
     </li>
   );
 }
@@ -78,14 +79,17 @@ function ModuleTree(props: Props) {
   const lockedModules = props.module.LockedModules;
   return (
     <div className={styles.container}>
-      {lockedModules && lockedModules.length > 0 && (
-        <Fragment>
-          <ul className={styles.prereqTree}>
-            {lockedModules.map(name => <Tree key={name} layer={0} name={name} branches={null} isPrereq />)}
-          </ul>
-          <div className={classnames(styles.node, styles.conditional)}>needs</div>
-        </Fragment>
-      )}
+      {lockedModules &&
+        lockedModules.length > 0 && (
+          <Fragment>
+            <ul className={styles.prereqTree}>
+              {lockedModules.map((name) => (
+                <Tree key={name} layer={0} name={name} branches={null} isPrereq />
+              ))}
+            </ul>
+            <div className={classnames(styles.node, styles.conditional)}>needs</div>
+          </Fragment>
+        )}
       <ul className={classnames(styles.tree, styles.root)}>
         <Tree layer={1} name={modTree.name} branches={_.castArray(modTree.children)} />
       </ul>

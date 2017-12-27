@@ -21,10 +21,7 @@ export function timetablePage(semester: Semester): string {
 }
 
 export const TIMETABLE_SHARE = 'share';
-export function timetableShare(
-  semester: Semester,
-  timetable: SemTimetableConfig,
-): string {
+export function timetableShare(semester: Semester, timetable: SemTimetableConfig): string {
   return `${timetablePage(semester)}/${TIMETABLE_SHARE}?${serializeTimetable(timetable)}`;
 }
 

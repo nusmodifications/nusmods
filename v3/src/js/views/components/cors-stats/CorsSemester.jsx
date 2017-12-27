@@ -45,10 +45,7 @@ export default class CorsSemester extends PureComponent<Props, State> {
           <div className="col-sm-3">
             <h4>Quota</h4>
             <p>
-              <CorsQuota
-                bidders={stats.bids}
-                quota={stats.quota}
-              />
+              <CorsQuota bidders={stats.bids} quota={stats.quota} />
             </p>
           </div>
 
@@ -61,31 +58,39 @@ export default class CorsSemester extends PureComponent<Props, State> {
 
         <button
           className={classnames('btn btn-link btn-svg', styles.detailsHeading)}
-          onClick={() => this.setState({ showDetails: !showDetails })}
-        >
-          {showDetails
-            ? <MinusSquare className="svg svg-small" />
-            : <PlusSquare className="svg svg-small" />}
+          onClick={() => this.setState({ showDetails: !showDetails })}>
+          {showDetails ? (
+            <MinusSquare className="svg svg-small" />
+          ) : (
+            <PlusSquare className="svg svg-small" />
+          )}
           Detailed bidding information
         </button>
 
-        {showDetails &&
+        {showDetails && (
           <div className={styles.details}>
             <div className="row">
               <div className="col-md">
-                <h4 className={styles.roundHeading}>Round 1 <small>Program account only</small></h4>
+                <h4 className={styles.roundHeading}>
+                  Round 1 <small>Program account only</small>
+                </h4>
                 <CorsRound stats={roundStats[1]} showFaculty={showFaculty} />
               </div>
               <div className="col-md">
-                <h4 className={styles.roundHeading}>Round 2 <small>Program and general account</small></h4>
+                <h4 className={styles.roundHeading}>
+                  Round 2 <small>Program and general account</small>
+                </h4>
                 <CorsRound stats={roundStats[2]} showFaculty={showFaculty} />
               </div>
               <div className="col-md">
-                <h4 className={styles.roundHeading}>Round 3 <small>All students</small></h4>
+                <h4 className={styles.roundHeading}>
+                  Round 3 <small>All students</small>
+                </h4>
                 <CorsRound stats={roundStats[3]} showFaculty={showFaculty} />
               </div>
             </div>
-          </div>}
+          </div>
+        )}
       </div>
     );
   }

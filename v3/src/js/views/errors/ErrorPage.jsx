@@ -43,28 +43,29 @@ export default class NotFoundPage extends PureComponent<Props> {
             {this.errorMessage()}
           </h1>
 
-          {showRefresh &&
+          {showRefresh && (
             <Online>
               <p>
-                <button
-                  className={styles.link}
-                  onClick={() => window.location.reload(true)}
-                >Refreshing the page</button> may help.
+                <button className={styles.link} onClick={() => window.location.reload(true)}>
+                  Refreshing the page
+                </button>{' '}
+                may help.
               </p>
-            </Online>}
+            </Online>
+          )}
 
-          {eventId &&
+          {eventId && (
             <Online isLive={false}>
               <p>
-                An error report has been made and we will look into this.
-                We would really appreciate it if you could <button
-                  className={styles.link}
-                  onClick={() => Raven.showReportDialog({ eventId })}
-                >
-                  tell us more about what happened</button> so we can
-                better fix this.
+                An error report has been made and we will look into this. We would really appreciate
+                it if you could{' '}
+                <button className={styles.link} onClick={() => Raven.showReportDialog({ eventId })}>
+                  tell us more about what happened
+                </button>{' '}
+                so we can better fix this.
               </p>
-            </Online>}
+            </Online>
+          )}
         </div>
       </div>
     );

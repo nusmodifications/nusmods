@@ -2,8 +2,20 @@
 import { first, groupBy, head, last, map, mapValues, min, sumBy } from 'lodash';
 
 import type { CorsRound, CorsPeriod } from 'config';
-import type { BiddingStat, GroupedBiddingStat, SemesterStats, StudentType, BiddingSummary } from 'types/cors';
-import { studentTypes, NON_BIDDING, NEW_STUDENT, RETURNING_STUDENT, GENERAL_ACCOUNT } from 'types/cors';
+import type {
+  BiddingStat,
+  GroupedBiddingStat,
+  SemesterStats,
+  StudentType,
+  BiddingSummary,
+} from 'types/cors';
+import {
+  studentTypes,
+  NON_BIDDING,
+  NEW_STUDENT,
+  RETURNING_STUDENT,
+  GENERAL_ACCOUNT,
+} from 'types/cors';
 import config from 'config';
 
 function appliesTo(studentAccountType: string): StudentType {
@@ -33,7 +45,8 @@ export function mergeBiddingStats(biddingStats: BiddingStat[]) {
   // Merge quotas and data from each lecture/sectional group - these groups are interchangeable
   // so its better to take their combined statistics instead
   const groupedStats = groupBy(biddingStats, (stats: BiddingStat) =>
-    [stats.AcadYear, stats.Semester, stats.Faculty, stats.Round, stats.StudentAcctType].join('-'));
+    [stats.AcadYear, stats.Semester, stats.Faculty, stats.Round, stats.StudentAcctType].join('-'),
+  );
   return map(groupedStats, (statsGroup: BiddingStat[]): GroupedBiddingStat => {
     // eslint-disable-next-line no-shadow
     const { AcadYear, Faculty, Semester, Round, StudentAcctType } = head(statsGroup);
@@ -45,15 +58,15 @@ export function mergeBiddingStats(biddingStats: BiddingStat[]) {
       Round,
 
       StudentType: appliesTo(StudentAcctType),
-      Quota: sumBy(statsGroup, stats => Number(stats.Quota)),
-      Bidders: sumBy(statsGroup, stats => Number(stats.Bidders)),
-      LowestSuccessfulBid: min(statsGroup.map(stats => Number(stats.LowestSuccessfulBid))),
+      Quota: sumBy(statsGroup, (stats) => Number(stats.Quota)),
+      Bidders: sumBy(statsGroup, (stats) => Number(stats.Bidders)),
+      LowestSuccessfulBid: min(statsGroup.map((stats) => Number(stats.LowestSuccessfulBid))),
     };
-  }).filter(stat => stat.StudentType !== NON_BIDDING);
+  }).filter((stat) => stat.StudentType !== NON_BIDDING);
 }
 
 export function findQuota(stats: GroupedBiddingStat[]): number {
-  const firstRound = min(stats.map(stat => stat.Round));
+  const firstRound = min(stats.map((stat) => stat.Round));
   return sumBy(stats, (stat) => {
     if (stat.Round === firstRound) return stat.Quota;
 
@@ -103,19 +116,25 @@ export function analyseStats(biddingStats: BiddingStat[]): { [string]: SemesterS
   const mergedStats = mergeBiddingStats(biddingStats);
 
   // Group by year and semester
-  const groupedBySem = groupBy(mergedStats, (stats: GroupedBiddingStat) =>
-    `${stats.AcadYear} ${config.shortSemesterNames[Number(stats.Semester)]}`);
+  const groupedBySem = groupBy(
+    mergedStats,
+    (stats: GroupedBiddingStat) =>
+      `${stats.AcadYear} ${config.shortSemesterNames[Number(stats.Semester)]}`,
+  );
 
   const extractStats = mapValues(groupedBySem, (stats: GroupedBiddingStat[]): SemesterStats => {
     // Check if there are multiple faculties
     const faculties = new Set();
-    stats.forEach(stat => faculties.add(stat.Faculty));
+    stats.forEach((stat) => faculties.add(stat.Faculty));
 
     // Find out how many people have managed to take the module to get a rough idea of
     // heavily subscribed a module is. This number of bidders may be higher than quota because
     // students can drop modules during bidding, so we cap it at quota
     const quota = findQuota(stats);
-    const bids = Math.min(quota, sumBy(stats, stat => Math.min(Number(stat.Bidders), Number(stat.Quota))));
+    const bids = Math.min(
+      quota,
+      sumBy(stats, (stat) => Math.min(Number(stat.Bidders), Number(stat.Quota))),
+    );
 
     const summary = biddingSummary(stats);
 
@@ -140,9 +159,9 @@ export function roundEnd(round: CorsRound): Date {
 }
 
 export function currentRound(now: Date = new Date()): ?CorsRound {
-  return config.corsSchedule.find(round => roundEnd(round) > now);
+  return config.corsSchedule.find((round) => roundEnd(round) > now);
 }
 
 export function currentPeriod(round: CorsRound, now: Date = new Date()): ?CorsPeriod {
-  return round.periods.find(period => period.endDate > now);
+  return round.periods.find((period) => period.endDate > now);
 }

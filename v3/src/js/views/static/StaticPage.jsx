@@ -17,7 +17,9 @@ function StaticPage(props: Props) {
     <div className="page-container">
       <ScrollToTop onComponentWillMount />
       <Helmet>
-        <title>{props.title} - {config.brandName}</title>
+        <title>
+          {props.title} - {config.brandName}
+        </title>
       </Helmet>
       <div className="row">
         <div className="col-md-8 offset-md-1">{props.children}</div>

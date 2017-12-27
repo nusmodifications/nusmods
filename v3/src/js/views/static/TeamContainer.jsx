@@ -47,8 +47,7 @@ function TeamMember({ member }: Props) {
                 <a
                   href={`https://www.facebook.com/${member.facebook}`}
                   title="Facebook profile"
-                  aria-label="Facebook profile"
-                >
+                  aria-label="Facebook profile">
                   <Facebook />
                 </a>
               </div>
@@ -59,8 +58,7 @@ function TeamMember({ member }: Props) {
                 <a
                   href={`https://www.twitter.com/${member.twitter}`}
                   title="Twitter profile"
-                  aria-label="Twitter profile"
-                >
+                  aria-label="Twitter profile">
                   <Twitter />
                 </a>
               </div>
@@ -68,7 +66,10 @@ function TeamMember({ member }: Props) {
 
             {member.github && (
               <div className="col-sm-1 col">
-                <a href={`https://www.github.com/${member.github}`} title="GitHub profile" aria-label="GitHub profile">
+                <a
+                  href={`https://www.github.com/${member.github}`}
+                  title="GitHub profile"
+                  aria-label="GitHub profile">
                   <GitHub />
                 </a>
               </div>
@@ -79,8 +80,7 @@ function TeamMember({ member }: Props) {
                 <a
                   href={`https://www.linkedin.com/in/${member.linkedin}`}
                   title="Linkedin profile"
-                  aria-label="Linkedin profile"
-                >
+                  aria-label="Linkedin profile">
                   <LinkedIn />
                 </a>
               </div>
@@ -98,17 +98,21 @@ export default function TeamContainer() {
       <h2>{title}</h2>
       <hr />
       <p>
-        NUSMods is an open source project that relies on the continuous support of its individual contributors and NUS
-        student community. We hope to involve more developers and contributors in making NUSMods even better. Please
-        reach out to us if you are interested in helping!
+        NUSMods is an open source project that relies on the continuous support of its individual
+        contributors and NUS student community. We hope to involve more developers and contributors
+        in making NUSMods even better. Please reach out to us if you are interested in helping!
       </p>
 
       <h4 className={styles.heading}>NUSMods Core (Active)</h4>
-      {teamMembers.filter(member => member.active).map(member => <TeamMember key={member.name} member={member} />)}
+      {teamMembers
+        .filter((member) => member.active)
+        .map((member) => <TeamMember key={member.name} member={member} />)}
       <hr />
 
       <h4 className={styles.heading}>NUSMods Alumni</h4>
-      {teamMembers.filter(member => !member.active).map(member => <TeamMember key={member.name} member={member} />)}
+      {teamMembers
+        .filter((member) => !member.active)
+        .map((member) => <TeamMember key={member.name} member={member} />)}
     </StaticPage>
   );
 }

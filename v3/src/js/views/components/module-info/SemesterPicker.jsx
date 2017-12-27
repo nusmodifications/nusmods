@@ -41,7 +41,7 @@ export default class SemesterPicker extends PureComponent<Props> {
     const { semesters, showDisabled } = this.props;
 
     each(this.semesterNames(), (name: string, key: string) => {
-      const semester = semesters.find(sem => String(sem) === key);
+      const semester = semesters.find((sem) => String(sem) === key);
       if (semester || showDisabled) map[name] = semester;
     });
 

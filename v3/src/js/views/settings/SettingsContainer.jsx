@@ -25,7 +25,9 @@ import availableThemes from 'data/themes.json';
 // import NewStudentSelect from 'views/components/NewStudentSelect';
 import ScrollToTop from 'views/components/ScrollToTop';
 import Timetable from 'views/timetable/Timetable';
-import CorsNotification, { corsNotificationText } from 'views/components/cors-info/CorsNotification';
+import CorsNotification, {
+  corsNotificationText,
+} from 'views/components/cors-info/CorsNotification';
 import { currentRound } from 'utils/cors';
 import { supportsCSSVariables } from 'utils/css';
 
@@ -97,34 +99,40 @@ function SettingsContainer(props: Props) {
       </div>
       <hr />
       */}
-      {supportsCSSVariables() &&
+      {supportsCSSVariables() && (
         <div>
           <h4>Night Mode</h4>
           <div className={classnames(styles.toggleRow, 'row')}>
             <div className={classnames(styles.toggleDescription, 'col-sm-7')}>
-              <p>Night mode turns the light surfaces of the page dark, creating an
-                      experience ideal for the dark. Try it out!
+              <p>
+                Night mode turns the light surfaces of the page dark, creating an experience ideal
+                for the dark. Try it out!
               </p>
-              <p>Protip: Press <kbd>X</kbd> to toggle modes anywhere on NUSMods.</p>
+              <p>
+                Protip: Press <kbd>X</kbd> to toggle modes anywhere on NUSMods.
+              </p>
             </div>
             <div className={classnames('col-sm-4 offset-sm-1', styles.toggle)}>
               <ModeSelect mode={props.mode} onSelectMode={props.selectMode} />
             </div>
           </div>
           <hr />
-        </div>}
+        </div>
+      )}
 
       <h4>Theme</h4>
 
       <p>Liven up your timetable with different color schemes!</p>
-      <p>Protip: Press <kbd>Z</kbd>/<kbd>C</kbd> to cycle through the themes anywhere on NUSMods.</p>
+      <p>
+        Protip: Press <kbd>Z</kbd>/<kbd>C</kbd> to cycle through the themes anywhere on NUSMods.
+      </p>
 
       <div className={styles.preview}>
         <Timetable lessons={previewTimetable} />
       </div>
 
       <div>
-        {availableThemes.map(theme => (
+        {availableThemes.map((theme) => (
           <ThemeOption
             key={theme.id}
             className={styles.themeOption}
@@ -158,31 +166,34 @@ function SettingsContainer(props: Props) {
 
       <hr />
 
-      {props.corsNotification.enabled && corsRound &&
-        <Fragment>
-          <div className={classnames(styles.toggleRow, 'row')}>
-            <div className={classnames(styles.toggleDescription, 'col-sm-7')}>
-              <p>{isSnoozed
-                ? 'You have snoozed reminders until the end of this round'
-                : 'You can also temporarily snooze the notification until the end of this round.'}</p>
+      {props.corsNotification.enabled &&
+        corsRound && (
+          <Fragment>
+            <div className={classnames(styles.toggleRow, 'row')}>
+              <div className={classnames(styles.toggleDescription, 'col-sm-7')}>
+                <p>
+                  {isSnoozed
+                    ? 'You have snoozed reminders until the end of this round'
+                    : 'You can also temporarily snooze the notification until the end of this round.'}
+                </p>
+              </div>
+              <div className={classnames('col-sm-4 offset-sm-1', styles.toggle)}>
+                <button
+                  className="btn btn-outline-primary"
+                  type="button"
+                  onClick={() =>
+                    isSnoozed
+                      ? props.enableCorsNotification(corsRound.round)
+                      : props.dismissCorsNotification(corsRound.round)
+                  }>
+                  {isSnoozed ? 'Unsnooze' : 'Snooze'}
+                </button>
+              </div>
             </div>
-            <div className={classnames('col-sm-4 offset-sm-1', styles.toggle)}>
-              <button
-                className="btn btn-outline-primary"
-                type="button"
-                onClick={() => (
-                  isSnoozed
-                    ? props.enableCorsNotification(corsRound.round)
-                    : props.dismissCorsNotification(corsRound.round)
-                )}
-              >
-                {isSnoozed ? 'Unsnooze' : 'Snooze'}
-              </button>
-            </div>
-          </div>
 
-          <hr />
-        </Fragment>}
+            <hr />
+          </Fragment>
+        )}
     </div>
   );
 }
@@ -195,16 +206,13 @@ const mapStateToProps = (state: State) => ({
   currentThemeId: state.theme.id,
 });
 
-const connectedSettings = connect(
-  mapStateToProps,
-  {
-    selectTheme,
-    selectNewStudent,
-    selectFaculty,
-    selectMode,
-    toggleCorsNotificationGlobally,
-    dismissCorsNotification,
-    enableCorsNotification,
-  },
-)(SettingsContainer);
+const connectedSettings = connect(mapStateToProps, {
+  selectTheme,
+  selectNewStudent,
+  selectFaculty,
+  selectMode,
+  toggleCorsNotificationGlobally,
+  dismissCorsNotification,
+  enableCorsNotification,
+})(SettingsContainer);
 export default deferComponentRender(connectedSettings);

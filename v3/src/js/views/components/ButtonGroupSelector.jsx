@@ -9,7 +9,7 @@ type Props = {
   classNames?: { [ButtonChoice]: string[] },
   size?: string,
   selectedChoice: ?ButtonChoice,
-  onChoiceSelect: (string) => void,
+  onChoiceSelect: string => void,
   ariaLabel?: string,
 };
 
@@ -30,18 +30,19 @@ export default function ButtonGroupSelector(props: Props) {
     const attr = attrs[choice] || {};
     const className = classNames[choice] || [];
 
-    return (<button
-      {...attr}
-      key={choice}
-      onClick={() => onChoiceSelect(choice)}
-      type="button"
-      className={classnames('btn', ...className, {
-        'btn-primary': selectedChoice === choice,
-        'btn-outline-primary': selectedChoice !== choice,
-      })}
-    >
-      {choice}
-    </button>);
+    return (
+      <button
+        {...attr}
+        key={choice}
+        onClick={() => onChoiceSelect(choice)}
+        type="button"
+        className={classnames('btn', ...className, {
+          'btn-primary': selectedChoice === choice,
+          'btn-outline-primary': selectedChoice !== choice,
+        })}>
+        {choice}
+      </button>
+    );
   });
 
   return (

@@ -45,8 +45,7 @@ class TimetableModulesTable extends Component<Props> {
               if (window.confirm(`Are you sure you want to remove ${module.ModuleCode}?`)) {
                 this.props.onRemoveModule(module.ModuleCode);
               }
-            }}
-          >
+            }}>
             <Trash2 className={styles.actionIcon} />
           </button>
           <button
@@ -60,8 +59,7 @@ class TimetableModulesTable extends Component<Props> {
               } else {
                 this.props.hideLessonInTimetable(module.ModuleCode);
               }
-            }}
-          >
+            }}>
             {module.hiddenInTimetable ? (
               <Eye className={styles.actionIcon} />
             ) : (
@@ -80,14 +78,13 @@ class TimetableModulesTable extends Component<Props> {
 
     return (
       <div className={classnames(styles.modulesTable, 'row')}>
-        {this.props.modules.map(module => (
+        {this.props.modules.map((module) => (
           <div
             className={classnames(styles.modulesTableRow, 'col-sm-6', {
               'col-lg-4': this.props.horizontalOrientation,
               'col-md-12': !this.props.horizontalOrientation,
             })}
-            key={module.ModuleCode}
-          >
+            key={module.ModuleCode}>
             <div className={styles.moduleColor}>
               <ColorPicker
                 label={`Change ${module.ModuleCode} timetable color`}
@@ -105,8 +102,7 @@ class TimetableModulesTable extends Component<Props> {
               <div className={styles.moduleExam}>
                 {getModuleExamDate(module, this.props.semester)
                   ? `Exam: ${getFormattedModuleExamDate(module, this.props.semester)}`
-                  : 'No Exam'
-                }
+                  : 'No Exam'}
                 &nbsp;&middot;&nbsp;
                 {module.ModuleCredit} MCs
               </div>

@@ -21,20 +21,19 @@ export default function Table(props: Props) {
 
   const tableHeader = (
     <thead>
-      <tr>
-        {props.headers.map((headerData, index) => <th key={index}>{headerData}</th>)}
-      </tr>
+      <tr>{props.headers.map((headerData, index) => <th key={index}>{headerData}</th>)}</tr>
     </thead>
   );
 
-  return props.data.length === 0 ?
+  return props.data.length === 0 ? (
     <p>{props.noDataText}</p>
-    :
+  ) : (
     <div className="table-responsive">
       {props.title && <h3 className="table-title">{props.title}</h3>}
       <table className="table table-sm">
         {tableHeader}
         {tableBody}
       </table>
-    </div>;
+    </div>
+  );
 }

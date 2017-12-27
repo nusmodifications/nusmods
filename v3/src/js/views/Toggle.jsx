@@ -33,8 +33,9 @@ export default class Toggle extends PureComponent<Props> {
               })}
               onClick={() => {
                 if (value !== isOn) onChange(value);
-              }}
-            >{label}</button>
+              }}>
+              {label}
+            </button>
           );
         })}
       </div>

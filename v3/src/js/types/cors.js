@@ -17,7 +17,6 @@ export type BiddingStat = {
   StudentAcctType: string,
 };
 
-
 // The student type which a bidding round is applicable to. This is expressed as a bitmask,
 // since a round can apply to more than one of these student types.
 // Usage:
@@ -53,7 +52,7 @@ export type BiddingSummary = {
       minBid: number,
       round: string,
     },
-  }
+  },
 };
 
 export type SemesterStats = {

@@ -59,7 +59,14 @@ class ModulesSelect extends Component<Props, State> {
   // downshift attaches label for us; autofocus only applies to modal
   /* eslint-disable jsx-a11y/label-has-for, jsx-a11y/no-autofocus */
   // TODO: Inject types from downshift when https://github.com/paypal/downshift/pull/180 is implemented
-  renderDropdown = ({ getLabelProps, getInputProps, getItemProps, isOpen, inputValue, highlightedIndex }: any) => {
+  renderDropdown = ({
+    getLabelProps,
+    getInputProps,
+    getItemProps,
+    isOpen,
+    inputValue,
+    highlightedIndex,
+  }: any) => {
     const { placeholder, disabled } = this.props;
     const { isModalOpen } = this.state;
     const results = this.getFilteredModules(inputValue);
@@ -80,39 +87,40 @@ class ModulesSelect extends Component<Props, State> {
           disabled={disabled}
           onFocus={this.onFocus}
           /* Also prevents iOS "Done" button from resetting input */
-          onBlur={() => { if (!inputValue && isModalOpen) this.toggleModal(); }}
+          onBlur={() => {
+            if (!inputValue && isModalOpen) this.toggleModal();
+          }}
         />
         {isModalOpen && <CloseButton className={styles.close} onClick={this.toggleModal} />}
         {showResults && (
           <ol className={styles.selectList}>
-            {results.map((module, index) => {
-              return module.isAdded ? (
-                <li
-                  key={module.ModuleCode}
-                  className={classnames(styles.option, styles.optionDisabled, {
-                    [styles.optionSelected]: highlightedIndex === index,
-                  })}
-                >
-                  {`${module.ModuleCode} ${module.ModuleTitle}`}
-                  <div>
-                    <span className="badge badge-info">Added</span>
-                  </div>
-                </li>
-              ) : (
-                <li
-                  {...getItemProps({
-                    key: module.ModuleCode,
-                    item: module.ModuleCode,
-                    index,
-                  })}
-                  className={classnames(styles.option, {
-                    [styles.optionSelected]: highlightedIndex === index,
-                  })}
-                >
-                  {`${module.ModuleCode} ${module.ModuleTitle}`}
-                </li>
-              );
-            })}
+            {results.map(
+              (module, index) =>
+                module.isAdded ? (
+                  <li
+                    key={module.ModuleCode}
+                    className={classnames(styles.option, styles.optionDisabled, {
+                      [styles.optionSelected]: highlightedIndex === index,
+                    })}>
+                    {`${module.ModuleCode} ${module.ModuleTitle}`}
+                    <div>
+                      <span className="badge badge-info">Added</span>
+                    </div>
+                  </li>
+                ) : (
+                  <li
+                    {...getItemProps({
+                      key: module.ModuleCode,
+                      item: module.ModuleCode,
+                      index,
+                    })}
+                    className={classnames(styles.option, {
+                      [styles.optionSelected]: highlightedIndex === index,
+                    })}>
+                    {`${module.ModuleCode} ${module.ModuleTitle}`}
+                  </li>
+                ),
+            )}
           </ol>
         )}
         {showTip && (
@@ -146,7 +154,10 @@ class ModulesSelect extends Component<Props, State> {
         <button className={styles.input} onClick={this.toggleModal} disabled={disabled}>
           {this.props.placeholder}
         </button>
-        <Modal isOpen={!disabled && isModalOpen} onRequestClose={this.toggleModal} className={styles.modal}>
+        <Modal
+          isOpen={!disabled && isModalOpen}
+          onRequestClose={this.toggleModal}
+          className={styles.modal}>
           {downshiftComponent}
         </Modal>
       </div>

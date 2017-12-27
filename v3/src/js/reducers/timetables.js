@@ -1,28 +1,19 @@
 // @flow
 import type { FSA } from 'types/redux';
-import type {
-  ClassNo,
-  LessonType,
-} from 'types/modules';
-import type {
-  ModuleLessonConfig,
-  TimetableConfig,
-  SemTimetableConfig,
-} from 'types/timetables';
+import type { ClassNo, LessonType } from 'types/modules';
+import type { ModuleLessonConfig, TimetableConfig, SemTimetableConfig } from 'types/timetables';
 
 import _ from 'lodash';
 
-import {
-  ADD_MODULE,
-  REMOVE_MODULE,
-  CHANGE_LESSON,
-  SET_TIMETABLE,
-} from 'actions/timetables';
+import { ADD_MODULE, REMOVE_MODULE, CHANGE_LESSON, SET_TIMETABLE } from 'actions/timetables';
 
 // Map of LessonType to ClassNo.
 const defaultModuleLessonConfig: ModuleLessonConfig = {};
 
-function moduleLessonConfig(state: ModuleLessonConfig = defaultModuleLessonConfig, action: FSA): ModuleLessonConfig {
+function moduleLessonConfig(
+  state: ModuleLessonConfig = defaultModuleLessonConfig,
+  action: FSA,
+): ModuleLessonConfig {
   switch (action.type) {
     case CHANGE_LESSON: {
       if (!action.payload) return state;
@@ -45,7 +36,10 @@ function moduleLessonConfig(state: ModuleLessonConfig = defaultModuleLessonConfi
 // Map of ModuleCode to module lesson config.
 const defaultSemTimetableConfig: SemTimetableConfig = {};
 
-function semTimetable(state: SemTimetableConfig = defaultSemTimetableConfig, action: FSA): SemTimetableConfig {
+function semTimetable(
+  state: SemTimetableConfig = defaultSemTimetableConfig,
+  action: FSA,
+): SemTimetableConfig {
   const moduleCode = _.get(action, 'payload.moduleCode');
   if (!moduleCode) return state;
 

@@ -41,7 +41,7 @@ export default class FilterGroup<Filter: ModuleFilter> {
   activeFilters: Filter[];
 
   constructor(id: FilterGroupId, label: string, filters: Filter[]) {
-    this.filters = keyBy(filters, filter => filter.id);
+    this.filters = keyBy(filters, (filter) => filter.id);
     this.id = id;
     this.label = label;
 
@@ -49,18 +49,17 @@ export default class FilterGroup<Filter: ModuleFilter> {
   }
 
   initFilters(modules: Module[]) {
-    values(this.filters).forEach(filter => filter.initCount(modules));
+    values(this.filters).forEach((filter) => filter.initCount(modules));
     return this;
   }
 
   updateActiveFilters() {
-    this.activeFilters = values(this.filters)
-      .filter(filter => filter.enabled);
+    this.activeFilters = values(this.filters).filter((filter) => filter.enabled);
   }
 
   filteredModules(): Set<ModuleCode> {
     // Within each FilterGroup, we take the union of the results from all active filters
-    return union(...this.activeFilters.map(filter => filter.filteredModules));
+    return union(...this.activeFilters.map((filter) => filter.filteredModules));
   }
 
   toggle(idOrFilter: string | Filter, value: ?boolean): FilterGroup<Filter> {
@@ -78,8 +77,9 @@ export default class FilterGroup<Filter: ModuleFilter> {
 
   reset(): FilterGroup<Filter> {
     let group = this;
-    this.activeFilters
-      .forEach((filter) => { group = group.toggle(filter); });
+    this.activeFilters.forEach((filter) => {
+      group = group.toggle(filter);
+    });
     return group;
   }
 
@@ -90,9 +90,7 @@ export default class FilterGroup<Filter: ModuleFilter> {
   // Query string (de)serialization - this allows the currently enabled filters to be
   // embedded directly
   toQueryString(): string {
-    return this.activeFilters
-      .map(filter => filter.id)
-      .join(ID_DELIMITER);
+    return this.activeFilters.map((filter) => filter.id).join(ID_DELIMITER);
   }
 
   fromQueryString(filterIds: string = ''): FilterGroup<Filter> {
@@ -113,11 +111,10 @@ export default class FilterGroup<Filter: ModuleFilter> {
    */
   static union(filterGroups: FilterGroup<any>[], exclude?: FilterGroup<any>): ?Set<ModuleCode> {
     const excludedId = exclude ? exclude.id : null;
-    const modules = filterGroups
-      .filter(group => group.isActive() && group.id !== excludedId);
+    const modules = filterGroups.filter((group) => group.isActive() && group.id !== excludedId);
 
     if (modules.length === 0) return null;
-    return intersection(...modules.map(group => group.filteredModules()));
+    return intersection(...modules.map((group) => group.filteredModules()));
   }
 
   /**
@@ -131,6 +128,6 @@ export default class FilterGroup<Filter: ModuleFilter> {
   static apply(modules: Module[], filterGroups: FilterGroup<any>[]): Module[] {
     const filteredModuleCodes = FilterGroup.union(filterGroups);
     if (!filteredModuleCodes) return modules;
-    return modules.filter(module => filteredModuleCodes.has(module.ModuleCode));
+    return modules.filter((module) => filteredModuleCodes.has(module.ModuleCode));
   }
 }

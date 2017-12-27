@@ -1,9 +1,6 @@
 // @flow
 import type { FSA } from 'types/redux';
-import type {
-  ColorMapping,
-  ThemeState,
-} from 'types/reducers';
+import type { ColorMapping, ThemeState } from 'types/reducers';
 import type { Theme } from 'types/settings';
 
 import { omit, values } from 'lodash';
@@ -17,10 +14,7 @@ import {
 } from 'actions/theme';
 import themes from 'data/themes.json';
 
-import {
-  VERTICAL,
-  HORIZONTAL,
-} from 'types/reducers';
+import { VERTICAL, HORIZONTAL } from 'types/reducers';
 
 const defaultColorsState: ColorMapping = {};
 export const defaultThemeState: ThemeState = {
@@ -37,9 +31,10 @@ function colors(state: ColorMapping, action: FSA): ColorMapping {
   }
   switch (action.type) {
     case ADD_MODULE: {
-      const colorIndex = typeof action.payload.colorIndex === 'number'
-        ? action.payload.colorIndex
-        : getNewColor(values(state));
+      const colorIndex =
+        typeof action.payload.colorIndex === 'number'
+          ? action.payload.colorIndex
+          : getNewColor(values(state));
       return {
         ...state,
         [action.payload.moduleCode]: colorIndex,
@@ -78,9 +73,9 @@ function theme(state: ThemeState = defaultThemeState, action: FSA): ThemeState {
         ...state,
         id: action.payload,
       };
-    case CYCLE_THEME:
-    {
-      const newThemeIndex = (themeIds.indexOf(state.id) + themeIds.length + action.payload) % themeIds.length;
+    case CYCLE_THEME: {
+      const newThemeIndex =
+        (themeIds.indexOf(state.id) + themeIds.length + action.payload) % themeIds.length;
       return {
         ...state,
         id: themeIds[newThemeIndex],

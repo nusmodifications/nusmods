@@ -28,7 +28,7 @@ const defaultModuleBankState: ModuleBank = {
 
 function precomputeFromModuleList(moduleList: ModuleList) {
   // Cache a mapping of all module codes to module data for fast module data lookup
-  const moduleCodes = _.zipObject(moduleList.map(module => module.ModuleCode), moduleList);
+  const moduleCodes = _.zipObject(moduleList.map((module) => module.ModuleCode), moduleList);
 
   return { moduleCodes };
 }
@@ -70,13 +70,15 @@ export function getSemModuleSelectList(
   semester: Semester,
   semTimetableConfig: SemTimetableConfig,
 ): ModuleSelectListItem[] {
-  return state.moduleList
-    // In specified semester and not within the timetable.
-    .filter(item => item.Semesters.includes(semester))
-    .map(mod => ({
-      ...mod,
-      isAdded: mod.ModuleCode in semTimetableConfig,
-    }));
+  return (
+    state.moduleList
+      // In specified semester and not within the timetable.
+      .filter((item) => item.Semesters.includes(semester))
+      .map((mod) => ({
+        ...mod,
+        isAdded: mod.ModuleCode in semTimetableConfig,
+      }))
+  );
 }
 
 export default moduleBank;

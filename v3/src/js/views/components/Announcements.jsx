@@ -53,26 +53,21 @@ class Announcements extends PureComponent<Props, State> {
 
         <div className={styles.body}>
           <h3>Welcome to NUSMods R!</h3>
-          <p>New and improved, just in time for the second semester.{' '}
+          <p>
+            New and improved, just in time for the second semester.{' '}
             <a
               href="http://blog.nusmods.com/nusmods-r-rethought-redesigned-rewritten-reborn"
               target="_blank"
-              rel="noopener noreferrer"
-            >
+              rel="noopener noreferrer">
               Check out what&apos;s new
             </a>, and{' '}
-            <button
-              className="btn btn-inline"
-              type="button"
-              onClick={this.props.toggleFeedback}
-            >tell us what you think</button>.</p>
+            <button className="btn btn-inline" type="button" onClick={this.props.toggleFeedback}>
+              tell us what you think
+            </button>.
+          </p>
         </div>
 
-        {STORAGE_KEY &&
-          <CloseButton
-            className={styles.closeButton}
-            onClick={this.dismiss}
-          />}
+        {STORAGE_KEY && <CloseButton className={styles.closeButton} onClick={this.dismiss} />}
       </div>
     );
   }

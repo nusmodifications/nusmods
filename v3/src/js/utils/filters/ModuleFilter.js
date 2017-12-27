@@ -23,8 +23,8 @@ export default class ModuleFilter {
     this.filteredModules = new Set();
 
     modules
-      .filter(module => this.test(module))
-      .forEach(module => this.filteredModules.add(module.ModuleCode));
+      .filter((module) => this.test(module))
+      .forEach((module) => this.filteredModules.add(module.ModuleCode));
   }
 
   /**
@@ -36,7 +36,9 @@ export default class ModuleFilter {
    */
   count(modules: ?Set<ModuleCode>) {
     if (!this.filteredModules) {
-      throw new Error(`count() method called before initCount() on filter ${this.label} (${this.id})`);
+      throw new Error(
+        `count() method called before initCount() on filter ${this.label} (${this.id})`,
+      );
     }
 
     if (!modules) return this.filteredModules.size;
