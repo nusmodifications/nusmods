@@ -27,6 +27,11 @@
   right: 0;
   bottom: 0;
   width: 3rem;
+
+  @include media-breakpoint-down(sm) {
+    // Visually align with alert box close buttons
+    width: 4rem;
+  }
 }
 
 @include media-breakpoint-up(md) {

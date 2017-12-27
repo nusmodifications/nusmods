@@ -15,6 +15,9 @@ import CloseButton from 'views/components/CloseButton';
 import styles from './CorsNotification.scss';
 
 type Props = {
+  // True only in the preview in the settings page since we don't want
+  // users accidentally dismissing that
+  hideCloseButton?: boolean,
   enabled: boolean,
   dismissedRounds: string[],
 
@@ -58,7 +61,7 @@ export class CorsNotificationComponent extends PureComponent<Props> {
   }
 
   render() {
-    const { enabled, dismissedRounds } = this.props;
+    const { enabled, dismissedRounds, hideCloseButton } = this.props;
 
     // User has disabled CORS notification globally
     if (!enabled) return null;
@@ -77,10 +80,11 @@ export class CorsNotificationComponent extends PureComponent<Props> {
           <div className={styles.notification}>{corsNotificationText(true, round, this.currentTime())}</div>
         </a>
 
-        <CloseButton
-          className={styles.close}
-          onClick={() => this.props.dismissCorsNotification(round.round)}
-        />
+        {!hideCloseButton &&
+          <CloseButton
+            className={styles.close}
+            onClick={() => this.props.dismissCorsNotification(round.round)}
+          />}
       </div>
     );
   }

@@ -140,7 +140,7 @@ function SettingsContainer(props: Props) {
       <h4>CORS Bidding Reminder</h4>
 
       <div className={styles.notificationPreview}>
-        <CorsNotification />
+        <CorsNotification hideCloseButton />
       </div>
 
       <div className={classnames(styles.toggleRow, 'row')}>
