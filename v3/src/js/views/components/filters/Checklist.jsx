@@ -19,7 +19,8 @@ export default function({ filters, onChange, getCount }: Props) {
           <label
             className={classnames('form-check-label', styles.label, {
               [styles.enabled]: filter.enabled,
-            })}>
+            })}
+          >
             <input
               className="form-check-input"
               type="checkbox"

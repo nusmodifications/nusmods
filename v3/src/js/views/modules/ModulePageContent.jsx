@@ -86,7 +86,8 @@ export class ModulePageContentComponent extends Component<Props, State> {
           <div className="col-md-9">
             <div
               id={SIDE_MENU_ITEMS.details}
-              className={classnames(styles.section, styles.firstSection)}>
+              className={classnames(styles.section, styles.firstSection)}
+            >
               <header className={styles.header}>
                 <h1 className={styles.pageTitle}>
                   <span className={styles.moduleCodeTitle}>{ModuleCode}</span>
@@ -264,7 +265,8 @@ export class ModulePageContentComponent extends Component<Props, State> {
                 <ScrollSpy
                   items={values(SIDE_MENU_ITEMS)}
                   currentClassName={styles.activeMenuItem}
-                  offset={-NAVTAB_HEIGHT}>
+                  offset={-NAVTAB_HEIGHT}
+                >
                   {map(SIDE_MENU_LABELS, (label, key) => (
                     <li key={label}>
                       <a onClick={() => this.toggleMenu(false)} href={`#${SIDE_MENU_ITEMS[key]}`}>

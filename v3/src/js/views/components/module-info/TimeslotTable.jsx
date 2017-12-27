@@ -78,7 +78,8 @@ export default class TimeslotTable extends Component<Props, State> {
                 key={`heading-${day}`}
                 className={classnames(styles.day, {
                   [styles.hover]: day === hover.day,
-                })}>
+                })}
+              >
                 {day.slice(0, 3)}
               </th>
             ))}
@@ -90,7 +91,8 @@ export default class TimeslotTable extends Component<Props, State> {
               <th
                 className={classnames(styles.time, {
                   [styles.hover]: time === hover.time,
-                })}>
+                })}
+              >
                 {timeLabels[time]}
               </th>
 
@@ -98,7 +100,8 @@ export default class TimeslotTable extends Component<Props, State> {
                 <td
                   key={`cell-${day}-${time}`}
                   onMouseEnter={() => this.onHoverEnter(day, time)}
-                  onMouseLeave={this.onHoverClear}>
+                  onMouseLeave={this.onHoverClear}
+                >
                   {children.get(getTimeslot(day, time))}
                 </td>
               ))}

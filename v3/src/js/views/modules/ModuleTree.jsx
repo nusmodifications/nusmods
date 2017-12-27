@@ -55,13 +55,15 @@ function Tree({ layer, name, branches, isPrereq = false }: TreeDisplay) {
     <li
       className={classnames(styles.branch, {
         [styles.prereqBranch]: isPrereq,
-      })}>
+      })}
+    >
       <div
         className={classnames(styles.node, {
           [`color-${layer}`]: !isConditional,
           [styles.conditional]: isConditional,
           [styles.prereqNode]: isPrereq,
-        })}>
+        })}
+      >
         {isConditional ? (
           formatConditional(name)
         ) : (

@@ -38,7 +38,8 @@ class SemesterSwitcher extends PureComponent<Props> {
             onClick={() => {
               this.switchSemester(-1);
             }}
-            disabled={!isValidSemester(this.props.semester - 1)}>
+            disabled={!isValidSemester(this.props.semester - 1)}
+          >
             <ChevronLeft />
           </button>
         )}
@@ -52,7 +53,8 @@ class SemesterSwitcher extends PureComponent<Props> {
             onClick={() => {
               this.switchSemester(1);
             }}
-            disabled={!isValidSemester(this.props.semester + 1)}>
+            disabled={!isValidSemester(this.props.semester + 1)}
+          >
             <ChevronRight />
           </button>
         )}

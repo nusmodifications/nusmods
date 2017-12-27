@@ -100,7 +100,8 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
               // Reset selection to the first placeholder item so that the last selected item
               // is not left selected in the <select>
               evt.target.selectedIndex = 0; // eslint-disable-line no-param-reassign
-            }}>
+            }}
+          >
             <option>{placeholder}</option>
             {this.displayedFilters().map(([filter, count]) => (
               <option key={filter.id} value={filter.id}>
@@ -130,7 +131,8 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
                 <div
                   className={classnames(styles.searchWrapper, {
                     [styles.focused]: this.state.isFocused,
-                  })}>
+                  })}
+                >
                   <Search className={styles.searchIcon} onClick={this.focusInput} />
                   <input
                     ref={(r) => {
@@ -161,7 +163,8 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
                             [styles.selected]: index === highlightedIndex,
                             [styles.enabled]: filter.enabled,
                           }),
-                        })}>
+                        })}
+                      >
                         <input
                           className="form-check-input"
                           type="checkbox"

@@ -306,7 +306,8 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
             <SideMenu
               isOpen={isMenuOpen}
               toggleMenu={this.toggleMenu}
-              openIcon={<Filter aria-label={OPEN_MENU_LABEL} />}>
+              openIcon={<Filter aria-label={OPEN_MENU_LABEL} />}
+            >
               <div className={styles.moduleFilters}>
                 <header className={styles.filterHeader}>
                   <h3>Refine by</h3>
@@ -318,7 +319,8 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
                         this.setState({
                           filterGroups: mapValues(groups, (group: FilterGroup<*>) => group.reset()),
                         })
-                      }>
+                      }
+                    >
                       Clear Filters
                     </button>
                   )}

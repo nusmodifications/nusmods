@@ -18,10 +18,10 @@ export default function FacultySelect(props: Props) {
       className="form-control"
       name="faculty-select"
       value={selectedFaculty}
-      onChange={(event) => onChange(event.target.value)}>
+      onChange={(event) => onChange(event.target.value)}
+    >
       <option disabled value="">
-        {' '}
-        -- Select a faculty --{' '}
+        &nbsp;-- Select a faculty --&nbsp;
       </option>
       {facultyList.map((faculty) => (
         <option key={faculty.value} value={faculty.value}>

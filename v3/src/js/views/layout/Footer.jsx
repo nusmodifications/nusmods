@@ -31,7 +31,8 @@ export function FooterComponent(props: Props) {
         <a
           href={`https://github.com/nusmodifications/nusmods/commit/${commitHash}`}
           target="_blank"
-          rel="noopener noreferrer">
+          rel="noopener noreferrer"
+        >
           {versionStr}
         </a>.
       </span>
@@ -60,7 +61,8 @@ export function FooterComponent(props: Props) {
             <a
               href="https://github.com/nusmodifications/nusmods-api"
               target="_blank"
-              rel="noopener noreferrer">
+              rel="noopener noreferrer"
+            >
               API
             </a>
           </li>
@@ -83,7 +85,8 @@ export function FooterComponent(props: Props) {
             <button
               type="button"
               onClick={props.toggleFeedback}
-              className={classnames('btn btn-inline', styles.feedbackBtn)}>
+              className={classnames('btn btn-inline', styles.feedbackBtn)}
+            >
               Feedback Welcome!
             </button>
           </li>

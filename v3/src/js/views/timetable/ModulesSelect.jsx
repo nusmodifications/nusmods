@@ -101,7 +101,8 @@ class ModulesSelect extends Component<Props, State> {
                     key={module.ModuleCode}
                     className={classnames(styles.option, styles.optionDisabled, {
                       [styles.optionSelected]: highlightedIndex === index,
-                    })}>
+                    })}
+                  >
                     {`${module.ModuleCode} ${module.ModuleTitle}`}
                     <div>
                       <span className="badge badge-info">Added</span>
@@ -116,7 +117,8 @@ class ModulesSelect extends Component<Props, State> {
                     })}
                     className={classnames(styles.option, {
                       [styles.optionSelected]: highlightedIndex === index,
-                    })}>
+                    })}
+                  >
                     {`${module.ModuleCode} ${module.ModuleTitle}`}
                   </li>
                 ),
@@ -157,7 +159,8 @@ class ModulesSelect extends Component<Props, State> {
         <Modal
           isOpen={!disabled && isModalOpen}
           onRequestClose={this.toggleModal}
-          className={styles.modal}>
+          className={styles.modal}
+        >
           {downshiftComponent}
         </Modal>
       </div>

@@ -118,7 +118,8 @@ class ContributorsContainer extends Component<Props, State> {
                       contributor.login
                     }`}
                     target="_blank"
-                    rel="noreferrer noopener">
+                    rel="noreferrer noopener"
+                  >
                     {contributor.contributions} commits
                   </a>
                 </p>

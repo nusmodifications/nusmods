@@ -52,7 +52,8 @@ export default class VenueDetailRow extends PureComponent<Props> {
           onClick={(e) => {
             e.preventDefault();
             onClick(name, venueHref);
-          }}>
+          }}
+        >
           <h4>{name}</h4>
         </a>
         {lessons && (

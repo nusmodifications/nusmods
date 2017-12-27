@@ -82,7 +82,8 @@ export class CorsNotificationComponent extends PureComponent<Props> {
         <a
           href="https://myaces.nus.edu.sg/cors/StudentLogin"
           target="_blank"
-          rel="noopener noreferrer">
+          rel="noopener noreferrer"
+        >
           <div className={styles.notification}>
             {corsNotificationText(true, round, this.currentTime())}
           </div>

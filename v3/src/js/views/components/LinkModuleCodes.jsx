@@ -34,7 +34,8 @@ export function LinkModuleCodesComponent(props: Props) {
         className={className}
         title={module.ModuleTitle}
         to={modulePage(code, module.ModuleTitle)}
-        key={i}>
+        key={i}
+      >
         {part}
       </Link>
     );

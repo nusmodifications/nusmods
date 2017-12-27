@@ -106,13 +106,15 @@ export class AddModuleDropdownComponent extends PureComponent<Props, State> {
             <div
               className={classnames('btn-group', styles.buttonGroup, className, {
                 'btn-block': block,
-              })}>
+              })}
+            >
               <button
                 type="button"
                 className={classnames('btn btn-outline-primary', {
                   'btn-block': block,
                 })}
-                onClick={() => this.onSelect(defaultSemester)}>
+                onClick={() => this.onSelect(defaultSemester)}
+              >
                 {this.buttonLabel(defaultSemester)}
               </button>
 
@@ -124,7 +126,8 @@ export class AddModuleDropdownComponent extends PureComponent<Props, State> {
                   onClick={toggleMenu}
                   data-toggle="dropdown"
                   aria-haspopup="true"
-                  aria-expanded={isOpen}>
+                  aria-expanded={isOpen}
+                >
                   <span className="sr-only">Toggle Dropdown</span>
                 </button>
               )}
@@ -136,7 +139,8 @@ export class AddModuleDropdownComponent extends PureComponent<Props, State> {
                       {...getItemProps({ item: semester })}
                       key={semester}
                       className={classnames('dropdown-item', styles.dropdownItem)}
-                      onClick={() => this.onSelect(semester)}>
+                      onClick={() => this.onSelect(semester)}
+                    >
                       {this.buttonLabel(semester)}
                     </button>
                   ))}

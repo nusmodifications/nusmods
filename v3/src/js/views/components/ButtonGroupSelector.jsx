@@ -39,7 +39,8 @@ export default function ButtonGroupSelector(props: Props) {
         className={classnames('btn', ...className, {
           'btn-primary': selectedChoice === choice,
           'btn-outline-primary': selectedChoice !== choice,
-        })}>
+        })}
+      >
         {choice}
       </button>
     );

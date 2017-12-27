@@ -35,7 +35,8 @@ export default function ModeSelect(props: Props) {
             'btn-primary': mode === value,
             'btn-outline-primary': mode !== value,
           })}
-          onClick={() => onSelectMode(value)}>
+          onClick={() => onSelectMode(value)}
+        >
           {label}
         </button>
       ))}

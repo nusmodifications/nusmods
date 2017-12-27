@@ -23,7 +23,8 @@ export default function ThemeOption(props: Props) {
       className={classnames(className, styles.option, `theme-${theme.id}`, {
         [styles.isSelected]: isSelected,
       })}
-      onClick={() => onSelectTheme(theme.id)}>
+      onClick={() => onSelectTheme(theme.id)}
+    >
       <div>
         <small>{theme.name}</small>
       </div>

@@ -24,12 +24,14 @@ function TimetableActions(props: Props) {
     <div
       className="btn-toolbar justify-content-between"
       role="toolbar"
-      aria-label="Timetable utilities">
+      aria-label="Timetable utilities"
+    >
       <div className={styles.leftButtonGroup} role="group" aria-label="Timetable manipulation">
         <button
           type="button"
           className="btn btn-outline-primary btn-svg"
-          onClick={props.toggleTimetableOrientation}>
+          onClick={props.toggleTimetableOrientation}
+        >
           <Sidebar className={styles.sidebarIcon} />
           {isVerticalOrientation ? 'Horizontal Mode' : 'Vertical Mode'}
         </button>
@@ -39,7 +41,8 @@ function TimetableActions(props: Props) {
           <button
             type="button"
             className="btn btn-outline-primary btn-svg"
-            onClick={props.downloadAsImage}>
+            onClick={props.downloadAsImage}
+          >
             <Image className="svg svg-small" />
             Export image
           </button>
@@ -48,7 +51,8 @@ function TimetableActions(props: Props) {
           <button
             type="button"
             className="btn btn-outline-primary btn-svg"
-            onClick={props.downloadAsIcal}>
+            onClick={props.downloadAsIcal}
+          >
             <Calendar className="svg svg-small" />
             Export iCal
           </button>

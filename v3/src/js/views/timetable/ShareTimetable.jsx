@@ -118,7 +118,8 @@ export default class ShareTimetable extends PureComponent<Props, State> {
               className="btn btn-primary btn-svg"
               type="button"
               aria-label="Copy URL"
-              onClick={this.copyText}>
+              onClick={this.copyText}
+            >
               <Copy />
             </button>
           </span>
@@ -149,7 +150,8 @@ export default class ShareTimetable extends PureComponent<Props, State> {
                 body:
                   `My timetable for ${config.academicYear} ${config.semesterNames[semester]}` +
                   ` can be found at ${url}`,
-              })}`}>
+              })}`}
+            >
               <Mail className="svg" /> Send Email
             </a>
           </div>
@@ -162,7 +164,8 @@ export default class ShareTimetable extends PureComponent<Props, State> {
                 text: `My timetable: ${url}`,
               })}`}
               target="_blank"
-              rel="noreferrer noopener">
+              rel="noreferrer noopener"
+            >
               WhatsApp
             </a>
 
@@ -170,7 +173,8 @@ export default class ShareTimetable extends PureComponent<Props, State> {
               className="btn btn-outline-primary btn-block"
               href={`https://t.me/share/url?${qs.stringify({ url })}`}
               target="_blank"
-              rel="noreferrer noopener">
+              rel="noreferrer noopener"
+            >
               Telegram
             </a>
           </div>
@@ -187,7 +191,8 @@ export default class ShareTimetable extends PureComponent<Props, State> {
         <button
           type="button"
           className="btn btn-sm btn-outline-primary btn-svg"
-          onClick={this.openModal}>
+          onClick={this.openModal}
+        >
           <Repeat className="svg svg-small" />
           Share/Sync
         </button>

@@ -37,7 +37,8 @@ class Timetable extends PureComponent<Props> {
       <div
         ref={(r) => {
           this.timetableDom = r;
-        }}>
+        }}
+      >
         <div className={styles.container}>
           <TimetableTimings startingIndex={startingIndex} endingIndex={endingIndex} />
           <ol className={styles.days}>

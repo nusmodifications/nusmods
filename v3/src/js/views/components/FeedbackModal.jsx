@@ -23,7 +23,8 @@ export class FeedbackModalComponent extends PureComponent<Props> {
       <Modal
         isOpen={this.props.isOpen}
         onRequestClose={this.props.toggleFeedback}
-        className={styles.modal}>
+        className={styles.modal}
+      >
         <CloseButton onClick={this.props.toggleFeedback} />
         <div className={styles.content}>
           <Heart className={styles.topIcon} />
@@ -37,7 +38,8 @@ export class FeedbackModalComponent extends PureComponent<Props> {
               className={styles.messenger}
               href={config.contact.messenger}
               target="_blank"
-              rel="noreferrer noopener">
+              rel="noreferrer noopener"
+            >
               <Facebook />
               Messenger
             </a>
@@ -45,7 +47,8 @@ export class FeedbackModalComponent extends PureComponent<Props> {
               className={styles.github}
               href={config.contact.githubRepo}
               target="_blank"
-              rel="noreferrer noopener">
+              rel="noreferrer noopener"
+            >
               <GitHub />
               GitHub
             </a>
@@ -53,7 +56,8 @@ export class FeedbackModalComponent extends PureComponent<Props> {
               className={styles.form}
               href="https://goo.gl/forms/iZd8uVXAiJfu8D6e2"
               target="_blank"
-              rel="noreferrer noopener">
+              rel="noreferrer noopener"
+            >
               <Mail />
               Feedback Form
             </a>

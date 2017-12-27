@@ -32,7 +32,8 @@ export default function TimeslotFilters(props: Props) {
       timeslot,
       <label
         className={classnames(styles.label, { [styles.enabled]: filter.enabled })}
-        title={`${count} modules with lessons on ${timeslot}`}>
+        title={`${count} modules with lessons on ${timeslot}`}
+      >
         <span className="sr-only">{timeslot}</span>
         <span>{count}</span>
         <input

@@ -18,7 +18,8 @@ export default function NewStudentSelect(props: Props) {
           'btn-primary': newStudent,
           'btn-outline-primary': !newStudent,
         })}
-        onClick={() => onSelectNewStudent(true)}>
+        onClick={() => onSelectNewStudent(true)}
+      >
         Yes
       </button>
       <button
@@ -27,7 +28,8 @@ export default function NewStudentSelect(props: Props) {
           'btn-primary': !newStudent,
           'btn-outline-primary': newStudent,
         })}
-        onClick={() => onSelectNewStudent(false)}>
+        onClick={() => onSelectNewStudent(false)}
+      >
         No
       </button>
     </div>

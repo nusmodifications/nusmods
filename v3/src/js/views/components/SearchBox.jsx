@@ -84,7 +84,8 @@ export default class SearchBox extends PureComponent<Props, State> {
         className={classnames(this.props.className, {
           [styles.searchBoxFocused]: this.state.isFocused,
         })}
-        ref={this.props.rootElementRef}>
+        ref={this.props.rootElementRef}
+      >
         <label htmlFor="search-box" className="sr-only">
           Search
         </label>
@@ -93,7 +94,8 @@ export default class SearchBox extends PureComponent<Props, State> {
           onSubmit={(evt) => {
             this.onSubmit();
             evt.preventDefault();
-          }}>
+          }}
+        >
           <Search className={styles.searchIcon} />
           <input
             id="search-box"

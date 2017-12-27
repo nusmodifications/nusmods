@@ -232,7 +232,8 @@ class TimetableContent extends Component<Props> {
         className={classnames('page-container', styles.container, {
           verticalMode: isVerticalOrientation,
         })}
-        onClick={this.cancelModifyLesson}>
+        onClick={this.cancelModifyLesson}
+      >
         <Helmet>
           <title>Timetable - {config.brandName}</title>
         </Helmet>
@@ -248,7 +249,8 @@ class TimetableContent extends Component<Props> {
             className={classnames({
               'col-md-12': !isVerticalOrientation,
               'col-md-8': isVerticalOrientation,
-            })}>
+            })}
+          >
             <div className={styles.timetableWrapper}>
               <Timetable
                 lessons={arrangedLessonsWithModifiableFlag}
@@ -264,7 +266,8 @@ class TimetableContent extends Component<Props> {
             className={classnames({
               'col-md-12': !isVerticalOrientation,
               'col-md-4': isVerticalOrientation,
-            })}>
+            })}
+          >
             <div className="row">
               <div className="col-12">
                 <TimetableActions

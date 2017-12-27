@@ -39,7 +39,8 @@ export default class CorsStats extends PureComponent<Props, State> {
         {semestersShown < sortedStats.length && (
           <button
             onClick={() => this.setState({ semestersShown: semestersShown + 3 })}
-            className="btn btn-outline-primary btn-block">
+            className="btn btn-outline-primary btn-block"
+          >
             Show more semesters
           </button>
         )}

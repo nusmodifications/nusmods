@@ -60,7 +60,8 @@ export default class AvailabilitySearch extends PureComponent<Props> {
             id="venue-day"
             className="form-control"
             value={searchOptions.day}
-            onChange={(evt) => this.onUpdate(evt, 'day')}>
+            onChange={(evt) => this.onUpdate(evt, 'day')}
+          >
             {SCHOOLDAYS.map((name, day) => (
               <option key={day} value={day}>
                 {name}s
@@ -75,7 +76,8 @@ export default class AvailabilitySearch extends PureComponent<Props> {
             id="venue-time"
             className="form-control"
             value={searchOptions.time}
-            onChange={(evt) => this.onUpdate(evt, 'time')}>
+            onChange={(evt) => this.onUpdate(evt, 'time')}
+          >
             {CLASS_START_HOURS.map((hour) => (
               <option key={hour} value={hour}>
                 {formatHour(hour)}
@@ -90,7 +92,8 @@ export default class AvailabilitySearch extends PureComponent<Props> {
             id="venue-duration"
             className="form-control"
             value={searchOptions.duration}
-            onChange={(evt) => this.onUpdate(evt, 'duration')}>
+            onChange={(evt) => this.onUpdate(evt, 'duration')}
+          >
             {range(1, LAST_CLASS_HOUR + 3 - searchOptions.time).map((hour) => (
               <option key={hour} value={hour}>
                 {formatHour(searchOptions.time + hour)} ({hour} {hour === 1 ? 'hr' : 'hrs'})

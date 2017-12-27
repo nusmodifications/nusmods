@@ -58,7 +58,8 @@ class Announcements extends PureComponent<Props, State> {
             <a
               href="http://blog.nusmods.com/nusmods-r-rethought-redesigned-rewritten-reborn"
               target="_blank"
-              rel="noopener noreferrer">
+              rel="noopener noreferrer"
+            >
               Check out what&apos;s new
             </a>, and{' '}
             <button className="btn btn-inline" type="button" onClick={this.props.toggleFeedback}>

@@ -15,7 +15,8 @@ export default function({ onClick, className }: Props) {
       className={classnames('close', className)}
       type="button"
       onClick={onClick}
-      aria-label="Close">
+      aria-label="Close"
+    >
       <Close />
     </button>
   );

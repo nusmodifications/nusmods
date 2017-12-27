@@ -197,7 +197,8 @@ export class VenuesContainerComponent extends Component<Props, State> {
                       <button
                         type="button"
                         className="btn btn-link"
-                        onClick={() => this.setState({ isAvailabilityEnabled: false })}>
+                        onClick={() => this.setState({ isAvailabilityEnabled: false })}
+                      >
                         Cancel free room search
                       </button>
                     </p>
@@ -215,7 +216,8 @@ export class VenuesContainerComponent extends Component<Props, State> {
             <SideMenu
               isOpen={isMenuOpen}
               openIcon={<Search aria-label="Search venues" />}
-              toggleMenu={(isOpen) => this.setState({ isMenuOpen: isOpen })}>
+              toggleMenu={(isOpen) => this.setState({ isMenuOpen: isOpen })}
+            >
               <div className={styles.venueSearch}>
                 <h3>Venue Search</h3>
 
@@ -236,7 +238,8 @@ export class VenuesContainerComponent extends Component<Props, State> {
                   )}
                   onClick={() =>
                     this.setState({ isAvailabilityEnabled: !isAvailabilityEnabled }, this.updateURL)
-                  }>
+                  }
+                >
                   <Clock className="svg" /> Find free rooms
                 </button>
 

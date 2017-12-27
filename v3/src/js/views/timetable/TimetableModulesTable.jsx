@@ -45,7 +45,8 @@ class TimetableModulesTable extends Component<Props> {
               if (window.confirm(`Are you sure you want to remove ${module.ModuleCode}?`)) {
                 this.props.onRemoveModule(module.ModuleCode);
               }
-            }}>
+            }}
+          >
             <Trash2 className={styles.actionIcon} />
           </button>
           <button
@@ -59,7 +60,8 @@ class TimetableModulesTable extends Component<Props> {
               } else {
                 this.props.hideLessonInTimetable(module.ModuleCode);
               }
-            }}>
+            }}
+          >
             {module.hiddenInTimetable ? (
               <Eye className={styles.actionIcon} />
             ) : (
@@ -84,7 +86,8 @@ class TimetableModulesTable extends Component<Props> {
               'col-lg-4': this.props.horizontalOrientation,
               'col-md-12': !this.props.horizontalOrientation,
             })}
-            key={module.ModuleCode}>
+            key={module.ModuleCode}
+          >
             <div className={styles.moduleColor}>
               <ColorPicker
                 label={`Change ${module.ModuleCode} timetable color`}

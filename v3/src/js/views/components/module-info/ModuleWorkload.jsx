@@ -97,13 +97,15 @@ export default class ModuleWorkload extends PureComponent<Props> {
             <div
               key={component}
               className="module-workload-component"
-              style={{ width: `${100 / ROW_MAX * Math.min(ROW_MAX, Math.ceil(hours))}%` }}>
+              style={{ width: `${100 / ROW_MAX * Math.min(ROW_MAX, Math.ceil(hours))}%` }}
+            >
               <h5 className={textClass(component)}>{workloadLabel(component, hours)}</h5>
 
               <div
                 className={classnames('module-workload-blocks', {
                   'blocks-fixed': Math.ceil(hours) > ROW_MAX,
-                })}>
+                })}
+              >
                 {workloadBlocks(component, hours)}
               </div>
             </div>

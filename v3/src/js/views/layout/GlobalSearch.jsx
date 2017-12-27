@@ -88,7 +88,8 @@ class GlobalSearch extends Component<Props, State> {
                     })}
                     className={classnames(styles.option, {
                       [styles.optionSelected]: highlightedIndex === index,
-                    })}>
+                    })}
+                  >
                     {highlight(`${module.ModuleCode} ${module.ModuleTitle}`, inputValue)}
                   </div>
                 ))}
@@ -108,7 +109,8 @@ class GlobalSearch extends Component<Props, State> {
                       })}
                       className={classnames(styles.option, {
                         [styles.optionSelected]: highlightedIndex === combinedIndex,
-                      })}>
+                      })}
+                    >
                       {highlight(venue, inputValue)}
                     </div>
                   );

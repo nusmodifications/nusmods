@@ -185,7 +185,8 @@ function SettingsContainer(props: Props) {
                     isSnoozed
                       ? props.enableCorsNotification(corsRound.round)
                       : props.dismissCorsNotification(corsRound.round)
-                  }>
+                  }
+                >
                   {isSnoozed ? 'Unsnooze' : 'Snooze'}
                 </button>
               </div>

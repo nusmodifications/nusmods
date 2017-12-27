@@ -47,7 +47,8 @@ function TeamMember({ member }: Props) {
                 <a
                   href={`https://www.facebook.com/${member.facebook}`}
                   title="Facebook profile"
-                  aria-label="Facebook profile">
+                  aria-label="Facebook profile"
+                >
                   <Facebook />
                 </a>
               </div>
@@ -58,7 +59,8 @@ function TeamMember({ member }: Props) {
                 <a
                   href={`https://www.twitter.com/${member.twitter}`}
                   title="Twitter profile"
-                  aria-label="Twitter profile">
+                  aria-label="Twitter profile"
+                >
                   <Twitter />
                 </a>
               </div>
@@ -69,7 +71,8 @@ function TeamMember({ member }: Props) {
                 <a
                   href={`https://www.github.com/${member.github}`}
                   title="GitHub profile"
-                  aria-label="GitHub profile">
+                  aria-label="GitHub profile"
+                >
                   <GitHub />
                 </a>
               </div>
@@ -80,7 +83,8 @@ function TeamMember({ member }: Props) {
                 <a
                   href={`https://www.linkedin.com/in/${member.linkedin}`}
                   title="Linkedin profile"
-                  aria-label="Linkedin profile">
+                  aria-label="Linkedin profile"
+                >
                   <LinkedIn />
                 </a>
               </div>

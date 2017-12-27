@@ -33,7 +33,8 @@ export default class Modal extends Component<Props> {
       <ReactModal
         overlayClassName={classnames(styles.overlay, overlayClassName)}
         className={classnames(styles.modal, className)}
-        {...rest}>
+        {...rest}
+      >
         {children}
       </ReactModal>
     );

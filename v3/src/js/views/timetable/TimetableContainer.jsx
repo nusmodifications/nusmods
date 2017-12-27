@@ -126,13 +126,15 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
             <button
               className="btn btn-success"
               type="button"
-              onClick={() => this.importTimetable(semester, timetable)}>
+              onClick={() => this.importTimetable(semester, timetable)}
+            >
               Import
             </button>
             <button
               className="btn btn-outline-primary"
               type="button"
-              onClick={this.clearImportedTimetable}>
+              onClick={this.clearImportedTimetable}
+            >
               Back to saved timetable
             </button>
           </div>
