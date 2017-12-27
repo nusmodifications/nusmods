@@ -5,10 +5,7 @@ import { values, flattenDeep, noop } from 'lodash';
 import type { Lesson } from 'types/modules';
 import type { TimetableArrangement } from 'types/timetables';
 
-import {
-  SCHOOLDAYS,
-  calculateBorderTimings,
-} from 'utils/timify';
+import { SCHOOLDAYS, calculateBorderTimings } from 'utils/timify';
 
 import styles from './Timetable.scss';
 import TimetableTimings from './TimetableTimings';
@@ -29,20 +26,23 @@ class Timetable extends PureComponent<Props> {
   };
 
   render() {
-    const schoolDays = SCHOOLDAYS.filter(day => day !== 'Saturday' || this.props.lessons.Saturday);
+    const schoolDays = SCHOOLDAYS.filter(
+      (day) => day !== 'Saturday' || this.props.lessons.Saturday,
+    );
 
     const lessons: Array<Lesson> = flattenDeep(values(this.props.lessons));
     const { startingIndex, endingIndex } = calculateBorderTimings(lessons);
 
     return (
-      <div ref={(r) => { this.timetableDom = r; }}>
+      <div
+        ref={(r) => {
+          this.timetableDom = r;
+        }}
+      >
         <div className={styles.container}>
-          <TimetableTimings
-            startingIndex={startingIndex}
-            endingIndex={endingIndex}
-          />
+          <TimetableTimings startingIndex={startingIndex} endingIndex={endingIndex} />
           <ol className={styles.days}>
-            {schoolDays.map(day => (
+            {schoolDays.map((day) => (
               <TimetableDay
                 key={day}
                 day={day}

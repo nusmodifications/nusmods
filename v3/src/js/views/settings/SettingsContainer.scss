@@ -8,6 +8,11 @@
     animation-name: $page-entering-animation;
   }
 
+  hr {
+    clear: both;
+    margin-bottom: 2rem;
+  }
+
   // Styles nested for specificity
   @include media-breakpoint-down(xs) {
     .toggleRow {
@@ -47,5 +52,13 @@
 
   @include media-breakpoint-down('sm') {
     width: 50%;
+  }
+}
+
+.notificationPreview {
+  margin-bottom: 1rem;
+
+  &:empty {
+    margin: 0;
   }
 }

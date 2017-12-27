@@ -13,12 +13,8 @@ type Props = {
 
 function Fab({ children, className, ...otherProps }: Props) {
   return (
-    <div
-      className={classnames(className, styles.fab)}
-    >
-      <ReactMaterialFab {...otherProps}>
-        {children}
-      </ReactMaterialFab>
+    <div className={classnames(className, styles.fab)}>
+      <ReactMaterialFab {...otherProps}>{children}</ReactMaterialFab>
     </div>
   );
 }

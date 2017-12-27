@@ -47,7 +47,14 @@ class GlobalSearch extends Component<Props, State> {
   // Downshift attaches label for us, so we can ignore ESLint here
   /* eslint-disable jsx-a11y/label-has-for */
   // TODO: Inject types from downshift when https://github.com/paypal/downshift/pull/180 is implemented
-  renderDropdown = ({ getLabelProps, getInputProps, getItemProps, isOpen, inputValue, highlightedIndex }: any) => {
+  renderDropdown = ({
+    getLabelProps,
+    getInputProps,
+    getItemProps,
+    isOpen,
+    inputValue,
+    highlightedIndex,
+  }: any) => {
     const [modules, venues] = this.props.getResults(inputValue);
     const hasModules = modules.length > 0;
     const hasVenues = venues.length > 0;
@@ -59,13 +66,15 @@ class GlobalSearch extends Component<Props, State> {
           {PLACEHOLDER}
         </label>
         <input
-          ref={(input) => { this.input = input; }}
+          ref={(input) => {
+            this.input = input;
+          }}
           className={classnames(styles.input, { [styles.inputOpen]: isOpen })}
           {...getInputProps({ placeholder: PLACEHOLDER })}
           onFocus={this.onOpen}
         />
 
-        {(hasModules || hasVenues) &&
+        {(hasModules || hasVenues) && (
           <div className={styles.selectList}>
             {hasModules && (
               <Fragment>
@@ -109,7 +118,7 @@ class GlobalSearch extends Component<Props, State> {
               </Fragment>
             )}
           </div>
-        }
+        )}
       </div>
     );
   };

@@ -28,20 +28,19 @@ const STUDENT_TYPE_LABELS = {
 
 function renderBidTableRow(stats: GroupedBiddingStat) {
   if (!stats.Bidders) {
-    return <td className={styles.noBids} colSpan="2">No bids</td>;
+    return (
+      <td className={styles.noBids} colSpan="2">
+        No bids
+      </td>
+    );
   }
 
   return (
     <Fragment>
       <td>
-        <CorsQuota
-          bidders={stats.Bidders}
-          quota={stats.Quota}
-        />
+        <CorsQuota bidders={stats.Bidders} quota={stats.Quota} />
       </td>
-      <td>
-        {stats.LowestSuccessfulBid}
-      </td>
+      <td>{stats.LowestSuccessfulBid}</td>
     </Fragment>
   );
 }
@@ -74,14 +73,14 @@ function renderBidTable(groupedStats: GroupedBiddingStat[]) {
  * by studentType.
  */
 function CorsRound(props: Props) {
-  const groupedByFaculty = groupBy(props.stats, stats => stats.Faculty);
+  const groupedByFaculty = groupBy(props.stats, (stats) => stats.Faculty);
 
   if (!size(groupedByFaculty)) {
     return <div className={styles.noBids}>No bidding during this round</div>;
   }
 
   return map(groupedByFaculty, (groupedStats: GroupedBiddingStat[], faculty: Faculty) => {
-    const groupedByType = groupBy(groupedStats, stats => stats.StudentType);
+    const groupedByType = groupBy(groupedStats, (stats) => stats.StudentType);
 
     return (
       <div key={faculty} className={styles.facultyRow}>
@@ -89,8 +88,9 @@ function CorsRound(props: Props) {
 
         {map(groupedByType, (stats: GroupedBiddingStat[], type: string) => (
           <div key={type}>
-            {size(groupedByType) > 1 &&
-            <h6 className={styles.typeHeading}>{STUDENT_TYPE_LABELS[type]}</h6>}
+            {size(groupedByType) > 1 && (
+              <h6 className={styles.typeHeading}>{STUDENT_TYPE_LABELS[type]}</h6>
+            )}
             {renderBidTable(stats)}
           </div>
         ))}

@@ -42,11 +42,11 @@ function workloadLabel(component: WorkloadComponent, hours: number): Node {
   }
 
   // Otherwise, use an abbreviation
-  return <abbr title={component}>{ shortComponentNames[component] }</abbr>;
+  return <abbr title={component}>{shortComponentNames[component]}</abbr>;
 }
 
 function workloadBlocks(component: WorkloadComponent, hours: number): Node {
-  const blocks: Node[] = _.range(Math.floor(hours)).map(hour => (
+  const blocks: Node[] = _.range(Math.floor(hours)).map((hour) => (
     <div key={hour} className={bgClass(component)} />
   ));
 
@@ -58,7 +58,9 @@ function workloadBlocks(component: WorkloadComponent, hours: number): Node {
   return blocks;
 }
 
-function sortWorkload(workload: { [WorkloadComponent]: number }): Array<[WorkloadComponent, number]> {
+function sortWorkload(workload: {
+  [WorkloadComponent]: number,
+}): Array<[WorkloadComponent, number]> {
   // Push longer components (those that take up more than one row) down
   // $FlowFixMe: lodash libdef incorrectly marks the return type of _.entries as any[][]
   const components: Array<[WorkloadComponent, number]> = _.entries(workload);
@@ -76,7 +78,7 @@ export default class ModuleWorkload extends PureComponent<Props> {
     return (
       <div className="module-workload-container">
         <h4>Workload</h4>
-        <p className="module-workload-fallback">{ this.props.workload }</p>
+        <p className="module-workload-fallback">{this.props.workload}</p>
       </div>
     );
   }
@@ -95,11 +97,9 @@ export default class ModuleWorkload extends PureComponent<Props> {
             <div
               key={component}
               className="module-workload-component"
-              style={{ width: `${(100 / ROW_MAX) * Math.min(ROW_MAX, Math.ceil(hours))}%` }}
+              style={{ width: `${100 / ROW_MAX * Math.min(ROW_MAX, Math.ceil(hours))}%` }}
             >
-              <h5 className={textClass(component)}>
-                {workloadLabel(component, hours)}
-              </h5>
+              <h5 className={textClass(component)}>{workloadLabel(component, hours)}</h5>
 
               <div
                 className={classnames('module-workload-blocks', {

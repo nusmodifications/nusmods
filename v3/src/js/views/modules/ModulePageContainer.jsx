@@ -54,7 +54,7 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
     this.fetchModule(this.props.moduleCode);
 
     import('views/modules/ModulePageContent')
-      .then(module => this.setState({ ModulePageContent: module.default }))
+      .then((module) => this.setState({ ModulePageContent: module.default }))
       .catch((error) => {
         Raven.captureException(error);
         this.setState({ error });
@@ -116,6 +116,8 @@ const mapStateToProps = (state, ownState) => {
   };
 };
 
-const connectedModulePageContainer = connect(mapStateToProps, { fetchModule })(ModulePageContainerComponent);
+const connectedModulePageContainer = connect(mapStateToProps, { fetchModule })(
+  ModulePageContainerComponent,
+);
 const routedModulePageContainer = withRouter(connectedModulePageContainer);
 export default deferComponentRender(routedModulePageContainer);

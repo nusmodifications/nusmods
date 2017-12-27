@@ -56,10 +56,9 @@ render();
 
 if (process.env.NODE_ENV === 'production') {
   if ('serviceWorker' in navigator && window.location.protocol === 'https:') {
-    navigator.serviceWorker.register('/sw.js')
-      .catch((e) => {
-        Raven.captureException(e);
-      });
+    navigator.serviceWorker.register('/sw.js').catch((e) => {
+      Raven.captureException(e);
+    });
   }
   initializeGA();
 }

@@ -26,9 +26,11 @@ export function getModuleTimetable(module: Module, semester: Semester): Array<Ra
 
 // Do these two lessons belong to the same class?
 export function areLessonsSameClass(lesson1: Lesson, lesson2: Lesson): boolean {
-  return lesson1.ModuleCode === lesson2.ModuleCode &&
+  return (
+    lesson1.ModuleCode === lesson2.ModuleCode &&
     lesson1.ClassNo === lesson2.ClassNo &&
-    lesson1.LessonType === lesson2.LessonType;
+    lesson1.LessonType === lesson2.LessonType
+  );
 }
 
 // Convert exam in ISO format to 12-hour date/time format. We slice off the
@@ -42,9 +44,9 @@ export function formatExamDate(examDate: string): string {
   const day: string = _.padStart(`${date.getUTCDate().toString()}`, 2, '0');
   const month: string = _.padStart(`${date.getUTCMonth() + 1}`, 2, '0');
   const year: number = date.getUTCFullYear();
-  const hour: number = (hours % 12 || 12);
+  const hour: number = hours % 12 || 12;
   const minute: string = _.padStart(`${date.getUTCMinutes()}`, 2, '0');
-  const amPm: string = (hours < 12 ? 'AM' : 'PM');
+  const amPm: string = hours < 12 ? 'AM' : 'PM';
   return `${day}-${month}-${year} ${hour}:${minute} ${amPm}`;
 }
 
@@ -63,18 +65,22 @@ export function getFirstAvailableSemester(
   semesters: SemesterData[],
   current: Semester = config.semester, // For testing only
 ): Semester {
-  const availableSemesters = semesters.map(semesterData => semesterData.Semester);
+  const availableSemesters = semesters.map((semesterData) => semesterData.Semester);
   return availableSemesters.includes(current) ? current : _.min(availableSemesters);
 }
 
 export function getSemestersOffered(module: Module): Semester[] {
-  return module.History
-    .map(semesterData => semesterData.Semester)
-    .sort();
+  return module.History.map((semesterData) => semesterData.Semester).sort();
 }
 
 // Workload components as defined by CORS, in their correct positions (see below).
-export const WORKLOAD_COMPONENTS: WorkloadComponent[] = ['Lecture', 'Tutorial', 'Laboratory', 'Project', 'Preparation'];
+export const WORKLOAD_COMPONENTS: WorkloadComponent[] = [
+  'Lecture',
+  'Tutorial',
+  'Laboratory',
+  'Project',
+  'Preparation',
+];
 export type Workload = { [WorkloadComponent]: number } | string;
 
 // Parse the workload string into a mapping of individual components to their hours.

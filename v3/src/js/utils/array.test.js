@@ -19,6 +19,6 @@ test('takeUntil should only return results until max length is reached', () => {
 
 test('takeUntil should return items filtered by the predicate', () => {
   expect(takeUntil(range(20), 20, stubFalse)).toEqual([]);
-  expect(takeUntil(range(20), 20, i => i % 2 === 0)).toEqual(range(0, 20, 2));
-  expect(takeUntil(range(20), 5, i => i % 2 === 0)).toEqual(range(0, 10, 2));
+  expect(takeUntil(range(20), 20, (i) => i % 2 === 0)).toEqual(range(0, 20, 2));
+  expect(takeUntil(range(20), 5, (i) => i % 2 === 0)).toEqual(range(0, 10, 2));
 });

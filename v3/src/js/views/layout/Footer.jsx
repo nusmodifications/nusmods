@@ -20,38 +20,67 @@ export function FooterComponent(props: Props) {
   const versionStr = process.env.versionStr;
 
   const lastUpdatedDate = props.lastUpdatedDate;
-  const apiUpdateSpan = lastUpdatedDate && (<span>Data correct as at {lastUpdatedDate.toLocaleString()}.</span>);
-
-  const versionSpan = commitHash && versionStr && (
-    <span>
-      NUSMods R version{' '}
-      <a
-        href={`https://github.com/nusmodifications/nusmods/commit/${commitHash}`}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {versionStr}
-      </a>.
-    </span>
+  const apiUpdateSpan = lastUpdatedDate && (
+    <span>Data correct as at {lastUpdatedDate.toLocaleString()}.</span>
   );
+
+  const versionSpan = commitHash &&
+    versionStr && (
+      <span>
+        NUSMods R version{' '}
+        <a
+          href={`https://github.com/nusmodifications/nusmods/commit/${commitHash}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {versionStr}
+        </a>.
+      </span>
+    );
 
   return (
     <footer className={styles.footer}>
       <div className="container">
         <ul className={styles.footerLinks}>
-          <li><a href={config.contact.githubRepo}>GitHub</a></li>
-          <li><a href={config.contact.facebook}>Facebook</a></li>
-          <li><a href={config.contact.messenger}>Messenger</a></li>
-          <li><a href={config.contact.twitter}>Twitter</a></li>
-          <li><a href={config.contact.blog}>Blog</a></li>
           <li>
-            <a href="https://github.com/nusmodifications/nusmods-api" target="_blank" rel="noopener noreferrer">API</a>
+            <a href={config.contact.githubRepo}>GitHub</a>
           </li>
-          <li><Link to="/apps">Apps</Link></li>
-          <li><Link to="/about">About</Link></li>
-          <li><Link to="/team">Team</Link></li>
-          <li><Link to="/contributors">Contributors</Link></li>
-          <li><Link to="/faq">FAQ</Link></li>
+          <li>
+            <a href={config.contact.facebook}>Facebook</a>
+          </li>
+          <li>
+            <a href={config.contact.messenger}>Messenger</a>
+          </li>
+          <li>
+            <a href={config.contact.twitter}>Twitter</a>
+          </li>
+          <li>
+            <a href={config.contact.blog}>Blog</a>
+          </li>
+          <li>
+            <a
+              href="https://github.com/nusmodifications/nusmods-api"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              API
+            </a>
+          </li>
+          <li>
+            <Link to="/apps">Apps</Link>
+          </li>
+          <li>
+            <Link to="/about">About</Link>
+          </li>
+          <li>
+            <Link to="/team">Team</Link>
+          </li>
+          <li>
+            <Link to="/contributors">Contributors</Link>
+          </li>
+          <li>
+            <Link to="/faq">FAQ</Link>
+          </li>
           <li>
             <button
               type="button"
@@ -63,10 +92,12 @@ export function FooterComponent(props: Props) {
           </li>
         </ul>
         <p>{apiUpdateSpan}</p>
-        <p>Designed and built with all the love in the world by{' '}
-          <a href={config.contact.githubOrg} target="_blank" rel="noopener noreferrer">@nusmodifications</a>.
-          Maintained by the <Link to="/team">core team</Link> with the help
-          of <Link to="/contributors">our contributors</Link>.
+        <p>
+          Designed and built with all the love in the world by{' '}
+          <a href={config.contact.githubOrg} target="_blank" rel="noopener noreferrer">
+            @nusmodifications
+          </a>. Maintained by the <Link to="/team">core team</Link> with the help of{' '}
+          <Link to="/contributors">our contributors</Link>.
         </p>
         <p>Copyright © 2017 NUSModifications. All rights reserved. {versionSpan}</p>
       </div>

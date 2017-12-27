@@ -23,28 +23,23 @@ const MODES: Array<ModeOption> = [
 ];
 
 export default function ModeSelect(props: Props) {
-  const {
-    mode,
-    onSelectMode,
-  } = props;
+  const { mode, onSelectMode } = props;
 
   return (
     <div className="btn-group" role="group">
-      {MODES.map(({ value, label }) => {
-        return (
-          <button
-            type="button"
-            key={value}
-            className={classnames('btn', {
-              'btn-primary': mode === value,
-              'btn-outline-primary': mode !== value,
-            })}
-            onClick={() => onSelectMode(value)}
-          >
-            {label}
-          </button>
-        );
-      })}
+      {MODES.map(({ value, label }) => (
+        <button
+          type="button"
+          key={value}
+          className={classnames('btn', {
+            'btn-primary': mode === value,
+            'btn-outline-primary': mode !== value,
+          })}
+          onClick={() => onSelectMode(value)}
+        >
+          {label}
+        </button>
+      ))}
     </div>
   );
 }

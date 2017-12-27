@@ -9,9 +9,14 @@ type Props = {
   className?: string,
 };
 
-export default function ({ onClick, className }: Props) {
+export default function({ onClick, className }: Props) {
   return (
-    <button className={classnames('close', className)} type="button" onClick={onClick} aria-label="Close">
+    <button
+      className={classnames('close', className)}
+      type="button"
+      onClick={onClick}
+      aria-label="Close"
+    >
       <Close />
     </button>
   );

@@ -7,8 +7,7 @@ import { createSearchFilter, sortModules } from './moduleSearch';
 describe('createSearchFilter', () => {
   function testSearchTerm(term: string, expectedModules: ModuleCode[]) {
     const filter = createSearchFilter(term).initFilters(moduleList);
-    expect(filter.filteredModules())
-      .toEqual(new Set(expectedModules));
+    expect(filter.filteredModules()).toEqual(new Set(expectedModules));
   }
 
   test('searches by module prefix', () => {
@@ -39,9 +38,8 @@ describe('createSearchFilter', () => {
 
 describe('sortModules', () => {
   function testSortModule(term: string, ...results: ModuleCode[]) {
-    const sorted = sortModules(term, moduleList).map(m => m.ModuleCode);
-    expect(sorted.slice(0, results.length))
-      .toEqual(results);
+    const sorted = sortModules(term, moduleList).map((m) => m.ModuleCode);
+    expect(sorted.slice(0, results.length)).toEqual(results);
   }
 
   test('sorts by preferring module prefix', () => {

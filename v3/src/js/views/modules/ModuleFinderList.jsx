@@ -18,7 +18,7 @@ type Props = {
 };
 
 function getPageKey(modules: Module[]): string {
-  const getId = module => _.get(module, 'ModuleCode', '');
+  const getId = (module) => _.get(module, 'ModuleCode', '');
   return `${getId(_.head(modules))}-${getId(_.last(modules))}`;
 }
 
@@ -49,7 +49,7 @@ export default class ModuleFinderList extends Component<Props> {
   }
 
   start(page: number) {
-    return ((page + this.props.page.start) * MODULES_PER_PAGE) + 1;
+    return (page + this.props.page.start) * MODULES_PER_PAGE + 1;
   }
 
   end(page: number) {
@@ -67,9 +67,11 @@ export default class ModuleFinderList extends Component<Props> {
 
     return (
       <div>
-        {start !== 0 && <button onClick={this.onShowPreviousPage} className="btn btn-outline-primary btn-block">
-          Show previous page
-        </button>}
+        {start !== 0 && (
+          <button onClick={this.onShowPreviousPage} className="btn btn-outline-primary btn-block">
+            Show previous page
+          </button>
+        )}
 
         {pages.map((page, i) => (
           <Waypoint key={getPageKey(page)} onEnter={() => this.onEnterPage(i)}>

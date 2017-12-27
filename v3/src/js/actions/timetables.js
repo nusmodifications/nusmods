@@ -5,14 +5,7 @@ import localforage from 'localforage';
 import type { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
 import type { FSA } from 'types/redux';
 import type { ColorMapping, ColorIndex } from 'types/reducers';
-import type {
-  Module,
-  ModuleCode,
-  Semester,
-  Lesson,
-  ClassNo,
-  LessonType,
-} from 'types/modules';
+import type { Module, ModuleCode, Semester, Lesson, ClassNo, LessonType } from 'types/modules';
 
 import { fetchModule } from 'actions/moduleBank';
 import { randomModuleLessonConfig } from 'utils/timetables';
@@ -33,8 +26,8 @@ export function addModule(
     dispatch(fetchModule(moduleCode)).then(() => {
       const module: Module = getState().moduleBank.modules[moduleCode];
       const lessons = getModuleTimetable(module, semester);
-      const moduleLessonConfig = lessons && isEmpty(lessonConfig) ?
-        randomModuleLessonConfig(lessons) : lessonConfig;
+      const moduleLessonConfig =
+        lessons && isEmpty(lessonConfig) ? randomModuleLessonConfig(lessons) : lessonConfig;
 
       return dispatch({
         type: ADD_MODULE,
@@ -140,8 +133,9 @@ export function fillTimetableBlanks(semester: Semester) {
 export function fetchTimetableModules(timetables: SemTimetableConfig[]) {
   return (dispatch: Function) => {
     const moduleCodes = new Set(flatMap(timetables, Object.keys));
-    return Promise.all(Array.from(moduleCodes)
-      .map(moduleCode => dispatch(fetchModule(moduleCode))));
+    return Promise.all(
+      Array.from(moduleCodes).map((moduleCode) => dispatch(fetchModule(moduleCode))),
+    );
   };
 }
 
@@ -152,18 +146,18 @@ export function migrateTimetable() {
     }
 
     const promises = MIGRATION_KEYS.map(([semester, key]) =>
-      localforage.getItem(key)
-        .then((queryString) => {
-          // Do nothing if there's no data
-          if (!queryString) return null;
+      localforage.getItem(key).then((queryString) => {
+        // Do nothing if there's no data
+        if (!queryString) return null;
 
-          const timetable = parseQueryString(queryString);
-          dispatch(setTimetable(semester, timetable));
-          return dispatch(fetchTimetableModules([timetable]))
-            .then(() => dispatch(fillTimetableBlanks(semester)));
-        }));
+        const timetable = parseQueryString(queryString);
+        dispatch(setTimetable(semester, timetable));
+        return dispatch(fetchTimetableModules([timetable])).then(() =>
+          dispatch(fillTimetableBlanks(semester)),
+        );
+      }),
+    );
 
-    return Promise.all(promises)
-      .then(() => storage.setItem(V2_MIGRATION_KEY, true));
+    return Promise.all(promises).then(() => storage.setItem(V2_MIGRATION_KEY, true));
   };
 }

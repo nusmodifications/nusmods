@@ -21,7 +21,7 @@ const STUDENT_TYPE_LABELS = {
  * Summary statistics consists of minimum amount of bid points required
  * to get a module for each type of student in each faculty
  */
-export default function (props: Props) {
+export default function(props: Props) {
   const { summary } = props;
 
   return map(summary, (facultyStats, name) => (
@@ -33,9 +33,8 @@ export default function (props: Props) {
           <div key={type} className="col-4">
             <h6 className={styles.typeHeading}>{STUDENT_TYPE_LABELS[type]}</h6>
             <p>
-              <strong className={styles.minBid}>
-                {minBid}
-              </strong> {minBid === 1 ? 'point' : 'points'}
+              <strong className={styles.minBid}>{minBid}</strong>{' '}
+              {minBid === 1 ? 'point' : 'points'}
               <span className={styles.roundInfo}>Round {round}</span>
             </p>
           </div>

@@ -35,7 +35,9 @@ export function LinkModuleCodesComponent(props: Props) {
         title={module.ModuleTitle}
         to={modulePage(code, module.ModuleTitle)}
         key={i}
-      >{part}</Link>
+      >
+        {part}
+      </Link>
     );
   });
 }

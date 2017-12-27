@@ -8,10 +8,7 @@ type Props = {
 };
 
 export default function NewStudentSelect(props: Props) {
-  const {
-    newStudent,
-    onSelectNewStudent,
-  } = props;
+  const { newStudent, onSelectNewStudent } = props;
 
   return (
     <div className="btn-group" role="group">
@@ -22,7 +19,8 @@ export default function NewStudentSelect(props: Props) {
           'btn-outline-primary': !newStudent,
         })}
         onClick={() => onSelectNewStudent(true)}
-      >Yes
+      >
+        Yes
       </button>
       <button
         type="button"
@@ -31,7 +29,8 @@ export default function NewStudentSelect(props: Props) {
           'btn-outline-primary': newStudent,
         })}
         onClick={() => onSelectNewStudent(false)}
-      >No
+      >
+        No
       </button>
     </div>
   );

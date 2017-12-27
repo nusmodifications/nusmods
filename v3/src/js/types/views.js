@@ -5,7 +5,7 @@ import type { Department, Faculty } from './modules';
 /* browse/ModuleFinderContainer */
 export type FilterGroupId = string;
 
-export type OnFilterChange = FilterGroup<*> => any;
+export type OnFilterChange = (FilterGroup<*>) => any;
 export type FilterGroups = { [FilterGroupId]: FilterGroup<any> };
 export type DepartmentFaculty = { [Department]: Faculty };
 

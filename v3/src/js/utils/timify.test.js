@@ -5,7 +5,6 @@ import {
   convertIndexToTime,
   calculateBorderTimings,
   formatHour,
-
   DEFAULT_EARLIEST_TIME,
   DEFAULT_LATEST_TIME,
 } from 'utils/timify';
@@ -14,9 +13,9 @@ import { createGenericLesson } from './timetables.test';
 describe('convertTimeToIndex', () => {
   test('convert time string to index', () => {
     for (let hour: number = 0; hour < 24; hour += 1) {
-      const doubleDigitTime: string = (`0${hour % 24}`).slice(-2);
+      const doubleDigitTime: string = `0${hour % 24}`.slice(-2);
       expect(convertTimeToIndex(`${doubleDigitTime}00`)).toBe(hour * 2);
-      expect(convertTimeToIndex(`${doubleDigitTime}30`)).toBe((hour * 2) + 1);
+      expect(convertTimeToIndex(`${doubleDigitTime}30`)).toBe(hour * 2 + 1);
     }
   });
 
@@ -28,9 +27,9 @@ describe('convertTimeToIndex', () => {
 
   test('convert time index to string', () => {
     for (let hour = 0; hour < 24; hour += 1) {
-      const doubleDigitTime: string = (`0${hour % 24}`).slice(-2);
+      const doubleDigitTime: string = `0${hour % 24}`.slice(-2);
       expect(convertIndexToTime(hour * 2)).toBe(`${doubleDigitTime}00`);
-      expect(convertIndexToTime((hour * 2) + 1)).toBe(`${doubleDigitTime}30`);
+      expect(convertIndexToTime(hour * 2 + 1)).toBe(`${doubleDigitTime}30`);
     }
   });
 });

@@ -10,7 +10,10 @@ export const NUM_DIFFERENT_COLORS: number = 8;
 // Returns a new index that is not present in the current color index.
 // If there are more than NUM_DIFFERENT_COLORS modules already present,
 // will try to balance the color distribution if randomize === true.
-export function getNewColor(currentColorIndices: Array<ColorIndex>, randomize: boolean = true): ColorIndex {
+export function getNewColor(
+  currentColorIndices: Array<ColorIndex>,
+  randomize: boolean = true,
+): ColorIndex {
   function generateInitialIndices(): Array<number> {
     return range(NUM_DIFFERENT_COLORS);
   }

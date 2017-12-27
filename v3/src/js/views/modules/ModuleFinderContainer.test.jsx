@@ -7,15 +7,11 @@ import { type ShallowWrapper, shallow } from 'enzyme';
 import _ from 'lodash';
 import qs from 'query-string';
 
-// react-router-dom internal dependency, used here to construct the history
-// object needed for testing. This is not added as a dev dependency to avoid
-// version desync between the version depended on by react-router-dom
-import createHistory from 'history/createMemoryHistory'; // eslint-disable-line import/no-extraneous-dependencies
-
 import type { FilterGroupId, PageRange } from 'types/views';
 
-import { nextTick, waitFor } from 'test-utils/async';
 import mockDom from 'test-utils/mockDom';
+import createHistory from 'test-utils/createHistory';
+import { nextTick, waitFor } from 'test-utils/async';
 import FilterGroup from 'utils/filters/FilterGroup';
 import { ModuleFinderContainerComponent, mergePageRange } from './ModuleFinderContainer';
 
@@ -27,16 +23,17 @@ describe('<ModuleFinderContainer', () => {
     mockDom();
 
     // Silence console.info calls
-    jest.spyOn(console, 'info')
-      .mockImplementation(_.noop);
+    jest.spyOn(console, 'info').mockImplementation(_.noop);
 
     // Mock axios to stop it from firing API requests
-    jest.spyOn(axios, 'get')
-      .mockImplementation((url) => {
-        return url.includes('facultyDepartments')
-          ? Promise.resolve({ data: {} })
-          : Promise.resolve({ data: [] });
-      });
+    jest
+      .spyOn(axios, 'get')
+      .mockImplementation(
+        (url) =>
+          url.includes('facultyDepartments')
+            ? Promise.resolve({ data: {} })
+            : Promise.resolve({ data: [] }),
+      );
   });
 
   afterEach(() => {
@@ -44,25 +41,13 @@ describe('<ModuleFinderContainer', () => {
     console.info.mockRestore(); // eslint-disable-line no-console
   });
 
-  async function createContainer(initialEntries?: Array<LocationShape | string>): Promise<Container> {
-    const history = createHistory({ initialEntries });
-    const mockMatch = {
-      path: '/',
-      url: '/',
-      isExact: true,
-      params: {},
-    };
+  async function createContainer(initialEntries?: Array<string>): Promise<Container> {
+    const router = createHistory(initialEntries);
 
     const container = {
-      history,
+      history: router.history,
       component: shallow(
-        <ModuleFinderContainerComponent
-          history={history}
-          location={history.location}
-          match={mockMatch}
-          resetModuleFinder={_.noop}
-          searchTerm=""
-        />,
+        <ModuleFinderContainerComponent resetModuleFinder={_.noop} searchTerm="" {...router} />,
       ),
     };
 
@@ -71,9 +56,10 @@ describe('<ModuleFinderContainer', () => {
   }
 
   function extractQueryString(location: LocationShape | string): string {
-    const query = typeof location === 'string'
-      ? qs.extract(location)
-      : (location.search || '').replace(/^\?/, '');
+    const query =
+      typeof location === 'string'
+        ? qs.extract(location)
+        : (location.search || '').replace(/^\?/, '');
 
     return decodeURIComponent(query);
   }
@@ -83,43 +69,42 @@ describe('<ModuleFinderContainer', () => {
     // data structure to assert against
     const active = {};
 
-    _.values(component.state().filterGroups)
-      .forEach((group: FilterGroup<*>) => {
-        const filters = group.activeFilters.map(filter => filter.id);
-        if (filters.length) active[group.id] = filters;
-      });
+    _.values(component.state().filterGroups).forEach((group: FilterGroup<*>) => {
+      const filters = group.activeFilters.map((filter) => filter.id);
+      if (filters.length) active[group.id] = filters;
+    });
 
     return active;
   }
 
   function interceptRouteChanges(history: RouterHistory): string[] {
     const calls = [];
-    jest.spyOn(history, 'push')
-      .mockImplementation(location => calls.push(location));
-    jest.spyOn(history, 'replace')
-      .mockImplementation(location => calls.push(location));
+    jest.spyOn(history, 'push').mockImplementation((location) => calls.push(location));
+    jest.spyOn(history, 'replace').mockImplementation((location) => calls.push(location));
     return calls;
   }
 
   test('should read initial filter state from query string', async () => {
-    expect(activeFilters(await createContainer()))
-      .toEqual({});
+    expect(activeFilters(await createContainer())).toEqual({});
 
-    expect(activeFilters(await createContainer(['?lecture=monday-morning'])))
-      .toEqual({ lecture: ['monday-morning'] });
+    expect(activeFilters(await createContainer(['?lecture=monday-morning']))).toEqual({
+      lecture: ['monday-morning'],
+    });
 
-    expect(activeFilters(await createContainer(['?lecture=monday-morning,tuesday-afternoon'])))
-      .toEqual({ lecture: ['monday-morning', 'tuesday-afternoon'] });
+    expect(
+      activeFilters(await createContainer(['?lecture=monday-morning,tuesday-afternoon'])),
+    ).toEqual({ lecture: ['monday-morning', 'tuesday-afternoon'] });
 
-    expect(activeFilters(await createContainer(['?lecture=monday-morning,tuesday-afternoon&mc=0'])))
-      .toEqual({
-        lecture: ['monday-morning', 'tuesday-afternoon'],
-        mc: ['0'],
-      });
+    expect(
+      activeFilters(await createContainer(['?lecture=monday-morning,tuesday-afternoon&mc=0'])),
+    ).toEqual({
+      lecture: ['monday-morning', 'tuesday-afternoon'],
+      mc: ['0'],
+    });
   });
 
   test('should update filter state when query string changes', async () => {
-  // Simulate the URL changing to check that the filter state changes with it
+    // Simulate the URL changing to check that the filter state changes with it
     const container = await createContainer();
 
     container.history.push('?lecture=monday-morning,tuesday-afternoon');
@@ -172,9 +157,7 @@ describe('<ModuleFinderContainer', () => {
     container.component.setProps({ searchTerm: 'new search' });
     await waitFor(() => calls.length > 0); // Wait until the route has changed
 
-    expect(calls.map(extractQueryString)).toEqual([
-      'q=new search',
-    ]);
+    expect(calls.map(extractQueryString)).toEqual(['q=new search']);
   });
 });
 

@@ -11,8 +11,7 @@ import ShareTimetable from './ShareTimetable';
 describe('ShareTimetable', () => {
   // Mock axios to stop it from firing API requests
   beforeEach(() => {
-    jest.spyOn(axios, 'get')
-      .mockReturnValue(Promise.resolve({ data: { shortUrl: '' } }));
+    jest.spyOn(axios, 'get').mockReturnValue(Promise.resolve({ data: { shortUrl: '' } }));
   });
 
   afterEach(() => {
@@ -25,8 +24,13 @@ describe('ShareTimetable', () => {
     },
   };
 
-  const openModal = wrapper => wrapper.find('button').simulate('click');
-  const closeModal = wrapper => wrapper.find(Modal).first().props().onRequestClose();
+  const openModal = (wrapper) => wrapper.find('button').simulate('click');
+  const closeModal = (wrapper) =>
+    wrapper
+      .find(Modal)
+      .first()
+      .props()
+      .onRequestClose();
 
   test('should load short URL when the modal is opened', () => {
     const wrapper = shallow(<ShareTimetable semester={1} timetable={timetable} />);

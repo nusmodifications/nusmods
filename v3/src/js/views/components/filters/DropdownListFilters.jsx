@@ -26,7 +26,7 @@ type Props = {
 type State = {
   isFocused: boolean,
   searchedFilters: string[],
-}
+};
 
 export class DropdownListFiltersComponent extends PureComponent<Props, State> {
   searchInput: ?HTMLInputElement;
@@ -37,8 +37,8 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
     this.state = {
       isFocused: false,
       searchedFilters: values(props.group.filters)
-        .filter(filter => filter.enabled)
-        .map(filter => filter.id),
+        .filter((filter) => filter.enabled)
+        .map((filter) => filter.id),
     };
   }
 
@@ -82,8 +82,7 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
     const htmlId = `dropdown-filter-${group.id}`;
     const placeholder = `Add ${group.label.toLowerCase()} filter...`;
 
-    const searchedFilters = this.state.searchedFilters
-      .map(filterId => group.filters[filterId]);
+    const searchedFilters = this.state.searchedFilters.map((filterId) => group.filters[filterId]);
 
     return (
       <div className={styles.dropdown}>
@@ -92,7 +91,7 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
         </h4>
 
         {/* Use a native select for mobile devices */}
-        {matchBreakpoint ?
+        {matchBreakpoint ? (
           <select
             className="form-control"
             id={htmlId}
@@ -108,13 +107,12 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
               <option key={filter.id} value={filter.id}>
                 {/* Extra layer of interpolation to workaround https://github.com/facebook/react/issues/11911 */}
                 {/* Use a unicode checkbox to indicate to the user filters that are already enabled */}
-                {filter.enabled
-                  ? `☑ ${filter.label} (${count})`
-                  : `${filter.label} (${count})`}
+                {filter.enabled ? `☑ ${filter.label} (${count})` : `${filter.label} (${count})`}
               </option>
             ))}
           </select>
-          : /* Use a search-select combo dropdown on desktop */
+        ) : (
+          /* Use a search-select combo dropdown on desktop */
           <Downshift
             breakingChanges={{ resetInputOnSelection: true }}
             onChange={(selectedItem, { clearSelection }) => {
@@ -130,13 +128,16 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
               highlightedIndex,
             }) => (
               <div className="dropdown">
-                <div className={classnames(styles.searchWrapper, { [styles.focused]: this.state.isFocused })}>
-                  <Search
-                    className={styles.searchIcon}
-                    onClick={this.focusInput}
-                  />
+                <div
+                  className={classnames(styles.searchWrapper, {
+                    [styles.focused]: this.state.isFocused,
+                  })}
+                >
+                  <Search className={styles.searchIcon} onClick={this.focusInput} />
                   <input
-                    ref={(r) => { this.searchInput = r; }}
+                    ref={(r) => {
+                      this.searchInput = r;
+                    }}
                     {...getInputProps({
                       onFocus: () => {
                         this.setState({ isFocused: true });
@@ -148,13 +149,10 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
                       id: htmlId,
                     })}
                   />
-                  <ChevronDown
-                    className={styles.openIcon}
-                    onClick={openMenu}
-                  />
+                  <ChevronDown className={styles.openIcon} onClick={openMenu} />
                 </div>
 
-                {isOpen &&
+                {isOpen && (
                   <div className="dropdown-menu show">
                     {this.displayedFilters(inputValue).map(([filter, count], index) => (
                       <label
@@ -175,21 +173,27 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
                         {highlight(filter.label, inputValue)}
                         &nbsp;
                         <span className="text-muted">({count})</span>
-                      </label>))}
-                  </div>}
+                      </label>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
-          />}
+          />
+        )}
 
         {/* Show all filters that have been selected at some point */}
         <Checklist
           filters={searchedFilters}
-          onChange={filter => onFilterChange(group.toggle(filter))}
-          getCount={filter => filter.count(moduleCodes)}
+          onChange={(filter) => onFilterChange(group.toggle(filter))}
+          getCount={(filter) => filter.count(moduleCodes)}
         />
       </div>
     );
   }
 }
 
-export default makeResponsive(DropdownListFiltersComponent, [breakpointDown('sm'), touchScreenOnly()]);
+export default makeResponsive(DropdownListFiltersComponent, [
+  breakpointDown('sm'),
+  touchScreenOnly(),
+]);

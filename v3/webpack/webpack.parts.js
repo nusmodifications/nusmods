@@ -63,9 +63,7 @@ exports.setFreeVariable = (key, value) => {
   env[key] = JSON.stringify(value);
 
   return {
-    plugins: [
-      new webpack.DefinePlugin(env),
-    ],
+    plugins: [new webpack.DefinePlugin(env)],
   };
 };
 
@@ -91,27 +89,24 @@ exports.clean = (...pathsToBeCleaned) => ({
  * @see https://survivejs.com/webpack/building/bundle-splitting/
  * @see https://survivejs.com/webpack/building/bundle-splitting/#loading-dependencies-to-a-vendor-bundle-automatically
  */
-exports.extractBundle = ({ name, entries }) => {
-  return {
-    plugins: [
-      // Extract bundle and manifest files. Manifest is
-      // needed for reliable caching.
-      new webpack.optimize.CommonsChunkPlugin({
-        names: [name],
-        minChunks: ({ resource }) => {
-          return resource &&
-            resource.includes('node_modules') &&
-            resource.match(/\.js$/) &&
-            entries.some(entry => resource.includes(entry));
-        },
-      }),
-      new webpack.optimize.CommonsChunkPlugin({
-        names: 'manifest',
-        minChunks: Infinity,
-      }),
-    ],
-  };
-};
+exports.extractBundle = ({ name, entries }) => ({
+  plugins: [
+    // Extract bundle and manifest files. Manifest is
+    // needed for reliable caching.
+    new webpack.optimize.CommonsChunkPlugin({
+      names: [name],
+      minChunks: ({ resource }) =>
+        resource &&
+        resource.includes('node_modules') &&
+        resource.match(/\.js$/) &&
+        entries.some((entry) => resource.includes(entry)),
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      names: 'manifest',
+      minChunks: Infinity,
+    }),
+  ],
+});
 
 /**
  * Lints javascript to make sure code is up to standard.
@@ -127,10 +122,7 @@ exports.lintJavaScript = ({ include, exclude, options }) => ({
         exclude,
         enforce: 'pre',
 
-        use: [
-          ...insertIf(IS_DEV, 'cache-loader'),
-          { loader: 'eslint-loader', options },
-        ],
+        use: [...insertIf(IS_DEV, 'cache-loader'), { loader: 'eslint-loader', options }],
       },
     ],
   },
@@ -150,10 +142,7 @@ exports.transpileJavascript = ({ include, exclude, options }) => ({
         include,
         exclude,
 
-        use: [
-          ...insertIf(IS_DEV, 'cache-loader'),
-          { loader: 'babel-loader', options },
-        ],
+        use: [...insertIf(IS_DEV, 'cache-loader'), { loader: 'babel-loader', options }],
       },
     ],
   },
@@ -165,7 +154,7 @@ exports.transpileJavascript = ({ include, exclude, options }) => ({
  * @see https://webpack.js.org/plugins/uglifyjs-webpack-plugin/
  * @see https://survivejs.com/webpack/optimizing/minifying/
  */
-exports.minifyJavascript = () => {
+exports.minifyJavascript = () =>
   // TODO: Use Babili instead when it's out of beta
   // Currently breaks Timify.js
   // SEE: https://webpack.js.org/plugins/babili-webpack-plugin/
@@ -180,7 +169,7 @@ exports.minifyJavascript = () => {
     }),
   ],
   */
-  return {
+  ({
     plugins: [
       new UglifyJsPlugin({
         sourceMap: true,
@@ -202,31 +191,28 @@ exports.minifyJavascript = () => {
         },
       }),
     ],
-  };
-};
+  });
 
-exports.getCSSConfig = ({ options } = {}) => {
-  return [
-    ...insertIf(IS_DEV, 'cache-loader'), // Because css-loader is slow
-    {
-      loader: 'css-loader',
-      // Enable 'composes' from other scss files
-      options: { ...options, importLoaders: 2 },
+exports.getCSSConfig = ({ options } = {}) => [
+  ...insertIf(IS_DEV, 'cache-loader'), // Because css-loader is slow
+  {
+    loader: 'css-loader',
+    // Enable 'composes' from other scss files
+    options: { ...options, importLoaders: 2 },
+  },
+  {
+    loader: 'postcss-loader',
+    // See .postcssrc.js for plugin and plugin config
+  },
+  {
+    loader: 'sass-loader',
+    options: {
+      // @material packages uses '@material' directly as part of their import paths.
+      // Without this those imports will not resolve properly
+      includePaths: [PATHS.node],
     },
-    {
-      loader: 'postcss-loader',
-      // See .postcssrc.js for plugin and plugin config
-    },
-    {
-      loader: 'sass-loader',
-      options: {
-        // @material packages uses '@material' directly as part of their import paths.
-        // Without this those imports will not resolve properly
-        includePaths: [PATHS.node],
-      },
-    },
-  ];
-};
+  },
+];
 
 /**
  * Enables importing CSS with Javascript. This is all in-memory.
@@ -324,7 +310,10 @@ exports.mockNode = () => ({
  * @returns Object with keys `commitHash` and `versionStr`.
  */
 exports.appVersion = () => {
-  const commitHash = childProcess.execSync('git rev-parse HEAD').toString().trim();
+  const commitHash = childProcess
+    .execSync('git rev-parse HEAD')
+    .toString()
+    .trim();
   // Version format: <YYYYMMDD date>-<7-char hash substring>
   const versionStr = commitHash && `${moment().format('YYYYMMDD')}-${commitHash.substring(0, 7)}`;
   return { commitHash, versionStr };

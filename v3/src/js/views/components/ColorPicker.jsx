@@ -12,7 +12,7 @@ import styles from './ColorPicker.scss';
 type Props = {
   label: string,
   color: ColorIndex,
-  onChooseColor: Function
+  onChooseColor: Function,
 };
 
 /**
@@ -22,46 +22,30 @@ type Props = {
  */
 class ColorPicker extends PureComponent<Props> {
   // TODO: Inject types from downshift when https://github.com/paypal/downshift/pull/180 is implemented
-  renderColorPicker = ({
-    getButtonProps,
-    getItemProps,
-    itemToString,
-    isOpen,
-  }: any) => {
-    return (
-      <div className={styles.container}>
-        <button
-          {...getButtonProps({
-            title: this.props.label,
-          })}
-          className={classnames(
-            'btn btn-block',
-            `color-${this.props.color}`,
-            styles.moduleColor,
-          )}
-        />
-        {isOpen && (
-          <div className={styles.palette}>
-            {_.range(NUM_DIFFERENT_COLORS).map((index: ColorIndex) => (
-              <span
-                {...getItemProps({ item: itemToString(index) })}
-                key={index}
-                className={classnames(styles.option, `color-${index}`)}
-              />
-            ))}
-          </div>
-        )}
-      </div>
-    );
-  };
+  renderColorPicker = ({ getButtonProps, getItemProps, itemToString, isOpen }: any) => (
+    <div className={styles.container}>
+      <button
+        {...getButtonProps({
+          title: this.props.label,
+        })}
+        className={classnames('btn btn-block', `color-${this.props.color}`, styles.moduleColor)}
+      />
+      {isOpen && (
+        <div className={styles.palette}>
+          {_.range(NUM_DIFFERENT_COLORS).map((index: ColorIndex) => (
+            <span
+              {...getItemProps({ item: itemToString(index) })}
+              key={index}
+              className={classnames(styles.option, `color-${index}`)}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
 
   render() {
-    return (
-      <Downshift
-        onChange={this.props.onChooseColor}
-        render={this.renderColorPicker}
-      />
-    );
+    return <Downshift onChange={this.props.onChooseColor} render={this.renderColorPicker} />;
   }
 }
 

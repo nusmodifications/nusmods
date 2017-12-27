@@ -36,7 +36,7 @@ const timeLabels: { [Time]: string } = {
 };
 
 export default class TimeslotTable extends Component<Props, State> {
-    state: State = { hover: EMPTY_HOVER };
+  state: State = { hover: EMPTY_HOVER };
 
   onHoverEnter = (day: Day, time: Time) => {
     this.setState({ hover: { day, time } });
@@ -58,12 +58,12 @@ export default class TimeslotTable extends Component<Props, State> {
     };
 
     // Remove Saturday if there are no children on Saturday
-    if (times.every(time => !hasChildren('Saturday', time))) {
+    if (times.every((time) => !hasChildren('Saturday', time))) {
       days.pop();
     }
 
     // Remove evening if there are no evening children
-    if (days.every(day => !hasChildren(day, 'Evening'))) {
+    if (days.every((day) => !hasChildren(day, 'Evening'))) {
       times.pop();
     }
 
@@ -73,7 +73,7 @@ export default class TimeslotTable extends Component<Props, State> {
           <tr>
             <th />
 
-            {days.map(day => (
+            {days.map((day) => (
               <th
                 key={`heading-${day}`}
                 className={classnames(styles.day, {
@@ -86,7 +86,7 @@ export default class TimeslotTable extends Component<Props, State> {
           </tr>
         </thead>
         <tbody>
-          {times.map(time => (
+          {times.map((time) => (
             <tr key={`row-${time}`}>
               <th
                 className={classnames(styles.time, {
@@ -96,7 +96,7 @@ export default class TimeslotTable extends Component<Props, State> {
                 {timeLabels[time]}
               </th>
 
-              {days.map(day => (
+              {days.map((day) => (
                 <td
                   key={`cell-${day}-${time}`}
                   onMouseEnter={() => this.onHoverEnter(day, time)}

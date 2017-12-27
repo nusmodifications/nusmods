@@ -35,8 +35,10 @@ export class AddModuleDropdownComponent extends PureComponent<Props, State> {
   };
 
   componentWillReceiveProps(nextProps: Props) {
-    if (this.state.loading != null &&
-        this.moduleOnTimetable(this.state.loading, nextProps.timetables)) {
+    if (
+      this.state.loading != null &&
+      this.moduleOnTimetable(this.state.loading, nextProps.timetables)
+    ) {
       this.setState({ loading: null });
     }
   }
@@ -61,16 +63,22 @@ export class AddModuleDropdownComponent extends PureComponent<Props, State> {
       );
     }
 
-    return this.moduleOnTimetable(semester, this.props.timetables)
-      ? <Fragment>Remove from <br />
-        <strong>{config.semesterNames[semester]}</strong></Fragment>
-      : <Fragment>Add to <br />
-        <strong>{config.semesterNames[semester]}</strong></Fragment>;
+    return this.moduleOnTimetable(semester, this.props.timetables) ? (
+      <Fragment>
+        Remove from <br />
+        <strong>{config.semesterNames[semester]}</strong>
+      </Fragment>
+    ) : (
+      <Fragment>
+        Add to <br />
+        <strong>{config.semesterNames[semester]}</strong>
+      </Fragment>
+    );
   }
 
   otherSemesters(exclude: Semester): Semester[] {
     return getSemestersOffered(this.props.module)
-      .filter(semester => semester !== exclude)
+      .filter((semester) => semester !== exclude)
       .sort();
   }
 
@@ -89,12 +97,7 @@ export class AddModuleDropdownComponent extends PureComponent<Props, State> {
     /* eslint-disable jsx-a11y/label-has-for */
     return (
       <Downshift>
-        {({
-          getLabelProps,
-          getItemProps,
-          isOpen,
-          toggleMenu,
-        }) => (
+        {({ getLabelProps, getItemProps, isOpen, toggleMenu }) => (
           <div>
             <label {...getLabelProps({ htmlFor: id })} className="sr-only">
               Add module to timetable
@@ -115,7 +118,7 @@ export class AddModuleDropdownComponent extends PureComponent<Props, State> {
                 {this.buttonLabel(defaultSemester)}
               </button>
 
-              {!!otherSemesters.length &&
+              {!!otherSemesters.length && (
                 <button
                   id={id}
                   type="button"
@@ -126,11 +129,12 @@ export class AddModuleDropdownComponent extends PureComponent<Props, State> {
                   aria-expanded={isOpen}
                 >
                   <span className="sr-only">Toggle Dropdown</span>
-                </button>}
+                </button>
+              )}
 
-              {isOpen &&
+              {isOpen && (
                 <div className="dropdown-menu show">
-                  {otherSemesters.map(semester => (
+                  {otherSemesters.map((semester) => (
                     <button
                       {...getItemProps({ item: semester })}
                       key={semester}
@@ -140,7 +144,8 @@ export class AddModuleDropdownComponent extends PureComponent<Props, State> {
                       {this.buttonLabel(semester)}
                     </button>
                   ))}
-                </div>}
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -149,8 +154,11 @@ export class AddModuleDropdownComponent extends PureComponent<Props, State> {
   }
 }
 
-const AddModuleDropdownConnected = connect(state => ({
-  timetables: state.timetables,
-}), { addModule, removeModule })(AddModuleDropdownComponent);
+const AddModuleDropdownConnected = connect(
+  (state) => ({
+    timetables: state.timetables,
+  }),
+  { addModule, removeModule },
+)(AddModuleDropdownComponent);
 
 export default AddModuleDropdownConnected;

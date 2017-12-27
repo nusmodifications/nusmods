@@ -12,7 +12,8 @@ const holidays = [];
 
 inputs.forEach((file) => {
   console.log(`Reading holidays from ${file}`);
-  fs.readFileSync(path.join(IN_DIR, file), 'utf-8')
+  fs
+    .readFileSync(path.join(IN_DIR, file), 'utf-8')
     .trim()
     .split('\n')
     // Remove header row
@@ -20,8 +21,8 @@ inputs.forEach((file) => {
     // Headers: ['Date', 'Name', 'Day', 'Observance', 'Observance Strategy']
     // We're looking for Observance - the date at which the holiday is actually
     // observed
-    .map(line => line.split(',')[3])
-    .forEach(date => holidays.push(date));
+    .map((line) => line.split(',')[3])
+    .forEach((date) => holidays.push(date));
 });
 
 console.log(`Writing ${holidays.length} holidays to ${OUT_FILE}`);

@@ -10,7 +10,7 @@ import { WORKLOAD_COMPONENTS } from 'utils/modules';
 import ModuleWorkload from './ModuleWorkload';
 
 function make(workload: { [WorkloadComponent]: number }) {
-  const workloadString = WORKLOAD_COMPONENTS.map(component => workload[component] || 0).join('-');
+  const workloadString = WORKLOAD_COMPONENTS.map((component) => workload[component] || 0).join('-');
   return shallow(<ModuleWorkload workload={workloadString} />);
 }
 
@@ -24,8 +24,7 @@ function extractComponent(node: ShallowWrapper): string {
     return extractComponent(node.children().first());
   }
 
-  const match = node.get(0).props
-    .className.match(/workload-([^-]+)/);
+  const match = node.get(0).props.className.match(/workload-([^-]+)/);
   return _.capitalize(match[1]);
 }
 
@@ -41,8 +40,7 @@ test('it should render workload correctly', () => {
   expect(heading.text()).toEqual(expect.stringContaining('10'));
 
   // Check that the correct number of blocks have been rendered
-  expect(component.find('.module-workload-blocks').children())
-    .toHaveLength(10);
+  expect(component.find('.module-workload-blocks').children()).toHaveLength(10);
 });
 
 test('it should render non-integer workloads correctly', () => {
@@ -60,8 +58,7 @@ test('it should render non-integer workloads correctly', () => {
   expect(heading.text()).toEqual(expect.stringContaining('10'));
 
   // But total number of blocks should be 12
-  expect(component.find('.module-workload-blocks').children())
-    .toHaveLength(12);
+  expect(component.find('.module-workload-blocks').children()).toHaveLength(12);
 });
 
 test('it should rearrange components correctly', () => {
@@ -72,8 +69,11 @@ test('it should rearrange components correctly', () => {
     Preparation: 6,
   });
 
-  expect(noSorting.find('h5').map(extractComponent))
-    .toEqual(['Lecture', 'Laboratory', 'Preparation']);
+  expect(noSorting.find('h5').map(extractComponent)).toEqual([
+    'Lecture',
+    'Laboratory',
+    'Preparation',
+  ]);
 
   // Do not sort - only last workload is 10+ hrs
   const alreadySorted = make({
@@ -82,8 +82,11 @@ test('it should rearrange components correctly', () => {
     Preparation: 10,
   });
 
-  expect(alreadySorted.find('h5').map(extractComponent))
-    .toEqual(['Lecture', 'Laboratory', 'Preparation']);
+  expect(alreadySorted.find('h5').map(extractComponent)).toEqual([
+    'Lecture',
+    'Laboratory',
+    'Preparation',
+  ]);
 
   // Sort - Prep is after Lab, but has less than 10 hrs of workload
   const needsSorting = make({
@@ -92,6 +95,9 @@ test('it should rearrange components correctly', () => {
     Preparation: 6,
   });
 
-  expect(needsSorting.find('h5').map(extractComponent))
-    .toEqual(['Lecture', 'Preparation', 'Laboratory']);
+  expect(needsSorting.find('h5').map(extractComponent)).toEqual([
+    'Lecture',
+    'Preparation',
+    'Laboratory',
+  ]);
 });

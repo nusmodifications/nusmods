@@ -1,7 +1,5 @@
 // @flow
-import type {
-  ModuleCode,
-} from 'types/modules';
+import type { ModuleCode } from 'types/modules';
 import type { FSA } from 'types/redux';
 
 import { API_REQUEST } from 'middlewares/requests-middleware';

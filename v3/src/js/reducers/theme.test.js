@@ -11,7 +11,10 @@ const googleTheme = 'google';
 const themeWithEighties: ThemeState = { ...themeInitialState, id: googleTheme };
 const themeWithFirstTheme: ThemeState = { ...themeInitialState, id: themeIds[0] };
 const themeWithLastTheme: ThemeState = { ...themeInitialState, id: themeIds[themeIds.length - 1] };
-const themeWithVerticalOrientation: ThemeState = { ...themeInitialState, timetableOrientation: VERTICAL };
+const themeWithVerticalOrientation: ThemeState = {
+  ...themeInitialState,
+  timetableOrientation: VERTICAL,
+};
 
 describe('theme', () => {
   test('can select theme', () => {

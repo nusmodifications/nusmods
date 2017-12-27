@@ -6,10 +6,7 @@ import { shallow } from 'enzyme';
 import type { SemTimetableConfig } from 'types/timetables';
 import type { ModulesMap } from 'reducers/moduleBank';
 
-// react-router-dom internal dependency, used here to construct the history
-// object needed for testing. This is not added as a dev dependency to avoid
-// version desync between the version depended on by react-router-dom
-import createHistory from 'history/createMemoryHistory'; // eslint-disable-line import/no-extraneous-dependencies
+import createHistory from 'test-utils/createHistory';
 
 import { timetablePage, semesterForTimetablePage, timetableShare } from 'views/routes/paths';
 import NotFoundPage from 'views/errors/NotFoundPage';
@@ -29,40 +26,31 @@ function create(
   timetable: SemTimetableConfig = {},
   modules: ModulesMap = { CS1010S, CS3216 },
 ) {
-  const history = createHistory({ initialEntries: [path] });
-  const match = {
-    path,
-    params,
-    url: path,
-    isExact: true,
-  };
+  const router = createHistory(path);
+  router.match.params = params;
 
   const selectSemester = jest.fn();
   const setTimetable = jest.fn();
   const fetchTimetableModules = jest.fn();
 
   return {
-    history,
     selectSemester,
     setTimetable,
     fetchTimetableModules,
+    history: router.history,
 
     wrapper: shallow(
       <TimetableContainerComponent
-        history={history}
-        location={history.location}
-        match={match}
-
         activeSemester={1}
         semester={semesterForTimetablePage(params.semester)}
         timetable={timetable}
         colors={{}}
         modules={modules}
         isV2TimetableMigrated
-
         selectSemester={selectSemester}
         setTimetable={setTimetable}
         fetchTimetableModules={fetchTimetableModules}
+        {...router}
       />,
     ),
   };
@@ -86,11 +74,11 @@ test('should redirect to activeSemester when semester is empty', () => {
 });
 
 test('should show 404 when the URL is invalid', () => {
-  expect(create('/timetable/hello', { semester: 'hello' })
-    .wrapper.type()).toEqual(NotFoundPage);
+  expect(create('/timetable/hello', { semester: 'hello' }).wrapper.type()).toEqual(NotFoundPage);
 
-  expect(create('/timetable/sem-1/hello', { semester: '1', action: 'hello' })
-    .wrapper.type()).toEqual(NotFoundPage);
+  expect(
+    create('/timetable/sem-1/hello', { semester: '1', action: 'hello' }).wrapper.type(),
+  ).toEqual(NotFoundPage);
 });
 
 test('should load modules from imported timetable', () => {

@@ -23,18 +23,20 @@ export default function NotFoundPage() {
           page not found.
         </h1>
         <p>
-          If you think something <em>should</em> be here, <button
-            className={styles.link}
-            onClick={() => Raven.showReportDialog({ eventId })}
-          >
+          If you think something <em>should</em> be here,{' '}
+          <button className={styles.link} onClick={() => Raven.showReportDialog({ eventId })}>
             do tell us
           </button>
         </p>
 
         <p className={styles.subheader}>Otherwise, if you want to</p>
         <ul className="list-unstyled">
-          <li>...plan your timetable? <Link to="/">Go back to Nusmods.com</Link></li>
-          <li>...find a module? <Link to="/modules">Try the module finder</Link></li>
+          <li>
+            ...plan your timetable? <Link to="/">Go back to Nusmods.com</Link>
+          </li>
+          <li>
+            ...find a module? <Link to="/modules">Try the module finder</Link>
+          </li>
         </ul>
       </div>
     </div>

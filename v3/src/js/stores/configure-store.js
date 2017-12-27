@@ -8,11 +8,11 @@ import ravenMiddleware from 'middlewares/raven-middleware';
 // https://github.com/zalmoxisus/redux-devtools-extension
 /* eslint-disable no-underscore-dangle */
 const composeEnhancers =
-  typeof window === 'object' &&
-  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
-    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-      // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
-    }) : compose;
+  typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+        // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
+      })
+    : compose;
 /* eslint-enable no-underscore-dangle */
 
 export default function configureStore(defaultState) {
@@ -39,10 +39,7 @@ export default function configureStore(defaultState) {
 
   if (module.hot) {
     // Enable webpack hot module replacement for reducers
-    module.hot.accept(
-      '../reducers',
-      () => store.replaceReducer(rootReducer),
-    );
+    module.hot.accept('../reducers', () => store.replaceReducer(rootReducer));
   }
 
   return store;

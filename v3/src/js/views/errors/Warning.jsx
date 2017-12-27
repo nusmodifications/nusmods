@@ -5,7 +5,7 @@ import styles from './Warning.scss';
 
 type Props = {
   message: string,
-}
+};
 
 export default function Warning(props: Props) {
   return (

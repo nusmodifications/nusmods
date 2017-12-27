@@ -28,20 +28,22 @@ export default function TimeslotFilters(props: Props) {
     const filter = group.filters[TimeslotFilter.labelToId(timeslot)];
     const count = filter.count(moduleCodes);
 
-    children.set(timeslot,
+    children.set(
+      timeslot,
       <label
         className={classnames(styles.label, { [styles.enabled]: filter.enabled })}
         title={`${count} modules with lessons on ${timeslot}`}
       >
-        <span className="sr-only">{ timeslot }</span>
-        <span>{ count }</span>
+        <span className="sr-only">{timeslot}</span>
+        <span>{count}</span>
         <input
           className="sr-only"
           type="checkbox"
           checked={filter.enabled}
           onChange={() => onFilterChange(group.toggle(filter))}
         />
-      </label>);
+      </label>,
+    );
   });
 
   return (

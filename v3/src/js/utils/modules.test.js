@@ -60,12 +60,15 @@ test('areLessonsSameClass should identify identity lessons as same class', () =>
   expect(areLessonsSameClass(mockLesson, deepClonedLesson)).toBe(true);
 });
 
-test('areLessonsSameClass should identify lessons from the same ClassNo but ' +
-  'with different timings as same class', () => {
-  const otherLesson: Lesson = lessonWithDifferentProperty(mockLesson, 'StartTime', '0000');
-  const otherLesson2: Lesson = lessonWithDifferentProperty(otherLesson, 'EndTime', '2300');
-  expect(areLessonsSameClass(mockLesson, otherLesson2)).toBe(true);
-});
+test(
+  'areLessonsSameClass should identify lessons from the same ClassNo but ' +
+    'with different timings as same class',
+  () => {
+    const otherLesson: Lesson = lessonWithDifferentProperty(mockLesson, 'StartTime', '0000');
+    const otherLesson2: Lesson = lessonWithDifferentProperty(otherLesson, 'EndTime', '2300');
+    expect(areLessonsSameClass(mockLesson, otherLesson2)).toBe(true);
+  },
+);
 
 test('areLessonsSameClass should identify lessons with different ModuleCode as different class', () => {
   const otherLesson: Lesson = lessonWithDifferentProperty(mockLesson, 'ModuleCode');

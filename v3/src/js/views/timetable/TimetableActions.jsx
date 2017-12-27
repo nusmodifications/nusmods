@@ -21,12 +21,12 @@ type Props = {
 function TimetableActions(props: Props) {
   const { isVerticalOrientation } = props;
   return (
-    <div className="btn-toolbar justify-content-between" role="toolbar" aria-label="Timetable utilities">
-      <div
-        className={styles.leftButtonGroup}
-        role="group"
-        aria-label="Timetable manipulation"
-      >
+    <div
+      className="btn-toolbar justify-content-between"
+      role="toolbar"
+      aria-label="Timetable utilities"
+    >
+      <div className={styles.leftButtonGroup} role="group" aria-label="Timetable manipulation">
         <button
           type="button"
           className="btn btn-outline-primary btn-svg"
@@ -36,21 +36,25 @@ function TimetableActions(props: Props) {
           {isVerticalOrientation ? 'Horizontal Mode' : 'Vertical Mode'}
         </button>
       </div>
-      <div
-        className={styles.rightButtonGroup}
-        role="group"
-        aria-label="Timetable exporting"
-      >
+      <div className={styles.rightButtonGroup} role="group" aria-label="Timetable exporting">
         {SUPPORTS_DOWNLOAD && (
-          <button type="button" className="btn btn-outline-primary btn-svg" onClick={props.downloadAsImage}>
+          <button
+            type="button"
+            className="btn btn-outline-primary btn-svg"
+            onClick={props.downloadAsImage}
+          >
             <Image className="svg svg-small" />
-              Export image
+            Export image
           </button>
         )}
         {SUPPORTS_DOWNLOAD && (
-          <button type="button" className="btn btn-outline-primary btn-svg" onClick={props.downloadAsIcal}>
+          <button
+            type="button"
+            className="btn btn-outline-primary btn-svg"
+            onClick={props.downloadAsIcal}
+          >
             <Calendar className="svg svg-small" />
-              Export iCal
+            Export iCal
           </button>
         )}
         <ShareTimetable semester={props.semester} timetable={props.timetable} />

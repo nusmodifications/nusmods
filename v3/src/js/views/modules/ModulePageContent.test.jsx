@@ -26,7 +26,8 @@ describe('<ModulePageContent>', () => {
 
   test('side menu items should appear in the same order in the document', () => {
     const component = make();
-    expect(component.find('[id]').map(ele => ele.prop('id')))
-      .toEqual(component.find(ScrollSpy).prop('items'));
+    expect(component.find('[id]').map((ele) => ele.prop('id'))).toEqual(
+      component.find(ScrollSpy).prop('items'),
+    );
   });
 });

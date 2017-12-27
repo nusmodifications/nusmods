@@ -53,7 +53,10 @@ test('shows at most 7 choices when search returns plentiful', () => {
 });
 
 test('shows at most 7 choices when there are many venues', () => {
-  const instance = make({ moduleList: MODULES.slice(0, 2), venueList: VENUES.slice(0, 4) }).instance();
+  const instance = make({
+    moduleList: MODULES.slice(0, 2),
+    venueList: VENUES.slice(0, 4),
+  }).instance();
   const [mods, venues] = instance.getResults('1 ');
   expect(mods).toHaveLength(2);
   expect(venues).toHaveLength(4);

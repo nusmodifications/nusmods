@@ -36,10 +36,7 @@ import {
   isSameTimetableConfig,
   findExamClashes,
 } from 'utils/timetables';
-import {
-  getModuleTimetable,
-  getModuleSemesterData,
-} from 'utils/modules';
+import { getModuleTimetable, getModuleSemesterData } from 'utils/modules';
 
 /** @var {Module} */
 import cs1010s from '__mocks__/modules/CS1010S.json';
@@ -54,8 +51,13 @@ import lessonsArray from '__mocks__/lessons-array.json';
 // A generic lesson with some default.
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable indent */
-export function createGenericLesson(dayText: DayText, startTime: LessonTime,
-  endTime: LessonTime, lessonType?: LessonType, classNo?: ClassNo): Lesson {
+export function createGenericLesson(
+  dayText: DayText,
+  startTime: LessonTime,
+  endTime: LessonTime,
+  lessonType?: LessonType,
+  classNo?: ClassNo,
+): Lesson {
   return {
     ModuleCode: 'GC1101',
     ModuleTitle: 'Generic Title',
@@ -108,7 +110,11 @@ test('hydrateSemTimetableWithLessons should replace ClassNo with lessons', () =>
       Lecture: '1',
     },
   };
-  const configWithLessons: SemTimetableConfigWithLessons = hydrateSemTimetableWithLessons(config, modules, sem);
+  const configWithLessons: SemTimetableConfigWithLessons = hydrateSemTimetableWithLessons(
+    config,
+    modules,
+    sem,
+  );
   expect(configWithLessons[moduleCode].Tutorial[0].ClassNo).toBe(tutorialClassNo);
   expect(configWithLessons[moduleCode].Recitation[0].ClassNo).toBe(recitationClassNo);
   expect(configWithLessons[moduleCode].Lecture[0].ClassNo).toBe(lectureClassNo);
@@ -150,41 +156,97 @@ test('groupLessonsByDay should group lessons by DayText', () => {
 
 test('doLessonsOverlap should correctly determine if two lessons overlap', () => {
   // Same day same time.
-  expect(doLessonsOverlap(createGenericLesson('Wednesday', '1000', '1200'),
-                          createGenericLesson('Wednesday', '1000', '1200'))).toBe(true);
+  expect(
+    doLessonsOverlap(
+      createGenericLesson('Wednesday', '1000', '1200'),
+      createGenericLesson('Wednesday', '1000', '1200'),
+    ),
+  ).toBe(true);
   // Same day with no overlapping time.
-  expect(doLessonsOverlap(createGenericLesson('Wednesday', '1000', '1200'),
-                          createGenericLesson('Wednesday', '1200', '1400'))).toBe(false);
-  expect(doLessonsOverlap(createGenericLesson('Wednesday', '1200', '1400'),
-                          createGenericLesson('Wednesday', '1000', '1200'))).toBe(false);
+  expect(
+    doLessonsOverlap(
+      createGenericLesson('Wednesday', '1000', '1200'),
+      createGenericLesson('Wednesday', '1200', '1400'),
+    ),
+  ).toBe(false);
+  expect(
+    doLessonsOverlap(
+      createGenericLesson('Wednesday', '1200', '1400'),
+      createGenericLesson('Wednesday', '1000', '1200'),
+    ),
+  ).toBe(false);
   // Same day with overlapping time.
-  expect(doLessonsOverlap(createGenericLesson('Wednesday', '1000', '1200'),
-                          createGenericLesson('Wednesday', '1100', '1300'))).toBe(true);
-  expect(doLessonsOverlap(createGenericLesson('Wednesday', '1100', '1300'),
-                          createGenericLesson('Wednesday', '1000', '1200'))).toBe(true);
+  expect(
+    doLessonsOverlap(
+      createGenericLesson('Wednesday', '1000', '1200'),
+      createGenericLesson('Wednesday', '1100', '1300'),
+    ),
+  ).toBe(true);
+  expect(
+    doLessonsOverlap(
+      createGenericLesson('Wednesday', '1100', '1300'),
+      createGenericLesson('Wednesday', '1000', '1200'),
+    ),
+  ).toBe(true);
   // Same day with one lesson totally within another lesson.
-  expect(doLessonsOverlap(createGenericLesson('Wednesday', '1000', '1200'),
-                          createGenericLesson('Wednesday', '0900', '1300'))).toBe(true);
-  expect(doLessonsOverlap(createGenericLesson('Wednesday', '0900', '1300'),
-                          createGenericLesson('Wednesday', '1000', '1200'))).toBe(true);
+  expect(
+    doLessonsOverlap(
+      createGenericLesson('Wednesday', '1000', '1200'),
+      createGenericLesson('Wednesday', '0900', '1300'),
+    ),
+  ).toBe(true);
+  expect(
+    doLessonsOverlap(
+      createGenericLesson('Wednesday', '0900', '1300'),
+      createGenericLesson('Wednesday', '1000', '1200'),
+    ),
+  ).toBe(true);
   // Different day same time.
-  expect(doLessonsOverlap(createGenericLesson('Wednesday', '1000', '1200'),
-                          createGenericLesson('Thursday', '1000', '1200'))).toBe(false);
+  expect(
+    doLessonsOverlap(
+      createGenericLesson('Wednesday', '1000', '1200'),
+      createGenericLesson('Thursday', '1000', '1200'),
+    ),
+  ).toBe(false);
   // Different day with no overlapping time.
-  expect(doLessonsOverlap(createGenericLesson('Wednesday', '1000', '1200'),
-                          createGenericLesson('Thursday', '1200', '1400'))).toBe(false);
-  expect(doLessonsOverlap(createGenericLesson('Wednesday', '1200', '1400'),
-                          createGenericLesson('Thursday', '1000', '1200'))).toBe(false);
+  expect(
+    doLessonsOverlap(
+      createGenericLesson('Wednesday', '1000', '1200'),
+      createGenericLesson('Thursday', '1200', '1400'),
+    ),
+  ).toBe(false);
+  expect(
+    doLessonsOverlap(
+      createGenericLesson('Wednesday', '1200', '1400'),
+      createGenericLesson('Thursday', '1000', '1200'),
+    ),
+  ).toBe(false);
   // Different day with overlapping time.
-  expect(doLessonsOverlap(createGenericLesson('Wednesday', '1000', '1200'),
-                          createGenericLesson('Thursday', '1100', '1300'))).toBe(false);
-  expect(doLessonsOverlap(createGenericLesson('Wednesday', '1100', '1300'),
-                          createGenericLesson('Thursday', '1000', '1200'))).toBe(false);
+  expect(
+    doLessonsOverlap(
+      createGenericLesson('Wednesday', '1000', '1200'),
+      createGenericLesson('Thursday', '1100', '1300'),
+    ),
+  ).toBe(false);
+  expect(
+    doLessonsOverlap(
+      createGenericLesson('Wednesday', '1100', '1300'),
+      createGenericLesson('Thursday', '1000', '1200'),
+    ),
+  ).toBe(false);
   // Different day with one lesson totally within another lesson.
-  expect(doLessonsOverlap(createGenericLesson('Wednesday', '1000', '1200'),
-                          createGenericLesson('Thursday', '0900', '1300'))).toBe(false);
-  expect(doLessonsOverlap(createGenericLesson('Wednesday', '0900', '1300'),
-                          createGenericLesson('Thursday', '1000', '1200'))).toBe(false);
+  expect(
+    doLessonsOverlap(
+      createGenericLesson('Wednesday', '1000', '1200'),
+      createGenericLesson('Thursday', '0900', '1300'),
+    ),
+  ).toBe(false);
+  expect(
+    doLessonsOverlap(
+      createGenericLesson('Wednesday', '0900', '1300'),
+      createGenericLesson('Thursday', '1000', '1200'),
+    ),
+  ).toBe(false);
 });
 
 test('arrangeLessonsWithinDay', () => {
@@ -193,85 +255,103 @@ test('arrangeLessonsWithinDay', () => {
   expect(arrangement0.length).toBe(1);
 
   // Can fit within one row.
-  const arrangement1: TimetableDayArrangement = arrangeLessonsWithinDay(_.shuffle([
-    createGenericLesson('Monday', '1000', '1200'),
-    createGenericLesson('Monday', '1600', '1800'),
-    createGenericLesson('Monday', '1400', '1500'),
-  ]));
+  const arrangement1: TimetableDayArrangement = arrangeLessonsWithinDay(
+    _.shuffle([
+      createGenericLesson('Monday', '1000', '1200'),
+      createGenericLesson('Monday', '1600', '1800'),
+      createGenericLesson('Monday', '1400', '1500'),
+    ]),
+  );
   expect(arrangement1.length).toBe(1);
 
   // Two rows.
-  const arrangement2: TimetableDayArrangement = arrangeLessonsWithinDay(_.shuffle([
-    createGenericLesson('Monday', '1000', '1200'),
-    createGenericLesson('Monday', '1600', '1800'),
-    createGenericLesson('Monday', '1500', '1700'),
-  ]));
+  const arrangement2: TimetableDayArrangement = arrangeLessonsWithinDay(
+    _.shuffle([
+      createGenericLesson('Monday', '1000', '1200'),
+      createGenericLesson('Monday', '1600', '1800'),
+      createGenericLesson('Monday', '1500', '1700'),
+    ]),
+  );
   expect(arrangement2.length).toBe(2);
 
   // Three rows.
-  const arrangement3: TimetableDayArrangement = arrangeLessonsWithinDay(_.shuffle([
-    createGenericLesson('Monday', '1000', '1200'),
-    createGenericLesson('Monday', '1100', '1300'),
-    createGenericLesson('Monday', '1000', '1300'),
-  ]));
+  const arrangement3: TimetableDayArrangement = arrangeLessonsWithinDay(
+    _.shuffle([
+      createGenericLesson('Monday', '1000', '1200'),
+      createGenericLesson('Monday', '1100', '1300'),
+      createGenericLesson('Monday', '1000', '1300'),
+    ]),
+  );
   expect(arrangement3.length).toBe(3);
 });
 
 test('arrangeLessonsForWeek', () => {
-  const arrangement0: TimetableArrangement = arrangeLessonsForWeek(_.shuffle([
-    createGenericLesson('Monday', '1000', '1200'),
-    createGenericLesson('Monday', '1600', '1800'),
-    createGenericLesson('Monday', '1400', '1500'),
-  ]));
+  const arrangement0: TimetableArrangement = arrangeLessonsForWeek(
+    _.shuffle([
+      createGenericLesson('Monday', '1000', '1200'),
+      createGenericLesson('Monday', '1600', '1800'),
+      createGenericLesson('Monday', '1400', '1500'),
+    ]),
+  );
   expect(arrangement0.Monday.length).toBe(1);
 
-  const arrangement1: TimetableArrangement = arrangeLessonsForWeek(_.shuffle([
-    createGenericLesson('Monday', '1000', '1200'),
-    createGenericLesson('Monday', '1600', '1800'),
-    createGenericLesson('Monday', '1400', '1500'),
-    createGenericLesson('Tuesday', '1400', '1500'),
-    createGenericLesson('Tuesday', '1400', '1500'),
-  ]));
+  const arrangement1: TimetableArrangement = arrangeLessonsForWeek(
+    _.shuffle([
+      createGenericLesson('Monday', '1000', '1200'),
+      createGenericLesson('Monday', '1600', '1800'),
+      createGenericLesson('Monday', '1400', '1500'),
+      createGenericLesson('Tuesday', '1400', '1500'),
+      createGenericLesson('Tuesday', '1400', '1500'),
+    ]),
+  );
   expect(arrangement1.Monday.length).toBe(1);
   expect(arrangement1.Tuesday.length).toBe(2);
 
-  const arrangement2: TimetableArrangement = arrangeLessonsForWeek(_.shuffle([
-    createGenericLesson('Monday', '1000', '1200'),
-    createGenericLesson('Monday', '1600', '1800'),
-    createGenericLesson('Monday', '1400', '1500'),
-    createGenericLesson('Tuesday', '1400', '1500'),
-    createGenericLesson('Tuesday', '1600', '1800'),
-  ]));
+  const arrangement2: TimetableArrangement = arrangeLessonsForWeek(
+    _.shuffle([
+      createGenericLesson('Monday', '1000', '1200'),
+      createGenericLesson('Monday', '1600', '1800'),
+      createGenericLesson('Monday', '1400', '1500'),
+      createGenericLesson('Tuesday', '1400', '1500'),
+      createGenericLesson('Tuesday', '1600', '1800'),
+    ]),
+  );
   expect(arrangement2.Monday.length).toBe(1);
   expect(arrangement2.Tuesday.length).toBe(1);
 
-  const arrangement3: TimetableArrangement = arrangeLessonsForWeek(_.shuffle([
-    createGenericLesson('Monday', '1000', '1200'),
-    createGenericLesson('Tuesday', '1100', '1300'),
-    createGenericLesson('Wednesday', '1000', '1300'),
-  ]));
+  const arrangement3: TimetableArrangement = arrangeLessonsForWeek(
+    _.shuffle([
+      createGenericLesson('Monday', '1000', '1200'),
+      createGenericLesson('Tuesday', '1100', '1300'),
+      createGenericLesson('Wednesday', '1000', '1300'),
+    ]),
+  );
   expect(arrangement3.Monday.length).toBe(1);
   expect(arrangement3.Tuesday.length).toBe(1);
   expect(arrangement3.Wednesday.length).toBe(1);
 
-  const arrangement4: TimetableArrangement = arrangeLessonsForWeek(_.shuffle([
-    createGenericLesson('Monday', '1000', '1200'),
-    createGenericLesson('Monday', '1600', '1800'),
-    createGenericLesson('Tuesday', '1100', '1300'),
-    createGenericLesson('Wednesday', '1000', '1300'),
-  ]));
+  const arrangement4: TimetableArrangement = arrangeLessonsForWeek(
+    _.shuffle([
+      createGenericLesson('Monday', '1000', '1200'),
+      createGenericLesson('Monday', '1600', '1800'),
+      createGenericLesson('Tuesday', '1100', '1300'),
+      createGenericLesson('Wednesday', '1000', '1300'),
+    ]),
+  );
   expect(arrangement4.Monday.length).toBe(1);
   expect(arrangement4.Tuesday.length).toBe(1);
   expect(arrangement4.Wednesday.length).toBe(1);
 
-  const arrangement5: TimetableArrangement = arrangeLessonsForWeek(_.shuffle([
-    createGenericLesson('Monday', '1000', '1200'),
-    createGenericLesson('Monday', '1600', '1800'),
-    createGenericLesson('Tuesday', '1100', '1300'),
-    createGenericLesson('Tuesday', '1200', '1400'),
-    createGenericLesson('Wednesday', '1000', '1300'),
-    createGenericLesson('Wednesday', '1100', '1400'),
-  ]));
+  const arrangement5: TimetableArrangement = arrangeLessonsForWeek(
+    _.shuffle([
+      createGenericLesson('Monday', '1000', '1200'),
+      createGenericLesson('Monday', '1600', '1800'),
+      createGenericLesson('Tuesday', '1100', '1300'),
+      createGenericLesson('Tuesday', '1200', '1400'),
+      createGenericLesson('Wednesday', '1000', '1300'),
+      createGenericLesson('Wednesday', '1100', '1400'),
+    ]),
+  );
   expect(arrangement5.Monday.length).toBe(1);
   expect(arrangement5.Tuesday.length).toBe(2);
   expect(arrangement5.Wednesday.length).toBe(2);
@@ -319,7 +399,6 @@ test('findExamClashes should return empty object if exams do not clash', () => {
   expect(examClashes).toEqual({});
 });
 
-
 test('timetable serialization/deserialization', () => {
   const configs: SemTimetableConfig[] = [
     {},
@@ -346,37 +425,45 @@ test('isSameTimetableConfig', () => {
   expect(isSameTimetableConfig({}, {})).toBe(true);
 
   // Change lessonType order
-  expect(isSameTimetableConfig(
-    { CS2104: { Tutorial: '1', Lecture: '2' } },
-    { CS2104: { Lecture: '2', Tutorial: '1' } },
-  )).toBe(true);
+  expect(
+    isSameTimetableConfig(
+      { CS2104: { Tutorial: '1', Lecture: '2' } },
+      { CS2104: { Lecture: '2', Tutorial: '1' } },
+    ),
+  ).toBe(true);
 
   // Change module order
-  expect(isSameTimetableConfig(
-    {
-      CS2104: { Lecture: '1', Tutorial: '2' },
-      CS2105: { Lecture: '1', Tutorial: '1' },
-    },
-    {
-      CS2105: { Lecture: '1', Tutorial: '1' },
-      CS2104: { Lecture: '1', Tutorial: '2' },
-    },
-  )).toBe(true);
+  expect(
+    isSameTimetableConfig(
+      {
+        CS2104: { Lecture: '1', Tutorial: '2' },
+        CS2105: { Lecture: '1', Tutorial: '1' },
+      },
+      {
+        CS2105: { Lecture: '1', Tutorial: '1' },
+        CS2104: { Lecture: '1', Tutorial: '2' },
+      },
+    ),
+  ).toBe(true);
 
   // Different values
-  expect(isSameTimetableConfig(
-    { CS2104: { Lecture: '1', Tutorial: '2' } },
-    { CS2104: { Lecture: '2', Tutorial: '1' } },
-  )).toBe(false);
+  expect(
+    isSameTimetableConfig(
+      { CS2104: { Lecture: '1', Tutorial: '2' } },
+      { CS2104: { Lecture: '2', Tutorial: '1' } },
+    ),
+  ).toBe(false);
 
   // One is subset of the other
-  expect(isSameTimetableConfig(
-    {
-      CS2104: { Tutorial: '1', Lecture: '2' },
-    },
-    {
-      CS2104: { Tutorial: '1', Lecture: '2' },
-      CS2105: { Lecture: '1', Tutorial: '1' },
-    },
-  )).toBe(false);
+  expect(
+    isSameTimetableConfig(
+      {
+        CS2104: { Tutorial: '1', Lecture: '2' },
+      },
+      {
+        CS2104: { Tutorial: '1', Lecture: '2' },
+        CS2105: { Lecture: '1', Tutorial: '1' },
+      },
+    ),
+  ).toBe(false);
 });

@@ -6,19 +6,14 @@ import _ from 'lodash';
 import config from 'config';
 
 import type { ModulesMap } from 'reducers/moduleBank';
-import type {
-  ColorMapping,
-  TimetableOrientation,
-  ModuleSelectList,
-} from 'types/reducers';
+import type { ColorMapping, TimetableOrientation, ModuleSelectList } from 'types/reducers';
 import { HORIZONTAL } from 'types/reducers';
+import type { Lesson, Module, ModuleCode, Semester } from 'types/modules';
 import type {
-  Lesson,
-  Module,
-  ModuleCode,
-  Semester,
-} from 'types/modules';
-import type { SemTimetableConfig, SemTimetableConfigWithLessons, TimetableArrangement } from 'types/timetables';
+  SemTimetableConfig,
+  SemTimetableConfigWithLessons,
+  TimetableArrangement,
+} from 'types/timetables';
 
 import classnames from 'classnames';
 import { getSemModuleSelectList } from 'reducers/moduleBank';
@@ -31,7 +26,12 @@ import {
   removeModule,
 } from 'actions/timetables';
 import { toggleTimetableOrientation } from 'actions/theme';
-import { getModuleTimetable, areLessonsSameClass, formatExamDate, getModuleExamDate } from 'utils/modules';
+import {
+  getModuleTimetable,
+  areLessonsSameClass,
+  formatExamDate,
+  getModuleExamDate,
+} from 'utils/modules';
 import {
   timetableLessonsArray,
   hydrateSemTimetableWithLessons,
@@ -89,7 +89,11 @@ class TimetableContent extends Component<Props> {
   downloadAsImage = () => this.props.downloadAsImage(this.timetableDom);
 
   downloadAsIcal = () =>
-    this.props.downloadAsIcal(this.props.semester, this.props.timetableWithLessons, this.props.modules);
+    this.props.downloadAsIcal(
+      this.props.semester,
+      this.props.timetableWithLessons,
+      this.props.modules,
+    );
 
   isHiddenInTimetable = (moduleCode: ModuleCode) =>
     this.props.hiddenInTimetable.includes(moduleCode);
@@ -115,16 +119,16 @@ class TimetableContent extends Component<Props> {
   renderModuleSections(horizontalOrientation) {
     const { readOnly } = this.props;
 
-    const renderModuleTable = modules => (
+    const renderModuleTable = (modules) => (
       <TimetableModulesTable
-        modules={modules.map(module => ({
+        modules={modules.map((module) => ({
           ...module,
           colorIndex: this.props.colors[module.ModuleCode],
           hiddenInTimetable: this.isHiddenInTimetable(module.ModuleCode),
         }))}
         horizontalOrientation={horizontalOrientation}
         semester={this.props.semester}
-        onRemoveModule={moduleCode => this.props.removeModule(this.props.semester, moduleCode)}
+        onRemoveModule={(moduleCode) => this.props.removeModule(this.props.semester, moduleCode)}
         readOnly={readOnly}
       />
     );
@@ -150,12 +154,14 @@ class TimetableContent extends Component<Props> {
           <div className="alert alert-danger" role="alert">
             <h4>Exam Clashes</h4>
             <p>These modules have clashing exams.</p>
-            {Object.keys(clashes).sort().map(clashDate => (
-              <div key={clashDate}>
-                <h5>Clash on {formatExamDate(clashDate)}</h5>
-                {renderModuleTable(clashes[clashDate])}
-              </div>
-            ))}
+            {Object.keys(clashes)
+              .sort()
+              .map((clashDate) => (
+                <div key={clashDate}>
+                  <h5>Clash on {formatExamDate(clashDate)}</h5>
+                  {renderModuleTable(clashes[clashDate])}
+                </div>
+              ))}
           </div>
         )}
         {renderModuleTable(nonClashingMods)}
@@ -168,12 +174,14 @@ class TimetableContent extends Component<Props> {
 
     let timetableLessons: Lesson[] = timetableLessonsArray(this.props.timetableWithLessons)
       // Do not process hidden modules
-      .filter(lesson => !this.isHiddenInTimetable(lesson.ModuleCode));
+      .filter((lesson) => !this.isHiddenInTimetable(lesson.ModuleCode));
 
     if (activeLesson) {
       const moduleCode = activeLesson.ModuleCode;
       // Remove activeLesson because it will appear again
-      timetableLessons = timetableLessons.filter(lesson => !areLessonsSameClass(lesson, activeLesson));
+      timetableLessons = timetableLessons.filter(
+        (lesson) => !areLessonsSameClass(lesson, activeLesson),
+      );
 
       const module = modules[moduleCode];
       const moduleTimetable = getModuleTimetable(module, semester);
@@ -194,21 +202,28 @@ class TimetableContent extends Component<Props> {
     }
 
     // Inject color into module
-    timetableLessons = timetableLessons.map((lesson): Lesson =>
-      ({ ...lesson, colorIndex: colors[lesson.ModuleCode] }));
+    timetableLessons = timetableLessons.map((lesson): Lesson => ({
+      ...lesson,
+      colorIndex: colors[lesson.ModuleCode],
+    }));
 
     const arrangedLessons = arrangeLessonsForWeek(timetableLessons);
-    const arrangedLessonsWithModifiableFlag: TimetableArrangement = _.mapValues(arrangedLessons, dayRows =>
-      dayRows.map(row =>
-        row.map((lesson) => {
-          const module: Module = modules[lesson.ModuleCode];
-          const moduleTimetable = getModuleTimetable(module, semester);
+    const arrangedLessonsWithModifiableFlag: TimetableArrangement = _.mapValues(
+      arrangedLessons,
+      (dayRows) =>
+        dayRows.map((row) =>
+          row.map((lesson) => {
+            const module: Module = modules[lesson.ModuleCode];
+            const moduleTimetable = getModuleTimetable(module, semester);
 
-          return {
-            ...lesson,
-            isModifiable: !readOnly && areOtherClassesAvailable(moduleTimetable, lesson.LessonType),
-          };
-        })));
+            return {
+              ...lesson,
+              isModifiable:
+                !readOnly && areOtherClassesAvailable(moduleTimetable, lesson.LessonType),
+            };
+          }),
+        ),
+    );
 
     const isVerticalOrientation = timetableOrientation !== HORIZONTAL;
 
@@ -227,9 +242,7 @@ class TimetableContent extends Component<Props> {
 
         <Announcements />
 
-        <div>
-          {this.props.header}
-        </div>
+        <div>{this.props.header}</div>
 
         <div className="row">
           <div
@@ -269,17 +282,24 @@ class TimetableContent extends Component<Props> {
             </div>
             <div className={styles.tableContainer}>
               <div className="col-md-12">
-                {!readOnly &&
-                  <Online>{isOnline => (
-                    <ModulesSelect
-                      moduleList={this.props.semModuleList}
-                      onChange={(moduleCode) => {
-                        this.props.addModule(semester, moduleCode);
-                      }}
-                      placeholder={isOnline ? 'Add module to timetable' : 'You need to be online to add modules'}
-                      disabled={!isOnline}
-                    />
-                  )}</Online>}
+                {!readOnly && (
+                  <Online>
+                    {(isOnline) => (
+                      <ModulesSelect
+                        moduleList={this.props.semModuleList}
+                        onChange={(moduleCode) => {
+                          this.props.addModule(semester, moduleCode);
+                        }}
+                        placeholder={
+                          isOnline
+                            ? 'Add module to timetable'
+                            : 'You need to be online to add modules'
+                        }
+                        disabled={!isOnline}
+                      />
+                    )}
+                  </Online>
+                )}
                 <br />
                 {this.renderModuleSections(!isVerticalOrientation)}
               </div>

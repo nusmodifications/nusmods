@@ -1,12 +1,9 @@
-import {
-  modulePage,
-  timetablePage,
-  semesterForTimetablePage,
-} from './paths';
+import { modulePage, timetablePage, semesterForTimetablePage } from './paths';
 
 test('modulePagePath should generate route correctly', () => {
-  expect(modulePage('CS1010S', 'Programming Methodology'))
-    .toBe('/modules/CS1010S/programming-methodology');
+  expect(modulePage('CS1010S', 'Programming Methodology')).toBe(
+    '/modules/CS1010S/programming-methodology',
+  );
 });
 
 test('timetablePage <-> semesterForTimetablePage', () => {

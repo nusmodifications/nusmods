@@ -52,8 +52,7 @@ test('cancelModifyLesson should not have payload', () => {
 describe('migrateTimetable()', () => {
   const migrationKey = 'v2Migration';
   const action = actions.migrateTimetable();
-  const makeDispatch = () => jest.fn()
-    .mockReturnValue(Promise.resolve());
+  const makeDispatch = () => jest.fn().mockReturnValue(Promise.resolve());
 
   afterEach(() => {
     storage.setItem.mockReset();

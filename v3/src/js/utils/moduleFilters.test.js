@@ -6,11 +6,13 @@ import { defaultGroups, DEPARTMENT, FACULTY } from './moduleFilters';
 import ModuleFilter from './filters/ModuleFilter';
 
 describe('defaultGroups()', () => {
-  const groups: FilterGroup<*>[] = _.values(defaultGroups({
-    Biology: 'Science',
-    Physics: 'Science',
-    'Computer Science': 'School Of Computing',
-  }));
+  const groups: FilterGroup<*>[] = _.values(
+    defaultGroups({
+      Biology: 'Science',
+      Physics: 'Science',
+      'Computer Science': 'School Of Computing',
+    }),
+  );
 
   function expectUnique<T>(arr: T[]) {
     // Set in JS iterates over elements in insertion order, so we can use them for
@@ -33,8 +35,8 @@ describe('defaultGroups()', () => {
 
   describe('filters should have unique id', () => {
     testGroups((group) => {
-      expectUnique(_.values(group.filters).map(filter => filter.id));
-      expectUnique(_.values(group.filters).map(filter => filter.label));
+      expectUnique(_.values(group.filters).map((filter) => filter.id));
+      expectUnique(_.values(group.filters).map((filter) => filter.label));
     });
   });
 
@@ -54,15 +56,15 @@ describe('defaultGroups()', () => {
     const INTEGER_REGEX = /^(0|[1-9]\d*)$/;
 
     testGroups((group) => {
-      const keys = _.values(group.filters).map(filter => filter.id);
-      const isInteger = keys.every(key => INTEGER_REGEX.test(key));
-      const isString = keys.every(key => !INTEGER_REGEX.test(key));
+      const keys = _.values(group.filters).map((filter) => filter.id);
+      const isInteger = keys.every((key) => INTEGER_REGEX.test(key));
+      const isString = keys.every((key) => !INTEGER_REGEX.test(key));
 
       expect(keys).not.toHaveLength(0);
       expect(isInteger || isString).toBe(true);
 
       if (isInteger) {
-        const numeric = keys.map(key => parseInt(key, 10));
+        const numeric = keys.map((key) => parseInt(key, 10));
         // Also check that numeric keys are incrementing to ensure order is correct
         numeric.slice(1).forEach((key, i) => {
           expect(numeric[i]).toBeLessThan(key);
@@ -72,7 +74,7 @@ describe('defaultGroups()', () => {
   });
 
   test('faculty filters should be created', () => {
-    const facultyFilters = groups.find(group => group.id === FACULTY);
+    const facultyFilters = groups.find((group) => group.id === FACULTY);
 
     expect(facultyFilters).toBeTruthy();
     if (facultyFilters) {
@@ -81,7 +83,7 @@ describe('defaultGroups()', () => {
   });
 
   test('department filters should be created', () => {
-    const departmentFilters = groups.find(group => group.id === DEPARTMENT);
+    const departmentFilters = groups.find((group) => group.id === DEPARTMENT);
 
     expect(departmentFilters).toBeTruthy();
     if (departmentFilters) {

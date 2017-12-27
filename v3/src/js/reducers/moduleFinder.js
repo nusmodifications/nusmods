@@ -12,7 +12,10 @@ const defaultState: ModuleFinderState = {
   },
 };
 
-export default function moduleFinder(state: ModuleFinderState = defaultState, action: FSA): ModuleFinderState {
+export default function moduleFinder(
+  state: ModuleFinderState = defaultState,
+  action: FSA,
+): ModuleFinderState {
   switch (action.type) {
     case RESET_MODULE_FINDER:
       return defaultState;
