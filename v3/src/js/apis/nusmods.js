@@ -1,6 +1,6 @@
 // @flow
 // This file uses comment type because we want to import it in Webpack configs
-/* eslint-disable spaced-comment, arrow-parens */
+/* eslint-disable spaced-comment */
 
 /*:: import type { ModuleCode, Semester } from 'types/modules'; */
 
