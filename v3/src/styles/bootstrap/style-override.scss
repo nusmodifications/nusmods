@@ -5,6 +5,14 @@ body {
   transition: color, background 0.2s;
 }
 
+mark {
+  padding: 0.2em 0;
+  color: inherit;
+  border-bottom: 1px solid var(--yellow);
+  background: var(--yellow-light);
+}
+
+// Forms
 .form-control,
 .form-control:focus {
   color: var(--body-color);
@@ -15,6 +23,7 @@ body {
   background: var(--body-bg);
 }
 
+// Dropdown menu
 .dropdown-menu {
   width: 100%;
   padding: 0.1rem 0;
@@ -28,11 +37,19 @@ body {
   color: var(--body-color);
 }
 
-mark {
-  padding: 0.2em 0;
-  color: inherit;
-  border-bottom: 1px solid var(--yellow);
-  background: var(--yellow-light);
+// Alerts
+$alert-override-themes: success, danger, warning;
+
+@mixin alert-colors($name) {
+  .alert-#{$name} {
+    color: var(--alert-#{$name}-color);
+    border-color: var(--alert-#{$name}-border);
+    background: var(--alert-#{$name}-background);
+  }
+}
+
+@each $color in $alert-override-themes {
+  @include alert-colors($color);
 }
 
 .close {
