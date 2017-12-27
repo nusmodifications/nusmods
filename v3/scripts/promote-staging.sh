@@ -29,12 +29,13 @@ echo
 echo "Dry running deployment..."
 npm run rsync -- --dry-run $PROD_DIR
 
+COMMIT_HASH_FILE="commit-hash.txt"
 PROD_COMMIT=""
 if [[ -d $PROD_DIR ]]; then
-  PROD_COMMIT=$(cat $PROD_DIR/app.*js | grep -Eo "20\d{6}-[0-9a-f]{7}" | cut -d '-' -f 2)
+  PROD_COMMIT=$(cat $PROD_DIR/$COMMIT_HASH_FILE)
 fi
 
-DEPLOYMENT_COMMIT=$(cat $STAGING_DIR/app.*js | grep -Eo "20\d{6}-[0-9a-f]{7}" | cut -d '-' -f 2)
+DEPLOYMENT_COMMIT=$(cat $STAGING_DIR/$COMMIT_HASH_FILE)
 LOG_FORMAT="%h %s by %an"
 
 echo

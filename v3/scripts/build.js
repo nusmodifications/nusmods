@@ -1,3 +1,5 @@
+const fs = require('fs');
+const path = require('path');
 const chalk = require('chalk');
 const webpack = require('webpack');
 const { measureFileSizesBeforeBuild, printFileSizesAfterBuild } = require('react-dev-utils/FileSizeReporter');
@@ -16,7 +18,7 @@ function printErrors(summary, errors) {
 }
 
 // Create the production build and print the deployment instructions.
-function build(previousFileSizes) {
+function build(previousFileSizes, callback) {
   console.log('Building version', chalk.cyan(parts.appVersion().versionStr));
   console.log(chalk.cyan('Creating an optimized production build...'));
   console.log();
@@ -47,14 +49,19 @@ function build(previousFileSizes) {
     console.log();
 
     console.log(`The ${chalk.cyan(parts.PATHS.build)} folder is ready to be deployed.`);
+
+    callback();
   });
+}
+
+// Write commit hash into `commit-hash.txt` for reference during deployment.
+function writeCommitHash() {
+  const { commitHash } = parts.appVersion();
+  fs.writeFileSync(path.join(parts.PATHS.build, 'commit-hash.txt'), `${commitHash.slice(0, 7)}\n`);
 }
 
 // First, read the current file sizes in build directory.
 // This lets us display how much they changed later.
-// First, read the current file sizes in build directory.
-// This lets us display how much they changed later.
-measureFileSizesBeforeBuild(parts.PATHS.build).then((previousFileSizes) => {
-  // Start the webpack build
-  build(previousFileSizes);
-});
+measureFileSizesBeforeBuild(parts.PATHS.build).then(previousFileSizes =>
+  new Promise(resolve => build(previousFileSizes, resolve))
+).then(writeCommitHash);
