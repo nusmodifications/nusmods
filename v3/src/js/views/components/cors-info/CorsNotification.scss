@@ -1,7 +1,11 @@
 @import "~styles/utils/modules-entry";
 
 .wrapper {
-  padding: 0.6rem 1rem;
+  position: relative;
+}
+
+.notification {
+  padding: 0.6rem 3rem 0.6rem 1rem;
   font-size: 0.9rem;
   color: var(--body-color);
   border: 1px solid theme-color();
@@ -15,12 +19,25 @@
       display: none;
     }
   }
+}
 
-  @include media-breakpoint-up(md) {
+.close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 3rem;
+}
+
+@include media-breakpoint-up(md) {
+  .wrapper {
     position: fixed;
     bottom: 2rem;
     left: 2rem;
     z-index: $cors-notification-z-index;
+  }
+
+  .notification {
     box-shadow: 0 3px 12px rgba(#000, 0.3);
 
     :global {

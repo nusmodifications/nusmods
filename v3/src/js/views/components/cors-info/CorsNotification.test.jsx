@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, type ShallowWrapper } from 'enzyme';
 import moment from 'moment';
 
 import config, { type CorsRound, type CorsPeriod, type CorsPeriodType } from 'config';
@@ -37,17 +37,31 @@ function setSchedule(schedule: CorsRound[]) {
   config.corsSchedule = schedule;
 }
 
-function make() {
-  return shallow(
-    <CorsNotificationComponent
-      {...createHistory()}
-    />,
-  );
+function make(dismissedRounds: string[] = [], enabled: boolean = true) {
+  const dismissCorsNotification = jest.fn();
+
+  return {
+    dismissCorsNotification,
+
+    wrapper: shallow(
+      <CorsNotificationComponent
+        enabled={enabled}
+        dismissedRounds={dismissedRounds}
+        dismissCorsNotification={dismissCorsNotification}
+        {...createHistory()}
+      />,
+    ),
+  };
+}
+
+function expectEmpty(container: { wrapper: ShallowWrapper }) {
+  expect(container.wrapper.html()).toBeNull();
 }
 
 test('should not show up if there is no CORS bidding data', () => {
   setSchedule([]);
-  expect(make().html()).toBeNull();
+
+  expectEmpty(make());
 });
 
 test('should not show up if CORS bidding is over', () => {
@@ -56,8 +70,27 @@ test('should not show up if CORS bidding is over', () => {
     periods: [corsPeriod(moment().subtract(2, 'hour'))],
   }]);
 
-  expect(make().html()).toBeNull();
+  expectEmpty(make());
 });
+
+test('should not show up if CORS notification is not enabled', () => {
+  setSchedule([{
+    round: '0',
+    periods: [corsPeriod(moment().add(1, 'hour'))],
+  }]);
+
+  expectEmpty(make([], false));
+});
+
+test('should not show up if it has been dismissed', () => {
+  setSchedule([{
+    round: '0',
+    periods: [corsPeriod(moment().add(1, 'hour'))],
+  }]);
+
+  expectEmpty(make(['0'], false));
+});
+
 
 test('should show next round when it has not started yet', () => {
   setSchedule([{
@@ -65,7 +98,7 @@ test('should show next round when it has not started yet', () => {
     periods: [corsPeriod(moment().add(1, 'hour'))],
   }]);
 
-  const content = make().text();
+  const content = make(['1']).wrapper.text();
   expect(content).toMatch('Next');
   expect(content).toMatch('0 (Open)');
 });
@@ -79,7 +112,7 @@ test('should show next round when in between the current round', () => {
     ],
   }]);
 
-  const content = make().text();
+  const content = make(['1']).wrapper.text();
   expect(content).toMatch('Next');
   expect(content).toMatch('0 (Closed)');
 });
@@ -90,7 +123,7 @@ test('should show current round when it is active', () => {
     periods: [corsPeriod(moment().subtract(1, 'minute'))],
   }]);
 
-  const content = make().text();
+  const content = make(['1']).wrapper.text();
   expect(content).toMatch('Current');
   expect(content).toMatch('0 (Open)');
 });

@@ -91,11 +91,19 @@ function settings(state: SettingsState = defaultSettingsState, action: FSA): Set
         },
       });
 
-    default:
+    default: {
+      let nextState = state;
+
+      if (!nextState.corsNotification) {
+        nextState = update(nextState, {
+          corsNotification: { $set: defaultCorsNotificationState },
+        });
+      }
+
       // Rehydrating from store - check that the key is the same, and if not,
       // return to default state since the old dismissed notification settings is stale
-      if (state.corsNotification.semesterKey !== config.getSemesterKey()) {
-        return update(state, {
+      if (nextState.corsNotification.semesterKey !== config.getSemesterKey()) {
+        nextState = update(nextState, {
           corsNotification: {
             semesterKey: { $set: config.getSemesterKey() },
             dismissed: { $set: [] },
@@ -103,7 +111,8 @@ function settings(state: SettingsState = defaultSettingsState, action: FSA): Set
         });
       }
 
-      return state;
+      return nextState;
+    }
   }
 }
 
