@@ -4,14 +4,13 @@ import { connect } from 'react-redux';
 import deferComponentRender from 'views/hocs/deferComponentRender';
 import classnames from 'classnames';
 import Helmet from 'react-helmet';
-import { head, last } from 'lodash';
 
 import type { Faculty } from 'types/modules';
 import type { Mode } from 'types/settings';
 import type { CorsNotificationSettings } from 'types/reducers';
 import type { State } from 'reducers';
 
-import config, { type CorsRound } from 'config';
+import config from 'config';
 import { selectTheme } from 'actions/theme';
 import {
   selectNewStudent,
@@ -26,6 +25,8 @@ import availableThemes from 'data/themes.json';
 // import NewStudentSelect from 'views/components/NewStudentSelect';
 import ScrollToTop from 'views/components/ScrollToTop';
 import Timetable from 'views/timetable/Timetable';
+import CorsNotification, { corsNotificationText } from 'views/components/cors-info/CorsNotification';
+import { currentRound } from 'utils/cors';
 import { supportsCSSVariables } from 'utils/css';
 
 import ThemeOption from './ThemeOption';
@@ -33,7 +34,6 @@ import ModeSelect from './ModeSelect';
 import styles from './SettingsContainer.scss';
 import previewTimetable from './previewTimetable';
 import Toggle from '../Toggle';
-import CorsNotification from '../components/cors-info/CorsNotification';
 
 type Props = {
   newStudent: boolean,
@@ -53,6 +53,10 @@ type Props = {
 };
 
 function SettingsContainer(props: Props) {
+  const corsRound = currentRound();
+  const isSnoozed = corsRound && props.corsNotification.dismissed.includes(corsRound.round);
+  const corsText = corsNotificationText(false);
+
   return (
     <div className={classnames(styles.settingsPage, 'page-container')}>
       <ScrollToTop onComponentWillMount />
@@ -135,9 +139,14 @@ function SettingsContainer(props: Props) {
 
       <h4>CORS Bidding Reminder</h4>
 
+      <div className={styles.notificationPreview}>
+        <CorsNotification />
+      </div>
+
       <div className={classnames(styles.toggleRow, 'row')}>
         <div className={classnames(styles.toggleDescription, 'col-sm-7')}>
-          <p>You can get a reminder when CORS bidding starts with a small notification.</p>
+          <p>You can get a reminder about when CORS bidding starts with a small notification.</p>
+          {corsText && <p>{corsText}</p>}
         </div>
         <div className={classnames('col-sm-4 offset-sm-1', styles.toggle)}>
           <Toggle
@@ -147,32 +156,32 @@ function SettingsContainer(props: Props) {
         </div>
       </div>
 
-      <CorsNotification />
+      <hr />
 
-      {props.corsNotification.enabled &&
+      {props.corsNotification.enabled && corsRound &&
         <Fragment>
-          <p>You can also enable reminders about each round individually.</p>
+          <div className={classnames(styles.toggleRow, 'row')}>
+            <div className={classnames(styles.toggleDescription, 'col-sm-7')}>
+              <p>{isSnoozed
+                ? 'You have snoozed reminders until the end of this round'
+                : 'You can also temporarily snooze the notification until the end of this round.'}</p>
+            </div>
+            <div className={classnames('col-sm-4 offset-sm-1', styles.toggle)}>
+              <button
+                className="btn btn-outline-primary"
+                type="button"
+                onClick={() => (
+                  isSnoozed
+                    ? props.enableCorsNotification(corsRound.round)
+                    : props.dismissCorsNotification(corsRound.round)
+                )}
+              >
+                {isSnoozed ? 'Unsnooze' : 'Snooze'}
+              </button>
+            </div>
+          </div>
 
-          <table className="table">
-            <tbody>
-              {config.corsSchedule.map((round: CorsRound) => (
-                <tr>
-                  <th>Round {round.round}</th>
-                  <td>{head(round.periods).start} - {last(round.periods).end}</td>
-                  <td>
-                    <Toggle
-                      onChange={isOn => (
-                        isOn
-                          ? props.enableCorsNotification(round.round)
-                          : props.dismissCorsNotification(round.round)
-                      )}
-                      isOn={!props.corsNotification.dismissed.includes(round.round)}
-                    />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <hr />
         </Fragment>}
     </div>
   );

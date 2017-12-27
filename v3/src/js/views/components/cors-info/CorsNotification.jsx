@@ -1,15 +1,15 @@
 // @flow
 
-import React, { PureComponent } from 'react';
+import React, { PureComponent, type Node, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, type ContextRouter } from 'react-router-dom';
 import { capitalize } from 'lodash';
 import qs from 'query-string';
 
 import type { State } from 'reducers';
-import config, { type CorsRound, type CorsPeriod } from 'config';
+import config, { type CorsRound } from 'config';
 import { dismissCorsNotification } from 'actions/settings';
-import { roundStart, roundEnd } from 'utils/cors';
+import { roundStart, currentPeriod, currentRound } from 'utils/cors';
 import CloseButton from 'views/components/CloseButton';
 
 import styles from './CorsNotification.scss';
@@ -25,6 +25,25 @@ type Props = {
 
 const NOW = new Date();
 
+export function corsNotificationText(
+  useLineBreaks: boolean,
+  round: ?CorsRound = currentRound(),
+  now: Date = new Date(),
+): Node {
+  if (!round) return null;
+  const period = currentPeriod(round, now);
+  if (!period) return null;
+  const isRoundOpen = now >= period.startDate;
+
+  return (
+    <Fragment>
+      {isRoundOpen ? 'Current' : 'Next'} CORS round: <strong>{round.round} ({capitalize(period.type)})</strong>
+      {isRoundOpen ? ' till' : ' at'} {useLineBreaks && <br />}
+      <strong>{isRoundOpen ? period.end : period.start}</strong>
+    </Fragment>
+  );
+}
+
 export class CorsNotificationComponent extends PureComponent<Props> {
   currentTime() {
     const debugRound = qs.parse(this.props.location.search).round;
@@ -38,39 +57,24 @@ export class CorsNotificationComponent extends PureComponent<Props> {
     return NOW;
   }
 
-  currentCorsRound(): ?CorsRound {
-    return config.corsSchedule.find(round => roundEnd(round) > this.currentTime());
-  }
-
-  currentPeriod(round: CorsRound): ?CorsPeriod {
-    return round.periods.find(period => period.endDate > this.currentTime());
-  }
-
   render() {
     const { enabled, dismissedRounds } = this.props;
 
     // User has disabled CORS notification globally
     if (!enabled) return null;
 
-    const round = this.currentCorsRound();
+    const round = currentRound(this.currentTime());
 
     // CORS bidding is over - don't show anything
     if (!round) return null;
+
     // User has dismissed this round of CORS notifications
     if (dismissedRounds.includes(round.round)) return null;
 
-    const period = this.currentPeriod(round);
-    if (!period) return null; // Shouldn't happen
-
-    const isRoundOpen = this.currentTime() >= period.startDate;
     return (
       <div className={styles.wrapper}>
         <a href="https://myaces.nus.edu.sg/cors/StudentLogin" target="_blank" rel="noopener noreferrer">
-          <div className={styles.notification}>
-            {isRoundOpen ? 'Current' : 'Next'} CORS round: <strong>{round.round} ({capitalize(period.type)})</strong>
-            {isRoundOpen ? ' till' : ' at'} <br />
-            <strong>{isRoundOpen ? period.end : period.start}</strong>
-          </div>
+          <div className={styles.notification}>{corsNotificationText(true, round, this.currentTime())}</div>
         </a>
 
         <CloseButton

@@ -54,3 +54,11 @@
     width: 50%;
   }
 }
+
+.notificationPreview {
+  margin-bottom: 1rem;
+
+  &:empty {
+    margin: 0;
+  }
+}
