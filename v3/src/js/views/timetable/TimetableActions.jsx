@@ -14,7 +14,7 @@ type Props = {
   timetable: SemTimetableConfig,
   isVerticalOrientation: boolean,
   toggleTimetableOrientation: Function,
-  downloadAsJpeg: Function,
+  downloadAsImage: Function,
   downloadAsIcal: Function,
 };
 
@@ -42,7 +42,7 @@ function TimetableActions(props: Props) {
         aria-label="Timetable exporting"
       >
         {SUPPORTS_DOWNLOAD && (
-          <button type="button" className="btn btn-outline-primary btn-svg" onClick={props.downloadAsJpeg}>
+          <button type="button" className="btn btn-outline-primary btn-svg" onClick={props.downloadAsImage}>
             <Image className="svg svg-small" />
               Export image
           </button>

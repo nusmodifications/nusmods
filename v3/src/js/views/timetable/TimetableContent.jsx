@@ -22,7 +22,7 @@ import type { SemTimetableConfig, SemTimetableConfigWithLessons, TimetableArrang
 
 import classnames from 'classnames';
 import { getSemModuleSelectList } from 'reducers/moduleBank';
-import { downloadAsJpeg, downloadAsIcal } from 'actions/export';
+import { downloadAsImage, downloadAsIcal } from 'actions/export';
 import {
   addModule,
   cancelModifyLesson,
@@ -69,7 +69,7 @@ type Props = {
   changeLesson: Function,
   cancelModifyLesson: Function,
   toggleTimetableOrientation: Function,
-  downloadAsJpeg: Function,
+  downloadAsImage: Function,
   downloadAsIcal: Function,
 };
 
@@ -86,7 +86,7 @@ class TimetableContent extends Component<Props> {
     }
   };
 
-  downloadAsJpeg = () => this.props.downloadAsJpeg(this.timetableDom);
+  downloadAsImage = () => this.props.downloadAsImage(this.timetableDom);
 
   downloadAsIcal = () =>
     this.props.downloadAsIcal(this.props.semester, this.props.timetableWithLessons, this.props.modules);
@@ -260,7 +260,7 @@ class TimetableContent extends Component<Props> {
                 <TimetableActions
                   isVerticalOrientation={isVerticalOrientation}
                   toggleTimetableOrientation={this.props.toggleTimetableOrientation}
-                  downloadAsJpeg={this.downloadAsJpeg}
+                  downloadAsImage={this.downloadAsImage}
                   downloadAsIcal={this.downloadAsIcal}
                   semester={semester}
                   timetable={this.props.timetable}
@@ -317,6 +317,6 @@ export default connect(mapStateToProps, {
   changeLesson,
   cancelModifyLesson,
   toggleTimetableOrientation,
-  downloadAsJpeg,
+  downloadAsImage,
   downloadAsIcal,
 })(TimetableContent);
