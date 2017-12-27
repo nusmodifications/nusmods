@@ -35,13 +35,13 @@ if [[ -d $PROD_DIR ]]; then
 fi
 
 DEPLOYMENT_COMMIT=$(cat $STAGING_DIR/app.*js | grep -Eo "20\d{6}-[0-9a-f]{7}" | cut -d '-' -f 2)
-LOG_FORMAT="%h %s by %an%n"
+LOG_FORMAT="%h %s by %an"
 
 echo
 if [[ "$PROD_COMMIT" = "$DEPLOYMENT_COMMIT" ]]; then
   echo "No changes to be deployed, both src and dst dirs are on:"
   echo
-  git --no-pager log --pretty=format:"$LOG_FORMAT" $PROD_COMMIT -1
+  git --no-pager log --pretty=format:"$LOG_FORMAT%n" $PROD_COMMIT -1
   echo
   echo "But you may continue anyway"
 elif [[ "$PROD_COMMIT" = "" ]]; then
@@ -51,6 +51,7 @@ else
   echo "The following commits will be deployed:"
   echo
   git --no-pager log --pretty=format:"$LOG_FORMAT" $PROD_COMMIT...$DEPLOYMENT_COMMIT
+  echo
 fi
 echo
 
