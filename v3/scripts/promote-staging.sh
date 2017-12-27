@@ -13,7 +13,7 @@ echo "Promote $STAGING_DIR to production at $PROD_DIR."
 # Ensure that staging exists
 if [[ ! -d $STAGING_DIR ]]; then
   echo "Staging directory does not exist!"
-  echo "Aborting."
+  echo "Aborting"
   exit 1
 fi
 echo "Staging directory $STAGING_DIR exists."
@@ -28,10 +28,35 @@ ls -la $STAGING_DIR
 echo
 echo "Dry running deployment..."
 npm run rsync -- --dry-run $PROD_DIR
-read -p "Ready to promote? [yN] " -r
+
+CURRENT_COMMIT=''
+if [[ -d $PROD_DIR ]]; then
+  CURRENT_COMMIT=$(cat $PROD_DIR/app.*js | grep -Eo "20\d{6}-[0-9a-f]{7}" | cut -d '-' -f 2)
+fi
+
+DEPLOYMENT_COMMIT=$(cat $STAGING_DIR/app.*js | grep -Eo "20\d{6}-[0-9a-f]{7}" | cut -d '-' -f 2)
+
+echo
+if [[ "$CURRENT_COMMIT" = "$DEPLOYMENT_COMMIT" ]]; then
+  echo "No changes to be deployed, both src and dst dirs are on:"
+  echo
+  git --no-pager log --pretty=oneline $CURRENT_COMMIT -1
+  echo
+  echo "But you may continue anyway"
+elif [[ "$CURRENT_COMMIT" = '' ]]; then
+  # Usually a case of a fresh deployment. This almost never happens.
+  echo "No existing version found in production dir."
+else
+  echo "The following commits will be deployed:"
+  echo
+  git --no-pager log --pretty=oneline $CURRENT_COMMIT...$DEPLOYMENT_COMMIT
+fi
+echo
+
+read -p "Ready to promote? [y/N] " -r
 if [[ ! $REPLY =~ ^[Yy]$ ]]; then
   echo
-  echo "Aborting."
+  echo "Aborting"
   exit
 fi
 
@@ -39,4 +64,4 @@ fi
 echo
 echo "Promoting..."
 npm run rsync -- $PROD_DIR
-echo "All done."
+echo "All done!"
