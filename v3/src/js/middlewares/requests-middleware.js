@@ -61,7 +61,7 @@ export default store => next => (action) => {
         ...meta,
         requestStatus: SUCCESS,
         request: payload,
-        headers: response.headers,
+        responseHeaders: response.headers,
       },
     })),
     error => next(constructActionWith({

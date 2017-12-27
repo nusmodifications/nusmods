@@ -40,7 +40,7 @@ function moduleBank(state: ModuleBank = defaultModuleBankState, action: FSA): Mo
         ...state,
         ...precomputeFromModuleList(action.payload),
         moduleList: action.payload,
-        apiLastUpdatedTimestamp: action.meta && action.meta.headers['last-modified'],
+        apiLastUpdatedTimestamp: action.meta && action.meta.responseHeaders['last-modified'],
       };
 
     case FETCH_MODULE + RequestResultCases.SUCCESS:
