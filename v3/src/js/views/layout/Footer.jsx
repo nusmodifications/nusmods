@@ -24,7 +24,7 @@ export function FooterComponent(props: Props) {
 
   const versionSpan = commitHash && versionStr && (
     <span>
-      NUSMods R Version{' '}
+      NUSMods R version{' '}
       <a
         href={`https://github.com/nusmodifications/nusmods/commit/${commitHash}`}
         target="_blank"
@@ -62,13 +62,13 @@ export function FooterComponent(props: Props) {
             </button>
           </li>
         </ul>
+        <p>{apiUpdateSpan}</p>
         <p>Designed and built with all the love in the world by{' '}
           <a href={config.contact.githubOrg} target="_blank" rel="noopener noreferrer">@nusmodifications</a>.
           Maintained by the <Link to="/team">core team</Link> with the help
           of <Link to="/contributors">our contributors</Link>.
         </p>
-        <p>Copyright © 2017 NUSModifications. All rights reserved.</p>
-        <p>{versionSpan} {apiUpdateSpan}</p>
+        <p>Copyright © 2017 NUSModifications. All rights reserved. {versionSpan}</p>
       </div>
     </footer>
   );
