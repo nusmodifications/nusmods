@@ -13,6 +13,14 @@ const SCRIPT_ID = 'dsq-embed-scr';
 
 export default class DisqusComments extends PureComponent<Props> {
   componentDidMount() {
+    this.loadInstance();
+  }
+
+  componentDidUpdate() {
+    this.loadInstance();
+  }
+
+  loadInstance() {
     if (window.DISQUS) {
       // See https://help.disqus.com/customer/portal/articles/472107
       window.DISQUS.reset({
