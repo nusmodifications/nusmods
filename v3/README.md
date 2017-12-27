@@ -109,6 +109,8 @@ $ yarn lint:test
 $ yarn lint:scripts
 # Append `--fix` to fix lint errors automatically
 # e.g. yarn lint:src --fix
+# p.s. Use yarn lint:styles --fix with care (it's experimental),
+#      remember to reset changes for themes.scss.
 
 # Run Flow type checking
 $ yarn flow
