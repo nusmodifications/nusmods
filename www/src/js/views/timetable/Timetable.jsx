@@ -32,7 +32,7 @@ class Timetable extends PureComponent<Props> {
 
     const lessons: Array<Lesson> = flattenDeep(values(this.props.lessons));
     const { startingIndex, endingIndex } = calculateBorderTimings(lessons);
-    const currentDayIndex: number = (new Date()).getDay() - 1; // Monday = 0, Friday = 5
+    const currentDayIndex: number = new Date().getDay() - 1; // Monday = 0, Friday = 5
 
     return (
       <div
