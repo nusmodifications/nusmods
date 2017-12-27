@@ -6,6 +6,7 @@ import type { SettingsState } from 'types/reducers';
 import * as actions from 'actions/settings';
 import reducer from 'reducers/settings';
 import { LIGHT_MODE, DARK_MODE } from 'types/settings';
+import { initAction } from 'test-utils/redux';
 import config from 'config/__mocks__/config';
 
 const initialState: SettingsState = {
@@ -33,7 +34,7 @@ const settingsWithDismissedNotifications: SettingsState = {
 
 describe('settings', () => {
   test('settings should return initial state', () => {
-    const nextState: SettingsState = reducer(undefined, { type: 'INIT', payload: null });
+    const nextState: SettingsState = reducer(undefined, initAction());
     expect(nextState).toEqual(initialState);
   });
 
@@ -71,7 +72,7 @@ describe('settings', () => {
   test('will clear out dismissed notifications when semester changes', () => {
     config.getSemesterKey = () => '2017/2018 Semester 2';
 
-    const nextState: SettingsState = reducer(settingsWithDismissedNotifications, { type: 'INIT', payload: null });
+    const nextState: SettingsState = reducer(settingsWithDismissedNotifications, initAction());
     expect(nextState.corsNotification).toMatchObject({
       semesterKey: '2017/2018 Semester 2',
       dismissed: [],
@@ -84,7 +85,7 @@ describe('settings', () => {
     const settingsState = _.cloneDeep(settingsWithDismissedNotifications);
     settingsState.corsNotification.enabled = false;
 
-    const nextState: SettingsState = reducer(settingsState, { type: 'INIT', payload: null });
+    const nextState: SettingsState = reducer(settingsState, initAction());
     expect(nextState.corsNotification).toHaveProperty('enabled', false);
   });
 });
