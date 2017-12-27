@@ -29,27 +29,28 @@ echo
 echo "Dry running deployment..."
 npm run rsync -- --dry-run $PROD_DIR
 
-PROD_COMMIT=''
+PROD_COMMIT=""
 if [[ -d $PROD_DIR ]]; then
   PROD_COMMIT=$(cat $PROD_DIR/app.*js | grep -Eo "20\d{6}-[0-9a-f]{7}" | cut -d '-' -f 2)
 fi
 
 DEPLOYMENT_COMMIT=$(cat $STAGING_DIR/app.*js | grep -Eo "20\d{6}-[0-9a-f]{7}" | cut -d '-' -f 2)
+LOG_FORMAT="%h %s by %an%n"
 
 echo
 if [[ "$PROD_COMMIT" = "$DEPLOYMENT_COMMIT" ]]; then
   echo "No changes to be deployed, both src and dst dirs are on:"
   echo
-  git --no-pager log --pretty=oneline $PROD_COMMIT -1
+  git --no-pager log --pretty=format:"$LOG_FORMAT" $PROD_COMMIT -1
   echo
   echo "But you may continue anyway"
-elif [[ "$PROD_COMMIT" = '' ]]; then
+elif [[ "$PROD_COMMIT" = "" ]]; then
   # Usually a case of a fresh deployment. This almost never happens.
   echo "No existing version found in production dir."
 else
   echo "The following commits will be deployed:"
   echo
-  git --no-pager log --pretty=oneline $PROD_COMMIT...$DEPLOYMENT_COMMIT
+  git --no-pager log --pretty=format:"$LOG_FORMAT" $PROD_COMMIT...$DEPLOYMENT_COMMIT
 fi
 echo
 
