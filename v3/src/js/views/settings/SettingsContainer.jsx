@@ -4,13 +4,21 @@ import { connect } from 'react-redux';
 import deferComponentRender from 'views/hocs/deferComponentRender';
 import classnames from 'classnames';
 import Helmet from 'react-helmet';
+import { head, last } from 'lodash';
 
 import type { Faculty } from 'types/modules';
 import type { Mode } from 'types/settings';
+import type { CorsNotificationSettings } from 'types/reducers';
+import type { State } from 'reducers';
 
-import config from 'config';
+import config, { type CorsRound } from 'config';
 import { selectTheme } from 'actions/theme';
-import { selectNewStudent, selectFaculty, selectMode } from 'actions/settings';
+import {
+  selectNewStudent,
+  selectFaculty,
+  selectMode,
+  toggleCorsNotificationGlobally,
+} from 'actions/settings';
 import availableThemes from 'data/themes.json';
 // import FacultySelect from 'views/components/FacultySelect';
 // import NewStudentSelect from 'views/components/NewStudentSelect';
@@ -28,6 +36,7 @@ type Props = {
   faculty: Faculty,
   currentThemeId: string,
   mode: Mode,
+  corsNotification: CorsNotificationSettings,
 
   selectTheme: Function,
   selectNewStudent: Function,
@@ -113,14 +122,34 @@ function SettingsContainer(props: Props) {
           />
         ))}
       </div>
+
+      <hr />
+
+      <h4>CORS Notification</h4>
+
+      <p>Tell me when CORS bidding starts with a small notification.</p>
+
+      <table className="table">
+        <tbody>
+          {config.corsSchedule.map((round: CorsRound) => (
+            <tr>
+              <th>Round {round.round}</th>
+              <td>{head(round.periods).start} - {last(round.periods).end}</td>
+              <td>{props.corsNotification.dismissed.includes(round.round)
+                ? 'Disabled' : 'Enabled'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: State) => ({
   newStudent: state.settings.newStudent,
   faculty: state.settings.faculty,
   mode: state.settings.mode,
+  corsNotification: state.settings.corsNotification,
   currentThemeId: state.theme.id,
 });
 
@@ -131,6 +160,7 @@ const connectedSettings = connect(
     selectNewStudent,
     selectFaculty,
     selectMode,
+    toggleCorsNotificationGlobally,
   },
 )(SettingsContainer);
 export default deferComponentRender(connectedSettings);

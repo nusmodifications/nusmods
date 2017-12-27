@@ -39,17 +39,18 @@ export type ThemeState = {
 };
 
 /* settings */
+export type CorsNotificationSettings = {
+  enabled: boolean,
+  semesterKey: string,
+  dismissed: string[],
+}
+
 export type SettingsState = {
   newStudent: boolean,
   faculty: ?Faculty,
   mode: Mode,
   hiddenInTimetable: ModuleCode[],
-
-  corsNotification: {
-    enabled: boolean,
-    semesterKey: string,
-    dismissed: string[],
-  },
+  corsNotification: CorsNotificationSettings,
 };
 
 /* moduleBank.js */

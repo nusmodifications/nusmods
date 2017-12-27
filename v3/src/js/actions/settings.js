@@ -67,6 +67,14 @@ export function dismissCorsNotification(round: string): FSA {
   };
 }
 
+export const ENABLE_CORS_NOTIFICATION = 'ENABLE_CORS_NOTIFICATION';
+export function enableCorsNotification(round: string): FSA {
+  return {
+    type: ENABLE_CORS_NOTIFICATION,
+    payload: { round },
+  };
+}
+
 export const TOGGLE_CORS_NOTIFICATION_GLOBALLY = 'TOGGLE_CORS_NOTIFICATION_GLOBALLY';
 export function toggleCorsNotificationGlobally(enabled: boolean): FSA {
   return {
