@@ -15,11 +15,11 @@ function enable(group: Group<*>, ids: string[]): Group<*> {
 }
 
 function initModules(groups: Group<*>[], modules: Module[]) {
-  groups.forEach(group => group.initFilters(modules));
+  groups.forEach((group) => group.initFilters(modules));
 }
 
 function moduleCodeFilter(str: string): Filter {
-  return new Filter(str, str, module => module.ModuleCode.includes(str));
+  return new Filter(str, str, (module) => module.ModuleCode.includes(str));
 }
 
 const f1 = new Filter('f1', 'f1', () => false);
@@ -78,14 +78,13 @@ describe('.union()', () => {
     const g2 = new Group('g2', 'g2', [moduleCodeFilter('1'), moduleCodeFilter('2')]);
     initModules([g1, g2], [cs1010s, cs3216, pc1222]);
 
-    expect(Group.union([g1.toggle('CS'), g2]))
-      .toEqual(new Set(['CS1010S', 'CS3216']));
+    expect(Group.union([g1.toggle('CS'), g2])).toEqual(new Set(['CS1010S', 'CS3216']));
 
-    expect(Group.union([g1.toggle('CS'), g2.toggle('2')]))
-      .toEqual(new Set(['CS3216']));
+    expect(Group.union([g1.toggle('CS'), g2.toggle('2')])).toEqual(new Set(['CS3216']));
 
-    expect(Group.union([g1.toggle('CS'), g2.toggle('1').toggle('2')]))
-      .toEqual(new Set(['CS1010S', 'CS3216']));
+    expect(Group.union([g1.toggle('CS'), g2.toggle('1').toggle('2')])).toEqual(
+      new Set(['CS1010S', 'CS3216']),
+    );
   });
 });
 
@@ -103,15 +102,11 @@ describe('.apply()', () => {
     const g2 = new Group('g2', 'g2', [moduleCodeFilter('3')]);
     initModules([g1, g2], [cs1010s, cs3216, pc1222]);
 
-    expect(Group.apply(
-      [cs1010s, pc1222, cs3216],
-      [g1.toggle('2'), g2],
-    )).toEqual([pc1222, cs3216]);
+    expect(Group.apply([cs1010s, pc1222, cs3216], [g1.toggle('2'), g2])).toEqual([pc1222, cs3216]);
 
-    expect(Group.apply(
-      [cs1010s, pc1222, cs3216],
-      [g1.toggle('2'), g2.toggle('3')],
-    )).toEqual([cs3216]);
+    expect(Group.apply([cs1010s, pc1222, cs3216], [g1.toggle('2'), g2.toggle('3')])).toEqual([
+      cs3216,
+    ]);
   });
 });
 
@@ -132,7 +127,7 @@ describe('#toQueryString()', () => {
 
 describe('#fromQueryString()', () => {
   function filterIds(group: Group<*>): string[] {
-    return group.activeFilters.map(filter => filter.id);
+    return group.activeFilters.map((filter) => filter.id);
   }
 
   test('should enable filters based on query string', () => {
@@ -172,7 +167,15 @@ describe('#reset()', () => {
     const group = new Group('test group', 'test group', [f1, f2]);
 
     expect(group.reset().isActive()).toBe(false);
-    expect(enable(group, ['f1']).reset().isActive()).toBe(false);
-    expect(enable(group, ['f1', 'f2']).reset().isActive()).toBe(false);
+    expect(
+      enable(group, ['f1'])
+        .reset()
+        .isActive(),
+    ).toBe(false);
+    expect(
+      enable(group, ['f1', 'f2'])
+        .reset()
+        .isActive(),
+    ).toBe(false);
   });
 });

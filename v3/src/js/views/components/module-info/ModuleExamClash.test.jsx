@@ -10,10 +10,7 @@ import cs1010s from '__mocks__/modules/CS1010S.json';
 import cs3216 from '__mocks__/modules/CS3216.json';
 import { ModuleExamClashComponent } from './ModuleExamClash';
 
-const MODULES = [
-  cs1010s,
-  cs3216,
-];
+const MODULES = [cs1010s, cs3216];
 
 function make(moduleCode: ModuleCode, examDate: ?string, modules: Module[] = MODULES) {
   return mount(

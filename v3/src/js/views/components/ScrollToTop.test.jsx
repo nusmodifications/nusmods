@@ -21,12 +21,7 @@ describe('ScrollToTopComponent', () => {
   });
 
   test('onPathChange attribute behaves correctly', () => {
-    const wrapper = mount(
-      <ScrollToTopComponent
-        onPathChange
-        location={{ pathname: '/' }}
-      />,
-    );
+    const wrapper = mount(<ScrollToTopComponent onPathChange location={{ pathname: '/' }} />);
     expect(window.scrollTo).not.toHaveBeenCalled();
     wrapper.setProps({ location: { pathname: '/foo' } });
     expect(window.scrollTo).toHaveBeenCalledWith(0, 0);
@@ -39,11 +34,7 @@ describe('ScrollToTopComponent', () => {
 
   test('integration test', () => {
     const wrapper = mount(
-      <ScrollToTopComponent
-        onPathChange
-        onComponentWillMount
-        location={{ pathname: '/' }}
-      />,
+      <ScrollToTopComponent onPathChange onComponentWillMount location={{ pathname: '/' }} />,
     );
     expect(window.scrollTo).toHaveBeenCalledTimes(1);
     expect(window.scrollTo).toHaveBeenCalledWith(0, 0);

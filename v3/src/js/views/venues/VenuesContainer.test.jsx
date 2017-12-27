@@ -9,11 +9,7 @@ import { VenuesContainerComponent, mapStateToProps } from './VenuesContainer';
 
 function createComponent(urlVenue: ?Venue) {
   return shallow(
-    <VenuesContainerComponent
-      urlVenue={urlVenue}
-      activeSemester={1}
-      {...createHistory()}
-    />,
+    <VenuesContainerComponent urlVenue={urlVenue} activeSemester={1} {...createHistory()} />,
   );
 }
 

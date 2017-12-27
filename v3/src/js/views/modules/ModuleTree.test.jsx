@@ -5,9 +5,7 @@ import { render } from 'enzyme';
 
 import ModuleTree, { incrementLayer } from './ModuleTree';
 
-jest.mock('views/components/LinkModuleCodes', () => {
-  return 'mockedlink';
-});
+jest.mock('views/components/LinkModuleCodes', () => 'mockedlink');
 
 describe('<ModuleTree>', () => {
   test('should render prereq tree of module', () => {

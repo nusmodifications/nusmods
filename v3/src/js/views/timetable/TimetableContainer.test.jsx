@@ -47,11 +47,9 @@ function create(
         colors={{}}
         modules={modules}
         isV2TimetableMigrated
-
         selectSemester={selectSemester}
         setTimetable={setTimetable}
         fetchTimetableModules={fetchTimetableModules}
-
         {...router}
       />,
     ),
@@ -76,11 +74,11 @@ test('should redirect to activeSemester when semester is empty', () => {
 });
 
 test('should show 404 when the URL is invalid', () => {
-  expect(create('/timetable/hello', { semester: 'hello' })
-    .wrapper.type()).toEqual(NotFoundPage);
+  expect(create('/timetable/hello', { semester: 'hello' }).wrapper.type()).toEqual(NotFoundPage);
 
-  expect(create('/timetable/sem-1/hello', { semester: '1', action: 'hello' })
-    .wrapper.type()).toEqual(NotFoundPage);
+  expect(
+    create('/timetable/sem-1/hello', { semester: '1', action: 'hello' }).wrapper.type(),
+  ).toEqual(NotFoundPage);
 });
 
 test('should load modules from imported timetable', () => {

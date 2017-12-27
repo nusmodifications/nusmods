@@ -45,9 +45,7 @@ describe('LinkModuleCodesComponent', () => {
   function create(content: string, modules: ModuleCodeMap = {}) {
     return mount(
       <MemoryRouter>
-        <LinkModuleCodesComponent
-          moduleCodes={modules}
-        >{ content }</LinkModuleCodesComponent>
+        <LinkModuleCodesComponent moduleCodes={modules}>{content}</LinkModuleCodesComponent>
       </MemoryRouter>,
     );
   }
@@ -76,11 +74,14 @@ describe('LinkModuleCodesComponent', () => {
   });
 
   test('should check words only', () => {
-    const component = create('CS1010FCThis teCS1010FCxt contains module codes in wordsACC1010FC', testModules);
+    const component = create(
+      'CS1010FCThis teCS1010FCxt contains module codes in wordsACC1010FC',
+      testModules,
+    );
     expect(component.find('Link')).toHaveLength(0);
   });
 
-  test('should ignore modules that are not available', (() => {
+  test('should ignore modules that are not available', () => {
     const component = create('CS1010FC, CS1020, ACC1002', {
       ACC1002: {
         ModuleCode: 'ACC1002',
@@ -92,5 +93,5 @@ describe('LinkModuleCodesComponent', () => {
     expect(component.find('Link')).toHaveLength(1);
     const ACC1002 = component.find('Link').at(0);
     expect(ACC1002.text()).toEqual('ACC1002');
-  }));
+  });
 });

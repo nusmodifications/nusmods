@@ -70,6 +70,5 @@ test('app should cancel and unset active lesson', () => {
 test('app should subscribe to online status action', () => {
   const nextState = reducer(appInitialState, setOnlineStatus(false));
   expect(nextState).toHaveProperty('isOnline', false);
-  expect(reducer(nextState, setOnlineStatus(true)))
-    .toHaveProperty('isOnline', true);
+  expect(reducer(nextState, setOnlineStatus(true))).toHaveProperty('isOnline', true);
 });

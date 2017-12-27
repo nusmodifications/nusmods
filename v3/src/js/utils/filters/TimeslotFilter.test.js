@@ -12,7 +12,12 @@ import TimeslotFilter, { TimeslotTypes } from './TimeslotFilter';
 
 test('test() should filter modules according to their lecture timeslot', () => {
   // Generate all possible combinations of parameters to test against
-  const possibleArgs = Combinatorics.cartesianProduct(DaysOfWeek, TimesOfDay, TimeslotTypes, Semesters);
+  const possibleArgs = Combinatorics.cartesianProduct(
+    DaysOfWeek,
+    TimesOfDay,
+    TimeslotTypes,
+    Semesters,
+  );
 
   testFilter(TimeslotFilter, cs1010s, possibleArgs, [
     ['Wednesday', 'Morning', 'Lecture', 1],
@@ -26,9 +31,7 @@ test('test() should filter modules according to their lecture timeslot', () => {
     ['Monday', 'Afternoon', 'Tutorial', 1],
   ]);
 
-  testFilter(TimeslotFilter, cs3216, possibleArgs, [
-    ['Monday', 'Evening', 'Lecture', 1],
-  ]);
+  testFilter(TimeslotFilter, cs3216, possibleArgs, [['Monday', 'Evening', 'Lecture', 1]]);
 });
 
 test('labelToId should be unique for all timeslots', () => {

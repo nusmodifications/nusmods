@@ -7,7 +7,6 @@ import { type ShallowWrapper, shallow } from 'enzyme';
 import _ from 'lodash';
 import qs from 'query-string';
 
-
 import type { FilterGroupId, PageRange } from 'types/views';
 
 import mockDom from 'test-utils/mockDom';
@@ -24,16 +23,17 @@ describe('<ModuleFinderContainer', () => {
     mockDom();
 
     // Silence console.info calls
-    jest.spyOn(console, 'info')
-      .mockImplementation(_.noop);
+    jest.spyOn(console, 'info').mockImplementation(_.noop);
 
     // Mock axios to stop it from firing API requests
-    jest.spyOn(axios, 'get')
-      .mockImplementation((url) => {
-        return url.includes('facultyDepartments')
-          ? Promise.resolve({ data: {} })
-          : Promise.resolve({ data: [] });
-      });
+    jest
+      .spyOn(axios, 'get')
+      .mockImplementation(
+        (url) =>
+          url.includes('facultyDepartments')
+            ? Promise.resolve({ data: {} })
+            : Promise.resolve({ data: [] }),
+      );
   });
 
   afterEach(() => {
@@ -47,11 +47,7 @@ describe('<ModuleFinderContainer', () => {
     const container = {
       history: router.history,
       component: shallow(
-        <ModuleFinderContainerComponent
-          resetModuleFinder={_.noop}
-          searchTerm=""
-          {...router}
-        />,
+        <ModuleFinderContainerComponent resetModuleFinder={_.noop} searchTerm="" {...router} />,
       ),
     };
 
@@ -60,9 +56,10 @@ describe('<ModuleFinderContainer', () => {
   }
 
   function extractQueryString(location: LocationShape | string): string {
-    const query = typeof location === 'string'
-      ? qs.extract(location)
-      : (location.search || '').replace(/^\?/, '');
+    const query =
+      typeof location === 'string'
+        ? qs.extract(location)
+        : (location.search || '').replace(/^\?/, '');
 
     return decodeURIComponent(query);
   }
@@ -72,43 +69,42 @@ describe('<ModuleFinderContainer', () => {
     // data structure to assert against
     const active = {};
 
-    _.values(component.state().filterGroups)
-      .forEach((group: FilterGroup<*>) => {
-        const filters = group.activeFilters.map(filter => filter.id);
-        if (filters.length) active[group.id] = filters;
-      });
+    _.values(component.state().filterGroups).forEach((group: FilterGroup<*>) => {
+      const filters = group.activeFilters.map((filter) => filter.id);
+      if (filters.length) active[group.id] = filters;
+    });
 
     return active;
   }
 
   function interceptRouteChanges(history: RouterHistory): string[] {
     const calls = [];
-    jest.spyOn(history, 'push')
-      .mockImplementation(location => calls.push(location));
-    jest.spyOn(history, 'replace')
-      .mockImplementation(location => calls.push(location));
+    jest.spyOn(history, 'push').mockImplementation((location) => calls.push(location));
+    jest.spyOn(history, 'replace').mockImplementation((location) => calls.push(location));
     return calls;
   }
 
   test('should read initial filter state from query string', async () => {
-    expect(activeFilters(await createContainer()))
-      .toEqual({});
+    expect(activeFilters(await createContainer())).toEqual({});
 
-    expect(activeFilters(await createContainer(['?lecture=monday-morning'])))
-      .toEqual({ lecture: ['monday-morning'] });
+    expect(activeFilters(await createContainer(['?lecture=monday-morning']))).toEqual({
+      lecture: ['monday-morning'],
+    });
 
-    expect(activeFilters(await createContainer(['?lecture=monday-morning,tuesday-afternoon'])))
-      .toEqual({ lecture: ['monday-morning', 'tuesday-afternoon'] });
+    expect(
+      activeFilters(await createContainer(['?lecture=monday-morning,tuesday-afternoon'])),
+    ).toEqual({ lecture: ['monday-morning', 'tuesday-afternoon'] });
 
-    expect(activeFilters(await createContainer(['?lecture=monday-morning,tuesday-afternoon&mc=0'])))
-      .toEqual({
-        lecture: ['monday-morning', 'tuesday-afternoon'],
-        mc: ['0'],
-      });
+    expect(
+      activeFilters(await createContainer(['?lecture=monday-morning,tuesday-afternoon&mc=0'])),
+    ).toEqual({
+      lecture: ['monday-morning', 'tuesday-afternoon'],
+      mc: ['0'],
+    });
   });
 
   test('should update filter state when query string changes', async () => {
-  // Simulate the URL changing to check that the filter state changes with it
+    // Simulate the URL changing to check that the filter state changes with it
     const container = await createContainer();
 
     container.history.push('?lecture=monday-morning,tuesday-afternoon');
@@ -161,9 +157,7 @@ describe('<ModuleFinderContainer', () => {
     container.component.setProps({ searchTerm: 'new search' });
     await waitFor(() => calls.length > 0); // Wait until the route has changed
 
-    expect(calls.map(extractQueryString)).toEqual([
-      'q=new search',
-    ]);
+    expect(calls.map(extractQueryString)).toEqual(['q=new search']);
   });
 });
 

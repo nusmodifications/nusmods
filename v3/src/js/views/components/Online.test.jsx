@@ -28,7 +28,11 @@ describe('<Online>', () => {
   });
 
   test('should not rerender if isLive is false', () => {
-    const wrapper = shallow(<OnlineComponent isOnline={false} isLive={false}>{testContent}</OnlineComponent>);
+    const wrapper = shallow(
+      <OnlineComponent isOnline={false} isLive={false}>
+        {testContent}
+      </OnlineComponent>,
+    );
     expect(wrapper.type()).toBeNull();
     wrapper.setProps({ isOnline: true });
     expect(wrapper.type()).toBeNull();
