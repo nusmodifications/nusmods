@@ -24,10 +24,7 @@ const extractTextPlugin = new ExtractTextPlugin('[name].[chunkhash].css', {
 });
 
 const ONE_MONTH = 30 * 24 * 60 * 60;
-const staleWhileRevalidatePaths = [
-  nusmods.venuesUrl(config.semester),
-  nusmods.modulesUrl(),
-];
+const staleWhileRevalidatePaths = [nusmods.venuesUrl(config.semester), nusmods.modulesUrl()];
 
 const productionConfig = merge([
   parts.setFreeVariable('process.env.NODE_ENV', 'production'),
@@ -91,7 +88,9 @@ const productionConfig = merge([
       }),
       extractTextPlugin,
       // Copy files from static folder over to dist
-      new CopyWebpackPlugin([{ from: 'static', context: parts.PATHS.root }], { copyUnmodified: true }),
+      new CopyWebpackPlugin([{ from: 'static', context: parts.PATHS.root }], {
+        copyUnmodified: true,
+      }),
       // See this for how to configure Workbox service workers
       // https://developers.google.com/web/tools/workbox/reference-docs/latest/module-workbox-build.html#.Configuration
       new WorkboxPlugin({
