@@ -14,11 +14,7 @@ function makeInstance(
   onPageChange = noop,
 ): ModuleFinderList {
   const wrapper = shallow(
-    <ModuleFinderList
-      modules={modules}
-      page={pages}
-      onPageChange={onPageChange}
-    />,
+    <ModuleFinderList modules={modules} page={pages} onPageChange={onPageChange} />,
   );
   return wrapper.instance();
 }

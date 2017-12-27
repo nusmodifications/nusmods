@@ -72,13 +72,14 @@ export function iCalEventForExam(module: Module, semester: Semester): ?EventOpti
 export function isTutorial(lesson: RawLesson): boolean {
   return (
     tutorialLessonTypes.includes(lesson.LessonType) ||
-    lesson.LessonType.toLowerCase().includes('tutorial'));
+    lesson.LessonType.toLowerCase().includes('tutorial')
+  );
 }
 
 export function holidaysForYear(hourOffset: number = 0) {
   return config.holidays
-    .map(date => new Date(date.valueOf() - SG_UTC_TIME_DIFF_MS)) // Convert to local time
-    .map(holiday => hoursAfter(holiday, hourOffset));
+    .map((date) => new Date(date.valueOf() - SG_UTC_TIME_DIFF_MS)) // Convert to local time
+    .map((holiday) => hoursAfter(holiday, hourOffset));
 }
 
 // given academic weeks in semester and a start date in week 1,
@@ -88,9 +89,7 @@ export function datesForAcademicWeeks(start: Date, week: number): Date {
   if (week === RECESS_WEEK) {
     return daysAfter(start, 6 * 7);
   }
-  return daysAfter(
-    start,
-    (week <= 6 ? week - 1 : week) * 7);
+  return daysAfter(start, (week <= 6 ? week - 1 : week) * 7);
 }
 
 /**
@@ -125,7 +124,7 @@ export function calculateExclusion(lesson: RawLesson, firstLesson: Date) {
     // 4. If WeekText is not any of the above, then assume it consists of a list of weeks
     //    with lessons, so we exclude weeks without lessons
     default: {
-      const weeksWithClasses = lesson.WeekText.split(',').map(w => parseInt(w, 10));
+      const weeksWithClasses = lesson.WeekText.split(',').map((w) => parseInt(w, 10));
       excludedWeeks = _.union(excludedWeeks, _.difference(ALL_WEEKS, weeksWithClasses));
       break;
     }
@@ -133,7 +132,7 @@ export function calculateExclusion(lesson: RawLesson, firstLesson: Date) {
 
   return [
     // 5. Convert the academic weeks into dates
-    ...excludedWeeks.map(week => datesForAcademicWeeks(firstLesson, week)),
+    ...excludedWeeks.map((week) => datesForAcademicWeeks(firstLesson, week)),
     // 6. Exclude holidays
     ...holidaysForYear(getTimeHour(lesson.StartTime)),
   ];
@@ -162,7 +161,8 @@ export function iCalEventForLesson(
     summary: `${module.ModuleCode} ${lesson.LessonType}`,
     description: `${module.ModuleTitle}\n${lesson.LessonType} Group ${lesson.ClassNo}`,
     location: lesson.Venue,
-    url: 'https://myaces.nus.edu.sg/cors/jsp/report/ModuleDetailedInfo.jsp?' +
+    url:
+      'https://myaces.nus.edu.sg/cors/jsp/report/ModuleDetailedInfo.jsp?' +
       `acad_y=${module.AcadYear}&sem_c=${semester}&mod_c=${module.ModuleCode}`,
     repeating: {
       freq: 'WEEKLY',
@@ -186,12 +186,10 @@ export function iCalForTimetable(
     timetable,
     (lessonConfig: ModuleLessonConfigWithLessons, moduleCode: ModuleCode) =>
       _.concat(
-        _.flatMap(
-          lessonConfig,
-          lessons =>
-            lessons.map(
-              lesson => iCalEventForLesson(
-                lesson, moduleData[moduleCode], semester, firstDayOfSchool)),
+        _.flatMap(lessonConfig, (lessons) =>
+          lessons.map((lesson) =>
+            iCalEventForLesson(lesson, moduleData[moduleCode], semester, firstDayOfSchool),
+          ),
         ),
         iCalEventForExam(moduleData[moduleCode], semester) || [],
       ),

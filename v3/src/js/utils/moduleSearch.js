@@ -42,8 +42,7 @@ export function createSearchPredicate(searchTerm: string): SearchableModule => b
 export function createSearchFilter(searchTerm: string): FilterGroup<ModuleFilter> {
   const predicate = createSearchPredicate(searchTerm);
   const filter = new ModuleFilter(encodeURIComponent(searchTerm), searchTerm, predicate);
-  return new FilterGroup(SEARCH_QUERY_KEY, 'Search', [filter])
-    .toggle(filter, !!searchTerm);
+  return new FilterGroup(SEARCH_QUERY_KEY, 'Search', [filter]).toggle(filter, !!searchTerm);
 }
 
 export function sortModules<T: { ModuleCode: ModuleCode, ModuleTitle: ModuleTitle }>(
@@ -55,7 +54,10 @@ export function sortModules<T: { ModuleCode: ModuleCode, ModuleTitle: ModuleTitl
   return sortBy(modules, (module) => {
     let sum = 0;
     for (let i = 0; i < searchRegexes.length; i++) {
-      if (searchRegexes[i].test(module.ModuleCode) || searchRegexes[i].test(module.ModuleCode.replace(/\D+/, ''))) {
+      if (
+        searchRegexes[i].test(module.ModuleCode) ||
+        searchRegexes[i].test(module.ModuleCode.replace(/\D+/, ''))
+      ) {
         sum += 1;
       } else if (searchRegexes[i].test(module.ModuleTitle)) {
         sum += 2;

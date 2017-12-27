@@ -43,29 +43,32 @@ export class ModuleFinderItemComponent extends PureComponent<Props> {
             </header>
             {module.ModuleDescription && <p>{this.highlight(module.ModuleDescription)}</p>}
             <dl>
-              {module.Preclusion &&
+              {module.Preclusion && (
                 <Fragment>
                   <dt>Preclusions</dt>
                   <dd>
                     <LinkModuleCodes>{module.Preclusion}</LinkModuleCodes>
                   </dd>
-                </Fragment>}
+                </Fragment>
+              )}
 
-              {module.Prerequisite &&
+              {module.Prerequisite && (
                 <Fragment>
                   <dt>Prerequisite</dt>
                   <dd>
                     <LinkModuleCodes>{module.Prerequisite}</LinkModuleCodes>
                   </dd>
-                </Fragment>}
+                </Fragment>
+              )}
 
-              {module.Corequisite &&
+              {module.Corequisite && (
                 <Fragment>
                   <dt>Corequisite</dt>
                   <dd>
                     <LinkModuleCodes>{module.Corequisite}</LinkModuleCodes>
                   </dd>
-                </Fragment>}
+                </Fragment>
+              )}
             </dl>
           </div>
           <div className="col-lg-4 col-md-12 col-sm-4">
@@ -78,7 +81,7 @@ export class ModuleFinderItemComponent extends PureComponent<Props> {
   }
 }
 
-const mapStateToProps: MapStateToProps<*, *, *> = state => ({
+const mapStateToProps: MapStateToProps<*, *, *> = (state) => ({
   search: state.moduleFinder.search,
 });
 

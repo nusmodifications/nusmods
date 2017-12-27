@@ -35,37 +35,36 @@ export default class LessonTimetableControl extends PureComponent<Props, State> 
   };
 
   renderTimetable(): Node {
-    const semester = this.props.history.find(data => data.Semester === this.state.selectedSem);
+    const semester = this.props.history.find((data) => data.Semester === this.state.selectedSem);
     if (!semester || !semester.Timetable) {
       return <p>Timetable info not available</p>;
     }
 
-    const lessons = semester.Timetable.map(lesson => ({
-      ...lesson, ModuleCode: '', ModuleTitle: '',
+    const lessons = semester.Timetable.map((lesson) => ({
+      ...lesson,
+      ModuleCode: '',
+      ModuleTitle: '',
     }));
     const coloredLessons = colorLessonsByKey(lessons, 'LessonType');
     const arrangedLessons = arrangeLessonsForWeek(coloredLessons);
 
-    return (
-      <Timetable lessons={arrangedLessons} />
-    );
+    return <Timetable lessons={arrangedLessons} />;
   }
 
   render() {
-    const semesters = this.props.history.map(data => data.Semester);
+    const semesters = this.props.history.map((data) => data.Semester);
 
     return (
       <Fragment>
-        {history.length > 1 &&
+        {history.length > 1 && (
           <SemesterPicker
             semesters={semesters}
             selectedSemester={this.state.selectedSem}
             onSelectSemester={this.onSelectSemester}
-          />}
+          />
+        )}
 
-        <div className={styles.lessonTimetable}>
-          {this.renderTimetable()}
-        </div>
+        <div className={styles.lessonTimetable}>{this.renderTimetable()}</div>
       </Fragment>
     );
   }

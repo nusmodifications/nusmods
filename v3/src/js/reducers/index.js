@@ -28,7 +28,7 @@ export type State = {
 // $FlowFixMe: State default is delegated to its child reducers.
 const defaultState: State = {};
 
-export default function (state: State = defaultState, action: FSA): State {
+export default function(state: State = defaultState, action: FSA): State {
   return {
     moduleBank: moduleBank(state.moduleBank, action),
     venueBank: venueBank(state.venueBank, action),

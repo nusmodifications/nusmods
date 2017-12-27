@@ -9,10 +9,7 @@ import { DropdownListFiltersComponent } from './DropdownListFilters';
 
 describe('<DropdownListFilters>', () => {
   const CHECKBOX = '☑';
-  const modules = [
-    createModule('CS1010S'),
-    createModule('CS3216'),
-  ];
+  const modules = [createModule('CS1010S'), createModule('CS3216')];
 
   function make(
     filterGroup: FilterGroup<*>,
@@ -59,7 +56,12 @@ describe('<DropdownListFilters>', () => {
     wrapper.setProps({ group: nextGroup1 });
 
     // Should render the option inside the <select> with a checkmark
-    expect(wrapper.find('option').at(1).text()).toMatch(CHECKBOX);
+    expect(
+      wrapper
+        .find('option')
+        .at(1)
+        .text(),
+    ).toMatch(CHECKBOX);
 
     // Should render the item in the checklist outside
     const checklist = wrapper.find('ul.list-unstyled input');

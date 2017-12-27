@@ -25,7 +25,7 @@ export default function VenueList(props: Props) {
 
   return (
     <ul className={styles.venueList}>
-      {sortedVenueNames.map(name => (
+      {sortedVenueNames.map((name) => (
         <VenueDetailRow
           key={name}
           name={name}

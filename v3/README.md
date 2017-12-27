@@ -50,47 +50,47 @@ This will start webpack dev server, which will automatically rebuild and reload 
 - [Redux DevTools](http://extension.remotedev.io/#installation)
 - [Firefox Developer Edition](https://www.mozilla.org/en-US/firefox/developer/)
 
-### Writing styles 
+### Writing styles
 
 We uses [CSS Modules][css-modules] to structure styles. This means that with the exception of a few global styles, styles for each component lives beside their source files (see [colocation](#colocation)). This allows us to write short, semantic names for styles without worrying about collision.
 
 ```
-// MyComponent.scss 
-import "~styles/utils/modules-entry"; // Import variables, mixins 
+// MyComponent.scss
+import "~styles/utils/modules-entry"; // Import variables, mixins
 
 .myComponent {
-  // .col will be included in the class name whenever .myComponent is used 
-  composes: col from global; 
+  // .col will be included in the class name whenever .myComponent is used
+  composes: col from global;
   color: theme-color();
-  
+
   :global(.btn) {
     // Selects all child .btn elements
   }
-  
+
   :global {
-    // :global is required for animation since animations are defined globally 
+    // :global is required for animation since animations are defined globally
     animation: fadeIn 0.3s;
   }
 }
 
-// MyComponent.jsx 
-import styles from './MyComponent.scss'; 
+// MyComponent.jsx
+import styles from './MyComponent.scss';
 
-// To use styles from MyComponent.scss: 
+// To use styles from MyComponent.scss:
 <div className={styles.myComponent}>
 ```
 
 Note that specificity still matters. This is important if you are trying to override Bootstrap styles.
 
-#### SCSS variables vs. CSS custom properties 
+#### SCSS variables vs. CSS custom properties
 
-Both SCSS and CSS variables (aka. custom properties) are used. In most cases, **prefer SCSS variables** as they can be used with SCSS mixins and functions, and integrate with Bootstrap. CSS variable generates more code (since we need to include a fallback for browsers that don't support it), and doesn't play well with SCSS. 
+Both SCSS and CSS variables (aka. custom properties) are used. In most cases, **prefer SCSS variables** as they can be used with SCSS mixins and functions, and integrate with Bootstrap. CSS variable generates more code (since we need to include a fallback for browsers that don't support it), and doesn't play well with SCSS.
 
-Currently CSS variables are used only for colors that change under night mode. 
+Currently CSS variables are used only for colors that change under night mode.
 
 ### Testing and Linting
 
-We use [Jest][jest] with [Enzyme][enzyme] to test our code and React components, and [Flow][flow], [Stylelint][stylelint] and [ESLint][eslint] using [Airbnb config][eslint-airbnb] for typechecking and linting.
+We use [Jest][jest] with [Enzyme][enzyme] to test our code and React components, and [Flow][flow], [Stylelint][stylelint] and [ESLint][eslint] using [Airbnb config][eslint-airbnb] and [Prettier][prettier] for typechecking and linting.
 
 ```sh
 # Run all tests once with code coverage
@@ -107,6 +107,10 @@ $ yarn lint:styles
 $ yarn lint:src
 $ yarn lint:test
 $ yarn lint:scripts
+# Append `--fix` to fix lint errors automatically
+# e.g. yarn lint:src --fix
+# p.s. Use yarn lint:styles --fix with care (it's experimental),
+#      remember to reset changes for themes.scss.
 
 # Run Flow type checking
 $ yarn flow
@@ -143,8 +147,8 @@ $ yarn promote-staging # Promote ./dist to production
 │   │   ├── reducers        - Redux reducers
 │   │   ├── storage         - Persistance layer for Redux
 │   │   ├── stores          - Redux store config
-│   │   ├── test-utils      - Utilities for testing - this directory is not counted 
-│   │   │                     for test coverage 
+│   │   ├── test-utils      - Utilities for testing - this directory is not counted
+│   │   │                     for test coverage
 │   │   ├── types           - Flow type definitions
 │   │   ├── utils           - Utility functions and classes
 │   │   └── views
@@ -154,7 +158,7 @@ $ yarn promote-staging # Promote ./dist to production
 │   │       ├── hocs        - Higher order components
 │   │       ├── layout      - Global layout components
 │   │       ├── modules     - Module finder and module info components
-│   │       ├── routes      - Routing related components 
+│   │       ├── routes      - Routing related components
 │   │       ├── settings    - Settings page component
 │   │       ├── static      - Static pages like /team and /developers
 │   │       └── timetable   - Timetable builder related components
@@ -188,6 +192,7 @@ Components should keep their styles and tests in the same directory with the sam
 [flow]: https://flow.org/
 [eslint]: https://eslint.org/
 [eslint-airbnb]: https://www.npmjs.com/package/eslint-config-airbnb
+[prettier]: https://prettier.io/docs/en/
 [stylelint]: https://stylelint.io/
 [zames-guide]: https://medium.com/@zameschua/getting-my-feet-wet-my-experience-with-open-source-and-nusmods-f1381450517e
 [css-modules]: https://github.com/css-modules/css-modules

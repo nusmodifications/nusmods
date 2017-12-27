@@ -34,7 +34,7 @@ function processRound(type, text) {
   return text
     .trim() // Clean text
     .split(/\s*\n\s*/g) // Split into periods (eg. 27/07/2017 09:00 to 28/07/2017 17:00)
-    .filter(period => period.includes('to')) // Remove things that don't look like periods (eg. 'N/A')
+    .filter((period) => period.includes('to')) // Remove things that don't look like periods (eg. 'N/A')
     .map((period) => {
       const chunks = period.split(/\s+/g);
 
@@ -59,23 +59,36 @@ function processRound(type, text) {
 }
 
 console.log(`Fetching page ${CORS_URL}...`);
-axios.get(CORS_URL, { responseType: 'responseType' })
+axios
+  .get(CORS_URL, { responseType: 'responseType' })
   .then(({ data }) => {
     const $page = cheerio.load(data);
 
     // 1. Retrieve the academic year and semester for the file name.
-    const rawHeader = $page('span.middletabletext:has(span.scheduleheader1)').text().trim();
-    const [acadYear, semester] = rawHeader.replace(/\s+|Bidding Schedule|\(AY|20|\/|Semester|\)/g, '').split(',');
+    const rawHeader = $page('span.middletabletext:has(span.scheduleheader1)')
+      .text()
+      .trim();
+    const [acadYear, semester] = rawHeader
+      .replace(/\s+|Bidding Schedule|\(AY|20|\/|Semester|\)/g, '')
+      .split(',');
     // Output file config
     const fileName = `cors-schedule-ay${acadYear}-sem${semester}.json`;
 
     // 2. Extract the bidding schedules table
     const table = $page('.scheduleheader1')
-      .filter((index, element) => $page(element).text().includes('Bidding Periods'))
+      .filter((index, element) =>
+        $page(element)
+          .text()
+          .includes('Bidding Periods'),
+      )
       .next('table');
 
-    assert.equal(table.length, 1, 'Unexpected bidding schedule table found - ' +
-      'check that the selector for the bidding schedule table is specific enough');
+    assert.equal(
+      table.length,
+      1,
+      'Unexpected bidding schedule table found - ' +
+        'check that the selector for the bidding schedule table is specific enough',
+    );
 
     // 3. Extract the rows containing round data
     const roundsData = table
@@ -97,7 +110,8 @@ axios.get(CORS_URL, { responseType: 'responseType' })
           round,
           periods,
         };
-      }).get(); // .get() remove the cheerio wrapper
+      })
+      .get(); // .get() remove the cheerio wrapper
     const numRounds = +semester === 2 ? ROUND_NAMES.length - 1 : ROUND_NAMES.length; // Sem 2 has no Round 1C.
     assert.equal(roundsData.length, numRounds, 'Unexpected number of CORS bidding rounds');
 
@@ -107,4 +121,4 @@ axios.get(CORS_URL, { responseType: 'responseType' })
     fs.writeFileSync(path.join(OUT_DIR, fileName), jsonArray);
     console.log(`Successfully written to ${fileName}.`);
   })
-  .catch(e => console.error(e));
+  .catch((e) => console.error(e));

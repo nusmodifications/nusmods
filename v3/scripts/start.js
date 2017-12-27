@@ -62,8 +62,4 @@ function runDevServer(host, port, protocol) {
   });
 }
 
-runDevServer(
-  DEFAULT_HOST,
-  DEFAULT_PORT,
-  PROTOCOL,
-);
+runDevServer(DEFAULT_HOST, DEFAULT_PORT, PROTOCOL);

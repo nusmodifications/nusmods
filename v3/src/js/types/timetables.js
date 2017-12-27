@@ -1,12 +1,5 @@
 // @flow
-import type {
-  ClassNo,
-  DayText,
-  Lesson,
-  LessonType,
-  ModuleCode,
-  Semester,
-} from 'types/modules';
+import type { ClassNo, DayText, Lesson, LessonType, ModuleCode, Semester } from 'types/modules';
 
 //  ModuleLessonConfig is a mapping of LessonType to ClassNo for a module.
 export type ModuleLessonConfig = {

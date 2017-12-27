@@ -11,6 +11,6 @@ export const nextTick = util.promisify(process.nextTick);
 export async function waitFor(condition: () => boolean, intervalInMs: number = 5) {
   while (!condition()) {
     // eslint-disable-next-line no-await-in-loop
-    await new Promise(resolve => setTimeout(resolve, intervalInMs));
+    await new Promise((resolve) => setTimeout(resolve, intervalInMs));
   }
 }

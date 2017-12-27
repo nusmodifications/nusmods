@@ -17,7 +17,7 @@ import cs1010s from '__mocks__/modules/CS1010S.json';
 import cs3216 from '__mocks__/modules/CS3216.json';
 import mockTimetable from '__mocks__/sem-timetable.json';
 
-const rawLesson = override => ({
+const rawLesson = (override) => ({
   ClassNo: 'A1',
   DayText: 'Monday',
   EndTime: '1700',
@@ -29,7 +29,7 @@ const rawLesson = override => ({
 });
 
 /* Build a RawLesson of a given type */
-const rawLessonOfType = lessonType => ({
+const rawLessonOfType = (lessonType) => ({
   ClassNo: '1',
   DayText: 'Monday',
   EndTime: '1600',
@@ -60,20 +60,29 @@ test('isTutorial should return true for tutorials', () => {
 });
 
 test('datesForAcademicWeeks should return correct dates', () => {
-  expect(datesForAcademicWeeks(new Date('2016-08-10T10:00+0800'), 1)).toEqual(new Date('2016-08-10T10:00+0800'));
+  expect(datesForAcademicWeeks(new Date('2016-08-10T10:00+0800'), 1)).toEqual(
+    new Date('2016-08-10T10:00+0800'),
+  );
 
-  expect(datesForAcademicWeeks(new Date('2016-08-10T10:00+0800'), 3)).toEqual(new Date('2016-08-24T10:00+0800'));
+  expect(datesForAcademicWeeks(new Date('2016-08-10T10:00+0800'), 3)).toEqual(
+    new Date('2016-08-24T10:00+0800'),
+  );
 
   // recess week
-  expect(datesForAcademicWeeks(new Date('2016-08-10T10:00+0800'), RECESS_WEEK))
-    .toEqual(new Date('2016-09-21T10:00+0800'));
+  expect(datesForAcademicWeeks(new Date('2016-08-10T10:00+0800'), RECESS_WEEK)).toEqual(
+    new Date('2016-09-21T10:00+0800'),
+  );
 
   // week 7 is after recess week, so it is 8 weeks after the start
-  expect(datesForAcademicWeeks(new Date('2016-08-10T10:00+0800'), 7)).toEqual(new Date('2016-09-28T10:00+0800'));
+  expect(datesForAcademicWeeks(new Date('2016-08-10T10:00+0800'), 7)).toEqual(
+    new Date('2016-09-28T10:00+0800'),
+  );
 });
 
 test('daysAfter should create a date days after', () => {
-  expect(daysAfter(new Date('2016-11-23T09:00+0800'), 1)).toEqual(new Date('2016-11-24T09:00+0800'));
+  expect(daysAfter(new Date('2016-11-23T09:00+0800'), 1)).toEqual(
+    new Date('2016-11-24T09:00+0800'),
+  );
 });
 
 test('iCalEventForExam should generate event', () => {
@@ -108,16 +117,18 @@ test('iCalEventForExam should generate event', () => {
 test('calculateExclusion generates exclusion for comma separated weeks', () => {
   const actual: EventOption = calculateExclusion(rawLesson(), new Date('2016-08-08T14:00+0800'));
 
-  expect(actual).toEqual(expect.arrayContaining([
-    new Date('2016-09-19T14:00+0800'), // Recess
-    new Date('2016-09-26T14:00+0800'), // 7
-    new Date('2016-10-03T14:00+0800'), // 8
-    new Date('2016-10-10T14:00+0800'), // 9
-    new Date('2016-10-17T14:00+0800'), // 10
-    new Date('2016-10-24T14:00+0800'), // 11
-    new Date('2016-10-31T14:00+0800'), // 12
-    new Date('2016-11-07T14:00+0800'), // 13
-  ]));
+  expect(actual).toEqual(
+    expect.arrayContaining([
+      new Date('2016-09-19T14:00+0800'), // Recess
+      new Date('2016-09-26T14:00+0800'), // 7
+      new Date('2016-10-03T14:00+0800'), // 8
+      new Date('2016-10-10T14:00+0800'), // 9
+      new Date('2016-10-17T14:00+0800'), // 10
+      new Date('2016-10-24T14:00+0800'), // 11
+      new Date('2016-10-31T14:00+0800'), // 12
+      new Date('2016-11-07T14:00+0800'), // 13
+    ]),
+  );
 });
 
 test('calculateExclusion generates exclusion for even weeks', () => {
@@ -129,16 +140,18 @@ test('calculateExclusion generates exclusion for even weeks', () => {
   );
 
   // Exclusions should be odd week lessons
-  expect(actual).toEqual(expect.arrayContaining([
-    new Date('2016-08-08T14:00+0800'), // 1
-    new Date('2016-08-22T14:00+0800'), // 3
-    new Date('2016-09-05T14:00+0800'), // 5
-    new Date('2016-09-19T14:00+0800'), // Recess
-    new Date('2016-09-26T14:00+0800'), // 7
-    new Date('2016-10-10T14:00+0800'), // 9
-    new Date('2016-10-24T14:00+0800'), // 11
-    new Date('2016-11-07T14:00+0800'), // 13
-  ]));
+  expect(actual).toEqual(
+    expect.arrayContaining([
+      new Date('2016-08-08T14:00+0800'), // 1
+      new Date('2016-08-22T14:00+0800'), // 3
+      new Date('2016-09-05T14:00+0800'), // 5
+      new Date('2016-09-19T14:00+0800'), // Recess
+      new Date('2016-09-26T14:00+0800'), // 7
+      new Date('2016-10-10T14:00+0800'), // 9
+      new Date('2016-10-24T14:00+0800'), // 11
+      new Date('2016-11-07T14:00+0800'), // 13
+    ]),
+  );
 });
 
 test('calculateExclusion generates exclusion for odd weeks', () => {
@@ -150,15 +163,17 @@ test('calculateExclusion generates exclusion for odd weeks', () => {
   );
 
   // Exclusions should be even week lessons
-  expect(actual).toEqual(expect.arrayContaining([
-    new Date('2016-08-15T14:00+0800'), // 2
-    new Date('2016-08-29T14:00+0800'), // 4
-    new Date('2016-09-12T14:00+0800'), // 6
-    new Date('2016-09-19T14:00+0800'), // Recess
-    new Date('2016-10-03T14:00+0800'), // 8
-    new Date('2016-10-17T14:00+0800'), // 10
-    new Date('2016-10-31T14:00+0800'), // 12
-  ]));
+  expect(actual).toEqual(
+    expect.arrayContaining([
+      new Date('2016-08-15T14:00+0800'), // 2
+      new Date('2016-08-29T14:00+0800'), // 4
+      new Date('2016-09-12T14:00+0800'), // 6
+      new Date('2016-09-19T14:00+0800'), // Recess
+      new Date('2016-10-03T14:00+0800'), // 8
+      new Date('2016-10-17T14:00+0800'), // 10
+      new Date('2016-10-31T14:00+0800'), // 12
+    ]),
+  );
 });
 
 test('calculateExclusion generates exclusions for holidays', () => {
@@ -170,9 +185,7 @@ test('calculateExclusion generates exclusions for holidays', () => {
   );
 
   // 2016 holidays
-  expect(actual).toEqual(expect.arrayContaining([
-    new Date('2016-01-01T14:00+0800'),
-  ]));
+  expect(actual).toEqual(expect.arrayContaining([new Date('2016-01-01T14:00+0800')]));
 });
 
 test('iCalEventForLesson generates correct output', () => {
@@ -197,8 +210,9 @@ test('iCalEventForLesson generates correct output', () => {
     summary: 'BFS1001 Sectional Teaching',
     description: 'Personal Development & Career Management\nSectional Teaching Group A1',
     location: 'BIZ1-0303',
-    url: 'https://myaces.nus.edu.sg/cors/jsp/report/ModuleDetailedInfo.jsp?' +
-    'acad_y=2016/2017&sem_c=1&mod_c=BFS1001',
+    url:
+      'https://myaces.nus.edu.sg/cors/jsp/report/ModuleDetailedInfo.jsp?' +
+      'acad_y=2016/2017&sem_c=1&mod_c=BFS1001',
     repeating: {
       freq: 'WEEKLY',
       count: 14,

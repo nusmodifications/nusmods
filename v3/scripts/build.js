@@ -2,7 +2,10 @@ const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
 const webpack = require('webpack');
-const { measureFileSizesBeforeBuild, printFileSizesAfterBuild } = require('react-dev-utils/FileSizeReporter');
+const {
+  measureFileSizesBeforeBuild,
+  printFileSizesAfterBuild,
+} = require('react-dev-utils/FileSizeReporter');
 
 const config = require('../webpack/webpack.config.prod');
 const parts = require('../webpack/webpack.parts');
@@ -36,7 +39,10 @@ function build(previousFileSizes, callback) {
 
     if (process.env.CI && stats.compilation.warnings.length) {
       // eslint-disable-next-line max-len
-      printErrors('Failed to compile. When process.env.CI = true, warnings are treated as failures. Most CI servers set this automatically.', stats.compilation.warnings);
+      printErrors(
+        'Failed to compile. When process.env.CI = true, warnings are treated as failures. Most CI servers set this automatically.',
+        stats.compilation.warnings,
+      );
       process.exit(1);
     }
 
@@ -63,6 +69,6 @@ function writeCommitHash() {
 
 // First, read the current file sizes in build directory.
 // This lets us display how much they changed later.
-measureFileSizesBeforeBuild(parts.PATHS.build).then(previousFileSizes =>
-  new Promise(resolve => build(previousFileSizes, resolve)),
-).then(writeCommitHash);
+measureFileSizesBeforeBuild(parts.PATHS.build)
+  .then((previousFileSizes) => new Promise((resolve) => build(previousFileSizes, resolve)))
+  .then(writeCommitHash);

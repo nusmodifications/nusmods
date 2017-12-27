@@ -58,17 +58,21 @@ export function isValidSemester(semester: Semester): boolean {
 //    [LessonType]: ClassNo,
 //  }
 export function randomModuleLessonConfig(lessons: Array<RawLesson>): ModuleLessonConfig {
-  const lessonByGroups: { [LessonType]: Array<RawLesson> } =
-    _.groupBy(lessons, lesson => lesson.LessonType);
+  const lessonByGroups: { [LessonType]: Array<RawLesson> } = _.groupBy(
+    lessons,
+    (lesson) => lesson.LessonType,
+  );
 
-  const lessonByGroupsByClassNo: { [LessonType]: { [ClassNo]: Array<RawLesson> } } =
-    _.mapValues(lessonByGroups, (lessonsOfSameLessonType: Array<RawLesson>) => {
-      return _.groupBy(lessonsOfSameLessonType, lesson => lesson.ClassNo);
-    });
+  const lessonByGroupsByClassNo: { [LessonType]: { [ClassNo]: Array<RawLesson> } } = _.mapValues(
+    lessonByGroups,
+    (lessonsOfSameLessonType: Array<RawLesson>) =>
+      _.groupBy(lessonsOfSameLessonType, (lesson) => lesson.ClassNo),
+  );
 
-  return _.mapValues(lessonByGroupsByClassNo, (group: { [ClassNo]: Array<RawLesson> }) => {
-    return _.sample(group)[0].ClassNo;
-  });
+  return _.mapValues(
+    lessonByGroupsByClassNo,
+    (group: { [ClassNo]: Array<RawLesson> }) => _.sample(group)[0].ClassNo,
+  );
 }
 
 // Replaces ClassNo in SemTimetableConfig with Array<Lesson>
@@ -77,30 +81,34 @@ export function hydrateSemTimetableWithLessons(
   modules: ModulesMap,
   semester: Semester,
 ): SemTimetableConfigWithLessons {
-  return _.mapValues(semTimetableConfig, (moduleLessonConfig: ModuleLessonConfig, moduleCode: ModuleCode) => {
-    const module: Module = modules[moduleCode];
-    // TODO: Split this part into a smaller function: hydrateModuleConfigWithLessons.
-    return _.mapValues(moduleLessonConfig, (classNo: ClassNo, lessonType: LessonType) => {
-      const lessons: Array<RawLesson> = getModuleTimetable(module, semester);
-      const newLessons: Array<RawLesson> = lessons.filter((lesson: RawLesson): boolean => {
-        return (lesson.LessonType === lessonType && lesson.ClassNo === classNo);
-      });
-      const timetableLessons: Array<Lesson> = newLessons.map((lesson: RawLesson): Lesson => {
-        return {
+  return _.mapValues(
+    semTimetableConfig,
+    (moduleLessonConfig: ModuleLessonConfig, moduleCode: ModuleCode) => {
+      const module: Module = modules[moduleCode];
+      // TODO: Split this part into a smaller function: hydrateModuleConfigWithLessons.
+      return _.mapValues(moduleLessonConfig, (classNo: ClassNo, lessonType: LessonType) => {
+        const lessons: Array<RawLesson> = getModuleTimetable(module, semester);
+        const newLessons: Array<RawLesson> = lessons.filter(
+          (lesson: RawLesson): boolean =>
+            lesson.LessonType === lessonType && lesson.ClassNo === classNo,
+        );
+        const timetableLessons: Array<Lesson> = newLessons.map((lesson: RawLesson): Lesson => ({
           ...lesson,
           ModuleCode: moduleCode,
           ModuleTitle: module.ModuleTitle,
-        };
+        }));
+        return timetableLessons;
       });
-      return timetableLessons;
-    });
-  });
+    },
+  );
 }
 
 //  Filters a flat array of lessons and returns the lessons corresponding to lessonType.
-export function lessonsForLessonType(lessons: Array<RawLesson | Lesson>,
-  lessonType: LessonType): Array<RawLesson | Lesson> {
-  return _.filter(lessons, lesson => lesson.LessonType === lessonType);
+export function lessonsForLessonType(
+  lessons: Array<RawLesson | Lesson>,
+  lessonType: LessonType,
+): Array<RawLesson | Lesson> {
+  return _.filter(lessons, (lesson) => lesson.LessonType === lessonType);
 }
 
 //  Converts from timetable config format to flat array of lessons.
@@ -120,14 +128,16 @@ export function timetableLessonsArray(timetable: SemTimetableConfigWithLessons):
 //    Tuesday: [Lesson, ...],
 //  }
 export function groupLessonsByDay(lessons: Array<Lesson>): TimetableDayFormat {
-  return _.groupBy(lessons, lesson => lesson.DayText);
+  return _.groupBy(lessons, (lesson) => lesson.DayText);
 }
 
 //  Determines if two lessons overlap:
 export function doLessonsOverlap(lesson1: Lesson, lesson2: Lesson): boolean {
-  return lesson1.DayText === lesson2.DayText &&
+  return (
+    lesson1.DayText === lesson2.DayText &&
     lesson1.StartTime < lesson2.EndTime &&
-    lesson2.StartTime < lesson1.EndTime;
+    lesson2.StartTime < lesson1.EndTime
+  );
 }
 
 //  Converts a flat array of lessons *for ONE day* into rows of lessons within that day row.
@@ -185,47 +195,58 @@ export function arrangeLessonsForWeek(lessons: Lesson[]): TimetableArrangement {
 
 //  Determines if a Lesson on the timetable can be modifiable / dragged around.
 //  Condition: There are multiple ClassNo for all the Array<Lesson> in a LessonType.
-export function areOtherClassesAvailable(lessons: Array<RawLesson>,
-  lessonType: LessonType): boolean {
-  const lessonTypeGroups: Object = _.groupBy(lessons, lesson => lesson.LessonType);
+export function areOtherClassesAvailable(
+  lessons: Array<RawLesson>,
+  lessonType: LessonType,
+): boolean {
+  const lessonTypeGroups: Object = _.groupBy(lessons, (lesson) => lesson.LessonType);
   if (!lessonTypeGroups[lessonType]) {
     // No such LessonType.
     return false;
   }
-  return Object.keys(_.groupBy(lessonTypeGroups[lessonType], lesson => lesson.ClassNo)).length > 1;
+  return (
+    Object.keys(_.groupBy(lessonTypeGroups[lessonType], (lesson) => lesson.ClassNo)).length > 1
+  );
 }
 
 // Find all exam clashes between modules in semester
 // Returns object associating exam dates with the modules clashing on those dates
-export function findExamClashes(modules: Array<Module>, semester: Semester): { string: Array<Module> } {
-  const groupedModules = _.groupBy(modules, module => _.get(getModuleSemesterData(module, semester), 'ExamDate'));
+export function findExamClashes(
+  modules: Array<Module>,
+  semester: Semester,
+): { string: Array<Module> } {
+  const groupedModules = _.groupBy(modules, (module) =>
+    _.get(getModuleSemesterData(module, semester), 'ExamDate'),
+  );
   delete groupedModules.undefined; // Remove modules without exams
-  return _.omitBy(groupedModules, mods => mods.length === 1); // Remove non-clashing mods
+  return _.omitBy(groupedModules, (mods) => mods.length === 1); // Remove non-clashing mods
 }
 
 // Get information for all modules present in a semester timetable config
-export function getSemesterModules(timetable: { [ModuleCode]: any }, modules: ModulesMap): Module[] {
+export function getSemesterModules(
+  timetable: { [ModuleCode]: any },
+  modules: ModulesMap,
+): Module[] {
   return _.values(_.pick(modules, Object.keys(timetable)));
 }
 
 function serializeModuleConfig(config: ModuleLessonConfig): string {
   // eg. { Lecture: 1, Laboratory: 2 } => LEC=1,LAB=2
   return _.map(config, (classNo, lessonType) =>
-    [LESSON_TYPE_ABBREV[lessonType], encodeURIComponent(classNo)].join(LESSON_TYPE_SEP))
-    .join(LESSON_SEP);
+    [LESSON_TYPE_ABBREV[lessonType], encodeURIComponent(classNo)].join(LESSON_TYPE_SEP),
+  ).join(LESSON_SEP);
 }
 
 function parseModuleConfig(serialized: string): ModuleLessonConfig {
   const config = {};
 
-  serialized.split(LESSON_SEP)
-    .forEach((lesson) => {
-      const [lessonTypeAbbr, classNo] = lesson.split(LESSON_TYPE_SEP);
-      const lessonType = LESSON_ABBREV_TYPE[lessonTypeAbbr];
-      // Ignore unparsable/invalid keys
-      if (!lessonType) return;
-      config[lessonType] = classNo;
-    });
+  serialized.split(LESSON_SEP).forEach((lesson) => {
+    const [lessonTypeAbbr, classNo] = lesson.split(LESSON_TYPE_SEP);
+    const lessonType = LESSON_ABBREV_TYPE[lessonTypeAbbr];
+    // Ignore unparsable/invalid keys
+    if (!lessonType) return;
+    config[lessonType] = classNo;
+  });
 
   return config;
 }

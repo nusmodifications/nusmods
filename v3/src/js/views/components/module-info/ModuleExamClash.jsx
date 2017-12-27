@@ -34,27 +34,27 @@ export class ModuleExamClashComponent extends PureComponent<Props> {
 
     if (!examDate) return null;
 
-    const clashes = modules.filter(module =>
-      // Exclude current module
-      module.ModuleCode !== moduleCode &&
-      // And find modules with the same exam date
-      get(getModuleSemesterData(module, semester), 'ExamDate') === examDate);
+    const clashes = modules.filter(
+      (module) =>
+        // Exclude current module
+        module.ModuleCode !== moduleCode &&
+        // And find modules with the same exam date
+        get(getModuleSemesterData(module, semester), 'ExamDate') === examDate,
+    );
     if (!clashes.length) return null;
 
     const useSingular = clashes.length === 1;
-    const clashLinks = clashes.map(module => (
-      <Link
-        key={module.ModuleCode}
-        to={modulePage(module.ModuleCode, module.ModuleTitle)}
-      >{module.ModuleCode}</Link>
+    const clashLinks = clashes.map((module) => (
+      <Link key={module.ModuleCode} to={modulePage(module.ModuleCode, module.ModuleTitle)}>
+        {module.ModuleCode}
+      </Link>
     ));
 
     return (
       <div className={classnames('text-danger', styles.alert)}>
         <AlertTriangle className={styles.icon} />
         <p className={styles.warning}>
-          Your {useSingular ? 'module' : 'modules'}{' '}
-          {intersperse(clashLinks, ', ')}{' '}
+          Your {useSingular ? 'module' : 'modules'} {intersperse(clashLinks, ', ')}{' '}
           {useSingular ? 'has' : 'have'} exams at the same time
         </p>
       </div>

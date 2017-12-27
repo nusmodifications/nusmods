@@ -65,38 +65,45 @@ test('should not show up if there is no CORS bidding data', () => {
 });
 
 test('should not show up if CORS bidding is over', () => {
-  setSchedule([{
-    round: '0',
-    periods: [corsPeriod(moment().subtract(2, 'hour'))],
-  }]);
+  setSchedule([
+    {
+      round: '0',
+      periods: [corsPeriod(moment().subtract(2, 'hour'))],
+    },
+  ]);
 
   expectEmpty(make());
 });
 
 test('should not show up if CORS notification is not enabled', () => {
-  setSchedule([{
-    round: '0',
-    periods: [corsPeriod(moment().add(1, 'hour'))],
-  }]);
+  setSchedule([
+    {
+      round: '0',
+      periods: [corsPeriod(moment().add(1, 'hour'))],
+    },
+  ]);
 
   expectEmpty(make([], false));
 });
 
 test('should not show up if it has been dismissed', () => {
-  setSchedule([{
-    round: '0',
-    periods: [corsPeriod(moment().add(1, 'hour'))],
-  }]);
+  setSchedule([
+    {
+      round: '0',
+      periods: [corsPeriod(moment().add(1, 'hour'))],
+    },
+  ]);
 
   expectEmpty(make(['0'], false));
 });
 
-
 test('should show next round when it has not started yet', () => {
-  setSchedule([{
-    round: '0',
-    periods: [corsPeriod(moment().add(1, 'hour'))],
-  }]);
+  setSchedule([
+    {
+      round: '0',
+      periods: [corsPeriod(moment().add(1, 'hour'))],
+    },
+  ]);
 
   const content = make(['1']).wrapper.text();
   expect(content).toMatch('Next');
@@ -104,13 +111,15 @@ test('should show next round when it has not started yet', () => {
 });
 
 test('should show next round when in between the current round', () => {
-  setSchedule([{
-    round: '0',
-    periods: [
-      corsPeriod(moment().subtract(2, 'hour')),
-      corsPeriod(moment().add(1, 'hour'), 1, 'closed'),
-    ],
-  }]);
+  setSchedule([
+    {
+      round: '0',
+      periods: [
+        corsPeriod(moment().subtract(2, 'hour')),
+        corsPeriod(moment().add(1, 'hour'), 1, 'closed'),
+      ],
+    },
+  ]);
 
   const content = make(['1']).wrapper.text();
   expect(content).toMatch('Next');
@@ -118,10 +127,12 @@ test('should show next round when in between the current round', () => {
 });
 
 test('should show current round when it is active', () => {
-  setSchedule([{
-    round: '0',
-    periods: [corsPeriod(moment().subtract(1, 'minute'))],
-  }]);
+  setSchedule([
+    {
+      round: '0',
+      periods: [corsPeriod(moment().subtract(1, 'minute'))],
+    },
+  ]);
 
   const content = make(['1']).wrapper.text();
   expect(content).toMatch('Current');

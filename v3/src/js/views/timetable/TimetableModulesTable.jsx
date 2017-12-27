@@ -80,7 +80,7 @@ class TimetableModulesTable extends Component<Props> {
 
     return (
       <div className={classnames(styles.modulesTable, 'row')}>
-        {this.props.modules.map(module => (
+        {this.props.modules.map((module) => (
           <div
             className={classnames(styles.modulesTableRow, 'col-sm-6', {
               'col-lg-4': this.props.horizontalOrientation,
@@ -105,8 +105,7 @@ class TimetableModulesTable extends Component<Props> {
               <div className={styles.moduleExam}>
                 {getModuleExamDate(module, this.props.semester)
                   ? `Exam: ${getFormattedModuleExamDate(module, this.props.semester)}`
-                  : 'No Exam'
-                }
+                  : 'No Exam'}
                 &nbsp;&middot;&nbsp;
                 {module.ModuleCredit} MCs
               </div>

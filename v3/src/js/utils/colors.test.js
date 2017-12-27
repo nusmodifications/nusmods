@@ -22,9 +22,13 @@ describe('#getNewColor()', () => {
     // We're not actually testing randomness, only that the color indices returned are valid
     // Check that calling getNewColor with currentColors returns an int
     // in [0, NUM_DIFFERENT_COLORS] AND not in unexpectedColors
-    function expectValidIndex(unexpectedColors: Array<ColorIndex>, currentColors: Array<ColorIndex>) {
-      expect(without(range(NUM_DIFFERENT_COLORS), ...unexpectedColors))
-        .toContain(getNewColor(currentColors, true));
+    function expectValidIndex(
+      unexpectedColors: Array<ColorIndex>,
+      currentColors: Array<ColorIndex>,
+    ) {
+      expect(without(range(NUM_DIFFERENT_COLORS), ...unexpectedColors)).toContain(
+        getNewColor(currentColors, true),
+      );
     }
 
     range(100).forEach(() => {

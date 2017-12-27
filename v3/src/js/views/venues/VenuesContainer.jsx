@@ -71,7 +71,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
     // Extract searchOptions from the query string if they are present
     const isAvailabilityEnabled = params.time && params.day && params.duration;
     const searchOptions = isAvailabilityEnabled
-      ? mapValues(pick(params, ['time', 'day', 'duration']), i => parseInt(i, 10))
+      ? mapValues(pick(params, ['time', 'day', 'duration']), (i) => parseInt(i, 10))
       : defaultSearchOptions();
 
     this.history = new HistoryDebouncer(props.history);
@@ -87,7 +87,8 @@ export class VenuesContainerComponent extends Component<Props, State> {
   }
 
   componentDidMount() {
-    axios.get(nusmods.venuesUrl(this.props.activeSemester))
+    axios
+      .get(nusmods.venuesUrl(this.props.activeSemester))
       .then(({ data }) => {
         this.setState({
           loading: false,
@@ -115,8 +116,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
   }
 
   onVenueSelect = (selectedVenue: Venue, venueURL: string, selectedVenueElement: HTMLElement) =>
-    this.setState({ selectedVenue, selectedVenueElement },
-      () => this.updateURL(venueURL, false));
+    this.setState({ selectedVenue, selectedVenueElement }, () => this.updateURL(venueURL, false));
 
   onSearch = (searchTerm: string) => {
     if (searchTerm !== this.state.searchTerm) {
@@ -147,7 +147,15 @@ export class VenuesContainerComponent extends Component<Props, State> {
   };
 
   render() {
-    const { isMenuOpen, searchTerm, selectedVenue, loading, error, isAvailabilityEnabled, searchOptions } = this.state;
+    const {
+      isMenuOpen,
+      searchTerm,
+      selectedVenue,
+      loading,
+      error,
+      isAvailabilityEnabled,
+      searchOptions,
+    } = this.state;
 
     if (error) {
       return <ErrorPage error="cannot load venues info" eventId={Raven.lastEventId()} />;
@@ -175,36 +183,40 @@ export class VenuesContainerComponent extends Component<Props, State> {
 
         <div className="row">
           <div className="col-md-8 col-lg-9">
-            {size(venues) === 0 ?
+            {size(venues) === 0 ? (
               <Fragment>
                 <Warning message="No matching venues found" />
-                {unfilteredCount && isAvailabilityEnabled &&
-                  <p className="text-center text-muted">
-                    There {unfilteredCount === 1
-                      ? 'is a venue that is'
-                      : `are ${unfilteredCount} venues that are`} not shown
-                    because they are not free.<br />
-                    <button
-                      type="button"
-                      className="btn btn-link"
-                      onClick={() => this.setState({ isAvailabilityEnabled: false })}
-                    >
-                      Cancel free room search
-                    </button>
-                  </p>}
+                {unfilteredCount &&
+                  isAvailabilityEnabled && (
+                    <p className="text-center text-muted">
+                      There{' '}
+                      {unfilteredCount === 1
+                        ? 'is a venue that is'
+                        : `are ${unfilteredCount} venues that are`}{' '}
+                      not shown because they are not free.<br />
+                      <button
+                        type="button"
+                        className="btn btn-link"
+                        onClick={() => this.setState({ isAvailabilityEnabled: false })}
+                      >
+                        Cancel free room search
+                      </button>
+                    </p>
+                  )}
               </Fragment>
-              :
+            ) : (
               <VenueList
                 venues={venues}
                 expandedVenue={selectedVenue}
                 onSelect={this.onVenueSelect}
-              />}
+              />
+            )}
           </div>
           <div className="col-md-4 col-lg-3">
             <SideMenu
               isOpen={isMenuOpen}
               openIcon={<Search aria-label="Search venues" />}
-              toggleMenu={isOpen => this.setState({ isMenuOpen: isOpen })}
+              toggleMenu={(isOpen) => this.setState({ isMenuOpen: isOpen })}
             >
               <div className={styles.venueSearch}>
                 <h3>Venue Search</h3>
@@ -224,17 +236,20 @@ export class VenuesContainerComponent extends Component<Props, State> {
                     styles.availabilityToggle,
                     isAvailabilityEnabled ? 'btn-primary' : 'btn-outline-primary',
                   )}
-                  onClick={() => this.setState({ isAvailabilityEnabled: !isAvailabilityEnabled }, this.updateURL)}
+                  onClick={() =>
+                    this.setState({ isAvailabilityEnabled: !isAvailabilityEnabled }, this.updateURL)
+                  }
                 >
                   <Clock className="svg" /> Find free rooms
                 </button>
 
-                {isAvailabilityEnabled &&
+                {isAvailabilityEnabled && (
                   <AvailabilitySearch
                     isEnabled={isAvailabilityEnabled}
                     searchOptions={searchOptions}
                     onUpdate={this.onAvailabilityUpdate}
-                  />}
+                  />
+                )}
               </div>
             </SideMenu>
           </div>

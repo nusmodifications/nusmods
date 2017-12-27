@@ -42,7 +42,8 @@ export class SearchContainerComponent extends Component<Props> {
   }
 
   onChange = (item: Module | Venue) => {
-    const path = typeof item === 'string' ? venuePage(item) : modulePage(item.ModuleCode, item.ModuleTitle);
+    const path =
+      typeof item === 'string' ? venuePage(item) : modulePage(item.ModuleCode, item.ModuleTitle);
     this.props.history.push(path);
   };
 
@@ -54,11 +55,13 @@ export class SearchContainerComponent extends Component<Props> {
 
     // Filter venues
     const regex = regexify(inputValue);
-    const venues = takeUntil(venueList, RESULTS_LIMIT, venue => regex.test(venue));
+    const venues = takeUntil(venueList, RESULTS_LIMIT, (venue) => regex.test(venue));
 
     // Filter modules
     const predicate = createSearchPredicate(inputValue);
-    const filteredModules = takeUntil(moduleList, RESULTS_LIMIT, module => predicate({ ...module }));
+    const filteredModules = takeUntil(moduleList, RESULTS_LIMIT, (module) =>
+      predicate({ ...module }),
+    );
     const modules = sortModules(inputValue, filteredModules.slice());
 
     // Plentiful of modules and venues, show 4 modules, 3 venues
@@ -72,7 +75,9 @@ export class SearchContainerComponent extends Component<Props> {
 
   render() {
     const { matchBreakpoint } = this.props;
-    return matchBreakpoint && <GlobalSearch getResults={this.getResults} onChange={this.onChange} />;
+    return (
+      matchBreakpoint && <GlobalSearch getResults={this.getResults} onChange={this.onChange} />
+    );
   }
 }
 
@@ -81,5 +86,7 @@ const mapStateToProps: MapStateToProps<*, *, *> = (state: State) => ({
   venueList: state.venueBank.venueList,
 });
 const routedSearchContainer = withRouter(SearchContainerComponent);
-const connectedSearchContainer = connect(mapStateToProps, { fetchVenueList })(routedSearchContainer);
+const connectedSearchContainer = connect(mapStateToProps, { fetchVenueList })(
+  routedSearchContainer,
+);
 export default makeResponsive(connectedSearchContainer, breakpointUp('md'));

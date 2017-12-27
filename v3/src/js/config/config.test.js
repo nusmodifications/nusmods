@@ -16,7 +16,7 @@ test('Academic calendar should have start dates for the current academic year', 
 test('CORS schedule is sorted', () => {
   expect(isSorted(config.corsSchedule.map(roundEnd))).toBe(true);
   config.corsSchedule.forEach((round) => {
-    expect(isSorted(round.periods.map(period => period.endDate))).toBe(true);
+    expect(isSorted(round.periods.map((period) => period.endDate))).toBe(true);
   });
 });
 

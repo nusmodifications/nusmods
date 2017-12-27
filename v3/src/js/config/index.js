@@ -13,7 +13,7 @@ export type CorsPeriod = {
   startDate: Date,
   end: string,
   endDate: Date,
-}
+};
 
 export type CorsRound = {
   round: string,
@@ -62,7 +62,7 @@ export type Config = {
 function convertCorsDate(roundData: Object): CorsRound {
   return {
     ...roundData,
-    periods: roundData.periods.map(period => ({
+    periods: roundData.periods.map((period) => ({
       ...period,
       // Convert timestamps to date objects
       startDate: new Date(period.startTs),
@@ -74,16 +74,15 @@ function convertCorsDate(roundData: Object): CorsRound {
 const augmentedConfig: Config = {
   ...appConfig,
 
-  holidays: holidays.map(date => new Date(date)),
+  holidays: holidays.map((date) => new Date(date)),
 
   corsSchedule: corsData.map(convertCorsDate),
 
   /**
    * Returns a unique key for every acad year + semester
    */
-  getSemesterKey: (): string => {
-    return `${augmentedConfig.academicYear} ${augmentedConfig.semesterNames[augmentedConfig.semester]}`;
-  },
+  getSemesterKey: (): string =>
+    `${augmentedConfig.academicYear} ${augmentedConfig.semesterNames[augmentedConfig.semester]}`,
 };
 
 export default augmentedConfig;

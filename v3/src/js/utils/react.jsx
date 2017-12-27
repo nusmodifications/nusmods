@@ -8,7 +8,6 @@ import { escapeRegExp, castArray } from 'lodash';
 export const NBSP = '\u00a0';
 export const BULLET = ' • ';
 
-
 /**
  * Replace substring matching the provided regex with React nodes. This is
  * basically the React version of replacing bits of strings with HTML tags,

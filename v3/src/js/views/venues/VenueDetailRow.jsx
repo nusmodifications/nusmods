@@ -16,7 +16,7 @@ type Props = {
   expanded: boolean,
   onClick: (Venue, string) => void,
   rootElementRef?: (?HTMLElement) => void, // For parent components to obtain a ref to the root HTMLElement
-}
+};
 
 export default class VenueDetailRow extends PureComponent<Props> {
   static defaultProps = {
@@ -32,8 +32,9 @@ export default class VenueDetailRow extends PureComponent<Props> {
     }
 
     const availability: DayAvailability[] = this.props.availability;
-    const lessons = flatMap(availability, (day): VenueLesson[] => day.Classes)
-      .map(venueLesson => ({ ...venueLesson, ModuleTitle: '' }));
+    const lessons = flatMap(availability, (day): VenueLesson[] => day.Classes).map(
+      (venueLesson) => ({ ...venueLesson, ModuleTitle: '' }),
+    );
     const coloredLessons = colorLessonsByKey(lessons, 'ModuleCode');
     return arrangeLessonsForWeek(coloredLessons);
   }
@@ -52,7 +53,9 @@ export default class VenueDetailRow extends PureComponent<Props> {
             e.preventDefault();
             onClick(name, venueHref);
           }}
-        ><h4>{name}</h4></a>
+        >
+          <h4>{name}</h4>
+        </a>
         {lessons && (
           <div className={styles.venueTimetable}>
             <Timetable lessons={lessons} />

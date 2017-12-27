@@ -20,7 +20,7 @@ describe('VenueList', () => {
     expect(rows).toHaveLength(Object.keys(venueInfo).length);
 
     // Case insensitive, natural sort
-    const orderedNames = rows.map(r => r.prop('name'));
+    const orderedNames = rows.map((r) => r.prop('name'));
     expect(orderedNames).toContain('LT1'); // else orderedNames.indexOf('LT1') = -1, which may break test
     expect(orderedNames.indexOf('LT1')).toBeLessThan(orderedNames.indexOf('lt2'));
     expect(orderedNames.indexOf('lt2')).toBeLessThan(orderedNames.indexOf('LT17'));
@@ -30,11 +30,19 @@ describe('VenueList', () => {
     let wrapper;
 
     function expectNumberExpandedRows(num: number) {
-      return expect(wrapper.find('VenueDetailRow').filterWhere(r => r.prop('expanded'))).toHaveLength(num);
+      return expect(
+        wrapper.find('VenueDetailRow').filterWhere((r) => r.prop('expanded')),
+      ).toHaveLength(num);
     }
 
     function expectExpandedVenue(venue: Venue, isExpanded: boolean = true) {
-      expect(wrapper.find('VenueDetailRow').filterWhere(r => r.prop('name') === venue).first().prop('expanded')).toBe(isExpanded);
+      expect(
+        wrapper
+          .find('VenueDetailRow')
+          .filterWhere((r) => r.prop('name') === venue)
+          .first()
+          .prop('expanded'),
+      ).toBe(isExpanded);
     }
 
     // Does not expand when there is no expandedVenue
@@ -62,7 +70,10 @@ describe('VenueList', () => {
   test('it calls onSelect when a row is clicked', () => {
     const mockOnSelect = jest.fn();
     const wrapper = mount(<VenueList {...minProps} onSelect={mockOnSelect} />);
-    const lt17Row = wrapper.find('VenueDetailRow').filterWhere(r => r.prop('name') === 'LT17').first();
+    const lt17Row = wrapper
+      .find('VenueDetailRow')
+      .filterWhere((r) => r.prop('name') === 'LT17')
+      .first();
     lt17Row.find('a').simulate('click');
     expect(mockOnSelect.mock.calls).toHaveLength(1);
     expect(mockOnSelect.mock.calls[0]).toMatchSnapshot();

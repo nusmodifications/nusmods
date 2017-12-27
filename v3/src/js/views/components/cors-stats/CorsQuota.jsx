@@ -10,7 +10,7 @@ type Props = {
   quota: number,
 };
 
-export default function ({ bidders, quota }: Props) {
+export default function({ bidders, quota }: Props) {
   let color = 'text-success';
   if (bidders / quota > 0.85) color = 'text-warning';
   if (bidders / quota >= 1) color = 'text-danger';

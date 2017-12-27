@@ -1,5 +1,12 @@
 // @flow
-import type { Faculty, Lesson, ModuleCode, SearchableModule, ModuleCondensed, Semester } from 'types/modules';
+import type {
+  Faculty,
+  Lesson,
+  ModuleCode,
+  SearchableModule,
+  ModuleCondensed,
+  Semester,
+} from 'types/modules';
 import type { Venue } from 'types/venues';
 import type { Mode } from 'types/settings';
 
@@ -43,7 +50,7 @@ export type CorsNotificationSettings = {
   enabled: boolean,
   semesterKey: string,
   dismissed: string[],
-}
+};
 
 export type SettingsState = {
   newStudent: boolean,

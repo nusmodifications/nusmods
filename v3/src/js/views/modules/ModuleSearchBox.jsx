@@ -14,7 +14,7 @@ type Props = ContextRouter & {
   useInstantSearch: boolean,
   initialSearchTerm: ?string,
 
-  searchModules: (string) => void,
+  searchModules: string => void,
 };
 
 export function ModuleSearchBoxComponent(props: Props) {

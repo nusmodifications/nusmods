@@ -36,7 +36,7 @@ type Props = {
   timetable: SemTimetableConfig,
   colors: ColorMapping,
 
-  selectSemester: (Semester) => void,
+  selectSemester: Semester => void,
   setTimetable: (Semester, SemTimetableConfig, ColorMapping) => void,
   fetchTimetableModules: (SemTimetableConfig[]) => void,
 };
@@ -57,7 +57,8 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
 
     const { semester, match } = props;
     const action = match.params.action;
-    const importedTimetable = (semester && action) ? deserializeTimetable(this.props.location.search) : null;
+    const importedTimetable =
+      semester && action ? deserializeTimetable(this.props.location.search) : null;
 
     this.state = {
       importedTimetable,
@@ -86,13 +87,11 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
 
     const moduleCodes = new Set(Object.keys(timetable));
     if (importedTimetable) {
-      Object.keys(importedTimetable)
-        .forEach(moduleCode => moduleCodes.add(moduleCode));
+      Object.keys(importedTimetable).forEach((moduleCode) => moduleCodes.add(moduleCode));
     }
 
     // TODO: Account for loading error
-    return Array.from(moduleCodes)
-      .some(moduleCode => !modules[moduleCode]);
+    return Array.from(moduleCodes).some((moduleCode) => !modules[moduleCode]);
   }
 
   importTimetable(semester: Semester, timetable: SemTimetableConfig) {
@@ -104,8 +103,9 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
   clearImportedTimetable = () => {
     const { semester } = this.props;
     if (semester) {
-      this.setState({ importedTimetable: null },
-        () => this.props.history.push(timetablePage(semester)));
+      this.setState({ importedTimetable: null }, () =>
+        this.props.history.push(timetablePage(semester)),
+      );
     }
   };
 
@@ -117,8 +117,9 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
         <div className={classnames('row', styles.row)}>
           <div className={classnames('col-md-auto', styles.text)}>
             <h3>This timetable was shared with you</h3>
-            <p>Clicking import will <strong>replace</strong> your saved timetable with
-              the one below.</p>
+            <p>
+              Clicking import will <strong>replace</strong> your saved timetable with the one below.
+            </p>
           </div>
 
           <div className={classnames('col-md-auto', styles.actions)}>
@@ -182,18 +183,18 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
 
     // 5. If there is an imported timetable, we show the sharing header which
     //    asks the user if they want to import the shared timetable
-    const header = importedTimetable
-      ? (<Fragment>
+    const header = importedTimetable ? (
+      <Fragment>
         {this.sharingHeader(semester, importedTimetable)}
         {this.timetableHeader(semester, true)}
-      </Fragment>)
-      : this.timetableHeader(semester);
+      </Fragment>
+    ) : (
+      this.timetableHeader(semester)
+    );
 
     return (
       <div>
-        <ScrollToTop
-          onComponentWillMount
-        />
+        <ScrollToTop onComponentWillMount />
         <TimetableContent
           semester={semester}
           timetable={displayedTimetable}
