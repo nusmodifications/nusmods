@@ -1,7 +1,9 @@
 // @flow
+import type { State } from 'reducers';
+
 import React from 'react';
 import classnames from 'classnames';
-import { connect } from 'react-redux';
+import { connect, type MapStateToProps } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import config from 'config';
@@ -9,6 +11,7 @@ import { toggleFeedback } from 'actions/app';
 import styles from './Footer.scss';
 
 type Props = {
+  lastUpdatedDate: ?Date,
   toggleFeedback: Function,
 };
 
@@ -16,9 +19,12 @@ export function FooterComponent(props: Props) {
   const commitHash = process.env.commitHash;
   const versionStr = process.env.versionStr;
 
+  const lastUpdatedDate = props.lastUpdatedDate;
+  const apiUpdateSpan = lastUpdatedDate && (<span>Data correct as at {lastUpdatedDate.toLocaleString()}.</span>);
+
   const versionSpan = commitHash && versionStr && (
     <span>
-      Version{' '}
+      NUSMods R version{' '}
       <a
         href={`https://github.com/nusmodifications/nusmods/commit/${commitHash}`}
         target="_blank"
@@ -56,17 +62,23 @@ export function FooterComponent(props: Props) {
             </button>
           </li>
         </ul>
-        {/* TODO: Add API data last updated timestamp */}
+        <p>{apiUpdateSpan}</p>
         <p>Designed and built with all the love in the world by{' '}
           <a href={config.contact.githubOrg} target="_blank" rel="noopener noreferrer">@nusmodifications</a>.
           Maintained by the <Link to="/team">core team</Link> with the help
           of <Link to="/contributors">our contributors</Link>.
         </p>
-        <p>Copyright © 2017 NUSModifications. All rights reserved. {versionSpan}
-        </p>
+        <p>Copyright © 2017 NUSModifications. All rights reserved. {versionSpan}</p>
       </div>
     </footer>
   );
 }
 
-export default connect(null, { toggleFeedback })(FooterComponent);
+const mapStateToProps: MapStateToProps<*, *, *> = (state: State) => {
+  const lastUpdatedString = state.moduleBank.apiLastUpdatedTimestamp;
+  return {
+    lastUpdatedDate: lastUpdatedString && new Date(lastUpdatedString),
+  };
+};
+
+export default connect(mapStateToProps, { toggleFeedback })(FooterComponent);
