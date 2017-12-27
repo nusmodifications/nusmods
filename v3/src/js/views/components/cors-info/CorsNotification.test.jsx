@@ -1,11 +1,11 @@
 // @flow
 import React from 'react';
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import moment from 'moment';
-import { MemoryRouter } from 'react-router-dom';
 
 import config, { type CorsRound, type CorsPeriod, type CorsPeriodType } from 'config';
-import CorsNotification from './CorsNotification';
+import createHistory from 'test-utils/createHistory';
+import { CorsNotificationComponent } from './CorsNotification';
 
 // Save the original CORS schedule for this test and restore it afterwards
 let originalSchedule;
@@ -38,10 +38,10 @@ function setSchedule(schedule: CorsRound[]) {
 }
 
 function make() {
-  return mount(
-    <MemoryRouter>
-      <CorsNotification />
-    </MemoryRouter>,
+  return shallow(
+    <CorsNotificationComponent
+      {...createHistory()}
+    />,
   );
 }
 
