@@ -2,7 +2,6 @@
 
 import React, { Component } from 'react';
 import axios from 'axios';
-import classnames from 'classnames';
 
 import Loader from 'views/components/LoadingSpinner';
 
