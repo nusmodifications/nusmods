@@ -1,5 +1,6 @@
 // @flow
 import type { FSA } from 'types/redux';
+import update from 'immutability-helper';
 import type {
   SettingsState,
 } from 'types/reducers';
@@ -13,12 +14,20 @@ import {
   SHOW_LESSON_IN_TIMETABLE,
 } from 'actions/settings';
 import { LIGHT_MODE, DARK_MODE } from 'types/settings';
+import config from 'config';
+
+const defaultCorsNotificationState = {
+  semesterKey: config.getSemesterKey(),
+  dismissed: [],
+  enabled: true,
+};
 
 const defaultSettingsState: SettingsState = {
   newStudent: false,
   faculty: '',
   mode: LIGHT_MODE,
   hiddenInTimetable: [],
+  corsNotification: defaultCorsNotificationState,
 };
 
 function hidden(state = [], action: FSA) {
@@ -64,6 +73,17 @@ function settings(state: SettingsState = defaultSettingsState, action: FSA): Set
         hiddenInTimetable: hidden(state.hiddenInTimetable, action),
       };
     default:
+      // Rehydrating from store - check that the key is the same, and if not,
+      // return to default state since the old dismissed notification settings is stale
+      if (state.corsNotification.semesterKey !== config.getSemesterKey()) {
+        return update(state, {
+          corsNotification: {
+            semesterKey: { $set: config.getSemesterKey() },
+            dismissed: { $set: [] },
+          },
+        });
+      }
+
       return state;
   }
 }

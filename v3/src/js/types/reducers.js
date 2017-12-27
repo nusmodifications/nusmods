@@ -44,6 +44,12 @@ export type SettingsState = {
   faculty: ?Faculty,
   mode: Mode,
   hiddenInTimetable: ModuleCode[],
+
+  corsNotification: {
+    enabled: boolean,
+    semesterKey: string,
+    dismissed: string[],
+  },
 };
 
 /* moduleBank.js */
