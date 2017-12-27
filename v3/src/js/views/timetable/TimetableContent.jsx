@@ -22,7 +22,7 @@ import type { SemTimetableConfig, SemTimetableConfigWithLessons, TimetableArrang
 
 import classnames from 'classnames';
 import { getSemModuleSelectList } from 'reducers/moduleBank';
-import { downloadAsJpeg, downloadAsIcal } from 'actions/export';
+import { downloadAsImage, downloadAsIcal } from 'actions/export';
 import {
   addModule,
   cancelModifyLesson,
@@ -48,7 +48,6 @@ import Online from 'views/components/Online';
 import Timetable from './Timetable';
 import TimetableActions from './TimetableActions';
 import TimetableModulesTable from './TimetableModulesTable';
-import ShareTimetable from './ShareTimetable';
 import styles from './TimetableContent.scss';
 
 type Props = {
@@ -70,7 +69,7 @@ type Props = {
   changeLesson: Function,
   cancelModifyLesson: Function,
   toggleTimetableOrientation: Function,
-  downloadAsJpeg: Function,
+  downloadAsImage: Function,
   downloadAsIcal: Function,
 };
 
@@ -87,7 +86,7 @@ class TimetableContent extends Component<Props> {
     }
   };
 
-  downloadAsJpeg = () => this.props.downloadAsJpeg(this.timetableDom);
+  downloadAsImage = () => this.props.downloadAsImage(this.timetableDom);
 
   downloadAsIcal = () =>
     this.props.downloadAsIcal(this.props.semester, this.props.timetableWithLessons, this.props.modules);
@@ -215,7 +214,9 @@ class TimetableContent extends Component<Props> {
 
     return (
       <div
-        className={classnames(styles.container, 'page-container')}
+        className={classnames('page-container', styles.container, {
+          verticalMode: isVerticalOrientation,
+        })}
         onClick={this.cancelModifyLesson}
       >
         <Helmet>
@@ -235,7 +236,6 @@ class TimetableContent extends Component<Props> {
             className={classnames({
               'col-md-12': !isVerticalOrientation,
               'col-md-8': isVerticalOrientation,
-              verticalMode: isVerticalOrientation,
             })}
           >
             <div className={styles.timetableWrapper}>
@@ -255,18 +255,13 @@ class TimetableContent extends Component<Props> {
               'col-md-4': isVerticalOrientation,
             })}
           >
-            <div className="row justify-content-between">
-              <div className={classnames('col-auto', styles.timetableActions)}>
+            <div className="row">
+              <div className="col-12">
                 <TimetableActions
-                  isVerticalOrientation={!isVerticalOrientation}
+                  isVerticalOrientation={isVerticalOrientation}
                   toggleTimetableOrientation={this.props.toggleTimetableOrientation}
-                  downloadAsJpeg={this.downloadAsJpeg}
+                  downloadAsImage={this.downloadAsImage}
                   downloadAsIcal={this.downloadAsIcal}
-                />
-              </div>
-
-              <div className={classnames('col-auto', styles.timetableActions)}>
-                <ShareTimetable
                   semester={semester}
                   timetable={this.props.timetable}
                 />
@@ -322,6 +317,6 @@ export default connect(mapStateToProps, {
   changeLesson,
   cancelModifyLesson,
   toggleTimetableOrientation,
-  downloadAsJpeg,
+  downloadAsImage,
   downloadAsIcal,
 })(TimetableContent);
