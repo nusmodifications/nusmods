@@ -2,23 +2,22 @@
 
 import React, { Component } from 'react';
 import axios from 'axios';
-import classnames from 'classnames';
 
 import Loader from 'views/components/LoadingSpinner';
 
 import StaticPage from './StaticPage';
 import styles from './AppsContainer.scss';
 
-const APPS_URL = 'https://nusmodifications.github.io/nusmods-apps/apps-raw.json';
+const APPS_URL = 'https://nusmodifications.github.io/nusmods-apps/apps.json';
 
 type AppInfo = {
-    name: string,
-    description: string,
-    author: string,
-    url: string,
-    repository_url?: string,
-    icon_url: string,
-    tags: Array<string>,
+  name: string,
+  description: string,
+  author: string,
+  url: string,
+  repository_url?: string,
+  icon_url: string,
+  tags: Array<string>,
 }
 
 type AppEntryProps = {
@@ -48,12 +47,11 @@ function AppEntry({ app }: AppEntryProps) {
           </a>
         </div>
         <div className="col-lg-10 col-sm-9">
-          <a href={app.url} className={styles.appIcon} target="_blank" rel="noopener noreferrer">
-            <h4>{app.name}</h4>
+          <a href={app.url} target="_blank" rel="noopener noreferrer">
+            <h4 className={styles.appName}>{app.name}</h4>
           </a>
+          <p><small>{app.author}</small></p>
           <p>{app.description}</p>
-          {app.tags.map(tag =>
-            <span key={app.name + tag} className={classnames('badge', 'badge-info', styles.tagBadge)}>{tag}</span>)}
         </div>
       </div>
     </section>
