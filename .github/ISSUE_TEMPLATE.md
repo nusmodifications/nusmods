@@ -22,6 +22,6 @@
 **Further information**
 
 - Which version of NUSMods are you currently using? (Check the footer for the version number, 201XXXXX-XXXXXXX)
-- Did this work in previous versions of NUSMods? Yes/No
-- Which browser and version are you using? Chrome 62/Firefox Quantum 57/etc
-- Which device and operating system are you on? MacBook Pro/Surface Pro/etc
+- Did this work in previous versions of NUSMods R? Yes/No
+- Which browser and version are you using? E.g. Chrome 62/Firefox Quantum 57/etc
+- Which device and operating system are you on? E.g. MacBook Pro/Surface Pro/etc
