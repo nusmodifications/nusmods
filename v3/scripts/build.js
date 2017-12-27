@@ -57,11 +57,12 @@ function build(previousFileSizes, callback) {
 // Write commit hash into `commit-hash.txt` for reference during deployment.
 function writeCommitHash() {
   const { commitHash } = parts.appVersion();
+  // Sync filename with `scripts/promote-staging.sh`.
   fs.writeFileSync(path.join(parts.PATHS.build, 'commit-hash.txt'), `${commitHash.slice(0, 7)}\n`);
 }
 
 // First, read the current file sizes in build directory.
 // This lets us display how much they changed later.
 measureFileSizesBeforeBuild(parts.PATHS.build).then(previousFileSizes =>
-  new Promise(resolve => build(previousFileSizes, resolve))
+  new Promise(resolve => build(previousFileSizes, resolve)),
 ).then(writeCommitHash);

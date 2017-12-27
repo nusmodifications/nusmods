@@ -29,6 +29,7 @@ echo
 echo "Dry running deployment..."
 npm run rsync -- --dry-run $PROD_DIR
 
+# Sync filename with `scripts/build.js`.
 COMMIT_HASH_FILE="commit-hash.txt"
 PROD_COMMIT=""
 if [[ -d $PROD_DIR ]]; then
