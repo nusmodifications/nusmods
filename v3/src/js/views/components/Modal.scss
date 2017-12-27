@@ -43,3 +43,10 @@
   overflow-y: hidden;
   background: var(--body-bg-70);
 }
+
+@include night-mode-only {
+  .modal {
+    border: 1px solid #444;
+    box-shadow: 0 6px 24px rgba(#000, 0.5);
+  }
+}

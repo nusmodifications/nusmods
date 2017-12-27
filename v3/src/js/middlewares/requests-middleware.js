@@ -11,8 +11,7 @@ function makeRequest(request, accessToken) {
     req.headers.Authorization = accessToken;
   }
 
-  return axios(req)
-    .then(response => response.data);
+  return axios(req);
 }
 
 export const API_REQUEST = Symbol('API_REQUEST');
@@ -57,11 +56,12 @@ export default store => next => (action) => {
   return makeRequest(payload, accessToken)
     .then(response => next(constructActionWith({
       type: type + SUCCESS,
-      payload: response,
+      payload: response.data,
       meta: {
         ...meta,
         requestStatus: SUCCESS,
         request: payload,
+        responseHeaders: response.headers,
       },
     })),
     error => next(constructActionWith({

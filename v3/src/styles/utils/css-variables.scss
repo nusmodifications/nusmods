@@ -1,3 +1,16 @@
+// Based on the original Bootstrap colors for alerts
+@mixin alert-variables($name) {
+  --alert-#{$name}-color: theme-color-level($name, 6);
+  --alert-#{$name}-background: theme-color-level($name, -10);
+  --alert-#{$name}-border: theme-color-level($name, -7);
+}
+
+@mixin alert-variables-dark($name) {
+  --alert-#{$name}-color: theme-color-level($name, -6);
+  --alert-#{$name}-background: theme-color-level($name, 9);
+  --alert-#{$name}-border: theme-color-level($name, 6);
+}
+
 // Root and dark mode CSS variable declaration
 :root {
   // Body background
@@ -18,6 +31,11 @@
   // Yellow
   --yellow: $yellow;
   --yellow-light: $mark-bg;
+
+  // Alert colors
+  @each $color in $alert-override-themes {
+    @include alert-variables($color);
+  }
 
   // Workload colors
   @each $name, $color in $workload-colors {
@@ -44,6 +62,11 @@ body.mode-dark {
   // Yellow
   --yellow: darken($yellow, 20);
   --yellow-light: darken($mark-bg, 75);
+
+  // Alert colors
+  @each $color in $alert-override-themes {
+    @include alert-variables-dark($color);
+  }
 
   // Workload colors
   @each $name, $color in $workload-colors {
