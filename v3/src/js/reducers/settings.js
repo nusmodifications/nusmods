@@ -1,5 +1,5 @@
 // @flow
-import { uniq } from 'lodash';
+import { uniq, without } from 'lodash';
 import update from 'immutability-helper';
 
 import type { FSA } from 'types/redux';
@@ -15,6 +15,7 @@ import {
   HIDE_LESSON_IN_TIMETABLE,
   SHOW_LESSON_IN_TIMETABLE,
   DISMISS_CORS_NOTIFICATION,
+  ENABLE_CORS_NOTIFICATION,
   TOGGLE_CORS_NOTIFICATION_GLOBALLY,
 } from 'actions/settings';
 import { LIGHT_MODE, DARK_MODE } from 'types/settings';
@@ -88,6 +89,13 @@ function settings(state: SettingsState = defaultSettingsState, action: FSA): Set
       return update(state, {
         corsNotification: {
           dismissed: rounds => uniq([...rounds, action.payload.round]),
+        },
+      });
+
+    case ENABLE_CORS_NOTIFICATION:
+      return update(state, {
+        corsNotification: {
+          dismissed: rounds => without(rounds, action.payload.round),
         },
       });
 
