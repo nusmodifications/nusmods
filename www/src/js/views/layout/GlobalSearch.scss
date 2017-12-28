@@ -73,21 +73,52 @@ $icon-dist: $input-width-open - $input-width;
 .item {
   width: $input-width-open;
   padding: 0.6rem $container-padding;
+  cursor: pointer;
+  transition: $transition-base;
 }
 
 .selectHeader {
   composes: item;
-  padding: 0.2rem $container-padding;
-  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  padding: 0.3rem $container-padding;
+  color: var(--body-bg);
   background: var(--gray);
+
+  .headerName {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .viewAll {
+    position: relative;
+    padding-right: 1.3rem;
+
+    svg {
+      position: absolute;
+      right: 0;
+      height: 1.3rem;
+      transition: $transition-base;
+    }
+  }
+
+  &.selected {
+    .viewAll {
+      color: theme-color();
+
+      svg {
+        right: -0.2rem;
+      }
+    }
+  }
 }
 
 .option {
   composes: item;
-  cursor: pointer;
+
+  &.selected {
+    color: theme-color();
+    background: var(--gray-lightest);
+  }
 }
 
-.optionSelected {
-  color: $link-hover-color;
-  background: var(--gray-lightest);
-}

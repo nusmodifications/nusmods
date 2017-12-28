@@ -3,6 +3,7 @@ import type { State } from 'reducers';
 import type { Module } from 'types/modules';
 import type { Venue } from 'types/venues';
 import type { ModuleList, VenueList } from 'types/reducers';
+import { type ResultType, VENUE_RESULT } from 'types/views';
 
 import React, { Component } from 'react';
 import { connect, type MapStateToProps } from 'react-redux';
@@ -50,9 +51,10 @@ export class SearchContainerComponent extends Component<Props> {
     this.props.history.push(venuePage(venue));
   };
 
-  onSearch = (query: string) => {
+  onSearch = (type: ResultType, query: string) => {
     // TODO: Move this into a proper function
-    this.props.history.push(`/modules?q=${encodeURIComponent(query)}`);
+    const path = type === VENUE_RESULT ? '/venues' : '/modules';
+    this.props.history.push(`${path}?q=${encodeURIComponent(query)}`);
   };
 
   getResults = (inputValue: string) => {
@@ -91,7 +93,7 @@ export class SearchContainerComponent extends Component<Props> {
         getResults={this.getResults}
         onSelectModule={this.onSelectModule}
         onSelectVenue={this.onSelectVenue}
-        onSearchModule={this.onSearch}
+        onSearch={this.onSearch}
       />
     );
   }
