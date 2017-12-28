@@ -11,13 +11,14 @@ import GlobalSearch from 'views/layout/GlobalSearch';
 import { modulePage, venuePage } from 'views/routes/paths';
 
 import { fetchVenueList } from 'actions/venueBank';
-import { regexify, createSearchPredicate, sortModules } from 'utils/moduleSearch';
+import { regexify, createSearchPredicate, sortModules, tokenize } from 'utils/moduleSearch';
 import { breakpointUp } from 'utils/css';
 import { takeUntil } from 'utils/array';
 import makeResponsive from 'views/hocs/makeResponsive';
 
 type Props = {
   ...ContextRouter,
+
   moduleList: ModuleList,
   venueList: VenueList,
   matchBreakpoint: boolean,
@@ -49,9 +50,12 @@ export class SearchContainerComponent extends Component<Props> {
 
   getResults = (inputValue: string) => {
     if (!inputValue || inputValue.length < MIN_INPUT_LENGTH) {
-      return [[], []];
+      return [[], [], []];
     }
+
     const { moduleList, venueList } = this.props;
+
+    const highlightTokens = tokenize(inputValue);
 
     // Filter venues
     const regex = regexify(inputValue);
@@ -66,18 +70,17 @@ export class SearchContainerComponent extends Component<Props> {
 
     // Plentiful of modules and venues, show 4 modules, 3 venues
     if (modules.length >= 4 && venues.length >= 3) {
-      return [modules.slice(0, 4), venues.slice(0, 3)];
+      return [modules.slice(0, 4), venues.slice(0, 3), highlightTokens];
     }
 
     // Some venues, show as many of them as possible as they are rare
-    return [modules.slice(0, RESULTS_LIMIT - venues.length), venues];
+    return [modules.slice(0, RESULTS_LIMIT - venues.length), venues, highlightTokens];
   };
 
   render() {
     const { matchBreakpoint } = this.props;
-    return (
-      matchBreakpoint && <GlobalSearch getResults={this.getResults} onChange={this.onChange} />
-    );
+    if (!matchBreakpoint) return null;
+    return <GlobalSearch getResults={this.getResults} onChange={this.onChange} />;
   }
 }
 
