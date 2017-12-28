@@ -3,7 +3,7 @@
 # Usage: promote-staging.sh
 
 STAGING_DIR=./dist
-PROD_DIR=../../beta.nusmods.com
+PROD_DIR=../../nusmods.com
 
 # Abort on any error
 set -e
