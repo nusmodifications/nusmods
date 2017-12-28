@@ -3,16 +3,13 @@ dist: trusty
 sudo: false
 matrix:
   include:
-  - env: PROJECT="v2"
-    node_js: 6
-  - env: PROJECT="v3"
+  - env: PROJECT="www"
     node_js: lts/*
 cache:
   yarn: true
   directories:
-    - node_modules
-    - v3/node_modules
+    - www/node_modules
 script:
   - bash ./ci.sh
 after_success:
-  cat ./v3/coverage/lcov.info | ./v3/node_modules/coveralls/bin/coveralls.js
+  cat ./www/coverage/lcov.info | ./www/node_modules/coveralls/bin/coveralls.js
