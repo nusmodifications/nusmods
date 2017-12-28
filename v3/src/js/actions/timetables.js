@@ -8,7 +8,7 @@ import type { ColorMapping, ColorIndex } from 'types/reducers';
 import type { Module, ModuleCode, Semester, Lesson, ClassNo, LessonType } from 'types/modules';
 
 import { fetchModule } from 'actions/moduleBank';
-import { randomModuleLessonConfig } from 'utils/timetables';
+import { randomModuleLessonConfig, validateTimetableModules } from 'utils/timetables';
 import { getModuleTimetable } from 'utils/modules';
 import storage from 'storage';
 import { MIGRATION_KEYS, parseQueryString } from 'storage/migrateTimetable';
@@ -97,10 +97,15 @@ export function setTimetable(
   semester: Semester,
   timetable?: SemTimetableConfig,
   colors?: ColorMapping,
-): FSA {
-  return {
-    type: SET_TIMETABLE,
-    payload: { semester, timetable, colors },
+) {
+  return (dispatch: Function, getState: Function) => {
+    const validatedTimetable =
+      timetable && validateTimetableModules(timetable, getState().moduleBank.moduleCodes);
+
+    return dispatch({
+      type: SET_TIMETABLE,
+      payload: { semester, timetable: validatedTimetable, colors },
+    });
   };
 }
 
@@ -140,7 +145,7 @@ export function fetchTimetableModules(timetables: SemTimetableConfig[]) {
 }
 
 export function migrateTimetable() {
-  return (dispatch: Function): Promise<*> => {
+  return (dispatch: Function, getState: Function): Promise<*> => {
     if (storage.getItem(V2_MIGRATION_KEY)) {
       return Promise.resolve();
     }
@@ -151,7 +156,12 @@ export function migrateTimetable() {
         if (!queryString) return null;
 
         const timetable = parseQueryString(queryString);
-        dispatch(setTimetable(semester, timetable));
+        const [validTimetable] = validateTimetableModules(
+          timetable,
+          getState().moduleBank.moduleCodes,
+        );
+
+        dispatch(setTimetable(semester, validTimetable));
         return dispatch(fetchTimetableModules([timetable])).then(() =>
           dispatch(fillTimetableBlanks(semester)),
         );
