@@ -71,7 +71,8 @@ class ModulesSelect extends Component<Props, State> {
     const { isModalOpen } = this.state;
     const results = this.getFilteredModules(inputValue);
     const showResults = isOpen && results.length > 0;
-    const showTip = isModalOpen && isOpen && !results.length;
+    const showTip = isModalOpen && !results.length;
+    const showNoResultMessage = isOpen && inputValue && !results.length;
 
     return (
       <div className={styles.container}>
@@ -130,6 +131,11 @@ class ModulesSelect extends Component<Props, State> {
           <div className={styles.tip}>
             Try &quot;GER1000&quot; or &quot;Quantitative Reasoning&quot;. Searching{' '}
             <strong>{this.props.moduleList.length}</strong> modules.
+          </div>
+        )}
+        {showNoResultMessage && (
+          <div className={styles.tip}>
+            No modules found for <strong>&apos;{inputValue}&apos;</strong>.
           </div>
         )}
       </div>
