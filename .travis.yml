@@ -16,7 +16,6 @@ cache:
     - www/node_modules
     - packages/nusmoderator/node_modules
 script:
-  - echo "Running tests for $PROJECT"
   - cd $PROJECT && yarn install
   - npm run ci
 after_success:
