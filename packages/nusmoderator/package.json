@@ -13,7 +13,7 @@
   ],
   "scripts": {
     "clean": "rimraf lib dist es coverage",
-    "check": "npm run lint && npm run test",
+    "ci": "npm run lint && npm run test",
     "lint": "eslint src __tests__",
     "docs": "documentation readme src -s \"API\"",
     "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir lib",
@@ -23,7 +23,7 @@
     "build": "npm run build:commonjs && npm run build:es && npm run build:umd && npm run build:umd:min",
     "test": "cross-env BABEL_ENV=commonjs jest --config .jestconfig --coverage",
     "test:watch": "npm test -- --watch",
-    "prepublish": "npm run clean && npm run check && npm run build && npm run docs --kill --print"
+    "prepublishOnly": "npm run clean && npm run check && npm run build && npm run docs --kill --print"
   },
   "repository": {
     "type": "git",

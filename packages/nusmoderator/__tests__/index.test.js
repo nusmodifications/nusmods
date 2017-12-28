@@ -1,9 +1,7 @@
-import {
-  academicCalendar,
-} from '../src';
+import nusmoderator from '../src';
 
 describe('nusmoderator', () => {
   test('academicCalendar', () => {
-    expect('academicCalendar').toBeDefined();
+    expect(nusmoderator.academicCalendar).toBeDefined();
   });
 });

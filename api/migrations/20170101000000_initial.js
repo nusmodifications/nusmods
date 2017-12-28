@@ -44,6 +44,7 @@ exports.down = (knex, Promise) => {
     ),
   ).then((tbls) => {
     if (process.env.NODE_ENV !== 'test') {
+      // eslint-disable-next-line
       console.log(`tables ${tbls.join(', ')} was dropped`);
     }
   });

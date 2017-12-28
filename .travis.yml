@@ -7,7 +7,7 @@ matrix:
     node_js: 8
   - env: PROJECT="www"
     node_js: lts/*
-  - env: PROJECT="nusmoderator"
+  - env: PROJECT="packages/nusmoderator"
     node_js: 6.6.0
 cache:
   yarn: true
@@ -16,6 +16,8 @@ cache:
     - www/node_modules
     - packages/nusmoderator/node_modules
 script:
-  - bash ./ci.sh
+  - echo "Running tests for $PROJECT"
+  - cd $PROJECT && yarn install
+  - npm run ci
 after_success:
   cat ./www/coverage/lcov.info | ./www/node_modules/coveralls/bin/coveralls.js
