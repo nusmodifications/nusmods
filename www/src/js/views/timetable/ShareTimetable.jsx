@@ -38,6 +38,9 @@ function shareUrl(semester: Semester, timetable: SemTimetableConfig): string {
   return absolutePath(timetableShare(semester, timetable));
 }
 
+// So that I don't keep typing 'shortUrl' instead
+export const SHORT_URL_KEY = 'shorturl';
+
 export default class ShareTimetable extends PureComponent<Props, State> {
   urlInput: ?HTMLInputElement;
   url: ?string;
@@ -55,8 +58,8 @@ export default class ShareTimetable extends PureComponent<Props, State> {
       axios
         .get('/short_url.php', { params: { url }, timeout: 2000 })
         .then(({ data }) => {
-          if (data.shorturl) {
-            this.setState({ shortUrl: data.shorturl });
+          if (data[SHORT_URL_KEY]) {
+            this.setState({ shortUrl: data[SHORT_URL_KEY] });
           } else {
             showFullUrl();
           }
