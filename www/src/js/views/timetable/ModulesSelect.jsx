@@ -5,9 +5,8 @@ import Downshift from 'downshift';
 import classnames from 'classnames';
 
 import type { ModuleSelectList } from 'types/reducers';
-import { createSearchPredicate, sortModules, tokenize } from 'utils/moduleSearch';
+import { createSearchPredicate, sortModules } from 'utils/moduleSearch';
 import { breakpointUp } from 'utils/css';
-import { highlight } from 'utils/react';
 import makeResponsive from 'views/hocs/makeResponsive';
 import Modal from 'views/components/Modal';
 import CloseButton from 'views/components/CloseButton';
@@ -27,7 +26,7 @@ type State = {
   isOpen: boolean,
 };
 
-const RESULTS_LIMIT = 400;
+const RESULTS_LIMIT = 500;
 
 class ModulesSelect extends Component<Props, State> {
   input: ?HTMLInputElement;
@@ -48,13 +47,13 @@ class ModulesSelect extends Component<Props, State> {
 
   getFilteredModules = (inputValue: string) => {
     if (!inputValue) {
-      return [[], []];
+      return [];
     }
 
     const predicate = createSearchPredicate(inputValue);
     const results = this.props.moduleList.filter(predicate);
 
-    return [sortModules(inputValue, results.slice(0, RESULTS_LIMIT)), tokenize(inputValue)];
+    return sortModules(inputValue, results.slice(0, RESULTS_LIMIT));
   };
 
   // downshift attaches label for us; autofocus only applies to modal
@@ -70,7 +69,7 @@ class ModulesSelect extends Component<Props, State> {
   }: any) => {
     const { placeholder, disabled } = this.props;
     const { isModalOpen } = this.state;
-    const [results, highlightTokens] = this.getFilteredModules(inputValue);
+    const results = this.getFilteredModules(inputValue);
     const showResults = isOpen && results.length > 0;
     const showTip = isModalOpen && isOpen && !results.length;
 
@@ -105,9 +104,7 @@ class ModulesSelect extends Component<Props, State> {
                       [styles.optionSelected]: highlightedIndex === index,
                     })}
                   >
-                    <span>
-                      {highlight(`${module.ModuleCode} ${module.ModuleTitle}`, highlightTokens)}
-                    </span>
+                    {`${module.ModuleCode} ${module.ModuleTitle}`}
                     <div>
                       <span className="badge badge-info">Added</span>
                     </div>
@@ -123,9 +120,7 @@ class ModulesSelect extends Component<Props, State> {
                       [styles.optionSelected]: highlightedIndex === index,
                     })}
                   >
-                    <span>
-                      {highlight(`${module.ModuleCode} ${module.ModuleTitle}`, highlightTokens)}
-                    </span>
+                    {`${module.ModuleCode} ${module.ModuleTitle}`}
                   </li>
                 ),
             )}
