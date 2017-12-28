@@ -8,14 +8,13 @@ import { highlight } from 'utils/react';
 import { Search, ChevronRight } from 'views/components/icons';
 import type { Module } from 'types/modules';
 import type { Venue } from 'types/venues';
-import type { ModuleList, VenueList } from 'types/reducers';
-import type { ResultType } from 'types/views';
+import type { ResultType, SearchResult } from 'types/views';
 
 import { MODULE_RESULT, SEARCH_RESULT, VENUE_RESULT } from 'types/views';
 import styles from './GlobalSearch.scss';
 
 type Props = {
-  getResults: string => [ModuleList, VenueList, string[]],
+  getResults: string => SearchResult,
 
   onSelectVenue: Venue => void,
   onSelectModule: Module => void,
@@ -75,7 +74,7 @@ class GlobalSearch extends Component<Props, State> {
     inputValue,
     highlightedIndex,
   }: any) => {
-    const [modules, venues, highlightTokens] = this.props.getResults(inputValue);
+    const { modules, venues, tokens } = this.props.getResults(inputValue);
     const hasModules = modules.length > 0;
     const hasVenues = venues.length > 0;
 
@@ -125,7 +124,7 @@ class GlobalSearch extends Component<Props, State> {
                       [styles.selected]: highlightedIndex === index + 1,
                     })}
                   >
-                    {highlight(`${module.ModuleCode} ${module.ModuleTitle}`, highlightTokens)}
+                    {highlight(`${module.ModuleCode} ${module.ModuleTitle}`, tokens)}
                   </div>
                 ))}
               </Fragment>
@@ -156,7 +155,7 @@ class GlobalSearch extends Component<Props, State> {
                       [styles.selected]: highlightedIndex === venueItemOffset + index,
                     })}
                   >
-                    {highlight(venue, highlightTokens)}
+                    {highlight(venue, tokens)}
                   </div>
                 ))}
               </Fragment>

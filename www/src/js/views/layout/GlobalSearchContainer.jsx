@@ -1,9 +1,9 @@
 // @flow
 import type { State } from 'reducers';
 import type { Module } from 'types/modules';
-import type { Venue } from 'types/venues';
-import type { ModuleList, VenueList } from 'types/reducers';
-import { type ResultType, VENUE_RESULT } from 'types/views';
+import type { Venue, VenueList } from 'types/venues';
+import type { ModuleList } from 'types/reducers';
+import { type ResultType, type SearchResult, VENUE_RESULT } from 'types/views';
 
 import React, { Component } from 'react';
 import { connect, type MapStateToProps } from 'react-redux';
@@ -58,13 +58,13 @@ export class SearchContainerComponent extends Component<Props> {
     this.props.history.push(`${path}?q=${encodeURIComponent(query)}`);
   };
 
-  getResults = (inputValue: string) => {
+  getResults = (inputValue: string): SearchResult => {
     if (!inputValue || inputValue.length < MIN_INPUT_LENGTH) {
-      return [[], [], []];
+      return { modules: [], venues: [], tokens: [] };
     }
 
     const { moduleList, venueList } = this.props;
-    const highlightTokens = tokenize(inputValue);
+    const tokens = tokenize(inputValue);
 
     // Filter venues
     const regex = regexify(inputValue);
@@ -79,16 +79,20 @@ export class SearchContainerComponent extends Component<Props> {
 
     // There's only one type of result - use the long list format
     if (!modules.length || !venues.length) {
-      return [modules.slice(0, LONG_LIST_LIMIT), venues.slice(0, LONG_LIST_LIMIT), highlightTokens];
+      return {
+        modules: modules.slice(0, LONG_LIST_LIMIT),
+        venues: venues.slice(0, LONG_LIST_LIMIT),
+        tokens,
+      };
     }
 
     // Plenty of modules and venues, show 6 modules, 4 venues
     if (modules.length >= 6 && venues.length >= 4) {
-      return [modules.slice(0, 6), venues.slice(0, 4), highlightTokens];
+      return { modules: modules.slice(0, 6), venues: venues.slice(0, 4), tokens };
     }
 
     // Some venues, show as many of them as possible as they are rare
-    return [modules.slice(0, RESULTS_LIMIT - venues.length), venues, highlightTokens];
+    return { modules: modules.slice(0, RESULTS_LIMIT - venues.length), venues, tokens };
   };
 
   render() {
