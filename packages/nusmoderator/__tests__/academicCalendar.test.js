@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import {
   acadYearStartDates,
   getAcadYear,
@@ -7,6 +6,7 @@ import {
   getAcadWeekInfo,
 } from '../src/academicCalendar';
 
+/* eslint-disable no-console */
 console.warn = jest.genMockFn();
 
 describe('acadYearStartDates', () => {

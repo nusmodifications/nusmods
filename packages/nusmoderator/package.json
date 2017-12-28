@@ -21,8 +21,7 @@
     "build:umd": "cross-env BABEL_ENV=commonjs NODE_ENV=development webpack src/index.js dist/nusmoderator.js",
     "build:umd:min": "cross-env BABEL_ENV=commonjs NODE_ENV=production webpack src/index.js dist/nusmoderator.min.js",
     "build": "npm run build:commonjs && npm run build:es && npm run build:umd && npm run build:umd:min",
-    "test": "cross-env BABEL_ENV=commonjs jest --config .jestconfig",
-    "test:cov": "npm test -- --coverage",
+    "test": "cross-env BABEL_ENV=commonjs jest --config .jestconfig --coverage",
     "test:watch": "npm test -- --watch",
     "prepublish": "npm run clean && npm run check && npm run build && npm run docs --kill --print"
   },
