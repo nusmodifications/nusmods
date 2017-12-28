@@ -8,6 +8,7 @@ import TimetableRow from './TimetableRow';
 
 type Props = {
   day: string,
+  isCurrentDay: boolean,
   dayLessonRows: TimetableDayArrangement,
   verticalMode: boolean,
   startingIndex: number,
@@ -26,6 +27,7 @@ function TimetableDay(props: Props) {
     backgroundSize: `${size}% ${size}%`,
   };
 
+  if (props.isCurrentDay) rowStyle.boxShadow = 'inset 0 0 0 99999px rgba(128, 128, 128, 0.3)';
   if (props.verticalMode) rowStyle.height = `${VERTICAL_HEIGHT * columns}rem`;
 
   return (

@@ -32,6 +32,7 @@ class Timetable extends PureComponent<Props> {
 
     const lessons: Array<Lesson> = flattenDeep(values(this.props.lessons));
     const { startingIndex, endingIndex } = calculateBorderTimings(lessons);
+    const currentDayIndex: number = new Date().getDay() - 1; // Monday = 0, Friday = 4
 
     return (
       <div
@@ -42,10 +43,11 @@ class Timetable extends PureComponent<Props> {
         <div className={styles.container}>
           <TimetableTimings startingIndex={startingIndex} endingIndex={endingIndex} />
           <ol className={styles.days}>
-            {schoolDays.map((day) => (
+            {schoolDays.map((day, index) => (
               <TimetableDay
                 key={day}
                 day={day}
+                isCurrentDay={index === currentDayIndex}
                 startingIndex={startingIndex}
                 endingIndex={endingIndex}
                 onModifyCell={this.props.onModifyCell}
