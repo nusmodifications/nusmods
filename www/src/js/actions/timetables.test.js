@@ -9,7 +9,9 @@ import CS1010S from '__mocks__/modules/CS1010S.json';
 import CS3216 from '__mocks__/modules/CS3216.json';
 
 import storage from 'storage';
+import runThunk from 'test-utils/runThunk';
 import * as actions from './timetables';
+import { FETCH_MODULE } from './moduleBank';
 
 jest.mock('localforage', () => ({ getItem: jest.fn() }));
 jest.mock('storage', () => ({
@@ -52,6 +54,10 @@ test('cancelModifyLesson should not have payload', () => {
 describe('migrateTimetable()', () => {
   const migrationKey = 'v2Migration';
   const action = actions.migrateTimetable();
+  const getState = () => ({
+    moduleBank: { moduleCodes: { CS5331: {} }, modules: {} },
+    timetables: {},
+  });
   const makeDispatch = () => jest.fn().mockReturnValue(Promise.resolve());
 
   afterEach(() => {
@@ -62,7 +68,7 @@ describe('migrateTimetable()', () => {
     const dispatch = makeDispatch();
     storage.getItem.mockReturnValue(true);
 
-    await action(dispatch);
+    await runThunk(action, dispatch, getState);
 
     expect(localforage.getItem).not.toHaveBeenCalled();
   });
@@ -72,7 +78,7 @@ describe('migrateTimetable()', () => {
 
     storage.getItem.mockReturnValue();
     localforage.getItem.mockReturnValue(Promise.resolve());
-    await action(dispatch);
+    await runThunk(action, dispatch, getState);
 
     expect(dispatch).not.toHaveBeenCalled();
     expect(storage.setItem).toHaveBeenCalledTimes(1);
@@ -88,13 +94,28 @@ describe('migrateTimetable()', () => {
       return Promise.resolve();
     });
 
-    await action(dispatch);
-
-    expect(dispatch).toHaveBeenCalledTimes(3);
+    await runThunk(action, dispatch, getState);
+    expect(dispatch).toHaveBeenCalledTimes(2);
 
     const [[firstAction], [secondAction]] = dispatch.mock.calls;
     expect(firstAction).toHaveProperty('type', actions.SET_TIMETABLE);
-    expect(secondAction).toBeInstanceOf(Function);
+    expect(secondAction).toHaveProperty('type', FETCH_MODULE);
+
+    expect(storage.setItem).toHaveBeenCalledTimes(1);
+    expect(storage.setItem).toHaveBeenCalledWith(migrationKey, true);
+  });
+
+  test('to exclude invalid modules from timetable', async () => {
+    const dispatch = makeDispatch();
+    storage.getItem.mockReturnValue();
+    // Just mock one semester
+    localforage.getItem.mockImplementation((key) => {
+      if (key.includes('sem1')) return Promise.resolve('CS5331=&DEADBEEF=');
+      return Promise.resolve();
+    });
+
+    await runThunk(action, dispatch, getState);
+    expect(dispatch).toHaveBeenCalledTimes(2);
 
     expect(storage.setItem).toHaveBeenCalledTimes(1);
     expect(storage.setItem).toHaveBeenCalledWith(migrationKey, true);
