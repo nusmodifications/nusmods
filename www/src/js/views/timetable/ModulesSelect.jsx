@@ -72,7 +72,7 @@ class ModulesSelect extends Component<Props, State> {
     const { isModalOpen } = this.state;
     const [results, highlightTokens] = this.getFilteredModules(inputValue);
     const showResults = isOpen && results.length > 0;
-    const showTip = isModalOpen ? !results.length : isOpen && !results.length;
+    const showTip = isModalOpen && isOpen && !results.length;
 
     return (
       <div className={styles.container}>
