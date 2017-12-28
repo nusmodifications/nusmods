@@ -1,12 +1,4 @@
 .DS_Store
-.sass-cache
 .tmp
-.vagrant
-app/bower_components
-app/vendor
-dist
-node_modules
-secrets.json
-npm-debug.log
 *.swp
 tmp/

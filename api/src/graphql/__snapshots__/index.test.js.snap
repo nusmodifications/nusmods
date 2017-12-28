@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`graphql should be not be null when modules are found 1`] = `
+Object {
+  "modules": Array [
+    Object {
+      "code": "testCode",
+    },
+    Object {
+      "code": "anotherTestCode",
+    },
+  ],
+}
+`;
+
+exports[`graphql should not be null when module is valid 1`] = `
+Object {
+  "module": Object {
+    "code": "anotherTestCode",
+    "credit": 4,
+    "department": null,
+    "description": null,
+    "title": "anotherTestTitle",
+  },
+}
+`;

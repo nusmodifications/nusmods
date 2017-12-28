@@ -1,6 +1,6 @@
 # Netlify configuration to deploy site
 
 [build]
-  base    = "v3"
-  publish = "v3/dist"
+  base    = "www"
+  publish = "www/dist"
   command = "yarn build"
