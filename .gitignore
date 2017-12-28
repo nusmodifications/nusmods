@@ -1,8 +1,4 @@
 .DS_Store
-.sass-cache
 .tmp
-dist
-node_modules
-npm-debug.log
 *.swp
 tmp/

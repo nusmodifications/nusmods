@@ -3,11 +3,14 @@ dist: trusty
 sudo: false
 matrix:
   include:
+  - env: PROJECT="api"
+    node_js: 8
   - env: PROJECT="www"
     node_js: lts/*
 cache:
   yarn: true
   directories:
+    - api/node_modules
     - www/node_modules
 script:
   - bash ./ci.sh
