@@ -91,9 +91,7 @@ class TimetableContent extends Component<Props> {
   }
 
   handleScroll = () => {
-    this.setState(() => {
-      return { isScrolledHorizontally: this.timetableWrapperDom.scrollLeft > 0 };
-    });
+    this.setState({ isScrolledHorizontally: this.timetableWrapperDom.scrollLeft > 0 });
   };
 
   cancelModifyLesson = () => {
@@ -269,7 +267,9 @@ class TimetableContent extends Component<Props> {
           >
             <div
               className={styles.timetableWrapper}
-              ref={(r) => { this.timetableWrapperDom = r; }}
+              ref={(r) => {
+                this.timetableWrapperDom = r;
+              }}
             >
               <Timetable
                 lessons={arrangedLessonsWithModifiableFlag}
