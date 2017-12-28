@@ -99,8 +99,11 @@ export function setTimetable(
   colors?: ColorMapping,
 ) {
   return (dispatch: Function, getState: Function) => {
-    const validatedTimetable =
-      timetable && validateTimetableModules(timetable, getState().moduleBank.moduleCodes);
+    let validatedTimetable = timetable;
+    if (timetable) {
+      const moduleCodes = getState().moduleBank.moduleCodes;
+      [validatedTimetable] = validateTimetableModules(timetable, moduleCodes);
+    }
 
     return dispatch({
       type: SET_TIMETABLE,

@@ -85,13 +85,14 @@ export class AppShell extends Component<Props> {
 
     // Retrieve module list
     // TODO: This always re-fetch the entire modules list. Consider a better strategy for this
-    this.props.fetchModuleList().then(() => this.props.migrateTimetable());
+    this.props
+      .fetchModuleList()
+      // Handle migration from v2
+      // TODO: Remove this once sem 2 is over
+      .then(() => this.props.migrateTimetable());
 
     // Fetch all module data that are on timetable
     this.props.fetchTimetableModules(values(timetables));
-
-    // Handle migration from v2
-    // TODO: Remove this once sem 2 is over
   }
 
   componentWillUpdate(nextProps: Props) {
