@@ -64,6 +64,10 @@ $cell-border-radius: 6px;
   }
 }
 
+.cellIsActiveScrolled {
+  z-index: $timetable-selected-cell-scrolled-z-index;
+}
+
 .moduleCode {
   font-weight: 600;
   font-size: $font-size-xs;

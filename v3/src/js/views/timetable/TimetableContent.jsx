@@ -75,10 +75,26 @@ type Props = {
 
 class TimetableContent extends Component<Props> {
   timetableDom: ?HTMLElement;
+  timetableWrapperDom: ?HTMLElement;
+
+  state: State = {
+    isScrolledHorizontally: false,
+  };
+
+  componentDidMount() {
+    this.timetableWrapperDom.addEventListener('scroll', this.handleScroll);
+  }
 
   componentWillUnmount() {
     this.cancelModifyLesson();
+    this.timetableWrapperDom.removeEventListener('scroll', this.handleScroll);
   }
+
+  handleScroll = () => {
+    this.setState(() => {
+      return { isScrolledHorizontally: this.timetableWrapperDom.scrollLeft > 0 };
+    });
+  };
 
   cancelModifyLesson = () => {
     if (this.props.activeLesson) {
@@ -238,10 +254,14 @@ class TimetableContent extends Component<Props> {
               'col-md-8': isVerticalOrientation,
             })}
           >
-            <div className={styles.timetableWrapper}>
+            <div
+              className={styles.timetableWrapper}
+              ref={(r) => { this.timetableWrapperDom = r; }}
+            >
               <Timetable
                 lessons={arrangedLessonsWithModifiableFlag}
                 isVerticalOrientation={isVerticalOrientation}
+                isScrolledHorizontally={this.state.isScrolledHorizontally}
                 onModifyCell={this.modifyCell}
                 ref={(r) => {
                   this.timetableDom = r && r.timetableDom;

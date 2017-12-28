@@ -17,6 +17,7 @@ import TimetableDay from './TimetableDay';
 type Props = {
   lessons: TimetableArrangement,
   isVerticalOrientation: boolean,
+  isScrolledHorizontally: boolean,
   onModifyCell: Function,
 };
 
@@ -25,6 +26,7 @@ class Timetable extends PureComponent<Props> {
 
   static defaultProps = {
     isVerticalOrientation: false,
+    isScrolledHorizontally: false,
     onModifyCell: noop,
   };
 
@@ -51,6 +53,7 @@ class Timetable extends PureComponent<Props> {
                 onModifyCell={this.props.onModifyCell}
                 verticalMode={this.props.isVerticalOrientation}
                 dayLessonRows={this.props.lessons[day] || [[]]}
+                isScrolledHorizontally={this.props.isScrolledHorizontally}
               />
             ))}
           </ol>
