@@ -9,8 +9,8 @@ import CS1010S from '__mocks__/modules/CS1010S.json';
 import CS3216 from '__mocks__/modules/CS3216.json';
 
 import storage from 'storage';
+import runThunk from 'test-utils/runThunk';
 import * as actions from './timetables';
-import runThunk from '../test-utils/runThunk';
 import { FETCH_MODULE } from './moduleBank';
 
 jest.mock('localforage', () => ({ getItem: jest.fn() }));
