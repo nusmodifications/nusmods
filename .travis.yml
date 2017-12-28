@@ -7,12 +7,16 @@ matrix:
     node_js: 8
   - env: PROJECT="www"
     node_js: lts/*
+  - env: PROJECT="packages/nusmoderator"
+    node_js: 6.6.0
 cache:
   yarn: true
   directories:
     - api/node_modules
     - www/node_modules
+    - packages/nusmoderator/node_modules
 script:
-  - bash ./ci.sh
+  - cd $PROJECT && yarn install
+  - npm run ci
 after_success:
   cat ./www/coverage/lcov.info | ./www/node_modules/coveralls/bin/coveralls.js

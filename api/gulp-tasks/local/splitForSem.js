@@ -2,7 +2,7 @@ import path from 'path';
 import fs from 'fs-extra';
 import bunyan from 'bunyan';
 import R from 'ramda';
-import timify from '../utils/timify';
+import { getSchoolDays, getTimeRange } from '../utils/timify';
 
 /**
  * Splits semester data into different chunks.
@@ -108,7 +108,7 @@ async function splitForSem(config) {
     return timetable.map(R.assoc('ModuleCode', module.ModuleCode));
   });
   const processTimetables = R.map((venueTimetable) => {
-    const schoolDays = timify.getSchoolDays();
+    const schoolDays = getSchoolDays();
     // remove 'Venue' key from lessons
     const timetable = R.map(R.omit('Venue'), venueTimetable);
     return schoolDays.map((day) => {
@@ -124,13 +124,13 @@ async function splitForSem(config) {
       //    "2330": "vacant"
       // }
       const availability = {};
-      timify.getTimeRange(SCHOOL_START_HOUR, SCHOOL_END_HOUR).forEach((time) => {
+      getTimeRange(SCHOOL_START_HOUR, SCHOOL_END_HOUR).forEach((time) => {
         availability[time] = 'vacant';
       });
 
       // for each time slot that contains lesson, label as occupied
       lessons.forEach((lesson) => {
-        timify.getTimeRange(lesson.StartTime, lesson.EndTime).forEach((time) => {
+        getTimeRange(lesson.StartTime, lesson.EndTime).forEach((time) => {
           availability[time] = 'occupied';
         });
       });
