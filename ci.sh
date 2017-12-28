@@ -4,7 +4,7 @@ if [ $PROJECT == "api" ]
   then
     echo "Running tests for api"
     cd api && yarn install
-    npm run ci
+    npm run test
 elif [ $PROJECT == "www" ]
   then
     echo "Running tests for www"
