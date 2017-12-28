@@ -1,0 +1,128 @@
+[
+  {
+    "Date": "19/06/2017",
+    "Time": "9:00AM",
+    "Faculty": "Risk Management Inst",
+    "ModuleCode": "FE5112",
+    "Title": "STOCHASTIC CALCULUS AND QUANTITATIVE METHODS"
+  },
+  {
+    "Date": "19/06/2017",
+    "Time": "1:00PM",
+    "Faculty": "Risk Management Inst",
+    "ModuleCode": "FE5209",
+    "Title": "FINANCIAL ECONOMETRICS"
+  },
+  {
+    "Date": "24/06/2017",
+    "Time": "9:00AM",
+    "Faculty": "Risk Management Inst",
+    "ModuleCode": "FE5105",
+    "Title": "CORPORATE FINANCING AND RISK"
+  },
+  {
+    "Date": "14/07/2017",
+    "Time": "9:00AM",
+    "Faculty": "Risk Management Inst",
+    "ModuleCode": "FE5116",
+    "Title": "PROGRAMMING AND ADVANCED NUMERICAL METHODS"
+  },
+  {
+    "Date": "14/07/2017",
+    "Time": "2:30PM",
+    "Faculty": "Faculty of Science",
+    "ModuleCode": "FST2204",
+    "Title": "SEAFOOD SUPPLY CHAINS IN JAPAN AND SINGAPORE"
+  },
+  {
+    "Date": "15/07/2017",
+    "Time": "9:00AM",
+    "Faculty": "Risk Management Inst",
+    "ModuleCode": "FE5211",
+    "Title": "SEMINAR IN FINANCIAL ENGINEERING"
+  },
+  {
+    "Date": "28/07/2017",
+    "Time": "9:00AM",
+    "Faculty": "School of Computing",
+    "ModuleCode": "CS1020",
+    "Title": "DATA STRUCTURES AND ALGORITHMS I"
+  },
+  {
+    "Date": "28/07/2017",
+    "Time": "9:00AM",
+    "Faculty": "School of Computing",
+    "ModuleCode": "CS2010",
+    "Title": "DATA STRUCTURES AND ALGORITHMS II"
+  },
+  {
+    "Date": "28/07/2017",
+    "Time": "9:00AM",
+    "Faculty": "Arts & Social Sciences",
+    "ModuleCode": "EC3385",
+    "Title": "MARITIME AND SHIPPING ECONOMICS"
+  },
+  {
+    "Date": "28/07/2017",
+    "Time": "9:00AM",
+    "Faculty": "Arts & Social Sciences",
+    "ModuleCode": "ECA5884",
+    "Title": "APPLIED BEHAVIOURAL ECONOMICS"
+  },
+  {
+    "Date": "28/07/2017",
+    "Time": "9:00AM",
+    "Faculty": "Faculty of Engineering",
+    "ModuleCode": "EE2021",
+    "Title": "DEVICES AND CIRCUITS"
+  },
+  {
+    "Date": "28/07/2017",
+    "Time": "2:30PM",
+    "Faculty": "School of Computing",
+    "ModuleCode": "CS2103",
+    "Title": "SOFTWARE ENGINEERING"
+  },
+  {
+    "Date": "28/07/2017",
+    "Time": "2:30PM",
+    "Faculty": "School of Computing",
+    "ModuleCode": "CS2105",
+    "Title": "INTRODUCTION TO COMPUTER NETWORKS"
+  },
+  {
+    "Date": "28/07/2017",
+    "Time": "2:30PM",
+    "Faculty": "Arts & Social Sciences",
+    "ModuleCode": "ECA5335",
+    "Title": "DERIVATIVE SECURITIES"
+  },
+  {
+    "Date": "28/07/2017",
+    "Time": "2:30PM",
+    "Faculty": "Arts & Social Sciences",
+    "ModuleCode": "ECA5376",
+    "Title": "AUCTIONS AND MARKET DESIGN"
+  },
+  {
+    "Date": "29/07/2017",
+    "Time": "9:00AM",
+    "Faculty": "Arts & Social Sciences",
+    "ModuleCode": "EC5387",
+    "Title": "ISSUES IN MARITIME AND SHIPPING ECONOMICS"
+  },
+  {
+    "Date": "29/07/2017",
+    "Time": "9:00AM",
+    "Faculty": "Arts & Social Sciences",
+    "ModuleCode": "EC5387R",
+    "Title": "ISSUES IN MARITIME AND SHIPPING ECONOMICS"
+  },
+  {
+    "Date": "29/07/2017",
+    "Time": "9:00AM",
+    "Faculty": "Faculty of Science",
+    "ModuleCode": "QF5204",
+    "Title": "NUMERICAL METHODS IN QUANTITATIVE FINANCE"
+  }
+]

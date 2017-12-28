@@ -1,0 +1,464 @@
+[
+  {
+    "Date": "29/9/2016",
+    "Time": "4:30PM",
+    "Faculty": "Yale‐NUS College",
+    "ModuleCode": "YSC1206",
+    "Title": "CONCEPTUAL CALCULUS"
+  },
+  {
+    "Date": "16/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Yale‐NUS College",
+    "ModuleCode": "YLG2202",
+    "Title": "INTERMEDIATE CLASSICAL GREEK"
+  },
+  {
+    "Date": "18/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Ctr for Engl Lang Comms",
+    "ModuleCode": "ENV1202",
+    "Title": "COMMUNICATIONS FOR ENVIRONMENTAL STUDIES"
+  },
+  {
+    "Date": "18/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Ctr for Engl Lang Comms",
+    "ModuleCode": "ES1102",
+    "Title": "ENGLISH FOR ACADEMIC PURPOSES"
+  },
+  {
+    "Date": "18/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Ctr for Engl Lang Comms",
+    "ModuleCode": "ES1103",
+    "Title": "ENGLISH FOR ACADEMIC PURPOSES"
+  },
+  {
+    "Date": "18/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Ctr for Engl Lang Comms",
+    "ModuleCode": "ES5000",
+    "Title": "GRADUATE ENGLISH COURSE (BASIC LEVEL)"
+  },
+  {
+    "Date": "18/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Ctr for Engl Lang Comms",
+    "ModuleCode": "ES5001A",
+    "Title": "GRADUATE ENGLISH COURSE (INTERMEDIATE LEVEL)"
+  },
+  {
+    "Date": "18/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Ctr for Engl Lang Comms",
+    "ModuleCode": "ES1531",
+    "Title": "CRITICAL THINKING AND WRITING"
+  },
+  {
+    "Date": "18/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Ctr for Engl Lang Comms",
+    "ModuleCode": "GEK1549",
+    "Title": "CRITICAL THINKING AND WRITING"
+  },
+  {
+    "Date": "18/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Ctr for Engl Lang Comms",
+    "ModuleCode": "GET1021",
+    "Title": "CRITICAL THINKING AND WRITING"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "NUS Business School",
+    "ModuleCode": "ACC2002",
+    "Title": "MANAGERIAL ACCOUNTING"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Faculty of Engineering",
+    "ModuleCode": "BN3201",
+    "Title": "INTRODUCTION TO BIOMECHANICS"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Faculty of Science",
+    "ModuleCode": "CM4242",
+    "Title": "ADVANCED ANALYTICAL TECHNIQUES"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "School of Computing",
+    "ModuleCode": "CS2104",
+    "Title": "PROGRAMMING LANGUAGE CONCEPTS"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "School of Computing",
+    "ModuleCode": "CS3244",
+    "Title": "MACHINE LEARNING"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "School of Computing",
+    "ModuleCode": "CS4224",
+    "Title": "DISTRIBUTED DATABASES"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Arts & Social Sciences",
+    "ModuleCode": "EC2104",
+    "Title": "QUANTITATIVE METHODS FOR ECONOMIC ANALYSIS"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Arts & Social Sciences",
+    "ModuleCode": "EC3373",
+    "Title": "ASEAN ECONOMIES"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Arts & Social Sciences",
+    "ModuleCode": "EC4306",
+    "Title": "APPLIED MICROECONOMIC ANALYSIS"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Arts & Social Sciences",
+    "ModuleCode": "ECA5325",
+    "Title": "PROJECT & POLICY EVALUATION"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Faculty of Engineering",
+    "ModuleCode": "EE2011",
+    "Title": "ENGINEERING ELECTROMAGNETICS"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Faculty of Engineering",
+    "ModuleCode": "EE4218",
+    "Title": "EMBEDDED HARDWARE SYSTEM DESIGN"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Arts & Social Sciences",
+    "ModuleCode": "EL3203",
+    "Title": "SEMANTICS AND PRAGMATICS"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Risk Management Institute",
+    "ModuleCode": "FE5101",
+    "Title": "DERIVATIVES AND FIXED INCOME"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Faculty of Engineering",
+    "ModuleCode": "IE5301",
+    "Title": "HUMAN FACTORS IN ENGINEERING AND DESIGN"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Faculty of Science",
+    "ModuleCode": "LSM2102",
+    "Title": "MOLECULAR BIOLOGY"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Faculty of Science",
+    "ModuleCode": "MA5205",
+    "Title": "GRADUATE ANALYSIS I"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Faculty of Engineering",
+    "ModuleCode": "ME5304",
+    "Title": "EXPERIMENTAL FLUID MECHANICS"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Arts & Social Sciences",
+    "ModuleCode": "NM2220",
+    "Title": "INTRODUCTION TO MEDIA WRITING"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Arts & Social Sciences",
+    "ModuleCode": "NM3224",
+    "Title": "CULTURE INDUSTRIES"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Faculty of Engineering",
+    "ModuleCode": "OT5102",
+    "Title": "OIL & GAS TECHNOLOGY"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Faculty of Science",
+    "ModuleCode": "PR5301",
+    "Title": "FOOD AND DRUG LAWS"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Arts & Social Sciences",
+    "ModuleCode": "SC3229",
+    "Title": "COMPARING DEVIANCE: PERVERTS & SCANDALOUS IMPROPRIE"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Faculty of Science",
+    "ModuleCode": "ST3242",
+    "Title": "INTRODUCTION TO SURVIVAL ANALYSIS"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Faculty of Engineering",
+    "ModuleCode": "TE2101",
+    "Title": "PROGRAMMING METHODOLOGY"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Faculty of Engineering",
+    "ModuleCode": "ME2151",
+    "Title": "PRINCIPLES OF MECHANICAL ENG. MATERIALS"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Faculty of Engineering",
+    "ModuleCode": "ME2151E",
+    "Title": "PRINCIPLES OF MECHANICAL ENG. MATERIALS"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Arts & Social Sciences",
+    "ModuleCode": "GEH1014",
+    "Title": "SAMURAI, GEISHA, YAKUZA AS SELF OR OTHER"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Arts & Social Sciences",
+    "ModuleCode": "GEK2022",
+    "Title": "SAMURAI, GEISHA, YAKUZA AS SELF OR OTHER"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Faculty of Engineering",
+    "ModuleCode": "EE3302",
+    "Title": "INDUSTRIAL CONTROL SYSTEMS"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Faculty of Engineering",
+    "ModuleCode": "EE3302E",
+    "Title": "INDUSTRIAL CONTROL SYSTEMS"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Faculty of Engineering",
+    "ModuleCode": "EE5107",
+    "Title": "OPTIMAL CONTROL SYSTEMS"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Faculty of Engineering",
+    "ModuleCode": "EE6107",
+    "Title": "OPTIMAL CONTROL SYSTEMS (ADVANCED)"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Faculty of Science",
+    "ModuleCode": "PR3144",
+    "Title": "PRINCIPLES OF RESEARCH METHODS"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Faculty of Science",
+    "ModuleCode": "PR4103",
+    "Title": "RESEARCH METHODOLOGY"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Faculty of Engineering",
+    "ModuleCode": "CN5162",
+    "Title": "ADVANCED POLYMERIC MATERIALS"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Faculty of Engineering",
+    "ModuleCode": "CN6162",
+    "Title": "ADVANCED POLYMERIC MATERIALS"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Faculty of Engineering",
+    "ModuleCode": "CN3121",
+    "Title": "PROCESS DYNAMICS & CONTROL"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "9:00AM",
+    "Faculty": "Faculty of Engineering",
+    "ModuleCode": "CN3121E",
+    "Title": "PROCESS DYNAMICS & CONTROL"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "1:00PM",
+    "Faculty": "Faculty of Science",
+    "ModuleCode": "BL5234",
+    "Title": "THEORETICAL BIOLOGY"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "1:00PM",
+    "Faculty": "School of Computing",
+    "ModuleCode": "BT3102",
+    "Title": "COMPUTATIONAL METHODS FOR BUSINESS ANALYTICS"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "1:00PM",
+    "Faculty": "Arts & Social Sciences",
+    "ModuleCode": "CH2295",
+    "Title": "COMMERCE AND CULTURE IN CHINAS PAST (IN ENGLISH)"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "1:00PM",
+    "Faculty": "Faculty of Science",
+    "ModuleCode": "CM5268",
+    "Title": "ADVANCED ORGANIC MATERIALS"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "1:00PM",
+    "Faculty": "Arts & Social Sciences",
+    "ModuleCode": "EC3342",
+    "Title": "INTERNATIONAL TRADE I"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "1:00PM",
+    "Faculty": "Arts & Social Sciences",
+    "ModuleCode": "EC4371",
+    "Title": "DEVELOPMENT ECONOMICS II"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "1:00PM",
+    "Faculty": "Arts & Social Sciences",
+    "ModuleCode": "EC5102",
+    "Title": "MACROECONOMIC THEORY"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "1:00PM",
+    "Faculty": "Faculty of Engineering",
+    "ModuleCode": "EE3431C",
+    "Title": "MICROELECTRONICS MATERIALS AND DEVICES"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "1:00PM",
+    "Faculty": "Faculty of Engineering",
+    "ModuleCode": "EE5431R",
+    "Title": "FUNDAMENTALS OF NANOELECTRONICS"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "1:00PM",
+    "Faculty": "Faculty of Engineering",
+    "ModuleCode": "ESE2001",
+    "Title": "ENVIRONMENTAL PROCESSES"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "1:00PM",
+    "Faculty": "Faculty of Science",
+    "ModuleCode": "FST3103",
+    "Title": "ADVANCED FOOD ENGINEERING"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "1:00PM",
+    "Faculty": "Arts & Social Sciences",
+    "ModuleCode": "GE4207",
+    "Title": "COASTAL MANAGEMENT"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "1:00PM",
+    "Faculty": "Faculty of Science",
+    "ModuleCode": "GER1000",
+    "Title": "QUANTITATIVE REASONING"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "1:00PM",
+    "Faculty": "School of Computing",
+    "ModuleCode": "IS3243",
+    "Title": "TECHNOLOGY STRATEGY AND MANAGEMENT"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "1:00PM",
+    "Faculty": "Arts & Social Sciences",
+    "ModuleCode": "JS2216",
+    "Title": "POSTWAR JAPANESE FILM AND ANIME"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "1:00PM",
+    "Faculty": "Yong Loo Lin School (Medicine)",
+    "ModuleCode": "LSM3232",
+    "Title": "MICROBIOLOGY"
+  },
+  {
+    "Date": "19/11/2016",
+    "Time": "1:00PM",
+    "Faculty": "Faculty of Science1",
+    "ModuleCode": "LSM4254",
+    "Title": "PRINCIPLES OF TAXONOMY AND SYSTEMATICS"
+  }
+]
