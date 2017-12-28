@@ -13,7 +13,7 @@ import type { ModuleList, VenueList } from 'types/reducers';
 import styles from './GlobalSearch.scss';
 
 type Props = {
-  getResults: string => [ModuleList, VenueList],
+  getResults: string => [ModuleList, VenueList, string[]],
   onChange: (Venue | Module) => void,
 };
 
@@ -55,7 +55,7 @@ class GlobalSearch extends Component<Props, State> {
     inputValue,
     highlightedIndex,
   }: any) => {
-    const [modules, venues] = this.props.getResults(inputValue);
+    const [modules, venues, highlightTokens] = this.props.getResults(inputValue);
     const hasModules = modules.length > 0;
     const hasVenues = venues.length > 0;
 
@@ -90,7 +90,7 @@ class GlobalSearch extends Component<Props, State> {
                       [styles.optionSelected]: highlightedIndex === index,
                     })}
                   >
-                    {highlight(`${module.ModuleCode} ${module.ModuleTitle}`, inputValue)}
+                    {highlight(`${module.ModuleCode} ${module.ModuleTitle}`, highlightTokens)}
                   </div>
                 ))}
               </Fragment>
@@ -111,7 +111,7 @@ class GlobalSearch extends Component<Props, State> {
                         [styles.optionSelected]: highlightedIndex === combinedIndex,
                       })}
                     >
-                      {highlight(venue, inputValue)}
+                      {highlight(venue, highlightTokens)}
                     </div>
                   );
                 })}
