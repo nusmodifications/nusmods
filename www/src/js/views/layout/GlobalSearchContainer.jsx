@@ -42,10 +42,17 @@ export class SearchContainerComponent extends Component<Props> {
     );
   }
 
-  onChange = (item: Module | Venue) => {
-    const path =
-      typeof item === 'string' ? venuePage(item) : modulePage(item.ModuleCode, item.ModuleTitle);
-    this.props.history.push(path);
+  onSelectModule = (module: Module) => {
+    this.props.history.push(modulePage(module.ModuleCode, module.ModuleTitle));
+  };
+
+  onSelectVenue = (venue: Venue) => {
+    this.props.history.push(venuePage(venue));
+  };
+
+  onSearch = (query: string) => {
+    // TODO: Move this into a proper function
+    this.props.history.push(`/modules?q=${encodeURIComponent(query)}`);
   };
 
   getResults = (inputValue: string) => {
@@ -54,7 +61,6 @@ export class SearchContainerComponent extends Component<Props> {
     }
 
     const { moduleList, venueList } = this.props;
-
     const highlightTokens = tokenize(inputValue);
 
     // Filter venues
@@ -80,7 +86,14 @@ export class SearchContainerComponent extends Component<Props> {
   render() {
     const { matchBreakpoint } = this.props;
     if (!matchBreakpoint) return null;
-    return <GlobalSearch getResults={this.getResults} onChange={this.onChange} />;
+    return (
+      <GlobalSearch
+        getResults={this.getResults}
+        onSelectModule={this.onSelectModule}
+        onSelectVenue={this.onSelectVenue}
+        onSearchModule={this.onSearch}
+      />
+    );
   }
 }
 

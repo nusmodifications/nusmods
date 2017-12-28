@@ -2,6 +2,12 @@
 import FilterGroup from 'utils/filters/FilterGroup';
 import type { Department, Faculty } from './modules';
 
+/* layout/GlobalSearch */
+export type ResultType = 'VENUE' | 'MODULE' | 'SEARCH';
+export const VENUE_RESULT: ResultType = 'VENUE';
+export const MODULE_RESULT: ResultType = 'MODULE';
+export const SEARCH_RESULT: ResultType = 'SEARCH';
+
 /* browse/ModuleFinderContainer */
 export type FilterGroupId = string;
 

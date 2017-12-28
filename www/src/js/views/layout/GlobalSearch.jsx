@@ -9,12 +9,17 @@ import { Search } from 'views/components/icons';
 import type { Module } from 'types/modules';
 import type { Venue } from 'types/venues';
 import type { ModuleList, VenueList } from 'types/reducers';
+import type { ResultType } from 'types/views';
 
+import { MODULE_RESULT, SEARCH_RESULT, VENUE_RESULT } from 'types/views';
 import styles from './GlobalSearch.scss';
 
 type Props = {
   getResults: string => [ModuleList, VenueList, string[]],
-  onChange: (Venue | Module) => void,
+
+  onSelectVenue: Venue => void,
+  onSelectModule: Module => void,
+  onSearchModule: string => void,
 };
 
 type State = {
@@ -39,8 +44,23 @@ class GlobalSearch extends Component<Props, State> {
     });
   };
 
-  onChange = (item: Venue | Module) => {
-    this.props.onChange(item);
+  onChange = ([resultType, item]: [ResultType, any]) => {
+    const { onSelectModule, onSelectVenue, onSearchModule } = this.props;
+
+    switch (resultType) {
+      case VENUE_RESULT:
+        onSelectVenue(item);
+        break;
+
+      case MODULE_RESULT:
+        onSelectModule(item);
+        break;
+
+      case SEARCH_RESULT:
+      default:
+        onSearchModule(item);
+    }
+
     this.onClose();
   };
 
@@ -83,8 +103,7 @@ class GlobalSearch extends Component<Props, State> {
                   <div
                     {...getItemProps({
                       key: module.ModuleCode,
-                      item: module,
-                      index,
+                      item: [MODULE_RESULT, module],
                     })}
                     className={classnames(styles.option, {
                       [styles.optionSelected]: highlightedIndex === index,
@@ -93,19 +112,28 @@ class GlobalSearch extends Component<Props, State> {
                     {highlight(`${module.ModuleCode} ${module.ModuleTitle}`, highlightTokens)}
                   </div>
                 ))}
+                <div
+                  {...getItemProps({
+                    item: [SEARCH_RESULT, inputValue],
+                  })}
+                  className={classnames(styles.option, {
+                    [styles.optionSelected]: highlightedIndex === modules.length,
+                  })}
+                >
+                  View all modules with &apos;{inputValue}&apos;...
+                </div>
               </Fragment>
             )}
             {hasVenues && (
               <Fragment>
                 <div className={styles.selectHeader}>Venues</div>
                 {venues.map((venue, index) => {
-                  const combinedIndex = modules.length + index;
+                  const combinedIndex = modules.length ? modules.length + 1 + index : index;
                   return (
                     <div
                       {...getItemProps({
                         key: venue,
-                        item: venue,
-                        index: combinedIndex,
+                        item: [VENUE_RESULT, venue],
                       })}
                       className={classnames(styles.option, {
                         [styles.optionSelected]: highlightedIndex === combinedIndex,
