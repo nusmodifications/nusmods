@@ -8,6 +8,7 @@
     "email": "mods@nusmods.com"
   },
   "scripts": {
+    "ci": "npm run lint && npm test",
     "dev": "cross-env NODE_ENV=development nodemon server --exec babel-node --watch server | bunyan -o short --color",
     "scrape": "cross-env NODE_ENV=production gulp --gulpfile gulpfile.compiled.js | bunyan -o short --color",
     "scrape:dev": "cross-env BABEL_ENV=development gulp local | bunyan -l debug -o short --color",
