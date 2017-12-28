@@ -150,6 +150,7 @@ class ModulesSelect extends Component<Props, State> {
         onOuterClick={this.onOuterClick}
         onChange={this.onChange}
         render={this.renderDropdown}
+        defaultHighlightedIndex={0}
         /* Hack to force item selection to be empty */
         itemToString={_.stubString}
         selectedItem=""
