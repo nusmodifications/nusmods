@@ -1,0 +1,7 @@
+node_modules
+cache
+coverage
+.env
+*.compiled.js
+*.sqlite3
+npm-debug.log
