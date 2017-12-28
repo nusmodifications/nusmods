@@ -1,9 +1,0 @@
-{
-  "config": {
-    "vendor-dir": "app/vendor"
-  },
-  "require": {
-    "facebook/php-sdk-v4" : "~4.0.23",
-    "knplabs/knp-snappy": "~0.4"
-  }
-}

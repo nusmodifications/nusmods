@@ -32,40 +32,12 @@ Once it's up, do a `vagrant ssh` to enter the development environment.
 
 - [Node.js](http://nodejs.org) (we currently use v6.6.0, instructions [here](https://github.com/nodesource/distributions#installation-instructions))
 
-### Setup
-
-Install the necessary packages.
-
-```bash
-$ npm install -g npm@3.10.3
-$ npm install -g gulp-cli@1.2.2
-$ npm install
-```
-
-If you are working on `news.php`, make a copy of `/app/config/secrets.json.example` in the same directory and call it `secrets.json`. Add your Facebook App credentials into the file `secrets.json`.
-
 ## Building for Development
 
 First, SSH into the vagrant box (this command has to be run in the directory that `Vagrantfile` is in):
 
 ```bash
 $ vagrant ssh
-```
-
-Run the development environment:
-
-```bash
-$ npm start
-```
-
-Visit `localhost:8080` to see your local instance of NUSMods.
-
-## Building for Production
-
-To get a complete, minified, production build under `dist/`:
-
-```bash
-$ npm run build
 ```
 
 ## Deploying to Production
@@ -102,6 +74,7 @@ so change `baseUrl` under `app/config/application.json` to point to `/api/`.
   which takes a *long* time to build.
 - [Facebook PHP SDK](https://github.com/facebook/facebook-php-sdk-v4) for Facebook API proxy.
 - To install the PHP dependencies, simply do:
+
 ```bash
 $ composer install
 ```
