@@ -27,7 +27,8 @@ type Props = {
   fetchVenueList: () => void,
 };
 
-const RESULTS_LIMIT = 7;
+const RESULTS_LIMIT = 10;
+const LONG_LIST_LIMIT = 70;
 const MIN_INPUT_LENGTH = 2;
 
 export class SearchContainerComponent extends Component<Props> {
@@ -67,18 +68,23 @@ export class SearchContainerComponent extends Component<Props> {
 
     // Filter venues
     const regex = regexify(inputValue);
-    const venues = takeUntil(venueList, RESULTS_LIMIT, (venue) => regex.test(venue));
+    const venues = takeUntil(venueList, LONG_LIST_LIMIT, (venue) => regex.test(venue));
 
     // Filter modules
     const predicate = createSearchPredicate(inputValue);
-    const filteredModules = takeUntil(moduleList, RESULTS_LIMIT, (module) =>
+    const filteredModules = takeUntil(moduleList, LONG_LIST_LIMIT, (module) =>
       predicate({ ...module }),
     );
     const modules = sortModules(inputValue, filteredModules.slice());
 
-    // Plentiful of modules and venues, show 4 modules, 3 venues
-    if (modules.length >= 4 && venues.length >= 3) {
-      return [modules.slice(0, 4), venues.slice(0, 3), highlightTokens];
+    // There's only one type of result - use the long list format
+    if (!modules.length || !venues.length) {
+      return [modules.slice(0, LONG_LIST_LIMIT), venues.slice(0, LONG_LIST_LIMIT), highlightTokens];
+    }
+
+    // Plenty of modules and venues, show 6 modules, 4 venues
+    if (modules.length >= 6 && venues.length >= 4) {
+      return [modules.slice(0, 6), venues.slice(0, 4), highlightTokens];
     }
 
     // Some venues, show as many of them as possible as they are rare

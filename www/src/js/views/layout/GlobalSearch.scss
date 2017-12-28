@@ -3,6 +3,7 @@ $icon-size: $font-size-lg;
 $input-width: 2rem;
 $input-width-open: 21rem;
 $container-padding: 0.5rem;
+$dropdown-height: 40rem;
 
 .container {
   composes: btn-svg from global;
@@ -58,23 +59,28 @@ $icon-dist: $input-width-open - $input-width;
 }
 
 .selectList {
-  composes: list-unstyled from global;
+  composes: list-unstyled scrollable from global;
   position: absolute;
   top: $navbar-height - 0.5rem;
   right: 0;
   z-index: $module-select-z-index;
+  max-height: $dropdown-height;
+  overflow-x: hidden;
   color: var(--body-color);
   border: $input-btn-border-width solid $input-border-color;
   border-width: 0 $input-btn-border-width $input-btn-border-width;
   border-radius: 0 0 $btn-border-radius $btn-border-radius;
   background: var(--body-bg);
+
+  @media (max-height: $dropdown-height + 5rem) {
+    max-height: calc(90vh - #{$navbar-height});
+  }
 }
 
 .item {
   width: $input-width-open;
   padding: 0.6rem $container-padding;
   cursor: pointer;
-  transition: $transition-base;
 }
 
 .selectHeader {
