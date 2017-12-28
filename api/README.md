@@ -1,4 +1,4 @@
-# NUSMods API [![Code Climate](http://img.shields.io/codeclimate/github/nusmodifications/nusmods-api.svg)](https://codeclimate.com/github/nusmodifications/nusmods-api) [![Dependency Status](http://img.shields.io/david/nusmodifications/nusmods-api.svg)](https://david-dm.org/nusmodifications/nusmods-api)
+# NUSMods API
 
 NUSMods API consolidates and normalizes various bits of NUS module information
 from the following sources:
@@ -21,7 +21,7 @@ match the equivalent IVLE API property names where possible to adhere to the
 principle of least astonishment.
 
 To be respectful to NUS servers, and reduce waiting while developing, the
-crawlers use simple local filesystem caching and HTTP `if-modified-since`
+crawlers use simple local file system caching and HTTP `if-modified-since`
 headers. They are modular, being written as separate gulp tasks, so if only a
 subset of information is required, it can be specified down to individual
 semesters.

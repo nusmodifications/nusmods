@@ -59,7 +59,7 @@ export function FooterComponent(props: Props) {
           </li>
           <li>
             <a
-              href="https://github.com/nusmodifications/nusmods-api"
+              href="https://github.com/nusmodifications/nusmods/tree/master/api"
               target="_blank"
               rel="noopener noreferrer"
             >
