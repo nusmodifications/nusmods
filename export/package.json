@@ -2,10 +2,13 @@
   "name": "nusmods-export",
   "version": "0.0.1",
   "description": "Server-side timetable rendering for export service ",
-  "main": "index.js",
+  "main": "app.js",
   "author": "NUSModifications",
   "license": "MIT",
   "private": true,
+  "scripts": {
+    "start": "node ./app.js"
+  },
   "dependencies": {
     "axios": "^0.17.1",
     "bunyan": "^1.8.12",

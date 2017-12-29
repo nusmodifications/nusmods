@@ -1,11 +1,35 @@
 const puppeteer = require('puppeteer');
+const config = require('./config');
 
 async function launch() {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({ headless: !process.env.DISABLE_HEADLESS });
   const page = await browser.newPage();
-  await page.goto();
+  await page.goto(config.page);
+
+  return [browser, page];
 }
 
-async function render(page, data) {
-
+async function injectData(page, data) {
+  await page.evaluate(() => {
+    return new Promise((resolve) => {
+      // TODO: Inject data into page here
+      resolve();
+    });
+  });
 }
+
+async function image(page, data) {
+  await injectData(page, data);
+  return page.screenshot();
+}
+
+async function pdf(page, data) {
+  await injectData(page, data);
+  return page.pdf();
+}
+
+module.exports = {
+  launch,
+  image,
+  pdf,
+};

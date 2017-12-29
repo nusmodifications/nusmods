@@ -1,3 +1,3 @@
 module.exports = {
-  page: '',
+  page: './dist-timetable/index.html',
 };
