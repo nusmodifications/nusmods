@@ -49,11 +49,19 @@ function runDevServer(host, port, protocol) {
     host,
     port,
 
-    // Proxy the short_url.php endpoint because it does not support CORS
     proxy: {
+      // Proxy the short_url.php endpoint because it does not support CORS
       '/short_url.php': {
         target: 'https://nusmods.com',
         changeOrigin: true,
+      },
+
+      // Proxy export endpoints to the local version for development
+      '/export': {
+        target: 'http://localhost:3000',
+        pathRewrite: {
+          '^/export': '',
+        },
       },
     },
   });
