@@ -3,6 +3,7 @@ const merge = require('webpack-merge');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
 
 const commonConfig = require('./webpack.config.common');
 const parts = require('./webpack.parts');
@@ -62,8 +63,9 @@ const productionConfig = merge([
       new webpack.optimize.ModuleConcatenationPlugin(),
       new HtmlWebpackPlugin({
         template: path.join(parts.PATHS.app, source('index.html')),
+        inlineSource: '\\.(js|css)$',
       }),
-
+      new HtmlWebpackInlineSourcePlugin(),
       extractTextPlugin,
     ],
   },
