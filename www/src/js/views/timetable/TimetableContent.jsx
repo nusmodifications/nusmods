@@ -273,7 +273,7 @@ class TimetableContent extends Component<Props> {
             })}
           >
             <div className="row">
-              <div className="col-12">
+              <div className="col-12 no-export">
                 <TimetableActions
                   isVerticalOrientation={isVerticalOrientation}
                   toggleTimetableOrientation={this.props.toggleTimetableOrientation}
@@ -285,10 +285,10 @@ class TimetableContent extends Component<Props> {
               </div>
             </div>
             <div className={styles.tableContainer}>
-              <div className="col-md-12">
-                {!readOnly && (
-                  <Online>
-                    {(isOnline) => (
+              {!readOnly && (
+                <Online>
+                  {(isOnline) => (
+                    <div className={classnames('col-md-12', styles.modulesSelect)}>
                       <ModulesSelect
                         moduleList={this.props.semModuleList}
                         onChange={(moduleCode) => {
@@ -301,12 +301,11 @@ class TimetableContent extends Component<Props> {
                         }
                         disabled={!isOnline}
                       />
-                    )}
-                  </Online>
-                )}
-                <br />
-                {this.renderModuleSections(!isVerticalOrientation)}
-              </div>
+                    </div>
+                  )}
+                </Online>
+              )}
+              <div className="col-md-12">{this.renderModuleSections(!isVerticalOrientation)}</div>
             </div>
           </div>
         </div>

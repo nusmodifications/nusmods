@@ -1,0 +1,7 @@
+body {
+  padding-top: 0.2rem !important;
+}
+
+:global(.no-export) {
+  display: none !important;
+}

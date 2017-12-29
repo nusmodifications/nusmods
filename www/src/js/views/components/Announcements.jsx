@@ -48,7 +48,7 @@ class Announcements extends PureComponent<Props, State> {
     if (!this.state.isOpen) return null;
 
     return (
-      <div className={classnames('alert alert-warning', styles.announcement)}>
+      <div className={classnames('alert alert-warning no-export', styles.announcement)}>
         <Heart className={styles.backgroundIcon} />
 
         <div className={styles.body}>
