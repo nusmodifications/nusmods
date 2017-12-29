@@ -3,17 +3,11 @@ import React from 'react';
 
 import type { Lesson } from 'types/modules';
 
-import {
-  convertTimeToIndex,
-  getCurrentSingaporeHours,
-  getCurrentSingaporeMinutes,
-} from 'utils/timify';
+import { convertTimeToIndex } from 'utils/timify';
 import styles from './TimetableRow.scss';
 import TimetableCell from './TimetableCell';
-import CurrentTimeIndicator from './CurrentTimeIndicator';
 
 type Props = {
-  isCurrentDay: boolean,
   verticalMode: boolean,
   startingIndex: number,
   endingIndex: number,
@@ -40,23 +34,9 @@ function TimetableRow(props: Props) {
   const dirStyle = verticalMode ? 'top' : 'marginLeft';
   const sizeStyle = verticalMode ? 'height' : 'width';
 
-  // Calculate the margin offset for the CurrentTimeIndicator
-  const currentHours = getCurrentSingaporeHours();
-  const currentMinutes = getCurrentSingaporeMinutes();
-  const hoursMarginOffset = (currentHours * 2 - startingIndex) / totalCols * 100;
-  const minutesMarginOffset = currentMinutes / 30 / totalCols * 100;
-  const timeIndicatorIsVisible =
-    currentHours * 2 >= startingIndex && currentHours * 2 < endingIndex;
-
-  const currentTimeIndicatorStyle: Object = {
-    [dirStyle]: `${hoursMarginOffset + minutesMarginOffset}%`,
-  };
-
   let lastStartIndex = startingIndex;
   return (
     <div className={styles.timetableRow}>
-      {props.isCurrentDay &&
-        timeIndicatorIsVisible && <CurrentTimeIndicator style={currentTimeIndicatorStyle} />}
       {lessons.map((lesson) => {
         const lessonStartIndex: number = convertTimeToIndex(lesson.StartTime);
         const lessonEndIndex: number = convertTimeToIndex(lesson.EndTime);

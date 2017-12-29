@@ -13,17 +13,13 @@ type Props = {
 function TimetableTimings(props: Props) {
   const range = _.range(props.startingIndex, props.endingIndex);
 
-  const currentDayStyle: Object = {
-    color: 'text-primary',
-  };
-
   return (
     <div className={styles.timings}>
       {range.map((i) => {
         const time = convertIndexToTime(i);
         if (i % 2 === 0) {
           return (
-            <time key={time} className={styles.time} style={currentDayStyle}>
+            <time key={time} className={styles.time}>
               {time}
             </time>
           );

@@ -1,6 +1,5 @@
 // @flow
 import type { DayText, LessonTime, Lesson } from 'types/modules';
-import moment from 'moment-timezone';
 
 // Converts a 24-hour format time string to an index.
 // Each index corresponds to one cell of each timetable row.
@@ -56,20 +55,21 @@ export function calculateBorderTimings(
   };
 }
 
-const MOMENT_SINGAPORE_TIMEZONE: string = 'Asia/Singapore';
+const SINGAPORE_TIMEZONE: string = 'Asia/Singapore';
 
 // Gets the current time in hours, 0915 -> 9, 1315 -> 13
 // Current time to always match Singapore's
 export function getCurrentSingaporeHours(): number {
-  return moment()
-    .tz(MOMENT_SINGAPORE_TIMEZONE)
-    .hour();
+  return new Date(new Date().toLocaleString({ timeZone: SINGAPORE_TIMEZONE })).getHours();
 }
 
 // Gets the current time in hours, 0915 -> 15, 1315 -> 45
 // Current time to always match Singapore's
-export function getCurrentSingaporeMinutes() {
-  return moment()
-    .tz(MOMENT_SINGAPORE_TIMEZONE)
-    .minutes();
+export function getCurrentSingaporeMinutes(): number {
+  return new Date(new Date().toLocaleString({ timeZone: SINGAPORE_TIMEZONE })).getMinutes();
+}
+
+// Monday = 0, Friday = 4
+export function getCurrentDayIndex(): number {
+  return new Date(new Date().toLocaleString({ timeZone: SINGAPORE_TIMEZONE })).getDay() - 1;
 }

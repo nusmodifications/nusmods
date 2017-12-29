@@ -15,24 +15,24 @@
 
 .circularPart {
   position: absolute;
-  top: -0.25rem;
-  left: -0.25rem;
-  width: 0.5rem;
-  height: 0.5rem;
+  top: $current-time-indicator-circle-offset;
+  left: $current-time-indicator-circle-offset;
+  width: $current-time-indicator-circle-diameter;
+  height: $current-time-indicator-circle-diameter;
   border-radius: 50%;
-  background: $primary;
+  background: theme-color();
 }
 
 .linePart {
   position: relative;
   top: 0%;
-  left: -0.05rem;
-  width: 0.1rem;
-  height: 110%;
-  background: $primary;
+  left: $current-time-indicator-line-offset;
+  width: $current-time-indicator-line-width;
+  height: 100%;
+  background: theme-color();
 }
 
 :global(.verticalMode) .linePart {
-  width: 102%;
-  height: 0.1rem;
+  width: 100%;
+  height: $current-time-indicator-line-width;
 }

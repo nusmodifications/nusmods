@@ -109,7 +109,6 @@
     "json2mq": "^0.2.0",
     "localforage": "^1.5.5",
     "lodash": "^4.17.4",
-    "moment-timezone": "^0.5.14",
     "mousetrap": "^1.6.1",
     "no-scroll": "^2.1.0",
     "nusmoderator": "^2.0.0",
