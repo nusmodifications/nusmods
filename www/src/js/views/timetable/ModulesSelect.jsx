@@ -71,7 +71,9 @@ class ModulesSelect extends Component<Props, State> {
     const { isModalOpen } = this.state;
     const results = this.getFilteredModules(inputValue);
     const showResults = isOpen && results.length > 0;
-    const showTip = isModalOpen ? !results.length : isOpen && !results.length;
+    const showTip = isModalOpen && !results.length;
+    const showNoResultMessage = isOpen && inputValue && !results.length;
+
     return (
       <div className={styles.container}>
         <label className="sr-only" {...getLabelProps()}>
@@ -131,6 +133,11 @@ class ModulesSelect extends Component<Props, State> {
             <strong>{this.props.moduleList.length}</strong> modules.
           </div>
         )}
+        {showNoResultMessage && (
+          <div className={styles.tip}>
+            No modules found for <strong>&quot;{inputValue}&quot;</strong>.
+          </div>
+        )}
       </div>
     );
   };
@@ -144,6 +151,7 @@ class ModulesSelect extends Component<Props, State> {
         onOuterClick={this.onOuterClick}
         onChange={this.onChange}
         render={this.renderDropdown}
+        defaultHighlightedIndex={0}
         /* Hack to force item selection to be empty */
         itemToString={_.stubString}
         selectedItem=""
