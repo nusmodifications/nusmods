@@ -79,6 +79,10 @@
   min-height: $timetable-row-height;
   padding-bottom: 0.3rem;
   background: linear-gradient(to right, var(--gray-lightest) 50%, transparent 50%);
+
+  &.currentDay {
+    box-shadow: inset 0 0 0 99999px rgba(128, 128, 128, 0.2);
+  }
 }
 
 :global(.verticalMode) .dayRows {

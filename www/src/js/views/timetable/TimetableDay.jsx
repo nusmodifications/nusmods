@@ -8,6 +8,7 @@ import TimetableRow from './TimetableRow';
 
 type Props = {
   day: string,
+  isCurrentDay: boolean,
   dayLessonRows: TimetableDayArrangement,
   verticalMode: boolean,
   startingIndex: number,
@@ -33,7 +34,10 @@ function TimetableDay(props: Props) {
       <div className={styles.dayName}>
         <span className={styles.dayNameText}>{props.day.substring(0, 3)}</span>
       </div>
-      <div className={styles.dayRows} style={rowStyle}>
+      <div
+        className={props.isCurrentDay ? `${styles.dayRows} ${styles.currentDay}` : styles.dayRows}
+        style={rowStyle}
+      >
         {props.dayLessonRows.map((dayLessonRow, i) => (
           <TimetableRow
             key={i}
