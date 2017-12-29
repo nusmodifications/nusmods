@@ -1,4 +1,4 @@
-import { modulePage, timetablePage, semesterForTimetablePage } from './paths';
+import { modulePage, timetablePage, semesterForTimetablePage, isV2TimetablePageUrl } from './paths';
 
 test('modulePagePath should generate route correctly', () => {
   expect(modulePage('CS1010S', 'Programming Methodology')).toBe(
@@ -13,4 +13,11 @@ test('timetablePage <-> semesterForTimetablePage', () => {
     const param = path.match(/timetable\/(.*)/)[1];
     expect(semesterForTimetablePage(param)).toBe(semester);
   });
+});
+
+test('isV2TimetablePageUrl', () => {
+  expect(isV2TimetablePageUrl({})).toBe(false);
+  expect(isV2TimetablePageUrl({ semester: '2017-2018', action: 'sem2' })).toBe(true);
+  expect(isV2TimetablePageUrl({ semester: 'sem-2', action: 'share' })).toBe(false);
+  expect(isV2TimetablePageUrl({ semester: 'sem-2' })).toBe(false);
 });

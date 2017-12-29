@@ -46,6 +46,14 @@ function runDevServer(host, port, protocol) {
     https: protocol === 'https',
     host,
     port,
+
+    // Proxy the short_url.php endpoint because it does not support CORS
+    proxy: {
+      '/short_url.php': {
+        target: 'https://nusmods.com',
+        changeOrigin: true,
+      },
+    },
   });
 
   // Launch WebpackDevServer.

@@ -7,7 +7,6 @@ import type {
   ModuleCondensed,
   Semester,
 } from 'types/modules';
-import type { Venue } from 'types/venues';
 import type { Mode } from 'types/settings';
 
 /* app.js */
@@ -69,7 +68,7 @@ export type ModuleSelectList = ModuleSelectListItem[];
 export type ModuleCodeMap = { [ModuleCode]: ModuleCondensed };
 
 /* venueBank.js */
-export type VenueList = Venue[];
+// VenueList is defined in venues.js
 
 /* moduleFinder.js */
 export type ModuleSearch = {
