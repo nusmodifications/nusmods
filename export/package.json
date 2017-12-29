@@ -1,0 +1,17 @@
+{
+  "name": "nusmods-export",
+  "version": "0.0.1",
+  "description": "Server-side timetable rendering for export service ",
+  "main": "index.js",
+  "author": "NUSModifications",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.17.1",
+    "bunyan": "^1.8.12",
+    "koa": "^2.4.1",
+    "koa-router": "^7.3.0",
+    "lodash": "^4.17.4",
+    "puppeteer": "^0.13.0"
+  }
+}
