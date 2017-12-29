@@ -53,7 +53,7 @@ div > .modal {
 }
 
 .selectList {
-  composes: scrollable from global;
+  composes: scrollable-y from global;
   max-height: calc(100% - #{$input-height});
   padding: 0;
   margin: 0;
