@@ -20,9 +20,6 @@ export function FooterComponent(props: Props) {
   const versionStr = process.env.versionStr;
 
   const lastUpdatedDate = props.lastUpdatedDate;
-  const apiUpdateSpan = lastUpdatedDate && (
-    <span>Data correct as at {lastUpdatedDate.toLocaleString()}.</span>
-  );
 
   const versionSpan = commitHash &&
     versionStr && (
@@ -91,7 +88,9 @@ export function FooterComponent(props: Props) {
             </button>
           </li>
         </ul>
-        <p>{apiUpdateSpan}</p>
+        <p>
+          Data correct as at {lastUpdatedDate ? lastUpdatedDate.toLocaleString() : 'Loading...'}.
+        </p>
         <p>
           Designed and built with all the love in the world by{' '}
           <a href={config.contact.githubOrg} target="_blank" rel="noopener noreferrer">
