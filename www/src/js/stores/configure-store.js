@@ -18,18 +18,18 @@ const composeEnhancers =
 export default function configureStore(defaultState) {
   const middlewares = [thunk, requestsMiddleware, ravenMiddleware];
 
-  // if (process.env.NODE_ENV === 'development') {
-  //   /* eslint-disable */
-  //   const { createLogger } = require('redux-logger');
-  //   /* eslint-enable */
-  //   const logger = createLogger({
-  //     level: 'info',
-  //     collapsed: true,
-  //     duration: true,
-  //     diff: true,
-  //   });
-  //   middlewares.push(logger);
-  // }
+  if (process.env.NODE_ENV === 'development') {
+    /* eslint-disable */
+    const { createLogger } = require('redux-logger');
+    /* eslint-enable */
+    const logger = createLogger({
+      level: 'info',
+      collapsed: true,
+      duration: true,
+      diff: true,
+    });
+    middlewares.push(logger);
+  }
 
   const store = createStore(
     rootReducer,

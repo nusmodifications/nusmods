@@ -1,13 +1,14 @@
 // @flow
 import ical from 'ical-generator';
 
-import type { ModuleCode, Module, Semester } from 'types/modules';
-import type { SemTimetableConfigWithLessons } from 'types/timetables';
+import type { Semester } from 'types/modules';
 import type { ExportData } from 'types/export';
+import type { State } from 'reducers';
 import { iCalForTimetable } from 'utils/ical';
 import { hideLessonInTimetable, selectMode } from 'actions/settings';
 import { setTimetable } from 'actions/timetables';
 import { selectTheme, setTimetableOrientation } from 'actions/theme';
+import { hydrateSemTimetableWithLessons } from 'utils/timetables';
 
 function downloadUrl(blob: Blob, filename: string) {
   const link = document.createElement('a');
@@ -24,20 +25,22 @@ function downloadUrl(blob: Blob, filename: string) {
 
 export const SUPPORTS_DOWNLOAD = 'download' in document.createElement('a');
 
-export function downloadAsIcal(
-  semester: Semester,
-  timetable: SemTimetableConfigWithLessons,
-  moduleData: { [ModuleCode]: Module },
-) {
-  const events = iCalForTimetable(semester, timetable, moduleData);
-  const cal = ical({
-    domain: 'nusmods.com',
-    prodId: '//NUSMods//NUSMods//EN',
-    events,
-  });
+export function downloadAsIcal(semester: Semester) {
+  return (dispatch: Function, getState: () => State) => {
+    const modules = getState().moduleBank.modules;
+    const timetable = getState().timetables[semester] || {};
+    const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
 
-  const blob = new Blob([cal.toString()], { type: 'text/plain' });
-  downloadUrl(blob, 'nusmods_calendar.ics');
+    const events = iCalForTimetable(semester, timetableWithLessons, modules);
+    const cal = ical({
+      domain: 'nusmods.com',
+      prodId: '//NUSMods//NUSMods//EN',
+      events,
+    });
+
+    const blob = new Blob([cal.toString()], { type: 'text/plain' });
+    downloadUrl(blob, 'nusmods_calendar.ics');
+  };
 }
 
 export function setExportedData({
