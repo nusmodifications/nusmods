@@ -4,7 +4,7 @@ import classnames from 'classnames';
 
 import type { TimetableDayArrangement } from 'types/timetables';
 
-import { getCurrentSingaporeHours, getCurrentSingaporeMinutes } from 'utils/timify';
+import { getCurrentHours, getCurrentMinutes } from 'utils/timify';
 import styles from './TimetableDay.scss';
 import TimetableRow from './TimetableRow';
 import CurrentTimeIndicator from './CurrentTimeIndicator';
@@ -34,8 +34,8 @@ function TimetableDay(props: Props) {
   if (props.verticalMode) rowStyle.height = `${VERTICAL_HEIGHT * columns}rem`;
 
   // Calculate the margin offset for the CurrentTimeIndicator
-  const currentHours = getCurrentSingaporeHours();
-  const currentMinutes = getCurrentSingaporeMinutes();
+  const currentHours = getCurrentHours();
+  const currentMinutes = getCurrentMinutes();
   const hoursMarginOffset = (currentHours * 2 - props.startingIndex) / columns * 100;
   const minutesMarginOffset = currentMinutes / 30 / columns * 100;
   const timeIndicatorIsVisible =

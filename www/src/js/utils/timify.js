@@ -55,21 +55,18 @@ export function calculateBorderTimings(
   };
 }
 
-const SINGAPORE_TIMEZONE: string = 'Asia/Singapore';
-
 // Gets the current time in hours, 0915 -> 9, 1315 -> 13
-// Current time to always match Singapore's
-export function getCurrentSingaporeHours(): number {
-  return new Date(new Date().toLocaleString({ timeZone: SINGAPORE_TIMEZONE })).getHours();
+export function getCurrentHours(): number {
+  return new Date().getHours();
 }
 
 // Gets the current time in hours, 0915 -> 15, 1315 -> 45
 // Current time to always match Singapore's
-export function getCurrentSingaporeMinutes(): number {
-  return new Date(new Date().toLocaleString({ timeZone: SINGAPORE_TIMEZONE })).getMinutes();
+export function getCurrentMinutes(): number {
+  return new Date().getMinutes();
 }
 
 // Monday = 0, Friday = 4
 export function getCurrentDayIndex(): number {
-  return new Date(new Date().toLocaleString({ timeZone: SINGAPORE_TIMEZONE })).getDay() - 1;
+  return new Date().getDay() - 1;
 }
