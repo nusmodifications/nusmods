@@ -1,4 +1,4 @@
-# NUSMods R [![Coverage Status](https://coveralls.io/repos/github/nusmodifications/nusmods/badge.svg?branch=master)](https://coveralls.io/github/nusmodifications/nusmods?branch=master) [![Build Status](https://travis-ci.org/nusmodifications/nusmods.svg?branch=master)](https://travis-ci.org/nusmodifications/nusmods)
+# NUSMods R
 
 NUSMods R is built using [React][react], [Redux][redux] and [Bootstrap][bootstrap], and is designed to be **fast, modern and responsive**.
 
@@ -6,7 +6,7 @@ NUSMods R is built using [React][react], [Redux][redux] and [Bootstrap][bootstra
 - Latest build: https://latest.nusmods.com/
 - Issues: https://github.com/nusmodifications/nusmods/issues?q=is%3Aissue+is%3Aopen
 
-For the previous version NUSMods V2's documentation on installation, refer [here](../provisioning/README.md).
+To install NUSMods V2 (the previous version of NUSMods), refer [here](../provisioning/README.md).
 
 ## Browser support
 
