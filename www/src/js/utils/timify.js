@@ -56,7 +56,7 @@ export function calculateBorderTimings(
   };
 }
 
-const MOMENT_SINGAPORE_TIMEZONE: String = 'Asia/Singapore';
+const MOMENT_SINGAPORE_TIMEZONE: string = 'Asia/Singapore';
 
 // Gets the current time in hours, 0915 -> 9, 1315 -> 13
 // Current time to always match Singapore's

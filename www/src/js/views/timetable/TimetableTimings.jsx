@@ -8,7 +8,6 @@ import styles from './TimetableTimings.scss';
 type Props = {
   startingIndex: number,
   endingIndex: number,
-  currentDayIndex: number,
 };
 
 function TimetableTimings(props: Props) {

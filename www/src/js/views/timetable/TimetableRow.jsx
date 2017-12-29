@@ -48,7 +48,7 @@ function TimetableRow(props: Props) {
   const timeIndicatorIsVisible =
     currentHours * 2 >= startingIndex && currentHours * 2 < endingIndex;
 
-  const currentTimeIndicatorStyle: object = {
+  const currentTimeIndicatorStyle: Object = {
     [dirStyle]: `${hoursMarginOffset + minutesMarginOffset}%`,
   };
 
