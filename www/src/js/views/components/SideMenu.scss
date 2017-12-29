@@ -11,7 +11,7 @@ $animation-duration: 0.3s;
 }
 
 .sideMenu {
-  composes: scrollable from global;
+  composes: scrollable-y from global;
   position: fixed;
   max-height: calc(100% - #{$navbar-height});
   overscroll-behavior: contain; // stylelint-disable-line property-no-unknown
