@@ -17,7 +17,8 @@
 }
 
 @mixin scrollable {
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
 
   // @supports is used here because Safari requires overflow: scroll to be used in conjunction with
   // -webkit-overflow-scrolling: touch to ensure smooth scrolling on iOS, but this causes ugly
