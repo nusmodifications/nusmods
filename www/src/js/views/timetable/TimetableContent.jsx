@@ -17,7 +17,6 @@ import type {
 
 import classnames from 'classnames';
 import { getSemModuleSelectList } from 'reducers/moduleBank';
-import { downloadAsImage, downloadAsIcal } from 'actions/export';
 import {
   addModule,
   cancelModifyLesson,
@@ -73,8 +72,6 @@ type Props = {
   changeLesson: Function,
   cancelModifyLesson: Function,
   toggleTimetableOrientation: Function,
-  downloadAsImage: Function,
-  downloadAsIcal: Function,
 };
 
 class TimetableContent extends Component<Props> {
@@ -89,15 +86,6 @@ class TimetableContent extends Component<Props> {
       this.props.cancelModifyLesson();
     }
   };
-
-  downloadAsImage = () => this.props.downloadAsImage(this.timetableDom);
-
-  downloadAsIcal = () =>
-    this.props.downloadAsIcal(
-      this.props.semester,
-      this.props.timetableWithLessons,
-      this.props.modules,
-    );
 
   isHiddenInTimetable = (moduleCode: ModuleCode) =>
     this.props.hiddenInTimetable.includes(moduleCode);
@@ -277,8 +265,6 @@ class TimetableContent extends Component<Props> {
                 <TimetableActions
                   isVerticalOrientation={isVerticalOrientation}
                   toggleTimetableOrientation={this.props.toggleTimetableOrientation}
-                  downloadAsImage={this.downloadAsImage}
-                  downloadAsIcal={this.downloadAsIcal}
                   semester={semester}
                   timetable={this.props.timetable}
                 />
@@ -340,6 +326,4 @@ export default connect(mapStateToProps, {
   changeLesson,
   cancelModifyLesson,
   toggleTimetableOrientation,
-  downloadAsImage,
-  downloadAsIcal,
 })(TimetableContent);

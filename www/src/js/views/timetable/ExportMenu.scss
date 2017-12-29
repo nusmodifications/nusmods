@@ -1,0 +1,32 @@
+@import "~styles/utils/modules-entry";
+
+.exportMenu {
+  .toggle {
+    width: 100%;
+  }
+
+  .chevron {
+    margin: 0 -0.6rem 0 0.2rem;
+  }
+
+  .dropdownMenu {
+    right: $grid-gutter-width / 2;
+    left: auto;
+    width: 20rem;
+
+    svg {
+      margin-right: 0.2rem;
+      vertical-align: middle;
+    }
+
+    @include media-breakpoint-down(xs) {
+      right: $grid-gutter-width / 2;
+      left: $grid-gutter-width / 2;
+      width: auto;
+    }
+
+    @include media-breakpoint-up(md) {
+      font-size: $font-size-sm;
+    }
+  }
+}

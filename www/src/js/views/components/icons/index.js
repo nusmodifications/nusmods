@@ -12,6 +12,7 @@ import Copy from 'react-feather/dist/icons/copy';
 import Eye from 'react-feather/dist/icons/eye';
 import EyeOff from 'react-feather/dist/icons/eye-off';
 import Facebook from 'react-feather/dist/icons/facebook';
+import FileText from 'react-feather/dist/icons/file-text';
 import Filter from 'react-feather/dist/icons/filter';
 import GitHub from 'react-feather/dist/icons/github';
 import Heart from 'react-feather/dist/icons/heart';
@@ -19,7 +20,6 @@ import Image from 'react-feather/dist/icons/image';
 import LinkedIn from 'react-feather/dist/icons/linkedin';
 import Map from 'react-feather/dist/icons/map';
 import Menu from 'react-feather/dist/icons/menu';
-import MessageCircle from 'react-feather/dist/icons/message-circle';
 import Mail from 'react-feather/dist/icons/mail';
 import MinusSquare from 'react-feather/dist/icons/minus-square';
 import PlusSquare from 'react-feather/dist/icons/plus-square';
@@ -29,6 +29,7 @@ import Search from 'react-feather/dist/icons/search';
 import Sidebar from 'react-feather/dist/icons/sidebar';
 import Twitter from 'react-feather/dist/icons/twitter';
 import Trash2 from 'react-feather/dist/icons/trash-2';
+import Upload from 'react-feather/dist/icons/upload';
 
 export {
   AlertTriangle,
@@ -44,6 +45,7 @@ export {
   EyeOff,
   Facebook,
   Filter,
+  FileText,
   GitHub,
   Heart,
   Image,
@@ -52,7 +54,6 @@ export {
   Mail,
   LinkedIn,
   Repeat,
-  MessageCircle,
   MinusSquare,
   PlusSquare,
   Search,
@@ -60,4 +61,5 @@ export {
   Sidebar,
   Twitter,
   Trash2,
+  Upload,
 };

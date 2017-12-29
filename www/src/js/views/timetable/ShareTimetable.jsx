@@ -199,11 +199,7 @@ export default class ShareTimetable extends PureComponent<Props, State> {
 
     return (
       <Fragment>
-        <button
-          type="button"
-          className="btn btn-sm btn-outline-primary btn-svg"
-          onClick={this.openModal}
-        >
+        <button type="button" className="btn btn-outline-primary btn-svg" onClick={this.openModal}>
           <Repeat className="svg svg-small" />
           Share/Sync
         </button>

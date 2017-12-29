@@ -11,6 +11,87 @@
   }
 }
 
+.leftButtonGroup,
+.rightButtonGroup {
+  display: flex;
+  margin-bottom: 0.5rem;
+
+  @include media-breakpoint-up(md) {
+    :global(.btn) {
+      padding: 0.25rem 0.4rem;
+      font-size: $font-size-sm;
+    }
+  }
+}
+
+// Three layout forms -
+//
+// 1. Left and right groups on separate rows
+//   - xs for both orientation
+//   - lg and below for vertical
+//
+// 2. Left and right on one row, each button taking 1/3 space
+//   - sm for both orientation
+//   - xl for vertical
+//
+// 3. Left and right on one row, with space between two groups
+//   - md and above for horizontal
+@mixin layout-1 {
+  .rightButtonGroup,
+  .leftButtonGroup {
+    width: 100%;
+  }
+}
+
+@mixin layout-2 {
+  .leftButtonGroup {
+    width: 33%;
+  }
+
+  .rightButtonGroup {
+    width: 66%;
+  }
+}
+
+.rightButtonGroup {
+  justify-content: space-between;
+  min-width: 16rem;
+
+  > * {
+    width: calc(50% - 0.25rem);
+  }
+}
+
+.leftButtonGroup {
+  :global(.btn) {
+    width: 100%;
+  }
+}
+
+:global(.verticalMode) {
+  .rightButtonGroup {
+    min-width: 0;
+  }
+
+  @include layout-1;
+
+  @include media-breakpoint-only(sm) {
+    @include layout-2;
+  }
+
+  @include media-breakpoint-up(xl) {
+    @include layout-2;
+  }
+}
+
+@include media-breakpoint-only(sm) {
+  @include layout-2;
+}
+
+@include media-breakpoint-down(xs) {
+  @include layout-1;
+}
+
 /*
   Button groups are complicated because there are total of 5 scenarios to consider
   1. 380px down (smaller than xs)
@@ -19,76 +100,38 @@
   4. md up (vertical)
   5. lg up (vertical)
 */
-
-@mixin vertical-button-group() {
-  flex-direction: column;
-  width: 100%;
-
-  & > :global(.btn.btn-svg) {
-    margin: 0;
-    border-radius: 0;
-
-    &:first-child {
-      border-top-left-radius: $btn-border-radius-sm;
-      border-top-right-radius: $btn-border-radius-sm;
-    }
-
-    &:last-child {
-      border-bottom-right-radius: $btn-border-radius-sm;
-      border-bottom-left-radius: $btn-border-radius-sm;
-    }
-
-    &:not(:last-child) {
-      border-bottom: 0;
-    }
-  }
-}
-
-.leftButtonGroup {
-  composes: btn-group btn-group-sm from global;
-
-  // Scenario 2
-  @include media-breakpoint-down(sm) {
-    flex-direction: column;
-    width: 100%;
-  }
-}
-
-.rightButtonGroup {
-  composes: btn-group btn-group-sm from global;
-
-  // Override specificity
-  > :global(.btn.btn-svg) {
-    flex: 1 1 auto;
-  }
-
-  // Scenario 1
-  @media (max-width: 380px) {
-    @include vertical-button-group();
-  }
-
-  // Scenario 2
-  @include media-breakpoint-down(sm) {
-    width: 100%;
-    margin-top: 0.5rem;
-  }
-}
-
-:global(.verticalMode) {
-  // Scenario 4 & 5
-  .leftButtonGroup {
-    flex-direction: column;
-    width: 100%;
-  }
-
-  // Scenario 4 & 5
-  .rightButtonGroup {
-    width: 100%;
-    margin-top: 0.5rem;
-
-    // Scenario 4 only
-    @include media-breakpoint-between(md, lg) {
-      @include vertical-button-group();
-    }
-  }
-}
+//
+//.leftButtonGroup {
+//  // Scenario 2
+//  @include media-breakpoint-down(sm) {
+//    flex-direction: column;
+//    width: 100%;
+//  }
+//}
+//
+//.rightButtonGroup {
+//  // Override specificity
+//  > :global(.btn.btn-svg) {
+//    flex: 1 1 auto;
+//  }
+//
+//  // Scenario 2
+//  @include media-breakpoint-down(sm) {
+//    width: 100%;
+//    margin-top: 0.5rem;
+//  }
+//}
+//
+//:global(.verticalMode) {
+//  // Scenario 4 & 5
+//  .leftButtonGroup {
+//    flex-direction: column;
+//    width: 100%;
+//  }
+//
+//  // Scenario 4 & 5
+//  .rightButtonGroup {
+//    width: 100%;
+//    margin-top: 0.5rem;
+//  }
+//}
