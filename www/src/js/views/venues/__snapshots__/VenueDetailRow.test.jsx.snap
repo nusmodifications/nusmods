@@ -16,6 +16,7 @@ exports[`VenueDetailRow it displays an anchor tag and a timetable when expanded 
     className="venueTimetable"
   >
     <Timetable
+      isScrolledHorizontally={false}
       isVerticalOrientation={false}
       lessons={
         Object {

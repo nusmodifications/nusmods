@@ -73,7 +73,11 @@ type Props = {
   downloadAsIcal: Function,
 };
 
-class TimetableContent extends Component<Props> {
+type State = {
+  isScrolledHorizontally: boolean,
+};
+
+class TimetableContent extends Component<Props, State> {
   timetableDom: ?HTMLElement;
   timetableWrapperDom: ?HTMLElement;
 
@@ -82,16 +86,22 @@ class TimetableContent extends Component<Props> {
   };
 
   componentDidMount() {
-    this.timetableWrapperDom.addEventListener('scroll', this.handleScroll);
+    if (this.timetableWrapperDom) {
+      this.timetableWrapperDom.addEventListener('scroll', this.handleScroll);
+    }
   }
 
   componentWillUnmount() {
     this.cancelModifyLesson();
-    this.timetableWrapperDom.removeEventListener('scroll', this.handleScroll);
+    if (this.timetableWrapperDom) {
+      this.timetableWrapperDom.removeEventListener('scroll', this.handleScroll);
+    }
   }
 
   handleScroll = () => {
-    this.setState({ isScrolledHorizontally: this.timetableWrapperDom.scrollLeft > 0 });
+    if (this.timetableWrapperDom) {
+      this.setState({ isScrolledHorizontally: this.timetableWrapperDom.scrollLeft > 0 });
+    }
   };
 
   cancelModifyLesson = () => {
