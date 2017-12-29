@@ -9,6 +9,7 @@ $cell-border-radius: 6px;
   // vertical align middle button content
   display: flex;
   flex-direction: column;
+  z-index: $timetable-cell-z-index;
   padding: $cell-padding;
   font-size: $font-size-xxs;
   line-height: 0.85rem;
