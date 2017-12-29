@@ -8,7 +8,7 @@ This monorepo consists of 3 projects. Further details can be found at the links 
 
 1. [NUSMods R website](https://github.com/nusmodifications/nusmods/tree/master/www)
 2. [NUSMods API](https://github.com/nusmodifications/nusmods/tree/master/api)
-3. [`nusmoderator` npm package](https://github.com/nusmodifications/nusmods/tree/master/package/nusmoderator)
+3. [`nusmoderator` npm package](https://github.com/nusmodifications/nusmods/tree/master/packages/nusmoderator)
 
 ## Talk to us!
 
