@@ -27,7 +27,7 @@ function TimetableDay(props: Props) {
     backgroundSize: `${size}% ${size}%`,
   };
 
-  if (props.isCurrentDay) rowStyle.boxShadow = 'inset 0 0 0 99999px rgba(128, 128, 128, 0.3)';
+  if (props.isCurrentDay) rowStyle.boxShadow = 'inset 0 0 0 99999px rgba(128, 128, 128, 0.25)';
   if (props.verticalMode) rowStyle.height = `${VERTICAL_HEIGHT * columns}rem`;
 
   return (
@@ -39,6 +39,7 @@ function TimetableDay(props: Props) {
         {props.dayLessonRows.map((dayLessonRow, i) => (
           <TimetableRow
             key={i}
+            isCurrentDay={props.isCurrentDay}
             startingIndex={props.startingIndex}
             endingIndex={props.endingIndex}
             verticalMode={props.verticalMode}

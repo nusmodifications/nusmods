@@ -1,5 +1,6 @@
 // @flow
 import type { DayText, LessonTime, Lesson } from 'types/modules';
+import moment from 'moment-timezone';
 
 // Converts a 24-hour format time string to an index.
 // Each index corresponds to one cell of each timetable row.
@@ -53,4 +54,18 @@ export function calculateBorderTimings(
     startingIndex: earliestTime % 2 === 0 ? earliestTime : earliestTime - 1, // floor to earliest hour.
     endingIndex: latestTime % 2 === 0 ? latestTime : latestTime + 1, // ceil to latest hour.
   };
+}
+
+const MOMENT_SINGAPORE_TIMEZONE: String = 'Asia/Singapore'
+
+// Gets the current time in hours, 0915 -> 9, 1315 -> 13
+// Current time to always match Singapore's
+export function getCurrentSingaporeHours(): number {
+  return moment().tz(MOMENT_SINGAPORE_TIMEZONE).hour();
+}
+
+// Gets the current time in hours, 0915 -> 15, 1315 -> 45
+// Current time to always match Singapore's
+export function getCurrentSingaporeMinutes() {
+  return moment().tz(MOMENT_SINGAPORE_TIMEZONE).minutes();
 }
