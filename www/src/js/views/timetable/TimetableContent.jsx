@@ -51,18 +51,22 @@ import TimetableModulesTable from './TimetableModulesTable';
 import styles from './TimetableContent.scss';
 
 type Props = {
+  // Own props
+  readOnly: boolean,
   header: Node,
   semester: Semester,
-  semModuleList: ModuleSelectList,
   timetable: SemTimetableConfig,
+
+  // From Redux
   timetableWithLessons: SemTimetableConfigWithLessons,
+  semModuleList: ModuleSelectList,
   modules: ModulesMap,
   colors: ColorMapping,
   activeLesson: Lesson,
   timetableOrientation: TimetableOrientation,
   hiddenInTimetable: ModuleCode[],
-  readOnly: boolean,
 
+  // Actions
   addModule: Function,
   removeModule: Function,
   modifyLesson: Function,
