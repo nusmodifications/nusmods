@@ -35,6 +35,7 @@ import {
   deserializeTimetable,
   isSameTimetableConfig,
   findExamClashes,
+  validateTimetableModules,
 } from 'utils/timetables';
 import { getModuleTimetable, getModuleSemesterData } from 'utils/modules';
 
@@ -44,6 +45,8 @@ import cs1010s from '__mocks__/modules/CS1010S.json';
 import cs3216 from '__mocks__/modules/CS3216.json';
 /** @var {Module} */
 import pc1222 from '__mocks__/modules/PC1222.json';
+
+import modulesList from '__mocks__/module-list.json';
 
 import timetable from '__mocks__/sem-timetable.json';
 import lessonsArray from '__mocks__/lessons-array.json';
@@ -466,4 +469,31 @@ test('isSameTimetableConfig', () => {
       },
     ),
   ).toBe(false);
+});
+
+describe('validateTimetableModules', () => {
+  test('should leave valid modules untouched', () => {
+    expect(validateTimetableModules({}, modulesList)).toEqual([{}, []]);
+    expect(
+      validateTimetableModules(
+        {
+          CS1010S: {},
+          CS2100: {},
+        },
+        modulesList,
+      ),
+    ).toEqual([{ CS1010S: {}, CS2100: {} }, []]);
+  });
+
+  test('should remove invalid modules', () => {
+    expect(
+      validateTimetableModules(
+        {
+          DEADBEEF: {},
+          CS2100: {},
+        },
+        modulesList,
+      ),
+    ).toEqual([{ CS2100: {} }, ['DEADBEEF']]);
+  });
 });

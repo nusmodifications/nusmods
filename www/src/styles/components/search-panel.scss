@@ -1,7 +1,7 @@
 .search-panel {
   position: sticky;
   top: $navbar-height;
-  z-index: $module-finder-search-z-index;
+  z-index: $module-finder-search-z-index-md;
   padding: 0 0 1rem;
   background:
     linear-gradient(
@@ -11,6 +11,7 @@
     );
 
   @include media-breakpoint-down(sm) {
+    z-index: $module-finder-search-z-index-sm;
     padding: 0 0 $navtab-shadow-height;
     margin: -1rem (-$grid-gutter-width / 2) 0;
     border-top: 1px solid var(--gray-lighter);

@@ -22,6 +22,7 @@ import type {
 import type { ModulesMap } from 'reducers/moduleBank';
 
 import { getModuleTimetable, getModuleSemesterData } from 'utils/modules';
+import type { ModuleCodeMap } from '../types/reducers';
 
 type LessonTypeAbbrev = { [LessonType]: string };
 export const LESSON_TYPE_ABBREV: LessonTypeAbbrev = {
@@ -220,6 +221,17 @@ export function findExamClashes(
   );
   delete groupedModules.undefined; // Remove modules without exams
   return _.omitBy(groupedModules, (mods) => mods.length === 1); // Remove non-clashing mods
+}
+
+export function validateTimetableModules(
+  timetable: SemTimetableConfig,
+  moduleCodes: ModuleCodeMap,
+): [SemTimetableConfig, ModuleCode[]] {
+  const [valid, invalid] = _.partition(
+    _.keys(timetable),
+    (moduleCode: ModuleCode) => moduleCodes[moduleCode],
+  );
+  return [_.pick(timetable, valid), invalid];
 }
 
 // Get information for all modules present in a semester timetable config
