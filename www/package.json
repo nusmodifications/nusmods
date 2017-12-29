@@ -4,7 +4,7 @@
   "description": "NUSMods v3",
   "scripts": {
     "start": "cross-env NODE_ENV=development node scripts/start",
-    "start-exporter": "cross-env NODE_ENV=development node scripts/start-exporter",
+    "start-exporter": "cross-env NODE_ENV=development CONFIG=timetable-only node scripts/start",
     "build": "cross-env NODE_ENV=production node scripts/build",
     "rsync": "rsync -avu --delete-after dist/",
     "promote-staging": "bash scripts/promote-staging.sh",
