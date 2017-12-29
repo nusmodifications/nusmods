@@ -1,20 +1,26 @@
+// @flow
+
 import React from 'react';
 import { shallow } from 'enzyme';
+import _ from 'lodash';
 
+import type { ModuleCondensed } from 'types/modules';
 import { SearchContainerComponent } from 'views/layout/GlobalSearchContainer';
+import createHistory from 'test-utils/createHistory';
 
-const MODULES = [
-  { ModuleCode: 'AS1010', ModuleTitle: 'Test' },
-  { ModuleCode: 'BS1010', ModuleTitle: 'Test' },
-  { ModuleCode: 'CS1010', ModuleTitle: 'Test' },
-  { ModuleCode: 'DS1010', ModuleTitle: 'Test' },
-  { ModuleCode: 'ES1010', ModuleTitle: 'Test' },
-  { ModuleCode: 'FS1010', ModuleTitle: 'Test' },
-  { ModuleCode: 'GS1010', ModuleTitle: 'Test' },
-  { ModuleCode: 'HS1010', ModuleTitle: 'Test' },
-];
+const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
-const VENUES = ['A-1', 'B-1', 'C-1', 'D-1', 'E-1', 'F-1', 'G-1', 'H-1'];
+// Produces 26 * 26 = 676 modules of the form AA1010, AB1010, ...
+const MODULES = _.flatMap(letters, (firstLetter): ModuleCondensed[] =>
+  letters.map((secondLetter) => ({
+    ModuleCode: `${firstLetter}${secondLetter}1010`,
+    ModuleTitle: 'Test',
+    Semesters: [1],
+  })),
+);
+
+// Produces 26 venues of the form AA-1, BB-1, CC-1, ...
+const VENUES = letters.map((letter) => `${letter}${letter}-1`);
 
 function make(props = {}) {
   const allProps = {
@@ -22,6 +28,7 @@ function make(props = {}) {
     fetchVenueList: jest.fn(),
     moduleList: MODULES,
     venueList: VENUES,
+    ...createHistory(),
     ...props,
   };
   return shallow(<SearchContainerComponent {...allProps} />);
@@ -40,38 +47,61 @@ test('fetches venue list', () => {
 
 test('shows at no choices when search is too short', () => {
   const instance = make().instance();
-  const [mods, venues] = instance.getResults('1');
-  expect(mods).toHaveLength(0);
+  const { modules, venues, tokens } = instance.getResults('1');
+  expect(modules).toHaveLength(0);
   expect(venues).toHaveLength(0);
+  expect(tokens).toHaveLength(0);
 });
 
-test('shows at most 7 choices when search returns plentiful', () => {
+test('passes down search tokens', () => {
   const instance = make().instance();
-  const [mods, venues] = instance.getResults('1 ');
-  expect(mods).toHaveLength(4);
-  expect(venues).toHaveLength(3);
+  expect(instance.getResults('ab').tokens).toEqual(['ab']);
+  expect(instance.getResults('a b').tokens).toEqual(['a', 'b']);
+  expect(instance.getResults('a, b').tokens).toEqual(['a', 'b']);
+  expect(instance.getResults(' a, b ').tokens).toEqual(['a', 'b']);
 });
 
-test('shows at most 7 choices when there are many venues', () => {
-  const instance = make({
-    moduleList: MODULES.slice(0, 2),
-    venueList: VENUES.slice(0, 4),
-  }).instance();
-  const [mods, venues] = instance.getResults('1 ');
-  expect(mods).toHaveLength(2);
+test('shows at most 10 choices when there are many venues and modules', () => {
+  const instance = make().instance();
+  const { modules, venues } = instance.getResults('1 ');
+  expect(modules).toHaveLength(6);
   expect(venues).toHaveLength(4);
 });
 
-test('shows at most 7 choices when there are many modules', () => {
+test('shows at most 10 choices when there are many venues', () => {
+  const instance = make({
+    moduleList: MODULES.slice(0, 10),
+    venueList: VENUES.slice(0, 4),
+  }).instance();
+  const { modules, venues } = instance.getResults('1 ');
+  expect(modules).toHaveLength(6);
+  expect(venues).toHaveLength(4);
+});
+
+test('shows at most 10 choices when there are many modules', () => {
   const instance = make({ venueList: VENUES.slice(0, 2) }).instance();
-  const [mods, venues] = instance.getResults('1 ');
-  expect(mods).toHaveLength(5);
+  const { modules, venues } = instance.getResults('1 ');
+  expect(modules).toHaveLength(8);
   expect(venues).toHaveLength(2);
 });
 
 test('shows all results when there are few', () => {
   const instance = make().instance();
-  const [mods, venues] = instance.getResults('A ');
-  expect(mods).toHaveLength(1);
+  const { modules, venues } = instance.getResults('AA');
+  expect(modules).toHaveLength(1);
   expect(venues).toHaveLength(1);
+});
+
+test('show many results if the search only returns results of one type', () => {
+  const instance = make({
+    venueList: _.range(100).map((n) => `Venue ${n}`),
+  }).instance();
+
+  let { modules, venues } = instance.getResults('1010');
+  expect(modules).toHaveLength(70);
+  expect(venues).toHaveLength(0);
+
+  ({ modules, venues } = instance.getResults('venue'));
+  expect(modules).toHaveLength(0);
+  expect(venues).toHaveLength(70);
 });
