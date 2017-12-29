@@ -98,12 +98,13 @@ $icon-dist: $input-width-open - $input-width;
 
   .viewAll {
     position: relative;
-    padding-right: 1.3rem;
+    padding-right: 1.4rem;
 
     svg {
       position: absolute;
+      top: 0;
       right: 0;
-      height: 1.3rem;
+      height: 1.2rem;
       transition: $transition-base;
     }
   }
