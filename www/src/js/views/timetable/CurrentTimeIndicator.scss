@@ -3,26 +3,36 @@
 .currentTimeIndicator {
   position: absolute;
   z-index: $current-time-indicator-z-index;
-  background: none;
   width: 0%;
   height: 100%;
+  background: none;
+}
+
+:global(.verticalMode) .currentTimeIndicator {
+  width: 100%;
+  height: 0%;
 }
 
 .circularPart {
   position: absolute;
-  border-radius: 50%;
-  background: $primary;
   top: -0.25rem;
   left: -0.25rem;
-  height: 0.5rem;
   width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: $primary;
 }
 
 .linePart {
   position: relative;
-  background: $primary;
   top: 0%;
   left: -0.05rem;
-  height: 110%;
   width: 0.1rem;
+  height: 110%;
+  background: $primary;
+}
+
+:global(.verticalMode) .linePart {
+  width: 102%;
+  height: 0.1rem;
 }
