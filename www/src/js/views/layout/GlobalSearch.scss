@@ -2,6 +2,7 @@
 $icon-size: $font-size-lg;
 $input-width: 2rem;
 $input-width-open: 21rem;
+$input-width-open-lg: 34rem;
 $container-padding: 0.5rem;
 $dropdown-height: 40rem;
 
@@ -16,6 +17,7 @@ $dropdown-height: 40rem;
 }
 
 $icon-dist: $input-width-open - $input-width;
+$icon-dist-lg: $input-width-open-lg - $input-width;
 
 .icon {
   position: absolute;
@@ -24,6 +26,11 @@ $icon-dist: $input-width-open - $input-width;
   height: $icon-size;
   transform: translate($icon-dist - 0.25rem);
   transition: transform $desktop-entering-duration $material-deceleration-curve;
+
+  @include media-breakpoint-up(lg) {
+    right: $icon-dist-lg + $container-padding;
+    transform: translate($icon-dist-lg - 0.25rem);
+  }
 }
 
 .iconOpen {
@@ -51,10 +58,18 @@ $icon-dist: $input-width-open - $input-width;
   }
 }
 
+.openWidth {
+  width: $input-width-open;
+
+  @include media-breakpoint-up(lg) {
+    width: $input-width-open-lg;
+  }
+}
+
 .inputOpen {
+  composes: openWidth;
   right: 0;
   opacity: 1;
-  width: $input-width-open;
   transform: translate(0);
 }
 
@@ -78,7 +93,7 @@ $icon-dist: $input-width-open - $input-width;
 }
 
 .item {
-  width: $input-width-open;
+  composes: openWidth;
   padding: 0.6rem $container-padding;
   cursor: pointer;
 }
@@ -89,7 +104,7 @@ $icon-dist: $input-width-open - $input-width;
   justify-content: space-between;
   padding: 0.3rem $container-padding;
   color: var(--body-bg);
-  background: var(--gray);
+  background: var(--gray-light);
 
   .headerName {
     text-transform: uppercase;
