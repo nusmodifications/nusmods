@@ -1,14 +1,14 @@
-# [NUSMods](http://nusmods.com) [![Code Climate](http://img.shields.io/codeclimate/github/nusmodifications/nusmods.svg)](https://codeclimate.com/github/nusmodifications/nusmods) [![Dependency Status](http://img.shields.io/david/nusmodifications/nusmods.svg)](https://david-dm.org/nusmodifications/nusmods) [![devDependency Status](http://img.shields.io/david/dev/nusmodifications/nusmods.svg)](https://david-dm.org/nusmodifications/nusmods#info=devDependencies) [![Build Status](https://travis-ci.org/nusmodifications/nusmods.svg?branch=master)](https://travis-ci.org/nusmodifications/nusmods) [![ghit.me](https://ghit.me/badge.svg?repo=nusmodifications/nusmods)](https://ghit.me/repo/nusmodifications/nusmods)
+# [NUSMods](http://nusmods.com) [![Build Status](https://travis-ci.org/nusmodifications/nusmods.svg?branch=master)](https://travis-ci.org/nusmodifications/nusmods) [![ghit.me](https://ghit.me/badge.svg?repo=nusmodifications/nusmods)](https://ghit.me/repo/nusmodifications/nusmods)
 
-## NUSMods R
+Help contribute to NUSMods!
 
-Help contribute to the next version of NUSMods!
+## Projects
 
-- Latest build: https://latest.nusmods.com/
-- Getting Started: https://github.com/nusmodifications/nusmods/tree/master/www
-- Issues: https://github.com/nusmodifications/nusmods/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+label%3A%22NUSMods+R%22
+This monorepo consists of 3 projects. Further details can be found at the links below.
 
-For V2's documentation on installation, refer [here](provisioning/README.md).
+1. [NUSMods R website](https://github.com/nusmodifications/nusmods/tree/master/www)
+2. [NUSMods API](https://github.com/nusmodifications/nusmods/tree/master/api)
+3. [`nusmoderator` npm package](https://github.com/nusmodifications/nusmods/tree/master/package/nusmoderator)
 
 ## Talk to us!
 

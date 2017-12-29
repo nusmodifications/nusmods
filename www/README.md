@@ -1,14 +1,12 @@
 # NUSMods R [![Coverage Status](https://coveralls.io/repos/github/nusmodifications/nusmods/badge.svg?branch=master)](https://coveralls.io/github/nusmodifications/nusmods?branch=master) [![Build Status](https://travis-ci.org/nusmodifications/nusmods.svg?branch=master)](https://travis-ci.org/nusmodifications/nusmods)
 
-**Talk to us!**
+NUSMods R is built using [React][react], [Redux][redux] and [Bootstrap][bootstrap], and is designed to be **fast, modern and responsive**.
 
-- Telegram: https://telegram.me/nusmods
-- Facebook: https://www.facebook.com/nusmods
-- Messenger: https://www.m.me/nusmods
-- Twitter: https://twitter.com/nusmods
-- Email: nusmods@googlegroups.com
+- Production deployment: https://nusmods.com/
+- Latest build: https://latest.nusmods.com/
+- Issues: https://github.com/nusmodifications/nusmods/issues?q=is%3Aissue+is%3Aopen
 
-NUSMods R is built using [React][react], [Redux][redux], [Bootstrap][bootstrap] and is designed to be **fast, modern and responsive**.
+For the previous version NUSMods V2's documentation on installation, refer [here](../provisioning/README.md).
 
 ## Browser support
 
@@ -24,7 +22,7 @@ Mobile browsers:
 
 ## Contributing
 
-Don't know where to start? One of our contributors, wrote [this fantastic beginner guide][zames-guide], it is highly recommended that you have a read.
+Don't know where to start? We highly recommend reading [this fantastic beginner's guide][zames-guide] written by one of our contributors. Alternatively, have a poke at our [open issues](https://github.com/nusmodifications/nusmods/issues?q=is%3Aissue+is%3Aopen).
 
 ## Getting Started
 
