@@ -14,7 +14,7 @@ const extractTextPlugin = new ExtractTextPlugin('[name].[chunkhash].css', {
 const source = (file) => path.join('js/timetable-export', file);
 
 const productionConfig = merge([
-  parts.setFreeVariable('process.env.NODE_ENV', 'production'),
+  parts.setFreeVariable('process.env.NODE_ENV', process.env.NODE_ENV || 'production'),
   commonConfig,
   {
     // Override common's entry point
