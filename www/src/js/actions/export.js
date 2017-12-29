@@ -1,11 +1,13 @@
 // @flow
-import domtoimage from 'dom-to-image';
 import ical from 'ical-generator';
-import Raven from 'raven-js';
 
 import type { ModuleCode, Module, Semester } from 'types/modules';
 import type { SemTimetableConfigWithLessons } from 'types/timetables';
+import type { ExportData } from 'types/export';
 import { iCalForTimetable } from 'utils/ical';
+import { hideLessonInTimetable, selectMode } from 'actions/settings';
+import { setTimetable } from 'actions/timetables';
+import { selectTheme, setTimetableOrientation } from 'actions/theme';
 
 function downloadUrl(blob: Blob, filename: string) {
   const link = document.createElement('a');
@@ -22,32 +24,6 @@ function downloadUrl(blob: Blob, filename: string) {
 
 export const SUPPORTS_DOWNLOAD = 'download' in document.createElement('a');
 
-export const DOWNLOAD_AS_IMAGE = 'DOWNLOAD_AS_IMAGE';
-export function downloadAsImage(domElement: Element) {
-  return (dispatch: Function) => {
-    dispatch({
-      type: `${DOWNLOAD_AS_IMAGE}_PENDING`,
-    });
-
-    const style = { margin: '0', marginLeft: '-0.25em' };
-    return domtoimage
-      .toBlob(domElement, { bgcolor: '#fff', style })
-      .then((blob) => {
-        downloadUrl(blob, 'timetable.png');
-        dispatch({
-          type: `${DOWNLOAD_AS_IMAGE}_SUCCESS`,
-        });
-      })
-      .catch((e) => {
-        Raven.captureException(e);
-        dispatch({
-          type: `${DOWNLOAD_AS_IMAGE}_FAILURE`,
-        });
-      });
-  };
-}
-
-export const DOWNLOAD_AS_ICAL = 'DOWNLOAD_AS_ICAL';
 export function downloadAsIcal(
   semester: Semester,
   timetable: SemTimetableConfigWithLessons,
@@ -62,9 +38,25 @@ export function downloadAsIcal(
 
   const blob = new Blob([cal.toString()], { type: 'text/plain' });
   downloadUrl(blob, 'nusmods_calendar.ics');
+}
 
-  return {
-    type: DOWNLOAD_AS_ICAL,
-    payload: cal.toString(),
+export function setExportedData({
+  semester,
+  timetable,
+  mode,
+  hiddenInTimetable,
+  theme,
+}: ExportData) {
+  return (dispatch: Function) => {
+    // Timetable
+    dispatch(setTimetable(semester, timetable, theme.colors));
+
+    // Theme
+    dispatch(selectTheme(theme.id));
+    dispatch(setTimetableOrientation(theme.timetableOrientation));
+
+    // Settings
+    dispatch(selectMode(mode));
+    hiddenInTimetable.forEach((moduleCode) => dispatch(hideLessonInTimetable(moduleCode)));
   };
 }

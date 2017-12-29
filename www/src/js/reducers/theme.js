@@ -11,6 +11,7 @@ import {
   CYCLE_THEME,
   SELECT_MODULE_COLOR,
   TOGGLE_TIMETABLE_ORIENTATION,
+  SET_TIMETABLE_ORIENTATION,
 } from 'actions/theme';
 import themes from 'data/themes.json';
 
@@ -81,6 +82,11 @@ function theme(state: ThemeState = defaultThemeState, action: FSA): ThemeState {
         id: themeIds[newThemeIndex],
       };
     }
+    case SET_TIMETABLE_ORIENTATION:
+      return {
+        ...state,
+        timetableOrientation: action.payload.orientation,
+      };
     case TOGGLE_TIMETABLE_ORIENTATION:
       return {
         ...state,
