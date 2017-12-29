@@ -1,10 +1,18 @@
+const fs = require('fs-extra');
 const puppeteer = require('puppeteer');
 const config = require('./config');
 
 async function launch() {
-  const browser = await puppeteer.launch({ headless: !process.env.DISABLE_HEADLESS });
-  const page = await browser.newPage();
-  await page.goto(config.page);
+  const browser = await puppeteer.launch({
+    headless: !process.env.DISABLE_HEADLESS,
+  });
+
+  const [page, content] = await Promise.all([
+    browser.newPage(),
+    fs.readFile(config.page, 'utf-8'),
+  ]);
+
+  await page.setContent(content);
 
   return [browser, page];
 }

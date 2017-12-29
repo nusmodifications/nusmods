@@ -25,7 +25,7 @@ render.launch()
     app.context.page = page;
     app.context.browser = browser;
 
-    app.listen(proces.env.PORT || 3000);
+    app.listen(process.env.PORT || 3000);
   })
   .catch((e) => {
     console.error('Cannot start browser:');
