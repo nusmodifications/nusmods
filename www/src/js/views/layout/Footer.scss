@@ -19,7 +19,8 @@
   }
 
   p {
-    margin-bottom: 0;
+    margin-bottom: 0.4rem;
+    line-height: 1.3;
   }
 
   @include media-breakpoint-up(sm) {
