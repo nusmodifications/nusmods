@@ -51,32 +51,20 @@ async function injectData(page, encodedData) {
   return appEle.boundingBox();
 }
 
-async function resetPage(page) {
-  await page.evaluate('window.resetData()');
-}
-
 async function image(page, data) {
   const boundingBox = await injectData(page, data);
-  const image = await page.screenshot({
+  return await page.screenshot({
     clip: boundingBox,
   });
-
-  await resetPage(page);
-
-  return image;
 }
 
 async function pdf(page, data) {
   await injectData(page, data);
   await page.emulateMedia('screen');
-  const pdf = await page.pdf({
+  return await page.pdf({
     printBackground: true,
     landscape: true,
   });
-
-  await resetPage(page);
-
-  return pdf;
 }
 
 module.exports = {

@@ -10,11 +10,6 @@ if (process.env.PRODUCTION) {
     throw new Error('No moduleData path set - check config.js. ' +
       'This should be the path to the api/<academic year>/modules folder.');
   }
-
-  if (!config.chromeExecutable) {
-    throw new Error('No chromeExecutable set - check config.js. ' +
-      'This should be set to the path to the Chrome executable.');
-  }
 }
 
 // Start router
