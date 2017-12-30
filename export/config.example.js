@@ -1,10 +1,12 @@
 module.exports = {
   academicYear: '2017-2018',
 
-  // Path to the Chrome executable - for Puppeteer 0.13, use Chrome 64
-  // If left blank during development will use Chromium instead - note that PDF
-  // export does not work with Chromium. In production leaving this blank will
-  // throw an error
+  // Width of the page in pixels
+  pageWidth: 1024,
+
+  // Path to the Chrome executable - for Puppeteer 0.13, use Chrome 64.
+  // If left blank this will use the version of Chromium that comes with Puppeteer
+  // instead
   chromeExecutable: null,
 
   // If set to a local path, the page will be loaded using setContent - use this

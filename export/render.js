@@ -4,6 +4,9 @@ const puppeteer = require('puppeteer');
 const config = require('./config');
 const { getModules } = require('./data');
 
+// Arbitrarily high number - just make sure it doesn't clip the timetable
+const VIEWPORT_HEIGHT = 2000;
+
 async function launch() {
   const executablePath = config.chromeExecutable ?
     config.chromeExecutable : undefined;
@@ -23,8 +26,8 @@ async function launch() {
   }
 
   await page.setViewport({
-    width: 1024,
-    height: 900,
+    width: config.pageWidth,
+    height: VIEWPORT_HEIGHT,
   });
 
   return [browser, page];
@@ -35,18 +38,29 @@ async function injectData(page, encodedData) {
   const moduleCodes = Object.keys(data.timetable);
   const modules = await getModules(moduleCodes);
 
-  await page.evaluate(`window.setData(${JSON.stringify(modules)}, ${encodedData})`);
+  await page.evaluate(`window.setData(${JSON.stringify(modules)}, ${JSON.stringify(data)})`);
+
+  // Calculate element height to get bounding box for screenshot
+  const appEle = await page.$('#timetable-only');
+  if (!appEle) throw new Error('#timetable-only element not found');
+
+  return appEle.boundingBox();
 }
 
 async function image(page, data) {
-  await injectData(page, data);
-  return page.screenshot();
+  const boundingBox = await injectData(page, data);
+  return page.screenshot({
+    clip: boundingBox,
+  });
 }
 
 async function pdf(page, data) {
   await injectData(page, data);
   await page.emulateMedia('screen');
-  return page.pdf();
+  return page.pdf({
+    printBackground: true,
+    landscape: true,
+  });
 }
 
 module.exports = {

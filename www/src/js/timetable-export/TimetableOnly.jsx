@@ -33,7 +33,7 @@ export default class TimetableOnly extends Component<Props, State> {
     return (
       <MemoryRouter>
         <Provider store={store}>
-          <div className={`theme-${theme.id}`}>
+          <div id="timetable-only" className={`theme-${theme.id}`}>
             <TimetableContent
               header={null}
               semester={semester}
