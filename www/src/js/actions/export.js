@@ -1,9 +1,10 @@
 // @flow
 import ical from 'ical-generator';
 
-import type { Semester } from 'types/modules';
+import type { Module, Semester } from 'types/modules';
 import type { ExportData } from 'types/export';
 import type { State } from 'reducers';
+import type { FSA } from 'types/redux';
 import { iCalForTimetable } from 'utils/ical';
 import { hideLessonInTimetable, selectMode } from 'actions/settings';
 import { setTimetable } from 'actions/timetables';
@@ -61,5 +62,13 @@ export function setExportedData({
     // Settings
     dispatch(selectMode(mode));
     hiddenInTimetable.forEach((moduleCode) => dispatch(hideLessonInTimetable(moduleCode)));
+  };
+}
+
+export const SET_MODULES = 'SET_MODULES';
+export function setModules(modules: Module[]): FSA {
+  return {
+    type: SET_MODULES,
+    payload: { modules },
   };
 }

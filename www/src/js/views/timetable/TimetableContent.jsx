@@ -55,13 +55,13 @@ type Props = {
   header: Node,
   semester: Semester,
   timetable: SemTimetableConfig,
+  colors: ColorMapping,
 
   // From Redux
   timetableWithLessons: SemTimetableConfigWithLessons,
   semModuleList: ModuleSelectList,
   modules: ModulesMap,
-  colors: ColorMapping,
-  activeLesson: Lesson,
+  activeLesson: ?Lesson,
   timetableOrientation: TimetableOrientation,
   hiddenInTimetable: ModuleCode[],
 

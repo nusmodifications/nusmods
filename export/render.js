@@ -2,28 +2,37 @@ const fs = require('fs-extra');
 const puppeteer = require('puppeteer');
 const config = require('./config');
 
+const { getModules } = require('./data');
+
 async function launch() {
   const browser = await puppeteer.launch({
-    headless: !process.env.DISABLE_HEADLESS,
+    devtools: !!process.env.DEVTOOLS,
   });
+  const page = await browser.newPage();
 
-  const [page, content] = await Promise.all([
-    browser.newPage(),
-    fs.readFile(config.page, 'utf-8'),
-  ]);
+  // If config.page is local, use setContent
+  // Otherwise connect to the page using goto
+  if (/^https?:\/\//.test(config.page)) {
+    await page.goto(config.page);
+  } else {
+    const content = fs.readFile(config.page, 'utf-8');
+    await page.setContent(content);
+  }
 
-  await page.setContent(content);
+  await page.setViewport({
+    width: 1024,
+    height: 900,
+  });
 
   return [browser, page];
 }
 
-async function injectData(page, data) {
-  await page.evaluate(() => {
-    return new Promise((resolve) => {
-      // TODO: Inject data into page here
-      resolve();
-    });
-  });
+async function injectData(page, encodedData) {
+  const data = JSON.parse(encodedData);
+  const moduleCodes = Object.keys(data.timetable);
+  const modules = await getModules(moduleCodes);
+
+  await page.evaluate(`window.setData(${JSON.stringify(modules)}, ${encodedData})`);
 }
 
 async function image(page, data) {
@@ -33,6 +42,7 @@ async function image(page, data) {
 
 async function pdf(page, data) {
   await injectData(page, data);
+  await page.emulateMedia('screen');
   return page.pdf();
 }
 
