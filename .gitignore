@@ -1,6 +1,7 @@
 ### NUSMods ###
 
 # Build folders
+api/app
 dist/
 build/
 *.compiled.js

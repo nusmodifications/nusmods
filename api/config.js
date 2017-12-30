@@ -24,7 +24,7 @@ const defaults = {
   // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#space_argument
   jsonSpace: process.env.NODE_ENV === 'production' ? '' : '\t',
   headers: {},
-  concurrency: 128,
+  concurrency: 32,
 };
 
 export default {
