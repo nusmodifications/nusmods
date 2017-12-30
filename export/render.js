@@ -1,17 +1,20 @@
 const fs = require('fs-extra');
 const puppeteer = require('puppeteer');
-const config = require('./config');
 
+const config = require('./config');
 const { getModules } = require('./data');
 
 async function launch() {
+  const executablePath = config.chromeExecutable ?
+    config.chromeExecutable : undefined;
   const browser = await puppeteer.launch({
+    executablePath,
     devtools: !!process.env.DEVTOOLS,
   });
+
   const page = await browser.newPage();
 
-  // If config.page is local, use setContent
-  // Otherwise connect to the page using goto
+  // If config.page is local, use setContent. Otherwise connect to the page using goto.
   if (/^https?:\/\//.test(config.page)) {
     await page.goto(config.page);
   } else {

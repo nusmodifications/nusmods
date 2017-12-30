@@ -8,8 +8,6 @@ async function fetchModule(moduleCode) {
 
   if (config.moduleData) {
     return fs.readJSON(path.join(config.moduleData, fileName));
-  } else if (process.env.PRODUCTION) {
-    throw new Error('No moduleData path set - check config.js');
   }
 
   // For development only

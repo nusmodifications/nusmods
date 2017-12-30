@@ -2,7 +2,22 @@ const Koa = require('koa');
 const Router = require('koa-router');
 const gracefulShutdown = require('http-graceful-shutdown');
 const render = require('./render');
+const config = require('./config');
 
+// Config check
+if (process.env.PRODUCTION) {
+  if (!config.moduleData) {
+    throw new Error('No moduleData path set - check config.js. ' +
+      'This should be the path to the api/<academic year>/modules folder.');
+  }
+
+  if (!config.chromeExecutable) {
+    throw new Error('No chromeExecutable set - check config.js. ' +
+      'This should be set to the path to the Chrome executable.');
+  }
+}
+
+// Start router
 const app = new Koa();
 const router = new Router();
 
@@ -33,5 +48,10 @@ render.launch()
   .catch((e) => {
     console.error('Cannot start browser:');
     console.error(e);
+
+    if (e.message.includes('ERR_CONNECTION_REFUSED')) {
+      console.error('Check that the export page dev server has been started');
+    }
+
     process.exit(1);
   });

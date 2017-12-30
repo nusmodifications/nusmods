@@ -2,12 +2,16 @@
 
 # Build folders
 dist/
+dist-timetable/
 build/
 *.compiled.js
 
 # Cache folders
 cache/
 .cache-loader
+
+# Local config 
+/export/config.js
 
 # Rest adapted from https://www.gitignore.io/api/vim,node,linux,macos,emacs,windows,ansible,database,webstorm,visualstudiocode
 

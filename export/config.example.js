@@ -1,7 +1,7 @@
 module.exports = {
   academicYear: '2017-2018',
 
-  // Path to the Chrome executable - for Puppeteer 0.13, use Chrome 64.
+  // Path to the Chrome executable - for Puppeteer 0.13, use Chrome 64
   // If left blank during development will use Chromium instead - note that PDF
   // export does not work with Chromium. In production leaving this blank will
   // throw an error

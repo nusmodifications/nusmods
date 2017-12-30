@@ -17,6 +17,6 @@
     "koa": "^2.4.1",
     "koa-router": "^7.3.0",
     "lodash": "^4.17.4",
-    "puppeteer": "^0.13.0"
+    "puppeteer": "0.13.0"
   }
 }
