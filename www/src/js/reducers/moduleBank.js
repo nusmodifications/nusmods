@@ -4,10 +4,10 @@ import type { Module, ModuleCode, Semester } from 'types/modules';
 import type { SemTimetableConfig } from 'types/timetables';
 import type { ModuleList, ModuleSelectListItem, ModuleCodeMap } from 'types/reducers';
 
-import { zipObject, keyBy } from 'lodash';
+import { keyBy, zipObject } from 'lodash';
 
-import { SET_MODULES } from 'actions/export';
 import { FETCH_MODULE_LIST, FETCH_MODULE } from 'actions/moduleBank';
+import { SET_EXPORTED_DATA } from 'actions/export';
 import * as RequestResultCases from 'middlewares/requests-middleware';
 
 export type ModulesMap = {
@@ -53,7 +53,7 @@ function moduleBank(state: ModuleBank = defaultModuleBankState, action: FSA): Mo
         },
       };
 
-    case SET_MODULES:
+    case SET_EXPORTED_DATA:
       return {
         ...state,
         modules: keyBy(action.payload.modules, (module: Module) => module.ModuleCode),

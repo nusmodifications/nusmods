@@ -8,6 +8,8 @@ export type ExportData = {
   semester: Semester,
   timetable: SemTimetableConfig,
   theme: ThemeState,
-  hiddenInTimetable: ModuleCode[],
-  mode: Mode,
+  settings: {
+    hiddenInTimetable: ModuleCode[],
+    mode: Mode,
+  },
 };

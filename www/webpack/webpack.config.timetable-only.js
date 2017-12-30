@@ -19,7 +19,7 @@ const productionConfig = merge([
   commonConfig,
   {
     // Override common's entry point
-    entry: source('main.js'),
+    entry: source('main.jsx'),
     // Don't attempt to continue if there are any errors.
     bail: true,
     // We generate sourcemaps in production. This is slow but gives good results.

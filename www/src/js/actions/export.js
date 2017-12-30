@@ -2,14 +2,12 @@
 import ical from 'ical-generator';
 
 import type { Module, Semester } from 'types/modules';
-import type { ExportData } from 'types/export';
 import type { State } from 'reducers';
-import type { FSA } from 'types/redux';
+
 import { iCalForTimetable } from 'utils/ical';
-import { hideLessonInTimetable, selectMode } from 'actions/settings';
-import { setTimetable } from 'actions/timetables';
-import { selectTheme, setTimetableOrientation } from 'actions/theme';
 import { hydrateSemTimetableWithLessons } from 'utils/timetables';
+import type { ExportData } from 'types/export';
+import type { FSA } from 'types/redux';
 
 function downloadUrl(blob: Blob, filename: string) {
   const link = document.createElement('a');
@@ -44,31 +42,13 @@ export function downloadAsIcal(semester: Semester) {
   };
 }
 
-export function setExportedData({
-  semester,
-  timetable,
-  mode,
-  hiddenInTimetable,
-  theme,
-}: ExportData) {
-  return (dispatch: Function) => {
-    // Timetable
-    dispatch(setTimetable(semester, timetable, theme.colors));
-
-    // Theme
-    dispatch(selectTheme(theme.id));
-    dispatch(setTimetableOrientation(theme.timetableOrientation));
-
-    // Settings
-    dispatch(selectMode(mode));
-    hiddenInTimetable.forEach((moduleCode) => dispatch(hideLessonInTimetable(moduleCode)));
-  };
-}
-
-export const SET_MODULES = 'SET_MODULES';
-export function setModules(modules: Module[]): FSA {
+export const SET_EXPORTED_DATA = 'SET_EXPORTED_DATA';
+export function setExportedData(modules: Module[], data: ExportData): FSA {
   return {
-    type: SET_MODULES,
-    payload: { modules },
+    type: SET_EXPORTED_DATA,
+    payload: {
+      modules,
+      ...data,
+    },
   };
 }

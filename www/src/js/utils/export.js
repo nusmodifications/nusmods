@@ -9,8 +9,10 @@ export function extractStateForExport(semester: Semester, state: State): ExportD
     semester,
     timetable: state.timetables[semester] || {},
     theme: state.theme,
-    hiddenInTimetable: state.settings.hiddenInTimetable,
-    mode: state.settings.mode,
+    settings: {
+      hiddenInTimetable: state.settings.hiddenInTimetable,
+      mode: state.settings.mode,
+    },
   };
 }
 
@@ -19,8 +21,4 @@ export function serializeExportState(data: ExportData, options: Object = {}): st
     data: JSON.stringify(data),
     ...options,
   });
-}
-
-export function deserializeExportState(serialized: string): ExportData {
-  return JSON.parse(qs.parse(serialized).data);
 }

@@ -5,6 +5,7 @@ import type { Theme } from 'types/settings';
 
 import { omit, values } from 'lodash';
 import { getNewColor } from 'utils/colors';
+import { SET_EXPORTED_DATA } from 'actions/export';
 import { ADD_MODULE, REMOVE_MODULE, SET_TIMETABLE } from 'actions/timetables';
 import {
   SELECT_THEME,
@@ -54,6 +55,8 @@ function colors(state: ColorMapping, action: FSA): ColorMapping {
         ...state,
         [action.payload.moduleCode]: action.payload.colorIndex,
       };
+    case SET_EXPORTED_DATA:
+      return action.payload.theme;
     default:
       return state;
   }
