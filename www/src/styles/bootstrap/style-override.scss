@@ -30,7 +30,7 @@ mark {
   background: var(--body-bg);
   box-shadow: 0 2px 6px rgba(#000, 0.25);
 
-  @include scrollable;
+  @include scrollable-y;
 }
 
 .dropdown-item {
