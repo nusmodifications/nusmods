@@ -38,7 +38,11 @@ async function injectData(page, encodedData) {
   const moduleCodes = Object.keys(data.timetable);
   const modules = await getModules(moduleCodes);
 
-  await page.evaluate(`window.setData(${JSON.stringify(modules)}, ${JSON.stringify(data)})`);
+  await page.evaluate(`
+    new Promise((resolve) => 
+      window.setData(${JSON.stringify(modules)}, ${JSON.stringify(data)}, resolve)
+    )
+  `);
 
   // Calculate element height to get bounding box for screenshot
   const appEle = await page.$('#timetable-only');
@@ -47,20 +51,32 @@ async function injectData(page, encodedData) {
   return appEle.boundingBox();
 }
 
+async function resetPage(page) {
+  await page.evaluate('window.resetData()');
+}
+
 async function image(page, data) {
   const boundingBox = await injectData(page, data);
-  return page.screenshot({
+  const image = await page.screenshot({
     clip: boundingBox,
   });
+
+  await resetPage(page);
+
+  return image;
 }
 
 async function pdf(page, data) {
   await injectData(page, data);
   await page.emulateMedia('screen');
-  return page.pdf({
+  const pdf = await page.pdf({
     printBackground: true,
     landscape: true,
   });
+
+  await resetPage(page);
+
+  return pdf;
 }
 
 module.exports = {
