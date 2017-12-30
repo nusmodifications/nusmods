@@ -20,7 +20,7 @@ cd ../www
 yarn start 
 yarn start:export
 
-# Start export server - use "yarn start" if you don't need the browser 
+# Start export server - use "yarn devtools" if need to see the graphical browser with  
 # developer tools. Note that PDF export does not work if this is set. 
 cd ../export 
 yarn dev
@@ -38,7 +38,7 @@ Supports
 
 ### GET `/pdf`
 
-Download PDF of the timetable.   
+Download PDF of the timetable.
 
 ### GET `/image`
 

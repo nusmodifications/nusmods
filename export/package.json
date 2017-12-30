@@ -7,12 +7,14 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "nodemon ./app.js",
-    "dev": "DEVTOOLS=1 nodemon ./app.js"
+    "start": "forever start --killSignal=SIGTERM -c 'nodemon --exitcrash' ./app.js",
+    "dev": "nodemon ./app.js",
+    "devtools": "DEVTOOLS=1 nodemon ./app.js"
   },
   "dependencies": {
     "axios": "^0.17.1",
     "bunyan": "^1.8.12",
+    "forever": "^0.15.3",
     "fs-extra": "^5.0.0",
     "http-graceful-shutdown": "^2.0.6",
     "koa": "^2.4.1",
