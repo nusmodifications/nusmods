@@ -33,11 +33,11 @@ export class ExportMenuComponent extends PureComponent<Props> {
         this.props.downloadAsIcal(semester);
         return;
       case PDF:
-        window.location = exportApi.pdf(semester, state);
+        window.open(exportApi.pdf(semester, state), '_blank');
         return;
       case IMAGE:
       default:
-        window.location = exportApi.image(semester, state);
+        window.open(exportApi.image(semester, state), '_blank');
     }
   };
 

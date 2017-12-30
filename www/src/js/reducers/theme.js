@@ -55,8 +55,6 @@ function colors(state: ColorMapping, action: FSA): ColorMapping {
         ...state,
         [action.payload.moduleCode]: action.payload.colorIndex,
       };
-    case SET_EXPORTED_DATA:
-      return action.payload.theme;
     default:
       return state;
   }
@@ -95,6 +93,8 @@ function theme(state: ThemeState = defaultThemeState, action: FSA): ThemeState {
         ...state,
         timetableOrientation: state.timetableOrientation === VERTICAL ? HORIZONTAL : VERTICAL,
       };
+    case SET_EXPORTED_DATA:
+      return action.payload.theme;
     default:
       return state;
   }

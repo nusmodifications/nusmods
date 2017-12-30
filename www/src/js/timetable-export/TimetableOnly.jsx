@@ -31,7 +31,7 @@ export default class TimetableOnly extends Component<Props, State> {
     const colors = fillColorMapping(timetable, theme.colors);
 
     return (
-      <MemoryRouter>
+      <MemoryRouter initialEntries={['https://nusmods.com']}>
         <Provider store={store}>
           <div id="timetable-only" className={`theme-${theme.id}`}>
             <TimetableContent

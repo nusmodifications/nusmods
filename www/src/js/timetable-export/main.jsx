@@ -7,6 +7,7 @@ import type { ExportData } from 'types/export';
 
 import configureStore from 'stores/configure-store';
 import { setExportedData } from 'actions/export';
+import { DARK_MODE } from 'types/settings';
 
 import TimetableOnly from './TimetableOnly';
 import './main.scss';
@@ -19,6 +20,10 @@ window.store = store;
 // For Puppeteer to import data
 window.setData = function setData(modules: Module[], data: ExportData, callback: Function) {
   const { semester, timetable } = data;
+
+  if (document.body) {
+    document.body.classList.toggle('mode-dark', data.settings.mode === DARK_MODE);
+  }
 
   store.dispatch(setExportedData(modules, data));
 
