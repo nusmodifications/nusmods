@@ -73,12 +73,37 @@ type Props = {
   downloadAsIcal: Function,
 };
 
-class TimetableContent extends Component<Props> {
+type State = {
+  isScrolledHorizontally: boolean,
+};
+
+class TimetableContent extends Component<Props, State> {
   timetableDom: ?HTMLElement;
+  timetableWrapperDom: ?HTMLElement;
+
+  state: State = {
+    isScrolledHorizontally: false,
+  };
+
+  componentDidMount() {
+    if (this.timetableWrapperDom) {
+      this.timetableWrapperDom.addEventListener('scroll', this.handleScroll, { passive: true });
+    }
+  }
 
   componentWillUnmount() {
     this.cancelModifyLesson();
+    if (this.timetableWrapperDom) {
+      this.timetableWrapperDom.removeEventListener('scroll', this.handleScroll);
+    }
   }
+
+  handleScroll = () => {
+    const isScrolledHorizontally =
+      !!this.timetableWrapperDom && this.timetableWrapperDom.scrollLeft > 0;
+    if (this.state.isScrolledHorizontally === isScrolledHorizontally) return;
+    this.setState({ isScrolledHorizontally });
+  };
 
   cancelModifyLesson = () => {
     if (this.props.activeLesson) {
@@ -251,10 +276,16 @@ class TimetableContent extends Component<Props> {
               'col-md-8': isVerticalOrientation,
             })}
           >
-            <div className={styles.timetableWrapper}>
+            <div
+              className={styles.timetableWrapper}
+              ref={(r) => {
+                this.timetableWrapperDom = r;
+              }}
+            >
               <Timetable
                 lessons={arrangedLessonsWithModifiableFlag}
                 isVerticalOrientation={isVerticalOrientation}
+                isScrolledHorizontally={this.state.isScrolledHorizontally}
                 onModifyCell={this.modifyCell}
                 ref={(r) => {
                   this.timetableDom = r && r.timetableDom;
