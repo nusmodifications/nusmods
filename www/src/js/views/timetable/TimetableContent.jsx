@@ -87,7 +87,7 @@ class TimetableContent extends Component<Props, State> {
 
   componentDidMount() {
     if (this.timetableWrapperDom) {
-      this.timetableWrapperDom.addEventListener('scroll', this.handleScroll);
+      this.timetableWrapperDom.addEventListener('scroll', this.handleScroll, { passive: true });
     }
   }
 
@@ -99,9 +99,10 @@ class TimetableContent extends Component<Props, State> {
   }
 
   handleScroll = () => {
-    if (this.timetableWrapperDom) {
-      this.setState({ isScrolledHorizontally: this.timetableWrapperDom.scrollLeft > 0 });
-    }
+    const isScrolledHorizontally =
+      !!this.timetableWrapperDom && this.timetableWrapperDom.scrollLeft > 0;
+    if (this.state.isScrolledHorizontally === isScrolledHorizontally) return;
+    this.setState({ isScrolledHorizontally });
   };
 
   cancelModifyLesson = () => {
