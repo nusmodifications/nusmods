@@ -1,13 +1,14 @@
 {
   "name": "nusmods-export",
   "version": "0.0.1",
-  "description": "Server-side timetable rendering for export service ",
+  "description": "Server-side timetable rendering for NUSMods export service",
   "main": "app.js",
   "author": "NUSModifications",
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "node ./app.js"
+    "start": "nodemon ./app.js",
+    "dev": "DEVTOOLS=1 nodemon ./app.js"
   },
   "dependencies": {
     "axios": "^0.17.1",
@@ -17,6 +18,7 @@
     "koa": "^2.4.1",
     "koa-router": "^7.3.0",
     "lodash": "^4.17.4",
+    "nodemon": "^1.14.6",
     "puppeteer": "0.13.0"
   }
 }
