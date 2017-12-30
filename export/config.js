@@ -5,7 +5,7 @@ module.exports = {
   // If left blank during development will use Chromium instead - note that PDF
   // export does not work with Chromium. In production leaving this blank will
   // throw an error
-  chromeExecutable: null,
+  chromeExecutable: '/opt/google/chrome-beta/chrome',
 
   // If set to a local path, the page will be loaded using setContent - use this
   // for production
