@@ -31,6 +31,19 @@ router
     ctx.attachment('My Timetable.pdf');
   });
 
+// Error handling
+app.use(async (ctx, next) => {
+  try {
+    await next();
+  } catch (e) {
+    if (ctx.page) {
+      await ctx.page.reload();
+    }
+
+    throw e;
+  }
+});
+
 app
   .use(router.routes())
   .use(router.allowedMethods());
