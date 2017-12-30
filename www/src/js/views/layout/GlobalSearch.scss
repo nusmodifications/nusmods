@@ -74,7 +74,7 @@ $icon-dist-lg: $input-width-open-lg - $input-width;
 }
 
 .selectList {
-  composes: list-unstyled scrollable from global;
+  composes: list-unstyled scrollable-y from global;
   position: absolute;
   top: $navbar-height - 0.5rem;
   right: 0;
