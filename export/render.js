@@ -7,6 +7,14 @@ const { getModules } = require('./data');
 // Arbitrarily high number - just make sure it doesn't clip the timetable
 const VIEWPORT_HEIGHT = 2000;
 
+async function setViewport(page, deviceScaleFactor = 1) {
+  await page.setViewport({
+    deviceScaleFactor,
+    width: config.pageWidth,
+    height: VIEWPORT_HEIGHT,
+  })
+}
+
 async function launch() {
   const executablePath = config.chromeExecutable ?
     config.chromeExecutable : undefined;
@@ -25,10 +33,7 @@ async function launch() {
     await page.setContent(content);
   }
 
-  await page.setViewport({
-    width: config.pageWidth,
-    height: VIEWPORT_HEIGHT,
-  });
+  await setViewport(page);
 
   return [browser, page];
 }
@@ -51,7 +56,11 @@ async function injectData(page, encodedData) {
   return appEle.boundingBox();
 }
 
-async function image(page, data) {
+async function image(page, data, options = {}) {
+  if (options.pixelRatio) {
+    await setViewport(page, Number(options.pixelRatio));
+  }
+
   const boundingBox = await injectData(page, data);
   return await page.screenshot({
     clip: boundingBox,

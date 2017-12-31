@@ -3,6 +3,7 @@ const Koa = require('koa');
 const Router = require('koa-router');
 const gracefulShutdown = require('http-graceful-shutdown');
 const Raven = require('raven');
+const _ = require('lodash');
 
 const render = require('./render');
 const config = require('./config');
@@ -38,7 +39,7 @@ const router = new Router();
 
 router
   .get('/image', async (ctx) => {
-    ctx.body = await render.image(ctx.page, ctx.query.data);
+    ctx.body = await render.image(ctx.page, ctx.query.data, _.omit(ctx.query, ['data']));
     ctx.attachment('My Timetable.png');
   })
   .get('/pdf', async (ctx) => {

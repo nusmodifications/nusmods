@@ -55,7 +55,7 @@ export class ExportMenuComponent extends PureComponent<Props> {
             {isOpen && (
               <div className={classnames('dropdown-menu show', styles.dropdownMenu)}>
                 <a
-                  href={exportApi.image(semester, state)}
+                  href={exportApi.image(semester, state, window.devicePixelRatio)}
                   className={classnames('dropdown-item', {
                     'dropdown-selected': highlightedIndex === 0,
                   })}
