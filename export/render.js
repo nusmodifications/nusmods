@@ -21,7 +21,7 @@ async function launch() {
   if (/^https?:\/\//.test(config.page)) {
     await page.goto(config.page);
   } else {
-    const content = fs.readFile(config.page, 'utf-8');
+    const content = await fs.readFile(config.page, 'utf-8');
     await page.setContent(content);
   }
 
