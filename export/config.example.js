@@ -19,4 +19,7 @@ module.exports = {
   // NUSMods API will be used instead. In production leaving this as null will
   // throw an error.
   moduleData: null,
+
+  // DSN used to report errors to Raven - used only in production
+  ravenDsn: '',
 };
