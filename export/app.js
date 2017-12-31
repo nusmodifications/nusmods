@@ -53,7 +53,7 @@ router
     ctx.attachment('My Timetable.pdf');
   })
   .get('/debug', async (ctx) => {
-    ctx.body = await ctx.page.content();
+    ctx.body = await ctx.state.page.content();
   });
 
 // Error handling
