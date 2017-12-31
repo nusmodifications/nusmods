@@ -26,26 +26,19 @@ type Props = {
 
 export class ExportMenuComponent extends PureComponent<Props> {
   onChange = (item: ExportAction) => {
-    const { semester, state } = this.props;
-
-    switch (item) {
-      case CALENDAR:
-        this.props.downloadAsIcal(semester);
-        return;
-      case PDF:
-        window.open(exportApi.pdf(semester, state), '_blank');
-        return;
-      case IMAGE:
-      default:
-        window.open(exportApi.image(semester, state), '_blank');
+    const { semester } = this.props;
+    if (item === CALENDAR) {
+      this.props.downloadAsIcal(semester);
     }
   };
 
   render() {
+    const { semester, state } = this.props;
+
     return (
       <Downshift
         onChange={this.onChange}
-        render={({ isOpen, getItemProps, toggleMenu }) => (
+        render={({ isOpen, getItemProps, toggleMenu, highlightedIndex }) => (
           <div className={styles.exportMenu}>
             <button
               className={classnames(styles.toggle, 'btn btn-outline-primary btn-svg')}
@@ -57,9 +50,31 @@ export class ExportMenuComponent extends PureComponent<Props> {
             </button>
             {isOpen && (
               <div className={classnames('dropdown-menu show', styles.dropdownMenu)}>
+                <a
+                  href={exportApi.image(semester, state)}
+                  className={classnames('dropdown-item', {
+                    'dropdown-selected': highlightedIndex === 0,
+                  })}
+                  {...getItemProps({ item: IMAGE })}
+                >
+                  <Image className="svg svg-small" /> Image (.png)
+                </a>
+
+                <a
+                  href={exportApi.pdf(semester, state)}
+                  className={classnames('dropdown-item', {
+                    'dropdown-selected': highlightedIndex === 1,
+                  })}
+                  {...getItemProps({ item: PDF })}
+                >
+                  <FileText className="svg svg-small" /> PDF (.pdf)
+                </a>
+
                 {SUPPORTS_DOWNLOAD && (
                   <button
-                    className="dropdown-item"
+                    className={classnames('dropdown-item', {
+                      'dropdown-selected': highlightedIndex === 2,
+                    })}
                     type="button"
                     {...getItemProps({ item: CALENDAR })}
                   >
@@ -67,14 +82,6 @@ export class ExportMenuComponent extends PureComponent<Props> {
                     (For Google Calendar / Outlook)
                   </button>
                 )}
-
-                <button className="dropdown-item" type="button" {...getItemProps({ item: PDF })}>
-                  <FileText className="svg svg-small" /> PDF (.pdf)
-                </button>
-
-                <button className="dropdown-item" type="button" {...getItemProps({ item: IMAGE })}>
-                  <Image className="svg svg-small" /> Image (.png)
-                </button>
               </div>
             )}
           </div>
