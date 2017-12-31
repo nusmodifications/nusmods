@@ -41,7 +41,7 @@ mark {
   &:focus,
   &.dropdown-selected {
     color: theme-color();
-    background: var(--gray-lighter);
+    background: var(--gray-lightest);
   }
 
   &.dropdown-selected:active {

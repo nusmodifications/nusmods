@@ -1,6 +1,8 @@
 @import "~styles/utils/modules-entry";
 
 .exportMenu {
+  position: relative;
+
   .toggle {
     width: 100%;
   }
@@ -10,9 +12,7 @@
   }
 
   .dropdownMenu {
-    right: $grid-gutter-width / 2;
-    left: auto;
-    width: 20rem;
+    width: 16rem;
 
     svg {
       margin-right: 0.2rem;
@@ -20,14 +20,19 @@
     }
 
     @include media-breakpoint-down(xs) {
-      right: $grid-gutter-width / 2;
-      left: $grid-gutter-width / 2;
       width: auto;
     }
 
     @include media-breakpoint-up(md) {
       font-size: $font-size-sm;
     }
+  }
+}
+
+@include media-breakpoint-only(md) {
+  :global(.verticalMode) .dropdownMenu {
+    right: 0;
+    left: auto;
   }
 }
 
