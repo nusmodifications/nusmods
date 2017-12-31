@@ -33,6 +33,8 @@ function parseExportData(ctx, next) {
       ctx.status = 422;
     }
   }
+
+  return next();
 }
 
 module.exports = {
