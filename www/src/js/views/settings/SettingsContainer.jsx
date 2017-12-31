@@ -1,15 +1,18 @@
 // @flow
-import React, { Fragment } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import deferComponentRender from 'views/hocs/deferComponentRender';
 import classnames from 'classnames';
 import Helmet from 'react-helmet';
+import localforage from 'localforage';
 
-import type { Faculty } from 'types/modules';
+import type { Faculty, ModuleCode } from 'types/modules';
 import type { Mode } from 'types/settings';
 import type { CorsNotificationSettings } from 'types/reducers';
-import type { State } from 'reducers';
+import type { State as StoreState } from 'reducers';
 
+import availableThemes from 'data/themes.json';
 import config from 'config';
 import { selectTheme } from 'actions/theme';
 import {
@@ -20,7 +23,7 @@ import {
   enableCorsNotification,
   toggleCorsNotificationGlobally,
 } from 'actions/settings';
-import availableThemes from 'data/themes.json';
+import { modulePage } from 'views/routes/paths';
 // import FacultySelect from 'views/components/FacultySelect';
 // import NewStudentSelect from 'views/components/NewStudentSelect';
 import ScrollToTop from 'views/components/ScrollToTop';
@@ -54,21 +57,40 @@ type Props = {
   toggleCorsNotificationGlobally: Function,
 };
 
-function SettingsContainer(props: Props) {
-  const corsRound = currentRound();
-  const isSnoozed = corsRound && props.corsNotification.dismissed.includes(corsRound.round);
-  const corsText = corsNotificationText(false);
+type State = {
+  bookmarks: ModuleCode[],
+};
 
-  return (
-    <div className={classnames(styles.settingsPage, 'page-container')}>
-      <ScrollToTop onComponentWillMount />
-      <Helmet>
-        <title>Settings - {config.brandName}</title>
-      </Helmet>
+class SettingsContainer extends Component<Props, State> {
+  state = {
+    bookmarks: [],
+  };
 
-      <h1 className={styles.title}>Settings</h1>
+  componentDidMount() {
+    localforage.getItem('module:bookmarks:bookmarkedModules:').then((bookmarks) => {
+      if (bookmarks) {
+        this.setState({ bookmarks });
+      }
+    });
+  }
 
-      {/* TODO: Finish the CORS bidding stats filter feature and re-enable this
+  render() {
+    const { corsNotification, mode, currentThemeId } = this.props;
+
+    const corsRound = currentRound();
+    const isSnoozed = corsRound && corsNotification.dismissed.includes(corsRound.round);
+    const corsText = corsNotificationText(false);
+
+    return (
+      <div className={classnames(styles.settingsPage, 'page-container')}>
+        <ScrollToTop onComponentWillMount />
+        <Helmet>
+          <title>Settings - {config.brandName}</title>
+        </Helmet>
+
+        <h1 className={styles.title}>Settings</h1>
+
+        {/* TODO: Finish the CORS bidding stats filter feature and re-enable this
       <h4>New Student</h4>
       <div className={classnames(styles.toggleRow, 'row')}>
         <div className={classnames(styles.toggleDescription, 'col-sm-7')}>
@@ -99,107 +121,130 @@ function SettingsContainer(props: Props) {
       </div>
       <hr />
       */}
-      {supportsCSSVariables() && (
-        <div>
-          <h4>Night Mode</h4>
-          <div className={classnames(styles.toggleRow, 'row')}>
-            <div className={classnames(styles.toggleDescription, 'col-sm-7')}>
-              <p>
-                Night mode turns the light surfaces of the page dark, creating an experience ideal
-                for the dark. Try it out!
-              </p>
-              <p>
-                Protip: Press <kbd>X</kbd> to toggle modes anywhere on NUSMods.
-              </p>
-            </div>
-            <div className={classnames('col-sm-4 offset-sm-1', styles.toggle)}>
-              <ModeSelect mode={props.mode} onSelectMode={props.selectMode} />
-            </div>
-          </div>
-          <hr />
-        </div>
-      )}
-
-      <h4>Theme</h4>
-
-      <p>Liven up your timetable with different color schemes!</p>
-      <p>
-        Protip: Press <kbd>Z</kbd>/<kbd>C</kbd> to cycle through the themes anywhere on NUSMods.
-      </p>
-
-      <div className={styles.preview}>
-        <Timetable lessons={previewTimetable} />
-      </div>
-
-      <div>
-        {availableThemes.map((theme) => (
-          <ThemeOption
-            key={theme.id}
-            className={styles.themeOption}
-            theme={theme}
-            isSelected={props.currentThemeId === theme.id}
-            onSelectTheme={props.selectTheme}
-          />
-        ))}
-      </div>
-
-      <hr />
-
-      <h4>CORS Bidding Reminder</h4>
-
-      <div className={styles.notificationPreview}>
-        <CorsNotification hideCloseButton />
-      </div>
-
-      <div className={classnames(styles.toggleRow, 'row')}>
-        <div className={classnames(styles.toggleDescription, 'col-sm-7')}>
-          <p>You can get a reminder about when CORS bidding starts with a small notification.</p>
-          {corsText && <p>{corsText}</p>}
-        </div>
-        <div className={classnames('col-sm-4 offset-sm-1', styles.toggle)}>
-          <Toggle
-            isOn={props.corsNotification.enabled}
-            onChange={props.toggleCorsNotificationGlobally}
-          />
-        </div>
-      </div>
-
-      <hr />
-
-      {props.corsNotification.enabled &&
-        corsRound && (
-          <Fragment>
+        {supportsCSSVariables() && (
+          <div>
+            <h4>Night Mode</h4>
             <div className={classnames(styles.toggleRow, 'row')}>
               <div className={classnames(styles.toggleDescription, 'col-sm-7')}>
                 <p>
-                  {isSnoozed
-                    ? 'You have snoozed reminders until the end of this round'
-                    : 'You can also temporarily snooze the notification until the end of this round.'}
+                  Night mode turns the light surfaces of the page dark, creating an experience ideal
+                  for the dark. Try it out!
+                </p>
+                <p>
+                  Protip: Press <kbd>X</kbd> to toggle modes anywhere on NUSMods.
                 </p>
               </div>
               <div className={classnames('col-sm-4 offset-sm-1', styles.toggle)}>
-                <button
-                  className="btn btn-outline-primary"
-                  type="button"
-                  onClick={() =>
-                    isSnoozed
-                      ? props.enableCorsNotification(corsRound.round)
-                      : props.dismissCorsNotification(corsRound.round)
-                  }
-                >
-                  {isSnoozed ? 'Unsnooze' : 'Snooze'}
-                </button>
+                <ModeSelect mode={mode} onSelectMode={this.props.selectMode} />
               </div>
             </div>
-
             <hr />
-          </Fragment>
+          </div>
         )}
-    </div>
-  );
+
+        <h4>Theme</h4>
+
+        <p>Liven up your timetable with different color schemes!</p>
+        <p>
+          Protip: Press <kbd>Z</kbd>/<kbd>C</kbd> to cycle through the themes anywhere on NUSMods.
+        </p>
+
+        <div className={styles.preview}>
+          <Timetable lessons={previewTimetable} />
+        </div>
+
+        <div>
+          {availableThemes.map((theme) => (
+            <ThemeOption
+              key={theme.id}
+              className={styles.themeOption}
+              theme={theme}
+              isSelected={currentThemeId === theme.id}
+              onSelectTheme={this.props.selectTheme}
+            />
+          ))}
+        </div>
+
+        <hr />
+
+        <h4>CORS Bidding Reminder</h4>
+
+        <div className={styles.notificationPreview}>
+          <CorsNotification hideCloseButton />
+        </div>
+
+        <div className={classnames(styles.toggleRow, 'row')}>
+          <div className={classnames(styles.toggleDescription, 'col-sm-7')}>
+            <p>You can get a reminder about when CORS bidding starts with a small notification.</p>
+            {corsText && <p>{corsText}</p>}
+          </div>
+          <div className={classnames('col-sm-4 offset-sm-1', styles.toggle)}>
+            <Toggle
+              isOn={corsNotification.enabled}
+              onChange={this.props.toggleCorsNotificationGlobally}
+            />
+          </div>
+        </div>
+
+        <hr />
+
+        {corsNotification.enabled &&
+          corsRound && (
+            <Fragment>
+              <div className={classnames(styles.toggleRow, 'row')}>
+                <div className={classnames(styles.toggleDescription, 'col-sm-7')}>
+                  <p>
+                    {isSnoozed
+                      ? 'You have snoozed reminders until the end of this round'
+                      : 'You can also temporarily snooze the notification until the end of this round.'}
+                  </p>
+                </div>
+                <div className={classnames('col-sm-4 offset-sm-1', styles.toggle)}>
+                  <button
+                    className="btn btn-outline-primary"
+                    type="button"
+                    onClick={() =>
+                      isSnoozed
+                        ? this.props.enableCorsNotification(corsRound.round)
+                        : this.props.dismissCorsNotification(corsRound.round)
+                    }
+                  >
+                    {isSnoozed ? 'Unsnooze' : 'Snooze'}
+                  </button>
+                </div>
+              </div>
+            </Fragment>
+          )}
+
+        <hr />
+
+        {this.state.bookmarks && (
+          <div>
+            <h4>Bookmarks from v2</h4>
+            <p>
+              You have bookmarked the following modules in v2. Bookmarks are no longer supported in
+              NUSMods R, but you can still view your previously saved bookmarks here.
+            </p>
+
+            <div className="alert alert-danger">
+              <strong>Please save these elsewhere as this will be removed by next semester.</strong>
+            </div>
+
+            <ul>
+              {this.state.bookmarks.map((moduleCode) => (
+                <li>
+                  <Link to={modulePage(moduleCode)}>{moduleCode}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    );
+  }
 }
 
-const mapStateToProps = (state: State) => ({
+const mapStateToProps = (state: StoreState) => ({
   newStudent: state.settings.newStudent,
   faculty: state.settings.faculty,
   mode: state.settings.mode,

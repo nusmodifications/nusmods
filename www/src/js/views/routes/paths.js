@@ -38,7 +38,7 @@ export function isV2TimetablePageUrl(params: { [string]: ?string }): boolean {
 }
 
 // Module Code, Module Title -> Module page path
-export function modulePage(moduleCode: ModuleCode, moduleTitle: ModuleTitle): string {
+export function modulePage(moduleCode: ModuleCode, moduleTitle: ModuleTitle = ''): string {
   return `/modules/${moduleCode}/${kebabCase(moduleTitle)}`;
 }
 
