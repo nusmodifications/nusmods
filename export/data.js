@@ -16,7 +16,11 @@ async function fetchModule(moduleCode) {
 }
 
 async function getModules(moduleCodes) {
-  return Promise.all(moduleCodes.map(fetchModule));
+  const modules = await Promise.all(
+    moduleCodes.map(fetchModule).catch(() => null)
+  );
+
+  return modules.filter(Boolean);
 }
 
 module.exports = {

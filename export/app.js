@@ -1,3 +1,4 @@
+const fs = require('fs-extra');
 const Koa = require('koa');
 const Router = require('koa-router');
 const gracefulShutdown = require('http-graceful-shutdown');
@@ -9,6 +10,11 @@ const config = require('./config');
 if (process.env.NODE_ENV === 'production') {
   if (!config.moduleData) {
     throw new Error('No moduleData path set - check config.js. ' +
+      'This should be the path to the api/<academic year>/modules folder.');
+  }
+
+  if (!fs.existsSync(config.moduleData) || !fs.lstatSync(config.moduleData).isDirectory()) {
+    throw new Error('moduleData path does not exist or is not a directory - check config.js. ' +
       'This should be the path to the api/<academic year>/modules folder.');
   }
 }
