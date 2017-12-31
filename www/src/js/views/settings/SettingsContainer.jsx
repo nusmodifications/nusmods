@@ -217,27 +217,30 @@ class SettingsContainer extends Component<Props, State> {
 
         <hr />
 
-        {this.state.bookmarks && (
-          <div>
-            <h4>Bookmarks from previous version of NUSMods</h4>
-            <p>
-              Bookmarks are no longer supported in NUSMods R, but you can still view your previously
-              saved bookmarks here.
-            </p>
+        {this.state.bookmarks &&
+          this.state.bookmarks.length > 0 && (
+            <div>
+              <h4>Bookmarks from previous version of NUSMods</h4>
+              <p>
+                Bookmarks are no longer supported in NUSMods R, but you can still view your
+                previously saved bookmarks here.
+              </p>
 
-            <ul>
-              {this.state.bookmarks.map((moduleCode) => (
-                <li>
-                  <LinkModuleCodes>{moduleCode}</LinkModuleCodes>
-                </li>
-              ))}
-            </ul>
+              <ul>
+                {this.state.bookmarks.map((moduleCode) => (
+                  <li>
+                    <LinkModuleCodes>{moduleCode}</LinkModuleCodes>
+                  </li>
+                ))}
+              </ul>
 
-            <div className="alert alert-danger">
-              <strong>Please save these elsewhere as this will be removed by next semester.</strong>
+              <div className="alert alert-danger">
+                <strong>
+                  Please save these elsewhere as this will be removed by next semester.
+                </strong>
+              </div>
             </div>
-          </div>
-        )}
+          )}
       </div>
     );
   }
