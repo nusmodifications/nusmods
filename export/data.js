@@ -17,7 +17,7 @@ async function fetchModule(moduleCode) {
 
 async function getModules(moduleCodes) {
   const modules = await Promise.all(
-    moduleCodes.map(fetchModule).catch(() => null)
+    moduleCodes.map(moduleCode => fetchModule(moduleCode).catch(() => null))
   );
 
   return modules.filter(Boolean);

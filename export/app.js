@@ -59,6 +59,7 @@ app.use(async (ctx, next) => {
 
 app.on('error', (err) => {
   Raven.captureException(err);
+  console.error(err);
 });
 
 app
