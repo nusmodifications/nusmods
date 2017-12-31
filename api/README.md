@@ -40,7 +40,7 @@ browsers is not required.
 ### jQuery Example
 
 ```js
-$.getJSON("http://api.nusmods.com/2015-2016/1/moduleList.json", function(data) {
+$.getJSON('http://api.nusmods.com/2015-2016/1/moduleList.json', function(data) {
   console.log(data);
 });
 ```
@@ -53,10 +53,10 @@ If supporting legacy browsers is required, JSONP can be used instead.
 
 ```js
 $.getJSON(
-  "http://api.nusmods.com/2015-2016/1/moduleList.json?callback=?",
+  'http://api.nusmods.com/2015-2016/1/moduleList.json?callback=?',
   function(data) {
     console.log(data);
-  }
+  },
 );
 ```
 
@@ -265,12 +265,12 @@ Many of the tasks have multiple targets, and can have more defined if necessary.
 If you want to parse a specific year or semester, take a look at `gulpfile.babel.js`. Each task will look something like below:
 
 ```js
-gulp.task("bulletinModules", () => {
+gulp.task('bulletinModules', () => {
   const subtasks = iterateSems({
     from: 2017, // change this to year you want to start from
     to: 2018, // year to end parsing
     semesters: [1, 2, 3, 4], // sem 1, 2 and the 2 special semesters
-    config: config.bulletinModules // configuration as found in config.js
+    config: config.bulletinModules, // configuration as found in config.js
   });
 
   const bulletinModules = R.map(tasks.bulletinModules, subtasks);
