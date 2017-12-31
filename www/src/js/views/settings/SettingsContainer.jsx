@@ -1,7 +1,6 @@
 // @flow
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import deferComponentRender from 'views/hocs/deferComponentRender';
 import classnames from 'classnames';
 import Helmet from 'react-helmet';
@@ -23,11 +22,11 @@ import {
   enableCorsNotification,
   toggleCorsNotificationGlobally,
 } from 'actions/settings';
-import { modulePage } from 'views/routes/paths';
 // import FacultySelect from 'views/components/FacultySelect';
 // import NewStudentSelect from 'views/components/NewStudentSelect';
 import ScrollToTop from 'views/components/ScrollToTop';
 import Timetable from 'views/timetable/Timetable';
+import LinkModuleCodes from 'views/components/LinkModuleCodes';
 import CorsNotification, {
   corsNotificationText,
 } from 'views/components/cors-info/CorsNotification';
@@ -220,23 +219,23 @@ class SettingsContainer extends Component<Props, State> {
 
         {this.state.bookmarks && (
           <div>
-            <h4>Bookmarks from v2</h4>
+            <h4>Bookmarks from previous version of NUSMods</h4>
             <p>
-              You have bookmarked the following modules in v2. Bookmarks are no longer supported in
-              NUSMods R, but you can still view your previously saved bookmarks here.
+              Bookmarks are no longer supported in NUSMods R, but you can still view your previously
+              saved bookmarks here.
             </p>
-
-            <div className="alert alert-danger">
-              <strong>Please save these elsewhere as this will be removed by next semester.</strong>
-            </div>
 
             <ul>
               {this.state.bookmarks.map((moduleCode) => (
                 <li>
-                  <Link to={modulePage(moduleCode)}>{moduleCode}</Link>
+                  <LinkModuleCodes>{moduleCode}</LinkModuleCodes>
                 </li>
               ))}
             </ul>
+
+            <div className="alert alert-danger">
+              <strong>Please save these elsewhere as this will be removed by next semester.</strong>
+            </div>
           </div>
         )}
       </div>
