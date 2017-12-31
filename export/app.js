@@ -39,11 +39,13 @@ const router = new Router();
 
 router
   .get('/image', async (ctx) => {
-    ctx.body = await render.image(ctx.page, ctx.query.data, _.omit(ctx.query, ['data']));
+    const data = JSON.parse(ctx.query.data);
+    ctx.body = await render.image(ctx.page, data, _.omit(ctx.query, ['data']));
     ctx.attachment('My Timetable.png');
   })
   .get('/pdf', async (ctx) => {
-    ctx.body = await render.pdf(ctx.page, ctx.query.data);
+    const data = JSON.parse(ctx.query.data);
+    ctx.body = await render.pdf(ctx.page, data);
     ctx.attachment('My Timetable.pdf');
   })
   .get('/debug', async (ctx) => {

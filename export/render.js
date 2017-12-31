@@ -38,8 +38,7 @@ async function launch() {
   return [browser, page];
 }
 
-async function injectData(page, encodedData) {
-  const data = JSON.parse(encodedData);
+async function injectData(page, data) {
   const moduleCodes = Object.keys(data.timetable);
   const modules = await getModules(moduleCodes);
 
@@ -70,9 +69,11 @@ async function image(page, data, options = {}) {
 async function pdf(page, data) {
   await injectData(page, data);
   await page.emulateMedia('screen');
+
   return await page.pdf({
     printBackground: true,
-    landscape: true,
+    format: 'A4',
+    landscape: data.theme.timetableOrientation === 'HORIZONTAL',
   });
 }
 
