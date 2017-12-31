@@ -104,3 +104,9 @@
     font-size: 1rem;
   }
 }
+
+.hiddenOnMobile {
+  @include media-breakpoint-down(sm) {
+    display: none;
+  }
+}
