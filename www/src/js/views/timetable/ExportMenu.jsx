@@ -9,7 +9,7 @@ import type { State } from 'reducers';
 import type { Semester } from 'types/modules';
 import exportApi from 'apis/export';
 import { downloadAsIcal, SUPPORTS_DOWNLOAD } from 'actions/export';
-import { Image, Calendar, FileText, Upload, ChevronDown } from 'views/components/icons';
+import { Image, Calendar, FileText, Download, ChevronDown } from 'views/components/icons';
 
 import styles from './ExportMenu.scss';
 
@@ -45,9 +45,13 @@ export class ExportMenuComponent extends PureComponent<Props> {
               type="button"
               onClick={toggleMenu}
             >
-              <Upload className="svg svg-small" /> Export
+              <Download className="svg svg-small" /> Download<span className={styles.longLabel}>
+                {' '}
+                As
+              </span>
               <ChevronDown className={classnames(styles.chevron, 'svg-small')} />
             </button>
+
             {isOpen && (
               <div className={classnames('dropdown-menu show', styles.dropdownMenu)}>
                 <a

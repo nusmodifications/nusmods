@@ -30,3 +30,13 @@
     }
   }
 }
+
+.longLabel {
+  white-space: pre;
+}
+
+:global(.verticalMode) .longLabel {
+  @include media-breakpoint-only(md) {
+    display: none;
+  }
+}

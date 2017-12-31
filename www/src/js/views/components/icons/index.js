@@ -9,6 +9,7 @@ import ChevronDown from 'react-feather/dist/icons/chevron-down';
 import Close from 'react-feather/dist/icons/x';
 import Clock from 'react-feather/dist/icons/clock';
 import Copy from 'react-feather/dist/icons/copy';
+import Download from 'react-feather/dist/icons/download';
 import Eye from 'react-feather/dist/icons/eye';
 import EyeOff from 'react-feather/dist/icons/eye-off';
 import Facebook from 'react-feather/dist/icons/facebook';
@@ -29,7 +30,6 @@ import Search from 'react-feather/dist/icons/search';
 import Sidebar from 'react-feather/dist/icons/sidebar';
 import Twitter from 'react-feather/dist/icons/twitter';
 import Trash2 from 'react-feather/dist/icons/trash-2';
-import Upload from 'react-feather/dist/icons/upload';
 
 export {
   AlertTriangle,
@@ -41,6 +41,7 @@ export {
   Close,
   Clock,
   Copy,
+  Download,
   Eye,
   EyeOff,
   Facebook,
@@ -61,5 +62,4 @@ export {
   Sidebar,
   Twitter,
   Trash2,
-  Upload,
 };

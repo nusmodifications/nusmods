@@ -79,7 +79,7 @@
     @include layout-2;
   }
 
-  @include media-breakpoint-up(xl) {
+  @media (min-width: 90rem) {
     @include layout-2;
   }
 }
