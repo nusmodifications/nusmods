@@ -6,7 +6,7 @@ const render = require('./render');
 const config = require('./config');
 
 // Config check
-if (process.env.PRODUCTION) {
+if (process.env.NODE_ENV === 'production') {
   if (!config.moduleData) {
     throw new Error('No moduleData path set - check config.js. ' +
       'This should be the path to the api/<academic year>/modules folder.');
@@ -14,12 +14,12 @@ if (process.env.PRODUCTION) {
 }
 
 // Set up Raven
+Raven.disableConsoleAlerts();
 Raven.config(process.env.NODE_ENV === 'production' && 'https://136790d7afe14eaabcd5c6f4bc0c71ea:8edd56be612848d2a090db5fe268b3a7@sentry.io/265295')
   .install({
     captureUnhandledRejections: true,
     autoBreadcrumbs: true,
   });
-Raven.disableConsoleAlerts();
 
 // Start router
 const app = new Koa();
