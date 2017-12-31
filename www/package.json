@@ -7,6 +7,7 @@
     "start:export": "cross-env NODE_ENV=development CONFIG=timetable-only PORT=8081 node scripts/start",
     "build": "cross-env NODE_ENV=production node scripts/build",
     "rsync": "rsync -avu --delete-after dist/",
+    "rsync:export": "rsync -avu --delete-after dist-timetable/",
     "promote-staging": "bash scripts/promote-staging.sh",
     "postinstall": "flow-scripts stub",
     "flow": "flow check",

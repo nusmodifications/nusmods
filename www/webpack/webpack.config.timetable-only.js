@@ -69,7 +69,7 @@ const productionConfig = merge([
       extractTextPlugin,
     ],
   },
-  // parts.minifyJavascript(),
+  parts.minifyJavascript(),
   parts.loadImages({
     include: parts.PATHS.images,
     options: {
