@@ -52,6 +52,25 @@ exports[`renders into nav element 1`] = `
       Venues
     </span>
   </NavLink>
+  <Link
+    activeClassName="linkActive"
+    ariaCurrent="page"
+    className="link hiddenOnMobile"
+    rel="noreferrer noopener"
+    replace={false}
+    target="_blank"
+    to="https://nuswhispers.com"
+  >
+    <Heart
+      color="currentColor"
+      size="24"
+    />
+    <span
+      className="title"
+    >
+      Whispers
+    </span>
+  </Link>
   <NavLink
     activeClassName="linkActive"
     ariaCurrent="page"
