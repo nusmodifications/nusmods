@@ -21,6 +21,7 @@
     "koa-router": "^7.3.0",
     "lodash": "^4.17.4",
     "nodemon": "^1.14.6",
-    "puppeteer": "0.13.0"
+    "puppeteer": "0.13.0",
+    "raven": "^2.3.0"
   }
 }

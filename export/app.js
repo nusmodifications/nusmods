@@ -1,6 +1,7 @@
 const Koa = require('koa');
 const Router = require('koa-router');
 const gracefulShutdown = require('http-graceful-shutdown');
+const Raven = require('raven');
 const render = require('./render');
 const config = require('./config');
 
@@ -11,6 +12,14 @@ if (process.env.PRODUCTION) {
       'This should be the path to the api/<academic year>/modules folder.');
   }
 }
+
+// Set up Raven
+Raven.config(process.env.NODE_ENV === 'production' && 'https://136790d7afe14eaabcd5c6f4bc0c71ea:8edd56be612848d2a090db5fe268b3a7@sentry.io/265295')
+  .install({
+    captureUnhandledRejections: true,
+    autoBreadcrumbs: true,
+  });
+Raven.disableConsoleAlerts();
 
 // Start router
 const app = new Koa();
@@ -37,6 +46,10 @@ app.use(async (ctx, next) => {
 
     throw e;
   }
+});
+
+app.on('error', (err) => {
+  Raven.captureException(err);
 });
 
 app
