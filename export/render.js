@@ -33,9 +33,24 @@ async function launch() {
     await page.setContent(content);
   }
 
-  await setViewport(page);
+  return browser;
+}
 
-  return [browser, page];
+async function openPage(ctx, next) {
+  const page = await ctx.browser.newPage();
+
+  if (ctx.pageUrl) {
+    await page.goto(ctx.pageUrl, { waitFor: 'load' });
+  } else {
+    await page.setContent(ctx.pageContent);
+  }
+
+  await setViewport(page);
+  ctx.state.page = page;
+
+  await next();
+
+  ctx.state.page.close();
 }
 
 async function injectData(page, data) {
@@ -79,6 +94,7 @@ async function pdf(page, data) {
 
 module.exports = {
   launch,
+  openPage,
   image,
   pdf,
 };

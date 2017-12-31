@@ -6,6 +6,7 @@ const Raven = require('raven');
 const _ = require('lodash');
 
 const render = require('./render');
+const data = require('./data');
 const config = require('./config');
 
 // Config check
@@ -39,13 +40,16 @@ const router = new Router();
 
 router
   .get('/image', async (ctx) => {
-    const data = JSON.parse(ctx.query.data);
-    ctx.body = await render.image(ctx.page, data, _.omit(ctx.query, ['data']));
+    const { page, data } = ctx.state;
+    const options = _.omit(ctx.query, ['data']);
+
+    ctx.body = await render.image(page, data, options);
     ctx.attachment('My Timetable.png');
   })
   .get('/pdf', async (ctx) => {
-    const data = JSON.parse(ctx.query.data);
-    ctx.body = await render.pdf(ctx.page, data);
+    const { page, data } = ctx.state;
+
+    ctx.body = await render.pdf(page, data);
     ctx.attachment('My Timetable.pdf');
   })
   .get('/debug', async (ctx) => {
@@ -53,35 +57,43 @@ router
   });
 
 // Error handling
-app.use(async (ctx, next) => {
+const errorHandler = async (ctx, next) => {
   try {
     await next();
   } catch (e) {
-    if (ctx.page) {
-      await ctx.page.reload();
-    }
+    Raven.captureException(e, {
+      req: ctx.req,
+    });
 
-    throw e;
+    console.error(e);
+    ctx.status = e.status || 500;
+    ctx.app.emit('error', e, ctx);
   }
-});
-
-app.on('error', (err) => {
-  Raven.captureException(err);
-  console.error(err);
-});
+};
 
 app
+  .use(errorHandler)
+  .use(data.parseExportData)
+  .use(render.openPage)
   .use(router.routes())
   .use(router.allowedMethods());
 
 // Wait for the browser to finish launching before starting the server
 render.launch()
-  .then(([browser, page]) => {
+  .then(async (browser) => {
     // Attach the page and browser objects to context
-    app.context.page = page;
     app.context.browser = browser;
 
+    // Attach page content or URL
+    if (/^https?:\/\//.test(config.page)) {
+      app.context.pageUrl = config.page;
+    } else {
+      app.context.pageContent = await fs.readFile(config.page, 'utf-8');
+    }
+
     const server = app.listen(process.env.PORT || 3000);
+    console.log('Export server started');
+
     gracefulShutdown(server);
   })
   .catch((e) => {

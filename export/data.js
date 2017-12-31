@@ -23,6 +23,19 @@ async function getModules(moduleCodes) {
   return modules.filter(Boolean);
 }
 
+function parseExportData(ctx, next) {
+  if (ctx.query.data) {
+    try {
+      const data = JSON.parse(ctx.query.data);
+      ctx.state.data = data;
+      return next();
+    } catch (e) {
+      ctx.status = 422;
+    }
+  }
+}
+
 module.exports = {
+  parseExportData,
   getModules,
 };
