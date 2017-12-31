@@ -33,6 +33,9 @@ router
   .get('/pdf', async (ctx) => {
     ctx.body = await render.pdf(ctx.page, ctx.query.data);
     ctx.attachment('My Timetable.pdf');
+  })
+  .get('/debug', async (ctx) => {
+    ctx.body = await ctx.page.content();
   });
 
 // Error handling
