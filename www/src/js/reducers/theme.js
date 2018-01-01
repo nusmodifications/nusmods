@@ -10,8 +10,8 @@ import {
   TOGGLE_TIMETABLE_ORIENTATION,
   SET_COLOR_MAP,
 } from 'actions/theme';
+import { SET_TIMETABLE } from 'actions/timetables';
 import themes from 'data/themes.json';
-
 import { VERTICAL, HORIZONTAL } from 'types/reducers';
 
 const defaultColorsState: ColorMapping = {};
@@ -24,14 +24,26 @@ export const defaultThemeState: ThemeState = {
 export const themeIds = themes.map((obj: Theme) => obj.id);
 
 function colors(state: ColorMapping, action: FSA): ColorMapping {
-  if (!(action.payload && action.payload.moduleCode)) {
-    return state;
-  }
   switch (action.type) {
     case SELECT_MODULE_COLOR:
+      if (!(action.payload && action.payload.moduleCode)) {
+        return state;
+      }
+
       return {
         ...state,
         [action.payload.moduleCode]: action.payload.colorIndex,
+      };
+
+    case SET_COLOR_MAP:
+      return action.payload.colors;
+
+    case SET_TIMETABLE:
+      if (!action.payload.colors) return state;
+
+      return {
+        ...state,
+        ...action.payload.colors,
       };
     default:
       return state;
@@ -41,14 +53,11 @@ function colors(state: ColorMapping, action: FSA): ColorMapping {
 function theme(state: ThemeState = defaultThemeState, action: FSA): ThemeState {
   switch (action.type) {
     case SELECT_MODULE_COLOR:
+    case SET_COLOR_MAP:
+    case SET_TIMETABLE:
       return {
         ...state,
         colors: colors(state.colors, action),
-      };
-    case SET_COLOR_MAP:
-      return {
-        ...state,
-        colors: action.payload.colors,
       };
     case SELECT_THEME:
       return {
