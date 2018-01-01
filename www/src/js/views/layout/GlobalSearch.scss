@@ -154,3 +154,27 @@ $icon-dist-lg: $input-width-open-lg - $input-width;
   }
 }
 
+.noResults {
+  composes: openWidth;
+  text-align: center;
+
+  p {
+    margin-bottom: 0.4rem;
+  }
+
+  svg {
+    opacity: 0.35;
+    width: 4rem;
+    height: 4rem;
+    margin-top: 1rem;
+  }
+
+  :global(.btn).selected {
+    text-decoration: underline;
+  }
+
+  .searchTerm {
+    display: block;
+    font-size: 1.4rem;
+  }
+}
