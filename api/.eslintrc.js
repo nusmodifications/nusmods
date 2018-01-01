@@ -19,6 +19,9 @@ module.exports = {
       env: {
         jest: true,
       },
+      globals: {
+        jasmine: false,
+      },
       rules: {
         // Much more lenient linting for tests
         'max-len': ['error', 120, {
