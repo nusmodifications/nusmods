@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs-extra');
 const axios = require('axios');
+const _ = require('lodash');
 const config = require('./config');
 
 async function fetchModule(moduleCode) {
@@ -27,6 +28,7 @@ function parseExportData(ctx, next) {
   if (ctx.query.data) {
     try {
       const data = JSON.parse(ctx.query.data);
+      validateExportData(data);
       ctx.state.data = data;
       return next();
     } catch (e) {
@@ -35,6 +37,31 @@ function parseExportData(ctx, next) {
   }
 
   return next();
+}
+
+function validateExportData(data) {
+  if (!_.isObject(data)) throw new Error('data should be an object');
+
+  if (
+    !_.isInteger(data.semester) ||
+    data.semester < 1 ||
+    data.semester > 4
+  ) {
+    throw new Error('Invalid semester');
+  }
+
+  // TODO: Improve these validation
+  if (!_.isObject(data.timetable)) {
+    throw new Error('Invalid timetable');
+  }
+
+  if (!_.isObject(data.settings)) {
+    throw new Error('Invalid settings');
+  }
+
+  if (!_.isObject(data.theme)) {
+    throw new Error('Invalid theme');
+  }
 }
 
 module.exports = {

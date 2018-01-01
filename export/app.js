@@ -41,7 +41,11 @@ const router = new Router();
 router
   .get('/image', async (ctx) => {
     const { page, data } = ctx.state;
-    const options = _.omit(ctx.query, ['data']);
+
+    // Validate options
+    const options = {
+      pixelRatio: _.clamp((Number(ctx.query.pixelRatio) || 1), 1, 3),
+    };
 
     ctx.body = await render.image(page, data, options);
     ctx.attachment('My Timetable.png');
