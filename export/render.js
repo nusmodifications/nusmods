@@ -37,7 +37,14 @@ async function launch() {
 }
 
 async function openPage(ctx, next) {
-  const page = await ctx.browser.newPage();
+  let page;
+  try {
+    page = await ctx.browser.newPage();
+  } catch (e) {
+    // Try launching a new browser object
+    ctx.app.context.browser = await launch();
+    page = await ctx.browser.newPage();
+  }
 
   if (ctx.pageUrl) {
     await page.goto(ctx.pageUrl, { waitFor: 'load' });
