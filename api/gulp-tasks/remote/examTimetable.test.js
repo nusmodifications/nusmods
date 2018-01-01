@@ -12,6 +12,17 @@ import {
 jest.unmock('fs-extra');
 
 describe('parseExamPdf', () => {
+  let originalTimeout;
+
+  beforeEach(() => {
+    originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000; // Default of 5 seconds times out on Travis
+  });
+
+  afterEach(() => {
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+  });
+
   const sublog = { warn: jest.fn() };
   function matchPdfOutput(filePath) {
     return fs
