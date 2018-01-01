@@ -93,13 +93,14 @@ $icon-dist-lg: $input-width-open-lg - $input-width;
 
 .item {
   composes: openWidth;
+  display: flex;
+  justify-content: space-between;
   padding: 0.6rem $container-padding;
   cursor: pointer;
 }
 
 .selectHeader {
   composes: item;
-  display: flex;
   justify-content: space-between;
   padding: 0.3rem $container-padding;
   color: var(--body-bg);
@@ -112,12 +113,12 @@ $icon-dist-lg: $input-width-open-lg - $input-width;
 
   .viewAll {
     position: relative;
-    padding-right: 1.4rem;
+    padding-right: 1.6rem;
 
     svg {
       position: absolute;
       top: 0;
-      right: 0;
+      right: 0.2rem;
       height: 1.2rem;
       transition: $transition-base;
     }
@@ -128,7 +129,7 @@ $icon-dist-lg: $input-width-open-lg - $input-width;
       color: theme-color();
 
       svg {
-        right: -0.2rem;
+        right: 0;
       }
     }
   }
@@ -140,6 +141,15 @@ $icon-dist-lg: $input-width-open-lg - $input-width;
   &.selected {
     color: theme-color();
     background: var(--gray-lightest);
+  }
+
+  .semesters {
+    margin-right: 0.4rem;
+  }
+
+  :global(.badge) {
+    margin-right: 0.2rem;
+    border-radius: 1px;
   }
 }
 

@@ -6,10 +6,11 @@ import classnames from 'classnames';
 
 import { highlight } from 'utils/react';
 import { Search, ChevronRight } from 'views/components/icons';
-import type { Module } from 'types/modules';
+import type { ModuleCondensed } from 'types/modules';
 import type { Venue } from 'types/venues';
 import type { ResultType, SearchResult } from 'types/views';
 
+import config from 'config';
 import { MODULE_RESULT, SEARCH_RESULT, VENUE_RESULT } from 'types/views';
 import styles from './GlobalSearch.scss';
 
@@ -17,7 +18,7 @@ type Props = {
   getResults: string => SearchResult,
 
   onSelectVenue: Venue => void,
-  onSelectModule: Module => void,
+  onSelectModule: ModuleCondensed => void,
   onSearch: (ResultType, string) => void,
 };
 
@@ -26,6 +27,15 @@ type State = {
 };
 
 const PLACEHOLDER = 'Search modules & venues. Try "GER" or "LT".';
+
+/* eslint-disable no-useless-computed-key */
+const BADGE_COLOR = {
+  [1]: 'badge-primary',
+  [2]: 'badge-danger',
+  [3]: 'badge-info',
+  [4]: 'badge-success',
+};
+/* eslint-enable */
 
 class GlobalSearch extends Component<Props, State> {
   input: ?HTMLInputElement;
@@ -124,7 +134,18 @@ class GlobalSearch extends Component<Props, State> {
                       [styles.selected]: highlightedIndex === index + 1,
                     })}
                   >
-                    {highlight(`${module.ModuleCode} ${module.ModuleTitle}`, tokens)}
+                    <span>{highlight(`${module.ModuleCode} ${module.ModuleTitle}`, tokens)}</span>
+
+                    <span className={styles.semesters}>
+                      {module.Semesters.sort().map((semester) => (
+                        <span
+                          className={classnames('badge', BADGE_COLOR[semester])}
+                          title={config.semesterNames[semester]}
+                        >
+                          {config.shortSemesterNames[semester]}
+                        </span>
+                      ))}
+                    </span>
                   </div>
                 ))}
               </Fragment>
