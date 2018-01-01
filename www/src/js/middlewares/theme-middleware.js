@@ -1,15 +1,16 @@
 // @flow
 import type { Store } from 'redux';
-import { mapValues, each, pick } from 'lodash';
+import { mapValues, each, pick, flatMap, difference, uniq } from 'lodash';
 import type { State } from 'reducers';
 import type { SemTimetableConfig } from 'types/timetables';
 import { setColorMap } from 'actions/theme';
 import { fillColorMapping } from 'utils/colors';
 
 /**
- * This middleware enforces keeps the theme color mapping for modules up to date.
+ * This middleware keeps the theme color mapping for modules up to date.
  * It enforces the following invariants
  *  - All modules in the timetables must have a color
+ *  - All colors in the color map must correspond to a module
  *  - When picking new colors, avoid duplicating colors as much as possible within
  *    the same semester
  */
@@ -37,6 +38,25 @@ export default (store: Store<State, *, *>) => (next: (*) => void) => (action: *)
 
     // Remove colors for modules which aren't on the timetable anymore
     colors = pick(colors, Array.from(modules));
+
+    // Invariant check
+    if (process.env.NODE_ENV === 'development') {
+      const timetableModules = uniq(flatMap(nextState.timetables, Object.keys));
+      const colorModules = Object.keys(colors);
+
+      if (
+        difference(timetableModules, colorModules).length ||
+        difference(colorModules, timetableModules).length
+      ) {
+        // eslint-disable-next-line no-console
+        console.error(
+          `INVARIANT: theme-middleware: Color map module codes and timetable module codes do not match`,
+          nextState.timetables,
+          colors,
+        );
+      }
+    }
+
     store.dispatch(setColorMap(colors));
   }
 };
