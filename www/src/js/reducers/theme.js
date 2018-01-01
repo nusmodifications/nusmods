@@ -3,14 +3,12 @@ import type { FSA } from 'types/redux';
 import type { ColorMapping, ThemeState } from 'types/reducers';
 import type { Theme } from 'types/settings';
 
-import { omit, values } from 'lodash';
-import { getNewColor } from 'utils/colors';
-import { ADD_MODULE, REMOVE_MODULE, SET_TIMETABLE } from 'actions/timetables';
 import {
   SELECT_THEME,
   CYCLE_THEME,
   SELECT_MODULE_COLOR,
   TOGGLE_TIMETABLE_ORIENTATION,
+  SET_COLOR_MAP,
 } from 'actions/theme';
 import themes from 'data/themes.json';
 
@@ -30,24 +28,6 @@ function colors(state: ColorMapping, action: FSA): ColorMapping {
     return state;
   }
   switch (action.type) {
-    case ADD_MODULE: {
-      const colorIndex =
-        typeof action.payload.colorIndex === 'number'
-          ? action.payload.colorIndex
-          : getNewColor(values(state));
-      return {
-        ...state,
-        [action.payload.moduleCode]: colorIndex,
-      };
-    }
-    case SET_TIMETABLE:
-      if (action.payload.colors) return state;
-      return {
-        ...state,
-        ...action.payload.colors,
-      };
-    case REMOVE_MODULE:
-      return omit(state, action.payload.moduleCode);
     case SELECT_MODULE_COLOR:
       return {
         ...state,
@@ -60,13 +40,15 @@ function colors(state: ColorMapping, action: FSA): ColorMapping {
 
 function theme(state: ThemeState = defaultThemeState, action: FSA): ThemeState {
   switch (action.type) {
-    case ADD_MODULE:
-    case REMOVE_MODULE:
     case SELECT_MODULE_COLOR:
-    case SET_TIMETABLE:
       return {
         ...state,
         colors: colors(state.colors, action),
+      };
+    case SET_COLOR_MAP:
+      return {
+        ...state,
+        colors: action.payload.colors,
       };
     case SELECT_THEME:
       return {
