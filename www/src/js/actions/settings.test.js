@@ -31,11 +31,11 @@ describe('settings', () => {
 
   test('should dispatch a module code for hiding', () => {
     const moduleCode: ModuleCode = 'CS1010';
-    expect(actions.hideLessonInTimetable(moduleCode)).toMatchSnapshot();
+    expect(actions.hideLessonsInTimetable(moduleCode)).toMatchSnapshot();
   });
 
   test('should dispatch a module code for showing', () => {
     const moduleCode: ModuleCode = 'CS1020';
-    expect(actions.showLessonInTimetable(moduleCode)).toMatchSnapshot();
+    expect(actions.showLessonsInTimetable(moduleCode)).toMatchSnapshot();
   });
 });

@@ -107,12 +107,12 @@ test('getFormattedModuleExamDate should return the correctly formatted exam timi
   expect(examTime).toBe('23-11-2016 9:00 AM');
 });
 
-test('getModuleSemExamDate should return - if it does not exist', () => {
+test('getModuleSemExamDate should return "No exam" if it does not exist', () => {
   const sem1: Semester = 1;
-  expect(getFormattedModuleExamDate(cs3216, sem1)).toBe('-');
+  expect(getFormattedModuleExamDate(cs3216, sem1)).toBe('No exam');
 
   const sem2: Semester = 2;
-  expect(getFormattedModuleExamDate(cs1010s, sem2)).toBe('-');
+  expect(getFormattedModuleExamDate(cs1010s, sem2)).toBe('No exam');
 });
 
 describe('getFirstAvailableSemester', () => {

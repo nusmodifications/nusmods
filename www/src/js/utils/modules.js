@@ -56,7 +56,7 @@ export function getModuleExamDate(module: Module, semester: Semester): string {
 
 export function getFormattedModuleExamDate(module: Module, semester: Semester): string {
   const examDate = getModuleExamDate(module, semester);
-  return examDate ? formatExamDate(examDate) : '-';
+  return examDate ? formatExamDate(examDate) : 'No exam';
 }
 
 // Returns the current semester if it is found in semesters, or the first semester

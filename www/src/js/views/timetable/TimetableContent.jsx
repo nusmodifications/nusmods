@@ -46,7 +46,7 @@ import Announcements from 'views/components/Announcements';
 import Online from 'views/components/Online';
 import Timetable from './Timetable';
 import TimetableActions from './TimetableActions';
-import TimetableModulesTable from './TimetableModulesTable';
+import ModulesTable from './ModulesTable';
 import styles from './TimetableContent.scss';
 
 type Props = {
@@ -137,7 +137,7 @@ class TimetableContent extends Component<Props, State> {
     const { readOnly } = this.props;
 
     const renderModuleTable = (modules) => (
-      <TimetableModulesTable
+      <ModulesTable
         modules={modules.map((module) => ({
           ...module,
           colorIndex: this.props.colors[module.ModuleCode],
@@ -166,7 +166,7 @@ class TimetableContent extends Component<Props, State> {
     }
 
     return (
-      <div>
+      <div className={styles.modulesTable}>
         {!_.isEmpty(clashes) && (
           <div>
             <div className="alert alert-danger">
@@ -291,7 +291,7 @@ class TimetableContent extends Component<Props, State> {
           </div>
           <div
             className={classnames({
-              'col-md-12': !isVerticalOrientation,
+              'col-md-12 col-xl-8 offset-xl-2': !isVerticalOrientation,
               'col-md-4': isVerticalOrientation,
             })}
           >
@@ -305,29 +305,23 @@ class TimetableContent extends Component<Props, State> {
                 />
               </div>
             </div>
-            <div className={styles.tableContainer}>
-              {!readOnly && (
-                <Online>
-                  {(isOnline) => (
-                    <div className={classnames('col-md-12', styles.modulesSelect)}>
-                      <ModulesSelect
-                        moduleList={this.props.semModuleList}
-                        onChange={(moduleCode) => {
-                          this.props.addModule(semester, moduleCode);
-                        }}
-                        placeholder={
-                          isOnline
-                            ? 'Add module to timetable'
-                            : 'You need to be online to add modules'
-                        }
-                        disabled={!isOnline}
-                      />
-                    </div>
-                  )}
-                </Online>
-              )}
-              <div className="col-md-12">{this.renderModuleSections(!isVerticalOrientation)}</div>
-            </div>
+            {!readOnly && (
+              <Online>
+                {(isOnline) => (
+                  <ModulesSelect
+                    moduleList={this.props.semModuleList}
+                    onChange={(moduleCode) => {
+                      this.props.addModule(semester, moduleCode);
+                    }}
+                    placeholder={
+                      isOnline ? 'Add module to timetable' : 'You need to be online to add modules'
+                    }
+                    disabled={!isOnline}
+                  />
+                )}
+              </Online>
+            )}
+            {this.renderModuleSections(!isVerticalOrientation)}
           </div>
         </div>
       </div>

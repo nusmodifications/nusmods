@@ -1,6 +1,7 @@
 @import '~styles/utils/modules-entry';
 
 $background-color: #e9e9e9;
+$button-size: 1.5rem;
 $size: 1.5rem;
 $padding: 0.3rem;
 $margin-bottom: 0.15rem;
@@ -13,8 +14,6 @@ $arrow-height: 1.5rem;
 }
 
 :global(.btn).moduleColor {
-  $button-size: 1.25rem;
-
   width: $button-size;
   height: $button-size;
   padding: 0;
@@ -23,6 +22,7 @@ $arrow-height: 1.5rem;
 
 .palette {
   position: absolute;
+  left: 0.1rem;
   z-index: 1;
   display: flex;
   flex-wrap: wrap;

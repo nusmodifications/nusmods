@@ -1,47 +1,50 @@
-@import "~styles/utils/modules-entry.scss";
+@import '~styles/utils/modules-entry.scss';
 
-.modulesTable {
-  font-size: 0.9rem;
-}
+.table {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
 
-.modulesTableRow {
-  display: flex;
-  margin-bottom: 0.7rem;
-}
-
-.moduleColor {
-  margin-top: 0.1rem;
-  margin-right: 0.5rem;
-}
-
-.moduleInfo {
-  display: table-cell;
-  flex: 1 1 auto;
-}
-
-.moduleExam {
-  display: block;
-  font-size: 87%;
-}
-
-.moduleAction {
-  > .actionIcon {
-    margin: 0;
+  th,
+  td {
+    padding: 0.25rem 0.5rem 0.4rem;
   }
 }
 
-.actionIcon {
-  composes: svg-small from global;
+:global(.cards) {
+  .thead {
+    @include sr-only();
+  }
+
+  td {
+    padding: 0 0 0.25rem;
+  }
 }
 
-.moduleActionButtons {
-  float: right;
-  margin-left: 0.2rem;
+.thead {
+  border-bottom: 1px solid var(--gray-lighter);
 
-  @include media-breakpoint-up(md) {
-    .moduleAction {
-      padding: 0.5rem;
-      border: 0;
+  th {
+    font-weight: 500;
+  }
+}
+
+.tableSummaryText {
+  composes: text-right from global;
+}
+
+:global(.cards) {
+  .tableSummary {
+    display: flex;
+    justify-content: center;
+    margin-top: 0.5rem;
+  }
+
+  .tableSummaryText {
+    margin-right: 0.3rem;
+
+    &::after {
+      content: ':';
     }
   }
 }

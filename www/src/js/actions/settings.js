@@ -44,7 +44,7 @@ export function toggleMode(): FSA {
 }
 
 export const HIDE_LESSON_IN_TIMETABLE: string = 'HIDE_LESSON_IN_TIMETABLE';
-export function hideLessonInTimetable(moduleCode: ModuleCode): FSA {
+export function hideLessonsInTimetable(moduleCode: ModuleCode): FSA {
   return {
     type: HIDE_LESSON_IN_TIMETABLE,
     payload: moduleCode,
@@ -52,7 +52,7 @@ export function hideLessonInTimetable(moduleCode: ModuleCode): FSA {
 }
 
 export const SHOW_LESSON_IN_TIMETABLE: string = 'SHOW_LESSON_IN_TIMETABLE';
-export function showLessonInTimetable(moduleCode: ModuleCode): FSA {
+export function showLessonsInTimetable(moduleCode: ModuleCode): FSA {
   return {
     type: SHOW_LESSON_IN_TIMETABLE,
     payload: moduleCode,

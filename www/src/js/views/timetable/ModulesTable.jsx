@@ -1,124 +1,85 @@
 // @flow
-
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 
 import type { ModuleWithColor, Semester } from 'types/modules';
-import type { ColorIndex } from 'types/reducers';
 
-import ColorPicker from 'views/components/ColorPicker';
-import { Eye, EyeOff, Trash2 } from 'views/components/icons/index';
 import { selectModuleColor } from 'actions/theme';
-import { hideLessonInTimetable, showLessonInTimetable } from 'actions/settings';
-import { getModuleExamDate, getFormattedModuleExamDate } from 'utils/modules';
-import { modulePage } from 'views/routes/paths';
+import makeResponsive from 'views/hocs/makeResponsive';
+import { breakpointUp } from 'utils/css';
+import { hideLessonsInTimetable, showLessonsInTimetable } from 'actions/settings';
+import { getFormattedModuleExamDate } from 'utils/modules';
+import ModulesTableRow from 'views/timetable/ModulesTableRow';
 
-import styles from './TimetableModulesTable.scss';
+import styles from './ModulesTable.scss';
 
 type Props = {
   selectModuleColor: Function,
-  hideLessonInTimetable: Function,
-  showLessonInTimetable: Function,
+  hideLessonsInTimetable: Function,
+  showLessonsInTimetable: Function,
   semester: Semester,
   modules: Array<ModuleWithColor>,
   onRemoveModule: Function,
   horizontalOrientation: boolean,
+  matchBreakpoint: boolean,
   readOnly: boolean,
 };
 
-class TimetableModulesTable extends Component<Props> {
-  renderModuleActions(module) {
-    const hideBtnLabel = `${module.hiddenInTimetable ? 'Show' : 'Hide'} ${module.ModuleCode}`;
-    const removeBtnLabel = `Remove ${module.ModuleCode} from timetable`;
-
-    return (
-      <div className={styles.moduleActionButtons}>
-        <div className="btn-group">
-          <button
-            type="button"
-            className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
-            title={removeBtnLabel}
-            aria-label={removeBtnLabel}
-            onClick={() => {
-              if (window.confirm(`Are you sure you want to remove ${module.ModuleCode}?`)) {
-                this.props.onRemoveModule(module.ModuleCode);
-              }
-            }}
-          >
-            <Trash2 className={styles.actionIcon} />
-          </button>
-          <button
-            type="button"
-            className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
-            title={hideBtnLabel}
-            aria-label={hideBtnLabel}
-            onClick={() => {
-              if (module.hiddenInTimetable) {
-                this.props.showLessonInTimetable(module.ModuleCode);
-              } else {
-                this.props.hideLessonInTimetable(module.ModuleCode);
-              }
-            }}
-          >
-            {module.hiddenInTimetable ? (
-              <Eye className={styles.actionIcon} />
-            ) : (
-              <EyeOff className={styles.actionIcon} />
-            )}
-          </button>
-        </div>
-      </div>
-    );
-  }
-
+class ModulesTable extends PureComponent<Props> {
   render() {
-    if (!this.props.modules.length) {
+    const { modules, matchBreakpoint, horizontalOrientation } = this.props;
+    if (!modules.length) {
       return null;
     }
-
     return (
-      <div className={classnames(styles.modulesTable, 'row')}>
-        {this.props.modules.map((module) => (
-          <div
-            className={classnames(styles.modulesTableRow, 'col-sm-6', {
-              'col-lg-4': this.props.horizontalOrientation,
-              'col-md-12': !this.props.horizontalOrientation,
-            })}
-            key={module.ModuleCode}
-          >
-            <div className={styles.moduleColor}>
-              <ColorPicker
-                label={`Change ${module.ModuleCode} timetable color`}
-                color={module.colorIndex}
-                onChooseColor={(colorIndex: ColorIndex) => {
-                  this.props.selectModuleColor(module.ModuleCode, colorIndex);
-                }}
-              />
-            </div>
-            <div className={styles.moduleInfo}>
-              {!this.props.readOnly && this.renderModuleActions(module)}
-              <Link to={modulePage(module.ModuleCode, module.ModuleTitle)}>
-                {module.ModuleCode} {module.ModuleTitle}
-              </Link>
-              <div className={styles.moduleExam}>
-                {getModuleExamDate(module, this.props.semester)
-                  ? `Exam: ${getFormattedModuleExamDate(module, this.props.semester)}`
-                  : 'No Exam'}
-                &nbsp;&middot;&nbsp;
-                {module.ModuleCredit} MCs
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
+      <table
+        className={classnames({
+          [styles.table]: horizontalOrientation && matchBreakpoint,
+          cards: !(horizontalOrientation && matchBreakpoint),
+        })}
+      >
+        <thead className={styles.thead}>
+          <tr className={styles.tableHeaderRow}>
+            <th />
+            <th>Title</th>
+            <th className="text-right">
+              <abbr title="Module Credits">MCs</abbr>
+            </th>
+            <th>Exam Timing</th>
+            <th />
+          </tr>
+        </thead>
+        <tbody>
+          {modules.map((module) => (
+            <ModulesTableRow
+              key={module.ModuleCode}
+              module={module}
+              exam={getFormattedModuleExamDate(module, this.props.semester)}
+              onSelectModuleColor={this.props.selectModuleColor}
+              onHideModule={this.props.hideLessonsInTimetable}
+              onShowModule={this.props.showLessonsInTimetable}
+              onRemoveModule={this.props.onRemoveModule}
+              readOnly={this.props.readOnly}
+            />
+          ))}
+          <tr className={styles.tableSummary}>
+            <td colSpan="2" className={styles.tableSummaryText}>
+              Total Module Credits for Semester
+            </td>
+            <td className="text-right">
+              {modules.reduce((sum, module) => sum + parseInt(module.ModuleCredit, 10), 0)}
+            </td>
+          </tr>
+        </tbody>
+      </table>
     );
   }
 }
 
+const responsiveModulesTable = makeResponsive(ModulesTable, breakpointUp('md'));
 export default connect(null, {
   selectModuleColor,
-  hideLessonInTimetable,
-  showLessonInTimetable,
-})(TimetableModulesTable);
+  hideLessonsInTimetable,
+  showLessonsInTimetable,
+})(responsiveModulesTable);
