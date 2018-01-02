@@ -166,26 +166,45 @@ $icon-dist-lg: $input-width-open-lg - $input-width;
   }
 }
 
-.sem {
-  color: $body-color;
+.sem1,
+.sem2,
+.sem3,
+.sem4 {
+  color: var(--body-color);
 }
 
 .sem1 {
-  composes: sem;
-  background: darken($gray-lightest, 1%);
+  background: darken($gray-lightest, 5%);
 }
 
 .sem2 {
-  composes: sem;
-  background: darken($gray-lightest, 4%);
+  background: darken($gray-lightest, 10%);
 }
 
 .sem3 {
-  composes: sem;
-  background: darken($gray-lightest, 7%);
+  background: darken($gray-lightest, 15%);
 }
 
 .sem4 {
-  composes: sem;
-  background: darken($gray-lightest, 10%);
+  background: darken($gray-lightest, 20%);
+}
+
+@include night-mode-only {
+  $dark-bg: #2c2c2c;
+
+  .sem1 {
+    background: lighten($dark-bg, 5%);
+  }
+
+  .sem2 {
+    background: lighten($dark-bg, 10%);
+  }
+
+  .sem3 {
+    background: lighten($dark-bg, 15%);
+  }
+
+  .sem4 {
+    background: lighten($dark-bg, 20%);
+  }
 }
