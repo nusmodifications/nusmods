@@ -168,17 +168,21 @@ class TimetableContent extends Component<Props, State> {
     return (
       <div>
         {!_.isEmpty(clashes) && (
-          <div className="alert alert-danger" role="alert">
-            <h4>Exam Clashes</h4>
-            <p>These modules have clashing exams.</p>
+          <div>
+            <div className="alert alert-danger">
+              Warning! There are clashes in your exam timetable.
+            </div>
             {Object.keys(clashes)
               .sort()
               .map((clashDate) => (
                 <div key={clashDate}>
-                  <h5>Clash on {formatExamDate(clashDate)}</h5>
+                  <p>
+                    Clash on <strong>{formatExamDate(clashDate)}</strong>
+                  </p>
                   {renderModuleTable(clashes[clashDate])}
                 </div>
               ))}
+            <hr />
           </div>
         )}
         {renderModuleTable(nonClashingMods)}
