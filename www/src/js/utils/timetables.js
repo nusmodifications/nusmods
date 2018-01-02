@@ -86,6 +86,8 @@ export function hydrateSemTimetableWithLessons(
     semTimetableConfig,
     (moduleLessonConfig: ModuleLessonConfig, moduleCode: ModuleCode) => {
       const module: Module = modules[moduleCode];
+      if (!module) return {};
+
       // TODO: Split this part into a smaller function: hydrateModuleConfigWithLessons.
       return _.mapValues(moduleLessonConfig, (classNo: ClassNo, lessonType: LessonType) => {
         const lessons: Array<RawLesson> = getModuleTimetable(module, semester);

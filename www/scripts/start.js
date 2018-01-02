@@ -4,7 +4,9 @@ const Webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const openBrowser = require('react-dev-utils/openBrowser');
 
-const developmentConfig = require('../webpack/webpack.config.dev');
+// Dynamically import webpack config. Default to webpack.config.dev
+const CONFIG_FILE = `../webpack/webpack.config.${process.env.CONFIG || 'dev'}`;
+const developmentConfig = require(CONFIG_FILE); // eslint-disable-line import/no-dynamic-require
 
 // If you use Docker, Vagrant or Cloud9, set
 // host: options.host || '0.0.0.0';
@@ -47,11 +49,19 @@ function runDevServer(host, port, protocol) {
     host,
     port,
 
-    // Proxy the short_url.php endpoint because it does not support CORS
     proxy: {
+      // Proxy the short_url.php endpoint because it does not support CORS
       '/short_url.php': {
         target: 'https://nusmods.com',
         changeOrigin: true,
+      },
+
+      // Proxy export endpoints to the local version for development
+      '/export': {
+        target: 'http://localhost:3000',
+        pathRewrite: {
+          '^/export': '',
+        },
       },
     },
   });

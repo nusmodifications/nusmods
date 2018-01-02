@@ -16,6 +16,7 @@ import {
   ENABLE_CORS_NOTIFICATION,
   TOGGLE_CORS_NOTIFICATION_GLOBALLY,
 } from 'actions/settings';
+import { SET_EXPORTED_DATA } from 'actions/export';
 import { LIGHT_MODE, DARK_MODE } from 'types/settings';
 import config from 'config';
 
@@ -96,6 +97,12 @@ function settings(state: SettingsState = defaultSettingsState, action: FSA): Set
           dismissed: (rounds) => without(rounds, action.payload.round),
         },
       });
+
+    case SET_EXPORTED_DATA:
+      return {
+        ...state,
+        ...action.payload.settings,
+      };
 
     default: {
       let nextState = state;

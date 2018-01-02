@@ -3,14 +3,16 @@ import type { FSA } from 'types/redux';
 import type { ColorMapping, ThemeState } from 'types/reducers';
 import type { Theme } from 'types/settings';
 
+import { SET_EXPORTED_DATA } from 'actions/export';
+import { SET_TIMETABLE } from 'actions/timetables';
 import {
   SELECT_THEME,
   CYCLE_THEME,
   SELECT_MODULE_COLOR,
   TOGGLE_TIMETABLE_ORIENTATION,
+  SET_TIMETABLE_ORIENTATION,
   SET_COLOR_MAP,
 } from 'actions/theme';
-import { SET_TIMETABLE } from 'actions/timetables';
 import themes from 'data/themes.json';
 import { VERTICAL, HORIZONTAL } from 'types/reducers';
 
@@ -72,11 +74,18 @@ function theme(state: ThemeState = defaultThemeState, action: FSA): ThemeState {
         id: themeIds[newThemeIndex],
       };
     }
+    case SET_TIMETABLE_ORIENTATION:
+      return {
+        ...state,
+        timetableOrientation: action.payload.orientation,
+      };
     case TOGGLE_TIMETABLE_ORIENTATION:
       return {
         ...state,
         timetableOrientation: state.timetableOrientation === VERTICAL ? HORIZONTAL : VERTICAL,
       };
+    case SET_EXPORTED_DATA:
+      return action.payload.theme;
     default:
       return state;
   }

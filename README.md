@@ -1,4 +1,4 @@
-# [NUSMods](http://nusmods.com) [![Coverage Status](https://coveralls.io/repos/github/nusmodifications/nusmods/badge.svg?branch=master)](https://coveralls.io/github/nusmodifications/nusmods?branch=master) [![Build Status](https://travis-ci.org/nusmodifications/nusmods.svg?branch=master)](https://travis-ci.org/nusmodifications/nusmods) [![ghit.me](https://ghit.me/badge.svg?repo=nusmodifications/nusmods)](https://ghit.me/repo/nusmodifications/nusmods)
+# [NUSMods](http://nusmods.com) [![Coverage Status](https://coveralls.io/repos/github/nusmodifications/nusmods/badge.svg?branch=master)](https://coveralls.io/github/nusmodifications/nusmods?branch=master) [![CircleCI Build Status](https://circleci.com/gh/nusmodifications/nusmods.svg?style=shield)](https://circleci.com/gh/nusmodifications/nusmods) [![ghit.me](https://ghit.me/badge.svg?repo=nusmodifications/nusmods)](https://ghit.me/repo/nusmodifications/nusmods)
 
 Help contribute to NUSMods!
 
@@ -12,12 +12,20 @@ This monorepo consists of 3 projects. Further details can be found at the links 
 
 ## Talk to us!
 
-- Telegram: https://telegram.me/nusmods
-- Facebook: https://www.facebook.com/nusmods
-- Messenger: https://www.m.me/nusmods
-- Twitter: https://twitter.com/nusmods
-- Email: nusmods@googlegroups.com
+* Telegram: https://telegram.me/nusmods
+* Facebook: https://www.facebook.com/nusmods
+* Messenger: https://www.m.me/nusmods
+* Twitter: https://twitter.com/nusmods
+* Email: nusmods@googlegroups.com
+
+## Code of Conduct
+
+We has adopted the same Code of Conduct as Facebook that we expect project participants to adhere to. Please read [the full text](https://code.facebook.com/codeofconduct) so that you can understand what actions will and will not be tolerated.
+
+## Good First Issues
+
+To help you get your feet wet and get you familiar with our contribution process, we have a list of [good first issues](https://github.com/nusmodifications/nusmods/labels/good%20first%20issue) that contain bugs and small features which have a relatively limited scope. This is a great place to get started.
 
 ## License
 
-Copyright (c) 2017 NUSModifications. Licensed under the MIT license.
+All projects and packages in this repository are [MIT licensed](https://github.com/nusmodifications/nusmods/blob/master/LICENSE).
