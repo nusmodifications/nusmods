@@ -102,37 +102,29 @@ $icon-dist-lg: $input-width-open-lg - $input-width;
 .selectHeader {
   composes: item;
   justify-content: space-between;
-  padding: 0.3rem $container-padding;
-  color: var(--body-bg);
-  background: var(--gray-light);
-
-  .headerName {
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-
-  .viewAll {
-    position: relative;
-    padding-right: 1.6rem;
-
-    svg {
-      position: absolute;
-      top: 0;
-      right: 0.2rem;
-      height: 1.2rem;
-      transition: $transition-base;
-    }
-  }
+  font-size: 0.95rem;
+  border-bottom: 1px solid var(--gray-lighter);
 
   &.selected {
-    .viewAll {
+    > :global(.btn-svg) {
       color: theme-color();
+    }
 
-      svg {
-        right: 0;
-      }
+    .svg {
+      transform: translateX(0.2rem);
     }
   }
+}
+
+.headerName {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.svg {
+  width: 1.1rem;
+  height: 1.1rem;
+  transition: $entering-duration transform $material-standard-curve;
 }
 
 .option {
@@ -172,9 +164,28 @@ $icon-dist-lg: $input-width-open-lg - $input-width;
   :global(.btn).selected {
     text-decoration: underline;
   }
+}
 
-  .searchTerm {
-    display: block;
-    font-size: 1.4rem;
-  }
+.sem {
+  color: $body-color;
+}
+
+.sem1 {
+  composes: sem;
+  background: darken($gray-lightest, 1%);
+}
+
+.sem2 {
+  composes: sem;
+  background: darken($gray-lightest, 4%);
+}
+
+.sem3 {
+  composes: sem;
+  background: darken($gray-lightest, 7%);
+}
+
+.sem4 {
+  composes: sem;
+  background: darken($gray-lightest, 10%);
 }
