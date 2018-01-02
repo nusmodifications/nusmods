@@ -4,6 +4,7 @@ import type { TimetableConfig } from 'types/timetables';
 import type { Requests, SettingsState, AppState, ModuleFinderState } from 'types/reducers';
 import type { ModuleBank } from 'reducers/moduleBank';
 import type { VenueBank } from 'reducers/venueBank';
+import type { UndoHistoryState } from 'reducers/undoHistory';
 
 import requests from './requests';
 import moduleBank from './moduleBank';
@@ -13,6 +14,7 @@ import app from './app';
 import theme from './theme';
 import settings from './settings';
 import moduleFinder from './moduleFinder';
+import { undoHistoryReducer, undoReducer } from './undoHistory';
 
 export type State = {
   moduleBank: ModuleBank,
@@ -23,20 +25,34 @@ export type State = {
   theme: Object,
   settings: SettingsState,
   moduleFinder: ModuleFinderState,
+  undoHistory: UndoHistoryState,
 };
 
 // $FlowFixMe: State default is delegated to its child reducers.
 const defaultState: State = {};
 
 export default function(state: State = defaultState, action: FSA): State {
+  // Calculate un/redone history
+  let unredoneState = {
+    ...state,
+    undoHistory: undoHistoryReducer(state.undoHistory, action),
+  };
+
+  // Merge "present" state in undoHistory with state
+  // Implemented as a reducer as middleware are not
+  // allowed to mutate state.
+  unredoneState = undoReducer(unredoneState, action);
+
+  // Update every other reducer
   return {
-    moduleBank: moduleBank(state.moduleBank, action),
-    venueBank: venueBank(state.venueBank, action),
-    requests: requests(state.requests, action),
-    timetables: timetables(state.timetables, action),
-    app: app(state.app, action),
-    theme: theme(state.theme, action),
-    settings: settings(state.settings, action),
-    moduleFinder: moduleFinder(state.moduleFinder, action),
+    moduleBank: moduleBank(unredoneState.moduleBank, action),
+    venueBank: venueBank(unredoneState.venueBank, action),
+    requests: requests(unredoneState.requests, action),
+    timetables: timetables(unredoneState.timetables, action),
+    app: app(unredoneState.app, action),
+    theme: theme(unredoneState.theme, action),
+    settings: settings(unredoneState.settings, action),
+    moduleFinder: moduleFinder(unredoneState.moduleFinder, action),
+    undoHistory: unredoneState.undoHistory,
   };
 }
