@@ -166,6 +166,12 @@ $icon-dist-lg: $input-width-open-lg - $input-width;
   }
 }
 
+.searchTerm {
+  composes: h4 from global;
+  display: block;
+  white-space: normal;
+}
+
 .sem1,
 .sem2,
 .sem3,
