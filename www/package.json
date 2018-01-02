@@ -4,8 +4,10 @@
   "description": "NUSMods v3",
   "scripts": {
     "start": "cross-env NODE_ENV=development node scripts/start",
+    "start:export": "cross-env NODE_ENV=development CONFIG=timetable-only PORT=8081 node scripts/start",
     "build": "cross-env NODE_ENV=production node scripts/build",
     "rsync": "rsync -avu --delete-after dist/",
+    "rsync:export": "rsync -avu --delete-after dist-timetable/",
     "promote-staging": "bash scripts/promote-staging.sh",
     "postinstall": "flow-scripts stub",
     "lint": "npm run flow && npm run lint:code && npm run lint:styles",
@@ -62,6 +64,7 @@
     "flow-scripts": "^0.4.0",
     "flow-status-webpack-plugin": "^0.1.6",
     "graceful-fs": "^4.1.11",
+    "html-webpack-inline-source-plugin": "^0.0.9",
     "html-webpack-plugin": "^2.30.1",
     "icalendar": "^0.7.1",
     "identity-obj-proxy": "^3.0.0",

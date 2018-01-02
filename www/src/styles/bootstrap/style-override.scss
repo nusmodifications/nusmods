@@ -35,6 +35,19 @@ mark {
 
 .dropdown-item {
   color: var(--body-color);
+  cursor: pointer;
+
+  &:hover,
+  &:focus,
+  &.dropdown-selected {
+    color: theme-color();
+    background: var(--gray-lightest);
+  }
+
+  &.dropdown-selected:active {
+    color: #fff;
+    background: theme-color();
+  }
 }
 
 // Alerts
