@@ -38,9 +38,7 @@ export default function(state: State = defaultState, action: FSA): State {
     undoHistory: undoHistoryReducer(state.undoHistory, action),
   };
 
-  // Merge "present" state in undoHistory with state
-  // Implemented as a reducer as middleware are not
-  // allowed to mutate state.
+  // Replace recorded parts of "present" state in undoHistory with state.
   unredoneState = undoReducer(unredoneState, action);
 
   // Update every other reducer

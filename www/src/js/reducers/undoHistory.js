@@ -2,7 +2,7 @@
 import type { FSA } from 'types/redux';
 import type { State } from 'reducers';
 
-import { merge } from 'lodash';
+import { assign } from 'lodash';
 import { ADD_MODULE, REMOVE_MODULE } from 'actions/timetables';
 
 export const actionsToPersist = [ADD_MODULE, REMOVE_MODULE];
@@ -20,7 +20,7 @@ export function redo(): FSA {
 
 // Should only be called by undo-middleware
 export const PUSH_NEW_PRESENT_STATE = 'PUSH_NEW_PRESENT_STATE';
-export function pushNewPresent<T>(newPresent: T): FSA {
+export function pushNewPresentState<T>(newPresent: T): FSA {
   return { type: PUSH_NEW_PRESENT_STATE, payload: { newPresent } };
 }
 
@@ -37,6 +37,7 @@ const initialState: UndoHistoryState = {
   future: [],
 };
 
+// Stores undo/redo history
 export function undoHistoryReducer(
   state: UndoHistoryState = initialState,
   action: FSA,
@@ -78,11 +79,11 @@ export function undoHistoryReducer(
 }
 
 // Applies undo and redo actions on overall app state
-// Merges state.undoHistory.present with state if action.type === {UNDO,REDO}
+// Applies state.undoHistory.present to state if action.type === {UNDO,REDO}
 // Assumes state.undoHistory.present is the final present state
 export function undoReducer(state: State, action: FSA): State {
   if (action.type === UNDO || action.type === REDO) {
-    return merge(state.undoHistory.present, state);
+    return assign(state, state.undoHistory.present);
   }
   return state;
 }
