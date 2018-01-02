@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-
+import classnames from 'classnames';
 import styles from './CurrentTimeIndicator.scss';
 
 type Props = {
@@ -9,7 +9,7 @@ type Props = {
 
 function CurrentTimeIndicator(props: Props) {
   return (
-    <div className={styles.currentTimeIndicator} style={props.style}>
+    <div className={classnames('no-export', styles.currentTimeIndicator)} style={props.style}>
       <div className={styles.circularPart} />
       <div className={styles.linePart} />
     </div>

@@ -50,10 +50,7 @@ function TimetableDay(props: Props) {
       <div className={styles.dayName}>
         <span className={styles.dayNameText}>{props.day.substring(0, 3)}</span>
       </div>
-      <div
-        className={classnames(styles.dayRows, { [styles.currentDay]: props.isCurrentDay })}
-        style={rowStyle}
-      >
+      <div className={styles.dayRows} style={rowStyle}>
         {props.isCurrentDay &&
           timeIndicatorIsVisible && <CurrentTimeIndicator style={currentTimeIndicatorStyle} />}
         {props.dayLessonRows.map((dayLessonRow, i) => (
@@ -68,6 +65,7 @@ function TimetableDay(props: Props) {
           />
         ))}
       </div>
+      {props.isCurrentDay && <div className={classnames('no-export', styles.currentDay)} />}
     </li>
   );
 }
