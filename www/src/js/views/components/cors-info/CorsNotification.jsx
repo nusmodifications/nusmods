@@ -7,8 +7,11 @@ import { capitalize } from 'lodash';
 import qs from 'query-string';
 
 import type { State } from 'reducers';
+import type { NotificationOptions } from 'types/reducers';
+
 import config, { type CorsRound } from 'config';
 import { dismissCorsNotification } from 'actions/settings';
+import { openNotification } from 'actions/app';
 import { roundStart, currentPeriod, currentRound } from 'utils/cors';
 import CloseButton from 'views/components/CloseButton';
 
@@ -22,6 +25,7 @@ type Props = {
   dismissedRounds: string[],
 
   dismissCorsNotification: string => void,
+  openNotification: (string, NotificationOptions) => void,
 
   ...ContextRouter,
 };
@@ -63,6 +67,19 @@ export class CorsNotificationComponent extends PureComponent<Props> {
     return NOW;
   }
 
+  dismiss = (round: string) => {
+    this.props.dismissCorsNotification(round);
+    this.props.openNotification('Reminder snoozed until start of next round', {
+      action: {
+        timeoutInMs: 12000,
+        text: 'Settings',
+        handler: () => {
+          this.props.history.push('/settings#cors');
+        },
+      },
+    });
+  };
+
   render() {
     const { enabled, dismissedRounds, hideCloseButton } = this.props;
 
@@ -90,10 +107,7 @@ export class CorsNotificationComponent extends PureComponent<Props> {
         </a>
 
         {!hideCloseButton && (
-          <CloseButton
-            className={styles.close}
-            onClick={() => this.props.dismissCorsNotification(round.round)}
-          />
+          <CloseButton className={styles.close} onClick={() => this.dismiss(round.round)} />
         )}
       </div>
     );
@@ -105,8 +119,9 @@ const mapStateToProps = (state: State) => ({
   dismissedRounds: state.settings.corsNotification.dismissed,
 });
 
-const withStoreCorsNotification = connect(mapStateToProps, { dismissCorsNotification })(
-  CorsNotificationComponent,
-);
+const withStoreCorsNotification = connect(mapStateToProps, {
+  dismissCorsNotification,
+  openNotification,
+})(CorsNotificationComponent);
 const CorsNotification = withRouter(withStoreCorsNotification);
 export default CorsNotification;
