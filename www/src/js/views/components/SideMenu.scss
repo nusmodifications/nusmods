@@ -11,9 +11,12 @@ $animation-duration: 0.3s;
 }
 
 .sideMenu {
-  composes: scrollable-y from global;
-  position: fixed;
-  max-height: calc(100% - #{$navbar-height});
+  $offset-top: $navbar-height + 1rem;
+
+  composes: scrollable from global;
+  position: sticky;
+  top: $offset-top;
+  max-height: calc(100vh - #{$offset-top});
   overscroll-behavior: contain; // stylelint-disable-line property-no-unknown
 }
 
