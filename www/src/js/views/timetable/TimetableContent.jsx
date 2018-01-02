@@ -17,6 +17,7 @@ import type {
 
 import classnames from 'classnames';
 import { getSemModuleSelectList } from 'reducers/moduleBank';
+import { undo, redo } from 'reducers/undoable';
 import {
   addModule,
   cancelModifyLesson,
@@ -72,6 +73,8 @@ type Props = {
   changeLesson: Function,
   cancelModifyLesson: Function,
   toggleTimetableOrientation: Function,
+  undo: Function,
+  redo: Function,
 };
 
 type State = {
@@ -326,6 +329,8 @@ class TimetableContent extends Component<Props, State> {
                   )}
                 </Online>
               )}
+              <button onClick={() => this.props.undo()}>UNDO</button>
+              <button onClick={() => this.props.redo()}>REDO</button>
               <div className="col-md-12">{this.renderModuleSections(!isVerticalOrientation)}</div>
             </div>
           </div>
@@ -361,4 +366,6 @@ export default connect(mapStateToProps, {
   changeLesson,
   cancelModifyLesson,
   toggleTimetableOrientation,
+  undo,
+  redo,
 })(TimetableContent);
