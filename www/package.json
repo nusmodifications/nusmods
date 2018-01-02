@@ -10,7 +10,7 @@
     "rsync:export": "rsync -avu --delete-after dist-timetable/",
     "promote-staging": "bash scripts/promote-staging.sh",
     "postinstall": "flow-scripts stub",
-    "lint": "npm run flow && npm run lint:code && npm run lint:styles",
+    "lint": "yarn flow && yarn lint:code && yarn lint:styles",
     "lint:code": "eslint src/js webpack scripts",
     "lint:styles": "stylelint \"src/**/*.scss\" --syntax scss",
     "test": "jest --coverage",
