@@ -47,6 +47,22 @@
   }
 }
 
+// Selects both touchscreens and small devices
+@mixin touchscreen-or-breakpoint-down($breakpoint: sm) {
+  $max: breakpoint-max($breakpoint);
+
+  @if $max {
+    @media (max-width: $max), (pointer: coarse) {
+      @content;
+    }
+  }
+  @else {
+    @media (pointer: coarse) {
+      @content;
+    }
+  }
+}
+
 @mixin night-mode-only {
   :global(.mode-dark) {
     @content;
