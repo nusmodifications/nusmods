@@ -6,6 +6,7 @@ import type { ModuleLessonConfig, TimetableConfig, SemTimetableConfig } from 'ty
 import _ from 'lodash';
 
 import { ADD_MODULE, REMOVE_MODULE, CHANGE_LESSON, SET_TIMETABLE } from 'actions/timetables';
+import { SET_EXPORTED_DATA } from 'actions/export';
 
 // Map of LessonType to ClassNo.
 const defaultModuleLessonConfig: ModuleLessonConfig = {};
@@ -84,6 +85,10 @@ function timetables(state: TimetableConfig = defaultTimetableConfig, action: FSA
         [action.payload.semester]: semTimetable(state[action.payload.semester], action),
       };
 
+    case SET_EXPORTED_DATA:
+      return {
+        [action.payload.semester]: action.payload.timetable,
+      };
     default:
       return state;
   }

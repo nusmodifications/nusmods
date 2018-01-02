@@ -2,41 +2,46 @@
 # Promotes built product to production after a dry run and confirmation.
 # Usage: promote-staging.sh
 
-STAGING_DIR=./dist
-PROD_DIR=../../nusmods.com
+FRONTEND_STAGING_DIR=./dist
+FRONTEND_PROD_DIR=../../nusmods.com
+TIMETABLE_ONLY_STAGING_DIR=./dist-timetable
+TIMETABLE_ONLY_PROD_DIR=../../nusmods-export/dist-timetable
 
 # Abort on any error
 set -e
 
-echo "Promote $STAGING_DIR to production at $PROD_DIR."
+echo "Promote $FRONTEND_STAGING_DIR to production at $FRONTEND_PROD_DIR."
 
 # Ensure that staging exists
-if [[ ! -d $STAGING_DIR ]]; then
-  echo "Staging directory does not exist!"
+if [[ ! -d $FRONTEND_STAGING_DIR || ! -d $TIMETABLE_ONLY_STAGING_DIR ]]; then
+  echo "Staging directory does not exist! You should probably run yarn build first"
   echo "Aborting"
   exit 1
 fi
-echo "Staging directory $STAGING_DIR exists."
+echo "Staging directory $FRONTEND_STAGING_DIR exists."
 
 # Print contents of staging
 # Necessary because if nothing changed, dry run shows nothing
 echo
-echo "Contents of $STAGING_DIR:"
-ls -la $STAGING_DIR
+echo "Contents of $FRONTEND_STAGING_DIR:"
+ls -la $FRONTEND_STAGING_DIR
+echo "Contents of $TIMETABLE_ONLY_STAGING_DIR:"
+ls -la $TIMETABLE_ONLY_STAGING_DIR
 
 # Dry run
 echo
 echo "Dry running deployment..."
-npm run rsync -- --dry-run $PROD_DIR
+npm run rsync -- --dry-run $FRONTEND_PROD_DIR
+npm run rsync:export -- --dry-run $TIMETABLE_ONLY_PROD_DIR
 
 # Sync filename with `scripts/build.js`.
 COMMIT_HASH_FILE="commit-hash.txt"
 PROD_COMMIT=""
-if [[ -d $PROD_DIR ]]; then
-  PROD_COMMIT=$(cat $PROD_DIR/$COMMIT_HASH_FILE)
+if [[ -d $FRONTEND_PROD_DIR ]]; then
+  PROD_COMMIT=$(cat $FRONTEND_PROD_DIR/$COMMIT_HASH_FILE)
 fi
 
-DEPLOYMENT_COMMIT=$(cat $STAGING_DIR/$COMMIT_HASH_FILE)
+DEPLOYMENT_COMMIT=$(cat $FRONTEND_STAGING_DIR/$COMMIT_HASH_FILE)
 LOG_FORMAT="%h %s by %an"
 
 echo
@@ -67,5 +72,6 @@ fi
 # Deploy
 echo
 echo "Promoting..."
-npm run rsync -- $PROD_DIR
+npm run rsync -- $FRONTEND_PROD_DIR
+npm run rsync:export -- $TIMETABLE_ONLY_PROD_DIR
 echo "All done!"

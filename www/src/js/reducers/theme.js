@@ -5,12 +5,14 @@ import type { Theme } from 'types/settings';
 
 import { omit, values } from 'lodash';
 import { getNewColor } from 'utils/colors';
+import { SET_EXPORTED_DATA } from 'actions/export';
 import { ADD_MODULE, REMOVE_MODULE, SET_TIMETABLE } from 'actions/timetables';
 import {
   SELECT_THEME,
   CYCLE_THEME,
   SELECT_MODULE_COLOR,
   TOGGLE_TIMETABLE_ORIENTATION,
+  SET_TIMETABLE_ORIENTATION,
 } from 'actions/theme';
 import themes from 'data/themes.json';
 
@@ -81,11 +83,18 @@ function theme(state: ThemeState = defaultThemeState, action: FSA): ThemeState {
         id: themeIds[newThemeIndex],
       };
     }
+    case SET_TIMETABLE_ORIENTATION:
+      return {
+        ...state,
+        timetableOrientation: action.payload.orientation,
+      };
     case TOGGLE_TIMETABLE_ORIENTATION:
       return {
         ...state,
         timetableOrientation: state.timetableOrientation === VERTICAL ? HORIZONTAL : VERTICAL,
       };
+    case SET_EXPORTED_DATA:
+      return action.payload.theme;
     default:
       return state;
   }

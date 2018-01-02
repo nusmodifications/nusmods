@@ -3,9 +3,9 @@ import type { Semester } from 'types/modules';
 import type { SemTimetableConfig } from 'types/timetables';
 
 import React from 'react';
-import { Sidebar, Image, Calendar } from 'views/components/icons/index';
-import { SUPPORTS_DOWNLOAD } from 'actions/export';
+import { Sidebar } from 'views/components/icons';
 import ShareTimetable from './ShareTimetable';
+import ExportMenu from './ExportMenu';
 
 import styles from './TimetableActions.scss';
 
@@ -14,8 +14,6 @@ type Props = {
   timetable: SemTimetableConfig,
   isVerticalOrientation: boolean,
   toggleTimetableOrientation: Function,
-  downloadAsImage: Function,
-  downloadAsIcal: Function,
 };
 
 function TimetableActions(props: Props) {
@@ -36,27 +34,10 @@ function TimetableActions(props: Props) {
           {isVerticalOrientation ? 'Horizontal Mode' : 'Vertical Mode'}
         </button>
       </div>
+
       <div className={styles.rightButtonGroup} role="group" aria-label="Timetable exporting">
-        {SUPPORTS_DOWNLOAD && (
-          <button
-            type="button"
-            className="btn btn-outline-primary btn-svg"
-            onClick={props.downloadAsImage}
-          >
-            <Image className="svg svg-small" />
-            Export image
-          </button>
-        )}
-        {SUPPORTS_DOWNLOAD && (
-          <button
-            type="button"
-            className="btn btn-outline-primary btn-svg"
-            onClick={props.downloadAsIcal}
-          >
-            <Calendar className="svg svg-small" />
-            Export iCal
-          </button>
-        )}
+        <ExportMenu semester={props.semester} />
+
         <ShareTimetable semester={props.semester} timetable={props.timetable} />
       </div>
     </div>
