@@ -16,8 +16,6 @@ jobs:
 
       - run: echo $CIRCLE_COMPARE_URL | cut -d/ -f7
 
-      - run: cd www
-
       - restore_cache:
           name: Restore node_modules cache
           keys:
@@ -27,31 +25,31 @@ jobs:
 
       - run:
           name: Install node_modules packages
-          command: yarn install
+          command: cd www && yarn install
 
       - save_cache:
           name: Save node_modules cache
           key: v1-node-{{ arch }}-{{ .Branch }}-{{ checksum "www/yarn.lock" }}
           paths:
-            - node_modules
+            - www/node_modules
 
       - run:
           name: Type check code
-          command: yarn flow
+          command: cd www && yarn flow
 
       - run:
           name: Lint code
-          command: yarn lint:code --format junit -o reports/junit/js-lint-results.xml
+          command: cd www && yarn lint:code --format junit -o reports/junit/js-lint-results.xml
 
       - run:
           name: Test code
           environment:
             JEST_JUNIT_OUTPUT: reports/junit/js-test-results.xml
-          command: yarn jest --ci --testResultsProcessor="jest-junit" --coverage
+          command: cd www && yarn jest --ci --testResultsProcessor="jest-junit" --coverage
 
       - run:
           name: Lint styles
-          command: yarn lint:styles
+          command: cd www && yarn lint:styles
 
       - store_test_results:
           path: reports/junit
