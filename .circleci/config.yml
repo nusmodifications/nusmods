@@ -7,8 +7,6 @@ jobs:
         environment:
             NODE_ENV: test
 
-    parallelism: 4
-
     working_directory: ~/nusmods/
 
     steps:
@@ -52,7 +50,7 @@ jobs:
           command: cd www && yarn lint:styles
 
       - store_test_results:
-          path: reports/junit
+          path: www/reports/junit
 
       - store_artifacts:
-          path: reports/junit
+          path: www/reports/junit
