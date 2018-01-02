@@ -173,7 +173,7 @@ export function iCalEventForLesson(
   };
 }
 
-export function iCalForTimetable(
+export default function iCalForTimetable(
   semester: Semester,
   timetable: SemTimetableConfigWithLessons,
   moduleData: { [ModuleCode]: Module },

@@ -4,7 +4,7 @@ import ical from 'ical-generator';
 import type { Module, Semester } from 'types/modules';
 import type { State } from 'reducers';
 
-import { iCalForTimetable } from 'utils/ical';
+import iCalForTimetable from 'utils/ical';
 import { hydrateSemTimetableWithLessons } from 'utils/timetables';
 import type { ExportData } from 'types/export';
 import type { FSA } from 'types/redux';
