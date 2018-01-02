@@ -85,7 +85,7 @@ export function undoHistoryReducer(
 // Applies state.undoHistory.present to state if action.type === {UNDO,REDO}
 // Assumes state.undoHistory.present is the final present state
 export function undoReducer(state: State, action: FSA): State {
-  if (action.type === UNDO || action.type === REDO) {
+  if ((action.type === UNDO || action.type === REDO) && state.undoHistory.present) {
     return assign(state, state.undoHistory.present);
   }
   return state;
