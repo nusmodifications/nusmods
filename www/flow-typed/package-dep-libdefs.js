@@ -4,6 +4,10 @@ declare module '@material/fab' {
   declare module.exports: any;
 }
 
+declare module '@material/snackbar' {
+  declare module.exports: any;
+}
+
 declare module 'core-js' {
   declare module.exports: any;
 }

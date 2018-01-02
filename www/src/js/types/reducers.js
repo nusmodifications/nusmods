@@ -10,11 +10,24 @@ import type {
 import type { Mode } from 'types/settings';
 
 /* app.js */
+
+export type NotificationOptions = {
+  timeoutInMs?: number,
+  action?: {
+    text: string,
+    handler: Function,
+  },
+  multiline?: boolean,
+};
+
+export type NotificationData = { message: string } & NotificationOptions;
+
 export type AppState = {
   activeSemester: Semester,
   activeLesson: ?Lesson,
   isOnline: boolean,
   isFeedbackModalOpen: boolean,
+  notification: ?NotificationData,
 };
 
 /* requests.js */
