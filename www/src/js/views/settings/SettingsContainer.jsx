@@ -121,7 +121,7 @@ class SettingsContainer extends Component<Props, State> {
       <hr />
       */}
         {supportsCSSVariables() && (
-          <div>
+          <div id="night-mode">
             <h4>Night Mode</h4>
             <div className={classnames(styles.toggleRow, 'row')}>
               <div className={classnames(styles.toggleDescription, 'col-sm-7')}>
@@ -141,7 +141,7 @@ class SettingsContainer extends Component<Props, State> {
           </div>
         )}
 
-        <h4>Theme</h4>
+        <h4 id="theme">Theme</h4>
 
         <p>Liven up your timetable with different color schemes!</p>
         <p>
@@ -166,7 +166,7 @@ class SettingsContainer extends Component<Props, State> {
 
         <hr />
 
-        <h4>CORS Bidding Reminder</h4>
+        <h4 id="cors">CORS Bidding Reminder</h4>
 
         <div className={styles.notificationPreview}>
           <CorsNotification hideCloseButton />
@@ -219,7 +219,7 @@ class SettingsContainer extends Component<Props, State> {
 
         {this.state.bookmarks &&
           this.state.bookmarks.length > 0 && (
-            <div>
+            <div id="bookmarks">
               <h4>Bookmarks from previous version of NUSMods</h4>
               <p>
                 Bookmarks are no longer supported in NUSMods R, but you can still view your
