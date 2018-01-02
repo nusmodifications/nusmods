@@ -6,7 +6,7 @@ import config from 'config';
 import { MODIFY_LESSON, CHANGE_LESSON, CANCEL_MODIFY_LESSON } from 'actions/timetables';
 import { SELECT_MODULE_COLOR } from 'actions/theme';
 import { SELECT_SEMESTER } from 'actions/settings';
-import { SET_ONLINE_STATUS, TOGGLE_FEEDBACK_MODAL } from 'actions/app';
+import { OPEN_NOTIFICATION, SET_ONLINE_STATUS, TOGGLE_FEEDBACK_MODAL } from 'actions/app';
 
 const defaultAppState = (): AppState => ({
   // Default to the current semester from config.
@@ -15,6 +15,7 @@ const defaultAppState = (): AppState => ({
   activeLesson: null,
   isOnline: navigator.onLine,
   isFeedbackModalOpen: false,
+  notification: null,
 });
 
 // This reducer is for storing state pertaining to the UI.
@@ -45,6 +46,11 @@ function app(state: AppState = defaultAppState(), action: FSA): AppState {
       return {
         ...state,
         isFeedbackModalOpen: !state.isFeedbackModalOpen,
+      };
+    case OPEN_NOTIFICATION:
+      return {
+        ...state,
+        notification: action.payload,
       };
     case SELECT_MODULE_COLOR:
     default:
