@@ -7,9 +7,13 @@ export default (store) => (next) => (action) => {
   // Ignore if action should not be recorded
   if (!actionsToPersist.includes(action.type)) return next(action);
 
-  // Save new state after action is performed
+  // Get new state before and after action is performed
+  const relevantBefore = pick(store.getState(), keyPathsToPersist);
   const result = next(action);
-  const persist = pick(store.getState(), keyPathsToPersist);
-  store.dispatch(pushNewPresentState(persist));
+  const relevantAfter = pick(store.getState(), keyPathsToPersist);
+
+  // Send to undoHistory reducer
+  store.dispatch(pushNewPresentState(relevantBefore, relevantAfter));
+
   return result;
 };

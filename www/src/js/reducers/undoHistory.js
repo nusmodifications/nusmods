@@ -20,20 +20,20 @@ export function redo(): FSA {
 
 // Should only be called by undo-middleware
 export const PUSH_NEW_PRESENT_STATE = 'PUSH_NEW_PRESENT_STATE';
-export function pushNewPresentState<T>(newPresent: T): FSA {
-  return { type: PUSH_NEW_PRESENT_STATE, payload: { newPresent } };
+export function pushNewPresentState(oldPresent: Object, newPresent: Object): FSA {
+  return { type: PUSH_NEW_PRESENT_STATE, payload: { oldPresent, newPresent } };
 }
 
 export type UndoHistoryState = {
   past: Array<Object>,
-  present: Object,
+  present: ?Object,
   future: Array<Object>,
 };
 
 // Call the reducer with empty action to populate the initial state
 const initialState: UndoHistoryState = {
   past: [],
-  present: {},
+  present: undefined, // Don't pretend to know the present
   future: [],
 };
 
@@ -46,7 +46,8 @@ export function undoHistoryReducer(
 
   switch (action.type) {
     case UNDO: {
-      if (past.length === 0) return state;
+      // Abort if no past, or present is unknown
+      if (past.length === 0 || !present) return state;
       const previous = past[past.length - 1];
       const newPast = past.slice(0, past.length - 1);
       return {
@@ -56,7 +57,8 @@ export function undoHistoryReducer(
       };
     }
     case REDO: {
-      if (future.length === 0) return state;
+      // Abort if no future, or present is unknown
+      if (future.length === 0 || !present) return state;
       const next = future[0];
       const newFuture = future.slice(1);
       return {
@@ -67,7 +69,8 @@ export function undoHistoryReducer(
     }
     case PUSH_NEW_PRESENT_STATE: {
       return {
-        past: [...past, present],
+        // Use oldPresent if we don't know the present
+        past: [...past, present || action.payload.oldPresent],
         present: action.payload.newPresent,
         future: [],
       };
