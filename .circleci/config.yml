@@ -9,12 +9,14 @@ jobs:
 
     parallelism: 4
 
-    working_directory: ~/nusmods/www
+    working_directory: ~/nusmods/
 
     steps:
       - checkout
 
       - run: echo $CIRCLE_COMPARE_URL | cut -d/ -f7
+
+      - run: cd www
 
       - restore_cache:
           name: Restore node_modules cache
