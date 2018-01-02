@@ -17,7 +17,6 @@ import type {
 
 import classnames from 'classnames';
 import { getSemModuleSelectList } from 'reducers/moduleBank';
-import { downloadAsImage, downloadAsIcal } from 'actions/export';
 import {
   addModule,
   cancelModifyLesson,
@@ -51,26 +50,28 @@ import TimetableModulesTable from './TimetableModulesTable';
 import styles from './TimetableContent.scss';
 
 type Props = {
+  // Own props
+  readOnly: boolean,
   header: Node,
   semester: Semester,
-  semModuleList: ModuleSelectList,
   timetable: SemTimetableConfig,
-  timetableWithLessons: SemTimetableConfigWithLessons,
-  modules: ModulesMap,
   colors: ColorMapping,
-  activeLesson: Lesson,
+
+  // From Redux
+  timetableWithLessons: SemTimetableConfigWithLessons,
+  semModuleList: ModuleSelectList,
+  modules: ModulesMap,
+  activeLesson: ?Lesson,
   timetableOrientation: TimetableOrientation,
   hiddenInTimetable: ModuleCode[],
-  readOnly: boolean,
 
+  // Actions
   addModule: Function,
   removeModule: Function,
   modifyLesson: Function,
   changeLesson: Function,
   cancelModifyLesson: Function,
   toggleTimetableOrientation: Function,
-  downloadAsImage: Function,
-  downloadAsIcal: Function,
 };
 
 type State = {
@@ -110,15 +111,6 @@ class TimetableContent extends Component<Props, State> {
       this.props.cancelModifyLesson();
     }
   };
-
-  downloadAsImage = () => this.props.downloadAsImage(this.timetableDom);
-
-  downloadAsIcal = () =>
-    this.props.downloadAsIcal(
-      this.props.semester,
-      this.props.timetableWithLessons,
-      this.props.modules,
-    );
 
   isHiddenInTimetable = (moduleCode: ModuleCode) =>
     this.props.hiddenInTimetable.includes(moduleCode);
@@ -304,22 +296,20 @@ class TimetableContent extends Component<Props, State> {
             })}
           >
             <div className="row">
-              <div className="col-12">
+              <div className="col-12 no-export">
                 <TimetableActions
                   isVerticalOrientation={isVerticalOrientation}
                   toggleTimetableOrientation={this.props.toggleTimetableOrientation}
-                  downloadAsImage={this.downloadAsImage}
-                  downloadAsIcal={this.downloadAsIcal}
                   semester={semester}
                   timetable={this.props.timetable}
                 />
               </div>
             </div>
             <div className={styles.tableContainer}>
-              <div className="col-md-12">
-                {!readOnly && (
-                  <Online>
-                    {(isOnline) => (
+              {!readOnly && (
+                <Online>
+                  {(isOnline) => (
+                    <div className={classnames('col-md-12', styles.modulesSelect)}>
                       <ModulesSelect
                         moduleList={this.props.semModuleList}
                         onChange={(moduleCode) => {
@@ -332,12 +322,11 @@ class TimetableContent extends Component<Props, State> {
                         }
                         disabled={!isOnline}
                       />
-                    )}
-                  </Online>
-                )}
-                <br />
-                {this.renderModuleSections(!isVerticalOrientation)}
-              </div>
+                    </div>
+                  )}
+                </Online>
+              )}
+              <div className="col-md-12">{this.renderModuleSections(!isVerticalOrientation)}</div>
             </div>
           </div>
         </div>
@@ -372,6 +361,4 @@ export default connect(mapStateToProps, {
   changeLesson,
   cancelModifyLesson,
   toggleTimetableOrientation,
-  downloadAsImage,
-  downloadAsIcal,
 })(TimetableContent);

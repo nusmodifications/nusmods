@@ -1,0 +1,60 @@
+version: 2
+jobs:
+  build:
+
+    docker:
+      - image: circleci/node:8
+        environment:
+            NODE_ENV: test
+
+    working_directory: ~/nusmods/
+
+    steps:
+      - checkout
+
+      - run: echo $CIRCLE_COMPARE_URL | cut -d/ -f7
+
+      - restore_cache:
+          name: Restore node_modules cache
+          keys:
+            - v1-node-{{ arch }}-{{ .Branch }}-{{ checksum "www/yarn.lock" }}
+            - v1-node-{{ arch }}-{{ .Branch }}-
+            - v1-node-{{ arch }}-
+
+      - run:
+          name: Install node_modules packages
+          command: cd www && yarn install
+
+      - save_cache:
+          name: Save node_modules cache
+          key: v1-node-{{ arch }}-{{ .Branch }}-{{ checksum "www/yarn.lock" }}
+          paths:
+            - www/node_modules
+
+      - run:
+          name: Type check code
+          command: cd www && yarn flow
+
+      - run:
+          name: Lint code
+          command: cd www && yarn lint:code --format junit -o reports/junit/js-lint-results.xml
+
+      - run:
+          name: Test code
+          environment:
+            JEST_JUNIT_OUTPUT: reports/junit/js-test-results.xml
+          command: |
+            cd www
+            set +e
+            yarn jest --ci --testResultsProcessor="jest-junit" --coverage
+            cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+
+      - run:
+          name: Lint styles
+          command: cd www && yarn lint:styles
+
+      - store_test_results:
+          path: www/reports/junit
+
+      - store_artifacts:
+          path: www/reports/junit
