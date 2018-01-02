@@ -214,7 +214,7 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
 
 const mapStateToProps = (state, ownProps) => {
   const semester = semesterForTimetablePage(ownProps.match.params.semester);
-  const timetable = state.timetables.present[semester] || EMPTY_OBJECT;
+  const timetable = state.timetables[semester] || EMPTY_OBJECT;
 
   return {
     semester,

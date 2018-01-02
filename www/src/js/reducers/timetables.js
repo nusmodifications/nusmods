@@ -4,7 +4,6 @@ import type { ClassNo, LessonType } from 'types/modules';
 import type { ModuleLessonConfig, TimetableConfig, SemTimetableConfig } from 'types/timetables';
 
 import { get, omit } from 'lodash';
-import undoable from 'reducers/undoable';
 
 import { ADD_MODULE, REMOVE_MODULE, CHANGE_LESSON, SET_TIMETABLE } from 'actions/timetables';
 import { SET_EXPORTED_DATA } from 'actions/export';
@@ -95,4 +94,4 @@ function timetables(state: TimetableConfig = defaultTimetableConfig, action: FSA
   }
 }
 
-export default undoable(timetables);
+export default timetables;
