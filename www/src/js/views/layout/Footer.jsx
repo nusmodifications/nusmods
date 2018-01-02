@@ -20,9 +20,6 @@ export function FooterComponent(props: Props) {
   const versionStr = process.env.versionStr;
 
   const lastUpdatedDate = props.lastUpdatedDate;
-  const apiUpdateSpan = lastUpdatedDate && (
-    <span>Data correct as at {lastUpdatedDate.toLocaleString()}.</span>
-  );
 
   const versionSpan = commitHash &&
     versionStr && (
@@ -91,7 +88,9 @@ export function FooterComponent(props: Props) {
             </button>
           </li>
         </ul>
-        <p>{apiUpdateSpan}</p>
+        <p>
+          Data correct as at {lastUpdatedDate ? lastUpdatedDate.toLocaleString() : 'Loading...'}.
+        </p>
         <p>
           Designed and built with all the love in the world by{' '}
           <a href={config.contact.githubOrg} target="_blank" rel="noopener noreferrer">
@@ -99,7 +98,7 @@ export function FooterComponent(props: Props) {
           </a>. Maintained by the <Link to="/team">core team</Link> with the help of{' '}
           <Link to="/contributors">our contributors</Link>.
         </p>
-        <p>Copyright © 2017 NUSModifications. All rights reserved. {versionSpan}</p>
+        <p>Copyright © 2014 - Present, NUSModifications. All rights reserved. {versionSpan}</p>
       </div>
     </footer>
   );

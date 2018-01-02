@@ -1,10 +1,3 @@
 {
-  "presets": ["es2015"],
-  "env": {
-    "commonjs": {
-      "plugins": [
-        ["transform-es2015-modules-commonjs", { "loose": true }]
-      ]
-    }
-  }
+  "presets": ["env"]
 }

@@ -11,6 +11,7 @@ import styles from './TimetableCell.scss';
 type Props = {
   lesson: Lesson,
   style: Object,
+  isScrolledHorizontally: boolean,
   onModifyCell?: Function,
 };
 
@@ -26,6 +27,8 @@ function TimetableCell(props: Props) {
         [styles.cellIsAvailable]: lesson.isAvailable,
         // $FlowFixMe When object spread type actually works
         [styles.cellIsActive]: lesson.isActive,
+        // $FlowFixMe When object spread type actually works
+        [styles.cellIsActiveScrolled]: lesson.isActive && props.isScrolledHorizontally,
       })}
       onClick={(event) => {
         event.stopPropagation();

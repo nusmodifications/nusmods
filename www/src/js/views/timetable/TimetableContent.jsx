@@ -17,7 +17,6 @@ import type {
 
 import classnames from 'classnames';
 import { getSemModuleSelectList } from 'reducers/moduleBank';
-import { downloadAsImage, downloadAsIcal } from 'actions/export';
 import {
   addModule,
   cancelModifyLesson,
@@ -51,49 +50,67 @@ import TimetableModulesTable from './TimetableModulesTable';
 import styles from './TimetableContent.scss';
 
 type Props = {
+  // Own props
+  readOnly: boolean,
   header: Node,
   semester: Semester,
-  semModuleList: ModuleSelectList,
   timetable: SemTimetableConfig,
-  timetableWithLessons: SemTimetableConfigWithLessons,
-  modules: ModulesMap,
   colors: ColorMapping,
-  activeLesson: Lesson,
+
+  // From Redux
+  timetableWithLessons: SemTimetableConfigWithLessons,
+  semModuleList: ModuleSelectList,
+  modules: ModulesMap,
+  activeLesson: ?Lesson,
   timetableOrientation: TimetableOrientation,
   hiddenInTimetable: ModuleCode[],
-  readOnly: boolean,
 
+  // Actions
   addModule: Function,
   removeModule: Function,
   modifyLesson: Function,
   changeLesson: Function,
   cancelModifyLesson: Function,
   toggleTimetableOrientation: Function,
-  downloadAsImage: Function,
-  downloadAsIcal: Function,
 };
 
-class TimetableContent extends Component<Props> {
+type State = {
+  isScrolledHorizontally: boolean,
+};
+
+class TimetableContent extends Component<Props, State> {
   timetableDom: ?HTMLElement;
+  timetableWrapperDom: ?HTMLElement;
+
+  state: State = {
+    isScrolledHorizontally: false,
+  };
+
+  componentDidMount() {
+    if (this.timetableWrapperDom) {
+      this.timetableWrapperDom.addEventListener('scroll', this.handleScroll, { passive: true });
+    }
+  }
 
   componentWillUnmount() {
     this.cancelModifyLesson();
+    if (this.timetableWrapperDom) {
+      this.timetableWrapperDom.removeEventListener('scroll', this.handleScroll);
+    }
   }
+
+  handleScroll = () => {
+    const isScrolledHorizontally =
+      !!this.timetableWrapperDom && this.timetableWrapperDom.scrollLeft > 0;
+    if (this.state.isScrolledHorizontally === isScrolledHorizontally) return;
+    this.setState({ isScrolledHorizontally });
+  };
 
   cancelModifyLesson = () => {
     if (this.props.activeLesson) {
       this.props.cancelModifyLesson();
     }
   };
-
-  downloadAsImage = () => this.props.downloadAsImage(this.timetableDom);
-
-  downloadAsIcal = () =>
-    this.props.downloadAsIcal(
-      this.props.semester,
-      this.props.timetableWithLessons,
-      this.props.modules,
-    );
 
   isHiddenInTimetable = (moduleCode: ModuleCode) =>
     this.props.hiddenInTimetable.includes(moduleCode);
@@ -151,17 +168,21 @@ class TimetableContent extends Component<Props> {
     return (
       <div>
         {!_.isEmpty(clashes) && (
-          <div className="alert alert-danger" role="alert">
-            <h4>Exam Clashes</h4>
-            <p>These modules have clashing exams.</p>
+          <div>
+            <div className="alert alert-danger">
+              Warning! There are clashes in your exam timetable.
+            </div>
             {Object.keys(clashes)
               .sort()
               .map((clashDate) => (
                 <div key={clashDate}>
-                  <h5>Clash on {formatExamDate(clashDate)}</h5>
+                  <p>
+                    Clash on <strong>{formatExamDate(clashDate)}</strong>
+                  </p>
                   {renderModuleTable(clashes[clashDate])}
                 </div>
               ))}
+            <hr />
           </div>
         )}
         {renderModuleTable(nonClashingMods)}
@@ -251,10 +272,16 @@ class TimetableContent extends Component<Props> {
               'col-md-8': isVerticalOrientation,
             })}
           >
-            <div className={styles.timetableWrapper}>
+            <div
+              className={styles.timetableWrapper}
+              ref={(r) => {
+                this.timetableWrapperDom = r;
+              }}
+            >
               <Timetable
                 lessons={arrangedLessonsWithModifiableFlag}
                 isVerticalOrientation={isVerticalOrientation}
+                isScrolledHorizontally={this.state.isScrolledHorizontally}
                 onModifyCell={this.modifyCell}
                 ref={(r) => {
                   this.timetableDom = r && r.timetableDom;
@@ -269,22 +296,20 @@ class TimetableContent extends Component<Props> {
             })}
           >
             <div className="row">
-              <div className="col-12">
+              <div className="col-12 no-export">
                 <TimetableActions
                   isVerticalOrientation={isVerticalOrientation}
                   toggleTimetableOrientation={this.props.toggleTimetableOrientation}
-                  downloadAsImage={this.downloadAsImage}
-                  downloadAsIcal={this.downloadAsIcal}
                   semester={semester}
                   timetable={this.props.timetable}
                 />
               </div>
             </div>
             <div className={styles.tableContainer}>
-              <div className="col-md-12">
-                {!readOnly && (
-                  <Online>
-                    {(isOnline) => (
+              {!readOnly && (
+                <Online>
+                  {(isOnline) => (
+                    <div className={classnames('col-md-12', styles.modulesSelect)}>
                       <ModulesSelect
                         moduleList={this.props.semModuleList}
                         onChange={(moduleCode) => {
@@ -297,12 +322,11 @@ class TimetableContent extends Component<Props> {
                         }
                         disabled={!isOnline}
                       />
-                    )}
-                  </Online>
-                )}
-                <br />
-                {this.renderModuleSections(!isVerticalOrientation)}
-              </div>
+                    </div>
+                  )}
+                </Online>
+              )}
+              <div className="col-md-12">{this.renderModuleSections(!isVerticalOrientation)}</div>
             </div>
           </div>
         </div>
@@ -337,6 +361,4 @@ export default connect(mapStateToProps, {
   changeLesson,
   cancelModifyLesson,
   toggleTimetableOrientation,
-  downloadAsImage,
-  downloadAsIcal,
 })(TimetableContent);

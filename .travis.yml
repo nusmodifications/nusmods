@@ -4,11 +4,11 @@ sudo: false
 matrix:
   include:
   - env: PROJECT="api"
-    node_js: 8
+    node_js: lts/*
   - env: PROJECT="www"
     node_js: lts/*
   - env: PROJECT="packages/nusmoderator"
-    node_js: 6.6.0
+    node_js: lts/*
 cache:
   yarn: true
   directories:

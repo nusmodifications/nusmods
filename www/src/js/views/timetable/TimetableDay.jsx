@@ -14,6 +14,7 @@ type Props = {
   isCurrentDay: boolean,
   dayLessonRows: TimetableDayArrangement,
   verticalMode: boolean,
+  isScrolledHorizontally: boolean,
   startingIndex: number,
   endingIndex: number,
   onModifyCell: Function,
@@ -63,6 +64,7 @@ function TimetableDay(props: Props) {
             verticalMode={props.verticalMode}
             lessons={dayLessonRow}
             onModifyCell={props.onModifyCell}
+            isScrolledHorizontally={props.isScrolledHorizontally}
           />
         ))}
       </div>

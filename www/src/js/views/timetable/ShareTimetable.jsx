@@ -38,6 +38,9 @@ function shareUrl(semester: Semester, timetable: SemTimetableConfig): string {
   return absolutePath(timetableShare(semester, timetable));
 }
 
+// So that I don't keep typing 'shortUrl' instead
+export const SHORT_URL_KEY = 'shorturl';
+
 export default class ShareTimetable extends PureComponent<Props, State> {
   urlInput: ?HTMLInputElement;
   url: ?string;
@@ -49,12 +52,20 @@ export default class ShareTimetable extends PureComponent<Props, State> {
   };
 
   loadShortUrl(url: string) {
+    const showFullUrl = () => this.setState({ shortUrl: url });
+
     return (
       axios
-        .get('https://nusmods.com/short_url.php', { params: { url }, timeout: 2000 })
-        .then(({ data }) => this.setState({ shortUrl: data.shorturl }))
+        .get('/short_url.php', { params: { url }, timeout: 2000 })
+        .then(({ data }) => {
+          if (data[SHORT_URL_KEY]) {
+            this.setState({ shortUrl: data[SHORT_URL_KEY] });
+          } else {
+            showFullUrl();
+          }
+        })
         // Cannot get short URL - just use long URL instead
-        .catch(() => this.setState({ shortUrl: url }))
+        .catch(showFullUrl)
     );
   }
 
@@ -188,11 +199,7 @@ export default class ShareTimetable extends PureComponent<Props, State> {
 
     return (
       <Fragment>
-        <button
-          type="button"
-          className="btn btn-sm btn-outline-primary btn-svg"
-          onClick={this.openModal}
-        >
+        <button type="button" className="btn btn-outline-primary btn-svg" onClick={this.openModal}>
           <Repeat className="svg svg-small" />
           Share/Sync
         </button>

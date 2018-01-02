@@ -1,37 +1,30 @@
 module.exports = {
   parser: 'babel-eslint',
   root: true,
-  extends: [
-    'airbnb-base',
-    'plugin:flowtype/recommended',
-  ],
+  extends: ['airbnb-base', 'plugin:flowtype/recommended'],
   env: {
     browser: true,
     node: true,
   },
-  globals: {
-    expect: true,
-    it: true,
-  },
-  plugins: [
-    'flowtype',
-    'import',
-  ],
-  settings: {
-    'import/resolver': {
-      webpack: {
-        config: 'webpack.config.js',
+  plugins: ['import', 'flowtype'],
+  overrides: [
+    {
+      files: '**/*.test.{js,jsx}',
+      env: {
+        jest: true,
       },
     },
-  },
+  ],
   rules: {
     'arrow-body-style': 'off',
     'arrow-parens': ['error', 'as-needed', { requireForBlockBody: true }],
     'max-len': ['error', 120],
-    'import/extensions': ['error', 'always',
+    'import/extensions': [
+      'error',
+      'always',
       {
         js: 'never',
-      }
+      },
     ],
     'linebreak-style': 'off',
   },

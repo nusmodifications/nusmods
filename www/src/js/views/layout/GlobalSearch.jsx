@@ -5,16 +5,20 @@ import Downshift from 'downshift';
 import classnames from 'classnames';
 
 import { highlight } from 'utils/react';
-import { Search } from 'views/components/icons';
+import { Search, ChevronRight } from 'views/components/icons';
 import type { Module } from 'types/modules';
 import type { Venue } from 'types/venues';
-import type { ModuleList, VenueList } from 'types/reducers';
+import type { ResultType, SearchResult } from 'types/views';
 
+import { MODULE_RESULT, SEARCH_RESULT, VENUE_RESULT } from 'types/views';
 import styles from './GlobalSearch.scss';
 
 type Props = {
-  getResults: string => [ModuleList, VenueList, string[]],
-  onChange: (Venue | Module) => void,
+  getResults: string => SearchResult,
+
+  onSelectVenue: Venue => void,
+  onSelectModule: Module => void,
+  onSearch: (ResultType, string) => void,
 };
 
 type State = {
@@ -39,8 +43,23 @@ class GlobalSearch extends Component<Props, State> {
     });
   };
 
-  onChange = (item: Venue | Module) => {
-    this.props.onChange(item);
+  onChange = ([resultType, item]: [ResultType, any]) => {
+    const { onSelectModule, onSelectVenue, onSearch } = this.props;
+
+    switch (resultType) {
+      case VENUE_RESULT:
+        onSelectVenue(item);
+        break;
+
+      case MODULE_RESULT:
+        onSelectModule(item);
+        break;
+
+      case SEARCH_RESULT:
+      default:
+        onSearch(...item);
+    }
+
     this.onClose();
   };
 
@@ -55,9 +74,12 @@ class GlobalSearch extends Component<Props, State> {
     inputValue,
     highlightedIndex,
   }: any) => {
-    const [modules, venues, highlightTokens] = this.props.getResults(inputValue);
+    const { modules, venues, tokens } = this.props.getResults(inputValue);
     const hasModules = modules.length > 0;
     const hasVenues = venues.length > 0;
+
+    const venueHeaderIndex = hasModules ? modules.length + 1 : 0;
+    const venueItemOffset = venueHeaderIndex + 1;
 
     return (
       <div className={styles.container}>
@@ -78,43 +100,64 @@ class GlobalSearch extends Component<Props, State> {
           <div className={styles.selectList}>
             {hasModules && (
               <Fragment>
-                <div className={styles.selectHeader}>Modules</div>
+                <div
+                  {...getItemProps({
+                    item: [SEARCH_RESULT, [MODULE_RESULT, inputValue]],
+                  })}
+                  className={classnames(styles.selectHeader, {
+                    [styles.selected]: highlightedIndex === 0,
+                  })}
+                >
+                  <span className={styles.headerName}>Modules</span>
+                  <span className={styles.viewAll}>
+                    View All <ChevronRight />
+                  </span>
+                </div>
+
                 {modules.map((module, index) => (
                   <div
                     {...getItemProps({
                       key: module.ModuleCode,
-                      item: module,
-                      index,
+                      item: [MODULE_RESULT, module],
                     })}
                     className={classnames(styles.option, {
-                      [styles.optionSelected]: highlightedIndex === index,
+                      [styles.selected]: highlightedIndex === index + 1,
                     })}
                   >
-                    {highlight(`${module.ModuleCode} ${module.ModuleTitle}`, highlightTokens)}
+                    {highlight(`${module.ModuleCode} ${module.ModuleTitle}`, tokens)}
                   </div>
                 ))}
               </Fragment>
             )}
             {hasVenues && (
               <Fragment>
-                <div className={styles.selectHeader}>Venues</div>
-                {venues.map((venue, index) => {
-                  const combinedIndex = modules.length + index;
-                  return (
-                    <div
-                      {...getItemProps({
-                        key: venue,
-                        item: venue,
-                        index: combinedIndex,
-                      })}
-                      className={classnames(styles.option, {
-                        [styles.optionSelected]: highlightedIndex === combinedIndex,
-                      })}
-                    >
-                      {highlight(venue, highlightTokens)}
-                    </div>
-                  );
-                })}
+                <div
+                  {...getItemProps({
+                    item: [SEARCH_RESULT, [VENUE_RESULT, inputValue]],
+                  })}
+                  className={classnames(styles.selectHeader, {
+                    [styles.selected]: highlightedIndex === venueHeaderIndex,
+                  })}
+                >
+                  <span className={styles.headerName}>Venues</span>
+                  <span className={styles.viewAll}>
+                    View All <ChevronRight />
+                  </span>
+                </div>
+
+                {venues.map((venue, index) => (
+                  <div
+                    {...getItemProps({
+                      key: venue,
+                      item: [VENUE_RESULT, venue],
+                    })}
+                    className={classnames(styles.option, {
+                      [styles.selected]: highlightedIndex === venueItemOffset + index,
+                    })}
+                  >
+                    {highlight(venue, tokens)}
+                  </div>
+                ))}
               </Fragment>
             )}
           </div>

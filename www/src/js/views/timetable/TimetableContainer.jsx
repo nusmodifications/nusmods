@@ -15,7 +15,12 @@ import { selectSemester } from 'actions/settings';
 import { setTimetable, fetchTimetableModules } from 'actions/timetables';
 import { deserializeTimetable } from 'utils/timetables';
 import { fillColorMapping } from 'utils/colors';
-import { semesterForTimetablePage, timetablePage, TIMETABLE_SHARE } from 'views/routes/paths';
+import {
+  semesterForTimetablePage,
+  timetablePage,
+  isV2TimetablePageUrl,
+  TIMETABLE_SHARE,
+} from 'views/routes/paths';
 import { Repeat } from 'views/components/icons';
 import NotFoundPage from 'views/errors/NotFoundPage';
 import SemesterSwitcher from 'views/components/semester-switcher/SemesterSwitcher';
@@ -161,7 +166,7 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
     // 1. Redirect to activeSemester if no semester was given in the URL. We do
     //    not check against props.semester because that may be null due to the
     //    semester being invalid (and not because the param was not provided)
-    if (!match.params.semester) {
+    if (!match.params.semester || isV2TimetablePageUrl(match.params)) {
       return <Redirect to={timetablePage(activeSemester)} />;
     }
 

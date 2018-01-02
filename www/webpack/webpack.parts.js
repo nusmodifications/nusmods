@@ -25,6 +25,7 @@ const PATHS = {
   styles: path.join(ROOT, SRC, 'styles'),
   images: path.join(ROOT, SRC, 'img'),
   build: path.join(ROOT, 'dist'),
+  buildTimetable: path.join(ROOT, 'dist-timetable'),
   fixtures: path.join(ROOT, '__mocks__'),
 };
 
