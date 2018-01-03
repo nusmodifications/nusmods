@@ -42,7 +42,8 @@ class TimetableModulesTable extends Component<Props> {
             title={removeBtnLabel}
             aria-label={removeBtnLabel}
             onClick={() => {
-              if (window.confirm(`Are you sure you want to remove ${module.ModuleCode}?`)) {
+              const confirmMessage = `Are you sure you want to remove ${module.ModuleCode}?`;
+              if (window.confirm(confirmMessage)) {
                 this.props.onRemoveModule(module.ModuleCode);
               }
             }}
