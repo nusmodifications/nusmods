@@ -19,7 +19,7 @@
       linear-gradient(
         to bottom,
         var(--body-bg) calc(100% - #{$navtab-shadow-height}),
-        $navtab-shadow-color calc(100% - #{$navtab-shadow-height}),
+        var(--navtab-shadow) calc(100% - #{$navtab-shadow-height}),
         rgba(#000, 0)
       );
   }

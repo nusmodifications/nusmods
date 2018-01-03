@@ -27,7 +27,7 @@ $animation-duration: 0.3s;
   bottom: 0;
   left: 0;
   z-index: $side-menu-overlay-z-index;
-  background: rgba(#000, 0.4);
+  background: var(--body-bg-40);
 
   :global {
     animation: fadeIn $animation-duration;
@@ -48,7 +48,7 @@ $animation-duration: 0.3s;
     width: 100%;
     padding: 1rem 0 3rem;
     background: var(--body-bg);
-    box-shadow: 0 -10px 20px rgba(#000, 0.18);
+    box-shadow: 0 -10px 20px var(--navtab-shadow);
     transform: translateY(100%);
     transition: transform $animation-duration;
 
