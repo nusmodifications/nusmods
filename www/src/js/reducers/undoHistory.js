@@ -1,7 +1,7 @@
 // @flow
 import type { FSA } from 'types/redux';
 
-import { assign, pick } from 'lodash';
+import { pick, set, get } from 'lodash';
 import { UNDO, REDO } from 'actions/undoHistory';
 
 export type UndoHistoryConfig = {
@@ -74,6 +74,16 @@ export function computeUndoStacks<T: Object>(
   }
 }
 
+// Copy all keyPaths in present into a new copy of state
+export function mergePresent<T: Object>(state: T, present: Object, keyPaths: string[]): T {
+  const newState = { ...state };
+  keyPaths.forEach((path) => {
+    const presentValue = get(present, path);
+    if (presentValue) set(newState, path, presentValue);
+  });
+  return newState;
+}
+
 // Given a config object, returns function which compute new state after
 // undoing/redoing/storing present as required by action.
 export default function undoHistory(config: UndoHistoryConfig) {
@@ -93,7 +103,7 @@ export default function undoHistory(config: UndoHistoryConfig) {
     // Applies updatedHistory.present to state if action.type === {UNDO,REDO}
     // Assumes updatedHistory.present is the final present state
     if ((action.type === UNDO || action.type === REDO) && updatedHistory.present) {
-      return assign(updatedState, updatedHistory.present);
+      return mergePresent(updatedState, updatedHistory.present, config.keyPathsToPersist);
     }
     return updatedState;
   };
