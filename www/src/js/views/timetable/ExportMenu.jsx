@@ -11,6 +11,7 @@ import exportApi from 'apis/export';
 import { downloadAsIcal, SUPPORTS_DOWNLOAD } from 'actions/export';
 import { Image, Calendar, FileText, Download, ChevronDown } from 'views/components/icons';
 import Online from 'views/components/Online';
+import { Counter } from 'utils/react';
 
 import styles from './ExportMenu.scss';
 
@@ -35,6 +36,7 @@ export class ExportMenuComponent extends PureComponent<Props> {
 
   renderDropdown = ({ isOpen, getItemProps, toggleMenu, highlightedIndex }: any) => {
     const { semester, state } = this.props;
+    const counter = new Counter();
 
     return (
       <div className={styles.exportMenu}>
@@ -56,7 +58,7 @@ export class ExportMenuComponent extends PureComponent<Props> {
               <a
                 href={exportApi.image(semester, state, window.devicePixelRatio)}
                 className={classnames('dropdown-item', {
-                  'dropdown-selected': highlightedIndex === 0,
+                  'dropdown-selected': counter.matches(highlightedIndex),
                 })}
                 {...getItemProps({ item: IMAGE })}
               >
@@ -66,7 +68,7 @@ export class ExportMenuComponent extends PureComponent<Props> {
               <a
                 href={exportApi.pdf(semester, state)}
                 className={classnames('dropdown-item', {
-                  'dropdown-selected': highlightedIndex === 1,
+                  'dropdown-selected': counter.matches(highlightedIndex),
                 })}
                 {...getItemProps({ item: PDF })}
               >
@@ -77,7 +79,7 @@ export class ExportMenuComponent extends PureComponent<Props> {
             {SUPPORTS_DOWNLOAD && (
               <button
                 className={classnames('dropdown-item', {
-                  'dropdown-selected': highlightedIndex === 2,
+                  'dropdown-selected': counter.matches(highlightedIndex),
                 })}
                 type="button"
                 {...getItemProps({ item: CALENDAR })}
