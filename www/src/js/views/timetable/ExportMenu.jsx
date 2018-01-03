@@ -10,6 +10,7 @@ import type { Semester } from 'types/modules';
 import exportApi from 'apis/export';
 import { downloadAsIcal, SUPPORTS_DOWNLOAD } from 'actions/export';
 import { Image, Calendar, FileText, Download, ChevronDown } from 'views/components/icons';
+import Online from 'views/components/Online';
 
 import styles from './ExportMenu.scss';
 
@@ -32,66 +33,67 @@ export class ExportMenuComponent extends PureComponent<Props> {
     }
   };
 
-  render() {
+  renderDropdown = ({ isOpen, getItemProps, toggleMenu, highlightedIndex }: any) => {
     const { semester, state } = this.props;
 
     return (
-      <Downshift
-        onChange={this.onChange}
-        render={({ isOpen, getItemProps, toggleMenu, highlightedIndex }) => (
-          <div className={styles.exportMenu}>
-            <button
-              className={classnames(styles.toggle, 'btn btn-outline-primary btn-svg')}
-              type="button"
-              onClick={toggleMenu}
-            >
-              <Download className="svg svg-small" /> Download<span className={styles.longLabel}>
-                {' '}
-                As
-              </span>
-              <ChevronDown className={classnames(styles.chevron, 'svg-small')} />
-            </button>
+      <div className={styles.exportMenu}>
+        <button
+          className={classnames(styles.toggle, 'btn btn-outline-primary btn-svg')}
+          type="button"
+          onClick={toggleMenu}
+        >
+          <Download className="svg svg-small" /> Download<span className={styles.longLabel}>
+            {' '}
+            As
+          </span>
+          <ChevronDown className={classnames(styles.chevron, 'svg-small')} />
+        </button>
 
-            {isOpen && (
-              <div className={classnames('dropdown-menu show', styles.dropdownMenu)}>
-                <a
-                  href={exportApi.image(semester, state, window.devicePixelRatio)}
-                  className={classnames('dropdown-item', {
-                    'dropdown-selected': highlightedIndex === 0,
-                  })}
-                  {...getItemProps({ item: IMAGE })}
-                >
-                  <Image className="svg svg-small" /> Image (.png)
-                </a>
+        {isOpen && (
+          <div className={classnames('dropdown-menu show', styles.dropdownMenu)}>
+            <Online>
+              <a
+                href={exportApi.image(semester, state, window.devicePixelRatio)}
+                className={classnames('dropdown-item', {
+                  'dropdown-selected': highlightedIndex === 0,
+                })}
+                {...getItemProps({ item: IMAGE })}
+              >
+                <Image className="svg svg-small" /> Image (.png)
+              </a>
 
-                <a
-                  href={exportApi.pdf(semester, state)}
-                  className={classnames('dropdown-item', {
-                    'dropdown-selected': highlightedIndex === 1,
-                  })}
-                  {...getItemProps({ item: PDF })}
-                >
-                  <FileText className="svg svg-small" /> PDF (.pdf)
-                </a>
+              <a
+                href={exportApi.pdf(semester, state)}
+                className={classnames('dropdown-item', {
+                  'dropdown-selected': highlightedIndex === 1,
+                })}
+                {...getItemProps({ item: PDF })}
+              >
+                <FileText className="svg svg-small" /> PDF (.pdf)
+              </a>
+            </Online>
 
-                {SUPPORTS_DOWNLOAD && (
-                  <button
-                    className={classnames('dropdown-item', {
-                      'dropdown-selected': highlightedIndex === 2,
-                    })}
-                    type="button"
-                    {...getItemProps({ item: CALENDAR })}
-                  >
-                    <Calendar className="svg svg-small" />iCalendar File (.ics)<br />
-                    (For Google Calendar / Outlook)
-                  </button>
-                )}
-              </div>
+            {SUPPORTS_DOWNLOAD && (
+              <button
+                className={classnames('dropdown-item', {
+                  'dropdown-selected': highlightedIndex === 2,
+                })}
+                type="button"
+                {...getItemProps({ item: CALENDAR })}
+              >
+                <Calendar className="svg svg-small" />iCalendar File (.ics)<br />
+                (For Google Calendar / Outlook)
+              </button>
             )}
           </div>
         )}
-      />
+      </div>
     );
+  };
+
+  render() {
+    return <Downshift onChange={this.onChange} render={this.renderDropdown} />;
   }
 }
 
