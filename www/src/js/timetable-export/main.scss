@@ -1,0 +1,15 @@
+html,
+body,
+#app,
+.app-container {
+  height: auto !important;
+}
+
+body {
+  padding-top: 0.2rem !important;
+  transition: none !important;
+}
+
+:global(.no-export) {
+  display: none !important;
+}

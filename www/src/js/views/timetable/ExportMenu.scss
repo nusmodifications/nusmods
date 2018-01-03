@@ -1,0 +1,47 @@
+@import "~styles/utils/modules-entry";
+
+.exportMenu {
+  position: relative;
+
+  .toggle {
+    width: 100%;
+  }
+
+  .chevron {
+    margin: 0 -0.6rem 0 0.2rem;
+  }
+
+  .dropdownMenu {
+    width: 16rem;
+
+    svg {
+      margin-right: 0.2rem;
+      vertical-align: middle;
+    }
+
+    @include media-breakpoint-down(xs) {
+      width: auto;
+    }
+
+    @include media-breakpoint-up(md) {
+      font-size: $font-size-sm;
+    }
+  }
+}
+
+@include media-breakpoint-only(md) {
+  :global(.verticalMode) .dropdownMenu {
+    right: 0;
+    left: auto;
+  }
+}
+
+.longLabel {
+  white-space: pre;
+}
+
+:global(.verticalMode) .longLabel {
+  @include media-breakpoint-only(md) {
+    display: none;
+  }
+}

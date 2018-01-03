@@ -67,15 +67,8 @@ const weekText = (() => {
 })();
 
 function setMode(mode: Mode) {
-  if (!document.body) {
-    return;
-  }
-
-  if (mode === DARK_MODE) {
-    document.body.classList.add('mode-dark');
-  } else {
-    document.body.classList.remove('mode-dark');
-  }
+  if (!document.body) return;
+  document.body.classList.toggle('mode-dark', mode === DARK_MODE);
 }
 
 export class AppShell extends Component<Props> {

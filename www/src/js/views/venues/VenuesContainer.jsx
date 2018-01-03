@@ -186,7 +186,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
             {size(venues) === 0 ? (
               <Fragment>
                 <Warning message="No matching venues found" />
-                {unfilteredCount &&
+                {!!unfilteredCount &&
                   isAvailabilityEnabled && (
                     <p className="text-center text-muted">
                       There{' '}

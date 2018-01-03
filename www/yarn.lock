@@ -3971,6 +3971,14 @@ html-tags@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/html-tags/-/html-tags-2.0.0.tgz#10b30a386085f43cede353cc8fa7cb0deeea668b"
 
+html-webpack-inline-source-plugin@^0.0.9:
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/html-webpack-inline-source-plugin/-/html-webpack-inline-source-plugin-0.0.9.tgz#e52dd3cf1164ac76ceaf39ba206f92e3597d054d"
+  dependencies:
+    escape-string-regexp "^1.0.5"
+    slash "^1.0.0"
+    source-map-url "^0.4.0"
+
 html-webpack-plugin@^2.30.1:
   version "2.30.1"
   resolved "https://registry.yarnpkg.com/html-webpack-plugin/-/html-webpack-plugin-2.30.1.tgz#7f9c421b7ea91ec460f56527d78df484ee7537d5"
@@ -4673,6 +4681,14 @@ jest-jasmine2@^22.0.3:
     jest-message-util "^22.0.3"
     jest-snapshot "^22.0.3"
     source-map-support "^0.5.0"
+
+jest-junit@^3.4.0:
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/jest-junit/-/jest-junit-3.4.0.tgz#a12d0a61c1fa401376ccf95ec907c50c96d497dc"
+  dependencies:
+    mkdirp "^0.5.1"
+    strip-ansi "^4.0.0"
+    xml "^1.0.1"
 
 jest-leak-detector@^22.0.3:
   version "22.0.3"
@@ -7712,6 +7728,10 @@ source-map-support@^0.5.0:
   dependencies:
     source-map "^0.6.0"
 
+source-map-url@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/source-map-url/-/source-map-url-0.4.0.tgz#3e935d7ddd73631b97659956d55128e87b5084a3"
+
 source-map@0.1.31:
   version "0.1.31"
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.1.31.tgz#9f704d0d69d9e138a81badf6ebb4fde33d151c61"
@@ -8762,6 +8782,10 @@ xml-char-classes@^1.0.0:
 xml-name-validator@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/xml-name-validator/-/xml-name-validator-2.0.1.tgz#4d8b8f1eccd3419aa362061becef515e1e559635"
+
+xml@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/xml/-/xml-1.0.1.tgz#78ba72020029c5bc87b8a81a3cfcd74b4a2fc1e5"
 
 "xtend@>=4.0.0 <4.1.0-0", xtend@^4.0.0, xtend@^4.0.1, xtend@~4.0.1:
   version "4.0.1"

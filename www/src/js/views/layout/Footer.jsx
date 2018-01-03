@@ -98,7 +98,7 @@ export function FooterComponent(props: Props) {
           </a>. Maintained by the <Link to="/team">core team</Link> with the help of{' '}
           <Link to="/contributors">our contributors</Link>.
         </p>
-        <p>Copyright © 2017 NUSModifications. All rights reserved. {versionSpan}</p>
+        <p>Copyright © 2014 - Present, NUSModifications. All rights reserved. {versionSpan}</p>
       </div>
     </footer>
   );

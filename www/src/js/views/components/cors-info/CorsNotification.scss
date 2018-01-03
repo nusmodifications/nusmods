@@ -1,6 +1,7 @@
 @import "~styles/utils/modules-entry";
 
 .wrapper {
+  composes: no-export from global;
   position: relative;
 }
 
