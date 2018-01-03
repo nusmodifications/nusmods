@@ -15,6 +15,39 @@
 
 declare module 'redux-persist' {
   declare module.exports: any;
+
+  // Taken from https://github.com/rt2zz/redux-persist/blob/master/src/types.js
+  declare export type Transform = {
+    in: (Object | string, string) => Object,
+    out: (Object | string, string) => Object,
+    config?: PersistConfig,
+  }
+
+  declare export type PersistState = {
+    version: number,
+    rehydrated: boolean,
+  }
+
+  declare export type PersistedState = {
+    _persist: PersistState,
+  } | void
+
+
+  declare export type PersistConfig = {
+    version?: number,
+    storage: Object,
+    key: string,
+    keyPrefix?: string, // @TODO remove in v6
+    blacklist?: Array<string>,
+    whitelist?: Array<string>,
+    transforms?: Array<Transform>,
+    throttle?: number,
+    migrate?: (PersistedState, number) => Promise<PersistedState>,
+    stateReconciler?: false | Function,
+    getStoredState?: PersistConfig => Promise<PersistedState>, // used for migrations
+    debug?: boolean,
+    serialize?: boolean,
+  }
 }
 
 /**
@@ -42,7 +75,7 @@ declare module 'redux-persist/es/getStoredState' {
   declare module.exports: any;
 }
 
-declare module 'redux-persist/es/index' {
+declare module 'redux-persist/es' {
   declare module.exports: any;
 }
 
@@ -90,7 +123,7 @@ declare module 'redux-persist/es/storage/getStorage' {
   declare module.exports: any;
 }
 
-declare module 'redux-persist/es/storage/index' {
+declare module 'redux-persist/es/storage' {
   declare module.exports: any;
 }
 
@@ -178,7 +211,7 @@ declare module 'redux-persist/lib/storage/getStorage' {
   declare module.exports: any;
 }
 
-declare module 'redux-persist/lib/storage/index' {
+declare module 'redux-persist/lib/storage' {
   declare module.exports: any;
 }
 
