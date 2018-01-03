@@ -32,18 +32,7 @@ export type State = {
 const defaultState: State = {};
 
 export default function(state: State = defaultState, action: FSA): State {
-  /* Actions: undo, redo, action we care about, action we don't care about
-   * Case undo:
-   * - Run reducers, then Merge store and alter history
-   * Case redo:
-   * - Run reducers, then Merge store and alter history
-   * Case relavent action:
-   * - Send before/after snapshots to reducer
-   * Case irrelavent action:
-   * - Just run other reducers
-   */
-
-  // Update every reducer except the undo reducers
+  // Update every reducer except the undo reducer
   const newState = {
     moduleBank: moduleBank(state.moduleBank, action),
     venueBank: venueBank(state.venueBank, action),
@@ -55,6 +44,5 @@ export default function(state: State = defaultState, action: FSA): State {
     moduleFinder: moduleFinder(state.moduleFinder, action),
     undoHistory: state.undoHistory,
   };
-
   return unredo(state, newState, action);
 }
