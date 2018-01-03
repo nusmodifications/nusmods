@@ -4,7 +4,7 @@ import type { Semester } from 'types/modules';
 
 import React from 'react';
 import { connect, type MapStateToProps } from 'react-redux';
-import { withRouter, Link, NavLink } from 'react-router-dom';
+import { withRouter, NavLink } from 'react-router-dom';
 import classnames from 'classnames';
 
 import { Calendar, Heart, Map, BookOpen, Settings } from 'views/components/icons';
@@ -39,20 +39,19 @@ export function NavtabsComponent(props: Props) {
         <Map />
         <span className={styles.title}>Venues</span>
       </NavLink>
-      <Link
-        {...tabProps}
+      <NavLink {...tabProps} to="/settings">
+        <Settings />
+        <span className={styles.title}>Settings</span>
+      </NavLink>
+      <a
         className={classnames(tabProps.className, styles.hiddenOnMobile)}
-        to="https://nuswhispers.com"
+        href="https://nuswhispers.com"
         target="_blank"
         rel="noreferrer noopener"
       >
         <Heart />
         <span className={styles.title}>Whispers</span>
-      </Link>
-      <NavLink {...tabProps} to="/settings">
-        <Settings />
-        <span className={styles.title}>Settings</span>
-      </NavLink>
+      </a>
     </nav>
   );
 }
