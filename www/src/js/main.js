@@ -1,17 +1,19 @@
-import 'utils/polyfill';
+import 'bootstrapping/polyfill';
+
+// Import Sentry earliest to capture exceptions
+import 'bootstrapping/sentry';
 
 import ReactDOM from 'react-dom';
 import ReactModal from 'react-modal';
 import Raven from 'raven-js';
 
-import configureStore from 'stores/configure-store';
-import subscribeOnlineEvents from 'stores/subscribeOnlineEvents';
-import initKeyboardShortcuts from 'utils/keyboardShortcuts';
-import storage from 'storage';
 import App from 'App';
+import storage from 'storage';
 
-import 'utils/sentry';
-import initializeGA from 'utils/google-analytics';
+import configureStore from 'bootstrapping/configure-store';
+import subscribeOnlineEvents from 'bootstrapping/subscribeOnlineEvents';
+import initKeyboardShortcuts from 'bootstrapping/keyboardShortcuts';
+import initializeGA from 'bootstrapping/google-analytics';
 
 import '../styles/main.scss';
 
