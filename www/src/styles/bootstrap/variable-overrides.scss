@@ -49,6 +49,7 @@ $input-disabled-bg: var(--gray-lighter);
 
 $dropdown-border-color: var(--gray-lighter);
 $dropdown-bg: var(--body-bg);
+// $zindex-dropdown: 820 - set in constants.css with the rest of the z-indexes
 
 // Close button line color
 $close-color: var(--gray-dark);
