@@ -93,45 +93,38 @@ $icon-dist-lg: $input-width-open-lg - $input-width;
 
 .item {
   composes: openWidth;
+  display: flex;
+  justify-content: space-between;
   padding: 0.6rem $container-padding;
   cursor: pointer;
 }
 
 .selectHeader {
   composes: item;
-  display: flex;
   justify-content: space-between;
-  padding: 0.3rem $container-padding;
-  color: var(--body-bg);
-  background: var(--gray-light);
-
-  .headerName {
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-
-  .viewAll {
-    position: relative;
-    padding-right: 1.4rem;
-
-    svg {
-      position: absolute;
-      top: 0;
-      right: 0;
-      height: 1.2rem;
-      transition: $transition-base;
-    }
-  }
+  font-size: 0.95rem;
+  border-bottom: 1px solid var(--gray-lighter);
 
   &.selected {
-    .viewAll {
+    > :global(.btn-svg) {
       color: theme-color();
+    }
 
-      svg {
-        right: -0.2rem;
-      }
+    .svg {
+      transform: translateX(0.2rem);
     }
   }
+}
+
+.headerName {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.svg {
+  width: 1.1rem;
+  height: 1.1rem;
+  transition: $entering-duration transform $material-standard-curve;
 }
 
 .option {
@@ -141,5 +134,83 @@ $icon-dist-lg: $input-width-open-lg - $input-width;
     color: theme-color();
     background: var(--gray-lightest);
   }
+
+  .semesters {
+    flex: 0 0 auto;
+    margin-right: 0.4rem;
+  }
+
+  :global(.badge) {
+    margin-right: 0.2rem;
+    border-radius: 1px;
+  }
 }
 
+.noResults {
+  composes: openWidth;
+  text-align: center;
+
+  p {
+    margin-bottom: 0.4rem;
+  }
+
+  svg {
+    opacity: 0.35;
+    width: 4rem;
+    height: 4rem;
+    margin-top: 1rem;
+  }
+
+  :global(.btn).selected {
+    text-decoration: underline;
+  }
+}
+
+.searchTerm {
+  composes: h4 from global;
+  display: block;
+  white-space: normal;
+}
+
+.sem1,
+.sem2,
+.sem3,
+.sem4 {
+  color: var(--body-color);
+}
+
+.sem1 {
+  background: darken($gray-lightest, 5%);
+}
+
+.sem2 {
+  background: darken($gray-lightest, 10%);
+}
+
+.sem3 {
+  background: darken($gray-lightest, 15%);
+}
+
+.sem4 {
+  background: darken($gray-lightest, 20%);
+}
+
+@include night-mode-only {
+  $dark-bg: #2c2c2c;
+
+  .sem1 {
+    background: lighten($dark-bg, 5%);
+  }
+
+  .sem2 {
+    background: lighten($dark-bg, 10%);
+  }
+
+  .sem3 {
+    background: lighten($dark-bg, 15%);
+  }
+
+  .sem4 {
+    background: lighten($dark-bg, 20%);
+  }
+}
