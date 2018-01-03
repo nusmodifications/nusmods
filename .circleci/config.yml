@@ -53,8 +53,12 @@ jobs:
           name: Lint styles
           command: cd www && yarn lint:styles
 
+      - run:
+          name: Build web page
+          command: cd www && yarn build
+
       - store_test_results:
           path: www/reports/junit
 
       - store_artifacts:
-          path: www/reports/junit
+          path: www/dist
