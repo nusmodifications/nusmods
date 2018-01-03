@@ -46,7 +46,9 @@ class Timetable extends PureComponent<Props> {
   }
 
   componentWillUnmount() {
-    clearInterval(this.interval);
+    if (this.interval !== null) {
+      clearInterval(this.interval);
+    }
   }
 
   render() {
