@@ -44,5 +44,11 @@ $state-danger-bg:           theme-color('danger');
 $mark-bg: transparent;
 $hr-border-color: var(--gray-lighter);
 
+$input-border-color: var(--gray-lighter);
+$input-disabled-bg: var(--gray-lightest);
+
+$dropdown-border-color: var(--gray-lighter);
+$dropdown-bg: var(--body-bg);
+
 // Close button line color
 $close-color: var(--gray-dark);
