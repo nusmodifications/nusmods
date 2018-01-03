@@ -1,5 +1,5 @@
 // @flow
-import type { Store } from 'redux';
+import type { Middleware, MiddlewareAPI } from 'redux';
 import { mapValues, each, pick, flatMap, difference, uniq } from 'lodash';
 import type { State } from 'reducers';
 import type { SemTimetableConfig } from 'types/timetables';
@@ -14,7 +14,9 @@ import { fillColorMapping } from 'utils/colors';
  *  - When picking new colors, avoid duplicating colors as much as possible within
  *    the same semester
  */
-export default (store: Store<State, *, *>) => (next: (*) => void) => (action: *) => {
+const themeMiddleware: Middleware<State, *, *> = (store: MiddlewareAPI<State, *, *>) => (
+  next: *,
+) => (action: *) => {
   // Run this after the action has been consumed
   const prevState = store.getState();
   next(action);
@@ -60,3 +62,5 @@ export default (store: Store<State, *, *>) => (next: (*) => void) => (action: *)
     store.dispatch(setColorMap(colors));
   }
 };
+
+export default themeMiddleware;

@@ -13,7 +13,7 @@ function applyMiddleware(before, after) {
     store.getState = () => after;
   };
 
-  const action = {};
+  const action = { type: 'TESTING', payload: null };
 
   themeMiddleware(store)(next)(action);
   return dispatch;

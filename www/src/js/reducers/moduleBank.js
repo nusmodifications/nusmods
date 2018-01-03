@@ -4,8 +4,10 @@ import type { Module, ModuleCode, Semester } from 'types/modules';
 import type { SemTimetableConfig } from 'types/timetables';
 import type { ModuleList, ModuleSelectListItem, ModuleCodeMap } from 'types/reducers';
 
+import { persistReducer } from 'redux-persist';
 import { keyBy, zipObject } from 'lodash';
 
+import createPersistConfig from 'storage/createPersistConfig';
 import { FETCH_MODULE_LIST, FETCH_MODULE } from 'actions/moduleBank';
 import { SET_EXPORTED_DATA } from 'actions/export';
 import * as RequestResultCases from 'middlewares/requests-middleware';
@@ -88,4 +90,10 @@ export function getSemModuleSelectList(
   );
 }
 
-export default moduleBank;
+export default persistReducer(
+  createPersistConfig('moduleBank', {
+    throttle: 1000,
+    whitelist: ['modules', 'moduleList'],
+  }),
+  moduleBank,
+);

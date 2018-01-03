@@ -4,7 +4,9 @@ import type { ClassNo, LessonType } from 'types/modules';
 import type { ModuleLessonConfig, TimetableConfig, SemTimetableConfig } from 'types/timetables';
 
 import _ from 'lodash';
+import { persistReducer } from 'redux-persist';
 
+import createPersistConfig from 'storage/createPersistConfig';
 import { ADD_MODULE, REMOVE_MODULE, CHANGE_LESSON, SET_TIMETABLE } from 'actions/timetables';
 import { SET_EXPORTED_DATA } from 'actions/export';
 
@@ -94,4 +96,4 @@ function timetables(state: TimetableConfig = defaultTimetableConfig, action: FSA
   }
 }
 
-export default timetables;
+export default persistReducer(createPersistConfig('timetables'), timetables);

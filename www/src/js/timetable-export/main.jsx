@@ -14,7 +14,7 @@ import './main.scss';
 import '../../styles/main.scss';
 
 // Set up Redux store
-const store = configureStore();
+const { store } = configureStore();
 window.store = store;
 
 // For Puppeteer to import data

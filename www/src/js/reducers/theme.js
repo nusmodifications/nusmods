@@ -3,6 +3,9 @@ import type { FSA } from 'types/redux';
 import type { ColorMapping, ThemeState } from 'types/reducers';
 import type { Theme } from 'types/settings';
 
+import { persistReducer } from 'redux-persist';
+
+import createPersistConfig from 'storage/createPersistConfig';
 import { SET_EXPORTED_DATA } from 'actions/export';
 import { SET_TIMETABLE } from 'actions/timetables';
 import {
@@ -91,4 +94,4 @@ function theme(state: ThemeState = defaultThemeState, action: FSA): ThemeState {
   }
 }
 
-export default theme;
+export default persistReducer(createPersistConfig('theme'), theme);
