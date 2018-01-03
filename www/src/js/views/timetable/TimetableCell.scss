@@ -23,17 +23,17 @@ $cell-border-radius: 6px;
   &:focus {
     outline: none;
   }
+
+  @include vertical-mode {
+    position: absolute;
+    width: 100%;
+  }
 }
 
 .cellContainer {
   width: 100%;
   height: 100%;
   padding: 0;
-}
-
-:global(.verticalMode) .cell {
-  position: absolute;
-  width: 100%;
 }
 
 .cellIsModifiable {

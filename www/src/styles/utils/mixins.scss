@@ -70,3 +70,11 @@
     }
   }
 }
+
+@mixin vertical-mode {
+  @at-root {
+    :global(.verticalMode) & {
+      @content;
+    }
+  }
+}
