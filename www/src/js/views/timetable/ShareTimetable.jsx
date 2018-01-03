@@ -1,7 +1,6 @@
 // @flow
 
 import React, { PureComponent, Fragment } from 'react';
-import { QRCode } from 'react-qr-svg';
 import classnames from 'classnames';
 import qs from 'query-string';
 import axios from 'axios';
@@ -44,6 +43,7 @@ export const SHORT_URL_KEY = 'shorturl';
 export default class ShareTimetable extends PureComponent<Props, State> {
   urlInput: ?HTMLInputElement;
   url: ?string;
+  QRCode: ?Object;
 
   state: State = {
     isOpen: false,
@@ -54,19 +54,21 @@ export default class ShareTimetable extends PureComponent<Props, State> {
   loadShortUrl(url: string) {
     const showFullUrl = () => this.setState({ shortUrl: url });
 
-    return (
-      axios
-        .get('/short_url.php', { params: { url }, timeout: 2000 })
-        .then(({ data }) => {
-          if (data[SHORT_URL_KEY]) {
-            this.setState({ shortUrl: data[SHORT_URL_KEY] });
-          } else {
-            showFullUrl();
-          }
-        })
-        // Cannot get short URL - just use long URL instead
-        .catch(showFullUrl)
-    );
+    import(/* webpackChunkName: "export" */ 'react-qr-svg').then((module) => {
+      this.QRCode = module.QRCode;
+    });
+
+    axios
+      .get('/short_url.php', { params: { url }, timeout: 2000 })
+      .then(({ data }) => {
+        if (data[SHORT_URL_KEY]) {
+          this.setState({ shortUrl: data[SHORT_URL_KEY] });
+        } else {
+          showFullUrl();
+        }
+      })
+      // Cannot get short URL - just use long URL instead
+      .catch(showFullUrl);
   }
 
   openModal = () => {
@@ -112,6 +114,7 @@ export default class ShareTimetable extends PureComponent<Props, State> {
 
   renderSharing(url: string) {
     const { semester } = this.props;
+    const QRCode = this.QRCode;
 
     return (
       <div>
@@ -147,9 +150,7 @@ export default class ShareTimetable extends PureComponent<Props, State> {
           <div className="col-sm-4">
             <h3 className={styles.shareHeading}>QR Code</h3>
 
-            <div className={styles.qrCode}>
-              <QRCode value={url} />
-            </div>
+            <div className={styles.qrCode}>{QRCode && <QRCode value={url} />}</div>
           </div>
           <div className="col-sm-4">
             <h3 className={styles.shareHeading}>Via email</h3>

@@ -1,10 +1,10 @@
 // @flow
-import { range, without } from 'lodash';
+import { range, without, uniq } from 'lodash';
 
 import type { ColorIndex } from 'types/reducers';
 import type { Lesson } from 'types/modules';
 
-import { NUM_DIFFERENT_COLORS, getNewColor, colorLessonsByKey } from './colors';
+import { NUM_DIFFERENT_COLORS, getNewColor, colorLessonsByKey, fillColorMapping } from './colors';
 
 describe('#getNewColor()', () => {
   test('it should get color without randomization', () => {
@@ -71,5 +71,62 @@ describe('#colorLessonsByKey()', () => {
       expect(coloredLesson).toMatchObject(newLesson); // Ensure that existing lesson info wasn't modified
       expect(coloredLesson).toHaveProperty('colorIndex', i % NUM_DIFFERENT_COLORS);
     });
+  });
+});
+
+describe('fillColorMapping', () => {
+  test('should return color map with colors for all modules', () => {
+    expect(Object.keys(fillColorMapping({ CS1010S: {}, CS3216: {} }, {}))).toEqual([
+      'CS1010S',
+      'CS3216',
+    ]);
+
+    expect(fillColorMapping({ CS1010S: {}, CS3216: {} }, { CS1010S: 0, CS3216: 1 })).toEqual({
+      CS1010S: 0,
+      CS3216: 1,
+    });
+
+    expect(
+      fillColorMapping(
+        { CS1010S: {}, CS3216: {} },
+        { CS1010S: 0, CS3216: 1, CS1101S: 1, CS2105: 0, CS1231: 2 },
+      ),
+    ).toEqual({
+      CS1010S: 0,
+      CS3216: 1,
+    });
+
+    expect(fillColorMapping({ CS1010S: {}, CS3216: {} }, { CS1010S: 0, CS3216: 0 })).toEqual({
+      CS1010S: 0,
+      CS3216: 0,
+    });
+  });
+
+  test('should not repeat colors unnecessarily', () => {
+    const FILLED_TIMETABLE = {
+      CS1010S: {},
+      CS2105: {},
+      CS3216: {},
+      CS1101S: {},
+      CS2104: {},
+      CS2100: {},
+      CS2107: {},
+      CS4257: {},
+    };
+
+    const uniqueColors = (timetable, colors) =>
+      uniq(Object.values(fillColorMapping(timetable, colors)));
+
+    expect(uniqueColors(FILLED_TIMETABLE, {})).toHaveLength(8);
+    expect(uniqueColors(FILLED_TIMETABLE, { CS3216: 1, CS1101S: 0 })).toHaveLength(8);
+    expect(
+      uniqueColors(
+        {
+          ...FILLED_TIMETABLE,
+          CS1231: {},
+        },
+        { CS3216: 2, CS1231: 2, CS1101S: 2 },
+      ),
+    ).toHaveLength(7);
   });
 });

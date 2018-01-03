@@ -3,6 +3,7 @@ import thunk from 'redux-thunk';
 import rootReducer from 'reducers';
 import requestsMiddleware from 'middlewares/requests-middleware';
 import ravenMiddleware from 'middlewares/raven-middleware';
+import themeMiddleware from 'middlewares/theme-middleware';
 import undoMiddleware from 'middlewares/undo-middleware';
 
 // For redux-devtools-extensions - see
@@ -17,7 +18,7 @@ const composeEnhancers =
 /* eslint-enable no-underscore-dangle */
 
 export default function configureStore(defaultState) {
-  const middlewares = [thunk, requestsMiddleware, ravenMiddleware, undoMiddleware];
+  const middlewares = [ravenMiddleware, thunk, requestsMiddleware, themeMiddleware, undoMiddleware];
 
   if (process.env.NODE_ENV === 'development') {
     /* eslint-disable */

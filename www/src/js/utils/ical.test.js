@@ -1,10 +1,9 @@
 // @flow
 import type { EventOption } from 'ical-generator';
 import config from 'config';
-import {
+import iCalForTimetable, {
   RECESS_WEEK,
   iCalEventForLesson,
-  iCalForTimetable,
   datesForAcademicWeeks,
   daysAfter,
   iCalEventForExam,

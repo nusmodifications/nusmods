@@ -68,5 +68,24 @@ exports[`renders into nav element 1`] = `
       Settings
     </span>
   </NavLink>
+  <div
+    className="divider"
+  />
+  <a
+    className="link hiddenOnMobile"
+    href="https://nuswhispers.com"
+    rel="noreferrer noopener"
+    target="_blank"
+  >
+    <Heart
+      color="currentColor"
+      size="24"
+    />
+    <span
+      className="title"
+    >
+      Whispers
+    </span>
+  </a>
 </nav>
 `;

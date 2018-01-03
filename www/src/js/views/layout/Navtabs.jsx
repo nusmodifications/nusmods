@@ -1,11 +1,13 @@
 // @flow
+import type { State } from 'reducers';
+import type { Semester } from 'types/modules';
+
 import React from 'react';
 import { connect, type MapStateToProps } from 'react-redux';
 import { withRouter, NavLink } from 'react-router-dom';
+import classnames from 'classnames';
 
-import type { State } from 'reducers';
-import type { Semester } from 'types/modules';
-import { Calendar, Map, BookOpen, Settings } from 'views/components/icons';
+import { Calendar, Heart, Map, BookOpen, Settings } from 'views/components/icons';
 import { timetablePage } from 'views/routes/paths';
 
 import styles from './Navtabs.scss';
@@ -41,6 +43,16 @@ export function NavtabsComponent(props: Props) {
         <Settings />
         <span className={styles.title}>Settings</span>
       </NavLink>
+      <div className={styles.divider} />
+      <a
+        className={classnames(tabProps.className, styles.hiddenOnMobile)}
+        href="https://nuswhispers.com"
+        target="_blank"
+        rel="noreferrer noopener"
+      >
+        <Heart />
+        <span className={styles.title}>Whispers</span>
+      </a>
     </nav>
   );
 }
