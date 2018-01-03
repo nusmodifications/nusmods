@@ -68,7 +68,3 @@ $alert-override-themes: success, danger, warning;
 @each $color in $alert-override-themes {
   @include alert-colors($color);
 }
-
-.close {
-  cursor: pointer;
-}

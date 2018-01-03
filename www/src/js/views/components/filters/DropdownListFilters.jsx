@@ -154,27 +154,36 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
 
                 {isOpen && (
                   <div className="dropdown-menu show">
-                    {this.displayedFilters(inputValue).map(([filter, count], index) => (
-                      <label
-                        key={filter.id}
-                        {...getItemProps({
-                          item: filter.id,
-                          className: classnames('dropdown-item', styles.label, {
-                            'dropdown-selected': index === highlightedIndex,
-                            [styles.enabled]: filter.enabled,
-                          }),
-                        })}
-                      >
-                        <input
-                          className="form-check-input"
-                          type="checkbox"
-                          defaultChecked={filter.enabled}
-                        />
-                        {highlight(filter.label, inputValue)}
-                        &nbsp;
-                        <span className="text-muted">({count})</span>
-                      </label>
-                    ))}
+                    {this.displayedFilters(inputValue).map(([filter, count], index) => {
+                      const id = `${group.id}-${filter.id}`;
+                      return (
+                        <div
+                          key={filter.id}
+                          {...getItemProps({
+                            item: filter.id,
+                            className: classnames('dropdown-item form-check', {
+                              'dropdown-selected': index === highlightedIndex,
+                              [styles.enabled]: filter.enabled,
+                            }),
+                          })}
+                        >
+                          <input
+                            id={id}
+                            className="form-check-input"
+                            type="checkbox"
+                            defaultChecked={filter.enabled}
+                          />
+                          <label
+                            htmlFor={id}
+                            className={classnames('form-check-label', styles.label)}
+                          >
+                            {highlight(filter.label, inputValue)}
+                            &nbsp;
+                            <span className="text-muted">({count})</span>
+                          </label>
+                        </div>
+                      );
+                    })}
                   </div>
                 )}
               </div>
@@ -184,6 +193,7 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
 
         {/* Show all filters that have been selected at some point */}
         <Checklist
+          groupId={`${group.id}-selected`}
           filters={searchedFilters}
           onChange={(filter) => onFilterChange(group.toggle(filter))}
           getCount={(filter) => filter.count(moduleCodes)}

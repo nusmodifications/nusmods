@@ -67,6 +67,7 @@ $h-padding: $grid-gutter-width / 2;
     position: relative;
     margin-right: ($grid-gutter-width / 2);
 
+    // To select both the search glass icon and the chevron
     svg {
       position: absolute;
       top: 0.35rem;
@@ -108,8 +109,11 @@ $h-padding: $grid-gutter-width / 2;
     border-radius: 0 0 3px 3px;
 
     .label {
-      padding-top: 0.25rem;
-      padding-bottom: 0.25rem;
+      padding: 0;
+    }
+
+    :global(.dropdown-selected) .label {
+      color: currentColor;
     }
   }
 
