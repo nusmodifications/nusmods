@@ -1,5 +1,6 @@
 // @flow
 import React, { Component } from 'react';
+import _ from 'lodash';
 import Downshift from 'downshift';
 import classnames from 'classnames';
 
@@ -21,51 +22,63 @@ type Props = {
 };
 
 type State = {
-  isModalOpen: boolean,
   isOpen: boolean,
+  isModalOpen: boolean,
   inputValue: string,
+  selectedItem: any,
 };
 
 const RESULTS_LIMIT = 500;
 
 class ModulesSelect extends Component<Props, State> {
   input: ?HTMLInputElement;
+
   state = {
     isOpen: false,
-    isModalOpen: false,
+    isModalOpen: true,
     inputValue: '',
-  };
-
-  onChange = (selection: any) => {
-    // Refocus after choosing a module
-    if (this.input) this.input.focus();
-    if (selection) {
-      this.props.onChange(selection);
-    }
+    selectedItem: null,
   };
 
   onStateChange = (changes: any) => {
-    if (Object.prototype.hasOwnProperty.call(changes, 'inputValue')) {
-      if (!Object.prototype.hasOwnProperty.call(changes, 'selectedItem')) {
-        this.setState({
-          inputValue: changes.inputValue,
-        });
-      }
+    if (_.has(changes, 'selectedItem')) {
+      this.props.onChange(changes.selectedItem);
     }
   };
 
-  onFocus = () => this.setState({ isOpen: true });
-  onOuterClick = () => this.setState({ isOpen: false });
-  toggleModal = () => this.setState({ isModalOpen: !this.state.isModalOpen });
+  onBlur = () => {
+    if (!this.state.inputValue && this.state.isModalOpen) {
+      this.closeSelect();
+    }
+  };
+
+  onInputChange = (event) => {
+    this.setState({ inputValue: event.target.value });
+  };
+
+  onFocus = () => this.openSelect();
+  onOuterClick = () => this.closeSelect();
+
+  closeSelect = () => {
+    this.setState({
+      isOpen: false,
+      isModalOpen: false,
+      inputValue: '',
+      selectedItem: null,
+    });
+  };
+
+  openSelect = () => {
+    this.setState({
+      isOpen: true,
+      isModalOpen: true,
+    });
+  };
 
   getFilteredModules = (inputValue: string) => {
-    if (!inputValue) {
-      return [];
-    }
-
+    if (!inputValue) return [];
     const predicate = createSearchPredicate(inputValue);
     const results = this.props.moduleList.filter(predicate);
-
     return sortModules(inputValue, results.slice(0, RESULTS_LIMIT));
   };
 
@@ -93,20 +106,20 @@ class ModulesSelect extends Component<Props, State> {
           {placeholder}
         </label>
         <input
-          ref={(input) => {
-            this.input = input;
-          }}
-          autoFocus={isModalOpen}
-          className={styles.input}
-          {...getInputProps({ placeholder })}
-          disabled={disabled}
-          onFocus={this.onFocus}
-          /* Also prevents iOS "Done" button from resetting input */
-          onBlur={() => {
-            if (!inputValue && isModalOpen) this.toggleModal();
-          }}
+          {...getInputProps({
+            ref: (input) => {
+              this.input = input;
+            },
+            className: styles.input,
+            autoFocus: isModalOpen,
+            placeholder,
+            disabled,
+            onFocus: this.onFocus,
+            onBlur: this.onBlur,
+            onChange: this.onInputChange,
+          })}
         />
-        {isModalOpen && <CloseButton className={styles.close} onClick={this.toggleModal} />}
+        {isModalOpen && <CloseButton className={styles.close} onClick={this.closeSelect} />}
         {showResults && (
           <ol className={styles.selectList}>
             {results.map(
@@ -156,29 +169,32 @@ class ModulesSelect extends Component<Props, State> {
   };
 
   render() {
-    const { isModalOpen, isOpen } = this.state;
+    const { isModalOpen } = this.state;
     const { matchBreakpoint, disabled } = this.props;
+
     const downshiftComponent = (
       <Downshift
-        isOpen={isModalOpen || isOpen}
         onOuterClick={this.onOuterClick}
-        onChange={this.onChange}
         render={this.renderDropdown}
-        defaultHighlightedIndex={0}
-        inputValue={this.state.inputValue}
         onStateChange={this.onStateChange}
+        inputValue={this.state.inputValue}
+        isOpen={this.state.isOpen}
+        selectedItem={this.state.selectedItem}
       />
     );
-    return matchBreakpoint ? (
-      downshiftComponent
-    ) : (
+
+    if (matchBreakpoint) {
+      return downshiftComponent;
+    }
+
+    return (
       <div>
-        <button className={styles.input} onClick={this.toggleModal} disabled={disabled}>
+        <button className={styles.input} onClick={this.openSelect} disabled={disabled}>
           {this.props.placeholder}
         </button>
         <Modal
           isOpen={!disabled && isModalOpen}
-          onRequestClose={this.toggleModal}
+          onRequestClose={this.closeSelect}
           className={styles.modal}
         >
           {downshiftComponent}
