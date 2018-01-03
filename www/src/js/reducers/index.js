@@ -6,6 +6,8 @@ import type { ModuleBank } from 'reducers/moduleBank';
 import type { VenueBank } from 'reducers/venueBank';
 import type { UndoHistoryState } from 'reducers/undoHistory';
 
+import { ADD_MODULE, REMOVE_MODULE } from 'actions/timetables';
+
 import requests from './requests';
 import moduleBank from './moduleBank';
 import venueBank from './venueBank';
@@ -14,7 +16,7 @@ import app from './app';
 import theme from './theme';
 import settings from './settings';
 import moduleFinder from './moduleFinder';
-import unredo from './undoHistory';
+import undoHistory from './undoHistory';
 
 export type State = {
   moduleBank: ModuleBank,
@@ -30,10 +32,15 @@ export type State = {
 
 // $FlowFixMe: State default is delegated to its child reducers.
 const defaultState: State = {};
+const unredo = undoHistory({
+  reducerName: 'undoHistory',
+  actionsToWatch: [ADD_MODULE, REMOVE_MODULE],
+  keyPathsToPersist: ['timetables'],
+});
 
 export default function(state: State = defaultState, action: FSA): State {
   // Update every reducer except the undo reducer
-  const newState = {
+  const newState: State = {
     moduleBank: moduleBank(state.moduleBank, action),
     venueBank: venueBank(state.venueBank, action),
     requests: requests(state.requests, action),

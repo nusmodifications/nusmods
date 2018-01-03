@@ -1,21 +1,13 @@
 // @flow
 import type { FSA } from 'types/redux';
-import type { State } from 'reducers';
 
 import { assign, pick } from 'lodash';
 import { UNDO, REDO } from 'actions/undoHistory';
-import { ADD_MODULE, REMOVE_MODULE } from 'actions/timetables';
 
-type UndoHistoryConfig = {
+export type UndoHistoryConfig = {
   reducerName: string,
   actionsToWatch: string[],
   keyPathsToPersist: string[],
-};
-
-const undoHistoryConfig: UndoHistoryConfig = {
-  reducerName: 'undoHistory',
-  actionsToWatch: [ADD_MODULE, REMOVE_MODULE],
-  keyPathsToPersist: ['timetables'],
 };
 
 export type UndoHistoryState = {
@@ -35,19 +27,20 @@ const initialState: UndoHistoryState = {
 // Basically a reducer but not really, as it needs to know the previous state.
 // Passing state in even though state === presentAppState[config.reducerName] as the "reducer"
 // doesn't need to know that.
-export function computeUndoStacks(
+export function computeUndoStacks<T: Object>(
   state: UndoHistoryState = initialState,
   actionType: string,
-  previousAppState: State,
-  presentAppState: State,
+  previousAppState: T,
+  presentAppState: T,
+  config: UndoHistoryConfig,
 ): UndoHistoryState {
   const { past, present, future } = state;
 
   // If action is undo/redoable, store state
-  if (undoHistoryConfig.actionsToWatch.includes(actionType)) {
+  if (config.actionsToWatch.includes(actionType)) {
     return {
-      past: [...past, present || pick(previousAppState, undoHistoryConfig.keyPathsToPersist)],
-      present: pick(presentAppState, undoHistoryConfig.keyPathsToPersist),
+      past: [...past, present || pick(previousAppState, config.keyPathsToPersist)],
+      present: pick(presentAppState, config.keyPathsToPersist),
       future: [],
     };
   }
@@ -81,24 +74,27 @@ export function computeUndoStacks(
   }
 }
 
-// Compute new state after undoing/redoing/storing present as required by action
-export default function unredo(previousState: State, presentState: State, action: FSA): State {
-  // Calculate un/redone history
-  const { reducerName } = undoHistoryConfig;
-  const undoHistoryState = presentState[reducerName];
-  const updatedHistory = computeUndoStacks(
-    undoHistoryState,
-    action.type,
-    previousState,
-    presentState,
-  );
-  const updatedState = { ...presentState, [reducerName]: updatedHistory };
+// Given a config object, returns function which compute new state after
+// undoing/redoing/storing present as required by action.
+export default function undoHistory(config: UndoHistoryConfig) {
+  return <T: Object>(previousState: T, presentState: T, action: FSA) => {
+    // Calculate un/redone history
+    const undoHistoryState = presentState[config.reducerName];
+    const updatedHistory = computeUndoStacks(
+      undoHistoryState,
+      action.type,
+      previousState,
+      presentState,
+      config,
+    );
+    const updatedState = { ...presentState, [config.reducerName]: updatedHistory };
 
-  // Applies undo and redo actions on overall app state
-  // Applies updatedHistory.present to state if action.type === {UNDO,REDO}
-  // Assumes updatedHistory.present is the final present state
-  if ((action.type === UNDO || action.type === REDO) && updatedHistory.present) {
-    return assign(updatedState, updatedHistory.present);
-  }
-  return updatedState;
+    // Applies undo and redo actions on overall app state
+    // Applies updatedHistory.present to state if action.type === {UNDO,REDO}
+    // Assumes updatedHistory.present is the final present state
+    if ((action.type === UNDO || action.type === REDO) && updatedHistory.present) {
+      return assign(updatedState, updatedHistory.present);
+    }
+    return updatedState;
+  };
 }
