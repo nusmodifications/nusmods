@@ -10,14 +10,13 @@ import CurrentTimeIndicator from './CurrentTimeIndicator';
 
 type Props = {
   day: string,
-  isCurrentDay: boolean,
   dayLessonRows: TimetableDayArrangement,
   verticalMode: boolean,
   isScrolledHorizontally: boolean,
   startingIndex: number,
   endingIndex: number,
   onModifyCell: Function,
-  currentTimeIndicatorVisible: boolean,
+  isCurrentDay: boolean,
   currentTimeIndicatorStyle: Object,
 };
 
@@ -41,10 +40,7 @@ function TimetableDay(props: Props) {
         <span className={styles.dayNameText}>{props.day.substring(0, 3)}</span>
       </div>
       <div className={styles.dayRows} style={rowStyle}>
-        {props.isCurrentDay &&
-          props.currentTimeIndicatorVisible && (
-            <CurrentTimeIndicator style={props.currentTimeIndicatorStyle} />
-          )}
+        <CurrentTimeIndicator style={props.currentTimeIndicatorStyle} />
         {props.dayLessonRows.map((dayLessonRow, i) => (
           <TimetableRow
             key={i}

@@ -46,9 +46,7 @@ class Timetable extends PureComponent<Props> {
   }
 
   componentWillUnmount() {
-    if (this.interval !== null) {
-      clearInterval(this.interval);
-    }
+    clearInterval(this.interval);
   }
 
   render() {
@@ -72,6 +70,9 @@ class Timetable extends PureComponent<Props> {
     const currentTimeIndicatorStyle: Object = {
       [dirStyle]: `${hoursMarginOffset + minutesMarginOffset}%`,
     };
+    const nullCurrentTimeIndicatorStyle: Object = {
+      opacity: 0,
+    };
 
     return (
       <div
@@ -86,15 +87,18 @@ class Timetable extends PureComponent<Props> {
               <TimetableDay
                 key={day}
                 day={day}
-                isCurrentDay={index === currentDayIndex}
                 startingIndex={startingIndex}
                 endingIndex={endingIndex}
                 onModifyCell={this.props.onModifyCell}
                 verticalMode={this.props.isVerticalOrientation}
                 dayLessonRows={this.props.lessons[day] || [[]]}
                 isScrolledHorizontally={this.props.isScrolledHorizontally}
-                currentTimeIndicatorVisible={currentTimeIndicatorVisible}
-                currentTimeIndicatorStyle={currentTimeIndicatorStyle}
+                isCurrentDay={index === currentDayIndex}
+                currentTimeIndicatorStyle={
+                  index === currentDayIndex && currentTimeIndicatorVisible
+                    ? currentTimeIndicatorStyle
+                    : nullCurrentTimeIndicatorStyle
+                }
               />
             ))}
           </ol>
