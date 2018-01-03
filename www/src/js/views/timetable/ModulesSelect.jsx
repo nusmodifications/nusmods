@@ -1,6 +1,5 @@
 // @flow
 import React, { Component } from 'react';
-import _ from 'lodash';
 import Downshift from 'downshift';
 import classnames from 'classnames';
 
@@ -24,6 +23,7 @@ type Props = {
 type State = {
   isModalOpen: boolean,
   isOpen: boolean,
+  inputValue: string,
 };
 
 const RESULTS_LIMIT = 500;
@@ -33,12 +33,25 @@ class ModulesSelect extends Component<Props, State> {
   state = {
     isOpen: false,
     isModalOpen: false,
+    inputValue: '',
   };
 
   onChange = (selection: any) => {
     // Refocus after choosing a module
     if (this.input) this.input.focus();
-    if (selection) this.props.onChange(selection);
+    if (selection) {
+      this.props.onChange(selection);
+    }
+  };
+
+  onStateChange = (changes: any) => {
+    if (Object.prototype.hasOwnProperty.call(changes, 'inputValue')) {
+      if (!Object.prototype.hasOwnProperty.call(changes, 'selectedItem')) {
+        this.setState({
+          inputValue: changes.inputValue,
+        });
+      }
+    }
   };
 
   onFocus = () => this.setState({ isOpen: true });
@@ -152,9 +165,8 @@ class ModulesSelect extends Component<Props, State> {
         onChange={this.onChange}
         render={this.renderDropdown}
         defaultHighlightedIndex={0}
-        /* Hack to force item selection to be empty */
-        itemToString={_.stubString}
-        selectedItem=""
+        inputValue={this.state.inputValue}
+        onStateChange={this.onStateChange}
       />
     );
     return matchBreakpoint ? (
