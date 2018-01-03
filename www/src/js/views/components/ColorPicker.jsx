@@ -12,7 +12,7 @@ import styles from './ColorPicker.scss';
 type Props = {
   label: string,
   color: ColorIndex,
-  onChooseColor: Function,
+  onChooseColor: ColorIndex => void,
 };
 
 /**
@@ -22,7 +22,7 @@ type Props = {
  */
 class ColorPicker extends PureComponent<Props> {
   // TODO: Inject types from downshift when https://github.com/paypal/downshift/pull/180 is implemented
-  renderColorPicker = ({ getButtonProps, getItemProps, itemToString, isOpen }: any) => (
+  renderColorPicker = ({ getButtonProps, getItemProps, isOpen }: any) => (
     <div className={styles.container}>
       <button
         {...getButtonProps({
@@ -34,7 +34,7 @@ class ColorPicker extends PureComponent<Props> {
         <div className={styles.palette}>
           {_.range(NUM_DIFFERENT_COLORS).map((index: ColorIndex) => (
             <span
-              {...getItemProps({ item: itemToString(index) })}
+              {...getItemProps({ item: index })}
               key={index}
               className={classnames(styles.option, `color-${index}`)}
             />
@@ -45,7 +45,12 @@ class ColorPicker extends PureComponent<Props> {
   );
 
   render() {
-    return <Downshift onChange={this.props.onChooseColor} render={this.renderColorPicker} />;
+    return (
+      <Downshift
+        onChange={(colorIndex) => this.props.onChooseColor(colorIndex)}
+        render={this.renderColorPicker}
+      />
+    );
   }
 }
 
