@@ -17,7 +17,7 @@ import type {
 
 import classnames from 'classnames';
 import { getSemModuleSelectList } from 'reducers/moduleBank';
-import { undo, redo } from 'reducers/undoHistory';
+import { undo, redo } from 'actions/undoHistory';
 import {
   addModule,
   cancelModifyLesson,

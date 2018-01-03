@@ -14,7 +14,7 @@ import app from './app';
 import theme from './theme';
 import settings from './settings';
 import moduleFinder from './moduleFinder';
-import { undoHistoryReducer, undoReducer } from './undoHistory';
+import { unredo } from './undoHistory';
 
 export type State = {
   moduleBank: ModuleBank,
@@ -32,25 +32,29 @@ export type State = {
 const defaultState: State = {};
 
 export default function(state: State = defaultState, action: FSA): State {
-  // Calculate un/redone history
-  let unredoneState = {
-    ...state,
-    undoHistory: undoHistoryReducer(state.undoHistory, action),
+  /* Actions: undo, redo, action we care about, action we don't care about
+   * Case undo:
+   * - Run reducers, then Merge store and alter history
+   * Case redo:
+   * - Run reducers, then Merge store and alter history
+   * Case relavent action:
+   * - Send before/after snapshots to reducer
+   * Case irrelavent action:
+   * - Just run other reducers
+   */
+
+  // Update every reducer except the undo reducers
+  const newState = {
+    moduleBank: moduleBank(state.moduleBank, action),
+    venueBank: venueBank(state.venueBank, action),
+    requests: requests(state.requests, action),
+    timetables: timetables(state.timetables, action),
+    app: app(state.app, action),
+    theme: theme(state.theme, action),
+    settings: settings(state.settings, action),
+    moduleFinder: moduleFinder(state.moduleFinder, action),
+    undoHistory: state.undoHistory,
   };
 
-  // Replace recorded parts of "present" state in undoHistory with state.
-  unredoneState = undoReducer(unredoneState, action);
-
-  // Update every other reducer
-  return {
-    moduleBank: moduleBank(unredoneState.moduleBank, action),
-    venueBank: venueBank(unredoneState.venueBank, action),
-    requests: requests(unredoneState.requests, action),
-    timetables: timetables(unredoneState.timetables, action),
-    app: app(unredoneState.app, action),
-    theme: theme(unredoneState.theme, action),
-    settings: settings(unredoneState.settings, action),
-    moduleFinder: moduleFinder(unredoneState.moduleFinder, action),
-    undoHistory: unredoneState.undoHistory,
-  };
+  return unredo(state, newState, action);
 }

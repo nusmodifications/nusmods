@@ -2,32 +2,26 @@
 import type { FSA } from 'types/redux';
 import type { State } from 'reducers';
 
-import { assign } from 'lodash';
+import { assign, pick } from 'lodash';
+import { UNDO, REDO } from 'actions/undoHistory';
 import { ADD_MODULE, REMOVE_MODULE } from 'actions/timetables';
 
-export const actionsToPersist = [ADD_MODULE, REMOVE_MODULE];
-export const keyPathsToPersist = ['timetables'];
+type UndoHistoryConfig = {
+  reducerName: string,
+  actionsToWatch: string[],
+  keyPathsToPersist: string[],
+};
 
-export const UNDO = 'UNDO';
-export function undo(): FSA {
-  return { type: UNDO, payload: {} };
-}
-
-export const REDO = 'REDO';
-export function redo(): FSA {
-  return { type: REDO, payload: {} };
-}
-
-// Should only be called by undo-middleware
-export const PUSH_NEW_PRESENT_STATE = 'PUSH_NEW_PRESENT_STATE';
-export function pushNewPresentState(oldPresent: Object, newPresent: Object): FSA {
-  return { type: PUSH_NEW_PRESENT_STATE, payload: { oldPresent, newPresent } };
-}
+export const undoHistoryConfig: UndoHistoryConfig = {
+  reducerName: 'undoHistory',
+  actionsToWatch: [ADD_MODULE, REMOVE_MODULE],
+  keyPathsToPersist: ['timetables'],
+};
 
 export type UndoHistoryState = {
-  past: Array<Object>,
+  past: Object[],
   present: ?Object,
-  future: Array<Object>,
+  future: Object[],
 };
 
 // Call the reducer with empty action to populate the initial state
@@ -38,13 +32,27 @@ const initialState: UndoHistoryState = {
 };
 
 // Stores undo/redo history
-export function undoHistoryReducer(
+// Basically a reducer but not really, as it needs to know the previous state.
+// Passing state in even though state === presentAppState[config.reducerName] as the "reducer"
+// doesn't need to know that.
+export function undoHistory(
   state: UndoHistoryState = initialState,
-  action: FSA,
+  actionType: string,
+  previousAppState: State,
+  presentAppState: State,
 ): UndoHistoryState {
   const { past, present, future } = state;
 
-  switch (action.type) {
+  // If action is undo/redoable, store state
+  if (undoHistoryConfig.actionsToWatch.includes(actionType)) {
+    return {
+      past: [...past, present || pick(previousAppState, undoHistoryConfig.keyPathsToPersist)],
+      present: pick(presentAppState, undoHistoryConfig.keyPathsToPersist),
+      future: [],
+    };
+  }
+
+  switch (actionType) {
     case UNDO: {
       // Abort if no past, or present is unknown
       if (past.length === 0 || !present) return state;
@@ -67,26 +75,24 @@ export function undoHistoryReducer(
         future: newFuture,
       };
     }
-    case PUSH_NEW_PRESENT_STATE: {
-      return {
-        // Use oldPresent if we don't know the present
-        past: [...past, present || action.payload.oldPresent],
-        present: action.payload.newPresent,
-        future: [],
-      };
-    }
     default: {
       return state;
     }
   }
 }
 
-// Applies undo and redo actions on overall app state
-// Applies state.undoHistory.present to state if action.type === {UNDO,REDO}
-// Assumes state.undoHistory.present is the final present state
-export function undoReducer(state: State, action: FSA): State {
-  if ((action.type === UNDO || action.type === REDO) && state.undoHistory.present) {
-    return assign(state, state.undoHistory.present);
+export function unredo(previousState: State, presentState: State, action: FSA): State {
+  // Calculate un/redone history
+  const { reducerName } = undoHistoryConfig;
+  const undoHistoryState = presentState[reducerName];
+  const updatedHistory = undoHistory(undoHistoryState, action.type, previousState, presentState);
+  const updatedState = { ...presentState, [reducerName]: updatedHistory };
+
+  // Applies undo and redo actions on overall app state
+  // Applies updatedHistory.present to state if action.type === {UNDO,REDO}
+  // Assumes updatedHistory.present is the final present state
+  if ((action.type === UNDO || action.type === REDO) && updatedHistory.present) {
+    return assign(updatedState, updatedHistory.present);
   }
-  return state;
+  return updatedState;
 }
