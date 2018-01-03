@@ -228,7 +228,7 @@ class SettingsContainer extends Component<Props, State> {
 
               <ul>
                 {this.state.bookmarks.map((moduleCode) => (
-                  <li>
+                  <li key={moduleCode}>
                     <LinkModuleCodes>{moduleCode}</LinkModuleCodes>
                   </li>
                 ))}
