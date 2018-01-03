@@ -113,11 +113,6 @@ $h-padding: $grid-gutter-width / 2;
     }
   }
 
-  mark {
-    padding: 0;
-    border-bottom: 1px solid var(--yellow);
-  }
-
   .selected {
     color: theme-color();
     background: var(--gray-lightest);

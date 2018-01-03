@@ -28,10 +28,6 @@
   --gray-lightest: $gray-lightest;
   --gray-dark: $gray-dark;
 
-  // Yellow
-  --yellow: $yellow;
-  --yellow-light: $mark-bg;
-
   // Alert colors
   @each $color in $alert-override-themes {
     @include alert-variables($color);
@@ -58,10 +54,6 @@ body.mode-dark {
   --gray-lighter: #474747;
   --gray-lightest: #333;
   --gray-dark: invert($gray-dark);
-
-  // Yellow
-  --yellow: darken($yellow, 20);
-  --yellow-light: darken($mark-bg, 75);
 
   // Alert colors
   @each $color in $alert-override-themes {

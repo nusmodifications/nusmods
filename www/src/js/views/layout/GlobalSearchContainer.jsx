@@ -1,6 +1,6 @@
 // @flow
 import type { State } from 'reducers';
-import type { Module } from 'types/modules';
+import type { ModuleCondensed } from 'types/modules';
 import type { Venue, VenueList } from 'types/venues';
 import type { ModuleList } from 'types/reducers';
 import { type ResultType, type SearchResult, VENUE_RESULT } from 'types/views';
@@ -44,7 +44,7 @@ export class SearchContainerComponent extends Component<Props> {
     );
   }
 
-  onSelectModule = (module: Module) => {
+  onSelectModule = (module: ModuleCondensed) => {
     this.props.history.push(modulePage(module.ModuleCode, module.ModuleTitle));
   };
 
@@ -58,9 +58,9 @@ export class SearchContainerComponent extends Component<Props> {
     this.props.history.push(`${path}?q=${encodeURIComponent(query)}`);
   };
 
-  getResults = (inputValue: string): SearchResult => {
+  getResults = (inputValue: string): ?SearchResult => {
     if (!inputValue || inputValue.length < MIN_INPUT_LENGTH) {
-      return { modules: [], venues: [], tokens: [] };
+      return null;
     }
 
     const { moduleList, venueList } = this.props;
