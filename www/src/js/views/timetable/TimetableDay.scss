@@ -73,6 +73,7 @@
 }
 
 .dayRows {
+  position: relative;
   display: flex;
   flex: 1 0 auto;
   flex-direction: column;
@@ -93,5 +94,5 @@
   right: 0;
   bottom: 0;
   left: 0;
-  background: rgba(#000, 0.05);
+  background: rgba(#777, 0.15);
 }

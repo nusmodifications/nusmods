@@ -62,7 +62,7 @@ class Timetable extends PureComponent<Props> {
     const columns = endingIndex - startingIndex;
     const currentHours = getCurrentHours();
     const currentMinutes = getCurrentMinutes();
-    const hoursMarginOffset = (currentHours * 2 - startingIndex - 2) / columns * 100;
+    const hoursMarginOffset = (currentHours * 2 - startingIndex) / columns * 100;
     const minutesMarginOffset = currentMinutes / 30 / columns * 100;
     const currentTimeIndicatorVisible =
       currentHours * 2 >= startingIndex && currentHours * 2 < endingIndex;
