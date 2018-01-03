@@ -12,7 +12,7 @@ type UndoHistoryConfig = {
   keyPathsToPersist: string[],
 };
 
-export const undoHistoryConfig: UndoHistoryConfig = {
+const undoHistoryConfig: UndoHistoryConfig = {
   reducerName: 'undoHistory',
   actionsToWatch: [ADD_MODULE, REMOVE_MODULE],
   keyPathsToPersist: ['timetables'],
@@ -31,11 +31,11 @@ const initialState: UndoHistoryState = {
   future: [],
 };
 
-// Stores undo/redo history
+// Update undo history using the action and app states
 // Basically a reducer but not really, as it needs to know the previous state.
 // Passing state in even though state === presentAppState[config.reducerName] as the "reducer"
 // doesn't need to know that.
-export function undoHistory(
+export function computeUndoStacks(
   state: UndoHistoryState = initialState,
   actionType: string,
   previousAppState: State,
@@ -81,11 +81,17 @@ export function undoHistory(
   }
 }
 
-export function unredo(previousState: State, presentState: State, action: FSA): State {
+// Compute new state after undoing/redoing/storing present as required by action
+export default function unredo(previousState: State, presentState: State, action: FSA): State {
   // Calculate un/redone history
   const { reducerName } = undoHistoryConfig;
   const undoHistoryState = presentState[reducerName];
-  const updatedHistory = undoHistory(undoHistoryState, action.type, previousState, presentState);
+  const updatedHistory = computeUndoStacks(
+    undoHistoryState,
+    action.type,
+    previousState,
+    presentState,
+  );
   const updatedState = { ...presentState, [reducerName]: updatedHistory };
 
   // Applies undo and redo actions on overall app state

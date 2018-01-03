@@ -14,7 +14,7 @@ import app from './app';
 import theme from './theme';
 import settings from './settings';
 import moduleFinder from './moduleFinder';
-import { unredo } from './undoHistory';
+import unredo from './undoHistory';
 
 export type State = {
   moduleBank: ModuleBank,
