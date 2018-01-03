@@ -63,8 +63,10 @@
   }
 }
 
-@mixin night-mode-only {
-  :global(.mode-dark) {
-    @content;
+@mixin night-mode {
+  @at-root {
+    :global(.mode-dark) & {
+      @content;
+    }
   }
 }

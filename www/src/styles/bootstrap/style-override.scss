@@ -37,10 +37,8 @@ mark {
   box-shadow: 0 2px 6px rgba(#000, 0.25);
 
   @include scrollable-y;
-}
 
-@include night-mode-only {
-  .dropdown-menu {
+  @include night-mode {
     box-shadow: 0 2px 6px rgba(#000, 0.75);
   }
 }
