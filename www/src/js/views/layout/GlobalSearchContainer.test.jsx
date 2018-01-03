@@ -45,12 +45,9 @@ test('fetches venue list', () => {
   expect(mock).toHaveBeenCalled();
 });
 
-test('shows at no choices when search is too short', () => {
+test('shows no choices when search is too short', () => {
   const instance = make().instance();
-  const { modules, venues, tokens } = instance.getResults('1');
-  expect(modules).toHaveLength(0);
-  expect(venues).toHaveLength(0);
-  expect(tokens).toHaveLength(0);
+  expect(instance.getResults('1')).toBeNull();
 });
 
 test('passes down search tokens', () => {
