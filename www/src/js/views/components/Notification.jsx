@@ -1,8 +1,10 @@
 // @flow
 
 import React, { PureComponent } from 'react';
+import classnames from 'classnames';
 import { MDCSnackbar } from '@material/snackbar';
 import type { NotificationData } from 'types/reducers';
+import styles from './Notification.scss';
 
 type Props = {
   notification: ?NotificationData,
@@ -51,7 +53,7 @@ export default class Notification extends PureComponent<Props> {
   render() {
     return (
       <div
-        className="mdc-snackbar"
+        className={classnames('mdc-snackbar', styles.snackbar)}
         aria-live="assertive"
         aria-atomic="true"
         aria-hidden="true"
