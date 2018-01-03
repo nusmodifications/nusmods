@@ -5,7 +5,13 @@ import { values, flattenDeep, noop } from 'lodash';
 import type { Lesson } from 'types/modules';
 import type { TimetableArrangement } from 'types/timetables';
 
-import { SCHOOLDAYS, calculateBorderTimings, getCurrentDayIndex } from 'utils/timify';
+import {
+  SCHOOLDAYS,
+  calculateBorderTimings,
+  getCurrentDayIndex,
+  getCurrentHours,
+  getCurrentMinutes,
+} from 'utils/timify';
 
 import styles from './Timetable.scss';
 import TimetableTimings from './TimetableTimings';
@@ -20,12 +26,30 @@ type Props = {
 
 class Timetable extends PureComponent<Props> {
   timetableDom: ?HTMLDivElement;
+  interval: ?number;
 
   static defaultProps = {
     isVerticalOrientation: false,
     isScrolledHorizontally: false,
     onModifyCell: noop,
   };
+
+  constructor(props: Props) {
+    super(props);
+    this.interval = null;
+  }
+
+  componentDidMount() {
+    this.interval = setInterval(() => {
+      this.forceUpdate();
+    }, 60000);
+  }
+
+  componentWillUnmount() {
+    if (this.interval !== null) {
+      clearInterval(this.interval);
+    }
+  }
 
   render() {
     const schoolDays = SCHOOLDAYS.filter(
@@ -35,6 +59,19 @@ class Timetable extends PureComponent<Props> {
     const lessons: Array<Lesson> = flattenDeep(values(this.props.lessons));
     const { startingIndex, endingIndex } = calculateBorderTimings(lessons);
     const currentDayIndex: number = getCurrentDayIndex(); // Monday = 0, Friday = 4
+
+    // Calculate the margin offset for the CurrentTimeIndicator
+    const columns = endingIndex - startingIndex;
+    const currentHours = getCurrentHours();
+    const currentMinutes = getCurrentMinutes();
+    const hoursMarginOffset = (currentHours * 2 - startingIndex - 2) / columns * 100;
+    const minutesMarginOffset = currentMinutes / 30 / columns * 100;
+    const currentTimeIndicatorVisible =
+      currentHours * 2 >= startingIndex && currentHours * 2 < endingIndex;
+    const dirStyle = this.props.isVerticalOrientation ? 'top' : 'marginLeft';
+    const currentTimeIndicatorStyle: Object = {
+      [dirStyle]: `${hoursMarginOffset + minutesMarginOffset}%`,
+    };
 
     return (
       <div
@@ -56,6 +93,8 @@ class Timetable extends PureComponent<Props> {
                 verticalMode={this.props.isVerticalOrientation}
                 dayLessonRows={this.props.lessons[day] || [[]]}
                 isScrolledHorizontally={this.props.isScrolledHorizontally}
+                currentTimeIndicatorVisible={currentTimeIndicatorVisible}
+                currentTimeIndicatorStyle={currentTimeIndicatorStyle}
               />
             ))}
           </ol>
