@@ -43,6 +43,7 @@ export function NavtabsComponent(props: Props) {
         <Settings />
         <span className={styles.title}>Settings</span>
       </NavLink>
+      <div className={styles.divider} />
       <a
         className={classnames(tabProps.className, styles.hiddenOnMobile)}
         href="https://nuswhispers.com"
