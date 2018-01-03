@@ -1,7 +1,7 @@
 // @flow
 import type { FSA } from 'types/redux';
 import type { ModuleCode } from 'types/modules';
-import type { ColorIndex, TimetableOrientation } from 'types/reducers';
+import type { ColorIndex, ColorMapping, TimetableOrientation } from 'types/reducers';
 
 export const SELECT_THEME: string = 'SELECT_THEME';
 export function selectTheme(theme: string): FSA {
@@ -16,6 +16,14 @@ export function cycleTheme(offset: number): FSA {
   return {
     type: CYCLE_THEME,
     payload: offset,
+  };
+}
+
+export const SET_COLOR_MAP = 'SET_COLOR_MAP';
+export function setColorMap(colors: ColorMapping): FSA {
+  return {
+    type: SET_COLOR_MAP,
+    payload: { colors },
   };
 }
 

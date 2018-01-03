@@ -56,9 +56,21 @@ export function fillColorMapping(
 ): ColorMapping {
   const colorMap = {};
   const colorsUsed = [];
+  const withoutColors = [];
 
+  // Collect a list of all colors used and all modules without colors
   Object.keys(timetable).forEach((moduleCode) => {
-    const color = original[moduleCode] || getNewColor(colorsUsed, false);
+    if (moduleCode in original) {
+      colorMap[moduleCode] = original[moduleCode];
+      colorsUsed.push(Number(original[moduleCode]));
+    } else {
+      withoutColors.push(moduleCode);
+    }
+  });
+
+  // Assign the modules without colors
+  withoutColors.forEach((moduleCode) => {
+    const color = getNewColor(colorsUsed, false);
     colorMap[moduleCode] = color;
     colorsUsed.push(color);
   });
