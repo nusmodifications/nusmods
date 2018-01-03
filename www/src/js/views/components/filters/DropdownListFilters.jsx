@@ -160,7 +160,7 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
                         {...getItemProps({
                           item: filter.id,
                           className: classnames('dropdown-item', styles.label, {
-                            [styles.selected]: index === highlightedIndex,
+                            'dropdown-selected': index === highlightedIndex,
                             [styles.enabled]: filter.enabled,
                           }),
                         })}

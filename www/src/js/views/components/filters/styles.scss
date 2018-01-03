@@ -113,11 +113,6 @@ $h-padding: $grid-gutter-width / 2;
     }
   }
 
-  .selected {
-    color: theme-color();
-    background: var(--gray-lightest);
-  }
-
   select {
     width: calc(100% - 3px);
   }
