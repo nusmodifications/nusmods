@@ -1,7 +1,7 @@
 // @flow
 import React, { Component, PureComponent } from 'react';
 import { render } from 'enzyme';
-import { highlight, wrapComponentName } from './react';
+import { highlight, wrapComponentName, Counter } from './react';
 
 describe('highlight()', () => {
   const h = (...args) => render(<p>{highlight(...args)}</p>);
@@ -58,5 +58,26 @@ describe('wrapComponentName()', () => {
     expect(wrapComponentName(FunctionalComponentWithDisplayName, 'wrapper')).toEqual(
       'wrapper(FunctionalComponentDisplayName)',
     );
+  });
+});
+
+describe('Counter', () => {
+  test('#index() should increment itself when called', () => {
+    const counter = new Counter();
+    expect(counter.index()).toEqual(0);
+    expect(counter.index()).toEqual(1);
+    expect(counter.index()).toEqual(2);
+    expect(counter.index()).toEqual(3);
+    expect(counter.index()).toEqual(4);
+  });
+
+  test('#matches() should return true if the provided index matches', () => {
+    const counter = new Counter();
+    expect(counter.matches(0)).toBe(true);
+    expect(counter.matches(0)).toBe(false);
+    expect(counter.matches(2)).toBe(true);
+    expect(counter.matches(2)).toBe(false);
+    expect(counter.matches(4)).toBe(true);
+    expect(counter.matches(5)).toBe(true);
   });
 });

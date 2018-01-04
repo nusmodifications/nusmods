@@ -179,38 +179,12 @@ $icon-dist-lg: $input-width-open-lg - $input-width;
   color: var(--body-color);
 }
 
-.sem1 {
-  background: darken($gray-lightest, 5%);
-}
+@each $semester in (1, 2, 3, 4) {
+  .sem#{$semester} {
+    background: darken($gray-lightest, 5% * $semester);
 
-.sem2 {
-  background: darken($gray-lightest, 10%);
-}
-
-.sem3 {
-  background: darken($gray-lightest, 15%);
-}
-
-.sem4 {
-  background: darken($gray-lightest, 20%);
-}
-
-@include night-mode-only {
-  $dark-bg: #2c2c2c;
-
-  .sem1 {
-    background: lighten($dark-bg, 5%);
-  }
-
-  .sem2 {
-    background: lighten($dark-bg, 10%);
-  }
-
-  .sem3 {
-    background: lighten($dark-bg, 15%);
-  }
-
-  .sem4 {
-    background: lighten($dark-bg, 20%);
+    @include night-mode {
+      background: lighten(#2c2c2c, 5% * $semester);
+    }
   }
 }

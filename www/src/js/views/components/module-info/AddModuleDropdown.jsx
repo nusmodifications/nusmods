@@ -97,7 +97,7 @@ export class AddModuleDropdownComponent extends PureComponent<Props, State> {
     /* eslint-disable jsx-a11y/label-has-for */
     return (
       <Downshift>
-        {({ getLabelProps, getItemProps, isOpen, toggleMenu }) => (
+        {({ getLabelProps, getItemProps, isOpen, toggleMenu, highlightedIndex }) => (
           <div>
             <label {...getLabelProps({ htmlFor: id })} className="sr-only">
               Add module to timetable
@@ -134,11 +134,13 @@ export class AddModuleDropdownComponent extends PureComponent<Props, State> {
 
               {isOpen && (
                 <div className="dropdown-menu show">
-                  {otherSemesters.map((semester) => (
+                  {otherSemesters.map((semester, index) => (
                     <button
                       {...getItemProps({ item: semester })}
                       key={semester}
-                      className={classnames('dropdown-item', styles.dropdownItem)}
+                      className={classnames('dropdown-item', styles.dropdownItem, {
+                        'dropdown-selected': index === highlightedIndex,
+                      })}
                       onClick={() => this.onSelect(semester)}
                     >
                       {this.buttonLabel(semester)}
