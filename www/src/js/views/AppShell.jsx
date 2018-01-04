@@ -10,10 +10,15 @@ import { NavLink, withRouter, type ContextRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import NUSModerator from 'nusmoderator';
 import classnames from 'classnames';
-import { values } from 'lodash';
+import { each } from 'lodash';
 
 import { fetchModuleList } from 'actions/moduleBank';
-import { fetchTimetableModules, setTimetable, migrateTimetable } from 'actions/timetables';
+import {
+  fetchTimetableModules,
+  fillTimetableBlanks,
+  setTimetable,
+  migrateTimetable,
+} from 'actions/timetables';
 import { noBreak } from 'utils/react';
 import Footer from 'views/layout/Footer';
 import Navtabs from 'views/layout/Navtabs';
@@ -35,8 +40,9 @@ type Props = {
 
   fetchModuleList: () => Promise<*>,
   migrateTimetable: () => void,
-  fetchTimetableModules: (SemTimetableConfig[]) => void,
+  fetchTimetableModules: (SemTimetableConfig[]) => Promise<*>,
   setTimetable: (Semester, SemTimetableConfig) => void,
+  fillTimetableBlanks: Semester => void,
 };
 
 type AcadWeekInfo = {
@@ -84,8 +90,15 @@ export class AppShell extends Component<Props> {
       // TODO: Remove this once sem 2 is over
       .then(() => this.props.migrateTimetable());
 
+    // Refresh the module data of the existing modules in the timetable and ensure all
+    // lessons are filled
+    each(timetables, (timetable, semester) => {
+      this.props
+        .fetchTimetableModules([timetable])
+        .then(() => this.props.fillTimetableBlanks(Number(semester)));
+    });
+
     // Fetch all module data that are on timetable
-    this.props.fetchTimetableModules(values(timetables));
   }
 
   componentWillUpdate(nextProps: Props) {
@@ -140,5 +153,6 @@ export default withRouter(
     fetchTimetableModules,
     setTimetable,
     migrateTimetable,
+    fillTimetableBlanks,
   })(AppShell),
 );
