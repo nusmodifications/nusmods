@@ -1,4 +1,4 @@
-@import "~styles/utils/modules-entry";
+@import '~styles/utils/modules-entry';
 
 $header-margin-top: 1rem;
 $sticky-top: $navbar-height;
@@ -87,6 +87,11 @@ $sticky-top: $navbar-height;
 
   p {
     margin-bottom: 0;
+  }
+
+  .noExamWarning {
+    margin-top: 0.1rem;
+    font-size: $font-size-sm * $sm-font-size-ratio;
   }
 }
 
