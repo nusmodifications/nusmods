@@ -37,7 +37,9 @@ export function areLessonsSameClass(lesson1: Lesson, lesson2: Lesson): boolean {
 // SGT time zone and interpret as UTC time, then use the getUTC* methods so
 // that they will correspond to Singapore time regardless of the local time
 // zone.
-export function formatExamDate(examDate: string): string {
+export function formatExamDate(examDate: ?string): string {
+  if (!examDate) return 'No Exam';
+
   const date: Date = new Date(`${examDate.slice(0, 16)}Z`);
   const hours: number = date.getUTCHours();
 
@@ -56,7 +58,7 @@ export function getModuleExamDate(module: Module, semester: Semester): string {
 
 export function getFormattedModuleExamDate(module: Module, semester: Semester): string {
   const examDate = getModuleExamDate(module, semester);
-  return examDate ? formatExamDate(examDate) : '-';
+  return formatExamDate(examDate);
 }
 
 // Returns the current semester if it is found in semesters, or the first semester
