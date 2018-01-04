@@ -1,11 +1,12 @@
 // @flow
 import type { FSA } from 'types/redux';
 
-import { pick, set, get } from 'lodash';
+import { pick, takeRight, set, get } from 'lodash';
 import { UNDO, REDO } from 'actions/undoHistory';
 
 export type UndoHistoryConfig = {
   reducerName: string,
+  limit?: number,
   actionsToWatch: string[],
   keyPathsToPersist: string[],
 };
@@ -38,8 +39,13 @@ export function computeUndoStacks<T: Object>(
 
   // If action is undo/redoable, store state
   if (config.actionsToWatch.includes(actionType)) {
+    // Append present to past, and drop history past config.limit
+    // Limit only enforced here since undo/redo only shift the history around without adding new history
+    const appendedPast = [...past, present || pick(previousAppState, config.keyPathsToPersist)];
+    const newPast = 'limit' in config ? takeRight(appendedPast, config.limit) : appendedPast;
+
     return {
-      past: [...past, present || pick(previousAppState, config.keyPathsToPersist)],
+      past: newPast,
       present: pick(presentAppState, config.keyPathsToPersist),
       future: [],
     };
