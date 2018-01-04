@@ -69,7 +69,7 @@ export class ModulePageContentComponent extends Component<Props, State> {
 
     if (exams.length === 0) {
       return (
-        <div key="no-exam" className={styles.exam}>
+        <div className={styles.exam}>
           <h3 className={styles.descriptionHeading}>No Exam</h3>
         </div>
       );
