@@ -73,6 +73,7 @@
 }
 
 .dayRows {
+  position: relative;
   display: flex;
   flex: 1 0 auto;
   flex-direction: column;
@@ -85,4 +86,13 @@
   flex-direction: row;
   padding: 0 0.1rem 0 0;
   background: linear-gradient(to bottom, var(--gray-lightest) 50%, transparent 50%);
+}
+
+.currentDay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(#777, 0.15);
 }
