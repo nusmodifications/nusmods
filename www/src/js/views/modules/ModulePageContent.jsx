@@ -63,6 +63,28 @@ export class ModulePageContentComponent extends Component<Props, State> {
 
   toggleMenu = (isMenuOpen: boolean) => this.setState({ isMenuOpen });
 
+  renderExams() {
+    const { ModuleCode } = this.props.module;
+    const exams = this.examinations();
+
+    if (exams.length === 0) {
+      return (
+        <div className={styles.exam}>
+          <h3 className={styles.descriptionHeading}>No Exam</h3>
+        </div>
+      );
+    }
+
+    return exams.map((exam) => (
+      <div key={exam.semester} className={styles.exam}>
+        <h3 className={styles.descriptionHeading}>{config.semesterNames[exam.semester]} Exam</h3>
+        <p>{formatExamDate(exam.date)}</p>
+
+        <ModuleExamClash semester={exam.semester} examDate={exam.date} moduleCode={ModuleCode} />
+      </div>
+    ));
+  }
+
   render() {
     const { module } = this.props;
     const { ModuleCode, ModuleTitle } = module;
@@ -158,20 +180,7 @@ export class ModulePageContentComponent extends Component<Props, State> {
                 </div>
 
                 <div className="col-sm-4">
-                  {this.examinations().map((exam) => (
-                    <div key={exam.semester} className={styles.exam}>
-                      <h3 className={styles.descriptionHeading}>
-                        {config.semesterNames[exam.semester]} Exam
-                      </h3>
-                      <p>{formatExamDate(exam.date)}</p>
-
-                      <ModuleExamClash
-                        semester={exam.semester}
-                        examDate={exam.date}
-                        moduleCode={ModuleCode}
-                      />
-                    </div>
-                  ))}
+                  {this.renderExams()}
 
                   <div className={styles.addToTimetable}>
                     <AddToTimetableDropdown module={module} className="btn-group-sm" block />
