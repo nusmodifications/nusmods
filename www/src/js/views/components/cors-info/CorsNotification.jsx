@@ -71,7 +71,7 @@ export class CorsNotificationComponent extends PureComponent<Props> {
     this.props.dismissCorsNotification(round);
     this.props.openNotification('Reminder snoozed until start of next round', {
       action: {
-        timeoutInMs: 12000,
+        timeout: 12000,
         text: 'Settings',
         handler: () => {
           this.props.history.push('/settings#cors');

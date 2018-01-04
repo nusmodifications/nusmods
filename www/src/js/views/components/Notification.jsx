@@ -38,13 +38,13 @@ export default class Notification extends PureComponent<Props> {
 
   showSnackbar() {
     if (this.snackbar && this.props.notification) {
-      const { message, timeoutInMs, action, multiline } = this.props.notification;
+      const { message, timeout, action, multiline } = this.props.notification;
       const actionParams = action ? { actionText: action.text, actionHandler: action.handler } : {};
 
       this.snackbar.show({
         multiline,
         message,
-        timeout: timeoutInMs,
+        timeout,
         ...actionParams,
       });
     }

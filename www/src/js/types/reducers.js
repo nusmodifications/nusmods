@@ -12,7 +12,7 @@ import type { Mode } from 'types/settings';
 /* app.js */
 
 export type NotificationOptions = {
-  timeoutInMs?: number,
+  timeout?: number,
   action?: {
     text: string,
     handler: Function,

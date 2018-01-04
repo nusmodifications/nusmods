@@ -73,8 +73,9 @@ function setMode(mode: Mode) {
   const { body } = document;
   if (!body) return;
 
-  body.classList.toggle('mode-dark', mode === DARK_MODE);
-  body.classList.toggle('mdc-theme--dark', mode === DARK_MODE);
+  const isDarkMode = mode === DARK_MODE;
+  body.classList.toggle('mode-dark', isDarkMode);
+  body.classList.toggle('mdc-theme--dark', isDarkMode);
 }
 
 export class AppShell extends Component<Props> {
