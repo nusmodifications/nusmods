@@ -6,7 +6,7 @@ import type { ModuleBank } from 'reducers/moduleBank';
 import type { VenueBank } from 'reducers/venueBank';
 import type { UndoHistoryState } from 'reducers/undoHistory';
 
-import { ADD_MODULE, REMOVE_MODULE } from 'actions/timetables';
+import { ADD_MODULE, REMOVE_MODULE, SET_TIMETABLE } from 'actions/timetables';
 
 import requests from './requests';
 import moduleBank from './moduleBank';
@@ -34,7 +34,7 @@ export type State = {
 const defaultState: State = {};
 const unredo = undoHistory({
   reducerName: 'undoHistory',
-  actionsToWatch: [ADD_MODULE, REMOVE_MODULE],
+  actionsToWatch: [ADD_MODULE, REMOVE_MODULE, SET_TIMETABLE],
   keyPathsToPersist: ['timetables'],
 });
 
