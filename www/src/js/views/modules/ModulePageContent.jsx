@@ -70,11 +70,7 @@ export class ModulePageContentComponent extends Component<Props, State> {
     if (exams.length === 0) {
       return (
         <div key="no-exam" className={styles.exam}>
-          <h3 className={styles.descriptionHeading}>No Exam Info</h3>
-          <p className={styles.noExamWarning}>
-            <strong>Caution</strong> Either {ModuleCode} has no exams or {ModuleCode}&#8217;s exam
-            data has not been released.
-          </p>
+          <h3 className={styles.descriptionHeading}>No Exam</h3>
         </div>
       );
     }
