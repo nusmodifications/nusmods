@@ -12,8 +12,8 @@ const TIME_FORMAT = 'dddd Do MMMM, ha'; // eg. Friday 27th October, 12pm
 const OUT_DIR = 'src/js/data';
 
 function formatDateTime(date, time) {
-  const dateTime = moment(`${date} ${time}`, 'DD/MM/YYYY HH:mm', true);
-  assert(dateTime.isValid(), `${date} ${time} is not a valid date`);
+  const dateTime = moment(`${date} ${time} +08:00`, 'DD/MM/YYYY HH:mm ZZ', true);
+  assert(dateTime.isValid(), `"${date} ${time} +08:00" is not a valid date`);
   return dateTime;
 }
 
