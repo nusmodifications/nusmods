@@ -67,7 +67,7 @@ async function bulletinModules(config) {
     toWrite.push(write(config.destFileName, modules));
     toWrite.push(write(config.destFacultyDepartments, facultyDepartment));
   });
-  await Promise.all(toWrite);
+  return Promise.all(toWrite);
 }
 
 export default bulletinModules;
