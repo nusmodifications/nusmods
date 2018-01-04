@@ -1,6 +1,6 @@
 // @flow
 import type { Middleware, MiddlewareAPI } from 'redux';
-import { mapValues, each, pick, flatMap, difference, uniq } from 'lodash';
+import { mapValues, each, pick, flatMap, difference, uniq, isEqual } from 'lodash';
 import type { State } from 'reducers';
 import type { SemTimetableConfig } from 'types/timetables';
 import { setColorMap } from 'actions/theme';
@@ -59,7 +59,9 @@ const themeMiddleware: Middleware<State, *, *> = (store: MiddlewareAPI<State, *,
       }
     }
 
-    store.dispatch(setColorMap(colors));
+    if (!isEqual(colors, nextState.theme.colors)) {
+      store.dispatch(setColorMap(colors));
+    }
   }
 };
 
