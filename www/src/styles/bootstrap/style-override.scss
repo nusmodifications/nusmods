@@ -60,8 +60,10 @@ mark {
   }
 
   @include touchscreen-only {
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
+    $touch-horizontal-padding: 0.5rem;
+
+    padding-top: $touch-horizontal-padding;
+    padding-bottom: $touch-horizontal-padding;
     border-bottom: 1px solid var(--gray-lighter);
 
     &:last-child {
