@@ -11,6 +11,7 @@ import type { ModuleCodeMap } from 'types/reducers';
 import type { Module, ModuleCode } from 'types/modules';
 
 import { fetchModule } from 'actions/moduleBank';
+import { retry } from 'utils/promise';
 import NotFoundPage from 'views/errors/NotFoundPage';
 import ErrorPage from 'views/errors/ErrorPage';
 import LoadingSpinner from 'views/components/LoadingSpinner';
@@ -53,7 +54,13 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
   componentDidMount() {
     this.fetchModule(this.props.moduleCode);
 
-    import('views/modules/ModulePageContent')
+    // Try importing ModulePageContent thrice if we're online and
+    // getting the "Loading chunk x failed." error.
+    retry(
+      3,
+      () => import('views/modules/ModulePageContent'),
+      (error) => error.message.includes('Loading chunk ') && window.navigator.onLine,
+    )
       .then((module) => this.setState({ ModulePageContent: module.default }))
       .catch((error) => {
         Raven.captureException(error);
