@@ -30,6 +30,21 @@ type State = {
   error?: any,
 };
 
+// Recursively retry fn until success, maxRetries has been reached, or shouldRetry returns false.
+// Based on https://stackoverflow.com/a/30471209/5281021
+function retry(
+  maxRetries: number,
+  fn: () => Promise<any>,
+  shouldRetry: Error => boolean = () => true,
+) {
+  return fn().catch((err) => {
+    if (maxRetries <= 0 || !shouldRetry(err)) {
+      throw err;
+    }
+    return retry(maxRetries - 1, fn, shouldRetry);
+  });
+}
+
 /**
  * Wrapper component that loads both module data and the module page component
  * simultaneously, and displays the correct component depending on the state.
@@ -53,7 +68,13 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
   componentDidMount() {
     this.fetchModule(this.props.moduleCode);
 
-    import('views/modules/ModulePageContent')
+    // Try importing ModulePageContent thrice if we're online and
+    // getting the "Loading chunk x failed." error.
+    retry(
+      3,
+      () => import('views/modules/ModulePageContent'),
+      (error) => error.message.indexOf('Loading chunk ') === 0 && window.navigator.onLine,
+    )
       .then((module) => this.setState({ ModulePageContent: module.default }))
       .catch((error) => {
         Raven.captureException(error);
