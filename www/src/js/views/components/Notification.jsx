@@ -22,6 +22,30 @@ type State = {
 const ACTIVE_CLASSNAME = 'mdc-snackbar--active';
 const DEFAULT_TIMEOUT = 2750;
 
+/**
+ * Notification has a relatively complicated state system since its State is deliberately
+ * out of step with the Redux store to ensure the transitions work properly. It is
+ * implemented as a state machine with four states -
+ *
+ * - Closed
+ *  - Wait for new notification to go to Opening
+ * - Opening
+ *  - Set isOpen to true to trigger transition
+ *  - Go to Closing if new notification arrives
+ * - Opened
+ *  - Start timer at the end of which go to Closing
+ *  - Go to Closing if new notification arrives
+ *  - Go to Closing if action is pressed
+ * - Closing
+ *  - Set isOpen to false to trigger transition
+ *
+ * shownNotification is used to ensure the text and content of the snackbar do not
+ * change when the active notification changes
+ *
+ * Notice we do not transition immediately from Opening or Opened to Closed
+ * because we want the animation to play out to draw the user's attention that
+ * a new
+ */
 export class NotificationComponent extends Component<Props, State> {
   element: ?HTMLElement;
   timeoutId: number;
@@ -43,8 +67,8 @@ export class NotificationComponent extends Component<Props, State> {
   }
 
   componentDidUpdate() {
-    // Active notification has changed
     if (this.props.notifications[0] !== this.state.shownNotification) {
+      // Active notification has changed
       if (this.state.isOpen) {
         this.closeSnackbar();
       } else if (!this.transitioning) {
@@ -62,8 +86,7 @@ export class NotificationComponent extends Component<Props, State> {
       // This is at the end of the opening transition, so we set a timer and
       // close the notification when the timer is up
       const timeout = this.state.shownNotification.timeout || DEFAULT_TIMEOUT;
-
-      clearTimeout(this.timeoutId);
+      clearTimeout(this.timeoutId); // Defensive
       this.timeoutId = setTimeout(() => this.props.popNotification(), timeout);
     } else if (this.props.notifications.length) {
       // End of closing transition - if there are more notifications, let's show them
@@ -100,7 +123,7 @@ export class NotificationComponent extends Component<Props, State> {
           this.element = r;
         }}
       >
-        {shownNotification ? (
+        {!!shownNotification && (
           <Fragment>
             <div className="mdc-snackbar__text">{shownNotification.message}</div>
             {shownNotification.action && (
@@ -115,7 +138,7 @@ export class NotificationComponent extends Component<Props, State> {
               </div>
             )}
           </Fragment>
-        ) : null}
+        )}
       </div>
     );
   }

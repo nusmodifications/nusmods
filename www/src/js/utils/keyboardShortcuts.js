@@ -2,7 +2,6 @@
 
 import type { Store } from 'redux';
 import Mousetrap from 'mousetrap';
-import { debounce } from 'lodash';
 
 import type { State } from 'reducers';
 import themes from 'data/themes.json';
@@ -25,23 +24,19 @@ export default function initKeyboardShortcuts(store: Store<State, *, *>) {
   });
 
   // Cycle through themes
-  const notifyThemeChange = debounce(
-    () => {
-      const themeId = store.getState().theme.id;
-      const theme = themes.find((t) => t.id === themeId);
+  const notifyThemeChange = () => {
+    const themeId = store.getState().theme.id;
+    const theme = themes.find((t) => t.id === themeId);
 
-      if (theme) {
-        store.dispatch(
-          openNotification(`Theme switched to ${theme.name}`, {
-            timeout: THEME_NOTIFICATION_TIMEOUT,
-            overwritable: true,
-          }),
-        );
-      }
-    },
-    THEME_NOTIFICATION_TIMEOUT,
-    { leading: true },
-  );
+    if (theme) {
+      store.dispatch(
+        openNotification(`Theme switched to ${theme.name}`, {
+          timeout: THEME_NOTIFICATION_TIMEOUT,
+          overwritable: true,
+        }),
+      );
+    }
+  };
 
   Mousetrap.bind('z', () => {
     store.dispatch(cycleTheme(-1));
