@@ -10,7 +10,7 @@ import type { ColorIndex } from 'types/reducers';
 
 import ColorPicker from 'views/components/ColorPicker';
 import { Eye, EyeOff, Trash2 } from 'views/components/icons/index';
-import { selectModuleColor } from 'actions/theme';
+import { selectModuleColor } from 'actions/timetables';
 import { hideLessonInTimetable, showLessonInTimetable } from 'actions/settings';
 import { getModuleExamDate, getFormattedModuleExamDate } from 'utils/modules';
 import { modulePage } from 'views/routes/paths';

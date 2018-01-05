@@ -89,13 +89,16 @@ function semColors(state: ColorMapping = defaultSemColorMap, action: FSA): Color
 }
 
 // Map of semester to semTimetable.
-const defaultTimetableState: TimetablesState = {
+export const defaultTimetableState: TimetablesState = {
   timetableConfig: {},
   colors: {},
   academicYear: config.academicYear,
 };
 
-function timetables(state: TimetablesState = defaultTimetableState, action: FSA): TimetablesState {
+export function timetablesReducer(
+  state: TimetablesState = defaultTimetableState,
+  action: FSA,
+): TimetablesState {
   if (!action.payload || !action.payload.semester) {
     return state;
   }
@@ -143,4 +146,4 @@ function timetables(state: TimetablesState = defaultTimetableState, action: FSA)
   }
 }
 
-export default persistReducer(createPersistConfig('timetables'), timetables);
+export default persistReducer(createPersistConfig('timetables'), timetablesReducer);

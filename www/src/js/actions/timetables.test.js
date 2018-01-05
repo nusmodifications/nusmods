@@ -53,6 +53,12 @@ test('cancelModifyLesson should not have payload', () => {
   expect(actions.cancelModifyLesson()).toMatchSnapshot();
 });
 
+test('select module color should dispatch a select of module color', () => {
+  const semester: Semester = 1;
+  expect(actions.selectModuleColor(semester, 'CS1010S', 0)).toMatchSnapshot();
+  expect(actions.selectModuleColor(semester, 'CS3216', 1)).toMatchSnapshot();
+});
+
 describe('migrateTimetable()', () => {
   const migrationKey = 'v2Migration';
   const action = actions.migrateTimetable();

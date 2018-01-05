@@ -1,13 +1,14 @@
 // @flow
-import { flatMap, isEmpty, each } from 'lodash';
+import { each, flatMap } from 'lodash';
 import localforage from 'localforage';
 
 import type { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
 import type { FSA } from 'types/redux';
-import type { ColorMapping, ColorIndex } from 'types/reducers';
-import type { Module, ModuleCode, Semester, Lesson, ClassNo, LessonType } from 'types/modules';
+import type { ColorIndex, ColorMapping } from 'types/reducers';
+import type { ClassNo, Lesson, LessonType, Module, ModuleCode, Semester } from 'types/modules';
 
 import { fetchModule } from 'actions/moduleBank';
+import { SELECT_MODULE_COLOR } from 'actions/theme';
 import { randomModuleLessonConfig, validateTimetableModules } from 'utils/timetables';
 import { getModuleTimetable } from 'utils/modules';
 import storage from 'storage';
@@ -15,18 +16,12 @@ import { V2_MIGRATION_KEY } from 'storage/keys';
 import { MIGRATION_KEYS, parseQueryString } from 'storage/migrateTimetable';
 
 export const ADD_MODULE: string = 'ADD_MODULE';
-export function addModule(
-  semester: Semester,
-  moduleCode: ModuleCode,
-  lessonConfig: ModuleLessonConfig = {},
-  colorIndex?: ColorIndex,
-) {
+export function addModule(semester: Semester, moduleCode: ModuleCode) {
   return (dispatch: Function, getState: Function) =>
     dispatch(fetchModule(moduleCode)).then(() => {
       const module: Module = getState().moduleBank.modules[moduleCode];
       const lessons = getModuleTimetable(module, semester);
-      const moduleLessonConfig =
-        lessons && isEmpty(lessonConfig) ? randomModuleLessonConfig(lessons) : lessonConfig;
+      const moduleLessonConfig = randomModuleLessonConfig(lessons);
 
       return dispatch({
         type: ADD_MODULE,
@@ -34,7 +29,6 @@ export function addModule(
           semester,
           moduleCode,
           moduleLessonConfig,
-          colorIndex,
         },
       });
     });
@@ -171,5 +165,20 @@ export function migrateTimetable() {
     );
 
     return Promise.all(promises).then(() => storage.setItem(V2_MIGRATION_KEY, true));
+  };
+}
+
+export function selectModuleColor(
+  semester: Semester,
+  moduleCode: ModuleCode,
+  colorIndex: ColorIndex,
+): FSA {
+  return {
+    type: SELECT_MODULE_COLOR,
+    payload: {
+      semester,
+      moduleCode,
+      colorIndex,
+    },
   };
 }

@@ -46,3 +46,25 @@ Object {
   "type": "REMOVE_MODULE",
 }
 `;
+
+exports[`select module color should dispatch a select of module color 1`] = `
+Object {
+  "payload": Object {
+    "colorIndex": 0,
+    "moduleCode": "CS1010S",
+    "semester": 1,
+  },
+  "type": "SELECT_MODULE_COLOR",
+}
+`;
+
+exports[`select module color should dispatch a select of module color 2`] = `
+Object {
+  "payload": Object {
+    "colorIndex": 1,
+    "moduleCode": "CS3216",
+    "semester": 1,
+  },
+  "type": "SELECT_MODULE_COLOR",
+}
+`;
