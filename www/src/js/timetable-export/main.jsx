@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import type { Module } from 'types/modules';
 import type { ExportData } from 'types/export';
 
-import configureStore from 'stores/configure-store';
+import configureStore from 'bootstrapping/configure-store';
 import { setExportedData } from 'actions/export';
 import { DARK_MODE } from 'types/settings';
 
