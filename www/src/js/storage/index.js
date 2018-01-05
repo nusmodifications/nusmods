@@ -1,8 +1,8 @@
 // @flow
-import { isString, get } from 'lodash';
+import { isString } from 'lodash';
 import Raven from 'raven-js';
-import { LEGACY_REDUX_KEY, PERSIST_MIGRATION_KEY } from 'storage/keys';
-import { defaultCorsNotificationState } from 'reducers/settings';
+import { LEGACY_REDUX_KEY, PERSIST_MIGRATION_KEY } from './keys';
+import migrateLegacyStorage from './migrateLegacyStorage';
 
 // Simple wrapper around localStorage to automagically parse and stringify payloads.
 // TODO: Use an in-memory storage for environments where localStorage is not present,
@@ -46,22 +46,7 @@ const storage = {
     // to Redux Persist
     if (getItem(PERSIST_MIGRATION_KEY)) return {};
 
-    const state = getItem(LEGACY_REDUX_KEY) || {};
-
-    // Convert legacy storage state into the new one
-    const colors = get(state, 'theme.colors');
-    if (colors) {
-      state.timetables = {
-        colors,
-        ...state.timetables,
-      };
-    }
-
-    if (state.settings && !state.settings.corsNotification) {
-      state.settings.corsNotification = defaultCorsNotificationState;
-    }
-
-    return state;
+    return migrateLegacyStorage(getItem(LEGACY_REDUX_KEY));
   },
   stateMigrationComplete: () => {
     setItem(PERSIST_MIGRATION_KEY, true);
