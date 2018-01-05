@@ -4,9 +4,13 @@ import type { AppState } from 'types/reducers';
 import config from 'config';
 
 import { MODIFY_LESSON, CHANGE_LESSON, CANCEL_MODIFY_LESSON } from 'actions/timetables';
-import { SELECT_MODULE_COLOR } from 'actions/theme';
 import { SELECT_SEMESTER } from 'actions/settings';
-import { OPEN_NOTIFICATION, SET_ONLINE_STATUS, TOGGLE_FEEDBACK_MODAL } from 'actions/app';
+import {
+  OPEN_NOTIFICATION,
+  POP_NOTIFICATION,
+  SET_ONLINE_STATUS,
+  TOGGLE_FEEDBACK_MODAL,
+} from 'actions/app';
 
 const defaultAppState = (): AppState => ({
   // Default to the current semester from config.
@@ -15,7 +19,7 @@ const defaultAppState = (): AppState => ({
   activeLesson: null,
   isOnline: navigator.onLine,
   isFeedbackModalOpen: false,
-  notification: null,
+  notifications: [],
 });
 
 // This reducer is for storing state pertaining to the UI.
@@ -47,12 +51,36 @@ function app(state: AppState = defaultAppState(), action: FSA): AppState {
         ...state,
         isFeedbackModalOpen: !state.isFeedbackModalOpen,
       };
-    case OPEN_NOTIFICATION:
+    case OPEN_NOTIFICATION: {
+      if (state.notifications.length) {
+        // If the ONLY notification in the queue can be discarded, we replace
+        // it with the current one
+        if (state.notifications.length === 1 && state.notifications[0].overwritable) {
+          return {
+            ...state,
+            notifications: [action.payload],
+          };
+        }
+
+        // Since the current item cannot give way, we discard the current
+        // item if it can be discarded
+        if (action.payload.overwritable) {
+          return state;
+        }
+
+        // Fallback to queuing the next item up
+      }
+
       return {
         ...state,
-        notification: action.payload,
+        notifications: [...state.notifications, action.payload],
       };
-    case SELECT_MODULE_COLOR:
+    }
+    case POP_NOTIFICATION:
+      return {
+        ...state,
+        notifications: state.notifications.slice(1),
+      };
     default:
       return state;
   }

@@ -29,3 +29,11 @@ export function openNotification(message: string, options: NotificationOptions =
     },
   };
 }
+
+export const POP_NOTIFICATION = 'POP_NOTIFICATION';
+export function popNotification(): FSA {
+  return {
+    type: POP_NOTIFICATION,
+    payload: null,
+  };
+}
