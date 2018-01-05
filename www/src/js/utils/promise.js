@@ -1,6 +1,6 @@
 // @flow
 
-// Recursively retry fn until success, maxRetries has been reached, or shouldRetry returns false.
+// Recursively retry fn until success, retries has been reached, or shouldRetry returns false.
 // Based on https://stackoverflow.com/a/30471209/5281021
 // TODO: Remove eslint-disable-line comment when other functions have been added to this file
 export function retry( // eslint-disable-line import/prefer-default-export
