@@ -59,7 +59,7 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
     retry(
       3,
       () => import('views/modules/ModulePageContent'),
-      (error) => error.message.indexOf('Loading chunk ') === 0 && window.navigator.onLine,
+      (error) => error.message.includes('Loading chunk ') && window.navigator.onLine,
     )
       .then((module) => this.setState({ ModulePageContent: module.default }))
       .catch((error) => {

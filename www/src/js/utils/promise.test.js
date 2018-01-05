@@ -5,7 +5,7 @@ describe('#retry()', () => {
   test('should retry failing fn up till limit if shouldRetry returns true', async () => {
     const mockFailingFn = jest.fn().mockReturnValue(Promise.reject('error'));
     await expect(retry(3, mockFailingFn, () => true)).rejects.toThrow('error');
-    expect(mockFailingFn.mock.calls).toHaveLength(4);
+    expect(mockFailingFn).toHaveBeenCalledTimes(4);
   });
 
   test('should stop retrying if shouldRetry returns false', async () => {
@@ -18,7 +18,7 @@ describe('#retry()', () => {
       .mockReturnValue(false);
 
     await expect(retry(3, mockFailingFn, shouldRetry)).rejects.toThrow('error');
-    expect(mockFailingFn.mock.calls).toHaveLength(2);
+    expect(mockFailingFn).toHaveBeenCalledTimes(2);
   });
 
   test('should stop retrying if promise resolves', async () => {
@@ -29,12 +29,12 @@ describe('#retry()', () => {
       .mockReturnValue(Promise.resolve());
 
     await expect(retry(3, mockFailingFn, () => true)).resolves;
-    expect(mockFailingFn.mock.calls).toHaveLength(2);
+    expect(mockFailingFn).toHaveBeenCalledTimes(2);
   });
 
   test('should not retry successful promises', async () => {
     const mockSucceedingFn = jest.fn().mockReturnValue(Promise.resolve());
     await expect(retry(3, mockSucceedingFn, () => true)).resolves;
-    expect(mockSucceedingFn.mock.calls).toHaveLength(1);
+    expect(mockSucceedingFn).toHaveBeenCalledTimes(1);
   });
 });
