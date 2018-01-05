@@ -11,6 +11,7 @@ import type { ModuleCodeMap } from 'types/reducers';
 import type { Module, ModuleCode } from 'types/modules';
 
 import { fetchModule } from 'actions/moduleBank';
+import { retry } from 'utils/promise';
 import NotFoundPage from 'views/errors/NotFoundPage';
 import ErrorPage from 'views/errors/ErrorPage';
 import LoadingSpinner from 'views/components/LoadingSpinner';
@@ -29,21 +30,6 @@ type State = {
   ModulePageContent: ?ComponentType<*>,
   error?: any,
 };
-
-// Recursively retry fn until success, maxRetries has been reached, or shouldRetry returns false.
-// Based on https://stackoverflow.com/a/30471209/5281021
-function retry(
-  maxRetries: number,
-  fn: () => Promise<any>,
-  shouldRetry: Error => boolean = () => true,
-) {
-  return fn().catch((err) => {
-    if (maxRetries <= 0 || !shouldRetry(err)) {
-      throw err;
-    }
-    return retry(maxRetries - 1, fn, shouldRetry);
-  });
-}
 
 /**
  * Wrapper component that loads both module data and the module page component
