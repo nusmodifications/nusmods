@@ -8,10 +8,12 @@ import CS1010S from '__mocks__/modules/CS1010S.json';
 /** @var {Module} */
 import CS3216 from '__mocks__/modules/CS3216.json';
 
-import storage from 'storage';
 import runThunk from 'test-utils/runThunk';
 import * as actions from './timetables';
 import { FETCH_MODULE } from './moduleBank';
+
+// Workaround for Jest not being able to recognize implicitly mocked modules
+const storage = (require('storage'): any); // eslint-disable-line global-require
 
 jest.mock('localforage', () => ({ getItem: jest.fn() }));
 jest.mock('storage', () => ({

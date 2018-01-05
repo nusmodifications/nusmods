@@ -32,12 +32,12 @@ class Announcements extends PureComponent<Props, State> {
     super(props);
 
     this.state = {
-      isOpen: !storage.getItem(key),
+      isOpen: !!key && !storage.getItem(key),
     };
   }
 
   dismiss = () => {
-    storage.setItem(key, true);
+    if (key) storage.setItem(key, true);
     this.setState({ isOpen: false });
   };
 

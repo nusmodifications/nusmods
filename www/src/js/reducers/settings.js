@@ -1,7 +1,7 @@
 // @flow
 import { uniq, without } from 'lodash';
 import update from 'immutability-helper';
-import { persistReducer } from 'redux-persist';
+import { persistReducer, REHYDRATE } from 'redux-persist';
 
 import createPersistConfig from 'storage/createPersistConfig';
 import type { FSA } from 'types/redux';
@@ -22,7 +22,7 @@ import { SET_EXPORTED_DATA } from 'actions/export';
 import { LIGHT_MODE, DARK_MODE } from 'types/settings';
 import config from 'config';
 
-const defaultCorsNotificationState = {
+export const defaultCorsNotificationState = {
   semesterKey: config.getSemesterKey(),
   dismissed: [],
   enabled: true,
@@ -106,17 +106,11 @@ function settings(state: SettingsState = defaultSettingsState, action: FSA): Set
         ...action.payload.settings,
       };
 
-    default: {
+    case REHYDRATE: {
       let nextState = state;
 
-      if (!nextState.corsNotification) {
-        nextState = update(nextState, {
-          corsNotification: { $set: defaultCorsNotificationState },
-        });
-      }
-
       // Rehydrating from store - check that the key is the same, and if not,
-      // return to default state since the old dismissed notification settings is stale
+      // reset to default state since the old dismissed notification settings is stale
       if (nextState.corsNotification.semesterKey !== config.getSemesterKey()) {
         nextState = update(nextState, {
           corsNotification: {
@@ -128,6 +122,9 @@ function settings(state: SettingsState = defaultSettingsState, action: FSA): Set
 
       return nextState;
     }
+
+    default:
+      return state;
   }
 }
 
