@@ -19,7 +19,9 @@ export default function initKeyboardShortcuts(store: Store<State, *, *>) {
     store.dispatch(toggleMode());
 
     const mode = store.getState().settings.mode;
-    store.dispatch(openNotification(`Night mode ${mode === DARK_MODE ? 'on' : 'off'}`));
+    store.dispatch(
+      openNotification(`Night mode ${mode === DARK_MODE ? 'on' : 'off'}`, { overwritable: true }),
+    );
   });
 
   // Cycle through themes
@@ -32,6 +34,7 @@ export default function initKeyboardShortcuts(store: Store<State, *, *>) {
         store.dispatch(
           openNotification(`Theme switched to ${theme.name}`, {
             timeout: THEME_NOTIFICATION_TIMEOUT,
+            overwritable: true,
           }),
         );
       }

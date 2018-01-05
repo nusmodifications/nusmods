@@ -1,7 +1,7 @@
 // @flow
 import type { Node } from 'react';
 import type { TimetableConfig, SemTimetableConfig } from 'types/timetables';
-import type { ModuleList, NotificationData } from 'types/reducers';
+import type { ModuleList } from 'types/reducers';
 import type { Semester } from 'types/modules';
 import type { Mode } from 'types/settings';
 import type { State } from 'reducers';
@@ -34,7 +34,6 @@ type Props = {
   theme: string,
   mode: Mode,
   activeSemester: Semester,
-  notification: NotificationData,
 
   fetchModuleList: () => Promise<*>,
   migrateTimetable: () => void,
@@ -123,7 +122,7 @@ export class AppShell extends Component<Props> {
 
         <FeedbackModal />
 
-        <Notification notification={this.props.notification} />
+        <Notification />
 
         <Footer />
       </div>
@@ -137,7 +136,6 @@ const mapStateToProps = (state: State) => ({
   theme: state.theme.id,
   mode: state.settings.mode,
   activeSemester: state.app.activeSemester,
-  notification: state.app.notification,
 });
 
 // withRouter here is used to ensure re-render when routes change, since
