@@ -1,12 +1,13 @@
-import _ from 'lodash';
+import { isString } from 'lodash';
 import Raven from 'raven-js';
+import { LEGACY_REDUX_KEY } from 'storage/keys';
 
 // Simple wrapper around localStorage to automagically parse and stringify payloads.
 // TODO: Use an in-memory storage for environments where localStorage is not present,
 //       like private mode on Safari.
 function setItem(key, value) {
   try {
-    localStorage.setItem(key, _.isString(value) ? value : JSON.stringify(value));
+    localStorage.setItem(key, isString(value) ? value : JSON.stringify(value));
   } catch (e) {
     Raven.captureException(e);
   }
@@ -34,15 +35,13 @@ function removeItem(key) {
   }
 }
 
-const stateKey = 'reduxState';
-
 const storage = {
   setItem,
   getItem,
   removeItem,
-  loadState: () => getItem(stateKey) || {},
+  loadState: () => getItem(LEGACY_REDUX_KEY) || {},
   saveState: (state) => {
-    setItem(stateKey, state);
+    setItem(LEGACY_REDUX_KEY, state);
   },
 };
 

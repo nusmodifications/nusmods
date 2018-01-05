@@ -11,9 +11,8 @@ import { fetchModule } from 'actions/moduleBank';
 import { randomModuleLessonConfig, validateTimetableModules } from 'utils/timetables';
 import { getModuleTimetable } from 'utils/modules';
 import storage from 'storage';
+import { V2_MIGRATION_KEY } from 'storage/keys';
 import { MIGRATION_KEYS, parseQueryString } from 'storage/migrateTimetable';
-
-const V2_MIGRATION_KEY = 'v2Migration';
 
 export const ADD_MODULE: string = 'ADD_MODULE';
 export function addModule(
