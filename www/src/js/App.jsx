@@ -1,3 +1,8 @@
+// @flow
+import type { Store } from 'redux';
+import type { Persistor } from 'redux-persist';
+import type { State } from 'reducers';
+
 import React from 'react';
 import { AppContainer } from 'react-hot-loader'; // eslint-disable-line import/no-extraneous-dependencies
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -8,8 +13,12 @@ import { PersistGate } from 'redux-persist/es/integration/react';
 import AppShell from 'views/AppShell';
 import Routes from 'views/routes/Routes';
 
-/* eslint-disable react/prop-types */
-export default function App({ store, persistor }) {
+type Props = {
+  store: Store<State, *, *>,
+  persistor: Persistor,
+};
+
+export default function App({ store, persistor }: Props) {
   return (
     <AppContainer>
       <Provider store={store}>

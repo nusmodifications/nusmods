@@ -32,7 +32,6 @@ declare module 'redux-persist' {
     _persist: PersistState,
   } | void
 
-
   declare export type PersistConfig = {
     version?: number,
     storage: Object,
@@ -47,6 +46,37 @@ declare module 'redux-persist' {
     getStoredState?: PersistConfig => Promise<PersistedState>, // used for migrations
     debug?: boolean,
     serialize?: boolean,
+  }
+
+  declare type RegisterAction = {
+    type: 'redux-persist/REGISTER',
+    key: string,
+  }
+
+  declare export type RehydrateErrorType = any
+
+  declare export type RehydrateAction = {
+    type: 'redux-persist/REHYDRATE',
+    key: string,
+    payload: ?Object,
+    err: ?RehydrateErrorType,
+  }
+
+  declare type PersistorAction = RehydrateAction | RegisterAction
+
+  declare type PersistorState = {
+    registry: Array<string>,
+    bootstrapped: boolean,
+  }
+
+  declare type PersistorSubscribeCallback = () => any
+
+  declare export type Persistor = {
+    purge: () => Promise<any>,
+    flush: () => Promise<any>,
+    +dispatch: PersistorAction => PersistorAction,
+    +getState: () => PersistorState,
+    +subscribe: PersistorSubscribeCallback => () => any,
   }
 }
 
