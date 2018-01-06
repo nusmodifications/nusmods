@@ -4,10 +4,9 @@ import type { Module, ModuleCode, Semester } from 'types/modules';
 import type { SemTimetableConfig } from 'types/timetables';
 import type { ModuleList, ModuleSelectListItem, ModuleCodeMap } from 'types/reducers';
 
-import { persistReducer } from 'redux-persist';
+import { REHYDRATE } from 'redux-persist';
 import { keyBy, zipObject } from 'lodash';
 
-import createPersistConfig from 'storage/createPersistConfig';
 import { FETCH_MODULE_LIST, FETCH_MODULE } from 'actions/moduleBank';
 import { SET_EXPORTED_DATA } from 'actions/export';
 import * as RequestResultCases from 'middlewares/requests-middleware';
@@ -61,8 +60,7 @@ function moduleBank(state: ModuleBank = defaultModuleBankState, action: FSA): Mo
         modules: keyBy(action.payload.modules, (module: Module) => module.ModuleCode),
       };
 
-    default:
-      // FIXME: HACK - Temporary solution to not having a specific dehydration action
+    case REHYDRATE:
       if (!state.moduleCodes && state.moduleList) {
         return {
           ...state,
@@ -70,6 +68,9 @@ function moduleBank(state: ModuleBank = defaultModuleBankState, action: FSA): Mo
         };
       }
 
+      return state;
+
+    default:
       return state;
   }
 }
@@ -90,10 +91,9 @@ export function getSemModuleSelectList(
   );
 }
 
-export default persistReducer(
-  createPersistConfig('moduleBank', {
-    throttle: 1000,
-    whitelist: ['modules', 'moduleList'],
-  }),
-  moduleBank,
-);
+export default moduleBank;
+
+export const persistConfig = {
+  throttle: 1000,
+  whitelist: ['modules', 'moduleList'],
+};

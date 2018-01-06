@@ -1,6 +1,6 @@
 // @flow
 
-import { timetablesReducer as reducer, defaultTimetableState } from 'reducers/timetables';
+import reducer, { defaultTimetableState } from 'reducers/timetables';
 import { ADD_MODULE, removeModule, SET_TIMETABLE } from 'actions/timetables';
 
 const initialState = defaultTimetableState;

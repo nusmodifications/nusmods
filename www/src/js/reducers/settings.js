@@ -1,9 +1,8 @@
 // @flow
 import { uniq, without } from 'lodash';
 import update from 'immutability-helper';
-import { persistReducer, REHYDRATE } from 'redux-persist';
+import { REHYDRATE } from 'redux-persist';
 
-import createPersistConfig from 'storage/createPersistConfig';
 import type { FSA } from 'types/redux';
 import type { SettingsState } from 'types/reducers';
 
@@ -128,4 +127,4 @@ function settings(state: SettingsState = defaultSettingsState, action: FSA): Set
   }
 }
 
-export default persistReducer(createPersistConfig('settings'), settings);
+export default settings;

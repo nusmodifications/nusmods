@@ -5,11 +5,9 @@ import type { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
 import type { ColorMapping, TimetablesState } from 'types/reducers';
 
 import _ from 'lodash';
-import { persistReducer } from 'redux-persist';
 import update from 'immutability-helper';
 
 import config from 'config';
-import createPersistConfig from 'storage/createPersistConfig';
 import { ADD_MODULE, CHANGE_LESSON, REMOVE_MODULE, SET_TIMETABLE } from 'actions/timetables';
 import { SET_EXPORTED_DATA } from 'actions/export';
 import { getNewColor } from 'utils/colors';
@@ -97,10 +95,7 @@ export const defaultTimetableState: TimetablesState = {
   academicYear: config.academicYear,
 };
 
-export function timetablesReducer(
-  state: TimetablesState = defaultTimetableState,
-  action: FSA,
-): TimetablesState {
+function timetables(state: TimetablesState = defaultTimetableState, action: FSA): TimetablesState {
   if (!action.payload || !action.payload.semester) {
     return state;
   }
@@ -148,7 +143,7 @@ export function timetablesReducer(
   }
 }
 
-export default persistReducer(createPersistConfig('timetables'), timetablesReducer);
+export default timetables;
 
 // Extract sem timetable and colors for a specific semester from TimetablesState
 export function getSemesterTimetable(

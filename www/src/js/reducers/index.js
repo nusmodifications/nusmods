@@ -10,14 +10,19 @@ import type {
 import type { ModuleBank } from 'reducers/moduleBank';
 import type { VenueBank } from 'reducers/venueBank';
 
+import persistReducer from 'storage/persistReducer';
+
+// Non-persisted reducers
 import requests from './requests';
-import moduleBank from './moduleBank';
-import venueBank from './venueBank';
-import timetables from './timetables';
 import app from './app';
-import theme from './theme';
-import settings from './settings';
 import moduleFinder from './moduleFinder';
+
+// Persisted reducers
+import moduleBankReducer, { persistConfig as moduleBankPersistConfig } from './moduleBank';
+import venueBankReducer, { persistConfig as venueBankPersistConfig } from './venueBank';
+import timetablesReducer from './timetables';
+import themeReducer from './theme';
+import settingsReducer from './settings';
 
 export type State = {
   moduleBank: ModuleBank,
@@ -29,6 +34,13 @@ export type State = {
   settings: SettingsState,
   moduleFinder: ModuleFinderState,
 };
+
+// Persist reducers
+const moduleBank = persistReducer('moduleBank', moduleBankReducer, moduleBankPersistConfig);
+const venueBank = persistReducer('venueBank', venueBankReducer, venueBankPersistConfig);
+const timetables = persistReducer('timetables', timetablesReducer);
+const theme = persistReducer('theme', themeReducer);
+const settings = persistReducer('settings', settingsReducer);
 
 // $FlowFixMe: State default is delegated to its child reducers.
 const defaultState: State = {};

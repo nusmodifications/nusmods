@@ -3,9 +3,6 @@ import type { FSA } from 'types/redux';
 import type { ColorMapping, ThemeState } from 'types/reducers';
 import type { Theme } from 'types/settings';
 
-import { persistReducer } from 'redux-persist';
-
-import createPersistConfig from 'storage/createPersistConfig';
 import { SET_EXPORTED_DATA } from 'actions/export';
 import { SELECT_THEME, CYCLE_THEME, TOGGLE_TIMETABLE_ORIENTATION } from 'actions/theme';
 import themes from 'data/themes.json';
@@ -47,4 +44,4 @@ function theme(state: ThemeState = defaultThemeState, action: FSA): ThemeState {
   }
 }
 
-export default persistReducer(createPersistConfig('theme'), theme);
+export default theme;
