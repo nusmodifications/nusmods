@@ -12,8 +12,9 @@ import type { Module, Semester, ModuleCode } from 'types/modules';
 import { modulePage } from 'views/routes/paths';
 import { AlertTriangle } from 'views/components/icons';
 import { getModuleSemesterData } from 'utils/modules';
-import { getSemesterModules, getSemesterTimetable } from 'utils/timetables';
+import { getSemesterModules } from 'utils/timetables';
 import { intersperse } from 'utils/array';
+import { getSemesterTimetable } from 'reducers/timetables';
 
 import styles from './ModuleExamClash.scss';
 

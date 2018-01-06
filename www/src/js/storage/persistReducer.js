@@ -12,9 +12,12 @@ export default function persistReducer(
   reducer: Reducer<*, *>,
   options: $Diff<PersistConfig, { key: string, storage: Object }> = {},
 ) {
-  return basePersistReducer(reducer, {
-    key,
-    storage,
-    ...options,
-  });
+  return basePersistReducer(
+    {
+      key,
+      storage,
+      ...options,
+    },
+    reducer,
+  );
 }
