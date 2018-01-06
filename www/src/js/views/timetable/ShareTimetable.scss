@@ -27,6 +27,11 @@
   margin-bottom: 2rem;
 }
 
+.copyIcon {
+  // Cannot use .btn-svg because display: inline-flex messes up button groups
+  margin-bottom: -0.2rem;
+}
+
 .copyStatus {
   position: absolute;
   right: 0;

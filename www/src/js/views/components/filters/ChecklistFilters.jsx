@@ -22,6 +22,7 @@ export default function ChecklistFilters(props: Props) {
     <div className={styles.checklist}>
       <h4 className={styles.heading}>{group.label}</h4>
       <Checklist
+        groupId={group.id}
         filters={values(group.filters)}
         onChange={(filter) => onFilterChange(group.toggle(filter))}
         getCount={(filter) => filter.count(moduleCodes)}

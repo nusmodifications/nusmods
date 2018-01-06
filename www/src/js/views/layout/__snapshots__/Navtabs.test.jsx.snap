@@ -68,6 +68,9 @@ exports[`renders into nav element 1`] = `
       Settings
     </span>
   </NavLink>
+  <div
+    className="divider"
+  />
   <a
     className="link hiddenOnMobile"
     href="https://nuswhispers.com"

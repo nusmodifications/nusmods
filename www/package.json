@@ -100,7 +100,7 @@
   "dependencies": {
     "autotrack": "^2.4.1",
     "axios": "^0.16.2",
-    "bootstrap": "4.0.0-beta.2",
+    "bootstrap": "4.0.0-beta.3",
     "classnames": "^2.2.5",
     "core-js": "^2.5.1",
     "dom-to-image": "^2.5.2",
@@ -125,7 +125,7 @@
     "react-qr-svg": "^2.1.0",
     "react-redux": "^5.0.5",
     "react-router-dom": "^4.2.2",
-    "react-scrollspy": "^3.3.4",
+    "react-scrollspy": "^3.3.5",
     "react-waypoint": "^7.3.4",
     "redux": "^3.7.2",
     "redux-persist": "^5.4.0",

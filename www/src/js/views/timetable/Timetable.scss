@@ -9,12 +9,12 @@ $timetable-min-width: $timetable-row-height * 16;
   @include media-breakpoint-down(sm) {
     padding-right: $timetable-right-padding;
   }
-}
 
-:global(.verticalMode) .container {
-  display: flex;
-  min-width: 0; // Edge fallback
-  min-width: fit-content;
+  @include vertical-mode {
+    display: flex;
+    min-width: 0; // Edge fallback
+    min-width: fit-content;
+  }
 }
 
 .days {
@@ -23,10 +23,10 @@ $timetable-min-width: $timetable-row-height * 16;
   border: $timetable-border;
   border-left-width: 0;
   border-radius: $btn-border-radius;
-}
 
-:global(.verticalMode) .days {
-  display: flex;
-  flex: 1 0 auto;
-  border-left-width: 1px;
+  @include vertical-mode {
+    display: flex;
+    flex: 1 0 auto;
+    border-left-width: 1px;
+  }
 }
