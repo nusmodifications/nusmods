@@ -4,6 +4,7 @@ import type { TimetableConfig, SemTimetableConfig } from 'types/timetables';
 import type { ModuleList } from 'types/reducers';
 import type { Semester } from 'types/modules';
 import type { Mode } from 'types/settings';
+import type { State } from 'reducers';
 
 import React, { Component } from 'react';
 import { NavLink, withRouter, type ContextRouter } from 'react-router-dom';
@@ -135,7 +136,7 @@ export class AppShell extends Component<Props> {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: State) => ({
   moduleList: state.moduleBank.moduleList,
   timetables: state.timetables.timetableConfig,
   theme: state.theme.id,
@@ -143,16 +144,16 @@ const mapStateToProps = (state) => ({
   activeSemester: state.app.activeSemester,
 });
 
+const connectedAppShell = connect(mapStateToProps, {
+  fetchModuleList,
+  fetchTimetableModules,
+  setTimetable,
+  migrateTimetable,
+  fillTimetableBlanks,
+})(AppShell);
+
 // withRouter here is used to ensure re-render when routes change, since
 // connect implements shouldComponentUpdate based purely on props. If it
 // is removed, connect not detect prop changes when route is changed and
 // thus the pages are not re-rendered
-export default withRouter(
-  connect(mapStateToProps, {
-    fetchModuleList,
-    fetchTimetableModules,
-    setTimetable,
-    migrateTimetable,
-    fillTimetableBlanks,
-  })(AppShell),
-);
+export default withRouter(connectedAppShell);
