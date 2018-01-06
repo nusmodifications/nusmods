@@ -124,7 +124,7 @@ export class AppShell extends Component<Props> {
 
 const mapStateToProps = (state) => ({
   moduleList: state.moduleBank.moduleList,
-  timetables: state.timetables,
+  timetables: state.timetables.timetableConfig,
   theme: state.theme.id,
   mode: state.settings.mode,
   activeSemester: state.app.activeSemester,

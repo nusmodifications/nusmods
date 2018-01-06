@@ -156,7 +156,7 @@ export class AddModuleDropdownComponent extends PureComponent<Props, State> {
 
 const AddModuleDropdownConnected = connect(
   (state) => ({
-    timetables: state.timetables,
+    timetables: state.timetables.timetableConfig,
   }),
   { addModule, removeModule },
 )(AddModuleDropdownComponent);

@@ -3,12 +3,11 @@ import { each, flatMap } from 'lodash';
 import localforage from 'localforage';
 
 import type { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
-import type { FSA } from 'types/redux';
+import type { FSA, GetState } from 'types/redux';
 import type { ColorIndex, ColorMapping } from 'types/reducers';
 import type { ClassNo, Lesson, LessonType, Module, ModuleCode, Semester } from 'types/modules';
 
 import { fetchModule } from 'actions/moduleBank';
-import { SELECT_MODULE_COLOR } from 'actions/theme';
 import { randomModuleLessonConfig, validateTimetableModules } from 'utils/timetables';
 import { getModuleTimetable } from 'utils/modules';
 import storage from 'storage';
@@ -106,11 +105,11 @@ export function setTimetable(
 }
 
 export function fillTimetableBlanks(semester: Semester) {
-  return (dispatch: Function, getState: Function) => {
-    const { timetables, moduleBank } = getState();
+  return (dispatch: Function, getState: GetState) => {
+    const { timetables: { timetableConfig }, moduleBank } = getState();
 
     // Extract the timetable and the modules for the semester
-    const timetable = timetables[semester];
+    const timetable = timetableConfig[semester];
     if (!timetable) return;
 
     // Check that all lessons for each module is filled, if they are not, use the
@@ -141,7 +140,7 @@ export function fetchTimetableModules(timetables: SemTimetableConfig[]) {
 }
 
 export function migrateTimetable() {
-  return (dispatch: Function, getState: Function): Promise<*> => {
+  return (dispatch: Function, getState: GetState): Promise<*> => {
     if (storage.getItem(V2_MIGRATION_KEY)) {
       return Promise.resolve();
     }
@@ -168,6 +167,7 @@ export function migrateTimetable() {
   };
 }
 
+export const SELECT_MODULE_COLOR: string = 'SELECT_MODULE_COLOR';
 export function selectModuleColor(
   semester: Semester,
   moduleCode: ModuleCode,

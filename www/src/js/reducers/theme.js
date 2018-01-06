@@ -7,12 +7,7 @@ import { persistReducer } from 'redux-persist';
 
 import createPersistConfig from 'storage/createPersistConfig';
 import { SET_EXPORTED_DATA } from 'actions/export';
-import {
-  SELECT_THEME,
-  CYCLE_THEME,
-  TOGGLE_TIMETABLE_ORIENTATION,
-  SET_TIMETABLE_ORIENTATION,
-} from 'actions/theme';
+import { SELECT_THEME, CYCLE_THEME, TOGGLE_TIMETABLE_ORIENTATION } from 'actions/theme';
 import themes from 'data/themes.json';
 import { VERTICAL, HORIZONTAL } from 'types/reducers';
 
@@ -40,11 +35,6 @@ function theme(state: ThemeState = defaultThemeState, action: FSA): ThemeState {
         id: themeIds[newThemeIndex],
       };
     }
-    case SET_TIMETABLE_ORIENTATION:
-      return {
-        ...state,
-        timetableOrientation: action.payload.orientation,
-      };
     case TOGGLE_TIMETABLE_ORIENTATION:
       return {
         ...state,

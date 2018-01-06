@@ -12,7 +12,7 @@ import type { Module, Semester, ModuleCode } from 'types/modules';
 import { modulePage } from 'views/routes/paths';
 import { AlertTriangle } from 'views/components/icons';
 import { getModuleSemesterData } from 'utils/modules';
-import { getSemesterModules } from 'utils/timetables';
+import { getSemesterModules, getSemesterTimetable } from 'utils/timetables';
 import { intersperse } from 'utils/array';
 
 import styles from './ModuleExamClash.scss';
@@ -63,7 +63,7 @@ export class ModuleExamClashComponent extends PureComponent<Props> {
 }
 
 const mapStateToProps: MapStateToProps<*, *, *> = (state: State, ownProps) => {
-  const timetable = state.timetables[ownProps.semester] || {};
+  const { timetable } = getSemesterTimetable(ownProps.semester, state.timetables);
   const modulesMap = state.moduleBank.modules;
   return { modules: getSemesterModules(timetable, modulesMap) };
 };

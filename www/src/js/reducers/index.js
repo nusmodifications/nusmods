@@ -1,7 +1,12 @@
 // @flow
 import type { FSA } from 'types/redux';
-import type { TimetableConfig } from 'types/timetables';
-import type { Requests, SettingsState, AppState, ModuleFinderState } from 'types/reducers';
+import type {
+  Requests,
+  SettingsState,
+  AppState,
+  ModuleFinderState,
+  TimetablesState,
+} from 'types/reducers';
 import type { ModuleBank } from 'reducers/moduleBank';
 import type { VenueBank } from 'reducers/venueBank';
 
@@ -18,7 +23,7 @@ export type State = {
   moduleBank: ModuleBank,
   venueBank: VenueBank,
   requests: Requests,
-  timetables: TimetableConfig,
+  timetables: TimetablesState,
   app: AppState,
   theme: Object,
   settings: SettingsState,

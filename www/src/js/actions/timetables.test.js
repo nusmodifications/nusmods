@@ -1,6 +1,8 @@
 // @flow
 import localforage from 'localforage';
 import type { ModuleCode, Semester, Lesson } from 'types/modules';
+import type { SemTimetableConfig } from 'types/timetables';
+
 import lessons from '__mocks__/lessons-array.json';
 
 /** @var {Module} */
@@ -9,6 +11,7 @@ import CS1010S from '__mocks__/modules/CS1010S.json';
 import CS3216 from '__mocks__/modules/CS3216.json';
 
 import runThunk from 'test-utils/runThunk';
+import { V2_MIGRATION_KEY } from 'storage/keys';
 import * as actions from './timetables';
 import { FETCH_MODULE } from './moduleBank';
 
@@ -60,11 +63,10 @@ test('select module color should dispatch a select of module color', () => {
 });
 
 describe('migrateTimetable()', () => {
-  const migrationKey = 'v2Migration';
   const action = actions.migrateTimetable();
   const getState = () => ({
     moduleBank: { moduleCodes: { CS5331: {} }, modules: {} },
-    timetables: {},
+    timetables: { timetableConfig: {} },
   });
   const makeDispatch = () => jest.fn().mockReturnValue(Promise.resolve());
 
@@ -90,7 +92,7 @@ describe('migrateTimetable()', () => {
 
     expect(dispatch).not.toHaveBeenCalled();
     expect(storage.setItem).toHaveBeenCalledTimes(1);
-    expect(storage.setItem).toHaveBeenCalledWith(migrationKey, true);
+    expect(storage.setItem).toHaveBeenCalledWith(V2_MIGRATION_KEY, true);
   });
 
   test('to migrate timetable', async () => {
@@ -110,7 +112,7 @@ describe('migrateTimetable()', () => {
     expect(secondAction).toHaveProperty('type', FETCH_MODULE);
 
     expect(storage.setItem).toHaveBeenCalledTimes(1);
-    expect(storage.setItem).toHaveBeenCalledWith(migrationKey, true);
+    expect(storage.setItem).toHaveBeenCalledWith(V2_MIGRATION_KEY, true);
   });
 
   test('to exclude invalid modules from timetable', async () => {
@@ -126,12 +128,15 @@ describe('migrateTimetable()', () => {
     expect(dispatch).toHaveBeenCalledTimes(2);
 
     expect(storage.setItem).toHaveBeenCalledTimes(1);
-    expect(storage.setItem).toHaveBeenCalledWith(migrationKey, true);
+    expect(storage.setItem).toHaveBeenCalledWith(V2_MIGRATION_KEY, true);
   });
 });
 
 describe('fillTimetableBlanks', () => {
   const moduleBank = { modules: { CS1010S, CS3216 } };
+  const timetablesState = (semester: Semester, timetable: SemTimetableConfig) => ({
+    timetableConfig: { [semester]: timetable },
+  });
   const semester = 1;
   const action = actions.fillTimetableBlanks(semester);
 
@@ -144,7 +149,7 @@ describe('fillTimetableBlanks', () => {
       },
     };
 
-    const state = { timetables: { [semester]: timetable }, moduleBank };
+    const state: any = { timetables: timetablesState(semester, timetable), moduleBank };
     const dispatch = jest.fn();
     action(dispatch, () => state);
 
@@ -159,7 +164,7 @@ describe('fillTimetableBlanks', () => {
       },
       CS3216: {},
     };
-    const state = { timetables: { [semester]: timetable }, moduleBank };
+    const state: any = { timetables: timetablesState(semester, timetable), moduleBank };
     const dispatch = jest.fn();
 
     action(dispatch, () => state);
