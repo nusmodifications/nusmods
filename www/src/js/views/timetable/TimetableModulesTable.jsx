@@ -79,13 +79,15 @@ class TimetableModulesTable extends Component<Props> {
       return null;
     }
 
+    const { readOnly, semester, horizontalOrientation } = this.props;
+
     return (
       <div className={classnames(styles.modulesTable, 'row')}>
         {this.props.modules.map((module) => (
           <div
             className={classnames(styles.modulesTableRow, 'col-sm-6', {
-              'col-lg-4': this.props.horizontalOrientation,
-              'col-md-12': !this.props.horizontalOrientation,
+              'col-lg-4': horizontalOrientation,
+              'col-md-12': !horizontalOrientation,
             })}
             key={module.ModuleCode}
           >
@@ -94,18 +96,18 @@ class TimetableModulesTable extends Component<Props> {
                 label={`Change ${module.ModuleCode} timetable color`}
                 color={module.colorIndex}
                 onChooseColor={(colorIndex: ColorIndex) => {
-                  this.props.selectModuleColor(module.ModuleCode, colorIndex);
+                  this.props.selectModuleColor(semester, module.ModuleCode, colorIndex);
                 }}
               />
             </div>
             <div className={styles.moduleInfo}>
-              {!this.props.readOnly && this.renderModuleActions(module)}
+              {!readOnly && this.renderModuleActions(module)}
               <Link to={modulePage(module.ModuleCode, module.ModuleTitle)}>
                 {module.ModuleCode} {module.ModuleTitle}
               </Link>
               <div className={styles.moduleExam}>
-                {getModuleExamDate(module, this.props.semester)
-                  ? `Exam: ${getFormattedModuleExamDate(module, this.props.semester)}`
+                {getModuleExamDate(module, semester)
+                  ? `Exam: ${getFormattedModuleExamDate(module, semester)}`
                   : 'No Exam'}
                 &nbsp;&middot;&nbsp;
                 {module.ModuleCredit} MCs

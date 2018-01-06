@@ -8,7 +8,13 @@ import _ from 'lodash';
 import update from 'immutability-helper';
 
 import config from 'config';
-import { ADD_MODULE, CHANGE_LESSON, REMOVE_MODULE, SET_TIMETABLE } from 'actions/timetables';
+import {
+  ADD_MODULE,
+  CHANGE_LESSON,
+  REMOVE_MODULE,
+  SELECT_MODULE_COLOR,
+  SET_TIMETABLE,
+} from 'actions/timetables';
 import { SET_EXPORTED_DATA } from 'actions/export';
 import { getNewColor } from 'utils/colors';
 
@@ -83,6 +89,12 @@ function semColors(state: ColorMapping = defaultSemColorMap, action: FSA): Color
     case REMOVE_MODULE:
       return _.omit(state, moduleCode);
 
+    case SELECT_MODULE_COLOR:
+      return {
+        ...state,
+        [moduleCode]: action.payload.colorIndex,
+      };
+
     default:
       return state;
   }
@@ -116,6 +128,7 @@ function timetables(state: TimetablesState = defaultTimetableState, action: FSA)
 
     case ADD_MODULE:
     case REMOVE_MODULE:
+    case SELECT_MODULE_COLOR:
     case CHANGE_LESSON: {
       const { semester } = action.payload;
 

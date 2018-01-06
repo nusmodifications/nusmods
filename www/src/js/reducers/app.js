@@ -3,12 +3,7 @@ import type { FSA } from 'types/redux';
 import type { AppState } from 'types/reducers';
 import config from 'config';
 
-import {
-  MODIFY_LESSON,
-  CHANGE_LESSON,
-  CANCEL_MODIFY_LESSON,
-  SELECT_MODULE_COLOR,
-} from 'actions/timetables';
+import { MODIFY_LESSON, CHANGE_LESSON, CANCEL_MODIFY_LESSON } from 'actions/timetables';
 import { SELECT_SEMESTER } from 'actions/settings';
 import { SET_ONLINE_STATUS, TOGGLE_FEEDBACK_MODAL } from 'actions/app';
 
@@ -50,7 +45,6 @@ function app(state: AppState = defaultAppState(), action: FSA): AppState {
         ...state,
         isFeedbackModalOpen: !state.isFeedbackModalOpen,
       };
-    case SELECT_MODULE_COLOR:
     default:
       return state;
   }
