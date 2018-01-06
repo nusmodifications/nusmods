@@ -65,11 +65,12 @@ const errorHandler = async (ctx, next) => {
   try {
     await next();
   } catch (e) {
-    Raven.captureException(e, {
+    Raven.captureException(e.original || e, {
       req: ctx.req,
     });
 
     console.error(e);
+
     ctx.status = e.status || 500;
     ctx.app.emit('error', e, ctx);
   }
