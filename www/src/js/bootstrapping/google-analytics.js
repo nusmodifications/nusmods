@@ -1,5 +1,5 @@
 // @flow
-import config from 'config/index';
+import config from 'config';
 
 export default function initializeGA() {
   window.addEventListener('load', () => {

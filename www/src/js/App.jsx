@@ -7,7 +7,7 @@ import React from 'react';
 import { AppContainer } from 'react-hot-loader'; // eslint-disable-line import/no-extraneous-dependencies
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/es/integration/react';
+import { PersistGate } from 'redux-persist/lib/integration/react';
 
 // eslint-disable-next-line import/no-named-as-default
 import AppShell from 'views/AppShell';

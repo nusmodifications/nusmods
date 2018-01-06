@@ -19,7 +19,7 @@ const composeEnhancers =
 /* eslint-enable no-underscore-dangle */
 
 export default function configureStore(defaultState?: State) {
-  const middlewares = [thunk, requestsMiddleware, ravenMiddleware];
+  const middlewares = [ravenMiddleware, thunk, requestsMiddleware];
 
   if (process.env.NODE_ENV === 'development') {
     /* eslint-disable */
