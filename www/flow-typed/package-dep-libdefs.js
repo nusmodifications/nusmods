@@ -32,10 +32,6 @@ declare module 'react-helmet' {
   declare module.exports: any;
 }
 
-declare module 'react-loadable' {
-  declare module.exports: any;
-}
-
 declare module 'react-modal' {
   declare module.exports: any;
 }
