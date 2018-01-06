@@ -1,4 +1,10 @@
-import { modulePage, timetablePage, semesterForTimetablePage, isV2TimetablePageUrl } from './paths';
+import {
+  modulePage,
+  timetablePage,
+  semesterForTimetablePage,
+  isV2TimetablePageUrl,
+  venuePage,
+} from './paths';
 
 test('modulePagePath should generate route correctly', () => {
   expect(modulePage('CS1010S', 'Programming Methodology')).toBe(
@@ -20,4 +26,11 @@ test('isV2TimetablePageUrl', () => {
   expect(isV2TimetablePageUrl({ semester: '2017-2018', action: 'sem2' })).toBe(true);
   expect(isV2TimetablePageUrl({ semester: 'sem-2', action: 'share' })).toBe(false);
   expect(isV2TimetablePageUrl({ semester: 'sem-2' })).toBe(false);
+});
+
+test('venuePage', () => {
+  expect(venuePage()).toEqual('/venues');
+  expect(venuePage(null)).toEqual('/venues');
+  expect(venuePage('abc')).toEqual('/venues/abc');
+  expect(venuePage('abc/def')).toEqual('/venues/abc%2Fdef');
 });
