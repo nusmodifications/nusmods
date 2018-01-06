@@ -12,8 +12,9 @@ import type { ColorMapping } from 'types/reducers';
 import type { ModulesMap } from 'reducers/moduleBank';
 
 import { selectSemester } from 'actions/settings';
+import { getSemesterTimetable } from 'reducers/timetables';
 import { setTimetable, fetchTimetableModules } from 'actions/timetables';
-import { deserializeTimetable, getSemesterTimetable } from 'utils/timetables';
+import { deserializeTimetable } from 'utils/timetables';
 import { fillColorMapping } from 'utils/colors';
 import {
   semesterForTimetablePage,

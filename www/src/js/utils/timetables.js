@@ -13,16 +13,16 @@ import type {
 } from 'types/modules';
 import type {
   ModuleLessonConfig,
-  SemTimetableConfigWithLessons,
   SemTimetableConfig,
-  TimetableDayFormat,
-  TimetableDayArrangement,
+  SemTimetableConfigWithLessons,
   TimetableArrangement,
+  TimetableDayArrangement,
+  TimetableDayFormat,
 } from 'types/timetables';
 import type { ModulesMap } from 'reducers/moduleBank';
-import type { ColorMapping, ModuleCodeMap, TimetablesState } from 'types/reducers';
+import type { ModuleCodeMap } from 'types/reducers';
 
-import { getModuleTimetable, getModuleSemesterData } from 'utils/modules';
+import { getModuleSemesterData, getModuleTimetable } from 'utils/modules';
 
 type LessonTypeAbbrev = { [LessonType]: string };
 export const LESSON_TYPE_ABBREV: LessonTypeAbbrev = {
@@ -236,16 +236,6 @@ export function validateTimetableModules(
     (moduleCode: ModuleCode) => moduleCodes[moduleCode],
   );
   return [_.pick(timetable, valid), invalid];
-}
-
-export function getSemesterTimetable(
-  semester: Semester,
-  state: TimetablesState,
-): { timetable: SemTimetableConfig, colors: ColorMapping } {
-  return {
-    timetable: state.timetableConfig[semester] || EMPTY_OBJECT,
-    colors: state.colors[semester] || EMPTY_OBJECT,
-  };
 }
 
 // Get information for all modules present in a semester timetable config
