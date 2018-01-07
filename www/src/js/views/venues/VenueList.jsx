@@ -1,26 +1,22 @@
 // @flow
 import React from 'react';
 import classnames from 'classnames';
-import { entries, map, groupBy } from 'lodash';
+import { map, groupBy } from 'lodash';
 
 import type { OnSelectVenue } from 'types/views';
-import type { Venue, VenueInfo } from 'types/venues';
+import type { Venue, VenueDetailList } from 'types/venues';
 
 import styles from './VenueList.scss';
 
 type Props = {
-  venues: VenueInfo,
+  venues: VenueDetailList,
   selectedVenue: ?Venue,
   onSelect: OnSelectVenue, // Called with venue name and venue URL (/venues/<venue>)
 };
 
-// $FlowFixMe: Flow doesn't have Intl typedefs https://github.com/facebook/flow/issues/1270
-const collator = new Intl.Collator('en', { sensitivity: 'base', numeric: true });
-
 export default function VenueList(props: Props) {
   // Case-insensitive, natural sort of venue names
-  const sortedVenues = entries(props.venues).sort(([a], [b]) => collator.compare(a, b));
-  const venueListPages = groupBy(sortedVenues, ([venue]) => venue.charAt(0).toUpperCase());
+  const venueListPages = groupBy(props.venues, ([venue]) => venue.charAt(0).toUpperCase());
 
   return (
     <ul className={styles.venueList}>

@@ -1,74 +1,101 @@
 // @flow
-import { pick } from 'lodash';
 import venueInfo from '__mocks__/venueInformation.json';
 
-import { searchVenue, filterAvailability } from './venues';
+import { searchVenue, filterAvailability, sortVenues } from './venues';
 
-const venues = (...names) => pick(venueInfo, names);
+const venues = sortVenues(venueInfo);
+const getVenues = (...names) => venues.filter(([name]) => names.includes(name));
+
+describe('sortVenues', () => {
+  test('handle empty venue object', () => {
+    expect(sortVenues({})).toEqual([]);
+  });
+
+  test('sort venues case insensitively', () => {
+    expect(
+      sortVenues({
+        a2: [],
+        A1: [],
+        b1: [],
+        B2: [],
+      }),
+    ).toEqual([['A1', []], ['a2', []], ['b1', []], ['B2', []]]);
+  });
+
+  test('sort venues using natrual sorting', () => {
+    expect(sortVenues(venueInfo).map(([venue]) => venue)).toEqual([
+      'CQT/SR0622',
+      'LT1',
+      'lt2',
+      'LT17',
+      'S11-0302',
+    ]);
+  });
+});
 
 describe('searchVenue()', () => {
   test('should return entire list if no search or options are given', () => {
-    expect(searchVenue(venueInfo, '')).toEqual(venueInfo);
+    expect(searchVenue(venues, '')).toEqual(venues);
   });
 
-  test('should find venues based on search', () => {
+  test('should find getVenues based on search', () => {
     // Exact match
-    expect(searchVenue(venueInfo, 'LT17')).toEqual(venues('LT17'));
+    expect(searchVenue(venues, 'LT17')).toEqual(getVenues('LT17'));
 
     // Case insensitivity
-    expect(searchVenue(venueInfo, 'lt17')).toEqual(venues('LT17'));
+    expect(searchVenue(venues, 'lt17')).toEqual(getVenues('LT17'));
 
     // Partial match
-    expect(searchVenue(venueInfo, 'L')).toEqual(venues('LT1', 'lt2', 'LT17'));
+    expect(searchVenue(venues, 'L')).toEqual(getVenues('LT1', 'lt2', 'LT17'));
 
-    expect(searchVenue(venueInfo, 'T1')).toEqual(venues('LT1', 'LT17'));
+    expect(searchVenue(venues, 'T1')).toEqual(getVenues('LT1', 'LT17'));
 
-    expect(searchVenue(venueInfo, '0')).toEqual(venues('S11-0302', 'CQT/SR0622'));
+    expect(searchVenue(venues, '0')).toEqual(getVenues('S11-0302', 'CQT/SR0622'));
 
     // Non-existent venue
-    expect(searchVenue(venueInfo, 'cofeve')).toEqual({});
+    expect(searchVenue(venues, 'cofeve')).toEqual([]);
   });
 
   test('should tokenize search queries', () => {
-    expect(searchVenue(venueInfo, 'lt 17')).toEqual(venues('LT17'));
-    expect(searchVenue(venueInfo, 'qt sr')).toEqual(venues('CQT/SR0622'));
+    expect(searchVenue(venues, 'lt 17')).toEqual(getVenues('LT17'));
+    expect(searchVenue(venues, 'qt sr')).toEqual(getVenues('CQT/SR0622'));
   });
 });
 
 describe('filterAvailability()', () => {
   test('should find venues based on search options', () => {
     expect(
-      filterAvailability(venueInfo, {
+      filterAvailability(venues, {
         day: 0, // Monday
         time: 10, // 10am
         duration: 1, // 1 hour
       }),
-    ).toEqual(venues('LT1', 'CQT/SR0622'));
+    ).toEqual(getVenues('LT1', 'CQT/SR0622'));
 
     expect(
-      filterAvailability(venueInfo, {
+      filterAvailability(venues, {
         day: 0,
         time: 9,
         duration: 1,
       }),
-    ).toEqual(venues('LT1', 'LT17', 'lt2', 'CQT/SR0622'));
+    ).toEqual(getVenues('LT1', 'LT17', 'lt2', 'CQT/SR0622'));
 
     // Two hours duration
     expect(
-      filterAvailability(venueInfo, {
+      filterAvailability(venues, {
         day: 0,
         time: 9,
         duration: 2,
       }),
-    ).toEqual(venues('LT1', 'CQT/SR0622'));
+    ).toEqual(getVenues('LT1', 'CQT/SR0622'));
 
     // Fourteen hour duration (whole day)
     expect(
-      filterAvailability(venueInfo, {
+      filterAvailability(venues, {
         day: 0,
         time: 9,
         duration: 14,
       }),
-    ).toEqual(venues('CQT/SR0622'));
+    ).toEqual(getVenues('CQT/SR0622'));
   });
 });

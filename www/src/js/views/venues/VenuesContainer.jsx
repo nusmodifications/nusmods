@@ -7,11 +7,11 @@ import classnames from 'classnames';
 import axios from 'axios';
 import qs from 'query-string';
 import Raven from 'raven-js';
-import { pick, mapValues, size, isEqual, findKey } from 'lodash';
+import { pick, mapValues, size, isEqual } from 'lodash';
 
 import type { MapStateToProps } from 'react-redux';
 import type { ContextRouter } from 'react-router-dom';
-import type { Venue, VenueInfo, VenueSearchOptions } from 'types/venues';
+import type { Venue, VenueDetailList, VenueInfo, VenueSearchOptions } from 'types/venues';
 import type { Semester } from 'types/modules';
 import type { OnSelectVenue } from 'types/views';
 
@@ -26,7 +26,7 @@ import { venuePage } from 'views/routes/paths';
 import config from 'config';
 import nusmods from 'apis/nusmods';
 import HistoryDebouncer from 'utils/HistoryDebouncer';
-import { searchVenue, filterAvailability } from 'utils/venues';
+import { searchVenue, filterAvailability, sortVenues } from 'utils/venues';
 import { breakpointDown } from 'utils/css';
 import { defer } from 'utils/react';
 import makeResponsive from 'views/hocs/makeResponsive';
@@ -45,10 +45,10 @@ type Props = {
   matchBreakpoint: boolean,
 };
 
-type State = {
+type State = {|
   loading: boolean,
   error?: any,
-  venues: VenueInfo,
+  venues: ?VenueDetailList,
 
   // Selected venue
   selectedVenue: ?Venue,
@@ -57,7 +57,7 @@ type State = {
   searchTerm: string,
   isAvailabilityEnabled: boolean,
   searchOptions: VenueSearchOptions,
-};
+|};
 
 const pageHead = (
   <Helmet>
@@ -86,7 +86,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
       searchOptions,
       isAvailabilityEnabled,
       loading: true,
-      venues: {},
+      venues: null,
       searchTerm: params.q || '',
     };
   }
@@ -94,10 +94,10 @@ export class VenuesContainerComponent extends Component<Props, State> {
   componentDidMount() {
     axios
       .get(nusmods.venuesUrl(this.props.activeSemester))
-      .then(({ data }) => {
+      .then(({ data }: { data: VenueInfo }) => {
         this.setState({
           loading: false,
-          venues: data,
+          venues: sortVenues(data),
         });
       })
       .catch((error) => {
@@ -227,17 +227,14 @@ export class VenuesContainerComponent extends Component<Props, State> {
 
   renderSelectedVenue() {
     const { venues, selectedVenue } = this.state;
-    if (!selectedVenue) return null;
+    if (!venues || !selectedVenue) return null;
 
     // Match case insensitively
     const lowercaseSelectedVenue = selectedVenue.toLowerCase();
-    const venue = findKey(
-      venues,
-      (availability, name: Venue) => name.toLowerCase() === lowercaseSelectedVenue,
-    );
+    const venueDetail = venues.find(([venue]) => venue.toLowerCase() === lowercaseSelectedVenue);
 
-    if (!venue) return null;
-    const availability = venues[venue];
+    if (!venueDetail) return null;
+    const [venue, availability] = venueDetail;
 
     return <VenueDetails venue={venue} availability={availability} />;
   }
@@ -250,13 +247,14 @@ export class VenuesContainerComponent extends Component<Props, State> {
       isAvailabilityEnabled,
       searchOptions,
       selectedVenue,
+      venues,
     } = this.state;
 
     if (error) {
       return <ErrorPage error="cannot load venues info" eventId={Raven.lastEventId()} />;
     }
 
-    if (loading) {
+    if (loading || !venues) {
       return (
         <div>
           {pageHead}
@@ -265,11 +263,11 @@ export class VenuesContainerComponent extends Component<Props, State> {
       );
     }
 
-    let venues = searchVenue(this.state.venues, searchTerm);
-    const unfilteredCount = size(venues);
+    let matchedVenues = searchVenue(venues, searchTerm);
+    const unfilteredCount = size(matchedVenues);
 
     if (isAvailabilityEnabled) {
-      venues = filterAvailability(venues, searchOptions);
+      matchedVenues = filterAvailability(matchedVenues, searchOptions);
     }
 
     return (
@@ -279,11 +277,11 @@ export class VenuesContainerComponent extends Component<Props, State> {
         <div className={styles.venuesList}>
           {this.renderSearch()}
 
-          {size(venues) === 0 ? (
+          {size(matchedVenues) === 0 ? (
             this.renderNoResult(unfilteredCount)
           ) : (
             <VenueList
-              venues={venues}
+              venues={matchedVenues}
               onSelect={this.onVenueSelect}
               selectedVenue={selectedVenue}
             />
