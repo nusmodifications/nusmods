@@ -127,16 +127,16 @@ export default class ShareTimetable extends PureComponent<Props, State> {
             }}
             readOnly
           />
-          <span className="input-group-btn">
+          <div className="input-group-append">
             <button
-              className="btn btn-primary btn-svg"
+              className="btn btn-primary"
               type="button"
               aria-label="Copy URL"
               onClick={this.copyText}
             >
-              <Copy />
+              <Copy className={styles.copyIcon} />
             </button>
-          </span>
+          </div>
 
           {this.state.urlCopied === COPY_SUCCESS && (
             <p className={styles.copyStatus}>Link copied!</p>

@@ -3,10 +3,8 @@
 .sidebarIcon {
   composes: svg svg-small from global;
   transform: rotate(180deg);
-}
 
-:global(.verticalMode) {
-  .sidebarIcon {
+  @include vertical-mode {
     transform: rotate(-90deg);
   }
 }
@@ -31,8 +29,8 @@
 //   - lg and below for vertical
 //
 // 2. Left and right on one row, each button taking 1/3 space
-//   - sm for both orientation
-//   - xl for vertical
+//   - sm only for both orientation
+//   - 90rem+ for vertical
 //
 // 3. Left and right on one row, with space between two groups
 //   - md and above for horizontal

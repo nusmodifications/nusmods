@@ -69,3 +69,21 @@ export function defer(task: () => any) {
 export function wrapComponentName(Component: ComponentType, wrapper: string): string {
   return `${wrapper}(${Component.displayName || Component.name || 'Component'})`;
 }
+
+/**
+ * Utility class that encapsulates an auto-incrementing counter. Useful for
+ * keeping track of Downshift item indices
+ */
+export class Counter {
+  count = -1;
+
+  index() {
+    this.count += 1;
+    return this.count;
+  }
+
+  matches(index: number) {
+    this.count += 1;
+    return this.count === index;
+  }
+}

@@ -12,6 +12,7 @@ type Props = {
 
 function TimetableTimings(props: Props) {
   const range = _.range(props.startingIndex, props.endingIndex);
+
   return (
     <div className={styles.timings}>
       {range.map((i) => {

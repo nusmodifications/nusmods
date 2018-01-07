@@ -6,7 +6,7 @@ import Helmet from 'react-helmet';
 import ScrollSpy from 'react-scrollspy';
 import { map, mapValues, kebabCase, values } from 'lodash';
 
-import type { Module, Semester } from 'types/modules';
+import type { Module } from 'types/modules';
 
 import config from 'config';
 import { formatExamDate, getSemestersOffered } from 'utils/modules';
@@ -51,15 +51,6 @@ export class ModulePageContentComponent extends Component<Props, State> {
   state: State = {
     isMenuOpen: false,
   };
-
-  examinations(): { semester: Semester, date: string }[] {
-    const history = this.props.module.History;
-    if (!history) return [];
-    return history
-      .filter((h) => h.ExamDate != null)
-      .sort((a, b) => a.Semester - b.Semester)
-      .map((h) => ({ semester: h.Semester, date: h.ExamDate || '' }));
-  }
 
   toggleMenu = (isMenuOpen: boolean) => this.setState({ isMenuOpen });
 
@@ -158,16 +149,17 @@ export class ModulePageContentComponent extends Component<Props, State> {
                 </div>
 
                 <div className="col-sm-4">
-                  {this.examinations().map((exam) => (
-                    <div key={exam.semester} className={styles.exam}>
+                  {module.History.sort((a, b) => a.Semester - b.Semester).map((semesterData) => (
+                    <div key={semesterData.Semester} className={styles.exam}>
                       <h3 className={styles.descriptionHeading}>
-                        {config.semesterNames[exam.semester]} Exam
+                        {module.History.length > 1 && config.semesterNames[semesterData.Semester]}{' '}
+                        Exam
                       </h3>
-                      <p>{formatExamDate(exam.date)}</p>
+                      <p>{formatExamDate(semesterData.ExamDate)}</p>
 
                       <ModuleExamClash
-                        semester={exam.semester}
-                        examDate={exam.date}
+                        semester={semesterData.Semester}
+                        examDate={semesterData.ExamDate}
                         moduleCode={ModuleCode}
                       />
                     </div>

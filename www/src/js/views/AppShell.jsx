@@ -4,20 +4,27 @@ import type { TimetableConfig, SemTimetableConfig } from 'types/timetables';
 import type { ModuleList } from 'types/reducers';
 import type { Semester } from 'types/modules';
 import type { Mode } from 'types/settings';
+import type { State } from 'reducers';
 
 import React, { Component } from 'react';
 import { NavLink, withRouter, type ContextRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import NUSModerator from 'nusmoderator';
 import classnames from 'classnames';
-import { values } from 'lodash';
+import { each } from 'lodash';
 
 import { fetchModuleList } from 'actions/moduleBank';
-import { fetchTimetableModules, setTimetable, migrateTimetable } from 'actions/timetables';
+import {
+  fetchTimetableModules,
+  fillTimetableBlanks,
+  setTimetable,
+  migrateTimetable,
+} from 'actions/timetables';
 import { noBreak } from 'utils/react';
 import Footer from 'views/layout/Footer';
 import Navtabs from 'views/layout/Navtabs';
 import GlobalSearchContainer from 'views/layout/GlobalSearchContainer';
+import Notification from 'views/components/Notification';
 import { DARK_MODE } from 'types/settings';
 import LoadingSpinner from './components/LoadingSpinner';
 import FeedbackModal from './components/FeedbackModal';
@@ -35,8 +42,9 @@ type Props = {
 
   fetchModuleList: () => Promise<*>,
   migrateTimetable: () => void,
-  fetchTimetableModules: (SemTimetableConfig[]) => void,
+  fetchTimetableModules: (SemTimetableConfig[]) => Promise<*>,
   setTimetable: (Semester, SemTimetableConfig) => void,
+  fillTimetableBlanks: Semester => void,
 };
 
 type AcadWeekInfo = {
@@ -67,8 +75,12 @@ const weekText = (() => {
 })();
 
 function setMode(mode: Mode) {
-  if (!document.body) return;
-  document.body.classList.toggle('mode-dark', mode === DARK_MODE);
+  const { body } = document;
+  if (!body) return;
+
+  const isDarkMode = mode === DARK_MODE;
+  body.classList.toggle('mode-dark', isDarkMode);
+  body.classList.toggle('mdc-theme--dark', isDarkMode);
 }
 
 export class AppShell extends Component<Props> {
@@ -84,8 +96,15 @@ export class AppShell extends Component<Props> {
       // TODO: Remove this once sem 2 is over
       .then(() => this.props.migrateTimetable());
 
+    // Refresh the module data of the existing modules in the timetable and ensure all
+    // lessons are filled
+    each(timetables, (timetable, semester) => {
+      this.props
+        .fetchTimetableModules([timetable])
+        .then(() => this.props.fillTimetableBlanks(Number(semester)));
+    });
+
     // Fetch all module data that are on timetable
-    this.props.fetchTimetableModules(values(timetables));
   }
 
   componentWillUpdate(nextProps: Props) {
@@ -116,13 +135,15 @@ export class AppShell extends Component<Props> {
 
         <FeedbackModal />
 
+        <Notification />
+
         <Footer />
       </div>
     );
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: State) => ({
   moduleList: state.moduleBank.moduleList,
   timetables: state.timetables,
   theme: state.theme.id,
@@ -140,5 +161,6 @@ export default withRouter(
     fetchTimetableModules,
     setTimetable,
     migrateTimetable,
+    fillTimetableBlanks,
   })(AppShell),
 );

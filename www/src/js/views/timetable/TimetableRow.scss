@@ -17,9 +17,11 @@
       min-width: $timetable-col-width * 0.8;
     }
   }
-}
 
-:global(.verticalMode) .timetableRow {
-  height: auto;
-  margin: 0 1px 0 0;
+  @include vertical-mode {
+    .timetableRow {
+      height: auto;
+      margin: 0 1px 0 0;
+    }
+  }
 }

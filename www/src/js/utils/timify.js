@@ -54,3 +54,19 @@ export function calculateBorderTimings(
     endingIndex: latestTime % 2 === 0 ? latestTime : latestTime + 1, // ceil to latest hour.
   };
 }
+
+// Gets the current time in hours, 0915 -> 9, 1315 -> 13
+export function getCurrentHours(): number {
+  return new Date().getHours();
+}
+
+// Gets the current time in hours, 0915 -> 15, 1315 -> 45
+// Current time to always match Singapore's
+export function getCurrentMinutes(): number {
+  return new Date().getMinutes();
+}
+
+// Monday = 0, Friday = 4
+export function getCurrentDayIndex(): number {
+  return new Date().getDay() - 1;
+}
