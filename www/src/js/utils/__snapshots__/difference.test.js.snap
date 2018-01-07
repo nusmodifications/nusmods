@@ -1,0 +1,64 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`#difference() should compute all deleted, added and changed object key paths 1`] = `
+Object {
+  "added": Object {
+    "added": "added",
+  },
+  "changed": Object {
+    "added": Object {
+      "next": "added",
+      "previous": undefined,
+      "type": "DIFF_PATH",
+    },
+    "arr": Object {
+      "next": Array [
+        0,
+        1,
+      ],
+      "previous": Array [
+        1,
+        2,
+      ],
+      "type": "DIFF_PATH",
+    },
+    "changed": Object {
+      "next": "ARRAYSSTARTAT0",
+      "previous": "ARRAYSSTARTAT1",
+      "type": "DIFF_PATH",
+    },
+    "deep": Object {
+      "added": Object {},
+      "changed": Object {
+        "obj": Object {
+          "added": Object {
+            "added": "added",
+          },
+          "changed": Object {
+            "added": Object {
+              "next": "added",
+              "previous": undefined,
+              "type": "DIFF_PATH",
+            },
+            "one": Object {
+              "next": "buckle",
+              "previous": "two",
+              "type": "DIFF_PATH",
+            },
+          },
+          "deleted": Object {
+            "deleted": "deleted",
+          },
+          "type": "DIFF_OBJ",
+        },
+      },
+      "deleted": Object {},
+      "type": "DIFF_OBJ",
+    },
+  },
+  "deleted": Object {
+    "deleted": "deleted",
+  },
+  "type": "DIFF_OBJ",
+}
+`;
