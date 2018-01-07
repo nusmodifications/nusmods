@@ -14,13 +14,22 @@ import type { Mode } from 'types/settings';
 export type NotificationOptions = {
   // Amount of time in ms for the notification to be shown, not including opening
   // and closing animation
+  // Default: a non-zero, non-infinity value - currently 2750ms.
   timeout?: number,
 
   // By default any notification that comes in when there is already a notification
   // shown will be queued behind the current one. If the notification is not too important,
   // or we expect a large number to be generated in a short period of time, we allow the
-  // current notification to be overwritten by the new one
+  // current notification to be overwritten by the new one.
+  // Default behavior: false
   overwritable?: boolean,
+
+  // If `priority` is true, the new notification pushes aside the queue and the currently displayed
+  // notification, and is displayed immediately. Like this: https://youtu.be/Iimj0j4NYME
+  // `overwritable` behavior is prioritized over `priority`; an overwritable priority notification
+  // will be discarded if a non-overwritable notification is opened.
+  // Default behavior: false
+  priority?: boolean,
 
   action?: {
     text: string,
