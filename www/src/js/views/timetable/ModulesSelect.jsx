@@ -35,7 +35,7 @@ class ModulesSelect extends Component<Props, State> {
 
   state = {
     isOpen: false,
-    isModalOpen: true,
+    isModalOpen: false,
     inputValue: '',
     selectedItem: null,
   };
