@@ -8,11 +8,13 @@ import classnames from 'classnames';
 
 import type { Semester } from 'types/modules';
 import type { SemTimetableConfig } from 'types/timetables';
-import type { ColorMapping } from 'types/reducers';
+import type { ColorMapping, NotificationOptions } from 'types/reducers';
 import type { ModulesMap } from 'reducers/moduleBank';
 
 import { selectSemester } from 'actions/settings';
 import { setTimetable, fetchTimetableModules } from 'actions/timetables';
+import { openNotification } from 'actions/app';
+import { undo } from 'actions/undoHistory';
 import { deserializeTimetable } from 'utils/timetables';
 import { fillColorMapping } from 'utils/colors';
 import {
@@ -44,6 +46,8 @@ type Props = {
   selectSemester: Semester => void,
   setTimetable: (Semester, SemTimetableConfig, ColorMapping) => void,
   fetchTimetableModules: (SemTimetableConfig[]) => void,
+  openNotification: (string, NotificationOptions) => void,
+  undo: () => void,
 };
 
 type State = {
@@ -131,7 +135,20 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
             <button
               className="btn btn-success"
               type="button"
-              onClick={() => this.importTimetable(semester, timetable)}
+              onClick={() => {
+                this.importTimetable(semester, timetable);
+                this.props.openNotification('Timetable imported', {
+                  timeout: 12000,
+                  priority: true,
+                  action: {
+                    text: 'Undo',
+                    handler: () => {
+                      this.props.undo();
+                      return true;
+                    },
+                  },
+                });
+              }}
             >
               Import
             </button>
@@ -230,6 +247,8 @@ const connectedTimetableContainer = connect(mapStateToProps, {
   selectSemester,
   setTimetable,
   fetchTimetableModules,
+  openNotification,
+  undo,
 })(TimetableContainerComponent);
 const routedTimetableContainer = withRouter(connectedTimetableContainer);
 export default deferComponentRender(routedTimetableContainer);

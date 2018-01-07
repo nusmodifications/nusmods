@@ -6,7 +6,12 @@ import _ from 'lodash';
 import config from 'config';
 
 import type { ModulesMap } from 'reducers/moduleBank';
-import type { ColorMapping, TimetableOrientation, ModuleSelectList } from 'types/reducers';
+import type {
+  ColorMapping,
+  TimetableOrientation,
+  ModuleSelectList,
+  NotificationOptions,
+} from 'types/reducers';
 import { HORIZONTAL } from 'types/reducers';
 import type { Lesson, Module, ModuleCode, Semester } from 'types/modules';
 import type {
@@ -17,7 +22,6 @@ import type {
 
 import classnames from 'classnames';
 import { getSemModuleSelectList } from 'reducers/moduleBank';
-import { undo, redo } from 'actions/undoHistory';
 import {
   addModule,
   cancelModifyLesson,
@@ -26,6 +30,8 @@ import {
   removeModule,
 } from 'actions/timetables';
 import { toggleTimetableOrientation } from 'actions/theme';
+import { openNotification } from 'actions/app';
+import { undo, redo } from 'actions/undoHistory';
 import {
   getModuleTimetable,
   areLessonsSameClass,
@@ -67,14 +73,15 @@ type Props = {
   hiddenInTimetable: ModuleCode[],
 
   // Actions
-  addModule: Function,
-  removeModule: Function,
+  addModule: (Semester, ModuleCode) => void,
+  removeModule: (Semester, ModuleCode) => void,
   modifyLesson: Function,
   changeLesson: Function,
   cancelModifyLesson: Function,
   toggleTimetableOrientation: Function,
-  undo: Function,
-  redo: Function,
+  openNotification: (string, NotificationOptions) => void,
+  undo: () => void,
+  redo: () => void,
 };
 
 type State = {
@@ -148,7 +155,20 @@ class TimetableContent extends Component<Props, State> {
         }))}
         horizontalOrientation={horizontalOrientation}
         semester={this.props.semester}
-        onRemoveModule={(moduleCode) => this.props.removeModule(this.props.semester, moduleCode)}
+        onRemoveModule={(moduleCode) => {
+          this.props.removeModule(this.props.semester, moduleCode);
+          this.props.openNotification(`Removed ${moduleCode}`, {
+            timeout: 12000,
+            priority: true,
+            action: {
+              text: 'Undo',
+              handler: () => {
+                this.props.undo();
+                return true;
+              },
+            },
+          });
+        }}
         readOnly={readOnly}
       />
     );
@@ -366,6 +386,7 @@ export default connect(mapStateToProps, {
   changeLesson,
   cancelModifyLesson,
   toggleTimetableOrientation,
+  openNotification,
   undo,
   redo,
 })(TimetableContent);
