@@ -24,7 +24,7 @@ export type NotificationOptions = {
 
   action?: {
     text: string,
-    handler: Function,
+    handler: () => ?boolean, // Return true to immediately pop notification
   },
 };
 

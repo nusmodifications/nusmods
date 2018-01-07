@@ -131,7 +131,11 @@ export class NotificationComponent extends Component<Props, State> {
                 <button
                   type="button"
                   className="mdc-snackbar__action-button"
-                  onClick={shownNotification.action.handler}
+                  onClick={() => {
+                    const action = shownNotification.action;
+                    if (!action || !action.handler) return;
+                    if (action.handler()) this.props.popNotification();
+                  }}
                 >
                   {shownNotification.action.text}
                 </button>
