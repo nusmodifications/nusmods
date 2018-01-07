@@ -28,6 +28,7 @@ import nusmods from 'apis/nusmods';
 import HistoryDebouncer from 'utils/HistoryDebouncer';
 import { searchVenue, filterAvailability } from 'utils/venues';
 import { breakpointDown } from 'utils/css';
+import { defer } from 'utils/react';
 import makeResponsive from 'views/hocs/makeResponsive';
 import Modal from 'views/components/Modal';
 import CloseButton from 'views/components/CloseButton';
@@ -131,7 +132,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
 
   onSearch = (searchTerm: string) => {
     if (searchTerm !== this.state.searchTerm) {
-      this.setState({ searchTerm });
+      defer(() => this.setState({ searchTerm }));
     }
   };
 
