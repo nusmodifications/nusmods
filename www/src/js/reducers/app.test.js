@@ -1,7 +1,7 @@
 // @flow
 
 import { modifyLesson, changeLesson, cancelModifyLesson } from 'actions/timetables';
-import { setOnlineStatus } from 'actions/app';
+import { openNotification, popNotification, setOnlineStatus } from 'actions/app';
 import { selectSemester } from 'actions/settings';
 
 import reducer from 'reducers/app';
@@ -20,6 +20,7 @@ const appInitialState: AppState = {
   activeLesson: null,
   isOnline: true,
   isFeedbackModalOpen: false,
+  notifications: [],
 };
 const appHasSemesterTwoState: AppState = { ...appInitialState, activeSemester: anotherSemester };
 const appHasActiveLessonState: AppState = { ...appInitialState, activeLesson: lesson };
@@ -71,4 +72,69 @@ test('app should subscribe to online status action', () => {
   const nextState = reducer(appInitialState, setOnlineStatus(false));
   expect(nextState).toHaveProperty('isOnline', false);
   expect(reducer(nextState, setOnlineStatus(true))).toHaveProperty('isOnline', true);
+});
+
+describe('notification reducers', () => {
+  test('queue notifications', () => {
+    let state = reducer(appInitialState, openNotification('New notification'));
+    expect(state.notifications).toHaveLength(1);
+    expect(state.notifications[0]).toMatchObject({
+      message: 'New notification',
+    });
+
+    state = reducer(state, openNotification('Second notification'));
+    expect(state.notifications).toHaveLength(2);
+    expect(state.notifications[1]).toMatchObject({
+      message: 'Second notification',
+    });
+  });
+
+  test('allow new notification to overwrite overwritable notifications', () => {
+    let state = appInitialState;
+
+    // Any incoming notification should overwrite an overwritable notification
+    state = reducer(
+      state,
+      openNotification('New notification', {
+        overwritable: true,
+      }),
+    );
+    state = reducer(state, openNotification('Second notification'));
+
+    expect(state.notifications).toHaveLength(1);
+    expect(state.notifications[0]).toMatchObject({ message: 'Second notification' });
+
+    // Overwritable notifications are discarded if there's already another, non-overwritable
+    // notification in the queue
+    state = reducer(
+      state,
+      openNotification('Third notification', {
+        overwritable: true,
+      }),
+    );
+    expect(state.notifications).toHaveLength(1);
+
+    // Non-overwritable notifications queue up normally
+    state = reducer(state, openNotification('Fourth notification'));
+    expect(state.notifications).toHaveLength(2);
+    expect(state.notifications[1]).toMatchObject({
+      message: 'Fourth notification',
+    });
+  });
+
+  test('pop notifications', () => {
+    // Pop empty queue
+    expect(reducer(appInitialState, popNotification()).notifications).toEqual([]);
+
+    // Pop last item
+    let state = reducer(appInitialState, openNotification('New notification'));
+    state = reducer(state, popNotification());
+    expect(state.notifications).toEqual([]);
+
+    state = reducer(appInitialState, openNotification('New notification'));
+    state = reducer(state, openNotification('Second notification'));
+    state = reducer(state, popNotification());
+    expect(state.notifications).toHaveLength(1);
+    expect(state.notifications[0]).toMatchObject({ message: 'Second notification' });
+  });
 });
