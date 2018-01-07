@@ -140,8 +140,6 @@ describe('VenuesContainer', () => {
     const ownProps: any = { match: { params: { venue: 'Cdat%2FoverThar1%21' } } };
     const mappedProps = mapStateToProps(state, ownProps);
     expect(mappedProps).toMatchObject(ownProps);
-    // Should set activeSemester
-    expect(mappedProps).toHaveProperty('activeSemester', 1);
     // Should decode urlVenue
     expect(mappedProps).toHaveProperty('urlVenue', 'Cdat/overThar1!');
   });

@@ -12,7 +12,6 @@ import { pick, mapValues, size, isEqual, get } from 'lodash';
 import type { MapStateToProps } from 'react-redux';
 import type { ContextRouter } from 'react-router-dom';
 import type { Venue, VenueDetailList, VenueInfo, VenueSearchOptions } from 'types/venues';
-import type { Semester } from 'types/modules';
 import type { OnSelectVenue } from 'types/views';
 
 import deferComponentRender from 'views/hocs/deferComponentRender';
@@ -40,7 +39,6 @@ import styles from './VenuesContainer.scss';
 
 type Props = {
   ...ContextRouter,
-  activeSemester: Semester,
   urlVenue: ?Venue,
   matchBreakpoint: boolean,
 };
@@ -96,7 +94,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
 
   componentDidMount() {
     axios
-      .get(nusmods.venuesUrl(this.props.activeSemester))
+      .get(nusmods.venuesUrl(config.semester))
       .then(({ data }: { data: VenueInfo }) => {
         this.setState({
           loading: false,
@@ -348,7 +346,6 @@ export const mapStateToProps: MapStateToProps<*, *, *> = (state, ownProps) => {
 
   return {
     ...ownProps, // To silence a Flow error
-    activeSemester: state.app.activeSemester,
     urlVenue: venue,
   };
 };
