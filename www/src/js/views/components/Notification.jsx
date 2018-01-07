@@ -43,8 +43,8 @@ const DEFAULT_TIMEOUT = 2750;
  * change when the active notification changes
  *
  * Notice we do not transition immediately from Opening or Opened to Closed
- * because we want the animation to play out to draw the user's attention that
- * a new
+ * because we want the animation to play out to draw the user's attention to
+ * the new notification.
  */
 export class NotificationComponent extends Component<Props, State> {
   element: ?HTMLElement;
