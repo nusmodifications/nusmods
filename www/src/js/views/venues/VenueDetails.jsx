@@ -6,6 +6,7 @@ import classnames from 'classnames';
 import { flatMap } from 'lodash';
 
 import type { DayAvailability, Venue, VenueLesson } from 'types/venues';
+import type { OnSelectVenue } from 'types/views';
 
 import config from 'config';
 import { colorLessonsByKey } from 'utils/colors';
@@ -19,9 +20,10 @@ import styles from './VenueDetails.scss';
 
 type Props = {
   venue: Venue,
-  previous: ?Venue,
-  next: ?Venue,
+  previous?: ?Venue,
+  next?: ?Venue,
   availability: DayAvailability[],
+  onSelectVenue: OnSelectVenue,
 
   matchBreakpoint: boolean,
 };
@@ -47,12 +49,24 @@ export class VenueDetailsComponent extends PureComponent<Props> {
         </Helmet>
 
         <header className={styles.header}>
-          <button className="btn btn-link" disabled={!previous}>
+          <button
+            className="btn btn-link btn-svg"
+            disabled={!previous}
+            onClick={() => {
+              if (previous) this.props.onSelectVenue(previous);
+            }}
+          >
             <ChevronLeft /> {previous}
           </button>
           <h1>{venue}</h1>
-          <button className="btn btn-link" disabled={!next}>
-            <ChevronRight /> {next}
+          <button
+            className="btn btn-link btn-svg"
+            disabled={!next}
+            onClick={() => {
+              if (next) this.props.onSelectVenue(next);
+            }}
+          >
+            {next} <ChevronRight />
           </button>
         </header>
 

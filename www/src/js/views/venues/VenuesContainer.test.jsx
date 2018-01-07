@@ -1,10 +1,13 @@
 // @flow
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 
-import type { Venue } from 'types/venues';
+import type { Venue, VenueDetailList } from 'types/venues';
 
+import venueInfo from '__mocks__/venueInformation.json';
 import createHistory from 'test-utils/createHistory';
+import mockDom from 'test-utils/mockDom';
+import { sortVenues } from 'utils/venues';
 import { VenuesContainerComponent, mapStateToProps } from './VenuesContainer';
 
 function createComponent(urlVenue: ?Venue) {
@@ -18,7 +21,13 @@ function createComponent(urlVenue: ?Venue) {
   );
 }
 
+const venues = sortVenues(venueInfo);
+
 describe('VenuesContainer', () => {
+  beforeEach(() => {
+    mockDom();
+  });
+
   test('#onVenueSelect() should change the URL when a venue is clicked', () => {
     const wrapper = createComponent();
     const instance = wrapper.instance();
@@ -81,10 +90,54 @@ describe('VenuesContainer', () => {
     });
   });
 
+  describe('#renderSelectedVenue', () => {
+    const getVenueDetail = (selectedVenue: ?Venue, matched: VenueDetailList = venues) => {
+      const instance = createComponent().instance();
+      instance.setState({ venues, selectedVenue });
+      return shallow(instance.renderSelectedVenue(matched));
+    };
+
+    test('not render when there is no selected venue', () => {
+      const instance = createComponent().instance();
+      instance.setState({ venues });
+
+      expect(instance.renderSelectedVenue(venues)).toBeNull();
+    });
+
+    test('render when a venue is selected', () => {
+      expect(getVenueDetail('LT17').props()).toMatchObject({
+        venue: 'LT17',
+        availability: venueInfo.LT17,
+        previous: 'lt2',
+        next: 'S11-0302',
+      });
+
+      const LTs = venues.filter(([venue]) => venue.includes('LT'));
+      expect(getVenueDetail('LT17', LTs).props()).toMatchObject({
+        venue: 'LT17',
+        availability: venueInfo.LT17,
+        previous: 'LT1',
+        next: undefined,
+      });
+    });
+
+    test('render when a venue is selected, and it is not in the list of matched venues', () => {
+      const wrapper = createComponent();
+      const instance = wrapper.instance();
+
+      instance.setState({ venues, selectedVenue: 'LT17' });
+      const venueDetail = shallow(instance.renderSelectedVenue([]));
+
+      expect(venueDetail.props()).toMatchObject({
+        venue: 'LT17',
+        availability: venueInfo.LT17,
+      });
+    });
+  });
+
   test('#mapStateToProps() should set semester and decode URL venue', () => {
     const state = { app: { activeSemester: 1 } };
-    const ownProps = { match: { params: { venue: 'Cdat%2FoverThar1%21' } } };
-    // $FlowFixMe ignore missing router props
+    const ownProps: any = { match: { params: { venue: 'Cdat%2FoverThar1%21' } } };
     const mappedProps = mapStateToProps(state, ownProps);
     expect(mappedProps).toMatchObject(ownProps);
     // Should set activeSemester

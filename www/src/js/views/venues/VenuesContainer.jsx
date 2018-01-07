@@ -7,7 +7,7 @@ import classnames from 'classnames';
 import axios from 'axios';
 import qs from 'query-string';
 import Raven from 'raven-js';
-import { pick, mapValues, size, isEqual } from 'lodash';
+import { pick, mapValues, size, isEqual, get } from 'lodash';
 
 import type { MapStateToProps } from 'react-redux';
 import type { ContextRouter } from 'react-router-dom';
@@ -71,7 +71,10 @@ export class VenuesContainerComponent extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    const params = qs.parse(props.location.search);
+    // Not sure why this is triggering ESLint
+    const { location, history } = props; // eslint-disable-line react/prop-types
+
+    const params = qs.parse(location.search);
     const selectedVenue = this.props.urlVenue;
 
     // Extract searchOptions from the query string if they are present
@@ -80,7 +83,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
       ? mapValues(pick(params, ['time', 'day', 'duration']), (i) => parseInt(i, 10))
       : defaultSearchOptions();
 
-    this.history = new HistoryDebouncer(props.history);
+    this.history = new HistoryDebouncer(history);
     this.state = {
       selectedVenue,
       searchOptions,
@@ -225,18 +228,45 @@ export class VenuesContainerComponent extends Component<Props, State> {
     );
   }
 
-  renderSelectedVenue() {
+  renderSelectedVenue(matchedVenues: VenueDetailList) {
     const { venues, selectedVenue } = this.state;
     if (!venues || !selectedVenue) return null;
 
-    // Match case insensitively
+    // Find the index of the current venue on the list of matched venues so
+    // we can obtain the previous and next item
     const lowercaseSelectedVenue = selectedVenue.toLowerCase();
-    const venueDetail = venues.find(([venue]) => venue.toLowerCase() === lowercaseSelectedVenue);
+    const venueIndex = matchedVenues.findIndex(
+      ([venue]) => venue.toLowerCase() === lowercaseSelectedVenue,
+    );
 
-    if (!venueDetail) return null;
-    const [venue, availability] = venueDetail;
+    // The selected item may not be in the list of matched venues (if the user
+    // changed their search options afterwards, in which case we look for it in all
+    // venues
+    if (venueIndex === -1) {
+      const venueDetail = venues.find(([venue]) => venue.toLowerCase() === lowercaseSelectedVenue);
+      if (!venueDetail) return null;
+      const [venue, availability] = venueDetail;
+      return (
+        <VenueDetails
+          venue={venue}
+          availability={availability}
+          onSelectVenue={this.onVenueSelect}
+        />
+      );
+    }
 
-    return <VenueDetails venue={venue} availability={availability} />;
+    const [venue, availability] = matchedVenues[venueIndex];
+    const previous = get(matchedVenues, [String(venueIndex - 1), '0']);
+    const next = get(matchedVenues, [String(venueIndex + 1), '0']);
+    return (
+      <VenueDetails
+        venue={venue}
+        availability={availability}
+        next={next}
+        previous={previous}
+        onSelectVenue={this.onVenueSelect}
+      />
+    );
   }
 
   render() {
@@ -291,7 +321,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
         {this.props.matchBreakpoint ? (
           <Modal isOpen={selectedVenue != null} onRequestClose={this.onClearVenueSelect}>
             <CloseButton onClick={this.onClearVenueSelect} />
-            {this.renderSelectedVenue()}
+            {this.renderSelectedVenue(matchedVenues)}
           </Modal>
         ) : (
           <div className={styles.venueDetail}>
@@ -301,7 +331,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
                 <p>Select a venue on the left to see its timetable</p>
               </div>
             ) : (
-              this.renderSelectedVenue()
+              this.renderSelectedVenue(matchedVenues)
             )}
           </div>
         )}
