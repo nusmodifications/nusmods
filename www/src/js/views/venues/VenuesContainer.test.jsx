@@ -22,19 +22,6 @@ describe('VenuesContainer', () => {
   });
 
   describe('URL handling', () => {
-    test('it should only filter venues by venue in URL on init if present and no query string', () => {
-      // Filter by URL venue on init and no query string
-      const wrapper = createComponent('Interwebs');
-      const instance = wrapper.instance();
-      expect(instance.state.searchTerm).toEqual('Interwebs');
-
-      // Don't filter by URL venue when venue clicked
-      wrapper.setProps({
-        urlVenue: 'covfefe',
-      });
-      expect(instance.state.searchTerm).toEqual('Interwebs');
-    });
-
     test('it should select venue in URL if present and appropriate', () => {
       const component = createComponent('Interwebs');
       const instance = component.instance();
@@ -53,7 +40,7 @@ describe('VenuesContainer', () => {
 
       // No URL on init
       expect(instance.state.searchTerm).toEqual('');
-      expect(instance.state.selectedVenue).toEqual('');
+      expect(instance.state.selectedVenue).toEqual(undefined);
 
       // No URL on props set
       component.setProps({
@@ -61,7 +48,7 @@ describe('VenuesContainer', () => {
         urlVenue: undefined, // No react-router match
       });
       expect(instance.state.searchTerm).toEqual('');
-      expect(instance.state.selectedVenue).toEqual('');
+      expect(instance.state.selectedVenue).toEqual(undefined);
     });
   });
 
@@ -89,26 +76,6 @@ describe('VenuesContainer', () => {
       instance.updateURL();
       wrapper.setProps({ location: instance.props.history.location });
       expect(instance.props.history.location.search).toBe('');
-    });
-
-    test('it should update URL path if present', () => {
-      const wrapper = createComponent();
-      const instance = wrapper.instance();
-
-      // Clear current value
-      instance.updateURL('/');
-      wrapper.setProps({ location: instance.props.history.location });
-      expect(instance.props.history.location.pathname).toBe('/');
-
-      // Update value
-      instance.updateURL('/venues/covfefe');
-      wrapper.setProps({ location: instance.props.history.location });
-      expect(instance.props.history.location.pathname).toBe('/venues/covfefe');
-
-      // Should not change path if none is provided
-      instance.updateURL();
-      wrapper.setProps({ location: instance.props.history.location });
-      expect(instance.props.history.location.pathname).toBe('/venues/covfefe');
     });
   });
 
