@@ -70,6 +70,16 @@ export function wrapComponentName(Component: ComponentType, wrapper: string): st
   return `${wrapper}(${Component.displayName || Component.name || 'Component'})`;
 }
 
+export function scrollToHash() {
+  const hash = window.location.hash;
+  if (hash) {
+    const ele = document.getElementById(hash.slice(1)); // Hash string contains the '#' character
+    if (ele) {
+      ele.scrollIntoView(true);
+    }
+  }
+}
+
 /**
  * Utility class that encapsulates an auto-incrementing counter. Useful for
  * keeping track of Downshift item indices
