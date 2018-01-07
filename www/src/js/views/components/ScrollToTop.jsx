@@ -1,12 +1,12 @@
 // @flow
-import type { ContextRouter, Location } from 'react-router-dom';
+import type { ContextRouter } from 'react-router-dom';
 
 import { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import { scrollToHash } from 'utils/react';
 
 type Props = {
   ...ContextRouter,
-  location: Location,
   onComponentWillMount: boolean,
   onPathChange: boolean,
 };
@@ -26,6 +26,10 @@ export class ScrollToTopComponent extends Component<Props> {
     if (this.props.onComponentWillMount) {
       scrollToTop();
     }
+  }
+
+  componentDidMount() {
+    scrollToHash();
   }
 
   componentDidUpdate(prevProps: Props) {

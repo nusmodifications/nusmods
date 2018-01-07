@@ -11,7 +11,7 @@ import type { Module } from 'types/modules';
 import config from 'config';
 import { formatExamDate, getSemestersOffered } from 'utils/modules';
 import { intersperse } from 'utils/array';
-import { BULLET } from 'utils/react';
+import { BULLET, scrollToHash } from 'utils/react';
 import { NAVTAB_HEIGHT } from 'views/layout/Navtabs';
 import ModuleTree from 'views/modules/ModuleTree';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
@@ -51,6 +51,10 @@ export class ModulePageContentComponent extends Component<Props, State> {
   state: State = {
     isMenuOpen: false,
   };
+
+  componentDidMount() {
+    scrollToHash();
+  }
 
   toggleMenu = (isMenuOpen: boolean) => this.setState({ isMenuOpen });
 
