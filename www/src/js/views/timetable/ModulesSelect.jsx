@@ -5,6 +5,7 @@ import Downshift from 'downshift';
 import classnames from 'classnames';
 
 import type { ModuleSelectList } from 'types/reducers';
+import type { ModuleCode } from 'types/modules';
 import { createSearchPredicate, sortModules } from 'utils/moduleSearch';
 import { breakpointUp } from 'utils/css';
 import makeResponsive from 'views/hocs/makeResponsive';
@@ -25,7 +26,7 @@ type State = {
   isOpen: boolean,
   isModalOpen: boolean,
   inputValue: string,
-  selectedItem: any,
+  selectedItem: ?ModuleCode,
 };
 
 const RESULTS_LIMIT = 500;
