@@ -1,5 +1,5 @@
 // @flow
-import { undo, redo, UNDO, REDO } from 'actions/undoHistory';
+import { undo, redo, UNDO, REDO, POP_UNDO_HISTORY } from 'actions/undoHistory';
 import update from 'immutability-helper';
 import { pick } from 'lodash';
 import undoHistory, {
@@ -130,6 +130,21 @@ describe('#computeUndoStacks()', () => {
     const noPresent = update(hist2, { present: { $set: undefined } }); // Future but no present
     const redoneNoPresent = computeUndoStacks(noPresent, REDO, state, state, config); // Redo
     expect(redoneNoPresent).toEqual(noPresent);
+  });
+
+  test('should pop undo history', () => {
+    const hist0 = state.undoHistoryState; // Empty past, present and future
+
+    // Expect no action if no past
+    const hist1 = computeUndoStacks(hist0, POP_UNDO_HISTORY, state, state, config);
+    expect(hist0).toEqual(hist1);
+
+    // Expect latest past to be removed
+    const hist2 = computeUndoStacks(hist0, WATCHED_ACTION, state, mutatedState, config); // Populate past and present
+    const hist3 = computeUndoStacks(hist2, POP_UNDO_HISTORY, state, state, config);
+    expect(hist3.future).toEqual(hist2.future);
+    expect(hist3.present).toEqual(hist2.present);
+    expect(hist3.past).toEqual(hist0.past);
   });
 
   test('should enforce limit if present', () => {

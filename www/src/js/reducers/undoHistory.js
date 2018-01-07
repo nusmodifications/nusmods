@@ -2,7 +2,7 @@
 import type { FSA } from 'types/redux';
 
 import { pick, takeRight, set, get } from 'lodash';
-import { UNDO, REDO } from 'actions/undoHistory';
+import { UNDO, REDO, POP_UNDO_HISTORY } from 'actions/undoHistory';
 
 export type UndoHistoryConfig = {
   reducerName: string,
@@ -72,6 +72,14 @@ export function computeUndoStacks<T: Object>(
         past: [...past, present],
         present: next,
         future: newFuture,
+      };
+    }
+    case POP_UNDO_HISTORY: {
+      // Abort if no past
+      if (past.length === 0) return state;
+      return {
+        ...state,
+        past: past.slice(0, past.length - 1), // Remove most recent past
       };
     }
     default: {

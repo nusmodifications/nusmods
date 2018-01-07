@@ -31,7 +31,7 @@ import {
 } from 'actions/timetables';
 import { toggleTimetableOrientation } from 'actions/theme';
 import { openNotification } from 'actions/app';
-import { undo, redo } from 'actions/undoHistory';
+import { undo, redo, popUndoHistory } from 'actions/undoHistory';
 import {
   getModuleTimetable,
   areLessonsSameClass,
@@ -82,6 +82,7 @@ type Props = {
   openNotification: (string, NotificationOptions) => void,
   undo: () => void,
   redo: () => void,
+  popUndoHistory: () => void,
 };
 
 type State = {
@@ -166,6 +167,11 @@ class TimetableContent extends Component<Props, State> {
                 this.props.undo();
                 return true;
               },
+            },
+            // Discard one past history instance if the undo to reach
+            // that instance has disappeared forever.
+            willClose: (discarded: boolean, actionClicked: boolean) => {
+              if (discarded && !actionClicked) this.props.popUndoHistory();
             },
           });
         }}
@@ -389,4 +395,5 @@ export default connect(mapStateToProps, {
   openNotification,
   undo,
   redo,
+  popUndoHistory,
 })(TimetableContent);
