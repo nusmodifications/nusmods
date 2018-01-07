@@ -121,8 +121,8 @@ class SettingsContainer extends Component<Props, State> {
       <hr />
       */}
         {supportsCSSVariables() && (
-          <div id="night-mode">
-            <h4>Night Mode</h4>
+          <div>
+            <h4 id="night-mode">Night Mode</h4>
             <div className={classnames(styles.toggleRow, 'row')}>
               <div className={classnames(styles.toggleDescription, 'col-sm-7')}>
                 <p>
