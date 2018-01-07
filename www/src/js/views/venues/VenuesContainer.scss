@@ -18,7 +18,9 @@
   @include media-breakpoint-up(md) {
     .venuesList {
       flex: 0 0 16rem;
+      align-self: stretch;
       margin-right: $gutter;
+      border-right: 1px solid var(--gray-lighter);
     }
 
     .venueDetail {
@@ -45,7 +47,7 @@
 }
 
 .venueSearch {
-  margin-bottom: 1rem;
+  margin: 0 0.5rem 1rem 0;
 
   h3 {
     margin-bottom: 0;
@@ -63,8 +65,24 @@
 }
 
 .availabilitySearch {
-  padding: 0 1rem 1rem;
+  padding: $border-radius 1rem 1rem;
+  margin-top: -$border-radius;
   border: 1px solid theme-color();
   border-width: 0 1px 1px;
   border-radius: 0 0 $border-radius $border-radius;
+}
+
+.noVenueSelected {
+  $icon-size: 6rem;
+
+  opacity: 0.6;
+  margin-top: 10vh;
+  font-size: 1.4rem;
+  text-align: center;
+
+  svg {
+    width: $icon-size;
+    height: $icon-size;
+    margin-bottom: 1rem;
+  }
 }

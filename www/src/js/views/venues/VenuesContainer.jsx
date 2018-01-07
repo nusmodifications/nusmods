@@ -20,7 +20,7 @@ import ErrorPage from 'views/errors/ErrorPage';
 import Warning from 'views/errors/Warning';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import SearchBox from 'views/components/SearchBox';
-import { Clock } from 'views/components/icons';
+import { Clock, Map } from 'views/components/icons';
 import { venuePage } from 'views/routes/paths';
 
 import config from 'config';
@@ -296,7 +296,16 @@ export class VenuesContainerComponent extends Component<Props, State> {
             {this.renderSelectedVenue()}
           </Modal>
         ) : (
-          <div className={styles.venueDetail}>{this.renderSelectedVenue()}</div>
+          <div className={styles.venueDetail}>
+            {selectedVenue == null ? (
+              <div className={styles.noVenueSelected}>
+                <Map />
+                <p>Select a venue on the left to see its timetable</p>
+              </div>
+            ) : (
+              this.renderSelectedVenue()
+            )}
+          </div>
         )}
       </div>
     );

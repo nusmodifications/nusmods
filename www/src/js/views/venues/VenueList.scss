@@ -1,11 +1,12 @@
 @import "~styles/utils/modules-entry.scss";
 
 $padding-h: 0.4rem;
+$padding-v: 0.5rem;
 
 .heading {
   position: sticky;
   top: $navbar-height;
-  padding: 0.3rem 0 0.3rem $padding-h;
+  padding: $padding-v 0 $padding-v $padding-h;
   margin-bottom: 0.5rem;
   font-weight: $font-weight-bold;
   font-size: $font-size-lg;
