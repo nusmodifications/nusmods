@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 
 import type { Venue } from 'types/venues';
 
@@ -8,17 +8,24 @@ import createHistory from 'test-utils/createHistory';
 import { VenuesContainerComponent, mapStateToProps } from './VenuesContainer';
 
 function createComponent(urlVenue: ?Venue) {
-  return shallow(
-    <VenuesContainerComponent urlVenue={urlVenue} activeSemester={1} {...createHistory()} />,
+  return mount(
+    <VenuesContainerComponent
+      urlVenue={urlVenue}
+      activeSemester={1}
+      {...createHistory()}
+      matchBreakpoint
+    />,
   );
 }
 
 describe('VenuesContainer', () => {
   test('#onVenueSelect() should change the URL when a venue is clicked', () => {
-    const component = createComponent().instance();
-    component.onVenueSelect('LT17', '/venues/LT17');
-    expect(component.state.selectedVenue).toEqual('LT17');
-    expect(component.props.history.location.pathname).toEqual('/venues/LT17');
+    const wrapper = createComponent();
+    const instance = wrapper.instance();
+    instance.onVenueSelect('LT17');
+
+    expect(instance.state.selectedVenue).toEqual('LT17');
+    expect(instance.props.history.location.pathname).toEqual('/venues/LT17');
   });
 
   describe('URL handling', () => {
@@ -58,22 +65,17 @@ describe('VenuesContainer', () => {
       const instance = wrapper.instance();
 
       instance.setState({ searchTerm: 'covfefe' });
-      expect(instance.props.history.location.search).toBe('');
 
       // Should set query string
-      instance.updateURL();
-      wrapper.setProps({ location: instance.props.history.location });
       expect(instance.props.history.location.search).toBe('?q=covfefe');
 
       // Should decode special chars
       instance.setState({ searchTerm: 'Cdat/overThar1!' });
-      instance.updateURL();
       wrapper.setProps({ location: instance.props.history.location });
       expect(instance.props.history.location.search).toBe('?q=Cdat%2FoverThar1%21');
 
       // Should clear query string
       instance.setState({ searchTerm: '' });
-      instance.updateURL();
       wrapper.setProps({ location: instance.props.history.location });
       expect(instance.props.history.location.search).toBe('');
     });
