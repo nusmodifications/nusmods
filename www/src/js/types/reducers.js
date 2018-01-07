@@ -35,6 +35,12 @@ export type NotificationOptions = {
     text: string,
     handler: () => ?boolean, // Return true to immediately pop notification
   },
+
+  // This function will be called when the notification is about to be closed,
+  // just before animation starts (i.e. just before state transitions to Closing).
+  // `discarded`: if false, notification will be displayed again.
+  // `actionClicked`: whether the action button was clicked while the notification was displayed
+  willClose?: (discarded: boolean, actionClicked: boolean) => void,
 };
 
 export type NotificationData = { message: string } & NotificationOptions;
