@@ -33,7 +33,7 @@ export type NotificationOptions = {
 
   action?: {
     text: string,
-    handler: () => ?boolean, // Return true to immediately pop notification
+    handler: () => ?boolean, // Return false to disable notification auto-close
   },
 
   // This function will be called when the notification is about to be closed,
