@@ -33,6 +33,7 @@ export type State = {
 // $FlowFixMe: State default is delegated to its child reducers.
 const defaultState: State = {};
 const unredo = undoHistory({
+  limit: 1,
   reducerName: 'undoHistory',
   actionsToWatch: [ADD_MODULE, REMOVE_MODULE, SET_TIMETABLE],
   whitelist: ['timetables', 'theme.colors'],
