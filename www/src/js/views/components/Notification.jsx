@@ -146,9 +146,9 @@ export class NotificationComponent extends Component<Props, State> {
                   className="mdc-snackbar__action-button"
                   onClick={() => {
                     this.setState({ actionClicked: true });
-                    const action = shownNotification.action;
-                    // Don't auto-close if handler returns true
-                    if (!action || !action.handler || action.handler()) return;
+                    const { handler } = shownNotification.action || {};
+                    // Don't auto-close if handler returns false
+                    if (handler && handler() === false) return;
                     this.props.popNotification();
                   }}
                 >

@@ -137,6 +137,18 @@ class TimetableContent extends Component<Props, State> {
     }
   };
 
+  removeModule = (moduleCode) => {
+    this.props.removeModule(this.props.semester, moduleCode);
+    this.props.openNotification(`Removed ${moduleCode}`, {
+      timeout: 12000,
+      overwritable: true,
+      action: {
+        text: 'Undo',
+        handler: () => this.props.undo(),
+      },
+    });
+  };
+
   // Returns modules currently in the timetable
   addedModules(): Array<Module> {
     const modules = getSemesterModules(this.props.timetableWithLessons, this.props.modules);
@@ -156,17 +168,7 @@ class TimetableContent extends Component<Props, State> {
         }))}
         horizontalOrientation={horizontalOrientation}
         semester={this.props.semester}
-        onRemoveModule={(moduleCode) => {
-          this.props.removeModule(this.props.semester, moduleCode);
-          this.props.openNotification(`Removed ${moduleCode}`, {
-            timeout: 12000,
-            overwritable: true,
-            action: {
-              text: 'Undo',
-              handler: () => this.props.undo(),
-            },
-          });
-        }}
+        onRemoveModule={this.removeModule}
         readOnly={readOnly}
       />
     );

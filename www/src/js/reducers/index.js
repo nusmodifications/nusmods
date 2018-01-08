@@ -35,7 +35,7 @@ const defaultState: State = {};
 const unredo = undoHistory({
   reducerName: 'undoHistory',
   actionsToWatch: [ADD_MODULE, REMOVE_MODULE, SET_TIMETABLE],
-  keyPathsToPersist: ['timetables'],
+  whitelist: ['timetables', 'theme.colors'],
 });
 
 export default function(state: State = defaultState, action: FSA): State {

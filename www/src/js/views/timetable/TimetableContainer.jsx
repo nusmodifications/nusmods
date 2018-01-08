@@ -107,6 +107,15 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
     const colors = fillColorMapping(timetable, this.props.colors);
     this.props.setTimetable(semester, timetable, colors);
     this.clearImportedTimetable();
+
+    this.props.openNotification('Timetable imported', {
+      timeout: 12000,
+      overwritable: true,
+      action: {
+        text: 'Undo',
+        handler: () => this.props.undo(),
+      },
+    });
   }
 
   clearImportedTimetable = () => {
@@ -135,17 +144,7 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
             <button
               className="btn btn-success"
               type="button"
-              onClick={() => {
-                this.importTimetable(semester, timetable);
-                this.props.openNotification('Timetable imported', {
-                  timeout: 12000,
-                  priority: true,
-                  action: {
-                    text: 'Undo',
-                    handler: () => this.props.undo(),
-                  },
-                });
-              }}
+              onClick={() => this.importTimetable(semester, timetable)}
             >
               Import
             </button>

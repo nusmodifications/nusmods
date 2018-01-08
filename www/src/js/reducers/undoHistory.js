@@ -1,14 +1,14 @@
 // @flow
 import type { FSA } from 'types/redux';
 
-import { pick, takeRight, set, get } from 'lodash';
+import { pick, takeRight, set, get, last } from 'lodash';
 import { UNDO, REDO } from 'actions/undoHistory';
 
 export type UndoHistoryConfig = {
   reducerName: string,
   limit?: number,
   actionsToWatch: string[],
-  keyPathsToPersist: string[],
+  whitelist: string[],
 };
 
 export type UndoHistoryState = {
@@ -41,12 +41,12 @@ export function computeUndoStacks<T: Object>(
   if (config.actionsToWatch.includes(action.type)) {
     // Append present to past, and drop history past config.limit
     // Limit only enforced here since undo/redo only shift the history around without adding new history
-    const appendedPast = [...past, present || pick(previousAppState, config.keyPathsToPersist)];
+    const appendedPast = [...past, present || pick(previousAppState, config.whitelist)];
     const newPast = 'limit' in config ? takeRight(appendedPast, config.limit) : appendedPast;
 
     return {
       past: newPast,
-      present: pick(presentAppState, config.keyPathsToPersist),
+      present: pick(presentAppState, config.whitelist),
       future: [],
     };
   }
@@ -55,7 +55,7 @@ export function computeUndoStacks<T: Object>(
     case UNDO: {
       // Abort if no past, or present is unknown
       if (past.length === 0 || !present) return state;
-      const previous = past[past.length - 1];
+      const previous = last(past);
       const newPast = past.slice(0, past.length - 1);
       return {
         past: newPast,
@@ -109,7 +109,7 @@ export default function undoHistory(config: UndoHistoryConfig) {
     // Applies updatedHistory.present to state if action.type === {UNDO,REDO}
     // Assumes updatedHistory.present is the final present state
     if ((action.type === UNDO || action.type === REDO) && updatedHistory.present) {
-      return mergePresent(updatedState, updatedHistory.present, config.keyPathsToPersist);
+      return mergePresent(updatedState, updatedHistory.present, config.whitelist);
     }
     return updatedState;
   };
