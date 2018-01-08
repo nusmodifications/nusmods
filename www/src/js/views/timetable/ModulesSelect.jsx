@@ -32,8 +32,6 @@ type State = {
 const RESULTS_LIMIT = 500;
 
 class ModulesSelect extends Component<Props, State> {
-  input: ?HTMLInputElement;
-
   state = {
     isOpen: false,
     isModalOpen: false,
@@ -108,9 +106,6 @@ class ModulesSelect extends Component<Props, State> {
         </label>
         <input
           {...getInputProps({
-            ref: (input) => {
-              this.input = input;
-            },
             className: styles.input,
             autoFocus: isModalOpen,
             placeholder,
@@ -120,7 +115,6 @@ class ModulesSelect extends Component<Props, State> {
             onChange: this.onInputChange,
           })}
         />
-        {isModalOpen && <CloseButton className={styles.close} onClick={this.closeSelect} />}
         {showResults && (
           <ol className={styles.selectList}>
             {results.map(
@@ -198,6 +192,7 @@ class ModulesSelect extends Component<Props, State> {
           onRequestClose={this.closeSelect}
           className={styles.modal}
         >
+          <CloseButton className={styles.close} onClick={this.closeSelect} />
           {downshiftComponent}
         </Modal>
       </div>

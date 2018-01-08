@@ -31,8 +31,9 @@ $module-list-height: 13.5rem;
 
 .close {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 1rem;
+  right: 0.5rem;
+  z-index: 1;
   width: $input-height;
   height: $input-height;
 }
