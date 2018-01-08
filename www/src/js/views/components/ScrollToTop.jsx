@@ -3,7 +3,6 @@ import type { ContextRouter } from 'react-router-dom';
 
 import { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { scrollToHash } from 'utils/react';
 
 type Props = {
   ...ContextRouter,
@@ -23,17 +22,19 @@ export class ScrollToTopComponent extends Component<Props> {
   };
 
   componentWillMount() {
-    if (this.props.onComponentWillMount) {
+    if (this.props.onComponentWillMount && !window.location.hash) {
       scrollToTop();
     }
   }
 
-  componentDidMount() {
-    scrollToHash();
-  }
-
   componentDidUpdate(prevProps: Props) {
-    if (this.props.onPathChange && this.props.location.pathname !== prevProps.location.pathname) {
+    const { onPathChange, location: { pathname, hash } } = this.props;
+
+    if (
+      onPathChange &&
+      pathname !== prevProps.location.pathname &&
+      hash === prevProps.location.hash
+    ) {
       scrollToTop();
     }
   }
