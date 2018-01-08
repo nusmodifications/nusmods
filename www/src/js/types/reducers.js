@@ -61,10 +61,12 @@ export type ColorIndex = number;
 // Mapping of module to color index [0, NUM_DIFFERENT_COLORS)
 export type ColorMapping = { [ModuleCode]: ColorIndex };
 export type SemesterColorMap = { [Semester]: ColorMapping };
+export type HiddenModulesMap = { [Semester]: ModuleCode[] };
 
 export type TimetablesState = {
-  timetableConfig: TimetableConfig,
+  lessons: TimetableConfig,
   colors: SemesterColorMap,
+  hidden: HiddenModulesMap,
   academicYear: string,
 };
 

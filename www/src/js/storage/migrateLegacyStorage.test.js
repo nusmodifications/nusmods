@@ -43,7 +43,7 @@ test('move timetables state', () => {
   });
 
   expect(migrated).toHaveProperty('timetables', {
-    timetableConfig: {
+    lessons: {
       [1]: {
         CS3216: {
           Lecture: '1',

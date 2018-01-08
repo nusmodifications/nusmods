@@ -102,8 +102,9 @@ function semColors(state: ColorMapping = defaultSemColorMap, action: FSA): Color
 
 // Map of semester to semTimetable.
 export const defaultTimetableState: TimetablesState = {
-  timetableConfig: {},
+  lessons: {},
   colors: {},
+  hidden: {},
   academicYear: config.academicYear,
 };
 
@@ -117,7 +118,7 @@ function timetables(state: TimetablesState = defaultTimetableState, action: FSA)
       const { semester, timetable, colors } = action.payload;
 
       return update(state, {
-        timetableConfig: {
+        lessons: {
           [semester]: { $set: timetable || defaultSemTimetableConfig },
         },
         colors: {
@@ -133,8 +134,8 @@ function timetables(state: TimetablesState = defaultTimetableState, action: FSA)
       const { semester } = action.payload;
 
       return update(state, {
-        timetableConfig: {
-          [semester]: { $set: semTimetable(state.timetableConfig[semester], action) },
+        lessons: {
+          [semester]: { $set: semTimetable(state.lessons[semester], action) },
         },
         colors: {
           [semester]: { $set: semColors(state.colors[semester], action) },
@@ -147,7 +148,7 @@ function timetables(state: TimetablesState = defaultTimetableState, action: FSA)
 
       return {
         ...state,
-        timetableConfig: { [semester]: timetable },
+        lessons: { [semester]: timetable },
         colors: { [semester]: colors },
       };
     }
@@ -164,7 +165,7 @@ export function getSemesterTimetable(
   state: TimetablesState,
 ): { timetable: SemTimetableConfig, colors: ColorMapping } {
   return {
-    timetable: state.timetableConfig[semester] || EMPTY_OBJECT,
+    timetable: state.lessons[semester] || EMPTY_OBJECT,
     colors: state.colors[semester] || EMPTY_OBJECT,
   };
 }

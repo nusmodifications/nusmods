@@ -66,7 +66,7 @@ describe('migrateTimetable()', () => {
   const action = actions.migrateTimetable();
   const getState = () => ({
     moduleBank: { moduleCodes: { CS5331: {} }, modules: {} },
-    timetables: { timetableConfig: {} },
+    timetables: { lessons: {} },
   });
   const makeDispatch = () => jest.fn().mockReturnValue(Promise.resolve());
 
@@ -135,7 +135,7 @@ describe('migrateTimetable()', () => {
 describe('fillTimetableBlanks', () => {
   const moduleBank = { modules: { CS1010S, CS3216 } };
   const timetablesState = (semester: Semester, timetable: SemTimetableConfig) => ({
-    timetableConfig: { [semester]: timetable },
+    lessons: { [semester]: timetable },
   });
   const semester = 1;
   const action = actions.fillTimetableBlanks(semester);

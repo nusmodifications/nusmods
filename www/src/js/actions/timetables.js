@@ -106,10 +106,10 @@ export function setTimetable(
 
 export function fillTimetableBlanks(semester: Semester) {
   return (dispatch: Function, getState: GetState) => {
-    const { timetables: { timetableConfig }, moduleBank } = getState();
+    const { timetables, moduleBank } = getState();
 
     // Extract the timetable and the modules for the semester
-    const timetable = timetableConfig[semester];
+    const timetable = timetables.lessons[semester];
     if (!timetable) return;
 
     // Check that all lessons for each module is filled, if they are not, use the
