@@ -137,6 +137,18 @@ class TimetableContent extends Component<Props, State> {
   };
 
   removeModule = (moduleCode) => {
+    // Display alert on iPhones and iPod touches because snackbar action will take 2 taps
+    // TODO: Replace with a more permanent solution
+    // Using indexOf() as userAgent doesn't have contains()
+    const userAgent = navigator.userAgent;
+    if (userAgent.indexOf('iPhone') !== -1 || userAgent.indexOf('iPod') !== -1) {
+      const confirmMessage = `Are you sure you want to remove ${moduleCode}?`;
+      if (window.confirm(confirmMessage)) {
+        this.props.removeModule(this.props.semester, moduleCode);
+      }
+      return;
+    }
+
     this.props.removeModule(this.props.semester, moduleCode);
     this.props.openNotification(`Removed ${moduleCode}`, {
       timeout: 12000,
