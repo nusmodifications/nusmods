@@ -31,7 +31,7 @@ import {
 } from 'actions/timetables';
 import { toggleTimetableOrientation } from 'actions/theme';
 import { openNotification, popNotification } from 'actions/app';
-import { undo, redo } from 'actions/undoHistory';
+import { undo } from 'actions/undoHistory';
 import {
   getModuleTimetable,
   areLessonsSameClass,
@@ -82,7 +82,6 @@ type Props = {
   openNotification: (string, NotificationOptions) => void,
   popNotification: () => void,
   undo: () => void,
-  redo: () => void,
 };
 
 type State = {
@@ -350,8 +349,6 @@ class TimetableContent extends Component<Props, State> {
                   )}
                 </Online>
               )}
-              <button onClick={() => this.props.undo()}>UNDO</button>
-              <button onClick={() => this.props.redo()}>REDO</button>
               <div className="col-md-12">{this.renderModuleSections(!isVerticalOrientation)}</div>
             </div>
           </div>
@@ -390,5 +387,4 @@ export default connect(mapStateToProps, {
   openNotification,
   popNotification,
   undo,
-  redo,
 })(TimetableContent);
