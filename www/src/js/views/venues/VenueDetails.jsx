@@ -1,12 +1,12 @@
 // @flow
 
 import React, { Fragment, PureComponent } from 'react';
+import { Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
 import classnames from 'classnames';
 import { flatMap } from 'lodash';
 
 import type { DayAvailability, Venue, VenueLesson } from 'types/venues';
-import type { OnSelectVenue } from 'types/views';
 
 import config from 'config';
 import { colorLessonsByKey } from 'utils/colors';
@@ -14,6 +14,7 @@ import { arrangeLessonsForWeek } from 'utils/timetables';
 import { ChevronLeft, ChevronRight } from 'views/components/icons';
 import Timetable from 'views/timetable/Timetable';
 import makeResponsive from 'views/hocs/makeResponsive';
+import { venuePage } from 'views/routes/paths';
 import { breakpointDown } from 'utils/css';
 
 import styles from './VenueDetails.scss';
@@ -23,7 +24,6 @@ type Props = {
   previous?: ?Venue,
   next?: ?Venue,
   availability: DayAvailability[],
-  onSelectVenue: OnSelectVenue,
 
   matchBreakpoint: boolean,
 };
@@ -49,25 +49,29 @@ export class VenueDetailsComponent extends PureComponent<Props> {
         </Helmet>
 
         <header className={styles.header}>
-          <button
-            className="btn btn-link btn-svg"
-            disabled={!previous}
-            onClick={() => {
-              if (previous) this.props.onSelectVenue(previous);
+          <Link
+            className={classnames('btn btn-link btn-svg', {
+              disabled: !previous,
+            })}
+            to={{
+              pathname: venuePage(previous),
+              search: window.location.search,
             }}
           >
             <ChevronLeft /> {previous}
-          </button>
+          </Link>
           <h1>{venue}</h1>
-          <button
-            className="btn btn-link btn-svg"
-            disabled={!next}
-            onClick={() => {
-              if (next) this.props.onSelectVenue(next);
+          <Link
+            className={classnames('btn btn-link btn-svg', {
+              disabled: !next,
+            })}
+            to={{
+              pathname: venuePage(next),
+              search: window.location.search,
             }}
           >
             {next} <ChevronRight />
-          </button>
+          </Link>
         </header>
 
         <div className={classnames(styles.timetable, { verticalMode: matchBreakpoint })}>

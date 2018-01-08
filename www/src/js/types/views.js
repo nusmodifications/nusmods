@@ -2,10 +2,7 @@
 import FilterGroup from 'utils/filters/FilterGroup';
 import type { Department, Faculty } from './modules';
 import type { ModuleList } from './reducers';
-import type { Venue, VenueList } from './venues';
-
-/* venues/VenueContainer */
-export type OnSelectVenue = Venue => void;
+import type { VenueList } from './venues';
 
 /* layout/GlobalSearch */
 export type ResultType = 'VENUE' | 'MODULE' | 'SEARCH';

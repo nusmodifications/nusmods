@@ -12,7 +12,6 @@ import { pick, mapValues, size, isEqual, get } from 'lodash';
 import type { MapStateToProps } from 'react-redux';
 import type { ContextRouter } from 'react-router-dom';
 import type { Venue, VenueDetailList, VenueInfo, VenueSearchOptions } from 'types/venues';
-import type { OnSelectVenue } from 'types/views';
 
 import deferComponentRender from 'views/hocs/deferComponentRender';
 import ErrorPage from 'views/errors/ErrorPage';
@@ -115,21 +114,21 @@ export class VenuesContainerComponent extends Component<Props, State> {
 
   componentDidUpdate(prevProps: Props, prevState: State) {
     // Update URL if any of these props have changed
-    const { selectedVenue, searchOptions, searchTerm, isAvailabilityEnabled } = this.state;
+    const { searchOptions, searchTerm, isAvailabilityEnabled } = this.state;
 
-    if (
-      selectedVenue !== prevState.selectedVenue ||
-      isAvailabilityEnabled !== prevState.isAvailabilityEnabled
-    ) {
+    if (isAvailabilityEnabled !== prevState.isAvailabilityEnabled) {
       this.updateURL(false);
     } else if (searchOptions !== prevState.searchOptions || searchTerm !== prevState.searchTerm) {
       this.updateURL();
     }
   }
 
-  onVenueSelect: OnSelectVenue = (selectedVenue) => this.setState({ selectedVenue });
-
-  onClearVenueSelect = () => this.setState({ selectedVenue: null });
+  onClearVenueSelect = () =>
+    // eslint-disable-next-line react/prop-types
+    this.props.history.push({
+      pathname: venuePage(),
+      search: window.location.search,
+    });
 
   onSearch = (searchTerm: string) => {
     if (searchTerm !== this.state.searchTerm) {
@@ -244,26 +243,14 @@ export class VenuesContainerComponent extends Component<Props, State> {
       const venueDetail = venues.find(([venue]) => venue.toLowerCase() === lowercaseSelectedVenue);
       if (!venueDetail) return null;
       const [venue, availability] = venueDetail;
-      return (
-        <VenueDetails
-          venue={venue}
-          availability={availability}
-          onSelectVenue={this.onVenueSelect}
-        />
-      );
+      return <VenueDetails venue={venue} availability={availability} />;
     }
 
     const [venue, availability] = matchedVenues[venueIndex];
     const previous = get(matchedVenues, [String(venueIndex - 1), '0']);
     const next = get(matchedVenues, [String(venueIndex + 1), '0']);
     return (
-      <VenueDetails
-        venue={venue}
-        availability={availability}
-        next={next}
-        previous={previous}
-        onSelectVenue={this.onVenueSelect}
-      />
+      <VenueDetails venue={venue} availability={availability} next={next} previous={previous} />
     );
   }
 
@@ -308,11 +295,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
           {size(matchedVenues) === 0 ? (
             this.renderNoResult(unfilteredCount)
           ) : (
-            <VenueList
-              venues={matchedVenues}
-              onSelect={this.onVenueSelect}
-              selectedVenue={selectedVenue}
-            />
+            <VenueList venues={matchedVenues} selectedVenue={selectedVenue} />
           )}
         </div>
 

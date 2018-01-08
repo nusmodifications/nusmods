@@ -28,15 +28,6 @@ describe('VenuesContainer', () => {
     mockDom();
   });
 
-  test('#onVenueSelect() should change the URL when a venue is clicked', () => {
-    const wrapper = createComponent();
-    const instance = wrapper.instance();
-    instance.onVenueSelect('LT17');
-
-    expect(instance.state.selectedVenue).toEqual('LT17');
-    expect(instance.props.history.location.pathname).toEqual('/venues/LT17');
-  });
-
   describe('URL handling', () => {
     test('it should select venue in URL if present and appropriate', () => {
       const component = createComponent('Interwebs');
