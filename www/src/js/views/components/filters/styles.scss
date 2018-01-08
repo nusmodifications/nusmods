@@ -29,18 +29,8 @@ $h-padding: $grid-gutter-width / 2;
     color: theme-color();
   }
 
-  :global(.text-muted) {
-    font-weight: normal;
-  }
-
-  @include touchscreen-only {
-    font-size: $font-size-sm;
-  }
-}
-
-.checklist,
-.dropdown {
-  .label {
+  .checklist &,
+  .dropdown & {
     display: block;
     padding-top: 0.1rem;
     padding-bottom: 0.1rem;
@@ -49,6 +39,14 @@ $h-padding: $grid-gutter-width / 2;
       padding: $v-padding $h-padding $v-padding ($h-padding + 20px);
       border-bottom: 1px solid var(--gray-lighter);
     }
+  }
+
+  :global(.text-muted) {
+    font-weight: normal;
+  }
+
+  @include touchscreen-only {
+    font-size: $font-size-sm;
   }
 }
 
@@ -67,6 +65,7 @@ $h-padding: $grid-gutter-width / 2;
     position: relative;
     margin-right: ($grid-gutter-width / 2);
 
+    // To select both the search glass icon and the chevron
     svg {
       position: absolute;
       top: 0.35rem;
@@ -108,14 +107,12 @@ $h-padding: $grid-gutter-width / 2;
     border-radius: 0 0 3px 3px;
 
     .label {
-      padding-top: 0.25rem;
-      padding-bottom: 0.25rem;
+      padding: 0;
     }
-  }
 
-  .selected {
-    color: theme-color();
-    background: var(--gray-lightest);
+    :global(.dropdown-selected) .label {
+      color: currentColor;
+    }
   }
 
   select {

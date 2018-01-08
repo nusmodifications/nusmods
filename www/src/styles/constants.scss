@@ -6,6 +6,7 @@ $navtab-height: 3rem;
 
 $navtab-shadow-height: 0.8rem;
 $navtab-shadow-color: rgba(#000, 0.1);
+$navtab-shadow-color-night: rgba(#000, 0.7);
 
 // Type
 $sm-font-size-ratio: 0.875;
@@ -159,6 +160,7 @@ $nusmods-theme-colors: (
 );
 
 // Z-index
+$snackbar-z-index: 2500;
 $sentry-z-index: 2000;
 $modal-z-index: 1500;
 $module-select-z-index: 960;
@@ -166,12 +168,15 @@ $module-finder-search-z-index-sm: 950;
 $navtabs-z-index: 900;
 $navbar-z-index: 890;
 $module-finder-search-z-index-md: 850;
+$zindex-dropdown: 820; // Bootstrap override
 $fab-z-index: 800;
 $side-menu-z-index: 700;
 $side-menu-overlay-z-index: 690;
 $cors-notification-z-index: 500;
 $timetable-timing-z-index: 95;
 $timetable-day-z-index: 90;
-$timetable-selected-cell-z-index: 100;
-$timetable-selected-cell-scrolled-z-index: 75;
+$timetable-current-time-indicator-z-index: 60;
+$timetable-selected-cell-scrolled-z-index: 50;
+$timetable-selected-cell-z-index: 40;
+$timetable-cell-z-index: 30;
 $module-page-divider-z-index: 50;

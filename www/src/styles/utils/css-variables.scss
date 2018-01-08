@@ -15,8 +15,12 @@
 :root {
   // Body background
   --body-bg: $body-bg;
+  --body-bg-40: rgba($body-bg, 0.4);
   --body-bg-70: rgba($body-bg, 0.7);
   --body-bg-transparent: rgba($body-bg, 0);
+
+  // Shadows
+  --navtab-shadow: rgba(#000, 0.1);
 
   // Body font color
   --body-color: $body-color;
@@ -42,8 +46,12 @@
 
 body.mode-dark {
   --body-bg: $gray-dark;
+  --body-bg-40: rgba($gray-dark, 0.4);
   --body-bg-70: rgba($gray-dark, 0.7);
   --body-bg-transparent: rgba($gray-dark, 0);
+
+  // Shadows
+  --navtab-shadow: rgba(#000, 0.26);
 
   // Body font color
   --body-color: #aaa;
@@ -52,7 +60,7 @@ body.mode-dark {
   --gray: #aaa;
   --gray-light: #666;
   --gray-lighter: #474747;
-  --gray-lightest: #333;
+  --gray-lightest: #292929;
   --gray-dark: invert($gray-dark);
 
   // Alert colors

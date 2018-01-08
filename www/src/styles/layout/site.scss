@@ -15,6 +15,10 @@ body {
   @include media-breakpoint-down(sm) {
     padding-top: $navbar-height;
     font-size: 1rem * $sm-font-size-ratio;
+
+    &.no-scroll {
+      padding-top: $navbar-height + $navtab-height;
+    }
   }
 }
 

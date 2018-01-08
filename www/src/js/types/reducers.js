@@ -10,11 +10,32 @@ import type {
 import type { Mode } from 'types/settings';
 
 /* app.js */
+
+export type NotificationOptions = {
+  // Amount of time in ms for the notification to be shown, not including opening
+  // and closing animation
+  timeout?: number,
+
+  // By default any notification that comes in when there is already a notification
+  // shown will be queued behind the current one. If the notification is not too important,
+  // or we expect a large number to be generated in a short period of time, we allow the
+  // current notification to be overwritten by the new one
+  overwritable?: boolean,
+
+  action?: {
+    text: string,
+    handler: Function,
+  },
+};
+
+export type NotificationData = { message: string } & NotificationOptions;
+
 export type AppState = {
   activeSemester: Semester,
   activeLesson: ?Lesson,
   isOnline: boolean,
   isFeedbackModalOpen: boolean,
+  notifications: NotificationData[],
 };
 
 /* requests.js */

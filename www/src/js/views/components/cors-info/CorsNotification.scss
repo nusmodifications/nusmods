@@ -3,6 +3,7 @@
 .wrapper {
   composes: no-export from global;
   position: relative;
+  z-index: $cors-notification-z-index;
 }
 
 .notification {
@@ -40,7 +41,6 @@
     position: fixed;
     bottom: 2rem;
     left: 2rem;
-    z-index: $cors-notification-z-index;
 
     :global {
       // Delay the animation a bit so that the user will not be distracted
