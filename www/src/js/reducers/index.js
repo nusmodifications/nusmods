@@ -16,7 +16,7 @@ import app from './app';
 import theme from './theme';
 import settings from './settings';
 import moduleFinder from './moduleFinder';
-import undoHistory from './undoHistory';
+import createUndoReducer from './undoHistory';
 
 export type State = {
   moduleBank: ModuleBank,
@@ -32,7 +32,7 @@ export type State = {
 
 // $FlowFixMe: State default is delegated to its child reducers.
 const defaultState: State = {};
-const unredo = undoHistory({
+const undoReducer = createUndoReducer({
   limit: 1,
   reducerName: 'undoHistory',
   actionsToWatch: [ADD_MODULE, REMOVE_MODULE, SET_TIMETABLE],
@@ -52,5 +52,5 @@ export default function(state: State = defaultState, action: FSA): State {
     moduleFinder: moduleFinder(state.moduleFinder, action),
     undoHistory: state.undoHistory,
   };
-  return unredo(state, newState, action);
+  return undoReducer(state, newState, action);
 }

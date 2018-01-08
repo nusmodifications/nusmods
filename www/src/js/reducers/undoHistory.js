@@ -39,9 +39,9 @@ export function computeUndoStacks<T: Object>(
 
   // If action is undo/redoable, store state
   if (config.actionsToWatch.includes(action.type)) {
-    // Append present to past, and drop history past config.limit
+    // Append actual present to past, and drop history past config.limit
     // Limit only enforced here since undo/redo only shift the history around without adding new history
-    const appendedPast = [...past, present || pick(previousAppState, config.whitelist)];
+    const appendedPast = [...past, pick(previousAppState, config.whitelist)];
     const newPast = 'limit' in config ? takeRight(appendedPast, config.limit) : appendedPast;
 
     return {
@@ -92,7 +92,7 @@ export function mergePresent<T: Object>(state: T, present: Object, keyPaths: str
 
 // Given a config object, returns function which compute new state after
 // undoing/redoing/storing present as required by action.
-export default function undoHistory(config: UndoHistoryConfig) {
+export default function createUndoReducer(config: UndoHistoryConfig) {
   return <T: Object>(previousState: T, presentState: T, action: FSA) => {
     // Calculate un/redone history
     const undoHistoryState = presentState[config.reducerName];
