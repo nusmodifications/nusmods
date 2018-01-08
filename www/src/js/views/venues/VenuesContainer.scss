@@ -72,6 +72,15 @@
   border-radius: 0 0 $border-radius $border-radius;
 }
 
+.venueDetailModal {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+.closeButton {
+  margin-right: 1rem;
+}
+
 .noVenueSelected {
   $icon-size: 6rem;
 

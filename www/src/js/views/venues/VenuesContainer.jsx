@@ -286,8 +286,12 @@ export class VenuesContainerComponent extends Component<Props, State> {
         </div>
 
         {this.props.matchBreakpoint ? (
-          <Modal isOpen={selectedVenue != null} onRequestClose={this.onClearVenueSelect}>
-            <CloseButton onClick={this.onClearVenueSelect} />
+          <Modal
+            isOpen={selectedVenue != null}
+            onRequestClose={this.onClearVenueSelect}
+            className={styles.venueDetailModal}
+          >
+            <CloseButton className={styles.closeButton} onClick={this.onClearVenueSelect} />
             {this.renderSelectedVenue(matchedVenues)}
           </Modal>
         ) : (
