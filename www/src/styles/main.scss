@@ -10,11 +10,11 @@
 @import "material/material";
 
 // Utils
+@import 'utils/css-variables';
 @import 'utils/animations';
 @import 'utils/workload';
 @import 'utils/themes';
 @import 'utils/scrollable';
-@import 'utils/css-variables';
 
 // Layout
 @import 'layout/site';
