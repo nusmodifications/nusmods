@@ -70,7 +70,7 @@ class ModulesSelect extends Component<Props, State> {
   openSelect = () => {
     this.setState({
       isOpen: true,
-      isModalOpen: true,
+      isModalOpen: !this.props.matchBreakpoint,
     });
   };
 
@@ -96,7 +96,7 @@ class ModulesSelect extends Component<Props, State> {
     const { isModalOpen } = this.state;
     const results = this.getFilteredModules(inputValue);
     const showResults = isOpen && results.length > 0;
-    const showTip = isModalOpen && !results.length;
+    const showTip = isOpen && !results.length;
     const showNoResultMessage = isOpen && inputValue && !results.length;
 
     return (
