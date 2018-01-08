@@ -1,5 +1,5 @@
 // @flow
-import { undo, redo, popUndoHistory } from 'actions/undoHistory';
+import { undo, redo } from 'actions/undoHistory';
 import update from 'immutability-helper';
 import { pick } from 'lodash';
 import undoHistory, {
@@ -134,44 +134,6 @@ describe('#computeUndoStacks()', () => {
     const noPresent = update(hist2, { present: { $set: undefined } }); // Future but no present
     const redoneNoPresent = computeUndoStacks(noPresent, redo(), state, state, config); // Redo
     expect(redoneNoPresent).toEqual(noPresent);
-  });
-
-  test('should pop undo history', () => {
-    const hist0 = state.undoHistoryState; // Empty past, present and future
-
-    // Expect no action if no past
-    const hist1 = computeUndoStacks(hist0, popUndoHistory(), state, state, config);
-    expect(hist0).toEqual(hist1);
-
-    // a: removed in 1, b: removed in 2, c: unchanged, d: changed, e: removed and added back, f: added in 1, g: added in 2
-    const state0 = { a: 'a', b: 'b', c: 'c', d: 'd', e: 'e', undoHistoryState: emptyUndoHistory };
-    const state1 = { ...state0, f: 'f' };
-    delete state1.a;
-    delete state1.e;
-    const state2 = { ...state1, d: '3.14', e: 'e', g: 'g' };
-    delete state2.b;
-    const popConfig = { ...config, keyPathsToPersist: ['a', 'b', 'c', 'd', 'e', 'f', 'g'] };
-
-    // Add history
-    const hist2 = computeUndoStacks(hist0, newFSA(WATCHED_ACTION), state0, state1, popConfig);
-    const hist3 = computeUndoStacks(hist2, newFSA(WATCHED_ACTION), state1, state2, popConfig);
-    expect(hist3).not.toEqual(hist2); // Ensure that we actually did something
-
-    // Expect latest past to be removed if we aren't propagating differences
-    const hist4 = computeUndoStacks(hist3, popUndoHistory(), state2, state2, popConfig);
-    expect(hist4.future).toEqual(hist3.future);
-    expect(hist4.present).toEqual(hist3.present);
-    expect(hist4.past).toEqual(hist2.past);
-    expect(hist4.past).toEqual([{ a: 'a', b: 'b', c: 'c', d: 'd', e: 'e' }]); // Next undo reverts to state0
-
-    // Expect past to be propagated
-    const hist5 = computeUndoStacks(hist3, popUndoHistory(true), state2, state2, popConfig);
-    expect(hist5.future).toEqual(hist3.future);
-    expect(hist5.present).toEqual(hist3.present);
-    expect(hist5.past).not.toEqual(hist4.past);
-    // Applies diff from state1-2 to state 0.
-    // Next undo only undoes diff from state0-1 (i.e. removes 'f', adds 'a').
-    expect(hist5.past).toEqual([{ a: 'a', c: 'c', d: '3.14', e: 'e', g: 'g' }]);
   });
 
   test('should enforce limit if present', () => {

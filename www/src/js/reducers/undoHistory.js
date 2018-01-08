@@ -2,8 +2,7 @@
 import type { FSA } from 'types/redux';
 
 import { pick, takeRight, set, get } from 'lodash';
-import { UNDO, REDO, POP_UNDO_HISTORY } from 'actions/undoHistory';
-import { difference, redoDifference } from 'utils/difference';
+import { UNDO, REDO } from 'actions/undoHistory';
 
 export type UndoHistoryConfig = {
   reducerName: string,
@@ -74,20 +73,6 @@ export function computeUndoStacks<T: Object>(
         present: next,
         future: newFuture,
       };
-    }
-    case POP_UNDO_HISTORY: {
-      // Abort if no past, or present is unknown
-      if (past.length === 0 || !present) return state;
-
-      // Simple pop if only 1 past or propagate diff disabled
-      const truncatedPast = past.slice(0, past.length - 1);
-      if (past.length === 1 || !action.payload.propagateDiff)
-        return { ...state, past: truncatedPast };
-
-      const previous = past[past.length - 1];
-      const diff = difference(previous, present);
-      const newPast = truncatedPast.map((pastState) => redoDifference(pastState, diff));
-      return { ...state, past: newPast };
     }
     default: {
       return state;

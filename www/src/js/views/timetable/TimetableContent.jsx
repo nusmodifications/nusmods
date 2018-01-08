@@ -30,8 +30,8 @@ import {
   removeModule,
 } from 'actions/timetables';
 import { toggleTimetableOrientation } from 'actions/theme';
-import { openNotification } from 'actions/app';
-import { undo, redo, popUndoHistory } from 'actions/undoHistory';
+import { openNotification, popNotification } from 'actions/app';
+import { undo, redo } from 'actions/undoHistory';
 import {
   getModuleTimetable,
   areLessonsSameClass,
@@ -80,9 +80,9 @@ type Props = {
   cancelModifyLesson: Function,
   toggleTimetableOrientation: Function,
   openNotification: (string, NotificationOptions) => void,
+  popNotification: () => void,
   undo: () => void,
   redo: () => void,
-  popUndoHistory: boolean => void,
 };
 
 type State = {
@@ -160,15 +160,10 @@ class TimetableContent extends Component<Props, State> {
           this.props.removeModule(this.props.semester, moduleCode);
           this.props.openNotification(`Removed ${moduleCode}`, {
             timeout: 12000,
-            priority: true,
+            overwritable: true,
             action: {
               text: 'Undo',
               handler: () => this.props.undo(),
-            },
-            willClose: (discarded: boolean, actionClicked: boolean) => {
-              // Discard one past history instance if the undo to reach
-              // that instance has disappeared forever.
-              if (discarded && !actionClicked) this.props.popUndoHistory(true);
             },
           });
         }}
@@ -339,6 +334,7 @@ class TimetableContent extends Component<Props, State> {
                       <ModulesSelect
                         moduleList={this.props.semModuleList}
                         onChange={(moduleCode) => {
+                          this.props.popNotification();
                           this.props.addModule(semester, moduleCode);
                         }}
                         placeholder={
@@ -390,7 +386,7 @@ export default connect(mapStateToProps, {
   cancelModifyLesson,
   toggleTimetableOrientation,
   openNotification,
+  popNotification,
   undo,
   redo,
-  popUndoHistory,
 })(TimetableContent);
