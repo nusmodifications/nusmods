@@ -1,5 +1,5 @@
 // @flow
-import { undo, redo, UNDO, REDO, POP_UNDO_HISTORY } from 'actions/undoHistory';
+import { undo, redo, popUndoHistory } from 'actions/undoHistory';
 import update from 'immutability-helper';
 import { pick } from 'lodash';
 import undoHistory, {
@@ -11,6 +11,10 @@ import undoHistory, {
 
 const WATCHED_ACTION = 'WATCHED_ACTION';
 const IGNORED_ACTION = 'IGNORED_ACTION';
+
+const newFSA = (type: string, payload: Object = {}) => ({ type, payload });
+
+const emptyUndoHistory = { past: [], present: undefined, future: [] };
 
 type TestState = {
   data: {
@@ -33,7 +37,7 @@ const state: TestState = {
     notToTouch: [3, 1, 4],
   },
   untouchable: { payload: 'donottouch' },
-  undoHistoryState: { past: [], present: undefined, future: [] },
+  undoHistoryState: emptyUndoHistory,
 };
 
 const mutatedState = update(state, {
@@ -52,14 +56,14 @@ const config: UndoHistoryConfig = {
 describe('#computeUndoStacks()', () => {
   test('should ignore irrelevant actions', () => {
     const hist0 = state.undoHistoryState;
-    const hist1 = computeUndoStacks(hist0, IGNORED_ACTION, state, mutatedState, config);
+    const hist1 = computeUndoStacks(hist0, newFSA(IGNORED_ACTION), state, mutatedState, config);
     expect(hist1).toEqual(hist0);
   });
 
   test('should store data when relevant actions dispatched', () => {
     const hist0 = update(state.undoHistoryState, { future: { $push: [state] } });
-    const hist1 = computeUndoStacks(hist0, WATCHED_ACTION, state, mutatedState, config);
-    const hist2 = computeUndoStacks(hist1, WATCHED_ACTION, mutatedState, state, config);
+    const hist1 = computeUndoStacks(hist0, newFSA(WATCHED_ACTION), state, mutatedState, config);
+    const hist2 = computeUndoStacks(hist1, newFSA(WATCHED_ACTION), mutatedState, state, config);
 
     // Expect history to change
     expect(hist1).not.toEqual(hist0);
@@ -87,10 +91,10 @@ describe('#computeUndoStacks()', () => {
 
   test('should undo', () => {
     const hist0 = state.undoHistoryState; // Empty past, present and future
-    const hist1 = computeUndoStacks(hist0, WATCHED_ACTION, state, mutatedState, config); // Populate past and present
+    const hist1 = computeUndoStacks(hist0, newFSA(WATCHED_ACTION), state, mutatedState, config); // Populate past and present
 
     // Expect present to be pushed to future
-    const hist2 = computeUndoStacks(hist1, UNDO, mutatedState, mutatedState, config); // Undo
+    const hist2 = computeUndoStacks(hist1, undo(), mutatedState, mutatedState, config); // Undo
     expect(hist2.future).toHaveLength(1);
     expect(hist2.future[0]).toEqual(hist1.present);
     // Expect past to be popped
@@ -99,22 +103,22 @@ describe('#computeUndoStacks()', () => {
     expect(hist2.present).toEqual(hist1.past[0]);
 
     // If no past, do nothing - no undoing beyond recorded history
-    const hist3 = computeUndoStacks(hist2, UNDO, state, state, config); // Undo again
+    const hist3 = computeUndoStacks(hist2, undo(), state, state, config); // Undo again
     expect(hist3).toEqual(hist2);
 
     // If present doesn't exist, do nothing - edge case which should not be encountered
-    const noPresent = update(hist1, { present: { $set: undefined } }); // Past but no present
-    const undoneNoPresent = computeUndoStacks(noPresent, UNDO, mutatedState, mutatedState, config); // Undo
-    expect(undoneNoPresent).toEqual(noPresent);
+    const hist4 = update(hist1, { present: { $set: undefined } }); // Past but no present
+    const hist5 = computeUndoStacks(hist4, undo(), mutatedState, mutatedState, config); // Undo
+    expect(hist5).toEqual(hist4);
   });
 
   test('should redo', () => {
     const hist0 = state.undoHistoryState; // Empty past, present and future
-    const hist1 = computeUndoStacks(hist0, WATCHED_ACTION, state, mutatedState, config); // Populate past and present
-    const hist2 = computeUndoStacks(hist1, UNDO, mutatedState, mutatedState, config); // Populate present and future, clears past
+    const hist1 = computeUndoStacks(hist0, newFSA(WATCHED_ACTION), state, mutatedState, config); // Populate past and present
+    const hist2 = computeUndoStacks(hist1, undo(), mutatedState, mutatedState, config); // Populate present and future, clears past
 
     // Expect present to be pushed to past
-    const hist3 = computeUndoStacks(hist2, REDO, state, state, config); // Redo
+    const hist3 = computeUndoStacks(hist2, redo(), state, state, config); // Redo
     expect(hist3.past).toHaveLength(1);
     expect(hist3.past[0]).toEqual(hist2.present);
     // Expect future to be popped
@@ -123,12 +127,12 @@ describe('#computeUndoStacks()', () => {
     expect(hist3.present).toEqual(hist2.future[0]);
 
     // If no future, do nothing - no redoing beyond recorded future
-    const hist4 = computeUndoStacks(hist3, REDO, mutatedState, mutatedState, config); // Redo again
+    const hist4 = computeUndoStacks(hist3, redo(), mutatedState, mutatedState, config); // Redo again
     expect(hist4).toEqual(hist3);
 
     // If present doesn't exist, do nothing - edge case which should not be encountered
     const noPresent = update(hist2, { present: { $set: undefined } }); // Future but no present
-    const redoneNoPresent = computeUndoStacks(noPresent, REDO, state, state, config); // Redo
+    const redoneNoPresent = computeUndoStacks(noPresent, redo(), state, state, config); // Redo
     expect(redoneNoPresent).toEqual(noPresent);
   });
 
@@ -136,38 +140,61 @@ describe('#computeUndoStacks()', () => {
     const hist0 = state.undoHistoryState; // Empty past, present and future
 
     // Expect no action if no past
-    const hist1 = computeUndoStacks(hist0, POP_UNDO_HISTORY, state, state, config);
+    const hist1 = computeUndoStacks(hist0, popUndoHistory(), state, state, config);
     expect(hist0).toEqual(hist1);
 
-    // Expect latest past to be removed
-    const hist2 = computeUndoStacks(hist0, WATCHED_ACTION, state, mutatedState, config); // Populate past and present
-    const hist3 = computeUndoStacks(hist2, POP_UNDO_HISTORY, state, state, config);
-    expect(hist3.future).toEqual(hist2.future);
-    expect(hist3.present).toEqual(hist2.present);
-    expect(hist3.past).toEqual(hist0.past);
+    // a: removed in 1, b: removed in 2, c: unchanged, d: changed, e: removed and added back, f: added in 1, g: added in 2
+    const state0 = { a: 'a', b: 'b', c: 'c', d: 'd', e: 'e', undoHistoryState: emptyUndoHistory };
+    const state1 = { ...state0, f: 'f' };
+    delete state1.a;
+    delete state1.e;
+    const state2 = { ...state1, d: '3.14', e: 'e', g: 'g' };
+    delete state2.b;
+    const popConfig = { ...config, keyPathsToPersist: ['a', 'b', 'c', 'd', 'e', 'f', 'g'] };
+
+    // Add history
+    const hist2 = computeUndoStacks(hist0, newFSA(WATCHED_ACTION), state0, state1, popConfig);
+    const hist3 = computeUndoStacks(hist2, newFSA(WATCHED_ACTION), state1, state2, popConfig);
+    expect(hist3).not.toEqual(hist2); // Ensure that we actually did something
+
+    // Expect latest past to be removed if we aren't propagating differences
+    const hist4 = computeUndoStacks(hist3, popUndoHistory(), state2, state2, popConfig);
+    expect(hist4.future).toEqual(hist3.future);
+    expect(hist4.present).toEqual(hist3.present);
+    expect(hist4.past).toEqual(hist2.past);
+    expect(hist4.past).toEqual([{ a: 'a', b: 'b', c: 'c', d: 'd', e: 'e' }]); // Next undo reverts to state0
+
+    // Expect past to be propagated
+    const hist5 = computeUndoStacks(hist3, popUndoHistory(true), state2, state2, popConfig);
+    expect(hist5.future).toEqual(hist3.future);
+    expect(hist5.present).toEqual(hist3.present);
+    expect(hist5.past).not.toEqual(hist4.past);
+    // Applies diff from state1-2 to state 0.
+    // Next undo only undoes diff from state0-1 (i.e. removes 'f', adds 'a').
+    expect(hist5.past).toEqual([{ a: 'a', c: 'c', d: '3.14', e: 'e', g: 'g' }]);
   });
 
   test('should enforce limit if present', () => {
     // Config without limit already tested in other cases
     // Do not test null/undefined limit since Flow should already catch that case
-    const configLimit1 = { ...config, limit: 1 };
-    const configLimit0 = { ...config, limit: 0 }; // Edge case
-    const configLimitN = { ...config, limit: -1 }; // Edge case
+    const limit1 = { ...config, limit: 1 };
+    const limit0 = { ...config, limit: 0 }; // Edge case
+    const limitN = { ...config, limit: -1 }; // Edge case
 
     // Expect limit > 0 to be enforced
     const hist0 = state.undoHistoryState; // Empty past, present and future
-    const hist10 = computeUndoStacks(hist0, WATCHED_ACTION, state, mutatedState, configLimit1); // Populate past and present
-    const hist11 = computeUndoStacks(hist10, WATCHED_ACTION, mutatedState, state, configLimit1);
+    const hist10 = computeUndoStacks(hist0, newFSA(WATCHED_ACTION), state, mutatedState, limit1); // Populate past and present
+    const hist11 = computeUndoStacks(hist10, newFSA(WATCHED_ACTION), mutatedState, state, limit1);
     expect(hist11.past).toHaveLength(1); // Expect length to be limited
     expect(hist11.past).not.toEqual(hist10.past); // Expect older past to be dropped
     expect(hist11.past[0]).toEqual(hist10.present); // Expect previous present to be left
 
     // Expect limit = 0 to be enforced
-    const hist00 = computeUndoStacks(hist0, WATCHED_ACTION, state, mutatedState, configLimit0); // Populate past and present
+    const hist00 = computeUndoStacks(hist0, newFSA(WATCHED_ACTION), state, mutatedState, limit0); // Populate past and present
     expect(hist00.past).toHaveLength(0); // Expect length to be capped to 0
 
     // Expect negative limit to be enforced as if limit = 0 was set
-    const histN0 = computeUndoStacks(hist0, WATCHED_ACTION, state, mutatedState, configLimitN); // Populate past and present
+    const histN0 = computeUndoStacks(hist0, newFSA(WATCHED_ACTION), state, mutatedState, limitN); // Populate past and present
     expect(histN0.past).toHaveLength(0); // Expect length to be capped to 0
   });
 });
@@ -203,10 +230,10 @@ describe('#undoHistory()()', () => {
 
   test('should set history state and merges present state', () => {
     const hist0 = state.undoHistoryState; // Empty past, present and future
-    const hist1 = computeUndoStacks(hist0, WATCHED_ACTION, state, mutatedState, config); // Populate past and present
+    const hist1 = computeUndoStacks(hist0, newFSA(WATCHED_ACTION), state, mutatedState, config); // Populate past and present
 
     // Updates state if watched action dispatched
-    const state0 = unredo(state, mutatedState, { type: WATCHED_ACTION, payload: {} }); // undoHistoryState populated
+    const state0 = unredo(state, mutatedState, newFSA(WATCHED_ACTION)); // undoHistoryState populated
     expect(state0.undoHistoryState).toEqual(hist1);
 
     // Expect undo to change a subset of data and change history state

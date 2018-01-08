@@ -82,7 +82,7 @@ type Props = {
   openNotification: (string, NotificationOptions) => void,
   undo: () => void,
   redo: () => void,
-  popUndoHistory: () => void,
+  popUndoHistory: boolean => void,
 };
 
 type State = {
@@ -171,7 +171,7 @@ class TimetableContent extends Component<Props, State> {
             // Discard one past history instance if the undo to reach
             // that instance has disappeared forever.
             willClose: (discarded: boolean, actionClicked: boolean) => {
-              if (discarded && !actionClicked) this.props.popUndoHistory();
+              if (discarded && !actionClicked) this.props.popUndoHistory(true);
             },
           });
         }}

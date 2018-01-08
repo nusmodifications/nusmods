@@ -3,7 +3,7 @@ import type { FSA } from 'types/redux';
 
 import { pick, takeRight, set, get } from 'lodash';
 import { UNDO, REDO, POP_UNDO_HISTORY } from 'actions/undoHistory';
-import { difference, undoDifference } from 'utils/difference';
+import { difference, redoDifference } from 'utils/difference';
 
 export type UndoHistoryConfig = {
   reducerName: string,
@@ -31,7 +31,7 @@ const initialState: UndoHistoryState = {
 // doesn't need to know that.
 export function computeUndoStacks<T: Object>(
   state: UndoHistoryState = initialState,
-  actionType: string,
+  action: FSA,
   previousAppState: T,
   presentAppState: T,
   config: UndoHistoryConfig,
@@ -39,7 +39,7 @@ export function computeUndoStacks<T: Object>(
   const { past, present, future } = state;
 
   // If action is undo/redoable, store state
-  if (config.actionsToWatch.includes(actionType)) {
+  if (config.actionsToWatch.includes(action.type)) {
     // Append present to past, and drop history past config.limit
     // Limit only enforced here since undo/redo only shift the history around without adding new history
     const appendedPast = [...past, present || pick(previousAppState, config.keyPathsToPersist)];
@@ -52,7 +52,7 @@ export function computeUndoStacks<T: Object>(
     };
   }
 
-  switch (actionType) {
+  switch (action.type) {
     case UNDO: {
       // Abort if no past, or present is unknown
       if (past.length === 0 || !present) return state;
@@ -79,13 +79,14 @@ export function computeUndoStacks<T: Object>(
       // Abort if no past, or present is unknown
       if (past.length === 0 || !present) return state;
 
-      // Simple pop if only 1 past
+      // Simple pop if only 1 past or propagate diff disabled
       const truncatedPast = past.slice(0, past.length - 1);
-      if (past.length === 1) return { ...state, past: truncatedPast };
+      if (past.length === 1 || !action.payload.propagateDiff)
+        return { ...state, past: truncatedPast };
 
       const previous = past[past.length - 1];
       const diff = difference(previous, present);
-      const newPast = truncatedPast.map((pastState) => undoDifference(pastState, diff));
+      const newPast = truncatedPast.map((pastState) => redoDifference(pastState, diff));
       return { ...state, past: newPast };
     }
     default: {
@@ -112,7 +113,7 @@ export default function undoHistory(config: UndoHistoryConfig) {
     const undoHistoryState = presentState[config.reducerName];
     const updatedHistory = computeUndoStacks(
       undoHistoryState,
-      action.type,
+      action,
       previousState,
       presentState,
       config,
