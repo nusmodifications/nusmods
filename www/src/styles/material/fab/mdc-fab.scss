@@ -1,5 +1,4 @@
-//
-// Copyright 2017 Google Inc. All Rights Reserved.
+// Copyright 2016 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,11 +11,20 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
 
-@import "variable-overrides";
+/* stylelint-disable */
 
-// Hacking our own version of the FAB styles until https://github.com/MadLittleMods/postcss-css-variables/issues/62
-// is fixed - the
-@import "fab/mdc-fab";
-@import "~@material/snackbar/mdc-snackbar";
+//@import "~@material/ripple/mixins";
+@import "~@material/ripple/variables";
+@import "mixins";
+
+// postcss-bem-linter: define fab
+
+.mdc-fab {
+  @include mdc-fab-base_;
+  @include mdc-fab-container-color(secondary);
+  @include mdc-fab-ink-color(text-primary-on-secondary);
+  // @include mdc-states(text-primary-on-secondary);
+}
+
+// postcss-bem-linter: end
