@@ -1,6 +1,5 @@
 // @flow
 import React, { Component, Fragment } from 'react';
-import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import Helmet from 'react-helmet';
 import classnames from 'classnames';
@@ -9,7 +8,6 @@ import qs from 'query-string';
 import Raven from 'raven-js';
 import { pick, mapValues, size, isEqual, get } from 'lodash';
 
-import type { MapStateToProps } from 'react-redux';
 import type { ContextRouter } from 'react-router-dom';
 import type { Venue, VenueDetailList, VenueInfo, VenueSearchOptions } from 'types/venues';
 
@@ -38,7 +36,6 @@ import styles from './VenuesContainer.scss';
 
 type Props = {
   ...ContextRouter,
-  urlVenue: ?Venue,
   matchBreakpoint: boolean,
 };
 
@@ -46,9 +43,6 @@ type State = {|
   loading: boolean,
   error?: any,
   venues: ?VenueDetailList,
-
-  // Selected venue
-  selectedVenue: ?Venue,
 
   // Search state
   searchTerm: string,
@@ -72,17 +66,15 @@ export class VenuesContainerComponent extends Component<Props, State> {
     const { location, history } = props; // eslint-disable-line react/prop-types
 
     const params = qs.parse(location.search);
-    const selectedVenue = this.props.urlVenue;
 
     // Extract searchOptions from the query string if they are present
-    const isAvailabilityEnabled = params.time && params.day && params.duration;
+    const isAvailabilityEnabled = !!(params.time && params.day && params.duration);
     const searchOptions = isAvailabilityEnabled
       ? mapValues(pick(params, ['time', 'day', 'duration']), (i) => parseInt(i, 10))
       : defaultSearchOptions();
 
     this.history = new HistoryDebouncer(history);
     this.state = {
-      selectedVenue,
       searchOptions,
       isAvailabilityEnabled,
       loading: true,
@@ -104,12 +96,6 @@ export class VenuesContainerComponent extends Component<Props, State> {
         Raven.captureException(error);
         this.setState({ error });
       });
-  }
-
-  componentWillReceiveProps(nextProps: Props) {
-    if (nextProps.urlVenue) {
-      this.setState({ selectedVenue: nextProps.urlVenue });
-    }
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
@@ -143,13 +129,13 @@ export class VenuesContainerComponent extends Component<Props, State> {
   };
 
   updateURL = (debounce: boolean = true) => {
-    const { searchTerm, isAvailabilityEnabled, searchOptions, selectedVenue } = this.state;
+    const { searchTerm, isAvailabilityEnabled, searchOptions } = this.state;
     let query = {};
 
     if (searchTerm) query.q = searchTerm;
     if (isAvailabilityEnabled) query = { ...query, ...searchOptions };
 
-    const pathname = venuePage(selectedVenue);
+    const pathname = venuePage(this.selectedVenue());
     const history = debounce ? this.history : this.props.history;
     history.push({
       ...this.props.location,
@@ -157,6 +143,12 @@ export class VenuesContainerComponent extends Component<Props, State> {
       pathname,
     });
   };
+
+  selectedVenue(): ?Venue {
+    const { match: { params } } = this.props; // eslint-disable-line react/prop-types
+    if (!params.venue) return null;
+    return decodeURIComponent(params.venue);
+  }
 
   renderSearch() {
     const { searchTerm, isAvailabilityEnabled, searchOptions } = this.state;
@@ -226,7 +218,8 @@ export class VenuesContainerComponent extends Component<Props, State> {
   }
 
   renderSelectedVenue(matchedVenues: VenueDetailList) {
-    const { venues, selectedVenue } = this.state;
+    const selectedVenue = this.selectedVenue();
+    const { venues } = this.state;
     if (!venues || !selectedVenue) return null;
 
     // Find the index of the current venue on the list of matched venues so
@@ -237,7 +230,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
     );
 
     // The selected item may not be in the list of matched venues (if the user
-    // changed their search options afterwards, in which case we look for it in all
+    // changed their search options afterwards), in which case we look for it in all
     // venues
     if (venueIndex === -1) {
       const venueDetail = venues.find(([venue]) => venue.toLowerCase() === lowercaseSelectedVenue);
@@ -255,15 +248,8 @@ export class VenuesContainerComponent extends Component<Props, State> {
   }
 
   render() {
-    const {
-      searchTerm,
-      loading,
-      error,
-      isAvailabilityEnabled,
-      searchOptions,
-      selectedVenue,
-      venues,
-    } = this.state;
+    const selectedVenue = this.selectedVenue();
+    const { searchTerm, loading, error, isAvailabilityEnabled, searchOptions, venues } = this.state;
 
     if (error) {
       return <ErrorPage error="cannot load venues info" eventId={Raven.lastEventId()} />;
@@ -321,20 +307,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
   }
 }
 
-export const mapStateToProps: MapStateToProps<*, *, *> = (state, ownProps) => {
-  let venue: Venue = ownProps.match.params.venue;
-  if (venue) {
-    venue = decodeURIComponent(venue);
-  }
-
-  return {
-    ...ownProps, // To silence a Flow error
-    urlVenue: venue,
-  };
-};
-
 // Explicitly declare top level components for React hot reloading to work.
 const responsiveVenueContainer = makeResponsive(VenuesContainerComponent, breakpointDown('sm'));
-const connectedVenuesContainer = connect(mapStateToProps)(responsiveVenueContainer);
-const routedVenuesContainer = withRouter(connectedVenuesContainer);
+const routedVenuesContainer = withRouter(responsiveVenueContainer);
 export default deferComponentRender(routedVenuesContainer);

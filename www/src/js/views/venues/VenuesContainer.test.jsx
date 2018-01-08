@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import { mount, shallow } from 'enzyme';
+import qs from 'query-string';
 
 import type { Venue, VenueDetailList } from 'types/venues';
 
@@ -8,17 +9,17 @@ import venueInfo from '__mocks__/venueInformation.json';
 import createHistory from 'test-utils/createHistory';
 import mockDom from 'test-utils/mockDom';
 import { sortVenues } from 'utils/venues';
-import { VenuesContainerComponent, mapStateToProps } from './VenuesContainer';
+import { venuePage } from 'views/routes/paths';
+import { VenuesContainerComponent } from './VenuesContainer';
 
-function createComponent(urlVenue: ?Venue) {
-  return mount(
-    <VenuesContainerComponent
-      urlVenue={urlVenue}
-      activeSemester={1}
-      {...createHistory()}
-      matchBreakpoint
-    />,
-  );
+function createComponent(selectedVenue: ?Venue, search?: string) {
+  const location = {
+    search,
+    pathname: venuePage(selectedVenue),
+  };
+  const match = { params: { venue: selectedVenue } };
+
+  return mount(<VenuesContainerComponent {...createHistory(location, match)} matchBreakpoint />);
 }
 
 const venues = sortVenues(venueInfo);
@@ -29,74 +30,100 @@ describe('VenuesContainer', () => {
   });
 
   describe('URL handling', () => {
-    test('it should select venue in URL if present and appropriate', () => {
-      const component = createComponent('Interwebs');
-      const instance = component.instance();
-
-      // Select URL venue on init
-      expect(instance.state.selectedVenue).toEqual('Interwebs');
-
-      // Select URL venue when changed
-      component.setProps({ urlVenue: 'covFEFE' });
-      expect(instance.state.selectedVenue).toEqual('covFEFE');
-    });
-
-    test('it should neither select nor filter if no venue is present in URL', () => {
+    test('should not select or filter if no venue is present in URL', () => {
       const component = createComponent();
-      const instance = component.instance();
 
-      // No URL on init
-      expect(instance.state.searchTerm).toEqual('');
-      expect(instance.state.selectedVenue).toEqual(undefined);
+      // Check that search and availability search is not enabled
+      expect(component.state('searchTerm')).toEqual('');
+      expect(component.state('isAvailabilityEnabled')).toBe(false);
 
-      // No URL on props set
       component.setProps({
         history: { action: 'POP' },
-        urlVenue: undefined, // No react-router match
+        selectedVenue: undefined, // No react-router match
       });
-      expect(instance.state.searchTerm).toEqual('');
-      expect(instance.state.selectedVenue).toEqual(undefined);
+
+      // Check that search and availability search is not enabled after navigation
+      expect(component.state('searchTerm')).toEqual('');
+      expect(component.state('isAvailabilityEnabled')).toBe(false);
+    });
+
+    test('initialize search based on params', () => {
+      const component = createComponent(null, '?q=hello+world');
+      expect(component.state('searchTerm')).toEqual('hello world');
+      expect(component.state('isAvailabilityEnabled')).toBe(false);
+    });
+
+    test('initialize filters based on params', () => {
+      const component = createComponent(null, '?day=1&time=9&duration=1');
+      expect(component.state()).toMatchObject({
+        searchOptions: {
+          day: 1,
+          time: 9,
+          duration: 1,
+        },
+        isAvailabilityEnabled: true,
+      });
     });
   });
 
   describe('#updateURL()', () => {
-    test('it should update URL query', () => {
-      const wrapper = createComponent();
-      const instance = wrapper.instance();
+    const getQueryParams = (wrapper) => qs.parse(wrapper.props().history.location.search);
 
-      instance.setState({ searchTerm: 'covfefe' });
+    test('it should update search query', () => {
+      const wrapper = createComponent();
 
       // Should set query string
-      expect(instance.props.history.location.search).toBe('?q=covfefe');
+      wrapper.setState({ searchTerm: 'covfefe' });
+      expect(getQueryParams(wrapper)).toEqual({ q: 'covfefe' });
 
       // Should decode special chars
-      instance.setState({ searchTerm: 'Cdat/overThar1!' });
-      wrapper.setProps({ location: instance.props.history.location });
-      expect(instance.props.history.location.search).toBe('?q=Cdat%2FoverThar1%21');
+      wrapper.setState({ searchTerm: 'Cdat/overThar1!' });
+      expect(wrapper.props()).toHaveProperty('history.location.search', '?q=Cdat%2FoverThar1%21');
 
       // Should clear query string
-      instance.setState({ searchTerm: '' });
-      wrapper.setProps({ location: instance.props.history.location });
-      expect(instance.props.history.location.search).toBe('');
+      wrapper.setState({ searchTerm: '' });
+      expect(getQueryParams(wrapper)).toEqual({});
+    });
+
+    test('it should update search options', () => {
+      const wrapper = createComponent();
+
+      wrapper.setState({
+        searchOptions: {
+          day: 1,
+          time: 9,
+          duration: 1,
+        },
+        isAvailabilityEnabled: true,
+      });
+
+      expect(getQueryParams(wrapper)).toEqual({
+        day: '1',
+        time: '9',
+        duration: '1',
+      });
+
+      // Switching availability search off should clear params
+      wrapper.setState({
+        isAvailabilityEnabled: false,
+      });
+      expect(getQueryParams(wrapper)).toEqual({});
     });
   });
 
   describe('#renderSelectedVenue', () => {
     const getVenueDetail = (selectedVenue: ?Venue, matched: VenueDetailList = venues) => {
-      const instance = createComponent().instance();
-      instance.setState({ venues, selectedVenue });
-      return shallow(instance.renderSelectedVenue(matched));
+      const instance = createComponent(selectedVenue).instance();
+      instance.setState({ venues });
+      return instance.renderSelectedVenue(matched);
     };
 
     test('not render when there is no selected venue', () => {
-      const instance = createComponent().instance();
-      instance.setState({ venues });
-
-      expect(instance.renderSelectedVenue(venues)).toBeNull();
+      expect(getVenueDetail(null)).toBeNull();
     });
 
     test('render when a venue is selected', () => {
-      expect(getVenueDetail('LT17').props()).toMatchObject({
+      expect(shallow(getVenueDetail('LT17')).props()).toMatchObject({
         venue: 'LT17',
         availability: venueInfo.LT17,
         previous: 'lt2',
@@ -104,7 +131,7 @@ describe('VenuesContainer', () => {
       });
 
       const LTs = venues.filter(([venue]) => venue.includes('LT'));
-      expect(getVenueDetail('LT17', LTs).props()).toMatchObject({
+      expect(shallow(getVenueDetail('LT17', LTs)).props()).toMatchObject({
         venue: 'LT17',
         availability: venueInfo.LT17,
         previous: 'LT1',
@@ -113,25 +140,12 @@ describe('VenuesContainer', () => {
     });
 
     test('render when a venue is selected, and it is not in the list of matched venues', () => {
-      const wrapper = createComponent();
-      const instance = wrapper.instance();
-
-      instance.setState({ venues, selectedVenue: 'LT17' });
-      const venueDetail = shallow(instance.renderSelectedVenue([]));
+      const venueDetail = shallow(getVenueDetail('LT17', []));
 
       expect(venueDetail.props()).toMatchObject({
         venue: 'LT17',
         availability: venueInfo.LT17,
       });
     });
-  });
-
-  test('#mapStateToProps() should set semester and decode URL venue', () => {
-    const state = { app: { activeSemester: 1 } };
-    const ownProps: any = { match: { params: { venue: 'Cdat%2FoverThar1%21' } } };
-    const mappedProps = mapStateToProps(state, ownProps);
-    expect(mappedProps).toMatchObject(ownProps);
-    // Should decode urlVenue
-    expect(mappedProps).toHaveProperty('urlVenue', 'Cdat/overThar1!');
   });
 });
