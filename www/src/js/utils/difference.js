@@ -6,8 +6,8 @@ const DIFF_OBJ = 'DIFF_OBJ';
 
 export type PathDiff = {
   type: 'DIFF_PATH',
-  previous: Object,
-  next: Object,
+  previous: any,
+  next: any,
 };
 
 export type ObjectDiff = {
@@ -20,22 +20,22 @@ export type ObjectDiff = {
 /*
  * Deep diff between two object, using lodash
  * Based on https://gist.github.com/Yimiprod/7ee176597fef230d1451
- * @param  {Object} object Object compared
- * @param  {Object} base   Object to compare with
+ * @param  {Object}   base   Object to compare with
+ * @param  {Object}   object Object compared
+ * @param  {Function} diffFn `difference` function. Passed in to avoid linting errors
  * @return {Object}        Return a new object who represent the diff
  */
-function changes(base: Object, object: Object, diffFn: Function): Object {
-  return transform(object, (result: Object, value: Object, key: string) => {
-    if (!isEqual(value, base[key])) {
-      // eslint-disable-next-line no-param-reassign
-      result[key] =
-        isObject(value) &&
-        isObject(base[key]) &&
-        !(value instanceof Array) &&
-        !(base[key] instanceof Array)
-          ? diffFn(base[key], value)
-          : { type: DIFF_PATH, previous: base[key], next: value };
-    }
+function changes(base: Object, object: Object, diffFn: (Object, Object) => ObjectDiff): Object {
+  return transform(object, (result: Object, value: any, key: any) => {
+    if (isEqual(value, base[key])) return;
+    // eslint-disable-next-line no-param-reassign
+    result[key] =
+      isObject(value) &&
+      isObject(base[key]) &&
+      !(value instanceof Array) &&
+      !(base[key] instanceof Array)
+        ? diffFn(base[key], value)
+        : { type: DIFF_PATH, previous: base[key], next: value };
   });
 }
 
@@ -48,56 +48,39 @@ export function difference(base: Object, object: Object): ObjectDiff {
   };
 }
 
-// Revert object back to base using diff
-export function undoDifference(object: Object, diff: ObjectDiff) {
-  let base = object;
-
-  // Remove added keys
-  base = omit(base, Object.keys(diff.added));
-
-  // Add deleted keys back
-  base = merge(base, diff.deleted);
-
-  // Apply PathDiffs here and ObjectDiffs recursively
-  base = mapValues(base, (value: PathDiff | ObjectDiff, key: string) => {
-    if (!(key in diff.changed)) return value;
-    const valueDiff = diff.changed[key];
-    switch (valueDiff.type) {
-      case DIFF_PATH:
-        return valueDiff.previous;
-      case DIFF_OBJ:
-        return undoDifference(value, valueDiff);
-      default:
-        return value;
-    }
-  });
-
-  return base;
-}
-
-// Revert object back from base using diff
-export function redoDifference(base: Object, diff: ObjectDiff) {
+// Revert object back to base OR base back to object using diff
+function applyDifference(base: Object, diff: ObjectDiff, isUndo: boolean) {
   let object = base;
 
-  // Remove deleted keys
-  object = omit(object, Object.keys(diff.deleted));
+  // Undo: remove added keys; Redo: remove deleted keys
+  object = omit(object, Object.keys(isUndo ? diff.added : diff.deleted));
 
-  // Add added keys back
-  object = merge(object, diff.added);
+  // Undo: add deleted keys back; Redo: add added keys back
+  object = merge(object, isUndo ? diff.deleted : diff.added);
 
   // Apply PathDiffs here and ObjectDiffs recursively
-  object = mapValues(object, (value: PathDiff | ObjectDiff, key: string) => {
+  object = mapValues(object, (value: PathDiff | ObjectDiff, key: any) => {
     if (!(key in diff.changed)) return value;
     const valueDiff = diff.changed[key];
     switch (valueDiff.type) {
       case DIFF_PATH:
-        return valueDiff.next;
+        return isUndo ? valueDiff.previous : valueDiff.next;
       case DIFF_OBJ:
-        return redoDifference(value, valueDiff);
+        return applyDifference(value, valueDiff, isUndo);
       default:
         return value;
     }
   });
 
   return object;
+}
+
+// Convenience function
+export function undoDifference(object: Object, diff: ObjectDiff) {
+  return applyDifference(object, diff, true);
+}
+
+// Convenience function
+export function redoDifference(base: Object, diff: ObjectDiff) {
+  return applyDifference(base, diff, false);
 }

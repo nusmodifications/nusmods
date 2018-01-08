@@ -163,14 +163,11 @@ class TimetableContent extends Component<Props, State> {
             priority: true,
             action: {
               text: 'Undo',
-              handler: () => {
-                this.props.undo();
-                return true;
-              },
+              handler: () => this.props.undo(),
             },
-            // Discard one past history instance if the undo to reach
-            // that instance has disappeared forever.
             willClose: (discarded: boolean, actionClicked: boolean) => {
+              // Discard one past history instance if the undo to reach
+              // that instance has disappeared forever.
               if (discarded && !actionClicked) this.props.popUndoHistory(true);
             },
           });

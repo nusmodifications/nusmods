@@ -142,10 +142,7 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
                   priority: true,
                   action: {
                     text: 'Undo',
-                    handler: () => {
-                      this.props.undo();
-                      return true;
-                    },
+                    handler: () => this.props.undo(),
                   },
                 });
               }}
