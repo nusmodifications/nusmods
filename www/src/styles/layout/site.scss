@@ -1,12 +1,18 @@
 // This file contains the styles for the overall site
-html,
-body,
-#app,
-.app-container {
-  // Ensures the page always fill the height of the page. Combined with the
-  // flexbox on .app-container, this allows the footer to be aligned to the
-  // page bottom when there's insufficient page content
-  height: 100%;
+
+// A bit of a hack to avoid this style triggering on Safari 9, but also because
+// it isn't really necessary on small screens since we only need this when the
+// viewport is taller than the page
+@include media-breakpoint-up(md) {
+  html,
+  body,
+  #app,
+  .app-container {
+    // Ensures the page always fill the height of the page. Combined with the
+    // flexbox on .app-container, this allows the footer to be aligned to the
+    // page bottom when there's insufficient page content
+    height: 100%;
+  }
 }
 
 body {
