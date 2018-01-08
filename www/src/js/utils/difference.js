@@ -24,7 +24,7 @@ export type ObjectDiff = {
  * @param  {Object} base   Object to compare with
  * @return {Object}        Return a new object who represent the diff
  */
-function changes(object: Object, base: Object, diffFn: Function): Object {
+function changes(base: Object, object: Object, diffFn: Function): Object {
   return transform(object, (result: Object, value: Object, key: string) => {
     if (!isEqual(value, base[key])) {
       // eslint-disable-next-line no-param-reassign
@@ -33,18 +33,18 @@ function changes(object: Object, base: Object, diffFn: Function): Object {
         isObject(base[key]) &&
         !(value instanceof Array) &&
         !(base[key] instanceof Array)
-          ? diffFn(value, base[key])
+          ? diffFn(base[key], value)
           : { type: DIFF_PATH, previous: base[key], next: value };
     }
   });
 }
 
-export function difference(object: Object, base: Object): ObjectDiff {
+export function difference(base: Object, object: Object): ObjectDiff {
   return {
     type: DIFF_OBJ,
     deleted: omit(base, Object.keys(object)),
     added: omit(object, Object.keys(base)),
-    changed: changes(object, base, difference),
+    changed: changes(base, object, difference),
   };
 }
 

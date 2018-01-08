@@ -37,14 +37,14 @@ const object = {
 
 describe('#difference()', () => {
   test('should compute all deleted, added and changed object key paths', () => {
-    const diff = difference(object, base);
+    const diff = difference(base, object);
     expect(diff).toMatchSnapshot();
   });
 });
 
 describe('#undoDifference()', () => {
   test('should undo all differences', () => {
-    const diff = difference(object, base);
+    const diff = difference(base, object);
     const generatedBase = undoDifference(object, diff);
     expect(generatedBase).toEqual(base);
   });
@@ -52,7 +52,7 @@ describe('#undoDifference()', () => {
 
 describe('#redoDifference()', () => {
   test('should redo all differences', () => {
-    const diff = difference(object, base);
+    const diff = difference(base, object);
     const generatedObject = redoDifference(base, diff);
     expect(generatedObject).toEqual(object);
   });
