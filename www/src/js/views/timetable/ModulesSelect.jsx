@@ -58,6 +58,13 @@ class ModulesSelect extends Component<Props, State> {
   onFocus = () => this.openSelect();
   onOuterClick = () => this.closeSelect();
 
+  onKeyDown = (event) => {
+    if (event.key === 'Escape') {
+      this.closeSelect();
+      event.target.blur();
+    }
+  };
+
   closeSelect = () => {
     this.setState({
       isOpen: false,
@@ -113,6 +120,7 @@ class ModulesSelect extends Component<Props, State> {
             onFocus: this.onFocus,
             onBlur: this.onBlur,
             onChange: this.onInputChange,
+            onKeyDown: this.onKeyDown,
           })}
         />
         {showResults && (
