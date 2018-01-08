@@ -148,7 +148,7 @@ export class NotificationComponent extends Component<Props, State> {
                     this.setState({ actionClicked: true });
                     const action = shownNotification.action;
                     // Don't auto-close if handler returns false
-                    if (!action || !action.handler || !action.handler()) return;
+                    if (!action || !action.handler || action.handler()) return;
                     this.props.popNotification();
                   }}
                 >
