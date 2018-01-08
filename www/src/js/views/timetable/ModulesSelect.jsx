@@ -183,6 +183,7 @@ class ModulesSelect extends Component<Props, State> {
         inputValue={this.state.inputValue}
         isOpen={this.state.isOpen}
         selectedItem={this.state.selectedItem}
+        defaultHighlightedIndex={0}
       />
     );
 
