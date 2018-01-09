@@ -27,7 +27,6 @@ import { breakpointDown } from 'utils/css';
 import { defer } from 'utils/react';
 import makeResponsive from 'views/hocs/makeResponsive';
 import Modal from 'views/components/Modal';
-import CloseButton from 'views/components/CloseButton';
 
 import AvailabilitySearch, { defaultSearchOptions } from './AvailabilitySearch';
 import VenueList from './VenueList';
@@ -290,8 +289,14 @@ export class VenuesContainerComponent extends Component<Props, State> {
             isOpen={selectedVenue != null}
             onRequestClose={this.onClearVenueSelect}
             className={styles.venueDetailModal}
+            fullscreen
           >
-            <CloseButton className={styles.closeButton} onClick={this.onClearVenueSelect} />
+            <button
+              className={classnames('btn btn-link btn-block', styles.closeButton)}
+              onClick={this.onClearVenueSelect}
+            >
+              Back to Venues
+            </button>
             {this.renderSelectedVenue(matchedVenues)}
           </Modal>
         ) : (

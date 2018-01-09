@@ -1,48 +1,67 @@
 @import "~styles/utils/modules-entry.scss";
 
-.pageContainer {
-  $gutter: $grid-gutter-width / 2;
-  $sticky-top: $navbar-height + 1rem;
+$gutter: $grid-gutter-width / 2;
+$sticky-top: $navbar-height + 1rem;
 
+// Layout for venues page is
+// - On md and above - Outlook style two panel UI with the venue list on the left
+//   and venue detail on the right
+// - On sm and below - Single column venue list, with the venue detail appearing
+//   in a modal when venue is selected
+.pageContainer {
   display: flex;
   align-items: flex-start;
 
   :global {
     animation-name: $page-entering-animation;
   }
+}
 
+.venuesList {
+  flex: 1 auto;
+}
+
+.venueDetail {
+  composes: scrollable-y from global;
+}
+
+@include media-breakpoint-up(md) {
   .venuesList {
-    flex: 1 auto;
+    flex: 0 0 16rem;
+    align-self: stretch;
+    margin-right: $gutter;
+    border-right: 1px solid var(--gray-lighter);
   }
 
-  @include media-breakpoint-up(md) {
-    .venuesList {
-      flex: 0 0 16rem;
-      align-self: stretch;
-      margin-right: $gutter;
-      border-right: 1px solid var(--gray-lighter);
-    }
+  .venueDetail {
+    position: sticky;
+    top: $sticky-top;
+    bottom: 0;
+    flex: 1 1 auto;
+    max-height: calc(100vh - #{$sticky-top});
+    padding-right: $gutter;
+    margin-right: -$gutter;
+    overflow: auto;
+  }
+}
 
-    .venueDetail {
-      position: sticky;
-      top: $sticky-top;
-      bottom: 0;
-      flex: 1 1 auto;
-      max-height: calc(100vh - #{$sticky-top});
-      padding-right: $gutter;
-      margin-right: -$gutter;
-      overflow: auto;
-    }
+@media (min-width: 90rem) {
+  .venuesList {
+    flex: 1 1 auto;
   }
 
-  @include media-breakpoint-up(xl) {
-    .venuesList {
-      flex: 1 1 auto;
-    }
+  .venueDetail {
+    flex: 0 0 60rem;
+  }
+}
 
-    .venueDetail {
-      flex: 0 0 60rem;
-    }
+.venueDetailModal {
+  padding: 0;
+
+  .closeButton {
+    padding: 0.5rem 0;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(theme-color(), 0.5);
   }
 }
 
@@ -65,20 +84,11 @@
 }
 
 .availabilitySearch {
-  padding: $border-radius 1rem 1rem;
+  padding: ($border-radius + 0.2rem) 1rem 1rem;
   margin-top: -$border-radius;
   border: 1px solid theme-color();
   border-width: 0 1px 1px;
   border-radius: 0 0 $border-radius $border-radius;
-}
-
-.venueDetailModal {
-  padding-right: 0;
-  padding-left: 0;
-}
-
-.closeButton {
-  margin-right: 1rem;
 }
 
 .noVenueSelected {
