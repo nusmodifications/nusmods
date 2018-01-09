@@ -32,6 +32,8 @@ function create(
   const selectSemester = jest.fn();
   const setTimetable = jest.fn();
   const fetchTimetableModules = jest.fn();
+  const openNotification = jest.fn();
+  const undo = jest.fn();
 
   return {
     selectSemester,
@@ -50,6 +52,8 @@ function create(
         selectSemester={selectSemester}
         setTimetable={setTimetable}
         fetchTimetableModules={fetchTimetableModules}
+        openNotification={openNotification}
+        undo={undo}
         {...router}
       />,
     ),

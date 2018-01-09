@@ -62,15 +62,23 @@ function app(state: AppState = defaultAppState(), action: FSA): AppState {
           };
         }
 
-        // Since the current item cannot give way, we discard the current
-        // item if it can be discarded
+        // Since the displayed item cannot give way, we
+        // discard the new item if possible
         if (action.payload.overwritable) {
           return state;
         }
 
-        // Fallback to queuing the next item up
+        // Since both can't be discarded, priority notification
+        // gets displayed immediately
+        if (action.payload.priority) {
+          return {
+            ...state,
+            notifications: [action.payload, ...state.notifications],
+          };
+        }
       }
 
+      // Fallback to queuing the next item up
       return {
         ...state,
         notifications: [...state.notifications, action.payload],
