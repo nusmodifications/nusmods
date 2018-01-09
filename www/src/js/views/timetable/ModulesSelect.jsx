@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import _ from 'lodash';
+import { has } from 'lodash';
 import Downshift from 'downshift';
 import classnames from 'classnames';
 
@@ -40,7 +40,7 @@ class ModulesSelect extends Component<Props, State> {
   };
 
   onStateChange = (changes: any) => {
-    if (_.has(changes, 'selectedItem')) {
+    if (has(changes, 'selectedItem')) {
       this.props.onChange(changes.selectedItem);
     }
   };
@@ -103,7 +103,7 @@ class ModulesSelect extends Component<Props, State> {
     const { isModalOpen } = this.state;
     const results = this.getFilteredModules(inputValue);
     const showResults = isOpen && results.length > 0;
-    const showTip = isOpen && !results.length;
+    const showTip = isModalOpen && !results.length;
     const showNoResultMessage = isOpen && inputValue && !results.length;
 
     return (
@@ -134,7 +134,7 @@ class ModulesSelect extends Component<Props, State> {
                       [styles.optionSelected]: highlightedIndex === index,
                     })}
                   >
-                    {`${module.ModuleCode} ${module.ModuleTitle}`}
+                    {module.ModuleCode} {module.ModuleTitle}
                     <div>
                       <span className="badge badge-info">Added</span>
                     </div>
@@ -150,7 +150,7 @@ class ModulesSelect extends Component<Props, State> {
                       [styles.optionSelected]: highlightedIndex === index,
                     })}
                   >
-                    {`${module.ModuleCode} ${module.ModuleTitle}`}
+                    {module.ModuleCode} {module.ModuleTitle}
                   </li>
                 ),
             )}
