@@ -91,7 +91,7 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
 
   render() {
     const { ModulePageContent, error } = this.state;
-    const { module, moduleCode, match } = this.props;
+    const { module, moduleCode, match, location } = this.props;
 
     if (!this.doesModuleExist(moduleCode)) {
       return <NotFoundPage />;
@@ -102,7 +102,14 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
     }
 
     if (module && match.url !== this.canonicalUrl()) {
-      return <Redirect to={this.canonicalUrl()} />;
+      return (
+        <Redirect
+          to={{
+            ...location,
+            pathname: this.canonicalUrl(),
+          }}
+        />
+      );
     }
 
     if (module && ModulePageContent) {

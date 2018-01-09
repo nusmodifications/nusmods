@@ -10,7 +10,10 @@
 
   hr {
     clear: both;
-    margin-bottom: 2rem;
+  }
+
+  h4 {
+    padding-top: $navbar-height;
   }
 
   // Styles nested for specificity
@@ -31,7 +34,7 @@
 }
 
 .title {
-  margin: 1rem 0 4rem;
+  margin: 1rem 0 0;
   font-size: $font-size-xlg;
 }
 
