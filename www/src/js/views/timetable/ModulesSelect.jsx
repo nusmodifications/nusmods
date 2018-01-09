@@ -134,7 +134,9 @@ class ModulesSelect extends Component<Props, State> {
                       [styles.optionSelected]: highlightedIndex === index,
                     })}
                   >
-                    {module.ModuleCode} {module.ModuleTitle}
+                    {/* Using interpolated string instead of JSX because of iOS Safari
+                        bug that drops the whitespace between the module code and title */}
+                    {`${module.ModuleCode} ${module.ModuleTitle}`}
                     <div>
                       <span className="badge badge-info">Added</span>
                     </div>
@@ -150,7 +152,9 @@ class ModulesSelect extends Component<Props, State> {
                       [styles.optionSelected]: highlightedIndex === index,
                     })}
                   >
-                    {module.ModuleCode} {module.ModuleTitle}
+                    {/* Using interpolated string instead of JSX because of iOS Safari
+                        bug that drops the whitespace between the module code and title */}
+                    {`${module.ModuleCode} ${module.ModuleTitle}`}
                   </li>
                 ),
             )}
