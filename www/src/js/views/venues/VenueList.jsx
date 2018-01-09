@@ -12,8 +12,12 @@ type Props = {
   onSelect: (Venue, string, HTMLElement) => void, // Called with venue name and venue URL (/venues/<venue>)
 };
 
-// $FlowFixMe: Flow doesn't have Intl typedefs https://github.com/facebook/flow/issues/1270
-const collator = new Intl.Collator('en', { sensitivity: 'base', numeric: true });
+const stringCompare =
+  // Feature detect Intl API
+  window.Intl && typeof window.Intl === 'object'
+    ? // $FlowFixMe: Flow doesn't have Intl typedefs https://github.com/facebook/flow/issues/1270
+      new Intl.Collator('en', { sensitivity: 'base', numeric: true }).compare
+    : (a, b) => a.localeCompare(b);
 
 export default function VenueList(props: Props) {
   const rowRefs: { [Venue]: HTMLElement } = {};
@@ -21,7 +25,7 @@ export default function VenueList(props: Props) {
   const lowercaseExpandedVenue = expandedVenue.toLowerCase();
 
   // Case-insensitive, natural sort of venue names
-  const sortedVenueNames = Object.keys(venues).sort(collator.compare);
+  const sortedVenueNames = Object.keys(venues).sort(stringCompare);
 
   return (
     <ul className={styles.venueList}>
