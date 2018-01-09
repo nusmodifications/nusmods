@@ -13,11 +13,15 @@ import { SCHOOLDAYS } from './timify';
 // eg. 900 + hourDifference[2] // (9am + 2 * 30 minutes = 10am)
 const hourDifference = range(48).map((i) => Math.floor(i / 2) * 100 + (i % 2) * 30);
 
-// $FlowFixMe: Flow doesn't have Intl typedefs https://github.com/facebook/flow/issues/1270
-const collator = new Intl.Collator('en', { sensitivity: 'base', numeric: true });
+const stringCompare =
+  // Feature detect Intl API
+  window.Intl && typeof window.Intl === 'object'
+    ? // $FlowFixMe: Flow doesn't have Intl typedefs https://github.com/facebook/flow/issues/1270
+      new Intl.Collator('en', { sensitivity: 'base', numeric: true }).compare
+    : (a, b) => a.localeCompare(b);
 
 export function sortVenues(venues: VenueInfo): VenueDetailList {
-  return entries(venues).sort(([a], [b]) => collator.compare(a, b));
+  return entries(venues).sort(([a], [b]) => stringCompare(a, b));
 }
 
 export function searchVenue(venues: VenueDetailList, search: string): VenueDetailList {

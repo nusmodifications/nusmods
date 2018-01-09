@@ -39,15 +39,18 @@ function setSchedule(schedule: CorsRound[]) {
 
 function make(dismissedRounds: string[] = [], enabled: boolean = true) {
   const dismissCorsNotification = jest.fn();
+  const openNotification = jest.fn();
 
   return {
     dismissCorsNotification,
+    openNotification,
 
     wrapper: shallow(
       <CorsNotificationComponent
         enabled={enabled}
         dismissedRounds={dismissedRounds}
         dismissCorsNotification={dismissCorsNotification}
+        openNotification={openNotification}
         {...createHistory()}
       />,
     ),

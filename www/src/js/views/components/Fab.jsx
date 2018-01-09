@@ -1,7 +1,6 @@
 // @flow
 
 import React, { type Node } from 'react';
-import { Fab as ReactMaterialFab } from 'rmwc/Fab';
 import classnames from 'classnames';
 
 import styles from './Fab.scss';
@@ -14,7 +13,9 @@ type Props = {
 function Fab({ children, className, ...otherProps }: Props) {
   return (
     <div className={classnames(className, styles.fab)}>
-      <ReactMaterialFab {...otherProps}>{children}</ReactMaterialFab>
+      <button className="mdc-fab material-icons" {...otherProps}>
+        {children}
+      </button>
     </div>
   );
 }
