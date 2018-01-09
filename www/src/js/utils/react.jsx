@@ -70,6 +70,14 @@ export function wrapComponentName(Component: ComponentType, wrapper: string): st
   return `${wrapper}(${Component.displayName || Component.name || 'Component'})`;
 }
 
+/**
+ * Small utility function to scroll to an element with ID matching the URL hash if
+ * both are present.
+ *
+ * This mimics traditional webpage behavior and should be used in componentDidMount() when
+ * the component is not loaded on initial page load (ie. the element is not in the DOM when
+ * the page is initially loaded), but has content that can be linked to via hashes.
+ */
 export function scrollToHash() {
   const hash = window.location.hash;
   if (hash) {

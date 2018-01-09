@@ -3,11 +3,13 @@ import type { ContextRouter } from 'react-router-dom';
 
 import { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import { scrollToHash } from 'utils/react';
 
 type Props = {
   ...ContextRouter,
   onComponentWillMount: boolean,
   onPathChange: boolean,
+  scrollToHash: boolean,
 };
 
 function scrollToTop() {
@@ -19,11 +21,18 @@ export class ScrollToTopComponent extends Component<Props> {
   static defaultProps = {
     onComponentWillMount: false,
     onPathChange: false,
+    scrollToHash: true,
   };
 
   componentWillMount() {
     if (this.props.onComponentWillMount && !window.location.hash) {
       scrollToTop();
+    }
+  }
+
+  componentDidMount() {
+    if (this.props.scrollToHash) {
+      scrollToHash();
     }
   }
 
