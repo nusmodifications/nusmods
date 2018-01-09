@@ -1,49 +1,68 @@
 // @flow
 import React from 'react';
-import { mount } from 'enzyme';
+import { MemoryRouter } from 'react-router-dom';
+import { mount, type ReactWrapper } from 'enzyme';
 import mockDom from 'test-utils/mockDom';
 
-import { ScrollToTopComponent } from './ScrollToTop';
+import ScrollToTop, { ScrollToTopComponent } from './ScrollToTop';
+
+type Props = {
+  onComponentWillMount?: boolean,
+  onPathChange?: boolean,
+};
 
 describe('ScrollToTopComponent', () => {
   beforeEach(() => {
     mockDom();
   });
 
+  function make({ onComponentWillMount, onPathChange }: Props = {}) {
+    return mount(
+      <MemoryRouter>
+        <ScrollToTop onComponentWillMount={onComponentWillMount} onPathChange={onPathChange} />
+      </MemoryRouter>,
+    );
+  }
+
+  function getHistory(wrapper: ReactWrapper) {
+    return wrapper.find(ScrollToTopComponent).prop('history');
+  }
+
   test('default behavior does not to anything', () => {
-    mount(<ScrollToTopComponent />);
+    make();
     expect(window.scrollTo).not.toHaveBeenCalled();
   });
 
   test('onComponentWillMount attribute behaves correctly', () => {
-    mount(<ScrollToTopComponent onComponentWillMount />);
+    make({ onComponentWillMount: true });
     expect(window.scrollTo).toHaveBeenCalledWith(0, 0);
   });
 
   test('onPathChange attribute behaves correctly', () => {
-    const wrapper = mount(<ScrollToTopComponent onPathChange location={{ pathname: '/' }} />);
+    const wrapper = make({ onPathChange: true });
+    const history = getHistory(wrapper);
     expect(window.scrollTo).not.toHaveBeenCalled();
-    wrapper.setProps({ location: { pathname: '/foo' } });
+    history.push('/foo');
     expect(window.scrollTo).toHaveBeenCalledWith(0, 0);
   });
 
   test('onComponentWillMount attribute behaves correctly', () => {
-    mount(<ScrollToTopComponent onComponentWillMount />);
+    make({ onComponentWillMount: true });
     expect(window.scrollTo).toHaveBeenCalledWith(0, 0);
   });
 
   test('integration test', () => {
-    const wrapper = mount(
-      <ScrollToTopComponent onPathChange onComponentWillMount location={{ pathname: '/' }} />,
-    );
+    const wrapper = make({ onComponentWillMount: true, onPathChange: true });
+    const history = getHistory(wrapper);
+
     expect(window.scrollTo).toHaveBeenCalledTimes(1);
     expect(window.scrollTo).toHaveBeenCalledWith(0, 0);
-    wrapper.setProps({ location: { pathname: '/foo' } });
+    history.push('/foo');
     expect(window.scrollTo).toHaveBeenCalledTimes(2);
     expect(window.scrollTo).toHaveBeenCalledWith(0, 0);
-    wrapper.setProps({ location: { pathname: '/foo' } });
+    history.push('/foo');
     expect(window.scrollTo).toHaveBeenCalledTimes(2);
-    wrapper.setProps({ location: { pathname: '/bar' } });
+    history.push('/bar');
     expect(window.scrollTo).toHaveBeenCalledTimes(3);
   });
 });
