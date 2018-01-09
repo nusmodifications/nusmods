@@ -7,6 +7,6 @@ module.exports = {
       warnings: false, // Ignore warnings about variables declared on non-:root selectors
     }),
     // Custom plugin used to remove extra ':root' rules
-    require('./scripts/postcss-single-root-plugin'),
+    require('./scripts/postcss-single-root'),
   ],
 };
