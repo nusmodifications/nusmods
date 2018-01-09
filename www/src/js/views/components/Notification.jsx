@@ -17,6 +17,7 @@ type Props = {
 type State = {
   isOpen: boolean,
   shownNotification: ?NotificationData,
+  actionClicked: boolean,
 };
 
 const ACTIVE_CLASSNAME = 'mdc-snackbar--active';
@@ -43,8 +44,8 @@ const DEFAULT_TIMEOUT = 2750;
  * change when the active notification changes
  *
  * Notice we do not transition immediately from Opening or Opened to Closed
- * because we want the animation to play out to draw the user's attention that
- * a new
+ * because we want the animation to play out to draw the user's attention to
+ * the new notification.
  */
 export class NotificationComponent extends Component<Props, State> {
   element: ?HTMLElement;
@@ -56,6 +57,7 @@ export class NotificationComponent extends Component<Props, State> {
     this.state = {
       shownNotification: props.notifications[0],
       isOpen: !!props.notifications.length,
+      actionClicked: false,
     };
   }
 
@@ -67,9 +69,16 @@ export class NotificationComponent extends Component<Props, State> {
   }
 
   componentDidUpdate() {
-    if (this.props.notifications[0] !== this.state.shownNotification) {
+    const notifications = this.props.notifications;
+    const shownNotification = this.state.shownNotification;
+
+    if (notifications[0] !== shownNotification) {
       // Active notification has changed
       if (this.state.isOpen) {
+        const discarded = !notifications.includes(shownNotification);
+        if (shownNotification && shownNotification.willClose) {
+          shownNotification.willClose(discarded, this.state.actionClicked);
+        }
         this.closeSnackbar();
       } else if (!this.transitioning) {
         this.openSnackbar();
@@ -98,7 +107,11 @@ export class NotificationComponent extends Component<Props, State> {
 
   openSnackbar = () => {
     this.transitioning = true;
-    this.setState({ isOpen: true, shownNotification: this.props.notifications[0] });
+    this.setState({
+      isOpen: true,
+      shownNotification: this.props.notifications[0],
+      actionClicked: false,
+    });
   };
 
   closeSnackbar = () => {
@@ -131,7 +144,13 @@ export class NotificationComponent extends Component<Props, State> {
                 <button
                   type="button"
                   className="mdc-snackbar__action-button"
-                  onClick={shownNotification.action.handler}
+                  onClick={() => {
+                    this.setState({ actionClicked: true });
+                    const { handler } = shownNotification.action || {};
+                    // Don't auto-close if handler returns false
+                    if (handler && handler() === false) return;
+                    this.props.popNotification();
+                  }}
                 >
                   {shownNotification.action.text}
                 </button>

@@ -122,6 +122,40 @@ describe('notification reducers', () => {
     });
   });
 
+  test('allow new priority notification to trump existing ones', () => {
+    let state = appInitialState;
+    state = reducer(
+      state,
+      openNotification('New notification', {
+        overwritable: true,
+        priority: true,
+      }),
+    );
+
+    // Expect overwritable priority notification to be overwritten
+    state = reducer(state, openNotification('Second notification'));
+    expect(state.notifications).toHaveLength(1);
+    expect(state.notifications[0]).toMatchObject({ message: 'Second notification' });
+
+    // Expect priority notification to be inserted at the front of the queue
+    const pNotif3 = { message: 'Third notification', priority: true };
+    state = reducer(state, openNotification(pNotif3.message, { priority: pNotif3.priority }));
+    expect(state.notifications).toHaveLength(2);
+    expect(state.notifications[0]).toMatchObject(pNotif3);
+
+    // Expect new, overwritable, priority notification to be discarded
+    // if non-overwritable notification is in line
+    state = reducer(
+      state,
+      openNotification('Fourth notification', {
+        overwritable: true,
+        priority: true,
+      }),
+    );
+    expect(state.notifications).toHaveLength(2);
+    expect(state.notifications[0]).toMatchObject(pNotif3);
+  });
+
   test('pop notifications', () => {
     // Pop empty queue
     expect(reducer(appInitialState, popNotification()).notifications).toEqual([]);

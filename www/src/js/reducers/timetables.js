@@ -3,7 +3,7 @@ import type { FSA } from 'types/redux';
 import type { ClassNo, LessonType } from 'types/modules';
 import type { ModuleLessonConfig, TimetableConfig, SemTimetableConfig } from 'types/timetables';
 
-import _ from 'lodash';
+import { get, omit } from 'lodash';
 
 import { ADD_MODULE, REMOVE_MODULE, CHANGE_LESSON, SET_TIMETABLE } from 'actions/timetables';
 import { SET_EXPORTED_DATA } from 'actions/export';
@@ -41,7 +41,7 @@ function semTimetable(
   state: SemTimetableConfig = defaultSemTimetableConfig,
   action: FSA,
 ): SemTimetableConfig {
-  const moduleCode = _.get(action, 'payload.moduleCode');
+  const moduleCode = get(action, 'payload.moduleCode');
   if (!moduleCode) return state;
 
   switch (action.type) {
@@ -51,7 +51,7 @@ function semTimetable(
         [moduleCode]: action.payload.moduleLessonConfig,
       };
     case REMOVE_MODULE:
-      return _.omit(state, [moduleCode]);
+      return omit(state, [moduleCode]);
     case CHANGE_LESSON:
       return {
         ...state,

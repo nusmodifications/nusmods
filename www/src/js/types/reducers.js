@@ -14,18 +14,33 @@ import type { Mode } from 'types/settings';
 export type NotificationOptions = {
   // Amount of time in ms for the notification to be shown, not including opening
   // and closing animation
+  // Default: a non-zero, non-infinity value - currently 2750ms.
   timeout?: number,
 
   // By default any notification that comes in when there is already a notification
   // shown will be queued behind the current one. If the notification is not too important,
   // or we expect a large number to be generated in a short period of time, we allow the
-  // current notification to be overwritten by the new one
+  // current notification to be overwritten by the new one.
+  // Default behavior: false
   overwritable?: boolean,
+
+  // If `priority` is true, the new notification pushes aside the queue and the currently displayed
+  // notification, and is displayed immediately. Like this: https://youtu.be/Iimj0j4NYME
+  // `overwritable` behavior is prioritized over `priority`; an overwritable priority notification
+  // will be discarded if a non-overwritable notification is opened.
+  // Default behavior: false
+  priority?: boolean,
 
   action?: {
     text: string,
-    handler: Function,
+    handler: () => ?boolean, // Return false to disable notification auto-close
   },
+
+  // This function will be called when the notification is about to be closed,
+  // just before animation starts (i.e. just before state transitions to Closing).
+  // `discarded`: if false, notification will be displayed again.
+  // `actionClicked`: whether the action button was clicked while the notification was displayed
+  willClose?: (discarded: boolean, actionClicked: boolean) => void,
 };
 
 export type NotificationData = { message: string } & NotificationOptions;
