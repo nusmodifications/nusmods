@@ -113,7 +113,7 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
       overwritable: true,
       action: {
         text: 'Undo',
-        handler: () => this.props.undo(),
+        handler: this.props.undo,
       },
     });
   }

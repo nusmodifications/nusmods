@@ -155,7 +155,7 @@ class TimetableContent extends Component<Props, State> {
       overwritable: true,
       action: {
         text: 'Undo',
-        handler: () => this.props.undo(),
+        handler: this.props.undo,
       },
     });
   };
