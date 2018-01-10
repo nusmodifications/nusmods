@@ -9,7 +9,6 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/lib/integration/react';
 
-// eslint-disable-next-line import/no-named-as-default
 import AppShell from 'views/AppShell';
 import Routes from 'views/routes/Routes';
 import storage from 'storage';
@@ -23,13 +22,13 @@ export default function App({ store, persistor }: Props) {
   return (
     <AppContainer>
       <Provider store={store}>
-        <PersistGate persistor={persistor} onBeforeLift={storage.stateMigrationComplete}>
-          <Router>
+        <Router>
+          <PersistGate persistor={persistor} onBeforeLift={storage.stateMigrationComplete}>
             <AppShell>
               <Routes />
             </AppShell>
-          </Router>
-        </PersistGate>
+          </PersistGate>
+        </Router>
       </Provider>
     </AppContainer>
   );

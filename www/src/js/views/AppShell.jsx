@@ -83,7 +83,7 @@ function setMode(mode: Mode) {
   body.classList.toggle('mdc-theme--dark', isDarkMode);
 }
 
-export class AppShell extends Component<Props> {
+export class AppShellComponent extends Component<Props> {
   componentWillMount() {
     const { mode, timetables } = this.props;
     setMode(mode);
@@ -157,7 +157,7 @@ const connectedAppShell = connect(mapStateToProps, {
   setTimetable,
   migrateTimetable,
   fillTimetableBlanks,
-})(AppShell);
+})(AppShellComponent);
 
 // withRouter here is used to ensure re-render when routes change, since
 // connect implements shouldComponentUpdate based purely on props. If it
