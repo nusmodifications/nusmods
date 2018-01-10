@@ -1,7 +1,14 @@
 // @flow
 
 import reducer, { defaultTimetableState } from 'reducers/timetables';
-import { ADD_MODULE, removeModule, SET_TIMETABLE } from 'actions/timetables';
+import {
+  ADD_MODULE,
+  SET_TIMETABLE,
+  hideLessonInTimetable,
+  removeModule,
+  showLessonInTimetable,
+} from 'actions/timetables';
+import type { TimetablesState } from 'types/reducers';
 
 const initialState = defaultTimetableState;
 
@@ -54,6 +61,49 @@ describe('color reducers', () => {
       reducer(initialState, setTimetable(1, { CS1010S: {} }, { CS1010S: 0 })).colors[1],
     ).toEqual({
       CS1010S: 0,
+    });
+  });
+});
+
+describe('hidden module reducer', () => {
+  const withHiddenModules: TimetablesState = {
+    ...initialState,
+    hidden: { [1]: ['CS1010S'], [2]: ['CS1010S'] },
+  };
+
+  test('should update hidden modules', () => {
+    expect(reducer(initialState, hideLessonInTimetable(1, 'CS3216'))).toHaveProperty('hidden.1', [
+      'CS3216',
+    ]);
+
+    expect(reducer(initialState, showLessonInTimetable(1, 'CS1010S'))).toMatchObject({
+      hidden: {
+        [1]: [],
+      },
+    });
+
+    expect(reducer(withHiddenModules, showLessonInTimetable(1, 'CS1010S'))).toMatchObject({
+      hidden: {
+        [1]: [],
+        [2]: ['CS1010S'],
+      },
+    });
+  });
+
+  test('should remove modules from list when modules are removed', () => {
+    expect(
+      reducer(
+        {
+          ...initialState,
+          hidden: { [1]: ['CS1010S'], [2]: ['CS1010S'] },
+        },
+        removeModule(1, 'CS1010S'),
+      ),
+    ).toMatchObject({
+      hidden: {
+        [1]: [],
+        [2]: ['CS1010S'],
+      },
     });
   });
 });

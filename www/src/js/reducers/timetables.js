@@ -111,9 +111,10 @@ function hidden(state = defaultHiddenState, action: FSA) {
 
   switch (action.type) {
     case HIDE_LESSON_IN_TIMETABLE:
-      return [action.payload, ...state];
+      return [action.payload.moduleCode, ...state];
     case SHOW_LESSON_IN_TIMETABLE:
-      return state.filter((c) => c !== action.payload);
+    case REMOVE_MODULE:
+      return state.filter((c) => c !== action.payload.moduleCode);
     default:
       return state;
   }
