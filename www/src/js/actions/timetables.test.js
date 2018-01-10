@@ -193,3 +193,17 @@ describe('fillTimetableBlanks', () => {
     });
   });
 });
+
+describe('hide/show timetable modules', () => {
+  const semester: Semester = 1;
+
+  test('should dispatch a module code for hiding', () => {
+    const moduleCode: ModuleCode = 'CS1010';
+    expect(actions.hideLessonInTimetable(semester, moduleCode)).toMatchSnapshot();
+  });
+
+  test('should dispatch a module code for showing', () => {
+    const moduleCode: ModuleCode = 'CS1020';
+    expect(actions.showLessonInTimetable(semester, moduleCode)).toMatchSnapshot();
+  });
+});

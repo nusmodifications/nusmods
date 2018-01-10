@@ -11,9 +11,11 @@ import config from 'config';
 import {
   ADD_MODULE,
   CHANGE_LESSON,
+  HIDE_LESSON_IN_TIMETABLE,
   REMOVE_MODULE,
   SELECT_MODULE_COLOR,
   SET_TIMETABLE,
+  SHOW_LESSON_IN_TIMETABLE,
 } from 'actions/timetables';
 import { SET_EXPORTED_DATA } from 'actions/export';
 import { getNewColor } from 'utils/colors';
@@ -100,7 +102,23 @@ function semColors(state: ColorMapping = defaultSemColorMap, action: FSA): Color
   }
 }
 
-// Map of semester to semTimetable.
+// Map of semester to list of hidden modules
+const defaultHiddenState = [];
+function hidden(state = defaultHiddenState, action: FSA) {
+  if (!action.payload) {
+    return state;
+  }
+
+  switch (action.type) {
+    case HIDE_LESSON_IN_TIMETABLE:
+      return [action.payload, ...state];
+    case SHOW_LESSON_IN_TIMETABLE:
+      return state.filter((c) => c !== action.payload);
+    default:
+      return state;
+  }
+}
+
 export const defaultTimetableState: TimetablesState = {
   lessons: {},
   colors: {},
@@ -130,7 +148,9 @@ function timetables(state: TimetablesState = defaultTimetableState, action: FSA)
     case ADD_MODULE:
     case REMOVE_MODULE:
     case SELECT_MODULE_COLOR:
-    case CHANGE_LESSON: {
+    case CHANGE_LESSON:
+    case HIDE_LESSON_IN_TIMETABLE:
+    case SHOW_LESSON_IN_TIMETABLE: {
       const { semester } = action.payload;
 
       return update(state, {
@@ -139,6 +159,9 @@ function timetables(state: TimetablesState = defaultTimetableState, action: FSA)
         },
         colors: {
           [semester]: { $set: semColors(state.colors[semester], action) },
+        },
+        hidden: {
+          [semester]: { $set: hidden(state.hidden[semester], action) },
         },
       });
     }

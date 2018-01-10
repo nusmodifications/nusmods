@@ -11,8 +11,6 @@ import {
   SELECT_FACULTY,
   SELECT_MODE,
   TOGGLE_MODE,
-  HIDE_LESSON_IN_TIMETABLE,
-  SHOW_LESSON_IN_TIMETABLE,
   DISMISS_CORS_NOTIFICATION,
   ENABLE_CORS_NOTIFICATION,
   TOGGLE_CORS_NOTIFICATION_GLOBALLY,
@@ -35,20 +33,6 @@ const defaultSettingsState: SettingsState = {
   corsNotification: defaultCorsNotificationState,
 };
 
-function hidden(state = [], action: FSA) {
-  if (!action.payload) {
-    return state;
-  }
-  switch (action.type) {
-    case HIDE_LESSON_IN_TIMETABLE:
-      return [action.payload, ...state];
-    case SHOW_LESSON_IN_TIMETABLE:
-      return state.filter((c) => c !== action.payload);
-    default:
-      return state;
-  }
-}
-
 function settings(state: SettingsState = defaultSettingsState, action: FSA): SettingsState {
   switch (action.type) {
     case SELECT_NEW_STUDENT:
@@ -70,12 +54,6 @@ function settings(state: SettingsState = defaultSettingsState, action: FSA): Set
       return {
         ...state,
         mode: state.mode === LIGHT_MODE ? DARK_MODE : LIGHT_MODE,
-      };
-    case HIDE_LESSON_IN_TIMETABLE:
-    case SHOW_LESSON_IN_TIMETABLE:
-      return {
-        ...state,
-        hiddenInTimetable: hidden(state.hiddenInTimetable, action),
       };
 
     case TOGGLE_CORS_NOTIFICATION_GLOBALLY:
