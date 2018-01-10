@@ -40,6 +40,10 @@ test('move timetables state', () => {
         CS3216: 2,
       },
     },
+
+    settings: {
+      hiddenInTimetable: ['CS1010S'],
+    },
   });
 
   expect(migrated).toHaveProperty('timetables', {
@@ -68,7 +72,40 @@ test('move timetables state', () => {
         CS1010S: 1,
       },
     },
+    hidden: {
+      [1]: ['CS1010S'],
+      [2]: ['CS1010S'],
+    },
     academicYear: '2017/2018',
+  });
+});
+
+test('move hidden modules', () => {
+  expect(
+    migrateLegacyStorage({
+      timetables: {},
+      theme: { colors: {} },
+      settings: {
+        hiddenInTimetable: ['CS1010S', 'CS3217'],
+      },
+    }),
+  ).toHaveProperty('timetables.hidden', {});
+
+  expect(
+    migrateLegacyStorage({
+      timetables: { [1]: { CS3216: {}, CS1010S: {} }, [2]: { CS1010S: {}, CS3217: {} } },
+      theme: { colors: {} },
+      settings: {
+        hiddenInTimetable: ['CS1010S', 'CS3217', 'CS3216'],
+      },
+    }),
+  ).toMatchObject({
+    timetables: {
+      hidden: {
+        [1]: expect.arrayContaining(['CS3216', 'CS1010S']),
+        [2]: expect.arrayContaining(['CS3217', 'CS1010S']),
+      },
+    },
   });
 });
 
