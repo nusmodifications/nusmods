@@ -1,3 +1,6 @@
+// @flow
+import type { Middleware } from 'redux';
+import type { State } from 'reducers';
 import axios from 'axios';
 
 function makeRequest(request) {
@@ -14,7 +17,7 @@ export const REQUEST = '_REQUEST';
 export const SUCCESS = '_SUCCESS';
 export const FAILURE = '_FAILURE';
 
-export default () => (next) => (action) => {
+const requestMiddleware: Middleware<State, *, *> = () => (next) => (action) => {
   if (!action.meta || !action.meta[API_REQUEST]) {
     // Non-api request action
     return next(action);
@@ -26,7 +29,7 @@ export default () => (next) => (action) => {
 
   // Swap the action content and structured api results
   function constructActionWith(data) {
-    const finalAction = Object.assign({}, action, data);
+    const finalAction = { ...action, ...data };
     delete finalAction[API_REQUEST];
     return finalAction;
   }
@@ -72,3 +75,5 @@ export default () => (next) => (action) => {
       ),
   );
 };
+
+export default requestMiddleware;
