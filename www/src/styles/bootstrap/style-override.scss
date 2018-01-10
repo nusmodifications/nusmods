@@ -73,8 +73,6 @@ mark {
 }
 
 // Alerts
-$alert-override-themes: success, danger, warning;
-
 @mixin alert-colors($name) {
   .alert-#{$name} {
     color: var(--alert-#{$name}-color);

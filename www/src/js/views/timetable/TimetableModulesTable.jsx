@@ -45,12 +45,7 @@ class TimetableModulesTable extends Component<Props> {
             className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
             title={removeBtnLabel}
             aria-label={removeBtnLabel}
-            onClick={() => {
-              const confirmMessage = `Are you sure you want to remove ${module.ModuleCode}?`;
-              if (window.confirm(confirmMessage)) {
-                this.props.onRemoveModule(module.ModuleCode);
-              }
-            }}
+            onClick={() => this.props.onRemoveModule(module.ModuleCode)}
           >
             <Trash2 className={styles.actionIcon} />
           </button>

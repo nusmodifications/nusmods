@@ -4,7 +4,7 @@ import type { ClassNo, LessonType, Semester } from 'types/modules';
 import type { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
 import type { ColorMapping, TimetablesState } from 'types/reducers';
 
-import _ from 'lodash';
+import { get, omit, values } from 'lodash';
 import update from 'immutability-helper';
 
 import config from 'config';
@@ -54,7 +54,7 @@ function semTimetable(
   state: SemTimetableConfig = defaultSemTimetableConfig,
   action: FSA,
 ): SemTimetableConfig {
-  const moduleCode = _.get(action, 'payload.moduleCode');
+  const moduleCode = get(action, 'payload.moduleCode');
   if (!moduleCode) return state;
 
   switch (action.type) {
@@ -64,7 +64,7 @@ function semTimetable(
         [moduleCode]: action.payload.moduleLessonConfig,
       };
     case REMOVE_MODULE:
-      return _.omit(state, [moduleCode]);
+      return omit(state, [moduleCode]);
     case CHANGE_LESSON:
       return {
         ...state,
@@ -78,18 +78,18 @@ function semTimetable(
 // Map of semester to color mapping
 const defaultSemColorMap = {};
 function semColors(state: ColorMapping = defaultSemColorMap, action: FSA): ColorMapping {
-  const moduleCode = _.get(action, 'payload.moduleCode');
+  const moduleCode = get(action, 'payload.moduleCode');
   if (!moduleCode) return state;
 
   switch (action.type) {
     case ADD_MODULE:
       return {
         ...state,
-        [moduleCode]: getNewColor(_.values(state)),
+        [moduleCode]: getNewColor(values(state)),
       };
 
     case REMOVE_MODULE:
-      return _.omit(state, moduleCode);
+      return omit(state, moduleCode);
 
     case SELECT_MODULE_COLOR:
       return {

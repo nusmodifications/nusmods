@@ -24,6 +24,7 @@ import { noBreak } from 'utils/react';
 import Footer from 'views/layout/Footer';
 import Navtabs from 'views/layout/Navtabs';
 import GlobalSearchContainer from 'views/layout/GlobalSearchContainer';
+import Notification from 'views/components/Notification';
 import { DARK_MODE } from 'types/settings';
 import LoadingSpinner from './components/LoadingSpinner';
 import FeedbackModal from './components/FeedbackModal';
@@ -74,8 +75,12 @@ const weekText = (() => {
 })();
 
 function setMode(mode: Mode) {
-  if (!document.body) return;
-  document.body.classList.toggle('mode-dark', mode === DARK_MODE);
+  const { body } = document;
+  if (!body) return;
+
+  const isDarkMode = mode === DARK_MODE;
+  body.classList.toggle('mode-dark', isDarkMode);
+  body.classList.toggle('mdc-theme--dark', isDarkMode);
 }
 
 export class AppShell extends Component<Props> {
@@ -129,6 +134,8 @@ export class AppShell extends Component<Props> {
         </div>
 
         <FeedbackModal />
+
+        <Notification />
 
         <Footer />
       </div>
