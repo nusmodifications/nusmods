@@ -83,7 +83,7 @@ class SettingsContainer extends Component<Props, State> {
     return (
       <div className={classnames(styles.settingsPage, 'page-container')}>
         <ScrollToTop onComponentWillMount />
-        <Helmet>
+        <Helmet defer={false}>
           <title>Settings - {config.brandName}</title>
         </Helmet>
 

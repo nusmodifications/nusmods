@@ -71,7 +71,7 @@ type State = {
 const INSTANT_SEARCH_THRESHOLD = 300;
 
 const pageHead = (
-  <Helmet>
+  <Helmet defer={false}>
     <title>Modules - {config.brandName}</title>
   </Helmet>
 );
