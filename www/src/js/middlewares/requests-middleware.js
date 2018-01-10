@@ -12,7 +12,7 @@ function makeRequest(request) {
   });
 }
 
-export const API_REQUEST = Symbol('API_REQUEST');
+export const API_REQUEST: any = Symbol('API_REQUEST');
 export const REQUEST = '_REQUEST';
 export const SUCCESS = '_SUCCESS';
 export const FAILURE = '_FAILURE';
