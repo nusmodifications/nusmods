@@ -340,7 +340,7 @@ function mapStateToProps(state, ownProps) {
   const modules = state.moduleBank.modules;
   const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
   const semModuleList = getSemModuleSelectList(state.moduleBank, semester, timetable);
-  const hiddenInTimetable = state.settings.hiddenInTimetable || [];
+  const hiddenInTimetable = state.timetables.hidden[semester] || [];
 
   return {
     semester,

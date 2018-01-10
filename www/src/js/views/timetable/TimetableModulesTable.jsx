@@ -5,13 +5,16 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 
-import type { ModuleWithColor, Semester } from 'types/modules';
+import type { ModuleCode, ModuleWithColor, Semester } from 'types/modules';
 import type { ColorIndex } from 'types/reducers';
 
 import ColorPicker from 'views/components/ColorPicker';
 import { Eye, EyeOff, Trash2 } from 'views/components/icons/index';
-import { selectModuleColor } from 'actions/timetables';
-import { hideLessonInTimetable, showLessonInTimetable } from 'actions/settings';
+import {
+  showLessonInTimetable,
+  hideLessonInTimetable,
+  selectModuleColor,
+} from 'actions/timetables';
 import { getModuleExamDate, getFormattedModuleExamDate } from 'utils/modules';
 import { modulePage } from 'views/routes/paths';
 
@@ -19,8 +22,8 @@ import styles from './TimetableModulesTable.scss';
 
 type Props = {
   selectModuleColor: Function,
-  hideLessonInTimetable: Function,
-  showLessonInTimetable: Function,
+  hideLessonInTimetable: (Semester, ModuleCode) => void,
+  showLessonInTimetable: (Semester, ModuleCode) => void,
   semester: Semester,
   modules: Array<ModuleWithColor>,
   onRemoveModule: Function,
@@ -32,6 +35,7 @@ class TimetableModulesTable extends Component<Props> {
   renderModuleActions(module) {
     const hideBtnLabel = `${module.hiddenInTimetable ? 'Show' : 'Hide'} ${module.ModuleCode}`;
     const removeBtnLabel = `Remove ${module.ModuleCode} from timetable`;
+    const { semester } = this.props;
 
     return (
       <div className={styles.moduleActionButtons}>
@@ -57,9 +61,9 @@ class TimetableModulesTable extends Component<Props> {
             aria-label={hideBtnLabel}
             onClick={() => {
               if (module.hiddenInTimetable) {
-                this.props.showLessonInTimetable(module.ModuleCode);
+                this.props.showLessonInTimetable(semester, module.ModuleCode);
               } else {
-                this.props.hideLessonInTimetable(module.ModuleCode);
+                this.props.hideLessonInTimetable(semester, module.ModuleCode);
               }
             }}
           >
