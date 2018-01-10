@@ -1,18 +1,21 @@
-import _ from 'lodash';
+// @flow
+import { isString } from 'lodash';
 import Raven from 'raven-js';
+import { LEGACY_REDUX_KEY, PERSIST_MIGRATION_KEY } from './keys';
+import migrateLegacyStorage from './migrateLegacyStorage';
 
 // Simple wrapper around localStorage to automagically parse and stringify payloads.
 // TODO: Use an in-memory storage for environments where localStorage is not present,
 //       like private mode on Safari.
-function setItem(key, value) {
+function setItem(key: string, value: any) {
   try {
-    localStorage.setItem(key, _.isString(value) ? value : JSON.stringify(value));
+    localStorage.setItem(key, isString(value) ? value : JSON.stringify(value));
   } catch (e) {
     Raven.captureException(e);
   }
 }
 
-function getItem(key) {
+function getItem(key: string): any {
   let value;
   try {
     value = localStorage.getItem(key);
@@ -26,7 +29,7 @@ function getItem(key) {
   }
 }
 
-function removeItem(key) {
+function removeItem(key: string) {
   try {
     localStorage.removeItem(key);
   } catch (e) {
@@ -34,15 +37,19 @@ function removeItem(key) {
   }
 }
 
-const stateKey = 'reduxState';
-
 const storage = {
   setItem,
   getItem,
   removeItem,
-  loadState: () => getItem(stateKey) || {},
-  saveState: (state) => {
-    setItem(stateKey, state);
+  loadState: () => {
+    // Do not load state from legacy storage if we have already migrated
+    // to Redux Persist
+    if (getItem(PERSIST_MIGRATION_KEY)) return {};
+
+    return migrateLegacyStorage(getItem(LEGACY_REDUX_KEY));
+  },
+  stateMigrationComplete: () => {
+    setItem(PERSIST_MIGRATION_KEY, true);
   },
 };
 

@@ -19,6 +19,26 @@ Object {
 }
 `;
 
+exports[`hide/show timetable modules should dispatch a module code for hiding 1`] = `
+Object {
+  "payload": Object {
+    "moduleCode": "CS1010",
+    "semester": 1,
+  },
+  "type": "HIDE_LESSON_IN_TIMETABLE",
+}
+`;
+
+exports[`hide/show timetable modules should dispatch a module code for showing 1`] = `
+Object {
+  "payload": Object {
+    "moduleCode": "CS1020",
+    "semester": 1,
+  },
+  "type": "SHOW_LESSON_IN_TIMETABLE",
+}
+`;
+
 exports[`modifyLesson should return lesson payload 1`] = `
 Object {
   "payload": Object {
@@ -44,5 +64,27 @@ Object {
     "semester": 1,
   },
   "type": "REMOVE_MODULE",
+}
+`;
+
+exports[`select module color should dispatch a select of module color 1`] = `
+Object {
+  "payload": Object {
+    "colorIndex": 0,
+    "moduleCode": "CS1010S",
+    "semester": 1,
+  },
+  "type": "SELECT_MODULE_COLOR",
+}
+`;
+
+exports[`select module color should dispatch a select of module color 2`] = `
+Object {
+  "payload": Object {
+    "colorIndex": 1,
+    "moduleCode": "CS3216",
+    "semester": 1,
+  },
+  "type": "SELECT_MODULE_COLOR",
 }
 `;

@@ -83,7 +83,7 @@ function setMode(mode: Mode) {
   body.classList.toggle('mdc-theme--dark', isDarkMode);
 }
 
-export class AppShell extends Component<Props> {
+export class AppShellComponent extends Component<Props> {
   componentWillMount() {
     const { mode, timetables } = this.props;
     setMode(mode);
@@ -145,22 +145,22 @@ export class AppShell extends Component<Props> {
 
 const mapStateToProps = (state: State) => ({
   moduleList: state.moduleBank.moduleList,
-  timetables: state.timetables,
+  timetables: state.timetables.lessons,
   theme: state.theme.id,
   mode: state.settings.mode,
   activeSemester: state.app.activeSemester,
 });
 
+const connectedAppShell = connect(mapStateToProps, {
+  fetchModuleList,
+  fetchTimetableModules,
+  setTimetable,
+  migrateTimetable,
+  fillTimetableBlanks,
+})(AppShellComponent);
+
 // withRouter here is used to ensure re-render when routes change, since
 // connect implements shouldComponentUpdate based purely on props. If it
 // is removed, connect not detect prop changes when route is changed and
 // thus the pages are not re-rendered
-export default withRouter(
-  connect(mapStateToProps, {
-    fetchModuleList,
-    fetchTimetableModules,
-    setTimetable,
-    migrateTimetable,
-    fillTimetableBlanks,
-  })(AppShell),
-);
+export default withRouter(connectedAppShell);

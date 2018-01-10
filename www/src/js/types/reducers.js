@@ -8,6 +8,7 @@ import type {
   Semester,
 } from 'types/modules';
 import type { Mode } from 'types/settings';
+import type { TimetableConfig } from 'types/timetables';
 
 /* app.js */
 
@@ -66,17 +67,12 @@ export type FetchRequest = {
 export type Requests = { [RequestType]: FetchRequest };
 
 /* theme.js */
-export type ColorIndex = number;
-// Mapping of module to color index [0, NUM_DIFFERENT_COLORS)
-export type ColorMapping = { [ModuleCode]: ColorIndex };
-
 export type TimetableOrientation = 'HORIZONTAL' | 'VERTICAL';
 export const VERTICAL: TimetableOrientation = 'VERTICAL';
 export const HORIZONTAL: TimetableOrientation = 'HORIZONTAL';
 
 export type ThemeState = {
   id: string,
-  colors: ColorMapping,
   timetableOrientation: TimetableOrientation,
 };
 
@@ -93,6 +89,21 @@ export type SettingsState = {
   mode: Mode,
   hiddenInTimetable: ModuleCode[],
   corsNotification: CorsNotificationSettings,
+};
+
+/* timetables.js */
+export type ColorIndex = number;
+
+// Mapping of module to color index [0, NUM_DIFFERENT_COLORS)
+export type ColorMapping = { [ModuleCode]: ColorIndex };
+export type SemesterColorMap = { [Semester]: ColorMapping };
+export type HiddenModulesMap = { [Semester]: ModuleCode[] };
+
+export type TimetablesState = {
+  lessons: TimetableConfig,
+  colors: SemesterColorMap,
+  hidden: HiddenModulesMap,
+  academicYear: string,
 };
 
 /* moduleBank.js */
