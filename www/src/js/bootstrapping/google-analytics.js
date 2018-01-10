@@ -15,6 +15,7 @@ export default function initializeGA() {
       // delays the GA invocation sufficiently long enough for React to do its stuff.
       // 100ms is an arbitary value which works well enough for most cases.
       const HANDLE_URL_CHANGE_TIMEOUT = 100;
+      // eslint-disable-next-line
       window.gaplugins.UrlChangeTracker.prototype.handleUrlChange = function(historyDidUpdate) {
         setTimeout(() => {
           origHandleUrlChange.call(this, historyDidUpdate);
