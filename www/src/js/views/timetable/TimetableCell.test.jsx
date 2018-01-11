@@ -22,7 +22,12 @@ describe('<TimetableCell />', () => {
     it('simulates click events and renders a button', () => {
       const onButtonClick = jest.fn();
       const wrapper = shallow(
-        <TimetableCell onClick={onButtonClick} lesson={DEFAULT_LESSON} style={{}} />,
+        <TimetableCell
+          onClick={onButtonClick}
+          lesson={DEFAULT_LESSON}
+          style={{}}
+          isScrolledHorizontally
+        />,
       );
       const buttons = wrapper.find('button');
       buttons.at(0).simulate('click', { preventDefault() {} });
@@ -32,7 +37,12 @@ describe('<TimetableCell />', () => {
     it('has clickable class styling', () => {
       const onButtonClick = jest.fn();
       const wrapper = shallow(
-        <TimetableCell onClick={onButtonClick} lesson={DEFAULT_LESSON} style={{}} />,
+        <TimetableCell
+          onClick={onButtonClick}
+          lesson={DEFAULT_LESSON}
+          style={{}}
+          isScrolledHorizontally
+        />,
       );
       const button = wrapper.find('button').at(0);
       expect(button.hasClass('cellIsClickable')).toBeTruthy();
@@ -42,7 +52,9 @@ describe('<TimetableCell />', () => {
   describe('when onClick is not passed', () => {
     it('does not simulates click events and renders a div', () => {
       const onButtonClick = jest.fn();
-      const wrapper = shallow(<TimetableCell lesson={DEFAULT_LESSON} style={{}} />);
+      const wrapper = shallow(
+        <TimetableCell lesson={DEFAULT_LESSON} style={{}} isScrolledHorizontally />,
+      );
       const buttons = wrapper.find('div');
       buttons.at(0).simulate('click', { preventDefault() {} });
       expect(onButtonClick).not.toBeCalled();

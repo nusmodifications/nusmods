@@ -51,6 +51,7 @@ function TimetableRow(props: Props) {
           [dirStyle]: `calc(${dirValue / totalCols * 100}% + 1px)`,
           [sizeStyle]: `calc(${size / totalCols * 100}% - 1px)`,
         };
+        // $FlowFixMe
         const conditionalProps = lesson.isModifiable ? { onClick: onModifyCell } : {};
         return (
           <TimetableCell

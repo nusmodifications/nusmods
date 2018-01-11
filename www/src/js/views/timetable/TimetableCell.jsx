@@ -2,7 +2,7 @@
 import React from 'react';
 import classnames from 'classnames';
 
-import type { ModifiableLesson } from 'types/modules';
+import type { Lesson } from 'types/modules';
 
 import { LESSON_TYPE_ABBREV } from 'utils/timetables';
 
@@ -11,7 +11,7 @@ import styles from './TimetableCell.scss';
 type Props = {
   isScrolledHorizontally: boolean,
   showTitle: boolean,
-  lesson: ModifiableLesson,
+  lesson: Lesson,
   style: Object,
   onClick?: Function,
 };
@@ -28,10 +28,12 @@ function TimetableCell(props: Props) {
 
   const Cell = props.onClick ? 'button' : 'div';
   return (
-    <Cell
+    <Cell // $FlowFixMe
       className={classnames(styles.cell, `color-${lesson.colorIndex}`, {
         [styles.cellIsClickable]: !!onClick,
+        // $FlowFixMe
         [styles.cellIsAvailable]: lesson.isAvailable,
+        // $FlowFixMe
         [styles.cellIsActive]: lesson.isActive,
         [styles.cellIsActiveScrolled]: props.isScrolledHorizontally,
       })}
