@@ -163,7 +163,7 @@ $ yarn promote-staging # Promote ./dist to production
 │   │       ├── timetable    - Timetable builder related components
 │   │       └── venues       - Venues page related components
 │   └── styles
-│       ├── bootstrap        - Bootstraping, uh, Bootstrap
+│       ├── bootstrap        - Bootstrapping, uh, Bootstrap
 │       ├── material         - Material components 
 │       ├── components       - Legacy component styles
 │       │                      (new components should colocate their styles)
