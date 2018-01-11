@@ -4,13 +4,14 @@ import React, { Component } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
+import type { State as StoreState } from 'reducers';
 import type { Semester } from 'types/modules';
 import type { SemTimetableConfig } from 'types/timetables';
 import { fillColorMapping } from 'utils/colors';
 import TimetableContent from 'views/timetable/TimetableContent';
 
 type Props = {
-  store: Store<*, *, *>,
+  store: Store<StoreState, *, *>,
 };
 
 type State = {

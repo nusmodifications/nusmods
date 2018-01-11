@@ -26,6 +26,8 @@ $material-sharp-curve: cubic-bezier(0.4, 0, 0.6, 1);
 $page-entering-duration: $fullscreen-duration;
 $page-entering-animation: fadeIn;
 
+$alert-override-themes: success, danger, warning;
+
 // Workload colors map
 $workload-colors: (
   lecture: #bbdefb,
@@ -160,6 +162,7 @@ $nusmods-theme-colors: (
 );
 
 // Z-index
+$snackbar-z-index: 2500;
 $sentry-z-index: 2000;
 $modal-z-index: 1500;
 $module-select-z-index: 960;

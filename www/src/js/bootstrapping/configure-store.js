@@ -1,9 +1,11 @@
+// @flow
+
 import { createStore, applyMiddleware, compose } from 'redux';
+import { persistStore } from 'redux-persist';
 import thunk from 'redux-thunk';
-import rootReducer from 'reducers';
+import rootReducer, { type State } from 'reducers';
 import requestsMiddleware from 'middlewares/requests-middleware';
 import ravenMiddleware from 'middlewares/raven-middleware';
-import themeMiddleware from 'middlewares/theme-middleware';
 
 // For redux-devtools-extensions - see
 // https://github.com/zalmoxisus/redux-devtools-extension
@@ -16,8 +18,8 @@ const composeEnhancers =
     : compose;
 /* eslint-enable no-underscore-dangle */
 
-export default function configureStore(defaultState) {
-  const middlewares = [ravenMiddleware, thunk, requestsMiddleware, themeMiddleware];
+export default function configureStore(defaultState?: State) {
+  const middlewares = [ravenMiddleware, thunk, requestsMiddleware];
 
   if (process.env.NODE_ENV === 'development') {
     /* eslint-disable */
@@ -32,16 +34,19 @@ export default function configureStore(defaultState) {
     middlewares.push(logger);
   }
 
-  const store = createStore(
+  const storeEnhancer = applyMiddleware(...middlewares);
+
+  const store: Store<State, *, *> = createStore(
     rootReducer,
     defaultState,
-    composeEnhancers(applyMiddleware(...middlewares)),
+    composeEnhancers(storeEnhancer),
   );
 
   if (module.hot) {
     // Enable webpack hot module replacement for reducers
-    module.hot.accept('../reducers', () => store.replaceReducer(rootReducer));
+    (module.hot: any).accept('../reducers', () => store.replaceReducer(rootReducer));
   }
 
-  return store;
+  const persistor = persistStore(store);
+  return { persistor, store };
 }

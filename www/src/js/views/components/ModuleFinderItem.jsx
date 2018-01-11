@@ -5,6 +5,7 @@ import { connect, type MapStateToProps } from 'react-redux';
 
 import type { Module } from 'types/modules';
 import type { ModuleSearch } from 'types/reducers';
+import type { State } from 'reducers';
 
 import { modulePage } from 'views/routes/paths';
 import { highlight } from 'utils/react';
@@ -81,7 +82,7 @@ export class ModuleFinderItemComponent extends PureComponent<Props> {
   }
 }
 
-const mapStateToProps: MapStateToProps<*, *, *> = (state) => ({
+const mapStateToProps: MapStateToProps<State, *, *> = (state: State) => ({
   search: state.moduleFinder.search,
 });
 

@@ -1,12 +1,11 @@
 // @flow
-import _ from 'lodash';
 import type { FSA } from 'types/redux';
 import type { SettingsState } from 'types/reducers';
 
 import * as actions from 'actions/settings';
 import reducer from 'reducers/settings';
 import { LIGHT_MODE, DARK_MODE } from 'types/settings';
-import { initAction } from 'test-utils/redux';
+import { initAction, rehydrateAction } from 'test-utils/redux';
 import config from 'config/__mocks__/config';
 
 const initialState: SettingsState = {
@@ -74,7 +73,7 @@ describe('corsNotification settings', () => {
   test('clear out dismissed notifications when semester changes', () => {
     config.getSemesterKey = () => '2017/2018 Semester 2';
 
-    const nextState: SettingsState = reducer(settingsWithDismissedNotifications, initAction());
+    const nextState: SettingsState = reducer(settingsWithDismissedNotifications, rehydrateAction());
     expect(nextState.corsNotification).toMatchObject({
       semesterKey: '2017/2018 Semester 2',
       dismissed: [],
@@ -84,10 +83,15 @@ describe('corsNotification settings', () => {
 
   test('not clear disabled when semester changes', () => {
     config.getSemesterKey = () => '2017/2018 Semester 2';
-    const settingsState = _.cloneDeep(settingsWithDismissedNotifications);
-    settingsState.corsNotification.enabled = false;
+    const settingsState: SettingsState = {
+      ...initialState,
+      corsNotification: {
+        ...initialState.corsNotification,
+        enabled: false,
+      },
+    };
 
-    const nextState: SettingsState = reducer(settingsState, initAction());
+    const nextState: SettingsState = reducer(settingsState, rehydrateAction());
     expect(nextState.corsNotification).toHaveProperty('enabled', false);
   });
 

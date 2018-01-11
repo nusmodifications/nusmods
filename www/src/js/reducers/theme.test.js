@@ -3,7 +3,6 @@ import type { FSA } from 'types/redux';
 import type { ThemeState } from 'types/reducers';
 
 import * as actions from 'actions/theme';
-import { SET_TIMETABLE } from 'actions/timetables';
 import reducer, { defaultThemeState, themeIds } from 'reducers/theme';
 import { VERTICAL } from 'types/reducers';
 
@@ -53,39 +52,5 @@ describe('theme', () => {
 
     const nextState2: ThemeState = reducer(nextState, action);
     expect(nextState2).toEqual(themeInitialState);
-  });
-});
-
-describe('colors map', () => {
-  test('should ignore empty color property when setting timetable', () => {
-    expect(
-      reducer(
-        {
-          ...themeInitialState,
-          colors: { CS1010S: 0, CS3216: 1 },
-        },
-        {
-          type: SET_TIMETABLE,
-          payload: {},
-        },
-      ).colors,
-    ).toEqual({ CS1010S: 0, CS3216: 1 });
-  });
-
-  test('should merge color map when setting timetable', () => {
-    expect(
-      reducer(
-        {
-          ...themeInitialState,
-          colors: { CS1010S: 0, CS3216: 1 },
-        },
-        {
-          type: SET_TIMETABLE,
-          payload: {
-            colors: { CS1010S: 2, CS2105: 0, CS1231: 4 },
-          },
-        },
-      ).colors,
-    ).toEqual({ CS1010S: 2, CS3216: 1, CS2105: 0, CS1231: 4 });
   });
 });

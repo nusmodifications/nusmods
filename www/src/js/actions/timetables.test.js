@@ -1,6 +1,8 @@
 // @flow
 import localforage from 'localforage';
 import type { ModuleCode, Semester, Lesson } from 'types/modules';
+import type { SemTimetableConfig } from 'types/timetables';
+
 import lessons from '__mocks__/lessons-array.json';
 
 /** @var {Module} */
@@ -8,10 +10,13 @@ import CS1010S from '__mocks__/modules/CS1010S.json';
 /** @var {Module} */
 import CS3216 from '__mocks__/modules/CS3216.json';
 
-import storage from 'storage';
 import runThunk from 'test-utils/runThunk';
+import { V2_MIGRATION_KEY } from 'storage/keys';
 import * as actions from './timetables';
 import { FETCH_MODULE } from './moduleBank';
+
+// Workaround for Jest not being able to recognize implicitly mocked modules
+const storage = (require('storage'): any); // eslint-disable-line global-require
 
 jest.mock('localforage', () => ({ getItem: jest.fn() }));
 jest.mock('storage', () => ({
@@ -51,12 +56,17 @@ test('cancelModifyLesson should not have payload', () => {
   expect(actions.cancelModifyLesson()).toMatchSnapshot();
 });
 
+test('select module color should dispatch a select of module color', () => {
+  const semester: Semester = 1;
+  expect(actions.selectModuleColor(semester, 'CS1010S', 0)).toMatchSnapshot();
+  expect(actions.selectModuleColor(semester, 'CS3216', 1)).toMatchSnapshot();
+});
+
 describe('migrateTimetable()', () => {
-  const migrationKey = 'v2Migration';
   const action = actions.migrateTimetable();
   const getState = () => ({
     moduleBank: { moduleCodes: { CS5331: {} }, modules: {} },
-    timetables: {},
+    timetables: { lessons: {} },
   });
   const makeDispatch = () => jest.fn().mockReturnValue(Promise.resolve());
 
@@ -82,7 +92,7 @@ describe('migrateTimetable()', () => {
 
     expect(dispatch).not.toHaveBeenCalled();
     expect(storage.setItem).toHaveBeenCalledTimes(1);
-    expect(storage.setItem).toHaveBeenCalledWith(migrationKey, true);
+    expect(storage.setItem).toHaveBeenCalledWith(V2_MIGRATION_KEY, true);
   });
 
   test('to migrate timetable', async () => {
@@ -102,7 +112,7 @@ describe('migrateTimetable()', () => {
     expect(secondAction).toHaveProperty('type', FETCH_MODULE);
 
     expect(storage.setItem).toHaveBeenCalledTimes(1);
-    expect(storage.setItem).toHaveBeenCalledWith(migrationKey, true);
+    expect(storage.setItem).toHaveBeenCalledWith(V2_MIGRATION_KEY, true);
   });
 
   test('to exclude invalid modules from timetable', async () => {
@@ -118,12 +128,15 @@ describe('migrateTimetable()', () => {
     expect(dispatch).toHaveBeenCalledTimes(2);
 
     expect(storage.setItem).toHaveBeenCalledTimes(1);
-    expect(storage.setItem).toHaveBeenCalledWith(migrationKey, true);
+    expect(storage.setItem).toHaveBeenCalledWith(V2_MIGRATION_KEY, true);
   });
 });
 
 describe('fillTimetableBlanks', () => {
   const moduleBank = { modules: { CS1010S, CS3216 } };
+  const timetablesState = (semester: Semester, timetable: SemTimetableConfig) => ({
+    lessons: { [semester]: timetable },
+  });
   const semester = 1;
   const action = actions.fillTimetableBlanks(semester);
 
@@ -136,7 +149,7 @@ describe('fillTimetableBlanks', () => {
       },
     };
 
-    const state = { timetables: { [semester]: timetable }, moduleBank };
+    const state: any = { timetables: timetablesState(semester, timetable), moduleBank };
     const dispatch = jest.fn();
     action(dispatch, () => state);
 
@@ -151,7 +164,7 @@ describe('fillTimetableBlanks', () => {
       },
       CS3216: {},
     };
-    const state = { timetables: { [semester]: timetable }, moduleBank };
+    const state: any = { timetables: timetablesState(semester, timetable), moduleBank };
     const dispatch = jest.fn();
 
     action(dispatch, () => state);
@@ -178,5 +191,19 @@ describe('fillTimetableBlanks', () => {
         classNo: '1',
       },
     });
+  });
+});
+
+describe('hide/show timetable modules', () => {
+  const semester: Semester = 1;
+
+  test('should dispatch a module code for hiding', () => {
+    const moduleCode: ModuleCode = 'CS1010';
+    expect(actions.hideLessonInTimetable(semester, moduleCode)).toMatchSnapshot();
+  });
+
+  test('should dispatch a module code for showing', () => {
+    const moduleCode: ModuleCode = 'CS1020';
+    expect(actions.showLessonInTimetable(semester, moduleCode)).toMatchSnapshot();
   });
 });

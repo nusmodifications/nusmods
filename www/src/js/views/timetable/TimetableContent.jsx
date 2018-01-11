@@ -6,7 +6,12 @@ import _ from 'lodash';
 import config from 'config';
 
 import type { ModulesMap } from 'reducers/moduleBank';
-import type { ColorMapping, TimetableOrientation, ModuleSelectList } from 'types/reducers';
+import type {
+  ColorMapping,
+  TimetableOrientation,
+  ModuleSelectList,
+  NotificationOptions,
+} from 'types/reducers';
 import { HORIZONTAL } from 'types/reducers';
 import type { Lesson, Module, ModuleCode, Semester } from 'types/modules';
 import type {
@@ -25,6 +30,8 @@ import {
   removeModule,
 } from 'actions/timetables';
 import { toggleTimetableOrientation } from 'actions/theme';
+import { openNotification, popNotification } from 'actions/app';
+import { undo } from 'actions/undoHistory';
 import {
   getModuleTimetable,
   areLessonsSameClass,
@@ -66,12 +73,15 @@ type Props = {
   hiddenInTimetable: ModuleCode[],
 
   // Actions
-  addModule: Function,
-  removeModule: Function,
+  addModule: (Semester, ModuleCode) => void,
+  removeModule: (Semester, ModuleCode) => void,
   modifyLesson: Function,
   changeLesson: Function,
   cancelModifyLesson: Function,
   toggleTimetableOrientation: Function,
+  openNotification: (string, NotificationOptions) => void,
+  popNotification: () => void,
+  undo: () => void,
 };
 
 type State = {
@@ -126,6 +136,30 @@ class TimetableContent extends Component<Props, State> {
     }
   };
 
+  removeModule = (moduleCode) => {
+    // Display alert on iPhones and iPod touches because snackbar action will take 2 taps
+    // TODO: Replace with a more permanent solution
+    // Using indexOf() as userAgent doesn't have contains()
+    const userAgent = navigator.userAgent;
+    if (userAgent.indexOf('iPhone') !== -1 || userAgent.indexOf('iPod') !== -1) {
+      const confirmMessage = `Are you sure you want to remove ${moduleCode}?`;
+      if (window.confirm(confirmMessage)) {
+        this.props.removeModule(this.props.semester, moduleCode);
+      }
+      return;
+    }
+
+    this.props.removeModule(this.props.semester, moduleCode);
+    this.props.openNotification(`Removed ${moduleCode}`, {
+      timeout: 12000,
+      overwritable: true,
+      action: {
+        text: 'Undo',
+        handler: this.props.undo,
+      },
+    });
+  };
+
   // Returns modules currently in the timetable
   addedModules(): Array<Module> {
     const modules = getSemesterModules(this.props.timetableWithLessons, this.props.modules);
@@ -145,7 +179,7 @@ class TimetableContent extends Component<Props, State> {
         }))}
         horizontalOrientation={horizontalOrientation}
         semester={this.props.semester}
-        onRemoveModule={(moduleCode) => this.props.removeModule(this.props.semester, moduleCode)}
+        onRemoveModule={this.removeModule}
         readOnly={readOnly}
       />
     );
@@ -313,6 +347,7 @@ class TimetableContent extends Component<Props, State> {
                       <ModulesSelect
                         moduleList={this.props.semModuleList}
                         onChange={(moduleCode) => {
+                          this.props.popNotification();
                           this.props.addModule(semester, moduleCode);
                         }}
                         placeholder={
@@ -340,7 +375,7 @@ function mapStateToProps(state, ownProps) {
   const modules = state.moduleBank.modules;
   const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
   const semModuleList = getSemModuleSelectList(state.moduleBank, semester, timetable);
-  const hiddenInTimetable = state.settings.hiddenInTimetable || [];
+  const hiddenInTimetable = state.timetables.hidden[semester] || [];
 
   return {
     semester,
@@ -361,4 +396,7 @@ export default connect(mapStateToProps, {
   changeLesson,
   cancelModifyLesson,
   toggleTimetableOrientation,
+  openNotification,
+  popNotification,
+  undo,
 })(TimetableContent);

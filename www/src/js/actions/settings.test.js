@@ -1,5 +1,5 @@
 // @flow
-import type { Faculty, ModuleCode, Semester } from 'types/modules';
+import type { Faculty, Semester } from 'types/modules';
 
 import * as actions from 'actions/settings';
 
@@ -27,15 +27,5 @@ describe('settings', () => {
   test('should dispatch a select of a faculty value', () => {
     const faculty: Faculty = 'Some faculty';
     expect(actions.selectFaculty(faculty)).toMatchSnapshot();
-  });
-
-  test('should dispatch a module code for hiding', () => {
-    const moduleCode: ModuleCode = 'CS1010';
-    expect(actions.hideLessonInTimetable(moduleCode)).toMatchSnapshot();
-  });
-
-  test('should dispatch a module code for showing', () => {
-    const moduleCode: ModuleCode = 'CS1020';
-    expect(actions.showLessonInTimetable(moduleCode)).toMatchSnapshot();
   });
 });

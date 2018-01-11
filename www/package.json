@@ -6,7 +6,7 @@
     "start": "cross-env NODE_ENV=development node scripts/start",
     "start:export": "cross-env NODE_ENV=development CONFIG=timetable-only PORT=8081 node scripts/start",
     "build": "cross-env NODE_ENV=production node scripts/build",
-    "rsync": "rsync -avu --delete-after dist/",
+    "rsync": "rsync -avu dist/",
     "rsync:export": "rsync -avu --delete-after dist-timetable/",
     "promote-staging": "bash scripts/promote-staging.sh",
     "postinstall": "flow-scripts stub",
@@ -92,11 +92,13 @@
     "uglifyjs-webpack-plugin": "^1.1.4",
     "url-loader": "^0.5.9",
     "webpack": "^3.8.1",
-    "webpack-dev-server": "^2.9.4",
+    "webpack-dev-server": "^2.10.0",
     "webpack-merge": "^4.1.0",
     "workbox-webpack-plugin": "^2.1.0"
   },
   "dependencies": {
+    "@material/fab": "^0.27.0",
+    "@material/snackbar": "^0.27.0",
     "autotrack": "^2.4.1",
     "axios": "^0.16.2",
     "bootstrap": "4.0.0-beta.3",
@@ -125,8 +127,8 @@
     "react-scrollspy": "^3.3.5",
     "react-waypoint": "^7.3.4",
     "redux": "^3.7.2",
-    "redux-thunk": "^2.2.0",
-    "rmwc": "^0.0.1-rc11"
+    "redux-persist": "^5.4.0",
+    "redux-thunk": "^2.2.0"
   },
   "browserslist": [
     "last 2 versions",

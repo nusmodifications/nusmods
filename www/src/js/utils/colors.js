@@ -14,7 +14,7 @@ export function getNewColor(
   currentColorIndices: Array<ColorIndex>,
   randomize: boolean = true,
 ): ColorIndex {
-  function generateInitialIndices(): Array<number> {
+  function generateInitialIndices(): Array<ColorIndex> {
     return range(NUM_DIFFERENT_COLORS);
   }
 

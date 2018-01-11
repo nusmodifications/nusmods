@@ -7,6 +7,7 @@ import classnames from 'classnames';
 
 import type { State } from 'reducers';
 import type { Semester } from 'types/modules';
+
 import exportApi from 'apis/export';
 import { downloadAsIcal, SUPPORTS_DOWNLOAD } from 'actions/export';
 import { Image, Calendar, FileText, Download, ChevronDown } from 'views/components/icons';
@@ -99,4 +100,4 @@ export class ExportMenuComponent extends PureComponent<Props> {
   }
 }
 
-export default connect((state) => ({ state }), { downloadAsIcal })(ExportMenuComponent);
+export default connect((state: State) => ({ state }), { downloadAsIcal })(ExportMenuComponent);
