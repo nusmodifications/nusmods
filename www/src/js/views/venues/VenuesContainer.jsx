@@ -33,6 +33,8 @@ import VenueList from './VenueList';
 import VenueDetails from './VenueDetails';
 import styles from './VenuesContainer.scss';
 
+/* eslint-disable react/prop-types */
+
 type Props = {
   ...ContextRouter,
   matchBreakpoint: boolean,
@@ -61,9 +63,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    // Not sure why this is triggering ESLint
-    const { location, history } = props; // eslint-disable-line react/prop-types
-
+    const { location, history } = props;
     const params = qs.parse(location.search);
 
     // Extract searchOptions from the query string if they are present
@@ -109,10 +109,9 @@ export class VenuesContainerComponent extends Component<Props, State> {
   }
 
   onClearVenueSelect = () =>
-    // eslint-disable-next-line react/prop-types
     this.props.history.push({
+      ...this.props.history.location,
       pathname: venuePage(),
-      search: window.location.search,
     });
 
   onSearch = (searchTerm: string) => {
@@ -144,9 +143,9 @@ export class VenuesContainerComponent extends Component<Props, State> {
   };
 
   selectedVenue(): ?Venue {
-    const { match: { params } } = this.props; // eslint-disable-line react/prop-types
-    if (!params.venue) return null;
-    return decodeURIComponent(params.venue);
+    const venue = this.props.match.params.venue;
+    if (!venue) return null;
+    return decodeURIComponent(venue);
   }
 
   renderSearch() {
