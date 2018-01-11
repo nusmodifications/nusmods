@@ -9,7 +9,7 @@ import axios from 'axios';
 import update from 'immutability-helper';
 import qs from 'query-string';
 import Raven from 'raven-js';
-import { clone, each, mapValues, values } from 'lodash';
+import { each, mapValues, values } from 'lodash';
 
 import type { Module } from 'types/modules';
 import type { PageRange, PageRangeDiff, FilterGroupId } from 'types/views';
@@ -78,7 +78,7 @@ const pageHead = (
 );
 
 export function mergePageRange(prev: PageRange, diff: PageRangeDiff): PageRange {
-  const next = clone(prev);
+  const next = { ...prev };
 
   // Current page is SET from the diff object
   if (diff.current != null) {
