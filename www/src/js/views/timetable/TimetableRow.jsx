@@ -51,8 +51,7 @@ function TimetableRow(props: Props) {
           [dirStyle]: `calc(${dirValue / totalCols * 100}% + 1px)`,
           [sizeStyle]: `calc(${size / totalCols * 100}% - 1px)`,
         };
-        // $FlowFixMe When object spread type actually works
-        const conditionalProps = lesson.isModifiable ? { onModifyCell } : {};
+        const conditionalProps = lesson.isModifiable ? { onClick: onModifyCell } : {};
         return (
           <TimetableCell
             key={lesson.StartTime}

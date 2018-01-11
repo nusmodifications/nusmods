@@ -16,7 +16,6 @@ $cell-border-radius: 6px;
   text-align: left;
   border-width: 0 0 0.2rem;
   border-style: solid;
-  pointer-events: none;
   transition: background-color $desktop-entering-duration $material-deceleration-curve;
   animation-duration: $desktop-entering-duration;
 
@@ -37,10 +36,13 @@ $cell-border-radius: 6px;
   padding: 0;
 }
 
-.cellIsModifiable {
+.cellIsClickable {
   border-radius: $cell-border-radius;
-  pointer-events: auto;
   cursor: pointer;
+
+  &:hover {
+    filter: brightness(95%);
+  }
 }
 
 .cellIsAvailable {
