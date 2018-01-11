@@ -1,25 +1,23 @@
+// @flow
+import type { Middleware } from 'redux';
+import type { State } from 'reducers';
 import axios from 'axios';
-import _ from 'lodash';
 
-function makeRequest(request, accessToken) {
-  const req = _.cloneDeep(request);
-  req.headers = {
-    'Content-Type': 'application/json',
-  };
-
-  if (accessToken) {
-    req.headers.Authorization = accessToken;
-  }
-
-  return axios(req);
+function makeRequest(request) {
+  return axios({
+    ...request,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 }
 
-export const API_REQUEST = Symbol('API_REQUEST');
+export const API_REQUEST: any = Symbol('API_REQUEST');
 export const REQUEST = '_REQUEST';
 export const SUCCESS = '_SUCCESS';
 export const FAILURE = '_FAILURE';
 
-export default (store) => (next) => (action) => {
+const requestMiddleware: Middleware<State, *, *> = () => (next) => (action) => {
   if (!action.meta || !action.meta[API_REQUEST]) {
     // Non-api request action
     return next(action);
@@ -31,7 +29,7 @@ export default (store) => (next) => (action) => {
 
   // Swap the action content and structured api results
   function constructActionWith(data) {
-    const finalAction = Object.assign({}, action, data);
+    const finalAction = { ...action, ...data };
     delete finalAction[API_REQUEST];
     return finalAction;
   }
@@ -48,14 +46,8 @@ export default (store) => (next) => (action) => {
     }),
   );
 
-  // Get the access token from store.
-  let accessToken = '';
-  if (_.get(store.getState(), 'user.accessToken')) {
-    accessToken = store.getState().user.accessToken;
-  }
-
   // Propagate the response of the request.
-  return makeRequest(payload, accessToken).then(
+  return makeRequest(payload).then(
     (response) =>
       next(
         constructActionWith({
@@ -83,3 +75,5 @@ export default (store) => (next) => (action) => {
       ),
   );
 };
+
+export default requestMiddleware;

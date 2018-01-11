@@ -1,6 +1,7 @@
 // @flow
 import { uniq, without } from 'lodash';
 import update from 'immutability-helper';
+import { REHYDRATE } from 'redux-persist';
 
 import type { FSA } from 'types/redux';
 import type { SettingsState } from 'types/reducers';
@@ -10,8 +11,6 @@ import {
   SELECT_FACULTY,
   SELECT_MODE,
   TOGGLE_MODE,
-  HIDE_LESSON_IN_TIMETABLE,
-  SHOW_LESSON_IN_TIMETABLE,
   DISMISS_CORS_NOTIFICATION,
   ENABLE_CORS_NOTIFICATION,
   TOGGLE_CORS_NOTIFICATION_GLOBALLY,
@@ -20,7 +19,7 @@ import { SET_EXPORTED_DATA } from 'actions/export';
 import { LIGHT_MODE, DARK_MODE } from 'types/settings';
 import config from 'config';
 
-const defaultCorsNotificationState = {
+export const defaultCorsNotificationState = {
   semesterKey: config.getSemesterKey(),
   dismissed: [],
   enabled: true,
@@ -33,20 +32,6 @@ const defaultSettingsState: SettingsState = {
   hiddenInTimetable: [],
   corsNotification: defaultCorsNotificationState,
 };
-
-function hidden(state = [], action: FSA) {
-  if (!action.payload) {
-    return state;
-  }
-  switch (action.type) {
-    case HIDE_LESSON_IN_TIMETABLE:
-      return [action.payload, ...state];
-    case SHOW_LESSON_IN_TIMETABLE:
-      return state.filter((c) => c !== action.payload);
-    default:
-      return state;
-  }
-}
 
 function settings(state: SettingsState = defaultSettingsState, action: FSA): SettingsState {
   switch (action.type) {
@@ -69,12 +54,6 @@ function settings(state: SettingsState = defaultSettingsState, action: FSA): Set
       return {
         ...state,
         mode: state.mode === LIGHT_MODE ? DARK_MODE : LIGHT_MODE,
-      };
-    case HIDE_LESSON_IN_TIMETABLE:
-    case SHOW_LESSON_IN_TIMETABLE:
-      return {
-        ...state,
-        hiddenInTimetable: hidden(state.hiddenInTimetable, action),
       };
 
     case TOGGLE_CORS_NOTIFICATION_GLOBALLY:
@@ -104,17 +83,11 @@ function settings(state: SettingsState = defaultSettingsState, action: FSA): Set
         ...action.payload.settings,
       };
 
-    default: {
+    case REHYDRATE: {
       let nextState = state;
 
-      if (!nextState.corsNotification) {
-        nextState = update(nextState, {
-          corsNotification: { $set: defaultCorsNotificationState },
-        });
-      }
-
       // Rehydrating from store - check that the key is the same, and if not,
-      // return to default state since the old dismissed notification settings is stale
+      // reset to default state since the old dismissed notification settings is stale
       if (nextState.corsNotification.semesterKey !== config.getSemesterKey()) {
         nextState = update(nextState, {
           corsNotification: {
@@ -126,6 +99,9 @@ function settings(state: SettingsState = defaultSettingsState, action: FSA): Set
 
       return nextState;
     }
+
+    default:
+      return state;
   }
 }
 

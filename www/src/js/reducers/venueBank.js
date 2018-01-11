@@ -27,3 +27,7 @@ function venueBank(state: VenueBank = defaultModuleBankState, action: FSA): Venu
 }
 
 export default venueBank;
+
+export const persistConfig = {
+  throttle: 1000,
+};
