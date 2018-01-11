@@ -95,6 +95,10 @@ export class VenuesContainerComponent extends Component<Props, State> {
         Raven.captureException(error);
         this.setState({ error });
       });
+
+    if (document.body) {
+      document.body.classList.add('no-footer');
+    }
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
@@ -105,6 +109,12 @@ export class VenuesContainerComponent extends Component<Props, State> {
       this.updateURL(false);
     } else if (searchOptions !== prevState.searchOptions || searchTerm !== prevState.searchTerm) {
       this.updateURL();
+    }
+  }
+
+  componentWillUnmount() {
+    if (document.body) {
+      document.body.classList.remove('no-footer');
     }
   }
 

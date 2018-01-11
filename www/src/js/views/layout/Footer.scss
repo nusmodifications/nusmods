@@ -23,6 +23,10 @@
     line-height: 1.3;
   }
 
+  :global(.no-footer) & {
+    display: none;
+  }
+
   @include media-breakpoint-up(sm) {
     text-align: left;
   }
