@@ -5,7 +5,7 @@ $padding-v: 0.5rem;
 
 .heading {
   position: sticky;
-  top: $navbar-height;
+  top: 0;
   padding: $padding-v 0 $padding-v $padding-h;
   margin-bottom: 0.5rem;
   font-weight: $font-weight-bold;

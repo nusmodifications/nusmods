@@ -2,6 +2,7 @@
 
 $gutter: $grid-gutter-width / 2;
 $sticky-top: $navbar-height + 1rem;
+$venue-list-width: 16rem;
 
 // Layout for venues page is
 // - On md and above - Outlook style two panel UI with the venue list on the left
@@ -9,16 +10,11 @@ $sticky-top: $navbar-height + 1rem;
 // - On sm and below - Single column venue list, with the venue detail appearing
 //   in a modal when venue is selected
 .pageContainer {
-  display: flex;
-  align-items: flex-start;
+  min-height: calc(100vh - #{$navbar-height});
 
   :global {
     animation-name: $page-entering-animation;
   }
-}
-
-.venuesList {
-  flex: 1 auto;
 }
 
 .venueDetail {
@@ -26,32 +22,43 @@ $sticky-top: $navbar-height + 1rem;
 }
 
 @include media-breakpoint-up(md) {
+  .venuesList,
+  .venueDetail {
+    position: fixed;
+    top: $sticky-top;
+    bottom: 0;
+  }
+
   .venuesList {
-    flex: 0 0 16rem;
-    align-self: stretch;
-    margin-right: $gutter;
+    width: $venue-list-width;
     border-right: 1px solid var(--gray-lighter);
+
+    @include scrollable-y;
   }
 
   .venueDetail {
-    position: sticky;
-    top: $sticky-top;
-    bottom: 0;
-    flex: 1 1 auto;
-    max-height: calc(100vh - #{$sticky-top});
-    padding-right: $gutter;
-    margin-right: -$gutter;
-    overflow: auto;
+    right: 0;
+    left: calc(#{$venue-list-width + $side-nav-width-md} + #{$gutter});
+    padding: 0 $gutter;
+  }
+}
+
+@include media-breakpoint-up(xl) {
+  .venueDetail {
+    left: $venue-list-width + $side-nav-width-lg;
   }
 }
 
 @media (min-width: 90rem) {
   .venuesList {
-    flex: 1 1 auto;
+    right: 60rem;
+    left: $side-nav-width-lg;
+    width: auto;
   }
 
   .venueDetail {
-    flex: 0 0 60rem;
+    left: auto;
+    width: 60rem;
   }
 }
 

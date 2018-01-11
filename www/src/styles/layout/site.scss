@@ -39,9 +39,6 @@ a {
 }
 
 .main-container {
-  $side-nav-width-md: 4rem;
-  $side-nav-width-lg: 10rem;
-
   flex: 1 auto;
 
   @include media-breakpoint-down(sm) {
