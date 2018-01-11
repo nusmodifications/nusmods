@@ -94,7 +94,7 @@
     "webpack": "^3.8.1",
     "webpack-dev-server": "^2.10.0",
     "webpack-merge": "^4.1.0",
-    "workbox-webpack-plugin": "^2.1.0"
+    "workbox-webpack-plugin": "^2.1.2"
   },
   "dependencies": {
     "@material/fab": "^0.27.0",
