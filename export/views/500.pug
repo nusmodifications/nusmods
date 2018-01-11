@@ -1,0 +1,15 @@
+extends ./base
+
+block main
+  h1 Uh oh...
+  p
+    | Something went wrong. We've logged the error and will be looking into
+    | it.
+
+  if eventId
+    script(src='https://cdn.ravenjs.com/3.21.0/raven.min.js' crossorigin='anonymous')
+    script.
+      Raven.showReportDialog({
+        eventId: '#{eventId}',
+        dsn: 'https://37215374a3fd42a198c7b144c8886335@sentry.io/265295'
+      });
