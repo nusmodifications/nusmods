@@ -133,43 +133,46 @@ $ yarn promote-staging # Promote ./dist to production
 ## Project Structure
 
 ```
-├── scripts                 - Command line scripts to help with development
+├── scripts                  - Command line scripts to help with development
 ├── src
 │   ├── img
 │   ├── js
-│   │   ├── actions         - Redux actions
-│   │   ├── apis            - Code to interface with external APIs
-│   │   ├── config          - App configuration
-│   │   ├── data            - Static data such as theme colors
-│   │   ├── middlewares     - Redux middlewares
-│   │   ├── reducers        - Redux reducers
-│   │   ├── storage         - Persistance layer for Redux
-│   │   ├── stores          - Redux store config
-│   │   ├── test-utils      - Utilities for testing - this directory is not counted
-│   │   │                     for test coverage
-│   │   ├── types           - Flow type definitions
-│   │   ├── utils           - Utility functions and classes
+│   │   ├── actions          - Redux actions
+│   │   ├── apis             - Code to interface with external APIs
+│   │   ├── bootstrapping    - Code that runs once only on app initialization 
+│   │   ├── config           - App configuration
+│   │   ├── data             - Static data such as theme colors
+│   │   ├── middlewares      - Redux middlewares
+│   │   ├── reducers         - Redux reducers
+│   │   ├── storage          - Persistance layer for Redux
+│   │   ├── test-utils       - Utilities for testing - this directory is not counted
+│   │   │                      for test coverage
+│   │   ├── timetable-export - Entry point for timetable only build for exports
+│   │   ├── types            - Flow type definitions
+│   │   ├── utils            - Utility functions and classes
 │   │   └── views
-│   │       ├── browse      - Module info and module finder related components
-│   │       ├── components  - Reusable components
-│   │       ├── errors      - Error pages
-│   │       ├── hocs        - Higher order components
-│   │       ├── layout      - Global layout components
-│   │       ├── modules     - Module finder and module info components
-│   │       ├── routes      - Routing related components
-│   │       ├── settings    - Settings page component
-│   │       ├── static      - Static pages like /team and /developers
-│   │       └── timetable   - Timetable builder related components
+│   │       ├── browse       - Module info and module finder related components
+│   │       ├── components   - Reusable components
+│   │       ├── errors       - Error pages
+│   │       ├── hocs         - Higher order components
+│   │       ├── layout       - Global layout components
+│   │       ├── modules      - Module finder and module info components
+│   │       ├── routes       - Routing related components
+│   │       ├── settings     - Settings page component
+│   │       ├── static       - Static pages like /team and /developers
+│   │       ├── timetable    - Timetable builder related components
+│   │       └── venues       - Venues page related components
 │   └── styles
-│       ├── bootstrap       - Bootstraping, uh, Bootstrap
-│       ├── components      - Legacy component styles
-│       │                     (new components should colocate their styles)
-│       ├── layout          - Site-wide layout styles
-│       ├── pages           - Page specific styles
-│       └── utils           - Utility classes, mixins, functions
-├── static                  - Static assets, eg. favicons
-|                             These will be copied directly into /dist
-└── webpack                 - Webpack config
+│       ├── bootstrap        - Bootstrapping, uh, Bootstrap
+│       ├── material         - Material components 
+│       ├── components       - Legacy component styles
+│       │                      (new components should colocate their styles)
+│       ├── layout           - Site-wide layout styles
+│       ├── pages            - Page specific styles
+│       └── utils            - Utility classes, mixins, functions
+├── static                   - Static assets, eg. favicons
+│                              These will be copied directly into /dist
+└── webpack                  - Webpack config
 ```
 
 ### Colocation

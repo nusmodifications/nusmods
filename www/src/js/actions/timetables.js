@@ -16,7 +16,7 @@ import { MIGRATION_KEYS, parseQueryString } from 'storage/migrateTimetable';
 
 export const ADD_MODULE: string = 'ADD_MODULE';
 export function addModule(semester: Semester, moduleCode: ModuleCode) {
-  return (dispatch: Function, getState: Function) =>
+  return (dispatch: Function, getState: GetState) =>
     dispatch(fetchModule(moduleCode)).then(() => {
       const module: Module = getState().moduleBank.modules[moduleCode];
       const lessons = getModuleTimetable(module, semester);
@@ -90,7 +90,7 @@ export function setTimetable(
   timetable?: SemTimetableConfig,
   colors?: ColorMapping,
 ) {
-  return (dispatch: Function, getState: Function) => {
+  return (dispatch: Function, getState: GetState) => {
     let validatedTimetable = timetable;
     if (timetable) {
       const moduleCodes = getState().moduleBank.moduleCodes;

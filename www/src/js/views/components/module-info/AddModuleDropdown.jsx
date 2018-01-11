@@ -8,6 +8,7 @@ import { get } from 'lodash';
 
 import type { Module, ModuleCode, Semester } from 'types/modules';
 import type { TimetableConfig } from 'types/timetables';
+import type { State as StoreState } from 'reducers';
 
 import { addModule, removeModule } from 'actions/timetables';
 import { getFirstAvailableSemester, getSemestersOffered } from 'utils/modules';
@@ -157,7 +158,7 @@ export class AddModuleDropdownComponent extends PureComponent<Props, State> {
 }
 
 const AddModuleDropdownConnected = connect(
-  (state) => ({
+  (state: StoreState) => ({
     timetables: state.timetables.lessons,
   }),
   { addModule, removeModule },

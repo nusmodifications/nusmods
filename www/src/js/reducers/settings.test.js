@@ -1,5 +1,4 @@
 // @flow
-import _ from 'lodash';
 import type { FSA } from 'types/redux';
 import type { SettingsState } from 'types/reducers';
 
@@ -84,8 +83,13 @@ describe('corsNotification settings', () => {
 
   test('not clear disabled when semester changes', () => {
     config.getSemesterKey = () => '2017/2018 Semester 2';
-    const settingsState = _.cloneDeep(settingsWithDismissedNotifications);
-    settingsState.corsNotification.enabled = false;
+    const settingsState: SettingsState = {
+      ...initialState,
+      corsNotification: {
+        ...initialState.corsNotification,
+        enabled: false,
+      },
+    };
 
     const nextState: SettingsState = reducer(settingsState, rehydrateAction());
     expect(nextState.corsNotification).toHaveProperty('enabled', false);

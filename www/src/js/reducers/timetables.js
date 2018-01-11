@@ -104,7 +104,7 @@ function semColors(state: ColorMapping = defaultSemColorMap, action: FSA): Color
 
 // Map of semester to list of hidden modules
 const defaultHiddenState = [];
-function hidden(state = defaultHiddenState, action: FSA) {
+function semHiddenModules(state = defaultHiddenState, action: FSA) {
   if (!action.payload) {
     return state;
   }
@@ -162,18 +162,19 @@ function timetables(state: TimetablesState = defaultTimetableState, action: FSA)
           [semester]: { $set: semColors(state.colors[semester], action) },
         },
         hidden: {
-          [semester]: { $set: hidden(state.hidden[semester], action) },
+          [semester]: { $set: semHiddenModules(state.hidden[semester], action) },
         },
       });
     }
 
     case SET_EXPORTED_DATA: {
-      const { semester, timetable, colors } = action.payload;
+      const { semester, timetable, colors, hidden } = action.payload;
 
       return {
         ...state,
         lessons: { [semester]: timetable },
         colors: { [semester]: colors },
+        hidden: { [semester]: hidden },
       };
     }
     default:
