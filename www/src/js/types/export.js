@@ -8,9 +8,9 @@ export type ExportData = {
   semester: Semester,
   timetable: SemTimetableConfig,
   colors: ColorMapping,
+  hidden: ModuleCode[],
   theme: ThemeState,
   settings: {
-    hiddenInTimetable: ModuleCode[],
     mode: Mode,
   },
 };
