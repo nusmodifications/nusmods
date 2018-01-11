@@ -13,6 +13,7 @@ import { clone, each, mapValues, values } from 'lodash';
 
 import type { Module } from 'types/modules';
 import type { PageRange, PageRangeDiff, FilterGroupId } from 'types/views';
+import type { State as StoreState } from 'reducers';
 
 import { Semesters } from 'types/modules';
 import ModuleFinderList from 'views/modules/ModuleFinderList';
@@ -350,7 +351,7 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: StoreState) => ({
   searchTerm: state.moduleFinder.search.term,
 });
 

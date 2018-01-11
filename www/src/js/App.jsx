@@ -22,13 +22,13 @@ export default function App({ store, persistor }: Props) {
   return (
     <AppContainer>
       <Provider store={store}>
-        <Router>
-          <PersistGate persistor={persistor} onBeforeLift={storage.stateMigrationComplete}>
+        <PersistGate persistor={persistor} onBeforeLift={storage.stateMigrationComplete}>
+          <Router>
             <AppShell>
               <Routes />
             </AppShell>
-          </PersistGate>
-        </Router>
+          </Router>
+        </PersistGate>
       </Provider>
     </AppContainer>
   );
