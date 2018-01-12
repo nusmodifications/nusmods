@@ -132,9 +132,12 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
 
         // Benchmark the amount of time taken to run the filters to determine if we can
         // use instant search
-        const start = performance.now();
+        const start = performance && performance.now();
         each(filterGroups, (group) => group.initFilters(modules));
-        const time = performance.now() - start;
+        const time = performance
+          ? performance.now() - start
+          : // If the user's browser doesn't support performance.now, we don't use instant search
+            Number.MAX_VALUE;
 
         if ('instant' in params) {
           // Manual override - use 'instant=1' to force instant search, and
