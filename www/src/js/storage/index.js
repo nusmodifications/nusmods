@@ -15,13 +15,13 @@ function getLocalStorage() {
       usableLocalStorage = {
         privData: {},
         clear: () => {
-          window.localStorage.m_data = {};
+          usableLocalStorage.privData = {};
         },
         setItem: (id, val) => {
-          window.localStorage.privData[id] = val;
+          usableLocalStorage.privData[id] = val;
         },
-        getItem: (id) => window.localStorage.privData[id],
-        removeItem: (id) => delete window.localStorage.privData[id],
+        getItem: (id) => usableLocalStorage.privData[id],
+        removeItem: (id) => delete usableLocalStorage.privData[id],
       };
     }
     return usableLocalStorage;
