@@ -5,7 +5,7 @@ import type { SemTimetableConfig } from 'types/timetables';
 import type { ModuleList, ModuleSelectListItem, ModuleCodeMap } from 'types/reducers';
 
 import { REHYDRATE } from 'redux-persist';
-import { keyBy, zipObject } from 'lodash';
+import { size, keyBy, zipObject } from 'lodash';
 
 import { FETCH_MODULE_LIST, FETCH_MODULE } from 'actions/moduleBank';
 import { SET_EXPORTED_DATA } from 'actions/export';
@@ -61,7 +61,7 @@ function moduleBank(state: ModuleBank = defaultModuleBankState, action: FSA): Mo
       };
 
     case REHYDRATE:
-      if (!state.moduleCodes && state.moduleList) {
+      if (!size(state.moduleCodes) && state.moduleList) {
         return {
           ...state,
           ...precomputeFromModuleList(state.moduleList),
