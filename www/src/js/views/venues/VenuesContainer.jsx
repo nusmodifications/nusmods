@@ -300,7 +300,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
             fullscreen
           >
             <button
-              className={classnames('btn btn-link btn-block', styles.closeButton)}
+              className={classnames('btn btn-outline-primary btn-block', styles.closeButton)}
               onClick={this.onClearVenueSelect}
             >
               Back to Venues

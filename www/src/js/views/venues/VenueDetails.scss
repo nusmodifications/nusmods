@@ -19,8 +19,20 @@
   }
 
   @include media-breakpoint-down(xs) {
-    svg {
-      display: none;
+    flex-wrap: wrap;
+
+    h1 {
+      order: -1;
+      width: 100%;
+    }
+
+    :global(.btn) {
+      justify-content: flex-start;
+      width: 50%;
+    }
+
+    :global(.btn):last-child {
+      justify-content: flex-end;
     }
   }
 }

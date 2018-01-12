@@ -12,6 +12,10 @@ $padding-v: 0.5rem;
   font-size: $font-size-lg;
   border-bottom: 1px solid var(--gray-lighter);
   background: var(--body-bg);
+
+  @include media-breakpoint-down(sm) {
+    top: $navbar-height;
+  }
 }
 
 .venueList {
