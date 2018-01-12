@@ -13,11 +13,13 @@ type Props = {
   semester: Semester,
   timetable: SemTimetableConfig,
   isVerticalOrientation: boolean,
+  showTitle: boolean,
   toggleTimetableOrientation: Function,
+  toggleTitleDisplay: Function,
 };
 
 function TimetableActions(props: Props) {
-  const { isVerticalOrientation } = props;
+  const { isVerticalOrientation, showTitle } = props;
   return (
     <div
       className="btn-toolbar justify-content-between"
@@ -32,6 +34,16 @@ function TimetableActions(props: Props) {
         >
           <Sidebar className={styles.sidebarIcon} />
           {isVerticalOrientation ? 'Horizontal Mode' : 'Vertical Mode'}
+        </button>
+
+        <button
+          type="button"
+          className="btn btn-outline-primary btn-svg"
+          onClick={props.toggleTitleDisplay}
+          disabled={isVerticalOrientation}
+        >
+          <Sidebar className={styles.sidebarIcon} />
+          {showTitle ? 'Hide Titles' : 'Show Titles'}
         </button>
       </div>
 

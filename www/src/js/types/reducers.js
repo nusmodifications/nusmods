@@ -92,6 +92,9 @@ export type SettingsState = {
 
 /* timetables.js */
 export type ColorIndex = number;
+export type TitleDisplay = 'HIDE' | 'SHOW';
+export const SHOW: TitleDisplay = 'SHOW';
+export const HIDE: TitleDisplay = 'HIDE';
 
 // Mapping of module to color index [0, NUM_DIFFERENT_COLORS)
 export type ColorMapping = { [ModuleCode]: ColorIndex };
@@ -103,6 +106,7 @@ export type TimetablesState = {
   +colors: SemesterColorMap,
   +hidden: HiddenModulesMap,
   +academicYear: string,
+  +titleDisplay: TitleDisplay,
 };
 
 /* moduleBank.js */
