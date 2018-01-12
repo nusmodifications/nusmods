@@ -18,7 +18,12 @@ $h-padding: $grid-gutter-width / 2;
 .label {
   margin: 0;
   font-size: $font-size-xs;
-  cursor: pointer;
+
+  &,
+  label,
+  input {
+    cursor: pointer;
+  }
 
   &:hover {
     color: theme-color();
