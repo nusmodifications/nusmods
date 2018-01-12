@@ -2,7 +2,6 @@
 import type { ContextRouter } from 'react-router-dom';
 
 import React, { Component } from 'react';
-import Helmet from 'react-helmet';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
@@ -25,6 +24,7 @@ import ErrorPage from 'views/errors/ErrorPage';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import SideMenu, { OPEN_MENU_LABEL } from 'views/components/SideMenu';
 import { Filter } from 'views/components/icons';
+import Title from 'views/components/Title';
 
 import {
   defaultGroups,
@@ -41,7 +41,6 @@ import {
   TUTORIAL_TIMESLOTS,
 } from 'utils/moduleFilters';
 import { createSearchFilter, sortModules } from 'utils/moduleSearch';
-import config from 'config';
 import nusmods from 'apis/nusmods';
 import { resetModuleFinder } from 'actions/moduleFinder';
 import FilterGroup from 'utils/filters/FilterGroup';
@@ -71,11 +70,7 @@ type State = {
 // only benchmark filtering, not rendering, so we err on using a lower threshold
 const INSTANT_SEARCH_THRESHOLD = 300;
 
-const pageHead = (
-  <Helmet defer={false}>
-    <title>Modules - {config.brandName}</title>
-  </Helmet>
-);
+const pageHead = <Title>Modules</Title>;
 
 export function mergePageRange(prev: PageRange, diff: PageRangeDiff): PageRange {
   const next = clone(prev);

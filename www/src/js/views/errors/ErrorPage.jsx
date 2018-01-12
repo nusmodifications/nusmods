@@ -2,11 +2,10 @@
 import type { Node } from 'react';
 
 import React, { PureComponent } from 'react';
-import Helmet from 'react-helmet';
 import Raven from 'raven-js';
 import classnames from 'classnames';
 
-import config from 'config';
+import Title from 'views/components/Title';
 import Online from 'views/components/Online';
 import styles from './ErrorPage.scss';
 
@@ -33,9 +32,7 @@ export default class NotFoundPage extends PureComponent<Props> {
 
     return (
       <div>
-        <Helmet defer={false}>
-          <title>Uh oh... - {config.brandName}</title>
-        </Helmet>
+        <Title>Uh oh...</Title>
 
         <div className={styles.container}>
           <h1 className={classnames('h2', styles.header)}>
