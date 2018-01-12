@@ -8,9 +8,27 @@ import migrateLegacyStorage from './migrateLegacyStorage';
 // Adapted from https://gist.github.com/juliocesar/926500
 let usableLocalStorage; // DO NOT USE. May be undefined. Use getLocalStorage() below.
 function getLocalStorage() {
+  // If we've performed all our checks before, just assume results will be the same
+  // Key assumption: writability of localStorage doesn't change while page is loaded
+  if (usableLocalStorage) return usableLocalStorage;
+
   try {
-    return window.localStorage;
+    // Ensure that accessing localStorage doesn't throw
+    const storage = window.localStorage;
+
+    // Ensure that localStorage isn't null to fix
+    // https://sentry.io/share/issue/d65da46a7e19406aaee298fb89a635d6/
+    if (!storage) throw new Error();
+
+    // Ensure that localStorage can be written to
+    storage.setItem('____writetest', 1);
+    storage.removeItem('____writetest');
+
+    // Only set storage AFTER we know it can be used
+    usableLocalStorage = storage;
   } catch (e) {
+    // Shim if we can't use localStorage
+    // Once set, don't override
     if (!usableLocalStorage) {
       usableLocalStorage = {
         privData: {},
@@ -24,8 +42,8 @@ function getLocalStorage() {
         removeItem: (id) => delete usableLocalStorage.privData[id],
       };
     }
-    return usableLocalStorage;
   }
+  return usableLocalStorage;
 }
 
 // Simple wrapper around localStorage to automagically parse and stringify payloads.
