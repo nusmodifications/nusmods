@@ -67,7 +67,7 @@ export class ModulePageContentComponent extends Component<Props, State> {
 
     return (
       <div className={classnames('page-container', styles.moduleInfoPage)}>
-        <Helmet>
+        <Helmet defer={false}>
           <title>
             {pageTitle} - {config.brandName}
           </title>

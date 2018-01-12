@@ -54,7 +54,7 @@ type State = {
 };
 
 const pageHead = (
-  <Helmet>
+  <Helmet defer={false}>
     <title>Venues - {config.brandName}</title>
   </Helmet>
 );
