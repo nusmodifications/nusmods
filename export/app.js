@@ -81,9 +81,11 @@ const errorHandler = async (ctx, next) => {
 
     if (ctx.status === 422) {
       await ctx.render('422');
-
     } else {
-      await ctx.render('500', { eventId });
+      await ctx.render('500', {
+        eventId,
+        dsn: config.publicDsn,
+      });
     }
 
     ctx.app.emit('error', e, ctx);
