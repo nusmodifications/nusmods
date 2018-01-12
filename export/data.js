@@ -30,9 +30,8 @@ function parseExportData(ctx, next) {
       const data = JSON.parse(ctx.query.data);
       validateExportData(data);
       ctx.state.data = data;
-      return next();
     } catch (e) {
-      ctx.status = 422;
+      ctx.throw(422, e, { original: e });
     }
   }
 

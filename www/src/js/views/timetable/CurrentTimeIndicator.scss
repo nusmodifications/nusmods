@@ -40,6 +40,8 @@ $line-width: 0.1rem;
 }
 
 :global(.verticalMode) .linePart {
+  top: -$line-width / 2;
+  left: 0;
   width: 100%;
   height: $line-width;
 }
