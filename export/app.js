@@ -1,6 +1,7 @@
 const fs = require('fs-extra');
 const Koa = require('koa');
 const Router = require('koa-router');
+const views = require('koa-views');
 const gracefulShutdown = require('http-graceful-shutdown');
 const Raven = require('raven');
 const _ = require('lodash');
@@ -64,18 +65,37 @@ router
 const errorHandler = async (ctx, next) => {
   try {
     await next();
+
+    if (ctx.status === 404) {
+      await ctx.render('404');
+      ctx.status = 404;
+    }
   } catch (e) {
-    Raven.captureException(e, {
+    const eventId = Raven.captureException(e.original || e, {
       req: ctx.req,
     });
 
     console.error(e);
+
     ctx.status = e.status || 500;
+
+    if (ctx.status === 422) {
+      await ctx.render('422');
+    } else {
+      await ctx.render('500', {
+        eventId,
+        dsn: config.publicDsn,
+      });
+    }
+
     ctx.app.emit('error', e, ctx);
   }
 };
 
 app
+  .use(views(__dirname + '/views', {
+    extension: 'pug',
+  }))
   .use(errorHandler)
   .use(data.parseExportData)
   .use(render.openPage)

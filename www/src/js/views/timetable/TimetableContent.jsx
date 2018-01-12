@@ -1,9 +1,7 @@
 // @flow
 import React, { Component, type Node } from 'react';
 import { connect } from 'react-redux';
-import Helmet from 'react-helmet';
 import _ from 'lodash';
-import config from 'config';
 
 import type { ModulesMap } from 'reducers/moduleBank';
 import type {
@@ -51,6 +49,7 @@ import ModulesSelect from 'views/timetable/ModulesSelect';
 import CorsNotification from 'views/components/cors-info/CorsNotification';
 import Announcements from 'views/components/Announcements';
 import Online from 'views/components/Online';
+import Title from 'views/components/Title';
 import Timetable from './Timetable';
 import TimetableActions from './TimetableActions';
 import TimetableModulesTable from './TimetableModulesTable';
@@ -289,9 +288,7 @@ class TimetableContent extends Component<Props, State> {
         })}
         onClick={this.cancelModifyLesson}
       >
-        <Helmet>
-          <title>Timetable - {config.brandName}</title>
-        </Helmet>
+        <Title>Timetable</Title>
 
         <CorsNotification />
 

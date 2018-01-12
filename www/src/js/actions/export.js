@@ -4,6 +4,7 @@ import type { Module, Semester } from 'types/modules';
 import { hydrateSemTimetableWithLessons } from 'utils/timetables';
 import type { ExportData } from 'types/export';
 import type { FSA, GetState } from 'types/redux';
+import { getSemesterTimetable } from 'reducers/timetables';
 
 function downloadUrl(blob: Blob, filename: string) {
   const link = document.createElement('a');
@@ -26,8 +27,9 @@ export function downloadAsIcal(semester: Semester) {
       import(/* webpackChunkName: "export" */ 'ical-generator'),
       import(/* webpackChunkName: "export" */ 'utils/ical'),
     ]).then(([ical, icalUtils]) => {
-      const modules = getState().moduleBank.modules;
-      const timetable = getState().timetables[semester] || {};
+      const { moduleBank, timetables } = getState();
+      const modules = moduleBank.modules;
+      const { timetable } = getSemesterTimetable(semester, timetables);
       const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
 
       const events = icalUtils.default(semester, timetableWithLessons, modules);

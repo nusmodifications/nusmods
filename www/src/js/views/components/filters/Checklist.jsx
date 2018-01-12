@@ -20,7 +20,7 @@ export default function Checklist({ groupId, filters, onChange, getCount }: Prop
         const id = `${groupId}-${filter.id}`;
 
         return (
-          <li key={filter.label} className="form-check">
+          <li key={filter.label} className={classnames(styles.label, 'form-check')}>
             <input
               id={id}
               className="form-check-input"
@@ -31,7 +31,7 @@ export default function Checklist({ groupId, filters, onChange, getCount }: Prop
 
             <label
               htmlFor={id}
-              className={classnames('form-check-label', styles.label, {
+              className={classnames('form-check-label', {
                 [styles.enabled]: filter.enabled,
               })}
             >
