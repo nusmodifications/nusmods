@@ -106,7 +106,6 @@ export type TimetablesState = {
   +colors: SemesterColorMap,
   +hidden: HiddenModulesMap,
   +academicYear: string,
-  +titleDisplay: TitleDisplay,
 };
 
 /* moduleBank.js */
