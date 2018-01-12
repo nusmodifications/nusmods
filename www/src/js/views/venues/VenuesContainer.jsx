@@ -1,7 +1,6 @@
 // @flow
 import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
-import Helmet from 'react-helmet';
 import classnames from 'classnames';
 import axios from 'axios';
 import qs from 'query-string';
@@ -27,6 +26,7 @@ import { breakpointDown } from 'utils/css';
 import { defer } from 'utils/react';
 import makeResponsive from 'views/hocs/makeResponsive';
 import Modal from 'views/components/Modal';
+import Title from 'views/components/Title';
 
 import AvailabilitySearch, { defaultSearchOptions } from './AvailabilitySearch';
 import VenueList from './VenueList';
@@ -51,11 +51,7 @@ type State = {|
   searchOptions: VenueSearchOptions,
 |};
 
-const pageHead = (
-  <Helmet defer={false}>
-    <title>Venues - {config.brandName}</title>
-  </Helmet>
-);
+const pageHead = <Title>Venues</Title>;
 
 export class VenuesContainerComponent extends Component<Props, State> {
   history: HistoryDebouncer;

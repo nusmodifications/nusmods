@@ -1,11 +1,9 @@
 // @flow
 
 import React, { type Node, Component } from 'react';
-import { connect, type MapStateToProps } from 'react-redux';
 import ReactModal from 'react-modal';
 import classnames from 'classnames';
 
-import type { State } from 'reducers';
 import noScroll from 'utils/noScroll';
 import styles from './Modal.scss';
 
@@ -14,11 +12,10 @@ type Props = {
   overlayClassName?: string,
   className?: string,
   children: Node,
-  theme: number,
   fullscreen: boolean,
 };
 
-export class ModalComponent extends Component<Props> {
+export default class Modal extends Component<Props> {
   static defaultProps = {
     fullscreen: false,
   };
@@ -41,12 +38,12 @@ export class ModalComponent extends Component<Props> {
   }
 
   render() {
-    const { className, overlayClassName, children, theme, fullscreen, ...rest } = this.props;
+    const { className, overlayClassName, children, fullscreen, ...rest } = this.props;
 
     return (
       <ReactModal
         overlayClassName={classnames(styles.overlay, overlayClassName)}
-        className={classnames(styles.modal, className, `theme-${theme}`, {
+        className={classnames(styles.modal, className, {
           [styles.fullscreen]: fullscreen,
         })}
         {...rest}
@@ -56,6 +53,3 @@ export class ModalComponent extends Component<Props> {
     );
   }
 }
-
-const mapStateToProps: MapStateToProps<*, *, *> = (state: State) => ({ theme: state.theme.id });
-export default connect(mapStateToProps)(ModalComponent);
