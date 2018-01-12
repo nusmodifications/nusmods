@@ -2,19 +2,18 @@
 
 import React, { Fragment, PureComponent } from 'react';
 import { Link } from 'react-router-dom';
-import Helmet from 'react-helmet';
 import classnames from 'classnames';
 import { flatMap } from 'lodash';
 
 import type { DayAvailability, Venue, VenueLesson } from 'types/venues';
 
-import config from 'config';
 import { colorLessonsByKey } from 'utils/colors';
 import { arrangeLessonsForWeek } from 'utils/timetables';
 import { ChevronLeft, ChevronRight } from 'views/components/icons';
 import Timetable from 'views/timetable/Timetable';
 import makeResponsive from 'views/hocs/makeResponsive';
 import { venuePage } from 'views/routes/paths';
+import Title from 'views/components/Title';
 import { breakpointDown } from 'utils/css';
 
 import styles from './VenueDetails.scss';
@@ -42,11 +41,7 @@ export class VenueDetailsComponent extends PureComponent<Props> {
 
     return (
       <Fragment>
-        <Helmet>
-          <title>
-            {venue} - Venues - {config.brandName}
-          </title>
-        </Helmet>
+        <Title>{`${venue} - Venues`}</Title>
 
         <header className={styles.header}>
           <Link

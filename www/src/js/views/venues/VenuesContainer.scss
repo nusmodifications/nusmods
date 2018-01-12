@@ -79,6 +79,10 @@ $venue-list-width: 16rem;
     font-weight: $font-weight-bold;
     font-size: $font-size-lg;
   }
+
+  @include media-breakpoint-down(sm) {
+    margin-right: 0;
+  }
 }
 
 .searchBox {
