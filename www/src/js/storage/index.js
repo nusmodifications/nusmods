@@ -14,13 +14,15 @@ function getLocalStorage() {
 
   try {
     // Ensure that accessing localStorage doesn't throw
+    // Next line throws on Chrome with cookies disabled
     const storage = window.localStorage;
 
-    // Ensure that localStorage isn't null to fix
-    // https://sentry.io/share/issue/d65da46a7e19406aaee298fb89a635d6/
+    // Ensure that localStorage isn't null
+    // Resolves https://sentry.io/share/issue/d65da46a7e19406aaee298fb89a635d6/
     if (!storage) throw new Error();
 
     // Ensure that localStorage can be written to
+    // Next line throws on iOS 10 private browsing
     storage.setItem('____writetest', 1);
     storage.removeItem('____writetest');
 
