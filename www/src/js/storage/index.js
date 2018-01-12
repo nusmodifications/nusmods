@@ -11,7 +11,25 @@ function setItem(key: string, value: any) {
   try {
     localStorage.setItem(key, isString(value) ? value : JSON.stringify(value));
   } catch (e) {
-    Raven.captureException(e);
+    // Calculate used size and attach it to the error report. This is diagnostics
+    // for https://sentry.io/nusmods/v3/issues/432778991/
+    let usedSpace = 0;
+    try {
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        let item;
+        if (typeof k === 'string') item = localStorage.getItem(k);
+        if (item) usedSpace += item.length;
+      }
+    } catch (error) {
+      // Ignore error
+    }
+
+    Raven.captureException(e, {
+      data: {
+        usedSpace,
+      },
+    });
   }
 }
 
