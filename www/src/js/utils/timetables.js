@@ -253,8 +253,9 @@ function serializeModuleConfig(config: ModuleLessonConfig): string {
   ).join(LESSON_SEP);
 }
 
-function parseModuleConfig(serialized: string): ModuleLessonConfig {
+function parseModuleConfig(serialized: ?string): ModuleLessonConfig {
   const config = {};
+  if (!serialized) return config;
 
   serialized.split(LESSON_SEP).forEach((lesson) => {
     const [lessonTypeAbbr, classNo] = lesson.split(LESSON_TYPE_SEP);
