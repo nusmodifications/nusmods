@@ -289,7 +289,7 @@ class TimetableContent extends Component<Props, State> {
         })}
         onClick={this.cancelModifyLesson}
       >
-        <Helmet>
+        <Helmet defer={false}>
           <title>Timetable - {config.brandName}</title>
         </Helmet>
 
