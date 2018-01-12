@@ -3,7 +3,6 @@ import type { Node } from 'react';
 
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import { clone } from 'lodash';
 
 import type { Day, Time } from 'types/modules';
 
@@ -35,6 +34,9 @@ const timeLabels: { [Time]: string } = {
   Evening: 'Night',
 };
 
+const withoutSaturday = DaysOfWeek.slice(0, -1);
+const withoutEvening = TimesOfDay.slice(0, -1);
+
 export default class TimeslotTable extends Component<Props, State> {
   state: State = { hover: EMPTY_HOVER };
 
@@ -49,23 +51,19 @@ export default class TimeslotTable extends Component<Props, State> {
   render() {
     const { children, className } = this.props;
     const { hover } = this.state;
-    const times = clone(TimesOfDay);
-    const days = clone(DaysOfWeek);
 
     const hasChildren = (day, time) => {
       const timeslot = getTimeslot(day, time);
       return React.Children.count(children.get(timeslot)) > 0;
     };
 
-    // Remove Saturday if there are no children on Saturday
-    if (times.every((time) => !hasChildren('Saturday', time))) {
-      days.pop();
-    }
-
-    // Remove evening if there are no evening children
-    if (days.every((day) => !hasChildren(day, 'Evening'))) {
-      times.pop();
-    }
+    // Remove Saturday and Evening if there is nothing in those rows / columns
+    const days = TimesOfDay.some((time) => hasChildren('Saturday', time))
+      ? DaysOfWeek
+      : withoutSaturday;
+    const times = DaysOfWeek.some((day) => hasChildren(day, 'Evening'))
+      ? TimesOfDay
+      : withoutEvening;
 
     return (
       <table className={classnames(styles.table, className)}>

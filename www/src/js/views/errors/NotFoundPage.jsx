@@ -13,7 +13,7 @@ export default function NotFoundPage() {
 
   return (
     <div>
-      <Helmet>
+      <Helmet defer={false}>
         <title>Page Not Found - {config.brandName}</title>
       </Helmet>
 

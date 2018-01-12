@@ -33,7 +33,7 @@ export default class NotFoundPage extends PureComponent<Props> {
 
     return (
       <div>
-        <Helmet>
+        <Helmet defer={false}>
           <title>Uh oh... - {config.brandName}</title>
         </Helmet>
 
