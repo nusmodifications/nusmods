@@ -7,6 +7,7 @@ import type { Mode } from 'types/settings';
 import type { State } from 'reducers';
 
 import React, { Component } from 'react';
+import Helmet from 'react-helmet';
 import { NavLink, withRouter, type ContextRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import NUSModerator from 'nusmoderator';
@@ -74,19 +75,9 @@ const weekText = (() => {
   return parts.join(', ').trim();
 })();
 
-function setMode(mode: Mode) {
-  const { body } = document;
-  if (!body) return;
-
-  const isDarkMode = mode === DARK_MODE;
-  body.classList.toggle('mode-dark', isDarkMode);
-  body.classList.toggle('mdc-theme--dark', isDarkMode);
-}
-
 export class AppShellComponent extends Component<Props> {
   componentWillMount() {
-    const { mode, timetables } = this.props;
-    setMode(mode);
+    const { timetables } = this.props;
 
     // Retrieve module list
     // TODO: This always re-fetch the entire modules list. Consider a better strategy for this
@@ -107,16 +98,22 @@ export class AppShellComponent extends Component<Props> {
     // Fetch all module data that are on timetable
   }
 
-  componentWillUpdate(nextProps: Props) {
-    setMode(nextProps.mode);
-  }
-
   render() {
     // TODO: Handle failed loading of module list
     const isModuleListReady = this.props.moduleList.length;
+    const isDarkMode = this.props.mode === DARK_MODE;
 
     return (
       <div className="app-container">
+        <Helmet>
+          <body
+            className={classnames(`theme-${this.props.theme}`, {
+              'mode-dark': isDarkMode,
+              'mdc-theme--dark': isDarkMode,
+            })}
+          />
+        </Helmet>
+
         <nav className={styles.navbar}>
           <NavLink className={styles.brand} to="/" title="Home">
             <span className="sr-only">NUSMods</span>
@@ -128,7 +125,7 @@ export class AppShellComponent extends Component<Props> {
         <div className="main-container">
           <Navtabs />
 
-          <main className={classnames('main-content', `theme-${this.props.theme}`)}>
+          <main className="main-content">
             {isModuleListReady ? this.props.children : <LoadingSpinner />}
           </main>
         </div>
