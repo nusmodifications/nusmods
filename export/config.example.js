@@ -20,6 +20,9 @@ module.exports = {
   // throw an error.
   moduleData: null,
 
-  // DSN used to report errors to Raven - used only in production
+  // Full DSN string used to report errors to Raven from the server - used only in production
   ravenDsn: '',
+
+  // Public key only DSN string used for the Raven error feedback form
+  publicDsn: 'https://37215374a3fd42a198c7b144c8886335@sentry.io/265295',
 };
