@@ -2,7 +2,6 @@
 import React, { Component, Fragment } from 'react';
 import classnames from 'classnames';
 import { connect, type MapStateToProps } from 'react-redux';
-import Helmet from 'react-helmet';
 import ScrollSpy from 'react-scrollspy';
 import { map, mapValues, kebabCase, values } from 'lodash';
 
@@ -26,6 +25,7 @@ import AddToTimetableDropdown from 'views/components/module-info/AddModuleDropdo
 import CorsStats from 'views/components/cors-stats/CorsStats';
 import CorsNotification from 'views/components/cors-info/CorsNotification';
 import Announcements from 'views/components/Announcements';
+import Title from 'views/components/Title';
 
 import styles from './ModulePageContent.scss';
 
@@ -67,11 +67,7 @@ export class ModulePageContentComponent extends Component<Props, State> {
 
     return (
       <div className={classnames('page-container', styles.moduleInfoPage)}>
-        <Helmet defer={false}>
-          <title>
-            {pageTitle} - {config.brandName}
-          </title>
-        </Helmet>
+        <Title>{pageTitle}</Title>
 
         <Announcements />
 
