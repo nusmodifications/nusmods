@@ -1,4 +1,4 @@
-@import './_variables.scss';
+@import "./_variables.scss";
 
 .sidebarIcon {
   composes: svg svg-small from global;
@@ -53,7 +53,7 @@
 
 .rightButtonGroup {
   justify-content: space-between;
-  min-width: 19rem;
+  min-width: 16rem;
 
   > * {
     width: calc(50% - 0.25rem);
