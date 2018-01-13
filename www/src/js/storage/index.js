@@ -21,10 +21,12 @@ function getLocalStorage() {
     // Resolves https://sentry.io/share/issue/d65da46a7e19406aaee298fb89a635d6/
     if (!storage) throw new Error();
 
-    // Ensure that localStorage can be written to
-    // Next line throws on iOS 10 private browsing
-    storage.setItem('____writetest', 1);
-    storage.removeItem('____writetest');
+    // Ensure that if setItem throws, it's not because of private browsing
+    // If storage is empty AND setItem throws, we're probably in iOS <=10 private browsing
+    if (storage.length === 0) {
+      storage.setItem('____writetest', 1);
+      storage.removeItem('____writetest');
+    }
 
     // Only set storage AFTER we know it can be used
     usableLocalStorage = storage;
