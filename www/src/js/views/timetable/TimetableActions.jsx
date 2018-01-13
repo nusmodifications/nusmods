@@ -1,6 +1,7 @@
 // @flow
 import type { Semester } from 'types/modules';
 import type { SemTimetableConfig } from 'types/timetables';
+import classnames from 'classnames';
 
 import React from 'react';
 import { Sidebar, Eye, EyeOff } from 'views/components/icons';
@@ -38,7 +39,10 @@ function TimetableActions(props: Props) {
 
         <button
           type="button"
-          className="btn btn-outline-primary btn-svg"
+          className={classnames('btn', 'btn-svg', {
+            'btn-outline-primary': !isVerticalOrientation,
+            'btn-outline-secondary': isVerticalOrientation,
+          })}
           onClick={props.toggleTitleDisplay}
           disabled={isVerticalOrientation}
         >
