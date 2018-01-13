@@ -39,11 +39,11 @@ function getLocalStorage() {
         clear: () => {
           usableLocalStorage.privData = {};
         },
-        setItem: (id, val) => {
-          usableLocalStorage.privData[id] = val;
+        setItem: (key, val) => {
+          usableLocalStorage.privData[String(key)] = JSON.stringify(val);
         },
-        getItem: (id) => usableLocalStorage.privData[id],
-        removeItem: (id) => delete usableLocalStorage.privData[id],
+        getItem: (key) => JSON.parse(usableLocalStorage.privData[String(key)]),
+        removeItem: (key) => delete usableLocalStorage.privData[String(key)],
       };
     }
   }
