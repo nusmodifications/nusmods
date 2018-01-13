@@ -11,25 +11,10 @@ function setItem(key: string, value: any) {
   try {
     localStorage.setItem(key, isString(value) ? value : JSON.stringify(value));
   } catch (e) {
-    // Calculate used size and attach it to the error report. This is diagnostics
-    // for https://sentry.io/nusmods/v3/issues/432778991/
-    const usedSpace: Object = {};
-    try {
-      for (let i = 0; i < localStorage.length; i++) {
-        const k = localStorage.key(i);
-        let item;
-        if (typeof k === 'string') item = localStorage.getItem(k);
-        if (item) usedSpace[k] = Math.round(item.length / 1024);
-      }
-    } catch (error) {
-      // Ignore error
-    }
-
-    Raven.captureException(e, {
-      extra: {
-        usedSpace,
-      },
-    });
+    // Silence errors originating from Safari 10 in private browsing mode
+    // https://bugs.webkit.org/show_bug.cgi?id=157010
+    if (e.name.toLowerCase().includes('quota') && localStorage.length === 0) return;
+    Raven.captureException(e);
   }
 }
 
