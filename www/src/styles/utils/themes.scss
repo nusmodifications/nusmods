@@ -9,11 +9,10 @@
     $index: 0;
 
     @each $color in $colors {
-
-      $index: $index + 1; /* stylelint-disable-line order/order */
       .color-#{$index} {
         @include color($color);
       }
+      $index: $index + 1; /* stylelint-disable-line order/order */
     }
   }
 }
