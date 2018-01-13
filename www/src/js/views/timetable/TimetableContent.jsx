@@ -296,6 +296,7 @@ class TimetableContent extends Component<Props, State> {
       <div
         className={classnames('page-container', styles.container, {
           verticalMode: isVerticalOrientation,
+          showTitle: isShowingTitle,
         })}
         onClick={this.cancelModifyLesson}
       >

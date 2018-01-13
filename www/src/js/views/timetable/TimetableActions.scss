@@ -9,6 +9,24 @@
   }
 }
 
+.eyeIcon {
+  composes: svg svg-small from global;
+  display: inline-flex;
+
+  @include show-title {
+    display: none;
+  }
+}
+
+.eyeOffIcon {
+  composes: svg svg-small from global;
+  display: none;
+
+  @include show-title {
+    display: inline-flex;
+  }
+}
+
 .leftButtonGroup,
 .rightButtonGroup {
   display: flex;

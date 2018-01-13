@@ -3,7 +3,7 @@ import type { Semester } from 'types/modules';
 import type { SemTimetableConfig } from 'types/timetables';
 
 import React from 'react';
-import { Sidebar } from 'views/components/icons';
+import { Sidebar, Eye, EyeOff } from 'views/components/icons';
 import ShareTimetable from './ShareTimetable';
 import ExportMenu from './ExportMenu';
 
@@ -42,7 +42,8 @@ function TimetableActions(props: Props) {
           onClick={props.toggleTitleDisplay}
           disabled={isVerticalOrientation}
         >
-          <Sidebar className={styles.sidebarIcon} />
+          <Eye className={styles.eyeIcon} />
+          <EyeOff className={styles.eyeOffIcon} />
           {showTitle ? 'Hide Titles' : 'Show Titles'}
         </button>
       </div>
