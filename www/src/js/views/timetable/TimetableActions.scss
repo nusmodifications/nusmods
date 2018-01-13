@@ -13,6 +13,18 @@
   composes: svg svg-small from global;
 }
 
+.orientationBtn {
+  @include vertical-mode {
+    flex: 1
+  }
+}
+
+.titleBtn {
+  @include vertical-mode {
+    display: none;
+  }
+}
+
 .leftButtonGroup,
 .rightButtonGroup {
   display: flex;

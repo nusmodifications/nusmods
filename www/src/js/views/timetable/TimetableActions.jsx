@@ -30,7 +30,7 @@ function TimetableActions(props: Props) {
       <div className={styles.leftButtonGroup} role="group" aria-label="Timetable manipulation">
         <button
           type="button"
-          className="btn btn-outline-primary btn-svg"
+          className={classnames(styles.orientationBtn, 'btn', 'btn-outline-primary', 'btn-svg')}
           onClick={props.toggleTimetableOrientation}
         >
           <Sidebar className={styles.sidebarIcon} />
@@ -39,14 +39,14 @@ function TimetableActions(props: Props) {
 
         <button
           type="button"
-          className={classnames('btn', 'btn-svg', {
+          className={classnames(styles.titleBtn, 'btn', 'btn-svg', {
             'btn-outline-primary': !isVerticalOrientation,
             'btn-outline-secondary': isVerticalOrientation,
           })}
           onClick={props.toggleTitleDisplay}
           disabled={isVerticalOrientation}
         >
-          <Type className={styles.typeIcon} />
+          <Type className={styles.typeIcon} size={20}/>
           {showTitle ? 'Hide Titles' : 'Show Titles'}
         </button>
       </div>
