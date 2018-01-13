@@ -15,7 +15,7 @@
 
 .orientationBtn {
   @include vertical-mode {
-    flex: 1
+    flex: 1;
   }
 }
 

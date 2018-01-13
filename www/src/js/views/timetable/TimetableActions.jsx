@@ -46,7 +46,7 @@ function TimetableActions(props: Props) {
           onClick={props.toggleTitleDisplay}
           disabled={isVerticalOrientation}
         >
-          <Type className={styles.typeIcon} size={20}/>
+          <Type className={styles.typeIcon} size={20} />
           {showTitle ? 'Hide Titles' : 'Show Titles'}
         </button>
       </div>
