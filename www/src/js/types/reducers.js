@@ -73,6 +73,7 @@ export const HORIZONTAL: TimetableOrientation = 'HORIZONTAL';
 export type ThemeState = {
   +id: string,
   +timetableOrientation: TimetableOrientation,
+  +showTitle: boolean,
 };
 
 /* settings */
@@ -92,9 +93,6 @@ export type SettingsState = {
 
 /* timetables.js */
 export type ColorIndex = number;
-export type TitleDisplay = 'HIDE' | 'SHOW';
-export const SHOW: TitleDisplay = 'SHOW';
-export const HIDE: TitleDisplay = 'HIDE';
 
 // Mapping of module to color index [0, NUM_DIFFERENT_COLORS)
 export type ColorMapping = { [ModuleCode]: ColorIndex };

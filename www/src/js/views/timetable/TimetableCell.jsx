@@ -18,8 +18,9 @@ type Props = {
 
 function TimetableCell(props: Props) {
   const lesson = props.lesson;
-  const moduleCodeWithTitle = `${lesson.ModuleCode} ${lesson.ModuleTitle}`;
-  const moduleName = props.showTitle ? moduleCodeWithTitle : lesson.ModuleCode;
+  const moduleName = props.showTitle
+    ? `${lesson.ModuleCode} ${lesson.ModuleTitle}`
+    : lesson.ModuleCode;
 
   return (
     <button
@@ -43,7 +44,7 @@ function TimetableCell(props: Props) {
       style={props.style}
     >
       <div className={styles.cellContainer}>
-        <div className={styles.moduleCode}>{moduleName}</div>
+        <div className={styles.moduleName}>{moduleName}</div>
         <div>
           {LESSON_TYPE_ABBREV[lesson.LessonType]} [{lesson.ClassNo}]
         </div>

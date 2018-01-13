@@ -198,11 +198,3 @@ export function showLessonInTimetable(semester: Semester, moduleCode: ModuleCode
     payload: { moduleCode, semester },
   };
 }
-
-export const TOGGLE_TITLE_DISPLAY: string = 'TOGGLE_TITLE_DISPLAY';
-export function toggleTitleDisplay(): FSA {
-  return {
-    type: TOGGLE_TITLE_DISPLAY,
-    payload: {},
-  };
-}

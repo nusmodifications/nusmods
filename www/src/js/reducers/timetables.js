@@ -16,11 +16,9 @@ import {
   SELECT_MODULE_COLOR,
   SET_TIMETABLE,
   SHOW_LESSON_IN_TIMETABLE,
-  TOGGLE_TITLE_DISPLAY,
 } from 'actions/timetables';
 import { SET_EXPORTED_DATA } from 'actions/export';
 import { getNewColor } from 'utils/colors';
-import { SHOW, HIDE } from 'types/reducers';
 
 const EMPTY_OBJECT = {};
 
@@ -127,11 +125,10 @@ export const defaultTimetableState: TimetablesState = {
   colors: {},
   hidden: {},
   academicYear: config.academicYear,
-  titleDisplay: HIDE,
 };
 
 function timetables(state: TimetablesState = defaultTimetableState, action: FSA): TimetablesState {
-  if (action.type !== TOGGLE_TITLE_DISPLAY && (!action.payload || !action.payload.semester)) {
+  if (!action.payload || !action.payload.semester) {
     return state;
   }
 
@@ -180,11 +177,6 @@ function timetables(state: TimetablesState = defaultTimetableState, action: FSA)
         hidden: { [semester]: hidden },
       };
     }
-    case TOGGLE_TITLE_DISPLAY:
-      return {
-        ...state,
-        titleDisplay: state.titleDisplay === HIDE ? SHOW : HIDE,
-      };
     default:
       return state;
   }
