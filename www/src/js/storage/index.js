@@ -3,13 +3,12 @@ import { isString } from 'lodash';
 import Raven from 'raven-js';
 import { LEGACY_REDUX_KEY, PERSIST_MIGRATION_KEY } from './keys';
 import migrateLegacyStorage from './migrateLegacyStorage';
+import getLocalStorage from './localStorage';
 
 // Simple wrapper around localStorage to automagically parse and stringify payloads.
-// TODO: Use an in-memory storage for environments where localStorage is not present,
-//       like private mode on Safari.
 function setItem(key: string, value: any) {
   try {
-    localStorage.setItem(key, isString(value) ? value : JSON.stringify(value));
+    getLocalStorage().setItem(key, isString(value) ? value : JSON.stringify(value));
   } catch (e) {
     // Calculate used size and attach it to the error report. This is diagnostics
     // for https://sentry.io/nusmods/v3/issues/432778991/
@@ -36,7 +35,7 @@ function setItem(key: string, value: any) {
 function getItem(key: string): any {
   let value;
   try {
-    value = localStorage.getItem(key);
+    value = getLocalStorage().getItem(key);
     if (value && value !== '') {
       return JSON.parse(value);
     }
@@ -49,7 +48,7 @@ function getItem(key: string): any {
 
 function removeItem(key: string) {
   try {
-    localStorage.removeItem(key);
+    getLocalStorage().removeItem(key);
   } catch (e) {
     Raven.captureException(e);
   }
