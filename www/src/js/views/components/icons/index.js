@@ -31,6 +31,7 @@ import Search from 'react-feather/dist/icons/search';
 import Sidebar from 'react-feather/dist/icons/sidebar';
 import Twitter from 'react-feather/dist/icons/twitter';
 import Trash2 from 'react-feather/dist/icons/trash-2';
+import Type from 'react-feather/dist/icons/type';
 
 export {
   AlertTriangle,
@@ -64,4 +65,5 @@ export {
   Sidebar,
   Twitter,
   Trash2,
+  Type,
 };

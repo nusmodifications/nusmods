@@ -78,11 +78,3 @@
     }
   }
 }
-
-@mixin show-title {
-  @at-root {
-    :global(.showTitle) & {
-      @content;
-    }
-  }
-}

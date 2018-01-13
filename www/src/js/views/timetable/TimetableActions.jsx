@@ -4,7 +4,7 @@ import type { SemTimetableConfig } from 'types/timetables';
 import classnames from 'classnames';
 
 import React from 'react';
-import { Sidebar, Eye, EyeOff } from 'views/components/icons';
+import { Sidebar, Type } from 'views/components/icons';
 import ShareTimetable from './ShareTimetable';
 import ExportMenu from './ExportMenu';
 
@@ -46,8 +46,7 @@ function TimetableActions(props: Props) {
           onClick={props.toggleTitleDisplay}
           disabled={isVerticalOrientation}
         >
-          <Eye className={styles.eyeIcon} />
-          <EyeOff className={styles.eyeOffIcon} />
+          <Type className={styles.typeIcon} />
           {showTitle ? 'Hide Titles' : 'Show Titles'}
         </button>
       </div>
