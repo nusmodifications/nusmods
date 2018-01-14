@@ -121,37 +121,39 @@ class GlobalSearch extends Component<Props, State> {
         <div className={styles.container}>
           {searchForm}
 
-          <div className={styles.selectList}>
-            <div className={styles.noResults}>
-              <Help />
-              <p>
-                No results found for{' '}
-                <strong className={styles.searchTerm}>&quot;{inputValue}&quot;</strong>
-              </p>
-              <p>
-                Try searching all{' '}
-                <button
-                  {...getItemProps({
-                    item: [SEARCH_RESULT, [MODULE_RESULT, inputValue]],
-                  })}
-                  className={classnames('btn btn-inline', {
-                    [styles.selected]: highlightedIndex === 0,
-                  })}
-                >
-                  modules
-                </button>{' '}
-                or{' '}
-                <button
-                  {...getItemProps({
-                    item: [SEARCH_RESULT, [VENUE_RESULT, inputValue]],
-                  })}
-                  className={classnames('btn btn-inline', {
-                    [styles.selected]: highlightedIndex === 1,
-                  })}
-                >
-                  venues
-                </button>
-              </p>
+          <div className={styles.selectListContainer}>
+            <div className={styles.selectList}>
+              <div className={styles.noResults}>
+                <Help />
+                <p>
+                  No results found for{' '}
+                  <strong className={styles.searchTerm}>&quot;{inputValue}&quot;</strong>
+                </p>
+                <p>
+                  Try searching all{' '}
+                  <button
+                    {...getItemProps({
+                      item: [SEARCH_RESULT, [MODULE_RESULT, inputValue]],
+                    })}
+                    className={classnames('btn btn-inline', {
+                      [styles.selected]: highlightedIndex === 0,
+                    })}
+                  >
+                    modules
+                  </button>{' '}
+                  or{' '}
+                  <button
+                    {...getItemProps({
+                      item: [SEARCH_RESULT, [VENUE_RESULT, inputValue]],
+                    })}
+                    className={classnames('btn btn-inline', {
+                      [styles.selected]: highlightedIndex === 1,
+                    })}
+                  >
+                    venues
+                  </button>
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -166,80 +168,84 @@ class GlobalSearch extends Component<Props, State> {
       <div className={styles.container}>
         {searchForm}
 
-        <div className={styles.selectList}>
-          {hasModules && (
-            <Fragment>
-              <div
-                {...getItemProps({
-                  item: [SEARCH_RESULT, [MODULE_RESULT, inputValue]],
-                })}
-                className={classnames(styles.selectHeader, {
-                  [styles.selected]: highlightedIndex === 0,
-                })}
-              >
-                <span className={styles.headerName}>Modules</span>
-                <span className="btn-svg">
-                  View All <ChevronRight className={styles.svg} />
-                </span>
-              </div>
-
-              {modules.map((module, index) => (
+        {/* Wrap select list in absolute-positioned container to fix macOS Safari scrolling perf */}
+        <div className={styles.selectListContainer}>
+          <div className={styles.selectList}>
+            {hasModules && (
+              <Fragment>
                 <div
                   {...getItemProps({
-                    key: module.ModuleCode,
-                    item: [MODULE_RESULT, module],
+                    item: [SEARCH_RESULT, [MODULE_RESULT, inputValue]],
                   })}
-                  className={classnames(styles.option, {
-                    [styles.selected]: highlightedIndex === index + 1,
+                  className={classnames(styles.selectHeader, {
+                    [styles.selected]: highlightedIndex === 0,
                   })}
                 >
-                  <span>{highlight(`${module.ModuleCode} ${module.ModuleTitle}`, tokens)}</span>
-
-                  <span className={styles.semesters}>
-                    {module.Semesters.sort().map((semester) => (
-                      <span
-                        className={classnames('badge', BADGE_COLOR[semester])}
-                        title={config.semesterNames[semester]}
-                      >
-                        {config.shortSemesterNames[semester]}
-                      </span>
-                    ))}
+                  <span className={styles.headerName}>Modules</span>
+                  <span className="btn-svg">
+                    View All <ChevronRight className={styles.svg} />
                   </span>
                 </div>
-              ))}
-            </Fragment>
-          )}
-          {hasVenues && (
-            <Fragment>
-              <div
-                {...getItemProps({
-                  item: [SEARCH_RESULT, [VENUE_RESULT, inputValue]],
-                })}
-                className={classnames(styles.selectHeader, {
-                  [styles.selected]: highlightedIndex === venueHeaderIndex,
-                })}
-              >
-                <span className={styles.headerName}>Venues</span>
-                <span className="btn-svg">
-                  View All <ChevronRight className={styles.svg} />
-                </span>
-              </div>
 
-              {venues.map((venue, index) => (
+                {modules.map((module, index) => (
+                  <div
+                    {...getItemProps({
+                      key: module.ModuleCode,
+                      item: [MODULE_RESULT, module],
+                    })}
+                    className={classnames(styles.option, {
+                      [styles.selected]: highlightedIndex === index + 1,
+                    })}
+                  >
+                    <span>{highlight(`${module.ModuleCode} ${module.ModuleTitle}`, tokens)}</span>
+
+                    <span className={styles.semesters}>
+                      {module.Semesters.sort().map((semester) => (
+                        <span
+                          key={semester}
+                          className={classnames('badge', BADGE_COLOR[semester])}
+                          title={config.semesterNames[semester]}
+                        >
+                          {config.shortSemesterNames[semester]}
+                        </span>
+                      ))}
+                    </span>
+                  </div>
+                ))}
+              </Fragment>
+            )}
+            {hasVenues && (
+              <Fragment>
                 <div
                   {...getItemProps({
-                    key: venue,
-                    item: [VENUE_RESULT, venue],
+                    item: [SEARCH_RESULT, [VENUE_RESULT, inputValue]],
                   })}
-                  className={classnames(styles.option, {
-                    [styles.selected]: highlightedIndex === venueItemOffset + index,
+                  className={classnames(styles.selectHeader, {
+                    [styles.selected]: highlightedIndex === venueHeaderIndex,
                   })}
                 >
-                  <span>{highlight(venue, tokens)}</span>
+                  <span className={styles.headerName}>Venues</span>
+                  <span className="btn-svg">
+                    View All <ChevronRight className={styles.svg} />
+                  </span>
                 </div>
-              ))}
-            </Fragment>
-          )}
+
+                {venues.map((venue, index) => (
+                  <div
+                    {...getItemProps({
+                      key: venue,
+                      item: [VENUE_RESULT, venue],
+                    })}
+                    className={classnames(styles.option, {
+                      [styles.selected]: highlightedIndex === venueItemOffset + index,
+                    })}
+                  >
+                    <span>{highlight(venue, tokens)}</span>
+                  </div>
+                ))}
+              </Fragment>
+            )}
+          </div>
         </div>
       </div>
     );
