@@ -24,3 +24,11 @@ export function toggleTimetableOrientation(): FSA {
     payload: null,
   };
 }
+
+export const TOGGLE_TITLE_DISPLAY: string = 'TOGGLE_TITLE_DISPLAY';
+export function toggleTitleDisplay(): FSA {
+  return {
+    type: TOGGLE_TITLE_DISPLAY,
+    payload: null,
+  };
+}
