@@ -73,6 +73,7 @@ export const HORIZONTAL: TimetableOrientation = 'HORIZONTAL';
 export type ThemeState = {
   +id: string,
   +timetableOrientation: TimetableOrientation,
+  +showTitle: boolean,
 };
 
 /* settings */

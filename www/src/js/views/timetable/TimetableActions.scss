@@ -9,6 +9,22 @@
   }
 }
 
+.titleIcon {
+  composes: svg svg-small from global;
+}
+
+.orientationBtn {
+  @include vertical-mode {
+    flex: 1;
+  }
+}
+
+.titleBtn {
+  @include vertical-mode {
+    display: none;
+  }
+}
+
 .leftButtonGroup,
 .rightButtonGroup {
   display: flex;
@@ -42,12 +58,9 @@
 }
 
 @mixin layout-2 {
+  .rightButtonGroup,
   .leftButtonGroup {
-    width: 33%;
-  }
-
-  .rightButtonGroup {
-    width: 66%;
+    width: 100%;
   }
 }
 
@@ -61,13 +74,17 @@
 }
 
 .leftButtonGroup {
-  :global(.btn) {
-    width: 100%;
+  justify-content: space-between;
+  min-width: 19rem;
+
+  > * {
+    width: calc(50% - 0.25rem);
   }
 }
 
 :global(.verticalMode) {
-  .rightButtonGroup {
+  .rightButtonGroup,
+  .leftButtonGroup {
     min-width: 0;
   }
 

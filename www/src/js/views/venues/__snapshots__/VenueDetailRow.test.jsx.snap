@@ -86,6 +86,7 @@ exports[`VenueDetailRow it displays an anchor tag and a timetable when expanded 
         }
       }
       onModifyCell={[Function]}
+      showTitle={false}
     />
   </div>
 </li>
