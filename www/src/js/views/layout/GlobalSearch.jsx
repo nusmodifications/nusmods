@@ -198,6 +198,7 @@ class GlobalSearch extends Component<Props, State> {
                   <span className={styles.semesters}>
                     {module.Semesters.sort().map((semester) => (
                       <span
+                        key={module.ModuleCode + semester}
                         className={classnames('badge', BADGE_COLOR[semester])}
                         title={config.semesterNames[semester]}
                       >
