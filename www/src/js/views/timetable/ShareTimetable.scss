@@ -6,7 +6,7 @@
   svg {
     width: 5rem;
     height: 5rem;
-    color: theme-color("success");
+    color: theme-color(success);
   }
 
   h3 {
@@ -39,7 +39,7 @@
   left: 0;
   margin: 0;
   text-align: center;
-  color: theme-color("success");
+  color: theme-color(success);
 
   :global {
     animation: fadeIn 0.2s forwards;
