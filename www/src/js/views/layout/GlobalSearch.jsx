@@ -168,6 +168,7 @@ class GlobalSearch extends Component<Props, State> {
       <div className={styles.container}>
         {searchForm}
 
+        {/* Wrap select list in absolute-positioned container to fix macOS Safari scrolling perf */}
         <div className={styles.selectListContainer}>
           <div className={styles.selectList}>
             {hasModules && (
@@ -201,7 +202,7 @@ class GlobalSearch extends Component<Props, State> {
                     <span className={styles.semesters}>
                       {module.Semesters.sort().map((semester) => (
                         <span
-                          key={module.ModuleCode + semester}
+                          key={semester}
                           className={classnames('badge', BADGE_COLOR[semester])}
                           title={config.semesterNames[semester]}
                         >
