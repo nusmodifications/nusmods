@@ -21,6 +21,7 @@ type Props = {
   lessons: TimetableArrangement,
   isVerticalOrientation: boolean,
   isScrolledHorizontally: boolean,
+  showTitle: boolean,
   onModifyCell: Function,
 };
 
@@ -31,6 +32,7 @@ class Timetable extends PureComponent<Props> {
   static defaultProps = {
     isVerticalOrientation: false,
     isScrolledHorizontally: false,
+    showTitle: false,
     onModifyCell: noop,
   };
 
@@ -93,6 +95,7 @@ class Timetable extends PureComponent<Props> {
                 endingIndex={endingIndex}
                 onModifyCell={this.props.onModifyCell}
                 verticalMode={this.props.isVerticalOrientation}
+                showTitle={this.props.showTitle}
                 dayLessonRows={this.props.lessons[day] || [[]]}
                 isScrolledHorizontally={this.props.isScrolledHorizontally}
                 isCurrentDay={index === currentDayIndex}
