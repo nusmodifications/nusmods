@@ -31,12 +31,6 @@ export function semesterForTimetablePage(semStr: ?string): ?Semester {
   return toSemester[semStr];
 }
 
-// Checks if the URL matches v2 timetable URL
-export function isV2TimetablePageUrl(params: { [string]: ?string }): boolean {
-  const { semester, action } = params;
-  return !!semester && !!action && /^\d{4}-\d{4}$/.test(semester) && /^sem[1234]$/.test(action);
-}
-
 // Module Code, Module Title -> Module page path
 export function modulePage(moduleCode: ModuleCode, moduleTitle: ModuleTitle): string {
   return `/modules/${moduleCode}/${kebabCase(moduleTitle)}`;
