@@ -12,6 +12,7 @@
       .color-#{$index} {
         @include color($color);
       }
+
       $index: $index + 1; /* stylelint-disable-line order/order */
     }
   }
