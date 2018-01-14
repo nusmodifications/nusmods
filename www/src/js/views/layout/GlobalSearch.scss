@@ -73,19 +73,21 @@ $icon-dist-lg: $input-width-open-lg - $input-width;
   transform: translate(0);
 }
 
-.selectList {
-  composes: list-unstyled scrollable-y from global;
+.selectListContainer {
   position: absolute;
   top: $navbar-height - 0.5rem;
   right: 0;
   z-index: $module-select-z-index;
-  max-height: $dropdown-height;
   color: var(--body-color);
   border: $input-btn-border-width solid $input-border-color;
   border-width: 0 $input-btn-border-width $input-btn-border-width;
   border-radius: 0 0 $btn-border-radius $btn-border-radius;
   background: var(--body-bg);
+}
 
+.selectList {
+  composes: list-unstyled scrollable-y from global;
+  max-height: $dropdown-height;
   @media (max-height: $dropdown-height + 5rem) {
     max-height: calc(90vh - #{$navbar-height});
   }
