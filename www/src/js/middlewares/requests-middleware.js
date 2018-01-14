@@ -61,7 +61,7 @@ const requestMiddleware: Middleware<State, *, *> = () => (next) => (action) => {
           },
         }),
       ),
-    (error) =>
+    (error) => {
       next(
         constructActionWith({
           type: type + FAILURE,
@@ -72,7 +72,10 @@ const requestMiddleware: Middleware<State, *, *> = () => (next) => (action) => {
             request: payload,
           },
         }),
-      ),
+      );
+
+      throw error;
+    },
   );
 };
 
