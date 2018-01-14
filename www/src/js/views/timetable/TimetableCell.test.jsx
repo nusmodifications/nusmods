@@ -27,6 +27,7 @@ describe('<TimetableCell />', () => {
           lesson={DEFAULT_LESSON}
           style={{}}
           isScrolledHorizontally
+          showTitle
         />,
       );
       const buttons = wrapper.find('button');
@@ -42,6 +43,7 @@ describe('<TimetableCell />', () => {
           lesson={DEFAULT_LESSON}
           style={{}}
           isScrolledHorizontally
+          showTitle
         />,
       );
       const button = wrapper.find('button').at(0);
@@ -53,7 +55,7 @@ describe('<TimetableCell />', () => {
     it('does not simulates click events and renders a div', () => {
       const onButtonClick = jest.fn();
       const wrapper = shallow(
-        <TimetableCell lesson={DEFAULT_LESSON} style={{}} isScrolledHorizontally />,
+        <TimetableCell lesson={DEFAULT_LESSON} style={{}} isScrolledHorizontally showTitle />,
       );
       const buttons = wrapper.find('div');
       buttons.at(0).simulate('click', { preventDefault() {} });
