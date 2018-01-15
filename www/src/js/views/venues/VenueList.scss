@@ -50,9 +50,15 @@ $padding-v: 0.5rem;
 
     &:active,
     &.selected {
-      text-decoration: none;
       color: #fff;
       background: theme-color();
     }
+  }
+}
+
+@supports (display: grid) {
+  .subList {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(7rem, 1fr));
   }
 }
