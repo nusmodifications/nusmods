@@ -41,11 +41,14 @@ $padding-v: 0.5rem;
     padding-right: $padding-h;
     padding-left: $padding-h;
     text-align: left;
+    text-decoration: none;
 
-    &:hover,
+    &:hover {
+      border-color: $link-hover-color;
+    }
+
     &:focus {
-      text-decoration: none;
-      border-color: currentColor;
+      border-color: theme-color();
     }
 
     &:active,
