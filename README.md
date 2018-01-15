@@ -29,3 +29,11 @@ To help you get your feet wet and get you familiar with our contribution process
 ## License
 
 All projects and packages in this repository are [MIT licensed](https://github.com/nusmodifications/nusmods/blob/master/LICENSE).
+
+## Supported by 
+
+[BrowserStack](browserstack) lets us ensure NUSMods functions across all browsers and devices by allowing us to test NUSMods on real devices, including Safari on older iPhones and previous versions of browsers.
+
+[![](docs/browserstack-logo.png)][browserstack]
+
+[browserstack]: https://www.browserstack.com/
