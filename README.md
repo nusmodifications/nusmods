@@ -1,16 +1,17 @@
-![](docs/nusmods-logo.png)
+# ![](docs/nusmods-logo.png)
 
-# [NUSMods](http://nusmods.com) [![Coverage Status](https://coveralls.io/repos/github/nusmodifications/nusmods/badge.svg?branch=master)](https://coveralls.io/github/nusmodifications/nusmods?branch=master) [![CircleCI Build Status](https://circleci.com/gh/nusmodifications/nusmods.svg?style=shield)](https://circleci.com/gh/nusmodifications/nusmods) [![ghit.me](https://ghit.me/badge.svg?repo=nusmodifications/nusmods)](https://ghit.me/repo/nusmodifications/nusmods)
+[![Coverage Status](https://coveralls.io/repos/github/nusmodifications/nusmods/badge.svg?branch=master)](https://coveralls.io/github/nusmodifications/nusmods?branch=master) [![CircleCI Build Status](https://circleci.com/gh/nusmodifications/nusmods.svg?style=shield)](https://circleci.com/gh/nusmodifications/nusmods) [![ghit.me](https://ghit.me/badge.svg?repo=nusmodifications/nusmods)](https://ghit.me/repo/nusmodifications/nusmods)
 
 Help contribute to NUSMods!
 
 ## Projects
 
-This monorepo consists of 3 projects. Further details can be found at the links below.
+This monorepo consists of 4 projects. Further details can be found at the links below.
 
 1. [NUSMods R website](https://github.com/nusmodifications/nusmods/tree/master/www)
-2. [NUSMods API](https://github.com/nusmodifications/nusmods/tree/master/api)
-3. [`nusmoderator` npm package](https://github.com/nusmodifications/nusmods/tree/master/packages/nusmoderator)
+1. [NUSMods API](https://github.com/nusmodifications/nusmods/tree/master/api)
+1. [NUSMods Timetable Export Service](https://github.com/nusmodifications/nusmods/tree/master/export)
+1. [`nusmoderator` npm package](https://github.com/nusmodifications/nusmods/tree/master/packages/nusmoderator)
 
 ## Talk to us!
 
