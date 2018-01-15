@@ -304,16 +304,19 @@ export class VenuesContainerComponent extends Component<Props, State> {
             {this.renderSelectedVenue(matchedVenues)}
           </Modal>
         ) : (
-          <div className={styles.venueDetail}>
-            {selectedVenue == null ? (
-              <div className={styles.noVenueSelected}>
-                <Map />
-                <p>Select a venue on the left to see its timetable</p>
-              </div>
-            ) : (
-              this.renderSelectedVenue(matchedVenues)
-            )}
-          </div>
+          <Fragment>
+            <div className={styles.venueDetail}>
+              {selectedVenue == null ? (
+                <div className={styles.noVenueSelected}>
+                  <Map />
+                  <p>Select a venue on the left to see its timetable</p>
+                </div>
+              ) : (
+                this.renderSelectedVenue(matchedVenues)
+              )}
+            </div>
+            <div className={styles.background} />
+          </Fragment>
         )}
       </div>
     );
