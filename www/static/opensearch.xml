@@ -1,7 +1,8 @@
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
-  <ShortName>NUSMods Module Search</ShortName>
+  <ShortName>NUSMods Modules</ShortName>
   <Description>Search for modules on NUSMods</Description>
-  <Url type="text/html" method="get" template="https://nusmods.com/modules/{searchTerms}"/>
-  <Image height="16" width="16" type="image/x-icon">https://nusmods.com/favicon.ico</Image>
+  <Url type="text/html" method="get" template="https://nusmods.com/modules?q={searchTerms}"/>
+  <Image height="16" width="16" type="image/png">https://nusmods.com/favicon-16x16.png</Image>
   <Contact>mods@nusmods.com</Contact>
+  <moz:SearchForm>https://nusmods.com/modules/</moz:SearchForm>
 </OpenSearchDescription>
