@@ -48,12 +48,6 @@ $arrow-height: 1.5rem;
     border-left-color: transparent;
   }
 
-  // Override .btn styles
-  > .option {
-    border: 0;
-    border-radius: 0;
-  }
-
   @include media-breakpoint-down(sm) {
     left: $width/2 - $arrow-width;
 
@@ -68,4 +62,10 @@ $arrow-height: 1.5rem;
   width: $size;
   height: $size;
   margin-bottom: $margin-bottom;
+}
+
+// Override .btn styles
+:global(.btn).option {
+  border: 0;
+  border-radius: 0;
 }

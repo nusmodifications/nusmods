@@ -39,10 +39,6 @@ $cell-border-radius: 6px;
 .cellIsClickable {
   border-radius: $cell-border-radius;
   cursor: pointer;
-
-  &:hover {
-    filter: brightness(95%);
-  }
 }
 
 .cellIsAvailable {

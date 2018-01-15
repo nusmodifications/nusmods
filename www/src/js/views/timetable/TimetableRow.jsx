@@ -52,7 +52,14 @@ function TimetableRow(props: Props) {
           [sizeStyle]: `calc(${size / totalCols * 100}% - 1px)`,
         };
         // $FlowFixMe
-        const conditionalProps = lesson.isModifiable ? { onClick: onModifyCell } : {};
+        const conditionalProps = lesson.isModifiable
+          ? {
+              onClick: (e: Event) => {
+                e.stopPropagation();
+                return onModifyCell(lesson);
+              },
+            }
+          : {};
         return (
           <TimetableCell
             key={lesson.StartTime}

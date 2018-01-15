@@ -25,6 +25,7 @@ function TimetableCell(props: Props) {
   const { lesson, showTitle, onClick } = props;
 
   const moduleName = showTitle ? `${lesson.ModuleCode} ${lesson.ModuleTitle}` : lesson.ModuleCode;
+  const conditionalProps = { onClick };
 
   const Cell = props.onClick ? 'button' : 'div';
   return (
@@ -37,11 +38,8 @@ function TimetableCell(props: Props) {
         [styles.cellIsActive]: lesson.isActive,
         [styles.cellIsActiveScrolled]: props.isScrolledHorizontally,
       })}
-      onClick={(e) => {
-        e.preventDefault();
-        if (onClick) onClick(lesson);
-      }}
       style={props.style}
+      {...conditionalProps}
     >
       <div className={styles.cellContainer}>
         <div className={styles.moduleName}>{moduleName}</div>
