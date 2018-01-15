@@ -1,4 +1,58 @@
+@import "~styles/utils/modules-entry.scss";
+
+$padding-h: 0.4rem;
+$padding-v: 0.5rem;
+
+.heading {
+  position: sticky;
+  top: 0;
+  padding: $padding-v 0 $padding-v $padding-h;
+  margin-bottom: 0.5rem;
+  font-weight: $font-weight-bold;
+  font-size: $font-size-lg;
+  border-bottom: 1px solid var(--gray-lighter);
+  background: var(--body-bg);
+
+  @include media-breakpoint-down(sm) {
+    top: $navbar-height;
+  }
+}
+
 .venueList {
-  padding-left: 0;
-  list-style-type: none;
+  padding: 0;
+  list-style: none;
+}
+
+.subList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: stretch;
+  padding: 0;
+  margin-bottom: 0.5rem;
+  list-style: none;
+
+  li {
+    flex: 1 1 7rem;
+    margin: 1px 1px 0 0;
+  }
+
+  :global(.btn) {
+    width: 100%;
+    padding-right: $padding-h;
+    padding-left: $padding-h;
+    text-align: left;
+
+    &:hover,
+    &:focus {
+      text-decoration: none;
+      border-color: currentColor;
+    }
+
+    &:active,
+    &.selected {
+      text-decoration: none;
+      color: #fff;
+      background: theme-color();
+    }
+  }
 }

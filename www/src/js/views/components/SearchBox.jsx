@@ -1,7 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
 import classnames from 'classnames';
-import { debounce, noop } from 'lodash';
+import { debounce } from 'lodash';
 
 import { Search } from 'views/components/icons';
 import styles from './SearchBox.scss';
@@ -13,7 +13,6 @@ type Props = {
   initialSearchTerm: ?string,
   placeholder: string,
   onSearch: string => void,
-  rootElementRef: (?HTMLElement) => void, // For parent components to obtain a ref to the root HTMLElement
 };
 
 type State = {
@@ -25,10 +24,6 @@ type State = {
 export default class SearchBox extends PureComponent<Props, State> {
   props: Props;
   searchElement: ?HTMLInputElement;
-
-  static defaultProps = {
-    rootElementRef: noop,
-  };
 
   state: State = {
     isFocused: false,
@@ -84,7 +79,6 @@ export default class SearchBox extends PureComponent<Props, State> {
         className={classnames(this.props.className, {
           [styles.searchBoxFocused]: this.state.isFocused,
         })}
-        ref={this.props.rootElementRef}
       >
         <label htmlFor="search-box" className="sr-only">
           Search

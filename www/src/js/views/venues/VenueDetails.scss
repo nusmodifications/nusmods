@@ -1,0 +1,43 @@
+@import "~styles/utils/modules-entry.scss";
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  clear: both;
+  margin-bottom: 1rem;
+
+  h1 {
+    margin: 0;
+    font-weight: bold;
+    font-size: 1.6rem;
+    text-align: center;
+  }
+
+  :global(.btn) {
+    white-space: normal;
+  }
+
+  @include media-breakpoint-down(xs) {
+    flex-wrap: wrap;
+
+    h1 {
+      order: -1;
+      width: 100%;
+    }
+
+    :global(.btn) {
+      justify-content: flex-start;
+      width: 50%;
+    }
+
+    :global(.btn):last-child {
+      justify-content: flex-end;
+    }
+  }
+}
+
+.timetable {
+  composes: scrollable from global;
+  padding-bottom: 1rem;
+}

@@ -15,7 +15,7 @@ const breakpoints: { [Breakpoint]: number } = {
   xl: 1200,
 };
 
-function nextBreakpoint(size: Breakpoint): ?Breakpoint {
+function nextBreakpoint(size: Breakpoint): ?number {
   const breakpointEntries = entries(breakpoints);
   const nextBreakpointIndex =
     breakpointEntries.findIndex(([breakpoint]) => breakpoint === size) + 1;
@@ -26,7 +26,7 @@ function nextBreakpoint(size: Breakpoint): ?Breakpoint {
 export function breakpointDown(size: Breakpoint): QueryObject {
   const nextSize = nextBreakpoint(size);
   if (nextSize == null) return { all: true };
-  return { maxWidth: breakpoints[nextSize] - 1 };
+  return { maxWidth: nextSize - 1 };
 }
 
 export function breakpointUp(size: Breakpoint): QueryObject {

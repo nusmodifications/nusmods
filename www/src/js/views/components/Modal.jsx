@@ -12,9 +12,14 @@ type Props = {
   overlayClassName?: string,
   className?: string,
   children: Node,
+  fullscreen: boolean,
 };
 
 export default class Modal extends Component<Props> {
+  static defaultProps = {
+    fullscreen: false,
+  };
+
   componentDidMount() {
     noScroll(this.props.isOpen);
   }
@@ -26,13 +31,21 @@ export default class Modal extends Component<Props> {
     }
   }
 
+  componentWillUnmount() {
+    // Ensure noScroll is disabled if the component is unmounted without
+    // the modal closing
+    noScroll(false);
+  }
+
   render() {
-    const { className, overlayClassName, children, ...rest } = this.props;
+    const { className, overlayClassName, children, fullscreen, ...rest } = this.props;
 
     return (
       <ReactModal
         overlayClassName={classnames(styles.overlay, overlayClassName)}
-        className={classnames(styles.modal, className)}
+        className={classnames(styles.modal, className, {
+          [styles.fullscreen]: fullscreen,
+        })}
         {...rest}
       >
         {children}
