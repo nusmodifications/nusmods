@@ -46,10 +46,7 @@ export class ExportMenuComponent extends PureComponent<Props> {
           type="button"
           onClick={toggleMenu}
         >
-          <Download className="svg svg-small" /> Download<span className={styles.longLabel}>
-            {' '}
-            As
-          </span>
+          <Download className="svg svg-small" />Download
           <ChevronDown className={classnames(styles.chevron, 'svg-small')} />
         </button>
 
