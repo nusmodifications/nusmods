@@ -1,9 +1,10 @@
 // @flow
 import type { Semester } from 'types/modules';
 import type { SemTimetableConfig } from 'types/timetables';
+import classnames from 'classnames';
 
 import React from 'react';
-import { Sidebar } from 'views/components/icons';
+import { Sidebar, Type } from 'views/components/icons';
 import ShareTimetable from './ShareTimetable';
 import ExportMenu from './ExportMenu';
 
@@ -13,11 +14,14 @@ type Props = {
   semester: Semester,
   timetable: SemTimetableConfig,
   isVerticalOrientation: boolean,
+  showTitle: boolean,
   toggleTimetableOrientation: Function,
+  toggleTitleDisplay: Function,
 };
 
 function TimetableActions(props: Props) {
-  const { isVerticalOrientation } = props;
+  const { isVerticalOrientation, showTitle } = props;
+
   return (
     <div
       className="btn-toolbar justify-content-between"
@@ -27,11 +31,21 @@ function TimetableActions(props: Props) {
       <div className={styles.leftButtonGroup} role="group" aria-label="Timetable manipulation">
         <button
           type="button"
-          className="btn btn-outline-primary btn-svg"
+          className={classnames(styles.orientationBtn, 'btn btn-outline-primary btn-svg')}
           onClick={props.toggleTimetableOrientation}
         >
           <Sidebar className={styles.sidebarIcon} />
           {isVerticalOrientation ? 'Horizontal Mode' : 'Vertical Mode'}
+        </button>
+
+        <button
+          type="button"
+          className={classnames(styles.titleBtn, 'btn-outline-primary btn btn-svg')}
+          onClick={props.toggleTitleDisplay}
+          disabled={isVerticalOrientation}
+        >
+          <Type className={styles.titleIcon} />
+          {showTitle ? 'Hide Titles' : 'Show Titles'}
         </button>
       </div>
 

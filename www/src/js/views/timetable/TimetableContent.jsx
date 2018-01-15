@@ -27,7 +27,7 @@ import {
   modifyLesson,
   removeModule,
 } from 'actions/timetables';
-import { toggleTimetableOrientation } from 'actions/theme';
+import { toggleTimetableOrientation, toggleTitleDisplay } from 'actions/theme';
 import { openNotification, popNotification } from 'actions/app';
 import { undo } from 'actions/undoHistory';
 import {
@@ -69,6 +69,7 @@ type Props = {
   modules: ModulesMap,
   activeLesson: ?Lesson,
   timetableOrientation: TimetableOrientation,
+  showTitle: boolean,
   hiddenInTimetable: ModuleCode[],
 
   // Actions
@@ -78,6 +79,7 @@ type Props = {
   changeLesson: Function,
   cancelModifyLesson: Function,
   toggleTimetableOrientation: Function,
+  toggleTitleDisplay: Function,
   openNotification: (string, NotificationOptions) => void,
   popNotification: () => void,
   undo: () => void,
@@ -224,7 +226,15 @@ class TimetableContent extends Component<Props, State> {
   }
 
   render() {
-    const { semester, modules, colors, activeLesson, timetableOrientation, readOnly } = this.props;
+    const {
+      semester,
+      modules,
+      colors,
+      activeLesson,
+      timetableOrientation,
+      showTitle,
+      readOnly,
+    } = this.props;
 
     let timetableLessons: Lesson[] = timetableLessonsArray(this.props.timetableWithLessons)
       // Do not process hidden modules
@@ -280,6 +290,7 @@ class TimetableContent extends Component<Props, State> {
     );
 
     const isVerticalOrientation = timetableOrientation !== HORIZONTAL;
+    const isShowingTitle = !isVerticalOrientation && showTitle;
 
     return (
       <div
@@ -313,6 +324,7 @@ class TimetableContent extends Component<Props, State> {
                 lessons={arrangedLessonsWithModifiableFlag}
                 isVerticalOrientation={isVerticalOrientation}
                 isScrolledHorizontally={this.state.isScrolledHorizontally}
+                showTitle={isShowingTitle}
                 onModifyCell={this.modifyCell}
                 ref={(r) => {
                   this.timetableDom = r && r.timetableDom;
@@ -331,6 +343,8 @@ class TimetableContent extends Component<Props, State> {
                 <TimetableActions
                   isVerticalOrientation={isVerticalOrientation}
                   toggleTimetableOrientation={this.props.toggleTimetableOrientation}
+                  showTitle={isShowingTitle}
+                  toggleTitleDisplay={this.props.toggleTitleDisplay}
                   semester={semester}
                   timetable={this.props.timetable}
                 />
@@ -382,6 +396,7 @@ function mapStateToProps(state, ownProps) {
     modules,
     activeLesson: state.app.activeLesson,
     timetableOrientation: state.theme.timetableOrientation,
+    showTitle: state.theme.showTitle,
     hiddenInTimetable,
   };
 }
@@ -393,6 +408,7 @@ export default connect(mapStateToProps, {
   changeLesson,
   cancelModifyLesson,
   toggleTimetableOrientation,
+  toggleTitleDisplay,
   openNotification,
   popNotification,
   undo,

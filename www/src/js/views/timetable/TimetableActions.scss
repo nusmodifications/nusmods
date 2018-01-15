@@ -1,4 +1,4 @@
-@import './_variables.scss';
+@import "./_variables.scss";
 
 .sidebarIcon {
   composes: svg svg-small from global;
@@ -6,6 +6,22 @@
 
   @include vertical-mode {
     transform: rotate(-90deg);
+  }
+}
+
+.titleIcon {
+  composes: svg svg-small from global;
+}
+
+.orientationBtn {
+  @include vertical-mode {
+    flex: 1;
+  }
+}
+
+.titleBtn {
+  @include vertical-mode {
+    display: none;
   }
 }
 
@@ -42,18 +58,15 @@
 }
 
 @mixin layout-2 {
+  .rightButtonGroup,
   .leftButtonGroup {
-    width: 33%;
-  }
-
-  .rightButtonGroup {
-    width: 66%;
+    width: 100%;
   }
 }
 
 .rightButtonGroup {
   justify-content: space-between;
-  min-width: 19rem;
+  min-width: 16rem;
 
   > * {
     width: calc(50% - 0.25rem);
@@ -61,13 +74,17 @@
 }
 
 .leftButtonGroup {
-  :global(.btn) {
-    width: 100%;
+  justify-content: space-between;
+  min-width: 17rem;
+
+  > * {
+    width: calc(50% - 0.25rem);
   }
 }
 
 :global(.verticalMode) {
-  .rightButtonGroup {
+  .rightButtonGroup,
+  .leftButtonGroup {
     min-width: 0;
   }
 

@@ -6896,9 +6896,9 @@ raven-for-redux@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/raven-for-redux/-/raven-for-redux-1.1.1.tgz#bba19812d2bbeb9286c71dcf3db4b58959d6e957"
 
-raven-js@^3.17.0:
-  version "3.17.0"
-  resolved "https://registry.yarnpkg.com/raven-js/-/raven-js-3.17.0.tgz#779457ac7910512c3c2cc9bb6d0a9eeb59a969ec"
+raven-js@^3.21.0:
+  version "3.21.0"
+  resolved "https://registry.yarnpkg.com/raven-js/-/raven-js-3.21.0.tgz#609236eb0ec30faf696b552f842a80b426be6258"
 
 raw-body@2.3.2:
   version "2.3.2"
@@ -6969,9 +6969,9 @@ react-hot-loader@^3.1.3:
     redbox-react "^1.3.6"
     source-map "^0.6.1"
 
-react-modal@^3.1.7:
-  version "3.1.7"
-  resolved "https://registry.yarnpkg.com/react-modal/-/react-modal-3.1.7.tgz#21feb937c95cd722bf2d375cada751fdc8189c0e"
+react-modal@^3.1.10:
+  version "3.1.10"
+  resolved "https://registry.yarnpkg.com/react-modal/-/react-modal-3.1.10.tgz#8898b5cc4ebba78adbb8dea4c55a69818aa682cc"
   dependencies:
     exenv "^1.2.0"
     prop-types "^15.5.10"

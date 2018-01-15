@@ -12,11 +12,16 @@ type Props = {
   lesson: Lesson,
   style: Object,
   isScrolledHorizontally: boolean,
+  showTitle: boolean,
   onModifyCell?: Function,
 };
 
 function TimetableCell(props: Props) {
   const lesson = props.lesson;
+  const moduleName = props.showTitle
+    ? `${lesson.ModuleCode} ${lesson.ModuleTitle}`
+    : lesson.ModuleCode;
+
   return (
     <button
       // $FlowFixMe When object spread type actually works
@@ -39,7 +44,7 @@ function TimetableCell(props: Props) {
       style={props.style}
     >
       <div className={styles.cellContainer}>
-        <div className={styles.moduleCode}>{lesson.ModuleCode}</div>
+        <div className={styles.moduleName}>{moduleName}</div>
         <div>
           {LESSON_TYPE_ABBREV[lesson.LessonType]} [{lesson.ClassNo}]
         </div>
