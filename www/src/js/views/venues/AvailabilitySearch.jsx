@@ -20,12 +20,11 @@ const FIRST_CLASS_HOUR = 8;
 const LAST_CLASS_HOUR = 22;
 const CLASS_START_HOURS = range(FIRST_CLASS_HOUR, LAST_CLASS_HOUR + 1);
 
-export function defaultSearchOptions(): VenueSearchOptions {
-  const now = new Date();
-
+export function defaultSearchOptions(
+  now: Date = new Date(), // Used for tests only
+): VenueSearchOptions {
   // Set day of week - if it is not a school day, then set to Monday (0)
-  let day = now.getDay();
-  if (day >= SCHOOLDAYS.length) day = 0;
+  const day = Math.max(now.getDay() - 1, 0); // Minus 1 because JS week starts on Sunday
 
   // Set time - if the current time is outside class hours, set it to the
   // time of the earliest lesson
