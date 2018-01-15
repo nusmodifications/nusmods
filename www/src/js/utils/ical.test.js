@@ -9,6 +9,8 @@ import iCalForTimetable, {
   iCalEventForExam,
   isTutorial,
   calculateExclusion,
+  getTimeHour,
+  hoursAfter,
 } from 'utils/ical';
 
 import bfs1001 from '__mocks__/modules/BFS1001.json';
@@ -82,6 +84,22 @@ test('daysAfter should create a date days after', () => {
   expect(daysAfter(new Date('2016-11-23T09:00+0800'), 1)).toEqual(
     new Date('2016-11-24T09:00+0800'),
   );
+});
+
+test('getTimeHour should return number of hours represented by a time string', () => {
+  expect(getTimeHour('0000')).toEqual(0);
+  expect(getTimeHour('1000')).toEqual(10);
+  expect(getTimeHour('1200')).toEqual(12);
+  expect(getTimeHour('2000')).toEqual(20);
+  expect(getTimeHour('1030')).toEqual(10.5);
+});
+
+test('hoursAfter should return a date incremented by the given number of hours', () => {
+  const d = new Date('2016-11-23T00:00+0800');
+  expect(hoursAfter(d, 0)).toEqual(new Date('2016-11-23T00:00+0800'));
+  expect(hoursAfter(d, 5)).toEqual(new Date('2016-11-23T05:00+0800'));
+  expect(hoursAfter(d, 20)).toEqual(new Date('2016-11-23T20:00+0800'));
+  expect(hoursAfter(d, 10.5)).toEqual(new Date('2016-11-23T10:30+0800'));
 });
 
 test('iCalEventForExam should generate event', () => {
@@ -206,6 +224,42 @@ test('iCalEventForLesson generates correct output', () => {
   const expected = {
     start: new Date('2016-08-08T14:00+0800'),
     end: new Date('2016-08-08T17:00+0800'),
+    summary: 'BFS1001 Sectional Teaching',
+    description: 'Personal Development & Career Management\nSectional Teaching Group A1',
+    location: 'BIZ1-0303',
+    url:
+      'https://myaces.nus.edu.sg/cors/jsp/report/ModuleDetailedInfo.jsp?' +
+      'acad_y=2016/2017&sem_c=1&mod_c=BFS1001',
+    repeating: {
+      freq: 'WEEKLY',
+      count: 14,
+      byDay: ['Mo'],
+      exclude: expect.arrayContaining([]), // Tested in previous tests
+    },
+  };
+
+  expect(actual).toEqual(expected);
+});
+
+test('work for half hour lesson offsets', () => {
+  const actual: EventOption = iCalEventForLesson(
+    {
+      ClassNo: 'A1',
+      DayText: 'Monday',
+      EndTime: '2030',
+      LessonType: 'Sectional Teaching',
+      StartTime: '1830',
+      Venue: 'BIZ1-0303',
+      WeekText: 'Every Week',
+    },
+    bfs1001,
+    1,
+    new Date('2016-08-08T00:00+0800'),
+  );
+
+  const expected = {
+    start: new Date('2016-08-08T18:30+0800'),
+    end: new Date('2016-08-08T20:30+0800'),
     summary: 'BFS1001 Sectional Teaching',
     description: 'Personal Development & Career Management\nSectional Teaching Group A1',
     location: 'BIZ1-0303',
