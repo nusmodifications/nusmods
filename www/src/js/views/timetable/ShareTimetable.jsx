@@ -149,7 +149,6 @@ export default class ShareTimetable extends PureComponent<Props, State> {
         <div className="row">
           <div className="col-sm-4">
             <h3 className={styles.shareHeading}>QR Code</h3>
-
             <div className={styles.qrCode}>{QRCode && <QRCode value={url} />}</div>
           </div>
           <div className="col-sm-4">

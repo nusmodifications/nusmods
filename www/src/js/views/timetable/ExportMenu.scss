@@ -35,13 +35,3 @@
     }
   }
 }
-
-.longLabel {
-  white-space: pre;
-
-  @include media-breakpoint-only(md) {
-    @include vertical-mode {
-      display: none;
-    }
-  }
-}
