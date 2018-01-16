@@ -65,11 +65,12 @@ const weekText = (() => {
     parts.push(noBreak(acadWeekInfo.sem));
   }
 
-  // Hide week if week type is 'Instructional'
-  if (acadWeekInfo.type !== 'Instructional') {
+  // Hide week type if week type is 'Instructional'
+  if (acadWeekInfo.type === 'Instructional') {
+    parts.push(`Week ${acadWeekInfo.num || ''}`);
+  } else {
     // Do not show the week number if there is only one week, e.g. recess
-    const weekNumber = acadWeekInfo.num || '';
-    parts.push(noBreak(`${acadWeekInfo.type} Week ${weekNumber}`));
+    parts.push(noBreak(`${acadWeekInfo.type} Week ${acadWeekInfo.num || ''}`));
   }
 
   return parts.join(', ').trim();
