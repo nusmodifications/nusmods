@@ -1,5 +1,4 @@
 // @flow
-
 import NUSModerator from 'nusmoderator';
 import { noBreak } from 'utils/react';
 
