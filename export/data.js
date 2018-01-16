@@ -31,7 +31,7 @@ function parseExportData(ctx, next) {
       validateExportData(data);
       ctx.state.data = data;
     } catch (e) {
-      ctx.throw({ status: 422, original: e });
+      ctx.throw(422, null, { original: e });
     }
   }
 
