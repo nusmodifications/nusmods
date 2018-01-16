@@ -39,7 +39,7 @@ test('should return the color index of the selected color', () => {
   const { wrapper, onChooseColor } = makeColorPicker();
   wrapper.find('button').simulate('click');
   findPopup(wrapper)
-    .find('span')
+    .find('button')
     .first()
     .simulate('click');
 
