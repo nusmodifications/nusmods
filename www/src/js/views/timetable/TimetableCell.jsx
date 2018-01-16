@@ -9,39 +9,37 @@ import { LESSON_TYPE_ABBREV } from 'utils/timetables';
 import styles from './TimetableCell.scss';
 
 type Props = {
-  lesson: Lesson,
-  style: Object,
   isScrolledHorizontally: boolean,
   showTitle: boolean,
-  onModifyCell?: Function,
+  lesson: Lesson,
+  style: Object,
+  onClick?: Function,
 };
 
+/**
+ * Smallest unit in timetable.
+ * Representing a lesson in this case. In future we
+ * might explore other representations e.g. grouped lessons
+ */
 function TimetableCell(props: Props) {
-  const lesson = props.lesson;
-  const moduleName = props.showTitle
-    ? `${lesson.ModuleCode} ${lesson.ModuleTitle}`
-    : lesson.ModuleCode;
+  const { lesson, showTitle, onClick } = props;
 
+  const moduleName = showTitle ? `${lesson.ModuleCode} ${lesson.ModuleTitle}` : lesson.ModuleCode;
+  const conditionalProps = { onClick };
+
+  const Cell = props.onClick ? 'button' : 'div';
   return (
-    <button
-      // $FlowFixMe When object spread type actually works
+    <Cell // $FlowFixMe
       className={classnames(styles.cell, `color-${lesson.colorIndex}`, {
-        // $FlowFixMe When object spread type actually works
-        [styles.cellIsModifiable]: lesson.isModifiable,
-        // $FlowFixMe When object spread type actually works
+        [styles.cellIsClickable]: !!onClick,
+        // $FlowFixMe
         [styles.cellIsAvailable]: lesson.isAvailable,
-        // $FlowFixMe When object spread type actually works
+        // $FlowFixMe
         [styles.cellIsActive]: lesson.isActive,
-        // $FlowFixMe When object spread type actually works
-        [styles.cellIsActiveScrolled]: lesson.isActive && props.isScrolledHorizontally,
+        [styles.cellIsActiveScrolled]: props.isScrolledHorizontally,
       })}
-      onClick={(event) => {
-        event.stopPropagation();
-        if (props.onModifyCell) {
-          props.onModifyCell(lesson);
-        }
-      }}
       style={props.style}
+      {...conditionalProps}
     >
       <div className={styles.cellContainer}>
         <div className={styles.moduleName}>{moduleName}</div>
@@ -51,7 +49,7 @@ function TimetableCell(props: Props) {
         <div>{lesson.Venue}</div>
         {lesson.WeekText !== 'Every Week' && <div>{lesson.WeekText}</div>}
       </div>
-    </button>
+    </Cell>
   );
 }
 
