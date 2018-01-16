@@ -10,10 +10,9 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { NavLink, withRouter, type ContextRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import NUSModerator from 'nusmoderator';
 import classnames from 'classnames';
 import { each } from 'lodash';
-
+import weekText from 'utils/weekText';
 import { fetchModuleList } from 'actions/moduleBank';
 import {
   fetchTimetableModules,
@@ -21,7 +20,6 @@ import {
   setTimetable,
   migrateTimetable,
 } from 'actions/timetables';
-import { noBreak } from 'utils/react';
 import Footer from 'views/layout/Footer';
 import Navtabs from 'views/layout/Navtabs';
 import GlobalSearchContainer from 'views/layout/GlobalSearchContainer';
@@ -47,33 +45,6 @@ type Props = {
   setTimetable: (Semester, SemTimetableConfig) => void,
   fillTimetableBlanks: Semester => void,
 };
-
-type AcadWeekInfo = {
-  year: string,
-  sem: 'Semester 1' | 'Semester 2' | 'Special Sem 1' | 'Special Sem 2',
-  type: 'Instructional' | 'Reading' | 'Examination' | 'Recess' | 'Vacation' | 'Orientation',
-  num: ?number,
-};
-
-// Put outside render because this only needs to computed on page load.
-const weekText = (() => {
-  const acadWeekInfo: AcadWeekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(new Date());
-  const parts: Array<string> = [`AY20${acadWeekInfo.year}`];
-
-  // Check for null value (ie. during vacation)
-  if (acadWeekInfo.sem) {
-    parts.push(noBreak(acadWeekInfo.sem));
-  }
-
-  // Hide week if week type is 'Instructional'
-  if (acadWeekInfo.type !== 'Instructional') {
-    // Do not show the week number if there is only one week, e.g. recess
-    const weekNumber = acadWeekInfo.num || '';
-    parts.push(noBreak(`${acadWeekInfo.type} Week ${weekNumber}`));
-  }
-
-  return parts.join(', ').trim();
-})();
 
 export class AppShellComponent extends Component<Props> {
   componentWillMount() {
