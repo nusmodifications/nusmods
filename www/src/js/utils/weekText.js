@@ -24,13 +24,13 @@ export const getWeekText = (acadWeekInfo: AcadWeekInfo) => {
   const weekNumber = acadWeekInfo.num || '';
   parts.push(noBreak(`${type}Week ${weekNumber}`));
 
-  return parts;
+  return parts.join(', ').trim();
 };
 
-// Put outside render because this only needs to computed on page load.
+// Text computed in an IIFE because this only needs to be computed on page load.
 const weekText = (() => {
   const acadWeekInfo: AcadWeekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(new Date());
-  return getWeekText(acadWeekInfo).join(', ').trim();
+  return getWeekText(acadWeekInfo);
 })();
 
 export default weekText;
