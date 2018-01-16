@@ -50,6 +50,7 @@ function validateExportData(data) {
   }
 
   // Handles pre-persist-migration data format
+  // TODO: Remove after AY2017/18 Sem 2 when the Redux Persist migration is also removed
   if (!_.isObject(data.hidden)) {
     data.hidden = _.get(data, 'settings.hiddenInTimetable', []);
   }
