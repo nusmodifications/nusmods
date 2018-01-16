@@ -49,6 +49,15 @@ function validateExportData(data) {
     throw new Error('Invalid semester');
   }
 
+  // Handles pre-persist-migration data format
+  if (!_.isObject(data.hidden)) {
+    data.hidden = _.get(data, 'settings.hiddenInTimetable', []);
+  }
+
+  if (!_.isObject(data.colors)) {
+    data.colors = _.get(data, 'theme.colors', {});
+  }
+
   // TODO: Improve these validation
   if (!_.isObject(data.timetable)) {
     throw new Error('Invalid timetable');
