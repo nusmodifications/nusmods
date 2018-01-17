@@ -19,7 +19,7 @@ window.store = store;
 
 // For Puppeteer to import data
 window.setData = function setData(modules: Module[], data: ExportData, callback: Function) {
-  const { semester, timetable } = data;
+  const { semester, timetable, colors } = data;
 
   if (document.body) {
     document.body.classList.toggle('mode-dark', data.settings.mode === DARK_MODE);
@@ -31,6 +31,7 @@ window.setData = function setData(modules: Module[], data: ExportData, callback:
     {
       semester,
       timetable,
+      colors,
     },
     callback,
   );
