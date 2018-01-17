@@ -11,7 +11,7 @@ import Helmet from 'react-helmet';
 import { NavLink, withRouter, type ContextRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import { each } from 'lodash';
+import { each, noop } from 'lodash';
 import weekText from 'utils/weekText';
 import { fetchModuleList } from 'actions/moduleBank';
 import {
@@ -24,6 +24,7 @@ import Footer from 'views/layout/Footer';
 import Navtabs from 'views/layout/Navtabs';
 import GlobalSearchContainer from 'views/layout/GlobalSearchContainer';
 import Notification from 'views/components/Notification';
+import ErrorBoundary from 'views/components/ErrorBoundary';
 import { DARK_MODE } from 'types/settings';
 import LoadingSpinner from './components/LoadingSpinner';
 import FeedbackModal from './components/FeedbackModal';
@@ -84,28 +85,37 @@ export class AppShellComponent extends Component<Props> {
             })}
           />
         </Helmet>
-
         <nav className={styles.navbar}>
           <NavLink className={styles.brand} to="/" title="Home">
             <span className="sr-only">NUSMods</span>
           </NavLink>
-          <GlobalSearchContainer />
+
+          <ErrorBoundary errorPage={noop}>
+            <GlobalSearchContainer />
+          </ErrorBoundary>
+
           <div className={styles.weekText}>{weekText}</div>
         </nav>
-
         <div className="main-container">
           <Navtabs />
 
           <main className="main-content">
-            {isModuleListReady ? this.props.children : <LoadingSpinner />}
+            {isModuleListReady ? (
+              <ErrorBoundary>{this.props.children}</ErrorBoundary>
+            ) : (
+              <LoadingSpinner />
+            )}
           </main>
         </div>
-
-        <FeedbackModal />
-
-        <Notification />
-
-        <Footer />
+        <ErrorBoundary errorPage={noop}>
+          <FeedbackModal />
+        </ErrorBoundary>
+        <ErrorBoundary errorPage={noop}>
+          <Notification />
+        </ErrorBoundary>
+        <ErrorBoundary errorPage={noop}>
+          <Footer />
+        </ErrorBoundary>
       </div>
     );
   }
