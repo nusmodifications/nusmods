@@ -12,6 +12,8 @@
 }
 
 :global(.cards) {
+  width: 100%;
+
   .thead {
     @include sr-only();
   }

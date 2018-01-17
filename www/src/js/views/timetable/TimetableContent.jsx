@@ -311,7 +311,7 @@ class TimetableContent extends Component<Props, State> {
           <div
             className={classnames({
               'col-md-12': !isVerticalOrientation,
-              'col-md-8': isVerticalOrientation,
+              'col-md-7 col-lg-8': isVerticalOrientation,
             })}
           >
             <div
@@ -335,7 +335,7 @@ class TimetableContent extends Component<Props, State> {
           <div
             className={classnames({
               'col-md-12 col-xl-8 offset-xl-2': !isVerticalOrientation,
-              'col-md-4': isVerticalOrientation,
+              'col-md-5 col-lg-4': isVerticalOrientation,
             })}
           >
             <div className="row">
@@ -349,8 +349,6 @@ class TimetableContent extends Component<Props, State> {
                   timetable={this.props.timetable}
                 />
               </div>
-            </div>
-            <div className={styles.tableContainer}>
               {!readOnly && (
                 <Online>
                   {(isOnline) => (

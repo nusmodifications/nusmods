@@ -14,19 +14,23 @@
   .row {
     display: flex;
     flex-wrap: wrap;
-  }
-
-  .color {
-    margin-top: 0.3rem;
+    align-items: center;
+    margin-bottom: 0.2rem;
+    font-size: $font-size-sm;
   }
 
   .title {
     flex: 1 0 calc(100% - 9.5rem);
     margin: 0 0.4rem;
+    line-height: 1.3;
+
+    a {
+      display: block;
+    }
   }
 
   .credit {
-    order: 3;
+    order: 2;
 
     &::before {
       content: '· ';
@@ -38,13 +42,18 @@
   }
 
   .exam {
-    order: 2;
-    margin: 0 0.35rem 0 1.8rem;
+    order: 1;
+    margin: 0 0.35rem 0 1.7rem;
   }
 
   .action {
-    order: 1;
+    float: right;
     text-align: right;
+  }
+
+  .exam,
+  .credit {
+    margin-top: -0.3rem;
   }
 }
 
