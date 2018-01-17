@@ -173,6 +173,38 @@ export function getAcadWeekInfo(date) {
   };
 }
 
+/**
+ * Get the first day of the exam week for the given semester
+ * @param {string} year
+ * @param {number} semester
+ * @returns {Date}
+ */
+export function getExamWeek(year, semester) {
+  const startDate = acadYearStartDates[year];
+
+  if (!startDate) {
+    console.warn(`[nusmoderator] Unsupported year: ${year}`);
+    return null;
+  }
+
+  const examWeek = {
+    1: 16,
+    2: 38,
+    3: 45,
+    4: 51,
+  };
+
+  const weeks = examWeek[semester];
+  if (!weeks) {
+    console.warn(`[nusmoderator] Unknown semester: ${semester}`);
+    return null;
+  }
+
+  const d = new Date(startDate.valueOf());
+  d.setDate(startDate.getDate() + (weeks * 7));
+  return d;
+}
+
 export default {
   acadYearStartDates,
   getAcadYear,
