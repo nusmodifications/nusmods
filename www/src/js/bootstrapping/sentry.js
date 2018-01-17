@@ -19,6 +19,7 @@ if (loadRaven) {
       // Chrome and Firefox extensions
       /^chrome:\/\//i,
       /^chrome-extension:\/\//i,
+      /^moz-extension:\/\//i,
       // Disqus
       /embed\.js$/i,
     ],
