@@ -5,19 +5,20 @@ import Downshift from 'downshift';
 import classnames from 'classnames';
 
 import { highlight } from 'utils/react';
-import { Search, ChevronRight } from 'views/components/icons';
-import type { Module } from 'types/modules';
+import { ChevronRight, Help, Search } from 'views/components/icons';
+import type { ModuleCondensed } from 'types/modules';
 import type { Venue } from 'types/venues';
 import type { ResultType, SearchResult } from 'types/views';
 
+import config from 'config';
 import { MODULE_RESULT, SEARCH_RESULT, VENUE_RESULT } from 'types/views';
 import styles from './GlobalSearch.scss';
 
 type Props = {
-  getResults: string => SearchResult,
+  getResults: string => ?SearchResult,
 
   onSelectVenue: Venue => void,
-  onSelectModule: Module => void,
+  onSelectModule: ModuleCondensed => void,
   onSearch: (ResultType, string) => void,
 };
 
@@ -26,6 +27,15 @@ type State = {
 };
 
 const PLACEHOLDER = 'Search modules & venues. Try "GER" or "LT".';
+
+/* eslint-disable no-useless-computed-key */
+const BADGE_COLOR = {
+  [1]: styles.sem1,
+  [2]: styles.sem2,
+  [3]: styles.sem3,
+  [4]: styles.sem4,
+};
+/* eslint-enable */
 
 class GlobalSearch extends Component<Props, State> {
   input: ?HTMLInputElement;
@@ -74,15 +84,10 @@ class GlobalSearch extends Component<Props, State> {
     inputValue,
     highlightedIndex,
   }: any) => {
-    const { modules, venues, tokens } = this.props.getResults(inputValue);
-    const hasModules = modules.length > 0;
-    const hasVenues = venues.length > 0;
-
-    const venueHeaderIndex = hasModules ? modules.length + 1 : 0;
-    const venueItemOffset = venueHeaderIndex + 1;
-
-    return (
-      <div className={styles.container}>
+    // key to ensure the input element does not change during rerender, which would cause
+    // selection to be lost
+    const searchForm = (
+      <Fragment key="search">
         <Search className={classnames(styles.icon, { [styles.iconOpen]: isOpen })} />
         <label className="sr-only" {...getLabelProps()}>
           {PLACEHOLDER}
@@ -95,8 +100,76 @@ class GlobalSearch extends Component<Props, State> {
           {...getInputProps({ placeholder: PLACEHOLDER })}
           onFocus={this.onOpen}
         />
+      </Fragment>
+    );
 
-        {(hasModules || hasVenues) && (
+    const searchResults = this.props.getResults(inputValue);
+
+    // 1. Search is not active - just show the search form
+    if (!searchResults) {
+      return <div className={styles.container}>{searchForm}</div>;
+    }
+
+    const { modules, venues, tokens } = searchResults;
+    const hasModules = modules.length > 0;
+    const hasVenues = venues.length > 0;
+
+    // 2. No results - show a message and ask if the user wants to view all
+    //    results instead
+    if (!hasModules && !hasVenues) {
+      return (
+        <div className={styles.container}>
+          {searchForm}
+
+          <div className={styles.selectListContainer}>
+            <div className={styles.selectList}>
+              <div className={styles.noResults}>
+                <Help />
+                <p>
+                  No results found for{' '}
+                  <strong className={styles.searchTerm}>&quot;{inputValue}&quot;</strong>
+                </p>
+                <p>
+                  Try searching all{' '}
+                  <button
+                    {...getItemProps({
+                      item: [SEARCH_RESULT, [MODULE_RESULT, inputValue]],
+                    })}
+                    className={classnames('btn btn-inline', {
+                      [styles.selected]: highlightedIndex === 0,
+                    })}
+                  >
+                    modules
+                  </button>{' '}
+                  or{' '}
+                  <button
+                    {...getItemProps({
+                      item: [SEARCH_RESULT, [VENUE_RESULT, inputValue]],
+                    })}
+                    className={classnames('btn btn-inline', {
+                      [styles.selected]: highlightedIndex === 1,
+                    })}
+                  >
+                    venues
+                  </button>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    const venueHeaderIndex = hasModules ? modules.length + 1 : 0;
+    const venueItemOffset = venueHeaderIndex + 1;
+
+    // 3. We have results - so show them to the user
+    return (
+      <div className={styles.container}>
+        {searchForm}
+
+        {/* Wrap select list in absolute-positioned container to fix macOS Safari scrolling perf */}
+        <div className={styles.selectListContainer}>
           <div className={styles.selectList}>
             {hasModules && (
               <Fragment>
@@ -109,8 +182,8 @@ class GlobalSearch extends Component<Props, State> {
                   })}
                 >
                   <span className={styles.headerName}>Modules</span>
-                  <span className={styles.viewAll}>
-                    View All <ChevronRight />
+                  <span className="btn-svg">
+                    View All <ChevronRight className={styles.svg} />
                   </span>
                 </div>
 
@@ -124,7 +197,19 @@ class GlobalSearch extends Component<Props, State> {
                       [styles.selected]: highlightedIndex === index + 1,
                     })}
                   >
-                    {highlight(`${module.ModuleCode} ${module.ModuleTitle}`, tokens)}
+                    <span>{highlight(`${module.ModuleCode} ${module.ModuleTitle}`, tokens)}</span>
+
+                    <span className={styles.semesters}>
+                      {module.Semesters.sort().map((semester) => (
+                        <span
+                          key={semester}
+                          className={classnames('badge', BADGE_COLOR[semester])}
+                          title={config.semesterNames[semester]}
+                        >
+                          {config.shortSemesterNames[semester]}
+                        </span>
+                      ))}
+                    </span>
                   </div>
                 ))}
               </Fragment>
@@ -140,8 +225,8 @@ class GlobalSearch extends Component<Props, State> {
                   })}
                 >
                   <span className={styles.headerName}>Venues</span>
-                  <span className={styles.viewAll}>
-                    View All <ChevronRight />
+                  <span className="btn-svg">
+                    View All <ChevronRight className={styles.svg} />
                   </span>
                 </div>
 
@@ -155,13 +240,13 @@ class GlobalSearch extends Component<Props, State> {
                       [styles.selected]: highlightedIndex === venueItemOffset + index,
                     })}
                   >
-                    {highlight(venue, tokens)}
+                    <span>{highlight(venue, tokens)}</span>
                   </div>
                 ))}
               </Fragment>
             )}
           </div>
-        )}
+        </div>
       </div>
     );
   };

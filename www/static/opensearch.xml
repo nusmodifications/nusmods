@@ -1,7 +1,12 @@
-<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
-  <ShortName>NUSMods Module Search</ShortName>
+<?xml version="1.0" encoding="UTF-8" ?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/"
+                       xmlns:moz="http://www.mozilla.org/2006/browser/search/">
+  <ShortName>NUSMods Modules</ShortName>
   <Description>Search for modules on NUSMods</Description>
-  <Url type="text/html" method="get" template="https://nusmods.com/modules/{searchTerms}"/>
-  <Image height="16" width="16" type="image/x-icon">https://nusmods.com/favicon.ico</Image>
+  <Url type="text/html" template="https://nusmods.com/modules?q={searchTerms}" />
+  <Query role="example" searchTerms="Programming Methodology" />
+  <Image height="16" width="16" type="image/png">https://nusmods.com/favicon-16x16.png</Image>
+  <InputEncoding>UTF-8</InputEncoding>
   <Contact>mods@nusmods.com</Contact>
+  <moz:SearchForm>https://nusmods.com/modules/</moz:SearchForm>
 </OpenSearchDescription>

@@ -43,7 +43,8 @@ export function modulePage(moduleCode: ModuleCode, moduleTitle: ModuleTitle): st
 }
 
 // Venue -> Venue page path
-export function venuePage(venue: Venue): string {
+export function venuePage(venue?: ?Venue): string {
+  if (!venue) return '/venues';
   return `/venues/${encodeURIComponent(venue)}`;
 }
 

@@ -1,6 +1,6 @@
 // @flow
 import type { FSA } from 'types/redux';
-import type { Faculty, ModuleCode, Semester } from 'types/modules';
+import type { Faculty, Semester } from 'types/modules';
 import type { Mode } from 'types/settings';
 
 export const SELECT_SEMESTER: string = 'SELECT_SEMESTER';
@@ -40,22 +40,6 @@ export function toggleMode(): FSA {
   return {
     type: TOGGLE_MODE,
     payload: null,
-  };
-}
-
-export const HIDE_LESSON_IN_TIMETABLE: string = 'HIDE_LESSON_IN_TIMETABLE';
-export function hideLessonsInTimetable(moduleCode: ModuleCode): FSA {
-  return {
-    type: HIDE_LESSON_IN_TIMETABLE,
-    payload: moduleCode,
-  };
-}
-
-export const SHOW_LESSON_IN_TIMETABLE: string = 'SHOW_LESSON_IN_TIMETABLE';
-export function showLessonsInTimetable(moduleCode: ModuleCode): FSA {
-  return {
-    type: SHOW_LESSON_IN_TIMETABLE,
-    payload: moduleCode,
   };
 }
 

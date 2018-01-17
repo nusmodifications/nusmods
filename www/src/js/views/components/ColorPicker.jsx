@@ -12,7 +12,7 @@ import styles from './ColorPicker.scss';
 type Props = {
   label: string,
   color: ColorIndex,
-  onChooseColor: Function,
+  onChooseColor: ColorIndex => void,
 };
 
 /**
@@ -22,30 +22,35 @@ type Props = {
  */
 class ColorPicker extends PureComponent<Props> {
   // TODO: Inject types from downshift when https://github.com/paypal/downshift/pull/180 is implemented
-  renderColorPicker = ({ getButtonProps, getItemProps, itemToString, isOpen }: any) => (
-    <span className={styles.container}>
+  renderColorPicker = ({ getButtonProps, getItemProps, isOpen }: any) => (
+    <div className={styles.container}>
       <button
         {...getButtonProps({
           title: this.props.label,
         })}
-        className={classnames('btn', `color-${this.props.color}`, styles.moduleColor)}
+        className={classnames('btn btn-block', `color-${this.props.color}`, styles.moduleColor)}
       />
       {isOpen && (
         <div className={styles.palette}>
           {_.range(NUM_DIFFERENT_COLORS).map((index: ColorIndex) => (
-            <span
-              {...getItemProps({ item: itemToString(index) })}
+            <button
+              {...getItemProps({ item: index })}
               key={index}
               className={classnames(styles.option, `color-${index}`)}
             />
           ))}
         </div>
       )}
-    </span>
+    </div>
   );
 
   render() {
-    return <Downshift onChange={this.props.onChooseColor} render={this.renderColorPicker} />;
+    return (
+      <Downshift
+        onChange={(colorIndex) => this.props.onChooseColor(colorIndex)}
+        render={this.renderColorPicker}
+      />
+    );
   }
 }
 

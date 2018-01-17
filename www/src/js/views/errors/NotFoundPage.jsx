@@ -1,10 +1,9 @@
 // @flow
 import React from 'react';
-import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import Raven from 'raven-js';
 
-import config from 'config/index';
+import Title from 'views/components/Title';
 import styles from './ErrorPage.scss';
 
 export default function NotFoundPage() {
@@ -13,9 +12,7 @@ export default function NotFoundPage() {
 
   return (
     <div>
-      <Helmet>
-        <title>Page Not Found - {config.brandName}</title>
-      </Helmet>
+      <Title>Page Not Found</Title>
 
       <div className={styles.container}>
         <h1 className={styles.header}>
@@ -26,18 +23,13 @@ export default function NotFoundPage() {
           If you think something <em>should</em> be here,{' '}
           <button className={styles.link} onClick={() => Raven.showReportDialog({ eventId })}>
             do tell us
-          </button>
+          </button>!
         </p>
 
-        <p className={styles.subheader}>Otherwise, if you want to</p>
-        <ul className="list-unstyled">
-          <li>
-            ...plan your timetable? <Link to="/">Go back to Nusmods.com</Link>
-          </li>
-          <li>
-            ...find a module? <Link to="/modules">Try the module finder</Link>
-          </li>
-        </ul>
+        <p>
+          Otherwise, <Link to="/">go back to nusmods.com</Link> or{' '}
+          <Link to="/modules">try the module finder</Link>.
+        </p>
       </div>
     </div>
   );

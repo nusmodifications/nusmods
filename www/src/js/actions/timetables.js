@@ -1,33 +1,26 @@
 // @flow
-import { flatMap, isEmpty, each } from 'lodash';
+import { each, flatMap } from 'lodash';
 import localforage from 'localforage';
 
 import type { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
-import type { FSA } from 'types/redux';
-import type { ColorMapping, ColorIndex } from 'types/reducers';
-import type { Module, ModuleCode, Semester, Lesson, ClassNo, LessonType } from 'types/modules';
+import type { FSA, GetState } from 'types/redux';
+import type { ColorIndex, ColorMapping } from 'types/reducers';
+import type { ClassNo, Lesson, LessonType, Module, ModuleCode, Semester } from 'types/modules';
 
 import { fetchModule } from 'actions/moduleBank';
 import { randomModuleLessonConfig, validateTimetableModules } from 'utils/timetables';
 import { getModuleTimetable } from 'utils/modules';
 import storage from 'storage';
+import { V2_MIGRATION_KEY } from 'storage/keys';
 import { MIGRATION_KEYS, parseQueryString } from 'storage/migrateTimetable';
 
-const V2_MIGRATION_KEY = 'v2Migration';
-
 export const ADD_MODULE: string = 'ADD_MODULE';
-export function addModule(
-  semester: Semester,
-  moduleCode: ModuleCode,
-  lessonConfig: ModuleLessonConfig = {},
-  colorIndex?: ColorIndex,
-) {
-  return (dispatch: Function, getState: Function) =>
+export function addModule(semester: Semester, moduleCode: ModuleCode) {
+  return (dispatch: Function, getState: GetState) =>
     dispatch(fetchModule(moduleCode)).then(() => {
       const module: Module = getState().moduleBank.modules[moduleCode];
       const lessons = getModuleTimetable(module, semester);
-      const moduleLessonConfig =
-        lessons && isEmpty(lessonConfig) ? randomModuleLessonConfig(lessons) : lessonConfig;
+      const moduleLessonConfig = randomModuleLessonConfig(lessons);
 
       return dispatch({
         type: ADD_MODULE,
@@ -35,7 +28,6 @@ export function addModule(
           semester,
           moduleCode,
           moduleLessonConfig,
-          colorIndex,
         },
       });
     });
@@ -98,7 +90,7 @@ export function setTimetable(
   timetable?: SemTimetableConfig,
   colors?: ColorMapping,
 ) {
-  return (dispatch: Function, getState: Function) => {
+  return (dispatch: Function, getState: GetState) => {
     let validatedTimetable = timetable;
     if (timetable) {
       const moduleCodes = getState().moduleBank.moduleCodes;
@@ -113,11 +105,11 @@ export function setTimetable(
 }
 
 export function fillTimetableBlanks(semester: Semester) {
-  return (dispatch: Function, getState: Function) => {
+  return (dispatch: Function, getState: GetState) => {
     const { timetables, moduleBank } = getState();
 
     // Extract the timetable and the modules for the semester
-    const timetable = timetables[semester];
+    const timetable = timetables.lessons[semester];
     if (!timetable) return;
 
     // Check that all lessons for each module is filled, if they are not, use the
@@ -148,7 +140,7 @@ export function fetchTimetableModules(timetables: SemTimetableConfig[]) {
 }
 
 export function migrateTimetable() {
-  return (dispatch: Function, getState: Function): Promise<*> => {
+  return (dispatch: Function, getState: GetState): Promise<*> => {
     if (storage.getItem(V2_MIGRATION_KEY)) {
       return Promise.resolve();
     }
@@ -172,5 +164,37 @@ export function migrateTimetable() {
     );
 
     return Promise.all(promises).then(() => storage.setItem(V2_MIGRATION_KEY, true));
+  };
+}
+
+export const SELECT_MODULE_COLOR: string = 'SELECT_MODULE_COLOR';
+export function selectModuleColor(
+  semester: Semester,
+  moduleCode: ModuleCode,
+  colorIndex: ColorIndex,
+): FSA {
+  return {
+    type: SELECT_MODULE_COLOR,
+    payload: {
+      semester,
+      moduleCode,
+      colorIndex,
+    },
+  };
+}
+
+export const HIDE_LESSON_IN_TIMETABLE: string = 'HIDE_LESSON_IN_TIMETABLE';
+export function hideLessonInTimetable(semester: Semester, moduleCode: ModuleCode): FSA {
+  return {
+    type: HIDE_LESSON_IN_TIMETABLE,
+    payload: { moduleCode, semester },
+  };
+}
+
+export const SHOW_LESSON_IN_TIMETABLE: string = 'SHOW_LESSON_IN_TIMETABLE';
+export function showLessonInTimetable(semester: Semester, moduleCode: ModuleCode): FSA {
+  return {
+    type: SHOW_LESSON_IN_TIMETABLE,
+    payload: { moduleCode, semester },
   };
 }

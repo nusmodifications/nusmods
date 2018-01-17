@@ -54,3 +54,25 @@ export function calculateBorderTimings(
     endingIndex: latestTime % 2 === 0 ? latestTime : latestTime + 1, // ceil to latest hour.
   };
 }
+
+// Gets the current time in hours, 0915 -> 9, 1315 -> 13
+export function getCurrentHours(
+  now: Date = new Date(), // Used for tests only
+): number {
+  return now.getHours();
+}
+
+// Gets the current time in hours, 0915 -> 15, 1315 -> 45
+// Current time to always match Singapore's
+export function getCurrentMinutes(
+  now: Date = new Date(), // Used for tests only
+): number {
+  return now.getMinutes();
+}
+
+// Monday = 0, Friday = 4
+export function getCurrentDayIndex(
+  now: Date = new Date(), // Used for tests only
+): number {
+  return now.getDay() - 1; // Minus 1 because JS week starts on Sunday
+}

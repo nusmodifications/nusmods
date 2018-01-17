@@ -41,7 +41,15 @@ $state-danger-text:         #fff;
 $state-danger-bg:           theme-color('danger');
 
 // Element styles
+$mark-bg: transparent;
 $hr-border-color: var(--gray-lighter);
+
+$input-border-color: var(--gray-lighter);
+$input-disabled-bg: var(--gray-lighter);
+
+$dropdown-border-color: var(--gray-lighter);
+$dropdown-bg: var(--body-bg);
+// $zindex-dropdown: 820 - set in constants.css with the rest of the z-indexes
 
 // Close button line color
 $close-color: var(--gray-dark);

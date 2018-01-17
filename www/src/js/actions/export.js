@@ -1,13 +1,10 @@
 // @flow
-import ical from 'ical-generator';
-
 import type { Module, Semester } from 'types/modules';
-import type { State } from 'reducers';
 
-import { iCalForTimetable } from 'utils/ical';
 import { hydrateSemTimetableWithLessons } from 'utils/timetables';
 import type { ExportData } from 'types/export';
-import type { FSA } from 'types/redux';
+import type { FSA, GetState } from 'types/redux';
+import { getSemesterTimetable } from 'reducers/timetables';
 
 function downloadUrl(blob: Blob, filename: string) {
   const link = document.createElement('a');
@@ -25,20 +22,27 @@ function downloadUrl(blob: Blob, filename: string) {
 export const SUPPORTS_DOWNLOAD = 'download' in document.createElement('a');
 
 export function downloadAsIcal(semester: Semester) {
-  return (dispatch: Function, getState: () => State) => {
-    const modules = getState().moduleBank.modules;
-    const timetable = getState().timetables[semester] || {};
-    const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
+  return (dispatch: Function, getState: GetState) => {
+    Promise.all([
+      import(/* webpackChunkName: "export" */ 'ical-generator'),
+      import(/* webpackChunkName: "export" */ 'utils/ical'),
+    ]).then(([ical, icalUtils]) => {
+      const { moduleBank, timetables } = getState();
+      const modules = moduleBank.modules;
+      const { timetable } = getSemesterTimetable(semester, timetables);
+      const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
 
-    const events = iCalForTimetable(semester, timetableWithLessons, modules);
-    const cal = ical({
-      domain: 'nusmods.com',
-      prodId: '//NUSMods//NUSMods//EN',
-      events,
+      const events = icalUtils.default(semester, timetableWithLessons, modules);
+      // $FlowFixMe Flow doesn't seem to like import() for CJS modules
+      const cal = ical({
+        domain: 'nusmods.com',
+        prodId: '//NUSMods//NUSMods//EN',
+        events,
+      });
+
+      const blob = new Blob([cal.toString()], { type: 'text/plain' });
+      downloadUrl(blob, 'nusmods_calendar.ics');
     });
-
-    const blob = new Blob([cal.toString()], { type: 'text/plain' });
-    downloadUrl(blob, 'nusmods_calendar.ics');
   };
 }
 

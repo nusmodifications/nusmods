@@ -8,6 +8,7 @@ import { get } from 'lodash';
 
 import type { Module, ModuleCode, Semester } from 'types/modules';
 import type { TimetableConfig } from 'types/timetables';
+import type { State as StoreState } from 'reducers';
 
 import { addModule, removeModule } from 'actions/timetables';
 import { getFirstAvailableSemester, getSemestersOffered } from 'utils/modules';
@@ -97,7 +98,7 @@ export class AddModuleDropdownComponent extends PureComponent<Props, State> {
     /* eslint-disable jsx-a11y/label-has-for */
     return (
       <Downshift>
-        {({ getLabelProps, getItemProps, isOpen, toggleMenu }) => (
+        {({ getLabelProps, getItemProps, isOpen, toggleMenu, highlightedIndex }) => (
           <div>
             <label {...getLabelProps({ htmlFor: id })} className="sr-only">
               Add module to timetable
@@ -134,11 +135,13 @@ export class AddModuleDropdownComponent extends PureComponent<Props, State> {
 
               {isOpen && (
                 <div className="dropdown-menu show">
-                  {otherSemesters.map((semester) => (
+                  {otherSemesters.map((semester, index) => (
                     <button
                       {...getItemProps({ item: semester })}
                       key={semester}
-                      className={classnames('dropdown-item', styles.dropdownItem)}
+                      className={classnames('dropdown-item', styles.dropdownItem, {
+                        'dropdown-selected': index === highlightedIndex,
+                      })}
                       onClick={() => this.onSelect(semester)}
                     >
                       {this.buttonLabel(semester)}
@@ -155,8 +158,8 @@ export class AddModuleDropdownComponent extends PureComponent<Props, State> {
 }
 
 const AddModuleDropdownConnected = connect(
-  (state) => ({
-    timetables: state.timetables,
+  (state: StoreState) => ({
+    timetables: state.timetables.lessons,
   }),
   { addModule, removeModule },
 )(AddModuleDropdownComponent);

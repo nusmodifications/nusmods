@@ -45,7 +45,7 @@ function make(
 
 function assertRedirect(component, redirectTo = CANONICAL) {
   expect(component.type()).toEqual(Redirect);
-  expect(component.props()).toMatchObject({ to: redirectTo });
+  expect(component.props()).toMatchObject({ to: { pathname: redirectTo } });
 }
 
 test('should show 404 page when the module code does not exist', () => {

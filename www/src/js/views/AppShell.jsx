@@ -4,20 +4,26 @@ import type { TimetableConfig, SemTimetableConfig } from 'types/timetables';
 import type { ModuleList } from 'types/reducers';
 import type { Semester } from 'types/modules';
 import type { Mode } from 'types/settings';
+import type { State } from 'reducers';
 
 import React, { Component } from 'react';
+import Helmet from 'react-helmet';
 import { NavLink, withRouter, type ContextRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import NUSModerator from 'nusmoderator';
 import classnames from 'classnames';
-import { values } from 'lodash';
-
+import { each } from 'lodash';
+import weekText from 'utils/weekText';
 import { fetchModuleList } from 'actions/moduleBank';
-import { fetchTimetableModules, setTimetable, migrateTimetable } from 'actions/timetables';
-import { noBreak } from 'utils/react';
+import {
+  fetchTimetableModules,
+  fillTimetableBlanks,
+  setTimetable,
+  migrateTimetable,
+} from 'actions/timetables';
 import Footer from 'views/layout/Footer';
 import Navtabs from 'views/layout/Navtabs';
 import GlobalSearchContainer from 'views/layout/GlobalSearchContainer';
+import Notification from 'views/components/Notification';
 import { DARK_MODE } from 'types/settings';
 import LoadingSpinner from './components/LoadingSpinner';
 import FeedbackModal from './components/FeedbackModal';
@@ -35,46 +41,14 @@ type Props = {
 
   fetchModuleList: () => Promise<*>,
   migrateTimetable: () => void,
-  fetchTimetableModules: (SemTimetableConfig[]) => void,
+  fetchTimetableModules: (SemTimetableConfig[]) => Promise<*>,
   setTimetable: (Semester, SemTimetableConfig) => void,
+  fillTimetableBlanks: Semester => void,
 };
 
-type AcadWeekInfo = {
-  year: string,
-  sem: 'Semester 1' | 'Semester 2' | 'Special Sem 1' | 'Special Sem 2',
-  type: 'Instructional' | 'Reading' | 'Examination' | 'Recess' | 'Vacation' | 'Orientation',
-  num: ?number,
-};
-
-// Put outside render because this only needs to computed on page load.
-const weekText = (() => {
-  const acadWeekInfo: AcadWeekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(new Date());
-  const parts: Array<string> = [`AY20${acadWeekInfo.year}`];
-
-  // Check for null value (ie. during vacation)
-  if (acadWeekInfo.sem) {
-    parts.push(noBreak(acadWeekInfo.sem));
-  }
-
-  // Hide week if week type is 'Instructional'
-  if (acadWeekInfo.type !== 'Instructional') {
-    // Do not show the week number if there is only one week, e.g. recess
-    const weekNumber = acadWeekInfo.num || '';
-    parts.push(noBreak(`${acadWeekInfo.type} Week ${weekNumber}`));
-  }
-
-  return parts.join(', ').trim();
-})();
-
-function setMode(mode: Mode) {
-  if (!document.body) return;
-  document.body.classList.toggle('mode-dark', mode === DARK_MODE);
-}
-
-export class AppShell extends Component<Props> {
+export class AppShellComponent extends Component<Props> {
   componentWillMount() {
-    const { mode, timetables } = this.props;
-    setMode(mode);
+    const { timetables } = this.props;
 
     // Retrieve module list
     // TODO: This always re-fetch the entire modules list. Consider a better strategy for this
@@ -84,20 +58,33 @@ export class AppShell extends Component<Props> {
       // TODO: Remove this once sem 2 is over
       .then(() => this.props.migrateTimetable());
 
-    // Fetch all module data that are on timetable
-    this.props.fetchTimetableModules(values(timetables));
-  }
+    // Refresh the module data of the existing modules in the timetable and ensure all
+    // lessons are filled
+    each(timetables, (timetable, semester) => {
+      this.props
+        .fetchTimetableModules([timetable])
+        .then(() => this.props.fillTimetableBlanks(Number(semester)));
+    });
 
-  componentWillUpdate(nextProps: Props) {
-    setMode(nextProps.mode);
+    // Fetch all module data that are on timetable
   }
 
   render() {
     // TODO: Handle failed loading of module list
     const isModuleListReady = this.props.moduleList.length;
+    const isDarkMode = this.props.mode === DARK_MODE;
 
     return (
       <div className="app-container">
+        <Helmet>
+          <body
+            className={classnames(`theme-${this.props.theme}`, {
+              'mode-dark': isDarkMode,
+              'mdc-theme--dark': isDarkMode,
+            })}
+          />
+        </Helmet>
+
         <nav className={styles.navbar}>
           <NavLink className={styles.brand} to="/" title="Home">
             <span className="sr-only">NUSMods</span>
@@ -109,12 +96,14 @@ export class AppShell extends Component<Props> {
         <div className="main-container">
           <Navtabs />
 
-          <main className={classnames('main-content', `theme-${this.props.theme}`)}>
+          <main className="main-content">
             {isModuleListReady ? this.props.children : <LoadingSpinner />}
           </main>
         </div>
 
         <FeedbackModal />
+
+        <Notification />
 
         <Footer />
       </div>
@@ -122,23 +111,24 @@ export class AppShell extends Component<Props> {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: State) => ({
   moduleList: state.moduleBank.moduleList,
-  timetables: state.timetables,
+  timetables: state.timetables.lessons,
   theme: state.theme.id,
   mode: state.settings.mode,
   activeSemester: state.app.activeSemester,
 });
 
+const connectedAppShell = connect(mapStateToProps, {
+  fetchModuleList,
+  fetchTimetableModules,
+  setTimetable,
+  migrateTimetable,
+  fillTimetableBlanks,
+})(AppShellComponent);
+
 // withRouter here is used to ensure re-render when routes change, since
 // connect implements shouldComponentUpdate based purely on props. If it
 // is removed, connect not detect prop changes when route is changed and
 // thus the pages are not re-rendered
-export default withRouter(
-  connect(mapStateToProps, {
-    fetchModuleList,
-    fetchTimetableModules,
-    setTimetable,
-    migrateTimetable,
-  })(AppShell),
-);
+export default withRouter(connectedAppShell);

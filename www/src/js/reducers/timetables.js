@@ -1,12 +1,26 @@
 // @flow
 import type { FSA } from 'types/redux';
-import type { ClassNo, LessonType } from 'types/modules';
-import type { ModuleLessonConfig, TimetableConfig, SemTimetableConfig } from 'types/timetables';
+import type { ClassNo, LessonType, Semester } from 'types/modules';
+import type { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
+import type { ColorMapping, TimetablesState } from 'types/reducers';
 
-import _ from 'lodash';
+import { get, omit, values } from 'lodash';
+import update from 'immutability-helper';
 
-import { ADD_MODULE, REMOVE_MODULE, CHANGE_LESSON, SET_TIMETABLE } from 'actions/timetables';
+import config from 'config';
+import {
+  ADD_MODULE,
+  CHANGE_LESSON,
+  HIDE_LESSON_IN_TIMETABLE,
+  REMOVE_MODULE,
+  SELECT_MODULE_COLOR,
+  SET_TIMETABLE,
+  SHOW_LESSON_IN_TIMETABLE,
+} from 'actions/timetables';
 import { SET_EXPORTED_DATA } from 'actions/export';
+import { getNewColor } from 'utils/colors';
+
+const EMPTY_OBJECT = {};
 
 // Map of LessonType to ClassNo.
 const defaultModuleLessonConfig: ModuleLessonConfig = {};
@@ -18,8 +32,8 @@ function moduleLessonConfig(
   switch (action.type) {
     case CHANGE_LESSON: {
       if (!action.payload) return state;
-      const classNo: ClassNo = action.payload.classNo;
 
+      const classNo: ClassNo = action.payload.classNo;
       const lessonType: LessonType = action.payload.lessonType;
 
       if (!(classNo && lessonType)) return state;
@@ -36,12 +50,11 @@ function moduleLessonConfig(
 
 // Map of ModuleCode to module lesson config.
 const defaultSemTimetableConfig: SemTimetableConfig = {};
-
 function semTimetable(
   state: SemTimetableConfig = defaultSemTimetableConfig,
   action: FSA,
 ): SemTimetableConfig {
-  const moduleCode = _.get(action, 'payload.moduleCode');
+  const moduleCode = get(action, 'payload.moduleCode');
   if (!moduleCode) return state;
 
   switch (action.type) {
@@ -51,7 +64,7 @@ function semTimetable(
         [moduleCode]: action.payload.moduleLessonConfig,
       };
     case REMOVE_MODULE:
-      return _.omit(state, [moduleCode]);
+      return omit(state, [moduleCode]);
     case CHANGE_LESSON:
       return {
         ...state,
@@ -62,36 +75,122 @@ function semTimetable(
   }
 }
 
-// Map of semester to semTimetable.
-const defaultTimetableConfig: TimetableConfig = {};
+// Map of semester to color mapping
+const defaultSemColorMap = {};
+function semColors(state: ColorMapping = defaultSemColorMap, action: FSA): ColorMapping {
+  const moduleCode = get(action, 'payload.moduleCode');
+  if (!moduleCode) return state;
 
-function timetables(state: TimetableConfig = defaultTimetableConfig, action: FSA): TimetableConfig {
+  switch (action.type) {
+    case ADD_MODULE:
+      return {
+        ...state,
+        [moduleCode]: getNewColor(values(state)),
+      };
+
+    case REMOVE_MODULE:
+      return omit(state, moduleCode);
+
+    case SELECT_MODULE_COLOR:
+      return {
+        ...state,
+        [moduleCode]: action.payload.colorIndex,
+      };
+
+    default:
+      return state;
+  }
+}
+
+// Map of semester to list of hidden modules
+const defaultHiddenState = [];
+function semHiddenModules(state = defaultHiddenState, action: FSA) {
   if (!action.payload) {
     return state;
   }
 
   switch (action.type) {
-    case SET_TIMETABLE:
-      return {
-        ...state,
-        [action.payload.semester]: action.payload.timetable || defaultSemTimetableConfig,
-      };
+    case HIDE_LESSON_IN_TIMETABLE:
+      return [action.payload.moduleCode, ...state];
+    case SHOW_LESSON_IN_TIMETABLE:
+    case REMOVE_MODULE:
+      return state.filter((c) => c !== action.payload.moduleCode);
+    default:
+      return state;
+  }
+}
+
+export const defaultTimetableState: TimetablesState = {
+  lessons: {},
+  colors: {},
+  hidden: {},
+  academicYear: config.academicYear,
+};
+
+function timetables(state: TimetablesState = defaultTimetableState, action: FSA): TimetablesState {
+  if (!action.payload || !action.payload.semester) {
+    return state;
+  }
+
+  switch (action.type) {
+    case SET_TIMETABLE: {
+      const { semester, timetable, colors } = action.payload;
+
+      return update(state, {
+        lessons: {
+          [semester]: { $set: timetable || defaultSemTimetableConfig },
+        },
+        colors: {
+          [semester]: { $set: colors || {} },
+        },
+      });
+    }
 
     case ADD_MODULE:
     case REMOVE_MODULE:
+    case SELECT_MODULE_COLOR:
     case CHANGE_LESSON:
+    case HIDE_LESSON_IN_TIMETABLE:
+    case SHOW_LESSON_IN_TIMETABLE: {
+      const { semester } = action.payload;
+
+      return update(state, {
+        lessons: {
+          [semester]: { $set: semTimetable(state.lessons[semester], action) },
+        },
+        colors: {
+          [semester]: { $set: semColors(state.colors[semester], action) },
+        },
+        hidden: {
+          [semester]: { $set: semHiddenModules(state.hidden[semester], action) },
+        },
+      });
+    }
+
+    case SET_EXPORTED_DATA: {
+      const { semester, timetable, colors, hidden } = action.payload;
+
       return {
         ...state,
-        [action.payload.semester]: semTimetable(state[action.payload.semester], action),
+        lessons: { [semester]: timetable },
+        colors: { [semester]: colors },
+        hidden: { [semester]: hidden },
       };
-
-    case SET_EXPORTED_DATA:
-      return {
-        [action.payload.semester]: action.payload.timetable,
-      };
+    }
     default:
       return state;
   }
 }
 
 export default timetables;
+
+// Extract sem timetable and colors for a specific semester from TimetablesState
+export function getSemesterTimetable(
+  semester: Semester,
+  state: TimetablesState,
+): { timetable: SemTimetableConfig, colors: ColorMapping } {
+  return {
+    timetable: state.lessons[semester] || EMPTY_OBJECT,
+    colors: state.colors[semester] || EMPTY_OBJECT,
+  };
+}

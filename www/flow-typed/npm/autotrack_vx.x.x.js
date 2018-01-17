@@ -22,6 +22,86 @@ declare module 'autotrack' {
  * require those files directly. Feel free to delete any files that aren't
  * needed.
  */
+declare module 'autotrack/autotrack' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/bin/build' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/bin/errors' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/gulpfile' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/lib/constants' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/lib/event-emitter' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/lib/externs/analytics' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/lib/externs/clean-url-tracker' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/lib/externs/event-tracker' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/lib/externs/impression-tracker' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/lib/externs/max-scroll-tracker' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/lib/externs/media-query-tracker' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/lib/externs/outbound-form-tracker' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/lib/externs/outbound-link-tracker' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/lib/externs/page-visibility-tracker' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/lib/externs/session' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/lib/externs/social-widget-tracker' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/lib/externs/url-change-tracker' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/lib/index' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/lib/method-chain' {
+  declare module.exports: any;
+}
+
 declare module 'autotrack/lib/plugins/clean-url-tracker' {
   declare module.exports: any;
 }
@@ -62,7 +142,179 @@ declare module 'autotrack/lib/plugins/url-change-tracker' {
   declare module.exports: any;
 }
 
+declare module 'autotrack/lib/provide' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/lib/session' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/lib/store' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/lib/usage' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/lib/utilities' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/test/analytics_debug' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/test/analytics' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/test/e2e/clean-url-tracker-test' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/test/e2e/event-tracker-test' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/test/e2e/ga' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/test/e2e/impression-tracker-test' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/test/e2e/index-test' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/test/e2e/max-scroll-tracker-test' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/test/e2e/media-query-tracker-test' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/test/e2e/outbound-form-tracker-test' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/test/e2e/outbound-link-tracker-test' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/test/e2e/page-visibility-tracker-test' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/test/e2e/server' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/test/e2e/social-widget-tracker-test' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/test/e2e/url-change-tracker-test' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/test/e2e/wdio.conf' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/test/unit/event-emitter-test' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/test/unit/method-chain-test' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/test/unit/plugins/clean-url-tracker-test' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/test/unit/plugins/page-visibility-tracker-test' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/test/unit/session-test' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/test/unit/store-test' {
+  declare module.exports: any;
+}
+
+declare module 'autotrack/test/unit/utilities-test' {
+  declare module.exports: any;
+}
+
 // Filename aliases
+declare module 'autotrack/autotrack.js' {
+  declare module.exports: $Exports<'autotrack/autotrack'>;
+}
+declare module 'autotrack/bin/build.js' {
+  declare module.exports: $Exports<'autotrack/bin/build'>;
+}
+declare module 'autotrack/bin/errors.js' {
+  declare module.exports: $Exports<'autotrack/bin/errors'>;
+}
+declare module 'autotrack/gulpfile.js' {
+  declare module.exports: $Exports<'autotrack/gulpfile'>;
+}
+declare module 'autotrack/lib/constants.js' {
+  declare module.exports: $Exports<'autotrack/lib/constants'>;
+}
+declare module 'autotrack/lib/event-emitter.js' {
+  declare module.exports: $Exports<'autotrack/lib/event-emitter'>;
+}
+declare module 'autotrack/lib/externs/analytics.js' {
+  declare module.exports: $Exports<'autotrack/lib/externs/analytics'>;
+}
+declare module 'autotrack/lib/externs/clean-url-tracker.js' {
+  declare module.exports: $Exports<'autotrack/lib/externs/clean-url-tracker'>;
+}
+declare module 'autotrack/lib/externs/event-tracker.js' {
+  declare module.exports: $Exports<'autotrack/lib/externs/event-tracker'>;
+}
+declare module 'autotrack/lib/externs/impression-tracker.js' {
+  declare module.exports: $Exports<'autotrack/lib/externs/impression-tracker'>;
+}
+declare module 'autotrack/lib/externs/max-scroll-tracker.js' {
+  declare module.exports: $Exports<'autotrack/lib/externs/max-scroll-tracker'>;
+}
+declare module 'autotrack/lib/externs/media-query-tracker.js' {
+  declare module.exports: $Exports<'autotrack/lib/externs/media-query-tracker'>;
+}
+declare module 'autotrack/lib/externs/outbound-form-tracker.js' {
+  declare module.exports: $Exports<'autotrack/lib/externs/outbound-form-tracker'>;
+}
+declare module 'autotrack/lib/externs/outbound-link-tracker.js' {
+  declare module.exports: $Exports<'autotrack/lib/externs/outbound-link-tracker'>;
+}
+declare module 'autotrack/lib/externs/page-visibility-tracker.js' {
+  declare module.exports: $Exports<'autotrack/lib/externs/page-visibility-tracker'>;
+}
+declare module 'autotrack/lib/externs/session.js' {
+  declare module.exports: $Exports<'autotrack/lib/externs/session'>;
+}
+declare module 'autotrack/lib/externs/social-widget-tracker.js' {
+  declare module.exports: $Exports<'autotrack/lib/externs/social-widget-tracker'>;
+}
+declare module 'autotrack/lib/externs/url-change-tracker.js' {
+  declare module.exports: $Exports<'autotrack/lib/externs/url-change-tracker'>;
+}
+declare module 'autotrack/lib/index.js' {
+  declare module.exports: $Exports<'autotrack/lib/index'>;
+}
+declare module 'autotrack/lib/method-chain.js' {
+  declare module.exports: $Exports<'autotrack/lib/method-chain'>;
+}
 declare module 'autotrack/lib/plugins/clean-url-tracker.js' {
   declare module.exports: $Exports<'autotrack/lib/plugins/clean-url-tracker'>;
 }
@@ -92,4 +344,88 @@ declare module 'autotrack/lib/plugins/social-widget-tracker.js' {
 }
 declare module 'autotrack/lib/plugins/url-change-tracker.js' {
   declare module.exports: $Exports<'autotrack/lib/plugins/url-change-tracker'>;
+}
+declare module 'autotrack/lib/provide.js' {
+  declare module.exports: $Exports<'autotrack/lib/provide'>;
+}
+declare module 'autotrack/lib/session.js' {
+  declare module.exports: $Exports<'autotrack/lib/session'>;
+}
+declare module 'autotrack/lib/store.js' {
+  declare module.exports: $Exports<'autotrack/lib/store'>;
+}
+declare module 'autotrack/lib/usage.js' {
+  declare module.exports: $Exports<'autotrack/lib/usage'>;
+}
+declare module 'autotrack/lib/utilities.js' {
+  declare module.exports: $Exports<'autotrack/lib/utilities'>;
+}
+declare module 'autotrack/test/analytics_debug.js' {
+  declare module.exports: $Exports<'autotrack/test/analytics_debug'>;
+}
+declare module 'autotrack/test/analytics.js' {
+  declare module.exports: $Exports<'autotrack/test/analytics'>;
+}
+declare module 'autotrack/test/e2e/clean-url-tracker-test.js' {
+  declare module.exports: $Exports<'autotrack/test/e2e/clean-url-tracker-test'>;
+}
+declare module 'autotrack/test/e2e/event-tracker-test.js' {
+  declare module.exports: $Exports<'autotrack/test/e2e/event-tracker-test'>;
+}
+declare module 'autotrack/test/e2e/ga.js' {
+  declare module.exports: $Exports<'autotrack/test/e2e/ga'>;
+}
+declare module 'autotrack/test/e2e/impression-tracker-test.js' {
+  declare module.exports: $Exports<'autotrack/test/e2e/impression-tracker-test'>;
+}
+declare module 'autotrack/test/e2e/index-test.js' {
+  declare module.exports: $Exports<'autotrack/test/e2e/index-test'>;
+}
+declare module 'autotrack/test/e2e/max-scroll-tracker-test.js' {
+  declare module.exports: $Exports<'autotrack/test/e2e/max-scroll-tracker-test'>;
+}
+declare module 'autotrack/test/e2e/media-query-tracker-test.js' {
+  declare module.exports: $Exports<'autotrack/test/e2e/media-query-tracker-test'>;
+}
+declare module 'autotrack/test/e2e/outbound-form-tracker-test.js' {
+  declare module.exports: $Exports<'autotrack/test/e2e/outbound-form-tracker-test'>;
+}
+declare module 'autotrack/test/e2e/outbound-link-tracker-test.js' {
+  declare module.exports: $Exports<'autotrack/test/e2e/outbound-link-tracker-test'>;
+}
+declare module 'autotrack/test/e2e/page-visibility-tracker-test.js' {
+  declare module.exports: $Exports<'autotrack/test/e2e/page-visibility-tracker-test'>;
+}
+declare module 'autotrack/test/e2e/server.js' {
+  declare module.exports: $Exports<'autotrack/test/e2e/server'>;
+}
+declare module 'autotrack/test/e2e/social-widget-tracker-test.js' {
+  declare module.exports: $Exports<'autotrack/test/e2e/social-widget-tracker-test'>;
+}
+declare module 'autotrack/test/e2e/url-change-tracker-test.js' {
+  declare module.exports: $Exports<'autotrack/test/e2e/url-change-tracker-test'>;
+}
+declare module 'autotrack/test/e2e/wdio.conf.js' {
+  declare module.exports: $Exports<'autotrack/test/e2e/wdio.conf'>;
+}
+declare module 'autotrack/test/unit/event-emitter-test.js' {
+  declare module.exports: $Exports<'autotrack/test/unit/event-emitter-test'>;
+}
+declare module 'autotrack/test/unit/method-chain-test.js' {
+  declare module.exports: $Exports<'autotrack/test/unit/method-chain-test'>;
+}
+declare module 'autotrack/test/unit/plugins/clean-url-tracker-test.js' {
+  declare module.exports: $Exports<'autotrack/test/unit/plugins/clean-url-tracker-test'>;
+}
+declare module 'autotrack/test/unit/plugins/page-visibility-tracker-test.js' {
+  declare module.exports: $Exports<'autotrack/test/unit/plugins/page-visibility-tracker-test'>;
+}
+declare module 'autotrack/test/unit/session-test.js' {
+  declare module.exports: $Exports<'autotrack/test/unit/session-test'>;
+}
+declare module 'autotrack/test/unit/store-test.js' {
+  declare module.exports: $Exports<'autotrack/test/unit/store-test'>;
+}
+declare module 'autotrack/test/unit/utilities-test.js' {
+  declare module.exports: $Exports<'autotrack/test/unit/utilities-test'>;
 }

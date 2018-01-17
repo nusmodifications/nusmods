@@ -2,7 +2,7 @@
 import React, { PureComponent, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 
-import type { ModuleWithColor } from 'types/modules';
+import type { ModuleCode, ModuleWithColor } from 'types/modules';
 import type { ColorIndex } from 'types/reducers';
 
 import ColorPicker from 'views/components/ColorPicker';
@@ -12,10 +12,10 @@ import { modulePage } from 'views/routes/paths';
 import styles from './ModulesTableRow.scss';
 
 type Props = {
-  onSelectModuleColor: Function,
-  onHideModule: Function,
-  onShowModule: Function,
-  onRemoveModule: Function,
+  onSelectModuleColor: (ModuleCode, ColorIndex) => void,
+  onHideModule: ModuleCode => void,
+  onShowModule: ModuleCode => void,
+  onRemoveModule: ModuleCode => void,
   module: ModuleWithColor,
   exam: string,
   readOnly: boolean,

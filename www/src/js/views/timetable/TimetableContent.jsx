@@ -1,12 +1,15 @@
 // @flow
 import React, { Component, type Node } from 'react';
 import { connect } from 'react-redux';
-import Helmet from 'react-helmet';
 import _ from 'lodash';
-import config from 'config';
 
 import type { ModulesMap } from 'reducers/moduleBank';
-import type { ColorMapping, TimetableOrientation, ModuleSelectList } from 'types/reducers';
+import type {
+  ColorMapping,
+  TimetableOrientation,
+  ModuleSelectList,
+  NotificationOptions,
+} from 'types/reducers';
 import { HORIZONTAL } from 'types/reducers';
 import type { Lesson, Module, ModuleCode, Semester } from 'types/modules';
 import type {
@@ -24,7 +27,9 @@ import {
   modifyLesson,
   removeModule,
 } from 'actions/timetables';
-import { toggleTimetableOrientation } from 'actions/theme';
+import { toggleTimetableOrientation, toggleTitleDisplay } from 'actions/theme';
+import { openNotification, popNotification } from 'actions/app';
+import { undo } from 'actions/undoHistory';
 import {
   getModuleTimetable,
   areLessonsSameClass,
@@ -44,6 +49,7 @@ import ModulesSelect from 'views/timetable/ModulesSelect';
 import CorsNotification from 'views/components/cors-info/CorsNotification';
 import Announcements from 'views/components/Announcements';
 import Online from 'views/components/Online';
+import Title from 'views/components/Title';
 import Timetable from './Timetable';
 import TimetableActions from './TimetableActions';
 import ModulesTable from './ModulesTable';
@@ -63,15 +69,20 @@ type Props = {
   modules: ModulesMap,
   activeLesson: ?Lesson,
   timetableOrientation: TimetableOrientation,
+  showTitle: boolean,
   hiddenInTimetable: ModuleCode[],
 
   // Actions
-  addModule: Function,
-  removeModule: Function,
+  addModule: (Semester, ModuleCode) => void,
+  removeModule: (Semester, ModuleCode) => void,
   modifyLesson: Function,
   changeLesson: Function,
   cancelModifyLesson: Function,
   toggleTimetableOrientation: Function,
+  toggleTitleDisplay: Function,
+  openNotification: (string, NotificationOptions) => void,
+  popNotification: () => void,
+  undo: () => void,
 };
 
 type State = {
@@ -126,6 +137,30 @@ class TimetableContent extends Component<Props, State> {
     }
   };
 
+  removeModule = (moduleCode) => {
+    // Display alert on iPhones and iPod touches because snackbar action will take 2 taps
+    // TODO: Replace with a more permanent solution
+    // Using indexOf() as userAgent doesn't have contains()
+    const userAgent = navigator.userAgent;
+    if (userAgent.indexOf('iPhone') !== -1 || userAgent.indexOf('iPod') !== -1) {
+      const confirmMessage = `Are you sure you want to remove ${moduleCode}?`;
+      if (window.confirm(confirmMessage)) {
+        this.props.removeModule(this.props.semester, moduleCode);
+      }
+      return;
+    }
+
+    this.props.removeModule(this.props.semester, moduleCode);
+    this.props.openNotification(`Removed ${moduleCode}`, {
+      timeout: 12000,
+      overwritable: true,
+      action: {
+        text: 'Undo',
+        handler: this.props.undo,
+      },
+    });
+  };
+
   // Returns modules currently in the timetable
   addedModules(): Array<Module> {
     const modules = getSemesterModules(this.props.timetableWithLessons, this.props.modules);
@@ -145,7 +180,7 @@ class TimetableContent extends Component<Props, State> {
         }))}
         horizontalOrientation={horizontalOrientation}
         semester={this.props.semester}
-        onRemoveModule={(moduleCode) => this.props.removeModule(this.props.semester, moduleCode)}
+        onRemoveModule={this.removeModule}
         readOnly={readOnly}
       />
     );
@@ -191,7 +226,15 @@ class TimetableContent extends Component<Props, State> {
   }
 
   render() {
-    const { semester, modules, colors, activeLesson, timetableOrientation, readOnly } = this.props;
+    const {
+      semester,
+      modules,
+      colors,
+      activeLesson,
+      timetableOrientation,
+      showTitle,
+      readOnly,
+    } = this.props;
 
     let timetableLessons: Lesson[] = timetableLessonsArray(this.props.timetableWithLessons)
       // Do not process hidden modules
@@ -247,6 +290,7 @@ class TimetableContent extends Component<Props, State> {
     );
 
     const isVerticalOrientation = timetableOrientation !== HORIZONTAL;
+    const isShowingTitle = !isVerticalOrientation && showTitle;
 
     return (
       <div
@@ -255,9 +299,7 @@ class TimetableContent extends Component<Props, State> {
         })}
         onClick={this.cancelModifyLesson}
       >
-        <Helmet>
-          <title>Timetable - {config.brandName}</title>
-        </Helmet>
+        <Title>Timetable</Title>
 
         <CorsNotification />
 
@@ -282,6 +324,7 @@ class TimetableContent extends Component<Props, State> {
                 lessons={arrangedLessonsWithModifiableFlag}
                 isVerticalOrientation={isVerticalOrientation}
                 isScrolledHorizontally={this.state.isScrolledHorizontally}
+                showTitle={isShowingTitle}
                 onModifyCell={this.modifyCell}
                 ref={(r) => {
                   this.timetableDom = r && r.timetableDom;
@@ -300,28 +343,37 @@ class TimetableContent extends Component<Props, State> {
                 <TimetableActions
                   isVerticalOrientation={isVerticalOrientation}
                   toggleTimetableOrientation={this.props.toggleTimetableOrientation}
+                  showTitle={isShowingTitle}
+                  toggleTitleDisplay={this.props.toggleTitleDisplay}
                   semester={semester}
                   timetable={this.props.timetable}
                 />
               </div>
             </div>
-            {!readOnly && (
-              <Online>
-                {(isOnline) => (
-                  <ModulesSelect
-                    moduleList={this.props.semModuleList}
-                    onChange={(moduleCode) => {
-                      this.props.addModule(semester, moduleCode);
-                    }}
-                    placeholder={
-                      isOnline ? 'Add module to timetable' : 'You need to be online to add modules'
-                    }
-                    disabled={!isOnline}
-                  />
-                )}
-              </Online>
-            )}
-            {this.renderModuleSections(!isVerticalOrientation)}
+            <div className={styles.tableContainer}>
+              {!readOnly && (
+                <Online>
+                  {(isOnline) => (
+                    <div className={classnames('col-md-12', styles.modulesSelect)}>
+                      <ModulesSelect
+                        moduleList={this.props.semModuleList}
+                        onChange={(moduleCode) => {
+                          this.props.popNotification();
+                          this.props.addModule(semester, moduleCode);
+                        }}
+                        placeholder={
+                          isOnline
+                            ? 'Add module to timetable'
+                            : 'You need to be online to add modules'
+                        }
+                        disabled={!isOnline}
+                      />
+                    </div>
+                  )}
+                </Online>
+              )}
+              <div className="col-md-12">{this.renderModuleSections(!isVerticalOrientation)}</div>
+            </div>
           </div>
         </div>
       </div>
@@ -334,7 +386,7 @@ function mapStateToProps(state, ownProps) {
   const modules = state.moduleBank.modules;
   const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
   const semModuleList = getSemModuleSelectList(state.moduleBank, semester, timetable);
-  const hiddenInTimetable = state.settings.hiddenInTimetable || [];
+  const hiddenInTimetable = state.timetables.hidden[semester] || [];
 
   return {
     semester,
@@ -344,6 +396,7 @@ function mapStateToProps(state, ownProps) {
     modules,
     activeLesson: state.app.activeLesson,
     timetableOrientation: state.theme.timetableOrientation,
+    showTitle: state.theme.showTitle,
     hiddenInTimetable,
   };
 }
@@ -355,4 +408,8 @@ export default connect(mapStateToProps, {
   changeLesson,
   cancelModifyLesson,
   toggleTimetableOrientation,
+  toggleTitleDisplay,
+  openNotification,
+  popNotification,
+  undo,
 })(TimetableContent);

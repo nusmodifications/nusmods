@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import { range } from 'lodash';
 
 import type { VenueSearchOptions } from 'types/venues';
-import { SCHOOLDAYS, formatHour } from 'utils/timify';
+import { SCHOOLDAYS, formatHour, getCurrentDayIndex, getCurrentHours } from 'utils/timify';
 import styles from './AvailabilitySearch.scss';
 
 type Props = {
@@ -20,16 +20,15 @@ const FIRST_CLASS_HOUR = 8;
 const LAST_CLASS_HOUR = 22;
 const CLASS_START_HOURS = range(FIRST_CLASS_HOUR, LAST_CLASS_HOUR + 1);
 
-export function defaultSearchOptions(): VenueSearchOptions {
-  const now = new Date();
-
+export function defaultSearchOptions(
+  now: Date = new Date(), // Used for tests only
+): VenueSearchOptions {
   // Set day of week - if it is not a school day, then set to Monday (0)
-  let day = now.getDay();
-  if (day >= SCHOOLDAYS.length) day = 0;
+  const day = Math.max(getCurrentDayIndex(now), 0);
 
   // Set time - if the current time is outside class hours, set it to the
   // time of the earliest lesson
-  const time = Math.max(now.getHours(), FIRST_CLASS_HOUR);
+  const time = Math.max(getCurrentHours(now), FIRST_CLASS_HOUR);
 
   return {
     time,

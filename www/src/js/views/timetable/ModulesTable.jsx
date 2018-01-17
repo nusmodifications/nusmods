@@ -2,33 +2,40 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
+import { partial } from 'lodash';
 
-import type { ModuleWithColor, Semester } from 'types/modules';
+import type { ModuleCode, ModuleWithColor, Semester } from 'types/modules';
+import type { ColorIndex } from 'types/reducers';
 
-import { selectModuleColor } from 'actions/theme';
 import makeResponsive from 'views/hocs/makeResponsive';
 import { breakpointUp } from 'utils/css';
-import { hideLessonsInTimetable, showLessonsInTimetable } from 'actions/settings';
+import {
+  selectModuleColor,
+  hideLessonInTimetable,
+  showLessonInTimetable,
+} from 'actions/timetables';
 import { getFormattedModuleExamDate } from 'utils/modules';
 import ModulesTableRow from 'views/timetable/ModulesTableRow';
 
 import styles from './ModulesTable.scss';
 
 type Props = {
-  selectModuleColor: Function,
-  hideLessonsInTimetable: Function,
-  showLessonsInTimetable: Function,
   semester: Semester,
   modules: Array<ModuleWithColor>,
   onRemoveModule: Function,
   horizontalOrientation: boolean,
   matchBreakpoint: boolean,
   readOnly: boolean,
+
+  // Actions
+  selectModuleColor: (Semester, ModuleCode, ColorIndex) => void,
+  hideLessonInTimetable: (Semester, ModuleCode) => void,
+  showLessonInTimetable: (Semester, ModuleCode) => void,
 };
 
 class ModulesTable extends PureComponent<Props> {
   render() {
-    const { modules, matchBreakpoint, horizontalOrientation } = this.props;
+    const { semester, modules, matchBreakpoint, horizontalOrientation } = this.props;
     if (!modules.length) {
       return null;
     }
@@ -56,9 +63,9 @@ class ModulesTable extends PureComponent<Props> {
               key={module.ModuleCode}
               module={module}
               exam={getFormattedModuleExamDate(module, this.props.semester)}
-              onSelectModuleColor={this.props.selectModuleColor}
-              onHideModule={this.props.hideLessonsInTimetable}
-              onShowModule={this.props.showLessonsInTimetable}
+              onSelectModuleColor={partial(this.props.selectModuleColor, semester)}
+              onHideModule={partial(this.props.hideLessonInTimetable, semester)}
+              onShowModule={partial(this.props.showLessonInTimetable, semester)}
               onRemoveModule={this.props.onRemoveModule}
               readOnly={this.props.readOnly}
             />
@@ -80,6 +87,6 @@ class ModulesTable extends PureComponent<Props> {
 const responsiveModulesTable = makeResponsive(ModulesTable, breakpointUp('md'));
 export default connect(null, {
   selectModuleColor,
-  hideLessonsInTimetable,
-  showLessonsInTimetable,
+  hideLessonInTimetable,
+  showLessonInTimetable,
 })(responsiveModulesTable);

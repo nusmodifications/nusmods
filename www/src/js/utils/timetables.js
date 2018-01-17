@@ -13,16 +13,16 @@ import type {
 } from 'types/modules';
 import type {
   ModuleLessonConfig,
-  SemTimetableConfigWithLessons,
   SemTimetableConfig,
-  TimetableDayFormat,
-  TimetableDayArrangement,
+  SemTimetableConfigWithLessons,
   TimetableArrangement,
+  TimetableDayArrangement,
+  TimetableDayFormat,
 } from 'types/timetables';
 import type { ModulesMap } from 'reducers/moduleBank';
+import type { ModuleCodeMap } from 'types/reducers';
 
-import { getModuleTimetable, getModuleSemesterData } from 'utils/modules';
-import type { ModuleCodeMap } from '../types/reducers';
+import { getModuleSemesterData, getModuleTimetable } from 'utils/modules';
 
 type LessonTypeAbbrev = { [LessonType]: string };
 export const LESSON_TYPE_ABBREV: LessonTypeAbbrev = {
@@ -47,6 +47,8 @@ export const LESSON_ABBREV_TYPE: { [string]: LessonType } = _.invert(LESSON_TYPE
 // See: https://stackoverflow.com/a/31300627
 export const LESSON_TYPE_SEP = ':';
 export const LESSON_SEP = ',';
+
+const EMPTY_OBJECT = {};
 
 export function isValidSemester(semester: Semester): boolean {
   return semester >= 1 && semester <= 4;
@@ -86,7 +88,7 @@ export function hydrateSemTimetableWithLessons(
     semTimetableConfig,
     (moduleLessonConfig: ModuleLessonConfig, moduleCode: ModuleCode) => {
       const module: Module = modules[moduleCode];
-      if (!module) return {};
+      if (!module) return EMPTY_OBJECT;
 
       // TODO: Split this part into a smaller function: hydrateModuleConfigWithLessons.
       return _.mapValues(moduleLessonConfig, (classNo: ClassNo, lessonType: LessonType) => {
@@ -251,8 +253,9 @@ function serializeModuleConfig(config: ModuleLessonConfig): string {
   ).join(LESSON_SEP);
 }
 
-function parseModuleConfig(serialized: string): ModuleLessonConfig {
+function parseModuleConfig(serialized: ?string): ModuleLessonConfig {
   const config = {};
+  if (!serialized) return config;
 
   serialized.split(LESSON_SEP).forEach((lesson) => {
     const [lessonTypeAbbr, classNo] = lesson.split(LESSON_TYPE_SEP);

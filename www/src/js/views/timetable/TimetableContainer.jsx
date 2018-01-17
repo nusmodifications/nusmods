@@ -3,16 +3,19 @@
 import React, { Fragment, PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Redirect, type ContextRouter } from 'react-router-dom';
-import deferComponentRender from 'views/hocs/deferComponentRender';
 import classnames from 'classnames';
 
+import type { State as StoreState } from 'reducers';
 import type { Semester } from 'types/modules';
 import type { SemTimetableConfig } from 'types/timetables';
-import type { ColorMapping } from 'types/reducers';
+import type { ColorMapping, NotificationOptions } from 'types/reducers';
 import type { ModulesMap } from 'reducers/moduleBank';
 
 import { selectSemester } from 'actions/settings';
+import { getSemesterTimetable } from 'reducers/timetables';
 import { setTimetable, fetchTimetableModules } from 'actions/timetables';
+import { openNotification } from 'actions/app';
+import { undo } from 'actions/undoHistory';
 import { deserializeTimetable } from 'utils/timetables';
 import { fillColorMapping } from 'utils/colors';
 import {
@@ -21,6 +24,7 @@ import {
   isV2TimetablePageUrl,
   TIMETABLE_SHARE,
 } from 'views/routes/paths';
+import deferComponentRender from 'views/hocs/deferComponentRender';
 import { Repeat } from 'views/components/icons';
 import NotFoundPage from 'views/errors/NotFoundPage';
 import SemesterSwitcher from 'views/components/semester-switcher/SemesterSwitcher';
@@ -29,8 +33,6 @@ import ScrollToTop from 'views/components/ScrollToTop';
 import TimetableContent from './TimetableContent';
 
 import styles from './TimetableContainer.scss';
-
-const EMPTY_OBJECT = {};
 
 type Props = {
   ...ContextRouter,
@@ -44,6 +46,8 @@ type Props = {
   selectSemester: Semester => void,
   setTimetable: (Semester, SemTimetableConfig, ColorMapping) => void,
   fetchTimetableModules: (SemTimetableConfig[]) => void,
+  openNotification: (string, NotificationOptions) => void,
+  undo: () => void,
 };
 
 type State = {
@@ -103,6 +107,15 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
     const colors = fillColorMapping(timetable, this.props.colors);
     this.props.setTimetable(semester, timetable, colors);
     this.clearImportedTimetable();
+
+    this.props.openNotification('Timetable imported', {
+      timeout: 12000,
+      overwritable: true,
+      action: {
+        text: 'Undo',
+        handler: this.props.undo,
+      },
+    });
   }
 
   clearImportedTimetable = () => {
@@ -212,14 +225,16 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state: StoreState, ownProps) => {
   const semester = semesterForTimetablePage(ownProps.match.params.semester);
-  const timetable = state.timetables[semester] || EMPTY_OBJECT;
+  const { timetable, colors } = semester
+    ? getSemesterTimetable(semester, state.timetables)
+    : { timetable: {}, colors: {} };
 
   return {
     semester,
     timetable,
-    colors: state.theme.colors,
+    colors,
     modules: state.moduleBank.modules,
     activeSemester: state.app.activeSemester,
   };
@@ -230,6 +245,8 @@ const connectedTimetableContainer = connect(mapStateToProps, {
   selectSemester,
   setTimetable,
   fetchTimetableModules,
+  openNotification,
+  undo,
 })(TimetableContainerComponent);
 const routedTimetableContainer = withRouter(connectedTimetableContainer);
 export default deferComponentRender(routedTimetableContainer);

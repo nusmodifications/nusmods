@@ -2,16 +2,15 @@
 import React, { Component, Fragment } from 'react';
 import classnames from 'classnames';
 import { connect, type MapStateToProps } from 'react-redux';
-import Helmet from 'react-helmet';
 import ScrollSpy from 'react-scrollspy';
 import { map, mapValues, kebabCase, values } from 'lodash';
 
-import type { Module, Semester } from 'types/modules';
+import type { Module } from 'types/modules';
 
 import config from 'config';
 import { formatExamDate, getSemestersOffered } from 'utils/modules';
 import { intersperse } from 'utils/array';
-import { BULLET } from 'utils/react';
+import { BULLET, scrollToHash } from 'utils/react';
 import { NAVTAB_HEIGHT } from 'views/layout/Navtabs';
 import ModuleTree from 'views/modules/ModuleTree';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
@@ -26,6 +25,7 @@ import AddToTimetableDropdown from 'views/components/module-info/AddModuleDropdo
 import CorsStats from 'views/components/cors-stats/CorsStats';
 import CorsNotification from 'views/components/cors-info/CorsNotification';
 import Announcements from 'views/components/Announcements';
+import Title from 'views/components/Title';
 
 import styles from './ModulePageContent.scss';
 
@@ -52,13 +52,8 @@ export class ModulePageContentComponent extends Component<Props, State> {
     isMenuOpen: false,
   };
 
-  examinations(): { semester: Semester, date: string }[] {
-    const history = this.props.module.History;
-    if (!history) return [];
-    return history
-      .filter((h) => h.ExamDate != null)
-      .sort((a, b) => a.Semester - b.Semester)
-      .map((h) => ({ semester: h.Semester, date: h.ExamDate || '' }));
+  componentDidMount() {
+    scrollToHash();
   }
 
   toggleMenu = (isMenuOpen: boolean) => this.setState({ isMenuOpen });
@@ -72,11 +67,7 @@ export class ModulePageContentComponent extends Component<Props, State> {
 
     return (
       <div className={classnames('page-container', styles.moduleInfoPage)}>
-        <Helmet>
-          <title>
-            {pageTitle} - {config.brandName}
-          </title>
-        </Helmet>
+        <Title>{pageTitle}</Title>
 
         <Announcements />
 
@@ -158,16 +149,17 @@ export class ModulePageContentComponent extends Component<Props, State> {
                 </div>
 
                 <div className="col-sm-4">
-                  {this.examinations().map((exam) => (
-                    <div key={exam.semester} className={styles.exam}>
+                  {module.History.sort((a, b) => a.Semester - b.Semester).map((semesterData) => (
+                    <div key={semesterData.Semester} className={styles.exam}>
                       <h3 className={styles.descriptionHeading}>
-                        {config.semesterNames[exam.semester]} Exam
+                        {module.History.length > 1 && config.semesterNames[semesterData.Semester]}{' '}
+                        Exam
                       </h3>
-                      <p>{formatExamDate(exam.date)}</p>
+                      <p>{formatExamDate(semesterData.ExamDate)}</p>
 
                       <ModuleExamClash
-                        semester={exam.semester}
-                        examDate={exam.date}
+                        semester={semesterData.Semester}
+                        examDate={semesterData.ExamDate}
                         moduleCode={ModuleCode}
                       />
                     </div>

@@ -26,22 +26,12 @@
     @include media-breakpoint-up(md) {
       font-size: $font-size-sm;
     }
-  }
-}
 
-@include media-breakpoint-only(md) {
-  :global(.verticalMode) .dropdownMenu {
-    right: 0;
-    left: auto;
-  }
-}
-
-.longLabel {
-  white-space: pre;
-}
-
-:global(.verticalMode) .longLabel {
-  @include media-breakpoint-only(md) {
-    display: none;
+    @include media-breakpoint-only(md) {
+      @include vertical-mode {
+        right: 0;
+        left: auto;
+      }
+    }
   }
 }

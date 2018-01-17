@@ -1,3 +1,10 @@
+// Disables all animations and transitions, since we don't want the screenshot
+// to be taken while there's transition happening
+* {
+  transition: none !important;
+  animation: none !important;
+}
+
 html,
 body,
 #app,
@@ -7,9 +14,9 @@ body,
 
 body {
   padding-top: 0.2rem !important;
-  transition: none !important;
 }
 
+// Hide all non-exportable UI elements
 :global(.no-export) {
   display: none !important;
 }

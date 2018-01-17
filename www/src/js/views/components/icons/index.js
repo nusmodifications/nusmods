@@ -17,6 +17,7 @@ import FileText from 'react-feather/dist/icons/file-text';
 import Filter from 'react-feather/dist/icons/filter';
 import GitHub from 'react-feather/dist/icons/github';
 import Heart from 'react-feather/dist/icons/heart';
+import Help from 'react-feather/dist/icons/help-circle';
 import Image from 'react-feather/dist/icons/image';
 import LinkedIn from 'react-feather/dist/icons/linkedin';
 import Map from 'react-feather/dist/icons/map';
@@ -30,6 +31,7 @@ import Search from 'react-feather/dist/icons/search';
 import Sidebar from 'react-feather/dist/icons/sidebar';
 import Twitter from 'react-feather/dist/icons/twitter';
 import Trash2 from 'react-feather/dist/icons/trash-2';
+import Type from 'react-feather/dist/icons/type';
 
 export {
   AlertTriangle,
@@ -49,6 +51,7 @@ export {
   FileText,
   GitHub,
   Heart,
+  Help,
   Image,
   Map,
   Menu,
@@ -62,4 +65,5 @@ export {
   Sidebar,
   Twitter,
   Trash2,
+  Type,
 };

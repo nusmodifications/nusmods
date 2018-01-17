@@ -4,8 +4,12 @@
 $navbar-height: 3rem;
 $navtab-height: 3rem;
 
+$side-nav-width-md: 4rem;
+$side-nav-width-lg: 10rem;
+
 $navtab-shadow-height: 0.8rem;
 $navtab-shadow-color: rgba(#000, 0.1);
+$navtab-shadow-color-night: rgba(#000, 0.7);
 
 // Type
 $sm-font-size-ratio: 0.875;
@@ -24,6 +28,8 @@ $material-sharp-curve: cubic-bezier(0.4, 0, 0.6, 1);
 
 $page-entering-duration: $fullscreen-duration;
 $page-entering-animation: fadeIn;
+
+$alert-override-themes: success, danger, warning;
 
 // Workload colors map
 $workload-colors: (
@@ -72,9 +78,9 @@ $nusmods-theme-colors: (
     #fba922,
     #198844,
     #3971ed,
-    #3971ed,
+    #79a4f9,
     #a36ac7,
-    #3971ed
+    #ec9998
   ),
   mocha: (
     #cb6077,
@@ -159,6 +165,7 @@ $nusmods-theme-colors: (
 );
 
 // Z-index
+$snackbar-z-index: 2500;
 $sentry-z-index: 2000;
 $modal-z-index: 1500;
 $module-select-z-index: 960;
@@ -166,12 +173,14 @@ $module-finder-search-z-index-sm: 950;
 $navtabs-z-index: 900;
 $navbar-z-index: 890;
 $module-finder-search-z-index-md: 850;
+$zindex-dropdown: 820; // Bootstrap override
 $fab-z-index: 800;
 $side-menu-z-index: 700;
 $side-menu-overlay-z-index: 690;
 $cors-notification-z-index: 500;
+$timetable-selected-cell-z-index: 110;
 $timetable-timing-z-index: 95;
 $timetable-day-z-index: 90;
-$timetable-selected-cell-z-index: 100;
-$timetable-selected-cell-scrolled-z-index: 75;
-$module-page-divider-z-index: 50;
+$timetable-current-time-indicator-z-index: 60;
+$timetable-selected-cell-scrolled-z-index: 50;
+$timetable-cell-z-index: 30;

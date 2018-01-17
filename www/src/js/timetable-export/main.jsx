@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import type { Module } from 'types/modules';
 import type { ExportData } from 'types/export';
 
-import configureStore from 'stores/configure-store';
+import configureStore from 'bootstrapping/configure-store';
 import { setExportedData } from 'actions/export';
 import { DARK_MODE } from 'types/settings';
 
@@ -14,12 +14,12 @@ import './main.scss';
 import '../../styles/main.scss';
 
 // Set up Redux store
-const store = configureStore();
+const { store } = configureStore();
 window.store = store;
 
 // For Puppeteer to import data
 window.setData = function setData(modules: Module[], data: ExportData, callback: Function) {
-  const { semester, timetable } = data;
+  const { semester, timetable, colors } = data;
 
   if (document.body) {
     document.body.classList.toggle('mode-dark', data.settings.mode === DARK_MODE);
@@ -31,6 +31,7 @@ window.setData = function setData(modules: Module[], data: ExportData, callback:
     {
       semester,
       timetable,
+      colors,
     },
     callback,
   );

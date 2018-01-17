@@ -4,9 +4,13 @@ import type { AppState } from 'types/reducers';
 import config from 'config';
 
 import { MODIFY_LESSON, CHANGE_LESSON, CANCEL_MODIFY_LESSON } from 'actions/timetables';
-import { SELECT_MODULE_COLOR } from 'actions/theme';
 import { SELECT_SEMESTER } from 'actions/settings';
-import { SET_ONLINE_STATUS, TOGGLE_FEEDBACK_MODAL } from 'actions/app';
+import {
+  OPEN_NOTIFICATION,
+  POP_NOTIFICATION,
+  SET_ONLINE_STATUS,
+  TOGGLE_FEEDBACK_MODAL,
+} from 'actions/app';
 
 const defaultAppState = (): AppState => ({
   // Default to the current semester from config.
@@ -15,6 +19,7 @@ const defaultAppState = (): AppState => ({
   activeLesson: null,
   isOnline: navigator.onLine,
   isFeedbackModalOpen: false,
+  notifications: [],
 });
 
 // This reducer is for storing state pertaining to the UI.
@@ -46,7 +51,44 @@ function app(state: AppState = defaultAppState(), action: FSA): AppState {
         ...state,
         isFeedbackModalOpen: !state.isFeedbackModalOpen,
       };
-    case SELECT_MODULE_COLOR:
+    case OPEN_NOTIFICATION: {
+      if (state.notifications.length) {
+        // If the ONLY notification in the queue can be discarded, we replace
+        // it with the current one
+        if (state.notifications.length === 1 && state.notifications[0].overwritable) {
+          return {
+            ...state,
+            notifications: [action.payload],
+          };
+        }
+
+        // Since the displayed item cannot give way, we
+        // discard the new item if possible
+        if (action.payload.overwritable) {
+          return state;
+        }
+
+        // Since both can't be discarded, priority notification
+        // gets displayed immediately
+        if (action.payload.priority) {
+          return {
+            ...state,
+            notifications: [action.payload, ...state.notifications],
+          };
+        }
+      }
+
+      // Fallback to queuing the next item up
+      return {
+        ...state,
+        notifications: [...state.notifications, action.payload],
+      };
+    }
+    case POP_NOTIFICATION:
+      return {
+        ...state,
+        notifications: state.notifications.slice(1),
+      };
     default:
       return state;
   }

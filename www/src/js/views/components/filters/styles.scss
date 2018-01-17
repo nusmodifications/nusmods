@@ -8,7 +8,7 @@ $h-padding: $grid-gutter-width / 2;
   font-weight: bold;
   font-size: $font-size-xs;
 
-  @include touchscreen-only {
+  @include touchscreen-or-breakpoint-down {
     padding: $v-padding $h-padding;
     font-size: $font-size-sm;
     border-bottom: 1px solid var(--gray-lighter);
@@ -18,7 +18,12 @@ $h-padding: $grid-gutter-width / 2;
 .label {
   margin: 0;
   font-size: $font-size-xs;
-  cursor: pointer;
+
+  &,
+  label,
+  input {
+    cursor: pointer;
+  }
 
   &:hover {
     color: theme-color();
@@ -29,26 +34,24 @@ $h-padding: $grid-gutter-width / 2;
     color: theme-color();
   }
 
+  .checklist &,
+  .dropdown & {
+    display: block;
+    padding-top: 0.1rem;
+    padding-bottom: 0.1rem;
+
+    @include touchscreen-or-breakpoint-down {
+      padding: $v-padding $h-padding $v-padding ($h-padding + 20px);
+      border-bottom: 1px solid var(--gray-lighter);
+    }
+  }
+
   :global(.text-muted) {
     font-weight: normal;
   }
 
   @include touchscreen-only {
     font-size: $font-size-sm;
-  }
-}
-
-.checklist,
-.dropdown {
-  .label {
-    display: block;
-    padding-top: 0.1rem;
-    padding-bottom: 0.1rem;
-
-    @include touchscreen-only {
-      padding: $v-padding $h-padding $v-padding ($h-padding + 20px);
-      border-bottom: 1px solid var(--gray-lighter);
-    }
   }
 }
 
@@ -67,6 +70,7 @@ $h-padding: $grid-gutter-width / 2;
     position: relative;
     margin-right: ($grid-gutter-width / 2);
 
+    // To select both the search glass icon and the chevron
     svg {
       position: absolute;
       top: 0.35rem;
@@ -108,19 +112,12 @@ $h-padding: $grid-gutter-width / 2;
     border-radius: 0 0 3px 3px;
 
     .label {
-      padding-top: 0.25rem;
-      padding-bottom: 0.25rem;
+      padding: 0;
     }
-  }
 
-  mark {
-    padding: 0;
-    border-bottom: 1px solid var(--yellow);
-  }
-
-  .selected {
-    color: theme-color();
-    background: var(--gray-lightest);
+    :global(.dropdown-selected) .label {
+      color: currentColor;
+    }
   }
 
   select {
@@ -128,6 +125,14 @@ $h-padding: $grid-gutter-width / 2;
   }
 
   @include media-breakpoint-down(sm) {
+    .heading {
+      border-bottom: 0;
+    }
+
+    .searchWrapper {
+      margin: 0 ($grid-gutter-width / 2);
+    }
+
     select {
       width: calc(100% - #{$grid-gutter-width});
       margin: 0.5rem ($grid-gutter-width / 2);

@@ -1,20 +1,22 @@
+/* @postcss-single-root-entry */
+
 // Define our own mixins, functions and constants first
 @import 'utils/mixins';
 @import 'utils/functions';
 @import 'constants';
 
+// 3rd-party imports
 @import 'bootstrap/bootstrap';
 @import 'bootstrap/style-override';
 
-// 3rd-party imports
 @import "material/material";
 
 // Utils
+@import 'utils/css-variables';
 @import 'utils/animations';
 @import 'utils/workload';
 @import 'utils/themes';
 @import 'utils/scrollable';
-@import 'utils/css-variables';
 
 // Layout
 @import 'layout/site';

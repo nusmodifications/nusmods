@@ -5,6 +5,7 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 
 import storage from 'storage';
+import { announcementKey } from 'storage/keys';
 import { toggleFeedback } from 'actions/app';
 import { Heart } from 'views/components/icons';
 import CloseButton from 'views/components/CloseButton';
@@ -17,30 +18,26 @@ type State = {
   isOpen: boolean,
 };
 
-const STORAGE_PREFIX = 'announcements.';
-
 /**
  * Unique string for the current announcement. If the announcement is not dismissible,
- * set the key to an empty string.
+ * set the key to null.
  *
  * Previous keys:
  * - 'nusmods-r-announcement' - NUSMods R announcement message
  */
-const STORAGE_KEY = 'nusmods-r-announcement';
-
-const KEY = `${STORAGE_PREFIX}${STORAGE_KEY}`;
+const key = announcementKey('nusmods-r-announcement');
 
 class Announcements extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
 
     this.state = {
-      isOpen: !storage.getItem(KEY),
+      isOpen: false, // !storage.getItem(key),
     };
   }
 
   dismiss = () => {
-    storage.setItem(KEY, true);
+    if (key) storage.setItem(key, true);
     this.setState({ isOpen: false });
   };
 
@@ -68,7 +65,7 @@ class Announcements extends PureComponent<Props, State> {
           </p>
         </div>
 
-        {STORAGE_KEY && <CloseButton className={styles.closeButton} onClick={this.dismiss} />}
+        {key && <CloseButton className={styles.closeButton} onClick={this.dismiss} />}
       </div>
     );
   }

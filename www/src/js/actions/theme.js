@@ -1,7 +1,5 @@
 // @flow
 import type { FSA } from 'types/redux';
-import type { ModuleCode } from 'types/modules';
-import type { ColorIndex, TimetableOrientation } from 'types/reducers';
 
 export const SELECT_THEME: string = 'SELECT_THEME';
 export function selectTheme(theme: string): FSA {
@@ -19,29 +17,18 @@ export function cycleTheme(offset: number): FSA {
   };
 }
 
-export const SELECT_MODULE_COLOR: string = 'SELECT_MODULE_COLOR';
-export function selectModuleColor(moduleCode: ModuleCode, colorIndex: ColorIndex): FSA {
-  return {
-    type: SELECT_MODULE_COLOR,
-    payload: {
-      moduleCode,
-      colorIndex,
-    },
-  };
-}
-
-export const SET_TIMETABLE_ORIENTATION: string = 'SET_TIMETABLE_ORIENTATION';
-export function setTimetableOrientation(orientation: TimetableOrientation): FSA {
-  return {
-    type: SET_TIMETABLE_ORIENTATION,
-    payload: { orientation },
-  };
-}
-
 export const TOGGLE_TIMETABLE_ORIENTATION: string = 'TOGGLE_TIMETABLE_ORIENTATION';
 export function toggleTimetableOrientation(): FSA {
   return {
     type: TOGGLE_TIMETABLE_ORIENTATION,
+    payload: null,
+  };
+}
+
+export const TOGGLE_TITLE_DISPLAY: string = 'TOGGLE_TITLE_DISPLAY';
+export function toggleTitleDisplay(): FSA {
+  return {
+    type: TOGGLE_TITLE_DISPLAY,
     payload: null,
   };
 }

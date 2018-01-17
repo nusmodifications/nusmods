@@ -3,7 +3,7 @@
   border-color: darken($color, 20%);
   background-color: $color;
 
-  &:hover {
+  &:enabled:hover {
     background-color: darken($color, 10%);
   }
 }
@@ -47,8 +47,34 @@
   }
 }
 
-@mixin night-mode-only {
-  :global(.mode-dark) {
-    @content;
+// Selects both touchscreens and small devices
+@mixin touchscreen-or-breakpoint-down($breakpoint: sm) {
+  $max: breakpoint-max($breakpoint);
+
+  @if $max {
+    @media (max-width: $max), (pointer: coarse) {
+      @content;
+    }
+  }
+  @else {
+    @media (pointer: coarse) {
+      @content;
+    }
+  }
+}
+
+@mixin night-mode {
+  @at-root {
+    :global(.mode-dark) & {
+      @content;
+    }
+  }
+}
+
+@mixin vertical-mode {
+  @at-root {
+    :global(.verticalMode) & {
+      @content;
+    }
   }
 }

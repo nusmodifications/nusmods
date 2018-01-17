@@ -1,6 +1,6 @@
 // @flow
 
-import type { ContextRouter } from 'react-router-dom';
+import type { ContextRouter, LocationShape } from 'react-router-dom';
 import _ from 'lodash';
 
 // react-router-dom internal dependency, used here to construct the history
@@ -13,8 +13,10 @@ type MatchShape = {
   isExact?: boolean,
 };
 
+type HistoryEntry = string | LocationShape;
+
 export default function createHistory(
-  initialEntries: string | string[] = '/',
+  initialEntries: HistoryEntry | $ReadOnlyArray<HistoryEntry> = '/',
   matchParams: MatchShape = {},
 ): ContextRouter {
   const entries = _.castArray(initialEntries);

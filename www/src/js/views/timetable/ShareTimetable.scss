@@ -6,7 +6,7 @@
   svg {
     width: 5rem;
     height: 5rem;
-    color: theme-color('success');
+    color: theme-color(success);
   }
 
   h3 {
@@ -27,6 +27,11 @@
   margin-bottom: 2rem;
 }
 
+.copyIcon {
+  // Cannot use .btn-svg because display: inline-flex messes up button groups
+  margin-bottom: -0.2rem;
+}
+
 .copyStatus {
   position: absolute;
   right: 0;
@@ -34,7 +39,7 @@
   left: 0;
   margin: 0;
   text-align: center;
-  color: theme-color('success');
+  color: theme-color(success);
 
   :global {
     animation: fadeIn 0.2s forwards;
@@ -56,6 +61,9 @@
 
   svg {
     display: block;
+
+    // Setting max-width again for iOS 10
+    max-width: 12rem;
     margin: 0;
   }
 }

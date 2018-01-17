@@ -6,10 +6,17 @@ body {
 }
 
 mark {
-  padding: 0.2em 0;
-  color: inherit;
-  border-bottom: 1px solid var(--yellow);
-  background: var(--yellow-light);
+  padding: 0;
+  font-weight: bold;
+  color: currentColor;
+}
+
+// Buttons
+.btn.btn-outline-primary:not([disabled]):not(.disabled):active,
+.btn.btn-outline-primary:not([disabled]):not(.disabled).active,
+.show > .btn.btn-outline-primary.dropdown-toggle {
+  // Override for outline button font color - https://github.com/twbs/bootstrap/issues/25158
+  color: $white;
 }
 
 // Forms
@@ -27,10 +34,13 @@ mark {
 .dropdown-menu {
   width: 100%;
   padding: 0.1rem 0;
-  background: var(--body-bg);
   box-shadow: 0 2px 6px rgba(#000, 0.25);
 
   @include scrollable-y;
+
+  @include night-mode {
+    box-shadow: 0 2px 6px rgba(#000, 0.75);
+  }
 }
 
 .dropdown-item {
@@ -48,11 +58,21 @@ mark {
     color: #fff;
     background: theme-color();
   }
+
+  @include touchscreen-only {
+    $touch-horizontal-padding: 0.5rem;
+
+    padding-top: $touch-horizontal-padding;
+    padding-bottom: $touch-horizontal-padding;
+    border-bottom: 1px solid var(--gray-lighter);
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
 }
 
 // Alerts
-$alert-override-themes: success, danger, warning;
-
 @mixin alert-colors($name) {
   .alert-#{$name} {
     color: var(--alert-#{$name}-color);
@@ -63,8 +83,4 @@ $alert-override-themes: success, danger, warning;
 
 @each $color in $alert-override-themes {
   @include alert-colors($color);
-}
-
-.close {
-  cursor: pointer;
 }

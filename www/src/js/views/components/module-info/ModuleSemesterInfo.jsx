@@ -109,7 +109,7 @@ export default class ModuleSemesterInfo extends Component<Props, State> {
           <div className="module-semester-info">
             <section className="module-exam">
               <h4>Exam</h4>
-              <p>{semester.ExamDate ? formatExamDate(semester.ExamDate) : 'No Exams'}</p>
+              <p>{formatExamDate(semester.ExamDate)}</p>
 
               <ModuleExamClash
                 semester={semester.Semester}

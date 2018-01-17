@@ -1,19 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`settings should dispatch a module code for hiding 1`] = `
-Object {
-  "payload": "CS1010",
-  "type": "HIDE_LESSON_IN_TIMETABLE",
-}
-`;
-
-exports[`settings should dispatch a module code for showing 1`] = `
-Object {
-  "payload": "CS1020",
-  "type": "SHOW_LESSON_IN_TIMETABLE",
-}
-`;
-
 exports[`settings should dispatch a select of a faculty value 1`] = `
 Object {
   "payload": "Some faculty",

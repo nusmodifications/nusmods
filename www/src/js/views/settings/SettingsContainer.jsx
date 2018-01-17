@@ -3,7 +3,6 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import deferComponentRender from 'views/hocs/deferComponentRender';
 import classnames from 'classnames';
-import Helmet from 'react-helmet';
 import localforage from 'localforage';
 
 import type { Faculty, ModuleCode } from 'types/modules';
@@ -12,7 +11,6 @@ import type { CorsNotificationSettings } from 'types/reducers';
 import type { State as StoreState } from 'reducers';
 
 import availableThemes from 'data/themes.json';
-import config from 'config';
 import { selectTheme } from 'actions/theme';
 import {
   selectNewStudent,
@@ -27,6 +25,9 @@ import {
 import ScrollToTop from 'views/components/ScrollToTop';
 import Timetable from 'views/timetable/Timetable';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
+import Title from 'views/components/Title';
+import Toggle from 'views/components/Toggle';
+
 import CorsNotification, {
   corsNotificationText,
 } from 'views/components/cors-info/CorsNotification';
@@ -37,7 +38,6 @@ import ThemeOption from './ThemeOption';
 import ModeSelect from './ModeSelect';
 import styles from './SettingsContainer.scss';
 import previewTimetable from './previewTimetable';
-import Toggle from '../Toggle';
 
 type Props = {
   newStudent: boolean,
@@ -83,9 +83,7 @@ class SettingsContainer extends Component<Props, State> {
     return (
       <div className={classnames(styles.settingsPage, 'page-container')}>
         <ScrollToTop onComponentWillMount />
-        <Helmet>
-          <title>Settings - {config.brandName}</title>
-        </Helmet>
+        <Title>Settings</Title>
 
         <h1 className={styles.title}>Settings</h1>
 
@@ -122,7 +120,7 @@ class SettingsContainer extends Component<Props, State> {
       */}
         {supportsCSSVariables() && (
           <div>
-            <h4>Night Mode</h4>
+            <h4 id="night-mode">Night Mode</h4>
             <div className={classnames(styles.toggleRow, 'row')}>
               <div className={classnames(styles.toggleDescription, 'col-sm-7')}>
                 <p>
@@ -141,7 +139,7 @@ class SettingsContainer extends Component<Props, State> {
           </div>
         )}
 
-        <h4>Theme</h4>
+        <h4 id="theme">Theme</h4>
 
         <p>Liven up your timetable with different color schemes!</p>
         <p>
@@ -166,7 +164,7 @@ class SettingsContainer extends Component<Props, State> {
 
         <hr />
 
-        <h4>CORS Bidding Reminder</h4>
+        <h4 id="cors">CORS Bidding Reminder</h4>
 
         <div className={styles.notificationPreview}>
           <CorsNotification hideCloseButton />
@@ -219,7 +217,7 @@ class SettingsContainer extends Component<Props, State> {
 
         {this.state.bookmarks &&
           this.state.bookmarks.length > 0 && (
-            <div>
+            <div id="bookmarks">
               <h4>Bookmarks from previous version of NUSMods</h4>
               <p>
                 Bookmarks are no longer supported in NUSMods R, but you can still view your
@@ -228,7 +226,7 @@ class SettingsContainer extends Component<Props, State> {
 
               <ul>
                 {this.state.bookmarks.map((moduleCode) => (
-                  <li>
+                  <li key={moduleCode}>
                     <LinkModuleCodes>{moduleCode}</LinkModuleCodes>
                   </li>
                 ))}

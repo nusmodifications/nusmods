@@ -2,17 +2,17 @@
 import type { ContextRouter } from 'react-router-dom';
 
 import React, { Component } from 'react';
-import Helmet from 'react-helmet';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import update from 'immutability-helper';
 import qs from 'query-string';
 import Raven from 'raven-js';
-import { clone, each, mapValues, values } from 'lodash';
+import { each, mapValues, values } from 'lodash';
 
 import type { Module } from 'types/modules';
 import type { PageRange, PageRangeDiff, FilterGroupId } from 'types/views';
+import type { State as StoreState } from 'reducers';
 
 import { Semesters } from 'types/modules';
 import ModuleFinderList from 'views/modules/ModuleFinderList';
@@ -24,6 +24,7 @@ import ErrorPage from 'views/errors/ErrorPage';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import SideMenu, { OPEN_MENU_LABEL } from 'views/components/SideMenu';
 import { Filter } from 'views/components/icons';
+import Title from 'views/components/Title';
 
 import {
   defaultGroups,
@@ -40,7 +41,6 @@ import {
   TUTORIAL_TIMESLOTS,
 } from 'utils/moduleFilters';
 import { createSearchFilter, sortModules } from 'utils/moduleSearch';
-import config from 'config';
 import nusmods from 'apis/nusmods';
 import { resetModuleFinder } from 'actions/moduleFinder';
 import FilterGroup from 'utils/filters/FilterGroup';
@@ -70,14 +70,10 @@ type State = {
 // only benchmark filtering, not rendering, so we err on using a lower threshold
 const INSTANT_SEARCH_THRESHOLD = 300;
 
-const pageHead = (
-  <Helmet>
-    <title>Modules - {config.brandName}</title>
-  </Helmet>
-);
+const pageHead = <Title>Modules</Title>;
 
 export function mergePageRange(prev: PageRange, diff: PageRangeDiff): PageRange {
-  const next = clone(prev);
+  const next = { ...prev };
 
   // Current page is SET from the diff object
   if (diff.current != null) {
@@ -136,9 +132,12 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
 
         // Benchmark the amount of time taken to run the filters to determine if we can
         // use instant search
-        const start = performance.now();
+        const start = performance && performance.now();
         each(filterGroups, (group) => group.initFilters(modules));
-        const time = performance.now() - start;
+        const time = performance
+          ? performance.now() - start
+          : // If the user's browser doesn't support performance.now, we don't use instant search
+            Number.MAX_VALUE;
 
         if ('instant' in params) {
           // Manual override - use 'instant=1' to force instant search, and
@@ -350,7 +349,7 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: StoreState) => ({
   searchTerm: state.moduleFinder.search.term,
 });
 

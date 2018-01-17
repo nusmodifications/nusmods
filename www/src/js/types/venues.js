@@ -1,5 +1,5 @@
 // @flow
-import type { RawLesson, ModuleCode, DayText, LessonTime } from 'types/modules';
+import type { DayText, LessonTime, ModuleCode, RawLesson } from 'types/modules';
 
 export type Venue = string;
 export type VenueList = Venue[];
@@ -34,3 +34,5 @@ export type VenueSearchOptions = {
   time: number, // in hours (ie. 9 = 9am, 13 = 1pm etc.)
   duration: number, // in hours
 };
+
+export type VenueDetailList = [Venue, DayAvailability[]][];

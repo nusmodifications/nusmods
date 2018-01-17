@@ -1,13 +1,90 @@
 @import "~styles/utils/modules-entry.scss";
 
+$gutter: $grid-gutter-width / 2;
+$sticky-top: $navbar-height + 1rem;
+$venue-list-width: 16rem;
+
+// Layout for venues page is
+// - On md and above - Outlook style two panel UI with the venue list on the left
+//   and venue detail on the right
+// - On sm and below - Single column venue list, with the venue detail appearing
+//   in a modal when venue is selected
 .pageContainer {
   :global {
     animation-name: $page-entering-animation;
   }
 }
 
+.venueDetail {
+  composes: scrollable-y from global;
+}
+
+@include media-breakpoint-up(md) {
+  .venuesList,
+  .venueDetail {
+    position: fixed;
+    top: $sticky-top;
+    bottom: 0;
+    z-index: 1;
+  }
+
+  .venuesList {
+    width: $venue-list-width;
+    border-right: 1px solid var(--gray-lighter);
+
+    @include scrollable-y;
+  }
+
+  .venueDetail {
+    right: 0;
+    left: calc(#{$venue-list-width + $side-nav-width-md} + #{$gutter});
+    padding: 0 $gutter;
+  }
+}
+
+@include media-breakpoint-up(xl) {
+  .venueDetail {
+    left: $venue-list-width + $side-nav-width-lg;
+  }
+}
+
+@media (min-width: 90rem) {
+  .venuesList {
+    right: 60rem;
+    left: $side-nav-width-lg;
+    width: auto;
+  }
+
+  .venueDetail {
+    left: auto;
+    width: 60rem;
+  }
+}
+
+// HACK (really stupid): hide the footer on md and above so it doesn't appear behind
+// the content
+.background {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: var(--body-bg);
+}
+
+.venueDetailModal {
+  padding: 0;
+
+  .closeButton {
+    padding: 0.5rem 0;
+    margin-bottom: 1rem;
+    border-width: 0 0 1px;
+    border-radius: 0;
+  }
+}
+
 .venueSearch {
-  padding-right: ($grid-gutter-width / 2);
+  margin: 0 0.5rem 1rem 0;
 
   h3 {
     margin-bottom: 0;
@@ -16,12 +93,8 @@
   }
 
   @include media-breakpoint-down(sm) {
-    padding: 0.5rem ($grid-gutter-width / 2) 2.5rem;
+    margin-right: 0;
   }
-}
-
-.availabilityToggle {
-  margin-bottom: 0.5rem;
 }
 
 .searchBox {
@@ -29,5 +102,28 @@
 
   @include media-breakpoint-down(sm) {
     border-bottom: 1px solid var(--gray-light);
+  }
+}
+
+.availabilitySearch {
+  padding: ($border-radius + 0.2rem) 1rem 1rem;
+  margin-top: -$border-radius;
+  border: 1px solid theme-color();
+  border-width: 0 1px 1px;
+  border-radius: 0 0 $border-radius $border-radius;
+}
+
+.noVenueSelected {
+  $icon-size: 6rem;
+
+  opacity: 0.6;
+  margin-top: 10vh;
+  font-size: 1.4rem;
+  text-align: center;
+
+  svg {
+    width: $icon-size;
+    height: $icon-size;
+    margin-bottom: 1rem;
   }
 }
