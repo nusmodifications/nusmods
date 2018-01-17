@@ -1,0 +1,52 @@
+@import '~styles/utils/modules-entry.scss';
+
+.table {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+
+  th,
+  td {
+    padding: 0.25rem 0.5rem 0.4rem;
+  }
+}
+
+:global(.cards) {
+  width: 100%;
+
+  .thead {
+    @include sr-only();
+  }
+
+  td {
+    padding: 0 0 0.25rem;
+  }
+}
+
+.thead {
+  border-bottom: 1px solid var(--gray-lighter);
+
+  th {
+    font-weight: 500;
+  }
+}
+
+.tableSummaryText {
+  composes: text-right from global;
+}
+
+:global(.cards) {
+  .tableSummary {
+    display: flex;
+    justify-content: center;
+    margin-top: 0.5rem;
+  }
+
+  .tableSummaryText {
+    margin-right: 0.3rem;
+
+    &::after {
+      content: ':';
+    }
+  }
+}

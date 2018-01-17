@@ -52,7 +52,7 @@ import Online from 'views/components/Online';
 import Title from 'views/components/Title';
 import Timetable from './Timetable';
 import TimetableActions from './TimetableActions';
-import TimetableModulesTable from './TimetableModulesTable';
+import ModulesTable from './ModulesTable';
 import styles from './TimetableContent.scss';
 
 type Props = {
@@ -172,7 +172,7 @@ class TimetableContent extends Component<Props, State> {
     const { readOnly } = this.props;
 
     const renderModuleTable = (modules) => (
-      <TimetableModulesTable
+      <ModulesTable
         modules={modules.map((module) => ({
           ...module,
           colorIndex: this.props.colors[module.ModuleCode],
@@ -201,7 +201,7 @@ class TimetableContent extends Component<Props, State> {
     }
 
     return (
-      <div>
+      <div className={styles.modulesTable}>
         {!_.isEmpty(clashes) && (
           <div>
             <div className="alert alert-danger">
@@ -311,7 +311,7 @@ class TimetableContent extends Component<Props, State> {
           <div
             className={classnames({
               'col-md-12': !isVerticalOrientation,
-              'col-md-8': isVerticalOrientation,
+              'col-md-7 col-lg-8': isVerticalOrientation,
             })}
           >
             <div
@@ -334,8 +334,8 @@ class TimetableContent extends Component<Props, State> {
           </div>
           <div
             className={classnames({
-              'col-md-12': !isVerticalOrientation,
-              'col-md-4': isVerticalOrientation,
+              'col-md-12 col-xl-8 offset-xl-2': !isVerticalOrientation,
+              'col-md-5 col-lg-4': isVerticalOrientation,
             })}
           >
             <div className="row">
@@ -349,8 +349,6 @@ class TimetableContent extends Component<Props, State> {
                   timetable={this.props.timetable}
                 />
               </div>
-            </div>
-            <div className={styles.tableContainer}>
               {!readOnly && (
                 <Online>
                   {(isOnline) => (
