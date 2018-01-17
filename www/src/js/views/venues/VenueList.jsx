@@ -31,9 +31,10 @@ export default function VenueList(props: Props) {
                     pathname: venuePage(venue),
                     search: window.location.search,
                   }}
-                  className={classnames('btn btn-link', {
-                    [styles.selected]: venue === props.selectedVenue,
-                  })}
+                  className={classnames(
+                    'btn',
+                    venue === props.selectedVenue ? 'btn-primary' : 'btn-outline-primary',
+                  )}
                 >
                   {venue}
                 </Link>

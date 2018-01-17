@@ -33,7 +33,7 @@ class ColorPicker extends PureComponent<Props> {
       {isOpen && (
         <div className={styles.palette}>
           {_.range(NUM_DIFFERENT_COLORS).map((index: ColorIndex) => (
-            <span
+            <button
               {...getItemProps({ item: index })}
               key={index}
               className={classnames(styles.option, `color-${index}`)}
