@@ -2,7 +2,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import { partial } from 'lodash';
+import { partial, sumBy } from 'lodash';
 
 import type { ModuleCode, ModuleWithColor, Semester } from 'types/modules';
 import type { ColorIndex } from 'types/reducers';
@@ -75,7 +75,7 @@ class ModulesTable extends PureComponent<Props> {
               Total Module Credits for Semester
             </td>
             <td className="text-right">
-              {modules.reduce((sum, module) => sum + parseInt(module.ModuleCredit, 10), 0)}
+              {sumBy(modules, (module) => parseInt(module.ModuleCredit, 10))}
             </td>
           </tr>
         </tbody>
