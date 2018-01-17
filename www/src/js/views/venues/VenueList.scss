@@ -41,18 +41,18 @@ $padding-v: 0.5rem;
     padding-right: $padding-h;
     padding-left: $padding-h;
     text-align: left;
+    border-color: transparent;
+  }
+}
 
-    &:hover,
-    &:focus {
-      text-decoration: none;
-      border-color: currentColor;
-    }
+@supports (display: grid) {
+  .subList {
+    display: grid;
+    grid-gap: 1px;
+    grid-template-columns: repeat(auto-fill, minmax(7rem, 1fr));
 
-    &:active,
-    &.selected {
-      text-decoration: none;
-      color: #fff;
-      background: theme-color();
+    li {
+      margin: 0;
     }
   }
 }
