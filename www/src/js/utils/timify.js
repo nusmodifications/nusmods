@@ -74,5 +74,5 @@ export function getCurrentMinutes(
 export function getCurrentDayIndex(
   now: Date = new Date(), // Used for tests only
 ): number {
-  return now.getDay() - 1;
+  return now.getDay() - 1; // Minus 1 because JS week starts on Sunday
 }

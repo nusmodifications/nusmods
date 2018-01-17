@@ -24,7 +24,7 @@ export function defaultSearchOptions(
   now: Date = new Date(), // Used for tests only
 ): VenueSearchOptions {
   // Set day of week - if it is not a school day, then set to Monday (0)
-  const day = Math.max(getCurrentDayIndex(now), 0); // Minus 1 because JS week starts on Sunday
+  const day = Math.max(getCurrentDayIndex(now), 0);
 
   // Set time - if the current time is outside class hours, set it to the
   // time of the earliest lesson
