@@ -52,11 +52,7 @@ class ModulesTableRow extends PureComponent<Props> {
                 className={styles.actionButton}
                 title={removeBtnLabel}
                 aria-label={removeBtnLabel}
-                onClick={() => {
-                  if (window.confirm(`Are you sure you want to remove ${module.ModuleCode}?`)) {
-                    this.props.onRemoveModule(module.ModuleCode);
-                  }
-                }}
+                onClick={() => this.props.onRemoveModule(module.ModuleCode)}
               >
                 <Trash2 className="svg-small" />
               </button>
