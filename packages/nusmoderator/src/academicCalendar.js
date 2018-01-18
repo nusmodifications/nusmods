@@ -211,4 +211,5 @@ export default {
   getAcadSem,
   getAcadWeekName,
   getAcadWeekInfo,
+  getExamWeek,
 };
