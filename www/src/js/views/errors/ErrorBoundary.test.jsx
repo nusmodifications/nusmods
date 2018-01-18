@@ -53,7 +53,7 @@ describe('ErrorBoundary', () => {
     expect(wrapper.text()).toEqual('Some content');
   });
 
-  test('should show error page when error is thrown', () => {
+  test('should show nothing by default when error is thrown', () => {
     const error = new Error('Test error');
     const wrapper = mount(
       <ErrorBoundary>
@@ -61,7 +61,7 @@ describe('ErrorBoundary', () => {
       </ErrorBoundary>,
     );
 
-    expect(wrapper.text()).toEqual('<ErrorPage> component');
+    expect(wrapper.isEmptyRender()).toBe(true);
     expect(Raven.captureException).toHaveBeenCalledWith(error, expect.any(Object));
   });
 

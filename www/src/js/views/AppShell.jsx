@@ -11,7 +11,7 @@ import Helmet from 'react-helmet';
 import { NavLink, withRouter, type ContextRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import { each, noop } from 'lodash';
+import { each } from 'lodash';
 import weekText from 'utils/weekText';
 import { fetchModuleList } from 'actions/moduleBank';
 import {
@@ -24,7 +24,8 @@ import Footer from 'views/layout/Footer';
 import Navtabs from 'views/layout/Navtabs';
 import GlobalSearchContainer from 'views/layout/GlobalSearchContainer';
 import Notification from 'views/components/Notification';
-import ErrorBoundary from 'views/components/ErrorBoundary';
+import ErrorBoundary from 'views/errors/ErrorBoundary';
+import ErrorPage from 'views/errors/ErrorPage';
 import { DARK_MODE } from 'types/settings';
 import LoadingSpinner from './components/LoadingSpinner';
 import FeedbackModal from './components/FeedbackModal';
@@ -90,7 +91,7 @@ export class AppShellComponent extends Component<Props> {
             <span className="sr-only">NUSMods</span>
           </NavLink>
 
-          <ErrorBoundary errorPage={noop}>
+          <ErrorBoundary>
             <GlobalSearchContainer />
           </ErrorBoundary>
 
@@ -101,19 +102,21 @@ export class AppShellComponent extends Component<Props> {
 
           <main className="main-content">
             {isModuleListReady ? (
-              <ErrorBoundary>{this.props.children}</ErrorBoundary>
+              <ErrorBoundary errorPage={(error, eventId) => <ErrorPage eventId={eventId} />}>
+                {this.props.children}
+              </ErrorBoundary>
             ) : (
               <LoadingSpinner />
             )}
           </main>
         </div>
-        <ErrorBoundary errorPage={noop}>
+        <ErrorBoundary>
           <FeedbackModal />
         </ErrorBoundary>
-        <ErrorBoundary errorPage={noop}>
+        <ErrorBoundary>
           <Notification />
         </ErrorBoundary>
-        <ErrorBoundary errorPage={noop}>
+        <ErrorBoundary>
           <Footer />
         </ErrorBoundary>
       </div>

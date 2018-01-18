@@ -1,9 +1,6 @@
 // @flow
-
-import React, { type Node, Component } from 'react';
+import { type Node, Component } from 'react';
 import Raven from 'raven-js';
-
-import ErrorPage from 'views/errors/ErrorPage';
 
 type Props = {
   children: Node,
@@ -20,7 +17,7 @@ export default class ErrorBoundary extends Component<Props, State> {
 
   static defaultProps = {
     captureError: true,
-    errorPage: (error: Error, eventId: ?string) => <ErrorPage eventId={eventId} />,
+    errorPage: () => null,
   };
 
   state = {
