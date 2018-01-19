@@ -53,6 +53,7 @@ import Title from 'views/components/Title';
 import Timetable from './Timetable';
 import TimetableActions from './TimetableActions';
 import TimetableModulesTable from './TimetableModulesTable';
+import ExamTimetable from './ExamTimetable';
 import styles from './TimetableContent.scss';
 
 type Props = {
@@ -373,6 +374,16 @@ class TimetableContent extends Component<Props, State> {
                 </Online>
               )}
               <div className="col-md-12">{this.renderModuleSections(!isVerticalOrientation)}</div>
+              <div className="col-md-12">
+                <ExamTimetable
+                  semester={semester}
+                  modules={this.addedModules().map((module) => ({
+                    ...module,
+                    colorIndex: this.props.colors[module.ModuleCode],
+                    hiddenInTimetable: this.isHiddenInTimetable(module.ModuleCode),
+                  }))}
+                />
+              </div>
             </div>
           </div>
         </div>

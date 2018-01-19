@@ -1,0 +1,66 @@
+@import "~styles/utils/modules-entry";
+
+.table {
+  // TODO
+}
+
+.day,
+.dayName {
+  width: 16.6666%;
+  padding: 0.25rem;
+  vertical-align: top;
+  border: 1px solid var(--gray-lighter);
+
+  &:last-child {
+    border-right: 0;
+  }
+}
+
+.dayName {
+  padding-bottom: 0;
+  font-weight: normal;
+  font-size: $font-size-sm;
+  color: var(--gray-light);
+  border-width: 0 1px 0 0;
+}
+
+.day {
+  border-width: 0 1px 1px 0;
+
+  .week:last-child & {
+    border-bottom: 0;
+  }
+
+  h3 {
+    margin-bottom: 0.3rem;
+    font-weight: $font-weight-bold;
+    font-size: 1rem;
+  }
+
+  h4 {
+    margin-bottom: 0.2rem;
+    font-weight: $font-weight-bold;
+    font-size: $font-size-sm;
+  }
+
+  a {
+    display: block;
+    height: 4rem;
+    padding: 0.3rem;
+    margin-bottom: 0.5rem;
+    font-size: $font-size-sm;
+    border-bottom-width: 0.3rem;
+    border-bottom-style: solid;
+  }
+
+  .moduleCode {
+    font-weight: $font-weight-bold;
+  }
+
+  .moduleTitle {
+    max-height: 2rem;
+    font-size: $font-size-xs;
+    line-height: 1.1;
+    text-overflow: ellipsis;
+  }
+}
