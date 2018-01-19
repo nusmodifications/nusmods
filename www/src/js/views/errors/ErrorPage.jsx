@@ -12,11 +12,11 @@ import styles from './ErrorPage.scss';
 type Props = {
   children?: Node,
   error?: string,
-  eventId?: string,
+  eventId?: ?string,
   showRefresh: boolean,
 };
 
-export default class NotFoundPage extends PureComponent<Props> {
+export default class ErrorPage extends PureComponent<Props> {
   static defaultProps = {
     showRefresh: true,
   };
