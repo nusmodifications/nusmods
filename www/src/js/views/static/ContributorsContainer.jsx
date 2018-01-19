@@ -120,7 +120,7 @@ class ContributorsContainer extends Component<Props, State> {
                     target="_blank"
                     rel="noreferrer noopener"
                   >
-                    {contributor.contributions} commits
+                    {contributor.contributions} commit{contributor.contributions !== 1 && 's'}
                   </a>
                 </p>
               </div>
