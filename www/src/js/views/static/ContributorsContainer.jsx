@@ -77,13 +77,10 @@ class ContributorsContainer extends Component<Props, State> {
         <h2>{title}</h2>
         <hr />
         <p>
-          NUSMods is an 100% open source project that relies on the continuous support of its
-          individual contributors and NUS student community. Many student hackers have reported
-          issues, suggested improvements, or even better, write code and contribute patches!
-        </p>
-        <p>
-          Please reach out to us if you are interested in helping! Join us and make NUS a better
-          place for its students (your friends)!
+          NUSMods is a 100% student-run, open source project. We rely on the continuous support of
+          our valued contributors and the NUS student community. Many students have reported issues,
+          suggested improvements, and even contributed code. Join us to make NUS a better place for
+          its students (your friends)!
         </p>
         <br />
         {this.state.isLoading && <Loader />}
