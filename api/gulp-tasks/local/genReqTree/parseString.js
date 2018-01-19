@@ -1,8 +1,4 @@
-import {
-  Token,
-  Lexer,
-  Parser,
-} from 'chevrotain';
+import { Token, Lexer, Parser } from 'chevrotain';
 import R from 'ramda';
 import { OPERATORS, MODULE_REGEX, AND_OR_REGEX } from './constants';
 
@@ -99,10 +95,15 @@ class ReqTreeParser extends Parser {
       return generateOrBranch(value);
     });
 
-    this.RULE('atomicExpression', () => this.OR([
-      { ALT: () => this.SUBRULE(this.parenthesisExpression) },
-      { ALT: () => this.CONSUME(Module).image },
-    ], 'a module or parenthesis expression'));
+    this.RULE('atomicExpression', () =>
+      this.OR(
+        [
+          { ALT: () => this.SUBRULE(this.parenthesisExpression) },
+          { ALT: () => this.CONSUME(Module).image },
+        ],
+        'a module or parenthesis expression',
+      ),
+    );
 
     // parenthesisExpression has the highest precedence and thus it appears
     // in the "lowest" leaf in the expression ParseTree.
@@ -120,7 +121,8 @@ class ReqTreeParser extends Parser {
   }
 
   // avoids inserting module literals as these can have multiple(and infinite) semantic values
-  canTokenTypeBeInsertedInRecovery(tokClass) { // eslint-disable-line class-methods-use-this
+  // eslint-disable-next-line class-methods-use-this
+  canTokenTypeBeInsertedInRecovery(tokClass) {
     return tokClass !== Module;
   }
 }
@@ -163,7 +165,10 @@ function cleanOperators(tokens) {
     const image = token.image;
     return MODULE_REGEX.test(image) || image === ')';
   });
-  const processedTokens = output.slice(findFirstRelevant(output), findLastRelevant(output) + 1);
+  const processedTokens = output.slice(
+    findFirstRelevant(output),
+    findLastRelevant(output) + 1,
+  );
 
   const removedDuplicates = processedTokens.filter((item, pos, arr) => {
     // always keep the first and last element
@@ -175,7 +180,33 @@ function cleanOperators(tokens) {
     // then check if each element is different than the one before it
     return !(AND_OR_REGEX.test(currentImage) && AND_OR_REGEX.test(nextImage));
   });
-  return removedDuplicates;
+
+  const moduleTokens = [];
+  // Falsy value if array does not contain unique conjunction
+  // Need token to inject later on when it is missing between two modules
+  const singularConjunction = removedDuplicates.reduce((acc, token) => {
+    const { image } = token;
+    if (image === 'and' || image === 'or') {
+      if (acc === null) return token;
+      if (image !== acc.image) return false;
+    }
+    return acc;
+  }, null);
+  // Fill in missing values with conjunction found
+  for (let i = 0; i < removedDuplicates.length; i++) {
+    const token = removedDuplicates[i];
+    const nextToken = removedDuplicates[i + 1];
+    const isModule = MODULE_REGEX.test(token.image);
+    const isAnotherModule = nextToken && MODULE_REGEX.test(nextToken.image);
+    if (singularConjunction && isModule && isAnotherModule) {
+      moduleTokens.push(token);
+      moduleTokens.push(singularConjunction);
+    } else {
+      moduleTokens.push(token);
+    }
+  }
+
+  return moduleTokens;
 }
 
 /**
