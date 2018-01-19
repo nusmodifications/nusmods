@@ -29,6 +29,24 @@ export default function Routes() {
       <Route path="/team" component={TeamContainer} />
       <Route path="/contributors" component={ContributorsContainer} />
       <Route path="/apps" component={AppsContainer} />
+
+      {/* v2 routes */}
+      <Redirect from="/venueavailability" to="/venues" />
+      <Redirect from="/contribute/developers" to="/contributors" />
+      <Route
+        path="/news/nusdiscount"
+        render={() => {
+          window.location = 'https://www.facebook.com/nusdiscount/';
+        }}
+      />
+      <Route
+        path="/news/bareNUS"
+        render={() => {
+          window.location = 'https://www.facebook.com/bareNUS';
+        }}
+      />
+
+      {/* 404 page */}
       <Route component={NotFoundPage} />
     </Switch>
   );
