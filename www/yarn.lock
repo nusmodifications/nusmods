@@ -5913,9 +5913,9 @@ number-is-nan@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/number-is-nan/-/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
 
-nusmoderator@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/nusmoderator/-/nusmoderator-2.0.0.tgz#b2c031471d90cd123f412a6c5d84b48714cb87bf"
+nusmoderator@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/nusmoderator/-/nusmoderator-2.1.0.tgz#0d24d0e35ec90acfa79370c71177ba17b6291304"
 
 nwmatcher@^1.4.3:
   version "1.4.3"
