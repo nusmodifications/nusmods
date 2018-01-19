@@ -39,6 +39,8 @@ module.exports = {
         js: 'never',
       },
     ],
+    // Enable i++ in for loops
+    'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
     'max-len': ['error', 100, { ignoreComments: true }],
     // Let git handle the linebreaks instead
     'linebreak-style': 'off',

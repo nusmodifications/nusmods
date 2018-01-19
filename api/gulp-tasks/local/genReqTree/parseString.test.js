@@ -84,6 +84,19 @@ describe('cleanOperators', () => {
     ]);
   });
 
+  it('inserts necessary operators when missing', () => {
+    const tokens = [leftBracketToken, moduleToken, orToken, moduleToken, moduleToken, rightBracketToken];
+    expect(cleanOperators(tokens)).toEqual([
+      leftBracketToken,
+      moduleToken,
+      orToken,
+      moduleToken,
+      orToken,
+      moduleToken,
+      rightBracketToken,
+    ]);
+  });
+
   it('does not throw with empty parenthesis', () => {
     const tokens = [
       leftBracketToken,
@@ -206,5 +219,27 @@ describe('parseString', () => {
         'CS1001',
       ],
     });
+  });
+
+  it('parses strings with modules with no operators in between', () => {
+    expect(parseString('(ES1231 or ESP2107 ST1232) and (MA1102R or MA1505)')).toEqual(
+      {
+        and: [
+          { or: ['ES1231', 'ESP2107', 'ST1232'] },
+          { or: ['MA1102R', 'MA1505'] },
+        ],
+      },
+    );
+  });
+
+  it('parses strings with modules with no operators in between', () => {
+    expect(parseString('(ES1231 and ESP2107 ST1232) or (MA1102R and MA1505)')).toEqual(
+      {
+        or: [
+          { and: ['ES1231', 'ESP2107', 'ST1232'] },
+          { and: ['MA1102R', 'MA1505'] },
+        ],
+      },
+    );
   });
 });
