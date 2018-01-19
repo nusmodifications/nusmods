@@ -74,11 +74,13 @@ export default class ExamTimetable extends PureComponent<Props> {
           {range(EXAM_WEEKS[semester]).map((week) => (
             <tr className={styles.week}>
               {range(6).map((day) => {
-                const examDate = new Date(firstDayOfExams.valueOf());
+                // Add Singapore's tz offset to ensure the date is in the local tz
+                const examDate = new Date(firstDayOfExams.valueOf() + 8 * 60 * 60 * 1000);
                 examDate.setDate(firstDayOfExams.getDate() + week * 7 + day);
 
                 const modules = modulesByExamDate[getExamDate(examDate.toISOString())];
-                let examDateString = examDate.getDate();
+                let examDateString = String(examDate.getDate());
+                // Show the month in the first cell, or if the month changed
                 if ((week === 0 && day === 0) || examDateString === 1) {
                   examDateString = `${MONTHS[examDate.getMonth()]} ${examDateString}`;
                 }
