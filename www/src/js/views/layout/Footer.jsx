@@ -19,7 +19,16 @@ export function FooterComponent(props: Props) {
   const commitHash = process.env.commitHash;
   const versionStr = process.env.versionStr;
 
-  const lastUpdatedDate = props.lastUpdatedDate;
+  // Try catch because of Chrome crashing on calling toLocaleString with no parameter
+  // See https://sentry.io/nusmods/v3/issues/434084130/
+  let lastUpdatedDate;
+  try {
+    lastUpdatedDate = props.lastUpdatedDate
+      ? props.lastUpdatedDate.toLocaleString()
+      : 'hang on, loading...';
+  } catch (e) {
+    // Ignore
+  }
 
   const versionSpan = commitHash &&
     versionStr && (
@@ -88,9 +97,7 @@ export function FooterComponent(props: Props) {
             </button>
           </li>
         </ul>
-        <p>
-          Data correct as at {lastUpdatedDate ? lastUpdatedDate.toLocaleString() : 'Loading...'}.
-        </p>
+        <p>Data correct as at {lastUpdatedDate}.</p>
         <p>
           Designed and built with all the love in the world by{' '}
           <a href={config.contact.githubOrg} target="_blank" rel="noopener noreferrer">
