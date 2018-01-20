@@ -1,5 +1,6 @@
 // @flow
 import React, { Component, Fragment, type Node } from 'react';
+import classnames from 'classnames';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
@@ -13,9 +14,7 @@ import type {
   TimetableArrangement,
 } from 'types/timetables';
 
-import classnames from 'classnames';
 import {
-  addModule,
   cancelModifyLesson,
   changeLesson,
   modifyLesson,
@@ -369,7 +368,6 @@ function mapStateToProps(state, ownProps) {
 }
 
 export default connect(mapStateToProps, {
-  addModule,
   removeModule,
   modifyLesson,
   changeLesson,
