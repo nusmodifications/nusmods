@@ -2,7 +2,7 @@
 import _ from 'lodash';
 import type { EventOption } from 'ical-generator';
 
-import type { RawLesson, Module, ModuleCode, Semester } from 'types/modules';
+import type { Module, ModuleCode, RawLesson, Semester } from 'types/modules';
 import type {
   ModuleLessonConfigWithLessons,
   SemTimetableConfigWithLessons,
@@ -11,6 +11,7 @@ import type {
 import config from 'config';
 import academicCalendar from 'data/academic-calendar.json';
 import { getModuleSemesterData } from 'utils/modules';
+import { daysAfter } from 'utils/timify';
 
 const SG_UTC_TIME_DIFF_MS = 8 * 60 * 60 * 1000;
 export const RECESS_WEEK = -1;
@@ -36,15 +37,6 @@ export function getTimeHour(time: string) {
 // needed cos the utils method formats the date for display
 function getExamDate(module: Module, semester: Semester): string {
   return _.get(getModuleSemesterData(module, semester), 'ExamDate');
-}
-
-/**
- * Return a copy of the original Date incremented by the given number of days
- */
-export function daysAfter(startDate: Date, days: number): Date {
-  const d = new Date(startDate.valueOf());
-  d.setUTCDate(d.getUTCDate() + days);
-  return d;
 }
 
 /**
