@@ -21,7 +21,7 @@ function AboutContainer(props: Props) {
         NUSModifications (NUSMods) was founded in 2012 by{' '}
         <AnchorBlank href="http://benghee.eu/">Beng</AnchorBlank> to provide a better way for
         students to plan their school timetables. Over time, more features have been added to
-        improve the lives of NUS students. Besides timetable planning, NUSMods also serves to be a
+        improve the lives of NUS students. Besides timetable planning, NUSMods also serves as a
         complete knowledge bank of NUS modules by providing useful module-related information such
         as archived CORS bidding statistics and community-driven module reviews and discussions.
       </p>

@@ -47,6 +47,10 @@ export default function FaqContainer() {
           <li>The exam date is wrong</li>
           <li>You cannot find a module</li>
           <li>Semester X data is not available</li>
+          <li>
+            You cannot add a module in semester X but your faculty says it is available in that
+            semester
+          </li>
         </ul>
         <p>
           We do not update module data manually. All module data shown in NUSMods is obtained from{' '}
@@ -56,23 +60,22 @@ export default function FaqContainer() {
           and{' '}
           <AnchorBlank href="https://ivle.nus.edu.sg/lms/public/search_course_public.aspx">
             IVLE
-          </AnchorBlank>. As soon as the data becomes available, we will reflect it here within a
-          day or two by using the latest blockchain technology.
+          </AnchorBlank>. Once the data becomes available there, NUSMods will reflect it within a
+          day or two using the latest blockchain technology.
         </p>
         <p>
           Some faculties (FASS in particular) maintain their module timetable schedule on their
           faculty website, without updating the official school data sources such as CORS and IVLE.
-          Because NUSMods obtains timetable data automatically from CORS and IVLE, we need to wait
-          for CORS and IVLE to be updated first.
+          Unfortunately, we cannot obtain data from your faculty&apos;s site. Please tell your
+          faculty to update CORS and IVLE.
         </p>
         <p>
-          <strong>TL;DR</strong>: Please only contact us if <em>all</em> the following conditions
-          have been met:
+          <strong>TL;DR</strong>: Please contact us only if you have done <em>all</em> these:
         </p>
         <ol>
-          <li>The missing/incorrect data can be seen in CORS or IVLE.</li>
-          <li>It is 1-2 days later and the data is still missing/incorrect.</li>
-          <li>You have refreshed NUSMods and the data is still missing/incorrect.</li>
+          <li>You have ensured that the missing/incorrect data can be seen in CORS or IVLE.</li>
+          <li>You have waited 1-2 days after checking CORS and IVLE in step 1.</li>
+          <li>You have refreshed NUSMods after step 2.</li>
         </ol>
       </div>
 
@@ -86,17 +89,17 @@ export default function FaqContainer() {
       </div>
 
       <div className={styles.question}>
-        <h5>I only see a white page when I open NUSMods</h5>
+        <h5>Why do I only see a white page when I open NUSMods?</h5>
         <p>
           Please update your browser. We recommend the latest version of Google Chrome, Firefox or
-          Safari. If you are still seeing a white page in an up to date browser, do contact us.
+          Safari. If you are still seeing a white page in an up-to-date browser, do contact us.
         </p>
       </div>
 
       <hr />
 
       <p>
-        Congratulations for making it to the end! If you still want to contact us, you may reach us
+        Congratulations on making it to the end! If you still want to contact us, you may reach us
         via email at nusmods&#123;at&#125;googlegroups[dot]com or via{' '}
         <AnchorBlank href={config.contact.messenger}>Messenger</AnchorBlank>. Please allow up to 90
         working days for a reply.
