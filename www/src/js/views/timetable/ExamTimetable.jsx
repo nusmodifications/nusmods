@@ -61,50 +61,52 @@ export default class ExamTimetable extends PureComponent<Props> {
     );
 
     return (
-      <table className={styles.table}>
-        <tbody>
-          <tr className={styles.daysOfWeek}>
-            {range(6).map((day) => (
-              <th key={day} className={styles.dayName}>
-                {DaysOfWeek[day].slice(0, 3)}
-              </th>
-            ))}
-          </tr>
-
-          {range(EXAM_WEEKS[semester]).map((week) => (
-            <tr className={styles.week}>
-              {range(6).map((day) => {
-                // Add Singapore's tz offset to ensure the date is in the local tz
-                const examDate = new Date(firstDayOfExams.valueOf() + 8 * 60 * 60 * 1000);
-                examDate.setDate(firstDayOfExams.getDate() + week * 7 + day);
-
-                const modules = modulesByExamDate[getExamDate(examDate.toISOString())];
-                let examDateString = String(examDate.getDate());
-                // Show the month in the first cell, or if the month changed
-                if ((week === 0 && day === 0) || examDateString === 1) {
-                  examDateString = `${MONTHS[examDate.getMonth()]} ${examDateString}`;
-                }
-
-                return (
-                  <td className={styles.day} key={day}>
-                    <h3>{examDateString}</h3>
-                    {modules && (
-                      <div>
-                        {modules.map((module) => (
-                          <Fragment key={module.ModuleCode}>
-                            <h4>{getExamTime(getModuleExamDate(module, semester))}</h4>
-                            <div key={module.ModuleCode}>{renderModule(module)}</div>
-                          </Fragment>
-                        ))}
-                      </div>
-                    )}
-                  </td>
-                );
-              })}
+      <div className="scrollable">
+        <table className={styles.table}>
+          <tbody>
+            <tr className={styles.daysOfWeek}>
+              {range(6).map((day) => (
+                <th key={day} className={styles.dayName}>
+                  {DaysOfWeek[day].slice(0, 3)}
+                </th>
+              ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+
+            {range(EXAM_WEEKS[semester]).map((week) => (
+              <tr className={styles.week}>
+                {range(6).map((day) => {
+                  // Add Singapore's tz offset to ensure the date is in the local tz
+                  const examDate = new Date(firstDayOfExams.valueOf() + 8 * 60 * 60 * 1000);
+                  examDate.setDate(firstDayOfExams.getDate() + week * 7 + day);
+
+                  const modules = modulesByExamDate[getExamDate(examDate.toISOString())];
+                  let examDateString = String(examDate.getDate());
+                  // Show the month in the first cell, or if the month changed
+                  if ((week === 0 && day === 0) || examDateString === 1) {
+                    examDateString = `${MONTHS[examDate.getMonth()]} ${examDateString}`;
+                  }
+
+                  return (
+                    <td className={styles.day} key={day}>
+                      <h3>{examDateString}</h3>
+                      {modules && (
+                        <div>
+                          {modules.map((module) => (
+                            <Fragment key={module.ModuleCode}>
+                              <h4>{getExamTime(getModuleExamDate(module, semester))}</h4>
+                              <div key={module.ModuleCode}>{renderModule(module)}</div>
+                            </Fragment>
+                          ))}
+                        </div>
+                      )}
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     );
   }
 }

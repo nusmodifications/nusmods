@@ -1,7 +1,8 @@
 @import "~styles/utils/modules-entry";
 
 .table {
-  // TODO
+  min-width: 100%;
+  table-layout: fixed;
 }
 
 .day,
@@ -17,6 +18,7 @@
 }
 
 .dayName {
+  min-width: 5rem;
   padding-bottom: 0;
   font-weight: normal;
   font-size: $font-size-sm;
@@ -45,9 +47,10 @@
 
   a {
     display: block;
-    height: 4rem;
+    height: 4.5rem;
     padding: 0.3rem;
     margin-bottom: 0.5rem;
+    overflow: hidden;
     font-size: $font-size-sm;
     border-bottom-width: 0.3rem;
     border-bottom-style: solid;
@@ -61,6 +64,5 @@
     max-height: 2rem;
     font-size: $font-size-xs;
     line-height: 1.1;
-    text-overflow: ellipsis;
   }
 }
