@@ -1,8 +1,7 @@
 // @flow
-
 import React from 'react';
-
 import config from 'config';
+import AnchorBlank from 'views/components/AnchorBlank';
 import StaticPage from './StaticPage';
 import styles from './FaqContainer.scss';
 
@@ -22,13 +21,9 @@ export default function FaqContainer() {
         <p>
           NUSMods is a student-run initiative and is not affiliated with the National University of
           Singapore. NUSMods was born out of the frustration of a lack of usable NUS timetable
-          planners (<a
-            href="https://webrb.nus.edu.sg/ctt/builder.aspx"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          planners (<AnchorBlank href="https://webrb.nus.edu.sg/ctt/builder.aspx">
             the official one
-          </a>{' '}
+          </AnchorBlank>{' '}
           provides a delightful hair-pulling experience &ndash; go ahead, try it out). Also, it
           seems like NUS does not intend to improve it anytime soon. Since most of us come from the
           School of Computing, we decided to put our technical skills to use, creating something
@@ -38,11 +33,7 @@ export default function FaqContainer() {
           NUSMods does not make decisions regarding your curriculum, module availability and module
           timetable. If you have questions regarding your curriculum, CORS bidding, IVLE, or
           anything unrelated to NUSMods, it would be better to either contact your faculty and
-          department or just{' '}
-          <a href="https://www.google.com/" target="_blank" rel="noopener noreferrer">
-            Google
-          </a>{' '}
-          it.
+          department or just <AnchorBlank href="https://www.google.com/">Google</AnchorBlank> it.
         </p>
       </div>
 
@@ -54,22 +45,14 @@ export default function FaqContainer() {
         <p>
           <strong>We do not update module data manually.</strong> All module data shown in NUSMods
           is obtained from{' '}
-          <a
-            href="https://myaces.nus.edu.sg/cors/jsp/report/ModuleInfoListing.jsp"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <AnchorBlank href="https://myaces.nus.edu.sg/cors/jsp/report/ModuleInfoListing.jsp">
             CORS
-          </a>{' '}
+          </AnchorBlank>{' '}
           and{' '}
-          <a
-            href="https://ivle.nus.edu.sg/lms/public/search_course_public.aspx"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <AnchorBlank href="https://ivle.nus.edu.sg/lms/public/search_course_public.aspx">
             IVLE
-          </a>. As soon as the data becomes available, we will reflect it here within a day or two
-          by using the latest blockchain technology.
+          </AnchorBlank>. As soon as the data becomes available, we will reflect it here within a
+          day or two by using the latest blockchain technology.
         </p>
         <p>
           Some faculties (FASS in particular) maintain their module timetable schedule on their
@@ -92,9 +75,7 @@ export default function FaqContainer() {
         <p>
           No, and we have no plans to make this possible. Having said that, if you would like to
           implement this, we welcome pull requests{' '}
-          <a href={config.contact.githubRepo} target="_blank" rel="noopener noreferrer">
-            here
-          </a>!
+          <AnchorBlank href={config.contact.githubRepo}>here</AnchorBlank>!
         </p>
       </div>
 
@@ -111,9 +92,8 @@ export default function FaqContainer() {
       <p>
         Congratulations for making it to the end! If you still want to contact us, you may reach us
         via email at nusmods&#123;at&#125;googlegroups[dot]com or via{' '}
-        <a href={config.contact.messenger} target="_blank" rel="noopener noreferrer">
-          Messenger
-        </a>. Please allow up to 90 working days for a reply.
+        <AnchorBlank href={config.contact.messenger}>Messenger</AnchorBlank>. Please allow up to 90
+        working days for a reply.
       </p>
     </StaticPage>
   );

@@ -2,6 +2,7 @@
 
 import React from 'react';
 
+import AnchorBlank from 'views/components/AnchorBlank';
 import { Facebook, LinkedIn, GitHub, Twitter } from 'views/components/icons';
 
 import teamMembers from 'data/team.json';
@@ -30,13 +31,13 @@ function TeamMember({ member }: Props) {
     <section className={styles.teamMember} key={member.name}>
       <div className="row">
         <div className="col-lg-2 col-sm-3 text-center-md">
-          <a href={member.link} className={styles.portrait}>
+          <AnchorBlank href={member.link} className={styles.portrait}>
             <img
               className="rounded-circle img-fluid img-thumbnail"
               src={`https://www.gravatar.com/avatar/${member.gravatar}?s=256`}
               alt={member.gravatarAlt}
             />
-          </a>
+          </AnchorBlank>
         </div>
         <div className="col-lg-10 col-sm-9">
           <h4>{member.name}</h4>
@@ -44,49 +45,49 @@ function TeamMember({ member }: Props) {
           <div className="row">
             {member.facebook && (
               <div className="col-sm-1 col">
-                <a
+                <AnchorBlank
                   href={`https://www.facebook.com/${member.facebook}`}
                   title="Facebook profile"
                   aria-label="Facebook profile"
                 >
                   <Facebook />
-                </a>
+                </AnchorBlank>
               </div>
             )}
 
             {member.twitter && (
               <div className="col-sm-1 col">
-                <a
+                <AnchorBlank
                   href={`https://www.twitter.com/${member.twitter}`}
                   title="Twitter profile"
                   aria-label="Twitter profile"
                 >
                   <Twitter />
-                </a>
+                </AnchorBlank>
               </div>
             )}
 
             {member.github && (
               <div className="col-sm-1 col">
-                <a
+                <AnchorBlank
                   href={`https://www.github.com/${member.github}`}
                   title="GitHub profile"
                   aria-label="GitHub profile"
                 >
                   <GitHub />
-                </a>
+                </AnchorBlank>
               </div>
             )}
 
             {member.linkedin && (
               <div className="col-sm-1 col">
-                <a
+                <AnchorBlank
                   href={`https://www.linkedin.com/in/${member.linkedin}`}
                   title="Linkedin profile"
                   aria-label="Linkedin profile"
                 >
                   <LinkedIn />
-                </a>
+                </AnchorBlank>
               </div>
             )}
           </div>

@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 import Loader from 'views/components/LoadingSpinner';
+import AnchorBlank from 'views/components/AnchorBlank';
 
 import StaticPage from './StaticPage';
 
@@ -95,30 +96,26 @@ class ContributorsContainer extends Component<Props, State> {
             {this.state.contributors.map((contributor) => (
               <div className="col-md-3 col-6 text-center" key={contributor.id}>
                 <div>
-                  <a href={contributor.html_url}>
+                  <AnchorBlank href={contributor.html_url}>
                     <img
                       src={contributor.avatar_url}
                       alt={`${contributor.login} thumbnail`}
                       className="rounded-circle img-fluid img-thumbnail"
                     />
-                  </a>
+                  </AnchorBlank>
                 </div>
                 <div className="font-weight-bold">
-                  <a href={contributor.html_url} target="_blank" rel="noreferrer noopener">
-                    {contributor.login}
-                  </a>
+                  <AnchorBlank href={contributor.html_url}>{contributor.login}</AnchorBlank>
                 </div>
                 <p>
-                  <a
+                  <AnchorBlank
                     className="text-muted"
                     href={`https://github.com/nusmodifications/nusmods/commits?author=${
                       contributor.login
                     }`}
-                    target="_blank"
-                    rel="noreferrer noopener"
                   >
                     {contributor.contributions} commit{contributor.contributions !== 1 && 's'}
-                  </a>
+                  </AnchorBlank>
                 </p>
               </div>
             ))}

@@ -5,6 +5,7 @@ import classnames from 'classnames';
 import { toggleFeedback } from 'actions/app';
 import config from 'config';
 
+import AnchorBlank from 'views/components/AnchorBlank';
 import StaticPage from './StaticPage';
 import styles from './AboutContainer.scss';
 
@@ -17,12 +18,12 @@ function AboutContainer(props: Props) {
     <StaticPage title="About">
       <h3>A Brief History</h3>
       <p>
-        NUSModifications (NUSMods) was founded in 2012 by <a href="http://benghee.eu/">Beng</a> to
-        provide a better way for students to plan their school timetables. Over time, more features
-        have been added to improve the lives of NUS students. Besides timetable planning, NUSMods
-        also serves to be a complete knowledge bank of NUS modules by providing useful
-        module-related information such as archived CORS bidding statistics and community-driven
-        module reviews and discussions.
+        NUSModifications (NUSMods) was founded in 2012 by{' '}
+        <AnchorBlank href="http://benghee.eu/">Beng</AnchorBlank> to provide a better way for
+        students to plan their school timetables. Over time, more features have been added to
+        improve the lives of NUS students. Besides timetable planning, NUSMods also serves to be a
+        complete knowledge bank of NUS modules by providing useful module-related information such
+        as archived CORS bidding statistics and community-driven module reviews and discussions.
       </p>
 
       <h3>Goals</h3>
@@ -47,15 +48,15 @@ function AboutContainer(props: Props) {
       <button onClick={props.toggleFeedback} className="btn btn-primary btn-block">
         We love hearing your feedback!
       </button>
-      <a href={config.contact.githubRepo} className="btn btn-primary btn-block">
+      <AnchorBlank href={config.contact.githubRepo} className="btn btn-primary btn-block">
         We need code!
-      </a>
-      <a
+      </AnchorBlank>
+      <AnchorBlank
         href={config.contact.messenger}
         className={classnames('btn btn-primary btn-block', styles.feedbackBtn)}
       >
         We need designers!
-      </a>
+      </AnchorBlank>
 
       <p>PS, we really need a UI designer. Please hit us up.</p>
 
