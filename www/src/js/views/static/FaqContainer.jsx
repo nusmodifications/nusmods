@@ -38,13 +38,16 @@ export default function FaqContainer() {
       </div>
 
       <div className={styles.question}>
-        <h5>
-          There is a mistake! There is a missing lecture or tutorial slot/the exam date is wrong/I
-          cannot find a module/semester X data is not available. Can you update your system?
-        </h5>
+        <h5>There is a mistake! Can you update your system?</h5>
+        <p>This question applies to these situations:</p>
+        <ul>
+          <li>There is a missing lecture or tutorial slot</li>
+          <li>The exam date is wrong</li>
+          <li>You cannot find a module</li>
+          <li>Semester X data is not available</li>
+        </ul>
         <p>
-          <strong>We do not update module data manually.</strong> All module data shown in NUSMods
-          is obtained from{' '}
+          We do not update module data manually. All module data shown in NUSMods is obtained from{' '}
           <AnchorBlank href="https://myaces.nus.edu.sg/cors/jsp/report/ModuleInfoListing.jsp">
             CORS
           </AnchorBlank>{' '}
@@ -60,7 +63,10 @@ export default function FaqContainer() {
           Because NUSMods obtains timetable data automatically from CORS and IVLE, we need to wait
           for CORS and IVLE to be updated first.
         </p>
-        <p>TL;DR: Please only contact us if all the following conditions have been met:</p>
+        <p>
+          <strong>TL;DR</strong>: Please only contact us if <em>all</em> the following conditions
+          have been met:
+        </p>
         <ol>
           <li>The missing/incorrect data can be seen in CORS or IVLE.</li>
           <li>It is 1-2 days later and the data is still missing/incorrect.</li>
@@ -81,7 +87,7 @@ export default function FaqContainer() {
         <h5>I only see a white page when I open NUSMods</h5>
         <p>
           Please update your browser. We recommend the latest version of Google Chrome, Firefox or
-          Safari.
+          Safari. If you are still seeing a white page in an up to date browser, do contact us.
         </p>
       </div>
 
