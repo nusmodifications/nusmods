@@ -45,18 +45,23 @@ function AboutContainer(props: Props) {
         NUSMods is a fast-evolving project, and there are many things to be done. Help us help you!
       </p>
 
-      <button onClick={props.toggleFeedback} className="btn btn-primary btn-block">
-        We love hearing your feedback!
-      </button>
-      <AnchorBlank href={config.contact.githubRepo} className="btn btn-primary btn-block">
-        We need code!
-      </AnchorBlank>
-      <AnchorBlank
-        href={config.contact.messenger}
-        className={classnames('btn btn-primary btn-block', styles.feedbackBtn)}
-      >
-        We need designers!
-      </AnchorBlank>
+      <div className={classnames('row no-gutters', styles.actionContainer)}>
+        <div className={classnames('col-lg', styles.btnContainer)}>
+          <button onClick={props.toggleFeedback} className="btn btn-primary btn-block">
+            We need feedback!
+          </button>
+        </div>
+        <div className={classnames('col-lg', styles.btnContainer)}>
+          <AnchorBlank href={config.contact.messenger} className="btn btn-primary btn-block">
+            We need designers!
+          </AnchorBlank>
+        </div>
+        <div className={classnames('col-lg', styles.btnContainer)}>
+          <AnchorBlank href={config.contact.githubRepo} className="btn btn-primary btn-block">
+            We need code!
+          </AnchorBlank>
+        </div>
+      </div>
 
       <p>PS, we really need a UI designer. Please hit us up.</p>
 
