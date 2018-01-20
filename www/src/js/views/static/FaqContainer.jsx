@@ -60,14 +60,12 @@ export default function FaqContainer() {
           Because NUSMods obtains timetable data automatically from CORS and IVLE, we need to wait
           for CORS and IVLE to be updated first.
         </p>
-        <p>
-          TL;DR: Please only contact us if all the following conditions have been met:
-          <ol>
-            <li>The missing/incorrect data can be seen in CORS or IVLE.</li>
-            <li>It is 1-2 days later and the data is still missing/incorrect.</li>
-            <li>You have refreshed NUSMods and the data is still missing/incorrect.</li>
-          </ol>
-        </p>
+        <p>TL;DR: Please only contact us if all the following conditions have been met:</p>
+        <ol>
+          <li>The missing/incorrect data can be seen in CORS or IVLE.</li>
+          <li>It is 1-2 days later and the data is still missing/incorrect.</li>
+          <li>You have refreshed NUSMods and the data is still missing/incorrect.</li>
+        </ol>
       </div>
 
       <div className={styles.question}>
