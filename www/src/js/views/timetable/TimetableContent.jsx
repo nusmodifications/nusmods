@@ -27,7 +27,6 @@ import {
   modifyLesson,
   removeModule,
 } from 'actions/timetables';
-import { toggleTimetableOrientation, toggleTitleDisplay } from 'actions/theme';
 import { openNotification, popNotification } from 'actions/app';
 import { undo } from 'actions/undoHistory';
 import {
@@ -342,9 +341,7 @@ class TimetableContent extends Component<Props, State> {
               <div className="col-12 no-export">
                 <TimetableActions
                   isVerticalOrientation={isVerticalOrientation}
-                  toggleTimetableOrientation={this.props.toggleTimetableOrientation}
                   showTitle={isShowingTitle}
-                  toggleTitleDisplay={this.props.toggleTitleDisplay}
                   semester={semester}
                   timetable={this.props.timetable}
                 />
@@ -407,8 +404,6 @@ export default connect(mapStateToProps, {
   modifyLesson,
   changeLesson,
   cancelModifyLesson,
-  toggleTimetableOrientation,
-  toggleTitleDisplay,
   openNotification,
   popNotification,
   undo,
