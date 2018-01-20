@@ -6,6 +6,7 @@ import classnames from 'classnames';
 import { connect, type MapStateToProps } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import AnchorBlank from 'views/components/AnchorBlank';
 import config from 'config';
 import { toggleFeedback } from 'actions/app';
 import styles from './Footer.scss';
@@ -25,13 +26,9 @@ export function FooterComponent(props: Props) {
     versionStr && (
       <span>
         NUSMods R version{' '}
-        <a
-          href={`https://github.com/nusmodifications/nusmods/commit/${commitHash}`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <AnchorBlank href={`https://github.com/nusmodifications/nusmods/commit/${commitHash}`}>
           {versionStr}
-        </a>.
+        </AnchorBlank>.
       </span>
     );
 
@@ -40,28 +37,24 @@ export function FooterComponent(props: Props) {
       <div className="container">
         <ul className={styles.footerLinks}>
           <li>
-            <a href={config.contact.githubRepo}>GitHub</a>
+            <AnchorBlank href={config.contact.githubRepo}>GitHub</AnchorBlank>
           </li>
           <li>
-            <a href={config.contact.facebook}>Facebook</a>
+            <AnchorBlank href={config.contact.facebook}>Facebook</AnchorBlank>
           </li>
           <li>
-            <a href={config.contact.messenger}>Messenger</a>
+            <AnchorBlank href={config.contact.messenger}>Messenger</AnchorBlank>
           </li>
           <li>
-            <a href={config.contact.twitter}>Twitter</a>
+            <AnchorBlank href={config.contact.twitter}>Twitter</AnchorBlank>
           </li>
           <li>
-            <a href={config.contact.blog}>Blog</a>
+            <AnchorBlank href={config.contact.blog}>Blog</AnchorBlank>
           </li>
           <li>
-            <a
-              href="https://github.com/nusmodifications/nusmods/tree/master/api"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <AnchorBlank href="https://github.com/nusmodifications/nusmods/tree/master/api">
               API
-            </a>
+            </AnchorBlank>
           </li>
           <li>
             <Link to="/apps">Apps</Link>
@@ -93,9 +86,8 @@ export function FooterComponent(props: Props) {
         </p>
         <p>
           Designed and built with all the love in the world by{' '}
-          <a href={config.contact.githubOrg} target="_blank" rel="noopener noreferrer">
-            @nusmodifications
-          </a>. Maintained by the <Link to="/team">core team</Link> with the help of{' '}
+          <AnchorBlank href={config.contact.githubOrg}>@nusmodifications</AnchorBlank>. Maintained
+          by the <Link to="/team">core team</Link> with the help of{' '}
           <Link to="/contributors">our contributors</Link>.
         </p>
         <p>Copyright © 2014 - Present, NUSModifications. All rights reserved. {versionSpan}</p>
