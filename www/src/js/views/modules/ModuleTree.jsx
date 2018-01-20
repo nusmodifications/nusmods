@@ -59,7 +59,7 @@ function Tree({ layer, name, branches, isPrereq = false }: TreeDisplay) {
     >
       <div
         className={classnames(styles.node, {
-          [`color-${layer}`]: !isConditional,
+          [`hoverable color-${layer}`]: !isConditional,
           [styles.conditional]: isConditional,
           [styles.prereqNode]: isPrereq,
         })}

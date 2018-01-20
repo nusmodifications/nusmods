@@ -42,7 +42,7 @@ function renderModule(module: ModuleWithColor) {
   return (
     <Link
       to={modulePage(module.ModuleCode, module.ModuleTitle)}
-      className={`color-${module.colorIndex}`}
+      className={`hoverable color-${module.colorIndex}`}
     >
       <div className={styles.moduleCode}>{module.ModuleCode}</div>
       <div className={styles.moduleTitle}>{module.ModuleTitle}</div>
