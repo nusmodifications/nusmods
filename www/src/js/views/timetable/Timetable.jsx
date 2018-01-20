@@ -26,7 +26,6 @@ type Props = {
 };
 
 class Timetable extends PureComponent<Props> {
-  timetableDom: ?HTMLDivElement;
   interval: ?number;
 
   static defaultProps = {
@@ -79,11 +78,7 @@ class Timetable extends PureComponent<Props> {
     };
 
     return (
-      <div
-        ref={(r) => {
-          this.timetableDom = r;
-        }}
-      >
+      <div>
         <div className={styles.container}>
           <TimetableTimings startingIndex={startingIndex} endingIndex={endingIndex} />
           <ol className={styles.days}>
