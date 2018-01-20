@@ -10,11 +10,13 @@ export default function FaqContainer() {
     <StaticPage title="FAQ">
       <h2>Frequently Asked Questions</h2>
       <hr />
-      <p>
-        Hi there! Before contacting us, please read the following FAQ (Frequently Asked Questions)
-        first. In most cases, you <strong>DO NOT</strong> need to contact us. We are busy students
-        just like you, so please try to save us some time as well!
-      </p>
+      <div className={styles.question}>
+        <p>
+          Hi there! Before contacting us, please read the following FAQ (Frequently Asked Questions)
+          first. In most cases, you <strong>DO NOT</strong> need to contact us. We are busy students
+          just like you, so please try to save us some time as well!
+        </p>
+      </div>
 
       <div className={styles.question}>
         <h5>NUSMods is cool, where do you guys come from?</h5>
