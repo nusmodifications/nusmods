@@ -7,6 +7,7 @@ import { groupBy, range } from 'lodash';
 import type { ModuleWithColor, Semester } from 'types/modules';
 import config from 'config';
 import { formatExamDate, getModuleExamDate } from 'utils/modules';
+import { daysAfter } from 'utils/timify';
 import { modulePage } from 'views/routes/paths';
 import { DaysOfWeek } from 'types/modules';
 
@@ -51,10 +52,38 @@ function renderModule(module: ModuleWithColor) {
 }
 
 export default class ExamTimetable extends PureComponent<Props> {
+  getExamCalendar(): [Date, number] {
+    const { semester, modules } = this.props;
+    const year = `${config.academicYear.slice(2, 4)}/${config.academicYear.slice(-2)}`;
+    let weekCount = EXAM_WEEKS[semester];
+    let firstDayOfExams = new Date(
+      NUSModerator.academicCalendar.getExamWeek(year, semester).valueOf() + 8 * 60 * 60 * 1000,
+    );
+    let lastDayOfExams = daysAfter(firstDayOfExams, weekCount * 7);
+
+    // Check modules for outliers, eg. GER1000 that has exams on the Saturday before the exam week
+    modules.forEach((module) => {
+      const dateString = getModuleExamDate(module, semester);
+      if (!dateString) return;
+
+      const date = new Date(dateString);
+      while (date < firstDayOfExams) {
+        firstDayOfExams = daysAfter(firstDayOfExams, -7);
+        weekCount += 1;
+      }
+
+      while (date > lastDayOfExams) {
+        lastDayOfExams = daysAfter(lastDayOfExams, 7);
+        weekCount += 1;
+      }
+    });
+
+    return [firstDayOfExams, weekCount];
+  }
+
   render() {
     const { semester } = this.props;
-    const year = `${config.academicYear.slice(2, 4)}/${config.academicYear.slice(-2)}`;
-    const firstDayOfExams = NUSModerator.academicCalendar.getExamWeek(year, semester);
+    const [firstDayOfExams, weekCount] = this.getExamCalendar();
 
     const modulesByExamDate = groupBy(this.props.modules, (module) =>
       getExamDate(getModuleExamDate(module, this.props.semester)),
@@ -72,12 +101,11 @@ export default class ExamTimetable extends PureComponent<Props> {
               ))}
             </tr>
 
-            {range(EXAM_WEEKS[semester]).map((week) => (
+            {range(weekCount).map((week) => (
               <tr className={styles.week}>
                 {range(6).map((day) => {
                   // Add Singapore's tz offset to ensure the date is in the local tz
-                  const examDate = new Date(firstDayOfExams.valueOf() + 8 * 60 * 60 * 1000);
-                  examDate.setDate(firstDayOfExams.getDate() + week * 7 + day);
+                  const examDate = daysAfter(firstDayOfExams, week * 7 + day);
 
                   const modules = modulesByExamDate[getExamDate(examDate.toISOString())];
                   let examDateString = String(examDate.getDate());
