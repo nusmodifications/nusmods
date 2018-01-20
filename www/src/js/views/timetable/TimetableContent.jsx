@@ -1,15 +1,10 @@
 // @flow
-import React, { Component, type Node } from 'react';
+import React, { Component, Fragment, type Node } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
 import type { ModulesMap } from 'reducers/moduleBank';
-import type {
-  ColorMapping,
-  TimetableOrientation,
-  ModuleSelectList,
-  NotificationOptions,
-} from 'types/reducers';
+import type { ColorMapping, TimetableOrientation, NotificationOptions } from 'types/reducers';
 import { HORIZONTAL } from 'types/reducers';
 import type { Lesson, Module, ModuleCode, Semester } from 'types/modules';
 import type {
@@ -19,7 +14,6 @@ import type {
 } from 'types/timetables';
 
 import classnames from 'classnames';
-import { getSemModuleSelectList } from 'reducers/moduleBank';
 import {
   addModule,
   cancelModifyLesson,
@@ -27,7 +21,7 @@ import {
   modifyLesson,
   removeModule,
 } from 'actions/timetables';
-import { openNotification, popNotification } from 'actions/app';
+import { openNotification } from 'actions/app';
 import { undo } from 'actions/undoHistory';
 import {
   getModuleTimetable,
@@ -44,10 +38,9 @@ import {
   findExamClashes,
   getSemesterModules,
 } from 'utils/timetables';
-import ModulesSelect from 'views/timetable/ModulesSelect';
+import ModulesSelectContainer from 'views/timetable/ModulesSelectContainer';
 import CorsNotification from 'views/components/cors-info/CorsNotification';
 import Announcements from 'views/components/Announcements';
-import Online from 'views/components/Online';
 import Title from 'views/components/Title';
 import Timetable from './Timetable';
 import TimetableActions from './TimetableActions';
@@ -64,7 +57,6 @@ type Props = {
 
   // From Redux
   timetableWithLessons: SemTimetableConfigWithLessons,
-  semModuleList: ModuleSelectList,
   modules: ModulesMap,
   activeLesson: ?Lesson,
   timetableOrientation: TimetableOrientation,
@@ -72,7 +64,6 @@ type Props = {
   hiddenInTimetable: ModuleCode[],
 
   // Actions
-  addModule: (Semester, ModuleCode) => void,
   removeModule: (Semester, ModuleCode) => void,
   modifyLesson: Function,
   changeLesson: Function,
@@ -80,7 +71,6 @@ type Props = {
   toggleTimetableOrientation: Function,
   toggleTitleDisplay: Function,
   openNotification: (string, NotificationOptions) => void,
-  popNotification: () => void,
   undo: () => void,
 };
 
@@ -200,9 +190,9 @@ class TimetableContent extends Component<Props, State> {
     }
 
     return (
-      <div>
+      <Fragment>
         {!_.isEmpty(clashes) && (
-          <div>
+          <Fragment>
             <div className="alert alert-danger">
               Warning! There are clashes in your exam timetable.
             </div>
@@ -217,10 +207,10 @@ class TimetableContent extends Component<Props, State> {
                 </div>
               ))}
             <hr />
-          </div>
+          </Fragment>
         )}
         {renderModuleTable(nonClashingMods)}
-      </div>
+      </Fragment>
     );
   }
 
@@ -346,29 +336,11 @@ class TimetableContent extends Component<Props, State> {
                   timetable={this.props.timetable}
                 />
               </div>
-            </div>
-            <div className={styles.tableContainer}>
-              {!readOnly && (
-                <Online>
-                  {(isOnline) => (
-                    <div className={classnames('col-md-12', styles.modulesSelect)}>
-                      <ModulesSelect
-                        moduleList={this.props.semModuleList}
-                        onChange={(moduleCode) => {
-                          this.props.popNotification();
-                          this.props.addModule(semester, moduleCode);
-                        }}
-                        placeholder={
-                          isOnline
-                            ? 'Add module to timetable'
-                            : 'You need to be online to add modules'
-                        }
-                        disabled={!isOnline}
-                      />
-                    </div>
-                  )}
-                </Online>
-              )}
+              <div className={styles.modulesSelect}>
+                {!readOnly && (
+                  <ModulesSelectContainer semester={semester} timetable={this.props.timetable} />
+                )}
+              </div>
               <div className="col-md-12">{this.renderModuleSections(!isVerticalOrientation)}</div>
             </div>
           </div>
@@ -382,12 +354,10 @@ function mapStateToProps(state, ownProps) {
   const { semester, timetable } = ownProps;
   const modules = state.moduleBank.modules;
   const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
-  const semModuleList = getSemModuleSelectList(state.moduleBank, semester, timetable);
   const hiddenInTimetable = state.timetables.hidden[semester] || [];
 
   return {
     semester,
-    semModuleList,
     timetable,
     timetableWithLessons,
     modules,
@@ -405,6 +375,5 @@ export default connect(mapStateToProps, {
   changeLesson,
   cancelModifyLesson,
   openNotification,
-  popNotification,
   undo,
 })(TimetableContent);

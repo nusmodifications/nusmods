@@ -4,9 +4,8 @@ import { has } from 'lodash';
 import Downshift from 'downshift';
 import classnames from 'classnames';
 
-import type { ModuleSelectList } from 'types/reducers';
 import type { ModuleCode } from 'types/modules';
-import { createSearchPredicate, sortModules } from 'utils/moduleSearch';
+
 import { breakpointUp } from 'utils/css';
 import makeResponsive from 'views/hocs/makeResponsive';
 import Modal from 'views/components/Modal';
@@ -15,8 +14,9 @@ import CloseButton from 'views/components/CloseButton';
 import styles from './ModulesSelect.scss';
 
 type Props = {
-  moduleList: ModuleSelectList,
+  getFilteredModules: Function,
   onChange: Function,
+  moduleCount: number,
   placeholder: string,
   matchBreakpoint: boolean,
   disabled?: boolean,
@@ -28,8 +28,6 @@ type State = {
   inputValue: string,
   selectedItem: ?ModuleCode,
 };
-
-const RESULTS_LIMIT = 500;
 
 class ModulesSelect extends Component<Props, State> {
   state = {
@@ -81,13 +79,6 @@ class ModulesSelect extends Component<Props, State> {
     });
   };
 
-  getFilteredModules = (inputValue: string) => {
-    if (!inputValue) return [];
-    const predicate = createSearchPredicate(inputValue);
-    const results = this.props.moduleList.filter(predicate);
-    return sortModules(inputValue, results.slice(0, RESULTS_LIMIT));
-  };
-
   // downshift attaches label for us; autofocus only applies to modal
   /* eslint-disable jsx-a11y/label-has-for, jsx-a11y/no-autofocus */
   // TODO: Inject types from downshift when https://github.com/paypal/downshift/pull/180 is implemented
@@ -101,7 +92,7 @@ class ModulesSelect extends Component<Props, State> {
   }: any) => {
     const { placeholder, disabled } = this.props;
     const { isModalOpen } = this.state;
-    const results = this.getFilteredModules(inputValue);
+    const results = this.props.getFilteredModules(inputValue);
     const showResults = isOpen && results.length > 0;
     const showTip = isModalOpen && !results.length;
     const showNoResultMessage = isOpen && inputValue && !results.length;
@@ -163,7 +154,7 @@ class ModulesSelect extends Component<Props, State> {
         {showTip && (
           <div className={styles.tip}>
             Try &quot;GER1000&quot; or &quot;Quantitative Reasoning&quot;. Searching{' '}
-            <strong>{this.props.moduleList.length}</strong> modules.
+            <strong>{this.props.moduleCount}</strong> modules.
           </div>
         )}
         {showNoResultMessage && (
