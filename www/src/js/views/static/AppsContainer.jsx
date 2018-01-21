@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 import Loader from 'views/components/LoadingSpinner';
-import AnchorBlank from 'views/components/AnchorBlank';
+import ExternalLink from 'views/components/ExternalLink';
 
 import StaticPage from './StaticPage';
 import styles from './AppsContainer.scss';
@@ -39,18 +39,18 @@ function AppEntry({ app }: AppEntryProps) {
     <section className={styles.appEntry}>
       <div className="row">
         <div className="col-lg-2 col-sm-3 text-center-md">
-          <AnchorBlank href={app.url} className={styles.appIcon}>
+          <ExternalLink href={app.url} className={styles.appIcon}>
             <img
               className="rounded-circle img-fluid img-thumbnail"
               src={app.icon_url}
               alt={app.name}
             />
-          </AnchorBlank>
+          </ExternalLink>
         </div>
         <div className="col-lg-10 col-sm-9">
-          <AnchorBlank href={app.url}>
+          <ExternalLink href={app.url}>
             <h4 className={styles.appName}>{app.name}</h4>
-          </AnchorBlank>
+          </ExternalLink>
           <p>
             <small>{app.author}</small>
           </p>
@@ -97,9 +97,9 @@ class AppsContainer extends Component<Props, State> {
         <p>A collection of NUS-related apps that may come in handy.</p>
         <p>
           Have an NUS app that you want added to the list? Simply add it to our{' '}
-          <AnchorBlank href="https://github.com/nusmodifications/nusmods-apps">
+          <ExternalLink href="https://github.com/nusmodifications/nusmods-apps">
             Apps repository
-          </AnchorBlank>!
+          </ExternalLink>!
         </p>
 
         {this.state.isLoading && <Loader />}

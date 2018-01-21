@@ -6,7 +6,7 @@ import { toggleFeedback } from 'actions/app';
 import config from 'config';
 
 import { Mail, Layers, GitHub } from 'views/components/icons';
-import AnchorBlank from 'views/components/AnchorBlank';
+import ExternalLink from 'views/components/ExternalLink';
 
 import StaticPage from './StaticPage';
 import styles from './AboutContainer.scss';
@@ -21,7 +21,7 @@ function AboutContainer(props: Props) {
       <h3>A Brief History</h3>
       <p>
         NUSModifications (NUSMods) was founded in 2012 by{' '}
-        <AnchorBlank href="http://benghee.eu/">Beng</AnchorBlank> to provide a better way for
+        <ExternalLink href="http://benghee.eu/">Beng</ExternalLink> to provide a better way for
         students to plan their school timetables. Over time, more features have been added to
         improve the lives of NUS students. Besides timetable planning, NUSMods also serves as a
         complete knowledge bank of NUS modules by providing useful module-related information such
@@ -55,22 +55,22 @@ function AboutContainer(props: Props) {
           </button>
         </div>
         <div className={classnames('col-lg', styles.btnContainer)}>
-          <AnchorBlank
+          <ExternalLink
             href={config.contact.messenger}
             className="btn btn-primary btn-svg btn-block"
           >
             <Layers className="svg" />
             We need designers!
-          </AnchorBlank>
+          </ExternalLink>
         </div>
         <div className={classnames('col-lg', styles.btnContainer)}>
-          <AnchorBlank
+          <ExternalLink
             href={config.contact.githubRepo}
             className="btn btn-primary btn-svg btn-block"
           >
             <GitHub className="svg" />
             We need code!
-          </AnchorBlank>
+          </ExternalLink>
         </div>
       </div>
 

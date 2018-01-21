@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import { connect, type MapStateToProps } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import AnchorBlank from 'views/components/AnchorBlank';
+import ExternalLink from 'views/components/ExternalLink';
 import config from 'config';
 import { toggleFeedback } from 'actions/app';
 import styles from './Footer.scss';
@@ -26,9 +26,9 @@ export function FooterComponent(props: Props) {
     versionStr && (
       <span>
         NUSMods R version{' '}
-        <AnchorBlank href={`https://github.com/nusmodifications/nusmods/commit/${commitHash}`}>
+        <ExternalLink href={`https://github.com/nusmodifications/nusmods/commit/${commitHash}`}>
           {versionStr}
-        </AnchorBlank>.
+        </ExternalLink>.
       </span>
     );
 
@@ -37,24 +37,24 @@ export function FooterComponent(props: Props) {
       <div className="container">
         <ul className={styles.footerLinks}>
           <li>
-            <AnchorBlank href={config.contact.githubRepo}>GitHub</AnchorBlank>
+            <ExternalLink href={config.contact.githubRepo}>GitHub</ExternalLink>
           </li>
           <li>
-            <AnchorBlank href={config.contact.facebook}>Facebook</AnchorBlank>
+            <ExternalLink href={config.contact.facebook}>Facebook</ExternalLink>
           </li>
           <li>
-            <AnchorBlank href={config.contact.messenger}>Messenger</AnchorBlank>
+            <ExternalLink href={config.contact.messenger}>Messenger</ExternalLink>
           </li>
           <li>
-            <AnchorBlank href={config.contact.twitter}>Twitter</AnchorBlank>
+            <ExternalLink href={config.contact.twitter}>Twitter</ExternalLink>
           </li>
           <li>
-            <AnchorBlank href={config.contact.blog}>Blog</AnchorBlank>
+            <ExternalLink href={config.contact.blog}>Blog</ExternalLink>
           </li>
           <li>
-            <AnchorBlank href="https://github.com/nusmodifications/nusmods/tree/master/api">
+            <ExternalLink href="https://github.com/nusmodifications/nusmods/tree/master/api">
               API
-            </AnchorBlank>
+            </ExternalLink>
           </li>
           <li>
             <Link to="/apps">Apps</Link>
@@ -86,7 +86,7 @@ export function FooterComponent(props: Props) {
         </p>
         <p>
           Designed and built with all the love in the world by{' '}
-          <AnchorBlank href={config.contact.githubOrg}>@nusmodifications</AnchorBlank>. Maintained
+          <ExternalLink href={config.contact.githubOrg}>@nusmodifications</ExternalLink>. Maintained
           by the <Link to="/team">core team</Link> with the help of{' '}
           <Link to="/contributors">our contributors</Link>.
         </p>

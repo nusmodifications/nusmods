@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import config from 'config';
-import AnchorBlank from 'views/components/AnchorBlank';
+import ExternalLink from 'views/components/ExternalLink';
 import StaticPage from './StaticPage';
 import styles from './FaqContainer.scss';
 
@@ -66,15 +66,15 @@ export default function FaqContainer() {
         </ul>
         <p>
           We do not update module data manually. All module data shown in NUSMods is obtained from{' '}
-          <AnchorBlank href="https://myaces.nus.edu.sg/cors/jsp/report/ModuleInfoListing.jsp">
+          <ExternalLink href="https://myaces.nus.edu.sg/cors/jsp/report/ModuleInfoListing.jsp">
             CORS
-          </AnchorBlank>{' '}
+          </ExternalLink>{' '}
           and{' '}
-          <AnchorBlank href="https://ivle.nus.edu.sg/lms/public/search_course_public.aspx">
+          <ExternalLink href="https://ivle.nus.edu.sg/lms/public/search_course_public.aspx">
             IVLE
-          </AnchorBlank>. Protip: every NUSMods module page also has a direct link to CORS and IVLE.
-          Once the data becomes available there, NUSMods will reflect it within a day or two using
-          the latest blockchain technology.
+          </ExternalLink>. Protip: every NUSMods module page also has a direct link to CORS and
+          IVLE. Once the data becomes available there, NUSMods will reflect it within a day or two
+          using the latest blockchain technology.
         </p>
         <p>
           Some faculties (FASS in particular) maintain their module timetable schedule on their
@@ -97,9 +97,9 @@ export default function FaqContainer() {
         <p>
           NUSMods is a student-run initiative and is not affiliated with the National University of
           Singapore. NUSMods was born out of the frustration of a lack of usable NUS timetable
-          planners (<AnchorBlank href="https://webrb.nus.edu.sg/ctt/builder.aspx">
+          planners (<ExternalLink href="https://webrb.nus.edu.sg/ctt/builder.aspx">
             the official one
-          </AnchorBlank>{' '}
+          </ExternalLink>{' '}
           provides a delightful hair-pulling experience &ndash; go ahead, try it out). Also, it
           seems like NUS does not intend to improve it anytime soon. Since most of us come from the
           School of Computing, we decided to put our technical skills to use, creating something
@@ -109,7 +109,7 @@ export default function FaqContainer() {
           NUSMods does not make decisions regarding your curriculum, module availability and module
           timetable. If you have questions regarding your curriculum, CORS bidding, IVLE, or
           anything unrelated to NUSMods, it would be better to either contact your faculty and
-          department or just <AnchorBlank href="https://www.google.com/">Google</AnchorBlank> it.
+          department or just <ExternalLink href="https://www.google.com/">Google</ExternalLink> it.
         </p>
       </div>
 
@@ -118,7 +118,7 @@ export default function FaqContainer() {
         <p>
           No, and we have no plans to make this possible. Having said that, if you would like to
           implement this, we welcome pull requests{' '}
-          <AnchorBlank href={config.contact.githubRepo}>here</AnchorBlank>!
+          <ExternalLink href={config.contact.githubRepo}>here</ExternalLink>!
         </p>
       </div>
 
@@ -142,8 +142,8 @@ export default function FaqContainer() {
       <p>
         Congratulations on making it to the end! If you still want to contact us, you may reach us
         via email at nusmods&#123;at&#125;googlegroups[dot]com or via{' '}
-        <AnchorBlank href={config.contact.messenger}>Messenger</AnchorBlank>. Please allow up to 90
-        working days for a reply.
+        <ExternalLink href={config.contact.messenger}>Messenger</ExternalLink>. Please allow up to
+        90 working days for a reply.
       </p>
     </StaticPage>
   );
