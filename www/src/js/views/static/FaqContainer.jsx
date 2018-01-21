@@ -16,9 +16,42 @@ export default function FaqContainer() {
           <strong>DO NOT</strong> need to contact us. We are busy students just like you, so please
           try to save us some time as well!
         </p>
+        <ul>
+          <li>
+            <a href="#mistakes">Can you update your system?</a>
+          </li>
+          <li>
+            <a href="#mistakes">Can you add a missing lecture/tutorial slot?</a>
+          </li>
+          <li>
+            <a href="#mistakes">Can you update the exam date?</a>
+          </li>
+          <li>
+            <a href="#mistakes">Can you add this module?</a>
+          </li>
+          <li>
+            <a href="#mistakes">When will semester X data be available?</a>
+          </li>
+          <li>
+            <a href="#mistakes">
+              Why can&apos;t I add this module in semester X? My faculty says that it is available
+              in semester X.
+            </a>
+          </li>
+          <li>
+            <a href="#about">NUSMods is cool, where do you guys come from?</a>
+          </li>
+          <li>
+            <a href="#export">Is it possible to export my timetable to Excel?</a>
+          </li>
+          <li>
+            <a href="#white-page">Why do I only see a white page when I open NUSMods?</a>
+          </li>
+        </ul>
+        <hr />
       </div>
 
-      <div className={styles.question}>
+      <div className={styles.question} id="mistakes">
         <h5>There is a mistake! Can you update your system?</h5>
         <p>This question applies to these situations:</p>
         <ul>
@@ -59,7 +92,7 @@ export default function FaqContainer() {
         </ol>
       </div>
 
-      <div className={styles.question}>
+      <div className={styles.question} id="about">
         <h5>NUSMods is cool, where do you guys come from?</h5>
         <p>
           NUSMods is a student-run initiative and is not affiliated with the National University of
@@ -80,7 +113,7 @@ export default function FaqContainer() {
         </p>
       </div>
 
-      <div className={styles.question}>
+      <div className={styles.question} id="export">
         <h5>Is it possible to export my timetable to Excel?</h5>
         <p>
           No, and we have no plans to make this possible. Having said that, if you would like to
@@ -89,7 +122,7 @@ export default function FaqContainer() {
         </p>
       </div>
 
-      <div className={styles.question}>
+      <div className={styles.question} id="white-page">
         <h5>Why do I only see a white page when I open NUSMods?</h5>
         <p>
           Please update your browser. Although we recommend the latest version of Google Chrome,
