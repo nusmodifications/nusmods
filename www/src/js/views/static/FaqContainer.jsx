@@ -10,46 +10,48 @@ export default function FaqContainer() {
     <StaticPage title="FAQ">
       <h2>Frequently Asked Questions</h2>
       <hr />
-      <div className={styles.question}>
+      <div>
         <p>
           Hi there! Before contacting us, please read the following FAQ. In most cases, you{' '}
           <strong>DO NOT</strong> need to contact us. We are busy students just like you, so please
           try to save us some time as well!
         </p>
-        <ul>
-          <li>
-            <a href="#mistakes">Can you update your system?</a>
-          </li>
-          <li>
-            <a href="#mistakes">Can you add a missing lecture/tutorial slot?</a>
-          </li>
-          <li>
-            <a href="#mistakes">Can you update the exam date?</a>
-          </li>
-          <li>
-            <a href="#mistakes">Can you add this module?</a>
-          </li>
-          <li>
-            <a href="#mistakes">When will semester X data be available?</a>
-          </li>
-          <li>
-            <a href="#mistakes">
-              Why can&apos;t I add this module in semester X? My faculty says that it is available
-              in semester X.
-            </a>
-          </li>
-          <li>
-            <a href="#about">NUSMods is cool, where do you guys come from?</a>
-          </li>
-          <li>
-            <a href="#export">Is it possible to export my timetable to Excel?</a>
-          </li>
-          <li>
-            <a href="#white-page">Why do I only see a white page when I open NUSMods?</a>
-          </li>
-        </ul>
-        <hr />
       </div>
+
+      <ul>
+        <li>
+          <a href="#mistakes">Can you update your system?</a>
+        </li>
+        <li>
+          <a href="#mistakes">Can you add a missing lecture/tutorial slot?</a>
+        </li>
+        <li>
+          <a href="#mistakes">Can you update the exam date?</a>
+        </li>
+        <li>
+          <a href="#mistakes">Can you add this module?</a>
+        </li>
+        <li>
+          <a href="#mistakes">When will semester X data be available?</a>
+        </li>
+        <li>
+          <a href="#mistakes">
+            Why can&apos;t I add this module in semester X? My faculty says that it is available in
+            semester X.
+          </a>
+        </li>
+        <li>
+          <a href="#about">NUSMods is cool, where do you guys come from?</a>
+        </li>
+        <li>
+          <a href="#export">Is it possible to export my timetable to Excel?</a>
+        </li>
+        <li>
+          <a href="#white-page">Why do I only see a white page when I open NUSMods?</a>
+        </li>
+      </ul>
+
+      <hr />
 
       <div className={styles.question} id="mistakes">
         <h5>There is a mistake! Can you update your system?</h5>
@@ -137,14 +139,15 @@ export default function FaqContainer() {
         </p>
       </div>
 
-      <hr />
-
-      <p>
-        Congratulations on making it to the end! If you still want to contact us, you may reach us
-        via email at nusmods&#123;at&#125;googlegroups[dot]com or via{' '}
-        <ExternalLink href={config.contact.messenger}>Messenger</ExternalLink>. Please allow up to
-        90 working days for a reply.
-      </p>
+      <div className={styles.conclusion}>
+        <hr />
+        <p>
+          Congratulations on making it to the end! If you still want to contact us, you may reach us
+          via email at nusmods&#123;at&#125;googlegroups[dot]com or via{' '}
+          <ExternalLink href={config.contact.messenger}>Messenger</ExternalLink>. Please allow up to
+          90 working days for a reply.
+        </p>
+      </div>
     </StaticPage>
   );
 }
