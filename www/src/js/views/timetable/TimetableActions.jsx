@@ -1,9 +1,12 @@
 // @flow
+import React from 'react';
+import classnames from 'classnames';
+import { connect } from 'react-redux';
+
+import { toggleTimetableOrientation, toggleTitleDisplay } from 'actions/theme';
 import type { Semester } from 'types/modules';
 import type { SemTimetableConfig } from 'types/timetables';
-import classnames from 'classnames';
 
-import React from 'react';
 import { Sidebar, Type } from 'views/components/icons';
 import ShareTimetable from './ShareTimetable';
 import ExportMenu from './ExportMenu';
@@ -58,4 +61,7 @@ function TimetableActions(props: Props) {
   );
 }
 
-export default TimetableActions;
+export default connect(null, {
+  toggleTimetableOrientation,
+  toggleTitleDisplay,
+})(TimetableActions);
