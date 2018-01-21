@@ -3,6 +3,7 @@ import React, { type Node } from 'react';
 
 type Props = {
   ...HTMLAnchorElement,
+  href: string,
   children: Node,
 };
 
