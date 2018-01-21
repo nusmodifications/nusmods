@@ -4,6 +4,7 @@ import { has } from 'lodash';
 import Downshift from 'downshift';
 import classnames from 'classnames';
 
+import type { ModuleSelectList } from 'types/reducers';
 import type { ModuleCode } from 'types/modules';
 
 import { breakpointUp } from 'utils/css';
@@ -14,8 +15,8 @@ import CloseButton from 'views/components/CloseButton';
 import styles from './ModulesSelect.scss';
 
 type Props = {
-  getFilteredModules: Function,
-  onChange: Function,
+  getFilteredModules: string => ModuleSelectList,
+  onChange: ModuleCode => void,
   moduleCount: number,
   placeholder: string,
   matchBreakpoint: boolean,
