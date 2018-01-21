@@ -37,7 +37,11 @@ function TimetableDay(props: Props) {
 
   return (
     <li className={styles.day}>
-      <div className={styles.dayName}>
+      <div
+        className={classnames(styles.dayName, {
+          [styles.dayNameScrolled]: props.isScrolledHorizontally,
+        })}
+      >
         <span className={styles.dayNameText}>{props.day.substring(0, 3)}</span>
       </div>
       <div className={styles.dayRows} style={rowStyle}>
@@ -51,7 +55,6 @@ function TimetableDay(props: Props) {
             showTitle={props.showTitle}
             lessons={dayLessonRow}
             onModifyCell={props.onModifyCell}
-            isScrolledHorizontally={props.isScrolledHorizontally}
           />
         ))}
       </div>
