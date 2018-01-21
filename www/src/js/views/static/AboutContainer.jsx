@@ -5,7 +5,9 @@ import classnames from 'classnames';
 import { toggleFeedback } from 'actions/app';
 import config from 'config';
 
+import { Mail, Layers, GitHub } from 'views/components/icons';
 import AnchorBlank from 'views/components/AnchorBlank';
+
 import StaticPage from './StaticPage';
 import styles from './AboutContainer.scss';
 
@@ -47,17 +49,26 @@ function AboutContainer(props: Props) {
 
       <div className={classnames('row no-gutters', styles.actionContainer)}>
         <div className={classnames('col-lg', styles.btnContainer)}>
-          <button onClick={props.toggleFeedback} className="btn btn-primary btn-block">
+          <button onClick={props.toggleFeedback} className="btn btn-primary btn-svg btn-block">
+            <Mail className="svg" />
             We need feedback!
           </button>
         </div>
         <div className={classnames('col-lg', styles.btnContainer)}>
-          <AnchorBlank href={config.contact.messenger} className="btn btn-primary btn-block">
+          <AnchorBlank
+            href={config.contact.messenger}
+            className="btn btn-primary btn-svg btn-block"
+          >
+            <Layers className="svg" />
             We need designers!
           </AnchorBlank>
         </div>
         <div className={classnames('col-lg', styles.btnContainer)}>
-          <AnchorBlank href={config.contact.githubRepo} className="btn btn-primary btn-block">
+          <AnchorBlank
+            href={config.contact.githubRepo}
+            className="btn btn-primary btn-svg btn-block"
+          >
+            <GitHub className="svg" />
             We need code!
           </AnchorBlank>
         </div>
