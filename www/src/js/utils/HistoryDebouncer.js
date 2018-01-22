@@ -1,5 +1,4 @@
 // @flow
-
 import type { LocationShape, RouterHistory } from 'react-router-dom';
 import { createPath } from 'history'; // eslint-disable-line import/no-extraneous-dependencies
 
@@ -35,7 +34,6 @@ export default class HistoryDebouncer {
         this.history.replace(path, state);
       } catch (e) {
         if (
-          e instanceof DOMException &&
           e.name === 'SecurityError' &&
           e.message.includes('Attempt to use history.replaceState()')
         ) {
