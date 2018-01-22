@@ -20,7 +20,7 @@ const developmentConfig = merge([
       'react-hot-loader/patch',
       // Modify entry for hot module reload to work
       // See: https://survivejs.com/webpack/appendices/hmr/#setting-wds-entry-points-manually
-      'webpack-dev-server/client?http://localhost:8080',
+      'webpack-dev-server/client?http://0.0.0.0:8080',
       'webpack/hot/only-dev-server',
       'main',
     ],

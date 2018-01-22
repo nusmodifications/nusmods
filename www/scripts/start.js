@@ -10,11 +10,9 @@ const developmentConfig = require(CONFIG_FILE); // eslint-disable-line import/no
 
 // If you use Docker, Vagrant or Cloud9, set
 // host: options.host || '0.0.0.0';
-//
-// 0.0.0.0 is available to all network devices
-// unlike default `localhost`.
+// 0.0.0.0 is available to all network devices unlike `localhost`.
 const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 8080;
-const DEFAULT_HOST = process.env.HOST || 'localhost';
+const DEFAULT_HOST = process.env.HOST || '0.0.0.0';
 const PROTOCOL = process.env.HTTPS === 'true' ? 'https' : 'http';
 
 function runDevServer(host, port, protocol) {
@@ -58,7 +56,7 @@ function runDevServer(host, port, protocol) {
 
       // Proxy export endpoints to the local version for development
       '/export': {
-        target: 'http://localhost:3000',
+        target: 'http://0.0.0.0:3000',
         pathRewrite: {
           '^/export': '',
         },
@@ -67,7 +65,7 @@ function runDevServer(host, port, protocol) {
   });
 
   // Launch WebpackDevServer.
-  devServer.listen(port, (err) => {
+  devServer.listen(port, host, (err) => {
     if (err) {
       console.log(err);
       return;
