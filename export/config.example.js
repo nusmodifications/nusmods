@@ -11,9 +11,9 @@ module.exports = {
 
   // If set to a local path, the page will be loaded using setContent - use this
   // for production
-  // If set to a URL, the page will be loaded instead - use localhost:8081 in
+  // If set to a URL, the page will be loaded instead - use 0.0.0.0:8081 in
   // development with Webpack hot reload server
-  page: 'http://localhost:8081',
+  page: 'http://0.0.0.0:8081',
 
   // Path to a folder containing module data. If null, during development the
   // NUSMods API will be used instead. In production leaving this as null will
