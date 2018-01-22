@@ -22,7 +22,7 @@ Mobile browsers:
 
 ## Contributing
 
-Don't know where to start? Firstly read our repository [contribution guide](../CONTRIBUTING.md). Next, we highly recommend reading [this fantastic beginner's guide][zames-guide] written by one of our contributors. Alternatively, have a poke at our [open issues](https://github.com/nusmodifications/nusmods/issues?q=is%3Aissue+is%3Aopen).
+Don't know where to start? First, read our repository [contribution guide](../CONTRIBUTING.md). Next, we highly recommend reading [this fantastic beginner's guide][zames-guide] written by one of our contributors. Alternatively, have a poke at our [open issues](https://github.com/nusmodifications/nusmods/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22).
 
 ## Getting Started
 
