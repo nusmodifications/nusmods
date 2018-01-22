@@ -35,8 +35,9 @@ export default class HistoryDebouncer {
         this.history.replace(path, state);
       } catch (e) {
         if (
-          e.message ===
-          'Attempt to use history.replaceState() more than 100 times per 30.000000 seconds'
+          e instanceof DOMException &&
+          e.name === 'SecurityError' &&
+          e.message.includes('Attempt to use history.replaceState()')
         ) {
           return;
         }
