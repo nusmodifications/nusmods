@@ -11,11 +11,12 @@ const developmentConfig = require(CONFIG_FILE); // eslint-disable-line import/no
 // If you use Docker, Vagrant or Cloud9, set
 // host: options.host || '0.0.0.0';
 // 0.0.0.0 is available to all network devices unlike `localhost`.
-const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 8080;
 const DEFAULT_HOST = process.env.HOST || '0.0.0.0';
+const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 8080;
+const DEFAULT_EXPORT_PORT = parseInt(process.env.EXPORT_PORT, 10) || 3000;
 const PROTOCOL = process.env.HTTPS === 'true' ? 'https' : 'http';
 
-function runDevServer(host, port, protocol) {
+function runDevServer(host, port, exportPort, protocol) {
   const compiler = Webpack(developmentConfig);
   const devServer = new WebpackDevServer(compiler, {
     // Enable history API fallback so HTML5 History API based
@@ -44,8 +45,6 @@ function runDevServer(host, port, protocol) {
       performance: false,
     },
     https: protocol === 'https',
-    host,
-    port,
 
     proxy: {
       // Proxy the short_url.php endpoint because it does not support CORS
@@ -56,7 +55,7 @@ function runDevServer(host, port, protocol) {
 
       // Proxy export endpoints to the local version for development
       '/export': {
-        target: 'http://0.0.0.0:3000',
+        target: `http://${host}:${exportPort}`,
         pathRewrite: {
           '^/export': '',
         },
@@ -78,4 +77,4 @@ function runDevServer(host, port, protocol) {
   });
 }
 
-runDevServer(DEFAULT_HOST, DEFAULT_PORT, PROTOCOL);
+runDevServer(DEFAULT_HOST, DEFAULT_PORT, DEFAULT_EXPORT_PORT, PROTOCOL);
