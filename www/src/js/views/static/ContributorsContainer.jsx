@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 import Loader from 'views/components/LoadingSpinner';
+import ExternalLink from 'views/components/ExternalLink';
 
 import StaticPage from './StaticPage';
 
@@ -77,13 +78,10 @@ class ContributorsContainer extends Component<Props, State> {
         <h2>{title}</h2>
         <hr />
         <p>
-          NUSMods is an 100% open source project that relies on the continuous support of its
-          individual contributors and NUS student community. Many student hackers have reported
-          issues, suggested improvements, or even better, write code and contribute patches!
-        </p>
-        <p>
-          Please reach out to us if you are interested in helping! Join us and make NUS a better
-          place for its students (your friends)!
+          NUSMods is a 100% student-run, open source project. We rely on the continuous support of
+          our valued contributors and the NUS student community. Many students have reported issues,
+          suggested improvements, and even contributed code. Join us to make NUS a better place for
+          its students (your friends)!
         </p>
         <br />
         {this.state.isLoading && <Loader />}
@@ -98,30 +96,26 @@ class ContributorsContainer extends Component<Props, State> {
             {this.state.contributors.map((contributor) => (
               <div className="col-md-3 col-6 text-center" key={contributor.id}>
                 <div>
-                  <a href={contributor.html_url}>
+                  <ExternalLink href={contributor.html_url}>
                     <img
                       src={contributor.avatar_url}
                       alt={`${contributor.login} thumbnail`}
                       className="rounded-circle img-fluid img-thumbnail"
                     />
-                  </a>
+                  </ExternalLink>
                 </div>
                 <div className="font-weight-bold">
-                  <a href={contributor.html_url} target="_blank" rel="noreferrer noopener">
-                    {contributor.login}
-                  </a>
+                  <ExternalLink href={contributor.html_url}>{contributor.login}</ExternalLink>
                 </div>
                 <p>
-                  <a
+                  <ExternalLink
                     className="text-muted"
                     href={`https://github.com/nusmodifications/nusmods/commits?author=${
                       contributor.login
                     }`}
-                    target="_blank"
-                    rel="noreferrer noopener"
                   >
-                    {contributor.contributions} commits
-                  </a>
+                    {contributor.contributions} commit{contributor.contributions !== 1 && 's'}
+                  </ExternalLink>
                 </p>
               </div>
             ))}
