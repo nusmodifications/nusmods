@@ -33,12 +33,16 @@ export default class HistoryDebouncer {
       try {
         this.history.replace(path, state);
       } catch (e) {
+        // Ignore Safari's history.replaceState() rate limit error.
+        // See https://github.com/nusmodifications/nusmods/issues/763
         if (
           e.name === 'SecurityError' &&
           e.message.includes('Attempt to use history.replaceState()')
         ) {
           return;
         }
+
+        // Continue throwing all other errors
         throw e;
       }
     }
