@@ -31,7 +31,17 @@ export default class HistoryDebouncer {
     if (Date.now() - this.lastPush > this.wait) {
       this.history.push(path, state);
     } else {
-      this.history.replace(path, state);
+      try {
+        this.history.replace(path, state);
+      } catch (e) {
+        if (
+          e.message ===
+          'Attempt to use history.replaceState() more than 100 times per 30.000000 seconds'
+        ) {
+          return;
+        }
+        throw e;
+      }
     }
 
     this.lastPush = Date.now();
