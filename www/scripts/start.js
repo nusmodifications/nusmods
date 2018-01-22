@@ -15,8 +15,9 @@ const DEFAULT_HOST = process.env.HOST || '0.0.0.0';
 const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 8080;
 const DEFAULT_EXPORT_PORT = parseInt(process.env.EXPORT_PORT, 10) || 3000;
 const PROTOCOL = process.env.HTTPS === 'true' ? 'https' : 'http';
+const OPEN_BROWSER = process.env.OPEN_BROWSER !== '0'; // Open browser unless told otherwise
 
-function runDevServer(host, port, exportPort, protocol) {
+function runDevServer(host, port, exportPort, protocol, shouldOpenBrowser) {
   const compiler = Webpack(developmentConfig);
   const devServer = new WebpackDevServer(compiler, {
     // Enable history API fallback so HTML5 History API based
@@ -73,8 +74,10 @@ function runDevServer(host, port, exportPort, protocol) {
     console.log(chalk.cyan('Starting the development server...'));
     console.log();
 
-    openBrowser(`${protocol}://${host}:${port}/`);
+    if (shouldOpenBrowser) {
+      openBrowser(`${protocol}://${host}:${port}/`);
+    }
   });
 }
 
-runDevServer(DEFAULT_HOST, DEFAULT_PORT, DEFAULT_EXPORT_PORT, PROTOCOL);
+runDevServer(DEFAULT_HOST, DEFAULT_PORT, DEFAULT_EXPORT_PORT, PROTOCOL, OPEN_BROWSER);
