@@ -210,10 +210,9 @@ class SettingsContainer extends Component<Props, State> {
                   </button>
                 </div>
               </div>
+              <hr />
             </Fragment>
           )}
-
-        <hr />
 
         {this.state.bookmarks &&
           this.state.bookmarks.length > 0 && (

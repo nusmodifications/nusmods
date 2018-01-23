@@ -10,7 +10,6 @@ import TimetableCell from './TimetableCell';
 type Props = {
   verticalMode: boolean,
   showTitle: boolean,
-  isScrolledHorizontally: boolean,
   startingIndex: number,
   endingIndex: number,
   lessons: Array<Lesson>,
@@ -65,7 +64,6 @@ function TimetableRow(props: Props) {
             key={lesson.StartTime}
             style={style}
             lesson={lesson}
-            isScrolledHorizontally={props.isScrolledHorizontally}
             showTitle={props.showTitle}
             {...conditionalProps}
           />

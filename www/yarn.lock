@@ -6892,9 +6892,9 @@ range-parser@^1.0.3, range-parser@~1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/range-parser/-/range-parser-1.2.0.tgz#f49be6b487894ddc40dcc94a322f611092e00d5e"
 
-raven-for-redux@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/raven-for-redux/-/raven-for-redux-1.1.1.tgz#bba19812d2bbeb9286c71dcf3db4b58959d6e957"
+raven-for-redux@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/raven-for-redux/-/raven-for-redux-1.2.0.tgz#242970159efd69853d3315c22782d4a4fbbfe6f0"
 
 raven-js@^3.21.0:
   version "3.21.0"

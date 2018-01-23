@@ -1,15 +1,11 @@
 // @flow
-import React, { Component, type Node } from 'react';
+import React, { Component, Fragment, type Node } from 'react';
+import classnames from 'classnames';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
 import type { ModulesMap } from 'reducers/moduleBank';
-import type {
-  ColorMapping,
-  TimetableOrientation,
-  ModuleSelectList,
-  NotificationOptions,
-} from 'types/reducers';
+import type { ColorMapping, TimetableOrientation, NotificationOptions } from 'types/reducers';
 import { HORIZONTAL } from 'types/reducers';
 import type { Lesson, Module, ModuleCode, Semester } from 'types/modules';
 import type {
@@ -18,17 +14,8 @@ import type {
   TimetableArrangement,
 } from 'types/timetables';
 
-import classnames from 'classnames';
-import { getSemModuleSelectList } from 'reducers/moduleBank';
-import {
-  addModule,
-  cancelModifyLesson,
-  changeLesson,
-  modifyLesson,
-  removeModule,
-} from 'actions/timetables';
-import { toggleTimetableOrientation, toggleTitleDisplay } from 'actions/theme';
-import { openNotification, popNotification } from 'actions/app';
+import { cancelModifyLesson, changeLesson, modifyLesson, removeModule } from 'actions/timetables';
+import { openNotification } from 'actions/app';
 import { undo } from 'actions/undoHistory';
 import {
   getModuleTimetable,
@@ -45,10 +32,9 @@ import {
   findExamClashes,
   getSemesterModules,
 } from 'utils/timetables';
-import ModulesSelect from 'views/timetable/ModulesSelect';
+import ModulesSelectContainer from 'views/timetable/ModulesSelectContainer';
 import CorsNotification from 'views/components/cors-info/CorsNotification';
 import Announcements from 'views/components/Announcements';
-import Online from 'views/components/Online';
 import Title from 'views/components/Title';
 import Timetable from './Timetable';
 import TimetableActions from './TimetableActions';
@@ -66,7 +52,6 @@ type Props = {
 
   // From Redux
   timetableWithLessons: SemTimetableConfigWithLessons,
-  semModuleList: ModuleSelectList,
   modules: ModulesMap,
   activeLesson: ?Lesson,
   timetableOrientation: TimetableOrientation,
@@ -74,7 +59,6 @@ type Props = {
   hiddenInTimetable: ModuleCode[],
 
   // Actions
-  addModule: (Semester, ModuleCode) => void,
   removeModule: (Semester, ModuleCode) => void,
   modifyLesson: Function,
   changeLesson: Function,
@@ -82,7 +66,6 @@ type Props = {
   toggleTimetableOrientation: Function,
   toggleTitleDisplay: Function,
   openNotification: (string, NotificationOptions) => void,
-  popNotification: () => void,
   undo: () => void,
 };
 
@@ -91,31 +74,23 @@ type State = {
 };
 
 class TimetableContent extends Component<Props, State> {
-  timetableDom: ?HTMLElement;
-  timetableWrapperDom: ?HTMLElement;
-
   state: State = {
     isScrolledHorizontally: false,
   };
 
-  componentDidMount() {
-    if (this.timetableWrapperDom) {
-      this.timetableWrapperDom.addEventListener('scroll', this.handleScroll, { passive: true });
-    }
-  }
-
   componentWillUnmount() {
     this.cancelModifyLesson();
-    if (this.timetableWrapperDom) {
-      this.timetableWrapperDom.removeEventListener('scroll', this.handleScroll);
-    }
   }
 
-  handleScroll = () => {
+  onScroll = (e: Event) => {
+    // Only trigger when there is an active lesson
     const isScrolledHorizontally =
-      !!this.timetableWrapperDom && this.timetableWrapperDom.scrollLeft > 0;
-    if (this.state.isScrolledHorizontally === isScrolledHorizontally) return;
-    this.setState({ isScrolledHorizontally });
+      !!this.props.activeLesson &&
+      e.currentTarget instanceof HTMLElement &&
+      e.currentTarget.scrollLeft > 0;
+    if (this.state.isScrolledHorizontally !== isScrolledHorizontally) {
+      this.setState({ isScrolledHorizontally });
+    }
   };
 
   cancelModifyLesson = () => {
@@ -202,9 +177,9 @@ class TimetableContent extends Component<Props, State> {
     }
 
     return (
-      <div>
+      <Fragment>
         {!_.isEmpty(clashes) && (
-          <div>
+          <Fragment>
             <div className="alert alert-danger">
               Warning! There are clashes in your exam timetable.
             </div>
@@ -219,10 +194,10 @@ class TimetableContent extends Component<Props, State> {
                 </div>
               ))}
             <hr />
-          </div>
+          </Fragment>
         )}
         {renderModuleTable(nonClashingMods)}
-      </div>
+      </Fragment>
     );
   }
 
@@ -315,21 +290,13 @@ class TimetableContent extends Component<Props, State> {
               'col-md-8': isVerticalOrientation,
             })}
           >
-            <div
-              className={styles.timetableWrapper}
-              ref={(r) => {
-                this.timetableWrapperDom = r;
-              }}
-            >
+            <div className={styles.timetableWrapper} onScroll={this.onScroll}>
               <Timetable
                 lessons={arrangedLessonsWithModifiableFlag}
                 isVerticalOrientation={isVerticalOrientation}
                 isScrolledHorizontally={this.state.isScrolledHorizontally}
                 showTitle={isShowingTitle}
                 onModifyCell={this.modifyCell}
-                ref={(r) => {
-                  this.timetableDom = r && r.timetableDom;
-                }}
               />
             </div>
           </div>
@@ -343,36 +310,16 @@ class TimetableContent extends Component<Props, State> {
               <div className="col-12 no-export">
                 <TimetableActions
                   isVerticalOrientation={isVerticalOrientation}
-                  toggleTimetableOrientation={this.props.toggleTimetableOrientation}
                   showTitle={isShowingTitle}
-                  toggleTitleDisplay={this.props.toggleTitleDisplay}
                   semester={semester}
                   timetable={this.props.timetable}
                 />
               </div>
-            </div>
-            <div className={styles.tableContainer}>
-              {!readOnly && (
-                <Online>
-                  {(isOnline) => (
-                    <div className={classnames('col-md-12', styles.modulesSelect)}>
-                      <ModulesSelect
-                        moduleList={this.props.semModuleList}
-                        onChange={(moduleCode) => {
-                          this.props.popNotification();
-                          this.props.addModule(semester, moduleCode);
-                        }}
-                        placeholder={
-                          isOnline
-                            ? 'Add module to timetable'
-                            : 'You need to be online to add modules'
-                        }
-                        disabled={!isOnline}
-                      />
-                    </div>
-                  )}
-                </Online>
-              )}
+              <div className={styles.modulesSelect}>
+                {!readOnly && (
+                  <ModulesSelectContainer semester={semester} timetable={this.props.timetable} />
+                )}
+              </div>
               <div className="col-md-12">{this.renderModuleSections(!isVerticalOrientation)}</div>
               <div className="col-md-12">
                 <ExamTimetable
@@ -396,12 +343,10 @@ function mapStateToProps(state, ownProps) {
   const { semester, timetable } = ownProps;
   const modules = state.moduleBank.modules;
   const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
-  const semModuleList = getSemModuleSelectList(state.moduleBank, semester, timetable);
   const hiddenInTimetable = state.timetables.hidden[semester] || [];
 
   return {
     semester,
-    semModuleList,
     timetable,
     timetableWithLessons,
     modules,
@@ -413,14 +358,10 @@ function mapStateToProps(state, ownProps) {
 }
 
 export default connect(mapStateToProps, {
-  addModule,
   removeModule,
   modifyLesson,
   changeLesson,
   cancelModifyLesson,
-  toggleTimetableOrientation,
-  toggleTitleDisplay,
   openNotification,
-  popNotification,
   undo,
 })(TimetableContent);

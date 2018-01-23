@@ -114,7 +114,7 @@
     "no-scroll": "^2.1.0",
     "nusmoderator": "^2.1.0",
     "query-string": "^5.0.1",
-    "raven-for-redux": "^1.1.1",
+    "raven-for-redux": "^1.2.0",
     "raven-js": "^3.21.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",

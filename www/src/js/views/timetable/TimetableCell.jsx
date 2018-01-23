@@ -9,10 +9,9 @@ import { LESSON_TYPE_ABBREV } from 'utils/timetables';
 import styles from './TimetableCell.scss';
 
 type Props = {
-  isScrolledHorizontally: boolean,
   showTitle: boolean,
   lesson: Lesson,
-  style: Object,
+  style?: Object,
   onClick?: Function,
 };
 
@@ -37,7 +36,6 @@ function TimetableCell(props: Props) {
         [styles.cellIsAvailable]: lesson.isAvailable,
         // $FlowFixMe
         [styles.cellIsActive]: lesson.isActive,
-        [styles.cellIsActiveScrolled]: props.isScrolledHorizontally,
       })}
       style={props.style}
       {...conditionalProps}

@@ -6,6 +6,7 @@ import classnames from 'classnames';
 import { connect, type MapStateToProps } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import ExternalLink from 'views/components/ExternalLink';
 import config from 'config';
 import { toggleFeedback } from 'actions/app';
 import styles from './Footer.scss';
@@ -19,19 +20,24 @@ export function FooterComponent(props: Props) {
   const commitHash = process.env.commitHash;
   const versionStr = process.env.versionStr;
 
-  const lastUpdatedDate = props.lastUpdatedDate;
+  // Try catch because of Chrome crashing on calling toLocaleString with no parameter
+  // See https://sentry.io/nusmods/v3/issues/434084130/
+  let lastUpdatedText = 'Loading data...';
+  if (props.lastUpdatedDate) {
+    try {
+      lastUpdatedText = `Data correct as at ${props.lastUpdatedDate.toLocaleString()}.`;
+    } catch (e) {
+      lastUpdatedText = `Data correct as at ${props.lastUpdatedDate.toString()}.`;
+    }
+  }
 
   const versionSpan = commitHash &&
     versionStr && (
       <span>
         NUSMods R version{' '}
-        <a
-          href={`https://github.com/nusmodifications/nusmods/commit/${commitHash}`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <ExternalLink href={`https://github.com/nusmodifications/nusmods/commit/${commitHash}`}>
           {versionStr}
-        </a>.
+        </ExternalLink>.
       </span>
     );
 
@@ -40,28 +46,24 @@ export function FooterComponent(props: Props) {
       <div className="container">
         <ul className={styles.footerLinks}>
           <li>
-            <a href={config.contact.githubRepo}>GitHub</a>
+            <ExternalLink href={config.contact.githubRepo}>GitHub</ExternalLink>
           </li>
           <li>
-            <a href={config.contact.facebook}>Facebook</a>
+            <ExternalLink href={config.contact.facebook}>Facebook</ExternalLink>
           </li>
           <li>
-            <a href={config.contact.messenger}>Messenger</a>
+            <ExternalLink href={config.contact.messenger}>Messenger</ExternalLink>
           </li>
           <li>
-            <a href={config.contact.twitter}>Twitter</a>
+            <ExternalLink href={config.contact.twitter}>Twitter</ExternalLink>
           </li>
           <li>
-            <a href={config.contact.blog}>Blog</a>
+            <ExternalLink href={config.contact.blog}>Blog</ExternalLink>
           </li>
           <li>
-            <a
-              href="https://github.com/nusmodifications/nusmods/tree/master/api"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <ExternalLink href="https://github.com/nusmodifications/nusmods/tree/master/api">
               API
-            </a>
+            </ExternalLink>
           </li>
           <li>
             <Link to="/apps">Apps</Link>
@@ -88,14 +90,11 @@ export function FooterComponent(props: Props) {
             </button>
           </li>
         </ul>
-        <p>
-          Data correct as at {lastUpdatedDate ? lastUpdatedDate.toLocaleString() : 'Loading...'}.
-        </p>
+        <p>{lastUpdatedText}</p>
         <p>
           Designed and built with all the love in the world by{' '}
-          <a href={config.contact.githubOrg} target="_blank" rel="noopener noreferrer">
-            @nusmodifications
-          </a>. Maintained by the <Link to="/team">core team</Link> with the help of{' '}
+          <ExternalLink href={config.contact.githubOrg}>@nusmodifications</ExternalLink>. Maintained
+          by the <Link to="/team">core team</Link> with the help of{' '}
           <Link to="/contributors">our contributors</Link>.
         </p>
         <p>Copyright © 2014 - Present, NUSModifications. All rights reserved. {versionSpan}</p>
