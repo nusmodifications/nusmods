@@ -19,6 +19,7 @@ import GitHub from 'react-feather/dist/icons/github';
 import Heart from 'react-feather/dist/icons/heart';
 import Help from 'react-feather/dist/icons/help-circle';
 import Image from 'react-feather/dist/icons/image';
+import Layers from 'react-feather/dist/icons/layers';
 import LinkedIn from 'react-feather/dist/icons/linkedin';
 import Map from 'react-feather/dist/icons/map';
 import Menu from 'react-feather/dist/icons/menu';
@@ -53,6 +54,7 @@ export {
   Heart,
   Help,
   Image,
+  Layers,
   Map,
   Menu,
   Mail,

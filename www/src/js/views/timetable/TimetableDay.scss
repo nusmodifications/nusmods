@@ -47,6 +47,10 @@
   border-width: 0 1px;
   background: var(--body-bg);
 
+  &.dayNameScrolled {
+    z-index: $timetable-scolled-day-z-index;
+  }
+
   @include media-breakpoint-down(sm) {
     flex: 0 0 $timetable-day-h-size-sm;
     overflow: hidden;

@@ -17,14 +17,7 @@
   }
 }
 
-.tableContainer {
-  composes: row from global;
-}
-
-.timetableActions {
-  margin-bottom: 0.3rem;
-}
-
 .modulesSelect {
+  composes: col-12 from global;
   margin-bottom: 1rem;
 }
