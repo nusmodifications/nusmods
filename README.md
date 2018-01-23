@@ -15,17 +15,25 @@ This monorepo consists of 4 projects. Further details can be found at the links 
 
 ## Talk to us!
 
+We can be reached via the following methods, in order of preference.
+
 * Telegram: https://telegram.me/nusmods
-* Facebook: https://www.facebook.com/nusmods
 * Messenger: https://www.m.me/nusmods
+* Facebook: https://www.facebook.com/nusmods
 * Twitter: https://twitter.com/nusmods
 * Email: nusmods@googlegroups.com
 
-## Code of Conduct
+## Contributing
 
-We has adopted the same Code of Conduct as Facebook that we expect project participants to adhere to. Please read [the full text](https://code.facebook.com/codeofconduct) so that you can understand what actions will and will not be tolerated.
+### Code of Conduct
 
-## Good First Issues
+We have adopted the same Code of Conduct as Facebook that we expect project participants to adhere to. Please read [the full text](https://code.facebook.com/codeofconduct) so that you can understand what actions will and will not be tolerated.
+
+### Contributing Guide
+
+Read our [contributing guide](CONTRIBUTING.md) to learn about our development process, how to propose bug fixes and improvements, and how to build and test your changes to NUSMods.
+
+### Good First Issues
 
 To help you get your feet wet and get you familiar with our contribution process, we have a list of [good first issues](https://github.com/nusmodifications/nusmods/labels/good%20first%20issue) that contain bugs and small features which have a relatively limited scope. This is a great place to get started.
 
@@ -33,7 +41,7 @@ To help you get your feet wet and get you familiar with our contribution process
 
 All projects and packages in this repository are [MIT licensed](https://github.com/nusmodifications/nusmods/blob/master/LICENSE).
 
-## Supported by 
+## Supported by
 
 [BrowserStack](browserstack) lets us ensure NUSMods functions across all browsers and devices by allowing us to test NUSMods on real devices, including Safari on older iPhones and previous versions of browsers.
 
