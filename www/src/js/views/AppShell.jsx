@@ -10,10 +10,9 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { NavLink, withRouter, type ContextRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import NUSModerator from 'nusmoderator';
 import classnames from 'classnames';
 import { each } from 'lodash';
-
+import weekText from 'utils/weekText';
 import { fetchModuleList } from 'actions/moduleBank';
 import {
   fetchTimetableModules,
@@ -21,11 +20,12 @@ import {
   setTimetable,
   migrateTimetable,
 } from 'actions/timetables';
-import { noBreak } from 'utils/react';
 import Footer from 'views/layout/Footer';
 import Navtabs from 'views/layout/Navtabs';
 import GlobalSearchContainer from 'views/layout/GlobalSearchContainer';
 import Notification from 'views/components/Notification';
+import ErrorBoundary from 'views/errors/ErrorBoundary';
+import ErrorPage from 'views/errors/ErrorPage';
 import { DARK_MODE } from 'types/settings';
 import LoadingSpinner from './components/LoadingSpinner';
 import FeedbackModal from './components/FeedbackModal';
@@ -47,33 +47,6 @@ type Props = {
   setTimetable: (Semester, SemTimetableConfig) => void,
   fillTimetableBlanks: Semester => void,
 };
-
-type AcadWeekInfo = {
-  year: string,
-  sem: 'Semester 1' | 'Semester 2' | 'Special Sem 1' | 'Special Sem 2',
-  type: 'Instructional' | 'Reading' | 'Examination' | 'Recess' | 'Vacation' | 'Orientation',
-  num: ?number,
-};
-
-// Put outside render because this only needs to computed on page load.
-const weekText = (() => {
-  const acadWeekInfo: AcadWeekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(new Date());
-  const parts: Array<string> = [`AY20${acadWeekInfo.year}`];
-
-  // Check for null value (ie. during vacation)
-  if (acadWeekInfo.sem) {
-    parts.push(noBreak(acadWeekInfo.sem));
-  }
-
-  // Hide week if week type is 'Instructional'
-  if (acadWeekInfo.type !== 'Instructional') {
-    // Do not show the week number if there is only one week, e.g. recess
-    const weekNumber = acadWeekInfo.num || '';
-    parts.push(noBreak(`${acadWeekInfo.type} Week ${weekNumber}`));
-  }
-
-  return parts.join(', ').trim();
-})();
 
 export class AppShellComponent extends Component<Props> {
   componentWillMount() {
@@ -113,28 +86,39 @@ export class AppShellComponent extends Component<Props> {
             })}
           />
         </Helmet>
-
         <nav className={styles.navbar}>
           <NavLink className={styles.brand} to="/" title="Home">
             <span className="sr-only">NUSMods</span>
           </NavLink>
-          <GlobalSearchContainer />
+
+          <ErrorBoundary>
+            <GlobalSearchContainer />
+          </ErrorBoundary>
+
           <div className={styles.weekText}>{weekText}</div>
         </nav>
-
         <div className="main-container">
           <Navtabs />
 
           <main className="main-content">
-            {isModuleListReady ? this.props.children : <LoadingSpinner />}
+            {isModuleListReady ? (
+              <ErrorBoundary errorPage={(error, eventId) => <ErrorPage eventId={eventId} />}>
+                {this.props.children}
+              </ErrorBoundary>
+            ) : (
+              <LoadingSpinner />
+            )}
           </main>
         </div>
-
-        <FeedbackModal />
-
-        <Notification />
-
-        <Footer />
+        <ErrorBoundary>
+          <FeedbackModal />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <Notification />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <Footer />
+        </ErrorBoundary>
       </div>
     );
   }

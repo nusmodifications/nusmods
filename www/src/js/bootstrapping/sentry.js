@@ -14,9 +14,12 @@ if (loadRaven) {
       'canvas.contentDocument',
     ],
     ignoreUrls: [
-      // Chrome extensions
-      /extensions\//i,
+      // Local file system
+      /^file:\/\//i,
+      // Chrome and Firefox extensions
       /^chrome:\/\//i,
+      /^chrome-extension:\/\//i,
+      /^moz-extension:\/\//i,
       // Disqus
       /embed\.js$/i,
     ],

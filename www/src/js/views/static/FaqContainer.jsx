@@ -1,8 +1,7 @@
 // @flow
-
 import React from 'react';
-
 import config from 'config';
+import ExternalLink from 'views/components/ExternalLink';
 import StaticPage from './StaticPage';
 import styles from './FaqContainer.scss';
 
@@ -11,118 +10,144 @@ export default function FaqContainer() {
     <StaticPage title="FAQ">
       <h2>Frequently Asked Questions</h2>
       <hr />
-      <div className={styles.question}>
+      <div>
         <p>
-          Hi there! Before contacting us, please read the following FAQ (Frequently Asked Questions)
-          first. In most cases, you <strong>DO NOT</strong> need to contact us.
+          Hi there! Before contacting us, please read the following FAQ. In most cases, you{' '}
+          <strong>DO NOT</strong> need to contact us. We are busy students just like you, so please
+          try to save us some time as well!
         </p>
       </div>
 
-      <div className={styles.question}>
-        <h5>NUSMods is cool, where do you guys come from?</h5>
-        <p>
-          NUSMods is a student-run initiative and does not have any affiliations with the National
-          University of Singapore. NUSMods was born out of the frustration of a lack of usable NUS
-          timetable planners (the official one makes anyone who uses it want to pull their hair
-          out). It seems like NUS does not have any intentions to improve it anytime soon anyway.
-          Since most of us come from School of Computing, we decided to put our technical skills to
-          good use to create something that will make your lives as students easier and better.
-        </p>
-
-        <p>
-          NUSMods does not get to make decisions regarding your curriculum, module availablity and
-          module timetable. If you have questions regarding your curriculum, CORS bidding, IVLE or
-          anything unrelated to NUSMods, maybe it would be better to contact your faculty and
-          department or just <a href="https://www.google.com/">Google</a> it.
-        </p>
-      </div>
-
-      <div className={styles.question}>
-        <h5>When will semester X data be available?</h5>
-        <p>
-          We do not own nor come up with any of the modules data shown here. They are all obtained
-          from CORS. As soon as the data becomes available, we will reflect it here within a day or
-          two by using the latest blockchain technology.
-        </p>
-      </div>
-
-      <div className={styles.question}>
-        <h5>
-          The module NM2220 is on the CORS timetable for semester 2 but it is not on NUSMods. I hope
-          you can update this.
-        </h5>
-        <p>Refer to the answer for the previous question.</p>
-      </div>
-
-      <div className={styles.question}>
-        <h5>
-          There is a mistake. On my faculty website, SC3205 is shown to have two lecture slots but
-          on NUSMods there is only one lecture slot.
-        </h5>
-        <p>
-          Yes, there is a mistake, but in most cases, it is a mistake with <em>your faculty</em>.
-          Many faculties (FASS in particular) like to maintain their own module timetable schedule
-          on their own faculty website, without updating the official school data sources such as
-          CORS and IVLE. NUSMods obtains timetable data automatically from CORS and IVLE, and the
-          only way for the updated data to be reflected on NUSMods is to have CORS and IVLE updated.
-        </p>
-        <p>
-          Check <a href="https://myaces.nus.edu.sg/cors/jsp/report/ModuleInfoListing.jsp">CORS</a>{' '}
-          for the official timetable data (and see if that module even exists in CORS). Only if it
-          differs from NUSMods, then report it to NUSMods, else, kindly inform your faculty to
-          update the official sources and NUSMods will reflect the updates respectively. If CORS is
-          updated while NUSMods is not, give it a day or two for NUSMods to update it via our
-          automated state-of-the-art artificial intelligence algorithms and machine learning models.
-          If NUSMods is still not updated after two days, then there might be a problem. Please
-          contact us and we will look into it.
-        </p>
-      </div>
-
-      <div className={styles.question}>
-        <h5>
-          On my faculty website, the exam date for PS3242 is different from the one shown on
-          NUSMods. It should be on 28th Nov and not 24th Nov.
-        </h5>
-        <p>Refer to the answer for the previous question.</p>
-      </div>
-
-      <div className={styles.question}>
-        <h5>
-          I can add IS1112 into my list of modules but why are there no lectures or tutorial slots
-          after adding them?
-        </h5>
-        <p>Refer to the answer for the previous question.</p>
-      </div>
-
-      <div className={styles.question}>
-        <h5>SE5221 cannot be found on your website, can you update your system?</h5>
-        <p>Refer to the answer for the previous question.</p>
-      </div>
-
-      <div className={styles.question}>
-        <h5>
-          SC3202 is indicated as only available in Sem 1 in NUSMods but the FASS module list shows
-          it as available in Sem 2 too?
-        </h5>
-        <p>Refer to the answer for the previous question.</p>
-      </div>
-
-      <div className={styles.question}>
-        <h5>Why is ... ?</h5>
-        <p>
-          Before we hear the rest of your question, refer to the answer for the previous question.
-        </p>
-      </div>
+      <ul>
+        <li>
+          <a href="#mistakes">Can you update your system?</a>
+        </li>
+        <li>
+          <a href="#mistakes">Can you add a missing lecture/tutorial slot?</a>
+        </li>
+        <li>
+          <a href="#mistakes">Can you update the exam date?</a>
+        </li>
+        <li>
+          <a href="#mistakes">Can you add this module?</a>
+        </li>
+        <li>
+          <a href="#mistakes">When will semester X data be available?</a>
+        </li>
+        <li>
+          <a href="#mistakes">
+            Why can&apos;t I add this module in semester X? My faculty says that it is available in
+            semester X.
+          </a>
+        </li>
+        <li>
+          <a href="#about">NUSMods is cool, where do you guys come from?</a>
+        </li>
+        <li>
+          <a href="#export">Is it possible to export my timetable to Excel?</a>
+        </li>
+        <li>
+          <a href="#white-page">Why do I only see a white page when I open NUSMods?</a>
+        </li>
+      </ul>
 
       <hr />
 
-      <p>
-        Congratulations for making it to the end! If you are still bent on contacting us, you may
-        reach us via email at nusmods&#123;at&#125;googlegroups[dot]com or via{' '}
-        <a href={config.contact.messenger} target="_blank" rel="noopener noreferrer">
-          Messenger
-        </a>. Please allow up to 90 working days for a reply.
-      </p>
+      <div className={styles.question} id="mistakes">
+        <h5>There is a mistake! Can you update your system?</h5>
+        <p>This question applies to these situations:</p>
+        <ul>
+          <li>There is a missing lecture or tutorial slot.</li>
+          <li>The exam date is wrong.</li>
+          <li>You cannot find a module.</li>
+          <li>Semester X data is not available.</li>
+          <li>
+            You cannot add a module in semester X but your faculty says it is available in that
+            semester.
+          </li>
+        </ul>
+        <p>
+          We do not update module data manually. All module data shown in NUSMods is obtained from{' '}
+          <ExternalLink href="https://myaces.nus.edu.sg/cors/jsp/report/ModuleInfoListing.jsp">
+            CORS
+          </ExternalLink>{' '}
+          and{' '}
+          <ExternalLink href="https://ivle.nus.edu.sg/lms/public/search_course_public.aspx">
+            IVLE
+          </ExternalLink>. Protip: every NUSMods module page also has a direct link to CORS and
+          IVLE. Once the data becomes available there, NUSMods will reflect it within a day or two
+          using the latest blockchain technology.
+        </p>
+        <p>
+          Some faculties (FASS in particular) maintain their module timetable schedule on their
+          faculty website, without updating the official school data sources such as CORS and IVLE.
+          Unfortunately, we cannot obtain data from your faculty&apos;s site. Please tell your
+          faculty to update CORS and IVLE.
+        </p>
+        <p>
+          <strong>TL;DR</strong>: Please contact us only <em>after</em> you have done all these:
+        </p>
+        <ol>
+          <li>You have ensured that the missing/incorrect data can be seen in CORS or IVLE.</li>
+          <li>You have waited 1-2 days after checking CORS and IVLE in step 1.</li>
+          <li>You have refreshed NUSMods after step 2.</li>
+        </ol>
+      </div>
+
+      <div className={styles.question} id="about">
+        <h5>NUSMods is cool, where do you guys come from?</h5>
+        <p>
+          NUSMods is a student-run initiative and is not affiliated with the National University of
+          Singapore. NUSMods was born out of the frustration of a lack of usable NUS timetable
+          planners (<ExternalLink href="https://webrb.nus.edu.sg/ctt/builder.aspx">
+            the official one
+          </ExternalLink>{' '}
+          provides a delightful hair-pulling experience &ndash; go ahead, try it out). Also, it
+          seems like NUS does not intend to improve it anytime soon. Since most of us come from the
+          School of Computing, we decided to put our technical skills to use, creating something
+          that will make your lives easier and better.
+        </p>
+        <p>
+          NUSMods does not make decisions regarding your curriculum, module availability and module
+          timetable. If you have questions regarding your curriculum, CORS bidding, IVLE, or
+          anything unrelated to NUSMods, it would be better to either contact your faculty and
+          department or just <ExternalLink href="https://www.google.com/">Google</ExternalLink> it.
+        </p>
+      </div>
+
+      <div className={styles.question} id="export">
+        <h5>Is it possible to export my timetable to Excel?</h5>
+        <p>
+          No, and we have no plans to make this possible. Having said that, if you would like to
+          implement this, we welcome pull requests{' '}
+          <ExternalLink href={config.contact.githubRepo}>here</ExternalLink>!
+        </p>
+      </div>
+
+      <div className={styles.question} id="white-page">
+        <h5>Why do I only see a white page when I open NUSMods?</h5>
+        <p>
+          Please update your browser. Although we recommend the latest version of Google Chrome,
+          Firefox, Safari or Edge, we support the latest two versions of these browsers.
+          Unfortunately, we cannot support more browsers or older versions due to our limited
+          resources. If you are using iOS 9 or below, please update your device to iOS 10 or 11, or
+          use another computer to access NUSMods.
+        </p>
+        <p>
+          If you are seeing a white page in an up-to-date Chrome, Firefox, Safari or Edge, do
+          contact us.
+        </p>
+      </div>
+
+      <div className={styles.conclusion}>
+        <hr />
+        <p>
+          Congratulations on making it to the end! If you still want to contact us, you may reach us
+          via email at nusmods&#123;at&#125;googlegroups[dot]com or via{' '}
+          <ExternalLink href={config.contact.messenger}>Messenger</ExternalLink>. Please allow up to
+          90 working days for a reply.
+        </p>
+      </div>
     </StaticPage>
   );
 }

@@ -7,6 +7,7 @@ import isBinaryPath from 'is-binary-path';
 import bunyan from 'bunyan';
 
 const log = bunyan.createLogger({ name: 'gotCached' });
+const RETRIES = 4; // Retry on http request
 
 /**
  * Converts URL to equivalent valid filename.
@@ -53,6 +54,10 @@ async function gotCached(urlStr, config) {
     url: urlStr,
     // returns body as a buffer instead of string if its a binary file
     encoding: isBinaryPath(urlStr) ? null : 'utf-8',
+    retries(retry) {
+      if (retry >= RETRIES) return 0; // Cancels retry
+      return 1000 * (retry ** 2);
+    },
   };
   if (modifiedTime) {
     options.headers = config.headers || {};

@@ -1,7 +1,7 @@
 // @flow
 
-import type { VenueInfo, VenueSearchOptions, DayAvailability } from 'types/venues';
-import { range, pick, pickBy, padStart } from 'lodash';
+import type { VenueInfo, VenueSearchOptions, VenueDetailList } from 'types/venues';
+import { range, entries, padStart } from 'lodash';
 import { OCCUPIED } from 'types/venues';
 
 import { tokenize } from './moduleSearch';
@@ -13,23 +13,34 @@ import { SCHOOLDAYS } from './timify';
 // eg. 900 + hourDifference[2] // (9am + 2 * 30 minutes = 10am)
 const hourDifference = range(48).map((i) => Math.floor(i / 2) * 100 + (i % 2) * 30);
 
-export function searchVenue(venues: VenueInfo, search: string): VenueInfo {
-  let foundVenues = venues;
+const stringCompare =
+  // Feature detect Intl API
+  window.Intl && typeof window.Intl === 'object'
+    ? // $FlowFixMe: Flow doesn't have Intl typedefs https://github.com/facebook/flow/issues/1270
+      new Intl.Collator('en', { sensitivity: 'base', numeric: true }).compare
+    : (a, b) => a.localeCompare(b);
 
-  // Search by name
-  const tokens = tokenize(search.toLowerCase());
-  tokens.forEach((token) => {
-    const matches = Object.keys(foundVenues).filter((name) => name.toLowerCase().includes(token));
-    foundVenues = pick(foundVenues, matches);
-  });
-
-  return foundVenues;
+export function sortVenues(venues: VenueInfo): VenueDetailList {
+  return entries(venues).sort(([a], [b]) => stringCompare(a, b));
 }
 
-export function filterAvailability(venues: VenueInfo, options: VenueSearchOptions): VenueInfo {
+export function searchVenue(venues: VenueDetailList, search: string): VenueDetailList {
+  // Search by name
+  const tokens = tokenize(search.toLowerCase());
+
+  return venues.filter(([name]) => {
+    const lowercaseName = name.toLowerCase();
+    return tokens.every((token) => lowercaseName.includes(token));
+  });
+}
+
+export function filterAvailability(
+  venues: VenueDetailList,
+  options: VenueSearchOptions,
+): VenueDetailList {
   const { day, time, duration } = options;
 
-  return pickBy(venues, (venue: DayAvailability[]) => {
+  return venues.filter(([, venue]) => {
     const start = time * 100;
     const dayAvailability = venue.find((availability) => availability.Day === SCHOOLDAYS[day]);
     if (!dayAvailability) return false;

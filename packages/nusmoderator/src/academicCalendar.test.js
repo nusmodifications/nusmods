@@ -4,6 +4,7 @@ import {
   getAcadSem,
   getAcadWeekName,
   getAcadWeekInfo,
+  getExamWeek,
 } from '../src/academicCalendar';
 
 /* eslint-disable no-console */
@@ -163,5 +164,23 @@ describe('getAcadWeekInfo', () => {
     expect(getAcadWeekInfo(new Date('August 7, 2017'))).toEqual({
       year: '17/18', sem: 'Semester 1', type: 'Orientation', num: null,
     });
+  });
+});
+
+describe('getExamWeek', () => {
+  it('returns the first day of exams', () => {
+    expect(getExamWeek('17/18', 1)).toEqual(new Date('November 27, 2017'));
+    expect(getExamWeek('17/18', 2)).toEqual(new Date('30 April, 2018'));
+    expect(getExamWeek('17/18', 3)).toEqual(new Date('18 June, 2018'));
+    expect(getExamWeek('16/17', 4)).toEqual(new Date('24 July, 2017'));
+  });
+
+  it('returns null for unsupported years', () => {
+    expect(getExamWeek('09/10', 1)).toBeNull();
+  });
+
+  it('returns null for unknown semesters', () => {
+    expect(getExamWeek('16/17', 0)).toBeNull();
+    expect(getExamWeek('16/17', 5)).toBeNull();
   });
 });

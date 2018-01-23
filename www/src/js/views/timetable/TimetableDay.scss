@@ -47,6 +47,10 @@
   border-width: 0 1px;
   background: var(--body-bg);
 
+  &.dayNameScrolled {
+    z-index: $timetable-scolled-day-z-index;
+  }
+
   @include media-breakpoint-down(sm) {
     flex: 0 0 $timetable-day-h-size-sm;
     overflow: hidden;
@@ -75,7 +79,7 @@
 .dayRows {
   position: relative;
   display: flex;
-  flex: 1 0 auto;
+  flex: 1 1 auto;
   flex-direction: column;
   min-height: $timetable-row-height;
   padding-bottom: 0.3rem;

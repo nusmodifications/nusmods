@@ -10,7 +10,6 @@ import TimetableCell from './TimetableCell';
 type Props = {
   verticalMode: boolean,
   showTitle: boolean,
-  isScrolledHorizontally: boolean,
   startingIndex: number,
   endingIndex: number,
   lessons: Array<Lesson>,
@@ -51,14 +50,20 @@ function TimetableRow(props: Props) {
           [dirStyle]: `calc(${dirValue / totalCols * 100}% + 1px)`,
           [sizeStyle]: `calc(${size / totalCols * 100}% - 1px)`,
         };
-        // $FlowFixMe When object spread type actually works
-        const conditionalProps = lesson.isModifiable ? { onModifyCell } : {};
+        // $FlowFixMe
+        const conditionalProps = lesson.isModifiable
+          ? {
+              onClick: (e: Event) => {
+                e.stopPropagation();
+                return onModifyCell(lesson);
+              },
+            }
+          : {};
         return (
           <TimetableCell
             key={lesson.StartTime}
             style={style}
             lesson={lesson}
-            isScrolledHorizontally={props.isScrolledHorizontally}
             showTitle={props.showTitle}
             {...conditionalProps}
           />

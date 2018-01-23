@@ -1,4 +1,4 @@
-import { modulePage, timetablePage, semesterForTimetablePage } from './paths';
+import { modulePage, timetablePage, semesterForTimetablePage, venuePage } from './paths';
 
 test('modulePagePath should generate route correctly', () => {
   expect(modulePage('CS1010S', 'Programming Methodology')).toBe(
@@ -13,4 +13,11 @@ test('timetablePage <-> semesterForTimetablePage', () => {
     const param = path.match(/timetable\/(.*)/)[1];
     expect(semesterForTimetablePage(param)).toBe(semester);
   });
+});
+
+test('venuePage', () => {
+  expect(venuePage()).toEqual('/venues');
+  expect(venuePage(null)).toEqual('/venues');
+  expect(venuePage('abc')).toEqual('/venues/abc');
+  expect(venuePage('abc/def')).toEqual('/venues/abc%2Fdef');
 });

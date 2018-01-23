@@ -32,7 +32,7 @@ class Announcements extends PureComponent<Props, State> {
     super(props);
 
     this.state = {
-      isOpen: !!key && !storage.getItem(key),
+      isOpen: false, // !storage.getItem(key),
     };
   }
 

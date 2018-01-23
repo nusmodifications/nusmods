@@ -41,7 +41,7 @@ describe('<ModuleFinderContainer', () => {
     console.info.mockRestore(); // eslint-disable-line no-console
   });
 
-  async function createContainer(initialEntries?: Array<string>): Promise<Container> {
+  async function createContainer(initialEntries?: string[]): Promise<Container> {
     const router = createHistory(initialEntries);
 
     const container = {

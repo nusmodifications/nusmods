@@ -4,6 +4,9 @@
 $navbar-height: 3rem;
 $navtab-height: 3rem;
 
+$side-nav-width-md: 4rem;
+$side-nav-width-lg: 10rem;
+
 $navtab-shadow-height: 0.8rem;
 $navtab-shadow-color: rgba(#000, 0.1);
 $navtab-shadow-color-night: rgba(#000, 0.7);
@@ -175,9 +178,9 @@ $fab-z-index: 800;
 $side-menu-z-index: 700;
 $side-menu-overlay-z-index: 690;
 $cors-notification-z-index: 500;
+$timetable-scolled-day-z-index: 120;
 $timetable-selected-cell-z-index: 110;
 $timetable-timing-z-index: 95;
 $timetable-day-z-index: 90;
 $timetable-current-time-indicator-z-index: 60;
-$timetable-selected-cell-scrolled-z-index: 50;
 $timetable-cell-z-index: 30;

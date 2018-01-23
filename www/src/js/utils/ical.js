@@ -27,10 +27,10 @@ function dayIndex(weekday: string) {
 }
 
 /**
- * Parse out the hour component from a time string in the format of hh:mm
+ * Parse out the hour component from a time string in the format of hhmm
  */
-function getTimeHour(time: string) {
-  return parseInt(time.slice(0, 2), 10);
+export function getTimeHour(time: string) {
+  return parseInt(time.slice(0, 2), 10) + parseInt(time.slice(2), 10) / 60;
 }
 
 // needed cos the utils method formats the date for display
@@ -50,9 +50,9 @@ export function daysAfter(startDate: Date, days: number): Date {
 /**
  * Return a copy of the original Date incremented by the given number of hours
  */
-function hoursAfter(date: Date, sgHour: number) {
+export function hoursAfter(date: Date, sgHour: number) {
   const d = new Date(date.valueOf());
-  d.setUTCHours(d.getUTCHours() + sgHour);
+  d.setUTCHours(d.getUTCHours() + Math.floor(sgHour), (sgHour % 1) * 60);
   return d;
 }
 

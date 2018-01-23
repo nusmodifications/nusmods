@@ -31,7 +31,7 @@ function parseExportData(ctx, next) {
       validateExportData(data);
       ctx.state.data = data;
     } catch (e) {
-      ctx.throw(422, e, { original: e });
+      ctx.throw(422, null, { original: e });
     }
   }
 
@@ -47,6 +47,16 @@ function validateExportData(data) {
     data.semester > 4
   ) {
     throw new Error('Invalid semester');
+  }
+
+  // Handles pre-persist-migration data format
+  // TODO: Remove after AY2017/18 Sem 2 when the Redux Persist migration is also removed
+  if (!_.isObject(data.hidden)) {
+    data.hidden = _.get(data, 'settings.hiddenInTimetable', []);
+  }
+
+  if (!_.isObject(data.colors)) {
+    data.colors = _.get(data, 'theme.colors', {});
   }
 
   // TODO: Improve these validation

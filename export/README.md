@@ -22,7 +22,7 @@ yarn start
 yarn start:export
 
 # Start export server - use "yarn devtools" if need to see the graphical browser with  
-# developer tools. Note that PDF export in devtools mode. 
+# developer tools. Note that PDF export does not work in devtools mode. 
 cd ../export 
 yarn dev
 ```
@@ -70,5 +70,37 @@ Download PNG image of the timetable.
 ### GET `/debug`
 
 Returns the HTML content of the page that Puppeteer renders.
+
+## Deployment
+
+In production the app runs behind forever in addition to nodemon, so the app will automatically restart when its files are changed or if the app crashes.
+
+Export depends on build artifacts from `www`. The deploy script for `www` will automatically push updated versions of the artifacts to the correct folder, but staging needs to be updated manually. Use `yarn rsync:export ../exports/dist-timetable` from the `www` folder in staging to do this.
+
+Here are the steps for deploying. We rsync everything over, including the `node_modules`, so it is not necesary to run `yarn` in the production folder.
+
+``` bash
+# Update the files from the repo
+$ git pull 
+
+# Install dependencies
+$ yarn 
+
+# Deploy the files to production - optionally add --dry-run to check which files are changed first
+$ yarn deploy
+
+# Starting the app, if the app is not already running 
+# Use port 3300 for production and 3301 for staging 
+$ cd ../../nusmods-export
+$ PORT=3300 NODE_ENV=production yarn start 
+
+# Check that the app is running - also monitor Sentry for errors
+$ forever list
+$ forever logs <index>
+
+# Stopping the app - it may be necessary to manually kill the node and chrome processes 
+# if they did not manage to shutdown properly
+$ forever stop <index>
+```
 
 [puppeteer]: https://github.com/GoogleChrome/puppeteer
