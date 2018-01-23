@@ -17,7 +17,7 @@ export function regexify(str: string): RegExp {
   return RegExp(`\\b${terms}`, 'i');
 }
 
-export function createSearchPredicate(searchTerm: string): SearchableModule => boolean {
+export function createSearchPredicate(searchTerm: string): (SearchableModule) => boolean {
   const searchRegexes = tokenize(searchTerm).map(regexify);
 
   return function predicate(module: SearchableModule): boolean {
