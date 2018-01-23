@@ -21,13 +21,13 @@ export function FooterComponent(props: Props) {
 
   // Try catch because of Chrome crashing on calling toLocaleString with no parameter
   // See https://sentry.io/nusmods/v3/issues/434084130/
-  let lastUpdatedDate;
-  try {
-    lastUpdatedDate = props.lastUpdatedDate
-      ? props.lastUpdatedDate.toLocaleString()
-      : 'hang on, loading...';
-  } catch (e) {
-    // Ignore
+  let lastUpdatedText = 'Loading data...';
+  if (props.lastUpdatedDate) {
+    try {
+      lastUpdatedText = `Data correct as ${props.lastUpdatedDate.toLocaleString()}.`;
+    } catch (e) {
+      lastUpdatedText = `Data correct as ${props.lastUpdatedDate.toString()}.`;
+    }
   }
 
   const versionSpan = commitHash &&
@@ -97,7 +97,7 @@ export function FooterComponent(props: Props) {
             </button>
           </li>
         </ul>
-        <p>Data correct as at {lastUpdatedDate}.</p>
+        <p>{lastUpdatedText}</p>
         <p>
           Designed and built with all the love in the world by{' '}
           <a href={config.contact.githubOrg} target="_blank" rel="noopener noreferrer">
