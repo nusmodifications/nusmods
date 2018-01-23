@@ -96,23 +96,19 @@ test('formatExamDate should format an exam date string correctly', () => {
 });
 
 test('getModuleExamDate should return the correct exam date if it exists', () => {
-  expect(getModuleExamDate(cs1010s, 1)).toBe('2016-11-23T09:00+0800');
-  expect(getModuleExamDate(cs1010s, 2)).toBeFalsy();
+  expect(getModuleExamDate(cs1010s, 1)).toBe('2017-11-29T17:00+0800');
   expect(getModuleExamDate(cs3216, 2)).toBeFalsy();
 });
 
 test('getFormattedModuleExamDate should return the correctly formatted exam timing if it exists', () => {
   const sem: Semester = 1;
   const examTime: string = getFormattedModuleExamDate(cs1010s, sem);
-  expect(examTime).toBe('23-11-2016 9:00 AM');
+  expect(examTime).toBe('29-11-2017 5:00 PM');
 });
 
 test('getModuleSemExamDate should return "No Exam" if it does not exist', () => {
   const sem1: Semester = 1;
   expect(getFormattedModuleExamDate(cs3216, sem1)).toBe('No Exam');
-
-  const sem2: Semester = 2;
-  expect(getFormattedModuleExamDate(cs1010s, sem2)).toBe('No Exam');
 });
 
 describe('getFirstAvailableSemester', () => {
