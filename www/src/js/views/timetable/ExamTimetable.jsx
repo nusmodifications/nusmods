@@ -110,7 +110,7 @@ export default class ExamTimetable extends PureComponent<Props> {
                   const modules = modulesByExamDate[getExamDate(examDate.toISOString())];
                   let examDateString = String(examDate.getDate());
                   // Show the month in the first cell, or if the month changed
-                  if ((week === 0 && day === 0) || examDateString === 1) {
+                  if ((week === 0 && day === 0) || examDateString === '1') {
                     examDateString = `${MONTHS[examDate.getMonth()]} ${examDateString}`;
                   }
 
