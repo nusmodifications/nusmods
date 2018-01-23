@@ -5,7 +5,7 @@ import { connect, type MapStateToProps } from 'react-redux';
 import type { State } from 'reducers';
 
 type Props = {
-  children: Node | (boolean => Node),
+  children: Node | ((boolean) => Node),
 
   isOnline: boolean,
   isLive: boolean,

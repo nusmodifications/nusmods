@@ -7,7 +7,7 @@ type Props = {
   labels: [string, string],
   isOn: ?boolean,
 
-  onChange: boolean => void,
+  onChange: (boolean) => void,
 };
 
 export default class Toggle extends PureComponent<Props> {

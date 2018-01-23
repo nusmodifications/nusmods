@@ -9,8 +9,8 @@ type Props = {
   // Needed to generate unique ID and labels for checkbox and radio inputs
   groupId: string,
   filters: ModuleFilter[],
-  onChange: ModuleFilter => void,
-  getCount: ModuleFilter => number,
+  onChange: (ModuleFilter) => void,
+  getCount: (ModuleFilter) => number,
 };
 
 export default function Checklist({ groupId, filters, onChange, getCount }: Props) {

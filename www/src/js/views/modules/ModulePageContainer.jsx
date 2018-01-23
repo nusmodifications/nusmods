@@ -23,7 +23,7 @@ type Props = {
   moduleCode: ModuleCode,
   moduleCodes: ModuleCodeMap,
   module: ?Module,
-  fetchModule: ModuleCode => void,
+  fetchModule: (ModuleCode) => void,
 };
 
 type State = {
