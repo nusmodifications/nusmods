@@ -22,11 +22,11 @@ Mobile browsers:
 
 ## Contributing
 
-Don't know where to start? We highly recommend reading [this fantastic beginner's guide][zames-guide] written by one of our contributors. Alternatively, have a poke at our [open issues](https://github.com/nusmodifications/nusmods/issues?q=is%3Aissue+is%3Aopen).
+Don't know where to start? First, read our repository [contribution guide](../CONTRIBUTING.md). Next, we highly recommend reading [this fantastic beginner's guide][zames-guide] written by one of our contributors. Alternatively, have a poke at our [open issues](https://github.com/nusmodifications/nusmods/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22).
 
 ## Getting Started
 
-Install [NodeJS 8+](https://nodejs.org/en/) and [Yarn](https://yarnpkg.com/en/docs/install) then run the following command:
+Install [Node 8+](https://nodejs.org/en/) and [Yarn](https://yarnpkg.com/en/docs/install) then run the following command:
 
 ```sh
 $ yarn
@@ -88,7 +88,7 @@ Currently CSS variables are used only for colors that change under night mode.
 
 ### Testing and Linting
 
-We use [Jest][jest] with [Enzyme][enzyme] to test our code and React components, and [Flow][flow], [Stylelint][stylelint] and [ESLint][eslint] using [Airbnb config][eslint-airbnb] and [Prettier][prettier] for typechecking and linting.
+We use [Jest][jest] with [Enzyme][enzyme] to test our code and React components, [Flow][flow] for typechecking, [Stylelint][stylelint] and [ESLint][eslint] using [Airbnb config][eslint-airbnb] and [Prettier][prettier] for linting and formatting.
 
 ```sh
 # Run all tests once with code coverage
@@ -139,7 +139,7 @@ $ yarn promote-staging # Promote ./dist to production
 │   ├── js
 │   │   ├── actions          - Redux actions
 │   │   ├── apis             - Code to interface with external APIs
-│   │   ├── bootstrapping    - Code that runs once only on app initialization 
+│   │   ├── bootstrapping    - Code that runs once only on app initialization
 │   │   ├── config           - App configuration
 │   │   ├── data             - Static data such as theme colors
 │   │   ├── middlewares      - Redux middlewares
@@ -164,7 +164,7 @@ $ yarn promote-staging # Promote ./dist to production
 │   │       └── venues       - Venues page related components
 │   └── styles
 │       ├── bootstrap        - Bootstrapping, uh, Bootstrap
-│       ├── material         - Material components 
+│       ├── material         - Material components
 │       ├── components       - Legacy component styles
 │       │                      (new components should colocate their styles)
 │       ├── layout           - Site-wide layout styles
@@ -172,7 +172,7 @@ $ yarn promote-staging # Promote ./dist to production
 │       └── utils            - Utility classes, mixins, functions
 ├── static                   - Static assets, eg. favicons
 │                              These will be copied directly into /dist
-└── webpack                  - Webpack config
+└── webpack                  - webpack config
 ```
 
 ### Colocation
