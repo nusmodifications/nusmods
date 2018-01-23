@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { shallow } from 'enzyme';
+import { shallow, type ShallowWrapper } from 'enzyme';
 import type { SemTimetableConfig } from 'types/timetables';
 import type { ModulesMap } from 'reducers/moduleBank';
 
@@ -70,19 +70,29 @@ function createWithImport(
   return create(path, { semester: 'sem-1', action: 'share' }, existingTimetable, modules);
 }
 
-test('should redirect to activeSemester when semester is empty', () => {
-  const wrapper = create('/timetable').wrapper;
-
+function expectRedirect(wrapper: ShallowWrapper, to = timetablePage(1)) {
   expect(wrapper.type()).toEqual(Redirect);
-  expect(wrapper.props()).toMatchObject({ to: timetablePage(1) });
+  expect(wrapper.prop('to')).toEqual(to);
+}
+
+test('should redirect to activeSemester when semester is empty', () => {
+  expectRedirect(create('/timetable').wrapper);
 });
 
-test('should show 404 when the URL is invalid', () => {
-  expect(create('/timetable/hello', { semester: 'hello' }).wrapper.type()).toEqual(NotFoundPage);
-
-  expect(
-    create('/timetable/sem-1/hello', { semester: '1', action: 'hello' }).wrapper.type(),
-  ).toEqual(NotFoundPage);
+test('should redirect to homepage when the URL is invalid', () => {
+  expectRedirect(create('/timetable/hello', { semester: 'hello' }).wrapper);
+  expectRedirect(create('/timetable/sem-3', { semester: 'sem-3' }).wrapper);
+  expectRedirect(create('/timetable/sem-1/hello', { semester: '1', action: 'hello' }).wrapper);
+  expectRedirect(create('/timetable/2017-2018', { semester: '2017-2018' }).wrapper);
+  expectRedirect(
+    create('/timetable/2017-2018/sem2', { semester: '2017-2018', action: 'sem2' }).wrapper,
+  );
+  expectRedirect(
+    create('/timetable/2017-2018/share', { semester: '2017-2018', action: 'share' }).wrapper,
+  );
+  expectRedirect(
+    create('/timetable/2017-2018/v1', { semester: '2017-2018', action: 'v1' }).wrapper,
+  );
 });
 
 test('should load modules from imported timetable', () => {
