@@ -17,7 +17,7 @@ type Props = {
   closeIcon: Node,
   isOpen: boolean,
   matchBreakpoint: boolean,
-  toggleMenu: boolean => void,
+  toggleMenu: (boolean) => void,
 };
 
 export const OPEN_MENU_LABEL = 'Open menu';

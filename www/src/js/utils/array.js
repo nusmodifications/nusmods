@@ -13,7 +13,7 @@ export function intersperse<T, U>(array: T[], delimiter: U): Array<T | U> {
   return flatMap(array, (item): Array<T | U> => [item, delimiter]).slice(0, -1);
 }
 
-export function takeUntil<T>(array: T[], max: number, predicate: T => boolean): T[] {
+export function takeUntil<T>(array: T[], max: number, predicate: (T) => boolean): T[] {
   const filtered = [];
 
   for (let i = 0; i < array.length && filtered.length < max; i++) {

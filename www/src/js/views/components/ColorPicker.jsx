@@ -12,7 +12,7 @@ import styles from './ColorPicker.scss';
 type Props = {
   label: string,
   color: ColorIndex,
-  onChooseColor: ColorIndex => void,
+  onChooseColor: (ColorIndex) => void,
 };
 
 /**

@@ -9,7 +9,6 @@ import type { ModulesMap } from 'reducers/moduleBank';
 import createHistory from 'test-utils/createHistory';
 
 import { timetablePage, semesterForTimetablePage, timetableShare } from 'views/routes/paths';
-import NotFoundPage from 'views/errors/NotFoundPage';
 
 /** @var {Module} */
 import CS1010S from '__mocks__/modules/CS1010S.json';

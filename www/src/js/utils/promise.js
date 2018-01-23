@@ -6,7 +6,7 @@
 export function retry( // eslint-disable-line import/prefer-default-export
   retries: number,
   fn: () => Promise<any>,
-  shouldRetry: Error => boolean = () => true,
+  shouldRetry: (Error) => boolean = () => true,
 ) {
   return fn().catch((err) => {
     if (retries <= 0 || !shouldRetry(err)) {

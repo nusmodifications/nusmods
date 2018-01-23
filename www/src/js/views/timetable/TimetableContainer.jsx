@@ -37,7 +37,7 @@ type Props = {
   timetable: SemTimetableConfig,
   colors: ColorMapping,
 
-  selectSemester: Semester => void,
+  selectSemester: (Semester) => void,
   setTimetable: (Semester, SemTimetableConfig, ColorMapping) => void,
   fetchTimetableModules: (SemTimetableConfig[]) => void,
   openNotification: (string, NotificationOptions) => void,
