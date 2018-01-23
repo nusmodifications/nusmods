@@ -41,7 +41,7 @@
     "cheerio": "^1.0.0-rc.2",
     "clean-webpack-plugin": "^0.1.16",
     "copy-webpack-plugin": "^4.0.1",
-    "coveralls": "^2.13.1",
+    "coveralls": "^3.0.0",
     "cross-env": "^5.0.1",
     "css-loader": "^0.28.4",
     "cssnano": "^3.10.0",
