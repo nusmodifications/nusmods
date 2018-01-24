@@ -1,6 +1,6 @@
 // @flow
 import type { FSA } from 'types/redux';
-import type { ClassNo, LessonType, Semester } from 'types/modules';
+import type { Semester } from 'types/modules';
 import type { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
 import type { ColorMapping, TimetablesState } from 'types/reducers';
 
@@ -33,11 +33,8 @@ function moduleLessonConfig(
     case CHANGE_LESSON: {
       if (!action.payload) return state;
 
-      const classNo: ClassNo = action.payload.classNo;
-      const lessonType: LessonType = action.payload.lessonType;
-
+      const { classNo, lessonType } = action.payload;
       if (!(classNo && lessonType)) return state;
-
       return {
         ...state,
         [lessonType]: classNo,

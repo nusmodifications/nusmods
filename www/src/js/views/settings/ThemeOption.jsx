@@ -19,6 +19,8 @@ export default function ThemeOption(props: Props) {
   const { theme, isSelected, onSelectTheme, className } = props;
 
   return (
+    // Disabling rule as we already have keyboard shortcuts for theme changing
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events
     <div
       className={classnames(className, styles.option, `theme-${theme.id}`, {
         [styles.isSelected]: isSelected,

@@ -162,7 +162,7 @@ export function arrangeLessonsWithinDay(lessons: Array<Lesson>): TimetableDayArr
     return timeDiff !== 0 ? timeDiff : a.ClassNo.localeCompare(b.ClassNo);
   });
   sortedLessons.forEach((lesson: Lesson) => {
-    for (let i = 0, length = rows.length; i < length; i++) {
+    for (let i = 0, { length } = rows; i < length; i++) {
       const rowLessons: Array<Lesson> = rows[i];
       const previousLesson = _.last(rowLessons);
       if (!previousLesson || !doLessonsOverlap(previousLesson, lesson)) {

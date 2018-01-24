@@ -116,7 +116,7 @@ class TimetableContent extends Component<Props, State> {
     // Display alert on iPhones and iPod touches because snackbar action will take 2 taps
     // TODO: Replace with a more permanent solution
     // Using indexOf() as userAgent doesn't have contains()
-    const userAgent = navigator.userAgent;
+    const { userAgent } = navigator;
     if (userAgent.indexOf('iPhone') !== -1 || userAgent.indexOf('iPod') !== -1) {
       const confirmMessage = `Are you sure you want to remove ${moduleCode}?`;
       if (window.confirm(confirmMessage)) {
@@ -273,6 +273,7 @@ class TimetableContent extends Component<Props, State> {
           verticalMode: isVerticalOrientation,
         })}
         onClick={this.cancelModifyLesson}
+        onKeyUp={(e) => e.keyCode === 27 && this.cancelModifyLesson()} // Close menu when Esc is pressed
       >
         <Title>Timetable</Title>
 
@@ -330,7 +331,11 @@ class TimetableContent extends Component<Props, State> {
 
 function mapStateToProps(state, ownProps) {
   const { semester, timetable } = ownProps;
-  const modules = state.moduleBank.modules;
+  const {
+    moduleBank: { modules },
+    app: { activeLesson },
+    theme: { timetableOrientation, showTitle },
+  } = state;
   const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
   const hiddenInTimetable = state.timetables.hidden[semester] || [];
 
@@ -339,9 +344,9 @@ function mapStateToProps(state, ownProps) {
     timetable,
     timetableWithLessons,
     modules,
-    activeLesson: state.app.activeLesson,
-    timetableOrientation: state.theme.timetableOrientation,
-    showTitle: state.theme.showTitle,
+    activeLesson,
+    timetableOrientation,
+    showTitle,
     hiddenInTimetable,
   };
 }

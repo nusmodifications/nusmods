@@ -79,7 +79,7 @@ export function wrapComponentName(Component: ComponentType, wrapper: string): st
  * the page is initially loaded), but has content that can be linked to via hashes.
  */
 export function scrollToHash() {
-  const hash = window.location.hash;
+  const { hash } = window.location;
   if (hash) {
     const ele = document.getElementById(hash.slice(1)); // Hash string contains the '#' character
     if (ele) {

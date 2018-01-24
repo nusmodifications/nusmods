@@ -17,8 +17,7 @@ type Props = {
 };
 
 export function FooterComponent(props: Props) {
-  const commitHash = process.env.commitHash;
-  const versionStr = process.env.versionStr;
+  const { commitHash, versionStr } = process.env;
 
   // Try catch because of Chrome crashing on calling toLocaleString with no parameter
   // See https://sentry.io/nusmods/v3/issues/434084130/

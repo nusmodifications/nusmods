@@ -46,11 +46,17 @@ export class SideMenuComponent extends PureComponent<Props> {
 
     return (
       <Fragment>
-        <Fab className={styles.fab} onClick={() => toggleMenu(!isOpen)}>
+        <Fab
+          className={styles.fab}
+          onClick={() => toggleMenu(!isOpen)}
+          onKeyUp={(e) => e.keyCode === 27 && toggleMenu(false)} // Close menu when Esc is pressed
+        >
           {isOpen ? closeIcon : openIcon}
         </Fab>
 
         {this.isSideMenuShown() && (
+          // Key events are not sent to this div. Added key event to FAB instead.
+          // eslint-disable-next-line jsx-a11y/click-events-have-key-events
           <div className={styles.overlay} onClick={() => toggleMenu(false)} />
         )}
 
