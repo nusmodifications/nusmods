@@ -15,8 +15,8 @@ import CloseButton from 'views/components/CloseButton';
 import styles from './ModulesSelect.scss';
 
 type Props = {
-  getFilteredModules: string => ModuleSelectList,
-  onChange: ModuleCode => void,
+  getFilteredModules: (string) => ModuleSelectList,
+  onChange: (ModuleCode) => void,
   moduleCount: number,
   placeholder: string,
   matchBreakpoint: boolean,

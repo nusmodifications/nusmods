@@ -11,7 +11,7 @@ import styles from './ThemeOption.scss';
 type Props = {
   theme: Theme,
   isSelected: boolean,
-  onSelectTheme: ThemeId => void,
+  onSelectTheme: (ThemeId) => void,
   className?: string,
 };
 

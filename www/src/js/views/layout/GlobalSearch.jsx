@@ -15,10 +15,10 @@ import { MODULE_RESULT, SEARCH_RESULT, VENUE_RESULT } from 'types/views';
 import styles from './GlobalSearch.scss';
 
 type Props = {
-  getResults: string => ?SearchResult,
+  getResults: (string) => ?SearchResult,
 
-  onSelectVenue: Venue => void,
-  onSelectModule: ModuleCondensed => void,
+  onSelectVenue: (Venue) => void,
+  onSelectModule: (ModuleCondensed) => void,
   onSearch: (ResultType, string) => void,
 };
 

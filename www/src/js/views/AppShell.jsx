@@ -45,7 +45,7 @@ type Props = {
   migrateTimetable: () => void,
   fetchTimetableModules: (SemTimetableConfig[]) => Promise<*>,
   setTimetable: (Semester, SemTimetableConfig) => void,
-  fillTimetableBlanks: Semester => void,
+  fillTimetableBlanks: (Semester) => void,
 };
 
 export class AppShellComponent extends Component<Props> {

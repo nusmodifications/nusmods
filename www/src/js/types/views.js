@@ -38,4 +38,4 @@ export type PageRangeDiff = {
   current?: number,
 };
 
-export type OnPageChange = PageRangeDiff => void;
+export type OnPageChange = (PageRangeDiff) => void;

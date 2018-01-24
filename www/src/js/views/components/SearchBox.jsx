@@ -12,7 +12,7 @@ type Props = {
   useInstantSearch: boolean,
   initialSearchTerm: ?string,
   placeholder: string,
-  onSearch: string => void,
+  onSearch: (string) => void,
 };
 
 type State = {
@@ -62,7 +62,9 @@ export default class SearchBox extends PureComponent<Props, State> {
     this.props.onSearch(input.trim());
   };
 
-  debouncedSearch: string => void = debounce(this.search, this.props.throttle, { leading: false });
+  debouncedSearch: (string) => void = debounce(this.search, this.props.throttle, {
+    leading: false,
+  });
 
   showSubmitHelp() {
     return (
