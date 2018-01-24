@@ -5,6 +5,7 @@ module.exports = {
   rules: {
     'at-rule-empty-line-before': null,
     'at-rule-no-unknown': null,
+    'no-descending-specificity': null,
     // Enable :global and :local selectors for css modules
     'selector-pseudo-class-no-unknown': [
       true,
