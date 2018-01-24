@@ -4054,9 +4054,9 @@ https-browserify@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/https-browserify/-/https-browserify-1.0.0.tgz#ec06c10e0a34c0f2faf199f7fd7fc78fffd03c73"
 
-ical-generator@^0.2.10:
+"ical-generator@https://github.com/ZhangYiJiang/ical-generator.git#ed6928fe":
   version "0.2.10"
-  resolved "https://registry.yarnpkg.com/ical-generator/-/ical-generator-0.2.10.tgz#f3d91201411c63b26985b7c59bd5ed91801084ef"
+  resolved "https://github.com/ZhangYiJiang/ical-generator.git#ed6928fecce6789db4d99f856413074de7eb5a1e"
 
 icalendar@^0.7.1:
   version "0.7.1"
