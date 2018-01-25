@@ -8,12 +8,12 @@ export default class ModuleFilter {
 
   id: string;
   label: string;
-  test: Module => boolean;
+  test: (Module) => boolean;
 
   // ModuleCode of modules that this filter matches
   filteredModules: Set<ModuleCode>;
 
-  constructor(id: string, label: string, test: Module => boolean) {
+  constructor(id: string, label: string, test: (Module) => boolean) {
     this.id = id;
     this.label = label;
     this.test = test;

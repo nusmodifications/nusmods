@@ -24,7 +24,7 @@ type Props = {
   enabled: boolean,
   dismissedRounds: string[],
 
-  dismissCorsNotification: string => void,
+  dismissCorsNotification: (string) => void,
   openNotification: (string, NotificationOptions) => void,
 
   ...ContextRouter,

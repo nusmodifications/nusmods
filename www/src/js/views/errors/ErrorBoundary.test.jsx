@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component } from 'react';
+import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Raven from 'raven-js';
 
@@ -15,17 +15,10 @@ jest.mock(
     },
 );
 
-// eslint-disable-next-line react/require-render-return
-class ThrowsError extends Component<{
-  error: Error,
-}> {
-  static defaultProps = {
-    error: new Error('Test error'),
-  };
-
-  render() {
-    throw this.props.error;
-  }
+const error = new Error('Test error'); // To be used to compare with error caught by ErrorBoundary
+// Stateless React component which throws error
+function ThrowsError() {
+  throw error;
 }
 
 describe('ErrorBoundary', () => {
@@ -54,10 +47,9 @@ describe('ErrorBoundary', () => {
   });
 
   test('should show nothing by default when error is thrown', () => {
-    const error = new Error('Test error');
     const wrapper = mount(
       <ErrorBoundary>
-        <ThrowsError error={error}>Some content</ThrowsError>
+        <ThrowsError>Some content</ThrowsError>
       </ErrorBoundary>,
     );
 
@@ -66,14 +58,13 @@ describe('ErrorBoundary', () => {
   });
 
   test('should show custom error page if provided', () => {
-    const error = new Error('Test error');
     const errorPage = jest.fn(() => 'Custom content');
     const eventId = '12345';
 
     Raven.lastEventId.mockReturnValue(eventId);
     const wrapper = mount(
       <ErrorBoundary errorPage={errorPage}>
-        <ThrowsError error={error}>Some content</ThrowsError>
+        <ThrowsError>Some content</ThrowsError>
       </ErrorBoundary>,
     );
 

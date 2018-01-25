@@ -24,7 +24,7 @@ const PDF: ExportAction = 'PDF';
 type Props = {
   state: State,
   semester: Semester,
-  downloadAsIcal: Semester => void,
+  downloadAsIcal: (Semester) => void,
 };
 
 export class ExportMenuComponent extends PureComponent<Props> {

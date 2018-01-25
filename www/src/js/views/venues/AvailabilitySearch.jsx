@@ -12,7 +12,7 @@ type Props = {
   className?: string,
   isEnabled: boolean,
   searchOptions: VenueSearchOptions,
-  onUpdate: VenueSearchOptions => void,
+  onUpdate: (VenueSearchOptions) => void,
 };
 
 // The first and last starting time of lessons

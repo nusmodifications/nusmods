@@ -9,7 +9,7 @@ type Props = {
   classNames?: { [ButtonChoice]: string[] },
   size?: string,
   selectedChoice: ?ButtonChoice,
-  onChoiceSelect: string => void,
+  onChoiceSelect: (string) => void,
   ariaLabel?: string,
 };
 

@@ -29,7 +29,7 @@ function make(
   url: string,
   module: ?Module = null,
   request: ?FetchRequest = null,
-  fetchModule: ModuleCode => void = noop,
+  fetchModule: (ModuleCode) => void = noop,
 ) {
   return shallow(
     <ModulePageContainerComponent
