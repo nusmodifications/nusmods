@@ -8,7 +8,11 @@ import type { ColorIndex, ColorMapping } from 'types/reducers';
 import type { ClassNo, Lesson, LessonType, Module, ModuleCode, Semester } from 'types/modules';
 
 import { fetchModule } from 'actions/moduleBank';
-import { randomModuleLessonConfig, validateTimetableModules } from 'utils/timetables';
+import {
+  randomModuleLessonConfig,
+  validateModuleLessons,
+  validateTimetableModules,
+} from 'utils/timetables';
 import { getModuleTimetable } from 'utils/modules';
 import storage from 'storage';
 import { V2_MIGRATION_KEY } from 'storage/keys';
@@ -76,6 +80,22 @@ export function changeLesson(semester: Semester, lesson: Lesson): FSA {
   return setLesson(semester, lesson.ModuleCode, lesson.LessonType, lesson.ClassNo);
 }
 
+export const SET_LESSON_CONFIG = 'SET_LESSON_CONFIG';
+export function setLessonConfig(
+  semester: Semester,
+  moduleCode: ModuleCode,
+  lessonConfig: ModuleLessonConfig,
+): FSA {
+  return {
+    type: SET_LESSON_CONFIG,
+    payload: {
+      semester,
+      moduleCode,
+      lessonConfig,
+    },
+  };
+}
+
 export const CANCEL_MODIFY_LESSON: string = 'CANCEL_MODIFY_LESSON';
 export function cancelModifyLesson(): FSA {
   return {
@@ -112,20 +132,21 @@ export function fillTimetableBlanks(semester: Semester) {
     const timetable = timetables.lessons[semester];
     if (!timetable) return;
 
-    // Check that all lessons for each module is filled, if they are not, use the
-    // randomly generated config to fill them in
+    // Check that all lessons for each module are valid. If they are not, we update it
+    // such that they are
     each(timetable, (lessonConfig: ModuleLessonConfig, moduleCode: ModuleCode) => {
       const module = moduleBank.modules[moduleCode];
       if (!module) return;
 
-      const lessons = getModuleTimetable(module, semester);
-      const randomLessonConfig = randomModuleLessonConfig(lessons);
+      const [validatedLessonConfig, changedLessonTypes] = validateModuleLessons(
+        semester,
+        lessonConfig,
+        module,
+      );
 
-      each(randomLessonConfig, (classNo: ClassNo, lessonType: LessonType) => {
-        if (!lessonConfig[lessonType]) {
-          dispatch(setLesson(semester, moduleCode, lessonType, classNo));
-        }
-      });
+      if (changedLessonTypes.length) {
+        dispatch(setLessonConfig(semester, moduleCode, validatedLessonConfig));
+      }
     });
   };
 }

@@ -173,22 +173,26 @@ describe('fillTimetableBlanks', () => {
 
     const [[firstAction], [secondAction]] = dispatch.mock.calls;
     expect(firstAction).toMatchObject({
-      type: actions.CHANGE_LESSON,
+      type: actions.SET_LESSON_CONFIG,
       payload: {
         semester,
         moduleCode: 'CS1010S',
-        lessonType: 'Recitation',
-        classNo: expect.any(String),
+        lessonConfig: {
+          Lecture: '1',
+          Tutorial: '1',
+          Recitation: expect.any(String),
+        },
       },
     });
 
     expect(secondAction).toMatchObject({
-      type: actions.CHANGE_LESSON,
+      type: actions.SET_LESSON_CONFIG,
       payload: {
         semester,
         moduleCode: 'CS3216',
-        lessonType: 'Lecture',
-        classNo: '1',
+        lessonConfig: {
+          Lecture: '1',
+        },
       },
     });
   });

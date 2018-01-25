@@ -62,10 +62,12 @@ export class AppShellComponent extends Component<Props> {
 
     // Refresh the module data of the existing modules in the timetable and ensure all
     // lessons are filled
-    each(timetables, (timetable, semester) => {
+    each(timetables, (timetable, semesterString) => {
+      const semester = Number(semesterString);
+
       this.props
         .fetchTimetableModules([timetable])
-        .then(() => this.props.fillTimetableBlanks(Number(semester)));
+        .then(() => this.props.fillTimetableBlanks(semester));
     });
 
     // Fetch all module data that are on timetable
