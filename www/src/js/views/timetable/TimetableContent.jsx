@@ -331,11 +331,7 @@ class TimetableContent extends Component<Props, State> {
 
 function mapStateToProps(state, ownProps) {
   const { semester, timetable } = ownProps;
-  const {
-    moduleBank: { modules },
-    app: { activeLesson },
-    theme: { timetableOrientation, showTitle },
-  } = state;
+  const modules = state.moduleBank.modules;
   const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
   const hiddenInTimetable = state.timetables.hidden[semester] || [];
 
@@ -344,9 +340,9 @@ function mapStateToProps(state, ownProps) {
     timetable,
     timetableWithLessons,
     modules,
-    activeLesson,
-    timetableOrientation,
-    showTitle,
+    activeLesson: state.app.activeLesson,
+    timetableOrientation: state.theme.timetableOrientation,
+    showTitle: state.theme.showTitle,
     hiddenInTimetable,
   };
 }
