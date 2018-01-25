@@ -273,7 +273,7 @@ class TimetableContent extends Component<Props, State> {
           verticalMode: isVerticalOrientation,
         })}
         onClick={this.cancelModifyLesson}
-        onKeyUp={(e) => e.keyCode === 27 && this.cancelModifyLesson()} // Close menu when Esc is pressed
+        onKeyUp={(e) => e.keyCode === 27 && this.cancelModifyLesson()} // Quit modifying when Esc is pressed
       >
         <Title>Timetable</Title>
 
