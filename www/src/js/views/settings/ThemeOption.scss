@@ -7,11 +7,16 @@ $theme-option-gap: 0.7rem;
 .option {
   padding: $theme-option-gap;
   border-radius: 6px;
+  border-width: 0;
   cursor: pointer;
   transition: background-color $desktop-entering-duration $material-deceleration-curve;
 
   &:hover {
     background-color: $theme-hover-bg-color;
+  }
+
+  &:focus {
+    outline: 0;
   }
 
   &.isSelected {

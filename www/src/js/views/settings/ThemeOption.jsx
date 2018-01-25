@@ -19,9 +19,7 @@ export default function ThemeOption(props: Props) {
   const { theme, isSelected, onSelectTheme, className } = props;
 
   return (
-    // Disabling rule as we already have keyboard shortcuts for theme changing
-    // eslint-disable-next-line jsx-a11y/click-events-have-key-events
-    <div
+    <button
       className={classnames(className, styles.option, `theme-${theme.id}`, {
         [styles.isSelected]: isSelected,
       })}
@@ -35,6 +33,6 @@ export default function ThemeOption(props: Props) {
           <li key={index} className={classnames(styles.colorItem, `color-${index}`)} />
         ))}
       </ul>
-    </div>
+    </button>
   );
 }
