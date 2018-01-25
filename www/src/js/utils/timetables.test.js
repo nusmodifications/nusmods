@@ -551,7 +551,7 @@ describe('validateModuleLessons', () => {
     ).toEqual([
       {
         Lecture: '1',
-        Recitation: expect.any(String),
+        Recitation: '1',
         Tutorial: '10',
       },
       ['Lecture', 'Recitation'],

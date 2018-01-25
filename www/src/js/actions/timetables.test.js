@@ -138,7 +138,7 @@ describe('fillTimetableBlanks', () => {
     lessons: { [semester]: timetable },
   });
   const semester = 1;
-  const action = actions.fillTimetableBlanks(semester);
+  const action = actions.validateTimetable(semester);
 
   test('do nothing if timetable is already full', () => {
     const timetable = {

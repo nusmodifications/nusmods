@@ -249,7 +249,8 @@ export function validateTimetableModules(
 
 /**
  * Validates the lesson config for a specific module. It replaces all lessons
- * which invalid class number with random class numbers, and
+ * which invalid class number with the first available class numbers, and
+ * removes lessons that are no longer valid
  * @param semester
  * @param lessonConfig
  * @param module
@@ -277,7 +278,7 @@ export function validateModuleLessons(
     //
     // If a lesson type is removed, then it simply won't be copied over
     if (!lessons.some((lesson) => lesson.ClassNo === classNo)) {
-      validatedLessonConfig[lessonType] = _.sample(lessons).ClassNo;
+      validatedLessonConfig[lessonType] = lessons[0].ClassNo;
       updatedLessonTypes.push(lessonType);
     } else {
       validatedLessonConfig[lessonType] = classNo;

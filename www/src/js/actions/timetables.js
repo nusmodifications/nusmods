@@ -124,7 +124,7 @@ export function setTimetable(
   };
 }
 
-export function fillTimetableBlanks(semester: Semester) {
+export function validateTimetable(semester: Semester) {
   return (dispatch: Function, getState: GetState) => {
     const { timetables, moduleBank } = getState();
 
@@ -179,7 +179,7 @@ export function migrateTimetable() {
 
         dispatch(setTimetable(semester, validTimetable));
         return dispatch(fetchTimetableModules([timetable])).then(() =>
-          dispatch(fillTimetableBlanks(semester)),
+          dispatch(validateTimetable(semester)),
         );
       }),
     );
