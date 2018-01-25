@@ -38,6 +38,8 @@ module.exports = {
 
     'no-alert': 'off',
 
+    'prefer-destructuring': warnInDevelopment,
+
     'import/extensions': [
       warnInDevelopment,
       'always',

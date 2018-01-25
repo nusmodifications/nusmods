@@ -165,8 +165,9 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
   }
 
   render() {
-    const { timetable, semester, activeSemester, match: { params: { action } } } = this.props;
+    const { timetable, semester, activeSemester, match } = this.props;
     const { importedTimetable } = this.state;
+    const { action } = match.params;
 
     // 1. If the URL doesn't look correct, we'll direct the user to the home page
     if (semester == null || (action && action !== TIMETABLE_SHARE)) {
