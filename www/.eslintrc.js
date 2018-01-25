@@ -37,8 +37,7 @@ module.exports = {
     'no-console': warnInDevelopment,
 
     'no-alert': 'off',
-
-    'prefer-destructuring': warnInDevelopment,
+    'prefer-destructuring': 'off',
 
     'import/extensions': [
       warnInDevelopment,
