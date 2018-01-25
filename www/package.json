@@ -37,7 +37,7 @@
     "babel-preset-react-optimize": "^1.0.1",
     "babel-register": "^6.24.1",
     "cache-loader": "^1.0.3",
-    "chalk": "^2.2.2",
+    "chalk": "^2.3.0",
     "cheerio": "^1.0.0-rc.2",
     "clean-webpack-plugin": "^0.1.16",
     "copy-webpack-plugin": "^4.0.1",
