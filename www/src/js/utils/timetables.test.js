@@ -45,6 +45,8 @@ import cs1010s from '__mocks__/modules/CS1010S.json';
 import cs3216 from '__mocks__/modules/CS3216.json';
 /** @var {Module} */
 import pc1222 from '__mocks__/modules/PC1222.json';
+/** @var {Module} */
+import cs4243 from '__mocks__/modules/CS4243.json';
 
 import modulesList from '__mocks__/module-list.json';
 
@@ -391,9 +393,9 @@ test('areOtherClassesAvailable', () => {
 
 test('findExamClashes should return non-empty object if exams clash', () => {
   const sem: Semester = 1;
-  const examClashes = findExamClashes([cs1010s, pc1222, cs3216], sem);
+  const examClashes = findExamClashes([cs1010s, cs4243, cs3216], sem);
   const examDate = _.get(getModuleSemesterData(cs1010s, sem), 'ExamDate');
-  expect(examClashes).toEqual({ [examDate]: [cs1010s, pc1222] });
+  expect(examClashes).toEqual({ [examDate]: [cs1010s, cs4243] });
 });
 
 test('findExamClashes should return empty object if exams do not clash', () => {

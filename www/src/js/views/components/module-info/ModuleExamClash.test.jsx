@@ -46,7 +46,7 @@ test('should ignore modules that are already on the timetable', () => {
 });
 
 test('should return all conflicting modules', () => {
-  const component = make('CS1010E', '2016-11-23T09:00+0800');
+  const component = make('CS1010E', '2017-11-29T17:00+0800');
   const link = component.find(Link);
   expect(link).toHaveLength(1);
   expect(link.text()).toMatch('CS1010S');
