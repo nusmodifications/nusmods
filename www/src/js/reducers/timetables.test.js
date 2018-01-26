@@ -7,6 +7,7 @@ import {
   hideLessonInTimetable,
   removeModule,
   showLessonInTimetable,
+  setLessonConfig,
 } from 'actions/timetables';
 import type { TimetablesState } from 'types/reducers';
 
@@ -103,6 +104,57 @@ describe('hidden module reducer', () => {
       hidden: {
         [1]: [],
         [2]: ['CS1010S'],
+      },
+    });
+  });
+});
+
+describe('lesson reducer', () => {
+  test('should allow lesson config to be set', () => {
+    expect(
+      reducer(
+        {
+          ...initialState,
+          lessons: {
+            [1]: {
+              CS1010S: {
+                Lecture: '1',
+                Recitation: '2',
+              },
+              CS3216: {
+                Lecture: '1',
+              },
+            },
+            [2]: {
+              CS3217: {
+                Lecture: '1',
+              },
+            },
+          },
+        },
+        setLessonConfig(1, 'CS1010S', {
+          Lecture: '2',
+          Recitation: '3',
+          Tutorial: '4',
+        }),
+      ),
+    ).toMatchObject({
+      lessons: {
+        [1]: {
+          CS1010S: {
+            Lecture: '2',
+            Recitation: '3',
+            Tutorial: '4',
+          },
+          CS3216: {
+            Lecture: '1',
+          },
+        },
+        [2]: {
+          CS3217: {
+            Lecture: '1',
+          },
+        },
       },
     });
   });

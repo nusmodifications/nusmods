@@ -105,8 +105,8 @@ test('hoursAfter should return a date incremented by the given number of hours',
 test('iCalEventForExam should generate event', () => {
   const actual: ?EventOption = iCalEventForExam(cs1010s, 1);
   const expected: EventOption = {
-    start: new Date('2016-11-23T09:00+0800'),
-    end: new Date('2016-11-23T11:00+0800'),
+    start: new Date('2017-11-29T17:00+0800'),
+    end: new Date('2017-11-29T19:00+0800'),
     summary: 'CS1010S Exam',
     description: 'Programming Methodology',
     url: 'http://www.nus.edu.sg/registrar/event/examschedule-sem1.html',
