@@ -83,12 +83,13 @@ function renderModule(module: ModuleWithColor) {
 }
 
 function renderWeek(week: ExamDay[], weekNumber: number) {
+  // Each week consists of a header row
   const headerRow = (
     <tr>
       {week.map((examDay, dayNumber) => {
         // Format the date number for each day of the exam. We avoid repeating
-        // the month unnecessarily by only showing it for the very first cell, and
-        // when the month changes
+        // the month name unnecessarily by only showing it for the very first cell,
+        // and when the month changes
         const { date } = examDay;
         let examDateString = String(date.getDate());
         if ((weekNumber === 0 && dayNumber === 0) || examDateString === '1') {
@@ -97,7 +98,7 @@ function renderWeek(week: ExamDay[], weekNumber: number) {
 
         return (
           <th className={styles.dayDate} key={examDateString}>
-            {examDateString}
+            <time dateTime={date.toDateString()}>{examDateString}</time>
           </th>
         );
       })}
@@ -111,12 +112,14 @@ function renderWeek(week: ExamDay[], weekNumber: number) {
         const modules = groupedModules[timeSegment];
 
         return (
-          modules && (
-            <td className={styles.day} key={dayNumber}>
-              <h4>{timeSegment}</h4>
-              {modules.map((module) => <div key={module.ModuleCode}>{renderModule(module)}</div>)}
-            </td>
-          )
+          <td className={styles.day} key={dayNumber}>
+            {modules && (
+              <Fragment>
+                <h4>{timeSegment}</h4>
+                {modules.map((module) => <div key={module.ModuleCode}>{renderModule(module)}</div>)}
+              </Fragment>
+            )}
+          </td>
         );
       })}
     </tr>
@@ -131,14 +134,16 @@ function renderWeek(week: ExamDay[], weekNumber: number) {
 }
 
 export default class ExamTimetable extends PureComponent<Props> {
+  // Utility function to get the first day of exams and calculate the number of weeks
   getExamCalendar(): [Date, number] {
     const { semester, modules } = this.props;
     const year = `${config.academicYear.slice(2, 4)}/${config.academicYear.slice(-2)}`;
-    let weekCount = EXAM_WEEKS[semester];
     let firstDayOfExams = new Date(
       // Add Singapore's tz offset to ensure the date is in the local tz
       NUSModerator.academicCalendar.getExamWeek(year, semester).valueOf() + 8 * 60 * 60 * 1000,
     );
+
+    let weekCount = EXAM_WEEKS[semester];
     let lastDayOfExams = daysAfter(firstDayOfExams, weekCount * 7);
 
     // Check modules for outliers, eg. GER1000 that has exams on the Saturday before the exam week
@@ -193,21 +198,23 @@ export default class ExamTimetable extends PureComponent<Props> {
     const modulesByExamDate = this.groupModulesByExams();
 
     return (
-      <div className="scrollable">
-        <table className={styles.table}>
-          <tbody>
-            <tr className={styles.daysOfWeek}>
-              {range(6).map((day) => (
-                <th key={day} className={styles.dayName}>
-                  {DaysOfWeek[day].slice(0, 3)}
-                </th>
-              ))}
-            </tr>
-
-            {modulesByExamDate.map(renderWeek)}
-          </tbody>
-        </table>
-      </div>
+      <Fragment>
+        <h3>Exam Timetable</h3>
+        <div className="scrollable">
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                {range(6).map((day) => (
+                  <th key={day} className={styles.dayName}>
+                    {DaysOfWeek[day].slice(0, 3)}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>{modulesByExamDate.map(renderWeek)}</tbody>
+          </table>
+        </div>
+      </Fragment>
     );
   }
 }
