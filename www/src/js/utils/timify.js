@@ -70,11 +70,12 @@ export function getCurrentMinutes(
   return now.getMinutes();
 }
 
-// Monday = 0, Friday = 4
-export function getCurrentDayIndex(
-  now: Date = new Date(), // Used for tests only
-): number {
-  return now.getDay() - 1; // Minus 1 because JS week starts on Sunday
+// Monday = 0, Friday = 4, Sunday = 6
+export function getCurrentDayIndex(now: Date = new Date()): number {
+  const day = now.getDay();
+  return day === 0
+    ? 6 // Sunday = 6
+    : day - 1; // Otherwise, add one because JS days start on Sunday
 }
 
 /**

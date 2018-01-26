@@ -7,7 +7,7 @@ import { groupBy, range } from 'lodash';
 import type { ModuleWithColor, Semester } from 'types/modules';
 import config from 'config';
 import { formatExamDate, getModuleExamDate } from 'utils/modules';
-import { daysAfter } from 'utils/timify';
+import { daysAfter, getCurrentDayIndex } from 'utils/timify';
 import { modulePage } from 'views/routes/paths';
 import { DaysOfWeek } from 'types/modules';
 
@@ -81,11 +81,10 @@ function renderWeek(week: ExamDay[], weekNumber: number) {
   // Each week consists of a header row
   const headerRow = (
     <tr>
-      {week.map((examDay, dayNumber) => {
+      {week.map(({ date }, dayNumber) => {
         // Format the date number for each day of the exam. We avoid repeating
         // the month name unnecessarily by only showing it for the very first cell,
         // and when the month changes
-        const { date } = examDay;
         let examDateString = String(date.getDate());
         if ((weekNumber === 0 && dayNumber === 0) || examDateString === '1') {
           examDateString = `${MONTHS[date.getMonth()]} ${examDateString}`;
@@ -102,8 +101,7 @@ function renderWeek(week: ExamDay[], weekNumber: number) {
 
   const moduleRows = TIME_SEGMENTS.map((timeSegment) => (
     <tr key={timeSegment}>
-      {week.map((day, dayNumber) => {
-        const { groupedModules } = day;
+      {week.map(({ groupedModules }, dayNumber) => {
         const modules = groupedModules[timeSegment];
 
         return (
@@ -169,7 +167,7 @@ export default class ExamTimetable extends PureComponent<Props> {
     const [firstDayOfExams, weekCount] = this.getExamCalendar();
 
     // Wrap each module with its exam date info. This means we don't have to
-    // recalculate these information every time
+    // recalculate these every time we need them
     const modulesWithExams: ModuleWithExamTime[] = [];
     this.props.modules.forEach((module) => {
       const dateTime = getModuleExamDate(module, semester);
@@ -187,12 +185,18 @@ export default class ExamTimetable extends PureComponent<Props> {
       });
     });
 
-    const modulesByExamDate = groupBy(modulesWithExams, (module) => module.date);
+    // Get the number of days of the week which have exams on them. Default to Monday to Friday
+    // (5 days), and expand as necessary
+    const daysWithExams = Math.max(
+      5,
+      ...modulesWithExams.map((module) => getCurrentDayIndex(new Date(module.dateTime)) + 1),
+    );
 
-    // eslint-disable-next-line
-    return range(weekCount).map((week) => {
+    // Group modules by their exam date and time
+    const modulesByExamDate = groupBy(modulesWithExams, (module) => module.date);
+    return range(weekCount).map((week) =>
       // Group by days
-      return range(6).map((day) => {
+      range(daysWithExams).map((day) => {
         const date = daysAfter(firstDayOfExams, week * 7 + day);
         const modules = modulesByExamDate[getExamDate(date.toISOString())] || [];
 
@@ -201,8 +205,8 @@ export default class ExamTimetable extends PureComponent<Props> {
           date,
           groupedModules: groupBy(modules, (module: ModuleWithExamTime) => module.timeSegment),
         };
-      });
-    });
+      }),
+    );
   }
 
   render() {
@@ -215,7 +219,7 @@ export default class ExamTimetable extends PureComponent<Props> {
           <table className={styles.table}>
             <thead>
               <tr>
-                {range(6).map((day) => (
+                {modulesByExamDate[0].map((_, day) => (
                   <th key={day} className={styles.dayName}>
                     {DaysOfWeek[day].slice(0, 3)}
                   </th>
