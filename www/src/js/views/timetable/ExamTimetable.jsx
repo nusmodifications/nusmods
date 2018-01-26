@@ -20,18 +20,19 @@ type Props = {
 
 type TimeSegment = 'Morning' | 'Afternoon' | 'Evening';
 const TIME_SEGMENTS = ['Morning', 'Afternoon', 'Evening'];
-//
-// type ModuleWithExamTime = {
-//   module: Module,
-//   date: ?String,
-//   time: ?String,
-//   timeSegment: TimeSegment,
-// };
+
+type ModuleWithExamTime = {
+  module: ModuleWithColor,
+  dateTime: string,
+  date: string,
+  time: string,
+  timeSegment: TimeSegment,
+};
 
 type ExamDay = {
   date: Date,
   groupedModules: {
-    [TimeSegment]: ModuleWithColor[],
+    [TimeSegment]: ModuleWithExamTime[],
   },
 };
 
@@ -48,12 +49,6 @@ const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 function getExamDate(date: ?string): ?string {
   if (!date) return null;
   return formatExamDate(date).split(' ')[0];
-}
-
-function getExamTime(date: ?string): ?string {
-  if (!date) return null;
-  const formattedDate = formatExamDate(date);
-  return formattedDate.slice(formattedDate.indexOf(' ') + 1);
 }
 
 function getTimeSegment(time: string): TimeSegment {
@@ -115,8 +110,10 @@ function renderWeek(week: ExamDay[], weekNumber: number) {
           <td className={styles.day} key={dayNumber}>
             {modules && (
               <Fragment>
-                <h4>{timeSegment}</h4>
-                {modules.map((module) => <div key={module.ModuleCode}>{renderModule(module)}</div>)}
+                <h4>{modules[0].time}</h4>
+                {modules.map(({ module }) => (
+                  <div key={module.ModuleCode}>{renderModule(module)}</div>
+                ))}
               </Fragment>
             )}
           </td>
@@ -171,9 +168,26 @@ export default class ExamTimetable extends PureComponent<Props> {
     const { semester } = this.props;
     const [firstDayOfExams, weekCount] = this.getExamCalendar();
 
-    const modulesByExamDate = groupBy(this.props.modules, (module) =>
-      getExamDate(getModuleExamDate(module, semester)),
-    );
+    // Wrap each module with its exam date info. This means we don't have to
+    // recalculate these information every time
+    const modulesWithExams: ModuleWithExamTime[] = [];
+    this.props.modules.forEach((module) => {
+      const dateTime = getModuleExamDate(module, semester);
+      if (!dateTime) return;
+
+      const [date, ...timeParts] = formatExamDate(dateTime).split(' ');
+      const time = timeParts.join(' ');
+
+      modulesWithExams.push({
+        module,
+        dateTime,
+        date,
+        time,
+        timeSegment: getTimeSegment(time),
+      });
+    });
+
+    const modulesByExamDate = groupBy(modulesWithExams, (module) => module.date);
 
     // eslint-disable-next-line
     return range(weekCount).map((week) => {
@@ -185,10 +199,7 @@ export default class ExamTimetable extends PureComponent<Props> {
         // Group by time segment
         return {
           date,
-          groupedModules: groupBy(modules, (module) => {
-            const examDate = getModuleExamDate(module, semester);
-            return getTimeSegment(getExamTime(examDate) || 'Error');
-          }),
+          groupedModules: groupBy(modules, (module: ModuleWithExamTime) => module.timeSegment),
         };
       });
     });
