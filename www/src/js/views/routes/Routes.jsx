@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { type Node } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 import TimetableContainer from 'views/timetable/TimetableContainer';
@@ -35,14 +35,16 @@ export default function Routes() {
       <Redirect from="/contribute/developers" to="/contributors" />
       <Route
         path="/news/nusdiscount"
-        render={() => {
+        render={(): Node => {
           window.location = 'https://www.facebook.com/nusdiscount/';
+          return null;
         }}
       />
       <Route
         path="/news/bareNUS"
-        render={() => {
+        render={(): Node => {
           window.location = 'https://www.facebook.com/bareNUS';
+          return null;
         }}
       />
 
