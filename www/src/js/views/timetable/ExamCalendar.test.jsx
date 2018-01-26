@@ -11,8 +11,8 @@ import mockModules from '__mocks__/modules';
 /** @vars {Module} */
 import GER1000 from '__mocks__/modules/GER1000.json';
 
-import ExamTimetable from './ExamTimetable';
-import styles from './ExamTimetable.scss';
+import ExamTimetable from './ExamCalendar';
+import styles from './ExamCalendar.scss';
 
 const modulesWithColor = mockModules.map((module, i) => ({
   ...module,

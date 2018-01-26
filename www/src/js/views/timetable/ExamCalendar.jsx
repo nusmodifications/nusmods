@@ -11,7 +11,7 @@ import { daysAfter, getCurrentDayIndex } from 'utils/timify';
 import { modulePage } from 'views/routes/paths';
 import { DaysOfWeek } from 'types/modules';
 
-import styles from './ExamTimetable.scss';
+import styles from './ExamCalendar.scss';
 
 type Props = {
   semester: Semester,

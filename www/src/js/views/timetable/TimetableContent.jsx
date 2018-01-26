@@ -36,10 +36,11 @@ import ModulesSelectContainer from 'views/timetable/ModulesSelectContainer';
 import CorsNotification from 'views/components/cors-info/CorsNotification';
 import Announcements from 'views/components/Announcements';
 import Title from 'views/components/Title';
+import { Calendar, Grid } from 'views/components/icons';
 import Timetable from './Timetable';
 import TimetableActions from './TimetableActions';
 import TimetableModulesTable from './TimetableModulesTable';
-import ExamTimetable from './ExamTimetable';
+import ExamCalendar from './ExamCalendar';
 import styles from './TimetableContent.scss';
 
 type Props = {
@@ -71,11 +72,13 @@ type Props = {
 
 type State = {
   isScrolledHorizontally: boolean,
+  showExamCalendar: boolean,
 };
 
 class TimetableContent extends Component<Props, State> {
   state: State = {
     isScrolledHorizontally: false,
+    showExamCalendar: false,
   };
 
   componentWillUnmount() {
@@ -315,21 +318,47 @@ class TimetableContent extends Component<Props, State> {
                   timetable={this.props.timetable}
                 />
               </div>
+
               <div className={styles.modulesSelect}>
                 {!readOnly && (
                   <ModulesSelectContainer semester={semester} timetable={this.props.timetable} />
                 )}
               </div>
-              <div className="col-md-12">{this.renderModuleSections(!isVerticalOrientation)}</div>
+
               <div className="col-md-12">
-                <ExamTimetable
-                  semester={semester}
-                  modules={this.addedModules().map((module) => ({
-                    ...module,
-                    colorIndex: this.props.colors[module.ModuleCode],
-                    hiddenInTimetable: this.isHiddenInTimetable(module.ModuleCode),
-                  }))}
-                />
+                {this.state.showExamCalendar ? (
+                  <ExamCalendar
+                    semester={semester}
+                    modules={this.addedModules().map((module) => ({
+                      ...module,
+                      colorIndex: this.props.colors[module.ModuleCode],
+                      hiddenInTimetable: this.isHiddenInTimetable(module.ModuleCode),
+                    }))}
+                  />
+                ) : (
+                  this.renderModuleSections(!isVerticalOrientation)
+                )}
+              </div>
+
+              <div className="col-md-12">
+                <div className={styles.moduleTableFooter}>
+                  <button
+                    className="btn btn-link btn-sm btn-svg"
+                    onClick={() =>
+                      this.setState({ showExamCalendar: !this.state.showExamCalendar })
+                    }
+                  >
+                    {this.state.showExamCalendar ? (
+                      <Fragment>
+                        <Grid className="svg svg-small" /> View module info
+                      </Fragment>
+                    ) : (
+                      <Fragment>
+                        <Calendar className="svg svg-small" /> View Exam Calendar
+                      </Fragment>
+                    )}
+                  </button>
+                </div>
               </div>
             </div>
           </div>

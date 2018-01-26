@@ -16,6 +16,7 @@ import Facebook from 'react-feather/dist/icons/facebook';
 import FileText from 'react-feather/dist/icons/file-text';
 import Filter from 'react-feather/dist/icons/filter';
 import GitHub from 'react-feather/dist/icons/github';
+import Grid from 'react-feather/dist/icons/grid';
 import Heart from 'react-feather/dist/icons/heart';
 import Help from 'react-feather/dist/icons/help-circle';
 import Image from 'react-feather/dist/icons/image';
@@ -51,6 +52,7 @@ export {
   Filter,
   FileText,
   GitHub,
+  Grid,
   Heart,
   Help,
   Image,
