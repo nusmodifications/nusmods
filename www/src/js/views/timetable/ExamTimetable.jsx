@@ -36,14 +36,6 @@ type ExamDay = {
   },
 };
 
-/* eslint-disable no-useless-computed-key */
-const EXAM_WEEKS = {
-  [1]: 2,
-  [2]: 2,
-  [3]: 1,
-  [4]: 1,
-};
-
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 function getExamDate(date: ?string): ?string {
@@ -78,7 +70,8 @@ function renderModule(module: ModuleWithColor) {
 }
 
 function renderWeek(week: ExamDay[], weekNumber: number) {
-  // Each week consists of a header row
+  // Each week consists of a header row and three module rows, one for each
+  // possible time segment
   const headerRow = (
     <tr>
       {week.map(({ date }, dayNumber) => {
@@ -138,8 +131,8 @@ export default class ExamTimetable extends PureComponent<Props> {
       NUSModerator.academicCalendar.getExamWeek(year, semester).valueOf() + 8 * 60 * 60 * 1000,
     );
 
-    let weekCount = EXAM_WEEKS[semester];
-    let lastDayOfExams = daysAfter(firstDayOfExams, weekCount * 7);
+    let weekCount = 0;
+    let lastDayOfExams = daysAfter(firstDayOfExams, 0);
 
     // Check modules for outliers, eg. GER1000 that has exams on the Saturday before the exam week
     // and expand the range accordingly
@@ -166,8 +159,11 @@ export default class ExamTimetable extends PureComponent<Props> {
     const { semester } = this.props;
     const [firstDayOfExams, weekCount] = this.getExamCalendar();
 
-    // Wrap each module with its exam date info. This means we don't have to
-    // recalculate these every time we need them
+    // If there are no modules with exams, then we can just stop here
+    if (weekCount === 0) return null;
+
+    // Wrap each module with its exam date info. This means we don't have to recalculate these
+    // every time we need them
     const modulesWithExams: ModuleWithExamTime[] = [];
     this.props.modules.forEach((module) => {
       const dateTime = getModuleExamDate(module, semester);
@@ -212,9 +208,26 @@ export default class ExamTimetable extends PureComponent<Props> {
   render() {
     const modulesByExamDate = this.groupModulesByExams();
 
+    if (!modulesByExamDate) {
+      return (
+        <p className="text-center">
+          You don&apos;t have any final exams this semester{' '}
+          <span className="h4" role="img" aria-label="Tada!">
+            🎉
+          </span>
+        </p>
+      );
+    }
+
+    // The table consists of the following <tr>s
+    // - Day of the week (Mon - Sat)
+    // - Exam date (1 - 31)
+    // - Morning exams
+    // - Afternoon exams
+    // - Evening exams
+    // - Repeat the above four rows for every week
     return (
       <Fragment>
-        <h3>Exam Timetable</h3>
         <div className="scrollable">
           <table className={styles.table}>
             <thead>

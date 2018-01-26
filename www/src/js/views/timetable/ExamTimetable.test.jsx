@@ -19,13 +19,13 @@ const modulesWithColor = mockModules.map((module, i) => ({
   colorIndex: i,
 }));
 
-function make(semester: Semester = 1, modules: ModuleWithColor[] = []) {
+function make(modules: ModuleWithColor[] = [], semester: Semester = 1) {
   return shallow(<ExamTimetable semester={semester} modules={modules} />);
 }
 
 describe('ExamTimetable', () => {
   test('show month names only in the first cell and on first day of month', () => {
-    const wrapper = make();
+    const wrapper = make(modulesWithColor);
 
     // AY17/18 semester 1 exams are from Nov 27 to Dec 9
     //    November 2017         December 2017
@@ -49,7 +49,7 @@ describe('ExamTimetable', () => {
   });
 
   test('show modules that have exams', () => {
-    const wrapper = make(1, modulesWithColor);
+    const wrapper = make(modulesWithColor);
 
     expect(
       wrapper
@@ -60,7 +60,7 @@ describe('ExamTimetable', () => {
   });
 
   test('show modules outside the two week exam period', () => {
-    const wrapper = make(1, [GER1000]);
+    const wrapper = make([GER1000]);
 
     expect(wrapper.find(Link)).toHaveLength(1);
   });
