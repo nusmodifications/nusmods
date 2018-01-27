@@ -408,6 +408,7 @@ test('findExamClashes should return empty object if exams do not clash', () => {
 test('timetable serialization/deserialization', () => {
   const configs: SemTimetableConfig[] = [
     {},
+    { CS1010S: {} },
     {
       GER1000: { Tutorial: 'B01' },
     },
@@ -423,6 +424,25 @@ test('timetable serialization/deserialization', () => {
 
   configs.forEach((config) => {
     expect(deserializeTimetable(serializeTimetable(config))).toEqual(config);
+  });
+});
+
+test('deserializing edge cases', () => {
+  // Duplicate module code
+  expect(deserializeTimetable('CS1010S=LEC:01&CS1010S=REC:11')).toEqual({
+    CS1010S: {
+      Lecture: '01',
+      Recitation: '11',
+    },
+  });
+
+  // No lessons
+  expect(deserializeTimetable('CS1010S&CS3217&CS2105=LEC:1')).toEqual({
+    CS1010S: {},
+    CS3217: {},
+    CS2105: {
+      Lecture: '1',
+    },
   });
 });
 
