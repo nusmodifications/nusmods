@@ -309,12 +309,14 @@ function parseModuleConfig(serialized: ?string): ModuleLessonConfig {
   const config = {};
   if (!serialized) return config;
 
-  serialized.split(LESSON_SEP).forEach((lesson) => {
-    const [lessonTypeAbbr, classNo] = lesson.split(LESSON_TYPE_SEP);
-    const lessonType = LESSON_ABBREV_TYPE[lessonTypeAbbr];
-    // Ignore unparsable/invalid keys
-    if (!lessonType) return;
-    config[lessonType] = classNo;
+  _.castArray(serialized).forEach((serializedModule) => {
+    serializedModule.split(LESSON_SEP).forEach((lesson) => {
+      const [lessonTypeAbbr, classNo] = lesson.split(LESSON_TYPE_SEP);
+      const lessonType = LESSON_ABBREV_TYPE[lessonTypeAbbr];
+      // Ignore unparsable/invalid keys
+      if (!lessonType) return;
+      config[lessonType] = classNo;
+    });
   });
 
   return config;
