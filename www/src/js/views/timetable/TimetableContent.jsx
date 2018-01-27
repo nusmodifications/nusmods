@@ -36,7 +36,6 @@ import ModulesSelectContainer from 'views/timetable/ModulesSelectContainer';
 import CorsNotification from 'views/components/cors-info/CorsNotification';
 import Announcements from 'views/components/Announcements';
 import Title from 'views/components/Title';
-import { Calendar, Grid } from 'views/components/icons';
 import Timetable from './Timetable';
 import TimetableActions from './TimetableActions';
 import TimetableModulesTable from './TimetableModulesTable';
@@ -215,6 +214,8 @@ class TimetableContent extends Component<Props, State> {
       readOnly,
     } = this.props;
 
+    const { showExamCalendar } = this.state;
+
     let timetableLessons: Lesson[] = timetableLessonsArray(this.props.timetableWithLessons)
       // Do not process hidden modules
       .filter((lesson) => !this.isHiddenInTimetable(lesson.ModuleCode));
@@ -293,15 +294,26 @@ class TimetableContent extends Component<Props, State> {
               'col-md-8': isVerticalOrientation,
             })}
           >
-            <div className={styles.timetableWrapper} onScroll={this.onScroll}>
-              <Timetable
-                lessons={arrangedLessonsWithModifiableFlag}
-                isVerticalOrientation={isVerticalOrientation}
-                isScrolledHorizontally={this.state.isScrolledHorizontally}
-                showTitle={isShowingTitle}
-                onModifyCell={this.modifyCell}
+            {showExamCalendar ? (
+              <ExamCalendar
+                semester={semester}
+                modules={this.addedModules().map((module) => ({
+                  ...module,
+                  colorIndex: this.props.colors[module.ModuleCode],
+                  hiddenInTimetable: this.isHiddenInTimetable(module.ModuleCode),
+                }))}
               />
-            </div>
+            ) : (
+              <div className={styles.timetableWrapper} onScroll={this.onScroll}>
+                <Timetable
+                  lessons={arrangedLessonsWithModifiableFlag}
+                  isVerticalOrientation={isVerticalOrientation}
+                  isScrolledHorizontally={this.state.isScrolledHorizontally}
+                  showTitle={isShowingTitle}
+                  onModifyCell={this.modifyCell}
+                />
+              </div>
+            )}
           </div>
           <div
             className={classnames({
@@ -316,6 +328,8 @@ class TimetableContent extends Component<Props, State> {
                   showTitle={isShowingTitle}
                   semester={semester}
                   timetable={this.props.timetable}
+                  showExamCalendar={showExamCalendar}
+                  toggleExamCalendar={() => this.setState({ showExamCalendar: !showExamCalendar })}
                 />
               </div>
 
@@ -325,41 +339,7 @@ class TimetableContent extends Component<Props, State> {
                 )}
               </div>
 
-              <div className="col-md-12">
-                {this.state.showExamCalendar ? (
-                  <ExamCalendar
-                    semester={semester}
-                    modules={this.addedModules().map((module) => ({
-                      ...module,
-                      colorIndex: this.props.colors[module.ModuleCode],
-                      hiddenInTimetable: this.isHiddenInTimetable(module.ModuleCode),
-                    }))}
-                  />
-                ) : (
-                  this.renderModuleSections(!isVerticalOrientation)
-                )}
-              </div>
-
-              <div className="col-md-12">
-                <div className={styles.moduleTableFooter}>
-                  <button
-                    className="btn btn-link btn-sm btn-svg"
-                    onClick={() =>
-                      this.setState({ showExamCalendar: !this.state.showExamCalendar })
-                    }
-                  >
-                    {this.state.showExamCalendar ? (
-                      <Fragment>
-                        <Grid className="svg svg-small" /> View module info
-                      </Fragment>
-                    ) : (
-                      <Fragment>
-                        <Calendar className="svg svg-small" /> View Exam Calendar
-                      </Fragment>
-                    )}
-                  </button>
-                </div>
-              </div>
+              <div className="col-md-12">{this.renderModuleSections(!isVerticalOrientation)}</div>
             </div>
           </div>
         </div>
