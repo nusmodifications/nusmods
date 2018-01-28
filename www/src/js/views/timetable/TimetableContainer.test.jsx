@@ -102,14 +102,14 @@ test('should load modules from imported timetable', () => {
 
 test('should display spinner when loading modules', () => {
   const timetable = { CS2105: { Lecture: '1' } };
-  const wrapper = createWithImport(timetable).wrapper;
+  const { wrapper } = createWithImport(timetable);
 
   expect(wrapper.type()).toEqual(LoadingSpinner);
 });
 
 test('should display imported timetable', () => {
   const timetable = { CS2105: { Lecture: '1' } };
-  const wrapper = createWithImport(timetable, { CS2105: CS3216 }).wrapper;
+  const { wrapper } = createWithImport(timetable, { CS2105: CS3216 });
   const timetableContentWrapper = wrapper.children(TimetableContent);
   expect(timetableContentWrapper.type()).toEqual(TimetableContent);
   expect(timetableContentWrapper.props()).toMatchObject({
@@ -122,7 +122,7 @@ test('should display saved timetable when there is no imported timetable', () =>
   const semester = 1;
   const timetable = { CS1010S: { Lecture: '1' } };
 
-  const wrapper = create(timetablePage(semester), { semester: 'sem-1' }, timetable).wrapper;
+  const { wrapper } = create(timetablePage(semester), { semester: 'sem-1' }, timetable);
   const timetableContentWrapper = wrapper.children(TimetableContent);
   expect(timetableContentWrapper.type()).toEqual(TimetableContent);
   expect(timetableContentWrapper.props()).toMatchObject({

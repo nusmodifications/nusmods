@@ -113,8 +113,7 @@ export function setTimetable(
   return (dispatch: Function, getState: GetState) => {
     let validatedTimetable = timetable;
     if (timetable) {
-      const moduleCodes = getState().moduleBank.moduleCodes;
-      [validatedTimetable] = validateTimetableModules(timetable, moduleCodes);
+      [validatedTimetable] = validateTimetableModules(timetable, getState().moduleBank.moduleCodes);
     }
 
     return dispatch({

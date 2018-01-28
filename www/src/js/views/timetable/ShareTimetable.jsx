@@ -113,8 +113,7 @@ export default class ShareTimetable extends PureComponent<Props, State> {
   };
 
   renderSharing(url: string) {
-    const { semester } = this.props;
-    const QRCode = this.QRCode;
+    const { QRCode, props: { semester } } = this;
 
     return (
       <div>

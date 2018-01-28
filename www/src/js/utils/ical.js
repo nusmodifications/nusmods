@@ -58,7 +58,7 @@ export function hoursAfter(date: Date, sgHour: number) {
 
 export function iCalEventForExam(module: Module, semester: Semester): ?EventOption {
   const examDate = new Date(getExamDate(module, semester));
-  if (isNaN(examDate.getTime())) return null;
+  if (Number.isNaN(examDate.getTime())) return null;
 
   return {
     start: examDate,

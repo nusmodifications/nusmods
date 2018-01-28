@@ -48,12 +48,12 @@ export default class DisqusComments extends PureComponent<Props> {
     // Disqus is configured using a function that modifies 'this', so we cannot use
     // arrow functions here, which also means we need to rebind values from the outer
     // this if we need to use them inside the function
-    const props = this.props;
+    const { identifier, url, title } = this.props;
 
     return function configDisqus() {
-      this.page.identifier = props.identifier;
-      this.page.url = props.url;
-      this.page.title = props.title;
+      this.page.identifier = identifier;
+      this.page.url = url;
+      this.page.title = title;
     };
   }
 

@@ -11,14 +11,6 @@ mark {
   color: currentColor;
 }
 
-// Buttons
-.btn.btn-outline-primary:not([disabled]):not(.disabled):active,
-.btn.btn-outline-primary:not([disabled]):not(.disabled).active,
-.show > .btn.btn-outline-primary.dropdown-toggle {
-  // Override for outline button font color - https://github.com/twbs/bootstrap/issues/25158
-  color: $white;
-}
-
 // Forms
 .form-control,
 .form-control:focus {
