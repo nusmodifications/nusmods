@@ -14,6 +14,7 @@ import {
   HIDE_LESSON_IN_TIMETABLE,
   REMOVE_MODULE,
   SELECT_MODULE_COLOR,
+  SET_LESSON_CONFIG,
   SET_TIMETABLE,
   SHOW_LESSON_IN_TIMETABLE,
 } from 'actions/timetables';
@@ -29,10 +30,10 @@ function moduleLessonConfig(
   state: ModuleLessonConfig = defaultModuleLessonConfig,
   action: FSA,
 ): ModuleLessonConfig {
+  if (!action.payload) return state;
+
   switch (action.type) {
     case CHANGE_LESSON: {
-      if (!action.payload) return state;
-
       const { classNo, lessonType } = action.payload;
       if (!(classNo && lessonType)) return state;
       return {
@@ -40,6 +41,9 @@ function moduleLessonConfig(
         [lessonType]: classNo,
       };
     }
+    case SET_LESSON_CONFIG:
+      return action.payload.lessonConfig;
+
     default:
       return state;
   }
@@ -63,6 +67,7 @@ function semTimetable(
     case REMOVE_MODULE:
       return omit(state, [moduleCode]);
     case CHANGE_LESSON:
+    case SET_LESSON_CONFIG:
       return {
         ...state,
         [moduleCode]: moduleLessonConfig(state[moduleCode], action),
@@ -147,6 +152,7 @@ function timetables(state: TimetablesState = defaultTimetableState, action: FSA)
     case REMOVE_MODULE:
     case SELECT_MODULE_COLOR:
     case CHANGE_LESSON:
+    case SET_LESSON_CONFIG:
     case HIDE_LESSON_IN_TIMETABLE:
     case SHOW_LESSON_IN_TIMETABLE: {
       const { semester } = action.payload;

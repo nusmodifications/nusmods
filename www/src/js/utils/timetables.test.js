@@ -36,6 +36,7 @@ import {
   isSameTimetableConfig,
   findExamClashes,
   validateTimetableModules,
+  validateModuleLessons,
 } from 'utils/timetables';
 import { getModuleTimetable, getModuleSemesterData } from 'utils/modules';
 
@@ -407,6 +408,7 @@ test('findExamClashes should return empty object if exams do not clash', () => {
 test('timetable serialization/deserialization', () => {
   const configs: SemTimetableConfig[] = [
     {},
+    { CS1010S: {} },
     {
       GER1000: { Tutorial: 'B01' },
     },
@@ -422,6 +424,25 @@ test('timetable serialization/deserialization', () => {
 
   configs.forEach((config) => {
     expect(deserializeTimetable(serializeTimetable(config))).toEqual(config);
+  });
+});
+
+test('deserializing edge cases', () => {
+  // Duplicate module code
+  expect(deserializeTimetable('CS1010S=LEC:01&CS1010S=REC:11')).toEqual({
+    CS1010S: {
+      Lecture: '01',
+      Recitation: '11',
+    },
+  });
+
+  // No lessons
+  expect(deserializeTimetable('CS1010S&CS3217&CS2105=LEC:1')).toEqual({
+    CS1010S: {},
+    CS3217: {},
+    CS2105: {
+      Lecture: '1',
+    },
   });
 });
 
@@ -497,5 +518,63 @@ describe('validateTimetableModules', () => {
         modulesList,
       ),
     ).toEqual([{ CS2100: {} }, ['DEADBEEF']]);
+  });
+});
+
+describe('validateModuleLessons', () => {
+  const semester: Semester = 1;
+  const lessons: ModuleLessonConfig = {
+    Lecture: '1',
+    Recitation: '10',
+    Tutorial: '11',
+  };
+
+  test('should leave valid lessons untouched', () => {
+    expect(validateModuleLessons(semester, lessons, cs1010s)).toEqual([lessons, []]);
+  });
+
+  test('should remove lesson types which do not exist', () => {
+    expect(
+      validateModuleLessons(
+        semester,
+        {
+          ...lessons,
+          Laboratory: '2', // CS1010S has no lab
+        },
+        cs1010s,
+      ),
+    ).toEqual([lessons, ['Laboratory']]);
+  });
+
+  test('should replace lessons with invalid class no', () => {
+    expect(
+      validateModuleLessons(
+        semester,
+        {
+          ...lessons,
+          Lecture: '2', // CS1010S has no Lecture 2
+        },
+        cs1010s,
+      ),
+    ).toEqual([lessons, ['Lecture']]);
+  });
+
+  test('should add lessons for when they are missing', () => {
+    expect(
+      validateModuleLessons(
+        semester,
+        {
+          Tutorial: '10',
+        },
+        cs1010s,
+      ),
+    ).toEqual([
+      {
+        Lecture: '1',
+        Recitation: '1',
+        Tutorial: '10',
+      },
+      ['Lecture', 'Recitation'],
+    ]);
   });
 });
