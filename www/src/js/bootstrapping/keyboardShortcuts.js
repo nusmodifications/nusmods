@@ -17,7 +17,7 @@ export default function initKeyboardShortcuts(store: Store<State, *, *>) {
   Mousetrap.bind('x', () => {
     store.dispatch(toggleMode());
 
-    const mode = store.getState().settings.mode;
+    const { mode } = store.getState().settings;
     store.dispatch(
       openNotification(`Night mode ${mode === DARK_MODE ? 'on' : 'off'}`, { overwritable: true }),
     );

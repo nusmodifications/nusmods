@@ -69,7 +69,7 @@ export class LessonTimetableComponent extends PureComponent<Props, State> {
 
     return (
       <Fragment>
-        {history.length > 1 && (
+        {semesters.length > 1 && (
           <SemesterPicker
             semesters={semesters}
             selectedSemester={this.state.selectedSem}

@@ -88,8 +88,8 @@ export class ModulePageContentComponent extends Component<Props, State> {
                 <p>
                   {intersperse(
                     [
-                      <a key="department">{module.Department}</a>,
-                      <a key="mc">{module.ModuleCredit} MCs</a>,
+                      <span key="department">{module.Department}</span>,
+                      <span key="mc">{module.ModuleCredit} MCs</span>,
                     ],
                     BULLET,
                   )}
@@ -98,7 +98,7 @@ export class ModulePageContentComponent extends Component<Props, State> {
                 <p>
                   {intersperse(
                     semesters.map((semester) => (
-                      <a key={semester}>{config.semesterNames[semester]}</a>
+                      <span key={semester}>{config.semesterNames[semester]}</span>
                     )),
                     BULLET,
                   )}

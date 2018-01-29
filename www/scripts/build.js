@@ -58,7 +58,7 @@ async function build(previousFileSizes) {
 
     console.log('File sizes after gzip:');
     console.log();
-    printFileSizesAfterBuild(mainStats, previousFileSizes);
+    printFileSizesAfterBuild(mainStats, previousFileSizes, parts.PATHS.build);
     console.log();
 
     console.log(`The ${chalk.cyan(parts.PATHS.build)} folder is ready to be deployed.`);

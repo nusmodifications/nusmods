@@ -44,5 +44,5 @@ export function venuePage(venue?: ?Venue): string {
 
 // Creates an absolute URL from a relative path
 export function absolutePath(path: string): string {
-  return `${location.protocol}//${location.host}${path}`;
+  return `${window.location.protocol}//${window.location.host}${path}`;
 }

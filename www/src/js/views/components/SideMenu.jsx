@@ -51,6 +51,8 @@ export class SideMenuComponent extends PureComponent<Props> {
         </Fab>
 
         {this.isSideMenuShown() && (
+          // Key events are not sent to this div.
+          // eslint-disable-next-line jsx-a11y/click-events-have-key-events
           <div className={styles.overlay} onClick={() => toggleMenu(false)} />
         )}
 

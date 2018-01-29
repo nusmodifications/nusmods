@@ -8,7 +8,8 @@ import type { ModuleSearch } from 'types/reducers';
 import type { State } from 'reducers';
 
 import { modulePage } from 'views/routes/paths';
-import { highlight } from 'utils/react';
+import { BULLET, highlight } from 'utils/react';
+import { intersperse } from 'utils/array';
 import ModuleSemesterInfo from './module-info/ModuleSemesterInfo';
 import ModuleWorkload from './module-info/ModuleWorkload';
 import LinkModuleCodes from './LinkModuleCodes';
@@ -38,8 +39,13 @@ export class ModuleFinderItemComponent extends PureComponent<Props> {
                 </Link>
               </h2>
               <p>
-                <a>{module.Department}</a> &middot;&nbsp;
-                <a>{module.ModuleCredit} MCs</a>
+                {intersperse(
+                  [
+                    <span key="department">{module.Department}</span>,
+                    <span key="mc">{module.ModuleCredit} MCs</span>,
+                  ],
+                  BULLET,
+                )}
               </p>
             </header>
             {module.ModuleDescription && <p>{this.highlight(module.ModuleDescription)}</p>}
