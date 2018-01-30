@@ -4,14 +4,23 @@ import React, { PureComponent } from 'react';
 import Downshift from 'downshift';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
+import { Link } from 'react-router-dom';
 
-import type { State } from 'reducers';
+import type { State as StoreState } from 'reducers';
 import type { Semester } from 'types/modules';
 
 import exportApi from 'apis/export';
 import { downloadAsIcal, SUPPORTS_DOWNLOAD } from 'actions/export';
-import { Image, Calendar, FileText, Download, ChevronDown } from 'views/components/icons';
+import {
+  Image,
+  Calendar,
+  FileText,
+  Download,
+  ChevronDown,
+  AlertTriangle,
+} from 'views/components/icons';
 import Online from 'views/components/Online';
+import Modal from 'views/components/Modal';
 import { Counter } from 'utils/react';
 
 import styles from './ExportMenu.scss';
@@ -22,18 +31,36 @@ const IMAGE: ExportAction = 'IMAGE';
 const PDF: ExportAction = 'PDF';
 
 type Props = {
-  state: State,
+  state: StoreState,
   semester: Semester,
   downloadAsIcal: (Semester) => void,
 };
 
-export class ExportMenuComponent extends PureComponent<Props> {
+type State = {
+  isMacWarningOpen: boolean,
+};
+
+export class ExportMenuComponent extends PureComponent<Props, State> {
+  state: State = {
+    isMacWarningOpen: false,
+  };
+
   onChange = (item: ExportAction) => {
     const { semester } = this.props;
     if (item === CALENDAR) {
       this.props.downloadAsIcal(semester);
+
+      // macOS calendar client has a ridiculous bug where it would sometimes disregard
+      // EXDATE statements which causes events to show up during holidays, recess week, etc.
+      if (navigator.platform === 'MacIntel') {
+        this.setState({
+          isMacWarningOpen: true,
+        });
+      }
     }
   };
+
+  closeMacOSWarningModal = () => this.setState({ isMacWarningOpen: false });
 
   renderDropdown = ({ isOpen, getItemProps, toggleMenu, highlightedIndex }: any) => {
     const { semester, state } = this.props;
@@ -88,6 +115,25 @@ export class ExportMenuComponent extends PureComponent<Props> {
             )}
           </div>
         )}
+
+        <Modal
+          isOpen={this.state.isMacWarningOpen}
+          className="macOSWarning"
+          onRequestClose={this.closeMacOSWarningModal}
+        >
+          <div className={styles.modalContent}>
+            <AlertTriangle />
+            <p>ICS export may not work with the macOS Calendar app.</p>
+          </div>
+          <div className={styles.modalButtons}>
+            <Link to="/faq#mac-calendar" className="btn btn-outline-primary">
+              Find out more
+            </Link>
+            <button className="btn btn-primary" onClick={this.closeMacOSWarningModal}>
+              Gotcha
+            </button>
+          </div>
+        </Modal>
       </div>
     );
   };
