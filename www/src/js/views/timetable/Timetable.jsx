@@ -26,7 +26,7 @@ type Props = {
 };
 
 class Timetable extends PureComponent<Props> {
-  interval: ?number;
+  interval: IntervalID;
 
   static defaultProps = {
     isVerticalOrientation: false,
@@ -35,11 +35,6 @@ class Timetable extends PureComponent<Props> {
     onModifyCell: noop,
   };
 
-  constructor(props: Props) {
-    super(props);
-    this.interval = null;
-  }
-
   componentDidMount() {
     this.interval = setInterval(() => {
       this.forceUpdate();
@@ -47,9 +42,7 @@ class Timetable extends PureComponent<Props> {
   }
 
   componentWillUnmount() {
-    if (this.interval !== null) {
-      clearInterval(this.interval);
-    }
+    clearInterval(this.interval);
   }
 
   render() {
