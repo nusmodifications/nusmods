@@ -39,7 +39,7 @@
     "cache-loader": "^1.2.0",
     "chalk": "^2.3.0",
     "cheerio": "^1.0.0-rc.2",
-    "clean-webpack-plugin": "^0.1.17",
+    "clean-webpack-plugin": "^0.1.18",
     "copy-webpack-plugin": "^4.3.1",
     "coveralls": "^3.0.0",
     "cross-env": "^5.1.3",
