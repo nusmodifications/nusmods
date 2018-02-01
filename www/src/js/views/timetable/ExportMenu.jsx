@@ -28,10 +28,9 @@ type Props = {
 };
 
 export class ExportMenuComponent extends PureComponent<Props> {
-  onChange = (item: ExportAction) => {
-    const { semester } = this.props;
+  onSelect = (item: ExportAction) => {
     if (item === CALENDAR) {
-      this.props.downloadAsIcal(semester);
+      this.props.downloadAsIcal(this.props.semester);
     }
   };
 
@@ -93,7 +92,7 @@ export class ExportMenuComponent extends PureComponent<Props> {
   };
 
   render() {
-    return <Downshift onChange={this.onChange} render={this.renderDropdown} />;
+    return <Downshift onSelect={this.onSelect} render={this.renderDropdown} />;
   }
 }
 
