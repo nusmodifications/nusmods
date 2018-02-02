@@ -36,11 +36,9 @@ export default function configureStore(defaultState?: State) {
 
   const storeEnhancer = applyMiddleware(...middlewares);
 
-  const store: Store<State, *, *> = createStore(
-    rootReducer,
-    defaultState,
-    composeEnhancers(storeEnhancer),
-  );
+  const store: Store<State, *, *> = defaultState
+    ? createStore(rootReducer, defaultState, composeEnhancers(storeEnhancer))
+    : createStore(rootReducer, composeEnhancers(storeEnhancer));
 
   if (module.hot) {
     // Enable webpack hot module replacement for reducers
