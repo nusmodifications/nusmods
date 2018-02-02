@@ -1,5 +1,5 @@
 // @flow
-import { keyBy, pickBy, values } from 'lodash';
+import { keyBy, values } from 'lodash';
 import update from 'immutability-helper';
 
 import type { Module, ModuleCode } from 'types/modules';
@@ -41,7 +41,7 @@ export default class FilterGroup<Filter: ModuleFilter> {
   activeFilters: Filter[];
 
   constructor(id: FilterGroupId, label: string, filters: Filter[]) {
-    this.filters = pickBy(keyBy(filters, (filter) => filter.id));
+    this.filters = keyBy(filters, (filter) => filter.id);
     this.id = id;
     this.label = label;
 

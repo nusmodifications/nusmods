@@ -608,7 +608,7 @@ declare module "lodash" {
     keyBy<T, V>(
       array: Array<T>,
       iteratee?: ?ValueOnlyIteratee<T>
-    ): { [key: V]: ?T };
+    ): { [key: V]: T }; // Def patched as we don't agree with https://github.com/flowtype/flow-typed/pull/681
     keyBy(
       array: void | null,
       iteratee?: ?ValueOnlyIteratee<*>

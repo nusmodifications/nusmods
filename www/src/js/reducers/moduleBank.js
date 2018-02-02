@@ -5,7 +5,7 @@ import type { SemTimetableConfig } from 'types/timetables';
 import type { ModuleList, ModuleSelectListItem, ModuleCodeMap } from 'types/reducers';
 
 import { REHYDRATE } from 'redux-persist';
-import { size, keyBy, pickBy, zipObject } from 'lodash';
+import { size, keyBy, zipObject } from 'lodash';
 
 import { FETCH_MODULE_LIST, FETCH_MODULE } from 'actions/moduleBank';
 import { SET_EXPORTED_DATA } from 'actions/export';
@@ -14,7 +14,6 @@ import * as RequestResultCases from 'middlewares/requests-middleware';
 export type ModulesMap = {
   [ModuleCode]: Module,
 };
-
 export type ModuleBank = {
   moduleList: ModuleList,
   modules: ModulesMap,
@@ -58,7 +57,7 @@ function moduleBank(state: ModuleBank = defaultModuleBankState, action: FSA): Mo
     case SET_EXPORTED_DATA:
       return {
         ...state,
-        modules: pickBy(keyBy(action.payload.modules, (module: Module) => module.ModuleCode)),
+        modules: keyBy(action.payload.modules, (module: Module) => module.ModuleCode),
       };
 
     case REHYDRATE:
