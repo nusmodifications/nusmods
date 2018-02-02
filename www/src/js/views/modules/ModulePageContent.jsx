@@ -65,6 +65,15 @@ export class ModulePageContentComponent extends Component<Props, State> {
     const pageTitle = `${ModuleCode} ${ModuleTitle}`;
     const semesters = getSemestersOffered(module);
 
+    const modSem = semesters.includes(config.semester) ? config.semester : semesters[0]; // Pick a sem if mod isn't available this sem
+    const ivleUrl = config.ivleUrl.replace('<ModuleCode>', ModuleCode);
+    const corsUrl =
+      semesters.length > 0 && // CORS URL only exists if mod is held in >=1 sem
+      config.corsUrl
+        .replace('<ModuleCode>', ModuleCode)
+        .replace('<AcademicYear>', module.AcadYear)
+        .replace('<Semester>', modSem.toString());
+
     return (
       <div className={classnames('page-container', styles.moduleInfoPage)}>
         <Title>{pageTitle}</Title>
@@ -173,10 +182,10 @@ export class ModulePageContentComponent extends Component<Props, State> {
                     <h3 className={styles.descriptionHeading}>Official Links</h3>
                     {intersperse(
                       [
-                        <a key="ivle" href={config.ivleUrl.replace('<ModuleCode>', ModuleCode)}>
+                        <a key="ivle" href={ivleUrl}>
                           IVLE
                         </a>,
-                        <a key="cors" href={config.corsUrl + ModuleCode}>
+                        <a key="cors" href={corsUrl}>
                           CORS
                         </a>,
                       ],
