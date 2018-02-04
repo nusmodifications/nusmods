@@ -5,12 +5,12 @@ import { connect, type MapStateToProps } from 'react-redux';
 import ScrollSpy from 'react-scrollspy';
 import { map, mapValues, kebabCase, values } from 'lodash';
 
-import type { Module } from 'types/modules';
+import type { Module, Semester } from 'types/modules';
 
 import config from 'config';
 import { formatExamDate, getSemestersOffered } from 'utils/modules';
 import { intersperse } from 'utils/array';
-import { BULLET, scrollToHash } from 'utils/react';
+import { BULLET, noBreak, scrollToHash } from 'utils/react';
 import { NAVTAB_HEIGHT } from 'views/layout/Navtabs';
 import ModuleTree from 'views/modules/ModuleTree';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
@@ -58,6 +58,15 @@ export class ModulePageContentComponent extends Component<Props, State> {
 
   toggleMenu = (isMenuOpen: boolean) => this.setState({ isMenuOpen });
 
+  getCorsUrl(semester: Semester): string {
+    const { module } = this.props;
+
+    return config.corsUrl
+      .replace('<ModuleCode>', module.ModuleCode)
+      .replace('<AcademicYear>', module.AcadYear)
+      .replace('<Semester>', String(semester));
+  }
+
   render() {
     const { module } = this.props;
     const { ModuleCode, ModuleTitle } = module;
@@ -65,12 +74,7 @@ export class ModulePageContentComponent extends Component<Props, State> {
     const pageTitle = `${ModuleCode} ${ModuleTitle}`;
     const semesters = getSemestersOffered(module);
 
-    const modSem = semesters.includes(config.semester) ? config.semester : semesters[0]; // Pick a sem if mod isn't available this sem
     const ivleUrl = config.ivleUrl.replace('<ModuleCode>', ModuleCode);
-    const corsUrl = config.corsUrl
-      .replace('<ModuleCode>', ModuleCode)
-      .replace('<AcademicYear>', module.AcadYear)
-      .replace('<Semester>', modSem ? modSem.toString() : '');
 
     return (
       <div className={classnames('page-container', styles.moduleInfoPage)}>
@@ -183,9 +187,11 @@ export class ModulePageContentComponent extends Component<Props, State> {
                         <a key="ivle" href={ivleUrl}>
                           IVLE
                         </a>,
-                        <a key="cors" href={corsUrl}>
-                          CORS
-                        </a>,
+                        ...semesters.map((semester) => (
+                          <a key={`cors-${semester}`} href={this.getCorsUrl(semester)}>
+                            {noBreak(`CORS (${config.shortSemesterNames[semester]})`)}
+                          </a>
+                        )),
                       ],
                       BULLET,
                     )}
