@@ -8,6 +8,10 @@ declare module '@material/snackbar' {
   declare module.exports: any;
 }
 
+declare module 'bowser' {
+  declare module.exports: any;
+}
+
 declare module 'core-js' {
   declare module.exports: any;
 }
