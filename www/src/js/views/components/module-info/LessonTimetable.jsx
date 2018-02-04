@@ -69,14 +69,11 @@ export class LessonTimetableComponent extends PureComponent<Props, State> {
 
     return (
       <Fragment>
-        {semesters.length > 1 && (
-          <SemesterPicker
-            semesters={semesters}
-            selectedSemester={this.state.selectedSem}
-            onSelectSemester={this.onSelectSemester}
-          />
-        )}
-
+        <SemesterPicker
+          semesters={semesters}
+          selectedSemester={this.state.selectedSem}
+          onSelectSemester={this.onSelectSemester}
+        />
         <div className={styles.lessonTimetable}>{this.renderTimetable()}</div>
       </Fragment>
     );
