@@ -10,6 +10,7 @@ import createHistory from 'test-utils/createHistory';
 import mockDom from 'test-utils/mockDom';
 import { sortVenues } from 'utils/venues';
 import { venuePage } from 'views/routes/paths';
+import VenueDetails from 'views/venues/VenueDetails';
 import { VenuesContainerComponent } from './VenuesContainer';
 
 function createComponent(selectedVenue: ?Venue, search?: string) {
@@ -115,15 +116,15 @@ describe('VenuesContainer', () => {
     const getVenueDetail = (selectedVenue: ?Venue, matched: VenueDetailList = venues) => {
       const instance = createComponent(selectedVenue).instance();
       instance.setState({ venues });
-      return instance.renderSelectedVenue(matched);
+      return shallow(<div>{instance.renderSelectedVenue(matched)}</div>).find(VenueDetails);
     };
 
     test('not render when there is no selected venue', () => {
-      expect(getVenueDetail(null)).toBeNull();
+      expect(getVenueDetail(null).exists()).toBe(false);
     });
 
     test('render when a venue is selected', () => {
-      expect(shallow(getVenueDetail('LT17')).props()).toMatchObject({
+      expect(getVenueDetail('LT17').props()).toMatchObject({
         venue: 'LT17',
         availability: venueInfo.LT17,
         previous: 'lt2',
@@ -131,7 +132,7 @@ describe('VenuesContainer', () => {
       });
 
       const LTs = venues.filter(([venue]) => venue.includes('LT'));
-      expect(shallow(getVenueDetail('LT17', LTs)).props()).toMatchObject({
+      expect(getVenueDetail('LT17', LTs).props()).toMatchObject({
         venue: 'LT17',
         availability: venueInfo.LT17,
         previous: 'LT1',
@@ -140,9 +141,7 @@ describe('VenuesContainer', () => {
     });
 
     test('render when a venue is selected, and it is not in the list of matched venues', () => {
-      const venueDetail = shallow(getVenueDetail('LT17', []));
-
-      expect(venueDetail.props()).toMatchObject({
+      expect(getVenueDetail('LT17', []).props()).toMatchObject({
         venue: 'LT17',
         availability: venueInfo.LT17,
       });
