@@ -14,6 +14,7 @@ import configureStore from 'bootstrapping/configure-store';
 import subscribeOnlineEvents from 'bootstrapping/subscribeOnlineEvents';
 import initKeyboardShortcuts from 'bootstrapping/keyboardShortcuts';
 import initializeGA from 'bootstrapping/google-analytics';
+import browerCheck from 'bootstrapping/browser';
 
 import '../styles/main.scss';
 
@@ -27,6 +28,7 @@ initKeyboardShortcuts(store);
 ReactModal.setAppElement('#app');
 
 const render = () => {
+  browerCheck();
   ReactDOM.render(App({ store, persistor }), document.getElementById('app'));
 };
 
