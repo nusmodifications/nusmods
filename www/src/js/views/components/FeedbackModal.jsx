@@ -8,7 +8,7 @@ import type { State } from 'reducers';
 import config from 'config';
 import { toggleFeedback } from 'actions/app';
 import { Heart, GitHub, Facebook, Mail } from './icons';
-import CloseButton from './CloseButton';
+import { AbsCloseButton } from './CloseButton';
 import Modal from './Modal';
 import styles from './FeedbackModal.scss';
 
@@ -25,7 +25,7 @@ export class FeedbackModalComponent extends PureComponent<Props> {
         onRequestClose={this.props.toggleFeedback}
         className={styles.modal}
       >
-        <CloseButton onClick={this.props.toggleFeedback} />
+        <AbsCloseButton onClick={this.props.toggleFeedback} />
         <div className={styles.content}>
           <Heart className={styles.topIcon} />
           <h1>Let us know what you think!</h1>
