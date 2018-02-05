@@ -97,6 +97,9 @@
     "workbox-webpack-plugin": "^2.1.2"
   },
   "dependencies": {
+    "@firebase/app": "^0.1.8",
+    "@firebase/auth": "^0.3.3",
+    "@firebase/firestore": "^0.3.2",
     "@material/fab": "^0.27.0",
     "@material/snackbar": "^0.27.0",
     "autotrack": "^2.4.1",
@@ -105,6 +108,7 @@
     "classnames": "^2.2.5",
     "core-js": "^2.5.1",
     "downshift": "^1.22.3",
+    "firebaseui": "^2.5.1",
     "ical-generator": "https://github.com/ZhangYiJiang/ical-generator.git#ed6928fe",
     "immutability-helper": "^2.3.1",
     "json2mq": "^0.2.0",
@@ -119,6 +123,7 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-feather": "1.0.8",
+    "react-firebaseui": "^1.0.10",
     "react-helmet": "^5.2.0",
     "react-modal": "^3.1.12",
     "react-qr-svg": "^2.1.0",
