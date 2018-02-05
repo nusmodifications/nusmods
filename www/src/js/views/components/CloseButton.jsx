@@ -9,9 +9,10 @@ import styles from './CloseButton.scss';
 type Props = {
   onClick: Function,
   className?: string,
+  absolutePositioned?: boolean, // For use in modals where we don't want the CloseButton to affect the layout of other elements.
 };
 
-export default function CloseButton({ onClick, className }: Props) {
+function RawCloseButton({ onClick, className }: Props) {
   return (
     <button
       className={classnames('close', className)}
@@ -24,12 +25,11 @@ export default function CloseButton({ onClick, className }: Props) {
   );
 }
 
-// Absolute positioned CloseButton
-// For use in modals where we don't want the CloseButton to affect the layout of other elements.
-export function AbsCloseButton(props: Props) {
+export default function CloseButton(props: Props) {
+  if (!props.absolutePositioned) return <RawCloseButton {...props} />;
   return (
     <div className={styles.closeContainer}>
-      <CloseButton {...props} className={classnames(props.className, styles.absCloseBtn)} />
+      <RawCloseButton {...props} className={classnames(props.className, styles.absCloseBtn)} />
     </div>
   );
 }
