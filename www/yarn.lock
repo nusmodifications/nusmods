@@ -7225,9 +7225,9 @@ redux-logger@^3.0.6:
   dependencies:
     deep-diff "^0.3.5"
 
-redux-persist@^5.4.0:
-  version "5.5.0"
-  resolved "https://registry.yarnpkg.com/redux-persist/-/redux-persist-5.5.0.tgz#64b5030625cb6f863f76487975acb8bb4fe4f9bb"
+redux-persist@^5.6.10:
+  version "5.6.10"
+  resolved "https://registry.yarnpkg.com/redux-persist/-/redux-persist-5.6.10.tgz#bd964c16a171dc729827ec4ff6bce7f340daa931"
 
 redux-thunk@^2.2.0:
   version "2.2.0"
