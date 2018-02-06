@@ -25,7 +25,7 @@ export class FeedbackModalComponent extends PureComponent<Props> {
         onRequestClose={this.props.toggleFeedback}
         className={styles.modal}
       >
-        <CloseButton onClick={this.props.toggleFeedback} />
+        <CloseButton absolutePositioned onClick={this.props.toggleFeedback} />
         <div className={styles.content}>
           <Heart className={styles.topIcon} />
           <h1>Let us know what you think!</h1>
