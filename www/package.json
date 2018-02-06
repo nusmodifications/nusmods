@@ -98,7 +98,7 @@
   },
   "dependencies": {
     "@material/fab": "^0.27.0",
-    "@material/snackbar": "^0.27.0",
+    "@material/snackbar": "^0.29.0",
     "autotrack": "^2.4.1",
     "axios": "^0.16.2",
     "bootstrap": "4.0.0",
