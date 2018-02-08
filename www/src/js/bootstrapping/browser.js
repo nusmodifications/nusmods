@@ -43,12 +43,13 @@ if (
 
     const addDismissListener = (elementId, composedFunction) => {
       const element = document.getElementById(elementId);
-      if (element)
+      if (element) {
         element.addEventListener('click', (event) => {
           event.preventDefault();
           if (body) body.removeChild(container);
           if (composedFunction && typeof composedFunction === 'function') composedFunction();
         });
+      }
     };
 
     addDismissListener('browser-warning-continue');
