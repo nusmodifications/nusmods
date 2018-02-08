@@ -7,8 +7,10 @@ import firebaseui from 'firebaseui';
 import '@firebase/auth';
 
 import type { State } from 'reducers';
+import type { User } from 'types/reducers';
 
 import { toggleLoginDialog } from 'actions/app';
+import { login } from 'actions/auth';
 // import { GitHub, Facebook, Mail } from './icons';
 import CloseButton from 'views/components/CloseButton';
 import Modal from 'views/components/Modal';
@@ -18,24 +20,36 @@ import FirebaseAuth from './FirebaseAuth';
 type Props = {
   isOpen: boolean,
   toggleLoginDialog: Function,
+  login: Function,
 };
 
 export class LoginModalComponent extends PureComponent<Props> {
-  uiConfig = {
-    signInFlow: 'popup',
-    signInOptions: [
-      firebase.auth.EmailAuthProvider.PROVIDER_ID,
-      firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-      firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-    ],
-    credentialHelper: firebaseui.auth.CredentialHelper.NONE,
-    callbacks: {
-      signInSuccess: () => {
-        console.log("We're logged in");
-        return false;
+  uiConfig: Object;
+
+  constructor(props: Props) {
+    super(props);
+    this.uiConfig = {
+      signInFlow: 'popup',
+      signInOptions: [
+        firebase.auth.EmailAuthProvider.PROVIDER_ID,
+        firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+        firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+      ],
+      credentialHelper: firebaseui.auth.CredentialHelper.NONE,
+      callbacks: {
+        signInSuccess: (currentUser: firebase.User) => {
+          const user: User = {
+            uid: currentUser.uid,
+            email: currentUser.email,
+            displayName: currentUser.displayName,
+            photoUrl: currentUser.photoURL,
+            providerId: currentUser.providerId,
+          };
+          props.login(user, currentUser);
+        },
       },
-    },
-  };
+    };
+  }
 
   render() {
     return (
@@ -58,5 +72,5 @@ export default connect(
   (state: State) => ({
     isOpen: state.app.isLoginModalOpen,
   }),
-  { toggleLoginDialog },
+  { toggleLoginDialog, login },
 )(LoginModalComponent);
