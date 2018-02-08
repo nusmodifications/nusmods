@@ -58,8 +58,16 @@ export default function createSyncMiddleware(perReducerConfig: { string: SyncCon
       const config = perReducerConfig[reducerName];
       const reducerState = newState[reducerName];
       const stateToSend = config.keyPaths ? pick(reducerState, config.keyPaths) : reducerState;
-      console.log('Sending doc for reducer', reducerName, stateToSend);
-      // TODO: Actually send data to server
+      // TODO: Consider diffing state to only send changed fields
+
+      // Send data to server
+      const uid = newState.auth.user.uid;
+      firestore
+        .collection(SYNC_COLLECTION_NAME)
+        .doc(uid)
+        .set({ [reducerName]: stateToSend }, { merge: true });
+      // .then(() => console.log("My god Jim, we've synced@!", stateToSend));
+      // TODO: Handle errors
     }
   };
 }
