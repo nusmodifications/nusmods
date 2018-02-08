@@ -33,14 +33,13 @@ export default function createSyncMiddleware(perReducerConfig: { string: SyncCon
     auth().onAuthStateChanged((user) => {
       if (user) {
         // User is signed in.
-        console.log('Listening for users data', user.uid);
         unsubscribeSync = firestore
           .collection(SYNC_COLLECTION_NAME)
           .doc(user.uid)
           .onSnapshot((doc) => {
-            const source = doc.metadata.hasPendingWrites ? 'Local' : 'Server';
-            console.log('Received data', source, doc.data());
-            // TODO: Dispatch sync data received action
+            // Ignore changes that originated locally
+            // https://firebase.google.com/docs/firestore/query-data/listen#events-local-changes
+            if (doc.metadata.hasPendingWrites) return;
             store.dispatch(syncDataReceived(doc.data()));
           });
       } else {

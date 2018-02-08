@@ -2,6 +2,7 @@
 import { uniq, without } from 'lodash';
 import update from 'immutability-helper';
 import { REHYDRATE } from 'redux-persist';
+import { SYNC_DATA_RECEIVED } from 'actions/sync';
 
 import type { FSA } from 'types/redux';
 import type { SettingsState } from 'types/reducers';
@@ -100,6 +101,13 @@ function settings(state: SettingsState = defaultSettingsState, action: FSA): Set
       return nextState;
     }
 
+    case SYNC_DATA_RECEIVED: {
+      return {
+        ...state,
+        ...action.payload.newState.settings, // TODO: Find a way to do this without having settings be aware of its name in app state
+      };
+    }
+
     default:
       return state;
   }
@@ -108,6 +116,6 @@ function settings(state: SettingsState = defaultSettingsState, action: FSA): Set
 export default settings;
 
 export const syncConfig = {
-  actions: [SELECT_NEW_STUDENT, SELECT_FACULTY, SELECT_MODE, TOGGLE_MODE],
-  keyPaths: ['newStudent', 'faculty', 'mode'],
+  actions: [SELECT_MODE, TOGGLE_MODE],
+  keyPaths: ['mode'],
 };
