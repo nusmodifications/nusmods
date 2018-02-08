@@ -1,16 +1,9 @@
 // @flow
 import bowser from 'bowser';
+import { checkBrowserSupportsLocalStorage } from '../storage/localStorage';
 
 const LOCAL_STORAGE_KEY = 'dismissedBrowserWarning';
-const browserSupportsLocalStorage = (() => {
-  try {
-    localStorage.setItem(`${LOCAL_STORAGE_KEY}__TEST`, 'TEST');
-    localStorage.removeItem(`${LOCAL_STORAGE_KEY}__TEST`);
-    return true;
-  } catch (error) {
-    return false;
-  }
-})();
+const browserSupportsLocalStorage = checkBrowserSupportsLocalStorage();
 
 if (
   !bowser.check(
@@ -32,7 +25,7 @@ if (
       <div class="browser-warning__modal">
       <h1>Your web browser is outdated or unsupported</h1>
       <p>NUSMods may not work or may work poorly. Please consider upgrading your web browser.</p>
-      <button class="btn btn-primary" id="browser-warning-continue">Continue</button>
+      <button class="btn btn-primary" id="browser-warning-continue">Continue to NUSMods</button>
       ${
         // Show "don't show again" only if the browser supports localStorage
         browserSupportsLocalStorage
