@@ -12,45 +12,48 @@ const browserSupportsLocalStorage = (() => {
   }
 })();
 
-export default () => {
-  if (browserSupportsLocalStorage && localStorage.getItem(LOCAL_STORAGE_KEY)) return; // Show diaglogue only once
+if (
+  !bowser.check(
+    {
+      edge: '14',
+      chrome: '56',
+      firefox: '52',
+      safari: '9',
+    },
+    true,
+  )
+) {
   if (
-    !bowser.check(
-      {
-        edge: '14',
-        chrome: '56',
-        firefox: '52',
-        safari: '9',
-      },
-      true,
-    )
+    (browserSupportsLocalStorage && !localStorage.getItem(LOCAL_STORAGE_KEY)) ||
+    !browserSupportsLocalStorage
   ) {
     const template = `
       <div class="browser-warning__overlay">
-        <div class="browser-warning__modal">
-          <h1>Your web browser is outdated or unsupported</h1>
-          <p>NUSMods may not work or may work poorly. Please consider upgrading your web browser.</p>
-          <button class="btn btn-primary" id="browser-warning-continue">Continue</button>
-          ${
-            // Show "don't show again" only if the browser supports localStorage
-            browserSupportsLocalStorage
-              ? '<button class="btn" id="browser-warning-ignore">Don\'t show again</button>'
-              : ''
-          }
-        </div>
+      <div class="browser-warning__modal">
+      <h1>Your web browser is outdated or unsupported</h1>
+      <p>NUSMods may not work or may work poorly. Please consider upgrading your web browser.</p>
+      <button class="btn btn-primary" id="browser-warning-continue">Continue</button>
+      ${
+        // Show "don't show again" only if the browser supports localStorage
+        browserSupportsLocalStorage
+          ? '<button class="btn" id="browser-warning-ignore">Don\'t show again</button>'
+          : ''
+      }
       </div>
-    `;
+      </div>
+      `;
     const container = document.createElement('div');
     container.className = 'browser-warning';
     container.innerHTML = template;
-    document.body.appendChild(container);
+    const body = document.body;
+    if (body) body.appendChild(container);
 
     const addDismissListener = (elementId, composedFunction) => {
       const element = document.getElementById(elementId);
       if (element)
         element.addEventListener('click', (event) => {
           event.preventDefault();
-          document.body.removeChild(container);
+          if (body) body.removeChild(container);
           if (composedFunction && typeof composedFunction === 'function') composedFunction();
         });
     };
@@ -60,4 +63,4 @@ export default () => {
       if (browserSupportsLocalStorage) localStorage.setItem(LOCAL_STORAGE_KEY, navigator.userAgent);
     });
   }
-};
+}
