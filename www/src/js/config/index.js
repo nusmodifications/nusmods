@@ -73,6 +73,9 @@ function convertCorsDate(roundData: Object): CorsRound {
 
 const augmentedConfig: Config = {
   ...appConfig,
+  corsUrl: appConfig.corsUrl
+    .replace('<AcademicYear>', appConfig.academicYear)
+    .replace('<Semester>', appConfig.semester),
 
   holidays: holidays.map((date) => new Date(date)),
 
