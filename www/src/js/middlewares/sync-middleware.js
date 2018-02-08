@@ -1,7 +1,7 @@
 // @flow
 import { mapValues, values, flatten, fromPairs, pick } from 'lodash';
-import { firestore } from 'utils/firebase/firebase';
-import { AUTH_LOGIN, AUTH_LOGOUT } from 'actions/auth';
+import { firestore, auth } from 'utils/firebase/firebase';
+import { syncDataReceived } from 'actions/sync';
 
 const SYNC_COLLECTION_NAME = 'mods';
 
@@ -29,45 +29,48 @@ export default function createSyncMiddleware(perReducerConfig: { string: SyncCon
   let unsubscribeSync; // Function to stop subscribing to Firebase update snapshots
   const actionToReducerMap = mapActionsToReducers(perReducerConfig);
 
-  return (store) => (next) => (action) => {
-    switch (action.type) {
-      case AUTH_LOGIN: {
-        console.log('Listening for users data', action.payload.user.uid);
+  return (store) => {
+    auth().onAuthStateChanged((user) => {
+      if (user) {
+        // User is signed in.
+        console.log('Listening for users data', user.uid);
         unsubscribeSync = firestore
           .collection(SYNC_COLLECTION_NAME)
-          .doc(action.payload.user.uid)
-          .onSnapshot((doc) => doc.data()); // TODO: Dispatch sync data received action
-        break;
-      }
-      case AUTH_LOGOUT: {
+          .doc(user.uid)
+          .onSnapshot((doc) => {
+            const source = doc.metadata.hasPendingWrites ? 'Local' : 'Server';
+            console.log('Received data', source, doc.data());
+            // TODO: Dispatch sync data received action
+            store.dispatch(syncDataReceived(doc.data()));
+          });
+      } else {
+        // No user is signed in.
+        // eslint-disable-next-line no-lonely-if
         if (unsubscribeSync) unsubscribeSync();
-        break;
       }
-      default: {
-        break;
+    });
+
+    return (next) => (action) => {
+      next(action);
+
+      // Send state if logged in and action is watched
+      const newState = store.getState();
+      const loggedInUser = auth().currentUser;
+      const reducerName = actionToReducerMap[action.type];
+      if (loggedInUser && reducerName) {
+        const config = perReducerConfig[reducerName];
+        const reducerState = newState[reducerName];
+        const stateToSend = config.keyPaths ? pick(reducerState, config.keyPaths) : reducerState;
+        // TODO: Consider diffing state to only send changed fields
+
+        // Send data to server
+        firestore
+          .collection(SYNC_COLLECTION_NAME)
+          .doc(loggedInUser.uid)
+          .set({ [reducerName]: stateToSend }, { merge: true });
+        // .then(() => console.log("My god Jim, we've synced@!", stateToSend));
+        // TODO: Handle errors
       }
-    }
-
-    next(action);
-
-    // Send state if logged in and action is watched
-    const newState = store.getState();
-    const loggedIn = newState.auth.loggedIn;
-    const reducerName = actionToReducerMap[action.type];
-    if (loggedIn && reducerName) {
-      const config = perReducerConfig[reducerName];
-      const reducerState = newState[reducerName];
-      const stateToSend = config.keyPaths ? pick(reducerState, config.keyPaths) : reducerState;
-      // TODO: Consider diffing state to only send changed fields
-
-      // Send data to server
-      const uid = newState.auth.user.uid;
-      firestore
-        .collection(SYNC_COLLECTION_NAME)
-        .doc(uid)
-        .set({ [reducerName]: stateToSend }, { merge: true });
-      // .then(() => console.log("My god Jim, we've synced@!", stateToSend));
-      // TODO: Handle errors
-    }
+    };
   };
 }

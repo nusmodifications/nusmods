@@ -106,3 +106,8 @@ function settings(state: SettingsState = defaultSettingsState, action: FSA): Set
 }
 
 export default settings;
+
+export const syncConfig = {
+  actions: [SELECT_NEW_STUDENT, SELECT_FACULTY, SELECT_MODE, TOGGLE_MODE],
+  keyPaths: ['newStudent', 'faculty', 'mode'],
+};

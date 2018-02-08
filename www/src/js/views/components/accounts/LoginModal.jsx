@@ -3,12 +3,9 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import firebaseui from 'firebaseui';
 
-import type { User as FirebaseUser } from '@firebase/app';
 import type { State } from 'reducers';
-import type { User } from 'types/reducers';
 
 import { toggleLoginDialog } from 'actions/app';
-import { login } from 'actions/auth';
 import { auth } from 'utils/firebase/firebase';
 
 // import { GitHub, Facebook, Mail } from './icons';
@@ -20,7 +17,6 @@ import FirebaseAuth from './FirebaseAuth';
 type Props = {
   isOpen: boolean,
   toggleLoginDialog: Function,
-  login: Function,
 };
 
 export class LoginModalComponent extends PureComponent<Props> {
@@ -37,16 +33,7 @@ export class LoginModalComponent extends PureComponent<Props> {
       ],
       credentialHelper: firebaseui.auth.CredentialHelper.NONE,
       callbacks: {
-        signInSuccess: (currentUser: FirebaseUser) => {
-          const user: User = {
-            uid: currentUser.uid,
-            email: currentUser.email,
-            displayName: currentUser.displayName,
-            photoUrl: currentUser.photoURL,
-            providerId: currentUser.providerId,
-          };
-          props.login(user, currentUser);
-        },
+        signInSuccess: () => props.toggleLoginDialog(),
       },
     };
   }
@@ -72,5 +59,5 @@ export default connect(
   (state: State) => ({
     isOpen: state.app.isLoginModalOpen,
   }),
-  { toggleLoginDialog, login },
+  { toggleLoginDialog },
 )(LoginModalComponent);

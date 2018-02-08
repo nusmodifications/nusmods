@@ -1,5 +1,4 @@
 // @flow
-import type { User as FirebaseUser } from '@firebase/app';
 import type {
   Faculty,
   Lesson,
@@ -66,21 +65,6 @@ export type FetchRequest = {
 };
 
 export type Requests = { [RequestType]: FetchRequest };
-
-/* auth.js */
-export type User = {
-  +uid: string,
-  +email: ?string,
-  +displayName: ?string,
-  +photoUrl: ?string,
-  +providerId: string,
-};
-
-export type AuthState = {
-  loggedIn: boolean,
-  user: ?User, // Logged in user. Will exist if logged in
-  rawUser: ?FirebaseUser,
-};
 
 /* theme.js */
 export type TimetableOrientation = 'HORIZONTAL' | 'VERTICAL';
