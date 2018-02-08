@@ -49,6 +49,7 @@ export type AppState = {
   +activeSemester: Semester,
   +activeLesson: ?Lesson,
   +isOnline: boolean,
+  +isLoginModalOpen: boolean,
   +isFeedbackModalOpen: boolean,
   +notifications: NotificationData[],
 };

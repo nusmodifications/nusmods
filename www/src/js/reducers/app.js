@@ -9,6 +9,7 @@ import {
   OPEN_NOTIFICATION,
   POP_NOTIFICATION,
   SET_ONLINE_STATUS,
+  TOGGLE_LOGIN_MODAL,
   TOGGLE_FEEDBACK_MODAL,
 } from 'actions/app';
 
@@ -18,6 +19,7 @@ const defaultAppState = (): AppState => ({
   // The lesson being modified on the timetable.
   activeLesson: null,
   isOnline: navigator.onLine,
+  isLoginModalOpen: false,
   isFeedbackModalOpen: false,
   notifications: [],
 });
@@ -45,6 +47,11 @@ function app(state: AppState = defaultAppState(), action: FSA): AppState {
       return {
         ...state,
         isOnline: action.payload.isOnline,
+      };
+    case TOGGLE_LOGIN_MODAL:
+      return {
+        ...state,
+        isLoginModalOpen: !state.isLoginModalOpen,
       };
     case TOGGLE_FEEDBACK_MODAL:
       return {

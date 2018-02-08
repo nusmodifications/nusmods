@@ -11,6 +11,14 @@ export function setOnlineStatus(isOnline: boolean): FSA {
   };
 }
 
+export const TOGGLE_LOGIN_MODAL = 'TOGGLE_LOGIN_MODAL';
+export function toggleLoginDialog(): FSA {
+  return {
+    type: TOGGLE_LOGIN_MODAL,
+    payload: null,
+  };
+}
+
 export const TOGGLE_FEEDBACK_MODAL = 'TOGGLE_FEEDBACK_MODAL';
 export function toggleFeedback(): FSA {
   return {

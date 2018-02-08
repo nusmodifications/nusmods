@@ -28,6 +28,7 @@ import ErrorBoundary from 'views/errors/ErrorBoundary';
 import ErrorPage from 'views/errors/ErrorPage';
 import { DARK_MODE } from 'types/settings';
 import LoadingSpinner from './components/LoadingSpinner';
+import LoginModal from './components/accounts/LoginModal';
 import FeedbackModal from './components/FeedbackModal';
 import styles from './AppShell.scss';
 
@@ -112,6 +113,9 @@ export class AppShellComponent extends Component<Props> {
             )}
           </main>
         </div>
+        <ErrorBoundary>
+          <LoginModal />
+        </ErrorBoundary>
         <ErrorBoundary>
           <FeedbackModal />
         </ErrorBoundary>
