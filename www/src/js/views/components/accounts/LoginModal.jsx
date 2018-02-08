@@ -1,16 +1,16 @@
 // @flow
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-
-import firebase from 'utils/firebase/firebase';
 import firebaseui from 'firebaseui';
-import '@firebase/auth';
 
+import type { User as FirebaseUser } from '@firebase/app';
 import type { State } from 'reducers';
 import type { User } from 'types/reducers';
 
 import { toggleLoginDialog } from 'actions/app';
 import { login } from 'actions/auth';
+import { auth } from 'utils/firebase/firebase';
+
 // import { GitHub, Facebook, Mail } from './icons';
 import CloseButton from 'views/components/CloseButton';
 import Modal from 'views/components/Modal';
@@ -31,13 +31,13 @@ export class LoginModalComponent extends PureComponent<Props> {
     this.uiConfig = {
       signInFlow: 'popup',
       signInOptions: [
-        firebase.auth.EmailAuthProvider.PROVIDER_ID,
-        firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-        firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+        auth.EmailAuthProvider.PROVIDER_ID,
+        auth.GoogleAuthProvider.PROVIDER_ID,
+        auth.FacebookAuthProvider.PROVIDER_ID,
       ],
       credentialHelper: firebaseui.auth.CredentialHelper.NONE,
       callbacks: {
-        signInSuccess: (currentUser: firebase.User) => {
+        signInSuccess: (currentUser: FirebaseUser) => {
           const user: User = {
             uid: currentUser.uid,
             email: currentUser.email,
@@ -61,7 +61,7 @@ export class LoginModalComponent extends PureComponent<Props> {
             Welcome to NUSMods! Signing in to NUSMods will allow you to sync your timetable between
             your devices.
           </p>
-          <FirebaseAuth uiConfig={this.uiConfig} firebaseAuth={firebase.auth()} />
+          <FirebaseAuth uiConfig={this.uiConfig} firebaseAuth={auth()} />
         </div>
       </Modal>
     );
