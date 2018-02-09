@@ -98,6 +98,7 @@
   },
   "dependencies": {
     "@firebase/app": "^0.1.8",
+    "@firebase/app-types": "^0.1.1",
     "@firebase/auth": "^0.3.3",
     "@firebase/firestore": "^0.3.2",
     "@material/fab": "^0.27.0",
