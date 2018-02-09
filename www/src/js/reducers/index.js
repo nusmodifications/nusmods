@@ -2,7 +2,6 @@
 import type { FSA } from 'types/redux';
 import type {
   Requests,
-  AuthState,
   SettingsState,
   AppState,
   ModuleFinderState,
@@ -34,7 +33,6 @@ export type State = {
   venueBank: VenueBank,
   requests: Requests,
   timetables: TimetablesState,
-  auth: AuthState,
   app: AppState,
   theme: Object,
   settings: SettingsState,

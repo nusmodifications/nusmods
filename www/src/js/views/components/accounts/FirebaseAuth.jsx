@@ -21,7 +21,7 @@
 
 import React from 'react';
 import firebaseui from 'firebaseui';
-import 'firebase.scss';
+import 'styles/firebase.scss';
 
 // Global ID for the element.
 const ELEMENT_ID = 'firebaseui_container';
@@ -35,7 +35,7 @@ type Props = {
   firebaseAuth: Object, // The Firebase App auth instance to use.
   elementId: string, // The ID of the underlying container that we'll generate.
   // Use this if you use more than one instance at a time in your app.
-  className: string,
+  className?: string,
 };
 
 /**

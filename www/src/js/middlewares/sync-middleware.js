@@ -1,4 +1,5 @@
 // @flow
+import type { Middleware } from 'redux';
 import { mapValues, values, flatten, fromPairs, pick } from 'lodash';
 import { firestore, auth } from 'utils/firebase/firebase';
 import { syncDataReceived } from 'actions/sync';
@@ -12,7 +13,7 @@ export type SyncConfig = {
 
 // Returns a map of action types to reducer names.
 // No two reducers should watch for the same action.
-export function mapActionsToReducers(config: { string: SyncConfig }): { string: string } {
+export function mapActionsToReducers(config: { [string]: SyncConfig }): { [string]: string } {
   return fromPairs(
     flatten(
       values(
@@ -25,11 +26,11 @@ export function mapActionsToReducers(config: { string: SyncConfig }): { string: 
   );
 }
 
-export default function createSyncMiddleware(perReducerConfig: { string: SyncConfig }) {
+export default function createSyncMiddleware(perReducerConfig: { [string]: SyncConfig }) {
   let unsubscribeSync; // Function to stop subscribing to Firebase update snapshots
   const actionToReducerMap = mapActionsToReducers(perReducerConfig);
 
-  return (store) => {
+  const syncMiddleware: Middleware<*, *, *> = (store) => {
     auth().onAuthStateChanged((user) => {
       if (user) {
         // User is signed in.
@@ -50,7 +51,7 @@ export default function createSyncMiddleware(perReducerConfig: { string: SyncCon
     });
 
     return (next) => (action) => {
-      next(action);
+      const result = next(action);
 
       // Send state if logged in and action is watched
       const newState = store.getState();
@@ -70,6 +71,10 @@ export default function createSyncMiddleware(perReducerConfig: { string: SyncCon
         // .then(() => console.log("My god Jim, we've synced@!", stateToSend));
         // TODO: Handle errors
       }
+
+      return result;
     };
   };
+
+  return syncMiddleware;
 }
