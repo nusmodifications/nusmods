@@ -2,7 +2,7 @@
 import type { Middleware } from 'redux';
 import type { PerReducerSyncConfig } from 'types/sync';
 import { mapValues, values, flatten, fromPairs, pick } from 'lodash';
-import { firestore, auth } from 'utils/firebase/firebase';
+import { firestore, auth } from 'utils/firebase';
 import { syncDataReceived } from 'actions/sync';
 
 const SYNC_COLLECTION_NAME = 'mods';
@@ -30,7 +30,7 @@ export default function createSyncMiddleware(perReducerConfig: PerReducerSyncCon
     auth().onAuthStateChanged((user) => {
       if (user) {
         // User is signed in.
-        unsubscribeSync = firestore
+        unsubscribeSync = firestore()
           .collection(SYNC_COLLECTION_NAME)
           .doc(user.uid)
           .onSnapshot(
@@ -66,10 +66,13 @@ export default function createSyncMiddleware(perReducerConfig: PerReducerSyncCon
         // TODO: Consider diffing state to only send changed fields
 
         // Send data to server
-        firestore
+        firestore()
           .collection(SYNC_COLLECTION_NAME)
           .doc(loggedInUser.uid)
-          .update({ [reducerName]: stateToSend })
+          .update({
+            [reducerName]: stateToSend,
+            updateTimestamp: firestore.FieldValue.serverTimestamp(),
+          })
           // .then(() => console.log("My god Jim, we've synced@!", stateToSend))
           // TODO: Handle errors properly
           .catch((err) => alert(`Send error ${err}`));

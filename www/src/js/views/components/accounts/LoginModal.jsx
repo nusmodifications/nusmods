@@ -6,7 +6,7 @@ import firebaseui from 'firebaseui';
 import type { State } from 'reducers';
 
 import { toggleLoginDialog } from 'actions/app';
-import { auth } from 'utils/firebase/firebase';
+import { auth } from 'utils/firebase';
 
 // import { GitHub, Facebook, Mail } from './icons';
 import CloseButton from 'views/components/CloseButton';
