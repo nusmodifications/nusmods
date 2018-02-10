@@ -3,6 +3,8 @@ import { firebase } from '@firebase/app';
 import '@firebase/auth';
 import '@firebase/firestore';
 
+export const SYNC_COLLECTION_NAME = 'mods';
+
 if (!firebase.apps.length) {
   firebase.initializeApp({
     // TODO: Use process.env instead

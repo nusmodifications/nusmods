@@ -2,10 +2,8 @@
 import type { Middleware } from 'redux';
 import type { PerReducerSyncConfig } from 'types/sync';
 import { mapValues, values, flatten, fromPairs, pick } from 'lodash';
-import { firestore, auth } from 'utils/firebase';
+import { firestore, auth, SYNC_COLLECTION_NAME } from 'utils/firebase';
 import { syncDataReceived } from 'actions/sync';
-
-const SYNC_COLLECTION_NAME = 'mods';
 
 // Returns a map of action types to reducer names.
 // No two reducers should watch for the same action.
@@ -22,6 +20,39 @@ export function mapActionsToReducers(config: PerReducerSyncConfig): { [string]: 
   );
 }
 
+function startReceivingState(uid: string, onDataReceived: (data: Object) => mixed): Function {
+  return firestore()
+    .collection(SYNC_COLLECTION_NAME)
+    .doc(uid)
+    .onSnapshot(
+      (doc) => {
+        // Ignore docs that don't exist
+        if (!doc.exists) return;
+        // Ignore changes that originated locally
+        // https://firebase.google.com/docs/firestore/query-data/listen#events-local-changes
+        if (doc.metadata.hasPendingWrites) return;
+        onDataReceived(doc.data());
+      },
+      // TODO: Handle errors properly
+      (err) => alert(`Receive error ${err}`),
+    );
+}
+
+function sendStateToServer(reducerName: string, stateToSend: Object) {
+  const loggedInUser = auth().currentUser;
+  // Send data to server
+  firestore()
+    .collection(SYNC_COLLECTION_NAME)
+    .doc(loggedInUser.uid)
+    .update({
+      [reducerName]: stateToSend,
+      updateTimestamp: firestore.FieldValue.serverTimestamp(),
+    })
+    // .then(() => console.log("Sent data!", stateToSend))
+    // TODO: Handle errors properly
+    .catch((err) => alert(`Send error ${err}`));
+}
+
 export default function createSyncMiddleware(perReducerConfig: PerReducerSyncConfig) {
   let unsubscribeSync: ?Function; // Function to stop subscribing to Firebase update snapshots
   const actionToReducerMap = mapActionsToReducers(perReducerConfig);
@@ -30,21 +61,9 @@ export default function createSyncMiddleware(perReducerConfig: PerReducerSyncCon
     auth().onAuthStateChanged((user) => {
       if (user) {
         // User is signed in.
-        unsubscribeSync = firestore()
-          .collection(SYNC_COLLECTION_NAME)
-          .doc(user.uid)
-          .onSnapshot(
-            (doc) => {
-              // Ignore docs that don't exist
-              if (!doc.exists) return;
-              // Ignore changes that originated locally
-              // https://firebase.google.com/docs/firestore/query-data/listen#events-local-changes
-              if (doc.metadata.hasPendingWrites) return;
-              store.dispatch(syncDataReceived(doc.data()));
-            },
-            // TODO: Handle errors properly
-            (err) => alert(`Subscription error ${err}`),
-          );
+        unsubscribeSync = startReceivingState(user.uid, (data) =>
+          store.dispatch(syncDataReceived(data)),
+        );
       } else {
         // No user is signed in.
         // eslint-disable-next-line no-lonely-if
@@ -63,19 +82,7 @@ export default function createSyncMiddleware(perReducerConfig: PerReducerSyncCon
         const config = perReducerConfig[reducerName];
         const reducerState = newState[reducerName];
         const stateToSend = config.keyPaths ? pick(reducerState, config.keyPaths) : reducerState;
-        // TODO: Consider diffing state to only send changed fields
-
-        // Send data to server
-        firestore()
-          .collection(SYNC_COLLECTION_NAME)
-          .doc(loggedInUser.uid)
-          .update({
-            [reducerName]: stateToSend,
-            updateTimestamp: firestore.FieldValue.serverTimestamp(),
-          })
-          // .then(() => console.log("My god Jim, we've synced@!", stateToSend))
-          // TODO: Handle errors properly
-          .catch((err) => alert(`Send error ${err}`));
+        sendStateToServer(reducerName, stateToSend);
       }
 
       return result;
