@@ -1,17 +1,11 @@
 // @flow
 import type { Middleware } from 'redux';
+import type { PerReducerSyncConfig } from 'types/sync';
 import { mapValues, values, flatten, fromPairs, pick } from 'lodash';
 import { firestore, auth } from 'utils/firebase/firebase';
 import { syncDataReceived } from 'actions/sync';
 
 const SYNC_COLLECTION_NAME = 'mods';
-
-export type SyncConfig = {
-  actions: string[], // Action types to watch for
-  keyPaths?: string[], // Key paths to send to server. If absent, sends entire reducer state
-};
-
-export type PerReducerSyncConfig = { [string]: SyncConfig };
 
 // Returns a map of action types to reducer names.
 // No two reducers should watch for the same action.
@@ -75,8 +69,8 @@ export default function createSyncMiddleware(perReducerConfig: PerReducerSyncCon
         firestore
           .collection(SYNC_COLLECTION_NAME)
           .doc(loggedInUser.uid)
-          .set({ [reducerName]: stateToSend }, { merge: true })
-          // .then(() => console.log("My god Jim, we've synced@!", stateToSend));
+          .update({ [reducerName]: stateToSend })
+          // .then(() => console.log("My god Jim, we've synced@!", stateToSend))
           // TODO: Handle errors properly
           .catch((err) => alert(`Send error ${err}`));
       }
