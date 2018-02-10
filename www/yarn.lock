@@ -3452,9 +3452,9 @@ firebase@^4.3.1:
     dom-storage "^2.0.2"
     xmlhttprequest "^1.8.0"
 
-firebaseui@^2.5.1:
-  version "2.5.1"
-  resolved "https://registry.yarnpkg.com/firebaseui/-/firebaseui-2.5.1.tgz#98a89bddd1cbf11c01069e7e4278ecc3cca1e2fe"
+firebaseui@^2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/firebaseui/-/firebaseui-2.6.0.tgz#2073323d318546d2a85ac8ed9631ade1e12c28b2"
   dependencies:
     dialog-polyfill "^0.4.7"
     firebase "^4.3.1"
