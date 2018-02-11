@@ -108,6 +108,7 @@
     "bootstrap": "4.0.0",
     "classnames": "^2.2.5",
     "core-js": "^2.5.1",
+    "deep-diff": "^0.3.8",
     "downshift": "^1.22.3",
     "firebaseui": "^2.6.0",
     "ical-generator": "https://github.com/ZhangYiJiang/ical-generator.git#ed6928fe",
