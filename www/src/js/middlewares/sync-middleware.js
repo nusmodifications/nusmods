@@ -72,15 +72,17 @@ export default function createSyncMiddleware(perReducerConfig: PerReducerSyncCon
 
   const syncMiddleware: Middleware<*, *, *> = (store) => {
     auth().onAuthStateChanged((user) => {
+      // Unsubscribe if user logged out, or logged in to another account while already logged in
+      if (unsubscribeSync) {
+        unsubscribeSync();
+        unsubscribeSync = null;
+      }
+
+      // Subscribe if user logged in
       if (user) {
-        // User is signed in.
         unsubscribeSync = startReceivingState(user.uid, (data) =>
           store.dispatch(syncDataReceived(data)),
         );
-      } else {
-        // No user is signed in.
-        // eslint-disable-next-line no-lonely-if
-        if (unsubscribeSync) unsubscribeSync();
       }
     });
 
