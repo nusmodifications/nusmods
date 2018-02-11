@@ -29,7 +29,7 @@ function startReceivingState(uid: string, onDataReceived: (data: Object) => mixe
       (doc) => {
         // Ignore docs that don't exist
         if (!doc.exists) return;
-        // Ignore changes that originated locally
+        // Ignore changes that originated locally. May be unreliable.
         // https://firebase.google.com/docs/firestore/query-data/listen#events-local-changes
         if (doc.metadata.hasPendingWrites) return;
         onDataReceived(doc.data());
@@ -88,7 +88,6 @@ export default function createSyncMiddleware(perReducerConfig: PerReducerSyncCon
 
     return (next) => (action) => {
       const result = next(action);
-
       // Send state if logged in and action is watched
       const loggedInUser = auth().currentUser;
       const reducerName = actionToReducerMap[action.type];

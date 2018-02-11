@@ -6,6 +6,7 @@ import thunk from 'redux-thunk';
 import rootReducer, { type State } from 'reducers';
 import requestsMiddleware from 'middlewares/requests-middleware';
 import ravenMiddleware from 'middlewares/raven-middleware';
+import syncCompleter from 'middlewares/sync-completer';
 import syncMiddleware from 'bootstrapping/configure-sync-middleware';
 
 // For redux-devtools-extensions - see
@@ -20,7 +21,7 @@ const composeEnhancers =
 /* eslint-enable no-underscore-dangle */
 
 export default function configureStore(defaultState?: State) {
-  const middlewares = [ravenMiddleware, thunk, requestsMiddleware, syncMiddleware];
+  const middlewares = [ravenMiddleware, thunk, requestsMiddleware, syncMiddleware, syncCompleter];
 
   if (process.env.NODE_ENV === 'development') {
     /* eslint-disable */
