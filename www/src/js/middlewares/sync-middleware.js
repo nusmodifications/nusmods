@@ -7,6 +7,7 @@ import { syncDataReceived } from 'actions/sync';
 
 // Returns a map of action types to reducer names.
 // No two reducers should watch for the same action.
+// Exported for unit tests.
 export function mapActionsToReducers(config: PerReducerSyncConfig): { [string]: string } {
   return fromPairs(
     flatten(
@@ -40,17 +41,28 @@ function startReceivingState(uid: string, onDataReceived: (data: Object) => mixe
 
 function sendStateToServer(reducerName: string, stateToSend: Object) {
   const loggedInUser = auth().currentUser;
-  // Send data to server
-  firestore()
+
+  const docToSend = {
+    [reducerName]: stateToSend,
+    updateTimestamp: firestore.FieldValue.serverTimestamp(),
+  };
+
+  const doc = firestore()
     .collection(SYNC_COLLECTION_NAME)
-    .doc(loggedInUser.uid)
-    .update({
-      [reducerName]: stateToSend,
-      updateTimestamp: firestore.FieldValue.serverTimestamp(),
+    .doc(loggedInUser.uid);
+
+  doc
+    // update() > set(..., { merge:true }) as update completely replaces a reducer's state
+    .update(docToSend)
+    // .update does not create docs when they do not exist.
+    // We therefore catch not-found errors and call .set instead.
+    .catch((err: firestore.FirestoreError) => {
+      if (err.code !== 'not-found') throw err;
+      return doc.set(docToSend);
     })
     // .then(() => console.log("Sent data!", stateToSend))
     // TODO: Handle errors properly
-    .catch((err) => alert(`Send error ${err}`));
+    .catch((err: firestore.FirestoreError) => alert(`Send error ${err}`));
 }
 
 export default function createSyncMiddleware(perReducerConfig: PerReducerSyncConfig) {
@@ -75,12 +87,11 @@ export default function createSyncMiddleware(perReducerConfig: PerReducerSyncCon
       const result = next(action);
 
       // Send state if logged in and action is watched
-      const newState = store.getState();
       const loggedInUser = auth().currentUser;
       const reducerName = actionToReducerMap[action.type];
       if (loggedInUser && reducerName) {
         const config = perReducerConfig[reducerName];
-        const reducerState = newState[reducerName];
+        const reducerState = store.getState()[reducerName];
         const stateToSend = config.keyPaths ? pick(reducerState, config.keyPaths) : reducerState;
         sendStateToServer(reducerName, stateToSend);
       }
