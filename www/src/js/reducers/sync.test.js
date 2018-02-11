@@ -14,6 +14,7 @@ const initialStoreState = (key: string): Object => ({
       key2: 'val',
       key3: 'deletedVal',
     },
+    key3: 'unsynced',
   },
 });
 const serverStoreState = (key: string): Object => ({
@@ -35,7 +36,10 @@ describe('#syncReducer()', () => {
       initialReducerState,
       syncDataReceived(serverStoreState(existKey)),
     );
-    expect(finalReducerState).toEqual(serverStoreState(existKey)[existKey]);
+    expect(finalReducerState).toEqual({
+      ...initialReducerState,
+      ...serverStoreState(existKey)[existKey],
+    });
   });
 
   test('ignores server states without a copy of this reducers state', () => {
