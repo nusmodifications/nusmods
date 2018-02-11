@@ -45,6 +45,7 @@ function sendStateToServer(reducerName: string, stateToSend: Object) {
   const docToSend = {
     [reducerName]: stateToSend,
     updateTimestamp: firestore.FieldValue.serverTimestamp(),
+    appVersion: process.env.versionStr,
   };
 
   const doc = firestore()
