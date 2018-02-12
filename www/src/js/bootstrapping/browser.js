@@ -1,8 +1,12 @@
 // @flow
 import bowser from 'bowser';
 import { checkBrowserSupportsLocalStorage } from '../storage/localStorage';
+import styles from './browser.scss';
 
 const LOCAL_STORAGE_KEY = 'dismissedBrowserWarning';
+const LINK_FOR_CHROME = 'https://www.google.com/chrome/';
+const LINK_FOR_FIREFOX = 'https://www.mozilla.org/en-US/';
+
 const browserSupportsLocalStorage = checkBrowserSupportsLocalStorage();
 
 if (
@@ -20,41 +24,53 @@ if (
     (browserSupportsLocalStorage && !localStorage.getItem(LOCAL_STORAGE_KEY)) ||
     !browserSupportsLocalStorage
   ) {
+    const promptText = (() => {
+      if (bowser.ios && bowser.safari)
+        return `NUSMods may not work properly. Please consider updating your OS or switching to the latest version of <a href="${LINK_FOR_CHROME}">Google Chrome</a></a>.`;
+      if (bowser.android && bowser.chrome)
+        return `NUSMods may not work properly. Please consider updating your web browser.`;
+      return `NUSMods may not work properly. Please consider updating your web browser or switching to the latest version of <a href="${LINK_FOR_CHROME}">Google Chrome</a> or <a href=${LINK_FOR_FIREFOX}>Mozilla Firefox</a>.`;
+    })();
     const template = `
-      <div class="browser-warning__overlay">
-      <div class="browser-warning__modal">
-      <h1>Your web browser is outdated or unsupported</h1>
-      <p>NUSMods may not work or may work poorly. Please consider upgrading your web browser.</p>
-      <button class="btn btn-primary" id="browser-warning-continue">Continue to NUSMods</button>
-      ${
-        // Show "don't show again" only if the browser supports localStorage
-        browserSupportsLocalStorage
-          ? '<button class="btn" id="browser-warning-ignore">Don\'t show again</button>'
-          : ''
-      }
+    <div class="${styles.overlay}">
+      <div class="${styles.modal}">
+      <h3>Your web browser is outdated or unsupported</h3>
+      <p>${promptText}</p>
+      <div class="form-row align-items-center">
+        <div class="col-auto">
+          <button class="btn btn-primary" id="browserWarning-continue" type="button">Continue to NUSMods</button>
+        </div>
+        ${
+          // Show "don't show again" only if the browser supports localStorage
+          browserSupportsLocalStorage
+            ? `
+              <div class="col-auto ${styles.checkboxContainer}">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" id="browserWarning-ignore" type="checkbox">
+                  <label class="form-check-label" for="browserWarning-ignore">Don't show this dialog again</label>
+                </div>
+              </div>
+              `
+            : ''
+        }
+        </div>
       </div>
-      </div>
-      `;
+    </div>
+  `;
     const container = document.createElement('div');
-    container.className = 'browser-warning';
+    container.className = styles.browserWarning;
     container.innerHTML = template;
     const body = document.body;
     if (body) body.appendChild(container);
 
-    const addDismissListener = (elementId, composedFunction) => {
-      const element = document.getElementById(elementId);
-      if (element) {
-        element.addEventListener('click', (event) => {
-          event.preventDefault();
-          if (body) body.removeChild(container);
-          if (composedFunction && typeof composedFunction === 'function') composedFunction();
-        });
-      }
-    };
-
-    addDismissListener('browser-warning-continue');
-    addDismissListener('browser-warning-ignore', () => {
-      if (browserSupportsLocalStorage) localStorage.setItem(LOCAL_STORAGE_KEY, navigator.userAgent);
-    });
+    const element = document.getElementById('browserWarning-continue');
+    if (element) {
+      element.addEventListener('click', () => {
+        const checkbox = document.getElementById('browserWarning-ignore');
+        if (browserSupportsLocalStorage && checkbox && checkbox.checked)
+          localStorage.setItem(LOCAL_STORAGE_KEY, navigator.userAgent);
+        if (body) body.removeChild(container);
+      });
+    }
   }
 }
