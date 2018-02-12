@@ -1,11 +1,19 @@
 // @flow
+
+// This script checks for browser compatibility and is executed outside React's scope. If a browser
+// is incompatible or not optimal for using the app, a pop-up dialog is appended into the DOM body.
+// This is so that in cases where the React app completely fails to render anything at all, the
+// user will at least be able to see the dialog warning them of the browser incompatibility.
+
 import bowser from 'bowser';
 import { checkBrowserSupportsLocalStorage } from '../storage/localStorage';
 import styles from './browser.scss';
 
 const LOCAL_STORAGE_KEY = 'dismissedBrowserWarning';
-const LINK_FOR_CHROME = 'https://www.google.com/chrome/';
-const LINK_FOR_FIREFOX = 'https://www.mozilla.org/en-US/';
+const composeAnchorText = (innerHTML, href) =>
+  `<a href=${href} target="_blank" rel="noopener noreferrer">${innerHTML}</a>`;
+const linkForChrome = composeAnchorText('Google Chrome', 'https://www.google.com/chrome/');
+const linkForFirefox = composeAnchorText('Mozilla Firefox', 'https://www.mozilla.org/en-US/');
 
 const browserSupportsLocalStorage = checkBrowserSupportsLocalStorage();
 
@@ -25,11 +33,12 @@ if (
     !browserSupportsLocalStorage
   ) {
     const promptText = (() => {
+      // Users can only update Safari by updating the OS in iOS
       if (bowser.ios && bowser.safari)
-        return `NUSMods may not work properly. Please consider updating your OS or switching to the latest version of <a href="${LINK_FOR_CHROME}">Google Chrome</a></a>.`;
+        return `NUSMods may not work properly. Please consider updating your OS or switching to the latest version of ${linkForChrome}.`;
       if (bowser.android && bowser.chrome)
         return `NUSMods may not work properly. Please consider updating your web browser.`;
-      return `NUSMods may not work properly. Please consider updating your web browser or switching to the latest version of <a href="${LINK_FOR_CHROME}">Google Chrome</a> or <a href=${LINK_FOR_FIREFOX}>Mozilla Firefox</a>.`;
+      return `NUSMods may not work properly. Please consider updating your web browser or switching to the latest version of ${linkForChrome} or ${linkForFirefox}.`;
     })();
     const template = `
     <div class="${styles.overlay}">
@@ -47,7 +56,7 @@ if (
               <div class="col-auto ${styles.checkboxContainer}">
                 <div class="form-check form-check-inline">
                   <input class="form-check-input" id="browserWarning-ignore" type="checkbox">
-                  <label class="form-check-label" for="browserWarning-ignore">Don't show this dialog again</label>
+                  <label class="form-check-label" for="browserWarning-ignore">Don't show this message again</label>
                 </div>
               </div>
               `
