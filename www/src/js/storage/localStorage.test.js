@@ -1,4 +1,4 @@
-import { createLocalStorageShim, isLocalStorageLike, getLocalStorage } from './localStorage';
+import getLocalStorage, { createLocalStorageShim, isLocalStorageLike } from './localStorage';
 
 describe('#createLocalStorageShim', () => {
   test('should store and return data', () => {

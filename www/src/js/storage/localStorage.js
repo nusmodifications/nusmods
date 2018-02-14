@@ -38,7 +38,7 @@ export function isLocalStorageLike(storage) {
 
 // Shim localStorage if it doesn't exist
 // Returns an object that behaves like localStorage
-export function getLocalStorage() {
+export default function getLocalStorage() {
   // If we've performed all our checks before, just assume results will be the same
   // Key assumption: writability of localStorage doesn't change while page is loaded
   if (usableLocalStorage) return usableLocalStorage;
