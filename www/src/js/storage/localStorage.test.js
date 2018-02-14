@@ -1,7 +1,4 @@
-import getLocalStorage, {
-  createLocalStorageShim,
-  checkBrowserSupportsLocalStorage,
-} from './localStorage';
+import getLocalStorage, { createLocalStorageShim, canUseBrowserLocalStorage } from './localStorage';
 
 describe('#createLocalStorageShim', () => {
   test('should store and return data', () => {
@@ -46,23 +43,35 @@ describe('#createLocalStorageShim', () => {
   });
 });
 
-describe('#checkBrowserSupportsLocalStorage', () => {
-  test('should correctly check if browser supports localstorage', () => {
+describe('#canUseBrowserLocalStorage', () => {
+  test('should correctly check if browser supports localStorage', () => {
+    window.localStorage = undefined;
+    expect(canUseBrowserLocalStorage()).toEqual(false);
     window.localStorage = {
       ...createLocalStorageShim(),
+      // the length is set here because canUseBrowserLocalStorage uses a hack to detect private browsing
+      length: 1,
       setItem: () => {
         throw new Error();
       },
     };
-    expect(checkBrowserSupportsLocalStorage()).toEqual(false);
+    expect(canUseBrowserLocalStorage()).toEqual(false);
     window.localStorage = createLocalStorageShim();
-    expect(checkBrowserSupportsLocalStorage()).toEqual(true);
+    expect(canUseBrowserLocalStorage()).toEqual(true);
   });
 });
 
 describe('#getLocalStorage', () => {
-  test('should get usable localstorage-like object', () => {
+  test('should get usable localStorage-like object', () => {
+    // getLocalStorage returns either the actual browser's localStorage or a shim of it and MUST
+    // always return an object that behaves like localStorage
     window.localStorage = getLocalStorage();
-    expect(checkBrowserSupportsLocalStorage()).toEqual(true);
+    expect(canUseBrowserLocalStorage()).toEqual(true);
+    // getLocalStorage should return the actual browser's localStorage if the browser can use localStorage
+    expect(getLocalStorage()).toBe(window.localStorage);
+    // getLocalStorage should return a shim if browser cannot use localStorage
+    window.localStorage = undefined;
+    expect(canUseBrowserLocalStorage()).toEqual(false);
+    expect(getLocalStorage()).toEqual(createLocalStorageShim());
   });
 });

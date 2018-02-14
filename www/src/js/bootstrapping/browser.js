@@ -6,7 +6,7 @@
 // user will at least be able to see the dialog warning them of the browser incompatibility.
 
 import bowser from 'bowser';
-import { checkBrowserSupportsLocalStorage } from '../storage/localStorage';
+import { canUseBrowserLocalStorage } from '../storage/localStorage';
 import styles from './browser.scss';
 
 const LOCAL_STORAGE_KEY = 'dismissedBrowserWarning';
@@ -15,7 +15,7 @@ const composeAnchorText = (innerHTML, href) =>
 const linkForChrome = composeAnchorText('Google Chrome', 'https://www.google.com/chrome/');
 const linkForFirefox = composeAnchorText('Mozilla Firefox', 'https://www.mozilla.org/en-US/');
 
-const browserSupportsLocalStorage = checkBrowserSupportsLocalStorage();
+const browserCanUseLocalStorage = canUseBrowserLocalStorage();
 
 if (
   !bowser.check(
@@ -29,8 +29,8 @@ if (
   )
 ) {
   if (
-    (browserSupportsLocalStorage && !localStorage.getItem(LOCAL_STORAGE_KEY)) ||
-    !browserSupportsLocalStorage
+    (browserCanUseLocalStorage && !localStorage.getItem(LOCAL_STORAGE_KEY)) ||
+    !browserCanUseLocalStorage
   ) {
     const promptText = (() => {
       // Users can only update Safari by updating the OS in iOS
@@ -51,7 +51,7 @@ if (
         </div>
         ${
           // Show "don't show again" only if the browser supports localStorage
-          browserSupportsLocalStorage
+          browserCanUseLocalStorage
             ? `
               <div class="col-auto ${styles.checkboxContainer}">
                 <div class="form-check form-check-inline">
@@ -76,7 +76,7 @@ if (
     if (element) {
       element.addEventListener('click', () => {
         const checkbox = document.getElementById('browserWarning-ignore');
-        if (browserSupportsLocalStorage && checkbox && checkbox.checked)
+        if (browserCanUseLocalStorage && checkbox && checkbox.checked)
           localStorage.setItem(LOCAL_STORAGE_KEY, navigator.userAgent);
         if (body) body.removeChild(container);
       });
