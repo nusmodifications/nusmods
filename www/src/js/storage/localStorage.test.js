@@ -1,4 +1,4 @@
-import { createLocalStorageShim } from './localStorage';
+import { createLocalStorageShim, isLocalStorageLike, getLocalStorage } from './localStorage';
 
 describe('#createLocalStorageShim', () => {
   test('should store and return data', () => {
@@ -40,5 +40,26 @@ describe('#createLocalStorageShim', () => {
   test('should not throw when removing nonexistent key', () => {
     const shim = createLocalStorageShim();
     expect(() => shim.removeItem('key')).not.toThrow();
+  });
+});
+
+describe('#isLocalStorageLike', () => {
+  test('should correctly check localstorage-like object', () => {
+    const faulty = {
+      ...createLocalStorageShim(),
+      setItem: () => {
+        throw new Error();
+      },
+    };
+    const shim = createLocalStorageShim();
+    expect(isLocalStorageLike(faulty)).toEqual(false);
+    expect(isLocalStorageLike(shim)).toEqual(true);
+  });
+});
+
+describe('#getLocalStorage', () => {
+  test('should get usable localstorage-like object', () => {
+    const possibleLocalStorage = getLocalStorage();
+    expect(isLocalStorageLike(possibleLocalStorage)).toEqual(true);
   });
 });
