@@ -20,8 +20,12 @@ export function createLocalStorageShim() {
   return storage;
 }
 
-export function isLocalStorageLike(storage) {
+export function checkBrowserSupportsLocalStorage() {
   try {
+    // Ensure that accessing localStorage doesn't throw
+    // Next line throws on Chrome with cookies disabled
+    const storage = window.localStorage;
+
     // Ensure that localStorage isn't null
     // Resolves https://sentry.io/share/issue/d65da46a7e19406aaee298fb89a635d6/
     if (!storage) throw new Error();
@@ -43,11 +47,7 @@ export default function getLocalStorage() {
   // Key assumption: writability of localStorage doesn't change while page is loaded
   if (usableLocalStorage) return usableLocalStorage;
 
-  // Ensure that accessing localStorage doesn't throw
-  // Next line throws on Chrome with cookies disabled
-  const storage = window.localStorage;
-
-  if (isLocalStorageLike(storage)) {
+  if (checkBrowserSupportsLocalStorage()) {
     usableLocalStorage = window.localStorage;
   } else if (!usableLocalStorage) {
     // Shim if we can't use localStorage

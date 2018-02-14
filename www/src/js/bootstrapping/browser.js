@@ -6,7 +6,7 @@
 // user will at least be able to see the dialog warning them of the browser incompatibility.
 
 import bowser from 'bowser';
-import { isLocalStorageLike } from '../storage/localStorage';
+import { checkBrowserSupportsLocalStorage } from '../storage/localStorage';
 import styles from './browser.scss';
 
 const LOCAL_STORAGE_KEY = 'dismissedBrowserWarning';
@@ -15,7 +15,7 @@ const composeAnchorText = (innerHTML, href) =>
 const linkForChrome = composeAnchorText('Google Chrome', 'https://www.google.com/chrome/');
 const linkForFirefox = composeAnchorText('Mozilla Firefox', 'https://www.mozilla.org/en-US/');
 
-const browserSupportsLocalStorage = isLocalStorageLike(window.localStorage);
+const browserSupportsLocalStorage = checkBrowserSupportsLocalStorage();
 
 if (
   !bowser.check(

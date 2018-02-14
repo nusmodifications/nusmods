@@ -1,4 +1,7 @@
-import getLocalStorage, { createLocalStorageShim, isLocalStorageLike } from './localStorage';
+import getLocalStorage, {
+  createLocalStorageShim,
+  checkBrowserSupportsLocalStorage,
+} from './localStorage';
 
 describe('#createLocalStorageShim', () => {
   test('should store and return data', () => {
@@ -43,23 +46,23 @@ describe('#createLocalStorageShim', () => {
   });
 });
 
-describe('#isLocalStorageLike', () => {
-  test('should correctly check localstorage-like object', () => {
-    const faulty = {
+describe('#checkBrowserSupportsLocalStorage', () => {
+  test('should correctly check if browser supports localstorage', () => {
+    window.localStorage = {
       ...createLocalStorageShim(),
       setItem: () => {
         throw new Error();
       },
     };
-    const shim = createLocalStorageShim();
-    expect(isLocalStorageLike(faulty)).toEqual(false);
-    expect(isLocalStorageLike(shim)).toEqual(true);
+    expect(checkBrowserSupportsLocalStorage()).toEqual(false);
+    window.localStorage = createLocalStorageShim();
+    expect(checkBrowserSupportsLocalStorage()).toEqual(true);
   });
 });
 
 describe('#getLocalStorage', () => {
   test('should get usable localstorage-like object', () => {
-    const possibleLocalStorage = getLocalStorage();
-    expect(isLocalStorageLike(possibleLocalStorage)).toEqual(true);
+    window.localStorage = getLocalStorage();
+    expect(checkBrowserSupportsLocalStorage()).toEqual(true);
   });
 });
