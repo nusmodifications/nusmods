@@ -44,18 +44,24 @@ describe('#createLocalStorageShim', () => {
 });
 
 describe('#canUseBrowserLocalStorage', () => {
-  test('should correctly check if browser supports localStorage', () => {
+  test('should return false if localStorage is undefined', () => {
     window.localStorage = undefined;
     expect(canUseBrowserLocalStorage()).toEqual(false);
+  });
+
+  test('should return false if localStorage throws when writing', () => {
     window.localStorage = {
       ...createLocalStorageShim(),
       // the length is set here because canUseBrowserLocalStorage uses a hack to detect private browsing
-      length: 1,
+      length: 0,
       setItem: () => {
         throw new Error();
       },
     };
     expect(canUseBrowserLocalStorage()).toEqual(false);
+  });
+
+  test('should return true if localStorage is localStorage-like object', () => {
     window.localStorage = createLocalStorageShim();
     expect(canUseBrowserLocalStorage()).toEqual(true);
   });
@@ -67,11 +73,23 @@ describe('#getLocalStorage', () => {
     // always return an object that behaves like localStorage
     window.localStorage = getLocalStorage();
     expect(canUseBrowserLocalStorage()).toEqual(true);
-    // getLocalStorage should return the actual browser's localStorage if the browser can use localStorage
+  });
+
+  test("should return the actual browser's localStorage if the browser can use localStorage", () => {
     expect(getLocalStorage()).toBe(window.localStorage);
-    // getLocalStorage should return a shim if browser cannot use localStorage
+  });
+
+  test('should return a shim if browser cannot use localStorage', () => {
     window.localStorage = undefined;
     expect(canUseBrowserLocalStorage()).toEqual(false);
-    expect(getLocalStorage()).toEqual(createLocalStorageShim());
+    expect(getLocalStorage()).toEqual(
+      expect.objectContaining({
+        privData: expect.any(Object),
+        clear: expect.any(Function),
+        setItem: expect.any(Function),
+        getItem: expect.any(Function),
+        removeItem: expect.any(Function),
+      }),
+    );
   });
 });
