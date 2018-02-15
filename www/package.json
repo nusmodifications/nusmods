@@ -115,7 +115,7 @@
     "nusmoderator": "^2.0.0",
     "query-string": "^5.0.1",
     "raven-for-redux": "^1.2.0",
-    "raven-js": "^3.22.2",
+    "raven-js": "^3.22.3",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-feather": "1.0.8",
