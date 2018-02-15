@@ -113,7 +113,7 @@
     "mousetrap": "^1.6.1",
     "no-scroll": "^2.1.0",
     "nusmoderator": "^2.0.0",
-    "query-string": "^5.0.1",
+    "query-string": "^5.1.0",
     "raven-for-redux": "^1.2.0",
     "raven-js": "^3.22.3",
     "react": "^16.2.0",
