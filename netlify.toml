@@ -3,4 +3,4 @@
 [build]
   base    = "www"
   publish = "www/dist"
-  command = "yarn build"
+  command = "npm rebuild node-sass && yarn build"
