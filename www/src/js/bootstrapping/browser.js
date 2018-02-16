@@ -34,8 +34,8 @@ if (
   ) {
     const promptText = (() => {
       // Users can only update Safari by updating the OS in iOS
-      if (bowser.ios && bowser.safari)
-        return `NUSMods may not work properly. Please consider updating your OS or switching to the latest version of ${linkForChrome}.`;
+      if (bowser.ios)
+        return `NUSMods may not work properly. Please consider updating your device to iOS 11 or higher.`;
       if (bowser.android && bowser.chrome)
         return `NUSMods may not work properly. Please consider updating your web browser.`;
       return `NUSMods may not work properly. Please consider updating your web browser or switching to the latest version of ${linkForChrome} or ${linkForFirefox}.`;

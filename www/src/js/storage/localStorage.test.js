@@ -49,7 +49,7 @@ describe('#canUseBrowserLocalStorage', () => {
     expect(canUseBrowserLocalStorage()).toEqual(false);
   });
 
-  test('should return false if localStorage throws when writing', () => {
+  test('should return false if localStorage throws when writing on iOS <=10 on private browsing', () => {
     window.localStorage = {
       ...createLocalStorageShim(),
       // the length is set here because canUseBrowserLocalStorage uses a hack to detect private browsing
@@ -68,14 +68,8 @@ describe('#canUseBrowserLocalStorage', () => {
 });
 
 describe('#getLocalStorage', () => {
-  test('should get usable localStorage-like object', () => {
-    // getLocalStorage returns either the actual browser's localStorage or a shim of it and MUST
-    // always return an object that behaves like localStorage
-    window.localStorage = getLocalStorage();
-    expect(canUseBrowserLocalStorage()).toEqual(true);
-  });
-
   test("should return the actual browser's localStorage if the browser can use localStorage", () => {
+    expect(canUseBrowserLocalStorage()).toEqual(true);
     expect(getLocalStorage()).toBe(window.localStorage);
   });
 
