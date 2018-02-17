@@ -42,16 +42,16 @@
   "npmName": "nusmoderator",
   "devDependencies": {
     "babel-core": "^6.26.0",
-    "babel-eslint": "^7.0.0",
-    "babel-jest": "^22.0.4",
+    "babel-eslint": "^8.2.1",
+    "babel-jest": "^22.2.2",
     "babel-preset-env": "^1.6.1",
-    "documentation": "^5.3.5",
-    "eslint": "4.9.0",
-    "eslint-config-airbnb-base": "^12.1.0w",
-    "eslint-plugin-flowtype": "^2.20.0",
-    "eslint-plugin-import": "2.7.0",
-    "jest": "^22.0.4",
-    "microbundle": "^0.2.4",
-    "rimraf": "^2.5.4"
+    "documentation": "^5.4.0",
+    "eslint": "^4.18.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-flowtype": "^2.44.0",
+    "eslint-plugin-import": "^2.8.0",
+    "jest": "^22.3.0",
+    "microbundle": "^0.4.3",
+    "rimraf": "^2.6.2"
   }
 }
