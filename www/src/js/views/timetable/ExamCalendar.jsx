@@ -37,12 +37,23 @@ type ExamDay = {
 };
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const TZ_OFFSET = 8 * 60 * 60 * 1000;
+
+// The API returns examDate with hhmm as the TZ specifier. Unfortunately Safari chokes on this
+// because it is not specified in ECMAScript specs (even though it _is_ valid ISO8601)
+// so we have to do our own conversion here
+function examDateStringToDate(date: string): Date {
+  return new Date(new Date(`${date.slice(0, 16)}Z`).valueOf() + TZ_OFFSET);
+}
 
 function getExamDate(date: ?string): ?string {
   if (!date) return null;
   return formatExamDate(date).split(' ')[0];
 }
 
+// NUS exams are grouped into morning, afternoon and evening exams. Afternoon exams happen at 2.30PM
+// on Fridays only. We don't want to create two different groups for 1pm and 2.30pm exams, so we
+// create another mapping here
 function getTimeSegment(time: string): TimeSegment {
   switch (time) {
     case '9:00 AM':
@@ -69,7 +80,7 @@ function renderModule(module: ModuleWithColor) {
   );
 }
 
-function renderWeek(week: ExamDay[], weekNumber: number) {
+function ExamWeek({ week, weekNumber }: { week: ExamDay[], weekNumber: number }) {
   // Each week consists of a header row and three module rows, one for each
   // possible time segment
   const headerRow = (
@@ -128,7 +139,7 @@ export default class ExamCalendar extends PureComponent<Props> {
     const year = `${config.academicYear.slice(2, 4)}/${config.academicYear.slice(-2)}`;
     let firstDayOfExams = new Date(
       // Add Singapore's tz offset to ensure the date is in the local tz
-      NUSModerator.academicCalendar.getExamWeek(year, semester).valueOf() + 8 * 60 * 60 * 1000,
+      NUSModerator.academicCalendar.getExamWeek(year, semester).valueOf() + TZ_OFFSET,
     );
 
     let weekCount = 0;
@@ -140,7 +151,7 @@ export default class ExamCalendar extends PureComponent<Props> {
       const dateString = getModuleExamDate(module, semester);
       if (!dateString) return;
 
-      const date = new Date(dateString);
+      const date = examDateStringToDate(dateString);
       while (date < firstDayOfExams) {
         firstDayOfExams = daysAfter(firstDayOfExams, -7);
         weekCount += 1;
@@ -185,7 +196,9 @@ export default class ExamCalendar extends PureComponent<Props> {
     // (5 days), and expand as necessary
     const daysWithExams = Math.max(
       5,
-      ...modulesWithExams.map((module) => getCurrentDayIndex(new Date(module.dateTime)) + 1),
+      ...modulesWithExams.map((module) =>
+        getCurrentDayIndex(examDateStringToDate(module.dateTime)),
+      ),
     );
 
     // Group modules by their exam date and time
@@ -239,7 +252,11 @@ export default class ExamCalendar extends PureComponent<Props> {
                 ))}
               </tr>
             </thead>
-            <tbody>{modulesByExamDate.map(renderWeek)}</tbody>
+            <tbody>
+              {modulesByExamDate.map((week, index) => (
+                <ExamWeek key={index} week={week} weekNumber={index} />
+              ))}
+            </tbody>
           </table>
         </div>
       </Fragment>

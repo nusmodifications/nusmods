@@ -1,9 +1,9 @@
 // @flow
 
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import _ from 'lodash';
-import { Link } from 'react-router-dom';
+import { Link, MemoryRouter } from 'react-router-dom';
 
 import type { ModuleWithColor, Semester } from 'types/modules';
 import mockModules from '__mocks__/modules';
@@ -20,7 +20,11 @@ const modulesWithColor = mockModules.map((module, i) => ({
 }));
 
 function make(modules: ModuleWithColor[] = [], semester: Semester = 1) {
-  return shallow(<ExamCalendar semester={semester} modules={modules} />);
+  return mount(
+    <MemoryRouter>
+      <ExamCalendar semester={semester} modules={modules} />
+    </MemoryRouter>,
+  );
 }
 
 describe('ExamCalendar', () => {
