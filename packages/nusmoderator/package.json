@@ -1,6 +1,6 @@
 {
   "name": "nusmoderator",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "A lightweight library with helpful functions for NUS-related matters",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
@@ -20,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/nusmodifications/nusmoderator.git"
+    "url": "https://github.com/nusmodifications/nusmods.git"
   },
   "keywords": [
     "NUS",
@@ -36,9 +36,9 @@
   "author": "NUSModifications",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/nusmodifications/nusmoderator/issues"
+    "email": "mods@nusmods.com"
   },
-  "homepage": "https://github.com/nusmodifications/nusmoderator",
+  "homepage": "https://github.com/nusmodifications/nusmods/tree/master/packages/nusmoderator",
   "npmName": "nusmoderator",
   "devDependencies": {
     "babel-core": "^6.26.0",
