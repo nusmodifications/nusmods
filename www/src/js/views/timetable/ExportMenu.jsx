@@ -116,14 +116,10 @@ export class ExportMenuComponent extends PureComponent<Props, State> {
           </div>
         )}
 
-        <Modal
-          isOpen={this.state.isMacWarningOpen}
-          className="macOSWarning"
-          onRequestClose={this.closeMacOSWarningModal}
-        >
+        <Modal isOpen={this.state.isMacWarningOpen} onRequestClose={this.closeMacOSWarningModal}>
           <div className={styles.modalContent}>
             <AlertTriangle />
-            <p>ICS export may not work with the macOS Calendar app.</p>
+            <p>The calendar you have just downloaded may not work with the macOS Calendar app.</p>
           </div>
           <div className={styles.modalButtons}>
             <Link to="/faq#mac-calendar" className="btn btn-outline-primary">

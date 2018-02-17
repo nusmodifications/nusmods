@@ -106,7 +106,8 @@ export default function FaqContainer() {
           / on public holidays / on weeks the lessons are not on
         </h5>
         <p>
-          Apple&apos;s Calendar app has a bug which we cannot work around. You can try using another
+          Unfortunately, the macOS Calendar app has a bug which we cannot work around. Our ICS file
+          is correct, but Calendar refuses to import it correctly. You can try using another
           calendar app like{' '}
           <ExternalLink href="https://calendar.google.com/">Google Calendar</ExternalLink> or{' '}
           <ExternalLink href="https://outlook.com">Outlook.com</ExternalLink>. If you want an app,
@@ -117,10 +118,8 @@ export default function FaqContainer() {
         </p>
 
         <p>
-          You can also{' '}
-          <ExternalLink href="https://nusit.nus.edu.sg/qat4/wp-content/uploads/2014/03/Apple-Mail-IMAP-Setup-Guide-Student.pdf">
-            link your NUSNet email account with the Mail app
-          </ExternalLink>, which gives you the option to sync your school calendar automatically.
+          You can also link your NUSNet email account with the macOS Mail app, which gives you the
+          option to sync your school timetable automatically.
         </p>
 
         <p>
