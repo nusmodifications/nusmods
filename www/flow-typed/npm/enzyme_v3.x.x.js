@@ -1,5 +1,5 @@
-// flow-typed signature: 687805dabf4b11b8ad99d263c9d3703d
-// flow-typed version: f0c7fe5246/enzyme_v3.x.x/flow_>=v0.53.x
+// flow-typed signature: 02db3523747059d89e87d4dec6873edf
+// flow-typed version: 62a0c60689/enzyme_v3.x.x/flow_>=v0.53.x
 
 import * as React from "react";
 
@@ -20,6 +20,7 @@ declare module "enzyme" {
     findWhere(predicate: PredicateFunction<this>): this,
     filter(selector: EnzymeSelector): this,
     filterWhere(predicate: PredicateFunction<this>): this,
+    hostNodes(): this,
     contains(nodeOrNodes: NodeOrNodes): boolean,
     containsMatchingElement(node: React.Node): boolean,
     containsAllMatchingElements(nodes: NodeOrNodes): boolean,

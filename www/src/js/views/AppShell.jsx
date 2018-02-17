@@ -16,7 +16,7 @@ import weekText from 'utils/weekText';
 import { fetchModuleList } from 'actions/moduleBank';
 import {
   fetchTimetableModules,
-  fillTimetableBlanks,
+  validateTimetable,
   setTimetable,
   migrateTimetable,
 } from 'actions/timetables';
@@ -45,7 +45,7 @@ type Props = {
   migrateTimetable: () => void,
   fetchTimetableModules: (SemTimetableConfig[]) => Promise<*>,
   setTimetable: (Semester, SemTimetableConfig) => void,
-  fillTimetableBlanks: (Semester) => void,
+  validateTimetable: (Semester) => void,
 };
 
 export class AppShellComponent extends Component<Props> {
@@ -62,10 +62,12 @@ export class AppShellComponent extends Component<Props> {
 
     // Refresh the module data of the existing modules in the timetable and ensure all
     // lessons are filled
-    each(timetables, (timetable, semester) => {
+    each(timetables, (timetable, semesterString) => {
+      const semester = Number(semesterString);
+
       this.props
         .fetchTimetableModules([timetable])
-        .then(() => this.props.fillTimetableBlanks(Number(semester)));
+        .then(() => this.props.validateTimetable(semester));
     });
 
     // Fetch all module data that are on timetable
@@ -137,7 +139,7 @@ const connectedAppShell = connect(mapStateToProps, {
   fetchTimetableModules,
   setTimetable,
   migrateTimetable,
-  fillTimetableBlanks,
+  validateTimetable,
 })(AppShellComponent);
 
 // withRouter here is used to ensure re-render when routes change, since

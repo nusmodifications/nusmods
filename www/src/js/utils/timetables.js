@@ -162,7 +162,7 @@ export function arrangeLessonsWithinDay(lessons: Array<Lesson>): TimetableDayArr
     return timeDiff !== 0 ? timeDiff : a.ClassNo.localeCompare(b.ClassNo);
   });
   sortedLessons.forEach((lesson: Lesson) => {
-    for (let i = 0, length = rows.length; i < length; i++) {
+    for (let i = 0; i < rows.length; i++) {
       const rowLessons: Array<Lesson> = rows[i];
       const previousLesson = _.last(rowLessons);
       if (!previousLesson || !doLessonsOverlap(previousLesson, lesson)) {
@@ -227,6 +227,15 @@ export function findExamClashes(
   return _.omitBy(groupedModules, (mods) => mods.length === 1); // Remove non-clashing mods
 }
 
+/**
+ * Validates the modules in a timetable. It removes all modules which do not exist in
+ * the provided module code map from the timetable and returns that as the first item
+ * in the tuple, and the module code of all removed modules as the second item.
+ *
+ * @param timetable
+ * @param moduleCodes
+ * @returns {[SemTimetableConfig, ModuleCode[]]}
+ */
 export function validateTimetableModules(
   timetable: SemTimetableConfig,
   moduleCodes: ModuleCodeMap,
@@ -236,6 +245,49 @@ export function validateTimetableModules(
     (moduleCode: ModuleCode) => moduleCodes[moduleCode],
   );
   return [_.pick(timetable, valid), invalid];
+}
+
+/**
+ * Validates the lesson config for a specific module. It replaces all lessons
+ * which invalid class number with the first available class numbers, and
+ * removes lessons that are no longer valid
+ * @param semester
+ * @param lessonConfig
+ * @param module
+ */
+export function validateModuleLessons(
+  semester: Semester,
+  lessonConfig: ModuleLessonConfig,
+  module: Module,
+): [ModuleLessonConfig, LessonType[]] {
+  const validatedLessonConfig = {};
+  const updatedLessonTypes = [];
+
+  const validLessons = getModuleTimetable(module, semester);
+  const lessonsByType = _.groupBy(validLessons, (lesson) => lesson.LessonType);
+
+  _.each(lessonsByType, (lessons: RawLesson[], lessonType: LessonType) => {
+    const classNo = lessonConfig[lessonType];
+
+    // Check that the lesson exists and is valid. If it is not, insert a random
+    // valid lesson. This covers both
+    //
+    // - lesson type is not in the original timetable (ie. a new lesson type was introduced)
+    //   in which case classNo is undefined and thus would not match
+    // - classNo is not valid anymore (ie. the class was removed)
+    //
+    // If a lesson type is removed, then it simply won't be copied over
+    if (!lessons.some((lesson) => lesson.ClassNo === classNo)) {
+      validatedLessonConfig[lessonType] = lessons[0].ClassNo;
+      updatedLessonTypes.push(lessonType);
+    } else {
+      validatedLessonConfig[lessonType] = classNo;
+    }
+  });
+
+  // Add all of the removed lesson types to the array of updated lesson types
+  updatedLessonTypes.push(..._.difference(Object.keys(lessonConfig), Object.keys(lessonsByType)));
+  return [validatedLessonConfig, updatedLessonTypes];
 }
 
 // Get information for all modules present in a semester timetable config
@@ -257,12 +309,14 @@ function parseModuleConfig(serialized: ?string): ModuleLessonConfig {
   const config = {};
   if (!serialized) return config;
 
-  serialized.split(LESSON_SEP).forEach((lesson) => {
-    const [lessonTypeAbbr, classNo] = lesson.split(LESSON_TYPE_SEP);
-    const lessonType = LESSON_ABBREV_TYPE[lessonTypeAbbr];
-    // Ignore unparsable/invalid keys
-    if (!lessonType) return;
-    config[lessonType] = classNo;
+  _.castArray(serialized).forEach((serializedModule) => {
+    serializedModule.split(LESSON_SEP).forEach((lesson) => {
+      const [lessonTypeAbbr, classNo] = lesson.split(LESSON_TYPE_SEP);
+      const lessonType = LESSON_ABBREV_TYPE[lessonTypeAbbr];
+      // Ignore unparsable/invalid keys
+      if (!lessonType) return;
+      config[lessonType] = classNo;
+    });
   });
 
   return config;

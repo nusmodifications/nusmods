@@ -88,8 +88,8 @@ export class ModulePageContentComponent extends Component<Props, State> {
                 <p>
                   {intersperse(
                     [
-                      <a key="department">{module.Department}</a>,
-                      <a key="mc">{module.ModuleCredit} MCs</a>,
+                      <span key="department">{module.Department}</span>,
+                      <span key="mc">{module.ModuleCredit} MCs</span>,
                     ],
                     BULLET,
                   )}
@@ -98,7 +98,7 @@ export class ModulePageContentComponent extends Component<Props, State> {
                 <p>
                   {intersperse(
                     semesters.map((semester) => (
-                      <a key={semester}>{config.semesterNames[semester]}</a>
+                      <span key={semester}>{config.semesterNames[semester]}</span>
                     )),
                     BULLET,
                   )}
@@ -176,7 +176,7 @@ export class ModulePageContentComponent extends Component<Props, State> {
                         <a key="ivle" href={config.ivleUrl.replace('<ModuleCode>', ModuleCode)}>
                           IVLE
                         </a>,
-                        <a key="cors" href={config.corsUrl + ModuleCode}>
+                        <a key="cors" href={config.corsUrl.replace('<ModuleCode>', ModuleCode)}>
                           CORS
                         </a>,
                       ],
@@ -194,7 +194,7 @@ export class ModulePageContentComponent extends Component<Props, State> {
 
             <section className={styles.section} id="timetable">
               <h2 className={styles.sectionHeading}>Timetable</h2>
-              <LessonTimetable semestersOffered={semesters} history={module.History} />
+              <LessonTimetable semestersOffered={semesters} semesterData={module.History} />
             </section>
 
             <section className={styles.section} id={SIDE_MENU_ITEMS.cors}>

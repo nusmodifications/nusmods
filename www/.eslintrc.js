@@ -37,6 +37,7 @@ module.exports = {
     'no-console': warnInDevelopment,
 
     'no-alert': 'off',
+    'prefer-destructuring': 'off',
 
     'import/extensions': [
       warnInDevelopment,
@@ -68,6 +69,7 @@ module.exports = {
       },
     ],
     'react/require-default-props': 'off',
+    'react/default-props-match-prop-types': ['error', { allowRequiredDefaults: true }],
     // TODO: Replace divs with buttons, but remove all button styling.
     'jsx-a11y/no-static-element-interactions': 'off',
     // The default option requires BOTH id and nesting, which is excessive,
@@ -78,6 +80,14 @@ module.exports = {
         required: {
           some: ['nesting', 'id'],
         },
+      },
+    ],
+    // Link fails this rule as it has no "href" prop.
+    'jsx-a11y/anchor-is-valid': [
+      'error',
+      {
+        components: ['Link'],
+        specialLink: ['to'],
       },
     ],
     // Let git handle the linebreaks instead.

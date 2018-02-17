@@ -49,7 +49,7 @@ const DEFAULT_TIMEOUT = 2750;
  */
 export class NotificationComponent extends Component<Props, State> {
   element: ?HTMLElement;
-  timeoutId: number;
+  timeoutId: TimeoutID;
 
   constructor(props: Props) {
     super(props);
@@ -69,15 +69,15 @@ export class NotificationComponent extends Component<Props, State> {
   }
 
   componentDidUpdate() {
-    const notifications = this.props.notifications;
-    const shownNotification = this.state.shownNotification;
+    const { notifications } = this.props;
+    const { shownNotification, isOpen, actionClicked } = this.state;
 
     if (notifications[0] !== shownNotification) {
       // Active notification has changed
-      if (this.state.isOpen) {
+      if (isOpen) {
         const discarded = !notifications.includes(shownNotification);
         if (shownNotification && shownNotification.willClose) {
-          shownNotification.willClose(discarded, this.state.actionClicked);
+          shownNotification.willClose(discarded, actionClicked);
         }
         this.closeSnackbar();
       } else if (!this.transitioning) {

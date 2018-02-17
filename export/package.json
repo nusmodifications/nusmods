@@ -17,14 +17,14 @@
     "bunyan": "^1.8.12",
     "forever": "^0.15.3",
     "fs-extra": "^5.0.0",
-    "http-graceful-shutdown": "^2.0.6",
-    "koa": "^2.4.1",
-    "koa-router": "^7.3.0",
+    "http-graceful-shutdown": "^2.1.0",
+    "koa": "^2.5.0",
+    "koa-router": "^7.4.0",
     "koa-views": "^6.1.3",
-    "lodash": "^4.17.4",
-    "nodemon": "^1.14.6",
+    "lodash": "^4.17.5",
+    "nodemon": "^1.15.0",
     "pug": "^2.0.0-rc.4",
-    "puppeteer": "0.13.0",
-    "raven": "^2.3.0"
+    "puppeteer": "^1.1.0",
+    "raven": "^2.4.1"
   }
 }

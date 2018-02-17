@@ -139,7 +139,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
   };
 
   selectedVenue(): ?Venue {
-    const venue = this.props.match.params.venue;
+    const { venue } = this.props.match.params;
     if (!venue) return null;
     return decodeURIComponent(venue);
   }
@@ -233,8 +233,8 @@ export class VenuesContainerComponent extends Component<Props, State> {
     }
 
     const [venue, availability] = matchedVenues[venueIndex];
-    const previous = get(matchedVenues, [String(venueIndex - 1), '0']);
-    const next = get(matchedVenues, [String(venueIndex + 1), '0']);
+    const [previous] = get(matchedVenues, String(venueIndex - 1), []);
+    const [next] = get(matchedVenues, String(venueIndex + 1), []);
     return (
       <VenueDetails venue={venue} availability={availability} next={next} previous={previous} />
     );

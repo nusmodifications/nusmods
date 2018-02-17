@@ -58,10 +58,9 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    const { semester, match } = props;
-    const action = match.params.action;
+    const { semester, match, location } = props;
     const importedTimetable =
-      semester && action ? deserializeTimetable(this.props.location.search) : null;
+      semester && match.params.action ? deserializeTimetable(location.search) : null;
 
     this.state = {
       importedTimetable,
@@ -168,7 +167,7 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
   render() {
     const { timetable, semester, activeSemester, match } = this.props;
     const { importedTimetable } = this.state;
-    const action = match.params.action;
+    const { action } = match.params;
 
     // 1. If the URL doesn't look correct, we'll direct the user to the home page
     if (semester == null || (action && action !== TIMETABLE_SHARE)) {
