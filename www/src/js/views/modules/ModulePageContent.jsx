@@ -176,7 +176,7 @@ export class ModulePageContentComponent extends Component<Props, State> {
                         <a key="ivle" href={config.ivleUrl.replace('<ModuleCode>', ModuleCode)}>
                           IVLE
                         </a>,
-                        <a key="cors" href={config.corsUrl + ModuleCode}>
+                        <a key="cors" href={config.corsUrl.replace('<ModuleCode>', ModuleCode)}>
                           CORS
                         </a>,
                       ],

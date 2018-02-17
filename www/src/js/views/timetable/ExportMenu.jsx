@@ -45,10 +45,9 @@ export class ExportMenuComponent extends PureComponent<Props, State> {
     isMacWarningOpen: false,
   };
 
-  onChange = (item: ExportAction) => {
-    const { semester } = this.props;
+  onSelect = (item: ExportAction) => {
     if (item === CALENDAR) {
-      this.props.downloadAsIcal(semester);
+      this.props.downloadAsIcal(this.props.semester);
 
       // macOS calendar client has a ridiculous bug where it would sometimes disregard
       // EXDATE statements which causes events to show up during holidays, recess week, etc.
@@ -135,7 +134,7 @@ export class ExportMenuComponent extends PureComponent<Props, State> {
   };
 
   render() {
-    return <Downshift onChange={this.onChange} render={this.renderDropdown} />;
+    return <Downshift onSelect={this.onSelect} render={this.renderDropdown} />;
   }
 }
 

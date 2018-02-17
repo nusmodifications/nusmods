@@ -49,7 +49,7 @@ const DEFAULT_TIMEOUT = 2750;
  */
 export class NotificationComponent extends Component<Props, State> {
   element: ?HTMLElement;
-  timeoutId: number;
+  timeoutId: TimeoutID;
 
   constructor(props: Props) {
     super(props);

@@ -204,7 +204,7 @@ export default class ShareTimetable extends PureComponent<Props, State> {
         </button>
 
         <Modal isOpen={isOpen} onRequestClose={this.closeModal}>
-          <CloseButton onClick={this.closeModal} />
+          <CloseButton absolutePositioned onClick={this.closeModal} />
           <div className={styles.header}>
             <Repeat />
 
