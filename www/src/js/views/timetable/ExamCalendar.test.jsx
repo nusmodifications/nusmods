@@ -11,7 +11,7 @@ import mockModules from '__mocks__/modules';
 /** @vars {Module} */
 import GER1000 from '__mocks__/modules/GER1000.json';
 
-import ExamTimetable from './ExamCalendar';
+import ExamCalendar from './ExamCalendar';
 import styles from './ExamCalendar.scss';
 
 const modulesWithColor = mockModules.map((module, i) => ({
@@ -20,10 +20,10 @@ const modulesWithColor = mockModules.map((module, i) => ({
 }));
 
 function make(modules: ModuleWithColor[] = [], semester: Semester = 1) {
-  return shallow(<ExamTimetable semester={semester} modules={modules} />);
+  return shallow(<ExamCalendar semester={semester} modules={modules} />);
 }
 
-describe('ExamTimetable', () => {
+describe('ExamCalendar', () => {
   test('show month names only in the first cell and on first day of month', () => {
     const wrapper = make(modulesWithColor);
 

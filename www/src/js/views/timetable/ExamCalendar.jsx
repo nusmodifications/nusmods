@@ -121,7 +121,7 @@ function renderWeek(week: ExamDay[], weekNumber: number) {
   );
 }
 
-export default class ExamTimetable extends PureComponent<Props> {
+export default class ExamCalendar extends PureComponent<Props> {
   // Utility function to get the first day of exams and calculate the number of weeks
   getExamCalendar(): [Date, number] {
     const { semester, modules } = this.props;
