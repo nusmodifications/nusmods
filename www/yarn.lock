@@ -8307,9 +8307,9 @@ stylelint-order@^0.8.0:
     postcss "^6.0.14"
     postcss-sorting "^3.1.0"
 
-stylelint-webpack-plugin@^0.10.1:
-  version "0.10.1"
-  resolved "https://registry.yarnpkg.com/stylelint-webpack-plugin/-/stylelint-webpack-plugin-0.10.1.tgz#16264256aea3f73eb30aba0adbc30b3bec3e4bea"
+stylelint-webpack-plugin@^0.10.2:
+  version "0.10.2"
+  resolved "https://registry.yarnpkg.com/stylelint-webpack-plugin/-/stylelint-webpack-plugin-0.10.2.tgz#e9dfd845ec0813a51b8d8d3abc983f0d556ce42d"
   dependencies:
     arrify "^1.0.1"
     micromatch "^2.3.0"
