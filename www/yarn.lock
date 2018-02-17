@@ -70,6 +70,10 @@
   version "0.24.0"
   resolved "https://registry.yarnpkg.com/@material/base/-/base-0.24.0.tgz#888a61e5b6580e35a66384a9f8823091b4fe7c55"
 
+"@material/base@^0.29.0":
+  version "0.29.0"
+  resolved "https://registry.yarnpkg.com/@material/base/-/base-0.29.0.tgz#5fac94c45907e38c969130e959722288d4ce06b2"
+
 "@material/elevation@^0.25.0":
   version "0.25.0"
   resolved "https://registry.yarnpkg.com/@material/elevation/-/elevation-0.25.0.tgz#ab1b22cdc6d0c840e2c389e334c39466a8397c9b"
@@ -93,31 +97,35 @@
     "@material/base" "^0.24.0"
     "@material/theme" "^0.27.0"
 
-"@material/rtl@^0.1.8":
-  version "0.1.8"
-  resolved "https://registry.yarnpkg.com/@material/rtl/-/rtl-0.1.8.tgz#2462db15e2d4e041666485559c028382872b01fb"
+"@material/rtl@^0.30.0":
+  version "0.30.0"
+  resolved "https://registry.yarnpkg.com/@material/rtl/-/rtl-0.30.0.tgz#0fbda0bc0e8a7baa6c29413fc3f9f8edda602502"
 
-"@material/snackbar@^0.27.0":
-  version "0.27.0"
-  resolved "https://registry.yarnpkg.com/@material/snackbar/-/snackbar-0.27.0.tgz#09722c95f9a58030821016a118cdacbadcc6266f"
+"@material/snackbar@^0.30.0":
+  version "0.30.0"
+  resolved "https://registry.yarnpkg.com/@material/snackbar/-/snackbar-0.30.0.tgz#cdf12e81a7bf38e0a68e73151f9d49ab3597b353"
   dependencies:
     "@material/animation" "^0.25.0"
-    "@material/base" "^0.24.0"
-    "@material/rtl" "^0.1.8"
-    "@material/theme" "^0.27.0"
-    "@material/typography" "^0.3.0"
+    "@material/base" "^0.29.0"
+    "@material/rtl" "^0.30.0"
+    "@material/theme" "^0.30.0"
+    "@material/typography" "^0.28.0"
 
 "@material/theme@^0.27.0":
   version "0.27.0"
   resolved "https://registry.yarnpkg.com/@material/theme/-/theme-0.27.0.tgz#32fd72addfec09bf22e83f66f36a7ebbdc123461"
 
+"@material/theme@^0.30.0":
+  version "0.30.0"
+  resolved "https://registry.yarnpkg.com/@material/theme/-/theme-0.30.0.tgz#503d7fd5ac88ff70763bb277236ee7188982e5d2"
+
 "@material/theme@^0.4.0":
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/@material/theme/-/theme-0.4.0.tgz#0aef1a0279b65c15990584fb8b8eca095c734641"
 
-"@material/typography@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@material/typography/-/typography-0.3.0.tgz#f828c2d3215bfd66c58072709b4260c64125390a"
+"@material/typography@^0.28.0":
+  version "0.28.0"
+  resolved "https://registry.yarnpkg.com/@material/typography/-/typography-0.28.0.tgz#4ae96a852fcd324d61b649adc995326c431fcaea"
 
 "@types/node@*":
   version "9.3.0"
