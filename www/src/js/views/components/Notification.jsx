@@ -50,6 +50,7 @@ const DEFAULT_TIMEOUT = 2750;
 export class NotificationComponent extends Component<Props, State> {
   element: ?HTMLElement;
   timeoutId: TimeoutID;
+  timeoutId2: TimeoutID;
 
   constructor(props: Props) {
     super(props);
@@ -82,12 +83,20 @@ export class NotificationComponent extends Component<Props, State> {
         this.closeSnackbar();
       } else if (!this.transitioning) {
         this.openSnackbar();
+      } else {
+        // onTransitionEnd can be cancelled, causing transitioning to never
+        // turn false and notifications to stop showing up, so we set a timer
+        // and turn transitioning false when the timer is up
+        this.timeoutId2 = setTimeout(() => this.clearTransition(), DEFAULT_TIMEOUT);
       }
     }
   }
 
   onTransitionEnd = (evt: TransitionEvent) => {
     if (evt.target !== this.element) return;
+
+    // the event ran, so the failsafe can be cancelled
+    clearTimeout(this.timeoutId2);
 
     this.transitioning = false;
 
@@ -112,6 +121,10 @@ export class NotificationComponent extends Component<Props, State> {
       shownNotification: this.props.notifications[0],
       actionClicked: false,
     });
+  };
+
+  clearTransition = () => {
+    this.transitioning = false;
   };
 
   closeSnackbar = () => {
