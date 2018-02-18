@@ -127,7 +127,7 @@
     "react-scrollspy": "^3.3.5",
     "react-waypoint": "^8.0.0",
     "redux": "^3.7.2",
-    "redux-persist": "^5.8.0",
+    "redux-persist": "^5.9.0",
     "redux-thunk": "^2.2.0"
   },
   "browserslist": [
