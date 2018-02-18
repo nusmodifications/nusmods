@@ -9,8 +9,8 @@ export const nextTick = util.promisify(process.nextTick);
  * components that have async actions, such as making network requests
  */
 export async function waitFor(condition: () => boolean, intervalInMs: number = 5) {
+  // eslint-disable-next-line no-await-in-loop
   while (!condition()) {
-    // eslint-disable-next-line no-await-in-loop
     await new Promise((resolve) => setTimeout(resolve, intervalInMs));
   }
 }
