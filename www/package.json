@@ -122,7 +122,7 @@
     "react-helmet": "^5.2.0",
     "react-modal": "^3.2.1",
     "react-qr-svg": "^2.1.0",
-    "react-redux": "^5.0.5",
+    "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
     "react-scrollspy": "^3.3.5",
     "react-waypoint": "^8.0.0",
