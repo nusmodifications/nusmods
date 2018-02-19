@@ -7,7 +7,7 @@ import { groupBy, range } from 'lodash';
 import type { ModuleWithColor, Semester } from 'types/modules';
 import config from 'config';
 import { formatExamDate, getModuleExamDate } from 'utils/modules';
-import { daysAfter, getCurrentDayIndex } from 'utils/timify';
+import { daysAfter } from 'utils/timify';
 import { modulePage } from 'views/routes/paths';
 import { DaysOfWeek } from 'types/modules';
 
@@ -37,13 +37,11 @@ type ExamDay = {
 };
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-const TZ_OFFSET = 8 * 60 * 60 * 1000;
 
-// The API returns examDate with hhmm as the TZ specifier. Unfortunately Safari chokes on this
-// because it is not specified in ECMAScript specs (even though it _is_ valid ISO8601)
-// so we have to do our own conversion here
+// The API returns examDate with hhmm as the TZ specifier, but we want this to work
+// on machines in all timezones, so instead we lop it off and pretend it is in UTC time
 function examDateStringToDate(date: string): Date {
-  return new Date(new Date(`${date.slice(0, 16)}Z`).valueOf() + TZ_OFFSET);
+  return new Date(`${date.slice(0, 16)}Z`);
 }
 
 function getExamDate(date: ?string): ?string {
@@ -89,9 +87,9 @@ function ExamWeek({ week, weekNumber }: { week: ExamDay[], weekNumber: number })
         // Format the date number for each day of the exam. We avoid repeating
         // the month name unnecessarily by only showing it for the very first cell,
         // and when the month changes
-        let examDateString = String(date.getDate());
+        let examDateString = String(date.getUTCDate());
         if ((weekNumber === 0 && dayNumber === 0) || examDateString === '1') {
-          examDateString = `${MONTHS[date.getMonth()]} ${examDateString}`;
+          examDateString = `${MONTHS[date.getUTCMonth()]} ${examDateString}`;
         }
 
         return (
@@ -137,10 +135,8 @@ export default class ExamCalendar extends PureComponent<Props> {
   getExamCalendar(): [Date, number] {
     const { semester, modules } = this.props;
     const year = `${config.academicYear.slice(2, 4)}/${config.academicYear.slice(-2)}`;
-    let firstDayOfExams = new Date(
-      // Add Singapore's tz offset to ensure the date is in the local tz
-      NUSModerator.academicCalendar.getExamWeek(year, semester).valueOf() + TZ_OFFSET,
-    );
+    let firstDayOfExams = NUSModerator.academicCalendar.getExamWeek(year, semester);
+    firstDayOfExams = new Date(firstDayOfExams - firstDayOfExams.getTimezoneOffset() * 60 * 1000);
 
     let weekCount = 0;
     let lastDayOfExams = daysAfter(firstDayOfExams, 0);
@@ -196,9 +192,7 @@ export default class ExamCalendar extends PureComponent<Props> {
     // (5 days), and expand as necessary
     const daysWithExams = Math.max(
       5,
-      ...modulesWithExams.map((module) =>
-        getCurrentDayIndex(examDateStringToDate(module.dateTime)),
-      ),
+      ...modulesWithExams.map((module) => examDateStringToDate(module.dateTime).getUTCDay()),
     );
 
     // Group modules by their exam date and time

@@ -75,7 +75,7 @@ export function getCurrentDayIndex(now: Date = new Date()): number {
   const day = now.getDay();
   return day === 0
     ? 6 // Sunday = 6
-    : day - 1; // Otherwise, add one because JS days start on Sunday
+    : day - 1; // Otherwise, minus one because JS days start on Sunday
 }
 
 /**

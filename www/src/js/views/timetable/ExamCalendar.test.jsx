@@ -14,6 +14,7 @@ import GER1000 from '__mocks__/modules/GER1000.json';
 import ExamCalendar from './ExamCalendar';
 import styles from './ExamCalendar.scss';
 
+const TR_PER_WEEK = 4;
 const modulesWithColor = mockModules.map((module, i) => ({
   ...module,
   colorIndex: i,
@@ -27,19 +28,35 @@ function make(modules: ModuleWithColor[] = [], semester: Semester = 1) {
   );
 }
 
+// AY17/18 semester 1 exams are from Nov 27 to Dec 9
+//    November 2017         December 2017
+// Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa
+//           1  2  3  4                  1  2
+//  5  6  7  8  9 10 11   3  4  5  6  7  8  9
+// 12 13 14 15 16 17 18  10 11 12 13 14 15 16
+// 19 20 21 22 23 24 25  17 18 19 20 21 22 23
+// 26 27 28 29 30        24 25 26 27 28 29 30
+//                       31
+// Mock module exam dates in semester 1 -
+//  - GER1000: 2017-11-25 (Sat) Afternoon
+//  - CS1010S: 2017-11-29 (Wed) Evening
+//  - ACC2002: 2017-12-01 (Fri) Morning
+//  - CS4243:  2017-11-29 (Wed) Morning
+//  - GES1021: 2017-11-29 (Wed) Evening
+//  - PC1222:  2017-12-05 (Tue) Evening
+//  - CS3216:  No exams
 describe('ExamCalendar', () => {
+  test('only show Saturday if there is a Saturday exam', () => {
+    const withSaturdayExams = make([GER1000]);
+    const withoutSaturdayExams = make(mockModules);
+
+    expect(withSaturdayExams.find('thead th')).toHaveLength(6);
+    expect(withoutSaturdayExams.find('thead th')).toHaveLength(5);
+  });
+
   test('show month names only in the first cell and on first day of month', () => {
     const wrapper = make(modulesWithColor);
 
-    // AY17/18 semester 1 exams are from Nov 27 to Dec 9
-    //    November 2017         December 2017
-    // Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa
-    //           1  2  3  4                  1  2
-    //  5  6  7  8  9 10 11   3  4  5  6  7  8  9
-    // 12 13 14 15 16 17 18  10 11 12 13 14 15 16
-    // 19 20 21 22 23 24 25  17 18 19 20 21 22 23
-    // 26 27 28 29 30        24 25 26 27 28 29 30
-    //                       31
     wrapper.find(`.${styles.day} h3`).forEach((element, index) => {
       if (index === 0) {
         expect(element.text()).toEqual('Nov 27');
@@ -67,5 +84,6 @@ describe('ExamCalendar', () => {
     const wrapper = make([GER1000]);
 
     expect(wrapper.find(Link)).toHaveLength(1);
+    expect(wrapper.find('tbody tr')).toHaveLength(TR_PER_WEEK);
   });
 });
