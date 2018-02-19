@@ -13,9 +13,9 @@ fs.setMock = (mockFileSystem, mockFilesSystemMeta) => {
   mockFilesMeta = mockFilesSystemMeta;
 };
 
-fs.readFileSync = filePath => mockFiles[filePath];
+fs.readFileSync = (filePath) => mockFiles[filePath];
 
-fs.readFile = async filePath => fs.readFileSync(filePath);
+fs.readFile = async (filePath) => fs.readFileSync(filePath);
 
 // A custom version of `readdirSync` that reads from the special mocked out
 // file list set via setMock
@@ -26,7 +26,7 @@ fs.readdirSync = (directoryPath) => {
 
 // A custom version of `readdir` that reads from the special mocked out
 // file list set via setMock
-fs.readdir = async directoryPath => fs.readdirSync(directoryPath);
+fs.readdir = async (directoryPath) => fs.readdirSync(directoryPath);
 
 // A custom version of `readJson` that reads from the special mocked out
 // file list set via setMock

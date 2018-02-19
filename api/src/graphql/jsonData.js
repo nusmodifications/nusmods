@@ -10,8 +10,8 @@ import config from '../../config';
 const apiFolder = config.defaults.destFolder;
 const modulesFile = config.consolidate.destFileName;
 
-const removeModuleKeys = mapKeysDeep(key => key.replace('Module', ''));
-const camelizeAllKeys = mapKeysDeep(key => key.replace(/[A-Z]/, R.toLower));
+const removeModuleKeys = mapKeysDeep((key) => key.replace('Module', ''));
+const camelizeAllKeys = mapKeysDeep((key) => key.replace(/[A-Z]/, R.toLower));
 const indexByModuleCode = R.map(R.indexBy(R.prop('code')));
 const processData = R.pipe(removeModuleKeys, camelizeAllKeys, indexByModuleCode);
 

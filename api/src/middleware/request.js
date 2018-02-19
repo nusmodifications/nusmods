@@ -5,6 +5,4 @@ const logger = async (ctx, next) => {
   await next();
 };
 
-export default () => compose([
-  logger,
-]);
+export default () => compose([logger]);

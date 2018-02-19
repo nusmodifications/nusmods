@@ -3,8 +3,10 @@
  */
 export default function sortByKey(object) {
   const sortedObject = {};
-  Object.keys(object).sort().forEach((key) => {
-    sortedObject[key] = object[key];
-  });
+  Object.keys(object)
+    .sort()
+    .forEach((key) => {
+      sortedObject[key] = object[key];
+    });
   return sortedObject;
 }

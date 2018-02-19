@@ -77,7 +77,7 @@ const Resolvers = {
         return null;
       }
       const modules = Object.values(yearData);
-      return modules.slice(offset, offset ? (offset + first) : first);
+      return modules.slice(offset, offset ? offset + first : first);
     },
     module(root, { acadYear, code }) {
       return R.path([acadYear, code], jsonData);
@@ -87,7 +87,7 @@ const Resolvers = {
 
 const subLog = log.child({ path: 'graphql' });
 const logger = {
-  log: e => subLog.error(e),
+  log: (e) => subLog.error(e),
 };
 
 const schema = makeExecutableSchema({

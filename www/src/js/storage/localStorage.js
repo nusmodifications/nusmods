@@ -20,13 +20,7 @@ export function createLocalStorageShim() {
   return storage;
 }
 
-// Shim localStorage if it doesn't exist
-// Returns an object that behaves like localStorage
-export default function getLocalStorage() {
-  // If we've performed all our checks before, just assume results will be the same
-  // Key assumption: writability of localStorage doesn't change while page is loaded
-  if (usableLocalStorage) return usableLocalStorage;
-
+export function canUseBrowserLocalStorage() {
   try {
     // Ensure that accessing localStorage doesn't throw
     // Next line throws on Chrome with cookies disabled
@@ -43,14 +37,25 @@ export default function getLocalStorage() {
       storage.removeItem('____writetest');
     }
 
-    // Only set storage AFTER we know it can be used
-    usableLocalStorage = storage;
+    // Only return true AFTER we know it can be used
+    return true;
   } catch (e) {
-    // Shim if we can't use localStorage
-    // Once set, don't override
-    if (!usableLocalStorage) {
-      usableLocalStorage = createLocalStorageShim();
-    }
+    return false;
   }
+}
+
+// Returns localStorage if it can be used, if not then it returns a shim
+export default function getLocalStorage() {
+  // If we've performed all our checks before, just assume results will be the same
+  // Key assumption: writability of localStorage doesn't change while page is loaded
+  if (usableLocalStorage) return usableLocalStorage;
+
+  // Sets usableLocalStorage on the first execution
+  if (canUseBrowserLocalStorage()) {
+    usableLocalStorage = window.localStorage;
+  } else {
+    usableLocalStorage = createLocalStorageShim();
+  }
+
   return usableLocalStorage;
 }

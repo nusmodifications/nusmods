@@ -26,10 +26,7 @@ async function splitForYear(config) {
   const subLog = log.child({ year });
 
   const acadYear = `${year}/${year + 1}`;
-  const basePath = path.join(
-    config.split.destFolder,
-    acadYear.replace('/', '-'),
-  );
+  const basePath = path.join(config.split.destFolder, acadYear.replace('/', '-'));
 
   const consolidatedPath = path.join(
     config.consolidate.destFolder,
@@ -39,10 +36,7 @@ async function splitForYear(config) {
   const modules = await fs.readJson(consolidatedPath);
 
   async function write(fileName, data) {
-    const pathToWrite = path.join(
-      basePath,
-      fileName,
-    );
+    const pathToWrite = path.join(basePath, fileName);
     subLog.info(`saving to ${pathToWrite}`);
     await fs.outputJson(pathToWrite, data, { spaces: config.split.jsonSpace });
   }
@@ -51,34 +45,31 @@ async function splitForYear(config) {
   const moduleInformation = [];
 
   modules.forEach((mod) => {
-    const pathToWrite = path.join(
-      config.split.destSubfolder,
-      `${mod.ModuleCode}.json`,
-    );
+    const pathToWrite = path.join(config.split.destSubfolder, `${mod.ModuleCode}.json`);
     write(pathToWrite, mod);
 
-    const module = R.pick([
-      'ModuleCode',
-      'ModuleTitle',
-    ], mod);
+    const module = R.pick(['ModuleCode', 'ModuleTitle'], mod);
     moduleList.push({
       ...module,
       Semesters: R.pluck('Semester', mod.History),
     });
 
-    const info = R.pick([
-      'ModuleCode',
-      'ModuleTitle',
-      'Department',
-      'ModuleDescription',
-      'CrossModule',
-      'ModuleCredit',
-      'Workload',
-      'Prerequisite',
-      'Preclusion',
-      'Corequisite',
-      'Types',
-    ], mod);
+    const info = R.pick(
+      [
+        'ModuleCode',
+        'ModuleTitle',
+        'Department',
+        'ModuleDescription',
+        'CrossModule',
+        'ModuleCredit',
+        'Workload',
+        'Prerequisite',
+        'Preclusion',
+        'Corequisite',
+        'Types',
+      ],
+      mod,
+    );
     info.History = mod.History.map(R.omit(['Timetable', 'IVLE']));
     moduleInformation.push(info);
 

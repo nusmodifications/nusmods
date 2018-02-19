@@ -28,11 +28,7 @@ async function splitForSem(config) {
   const { year, semester } = config;
   const subLog = log.child({ year, semester });
 
-  const basePath = path.join(
-    config.consolidate.destFolder,
-    `${year}-${year + 1}`,
-    `${semester}`,
-  );
+  const basePath = path.join(config.consolidate.destFolder, `${year}-${year + 1}`, `${semester}`);
   const pathToRead = path.join(basePath, config.consolidate.destFileName);
   const listOfModules = await fs.readJson(pathToRead);
 
@@ -43,62 +39,48 @@ async function splitForSem(config) {
     fs.outputJson(pathToWrite, data, { spaces: thisConfig.jsonSpace });
   }
   function write(destPath, func) {
-    const pathToWrite = path.join(
-      basePath,
-      destPath,
-    );
+    const pathToWrite = path.join(basePath, destPath);
     const data = func(listOfModules);
     return outputData(pathToWrite, data);
   }
 
   // moduleCodes.json
   // output: ['CS1010', ... ]
-  write(
-    thisConfig.destModuleCodes,
-    R.pluck('ModuleCode'),
-  );
+  write(thisConfig.destModuleCodes, R.pluck('ModuleCode'));
 
   // moduleList.json
   // output: { 'CS1010': 'Introduction to Computer Science', ... }
-  const collateModuleTitles = R.pipe(
-    R.indexBy(R.prop('ModuleCode')),
-    R.map(R.prop('ModuleTitle')),
-  );
-  write(
-    thisConfig.destModuleList,
-    collateModuleTitles,
-  );
+  const collateModuleTitles = R.pipe(R.indexBy(R.prop('ModuleCode')), R.map(R.prop('ModuleTitle')));
+  write(thisConfig.destModuleList, collateModuleTitles);
 
   // timetable.json
   write(
     thisConfig.destTimetableInformation,
-    R.map(R.pick([
-      'ModuleCode',
-      'ModuleTitle',
-      'Timetable',
-    ])),
+    R.map(R.pick(['ModuleCode', 'ModuleTitle', 'Timetable'])),
   );
 
   // moduleInformation.json
   write(
     thisConfig.destModuleInformation,
-    R.map(R.pick([
-      'ModuleCode',
-      'ModuleTitle',
-      'Department',
-      'ModuleDescription',
-      'CrossModule',
-      'ModuleCredit',
-      'Workload',
-      'Prerequisite',
-      'Preclusion',
-      'Corequisite',
-      'ExamDate',
-      'Types',
-      'Lecturers',
-      'LecturePeriods',
-      'TutorialPeriods',
-    ])),
+    R.map(
+      R.pick([
+        'ModuleCode',
+        'ModuleTitle',
+        'Department',
+        'ModuleDescription',
+        'CrossModule',
+        'ModuleCredit',
+        'Workload',
+        'Prerequisite',
+        'Preclusion',
+        'Corequisite',
+        'ExamDate',
+        'Types',
+        'Lecturers',
+        'LecturePeriods',
+        'TutorialPeriods',
+      ]),
+    ),
   );
 
   // venueInformation.json
@@ -112,7 +94,7 @@ async function splitForSem(config) {
     // remove 'Venue' key from lessons
     const timetable = R.map(R.omit('Venue'), venueTimetable);
     return schoolDays.map((day) => {
-      const lessons = R.filter(lesson => lesson.DayText === day, timetable);
+      const lessons = R.filter((lesson) => lesson.DayText === day, timetable);
 
       // Outputs the following:
       // availability: {
@@ -149,10 +131,7 @@ async function splitForSem(config) {
     R.omit(''), // Delete empty venue string
     processTimetables,
   );
-  write(
-    thisConfig.destVenueInformation,
-    collateVenues,
-  );
+  write(thisConfig.destVenueInformation, collateVenues);
 
   // modules/*.json
   // modules/*/CorsBiddingStats.json
@@ -160,10 +139,7 @@ async function splitForSem(config) {
   // modules/*/timetable.json
   // modules/*/index.json
   function writeModule(module) {
-    const subBasePath = path.join(
-      basePath,
-      thisConfig.destSubfolder,
-    );
+    const subBasePath = path.join(basePath, thisConfig.destSubfolder);
     const fileNameToData = {
       '': module,
       index: module,
@@ -175,7 +151,8 @@ async function splitForSem(config) {
     const moduleCode = module.ModuleCode;
     return Object.entries(fileNameToData).map(([fileName, data]) => {
       let pathToWrite = path.join(subBasePath, moduleCode, `${fileName}.json`);
-      if (fileName === '') { // save to parent folder instead of module folder
+      if (fileName === '') {
+        // save to parent folder instead of module folder
         pathToWrite = path.join(subBasePath, `${moduleCode}.json`);
       }
       return outputData(pathToWrite, data);

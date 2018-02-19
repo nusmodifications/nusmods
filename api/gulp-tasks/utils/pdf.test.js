@@ -15,7 +15,7 @@ describe('pdf', () => {
     expect(pages.length).toBe(1);
   });
 
-  it('getPagesTextFromPdf gets pages\' text from pdf', async () => {
+  it("getPagesTextFromPdf gets pages' text from pdf", async () => {
     const textPages = await getPagesTextFromPdf(fileData);
     expect(textPages.length).toBe(1);
     expect(textPages[0].length).toBe(77);

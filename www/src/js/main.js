@@ -2,6 +2,7 @@ import 'bootstrapping/polyfill';
 
 // Import Sentry earliest to capture exceptions
 import 'bootstrapping/sentry';
+import 'bootstrapping/browser';
 
 import ReactDOM from 'react-dom';
 import ReactModal from 'react-modal';

@@ -11,13 +11,15 @@ import fs from 'fs-extra';
 async function walkJsonDir(folderPath, destFileName) {
   const folders = await fs.readdir(folderPath);
   const folderToJsonMap = {};
-  await Promise.all(folders.map(async (folder) => {
-    const filePath = path.join(folderPath, folder, destFileName);
-    const fileContent = await fs.readJson(filePath).catch(() => null);
-    if (fileContent) {
-      folderToJsonMap[folder] = fileContent;
-    }
-  }));
+  await Promise.all(
+    folders.map(async (folder) => {
+      const filePath = path.join(folderPath, folder, destFileName);
+      const fileContent = await fs.readJson(filePath).catch(() => null);
+      if (fileContent) {
+        folderToJsonMap[folder] = fileContent;
+      }
+    }),
+  );
   return folderToJsonMap;
 }
 
@@ -41,7 +43,4 @@ function walkJsonDirSync(folderPath, destFileName) {
   return folderToJsonMap;
 }
 
-export {
-  walkJsonDir,
-  walkJsonDirSync,
-};
+export { walkJsonDir, walkJsonDirSync };
