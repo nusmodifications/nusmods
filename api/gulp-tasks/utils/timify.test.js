@@ -12,7 +12,7 @@ describe('convertTimeToIndex', () => {
     for (let hour = 0; hour < 24; hour += 1) {
       const doubleDigitTime = `0${hour % 24}`.slice(-2);
       expect(convertTimeToIndex(`${doubleDigitTime}00`)).toBe(hour * 2);
-      expect(convertTimeToIndex(`${doubleDigitTime}30`)).toBe((hour * 2) + 1);
+      expect(convertTimeToIndex(`${doubleDigitTime}30`)).toBe(hour * 2 + 1);
     }
   });
 
@@ -28,7 +28,7 @@ describe('convertIndexToTime', () => {
     for (let hour = 0; hour < 24; hour += 1) {
       const doubleDigitTime = `0${hour % 24}`.slice(-2);
       expect(convertIndexToTime(hour * 2)).toBe(`${doubleDigitTime}00`);
-      expect(convertIndexToTime((hour * 2) + 1)).toBe(`${doubleDigitTime}30`);
+      expect(convertIndexToTime(hour * 2 + 1)).toBe(`${doubleDigitTime}30`);
     }
   });
 });

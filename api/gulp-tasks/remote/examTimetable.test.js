@@ -16,7 +16,7 @@ describe('parseExamPdf', () => {
   function matchPdfOutput(filePath) {
     return fs
       .readFile(filePath)
-      .then(fileContent => parseExamPdf(fileContent, sublog))
+      .then((fileContent) => parseExamPdf(fileContent, sublog))
       .then((result) => {
         expect(result).toMatchSnapshot();
       });

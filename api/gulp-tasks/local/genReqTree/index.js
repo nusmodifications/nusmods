@@ -55,7 +55,7 @@ function parse(key, data, subLog) {
   const moduleCodeToData = generateModulesToKeyMap(data);
 
   const filterUnparseable = R.pipe(
-    R.filter(str => !RESTRICTED_KEYWORDS.some(keyword => str.includes(keyword))), // remove restricted
+    R.filter((str) => !RESTRICTED_KEYWORDS.some((keyword) => str.includes(keyword))), // remove restricted
     R.filter(R.test(MODULE_REGEX)), // remove those with no modules
   );
   const parsable = filterUnparseable(moduleCodeToData);
@@ -72,10 +72,12 @@ function parse(key, data, subLog) {
 
     const moduleLog = subLog.child({ moduleCode });
     const parsedString = parseString(normalizedString, moduleLog);
-    parsable[moduleCode] = parsedString ? {
-      [key]: string,
-      [`Parsed${key}`]: parsedString,
-    } : null;
+    parsable[moduleCode] = parsedString
+      ? {
+          [key]: string,
+          [`Parsed${key}`]: parsedString,
+        }
+      : null;
   });
   const removeNull = R.filter(R.identity);
   return removeNull(parsable);
@@ -172,20 +174,19 @@ async function genReqTree(allModules, config) {
 
   // for debugging usage
   if (process.env.NODE_ENV === 'development') {
-    const debugOutput = R.map(R.pick([
-      'Prerequisite',
-      'ParsedPrerequisite',
-      'Preclusion',
-      'ParsedPreclusion',
-      'ModmavenTree',
-      'LockedModules',
-    ]), modules);
-
-    const pathToWrite = path.join(
-      config.destFolder,
-      `${year}-${year + 1}`,
-      'reqTree.json',
+    const debugOutput = R.map(
+      R.pick([
+        'Prerequisite',
+        'ParsedPrerequisite',
+        'Preclusion',
+        'ParsedPreclusion',
+        'ModmavenTree',
+        'LockedModules',
+      ]),
+      modules,
     );
+
+    const pathToWrite = path.join(config.destFolder, `${year}-${year + 1}`, 'reqTree.json');
     subLog.debug(`saving to ${pathToWrite}`);
     await fs.outputJson(pathToWrite, debugOutput, { spaces: config.jsonSpace });
   }

@@ -51,33 +51,28 @@ async function consolidateForYear(config) {
   const subLog = log.child({ year });
 
   const acadYear = `${year}/${year + 1}`;
-  const basePath = path.join(
-    config.destFolder,
-    acadYear.replace('/', '-'),
-  );
+  const basePath = path.join(config.destFolder, acadYear.replace('/', '-'));
 
   const modules = {};
-  await Promise.all(R.range(1, 5).map(async (semester) => {
-    const pathToRead = path.join(
-      basePath,
-      semester.toString(),
-      config.destFileName,
-    );
-    const listOfModules = await fs.readJson(pathToRead).catch(() => {
-      subLog.info(`${pathToRead} does not exist, continuing with joining`);
-      return [];
-    });
-    listOfModules.forEach((mod) => {
-      const module = {
-        ...mod,
-        AcadYear: acadYear,
-        Semester: semester,
-      };
-      const code = module.ModuleCode;
-      modules[code] = modules[code] || {};
-      modules[code][acadYear + semester] = module;
-    });
-  }));
+  await Promise.all(
+    R.range(1, 5).map(async (semester) => {
+      const pathToRead = path.join(basePath, semester.toString(), config.destFileName);
+      const listOfModules = await fs.readJson(pathToRead).catch(() => {
+        subLog.info(`${pathToRead} does not exist, continuing with joining`);
+        return [];
+      });
+      listOfModules.forEach((mod) => {
+        const module = {
+          ...mod,
+          AcadYear: acadYear,
+          Semester: semester,
+        };
+        const code = module.ModuleCode;
+        modules[code] = modules[code] || {};
+        modules[code][acadYear + semester] = module;
+      });
+    }),
+  );
 
   const joined = Object.entries(modules).map(([moduleCode, mods]) => {
     const mergeModule = mergeModuleFields(subLog, moduleCode);
@@ -93,10 +88,7 @@ async function consolidateForYear(config) {
   const reqTree = await genReqTree(joined, config);
   const final = R.sortBy(R.prop('ModuleCode'), reqTree);
 
-  const pathToWrite = path.join(
-    basePath,
-    config.destFileName,
-  );
+  const pathToWrite = path.join(basePath, config.destFileName);
   subLog.info(`saving to ${pathToWrite}`);
   await fs.outputJson(pathToWrite, final, { spaces: config.jsonSpace });
 }

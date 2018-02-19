@@ -114,14 +114,14 @@ async function parseExamPdf(fileData, subLog) {
   const modulesArrFromPages = R.pipe(
     removeHeadersAndPageNum,
     R.flatten,
-    R.map(str => str.replace(/\s{2,}/g, ' ').replace(/ ‐/, '-')),
+    R.map((str) => str.replace(/\s{2,}/g, ' ').replace(/ ‐/, '-')),
     modulesFromText,
   );
 
   const pagesOfText = await getPagesTextFromPdf(fileData);
   const modulesArr = modulesArrFromPages(pagesOfText);
   const filterEmptyObject = R.reject(R.isEmpty);
-  return filterEmptyObject(modulesArr.map(module => parseModule(module, subLog)));
+  return filterEmptyObject(modulesArr.map((module) => parseModule(module, subLog)));
 }
 
 async function examTimetable(config) {

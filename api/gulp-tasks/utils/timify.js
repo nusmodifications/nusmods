@@ -1,14 +1,6 @@
 import R from 'ramda';
 
-const DAYS = [
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-  'Sunday',
-];
+const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
 /**
  * Converts a 24-hour format time string to an index.
@@ -20,7 +12,7 @@ export function convertTimeToIndex(time) {
   const hour = parseInt(time.substring(0, 2), 10);
   const minute = time.substring(2);
   /* eslint-disable quote-props */
-  return (hour * 2) + { '00': 0, '30': 1, '59': 2 }[minute];
+  return hour * 2 + { '00': 0, '30': 1, '59': 2 }[minute];
 }
 
 /**
@@ -31,7 +23,7 @@ export function convertTimeToIndex(time) {
  */
 export function convertIndexToTime(index) {
   const hour = parseInt(index / 2, 10);
-  const minute = (index % 2) === 0 ? '00' : '30';
+  const minute = index % 2 === 0 ? '00' : '30';
   return (hour < 10 ? `0${hour}` : hour.toString()) + minute;
 }
 
@@ -43,10 +35,7 @@ export function convertIndexToTime(index) {
  * @returns {Array} listOfTime - 24-hour format time each 30 minutes apart.
  */
 export function getTimeRange(startTime, endTime) {
-  const timeRange = R.range(
-    convertTimeToIndex(startTime),
-    convertTimeToIndex(endTime),
-  );
+  const timeRange = R.range(convertTimeToIndex(startTime), convertTimeToIndex(endTime));
   return timeRange.map(convertIndexToTime);
 }
 

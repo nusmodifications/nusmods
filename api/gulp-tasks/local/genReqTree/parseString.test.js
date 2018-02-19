@@ -1,6 +1,4 @@
-import parseString, {
-  cleanOperators,
-} from './parseString';
+import parseString, { cleanOperators } from './parseString';
 
 describe('cleanOperators', () => {
   const andToken = { image: 'and' };
@@ -11,23 +9,12 @@ describe('cleanOperators', () => {
   const rightBracketToken = { image: ')' };
 
   it('cleans excess operators from simple strings', () => {
-    const tokens = [
-      andToken,
-      moduleToken,
-      orToken,
-      andToken,
-    ];
+    const tokens = [andToken, moduleToken, orToken, andToken];
     expect(cleanOperators(tokens)).toEqual([moduleToken]);
   });
 
   it('cleans excess operators within parenthesis', () => {
-    const tokens = [
-      leftBracketToken,
-      andToken,
-      moduleToken,
-      orToken,
-      rightBracketToken,
-    ];
+    const tokens = [leftBracketToken, andToken, moduleToken, orToken, rightBracketToken];
     expect(cleanOperators(tokens)).toEqual([leftBracketToken, moduleToken, rightBracketToken]);
   });
 
@@ -85,7 +72,14 @@ describe('cleanOperators', () => {
   });
 
   it('inserts necessary operators when missing', () => {
-    const tokens = [leftBracketToken, moduleToken, orToken, moduleToken, moduleToken, rightBracketToken];
+    const tokens = [
+      leftBracketToken,
+      moduleToken,
+      orToken,
+      moduleToken,
+      moduleToken,
+      rightBracketToken,
+    ];
     expect(cleanOperators(tokens)).toEqual([
       leftBracketToken,
       moduleToken,
@@ -98,10 +92,7 @@ describe('cleanOperators', () => {
   });
 
   it('does not throw with empty parenthesis', () => {
-    const tokens = [
-      leftBracketToken,
-      rightBracketToken,
-    ];
+    const tokens = [leftBracketToken, rightBracketToken];
     expect(cleanOperators(tokens)).toEqual([]);
   });
 });
@@ -113,19 +104,13 @@ describe('parseString', () => {
 
   it('parses simple strings in `or` form', () => {
     expect(parseString('CS1000 or CS1001')).toEqual({
-      or: [
-        'CS1000',
-        'CS1001',
-      ],
+      or: ['CS1000', 'CS1001'],
     });
   });
 
   it('parses simple strings in `and` form', () => {
     expect(parseString('CS1000 and CS1001')).toEqual({
-      and: [
-        'CS1000',
-        'CS1001',
-      ],
+      and: ['CS1000', 'CS1001'],
     });
   });
 
@@ -134,10 +119,7 @@ describe('parseString', () => {
       and: [
         'CS1000',
         {
-          or: [
-            'CS1001',
-            'CS1002',
-          ],
+          or: ['CS1001', 'CS1002'],
         },
       ],
     };
@@ -148,10 +130,7 @@ describe('parseString', () => {
     const result = {
       and: [
         {
-          or: [
-            'CS1000',
-            'CS1001',
-          ],
+          or: ['CS1000', 'CS1001'],
         },
         'CS1002',
       ],
@@ -163,16 +142,10 @@ describe('parseString', () => {
     const result = {
       and: [
         {
-          or: [
-            'CS1000',
-            'CS1001',
-          ],
+          or: ['CS1000', 'CS1001'],
         },
         {
-          or: [
-            'CS1002',
-            'CS1003',
-          ],
+          or: ['CS1002', 'CS1003'],
         },
       ],
     };
@@ -192,19 +165,13 @@ describe('parseString', () => {
 
   it('parses strings with duplicate `and` operator', () => {
     expect(parseString('CS1000 and and CS1001')).toEqual({
-      and: [
-        'CS1000',
-        'CS1001',
-      ],
+      and: ['CS1000', 'CS1001'],
     });
   });
 
   it('parses strings with duplicate `or` operator', () => {
     expect(parseString('CS1000 or or CS1001')).toEqual({
-      or: [
-        'CS1000',
-        'CS1001',
-      ],
+      or: ['CS1000', 'CS1001'],
     });
   });
 
@@ -214,32 +181,19 @@ describe('parseString', () => {
 
   it('parses strings with operators that have no modules in between', () => {
     expect(parseString('CS1000 or and CS1001')).toEqual({
-      and: [
-        'CS1000',
-        'CS1001',
-      ],
+      and: ['CS1000', 'CS1001'],
     });
   });
 
   it('parses strings with modules with no operators in between', () => {
-    expect(parseString('(ES1231 or ESP2107 ST1232) and (MA1102R or MA1505)')).toEqual(
-      {
-        and: [
-          { or: ['ES1231', 'ESP2107', 'ST1232'] },
-          { or: ['MA1102R', 'MA1505'] },
-        ],
-      },
-    );
+    expect(parseString('(ES1231 or ESP2107 ST1232) and (MA1102R or MA1505)')).toEqual({
+      and: [{ or: ['ES1231', 'ESP2107', 'ST1232'] }, { or: ['MA1102R', 'MA1505'] }],
+    });
   });
 
   it('parses strings with modules with no operators in between', () => {
-    expect(parseString('(ES1231 and ESP2107 ST1232) or (MA1102R and MA1505)')).toEqual(
-      {
-        or: [
-          { and: ['ES1231', 'ESP2107', 'ST1232'] },
-          { and: ['MA1102R', 'MA1505'] },
-        ],
-      },
-    );
+    expect(parseString('(ES1231 and ESP2107 ST1232) or (MA1102R and MA1505)')).toEqual({
+      or: [{ and: ['ES1231', 'ESP2107', 'ST1232'] }, { and: ['MA1102R', 'MA1505'] }],
+    });
   });
 });

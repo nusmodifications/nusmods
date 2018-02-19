@@ -1,7 +1,7 @@
 import { graphql } from 'graphql';
 import schema from './index';
 
-const gql = x => x.raw[0]; // identify function for template literals
+const gql = (x) => x.raw[0]; // identify function for template literals
 
 jest.mock('./jsonData', () => ({
   '2016-2017': {

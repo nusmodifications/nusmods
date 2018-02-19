@@ -27,11 +27,13 @@ router.post('/graphql', graphqlKoa({ schema }));
 router.get('/graphiql', graphiqlKoa({ endpointURL: '/graphql' }));
 
 app.use(router.routes());
-app.use(router.allowedMethods({
-  throw: true,
-  notImplemented: () => new Boom.notImplemented(), // eslint-disable-line new-cap
-  methodNotAllowed: () => new Boom.methodNotAllowed(), // eslint-disable-line new-cap
-}));
+app.use(
+  router.allowedMethods({
+    throw: true,
+    notImplemented: () => new Boom.notImplemented(), // eslint-disable-line new-cap
+    methodNotAllowed: () => new Boom.methodNotAllowed(), // eslint-disable-line new-cap
+  }),
+);
 
 log.info('current environment: %s', process.env.NODE_ENV);
 log.info('server started at port: %d', process.env.PORT || 3000);

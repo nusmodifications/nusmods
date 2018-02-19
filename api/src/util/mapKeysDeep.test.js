@@ -1,7 +1,7 @@
 import mapKeysDeep from './mapKeysDeep';
 
 describe('mapKeysDeep', () => {
-  const appendXToKeys = mapKeysDeep(key => `${key}X`);
+  const appendXToKeys = mapKeysDeep((key) => `${key}X`);
 
   const testString = 'testString';
 
@@ -49,18 +49,22 @@ describe('mapKeysDeep', () => {
       testString,
       anotherString: {
         yetAnotherString: 'yetAnotherString',
-        array: [{
-          testString,
-        }],
+        array: [
+          {
+            testString,
+          },
+        ],
       },
     };
     expect(appendXToKeys(inputObject)).toEqual({
       testStringX: testString,
       anotherStringX: {
         yetAnotherStringX: 'yetAnotherString',
-        arrayX: [{
-          testStringX: testString,
-        }],
+        arrayX: [
+          {
+            testStringX: testString,
+          },
+        ],
       },
     });
   });
