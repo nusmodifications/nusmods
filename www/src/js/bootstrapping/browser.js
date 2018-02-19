@@ -6,7 +6,7 @@
 // user will at least be able to see the dialog warning them of the browser incompatibility.
 
 import bowser from 'bowser';
-import { canUseBrowserLocalStorage } from '../storage/localStorage';
+import { canUseBrowserLocalStorage } from 'storage/localStorage';
 import styles from './browser.scss';
 
 const LOCAL_STORAGE_KEY = 'dismissedBrowserWarning';
@@ -14,6 +14,10 @@ const composeAnchorText = (innerHTML, href) =>
   `<a href=${href} target="_blank" rel="noopener noreferrer">${innerHTML}</a>`;
 const linkForChrome = composeAnchorText('Google Chrome', 'https://www.google.com/chrome/');
 const linkForFirefox = composeAnchorText('Mozilla Firefox', 'https://www.mozilla.org/en-US/');
+const linkForChromePlayStore = composeAnchorText(
+  'updating your web browser',
+  'http://play.google.com/store/apps/details?id=com.android.chrome',
+);
 
 const browserCanUseLocalStorage = canUseBrowserLocalStorage();
 
@@ -37,11 +41,10 @@ if (
       if (bowser.ios)
         return `NUSMods may not work properly. Please consider updating your device to iOS 11 or higher.`;
       if (bowser.android && bowser.chrome)
-        return `NUSMods may not work properly. Please consider updating your web browser.`;
+        return `NUSMods may not work properly. Please consider ${linkForChromePlayStore}.`;
       return `NUSMods may not work properly. Please consider updating your web browser or switching to the latest version of ${linkForChrome} or ${linkForFirefox}.`;
     })();
     const template = `
-    <div class="${styles.overlay}">
       <div class="${styles.modal}">
       <h3>Your web browser is outdated or unsupported</h3>
       <p>${promptText}</p>
@@ -64,8 +67,7 @@ if (
         }
         </div>
       </div>
-    </div>
-  `;
+    `;
     const container = document.createElement('div');
     container.className = styles.browserWarning;
     container.innerHTML = template;

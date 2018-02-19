@@ -76,9 +76,8 @@ describe('#getLocalStorage', () => {
   test('should return a shim if browser cannot use localStorage', () => {
     window.localStorage = undefined;
     expect(canUseBrowserLocalStorage()).toEqual(false);
-    expect(getLocalStorage()).toEqual(
+    expect(getLocalStorage()).toMatchObject(
       expect.objectContaining({
-        privData: expect.any(Object),
         clear: expect.any(Function),
         setItem: expect.any(Function),
         getItem: expect.any(Function),
