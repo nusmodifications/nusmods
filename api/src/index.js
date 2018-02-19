@@ -1,8 +1,8 @@
 import Koa from 'koa';
 
 import Router from 'koa-router';
-import BodyParser from 'koa-bodyparser';
-import { graphqlKoa, graphiqlKoa } from 'graphql-server-koa';
+import bodyParser from 'koa-bodyparser';
+import { graphqlKoa, graphiqlKoa } from 'apollo-server-koa';
 import koaPlayground from 'graphql-playground-middleware-koa';
 
 import Boom from 'boom';
@@ -14,10 +14,9 @@ import schema from './graphql';
 
 const app = new Koa();
 const router = new Router();
-const bodyparser = new BodyParser();
 
 // Register middleware
-app.use(bodyparser);
+app.use(bodyParser());
 app.use(loggerMiddleware(log));
 app.use(loggerMiddleware.requestIdContext());
 app.use(loggerMiddleware.requestLogger());
