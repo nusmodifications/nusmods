@@ -79,12 +79,15 @@
     "babili-webpack-plugin": "^0.1.2",
     "eslint": "^4.3.0",
     "eslint-config-airbnb-base": "^11.1.3",
+    "eslint-config-prettier": "^2.9.0",
     "eslint-import-resolver-node": "^0.3.0",
     "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-prettier": "^2.6.0",
     "jest": "^20.0.4",
     "mock-fs": "^4.2.0",
     "nock": "^9.0.14",
     "nodemon": "^1.11.0",
+    "prettier": "^1.10.2",
     "webpack": "^3.3.0",
     "webpack-node-externals": "^1.6.0"
   }
