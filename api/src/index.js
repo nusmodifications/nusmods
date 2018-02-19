@@ -23,7 +23,7 @@ app.use(loggerMiddleware.requestLogger());
 app.use(errorMiddleware());
 
 // Registers routes
-router.post('/graphql', graphqlKoa({ schema }));
+router.post('/graphql', graphqlKoa({ schema, tracing: true }));
 router.get('/graphiql', graphiqlKoa({ endpointURL: '/graphql' }));
 router.get('/playground', koaPlayground({ endpoint: '/graphql' }));
 
