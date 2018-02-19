@@ -43,6 +43,7 @@
     "fs-extra": "^4.0.0",
     "got": "^8.0.2",
     "graphql": "^0.9.4",
+    "graphql-playground-middleware-koa": "^1.4.2",
     "graphql-server-koa": "^0.7.2",
     "graphql-tools": "^0.11.0",
     "gulp": "^4.0.0",
