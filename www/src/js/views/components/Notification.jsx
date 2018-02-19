@@ -22,6 +22,7 @@ type State = {
 
 const ACTIVE_CLASSNAME = 'mdc-snackbar--active';
 const DEFAULT_TIMEOUT = 2750;
+const TRANSITION_DURATION = 250;
 
 /**
  * Notification has a relatively complicated state system since its State is deliberately
@@ -49,8 +50,8 @@ const DEFAULT_TIMEOUT = 2750;
  */
 export class NotificationComponent extends Component<Props, State> {
   element: ?HTMLElement;
-  timeoutId: TimeoutID;
-  timeoutId2: TimeoutID;
+  openTimeoutId: TimeoutID;
+  closeTimeoutId: TimeoutID;
 
   constructor(props: Props) {
     super(props);
@@ -83,11 +84,6 @@ export class NotificationComponent extends Component<Props, State> {
         this.closeSnackbar();
       } else if (!this.transitioning) {
         this.openSnackbar();
-      } else {
-        // onTransitionEnd can be cancelled, causing transitioning to never
-        // turn false and notifications to stop showing up, so we set a timer
-        // and turn transitioning false when the timer is up
-        this.timeoutId2 = setTimeout(() => this.clearTransition(), DEFAULT_TIMEOUT);
       }
     }
   }
@@ -96,7 +92,7 @@ export class NotificationComponent extends Component<Props, State> {
     if (evt.target !== this.element) return;
 
     // the event ran, so the failsafe can be cancelled
-    clearTimeout(this.timeoutId2);
+    clearTimeout(this.closeTimeoutId);
 
     this.transitioning = false;
 
@@ -104,8 +100,8 @@ export class NotificationComponent extends Component<Props, State> {
       // This is at the end of the opening transition, so we set a timer and
       // close the notification when the timer is up
       const timeout = this.state.shownNotification.timeout || DEFAULT_TIMEOUT;
-      clearTimeout(this.timeoutId); // Defensive
-      this.timeoutId = setTimeout(() => this.props.popNotification(), timeout);
+      clearTimeout(this.openTimeoutId); // Defensive
+      this.openTimeoutId = setTimeout(() => this.props.popNotification(), timeout);
     } else if (this.props.notifications.length) {
       // End of closing transition - if there are more notifications, let's show them
       this.openSnackbar();
@@ -129,8 +125,12 @@ export class NotificationComponent extends Component<Props, State> {
 
   closeSnackbar = () => {
     this.transitioning = true;
-    clearTimeout(this.timeoutId);
     this.setState({ isOpen: false });
+    // onTransitionEnd can be cancelled, causing transitioning to never
+    // turn false and notifications to stop showing up, so we set a timer
+    // and turn transitioning false when the timer is up
+    clearTimeout(this.closeTimeoutId); // Defensive
+    this.closeTimeoutId = setTimeout(() => this.clearTransition(), TRANSITION_DURATION);
   };
 
   render() {
