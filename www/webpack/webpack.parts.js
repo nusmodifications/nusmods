@@ -176,10 +176,6 @@ exports.minifyJavascript = () =>
         sourceMap: true,
         // See: https://github.com/mishoo/UglifyJS2/tree/harmony
         uglifyOptions: {
-          mangle: {
-            // Required to avoid Safari 10 bug https://github.com/mishoo/UglifyJS2/issues/1753
-            safari10: true,
-          },
           // Don't beautify output (enable for neater output).
           beautify: false,
           // Eliminate comments.
@@ -189,6 +185,8 @@ exports.minifyJavascript = () =>
             // Two passes yield the most optimal results
             passes: 2,
           },
+          // Required to avoid Safari 10/11 bugs
+          safari10: true,
         },
       }),
     ],
