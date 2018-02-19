@@ -31,8 +31,6 @@ module.exports = {
   ],
   rules: {
     'prettier/prettier': ['warn'],
-    // Consistent arrow parens
-    'arrow-parens': ['error', 'as-needed', { requireForBlockBody: true }],
     'import/extensions': [
       'error',
       'always',

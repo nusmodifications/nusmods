@@ -125,7 +125,7 @@ function cleanOperators(tokens) {
   let temp = [];
   let bracketsCount = 0;
   tokens.forEach((token) => {
-    const image = token.image;
+    const { image } = token;
     if (bracketsCount === 0 && image !== '(' && image !== ')') {
       output.push(token);
       return;
@@ -150,11 +150,11 @@ function cleanOperators(tokens) {
   });
 
   const findFirstRelevant = R.findIndex((token) => {
-    const image = token.image;
+    const { image } = token;
     return MODULE_REGEX.test(image) || image === '(';
   });
   const findLastRelevant = R.findLastIndex((token) => {
-    const image = token.image;
+    const { image } = token;
     return MODULE_REGEX.test(image) || image === ')';
   });
   const processedTokens = output.slice(findFirstRelevant(output), findLastRelevant(output) + 1);

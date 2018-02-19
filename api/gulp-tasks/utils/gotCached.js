@@ -44,7 +44,7 @@ async function gotCached(urlStr, config) {
   }
 
   const modifiedTime = await getFileModifiedTime(cachedPath, urlStr);
-  const maxCacheAge = config.maxCacheAge;
+  const { maxCacheAge } = config;
   const isCachedFileValid = modifiedTime && modifiedTime > Date.now() - maxCacheAge * 1000;
   if (maxCacheAge === -1 || isCachedFileValid) {
     return returnCached();
@@ -67,7 +67,7 @@ async function gotCached(urlStr, config) {
 
   try {
     const response = await got(urlStr, options);
-    let body = response.body;
+    let { body } = response;
     if (response.headers['content-type'] === 'text/html') {
       // Serializes the parsed document
       const doc = parse5.parse(body);

@@ -87,14 +87,17 @@ gulp.task('moduleTimetableDelta', () => tasks.moduleTimetableDelta(config.module
 
 gulp.task('venues', () => tasks.venues(config.venues));
 
-gulp.task('remote', gulp.parallel(
-  'bulletinModules',
-  'cors',
-  'corsBiddingStats',
-  'examTimetable',
-  'venues',
-  'moduleTimetableDelta',
-));
+gulp.task(
+  'remote',
+  gulp.parallel(
+    'bulletinModules',
+    'cors',
+    'corsBiddingStats',
+    'examTimetable',
+    'venues',
+    'moduleTimetableDelta',
+  ),
+);
 
 gulp.task('mergeCorsBiddingStats', () => {
   const toMerge = iterateSems({
@@ -146,13 +149,15 @@ gulp.task('splitForYear', () => {
   return Promise.each(subtasks, tasks.splitForYear);
 });
 
-gulp.task('local', gulp.series(
-  'mergeCorsBiddingStats',
-  'consolidateForSem',
-  'splitForSem',
-  'consolidateForYear',
-  'splitForYear',
-));
+gulp.task(
+  'local',
+  gulp.series(
+    'mergeCorsBiddingStats',
+    'consolidateForSem',
+    'splitForSem',
+    'consolidateForYear',
+    'splitForYear',
+  ),
+);
 
 gulp.task('default', gulp.series('remote', 'local'));
-
