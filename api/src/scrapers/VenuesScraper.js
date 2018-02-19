@@ -22,7 +22,11 @@ export default class VenuesScraper extends BaseTask {
     const map = R.indexBy(R.prop('name'), currentRows);
 
     const transactions = [];
-    const transact = ({ name }) => this.db.table('venues').transacting(transaction).where({ name });
+    const transact = ({ name }) =>
+      this.db
+        .table('venues')
+        .transacting(transaction)
+        .where({ name });
     existingRows.forEach((row) => {
       const currentRow = map[row.name];
       if (!currentRow) {
@@ -36,11 +40,13 @@ export default class VenuesScraper extends BaseTask {
       delete map[row.name];
     });
 
-    return Promise.all(transactions)
-      // Whatever remains must be new data
-      .then(() => this.db.batchInsert('venues', Object.values(map), MAX_INSERT_SIZE))
-      .then(transaction.commit)
-      .catch(transaction.rollback);
+    return (
+      Promise.all(transactions)
+        // Whatever remains must be new data
+        .then(() => this.db.batchInsert('venues', Object.values(map), MAX_INSERT_SIZE))
+        .then(transaction.commit)
+        .catch(transaction.rollback)
+    );
   }
 
   async scrape() {
@@ -50,8 +56,11 @@ export default class VenuesScraper extends BaseTask {
         output: 'json',
       },
     });
-    const currentVenues = response.data.map(datum => this.convertToRow(datum));
-    const existingVenues = await this.db.table('venues').where(SCHOOL_ID).select(FIELDS);
+    const currentVenues = response.data.map((datum) => this.convertToRow(datum));
+    const existingVenues = await this.db
+      .table('venues')
+      .where(SCHOOL_ID)
+      .select(FIELDS);
 
     return this.save(existingVenues, currentVenues);
   }

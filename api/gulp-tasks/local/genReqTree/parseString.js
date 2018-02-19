@@ -31,15 +31,7 @@ class IrrelevantWord extends Token {}
 IrrelevantWord.PATTERN = /[^\s()]+/;
 IrrelevantWord.GROUP = Lexer.SKIPPED;
 
-const allTokens = [
-  WhiteSpace,
-  Module,
-  And,
-  Or,
-  LeftBracket,
-  RightBracket,
-  IrrelevantWord,
-];
+const allTokens = [WhiteSpace, Module, And, Or, LeftBracket, RightBracket, IrrelevantWord];
 const ReqTreeLexer = new Lexer(allTokens);
 
 function generateAndBranch(modules) {
@@ -165,10 +157,7 @@ function cleanOperators(tokens) {
     const image = token.image;
     return MODULE_REGEX.test(image) || image === ')';
   });
-  const processedTokens = output.slice(
-    findFirstRelevant(output),
-    findLastRelevant(output) + 1,
-  );
+  const processedTokens = output.slice(findFirstRelevant(output), findLastRelevant(output) + 1);
 
   const removedDuplicates = processedTokens.filter((item, pos, arr) => {
     // always keep the first and last element

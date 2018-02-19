@@ -3,14 +3,18 @@ import { normalize } from './normalizeString';
 /* eslint-disable max-len */
 describe('normalizeString', () => {
   it('converts commas to delimiter or', () => {
-    const testString = 'ACC1002 Financial Accounting, BSP1004 Legal Environment of Business, FIN2004 Finance';
-    const expected = 'ACC1002 Financial Accounting or  BSP1004 Legal Environment of Business or  FIN2004 Finance';
+    const testString =
+      'ACC1002 Financial Accounting, BSP1004 Legal Environment of Business, FIN2004 Finance';
+    const expected =
+      'ACC1002 Financial Accounting or  BSP1004 Legal Environment of Business or  FIN2004 Finance';
     expect(normalize(testString)).toBe(expected);
   });
 
   it('converts commas to delimiter and when written like a sentence', () => {
-    const testString = 'ACC1002 Financial Accounting, BSP1004 Legal Environment of Business, and FIN2004 Finance';
-    const expected = 'ACC1002 Financial Accounting and  BSP1004 Legal Environment of Business and  FIN2004 Finance';
+    const testString =
+      'ACC1002 Financial Accounting, BSP1004 Legal Environment of Business, and FIN2004 Finance';
+    const expected =
+      'ACC1002 Financial Accounting and  BSP1004 Legal Environment of Business and  FIN2004 Finance';
     expect(normalize(testString)).toBe(expected);
   });
 
@@ -27,7 +31,8 @@ describe('normalizeString', () => {
   });
 
   it('removes module titles that contains operators 1', () => {
-    const testString = 'ACC3616 Corporate Governance and Risk Management or ACC3612 Risk Management and Internal Control';
+    const testString =
+      'ACC3616 Corporate Governance and Risk Management or ACC3612 Risk Management and Internal Control';
     const expected = 'ACC3616 Corporate  Management or ACC3612 Risk  Control';
     expect(normalize(testString)).toBe(expected);
   });
