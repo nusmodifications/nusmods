@@ -20,8 +20,8 @@ function removeSpaceFromModule(string) {
 
 // converts `CS1000and` to `CS1000 and`
 function fixOperatorTypos(string) {
-  const leftConjoinedRegex = /\b([^\s()]{6,9})(and|or)\b/ig;
-  const rightConjoinedRegex = /\b(and|or)([^\s()]{6,9})\b/ig;
+  const leftConjoinedRegex = /\b([^\s()]{6,9})(and|or)\b/gi;
+  const rightConjoinedRegex = /\b(and|or)([^\s()]{6,9})\b/gi;
   return string
     .replace(leftConjoinedRegex, (match, p1, p2) => {
       if (MODULE_REGEX.test(p1)) {
@@ -44,7 +44,7 @@ function insertPostFixAsStandalone(string) {
     const p = args.slice(0, -2); // last two are offset and string
     const modules = [
       module,
-      ...p.map(postfix => `${module}${postfix.slice(1)}`), // remove '/' sign
+      ...p.map((postfix) => `${module}${postfix.slice(1)}`), // remove '/' sign
     ];
     return modules.join(OPERATORS.or);
   });
@@ -96,8 +96,12 @@ function fixBrackets(string) {
 function removeModuleTitles(string) {
   const moduleTitlesRegex = /([^\s()]+)\b[\s]+(?:and|or)[\s]+([^\s()]+)\b/g;
   const result = string.replace(moduleTitlesRegex, (match, p1, p2) => {
-    if (AND_OR_REGEX.test(p1) || AND_OR_REGEX.test(p2) ||
-      MODULE_REGEX.test(p1) || MODULE_REGEX.test(p2)) {
+    if (
+      AND_OR_REGEX.test(p1) ||
+      AND_OR_REGEX.test(p2) ||
+      MODULE_REGEX.test(p1) ||
+      MODULE_REGEX.test(p2)
+    ) {
       return match;
     }
     return '';

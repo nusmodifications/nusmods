@@ -46,7 +46,7 @@ function parseFacultyDepartment(modules) {
 
 async function bulletinModules(config) {
   const bulletinData = await parseBulletinModules(config);
-  const semester = config.semester;
+  const { semester } = config;
 
   const toWrite = [];
   Object.entries(bulletinData).forEach(([academicYear, modules]) => {

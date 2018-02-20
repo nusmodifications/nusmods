@@ -18,6 +18,4 @@ const handler = async (ctx, next) => {
   }
 };
 
-export default () => compose([
-  handler,
-]);
+export default () => compose([handler]);

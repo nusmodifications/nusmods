@@ -55,7 +55,7 @@ const log = bunyan.createLogger({ name: 'consolidateForSem' });
 
 function normalize(data, subLog) {
   function normalizeSingleTimetable(timetable) {
-    const toFourCharsTime = time => `000${time}`.slice(-4);
+    const toFourCharsTime = (time) => `000${time}`.slice(-4);
     const processLesson = R.evolve({
       StartTime: toFourCharsTime,
       EndTime: toFourCharsTime,
@@ -98,10 +98,12 @@ function normalize(data, subLog) {
       return `${date.toISOString().slice(0, 16)}+0800`;
     }
     const processTimetable = R.pipe(
-      R.map(R.evolve({
-        WeekText: R.replace('&nbsp;', ' '),
-        Venue: R.replace(/(?:^null)?,$/, ''),
-      })),
+      R.map(
+        R.evolve({
+          WeekText: R.replace('&nbsp;', ' '),
+          Venue: R.replace(/(?:^null)?,$/, ''),
+        }),
+      ),
       normalizeSingleTimetable,
     );
     const processCors = R.evolve({
@@ -136,7 +138,7 @@ function normalize(data, subLog) {
 
   function normalizeSingleTimetableDelta(timetableDelta) {
     const sortByLastModified = R.sortBy(R.prop('LastModified'));
-    const isRedundant = lesson => lesson.isDelete || lesson.DayCode === '7'; // Sundays seem to be dummy values
+    const isRedundant = (lesson) => lesson.isDelete || lesson.DayCode === '7'; // Sundays seem to be dummy values
     const removeRedundant = R.pipe(
       sortByLastModified,
       R.reverse,
@@ -149,14 +151,16 @@ function normalize(data, subLog) {
   }
 
   function normalizeSingleCorsBiddingStats(corsBiddingStats) {
-    return corsBiddingStats.map(R.pipe(
-      R.omit(['ModuleCode']),
-      R.evolve({
-        Group: titleize,
-        Faculty: titleize,
-        StudentAcctType: R.replace('<br>', ''),
-      }),
-    ));
+    return corsBiddingStats.map(
+      R.pipe(
+        R.omit(['ModuleCode']),
+        R.evolve({
+          Group: titleize,
+          Faculty: titleize,
+          StudentAcctType: R.replace('<br>', ''),
+        }),
+      ),
+    );
   }
 
   function normalizeSingleExam(exam) {
@@ -165,7 +169,9 @@ function normalize(data, subLog) {
 
     let duration;
     if (exam.Duration) {
-      duration = `P${exam.Duration.replace(/\s/g, '').toUpperCase().slice(0, 5)}`;
+      duration = `P${exam.Duration.replace(/\s/g, '')
+        .toUpperCase()
+        .slice(0, 5)}`;
     }
     return {
       ModuleCode: exam.ModuleCode,
@@ -186,10 +192,7 @@ function normalize(data, subLog) {
 }
 
 function consolidate(data, subLog) {
-  const mainModuleCodes = [
-    ...Object.keys(data.bulletinModules),
-    ...Object.keys(data.cors),
-  ];
+  const mainModuleCodes = [...Object.keys(data.bulletinModules), ...Object.keys(data.cors)];
   const auxiliaryModuleCodes = [
     ...Object.keys(data.corsBiddingStats),
     ...Object.keys(data.examTimetable),
@@ -198,19 +201,25 @@ function consolidate(data, subLog) {
   ];
   const moduleCodesWithoutData = R.difference(auxiliaryModuleCodes, mainModuleCodes);
   // eslint-disable-next-line max-len
-  subLog.warn(`${moduleCodesWithoutData.join(', ')} have no bulletin or cors data source and will be excluded.`);
+  subLog.warn(
+    `${moduleCodesWithoutData.join(
+      ', ',
+    )} have no bulletin or cors data source and will be excluded.`,
+  );
 
   const allModuleCodes = mainModuleCodes;
   subLog.info(`parsing ${allModuleCodes.length} modules`);
 
   const dataTypes = Object.keys(data);
-  const consolidated = R.fromPairs(allModuleCodes.map((moduleCode) => {
-    const module = {};
-    dataTypes.forEach((type) => {
-      module[type] = data[type][moduleCode];
-    });
-    return [moduleCode, module]; // fromPairs turns [key, val] to { key: val }
-  }));
+  const consolidated = R.fromPairs(
+    allModuleCodes.map((moduleCode) => {
+      const module = {};
+      dataTypes.forEach((type) => {
+        module[type] = data[type][moduleCode];
+      });
+      return [moduleCode, module]; // fromPairs turns [key, val] to { key: val }
+    }),
+  );
   return consolidated;
 }
 
@@ -273,10 +282,7 @@ function parseModule(rawModule, lessonTypes) {
   });
   module.LecturePeriods = [...periods.Lecture];
   module.TutorialPeriods = [...periods.Tutorial];
-  return R.pipe(
-    R.pick(MODULE_FIELDS),
-    R.pickBy(val => val && !R.isEmpty(val)),
-  )(module);
+  return R.pipe(R.pick(MODULE_FIELDS), R.pickBy((val) => val && !R.isEmpty(val)))(module);
 }
 
 /**
@@ -305,11 +311,7 @@ function merge(consolidated, lessonTypes, subLog) {
 }
 
 function parseVenues(modules) {
-  const lessons = R.pipe(
-    R.pluck('Timetable'),
-    R.unnest,
-    R.filter(R.identity),
-  )(modules);
+  const lessons = R.pipe(R.pluck('Timetable'), R.unnest, R.filter(R.identity))(modules);
   const venuesSet = new Set(R.pluck('Venue', lessons));
   return [...venuesSet];
 }
@@ -338,10 +340,7 @@ async function consolidateForSem(config) {
       config[category].destFileName,
     );
     if (category === 'corsBiddingStats') {
-      filePath = path.join(
-        config[category].destFolder,
-        config[category].destFileName,
-      );
+      filePath = path.join(config[category].destFolder, config[category].destFileName);
       func = R.groupBy;
     } else if (category === 'moduleTimetableDelta') {
       func = R.groupBy;

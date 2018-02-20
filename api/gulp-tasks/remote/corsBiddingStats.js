@@ -79,10 +79,12 @@ async function corsBiddingStats(config) {
   const webpage = await gotCached(CORS_ARCHIVE_URL, config);
   const $ = cheerio.load(webpage);
 
-  const urls = $(BID_RESULTS_LINK_SELECTOR).map((i, anchor) => $(anchor).prop('href')).get();
-  const wantedUrls = urls.filter(href => href.includes(`${year + 1}s${semester}`));
+  const urls = $(BID_RESULTS_LINK_SELECTOR)
+    .map((i, anchor) => $(anchor).prop('href'))
+    .get();
+  const wantedUrls = urls.filter((href) => href.includes(`${year + 1}s${semester}`));
 
-  const statsByPhase = wantedUrls.map(href => processBiddingStats(href, config));
+  const statsByPhase = wantedUrls.map((href) => processBiddingStats(href, config));
   const biddingStats = R.unnest(await Promise.all(statsByPhase));
   if (biddingStats.length === 0) {
     subLog.info('no bidding stats available, scrape ended.');

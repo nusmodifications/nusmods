@@ -37,34 +37,38 @@ function mergeModuleFields(log, moduleCode, thisModule, anotherModule) {
   if (anotherModule.ModuleCode && anotherModule.ModuleCode !== moduleCode) {
     throw differentModuleError;
   }
-  return R.mergeWithKey((key, x, y) => {
-    // return whichever side that has data
-    const xIsNullData = NULL_REGEX.test(x);
-    const yIsNullData = NULL_REGEX.test(y);
-    if (xIsNullData && yIsNullData) {
-      return '';
-    } else if (yIsNullData) {
-      return x;
-    } else if (xIsNullData) {
+  return R.mergeWithKey(
+    (key, x, y) => {
+      // return whichever side that has data
+      const xIsNullData = NULL_REGEX.test(x);
+      const yIsNullData = NULL_REGEX.test(y);
+      if (xIsNullData && yIsNullData) {
+        return '';
+      } else if (yIsNullData) {
+        return x;
+      } else if (xIsNullData) {
+        return y;
+      }
+      if (x === y) {
+        return y;
+      }
+      // diff and return whichever side that has strictly more data
+      const diffFunc = typeof x === 'string' ? diffWords : diffJson;
+      const diffs = diffFunc(x, y);
+      if (diffs.filter((diff) => diff.removed).length === 0) {
+        return y;
+      } else if (diffs.filter((diff) => diff.added).length === 0) {
+        return x;
+      }
+      const level = CRITICAL_FIELDS.includes(key) ? 'warn' : 'info';
+      const strX = key === 'ModuleDescription' ? prune(x, PRUNE_LIMIT) : x;
+      const strY = key === 'ModuleDescription' ? prune(y, PRUNE_LIMIT) : y;
+      log[level](`module ${moduleCode}'s ${key} is not the same, got:\n1) '${strX}'\n2) '${strY}'`);
       return y;
-    }
-    if (x === y) {
-      return y;
-    }
-    // diff and return whichever side that has strictly more data
-    const diffFunc = typeof x === 'string' ? diffWords : diffJson;
-    const diffs = diffFunc(x, y);
-    if (diffs.filter(diff => diff.removed).length === 0) {
-      return y;
-    } else if (diffs.filter(diff => diff.added).length === 0) {
-      return x;
-    }
-    const level = CRITICAL_FIELDS.includes(key) ? 'warn' : 'info';
-    const strX = key === 'ModuleDescription' ? prune(x, PRUNE_LIMIT) : x;
-    const strY = key === 'ModuleDescription' ? prune(y, PRUNE_LIMIT) : y;
-    log[level](`module ${moduleCode}'s ${key} is not the same, got:\n1) '${strX}'\n2) '${strY}'`);
-    return y;
-  }, thisModule, anotherModule);
+    },
+    thisModule,
+    anotherModule,
+  );
 }
 
 export default R.curry(mergeModuleFields);

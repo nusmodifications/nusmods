@@ -9,7 +9,7 @@ import _ from 'lodash';
  */
 function mapKeysDeep(func, value) {
   if (Array.isArray(value)) {
-    return value.map(innerContent => mapKeysDeep(func, innerContent));
+    return value.map((innerContent) => mapKeysDeep(func, innerContent));
   }
   if (_.isObjectLike(value)) {
     const obj = {};
