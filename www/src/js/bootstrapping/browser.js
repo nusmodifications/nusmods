@@ -7,9 +7,9 @@
 
 import bowser from 'bowser';
 import { canUseBrowserLocalStorage } from 'storage/localStorage';
+import { BROWSER_WARNING_KEY } from 'storage/keys';
 import styles from './browser.scss';
 
-const LOCAL_STORAGE_KEY = 'dismissedBrowserWarning';
 const composeAnchorText = (innerHTML, href) =>
   `<a href=${href} target="_blank" rel="noopener noreferrer">${innerHTML}</a>`;
 const linkForChrome = composeAnchorText('Google Chrome', 'https://www.google.com/chrome/');
@@ -33,7 +33,7 @@ if (
   )
 ) {
   if (
-    (browserCanUseLocalStorage && !localStorage.getItem(LOCAL_STORAGE_KEY)) ||
+    (browserCanUseLocalStorage && !localStorage.getItem(BROWSER_WARNING_KEY)) ||
     !browserCanUseLocalStorage
   ) {
     const promptText = (() => {
@@ -79,7 +79,7 @@ if (
       element.addEventListener('click', () => {
         const checkbox = document.getElementById('browserWarning-ignore');
         if (browserCanUseLocalStorage && checkbox && checkbox.checked)
-          localStorage.setItem(LOCAL_STORAGE_KEY, navigator.userAgent);
+          localStorage.setItem(BROWSER_WARNING_KEY, navigator.userAgent);
         if (body) body.removeChild(container);
       });
     }
