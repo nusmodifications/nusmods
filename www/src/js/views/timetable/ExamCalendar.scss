@@ -1,9 +1,8 @@
 @import "~styles/utils/modules-entry";
 
-.table {
-  min-width: 100%;
+.calendarWrapper {
+  composes: scrollable from global;
   margin-bottom: 1rem;
-  table-layout: fixed;
 }
 
 .day,

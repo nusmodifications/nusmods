@@ -233,8 +233,8 @@ export default class ExamCalendar extends PureComponent<Props> {
     //   - Evening exams
     return (
       <Fragment>
-        <div className="scrollable">
-          <table className={styles.table}>
+        <div className={styles.calendarWrapper}>
+          <table>
             <thead>
               <tr>
                 {range(daysWithExams).map((day) => (
