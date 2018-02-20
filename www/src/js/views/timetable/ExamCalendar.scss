@@ -41,13 +41,15 @@
 
 .day {
   h4 {
+    opacity: 0.8;
     margin-bottom: 0.2rem;
     font-size: $font-size-sm;
+    text-align: center;
   }
 
   a {
     display: block;
-    padding: 0.3rem;
+    padding: 0.3rem 0.3rem 0.5rem 0.3rem;
     margin-bottom: 0.5rem;
     overflow: hidden;
     font-size: $font-size-sm;
@@ -63,4 +65,9 @@
     font-size: $font-size-xs;
     line-height: 1.1;
   }
+}
+
+.noExams {
+  composes: h4 text-center from global;
+  padding: 1.5rem 0;
 }

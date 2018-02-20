@@ -48,7 +48,7 @@ function make(modules: ModuleWithColor[] = [], semester: Semester = 1) {
 describe('ExamCalendar', () => {
   test('only show Saturday if there is a Saturday exam', () => {
     const withSaturdayExams = make([GER1000]);
-    const withoutSaturdayExams = make(mockModules);
+    const withoutSaturdayExams = make(modulesWithColor);
 
     expect(withSaturdayExams.find('thead th')).toHaveLength(6);
     expect(withoutSaturdayExams.find('thead th')).toHaveLength(5);
@@ -85,5 +85,13 @@ describe('ExamCalendar', () => {
 
     expect(wrapper.find(Link)).toHaveLength(1);
     expect(wrapper.find('tbody tr')).toHaveLength(TR_PER_WEEK);
+  });
+
+  test('should hide modules which are hidden in timetable', () => {
+    const modules = _.cloneDeep(modulesWithColor);
+    modules[0].hiddenInTimetable = true;
+    const wrapper = make(modules);
+
+    expect(wrapper.find(Link)).toHaveLength(3);
   });
 });

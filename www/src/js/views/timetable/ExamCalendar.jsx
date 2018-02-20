@@ -66,7 +66,7 @@ function getTimeSegment(time: string): TimeSegment {
   }
 }
 
-function renderModule(module: ModuleWithColor) {
+function ExamModule({ module }: { module: ModuleWithColor }) {
   return (
     <Link
       to={modulePage(module.ModuleCode, module.ModuleTitle)}
@@ -112,7 +112,7 @@ function ExamWeek({ week, weekNumber }: { week: ExamDay[], weekNumber: number })
               <Fragment>
                 <h4>{modules[0].time}</h4>
                 {modules.map(({ module }) => (
-                  <div key={module.ModuleCode}>{renderModule(module)}</div>
+                  <ExamModule key={module.ModuleCode} module={module} />
                 ))}
               </Fragment>
             )}
@@ -131,9 +131,13 @@ function ExamWeek({ week, weekNumber }: { week: ExamDay[], weekNumber: number })
 }
 
 export default class ExamCalendar extends PureComponent<Props> {
+  getVisibleModules() {
+    return this.props.modules.filter((module) => !module.hiddenInTimetable);
+  }
+
   // Utility function to get the first day of exams and calculate the number of weeks
   getExamCalendar(): [Date, number] {
-    const { semester, modules } = this.props;
+    const { semester } = this.props;
     const year = `${config.academicYear.slice(2, 4)}/${config.academicYear.slice(-2)}`;
     let firstDayOfExams = NUSModerator.academicCalendar.getExamWeek(year, semester);
     firstDayOfExams = new Date(firstDayOfExams - firstDayOfExams.getTimezoneOffset() * 60 * 1000);
@@ -143,7 +147,7 @@ export default class ExamCalendar extends PureComponent<Props> {
 
     // Check modules for outliers, eg. GER1000 that has exams on the Saturday before the exam week
     // and expand the range accordingly
-    modules.forEach((module) => {
+    this.getVisibleModules().forEach((module) => {
       const dateString = getModuleExamDate(module, semester);
       if (!dateString) return;
 
@@ -172,7 +176,7 @@ export default class ExamCalendar extends PureComponent<Props> {
     // Wrap each module with its exam date info. This means we don't have to recalculate these
     // every time we need them
     const modulesWithExams: ModuleWithExamTime[] = [];
-    this.props.modules.forEach((module) => {
+    this.getVisibleModules().forEach((module) => {
       const dateTime = getModuleExamDate(module, semester);
       if (!dateTime) return;
 
@@ -217,9 +221,9 @@ export default class ExamCalendar extends PureComponent<Props> {
 
     if (!modulesByExamDate) {
       return (
-        <p className="text-center">
+        <p className={styles.noExams}>
           You don&apos;t have any final exams this semester{' '}
-          <span className="h4" role="img" aria-label="Tada!">
+          <span className="h3" role="img" aria-label="Tada!">
             🎉
           </span>
         </p>
