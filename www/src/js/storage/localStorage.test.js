@@ -1,4 +1,4 @@
-import { createLocalStorageShim } from './localStorage';
+import getLocalStorage, { createLocalStorageShim, canUseBrowserLocalStorage } from './localStorage';
 
 describe('#createLocalStorageShim', () => {
   test('should store and return data', () => {
@@ -40,5 +40,49 @@ describe('#createLocalStorageShim', () => {
   test('should not throw when removing nonexistent key', () => {
     const shim = createLocalStorageShim();
     expect(() => shim.removeItem('key')).not.toThrow();
+  });
+});
+
+describe('#canUseBrowserLocalStorage', () => {
+  test('should return false if localStorage is undefined', () => {
+    window.localStorage = undefined;
+    expect(canUseBrowserLocalStorage()).toEqual(false);
+  });
+
+  test('should return false if localStorage throws when writing on iOS <=10 on private browsing', () => {
+    window.localStorage = {
+      ...createLocalStorageShim(),
+      // the length is set here because canUseBrowserLocalStorage uses a hack to detect private browsing
+      length: 0,
+      setItem: () => {
+        throw new Error();
+      },
+    };
+    expect(canUseBrowserLocalStorage()).toEqual(false);
+  });
+
+  test('should return true if localStorage is localStorage-like object', () => {
+    window.localStorage = createLocalStorageShim();
+    expect(canUseBrowserLocalStorage()).toEqual(true);
+  });
+});
+
+describe('#getLocalStorage', () => {
+  test("should return the actual browser's localStorage if the browser can use localStorage", () => {
+    expect(canUseBrowserLocalStorage()).toEqual(true);
+    expect(getLocalStorage()).toBe(window.localStorage);
+  });
+
+  test('should return a shim if browser cannot use localStorage', () => {
+    window.localStorage = undefined;
+    expect(canUseBrowserLocalStorage()).toEqual(false);
+    expect(getLocalStorage()).toMatchObject(
+      expect.objectContaining({
+        clear: expect.any(Function),
+        setItem: expect.any(Function),
+        getItem: expect.any(Function),
+        removeItem: expect.any(Function),
+      }),
+    );
   });
 });

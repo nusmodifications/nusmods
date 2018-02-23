@@ -1,15 +1,11 @@
 module.exports = {
   parser: 'babel-eslint',
   root: true,
-  extends: [
-    'airbnb-base',
-  ],
+  extends: ['airbnb-base', 'prettier'],
   env: {
     node: true,
   },
-  plugins: [
-    'import',
-  ],
+  plugins: ['import', 'prettier'],
   settings: {
     'import/resolver': 'node',
   },
@@ -21,17 +17,20 @@ module.exports = {
       },
       rules: {
         // Much more lenient linting for tests
-        'max-len': ['error', 120, {
-          ignoreComments: true,
-          ignoreStrings: true,
-          ignoreTemplateLiterals: true,
-        }],
+        'max-len': [
+          'error',
+          120,
+          {
+            ignoreComments: true,
+            ignoreStrings: true,
+            ignoreTemplateLiterals: true,
+          },
+        ],
       },
     },
   ],
   rules: {
-    // Consistent arrow parens
-    'arrow-parens': ['error', 'as-needed', { requireForBlockBody: true }],
+    'prettier/prettier': ['warn'],
     'import/extensions': [
       'error',
       'always',

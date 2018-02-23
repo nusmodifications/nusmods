@@ -1,12 +1,21 @@
 exports.up = (knex, Promise) => {
   const schoolsTable = knex.schema.createTable('schools', (table) => {
-    table.increments('id').notNullable().primary();
-    table.string('name').notNullable().unique();
+    table
+      .increments('id')
+      .notNullable()
+      .primary();
+    table
+      .string('name')
+      .notNullable()
+      .unique();
     table.string('abbreviation', 32);
   });
 
   const departmentsTable = knex.schema.createTable('departments', (table) => {
-    table.increments('id').notNullable().primary();
+    table
+      .increments('id')
+      .notNullable()
+      .primary();
     table
       .integer('school_id')
       .notNullable()
@@ -19,7 +28,10 @@ exports.up = (knex, Promise) => {
   });
 
   const venuesTable = knex.schema.createTable('venues', (table) => {
-    table.increments('id').notNullable().primary();
+    table
+      .increments('id')
+      .notNullable()
+      .primary();
     table
       .integer('school_id')
       .notNullable()
@@ -39,9 +51,7 @@ exports.up = (knex, Promise) => {
 exports.down = (knex, Promise) => {
   const tables = ['schools', 'departments', 'venues'];
   return Promise.all(
-    tables.map(table =>
-      knex.schema.dropTableIfExists(table).then(() => table),
-    ),
+    tables.map((table) => knex.schema.dropTableIfExists(table).then(() => table)),
   ).then((tbls) => {
     if (process.env.NODE_ENV !== 'test') {
       // eslint-disable-next-line

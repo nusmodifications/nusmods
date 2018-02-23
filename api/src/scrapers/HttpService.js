@@ -32,7 +32,11 @@ function getCacheFilePath(requestConfig) {
 
   let filename = '';
   if (keyValuePairs.size) {
-    filename = sanitizeFilename(Array.from(keyValuePairs).sort().join('&'));
+    filename = sanitizeFilename(
+      Array.from(keyValuePairs)
+        .sort()
+        .join('&'),
+    );
     if (filename === '') {
       throw new Error(`Invalid filename for url ${href}`);
     }
@@ -65,7 +69,7 @@ async function getFileModifiedTime(cachedPath, urlStr) {
 }
 
 const HttpService = axios.create({
-  validateStatus: status => (status >= 200 && status < 300) || status === 304,
+  validateStatus: (status) => (status >= 200 && status < 300) || status === 304,
 });
 
 /**

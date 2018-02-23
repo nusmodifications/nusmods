@@ -3,7 +3,6 @@ require('dotenv').config();
 const DEBUG_FLAG = JSON.parse(process.env.DB_DEBUG || false);
 
 module.exports = {
-
   development: {
     client: 'sqlite3',
     useNullAsDefault: true,
@@ -43,5 +42,4 @@ module.exports = {
       tableName: 'knex_migrations',
     },
   },
-
 };

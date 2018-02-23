@@ -7,9 +7,4 @@ const OPERATORS = {
 const AND_OR_REGEX = new RegExp(Object.keys(OPERATORS).join('|'));
 const OPERATORS_REGEX = new RegExp(AND_OR_REGEX, 'gi');
 
-export {
-  MODULE_REGEX,
-  OPERATORS,
-  AND_OR_REGEX,
-  OPERATORS_REGEX,
-};
+export { MODULE_REGEX, OPERATORS, AND_OR_REGEX, OPERATORS_REGEX };

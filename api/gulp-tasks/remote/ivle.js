@@ -27,27 +27,11 @@ async function ivle(config) {
   const subLog = log.child({ year, semester });
   const thisConfig = config.ivle;
 
-  const basePath = path.join(
-    thisConfig.srcFolder,
-    `${year}-${year + 1}`,
-    `${semester}`,
-  );
-  const bulletinModulesPath = path.join(
-    basePath,
-    config.bulletinModules.destFileName,
-  );
-  const corsPath = path.join(
-    basePath,
-    config.cors.destFileName,
-  );
-  const examTimetablePath = path.join(
-    basePath,
-    config.examTimetable.destFileName,
-  );
-  const moduleTimetableDeltaPath = path.join(
-    basePath,
-    config.moduleTimetableDelta.destFileName,
-  );
+  const basePath = path.join(thisConfig.srcFolder, `${year}-${year + 1}`, `${semester}`);
+  const bulletinModulesPath = path.join(basePath, config.bulletinModules.destFileName);
+  const corsPath = path.join(basePath, config.cors.destFileName);
+  const examTimetablePath = path.join(basePath, config.examTimetable.destFileName);
+  const moduleTimetableDeltaPath = path.join(basePath, config.moduleTimetableDelta.destFileName);
 
   // Get module codes from all preceding tasks
   let moduleCodes = [];
@@ -67,7 +51,7 @@ async function ivle(config) {
   }
 
   await populateModuleCodes(bulletinModulesPath, 'ModuleCode');
-  await populateModuleCodes(corsPath, mod => mod.ModuleCode.split(' / '));
+  await populateModuleCodes(corsPath, (mod) => mod.ModuleCode.split(' / '));
   await populateModuleCodes(examTimetablePath, 'ModuleCode');
   await populateModuleCodes(moduleTimetableDeltaPath, 'ModuleCode');
 
@@ -103,8 +87,9 @@ async function ivle(config) {
     });
     return modules;
   }
-  const ivleModules = await Promise.map(moduleCodes, processModule,
-    { concurrency: thisConfig.concurrency });
+  const ivleModules = await Promise.map(moduleCodes, processModule, {
+    concurrency: thisConfig.concurrency,
+  });
   subLog.info(`parsed ${ivleModules.length} bidding stats`);
 
   const pathToWrite = path.join(
