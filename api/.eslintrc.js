@@ -36,6 +36,7 @@ module.exports = {
       'always',
       {
         js: 'never',
+        mjs: 'never',
       },
     ],
     // Enable i++ in for loops
