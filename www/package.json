@@ -100,7 +100,7 @@
     "@material/fab": "^0.30.0",
     "@material/snackbar": "^0.30.0",
     "autotrack": "^2.4.1",
-    "axios": "^0.17.1",
+    "axios": "^0.18.0",
     "bootstrap": "4.0.0",
     "bowser": "^1.9.2",
     "classnames": "^2.2.5",
