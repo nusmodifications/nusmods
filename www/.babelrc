@@ -34,6 +34,7 @@
     },
     "test": {
       "plugins": [
+        "./scripts/babel-plugin-expose-privates",
         "transform-es2015-modules-commonjs",
         "dynamic-import-node"
       ],
