@@ -7,7 +7,7 @@ import _ from 'lodash';
 import type { ModulesMap } from 'reducers/moduleBank';
 import type { ColorMapping, TimetableOrientation, NotificationOptions } from 'types/reducers';
 import { HORIZONTAL } from 'types/reducers';
-import type { Lesson, Module, ModuleCode, Semester } from 'types/modules';
+import type { Lesson, ColoredLesson, Module, ModuleCode, Semester } from 'types/modules';
 import type {
   SemTimetableConfig,
   SemTimetableConfigWithLessons,
@@ -241,12 +241,12 @@ class TimetableContent extends Component<Props, State> {
     }
 
     // Inject color into module
-    timetableLessons = timetableLessons.map((lesson): Lesson => ({
+    const coloredTimetableLessons = timetableLessons.map((lesson: Lesson): ColoredLesson => ({
       ...lesson,
       colorIndex: colors[lesson.ModuleCode],
     }));
 
-    const arrangedLessons = arrangeLessonsForWeek(timetableLessons);
+    const arrangedLessons = arrangeLessonsForWeek(coloredTimetableLessons);
     const arrangedLessonsWithModifiableFlag: TimetableArrangement = _.mapValues(
       arrangedLessons,
       (dayRows) =>
