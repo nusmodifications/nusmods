@@ -17,9 +17,24 @@ describe('ScrollToTopComponent', () => {
   });
 
   function make({ onComponentWillMount, onPathChange }: Props = {}) {
+    // Construct a ScrollToTop component without triggering Flow errors on undefined props
+    let sttComponent = null;
+    if (onComponentWillMount !== undefined && onPathChange !== undefined) {
+      sttComponent = (
+        <ScrollToTop onComponentWillMount={onComponentWillMount} onPathChange={onPathChange} />
+      );
+    } else if (onComponentWillMount !== undefined) {
+      sttComponent = <ScrollToTop onComponentWillMount={onComponentWillMount} />;
+    } else if (onPathChange !== undefined) {
+      sttComponent = <ScrollToTop onPathChange={onPathChange} />;
+    } else {
+      sttComponent = <ScrollToTop />;
+    }
+
     return mount(
       <MemoryRouter>
-        <ScrollToTop onComponentWillMount={onComponentWillMount} onPathChange={onPathChange} />
+        {}
+        {sttComponent}
       </MemoryRouter>,
     );
   }
@@ -28,7 +43,7 @@ describe('ScrollToTopComponent', () => {
     return wrapper.find(ScrollToTopComponent).prop('history');
   }
 
-  test('default behavior does not to anything', () => {
+  test('default behavior does not do anything', () => {
     make();
     expect(window.scrollTo).not.toHaveBeenCalled();
   });
