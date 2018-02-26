@@ -24,7 +24,7 @@
     "lodash": "^4.17.5",
     "nodemon": "^1.15.1",
     "pug": "^2.0.0-rc.4",
-    "puppeteer": "^1.1.0",
+    "puppeteer": "^1.1.1",
     "raven": "^2.4.1"
   }
 }
