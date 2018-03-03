@@ -5,6 +5,7 @@ import moment from 'moment';
 
 import config, { type CorsRound, type CorsPeriod, type CorsPeriodType } from 'config';
 import createHistory from 'test-utils/createHistory';
+// $FlowFixMe - Unexported import
 import { CorsNotificationComponent } from './CorsNotification';
 
 // Save the original CORS schedule for this test and restore it afterwards

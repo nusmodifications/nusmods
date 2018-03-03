@@ -11,6 +11,7 @@ import mockDom from 'test-utils/mockDom';
 import { sortVenues } from 'utils/venues';
 import { venuePage } from 'views/routes/paths';
 import VenueDetails from 'views/venues/VenueDetails';
+// $FlowFixMe - Unexported import
 import { VenuesContainerComponent } from './VenuesContainer';
 
 function createComponent(selectedVenue: ?Venue, search?: string) {

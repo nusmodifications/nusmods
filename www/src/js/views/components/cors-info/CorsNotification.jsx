@@ -54,7 +54,8 @@ export function corsNotificationText(
   );
 }
 
-export class CorsNotificationComponent extends PureComponent<Props> {
+// babel-plugin-expose-privates
+class CorsNotificationComponent extends PureComponent<Props> {
   currentTime() {
     const debugRound = qs.parse(this.props.location.search).round;
 

@@ -53,7 +53,8 @@ type State = {|
 
 const pageHead = <Title>Venues</Title>;
 
-export class VenuesContainerComponent extends Component<Props, State> {
+// babel-plugin-expose-privates
+class VenuesContainerComponent extends Component<Props, State> {
   history: HistoryDebouncer;
 
   constructor(props: Props) {
