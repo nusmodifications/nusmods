@@ -1,5 +1,7 @@
 # NUSMods API - Data Server
 
+https://api.nusmods.com
+
 The NUSMods API data server serves various bits of NUS-related information
 consolidated from official sources by [our
 scraper](https://github.com/nusmodifications/nusmods/tree/master/api/scrapers/nus).
@@ -11,9 +13,9 @@ our REST API is just a bunch of static files served by Nginx.
 
 ## GraphQL API
 
-As our new GraphQL APIs are still being worked on and have not been finalized,
-there are no detailed docs for it. You are still welcome to browse through the
-code and schema.
+As our new GraphQL APIs are still being worked on, have not been finalized and
+is not live, there are no detailed docs for it. You are still welcome to browse
+through the code and schema.
 
 ### Initial Setup
 
