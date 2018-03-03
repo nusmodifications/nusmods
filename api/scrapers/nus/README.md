@@ -3,12 +3,12 @@
 This scraper consolidates and normalizes various bits of NUS module information
 from the following sources:
 
-* [CORS historical bidding statistics](http://www.nus.edu.sg/cors/archive.html)
-* [CORS module information listings](http://www.nus.edu.sg/cors/schedule.html#corsmodinfo)
-* [IVLE API](http://wiki.nus.edu.sg/display/ivlelapi/Home)
-* [NUS Bulletin](http://www.nus.edu.sg/registrar/nusbulletin/modulesearch.html)
-* [NUS Examination Time-Table](http://www.nus.edu.sg/registrar/event/examschedule-sem1.html)
-* [NUS Living Lab API](http://nuslivinglab.nus.edu.sg/)
+* [CORS historical bidding statistics](https://www.nus.edu.sg/cors/archive.html)
+* [CORS module information listings](https://www.nus.edu.sg/cors/schedule.html#corsmodinfo)
+* [IVLE API](https://wiki.nus.edu.sg/display/ivlelapi/Home)
+* [NUS Bulletin](https://www.nus.edu.sg/registrar/nusbulletin/modulesearch.html)
+* [NUS Examination Time-Table](https://www.nus.edu.sg/registrar/event/examschedule-sem1.html)
+* [NUS Living Lab API](https://nuslivinglab.nus.edu.sg/)
 
 To be respectful to NUS servers, and reduce waiting while developing, the
 crawlers use simple local file system caching and HTTP `if-modified-since`
@@ -19,9 +19,9 @@ semesters.
 ## Initial Setup
 
 1. Copy `.env.example` to a file named `.env`.
-1. Get an API key from [IVLE](http://ivle.nus.edu.sg/LAPI/default.aspx) and put
+1. Get an API key from [IVLE](https://ivle.nus.edu.sg/LAPI/default.aspx) and put
    it in `.env` under `IVLE_API_KEY`.
-1. Download and install [Node.js](http://nodejs.org), [npm](http://npmjs.org)
+1. Download and install [Node.js](https://nodejs.org), [npm](https://npmjs.org)
    and [yarn](https://yarnpkg.com/en/docs/install).
 1. Run the following command in a terminal:
 

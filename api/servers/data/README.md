@@ -17,7 +17,7 @@ code and schema.
 
 ### Initial Setup
 
-1. Download and install [Node.js](http://nodejs.org), [npm](http://npmjs.org)
+1. Download and install [Node.js](https://nodejs.org), [npm](https://npmjs.org)
    and [yarn](https://yarnpkg.com/en/docs/install).
 1. Run the scraper, or copy the scraped data into `<nusmods>/api/data/nus`.
 1. Run the following commands in a terminal:
@@ -67,7 +67,7 @@ browsers is not required.
 #### jQuery Example
 
 ```js
-$.getJSON('http://api.nusmods.com/2015-2016/1/moduleList.json', function(data) {
+$.getJSON('https://api.nusmods.com/2015-2016/1/moduleList.json', function(data) {
   console.log(data);
 });
 ```
@@ -80,7 +80,7 @@ If supporting legacy browsers is required, JSONP can be used instead.
 
 ```js
 $.getJSON(
-  'http://api.nusmods.com/2015-2016/1/moduleList.json?callback=?',
+  'https://api.nusmods.com/2015-2016/1/moduleList.json?callback=?',
   function(data) {
     console.log(data);
   },
@@ -95,7 +95,7 @@ JSONP response.
 
 #### GET /&lt;AcadYear&gt;/&lt;Semester&gt;/moduleCodes.json
 
-http://api.nusmods.com/2015-2016/1/moduleCodes.json
+https://api.nusmods.com/2015-2016/1/moduleCodes.json
 
 ```js
 [
@@ -108,7 +108,7 @@ http://api.nusmods.com/2015-2016/1/moduleCodes.json
 
 #### GET /&lt;AcadYear&gt;/&lt;Semester&gt;/moduleList.json
 
-http://api.nusmods.com/2015-2016/1/moduleList.json
+https://api.nusmods.com/2015-2016/1/moduleList.json
 
 ```js
 {
@@ -121,7 +121,7 @@ http://api.nusmods.com/2015-2016/1/moduleList.json
 
 #### GET /&lt;AcadYear&gt;/&lt;Semester&gt;/facultyDepartments.json
 
-http://api.nusmods.com/2015-2016/1/facultyDepartments.json
+https://api.nusmods.com/2015-2016/1/facultyDepartments.json
 
 ```js
 {
@@ -144,7 +144,7 @@ http://api.nusmods.com/2015-2016/1/facultyDepartments.json
 
 #### GET /lessonTypes.json
 
-http://api.nusmods.com/lessonTypes.json
+https://api.nusmods.com/lessonTypes.json
 
 ```js
 {
@@ -166,7 +166,7 @@ http://api.nusmods.com/lessonTypes.json
 
 `ExamDate` and `ExamDuration` are in ISO 8601 formats.
 
-http://api.nusmods.com/2014-2015/2/modules/FE5218.json
+https://api.nusmods.com/2014-2015/2/modules/FE5218.json
 
 ```js
 {
@@ -198,7 +198,7 @@ http://api.nusmods.com/2014-2015/2/modules/FE5218.json
 
 #### GET /&lt;AcadYear&gt;/&lt;Semester&gt;/modules.json
 
-http://api.nusmods.com/2015-2016/1/modules.json
+https://api.nusmods.com/2015-2016/1/modules.json
 
 ```js
 [
