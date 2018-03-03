@@ -243,8 +243,10 @@ export class ModulePageContentComponent extends Component<Props, State> {
                       </div>
                     </div>
                   ) : (
-                    <Warning message="Comments not available while offline. Make sure you are
-                             online and refresh to view comments." />
+                    <Warning
+                      message="Comments not available while offline. Make sure you are
+                             online and refresh to view comments."
+                    />
                   )
                 }
               </Online>
