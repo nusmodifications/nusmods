@@ -3,11 +3,11 @@
 This scraper consolidates and normalizes various bits of NUS module information
 from the following sources:
 
-* [CORS historical bidding statistics](https://www.nus.edu.sg/cors/archive.html)
-* [CORS module information listings](https://www.nus.edu.sg/cors/schedule.html#corsmodinfo)
+* [CORS historical bidding statistics](http://www.nus.edu.sg/cors/archive.html)
+* [CORS module information listings](http://www.nus.edu.sg/cors/schedule.html#corsmodinfo)
 * [IVLE API](https://wiki.nus.edu.sg/display/ivlelapi/Home)
-* [NUS Bulletin](https://www.nus.edu.sg/registrar/nusbulletin/modulesearch.html)
-* [NUS Examination Time-Table](https://www.nus.edu.sg/registrar/event/examschedule-sem1.html)
+* [NUS Bulletin](http://www.nus.edu.sg/registrar/nusbulletin/modulesearch.html)
+* [NUS Examination Time-Table](http://www.nus.edu.sg/registrar/event/examschedule-sem1.html)
 * [NUS Living Lab API](https://nuslivinglab.nus.edu.sg/)
 
 To be respectful to NUS servers, and reduce waiting while developing, the
