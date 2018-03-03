@@ -22,9 +22,11 @@ found within their respective folders.
     implemented here.
 
 The scrapers should store their data in a data folder. Once a scraper has been
-run, the directory structure should be as such:
+run, this is what the `/api` directory should look like:
 
 ```
+├── data      - Folder containing all scraped data
+│   └── nus   - NUS data in static JSON files
 ├── scrapers  - Folder containing all data scrapers
 │   └── nus   - NUS scrapers
 └── servers   - Folder containing all API servers
