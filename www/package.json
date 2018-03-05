@@ -107,7 +107,7 @@
     "core-js": "^2.5.1",
     "downshift": "^1.28.3",
     "ical-generator": "https://github.com/ZhangYiJiang/ical-generator.git#ed6928fe",
-    "immutability-helper": "^2.6.5",
+    "immutability-helper": "^2.6.6",
     "json2mq": "^0.2.0",
     "localforage": "^1.6.0",
     "lodash": "^4.17.5",
