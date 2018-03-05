@@ -4,7 +4,7 @@ https://api.nusmods.com
 
 The NUSMods API data server serves various bits of NUS-related information
 consolidated from official sources by [our
-scraper](https://github.com/nusmodifications/nusmods/tree/master/api/scrapers/nus).
+scraper](../../scrapers/nus).
 
 We will be transitioning from a REST API data server to a GraphQL data server
 soon, and this project contains the code which implements this new server. Note

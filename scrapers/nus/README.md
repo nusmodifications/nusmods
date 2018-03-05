@@ -1,4 +1,4 @@
-# NUSMods API - NUS Data Scrapers
+# NUSMods - NUS Data Scrapers
 
 This scraper consolidates and normalizes various bits of NUS module information
 from the following sources:
@@ -9,6 +9,13 @@ from the following sources:
 * [NUS Bulletin](http://www.nus.edu.sg/registrar/nusbulletin/modulesearch.html)
 * [NUS Examination Time-Table](http://www.nus.edu.sg/registrar/event/examschedule-sem1.html)
 * [NUS Living Lab API](https://nuslivinglab.nus.edu.sg/)
+
+The scraped data used by the NUSMods website can be browsed at
+<https://api.nusmods.com>. API documentation can be found
+[here](../../api/data).
+
+The scraped data is stored in easy to use static JSON files in a data folder in
+the repository root.
 
 To be respectful to NUS servers, and reduce waiting while developing, the
 crawlers use simple local file system caching and HTTP `if-modified-since`
