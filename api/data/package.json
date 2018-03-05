@@ -12,8 +12,8 @@
     "start": "cross-env NODE_ENV=development nodemon src --exec babel-node --watch src | bunyan -o short --color",
     "test": "jest --config jest.config.js --coverage",
     "test:watch": "jest --config jest.config.js --watch",
-    "lint": "eslint . --ignore-path ../../../.gitignore",
-    "lint:fix": "eslint . --ignore-path ../../../.gitignore --fix"
+    "lint": "eslint . --ignore-path ../../.gitignore",
+    "lint:fix": "eslint . --ignore-path ../../.gitignore --fix"
   },
   "repository": {
     "type": "git",

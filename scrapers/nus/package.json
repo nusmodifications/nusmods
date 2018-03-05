@@ -13,8 +13,8 @@
     "build:scraper": "cross-env BABEL_ENV=development webpack --config webpack.config.babel.js",
     "test": "jest --config jest.config.js --coverage",
     "test:watch": "jest --config jest.config.js --watch",
-    "lint": "eslint . --ignore-path ../../../.gitignore",
-    "lint:fix": "eslint . --ignore-path ../../../.gitignore --fix"
+    "lint": "eslint . --ignore-path ../../.gitignore",
+    "lint:fix": "eslint . --ignore-path ../../.gitignore --fix"
   },
   "repository": {
     "type": "git",
