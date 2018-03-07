@@ -19,7 +19,7 @@ const defaults = {
   // time. If set to -1, cached files never expire and are always used.
   // By default, force refresh for dist build, cache for one day otherwise.
   maxCacheAge: process.env.NODE_ENV === 'production' ? 0 : 86400,
-  destFolder: 'app/api',
+  destFolder: '../../data/nus',
   // Pretty-print JSON with '\t', uglify JSON with ''.
   // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#space_argument
   jsonSpace: process.env.NODE_ENV === 'production' ? '' : '\t',
