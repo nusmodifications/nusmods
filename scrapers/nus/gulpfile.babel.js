@@ -93,8 +93,8 @@ gulp.task(
     'bulletinModules',
     'cors',
     'corsBiddingStats',
-    'examTimetable',
-    'venues',
+    // 'examTimetable', // RIP dead NUS APIs
+    // 'venues', // RIP dead NUS APIs
     'moduleTimetableDelta',
   ),
 );
