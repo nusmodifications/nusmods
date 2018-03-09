@@ -2568,9 +2568,9 @@ dot-prop@^4.1.1:
   dependencies:
     is-obj "^1.0.0"
 
-downshift@^1.29.1:
-  version "1.29.1"
-  resolved "https://registry.yarnpkg.com/downshift/-/downshift-1.29.1.tgz#949e493195c4919cfa52ad38011d5631d6395ac3"
+downshift@^1.30.0:
+  version "1.30.0"
+  resolved "https://registry.yarnpkg.com/downshift/-/downshift-1.30.0.tgz#02ccb586375af7ed36819e32449bcbc5fcb27127"
 
 duplexer@^0.1.1:
   version "0.1.1"
