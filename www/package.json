@@ -64,7 +64,7 @@
     "flow-scripts": "^0.4.0",
     "flow-status-webpack-plugin": "^0.1.7",
     "graceful-fs": "^4.1.11",
-    "html-webpack-inline-source-plugin": "^0.0.9",
+    "html-webpack-inline-source-plugin": "^0.0.10",
     "html-webpack-plugin": "^3.0.6",
     "icalendar": "^0.7.1",
     "identity-obj-proxy": "^3.0.0",
