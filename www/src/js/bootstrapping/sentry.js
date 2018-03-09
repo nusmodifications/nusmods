@@ -24,9 +24,4 @@ if (loadRaven) {
       /embed\.js$/i,
     ],
   }).install();
-
-  // Capture unhandled Promise rejections
-  window.addEventListener('unhandledrejection', (evt) => {
-    Raven.captureException(evt.reason);
-  });
 }
