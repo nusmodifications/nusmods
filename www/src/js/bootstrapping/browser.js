@@ -6,6 +6,8 @@
 // user will at least be able to see the dialog warning them of the browser incompatibility.
 
 import bowser from 'bowser';
+import Raven from 'raven-js';
+
 import { canUseBrowserLocalStorage } from 'storage/localStorage';
 import { BROWSER_WARNING_KEY } from 'storage/keys';
 import styles from './browser.scss';
@@ -32,6 +34,10 @@ if (
     true,
   )
 ) {
+  // Add unsupported tag to Raven so that we can filter out reports from those users
+  Raven.setTagsContext({ unsupported: true });
+
+  // Show unsupported browser warning
   if (
     (browserCanUseLocalStorage && !localStorage.getItem(BROWSER_WARNING_KEY)) ||
     !browserCanUseLocalStorage
