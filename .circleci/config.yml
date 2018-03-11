@@ -53,6 +53,8 @@ jobs:
       - run: yarn test
       - run:
           name: Build scraper
+          environment:
+            NODE_ENV: production
           command: yarn build:scraper
 
   build_nusmoderator:
@@ -79,7 +81,6 @@ jobs:
       - image: circleci/node:8
         environment:
           NODE_ENV: test
-
     working_directory: ~/nusmods/www
     steps:
       - checkout
