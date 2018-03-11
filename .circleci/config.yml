@@ -4,6 +4,19 @@ defaults: &defaults
   docker:
     - image: circleci/node:8
 
+restore_cache: &restore_node_deps
+  name: Restore node_modules cache
+  keys:
+    - v1-node-{{ arch }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
+    - v1-node-{{ arch }}-{{ .Branch }}-
+    - v1-node-{{ arch }}-
+
+save_cache: &save_node_deps
+  name: Save node_modules cache
+  key: v1-node-{{ arch }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
+  paths:
+    - node_modules
+
 jobs:
   checkout:
     <<: *defaults
@@ -21,18 +34,9 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/nusmods
-      - restore_cache:
-          name: Restore node_modules cache
-          keys:
-            - v1-node-{{ arch }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
-            - v1-node-{{ arch }}-{{ .Branch }}-
-            - v1-node-{{ arch }}-
+      - restore_cache: *restore_node_deps
       - run: yarn
-      - save_cache:
-          name: Save node_modules cache
-          key: v1-node-{{ arch }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
-          paths:
-            - node_modules
+      - save_cache: *save_node_deps
       - run: yarn lint
       - run: yarn test
 
@@ -40,7 +44,8 @@ jobs:
     <<: *defaults
     working_directory: ~/nusmods/scrapers/nus
     steps:
-      - checkout
+      - attach_workspace:
+          at: ~/nusmods
       - restore_cache:
           name: Restore node_modules cache
           keys:
@@ -63,7 +68,8 @@ jobs:
     <<: *defaults
     working_directory: ~/nusmods/packages/nusmoderator
     steps:
-      - checkout
+      - attach_workspace:
+          at: ~/nusmods
       - restore_cache:
           name: Restore node_modules cache
           keys:
