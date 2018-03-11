@@ -1,5 +1,30 @@
 {
   "extends": [
-    "config:base"
+    "config:base",
+    "schedule:earlyMondays",
+    "group:babel6Monorepo",
+    "group:reactMonorepo",
+    "group:linters",
+    "group:jestMonorepo",
+    "group:lodashMonorepo",
+    ":automergePr",
+    ":automergeRequireAllStatusChecks",
+    ":automergeLinters"
+  ],
+  "pinVersions": false,
+  "prConcurrentLimit": 7,
+  "timezone": "Asia/Singapore",
+  "packageRules": [
+    {
+      "description": "Group Webpack related packages together",
+      "packagePatterns": ["-loader$", "webpack"],
+      "excludePackageNames": ["react-hot-loader"],
+      "groupName": "webpack packages"
+    },
+    {
+      "description": "Group material-components-web monorepo packages together",
+      "packagePatterns": ["^@material/"],
+      "groupName": "material monorepo"
+    }
   ]
 }
