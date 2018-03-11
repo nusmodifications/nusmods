@@ -1,13 +1,84 @@
 version: 2
 jobs:
-  build:
+  build_api_data_server:
+    working_directory: ~/nusmods/api/data
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout
+      - restore_cache:
+          name: Restore node_modules cache
+          keys:
+            - v1-node-{{ arch }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - v1-node-{{ arch }}-{{ .Branch }}-
+            - v1-node-{{ arch }}-
+      - run: yarn
+      - save_cache:
+          name: Save node_modules cache
+          key: v1-node-{{ arch }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+      - run: yarn lint
+      - run: yarn test
 
+  build_scrapers_nus:
+    working_directory: ~/nusmods/api/data
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout
+      - restore_cache:
+          name: Restore node_modules cache
+          keys:
+            - v1-node-{{ arch }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - v1-node-{{ arch }}-{{ .Branch }}-
+            - v1-node-{{ arch }}-
+      - run: yarn
+      - save_cache:
+          name: Save node_modules cache
+          key: v1-node-{{ arch }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+      - run: yarn lint
+      - run: yarn test
+      - run:
+          name: Build scraper
+          command: yarn build:scraper
+
+  build_nusmoderator:
+    working_directory: ~/nusmods/packages/nusmoderator
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout
+      - restore_cache:
+          name: Restore node_modules cache
+          keys:
+            - v1-node-{{ arch }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - v1-node-{{ arch }}-{{ .Branch }}-
+            - v1-node-{{ arch }}-
+      - run: yarn
+      - save_cache:
+          name: Save node_modules cache
+          key: v1-node-{{ arch }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+      - run: yarn lint
+      - run: yarn test
+      - run: yarn build
+      - store_artifacts:
+          path: dist
+      - run: yarn docs
+      - store_artifacts:
+          path: docs
+
+  build_www:
     docker:
       - image: circleci/node:8
         environment:
-            NODE_ENV: test
+          NODE_ENV: test
 
-    working_directory: ~/nusmods/
+    working_directory: ~/nusmods/www
 
     steps:
       - checkout
@@ -17,48 +88,56 @@ jobs:
       - restore_cache:
           name: Restore node_modules cache
           keys:
-            - v1-node-{{ arch }}-{{ .Branch }}-{{ checksum "www/yarn.lock" }}
+            - v1-node-{{ arch }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
             - v1-node-{{ arch }}-{{ .Branch }}-
             - v1-node-{{ arch }}-
 
       - run:
           name: Install node_modules packages
-          command: cd www && yarn install
+          command: yarn install
 
       - save_cache:
           name: Save node_modules cache
-          key: v1-node-{{ arch }}-{{ .Branch }}-{{ checksum "www/yarn.lock" }}
+          key: v1-node-{{ arch }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
           paths:
-            - www/node_modules
+            - node_modules
 
       - run:
           name: Type check code
-          command: cd www && yarn flow
+          command: yarn flow
 
       - run:
           name: Lint code
-          command: cd www && yarn lint:code --format junit -o reports/junit/js-lint-results.xml
+          command: yarn lint:code --format junit -o reports/junit/js-lint-results.xml
 
       - run:
           name: Test code
           environment:
             JEST_JUNIT_OUTPUT: reports/junit/js-test-results.xml
           command: |
-            cd www
             set -e
             yarn jest --ci --testResultsProcessor="jest-junit" --coverage
             cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
 
       - run:
           name: Lint styles
-          command: cd www && yarn lint:styles
+          command: yarn lint:styles
 
       - run:
           name: Build web page
-          command: cd www && yarn build
+          command: build
 
       - store_test_results:
-          path: www/reports/junit
+          path: reports/junit
 
       - store_artifacts:
-          path: www/dist
+          path: dist
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build_api_data_server
+      - build_scrapers_nus
+      - build_nusmoderator
+      - build_www
