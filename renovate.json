@@ -7,7 +7,6 @@
     ":automergeRequireAllStatusChecks",
     ":automergeLinters",
     ":prConcurrentLimit10",
-    ":preserveSemverRanges",
     ":label(dependencies)",
     ":timezone(Asia/Singapore)"
   ],
@@ -30,6 +29,12 @@
     "webpack-dev-server",
     "optimize-css-assets-webpack-plugin",
     "flow-bin"
+  ],
+  "pathRules": [
+    {
+      "paths": ["packages/**"],
+      "extends": ["config:js-lib"]
+    }
   ],
   "ignorePaths": ["api/data", "scrapers/nus", ".nvmrc"]
 }
