@@ -30,5 +30,6 @@
     "webpack-dev-server",
     "optimize-css-assets-webpack-plugin",
     "flow-bin"
-  ]
+  ],
+  "ignorePaths": ["api/data", "scrapers/nus", ".nvmrc"]
 }
