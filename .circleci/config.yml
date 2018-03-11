@@ -1,18 +1,26 @@
 version: 2
+
+defaults: &defaults
+  docker:
+    - image: circleci/node:8
+
 jobs:
   checkout:
+    <<: *defaults
     working_directory: ~/nusmods
-    docker:
-      - image: circleci/node:8
     steps:
       - checkout
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
 
   build_api_data_server:
+    <<: *defaults
     working_directory: ~/nusmods/api/data
-    docker:
-      - image: circleci/node:8
     steps:
-      - checkout
+      - attach_workspace:
+          at: ~/nusmods
       - restore_cache:
           name: Restore node_modules cache
           keys:
@@ -29,9 +37,8 @@ jobs:
       - run: yarn test
 
   build_scrapers_nus:
-    working_directory: ~/nusmods/api/data
-    docker:
-      - image: circleci/node:8
+    <<: *defaults
+    working_directory: ~/nusmods/scrapers/nus
     steps:
       - checkout
       - restore_cache:
@@ -53,9 +60,8 @@ jobs:
           command: yarn build:scraper
 
   build_nusmoderator:
+    <<: *defaults
     working_directory: ~/nusmods/packages/nusmoderator
-    docker:
-      - image: circleci/node:8
     steps:
       - checkout
       - restore_cache:
@@ -80,6 +86,7 @@ jobs:
           path: docs
 
   build_www:
+    <<: *defaults
     docker:
       - image: circleci/node:8
         environment:
