@@ -145,15 +145,15 @@ workflows:
   build_and_test:
     jobs:
       - checkout
-      - build_api_data_server
+      - build_api_data_server:
           requires:
             - checkout
-      - build_scrapers_nus
+      - build_scrapers_nus:
           requires:
             - checkout
-      - build_nusmoderator
+      - build_nusmoderator:
           requires:
             - checkout
-      - build_www
+      - build_www:
           requires:
             - checkout
