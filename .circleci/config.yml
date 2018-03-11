@@ -46,18 +46,9 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/nusmods
-      - restore_cache:
-          name: Restore node_modules cache
-          keys:
-            - v1-node-{{ arch }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
-            - v1-node-{{ arch }}-{{ .Branch }}-
-            - v1-node-{{ arch }}-
+      - restore_cache: *restore_node_deps
       - run: yarn
-      - save_cache:
-          name: Save node_modules cache
-          key: v1-node-{{ arch }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
-          paths:
-            - node_modules
+      - save_cache: *save_node_deps
       - run: yarn lint
       - run: yarn test
       - run:
@@ -70,18 +61,9 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/nusmods
-      - restore_cache:
-          name: Restore node_modules cache
-          keys:
-            - v1-node-{{ arch }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
-            - v1-node-{{ arch }}-{{ .Branch }}-
-            - v1-node-{{ arch }}-
+      - restore_cache: *restore_node_deps
       - run: yarn
-      - save_cache:
-          name: Save node_modules cache
-          key: v1-node-{{ arch }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
-          paths:
-            - node_modules
+      - save_cache: *save_node_deps
       - run: yarn lint
       - run: yarn test
       - run: yarn build
@@ -99,37 +81,18 @@ jobs:
           NODE_ENV: test
 
     working_directory: ~/nusmods/www
-
     steps:
       - checkout
-
       - run: echo $CIRCLE_COMPARE_URL | cut -d/ -f7
-
-      - restore_cache:
-          name: Restore node_modules cache
-          keys:
-            - v1-node-{{ arch }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
-            - v1-node-{{ arch }}-{{ .Branch }}-
-            - v1-node-{{ arch }}-
-
-      - run:
-          name: Install node_modules packages
-          command: yarn install
-
-      - save_cache:
-          name: Save node_modules cache
-          key: v1-node-{{ arch }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
-          paths:
-            - node_modules
-
+      - restore_cache: *restore_node_deps
+      - run: yarn
+      - save_cache: *save_node_deps
       - run:
           name: Type check code
           command: yarn flow
-
       - run:
           name: Lint code
           command: yarn lint:code --format junit -o reports/junit/js-lint-results.xml
-
       - run:
           name: Test code
           environment:
@@ -138,18 +101,14 @@ jobs:
             set -e
             yarn jest --ci --testResultsProcessor="jest-junit" --coverage
             cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
-
       - run:
           name: Lint styles
           command: yarn lint:styles
-
       - run:
           name: Build web page
           command: build
-
       - store_test_results:
           path: reports/junit
-
       - store_artifacts:
           path: dist
 
