@@ -9,22 +9,30 @@
     "group:lodashMonorepo",
     ":automergePr",
     ":automergeRequireAllStatusChecks",
-    ":automergeLinters"
+    ":automergeLinters",
+    ":prConcurrentLimit10",
+    ":preserveSemverRanges",
+    ":label(dependencies)",
+    ":timezone(Asia/Singapore)"
   ],
-  "pinVersions": false,
-  "prConcurrentLimit": 7,
-  "timezone": "Asia/Singapore",
   "packageRules": [
     {
-      "description": "Group Webpack related packages together",
+      "description": "Group Webpack-related packages together",
       "packagePatterns": ["-loader$", "webpack"],
       "excludePackageNames": ["react-hot-loader"],
-      "groupName": "webpack packages"
+      "groupName": "webpack"
     },
     {
       "description": "Group material-components-web monorepo packages together",
       "packagePatterns": ["^@material/"],
       "groupName": "material monorepo"
     }
+  ],
+  "ignoreDeps": [
+    "stylelint",
+    "webpack",
+    "webpack-dev-server",
+    "optimize-css-assets-webpack-plugin",
+    "flow-bin"
   ]
 }
