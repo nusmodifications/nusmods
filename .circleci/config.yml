@@ -29,7 +29,7 @@ jobs:
           paths:
             - .
 
-  build_api_data_server:
+  data-server:
     <<: *defaults
     working_directory: ~/nusmods/api/data
     steps:
@@ -41,7 +41,7 @@ jobs:
       - run: yarn lint
       - run: yarn test
 
-  build_scrapers_nus:
+  nus-scrapers:
     <<: *defaults
     working_directory: ~/nusmods/scrapers/nus
     steps:
@@ -58,7 +58,7 @@ jobs:
             NODE_ENV: production
           command: yarn build:scraper
 
-  build_nusmoderator:
+  nusmoderator:
     <<: *defaults
     working_directory: ~/nusmods/packages/nusmoderator
     steps:
@@ -76,7 +76,7 @@ jobs:
       - store_artifacts:
           path: README.md
 
-  build_www:
+  www:
     <<: *defaults
     working_directory: ~/nusmods/www
     environment:
@@ -117,15 +117,15 @@ workflows:
   build_and_test:
     jobs:
       - checkout
-      - build_api_data_server:
+      - data-server:
           requires:
             - checkout
-      - build_scrapers_nus:
+      - nus-scrapers:
           requires:
             - checkout
-      - build_nusmoderator:
+      - nusmoderator:
           requires:
             - checkout
-      - build_www:
+      - www:
           requires:
             - checkout
