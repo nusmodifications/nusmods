@@ -27,8 +27,7 @@
     "stylelint",
     "webpack",
     "webpack-dev-server",
-    "optimize-css-assets-webpack-plugin",
-    "flow-bin"
+    "optimize-css-assets-webpack-plugin"
   ],
   "pathRules": [
     {
