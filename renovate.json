@@ -2,11 +2,7 @@
   "extends": [
     "config:base",
     "schedule:earlyMondays",
-    "group:babel6Monorepo",
-    "group:reactMonorepo",
     "group:linters",
-    "group:jestMonorepo",
-    "group:lodashMonorepo",
     ":automergePr",
     ":automergeRequireAllStatusChecks",
     ":automergeLinters",
