@@ -23,6 +23,7 @@ jobs:
     working_directory: ~/nusmods
     steps:
       - checkout
+      - run: echo $CIRCLE_COMPARE_URL | cut -d/ -f7
       - persist_to_workspace:
           root: .
           paths:
@@ -83,7 +84,6 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/nusmods
-      - run: echo $CIRCLE_COMPARE_URL | cut -d/ -f7
       - restore_cache: *restore_node_deps
       - run: yarn
       - save_cache: *save_node_deps
