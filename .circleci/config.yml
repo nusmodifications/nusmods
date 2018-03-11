@@ -73,17 +73,16 @@ jobs:
           path: dist
       - run: yarn docs
       - store_artifacts:
-          path: docs
+          path: README.md
 
   build_www:
     <<: *defaults
-    docker:
-      - image: circleci/node:8
-        environment:
-          NODE_ENV: test
     working_directory: ~/nusmods/www
+    environment:
+      NODE_ENV: test
     steps:
-      - checkout
+      - attach_workspace:
+          at: ~/nusmods
       - run: echo $CIRCLE_COMPARE_URL | cut -d/ -f7
       - restore_cache: *restore_node_deps
       - run: yarn
@@ -107,7 +106,7 @@ jobs:
           command: yarn lint:styles
       - run:
           name: Build web page
-          command: build
+          command: yarn build
       - store_test_results:
           path: reports/junit
       - store_artifacts:
