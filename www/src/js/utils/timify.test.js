@@ -5,6 +5,7 @@ import {
   convertIndexToTime,
   calculateBorderTimings,
   formatHour,
+  daysAfter,
   DEFAULT_EARLIEST_TIME,
   DEFAULT_LATEST_TIME,
 } from 'utils/timify';
@@ -102,4 +103,10 @@ describe('formatHour()', () => {
     expect(formatHour(13)).toBe('1pm');
     expect(formatHour(23)).toBe('11pm');
   });
+});
+
+test('daysAfter should create a date days after', () => {
+  expect(daysAfter(new Date('2016-11-23T09:00+0800'), 1)).toEqual(
+    new Date('2016-11-24T09:00+0800'),
+  );
 });

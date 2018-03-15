@@ -39,6 +39,7 @@ import Title from 'views/components/Title';
 import Timetable from './Timetable';
 import TimetableActions from './TimetableActions';
 import TimetableModulesTable from './TimetableModulesTable';
+import ExamCalendar from './ExamCalendar';
 import styles from './TimetableContent.scss';
 
 type Props = {
@@ -70,11 +71,13 @@ type Props = {
 
 type State = {
   isScrolledHorizontally: boolean,
+  showExamCalendar: boolean,
 };
 
 class TimetableContent extends Component<Props, State> {
   state: State = {
     isScrolledHorizontally: false,
+    showExamCalendar: false,
   };
 
   componentWillUnmount() {
@@ -211,6 +214,8 @@ class TimetableContent extends Component<Props, State> {
       readOnly,
     } = this.props;
 
+    const { showExamCalendar } = this.state;
+
     let timetableLessons: Lesson[] = timetableLessonsArray(this.props.timetableWithLessons)
       // Do not process hidden modules
       .filter((lesson) => !this.isHiddenInTimetable(lesson.ModuleCode));
@@ -290,15 +295,26 @@ class TimetableContent extends Component<Props, State> {
               'col-md-8': isVerticalOrientation,
             })}
           >
-            <div className={styles.timetableWrapper} onScroll={this.onScroll}>
-              <Timetable
-                lessons={arrangedLessonsWithModifiableFlag}
-                isVerticalOrientation={isVerticalOrientation}
-                isScrolledHorizontally={this.state.isScrolledHorizontally}
-                showTitle={isShowingTitle}
-                onModifyCell={this.modifyCell}
+            {showExamCalendar ? (
+              <ExamCalendar
+                semester={semester}
+                modules={this.addedModules().map((module) => ({
+                  ...module,
+                  colorIndex: this.props.colors[module.ModuleCode],
+                  hiddenInTimetable: this.isHiddenInTimetable(module.ModuleCode),
+                }))}
               />
-            </div>
+            ) : (
+              <div className={styles.timetableWrapper} onScroll={this.onScroll}>
+                <Timetable
+                  lessons={arrangedLessonsWithModifiableFlag}
+                  isVerticalOrientation={isVerticalOrientation}
+                  isScrolledHorizontally={this.state.isScrolledHorizontally}
+                  showTitle={isShowingTitle}
+                  onModifyCell={this.modifyCell}
+                />
+              </div>
+            )}
           </div>
           <div
             className={classnames({
@@ -313,13 +329,17 @@ class TimetableContent extends Component<Props, State> {
                   showTitle={isShowingTitle}
                   semester={semester}
                   timetable={this.props.timetable}
+                  showExamCalendar={showExamCalendar}
+                  toggleExamCalendar={() => this.setState({ showExamCalendar: !showExamCalendar })}
                 />
               </div>
+
               <div className={styles.modulesSelect}>
                 {!readOnly && (
                   <ModulesSelectContainer semester={semester} timetable={this.props.timetable} />
                 )}
               </div>
+
               <div className="col-md-12">{this.renderModuleSections(!isVerticalOrientation)}</div>
             </div>
           </div>
