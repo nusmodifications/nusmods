@@ -1,11 +1,12 @@
 // @flow
+
 import type { ContextRouter } from 'react-router-dom';
 
 import { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { scrollToHash } from 'utils/react';
 
-type Props = {
+export type Props = {
   ...ContextRouter,
   onComponentWillMount: boolean,
   onPathChange: boolean,
