@@ -41,6 +41,7 @@ function TimetableActions(props: Props) {
           type="button"
           className={classnames('btn btn-outline-primary btn-svg')}
           onClick={props.toggleTimetableOrientation}
+          disabled={props.showExamCalendar}
         >
           <Sidebar className={styles.sidebarIcon} />
           {isVerticalOrientation ? 'Horizontal Mode' : 'Vertical Mode'}
@@ -51,6 +52,7 @@ function TimetableActions(props: Props) {
             type="button"
             className={classnames(styles.titleBtn, 'btn-outline-primary btn btn-svg')}
             onClick={props.toggleTitleDisplay}
+            disabled={props.showExamCalendar}
           >
             <Type className={styles.titleIcon} />
             {showTitle ? 'Hide Titles' : 'Show Titles'}
