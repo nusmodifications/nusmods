@@ -1,6 +1,5 @@
 module.exports = {
-  roots: ['<rootDir>/__mocks__', '<rootDir>/gulp-tasks', '<rootDir>/src'],
-  testPathIgnorePatterns: ['.eslintrc.js'],
+  roots: ['<rootDir>/__mocks__', '<rootDir>/src'],
   // Node environment
   testEnvironment: 'node',
   collectCoverageFrom: ['**/*.{js,jsx}', '!**/node_modules/**', '!**/vendor/**'],

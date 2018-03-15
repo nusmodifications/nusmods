@@ -6,12 +6,13 @@ Help contribute to NUSMods!
 
 ## Projects
 
-This monorepo consists of 4 projects. Further details can be found at the links below.
+This monorepo consists of 5 projects. Further details can be found at the links below.
 
-1. [NUSMods R website](https://github.com/nusmodifications/nusmods/tree/master/www)
-1. [NUSMods API](https://github.com/nusmodifications/nusmods/tree/master/api)
-1. [NUSMods Timetable Export Service](https://github.com/nusmodifications/nusmods/tree/master/export)
-1. [`nusmoderator` npm package](https://github.com/nusmodifications/nusmods/tree/master/packages/nusmoderator)
+1. [NUSMods R website](www)
+1. [NUSMods API Servers](api)
+1. [NUSMods Scrapers](scrapers)
+1. [NUSMods Timetable Export Service](export)
+1. [`nusmoderator` npm package](packages/nusmoderator)
 
 ## Talk to us!
 
@@ -39,7 +40,7 @@ To help you get your feet wet and get you familiar with our contribution process
 
 ## License
 
-All projects and packages in this repository are [MIT licensed](https://github.com/nusmodifications/nusmods/blob/master/LICENSE).
+All projects and packages in this repository are [MIT licensed](LICENSE).
 
 ## Supported by
 

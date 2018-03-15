@@ -37,5 +37,5 @@ app.use(
 );
 
 log.info('current environment: %s', process.env.NODE_ENV);
-log.info('server started at port: %d', process.env.PORT || 3000);
-app.listen(process.env.PORT || 3000);
+log.info('server started at port: %d', process.env.PORT || 3600);
+app.listen(process.env.PORT || 3600);

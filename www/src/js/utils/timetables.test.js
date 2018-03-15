@@ -15,6 +15,7 @@ import type {
   LessonType,
   ModuleCode,
   RawLesson,
+  ColoredLesson,
   Semester,
 } from 'types/modules';
 import type { ModulesMap } from 'reducers/moduleBank';
@@ -55,8 +56,6 @@ import timetable from '__mocks__/sem-timetable.json';
 import lessonsArray from '__mocks__/lessons-array.json';
 
 // A generic lesson with some default.
-/* eslint-disable import/prefer-default-export */
-/* eslint-disable indent */
 export function createGenericLesson(
   dayText: DayText,
   startTime: LessonTime,
@@ -74,6 +73,20 @@ export function createGenericLesson(
     DayText: dayText,
     StartTime: startTime,
     EndTime: endTime,
+  };
+}
+
+export function createGenericColoredLesson(
+  dayText: DayText,
+  startTime: LessonTime,
+  endTime: LessonTime,
+  lessonType?: LessonType,
+  classNo?: ClassNo,
+  colorIndex?: number,
+): ColoredLesson {
+  return {
+    ...createGenericLesson(dayText, startTime, endTime, lessonType, classNo),
+    colorIndex: colorIndex || 0,
   };
 }
 
@@ -152,7 +165,7 @@ test('timetableLessonsArray should return a flat array of lessons', () => {
 });
 
 test('groupLessonsByDay should group lessons by DayText', () => {
-  const lessons: Array<Lesson> = lessonsArray;
+  const lessons: ColoredLesson[] = lessonsArray;
   const lessonsGroupedByDay: TimetableDayFormat = groupLessonsByDay(lessons);
   expect(lessonsGroupedByDay.Monday.length).toBe(2);
   expect(lessonsGroupedByDay.Tuesday.length).toBe(1);
@@ -263,9 +276,9 @@ test('arrangeLessonsWithinDay', () => {
   // Can fit within one row.
   const arrangement1: TimetableDayArrangement = arrangeLessonsWithinDay(
     _.shuffle([
-      createGenericLesson('Monday', '1000', '1200'),
-      createGenericLesson('Monday', '1600', '1800'),
-      createGenericLesson('Monday', '1400', '1500'),
+      createGenericColoredLesson('Monday', '1000', '1200'),
+      createGenericColoredLesson('Monday', '1600', '1800'),
+      createGenericColoredLesson('Monday', '1400', '1500'),
     ]),
   );
   expect(arrangement1.length).toBe(1);
@@ -273,9 +286,9 @@ test('arrangeLessonsWithinDay', () => {
   // Two rows.
   const arrangement2: TimetableDayArrangement = arrangeLessonsWithinDay(
     _.shuffle([
-      createGenericLesson('Monday', '1000', '1200'),
-      createGenericLesson('Monday', '1600', '1800'),
-      createGenericLesson('Monday', '1500', '1700'),
+      createGenericColoredLesson('Monday', '1000', '1200'),
+      createGenericColoredLesson('Monday', '1600', '1800'),
+      createGenericColoredLesson('Monday', '1500', '1700'),
     ]),
   );
   expect(arrangement2.length).toBe(2);
@@ -283,9 +296,9 @@ test('arrangeLessonsWithinDay', () => {
   // Three rows.
   const arrangement3: TimetableDayArrangement = arrangeLessonsWithinDay(
     _.shuffle([
-      createGenericLesson('Monday', '1000', '1200'),
-      createGenericLesson('Monday', '1100', '1300'),
-      createGenericLesson('Monday', '1000', '1300'),
+      createGenericColoredLesson('Monday', '1000', '1200'),
+      createGenericColoredLesson('Monday', '1100', '1300'),
+      createGenericColoredLesson('Monday', '1000', '1300'),
     ]),
   );
   expect(arrangement3.length).toBe(3);
@@ -294,20 +307,20 @@ test('arrangeLessonsWithinDay', () => {
 test('arrangeLessonsForWeek', () => {
   const arrangement0: TimetableArrangement = arrangeLessonsForWeek(
     _.shuffle([
-      createGenericLesson('Monday', '1000', '1200'),
-      createGenericLesson('Monday', '1600', '1800'),
-      createGenericLesson('Monday', '1400', '1500'),
+      createGenericColoredLesson('Monday', '1000', '1200'),
+      createGenericColoredLesson('Monday', '1600', '1800'),
+      createGenericColoredLesson('Monday', '1400', '1500'),
     ]),
   );
   expect(arrangement0.Monday.length).toBe(1);
 
   const arrangement1: TimetableArrangement = arrangeLessonsForWeek(
     _.shuffle([
-      createGenericLesson('Monday', '1000', '1200'),
-      createGenericLesson('Monday', '1600', '1800'),
-      createGenericLesson('Monday', '1400', '1500'),
-      createGenericLesson('Tuesday', '1400', '1500'),
-      createGenericLesson('Tuesday', '1400', '1500'),
+      createGenericColoredLesson('Monday', '1000', '1200'),
+      createGenericColoredLesson('Monday', '1600', '1800'),
+      createGenericColoredLesson('Monday', '1400', '1500'),
+      createGenericColoredLesson('Tuesday', '1400', '1500'),
+      createGenericColoredLesson('Tuesday', '1400', '1500'),
     ]),
   );
   expect(arrangement1.Monday.length).toBe(1);
@@ -315,11 +328,11 @@ test('arrangeLessonsForWeek', () => {
 
   const arrangement2: TimetableArrangement = arrangeLessonsForWeek(
     _.shuffle([
-      createGenericLesson('Monday', '1000', '1200'),
-      createGenericLesson('Monday', '1600', '1800'),
-      createGenericLesson('Monday', '1400', '1500'),
-      createGenericLesson('Tuesday', '1400', '1500'),
-      createGenericLesson('Tuesday', '1600', '1800'),
+      createGenericColoredLesson('Monday', '1000', '1200'),
+      createGenericColoredLesson('Monday', '1600', '1800'),
+      createGenericColoredLesson('Monday', '1400', '1500'),
+      createGenericColoredLesson('Tuesday', '1400', '1500'),
+      createGenericColoredLesson('Tuesday', '1600', '1800'),
     ]),
   );
   expect(arrangement2.Monday.length).toBe(1);
@@ -327,9 +340,9 @@ test('arrangeLessonsForWeek', () => {
 
   const arrangement3: TimetableArrangement = arrangeLessonsForWeek(
     _.shuffle([
-      createGenericLesson('Monday', '1000', '1200'),
-      createGenericLesson('Tuesday', '1100', '1300'),
-      createGenericLesson('Wednesday', '1000', '1300'),
+      createGenericColoredLesson('Monday', '1000', '1200'),
+      createGenericColoredLesson('Tuesday', '1100', '1300'),
+      createGenericColoredLesson('Wednesday', '1000', '1300'),
     ]),
   );
   expect(arrangement3.Monday.length).toBe(1);
@@ -338,10 +351,10 @@ test('arrangeLessonsForWeek', () => {
 
   const arrangement4: TimetableArrangement = arrangeLessonsForWeek(
     _.shuffle([
-      createGenericLesson('Monday', '1000', '1200'),
-      createGenericLesson('Monday', '1600', '1800'),
-      createGenericLesson('Tuesday', '1100', '1300'),
-      createGenericLesson('Wednesday', '1000', '1300'),
+      createGenericColoredLesson('Monday', '1000', '1200'),
+      createGenericColoredLesson('Monday', '1600', '1800'),
+      createGenericColoredLesson('Tuesday', '1100', '1300'),
+      createGenericColoredLesson('Wednesday', '1000', '1300'),
     ]),
   );
   expect(arrangement4.Monday.length).toBe(1);
@@ -350,12 +363,12 @@ test('arrangeLessonsForWeek', () => {
 
   const arrangement5: TimetableArrangement = arrangeLessonsForWeek(
     _.shuffle([
-      createGenericLesson('Monday', '1000', '1200'),
-      createGenericLesson('Monday', '1600', '1800'),
-      createGenericLesson('Tuesday', '1100', '1300'),
-      createGenericLesson('Tuesday', '1200', '1400'),
-      createGenericLesson('Wednesday', '1000', '1300'),
-      createGenericLesson('Wednesday', '1100', '1400'),
+      createGenericColoredLesson('Monday', '1000', '1200'),
+      createGenericColoredLesson('Monday', '1600', '1800'),
+      createGenericColoredLesson('Tuesday', '1100', '1300'),
+      createGenericColoredLesson('Tuesday', '1200', '1400'),
+      createGenericColoredLesson('Wednesday', '1000', '1300'),
+      createGenericColoredLesson('Wednesday', '1100', '1400'),
     ]),
   );
   expect(arrangement5.Monday.length).toBe(1);

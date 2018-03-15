@@ -1,10 +1,11 @@
 // @flow
+
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { mount, type ReactWrapper } from 'enzyme';
 import mockDom from 'test-utils/mockDom';
 
-import ScrollToTop, { ScrollToTopComponent } from './ScrollToTop';
+import ScrollToTop, { ScrollToTopComponent, type Props as ScrollToTopProps } from './ScrollToTop';
 
 type Props = {
   onComponentWillMount?: boolean,
@@ -16,10 +17,23 @@ describe('ScrollToTopComponent', () => {
     mockDom();
   });
 
-  function make({ onComponentWillMount, onPathChange }: Props = {}) {
+  // Construct a testable ScrollToTop component
+  function make(props: Props = {}) {
+    // This function exists to avoid triggering Flow errors on undefined props
+    function getDefinedProp(name: $Keys<Props & ScrollToTopProps>) {
+      // Try to return prop if it exists in props
+      if (props[name] !== undefined) return props[name];
+      // Else return component's default value
+      return ScrollToTopComponent.defaultProps[name];
+    }
+
     return mount(
       <MemoryRouter>
-        <ScrollToTop onComponentWillMount={onComponentWillMount} onPathChange={onPathChange} />
+        {}
+        <ScrollToTop
+          onComponentWillMount={getDefinedProp('onComponentWillMount')}
+          onPathChange={getDefinedProp('onPathChange')}
+        />
       </MemoryRouter>,
     );
   }
@@ -28,7 +42,7 @@ describe('ScrollToTopComponent', () => {
     return wrapper.find(ScrollToTopComponent).prop('history');
   }
 
-  test('default behavior does not to anything', () => {
+  test('default behavior does not do anything', () => {
     make();
     expect(window.scrollTo).not.toHaveBeenCalled();
   });
