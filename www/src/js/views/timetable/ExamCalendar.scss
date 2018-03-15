@@ -3,6 +3,10 @@
 .calendarWrapper {
   composes: scrollable from global;
   margin-bottom: 1rem;
+
+  table {
+    width: 100%;
+  }
 }
 
 .day,
