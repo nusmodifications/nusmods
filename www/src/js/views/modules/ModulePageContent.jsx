@@ -14,6 +14,7 @@ import { BULLET, scrollToHash } from 'utils/react';
 import { NAVTAB_HEIGHT } from 'views/layout/Navtabs';
 import ModuleTree from 'views/modules/ModuleTree';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
+import CommentCount from 'views/components/CommentCount';
 import DisqusComments from 'views/components/DisqusComments';
 import Online from 'views/components/Online';
 import Warning from 'views/errors/Warning';
@@ -261,13 +262,34 @@ export class ModulePageContentComponent extends Component<Props, State> {
                   currentClassName={styles.activeMenuItem}
                   offset={-NAVTAB_HEIGHT}
                 >
-                  {map(SIDE_MENU_LABELS, (label, key) => (
-                    <li key={label}>
-                      <a onClick={() => this.toggleMenu(false)} href={`#${SIDE_MENU_ITEMS[key]}`}>
-                        {label}
-                      </a>
-                    </li>
-                  ))}
+                  {map(SIDE_MENU_LABELS, (label, key) => {
+                    if (label.valueOf() === 'Reviews') {
+                      return (
+                        <li key={label}>
+                          <a
+                            onClick={() => this.toggleMenu(false)}
+                            href={`#${SIDE_MENU_ITEMS[key]}`}
+                          >
+                            {label}
+                            <CommentCount
+                              url={`https://nusmods.com/modules/${ModuleCode}/reviews`}
+                              identifier={ModuleCode}
+                              title={pageTitle}
+                            >
+                              -1
+                            </CommentCount>
+                          </a>
+                        </li>
+                      );
+                    }
+                    return (
+                      <li key={label}>
+                        <a onClick={() => this.toggleMenu(false)} href={`#${SIDE_MENU_ITEMS[key]}`}>
+                          {label}
+                        </a>
+                      </li>
+                    );
+                  })}
                 </ScrollSpy>
               </nav>
             </SideMenu>
