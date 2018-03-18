@@ -5,10 +5,10 @@ exports.up = (knex, Promise) => {
       .notNullable()
       .primary();
     table
-      .string('name')
+      .string('longName')
       .notNullable()
       .unique();
-    table.string('abbreviation', 32);
+    table.string('shortName', 32);
   });
 
   const departmentsTable = knex.schema.createTable('departments', (table) => {
