@@ -30,7 +30,7 @@ export default function ThemeOption(props: Props) {
       </div>
       <ul className={classnames('list-unstyled', styles.colorList)}>
         {_.range(NUM_DIFFERENT_COLORS).map((index) => (
-          <li key={index} className={classnames(styles.colorItem, `color-${index}`)} />
+          <li key={index} className={classnames(styles.colorItem, `hoverable color-${index}`)} />
         ))}
       </ul>
     </button>

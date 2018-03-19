@@ -5,7 +5,6 @@ import iCalForTimetable, {
   RECESS_WEEK,
   iCalEventForLesson,
   datesForAcademicWeeks,
-  daysAfter,
   iCalEventForExam,
   isTutorial,
   calculateExclusion,
@@ -77,12 +76,6 @@ test('datesForAcademicWeeks should return correct dates', () => {
   // week 7 is after recess week, so it is 8 weeks after the start
   expect(datesForAcademicWeeks(new Date('2016-08-10T10:00+0800'), 7)).toEqual(
     new Date('2016-09-28T10:00+0800'),
-  );
-});
-
-test('daysAfter should create a date days after', () => {
-  expect(daysAfter(new Date('2016-11-23T09:00+0800'), 1)).toEqual(
-    new Date('2016-11-24T09:00+0800'),
   );
 });
 

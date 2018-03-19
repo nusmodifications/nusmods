@@ -30,6 +30,7 @@ function TimetableCell(props: Props) {
   return (
     <Cell // $FlowFixMe
       className={classnames(styles.cell, `color-${lesson.colorIndex}`, {
+        hoverable: !!props.onClick,
         [styles.cellIsClickable]: !!onClick,
         // $FlowFixMe
         [styles.cellIsAvailable]: lesson.isAvailable,

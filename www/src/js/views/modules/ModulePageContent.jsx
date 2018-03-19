@@ -74,7 +74,7 @@ export class ModulePageContentComponent extends Component<Props, State> {
 
     return (
       <div className={classnames('page-container', styles.moduleInfoPage)}>
-        <Title>{pageTitle}</Title>
+        <Title description={module.ModuleDescription}>{pageTitle}</Title>
 
         <Announcements />
 

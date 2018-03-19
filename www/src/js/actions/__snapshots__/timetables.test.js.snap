@@ -51,6 +51,7 @@ Object {
       "StartTime": "1000",
       "Venue": "LT26",
       "WeekText": "Every Week",
+      "colorIndex": 0,
     },
   },
   "type": "MODIFY_LESSON",

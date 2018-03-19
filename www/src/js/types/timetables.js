@@ -1,5 +1,13 @@
 // @flow
-import type { ClassNo, DayText, Lesson, LessonType, ModuleCode, Semester } from 'types/modules';
+import type {
+  ClassNo,
+  DayText,
+  Lesson,
+  ColoredLesson,
+  LessonType,
+  ModuleCode,
+  Semester,
+} from 'types/modules';
 
 //  ModuleLessonConfig is a mapping of LessonType to ClassNo for a module.
 export type ModuleLessonConfig = {
@@ -29,11 +37,11 @@ export type TimetableConfig = {
 
 // TimetableDayFormat is timetable data grouped by DayText.
 export type TimetableDayFormat = {
-  [DayText]: Array<Lesson>,
+  [DayText]: ColoredLesson[],
 };
 
 // TimetableDayArrangement is the arrangement of lessons on the timetable within a day.
-export type TimetableDayArrangement = Array<Array<Lesson>>;
+export type TimetableDayArrangement = ColoredLesson[][];
 
 // TimetableArrangement is the arrangement of lessons on the timetable for a week.
 export type TimetableArrangement = {
