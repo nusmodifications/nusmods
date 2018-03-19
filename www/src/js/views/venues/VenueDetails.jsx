@@ -44,7 +44,7 @@ export class VenueDetailsComponent extends PureComponent<Props> {
 
     return (
       <Fragment>
-        <Title>{`${venue} - Venues`}</Title>
+        <Title description={`NUS classroom timetable for ${venue}`}>{`${venue} - Venues`}</Title>
 
         <header className={styles.header}>
           <Link
