@@ -5,6 +5,7 @@ import qs from 'query-string';
 import type {
   ClassNo,
   Lesson,
+  ColoredLesson,
   LessonType,
   Module,
   ModuleCode,
@@ -132,7 +133,7 @@ export function timetableLessonsArray(timetable: SemTimetableConfigWithLessons):
 //    Monday: [Lesson, Lesson, ...],
 //    Tuesday: [Lesson, ...],
 //  }
-export function groupLessonsByDay(lessons: Array<Lesson>): TimetableDayFormat {
+export function groupLessonsByDay(lessons: ColoredLesson[]): TimetableDayFormat {
   return _.groupBy(lessons, (lesson) => lesson.DayText);
 }
 
@@ -152,7 +153,7 @@ export function doLessonsOverlap(lesson1: Lesson, lesson2: Lesson): boolean {
 //    [Lesson, Lesson, ...],
 //    [Lesson, ...],
 //  ]
-export function arrangeLessonsWithinDay(lessons: Array<Lesson>): TimetableDayArrangement {
+export function arrangeLessonsWithinDay(lessons: ColoredLesson[]): TimetableDayArrangement {
   const rows: TimetableDayArrangement = [[]];
   if (_.isEmpty(lessons)) {
     return rows;
@@ -161,9 +162,9 @@ export function arrangeLessonsWithinDay(lessons: Array<Lesson>): TimetableDayArr
     const timeDiff = a.StartTime.localeCompare(b.StartTime);
     return timeDiff !== 0 ? timeDiff : a.ClassNo.localeCompare(b.ClassNo);
   });
-  sortedLessons.forEach((lesson: Lesson) => {
+  sortedLessons.forEach((lesson: ColoredLesson) => {
     for (let i = 0; i < rows.length; i++) {
-      const rowLessons: Array<Lesson> = rows[i];
+      const rowLessons: ColoredLesson[] = rows[i];
       const previousLesson = _.last(rowLessons);
       if (!previousLesson || !doLessonsOverlap(previousLesson, lesson)) {
         // Lesson does not overlap with any Lesson in the row. Add it to row.
@@ -193,9 +194,11 @@ export function arrangeLessonsWithinDay(lessons: Array<Lesson>): TimetableDayArr
 //    ...
 //  }
 // $FlowFixMe - Flow refuses to accept 'extra' properties on Lesson object
-export function arrangeLessonsForWeek(lessons: Lesson[]): TimetableArrangement {
+export function arrangeLessonsForWeek(lessons: ColoredLesson[]): TimetableArrangement {
   const dayLessons = groupLessonsByDay(lessons);
-  return _.mapValues(dayLessons, (dayLesson: Lesson[]) => arrangeLessonsWithinDay(dayLesson));
+  return _.mapValues(dayLessons, (dayLesson: ColoredLesson[]) =>
+    arrangeLessonsWithinDay(dayLesson),
+  );
 }
 
 //  Determines if a Lesson on the timetable can be modifiable / dragged around.

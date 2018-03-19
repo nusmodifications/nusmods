@@ -126,6 +126,10 @@ export type Lesson = RawLesson & {
   ModuleTitle: ModuleTitle,
 };
 
+export type ColoredLesson = Lesson & {
+  colorIndex: number,
+};
+
 type Modifiable = {
   isModifiable?: boolean,
   isAvailable?: boolean,
@@ -134,4 +138,4 @@ type Modifiable = {
 };
 
 // Lessons do not implement a modifiable interface.
-export type ModifiableLesson = Lesson & Modifiable;
+export type ModifiableLesson = ColoredLesson & Modifiable;

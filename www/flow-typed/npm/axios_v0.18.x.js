@@ -1,10 +1,17 @@
-// flow-typed signature: 6bf2786e8ea28ee43e0e946be4b07920
-// flow-typed version: a8b5058d19/axios_v0.16.x/flow_>=v0.25.x
+// flow-typed signature: b62a29fb60b64330a39b04a7739c637d
+// flow-typed version: 8b766558cb/axios_v0.18.x/flow_>=v0.25.x
 
 declare module "axios" {
+  declare interface AxiosTransformer<T> {
+    (data: T, headers?: Object): Object;
+  }
   declare interface ProxyConfig {
     host: string;
     port: number;
+    auth?: {
+      username: string,
+      password: string
+    };
   }
   declare interface Cancel {
     constructor(message?: string): Cancel;
@@ -36,7 +43,7 @@ declare module "axios" {
     httpAgent?: mixed; // Missing the type in the core flow node libdef
     httpsAgent?: mixed; // Missing the type in the core flow node libdef
     maxContentLength?: number;
-    maxRedirects?: 5;
+    maxRedirects?: number;
     params?: Object;
     paramsSerializer?: (params: Object) => string;
     progress?: (progressEvent: Event) => void | mixed;
@@ -49,8 +56,8 @@ declare module "axios" {
       | "text"
       | "stream";
     timeout?: number;
-    transformRequest?: Array<<U>(data: T) => U | Array<<U>(data: T) => U>>;
-    transformResponse?: Array<<U>(data: T) => U>;
+    transformRequest?: AxiosTransformer<T> | Array<AxiosTransformer<T>>;
+    transformResponse?: AxiosTransformer<T> | Array<AxiosTransformer<T>>;
     validateStatus?: (status: number) => boolean;
     withCredentials?: boolean;
     xsrfCookieName?: string;
@@ -72,7 +79,7 @@ declare module "axios" {
     request: http$ClientRequest | XMLHttpRequest;
   }
   declare type $AxiosXHR<T> = AxiosXHR<T>;
-  declare class AxiosInterceptorIdent extends String {}
+  declare type AxiosInterceptorIdent = number;
   declare class AxiosRequestInterceptor<T> {
     use(
       successHandler: ?(
@@ -124,7 +131,8 @@ declare module "axios" {
 
   declare class AxiosError<T> extends Error {
     config: AxiosXHRConfig<T>;
-    response: AxiosXHR<T>;
+    request?: http$ClientRequest | XMLHttpRequest;
+    response?: AxiosXHR<T>;
     code?: string;
   }
 

@@ -1,5 +1,5 @@
 // @flow
-import type { DayText, LessonTime, Lesson } from 'types/modules';
+import type { DayText, Lesson, LessonTime } from 'types/modules';
 
 // Converts a 24-hour format time string to an index.
 // Each index corresponds to one cell of each timetable row.
@@ -70,9 +70,19 @@ export function getCurrentMinutes(
   return now.getMinutes();
 }
 
-// Monday = 0, Friday = 4
-export function getCurrentDayIndex(
-  now: Date = new Date(), // Used for tests only
-): number {
-  return now.getDay() - 1; // Minus 1 because JS week starts on Sunday
+// Monday = 0, Friday = 4, Sunday = 6
+export function getCurrentDayIndex(now: Date = new Date()): number {
+  const day = now.getDay();
+  return day === 0
+    ? 6 // Sunday = 6
+    : day - 1; // Otherwise, minus one because JS days start on Sunday
+}
+
+/**
+ * Return a copy of the original Date incremented by the given number of days
+ */
+export function daysAfter(startDate: Date, days: number): Date {
+  const d = new Date(startDate.valueOf());
+  d.setUTCDate(d.getUTCDate() + days);
+  return d;
 }

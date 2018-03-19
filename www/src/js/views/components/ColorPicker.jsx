@@ -28,7 +28,11 @@ class ColorPicker extends PureComponent<Props> {
         {...getButtonProps({
           title: this.props.label,
         })}
-        className={classnames('btn btn-block', `color-${this.props.color}`, styles.moduleColor)}
+        className={classnames(
+          'btn btn-block hoverable',
+          `color-${this.props.color}`,
+          styles.moduleColor,
+        )}
       />
       {isOpen && (
         <div className={styles.palette}>

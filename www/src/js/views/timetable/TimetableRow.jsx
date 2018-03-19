@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 
-import type { Lesson } from 'types/modules';
+import type { ColoredLesson } from 'types/modules';
 
 import { convertTimeToIndex } from 'utils/timify';
 import styles from './TimetableRow.scss';
@@ -12,7 +12,7 @@ type Props = {
   showTitle: boolean,
   startingIndex: number,
   endingIndex: number,
-  lessons: Array<Lesson>,
+  lessons: ColoredLesson[],
   onModifyCell: Function,
 };
 

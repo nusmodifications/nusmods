@@ -1,5 +1,5 @@
-// flow-typed signature: 02db3523747059d89e87d4dec6873edf
-// flow-typed version: 62a0c60689/enzyme_v3.x.x/flow_>=v0.53.x
+// flow-typed signature: 7be2af8800fdadaea6ac0404d256bafc
+// flow-typed version: 6ce6a0467c/enzyme_v3.x.x/flow_>=v0.53.x
 
 import * as React from "react";
 
@@ -43,7 +43,6 @@ declare module "enzyme" {
     text(): string,
     html(): string,
     get(index: number): React.Node,
-    getNodes(): Array<React.Node>,
     getDOMNode(): HTMLElement | HTMLInputElement,
     at(index: number): this,
     first(): this,
@@ -59,7 +58,7 @@ declare module "enzyme" {
     setContext(context: Object): this,
     instance(): React.Component<*, *>,
     update(): this,
-    debug(): string,
+    debug(options?: Object): string,
     type(): string | Function | null,
     name(): string,
     forEach(fn: (node: this, index: number) => mixed): this,
@@ -93,7 +92,9 @@ declare module "enzyme" {
       options?: ?Object
     ): ShallowWrapper,
     equals(node: React.Node): boolean,
-    shallow(options?: { context?: Object }): ShallowWrapper
+    shallow(options?: { context?: Object }): ShallowWrapper,
+    getElement(): React.Node,
+    getElements(): Array<React.Node>
   }
 
   declare function shallow(
