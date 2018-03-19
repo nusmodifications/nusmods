@@ -1876,9 +1876,9 @@ doctrine@^2.1.0:
   dependencies:
     esutils "^2.0.2"
 
-documentation@6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/documentation/-/documentation-6.0.0.tgz#2dccda5919900126da9fea345b224570de529ae2"
+documentation@6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/documentation/-/documentation-6.1.0.tgz#fb884b18d7f4a718de67ad1da9e22a7d199f806d"
   dependencies:
     ansi-html "^0.0.7"
     babel-core "^6.26.0"
