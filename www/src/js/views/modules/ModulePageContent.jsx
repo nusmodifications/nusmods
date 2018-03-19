@@ -263,7 +263,7 @@ export class ModulePageContentComponent extends Component<Props, State> {
                   offset={-NAVTAB_HEIGHT}
                 >
                   {map(SIDE_MENU_LABELS, (label, key) => {
-                    if (label.valueOf() === 'Reviews') {
+                    if (label === 'Reviews') {
                       return (
                         <li key={label}>
                           <a
@@ -275,9 +275,7 @@ export class ModulePageContentComponent extends Component<Props, State> {
                               url={`https://nusmods.com/modules/${ModuleCode}/reviews`}
                               identifier={ModuleCode}
                               title={pageTitle}
-                            >
-                              -1
-                            </CommentCount>
+                            />
                           </a>
                         </li>
                       );

@@ -6,24 +6,17 @@ import { MessageSquare } from 'views/components/icons';
 import styles from './CommentCount.scss';
 
 type Props = {
-  children: Node,
   url: string,
   identifier: string,
   title: string,
   commentIcon: Node,
 };
 
-type Option = {
-  reset: boolean,
-};
-
 const SCRIPT_ID = 'dsq-count-scr';
-
-export const MESSAGE_SQUARE_LABEL = 'Open menu';
 
 export default class CommentCount extends PureComponent<Props> {
   static defaultProps = {
-    commentIcon: <MessageSquare aria-label={MESSAGE_SQUARE_LABEL} />,
+    commentIcon: <MessageSquare aria-label="Comment count" />,
   };
 
   componentDidMount() {
@@ -36,24 +29,20 @@ export default class CommentCount extends PureComponent<Props> {
 
   loadInstance() {
     if (window.document.getElementById('dsq-count-scr')) {
-      this.queueResetCount();
+      if (window.DISQUSWIDGETS) {
+        window.DISQUSWIDGETS.getCount(this.option);
+      }
     } else {
       insertScript(`https://${config.disqusShortname}.disqus.com/count.js`, SCRIPT_ID, true);
     }
   }
 
-  option: Option = {
+  option = {
     reset: true,
   };
 
-  queueResetCount() {
-    if (window.DISQUSWIDGETS) {
-      window.DISQUSWIDGETS.getCount(this.option);
-    }
-  }
-
   render() {
-    const { identifier, url, children, commentIcon } = this.props;
+    const { identifier, url, commentIcon } = this.props;
     return (
       <span className={styles.comment}>
         <span className={styles.icon}> {commentIcon} </span>
@@ -61,9 +50,7 @@ export default class CommentCount extends PureComponent<Props> {
           className="disqus-comment-count"
           data-disqus-identifier={identifier}
           data-disqus-url={url}
-        >
-          {children}
-        </span>
+        />
       </span>
     );
   }
