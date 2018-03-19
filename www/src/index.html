@@ -11,10 +11,11 @@
     <link href="${htmlWebpackPlugin.options.moduleListUrl}" rel="preload" as="fetch">
     <link href="${htmlWebpackPlugin.options.venuesUrl}" rel="prefetch">
     <title>${htmlWebpackPlugin.options.brandName}</title>
-    <meta name="description" content="${htmlWebpackPlugin.options.description}">
+    <!-- data-react-helmet="true" is set on tags which should be replaced by React Helmet (See <Title> component) -->
+    <meta name="description" content="${htmlWebpackPlugin.options.description}" data-react-helmet="true">
     <!-- Open Graph general (Facebook, Pinterest & Google+) -->
-    <meta name="og:title" content="${htmlWebpackPlugin.options.brandName}">
-    <meta name="og:description" content="${htmlWebpackPlugin.options.description}">
+    <meta name="og:title" content="${htmlWebpackPlugin.options.brandName}" data-react-helmet="true">
+    <meta name="og:description" content="${htmlWebpackPlugin.options.description}" data-react-helmet="true">
     <meta name="og:image" content="${htmlWebpackPlugin.files.publicPath}share.png">
     <meta name="og:site_name" content="${htmlWebpackPlugin.options.brandName}">
     <meta name="og:type" content="website">
