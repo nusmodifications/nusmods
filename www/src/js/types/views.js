@@ -39,3 +39,9 @@ export type PageRangeDiff = {
 };
 
 export type OnPageChange = (PageRangeDiff) => void;
+
+export type DisqusConfig = {
+  identifier: string,
+  url: string,
+  title: string,
+};

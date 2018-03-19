@@ -1,12 +1,13 @@
 // @flow
+import type { DisqusConfig } from 'types/views';
+
 import React, { PureComponent } from 'react';
 import config from 'config';
 import insertScript from 'utils/insertScript';
 import { MessageSquare } from 'views/components/icons';
 import styles from './CommentCount.scss';
 
-type Props = {
-  commentProperty: Object,
+type Props = DisqusConfig & {
   commentIcon: Node,
 };
 
@@ -17,31 +18,29 @@ export default class CommentCount extends PureComponent<Props> {
     commentIcon: <MessageSquare aria-label="Comment count" />,
   };
 
-  componentDidMount() {
-    this.loadInstance();
-  }
-
-  componentDidUpdate() {
-    this.loadInstance();
-  }
-
-  loadInstance() {
+  static loadInstance() {
     if (window.document.getElementById('dsq-count-scr')) {
       if (window.DISQUSWIDGETS) {
-        window.DISQUSWIDGETS.getCount(this.option);
+        window.DISQUSWIDGETS.getCount({
+          reset: true,
+        });
       }
     } else {
       insertScript(`https://${config.disqusShortname}.disqus.com/count.js`, SCRIPT_ID, true);
     }
   }
 
-  option = {
-    reset: true,
-  };
+  componentDidMount() {
+    CommentCount.loadInstance();
+  }
+
+  componentDidUpdate() {
+    CommentCount.loadInstance();
+  }
 
   render() {
-    const { commentIcon } = this.props;
-    const { identifier, url } = this.props.commentProperty;
+    const { identifier, url, commentIcon } = this.props;
+
     return (
       <span className={styles.comment}>
         <span className={styles.icon}> {commentIcon} </span>

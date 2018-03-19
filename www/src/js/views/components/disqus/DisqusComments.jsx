@@ -1,12 +1,11 @@
 // @flow
 
+import type { DisqusConfig } from 'types/views';
 import React, { PureComponent } from 'react';
 import config from 'config';
 import insertScript from 'utils/insertScript';
 
-type Props = {
-  commentProperty: Object,
-};
+type Props = DisqusConfig;
 
 const SCRIPT_ID = 'dsq-embed-scr';
 
@@ -40,7 +39,7 @@ export default class DisqusComments extends PureComponent<Props> {
     // Disqus is configured using a function that modifies 'this', so we cannot use
     // arrow functions here, which also means we need to rebind values from the outer
     // this if we need to use them inside the function
-    const { identifier, url, title } = this.props.commentProperty;
+    const { identifier, url, title } = this.props;
 
     return function configDisqus() {
       this.page.identifier = identifier;

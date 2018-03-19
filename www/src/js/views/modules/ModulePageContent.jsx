@@ -66,7 +66,7 @@ export class ModulePageContentComponent extends Component<Props, State> {
     const pageTitle = `${ModuleCode} ${ModuleTitle}`;
     const semesters = getSemestersOffered(module);
 
-    const commentProperty = {
+    const disqusConfig = {
       url: `https://nusmods.com/modules/${ModuleCode}/reviews`,
       identifier: ModuleCode,
       title: pageTitle,
@@ -242,7 +242,7 @@ export class ModulePageContentComponent extends Component<Props, State> {
                         </div>
                       </div>
                       <div className="col-xl-8 order-xl-first">
-                        <DisqusComments commentProperty={commentProperty} />
+                        <DisqusComments {...disqusConfig} />
                       </div>
                     </div>
                   ) : (
@@ -264,21 +264,14 @@ export class ModulePageContentComponent extends Component<Props, State> {
                   currentClassName={styles.activeMenuItem}
                   offset={-NAVTAB_HEIGHT}
                 >
-                  {map(SIDE_MENU_LABELS, (label, key) => {
-                    const commentCount =
-                      label === 'Reviews' ? (
-                        <CommentCount commentProperty={commentProperty} />
-                      ) : null;
-
-                    return (
-                      <li key={label}>
-                        <a onClick={() => this.toggleMenu(false)} href={`#${SIDE_MENU_ITEMS[key]}`}>
-                          {label}
-                          {commentCount}
-                        </a>
-                      </li>
-                    );
-                  })}
+                  {map(SIDE_MENU_LABELS, (label, key) => (
+                    <li key={label}>
+                      <a onClick={() => this.toggleMenu(false)} href={`#${SIDE_MENU_ITEMS[key]}`}>
+                        {label}
+                        {'Reviews' && <CommentCount {...disqusConfig} />}
+                      </a>
+                    </li>
+                  ))}
                 </ScrollSpy>
               </nav>
             </SideMenu>
