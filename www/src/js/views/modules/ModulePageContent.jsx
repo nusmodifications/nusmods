@@ -66,6 +66,12 @@ export class ModulePageContentComponent extends Component<Props, State> {
     const pageTitle = `${ModuleCode} ${ModuleTitle}`;
     const semesters = getSemestersOffered(module);
 
+    const commentProperty = {
+      url: `https://nusmods.com/modules/${ModuleCode}/reviews`,
+      identifier: ModuleCode,
+      title: pageTitle,
+    };
+
     return (
       <div className={classnames('page-container', styles.moduleInfoPage)}>
         <Title>{pageTitle}</Title>
@@ -236,11 +242,7 @@ export class ModulePageContentComponent extends Component<Props, State> {
                         </div>
                       </div>
                       <div className="col-xl-8 order-xl-first">
-                        <DisqusComments
-                          url={`https://nusmods.com/modules/${ModuleCode}/reviews`}
-                          identifier={ModuleCode}
-                          title={pageTitle}
-                        />
+                        <DisqusComments commentProperty={commentProperty} />
                       </div>
                     </div>
                   ) : (
@@ -263,27 +265,16 @@ export class ModulePageContentComponent extends Component<Props, State> {
                   offset={-NAVTAB_HEIGHT}
                 >
                   {map(SIDE_MENU_LABELS, (label, key) => {
-                    if (label === 'Reviews') {
-                      return (
-                        <li key={label}>
-                          <a
-                            onClick={() => this.toggleMenu(false)}
-                            href={`#${SIDE_MENU_ITEMS[key]}`}
-                          >
-                            {label}
-                            <CommentCount
-                              url={`https://nusmods.com/modules/${ModuleCode}/reviews`}
-                              identifier={ModuleCode}
-                              title={pageTitle}
-                            />
-                          </a>
-                        </li>
-                      );
-                    }
+                    const commentCount =
+                      label === 'Reviews' ? (
+                        <CommentCount commentProperty={commentProperty} />
+                      ) : null;
+
                     return (
                       <li key={label}>
                         <a onClick={() => this.toggleMenu(false)} href={`#${SIDE_MENU_ITEMS[key]}`}>
                           {label}
+                          {commentCount}
                         </a>
                       </li>
                     );

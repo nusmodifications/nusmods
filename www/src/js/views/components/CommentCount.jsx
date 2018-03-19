@@ -6,9 +6,7 @@ import { MessageSquare } from 'views/components/icons';
 import styles from './CommentCount.scss';
 
 type Props = {
-  url: string,
-  identifier: string,
-  title: string,
+  commentProperty: Object,
   commentIcon: Node,
 };
 
@@ -42,7 +40,8 @@ export default class CommentCount extends PureComponent<Props> {
   };
 
   render() {
-    const { identifier, url, commentIcon } = this.props;
+    const { commentIcon } = this.props;
+    const { identifier, url } = this.props.commentProperty;
     return (
       <span className={styles.comment}>
         <span className={styles.icon}> {commentIcon} </span>
