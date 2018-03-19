@@ -76,7 +76,6 @@ const productionConfig = merge([
         minify: {
           removeComments: true,
           removeRedundantAttributes: true,
-          collapseWhitespace: true,
         },
         // For use as a variable under htmlWebpackPlugin.options in the template
         moduleListUrl: nusmods.moduleListUrl(),

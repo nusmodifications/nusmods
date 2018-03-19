@@ -35,5 +35,6 @@
       "extends": ["config:js-lib"]
     }
   ],
-  "ignorePaths": ["api/data", "scrapers/nus", ".nvmrc"]
+  "ignorePaths": ["api/data", "scrapers/nus", ".nvmrc"],
+  "prHourlyLimit": 0
 }
