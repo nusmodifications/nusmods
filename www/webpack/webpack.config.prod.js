@@ -5,7 +5,7 @@ const _ = require('lodash');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const WorkboxPlugin = require('workbox-webpack-plugin');
+const { GenerateSW } = require('workbox-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 
 const commonConfig = require('./webpack.config.common');
@@ -91,8 +91,8 @@ const productionConfig = merge([
         copyUnmodified: true,
       }),
       // See this for how to configure Workbox service workers
-      // https://developers.google.com/web/tools/workbox/reference-docs/latest/module-workbox-build.html#.Configuration
-      new WorkboxPlugin({
+      // https://developers.google.com/web/tools/workbox/modules/workbox-webpack-plugin
+      new GenerateSW({
         // Files matching these will be precached
         globDirectory: parts.PATHS.build,
         globPatterns: ['**/*.{html,js,css,png,svg}'],
@@ -106,8 +106,10 @@ const productionConfig = merge([
           {
             urlPattern: new RegExp(staleWhileRevalidatePaths.map(_.escapeRegExp).join('|')),
             handler: 'staleWhileRevalidate',
-            cacheExpiration: {
-              maxAgeSeconds: ONE_MONTH,
+            options: {
+              expiration: {
+                maxAgeSeconds: ONE_MONTH,
+              },
             },
           },
           // Everything else (module info, module list) uses network first because
@@ -115,9 +117,11 @@ const productionConfig = merge([
           {
             urlPattern: new RegExp(_.escapeRegExp(nusmods.ayBaseUrl())),
             handler: 'networkFirst',
-            cacheExpiration: {
-              maxEntries: 500,
-              maxAgeSeconds: ONE_MONTH,
+            options: {
+              expiration: {
+                maxEntries: 500,
+                maxAgeSeconds: ONE_MONTH,
+              },
             },
           },
         ],
@@ -127,7 +131,7 @@ const productionConfig = merge([
 
         // Exclude /export, which are handled by the server, using negative lookahead
         // short_url is not excluded because it is fetched, not navigated to
-        navigateFallbackWhitelist: [/^(?!.*\/export).*$/],
+        navigateFallbackBlacklist: [/^.*\/export.*$/],
 
         // Since our build system already adds hashes to our CSS and JS, we don't need
         // to bust cache for these files
