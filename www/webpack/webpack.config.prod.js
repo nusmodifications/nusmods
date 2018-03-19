@@ -80,6 +80,8 @@ const productionConfig = merge([
         // For use as a variable under htmlWebpackPlugin.options in the template
         moduleListUrl: nusmods.moduleListUrl(),
         venuesUrl: nusmods.venuesUrl(config.semester),
+        brandName: config.brandName,
+        description: config.defaultDescription,
       }),
       new ScriptExtHtmlWebpackPlugin({
         inline: /manifest/,

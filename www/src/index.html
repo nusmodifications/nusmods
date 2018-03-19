@@ -10,21 +10,21 @@
     <link href="${htmlWebpackPlugin.files.publicPath}manifest.json" rel="manifest">
     <link href="${htmlWebpackPlugin.options.moduleListUrl}" rel="preload" as="fetch">
     <link href="${htmlWebpackPlugin.options.venuesUrl}" rel="prefetch">
-    <title>NUSMods</title>
-    <meta name="description" content="NUSMods is a timetable builder and knowledge platform, providing students with a better way to plan their school timetable and useful module-related information that are community-driven.">
+    <title>${htmlWebpackPlugin.options.brandName}</title>
+    <meta name="description" content="${htmlWebpackPlugin.options.description}">
     <!-- Open Graph general (Facebook, Pinterest & Google+) -->
-    <meta name="og:title" content="NUSMods">
-    <meta name="og:description" content="NUSMods is a timetable builder and knowledge platform, providing students with a better way to plan their school timetable and useful module-related information that are community-driven.">
+    <meta name="og:title" content="${htmlWebpackPlugin.options.brandName}">
+    <meta name="og:description" content="${htmlWebpackPlugin.options.description}">
     <meta name="og:image" content="${htmlWebpackPlugin.files.publicPath}share.png">
-    <meta name="og:site_name" content="NUSMods">
+    <meta name="og:site_name" content="${htmlWebpackPlugin.options.brandName}">
     <meta name="og:type" content="website">
     <!-- Open Search -->
-    <link href="${htmlWebpackPlugin.files.publicPath}opensearch.xml" rel="search" title="NUSMods Modules" type="application/opensearchdescription+xml">
+    <link href="${htmlWebpackPlugin.files.publicPath}opensearch.xml" rel="search" title="${htmlWebpackPlugin.options.brandName} Modules" type="application/opensearchdescription+xml">
     <meta name="theme-color" content="#ffffff" />
   </head>
   <body>
     <div id="app"></div>
-    <noscript>Please enable JavaScript to use NUSMods</noscript>
+    <noscript>Please enable JavaScript to use ${htmlWebpackPlugin.options.brandName}</noscript>
     <script async src="https://www.google-analytics.com/analytics.js"></script>
   </body>
 </html>
