@@ -93,11 +93,6 @@ const productionConfig = merge([
       // See this for how to configure Workbox service workers
       // https://developers.google.com/web/tools/workbox/modules/workbox-webpack-plugin
       new GenerateSW({
-        // Files matching these will be precached
-        globDirectory: parts.PATHS.build,
-        globPatterns: ['**/*.{html,js,css,png,svg}'],
-        swDest: path.join(parts.PATHS.build, 'sw.js'),
-
         // Cache NUSMods API requests so that pages which depend on them can be
         // viewed offline
         runtimeCaching: [
