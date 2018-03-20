@@ -19,7 +19,7 @@ export default class CommentCount extends PureComponent<Props> {
   };
 
   static loadInstance() {
-    if (window.document.getElementById('dsq-count-scr')) {
+    if (window.document.getElementById(SCRIPT_ID)) {
       if (window.DISQUSWIDGETS) {
         window.DISQUSWIDGETS.getCount({
           reset: true,

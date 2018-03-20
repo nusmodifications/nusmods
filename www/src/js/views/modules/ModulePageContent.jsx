@@ -268,7 +268,7 @@ export class ModulePageContentComponent extends Component<Props, State> {
                     <li key={label}>
                       <a onClick={() => this.toggleMenu(false)} href={`#${SIDE_MENU_ITEMS[key]}`}>
                         {label}
-                        {'Reviews' && <CommentCount {...disqusConfig} />}
+                        {key === 'reviews' && <CommentCount {...disqusConfig} />}
                       </a>
                     </li>
                   ))}

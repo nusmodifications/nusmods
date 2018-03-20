@@ -2,8 +2,8 @@
 
 import insertScript from './insertScript';
 
-describe('insertScript()', () => {
-  test('insert a script', () => {
+describe(insertScript, () => {
+  test('insert a script tag', () => {
     window.document.createElement = jest.fn();
     window.document.createElement.mockReturnValue({});
 
