@@ -14,7 +14,8 @@ import { BULLET, scrollToHash } from 'utils/react';
 import { NAVTAB_HEIGHT } from 'views/layout/Navtabs';
 import ModuleTree from 'views/modules/ModuleTree';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
-import DisqusComments from 'views/components/DisqusComments';
+import CommentCount from 'views/components/disqus/CommentCount';
+import DisqusComments from 'views/components/disqus/DisqusComments';
 import Online from 'views/components/Online';
 import Warning from 'views/errors/Warning';
 import SideMenu from 'views/components/SideMenu';
@@ -64,6 +65,12 @@ export class ModulePageContentComponent extends Component<Props, State> {
 
     const pageTitle = `${ModuleCode} ${ModuleTitle}`;
     const semesters = getSemestersOffered(module);
+
+    const disqusConfig = {
+      url: `https://nusmods.com/modules/${ModuleCode}/reviews`,
+      identifier: ModuleCode,
+      title: pageTitle,
+    };
 
     return (
       <div className={classnames('page-container', styles.moduleInfoPage)}>
@@ -235,11 +242,7 @@ export class ModulePageContentComponent extends Component<Props, State> {
                         </div>
                       </div>
                       <div className="col-xl-8 order-xl-first">
-                        <DisqusComments
-                          url={`https://nusmods.com/modules/${ModuleCode}/reviews`}
-                          identifier={ModuleCode}
-                          title={pageTitle}
-                        />
+                        <DisqusComments {...disqusConfig} />
                       </div>
                     </div>
                   ) : (
@@ -265,6 +268,7 @@ export class ModulePageContentComponent extends Component<Props, State> {
                     <li key={label}>
                       <a onClick={() => this.toggleMenu(false)} href={`#${SIDE_MENU_ITEMS[key]}`}>
                         {label}
+                        {key === 'reviews' && <CommentCount {...disqusConfig} />}
                       </a>
                     </li>
                   ))}
