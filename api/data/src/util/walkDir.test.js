@@ -4,7 +4,7 @@ import { walkJsonDir, walkJsonDirSync } from './walkDir';
 
 jest.mock('fs-extra');
 
-describe('walkJsonDir', () => {
+describe(walkJsonDir, () => {
   it('walks the api directory for relevant files', async () => {
     const mockFileSystem = {
       app: {
@@ -24,11 +24,11 @@ describe('walkJsonDir', () => {
       '2017-2018': ['test1'],
     };
     const apiPath = path.join('app', 'api');
-    expect(await walkJsonDir(apiPath, 'modules.json')).toEqual(expected);
+    expect(await walkJsonDir(apiPath, 'modules.json', 1)).toEqual(expected);
   });
 });
 
-describe('walkJsonDirSync', () => {
+describe(walkJsonDirSync, () => {
   it('walks the api directory for relevant files', async () => {
     const mockFileSystem = {
       app: {

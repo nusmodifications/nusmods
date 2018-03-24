@@ -1,6 +1,6 @@
 import mapKeysDeep from './mapKeysDeep';
 
-describe('mapKeysDeep', () => {
+describe(mapKeysDeep, () => {
   const appendXToKeys = mapKeysDeep((key) => `${key}X`);
 
   const testString = 'testString';

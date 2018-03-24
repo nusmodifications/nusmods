@@ -6,7 +6,7 @@ import BaseTask from './BaseTask';
 jest.mock('fs-extra');
 jest.unmock('bunyan');
 
-describe('BaseTask', () => {
+describe(BaseTask, () => {
   let base;
   beforeAll(() => {
     base = new BaseTask();

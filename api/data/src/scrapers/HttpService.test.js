@@ -9,7 +9,7 @@ jest.mock('../../config.js', () => ({
   },
 }));
 
-describe('getCacheFilePath', () => {
+describe(getCacheFilePath, () => {
   const getFilePath = (url, params) => getCacheFilePath({ url, params });
 
   it('should output root to domain with index.html', () => {
@@ -63,7 +63,7 @@ describe('getCacheFilePath', () => {
   });
 });
 
-describe('getFileModifiedTime', () => {
+describe(getFileModifiedTime, () => {
   const mockFileSystemMeta = {
     testFile: {
       isFile: () => true,
@@ -92,7 +92,7 @@ describe('getFileModifiedTime', () => {
   });
 });
 
-describe('HttpService', () => {
+describe(HttpService, () => {
   const HOST = 'http://example.com';
   const EPOCH = new Date(0);
   const cachedData = 'cached test';
