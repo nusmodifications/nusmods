@@ -45,7 +45,106 @@ exports.up = (knex, Promise) => {
     table.unique(['school_id', 'name']);
   });
 
-  return Promise.all([schoolsTable, departmentsTable, venuesTable]);
+  const modulesTable = knex.schema.createTable('modules', (table) => {
+    table
+      .increments('id')
+      .notNullable()
+      .primary();
+    table
+      .integer('school_id')
+      .notNullable()
+      .references('id')
+      .inTable('schools')
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE');
+    table.string('acadYear').notNullable();
+    table.integer('semester').notNullable();
+    table.string('code').notNullable();
+    table.string('title').notNullable();
+    table.string('description');
+    table.string('credit').notNullable();
+    table.integer('workload');
+    table.dateTime('examDate');
+    table.string('department');
+    table.string('lecturePeriods');
+    table.string('tutorialPeriods');
+    table.string('types');
+    table.string('prerequisite');
+    table.string('preclusion');
+    table.string('corequisite');
+    table.unique(['school_id', 'code', 'acadYear', 'semester']);
+  });
+
+  const classTable = knex.schema.createTable('classes', (table) => {
+    table
+      .increments('id')
+      .notNullable()
+      .primary();
+    table
+      .integer('module_id')
+      .notNullable()
+      .references('id')
+      .inTable('modules')
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE');
+    table
+      .integer('venue_id')
+      .notNullable()
+      .references('id')
+      .inTable('venues')
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE');
+    table.string('classNo').notNullable();
+    table.string('type').notNullable();
+    table.string('weekFrequency').notNullable();
+    table.string('day').notNullable();
+    table.integer('startTime').notNullable();
+    table.integer('endTime').notNullable();
+    table.unique(['module_id', 'classNo', 'type', 'day', 'startTime', 'endTime']);
+  });
+
+  const corsBiddingStatsTable = knex.schema.createTable('corsBiddingStats', (table) => {
+    table
+      .increments('id')
+      .notNullable()
+      .primary();
+    table
+      .integer('module_id')
+      .notNullable()
+      .references('id')
+      .inTable('modules')
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE');
+    table.string('acadYear').notNullable();
+    table.integer('semester').notNullable();
+    table.string('round').notNullable();
+    table.string('group').notNullable();
+    table.string('faculty').notNullable();
+    table.string('studentAcctType').notNullable();
+    table.integer('quota').notNullable();
+    table.integer('bidders').notNullable();
+    table.integer('lowestBid').notNullable();
+    table.integer('lowestSuccessfulBid').notNullable();
+    table.integer('highestBid').notNullable();
+    table.unique([
+      'module_id',
+      'acadYear',
+      'semester',
+      'round',
+      'group',
+      'faculty',
+      'studentAcctType',
+    ]);
+  });
+
+  return Promise.all([
+    schoolsTable,
+    departmentsTable,
+    venuesTable,
+    modulesTable,
+    classTable,
+    corsBiddingStatsTable,
+  ]);
 };
 
 exports.down = (knex, Promise) => {
