@@ -14,7 +14,8 @@
     "test": "jest --config jest.config.js --coverage",
     "test:watch": "jest --config jest.config.js --watch",
     "lint": "eslint . --ignore-path ../../.gitignore",
-    "lint:fix": "eslint . --ignore-path ../../.gitignore --fix"
+    "lint:fix": "eslint . --ignore-path ../../.gitignore --fix",
+    "db:init": "knex migrate:latest && knex seed:run"
   },
   "repository": {
     "type": "git",
