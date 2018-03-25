@@ -89,7 +89,6 @@ exports.up = (knex, Promise) => {
       .onUpdate('CASCADE');
     table
       .integer('venue_id')
-      .notNullable()
       .references('id')
       .inTable('venues')
       .onDelete('CASCADE')
@@ -100,7 +99,6 @@ exports.up = (knex, Promise) => {
     table.string('day').notNullable();
     table.integer('startTime').notNullable();
     table.integer('endTime').notNullable();
-    table.unique(['module_id', 'classNo', 'type', 'day', 'startTime', 'endTime']);
   });
 
   const corsBiddingStatsTable = knex.schema.createTable('corsBiddingStats', (table) => {
