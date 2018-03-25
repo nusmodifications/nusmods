@@ -20,6 +20,5 @@ import populateModules from './modules';
 
   await populateVenues(db);
   await populateModules(db);
-  // console.log('Done');
   process.exit();
 })();

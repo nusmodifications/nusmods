@@ -4,7 +4,6 @@
       "env",
       {
         "targets": { "node": "current" },
-        "modules": false,
         "loose": true,
         "useBuiltIns": true
       }
