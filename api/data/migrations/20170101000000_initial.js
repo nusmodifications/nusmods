@@ -146,7 +146,7 @@ exports.up = (knex, Promise) => {
 };
 
 exports.down = (knex, Promise) => {
-  const tables = ['schools', 'departments', 'venues'];
+  const tables = ['schools', 'departments', 'venues', 'modules', 'classes', 'corsBiddingStats'];
   return Promise.all(
     tables.map((table) => knex.schema.dropTableIfExists(table).then(() => table)),
   ).then((tbls) => {
