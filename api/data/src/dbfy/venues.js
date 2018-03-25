@@ -9,6 +9,11 @@ import { maxInsertSize } from '../util/db';
 
 const SCHOOL_ID = { school_id: 1 };
 
+/**
+ * Store venue data into db.
+ *
+ * @param db database to store into
+ */
 export default async function populateVenues(db: Knex) {
   const { dataFolder, venuesFileName } = config;
   const rawData = await walkJsonDir(dataFolder, venuesFileName, 2);
