@@ -7,6 +7,15 @@ import rootReducer, { type State } from 'reducers';
 import requestsMiddleware from 'middlewares/requests-middleware';
 import ravenMiddleware from 'middlewares/raven-middleware';
 
+// Typedef for Webpack-augmented global module variable.
+// Docs: https://webpack.js.org/api/hot-module-replacement/
+// Source: https://github.com/flowtype/flow-typed/issues/165#issuecomment-246002816
+declare var module: {
+  hot: {
+    accept(path: string | string[], callback: () => void): void,
+  },
+};
+
 // For redux-devtools-extensions - see
 // https://github.com/zalmoxisus/redux-devtools-extension
 /* eslint-disable no-underscore-dangle */
@@ -44,7 +53,7 @@ export default function configureStore(defaultState?: State) {
 
   if (module.hot) {
     // Enable webpack hot module replacement for reducers
-    (module.hot: any).accept('../reducers', () => store.replaceReducer(rootReducer));
+    module.hot.accept('../reducers', () => store.replaceReducer(rootReducer));
   }
 
   const persistor = persistStore(store);
