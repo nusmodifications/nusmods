@@ -18,14 +18,8 @@ declare var module: {
 
 // For redux-devtools-extensions - see
 // https://github.com/zalmoxisus/redux-devtools-extension
-/* eslint-disable no-underscore-dangle */
-const composeEnhancers =
-  typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-        // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
-      })
-    : compose;
-/* eslint-enable no-underscore-dangle */
+// eslint-disable-next-line no-underscore-dangle
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 export default function configureStore(defaultState?: State) {
   const middlewares = [ravenMiddleware, thunk, requestsMiddleware];
