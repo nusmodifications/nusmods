@@ -38,12 +38,12 @@ export function defaultSearchOptions(
 }
 
 export default class AvailabilitySearch extends PureComponent<Props> {
-  onUpdate = (event: Event, key: $Keys<VenueSearchOptions>) => {
-    if (typeof event.target.value !== 'undefined') {
+  onUpdate = (event: SyntheticEvent<HTMLSelectElement>, key: $Keys<VenueSearchOptions>) => {
+    if (typeof event.currentTarget.value !== 'undefined') {
       const { searchOptions, onUpdate } = this.props;
       onUpdate({
         ...searchOptions,
-        [key]: +event.target.value,
+        [key]: +event.currentTarget.value,
       });
     }
   };
