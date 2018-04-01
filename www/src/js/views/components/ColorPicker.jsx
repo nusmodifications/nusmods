@@ -22,10 +22,10 @@ type Props = {
  */
 class ColorPicker extends PureComponent<Props> {
   // TODO: Inject types from downshift when https://github.com/paypal/downshift/pull/180 is implemented
-  renderColorPicker = ({ getButtonProps, getItemProps, isOpen }: any) => (
+  renderColorPicker = ({ getToggleButtonProps, getItemProps, isOpen }: any) => (
     <div className={styles.container}>
       <button
-        {...getButtonProps({
+        {...getToggleButtonProps({
           title: this.props.label,
         })}
         className={classnames(
