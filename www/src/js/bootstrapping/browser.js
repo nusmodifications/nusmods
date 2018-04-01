@@ -84,7 +84,12 @@ if (
     if (element) {
       element.addEventListener('click', () => {
         const checkbox = document.getElementById('browserWarning-ignore');
-        if (browserCanUseLocalStorage && checkbox && checkbox.checked)
+        if (
+          browserCanUseLocalStorage &&
+          checkbox &&
+          checkbox instanceof HTMLInputElement &&
+          checkbox.checked
+        )
           localStorage.setItem(BROWSER_WARNING_KEY, navigator.userAgent);
         if (body) body.removeChild(container);
       });
