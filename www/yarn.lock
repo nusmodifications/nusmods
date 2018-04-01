@@ -102,23 +102,27 @@
     "@material/base" "^0.29.0"
     "@material/theme" "^0.30.0"
 
-"@material/rtl@^0.30.0":
-  version "0.30.0"
-  resolved "https://registry.yarnpkg.com/@material/rtl/-/rtl-0.30.0.tgz#0fbda0bc0e8a7baa6c29413fc3f9f8edda602502"
+"@material/rtl@^0.33.0":
+  version "0.33.0"
+  resolved "https://registry.yarnpkg.com/@material/rtl/-/rtl-0.33.0.tgz#4ae034aa9de3056c73843ac6c50b4b93ee7669aa"
 
-"@material/snackbar@0.30.0":
-  version "0.30.0"
-  resolved "https://registry.yarnpkg.com/@material/snackbar/-/snackbar-0.30.0.tgz#cdf12e81a7bf38e0a68e73151f9d49ab3597b353"
+"@material/snackbar@0.33.0":
+  version "0.33.0"
+  resolved "https://registry.yarnpkg.com/@material/snackbar/-/snackbar-0.33.0.tgz#dab71504f5057e2972bb7c8b698e66f5a07127f1"
   dependencies:
     "@material/animation" "^0.25.0"
     "@material/base" "^0.29.0"
-    "@material/rtl" "^0.30.0"
-    "@material/theme" "^0.30.0"
+    "@material/rtl" "^0.33.0"
+    "@material/theme" "^0.33.0"
     "@material/typography" "^0.28.0"
 
 "@material/theme@^0.30.0":
   version "0.30.0"
   resolved "https://registry.yarnpkg.com/@material/theme/-/theme-0.30.0.tgz#503d7fd5ac88ff70763bb277236ee7188982e5d2"
+
+"@material/theme@^0.33.0":
+  version "0.33.0"
+  resolved "https://registry.yarnpkg.com/@material/theme/-/theme-0.33.0.tgz#8d4c5374fc607648c46bcebe40183ff345e2e027"
 
 "@material/theme@^0.4.0":
   version "0.4.0"
