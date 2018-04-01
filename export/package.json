@@ -23,7 +23,7 @@
     "koa-views": "6.1.4",
     "lodash": "4.17.5",
     "nodemon": "1.17.2",
-    "pug": "2.0.0-rc.4",
+    "pug": "2.0.3",
     "puppeteer": "1.2.0",
     "raven": "2.4.2"
   }
