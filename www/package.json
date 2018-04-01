@@ -97,7 +97,7 @@
     "workbox-webpack-plugin": "2.1.3"
   },
   "dependencies": {
-    "@material/fab": "0.32.0",
+    "@material/fab": "0.33.0",
     "@material/snackbar": "0.30.0",
     "autotrack": "2.4.1",
     "axios": "0.18.0",

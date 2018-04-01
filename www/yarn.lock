@@ -86,21 +86,21 @@
     "@material/animation" "^0.25.0"
     "@material/theme" "^0.4.0"
 
-"@material/fab@0.32.0":
-  version "0.32.0"
-  resolved "https://registry.yarnpkg.com/@material/fab/-/fab-0.32.0.tgz#6c236f38226c531ea042c86bdaecb54659f85064"
+"@material/fab@0.33.0":
+  version "0.33.0"
+  resolved "https://registry.yarnpkg.com/@material/fab/-/fab-0.33.0.tgz#a9f089ef8950439678d64738b09b181d25a8e989"
   dependencies:
     "@material/animation" "^0.25.0"
     "@material/elevation" "^0.28.0"
-    "@material/ripple" "^0.32.0"
-    "@material/theme" "^0.30.0"
+    "@material/ripple" "^0.33.0"
+    "@material/theme" "^0.33.0"
 
-"@material/ripple@^0.32.0":
-  version "0.32.0"
-  resolved "https://registry.yarnpkg.com/@material/ripple/-/ripple-0.32.0.tgz#ea944a1995dc22d713608cfe6153fda108bceacc"
+"@material/ripple@^0.33.0":
+  version "0.33.0"
+  resolved "https://registry.yarnpkg.com/@material/ripple/-/ripple-0.33.0.tgz#e94407d4a1ff2359cd0644b221f09de16d31cd50"
   dependencies:
     "@material/base" "^0.29.0"
-    "@material/theme" "^0.30.0"
+    "@material/theme" "^0.33.0"
 
 "@material/rtl@^0.30.0":
   version "0.30.0"
@@ -119,6 +119,10 @@
 "@material/theme@^0.30.0":
   version "0.30.0"
   resolved "https://registry.yarnpkg.com/@material/theme/-/theme-0.30.0.tgz#503d7fd5ac88ff70763bb277236ee7188982e5d2"
+
+"@material/theme@^0.33.0":
+  version "0.33.0"
+  resolved "https://registry.yarnpkg.com/@material/theme/-/theme-0.33.0.tgz#8d4c5374fc607648c46bcebe40183ff345e2e027"
 
 "@material/theme@^0.4.0":
   version "0.4.0"
