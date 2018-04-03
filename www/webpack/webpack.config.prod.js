@@ -102,6 +102,7 @@ const productionConfig = merge([
             urlPattern: new RegExp(staleWhileRevalidatePaths.map(_.escapeRegExp).join('|')),
             handler: 'staleWhileRevalidate',
             options: {
+              cacheName: 'api-stale-while-revalidate-cache',
               expiration: {
                 maxAgeSeconds: ONE_MONTH,
               },
@@ -113,6 +114,7 @@ const productionConfig = merge([
             urlPattern: new RegExp(_.escapeRegExp(nusmods.ayBaseUrl())),
             handler: 'networkFirst',
             options: {
+              cacheName: 'api-network-first-cache',
               expiration: {
                 maxEntries: 500,
                 maxAgeSeconds: ONE_MONTH,
