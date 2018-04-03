@@ -89,7 +89,7 @@
     "stylelint-config-standard": "18.2.0",
     "stylelint-order": "0.8.1",
     "stylelint-webpack-plugin": "0.10.3",
-    "uglifyjs-webpack-plugin": "1.2.2",
+    "uglifyjs-webpack-plugin": "1.2.4",
     "url-loader": "1.0.1",
     "webpack": "^3.11.0",
     "webpack-dev-server": "^2.11.1",
