@@ -26,7 +26,7 @@ const browserCanUseLocalStorage = canUseBrowserLocalStorage();
 if (
   !bowser.check(
     {
-      edge: '14',
+      msedge: '14',
       chrome: '56',
       firefox: '52',
       safari: '9',
