@@ -20,6 +20,7 @@ const commonConfig = merge([
         parts.PATHS.app,
         parts.PATHS.styles,
         parts.PATHS.node,
+        parts.PATHS.nodeHoisted,
         parts.PATHS.images,
       ],
       // Maps specific modules, similar to modules above, except in this case
