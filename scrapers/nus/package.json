@@ -8,7 +8,8 @@
   },
   "scripts": {
     "ci": "yarn lint && yarn test",
-    "scrape": "cross-env NODE_ENV=production gulp --gulpfile gulpfile.compiled.js | bunyan -o short --color",
+    "scrape":
+      "cross-env NODE_ENV=production gulp --gulpfile gulpfile.compiled.js | bunyan -o short --color",
     "scrape:dev": "cross-env BABEL_ENV=development gulp | bunyan -l debug -o short --color",
     "build:scraper": "cross-env BABEL_ENV=development webpack --config webpack.config.babel.js",
     "test": "jest --config jest.config.js --coverage",
@@ -67,7 +68,7 @@
     "eslint-plugin-prettier": "^2.6.0",
     "jest": "^23.6.0",
     "mock-fs": "^4.2.0",
-    "prettier": "^1.11.1",
+    "prettier": "^1.12.1",
     "webpack": "^4.29.1",
     "webpack-cli": "^3.2.3",
     "webpack-node-externals": "^1.7.2"
