@@ -16,6 +16,11 @@ save_cache: &save_node_deps
   key: v1-node-{{ arch }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
   paths:
     - node_modules
+    - www/node_modules
+    - export/node_modules
+    - api/data/node_modules
+    - scrapers/nus/node_modules
+    - packages/nusmoderator/node_modules
 
 jobs:
   checkout:
@@ -24,6 +29,9 @@ jobs:
     steps:
       - checkout
       - run: echo $CIRCLE_COMPARE_URL | cut -d/ -f7
+      - restore_cache: *restore_node_deps
+      - run: yarn
+      - save_cache: *save_node_deps
       - persist_to_workspace:
           root: .
           paths:
