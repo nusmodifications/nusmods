@@ -33,7 +33,7 @@ If applicable, add screenshots to help explain your problem.
 **Smartphone (please complete the following information):**
 
 * Device: [e.g. iPhone 8]
-* OS: [e.g. iOS8.1]
+* OS: [e.g. iOS 12.0.0]
 * Browser [e.g. Stock browser, Safari]
 * Version [e.g. 22]
 
