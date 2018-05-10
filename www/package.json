@@ -104,7 +104,7 @@
     "bootstrap": "4.0.0",
     "bowser": "1.9.3",
     "classnames": "2.2.5",
-    "core-js": "2.5.3",
+    "core-js": "2.5.4",
     "downshift": "1.31.2",
     "ical-generator": "https://github.com/ZhangYiJiang/ical-generator.git#ed6928fe",
     "immutability-helper": "2.6.6",
