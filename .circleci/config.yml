@@ -2,7 +2,7 @@ version: 2
 
 defaults: &defaults
   docker:
-    - image: circleci/node:8
+    - image: circleci/node:8@sha256:5a17dd12dce1750631dd7e6a2131d589ab02355b99db10123b982f3b33e01a86
 
 restore_cache: &restore_node_deps
   name: Restore node_modules cache
