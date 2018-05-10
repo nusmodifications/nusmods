@@ -89,9 +89,17 @@
   version "0.25.0"
   resolved "https://registry.yarnpkg.com/@material/animation/-/animation-0.25.0.tgz#b252ac3d0b628e79a79f0c406d7470fb56352a80"
 
+"@material/animation@^0.34.0":
+  version "0.34.0"
+  resolved "https://registry.yarnpkg.com/@material/animation/-/animation-0.34.0.tgz#a99cc9dabf7d0179b4da9a0aaa1575c4d1513823"
+
 "@material/base@^0.29.0":
   version "0.29.0"
   resolved "https://registry.yarnpkg.com/@material/base/-/base-0.29.0.tgz#5fac94c45907e38c969130e959722288d4ce06b2"
+
+"@material/base@^0.34.0":
+  version "0.34.0"
+  resolved "https://registry.yarnpkg.com/@material/base/-/base-0.34.0.tgz#73f915227f9f0548e24587f502d74c351250224a"
 
 "@material/elevation@^0.28.0":
   version "0.28.0"
@@ -116,31 +124,35 @@
     "@material/base" "^0.29.0"
     "@material/theme" "^0.30.0"
 
-"@material/rtl@^0.30.0":
-  version "0.30.0"
-  resolved "https://registry.yarnpkg.com/@material/rtl/-/rtl-0.30.0.tgz#0fbda0bc0e8a7baa6c29413fc3f9f8edda602502"
+"@material/rtl@^0.34.0":
+  version "0.34.0"
+  resolved "https://registry.yarnpkg.com/@material/rtl/-/rtl-0.34.0.tgz#6116d9c99f0c0ff40a8ae97ea5bc1a5fd29bcff5"
 
-"@material/snackbar@0.30.0":
-  version "0.30.0"
-  resolved "https://registry.yarnpkg.com/@material/snackbar/-/snackbar-0.30.0.tgz#cdf12e81a7bf38e0a68e73151f9d49ab3597b353"
+"@material/snackbar@0.34.0":
+  version "0.34.0"
+  resolved "https://registry.yarnpkg.com/@material/snackbar/-/snackbar-0.34.0.tgz#cb47b46533eff56239ac0d8a1d7e60ea85bfb3e8"
   dependencies:
-    "@material/animation" "^0.25.0"
-    "@material/base" "^0.29.0"
-    "@material/rtl" "^0.30.0"
-    "@material/theme" "^0.30.0"
-    "@material/typography" "^0.28.0"
+    "@material/animation" "^0.34.0"
+    "@material/base" "^0.34.0"
+    "@material/rtl" "^0.34.0"
+    "@material/theme" "^0.34.0"
+    "@material/typography" "^0.34.0"
 
 "@material/theme@^0.30.0":
   version "0.30.0"
   resolved "https://registry.yarnpkg.com/@material/theme/-/theme-0.30.0.tgz#503d7fd5ac88ff70763bb277236ee7188982e5d2"
 
+"@material/theme@^0.34.0":
+  version "0.34.0"
+  resolved "https://registry.yarnpkg.com/@material/theme/-/theme-0.34.0.tgz#0118b935c2ecbcf3b4a1c84cd949e6344fa8bcb5"
+
 "@material/theme@^0.4.0":
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/@material/theme/-/theme-0.4.0.tgz#0aef1a0279b65c15990584fb8b8eca095c734641"
 
-"@material/typography@^0.28.0":
-  version "0.28.0"
-  resolved "https://registry.yarnpkg.com/@material/typography/-/typography-0.28.0.tgz#4ae96a852fcd324d61b649adc995326c431fcaea"
+"@material/typography@^0.34.0":
+  version "0.34.0"
+  resolved "https://registry.yarnpkg.com/@material/typography/-/typography-0.34.0.tgz#cb365ecd2eb0d785410c743ec3426a107a687e3d"
 
 "@types/node@*":
   version "9.3.0"
