@@ -23,7 +23,6 @@ type State = {
 
 export default class SearchBox extends PureComponent<Props, State> {
   props: Props;
-  searchElement: ?HTMLInputElement;
 
   state: State = {
     isFocused: false,
@@ -38,13 +37,13 @@ export default class SearchBox extends PureComponent<Props, State> {
   onSubmit = () => {
     const { searchElement } = this;
 
-    if (searchElement) {
-      const searchTerm = searchElement.value;
+    if (searchElement.current) {
+      const searchTerm = searchElement.current.value;
       this.setState({ searchTerm });
 
       this.debouncedSearch(searchTerm);
       this.debouncedSearch.flush();
-      searchElement.blur();
+      searchElement.current.blur();
     }
   };
 
@@ -56,6 +55,8 @@ export default class SearchBox extends PureComponent<Props, State> {
       if (this.props.useInstantSearch) this.debouncedSearch(searchTerm);
     }
   };
+
+  searchElement = React.createRef();
 
   search = (input: string) => {
     this.setState({ hasChanges: false });
@@ -70,8 +71,8 @@ export default class SearchBox extends PureComponent<Props, State> {
     return (
       !this.props.useInstantSearch &&
       this.state.hasChanges &&
-      this.searchElement &&
-      this.searchElement.value
+      this.searchElement.current &&
+      this.searchElement.current.value
     );
   }
 
@@ -97,9 +98,7 @@ export default class SearchBox extends PureComponent<Props, State> {
             id="search-box"
             className="form-control form-control-lg"
             type="search"
-            ref={(e) => {
-              this.searchElement = e;
-            }}
+            ref={this.searchElement}
             value={this.state.searchTerm}
             onChange={this.onInput}
             onFocus={() => this.setState({ isFocused: true })}
