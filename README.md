@@ -1,6 +1,7 @@
 # ![](docs/nusmods-logo.png)
 
 [![Coverage Status](https://coveralls.io/repos/github/nusmodifications/nusmods/badge.svg?branch=master)](https://coveralls.io/github/nusmodifications/nusmods?branch=master) [![CircleCI Build Status](https://circleci.com/gh/nusmodifications/nusmods.svg?style=shield)](https://circleci.com/gh/nusmodifications/nusmods) [![ghit.me](https://ghit.me/badge.svg?repo=nusmodifications/nusmods)](https://ghit.me/repo/nusmodifications/nusmods)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fnusmodifications%2Fnusmods.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fnusmodifications%2Fnusmods?ref=badge_shield)
 
 Help contribute to NUSMods!
 
@@ -41,6 +42,9 @@ To help you get your feet wet and get you familiar with our contribution process
 ## License
 
 All projects and packages in this repository are [MIT licensed](LICENSE).
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fnusmodifications%2Fnusmods.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fnusmodifications%2Fnusmods?ref=badge_large)
 
 ## Supported by
 
