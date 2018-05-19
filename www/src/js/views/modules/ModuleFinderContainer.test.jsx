@@ -1,5 +1,5 @@
 // @flow
-import type { LocationShape, RouterHistory } from 'react-router-dom';
+import type { RouterHistory } from 'react-router-dom';
 
 import React from 'react';
 import axios from 'axios';
@@ -18,7 +18,7 @@ import { ModuleFinderContainerComponent, mergePageRange } from './ModuleFinderCo
 type ActiveFilters = { [FilterGroupId]: string[] };
 type Container = { component: ShallowWrapper, history: RouterHistory };
 
-describe('<ModuleFinderContainer', () => {
+describe(ModuleFinderContainerComponent, () => {
   beforeEach(() => {
     mockDom();
 
@@ -55,7 +55,7 @@ describe('<ModuleFinderContainer', () => {
     return container;
   }
 
-  function extractQueryString(location: LocationShape | string): string {
+  function extractQueryString(location: { search: string } | string): string {
     const query =
       typeof location === 'string'
         ? qs.extract(location)
@@ -158,6 +158,19 @@ describe('<ModuleFinderContainer', () => {
     await waitFor(() => calls.length > 0); // Wait until the route has changed
 
     expect(calls.map(extractQueryString)).toEqual(['q=new search']);
+  });
+
+  describe('Clear filter button', () => {
+    test('should clear query when clicked', async () => {
+      const container = await createContainer();
+
+      const instance = container.component.instance();
+      instance.onFilterChange(instance.state.filterGroups.level.toggle('1'));
+      instance.onFilterChange(instance.state.filterGroups.mc.toggle('0'));
+
+      instance.onClearFilter();
+      expect(extractQueryString(container.history.location)).toEqual('');
+    });
   });
 });
 
