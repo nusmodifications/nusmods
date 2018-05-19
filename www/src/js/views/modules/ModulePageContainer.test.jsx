@@ -11,7 +11,7 @@ import type { Module, ModuleCode } from 'types/modules';
 
 /* @var {Module} */
 import cs1010s from '__mocks__/modules/CS1010S.json';
-import NotFoundPage from 'views/errors/NotFoundPage';
+import ModuleNotFoundPage from 'views/errors/ModuleNotFoundPage';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import { ModulePageContainerComponent } from './ModulePageContainer';
 
@@ -49,7 +49,7 @@ function assertRedirect(component, redirectTo = CANONICAL) {
 }
 
 test('should show 404 page when the module code does not exist', () => {
-  expect(make('CS1234', '/modules/CS1234').type()).toEqual(NotFoundPage);
+  expect(make('CS1234', '/modules/CS1234').type()).toEqual(ModuleNotFoundPage);
 });
 
 test('should redirect to canonical URL', () => {
