@@ -52,6 +52,7 @@ function getTimeSegment(time: string): TimeSegment {
     case '2:30 PM':
       return 'Afternoon';
     case '5:00 PM':
+    case '6:30 PM':
       return 'Evening';
     default:
       throw new Error(`Unrecognized exam time: ${time}`);
