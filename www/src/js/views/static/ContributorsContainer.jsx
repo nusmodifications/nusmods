@@ -54,7 +54,7 @@ class ContributorsContainer extends Component<Props, State> {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     axios
       .get(CONTRIBUTORS_URL)
       .then((response) => {
