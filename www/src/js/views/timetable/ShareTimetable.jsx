@@ -41,7 +41,6 @@ function shareUrl(semester: Semester, timetable: SemTimetableConfig): string {
 export const SHORT_URL_KEY = 'shorturl';
 
 export default class ShareTimetable extends PureComponent<Props, State> {
-  urlInput: ?HTMLInputElement;
   url: ?string;
   QRCode: ?Object;
 
@@ -50,6 +49,8 @@ export default class ShareTimetable extends PureComponent<Props, State> {
     urlCopied: NOT_COPIED,
     shortUrl: null,
   };
+
+  urlInput = React.createRef();
 
   loadShortUrl(url: string) {
     const showFullUrl = () => this.setState({ shortUrl: url });
@@ -97,7 +98,7 @@ export default class ShareTimetable extends PureComponent<Props, State> {
     });
 
   copyText = () => {
-    const input = this.urlInput;
+    const input = this.urlInput.current;
 
     if (input) {
       input.select();
@@ -121,9 +122,7 @@ export default class ShareTimetable extends PureComponent<Props, State> {
           <input
             value={url}
             className={classnames('form-control', styles.url)}
-            ref={(r) => {
-              this.urlInput = r;
-            }}
+            ref={this.urlInput}
             readOnly
           />
           <div className="input-group-append">

@@ -230,12 +230,13 @@ class TimetableContent extends Component<Props, State> {
       const module = modules[moduleCode];
       const moduleTimetable = getModuleTimetable(module, semester);
       lessonsForLessonType(moduleTimetable, activeLesson.LessonType).forEach((lesson) => {
-        const modifiableLesson = {
+        const modifiableLesson: Object = {
           ...lesson,
           // Inject module code in
           ModuleCode: moduleCode,
           ModuleTitle: module.ModuleTitle,
         };
+
         if (areLessonsSameClass(modifiableLesson, activeLesson)) {
           modifiableLesson.isActive = true;
         } else if (lesson.LessonType === activeLesson.LessonType) {

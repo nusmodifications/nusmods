@@ -30,23 +30,34 @@ type State = {
   loading: ?Semester,
 };
 
+function isModuleOnTimetable(
+  semester: Semester,
+  timetables: TimetableConfig,
+  module: Module,
+): boolean {
+  return !!get(timetables, [String(semester), module.ModuleCode]);
+}
+
 export class AddModuleDropdownComponent extends PureComponent<Props, State> {
+  static getDerivedStateFromProps(nextProps: Props, prevState: State) {
+    const { timetables, module } = nextProps;
+    const { loading } = prevState;
+
+    if (loading != null && isModuleOnTimetable(loading, timetables, module)) {
+      return { loading: null };
+    }
+
+    return null;
+  }
+
   state: State = {
     loading: null,
   };
 
-  componentWillReceiveProps(nextProps: Props) {
-    if (
-      this.state.loading != null &&
-      this.moduleOnTimetable(this.state.loading, nextProps.timetables)
-    ) {
-      this.setState({ loading: null });
-    }
-  }
-
   onSelect(semester: Semester) {
     const { module, timetables } = this.props;
-    if (this.moduleOnTimetable(semester, timetables)) {
+
+    if (isModuleOnTimetable(semester, timetables, module)) {
       this.props.removeModule(semester, module.ModuleCode);
     } else {
       this.setState({ loading: semester });
@@ -64,7 +75,8 @@ export class AddModuleDropdownComponent extends PureComponent<Props, State> {
       );
     }
 
-    return this.moduleOnTimetable(semester, this.props.timetables) ? (
+    const hasModule = isModuleOnTimetable(semester, this.props.timetables, this.props.module);
+    return hasModule ? (
       <Fragment>
         Remove from <br />
         <strong>{config.semesterNames[semester]}</strong>
@@ -81,11 +93,6 @@ export class AddModuleDropdownComponent extends PureComponent<Props, State> {
     return getSemestersOffered(this.props.module)
       .filter((semester) => semester !== exclude)
       .sort();
-  }
-
-  moduleOnTimetable(semester: Semester, timetables: TimetableConfig): boolean {
-    const { module } = this.props;
-    return !!get(timetables, [String(semester), module.ModuleCode]);
   }
 
   render() {

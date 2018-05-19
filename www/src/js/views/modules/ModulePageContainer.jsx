@@ -68,9 +68,9 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
       });
   }
 
-  componentWillReceiveProps(nextProps: Props) {
-    if (nextProps.moduleCode !== this.props.moduleCode) {
-      this.fetchModule(nextProps.moduleCode);
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.moduleCode !== this.props.moduleCode) {
+      this.fetchModule(this.props.moduleCode);
     }
   }
 

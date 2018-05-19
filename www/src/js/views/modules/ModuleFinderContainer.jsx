@@ -165,9 +165,9 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
       });
   }
 
-  componentWillReceiveProps(nextProps: Props) {
-    if (this.props.searchTerm !== nextProps.searchTerm) {
-      this.onSearch(nextProps.searchTerm);
+  componentDidUpdate(prevProps: Props) {
+    if (this.props.searchTerm !== prevProps.searchTerm) {
+      this.onSearch(this.props.searchTerm);
     }
   }
 
