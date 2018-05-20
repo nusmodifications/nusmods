@@ -3,7 +3,7 @@ import type { Store } from 'redux';
 import type { State } from 'reducers/index';
 
 import React from 'react';
-import { MemoryRouter as Router } from 'react-router-dom';
+import { StaticRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
 import AppShell from 'views/AppShell';
@@ -17,7 +17,7 @@ type Props = {
 export default function App({ store, location }: Props) {
   return (
     <Provider store={store}>
-      <Router location={location}>
+      <Router context={{}} location={location}>
         <AppShell>
           <Routes />
         </AppShell>

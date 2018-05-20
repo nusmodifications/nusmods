@@ -26,7 +26,7 @@ export class ScrollToTopComponent extends Component<Props> {
   };
 
   componentWillMount() {
-    if (this.props.onComponentWillMount && !window.location.hash) {
+    if (this.props.onComponentWillMount && typeof window !== 'undefined' && !window.location.hash) {
       scrollToTop();
     }
   }
