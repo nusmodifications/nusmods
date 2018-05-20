@@ -10,6 +10,7 @@ const {
 
 const production = require('../webpack/webpack.config.prod');
 const timetableOnly = require('../webpack/webpack.config.timetable-only');
+const server = require('../webpack/webpack.config.server');
 const parts = require('../webpack/webpack.parts');
 
 function runWebpack(config) {
@@ -50,6 +51,13 @@ async function build(previousFileSizes) {
   console.log();
 
   try {
+    console.log(chalk.cyan('Creating server build...'));
+
+    const serverStats = await runWebpack(server);
+    handleErrors(serverStats);
+
+    console.log(chalk.green('Compiled successfully.'));
+
     const mainStats = await runWebpack(production);
     handleErrors(mainStats);
 
@@ -57,21 +65,17 @@ async function build(previousFileSizes) {
     console.log();
 
     console.log('File sizes after gzip:');
-    console.log();
     printFileSizesAfterBuild(mainStats, previousFileSizes, parts.PATHS.build);
     console.log();
 
     console.log(`The ${chalk.cyan(parts.PATHS.build)} folder is ready to be deployed.`);
-    console.log();
 
     console.log(chalk.cyan('Creating timetable-only build...'));
-    console.log();
 
     const timetableOnlyStats = await runWebpack(timetableOnly);
     handleErrors(timetableOnlyStats);
 
     console.log(chalk.green('Compiled successfully.'));
-    console.log();
   } catch (err) {
     printErrors('Failed to compile.', [err]);
     process.exit(1);
