@@ -17,7 +17,7 @@ const defaultAppState = (): AppState => ({
   activeSemester: config.semester,
   // The lesson being modified on the timetable.
   activeLesson: null,
-  isOnline: navigator.onLine,
+  isOnline: process.env.IS_SSR ? true : navigator.onLine,
   isFeedbackModalOpen: false,
   notifications: [],
 });

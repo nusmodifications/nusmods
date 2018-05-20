@@ -10,7 +10,7 @@ import type { State as StoreState } from 'reducers';
 import type { Semester } from 'types/modules';
 
 import exportApi from 'apis/export';
-import { downloadAsIcal, SUPPORTS_DOWNLOAD } from 'actions/export';
+import { downloadAsIcal, supportsDownload } from 'actions/export';
 import {
   Image,
   Calendar,
@@ -100,7 +100,7 @@ export class ExportMenuComponent extends PureComponent<Props, State> {
               </a>
             </Online>
 
-            {SUPPORTS_DOWNLOAD && (
+            {supportsDownload() && (
               <button
                 className={classnames('dropdown-item', {
                   'dropdown-selected': counter.matches(highlightedIndex),

@@ -14,10 +14,8 @@ import { SCHOOLDAYS } from './timify';
 const hourDifference = range(48).map((i) => Math.floor(i / 2) * 100 + (i % 2) * 30);
 
 const stringCompare =
-  // Feature detect Intl API
-  window.Intl && typeof window.Intl === 'object'
-    ? // $FlowFixMe: Flow doesn't have Intl typedefs https://github.com/facebook/flow/issues/1270
-      new Intl.Collator('en', { sensitivity: 'base', numeric: true }).compare
+  process.env.IS_SSR || (window.Intl && typeof window.Intl === 'object')
+    ? new Intl.Collator('en', { sensitivity: 'base', numeric: true }).compare
     : (a, b) => a.localeCompare(b);
 
 export function sortVenues(venues: VenueInfo): VenueDetailList {

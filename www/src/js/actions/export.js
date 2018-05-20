@@ -1,5 +1,6 @@
 // @flow
 import type { Module, Semester } from 'types/modules';
+import { memoize } from 'lodash';
 
 import { hydrateSemTimetableWithLessons } from 'utils/timetables';
 import type { ExportData } from 'types/export';
@@ -19,7 +20,7 @@ function downloadUrl(blob: Blob, filename: string) {
   }
 }
 
-export const SUPPORTS_DOWNLOAD = 'download' in document.createElement('a');
+export const supportsDownload = memoize(() => 'download' in document.createElement('a'));
 
 export function downloadAsIcal(semester: Semester) {
   return (dispatch: Function, getState: GetState) => {
