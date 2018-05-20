@@ -49,7 +49,6 @@ const TRANSITION_DURATION = 250;
  * the new notification.
  */
 export class NotificationComponent extends Component<Props, State> {
-  element: ?HTMLElement;
   openTimeoutId: TimeoutID;
   closeTimeoutId: TimeoutID;
 
@@ -89,7 +88,7 @@ export class NotificationComponent extends Component<Props, State> {
   }
 
   onTransitionEnd = (evt: TransitionEvent) => {
-    if (evt.target !== this.element) return;
+    if (evt.target !== this.element.current) return;
 
     // the event ran, so the failsafe can be cancelled
     clearTimeout(this.closeTimeoutId);
@@ -108,6 +107,7 @@ export class NotificationComponent extends Component<Props, State> {
     }
   };
 
+  element = React.createRef();
   transitioning: boolean = false;
 
   openSnackbar = () => {
@@ -145,9 +145,7 @@ export class NotificationComponent extends Component<Props, State> {
         aria-atomic="true"
         aria-hidden={!!shownNotification}
         onTransitionEnd={this.onTransitionEnd}
-        ref={(r) => {
-          this.element = r;
-        }}
+        ref={this.element}
       >
         {!!shownNotification && (
           <Fragment>

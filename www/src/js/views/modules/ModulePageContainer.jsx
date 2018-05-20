@@ -12,8 +12,8 @@ import type { Module, ModuleCode } from 'types/modules';
 
 import { fetchModule } from 'actions/moduleBank';
 import { retry } from 'utils/promise';
-import NotFoundPage from 'views/errors/NotFoundPage';
 import ErrorPage from 'views/errors/ErrorPage';
+import ModuleNotFoundPage from 'views/errors/ModuleNotFoundPage';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import { modulePage } from 'views/routes/paths';
 
@@ -68,9 +68,9 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
       });
   }
 
-  componentWillReceiveProps(nextProps: Props) {
-    if (nextProps.moduleCode !== this.props.moduleCode) {
-      this.fetchModule(nextProps.moduleCode);
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.moduleCode !== this.props.moduleCode) {
+      this.fetchModule(this.props.moduleCode);
     }
   }
 
@@ -94,7 +94,7 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
     const { module, moduleCode, match, location } = this.props;
 
     if (!this.doesModuleExist(moduleCode)) {
-      return <NotFoundPage />;
+      return <ModuleNotFoundPage moduleCode={moduleCode} />;
     }
 
     if (error) {

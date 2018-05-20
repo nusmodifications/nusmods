@@ -49,7 +49,7 @@ type Props = {
 };
 
 export class AppShellComponent extends Component<Props> {
-  componentWillMount() {
+  componentDidMount() {
     const { timetables } = this.props;
 
     // Retrieve module list

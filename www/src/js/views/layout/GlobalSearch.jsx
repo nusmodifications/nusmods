@@ -38,7 +38,6 @@ const BADGE_COLOR = {
 /* eslint-enable */
 
 class GlobalSearch extends Component<Props, State> {
-  input: ?HTMLInputElement;
   state = {
     isOpen: false,
   };
@@ -49,7 +48,7 @@ class GlobalSearch extends Component<Props, State> {
 
   onClose = () => {
     this.setState({ isOpen: false }, () => {
-      if (this.input) this.input.blur();
+      if (this.input.current) this.input.current.blur();
     });
   };
 
@@ -73,6 +72,8 @@ class GlobalSearch extends Component<Props, State> {
     this.onClose();
   };
 
+  input = React.createRef();
+
   // Downshift attaches label for us, so we can ignore ESLint here
   /* eslint-disable jsx-a11y/label-has-for */
   // TODO: Inject types from downshift when https://github.com/paypal/downshift/pull/180 is implemented
@@ -93,9 +94,7 @@ class GlobalSearch extends Component<Props, State> {
           {PLACEHOLDER}
         </label>
         <input
-          ref={(input) => {
-            this.input = input;
-          }}
+          ref={this.input}
           className={classnames(styles.input, { [styles.inputOpen]: isOpen })}
           {...getInputProps({ placeholder: PLACEHOLDER })}
           onFocus={this.onOpen}

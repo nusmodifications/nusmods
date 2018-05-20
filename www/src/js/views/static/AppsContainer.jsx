@@ -71,7 +71,7 @@ class AppsContainer extends Component<Props, State> {
     errorMessage: '',
   };
 
-  componentWillMount() {
+  componentDidMount() {
     axios
       .get(APPS_URL)
       .then((response) => {
