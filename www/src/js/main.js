@@ -9,7 +9,6 @@ import ReactModal from 'react-modal';
 import Raven from 'raven-js';
 
 import App from 'App';
-import storage from 'storage';
 
 import configureStore from 'bootstrapping/configure-store';
 import subscribeOnlineEvents from 'bootstrapping/subscribeOnlineEvents';
@@ -18,7 +17,9 @@ import initializeGA from 'bootstrapping/google-analytics';
 
 import '../styles/main.scss';
 
-const persistedState = storage.loadState();
+// If the page is server side rendered, the REDUX_STATE variable would be
+// available and contain the state of store on the server side
+const persistedState = window.REDUX_STATE || {};
 const { store, persistor } = configureStore(persistedState);
 
 subscribeOnlineEvents(store);
@@ -28,7 +29,14 @@ initKeyboardShortcuts(store);
 ReactModal.setAppElement('#app');
 
 const render = () => {
-  ReactDOM.render(App({ store, persistor }), document.getElementById('app'));
+  const app = App({ store, persistor });
+  const container = document.getElementById('app');
+
+  if (window.REDUX_STATE) {
+    ReactDOM.hydrate(app, container);
+  } else {
+    ReactDOM.render(app, container);
+  }
 };
 
 if (module.hot) {
