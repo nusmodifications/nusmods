@@ -6,6 +6,7 @@ import chokidar from 'chokidar';
 import ReactDOM from 'react-dom/server';
 import App from './App';
 import configureStore from './configure-store';
+import * as data from './data';
 
 // Load HTML template
 const templatePath = 'dist/index.html';
@@ -23,18 +24,18 @@ const app = new Koa();
 app
   .use(async (ctx, next) => {
     // Development proxy for static CSS and JS files
-    if (process.env.NODE_ENV !== 'production' && /\.(js|css)$/.test(ctx.path)) {
-      const filename = path.basename(ctx.path);
+    if (process.env.NODE_ENV !== 'production' && /\.(css|png)$/.test(ctx.path)) {
       const dirname = path.dirname(templatePath);
-      ctx.body = await fs.readFile(path.join(dirname, filename), 'utf-8');
       ctx.type = path.extname(ctx.path);
+      ctx.body = fs.createReadStream(path.join(dirname, ctx.path));
     } else {
-      next();
+      await next();
     }
   })
   .use(async (ctx) => {
     const store = configureStore();
-    const html = ReactDOM.renderToString(App({ store, location: ctx.href }));
+    store.dispatch(await data.getModuleList());
+    const html = ReactDOM.renderToString(App({ store, location: ctx.url }));
     const state = JSON.stringify(store.getState());
 
     // Zalgo have mercy on me
