@@ -1,38 +1,79 @@
 // @flow
 import fs from 'mz/fs';
 import path from 'path';
-import Koa from 'koa';
+import Koa, { type Middleware } from 'koa';
 import chokidar from 'chokidar';
 import ReactDOM from 'react-dom/server';
+import Raven from 'raven';
 import App from './App';
 import configureStore from './configure-store';
 import * as data from './data';
 
-// Load HTML template
-const templatePath = 'dist/index.html';
-let template: string;
+const isProduction = process.env.NODE_ENV === 'production';
 
-const loadTemplate = () =>
-  fs.readFile(templatePath, 'utf-8').then((file) => {
-    template = file;
-  });
+if (isProduction) {
+  Raven.config('https://dd204e9197b242bf82cfcaafef0cfd5a@sentry.io/1210682').install();
+}
 
-chokidar.watch(templatePath).on('change', loadTemplate);
+export default class Server {
+  templatePath: string;
+  template: ?string;
+  port: number;
+  app: Koa;
 
-const app = new Koa();
+  containerString = '<div id="app"></div>';
 
-app
-  .use(async (ctx, next) => {
-    // Development proxy for static CSS and JS files
-    if (process.env.NODE_ENV !== 'production' && /\.(css|png)$/.test(ctx.path)) {
-      const dirname = path.dirname(templatePath);
+  constructor(templatePath: string = 'dist/index.html', port: number = 4000) {
+    this.templatePath = templatePath;
+    this.port = port;
+    this.app = new Koa();
+
+    // Define routes
+    this.app.use(this.errorHandler);
+
+    if (!isProduction) {
+      this.app.use(this.proxyAssets);
+    }
+
+    this.app.use(this.ssr);
+  }
+
+  // Routes
+  errorHandler: Middleware = async (ctx, next) => {
+    try {
+      await next();
+    } catch (e) {
+      if (isProduction) {
+        Raven.captureException(e);
+
+        // If SSR failed for any reason, we fall back to the client side rendering template
+        // TODO: Fix this
+        // $FlowFixMe - let's assume template is defined for now
+        ctx.body = this.template;
+      } else {
+        console.error(e); // eslint-disable-line no-console
+        throw e;
+      }
+    }
+  };
+
+  proxyAssets: Middleware = async (ctx, next) => {
+    if (/\.(css|png)$/.test(ctx.path)) {
+      const dirname = path.dirname(this.templatePath);
       ctx.type = path.extname(ctx.path);
       ctx.body = fs.createReadStream(path.join(dirname, ctx.path));
     } else {
       await next();
     }
-  })
-  .use(async (ctx) => {
+  };
+
+  ssr: Middleware = async (ctx) => {
+    const template = this.template;
+    if (typeof template !== 'string') {
+      ctx.throw(500, 'Server is not ready yet, come back in a bit');
+      return;
+    }
+
     const store = configureStore();
     store.dispatch(await data.getModuleList());
     const html = ReactDOM.renderToString(App({ store, location: ctx.url }));
@@ -40,11 +81,24 @@ app
 
     // Zalgo have mercy on me
     ctx.body = template.replace(
-      '<div id="app"></div>',
+      this.containerString,
       `<div id="app">${html}</div>
      <script>window.REDUX_STATE = ${state}</script>`,
     );
-  });
+  };
 
-// Start server
-loadTemplate().then(() => app.listen(4000));
+  loadTemplate = () =>
+    fs.readFile(this.templatePath, 'utf-8').then((file) => {
+      this.template = file;
+    });
+
+  startServer() {
+    chokidar.watch(this.templatePath).on('change', this.loadTemplate);
+    this.loadTemplate().then(() => this.app.listen(this.port));
+  }
+}
+
+if (require.main === module) {
+  const server = new Server();
+  server.startServer();
+}
