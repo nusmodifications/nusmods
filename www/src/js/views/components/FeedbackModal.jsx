@@ -7,6 +7,7 @@ import type { State } from 'reducers';
 
 import config from 'config';
 import { toggleFeedback } from 'actions/app';
+import serverSkip from 'views/hocs/serverSkip';
 import { Heart, GitHub, Facebook, Mail } from './icons';
 import CloseButton from './CloseButton';
 import Modal from './Modal';
@@ -68,9 +69,11 @@ export class FeedbackModalComponent extends PureComponent<Props> {
   }
 }
 
+const ServerSkipFeedbackModal = serverSkip(FeedbackModalComponent);
+
 export default connect(
   (state: State) => ({
     isOpen: state.app.isFeedbackModalOpen,
   }),
   { toggleFeedback },
-)(FeedbackModalComponent);
+)(ServerSkipFeedbackModal);
