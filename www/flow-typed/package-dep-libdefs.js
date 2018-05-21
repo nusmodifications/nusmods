@@ -15,3 +15,7 @@ declare module 'bowser' {
 declare module 'chokidar' {
   declare module.exports: any;
 }
+
+declare module 'raven' {
+  declare module.exports: any;
+}
