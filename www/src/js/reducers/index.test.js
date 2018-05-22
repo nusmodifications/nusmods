@@ -39,7 +39,7 @@ const exportData: ExportData = {
   },
 };
 
-jest.mock('storage/persistReducer', () => (key, reducer) => reducer);
+jest.mock('storage/persistReducer');
 
 test('reducers should set export data state', () => {
   const state = reducers(({}: any), setExportedData(modules, exportData));
