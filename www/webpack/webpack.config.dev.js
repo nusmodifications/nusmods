@@ -33,6 +33,7 @@ const developmentConfig = merge([
         template: path.join(parts.PATHS.app, 'index.html'),
         cache: true,
       }),
+      new parts.RemoveMustachePlugin(),
       new AutoDllPlugin({
         inject: true, // will inject the DLL bundles to index.html
         filename: parts.DLL.FILE_FORMAT,

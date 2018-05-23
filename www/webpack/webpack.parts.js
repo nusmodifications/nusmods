@@ -322,3 +322,22 @@ exports.appVersion = () => {
 exports.PATHS = PATHS;
 exports.VENDOR = VENDOR;
 exports.DLL = DLL;
+
+/**
+ * Tiny Webpack plugin that hooks into Webpack HTML plugin and strips out the {{{ }}}
+ * mustache templates used for SSR
+ *
+ * @type {RemoveMustachePlugin}
+ */
+exports.RemoveMustachePlugin = class {
+  /* eslint-disable class-methods-use-this, no-param-reassign */
+  apply(compiler) {
+    compiler.plugin('compilation', (compilation) => {
+      compilation.plugin('html-webpack-plugin-before-html-processing', (data, cb) => {
+        data.html = data.html.replace(/{{3}\w+}{3}/g, '');
+        cb(null, data);
+      });
+    });
+  }
+  /* eslint-enable */
+};

@@ -4,15 +4,30 @@ import path from 'path';
 import Koa, { type Middleware } from 'koa';
 import chokidar from 'chokidar';
 import ReactDOM from 'react-dom/server';
+import Helmet from 'react-helmet';
 import Raven from 'raven';
+import Mustache from 'mustache';
+
+import type { PageTemplateData } from 'types/ssr';
 import App from './App';
 import configureStore from './configure-store';
 import * as data from './data';
+import placeholders from './placeholders';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
 if (isProduction) {
   Raven.config('https://dd204e9197b242bf82cfcaafef0cfd5a@sentry.io/1210682').install();
+}
+
+function renderHelmet(helmet): PageTemplateData {
+  return {
+    htmlAttributes: helmet.htmlAttributes.toString(),
+    bodyAttributes: helmet.bodyAttributes.toString(),
+    titleTag: helmet.title.toString(),
+    metaTags: helmet.meta.toString(),
+    linkTags: helmet.link.toString(),
+  };
 }
 
 export default class Server {
@@ -49,7 +64,7 @@ export default class Server {
         // If SSR failed for any reason, we fall back to the client side rendering template
         // TODO: Fix this
         // $FlowFixMe - let's assume template is defined for now
-        ctx.body = this.template;
+        ctx.body = Mustache.render(this.template, placeholders);
       } else {
         console.error(e); // eslint-disable-line no-console
         throw e;
@@ -74,22 +89,27 @@ export default class Server {
       return;
     }
 
+    // Prepare data
     const store = configureStore();
     store.dispatch(await data.getModuleList());
-    const html = ReactDOM.renderToString(App({ store, location: ctx.url }));
-    const state = JSON.stringify(store.getState());
 
-    // Zalgo have mercy on me
-    ctx.body = template.replace(
-      this.containerString,
-      `<div id="app">${html}</div>
-     <script>window.REDUX_STATE = ${state}</script>`,
-    );
+    // Prepare HTML - view contains the HTML snippets to be injected into the
+    // Mustache template
+    const html = ReactDOM.renderToString(App({ store, location: ctx.url }));
+    const view = renderHelmet(Helmet.renderStatic());
+    view.app = html;
+    const state = JSON.stringify(store.getState());
+    view.script = `<script>window.REDUX_STATE = ${state}</script>`;
+
+    ctx.body = Mustache.render(template, view);
   };
 
   loadTemplate = () =>
     fs.readFile(this.templatePath, 'utf-8').then((file) => {
       this.template = file;
+
+      Mustache.clearCache();
+      Mustache.parse(file);
     });
 
   startServer() {

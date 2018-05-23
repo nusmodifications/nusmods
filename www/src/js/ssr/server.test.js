@@ -1,6 +1,20 @@
 // @flow
+import fs from 'fs';
+import path from 'path';
 import request from 'supertest';
+import cheerio from 'cheerio';
 import Server from './server';
+
+// Get around React Side Effect freaking out because it mistakes JSDOM for
+// the real DOM
+jest.mock('exenv', () => ({
+  canUseDOM: false,
+}));
+
+// Silence 'failed to create sync storage' console message from redux-persist
+jest.mock('storage/persistReducer');
+
+const template = fs.readFileSync(path.resolve(__dirname, '../../index.html'), 'utf-8');
 
 describe(Server, () => {
   let server: Server;
@@ -15,12 +29,16 @@ describe(Server, () => {
 
   beforeEach(() => {
     server = new Server();
-    server.template = server.containerString;
+    server.template = template;
   });
 
   test('should serve /faq', async () => {
     const response = await request(server.app.callback()).get('/faq');
+    const $ = cheerio.load(response.text);
+
     expect(response.status).toEqual(200);
+    expect($('h2').text()).toContain('Frequently Asked Questions');
+    expect($('title').text()).toContain('FAQ');
   });
 
   test('should serve /team', async () => {
