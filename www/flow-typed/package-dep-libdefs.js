@@ -16,6 +16,10 @@ declare module 'chokidar' {
   declare module.exports: any;
 }
 
+declare module 'mustache' {
+  declare module.exports: any;
+}
+
 declare module 'raven' {
   declare module.exports: any;
 }

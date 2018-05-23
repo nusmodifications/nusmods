@@ -117,6 +117,7 @@
     "localforage": "1.6.0",
     "lodash": "4.17.5",
     "mousetrap": "1.6.1",
+    "mustache": "^2.3.0",
     "mz": "2.7.0",
     "no-scroll": "2.1.0",
     "nusmoderator": "2.1.1",
