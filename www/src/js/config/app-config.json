@@ -35,5 +35,9 @@
     "githubRepo": "https://github.com/nusmodifications/nusmods",
     "messenger": "https://m.me/nusmods",
     "twitter": "https://twitter.com/nusmods"
+  },
+  "ssr": {
+    "template": "dist/index.html",
+    "api": "../api.nusmods.com"
   }
 }

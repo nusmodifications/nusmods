@@ -57,6 +57,11 @@ export type Config = {
   holidays: Date[],
 
   corsSchedule: CorsRound[],
+
+  ssr: {
+    template: string,
+    api: string,
+  },
 };
 
 function convertCorsDate(roundData: Object): CorsRound {
