@@ -145,7 +145,7 @@ declare module "react-router-dom" {
     Component: React$ComponentType<{| ...ContextRouter, ...P |}>
   ): React$ComponentType<P>;
 
-  declare type MatchPathOptions = {
+  declare export type MatchPathOptions = {
     path?: string,
     exact?: boolean,
     sensitive?: boolean,
