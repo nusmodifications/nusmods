@@ -4,12 +4,13 @@ import type { DisqusConfig } from 'types/views';
 import React, { PureComponent } from 'react';
 import config from 'config';
 import insertScript from 'utils/insertScript';
+import serverSkip from 'views/hocs/serverSkip';
 
 type Props = DisqusConfig;
 
 const SCRIPT_ID = 'dsq-embed-scr';
 
-export default class DisqusComments extends PureComponent<Props> {
+class DisqusCommentsComponent extends PureComponent<Props> {
   componentDidMount() {
     this.loadInstance();
   }
@@ -52,3 +53,5 @@ export default class DisqusComments extends PureComponent<Props> {
     return <div id="disqus_thread" />;
   }
 }
+
+export default serverSkip(DisqusCommentsComponent);

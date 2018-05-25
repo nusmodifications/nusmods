@@ -5,31 +5,30 @@ import React, { PureComponent } from 'react';
 import config from 'config';
 import insertScript from 'utils/insertScript';
 import { MessageSquare } from 'views/components/icons';
+import serverSkip from 'views/hocs/serverSkip';
 import styles from './CommentCount.scss';
 
 type Props = DisqusConfig;
 
 const SCRIPT_ID = 'dsq-count-scr';
 
-export default class CommentCount extends PureComponent<Props> {
+class CommentCountComponent extends PureComponent<Props> {
   static loadInstance() {
-    if (window.document.getElementById(SCRIPT_ID)) {
-      if (window.DISQUSWIDGETS) {
-        window.DISQUSWIDGETS.getCount({
-          reset: true,
-        });
-      }
+    if (window.DISQUSWIDGETS) {
+      window.DISQUSWIDGETS.getCount({
+        reset: true,
+      });
     } else {
       insertScript(`https://${config.disqusShortname}.disqus.com/count.js`, SCRIPT_ID, true);
     }
   }
 
   componentDidMount() {
-    CommentCount.loadInstance();
+    CommentCountComponent.loadInstance();
   }
 
   componentDidUpdate() {
-    CommentCount.loadInstance();
+    CommentCountComponent.loadInstance();
   }
 
   render() {
@@ -49,3 +48,5 @@ export default class CommentCount extends PureComponent<Props> {
     );
   }
 }
+
+export default serverSkip(CommentCountComponent);
