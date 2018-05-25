@@ -32,30 +32,32 @@ describe(Server, () => {
     process.env.IS_SSR = 'true';
 
     // Mock API so all data come locally
-    beforeEach(() => {
-      jest.spyOn(axios, 'get').mockImplementation(async (url) => {
-        if (url.endsWith(`${MODULE_CODE}.json`)) {
-          return mockResponse(CS1010S);
-        }
-
-        if (url.endsWith('moduleList.json')) {
-          return mockResponse(moduleList);
-        }
-
-        throw new Error(`Unknown url ${url} requested`);
-      });
-    });
+    beforeEach(() => {});
   });
 
   afterAll(() => {
     delete process.env.IS_SSR;
-
-    axios.get.mockRestore();
   });
 
   beforeEach(() => {
     server = new Server();
     server.template = template;
+
+    jest.spyOn(axios, 'get').mockImplementation(async (url) => {
+      if (url.endsWith(`${MODULE_CODE}.json`)) {
+        return mockResponse(CS1010S);
+      }
+
+      if (url.endsWith('moduleList.json')) {
+        return mockResponse(moduleList);
+      }
+
+      throw new Error(`Unknown url ${url} requested`);
+    });
+  });
+
+  afterEach(() => {
+    axios.get.mockRestore();
   });
 
   test('should serve /faq', async () => {
@@ -72,8 +74,27 @@ describe(Server, () => {
     expect(response.status).toEqual(200);
   });
 
+  test('should serve module info page', async () => {
+    const response = await request(server.app.callback()).get(
+      '/modules/CS1010S/programming-methodology',
+    );
+    const $ = cheerio.load(response.text);
+
+    console.log(response.text.slice(5000, 10000));
+
+    expect(axios.get.mock.calls).toHaveLength(2);
+
+    expect(response.status).toEqual(200);
+    expect($('h1').text()).toContain('CS1010S Programming Methodology');
+  });
+
   test('should return 404 on a non-existent page', async () => {
     const response = await request(server.app.callback()).get('/does-not-exist');
+
+    console.log(response.text.slice(5000, 10000));
+    const $ = cheerio.load(response.text);
+    expect($('h1').text()).toContain('page not found');
+
     expect(response.status).toEqual(404);
   });
 });
