@@ -12,3 +12,8 @@ export type PageTemplateData = {
   app?: string,
   script?: string,
 };
+
+export type ServerRouterContext = {
+  status?: number,
+  url?: string,
+};

@@ -12,6 +12,7 @@ import type { PageTemplateData } from 'types/ssr';
 import App from './App';
 import configureStore from './configure-store';
 import * as data from './data';
+import getDataLoader from './routes';
 import placeholders from './placeholders';
 
 const isProduction = process.env.NODE_ENV === 'production';
@@ -36,8 +37,6 @@ export default class Server {
   port: number;
   app: Koa;
 
-  containerString = '<div id="app"></div>';
-
   constructor(templatePath: string = 'dist/index.html', port: number = 4000) {
     this.templatePath = templatePath;
     this.port = port;
@@ -53,7 +52,9 @@ export default class Server {
     this.app.use(this.ssr);
   }
 
-  // Routes
+  /**
+   * Middleware
+   */
   errorHandler: Middleware = async (ctx, next) => {
     try {
       await next();
@@ -73,7 +74,7 @@ export default class Server {
   };
 
   proxyAssets: Middleware = async (ctx, next) => {
-    if (/\.(css|png)$/.test(ctx.path)) {
+    if (/\.(css|png|js)$/.test(ctx.path)) {
       const dirname = path.dirname(this.templatePath);
       ctx.type = path.extname(ctx.path);
       ctx.body = fs.createReadStream(path.join(dirname, ctx.path));
@@ -93,9 +94,27 @@ export default class Server {
     const store = configureStore();
     store.dispatch(await data.getModuleList());
 
+    // Fetch data
+    const dataLoader = getDataLoader(ctx.path);
+    if (dataLoader) {
+      await dataLoader(store);
+    }
+
     // Prepare HTML - view contains the HTML snippets to be injected into the
     // Mustache template
-    const html = ReactDOM.renderToString(App({ store, location: ctx.url }));
+    const context = {};
+    const html = ReactDOM.renderToString(App({ store, context, location: ctx.url }));
+
+    // Check for redirect
+    if (context.url) {
+      ctx.redirect(context.url);
+      return;
+    }
+
+    if (context.status) {
+      ctx.status = context.status;
+    }
+
     const view = renderHelmet(Helmet.renderStatic());
     view.app = html;
     const state = JSON.stringify(store.getState());
@@ -104,6 +123,9 @@ export default class Server {
     ctx.body = Mustache.render(template, view);
   };
 
+  /**
+   * Templates
+   */
   loadTemplate = () =>
     fs.readFile(this.templatePath, 'utf-8').then((file) => {
       this.template = file;
