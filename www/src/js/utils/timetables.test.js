@@ -50,7 +50,7 @@ import pc1222 from '__mocks__/modules/PC1222.json';
 /** @var {Module} */
 import cs4243 from '__mocks__/modules/CS4243.json';
 
-import modulesList from '__mocks__/module-list.json';
+import modulesMap from '__mocks__/module-map.json';
 
 import timetable from '__mocks__/sem-timetable.json';
 import lessonsArray from '__mocks__/lessons-array.json';
@@ -509,14 +509,14 @@ test('isSameTimetableConfig', () => {
 
 describe('validateTimetableModules', () => {
   test('should leave valid modules untouched', () => {
-    expect(validateTimetableModules({}, modulesList)).toEqual([{}, []]);
+    expect(validateTimetableModules({}, modulesMap)).toEqual([{}, []]);
     expect(
       validateTimetableModules(
         {
           CS1010S: {},
           CS2100: {},
         },
-        modulesList,
+        modulesMap,
       ),
     ).toEqual([{ CS1010S: {}, CS2100: {} }, []]);
   });
@@ -528,7 +528,7 @@ describe('validateTimetableModules', () => {
           DEADBEEF: {},
           CS2100: {},
         },
-        modulesList,
+        modulesMap,
       ),
     ).toEqual([{ CS2100: {} }, ['DEADBEEF']]);
   });

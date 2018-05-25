@@ -1,0 +1,3410 @@
+[
+  {
+    "ModuleCode": "ACC1002",
+    "ModuleTitle": "Financial Accounting",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "ACC1002X",
+    "ModuleTitle": "Financial Accounting",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "ACC1006",
+    "ModuleTitle": "Accounting Information Systems",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "ACC1701",
+    "ModuleTitle": "Accounting for Decision Makers",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "ACC1701X",
+    "ModuleTitle": "Accounting for Decision Makers",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "ACC2002",
+    "ModuleTitle": "Managerial Accounting",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "ACC2706",
+    "ModuleTitle": "Managerial Accounting",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "ACC2707",
+    "ModuleTitle": "Corporate Accounting & Reporting I",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "ACC3601",
+    "ModuleTitle": "Corporate Accounting and Reporting",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "ACC3602",
+    "ModuleTitle": "Managerial Planning and Control",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "ACC3603",
+    "ModuleTitle": "Assurance and Attestation",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "ACC3604",
+    "ModuleTitle": "Corporate and Securities Law",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "ACC3605",
+    "ModuleTitle": "Taxation",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "ACC3606",
+    "ModuleTitle": "Advanced Corporate Accounting and Reporting",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "ACC3611",
+    "ModuleTitle": "Corporate Governance and Ethics",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "ACC3612",
+    "ModuleTitle": "Risk Management and Internal Control",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "ACC3613",
+    "ModuleTitle": "Advanced Assurance and Attestation",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "ACC3614",
+    "ModuleTitle": "Valuation",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "ACC3615",
+    "ModuleTitle": "Accounting Theory",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BMK6101",
+    "ModuleTitle": "Marketing Seminar: Perspectives in Consumer Behavior",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BMK6104",
+    "ModuleTitle": "Marketing Seminar: Marketing Theory & Research",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BMK6107",
+    "ModuleTitle": "Empirical Modelling in Marketing (II)",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BMK6110I",
+    "ModuleTitle": "Field Experiments and Behavioral Economics Modeling",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BMK6111N",
+    "ModuleTitle":
+      "Seminar in Marketing Strategy and Industrial Organization II",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BMK6111O",
+    "ModuleTitle": "Marketing Strategy",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BMM5001",
+    "ModuleTitle": "Leadership and Management",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BMM5002",
+    "ModuleTitle": "Asia-Pacific Economic and Business Environment",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BMM5003",
+    "ModuleTitle": "Business Finance & Growth Economics for Policy Makers",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BMM5101",
+    "ModuleTitle": "Judgment and Decision-Making for Modern Policy Makers",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BMM5105",
+    "ModuleTitle": "Real Estate Fundamentals and City Planning",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BMO5000",
+    "ModuleTitle": "Block Seminar",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BMO5002",
+    "ModuleTitle": "Business Project",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BMO5003",
+    "ModuleTitle": "Workplace and Corporate Deviance",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BMO5004",
+    "ModuleTitle": "Special Topics in Organizational Behavior",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BMO6012A",
+    "ModuleTitle": "Organizational Behavior Seminar: Interpersonal Relations",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BMO6013A",
+    "ModuleTitle":
+      "Organizational Behavior Seminar: Motivation and Work Behavior",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BMO6014A",
+    "ModuleTitle":
+      "Organizational Behavior Seminar: Social Capital Theory & Methods",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BMO6017A",
+    "ModuleTitle": "Human Resource Management Seminar: Challenges",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BMP5001",
+    "ModuleTitle": "Venture Capital",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BMP5002",
+    "ModuleTitle": "Asian Business Environment",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BMS5107",
+    "ModuleTitle": "Ethical Leadership and Corporate Strategy",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BMS5108",
+    "ModuleTitle": "Macroeconomics and Finance: Perspectives from Asia",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BMS5109",
+    "ModuleTitle": "Strategy: Bridging the Planning – Implementation Divide",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BMS5202",
+    "ModuleTitle": "Global Supply Chain Management",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BMS5203",
+    "ModuleTitle": "The Knowledge & Innovation Economy 4.0",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BMS5303",
+    "ModuleTitle": "Valuation and Mergers & Acquisitions",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BMS5304",
+    "ModuleTitle": "Selected Topics in Finance: Private Equity",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BMS5305",
+    "ModuleTitle": "Entrepreneurial Finance",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BMS5403",
+    "ModuleTitle": "Global Management Practice",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BMS5404",
+    "ModuleTitle": "Becoming Future Prepared Global Leaders",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BMS5405",
+    "ModuleTitle": "New Venture Creation Practicum: Lean Startup Method",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BMS5406",
+    "ModuleTitle": "Asian Leadership",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BMS5502",
+    "ModuleTitle": "Marketing Practice & Impact",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BMS5503",
+    "ModuleTitle": "Pricing",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BMS5504",
+    "ModuleTitle": "Marketing Analysis and Decision Making",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BMS5505",
+    "ModuleTitle": "Marketing in the Digital Age",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BMU5001",
+    "ModuleTitle": "Leadership & Managerial Skills",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BMU5003",
+    "ModuleTitle": "Economic Analysis For Managers",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BMU5006",
+    "ModuleTitle": "Marketing Strategy",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BMU5007",
+    "ModuleTitle": "Corporate Finance",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BMU5008",
+    "ModuleTitle": "Corporate Governance, Business Law & Ethics",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BMU5014",
+    "ModuleTitle": "Contemporary Issues In Business",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BMU5015",
+    "ModuleTitle": "Competitive Strategy & Business Policy",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BMU5017",
+    "ModuleTitle": "Management Practicum",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BN1101",
+    "ModuleTitle": "Engineering Principles and Practice I",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BN1102",
+    "ModuleTitle": "Engineering Principles and Practice II",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BN2001",
+    "ModuleTitle": "Independent Study",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "BN2102",
+    "ModuleTitle": "Bioengineering Data Analysis",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BN2103",
+    "ModuleTitle": "Bioengineering Design Workshop",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BN2201",
+    "ModuleTitle": "Quantitative Physiology for Bioengineers",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BN2202",
+    "ModuleTitle": "Introduction to Biotransport",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BN2204",
+    "ModuleTitle": "Fundamentals of Biomechanics",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BN2401",
+    "ModuleTitle": "Biosignals Processing",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BN2402",
+    "ModuleTitle": "Fundamentals of Bioinstrumentation",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BN3101",
+    "ModuleTitle": "Biomedical Engineering Design",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "BN3202",
+    "ModuleTitle": "Musculoskeletal Biomechanics",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BN3301",
+    "ModuleTitle": "Introduction To Biomaterials",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BN3401",
+    "ModuleTitle": "Biomedical Electronics & Systems",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BN3402",
+    "ModuleTitle": "Bio-Analytical Methods In Bioengineering",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BN3501",
+    "ModuleTitle": "Equilibrium and Kinetic Bioprocesses",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BN4101",
+    "ModuleTitle": "B.Eng. Dissertation",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "BN4101R",
+    "ModuleTitle": "B.Eng. Dissertation",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "BN4201",
+    "ModuleTitle": "Tissue Biomechanics",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BN4202",
+    "ModuleTitle": "Biofluids Dynamics",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BN4203",
+    "ModuleTitle": "Rehabilitation Engineering",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BN4301",
+    "ModuleTitle": "Principles Of Tissue Engineering",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BN4402",
+    "ModuleTitle": "Electrophysiology",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BN4403",
+    "ModuleTitle": "Cellular Bioengineering",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BN4404",
+    "ModuleTitle": "Bioelectromechanical Systems - Biomems",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BN4406",
+    "ModuleTitle": "Biophotonics And Bioimaging",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BN4501",
+    "ModuleTitle": "Engineering Biology",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BN5101",
+    "ModuleTitle": "Biomedical Engineering Systems",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BN5102",
+    "ModuleTitle": "Clinical Instrumentation",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BN5104",
+    "ModuleTitle": "Quantitative Physiology Principles In Bioengineering",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BN5201",
+    "ModuleTitle": "Advanced Biomaterials",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BN5202",
+    "ModuleTitle": "Advanced Tissue Biomechanics",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BN5203",
+    "ModuleTitle": "Advanced Tissue Engineering",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BN5205",
+    "ModuleTitle": "Computational Biomechanics",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BN5207",
+    "ModuleTitle": "Medical Imaging Systems",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BN5208",
+    "ModuleTitle": "Biomedical Quality and Regulatory Systems",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BN5209",
+    "ModuleTitle": "Neurosensors And Signal Processing",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BN5210",
+    "ModuleTitle": "Biosensors And Biochips",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BN5501",
+    "ModuleTitle": "The Singapore-Stanford Biodesign Process",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BN5666",
+    "ModuleTitle": "Industrial Attachment",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BN5999",
+    "ModuleTitle": "Graduate Seminars",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "BN6202",
+    "ModuleTitle": "Advanced Human Motion Biomechanics",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BN6209",
+    "ModuleTitle": "Neurotechnology",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BN6401",
+    "ModuleTitle": "Advanced Quantitative Fluorescence Microscopy",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BN6999",
+    "ModuleTitle": "Doctoral Seminars",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "BPM1701",
+    "ModuleTitle": "Calculus and Statistics",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "BPM1702",
+    "ModuleTitle": "Microsoft Excel Skills for Business",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "BPM1705",
+    "ModuleTitle": "Understanding How Business Works",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "BPS5000",
+    "ModuleTitle": "Dissertation",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "BPS5111",
+    "ModuleTitle": "Integrated Building Design",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BPS5112",
+    "ModuleTitle": "Green Building Integration and Evaluation Studio",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "BPS5221",
+    "ModuleTitle": "Microclimate Design",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BPS5222",
+    "ModuleTitle": "Indoor Environmental Quality",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BPS5223",
+    "ModuleTitle": "Building Energy Performance - Passive Systems",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BPS5224",
+    "ModuleTitle": "Building Energy Performance - Active Systems",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BPS5225",
+    "ModuleTitle":
+      "Building Energy Audit and Performance Measurement and Verification",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BPS5226",
+    "ModuleTitle": "Smart Buildings and Facilities",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BPS5227",
+    "ModuleTitle": "Maintainability and Green Facilities Management",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BPS5228",
+    "ModuleTitle": "Advanced Building Materials and Structures",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BPS5300",
+    "ModuleTitle": "Topics in Building Performance and Sustainability",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "BRP6551",
+    "ModuleTitle": "Graduate Research Seminar 1",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BRP6552",
+    "ModuleTitle": "Graduate Research Seminar 2",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BS5770",
+    "ModuleTitle": "Graduate Seminar",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "BS6770",
+    "ModuleTitle": "Phd Seminar",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "BSN3701",
+    "ModuleTitle": "Technological Innovation",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BSN3702",
+    "ModuleTitle": "New Venture Creation",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BSP1004",
+    "ModuleTitle": "Legal Environment Of Business",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "BSP1004X",
+    "ModuleTitle": "Legal Environment Of Business",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "BSP1005",
+    "ModuleTitle": "Managerial Economics",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "BSP1702",
+    "ModuleTitle": "Legal Environment of Business",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "BSP1702X",
+    "ModuleTitle": "Legal Environment of Business",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "BSP1703",
+    "ModuleTitle": "Managerial Economics",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "BSP1707",
+    "ModuleTitle": "Managerial Economics: Exposure",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BSP2001",
+    "ModuleTitle": "Macro And International Economics",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "BSP2005",
+    "ModuleTitle": "Asian Business Environments",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "BSP3001",
+    "ModuleTitle": "Strategic Management",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BSP3001A",
+    "ModuleTitle": "Strategic Management",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BSP3001B",
+    "ModuleTitle": "Strategic Management",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BSP3001C",
+    "ModuleTitle": "Strategic Management",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BSP3513",
+    "ModuleTitle": "Family Business",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BSP3516",
+    "ModuleTitle": "S'pore & ASEAN: Geoeconomics & Geopolitics of Business",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "BSP4513",
+    "ModuleTitle": "Econometrics: Theory and Practical Business Applications",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "BSS4003A",
+    "ModuleTitle": "SSIB: Innovation and Productivity",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BSS4003B",
+    "ModuleTitle": "Innovation and Productivity (with Econometrics)",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BT1101",
+    "ModuleTitle": "Introduction to Business Analytics",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "BT2101",
+    "ModuleTitle": "Decision Making Methods and Tools",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "BT2102",
+    "ModuleTitle": "Data Management and Visualisation",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "BT3101",
+    "ModuleTitle": "Business Analytics Capstone Project",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "BT3102",
+    "ModuleTitle": "Computational Methods for Business Analytics",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BT3103",
+    "ModuleTitle": "Application Systems Development for Business Analytics",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "BT4010",
+    "ModuleTitle": "Business Analytics Internship Programme",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BT4101",
+    "ModuleTitle": "B.Sc. (Business Analytics) Dissertation",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "BT4211",
+    "ModuleTitle": "Data-Driven Marketing",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BT4212",
+    "ModuleTitle": "Search Engine Optimization and Analytics",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BT4221",
+    "ModuleTitle": "Big Data Techniques and Technologies",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BT4222",
+    "ModuleTitle": "Mining Web Data for Business Insights",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BT5110",
+    "ModuleTitle": "Data Management and Warehousing",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BT5152",
+    "ModuleTitle": "Decision Making Technology for Business",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BX5101",
+    "ModuleTitle": "Business And The Environment",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BZD6000",
+    "ModuleTitle": "Applied Economics",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BZD6001",
+    "ModuleTitle": "Model Building Workshop I: Static Models",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BZD6003",
+    "ModuleTitle": "Applied Econometrics I",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BZD6004",
+    "ModuleTitle": "Applied Econometrics II",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BZD6006",
+    "ModuleTitle": "Organization Theory",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BZD6008",
+    "ModuleTitle": "Cognition and Affect",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BZD6009",
+    "ModuleTitle": "Motivation and Interpersonal Processes",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BZD6010",
+    "ModuleTitle": "Seminar In Research Methodology",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "BZD6011",
+    "ModuleTitle": "Advanced Quantitative Research Methods",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "BZD6012",
+    "ModuleTitle": "Experimental Methods for Behavioral Research",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CAS5101",
+    "ModuleTitle": "Theorizing from Asia",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CAS6101",
+    "ModuleTitle": "Asian Studies in Asia",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CAS6770",
+    "ModuleTitle": "Graduate Research Seminar",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CAS6880",
+    "ModuleTitle": "Topics in Comparative Asian Studies II",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CDM5101",
+    "ModuleTitle": "Fundamentals of Cancer Biology",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CDM5102",
+    "ModuleTitle": "Translational Cancer Research",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CE1101",
+    "ModuleTitle": "Civil Engineering Principles and Practice",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CE1102",
+    "ModuleTitle": "Principles & Practice in Infrastructure and Environment",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CE2112",
+    "ModuleTitle": "Soil Mechanics",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CE2134",
+    "ModuleTitle": "Hydraulics",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CE2155",
+    "ModuleTitle": "Structural Mechanics and Materials",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CE2183",
+    "ModuleTitle": "Construction Project Management",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CE2184",
+    "ModuleTitle": "Infrastructure & The Environment",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CE2407",
+    "ModuleTitle": "Engineering & Uncertainty Analyses",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CE2409",
+    "ModuleTitle": "Computer Applications in Civil Engineering",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CE3101",
+    "ModuleTitle": "Integrated Infrastructure Project",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CE3102",
+    "ModuleTitle": "Socio-economically sustainable developments",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CE3115",
+    "ModuleTitle": "Geotechnical Engineering",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CE3116",
+    "ModuleTitle": "Foundation Engineering",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CE3121",
+    "ModuleTitle": "Transportation Engineering",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CE3132",
+    "ModuleTitle": "Water Resources Engineering",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CE3155",
+    "ModuleTitle": "Structural Analysis",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CE3165",
+    "ModuleTitle": "Structural Concrete Design",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CE3166",
+    "ModuleTitle": "Structural Steel Design and System",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CE4103",
+    "ModuleTitle": "Design Project",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CE4104",
+    "ModuleTitle": "B. Eng. Dissertation",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CE4257",
+    "ModuleTitle": "Linear Finite Element Analysis",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CE4258",
+    "ModuleTitle": "Structural Stability & Dynamics",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CE4282",
+    "ModuleTitle": "Building Information Modeling for Project Management",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CE5001",
+    "ModuleTitle": "Research Project",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CE5101",
+    "ModuleTitle": "Seepage & Consolidation of Soils",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CE5104",
+    "ModuleTitle": "Underground Space",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CE5105",
+    "ModuleTitle": "Analytical & Numerical Methods In Foundation Engineering",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CE5106",
+    "ModuleTitle": "Ground Improvement",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CE5107",
+    "ModuleTitle": "Pile Foundations",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CE5108",
+    "ModuleTitle": "Earth Retaining Structures",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CE5111",
+    "ModuleTitle": "Underground Construction Design Project",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CE5112",
+    "ModuleTitle": "Structural Support Systems for Excavation",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CE5113",
+    "ModuleTitle": "Geotechnical Investigation & Monitoring",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CE5203",
+    "ModuleTitle": "Traffic Flow & Control",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CE5204",
+    "ModuleTitle": "Pavement Design & Rehabilitation",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CE5205",
+    "ModuleTitle": "Transportation Planning",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CE5207",
+    "ModuleTitle": "Pavement Network Management Systems",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CE5307",
+    "ModuleTitle": "Wave Hydrodynamics",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CE5308",
+    "ModuleTitle": "Coastal Processes & Sediment Transport",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CE5310",
+    "ModuleTitle": "Hydroinformatics",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CE5311",
+    "ModuleTitle": "Environmental modelling with computers",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CE5312",
+    "ModuleTitle": "River Mechanics",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CE5314",
+    "ModuleTitle": "HEWRM Project",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CE5377",
+    "ModuleTitle": "Numerical Methods in Mechanics & Envr. Flows",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CE5509",
+    "ModuleTitle": "Advanced Structural Steel Design",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CE5510",
+    "ModuleTitle": "Advanced Structural Concrete Design",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CE5513",
+    "ModuleTitle": "Plastic Analysis Of Structures",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CE5603",
+    "ModuleTitle": "Engineering Economics & Project Evaluation",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CE5604",
+    "ModuleTitle": "Advanced Concrete Technology",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CE5610",
+    "ModuleTitle": "Assessment and Retrofit of Concrete Structures",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CE5611",
+    "ModuleTitle": "Precast Concrete Technology",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CE5666",
+    "ModuleTitle": "Industrial Attachment",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CE5804",
+    "ModuleTitle": "Global Infrastructure Project Management",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CE5805",
+    "ModuleTitle": "Construction Equipment & Methods",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CE5806",
+    "ModuleTitle": "Construction Project and Site Control",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CE5881",
+    "ModuleTitle": "Topics In Geotechnical Engineering: Soil Dynamics",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CE5999",
+    "ModuleTitle": "Graduate Seminars",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CE6001",
+    "ModuleTitle": "Operations & Management Of Infrastructure Systems",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CE6002",
+    "ModuleTitle": "Analysis Of Civil Engineering Experiments",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CE6006",
+    "ModuleTitle": "Advanced Finite Element Analysis",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CE6077",
+    "ModuleTitle": "Advanced Numerical Methods in Mechanics & Envr. Flows",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CE6101",
+    "ModuleTitle": "Geotechnical Constitutive Modeling",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CE6102",
+    "ModuleTitle": "Geotechnical Analysis",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CE6999",
+    "ModuleTitle": "Doctoral Seminars",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CFG1010",
+    "ModuleTitle":
+      "Roots and Wings - Personal and Interpersonal Effectiveness 1.0",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CFG1020",
+    "ModuleTitle":
+      "Roots and Wings – Personal and Interpersonal Effectiveness 2.0",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CFG2001",
+    "ModuleTitle": "Career Catalyst",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CG1111",
+    "ModuleTitle": "Engineering Principles and Practice I",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CG1112",
+    "ModuleTitle": "Engineering Principles and Practice II",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CG2023",
+    "ModuleTitle": "Signals and Systems",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CG2271",
+    "ModuleTitle": "Real-Time Operating Systems",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CG3002",
+    "ModuleTitle": "Embedded Systems Design Project",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CG3207",
+    "ModuleTitle": "Computer Architecture",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CG4001",
+    "ModuleTitle": "B. Eng. Dissertation",
+    "Semesters": [3, 4, 1, 2]
+  },
+  {
+    "ModuleCode": "CH1101E",
+    "ModuleTitle": "Retelling Chinese Stories: Change and Continuity",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CH2121",
+    "ModuleTitle": "History of Chinese Literature",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CH2141",
+    "ModuleTitle": "General History of China",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CH2161",
+    "ModuleTitle": "Traditional Chinese Taxonomy of Learning",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CH2162",
+    "ModuleTitle": "Reading Classical Chinese Texts",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CH2228",
+    "ModuleTitle": "Ci Lyric in the Tang-Song Period",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CH2242",
+    "ModuleTitle": "A Global Perspective on Chinese Identities",
+    "Semesters": [4]
+  },
+  {
+    "ModuleCode": "CH2247",
+    "ModuleTitle": "Socio-Cultural Dimensions of Cross-Strait Relations",
+    "Semesters": [4]
+  },
+  {
+    "ModuleCode": "CH2252",
+    "ModuleTitle": "History of Chinese Philosophy",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CH2293",
+    "ModuleTitle": "Introduction to Chinese Art (taught in English)",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CH2299",
+    "ModuleTitle": "Art of Modern and Contemporary China (in English)",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CH2390",
+    "ModuleTitle": "Chinese Diasporas (in English)",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CH3221",
+    "ModuleTitle": "Selected Readings in Chinese Verse",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CH3243",
+    "ModuleTitle": "Chinese Cultural History",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CH3245",
+    "ModuleTitle": "Overseas Chinese Society",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CH3247",
+    "ModuleTitle": "Socio-Economic History of China",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CH3261",
+    "ModuleTitle": "Prescribed Text: The Four Books",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CH3297",
+    "ModuleTitle": "Chinese Business Enterprises and Management (in English)",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CH3298",
+    "ModuleTitle": "Chinese in Southeast Asia (in English)",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CH3550",
+    "ModuleTitle": "Chinese Studies Internship (taught in English)",
+    "Semesters": [3, 4]
+  },
+  {
+    "ModuleCode": "CH3551",
+    "ModuleTitle": "FASS Undergraduate Research Opportunity (UROP)",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CH4203",
+    "ModuleTitle": "Chinese Dialectology",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CH4204",
+    "ModuleTitle": "Selected Topics in Chinese Linguistics",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CH4207",
+    "ModuleTitle": "History of Chinese Language",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CH4224",
+    "ModuleTitle": "Studies in Chinese Verse",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CH4244",
+    "ModuleTitle": "Selected Topics on The Overseas Chinese",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CH4247",
+    "ModuleTitle": "Print Culture in Modern China",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CH4261",
+    "ModuleTitle": "Prescribed Text: Zhuangzi",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CH4281",
+    "ModuleTitle": "Translation Studies",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CH4401",
+    "ModuleTitle": "Honours Thesis",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CH4660",
+    "ModuleTitle": "Independent Study",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CH5210",
+    "ModuleTitle": "Chinese Lexical Semantics",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CH5210R",
+    "ModuleTitle": "Chinese Lexical Semantics",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CH5211",
+    "ModuleTitle": "Seminar in Chinese Pragmatics",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CH5211R",
+    "ModuleTitle": "Seminar In Chinese Pragmatics",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CH5212",
+    "ModuleTitle": "THEORIES IN PHONOLOGY (Taught in English)",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CH5212R",
+    "ModuleTitle": "Theories In Phonology (Taught In English)",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CH5213",
+    "ModuleTitle": "Cognitive Linguistics & Chinese Language",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CH5213R",
+    "ModuleTitle": "Cognitive Linguistics & Chinese Language",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CH5224",
+    "ModuleTitle": "Prescribed Texts In Literature",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CH5224R",
+    "ModuleTitle": "Prescribed Texts in Literature",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CH5247",
+    "ModuleTitle": "Business Culture in Traditional China",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CH5247R",
+    "ModuleTitle": "Business Culture in Traditional China",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CH5660",
+    "ModuleTitle": "Independent Study",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CH5880",
+    "ModuleTitle": "Topics in Applied Chinese Linguistics",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CH5880R",
+    "ModuleTitle": "Topics in Applied Chinese Linguistics",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CH6201",
+    "ModuleTitle": "Topics In Chinese Linguistics",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CH6203",
+    "ModuleTitle": "Grammaticalization and Chinese Grammar",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CH6243",
+    "ModuleTitle": "Seminar In Se Asian Chinese Studies",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CH6248",
+    "ModuleTitle": "Studies In Sino-S.e. Asian Interactions",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CH6262",
+    "ModuleTitle": "Independent Study In Chinese Studies",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CH6263",
+    "ModuleTitle": "Translation: Formal, Cultural, Political",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CH6770",
+    "ModuleTitle": "Graduate Research Seminar",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CHC5101",
+    "ModuleTitle": "Contemporary Research in Chinese Studies",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CHC5102",
+    "ModuleTitle": "Contemporary Research in Chinese Language",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CHC5301",
+    "ModuleTitle": "History and Civilizations of the Tang Empire",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CHC5302",
+    "ModuleTitle": "Chinese Buddhist Proselytic Literature",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CHC5303",
+    "ModuleTitle": "Traditional Chinese Culture in Singapore and Malaysia",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CHC5304",
+    "ModuleTitle": "Society and Culture of the Ming Dynasty",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CHC5305",
+    "ModuleTitle": "Prominent Nanyang Chinese in Modern China",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CHC5306",
+    "ModuleTitle": "Chinese Intellectual History, 10th – 19th Century",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CHC5309",
+    "ModuleTitle": "Economic & Management Thought in Pre-Modern China",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CHC5310",
+    "ModuleTitle": "Chinese Rhapsody",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CHC5312",
+    "ModuleTitle": "Tang-Song Poetry and Poetics",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CHC5313",
+    "ModuleTitle": "Thematics in Chinese Literature",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CHC5314",
+    "ModuleTitle": "Chinese Religion",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CHC5320",
+    "ModuleTitle": "Grammaticalization in Chinese",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CHC5322",
+    "ModuleTitle": "Pragmatics and Politeness",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CHC5323",
+    "ModuleTitle": "Special Topics in Chinese Linguistics",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CL1101E",
+    "ModuleTitle": "Chinese Language: Its Past and Present",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CL2101",
+    "ModuleTitle": "The Chinese Script : History and Issues",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CL2102",
+    "ModuleTitle": "Chinese Phonetics",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CL2103",
+    "ModuleTitle": "Chinese Grammar",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CL2104",
+    "ModuleTitle": "Reading/Writing Chinese",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CL2121",
+    "ModuleTitle": "History of Chinese Literature",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CL2210",
+    "ModuleTitle": "The Analysis of Chinese Morphosyntax",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CL2241",
+    "ModuleTitle": "General History of China",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CL2280",
+    "ModuleTitle": "Basic Translation",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CL2281",
+    "ModuleTitle": "Translation and Interpretation",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CL3202",
+    "ModuleTitle": "Chinese Lexicology",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CL3205",
+    "ModuleTitle": "Topics on Chinese Linguistics II",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CL3207",
+    "ModuleTitle": "Chinese Sociolinguistics",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CL3210",
+    "ModuleTitle": "The Grammars and Lexicons of the Chinese Dialects",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CL3213",
+    "ModuleTitle": "Chinese Semantics",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CL3221",
+    "ModuleTitle": "Selected Readings in Chinese Verse",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CL3281",
+    "ModuleTitle": "Advanced Translation",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CL3284",
+    "ModuleTitle": "Literary Translation",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CL3285",
+    "ModuleTitle": "Computer-Assisted Translation Tools",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CL3550",
+    "ModuleTitle": "Chinese Language Internship",
+    "Semesters": [3, 4]
+  },
+  {
+    "ModuleCode": "CL3551",
+    "ModuleTitle": "FASS Undergraduate Research Opportunity (UROP)",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CLC2201",
+    "ModuleTitle": "Community Development Practicum",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CM1111",
+    "ModuleTitle": "Inorganic Chemistry 1",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CM1121",
+    "ModuleTitle": "Organic Chemistry 1",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CM1131",
+    "ModuleTitle": "Physical Chemistry 1",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CM1191",
+    "ModuleTitle": "Experiments in Chemistry 1",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CM1401",
+    "ModuleTitle": "Chemistry for Life Sciences",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CM1402",
+    "ModuleTitle": "General Chemistry",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CM1417",
+    "ModuleTitle": "Fundamentals of Chemistry",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CM1501",
+    "ModuleTitle": "Organic Chemistry for Engineers",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CM1502",
+    "ModuleTitle": "General and Physical Chemistry for Engineers",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CM1502X",
+    "ModuleTitle": "General and Physical Chemistry for Engineers",
+    "Semesters": [3, 2]
+  },
+  {
+    "ModuleCode": "CM2101",
+    "ModuleTitle": "Physical Chemistry 2",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CM2111",
+    "ModuleTitle": "Inorganic Chemistry 2",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CM2121",
+    "ModuleTitle": "Organic Chemistry 2",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CM2191",
+    "ModuleTitle": "Experiments in Chemistry 2",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CM2192",
+    "ModuleTitle": "Experiments in Chemistry 3",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CM2288",
+    "ModuleTitle": "Basic UROPS in Chemistry I",
+    "Semesters": [3, 4, 1, 2]
+  },
+  {
+    "ModuleCode": "CM2289",
+    "ModuleTitle": "Basic UROPS In Chemistry II",
+    "Semesters": [3, 4, 1, 2]
+  },
+  {
+    "ModuleCode": "CM3201",
+    "ModuleTitle": "Principles of Chemical Processes",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CM3212",
+    "ModuleTitle": "Transition Metal Chemistry",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CM3221",
+    "ModuleTitle": "Organic Synthesis: The Disconnection Approach",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CM3222",
+    "ModuleTitle": "Organic Reaction Mechanisms",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CM3225",
+    "ModuleTitle": "Biomolecules",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CM3231",
+    "ModuleTitle": "Quantum Chem & Molecular Thermodynamics",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CM3232",
+    "ModuleTitle": "Phy Chem of the Solid State & Interfaces",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CM3242",
+    "ModuleTitle": "Instrumental Analysis II",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CM3251",
+    "ModuleTitle": "Nanochemistry",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CM3252",
+    "ModuleTitle": "Polymer Chemistry 1",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CM3253",
+    "ModuleTitle": "Materials Chemistry 1",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CM3261",
+    "ModuleTitle": "Environmental Chemistry",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CM3288",
+    "ModuleTitle": "Advanced UROPS in Chemistry I",
+    "Semesters": [3, 4, 1, 2]
+  },
+  {
+    "ModuleCode": "CM3289",
+    "ModuleTitle": "Advanced UROPS in Chemistry II",
+    "Semesters": [3, 4, 1, 2]
+  },
+  {
+    "ModuleCode": "CM3291",
+    "ModuleTitle": "Advanced Experiments In Organic & Inorganic Chemistry",
+    "Semesters": [3, 1, 2]
+  },
+  {
+    "ModuleCode": "CM3292",
+    "ModuleTitle": "Advanced Experiments In Analytical & Physical Chemistry",
+    "Semesters": [4, 1, 2]
+  },
+  {
+    "ModuleCode": "CM3295",
+    "ModuleTitle": "Selected Experiments in Analytical Chemistry",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CM3296",
+    "ModuleTitle": "Molecular Modelling: Theory & Practice",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CM3301",
+    "ModuleTitle": "Advanced Forensic Science",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CM3302",
+    "ModuleTitle": "Overseas Exploratory Project (Europe)",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CM3310",
+    "ModuleTitle": "Undergraduate Professional Internship Programme",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CM3311",
+    "ModuleTitle": "Undergraduate Professional Internship Programme",
+    "Semesters": [3, 4, 1]
+  },
+  {
+    "ModuleCode": "CM3312",
+    "ModuleTitle": "Enhanced Undergraduate Professional Internship Programme",
+    "Semesters": [3, 4, 1, 2]
+  },
+  {
+    "ModuleCode": "CM4199A",
+    "ModuleTitle": "Honours Project in Chemistry",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CM4201",
+    "ModuleTitle": "Directed Independent Study In Modern Chemistry",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CM4212",
+    "ModuleTitle": "Advanced Organometallic Chemistry",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CM4214",
+    "ModuleTitle": "Structural Methods in Inorganic Chem",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CM4215",
+    "ModuleTitle": "Bioinorganic Chemistry",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CM4225",
+    "ModuleTitle": "Organic Spectroscopy",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CM4227",
+    "ModuleTitle": "Chemical Biology",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CM4228",
+    "ModuleTitle": "Catalysis",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CM4238",
+    "ModuleTitle": "Selected Topics in Physical Chemistry",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CM4241",
+    "ModuleTitle": "Trace Analysis",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CM4242",
+    "ModuleTitle": "Advanced Analytical Techniques",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CM4251",
+    "ModuleTitle": "Characterization Techniques in Materials Chemistry",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CM4252",
+    "ModuleTitle": "Polymer Chemistry 2",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CM4253",
+    "ModuleTitle": "Materials Chemistry 2",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CM4254",
+    "ModuleTitle": "Chemistry of Semiconductors",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CM4258",
+    "ModuleTitle": "Advanced Polymer Science",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CM4269",
+    "ModuleTitle": "Sustainable & Green Chemistry",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CM4271",
+    "ModuleTitle": "Medicinal Chemistry",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CM4273",
+    "ModuleTitle": "Computational Drug Design",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CM4274",
+    "ModuleTitle": "The Art and Methodology in Total Synthesis",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CM4282",
+    "ModuleTitle": "Energy Resources",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CM4299",
+    "ModuleTitle": "Applied Project in Chemistry",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CM5100",
+    "ModuleTitle": "M.sc. Project",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CM5100A",
+    "ModuleTitle": "Advanced MSc Project",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CM5101",
+    "ModuleTitle": "Advanced Analysis and Characterization Techniques",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CM5151",
+    "ModuleTitle": "Energy Storage and Conversion Chemistry",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CM5152",
+    "ModuleTitle": "Water Chemistry and Environment",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CM5161",
+    "ModuleTitle": "Advanced Chemical Laboratory Safety",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CM5198",
+    "ModuleTitle": "Graduate Seminar Module in Chemistry",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CM5199",
+    "ModuleTitle": "M.Sc. R&D project",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CM5211",
+    "ModuleTitle": "Contemporary Organometallic Chemistry",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CM5212",
+    "ModuleTitle": "Crystal Engineering",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CM5221",
+    "ModuleTitle": "Advanced Organic Synthesis",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CM5224",
+    "ModuleTitle": "Emerging Concepts in Drug Discovery",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CM5225",
+    "ModuleTitle": "Asymmetric Catalysis",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CM5232",
+    "ModuleTitle": "Topics in Chemical Kinetics",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CM5237",
+    "ModuleTitle": "Advanced Optical Spectroscopy and Imaging",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CM5241",
+    "ModuleTitle": "Modern Analytical Techniques",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CM5244",
+    "ModuleTitle": "Topics in Environmental Chemistry",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CM5245",
+    "ModuleTitle": "Bioanalyticalchemistry",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CM5262",
+    "ModuleTitle": "Contemporary Materials Chemistry",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CM5268",
+    "ModuleTitle": "Advanced Organic Materials",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CN1101",
+    "ModuleTitle": "Chemical Engineering Principles and Practice I",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CN1102",
+    "ModuleTitle": "Chemical Engineering Principles and Practice II",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CN1111",
+    "ModuleTitle": "Chemical Engineering Principles",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CN1111E",
+    "ModuleTitle": "Chemical Engineering Principles",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CN2108",
+    "ModuleTitle": "Chemical Engineering Process Laboratory I",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CN2116",
+    "ModuleTitle": "Chemical Kinetics & Reactor Design",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CN2116E",
+    "ModuleTitle": "Chemical Kinetics And Reactor Design",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CN2121",
+    "ModuleTitle": "Chemical Engineering Thermodynamics",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CN2121E",
+    "ModuleTitle": "Chemical Engineering Thermodynamics",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CN2122",
+    "ModuleTitle": "Fluid Mechanics",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CN2122E",
+    "ModuleTitle": "Fluid Mechanics",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CN2125",
+    "ModuleTitle": "Heat & Mass Transfer",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CN2125E",
+    "ModuleTitle": "Heat And Mass Transfer",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CN3108",
+    "ModuleTitle": "Chemical Engineering Process Laboratory II",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CN3109",
+    "ModuleTitle": "Chemical Engineering Process Laboratory III",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CN3121",
+    "ModuleTitle": "Process Dynamics & Control",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CN3121E",
+    "ModuleTitle": "Process Dynamics & Control",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CN3124",
+    "ModuleTitle": "Fluid-Solid Systems",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CN3124E",
+    "ModuleTitle": "Particle Technology",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CN3132",
+    "ModuleTitle": "Separation Processes",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CN3132E",
+    "ModuleTitle": "Separation Processes",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CN3135",
+    "ModuleTitle": "Process Safety, Health and Environment",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CN3135E",
+    "ModuleTitle": "Process Safety, Health and Environment",
+    "Semesters": [3]
+  },
+  {
+    "ModuleCode": "CN3421",
+    "ModuleTitle": "Process Modeling And Numerical Simulation",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CN3421E",
+    "ModuleTitle": "Process Modeling & Numerical Simulation",
+    "Semesters": [3, 1]
+  },
+  {
+    "ModuleCode": "CN4118",
+    "ModuleTitle": "B.Eng. Dissertation",
+    "Semesters": [3, 4, 1, 2]
+  },
+  {
+    "ModuleCode": "CN4118E",
+    "ModuleTitle": "B.Tech. Dissertation",
+    "Semesters": [3, 1, 2]
+  },
+  {
+    "ModuleCode": "CN4118R",
+    "ModuleTitle": "B.Eng. Dissertation",
+    "Semesters": [3, 4, 1, 2]
+  },
+  {
+    "ModuleCode": "CN4119E",
+    "ModuleTitle": "B.Tech. Dissertation",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CN4122",
+    "ModuleTitle": "Process Synthesis and Simulation",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CN4122E",
+    "ModuleTitle": "Process Synthesis and Simulation",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CN4123",
+    "ModuleTitle": "Design Project",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CN4123E",
+    "ModuleTitle": "Design Project",
+    "Semesters": [3, 2]
+  },
+  {
+    "ModuleCode": "CN4123R",
+    "ModuleTitle": "Final Year Design Project",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CN4203R",
+    "ModuleTitle": "Polymer Engineering",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CN4205E",
+    "ModuleTitle": "Pinch Analysis and Process Integration",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CN4205R",
+    "ModuleTitle": "Pinch Analysis and Process Integration",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CN4208E",
+    "ModuleTitle": "Biochemical Engineering",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CN4210E",
+    "ModuleTitle": "Membrane Science And Engineering",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CN4211E",
+    "ModuleTitle": "Petrochemicals & Processing Technology",
+    "Semesters": [3]
+  },
+  {
+    "ModuleCode": "CN4211R",
+    "ModuleTitle": "Petrochemicals and Processing Technology",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CN4215E",
+    "ModuleTitle": "Food Technology And Engineering",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CN4215R",
+    "ModuleTitle": "Food Technology and Engineering",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CN4216E",
+    "ModuleTitle": "Electronic Materials Science",
+    "Semesters": [3]
+  },
+  {
+    "ModuleCode": "CN4216R",
+    "ModuleTitle": "Electronic Materials Science",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CN4221R",
+    "ModuleTitle": "Control of Industrial Processes",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CN4223R",
+    "ModuleTitle": "Microelectronic Thin Films",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CN4227E",
+    "ModuleTitle": "Advanced Process Control",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CN4227R",
+    "ModuleTitle": "Advanced Process Control",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CN4233E",
+    "ModuleTitle": "Good Manufacturing Practices in Pharmaceutical Industry",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CN4240E",
+    "ModuleTitle": "Unit Operations and Processes for Effluent Treatment",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CN4240R",
+    "ModuleTitle": "Unit Operations and Processes for Effluent Treatment",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CN4242E",
+    "ModuleTitle": "Optimization of Chemical Processes",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CN4246E",
+    "ModuleTitle": "Chemical And Bio-Catalysis",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CN4246R",
+    "ModuleTitle": "Chemical and Bio Catalysis",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CN4247R",
+    "ModuleTitle": "Enzyme Technology",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CN4248",
+    "ModuleTitle": "Sustainable Process Development",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CN4250",
+    "ModuleTitle": "Chemical Product Design",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CN4251",
+    "ModuleTitle": "Troubleshooting with Case Studies for Process Engineers",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CN5010",
+    "ModuleTitle":
+      "Mathematical Methods In Chemical & Environmental Engineering",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CN5020",
+    "ModuleTitle": "Advanced Reaction Engineering",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CN5030",
+    "ModuleTitle": "Advanced Chemical Engineering Thermodynamics",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CN5040",
+    "ModuleTitle": "Advanced Transport Phenomena",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CN5050",
+    "ModuleTitle": "Advanced Separation Processes",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CN5111",
+    "ModuleTitle": "Optimization Of Chemical Processes",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CN5161",
+    "ModuleTitle": "Polymer Processing Engineering",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CN5162",
+    "ModuleTitle": "Advanced Polymeric Materials",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CN5172",
+    "ModuleTitle": "Biochemical Engineering",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CN5173",
+    "ModuleTitle":
+      "Downstream Processing Of Biochemical & Pharmaceutical Products",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CN5191",
+    "ModuleTitle": "Project Engineering",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CN5192",
+    "ModuleTitle": "Future Fuel Options: Prospects and Technologies",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CN5193",
+    "ModuleTitle": "Instrumental Methods Of Analysis",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CN5222",
+    "ModuleTitle": "Pharmaceuticals & Fine Chemicals",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CN5251",
+    "ModuleTitle": "Membrane Science & Technology",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CN5555",
+    "ModuleTitle": "Chemical Engineering Project",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CN5666",
+    "ModuleTitle": "Industrial Attachment",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CN5999",
+    "ModuleTitle": "Graduate Seminars",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CN6020",
+    "ModuleTitle": "Advanced Reaction Engineering",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CN6162",
+    "ModuleTitle": "Advanced Polymeric Materials",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CN6163",
+    "ModuleTitle": "Inorganic Nanomaterials for Sustainability",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CN6251",
+    "ModuleTitle": "Membrane Science & Technology",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CN6999",
+    "ModuleTitle": "Doctoral Seminars",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CO5206",
+    "ModuleTitle": "Medical And Humanitarian Emergencies",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CO5210",
+    "ModuleTitle": "Practicum",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CO5231",
+    "ModuleTitle": "Field Practice",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "COS2000",
+    "ModuleTitle": "Computational Thinking for Scientists",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CP2106",
+    "ModuleTitle": "Independent Software Development Project (Orbital)",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CP2201",
+    "ModuleTitle": "Journey of the Innovator",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CP2202",
+    "ModuleTitle": "Work Experience Internship",
+    "Semesters": [3, 4, 1]
+  },
+  {
+    "ModuleCode": "CP3101A",
+    "ModuleTitle": "Global Open Source Project",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CP3106",
+    "ModuleTitle": "Independent Project",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CP3108A",
+    "ModuleTitle": "Independent Work",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CP3108B",
+    "ModuleTitle": "Independent Work",
+    "Semesters": [4, 1, 2]
+  },
+  {
+    "ModuleCode": "CP3109",
+    "ModuleTitle": "Overseas Exploratory Project",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CP3200",
+    "ModuleTitle": "Internship",
+    "Semesters": [3, 4, 1, 2]
+  },
+  {
+    "ModuleCode": "CP3201",
+    "ModuleTitle": "Industry Seminar",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CP3202",
+    "ModuleTitle": "Internship II",
+    "Semesters": [3, 4, 1, 2]
+  },
+  {
+    "ModuleCode": "CP3208",
+    "ModuleTitle": "Undergraduate Research in Computing I",
+    "Semesters": [3, 4, 1, 2]
+  },
+  {
+    "ModuleCode": "CP3209",
+    "ModuleTitle": "Undergraduate Research in Computing II",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CP3880",
+    "ModuleTitle": "Advanced Technology Attachment Programme",
+    "Semesters": [3, 4, 1, 2]
+  },
+  {
+    "ModuleCode": "CP4101",
+    "ModuleTitle": "B.Comp. Dissertation",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CP5010",
+    "ModuleTitle": "Graduate Research Paper",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CP5101",
+    "ModuleTitle": "MComp Dissertation",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CP5102",
+    "ModuleTitle": "MComp Information Security Project",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CP6010",
+    "ModuleTitle": "Doctoral Seminar",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CS1010",
+    "ModuleTitle": "Programming Methodology",
+    "Semesters": [4, 1, 2]
+  },
+  {
+    "ModuleCode": "CS1010E",
+    "ModuleTitle": "Programming Methodology",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CS1010J",
+    "ModuleTitle": "Programming Methodology",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CS1010R",
+    "ModuleTitle": "Programming Methodology",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CS1010S",
+    "ModuleTitle": "Programming Methodology",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CS1010X",
+    "ModuleTitle": "Programming Methodology",
+    "Semesters": [3, 2]
+  },
+  {
+    "ModuleCode": "CS1010XCP",
+    "ModuleTitle": "Programming Methodology",
+    "Semesters": [3, 2]
+  },
+  {
+    "ModuleCode": "CS1020",
+    "ModuleTitle": "Data Structures and Algorithms I",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CS1020E",
+    "ModuleTitle": "Data Structures and Algorithms I",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CS1101S",
+    "ModuleTitle": "Programming Methodology",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CS1231",
+    "ModuleTitle": "Discrete Structures",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CS1231R",
+    "ModuleTitle": "Discrete Structures",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CS2010",
+    "ModuleTitle": "Data Structures and Algorithms II",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CS2010R",
+    "ModuleTitle": "Data Structures and Algorithms II",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CS2030",
+    "ModuleTitle": "Programming Methodology II",
+    "Semesters": [4, 1, 2]
+  },
+  {
+    "ModuleCode": "CS2040",
+    "ModuleTitle": "Data Structures and Algorithms",
+    "Semesters": [4, 1, 2]
+  },
+  {
+    "ModuleCode": "CS2040C",
+    "ModuleTitle": "Data Structures and Algorithms",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CS2100",
+    "ModuleTitle": "Computer Organisation",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CS2100R",
+    "ModuleTitle": "Computer Organisation",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CS2101",
+    "ModuleTitle": "Effective Communication for Computing Professionals",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CS2102",
+    "ModuleTitle": "Database Systems",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CS2102R",
+    "ModuleTitle": "Database Systems",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CS2103",
+    "ModuleTitle": "Software Engineering",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CS2103R",
+    "ModuleTitle": "Software Engineering",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CS2103T",
+    "ModuleTitle": "Software Engineering",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CS2104",
+    "ModuleTitle": "Programming Language Concepts",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CS2104R",
+    "ModuleTitle": "Programming Language Concepts",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CS2105",
+    "ModuleTitle": "Introduction to Computer Networks",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CS2105R",
+    "ModuleTitle": "Introduction to Computer Networks",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CS2106",
+    "ModuleTitle": "Introduction to Operating Systems",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CS2107",
+    "ModuleTitle": "Introduction to Information Security",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CS2108",
+    "ModuleTitle": "Introduction to Media Computing",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CS2113",
+    "ModuleTitle": "Software Engineering & Object-Oriented Programming",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS2113T",
+    "ModuleTitle": "Software Engineering & Object-Oriented Programming",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS2220",
+    "ModuleTitle": "Introduction to Computational Biology",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CS2309",
+    "ModuleTitle": "CS Research Methodology",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CS3103",
+    "ModuleTitle": "Computer Networks Practice",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CS3201",
+    "ModuleTitle": "Software Engineering Project I",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CS3201R",
+    "ModuleTitle": "Software Engineering Project I",
+    "Semesters": [3, 1, 2]
+  },
+  {
+    "ModuleCode": "CS3202",
+    "ModuleTitle": "Software Engineering Project II",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CS3202R",
+    "ModuleTitle": "Software Engineering Project II",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CS3205",
+    "ModuleTitle": "Information Security Capstone Project",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CS3210",
+    "ModuleTitle": "Parallel Computing",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CS3211",
+    "ModuleTitle": "Parallel and Concurrent Programming",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS3216",
+    "ModuleTitle": "Software Product Engineering for Digital Markets",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CS3217",
+    "ModuleTitle": "Software Engineering on Modern Application Platforms",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS3218",
+    "ModuleTitle": "Multimodal Processing in Mobile Platforms",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS3219",
+    "ModuleTitle": "Software Engineering Principles and Patterns",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CS3219R",
+    "ModuleTitle": "Software Engineering Principles and Patterns",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CS3223",
+    "ModuleTitle": "Database Systems Implementation",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS3225",
+    "ModuleTitle": "Combinatorial Methods in Bioinformatics",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS3230",
+    "ModuleTitle": "Design and Analysis of Algorithms",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CS3230R",
+    "ModuleTitle": "Design and Analysis of Algorithms",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CS3233",
+    "ModuleTitle": "Competitive Programming",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS3233R",
+    "ModuleTitle": "Competitive Programming",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS3234",
+    "ModuleTitle": "Logic and Formal Systems",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS3235",
+    "ModuleTitle": "Computer Security",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CS3236",
+    "ModuleTitle": "Introduction to Information Theory",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS3240",
+    "ModuleTitle": "Interaction Design",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CS3240R",
+    "ModuleTitle": "Interaction Design",
+    "Semesters": [3, 1, 2]
+  },
+  {
+    "ModuleCode": "CS3241",
+    "ModuleTitle": "Computer Graphics",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CS3241R",
+    "ModuleTitle": "Computer Graphics",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CS3242",
+    "ModuleTitle": "3D Modeling and Animation",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS3243",
+    "ModuleTitle": "Introduction to Artificial Intelligence",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS3243R",
+    "ModuleTitle": "Introduction to Artificial Intelligence",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS3244",
+    "ModuleTitle": "Machine Learning",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CS3245",
+    "ModuleTitle": "Information Retrieval",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS3247",
+    "ModuleTitle": "Game Development",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS3281",
+    "ModuleTitle": "Thematic Systems Project I",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS3282",
+    "ModuleTitle": "Thematic Systems Project II",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS4211",
+    "ModuleTitle": "Formal Methods for Software Engineering",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CS4212",
+    "ModuleTitle": "Compiler Design",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CS4215",
+    "ModuleTitle": "Programming Language Implementation",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS4218",
+    "ModuleTitle": "Software Testing",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS4220",
+    "ModuleTitle": "Knowledge Discovery Methods in Bioinformatics",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS4221",
+    "ModuleTitle": "Database Applications Design and Tuning",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS4222",
+    "ModuleTitle": "Wireless Networking",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS4223",
+    "ModuleTitle": "Multi-core Architectures",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CS4224",
+    "ModuleTitle": "Distributed Databases",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CS4225",
+    "ModuleTitle": "Massive Data Processing Techniques in Data Science",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS4226",
+    "ModuleTitle": "Internet Architecture",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CS4231",
+    "ModuleTitle": "Parallel and Distributed Algorithms",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS4232",
+    "ModuleTitle": "Theory of Computation",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CS4234",
+    "ModuleTitle": "Optimisation Algorithms",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CS4234R",
+    "ModuleTitle": "Optimisation Algorithms",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS4236",
+    "ModuleTitle": "Cryptography Theory and Practice",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CS4238",
+    "ModuleTitle": "Computer Security Practice",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CS4239",
+    "ModuleTitle": "Software Security",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CS4240",
+    "ModuleTitle": "Interaction Design for Virtual and Augmented Reality",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS4240R",
+    "ModuleTitle": "Interaction Design for Virtual and Augmented Reality",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS4242",
+    "ModuleTitle": "Social Media Computing",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS4243",
+    "ModuleTitle": "Computer Vision and Pattern Recognition",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CS4244",
+    "ModuleTitle": "Knowledge-Based Systems",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS4246",
+    "ModuleTitle": "AI Planning and Decision Making",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CS4247",
+    "ModuleTitle": "Graphics Rendering Techniques",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS4248",
+    "ModuleTitle": "Natural Language Processing",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CS4249",
+    "ModuleTitle": "Phenomena and Theories of Human-Computer Interaction",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CS4257",
+    "ModuleTitle": "Algorithmic Foundations of Privacy",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS4347",
+    "ModuleTitle": "Sound and Music Computing",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS4350",
+    "ModuleTitle": "Game Development Project",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CS4351",
+    "ModuleTitle": "Real-Time Graphics",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CS5201",
+    "ModuleTitle": "Foundation in Theoretical CS",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CS5202",
+    "ModuleTitle": "Foundation in Computer Systems",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CS5218",
+    "ModuleTitle": "Principles of Program Analysis",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS5219",
+    "ModuleTitle": "Automated Software Validation",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CS5222",
+    "ModuleTitle": "Advanced Computer Architecture",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS5223",
+    "ModuleTitle": "Distributed Systems",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CS5224",
+    "ModuleTitle": "Cloud Computing",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS5228",
+    "ModuleTitle": "Knowledge Discovery and Data Mining",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CS5229",
+    "ModuleTitle": "Advanced Computer Networks",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CS5230",
+    "ModuleTitle": "Computational Complexity",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS5231",
+    "ModuleTitle": "Systems Security",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CS5232",
+    "ModuleTitle": "Formal Specification and Design Techniques",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS5233",
+    "ModuleTitle": "Simulation and Modelling Techniques",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS5234",
+    "ModuleTitle": "Combinatorial and Graph Algorithms",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CS5239",
+    "ModuleTitle": "Computer System Performance Analysis",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CS5242",
+    "ModuleTitle": "Neural Networks and Deep Learning",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CS5248",
+    "ModuleTitle": "Systems Support for Continuous Media",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CS5250",
+    "ModuleTitle": "Advanced Operating Systems",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS5321",
+    "ModuleTitle": "Network Security",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS5330",
+    "ModuleTitle": "Randomized Algorithms",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS5331",
+    "ModuleTitle": "Web Security",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS5332",
+    "ModuleTitle": "Biometric Authentication",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS5339",
+    "ModuleTitle": "Theory and Algorithms for Machine Learning",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS5340",
+    "ModuleTitle": "Uncertainty Modelling in AI",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CS5344",
+    "ModuleTitle": "Big-Data Analytics Technology",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS5346",
+    "ModuleTitle": "Information Visualisation",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS6101",
+    "ModuleTitle": "Exploration of Computer Science Research",
+    "Semesters": [1, 2]
+  },
+  {
+    "ModuleCode": "CS6202",
+    "ModuleTitle": "Advanced Topics in Programming Languages",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CS6203",
+    "ModuleTitle": "Advanced Topics in Database Systems",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CS6204",
+    "ModuleTitle": "Advanced Topics in Networking",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS6206",
+    "ModuleTitle": "Advanced Topics in Human-Computer Interaction",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS6207",
+    "ModuleTitle": "Advanced Natural Language Processing",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS6208",
+    "ModuleTitle": "Advanced Topics in Artificial Intelligence",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS6210",
+    "ModuleTitle": "The Art of Computer Science Research",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS6211",
+    "ModuleTitle": "Analytical Performance Modelling for Computer Systems",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS6212",
+    "ModuleTitle": "Topics in Media",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS6215",
+    "ModuleTitle": "Advanced Topics in Program Analysis",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS6220",
+    "ModuleTitle": "Advanced Topics in Data Mining",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS6222",
+    "ModuleTitle": "Advanced Topics in Computational Biology",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS6230",
+    "ModuleTitle": "Topics in Information Security",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CS6234",
+    "ModuleTitle": "Advanced Algorithms",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CS6244",
+    "ModuleTitle": "Robot Motion Planning & Control",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CS6280",
+    "ModuleTitle": "Datacentre Software Dynamics",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CS6281",
+    "ModuleTitle": "Topics in Computer Science II: Human Centred AI",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CSA6101",
+    "ModuleTitle": "Cultural Studies Theory And Analysis",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CSA6102",
+    "ModuleTitle": "Cultural Studies In Asia",
+    "Semesters": [2]
+  },
+  {
+    "ModuleCode": "CSA6770",
+    "ModuleTitle": "Graduate Research Seminar",
+    "Semesters": [1]
+  },
+  {
+    "ModuleCode": "CSA6880",
+    "ModuleTitle": "Topics in Cultural Studies in Asia",
+    "Semesters": [2]
+  }
+]
