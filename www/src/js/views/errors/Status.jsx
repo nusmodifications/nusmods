@@ -7,6 +7,10 @@ type Props = {
   children?: Node,
 };
 
+/**
+ * In SSR, this will cause the server to return the code of the innermost
+ * <Status> component as the HTTP status code. Does nothing on the client.
+ */
 export default function Status({ code, children }: Props) {
   return (
     <Route
