@@ -88,8 +88,7 @@ export class ModulePageContentComponent extends Component<Props, State> {
             >
               <header className={styles.header}>
                 <h1 className={styles.pageTitle}>
-                  <span className={styles.moduleCodeTitle}>{ModuleCode}</span>
-                  {ModuleTitle}
+                  <span className={styles.moduleCodeTitle}>{ModuleCode}</span> {ModuleTitle}
                 </h1>
 
                 <p>

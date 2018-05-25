@@ -5,14 +5,11 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Redirect, withRouter } from 'react-router-dom';
 import deferComponentRender from 'views/hocs/deferComponentRender';
-import Raven from 'raven-js';
-
 import type { ModuleCodeMap } from 'types/reducers';
 import type { Module, ModuleCode } from 'types/modules';
 
 import { fetchModule } from 'actions/moduleBank';
-import { retry } from 'utils/promise';
-import ErrorPage from 'views/errors/ErrorPage';
+import ModulePageContent from 'views/modules/ModulePageContent';
 import ModuleNotFoundPage from 'views/errors/ModuleNotFoundPage';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import { modulePage } from 'views/routes/paths';
@@ -26,46 +23,23 @@ type Props = {
   fetchModule: (ModuleCode) => void,
 };
 
-type State = {
-  ModulePageContent: ?ComponentType<*>,
-  error?: any,
-};
-
 /**
  * Wrapper component that loads both module data and the module page component
  * simultaneously, and displays the correct component depending on the state.
  *
  * - Module data is considered to be loaded when the the data exists in
  *   the module bank
- * - Component is loaded when the dynamic import() Promise resolves
  *
  * We then render the correct component based on the status
  *
  * - Not found: moduleCode not in module list (this is checked synchronously)
- * - Error: Either requests failed
+ * - Error: Module
  * - Loading: Either requests are pending
  * - Loaded: Both requests are successfully loaded
  */
-export class ModulePageContainerComponent extends PureComponent<Props, State> {
-  state: State = {
-    ModulePageContent: null,
-  };
-
+export class ModulePageContainerComponent extends PureComponent<Props> {
   componentDidMount() {
     this.fetchModule(this.props.moduleCode);
-
-    // Try importing ModulePageContent thrice if we're online and
-    // getting the "Loading chunk x failed." error.
-    retry(
-      3,
-      () => import('views/modules/ModulePageContent'),
-      (error) => error.message.includes('Loading chunk ') && window.navigator.onLine,
-    )
-      .then((module) => this.setState({ ModulePageContent: module.default }))
-      .catch((error) => {
-        Raven.captureException(error);
-        this.setState({ error });
-      });
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -90,15 +64,10 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
   }
 
   render() {
-    const { ModulePageContent, error } = this.state;
     const { module, moduleCode, match, location } = this.props;
 
     if (!this.doesModuleExist(moduleCode)) {
       return <ModuleNotFoundPage moduleCode={moduleCode} />;
-    }
-
-    if (error) {
-      return <ErrorPage eventId={Raven.lastEventId()} />;
     }
 
     if (module && match.url !== this.canonicalUrl()) {
@@ -112,7 +81,7 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
       );
     }
 
-    if (module && ModulePageContent) {
+    if (module) {
       return <ModulePageContent moduleCode={moduleCode} />;
     }
 

@@ -27,7 +27,9 @@ function deferComponentRender<Props: {}>(
     }
 
     render() {
-      return this.state.shouldRender && <WrappedComponent {...this.props} />;
+      return (
+        (process.env.IS_SSR || this.state.shouldRender) && <WrappedComponent {...this.props} />
+      );
     }
   };
 }
