@@ -28,11 +28,8 @@ describe(Server, () => {
   let server: Server;
 
   beforeAll(() => {
-    // Ensure IS_SSR env is set so
+    // Ensure IS_SSR env - this is needed by components
     process.env.IS_SSR = 'true';
-
-    // Mock API so all data come locally
-    beforeEach(() => {});
   });
 
   afterAll(() => {
@@ -43,6 +40,7 @@ describe(Server, () => {
     server = new Server();
     server.template = template;
 
+    // Mock API so all data come locally
     jest.spyOn(axios, 'get').mockImplementation(async (url) => {
       if (url.endsWith(`${MODULE_CODE}.json`)) {
         return mockResponse(CS1010S);
@@ -60,6 +58,7 @@ describe(Server, () => {
     axios.get.mockRestore();
   });
 
+  // Static pages
   test('should serve /faq', async () => {
     const response = await request(server.app.callback()).get('/faq');
     const $ = cheerio.load(response.text);
@@ -71,16 +70,34 @@ describe(Server, () => {
 
   test('should serve /team', async () => {
     const response = await request(server.app.callback()).get('/team');
+    const $ = cheerio.load(response.text);
+
+    expect($('h2').text()).toContain('Team');
     expect(response.status).toEqual(200);
   });
 
+  test('should serve /contributors', async () => {
+    const response = await request(server.app.callback()).get('/contributors');
+    const $ = cheerio.load(response.text);
+
+    expect($('h2').text()).toContain('Contributors');
+    expect(response.status).toEqual(200);
+  });
+
+  test('should serve /about', async () => {
+    const response = await request(server.app.callback()).get('/about');
+    const $ = cheerio.load(response.text);
+
+    expect($('h3').text()).toContain('A Brief History');
+    expect(response.status).toEqual(200);
+  });
+
+  // Module page
   test('should serve module info page', async () => {
     const response = await request(server.app.callback()).get(
       '/modules/CS1010S/programming-methodology',
     );
     const $ = cheerio.load(response.text);
-
-    console.log(response.text.slice(5000, 10000));
 
     expect(axios.get.mock.calls).toHaveLength(2);
 
@@ -88,10 +105,14 @@ describe(Server, () => {
     expect($('h1').text()).toContain('CS1010S Programming Methodology');
   });
 
+  test('should redirect if module page slug is missing', async () => {
+    const response = await request(server.app.callback()).get('/modules/CS1010S');
+    expect(response.status).toEqual(302);
+  });
+
+  // Errors
   test('should return 404 on a non-existent page', async () => {
     const response = await request(server.app.callback()).get('/does-not-exist');
-
-    console.log(response.text.slice(5000, 10000));
     const $ = cheerio.load(response.text);
     expect($('h1').text()).toContain('page not found');
 

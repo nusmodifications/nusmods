@@ -1,5 +1,5 @@
 // @flow
-import React, { type Node } from 'react';
+import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 import TimetableContainer from 'views/timetable/TimetableContainer';
@@ -13,6 +13,7 @@ import ContributorsContainer from 'views/static/ContributorsContainer';
 import FaqContainer from 'views/static/FaqContainer';
 import AppsContainer from 'views/static/AppsContainer';
 import NotFoundPage from 'views/errors/NotFoundPage';
+import ExternalRedirect from './ExternalRedirect';
 
 export default function Routes() {
   return (
@@ -33,20 +34,9 @@ export default function Routes() {
       {/* v2 routes */}
       <Redirect from="/venueavailability" to="/venues" />
       <Redirect from="/contribute/developers" to="/contributors" />
-      <Route
-        path="/news/nusdiscount"
-        render={(): Node => {
-          window.location = 'https://www.facebook.com/nusdiscount/';
-          return null;
-        }}
-      />
-      <Route
-        path="/news/bareNUS"
-        render={(): Node => {
-          window.location = 'https://www.facebook.com/bareNUS';
-          return null;
-        }}
-      />
+
+      <ExternalRedirect path="/news/nusdiscount" to="https://www.facebook.com/nusdiscount/" />
+      <ExternalRedirect path="/news/bareNUS" to="https://www.facebook.com/bareNUS" />
 
       {/* 404 page */}
       <Route component={NotFoundPage} />
