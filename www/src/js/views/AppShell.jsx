@@ -8,7 +8,7 @@ import type { State } from 'reducers';
 
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import { NavLink, withRouter, type ContextRouter } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { each } from 'lodash';
@@ -32,8 +32,6 @@ import FeedbackModal from './components/FeedbackModal';
 import styles from './AppShell.scss';
 
 type Props = {
-  ...ContextRouter,
-
   children: Node,
   moduleList: ModuleList,
   timetables: TimetableConfig,

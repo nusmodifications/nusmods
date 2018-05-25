@@ -6,7 +6,7 @@ import type { ModuleList } from 'types/reducers';
 import { type ResultType, type SearchResult, VENUE_RESULT } from 'types/views';
 
 import React, { Component } from 'react';
-import { connect, type MapStateToProps } from 'react-redux';
+import { connect } from 'react-redux';
 import { withRouter, type ContextRouter } from 'react-router-dom';
 import GlobalSearch from 'views/layout/GlobalSearch';
 import { modulePage, venuePage } from 'views/routes/paths';
@@ -109,7 +109,7 @@ export class SearchContainerComponent extends Component<Props> {
   }
 }
 
-const mapStateToProps: MapStateToProps<*, *, *> = (state: State) => ({
+const mapStateToProps = (state: State) => ({
   moduleList: state.moduleBank.moduleList,
   venueList: state.venueBank.venueList,
 });

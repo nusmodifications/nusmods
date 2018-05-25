@@ -1,7 +1,7 @@
 // @flow
 
 import React, { PureComponent } from 'react';
-import { connect, type MapStateToProps } from 'react-redux';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 import { get } from 'lodash';
@@ -63,7 +63,7 @@ export class ModuleExamClashComponent extends PureComponent<Props> {
   }
 }
 
-const mapStateToProps: MapStateToProps<*, *, *> = (state: State, ownProps) => {
+const mapStateToProps = (state: State, ownProps) => {
   const { timetable } = getSemesterTimetable(ownProps.semester, state.timetables);
   const modulesMap = state.moduleBank.modules;
   return { modules: getSemesterModules(timetable, modulesMap) };

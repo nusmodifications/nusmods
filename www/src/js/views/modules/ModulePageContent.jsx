@@ -1,7 +1,7 @@
 // @flow
 import React, { Component, Fragment } from 'react';
 import classnames from 'classnames';
-import { connect, type MapStateToProps } from 'react-redux';
+import { connect } from 'react-redux';
 import ScrollSpy from 'react-scrollspy';
 import { map, mapValues, kebabCase, values } from 'lodash';
 
@@ -281,8 +281,6 @@ export class ModulePageContentComponent extends Component<Props, State> {
   }
 }
 
-const mapStateToProps: MapStateToProps<*, *, *> = (state, ownProps) => ({
+export default connect((state, ownProps) => ({
   module: state.moduleBank.modules[ownProps.moduleCode],
-});
-
-export default connect(mapStateToProps)(ModulePageContentComponent);
+}))(ModulePageContentComponent);
