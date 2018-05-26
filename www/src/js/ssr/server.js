@@ -14,6 +14,8 @@ import App from './App';
 import configureStore from './configure-store';
 import getDataLoaders from './routes';
 import placeholders from './placeholders';
+import assetProxy from './middlewares/assetProxy';
+import cache from './middlewares/cache';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -42,11 +44,13 @@ export default class Server {
     this.port = port;
     this.app = new Koa();
 
-    // Define routes
+    // Define middlewares
     this.app.use(this.errorHandler);
 
-    if (!isProduction) {
-      this.app.use(this.proxyAssets);
+    if (isProduction) {
+      this.app.use(cache());
+    } else {
+      this.app.use(assetProxy(this.templatePath));
     }
 
     this.app.use(this.ssr);
@@ -59,6 +63,8 @@ export default class Server {
     try {
       await next();
     } catch (e) {
+      console.error(e); // eslint-disable-line no-console
+
       if (isProduction) {
         Raven.captureException(e);
 
@@ -67,19 +73,8 @@ export default class Server {
         // $FlowFixMe - let's assume template is defined for now
         ctx.body = Mustache.render(this.template, placeholders);
       } else {
-        console.error(e); // eslint-disable-line no-console
         throw e;
       }
-    }
-  };
-
-  proxyAssets: Middleware = async (ctx, next) => {
-    if (/\.(css|png|js)$/.test(ctx.path)) {
-      const dirname = path.dirname(this.templatePath);
-      ctx.type = path.extname(ctx.path);
-      ctx.body = fs.createReadStream(path.join(dirname, ctx.path));
-    } else {
-      await next();
     }
   };
 
