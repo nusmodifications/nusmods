@@ -2,21 +2,13 @@
 import { matchPath, type Match, type MatchPathOptions } from 'react-router-dom';
 import type { Store } from 'redux';
 import type { State } from 'reducers';
-import { getModule } from './data';
+import { getModule, getModuleList } from './data';
 
-type DataLoader = (store: Store<State, *, *>, match: Match) => Promise<*>;
-type Route = string | (MatchPathOptions & { loadData: DataLoader });
+type RouteDataLoader = (store: Store<State, *, *>, match: Match) => Promise<*>;
+type Route = MatchPathOptions & { loadData: RouteDataLoader };
+type DataLoader = (store: Store<State, *, *>) => Promise<*>;
 
 const routes: Route[] = [
-  // Routes with no data loading requirements
-  '/faq',
-  '/about',
-  '/contributors',
-  '/contact',
-  '/settings',
-  '/team',
-
-  // Routes that load data
   {
     path: '/modules/:moduleCode/:slug?',
     loadData: async (store, match) => {
@@ -29,15 +21,19 @@ const routes: Route[] = [
   },
 ];
 
-export default function getDataLoader(path: string): ?(Store<State, *, *>) => Promise<*> {
+export default function getDataLoaders(path: string): DataLoader[] {
+  // By default the module list will always be loaded
+  const dataLoaders = [async (store) => store.dispatch(await getModuleList())];
+
+  // Add any additional data loader required by the route
   for (let i = 0; i < routes.length; i++) {
     const route = routes[i];
     const match = matchPath(path, route);
 
     if (match) {
-      return typeof route === 'string' ? null : (store) => route.loadData(store, match);
+      dataLoaders.push((store) => route.loadData(store, match));
     }
   }
 
-  return null;
+  return dataLoaders;
 }

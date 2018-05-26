@@ -9,10 +9,10 @@ import Raven from 'raven';
 import Mustache from 'mustache';
 
 import type { PageTemplateData } from 'types/ssr';
+import config from 'config';
 import App from './App';
 import configureStore from './configure-store';
-import * as data from './data';
-import getDataLoader from './routes';
+import getDataLoaders from './routes';
 import placeholders from './placeholders';
 
 const isProduction = process.env.NODE_ENV === 'production';
@@ -37,7 +37,7 @@ export default class Server {
   port: number;
   app: Koa;
 
-  constructor(templatePath: string = 'dist/index.html', port: number = 4000) {
+  constructor(templatePath: string = config.ssr.template, port: number = 4000) {
     this.templatePath = templatePath;
     this.port = port;
     this.app = new Koa();
@@ -92,13 +92,7 @@ export default class Server {
 
     // Prepare data
     const store = configureStore();
-    store.dispatch(await data.getModuleList());
-
-    // Fetch data
-    const dataLoader = getDataLoader(ctx.path);
-    if (dataLoader) {
-      await dataLoader(store);
-    }
+    await Promise.all(getDataLoaders(ctx.path).map((loader) => loader(store)));
 
     // Prepare HTML - view contains the HTML snippets to be injected into the
     // Mustache template
