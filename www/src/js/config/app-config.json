@@ -38,6 +38,6 @@
   },
   "ssr": {
     "template": "dist/index.html",
-    "api": "../api.nusmods.com"
+    "api": "../../api.nusmods.com"
   }
 }
