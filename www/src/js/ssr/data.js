@@ -41,7 +41,7 @@ const fsToAction = async (type: string, filePath: string) => {
 export class Data {
   cachedModuleList: ?{
     action: Object,
-    lastModified: Date,
+    lastModified: number,
   };
 
   async getModuleList() {
@@ -51,8 +51,8 @@ export class Data {
       const filename = apiPath('moduleList.json');
 
       const cachedModuleList = this.cachedModuleList;
-      const lastModified = await fs.stat(filename).mtime;
-      if (cachedModuleList && lastModified.getTime() > cachedModuleList.lastModified.getTime()) {
+      const lastModified = (await fs.stat(filename)).mtimeMs;
+      if (cachedModuleList && lastModified > cachedModuleList.lastModified) {
         return cachedModuleList.action;
       }
 
