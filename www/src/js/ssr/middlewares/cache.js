@@ -5,9 +5,10 @@ import zlib from 'mz/zlib';
 import path from 'path';
 import crypto from 'crypto';
 import iltorb from 'iltorb';
+import mkdirp from 'mkdirp';
 
 export default function createCacheMiddleware(cachePath: string = 'cache'): Middleware {
-  fs.mkdirSync(cachePath);
+  mkdirp.sync(cachePath);
 
   return async (ctx, next) => {
     const useBr = ctx.acceptsEncodings('br', 'identity') === 'br';

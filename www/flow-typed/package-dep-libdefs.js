@@ -24,6 +24,10 @@ declare module 'is-stream' {
   declare module.exports: any;
 }
 
+declare module 'mkdirp' {
+  declare module.exports: any;
+}
+
 declare module 'mustache' {
   declare module.exports: any;
 }
