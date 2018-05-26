@@ -15,6 +15,7 @@ import getDataLoaders from './routes';
 import placeholders from './placeholders';
 import assetProxy from './middlewares/assetProxy';
 import cache from './middlewares/cache';
+import time from './middlewares/time';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -44,6 +45,7 @@ export default class Server {
     this.app = new Koa();
 
     // Define middlewares
+    this.app.use(time);
     this.app.use(this.errorHandler);
 
     if (isProduction) {
