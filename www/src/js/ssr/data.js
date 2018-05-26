@@ -23,7 +23,7 @@ const axiosResponseToAction = (type: string) => (response: $AxiosXHR<*, *>) => (
 });
 
 const fsToAction = async (type: string, filePath: string) => {
-  const [content, stat] = await Promise.all([fs.readFile(filePath), fs.stat(filePath)]);
+  const [content, stat] = await Promise.all([fs.readFile(filePath, 'utf-8'), fs.stat(filePath)]);
 
   return {
     type: type + SUCCESS,
