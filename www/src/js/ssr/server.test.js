@@ -92,6 +92,14 @@ describe(Server, () => {
     expect(response.status).toEqual(200);
   });
 
+  test('should serve /apps', async () => {
+    const response = await request(server.app.callback()).get('/apps');
+    const $ = cheerio.load(response.text);
+
+    expect($('h2').text()).toContain('Apps');
+    expect(response.status).toEqual(200);
+  });
+
   // Module page
   test('should serve module info page', async () => {
     const response = await request(server.app.callback()).get(

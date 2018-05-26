@@ -1,4 +1,5 @@
 // @flow
+import type { Readable } from 'stream';
 
 export function mockResponse<Data>(data: Data) {
   return {
@@ -18,7 +19,7 @@ export function mockResponse<Data>(data: Data) {
   };
 }
 
-export async function streamToString(stream: ReadableStream) {
+export async function streamToString(stream: Readable) {
   return new Promise((resolve) => {
     let output = '';
 

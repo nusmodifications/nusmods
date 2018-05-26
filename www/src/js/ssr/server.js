@@ -1,6 +1,5 @@
 // @flow
 import fs from 'mz/fs';
-import path from 'path';
 import Koa, { type Middleware } from 'koa';
 import chokidar from 'chokidar';
 import ReactDOM from 'react-dom/server';
