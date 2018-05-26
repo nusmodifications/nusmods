@@ -11,7 +11,7 @@ import { SUCCESS } from 'middlewares/requests-middleware';
 import { FETCH_MODULE, FETCH_MODULE_LIST } from 'actions/moduleBank';
 
 const isProduction = process.env.NODE_ENV === 'production';
-const apiPath = (file) => path.resolve(config.ssr.api, config.academicYear, file);
+const apiPath = (file) => path.resolve(config.ssr.api, config.academicYear.replace('/', '-'), file);
 
 const axiosResponseToAction = (type: string) => (response: $AxiosXHR<*, *>) => ({
   type: type + SUCCESS,
