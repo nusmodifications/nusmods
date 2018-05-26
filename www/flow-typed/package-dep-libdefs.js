@@ -16,6 +16,14 @@ declare module 'chokidar' {
   declare module.exports: any;
 }
 
+declare module 'iltorb' {
+  declare module.exports: any;
+}
+
+declare module 'is-stream' {
+  declare module.exports: any;
+}
+
 declare module 'mustache' {
   declare module.exports: any;
 }

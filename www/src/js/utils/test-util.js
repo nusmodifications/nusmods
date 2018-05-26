@@ -1,6 +1,5 @@
 // @flow
 
-// eslint-disable-next-line import/prefer-default-export
 export function mockResponse<Data>(data: Data) {
   return {
     data,
@@ -17,4 +16,18 @@ export function mockResponse<Data>(data: Data) {
 
     request: {},
   };
+}
+
+export async function streamToString(stream: ReadableStream) {
+  return new Promise((resolve) => {
+    let output = '';
+
+    stream.on('data', (chunk) => {
+      output += chunk.toString();
+    });
+
+    stream.on('end', () => {
+      resolve(output);
+    });
+  });
 }
