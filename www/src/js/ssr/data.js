@@ -27,31 +27,54 @@ const fsToAction = async (type: string, filePath: string) => {
 
   return {
     type: type + SUCCESS,
-    payload: content,
+    payload: JSON.parse(content),
     meta: {
       requestStatus: SUCCESS,
       responseHeaders: {
-        lastModified: stat.mtime,
+        lastModified: stat.mtime.toUTCString(),
       },
     },
   };
 };
 
-export function getModuleList() {
-  const action = FETCH_MODULE_LIST;
-  return isProduction
-    ? fsToAction(action, apiPath('moduleList.json'))
-    : axios.get(api.moduleListUrl()).then(axiosResponseToAction(action));
+/* eslint-disable class-methods-use-this */
+export class Data {
+  cachedModuleList: ?{
+    action: Object,
+    lastModified: Date,
+  };
+
+  async getModuleList() {
+    const type = FETCH_MODULE_LIST;
+
+    if (isProduction) {
+      const filename = apiPath('moduleList.json');
+
+      const cachedModuleList = this.cachedModuleList;
+      const lastModified = await fs.stat(filename).mtime;
+      if (cachedModuleList && lastModified.getTime() > cachedModuleList.lastModified.getTime()) {
+        return cachedModuleList.action;
+      }
+
+      const action = fsToAction(type, apiPath('moduleList.json'));
+      this.cachedModuleList = { action, lastModified };
+      return action;
+    }
+
+    return axios.get(api.moduleListUrl()).then(axiosResponseToAction(type));
+  }
+
+  getVenueList() {
+    // TODO: Move VenueList into Redux store
+    return axios.get(api.venueListUrl(config.semester));
+  }
+
+  getModule(moduleCode: ModuleCode) {
+    const type = FETCH_MODULE;
+    return isProduction
+      ? fsToAction(type, apiPath(`modules/${moduleCode}.json`))
+      : axios.get(api.moduleDetailsUrl(moduleCode)).then(axiosResponseToAction(type));
+  }
 }
 
-export function getVenueList() {
-  // TODO: Move VenueList into Redux store
-  return axios.get(api.venueListUrl(config.semester));
-}
-
-export function getModule(moduleCode: ModuleCode) {
-  const action = FETCH_MODULE;
-  return isProduction
-    ? fsToAction(action, apiPath(`modules/${moduleCode}.json`))
-    : axios.get(api.moduleDetailsUrl(moduleCode)).then(axiosResponseToAction(action));
-}
+export default new Data();
