@@ -65,6 +65,7 @@ describe(createCacheMiddleware, () => {
 
       expect(ctx.body).toEqual(zlib.gzipSync('Test content'));
       expect(ctx['content-encoding']).toEqual('gzip');
+      expect(fs.readdirSync(CACHE_NAME).sort()).toEqual(getCacheFileNames(ctx.path));
     });
 
     it('should return brotli content if UA accepts it', async () => {
@@ -73,6 +74,7 @@ describe(createCacheMiddleware, () => {
 
       expect(ctx.body).toEqual(iltorb.compressSync(Buffer.from('Test content')));
       expect(ctx['content-encoding']).toEqual('br');
+      expect(fs.readdirSync(CACHE_NAME).sort()).toEqual(getCacheFileNames(ctx.path));
     });
   });
 
@@ -98,16 +100,20 @@ describe(createCacheMiddleware, () => {
 
     it('should return cached gzip content when the UA accepts it', async () => {
       ctx.acceptsEncodings.mockReturnValue('gzip');
-      await cache(ctx, next);
+      const mockNext = jest.fn();
+      await cache(ctx, mockNext);
 
+      expect(mockNext).not.toBeCalled();
       expect(await streamToString(ctx.body)).toEqual('Test content (cached gzip)');
       expect(ctx['content-encoding']).toEqual('gzip');
     });
 
     it('should return cached brotli content when the UA accepts it', async () => {
       ctx.acceptsEncodings.mockReturnValue('br');
-      await cache(ctx, next);
+      const mockNext = jest.fn();
+      await cache(ctx, mockNext);
 
+      expect(mockNext).not.toBeCalled();
       expect(await streamToString(ctx.body)).toEqual('Test content (cached brotli)');
       expect(ctx['content-encoding']).toEqual('br');
     });

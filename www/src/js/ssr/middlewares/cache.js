@@ -17,18 +17,19 @@ export default function createCacheMiddleware(cachePath: string = 'cache'): Midd
     // Calculate cache filename as a SHA1 hash of path
     const hash = crypto.createHash('sha1');
     hash.update(ctx.path);
-    let filename = path.join(cachePath, hash.digest('hex'));
+    const filename = path.join(cachePath, hash.digest('hex'));
+    let extension = '';
 
     // Load the appropriate file based on available encoding
     if (useBr) {
-      filename += '.br';
+      extension = '.br';
     } else if (useGzip) {
-      filename += '.gz';
+      extension = '.gz';
     }
 
     try {
       const stats = await fs.stat(filename);
-      ctx.body = fs.createReadStream(filename);
+      ctx.body = fs.createReadStream(filename + extension);
 
       ctx.set('Content-Length', stats.size);
       ctx.type = 'html';
