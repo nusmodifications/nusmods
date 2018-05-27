@@ -7,11 +7,11 @@ import Mousetrap from 'mousetrap';
 import { groupBy, map } from 'lodash';
 
 import { DARK_MODE } from 'types/settings';
+import type { Mode, ThemeId } from 'types/settings';
 import themes from 'data/themes.json';
 import { cycleTheme } from 'actions/theme';
 import { openNotification } from 'actions/app';
 import { toggleMode } from 'actions/settings';
-import type { State as StoreState } from 'reducers';
 import { intersperse } from 'utils/array';
 import ComponentMap from 'utils/ComponentMap';
 import Modal from './Modal';
@@ -19,7 +19,8 @@ import styles from './KeyboardShortcuts.scss';
 
 type Props = ContextRouter & {
   dispatch: Dispatch<*>,
-  state: StoreState,
+  theme: ThemeId,
+  mode: Mode,
 };
 
 type State = {
@@ -45,7 +46,7 @@ export class KeyboardShortcutsComponent extends PureComponent<Props, State> {
   };
 
   componentDidMount() {
-    const { state, dispatch, history } = this.props;
+    const { mode, dispatch, history } = this.props;
 
     // Navigation
     this.bind('t', NAVIGATION, 'Go to timetable', () => {
@@ -79,7 +80,7 @@ export class KeyboardShortcutsComponent extends PureComponent<Props, State> {
       this.props.dispatch(toggleMode());
 
       dispatch(
-        openNotification(`Night mode ${state.settings.mode === DARK_MODE ? 'on' : 'off'}`, {
+        openNotification(`Night mode ${mode === DARK_MODE ? 'on' : 'off'}`, {
           overwritable: true,
         }),
       );
@@ -108,7 +109,7 @@ export class KeyboardShortcutsComponent extends PureComponent<Props, State> {
   }
 
   notifyThemeChange() {
-    const themeId = this.props.state.theme.id;
+    const themeId = this.props.theme;
     const theme = themes.find((t) => t.id === themeId);
 
     if (theme) {
@@ -163,8 +164,9 @@ export class KeyboardShortcutsComponent extends PureComponent<Props, State> {
   }
 }
 
-const KeyboardShortcutsConnected = connect((state) => ({ state }), (dispatch) => ({ dispatch }))(
-  KeyboardShortcutsComponent,
-);
+const KeyboardShortcutsConnected = connect(
+  (state) => ({ mode: state.settings.mode, theme: state.theme.id }),
+  (dispatch) => ({ dispatch }),
+)(KeyboardShortcutsComponent);
 
 export default withRouter(KeyboardShortcutsConnected);
