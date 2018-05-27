@@ -13,6 +13,7 @@ import { openNotification } from 'actions/app';
 import { toggleMode } from 'actions/settings';
 import type { State as StoreState } from 'reducers';
 import { intersperse } from 'utils/array';
+import ComponentMap from 'utils/ComponentMap';
 import Modal from './Modal';
 import styles from './KeyboardShortcuts.scss';
 
@@ -38,7 +39,7 @@ type KeyBinding = {
 
 const THEME_NOTIFICATION_TIMEOUT = 1000;
 
-class KeyboardShortcutsComponent extends PureComponent<Props, State> {
+export class KeyboardShortcutsComponent extends PureComponent<Props, State> {
   state = {
     helpShown: false,
   };
@@ -61,6 +62,12 @@ class KeyboardShortcutsComponent extends PureComponent<Props, State> {
 
     this.bind('s', NAVIGATION, 'Go to settings', () => {
       history.push('/settings');
+    });
+
+    this.bind('/', NAVIGATION, 'Open global search', () => {
+      if (ComponentMap.globalSearchInput) {
+        ComponentMap.globalSearchInput.focus();
+      }
     });
 
     this.bind('?', NAVIGATION, 'Show this help', () =>

@@ -4,6 +4,10 @@ import type { Department, Faculty } from './modules';
 import type { ModuleList } from './reducers';
 import type { VenueList } from './venues';
 
+export type ComponentMap = {|
+  globalSearchInput: ?HTMLInputElement,
+|};
+
 /* layout/GlobalSearch */
 export type ResultType = 'VENUE' | 'MODULE' | 'SEARCH';
 export const VENUE_RESULT: ResultType = 'VENUE';
