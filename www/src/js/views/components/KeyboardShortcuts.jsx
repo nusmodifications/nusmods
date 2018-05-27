@@ -44,7 +44,28 @@ class KeyboardShortcutsComponent extends PureComponent<Props, State> {
   };
 
   componentDidMount() {
-    const { state, dispatch } = this.props;
+    const { state, dispatch, history } = this.props;
+
+    // Navigation
+    this.bind('t', NAVIGATION, 'Go to timetable', () => {
+      history.push('/timetable');
+    });
+
+    this.bind('m', NAVIGATION, 'Go to module finder', () => {
+      history.push('/modules');
+    });
+
+    this.bind('v', NAVIGATION, 'Go to venues page', () => {
+      history.push('/venues');
+    });
+
+    this.bind('s', NAVIGATION, 'Go to settings', () => {
+      history.push('/settings');
+    });
+
+    this.bind('?', NAVIGATION, 'Show this help', () =>
+      this.setState({ helpShown: !this.state.helpShown }),
+    );
 
     // Toggle night mode
     this.bind('x', APPEARANCE, 'Toggle Night Mode', () => {
@@ -67,10 +88,6 @@ class KeyboardShortcutsComponent extends PureComponent<Props, State> {
       dispatch(cycleTheme(1));
       this.notifyThemeChange();
     });
-
-    this.bind('?', NAVIGATION, 'Show this help', () =>
-      this.setState({ helpShown: !this.state.helpShown }),
-    );
   }
 
   shortcuts: KeyBinding[] = [];
