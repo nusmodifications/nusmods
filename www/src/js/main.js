@@ -13,7 +13,6 @@ import storage from 'storage';
 
 import configureStore from 'bootstrapping/configure-store';
 import subscribeOnlineEvents from 'bootstrapping/subscribeOnlineEvents';
-import initKeyboardShortcuts from 'bootstrapping/keyboardShortcuts';
 import initializeGA from 'bootstrapping/google-analytics';
 
 import '../styles/main.scss';
@@ -22,7 +21,6 @@ const persistedState = storage.loadState();
 const { store, persistor } = configureStore(persistedState);
 
 subscribeOnlineEvents(store);
-initKeyboardShortcuts(store);
 
 // Initialize ReactModal
 ReactModal.setAppElement('#app');
