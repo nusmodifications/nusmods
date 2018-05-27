@@ -2,8 +2,8 @@
 import React, { PureComponent } from 'react';
 import { values, flattenDeep, noop } from 'lodash';
 
-import type { ClassNo, Lesson } from 'types/modules';
-import type { TimetableArrangement } from 'types/timetables';
+import type { Lesson } from 'types/modules';
+import type { HoverLesson, TimetableArrangement } from 'types/timetables';
 
 import {
   SCHOOLDAYS,
@@ -26,7 +26,7 @@ type Props = {
 };
 
 type State = {
-  hoverClassNo: ?ClassNo,
+  hoverLesson: ?HoverLesson,
 };
 
 class Timetable extends PureComponent<Props, State> {
@@ -40,7 +40,7 @@ class Timetable extends PureComponent<Props, State> {
   };
 
   state = {
-    hoverClassNo: null,
+    hoverLesson: null,
   };
 
   componentDidMount() {
@@ -53,8 +53,8 @@ class Timetable extends PureComponent<Props, State> {
     clearInterval(this.interval);
   }
 
-  onCellHover = (hoverClassNo: ?ClassNo) => {
-    this.setState({ hoverClassNo });
+  onCellHover = (hoverLesson: ?HoverLesson) => {
+    this.setState({ hoverLesson });
   };
 
   render() {
@@ -94,7 +94,7 @@ class Timetable extends PureComponent<Props, State> {
                 startingIndex={startingIndex}
                 endingIndex={endingIndex}
                 onModifyCell={this.props.onModifyCell}
-                hoverClassNo={this.state.hoverClassNo}
+                hoverLesson={this.state.hoverLesson}
                 onCellHover={this.onCellHover}
                 verticalMode={this.props.isVerticalOrientation}
                 showTitle={this.props.showTitle}
