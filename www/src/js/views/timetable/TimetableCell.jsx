@@ -2,7 +2,7 @@
 import React from 'react';
 import classnames from 'classnames';
 
-import type { Lesson } from 'types/modules';
+import type { ClassNo, Lesson } from 'types/modules';
 
 import { LESSON_TYPE_ABBREV } from 'utils/timetables';
 
@@ -13,6 +13,8 @@ type Props = {
   lesson: Lesson,
   style?: Object,
   onClick?: Function,
+  onHover: ?(?ClassNo) => void,
+  hoverClassNo: ?ClassNo,
 };
 
 /**
@@ -21,12 +23,13 @@ type Props = {
  * might explore other representations e.g. grouped lessons
  */
 function TimetableCell(props: Props) {
-  const { lesson, showTitle, onClick } = props;
+  const { lesson, showTitle, onClick, onHover, hoverClassNo } = props;
 
   const moduleName = showTitle ? `${lesson.ModuleCode} ${lesson.ModuleTitle}` : lesson.ModuleCode;
   const conditionalProps = { onClick };
 
   const Cell = props.onClick ? 'button' : 'div';
+  /* eslint-disable */
   return (
     <Cell // $FlowFixMe
       className={classnames(styles.cell, `color-${lesson.colorIndex}`, {
@@ -36,8 +39,11 @@ function TimetableCell(props: Props) {
         [styles.cellIsAvailable]: lesson.isAvailable,
         // $FlowFixMe
         [styles.cellIsActive]: lesson.isActive,
+        [styles.hover]: lesson.ClassNo === hoverClassNo,
       })}
       style={props.style}
+      onMouseEnter={() => onHover && onHover(lesson.ClassNo)}
+      onMouseLeave={() => onHover && onHover(null)}
       {...conditionalProps}
     >
       <div className={styles.cellContainer}>

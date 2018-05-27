@@ -48,7 +48,8 @@ $cell-border-radius: 6px;
     animation-name: zoomIn;
   }
 
-  &:hover {
+  &:hover,
+  &.hover {
     opacity: 1;
   }
 }

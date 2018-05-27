@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 
-import type { ColoredLesson } from 'types/modules';
+import type { ClassNo, ColoredLesson } from 'types/modules';
 
 import { convertTimeToIndex } from 'utils/timify';
 import styles from './TimetableRow.scss';
@@ -10,6 +10,8 @@ import TimetableCell from './TimetableCell';
 type Props = {
   verticalMode: boolean,
   showTitle: boolean,
+  hoverClassNo: ?ClassNo,
+  onCellHover: ?(?ClassNo) => void,
   startingIndex: number,
   endingIndex: number,
   lessons: ColoredLesson[],
@@ -59,12 +61,15 @@ function TimetableRow(props: Props) {
               },
             }
           : {};
+
         return (
           <TimetableCell
             key={lesson.StartTime}
             style={style}
             lesson={lesson}
             showTitle={props.showTitle}
+            hoverClassNo={props.hoverClassNo}
+            onHover={props.onCellHover}
             {...conditionalProps}
           />
         );
