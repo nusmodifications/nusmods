@@ -36,12 +36,12 @@ $cell-border-radius: 6px;
   padding: 0;
 }
 
-.cellIsClickable {
+.clickable {
   border-radius: $cell-border-radius;
   cursor: pointer;
 }
 
-.cellIsAvailable {
+.available {
   opacity: $cell-opacity;
 
   :global {
@@ -54,7 +54,7 @@ $cell-border-radius: 6px;
   }
 }
 
-.cellIsActive {
+.active {
   z-index: $timetable-selected-cell-z-index;
   animation-duration: 1s;
   animation-iteration-count: infinite;

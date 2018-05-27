@@ -34,11 +34,11 @@ function TimetableCell(props: Props) {
     <Cell // $FlowFixMe
       className={classnames(styles.cell, `color-${lesson.colorIndex}`, {
         hoverable: !!props.onClick,
-        [styles.cellIsClickable]: !!onClick,
+        [styles.clickable]: !!onClick,
         // $FlowFixMe
-        [styles.cellIsAvailable]: lesson.isAvailable,
+        [styles.available]: lesson.isAvailable,
         // $FlowFixMe
-        [styles.cellIsActive]: lesson.isActive,
+        [styles.active]: lesson.isActive,
         // Local hover style for the timetable planner timetable,
         [styles.hover]: lesson.ClassNo === hoverClassNo,
         // Global hover style for module page timetable
