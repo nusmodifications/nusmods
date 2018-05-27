@@ -39,7 +39,10 @@ function TimetableCell(props: Props) {
         [styles.cellIsAvailable]: lesson.isAvailable,
         // $FlowFixMe
         [styles.cellIsActive]: lesson.isActive,
+        // Local hover style for the timetable planner timetable,
         [styles.hover]: lesson.ClassNo === hoverClassNo,
+        // Global hover style for module page timetable
+        hover: lesson.ClassNo === hoverClassNo,
       })}
       style={props.style}
       onMouseEnter={() => onHover && onHover(lesson.ClassNo)}
