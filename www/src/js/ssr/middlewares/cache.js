@@ -17,7 +17,7 @@ export default function createCacheMiddleware(cachePath: string = 'cache'): Midd
     // Calculate cache filename as a SHA1 hash of path
     const hash = crypto.createHash('sha1');
     hash.update(ctx.path);
-    let filename = path.join(cachePath, hash.digest('base64'));
+    let filename = path.join(cachePath, hash.digest('hex'));
 
     // Load the appropriate file based on available encoding
     if (useBr) {

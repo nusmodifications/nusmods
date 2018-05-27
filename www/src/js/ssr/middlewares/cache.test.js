@@ -12,7 +12,7 @@ const getCacheFileNames = (filename) => {
   const hash = crypto.createHash('sha1');
   hash.update(filename);
 
-  const cacheName = hash.digest('base64');
+  const cacheName = hash.digest('hex');
   return [cacheName, `${cacheName}.br`, `${cacheName}.gz`];
 };
 
@@ -80,9 +80,9 @@ describe(createCacheMiddleware, () => {
     beforeEach(() => {
       mockFs({
         cache: {
-          'qUqP5cyxm6YcTAhz05Hph5gvu9M=': 'Test content (cached)',
-          'qUqP5cyxm6YcTAhz05Hph5gvu9M=.br': 'Test content (cached brotli)',
-          'qUqP5cyxm6YcTAhz05Hph5gvu9M=.gz': 'Test content (cached gzip)',
+          a94a8fe5ccb19ba61c4c0873d391e987982fbbd3: 'Test content (cached)',
+          'a94a8fe5ccb19ba61c4c0873d391e987982fbbd3.br': 'Test content (cached brotli)',
+          'a94a8fe5ccb19ba61c4c0873d391e987982fbbd3.gz': 'Test content (cached gzip)',
         },
       });
     });

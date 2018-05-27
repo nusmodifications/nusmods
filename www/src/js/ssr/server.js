@@ -67,7 +67,7 @@ export default class Server {
       console.error(e); // eslint-disable-line no-console
 
       if (isProduction) {
-        Raven.captureException(e);
+        Raven.captureException(e, { req: ctx.req });
 
         // If SSR failed for any reason, we fall back to the client side rendering template
         // TODO: Fix this
