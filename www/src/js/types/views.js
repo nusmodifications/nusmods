@@ -6,6 +6,7 @@ import type { VenueList } from './venues';
 
 export type ComponentMap = {|
   globalSearchInput: ?HTMLInputElement,
+  downloadButton: ?HTMLButtonElement,
 |};
 
 /* layout/GlobalSearch */

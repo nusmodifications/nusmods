@@ -9,7 +9,7 @@ import { groupBy, map } from 'lodash';
 import { DARK_MODE } from 'types/settings';
 import type { Mode, ThemeId } from 'types/settings';
 import themes from 'data/themes.json';
-import { cycleTheme } from 'actions/theme';
+import { cycleTheme, toggleTimetableOrientation } from 'actions/theme';
 import { openNotification } from 'actions/app';
 import { toggleMode } from 'actions/settings';
 import { intersperse } from 'utils/array';
@@ -27,9 +27,10 @@ type State = {
   helpShown: boolean,
 };
 
-type Section = 'Appearance' | 'Navigation';
+type Section = 'Appearance' | 'Navigation' | 'Timetable';
 const APPEARANCE: Section = 'Appearance';
 const NAVIGATION: Section = 'Navigation';
+const TIMETABLE: Section = 'Timetable';
 
 type Shortcut = string | string[];
 type KeyBinding = {
@@ -74,6 +75,19 @@ export class KeyboardShortcutsComponent extends PureComponent<Props, State> {
     this.bind('?', NAVIGATION, 'Show this help', () =>
       this.setState({ helpShown: !this.state.helpShown }),
     );
+
+    // Timetable shortcuts
+    this.bind('o', TIMETABLE, 'Switch timetable orientation', () => {
+      dispatch(toggleTimetableOrientation());
+    });
+
+    this.bind('d', TIMETABLE, 'Open download timetable menu', () => {
+      const button = ComponentMap.downloadButton;
+      if (button) {
+        button.focus();
+        button.click();
+      }
+    });
 
     // Toggle night mode
     this.bind('x', APPEARANCE, 'Toggle Night Mode', () => {

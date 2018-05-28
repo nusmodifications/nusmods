@@ -9,6 +9,7 @@ import type { ComponentMap as ComponentMapType } from 'types/views';
 // memory leaks
 const ComponentMap: ComponentMapType = {
   globalSearchInput: null,
+  downloadButton: null,
 };
 
 export default ComponentMap;
