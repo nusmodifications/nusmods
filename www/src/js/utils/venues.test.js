@@ -2,6 +2,7 @@
 import venueInfo from '__mocks__/venueInformation.json';
 
 import type { WeekText, ModuleCode, StartTime } from 'types/modules';
+import { ZWSP } from 'utils/react';
 import {
   searchVenue,
   filterAvailability,
@@ -151,7 +152,7 @@ describe(getDuplicateModules, () => {
 describe(mergeDualCodedModules, () => {
   it('should merge modules with the same starting time', () => {
     expect(mergeDualCodedModules([makeVenueLesson('GEK1901'), makeVenueLesson('GET1001')])).toEqual(
-      [makeVenueLesson('GEK1901/GET1001')],
+      [makeVenueLesson(`GEK1901/${ZWSP}GET1001`)],
     );
   });
 
@@ -166,9 +167,9 @@ describe(mergeDualCodedModules, () => {
         makeVenueLesson('GES1001', { StartTime: '1200' }),
       ]),
     ).toEqual([
-      makeVenueLesson('GEK1901/GET1001', { StartTime: '1000' }),
-      makeVenueLesson('GEK1901/GET1001', { StartTime: '1400' }),
-      makeVenueLesson('GEK1902/GES1001', { StartTime: '1200' }),
+      makeVenueLesson(`GEK1901/${ZWSP}GET1001`, { StartTime: '1000' }),
+      makeVenueLesson(`GEK1901/${ZWSP}GET1001`, { StartTime: '1400' }),
+      makeVenueLesson(`GEK1902/${ZWSP}GES1001`, { StartTime: '1200' }),
     ]);
   });
 
