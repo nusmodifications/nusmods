@@ -60,7 +60,14 @@ export function filterAvailability(
 }
 
 export function getDuplicateModules(classes: VenueLesson[]): ModuleCode[] {
-  const lessonsByTime = values(groupBy(classes, (lesson) => [lesson.StartTime, lesson.WeekText]));
+  const lessonsByTime = values(
+    groupBy(classes, (lesson) => [
+      lesson.StartTime,
+      lesson.EndTime,
+      lesson.WeekText,
+      lesson.DayText,
+    ]),
+  );
   for (let i = 0; i < lessonsByTime.length; i++) {
     const lessons = lessonsByTime[i];
     if (lessons.length > 1 && lessons.every((lesson) => lesson.WeekText === lessons[0].WeekText)) {
