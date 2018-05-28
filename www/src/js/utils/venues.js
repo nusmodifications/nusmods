@@ -4,6 +4,7 @@ import type { ModuleCode } from 'types/modules';
 import type { VenueInfo, VenueSearchOptions, VenueDetailList, VenueLesson } from 'types/venues';
 import { OCCUPIED } from 'types/venues';
 import { range, entries, padStart, groupBy, values } from 'lodash';
+import { ZWSP } from 'utils/react';
 
 import { tokenize } from './moduleSearch';
 import { SCHOOLDAYS } from './timify';

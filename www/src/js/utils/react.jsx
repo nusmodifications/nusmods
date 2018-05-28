@@ -6,6 +6,7 @@ import { escapeRegExp, castArray } from 'lodash';
 
 // Define some useful Unicode characters as constants
 export const NBSP = '\u00a0';
+export const ZWSP = '\u200b';
 export const BULLET = ' • ';
 
 /**
