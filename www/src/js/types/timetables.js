@@ -47,3 +47,10 @@ export type TimetableDayArrangement = ColoredLesson[][];
 export type TimetableArrangement = {
   [DayText]: TimetableDayArrangement,
 };
+
+// Represents the lesson which the user is currently hovering over.
+// Used to highlight lessons which have the same classNo
+export type HoverLesson = {
+  classNo: ClassNo,
+  moduleCode: ModuleCode,
+};
