@@ -15,6 +15,7 @@ import Timetable from 'views/timetable/Timetable';
 import makeResponsive from 'views/hocs/makeResponsive';
 import { modulePage, venuePage } from 'views/routes/paths';
 import Title from 'views/components/Title';
+import { mergeDualCodedModules } from 'utils/venues';
 import { breakpointDown } from 'utils/css';
 
 import styles from './VenueDetails.scss';
@@ -32,9 +33,10 @@ type Props = {
 
 export class VenueDetailsComponent extends PureComponent<Props> {
   arrangedLessons() {
-    const lessons = flatMap(this.props.availability, (day): VenueLesson[] => day.Classes).map(
-      (venueLesson) => ({ ...venueLesson, ModuleTitle: '', isModifiable: true }),
-    );
+    const lessons = flatMap(this.props.availability, (day): VenueLesson[] =>
+      mergeDualCodedModules(day.Classes),
+    ).map((venueLesson) => ({ ...venueLesson, ModuleTitle: '', isModifiable: true }));
+
     const coloredLessons = colorLessonsByKey(lessons, 'ModuleCode');
     return arrangeLessonsForWeek(coloredLessons);
   }
