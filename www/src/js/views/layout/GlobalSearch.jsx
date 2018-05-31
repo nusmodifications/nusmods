@@ -10,6 +10,7 @@ import type { ModuleCondensed } from 'types/modules';
 import type { Venue } from 'types/venues';
 import type { ResultType, SearchResult } from 'types/views';
 
+import ComponentMap from 'utils/ComponentMap';
 import config from 'config';
 import { MODULE_RESULT, SEARCH_RESULT, VENUE_RESULT } from 'types/views';
 import styles from './GlobalSearch.scss';
@@ -38,6 +39,8 @@ const BADGE_COLOR = {
 /* eslint-enable */
 
 class GlobalSearch extends Component<Props, State> {
+  input: ?HTMLInputElement;
+
   state = {
     isOpen: false,
   };
@@ -48,7 +51,7 @@ class GlobalSearch extends Component<Props, State> {
 
   onClose = () => {
     this.setState({ isOpen: false }, () => {
-      if (this.input.current) this.input.current.blur();
+      if (this.input) this.input.blur();
     });
   };
 
@@ -72,8 +75,6 @@ class GlobalSearch extends Component<Props, State> {
     this.onClose();
   };
 
-  input = React.createRef();
-
   // Downshift attaches label for us, so we can ignore ESLint here
   /* eslint-disable jsx-a11y/label-has-for */
   // TODO: Inject types from downshift when https://github.com/paypal/downshift/pull/180 is implemented
@@ -94,7 +95,10 @@ class GlobalSearch extends Component<Props, State> {
           {PLACEHOLDER}
         </label>
         <input
-          ref={this.input}
+          ref={(r) => {
+            this.input = r;
+            ComponentMap.globalSearchInput = r;
+          }}
           className={classnames(styles.input, { [styles.inputOpen]: isOpen })}
           {...getInputProps({ placeholder: PLACEHOLDER })}
           onFocus={this.onOpen}
