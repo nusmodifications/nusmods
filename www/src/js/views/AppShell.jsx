@@ -29,6 +29,7 @@ import ErrorPage from 'views/errors/ErrorPage';
 import { DARK_MODE } from 'types/settings';
 import LoadingSpinner from './components/LoadingSpinner';
 import FeedbackModal from './components/FeedbackModal';
+import KeyboardShortcuts from './components/KeyboardShortcuts';
 import styles from './AppShell.scss';
 
 type Props = {
@@ -49,7 +50,7 @@ type Props = {
 };
 
 export class AppShellComponent extends Component<Props> {
-  componentWillMount() {
+  componentDidMount() {
     const { timetables } = this.props;
 
     // Retrieve module list
@@ -120,6 +121,9 @@ export class AppShellComponent extends Component<Props> {
         </ErrorBoundary>
         <ErrorBoundary>
           <Footer />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <KeyboardShortcuts />
         </ErrorBoundary>
       </div>
     );

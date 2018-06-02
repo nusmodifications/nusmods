@@ -20,32 +20,24 @@ export type Semester = number; // E.g. 0/1/2/3/4. 3 and 4 means special sem i an
 export type WeekText = string; // E.g. "Every Week", "Odd Week"
 
 // Auxiliary data types
-const DaysOfWeekEnum = {
-  Monday: 'Monday',
-  Tuesday: 'Tuesday',
-  Wednesday: 'Wednesday',
-  Thursday: 'Thursday',
-  Friday: 'Friday',
-  Saturday: 'Saturday',
-};
+export type Day = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday';
+export const DaysOfWeek: Day[] = [
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+];
 
-export const DaysOfWeek = Object.keys(DaysOfWeekEnum);
-export type Day = $Keys<typeof DaysOfWeekEnum>;
-
-const TimesOfDayEnum = {
-  Morning: 'Morning',
-  Afternoon: 'Afternoon',
-  Evening: 'Evening',
-};
-
-export const TimesOfDay = Object.keys(TimesOfDayEnum);
-export type Time = $Keys<typeof TimesOfDayEnum>;
+export type Time = 'Morning' | 'Afternoon' | 'Evening';
+export const TimesOfDay: Time[] = ['Morning', 'Afternoon', 'Evening'];
 
 export const Timeslots: [Day, Time][] = flatMap(DaysOfWeek, (day): [Day, Time][] =>
   TimesOfDay.map((time) => [day, time]),
 );
 
-export type ModuleLevel = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+export type ModuleLevel = 1 | 2 | 3 | 4 | 5 | 6;
 export const Semesters = [1, 2, 3, 4];
 
 export type WorkloadComponent = 'Lecture' | 'Tutorial' | 'Laboratory' | 'Project' | 'Preparation';

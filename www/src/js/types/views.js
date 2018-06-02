@@ -4,6 +4,11 @@ import type { Department, Faculty } from './modules';
 import type { ModuleList } from './reducers';
 import type { VenueList } from './venues';
 
+export type ComponentMap = {|
+  globalSearchInput: ?HTMLInputElement,
+  downloadButton: ?HTMLButtonElement,
+|};
+
 /* layout/GlobalSearch */
 export type ResultType = 'VENUE' | 'MODULE' | 'SEARCH';
 export const VENUE_RESULT: ResultType = 'VENUE';
@@ -39,3 +44,9 @@ export type PageRangeDiff = {
 };
 
 export type OnPageChange = (PageRangeDiff) => void;
+
+export type DisqusConfig = {
+  identifier: string,
+  url: string,
+  title: string,
+};

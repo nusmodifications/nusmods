@@ -1,13 +1,11 @@
 // @flow
 
+import type { DisqusConfig } from 'types/views';
 import React, { PureComponent } from 'react';
 import config from 'config';
+import insertScript from 'utils/insertScript';
 
-type Props = {
-  url: string,
-  identifier: string,
-  title: string,
-};
+type Props = DisqusConfig;
 
 const SCRIPT_ID = 'dsq-embed-scr';
 
@@ -33,14 +31,7 @@ export default class DisqusComments extends PureComponent<Props> {
       window.disqus_config = this.getDisqusConfig();
       window.disqus_shortname = config.disqusShortname;
 
-      const script = document.createElement('script');
-      script.src = `https://${config.disqusShortname}.disqus.com/embed.js`;
-      script.id = SCRIPT_ID;
-      script.async = true;
-
-      if (document.body) {
-        document.body.appendChild(script);
-      }
+      insertScript(`https://${config.disqusShortname}.disqus.com/embed.js`, SCRIPT_ID, true);
     }
   }
 

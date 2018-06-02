@@ -29,8 +29,6 @@ type State = {
 };
 
 export class DropdownListFiltersComponent extends PureComponent<Props, State> {
-  searchInput: ?HTMLInputElement;
-
   constructor(props: Props) {
     super(props);
 
@@ -50,8 +48,10 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
     this.setState({ searchedFilters: uniq([...this.state.searchedFilters, selectedItem]) });
   };
 
+  searchInput = React.createRef();
+
   focusInput = () => {
-    if (this.searchInput) this.searchInput.focus();
+    if (this.searchInput.current) this.searchInput.current.focus();
   };
 
   displayedFilters(inputValue?: string): [ModuleFilter, number][] {
@@ -135,9 +135,7 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
                 >
                   <Search className={styles.searchIcon} onClick={this.focusInput} />
                   <input
-                    ref={(r) => {
-                      this.searchInput = r;
-                    }}
+                    ref={this.searchInput}
                     {...getInputProps({
                       onFocus: () => {
                         this.setState({ isFocused: true });

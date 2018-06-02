@@ -10,6 +10,7 @@ import type { ModuleCondensed } from 'types/modules';
 import type { Venue } from 'types/venues';
 import type { ResultType, SearchResult } from 'types/views';
 
+import ComponentMap from 'utils/ComponentMap';
 import config from 'config';
 import { MODULE_RESULT, SEARCH_RESULT, VENUE_RESULT } from 'types/views';
 import styles from './GlobalSearch.scss';
@@ -39,6 +40,7 @@ const BADGE_COLOR = {
 
 class GlobalSearch extends Component<Props, State> {
   input: ?HTMLInputElement;
+
   state = {
     isOpen: false,
   };
@@ -93,8 +95,9 @@ class GlobalSearch extends Component<Props, State> {
           {PLACEHOLDER}
         </label>
         <input
-          ref={(input) => {
-            this.input = input;
+          ref={(r) => {
+            this.input = r;
+            ComponentMap.globalSearchInput = r;
           }}
           className={classnames(styles.input, { [styles.inputOpen]: isOpen })}
           {...getInputProps({ placeholder: PLACEHOLDER })}

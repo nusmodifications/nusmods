@@ -26,7 +26,7 @@ const browserCanUseLocalStorage = canUseBrowserLocalStorage();
 if (
   !bowser.check(
     {
-      edge: '14',
+      msedge: '14',
       chrome: '56',
       firefox: '52',
       safari: '9',
@@ -84,7 +84,12 @@ if (
     if (element) {
       element.addEventListener('click', () => {
         const checkbox = document.getElementById('browserWarning-ignore');
-        if (browserCanUseLocalStorage && checkbox && checkbox.checked)
+        if (
+          browserCanUseLocalStorage &&
+          checkbox &&
+          checkbox instanceof HTMLInputElement &&
+          checkbox.checked
+        )
           localStorage.setItem(BROWSER_WARNING_KEY, navigator.userAgent);
         if (body) body.removeChild(container);
       });

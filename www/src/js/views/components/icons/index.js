@@ -24,6 +24,7 @@ import Layers from 'react-feather/dist/icons/layers';
 import LinkedIn from 'react-feather/dist/icons/linkedin';
 import Map from 'react-feather/dist/icons/map';
 import Menu from 'react-feather/dist/icons/menu';
+import MessageSquare from 'react-feather/dist/icons/message-square';
 import Mail from 'react-feather/dist/icons/mail';
 import MinusSquare from 'react-feather/dist/icons/minus-square';
 import PlusSquare from 'react-feather/dist/icons/plus-square';
@@ -59,6 +60,7 @@ export {
   Layers,
   Map,
   Menu,
+  MessageSquare,
   Mail,
   LinkedIn,
   Repeat,

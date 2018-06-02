@@ -21,6 +21,7 @@ import {
 } from 'views/components/icons';
 import Online from 'views/components/Online';
 import Modal from 'views/components/Modal';
+import ComponentMap from 'utils/ComponentMap';
 import { Counter } from 'utils/react';
 
 import styles from './ExportMenu.scss';
@@ -68,6 +69,9 @@ export class ExportMenuComponent extends PureComponent<Props, State> {
     return (
       <div className={styles.exportMenu}>
         <button
+          ref={(r) => {
+            ComponentMap.downloadButton = r;
+          }}
           className={classnames(styles.toggle, 'btn btn-outline-primary btn-svg')}
           type="button"
           onClick={toggleMenu}

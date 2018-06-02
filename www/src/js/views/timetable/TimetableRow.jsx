@@ -2,6 +2,7 @@
 import React from 'react';
 
 import type { ColoredLesson } from 'types/modules';
+import type { HoverLesson } from 'types/timetables';
 
 import { convertTimeToIndex } from 'utils/timify';
 import styles from './TimetableRow.scss';
@@ -10,6 +11,8 @@ import TimetableCell from './TimetableCell';
 type Props = {
   verticalMode: boolean,
   showTitle: boolean,
+  hoverLesson: ?HoverLesson,
+  onCellHover: ?(?HoverLesson) => void,
   startingIndex: number,
   endingIndex: number,
   lessons: ColoredLesson[],
@@ -59,12 +62,15 @@ function TimetableRow(props: Props) {
               },
             }
           : {};
+
         return (
           <TimetableCell
             key={lesson.StartTime}
             style={style}
             lesson={lesson}
             showTitle={props.showTitle}
+            hoverLesson={props.hoverLesson}
+            onHover={props.onCellHover}
             {...conditionalProps}
           />
         );

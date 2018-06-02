@@ -40,7 +40,7 @@ import {
   SEMESTER,
   TUTORIAL_TIMESLOTS,
 } from 'utils/moduleFilters';
-import { createSearchFilter, sortModules } from 'utils/moduleSearch';
+import { createSearchFilter, SEARCH_QUERY_KEY, sortModules } from 'utils/moduleSearch';
 import nusmods from 'apis/nusmods';
 import { resetModuleFinder } from 'actions/moduleFinder';
 import FilterGroup from 'utils/filters/FilterGroup';
@@ -136,7 +136,7 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
         each(filterGroups, (group) => group.initFilters(modules));
         const time = window.performance
           ? performance.now() - start
-          : // If the user's browser doesn't support performance.now, we don't use instant search
+          : // If the user's browser doesn't support performance.now, we assume it is too old for instant search
             Number.MAX_VALUE;
 
         if ('instant' in params) {
@@ -165,9 +165,9 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
       });
   }
 
-  componentWillReceiveProps(nextProps: Props) {
-    if (this.props.searchTerm !== nextProps.searchTerm) {
-      this.onSearch(nextProps.searchTerm);
+  componentDidUpdate(prevProps: Props) {
+    if (this.props.searchTerm !== prevProps.searchTerm) {
+      this.onSearch(this.props.searchTerm);
     }
   }
 
@@ -198,11 +198,7 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
           page: { $merge: { start: 0, current: 0 } },
         }),
       () => {
-        // Update query string after state is updated
-        this.history.push({
-          ...this.props.history.location,
-          search: serializeGroups(this.state.filterGroups),
-        });
+        this.updateQueryString();
 
         // Scroll back to the top
         if (resetScroll) window.scrollTo(0, 0);
@@ -219,6 +215,16 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
     );
   };
 
+  onClearFilter = () => {
+    const filterGroups = mapValues(this.state.filterGroups, (group: FilterGroup<*>) => {
+      // Don't clear search query
+      if (group.id === SEARCH_QUERY_KEY) return group;
+      return group.reset();
+    });
+
+    this.setState({ filterGroups }, this.updateQueryString);
+  };
+
   onSearch(searchTerm: string) {
     const filter = createSearchFilter(searchTerm).initFilters(this.state.modules);
 
@@ -229,6 +235,14 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
   }
 
   useInstantSearch = false;
+
+  updateQueryString = () => {
+    // Update query string after state is updated
+    this.history.push({
+      ...this.props.history.location,
+      search: serializeGroups(this.state.filterGroups),
+    });
+  };
 
   updatePageHash = () => {
     // Update the location hash so that users can share the URL and go back to the
@@ -284,6 +298,12 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
       onFilterChange: this.onFilterChange,
     };
 
+    // The clear filter button is only shown when there is at least one filter
+    // active
+    const showClearFilters = this.filterGroups().some(
+      (group) => group.isActive() && group.id !== SEARCH_QUERY_KEY,
+    );
+
     return (
       <div className="modules-page-container page-container">
         {pageHead}
@@ -310,15 +330,11 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
               <div className={styles.moduleFilters}>
                 <header className={styles.filterHeader}>
                   <h3>Refine by</h3>
-                  {this.filterGroups().some((group) => group.isActive()) && (
+                  {showClearFilters && (
                     <button
                       className="btn btn-link btn-sm"
                       type="button"
-                      onClick={() =>
-                        this.setState({
-                          filterGroups: mapValues(groups, (group: FilterGroup<*>) => group.reset()),
-                        })
-                      }
+                      onClick={this.onClearFilter}
                     >
                       Clear Filters
                     </button>
