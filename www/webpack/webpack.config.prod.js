@@ -105,6 +105,9 @@ const productionConfig = merge([
             handler: 'staleWhileRevalidate',
             options: {
               cacheName: 'api-stale-while-revalidate-cache',
+              cacheableResponse: {
+                statuses: [0, 200],
+              },
               expiration: {
                 maxAgeSeconds: ONE_MONTH,
               },
@@ -117,6 +120,9 @@ const productionConfig = merge([
             handler: 'networkFirst',
             options: {
               cacheName: 'api-network-first-cache',
+              cacheableResponse: {
+                statuses: [0, 200],
+              },
               expiration: {
                 maxEntries: 500,
                 maxAgeSeconds: ONE_MONTH,
