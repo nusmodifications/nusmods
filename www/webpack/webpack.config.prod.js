@@ -128,13 +128,9 @@ const productionConfig = merge([
         // Always serve index.html since we're a SPA using HTML5 history
         navigateFallback: 'index.html',
 
-        // Exclude /export, which are handled by the server, using negative lookahead
+        // Exclude /export, which are handled by the server
         // short_url is not excluded because it is fetched, not navigated to
         navigateFallbackBlacklist: [/^.*\/export.*$/],
-
-        // Since our build system already adds hashes to our CSS and JS, we don't need
-        // to bust cache for these files
-        dontCacheBustUrlsMatching: /\w{20}\.(css|js)$/,
 
         skipWaiting: true,
       }),
