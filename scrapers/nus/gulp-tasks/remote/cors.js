@@ -33,11 +33,15 @@ const ROOT_URLS = {
 };
 
 const MODULE_TYPES = ['Module', 'GEM2015', 'GEM', 'SSM', 'UEM', 'CFM'];
+const NO_INFO = 'The module information that you are looking for is currently not available.';
 
 const log = bunyan.createLogger({ name: 'cors' });
 
 function processModulePage(webpage, moduleInfo) {
   const $ = cheerio.load(webpage);
+  if ($.text().includes(NO_INFO)) {
+    return null;
+  }
   const timestamp = $('h2')
     .text()
     .match(TIMESTAMP_REGEX)
@@ -178,7 +182,7 @@ async function processListings(rootUrl, type, lessonTypes, config) {
   return {
     academicYear,
     semester,
-    modules,
+    modules: R.filter(R.identity, modules), // remove nulls
   };
 }
 
