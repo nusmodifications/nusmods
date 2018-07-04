@@ -7,9 +7,10 @@ import { connect } from 'react-redux';
 import storage from 'storage';
 // import { announcementKey } from 'storage/keys';
 import { toggleFeedback } from 'actions/app';
-import { Heart } from 'views/components/icons';
+import { AlertTriangle } from 'views/components/icons';
 import CloseButton from 'views/components/CloseButton';
 import styles from './Announcements.scss';
+import ExternalLink from './ExternalLink';
 
 type Props = {
   toggleFeedback: Function,
@@ -46,18 +47,20 @@ class Announcements extends PureComponent<Props, State> {
 
     return (
       <div className={classnames('alert alert-warning no-export', styles.announcement)}>
-        <Heart className={styles.backgroundIcon} />
+        <AlertTriangle className={styles.backgroundIcon} />
 
         <div className={styles.body}>
           <h3>No module information for AY2019/20 yet</h3>
           <p>
             CORS and IVLE have not been updated with next semester&apos;s information yet.
-            We&apos;ll update them as soon as they become available. For now please refer to the
+            We&apos;ll update as soon as they become available. For now please refer to the
             individual faculty&apos;s module list:
           </p>
           <ul>
             <li>
-              <a href="http://www.comp.nus.edu.sg/cugresource/soc-sched/">SOC</a>
+              <ExternalLink href="http://www.comp.nus.edu.sg/cugresource/soc-sched/">
+                School of Computing
+              </ExternalLink>
             </li>
           </ul>
         </div>
