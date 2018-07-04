@@ -50,7 +50,7 @@ class Announcements extends PureComponent<Props, State> {
         <AlertTriangle className={styles.backgroundIcon} />
 
         <div className={styles.body}>
-          <h3>No module information for AY2019/20 yet</h3>
+          <h3>No module information for AY2018/19 yet</h3>
           <p>
             CORS and IVLE have not been updated with next semester&apos;s information yet.
             We&apos;ll update as soon as they become available. For now please refer to the
