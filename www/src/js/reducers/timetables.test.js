@@ -1,6 +1,6 @@
 // @flow
 
-import reducer, { defaultTimetableState } from 'reducers/timetables';
+import reducer, { defaultTimetableState, PERSIST_KEY } from 'reducers/timetables';
 import {
   ADD_MODULE,
   SET_TIMETABLE,
@@ -10,8 +10,12 @@ import {
   setLessonConfig,
 } from 'actions/timetables';
 import type { TimetablesState } from 'types/reducers';
+import { REHYDRATE } from 'redux-persist';
+import config from 'config';
 
 const initialState = defaultTimetableState;
+
+jest.mock('config');
 
 /* eslint-disable no-useless-computed-key */
 describe('color reducers', () => {
@@ -156,6 +160,43 @@ describe('lesson reducer', () => {
           },
         },
       },
+    });
+  });
+});
+
+describe('root reducer', () => {
+  test('should archive old timetables', () => {
+    const oldLessons = {
+      [1]: {
+        CS1010S: {
+          Lecture: '1',
+          Recitation: '2',
+        },
+      },
+      [2]: {
+        CS3217: {
+          Lecture: '1',
+        },
+      },
+    };
+
+    const action: any = {
+      type: REHYDRATE,
+      key: PERSIST_KEY,
+      payload: {
+        ...initialState,
+        lessons: oldLessons,
+        academicYear: '2016/2017',
+      },
+    };
+
+    expect(reducer(initialState, action)).toEqual({
+      ...initialState,
+      lessons: {},
+      archive: {
+        '2016/2017': oldLessons,
+      },
+      academicYear: config.academicYear,
     });
   });
 });

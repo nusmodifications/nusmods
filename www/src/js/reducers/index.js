@@ -24,7 +24,10 @@ import createUndoReducer from './undoHistory';
 // Persisted reducers
 import moduleBankReducer, { persistConfig as moduleBankPersistConfig } from './moduleBank';
 import venueBankReducer, { persistConfig as venueBankPersistConfig } from './venueBank';
-import timetablesReducer from './timetables';
+import timetablesReducer, {
+  PERSIST_KEY as timetablesPersistKey,
+  persistConfig as timetablesPersistConfig,
+} from './timetables';
 import themeReducer from './theme';
 import settingsReducer from './settings';
 
@@ -43,7 +46,7 @@ export type State = {
 // Persist reducers
 const moduleBank = persistReducer('moduleBank', moduleBankReducer, moduleBankPersistConfig);
 const venueBank = persistReducer('venueBank', venueBankReducer, venueBankPersistConfig);
-const timetables = persistReducer('timetables', timetablesReducer);
+const timetables = persistReducer(timetablesPersistKey, timetablesReducer, timetablesPersistConfig);
 const theme = persistReducer('theme', themeReducer);
 const settings = persistReducer('settings', settingsReducer);
 
