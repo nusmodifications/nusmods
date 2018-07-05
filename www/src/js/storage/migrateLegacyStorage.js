@@ -46,6 +46,7 @@ export default function migrateLegacyStorage(original: ?Object) {
       hidden: splitHiddenModules(timetables, get(original, 'settings.hiddenInTimetable', [])),
       // Add academic year key
       academicYear: config.academicYear,
+      archive: {},
     }: TimetablesState);
   }
 
