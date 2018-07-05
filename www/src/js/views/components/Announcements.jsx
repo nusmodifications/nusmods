@@ -5,12 +5,11 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 
 import storage from 'storage';
-// import { announcementKey } from 'storage/keys';
+import { announcementKey } from 'storage/keys';
 import { toggleFeedback } from 'actions/app';
-import { AlertTriangle } from 'views/components/icons';
+import { Heart } from 'views/components/icons';
 import CloseButton from 'views/components/CloseButton';
 import styles from './Announcements.scss';
-import ExternalLink from './ExternalLink';
 
 type Props = {
   toggleFeedback: Function,
@@ -26,14 +25,14 @@ type State = {
  * Previous keys:
  * - 'nusmods-r-announcement' - NUSMods R announcement message
  */
-const key = null;
+const key = announcementKey('nusmods-r-announcement');
 
 class Announcements extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
 
     this.state = {
-      isOpen: true, // !storage.getItem(key),
+      isOpen: false, // !storage.getItem(key),
     };
   }
 
@@ -47,22 +46,23 @@ class Announcements extends PureComponent<Props, State> {
 
     return (
       <div className={classnames('alert alert-warning no-export', styles.announcement)}>
-        <AlertTriangle className={styles.backgroundIcon} />
+        <Heart className={styles.backgroundIcon} />
 
         <div className={styles.body}>
-          <h3>No module information for AY2019/20 yet</h3>
+          <h3>Welcome to NUSMods R!</h3>
           <p>
-            CORS and IVLE have not been updated with next semester&apos;s information yet.
-            We&apos;ll update as soon as they become available. For now please refer to the
-            individual faculty&apos;s module list:
+            New and improved, just in time for the second semester.{' '}
+            <a
+              href="http://blog.nusmods.com/nusmods-r-rethought-redesigned-rewritten-reborn"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Check out what&apos;s new
+            </a>, and{' '}
+            <button className="btn btn-inline" type="button" onClick={this.props.toggleFeedback}>
+              tell us what you think
+            </button>.
           </p>
-          <ul>
-            <li>
-              <ExternalLink href="http://www.comp.nus.edu.sg/cugresource/soc-sched/">
-                School of Computing
-              </ExternalLink>
-            </li>
-          </ul>
         </div>
 
         {key && <CloseButton className={styles.closeButton} onClick={this.dismiss} />}
