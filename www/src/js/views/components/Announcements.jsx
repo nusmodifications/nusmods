@@ -52,7 +52,7 @@ class Announcements extends PureComponent<Props, State> {
 
         <div className={styles.body}>
           <h3>AY2018/19 modules now available</h3>
-          <p>NUSMods now have AY2018/19 module information available. Happy planning!</p>
+          <p>NUSMods now has AY2018/19 module information available. Happy planning!</p>
         </div>
 
         {key && <CloseButton className={styles.closeButton} onClick={this.dismiss} />}
