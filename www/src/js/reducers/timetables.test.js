@@ -1,6 +1,6 @@
 // @flow
 
-import reducer, { defaultTimetableState, PERSIST_KEY } from 'reducers/timetables';
+import reducer, { defaultTimetableState, persistConfig } from 'reducers/timetables';
 import {
   ADD_MODULE,
   SET_TIMETABLE,
@@ -10,7 +10,6 @@ import {
   setLessonConfig,
 } from 'actions/timetables';
 import type { TimetablesState } from 'types/reducers';
-import { REHYDRATE } from 'redux-persist';
 import config from 'config';
 
 const initialState = defaultTimetableState;
@@ -164,39 +163,75 @@ describe('lesson reducer', () => {
   });
 });
 
-describe('root reducer', () => {
-  test('should archive old timetables', () => {
-    const oldLessons = {
+describe('stateReconciler', () => {
+  const oldArchive = {
+    '2015/2016': {
       [1]: {
-        CS1010S: {
+        GET1006: {
           Lecture: '1',
-          Recitation: '2',
         },
+      },
+    },
+  };
+
+  const oldLessons = {
+    [1]: {
+      CS1010S: {
+        Lecture: '1',
+        Recitation: '2',
+      },
+    },
+    [2]: {
+      CS3217: {
+        Lecture: '1',
+      },
+    },
+  };
+
+  const inbound: TimetablesState = {
+    lessons: oldLessons,
+    colors: {
+      [1]: {
+        CS1010S: '1',
       },
       [2]: {
-        CS3217: {
-          Lecture: '1',
-        },
+        CS3217: '2',
       },
+    },
+    hidden: {
+      [1]: {
+        CS1010S: '1',
+      },
+    },
+    academicYear: config.academicYear,
+    archive: oldArchive,
+  };
+
+  const { stateReconciler } = persistConfig;
+  if (!stateReconciler) {
+    throw new Error('No stateReconciler');
+  }
+
+  test('should return inbound state when academic year is the same', () => {
+    expect(stateReconciler(inbound, initialState, initialState, { debug: false })).toEqual(inbound);
+  });
+
+  test('should archive old timetables and clear state when academic year is different', () => {
+    const oldInbound = {
+      ...inbound,
+      academicYear: '2016/2017',
     };
 
-    const action: any = {
-      type: REHYDRATE,
-      key: PERSIST_KEY,
-      payload: {
-        ...initialState,
-        lessons: oldLessons,
-        academicYear: '2016/2017',
-      },
-    };
-
-    expect(reducer(initialState, action)).toEqual({
+    expect(
+      stateReconciler(oldInbound, initialState, initialState, {
+        debug: false,
+      }),
+    ).toEqual({
       ...initialState,
-      lessons: {},
       archive: {
+        ...oldArchive,
         '2016/2017': oldLessons,
       },
-      academicYear: config.academicYear,
     });
   });
 });
