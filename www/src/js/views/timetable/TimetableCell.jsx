@@ -33,7 +33,8 @@ function TimetableCell(props: Props) {
   const hover =
     hoverLesson &&
     lesson.ClassNo === hoverLesson.classNo &&
-    lesson.ModuleCode === hoverLesson.moduleCode;
+    lesson.ModuleCode === hoverLesson.moduleCode &&
+    lesson.LessonType === hoverLesson.lessonType;
 
   /* eslint-disable */
   return (
@@ -52,7 +53,12 @@ function TimetableCell(props: Props) {
       })}
       style={props.style}
       onMouseEnter={() =>
-        onHover && onHover({ classNo: lesson.ClassNo, moduleCode: lesson.ModuleCode })
+        onHover &&
+        onHover({
+          classNo: lesson.ClassNo,
+          moduleCode: lesson.ModuleCode,
+          lessonType: lesson.LessonType,
+        })
       }
       onMouseLeave={() => onHover && onHover(null)}
       {...conditionalProps}
