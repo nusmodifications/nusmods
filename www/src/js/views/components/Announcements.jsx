@@ -5,12 +5,11 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 
 import storage from 'storage';
-// import { announcementKey } from 'storage/keys';
+import { announcementKey } from 'storage/keys';
 import { toggleFeedback } from 'actions/app';
-import { AlertTriangle } from 'views/components/icons';
+import { Heart } from 'views/components/icons';
 import CloseButton from 'views/components/CloseButton';
 import styles from './Announcements.scss';
-import ExternalLink from './ExternalLink';
 
 type Props = {
   toggleFeedback: Function,
@@ -25,15 +24,17 @@ type State = {
  *
  * Previous keys:
  * - 'nusmods-r-announcement' - NUSMods R announcement message
+ * - 'ay201819-new-data' - AY2018/19 data is available
  */
-const key = null;
+const key = announcementKey('ay201819-new-data');
 
 class Announcements extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
 
     this.state = {
-      isOpen: true, // !storage.getItem(key),
+      // Set to constant false to turn off announcement
+      isOpen: key ? !storage.getItem(key) : true,
     };
   }
 
@@ -46,23 +47,12 @@ class Announcements extends PureComponent<Props, State> {
     if (!this.state.isOpen) return null;
 
     return (
-      <div className={classnames('alert alert-warning no-export', styles.announcement)}>
-        <AlertTriangle className={styles.backgroundIcon} />
+      <div className={classnames('alert alert-success no-export', styles.announcement)}>
+        <Heart className={styles.backgroundIcon} />
 
         <div className={styles.body}>
-          <h3>No module information for AY2018/19 yet</h3>
-          <p>
-            CORS and IVLE have not been updated with next semester&apos;s information yet.
-            We&apos;ll update as soon as they become available. For now please refer to the
-            individual faculty&apos;s module list:
-          </p>
-          <ul>
-            <li>
-              <ExternalLink href="http://www.comp.nus.edu.sg/cugresource/soc-sched/">
-                School of Computing
-              </ExternalLink>
-            </li>
-          </ul>
+          <h3>AY2018/19 modules now available</h3>
+          <p>NUSMods now has AY2018/19 module information available. Happy planning!</p>
         </div>
 
         {key && <CloseButton className={styles.closeButton} onClick={this.dismiss} />}
