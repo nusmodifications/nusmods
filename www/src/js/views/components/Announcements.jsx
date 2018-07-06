@@ -24,15 +24,17 @@ type State = {
  *
  * Previous keys:
  * - 'nusmods-r-announcement' - NUSMods R announcement message
+ * - 'ay201819-new-data' - AY2018/19 data is available
  */
-const key = announcementKey('nusmods-r-announcement');
+const key = announcementKey('ay201819-new-data');
 
 class Announcements extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
 
     this.state = {
-      isOpen: false, // !storage.getItem(key),
+      // Set to constant false to turn off announcement
+      isOpen: key ? !storage.getItem(key) : true,
     };
   }
 
@@ -45,24 +47,12 @@ class Announcements extends PureComponent<Props, State> {
     if (!this.state.isOpen) return null;
 
     return (
-      <div className={classnames('alert alert-warning no-export', styles.announcement)}>
+      <div className={classnames('alert alert-success no-export', styles.announcement)}>
         <Heart className={styles.backgroundIcon} />
 
         <div className={styles.body}>
-          <h3>Welcome to NUSMods R!</h3>
-          <p>
-            New and improved, just in time for the second semester.{' '}
-            <a
-              href="http://blog.nusmods.com/nusmods-r-rethought-redesigned-rewritten-reborn"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Check out what&apos;s new
-            </a>, and{' '}
-            <button className="btn btn-inline" type="button" onClick={this.props.toggleFeedback}>
-              tell us what you think
-            </button>.
-          </p>
+          <h3>AY2018/19 modules now available</h3>
+          <p>NUSMods now have AY2018/19 module information available. Happy planning!</p>
         </div>
 
         {key && <CloseButton className={styles.closeButton} onClick={this.dismiss} />}
