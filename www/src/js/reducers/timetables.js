@@ -20,7 +20,7 @@ import {
 } from 'actions/timetables';
 import { SET_EXPORTED_DATA } from 'actions/export';
 import { getNewColor } from 'utils/colors';
-import { createMigrate, REHYDRATE } from 'redux-persist';
+import { createMigrate, type PersistConfig } from 'redux-persist';
 
 const EMPTY_OBJECT = {};
 
@@ -35,6 +35,34 @@ export const persistConfig = {
   }),
   /* eslint-enable */
   version: 1,
+
+  // Our own state reconciler archives old timetables if the acad year is different,
+  // otherwise use the persisted timetable state
+  stateReconciler: (
+    inbound: TimetablesState,
+    original: TimetablesState,
+    reduced: TimetablesState,
+    { debug }: PersistConfig,
+  ): TimetablesState => {
+    if (inbound.academicYear === original.academicYear) {
+      return inbound;
+    }
+
+    if (debug) {
+      // eslint-disable-next-line no-console
+      console.log(
+        'New academic year detected - resetting timetable and adding timetable to archive',
+      );
+    }
+
+    return {
+      ...original,
+      archive: {
+        ...inbound.archive,
+        [inbound.academicYear]: inbound.lessons,
+      },
+    };
+  },
 };
 
 // Map of LessonType to ClassNo.
@@ -145,33 +173,8 @@ export const defaultTimetableState: TimetablesState = {
 };
 
 function timetables(state: TimetablesState = defaultTimetableState, action: FSA): TimetablesState {
-  if (!action.payload) {
-    return state;
-  }
-
-  // Archive old timetables on rehydration and clear the timetable for the new AY
-  if (action.type === REHYDRATE) {
-    // Redux Persist does not follow FSA, so we cast to any to let Flow
-    // give us a pass here
-    const { key, payload } = (action: any);
-
-    if (key !== PERSIST_KEY || !payload || payload.academicYear === config.academicYear) {
-      return state;
-    }
-
-    return {
-      ...state,
-      academicYear: config.academicYear,
-      lessons: {},
-      archive: {
-        ...(state.archive || EMPTY_OBJECT),
-        [payload.academicYear]: payload.lessons,
-      },
-    };
-  }
-
   // All normal timetable actions should specify their semester
-  if (!action.payload.semester) {
+  if (!action.payload || !action.payload.semester) {
     return state;
   }
 

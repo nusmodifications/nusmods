@@ -16,6 +16,7 @@ export default function persistReducer(
     {
       key,
       storage,
+      debug: process.env.NODE_ENV !== 'production',
       ...options,
     },
     reducer,
