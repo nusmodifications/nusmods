@@ -7,7 +7,7 @@ Object {
   },
   "payload": Object {
     "method": "GET",
-    "url": "https://nusmods.com/api/2018-2019/modules/CS1010S.json",
+    "url": "test://MOCK_MOD_DETAILS_URL/CS1010S",
   },
   "type": "FETCH_MODULE",
 }
@@ -20,7 +20,7 @@ Object {
   },
   "payload": Object {
     "method": "GET",
-    "url": "https://nusmods.com/api/2018-2019/moduleList.json",
+    "url": "test://MOCK_MOD_LIST_URL",
   },
   "type": "FETCH_MODULE_LIST",
 }
