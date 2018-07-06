@@ -77,6 +77,7 @@ test('move timetables state', () => {
       [2]: ['CS1010S'],
     },
     academicYear: '2017/2018',
+    archive: {},
   });
 });
 

@@ -20,8 +20,22 @@ import {
 } from 'actions/timetables';
 import { SET_EXPORTED_DATA } from 'actions/export';
 import { getNewColor } from 'utils/colors';
+import { createMigrate, REHYDRATE } from 'redux-persist';
 
 const EMPTY_OBJECT = {};
+
+export const PERSIST_KEY = 'timetables';
+export const persistConfig = {
+  /* eslint-disable no-useless-computed-key */
+  migrate: createMigrate({
+    [1]: (state: TimetablesState) => ({
+      ...state,
+      archive: {},
+    }),
+  }),
+  /* eslint-enable */
+  version: 1,
+};
 
 // Map of LessonType to ClassNo.
 const defaultModuleLessonConfig: ModuleLessonConfig = {};
@@ -127,10 +141,37 @@ export const defaultTimetableState: TimetablesState = {
   colors: {},
   hidden: {},
   academicYear: config.academicYear,
+  archive: {},
 };
 
 function timetables(state: TimetablesState = defaultTimetableState, action: FSA): TimetablesState {
-  if (!action.payload || !action.payload.semester) {
+  if (!action.payload) {
+    return state;
+  }
+
+  // Archive old timetables on rehydration and clear the timetable for the new AY
+  if (action.type === REHYDRATE) {
+    // Redux Persist does not follow FSA, so we cast to any to let Flow
+    // give us a pass here
+    const { key, payload } = (action: any);
+
+    if (key !== PERSIST_KEY || !payload || payload.academicYear === config.academicYear) {
+      return state;
+    }
+
+    return {
+      ...state,
+      academicYear: config.academicYear,
+      lessons: {},
+      archive: {
+        ...(state.archive || EMPTY_OBJECT),
+        [payload.academicYear]: payload.lessons,
+      },
+    };
+  }
+
+  // All normal timetable actions should specify their semester
+  if (!action.payload.semester) {
     return state;
   }
 
@@ -180,6 +221,7 @@ function timetables(state: TimetablesState = defaultTimetableState, action: FSA)
         hidden: { [semester]: hidden },
       };
     }
+
     default:
       return state;
   }
