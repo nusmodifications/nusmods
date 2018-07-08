@@ -106,7 +106,7 @@ const productionConfig = merge([
             options: {
               cacheName: 'api-stale-while-revalidate-cache',
               cacheableResponse: {
-                statuses: [0, 200],
+                statuses: [200],
               },
               expiration: {
                 maxAgeSeconds: ONE_MONTH,
@@ -121,7 +121,7 @@ const productionConfig = merge([
             options: {
               cacheName: 'api-network-first-cache',
               cacheableResponse: {
-                statuses: [0, 200],
+                statuses: [200],
               },
               expiration: {
                 maxEntries: 500,
