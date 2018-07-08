@@ -11,6 +11,7 @@ const parts = require('./webpack.parts');
 
 const developmentConfig = merge([
   parts.setFreeVariable('process.env.NODE_ENV', 'development'),
+  parts.setFreeVariable('process.env.DEBUG_WORKBOX', process.env.DEBUG_WORKBOX),
   commonConfig,
   {
     // Use a fast source map for good-enough debugging usage
@@ -55,6 +56,7 @@ const developmentConfig = merge([
       new webpack.NoEmitOnErrorsPlugin(),
     ],
   },
+  process.env.DEBUG_WORKBOX ? parts.workbox() : {},
   parts.loadImages({
     include: parts.PATHS.images,
   }),

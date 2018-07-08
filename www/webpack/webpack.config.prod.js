@@ -1,11 +1,9 @@
 const path = require('path');
 const merge = require('webpack-merge');
 const webpack = require('webpack');
-const _ = require('lodash');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const { GenerateSW } = require('workbox-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 
 const commonConfig = require('./webpack.config.common');
@@ -22,9 +20,6 @@ const config = require('../src/js/config/app-config.json');
 const extractTextPlugin = new ExtractTextPlugin('[name].[chunkhash].css', {
   allChunks: true,
 });
-
-const ONE_MONTH = 30 * 24 * 60 * 60;
-const staleWhileRevalidatePaths = [nusmods.venuesUrl(config.semester), nusmods.modulesUrl()];
 
 const productionConfig = merge([
   parts.setFreeVariable('process.env.NODE_ENV', 'production'),
@@ -92,56 +87,9 @@ const productionConfig = merge([
       new CopyWebpackPlugin([{ from: 'static', context: parts.PATHS.root }], {
         copyUnmodified: true,
       }),
-      // See this for how to configure Workbox service workers
-      // https://developers.google.com/web/tools/workbox/modules/workbox-webpack-plugin
-      new GenerateSW({
-        // Cache NUSMods API requests so that pages which depend on them can be
-        // viewed offline
-        runtimeCaching: [
-          // Module and venue info are served from cache first, because they are
-          // large, so this will improve perceived performance
-          {
-            urlPattern: new RegExp(staleWhileRevalidatePaths.map(_.escapeRegExp).join('|')),
-            handler: 'staleWhileRevalidate',
-            options: {
-              cacheName: 'api-stale-while-revalidate-cache',
-              cacheableResponse: {
-                statuses: [200],
-              },
-              expiration: {
-                maxAgeSeconds: ONE_MONTH,
-              },
-            },
-          },
-          // Everything else (module info, module list) uses network first because
-          // they are relatively small and needs to be as updated as possible
-          {
-            urlPattern: new RegExp(_.escapeRegExp(nusmods.ayBaseUrl())),
-            handler: 'networkFirst',
-            options: {
-              cacheName: 'api-network-first-cache',
-              cacheableResponse: {
-                statuses: [200],
-              },
-              expiration: {
-                maxEntries: 500,
-                maxAgeSeconds: ONE_MONTH,
-              },
-            },
-          },
-        ],
-
-        // Always serve index.html since we're a SPA using HTML5 history
-        navigateFallback: 'index.html',
-
-        // Exclude /export, which are handled by the server
-        // short_url is not excluded because it is fetched, not navigated to
-        navigateFallbackBlacklist: [/^.*\/export.*$/],
-
-        skipWaiting: true,
-      }),
     ],
   },
+  parts.workbox(),
   parts.clean(parts.PATHS.build),
   parts.extractBundle({
     name: 'vendor',
