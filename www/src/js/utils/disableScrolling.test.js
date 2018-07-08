@@ -1,7 +1,7 @@
 // @flow
 
 import noScrollNpm from 'no-scroll';
-import noScroll from './noScroll';
+import disableScrolling from './disableScrolling';
 
 jest.mock('no-scroll');
 
@@ -13,23 +13,23 @@ describe('noScroll()', () => {
   });
 
   test('turn noScroll on or off', () => {
-    noScroll(true);
+    disableScrolling(true);
     expect(noScrollNpm.toggle).toBeCalled();
     expect(body && body.classList.contains('no-scroll')).toBe(true);
 
-    noScroll(false);
+    disableScrolling(false);
     expect(noScrollNpm.toggle).toHaveBeenCalledTimes(2);
     expect(body && body.classList.contains('no-scroll')).toBe(false);
   });
 
   test('not do anything if it is already on/off', () => {
-    noScroll(false);
+    disableScrolling(false);
     expect(noScrollNpm.toggle).not.toHaveBeenCalled();
     expect(body && body.classList.contains('no-scroll')).toBe(false);
 
-    noScroll(true);
-    noScroll(true);
-    noScroll(true);
+    disableScrolling(true);
+    disableScrolling(true);
+    disableScrolling(true);
     expect(noScrollNpm.toggle).toHaveBeenCalledTimes(1);
     expect(body && body.classList.contains('no-scroll')).toBe(true);
   });

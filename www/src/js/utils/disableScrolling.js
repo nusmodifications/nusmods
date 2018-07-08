@@ -9,7 +9,7 @@ let isOn = false;
  * class on body because unfortunately toggling the no scroll styles
  * also affects position: sticky elements
  */
-export default function noScroll(active: boolean) {
+export default function disableScrolling(active: boolean) {
   const { body } = document;
   if (!body || active === isOn) return;
 
