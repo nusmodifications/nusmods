@@ -37,6 +37,12 @@ export class SideMenuComponent extends PureComponent<Props> {
     noScroll(this.isSideMenuShown());
   }
 
+  componentWillUnmount() {
+    // Force unset noscroll when unmounting so the user gets scrolling back if
+    // they navigate out of the parent component without closing the menu
+    noScroll(false);
+  }
+
   isSideMenuShown() {
     return this.props.isOpen && !this.props.matchBreakpoint;
   }
