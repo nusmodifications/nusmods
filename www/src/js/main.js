@@ -35,12 +35,18 @@ if (module.hot) {
 
 render();
 
-if (process.env.NODE_ENV === 'production') {
-  if ('serviceWorker' in navigator && window.location.protocol === 'https:') {
-    navigator.serviceWorker.register('/sw.js').catch((e) => {
-      Raven.captureException(e);
-    });
-  }
+if (
+  ('serviceWorker' in navigator &&
+    window.location.protocol === 'https:' &&
+    process.env.NODE_ENV === 'production') ||
+  // Allow us to force Workbox to be enabled for debugging
+  process.env.DEBUG_WORKBOX
+) {
+  navigator.serviceWorker.register('/service-worker.js').catch((e) => {
+    Raven.captureException(e);
+  });
+}
 
+if (process.env.NODE_ENV === 'production') {
   initializeGA();
 }
