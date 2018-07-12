@@ -104,6 +104,8 @@ export type TimetablesState = {
   +colors: SemesterColorMap,
   +hidden: HiddenModulesMap,
   +academicYear: string,
+  // Mapping of academic year to old timetable config
+  +archive: { [string]: TimetableConfig },
 };
 
 /* moduleBank.js */

@@ -53,4 +53,5 @@ export type TimetableArrangement = {
 export type HoverLesson = {
   classNo: ClassNo,
   moduleCode: ModuleCode,
+  lessonType: LessonType,
 };
