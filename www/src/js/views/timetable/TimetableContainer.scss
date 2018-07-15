@@ -23,13 +23,7 @@
     height: 8rem;
   }
 
-  .text {
-    flex: 0 1 auto;
-  }
-
   .actions {
-    text-align: right;
-
     :global(.btn) {
       margin-left: 0.5rem;
     }
@@ -37,7 +31,6 @@
 
   @include media-breakpoint-up(md) {
     .row {
-      flex-wrap: nowrap;
       align-items: center;
       justify-content: space-between;
     }

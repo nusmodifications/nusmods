@@ -28,6 +28,7 @@ import MessageSquare from 'react-feather/dist/icons/message-square';
 import Mail from 'react-feather/dist/icons/mail';
 import MinusSquare from 'react-feather/dist/icons/minus-square';
 import PlusSquare from 'react-feather/dist/icons/plus-square';
+import Refresh from 'react-feather/dist/icons/refresh-cw';
 import Repeat from 'react-feather/dist/icons/repeat';
 import Settings from 'react-feather/dist/icons/settings';
 import Search from 'react-feather/dist/icons/search';
@@ -63,6 +64,7 @@ export {
   MessageSquare,
   Mail,
   LinkedIn,
+  Refresh,
   Repeat,
   MinusSquare,
   PlusSquare,

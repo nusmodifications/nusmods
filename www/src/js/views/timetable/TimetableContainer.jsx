@@ -126,7 +126,7 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
         <Repeat />
 
         <div className={classnames('row', styles.row)}>
-          <div className={classnames('col-md-auto', styles.text)}>
+          <div className={classnames('col')}>
             <h3>This timetable was shared with you</h3>
             <p>
               Clicking import will <strong>replace</strong> your saved timetable with the one below.

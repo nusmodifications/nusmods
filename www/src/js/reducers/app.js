@@ -8,6 +8,7 @@ import { SELECT_SEMESTER } from 'actions/settings';
 import {
   OPEN_NOTIFICATION,
   POP_NOTIFICATION,
+  PROMPT_REFRESH,
   SET_ONLINE_STATUS,
   TOGGLE_FEEDBACK_MODAL,
 } from 'actions/app';
@@ -19,6 +20,7 @@ const defaultAppState = (): AppState => ({
   activeLesson: null,
   isOnline: navigator.onLine,
   isFeedbackModalOpen: false,
+  promptRefresh: false,
   notifications: [],
 });
 
@@ -50,6 +52,12 @@ function app(state: AppState = defaultAppState(), action: FSA): AppState {
       return {
         ...state,
         isFeedbackModalOpen: !state.isFeedbackModalOpen,
+      };
+
+    case PROMPT_REFRESH:
+      return {
+        ...state,
+        promptRefresh: true,
       };
     case OPEN_NOTIFICATION: {
       if (state.notifications.length) {
