@@ -57,6 +57,12 @@ export default function initializeServiceWorker(store: Store<*, *, *>) {
         return;
       }
 
+      // Refresh the service worker regularly so that the user gets the update
+      // notice if they leave the tab open for a while
+      const updateIntervalId = window.setInterval(() => {
+        registration.update();
+      }, 60 * 60 * 1000);
+
       // When the user asks to refresh the UI, we'll need to reload the window
       let preventDevToolsReloadLoop;
       serviceWorker.addEventListener('controllerchange', () => {
@@ -69,6 +75,7 @@ export default function initializeServiceWorker(store: Store<*, *, *>) {
       onNewServiceWorker(registration, () => {
         currentRegistration = registration;
         store.dispatch(promptRefresh());
+        window.clearInterval(updateIntervalId);
       });
     })
     .catch((e) => {
