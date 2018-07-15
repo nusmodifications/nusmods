@@ -1,5 +1,4 @@
 // @flow
-
 import React, { PureComponent } from 'react';
 import classnames from 'classnames';
 import { connect, type MapStateToProps } from 'react-redux';
