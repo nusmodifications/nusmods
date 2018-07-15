@@ -14,9 +14,9 @@ type Props = {
 
 class RefreshPrompt extends PureComponent<Props> {
   render() {
-    // if (!this.props.showPrompt) {
-    //   return null;
-    // }
+    if (!this.props.showPrompt) {
+      return null;
+    }
 
     return (
       <div className={classnames('alert alert-success', styles.announcement)}>
