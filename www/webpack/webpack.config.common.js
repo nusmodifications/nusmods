@@ -51,12 +51,12 @@ const commonConfig = merge([
       new StyleLintPlugin({
         context: parts.PATHS.app,
       }),
-      new LodashModuleReplacementPlugin({
-        caching: true,
-        collections: true,
-        flattening: true,
-        paths: true,
-      }),
+      // new LodashModuleReplacementPlugin({
+      //   caching: true,
+      //   collections: true,
+      //   flattening: true,
+      //   paths: true,
+      // }),
     ],
   },
   parts.lintJavaScript({

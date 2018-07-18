@@ -14,6 +14,7 @@ const developmentConfig = merge([
   parts.setFreeVariable('process.env.DEBUG_WORKBOX', process.env.DEBUG_WORKBOX),
   commonConfig,
   {
+    mode: 'development',
     // Use a fast source map for good-enough debugging usage
     // https://webpack.js.org/configuration/devtool/#devtool
     devtool: 'cheap-module-eval-source-map',
@@ -29,16 +30,16 @@ const developmentConfig = merge([
       // If you require a missing module and then `npm install` it, you still have
       // to restart the development server for Webpack to discover it. This plugin
       // makes the discovery automatic so you don't have to restart.
-      new WatchMissingNodeModulesPlugin(parts.PATHS.node),
+      // new WatchMissingNodeModulesPlugin(parts.PATHS.node),
       new HtmlWebpackPlugin({
         template: path.join(parts.PATHS.app, 'index.html'),
         cache: true,
       }),
-      new AutoDllPlugin({
-        inject: true, // will inject the DLL bundles to index.html
-        filename: parts.DLL.FILE_FORMAT,
-        entry: parts.DLL.ENTRIES,
-      }),
+      // new AutoDllPlugin({
+      //   inject: true, // will inject the DLL bundles to index.html
+      //   filename: parts.DLL.FILE_FORMAT,
+      //   entry: parts.DLL.ENTRIES,
+      // }),
       // Copy files from static folder over (in-memory)
       new CopyWebpackPlugin([
         { from: 'static', context: parts.PATHS.root, ignore: ['short_url.php'] },

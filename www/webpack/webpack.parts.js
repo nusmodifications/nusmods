@@ -45,8 +45,6 @@ const VENDOR = [
   'history', // History module used by router
   'fbjs', // facebook deps
   'prop-types', // gone but not forgotten
-  'loader', // style loader fallbacks
-  'equal', // various comparison libs used by deps
 ];
 
 const DLL = {
