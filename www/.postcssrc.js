@@ -13,7 +13,18 @@ const config = {
 
 // Use CSSNano in production
 if (process.env.NODE_ENV === 'production') {
-  config.plugins.push(require('cssnano'));
+  config.plugins.push(
+    require('cssnano')({
+      preset: [
+        'default',
+        {
+          // mergeLonghand produces incorrect transformations with border
+          // https://github.com/cssnano/cssnano/issues/557
+          mergeLonghand: false,
+        },
+      ],
+    }),
+  );
 }
 
-module.exports = config
+module.exports = config;
