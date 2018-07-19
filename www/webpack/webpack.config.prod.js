@@ -6,7 +6,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
 
 const commonConfig = require('./webpack.config.common');
 const parts = require('./webpack.parts');
@@ -20,8 +20,8 @@ const config = require('../src/js/config/app-config.json');
  * @see https://survivejs.com/webpack/styling/separating-css/
  */
 const cssExtractPlugin = new MiniCssExtractPlugin({
-  filename: '[contenthash].css',
-  chunkFilename: '[contenthash].css',
+  filename: '[name].[chunkhash:8].css',
+  chunkFilename: '[name].[chunkhash:8].css',
 });
 
 const productionConfig = merge([
@@ -37,10 +37,10 @@ const productionConfig = merge([
     output: {
       // The build folder.
       path: parts.PATHS.build,
-      filename: '[chunkhash].js',
+      filename: '[name].[chunkhash:8].js',
       // This is used for require.ensure. The setup
       // will work without but this is useful to set.
-      chunkFilename: '[chunkhash].js',
+      chunkFilename: '[name].[chunkhash:8].js',
     },
     module: {
       rules: [
@@ -73,12 +73,17 @@ const productionConfig = merge([
           removeComments: true,
           removeRedundantAttributes: true,
         },
+        // Embed the runtime entry point chunk in the HTML itself
+        // See runtimeChunk below
+        inlineSource: 'runtime',
         // For use as a variable under htmlWebpackPlugin.options in the template
         moduleListUrl: nusmods.moduleListUrl(),
         venuesUrl: nusmods.venuesUrl(config.semester),
         brandName: config.brandName,
         description: config.defaultDescription,
       }),
+      // Allows us to use the inlineSource option above
+      new HtmlWebpackInlineSourcePlugin(),
       new ScriptExtHtmlWebpackPlugin({
         inline: /manifest/,
         preload: /\.js$/,
@@ -102,12 +107,14 @@ const productionConfig = merge([
             },
           },
         }),
-        new OptimizeCSSAssetsPlugin(),
       ],
       splitChunks: {
         // include all types of chunks
-        chunks: 'all'
+        chunks: 'all',
       },
+      // Split off the runtime chunk and allows us to inline this directly into the HTML
+      // for better performance
+      runtimeChunk: 'single',
     },
   },
   parts.workbox(),

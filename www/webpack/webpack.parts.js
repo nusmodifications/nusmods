@@ -3,10 +3,7 @@ const webpack = require('webpack');
 const _ = require('lodash');
 
 const { GenerateSW } = require('workbox-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const cssnano = require('cssnano');
 const FlowStatusWebpackPlugin = require('flow-status-webpack-plugin');
 const childProcess = require('child_process');
 const moment = require('moment');
@@ -148,14 +145,13 @@ exports.transpileJavascript = ({ include, exclude, options }) => ({
         include,
         exclude,
 
-        use: [...insertIf(IS_DEV, 'cache-loader'), { loader: 'babel-loader', options }],
+        use: [{ loader: 'babel-loader', options }],
       },
     ],
   },
 });
 
 exports.getCSSConfig = ({ options } = {}) => [
-  ...insertIf(IS_DEV, 'cache-loader'), // Because css-loader is slow
   {
     loader: 'css-loader',
     // Enable 'composes' from other scss files

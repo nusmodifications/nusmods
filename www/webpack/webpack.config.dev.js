@@ -2,7 +2,6 @@ const webpack = require('webpack');
 const merge = require('webpack-merge');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const AutoDllPlugin = require('autodll-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
 
@@ -35,11 +34,6 @@ const developmentConfig = merge([
         template: path.join(parts.PATHS.app, 'index.html'),
         cache: true,
       }),
-      // new AutoDllPlugin({
-      //   inject: true, // will inject the DLL bundles to index.html
-      //   filename: parts.DLL.FILE_FORMAT,
-      //   entry: parts.DLL.ENTRIES,
-      // }),
       // Copy files from static folder over (in-memory)
       new CopyWebpackPlugin([
         { from: 'static', context: parts.PATHS.root, ignore: ['short_url.php'] },

@@ -1,6 +1,5 @@
 const path = require('path');
 const merge = require('webpack-merge');
-const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
@@ -58,8 +57,6 @@ const productionConfig = merge([
       ],
     },
     plugins: [
-      // SEE: https://medium.com/webpack/brief-introduction-to-scope-hoisting-in-webpack-8435084c171f
-      new webpack.optimize.ModuleConcatenationPlugin(),
       new HtmlWebpackPlugin({
         template: path.join(parts.PATHS.app, source('index.html')),
         inlineSource: '\\.(js|css)$',
@@ -68,7 +65,6 @@ const productionConfig = merge([
       cssExtractPlugin,
     ],
   },
-  parts.minifyJavascript(),
   parts.loadImages({
     include: parts.PATHS.images,
     options: {

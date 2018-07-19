@@ -21,7 +21,6 @@
   "author": "NUSModifications",
   "license": "MIT",
   "devDependencies": {
-    "autodll-webpack-plugin": "0.4.2",
     "autoprefixer": "8.2.0",
     "babel-cli": "6.26.0",
     "babel-core": "6.26.0",
@@ -36,7 +35,6 @@
     "babel-preset-react": "6.24.1",
     "babel-preset-react-optimize": "1.0.1",
     "babel-register": "6.26.0",
-    "cache-loader": "1.2.2",
     "chalk": "2.3.2",
     "cheerio": "1.0.0-rc.2",
     "clean-webpack-plugin": "0.1.19",
@@ -75,7 +73,6 @@
     "mini-css-extract-plugin": "^0.4.1",
     "moment": "2.22.0",
     "node-sass": "4.9.2",
-    "optimize-css-assets-webpack-plugin": "^4.0.3",
     "postcss-custom-properties": "7.0.0",
     "postcss-loader": "2.1.6",
     "prettier": "1.11.1",

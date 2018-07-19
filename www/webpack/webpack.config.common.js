@@ -1,5 +1,4 @@
 const merge = require('webpack-merge');
-const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 
 const parts = require('./webpack.parts');
@@ -33,6 +32,8 @@ const commonConfig = merge([
       },
       // Importing modules from these files will not require the extension.
       extensions: ['.js', '.jsx', '.json'],
+      // We don't use symlinks, so disable for performance
+      symlinks: false,
     },
     // Entry accepts a path or an object of entries.
     // We'll be using the latter form given it's
@@ -46,17 +47,12 @@ const commonConfig = merge([
       publicPath,
       path: parts.PATHS.build,
       filename: '[name].js',
+      pathinfo: false,
     },
     plugins: [
       new StyleLintPlugin({
         context: parts.PATHS.app,
       }),
-      // new LodashModuleReplacementPlugin({
-      //   caching: true,
-      //   collections: true,
-      //   flattening: true,
-      //   paths: true,
-      // }),
     ],
   },
   parts.lintJavaScript({
