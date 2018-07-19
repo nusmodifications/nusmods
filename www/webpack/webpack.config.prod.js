@@ -1,10 +1,12 @@
 const path = require('path');
 const merge = require('webpack-merge');
 const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 const commonConfig = require('./webpack.config.common');
 const parts = require('./webpack.parts');
@@ -17,8 +19,9 @@ const config = require('../src/js/config/app-config.json');
  * @see https://webpack.js.org/guides/code-splitting-css/
  * @see https://survivejs.com/webpack/styling/separating-css/
  */
-const extractTextPlugin = new ExtractTextPlugin('[name].[chunkhash].css', {
-  allChunks: true,
+const cssExtractPlugin = new MiniCssExtractPlugin({
+  filename: '[contenthash].css',
+  chunkFilename: '[contenthash].css',
 });
 
 const productionConfig = merge([
@@ -27,13 +30,14 @@ const productionConfig = merge([
   {
     // Don't attempt to continue if there are any errors.
     bail: true,
+    mode: 'production',
     // We generate sourcemaps in production. This is slow but gives good results.
     // You can exclude the *.map files from the build during deployment.
     devtool: 'source-map',
     output: {
       // The build folder.
       path: parts.PATHS.build,
-      filename: '[name].[chunkhash].js',
+      filename: '[chunkhash].js',
       // This is used for require.ensure. The setup
       // will work without but this is useful to set.
       chunkFilename: '[chunkhash].js',
@@ -43,23 +47,20 @@ const productionConfig = merge([
         {
           test: /\.(css|scss)$/,
           include: parts.PATHS.styles,
-          use: extractTextPlugin.extract({
-            use: parts.getCSSConfig(),
-            fallback: 'style-loader',
-          }),
+          use: [MiniCssExtractPlugin.loader, ...parts.getCSSConfig()],
         },
         {
           test: /\.(css|scss)$/,
           include: parts.PATHS.scripts,
-          use: extractTextPlugin.extract({
-            use: parts.getCSSConfig({
+          use: [
+            MiniCssExtractPlugin.loader,
+            ...parts.getCSSConfig({
               options: {
                 modules: true,
                 localIdentName: '[hash:base64:8]',
               },
             }),
-            fallback: 'style-loader',
-          }),
+          ],
         },
       ],
     },
@@ -82,30 +83,35 @@ const productionConfig = merge([
         inline: /manifest/,
         preload: /\.js$/,
       }),
-      extractTextPlugin,
+      cssExtractPlugin,
       // Copy files from static folder over to dist
       new CopyWebpackPlugin([{ from: 'static', context: parts.PATHS.root }], {
         copyUnmodified: true,
       }),
     ],
+    optimization: {
+      minimizer: [
+        new UglifyJsPlugin({
+          cache: true,
+          parallel: true,
+          sourceMap: true,
+          uglifyOptions: {
+            compress: {
+              // Two passes yield the most optimal results
+              passes: 2,
+            },
+          },
+        }),
+        new OptimizeCSSAssetsPlugin(),
+      ],
+      splitChunks: {
+        // include all types of chunks
+        chunks: 'all'
+      },
+    },
   },
   parts.workbox(),
   parts.clean(parts.PATHS.build),
-  parts.extractBundle({
-    name: 'vendor',
-    entries: parts.VENDOR,
-  }),
-  parts.minifyJavascript(),
-  parts.minifyCSS({
-    options: {
-      discardComments: {
-        removeAll: true,
-      },
-      // Run cssnano in safe mode to avoid
-      // potentially unsafe transformations.
-      safe: true,
-    },
-  }),
   // If the file size is below the specified limit
   // the file is converted into a data URL and inlined to avoid requests.
   parts.loadImages({

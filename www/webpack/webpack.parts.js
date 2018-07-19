@@ -154,49 +154,6 @@ exports.transpileJavascript = ({ include, exclude, options }) => ({
   },
 });
 
-/**
- * Minifies Javascript to make them smaller and faster.
- *
- * @see https://webpack.js.org/plugins/uglifyjs-webpack-plugin/
- * @see https://survivejs.com/webpack/optimizing/minifying/
- */
-exports.minifyJavascript = () =>
-  // TODO: Use Babili instead when it's out of beta
-  // Currently breaks Timify.js
-  // SEE: https://webpack.js.org/plugins/babili-webpack-plugin/
-  /*
-  plugins: [
-    new BabiliPlugin({
-      mangle: {
-        blacklist: ['$'],
-      },
-      removeConsole: false,
-      keepFnName: true,
-    }),
-  ],
-  */
-  ({
-    plugins: [
-      new UglifyJsPlugin({
-        sourceMap: true,
-        // See: https://github.com/mishoo/UglifyJS2/tree/harmony
-        uglifyOptions: {
-          // Don't beautify output (enable for neater output).
-          beautify: false,
-          // Eliminate comments.
-          comments: false,
-          // Compression specific options.
-          compress: {
-            // Two passes yield the most optimal results
-            passes: 2,
-          },
-          // Required to avoid Safari 10/11 bugs
-          safari10: true,
-        },
-      }),
-    ],
-  });
-
 exports.getCSSConfig = ({ options } = {}) => [
   ...insertIf(IS_DEV, 'cache-loader'), // Because css-loader is slow
   {
@@ -235,21 +192,6 @@ exports.loadCSS = ({ include, exclude, options } = {}) => ({
       },
     ],
   },
-});
-
-/**
- * Minifies CSS to make it super small.
- *
- * @see https://survivejs.com/webpack/optimizing/minifying/#minifying-css
- */
-exports.minifyCSS = ({ options }) => ({
-  plugins: [
-    new OptimizeCSSAssetsPlugin({
-      cssProcessor: cssnano,
-      cssProcessorOptions: options,
-      canPrint: false,
-    }),
-  ],
 });
 
 /**
