@@ -21,7 +21,7 @@ class RefreshPrompt extends PureComponent<Props> {
       <div className={classnames('alert alert-success', styles.announcement)}>
         <Refresh className={styles.backgroundIcon} />
 
-        <div className={classnames()}>
+        <div>
           <h3>A new version of NUSMods is available</h3>
           <p>Please refresh the page to get the latest version.</p>
         </div>
