@@ -51,6 +51,7 @@ export type AppState = {
   +isOnline: boolean,
   +isFeedbackModalOpen: boolean,
   +notifications: NotificationData[],
+  +promptRefresh: boolean,
 };
 
 /* requests.js */
