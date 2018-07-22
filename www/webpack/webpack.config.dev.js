@@ -3,7 +3,6 @@ const merge = require('webpack-merge');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
 
 const commonConfig = require('./webpack.config.common');
 const parts = require('./webpack.parts');
@@ -26,10 +25,6 @@ const developmentConfig = merge([
       'main',
     ],
     plugins: [
-      // If you require a missing module and then `npm install` it, you still have
-      // to restart the development server for Webpack to discover it. This plugin
-      // makes the discovery automatic so you don't have to restart.
-      // new WatchMissingNodeModulesPlugin(parts.PATHS.node),
       new HtmlWebpackPlugin({
         template: path.join(parts.PATHS.app, 'index.html'),
         cache: true,
