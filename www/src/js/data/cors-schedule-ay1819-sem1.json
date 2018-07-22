@@ -1,0 +1,147 @@
+[
+  {
+    "round": "0",
+    "periods": [
+      {
+        "type": "open",
+        "start": "Thursday 26th July, 9am",
+        "startTs": "2018-07-26T01:00:00.000Z",
+        "end": "Friday 27th July, 5pm",
+        "endTs": "2018-07-27T09:00:00.000Z"
+      }
+    ]
+  },
+  {
+    "round": "1A",
+    "periods": [
+      {
+        "type": "open",
+        "start": "Monday 30th July, 9am",
+        "startTs": "2018-07-30T01:00:00.000Z",
+        "end": "Tuesday 31st July, 1pm",
+        "endTs": "2018-07-31T05:00:00.000Z"
+      },
+      {
+        "type": "closed",
+        "start": "Tuesday 31st July, 1pm",
+        "startTs": "2018-07-31T05:00:00.000Z",
+        "end": "Tuesday 31st July, 5pm",
+        "endTs": "2018-07-31T09:00:00.000Z"
+      }
+    ]
+  },
+  {
+    "round": "1B",
+    "periods": [
+      {
+        "type": "open",
+        "start": "Wednesday 1st August, 9am",
+        "startTs": "2018-08-01T01:00:00.000Z",
+        "end": "Wednesday 1st August, 3pm",
+        "endTs": "2018-08-01T07:00:00.000Z"
+      },
+      {
+        "type": "closed",
+        "start": "Wednesday 1st August, 3pm",
+        "startTs": "2018-08-01T07:00:00.000Z",
+        "end": "Wednesday 1st August, 5pm",
+        "endTs": "2018-08-01T09:00:00.000Z"
+      }
+    ]
+  },
+  {
+    "round": "1C",
+    "periods": [
+      {
+        "type": "open",
+        "start": "Thursday 2nd August, 9am",
+        "startTs": "2018-08-02T01:00:00.000Z",
+        "end": "Friday 3rd August, 1pm",
+        "endTs": "2018-08-03T05:00:00.000Z"
+      },
+      {
+        "type": "closed",
+        "start": "Friday 3rd August, 1pm",
+        "startTs": "2018-08-03T05:00:00.000Z",
+        "end": "Friday 3rd August, 5pm",
+        "endTs": "2018-08-03T09:00:00.000Z"
+      }
+    ]
+  },
+  {
+    "round": "2A",
+    "periods": [
+      {
+        "type": "open",
+        "start": "Tuesday 7th August, 9am",
+        "startTs": "2018-08-07T01:00:00.000Z",
+        "end": "Wednesday 8th August, 1pm",
+        "endTs": "2018-08-08T05:00:00.000Z"
+      },
+      {
+        "type": "closed",
+        "start": "Wednesday 8th August, 1pm",
+        "startTs": "2018-08-08T05:00:00.000Z",
+        "end": "Wednesday 8th August, 5pm",
+        "endTs": "2018-08-08T09:00:00.000Z"
+      }
+    ]
+  },
+  {
+    "round": "2B",
+    "periods": [
+      {
+        "type": "open",
+        "start": "Friday 10th August, 9am",
+        "startTs": "2018-08-10T01:00:00.000Z",
+        "end": "Friday 10th August, 3pm",
+        "endTs": "2018-08-10T07:00:00.000Z"
+      },
+      {
+        "type": "closed",
+        "start": "Friday 10th August, 3pm",
+        "startTs": "2018-08-10T07:00:00.000Z",
+        "end": "Friday 10th August, 5pm",
+        "endTs": "2018-08-10T09:00:00.000Z"
+      }
+    ]
+  },
+  {
+    "round": "3A",
+    "periods": [
+      {
+        "type": "open",
+        "start": "Monday 13th August, 9am",
+        "startTs": "2018-08-13T01:00:00.000Z",
+        "end": "Monday 13th August, 3pm",
+        "endTs": "2018-08-13T07:00:00.000Z"
+      },
+      {
+        "type": "closed",
+        "start": "Monday 13th August, 3pm",
+        "startTs": "2018-08-13T07:00:00.000Z",
+        "end": "Monday 13th August, 5pm",
+        "endTs": "2018-08-13T09:00:00.000Z"
+      }
+    ]
+  },
+  {
+    "round": "3B",
+    "periods": [
+      {
+        "type": "open",
+        "start": "Tuesday 14th August, 9am",
+        "startTs": "2018-08-14T01:00:00.000Z",
+        "end": "Tuesday 14th August, 3pm",
+        "endTs": "2018-08-14T07:00:00.000Z"
+      },
+      {
+        "type": "closed",
+        "start": "Tuesday 14th August, 3pm",
+        "startTs": "2018-08-14T07:00:00.000Z",
+        "end": "Tuesday 14th August, 5pm",
+        "endTs": "2018-08-14T09:00:00.000Z"
+      }
+    ]
+  }
+]
