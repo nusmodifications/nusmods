@@ -113,15 +113,19 @@ export class AppShellComponent extends Component<Props> {
             )}
           </main>
         </div>
+
         <ErrorBoundary>
           <FeedbackModal />
         </ErrorBoundary>
+
         <ErrorBoundary>
           <Notification />
         </ErrorBoundary>
+
         <ErrorBoundary>
           <Footer />
         </ErrorBoundary>
+
         <ErrorBoundary>
           <KeyboardShortcuts />
         </ErrorBoundary>

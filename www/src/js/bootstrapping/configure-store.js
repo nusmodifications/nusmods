@@ -1,6 +1,5 @@
 // @flow
-
-import { createStore, applyMiddleware, compose } from 'redux';
+import { createStore, applyMiddleware, compose, type Store } from 'redux';
 import { persistStore } from 'redux-persist';
 import thunk from 'redux-thunk';
 import rootReducer, { type State } from 'reducers';
@@ -33,6 +32,9 @@ export default function configureStore(defaultState?: State) {
       collapsed: true,
       duration: true,
       diff: true,
+      // Avoid diffing actions that insert a lot of stuff into the state to prevent console from lagging
+      diffPredicate: (getState, action) =>
+        !action.type.startsWith('FETCH_MODULE_LIST') && !action.type.startsWith('persist/'),
     });
     middlewares.push(logger);
   }
