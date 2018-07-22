@@ -54,6 +54,10 @@ const commonConfig = merge([
         context: parts.PATHS.app,
       }),
     ],
+    stats: {
+      // Ignore deprecation warning due to Create React App plugins for now
+      warningsFilter: (warning) => !warning.includes('Tapable.plugin'),
+    },
   },
   parts.lintJavaScript({
     include: parts.PATHS.app,
