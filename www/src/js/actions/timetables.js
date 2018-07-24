@@ -23,10 +23,20 @@ export function addModule(semester: Semester, moduleCode: ModuleCode) {
   return (dispatch: Function, getState: GetState) =>
     dispatch(fetchModule(moduleCode)).then(() => {
       const module: Module = getState().moduleBank.modules[moduleCode];
+
+      if (!module) {
+        // TODO: Replace with better UI implementation
+        if (window.confirm(`Cannot add ${moduleCode}. Press okay to retry`)) {
+          dispatch(addModule(semester, moduleCode));
+        }
+
+        return;
+      }
+
       const lessons = getModuleTimetable(module, semester);
       const moduleLessonConfig = randomModuleLessonConfig(lessons);
 
-      return dispatch({
+      dispatch({
         type: ADD_MODULE,
         payload: {
           semester,
