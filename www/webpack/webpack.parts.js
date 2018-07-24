@@ -1,6 +1,8 @@
 const path = require('path');
 const webpack = require('webpack');
+const _ = require('lodash');
 
+const { GenerateSW } = require('workbox-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
@@ -10,10 +12,15 @@ const childProcess = require('child_process');
 const moment = require('moment');
 
 const packageJson = require('../package.json');
+const nusmods = require('../src/js/apis/nusmods');
+const config = require('../src/js/config/app-config.json');
 
 const IS_DEV = process.env.NODE_ENV === 'development';
 const ROOT = path.join(__dirname, '..');
 const SRC = 'src';
+
+const ONE_MONTH = 30 * 24 * 60 * 60;
+const staleWhileRevalidatePaths = [nusmods.venuesUrl(config.semester), nusmods.modulesUrl()];
 
 const PATHS = {
   root: ROOT,
@@ -285,6 +292,70 @@ exports.flow = ({ failOnError, flowArgs }) => ({
       restartFlow: false,
       failOnError,
       flowArgs,
+    }),
+  ],
+});
+
+/**
+ * Use Workbox to enable offline support with service worker
+ *
+ * @see https://developers.google.com/web/tools/workbox/modules/workbox-webpack-plugin#generatesw_plugin_1
+ *
+ */
+exports.workbox = () => ({
+  plugins: [
+    new GenerateSW({
+      // Cache NUSMods API requests so that pages which depend on them can be
+      // viewed offline
+      runtimeCaching: [
+        // Module and venue info are served from cache first, because they are
+        // large, so this will improve perceived performance
+        {
+          urlPattern: new RegExp(staleWhileRevalidatePaths.map(_.escapeRegExp).join('|')),
+          handler: 'staleWhileRevalidate',
+          options: {
+            cacheName: 'api-stale-while-revalidate-cache',
+            cacheableResponse: {
+              // Do not cache opaque responses. All normal API responses should have
+              // CORS headers, so if it doesn't then the response is non-cachable
+              // and should be ignored
+              statuses: [200],
+            },
+            expiration: {
+              maxAgeSeconds: ONE_MONTH,
+            },
+          },
+        },
+        // Everything else (module info, module list) uses network first because
+        // they are relatively small and needs to be as updated as possible
+        {
+          urlPattern: new RegExp(_.escapeRegExp(nusmods.ayBaseUrl())),
+          handler: 'networkFirst',
+          options: {
+            cacheName: 'api-network-first-cache',
+            cacheableResponse: {
+              statuses: [200],
+            },
+            expiration: {
+              maxEntries: 500,
+              maxAgeSeconds: ONE_MONTH,
+            },
+          },
+        },
+      ],
+
+      // Exclude hot reload related code in development
+      exclude: [/\.hot-update\.js(on)?$/],
+
+      // Include additional service worker code
+      importScripts: ['service-worker-notifications.js'],
+
+      // Always serve index.html since we're a SPA using HTML5 history
+      navigateFallback: 'index.html',
+
+      // Exclude /export, which are handled by the server
+      // short_url is not excluded because it is fetched, not navigated to
+      navigateFallbackBlacklist: [/^.*\/export.*$/],
     }),
   ],
 });

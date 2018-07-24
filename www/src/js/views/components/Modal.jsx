@@ -4,7 +4,7 @@ import React, { type Node, Component } from 'react';
 import ReactModal from 'react-modal';
 import classnames from 'classnames';
 
-import noScroll from 'utils/noScroll';
+import disableScrolling from 'utils/disableScrolling';
 import styles from './Modal.scss';
 
 type Props = {
@@ -21,20 +21,20 @@ export default class Modal extends Component<Props> {
   };
 
   componentDidMount() {
-    noScroll(this.props.isOpen);
+    disableScrolling(this.props.isOpen);
   }
 
   // noScroll must trigger before actual opening of modal
   componentWillUpdate(nextProps: Props) {
     if (this.props.isOpen !== nextProps.isOpen) {
-      noScroll(nextProps.isOpen);
+      disableScrolling(nextProps.isOpen);
     }
   }
 
   componentWillUnmount() {
     // Ensure noScroll is disabled if the component is unmounted without
     // the modal closing
-    noScroll(false);
+    disableScrolling(false);
   }
 
   render() {

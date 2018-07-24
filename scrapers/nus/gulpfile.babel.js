@@ -30,7 +30,7 @@ gulp.task('bulletinModules', () => {
   const subtasks = iterateSems({
     from: yearStart,
     to: yearEnd,
-    semesters: [0, 3, 4],
+    semesters: [0, 1, 2, 3, 4],
     config: config.bulletinModules,
   });
 

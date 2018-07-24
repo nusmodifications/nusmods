@@ -1,11 +1,12 @@
 // @flow
 import React from 'react';
 import classnames from 'classnames';
+import { isEqual } from 'lodash';
 
 import type { Lesson } from 'types/modules';
 import type { HoverLesson } from 'types/timetables';
 
-import { LESSON_TYPE_ABBREV } from 'utils/timetables';
+import { getHoverLesson, LESSON_TYPE_ABBREV } from 'utils/timetables';
 
 import styles from './TimetableCell.scss';
 
@@ -30,10 +31,7 @@ function TimetableCell(props: Props) {
   const conditionalProps = { onClick };
 
   const Cell = props.onClick ? 'button' : 'div';
-  const hover =
-    hoverLesson &&
-    lesson.ClassNo === hoverLesson.classNo &&
-    lesson.ModuleCode === hoverLesson.moduleCode;
+  const hover = isEqual(getHoverLesson(lesson), hoverLesson);
 
   /* eslint-disable */
   return (
@@ -51,9 +49,7 @@ function TimetableCell(props: Props) {
         hover,
       })}
       style={props.style}
-      onMouseEnter={() =>
-        onHover && onHover({ classNo: lesson.ClassNo, moduleCode: lesson.ModuleCode })
-      }
+      onMouseEnter={() => onHover && onHover(getHoverLesson(lesson))}
       onMouseLeave={() => onHover && onHover(null)}
       {...conditionalProps}
     >

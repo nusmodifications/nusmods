@@ -5,7 +5,7 @@ import classnames from 'classnames';
 
 import { Menu, Close } from 'views/components/icons';
 import makeResponsive from 'views/hocs/makeResponsive';
-import noScroll from 'utils/noScroll';
+import disableScrolling from 'utils/disableScrolling';
 import { breakpointUp } from 'utils/css';
 import Fab from './Fab';
 
@@ -30,11 +30,17 @@ export class SideMenuComponent extends PureComponent<Props> {
   };
 
   componentDidMount() {
-    noScroll(this.isSideMenuShown());
+    disableScrolling(this.isSideMenuShown());
   }
 
   componentDidUpdate() {
-    noScroll(this.isSideMenuShown());
+    disableScrolling(this.isSideMenuShown());
+  }
+
+  componentWillUnmount() {
+    // Force unset noscroll when unmounting so the user gets scrolling back if
+    // they navigate out of the parent component without closing the menu
+    disableScrolling(false);
   }
 
   isSideMenuShown() {

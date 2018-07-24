@@ -1,4 +1,4 @@
-@import "~styles/utils/modules-entry";
+@import '~styles/utils/modules-entry';
 
 .announcement {
   display: flex;
@@ -18,6 +18,10 @@
 
   p:last-child {
     margin-bottom: 0;
+  }
+
+  .actions {
+    margin-top: 0.5rem;
   }
 }
 

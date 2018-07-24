@@ -61,11 +61,12 @@ describe(TimetableCell, () => {
   });
 
   describe('hoverLesson', () => {
-    it('should highlight lesson when module code and classNo matches', () => {
+    it('should highlight lesson when module code, classNo and lessonType matches', () => {
       const { wrapper } = make({
         hoverLesson: {
           moduleCode: 'CS1010',
           classNo: '1',
+          lessonType: 'Lecture',
         },
       });
 
@@ -73,12 +74,26 @@ describe(TimetableCell, () => {
       expect(button.hasClass('hover')).toBe(true);
     });
 
-    it('should not highlight lesson when only module code and classNo match', () => {
+    it('should not highlight lesson when only module code or classNo match', () => {
       let button;
+
+      button = make({
+        hoverLesson: {
+          moduleCode: 'CS1010',
+          classNo: '1',
+          lessonType: 'Tutorial',
+        },
+      })
+        .wrapper.find('button')
+        .at(0);
+
+      expect(button.hasClass('hover')).toBe(false);
+
       button = make({
         hoverLesson: {
           moduleCode: 'CS1010',
           classNo: '2',
+          lessonType: 'Lecture',
         },
       })
         .wrapper.find('button')
@@ -90,6 +105,7 @@ describe(TimetableCell, () => {
         hoverLesson: {
           moduleCode: 'CS1101S',
           classNo: '1',
+          lessonType: 'Lecture',
         },
       })
         .wrapper.find('button')

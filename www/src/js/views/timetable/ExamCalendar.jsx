@@ -50,6 +50,7 @@ function getTimeSegment(time: string): TimeSegment {
       return 'Morning';
     case '1:00 PM':
     case '2:30 PM':
+    case '3:00 PM':
       return 'Afternoon';
     case '5:00 PM':
     case '6:30 PM':

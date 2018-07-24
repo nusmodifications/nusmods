@@ -13,6 +13,7 @@ import type {
   Semester,
 } from 'types/modules';
 import type {
+  HoverLesson,
   ModuleLessonConfig,
   SemTimetableConfig,
   SemTimetableConfigWithLessons,
@@ -343,4 +344,12 @@ export function deserializeTimetable(serialized: string): SemTimetableConfig {
 
 export function isSameTimetableConfig(t1: SemTimetableConfig, t2: SemTimetableConfig): boolean {
   return _.isEqual(t1, t2);
+}
+
+export function getHoverLesson(lesson: Lesson): HoverLesson {
+  return {
+    classNo: lesson.ClassNo,
+    moduleCode: lesson.ModuleCode,
+    lessonType: lesson.LessonType,
+  };
 }

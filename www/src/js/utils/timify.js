@@ -6,10 +6,21 @@ import type { DayText, Lesson, LessonTime } from 'types/modules';
 // Each row may not start from index 0, it depends on the config's starting time.
 // 0000 -> 0, 0030 -> 1, 0100 -> 2, ...
 export function convertTimeToIndex(time: LessonTime): number {
-  const hour: number = parseInt(time.substring(0, 2), 10);
-  const minute: string = time.substring(2);
-  // eslint-disable-next-line quote-props
-  return hour * 2 + { '00': 0, '30': 1, '59': 2 }[minute];
+  const hour = parseInt(time.substring(0, 2), 10);
+  const minute = parseInt(time.substring(2), 10);
+
+  // TODO: Expose incorrect offsets to user via UI
+  // Currently we round up in half hour blocks, but the actual time is not shown
+  let minuteOffset;
+  if (minute === 0) {
+    minuteOffset = 0;
+  } else if (minute <= 30) {
+    minuteOffset = 1;
+  } else {
+    minuteOffset = 2;
+  }
+
+  return hour * 2 + minuteOffset;
 }
 
 // Reverse of convertTimeToIndex.
