@@ -107,6 +107,9 @@ jobs:
       - run:
           name: Build web page
           command: yarn build
+      - run:
+          name: End to End Smoke Test
+          command: yarn e2e
       - store_test_results:
           path: reports/junit
       - store_artifacts:
