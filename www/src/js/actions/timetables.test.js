@@ -11,7 +11,6 @@ import CS3216 from '__mocks__/modules/CS3216.json';
 
 import * as actions from './timetables';
 
-jest.mock('localforage', () => ({ getItem: jest.fn() }));
 jest.mock('storage', () => ({
   getItem: jest.fn(),
   setItem: jest.fn(),
