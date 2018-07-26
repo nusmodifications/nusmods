@@ -15,7 +15,7 @@
     "lint:styles": "stylelint \"src/**/*.scss\" --syntax scss",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
-    "e2e": "nightwatch -e default,safariMobile,safariDesktop",
+    "e2e": "nightwatch -e default,safariMobile,safariDesktop,edge",
     "cors": "node scripts/cors-crawler",
     "ci": "cross-env NODE_ENV=production npm run lint && npm test && npm rebuild node-sass && npm run build"
   },

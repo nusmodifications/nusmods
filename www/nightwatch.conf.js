@@ -35,6 +35,11 @@ const config = {
         browserVersion: '9.1',
       },
     },
+
+    edge: {
+      browser: 'Edge',
+      browserVersion: '16.0',
+    },
   },
 };
 
