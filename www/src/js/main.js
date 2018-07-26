@@ -8,7 +8,6 @@ import ReactDOM from 'react-dom';
 import ReactModal from 'react-modal';
 
 import App from 'App';
-import storage from 'storage';
 
 import configureStore from 'bootstrapping/configure-store';
 import subscribeOnlineEvents from 'bootstrapping/subscribeOnlineEvents';
@@ -17,8 +16,7 @@ import initializeServiceWorker from 'bootstrapping/service-worker';
 
 import '../styles/main.scss';
 
-const persistedState = storage.loadState();
-const { store, persistor } = configureStore(persistedState);
+const { store, persistor } = configureStore();
 
 subscribeOnlineEvents(store);
 

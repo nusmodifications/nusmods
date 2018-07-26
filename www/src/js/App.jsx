@@ -11,7 +11,6 @@ import { PersistGate } from 'redux-persist/lib/integration/react';
 
 import AppShell from 'views/AppShell';
 import Routes from 'views/routes/Routes';
-import storage from 'storage';
 
 type Props = {
   store: Store<State, *, *>,
@@ -22,7 +21,7 @@ export default function App({ store, persistor }: Props) {
   return (
     <AppContainer>
       <Provider store={store}>
-        <PersistGate persistor={persistor} onBeforeLift={storage.stateMigrationComplete}>
+        <PersistGate persistor={persistor}>
           <Router>
             <AppShell>
               <Routes />
