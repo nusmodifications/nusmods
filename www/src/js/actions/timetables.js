@@ -8,6 +8,7 @@ import type { ColorIndex, ColorMapping } from 'types/reducers';
 import type { ClassNo, Lesson, LessonType, Module, ModuleCode, Semester } from 'types/modules';
 
 import { fetchModule } from 'actions/moduleBank';
+import { openNotification } from 'actions/app';
 import {
   randomModuleLessonConfig,
   validateModuleLessons,
@@ -25,10 +26,14 @@ export function addModule(semester: Semester, moduleCode: ModuleCode) {
       const module: Module = getState().moduleBank.modules[moduleCode];
 
       if (!module) {
-        // TODO: Replace with better UI implementation
-        if (window.confirm(`Cannot add ${moduleCode}. Press okay to retry`)) {
-          dispatch(addModule(semester, moduleCode));
-        }
+        dispatch(
+          openNotification(`Cannot load ${moduleCode}`, {
+            action: {
+              text: 'Retry',
+              handler: () => dispatch(addModule(semester, moduleCode)),
+            },
+          }),
+        );
 
         return;
       }
