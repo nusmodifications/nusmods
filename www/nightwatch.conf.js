@@ -10,11 +10,10 @@ const config = {
 
   test_settings: {
     default: {
-      launch_url: 'http://localhost:9015',
+      launch_url: process.env.LAUNCH_URL || 'http://staging.nusmods.com',
       desiredCapabilities: {
         'browserstack.user': process.env.BROWSERSTACK_USER,
         'browserstack.key': process.env.BROWSERSTACK_ACCESS_KEY,
-        'browserstack.local': true,
         browser: 'Firefox',
         // Latest ESR
         browserVersion: '60',
@@ -44,5 +43,9 @@ Object.values(config.test_settings).forEach((setting) => {
   setting.selenium_host = config.selenium.host;
   setting.selenium_port = config.selenium.port;
 });
+
+if (process.env.LOCAL_TEST) {
+  config.test_settings.default.desiredCapabilities['browserstack.local'] = true;
+}
 
 module.exports = config;

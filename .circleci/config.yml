@@ -108,7 +108,19 @@ jobs:
           name: Build web page
           command: yarn build
       - run:
-          name: End to End Smoke Test
+          command: node scripts/serve
+          background: true
+      - run:
+          command: |
+            wget "https://www.browserstack.com/browserstack-local/BrowserStackLocal-linux-x64.zip"
+            unzip BrowserStackLocal-linux-x64.zip
+      - run:
+          command: ./BrowserStackLocal $BROWSERSTACK_ACCESS_KEY
+          background: true
+      - run:
+          environment:
+            LAUNCH_URL: http://localhost:9015
+            LOCAL_TEST: true
           command: yarn e2e
       - store_test_results:
           path: reports/junit

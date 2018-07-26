@@ -15,7 +15,7 @@
     "lint:styles": "stylelint \"src/**/*.scss\" --syntax scss",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
-    "e2e": "node scripts/local_runner.js -e default,safariMobile,safariDesktop",
+    "e2e": "nightwatch -e default,safariMobile,safariDesktop",
     "cors": "node scripts/cors-crawler",
     "ci": "cross-env NODE_ENV=production npm run lint && npm test && npm rebuild node-sass && npm run build"
   },
@@ -37,7 +37,6 @@
     "babel-preset-react": "6.24.1",
     "babel-preset-react-optimize": "1.0.1",
     "babel-register": "6.26.0",
-    "browserstack-local": "^1.3.3",
     "cache-loader": "1.2.2",
     "chalk": "2.3.2",
     "cheerio": "1.0.0-rc.2",
