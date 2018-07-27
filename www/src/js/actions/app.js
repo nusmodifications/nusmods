@@ -37,3 +37,11 @@ export function popNotification(): FSA {
     payload: null,
   };
 }
+
+export const PROMPT_REFRESH = 'PROMPT_REFRESH';
+export function promptRefresh(): FSA {
+  return {
+    type: PROMPT_REFRESH,
+    payload: null,
+  };
+}

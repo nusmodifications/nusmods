@@ -6,7 +6,6 @@ import 'bootstrapping/browser';
 
 import ReactDOM from 'react-dom';
 import ReactModal from 'react-modal';
-import Raven from 'raven-js';
 
 import App from 'App';
 import storage from 'storage';
@@ -14,6 +13,7 @@ import storage from 'storage';
 import configureStore from 'bootstrapping/configure-store';
 import subscribeOnlineEvents from 'bootstrapping/subscribeOnlineEvents';
 import initializeGA from 'bootstrapping/google-analytics';
+import initializeServiceWorker from 'bootstrapping/service-worker';
 
 import '../styles/main.scss';
 
@@ -42,9 +42,7 @@ if (
   // Allow us to force Workbox to be enabled for debugging
   process.env.DEBUG_WORKBOX
 ) {
-  navigator.serviceWorker.register('/service-worker.js').catch((e) => {
-    Raven.captureException(e);
-  });
+  initializeServiceWorker(store);
 }
 
 if (process.env.NODE_ENV === 'production') {

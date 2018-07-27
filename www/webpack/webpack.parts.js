@@ -344,6 +344,12 @@ exports.workbox = () => ({
         },
       ],
 
+      // Exclude hot reload related code in development
+      exclude: [/\.hot-update\.js(on)?$/],
+
+      // Include additional service worker code
+      importScripts: ['service-worker-notifications.js'],
+
       // Always serve index.html since we're a SPA using HTML5 history
       navigateFallback: 'index.html',
 
