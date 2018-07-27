@@ -11,6 +11,7 @@ import { breakpointUp } from 'utils/css';
 import makeResponsive from 'views/hocs/makeResponsive';
 import Modal from 'views/components/Modal';
 import CloseButton from 'views/components/CloseButton';
+import elements from 'views/elements';
 
 import styles from './ModulesSelect.scss';
 
@@ -105,7 +106,7 @@ class ModulesSelect extends Component<Props, State> {
         </label>
         <input
           {...getInputProps({
-            className: styles.input,
+            className: classnames(styles.input, elements.addModuleInput),
             autoFocus: isModalOpen,
             placeholder,
             disabled,
@@ -189,7 +190,11 @@ class ModulesSelect extends Component<Props, State> {
 
     return (
       <div>
-        <button className={styles.input} onClick={this.openSelect} disabled={disabled}>
+        <button
+          className={classnames(styles.input, elements.addModuleInput)}
+          onClick={this.openSelect}
+          disabled={disabled}
+        >
           {this.props.placeholder}
         </button>
         <Modal

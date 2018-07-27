@@ -3,12 +3,14 @@ import React, { Fragment, PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 import NUSModerator from 'nusmoderator';
 import { groupBy, range } from 'lodash';
+import classnames from 'classnames';
 
 import type { ModuleWithColor, Semester } from 'types/modules';
 import config from 'config';
 import { formatExamDate, getModuleExamDate } from 'utils/modules';
 import { daysAfter } from 'utils/timify';
 import { modulePage } from 'views/routes/paths';
+import elements from 'views/elements';
 import { DaysOfWeek } from 'types/modules';
 
 import styles from './ExamCalendar.scss';
@@ -234,33 +236,31 @@ export default class ExamCalendar extends PureComponent<Props> {
     //   - Afternoon exams
     //   - Evening exams
     return (
-      <Fragment>
-        <div className={styles.calendarWrapper}>
-          <table>
-            <thead>
-              <tr>
-                {range(daysWithExams).map((day) => (
-                  <th key={day} className={styles.dayName}>
-                    {DaysOfWeek[day].slice(0, 3)}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-
-            <tbody>
-              {range(weekCount).map((week) => (
-                <ExamWeek
-                  key={week}
-                  days={daysWithExams}
-                  weekNumber={week}
-                  firstDayOfExams={firstDayOfExams}
-                  modules={modulesByExamDate}
-                />
+      <div className={classnames(styles.calendarWrapper, elements.examCalendar)}>
+        <table>
+          <thead>
+            <tr>
+              {range(daysWithExams).map((day) => (
+                <th key={day} className={styles.dayName}>
+                  {DaysOfWeek[day].slice(0, 3)}
+                </th>
               ))}
-            </tbody>
-          </table>
-        </div>
-      </Fragment>
+            </tr>
+          </thead>
+
+          <tbody>
+            {range(weekCount).map((week) => (
+              <ExamWeek
+                key={week}
+                days={daysWithExams}
+                weekNumber={week}
+                firstDayOfExams={firstDayOfExams}
+                modules={modulesByExamDate}
+              />
+            ))}
+          </tbody>
+        </table>
+      </div>
     );
   }
 }

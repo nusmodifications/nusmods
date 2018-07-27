@@ -1,5 +1,6 @@
 const config = {
   src_folders: ['src/js/e2e/tests'],
+  page_objects_path: 'src/js/e2e/page-objects',
   output_folder: 'reports/junit/e2e',
 
   selenium: {

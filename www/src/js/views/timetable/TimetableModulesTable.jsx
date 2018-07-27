@@ -17,6 +17,7 @@ import {
 } from 'actions/timetables';
 import { getModuleExamDate, getFormattedModuleExamDate } from 'utils/modules';
 import { modulePage } from 'views/routes/paths';
+import elements from 'views/elements';
 
 import styles from './TimetableModulesTable.scss';
 
@@ -81,7 +82,7 @@ class TimetableModulesTable extends Component<Props> {
     const { readOnly, semester, horizontalOrientation } = this.props;
 
     return (
-      <div className={classnames(styles.modulesTable, 'row')}>
+      <div className={classnames(styles.modulesTable, elements.moduleTable, 'row')}>
         {this.props.modules.map((module) => (
           <div
             className={classnames(styles.modulesTableRow, 'col-sm-6', {
