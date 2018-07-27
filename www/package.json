@@ -13,6 +13,7 @@
     "lint": "yarn flow && yarn lint:code && yarn lint:styles",
     "lint:code": "eslint --ext .js,.jsx src/js webpack scripts",
     "lint:styles": "stylelint \"src/**/*.scss\" --syntax scss",
+    "size": "bundlesize",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
     "cors": "node scripts/cors-crawler",
@@ -36,6 +37,7 @@
     "babel-preset-react": "6.24.1",
     "babel-preset-react-optimize": "1.0.1",
     "babel-register": "6.26.0",
+    "bundlesize": "^0.17.0",
     "cache-loader": "1.2.2",
     "chalk": "2.3.2",
     "cheerio": "1.0.0-rc.2",
@@ -136,5 +138,14 @@
     "iOS >= 9",
     "Safari >= 9",
     "not ie <= 11"
+  ],
+  "bundlesize": [
+    {
+      "path": "dist/*.js",
+      "maxSize": "300 kB"
+    }, {
+      "path": "dist/*.css",
+      "maxSize": "40 kB"
+    }
   ]
 }
