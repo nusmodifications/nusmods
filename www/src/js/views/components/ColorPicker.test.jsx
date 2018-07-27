@@ -12,7 +12,9 @@ function makeColorPicker(color: ColorIndex = 0) {
   const onChooseColor = jest.fn();
   return {
     onChooseColor,
-    wrapper: mount(<ColorPicker label="" color={color} onChooseColor={onChooseColor} />),
+    wrapper: mount(
+      <ColorPicker label="" color={color} onChooseColor={onChooseColor} isHidden={false} />,
+    ),
   };
 }
 

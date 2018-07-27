@@ -54,7 +54,12 @@ class ColorPicker extends PureComponent<Props> {
   };
 
   render() {
-    return <Downshift onChange={this.props.onChooseColor} render={this.renderColorPicker} />;
+    return (
+      <Downshift
+        onChange={(colorIndex) => this.props.onChooseColor(colorIndex)}
+        render={this.renderColorPicker}
+      />
+    );
   }
 }
 
