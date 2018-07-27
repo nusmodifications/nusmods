@@ -141,9 +141,11 @@
   ],
   "bundlesize": [
     {
-      "path": "dist/*.js"
+      "path": "dist/*.js",
+      "maxSize": "300 kB"
     }, {
-      "path": "dist/*.css"
+      "path": "dist/*.css",
+      "maxSize": "40 kB"
     }
   ]
 }
