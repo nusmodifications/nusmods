@@ -12,6 +12,7 @@ import styles from './ColorPicker.scss';
 type Props = {
   label: string,
   color: ColorIndex,
+  isHidden: boolean,
   onChooseColor: (ColorIndex) => void,
 };
 
@@ -32,6 +33,7 @@ class ColorPicker extends PureComponent<Props> {
           'btn btn-block hoverable',
           `color-${this.props.color}`,
           styles.moduleColor,
+          { [styles.hidden]: this.props.isHidden },
         )}
       />
       {isOpen && (
@@ -49,12 +51,7 @@ class ColorPicker extends PureComponent<Props> {
   );
 
   render() {
-    return (
-      <Downshift
-        onChange={(colorIndex) => this.props.onChooseColor(colorIndex)}
-        render={this.renderColorPicker}
-      />
-    );
+    return <Downshift onChange={this.props.onChooseColor} render={this.renderColorPicker} />;
   }
 }
 

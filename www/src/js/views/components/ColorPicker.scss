@@ -19,6 +19,11 @@ $arrow-height: 1.5rem;
   height: $button-size;
   padding: 0;
   border: 0;
+
+  &.hidden {
+    border: 1px dashed;
+    background: none;
+  }
 }
 
 .palette {
