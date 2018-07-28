@@ -111,7 +111,6 @@
     "ical-generator": "https://github.com/ZhangYiJiang/ical-generator.git#ed6928fe",
     "immutability-helper": "2.6.6",
     "json2mq": "0.2.0",
-    "localforage": "1.6.0",
     "lodash": "4.17.5",
     "mousetrap": "1.6.1",
     "no-scroll": "2.1.0",
