@@ -1,6 +1,5 @@
 // @flow
 import { each, flatMap } from 'lodash';
-import localforage from 'localforage';
 
 import type { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
 import type { FSA, GetState } from 'types/redux';
@@ -14,9 +13,6 @@ import {
   validateTimetableModules,
 } from 'utils/timetables';
 import { getModuleTimetable } from 'utils/modules';
-import storage from 'storage';
-import { V2_MIGRATION_KEY } from 'storage/keys';
-import { MIGRATION_KEYS, parseQueryString } from 'storage/migrateTimetable';
 
 export const ADD_MODULE: string = 'ADD_MODULE';
 export function addModule(semester: Semester, moduleCode: ModuleCode) {
@@ -156,34 +152,6 @@ export function fetchTimetableModules(timetables: SemTimetableConfig[]) {
     return Promise.all(
       Array.from(moduleCodes).map((moduleCode) => dispatch(fetchModule(moduleCode))),
     );
-  };
-}
-
-export function migrateTimetable() {
-  return (dispatch: Function, getState: GetState): Promise<*> => {
-    if (storage.getItem(V2_MIGRATION_KEY)) {
-      return Promise.resolve();
-    }
-
-    const promises = MIGRATION_KEYS.map(([semester, key]) =>
-      localforage.getItem(key).then((queryString) => {
-        // Do nothing if there's no data
-        if (!queryString) return null;
-
-        const timetable = parseQueryString(queryString);
-        const [validTimetable] = validateTimetableModules(
-          timetable,
-          getState().moduleBank.moduleCodes,
-        );
-
-        dispatch(setTimetable(semester, validTimetable));
-        return dispatch(fetchTimetableModules([timetable])).then(() =>
-          dispatch(validateTimetable(semester)),
-        );
-      }),
-    );
-
-    return Promise.all(promises).then(() => storage.setItem(V2_MIGRATION_KEY, true));
   };
 }
 

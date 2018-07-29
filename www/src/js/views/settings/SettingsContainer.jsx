@@ -3,9 +3,8 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import deferComponentRender from 'views/hocs/deferComponentRender';
 import classnames from 'classnames';
-import localforage from 'localforage';
 
-import type { Faculty, ModuleCode } from 'types/modules';
+import type { Faculty } from 'types/modules';
 import type { Mode } from 'types/settings';
 import type { CorsNotificationSettings } from 'types/reducers';
 import type { State as StoreState } from 'reducers';
@@ -24,7 +23,6 @@ import {
 // import NewStudentSelect from 'views/components/NewStudentSelect';
 import ScrollToTop from 'views/components/ScrollToTop';
 import Timetable from 'views/timetable/Timetable';
-import LinkModuleCodes from 'views/components/LinkModuleCodes';
 import Title from 'views/components/Title';
 import Toggle from 'views/components/Toggle';
 
@@ -56,28 +54,67 @@ type Props = {
   toggleCorsNotificationGlobally: Function,
 };
 
-type State = {
-  bookmarks: ModuleCode[],
-};
+class SettingsContainer extends Component<Props> {
+  renderNightModeOption() {
+    return (
+      <div>
+        <h4 id="night-mode">Night Mode</h4>
+        <div className={classnames(styles.toggleRow, 'row')}>
+          <div className={classnames(styles.toggleDescription, 'col-sm-7')}>
+            <p>
+              Night mode turns the light surfaces of the page dark, creating an experience ideal for
+              the dark. Try it out!
+            </p>
+            <p>
+              Protip: Press <kbd>X</kbd> to toggle modes anywhere on NUSMods.
+            </p>
+          </div>
+          <div className={classnames('col-sm-4 offset-sm-1', styles.toggle)}>
+            <ModeSelect mode={this.props.mode} onSelectMode={this.props.selectMode} />
+          </div>
+        </div>
+        <hr />
+      </div>
+    );
+  }
 
-class SettingsContainer extends Component<Props, State> {
-  state = {
-    bookmarks: [],
-  };
+  renderCorsNotitificationOption(corsRound) {
+    const { corsNotification } = this.props;
+    const isSnoozed = corsRound && corsNotification.dismissed.includes(corsRound.round);
 
-  componentDidMount() {
-    localforage.getItem('module:bookmarks:bookmarkedModules:').then((bookmarks) => {
-      if (bookmarks) {
-        this.setState({ bookmarks });
-      }
-    });
+    return (
+      <Fragment>
+        <div className={classnames(styles.toggleRow, 'row')}>
+          <div className={classnames(styles.toggleDescription, 'col-sm-7')}>
+            <p>
+              {isSnoozed
+                ? 'You have snoozed reminders until the end of this round'
+                : 'You can also temporarily snooze the notification until the end of this round.'}
+            </p>
+          </div>
+          <div className={classnames('col-sm-4 offset-sm-1', styles.toggle)}>
+            <button
+              className="btn btn-outline-primary"
+              type="button"
+              onClick={() =>
+                isSnoozed
+                  ? this.props.enableCorsNotification(corsRound.round)
+                  : this.props.dismissCorsNotification(corsRound.round)
+              }
+            >
+              {isSnoozed ? 'Unsnooze' : 'Snooze'}
+            </button>
+          </div>
+        </div>
+        <hr />
+      </Fragment>
+    );
   }
 
   render() {
-    const { corsNotification, mode, currentThemeId } = this.props;
+    const { corsNotification, currentThemeId } = this.props;
 
     const corsRound = currentRound();
-    const isSnoozed = corsRound && corsNotification.dismissed.includes(corsRound.round);
     const corsText = corsNotificationText(false);
 
     return (
@@ -118,26 +155,7 @@ class SettingsContainer extends Component<Props, State> {
       </div>
       <hr />
       */}
-        {supportsCSSVariables() && (
-          <div>
-            <h4 id="night-mode">Night Mode</h4>
-            <div className={classnames(styles.toggleRow, 'row')}>
-              <div className={classnames(styles.toggleDescription, 'col-sm-7')}>
-                <p>
-                  Night mode turns the light surfaces of the page dark, creating an experience ideal
-                  for the dark. Try it out!
-                </p>
-                <p>
-                  Protip: Press <kbd>X</kbd> to toggle modes anywhere on NUSMods.
-                </p>
-              </div>
-              <div className={classnames('col-sm-4 offset-sm-1', styles.toggle)}>
-                <ModeSelect mode={mode} onSelectMode={this.props.selectMode} />
-              </div>
-            </div>
-            <hr />
-          </div>
-        )}
+        {supportsCSSVariables() && this.renderNightModeOption()}
 
         <h4 id="theme">Theme</h4>
 
@@ -185,59 +203,7 @@ class SettingsContainer extends Component<Props, State> {
 
         <hr />
 
-        {corsNotification.enabled &&
-          corsRound && (
-            <Fragment>
-              <div className={classnames(styles.toggleRow, 'row')}>
-                <div className={classnames(styles.toggleDescription, 'col-sm-7')}>
-                  <p>
-                    {isSnoozed
-                      ? 'You have snoozed reminders until the end of this round'
-                      : 'You can also temporarily snooze the notification until the end of this round.'}
-                  </p>
-                </div>
-                <div className={classnames('col-sm-4 offset-sm-1', styles.toggle)}>
-                  <button
-                    className="btn btn-outline-primary"
-                    type="button"
-                    onClick={() =>
-                      isSnoozed
-                        ? this.props.enableCorsNotification(corsRound.round)
-                        : this.props.dismissCorsNotification(corsRound.round)
-                    }
-                  >
-                    {isSnoozed ? 'Unsnooze' : 'Snooze'}
-                  </button>
-                </div>
-              </div>
-              <hr />
-            </Fragment>
-          )}
-
-        {this.state.bookmarks &&
-          this.state.bookmarks.length > 0 && (
-            <div id="bookmarks">
-              <h4>Bookmarks from previous version of NUSMods</h4>
-              <p>
-                Bookmarks are no longer supported in NUSMods R, but you can still view your
-                previously saved bookmarks here.
-              </p>
-
-              <ul>
-                {this.state.bookmarks.map((moduleCode) => (
-                  <li key={moduleCode}>
-                    <LinkModuleCodes>{moduleCode}</LinkModuleCodes>
-                  </li>
-                ))}
-              </ul>
-
-              <div className="alert alert-danger">
-                <strong>
-                  Please save these elsewhere as this will be removed by next semester.
-                </strong>
-              </div>
-            </div>
-          )}
+        {corsNotification.enabled && corsRound && this.renderCorsNotitificationOption(corsRound)}
       </div>
     );
   }

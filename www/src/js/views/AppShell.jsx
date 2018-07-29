@@ -14,12 +14,7 @@ import classnames from 'classnames';
 import { each } from 'lodash';
 import weekText from 'utils/weekText';
 import { fetchModuleList } from 'actions/moduleBank';
-import {
-  fetchTimetableModules,
-  validateTimetable,
-  setTimetable,
-  migrateTimetable,
-} from 'actions/timetables';
+import { fetchTimetableModules, validateTimetable, setTimetable } from 'actions/timetables';
 import Footer from 'views/layout/Footer';
 import Navtabs from 'views/layout/Navtabs';
 import GlobalSearchContainer from 'views/layout/GlobalSearchContainer';
@@ -43,7 +38,6 @@ type Props = {
   activeSemester: Semester,
 
   fetchModuleList: () => Promise<*>,
-  migrateTimetable: () => void,
   fetchTimetableModules: (SemTimetableConfig[]) => Promise<*>,
   setTimetable: (Semester, SemTimetableConfig) => void,
   validateTimetable: (Semester) => void,
@@ -55,11 +49,7 @@ export class AppShellComponent extends Component<Props> {
 
     // Retrieve module list
     // TODO: This always re-fetch the entire modules list. Consider a better strategy for this
-    this.props
-      .fetchModuleList()
-      // Handle migration from v2
-      // TODO: Remove this once sem 2 is over
-      .then(() => this.props.migrateTimetable());
+    this.props.fetchModuleList();
 
     // Refresh the module data of the existing modules in the timetable and ensure all
     // lessons are filled
@@ -146,7 +136,6 @@ const connectedAppShell = connect(mapStateToProps, {
   fetchModuleList,
   fetchTimetableModules,
   setTimetable,
-  migrateTimetable,
   validateTimetable,
 })(AppShellComponent);
 
