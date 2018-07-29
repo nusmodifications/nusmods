@@ -56,7 +56,7 @@
 
 .link {
   flex: 1 0 auto;
-  line-height: 1;
+  line-height: 1.6;
   text-align: center;
   color: var(--gray-light);
   transition: color 0.15s;
@@ -80,7 +80,7 @@
   }
 
   @include media-breakpoint-up(md) {
-    padding: 1rem 0.5rem;
+    padding: 0.8rem 0.5rem;
   }
 
   @include media-breakpoint-up(xl) {
