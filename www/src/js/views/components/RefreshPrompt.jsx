@@ -1,7 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
 import classnames from 'classnames';
-import { connect, type MapStateToProps } from 'react-redux';
+import { connect } from 'react-redux';
 import type { State } from 'reducers';
 import { getRegistration } from 'bootstrapping/service-worker';
 import { Refresh } from 'views/components/icons';
@@ -47,8 +47,6 @@ class RefreshPrompt extends PureComponent<Props> {
   }
 }
 
-const mapPropsToState: MapStateToProps<*, *, *> = (state: State) => ({
+export default connect((state: State) => ({
   showPrompt: state.app.promptRefresh,
-});
-
-export default connect(mapPropsToState)(RefreshPrompt);
+}))(RefreshPrompt);

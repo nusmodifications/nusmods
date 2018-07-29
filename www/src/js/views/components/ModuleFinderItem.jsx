@@ -1,7 +1,7 @@
 // @flow
-import React, { PureComponent, Fragment } from 'react';
+import React, { Fragment, PureComponent } from 'react';
 import { Link } from 'react-router-dom';
-import { connect, type MapStateToProps } from 'react-redux';
+import { connect } from 'react-redux';
 
 import type { Module } from 'types/modules';
 import type { ModuleSearch } from 'types/reducers';
@@ -88,8 +88,6 @@ export class ModuleFinderItemComponent extends PureComponent<Props> {
   }
 }
 
-const mapStateToProps: MapStateToProps<State, *, *> = (state: State) => ({
+export default connect((state: State) => ({
   search: state.moduleFinder.search,
-});
-
-export default connect(mapStateToProps)(ModuleFinderItemComponent);
+}))(ModuleFinderItemComponent);

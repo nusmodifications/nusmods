@@ -178,9 +178,9 @@ export class KeyboardShortcutsComponent extends PureComponent<Props, State> {
   }
 }
 
-const KeyboardShortcutsConnected = connect(
-  (state) => ({ mode: state.settings.mode, theme: state.theme.id }),
-  (dispatch) => ({ dispatch }),
-)(KeyboardShortcutsComponent);
+const KeyboardShortcutsConnected = connect((state) => ({
+  mode: state.settings.mode,
+  theme: state.theme.id,
+}))(KeyboardShortcutsComponent);
 
 export default withRouter(KeyboardShortcutsConnected);
