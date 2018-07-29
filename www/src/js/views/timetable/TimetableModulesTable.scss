@@ -1,4 +1,4 @@
-@import "~styles/utils/modules-entry.scss";
+@import '~styles/utils/modules-entry.scss';
 
 .modulesTable {
   font-size: 0.9rem;
@@ -43,5 +43,33 @@
       padding: 0.5rem;
       border: 0;
     }
+  }
+}
+
+.footer {
+  font-size: $font-size-sm;
+  color: var(--gray-light);
+
+  hr {
+    margin: 1rem 0 0.5rem;
+  }
+
+  strong {
+    color: var(--gray);
+  }
+}
+
+.moduleOrder {
+  text-align: right;
+
+  label {
+    padding-right: 1rem;
+    margin: 0;
+  }
+
+  :global(.form-control) {
+    display: inline-block;
+    width: auto;
+    text-align: left;
   }
 }
