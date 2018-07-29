@@ -39,7 +39,7 @@
     "babel-register": "6.26.0",
     "bundlesize": "0.17.0",
     "cache-loader": "1.2.2",
-    "chalk": "2.3.2",
+    "chalk": "2.4.1",
     "cheerio": "1.0.0-rc.2",
     "clean-webpack-plugin": "0.1.19",
     "copy-webpack-plugin": "4.5.1",
