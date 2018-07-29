@@ -8,6 +8,7 @@
   "ivleUrl": "http://ivle.nus.edu.sg/lms/public/list_course_public.aspx?code=<ModuleCode>",
   "disqusShortname": "nusmods-prod",
   "googleAnalyticsId": "UA-33503218-6",
+  "timetableAvailable": [1],
   "semesterNames": {
     "1": "Semester 1",
     "2": "Semester 2",

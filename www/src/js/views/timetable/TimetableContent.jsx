@@ -2,7 +2,7 @@
 import React, { Component, Fragment, type Node } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import _ from 'lodash';
+import _, { isEmpty } from 'lodash';
 
 import type { ModulesMap } from 'reducers/moduleBank';
 import type { ColorMapping, TimetableOrientation, NotificationOptions } from 'types/reducers';
@@ -32,11 +32,13 @@ import {
   findExamClashes,
   getSemesterModules,
 } from 'utils/timetables';
+import config from 'config';
 import ModulesSelectContainer from 'views/timetable/ModulesSelectContainer';
 import CorsNotification from 'views/components/cors-info/CorsNotification';
 import Announcements from 'views/components/Announcements';
 import Title from 'views/components/Title';
 import RefreshPrompt from 'views/components/RefreshPrompt';
+import NoLessonWarning from 'views/timetable/NoLessonWarning';
 import Timetable from './Timetable';
 import TimetableActions from './TimetableActions';
 import TimetableModulesTable from './TimetableModulesTable';
@@ -273,6 +275,8 @@ class TimetableContent extends Component<Props, State> {
 
     const isVerticalOrientation = timetableOrientation !== HORIZONTAL;
     const isShowingTitle = !isVerticalOrientation && showTitle;
+    const showNoLessonWarning =
+      !config.timetableAvailable.includes(semester) && isEmpty(arrangedLessonsWithModifiableFlag);
 
     return (
       <div
@@ -317,6 +321,7 @@ class TimetableContent extends Component<Props, State> {
                   showTitle={isShowingTitle}
                   onModifyCell={this.modifyCell}
                 />
+                {showNoLessonWarning && <NoLessonWarning />}
               </div>
             )}
           </div>
