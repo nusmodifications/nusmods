@@ -1,11 +1,13 @@
 .semesterSwitcher {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 0.5rem;
   font-size: 1.2rem;
-  text-align: center;
 }
 
 .semesterName {
-  display: inline-block;
   min-width: 130px;
   margin: 0 0.5rem;
+  text-align: center;
 }

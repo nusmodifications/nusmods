@@ -16,7 +16,7 @@ export type LessonType = string; // E.g. "Lecture", "Tutorial"
 export type LessonTime = StartTime | EndTime;
 export type ModuleCode = string; // E.g. "CS3216"
 export type ModuleTitle = string;
-export type Semester = number; // E.g. 0/1/2/3/4. 3 and 4 means special sem i and ii.
+export type Semester = number; // E.g. 1/2/3/4. 3 and 4 means special sem i and ii.
 export type WeekText = string; // E.g. "Every Week", "Odd Week"
 
 // Auxiliary data types
