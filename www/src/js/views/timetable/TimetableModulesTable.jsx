@@ -151,7 +151,7 @@ class TimetableModulesTable extends Component<Props> {
           <div className="col">
             Total Module Credits: <strong>{renderMCs(this.totalMCs())}</strong>
           </div>
-          <div className={classnames(styles.moduleOrder, 'col')}>
+          <div className={classnames(styles.moduleOrder, 'col no-export')}>
             <label htmlFor="moduleOrder">Order</label>
             <select
               onChange={(evt) => this.props.setModuleTableOrder(evt.target.value)}
