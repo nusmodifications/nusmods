@@ -8,6 +8,7 @@ import { sum, sortBy, map } from 'lodash';
 
 import type { ModuleCode, ModuleWithColor, Semester } from 'types/modules';
 import type { ColorIndex } from 'types/reducers';
+import type { ModuleTableOrder } from 'types/views';
 
 import ColorPicker from 'views/components/ColorPicker';
 import { Eye, EyeOff, Trash2 } from 'views/components/icons/index';
@@ -16,6 +17,7 @@ import {
   hideLessonInTimetable,
   selectModuleColor,
 } from 'actions/timetables';
+import { setModuleTableOrder } from 'actions/settings';
 import { getModuleExamDate, getFormattedModuleExamDate } from 'utils/modules';
 import { NBSP } from 'utils/react';
 import { modulePage } from 'views/routes/paths';
@@ -27,36 +29,30 @@ type ModuleOrder = {
   orderBy: (ModuleWithColor, Semester) => string | number,
 };
 
-const moduleOrders = {
+const moduleOrders: { [ModuleTableOrder]: ModuleOrder } = {
   exam: { label: 'Exam Date', orderBy: (module, semester) => getModuleExamDate(module, semester) },
-  mc: ({ label: 'Module Credits', orderBy: (module) => module.ModuleCredit }: ModuleOrder),
-  code: ({ label: 'Module Code', orderBy: (module) => module.ModuleCode }: ModuleOrder),
+  mc: { label: 'Module Credits', orderBy: (module) => module.ModuleCredit },
+  code: { label: 'Module Code', orderBy: (module) => module.ModuleCode },
 };
 
 type Props = {
   selectModuleColor: Function,
   hideLessonInTimetable: (Semester, ModuleCode) => void,
   showLessonInTimetable: (Semester, ModuleCode) => void,
+  setModuleTableOrder: (ModuleTableOrder) => void,
   semester: Semester,
   modules: Array<ModuleWithColor>,
   onRemoveModule: Function,
+  moduleTableOrder: ModuleTableOrder,
   horizontalOrientation: boolean,
   readOnly: boolean,
-};
-
-type State = {
-  moduleOrder: $Keys<typeof moduleOrders>,
 };
 
 function renderMCs(moduleCredits) {
   return `${moduleCredits}${NBSP}${moduleCredits === 1 ? 'MC' : 'MCs'}`;
 }
 
-class TimetableModulesTable extends Component<Props, State> {
-  state = {
-    moduleOrder: 'exam',
-  };
-
+class TimetableModulesTable extends Component<Props> {
   totalMCs() {
     return sum(this.props.modules.map((module) => parseInt(module.ModuleCredit, 10)));
   }
@@ -109,7 +105,7 @@ class TimetableModulesTable extends Component<Props, State> {
 
     const { readOnly, semester, horizontalOrientation } = this.props;
     const modules = sortBy(this.props.modules, (module) =>
-      moduleOrders[this.state.moduleOrder].orderBy(module, semester),
+      moduleOrders[this.props.moduleTableOrder].orderBy(module, semester),
     );
 
     return (
@@ -158,9 +154,9 @@ class TimetableModulesTable extends Component<Props, State> {
           <div className={classnames(styles.moduleOrder, 'col')}>
             <label htmlFor="moduleOrder">Order</label>
             <select
-              onChange={(evt) => this.setState({ moduleOrder: evt.target.value })}
+              onChange={(evt) => this.props.setModuleTableOrder(evt.target.value)}
               className={classnames(styles.moduleOrder, 'form-control form-control-sm')}
-              value={this.state.moduleOrder}
+              value={this.props.moduleTableOrder}
               id="moduleOrder"
             >
               {map(moduleOrders, ({ label }, key) => (
@@ -176,8 +172,9 @@ class TimetableModulesTable extends Component<Props, State> {
   }
 }
 
-export default connect(null, {
+export default connect((state) => ({ moduleTableOrder: state.settings.moduleTableOrder }), {
   selectModuleColor,
   hideLessonInTimetable,
   showLessonInTimetable,
+  setModuleTableOrder,
 })(TimetableModulesTable);
