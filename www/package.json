@@ -71,7 +71,7 @@
     "icalendar": "0.7.1",
     "identity-obj-proxy": "3.0.0",
     "jest": "22.4.3",
-    "jest-junit": "3.6.0",
+    "jest-junit": "3.7.0",
     "js-combinatorics": "0.5.3",
     "lodash-webpack-plugin": "0.11.4",
     "moment": "2.22.0",
