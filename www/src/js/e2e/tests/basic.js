@@ -17,8 +17,14 @@ module.exports = {
     const home = client.page.timetable();
 
     home
-      .click('@addModule')
-      .setValue('@addModule', ['CS1010S', client.Keys.ENTER])
+      .click('@addModuleBtn')
+      .sendKeys('@addModuleInput', ['CS1010S'])
+      .sendKeys('@addModuleInput', [client.Keys.RETURN]);
+
+    client.pause(100);
+
+    home
+      .sendKeys('@addModuleInput', [client.Keys.ESCAPE])
       .waitForElementVisible('@timetableLessons', config.timeout)
       .assert.containsText('@timetableLessons', 'CS1010S')
       .assert.containsText('@moduleTable', 'CS1010S');

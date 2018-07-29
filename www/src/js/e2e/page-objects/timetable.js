@@ -8,7 +8,8 @@ module.exports = {
   elements: {
     timetable: `.${elements.timetable}`,
     timetableLessons: `.${elements.lessons}`,
-    addModule: `.${elements.addModuleInput}`,
+    addModuleBtn: `.${elements.addModuleInput}`,
+    addModuleInput: `input.${elements.addModuleInput}`,
     moduleTable: `.${elements.moduleTable}`,
     examCalendar: `.${elements.examCalendar}`,
     examCalendarBtn: `.${elements.examCalendarBtn}`,

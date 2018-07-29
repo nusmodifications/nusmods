@@ -15,6 +15,9 @@ const config = {
       desiredCapabilities: {
         'browserstack.user': process.env.BROWSERSTACK_USER,
         'browserstack.key': process.env.BROWSERSTACK_ACCESS_KEY,
+        'browserstack.debug': true,
+        'browserstack.console': 'errors',
+
         browser: 'Firefox',
         // Latest ESR
         browserVersion: '60',
@@ -23,7 +26,7 @@ const config = {
 
     safariMobile: {
       desiredCapabilities: {
-        device: 'iPhone 7 Plus',
+        device: 'iPhone 7',
         realMobile: 'true',
         os_version: '10.3',
       },
