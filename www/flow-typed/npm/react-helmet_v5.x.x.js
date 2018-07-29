@@ -1,5 +1,5 @@
-// flow-typed signature: c0fb6fa2ea9be0c11b3ced1f95a09e56
-// flow-typed version: 5af8bb5901/react-helmet_v5.x.x/flow_>=v0.53.x
+// flow-typed signature: afa3502910d5b2aef93707cc683f52b8
+// flow-typed version: 492c298a82/react-helmet_v5.x.x/flow_>=v0.53.x
 
 declare module 'react-helmet' {
   declare type Props = {
@@ -30,10 +30,15 @@ declare module 'react-helmet' {
     toComponent(): [React$Element<*>] | React$Element<*> | Array<Object>;
   }
 
+  declare interface AttributeTagMethods {
+    toString(): string;
+    toComponent(): {[string]: *};
+  }
+
   declare interface StateOnServer {
     base: TagMethods;
-    bodyAttributes: TagMethods,
-    htmlAttributes: TagMethods;
+    bodyAttributes: AttributeTagMethods,
+    htmlAttributes: AttributeTagMethods;
     link: TagMethods;
     meta: TagMethods;
     noscript: TagMethods;
