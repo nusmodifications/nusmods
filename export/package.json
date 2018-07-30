@@ -18,7 +18,7 @@
     "forever": "0.15.3",
     "fs-extra": "5.0.0",
     "http-graceful-shutdown": "2.1.1",
-    "koa": "2.5.0",
+    "koa": "2.5.2",
     "koa-router": "7.4.0",
     "koa-views": "6.1.4",
     "lodash": "4.17.5",
