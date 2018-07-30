@@ -4,7 +4,7 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
-import { sum, sortBy, map } from 'lodash';
+import { sumBy, sortBy, map } from 'lodash';
 
 import type { ModuleCode, ModuleWithColor, Semester } from 'types/modules';
 import type { ColorIndex } from 'types/reducers';
@@ -54,7 +54,7 @@ function renderMCs(moduleCredits) {
 
 class TimetableModulesTable extends Component<Props> {
   totalMCs() {
-    return sum(this.props.modules.map((module) => parseInt(module.ModuleCredit, 10)));
+    return sumBy(this.props.modules, (module) => parseInt(module.ModuleCredit, 10));
   }
 
   renderModuleActions(module) {
