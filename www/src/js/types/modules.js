@@ -37,7 +37,7 @@ export const Timeslots: [Day, Time][] = flatMap(DaysOfWeek, (day): [Day, Time][]
   TimesOfDay.map((time) => [day, time]),
 );
 
-export type ModuleLevel = 1 | 2 | 3 | 4 | 5 | 6;
+export type ModuleLevel = 1 | 2 | 3 | 4 | 5 | 6 | 8;
 export const Semesters = [1, 2, 3, 4];
 
 export type WorkloadComponent = 'Lecture' | 'Tutorial' | 'Laboratory' | 'Project' | 'Preparation';
