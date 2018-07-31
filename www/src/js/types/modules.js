@@ -16,7 +16,7 @@ export type LessonType = string; // E.g. "Lecture", "Tutorial"
 export type LessonTime = StartTime | EndTime;
 export type ModuleCode = string; // E.g. "CS3216"
 export type ModuleTitle = string;
-export type Semester = number; // E.g. 0/1/2/3/4. 3 and 4 means special sem i and ii.
+export type Semester = number; // E.g. 1/2/3/4. 3 and 4 means special sem i and ii.
 export type WeekText = string; // E.g. "Every Week", "Odd Week"
 
 // Auxiliary data types
@@ -37,7 +37,7 @@ export const Timeslots: [Day, Time][] = flatMap(DaysOfWeek, (day): [Day, Time][]
   TimesOfDay.map((time) => [day, time]),
 );
 
-export type ModuleLevel = 1 | 2 | 3 | 4 | 5 | 6;
+export type ModuleLevel = 1 | 2 | 3 | 4 | 5 | 6 | 8;
 export const Semesters = [1, 2, 3, 4];
 
 export type WorkloadComponent = 'Lecture' | 'Tutorial' | 'Laboratory' | 'Project' | 'Preparation';

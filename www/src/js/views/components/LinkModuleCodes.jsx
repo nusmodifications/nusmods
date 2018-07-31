@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { connect, type MapStateToProps } from 'react-redux';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import type { State } from 'reducers';
@@ -43,9 +43,10 @@ export function LinkModuleCodesComponent(props: Props) {
 }
 
 // Type annotation is workaround for https://github.com/flowtype/flow-typed/issues/1269
-const mapStateToProps: MapStateToProps<*, *, *> = (state: State) => ({
-  moduleCodes: state.moduleBank.moduleCodes,
-});
-
 // Exclude dispatch from props
-export default connect(mapStateToProps, null)(LinkModuleCodesComponent);
+export default connect(
+  (state: State) => ({
+    moduleCodes: state.moduleBank.moduleCodes,
+  }),
+  null,
+)(LinkModuleCodesComponent);

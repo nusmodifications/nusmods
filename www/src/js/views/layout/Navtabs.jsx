@@ -3,11 +3,11 @@ import type { State } from 'reducers';
 import type { Semester } from 'types/modules';
 
 import React from 'react';
-import { connect, type MapStateToProps } from 'react-redux';
-import { withRouter, NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { NavLink, withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 
-import { Calendar, Heart, Map, BookOpen, Settings } from 'views/components/icons';
+import { BookOpen, Calendar, Heart, Map, Settings } from 'views/components/icons';
 import { timetablePage } from 'views/routes/paths';
 
 import styles from './Navtabs.scss';
@@ -57,9 +57,7 @@ export function NavtabsComponent(props: Props) {
   );
 }
 
-const mapStateToProps: MapStateToProps<*, *, *> = (state: State) => ({
+const connectedNavtabs = connect((state: State) => ({
   activeSemester: state.app.activeSemester,
-});
-
-const connectedNavtabs = connect(mapStateToProps)(NavtabsComponent);
+}))(NavtabsComponent);
 export default withRouter(connectedNavtabs);

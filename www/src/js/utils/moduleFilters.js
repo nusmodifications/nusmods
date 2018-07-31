@@ -125,7 +125,7 @@ export function defaultGroups(faculties: DepartmentFaculty, query: string = ''):
     [LEVELS]: new FilterGroup(
       LEVELS,
       'Levels',
-      [1, 2, 3, 4, 5, 6].map((level) => new LevelFilter(level)),
+      [1, 2, 3, 4, 5, 6, 8].map((level) => new LevelFilter(level)),
     ),
 
     [LECTURE_TIMESLOTS]: new FilterGroup(

@@ -1,4 +1,4 @@
-@import "~styles/utils/modules-entry.scss";
+@import '~styles/utils/modules-entry.scss';
 
 $v-padding: 0.6rem;
 $h-padding: $grid-gutter-width / 2;
@@ -52,6 +52,13 @@ $h-padding: $grid-gutter-width / 2;
 
   @include touchscreen-only {
     font-size: $font-size-sm;
+  }
+}
+
+.checklist,
+.dropdown {
+  input {
+    margin-top: 0.15rem;
   }
 }
 

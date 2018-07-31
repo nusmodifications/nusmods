@@ -123,6 +123,7 @@ class TimetableModulesTable extends Component<Props> {
                 <ColorPicker
                   label={`Change ${module.ModuleCode} timetable color`}
                   color={module.colorIndex}
+                  isHidden={module.hiddenInTimetable}
                   onChooseColor={(colorIndex: ColorIndex) => {
                     this.props.selectModuleColor(semester, module.ModuleCode, colorIndex);
                   }}
