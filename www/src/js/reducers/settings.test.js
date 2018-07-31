@@ -18,6 +18,7 @@ const initialState: SettingsState = {
     semesterKey: config.getSemesterKey(),
     dismissed: [],
   },
+  moduleTableOrder: 'exam',
 };
 const settingsWithNewStudent: SettingsState = { ...initialState, newStudent: true };
 const faculty = 'School of Computing';
@@ -112,5 +113,13 @@ describe('corsNotification settings', () => {
 
     const state2 = reducer(initialState, actions.toggleCorsNotificationGlobally(false));
     expect(state2.corsNotification.enabled).toEqual(false);
+  });
+
+  test('set module table order', () => {
+    const state1 = reducer(initialState, actions.setModuleTableOrder('mc'));
+    expect(state1.moduleTableOrder).toEqual('mc');
+
+    const state2 = reducer(initialState, actions.setModuleTableOrder('code'));
+    expect(state2.moduleTableOrder).toEqual('code');
   });
 });
