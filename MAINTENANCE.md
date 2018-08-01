@@ -1,4 +1,4 @@
-NUSMods Maintainace Notes
+NUSMods Maintenance Notes
 =========================
 
 Create a new issue on GitHub with this checklist after the finals every semester.
