@@ -6,7 +6,7 @@ import { isEqual } from 'lodash';
 import type { Lesson } from 'types/modules';
 import type { HoverLesson } from 'types/timetables';
 
-import { getHoverLesson, LESSON_TYPE_ABBREV } from 'utils/timetables';
+import { formatWeekNumber, getHoverLesson, LESSON_TYPE_ABBREV } from 'utils/timetables';
 
 import styles from './TimetableCell.scss';
 
@@ -59,7 +59,7 @@ function TimetableCell(props: Props) {
           {LESSON_TYPE_ABBREV[lesson.LessonType]} [{lesson.ClassNo}]
         </div>
         <div>{lesson.Venue}</div>
-        {lesson.WeekText !== 'Every Week' && <div>{lesson.WeekText}</div>}
+        {lesson.WeekText !== 'Every Week' && <div>{formatWeekNumber(lesson.WeekText)}</div>}
       </div>
     </Cell>
   );

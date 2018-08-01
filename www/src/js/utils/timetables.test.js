@@ -38,6 +38,7 @@ import {
   findExamClashes,
   validateTimetableModules,
   validateModuleLessons,
+  formatWeekNumber,
 } from 'utils/timetables';
 import { getModuleTimetable, getModuleSemesterData } from 'utils/modules';
 
@@ -589,5 +590,22 @@ describe('validateModuleLessons', () => {
       },
       ['Lecture', 'Recitation'],
     ]);
+  });
+});
+
+describe(formatWeekNumber, () => {
+  it('should not change non-numeric week text', () => {
+    expect(formatWeekNumber('Every Week')).toEqual('Every Week');
+    expect(formatWeekNumber('Odd Weeks')).toEqual('Odd Weeks');
+    expect(formatWeekNumber('Even Weeks')).toEqual('Even Weeks');
+  });
+
+  it('should abbreviate consecutive week numbers', () => {
+    expect(formatWeekNumber('1')).toEqual('Week 1');
+    expect(formatWeekNumber('1,2,3,4')).toEqual('Weeks 1-4');
+    expect(formatWeekNumber('1,2,3,4,6,7,8,9')).toEqual('Weeks 1-4, 6-9');
+    expect(formatWeekNumber('1,3,5')).toEqual('Weeks 1, 3, 5');
+    expect(formatWeekNumber('1,2,4,5,6,7')).toEqual('Weeks 1, 2, 4-7');
+    expect(formatWeekNumber('1,2,4,5')).toEqual('Weeks 1, 2, 4, 5');
   });
 });

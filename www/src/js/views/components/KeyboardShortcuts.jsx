@@ -47,7 +47,7 @@ export class KeyboardShortcutsComponent extends PureComponent<Props, State> {
   };
 
   componentDidMount() {
-    const { mode, dispatch, history } = this.props;
+    const { dispatch, history } = this.props;
 
     // Navigation
     this.bind('t', NAVIGATION, 'Go to timetable', () => {
@@ -94,7 +94,7 @@ export class KeyboardShortcutsComponent extends PureComponent<Props, State> {
       this.props.dispatch(toggleMode());
 
       dispatch(
-        openNotification(`Night mode ${mode === DARK_MODE ? 'on' : 'off'}`, {
+        openNotification(`Night mode ${this.props.mode === DARK_MODE ? 'on' : 'off'}`, {
           overwritable: true,
         }),
       );
@@ -178,9 +178,9 @@ export class KeyboardShortcutsComponent extends PureComponent<Props, State> {
   }
 }
 
-const KeyboardShortcutsConnected = connect(
-  (state) => ({ mode: state.settings.mode, theme: state.theme.id }),
-  (dispatch) => ({ dispatch }),
-)(KeyboardShortcutsComponent);
+const KeyboardShortcutsConnected = connect((state) => ({
+  mode: state.settings.mode,
+  theme: state.theme.id,
+}))(KeyboardShortcutsComponent);
 
 export default withRouter(KeyboardShortcutsConnected);

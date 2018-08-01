@@ -9,6 +9,7 @@ import type {
 } from 'types/modules';
 import type { Mode } from 'types/settings';
 import type { TimetableConfig } from 'types/timetables';
+import type { ModuleTableOrder } from 'types/views';
 
 /* app.js */
 export type NotificationOptions = {
@@ -90,6 +91,7 @@ export type SettingsState = {
   +mode: Mode,
   +hiddenInTimetable: ModuleCode[],
   +corsNotification: CorsNotificationSettings,
+  +moduleTableOrder: ModuleTableOrder,
 };
 
 /* timetables.js */

@@ -1,8 +1,6 @@
 // @flow
 import { isString } from 'lodash';
 import Raven from 'raven-js';
-import { LEGACY_REDUX_KEY, PERSIST_MIGRATION_KEY } from './keys';
-import migrateLegacyStorage from './migrateLegacyStorage';
 import getLocalStorage from './localStorage';
 
 // Simple wrapper around localStorage to automagically parse and stringify payloads.
@@ -58,16 +56,6 @@ const storage = {
   setItem,
   getItem,
   removeItem,
-  loadState: () => {
-    // Do not load state from legacy storage if we have already migrated
-    // to Redux Persist
-    if (getItem(PERSIST_MIGRATION_KEY)) return {};
-
-    return migrateLegacyStorage(getItem(LEGACY_REDUX_KEY));
-  },
-  stateMigrationComplete: () => {
-    setItem(PERSIST_MIGRATION_KEY, true);
-  },
 };
 
 export default storage;
