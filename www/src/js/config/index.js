@@ -35,6 +35,7 @@ export type Config = {
 
   semesterNames: { [Semester]: string },
   shortSemesterNames: { [Semester]: string },
+  timetableAvailable: Semester[],
 
   defaultPreferences: {
     theme: string,

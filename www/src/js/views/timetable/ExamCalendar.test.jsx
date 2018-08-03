@@ -11,7 +11,7 @@ import mockModules from '__mocks__/modules';
 /** @vars {Module} */
 import GER1000 from '__mocks__/modules/GER1000.json';
 
-import ExamCalendar from './ExamCalendar';
+import ExamCalendar, { getTimeSegment } from './ExamCalendar';
 import styles from './ExamCalendar.scss';
 
 const TR_PER_WEEK = 4;
@@ -45,7 +45,7 @@ function make(modules: ModuleWithColor[] = [], semester: Semester = 1) {
 //  - GES1021: 2017-11-29 (Wed) Evening
 //  - PC1222:  2017-12-05 (Tue) Evening
 //  - CS3216:  No exams
-describe('ExamCalendar', () => {
+describe(ExamCalendar, () => {
   test('only show Saturday if there is a Saturday exam', () => {
     const withSaturdayExams = make([GER1000]);
     const withoutSaturdayExams = make(modulesWithColor);
@@ -94,4 +94,22 @@ describe('ExamCalendar', () => {
 
     expect(wrapper.find(Link)).toHaveLength(3);
   });
+});
+
+describe(getTimeSegment, () => {
+  it.each([
+    ['8:30 AM', 'Morning'],
+    ['9:00 AM', 'Morning'],
+    ['10:00 AM', 'Morning'],
+    ['11:00 AM', 'Morning'],
+
+    ['12:00 PM', 'Afternoon'],
+    ['1:00 PM', 'Afternoon'],
+    ['2:00 PM', 'Afternoon'],
+    ['2:30 PM', 'Afternoon'],
+    ['3:00 PM', 'Afternoon'],
+
+    ['5:00 PM', 'Evening'],
+    ['6:30 PM', 'Evening'],
+  ])('%s is in the %s', (time, expected) => expect(getTimeSegment(time)).toBe(expected));
 });

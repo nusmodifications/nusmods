@@ -1,7 +1,7 @@
 // @flow
 
-import { type Node, Component } from 'react';
-import { connect, type MapStateToProps } from 'react-redux';
+import { Component, type Node } from 'react';
+import { connect } from 'react-redux';
 import type { State } from 'reducers';
 
 type Props = {
@@ -31,7 +31,6 @@ export class OnlineComponent extends Component<Props> {
   }
 }
 
-const mapStateToProps: MapStateToProps<*, *, *> = (state: State) => ({
+export default connect((state: State) => ({
   isOnline: state.app.isOnline,
-});
-export default connect(mapStateToProps)(OnlineComponent);
+}))(OnlineComponent);

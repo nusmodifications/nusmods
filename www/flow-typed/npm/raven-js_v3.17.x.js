@@ -1,5 +1,5 @@
-// flow-typed signature: e1f97cc57b871f5647a2a5a8567b0b5b
-// flow-typed version: 39e54508d9/raven-js_v3.17.x/flow_>=v0.38.x
+// flow-typed signature: 4850a295b0a6cab60f9421a95997888f
+// flow-typed version: 5b150db5b6/raven-js_v3.17.x/flow_>=v0.38.x
 
 type LogLevel = "critical" | "error" | "warning" | "info" | "debug";
 
@@ -218,7 +218,14 @@ declare module "raven-js" {
     setShouldSendCallback(data: any, orig?: any): this,
 
     /** Show Sentry user feedback dialog */
-    showReportDialog(options: Object): void,
+    showReportDialog(options?: { 
+      eventId?: string, 
+      dsn?: string, 
+      user?: { 
+        name?: string, 
+        email?: string 
+      } 
+    }): void,
 
     /** Configure Raven DSN */
     setDSN(dsn: string): void
