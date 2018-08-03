@@ -12,7 +12,6 @@ const packageJson = require('../package.json');
 const nusmods = require('../src/js/apis/nusmods');
 const config = require('../src/js/config/app-config.json');
 
-const IS_DEV = process.env.NODE_ENV === 'development';
 const ROOT = path.join(__dirname, '..');
 const SRC = 'src';
 
@@ -50,10 +49,6 @@ const DLL = {
   },
   FILE_FORMAT: '[name].dll.js',
 };
-
-function insertIf(condition, element) {
-  return condition ? [element] : [];
-}
 
 /**
  * Set environment variables (and more).
