@@ -125,7 +125,7 @@ exports.lintJavaScript = ({ include, exclude, options }) => ({
         exclude,
         enforce: 'pre',
 
-        use: [...insertIf(IS_DEV, 'cache-loader'), { loader: 'eslint-loader', options }],
+        use: [{ loader: 'eslint-loader', options }],
       },
     ],
   },
