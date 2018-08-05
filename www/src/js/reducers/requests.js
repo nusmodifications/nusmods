@@ -4,7 +4,6 @@ import { camelCase } from 'lodash';
 import type { FSA } from 'types/redux';
 import type { Requests, RequestType, FetchRequest } from 'types/reducers';
 
-import { RESET_ALL_STATE, RESET_REQUEST_STATE } from 'actions/helpers';
 import { REQUEST, SUCCESS, FAILURE } from 'middlewares/requests-middleware';
 
 const NULL_FETCH_REQUEST: FetchRequest = {
@@ -26,22 +25,6 @@ export function getRequestName(type: string): RequestType {
 
 export default function requests(state: Requests = {}, action: FSA): Requests {
   const { type, meta } = action;
-
-  switch (type) {
-    case RESET_ALL_STATE:
-      return {};
-
-    case RESET_REQUEST_STATE: {
-      const newState: Requests = {};
-      action.payload.forEach((domain) => {
-        newState[getRequestName(domain)] = NULL_FETCH_REQUEST;
-      });
-
-      return { ...state, ...newState };
-    }
-
-    default: // Fallthrough
-  }
 
   // requestStatus is a field specially designed and owned by api request actions
   if (!meta || !meta.requestStatus) return state;

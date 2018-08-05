@@ -14,7 +14,7 @@ export function fetchVenueList(): FSA {
       url: NUSModsApi.venueListUrl(config.semester),
     },
     meta: {
-      [API_REQUEST]: true,
+      [API_REQUEST]: FETCH_VENUE_LIST,
     },
   };
 }

@@ -14,12 +14,16 @@ export function fetchModuleList(): FSA {
       url: NUSModsApi.moduleListUrl(),
     },
     meta: {
-      [API_REQUEST]: true,
+      [API_REQUEST]: FETCH_MODULE_LIST,
     },
   };
 }
 
 export const FETCH_MODULE: string = 'FETCH_MODULE';
+export function fetchModuleRequest(moduleCode: ModuleCode) {
+  return `${FETCH_MODULE}_${moduleCode}`;
+}
+
 export function fetchModule(moduleCode: ModuleCode): FSA {
   return {
     type: FETCH_MODULE,
@@ -28,7 +32,7 @@ export function fetchModule(moduleCode: ModuleCode): FSA {
       url: NUSModsApi.moduleDetailsUrl(moduleCode),
     },
     meta: {
-      [API_REQUEST]: true,
+      [API_REQUEST]: fetchModuleRequest(moduleCode),
     },
   };
 }
