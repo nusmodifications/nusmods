@@ -2,6 +2,8 @@
 import type { Middleware } from 'redux';
 import type { State } from 'reducers';
 import axios from 'axios';
+import { FAILURE, REQUEST, SUCCESS } from 'types/reducers';
+import { API_REQUEST } from 'actions/requests';
 
 function makeRequest(request) {
   return axios({
@@ -11,11 +13,6 @@ function makeRequest(request) {
     },
   });
 }
-
-export const API_REQUEST: any = Symbol('API_REQUEST');
-export const REQUEST = '_REQUEST';
-export const SUCCESS = '_SUCCESS';
-export const FAILURE = '_FAILURE';
 
 const requestMiddleware: Middleware<State, *, *> = () => (next) => (action) => {
   if (!action.meta || !action.meta[API_REQUEST]) {
@@ -27,52 +24,39 @@ const requestMiddleware: Middleware<State, *, *> = () => (next) => (action) => {
   // payload  is the request body to be processed
   const { type, payload, meta } = action;
 
-  // Swap the action content and structured api results
-  function constructActionWith(data) {
-    const finalAction = { ...action, ...data };
-    delete finalAction[API_REQUEST];
-    return finalAction;
-  }
-
   // Propagate the start of the request
-  next(
-    constructActionWith({
-      type: type + REQUEST,
-      payload,
-      meta: {
-        ...meta,
-        requestStatus: REQUEST,
-      },
-    }),
-  );
+  next({
+    type: type + REQUEST,
+    payload,
+    meta: {
+      ...meta,
+      requestStatus: REQUEST,
+    },
+  });
 
   // Propagate the response of the request.
   return makeRequest(payload).then(
     (response) =>
-      next(
-        constructActionWith({
-          type: type + SUCCESS,
-          payload: response.data,
-          meta: {
-            ...meta,
-            requestStatus: SUCCESS,
-            request: payload,
-            responseHeaders: response.headers,
-          },
-        }),
-      ),
+      next({
+        type: type + SUCCESS,
+        payload: response.data,
+        meta: {
+          ...meta,
+          requestStatus: SUCCESS,
+          request: payload,
+          responseHeaders: response.headers,
+        },
+      }),
     (error) => {
-      next(
-        constructActionWith({
-          type: type + FAILURE,
-          payload: error,
-          meta: {
-            ...meta,
-            requestStatus: FAILURE,
-            request: payload,
-          },
-        }),
-      );
+      next({
+        type: type + FAILURE,
+        payload: error,
+        meta: {
+          ...meta,
+          requestStatus: FAILURE,
+          request: payload,
+        },
+      });
 
       throw error;
     },

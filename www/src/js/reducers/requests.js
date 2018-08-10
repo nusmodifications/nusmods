@@ -1,58 +1,42 @@
 // @flow
-import { camelCase } from 'lodash';
-
 import type { FSA } from 'types/redux';
-import type { Requests, RequestType, FetchRequest } from 'types/reducers';
+import type { Requests } from 'types/reducers';
 
-import { REQUEST, SUCCESS, FAILURE } from 'middlewares/requests-middleware';
-
-const NULL_FETCH_REQUEST: FetchRequest = {
-  isPending: false,
-  isSuccessful: false,
-  isFailure: false,
-};
-
-const requestState = 'Request';
-
-export function getRequestName(type: string): RequestType {
-  const normalizedType = type
-    .replace(REQUEST, '')
-    .replace(SUCCESS, '')
-    .replace(FAILURE, '');
-
-  return camelCase(normalizedType) + requestState;
-}
+import { API_REQUEST } from 'actions/requests';
+import { FAILURE, REQUEST, SUCCESS } from 'types/reducers';
 
 export default function requests(state: Requests = {}, action: FSA): Requests {
-  const { type, meta } = action;
+  const { meta } = action;
 
   // requestStatus is a field specially designed and owned by api request actions
-  if (!meta || !meta.requestStatus) return state;
+  if (!meta || !meta.requestStatus || !meta[API_REQUEST]) {
+    return state;
+  }
+
+  const key = meta[API_REQUEST];
+
   switch (meta.requestStatus) {
     case REQUEST:
       return {
         ...state,
-        [getRequestName(type)]: {
-          ...NULL_FETCH_REQUEST,
-          isPending: true,
+        [key]: {
+          status: REQUEST,
         },
       };
 
     case SUCCESS:
       return {
         ...state,
-        [getRequestName(type)]: {
-          ...NULL_FETCH_REQUEST,
-          isSuccessful: true,
+        [key]: {
+          status: SUCCESS,
         },
       };
 
     case FAILURE:
       return {
         ...state,
-        [getRequestName(type)]: {
-          ...NULL_FETCH_REQUEST,
-          isFailure: true,
+        [key]: {
+          status: FAILURE,
           error: action.payload,
         },
       };

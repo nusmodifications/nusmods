@@ -3,7 +3,7 @@
 exports[`fetchModule should return a request action 1`] = `
 Object {
   "meta": Object {
-    Symbol(API_REQUEST): true,
+    "API_REQUEST": "FETCH_MODULE_CS1010S",
   },
   "payload": Object {
     "method": "GET",
@@ -16,7 +16,7 @@ Object {
 exports[`fetchModuleList should return a request action 1`] = `
 Object {
   "meta": Object {
-    Symbol(API_REQUEST): true,
+    "API_REQUEST": "FETCH_MODULE_LIST",
   },
   "payload": Object {
     "method": "GET",

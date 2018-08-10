@@ -2,7 +2,9 @@
 
 import axios from 'axios';
 import configureStore from 'redux-mock-store';
-import requestMiddleware, { API_REQUEST, FAILURE, REQUEST, SUCCESS } from './requests-middleware';
+import { FAILURE, REQUEST, SUCCESS } from 'types/reducers';
+import requestMiddleware from './requests-middleware';
+import { API_REQUEST } from "actions/requests";
 
 jest.mock('axios');
 
@@ -22,6 +24,9 @@ describe(requestMiddleware, () => {
 
   beforeEach(() => {
     store = mockStore();
+
+    // $FlowFixMe
+    axios.mockClear();
   });
 
   it('should make async calls and dispatch actions on success', async () => {
@@ -39,7 +44,7 @@ describe(requestMiddleware, () => {
 
     await store.dispatch(requestAction);
 
-    expect(axios).toBeCalled();
+    expect(axios).toBeCalledTimes(1);
 
     expect(store.getActions()).toMatchObject([
       {
@@ -77,7 +82,7 @@ describe(requestMiddleware, () => {
       // Ignore
     }
 
-    expect(axios).toBeCalled();
+    expect(axios).toBeCalledTimes(1);
 
     expect(store.getActions()).toMatchObject([
       {

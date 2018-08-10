@@ -1,5 +1,6 @@
+import { API_REQUEST } from 'actions/requests';
+import { FAILURE, REQUEST, SUCCESS } from 'types/reducers';
 import requests from './requests';
-import { API_REQUEST, FAILURE, REQUEST, SUCCESS } from 'middlewares/requests-middleware';
 
 describe(requests, () => {
   const DEFAULT_STATE = {};
@@ -16,12 +17,17 @@ describe(requests, () => {
     type: 'TEST_ACTION_SUCCESS',
     meta: {
       [API_REQUEST]: 'TEST_ACTION',
+      payload: {
+        data: 'Hello world',
+      },
       requestStatus: SUCCESS,
     },
   };
 
+  const failureError = new Error('Test error');
   const failureAction = {
     type: 'TEST_ACTION_FAILURE',
+    payload: failureError,
     meta: {
       [API_REQUEST]: 'TEST_ACTION',
       requestStatus: FAILURE,
@@ -33,9 +39,28 @@ describe(requests, () => {
 
     expect(next).toEqual({
       TEST_ACTION: {
-        isPending: true,
-        isSuccessful: false,
-        isFailure: false,
+        status: '_REQUEST',
+      },
+    });
+  });
+
+  it('should store failures', () => {
+    const next = requests(DEFAULT_STATE, failureAction);
+
+    expect(next).toEqual({
+      TEST_ACTION: {
+        status: '_FAILURE',
+        error: failureError,
+      },
+    });
+  });
+
+  it('should store success', () => {
+    const next = requests(DEFAULT_STATE, successAction);
+
+    expect(next).toEqual({
+      TEST_ACTION: {
+        status: '_SUCCESS',
       },
     });
   });
