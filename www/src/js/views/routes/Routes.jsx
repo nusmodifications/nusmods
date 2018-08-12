@@ -14,6 +14,7 @@ import FaqContainer from 'views/static/FaqContainer';
 import AppsContainer from 'views/static/AppsContainer';
 import NotFoundPage from 'views/errors/NotFoundPage';
 
+// IMPORTANT: Remember to update any route changes on the sitemap
 export default function Routes() {
   return (
     <Switch>
