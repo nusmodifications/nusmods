@@ -50,3 +50,5 @@ export type DisqusConfig = {
   url: string,
   title: string,
 };
+
+export type ModuleTableOrder = 'exam' | 'mc' | 'code';

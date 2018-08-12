@@ -142,4 +142,4 @@ export class ExportMenuComponent extends PureComponent<Props, State> {
   }
 }
 
-export default connect((state: State) => ({ state }), { downloadAsIcal })(ExportMenuComponent);
+export default connect((state: StoreState) => ({ state }), { downloadAsIcal })(ExportMenuComponent);

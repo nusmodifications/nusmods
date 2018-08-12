@@ -7,6 +7,7 @@ import type { ColorIndex, ColorMapping } from 'types/reducers';
 import type { ClassNo, Lesson, LessonType, Module, ModuleCode, Semester } from 'types/modules';
 
 import { fetchModule } from 'actions/moduleBank';
+import { openNotification } from 'actions/app';
 import {
   randomModuleLessonConfig,
   validateModuleLessons,
@@ -19,10 +20,24 @@ export function addModule(semester: Semester, moduleCode: ModuleCode) {
   return (dispatch: Function, getState: GetState) =>
     dispatch(fetchModule(moduleCode)).then(() => {
       const module: Module = getState().moduleBank.modules[moduleCode];
+
+      if (!module) {
+        dispatch(
+          openNotification(`Cannot load ${moduleCode}`, {
+            action: {
+              text: 'Retry',
+              handler: () => dispatch(addModule(semester, moduleCode)),
+            },
+          }),
+        );
+
+        return;
+      }
+
       const lessons = getModuleTimetable(module, semester);
       const moduleLessonConfig = randomModuleLessonConfig(lessons);
 
-      return dispatch({
+      dispatch({
         type: ADD_MODULE,
         payload: {
           semester,

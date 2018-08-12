@@ -2,6 +2,7 @@
 import type { FSA } from 'types/redux';
 import type { Faculty, Semester } from 'types/modules';
 import type { Mode } from 'types/settings';
+import type { ModuleTableOrder } from 'types/views';
 
 export const SELECT_SEMESTER: string = 'SELECT_SEMESTER';
 export function selectSemester(semester: Semester): FSA {
@@ -64,5 +65,13 @@ export function toggleCorsNotificationGlobally(enabled: boolean): FSA {
   return {
     type: TOGGLE_CORS_NOTIFICATION_GLOBALLY,
     payload: { enabled },
+  };
+}
+
+export const SET_MODULE_TABLE_SORT = 'SET_MODULE_TABLE_SORT';
+export function setModuleTableOrder(sort: ModuleTableOrder): FSA {
+  return {
+    type: SET_MODULE_TABLE_SORT,
+    payload: sort,
   };
 }

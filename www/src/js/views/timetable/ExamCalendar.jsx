@@ -46,20 +46,13 @@ function getExamDate(date: Date): string {
 // NUS exams are grouped into morning, afternoon and evening exams. Afternoon exams happen at 2.30PM
 // on Fridays only. We don't want to create two different groups for 1pm and 2.30pm exams, so we
 // create another mapping here
-function getTimeSegment(time: string): TimeSegment {
-  switch (time) {
-    case '9:00 AM':
-      return 'Morning';
-    case '1:00 PM':
-    case '2:30 PM':
-    case '3:00 PM':
-      return 'Afternoon';
-    case '5:00 PM':
-    case '6:30 PM':
-      return 'Evening';
-    default:
-      throw new Error(`Unrecognized exam time: ${time}`);
+export function getTimeSegment(time: string): TimeSegment {
+  if (time.toUpperCase().includes('AM')) {
+    return 'Morning';
   }
+
+  const hour = parseInt(time, 10);
+  return hour === 12 || hour < 5 ? 'Afternoon' : 'Evening';
 }
 
 function ExamModule({ module }: { module: ModuleWithColor }) {

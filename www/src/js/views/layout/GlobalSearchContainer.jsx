@@ -6,13 +6,13 @@ import type { ModuleList } from 'types/reducers';
 import { type ResultType, type SearchResult, VENUE_RESULT } from 'types/views';
 
 import React, { Component } from 'react';
-import { connect, type MapStateToProps } from 'react-redux';
-import { withRouter, type ContextRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { type ContextRouter, withRouter } from 'react-router-dom';
 import GlobalSearch from 'views/layout/GlobalSearch';
 import { modulePage, venuePage } from 'views/routes/paths';
 
 import { fetchVenueList } from 'actions/venueBank';
-import { regexify, createSearchPredicate, sortModules, tokenize } from 'utils/moduleSearch';
+import { createSearchPredicate, regexify, sortModules, tokenize } from 'utils/moduleSearch';
 import { breakpointUp } from 'utils/css';
 import { takeUntil } from 'utils/array';
 import makeResponsive from 'views/hocs/makeResponsive';
@@ -109,12 +109,13 @@ export class SearchContainerComponent extends Component<Props> {
   }
 }
 
-const mapStateToProps: MapStateToProps<*, *, *> = (state: State) => ({
-  moduleList: state.moduleBank.moduleList,
-  venueList: state.venueBank.venueList,
-});
 const routedSearchContainer = withRouter(SearchContainerComponent);
-const connectedSearchContainer = connect(mapStateToProps, { fetchVenueList })(
-  routedSearchContainer,
-);
+const connectedSearchContainer = connect(
+  (state: State) => ({
+    moduleList: state.moduleBank.moduleList,
+    venueList: state.venueBank.venueList,
+  }),
+  { fetchVenueList },
+)(routedSearchContainer);
+
 export default makeResponsive(connectedSearchContainer, breakpointUp('md'));

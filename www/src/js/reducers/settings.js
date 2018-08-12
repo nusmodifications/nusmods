@@ -14,6 +14,7 @@ import {
   DISMISS_CORS_NOTIFICATION,
   ENABLE_CORS_NOTIFICATION,
   TOGGLE_CORS_NOTIFICATION_GLOBALLY,
+  SET_MODULE_TABLE_SORT,
 } from 'actions/settings';
 import { SET_EXPORTED_DATA } from 'actions/export';
 import { LIGHT_MODE, DARK_MODE } from 'types/settings';
@@ -31,6 +32,7 @@ const defaultSettingsState: SettingsState = {
   mode: LIGHT_MODE,
   hiddenInTimetable: [],
   corsNotification: defaultCorsNotificationState,
+  moduleTableOrder: 'exam',
 };
 
 function settings(state: SettingsState = defaultSettingsState, action: FSA): SettingsState {
@@ -81,6 +83,12 @@ function settings(state: SettingsState = defaultSettingsState, action: FSA): Set
       return {
         ...state,
         ...action.payload.settings,
+      };
+
+    case SET_MODULE_TABLE_SORT:
+      return {
+        ...state,
+        moduleTableOrder: action.payload,
       };
 
     case REHYDRATE: {
