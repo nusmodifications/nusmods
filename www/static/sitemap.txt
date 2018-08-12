@@ -96,7 +96,6 @@ https://nusmods.com/modules/AR5951B/topics-in-history-theory-of-architecture-2
 https://nusmods.com/modules/AR5951C/topics-in-history-and-theory-of-architecture-3
 https://nusmods.com/modules/AR5951D/topics-in-history-theory-of-architecture-4
 https://nusmods.com/modules/AR5951L/topics-in-history-and-theory-of-architecture
-https://nusmods.com/modules/AR5951O/topics-in-history-and-theory-of-architecture-east-asian-modern-architecture
 https://nusmods.com/modules/AR5952A/topics-in-urban-studies-1
 https://nusmods.com/modules/AR5952B/topics-in-urban-studies-2
 https://nusmods.com/modules/AR5952C/special-topics-in-urban-studies-3
@@ -111,6 +110,20 @@ https://nusmods.com/modules/AR5954/topics-in-landscape-architecture
 https://nusmods.com/modules/AR5954A/topics-in-landscape-architecture-1
 https://nusmods.com/modules/AR5954B/topics-in-landscape-architecture
 https://nusmods.com/modules/AR5955/topics-in-architectural-design
+https://nusmods.com/modules/AR5957A/topics-in-history-and-theory-of-architecture-1
+https://nusmods.com/modules/AR5957B/topics-in-history-and-theory-of-architecture-2
+https://nusmods.com/modules/AR5957C/topics-in-history-and-theory-of-architecture-3
+https://nusmods.com/modules/AR5957D/topics-in-history-and-theory-of-architecture-4
+https://nusmods.com/modules/AR5957E/topics-in-history-and-theory-of-architecture-5
+https://nusmods.com/modules/AR5957F/topics-in-history-and-theory-of-architecture-6
+https://nusmods.com/modules/AR5958A/topics-in-urbanism-1
+https://nusmods.com/modules/AR5958B/topics-in-urbanism-2
+https://nusmods.com/modules/AR5958C/topics-in-urbanism-3
+https://nusmods.com/modules/AR5959A/topics-in-design-technology-1
+https://nusmods.com/modules/AR5959B/topics-in-design-technology-2
+https://nusmods.com/modules/AR5959C/topics-in-design-technology-3
+https://nusmods.com/modules/AR5959D/topics-in-design-technology-4
+https://nusmods.com/modules/AR5959E/topics-in-design-technology-5
 https://nusmods.com/modules/AR6770/phd-seminar
 https://nusmods.com/modules/AUD5114/electrophysiological-assessment-b
 https://nusmods.com/modules/AUD5216/vestibular-assessment-and-management-b
@@ -398,7 +411,6 @@ https://nusmods.com/modules/BT3103/application-systems-development-for-business-
 https://nusmods.com/modules/BT4012/fraud-analytics
 https://nusmods.com/modules/BT4013/analytics-for-capital-market-trading-and-investment
 https://nusmods.com/modules/BT4014/analytics-driven-design-of-adaptive-systems
-https://nusmods.com/modules/BT4015/geospatial-analytics
 https://nusmods.com/modules/BT4016/risk-analytics-for-financial-services
 https://nusmods.com/modules/BT4101/b-sc-business-analytics-dissertation
 https://nusmods.com/modules/BT4211/data-driven-marketing
@@ -456,6 +468,8 @@ https://nusmods.com/modules/CE5104A/tunnelling-in-soils
 https://nusmods.com/modules/CE5104B/tunnelling-in-rocks
 https://nusmods.com/modules/CE5105/analytical-numerical-methods-in-foundation-engineering
 https://nusmods.com/modules/CE5106/ground-improvement
+https://nusmods.com/modules/CE5106A/ground-improvement-for-soft-soils
+https://nusmods.com/modules/CE5106B/advanced-ground-improvement-for-difficult-ground
 https://nusmods.com/modules/CE5107/pile-foundations
 https://nusmods.com/modules/CE5107A/principles-of-pile-foundation-design
 https://nusmods.com/modules/CE5107B/pile-foundation-problems-and-ec-7-impact
@@ -1479,6 +1493,7 @@ https://nusmods.com/modules/FIN4112L/sif-family-business-wealth-management
 https://nusmods.com/modules/FIN4113/personal-finance-and-wealth-management
 https://nusmods.com/modules/FIN4113Y/personal-finance-and-wealth-management
 https://nusmods.com/modules/FIN4115/advanced-portfolio-mgt-security-analysis-valuation
+https://nusmods.com/modules/FIN4116/valuation-and-mergers-acquisitions
 https://nusmods.com/modules/FIN4122/entrepreneurial-finance
 https://nusmods.com/modules/FIN6001/corporate-finance
 https://nusmods.com/modules/FIN6002/banking-and-household-finance
@@ -1494,7 +1509,6 @@ https://nusmods.com/modules/FMS1206P/energy-storage-devices-state-of-the-art
 https://nusmods.com/modules/FMS1210P/imaging-our-world
 https://nusmods.com/modules/FMS1212P/syc-simple-yet-complex
 https://nusmods.com/modules/FMS1214B/mysteries-of-water-protein-aggregation-and-diseases
-https://nusmods.com/modules/FMS1214P/silk-fibers-that-make-a-difference-in-our-world
 https://nusmods.com/modules/FMS1215B/plant-pathogens-that-cause-plants-to-end-up-in-a-bucket
 https://nusmods.com/modules/FMS1218B/fs-how-come-aspirin-can-relieve-my-headache
 https://nusmods.com/modules/FMS1221B/science-the-good-the-bad-the-ugly-and-the-beautiful
@@ -1870,8 +1884,6 @@ https://nusmods.com/modules/GS6889A/academic-professional-skills-ii
 https://nusmods.com/modules/GS6889B/academic-skills-and-research-ethics
 https://nusmods.com/modules/GSN6501/neuronal-signalling
 https://nusmods.com/modules/GSN6504/behavioral-cognitive-neuroscience
-https://nusmods.com/modules/GSN6881/human-cognitive-neuroscience-a-hands-on-approach
-https://nusmods.com/modules/GSS6886/ngs-seminars
 https://nusmods.com/modules/HM5101/introduction-to-psychiatry
 https://nusmods.com/modules/HM5102/psychosis
 https://nusmods.com/modules/HM5103/mood-anxiety-grief
@@ -1924,6 +1936,7 @@ https://nusmods.com/modules/HY4401/honours-thesis
 https://nusmods.com/modules/HY4660/independent-study
 https://nusmods.com/modules/HY5210/approaches-to-modern-se-asian-history
 https://nusmods.com/modules/HY5305/approaches-to-world-history
+https://nusmods.com/modules/HY5305R/approaches-to-world-history
 https://nusmods.com/modules/HY5402/reconsidering-the-cold-war
 https://nusmods.com/modules/HY5660/independent-study
 https://nusmods.com/modules/HY6101/historiography-theory-archive
@@ -2713,7 +2726,6 @@ https://nusmods.com/modules/LLD5214/international-and-comparative-oil-and-gas-la
 https://nusmods.com/modules/LLD5226/multimodal-transport-law
 https://nusmods.com/modules/LLD5396/university-research-opportunities-programme
 https://nusmods.com/modules/LLD5397/university-research-opportunities-programme
-https://nusmods.com/modules/LSE6101/fundamentals-of-environmental-life-sciences-engineering
 https://nusmods.com/modules/LSM1102/molecular-genetics
 https://nusmods.com/modules/LSM1105/evolutionary-biology
 https://nusmods.com/modules/LSM1106/molecular-cell-biology
@@ -3159,8 +3171,8 @@ https://nusmods.com/modules/MNO3711/managing-change
 https://nusmods.com/modules/MNO3713/management-of-employee-relations
 https://nusmods.com/modules/MNO3811/social-entrepreneurship
 https://nusmods.com/modules/MNO4313D/silhcm-corp-entrepreneurship-busi-model-evaluation
+https://nusmods.com/modules/MNO4313J/silhcm-talent-development-and-performing-with-impact
 https://nusmods.com/modules/MNO4314/consulting-to-management
-https://nusmods.com/modules/MNO4761/seminars-in-leadership-and-human-capital-management
 https://nusmods.com/modules/MS1102E/malays-tradition-conflict-and-change
 https://nusmods.com/modules/MS2210/malay-culture-society
 https://nusmods.com/modules/MS2211/criticism-in-modern-malay-literature
@@ -4012,6 +4024,7 @@ https://nusmods.com/modules/QF5207/investment-and-portfolio-selection
 https://nusmods.com/modules/QF5210/financial-time-series-theory-and-computation
 https://nusmods.com/modules/QT5101/quantum-measurements-and-statistics
 https://nusmods.com/modules/QT5198/graduate-seminar-in-quantum-information
+https://nusmods.com/modules/QT5201P/atoms-and-photon
 https://nusmods.com/modules/QT5201Q/quantum-algorithms
 https://nusmods.com/modules/RE1701/urban-land-use-and-development
 https://nusmods.com/modules/RE1702/real-estate-data-analytics
@@ -5014,6 +5027,7 @@ https://nusmods.com/venues/BIZ2-0226
 https://nusmods.com/venues/BIZ2-0224
 https://nusmods.com/venues/BIZ2-0201
 https://nusmods.com/venues/BIZ2-B104
+https://nusmods.com/venues/BIZ2-0510
 https://nusmods.com/venues/BIZ1-0206
 https://nusmods.com/venues/BIZ1-0301
 https://nusmods.com/venues/HSSMLCR
@@ -5026,8 +5040,6 @@ https://nusmods.com/venues/BIZ1-0305
 https://nusmods.com/venues/BIZ1-0203
 https://nusmods.com/venues/BIZ2-0202
 https://nusmods.com/venues/BIZ2-0413C
-https://nusmods.com/venues/BIZ2-0510
-https://nusmods.com/venues/BIZ2-0509
 https://nusmods.com/venues/BIZ1-0304
 https://nusmods.com/venues/BIZ1-0204
 https://nusmods.com/venues/LT10
@@ -5061,13 +5073,13 @@ https://nusmods.com/venues/UTSRC-LT50
 https://nusmods.com/venues/UTSRC-LT51
 https://nusmods.com/venues/TP-SR8
 https://nusmods.com/venues/ERC-SR11
-https://nusmods.com/venues/ERC-GLR
 https://nusmods.com/venues/SDE-ER4
 https://nusmods.com/venues/SDE-SR12
 https://nusmods.com/venues/AKI5B
 https://nusmods.com/venues/AKI5A
-https://nusmods.com/venues/SDE-ER5
+https://nusmods.com/venues/ERC-GLR
 https://nusmods.com/venues/SDE-ER1
+https://nusmods.com/venues/SDE_ER4-5
 https://nusmods.com/venues/MD10-01-01
 https://nusmods.com/venues/LT33
 https://nusmods.com/venues/S16-0430
@@ -5105,6 +5117,7 @@ https://nusmods.com/venues/E3-06-04
 https://nusmods.com/venues/E4-04-04
 https://nusmods.com/venues/BIZ2-0112
 https://nusmods.com/venues/SDE-ES2
+https://nusmods.com/venues/BIZ2-0509
 https://nusmods.com/venues/BIZ2-0228
 https://nusmods.com/venues/BIZ2-0302
 https://nusmods.com/venues/BIZ2-0229
@@ -5114,8 +5127,6 @@ https://nusmods.com/venues/COM1-0216
 https://nusmods.com/venues/COM2-0108
 https://nusmods.com/venues/RMI-SR1
 https://nusmods.com/venues/COM1-B110
-https://nusmods.com/venues/I3-0339
-https://nusmods.com/venues/I3-0336
 https://nusmods.com/venues/I3-0338
 https://nusmods.com/venues/COM1-0212
 https://nusmods.com/venues/COM1-VCRM
@@ -5123,6 +5134,7 @@ https://nusmods.com/venues/COM1-0114
 https://nusmods.com/venues/COM1-0204
 https://nusmods.com/venues/COM1-0113
 https://nusmods.com/venues/COM1-B103
+https://nusmods.com/venues/I3-0339
 https://nusmods.com/venues/I3-0344
 https://nusmods.com/venues/BIZ2-0420
 https://nusmods.com/venues/AS8-0646
@@ -5220,6 +5232,7 @@ https://nusmods.com/venues/E5-03-19
 https://nusmods.com/venues/UTSRC-LT53
 https://nusmods.com/venues/S13-M-08
 https://nusmods.com/venues/I3-AUD
+https://nusmods.com/venues/I3-0336
 https://nusmods.com/venues/COM1-B111
 https://nusmods.com/venues/COM1-B112
 https://nusmods.com/venues/COM1-B108
@@ -5243,7 +5256,7 @@ https://nusmods.com/venues/AS6-0421
 https://nusmods.com/venues/COM1-B113
 https://nusmods.com/venues/COM1-B102
 https://nusmods.com/venues/AS6-0426
-https://nusmods.com/venues/AS3-0305
+https://nusmods.com/venues/AS6-0333
 https://nusmods.com/venues/UTSRC-GLR
 https://nusmods.com/venues/BIZ2-0303
 https://nusmods.com/venues/BIZ2-0227
@@ -5272,6 +5285,7 @@ https://nusmods.com/venues/AS1-0209
 https://nusmods.com/venues/AS3-0307
 https://nusmods.com/venues/AS4-0601
 https://nusmods.com/venues/AS4-0602
+https://nusmods.com/venues/AS3-0305
 https://nusmods.com/venues/LT11
 https://nusmods.com/venues/AS4-0117
 https://nusmods.com/venues/AS8-0405
@@ -5285,8 +5299,8 @@ https://nusmods.com/venues/AS4-0109
 https://nusmods.com/venues/E4A-06-03
 https://nusmods.com/venues/E3-06-13
 https://nusmods.com/venues/E4A-06-07
-https://nusmods.com/venues/E4-07-09
 https://nusmods.com/venues/NAK-AUD
+https://nusmods.com/venues/E4-07-09
 https://nusmods.com/venues/E3-06-10
 https://nusmods.com/venues/E3-06-07
 https://nusmods.com/venues/E2A-02-02
@@ -5322,6 +5336,7 @@ https://nusmods.com/venues/ERC-SR5
 https://nusmods.com/venues/UTSRC-SR1
 https://nusmods.com/venues/CELC-TR7
 https://nusmods.com/venues/CELC-SR1B
+https://nusmods.com/venues/CELC-TR6
 https://nusmods.com/venues/EW2-03-14
 https://nusmods.com/venues/E3-05-21
 https://nusmods.com/venues/E3-03-01
@@ -5366,6 +5381,7 @@ https://nusmods.com/venues/RH-CONF-RM
 https://nusmods.com/venues/SH-SR1
 https://nusmods.com/venues/TH-SR1
 https://nusmods.com/venues/KEVII-MR2
+https://nusmods.com/venues/SDE-ER5
 https://nusmods.com/venues/YSTCM-SR8
 https://nusmods.com/venues/ERC-SR9CAM
 https://nusmods.com/venues/TP-SR5
@@ -5425,6 +5441,7 @@ https://nusmods.com/venues/S17-0302
 https://nusmods.com/venues/S17-0405
 https://nusmods.com/venues/S17-0611
 https://nusmods.com/venues/S17-0304
+https://nusmods.com/venues/E2-03-32
 https://nusmods.com/venues/S17-0406
 https://nusmods.com/venues/S17-0512
 https://nusmods.com/venues/E3A-05-07
@@ -5444,7 +5461,6 @@ https://nusmods.com/venues/YSTCM-SR5
 https://nusmods.com/venues/YSTCM-MLAB
 https://nusmods.com/venues/AS6-0215B
 https://nusmods.com/venues/AS6-0338
-https://nusmods.com/venues/AS6-0333
 https://nusmods.com/venues/S12-0402A
 https://nusmods.com/venues/S12-0402B
 https://nusmods.com/venues/S12-0402C
@@ -5460,6 +5476,7 @@ https://nusmods.com/venues/AS4-B107
 https://nusmods.com/venues/AS7-0201A
 https://nusmods.com/venues/AS7-0201
 https://nusmods.com/venues/AS4-0208
+https://nusmods.com/venues/CHPC
 https://nusmods.com/venues/LKY_SR2-1
 https://nusmods.com/venues/LKY_SR3-1
 https://nusmods.com/venues/LKY_SR3-4
@@ -5480,8 +5497,8 @@ https://nusmods.com/venues/MD11CRCAUD
 https://nusmods.com/venues/MD1-03-01C
 https://nusmods.com/venues/MD1-03-01B
 https://nusmods.com/venues/CQT%2FSR0622
+https://nusmods.com/venues/CQT%2FSR0315
 https://nusmods.com/venues/AS4-0115
-https://nusmods.com/venues/AS3-0101
 https://nusmods.com/venues/AS1-0212
 https://nusmods.com/venues/AS2-0201
 https://nusmods.com/venues/ISS%2F4-4
@@ -5550,7 +5567,6 @@ https://nusmods.com/venues/Y-CR12
 https://nusmods.com/venues/Y-CR22
 https://nusmods.com/venues/RC2-G-02
 https://nusmods.com/venues/Y-ArtsStud
-https://nusmods.com/venues/Y-Studio3
 https://nusmods.com/venues/Y-PracRm6
 https://nusmods.com/venues/Y-CR11
 https://nusmods.com/venues/Y-PgRm1
