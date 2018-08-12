@@ -74,4 +74,15 @@ echo
 echo "Promoting..."
 npm run rsync -- $FRONTEND_PROD_DIR
 npm run rsync:export -- $TIMETABLE_ONLY_PROD_DIR
+
+# Create release
+if [ -x "$(command -v sentry-cli)" ]; then
+  echo "Creating Sentry release"
+
+  sentry-cli releases new "$PROD_COMMIT"
+  sentry-cli releases set-commits "$PROD_COMMIT" --auto
+  sentry-cli releases files "$PROD_COMMIT" upload-sourcemaps $FRONTEND_STAGING_DIR
+  sentry-cli releases finalize "$PROD_COMMIT"
+fi
+
 echo "All done!"

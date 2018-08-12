@@ -195,6 +195,8 @@ typings/
 # dotenv environment variables file
 .env
 
+# Junit reports
+reports
 
 ### Vim ###
 # swap

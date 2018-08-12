@@ -3,12 +3,14 @@ import React, { Fragment, PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 import NUSModerator from 'nusmoderator';
 import { groupBy, range } from 'lodash';
+import classnames from 'classnames';
 
 import type { ModuleWithColor, Semester } from 'types/modules';
 import config from 'config';
 import { formatExamDate, getModuleExamDate } from 'utils/modules';
 import { daysAfter } from 'utils/timify';
 import { modulePage } from 'views/routes/paths';
+import elements from 'views/elements';
 import { DaysOfWeek } from 'types/modules';
 
 import styles from './ExamCalendar.scss';
@@ -44,20 +46,13 @@ function getExamDate(date: Date): string {
 // NUS exams are grouped into morning, afternoon and evening exams. Afternoon exams happen at 2.30PM
 // on Fridays only. We don't want to create two different groups for 1pm and 2.30pm exams, so we
 // create another mapping here
-function getTimeSegment(time: string): TimeSegment {
-  switch (time) {
-    case '9:00 AM':
-      return 'Morning';
-    case '1:00 PM':
-    case '2:30 PM':
-    case '3:00 PM':
-      return 'Afternoon';
-    case '5:00 PM':
-    case '6:30 PM':
-      return 'Evening';
-    default:
-      throw new Error(`Unrecognized exam time: ${time}`);
+export function getTimeSegment(time: string): TimeSegment {
+  if (time.toUpperCase().includes('AM')) {
+    return 'Morning';
   }
+
+  const hour = parseInt(time, 10);
+  return hour === 12 || hour < 5 ? 'Afternoon' : 'Evening';
 }
 
 function ExamModule({ module }: { module: ModuleWithColor }) {
@@ -234,33 +229,31 @@ export default class ExamCalendar extends PureComponent<Props> {
     //   - Afternoon exams
     //   - Evening exams
     return (
-      <Fragment>
-        <div className={styles.calendarWrapper}>
-          <table>
-            <thead>
-              <tr>
-                {range(daysWithExams).map((day) => (
-                  <th key={day} className={styles.dayName}>
-                    {DaysOfWeek[day].slice(0, 3)}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-
-            <tbody>
-              {range(weekCount).map((week) => (
-                <ExamWeek
-                  key={week}
-                  days={daysWithExams}
-                  weekNumber={week}
-                  firstDayOfExams={firstDayOfExams}
-                  modules={modulesByExamDate}
-                />
+      <div className={classnames(styles.calendarWrapper, elements.examCalendar)}>
+        <table>
+          <thead>
+            <tr>
+              {range(daysWithExams).map((day) => (
+                <th key={day} className={styles.dayName}>
+                  {DaysOfWeek[day].slice(0, 3)}
+                </th>
               ))}
-            </tbody>
-          </table>
-        </div>
-      </Fragment>
+            </tr>
+          </thead>
+
+          <tbody>
+            {range(weekCount).map((week) => (
+              <ExamWeek
+                key={week}
+                days={daysWithExams}
+                weekNumber={week}
+                firstDayOfExams={firstDayOfExams}
+                modules={modulesByExamDate}
+              />
+            ))}
+          </tbody>
+        </table>
+      </div>
     );
   }
 }
