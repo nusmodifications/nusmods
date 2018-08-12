@@ -8,6 +8,7 @@ import type { Semester } from 'types/modules';
 import type { SemTimetableConfig } from 'types/timetables';
 
 import { Sidebar, Type, Grid, Calendar } from 'views/components/icons';
+import elements from 'views/elements';
 import ShareTimetable from './ShareTimetable';
 import ExportMenu from './ExportMenu';
 
@@ -61,7 +62,11 @@ function TimetableActions(props: Props) {
 
         <button
           type="button"
-          className={classnames(styles.calendarBtn, 'btn-outline-primary btn btn-svg')}
+          className={classnames(
+            styles.calendarBtn,
+            elements.examCalendarBtn,
+            'btn-outline-primary btn btn-svg',
+          )}
           onClick={props.toggleExamCalendar}
         >
           {props.showExamCalendar ? (

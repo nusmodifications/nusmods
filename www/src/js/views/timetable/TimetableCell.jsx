@@ -7,6 +7,7 @@ import type { Lesson } from 'types/modules';
 import type { HoverLesson } from 'types/timetables';
 
 import { formatWeekNumber, getHoverLesson, LESSON_TYPE_ABBREV } from 'utils/timetables';
+import elements from 'views/elements';
 
 import styles from './TimetableCell.scss';
 
@@ -36,7 +37,7 @@ function TimetableCell(props: Props) {
   /* eslint-disable */
   return (
     <Cell // $FlowFixMe
-      className={classnames(styles.cell, `color-${lesson.colorIndex}`, {
+      className={classnames(styles.cell, elements.lessons, `color-${lesson.colorIndex}`, {
         hoverable: !!props.onClick,
         [styles.clickable]: !!onClick,
         // $FlowFixMe

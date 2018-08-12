@@ -21,6 +21,7 @@ import { setModuleTableOrder } from 'actions/settings';
 import { getModuleExamDate, getFormattedModuleExamDate } from 'utils/modules';
 import { NBSP } from 'utils/react';
 import { modulePage } from 'views/routes/paths';
+import elements from 'views/elements';
 
 import styles from './TimetableModulesTable.scss';
 
@@ -110,7 +111,7 @@ class TimetableModulesTable extends Component<Props> {
 
     return (
       <Fragment>
-        <div className={classnames(styles.modulesTable, 'row')}>
+        <div className={classnames(styles.modulesTable, elements.moduleTable, 'row')}>
           {modules.map((module) => (
             <div
               className={classnames(styles.modulesTableRow, 'col-sm-6', {
