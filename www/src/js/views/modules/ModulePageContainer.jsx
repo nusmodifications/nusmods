@@ -1,5 +1,6 @@
 // @flow
 import type { ContextRouter } from 'react-router-dom';
+import type { $AxiosError } from 'axios';
 
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
@@ -23,7 +24,7 @@ type Props = {
   moduleCode: ModuleCode,
   moduleCodes: ModuleCodeMap,
   module: ?Module,
-  fetchModule: (ModuleCode) => void,
+  fetchModule: (ModuleCode) => Promise<*>,
 };
 
 type State = {
@@ -53,19 +54,7 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
 
   componentDidMount() {
     this.fetchModule(this.props.moduleCode);
-
-    // Try importing ModulePageContent thrice if we're online and
-    // getting the "Loading chunk x failed." error.
-    retry(
-      3,
-      () => import('views/modules/ModulePageContent'),
-      (error) => error.message.includes('Loading chunk ') && window.navigator.onLine,
-    )
-      .then((module) => this.setState({ ModulePageContent: module.default }))
-      .catch((error) => {
-        Raven.captureException(error);
-        this.setState({ error });
-      });
+    this.fetchPageImport();
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -76,9 +65,26 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
 
   fetchModule(moduleCode: ModuleCode) {
     if (this.doesModuleExist(moduleCode)) {
-      this.props.fetchModule(moduleCode);
+      this.props.fetchModule(moduleCode).catch(this.handleFetchError);
     }
   }
+
+  fetchPageImport() {
+    // Try importing ModulePageContent thrice if we're online and
+    // getting the "Loading chunk x failed." error.
+    retry(
+      3,
+      () => import('views/modules/ModulePageContent'),
+      (error) => error.message.includes('Loading chunk ') && window.navigator.onLine,
+    )
+      .then((module) => this.setState({ ModulePageContent: module.default }))
+      .catch(this.handleFetchError);
+  }
+
+  handleFetchError = (error: $AxiosError<*>) => {
+    this.setState({ error });
+    Raven.captureException(error);
+  };
 
   doesModuleExist(moduleCode: ModuleCode): boolean {
     return !!this.props.moduleCodes[moduleCode];
@@ -97,7 +103,9 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
       return <ModuleNotFoundPage moduleCode={moduleCode} />;
     }
 
-    if (error) {
+    // If there is an error, but module already exists, we assume module has
+    // been loaded at some point, so we just show that
+    if (error && !module) {
       return <ErrorPage eventId={Raven.lastEventId()} />;
     }
 
