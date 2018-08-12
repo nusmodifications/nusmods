@@ -6,6 +6,8 @@ import type { SemTimetableConfig } from 'types/timetables';
 import { serializeTimetable } from 'utils/timetables';
 import config from 'config';
 
+// IMPORTANT: Remember to update any route changes on the sitemap
+
 // Cache semester -> path and path -> semester mappings
 export const fromSemester: { [Semester]: string } = {};
 const toSemester: { [string]: Semester } = {};
