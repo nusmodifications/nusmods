@@ -6,6 +6,8 @@ import { FAILURE, REQUEST, SUCCESS } from 'types/reducers';
 import { API_REQUEST } from 'actions/requests';
 import requestMiddleware from './requests-middleware';
 
+// Note: Flow does not understand mocks, so all calls to .mock* functions need to
+// use $FlowFixMe comments so that Flow will not raise "method not found" errors
 jest.mock('axios');
 
 describe(requestMiddleware, () => {
