@@ -2,14 +2,14 @@
 import type { FSA } from 'types/redux';
 import type { Module, ModuleCode, Semester } from 'types/modules';
 import type { SemTimetableConfig } from 'types/timetables';
-import type { ModuleList, ModuleSelectListItem, ModuleCodeMap } from 'types/reducers';
+import type { ModuleCodeMap, ModuleList, ModuleSelectListItem } from 'types/reducers';
+import { SUCCESS } from 'types/reducers';
 
 import { REHYDRATE } from 'redux-persist';
-import { size, keyBy, zipObject } from 'lodash';
+import { keyBy, size, zipObject } from 'lodash';
 
-import { FETCH_MODULE_LIST, FETCH_MODULE } from 'actions/moduleBank';
+import { FETCH_MODULE, FETCH_MODULE_LIST } from 'actions/moduleBank';
 import { SET_EXPORTED_DATA } from 'actions/export';
-import * as RequestResultCases from 'middlewares/requests-middleware';
 
 export type ModulesMap = {
   [ModuleCode]: Module,
@@ -37,7 +37,7 @@ function precomputeFromModuleList(moduleList: ModuleList) {
 
 function moduleBank(state: ModuleBank = defaultModuleBankState, action: FSA): ModuleBank {
   switch (action.type) {
-    case FETCH_MODULE_LIST + RequestResultCases.SUCCESS:
+    case FETCH_MODULE_LIST + SUCCESS:
       return {
         ...state,
         ...precomputeFromModuleList(action.payload),
@@ -45,7 +45,7 @@ function moduleBank(state: ModuleBank = defaultModuleBankState, action: FSA): Mo
         apiLastUpdatedTimestamp: action.meta && action.meta.responseHeaders['last-modified'],
       };
 
-    case FETCH_MODULE + RequestResultCases.SUCCESS:
+    case FETCH_MODULE + SUCCESS:
       return {
         ...state,
         modules: {
