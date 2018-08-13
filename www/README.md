@@ -92,7 +92,11 @@ We use Redux actions to make REST requests. This allows us to store request stat
 
 #### Writing request actions
 
-To write an action that makes a request, simple call and return the result from `requestAction(key: string, type?: string, options: AxiosXHRConfig)`. `type` should describe what the action is fetching, eg. `FETCH_MODULE`. By convention these actions should start with `FETCH_`. The `key` should be unique for each endpoint the action calls. If the action will only call one endpoint then key can be omitted, and type will be used automatically. For example, fetch module calls a different endpoint for each module, so the key used is `FETCH_MODULE_[Module Code]`. `options` is passed directly to `axios()`, so [see its documentation](https://github.com/axios/axios#request-config) for the full list of configs. Minimally `url` should be specified.
+To write an action that makes a request, simple call and return the result from `requestAction(key: string, type?: string, options: AxiosXHRConfig)`.
+
+- `type` should describe what the action is fetching, eg. `FETCH_MODULE`. By convention these actions should start with `FETCH_`.
+- `key` should be unique for each endpoint the action calls. If the action will only call one endpoint then key can be omitted, and type will be used automatically. For example, fetch module calls a different endpoint for each module, so the key used is `FETCH_MODULE_[Module Code]`.
+- `options` is passed directly to `axios()`, so [see its documentation][axios-config] for the full list of configs. Minimally `url` should be specified.
 
 **Example**
 
@@ -154,11 +158,11 @@ export default connect(null, { fetchData })(MyComponent);
 
 To make the data available offline, the data must be stored in the Redux store which is then persisted. To do this create a reducer which listens to [request type] + SUCCESS. The payload of the action is the result of the API call. Then in the component, instead of using the result from the Promise directly, we
 
-This is the [cache-then-network strategy described in the Offline Cookbook](https://developers.google.com/web/fundamentals/instant-and-offline/offline-cookbook/#cache-then-network) and is similar to Workbox's revalidate-while-stale strategy.
+This is the [cache-then-network strategy described in the Offline Cookbook][offline-cookbook] and is similar to Workbox's revalidate-while-stale strategy.
 
 **Note:** This assumes the result from the API will not be significantly different after it is loaded. If this is not the case, you might want to use another strategy, otherwise the user may be surprised by the content of the page changing while they're reading it.
 
-**Reducer example*
+**Reducer example**
 
 ```js
 import { SUCCESS } from 'types/reducers';
@@ -353,3 +357,5 @@ Components should keep their styles and tests in the same directory with the sam
 [stylelint]: https://stylelint.io/
 [zames-guide]: https://medium.com/@zameschua/getting-my-feet-wet-my-experience-with-open-source-and-nusmods-f1381450517e
 [css-modules]: https://github.com/css-modules/css-modules
+[offline-cookbook]: https://developers.google.com/web/fundamentals/instant-and-offline/offline-cookbook/#cache-then-network
+[axios-config]: https://github.com/axios/axios#request-config
