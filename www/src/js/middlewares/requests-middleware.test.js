@@ -3,8 +3,8 @@
 import axios from 'axios';
 import configureStore from 'redux-mock-store';
 import { FAILURE, REQUEST, SUCCESS } from 'types/reducers';
+import { API_REQUEST } from 'actions/requests';
 import requestMiddleware from './requests-middleware';
-import { API_REQUEST } from "actions/requests";
 
 jest.mock('axios');
 
