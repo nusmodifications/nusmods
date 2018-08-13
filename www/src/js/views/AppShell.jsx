@@ -55,6 +55,8 @@ type State = {
 };
 
 export class AppShellComponent extends Component<Props, State> {
+  state = {};
+
   componentDidMount() {
     const { timetables } = this.props;
 
