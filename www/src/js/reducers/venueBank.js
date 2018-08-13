@@ -1,9 +1,9 @@
 // @flow
-import type { FSA } from "types/redux";
-import type { VenueList } from "types/venues";
+import type { FSA } from 'types/redux';
+import type { VenueList } from 'types/venues';
 
-import { FETCH_VENUE_LIST } from "actions/venueBank";
-import { SUCCESS } from "types/reducers";
+import { FETCH_VENUE_LIST } from 'actions/venueBank';
+import { SUCCESS } from 'types/reducers';
 
 export type VenueBank = {
   +venueList: VenueList,

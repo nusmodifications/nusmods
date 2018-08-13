@@ -1,18 +1,21 @@
 // @flow
 import type { Node } from 'react';
 import type { TimetableConfig, SemTimetableConfig } from 'types/timetables';
-import type { ModuleList } from 'types/reducers';
+import type { ModuleList, NotificationOptions } from 'types/reducers';
 import type { Semester } from 'types/modules';
 import type { Mode } from 'types/settings';
-import type { State } from 'reducers';
+import type { State as StoreState } from 'reducers';
 
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { NavLink, withRouter, type ContextRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import Raven from 'raven-js';
 import classnames from 'classnames';
 import { each } from 'lodash';
+
 import weekText from 'utils/weekText';
+import { openNotification } from 'actions/app';
 import { fetchModuleList } from 'actions/moduleBank';
 import { fetchTimetableModules, validateTimetable, setTimetable } from 'actions/timetables';
 import Footer from 'views/layout/Footer';
@@ -31,43 +34,67 @@ type Props = {
   ...ContextRouter,
 
   children: Node,
+
+  // From Redux state
   moduleList: ModuleList,
   timetables: TimetableConfig,
   theme: string,
   mode: Mode,
   activeSemester: Semester,
 
+  // From Redux actions
   fetchModuleList: () => Promise<*>,
   fetchTimetableModules: (SemTimetableConfig[]) => Promise<*>,
   setTimetable: (Semester, SemTimetableConfig) => void,
   validateTimetable: (Semester) => void,
+  openNotification: (string, ?NotificationOptions) => void,
 };
 
-export class AppShellComponent extends Component<Props> {
+type State = {
+  moduleListError?: any,
+};
+
+export class AppShellComponent extends Component<Props, State> {
   componentDidMount() {
     const { timetables } = this.props;
 
     // Retrieve module list
     // TODO: This always re-fetch the entire modules list. Consider a better strategy for this
-    this.props.fetchModuleList();
+    this.props.fetchModuleList().catch((error) => {
+      Raven.captureException(error);
+      this.setState({ moduleListError: error });
+    });
 
-    // Refresh the module data of the existing modules in the timetable and ensure all
+    // Fetch the module data of the existing modules in the timetable and ensure all
     // lessons are filled
     each(timetables, (timetable, semesterString) => {
       const semester = Number(semesterString);
-
-      this.props
-        .fetchTimetableModules([timetable])
-        .then(() => this.props.validateTimetable(semester));
+      this.fetchTimetableModules(timetable, semester);
     });
-
-    // Fetch all module data that are on timetable
   }
 
+  fetchTimetableModules = (timetable: SemTimetableConfig, semester: Semester) => {
+    this.props
+      .fetchTimetableModules([timetable])
+      .then(() => this.props.validateTimetable(semester))
+      .catch((error) => {
+        Raven.captureException(error);
+        this.props.openNotification('Data for some modules failed to load', {
+          action: {
+            text: 'Retry',
+            handler: () => this.fetchTimetableModules(timetable, semester),
+          },
+        });
+      });
+  };
+
   render() {
-    // TODO: Handle failed loading of module list
     const isModuleListReady = this.props.moduleList.length;
     const isDarkMode = this.props.mode === DARK_MODE;
+
+    if (!isModuleListReady && this.state.moduleListError) {
+      return <ErrorPage eventId={Raven.lastEventId()} />;
+    }
 
     return (
       <div className="app-container">
@@ -124,7 +151,7 @@ export class AppShellComponent extends Component<Props> {
   }
 }
 
-const mapStateToProps = (state: State) => ({
+const mapStateToProps = (state: StoreState) => ({
   moduleList: state.moduleBank.moduleList,
   timetables: state.timetables.lessons,
   theme: state.theme.id,
@@ -137,6 +164,7 @@ const connectedAppShell = connect(mapStateToProps, {
   fetchTimetableModules,
   setTimetable,
   validateTimetable,
+  openNotification,
 })(AppShellComponent);
 
 // withRouter here is used to ensure re-render when routes change, since
