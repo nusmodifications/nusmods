@@ -6,7 +6,6 @@ Object {
     "API_REQUEST": "FETCH_MODULE_CS1010S",
   },
   "payload": Object {
-    "method": "GET",
     "url": "test://MOCK_MOD_DETAILS_URL/CS1010S",
   },
   "type": "FETCH_MODULE",
@@ -19,7 +18,6 @@ Object {
     "API_REQUEST": "FETCH_MODULE_LIST",
   },
   "payload": Object {
-    "method": "GET",
     "url": "test://MOCK_MOD_LIST_URL",
   },
   "type": "FETCH_MODULE_LIST",
