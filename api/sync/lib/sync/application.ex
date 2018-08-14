@@ -11,7 +11,7 @@ defmodule Sync.Application do
       # Start the Ecto repository
       supervisor(Sync.Repo, []),
       # Start the endpoint when the application starts
-      supervisor(SyncWeb.Endpoint, []),
+      supervisor(SyncWeb.Endpoint, [])
       # Start your own worker by calling: Sync.Worker.start_link(arg1, arg2, arg3)
       # worker(Sync.Worker, [arg1, arg2, arg3]),
     ]
