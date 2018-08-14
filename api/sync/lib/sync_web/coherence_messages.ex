@@ -21,104 +21,103 @@ defmodule SyncWeb.Coherence.Messages do
   ##################
   # Messages
 
-  def account_already_confirmed, do: Gettext.dgettext(@domain, "Account already confirmed.")
-  def account_is_not_locked, do: Gettext.dgettext(@domain, "Account is not locked.")
-  def account_updated_successfully, do: Gettext.dgettext(@domain, "Account updated successfully.")
-  def already_confirmed, do: Gettext.dgettext(@domain, "already confirmed")
-  def already_locked, do: Gettext.dgettext(@domain, "already locked")
-  def already_logged_in, do: Gettext.dgettext(@domain, "Already logged in.")
-  def cant_be_blank, do: Gettext.dgettext(@domain, "can't be blank")
-  def cant_find_that_token, do: Gettext.dgettext(@domain, "Can't find that token")
-  def confirmation_email_sent, do: Gettext.dgettext(@domain, "Confirmation email sent.")
-  def confirmation_token_expired, do: Gettext.dgettext(@domain, "Confirmation token expired.")
+  def account_already_confirmed, do: dgettext(@domain, "Account already confirmed.")
+  def account_is_not_locked, do: dgettext(@domain, "Account is not locked.")
+  def account_updated_successfully, do: dgettext(@domain, "Account updated successfully.")
+  def already_confirmed, do: dgettext(@domain, "already confirmed")
+  def already_locked, do: dgettext(@domain, "already locked")
+  def already_logged_in, do: dgettext(@domain, "Already logged in.")
+  def cant_be_blank, do: dgettext(@domain, "can't be blank")
+  def cant_find_that_token, do: dgettext(@domain, "Can't find that token")
+  def confirmation_email_sent, do: dgettext(@domain, "Confirmation email sent.")
+  def confirmation_token_expired, do: dgettext(@domain, "Confirmation token expired.")
 
   def could_not_find_that_email_address,
-    do: Gettext.dgettext(@domain, "Could not find that email address")
+    do: dgettext(@domain, "Could not find that email address")
 
-  def forgot_your_password, do: Gettext.dgettext(@domain, "Forgot your password?")
-  def http_authentication_required, do: Gettext.dgettext(@domain, "HTTP Authentication Required")
+  def forgot_your_password, do: dgettext(@domain, "Forgot your password?")
+  def http_authentication_required, do: dgettext(@domain, "HTTP Authentication Required")
 
   def incorrect_login_or_password(opts),
-    do: Gettext.dgettext(@domain, "Incorrect %{login_field} or password.", opts)
+    do: dgettext(@domain, "Incorrect %{login_field} or password.", opts)
 
-  def invalid_current_password, do: Gettext.dgettext(@domain, "invalid current password")
+  def invalid_current_password, do: dgettext(@domain, "invalid current password")
 
   def invalid_invitation,
-    do: Gettext.dgettext(@domain, "Invalid Invitation. Please contact the site administrator.")
+    do: dgettext(@domain, "Invalid Invitation. Please contact the site administrator.")
 
-  def invalid_request, do: Gettext.dgettext(@domain, "Invalid Request.")
-  def invalid_confirmation_token, do: Gettext.dgettext(@domain, "Invalid confirmation token.")
-  def invalid_email_or_password, do: Gettext.dgettext(@domain, "Invalid email or password.")
-  def invalid_invitation_token, do: Gettext.dgettext(@domain, "Invalid invitation token.")
-  def invalid_reset_token, do: Gettext.dgettext(@domain, "Invalid reset token.")
-  def invalid_unlock_token, do: Gettext.dgettext(@domain, "Invalid unlock token.")
-  def invitation_already_sent, do: Gettext.dgettext(@domain, "Invitation already sent.")
-  def invitation_sent, do: Gettext.dgettext(@domain, "Invitation sent.")
-  def invite_someone, do: Gettext.dgettext(@domain, "Invite Someone")
+  def invalid_request, do: dgettext(@domain, "Invalid Request.")
+  def invalid_confirmation_token, do: dgettext(@domain, "Invalid confirmation token.")
+  def invalid_email_or_password, do: dgettext(@domain, "Invalid email or password.")
+  def invalid_invitation_token, do: dgettext(@domain, "Invalid invitation token.")
+  def invalid_reset_token, do: dgettext(@domain, "Invalid reset token.")
+  def invalid_unlock_token, do: dgettext(@domain, "Invalid unlock token.")
+  def invitation_already_sent, do: dgettext(@domain, "Invitation already sent.")
+  def invitation_sent, do: dgettext(@domain, "Invitation sent.")
+  def invite_someone, do: dgettext(@domain, "Invite Someone")
 
   def maximum_login_attempts_exceeded,
-    do:
-      Gettext.dgettext(@domain, "Maximum Login attempts exceeded. Your account has been locked.")
+    do: dgettext(@domain, "Maximum Login attempts exceeded. Your account has been locked.")
 
-  def need_an_account, do: Gettext.dgettext(@domain, "Need An Account?")
-  def not_locked, do: Gettext.dgettext(@domain, "not locked")
-  def password_reset_token_expired, do: Gettext.dgettext(@domain, "Password reset token expired.")
+  def need_an_account, do: dgettext(@domain, "Need An Account?")
+  def not_locked, do: dgettext(@domain, "not locked")
+  def password_reset_token_expired, do: dgettext(@domain, "Password reset token expired.")
 
   def password_updated_successfully,
-    do: Gettext.dgettext(@domain, "Password updated successfully.")
+    do: dgettext(@domain, "Password updated successfully.")
 
   def problem_confirming_user_account,
     do:
-      Gettext.dgettext(
+      dgettext(
         @domain,
         "Problem confirming user account. Please contact the system administrator."
       )
 
   def registration_created_successfully,
-    do: Gettext.dgettext(@domain, "Registration created successfully.")
+    do: dgettext(@domain, "Registration created successfully.")
 
-  def required, do: Gettext.dgettext(@domain, "required")
-  def resend_confirmation_email, do: Gettext.dgettext(@domain, "Resend confirmation email")
+  def required, do: dgettext(@domain, "required")
+  def resend_confirmation_email, do: dgettext(@domain, "Resend confirmation email")
 
   def reset_email_sent,
-    do: Gettext.dgettext(@domain, "Reset email sent. Check your email for a reset link.")
+    do: dgettext(@domain, "Reset email sent. Check your email for a reset link.")
 
-  def restricted_area, do: Gettext.dgettext(@domain, "Restricted Area")
-  def send_an_unlock_email, do: Gettext.dgettext(@domain, "Send an unlock email")
-  def sign_in, do: Gettext.dgettext(@domain, "Sign In")
-  def sign_out, do: Gettext.dgettext(@domain, "Sign Out")
-  def signed_in_successfully, do: Gettext.dgettext(@domain, "Signed in successfully.")
+  def restricted_area, do: dgettext(@domain, "Restricted Area")
+  def send_an_unlock_email, do: dgettext(@domain, "Send an unlock email")
+  def sign_in, do: dgettext(@domain, "Sign In")
+  def sign_out, do: dgettext(@domain, "Sign Out")
+  def signed_in_successfully, do: dgettext(@domain, "Signed in successfully.")
 
   def too_many_failed_login_attempts,
-    do: Gettext.dgettext(@domain, "Too many failed login attempts. Account has been locked.")
+    do: dgettext(@domain, "Too many failed login attempts. Account has been locked.")
 
-  def unauthorized_ip_address, do: Gettext.dgettext(@domain, "Unauthorized IP Address")
-  def unlock_instructions_sent, do: Gettext.dgettext(@domain, "Unlock Instructions sent.")
+  def unauthorized_ip_address, do: dgettext(@domain, "Unauthorized IP Address")
+  def unlock_instructions_sent, do: dgettext(@domain, "Unlock Instructions sent.")
 
   def user_account_confirmed_successfully,
-    do: Gettext.dgettext(@domain, "User account confirmed successfully.")
+    do: dgettext(@domain, "User account confirmed successfully.")
 
-  def user_already_has_an_account, do: Gettext.dgettext(@domain, "User already has an account!")
+  def user_already_has_an_account, do: dgettext(@domain, "User already has an account!")
 
   def you_must_confirm_your_account,
-    do: Gettext.dgettext(@domain, "You must confirm your account before you can login.")
+    do: dgettext(@domain, "You must confirm your account before you can login.")
 
   def your_account_has_been_unlocked,
-    do: Gettext.dgettext(@domain, "Your account has been unlocked")
+    do: dgettext(@domain, "Your account has been unlocked")
 
-  def your_account_is_not_locked, do: Gettext.dgettext(@domain, "Your account is not locked.")
+  def your_account_is_not_locked, do: dgettext(@domain, "Your account is not locked.")
 
   def verify_user_token(opts),
-    do: Gettext.dgettext(@domain, "Invalid %{user_token} error: %{error}", opts)
+    do: dgettext(@domain, "Invalid %{user_token} error: %{error}", opts)
 
   def you_are_using_an_invalid_security_token,
     do:
-      Gettext.dgettext(
+      dgettext(
         @domain,
         "You are using an invalid security token for this site! This security\n" <>
           "violation has been logged.\n"
       )
 
-  def mailer_required, do: Gettext.dgettext(@domain, "Mailer configuration required!")
-  def account_is_inactive(), do: Gettext.dgettext(@domain, "Account is inactive!")
+  def mailer_required, do: dgettext(@domain, "Mailer configuration required!")
+  def account_is_inactive(), do: dgettext(@domain, "Account is inactive!")
 end
