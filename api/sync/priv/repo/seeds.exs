@@ -9,3 +9,14 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+
+Sync.Repo.delete_all(Sync.Coherence.User)
+
+Sync.Coherence.User.changeset(%Sync.Coherence.User{}, %{
+  name: "Test User",
+  email: "testuser@example.com",
+  password: "secret",
+  password_confirmation: "secret"
+})
+|> Sync.Repo.insert!()
+|> Coherence.ControllerHelpers.confirm!()
