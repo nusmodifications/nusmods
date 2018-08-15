@@ -13,7 +13,7 @@ import type { Module, ModuleCode } from 'types/modules';
 
 import { fetchModule } from 'actions/moduleBank';
 import { retry } from 'utils/promise';
-import ErrorPage from 'views/errors/ErrorPage';
+import ApiError from 'views/errors/ApiError';
 import ModuleNotFoundPage from 'views/errors/ModuleNotFoundPage';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import { modulePage } from 'views/routes/paths';
@@ -104,9 +104,9 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
     }
 
     // If there is an error, but module already exists, we assume module has
-    // been loaded at some point, so we just show that
+    // been loaded at some point, so we just show that instead
     if (error && !module) {
-      return <ErrorPage eventId={Raven.lastEventId()} />;
+      return <ApiError dataName="module information" retry={() => this.fetchModule(moduleCode)} />;
     }
 
     if (module && match.url !== this.canonicalUrl()) {

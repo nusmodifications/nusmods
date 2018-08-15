@@ -11,7 +11,7 @@ import type { ContextRouter } from 'react-router-dom';
 import type { Venue, VenueDetailList, VenueInfo, VenueSearchOptions } from 'types/venues';
 
 import deferComponentRender from 'views/hocs/deferComponentRender';
-import ErrorPage from 'views/errors/ErrorPage';
+import ApiError from 'views/errors/ApiError';
 import Warning from 'views/errors/Warning';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import SearchBox from 'views/components/SearchBox';
@@ -79,18 +79,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
   }
 
   componentDidMount() {
-    axios
-      .get(nusmods.venuesUrl(config.semester))
-      .then(({ data }: { data: VenueInfo }) => {
-        this.setState({
-          loading: false,
-          venues: sortVenues(data),
-        });
-      })
-      .catch((error) => {
-        Raven.captureException(error);
-        this.setState({ error });
-      });
+    this.loadPageData();
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
@@ -120,6 +109,23 @@ export class VenuesContainerComponent extends Component<Props, State> {
     if (!isEqual(searchOptions, this.state.searchOptions)) {
       this.setState({ searchOptions });
     }
+  };
+
+  loadPageData = () => {
+    this.setState({ error: null });
+
+    axios
+      .get(nusmods.venuesUrl(config.semester))
+      .then(({ data }: { data: VenueInfo }) => {
+        this.setState({
+          loading: false,
+          venues: sortVenues(data),
+        });
+      })
+      .catch((error) => {
+        Raven.captureException(error);
+        this.setState({ error });
+      });
   };
 
   updateURL = (debounce: boolean = true) => {
@@ -245,7 +251,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
     const { searchTerm, loading, error, isAvailabilityEnabled, searchOptions, venues } = this.state;
 
     if (error) {
-      return <ErrorPage error="cannot load venues info" eventId={Raven.lastEventId()} />;
+      return <ApiError dataName="venue information" retry={this.loadPageData} />;
     }
 
     if (loading || !venues) {
