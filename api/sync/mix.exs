@@ -39,6 +39,8 @@ defmodule Sync.Mixfile do
       {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 2.10"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
+      {:absinthe, "~> 1.4"},
+      {:absinthe_plug, ">= 0.0.0"},
       {:gettext, "~> 0.13.1"},
       {:cowboy, "~> 1.0"},
       {:coherence, "~> 0.5"}
