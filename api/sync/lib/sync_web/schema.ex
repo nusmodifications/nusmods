@@ -26,9 +26,10 @@ defmodule SyncWeb.Schema do
     @desc "Get school"
     field :school, :school do
       arg(:id, :id)
-      arg(:name, :string)
+      arg(:short_name, :string)
+      arg(:long_name, :string)
       arg(:slug, :string)
-      resolve(&Resolvers.Data.find_school/3)
+      resolve(&Resolvers.Data.get_school/3)
     end
 
     @desc "Get academic years"

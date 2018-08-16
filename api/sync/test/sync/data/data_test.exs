@@ -6,9 +6,13 @@ defmodule Sync.DataTest do
   describe "schools" do
     alias Sync.Data.School
 
-    @valid_attrs %{name: "some name", slug: "some slug"}
-    @update_attrs %{name: "some updated name", slug: "some updated slug"}
-    @invalid_attrs %{name: nil, slug: nil}
+    @valid_attrs %{short_name: "some short name", long_name: "some long name", slug: "some slug"}
+    @update_attrs %{
+      short_name: "some updated short name",
+      long_name: "some updated long name",
+      slug: "some updated slug"
+    }
+    @invalid_attrs %{long_name: nil, slug: nil}
 
     def school_fixture(attrs \\ %{}) do
       {:ok, school} =
@@ -31,7 +35,8 @@ defmodule Sync.DataTest do
 
     test "create_school/1 with valid data creates a school" do
       assert {:ok, %School{} = school} = Data.create_school(@valid_attrs)
-      assert school.name == "some name"
+      assert school.short_name == "some short name"
+      assert school.long_name == "some long name"
       assert school.slug == "some slug"
     end
 
@@ -43,7 +48,8 @@ defmodule Sync.DataTest do
       school = school_fixture()
       assert {:ok, school} = Data.update_school(school, @update_attrs)
       assert %School{} = school
-      assert school.name == "some updated name"
+      assert school.short_name == "some updated short name"
+      assert school.long_name == "some updated long name"
       assert school.slug == "some updated slug"
     end
 

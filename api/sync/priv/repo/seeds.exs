@@ -59,10 +59,12 @@ defmodule SchoolSeeder do
 
   def insert_school(_) do
     uni_name = "#{Faker.Company.name()} University"
+    short_name = gen_abbr(uni_name)
 
     %Sync.Data.School{
-      name: uni_name,
-      slug: gen_abbr(uni_name),
+      short_name: short_name,
+      long_name: uni_name,
+      slug: String.downcase(short_name),
       acad_years: 1..@num_fakes |> Enum.map(&new_acad_year/1)
     }
     |> Sync.Repo.insert!()

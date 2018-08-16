@@ -5,7 +5,8 @@ defmodule SyncWeb.Schema.DataTypes do
 
   object :school do
     field(:id, :id)
-    field(:name, :string)
+    field(:short_name, :string)
+    field(:long_name, :string)
     field(:slug, :string)
     field(:acad_years, list_of(:acad_year), resolve: dataloader(Sync.Data))
   end

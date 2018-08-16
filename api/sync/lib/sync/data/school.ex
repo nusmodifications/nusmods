@@ -3,7 +3,8 @@ defmodule Sync.Data.School do
   import Ecto.Changeset
 
   schema "schools" do
-    field(:name, :string)
+    field(:short_name, :string)
+    field(:long_name, :string)
     field(:slug, :string)
     has_many(:acad_years, Sync.Data.AcadYear)
 
@@ -13,9 +14,10 @@ defmodule Sync.Data.School do
   @doc false
   def changeset(school, attrs) do
     school
-    |> cast(attrs, [:name, :slug])
-    |> validate_required([:name, :slug])
-    |> unique_constraint(:name)
+    |> cast(attrs, [:short_name, :long_name, :slug])
+    |> validate_required([:short_name, :long_name, :slug])
+    |> unique_constraint(:short_name)
+    |> unique_constraint(:long_name)
     |> unique_constraint(:slug)
   end
 end

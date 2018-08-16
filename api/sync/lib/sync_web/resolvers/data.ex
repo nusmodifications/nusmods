@@ -3,7 +3,7 @@ defmodule SyncWeb.Resolvers.Data do
     {:ok, Sync.Data.list_schools()}
   end
 
-  def find_school(_parent, args, _resolution) do
+  def get_school(_parent, args, _resolution) do
     try do
       {:ok, Sync.Data.get_school!(args)}
     rescue
