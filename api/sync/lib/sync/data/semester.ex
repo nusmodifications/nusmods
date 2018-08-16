@@ -5,6 +5,7 @@ defmodule Sync.Data.Semester do
   schema "semesters" do
     field(:name, :string)
     belongs_to(:acad_year, Sync.Data.AcadYear)
+    has_many(:modules, Sync.Data.Module)
 
     timestamps()
   end

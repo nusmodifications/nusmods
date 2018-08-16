@@ -184,4 +184,80 @@ defmodule Sync.DataTest do
       assert %Ecto.Changeset{} = Data.change_semester(semester)
     end
   end
+
+  describe "modules" do
+    alias Sync.Data.Module
+
+    @valid_attrs %{
+      code: "some code",
+      description: "some description",
+      slug: "some slug",
+      title: "some title"
+    }
+    @update_attrs %{
+      code: "some updated code",
+      description: "some updated description",
+      slug: "some updated slug",
+      title: "some updated title"
+    }
+    @invalid_attrs %{code: nil, description: nil, slug: nil, title: nil}
+
+    def module_fixture(attrs \\ %{}) do
+      {:ok, module} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Data.create_module()
+
+      module
+    end
+
+    test "list_modules/0 returns all modules" do
+      module = module_fixture()
+      assert Data.list_modules() == [module]
+    end
+
+    test "get_module!/1 returns the module with given id" do
+      module = module_fixture()
+      assert Data.get_module!(module.id) == module
+    end
+
+    test "create_module/1 with valid data creates a module" do
+      assert {:ok, %Module{} = module} = Data.create_module(@valid_attrs)
+      assert module.code == "some code"
+      assert module.description == "some description"
+      assert module.slug == "some slug"
+      assert module.title == "some title"
+    end
+
+    test "create_module/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Data.create_module(@invalid_attrs)
+    end
+
+    test "update_module/2 with valid data updates the module" do
+      module = module_fixture()
+      assert {:ok, module} = Data.update_module(module, @update_attrs)
+      assert %Module{} = module
+      assert module.code == "some updated code"
+      assert module.description == "some updated description"
+      assert module.slug == "some updated slug"
+      assert module.title == "some updated title"
+    end
+
+    test "update_module/2 with invalid data returns error changeset" do
+      module = module_fixture()
+      assert {:error, %Ecto.Changeset{}} = Data.update_module(module, @invalid_attrs)
+      assert module == Data.get_module!(module.id)
+    end
+
+    test "delete_module/1 deletes the module" do
+      module = module_fixture()
+      assert {:ok, %Module{}} = Data.delete_module(module)
+      assert_raise Ecto.NoResultsError, fn -> Data.get_module!(module.id) end
+    end
+
+    test "change_module/1 returns a module changeset" do
+      module = module_fixture()
+      assert %Ecto.Changeset{} = Data.change_module(module)
+    end
+  end
 end

@@ -11,6 +11,7 @@
 # and so on) as they will fail if something goes wrong.
 
 Sync.Repo.delete_all(Sync.Coherence.User)
+Sync.Repo.delete_all(Sync.Data.Module)
 Sync.Repo.delete_all(Sync.Data.Semester)
 Sync.Repo.delete_all(Sync.Data.AcadYear)
 Sync.Repo.delete_all(Sync.Data.School)
@@ -31,8 +32,22 @@ defmodule SchoolSeeder do
     str |> String.split() |> Stream.map(&String.first/1) |> Enum.join()
   end
 
+  def new_module(_) do
+    code = Faker.Util.format("%2A%4d%3A")
+
+    %Sync.Data.Module{
+      code: code,
+      title: Faker.Company.catch_phrase(),
+      description: Faker.Lorem.paragraph(),
+      slug: code
+    }
+  end
+
   def new_sem(_) do
-    %Sync.Data.Semester{name: Faker.Company.buzzword_suffix()}
+    %Sync.Data.Semester{
+      name: Faker.Company.buzzword_suffix(),
+      modules: 1..@num_fakes |> Enum.map(&new_module/1)
+    }
   end
 
   def new_acad_year(_) do
