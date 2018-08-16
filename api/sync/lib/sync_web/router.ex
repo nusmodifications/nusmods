@@ -42,7 +42,10 @@ defmodule SyncWeb.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", SyncWeb do
-  #   pipe_through :api
-  # end
+  scope "/api" do
+    pipe_through(:api)
+
+    forward("/graphiql", Absinthe.Plug.GraphiQL, schema: SyncWeb.Schema)
+    forward("/", Absinthe.Plug, schema: SyncWeb.Schema)
+  end
 end
