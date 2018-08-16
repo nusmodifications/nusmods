@@ -11,6 +11,7 @@
 # and so on) as they will fail if something goes wrong.
 
 Sync.Repo.delete_all(Sync.Coherence.User)
+Sync.Repo.delete_all(Sync.Data.AcadYear)
 Sync.Repo.delete_all(Sync.Data.School)
 
 Sync.Coherence.User.changeset(%Sync.Coherence.User{}, %{
@@ -22,8 +23,14 @@ Sync.Coherence.User.changeset(%Sync.Coherence.User{}, %{
 |> Sync.Repo.insert!()
 |> Coherence.ControllerHelpers.confirm!()
 
-Sync.Data.School.changeset(%Sync.Data.School{}, %{
+nus = %Sync.Data.School{
   name: "National University of Singapore",
-  slug: "NUS"
-})
-|> Sync.Repo.insert!()
+  slug: "NUS",
+  acad_years: [
+    %Sync.Data.AcadYear{
+      name: "AY2018/19"
+    }
+  ]
+}
+
+Sync.Repo.insert!(nus)

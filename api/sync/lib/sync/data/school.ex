@@ -5,6 +5,7 @@ defmodule Sync.Data.School do
   schema "schools" do
     field(:name, :string)
     field(:slug, :string)
+    has_many(:acad_years, Sync.Data.AcadYear)
 
     timestamps()
   end

@@ -64,4 +64,64 @@ defmodule Sync.DataTest do
       assert %Ecto.Changeset{} = Data.change_school(school)
     end
   end
+
+  describe "acad_years" do
+    alias Sync.Data.AcadYear
+
+    @valid_attrs %{name: "some name"}
+    @update_attrs %{name: "some updated name"}
+    @invalid_attrs %{name: nil}
+
+    def acad_year_fixture(attrs \\ %{}) do
+      {:ok, acad_year} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Data.create_acad_year()
+
+      acad_year
+    end
+
+    test "list_acad_years/0 returns all acad_years" do
+      acad_year = acad_year_fixture()
+      assert Data.list_acad_years() == [acad_year]
+    end
+
+    test "get_acad_year!/1 returns the acad_year with given id" do
+      acad_year = acad_year_fixture()
+      assert Data.get_acad_year!(acad_year.id) == acad_year
+    end
+
+    test "create_acad_year/1 with valid data creates a acad_year" do
+      assert {:ok, %AcadYear{} = acad_year} = Data.create_acad_year(@valid_attrs)
+      assert acad_year.name == "some name"
+    end
+
+    test "create_acad_year/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Data.create_acad_year(@invalid_attrs)
+    end
+
+    test "update_acad_year/2 with valid data updates the acad_year" do
+      acad_year = acad_year_fixture()
+      assert {:ok, acad_year} = Data.update_acad_year(acad_year, @update_attrs)
+      assert %AcadYear{} = acad_year
+      assert acad_year.name == "some updated name"
+    end
+
+    test "update_acad_year/2 with invalid data returns error changeset" do
+      acad_year = acad_year_fixture()
+      assert {:error, %Ecto.Changeset{}} = Data.update_acad_year(acad_year, @invalid_attrs)
+      assert acad_year == Data.get_acad_year!(acad_year.id)
+    end
+
+    test "delete_acad_year/1 deletes the acad_year" do
+      acad_year = acad_year_fixture()
+      assert {:ok, %AcadYear{}} = Data.delete_acad_year(acad_year)
+      assert_raise Ecto.NoResultsError, fn -> Data.get_acad_year!(acad_year.id) end
+    end
+
+    test "change_acad_year/1 returns a acad_year changeset" do
+      acad_year = acad_year_fixture()
+      assert %Ecto.Changeset{} = Data.change_acad_year(acad_year)
+    end
+  end
 end
