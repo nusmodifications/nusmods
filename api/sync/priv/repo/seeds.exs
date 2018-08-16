@@ -11,6 +11,7 @@
 # and so on) as they will fail if something goes wrong.
 
 Sync.Repo.delete_all(Sync.Coherence.User)
+Sync.Repo.delete_all(Sync.Data.School)
 
 Sync.Coherence.User.changeset(%Sync.Coherence.User{}, %{
   name: "Test User",
@@ -20,3 +21,9 @@ Sync.Coherence.User.changeset(%Sync.Coherence.User{}, %{
 })
 |> Sync.Repo.insert!()
 |> Coherence.ControllerHelpers.confirm!()
+
+Sync.Data.School.changeset(%Sync.Data.School{}, %{
+  name: "National University of Singapore",
+  slug: "NUS"
+})
+|> Sync.Repo.insert!()
