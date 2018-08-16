@@ -79,10 +79,13 @@ npm run rsync:export -- $TIMETABLE_ONLY_PROD_DIR
 if [ -x "$(command -v sentry-cli)" ]; then
   echo "Creating Sentry release"
 
-  sentry-cli releases new "$PROD_COMMIT"
-  sentry-cli releases set-commits "$PROD_COMMIT" --auto
-  sentry-cli releases files "$PROD_COMMIT" upload-sourcemaps $FRONTEND_STAGING_DIR
-  sentry-cli releases finalize "$PROD_COMMIT"
+  # Follow the format <YYYYMMDD>-<7-char commit hash>
+  PROD_VERSION="$(date +%Y%m%d)-${PROD_COMMIT}"
+
+  sentry-cli releases new "$PROD_VERSION"
+  sentry-cli releases set-commits "$PROD_VERSION" --auto
+  sentry-cli releases files "$PROD_VERSION" upload-sourcemaps $FRONTEND_STAGING_DIR
+  sentry-cli releases finalize "$PROD_VERSION"
 fi
 
 echo "All done!"
