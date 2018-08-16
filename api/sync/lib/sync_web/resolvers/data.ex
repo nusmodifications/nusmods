@@ -15,4 +15,12 @@ defmodule SyncWeb.Resolvers.Data do
   def list_acad_years(_parent, _args, _resolution) do
     {:ok, Sync.Data.list_acad_years()}
   end
+
+  def get_acad_year(_parent, %{name: name, school_slug: school_slug}, _resolution) do
+    try do
+      {:ok, Sync.Data.get_acad_year!(name, school_slug)}
+    rescue
+      Ecto.NoResultsError -> {:error, "Academic year not found"}
+    end
+  end
 end

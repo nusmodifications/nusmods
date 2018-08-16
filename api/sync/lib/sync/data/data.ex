@@ -164,6 +164,29 @@ defmodule Sync.Data do
   end
 
   @doc """
+  Gets a single acad_year by name and school slug.
+
+  Raises `Ecto.NoResultsError` if the Acad year does not exist.
+
+  ## Examples
+
+      iex> get_acad_year!(name: "AY18/19", school_slug: "nus")
+      %School{}
+
+      iex> get_acad_year!(name: "AY18/89", school_slug: "nus")
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_acad_year!(name, school_slug) do
+    from(ay in AcadYear,
+      join: s in assoc(ay, :school),
+      where: ay.name == ^name,
+      where: s.slug == ^school_slug
+    )
+    |> Repo.one!()
+  end
+
+  @doc """
   Gets a single acad_year.
 
   Raises `Ecto.NoResultsError` if the Acad year does not exist.
