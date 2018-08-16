@@ -124,4 +124,64 @@ defmodule Sync.DataTest do
       assert %Ecto.Changeset{} = Data.change_acad_year(acad_year)
     end
   end
+
+  describe "semesters" do
+    alias Sync.Data.Semester
+
+    @valid_attrs %{name: "some name"}
+    @update_attrs %{name: "some updated name"}
+    @invalid_attrs %{name: nil}
+
+    def semester_fixture(attrs \\ %{}) do
+      {:ok, semester} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Data.create_semester()
+
+      semester
+    end
+
+    test "list_semesters/0 returns all semesters" do
+      semester = semester_fixture()
+      assert Data.list_semesters() == [semester]
+    end
+
+    test "get_semester!/1 returns the semester with given id" do
+      semester = semester_fixture()
+      assert Data.get_semester!(semester.id) == semester
+    end
+
+    test "create_semester/1 with valid data creates a semester" do
+      assert {:ok, %Semester{} = semester} = Data.create_semester(@valid_attrs)
+      assert semester.name == "some name"
+    end
+
+    test "create_semester/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Data.create_semester(@invalid_attrs)
+    end
+
+    test "update_semester/2 with valid data updates the semester" do
+      semester = semester_fixture()
+      assert {:ok, semester} = Data.update_semester(semester, @update_attrs)
+      assert %Semester{} = semester
+      assert semester.name == "some updated name"
+    end
+
+    test "update_semester/2 with invalid data returns error changeset" do
+      semester = semester_fixture()
+      assert {:error, %Ecto.Changeset{}} = Data.update_semester(semester, @invalid_attrs)
+      assert semester == Data.get_semester!(semester.id)
+    end
+
+    test "delete_semester/1 deletes the semester" do
+      semester = semester_fixture()
+      assert {:ok, %Semester{}} = Data.delete_semester(semester)
+      assert_raise Ecto.NoResultsError, fn -> Data.get_semester!(semester.id) end
+    end
+
+    test "change_semester/1 returns a semester changeset" do
+      semester = semester_fixture()
+      assert %Ecto.Changeset{} = Data.change_semester(semester)
+    end
+  end
 end

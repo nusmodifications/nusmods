@@ -11,6 +11,7 @@
 # and so on) as they will fail if something goes wrong.
 
 Sync.Repo.delete_all(Sync.Coherence.User)
+Sync.Repo.delete_all(Sync.Data.Semester)
 Sync.Repo.delete_all(Sync.Data.AcadYear)
 Sync.Repo.delete_all(Sync.Data.School)
 
@@ -24,28 +25,34 @@ Sync.Coherence.User.changeset(%Sync.Coherence.User{}, %{
 |> Coherence.ControllerHelpers.confirm!()
 
 defmodule SchoolSeeder do
+  @num_fakes 5
+
   def gen_abbr(str) do
     str |> String.split() |> Stream.map(&String.first/1) |> Enum.join()
   end
 
-  def insert_school do
+  def new_sem(_) do
+    %Sync.Data.Semester{name: Faker.Company.buzzword_suffix()}
+  end
+
+  def new_acad_year(_) do
+    %Sync.Data.AcadYear{
+      name: Faker.Company.buzzword_prefix(),
+      semesters: 1..@num_fakes |> Enum.map(&new_sem/1)
+    }
+  end
+
+  def insert_school(_) do
     uni_name = "#{Faker.Company.name()} University"
 
     %Sync.Data.School{
       name: uni_name,
       slug: gen_abbr(uni_name),
-      acad_years: [
-        %Sync.Data.AcadYear{
-          name: "AY2018/19"
-        }
-      ]
+      acad_years: 1..@num_fakes |> Enum.map(&new_acad_year/1)
     }
     |> Sync.Repo.insert!()
   end
 end
 
 num_fakes = 5
-
-for _ <- 0..num_fakes do
-  SchoolSeeder.insert_school()
-end
+1..num_fakes |> Enum.each(&SchoolSeeder.insert_school/1)
