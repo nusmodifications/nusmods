@@ -41,6 +41,7 @@ defmodule Sync.Mixfile do
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:absinthe, "~> 1.4"},
       {:absinthe_plug, ">= 0.0.0"},
+      {:faker, "~> 0.10", only: [:dev, :test]},
       {:gettext, "~> 0.13.1"},
       {:cowboy, "~> 1.0"},
       {:coherence, "~> 0.5"}

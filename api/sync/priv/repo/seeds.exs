@@ -23,14 +23,29 @@ Sync.Coherence.User.changeset(%Sync.Coherence.User{}, %{
 |> Sync.Repo.insert!()
 |> Coherence.ControllerHelpers.confirm!()
 
-nus = %Sync.Data.School{
-  name: "National University of Singapore",
-  slug: "NUS",
-  acad_years: [
-    %Sync.Data.AcadYear{
-      name: "AY2018/19"
-    }
-  ]
-}
+defmodule SchoolSeeder do
+  def gen_abbr(str) do
+    str |> String.split() |> Stream.map(&String.first/1) |> Enum.join()
+  end
 
-Sync.Repo.insert!(nus)
+  def insert_school do
+    uni_name = "#{Faker.Company.name()} University"
+
+    %Sync.Data.School{
+      name: uni_name,
+      slug: gen_abbr(uni_name),
+      acad_years: [
+        %Sync.Data.AcadYear{
+          name: "AY2018/19"
+        }
+      ]
+    }
+    |> Sync.Repo.insert!()
+  end
+end
+
+num_fakes = 5
+
+for _ <- 0..num_fakes do
+  SchoolSeeder.insert_school()
+end
