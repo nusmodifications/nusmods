@@ -30,7 +30,29 @@ defmodule Sync.Data do
   end
 
   @doc """
-  Gets a single school.
+  Gets a single school by params.
+
+  Raises `Ecto.NoResultsError` if the School does not exist, and
+  `Ecto.MultipleResultsError` if multiple Schools exist for the given params.
+
+  ## Examples
+
+      iex> get_school!(%{id: 1, name: "NUS"})
+      %School{}
+
+      iex> get_school!(%{id: 2})
+      ** (Ecto.NoResultsError)
+
+      iex> get_school!(%{})
+      ** (Ecto.MultipleResultsError)
+
+  """
+  def get_school!(params) when is_map(params) do
+    Repo.get_by!(School, params)
+  end
+
+  @doc """
+  Gets a single school by ID.
 
   Raises `Ecto.NoResultsError` if the School does not exist.
 

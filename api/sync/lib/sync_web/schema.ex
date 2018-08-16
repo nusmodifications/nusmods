@@ -23,9 +23,17 @@ defmodule SyncWeb.Schema do
       resolve(&Resolvers.Data.list_schools/3)
     end
 
+    @desc "Get school"
+    field :school, :school do
+      arg(:id, :id)
+      arg(:name, :string)
+      arg(:slug, :string)
+      resolve(&Resolvers.Data.find_school/3)
+    end
+
     @desc "Get academic years"
     field :acad_years, list_of(:acad_year) do
-      arg(:school_abbr, :string)
+      arg(:school_slug, :string)
       resolve(&Resolvers.Data.list_acad_years/3)
     end
   end

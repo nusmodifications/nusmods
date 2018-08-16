@@ -3,6 +3,15 @@ defmodule SyncWeb.Resolvers.Data do
     {:ok, Sync.Data.list_schools()}
   end
 
+  def find_school(_parent, args, _resolution) do
+    try do
+      {:ok, Sync.Data.get_school!(args)}
+    rescue
+      Ecto.NoResultsError -> {:error, "School not found"}
+      Ecto.MultipleResultsError -> {:error, "Multiple schools found"}
+    end
+  end
+
   def list_acad_years(_parent, _args, _resolution) do
     {:ok, Sync.Data.list_acad_years()}
   end
