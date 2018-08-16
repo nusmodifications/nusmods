@@ -24,6 +24,7 @@ import GlobalSearchContainer from 'views/layout/GlobalSearchContainer';
 import Notification from 'views/components/Notification';
 import ErrorBoundary from 'views/errors/ErrorBoundary';
 import ErrorPage from 'views/errors/ErrorPage';
+import ApiError from 'views/errors/ApiError';
 import { DARK_MODE } from 'types/settings';
 import LoadingSpinner from './components/LoadingSpinner';
 import FeedbackModal from './components/FeedbackModal';
@@ -55,15 +56,13 @@ type State = {
 };
 
 export class AppShellComponent extends Component<Props, State> {
+  state = {};
+
   componentDidMount() {
     const { timetables } = this.props;
 
     // Retrieve module list
-    // TODO: This always re-fetch the entire modules list. Consider a better strategy for this
-    this.props.fetchModuleList().catch((error) => {
-      Raven.captureException(error);
-      this.setState({ moduleListError: error });
-    });
+    this.fetchModuleList();
 
     // Fetch the module data of the existing modules in the timetable and ensure all
     // lessons are filled
@@ -72,6 +71,14 @@ export class AppShellComponent extends Component<Props, State> {
       this.fetchTimetableModules(timetable, semester);
     });
   }
+
+  fetchModuleList = () => {
+    // TODO: This always re-fetch the entire modules list. Consider a better strategy for this
+    this.props.fetchModuleList().catch((error) => {
+      Raven.captureException(error);
+      this.setState({ moduleListError: error });
+    });
+  };
 
   fetchTimetableModules = (timetable: SemTimetableConfig, semester: Semester) => {
     this.props
@@ -93,7 +100,7 @@ export class AppShellComponent extends Component<Props, State> {
     const isDarkMode = this.props.mode === DARK_MODE;
 
     if (!isModuleListReady && this.state.moduleListError) {
-      return <ErrorPage eventId={Raven.lastEventId()} />;
+      return <ApiError dataName="module information" retry={this.fetchModuleList} />;
     }
 
     return (

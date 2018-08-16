@@ -13,7 +13,7 @@ import cs1010s from '__mocks__/modules/CS1010S.json';
 import ModuleNotFoundPage from 'views/errors/ModuleNotFoundPage';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import { waitFor } from 'test-utils/async';
-import ErrorPage from 'views/errors/ErrorPage';
+import ApiError from 'views/errors/ApiError';
 import { ModulePageContainerComponent } from './ModulePageContainer';
 
 const CANONICAL = '/modules/CS1010S/programming-methodology';
@@ -71,6 +71,6 @@ test('should show error if module fetch failed', async () => {
     return component.type() !== LoadingSpinner;
   });
 
-  expect(component.type()).toEqual(ErrorPage);
+  expect(component.type()).toEqual(ApiError);
   expect(fetchModule).toBeCalledWith('CS1010S');
 });

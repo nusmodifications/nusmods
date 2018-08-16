@@ -20,7 +20,7 @@ import ModuleSearchBox from 'views/modules/ModuleSearchBox';
 import ChecklistFilters from 'views/components/filters/ChecklistFilters';
 import TimeslotFilters from 'views/components/filters/TimeslotFilters';
 import DropdownListFilters from 'views/components/filters/DropdownListFilters';
-import ErrorPage from 'views/errors/ErrorPage';
+import ApiError from 'views/errors/ApiError';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import SideMenu, { OPEN_MENU_LABEL } from 'views/components/SideMenu';
 import { Filter } from 'views/components/icons';
@@ -111,58 +111,7 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
   }
 
   componentDidMount() {
-    // Load module data
-    const modulesRequest = axios.get(nusmods.modulesUrl()).then(({ data }) => data);
-
-    // Load faculty-department mapping
-    const makeFacultyRequest = (semester) =>
-      axios
-        .get(nusmods.facultyDepartmentsUrl(semester))
-        .then(({ data }) => invertFacultyDepartments(data));
-
-    const facultiesRequest = Promise.all(Semesters.map(makeFacultyRequest))
-      // Then merge all of the mappings together
-      .then((mappings) => Object.assign({}, ...mappings));
-
-    // Finally initialize everything
-    Promise.all([modulesRequest, facultiesRequest])
-      .then(([modules, faculties]) => {
-        const params = qs.parse(this.props.location.search);
-        const filterGroups = defaultGroups(faculties, this.props.location.search);
-
-        // Benchmark the amount of time taken to run the filters to determine if we can
-        // use instant search
-        const start = window.performance && performance.now();
-        each(filterGroups, (group) => group.initFilters(modules));
-        const time = window.performance
-          ? performance.now() - start
-          : // If the user's browser doesn't support performance.now, we assume it is too old for instant search
-            Number.MAX_VALUE;
-
-        if ('instant' in params) {
-          // Manual override - use 'instant=1' to force instant search, and
-          // 'instant=0' to force non-instant search
-          this.useInstantSearch = params.instant === '1';
-        } else {
-          // By default, only turn on instant search for desktop and if the
-          // benchmark earlier is fast enough
-          this.useInstantSearch =
-            queryMatch(breakpointUp('sm')).matches && time < INSTANT_SEARCH_THRESHOLD;
-        }
-
-        console.info(`${time}ms taken to init filters`); // eslint-disable-line
-        console.info(this.useInstantSearch ? 'Instant search on' : 'Instant search off'); // eslint-disable-line
-
-        this.setState({
-          filterGroups,
-          modules,
-          loading: false,
-        });
-      })
-      .catch((error) => {
-        Raven.captureException(error);
-        this.setState({ error });
-      });
+    this.loadPageData();
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -236,6 +185,63 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
 
   useInstantSearch = false;
 
+  loadPageData = () => {
+    this.setState({ error: null });
+
+    // Load module data
+    const modulesRequest = axios.get(nusmods.modulesUrl()).then(({ data }) => data);
+
+    // Load faculty-department mapping
+    const makeFacultyRequest = (semester) =>
+      axios
+        .get(nusmods.facultyDepartmentsUrl(semester))
+        .then(({ data }) => invertFacultyDepartments(data));
+
+    const facultiesRequest = Promise.all(Semesters.map(makeFacultyRequest))
+      // Then merge all of the mappings together
+      .then((mappings) => Object.assign({}, ...mappings));
+
+    // Finally initialize everything
+    Promise.all([modulesRequest, facultiesRequest])
+      .then(([modules, faculties]) => {
+        const params = qs.parse(this.props.location.search);
+        const filterGroups = defaultGroups(faculties, this.props.location.search);
+
+        // Benchmark the amount of time taken to run the filters to determine if we can
+        // use instant search
+        const start = window.performance && performance.now();
+        each(filterGroups, (group) => group.initFilters(modules));
+        const time = window.performance
+          ? performance.now() - start
+          : // If the user's browser doesn't support performance.now, we assume it is too old for instant search
+            Number.MAX_VALUE;
+
+        if ('instant' in params) {
+          // Manual override - use 'instant=1' to force instant search, and
+          // 'instant=0' to force non-instant search
+          this.useInstantSearch = params.instant === '1';
+        } else {
+          // By default, only turn on instant search for desktop and if the
+          // benchmark earlier is fast enough
+          this.useInstantSearch =
+            queryMatch(breakpointUp('sm')).matches && time < INSTANT_SEARCH_THRESHOLD;
+        }
+
+        console.info(`${time}ms taken to init filters`); // eslint-disable-line
+        console.info(this.useInstantSearch ? 'Instant search on' : 'Instant search off'); // eslint-disable-line
+
+        this.setState({
+          filterGroups,
+          modules,
+          loading: false,
+        });
+      })
+      .catch((error) => {
+        Raven.captureException(error);
+        this.setState({ error });
+      });
+  };
+
   updateQueryString = () => {
     // Update query string after state is updated
     this.history.push({
@@ -275,7 +281,7 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
     const { filterGroups: groups, isMenuOpen, modules, loading, page, error } = this.state;
 
     if (error) {
-      return <ErrorPage error="cannot load modules info" eventId={Raven.lastEventId()} />;
+      return <ApiError dataName="module information" retry={this.loadPageData} />;
     }
 
     if (loading) {
