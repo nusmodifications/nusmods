@@ -6,6 +6,14 @@ defmodule Sync.Data do
   import Ecto.Query, warn: false
   alias Sync.Repo
 
+  def data() do
+    Dataloader.Ecto.new(Repo, query: &query/2)
+  end
+
+  def query(queryable, _params) do
+    queryable
+  end
+
   alias Sync.Data.School
 
   @doc """

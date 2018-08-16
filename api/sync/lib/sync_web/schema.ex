@@ -2,7 +2,20 @@ defmodule SyncWeb.Schema do
   use Absinthe.Schema
   import_types(SyncWeb.Schema.DataTypes)
 
+  alias Sync.Data
   alias SyncWeb.Resolvers
+
+  def context(ctx) do
+    loader =
+      Dataloader.new()
+      |> Dataloader.add_source(Data, Data.data())
+
+    Map.put(ctx, :loader, loader)
+  end
+
+  def plugins do
+    [Absinthe.Middleware.Dataloader] ++ Absinthe.Plugin.defaults()
+  end
 
   query do
     @desc "Get all schools"
