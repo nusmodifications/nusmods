@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Types
   class AcadYearType < Types::BaseObject
     field :id, ID, null: false
