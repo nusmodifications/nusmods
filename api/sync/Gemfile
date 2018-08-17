@@ -16,7 +16,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 
 gem 'batch-loader'
 
-gem 'graphql'
+gem 'graphql', '< 1.8.7' # Bug preventing batch-loader from working. See: https://github.com/exAspArk/batch-loader/issues/22
 
 gem 'rack-cors'
 
