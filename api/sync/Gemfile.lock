@@ -52,6 +52,8 @@ GEM
     concurrent-ruby (1.0.5)
     crass (1.0.4)
     erubi (1.7.1)
+    faker (1.9.1)
+      i18n (>= 0.7)
     ffi (1.9.25)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
@@ -155,6 +157,7 @@ PLATFORMS
 DEPENDENCIES
   bootsnap (>= 1.1.0)
   byebug
+  faker
   graphql
   listen (>= 3.0.5, < 3.2)
   pry-rails
