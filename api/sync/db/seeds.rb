@@ -48,7 +48,7 @@ end
 def new_sems
   Array.new(@num_fakes) do
     Semester.new(
-      name: Faker::Vehicle.model,
+      name: Faker::Space.moon,
       start: Faker::Time.between(1.year.ago, Date.current),
       courses: new_courses
     )
@@ -58,7 +58,7 @@ end
 def new_acad_years
   Array.new(@num_fakes) do
     AcadYear.new(
-      name: Faker::Vehicle.make,
+      name: Faker::Space.galaxy,
       semesters: new_sems
     )
   end

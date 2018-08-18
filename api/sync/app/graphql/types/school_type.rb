@@ -7,12 +7,7 @@ module Types
     field :long_name, String, null: false
     field :slug, String, null: false
 
-    field :acad_years, [Types::AcadYearType], null: false, resolve: lambda { |school, _args, _ctx|
-      BatchLoader.for(school.id).batch(default_value: []) do |school_ids, loader|
-        AcadYear.where(school_id: school_ids).each do |ay|
-          loader.call(ay.school_id) { |memo| memo << ay }
-        end
-      end
-    }
+    field :acad_years, [Types::AcadYearType], null: false,
+      resolve: to_many_batch_resolver(AcadYear, :school_id)
   end
 end
