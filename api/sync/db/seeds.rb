@@ -45,8 +45,12 @@ def new_courses
   end
 end
 
-def new_sems
-  times = Array.new(@num_fakes + 1) { Faker::Time.between(1.year.ago, 1.year.since) }.sort!
+def new_sems(ay_start, ay_end)
+  times = Array.new(@num_fakes - 1) { Faker::Time.between(ay_start, ay_end) }.sort!
+  # An AY should be filled with sems from start to end
+  times.unshift(ay_start)
+  times.push(ay_end)
+
   Array.new(@num_fakes) do |i|
     Semester.new(
       name: Faker::Space.moon,
@@ -58,10 +62,11 @@ def new_sems
 end
 
 def new_acad_years
-  Array.new(@num_fakes) do
+  times = Array.new(@num_fakes + 1) { Faker::Time.between(@num_fakes.year.ago, @num_fakes.year.since) }.sort!
+  Array.new(@num_fakes) do |i|
     AcadYear.new(
       name: Faker::Space.galaxy,
-      semesters: new_sems
+      semesters: new_sems(times[i], times[i+1])
     )
   end
 end
