@@ -4,7 +4,8 @@ module Types
   class SemesterType < Types::BaseObject
     field :id, ID, null: false
     field :name, String, null: false
-    field :start, GraphQL::Types::ISO8601DateTime, null: false
+    field :start_at, GraphQL::Types::ISO8601DateTime, null: false
+    field :end_at, GraphQL::Types::ISO8601DateTime, null: false
 
     field :acad_year, Types::AcadYearType,
           null: false,

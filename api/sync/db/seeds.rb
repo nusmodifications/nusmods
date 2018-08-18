@@ -23,8 +23,8 @@ def new_lessons
       class_type: "TUTORIAL",
       day: date.strftime('%A').upcase,
       week: "Odd Week",
-      start: start_time,
-      end: end_time
+      start_at: start_time,
+      end_at: end_time
     )
   end
 end
@@ -46,10 +46,12 @@ def new_courses
 end
 
 def new_sems
-  Array.new(@num_fakes) do
+  times = Array.new(@num_fakes + 1) { Faker::Time.between(1.year.ago, 1.year.since) }.sort!
+  Array.new(@num_fakes) do |i|
     Semester.new(
       name: Faker::Space.moon,
-      start: Faker::Time.between(1.year.ago, Date.current),
+      start_at: times[i],
+      end_at: times[i+1],
       courses: new_courses
     )
   end

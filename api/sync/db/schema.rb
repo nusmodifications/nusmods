@@ -51,8 +51,8 @@ ActiveRecord::Schema.define(version: 2018_08_17_014544) do
     t.string "class_type", null: false
     t.string "day", null: false
     t.string "week", null: false
-    t.datetime "start", null: false
-    t.datetime "end", null: false
+    t.datetime "start_at", null: false
+    t.datetime "end_at", null: false
     t.integer "course_id", null: false
     t.integer "venue_id"
     t.datetime "created_at", null: false
@@ -71,7 +71,8 @@ ActiveRecord::Schema.define(version: 2018_08_17_014544) do
 
   create_table "semesters", force: :cascade do |t|
     t.string "name", null: false
-    t.datetime "start", null: false
+    t.datetime "start_at", null: false
+    t.datetime "end_at", null: false
     t.integer "acad_year_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

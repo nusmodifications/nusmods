@@ -17,7 +17,8 @@ class CreateDataModels < ActiveRecord::Migration[5.2]
 
     create_table :semesters do |t|
       t.string :name, null: false
-      t.datetime :start, null: false
+      t.datetime :start_at, null: false
+      t.datetime :end_at, null: false
       t.references :acad_year, foreign_key: true, null: false
 
       t.timestamps
@@ -65,8 +66,8 @@ class CreateDataModels < ActiveRecord::Migration[5.2]
       t.string :class_type, null: false
       t.string :day, null: false
       t.string :week, null: false
-      t.datetime :start, null: false
-      t.datetime :end, null: false
+      t.datetime :start_at, null: false
+      t.datetime :end_at, null: false
       t.references :course, foreign_key: true, null: false
       t.references :venue, foreign_key: true
 
