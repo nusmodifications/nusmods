@@ -7,7 +7,8 @@ module Types
     field :long_name, String, null: false
     field :slug, String, null: false
 
-    field :acad_years, [Types::AcadYearType], null: false,
-      resolve: to_many_batch_resolver(AcadYear, :school_id)
+    field :acad_years, [Types::AcadYearType],
+          null: false,
+          resolve: to_many_batch_resolver(AcadYear, :school_id)
   end
 end
