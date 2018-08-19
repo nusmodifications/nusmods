@@ -82,3 +82,7 @@ end
     acad_years: new_acad_years
   )
 end
+
+user = User.new(email: 'test@example.com', password: 'secret', password_confirmation: 'secret')
+user.skip_confirmation!
+user.save!
