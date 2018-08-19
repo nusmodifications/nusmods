@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class GraphqlController < ApplicationController
+  # Disable authenticity token on our GraphQL endpoint
+  skip_before_action :verify_authenticity_token
+
   def execute
     variables = ensure_hash(params[:variables])
     query = params[:query]
