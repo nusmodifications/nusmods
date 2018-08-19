@@ -30,6 +30,8 @@ gem 'graphiql-rails'
 gem 'graphql', '< 1.8.7' # Bug preventing batch-loader from working. See: https://github.com/exAspArk/batch-loader/issues/22
 gem 'rack-cors'
 
+gem 'rails_admin'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
