@@ -202,6 +202,7 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
+    redis (4.0.2)
     remotipart (1.4.2)
     responders (2.4.0)
       actionpack (>= 4.2.0, < 5.3)
@@ -275,6 +276,7 @@ DEPENDENCIES
   rack-cors
   rails (~> 5.2.1)
   rails_admin
+  redis (~> 4.0)
   rubocop
   sass-rails (~> 5.0)
   sqlite3

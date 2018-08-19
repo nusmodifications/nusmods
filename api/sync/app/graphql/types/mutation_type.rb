@@ -15,6 +15,7 @@ module Types
       current_user = context[:current_user]
       return nil if current_user.nil?
 
+      # Find or create settings object
       settings = current_user.settings(school_id: school_id)
       if settings.nil?
         settings = UserSetting.new
@@ -24,6 +25,10 @@ module Types
 
       settings.assign_attributes(args)
       settings.save!
+
+      SyncSchema.subscriptions.trigger('settingsUpdated', { schoolId: school_id }, settings,
+                                       scope: current_user.id)
+
       settings
     end
   end
