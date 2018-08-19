@@ -2,6 +2,13 @@
 
 module Types
   class QueryType < Types::BaseObject
+    field :viewer, Types::UserType,
+          null: true,
+          description: 'Get the current signed in user'
+    def viewer
+      context[:current_user]
+    end
+
     field :schools, [Types::SchoolType],
           null: false,
           description: 'Get schools'

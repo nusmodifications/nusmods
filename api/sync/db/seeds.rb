@@ -86,3 +86,14 @@ end
 user = User.new(email: 'test@example.com', password: 'secret', password_confirmation: 'secret')
 user.skip_confirmation!
 user.save!
+
+settings = School.limit(School.count / 2).map do |school|
+  setting = UserSetting.new(school: school, user: user, content: {
+    mode: "LIGHT",
+    theme_id: "eighties"
+  })
+  setting.save!
+  setting
+end
+user.user_settings = settings
+user.save!

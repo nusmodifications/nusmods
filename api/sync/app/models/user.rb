@@ -6,4 +6,10 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
          :confirmable, :trackable
+
+  has_many :user_settings
+
+  def settings(school_id:)
+    user_settings.where(school_id: school_id).first
+  end
 end
