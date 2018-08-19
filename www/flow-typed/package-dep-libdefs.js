@@ -7,3 +7,39 @@ declare module '@material/fab' {
 declare module '@material/snackbar' {
   declare module.exports: any;
 }
+
+declare module 'actioncable' {
+  declare module.exports: any;
+}
+
+declare module 'apollo-cache-inmemory' {
+  declare module.exports: any;
+}
+
+declare module 'apollo-client' {
+  declare module.exports: any;
+}
+
+declare module 'apollo-link' {
+  declare module.exports: any;
+}
+
+declare module 'apollo-link-http' {
+  declare module.exports: any;
+}
+
+declare module 'graphql' {
+  declare module.exports: any;
+}
+
+declare module 'graphql-ruby-client' {
+  declare module.exports: any;
+}
+
+declare module 'graphql-tag' {
+  declare module.exports: any;
+}
+
+declare module 'react-apollo' {
+  declare module.exports: any;
+}
