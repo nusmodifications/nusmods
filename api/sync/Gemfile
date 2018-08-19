@@ -26,6 +26,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'bootsnap', '>= 1.1.0', require: false
 
 gem 'batch-loader'
+gem 'graphiql-rails'
 gem 'graphql', '< 1.8.7' # Bug preventing batch-loader from working. See: https://github.com/exAspArk/batch-loader/issues/22
 gem 'rack-cors'
 
@@ -47,3 +48,4 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
+
