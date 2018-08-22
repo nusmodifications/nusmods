@@ -27,9 +27,9 @@ gem 'devise'
 gem 'devise_token_auth', github: 'taneliang/devise_token_auth', branch: 'devise-4.5' # Updated to allow devise 4.5. PR opened at https://github.com/lynndylanhurley/devise_token_auth/pull/1203
 
 gem 'batch-loader'
-gem 'graphiql-rails'
 gem 'graphql', '< 1.8.7' # Bug preventing batch-loader from working. See: https://github.com/exAspArk/batch-loader/issues/22
 gem 'graphql-guard'
+gem 'graphql_playground-rails', github: 'taneliang/graphql_playground-rails' # Patched to use latest GraphQL playground version. PR opened at https://github.com/papodaca/graphql_playground-rails/pull/1
 gem 'rack-cors'
 
 gem 'rails_admin'
