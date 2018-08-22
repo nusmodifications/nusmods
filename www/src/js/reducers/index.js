@@ -1,4 +1,6 @@
 // @flow
+import { reduxTokenAuthReducer } from 'redux-token-auth';
+
 import type { FSA } from 'types/redux';
 import type {
   Requests,
@@ -41,6 +43,7 @@ export type State = {
   settings: SettingsState,
   moduleFinder: ModuleFinderState,
   undoHistory: UndoHistoryState,
+  reduxTokenAuth: Object,
 };
 
 // Persist reducers
@@ -70,6 +73,7 @@ export default function(state: State = defaultState, action: FSA): State {
     theme: theme(state.theme, action),
     settings: settings(state.settings, action),
     moduleFinder: moduleFinder(state.moduleFinder, action),
+    reduxTokenAuth: reduxTokenAuthReducer(state.reduxTokenAuth, action),
     undoHistory: state.undoHistory,
   };
   return undoReducer(state, newState, action);

@@ -43,3 +43,7 @@ declare module 'graphql-tag' {
 declare module 'react-apollo' {
   declare module.exports: any;
 }
+
+declare module 'redux-token-auth' {
+  declare module.exports: any;
+}

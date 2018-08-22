@@ -14,11 +14,14 @@ import subscribeOnlineEvents from 'bootstrapping/subscribeOnlineEvents';
 import initializeGA from 'bootstrapping/google-analytics';
 import initializeServiceWorker from 'bootstrapping/service-worker';
 
+import { verifyCredentials } from 'actions/auth';
+
 import '../styles/main.scss';
 
 const { store, persistor } = configureStore();
 
 subscribeOnlineEvents(store);
+verifyCredentials(store);
 
 // Initialize ReactModal
 ReactModal.setAppElement('#app');

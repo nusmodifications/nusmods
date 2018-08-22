@@ -27,6 +27,7 @@ export type Config = {
   getSemesterKey: () => string,
 
   apiBaseUrl: string,
+  railsApiBaseUrl: string,
   corsUrl: string,
   ivleUrl: string,
 

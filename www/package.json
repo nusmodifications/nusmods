@@ -145,7 +145,8 @@
     "react-waypoint": "8.0.1",
     "redux": "4.0.0",
     "redux-persist": "5.9.1",
-    "redux-thunk": "2.2.0"
+    "redux-thunk": "2.2.0",
+    "redux-token-auth": "^0.19.0"
   },
   "browserslist": [
     "last 2 versions",
