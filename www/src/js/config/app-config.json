@@ -9,6 +9,11 @@
   "disqusShortname": "nusmods-prod",
   "googleAnalyticsId": "UA-33503218-6",
   "timetableAvailable": [1],
+  "archiveYears": [
+    "2015/2016",
+    "2016/2017",
+    "2017/2018"
+  ],
   "semesterNames": {
     "1": "Semester 1",
     "2": "Semester 2",
