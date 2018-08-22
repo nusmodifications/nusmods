@@ -19,6 +19,7 @@ const appInitialState: AppState = {
   activeSemester: semester,
   activeLesson: null,
   isOnline: true,
+  isLoginModalOpen: false,
   isFeedbackModalOpen: false,
   promptRefresh: false,
   notifications: [],
