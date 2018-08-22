@@ -1,12 +1,15 @@
 Rails.application.routes.draw do
-  mount_devise_token_auth_for 'User', at: 'auth'
+  devise_for :users
 
   root to: redirect('/playground')
 
+  mount RailsAdmin::Engine, at: '/admin'
   mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
 
-  mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
+  namespace :auth do
+    mount_devise_token_auth_for 'User', at: ''
+  end
 
-  mount GraphqlPlayground::Rails::Engine, at: '/playground', graphql_path: '/graphql'
-  post "/graphql", to: "graphql#execute"
+  mount GraphqlPlayground::Rails::Engine, at: :playground, graphql_path: '/graphql'
+  post :graphql, to: 'graphql#execute'
 end
