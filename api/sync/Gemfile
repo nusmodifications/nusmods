@@ -24,6 +24,7 @@ gem 'redis', '~> 4.0'
 gem 'bootsnap', '>= 1.1.0', require: false
 
 gem 'devise'
+gem 'devise_token_auth', github: 'taneliang/devise_token_auth', branch: 'devise-4.5' # Updated to allow devise 4.5. PR opened at https://github.com/lynndylanhurley/devise_token_auth/pull/1203
 
 gem 'batch-loader'
 gem 'graphiql-rails'

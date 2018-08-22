@@ -1,3 +1,12 @@
+GIT
+  remote: https://github.com/taneliang/devise_token_auth.git
+  revision: b92c85a7f3c933e7ebd26c241dd37301cf7e2831
+  branch: devise-4.5
+  specs:
+    devise_token_auth (1.0.0.rc1)
+      devise (> 3.5.2, < 4.6)
+      rails (< 6)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -264,6 +273,7 @@ DEPENDENCIES
   bootsnap (>= 1.1.0)
   byebug
   devise
+  devise_token_auth!
   faker
   graphiql-rails
   graphql (< 1.8.7)
