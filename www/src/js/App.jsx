@@ -6,9 +6,11 @@ import type { State } from 'reducers';
 import React from 'react';
 import { AppContainer } from 'react-hot-loader'; // eslint-disable-line import/no-extraneous-dependencies
 import { BrowserRouter as Router } from 'react-router-dom';
+import { ApolloProvider } from 'react-apollo';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/lib/integration/react';
 
+import client from 'utils/graphql';
 import AppShell from 'views/AppShell';
 import Routes from 'views/routes/Routes';
 
@@ -20,15 +22,17 @@ type Props = {
 export default function App({ store, persistor }: Props) {
   return (
     <AppContainer>
-      <Provider store={store}>
-        <PersistGate persistor={persistor}>
-          <Router>
-            <AppShell>
-              <Routes />
-            </AppShell>
-          </Router>
-        </PersistGate>
-      </Provider>
+      <ApolloProvider client={client}>
+        <Provider store={store}>
+          <PersistGate persistor={persistor}>
+            <Router>
+              <AppShell>
+                <Routes />
+              </AppShell>
+            </Router>
+          </PersistGate>
+        </Provider>
+      </ApolloProvider>
     </AppContainer>
   );
 }
