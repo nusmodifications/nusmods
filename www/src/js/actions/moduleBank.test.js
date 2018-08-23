@@ -1,6 +1,4 @@
 // @flow
-import type { FSA } from 'types/redux';
-
 import * as actions from 'actions/moduleBank';
 import NUSModsApi from 'apis/nusmods';
 
@@ -13,11 +11,11 @@ NUSModsApi.moduleDetailsUrl.mockImplementation(
 );
 
 test('fetchModuleList should return a request action', () => {
-  const resultOfAction: FSA = actions.fetchModuleList();
+  const resultOfAction = actions.fetchModuleList();
   expect(resultOfAction).toMatchSnapshot();
 });
 
 test('fetchModule should return a request action', () => {
-  const resultOfAction: FSA = actions.fetchModule('CS1010S');
+  const resultOfAction = actions.fetchModule('CS1010S');
   expect(resultOfAction).toMatchSnapshot();
 });
