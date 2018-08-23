@@ -66,8 +66,7 @@ export class ModuleNotFoundPageComponent extends PureComponent<Props> {
 
               <p>
                 Click on them to view the archived module information. Otherwise, if this is not
-                what you are looking for,
-                <Link to="/">go back to nusmods.com</Link> or{' '}
+                what you are looking for, <Link to="/">go back to nusmods.com</Link> or{' '}
                 <Link to="/modules">try the module finder</Link>.
               </p>
             </Fragment>
