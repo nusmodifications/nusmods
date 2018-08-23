@@ -1,28 +1,32 @@
 // @flow
-import type { ContextRouter } from 'react-router-dom';
+import type { ContextRouter, Match } from 'react-router-dom';
 import type { $AxiosError } from 'axios';
+import type { Dispatch } from 'redux';
 
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Redirect, withRouter } from 'react-router-dom';
 import deferComponentRender from 'views/hocs/deferComponentRender';
+import { get } from 'lodash';
 import Raven from 'raven-js';
 
-import type { ModuleCodeMap } from 'types/reducers';
 import type { Module, ModuleCode } from 'types/modules';
+import type { State as StoreState } from 'reducers';
 
-import { fetchModule } from 'actions/moduleBank';
+import { fetchArchiveRequest, fetchModule, fetchModuleArchive } from 'actions/moduleBank';
 import { retry } from 'utils/promise';
 import ApiError from 'views/errors/ApiError';
 import ModuleNotFoundPage from 'views/errors/ModuleNotFoundPage';
 import LoadingSpinner from 'views/components/LoadingSpinner';
-import { modulePage } from 'views/routes/paths';
+import { moduleArchive, modulePage } from 'views/routes/paths';
+import { isFailure } from 'selectors/requests';
 
 type Props = {
   ...ContextRouter,
 
+  moduleExists: boolean,
+  archiveYear: ?string,
   moduleCode: ModuleCode,
-  moduleCodes: ModuleCodeMap,
   module: ?Module,
   fetchModule: (ModuleCode) => Promise<*>,
 };
@@ -64,7 +68,7 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
   }
 
   fetchModule(moduleCode: ModuleCode) {
-    if (this.doesModuleExist(moduleCode)) {
+    if (this.props.moduleExists || this.props.archiveYear) {
       this.props.fetchModule(moduleCode).catch(this.handleFetchError);
     }
   }
@@ -86,24 +90,25 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
     Raven.captureException(error);
   };
 
-  doesModuleExist(moduleCode: ModuleCode): boolean {
-    return !!this.props.moduleCodes[moduleCode];
-  }
-
   canonicalUrl() {
-    if (!this.props.module) throw new Error('canonicalUrl() called before module is loaded');
-    return modulePage(this.props.moduleCode, this.props.module.ModuleTitle);
+    if (!this.props.module) {
+      throw new Error('canonicalUrl() called before module is loaded');
+    }
+
+    return this.props.archiveYear
+      ? moduleArchive(this.props.moduleCode, this.props.archiveYear, this.props.module.ModuleTitle)
+      : modulePage(this.props.moduleCode, this.props.module.ModuleTitle);
   }
 
   render() {
     const { ModulePageContent, error } = this.state;
-    const { module, moduleCode, match, location } = this.props;
+    const { module, moduleCode, moduleExists, match, location } = this.props;
 
-    if (!this.doesModuleExist(moduleCode)) {
+    if (!moduleExists) {
       return <ModuleNotFoundPage moduleCode={moduleCode} />;
     }
 
-    // If there is an error, but module already exists, we assume module has
+    // If there is an error but module data can still be found, we assume module has
     // been loaded at some point, so we just show that instead
     if (error && !module) {
       return <ApiError dataName="module information" retry={() => this.fetchModule(moduleCode)} />;
@@ -121,24 +126,46 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
     }
 
     if (module && ModulePageContent) {
-      return <ModulePageContent moduleCode={moduleCode} />;
+      return <ModulePageContent module={module} />;
     }
 
     return <LoadingSpinner />;
   }
 }
 
-const mapStateToProps = (state, ownState) => {
-  const moduleCode = ownState.match.params.moduleCode.toUpperCase();
+const getPropsFromMatch = (match: Match) => {
+  const year = match.params.year;
 
   return {
-    moduleCode,
-    moduleCodes: state.moduleBank.moduleCodes,
-    module: state.moduleBank.modules[moduleCode],
+    moduleCode: (match.params.moduleCode || '').toUpperCase(),
+    year: year ? year.replace('-', '/') : null,
   };
 };
 
-const connectedModulePageContainer = connect(mapStateToProps, { fetchModule })(
+const mapStateToProps = (state: StoreState, ownProps) => {
+  const { moduleCode, year } = getPropsFromMatch(ownProps.match);
+
+  return {
+    archiveYear: year,
+    moduleCode,
+    moduleExists: year
+      ? isFailure(state, fetchArchiveRequest(moduleCode, year))
+      : state.moduleBank.moduleCodes[moduleCode],
+    module: year
+      ? get(state.moduleBank.moduleArchive, [moduleCode, year], null)
+      : state.moduleBank.modules[moduleCode],
+  };
+};
+
+const mapDispatchToProps = (dispatch: Dispatch<*>, ownProps) => {
+  const { moduleCode, year } = getPropsFromMatch(ownProps.match);
+
+  return {
+    fetchModule: year ? () => dispatch(fetchModuleArchive(moduleCode, year)) : fetchModule,
+  };
+};
+
+const connectedModulePageContainer = connect(mapStateToProps, mapDispatchToProps)(
   ModulePageContainerComponent,
 );
 const routedModulePageContainer = withRouter(connectedModulePageContainer);

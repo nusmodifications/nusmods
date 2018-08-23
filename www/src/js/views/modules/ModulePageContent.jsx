@@ -1,7 +1,6 @@
 // @flow
 import React, { Component, Fragment } from 'react';
 import classnames from 'classnames';
-import { connect } from 'react-redux';
 import ScrollSpy from 'react-scrollspy';
 import { kebabCase, map, mapValues, values } from 'lodash';
 
@@ -49,7 +48,7 @@ export const SIDE_MENU_LABELS = {
 
 export const SIDE_MENU_ITEMS = mapValues(SIDE_MENU_LABELS, kebabCase);
 
-export class ModulePageContentComponent extends Component<Props, State> {
+export default class ModulePageContent extends Component<Props, State> {
   state: State = {
     isMenuOpen: false,
   };
@@ -284,7 +283,3 @@ export class ModulePageContentComponent extends Component<Props, State> {
     );
   }
 }
-
-export default connect((state, ownProps) => ({
-  module: state.moduleBank.modules[ownProps.moduleCode],
-}))(ModulePageContentComponent);
