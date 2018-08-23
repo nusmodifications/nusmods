@@ -10,12 +10,12 @@ import type { TimetableConfig } from 'types/timetables';
 /** @var {Module} */
 import CS1010S from '__mocks__/modules/CS1010S.json';
 
-import { ModulePageContentComponent } from './ModulePageContent';
+import ModulePageContent from './ModulePageContent';
 
 describe('<ModulePageContent>', () => {
   function make(module: Module = CS1010S, timetables: TimetableConfig = {}) {
     return shallow(
-      <ModulePageContentComponent
+      <ModulePageContent
         module={module}
         timetables={timetables}
         addModule={noop}

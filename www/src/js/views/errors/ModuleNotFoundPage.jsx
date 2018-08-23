@@ -21,7 +21,7 @@ type Props = {
   fetchModuleArchive: (string) => Promise<*>,
 };
 
-class ModuleNotFoundPage extends PureComponent<Props> {
+export class ModuleNotFoundPageComponent extends PureComponent<Props> {
   componentDidMount() {
     Raven.captureMessage('404 - Module Not Found');
 
@@ -64,7 +64,12 @@ class ModuleNotFoundPage extends PureComponent<Props> {
                 ))}
               </ul>
 
-              <p>Click on them to view the archived module information.</p>
+              <p>
+                Click on them to view the archived module information. Otherwise, if this is not
+                what you are looking for,
+                <Link to="/">go back to nusmods.com</Link> or{' '}
+                <Link to="/modules">try the module finder</Link>.
+              </p>
             </Fragment>
           ) : (
             <Fragment>
@@ -103,4 +108,4 @@ export default connect(
     availableArchive: availableArchive(state, ownProps.moduleCode),
   }),
   { fetchModuleArchive: fetchAllModuleArchive },
-)(ModuleNotFoundPage);
+)(ModuleNotFoundPageComponent);
