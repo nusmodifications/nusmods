@@ -32,6 +32,7 @@ import styles from './ModulePageContent.scss';
 
 type Props = {
   module: Module,
+  archiveYear?: string,
 };
 
 type State = {
@@ -81,6 +82,13 @@ export default class ModulePageContent extends Component<Props, State> {
         <RefreshPrompt />
 
         <CorsNotification />
+
+        {this.props.archiveYear && (
+          <div className="alert alert-warning">
+            You are looking at archived information of this module from academic year{' '}
+            <strong>{this.props.archiveYear}</strong>. Information on this page may be out of date.
+          </div>
+        )}
 
         <div className="row">
           <div className="col-md-9">

@@ -126,7 +126,7 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
     }
 
     if (module && ModulePageContent) {
-      return <ModulePageContent module={module} />;
+      return <ModulePageContent module={module} archiveYear={this.props.archiveYear} />;
     }
 
     return <LoadingSpinner />;
@@ -149,7 +149,8 @@ const mapStateToProps = (state: StoreState, ownProps) => {
     archiveYear: year,
     moduleCode,
     moduleExists: year
-      ? isFailure(state, fetchArchiveRequest(moduleCode, year))
+      ? // Use !isFailure to account for loading state
+        !isFailure(state, fetchArchiveRequest(moduleCode, year))
       : state.moduleBank.moduleCodes[moduleCode],
     module: year
       ? get(state.moduleBank.moduleArchive, [moduleCode, year], null)
