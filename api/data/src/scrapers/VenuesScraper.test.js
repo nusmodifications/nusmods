@@ -1,6 +1,6 @@
 import VenuesScraper from './VenuesScraper';
 
-describe('VenuesScraper', () => {
+describe(VenuesScraper, () => {
   const scraper = new VenuesScraper();
   const FIELDS = ['school_id', 'name', 'type', 'owned_by'];
 

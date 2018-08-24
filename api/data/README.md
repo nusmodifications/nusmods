@@ -29,25 +29,31 @@ through the code and schema.
     $ yarn start # start the GraphQL server
     ```
 
-#### Incomplete scraper set up (optional)
+### Database Setup
 
-There is an incomplete (and unused) scraper implementation present in this
-project as well. It is intended to replace the existing scrapers at some point,
-and save all scraped data straight to a SQLite database instead of saving to
-static files.
-
-Currently, it is incomplete and can't do anything useful, but this is how to
-set it up if you want to work on it.
+This project includes a `dbfy` script, which populates the SQLite database with
+module and venue data from the JSON files. It is intended to be used by the
+GraphQL server in the future.
 
 1. Copy `.env.example` to a file named `.env`.
 
 1. Download and install [sqlite3](https://www.sqlite.org/download.html).
 
+1. Set `NODE_ENV`.
+
+1. Ensure that the JSON data files are in the `dataFolder` directory as
+   specified in config.js.
+
 1. Run the following commands in a terminal:
     ```bash
-    $ npx knex migrate:latest # set up db tables
-    $ npx knex seed:run # set up basic information
+    $ yarn db:init # set up db
+    $ yarn dbfy # run dbfy script to populate the db
     ```
+
+Also, there is an incomplete (and unused) scraper implementation present in this
+project. It is intended to replace the existing scrapers at some point, and
+save all scraped data straight to a SQLite database instead of saving to static
+files. Currently, it is incomplete and can't do anything useful.
 
 ## REST API
 
