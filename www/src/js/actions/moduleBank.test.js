@@ -19,3 +19,15 @@ test('fetchModule should return a request action', () => {
   const resultOfAction = actions.fetchModule('CS1010S');
   expect(resultOfAction).toMatchSnapshot();
 });
+
+test('fetchModuleArchive should return a request action', () => {
+  expect(actions.fetchModuleArchive('CS1010S', '2016/2017')).toMatchSnapshot();
+});
+
+test('fetchAllModuleArchive should return multiple request actions', () => {
+  const dispatch = jest.fn().mockReturnValue(Promise.resolve());
+  const thunk = actions.fetchAllModuleArchive('CS1010S');
+  expect(thunk).toEqual(expect.any(Function));
+  thunk(dispatch);
+  expect(dispatch.mock.calls).toMatchSnapshot();
+});
