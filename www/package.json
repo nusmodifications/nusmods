@@ -24,7 +24,7 @@
   "license": "MIT",
   "devDependencies": {
     "autodll-webpack-plugin": "0.3.9",
-    "autoprefixer": "8.2.0",
+    "autoprefixer": "8.6.5",
     "babel-cli": "6.26.0",
     "babel-core": "6.26.0",
     "babel-eslint": "8.2.2",
