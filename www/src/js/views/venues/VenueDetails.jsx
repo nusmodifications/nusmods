@@ -1,5 +1,5 @@
 // @flow
-
+import type { ComponentType } from 'react';
 import React, { Fragment, PureComponent } from 'react';
 import { Link, withRouter, type ContextRouter } from 'react-router-dom';
 import classnames from 'classnames';
@@ -31,7 +31,21 @@ type Props = {
   matchBreakpoint: boolean,
 };
 
-export class VenueDetailsComponent extends PureComponent<Props> {
+type State = {
+  VenueLocation: ComponentType<*>,
+};
+
+export class VenueDetailsComponent extends PureComponent<Props, State> {
+  state = {
+    VenueLocation: null,
+  };
+
+  componentDidMount() {
+    import(/* webpackChunkName: venue */ 'views/venues/VenueLocation')
+      .then((module) => this.setState({ VenueLocation: module.default }))
+      .catch((error) => console.error(error));
+  }
+
   arrangedLessons() {
     const lessons = flatMap(this.props.availability, (day): VenueLesson[] =>
       mergeDualCodedModules(day.Classes),
@@ -43,6 +57,7 @@ export class VenueDetailsComponent extends PureComponent<Props> {
 
   render() {
     const { venue, previous, next, matchBreakpoint, history } = this.props;
+    const { VenueLocation } = this.state;
 
     return (
       <Fragment>
@@ -73,6 +88,8 @@ export class VenueDetailsComponent extends PureComponent<Props> {
             {next} <ChevronRight />
           </Link>
         </header>
+
+        {VenueLocation && <VenueLocation venue={venue} />}
 
         <div className={classnames(styles.timetable, { verticalMode: matchBreakpoint })}>
           <Timetable
