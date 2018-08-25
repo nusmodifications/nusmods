@@ -43,7 +43,7 @@ export class VenueDetailsComponent extends PureComponent<Props, State> {
   componentDidMount() {
     import(/* webpackChunkName: venue */ 'views/venues/VenueLocation')
       .then((module) => this.setState({ VenueLocation: module.default }))
-      .catch((error) => console.error(error));
+      .catch((error) => console.error(error)); // eslint-disable-line no-console
   }
 
   arrangedLessons() {
