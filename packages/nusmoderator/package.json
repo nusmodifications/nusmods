@@ -42,7 +42,7 @@
   "npmName": "nusmoderator",
   "devDependencies": {
     "babel-core": "6.26.0",
-    "babel-eslint": "8.2.2",
+    "babel-eslint": "8.2.6",
     "babel-jest": "22.4.1",
     "babel-preset-env": "1.7.0",
     "documentation": "6.1.0",
