@@ -1,8 +1,5 @@
 import { makeExecutableSchema } from 'graphql-tools';
 import bunyan from 'bunyan';
-import R from 'ramda';
-
-import jsonData from './jsonData';
 
 const log = bunyan.createLogger({ name: 'graphql' });
 
@@ -60,8 +57,8 @@ type Lesson {
 
 # the schema allows the following query:
 type Query {
-  modules(acadYear: String!, first: Int, offset: Int): [Module]!
-  module(acadYear: String!, code: String!): Module!
+  modules(acadYear: String!, first: Int, offset: Int): [Module!]!
+  module(acadYear: String!, code: String!): Module
 }
 
 schema {
@@ -72,15 +69,11 @@ schema {
 const Resolvers = {
   Query: {
     modules(root, { acadYear, first, offset }) {
-      const yearData = jsonData[acadYear];
-      if (yearData == null) {
-        return null;
-      }
-      const modules = Object.values(yearData);
+      const modules = [];
       return modules.slice(offset, offset ? offset + first : first);
     },
     module(root, { acadYear, code }) {
-      return R.path([acadYear, code], jsonData);
+      return null;
     },
   },
 };
