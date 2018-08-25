@@ -1,5 +1,8 @@
 import { makeExecutableSchema } from 'graphql-tools';
 import bunyan from 'bunyan';
+import R from 'ramda';
+
+import jsonData from './jsonData';
 
 const log = bunyan.createLogger({ name: 'graphql' });
 
@@ -18,7 +21,6 @@ type Module {
   # Refers to the history of the module throughout semesters
   history: [ModuleInfo]!
 }
-
 # Describes a particular module for a semester
 type ModuleInfo {
   semester: Int
@@ -28,7 +30,6 @@ type ModuleInfo {
   examVenue: String
   timetable: [Lesson]
 }
-
 # Bidding stats for Cors
 type CorsBiddingStats {
   quota: Int
@@ -43,7 +44,6 @@ type CorsBiddingStats {
   round: String
   group: String
 }
-
 # A lesson conducted, may it be a lecture, laboratory or lecture
 type Lesson {
   classNo: String!
@@ -54,13 +54,11 @@ type Lesson {
   endTime: String!
   venue: String!
 }
-
 # the schema allows the following query:
 type Query {
-  modules(acadYear: String!, first: Int, offset: Int): [Module!]!
-  module(acadYear: String!, code: String!): Module
+  modules(acadYear: String!, first: Int, offset: Int): [Module]!
+  module(acadYear: String!, code: String!): Module!
 }
-
 schema {
   query: Query
 }
@@ -69,11 +67,15 @@ schema {
 const Resolvers = {
   Query: {
     modules(root, { acadYear, first, offset }) {
-      const modules = [];
+      const yearData = jsonData[acadYear];
+      if (yearData == null) {
+        return [];
+      }
+      const modules = Object.values(yearData);
       return modules.slice(offset, offset ? offset + first : first);
     },
     module(root, { acadYear, code }) {
-      return null;
+      return R.path([acadYear, code], jsonData);
     },
   },
 };

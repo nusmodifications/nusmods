@@ -21,7 +21,7 @@ jest.mock('./jsonData', () => ({
 }));
 
 describe('graphql', () => {
-  it('should be null when modules are not found', async () => {
+  it('should be empty when modules are not found', async () => {
     const query = gql`
       query {
         modules(acadYear: "2017-2018") {
@@ -31,7 +31,8 @@ describe('graphql', () => {
     `;
     const { data } = await graphql(schema, query);
 
-    expect(data).toBeNull();
+    expect(data).not.toBeNull();
+    expect(data.modules).toEqual([]);
   });
 
   it('should be not be null when modules are found', async () => {
