@@ -1,6 +1,6 @@
 import { graphql } from 'graphql';
-import { makeExecutableSchema } from 'graphql-tools';
-import index from './index';
+import { makeExecutableSchema } from 'apollo-server';
+import index from './';
 
 const schema = makeExecutableSchema(index);
 
