@@ -1,6 +1,6 @@
 # ![](docs/nusmods-logo.png)
 
-[![Backers on Open Collective](https://opencollective.com/nusmods/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/nusmods/sponsors/badge.svg)](#sponsors) [![Coverage Status](https://coveralls.io/repos/github/nusmodifications/nusmods/badge.svg?branch=master)](https://coveralls.io/github/nusmodifications/nusmods?branch=master) [![CircleCI Build Status](https://circleci.com/gh/nusmodifications/nusmods.svg?style=shield)](https://circleci.com/gh/nusmodifications/nusmods) [![ghit.me](https://ghit.me/badge.svg?repo=nusmodifications/nusmods)](https://ghit.me/repo/nusmodifications/nusmods)
+[![Backers on Open Collective](https://opencollective.com/nusmods/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/nusmods/sponsors/badge.svg)](#sponsors) [![Coverage Status](https://coveralls.io/repos/github/nusmodifications/nusmods/badge.svg?branch=master)](https://coveralls.io/github/nusmodifications/nusmods?branch=master) [![CircleCI Build Status](https://circleci.com/gh/nusmodifications/nusmods.svg?style=shield)](https://circleci.com/gh/nusmodifications/nusmods)
 
 Help contribute to NUSMods!
 
@@ -38,18 +38,18 @@ Read our [contributing guide](CONTRIBUTING.md) to learn about our development pr
 
 To help you get your feet wet and get you familiar with our contribution process, we have a list of [good first issues](https://github.com/nusmodifications/nusmods/labels/good%20first%20issue) that contain bugs and small features which have a relatively limited scope. This is a great place to get started.
 
-## Contributors
+### Contributors
 
 This project exists thanks to all the people who contributed. [[Contribute](CONTRIBUTING.md)].
-<a href="https://opencollective.com/nusmods#contributors"><img src="https://opencollective.com/nusmods/contributors.svg?width=890&button=false" /></a>
+<a href="graphs/contributors"><img src="https://opencollective.com/nusmods/contributors.svg?width=890&button=false" /></a>
 
-## Backers
+### Backers
 
 Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/nusmods#backer)]
 
 <a href="https://opencollective.com/nusmods#backers" target="_blank"><img src="https://opencollective.com/nusmods/backers.svg?width=890"></a>
 
-## Sponsors
+### Sponsors
 
 Support this project by becoming a sponsor. Your logo/profile picture will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/nusmods#sponsor)]
 
