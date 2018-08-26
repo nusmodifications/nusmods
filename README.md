@@ -18,11 +18,11 @@ This monorepo consists of 5 projects. Further details can be found at the links 
 
 We can be reached via the following methods, in order of preference.
 
-* Telegram: https://telegram.me/nusmods
-* Messenger: https://www.m.me/nusmods
-* Facebook: https://www.facebook.com/nusmods
-* Twitter: https://twitter.com/nusmods
-* Email: nusmods@googlegroups.com
+- Telegram: https://telegram.me/nusmods
+- Messenger: https://www.m.me/nusmods
+- Facebook: https://www.facebook.com/nusmods
+- Twitter: https://twitter.com/nusmods
+- Email: nusmods@googlegroups.com
 
 ## Contributing
 
@@ -40,9 +40,8 @@ To help you get your feet wet and get you familiar with our contribution process
 
 ## Contributors
 
-This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
-<a href="graphs/contributors"><img src="https://opencollective.com/nusmods/contributors.svg?width=890&button=false" /></a>
-
+This project exists thanks to all the people who contributed. [[Contribute](CONTRIBUTING.md)].
+<a href="https://opencollective.com/nusmods#contributors"><img src="https://opencollective.com/nusmods/contributors.svg?width=890&button=false" /></a>
 
 ## Backers
 
@@ -50,10 +49,9 @@ Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com
 
 <a href="https://opencollective.com/nusmods#backers" target="_blank"><img src="https://opencollective.com/nusmods/backers.svg?width=890"></a>
 
-
 ## Sponsors
 
-Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/nusmods#sponsor)]
+Support this project by becoming a sponsor. Your logo/profile picture will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/nusmods#sponsor)]
 
 <a href="https://opencollective.com/nusmods/sponsor/0/website" target="_blank"><img src="https://opencollective.com/nusmods/sponsor/0/avatar.svg"></a>
 <a href="https://opencollective.com/nusmods/sponsor/1/website" target="_blank"><img src="https://opencollective.com/nusmods/sponsor/1/avatar.svg"></a>
@@ -65,8 +63,6 @@ Support this project by becoming a sponsor. Your logo will show up here with a l
 <a href="https://opencollective.com/nusmods/sponsor/7/website" target="_blank"><img src="https://opencollective.com/nusmods/sponsor/7/avatar.svg"></a>
 <a href="https://opencollective.com/nusmods/sponsor/8/website" target="_blank"><img src="https://opencollective.com/nusmods/sponsor/8/avatar.svg"></a>
 <a href="https://opencollective.com/nusmods/sponsor/9/website" target="_blank"><img src="https://opencollective.com/nusmods/sponsor/9/avatar.svg"></a>
-
-
 
 ## License
 
