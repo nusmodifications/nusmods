@@ -43,17 +43,13 @@ export default class VenueLocation extends PureComponent<Props> {
     return (
       <div className={styles.location}>
         <p>
-          <strong>
-            {capitalize(location.roomName)} ({this.props.venue}){' '}
-          </strong>
+          <strong>{capitalize(location.roomName)}</strong> ({this.props.venue}){' '}
           {location.floor && (
             <Fragment>
-              is on floor <strong>{floorName(location.floor)}</strong>
+              is on <strong>floor {floorName(location.floor)}</strong>
             </Fragment>
-          )}
+          )}.
         </p>
-
-        <hr />
 
         <div className={styles.mapWrapper}>
           <ExternalLink
@@ -70,6 +66,11 @@ export default class VenueLocation extends PureComponent<Props> {
             <Marker position={position} icon={icon} />
           </Map>
         </div>
+
+        <p>
+          See a problem with the map?{' '}
+          <ExternalLink href="https://www.openstreetmap.org/fixthemap">Help fix it!</ExternalLink>
+        </p>
       </div>
     );
   }

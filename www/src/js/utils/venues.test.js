@@ -9,8 +9,8 @@ import {
   sortVenues,
   getDuplicateModules,
   mergeDualCodedModules,
+  floorName,
 } from './venues';
-import { floorName } from 'utils/venues';
 
 const venues = sortVenues(venueInfo);
 const getVenues = (...names) => venues.filter(([name]) => names.includes(name));

@@ -1,7 +1,7 @@
 @import '~styles/utils/modules-entry';
 
 .location {
-  margin-bottom: 4rem;
+  margin-bottom: 2rem;
 
   @include media-breakpoint-down(sm) {
     margin: 0 $grid-gutter-width / 2;
@@ -10,6 +10,7 @@
 
 .mapWrapper {
   position: relative;
+  margin-bottom: 0.4rem;
 }
 
 .map {
