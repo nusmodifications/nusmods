@@ -104,3 +104,7 @@ export function mergeDualCodedModules(classes: VenueLesson[]): VenueLesson[] {
 
   return mergedModules;
 }
+
+export function floorName(floor: number): string {
+  return floor < 0 ? `B${-floor}` : String(floor);
+}
