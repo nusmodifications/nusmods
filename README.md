@@ -41,7 +41,7 @@ To help you get your feet wet and get you familiar with our contribution process
 ### Contributors
 
 This project exists thanks to all the people who contributed. [[Contribute](CONTRIBUTING.md)].
-<a href="graphs/contributors"><img src="https://opencollective.com/nusmods/contributors.svg?width=890&button=false" /></a>
+<a href="https://github.com/nusmodifications/nusmods/graphs/contributors"><img src="https://opencollective.com/nusmods/contributors.svg?width=890&button=false" /></a>
 
 ### Backers
 
