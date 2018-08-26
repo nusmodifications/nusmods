@@ -181,7 +181,7 @@
   },
   "LT10": {
     "nusRoomCode": "LT10",
-    "roomName": "FEMALE TOILET",
+    "roomName": "Lecture Theatre 10",
     "floor": 2,
     "location": {
       "x": 103.7720594590288,
@@ -1061,7 +1061,7 @@
   },
   "LT26": {
     "nusRoomCode": "LT26",
-    "roomName": "MALE TOILET",
+    "roomName": "LECTURE THEATRE 26",
     "floor": 1,
     "location": {
       "x": 103.78110405867265,
