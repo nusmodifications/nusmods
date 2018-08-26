@@ -37,6 +37,8 @@ export default class VenueLocation extends PureComponent<Props> {
     }
 
     const position = [location.location.y, location.location.x];
+    // Query param for https://developers.google.com/maps/documentation/urls/guide#search-action
+    const googleMapQuery = encodeURIComponent(position.join(','));
 
     return (
       <div className={styles.location}>
@@ -55,7 +57,7 @@ export default class VenueLocation extends PureComponent<Props> {
 
         <div className={styles.mapWrapper}>
           <ExternalLink
-            href={`https://www.google.com/maps/@${location.location.y},${location.location.x},17z`}
+            href={`https://www.google.com/maps/search/?api=1&query=${googleMapQuery}`}
             className={classnames('btn btn-sm btn-primary', styles.gmapBtn)}
           >
             Open in Google Maps
