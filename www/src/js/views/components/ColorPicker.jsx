@@ -31,7 +31,7 @@ class ColorPicker extends PureComponent<Props> {
     const { label, color, isHidden } = this.props;
 
     return (
-      <div className={styles.container} {...getMenuProps()}>
+      <div className={styles.container}>
         <button
           {...getToggleButtonProps({
             title: label,
@@ -41,7 +41,7 @@ class ColorPicker extends PureComponent<Props> {
           })}
         />
         {isOpen && (
-          <div className={styles.palette}>
+          <div className={styles.palette} {...getMenuProps()}>
             {_.range(NUM_DIFFERENT_COLORS).map((index: ColorIndex) => (
               <button
                 {...getItemProps({ item: index })}

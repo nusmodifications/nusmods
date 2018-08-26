@@ -119,8 +119,16 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
               clearSelection();
             }}
           >
-            {({ getInputProps, getItemProps, openMenu, isOpen, inputValue, highlightedIndex }) => (
-              <div className="dropdown">
+            {({
+              getInputProps,
+              getItemProps,
+              openMenu,
+              isOpen,
+              inputValue,
+              highlightedIndex,
+              getMenuProps,
+            }) => (
+              <div className="dropdown" {...getMenuProps()}>
                 <div
                   className={classnames(styles.searchWrapper, {
                     [styles.focused]: this.state.isFocused,

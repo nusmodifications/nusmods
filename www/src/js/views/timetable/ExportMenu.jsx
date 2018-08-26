@@ -65,6 +65,7 @@ export class ExportMenuComponent extends PureComponent<Props, State> {
   renderDropdown: ChildrenFunction<ExportAction> = ({
     isOpen,
     getItemProps,
+    getMenuProps,
     toggleMenu,
     highlightedIndex,
   }) => {
@@ -86,7 +87,10 @@ export class ExportMenuComponent extends PureComponent<Props, State> {
         </button>
 
         {isOpen && (
-          <div className={classnames('dropdown-menu show', styles.dropdownMenu)}>
+          <div
+            className={classnames('dropdown-menu show', styles.dropdownMenu)}
+            {...getMenuProps()}
+          >
             <Online>
               <a
                 href={exportApi.image(semester, state, window.devicePixelRatio)}

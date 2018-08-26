@@ -87,6 +87,7 @@ class ModulesSelect extends Component<Props, State> {
     getLabelProps,
     getInputProps,
     getItemProps,
+    getMenuProps,
     isOpen,
     inputValue,
     highlightedIndex,
@@ -116,7 +117,7 @@ class ModulesSelect extends Component<Props, State> {
           })}
         />
         {showResults && (
-          <ol className={styles.selectList}>
+          <ol className={styles.selectList} {...getMenuProps()}>
             {results.map(
               (module, index) =>
                 module.isAdded ? (

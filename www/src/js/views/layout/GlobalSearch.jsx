@@ -84,6 +84,7 @@ class GlobalSearch extends Component<Props, State> {
     getLabelProps,
     getInputProps,
     getItemProps,
+    getMenuProps,
     isOpen,
     inputValue,
     highlightedIndex,
@@ -175,7 +176,7 @@ class GlobalSearch extends Component<Props, State> {
 
         {/* Wrap select list in absolute-positioned container to fix macOS Safari scrolling perf */}
         <div className={styles.selectListContainer}>
-          <div className={styles.selectList}>
+          <div className={styles.selectList} {...getMenuProps()}>
             {hasModules && (
               <Fragment>
                 <div
@@ -219,6 +220,7 @@ class GlobalSearch extends Component<Props, State> {
                 ))}
               </Fragment>
             )}
+
             {hasVenues && (
               <Fragment>
                 <div
