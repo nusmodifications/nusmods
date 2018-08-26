@@ -14,6 +14,7 @@ import styles from './Announcements.scss';
 type Props = {
   toggleFeedback: Function,
 };
+
 type State = {
   isOpen: boolean,
 };
@@ -34,7 +35,7 @@ class Announcements extends PureComponent<Props, State> {
 
     this.state = {
       // Set to constant false to turn off announcement
-      isOpen: key ? !storage.getItem(key) : true,
+      isOpen: false, // key ? !storage.getItem(key) : true,
     };
   }
 

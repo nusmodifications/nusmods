@@ -4,6 +4,7 @@
 [include]
 
 [libs]
+node_modules/downshift/flow-typed/npm
 
 [options]
 module.name_mapper='^\(actions\|apis\|bootstrapping\|config\|data\|middlewares\|reducers\|storage\|stores\|types\|utils\|views\|test-utils\)\/?\(.*\)$' -> '<PROJECT_ROOT>/src/js/\1/\2'
