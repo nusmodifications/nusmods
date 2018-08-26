@@ -1,5 +1,5 @@
 import path from 'path';
-import R from 'ramda';
+import _ from 'lodash';
 
 const fs = jest.genMockFromModule('fs-extra');
 
@@ -21,7 +21,7 @@ fs.readFile = async (filePath) => fs.readFileSync(filePath);
 // file list set via setMock
 fs.readdirSync = (directoryPath) => {
   const pathArr = directoryPath.split(path.sep);
-  return Object.keys(R.path(pathArr, mockFiles)) || [];
+  return Object.keys(_.get(mockFiles, pathArr)) || [];
 };
 
 // A custom version of `readdir` that reads from the special mocked out
@@ -38,7 +38,7 @@ fs.readdir = async (directoryPath) => fs.readdirSync(directoryPath);
 fs.readJson = async (directoryPath) => {
   const pathArr = directoryPath.split(path.sep);
   try {
-    return JSON.parse(R.path(pathArr, mockFiles));
+    return JSON.parse(_.get(mockFiles, pathArr));
   } catch (error) {
     return Promise.reject(error);
   }
@@ -50,7 +50,7 @@ fs.readJson = async (directoryPath) => {
  */
 fs.readJsonSync = (directoryPath) => {
   const pathArr = directoryPath.split(path.sep);
-  return JSON.parse(R.path(pathArr, mockFiles));
+  return JSON.parse(_.get(mockFiles, pathArr));
 };
 
 /**

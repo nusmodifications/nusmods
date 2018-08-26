@@ -3,7 +3,9 @@
     [
       "env",
       {
-        "targets": { "node": "current" },
+        "targets": {
+          "node": "current"
+        },
         "modules": false,
         "loose": true,
         "useBuiltIns": true
@@ -19,5 +21,10 @@
     "test": {
       "plugins": ["transform-es2015-modules-commonjs"]
     }
-  }
+  },
+  "plugins": [
+    ["transform-object-rest-spread", {
+      "useBuiltIns": true
+    }]
+  ],
 }

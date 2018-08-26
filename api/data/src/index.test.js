@@ -1,5 +1,8 @@
 import { graphql } from 'graphql';
-import schema from './index';
+import { makeExecutableSchema } from 'graphql-tools';
+import index from './index';
+
+const schema = makeExecutableSchema(index);
 
 const gql = (x) => x.raw[0]; // identify function for template literals
 
@@ -110,9 +113,9 @@ describe('graphql', () => {
         }
       }
     `;
-    const { data } = await graphql(schema, query);
+    const { data: { module } } = await graphql(schema, query);
 
-    expect(data).toBeNull();
+    expect(module).toBeNull();
   });
 
   it('should not be null when module is valid', async () => {
