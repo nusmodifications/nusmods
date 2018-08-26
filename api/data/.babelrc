@@ -6,7 +6,6 @@
         "targets": {
           "node": "current"
         },
-        "modules": false,
         "loose": true,
         "useBuiltIns": true
       }
@@ -14,14 +13,6 @@
     "flow",
     "bluebird"
   ],
-  "env": {
-    "development": {
-      "plugins": ["transform-es2015-modules-commonjs"]
-    },
-    "test": {
-      "plugins": ["transform-es2015-modules-commonjs"]
-    }
-  },
   "plugins": [
     ["transform-object-rest-spread", {
       "useBuiltIns": true
