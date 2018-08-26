@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import { has } from 'lodash';
-import Downshift from 'downshift';
+import Downshift, { type ChildrenFunction } from 'downshift';
 import classnames from 'classnames';
 
 import type { ModuleSelectList } from 'types/reducers';
@@ -16,7 +16,7 @@ import elements from 'views/elements';
 import styles from './ModulesSelect.scss';
 
 type Props = {
-  getFilteredModules: (string) => ModuleSelectList,
+  getFilteredModules: (?string) => ModuleSelectList,
   onChange: (ModuleCode) => void,
   moduleCount: number,
   placeholder: string,
@@ -83,15 +83,14 @@ class ModulesSelect extends Component<Props, State> {
 
   // downshift attaches label for us; autofocus only applies to modal
   /* eslint-disable jsx-a11y/label-has-for, jsx-a11y/no-autofocus */
-  // TODO: Inject types from downshift when https://github.com/paypal/downshift/pull/180 is implemented
-  renderDropdown = ({
+  renderDropdown: ChildrenFunction<string> = ({
     getLabelProps,
     getInputProps,
     getItemProps,
     isOpen,
     inputValue,
     highlightedIndex,
-  }: any) => {
+  }) => {
     const { placeholder, disabled } = this.props;
     const { isModalOpen } = this.state;
     const results = this.props.getFilteredModules(inputValue);
@@ -175,13 +174,14 @@ class ModulesSelect extends Component<Props, State> {
     const downshiftComponent = (
       <Downshift
         onOuterClick={this.onOuterClick}
-        render={this.renderDropdown}
         onStateChange={this.onStateChange}
         inputValue={this.state.inputValue}
         isOpen={this.state.isOpen}
         selectedItem={this.state.selectedItem}
         defaultHighlightedIndex={0}
-      />
+      >
+        {this.renderDropdown}
+      </Downshift>
     );
 
     if (matchBreakpoint) {

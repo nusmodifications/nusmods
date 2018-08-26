@@ -114,19 +114,12 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
         ) : (
           /* Use a search-select combo dropdown on desktop */
           <Downshift
-            breakingChanges={{ resetInputOnSelection: true }}
             onChange={(selectedItem, { clearSelection }) => {
               this.onSelectItem(selectedItem);
               clearSelection();
             }}
-            render={({
-              getInputProps,
-              getItemProps,
-              openMenu,
-              isOpen,
-              inputValue,
-              highlightedIndex,
-            }) => (
+          >
+            {({ getInputProps, getItemProps, openMenu, isOpen, inputValue, highlightedIndex }) => (
               <div className="dropdown">
                 <div
                   className={classnames(styles.searchWrapper, {
@@ -186,7 +179,7 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
                 )}
               </div>
             )}
-          />
+          </Downshift>
         )}
 
         {/* Show all filters that have been selected at some point */}

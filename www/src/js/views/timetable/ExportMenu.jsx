@@ -1,7 +1,7 @@
 // @flow
 
 import React, { PureComponent } from 'react';
-import Downshift from 'downshift';
+import Downshift, { type ChildrenFunction } from 'downshift';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
@@ -62,7 +62,12 @@ export class ExportMenuComponent extends PureComponent<Props, State> {
 
   closeMacOSWarningModal = () => this.setState({ isMacWarningOpen: false });
 
-  renderDropdown = ({ isOpen, getItemProps, toggleMenu, highlightedIndex }: any) => {
+  renderDropdown: ChildrenFunction<ExportAction> = ({
+    isOpen,
+    getItemProps,
+    toggleMenu,
+    highlightedIndex,
+  }) => {
     const { semester, state } = this.props;
     const counter = new Counter();
 
@@ -138,7 +143,7 @@ export class ExportMenuComponent extends PureComponent<Props, State> {
   };
 
   render() {
-    return <Downshift onSelect={this.onSelect} render={this.renderDropdown} />;
+    return <Downshift onSelect={this.onSelect}>{this.renderDropdown}</Downshift>;
   }
 }
 

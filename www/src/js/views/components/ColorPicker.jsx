@@ -1,7 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
 import classnames from 'classnames';
-import Downshift from 'downshift';
+import Downshift, { type ChildrenFunction } from 'downshift';
 import _ from 'lodash';
 
 import type { ColorIndex } from 'types/reducers';
@@ -22,12 +22,16 @@ type Props = {
  * For use in places like changing module colors
  */
 class ColorPicker extends PureComponent<Props> {
-  // TODO: Inject types from downshift when https://github.com/paypal/downshift/pull/180 is implemented
-  renderColorPicker = ({ getToggleButtonProps, getItemProps, isOpen }: any) => {
+  renderColorPicker: ChildrenFunction<ColorIndex> = ({
+    getToggleButtonProps,
+    getItemProps,
+    getMenuProps,
+    isOpen,
+  }) => {
     const { label, color, isHidden } = this.props;
 
     return (
-      <div className={styles.container}>
+      <div className={styles.container} {...getMenuProps()}>
         <button
           {...getToggleButtonProps({
             title: label,
@@ -55,10 +59,9 @@ class ColorPicker extends PureComponent<Props> {
 
   render() {
     return (
-      <Downshift
-        onChange={(colorIndex) => this.props.onChooseColor(colorIndex)}
-        render={this.renderColorPicker}
-      />
+      <Downshift onChange={(colorIndex) => this.props.onChooseColor(colorIndex)}>
+        {this.renderColorPicker}
+      </Downshift>
     );
   }
 }

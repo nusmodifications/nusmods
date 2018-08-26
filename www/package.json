@@ -113,7 +113,7 @@
     "bowser": "1.9.4",
     "classnames": "2.2.6",
     "core-js": "2.5.3",
-    "downshift": "1.31.16",
+    "downshift": "2.1.5",
     "ical-generator": "https://github.com/ZhangYiJiang/ical-generator.git#ed6928fe",
     "immutability-helper": "2.7.1",
     "json2mq": "0.2.0",
