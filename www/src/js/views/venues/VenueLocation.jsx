@@ -6,7 +6,11 @@ import classnames from 'classnames';
 import { capitalize } from 'lodash';
 import type { VenueLocation as VenueLocationItem } from 'types/venues';
 import ExternalLink from 'views/components/ExternalLink';
+import Modal from 'views/components/Modal';
+import CloseButton from 'views/components/CloseButton';
+import { Map as MapIcon, MapPin } from 'views/components/icons';
 import { floorName } from 'utils/venues';
+import config from 'config';
 import marker from 'img/marker-icon.png';
 import marker2x from 'img/marker-icon-2x.png';
 
@@ -16,6 +20,10 @@ import styles from './VenueLocation.scss';
 
 type Props = {
   venue: string,
+};
+
+type State = {
+  isFeedbackModalOpen: boolean,
 };
 
 const icon = new Icon({
@@ -28,7 +36,13 @@ const icon = new Icon({
   tooltipAnchor: [16, -28],
 });
 
-export default class VenueLocation extends PureComponent<Props> {
+export default class VenueLocation extends PureComponent<Props, State> {
+  state = {
+    isFeedbackModalOpen: false,
+  };
+
+  onCloseFeedbackModal = () => this.setState({ isFeedbackModalOpen: false });
+
   render() {
     const location: ?VenueLocationItem = venueLocations[this.props.venue];
 
@@ -67,10 +81,39 @@ export default class VenueLocation extends PureComponent<Props> {
           </Map>
         </div>
 
-        <p>
-          See a problem with the map?{' '}
-          <ExternalLink href="https://www.openstreetmap.org/fixthemap">Help fix it!</ExternalLink>
-        </p>
+        <button
+          className={classnames(styles.feedbackBtn, 'btn btn-primary btn-outline-primary')}
+          onClick={() => this.setState({ isFeedbackModalOpen: true })}
+        >
+          Report a problem
+        </button>
+
+        <hr />
+
+        <Modal isOpen={this.state.isFeedbackModalOpen} onRequestClose={this.onCloseFeedbackModal}>
+          <CloseButton onClick={this.onCloseFeedbackModal} />
+          <div className="container">
+            <div className={classnames('row', styles.feedback)}>
+              <h2 className="col-sm-12">Report a problem</h2>
+
+              <div className="col-sm-6">
+                <ExternalLink href="https://www.openstreetmap.org/fixthemap">
+                  <MapIcon />
+                  <h3>Problem with map data</h3>
+                  <p>eg. incorrect building outline, missing walkways</p>
+                </ExternalLink>
+              </div>
+
+              <div className="col-sm-6">
+                <ExternalLink href={config.contact.messenger}>
+                  <MapPin />
+                  <h3>Problem with venue data</h3>
+                  <p>eg. incorrect room name, floor, location of the map pin</p>
+                </ExternalLink>
+              </div>
+            </div>
+          </div>
+        </Modal>
       </div>
     );
   }
