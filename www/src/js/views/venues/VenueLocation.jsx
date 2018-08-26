@@ -6,6 +6,7 @@ import classnames from 'classnames';
 import { capitalize } from 'lodash';
 import type { VenueLocation as VenueLocationItem } from 'types/venues';
 import ExternalLink from 'views/components/ExternalLink';
+import { floorName } from 'utils/venues';
 import marker from 'img/marker-icon.png';
 import marker2x from 'img/marker-icon-2x.png';
 
@@ -45,7 +46,7 @@ export default class VenueLocation extends PureComponent<Props> {
           </strong>
           {location.floor && (
             <Fragment>
-              is on floor <strong>{location.floor}</strong>
+              is on floor <strong>{floorName(location.floor)}</strong>
             </Fragment>
           )}
         </p>

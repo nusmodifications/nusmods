@@ -10,6 +10,7 @@ import {
   getDuplicateModules,
   mergeDualCodedModules,
 } from './venues';
+import { floorName } from 'utils/venues';
 
 const venues = sortVenues(venueInfo);
 const getVenues = (...names) => venues.filter(([name]) => names.includes(name));
@@ -183,5 +184,19 @@ describe(mergeDualCodedModules, () => {
       makeVenueLesson('GEK1901', { WeekText: 'Odd Week' }),
       makeVenueLesson('GET1001', { WeekText: 'Even Week' }),
     ]);
+  });
+});
+
+describe(floorName, () => {
+  it('should add B to basement floors', () => {
+    expect(floorName(-1)).toEqual('B1');
+    expect(floorName(-2)).toEqual('B2');
+    expect(floorName(-5)).toEqual('B5');
+  });
+
+  it('should not add B to above ground floors', () => {
+    expect(floorName(1)).toEqual('1');
+    expect(floorName(2)).toEqual('2');
+    expect(floorName(5)).toEqual('5');
   });
 });
