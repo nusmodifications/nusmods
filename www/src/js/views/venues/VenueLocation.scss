@@ -1,7 +1,24 @@
+@import '~styles/utils/modules-entry';
+
 .location {
   margin-bottom: 4rem;
+
+  @include media-breakpoint-down(sm) {
+    margin: 0 $grid-gutter-width / 2;
+  }
+}
+
+.mapWrapper {
+  position: relative;
 }
 
 .map {
   height: 30rem;
+}
+
+.gmapBtn {
+  position: absolute;
+  top: 0.1rem;
+  right: 0.1rem;
+  z-index: 1000;
 }

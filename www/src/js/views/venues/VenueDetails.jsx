@@ -4,6 +4,7 @@ import React, { Fragment, PureComponent } from 'react';
 import { Link, withRouter, type ContextRouter } from 'react-router-dom';
 import classnames from 'classnames';
 import { flatMap } from 'lodash';
+import Raven from 'raven-js';
 
 import type { DayAvailability, Venue, VenueLesson } from 'types/venues';
 import type { Lesson } from 'types/modules';
@@ -17,6 +18,7 @@ import { modulePage, venuePage } from 'views/routes/paths';
 import Title from 'views/components/Title';
 import { mergeDualCodedModules } from 'utils/venues';
 import { breakpointDown } from 'utils/css';
+import { retry } from 'utils/promise';
 
 import styles from './VenueDetails.scss';
 
@@ -41,9 +43,15 @@ export class VenueDetailsComponent extends PureComponent<Props, State> {
   };
 
   componentDidMount() {
-    import(/* webpackChunkName: venue */ 'views/venues/VenueLocation')
+    retry(
+      3,
+      () => import(/* webpackChunkName: venue */ 'views/venues/VenueLocation'),
+      (error) => error.message.includes('Loading chunk ') && window.navigator.onLine,
+    )
       .then((module) => this.setState({ VenueLocation: module.default }))
-      .catch((error) => console.error(error)); // eslint-disable-line no-console
+      .catch((error) => {
+        Raven.captureException(error);
+      });
   }
 
   arrangedLessons() {
