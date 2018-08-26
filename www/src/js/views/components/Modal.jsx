@@ -9,7 +9,6 @@ import styles from './Modal.scss';
 
 type Props = {
   isOpen: boolean,
-  onRequestClose: () => void,
   overlayClassName?: string,
   className?: string,
   children: Node,
@@ -40,15 +39,7 @@ export default class Modal extends Component<Props> {
   }
 
   render() {
-    const {
-      className,
-      overlayClassName,
-      children,
-      fullscreen,
-      animate,
-      onRequestClose,
-      ...rest
-    } = this.props;
+    const { className, overlayClassName, children, fullscreen, animate, ...rest } = this.props;
 
     return (
       <ReactModal
@@ -57,7 +48,6 @@ export default class Modal extends Component<Props> {
           [styles.fullscreen]: fullscreen,
           [styles.animated]: animate,
         })}
-        onRequestClose={onRequestClose}
         closeTimeoutMS={animate ? 200 : 0}
         {...rest}
       >

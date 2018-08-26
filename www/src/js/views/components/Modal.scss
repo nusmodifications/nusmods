@@ -21,7 +21,7 @@
   .animated {
     :global {
       // Update closeTimeoutMS prop in Modal.jsx if this duration is changed
-      animation: zoomOut 0.2s forwards;
+      animation: zoomOut 0.15s forwards;
     }
   }
 }
