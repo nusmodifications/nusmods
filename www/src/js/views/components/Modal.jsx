@@ -48,7 +48,7 @@ export default class Modal extends Component<Props> {
           [styles.fullscreen]: fullscreen,
           [styles.animated]: animate,
         })}
-        closeTimeoutMS={animate ? 200 : 0}
+        closeTimeoutMS={animate ? 150 : 0}
         {...rest}
       >
         {children}
