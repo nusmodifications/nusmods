@@ -5,8 +5,8 @@ exports.seed = (knex) =>
     .then(() =>
       // Inserts seed entries
       knex('schools').insert([
-        { name: 'National Univerity of Singapore', abbreviation: 'NUS' },
-        { name: 'National Technological Univesity', abbreviation: 'NTU' },
-        { name: 'Singapore Management University', abbreviation: 'SMU' },
+        { long_name: 'National University of Singapore', short_name: 'NUS' },
+        { long_name: 'National Technological University', short_name: 'NTU' },
+        { long_name: 'Singapore Management University', short_name: 'SMU' },
       ]),
     );
