@@ -120,7 +120,7 @@
     "leaflet": "1.3.4",
     "lodash": "4.17.5",
     "mousetrap": "1.6.2",
-    "no-scroll": "2.1.0",
+    "no-scroll": "2.1.1",
     "nusmoderator": "2.1.1",
     "query-string": "5.0.0",
     "raven-for-redux": "1.3.1",
