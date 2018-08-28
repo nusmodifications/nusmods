@@ -1,5 +1,9 @@
 @import '~styles/utils/modules-entry';
 
+.noLocation {
+  text-align: center;
+}
+
 .location {
   margin-bottom: 2rem;
 
@@ -25,9 +29,18 @@
 }
 
 .feedbackBtn {
+  :global(.btn) {
+    margin: 0 0 0 0.4rem;
+  }
+
   @include media-breakpoint-down(sm) {
-    display: block;
-    width: 100%;
+    text-align: center;
+
+    :global(.btn) {
+      display: block;
+      width: 100%;
+      margin: 0.3rem 0 0 0;
+    }
   }
 }
 
@@ -41,6 +54,7 @@
   a {
     display: block;
     padding: 2rem 1rem;
+    margin-bottom: 1rem;
     color: var(--body-color);
     border: 1px solid var(--gray-lighter);
     border-radius: 0.4rem;
