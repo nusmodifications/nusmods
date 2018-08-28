@@ -7,3 +7,7 @@ declare module '@material/fab' {
 declare module '@material/snackbar' {
   declare module.exports: any;
 }
+
+declare module 'leaflet' {
+  declare module.exports: any;
+}

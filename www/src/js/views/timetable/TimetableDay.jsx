@@ -24,7 +24,7 @@ type Props = {
 };
 
 // Height of timetable per hour in vertical mode
-const VERTICAL_HEIGHT = 2;
+const VERTICAL_HEIGHT = 2.4;
 
 function TimetableDay(props: Props) {
   const columns = props.endingIndex - props.startingIndex;

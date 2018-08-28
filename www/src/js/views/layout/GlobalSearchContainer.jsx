@@ -58,7 +58,7 @@ export class SearchContainerComponent extends Component<Props> {
     this.props.history.push(`${path}?q=${encodeURIComponent(query)}`);
   };
 
-  getResults = (inputValue: string): ?SearchResult => {
+  getResults = (inputValue: ?string): ?SearchResult => {
     if (!inputValue || inputValue.length < MIN_INPUT_LENGTH) {
       return null;
     }
