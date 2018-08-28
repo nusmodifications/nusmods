@@ -24,6 +24,7 @@ export class FeedbackModalComponent extends PureComponent<Props> {
         isOpen={this.props.isOpen}
         onRequestClose={this.props.toggleFeedback}
         className={styles.modal}
+        animate
       >
         <CloseButton absolutePositioned onClick={this.props.toggleFeedback} />
         <div className={styles.content}>

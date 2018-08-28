@@ -153,6 +153,7 @@ export class KeyboardShortcutsComponent extends PureComponent<Props, State> {
         isOpen={this.state.helpShown}
         onRequestClose={this.closeModal}
         className={styles.modal}
+        animate
       >
         <h2>Keyboard shortcuts</h2>
 
