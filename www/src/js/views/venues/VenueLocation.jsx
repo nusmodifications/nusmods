@@ -142,12 +142,12 @@ export default class VenueLocation extends PureComponent<Props, State> {
         )}
 
         <p className={styles.feedbackBtn}>
-          See a problem? Help us{' '}
+          See a problem?{' '}
           <button
             className={classnames('btn btn-primary btn-outline-primary')}
             onClick={() => this.setState({ isFeedbackModalOpen: true })}
           >
-            Improve this map
+            Help us improve this map
           </button>
         </p>
 
