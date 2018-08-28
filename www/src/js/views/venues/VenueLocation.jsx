@@ -153,7 +153,11 @@ export default class VenueLocation extends PureComponent<Props, State> {
 
         <hr />
 
-        <Modal isOpen={this.state.isFeedbackModalOpen} onRequestClose={this.onCloseFeedbackModal}>
+        <Modal
+          isOpen={this.state.isFeedbackModalOpen}
+          onRequestClose={this.onCloseFeedbackModal}
+          animate
+        >
           <CloseButton onClick={this.onCloseFeedbackModal} />
           <div className="container">
             <div className={classnames('row flex-fill', styles.feedback)}>
