@@ -128,7 +128,11 @@ export class ExportMenuComponent extends PureComponent<Props, State> {
           </div>
         )}
 
-        <Modal isOpen={this.state.isMacWarningOpen} onRequestClose={this.closeMacOSWarningModal}>
+        <Modal
+          isOpen={this.state.isMacWarningOpen}
+          onRequestClose={this.closeMacOSWarningModal}
+          animate
+        >
           <div className={styles.modalContent}>
             <AlertTriangle />
             <p>The calendar you have just downloaded may not work with the macOS Calendar app.</p>
