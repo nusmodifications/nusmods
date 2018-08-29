@@ -86,6 +86,145 @@ Both SCSS and CSS variables (aka. custom properties) are used. In most cases, **
 
 Currently CSS variables are used only for colors that change under night mode.
 
+### Fetching data
+
+We use Redux actions to make REST requests. This allows us to store request status in the Redux store, making it available to any component that needs it, and also allows the Redux store to cache the results from requests to make it offline if necessary. Broadly, our strategy corresponds to
+
+#### Writing request actions
+
+To write an action that makes a request, simple call and return the result from `requestAction(key: string, type?: string, options: AxiosXHRConfig)`.
+
+- `type` should describe what the action is fetching, eg. `FETCH_MODULE`. By convention these actions should start with `FETCH_`.
+- `key` should be unique for each endpoint the action calls. If the action will only call one endpoint then key can be omitted, and type will be used automatically. For example, fetch module calls a different endpoint for each module, so the key used is `FETCH_MODULE_[Module Code]`.
+- `options` is passed directly to `axios()`, so [see its documentation][axios-config] for the full list of configs. Minimally `url` should be specified.
+
+**Example**
+
+```js
+import { requestAction } from 'actions/requests';
+
+export const FETCH_DATA = 'FETCH_DATA';
+export function fetchData() {
+  return requestAction(FETCH_DATA, {
+    url: 'http://example.com/api/my-data'
+  });
+}
+```
+
+#### Calling actions from components
+
+Components should dispatch the action to fetch data. The dispatch function returns a Promise of the request response which the component can consume.
+
+**Example**
+
+```js
+import { fetchData } from 'actions/example';
+
+interface Props {
+  fetchData: () => Promise<MyData>,
+}
+
+interface State {
+  data: ?MyData,
+  error?: any,
+}
+
+class MyComponent extends Component<Props> {
+  componentDidMount() {
+    this.props.fetchData()
+      .then(data => this.setState({ data }))
+      .catch(error => this.setState({ error });
+  }
+
+  render() {
+    const { data, error } = this.state;
+
+    if (error) {
+      return <ErrorPage />;
+    }
+
+    if (!data) {
+      return <LoadingSpinner />;
+    }
+
+    // Render something with the data
+  }
+}
+
+export default connect(null, { fetchData })(MyComponent);
+```
+
+#### Caching data
+
+To make the data available offline, the data must be stored in the Redux store which is then persisted. To do this create a reducer which listens to [request type] + SUCCESS. The payload of the action is the result of the API call. Then in the component, instead of using the result from the Promise directly, we
+
+This is the [cache-then-network strategy described in the Offline Cookbook][offline-cookbook] and is similar to Workbox's revalidate-while-stale strategy.
+
+**Note:** This assumes the result from the API will not be significantly different after it is loaded. If this is not the case, you might want to use another strategy, otherwise the user may be surprised by the content of the page changing while they're reading it.
+
+**Reducer example**
+
+```js
+import { SUCCESS } from 'types/reducers';
+import { FETCH_DATA } from 'actions/example';
+
+export function exampleBank(state: ExampleBank, action: FSA): ExampleBank {
+  switch(action.type) {
+    case FETCH_DATA + SUCCESS:
+      return action.payload;
+
+    // Other actions...
+  }
+
+  return state;
+}
+```
+
+**Component example**
+
+```
+interface Props {
+  myData: ?MyData,
+  fetchData: () => Promise<MyData>,
+}
+
+interface State {
+  error?: any,
+}
+
+class MyComponent extends Component<Props> {
+  componentDidMount() {
+    this.props.fetchData()
+      .catch(error => this.setState({ error });
+  }
+
+  render() {
+    const { data, error } = this.state;
+
+    // ErrorPage is only show if there is no cached data available
+    // and the request failed
+    if (error && !data) {
+      return <ErrorPage />;
+    }
+
+    if (!data) {
+      return <LoadingSpinner />;
+    }
+
+    // Render something with the data
+  }
+}
+
+export default connect(state => ({
+  myData: state.exampleBank,
+}), { fetchData })(MyComponent);
+```
+
+#### Getting request status
+
+If you need to access the status of a request from outside the component which initiated the request, you can use the `isSuccess` and `isFailure` selectors to get the status of any request given its key.
+
+
 ### Testing and Linting
 
 We use [Jest][jest] with [Enzyme][enzyme] to test our code and React components, [Flow][flow] for typechecking, [Stylelint][stylelint] and [ESLint][eslint] using [Airbnb config][eslint-airbnb] and [Prettier][prettier] for linting and formatting.
@@ -112,6 +251,27 @@ $ yarn lint:scripts
 
 # Run Flow type checking
 $ yarn flow
+```
+
+#### End to End testing
+
+We currently have some simple E2E tests set up courtesy of Browserstack using Nightwatch. The purpose of this is mainly to catch major regression in browsers at the older end of our browser support matrix (Safari 9, Edge, Firefox ESR) which can be difficult to test manually.
+
+By default the tests are ran against http://staging.nusmods.com, although they can be configured to run against any host, including localhost if you use [Browserstack's local testing feature](https://www.browserstack.com/local-testing#command-line).
+
+```sh
+# All commands must include BROWSERSTACK_USER and BROWSERSTACK_ACCESS_KEY env variables
+# these are omitted for brevity
+
+# Run end to end test against staging
+yarn e2e
+
+# Run against deploy preview
+LAUNCH_URL="https://deploy-preview-1024--nusmods.netlify.com" yarn e2e
+
+# Enable local testing
+./BrowserStackLocal --key $BROWSERSTACK_ACCESS_KEY
+LAUNCH_URL="http://localhost:8080" lOCAL_TEST=1 yarn e2e
 ```
 
 ### Deployment
@@ -197,3 +357,5 @@ Components should keep their styles and tests in the same directory with the sam
 [stylelint]: https://stylelint.io/
 [zames-guide]: https://medium.com/@zameschua/getting-my-feet-wet-my-experience-with-open-source-and-nusmods-f1381450517e
 [css-modules]: https://github.com/css-modules/css-modules
+[offline-cookbook]: https://developers.google.com/web/fundamentals/instant-and-offline/offline-cookbook/#cache-then-network
+[axios-config]: https://github.com/axios/axios#request-config

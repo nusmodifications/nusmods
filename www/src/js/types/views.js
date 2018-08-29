@@ -1,8 +1,8 @@
 // @flow
 import FilterGroup from 'utils/filters/FilterGroup';
-import type { Department, Faculty } from './modules';
+import type { Department, Faculty, ModuleCondensed } from './modules';
 import type { ModuleList } from './reducers';
-import type { VenueList } from './venues';
+import type { Venue, VenueList } from './venues';
 
 export type ComponentMap = {|
   globalSearchInput: ?HTMLInputElement,
@@ -11,15 +11,21 @@ export type ComponentMap = {|
 
 /* layout/GlobalSearch */
 export type ResultType = 'VENUE' | 'MODULE' | 'SEARCH';
-export const VENUE_RESULT: ResultType = 'VENUE';
-export const MODULE_RESULT: ResultType = 'MODULE';
-export const SEARCH_RESULT: ResultType = 'SEARCH';
+export const VENUE_RESULT = 'VENUE';
+export const MODULE_RESULT = 'MODULE';
+export const SEARCH_RESULT = 'SEARCH';
 
 export type SearchResult = {
   modules: ModuleList,
   venues: VenueList,
   tokens: string[],
 };
+
+// Flow doesn't accept tuple disjoint unions https://github.com/facebook/flow/issues/4296
+export type SearchItem =
+  | { type: 'VENUE', venue: Venue }
+  | { type: 'MODULE', module: ModuleCondensed }
+  | { type: 'SEARCH', result: 'MODULE' | 'VENUE', term: string };
 
 /* browse/ModuleFinderContainer */
 export type FilterGroupId = string;
@@ -50,3 +56,5 @@ export type DisqusConfig = {
   url: string,
   title: string,
 };
+
+export type ModuleTableOrder = 'exam' | 'mc' | 'code';

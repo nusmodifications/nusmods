@@ -1,5 +1,6 @@
 // @flow
 import type { ContextRouter } from 'react-router-dom';
+import type { $AxiosError } from 'axios';
 
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
@@ -12,7 +13,7 @@ import type { Module, ModuleCode } from 'types/modules';
 
 import { fetchModule } from 'actions/moduleBank';
 import { retry } from 'utils/promise';
-import ErrorPage from 'views/errors/ErrorPage';
+import ApiError from 'views/errors/ApiError';
 import ModuleNotFoundPage from 'views/errors/ModuleNotFoundPage';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import { modulePage } from 'views/routes/paths';
@@ -23,7 +24,7 @@ type Props = {
   moduleCode: ModuleCode,
   moduleCodes: ModuleCodeMap,
   module: ?Module,
-  fetchModule: (ModuleCode) => void,
+  fetchModule: (ModuleCode) => Promise<*>,
 };
 
 type State = {
@@ -53,19 +54,7 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
 
   componentDidMount() {
     this.fetchModule(this.props.moduleCode);
-
-    // Try importing ModulePageContent thrice if we're online and
-    // getting the "Loading chunk x failed." error.
-    retry(
-      3,
-      () => import(/* webpackChunkName: "module" */ 'views/modules/ModulePageContent'),
-      (error) => error.message.includes('Loading chunk ') && window.navigator.onLine,
-    )
-      .then((module) => this.setState({ ModulePageContent: module.default }))
-      .catch((error) => {
-        Raven.captureException(error);
-        this.setState({ error });
-      });
+    this.fetchPageImport();
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -76,9 +65,26 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
 
   fetchModule(moduleCode: ModuleCode) {
     if (this.doesModuleExist(moduleCode)) {
-      this.props.fetchModule(moduleCode);
+      this.props.fetchModule(moduleCode).catch(this.handleFetchError);
     }
   }
+
+  fetchPageImport() {
+    // Try importing ModulePageContent thrice if we're online and
+    // getting the "Loading chunk x failed." error.
+    retry(
+      3,
+      () => import(/* webpackChunkName: "module" */ 'views/modules/ModulePageContent'),
+      (error) => error.message.includes('Loading chunk ') && window.navigator.onLine,
+    )
+      .then((module) => this.setState({ ModulePageContent: module.default }))
+      .catch(this.handleFetchError);
+  }
+
+  handleFetchError = (error: $AxiosError<*>) => {
+    this.setState({ error });
+    Raven.captureException(error);
+  };
 
   doesModuleExist(moduleCode: ModuleCode): boolean {
     return !!this.props.moduleCodes[moduleCode];
@@ -97,8 +103,10 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
       return <ModuleNotFoundPage moduleCode={moduleCode} />;
     }
 
-    if (error) {
-      return <ErrorPage eventId={Raven.lastEventId()} />;
+    // If there is an error, but module already exists, we assume module has
+    // been loaded at some point, so we just show that instead
+    if (error && !module) {
+      return <ApiError dataName="module information" retry={() => this.fetchModule(moduleCode)} />;
     }
 
     if (module && match.url !== this.canonicalUrl()) {

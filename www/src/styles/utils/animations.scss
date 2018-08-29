@@ -34,6 +34,17 @@
   }
 }
 
+@keyframes zoomOut {
+  50% {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);

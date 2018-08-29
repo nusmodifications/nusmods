@@ -52,6 +52,7 @@
   float: left;
   width: 25%;
   margin-bottom: 0.4rem;
+  color: var(--body-color);
   background: none;
 
   @include media-breakpoint-down('sm') {

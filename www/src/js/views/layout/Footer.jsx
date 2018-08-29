@@ -3,7 +3,7 @@ import type { State } from 'reducers';
 
 import React from 'react';
 import classnames from 'classnames';
-import { connect, type MapStateToProps } from 'react-redux';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import ExternalLink from 'views/components/ExternalLink';
@@ -102,11 +102,12 @@ export function FooterComponent(props: Props) {
   );
 }
 
-const mapStateToProps: MapStateToProps<*, *, *> = (state: State) => {
-  const lastUpdatedString = state.moduleBank.apiLastUpdatedTimestamp;
-  return {
-    lastUpdatedDate: lastUpdatedString && new Date(lastUpdatedString),
-  };
-};
-
-export default connect(mapStateToProps, { toggleFeedback })(FooterComponent);
+export default connect(
+  (state: State) => {
+    const lastUpdatedString = state.moduleBank.apiLastUpdatedTimestamp;
+    return {
+      lastUpdatedDate: lastUpdatedString && new Date(lastUpdatedString),
+    };
+  },
+  { toggleFeedback },
+)(FooterComponent);

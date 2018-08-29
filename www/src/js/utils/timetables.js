@@ -11,6 +11,7 @@ import type {
   ModuleCode,
   RawLesson,
   Semester,
+  WeekText,
 } from 'types/modules';
 import type {
   HoverLesson,
@@ -324,6 +325,56 @@ function parseModuleConfig(serialized: ?string): ModuleLessonConfig {
   });
 
   return config;
+}
+
+/**
+ * Formats numeric week number string into something human readable
+ *
+ * - 1           => Week 1
+ * - 1,2         => Weeks 1,2
+ * - 1,2,3       => Weeks 1-3
+ * - 1,2,3,4,5,6 => Weeks 1-3, 4-6
+ */
+export function formatWeekNumber(weekText: WeekText) {
+  // Check if this is a numeric week number list and bail if it's not
+  const weeks = weekText.split(',').map((week) => parseInt(week.trim(), 10));
+  if (weeks.some(Number.isNaN)) {
+    return weekText;
+  }
+
+  if (weeks.length === 1) {
+    return `Week ${weeks[0]}`;
+  }
+
+  // Find consecutive week numbers
+  const processed = [];
+  let start = weeks.shift();
+  let last = start;
+
+  const mergeConsecutive = () => {
+    if (last - start > 2) {
+      processed.push(`${start}-${last}`);
+    } else {
+      processed.push(..._.range(start, last + 1));
+    }
+  };
+
+  while (weeks.length) {
+    const next = weeks.shift();
+    if (next - last === 1) {
+      // Consecutive week number - keep going
+      last = next;
+    } else {
+      // Break = push the current chunk into processed
+      mergeConsecutive();
+      start = next;
+      last = start;
+    }
+  }
+
+  mergeConsecutive();
+
+  return `Weeks ${processed.join(', ')}`;
 }
 
 // Converts a timetable config to query string

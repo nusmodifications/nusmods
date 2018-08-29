@@ -1,5 +1,8 @@
 import { graphql } from 'graphql';
-import schema from './index';
+import { makeExecutableSchema } from 'apollo-server';
+import index from './';
+
+const schema = makeExecutableSchema(index);
 
 const gql = (x) => x.raw[0]; // identify function for template literals
 
@@ -21,7 +24,7 @@ jest.mock('./jsonData', () => ({
 }));
 
 describe('graphql', () => {
-  it('should be null when modules are not found', async () => {
+  it('should be empty when modules are not found', async () => {
     const query = gql`
       query {
         modules(acadYear: "2017-2018") {
@@ -31,7 +34,8 @@ describe('graphql', () => {
     `;
     const { data } = await graphql(schema, query);
 
-    expect(data).toBeNull();
+    expect(data).not.toBeNull();
+    expect(data.modules).toEqual([]);
   });
 
   it('should be not be null when modules are found', async () => {
@@ -56,7 +60,9 @@ describe('graphql', () => {
         }
       }
     `;
-    const { data: { modules } } = await graphql(schema, query);
+    const {
+      data: { modules },
+    } = await graphql(schema, query);
 
     expect(modules).toHaveLength(2);
   });
@@ -69,7 +75,9 @@ describe('graphql', () => {
         }
       }
     `;
-    const { data: { modules } } = await graphql(schema, query);
+    const {
+      data: { modules },
+    } = await graphql(schema, query);
 
     expect(modules).toHaveLength(1);
   });
@@ -82,7 +90,9 @@ describe('graphql', () => {
         }
       }
     `;
-    const { data: { modules } } = await graphql(schema, query);
+    const {
+      data: { modules },
+    } = await graphql(schema, query);
 
     expect(modules).toHaveLength(0);
   });
@@ -95,7 +105,9 @@ describe('graphql', () => {
         }
       }
     `;
-    const { data: { modules } } = await graphql(schema, query);
+    const {
+      data: { modules },
+    } = await graphql(schema, query);
 
     expect(modules).toHaveLength(1);
     expect(modules[0].code).toBe('anotherTestCode');
@@ -109,9 +121,11 @@ describe('graphql', () => {
         }
       }
     `;
-    const { data } = await graphql(schema, query);
+    const {
+      data: { module },
+    } = await graphql(schema, query);
 
-    expect(data).toBeNull();
+    expect(module).toBeNull();
   });
 
   it('should not be null when module is valid', async () => {

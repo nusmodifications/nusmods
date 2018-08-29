@@ -60,7 +60,9 @@ export default function initializeServiceWorker(store: Store<*, *, *>) {
       // Refresh the service worker regularly so that the user gets the update
       // notice if they leave the tab open for a while
       const updateIntervalId = window.setInterval(() => {
-        registration.update();
+        if (navigator.onLine) {
+          registration.update();
+        }
       }, 60 * 60 * 1000);
 
       // When the user asks to refresh the UI, we'll need to reload the window

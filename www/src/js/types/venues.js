@@ -36,3 +36,15 @@ export type VenueSearchOptions = {
 };
 
 export type VenueDetailList = [Venue, DayAvailability[]][];
+
+export type VenueLocation = {
+  nusRoomCode?: string,
+  roomName: string,
+  floor: ?number,
+  location?: { x: number, y: number, z: number },
+};
+
+export type LatLngTuple = [number, number];
+
+// data/venues.json is of this type
+export type VenueLocationMap = { [string]: VenueLocation };

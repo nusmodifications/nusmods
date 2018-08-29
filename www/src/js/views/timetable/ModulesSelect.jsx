@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import { has } from 'lodash';
-import Downshift from 'downshift';
+import Downshift, { type ChildrenFunction } from 'downshift';
 import classnames from 'classnames';
 
 import type { ModuleSelectList } from 'types/reducers';
@@ -11,11 +11,12 @@ import { breakpointUp } from 'utils/css';
 import makeResponsive from 'views/hocs/makeResponsive';
 import Modal from 'views/components/Modal';
 import CloseButton from 'views/components/CloseButton';
+import elements from 'views/elements';
 
 import styles from './ModulesSelect.scss';
 
 type Props = {
-  getFilteredModules: (string) => ModuleSelectList,
+  getFilteredModules: (?string) => ModuleSelectList,
   onChange: (ModuleCode) => void,
   moduleCount: number,
   placeholder: string,
@@ -82,15 +83,15 @@ class ModulesSelect extends Component<Props, State> {
 
   // downshift attaches label for us; autofocus only applies to modal
   /* eslint-disable jsx-a11y/label-has-for, jsx-a11y/no-autofocus */
-  // TODO: Inject types from downshift when https://github.com/paypal/downshift/pull/180 is implemented
-  renderDropdown = ({
+  renderDropdown: ChildrenFunction<string> = ({
     getLabelProps,
     getInputProps,
     getItemProps,
+    getMenuProps,
     isOpen,
     inputValue,
     highlightedIndex,
-  }: any) => {
+  }) => {
     const { placeholder, disabled } = this.props;
     const { isModalOpen } = this.state;
     const results = this.props.getFilteredModules(inputValue);
@@ -105,7 +106,7 @@ class ModulesSelect extends Component<Props, State> {
         </label>
         <input
           {...getInputProps({
-            className: styles.input,
+            className: classnames(styles.input, elements.addModuleInput),
             autoFocus: isModalOpen,
             placeholder,
             disabled,
@@ -116,7 +117,7 @@ class ModulesSelect extends Component<Props, State> {
           })}
         />
         {showResults && (
-          <ol className={styles.selectList}>
+          <ol className={styles.selectList} {...getMenuProps()}>
             {results.map(
               (module, index) =>
                 module.isAdded ? (
@@ -174,13 +175,14 @@ class ModulesSelect extends Component<Props, State> {
     const downshiftComponent = (
       <Downshift
         onOuterClick={this.onOuterClick}
-        render={this.renderDropdown}
         onStateChange={this.onStateChange}
         inputValue={this.state.inputValue}
         isOpen={this.state.isOpen}
         selectedItem={this.state.selectedItem}
         defaultHighlightedIndex={0}
-      />
+      >
+        {this.renderDropdown}
+      </Downshift>
     );
 
     if (matchBreakpoint) {
@@ -189,7 +191,11 @@ class ModulesSelect extends Component<Props, State> {
 
     return (
       <div>
-        <button className={styles.input} onClick={this.openSelect} disabled={disabled}>
+        <button
+          className={classnames(styles.input, elements.addModuleInput)}
+          onClick={this.openSelect}
+          disabled={disabled}
+        >
           {this.props.placeholder}
         </button>
         <Modal

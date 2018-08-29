@@ -67,12 +67,7 @@ export class AddModuleDropdownComponent extends PureComponent<Props, State> {
 
   buttonLabel(semester: Semester) {
     if (this.state.loading === semester) {
-      return (
-        <Fragment>
-          Adding...<br />
-          <strong>{config.semesterNames[semester]}</strong>
-        </Fragment>
-      );
+      return 'Adding...';
     }
 
     const hasModule = isModuleOnTimetable(semester, this.props.timetables, this.props.module);
@@ -105,7 +100,7 @@ export class AddModuleDropdownComponent extends PureComponent<Props, State> {
     /* eslint-disable jsx-a11y/label-has-for */
     return (
       <Downshift>
-        {({ getLabelProps, getItemProps, isOpen, toggleMenu, highlightedIndex }) => (
+        {({ getLabelProps, getItemProps, isOpen, toggleMenu, highlightedIndex, getMenuProps }) => (
           <div>
             <label {...getLabelProps({ htmlFor: id })} className="sr-only">
               Add module to timetable
@@ -141,7 +136,7 @@ export class AddModuleDropdownComponent extends PureComponent<Props, State> {
               )}
 
               {isOpen && (
-                <div className="dropdown-menu show">
+                <div className="dropdown-menu show" {...getMenuProps()}>
                   {otherSemesters.map((semester, index) => (
                     <button
                       {...getItemProps({ item: semester })}

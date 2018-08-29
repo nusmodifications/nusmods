@@ -28,11 +28,11 @@ Simply open up the [bug report form](https://github.com/nusmodifications/nusmods
 
 We can be reached via the following methods, in order of preference.
 
-* Telegram: https://telegram.me/nusmods
-* Messenger: https://www.m.me/nusmods
-* Facebook: https://www.facebook.com/nusmods
-* Twitter: https://twitter.com/nusmods
-* Email: nusmods@googlegroups.com
+- Telegram: https://telegram.me/nusmods
+- Messenger: https://www.m.me/nusmods
+- Facebook: https://www.facebook.com/nusmods
+- Twitter: https://twitter.com/nusmods
+- Email: nusmods@googlegroups.com
 
 ## Proposing a Change
 
@@ -67,8 +67,8 @@ Before submitting a pull request, please make sure the following is done:
 
 ## Contribution Prerequisites
 
-* You have [Node](https://nodejs.org/) installed at v8.0.0+ and [Yarn](https://yarnpkg.com/en/) at v1.2.0+. We recommend using [nvm](https://github.com/creationix/nvm) to manage your Node versions.
-* You are familiar with Git.
+- You have [Node](https://nodejs.org/) installed at v8.0.0+ and [Yarn](https://yarnpkg.com/en/) at v1.2.0+. We recommend using [nvm](https://github.com/creationix/nvm) to manage your Node versions.
+- You are familiar with Git.
 
 ## Development Workflow
 

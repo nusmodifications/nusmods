@@ -1,6 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
 import { values, flattenDeep, noop } from 'lodash';
+import classnames from 'classnames';
 
 import type { Lesson } from 'types/modules';
 import type { HoverLesson, TimetableArrangement } from 'types/timetables';
@@ -12,6 +13,7 @@ import {
   getCurrentHours,
   getCurrentMinutes,
 } from 'utils/timify';
+import elements from 'views/elements';
 
 import styles from './Timetable.scss';
 import TimetableTimings from './TimetableTimings';
@@ -84,7 +86,7 @@ class Timetable extends PureComponent<Props, State> {
 
     return (
       <div>
-        <div className={styles.container}>
+        <div className={classnames(styles.container, elements.timetable)}>
           <TimetableTimings startingIndex={startingIndex} endingIndex={endingIndex} />
           <ol className={styles.days}>
             {schoolDays.map((day, index) => (

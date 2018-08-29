@@ -32,9 +32,14 @@ export type Config = {
 
   disqusShortname: string,
   googleAnalyticsId: string,
+  venueFeedbackForm: {
+    url: string,
+    query: { [string]: string },
+  },
 
   semesterNames: { [Semester]: string },
   shortSemesterNames: { [Semester]: string },
+  timetableAvailable: Semester[],
 
   defaultPreferences: {
     theme: string,

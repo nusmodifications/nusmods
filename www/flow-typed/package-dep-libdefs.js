@@ -8,6 +8,6 @@ declare module '@material/snackbar' {
   declare module.exports: any;
 }
 
-declare module 'bowser' {
+declare module 'leaflet' {
   declare module.exports: any;
 }

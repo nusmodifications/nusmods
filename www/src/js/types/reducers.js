@@ -3,12 +3,13 @@ import type {
   Faculty,
   Lesson,
   ModuleCode,
-  SearchableModule,
   ModuleCondensed,
+  SearchableModule,
   Semester,
 } from 'types/modules';
 import type { Mode } from 'types/settings';
 import type { TimetableConfig } from 'types/timetables';
+import type { ModuleTableOrder } from 'types/views';
 
 /* app.js */
 export type NotificationOptions = {
@@ -55,16 +56,19 @@ export type AppState = {
 };
 
 /* requests.js */
-export type RequestType = string;
+export type RequestKey = string;
+
+export type ApiStatus = '_REQUEST' | '_SUCCESS' | '_FAILURE';
+export const REQUEST = '_REQUEST';
+export const SUCCESS = '_SUCCESS';
+export const FAILURE = '_FAILURE';
 
 export type FetchRequest = {
-  isPending: boolean,
-  isSuccessful: boolean,
-  isFailure: boolean,
+  status: ApiStatus,
   error?: any,
 };
 
-export type Requests = { [RequestType]: FetchRequest };
+export type Requests = { [RequestKey]: FetchRequest };
 
 /* theme.js */
 export type TimetableOrientation = 'HORIZONTAL' | 'VERTICAL';
@@ -90,6 +94,7 @@ export type SettingsState = {
   +mode: Mode,
   +hiddenInTimetable: ModuleCode[],
   +corsNotification: CorsNotificationSettings,
+  +moduleTableOrder: ModuleTableOrder,
 };
 
 /* timetables.js */

@@ -18,13 +18,13 @@
     "forever": "0.15.3",
     "fs-extra": "5.0.0",
     "http-graceful-shutdown": "2.1.1",
-    "koa": "2.5.0",
+    "koa": "2.5.2",
     "koa-router": "7.4.0",
     "koa-views": "6.1.4",
     "lodash": "4.17.5",
     "nodemon": "1.17.2",
     "pug": "2.0.3",
     "puppeteer": "1.2.0",
-    "raven": "2.4.2"
+    "raven": "2.6.3"
   }
 }

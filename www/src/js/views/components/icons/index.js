@@ -23,6 +23,7 @@ import Image from 'react-feather/dist/icons/image';
 import Layers from 'react-feather/dist/icons/layers';
 import LinkedIn from 'react-feather/dist/icons/linkedin';
 import Map from 'react-feather/dist/icons/map';
+import MapPin from 'react-feather/dist/icons/map-pin';
 import Menu from 'react-feather/dist/icons/menu';
 import MessageSquare from 'react-feather/dist/icons/message-square';
 import Mail from 'react-feather/dist/icons/mail';
@@ -60,6 +61,7 @@ export {
   Image,
   Layers,
   Map,
+  MapPin,
   Menu,
   MessageSquare,
   Mail,

@@ -1,5 +1,10 @@
-@import "~styles/utils/modules-entry";
+@import '~styles/utils/modules-entry';
 
-.snackbar {
+.snackbar:global(.mdc-snackbar) {
   z-index: $snackbar-z-index;
+  background: var(--gray-dark);
+
+  :global(.mdc-snackbar__text) {
+    color: var(--gray-lightest);
+  }
 }
