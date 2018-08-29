@@ -43,13 +43,6 @@ const VENDOR = [
   'prop-types', // gone but not forgotten
 ];
 
-const DLL = {
-  ENTRIES: {
-    vendor: VENDOR,
-  },
-  FILE_FORMAT: '[name].dll.js',
-};
-
 /**
  * Set environment variables (and more).
  *
@@ -322,4 +315,3 @@ exports.appVersion = () => {
 
 exports.PATHS = PATHS;
 exports.VENDOR = VENDOR;
-exports.DLL = DLL;
