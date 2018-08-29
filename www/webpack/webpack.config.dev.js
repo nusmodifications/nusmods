@@ -3,6 +3,7 @@ const merge = require('webpack-merge');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
 const commonConfig = require('./webpack.config.common');
 const parts = require('./webpack.parts');
@@ -40,10 +41,10 @@ const developmentConfig = merge([
       // Waiting on: https://github.com/jantimon/html-webpack-plugin/issues/533
       new webpack.HotModuleReplacementPlugin(),
       // { multiStep: true }
-      // prints more readable module names in the browser console on HMR updates
-      new webpack.NamedModulesPlugin(),
       // do not emit compiled assets that include errors
       new webpack.NoEmitOnErrorsPlugin(),
+      // Caches modules to disk to improve rebuild times
+      new HardSourceWebpackPlugin(),
     ],
   },
   process.env.DEBUG_WORKBOX ? parts.workbox() : {},
