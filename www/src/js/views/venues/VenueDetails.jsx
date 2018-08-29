@@ -45,7 +45,7 @@ export class VenueDetailsComponent extends PureComponent<Props, State> {
   componentDidMount() {
     retry(
       3,
-      () => import(/* webpackChunkName: venue */ 'views/venues/VenueLocation'),
+      () => import(/* webpackChunkName: "venue" */ 'views/venues/VenueLocation'),
       (error) => error.message.includes('Loading chunk ') && window.navigator.onLine,
     )
       .then((module) => this.setState({ VenueLocation: module.default }))
