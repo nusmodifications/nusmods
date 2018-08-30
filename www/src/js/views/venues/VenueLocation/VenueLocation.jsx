@@ -9,9 +9,9 @@ import type { LatLngTuple, VenueLocation as VenueLocationItem } from 'types/venu
 import ExternalLink from 'views/components/ExternalLink';
 import Modal from 'views/components/Modal';
 import CloseButton from 'views/components/CloseButton';
-import { Map as MapIcon, MapPin } from 'views/components/icons';
+import { Map as MapIcon, MapPin } from 'views/components/icons/index';
 import { floorName } from 'utils/venues';
-import config from 'config';
+import config from 'config/index';
 import marker from 'img/marker-icon.png';
 import marker2x from 'img/marker-icon-2x.png';
 
