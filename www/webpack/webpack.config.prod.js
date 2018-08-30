@@ -20,8 +20,8 @@ const config = require('../src/js/config/app-config.json');
  * @see https://survivejs.com/webpack/styling/separating-css/
  */
 const cssExtractPlugin = new MiniCssExtractPlugin({
-  filename: '[name].[chunkhash:8].css',
-  chunkFilename: '[name].[chunkhash:8].css',
+  filename: '[name].[contenthash:8].css',
+  chunkFilename: '[name].[contenthash:8].css',
 });
 
 const productionConfig = merge([
@@ -37,10 +37,10 @@ const productionConfig = merge([
     output: {
       // The build folder.
       path: parts.PATHS.build,
-      filename: '[name].[chunkhash:8].js',
+      filename: '[name].[contenthash:8].js',
       // This is used for require.ensure. The setup
       // will work without but this is useful to set.
-      chunkFilename: '[name].[chunkhash:8].js',
+      chunkFilename: '[name].[contenthash:8].js',
     },
     module: {
       rules: [

@@ -43,8 +43,12 @@ const developmentConfig = merge([
       // { multiStep: true }
       // do not emit compiled assets that include errors
       new webpack.NoEmitOnErrorsPlugin(),
-      // Caches modules to disk to improve rebuild times
-      new HardSourceWebpackPlugin(),
+      // Caches compiled modules to disk to improve rebuild times
+      new HardSourceWebpackPlugin({
+        info: {
+          level: 'info',
+        },
+      }),
     ],
   },
   process.env.DEBUG_WORKBOX ? parts.workbox() : {},
