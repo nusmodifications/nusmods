@@ -12,8 +12,7 @@ import CloseButton from 'views/components/CloseButton';
 import { Map as MapIcon, MapPin } from 'views/components/icons/index';
 import { floorName } from 'utils/venues';
 import config from 'config/index';
-import marker from 'img/marker-icon.png';
-import marker2x from 'img/marker-icon-2x.png';
+import marker from 'img/marker.svg';
 
 /** @var { VenueLocationMap } */
 import venueLocations from 'data/venues.json';
@@ -29,12 +28,10 @@ type State = {
 
 const icon = new Icon({
   iconUrl: marker,
-  iconRetinaUrl: marker2x,
-  // Copied from Icon.Default
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  tooltipAnchor: [16, -28],
+  className: styles.marker,
+  // SVG is 365x560
+  iconSize: [25, 38],
+  iconAnchor: [13, 38],
 });
 
 function renderMap(position: LatLngTuple) {
