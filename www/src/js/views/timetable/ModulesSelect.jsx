@@ -46,9 +46,15 @@ class ModulesSelect extends Component<Props, State> {
   };
 
   onBlur = () => {
-    if (!this.state.inputValue && this.state.isModalOpen) {
-      this.closeSelect();
-    }
+    // A hack to force the onBlur event to be handled after other UI events.
+    // This allows the close button in modal mode to work properly, because
+    // otherwise the blur event will fire before the click event is handled,
+    // and the click event will fire on the wrong element
+    setTimeout(() => {
+      if (!this.state.inputValue && this.state.isModalOpen) {
+        this.closeSelect();
+      }
+    }, 0);
   };
 
   onInputChange = (event) => {
@@ -189,6 +195,8 @@ class ModulesSelect extends Component<Props, State> {
       return downshiftComponent;
     }
 
+    // On smaller screens we use a modal to open the dropdown menu as a
+    // fullscreen menu
     return (
       <div>
         <button
@@ -202,6 +210,7 @@ class ModulesSelect extends Component<Props, State> {
           isOpen={!disabled && isModalOpen}
           onRequestClose={this.closeSelect}
           className={styles.modal}
+          fullscreen
         >
           <CloseButton className={styles.close} onClick={this.closeSelect} />
           {downshiftComponent}
