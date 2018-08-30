@@ -11,20 +11,9 @@ const config = {
   ],
 };
 
-// Use CSSNano in production
+// Use CSSNano in production to minify CSS
 if (process.env.NODE_ENV === 'production') {
-  config.plugins.push(
-    require('cssnano')({
-      preset: [
-        'default',
-        {
-          // mergeLonghand produces incorrect transformations with border
-          // https://github.com/cssnano/cssnano/issues/557
-          mergeLonghand: false,
-        },
-      ],
-    }),
-  );
+  config.plugins.push(require('cssnano'));
 }
 
 module.exports = config;
