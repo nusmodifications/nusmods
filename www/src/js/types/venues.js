@@ -38,10 +38,9 @@ export type VenueSearchOptions = {
 export type VenueDetailList = [Venue, DayAvailability[]][];
 
 export type VenueLocation = {
-  nusRoomCode?: string,
   roomName: string,
   floor: ?number,
-  location?: { x: number, y: number, z: number },
+  location?: { x: number, y: number },
 };
 
 export type LatLngTuple = [number, number];

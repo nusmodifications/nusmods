@@ -50,16 +50,17 @@ const localSource = args[1] || path.resolve(__dirname, '../src/js/data/venues.js
   // while everything else we retain local data. We also ignore remote locations that
   // don't exist
   _.each(remoteVenues, (details, venue) => {
-    if (!localVenues[venue]) {
+    const localVenue = localVenues[venue];
+    if (!localVenue) {
       localVenues[venue] = details;
       return;
     }
 
-    if (localVenues[venue].floor === null) {
+    if (localVenue.floor === null) {
       localVenues[venue].floor = details.floor;
     }
 
-    localVenues[venue].location = details.location;
+    localVenue.location = details.location;
   });
 
   const missingVenues = _.difference(apiVenues, Object.keys(localVenues));

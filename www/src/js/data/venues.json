@@ -1,6 +1,5 @@
 {
   "LT17": {
-    "nusRoomCode": "LT17",
     "roomName": "LECTURE THEATRE 17",
     "floor": 1,
     "location": {
@@ -9,7 +8,6 @@
     }
   },
   "LT16": {
-    "nusRoomCode": "LT16",
     "roomName": "LECTURE THEATRE 16",
     "floor": 1,
     "location": {
@@ -18,7 +16,6 @@
     }
   },
   "BIZ2-0301": {
-    "nusRoomCode": "BIZ2-03-01",
     "roomName": "SEMINAR ROOM 3-1",
     "floor": 3,
     "location": {
@@ -27,7 +24,6 @@
     }
   },
   "BIZ2-0404": {
-    "nusRoomCode": "BIZ2-04-04",
     "roomName": "SEMINAR ROOM 4-4",
     "floor": 4,
     "location": {
@@ -36,7 +32,6 @@
     }
   },
   "BIZ2-0509": {
-    "nusRoomCode": "BIZ2-05-09",
     "roomName": "SEMINAR ROOM 5-9",
     "floor": 5,
     "location": {
@@ -45,7 +40,6 @@
     }
   },
   "BIZ1-0301": {
-    "nusRoomCode": "BIZ1-03-01",
     "roomName": "SEMINAR ROOM 3-1",
     "floor": 3,
     "location": {
@@ -54,7 +48,6 @@
     }
   },
   "BIZ2-0510": {
-    "nusRoomCode": "BIZ2-05-10",
     "roomName": "SEMINAR ROOM 5-10",
     "floor": 5,
     "location": {
@@ -63,7 +56,6 @@
     }
   },
   "BIZ2-0202": {
-    "nusRoomCode": "BIZ2-02-02",
     "roomName": "SEMINAR ROOM 2-2",
     "floor": 2,
     "location": {
@@ -72,7 +64,6 @@
     }
   },
   "BIZ1-0205": {
-    "nusRoomCode": "BIZ1-02-05",
     "roomName": "SEMINAR ROOM 2-5",
     "floor": 2,
     "location": {
@@ -81,7 +72,6 @@
     }
   },
   "BIZ1-0304": {
-    "nusRoomCode": "BIZ1-03-04",
     "roomName": "SEMINAR ROOM 3-4",
     "floor": 3,
     "location": {
@@ -90,7 +80,6 @@
     }
   },
   "BIZ1-0201": {
-    "nusRoomCode": "BIZ1-02-01",
     "roomName": "SEMINAR ROOM 2-1",
     "floor": 2,
     "location": {
@@ -99,7 +88,6 @@
     }
   },
   "BIZ1-0202": {
-    "nusRoomCode": "BIZ1-02-02",
     "roomName": "SEMINAR ROOM 2-2",
     "floor": 2,
     "location": {
@@ -108,7 +96,6 @@
     }
   },
   "BIZ2-0201": {
-    "nusRoomCode": "BIZ2-02-01",
     "roomName": "SEMINAR ROOM 2-1",
     "floor": 2,
     "location": {
@@ -117,7 +104,6 @@
     }
   },
   "BIZ1-0206": {
-    "nusRoomCode": "BIZ1-02-06",
     "roomName": "SEMINAR ROOM 2-6",
     "floor": 2,
     "location": {
@@ -126,7 +112,6 @@
     }
   },
   "BIZ2-B104": {
-    "nusRoomCode": "BIZ2-B1-04",
     "roomName": "SEMINAR ROOM B1-4",
     "floor": -1,
     "location": {
@@ -135,7 +120,6 @@
     }
   },
   "BIZ1-0204": {
-    "nusRoomCode": "BIZ1-02-04",
     "roomName": "SEMINAR ROOM 2-4",
     "floor": 2,
     "location": {
@@ -144,7 +128,6 @@
     }
   },
   "BIZ1-0303": {
-    "nusRoomCode": "BIZ1-03-03",
     "roomName": "SEMINAR ROOM 3-3",
     "floor": 3,
     "location": {
@@ -153,7 +136,6 @@
     }
   },
   "BIZ2-0229": {
-    "nusRoomCode": "BIZ2-02-29",
     "roomName": "SEMINAR ROOM 2-29",
     "floor": 2,
     "location": {
@@ -162,7 +144,6 @@
     }
   },
   "LT10": {
-    "nusRoomCode": "LT10",
     "roomName": "Lecture Theatre 10",
     "floor": 2,
     "location": {
@@ -171,7 +152,6 @@
     }
   },
   "AS7-0214": {
-    "nusRoomCode": "AS7-02-14",
     "roomName": "TUTORIAL ROOM",
     "floor": 2,
     "location": {
@@ -180,7 +160,6 @@
     }
   },
   "AS8-0402": {
-    "nusRoomCode": "AS8-04-02",
     "roomName": "FASS TUTORIAL ROOM",
     "floor": 4,
     "location": {
@@ -189,7 +168,6 @@
     }
   },
   "AS7-0102": {
-    "nusRoomCode": "AS7-01-02",
     "roomName": "SEMINAR ROOM",
     "floor": 1,
     "location": {
@@ -198,7 +176,6 @@
     }
   },
   "S2-0414": {
-    "nusRoomCode": "S2-04-14",
     "roomName": "TEACHING ASSISTANT ROOM",
     "floor": 4,
     "location": {
@@ -207,7 +184,6 @@
     }
   },
   "S2-0415": {
-    "nusRoomCode": "S2-04-15",
     "roomName": "STAFF ROOM",
     "floor": 4,
     "location": {
@@ -216,7 +192,6 @@
     }
   },
   "S1A-0217": {
-    "nusRoomCode": "S1A-02-17",
     "roomName": "SEMINAR ROOM",
     "floor": 2,
     "location": {
@@ -225,7 +200,6 @@
     }
   },
   "S16-0437": {
-    "nusRoomCode": "S16-04-37",
     "roomName": "SEMINAR ROOM 8",
     "floor": 4,
     "location": {
@@ -234,7 +208,6 @@
     }
   },
   "BIZ1-0302": {
-    "nusRoomCode": "BIZ1-03-02",
     "roomName": "SEMINAR ROOM 3-2",
     "floor": 3,
     "location": {
@@ -243,7 +216,6 @@
     }
   },
   "BIZ1-0307": {
-    "nusRoomCode": "BIZ1-03-07",
     "roomName": "EMBA SEMINAR ROOM 3-7",
     "floor": 3,
     "location": {
@@ -252,7 +224,6 @@
     }
   },
   "BIZ2-0420": {
-    "nusRoomCode": "BIZ2-04-20",
     "roomName": "SEMINAR ROOM 4-20",
     "floor": 4,
     "location": {
@@ -261,7 +232,6 @@
     }
   },
   "BIZ2-0228": {
-    "nusRoomCode": "BIZ2-02-28",
     "roomName": "SEMINAR ROOM 2-28",
     "floor": 2,
     "location": {
@@ -270,7 +240,6 @@
     }
   },
   "BIZ1-0203": {
-    "nusRoomCode": "BIZ1-02-03",
     "roomName": "SEMINAR ROOM 2-3",
     "floor": 2,
     "location": {
@@ -279,7 +248,6 @@
     }
   },
   "BIZ1-0305": {
-    "nusRoomCode": "BIZ1-03-05",
     "roomName": "SEMINAR ROOM 3-5",
     "floor": 3,
     "location": {
@@ -288,7 +256,6 @@
     }
   },
   "LT3": {
-    "nusRoomCode": "LT3",
     "roomName": "LECTURE THEATRE 3",
     "floor": 6,
     "location": {
@@ -297,7 +264,6 @@
     }
   },
   "EA-06-04": {
-    "nusRoomCode": "EA-06-04",
     "roomName": "SEMINAR ROOM 4",
     "floor": 6,
     "location": {
@@ -306,7 +272,6 @@
     }
   },
   "LT1": {
-    "nusRoomCode": "LT1",
     "roomName": "SEMINAR ROOM @ LT19",
     "floor": 4,
     "location": {
@@ -315,7 +280,6 @@
     }
   },
   "EA-06-02": {
-    "nusRoomCode": "EA-06-02",
     "roomName": "SEMINAR ROOM 2",
     "floor": 6,
     "location": {
@@ -324,7 +288,6 @@
     }
   },
   "EA-02-11": {
-    "nusRoomCode": "EA-02-11",
     "roomName": "SEMINAR ROOM",
     "floor": 2,
     "location": {
@@ -333,7 +296,6 @@
     }
   },
   "LT5": {
-    "nusRoomCode": "LT5",
     "roomName": "LECTURE THEATRE 5",
     "floor": 3,
     "location": {
@@ -342,7 +304,6 @@
     }
   },
   "EA-06-07": {
-    "nusRoomCode": "EA-06-07",
     "roomName": "SEMINAR ROOM 7 (ACTIVE LEARNING ROOM",
     "floor": 6,
     "location": {
@@ -351,7 +312,6 @@
     }
   },
   "EA-06-03": {
-    "nusRoomCode": "EA-06-03",
     "roomName": "SEMINAR ROOM 3",
     "floor": 6,
     "location": {
@@ -360,7 +320,6 @@
     }
   },
   "E1-06-01": {
-    "nusRoomCode": "E1-06-01",
     "roomName": "SEMINAR ROOM",
     "floor": 6,
     "location": {
@@ -369,7 +328,6 @@
     }
   },
   "E4A-06-03": {
-    "nusRoomCode": "E4A-06-03",
     "roomName": "LINEAR ELECTRONICS LABORATORY",
     "floor": 6,
     "location": {
@@ -378,7 +336,6 @@
     }
   },
   "E3-06-04": {
-    "nusRoomCode": "E3-06-04",
     "roomName": "TUTORIAL ROOM",
     "floor": 6,
     "location": {
@@ -387,7 +344,6 @@
     }
   },
   "LT4": {
-    "nusRoomCode": "LT4",
     "roomName": "LECTURE THEATRE 4",
     "floor": 6,
     "location": {
@@ -396,7 +352,6 @@
     }
   },
   "E3-06-03": {
-    "nusRoomCode": "E3-06-03",
     "roomName": "SEMINAR ROOM",
     "floor": 6,
     "location": {
@@ -405,7 +360,6 @@
     }
   },
   "BIZ2-0303": {
-    "nusRoomCode": "BIZ2-03-03",
     "roomName": "SEMINAR ROOM 3-3",
     "floor": 3,
     "location": {
@@ -414,7 +368,6 @@
     }
   },
   "BIZ2-0302": {
-    "nusRoomCode": "BIZ2-03-02",
     "roomName": "SEMINAR ROOM 3-2",
     "floor": 3,
     "location": {
@@ -423,7 +376,6 @@
     }
   },
   "COM1-0212": {
-    "nusRoomCode": "COM1-02-12",
     "roomName": "SEMINAR ROOM 3",
     "floor": 2,
     "location": {
@@ -432,7 +384,6 @@
     }
   },
   "COM1-0204": {
-    "nusRoomCode": "COM1-02-04",
     "roomName": "SEMINAR ROOM 2",
     "floor": 2,
     "location": {
@@ -441,7 +392,6 @@
     }
   },
   "COM1-0203": {
-    "nusRoomCode": "COM1-02-03",
     "roomName": "SEMINAR ROOM 6",
     "floor": 2,
     "location": {
@@ -450,7 +400,6 @@
     }
   },
   "COM1-0201": {
-    "nusRoomCode": "COM1-02-01",
     "roomName": "SEMINAR ROOM 5 (ACTIVE LEARNING ROOM)",
     "floor": 2,
     "location": {
@@ -459,7 +408,6 @@
     }
   },
   "COM1-0209": {
-    "nusRoomCode": "COM1-02-09",
     "roomName": "SEMINAR ROOM 9",
     "floor": 2,
     "location": {
@@ -468,7 +416,6 @@
     }
   },
   "COM1-0216": {
-    "nusRoomCode": "COM1-02-16",
     "roomName": "TUTORIAL ROOM 11",
     "floor": 2,
     "location": {
@@ -477,7 +424,6 @@
     }
   },
   "COM1-0207": {
-    "nusRoomCode": "COM1-02-07",
     "roomName": "SEMINAR ROOM 7",
     "floor": 2,
     "location": {
@@ -486,7 +432,6 @@
     }
   },
   "COM1-0217": {
-    "nusRoomCode": "COM1-02-17",
     "roomName": "TUTORIAL ROOM 10",
     "floor": 2,
     "location": {
@@ -505,7 +450,6 @@
     }
   },
   "AS8-0646": {
-    "nusRoomCode": "AS8-06-46",
     "roomName": "CONFERENCE ROOM",
     "floor": 6,
     "location": {
@@ -514,7 +458,6 @@
     }
   },
   "E1-06-04": {
-    "nusRoomCode": "E1-06-04",
     "roomName": "SEMINAR ROOM",
     "floor": 6,
     "location": {
@@ -523,7 +466,6 @@
     }
   },
   "LT7": {
-    "nusRoomCode": "LT7",
     "roomName": "LECTURE THEATRE 7",
     "floor": null,
     "location": {
@@ -532,7 +474,6 @@
     }
   },
   "E1-06-06": {
-    "nusRoomCode": "E1-06-06",
     "roomName": "SEMINAR ROOM",
     "floor": 6,
     "location": {
@@ -541,7 +482,6 @@
     }
   },
   "E1-06-09": {
-    "nusRoomCode": "E1-06-09",
     "roomName": "SEMINAR ROOM",
     "floor": 6,
     "location": {
@@ -550,7 +490,6 @@
     }
   },
   "E1-06-03": {
-    "nusRoomCode": "E1-06-03",
     "roomName": "SEMINAR ROOM",
     "floor": 6,
     "location": {
@@ -559,7 +498,6 @@
     }
   },
   "E1-06-05": {
-    "nusRoomCode": "E1-06-05",
     "roomName": "SEMINAR ROOM",
     "floor": 6,
     "location": {
@@ -568,7 +506,6 @@
     }
   },
   "E4-04-03": {
-    "nusRoomCode": "E4A-04-03E",
     "roomName": "ADVANCE CONTROL TECHNOLOGY LAB",
     "floor": 4,
     "location": {
@@ -577,7 +514,6 @@
     }
   },
   "LT2": {
-    "nusRoomCode": "LT2",
     "roomName": "LECTURE THEATRE 2",
     "floor": 1,
     "location": {
@@ -586,7 +522,6 @@
     }
   },
   "LT6": {
-    "nusRoomCode": "LT6",
     "roomName": "LECTURE THEATRE 6",
     "floor": 4,
     "location": {
@@ -595,7 +530,6 @@
     }
   },
   "E1-06-08": {
-    "nusRoomCode": "E1-06-08",
     "roomName": "SEMINAR ROOM",
     "floor": 6,
     "location": {
@@ -604,7 +538,6 @@
     }
   },
   "E3-06-09": {
-    "nusRoomCode": "E3-06-09",
     "roomName": "SEMINAR ROOM",
     "floor": 6,
     "location": {
@@ -613,7 +546,6 @@
     }
   },
   "E4-04-04": {
-    "nusRoomCode": "E4-04-04",
     "roomName": "ACTIVE LEARNING ROOM",
     "floor": 4,
     "location": {
@@ -622,7 +554,6 @@
     }
   },
   "E1-06-07": {
-    "nusRoomCode": "E1-06-07",
     "roomName": "SEMINAR ROOM (ACTIVE LEARNING ROOM)",
     "floor": 6,
     "location": {
@@ -631,7 +562,6 @@
     }
   },
   "E2-03-02": {
-    "nusRoomCode": "E2-03-02",
     "roomName": "SEMINAR ROOM (ACTIVE LEARNING ROOM)",
     "floor": 3,
     "location": {
@@ -640,7 +570,6 @@
     }
   },
   "E2-03-32": {
-    "nusRoomCode": "E2-03-32",
     "roomName": "SEMINAR ROOM",
     "floor": 3,
     "location": {
@@ -649,7 +578,6 @@
     }
   },
   "E2-03-03": {
-    "nusRoomCode": "E2-03-03",
     "roomName": "TUTORIAL ROOM (ACTIVE LEARNING ROOM)",
     "floor": 3,
     "location": {
@@ -658,7 +586,6 @@
     }
   },
   "E3-06-01": {
-    "nusRoomCode": "E3-06-01",
     "roomName": "SEMINAR ROOM",
     "floor": 6,
     "location": {
@@ -667,7 +594,6 @@
     }
   },
   "E3-06-08": {
-    "nusRoomCode": "E3-06-08",
     "roomName": "SEMINAR ROOM",
     "floor": 6,
     "location": {
@@ -676,7 +602,6 @@
     }
   },
   "COM1-0113": {
-    "nusRoomCode": "COM1-01-13",
     "roomName": "EMBEDDED SYSTEMS TEACHING LAB 2",
     "floor": 1,
     "location": {
@@ -685,7 +610,6 @@
     }
   },
   "COM1-0114": {
-    "nusRoomCode": "COM1-01-14",
     "roomName": "EMBEDDED SYSTEMS TEACHING LAB 1",
     "floor": 1,
     "location": {
@@ -694,7 +618,6 @@
     }
   },
   "AS3-0303": {
-    "nusRoomCode": "AS3-03-03",
     "roomName": "SEMINAR ROOM",
     "floor": 3,
     "location": {
@@ -703,7 +626,6 @@
     }
   },
   "AS5-0309": {
-    "nusRoomCode": "AS5-03-09",
     "roomName": "SEMINAR ROOM",
     "floor": 3,
     "location": {
@@ -712,7 +634,6 @@
     }
   },
   "AS7-0106": {
-    "nusRoomCode": "AS7-01-06",
     "roomName": "SEMINAR ROOM",
     "floor": 1,
     "location": {
@@ -721,7 +642,6 @@
     }
   },
   "AS1-0301": {
-    "nusRoomCode": "AS1-03-01",
     "roomName": "SEMINAR ROOM",
     "floor": 3,
     "location": {
@@ -730,7 +650,6 @@
     }
   },
   "AS1-0208": {
-    "nusRoomCode": "AS1-02-08",
     "roomName": "SEMINAR ROOM (ACTIVE LEARNING ROOM)",
     "floor": 2,
     "location": {
@@ -739,7 +658,6 @@
     }
   },
   "AS4-0206": {
-    "nusRoomCode": "AS4-02-06",
     "roomName": "SEMINAR ROOM",
     "floor": 2,
     "location": {
@@ -748,7 +666,6 @@
     }
   },
   "AS2-0413": {
-    "nusRoomCode": "AS2-04-13",
     "roomName": "SEMINAR ROOM",
     "floor": 4,
     "location": {
@@ -757,7 +674,6 @@
     }
   },
   "AS5-0205": {
-    "nusRoomCode": "AS5-02-05",
     "roomName": "SEMINAR ROOM",
     "floor": 2,
     "location": {
@@ -766,7 +682,6 @@
     }
   },
   "AS3-0307": {
-    "nusRoomCode": "AS3-03-07",
     "roomName": "SEMINAR ROOM",
     "floor": 3,
     "location": {
@@ -775,7 +690,6 @@
     }
   },
   "AS4-0604": {
-    "nusRoomCode": "AS4-06-04",
     "roomName": "RESEARCH LAB (TEMP)",
     "floor": 6,
     "location": {
@@ -784,7 +698,6 @@
     }
   },
   "AS5-0202": {
-    "nusRoomCode": "AS5-02-02",
     "roomName": "SEMINAR ROOM",
     "floor": 2,
     "location": {
@@ -793,7 +706,6 @@
     }
   },
   "AS8-0401": {
-    "nusRoomCode": "AS8-04-01",
     "roomName": "FASS SEMINAR ROOM",
     "floor": 4,
     "location": {
@@ -802,7 +714,6 @@
     }
   },
   "AS4-0119": {
-    "nusRoomCode": "AS4-01-19",
     "roomName": "SEMINAR ROOM",
     "floor": 1,
     "location": {
@@ -811,7 +722,6 @@
     }
   },
   "AS1-0304": {
-    "nusRoomCode": "AS1-03-04",
     "roomName": "SEMINAR ROOM",
     "floor": 3,
     "location": {
@@ -820,7 +730,6 @@
     }
   },
   "AS7-0101": {
-    "nusRoomCode": "AS7-01-01",
     "roomName": "SEMINAR ROOM",
     "floor": 1,
     "location": {
@@ -829,7 +738,6 @@
     }
   },
   "AS4-0603": {
-    "nusRoomCode": "AS4-06-03",
     "roomName": "SEMINAR ROOM",
     "floor": 6,
     "location": {
@@ -838,7 +746,6 @@
     }
   },
   "AS7-0119": {
-    "nusRoomCode": "AS7-01-19",
     "roomName": "SEMINAR ROOM D",
     "floor": 1,
     "location": {
@@ -847,7 +754,6 @@
     }
   },
   "AS3-0305": {
-    "nusRoomCode": "AS3-03-05",
     "roomName": "SEMINAR ROOM",
     "floor": 3,
     "location": {
@@ -856,7 +762,6 @@
     }
   },
   "AS1-0303": {
-    "nusRoomCode": "AS1-03-03",
     "roomName": "SEMINAR ROOM",
     "floor": 3,
     "location": {
@@ -875,7 +780,6 @@
     }
   },
   "LT28": {
-    "nusRoomCode": "LT28",
     "roomName": "LECTURE THEATRE 28",
     "floor": 1,
     "location": {
@@ -884,7 +788,6 @@
     }
   },
   "S16-0307": {
-    "nusRoomCode": "S16-03-07",
     "roomName": "DEPARTMENT SEMINAR ROOM (SEMINAR ROOM 1)",
     "floor": 3,
     "location": {
@@ -893,7 +796,6 @@
     }
   },
   "S5-0224": {
-    "nusRoomCode": "S5-02-24",
     "roomName": "CHEM TUTORIAL ROOM 2",
     "floor": 2,
     "location": {
@@ -902,7 +804,6 @@
     }
   },
   "S16-0430": {
-    "nusRoomCode": "S16-04-30",
     "roomName": "TUTORIAL ROOM 10",
     "floor": 4,
     "location": {
@@ -911,7 +812,6 @@
     }
   },
   "LT32": {
-    "nusRoomCode": "LT32",
     "roomName": "LECTURE THEATRE 32",
     "floor": null,
     "location": {
@@ -920,7 +820,6 @@
     }
   },
   "LT27": {
-    "nusRoomCode": "LT27",
     "roomName": "LECTURE THEATRE 27",
     "floor": 1,
     "location": {
@@ -929,7 +828,6 @@
     }
   },
   "LT31": {
-    "nusRoomCode": "LT31",
     "roomName": "LECTURE THEATRE 31",
     "floor": 3,
     "location": {
@@ -938,7 +836,6 @@
     }
   },
   "E5-03-19": {
-    "nusRoomCode": "E5-03-19",
     "roomName": "SEMINAR ROOM(ACTIVE LEARNING ROOM)",
     "floor": 3,
     "location": {
@@ -947,7 +844,6 @@
     }
   },
   "LT34": {
-    "nusRoomCode": "LT34",
     "roomName": "LECTURE THEATRE 34",
     "floor": 4,
     "location": {
@@ -956,7 +852,6 @@
     }
   },
   "LT26": {
-    "nusRoomCode": "LT26",
     "roomName": "LECTURE THEATRE 26",
     "floor": 1,
     "location": {
@@ -965,7 +860,6 @@
     }
   },
   "S5-0223": {
-    "nusRoomCode": "S5-02-23",
     "roomName": "CHEM TUTORIAL ROOM 3",
     "floor": 2,
     "location": {
@@ -974,7 +868,6 @@
     }
   },
   "LT21": {
-    "nusRoomCode": "LT21",
     "roomName": "LECTURE THEATRE 21",
     "floor": 1,
     "location": {
@@ -983,7 +876,6 @@
     }
   },
   "LT33": {
-    "nusRoomCode": "LT33",
     "roomName": "LECTURE THEATRE 33",
     "floor": 2,
     "location": {
@@ -992,7 +884,6 @@
     }
   },
   "S5-0410": {
-    "nusRoomCode": "S5-04-10",
     "roomName": "EXPERIMENTAL CUBICLE 5",
     "floor": 4,
     "location": {
@@ -1001,7 +892,6 @@
     }
   },
   "S14-0620": {
-    "nusRoomCode": "S14-06-20",
     "roomName": "SEMINAR ROOM",
     "floor": 6,
     "location": {
@@ -1010,7 +900,6 @@
     }
   },
   "LT20": {
-    "nusRoomCode": "LT20",
     "roomName": "LECTURE THEATRE 20",
     "floor": 1,
     "location": {
@@ -1019,7 +908,6 @@
     }
   },
   "LT29": {
-    "nusRoomCode": "LT29",
     "roomName": "LECTURE THEATRE 29",
     "floor": 1,
     "location": {
@@ -1028,7 +916,6 @@
     }
   },
   "S14-0619": {
-    "nusRoomCode": "S14-06-19",
     "roomName": "SEMINAR ROOM",
     "floor": 6,
     "location": {
@@ -1037,7 +924,6 @@
     }
   },
   "S8-0314": {
-    "nusRoomCode": "S8-03-14",
     "roomName": "EXECUTIVE CLASSROOM",
     "floor": 3,
     "location": {
@@ -1046,7 +932,6 @@
     }
   },
   "S13-M-09": {
-    "nusRoomCode": "S13-M-09",
     "roomName": "COMPUTER LAB 1",
     "floor": 105,
     "location": {
@@ -1055,7 +940,6 @@
     }
   },
   "S16-0436": {
-    "nusRoomCode": "S16-04-36",
     "roomName": "TUTORIAL ROOM 13",
     "floor": 4,
     "location": {
@@ -1064,7 +948,6 @@
     }
   },
   "S16-0435": {
-    "nusRoomCode": "S16-04-35",
     "roomName": "SEMINAR ROOM 7",
     "floor": 4,
     "location": {
@@ -1073,7 +956,6 @@
     }
   },
   "E3-06-07": {
-    "nusRoomCode": "E3-06-07",
     "roomName": "SEMINAR ROOM (ACTIVE LEARNING ROOM)",
     "floor": 6,
     "location": {
@@ -1082,7 +964,6 @@
     }
   },
   "E5-03-22": {
-    "nusRoomCode": "E5-03-22",
     "roomName": "SEMINAR ROOM",
     "floor": 3,
     "location": {
@@ -1091,7 +972,6 @@
     }
   },
   "E5-03-21": {
-    "nusRoomCode": "E5-03-21",
     "roomName": "SEMINAR ROOM",
     "floor": 3,
     "location": {
@@ -1100,7 +980,6 @@
     }
   },
   "E5-02-32": {
-    "nusRoomCode": "E5-02-32",
     "roomName": "EXECUTIVE SEMINAR ROOM",
     "floor": 2,
     "location": {
@@ -1109,7 +988,6 @@
     }
   },
   "E5-03-20": {
-    "nusRoomCode": "E5-03-20",
     "roomName": "SEMINAR ROOM",
     "floor": 3,
     "location": {
@@ -1128,7 +1006,6 @@
     }
   },
   "LT7A": {
-    "nusRoomCode": "LT7A",
     "roomName": "LECTURE THEATRE 7A",
     "floor": null,
     "location": {
@@ -1137,7 +1014,6 @@
     }
   },
   "E5-03-23": {
-    "nusRoomCode": "E5-03-23",
     "roomName": "SEMINAR ROOM",
     "floor": 3,
     "location": {
@@ -1146,7 +1022,6 @@
     }
   },
   "E1-06-02": {
-    "nusRoomCode": "E1-06-02",
     "roomName": "SEMINAR ROOM",
     "floor": 6,
     "location": {
@@ -1155,7 +1030,6 @@
     }
   },
   "E3-06-06": {
-    "nusRoomCode": "E3-06-06",
     "roomName": "TUTORIAL ROOM",
     "floor": 6,
     "location": {
@@ -1164,7 +1038,6 @@
     }
   },
   "MD1-08-01E": {
-    "nusRoomCode": "MD1-08-01E",
     "roomName": "SEMINAR ROOM 1",
     "floor": 8,
     "location": {
@@ -1173,7 +1046,6 @@
     }
   },
   "S13-M-08": {
-    "nusRoomCode": "S13-M-08",
     "roomName": "COMPUTER LAB 2",
     "floor": 105,
     "location": {
@@ -1182,7 +1054,6 @@
     }
   },
   "COM1-B108": {
-    "nusRoomCode": "COM1-B1-08",
     "roomName": "PROGRAMMING LAB 3",
     "floor": -1,
     "location": {
@@ -1191,7 +1062,6 @@
     }
   },
   "COM1-0120": {
-    "nusRoomCode": "COM1-01-20",
     "roomName": "PROGRAMMING LAB 6",
     "floor": 1,
     "location": {
@@ -1200,7 +1070,6 @@
     }
   },
   "COM1-B111": {
-    "nusRoomCode": "COM1-B1-11",
     "roomName": "PROGRAMMING LAB 4",
     "floor": -1,
     "location": {
@@ -1229,7 +1098,6 @@
     }
   },
   "COM1-B110": {
-    "nusRoomCode": "COM1-B1-10",
     "roomName": "PROGRAMMING LAB 5",
     "floor": -1,
     "location": {
@@ -1238,7 +1106,6 @@
     }
   },
   "AS6-0208": {
-    "nusRoomCode": "AS6-02-08",
     "roomName": "DISCUSSION ROOM 5",
     "floor": 2,
     "location": {
@@ -1247,7 +1114,6 @@
     }
   },
   "COM1-0208": {
-    "nusRoomCode": "COM1-02-08",
     "roomName": "SEMINAR ROOM 8",
     "floor": 2,
     "location": {
@@ -1256,7 +1122,6 @@
     }
   },
   "AS6-0421": {
-    "nusRoomCode": "AS6-04-21",
     "roomName": "MEDIA TEACHING LAB 1",
     "floor": 4,
     "location": {
@@ -1265,7 +1130,6 @@
     }
   },
   "COM1-B109": {
-    "nusRoomCode": "COM1-B1-09",
     "roomName": "PROGRAMMING LAB 2",
     "floor": -1,
     "location": {
@@ -1274,7 +1138,6 @@
     }
   },
   "COM2-0108": {
-    "nusRoomCode": "COM2-01-08",
     "roomName": "TUTORIAL ROOM 9",
     "floor": 1,
     "location": {
@@ -1283,7 +1146,6 @@
     }
   },
   "COM1-0218": {
-    "nusRoomCode": "COM1-02-18",
     "roomName": "TUTORIAL ROOM 5",
     "floor": 2,
     "location": {
@@ -1292,7 +1154,6 @@
     }
   },
   "COM1-B112": {
-    "nusRoomCode": "COM1-B1-12",
     "roomName": "PROGRAMMING LAB 1",
     "floor": -1,
     "location": {
@@ -1301,7 +1162,6 @@
     }
   },
   "LT15": {
-    "nusRoomCode": "LT15",
     "roomName": "LECTURE THEATRE 15",
     "floor": 1,
     "location": {
@@ -1310,7 +1170,6 @@
     }
   },
   "COM1-0210": {
-    "nusRoomCode": "COM1-02-10",
     "roomName": "SEMINAR ROOM 10 (ACTIVE LEARNING ROOM)",
     "floor": 2,
     "location": {
@@ -1319,7 +1178,6 @@
     }
   },
   "COM1-B103": {
-    "nusRoomCode": "COM1-B1-03",
     "roomName": "ACTIVE LEARNING LAB",
     "floor": -1,
     "location": {
@@ -1328,7 +1186,6 @@
     }
   },
   "COM1-B113": {
-    "nusRoomCode": "COM1-B1-13",
     "roomName": "IT SECURITY & OS LAB",
     "floor": -1,
     "location": {
@@ -1337,7 +1194,6 @@
     }
   },
   "COM1-B102": {
-    "nusRoomCode": "COM1-B1-02",
     "roomName": "DATA COMMUNICATIONS & NETWORKING LAB 2",
     "floor": -1,
     "location": {
@@ -1346,7 +1202,6 @@
     }
   },
   "AS6-0426": {
-    "nusRoomCode": "AS6-04-26",
     "roomName": "MEDIA TEACHING LAB 2A",
     "floor": 4,
     "location": {
@@ -1355,7 +1210,6 @@
     }
   },
   "COM1-0206": {
-    "nusRoomCode": "COM1-02-06",
     "roomName": "SEMINAR ROOM 1",
     "floor": 2,
     "location": {
@@ -1374,7 +1228,6 @@
     }
   },
   "S16-0598": {
-    "nusRoomCode": "S16-05-98",
     "roomName": "SEMINAR ROOM (ACTIVE LEARNING)",
     "floor": 5,
     "location": {
@@ -1383,7 +1236,6 @@
     }
   },
   "LT18": {
-    "nusRoomCode": "LT18",
     "roomName": "LECTURE THEATRE 18",
     "floor": null,
     "location": {
@@ -1392,7 +1244,6 @@
     }
   },
   "S17-0404": {
-    "nusRoomCode": "S17-04-04",
     "roomName": "SEMINAR ROOM 3",
     "floor": 4,
     "location": {
@@ -1401,7 +1252,6 @@
     }
   },
   "BIZ2-0117": {
-    "nusRoomCode": "BIZ2-01-17",
     "roomName": "SEMINAR ROOM 1-17",
     "floor": 1,
     "location": {
@@ -1420,7 +1270,6 @@
     }
   },
   "E3-06-11": {
-    "nusRoomCode": "E3-06-11",
     "roomName": "TUTORIAL ROOM",
     "floor": 6,
     "location": {
@@ -1429,7 +1278,6 @@
     }
   },
   "E3-06-10": {
-    "nusRoomCode": "E3-06-10",
     "roomName": "TUTORIAL ROOM",
     "floor": 6,
     "location": {
@@ -1438,7 +1286,6 @@
     }
   },
   "E3-06-05": {
-    "nusRoomCode": "E3-06-05",
     "roomName": "SEMINAR ROOM",
     "floor": 6,
     "location": {
@@ -1447,7 +1294,6 @@
     }
   },
   "LT9": {
-    "nusRoomCode": "LT9",
     "roomName": "LECTURE THEATRE 9",
     "floor": null,
     "location": {
@@ -1456,7 +1302,6 @@
     }
   },
   "AS4-0602": {
-    "nusRoomCode": "AS4-06-02",
     "roomName": "SEMINAR ROOM",
     "floor": 6,
     "location": {
@@ -1465,7 +1310,6 @@
     }
   },
   "AS3-0208": {
-    "nusRoomCode": "AS3-02-08",
     "roomName": "SEMINAR ROOM",
     "floor": 2,
     "location": {
@@ -1474,7 +1318,6 @@
     }
   },
   "AS4-0109": {
-    "nusRoomCode": "AS4-01-09",
     "roomName": "SEMINAR ROOM",
     "floor": 1,
     "location": {
@@ -1483,7 +1326,6 @@
     }
   },
   "AS3-0209": {
-    "nusRoomCode": "AS3-02-09",
     "roomName": "SEMINAR ROOM",
     "floor": 2,
     "location": {
@@ -1492,7 +1334,6 @@
     }
   },
   "AS3-0302": {
-    "nusRoomCode": "AS3-03-02",
     "roomName": "SEMINAR ROOM",
     "floor": 3,
     "location": {
@@ -1501,7 +1342,6 @@
     }
   },
   "AS1-0209": {
-    "nusRoomCode": "AS1-02-09",
     "roomName": "SEMINAR ROOM (ACTIVE LEARNING ROOM)",
     "floor": 2,
     "location": {
@@ -1510,7 +1350,6 @@
     }
   },
   "LT11": {
-    "nusRoomCode": "LT11",
     "roomName": "LECTURE THEATRE 11",
     "floor": null,
     "location": {
@@ -1519,7 +1358,6 @@
     }
   },
   "AS2-0311": {
-    "nusRoomCode": "AS2-03-11",
     "roomName": "SEMINAR ROOM",
     "floor": 3,
     "location": {
@@ -1528,7 +1366,6 @@
     }
   },
   "AS1-0204": {
-    "nusRoomCode": "AS1-02-04",
     "roomName": "SEMINAR ROOM",
     "floor": 2,
     "location": {
@@ -1537,7 +1374,6 @@
     }
   },
   "AS2-0509": {
-    "nusRoomCode": "AS2-05-09",
     "roomName": "SEMINAR ROOM",
     "floor": 5,
     "location": {
@@ -1546,7 +1382,6 @@
     }
   },
   "AS4-0118": {
-    "nusRoomCode": "AS4-01-18",
     "roomName": "SEMINAR ROOM",
     "floor": 1,
     "location": {
@@ -1555,7 +1390,6 @@
     }
   },
   "LT8": {
-    "nusRoomCode": "LT8",
     "roomName": "LECTURE THEATRE 8",
     "floor": 3,
     "location": {
@@ -1564,7 +1398,6 @@
     }
   },
   "AS1-0203": {
-    "nusRoomCode": "AS1-02-03",
     "roomName": "SEMINAR ROOM",
     "floor": 2,
     "location": {
@@ -1573,7 +1406,6 @@
     }
   },
   "AS1-0302": {
-    "nusRoomCode": "AS1-03-02",
     "roomName": "SEMINAR ROOM",
     "floor": 3,
     "location": {
@@ -1582,7 +1414,6 @@
     }
   },
   "AS4-0117": {
-    "nusRoomCode": "AS4-01-17",
     "roomName": "COMPUTER ROOM",
     "floor": 1,
     "location": {
@@ -1591,7 +1422,6 @@
     }
   },
   "AS8-0405": {
-    "nusRoomCode": "AS8-04-05",
     "roomName": "FASS COMPUTER TEACHING LAB",
     "floor": 4,
     "location": {
@@ -1600,7 +1430,6 @@
     }
   },
   "AS3-0214": {
-    "nusRoomCode": "AS3-02-14",
     "roomName": "SEMINAR ROOM",
     "floor": 2,
     "location": {
@@ -1609,7 +1438,6 @@
     }
   },
   "LT12": {
-    "nusRoomCode": "LT12",
     "roomName": "LECTURE THEATRE 12",
     "floor": 1,
     "location": {
@@ -1618,7 +1446,6 @@
     }
   },
   "AS4-0116": {
-    "nusRoomCode": "AS4-01-16",
     "roomName": "SEMINAR ROOM",
     "floor": 1,
     "location": {
@@ -1627,7 +1454,6 @@
     }
   },
   "AS2-0510": {
-    "nusRoomCode": "AS2-05-10",
     "roomName": "SEMINAR ROOM",
     "floor": 5,
     "location": {
@@ -1636,7 +1462,6 @@
     }
   },
   "LT14": {
-    "nusRoomCode": "LT14",
     "roomName": "LECTURE THEATRE 14",
     "floor": 1,
     "location": {
@@ -1645,7 +1470,6 @@
     }
   },
   "AS2-0312": {
-    "nusRoomCode": "AS2-03-12",
     "roomName": "ECONOMICS DEPT SEMINAR ROOM (LIM TAY BOH ROOM)",
     "floor": 3,
     "location": {
@@ -1654,7 +1478,6 @@
     }
   },
   "AS6-0214": {
-    "nusRoomCode": "AS6-02-14",
     "roomName": "SEMINAR ROOM",
     "floor": 2,
     "location": {
@@ -1663,7 +1486,6 @@
     }
   },
   "AS1-0213": {
-    "nusRoomCode": "AS1-02-13",
     "roomName": "SEMINAR ROOM (ACTIVE LEARNING ROOM)",
     "floor": 2,
     "location": {
@@ -1672,7 +1494,6 @@
     }
   },
   "E3-06-12": {
-    "nusRoomCode": "E3-06-12",
     "roomName": "TUTORIAL ROOM",
     "floor": 6,
     "location": {
@@ -1681,7 +1502,6 @@
     }
   },
   "E3-06-13": {
-    "nusRoomCode": "E3-06-13",
     "roomName": "TUTORIAL ROOM",
     "floor": 6,
     "location": {
@@ -1690,7 +1510,6 @@
     }
   },
   "E3-06-15": {
-    "nusRoomCode": "E3-06-15",
     "roomName": "TUTORIAL ROOM (ACTIVE LEARNING ROOM)",
     "floor": 6,
     "location": {
@@ -1699,7 +1518,6 @@
     }
   },
   "E3-06-14": {
-    "nusRoomCode": "E3-06-14",
     "roomName": "TUTORIAL ROOM",
     "floor": 6,
     "location": {
@@ -1708,7 +1526,6 @@
     }
   },
   "E3-06-02": {
-    "nusRoomCode": "E3-06-02",
     "roomName": "TUTORIAL ROOM",
     "floor": 6,
     "location": {
@@ -1717,7 +1534,6 @@
     }
   },
   "EA-06-05": {
-    "nusRoomCode": "EA-06-05",
     "roomName": "SEMINAR ROOM 5",
     "floor": 6,
     "location": {
@@ -1726,7 +1542,6 @@
     }
   },
   "E1-06-10": {
-    "nusRoomCode": "E1-06-10",
     "roomName": "TUTORIAL ROOM",
     "floor": 6,
     "location": {
@@ -1735,7 +1550,6 @@
     }
   },
   "E2A-02-02": {
-    "nusRoomCode": "E2A-02-02",
     "roomName": "DCP ELECTRONICS WORKSHOP",
     "floor": 2,
     "location": {
@@ -1744,7 +1558,6 @@
     }
   },
   "E2A-03-01": {
-    "nusRoomCode": "E2A-03-01",
     "roomName": "DCP STUDIO 1",
     "floor": 3,
     "location": {
@@ -1783,7 +1596,6 @@
     }
   },
   "E1-06-12": {
-    "nusRoomCode": "E1-06-12",
     "roomName": "TUTORIAL ROOM",
     "floor": 6,
     "location": {
@@ -1792,7 +1604,6 @@
     }
   },
   "E1-06-11": {
-    "nusRoomCode": "E1-06-11",
     "roomName": "TUTORIAL ROOM",
     "floor": 6,
     "location": {
@@ -1801,7 +1612,6 @@
     }
   },
   "E1-06-15": {
-    "nusRoomCode": "E1-06-15",
     "roomName": "TUTORIAL ROOM",
     "floor": 6,
     "location": {
@@ -1810,7 +1620,6 @@
     }
   },
   "E1-06-13": {
-    "nusRoomCode": "E1-06-13",
     "roomName": "TUTORIAL ROOM",
     "floor": 6,
     "location": {
@@ -1819,7 +1628,6 @@
     }
   },
   "AS3-0304": {
-    "nusRoomCode": "AS3-03-04",
     "roomName": "SEMINAR ROOM",
     "floor": 3,
     "location": {
@@ -1828,7 +1636,6 @@
     }
   },
   "AS5-0203": {
-    "nusRoomCode": "AS5-02-03",
     "roomName": "SEMIOTIC RESEARCH LAB (ELL)",
     "floor": 2,
     "location": {
@@ -1837,7 +1644,6 @@
     }
   },
   "AS3-0308": {
-    "nusRoomCode": "AS3-03-08",
     "roomName": "SEMINAR ROOM",
     "floor": 3,
     "location": {
@@ -1846,7 +1652,6 @@
     }
   },
   "AS3-0306": {
-    "nusRoomCode": "AS3-03-06",
     "roomName": "SEMINAR ROOM",
     "floor": 3,
     "location": {
@@ -1855,7 +1660,6 @@
     }
   },
   "AS3-0215": {
-    "nusRoomCode": "AS3-02-15",
     "roomName": "SEMINAR ROOM",
     "floor": 2,
     "location": {
@@ -1864,7 +1668,6 @@
     }
   },
   "AS3-0212": {
-    "nusRoomCode": "AS3-02-12",
     "roomName": "SEMINAR ROOM",
     "floor": 2,
     "location": {
@@ -1873,7 +1676,6 @@
     }
   },
   "AS3-0309": {
-    "nusRoomCode": "AS3-03-09",
     "roomName": "SEMINAR ROOM",
     "floor": 3,
     "location": {
@@ -1882,7 +1684,6 @@
     }
   },
   "BIZ2-0112": {
-    "nusRoomCode": "BIZ2-01-12",
     "roomName": "SEMINAR ROOM 1-12",
     "floor": 1,
     "location": {
@@ -1891,7 +1692,6 @@
     }
   },
   "E1-06-16": {
-    "nusRoomCode": "E1-06-16",
     "roomName": "TUTORIAL ROOM (ACTIVE LEARNING ROOM)",
     "floor": 6,
     "location": {
@@ -1900,7 +1700,6 @@
     }
   },
   "E1-06-14": {
-    "nusRoomCode": "E1-06-14",
     "roomName": "TUTORIAL ROOM",
     "floor": 6,
     "location": {
@@ -1909,7 +1708,6 @@
     }
   },
   "S16-0440": {
-    "nusRoomCode": "S16-04-40",
     "roomName": "TUTORIAL ROOM 16",
     "floor": 4,
     "location": {
@@ -1918,7 +1716,6 @@
     }
   },
   "S16-0304": {
-    "nusRoomCode": "S16-03-04",
     "roomName": "SEMINAR ROOM",
     "floor": 3,
     "location": {
@@ -1927,7 +1724,6 @@
     }
   },
   "S16-0309": {
-    "nusRoomCode": "S16-03-09",
     "roomName": "TUTORIAL ROOM 3",
     "floor": 3,
     "location": {
@@ -1946,7 +1742,6 @@
     }
   },
   "BIZ2-0115": {
-    "nusRoomCode": "BIZ2-01-15",
     "roomName": "SEMINAR ROOM 1-15",
     "floor": 1,
     "location": {
@@ -1955,7 +1750,6 @@
     }
   },
   "EA-06-06": {
-    "nusRoomCode": "EA-06-06",
     "roomName": "SEMINAR ROOM 6",
     "floor": 6,
     "location": {
@@ -1984,7 +1778,6 @@
     }
   },
   "AS3-0316": {
-    "nusRoomCode": "AS3-03-16",
     "roomName": "GRADUATE ROOM",
     "floor": 3,
     "location": {
@@ -1993,7 +1786,6 @@
     }
   },
   "AS6-0338": {
-    "nusRoomCode": "AS6-03-38",
     "roomName": "PLAY ROOM (CNM)",
     "floor": 3,
     "location": {
@@ -2002,7 +1794,6 @@
     }
   },
   "AS2-0203": {
-    "nusRoomCode": "AS2-02-03",
     "roomName": "EARTH LAB",
     "floor": 2,
     "location": {
@@ -2011,7 +1802,6 @@
     }
   },
   "AS2-0313": {
-    "nusRoomCode": "AS2-03-13",
     "roomName": "GIS LAB",
     "floor": 3,
     "location": {
@@ -2020,7 +1810,6 @@
     }
   },
   "AS2-0204": {
-    "nusRoomCode": "AS2-02-04",
     "roomName": "EARTH LAB",
     "floor": 2,
     "location": {
@@ -2039,7 +1828,6 @@
     }
   },
   "AS2-0302": {
-    "nusRoomCode": "AS2-03-02",
     "roomName": "HONOURS ROOM (GEOGRAPHY)",
     "floor": 3,
     "location": {
@@ -2048,7 +1836,6 @@
     }
   },
   "AS2-0316": {
-    "nusRoomCode": "AS2-03-16",
     "roomName": "DEPT MEETING ROOM (GEO)",
     "floor": 3,
     "location": {
@@ -2057,7 +1844,6 @@
     }
   },
   "S11-0301": {
-    "nusRoomCode": "S11-03-01",
     "roomName": "LAB INSTRUCTION ROOM",
     "floor": 3,
     "location": {
@@ -2066,7 +1852,6 @@
     }
   },
   "S12-0401": {
-    "nusRoomCode": "S12-04-01",
     "roomName": "TUTORIAL ROOM",
     "floor": 4,
     "location": {
@@ -2075,7 +1860,6 @@
     }
   },
   "S16-0431": {
-    "nusRoomCode": "S16-04-31",
     "roomName": "SEMINAR ROOM 5",
     "floor": 4,
     "location": {
@@ -2084,7 +1868,6 @@
     }
   },
   "S17-0611": {
-    "nusRoomCode": "S17-06-11",
     "roomName": "SEMINAR ROOM 6",
     "floor": 6,
     "location": {
@@ -2093,7 +1876,6 @@
     }
   },
   "AS4-B107": {
-    "nusRoomCode": "AS4-B1-07",
     "roomName": "TUTORIAL ROOM",
     "floor": -1,
     "location": {
@@ -2102,7 +1884,6 @@
     }
   },
   "AS3-0523": {
-    "nusRoomCode": "AS3-05-23",
     "roomName": "PHILOSOPHY MEETING/RESOURCE ROOM",
     "floor": 5,
     "location": {
@@ -2111,7 +1892,6 @@
     }
   },
   "S17-0512": {
-    "nusRoomCode": "S17-05-12",
     "roomName": "SEMINAR ROOM 4",
     "floor": 5,
     "location": {
@@ -2120,7 +1900,6 @@
     }
   },
   "S12-0402": {
-    "nusRoomCode": "S12-04-02",
     "roomName": "PHYSICS TEACHING LAB",
     "floor": 4,
     "location": {
@@ -2129,7 +1908,6 @@
     }
   },
   "AS1-0210": {
-    "nusRoomCode": "AS1-02-10",
     "roomName": "SEMINAR ROOM (ACTIVE LEARNING ROOM)",
     "floor": 2,
     "location": {
@@ -2138,7 +1916,6 @@
     }
   },
   "LT13": {
-    "nusRoomCode": "LT13",
     "roomName": "NUS THEATRETTE (LECTURE THEATRE 13)",
     "floor": 1,
     "location": {
@@ -2147,7 +1924,6 @@
     }
   },
   "AS4-0601": {
-    "nusRoomCode": "AS4-06-01",
     "roomName": "SEMINAR ROOM",
     "floor": 6,
     "location": {
@@ -2156,7 +1932,6 @@
     }
   },
   "AS1-0207": {
-    "nusRoomCode": "AS1-02-07",
     "roomName": "SEMINAR ROOM",
     "floor": 2,
     "location": {
@@ -2165,7 +1940,6 @@
     }
   },
   "BIZ2-0118": {
-    "nusRoomCode": "BIZ2-01-18",
     "roomName": "SEMINAR ROOM 1-18",
     "floor": 1,
     "location": {
@@ -2174,7 +1948,6 @@
     }
   },
   "BIZ2-0224": {
-    "nusRoomCode": "BIZ2-02-24",
     "roomName": "SEMINAR ROOM 2-24",
     "floor": 2,
     "location": {
@@ -2193,7 +1966,6 @@
     }
   },
   "AS3-0101": {
-    "nusRoomCode": "AS3-01-01",
     "roomName": "THEATRE STUDIES PRACTICE STUDIO",
     "floor": 1,
     "location": {
@@ -2202,7 +1974,6 @@
     }
   },
   "CELS-01-08": {
-    "nusRoomCode": "CELS-01-08",
     "roomName": "NGS MULTIPURPOSE ROOM",
     "floor": 1,
     "location": {
@@ -2221,7 +1992,6 @@
     }
   },
   "BIZ2-0227": {
-    "nusRoomCode": "BIZ2-02-27",
     "roomName": "SEMINAR ROOM 2-27",
     "floor": 2,
     "location": {
@@ -2230,7 +2000,6 @@
     }
   },
   "AS1-0524": {
-    "nusRoomCode": "AS1-05-24",
     "roomName": "MEETING/ THESIS",
     "floor": 5,
     "location": {
@@ -2239,7 +2008,6 @@
     }
   },
   "E1A-05-19": {
-    "nusRoomCode": "E1-05-19",
     "roomName": "STAFF ROOM",
     "floor": 5,
     "location": {
@@ -2258,7 +2026,6 @@
     }
   },
   "AS3-0213": {
-    "nusRoomCode": "AS3-02-13",
     "roomName": "SEMINAR ROOM",
     "floor": 2,
     "location": {
@@ -2267,7 +2034,6 @@
     }
   },
   "AS4-0114": {
-    "nusRoomCode": "AS4-01-14",
     "roomName": "COMPUTER LAB",
     "floor": 1,
     "location": {
@@ -2276,7 +2042,6 @@
     }
   },
   "AS4-0115": {
-    "nusRoomCode": "AS4-01-15",
     "roomName": "COMPUTER LAB",
     "floor": 1,
     "location": {
@@ -2285,7 +2050,6 @@
     }
   },
   "AS4-0335": {
-    "nusRoomCode": "AS4-03-35",
     "roomName": "HONOURS ROOM",
     "floor": 3,
     "location": {
@@ -2294,7 +2058,6 @@
     }
   },
   "MD4-02-03E": {
-    "nusRoomCode": "MD4-02-03",
     "roomName": "MEETING ROOM/OFFICES",
     "floor": 2,
     "location": {
@@ -2303,7 +2066,6 @@
     }
   },
   "MD1-07-01A": {
-    "nusRoomCode": "MD1-07-01",
     "roomName": "TEACHING LAB 1 & MICROBIOLOGY MICROSCOPE ROOM",
     "floor": 7,
     "location": {
@@ -2312,7 +2074,6 @@
     }
   },
   "MD7-02-03": {
-    "nusRoomCode": "MD7-02-03",
     "roomName": "SEMINAR ROOM M9",
     "floor": 2,
     "location": {
@@ -2321,7 +2082,6 @@
     }
   },
   "S17-0302": {
-    "nusRoomCode": "S17-03-02",
     "roomName": "COMPUTER LAB 2",
     "floor": 3,
     "location": {
@@ -2330,7 +2090,6 @@
     }
   },
   "S17-0304": {
-    "nusRoomCode": "S17-03-04",
     "roomName": "COMPUTER LAB 1",
     "floor": 3,
     "location": {
@@ -2339,7 +2098,6 @@
     }
   },
   "S17-0406": {
-    "nusRoomCode": "S17-04-06",
     "roomName": "SEMINAR ROOM 1",
     "floor": 4,
     "location": {
@@ -2348,7 +2106,6 @@
     }
   },
   "S17-0405": {
-    "nusRoomCode": "S17-04-05",
     "roomName": "SEMINAR ROOM 2",
     "floor": 4,
     "location": {
@@ -2357,7 +2114,6 @@
     }
   },
   "S16-05102": {
-    "nusRoomCode": "S16-05-102",
     "roomName": "COMPUTER LABORATORY 2",
     "floor": 5,
     "location": {
@@ -2366,7 +2122,6 @@
     }
   },
   "S16-05101": {
-    "nusRoomCode": "S16-05-101",
     "roomName": "COMPUTER LABORATORY 1",
     "floor": 5,
     "location": {
@@ -2375,7 +2130,6 @@
     }
   },
   "S16-06118": {
-    "nusRoomCode": "S16-06-118",
     "roomName": "SEMINAR ROOM",
     "floor": 6,
     "location": {
@@ -2384,7 +2138,6 @@
     }
   },
   "S17-0511": {
-    "nusRoomCode": "S17-05-11",
     "roomName": "SEMINAR ROOM 5",
     "floor": 5,
     "location": {
@@ -2403,7 +2156,6 @@
     }
   },
   "AS8-0647": {
-    "nusRoomCode": "AS8-06-47",
     "roomName": "MEETING ROOM",
     "floor": 6,
     "location": {
@@ -2412,7 +2164,6 @@
     }
   },
   "AS6-0333": {
-    "nusRoomCode": "AS6-03-33",
     "roomName": "DEPT MEETING ROOM (CNM)",
     "floor": 3,
     "location": {
@@ -2421,7 +2172,6 @@
     }
   },
   "S11-0204": {
-    "nusRoomCode": "S11-02-04",
     "roomName": "TUTORIAL ROOM/LAB",
     "floor": 2,
     "location": {
@@ -2430,7 +2180,6 @@
     }
   },
   "S11-0302": {
-    "nusRoomCode": "S11-03-02",
     "roomName": "PHYSICS E-LAB",
     "floor": 3,
     "location": {
@@ -2449,7 +2198,6 @@
     }
   },
   "S12-0403": {
-    "nusRoomCode": "S12-04-03",
     "roomName": "SEMINAR ROOM",
     "floor": 4,
     "location": {
@@ -2468,7 +2216,6 @@
     }
   },
   "AS7-0201": {
-    "nusRoomCode": "AS7-02-01",
     "roomName": "PSYCHOLOGY COMPUTER LAB",
     "floor": 2,
     "location": {
@@ -2477,7 +2224,6 @@
     }
   },
   "AS4-0208": {
-    "nusRoomCode": "AS4-02-08",
     "roomName": "DEPT MEETING ROOM (PSYCHOLOGY)",
     "floor": 2,
     "location": {
@@ -2486,7 +2232,6 @@
     }
   },
   "MD1-06-01A": {
-    "nusRoomCode": "MD1-06-01A",
     "roomName": "TEACHING LAB 2",
     "floor": 6,
     "location": {
@@ -2495,7 +2240,6 @@
     }
   },
   "MD1-05-01A": {
-    "nusRoomCode": "MD1-05-01",
     "roomName": "TEACHING LAB 3",
     "floor": 5,
     "location": {
@@ -2514,7 +2258,6 @@
     }
   },
   "AS1-0212": {
-    "nusRoomCode": "AS1-02-12",
     "roomName": "SOCIOLOGY SEMINAR ROOM",
     "floor": 2,
     "location": {
@@ -2523,7 +2266,6 @@
     }
   },
   "AS2-0201": {
-    "nusRoomCode": "AS2-02-01",
     "roomName": "GAMELAN INSTRUMENT ROOM (STUDIO)",
     "floor": 2,
     "location": {
@@ -2542,7 +2284,6 @@
     }
   },
   "MD1-08-03E": {
-    "nusRoomCode": "MD1-08-03E",
     "roomName": "SEMINAR ROOM 2",
     "floor": 8,
     "location": {
@@ -2551,7 +2292,6 @@
     }
   },
   "MD1-09-01A": {
-    "nusRoomCode": "MD1-09-01A",
     "roomName": "TUTORIAL ROOM 1",
     "floor": 9,
     "location": {
@@ -2560,7 +2300,6 @@
     }
   },
   "MD1-09-03F": {
-    "nusRoomCode": "MD1-09-03F",
     "roomName": "TUTORIAL ROOM 4",
     "floor": 9,
     "location": {
@@ -2569,7 +2308,6 @@
     }
   },
   "AS4-B110": {
-    "nusRoomCode": "AS4-B1-10",
     "roomName": "FAMILY ROOM (SOCIAL WORK)",
     "floor": -1,
     "location": {
@@ -2578,7 +2316,6 @@
     }
   },
   "AS4-B109": {
-    "nusRoomCode": "AS4-B1-09",
     "roomName": "OBSERVATION ROOM (SOCIAL WORK)",
     "floor": -1,
     "location": {
