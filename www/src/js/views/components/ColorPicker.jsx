@@ -40,19 +40,17 @@ class ColorPicker extends PureComponent<Props> {
             [styles.hidden]: isHidden,
           })}
         />
-        {isOpen && (
-          <div className={styles.palette} {...getMenuProps()}>
-            {_.range(NUM_DIFFERENT_COLORS).map((index: ColorIndex) => (
-              <button
-                {...getItemProps({ item: index })}
-                key={index}
-                className={classnames(styles.option, `color-${index}`, {
-                  [styles.selected]: index === color,
-                })}
-              />
-            ))}
-          </div>
-        )}
+        <div className={classnames(styles.palette, { hidden: !isOpen })} {...getMenuProps()}>
+          {_.range(NUM_DIFFERENT_COLORS).map((index: ColorIndex) => (
+            <button
+              {...getItemProps({ item: index })}
+              key={index}
+              className={classnames(styles.option, `color-${index}`, {
+                [styles.selected]: index === color,
+              })}
+            />
+          ))}
+        </div>
       </div>
     );
   };

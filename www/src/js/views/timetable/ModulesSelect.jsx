@@ -116,43 +116,42 @@ class ModulesSelect extends Component<Props, State> {
             onKeyDown: this.onKeyDown,
           })}
         />
-        {showResults && (
-          <ol className={styles.selectList} {...getMenuProps()}>
-            {results.map(
-              (module, index) =>
-                module.isAdded ? (
-                  <li
-                    key={module.ModuleCode}
-                    className={classnames(styles.option, styles.optionDisabled, {
-                      [styles.optionSelected]: highlightedIndex === index,
-                    })}
-                  >
-                    {/* Using interpolated string instead of JSX because of iOS Safari
+        <ol className={classnames(styles.selectList, { hidden: !showResults })} {...getMenuProps()}>
+          {results.map(
+            (module, index) =>
+              module.isAdded ? (
+                <li
+                  key={module.ModuleCode}
+                  className={classnames(styles.option, styles.optionDisabled, {
+                    [styles.optionSelected]: highlightedIndex === index,
+                  })}
+                >
+                  {/* Using interpolated string instead of JSX because of iOS Safari
                         bug that drops the whitespace between the module code and title */}
-                    {`${module.ModuleCode} ${module.ModuleTitle}`}
-                    <div>
-                      <span className="badge badge-info">Added</span>
-                    </div>
-                  </li>
-                ) : (
-                  <li
-                    {...getItemProps({
-                      key: module.ModuleCode,
-                      item: module.ModuleCode,
-                      index,
-                    })}
-                    className={classnames(styles.option, {
-                      [styles.optionSelected]: highlightedIndex === index,
-                    })}
-                  >
-                    {/* Using interpolated string instead of JSX because of iOS Safari
+                  {`${module.ModuleCode} ${module.ModuleTitle}`}
+                  <div>
+                    <span className="badge badge-info">Added</span>
+                  </div>
+                </li>
+              ) : (
+                <li
+                  {...getItemProps({
+                    key: module.ModuleCode,
+                    item: module.ModuleCode,
+                    index,
+                  })}
+                  className={classnames(styles.option, {
+                    [styles.optionSelected]: highlightedIndex === index,
+                  })}
+                >
+                  {/* Using interpolated string instead of JSX because of iOS Safari
                         bug that drops the whitespace between the module code and title */}
-                    {`${module.ModuleCode} ${module.ModuleTitle}`}
-                  </li>
-                ),
-            )}
-          </ol>
-        )}
+                  {`${module.ModuleCode} ${module.ModuleTitle}`}
+                </li>
+              ),
+          )}
+        </ol>
+
         {showTip && (
           <div className={styles.tip}>
             Try &quot;GER1000&quot; or &quot;Quantitative Reasoning&quot;. Searching{' '}
