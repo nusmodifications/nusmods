@@ -17,7 +17,7 @@ type Props = {
   venue: string,
   isOpen: boolean,
   onRequestClose: () => void,
-  existingLocation?: VenueLocation,
+  existingLocation: ?VenueLocation,
 };
 
 type State = {

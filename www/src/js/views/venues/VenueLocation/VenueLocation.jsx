@@ -5,6 +5,8 @@ import classnames from 'classnames';
 import { capitalize } from 'lodash';
 import type { LatLngTuple, VenueLocation as VenueLocationItem } from 'types/venues';
 import ExternalLink from 'views/components/ExternalLink';
+import Modal from 'views/components/Modal';
+import CloseButton from 'views/components/CloseButton';
 import { floorName } from 'utils/venues';
 
 /** @var { VenueLocationMap } */
@@ -13,6 +15,7 @@ import venueLocations from 'data/venues.json';
 import { icon } from './icons';
 import FeedbackModal from './FeedbackModal';
 import styles from './VenueLocation.scss';
+import ImproveVenueForm from './ImproveVenueForm';
 
 type Props = {
   venue: string,
@@ -50,22 +53,30 @@ export default class VenueLocation extends PureComponent<Props, State> {
     isFeedbackModalOpen: false,
   };
 
+  openModal = () => this.setState({ isFeedbackModalOpen: true });
+  closeModal = () => this.setState({ isFeedbackModalOpen: false });
+
   render() {
     const { venue } = this.props;
     const location: ?VenueLocationItem = venueLocations[venue];
 
     if (!location) {
       return (
-        <div className={styles.noLocation}>
-          <p>We don&apos;t have data for this venue.</p>
-          <button
-            className="btn btn-primary btn-outline-primary"
-            onClick={() => this.setState({ isFeedbackModalOpen: true })}
-          >
-            Help us map this venue
-          </button>
-          <hr />
-        </div>
+        <Fragment>
+          <div className={styles.noLocation}>
+            <p>We don&apos;t have data for this venue.</p>
+            <button className="btn btn-primary btn-outline-primary" onClick={this.openModal}>
+              Help us map this venue
+            </button>
+            <hr />
+          </div>
+
+          <Modal isOpen={this.state.isFeedbackModalOpen} onRequestClose={this.closeModal} animate>
+            <CloseButton onClick={this.closeModal} />
+            <h2 className={styles.feedbackTitle}>Improve {this.props.venue}</h2>
+            <ImproveVenueForm venue={this.props.venue} />
+          </Modal>
+        </Fragment>
       );
     }
 
@@ -88,10 +99,7 @@ export default class VenueLocation extends PureComponent<Props, State> {
         ) : (
           <Fragment>
             <p>We don&apos;t have the location of this venue.</p>
-            <button
-              className="btn btn-primary btn-outline-primary"
-              onClick={() => this.setState({ isFeedbackModalOpen: true })}
-            >
+            <button className="btn btn-primary btn-outline-primary" onClick={this.openModal}>
               Help us map this venue
             </button>
           </Fragment>
@@ -101,7 +109,7 @@ export default class VenueLocation extends PureComponent<Props, State> {
           See a problem?{' '}
           <button
             className={classnames('btn btn-primary btn-outline-primary')}
-            onClick={() => this.setState({ isFeedbackModalOpen: true })}
+            onClick={this.openModal}
           >
             Help us improve this map
           </button>
@@ -112,7 +120,7 @@ export default class VenueLocation extends PureComponent<Props, State> {
         <FeedbackModal
           venue={venue}
           isOpen={this.state.isFeedbackModalOpen}
-          onRequestClose={() => this.setState({ isFeedbackModalOpen: false })}
+          onRequestClose={this.closeModal}
           existingLocation={location}
         />
       </div>

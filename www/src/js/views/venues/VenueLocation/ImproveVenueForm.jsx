@@ -4,38 +4,41 @@ import React, { PureComponent } from 'react';
 import { type LatLng, Map, Marker, TileLayer } from 'react-leaflet';
 import classnames from 'classnames';
 import axios from 'axios';
-import type { VenueLocation } from 'types/venues';
+import type { LatLngTuple, VenueLocation } from 'types/venues';
 import config from 'config';
+import { ThumbsUp } from 'views/components/icons';
+import LoadingSpinner from 'views/components/LoadingSpinner';
 import { icon } from './icons';
 import styles from './ImproveVenueForm.scss';
 
 type Props = {
   venue: string,
-  existingLocation?: VenueLocation,
-  onBack: () => void,
+  existingLocation?: ?VenueLocation,
+  onBack?: () => void,
 };
 
 type State = {
+  // Form data
   reporterEmail: string,
-  latlngUpdated: boolean,
   roomName: string,
   floor: number,
-  location: { x: number, y: number },
+  location: LatLngTuple,
+
+  // Form state
+  latlngUpdated: boolean,
+  submitting: boolean,
+  submitted: boolean,
+  error?: any,
 };
 
 const wellKnownLocations = {
-  'Central Library': { y: 1.2966113099432135, x: 103.77322643995288 },
-  UTown: { y: 1.304448761575499, x: 103.77278119325639 },
-  Science: { y: 1.2964893900409042, x: 103.78065884113312 },
-  Engineering: { y: 1.3002873614041492, x: 103.77067700028421 },
-  "Prince George's Park": {
-    y: 1.2909124430918655,
-    x: 103.78115504980089,
-  },
-  'Bukit Timah Campus': {
-    y: 1.3189664358274156,
-    x: 103.81760090589525,
-  },
+  'Central Library': [1.2966113099432135, 103.77322643995288],
+  UTown: [1.304448761575499, 103.77278119325639],
+  Science: [1.2964893900409042, 103.78065884113312],
+  Engineering: [1.3002873614041492, 103.77067700028421],
+  Computing: [1.2935772164129489, 103.7741592837536],
+  "Prince George's Park": [1.2909124430918655, 103.78115504980089],
+  'Bukit Timah Campus': [1.3189664358274156, 103.81760090589525],
 };
 
 export default class ImproveVenueForm extends PureComponent<Props, State> {
@@ -46,7 +49,7 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
     const location = {
       roomName: '',
       floor: 1,
-      location: { y: 1.2974523, x: 103.7736379 },
+      location: wellKnownLocations['Central Library'],
     };
 
     // Make sure we copy only non-null values into the new location
@@ -58,13 +61,15 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
       }
 
       if (existingLocation.location) {
-        location.location = existingLocation.location;
+        location.location = [existingLocation.location.y, existingLocation.location.x];
       }
     }
 
     this.state = {
       reporterEmail: '',
       latlngUpdated: false,
+      submitting: false,
+      submitted: false,
       ...location,
     };
   }
@@ -72,16 +77,22 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
   onSubmit = (evt: SyntheticEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
+    this.setState({ submitting: true });
+
     const { reporterEmail, roomName, location, floor } = this.state;
     const { venue } = this.props;
 
-    return axios.post(config.venueFeedbackApi, {
-      venue,
-      reporterEmail,
-      floor,
-      latlng: location,
-      room: roomName,
-    });
+    return axios
+      .post(config.venueFeedbackApi, {
+        venue,
+        reporterEmail,
+        floor,
+        latlng: location,
+        room: roomName,
+      })
+      .then(() => this.setState({ submitted: true }))
+      .catch((error) => this.setState({ error }))
+      .then(() => this.setState({ submitting: false }));
   };
 
   onMapJump = (evt: SyntheticEvent<HTMLSelectElement>) => {
@@ -99,17 +110,40 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
     const { lat, lng } = latlng;
 
     this.setState({
-      location: { y: lat, x: lng },
+      location: [lat, lng],
       latlngUpdated: true,
     });
   };
 
   render() {
     const { location, reporterEmail, floor, roomName } = this.state;
-    const position = [location.y, location.x];
+
+    if (this.state.submitted) {
+      return (
+        <div className={styles.submitted}>
+          <ThumbsUp />
+          <p>
+            Thank you for helping us improve NUSMods. If you have left your email, we will send you
+            a message when your update goes live
+          </p>
+        </div>
+      );
+    }
+
+    if (this.state.submitting) {
+      return <LoadingSpinner />;
+    }
 
     return (
       <form className="form-row" onSubmit={this.onSubmit}>
+        {this.state.error && (
+          <div className="col-sm-12">
+            <div className="alert alert-warning">
+              There was a problem submitting your feedback. Please try again later.
+            </div>
+          </div>
+        )}
+
         <div className="form-group col-sm-12">
           <label htmlFor="improve-venue-email">Email (optional)</label>
           <input
@@ -173,17 +207,17 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
         <div className={classnames('col-sm-12', styles.mapWrapper)}>
           <Map
             className={styles.map}
-            center={position}
+            center={location}
             zoom={19}
             maxZoom={19}
             onClick={(evt) => this.updateLocation(evt.latlng)}
           >
             <Marker
-              position={position}
+              position={location}
               icon={icon}
               onDragEnd={(evt) => this.updateLocation(evt.target.getLatLng())}
               draggable
-              autopan
+              autoPan
             />
             <TileLayer
               attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
@@ -216,9 +250,11 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
           <button className="btn btn-lg btn-primary" type="submit">
             Submit
           </button>
-          <button className="btn btn-link" onClick={this.props.onBack}>
-            Back
-          </button>
+          {this.props.onBack && (
+            <button className="btn btn-link" onClick={this.props.onBack}>
+              Back
+            </button>
+          )}
         </div>
       </form>
     );

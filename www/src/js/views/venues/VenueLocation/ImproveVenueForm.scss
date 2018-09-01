@@ -1,3 +1,5 @@
+@import '~styles/utils/modules-entry';
+
 .mapWrapper {
   position: relative;
 }
@@ -29,6 +31,7 @@
   max-width: 20rem;
   padding: 0.2rem 0.4rem;
   margin: -4rem auto 2rem auto;
+  font-weight: bold;
   text-align: center;
   color: #fff;
   background: rgba(#000, 0.6);
@@ -37,5 +40,16 @@
 
   &.moved {
     opacity: 0;
+  }
+}
+
+.submitted {
+  text-align: center;
+
+  svg {
+    width: 6rem;
+    height: 6rem;
+    margin-bottom: 1rem;
+    color: theme-color('success');
   }
 }
