@@ -1,21 +1,17 @@
 // @flow
 import React, { Fragment, PureComponent } from 'react';
-import { Map, TileLayer, Marker } from 'react-leaflet';
-import { Icon } from 'leaflet';
+import { Map, Marker, TileLayer } from 'react-leaflet';
 import classnames from 'classnames';
-import { capitalize, each } from 'lodash';
-import qs from 'query-string';
+import { capitalize } from 'lodash';
 import type { LatLngTuple, VenueLocation as VenueLocationItem } from 'types/venues';
 import ExternalLink from 'views/components/ExternalLink';
-import Modal from 'views/components/Modal';
-import CloseButton from 'views/components/CloseButton';
-import { Map as MapIcon, MapPin } from 'views/components/icons/index';
 import { floorName } from 'utils/venues';
-import config from 'config/index';
-import marker from 'img/marker.svg';
 
 /** @var { VenueLocationMap } */
 import venueLocations from 'data/venues.json';
+
+import { icon } from './icons';
+import FeedbackModal from './FeedbackModal';
 import styles from './VenueLocation.scss';
 
 type Props = {
@@ -25,14 +21,6 @@ type Props = {
 type State = {
   isFeedbackModalOpen: boolean,
 };
-
-const icon = new Icon({
-  iconUrl: marker,
-  className: styles.marker,
-  // SVG is 365x560
-  iconSize: [25, 38],
-  iconAnchor: [13, 38],
-});
 
 function renderMap(position: LatLngTuple) {
   // Query param for https://developers.google.com/maps/documentation/urls/guide#search-action
@@ -57,39 +45,10 @@ function renderMap(position: LatLngTuple) {
   );
 }
 
-function getFeedbackFormUrl(venue: string, location: ?VenueLocationItem = null) {
-  // Merge venue and existing location data
-  const formValues: Object = {
-    venue,
-  };
-
-  if (location) {
-    formValues.room = location.roomName;
-
-    if (location.floor) {
-      formValues.floor = location.floor;
-    }
-
-    if (location.location) {
-      formValues.latlng = `${location.location.y}, ${location.location.x}`;
-    }
-  }
-
-  // Convert existing data into query string to pre-fill the form
-  const query = {};
-  each(formValues, (value, key) => {
-    query[config.venueFeedbackForm.query[key]] = value;
-  });
-
-  return `${config.venueFeedbackForm.url}${qs.stringify(query)}`;
-}
-
 export default class VenueLocation extends PureComponent<Props, State> {
   state = {
     isFeedbackModalOpen: false,
   };
-
-  onCloseFeedbackModal = () => this.setState({ isFeedbackModalOpen: false });
 
   render() {
     const { venue } = this.props;
@@ -99,12 +58,12 @@ export default class VenueLocation extends PureComponent<Props, State> {
       return (
         <div className={styles.noLocation}>
           <p>We don&apos;t have data for this venue.</p>
-          <ExternalLink
+          <button
             className="btn btn-primary btn-outline-primary"
-            href={getFeedbackFormUrl(venue)}
+            onClick={() => this.setState({ isFeedbackModalOpen: true })}
           >
             Help us map this venue
-          </ExternalLink>
+          </button>
           <hr />
         </div>
       );
@@ -129,12 +88,12 @@ export default class VenueLocation extends PureComponent<Props, State> {
         ) : (
           <Fragment>
             <p>We don&apos;t have the location of this venue.</p>
-            <ExternalLink
+            <button
               className="btn btn-primary btn-outline-primary"
-              href={getFeedbackFormUrl(venue, location)}
+              onClick={() => this.setState({ isFeedbackModalOpen: true })}
             >
               Help us map this venue
-            </ExternalLink>
+            </button>
           </Fragment>
         )}
 
@@ -150,34 +109,12 @@ export default class VenueLocation extends PureComponent<Props, State> {
 
         <hr />
 
-        <Modal
+        <FeedbackModal
+          venue={venue}
           isOpen={this.state.isFeedbackModalOpen}
-          onRequestClose={this.onCloseFeedbackModal}
-          animate
-        >
-          <CloseButton onClick={this.onCloseFeedbackModal} />
-          <div className="container">
-            <div className={classnames('row flex-fill', styles.feedback)}>
-              <h2 className="col-sm-12">Improve {venue}</h2>
-
-              <div className="col-sm-6">
-                <ExternalLink href="https://www.openstreetmap.org/fixthemap">
-                  <MapIcon />
-                  <h3>Problem with map data</h3>
-                  <p>eg. incorrect building outline, missing walkways</p>
-                </ExternalLink>
-              </div>
-
-              <div className="col-sm-6">
-                <ExternalLink href={getFeedbackFormUrl(venue, location)}>
-                  <MapPin />
-                  <h3>Problem with venue data</h3>
-                  <p>eg. incorrect room name, floor, location of the map pin</p>
-                </ExternalLink>
-              </div>
-            </div>
-          </div>
-        </Modal>
+          onRequestClose={() => this.setState({ isFeedbackModalOpen: false })}
+          existingLocation={location}
+        />
       </div>
     );
   }

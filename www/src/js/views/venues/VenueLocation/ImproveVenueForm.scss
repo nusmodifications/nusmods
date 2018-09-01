@@ -1,0 +1,41 @@
+.mapWrapper {
+  position: relative;
+}
+
+.map {
+  height: 25rem;
+}
+
+.jumpSelect,
+.instructions {
+  z-index: 1000;
+}
+
+.jumpSelect {
+  position: absolute;
+  top: 0.2rem;
+  right: 0.5rem;
+  opacity: 0.5;
+  width: auto;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.instructions {
+  position: relative;
+  display: block;
+  max-width: 20rem;
+  padding: 0.2rem 0.4rem;
+  margin: -4rem auto 2rem auto;
+  text-align: center;
+  color: #fff;
+  background: rgba(#000, 0.6);
+  pointer-events: none;
+  transition: opacity 0.2s;
+
+  &.moved {
+    opacity: 0;
+  }
+}
