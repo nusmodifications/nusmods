@@ -17,14 +17,14 @@ const ID_NAMES = {
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
 exports.up = (knex, Promise) => {
-  function idPrimaryKey(table) {
+  function createIdPrimaryKey(table) {
     table
       .increments('id')
       .notNullable()
       .primary();
   }
 
-  function idForeignKey(table, foreignTableName, notNullable) {
+  function createIdForeignKey(table, foreignTableName, notNullable) {
     const tableIdName = ID_NAMES[foreignTableName];
     if (notNullable) {
       table
@@ -44,9 +44,20 @@ exports.up = (knex, Promise) => {
     }
   }
 
+  function createTimestamps(table) {
+    table
+      .timestamp('created_at')
+      .notNullable()
+      .defaultTo(knex.fn.now());
+    table
+      .timestamp('updated_at')
+      .notNullable()
+      .defaultTo(knex.fn.now());
+  }
+
   const schoolsTable = knex.schema.createTable(TABLE_NAMES.schools, (table) => {
-    idPrimaryKey(table);
-    table.timestamps();
+    createIdPrimaryKey(table);
+    createTimestamps(table);
     table
       .string('long_name')
       .notNullable()
@@ -55,9 +66,9 @@ exports.up = (knex, Promise) => {
   });
 
   const termsTable = knex.schema.createTable(TABLE_NAMES.terms, (table) => {
-    idPrimaryKey(table);
-    idForeignKey(table, TABLE_NAMES.schools, true);
-    table.timestamps();
+    createIdPrimaryKey(table);
+    createIdForeignKey(table, TABLE_NAMES.schools, true);
+    createTimestamps(table);
     table.dateTime('starts_at').notNullable();
     table.dateTime('ends_at').notNullable();
     table.string('name', 32).notNullable();
@@ -65,18 +76,18 @@ exports.up = (knex, Promise) => {
   });
 
   const departmentsTable = knex.schema.createTable(TABLE_NAMES.departments, (table) => {
-    idPrimaryKey(table);
-    idForeignKey(table, TABLE_NAMES.terms, true);
-    table.timestamps();
+    createIdPrimaryKey(table);
+    createIdForeignKey(table, TABLE_NAMES.terms, true);
+    createTimestamps(table);
     table.string('name').notNullable();
     table.unique([ID_NAMES.terms, 'name']);
   });
 
   const venuesTable = knex.schema.createTable(TABLE_NAMES.venues, (table) => {
-    idPrimaryKey(table);
-    idForeignKey(table, TABLE_NAMES.terms, true);
-    idForeignKey(table, TABLE_NAMES.departments, false);
-    table.timestamps();
+    createIdPrimaryKey(table);
+    createIdForeignKey(table, TABLE_NAMES.terms, true);
+    createIdForeignKey(table, TABLE_NAMES.departments, false);
+    createTimestamps(table);
     table.string('code').notNullable();
     table.string('name').notNullable();
     table.string('floor');
@@ -87,10 +98,10 @@ exports.up = (knex, Promise) => {
   });
 
   const coursesTable = knex.schema.createTable(TABLE_NAMES.courses, (table) => {
-    idPrimaryKey(table);
-    idForeignKey(table, TABLE_NAMES.terms, true);
-    idForeignKey(table, TABLE_NAMES.departments, false);
-    table.timestamps();
+    createIdPrimaryKey(table);
+    createIdForeignKey(table, TABLE_NAMES.terms, true);
+    createIdForeignKey(table, TABLE_NAMES.departments, false);
+    createTimestamps(table);
     table.string('code').notNullable();
     table.string('title').notNullable();
     table
@@ -106,11 +117,11 @@ exports.up = (knex, Promise) => {
   });
 
   const lessonsTable = knex.schema.createTable(TABLE_NAMES.lessons, (table) => {
-    idPrimaryKey(table);
-    idForeignKey(table, TABLE_NAMES.courses, true);
+    createIdPrimaryKey(table);
+    createIdForeignKey(table, TABLE_NAMES.courses, true);
     // Allow multiple locations, also disallow deletion of location if lesson exists
-    idForeignKey(table, TABLE_NAMES.venues, false);
-    table.timestamps();
+    createIdForeignKey(table, TABLE_NAMES.venues, false);
+    createTimestamps(table);
     table.enu('day', DAYS, { useNative: true, enumName: 'days_enum' }).notNullable();
     table.string('week').notNullable();
     table.string('code').notNullable();
@@ -132,12 +143,10 @@ exports.up = (knex, Promise) => {
 
 exports.down = (knex, Promise) => {
   const tables = Object.values(TABLE_NAMES);
-  return Promise.all(
-    tables.map((table) => knex.schema.dropTableIfExists(table).then(() => table)),
-  ).then((tbls) => {
-    if (process.env.NODE_ENV !== 'test') {
-      // eslint-disable-next-line
-      console.log(`tables ${tbls.join(', ')} was dropped`);
-    }
+  return Promise.all(tables.map(knex.schema.dropTableIfExists)).then(() => {
+    // if (process.env.NODE_ENV !== 'test') {
+    // eslint-disable-next-line
+      console.log(`tables ${tables.join(', ')} were dropped`);
+    // }
   });
 };
