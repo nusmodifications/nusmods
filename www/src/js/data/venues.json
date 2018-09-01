@@ -2642,5 +2642,57 @@
       "x": 103.77253885939898,
       "y": 1.2994721120645238
     }
+  },
+  "UT-AUD3": {
+    "roomName": "Auditorium 3",
+    "floor": 1,
+    "location": {
+      "x": 103.77304673194887,
+      "y": 1.307261676800578
+    }
+  },
+  "SR_LT19": {
+    "roomName": "Seminar Room at LT19",
+    "floor": 1,
+    "location": {
+      "x": 103.77432882785799,
+      "y": 1.2937125827502152
+    }
+  },
+  "ENG-AUD": {
+    "roomName": "Engineering Auditorium",
+    "floor": 1,
+    "location": {
+      "x": 103.7705817818642,
+      "y": 1.300612137950934
+    }
+  },
+  "LAW_LT": {
+    "roomName": "Lecture Theatre",
+    "floor": 1,
+    "location": {
+      "x": 103.81695717573167,
+      "y": 1.3192665513499864
+    }
+  },
+  "SDE-ER4": {
+    "roomName": "Executive Room 4",
+    "floor": 3
+  },
+  "LT19": {
+    "roomName": "Lecture Theater 19",
+    "floor": 1,
+    "location": {
+      "x": 103.7743029,
+      "y": 1.2937303
+    }
+  },
+  "COM1-VCRM": {
+    "roomName": "VCR Room",
+    "floor": 2,
+    "location": {
+      "x": 103.7740085,
+      "y": 1.2947362
+    }
   }
 }
