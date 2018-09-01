@@ -9,7 +9,8 @@
 }
 
 .jumpSelect,
-.instructions {
+.instructions,
+.geolocate {
   z-index: 1000;
 }
 
@@ -41,6 +42,18 @@
   &.moved {
     opacity: 0;
   }
+}
+
+.geolocate {
+  position: absolute;
+  bottom: 1rem;
+  left: 0.5rem;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
 }
 
 .submitted {

@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import axios from 'axios';
 import type { LatLngTuple, VenueLocation } from 'types/venues';
 import config from 'config';
-import { ThumbsUp } from 'views/components/icons';
+import { MapPin, ThumbsUp } from 'views/components/icons';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import { icon } from './icons';
 import styles from './ImproveVenueForm.scss';
@@ -104,6 +104,15 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
     if (location) {
       this.setState({ location });
     }
+  };
+
+  geolocate = () => {
+    navigator.geolocation.getCurrentPosition((position) =>
+      this.updateLocation({
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+      }),
+    );
   };
 
   updateLocation = (latlng: LatLng) => {
@@ -244,17 +253,30 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
           >
             Drag marker or click on map so that the marker is pointing to the location.
           </small>
+
+          {'geolocation' in navigator && (
+            <button
+              className={classnames('btn btn-sm btn-outline-secondary', styles.geolocate)}
+              title="Center on my location"
+              aria-label="Center on my location"
+              type="button"
+              onClick={this.geolocate}
+            >
+              <MapPin />
+            </button>
+          )}
         </div>
 
-        <div className="col-sm-12">
-          <button className="btn btn-lg btn-primary" type="submit">
-            Submit
-          </button>
+        <div className={classnames(styles.actions, 'col-sm-12')}>
           {this.props.onBack && (
-            <button className="btn btn-link" onClick={this.props.onBack}>
+            <button className="btn btn-lg btn-secondary" onClick={this.props.onBack}>
               Back
             </button>
           )}
+
+          <button className="btn btn-lg btn-primary" type="submit">
+            Submit
+          </button>
         </div>
       </form>
     );

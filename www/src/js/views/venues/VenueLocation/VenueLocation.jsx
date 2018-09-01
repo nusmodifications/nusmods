@@ -37,7 +37,7 @@ function renderMap(position: LatLngTuple) {
       >
         Open in Google Maps
       </ExternalLink>
-      <Map center={position} zoom={18} className={styles.map}>
+      <Map center={position} zoom={18} maxZoom={19} className={styles.map}>
         <TileLayer
           attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
