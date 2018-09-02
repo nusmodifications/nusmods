@@ -1,25 +1,44 @@
 import { gql } from 'apollo-server';
 import _ from 'lodash';
-import jsonData from './jsonData';
+import db from '../db';
+import customScalars from './customScalars';
 
 const typeDefs = gql`
-  # Describes a module for, may span different semesters
-  type Module {
+  scalar Date
+
+  type School {
+    id: ID!
+    createdAt: Date!
+    updatedAt: Date!
+    longName: String!
+    shortName: String
+  }
+
+  type Term {
+    id: ID!
+    createdAt: Date!
+    updatedAt: Date!
+    name: String!
+    startsAt: Date!
+    endsAt: Date!
+  }
+
+  # Describes a module, may span different semesters
+  type Course {
+    id: ID!
+    createdAt: Date!
+    updatedAt: Date!
     code: String!
     title: String!
-    department: String
     description: String
-    credit: Float
+    value: Float
     workload: String
     prerequisite: String
     corequisite: String
-    corsBiddingStats: [CorsBiddingStats]
-    # Refers to the history of the module throughout semesters
-    history: [ModuleInfo]!
   }
 
   # Describes a particular module for a semester
-  type ModuleInfo {
+  type CourseInfo {
     semester: Int
     examDate: String
     examOpenBook: Boolean
@@ -56,29 +75,64 @@ const typeDefs = gql`
 
   # the schema allows the following query:
   type Query {
-    modules(acadYear: String!, first: Int, offset: Int): [Module!]!
-    module(acadYear: String!, code: String!): Module
+    schools(first: Int, offset: Int): [School!]!
+    terms(schoolId: ID!, first: Int, offset: Int): [Term!]!
+    courses(termId: ID!, first: Int, offset: Int): [Course!]!
+    course(termId: ID!, code: String!): Course
+  }
+
+  type Mutation {
+    term(schoolId: ID!, name: String!, startsAt: Date!, endsAt: Date!): ID!
   }
 
   schema {
     query: Query
+    mutation: Mutation
   }
 `;
 
 const resolvers = {
   Query: {
-    modules(root, { acadYear, first, offset }) {
-      const yearData = jsonData[acadYear];
-      if (yearData == null) {
-        return [];
-      }
-      const modules = Object.values(yearData);
-      return modules.slice(offset, offset ? offset + first : first);
+    schools(root, { first, offset }) {
+      return db
+        .table('schools')
+        .select()
+        .limit(first)
+        .offset(offset);
     },
-    module(root, { acadYear, code }) {
-      return _.get(jsonData, [acadYear, code]);
+    terms(root, { schoolId, first, offset }) {
+      return db
+        .table('terms')
+        .select()
+        .where({ schoolId })
+        .limit(first)
+        .offset(offset);
+    },
+    courses(root, { termId, first, offset }) {
+      return db
+        .table('courses')
+        .select()
+        .where({ termId })
+        .limit(first)
+        .offset(offset);
+    },
+    course(root, { termId, code }) {
+      return db
+        .table('courses')
+        .select()
+        .where({ termId, code })
+        .first();
     },
   },
+  Mutation: {
+    term(root, { schoolId, name, startsAt, endsAt }) {
+      return db
+        .table('terms')
+        .insert({ schoolId, name, startsAt, endsAt })
+        .then((x) => x[0]);
+    },
+  },
+  Date: customScalars.DateScalarType,
 };
 
 export default {

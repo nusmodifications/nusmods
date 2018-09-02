@@ -1,33 +1,23 @@
 import { graphql } from 'graphql';
 import { makeExecutableSchema } from 'apollo-server';
 import index from './';
+import db from '../db';
 
 const schema = makeExecutableSchema(index);
 
 const gql = (x) => x.raw[0]; // identify function for template literals
 
-jest.mock('./jsonData', () => ({
-  '2016-2017': {
-    CS1000: {
-      code: 'testCode',
-      title: 'testTitle',
-      credit: 4.0,
-      history: [],
-    },
-    CS2100: {
-      code: 'anotherTestCode',
-      title: 'anotherTestTitle',
-      credit: 4.0,
-      history: [],
-    },
-  },
-}));
+describe('course queries', () => {
+  beforeEach(async () => {
+    await db.migrate.rollback();
+    await db.migrate.latest();
+    await db.seed.run();
+  });
 
-describe('graphql', () => {
-  it('should be empty when modules are not found', async () => {
+  it('should be empty when courses are not found', async () => {
     const query = gql`
       query {
-        modules(acadYear: "2017-2018") {
+        courses(acadYear: "2017-2018") {
           code
         }
       }
@@ -35,13 +25,13 @@ describe('graphql', () => {
     const { data } = await graphql(schema, query);
 
     expect(data).not.toBeNull();
-    expect(data.modules).toEqual([]);
+    expect(data.courses).toEqual([]);
   });
 
-  it('should be not be null when modules are found', async () => {
+  it('should be not be null when courses are found', async () => {
     const query = gql`
       query {
-        modules(acadYear: "2016-2017") {
+        courses(acadYear: "2016-2017") {
           code
         }
       }
@@ -55,83 +45,83 @@ describe('graphql', () => {
   it('should return everything when first and offset are not specified', async () => {
     const query = gql`
       query {
-        modules(acadYear: "2016-2017") {
+        courses(acadYear: "2016-2017") {
           code
         }
       }
     `;
     const {
-      data: { modules },
+      data: { courses },
     } = await graphql(schema, query);
 
-    expect(modules).toHaveLength(2);
+    expect(courses).toHaveLength(2);
   });
 
   it('should return first n elements when specified', async () => {
     const query = gql`
       query {
-        modules(acadYear: "2016-2017", first: 1) {
+        courses(acadYear: "2016-2017", first: 1) {
           code
         }
       }
     `;
     const {
-      data: { modules },
+      data: { courses },
     } = await graphql(schema, query);
 
-    expect(modules).toHaveLength(1);
+    expect(courses).toHaveLength(1);
   });
 
   it('should return offset n elements when specified', async () => {
     const query = gql`
       query {
-        modules(acadYear: "2016-2017", offset: 2) {
+        courses(acadYear: "2016-2017", offset: 2) {
           code
         }
       }
     `;
     const {
-      data: { modules },
+      data: { courses },
     } = await graphql(schema, query);
 
-    expect(modules).toHaveLength(0);
+    expect(courses).toHaveLength(0);
   });
 
   it('should return first n and offset n elements when specified', async () => {
     const query = gql`
       query {
-        modules(acadYear: "2016-2017", first: 1, offset: 1) {
+        courses(acadYear: "2016-2017", first: 1, offset: 1) {
           code
         }
       }
     `;
     const {
-      data: { modules },
+      data: { courses },
     } = await graphql(schema, query);
 
-    expect(modules).toHaveLength(1);
-    expect(modules[0].code).toBe('anotherTestCode');
+    expect(courses).toHaveLength(1);
+    expect(courses[0].code).toBe('anotherTestCode');
   });
 
-  it('should be null when module is not found', async () => {
+  it('should be null when course is not found', async () => {
     const query = gql`
       query {
-        module(acadYear: "2017-2018", code: "CS2100") {
+        course(acadYear: "2017-2018", code: "CS2100") {
           code
         }
       }
     `;
     const {
-      data: { module },
+      data: { course },
     } = await graphql(schema, query);
 
-    expect(module).toBeNull();
+    expect(course).toBeNull();
   });
 
-  it('should not be null when module is valid', async () => {
+  it('should not be null when course is valid', async () => {
     const query = gql`
       query {
-        module(acadYear: "2016-2017", code: "CS2100") {
+        course(acadYear: "2016-2017", code: "CS2100") {
           code
           title
           credit
@@ -144,5 +134,27 @@ describe('graphql', () => {
 
     expect(data).not.toBeNull();
     expect(data).toMatchSnapshot();
+  });
+});
+
+describe('terms query', () => {
+  beforeEach(async () => {
+    await db.migrate.rollback();
+    await db.migrate.latest();
+    await db.seed.run();
+  });
+
+  it('should return terms when school id is valid', async () => {
+    const query = gql`
+      query {
+        terms(schoolId: 1) {
+          id
+        }
+      }
+    `;
+    const {
+      data: { terms },
+    } = await graphql(schema, query);
+    expect(terms).toHaveLength(1);
   });
 });
