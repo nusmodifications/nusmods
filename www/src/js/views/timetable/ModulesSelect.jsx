@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import { has } from 'lodash';
-import Downshift, { type ChildrenFunction } from 'downshift';
+import Downshift, { type ChildrenFunction, DownshiftState, StateChangeOptions } from 'downshift';
 import classnames from 'classnames';
 
 import type { ModuleSelectList } from 'types/reducers';
@@ -26,49 +26,28 @@ type Props = {
 
 type State = {
   isOpen: boolean,
-  isModalOpen: boolean,
   inputValue: string,
   selectedItem: ?ModuleCode,
 };
 
-class ModulesSelect extends Component<Props, State> {
+export class ModulesSelectComponent extends Component<Props, State> {
   state = {
     isOpen: false,
-    isModalOpen: false,
     inputValue: '',
     selectedItem: null,
   };
 
-  onStateChange = (changes: any) => {
+  onStateChange = (changes: StateChangeOptions<ModuleCode>) => {
     if (has(changes, 'selectedItem')) {
       this.props.onChange(changes.selectedItem);
-    }
-  };
-
-  onBlur = () => {
-    if (!this.state.inputValue && this.state.isModalOpen) {
-      this.closeSelect();
-    }
-  };
-
-  onInputChange = (event) => {
-    this.setState({ inputValue: event.target.value });
-  };
-
-  onFocus = () => this.openSelect();
-  onOuterClick = () => this.closeSelect();
-
-  onKeyDown = (event) => {
-    if (event.key === 'Escape') {
-      this.closeSelect();
-      event.target.blur();
+    } else if (has(changes, 'inputValue')) {
+      this.setState({ inputValue: changes.inputValue });
     }
   };
 
   closeSelect = () => {
     this.setState({
       isOpen: false,
-      isModalOpen: false,
       inputValue: '',
       selectedItem: null,
     });
@@ -77,13 +56,28 @@ class ModulesSelect extends Component<Props, State> {
   openSelect = () => {
     this.setState({
       isOpen: true,
-      isModalOpen: !this.props.matchBreakpoint,
     });
+  };
+
+  preventResetOnBlur = (
+    state: DownshiftState<ModuleCode>,
+    changes: StateChangeOptions<ModuleCode>,
+  ) => {
+    switch (changes.type) {
+      case Downshift.stateChangeTypes.blurInput:
+        if (state.inputValue) {
+          return {}; // remain open on iOS
+        }
+        this.closeSelect();
+        return changes;
+      default:
+        return changes;
+    }
   };
 
   // downshift attaches label for us; autofocus only applies to modal
   /* eslint-disable jsx-a11y/label-has-for, jsx-a11y/no-autofocus */
-  renderDropdown: ChildrenFunction<string> = ({
+  renderDropdown: ChildrenFunction<ModuleCode> = ({
     getLabelProps,
     getInputProps,
     getItemProps,
@@ -92,8 +86,8 @@ class ModulesSelect extends Component<Props, State> {
     inputValue,
     highlightedIndex,
   }) => {
-    const { placeholder, disabled } = this.props;
-    const { isModalOpen } = this.state;
+    const { placeholder } = this.props;
+    const isModalOpen = !this.props.matchBreakpoint && isOpen;
     const results = this.props.getFilteredModules(inputValue);
     const showResults = isOpen && results.length > 0;
     const showTip = isModalOpen && !results.length;
@@ -109,48 +103,38 @@ class ModulesSelect extends Component<Props, State> {
             className: classnames(styles.input, elements.addModuleInput),
             autoFocus: isModalOpen,
             placeholder,
-            disabled,
-            onFocus: this.onFocus,
-            onBlur: this.onBlur,
-            onChange: this.onInputChange,
-            onKeyDown: this.onKeyDown,
+            onFocus: this.openSelect,
+            // no onBlur as that means people can't click menu items as
+            // input has lost focus, see 'onOuterClick' instead
+            disabled: this.props.disabled,
           })}
         />
+        {isModalOpen && <CloseButton className={styles.close} onClick={this.closeSelect} />}
         {showResults && (
           <ol className={styles.selectList} {...getMenuProps()}>
-            {results.map(
-              (module, index) =>
-                module.isAdded ? (
-                  <li
-                    key={module.ModuleCode}
-                    className={classnames(styles.option, styles.optionDisabled, {
-                      [styles.optionSelected]: highlightedIndex === index,
-                    })}
-                  >
-                    {/* Using interpolated string instead of JSX because of iOS Safari
-                        bug that drops the whitespace between the module code and title */}
-                    {`${module.ModuleCode} ${module.ModuleTitle}`}
-                    <div>
-                      <span className="badge badge-info">Added</span>
-                    </div>
-                  </li>
-                ) : (
-                  <li
-                    {...getItemProps({
-                      key: module.ModuleCode,
-                      item: module.ModuleCode,
-                      index,
-                    })}
-                    className={classnames(styles.option, {
-                      [styles.optionSelected]: highlightedIndex === index,
-                    })}
-                  >
-                    {/* Using interpolated string instead of JSX because of iOS Safari
-                        bug that drops the whitespace between the module code and title */}
-                    {`${module.ModuleCode} ${module.ModuleTitle}`}
-                  </li>
-                ),
-            )}
+            {results.map((module, index) => (
+              <li
+                {...getItemProps({
+                  key: module.ModuleCode,
+                  item: module.ModuleCode,
+                  index,
+                  disabled: module.isAdded,
+                })}
+                className={classnames(styles.option, {
+                  [styles.optionDisabled]: module.isAdded,
+                  [styles.optionSelected]: highlightedIndex === index,
+                })}
+              >
+                {/* Using interpolated string instead of JSX because of iOS Safari
+                    bug that drops the whitespace between the module code and title */}
+                {`${module.ModuleCode} ${module.ModuleTitle}`}
+                {module.isAdded && (
+                  <div>
+                    <span className="badge badge-info">Added</span>
+                  </div>
+                )}
+              </li>
+            ))}
           </ol>
         )}
         {showTip && (
@@ -169,16 +153,17 @@ class ModulesSelect extends Component<Props, State> {
   };
 
   render() {
-    const { isModalOpen } = this.state;
+    const { isOpen } = this.state;
     const { matchBreakpoint, disabled } = this.props;
 
     const downshiftComponent = (
       <Downshift
-        onOuterClick={this.onOuterClick}
+        isOpen={isOpen}
+        onOuterClick={this.closeSelect}
         onStateChange={this.onStateChange}
         inputValue={this.state.inputValue}
-        isOpen={this.state.isOpen}
         selectedItem={this.state.selectedItem}
+        stateReducer={this.preventResetOnBlur}
         defaultHighlightedIndex={0}
       >
         {this.renderDropdown}
@@ -190,7 +175,7 @@ class ModulesSelect extends Component<Props, State> {
     }
 
     return (
-      <div>
+      <React.Fragment>
         <button
           className={classnames(styles.input, elements.addModuleInput)}
           onClick={this.openSelect}
@@ -199,16 +184,16 @@ class ModulesSelect extends Component<Props, State> {
           {this.props.placeholder}
         </button>
         <Modal
-          isOpen={!disabled && isModalOpen}
+          isOpen={!disabled && isOpen}
           onRequestClose={this.closeSelect}
           className={styles.modal}
+          shouldCloseOnOverlayClick={false}
         >
-          <CloseButton className={styles.close} onClick={this.closeSelect} />
           {downshiftComponent}
         </Modal>
-      </div>
+      </React.Fragment>
     );
   }
 }
 
-export default makeResponsive(ModulesSelect, breakpointUp('md'));
+export default makeResponsive(ModulesSelectComponent, breakpointUp('md'));
