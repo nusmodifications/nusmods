@@ -1,7 +1,8 @@
-const { GraphQLScalarType } = require('graphql');
-const { Kind } = require('graphql/language');
+import { GraphQLScalarType } from 'graphql';
+import { Kind } from 'graphql/language';
 
-const DateScalarType = new GraphQLScalarType({
+// eslint-disable-next-line import/prefer-default-export
+export const DateScalarType = new GraphQLScalarType({
   name: 'Date',
   description: 'Date custom scalar type',
   parseValue(value) {
@@ -19,7 +20,3 @@ const DateScalarType = new GraphQLScalarType({
     return null;
   },
 });
-
-export default {
-  DateScalarType,
-};

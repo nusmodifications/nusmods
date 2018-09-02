@@ -16,7 +16,7 @@ const ID_NAMES = {
 };
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
-exports.up = (knex, Promise) => {
+exports.up = async (knex, Promise) => {
   function createIdPrimaryKey(table) {
     table
       .increments('id')
@@ -143,7 +143,7 @@ exports.up = (knex, Promise) => {
 
 exports.down = (knex, Promise) => {
   const tables = Object.values(TABLE_NAMES);
-  return Promise.all(tables.map(knex.schema.dropTableIfExists)).then(() => {
+  return Promise.all(tables.map((table) => knex.schema.dropTableIfExists(table))).then(() => {
     // if (process.env.NODE_ENV !== 'test') {
     // eslint-disable-next-line
       console.log(`tables ${tables.join(', ')} were dropped`);

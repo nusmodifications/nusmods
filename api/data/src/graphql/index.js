@@ -1,7 +1,7 @@
 import { gql } from 'apollo-server';
 import _ from 'lodash';
 import db from '../db';
-import customScalars from './customScalars';
+import { DateScalarType } from './customScalars';
 
 const typeDefs = gql`
   scalar Date
@@ -132,7 +132,7 @@ const resolvers = {
         .then((x) => x[0]);
     },
   },
-  Date: customScalars.DateScalarType,
+  Date: DateScalarType,
 };
 
 export default {

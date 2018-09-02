@@ -1,13 +1,11 @@
-import customScalars from './customScalars';
+import { DateScalarType } from './customScalars';
 
 const dateString = '2018-09-01 09:14:20';
 const dateUTCString = '2018-09-01T09:14:20.000Z';
 const dateInt = 1535793260000;
 const dateDate = new Date(dateInt);
 
-const { DateScalarType } = customScalars;
-
-describe('Date scalar', () => {
+describe('DateScalarType', () => {
   it('should parse raw string to Date', () => {
     const date = DateScalarType.parseValue(dateUTCString);
     expect(date).toBeInstanceOf(Date);
