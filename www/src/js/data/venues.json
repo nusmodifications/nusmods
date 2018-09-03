@@ -2669,7 +2669,7 @@
   },
   "LAW_LT": {
     "roomName": "Lecture Theatre",
-    "floor": 1,
+    "floor": 3,
     "location": {
       "x": 103.81695717573167,
       "y": 1.3192665513499864
@@ -2693,6 +2693,30 @@
     "location": {
       "x": 103.7740085,
       "y": 1.2947362
+    }
+  },
+  "LAW_AUD": {
+    "roomName": "Auditorium",
+    "floor": 3,
+    "location": {
+      "x": 103.816607,
+      "y": 1.318959
+    }
+  },
+  "LAW_SR3": {
+    "roomName": "SR 3",
+    "floor": 3,
+    "location": {
+      "x": 103.817133,
+      "y": 1.319202
+    }
+  },
+  "LAW_ESR": {
+    "roomName": "Executive SR",
+    "floor": 3,
+    "location": {
+      "x": 103.817032,
+      "y": 1.319112
     }
   }
 }
