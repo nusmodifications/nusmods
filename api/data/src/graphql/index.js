@@ -1,6 +1,7 @@
 import { gql } from 'apollo-server';
 import _ from 'lodash';
-import db from '../db';
+import { TABLES } from '../db/constants';
+import db from '../db/database';
 import { DateScalarType } from './customScalars';
 
 const typeDefs = gql`
@@ -95,30 +96,30 @@ const resolvers = {
   Query: {
     schools(root, { first, offset }) {
       return db
-        .table('schools')
+        .table(TABLES.schools)
         .select()
-        .limit(first)
+        .limit(first || -1)
         .offset(offset);
     },
     terms(root, { schoolId, first, offset }) {
       return db
-        .table('terms')
+        .table(TABLES.terms)
         .select()
         .where({ schoolId })
-        .limit(first)
+        .limit(first || -1)
         .offset(offset);
     },
     courses(root, { termId, first, offset }) {
       return db
-        .table('courses')
+        .table(TABLES.courses)
         .select()
         .where({ termId })
-        .limit(first)
+        .limit(first || -1)
         .offset(offset);
     },
     course(root, { termId, code }) {
       return db
-        .table('courses')
+        .table(TABLES.courses)
         .select()
         .where({ termId, code })
         .first();
@@ -127,7 +128,7 @@ const resolvers = {
   Mutation: {
     term(root, { schoolId, name, startsAt, endsAt }) {
       return db
-        .table('terms')
+        .table(TABLES.terms)
         .insert({ schoolId, name, startsAt, endsAt })
         .then((x) => x[0]);
     },

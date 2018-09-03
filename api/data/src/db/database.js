@@ -1,7 +1,7 @@
 // @flow
 import Knex from 'knex';
-import convertCase from './util/convertCase';
-import knexConfigs from '../knexfile';
+import convertCase from './convertCase';
+import knexConfigs from '../../knexfile';
 
 // Patch config to convert between snake_case <=> camelCase
 const config = {

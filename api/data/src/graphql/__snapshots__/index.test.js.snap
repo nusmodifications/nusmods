@@ -1,26 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`graphql should be not be null when modules are found 1`] = `
+exports[`queries course queries should be not be null when courses are found 1`] = `
 Object {
-  "modules": Array [
+  "courses": Array [
     Object {
-      "code": "testCode",
+      "code": "CS1101S",
     },
     Object {
-      "code": "anotherTestCode",
+      "code": "CS2100",
     },
   ],
 }
 `;
 
-exports[`graphql should not be null when module is valid 1`] = `
-Object {
-  "module": Object {
-    "code": "anotherTestCode",
-    "credit": 4,
-    "department": null,
-    "description": null,
-    "title": "anotherTestTitle",
-  },
-}
-`;
+exports[`queries course queries should not be null when course is valid 1`] = `undefined`;

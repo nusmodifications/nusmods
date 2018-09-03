@@ -1,43 +1,27 @@
-const TABLE_NAMES = {
-  schools: 'schools',
-  terms: 'terms',
-  departments: 'departments',
-  venues: 'venues',
-  courses: 'courses',
-  lessons: 'lessons',
-};
-const ID_NAMES = {
-  schools: 'school_id',
-  terms: 'term_id',
-  departments: 'department_id',
-  venues: 'venue_id',
-  courses: 'course_id',
-  lessons: 'lesson_id',
-};
-const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+const { TABLES, COLUMNS, ENUMS, TABLE_TO_FOREIGN_KEYS, DAYS } = require('../src/db/constants');
 
-exports.up = async (knex, Promise) => {
+exports.up = (knex, Promise) => {
   function createIdPrimaryKey(table) {
     table
-      .increments('id')
+      .increments(COLUMNS.id)
       .notNullable()
       .primary();
   }
 
-  function createIdForeignKey(table, foreignTableName, notNullable) {
-    const tableIdName = ID_NAMES[foreignTableName];
+  function createIdForeignKey(table, foreignTableName, { notNullable }) {
+    const tableIdName = TABLE_TO_FOREIGN_KEYS[foreignTableName];
     if (notNullable) {
       table
         .integer(tableIdName)
         .notNullable()
-        .references('id')
+        .references(COLUMNS.id)
         .inTable(foreignTableName)
         .onDelete('CASCADE')
         .onUpdate('CASCADE');
     } else {
       table
         .integer(tableIdName)
-        .references('id')
+        .references(COLUMNS.id)
         .inTable(foreignTableName)
         .onDelete('RESTRICT')
         .onUpdate('CASCADE');
@@ -46,89 +30,89 @@ exports.up = async (knex, Promise) => {
 
   function createTimestamps(table) {
     table
-      .timestamp('created_at')
+      .timestamp(COLUMNS.createdAt)
       .notNullable()
       .defaultTo(knex.fn.now());
     table
-      .timestamp('updated_at')
+      .timestamp(COLUMNS.updatedAt)
       .notNullable()
       .defaultTo(knex.fn.now());
   }
 
-  const schoolsTable = knex.schema.createTable(TABLE_NAMES.schools, (table) => {
+  const schoolsTable = knex.schema.createTable(TABLES.schools, (table) => {
     createIdPrimaryKey(table);
     createTimestamps(table);
     table
-      .string('long_name')
+      .string(COLUMNS.longName)
       .notNullable()
       .unique();
-    table.string('short_name', 32);
+    table.string(COLUMNS.shortName, 32);
   });
 
-  const termsTable = knex.schema.createTable(TABLE_NAMES.terms, (table) => {
+  const termsTable = knex.schema.createTable(TABLES.terms, (table) => {
     createIdPrimaryKey(table);
-    createIdForeignKey(table, TABLE_NAMES.schools, true);
+    createIdForeignKey(table, TABLES.schools, true);
     createTimestamps(table);
-    table.dateTime('starts_at').notNullable();
-    table.dateTime('ends_at').notNullable();
-    table.string('name', 32).notNullable();
-    table.unique([ID_NAMES.schools, 'name']);
+    table.dateTime(COLUMNS.startsAt).notNullable();
+    table.dateTime(COLUMNS.endsAt).notNullable();
+    table.string(COLUMNS.name, 32).notNullable();
+    table.unique([COLUMNS.schoolId, COLUMNS.name]);
   });
 
-  const departmentsTable = knex.schema.createTable(TABLE_NAMES.departments, (table) => {
+  const departmentsTable = knex.schema.createTable(TABLES.departments, (table) => {
     createIdPrimaryKey(table);
-    createIdForeignKey(table, TABLE_NAMES.terms, true);
+    createIdForeignKey(table, TABLES.terms, true);
     createTimestamps(table);
-    table.string('name').notNullable();
-    table.unique([ID_NAMES.terms, 'name']);
+    table.string(COLUMNS.name).notNullable();
+    table.unique([COLUMNS.termId, COLUMNS.name]);
   });
 
-  const venuesTable = knex.schema.createTable(TABLE_NAMES.venues, (table) => {
+  const venuesTable = knex.schema.createTable(TABLES.venues, (table) => {
     createIdPrimaryKey(table);
-    createIdForeignKey(table, TABLE_NAMES.terms, true);
-    createIdForeignKey(table, TABLE_NAMES.departments, false);
+    createIdForeignKey(table, TABLES.terms, true);
+    createIdForeignKey(table, TABLES.departments, false);
     createTimestamps(table);
-    table.string('code').notNullable();
-    table.string('name').notNullable();
-    table.string('floor');
-    table.decimal('lat', 10, 7);
-    table.decimal('lng', 10, 7);
-    table.integer('altitude');
-    table.unique([ID_NAMES.terms, 'code']);
+    table.string(COLUMNS.code).notNullable();
+    table.string(COLUMNS.name).notNullable();
+    table.string(COLUMNS.floor);
+    table.decimal(COLUMNS.lat, 10, 7);
+    table.decimal(COLUMNS.lng, 10, 7);
+    table.integer(COLUMNS.altitude);
+    table.unique([COLUMNS.termId, COLUMNS.code]);
   });
 
-  const coursesTable = knex.schema.createTable(TABLE_NAMES.courses, (table) => {
+  const coursesTable = knex.schema.createTable(TABLES.courses, (table) => {
     createIdPrimaryKey(table);
-    createIdForeignKey(table, TABLE_NAMES.terms, true);
-    createIdForeignKey(table, TABLE_NAMES.departments, false);
+    createIdForeignKey(table, TABLES.terms, true);
+    createIdForeignKey(table, TABLES.departments, false);
     createTimestamps(table);
-    table.string('code').notNullable();
-    table.string('title').notNullable();
+    table.string(COLUMNS.code).notNullable();
+    table.string(COLUMNS.title).notNullable();
     table
-      .text('description')
+      .text(COLUMNS.description)
       .notNullable()
       .defaultTo('');
-    table.float('value');
-    table.text('workload');
-    table.text('prerequisite');
-    table.text('preclusion');
-    table.text('corequisite');
-    table.unique([ID_NAMES.terms, 'code']);
+    table.float(COLUMNS.value);
+    table.text(COLUMNS.workload);
+    table.text(COLUMNS.prerequisite);
+    table.text(COLUMNS.preclusion);
+    table.text(COLUMNS.corequisite);
+    table.unique([COLUMNS.termId, COLUMNS.code]);
   });
 
-  const lessonsTable = knex.schema.createTable(TABLE_NAMES.lessons, (table) => {
+  const lessonsTable = knex.schema.createTable(TABLES.lessons, (table) => {
     createIdPrimaryKey(table);
-    createIdForeignKey(table, TABLE_NAMES.courses, true);
+    createIdForeignKey(table, TABLES.courses, true);
     // Allow multiple locations, also disallow deletion of location if lesson exists
-    createIdForeignKey(table, TABLE_NAMES.venues, false);
+    createIdForeignKey(table, TABLES.venues, false);
     createTimestamps(table);
-    table.enu('day', DAYS, { useNative: true, enumName: 'days_enum' }).notNullable();
-    table.string('week').notNullable();
-    table.string('code').notNullable();
-    table.dateTime('starts_at').notNullable();
-    table.dateTime('ends_at').notNullable();
-    table.string('type').notNullable();
-    table.unique([ID_NAMES.courses, 'code']);
+    table.enu(COLUMNS.day, DAYS, { useNative: true, enumName: ENUMS.day }).notNullable();
+    table.string(COLUMNS.week).notNullable();
+    table.string(COLUMNS.code).notNullable();
+    table.dateTime(COLUMNS.startsAt).notNullable();
+    table.dateTime(COLUMNS.endsAt).notNullable();
+    table.string(COLUMNS.type).notNullable();
+    table.unique([COLUMNS.courseId, COLUMNS.code]);
   });
 
   return Promise.all([
@@ -142,11 +126,11 @@ exports.up = async (knex, Promise) => {
 };
 
 exports.down = (knex, Promise) => {
-  const tables = Object.values(TABLE_NAMES);
+  const tables = Object.values(TABLES);
   return Promise.all(tables.map((table) => knex.schema.dropTableIfExists(table))).then(() => {
-    // if (process.env.NODE_ENV !== 'test') {
-    // eslint-disable-next-line
+    if (process.env.NODE_ENV !== 'test') {
+      // eslint-disable-next-line
       console.log(`tables ${tables.join(', ')} were dropped`);
-    // }
+    }
   });
 };

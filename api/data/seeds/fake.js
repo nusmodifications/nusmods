@@ -1,40 +1,42 @@
+const { TABLES, COLUMNS } = require('../src/db/constants');
+
 exports.seed = async (knex) => {
   // Deletes ALL existing entries
-  await knex('schools').truncate();
+  await knex(TABLES.schools).truncate();
   // Inserts seed entries
-  await knex('schools').insert([
-    { long_name: 'National University of Singapore', short_name: 'NUS' },
-    { long_name: 'National Technological University', short_name: 'NTU' },
-    { long_name: 'Singapore Management University', short_name: 'SMU' },
+  await knex(TABLES.schools).insert([
+    { [COLUMNS.longName]: 'National University of Singapore', [COLUMNS.shortName]: 'NUS' },
+    { [COLUMNS.longName]: 'National Technological University', [COLUMNS.shortName]: 'NTU' },
+    { [COLUMNS.longName]: 'Singapore Management University', [COLUMNS.shortName]: 'SMU' },
   ]);
-  await knex('terms').truncate();
-  await knex('terms').insert([
+  await knex(TABLES.terms).truncate();
+  await knex(TABLES.terms).insert([
     {
-      school_id: 1,
-      name: 'AY2017Sem1',
-      starts_at: '2018-08-01T13:00:00.000Z',
-      ends_at: '2018-12-01T13:00:00.000Z',
+      [COLUMNS.schoolId]: 1,
+      [COLUMNS.name]: 'AY2017Sem1',
+      [COLUMNS.startsAt]: '2018-08-01T13:00:00.000Z',
+      [COLUMNS.endsAt]: '2018-12-01T13:00:00.000Z',
     },
     {
-      school_id: 2,
-      name: 'AY2017Sem2',
-      starts_at: '2019-01-01T13:00:00.000Z',
-      ends_at: '2019-05-01T13:00:00.000Z',
+      [COLUMNS.schoolId]: 2,
+      [COLUMNS.name]: 'AY2017Sem2',
+      [COLUMNS.startsAt]: '2019-01-01T13:00:00.000Z',
+      [COLUMNS.endsAt]: '2019-05-01T13:00:00.000Z',
     },
   ]);
-  await knex('courses').truncate();
-  await knex('courses').insert([
+  await knex(TABLES.courses).truncate();
+  await knex(TABLES.courses).insert([
     {
-      term_id: 1,
-      code: 'CS1101S',
-      title: 'Intro to Computer Science',
-      value: 4.0,
+      [COLUMNS.termId]: 1,
+      [COLUMNS.code]: 'CS1101S',
+      [COLUMNS.title]: 'Intro to Computer Science',
+      [COLUMNS.value]: 4.0,
     },
     {
-      term_id: 2,
-      code: 'CS1101S',
-      title: 'Intro to Computer Science',
-      value: 4.0,
+      [COLUMNS.termId]: 1,
+      [COLUMNS.code]: 'CS2100',
+      [COLUMNS.title]: 'Intro to Computer Science',
+      [COLUMNS.value]: 4.0,
     },
   ]);
 };
