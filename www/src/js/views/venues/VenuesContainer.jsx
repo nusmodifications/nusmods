@@ -31,6 +31,7 @@ import Title from 'views/components/Title';
 import AvailabilitySearch, { defaultSearchOptions } from './AvailabilitySearch';
 import VenueList from './VenueList';
 import VenueDetails from './VenueDetails';
+import VenueLocation from './VenueLocation';
 import styles from './VenuesContainer.scss';
 
 /* eslint-disable react/prop-types */
@@ -80,6 +81,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
 
   componentDidMount() {
     this.loadPageData();
+    VenueLocation.preload();
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
