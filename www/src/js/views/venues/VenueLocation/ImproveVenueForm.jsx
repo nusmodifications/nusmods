@@ -262,7 +262,7 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
               type="button"
               onClick={this.geolocate}
             >
-              <MapPin />
+              <MapPin /> Use my location
             </button>
           )}
         </div>
