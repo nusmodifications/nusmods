@@ -2989,22 +2989,21 @@ entities@^1.1.1, entities@~1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/entities/-/entities-1.1.1.tgz#6e5c2d0a5621b5dadaecef80b90edfb5cd7772f0"
 
-enzyme-adapter-react-16@1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.2.0.tgz#c6e80f334e0a817873262d7d01ee9e4747e3c97e"
+enzyme-adapter-react-16@1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.3.1.tgz#a0f04273aee62c47521da7a2f6c7134182bd7f73"
   dependencies:
-    enzyme-adapter-utils "^1.5.0"
+    enzyme-adapter-utils "^1.6.0"
     function.prototype.name "^1.1.0"
     object.assign "^4.1.0"
     object.values "^1.0.4"
     prop-types "^15.6.2"
     react-is "^16.4.2"
-    react-reconciler "^0.7.0"
     react-test-renderer "^16.0.0-0"
 
-enzyme-adapter-utils@^1.5.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/enzyme-adapter-utils/-/enzyme-adapter-utils-1.5.0.tgz#a020ab3ae79bb1c85e1d51f48f35e995e0eed810"
+enzyme-adapter-utils@^1.6.0:
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/enzyme-adapter-utils/-/enzyme-adapter-utils-1.6.1.tgz#f19acb8b23ddd21b2de99506b181e46138368f2a"
   dependencies:
     function.prototype.name "^1.1.0"
     object.assign "^4.1.0"
@@ -3934,6 +3933,14 @@ fs-constants@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/fs-constants/-/fs-constants-1.0.0.tgz#6be0de9be998ce16af8afc24497b9ee9b7ccd9ad"
 
+fs-extra@7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-7.0.0.tgz#8cc3f47ce07ef7b3593a11b9fb245f7e34c041d6"
+  dependencies:
+    graceful-fs "^4.1.2"
+    jsonfile "^4.0.0"
+    universalify "^0.1.0"
+
 fs-extra@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-3.0.1.tgz#3794f378c58b342ea7dbbb23095109c4b3b62291"
@@ -3945,14 +3952,6 @@ fs-extra@^3.0.1:
 fs-extra@^4.0.2:
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-4.0.3.tgz#0d852122e5bc5beb453fb028e9c0c9bf36340c94"
-  dependencies:
-    graceful-fs "^4.1.2"
-    jsonfile "^4.0.0"
-    universalify "^0.1.0"
-
-fs-extra@^7.0.0:
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-7.0.0.tgz#8cc3f47ce07ef7b3593a11b9fb245f7e34c041d6"
   dependencies:
     graceful-fs "^4.1.2"
     jsonfile "^4.0.0"
@@ -8003,9 +8002,9 @@ raven-for-redux@1.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/raven-for-redux/-/raven-for-redux-1.3.1.tgz#865f0056ec1706073c1b3a33164640453ed4fed2"
 
-raven-js@3.24.0:
-  version "3.24.0"
-  resolved "https://registry.yarnpkg.com/raven-js/-/raven-js-3.24.0.tgz#59464d8bc4b3812ae87a282e9bb98ecad5b4b047"
+raven-js@3.26.4:
+  version "3.26.4"
+  resolved "https://registry.yarnpkg.com/raven-js/-/raven-js-3.26.4.tgz#32aae3a63a9314467a453c94c89a364ea43707be"
 
 raw-body@2:
   version "2.3.3"
@@ -8139,15 +8138,6 @@ react-qr-svg@2.1.0:
   dependencies:
     prop-types "^15.5.8"
     qr.js "0.0.0"
-
-react-reconciler@^0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/react-reconciler/-/react-reconciler-0.7.0.tgz#9614894103e5f138deeeb5eabaf3ee80eb1d026d"
-  dependencies:
-    fbjs "^0.8.16"
-    loose-envify "^1.1.0"
-    object-assign "^4.1.1"
-    prop-types "^15.6.0"
 
 react-redux@5.0.7:
   version "5.0.7"
