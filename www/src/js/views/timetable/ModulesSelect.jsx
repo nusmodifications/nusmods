@@ -1,7 +1,8 @@
 // @flow
 import React, { Component } from 'react';
 import { has } from 'lodash';
-import Downshift, { type ChildrenFunction, DownshiftState, StateChangeOptions } from 'downshift';
+import type { ChildrenFunction, DownshiftState, StateChangeOptions } from 'downshift';
+import Downshift from 'downshift';
 import classnames from 'classnames';
 
 import type { ModuleSelectList } from 'types/reducers';
@@ -188,6 +189,7 @@ export class ModulesSelectComponent extends Component<Props, State> {
           onRequestClose={this.closeSelect}
           className={styles.modal}
           shouldCloseOnOverlayClick={false}
+          fullscreen
         >
           {downshiftComponent}
         </Modal>
