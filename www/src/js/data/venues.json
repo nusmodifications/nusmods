@@ -2718,5 +2718,13 @@
       "x": 103.817032,
       "y": 1.319112
     }
+  },
+  "NAK-AUD": {
+    "roomName": "Ngee Ann Kongsi Auditorium",
+    "floor": 2,
+    "location": {
+      "x": 103.773178,
+      "y": 1.305546
+    }
   }
 }
