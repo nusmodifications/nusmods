@@ -15,6 +15,7 @@ import {
   ENABLE_CORS_NOTIFICATION,
   TOGGLE_CORS_NOTIFICATION_GLOBALLY,
   SET_MODULE_TABLE_SORT,
+  TOGGLE_BETA_TESTING_STATUS,
 } from 'actions/settings';
 import { SET_EXPORTED_DATA } from 'actions/export';
 import { LIGHT_MODE, DARK_MODE } from 'types/settings';
@@ -33,6 +34,7 @@ const defaultSettingsState: SettingsState = {
   hiddenInTimetable: [],
   corsNotification: defaultCorsNotificationState,
   moduleTableOrder: 'exam',
+  beta: false,
 };
 
 function settings(state: SettingsState = defaultSettingsState, action: FSA): SettingsState {
@@ -89,6 +91,12 @@ function settings(state: SettingsState = defaultSettingsState, action: FSA): Set
       return {
         ...state,
         moduleTableOrder: action.payload,
+      };
+
+    case TOGGLE_BETA_TESTING_STATUS:
+      return {
+        ...state,
+        beta: !(state.beta || false),
       };
 
     case REHYDRATE: {
