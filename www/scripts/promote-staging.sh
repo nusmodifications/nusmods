@@ -80,7 +80,7 @@ if [ -x "$(command -v sentry-cli)" ]; then
   echo "Creating Sentry release"
 
   # Follow the format <YYYYMMDD>-<7-char commit hash>
-  PROD_VERSION="$(date +%Y%m%d)-${$DEPLOYMENT_COMMIT}"
+  PROD_VERSION="$(date +%Y%m%d)-${DEPLOYMENT_COMMIT}"
 
   sentry-cli releases new "$PROD_VERSION"
   sentry-cli releases set-commits "$PROD_VERSION" --auto
