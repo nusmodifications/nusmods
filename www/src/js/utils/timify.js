@@ -73,7 +73,7 @@ export function getCurrentHours(
   return now.getHours();
 }
 
-// Gets the current time in hours, 0915 -> 15, 1315 -> 45
+// Gets the current time in hours, 0915 -> 15, 1345 -> 45
 // Current time to always match Singapore's
 export function getCurrentMinutes(
   now: Date = new Date(), // Used for tests only

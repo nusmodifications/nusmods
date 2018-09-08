@@ -20,8 +20,15 @@ export type Semester = number; // E.g. 1/2/3/4. 3 and 4 means special sem i and 
 export type WeekText = string; // E.g. "Every Week", "Odd Week"
 
 // Auxiliary data types
-export type Day = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday';
-export const DaysOfWeek: Day[] = [
+export type Day =
+  | 'Monday'
+  | 'Tuesday'
+  | 'Wednesday'
+  | 'Thursday'
+  | 'Friday'
+  | 'Saturday'
+  | 'Sunday';
+export const WorkingDaysOfWeek: Day[] = [
   'Monday',
   'Tuesday',
   'Wednesday',
@@ -29,11 +36,12 @@ export const DaysOfWeek: Day[] = [
   'Friday',
   'Saturday',
 ];
+export const DaysOfWeek: Day[] = [...WorkingDaysOfWeek, 'Sunday'];
 
 export type Time = 'Morning' | 'Afternoon' | 'Evening';
 export const TimesOfDay: Time[] = ['Morning', 'Afternoon', 'Evening'];
 
-export const Timeslots: [Day, Time][] = flatMap(DaysOfWeek, (day): [Day, Time][] =>
+export const Timeslots: [Day, Time][] = flatMap(WorkingDaysOfWeek, (day): [Day, Time][] =>
   TimesOfDay.map((time) => [day, time]),
 );
 

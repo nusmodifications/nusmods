@@ -6,7 +6,7 @@ import classnames from 'classnames';
 
 import type { Day, Time } from 'types/modules';
 
-import { DaysOfWeek, TimesOfDay } from 'types/modules';
+import { WorkingDaysOfWeek, TimesOfDay } from 'types/modules';
 import { getTimeslot } from 'utils/modules';
 import styles from './TimeslotTable.scss';
 
@@ -34,7 +34,7 @@ const timeLabels: { [Time]: string } = {
   Evening: 'Night',
 };
 
-const withoutSaturday = DaysOfWeek.slice(0, -1);
+const withoutSaturday = WorkingDaysOfWeek.slice(0, -1);
 const withoutEvening = TimesOfDay.slice(0, -1);
 
 export default class TimeslotTable extends Component<Props, State> {
@@ -59,9 +59,9 @@ export default class TimeslotTable extends Component<Props, State> {
 
     // Remove Saturday and Evening if there is nothing in those rows / columns
     const days = TimesOfDay.some((time) => hasChildren('Saturday', time))
-      ? DaysOfWeek
+      ? WorkingDaysOfWeek
       : withoutSaturday;
-    const times = DaysOfWeek.some((day) => hasChildren(day, 'Evening'))
+    const times = WorkingDaysOfWeek.some((day) => hasChildren(day, 'Evening'))
       ? TimesOfDay
       : withoutEvening;
 
