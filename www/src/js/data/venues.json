@@ -2726,5 +2726,9 @@
       "x": 103.773178,
       "y": 1.305546
     }
+  },
+  "TC-SR4": {
+    "roomName": "Tembusu Seminar Room 4",
+    "floor": 1
   }
 }
