@@ -911,8 +911,8 @@
     "roomName": "LECTURE THEATRE 29",
     "floor": 1,
     "location": {
-      "x": 103.78098784913514,
-      "y": 1.2973635913960453
+      "x": 103.78121942281726,
+      "y": 1.2970306748465374
     }
   },
   "S14-0619": {
@@ -2730,5 +2730,69 @@
   "TC-SR4": {
     "roomName": "Tembusu Seminar Room 4",
     "floor": 1
+  },
+  "TP-SR9": {
+    "roomName": "Town Plaza Seminar Room 9",
+    "floor": 2,
+    "location": {
+      "x": 103.7734447780531,
+      "y": 1.3040060366184345
+    }
+  },
+  "ERC-GLR": {
+    "roomName": "Global Learning Room",
+    "floor": 2,
+    "location": {
+      "x": 103.77296626567842,
+      "y": 1.3062266437833203
+    }
+  },
+  "CELC-TR7": {
+    "roomName": "Training Room 7",
+    "floor": 3,
+    "location": {
+      "x": 103.77142667770386,
+      "y": 1.2969754103578175
+    }
+  },
+  "UTSRC-LT51": {
+    "roomName": "LT51",
+    "floor": 1,
+    "location": {
+      "x": 103.77298235893251,
+      "y": 1.3040546181167396
+    }
+  },
+  "UTSRC-SR7": {
+    "roomName": "UTown Seminar Room 7",
+    "floor": 2,
+    "location": {
+      "x": 103.77302572325755,
+      "y": 1.3041726550718167
+    }
+  },
+  "Y-PgRm2": {
+    "roomName": "Yale-NUS Programme Room 2",
+    "floor": 2,
+    "location": {
+      "x": 103.77246850300989,
+      "y": 1.3074623343447909
+    }
+  },
+  "Y-CR3": {
+    "roomName": "Yale-NUS Saga College Classroom C",
+    "floor": 1,
+    "location": {
+      "x": 103.77201037850928,
+      "y": 1.3056591015490226
+    }
+  },
+  "BIZ2-0413C": {
+    "roomName": "BIZ2-0413C",
+    "floor": 4,
+    "location": {
+      "x": 103.77533733844759,
+      "y": 1.29322559256955
+    }
   }
 }
