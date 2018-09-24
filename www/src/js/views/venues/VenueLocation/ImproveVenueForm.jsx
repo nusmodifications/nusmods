@@ -220,6 +220,7 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
             zoom={19}
             maxZoom={19}
             onClick={(evt) => this.updateLocation(evt.latlng)}
+            gestureHandling
           >
             <Marker
               position={location}
