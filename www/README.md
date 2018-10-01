@@ -302,8 +302,10 @@ $ yarn promote-staging # Promote ./dist to production
 │   │   ├── bootstrapping    - Code that runs once only on app initialization
 │   │   ├── config           - App configuration
 │   │   ├── data             - Static data such as theme colors
+│   │   ├── e2e              - End-to-end tests
 │   │   ├── middlewares      - Redux middlewares
 │   │   ├── reducers         - Redux reducers
+│   │   ├── selectors        - Redux state selectors
 │   │   ├── storage          - Persistance layer for Redux
 │   │   ├── test-utils       - Utilities for testing - this directory is not counted
 │   │   │                      for test coverage
