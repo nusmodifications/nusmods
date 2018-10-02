@@ -228,16 +228,13 @@ const mapStateToProps = (state: StoreState) => ({
   currentThemeId: state.theme.id,
 });
 
-const connectedSettings = connect(
-  mapStateToProps,
-  {
-    selectTheme,
-    selectNewStudent,
-    selectFaculty,
-    selectMode,
-    toggleCorsNotificationGlobally,
-    dismissCorsNotification,
-    enableCorsNotification,
-  },
-)(SettingsContainer);
+const connectedSettings = connect(mapStateToProps, {
+  selectTheme,
+  selectNewStudent,
+  selectFaculty,
+  selectMode,
+  toggleCorsNotificationGlobally,
+  dismissCorsNotification,
+  enableCorsNotification,
+})(SettingsContainer);
 export default deferComponentRender(connectedSettings);
