@@ -124,7 +124,8 @@ class SettingsContainer extends Component<Props> {
         <ScrollToTop onComponentWillMount />
         <Title>Settings</Title>
 
-        <h1 className={styles.title}>Settings</h1>
+        <h2 className={styles.title}>Settings</h2>
+        <hr />
 
         {/* TODO: Finish the CORS bidding stats filter feature and re-enable this
       <h4>New Student</h4>
