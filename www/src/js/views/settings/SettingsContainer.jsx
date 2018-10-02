@@ -57,23 +57,25 @@ type Props = {
 class SettingsContainer extends Component<Props> {
   renderNightModeOption() {
     return (
-      <div>
-        <h4 id="night-mode">Night Mode</h4>
-        <div className={classnames(styles.toggleRow, 'row')}>
-          <div className={classnames(styles.toggleDescription, 'col-sm-7')}>
-            <p>
-              Night mode turns the light surfaces of the page dark, creating an experience ideal for
-              the dark. Try it out!
-            </p>
-            <p>
-              Protip: Press <kbd>X</kbd> to toggle modes anywhere on NUSMods.
-            </p>
+      <div className="row">
+        <div className="col">
+          <h4 id="night-mode">Night Mode</h4>
+          <div className={styles.toggleRow}>
+            <div className={styles.toggleDescription}>
+              <p>
+                Night mode turns the light surfaces of the page dark, creating an experience ideal
+                for the dark. Try it out!
+              </p>
+              <p>
+                Protip: Press <kbd>X</kbd> to toggle modes anywhere on NUSMods.
+              </p>
+            </div>
+            <div className={styles.toggle}>
+              <ModeSelect mode={this.props.mode} onSelectMode={this.props.selectMode} />
+            </div>
           </div>
-          <div className={classnames('col-sm-4 offset-sm-1', styles.toggle)}>
-            <ModeSelect mode={this.props.mode} onSelectMode={this.props.selectMode} />
-          </div>
+          <hr />
         </div>
-        <hr />
       </div>
     );
   }
@@ -182,28 +184,36 @@ class SettingsContainer extends Component<Props> {
 
         <hr />
 
-        <h4 id="cors">CORS Bidding Reminder</h4>
+        <div className="row">
+          <div className="col">
+            <h4 id="cors">CORS Bidding Reminder</h4>
 
-        <div className={styles.notificationPreview}>
-          <CorsNotification hideCloseButton />
-        </div>
+            <div className={styles.notificationPreview}>
+              <CorsNotification hideCloseButton />
+            </div>
 
-        <div className={classnames(styles.toggleRow, 'row')}>
-          <div className={classnames(styles.toggleDescription, 'col-sm-7')}>
-            <p>You can get a reminder about when CORS bidding starts with a small notification.</p>
-            {corsText && <p>{corsText}</p>}
+            <div className={styles.toggleRow}>
+              <div className={styles.toggleDescription}>
+                <p>
+                  You can get a reminder about when CORS bidding starts with a small notification.
+                </p>
+                {corsText && <p>{corsText}</p>}
+              </div>
+              <div className={styles.toggle}>
+                <Toggle
+                  isOn={corsNotification.enabled}
+                  onChange={this.props.toggleCorsNotificationGlobally}
+                />
+              </div>
+            </div>
+
+            <hr />
+
+            {corsNotification.enabled &&
+              corsRound &&
+              this.renderCorsNotitificationOption(corsRound)}
           </div>
-          <div className={classnames('col-sm-4 offset-sm-1', styles.toggle)}>
-            <Toggle
-              isOn={corsNotification.enabled}
-              onChange={this.props.toggleCorsNotificationGlobally}
-            />
-          </div>
         </div>
-
-        <hr />
-
-        {corsNotification.enabled && corsRound && this.renderCorsNotitificationOption(corsRound)}
       </div>
     );
   }
@@ -217,13 +227,16 @@ const mapStateToProps = (state: StoreState) => ({
   currentThemeId: state.theme.id,
 });
 
-const connectedSettings = connect(mapStateToProps, {
-  selectTheme,
-  selectNewStudent,
-  selectFaculty,
-  selectMode,
-  toggleCorsNotificationGlobally,
-  dismissCorsNotification,
-  enableCorsNotification,
-})(SettingsContainer);
+const connectedSettings = connect(
+  mapStateToProps,
+  {
+    selectTheme,
+    selectNewStudent,
+    selectFaculty,
+    selectMode,
+    toggleCorsNotificationGlobally,
+    dismissCorsNotification,
+    enableCorsNotification,
+  },
+)(SettingsContainer);
 export default deferComponentRender(connectedSettings);
