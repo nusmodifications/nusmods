@@ -39,7 +39,7 @@ jobs:
       - run: yarn
       - save_cache: *save_node_deps
       - run: yarn lint
-      - run: yarn test
+      - run: yarn test --maxWorkers=4 --ci
 
   nus-scrapers:
     <<: *defaults
@@ -51,7 +51,7 @@ jobs:
       - run: yarn
       - save_cache: *save_node_deps
       - run: yarn lint
-      - run: yarn test
+      - run: yarn test --maxWorkers=4 --ci
       - run:
           name: Build scraper
           environment:
@@ -68,7 +68,7 @@ jobs:
       - run: yarn
       - save_cache: *save_node_deps
       - run: yarn lint
-      - run: yarn test
+      - run: yarn test --maxWorkers=4 --ci
       - run: yarn build
       - store_artifacts:
           path: dist
@@ -99,7 +99,7 @@ jobs:
             JEST_JUNIT_OUTPUT: reports/junit/js-test-results.xml
           command: |
             set -e
-            yarn jest --ci --testResultsProcessor="jest-junit" --coverage
+            yarn jest --maxWorkers=4 --ci --testResultsProcessor="jest-junit" --coverage
             cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
       - run:
           name: Lint styles
