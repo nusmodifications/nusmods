@@ -13,6 +13,20 @@
   }
 }
 
+@keyframes pulse-more {
+  from {
+    transform: scale3d(1, 1, 1);
+  }
+
+  50% {
+    transform: scale3d(1.2, 1.2, 1.2);
+  }
+
+  to {
+    transform: scale3d(1, 1, 1);
+  }
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;

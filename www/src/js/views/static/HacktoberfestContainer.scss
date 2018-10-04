@@ -1,0 +1,73 @@
+@import '~styles/utils/modules-entry';
+
+.page {
+  max-width: 65rem;
+  font-size: 1.2rem;
+
+  h2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 2rem 0;
+    font-size: 2.4rem;
+
+    .heart {
+      display: inline-block;
+      width: 3rem;
+      height: 3rem;
+      margin: 0 0.7rem;
+      color: theme-color(danger);
+
+      :global {
+        animation: pulse-more 2s infinite;
+      }
+    }
+
+    svg {
+      max-width: 15rem;
+    }
+
+    @include media-breakpoint-down(sm) {
+      flex-direction: column;
+
+      .heart {
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+      }
+    }
+  }
+
+  .steps {
+    margin: 3rem 0;
+    font-size: 1.4rem;
+    list-style: none;
+
+    a {
+      font-weight: bold;
+    }
+
+    li {
+      margin-bottom: 1.8rem;
+      margin-left: 1.6rem;
+      counter-increment: steps;
+
+      &::before {
+        content: counter(steps);
+        display: inline-block;
+        width: 2rem;
+        height: 2rem;
+        margin: 0 0.5rem 0 -2.6rem;
+        font-weight: bold;
+        line-height: 2rem;
+        text-align: center;
+        color: #fff;
+        background-color: theme-color();
+      }
+    }
+  }
+
+  .disclaimer {
+    margin-top: 2rem;
+    line-height: 1.2;
+  }
+}
