@@ -2,7 +2,11 @@
 
 import React from 'react';
 
-export default function HacktoberfestLogo() {
+type Props = {
+  className?: string,
+};
+
+export default function HacktoberfestLogo(props: Props) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -10,10 +14,11 @@ export default function HacktoberfestLogo() {
       version="1.1"
       role="img"
       aria-labelledby="87qhsz3360uj6xpqxk4hl975pio2u7p l1bc0610ek2gqye5ebsbttyeav9mn9q"
+      className={props.className}
     >
       <title id="87qhsz3360uj6xpqxk4hl975pio2u7p">Hacktoberfest 2018</title>
       <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-        <g transform="translate(-475.000000, -323.000000)" fill="#FFFFFF">
+        <g transform="translate(-475.000000, -323.000000)" fill="currentColor">
           <g transform="translate(475.000000, 278.000000)">
             <g transform="translate(0.000000, 45.000000)">
               <polygon points="241.322346 49.1683308 251.858887 49.1683308 251.858887 112.384872 258.882045 119.40803 265.907008 112.384872 276.441744 101.848331 272.930165 98.3358496 265.907008 105.35991 265.907008 49.1674286 279.954226 35.1202105 265.907008 35.1202105 265.907008 24.5845714" />
