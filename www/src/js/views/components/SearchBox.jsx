@@ -100,6 +100,7 @@ export default class SearchBox extends PureComponent<Props, State> {
             id="search-box"
             className="form-control form-control-lg"
             type="search"
+            autoComplete="off"
             ref={this.searchElement}
             value={this.state.searchTerm}
             onChange={this.onInput}

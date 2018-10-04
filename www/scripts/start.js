@@ -10,8 +10,7 @@ const developmentConfig = require(CONFIG_FILE); // eslint-disable-line import/no
 
 // If you use Docker, Vagrant or Cloud9, set
 // host: options.host || '0.0.0.0';
-// 0.0.0.0 is available to all network devices unlike `localhost`.
-const DEFAULT_HOST = process.env.HOST || '0.0.0.0';
+const DEFAULT_HOST = process.env.HOST || 'localhost';
 const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 8080;
 const DEFAULT_EXPORT_PORT = parseInt(process.env.EXPORT_PORT, 10) || 3000;
 const PROTOCOL = process.env.HTTPS === 'true' ? 'https' : 'http';
