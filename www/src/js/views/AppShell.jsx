@@ -15,7 +15,7 @@ import classnames from 'classnames';
 import { each } from 'lodash';
 
 import weekText from 'utils/weekText';
-import { isMobileSafari } from 'utils/css';
+import { isMobileIos } from 'utils/css';
 import { openNotification } from 'actions/app';
 import { fetchModuleList } from 'actions/moduleBank';
 import { fetchTimetableModules, validateTimetable, setTimetable } from 'actions/timetables';
@@ -73,7 +73,7 @@ export class AppShellComponent extends Component<Props, State> {
     });
   }
 
-  isMobileSafari = isMobileSafari();
+  isMobileIos = isMobileIos();
 
   fetchModuleList = () => {
     // TODO: This always re-fetch the entire modules list. Consider a better strategy for this
@@ -113,7 +113,7 @@ export class AppShellComponent extends Component<Props, State> {
             className={classnames(`theme-${this.props.theme}`, {
               'mode-dark': isDarkMode,
               'mdc-theme--dark': isDarkMode,
-              'mobile-safari': this.isMobileSafari,
+              'mobile-safari': this.isMobileIos,
             })}
           />
         </Helmet>
