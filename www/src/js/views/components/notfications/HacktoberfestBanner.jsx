@@ -29,7 +29,13 @@ export default class HacktoberfestBanner extends PureComponent<Props, State> {
     if (!this.state.isOpen) return null;
 
     return (
-      <div className={classnames('alert alert-info no-export', styles.announcement)}>
+      <div
+        className={classnames(
+          'alert alert-info no-export',
+          styles.announcement,
+          styles.hacktoberfest,
+        )}
+      >
         <Heart className={styles.backgroundIcon} />
 
         <div className={styles.body}>
@@ -38,7 +44,7 @@ export default class HacktoberfestBanner extends PureComponent<Props, State> {
         </div>
 
         <div className={styles.buttons}>
-          <Link to="/hacktoberfest" className="btn btn-lg btn-info">
+          <Link to="/hacktoberfest" className="btn btn-info">
             Find out more
           </Link>
 

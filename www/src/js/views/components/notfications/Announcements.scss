@@ -38,6 +38,16 @@
   margin-left: 1rem;
 }
 
+:global(.verticalMode) .hacktoberfest {
+  flex-wrap: wrap;
+
+  .buttons {
+    flex: 1 0 auto;
+    justify-content: space-between;
+    margin-top: 1rem;
+  }
+}
+
 .backgroundIcon {
   position: absolute;
   top: -1rem;
