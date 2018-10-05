@@ -47,4 +47,5 @@ export function supportsCSSVariables() {
   return window.CSS.supports && window.CSS.supports('(--var: red)');
 }
 
-export const isMobileSafari = (): boolean => bowser.ios && bowser.safari;
+// Safari and Non-Safari browsers in IOS
+export const isMobileIos = (): boolean => bowser.ios;
