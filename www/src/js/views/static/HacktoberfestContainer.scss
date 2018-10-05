@@ -9,13 +9,16 @@
     align-items: center;
     justify-content: center;
     margin: 2rem 0;
-    font-size: 2.4rem;
+
+    .logo {
+      width: 12rem;
+    }
 
     .heart {
       display: inline-block;
       width: 3rem;
       height: 3rem;
-      margin: 0 0.7rem;
+      margin: 0 1rem;
       color: theme-color(danger);
 
       :global {
@@ -35,6 +38,11 @@
         margin-bottom: 0.5rem;
       }
     }
+  }
+
+  .shirts {
+    display: block;
+    width: 100%;
   }
 
   .steps {
