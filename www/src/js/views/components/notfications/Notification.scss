@@ -1,4 +1,4 @@
-@import '../../../../styles/utils/modules-entry';
+@import '~styles/utils/modules-entry';
 
 .snackbar:global(.mdc-snackbar) {
   z-index: $snackbar-z-index;
