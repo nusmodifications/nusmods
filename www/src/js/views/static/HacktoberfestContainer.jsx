@@ -29,7 +29,7 @@ export default function TeamContainer() {
       <img
         src={shirt}
         className={styles.shirts}
-        alt="Gray shirts with NUSMods logotype on the front and a hexagonal N NUSMods logo at the back"
+        alt="Gray shirts with NUSMods logotype on the front and a hexagonal M NUSMods logo at the back"
       />
 
       <ol className={styles.steps}>
@@ -78,8 +78,8 @@ export default function TeamContainer() {
         *{' '}
         <small>
           Free NUSMods shirt only available for NUS students on a first-come-first-serve basis.
-          NUSMods is not affiliated with Hacktoberfest. Official Hacktoberfest shirt only available
-          on a limited basis if you submit five pull requests to any projects on GitHub.
+          NUSMods is not affiliated with Hacktoberfest in any way. Official Hacktoberfest shirt only
+          available on a limited basis if you submit five pull requests to any projects on GitHub.
         </small>
       </p>
     </StaticPage>

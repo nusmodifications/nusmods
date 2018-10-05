@@ -34,9 +34,7 @@ export default class HacktoberfestBanner extends PureComponent<Props, State> {
 
         <div className={styles.body}>
           <h3>Hacktoberfest 2018 now open!</h3>
-          <p>
-            Improve NUSMods by submitting pull requests and get a free T-shirt at the same time!
-          </p>
+          <p>Improve NUSMods by submitting pull requests and get free T-shirts at the same time!</p>
         </div>
 
         <div className={styles.buttons}>
