@@ -48,20 +48,20 @@
 
     li {
       margin-bottom: 1.8rem;
-      margin-left: 1.6rem;
+      margin-left: 1.8rem;
       counter-increment: steps;
 
       &::before {
         content: counter(steps);
         display: inline-block;
-        width: 2rem;
-        height: 2rem;
-        margin: 0 0.5rem 0 -2.6rem;
+        width: 2.2rem;
+        height: 2.2rem;
+        margin: 0 0.6rem 0 -2.8rem;
         font-weight: bold;
         line-height: 2rem;
         text-align: center;
         color: #fff;
-        background-color: theme-color();
+        border: 1px solid theme-color();
       }
     }
   }

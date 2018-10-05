@@ -2,13 +2,13 @@
 
 import React, { PureComponent } from 'react';
 import classnames from 'classnames';
+import { Link } from 'react-router-dom';
 
 import storage from 'storage';
 import { HACKTOBERFEST } from 'storage/keys';
 import styles from 'views/components/notfications/Announcements.scss';
 import Heart from 'react-feather/dist/icons/heart';
 import CloseButton from 'views/components/CloseButton';
-import ExternalLink from 'views/components/ExternalLink';
 
 type Props = {};
 type State = {
@@ -35,19 +35,17 @@ export default class HacktoberfestBanner extends PureComponent<Props, State> {
         <div className={styles.body}>
           <h3>Hacktoberfest 2018 now open!</h3>
           <p>
-            Improve NUSMods by{' '}
-            <ExternalLink href="https://github.com/nusmodifications/nusmods/issues?q=is%3Aissue+is%3Aopen+label%3AHacktoberfest">
-              submitting pull requests
-            </ExternalLink>{' '}
-            and{' '}
-            <ExternalLink href="https://hacktoberfest.digitalocean.com/">
-              get a free T-shirt
-            </ExternalLink>{' '}
-            at the same time!
+            Improve NUSMods by submitting pull requests and get a free T-shirt at the same time!
           </p>
         </div>
 
-        <CloseButton className={styles.closeButton} onClick={this.dismiss} />
+        <div className={styles.buttons}>
+          <Link to="/hacktoberfest" className="btn btn-lg btn-info">
+            Find out more
+          </Link>
+
+          <CloseButton className={styles.closeButton} onClick={this.dismiss} />
+        </div>
       </div>
     );
   }
