@@ -2794,5 +2794,45 @@
       "x": 103.77533733844759,
       "y": 1.29322559256955
     }
+  },
+  "RMI-SR1": {
+    "roomName": "RMI-SR1 (i3-01-05)",
+    "floor": 1,
+    "location": {
+      "x": 103.77548217773439,
+      "y": 1.2926128638467618
+    }
+  },
+  "HSSMLCR": {
+    "roomName": "HSSMLCR",
+    "floor": 3,
+    "location": {
+      "x": 103.77434492111207,
+      "y": 1.293218888755013
+    }
+  },
+  "RC4-SR6": {
+    "roomName": "Seminar Room 6",
+    "floor": 1,
+    "location": {
+      "x": 103.77289652824403,
+      "y": 1.3082901083261955
+    }
+  },
+  "SDE-SR15": {
+    "roomName": "Seminar Room 15",
+    "floor": 2,
+    "location": {
+      "x": 103.7704767581688,
+      "y": 1.2979434993900776
+    }
+  },
+  "UTSRC-SR2": {
+    "roomName": "UTown Seminar Room 2",
+    "floor": 1,
+    "location": {
+      "x": 103.77266854047777,
+      "y": 1.3043045855179205
+    }
   }
 }
