@@ -355,7 +355,7 @@ class TimetableContent extends Component<Props, State> {
             <div className="row">
               <div className="col">
                 <br />
-                <HacktoberfestBanner />
+                <HacktoberfestBanner modules={this.addedModules()} />
               </div>
             </div>
           </div>

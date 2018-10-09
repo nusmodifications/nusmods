@@ -21,9 +21,10 @@ export default function TeamContainer() {
       </h2>
 
       <p>
-        Hacktoberfest is a month long celebration of open source. Help contribute to NUSMods by
-        opening pull requests in the month of October and get a free T-shirt from GitHub and Digital
-        Ocean, as well as exclusive NUSMods shirts from us!
+        <ExternalLink href="https://hacktoberfest.digitalocean.com/">Hacktoberfest</ExternalLink> is
+        a month long celebration of open source. Help contribute to NUSMods by opening pull requests
+        in the month of October and get a free T-shirt from GitHub and DigitalOcean, as well as
+        exclusive NUSMods shirts from us!
       </p>
 
       <img
