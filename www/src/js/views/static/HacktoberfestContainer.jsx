@@ -21,9 +21,10 @@ export default function TeamContainer() {
       </h2>
 
       <p>
-        Hacktoberfest is a month long celebration of open source. Help contribute to NUSMods by
-        opening pull requests in the month of October and get a free T-shirt from GitHub and Digital
-        Ocean, as well as exclusive NUSMods shirts from us!
+        <ExternalLink href="https://hacktoberfest.digitalocean.com/">Hacktoberfest</ExternalLink> is
+        a month long celebration of open source. Help contribute to NUSMods by opening pull requests
+        in the month of October and November and get a free T-shirt from GitHub and DigitalOcean, as
+        well as exclusive NUSMods shirts from us!
       </p>
 
       <img
@@ -75,12 +76,11 @@ export default function TeamContainer() {
       <hr />
 
       <p className={styles.disclaimer}>
-        *{' '}
-        <small>
-          Free NUSMods shirt only available for NUS students on a first-come-first-serve basis.
-          NUSMods is not affiliated with Hacktoberfest in any way. Official Hacktoberfest shirt only
-          available on a limited basis if you submit five pull requests to any projects on GitHub.
-        </small>
+        Shirt images above are mockups, actual shirt design may differ. Free NUSMods shirt only
+        available for top five NUS students for students with the most number of commits by the end
+        of November. NUSMods is not affiliated with Hacktoberfest in any way. Official Hacktoberfest
+        shirt only available on a limited basis if you submit five pull requests to any projects on
+        GitHub.
       </p>
     </StaticPage>
   );

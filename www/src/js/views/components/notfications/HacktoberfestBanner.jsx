@@ -15,9 +15,11 @@ type State = {
   isOpen: boolean,
 };
 
+const today = new Date();
+
 export default class HacktoberfestBanner extends PureComponent<Props, State> {
   state: State = {
-    isOpen: !storage.getItem(HACKTOBERFEST) && new Date().getMonth() === 9,
+    isOpen: !storage.getItem(HACKTOBERFEST) && (today.getMonth() === 9 || today.getMonth() === 10),
   };
 
   dismiss = () => {
@@ -40,7 +42,7 @@ export default class HacktoberfestBanner extends PureComponent<Props, State> {
 
         <div className={styles.body}>
           <h3>Hacktoberfest 2018 now open!</h3>
-          <p>Improve NUSMods by submitting pull requests and get free T-shirts at the same time!</p>
+          <p>Improve NUSMods by writing code and get free T-shirts at the same time!</p>
         </div>
 
         <div className={styles.buttons}>
