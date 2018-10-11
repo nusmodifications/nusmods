@@ -14,25 +14,22 @@
  */
 
 declare module 'immutability-helper' {
-  declare module.exports: any;
-}
+  declare type UpdateQuery = {
+    [string]: UpdateQuery,
+    $push?: any[],
+    $unshift?: any[],
+    $splice?: any[][],
+    $set?: any,
+    $unset?: string[],
+    $merge?: any,
+    $apply?: (any) => any,
+  };
 
-/**
- * We include stubs for each file inside this npm package in case you need to
- * require those files directly. Feel free to delete any files that aren't
- * needed.
- */
-declare module 'immutability-helper/test' {
-  declare module.exports: any;
-}
+  declare type UpdateFn = (value: any, object: any) => any;
 
-// Filename aliases
-declare module 'immutability-helper/index' {
-  declare module.exports: $Exports<'immutability-helper'>;
-}
-declare module 'immutability-helper/index.js' {
-  declare module.exports: $Exports<'immutability-helper'>;
-}
-declare module 'immutability-helper/test.js' {
-  declare module.exports: $Exports<'immutability-helper/test'>;
+  declare export default function update<T>(data: T, update: UpdateQuery): T;
+  declare export function extend(name: string, fn: UpdateFn): void;
+  declare export function newContext(): {
+    extend: (name: string, fn: UpdateFn) => void,
+  };
 }
