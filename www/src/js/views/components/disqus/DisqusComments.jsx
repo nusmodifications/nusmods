@@ -9,12 +9,13 @@ import type { State } from 'reducers';
 import config from 'config';
 import insertScript from 'utils/insertScript';
 
-type Props = DisqusConfig & {
+type Props = {|
+  ...DisqusConfig,
   // Disqus autodetects page background color so that its own font color has
   // enough contrast to be read, but only when the widget is loaded, so we use
   // this to force the widget after night mode is activated or deactivated
   mode: Mode,
-};
+|};
 
 const SCRIPT_ID = 'dsq-embed-scr';
 
@@ -25,6 +26,8 @@ class DisqusComments extends PureComponent<Props> {
 
   componentDidUpdate(prevProps: Props) {
     // Wait a bit for the page colors to change before reloading instance
+    // 2 second delay is found empirically, and is longer than necessary to
+    // account for lag is slower user agents
     if (prevProps.mode !== this.props.mode) {
       setTimeout(this.loadInstance, 2000);
     } else {
