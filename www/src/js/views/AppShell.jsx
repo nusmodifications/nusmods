@@ -22,7 +22,7 @@ import { fetchTimetableModules, validateTimetable, setTimetable } from 'actions/
 import Footer from 'views/layout/Footer';
 import Navtabs from 'views/layout/Navtabs';
 import GlobalSearchContainer from 'views/layout/GlobalSearchContainer';
-import Notification from 'views/components/Notification';
+import Notification from 'views/components/notfications/Notification';
 import ErrorBoundary from 'views/errors/ErrorBoundary';
 import ErrorPage from 'views/errors/ErrorPage';
 import ApiError from 'views/errors/ApiError';

@@ -79,6 +79,15 @@ export function FooterComponent(props: Props) {
           <li>
             <Link to="/faq">FAQ</Link>
           </li>
+
+          {new Date().getMonth() === 9 && (
+            <li>
+              <Link to="/hacktoberfest">
+                <strong>Hacktoberfest!</strong>
+              </Link>
+            </li>
+          )}
+
           <li>
             <button
               type="button"

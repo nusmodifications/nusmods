@@ -12,12 +12,14 @@
     font-size: 1.1rem;
   }
 
-  a:hover {
-    text-decoration: underline;
-  }
+  .body {
+    a:hover {
+      text-decoration: underline;
+    }
 
-  p:last-child {
-    margin-bottom: 0;
+    p:last-child {
+      margin-bottom: 0;
+    }
   }
 
   .actions {
@@ -25,8 +27,25 @@
   }
 }
 
+.buttons {
+  display: flex;
+  flex: 0 0;
+  align-items: center;
+}
+
 .closeButton {
+  align-self: stretch;
   margin-left: 1rem;
+}
+
+:global(.verticalMode) .hacktoberfest {
+  flex-wrap: wrap;
+
+  .buttons {
+    flex: 1 0 auto;
+    justify-content: space-between;
+    margin-top: 1rem;
+  }
 }
 
 .backgroundIcon {
