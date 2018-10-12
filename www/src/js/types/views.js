@@ -51,10 +51,10 @@ export type PageRangeDiff = {
 
 export type OnPageChange = (PageRangeDiff) => void;
 
-export type DisqusConfig = {
+export type DisqusConfig = {|
   identifier: string,
   url: string,
   title: string,
-};
+|};
 
 export type ModuleTableOrder = 'exam' | 'mc' | 'code';
