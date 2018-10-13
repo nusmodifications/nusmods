@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 import { sumBy, sortBy, map } from 'lodash';
 
-import type { ModuleCode, ModuleWithColor, Semester } from 'types/modules';
+import type { ModuleCode, ModuleWithColor, Semester, Tombstone } from 'types/modules';
 import type { ColorIndex } from 'types/reducers';
 import type { ModuleTableOrder } from 'types/views';
 
@@ -24,6 +24,7 @@ import { modulePage } from 'views/routes/paths';
 import elements from 'views/elements';
 
 import styles from './TimetableModulesTable.scss';
+import ModuleTombstone from './ModuleTombstone'; /* eslint-disable-line */
 
 type ModuleOrder = {
   label: string,
@@ -47,6 +48,7 @@ type Props = {
   moduleTableOrder: ModuleTableOrder,
   horizontalOrientation: boolean,
   readOnly: boolean,
+  tombstone: Tombstone,
 };
 
 function renderMCs(moduleCredits) {
@@ -99,12 +101,68 @@ class TimetableModulesTable extends Component<Props> {
     );
   }
 
+  renderModuleRow(module) {
+    const { horizontalOrientation, semester, readOnly } = this.props;
+
+    return (
+      <div
+        className={classnames(styles.modulesTableRow, 'col-sm-6', {
+          'col-lg-4': horizontalOrientation,
+          'col-md-12': !horizontalOrientation,
+        })}
+        key={module.ModuleCode}
+      >
+        <div className={styles.moduleColor}>
+          <ColorPicker
+            label={`Change ${module.ModuleCode} timetable color`}
+            color={module.colorIndex}
+            isHidden={module.hiddenInTimetable}
+            onChooseColor={(colorIndex: ColorIndex) => {
+              this.props.selectModuleColor(semester, module.ModuleCode, colorIndex);
+            }}
+          />
+        </div>
+        <div className={styles.moduleInfo}>
+          {!readOnly && this.renderModuleActions(module)}
+          {/*
+                * the removed module doesn't exist as part of modules anymore
+                * so the next condition will never be true
+                */}
+          {/* module.ModuleCode === tombstone.moduleCode && semester === tombstone.semester ? (
+                  <ModuleTombstone tombstone={tombstone} />
+                ) : (
+                  <Link to={modulePage(module.ModuleCode, module.ModuleTitle)}>
+                    {module.ModuleCode} {module.ModuleTitle}
+                  </Link>
+                ) */}
+          <Link to={modulePage(module.ModuleCode, module.ModuleTitle)}>
+            {module.ModuleCode} {module.ModuleTitle}
+          </Link>
+          <div className={styles.moduleExam}>
+            {getModuleExamDate(module, semester)
+              ? `Exam: ${getFormattedModuleExamDate(module, semester)}`
+              : 'No Exam'}
+            &nbsp;&middot;&nbsp;{renderMCs(module.ModuleCredit)}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   render() {
+    const { semester, horizontalOrientation, tombstone } = this.props;
+
     if (!this.props.modules.length) {
+      if (tombstone.moduleCode !== '') {
+        return (
+          <div className={classnames(styles.modulesTable, elements.moduleTable, 'row')}>
+            <ModuleTombstone tombstone={tombstone} horizontalOrientation={horizontalOrientation} />
+          </div>
+        );
+      }
       return null;
     }
 
-    const { readOnly, semester, horizontalOrientation } = this.props;
     const modules = sortBy(this.props.modules, (module) =>
       moduleOrders[this.props.moduleTableOrder].orderBy(module, semester),
     );
@@ -112,38 +170,17 @@ class TimetableModulesTable extends Component<Props> {
     return (
       <Fragment>
         <div className={classnames(styles.modulesTable, elements.moduleTable, 'row')}>
-          {modules.map((module) => (
-            <div
-              className={classnames(styles.modulesTableRow, 'col-sm-6', {
-                'col-lg-4': horizontalOrientation,
-                'col-md-12': !horizontalOrientation,
-              })}
-              key={module.ModuleCode}
-            >
-              <div className={styles.moduleColor}>
-                <ColorPicker
-                  label={`Change ${module.ModuleCode} timetable color`}
-                  color={module.colorIndex}
-                  isHidden={module.hiddenInTimetable}
-                  onChooseColor={(colorIndex: ColorIndex) => {
-                    this.props.selectModuleColor(semester, module.ModuleCode, colorIndex);
-                  }}
-                />
-              </div>
-              <div className={styles.moduleInfo}>
-                {!readOnly && this.renderModuleActions(module)}
-                <Link to={modulePage(module.ModuleCode, module.ModuleTitle)}>
-                  {module.ModuleCode} {module.ModuleTitle}
-                </Link>
-                <div className={styles.moduleExam}>
-                  {getModuleExamDate(module, semester)
-                    ? `Exam: ${getFormattedModuleExamDate(module, semester)}`
-                    : 'No Exam'}
-                  &nbsp;&middot;&nbsp;{renderMCs(module.ModuleCredit)}
-                </div>
-              </div>
-            </div>
-          ))}
+          {tombstone.moduleCode !== ''
+            ? modules
+                .map((module) => this.renderModuleRow(module))
+                .concat(
+                  <ModuleTombstone
+                    tombstone={tombstone}
+                    horizontalOrientation={horizontalOrientation}
+                    key={`R_${tombstone.moduleCode}`}
+                  />,
+                )
+            : modules.map((module) => this.renderModuleRow(module))}
         </div>
 
         <div className={classnames(styles.footer, 'row align-items-center')}>

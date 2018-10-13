@@ -7,7 +7,7 @@ import _, { isEmpty } from 'lodash';
 import type { ModulesMap } from 'reducers/moduleBank';
 import type { ColorMapping, TimetableOrientation, NotificationOptions } from 'types/reducers';
 import { HORIZONTAL } from 'types/reducers';
-import type { Lesson, ColoredLesson, Module, ModuleCode, Semester } from 'types/modules';
+import type { Lesson, ColoredLesson, Module, ModuleCode, Semester, Tombstone } from 'types/modules';
 import type {
   SemTimetableConfig,
   SemTimetableConfigWithLessons,
@@ -76,12 +76,17 @@ type Props = {
 type State = {
   isScrolledHorizontally: boolean,
   showExamCalendar: boolean,
+  tombstone: Tombstone,
 };
 
 class TimetableContent extends Component<Props, State> {
   state: State = {
     isScrolledHorizontally: false,
     showExamCalendar: false,
+    tombstone: {
+      moduleCode: '',
+      semester: null,
+    },
   };
 
   componentWillUnmount() {
@@ -133,6 +138,14 @@ class TimetableContent extends Component<Props, State> {
     }
 
     this.props.removeModule(this.props.semester, moduleCode);
+
+    this.setState({
+      tombstone: {
+        moduleCode,
+        semester: this.props.semester,
+      },
+    });
+
     this.props.openNotification(`Removed ${moduleCode}`, {
       timeout: 12000,
       overwritable: true,
@@ -152,6 +165,7 @@ class TimetableContent extends Component<Props, State> {
   // Returns component with table(s) of modules
   renderModuleSections(horizontalOrientation) {
     const { readOnly } = this.props;
+    const { tombstone } = this.state;
 
     const renderModuleTable = (modules) => (
       <TimetableModulesTable
@@ -164,6 +178,7 @@ class TimetableContent extends Component<Props, State> {
         semester={this.props.semester}
         onRemoveModule={this.removeModule}
         readOnly={readOnly}
+        tombstone={tombstone}
       />
     );
 
