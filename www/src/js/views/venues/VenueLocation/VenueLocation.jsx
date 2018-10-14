@@ -25,6 +25,7 @@ type Props = {
 
 type State = {
   isFeedbackModalOpen: boolean,
+  isFullscreen: boolean,
 };
 
 LeafletMap.addInitHook('addHandler', 'gestureHandling', GestureHandling);
@@ -34,7 +35,7 @@ function renderMap(position: LatLngTuple) {
   const googleMapQuery = encodeURIComponent(position.join(','));
 
   return (
-    <div className={styles.mapWrapper}>
+    <div id="venue-map" className={styles.mapWrapper}>
       <ExternalLink
         href={`https://www.google.com/maps/search/?api=1&query=${googleMapQuery}`}
         className={classnames('btn btn-sm btn-primary', styles.gmapBtn)}
@@ -55,10 +56,67 @@ function renderMap(position: LatLngTuple) {
 export default class VenueLocation extends PureComponent<Props, State> {
   state = {
     isFeedbackModalOpen: false,
+    isFullscreen: false,
   };
 
   openModal = () => this.setState({ isFeedbackModalOpen: true });
   closeModal = () => this.setState({ isFeedbackModalOpen: false });
+
+  /**
+   * Returns an `Array` of standard, or vendored function names from
+   * the fullScreen API dependent on the current browser's support.
+   * based on https://github.com/rafrex/fscreen/blob/master/src/index.js
+   * @returns {Array} standard or vendored fullScreen API functions
+   */
+  getVendoredFullscreen = () => {
+    const key = {
+      fullscreenEnabled: 0,
+      requestFullscreen: 1,
+      onfullscreenchange: 2,
+    };
+    const moz = ['mozFullScreenEnabled', 'mozRequestFullScreen', 'onmozfullscreenchange'];
+    const ms = ['msFullscreenEnabled', 'msRequestFullscreen', 'onmsfullscreenchange'];
+    const webkit = [
+      'webkitFullscreenEnabled',
+      'webkitRequestFullscreen',
+      'onwebkitfullscreenchange',
+    ];
+
+    return (
+      ('fullscreenEnabled' in document && Object.keys(key)) ||
+      (webkit[0] in document && webkit) ||
+      (moz[0] in document && moz) ||
+      (ms[0] in document && ms) ||
+      []
+    );
+  };
+
+  /**
+   * Called by 'Fullscreen map' button. Handles the transition between
+   * fullscreen and back. Ensures that the map sizing is adjusted
+   * as appropriate.
+   */
+  fullscreenMap = () => {
+    const leafletContainer = document.querySelector('.leaflet-container');
+    const vendoredFullscreenAPI = this.getVendoredFullscreen();
+
+    leafletContainer.style.width = '100vw';
+    leafletContainer.style.height = '100vh';
+    leafletContainer[vendoredFullscreenAPI[1]]();
+
+    document[vendoredFullscreenAPI[2]] = () => {
+      if (!this.state.isFullscreen) {
+        // we are entering fullscreen
+        this.setState({ isFullscreen: true });
+      } else if (this.state.isFullscreen) {
+        // we are exiting fullscreen
+        this.setState({ isFullscreen: false });
+        // reset the width and height of the `leafletContainer`
+        leafletContainer.style.width = '';
+        leafletContainer.style.height = '';
+      }
+    };
+  };
 
   render() {
     const { venue } = this.props;
@@ -116,6 +174,9 @@ export default class VenueLocation extends PureComponent<Props, State> {
             onClick={this.openModal}
           >
             Help us improve this map
+          </button>
+          <button className="btn btn-primary btn-outline-primary" onClick={this.fullscreenMap}>
+            Fullscreen map
           </button>
         </p>
 
