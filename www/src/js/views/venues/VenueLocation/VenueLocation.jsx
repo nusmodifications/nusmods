@@ -35,7 +35,7 @@ function renderMap(position: LatLngTuple) {
   const googleMapQuery = encodeURIComponent(position.join(','));
 
   return (
-    <div id="venue-map" className={styles.mapWrapper}>
+    <div className={styles.mapWrapper}>
       <ExternalLink
         href={`https://www.google.com/maps/search/?api=1&query=${googleMapQuery}`}
         className={classnames('btn btn-sm btn-primary', styles.gmapBtn)}
