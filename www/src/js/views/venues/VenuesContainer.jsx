@@ -77,10 +77,8 @@ export class VenuesContainerComponent extends Component<Props, State> {
       loading: true,
       venues: null,
       searchTerm: params.q || '',
-      pristineSearchOptions: isAvailabilityEnabled,
+      pristineSearchOptions: !isAvailabilityEnabled,
     };
-
-    this.onFindFreeRoomsClicked = this.onFindFreeRoomsClicked.bind(this);
   }
 
   componentDidMount() {
@@ -99,7 +97,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
     }
   }
 
-  onFindFreeRoomsClicked() {
+  onFindFreeRoomsClicked = () => {
     const { pristineSearchOptions, searchOptions, isAvailabilityEnabled } = this.state;
     const newSearchOptions = pristineSearchOptions ? defaultSearchOptions() : searchOptions;
     const stateUpdate = {
@@ -107,7 +105,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
       searchOptions: newSearchOptions,
     };
     this.setState({ ...stateUpdate });
-  }
+  };
 
   onClearVenueSelect = () =>
     this.props.history.push({
