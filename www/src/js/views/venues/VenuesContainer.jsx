@@ -76,7 +76,10 @@ export class VenuesContainerComponent extends Component<Props, State> {
       loading: true,
       venues: null,
       searchTerm: params.q || '',
+      pristineSearchOptions: isAvailabilityEnabled,
     };
+
+    this.onFindFreeRoomsClicked = this.onFindFreeRoomsClicked.bind(this);
   }
 
   componentDidMount() {
@@ -95,6 +98,16 @@ export class VenuesContainerComponent extends Component<Props, State> {
     }
   }
 
+  onFindFreeRoomsClicked() {
+    const { pristineSearchOptions, searchOptions, isAvailabilityEnabled } = this.state;
+    const newSearchOptions = pristineSearchOptions ? defaultSearchOptions() : searchOptions;
+    const stateUpdate = {
+      isAvailabilityEnabled: !isAvailabilityEnabled,
+      searchOptions: newSearchOptions,
+    };
+    this.setState({ ...stateUpdate });
+  }
+
   onClearVenueSelect = () =>
     this.props.history.push({
       ...this.props.history.location,
@@ -109,7 +122,10 @@ export class VenuesContainerComponent extends Component<Props, State> {
 
   onAvailabilityUpdate = (searchOptions: VenueSearchOptions) => {
     if (!isEqual(searchOptions, this.state.searchOptions)) {
-      this.setState({ searchOptions });
+      this.setState({
+        searchOptions,
+        pristineSearchOptions: false, // user changed searchOptions
+      });
     }
   };
 
@@ -174,7 +190,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
             styles.availabilityToggle,
             isAvailabilityEnabled ? 'btn-primary' : 'btn-outline-primary',
           )}
-          onClick={() => this.setState({ isAvailabilityEnabled: !isAvailabilityEnabled })}
+          onClick={this.onFindFreeRoomsClicked}
         >
           <Clock className="svg" /> Find free rooms
         </button>
