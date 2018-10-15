@@ -50,6 +50,7 @@ type State = {|
   searchTerm: string,
   isAvailabilityEnabled: boolean,
   searchOptions: VenueSearchOptions,
+  pristineSearchOptions: boolean,
 |};
 
 const pageHead = <Title>Venues</Title>;
