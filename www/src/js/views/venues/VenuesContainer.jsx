@@ -99,10 +99,16 @@ export class VenuesContainerComponent extends Component<Props, State> {
 
   onFindFreeRoomsClicked = () => {
     const { pristineSearchOptions, isAvailabilityEnabled } = this.state;
-    const stateUpdate = { isAvailabilityEnabled: !isAvailabilityEnabled };
+    const stateUpdate: $Shape<State> = { isAvailabilityEnabled: !isAvailabilityEnabled };
+
+    // Only reset search options if the user has never changed it, and if the
+    // search box is being opened. By resetting the option when the box is opened,
+    // the time when the box is opened will be used, instead of the time when the
+    // page is loaded
     if (pristineSearchOptions && !isAvailabilityEnabled) {
       stateUpdate.searchOptions = defaultSearchOptions();
     }
+
     this.setState(stateUpdate);
   };
 
