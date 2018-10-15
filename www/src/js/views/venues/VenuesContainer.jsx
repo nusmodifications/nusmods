@@ -98,12 +98,11 @@ export class VenuesContainerComponent extends Component<Props, State> {
   }
 
   onFindFreeRoomsClicked = () => {
-    const { pristineSearchOptions, searchOptions, isAvailabilityEnabled } = this.state;
-    const newSearchOptions = pristineSearchOptions ? defaultSearchOptions() : searchOptions;
-    const stateUpdate = {
-      isAvailabilityEnabled: !isAvailabilityEnabled,
-      searchOptions: newSearchOptions,
-    };
+    const { pristineSearchOptions, isAvailabilityEnabled } = this.state;
+    const stateUpdate = { isAvailabilityEnabled: !isAvailabilityEnabled };
+    if (pristineSearchOptions && !isAvailabilityEnabled) {
+      stateUpdate.searchOptions = defaultSearchOptions();
+    }
     this.setState(stateUpdate);
   };
 
