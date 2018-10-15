@@ -104,7 +104,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
       isAvailabilityEnabled: !isAvailabilityEnabled,
       searchOptions: newSearchOptions,
     };
-    this.setState({ ...stateUpdate });
+    this.setState(stateUpdate);
   };
 
   onClearVenueSelect = () =>
