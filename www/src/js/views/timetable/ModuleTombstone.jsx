@@ -1,12 +1,16 @@
 // @flow
 import React from 'react';
+import { connect } from 'react-redux';
 import type { Tombstone } from 'types/modules';
+import { undo } from 'actions/undoHistory';
 import classnames from 'classnames';
 import styles from './TimetableModulesTable.scss';
 
 type Props = {
   tombstone: Tombstone,
   horizontalOrientation: boolean,
+  undo: () => void,
+  resetTombstone: Function,
 };
 
 function ModuleTombstone(props: Props) {
@@ -20,10 +24,35 @@ function ModuleTombstone(props: Props) {
       })}
     >
       <div className={styles.moduleInfo}>
+        <div className={styles.moduleActionButtons}>
+          <div className="btn-group">
+            <button
+              type="button"
+              className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
+              title="Dismiss"
+              aria-label="Dismiss"
+              onClick={() => props.resetTombstone()}
+            >
+              Dismiss
+            </button>
+            <button
+              type="button"
+              className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
+              title="Undo"
+              aria-label="Undo"
+              onClick={() => {
+                props.undo();
+                props.resetTombstone();
+              }}
+            >
+              Undo
+            </button>
+          </div>
+        </div>
         <span>{`Removed ${tombstone.moduleCode}`}</span>
       </div>
     </div>
   );
 }
 
-export default ModuleTombstone;
+export default connect(null, { undo })(ModuleTombstone);

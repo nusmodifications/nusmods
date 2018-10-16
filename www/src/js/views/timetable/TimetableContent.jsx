@@ -125,18 +125,6 @@ class TimetableContent extends Component<Props, State> {
   };
 
   removeModule = (moduleCode) => {
-    // Display alert on iPhones and iPod touches because snackbar action will take 2 taps
-    // TODO: Replace with a more permanent solution
-    // Using indexOf() as userAgent doesn't have contains()
-    const { userAgent } = navigator;
-    if (userAgent.indexOf('iPhone') !== -1 || userAgent.indexOf('iPod') !== -1) {
-      const confirmMessage = `Are you sure you want to remove ${moduleCode}?`;
-      if (window.confirm(confirmMessage)) {
-        this.props.removeModule(this.props.semester, moduleCode);
-      }
-      return;
-    }
-
     this.props.removeModule(this.props.semester, moduleCode);
 
     this.setState({
@@ -145,13 +133,13 @@ class TimetableContent extends Component<Props, State> {
         semester: this.props.semester,
       },
     });
+  };
 
-    this.props.openNotification(`Removed ${moduleCode}`, {
-      timeout: 12000,
-      overwritable: true,
-      action: {
-        text: 'Undo',
-        handler: this.props.undo,
+  resetTombstone = () => {
+    this.setState({
+      tombstone: {
+        moduleCode: '',
+        semester: null,
       },
     });
   };
@@ -179,6 +167,7 @@ class TimetableContent extends Component<Props, State> {
         onRemoveModule={this.removeModule}
         readOnly={readOnly}
         tombstone={tombstone}
+        resetTombstone={this.resetTombstone}
       />
     );
 
@@ -187,7 +176,7 @@ class TimetableContent extends Component<Props, State> {
     const clashes: { [string]: Array<Module> } = findExamClashes(modules, this.props.semester);
     const nonClashingMods: Array<Module> = _.difference(modules, _.flatten(_.values(clashes)));
 
-    if (_.isEmpty(clashes) && _.isEmpty(nonClashingMods)) {
+    if (_.isEmpty(clashes) && _.isEmpty(nonClashingMods) && tombstone.moduleCode === '') {
       return (
         <div className="row">
           <div className="col-sm-12">

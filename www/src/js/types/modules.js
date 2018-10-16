@@ -134,5 +134,5 @@ export type ModifiableLesson = ColoredLesson & Modifiable;
 
 export type Tombstone = {
   moduleCode: ModuleCode,
-  semester: Semester,
+  semester: ?Semester,
 };

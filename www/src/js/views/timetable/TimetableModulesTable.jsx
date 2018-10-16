@@ -49,6 +49,7 @@ type Props = {
   horizontalOrientation: boolean,
   readOnly: boolean,
   tombstone: Tombstone,
+  resetTombstone: Function,
 };
 
 function renderMCs(moduleCredits) {
@@ -124,17 +125,6 @@ class TimetableModulesTable extends Component<Props> {
         </div>
         <div className={styles.moduleInfo}>
           {!readOnly && this.renderModuleActions(module)}
-          {/*
-                * the removed module doesn't exist as part of modules anymore
-                * so the next condition will never be true
-                */}
-          {/* module.ModuleCode === tombstone.moduleCode && semester === tombstone.semester ? (
-                  <ModuleTombstone tombstone={tombstone} />
-                ) : (
-                  <Link to={modulePage(module.ModuleCode, module.ModuleTitle)}>
-                    {module.ModuleCode} {module.ModuleTitle}
-                  </Link>
-                ) */}
           <Link to={modulePage(module.ModuleCode, module.ModuleTitle)}>
             {module.ModuleCode} {module.ModuleTitle}
           </Link>
@@ -156,7 +146,12 @@ class TimetableModulesTable extends Component<Props> {
       if (tombstone.moduleCode !== '') {
         return (
           <div className={classnames(styles.modulesTable, elements.moduleTable, 'row')}>
-            <ModuleTombstone tombstone={tombstone} horizontalOrientation={horizontalOrientation} />
+            <ModuleTombstone
+              tombstone={tombstone}
+              horizontalOrientation={horizontalOrientation}
+              resetTombstone={this.props.resetTombstone}
+              key={`R_${tombstone.moduleCode}`}
+            />
           </div>
         );
       }
@@ -177,6 +172,7 @@ class TimetableModulesTable extends Component<Props> {
                   <ModuleTombstone
                     tombstone={tombstone}
                     horizontalOrientation={horizontalOrientation}
+                    resetTombstone={this.props.resetTombstone}
                     key={`R_${tombstone.moduleCode}`}
                   />,
                 )
