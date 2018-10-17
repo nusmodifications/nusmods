@@ -47,6 +47,13 @@
   }
 }
 
+.expandMap {
+  position: absolute;
+  top: 0.4rem;
+  right: 11rem;
+  z-index: 999;
+}
+
 .closeMap {
   position: absolute;
   top: 3.5rem;

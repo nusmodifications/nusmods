@@ -43,26 +43,41 @@ function toggleMapSize() {
   leafletControlContainer.classList.toggle(styles.adjustTopOffset);
 }
 
+function getMap(position: LatLngTuple) {
+  return (
+    <Map center={position} zoom={18} maxZoom={19} className={styles.map} gestureHandling>
+      <TileLayer
+        attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+      <Marker position={position} icon={icon} />
+    </Map>
+  );
+}
+
 function renderMap(position: LatLngTuple) {
   // Query param for https://developers.google.com/maps/documentation/urls/guide#search-action
   const googleMapQuery = encodeURIComponent(position.join(','));
+  const map = getMap(position);
 
   return (
     <div className={styles.mapWrapper}>
-      <CloseButton className={styles.hidden} onClick={toggleMapSize} />
+      <button
+        className={classnames('btn btn-sm btn-outline', styles.expandMap)}
+        onClick={() => {
+          toggleMapSize();
+        }}
+      >
+        Expand map
+      </button>
       <ExternalLink
         href={`https://www.google.com/maps/search/?api=1&query=${googleMapQuery}`}
         className={classnames('btn btn-sm btn-primary', styles.gmapBtn)}
       >
         Open in Google Maps
       </ExternalLink>
-      <Map center={position} zoom={18} maxZoom={19} className={styles.map} gestureHandling>
-        <TileLayer
-          attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        <Marker position={position} icon={icon} />
-      </Map>
+      <CloseButton className={styles.hidden} onClick={toggleMapSize} />
+      {map}
     </div>
   );
 }
@@ -131,14 +146,6 @@ export default class VenueLocation extends PureComponent<Props, State> {
             onClick={this.openModal}
           >
             Help us improve this map
-          </button>
-          <button
-            className="btn btn-primary btn-outline-primary"
-            onClick={() => {
-              toggleMapSize();
-            }}
-          >
-            Expand map
           </button>
         </p>
 
