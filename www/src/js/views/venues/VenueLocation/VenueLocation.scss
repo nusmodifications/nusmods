@@ -16,11 +16,15 @@
   height: 30rem;
 }
 
-.gmapBtn {
+.gmapBtn,
+.expandBtn {
   position: absolute;
+  z-index: 1000;
+}
+
+.gmapBtn {
   top: 0.4rem;
   right: 0.4rem;
-  z-index: 1000;
 }
 
 .mapWrapper {
@@ -28,48 +32,18 @@
   margin-bottom: 1rem;
 
   &.expanded {
-    position: fixed !important;
-    top: 0;
-    left: 160px;
-    z-index: 99;
-    width: 90vw;
-    height: 100vh;
+    position: fixed;
+    z-index: 10000;
+    top: $navbar-height;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: 0;
 
     .map {
-      width: 100%;
       height: 100%;
     }
-
-    .gmapBtn {
-      top: 3.5rem;
-      right: 3.2rem;
-    }
   }
-}
-
-.expandMap {
-  position: absolute;
-  top: 0.4rem;
-  right: 11rem;
-  z-index: 999;
-}
-
-.closeMap {
-  position: absolute;
-  top: 3.5rem;
-  right: 1rem;
-  z-index: 999;
-  float: none;
-}
-
-.hidden {
-  display: none;
-}
-
-/* adjust the top offset of the leaflet-control-container */
-.adjustTopOffset {
-  position: absolute;
-  top: 60px;
 }
 
 .feedbackBtn {
