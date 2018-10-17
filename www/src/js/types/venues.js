@@ -17,11 +17,11 @@ export type VenueLesson = RawLesson & {
 
 // A venue's availability info for one day
 // E.g. { "Day": "Monday", "Classes": [...], "Availability": {...} }
-export type DayAvailability = {
-  Day: DayText,
-  Classes: VenueLesson[],
-  Availability: Availability,
-};
+export type DayAvailability = {|
+  +Day: DayText,
+  +Classes: VenueLesson[],
+  +Availability: Availability,
+|};
 
 // Describes venueInformation.json
 // E.g. { "LT16": [DayAvailability1, DayAvailability2, ...], "LT17": [...], ... }
@@ -29,21 +29,21 @@ export type VenueInfo = { [Venue]: DayAvailability[] };
 
 // Used to specify availability search options
 // All properties are number to make (de)serialization into query string simpler to handle
-export type VenueSearchOptions = {
-  day: number, // Day of week (ie. 0 = Monday, 1 = Tuesday etc.)
-  time: number, // in hours (ie. 9 = 9am, 13 = 1pm etc.)
-  duration: number, // in hours
-};
+export type VenueSearchOptions = {|
+  +day: number, // Day of week (ie. 0 = Monday, 1 = Tuesday etc.)
+  +time: number, // in hours (ie. 9 = 9am, 13 = 1pm etc.)
+  +duration: number, // in hours
+|};
 
 export type VenueDetailList = [Venue, DayAvailability[]][];
 
-export type VenueLocation = {
-  roomName: string,
-  floor: ?number,
-  location?: { x: number, y: number },
-};
+export type VenueLocation = {|
+  +roomName: string,
+  +floor: ?number,
+  +location?: { x: number, y: number },
+|};
 
 export type LatLngTuple = [number, number];
 
 // data/venues.json is of this type
-export type VenueLocationMap = { [string]: VenueLocation };
+export type VenueLocationMap = {| +[string]: VenueLocation |};
