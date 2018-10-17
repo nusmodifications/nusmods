@@ -16,15 +16,11 @@
   height: 30rem;
 }
 
-.gmapBtn,
-.expandBtn {
-  position: absolute;
-  z-index: 1000;
-}
-
 .gmapBtn {
+  position: absolute;
   top: 0.4rem;
   right: 0.4rem;
+  z-index: 1000;
 }
 
 .mapWrapper {
@@ -33,15 +29,19 @@
 
   &.expanded {
     position: fixed;
-    z-index: 10000;
     top: $navbar-height;
     right: 0;
     bottom: 0;
     left: 0;
+    z-index: $venue-map-z-index;
     margin: 0;
 
     .map {
       height: 100%;
+    }
+
+    @include media-breakpoint-down(sm) {
+      top: 0;
     }
   }
 }
