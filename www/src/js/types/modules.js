@@ -98,9 +98,9 @@ export type ModuleWithColor = Module & {
 
 // This format is returned from the module list endpoint.
 export type ModuleCondensed = {|
-  ModuleCode: ModuleCode,
-  ModuleTitle: ModuleTitle,
-  Semesters: Array<number>,
+  +ModuleCode: ModuleCode,
+  +ModuleTitle: ModuleTitle,
+  +Semesters: number[],
 |};
 
 // Subset of Module object that contains the properties that are
