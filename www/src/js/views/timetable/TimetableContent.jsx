@@ -89,6 +89,16 @@ class TimetableContent extends Component<Props, State> {
     },
   };
 
+  componentDidUpdate(prevProps, prevState) {
+    // remove tombstone after a certain time
+    const { tombstone } = this.state;
+    if (prevState.tombstone.moduleCode !== tombstone.moduleCode && tombstone.moduleCode !== '') {
+      setTimeout(() => {
+        this.resetTombstone();
+      }, 12000);
+    }
+  }
+
   componentWillUnmount() {
     this.cancelModifyLesson();
   }

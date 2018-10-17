@@ -24,7 +24,7 @@ import { modulePage } from 'views/routes/paths';
 import elements from 'views/elements';
 
 import styles from './TimetableModulesTable.scss';
-import ModuleTombstone from './ModuleTombstone'; /* eslint-disable-line */
+import ModuleTombstone from './ModuleTombstone';
 
 type ModuleOrder = {
   label: string,

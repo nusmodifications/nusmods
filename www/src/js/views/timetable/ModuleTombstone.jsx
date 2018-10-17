@@ -31,7 +31,7 @@ function ModuleTombstone(props: Props) {
               className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
               title="Dismiss"
               aria-label="Dismiss"
-              onClick={() => props.resetTombstone()}
+              onClick={props.resetTombstone}
             >
               Dismiss
             </button>
@@ -54,5 +54,7 @@ function ModuleTombstone(props: Props) {
     </div>
   );
 }
+
+export { ModuleTombstone as DisconnectedModuleTombstone };
 
 export default connect(null, { undo })(ModuleTombstone);
