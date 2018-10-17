@@ -13,6 +13,8 @@
   }
 
   .body {
+    margin-right: 0.5rem;
+
     a:hover {
       text-decoration: underline;
     }
@@ -38,7 +40,18 @@
   margin-left: 1rem;
 }
 
-:global(.verticalMode) .hacktoberfest {
+.backgroundIcon {
+  position: absolute;
+  top: -1rem;
+  left: -1rem;
+  opacity: 0.1;
+  width: 8rem;
+  height: 8rem;
+  pointer-events: none;
+}
+
+// Make the buttons move below the body on small screens and in vertical mode
+@mixin hacktoberfest-banner {
   flex-wrap: wrap;
 
   .buttons {
@@ -48,12 +61,12 @@
   }
 }
 
-.backgroundIcon {
-  position: absolute;
-  top: -1rem;
-  left: -1rem;
-  opacity: 0.1;
-  width: 8rem;
-  height: 8rem;
-  pointer-events: none;
+.hacktoberfest {
+  :global(.verticalMode) & {
+    @include hacktoberfest-banner;
+  }
+
+  @include media-breakpoint-down(xs) {
+    @include hacktoberfest-banner;
+  }
 }

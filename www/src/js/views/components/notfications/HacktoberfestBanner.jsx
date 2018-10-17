@@ -6,9 +6,9 @@ import { Link } from 'react-router-dom';
 
 import storage from 'storage';
 import { HACKTOBERFEST } from 'storage/keys';
-import styles from 'views/components/notfications/Announcements.scss';
-import Heart from 'react-feather/dist/icons/heart';
+import { Heart } from 'views/components/icons';
 import CloseButton from 'views/components/CloseButton';
+import styles from './Announcements.scss';
 
 type Props = {};
 type State = {

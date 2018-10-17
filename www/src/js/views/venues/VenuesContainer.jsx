@@ -50,6 +50,7 @@ type State = {|
   searchTerm: string,
   isAvailabilityEnabled: boolean,
   searchOptions: VenueSearchOptions,
+  pristineSearchOptions: boolean,
 |};
 
 const pageHead = <Title>Venues</Title>;
@@ -76,6 +77,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
       loading: true,
       venues: null,
       searchTerm: params.q || '',
+      pristineSearchOptions: !isAvailabilityEnabled,
     };
   }
 
@@ -95,6 +97,21 @@ export class VenuesContainerComponent extends Component<Props, State> {
     }
   }
 
+  onFindFreeRoomsClicked = () => {
+    const { pristineSearchOptions, isAvailabilityEnabled } = this.state;
+    const stateUpdate: $Shape<State> = { isAvailabilityEnabled: !isAvailabilityEnabled };
+
+    // Only reset search options if the user has never changed it, and if the
+    // search box is being opened. By resetting the option when the box is opened,
+    // the time when the box is opened will be used, instead of the time when the
+    // page is loaded
+    if (pristineSearchOptions && !isAvailabilityEnabled) {
+      stateUpdate.searchOptions = defaultSearchOptions();
+    }
+
+    this.setState(stateUpdate);
+  };
+
   onClearVenueSelect = () =>
     this.props.history.push({
       ...this.props.history.location,
@@ -109,7 +126,10 @@ export class VenuesContainerComponent extends Component<Props, State> {
 
   onAvailabilityUpdate = (searchOptions: VenueSearchOptions) => {
     if (!isEqual(searchOptions, this.state.searchOptions)) {
-      this.setState({ searchOptions });
+      this.setState({
+        searchOptions,
+        pristineSearchOptions: false, // user changed searchOptions
+      });
     }
   };
 
@@ -174,7 +194,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
             styles.availabilityToggle,
             isAvailabilityEnabled ? 'btn-primary' : 'btn-outline-primary',
           )}
-          onClick={() => this.setState({ isAvailabilityEnabled: !isAvailabilityEnabled })}
+          onClick={this.onFindFreeRoomsClicked}
         >
           <Clock className="svg" /> Find free rooms
         </button>
