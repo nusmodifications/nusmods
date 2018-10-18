@@ -48,7 +48,10 @@ class DisqusComments extends PureComponent<Props> {
       window.disqus_config = this.getDisqusConfig();
       window.disqus_shortname = config.disqusShortname;
 
-      insertScript(`https://${config.disqusShortname}.disqus.com/embed.js`, SCRIPT_ID, true);
+      insertScript(`https://${config.disqusShortname}.disqus.com/embed.js`, {
+        id: SCRIPT_ID,
+        async: true,
+      });
     }
   };
 

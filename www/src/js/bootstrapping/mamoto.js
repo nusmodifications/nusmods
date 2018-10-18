@@ -24,7 +24,7 @@ function configureMamoto(history: RouterHistory) {
       if (action === 'PUSH') {
         // Wait a bit for the page title to update
         setTimeout(() => {
-          mamoto.trackPageView();
+          mamoto.trackPageView(document.title);
         }, 100);
       }
     });

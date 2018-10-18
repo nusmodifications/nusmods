@@ -20,7 +20,10 @@ export default class CommentCount extends PureComponent<Props> {
         });
       }
     } else {
-      insertScript(`https://${config.disqusShortname}.disqus.com/count.js`, SCRIPT_ID, true);
+      insertScript(`https://${config.disqusShortname}.disqus.com/count.js`, {
+        id: SCRIPT_ID,
+        async: true,
+      });
     }
   }
 
