@@ -31,7 +31,7 @@ type State = {
 LeafletMap.addInitHook('addHandler', 'gestureHandling', GestureHandling);
 
 export default class VenueLocation extends PureComponent<Props, State> {
-  state = {
+  state: State = {
     isFeedbackModalOpen: false,
     isExpanded: false,
   };
