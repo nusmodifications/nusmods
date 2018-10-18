@@ -1,41 +1,36 @@
-import Koa from 'koa';
-
-import Router from 'koa-router';
-import bodyParser from 'koa-bodyparser';
-import { graphqlKoa, graphiqlKoa } from 'apollo-server-koa';
-import koaPlayground from 'graphql-playground-middleware-koa';
-
-import Boom from 'boom';
-import loggerMiddleware from 'koa-bunyan-logger';
-import errorMiddleware from './middleware/error';
-
+import { ApolloServer } from 'apollo-server';
+import playgroundConfig from './config/graphqlPlayground';
 import log from './util/log';
-import schema from './graphql';
 
-const app = new Koa();
-const router = new Router();
+function makeServer() {
+  // enable hot-reload server side
+  // eslint-disable-next-line global-require
+  const graphqlSchema = require('./graphql').default;
+  return new ApolloServer({
+    typeDefs: graphqlSchema.typeDefs,
+    /* Apollo is mutating resolvers */
+    resolvers: { ...graphqlSchema.resolvers },
+    playground: playgroundConfig,
+    formatError: (error) => {
+      log.error(error);
+      return error;
+    },
+    formatResponse: (response) => {
+      log.info(response);
+      return response;
+    },
+  });
+}
 
-// Register middleware
-app.use(bodyParser());
-app.use(loggerMiddleware(log));
-app.use(loggerMiddleware.requestIdContext());
-app.use(loggerMiddleware.requestLogger());
-app.use(errorMiddleware());
+let serverInstance = makeServer();
+serverInstance.listen(process.env.PORT).then(({ url }) => {
+  log.info(`🚀  Server ready at ${url}`);
+});
 
-// Registers routes
-router.post('/graphql', graphqlKoa({ schema, tracing: true }));
-router.get('/graphiql', graphiqlKoa({ endpointURL: '/graphql' }));
-router.get('/playground', koaPlayground({ endpoint: '/graphql' }));
-
-app.use(router.routes());
-app.use(
-  router.allowedMethods({
-    throw: true,
-    notImplemented: () => new Boom.notImplemented(), // eslint-disable-line new-cap
-    methodNotAllowed: () => new Boom.methodNotAllowed(), // eslint-disable-line new-cap
-  }),
-);
-
-log.info('current environment: %s', process.env.NODE_ENV);
-log.info('server started at port: %d', process.env.PORT || 3600);
-app.listen(process.env.PORT || 3600);
+if (module.hot) {
+  module.hot.accept('./graphql', async () => {
+    await serverInstance.stop();
+    serverInstance = makeServer();
+    await serverInstance.listen(process.env.PORT);
+  });
+}

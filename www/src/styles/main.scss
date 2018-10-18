@@ -9,6 +9,8 @@
 @import 'bootstrap/bootstrap';
 @import 'bootstrap/style-override';
 @import 'material/material';
+@import 'leaflet';
+@import 'leaflet-gesture-handling';
 
 // Utils
 @import 'utils/css-variables';
@@ -27,6 +29,7 @@
 @import 'components/sentry';
 @import 'components/buttons';
 @import 'components/kbd';
+@import 'components/select';
 
 // Pages
 @import 'pages/module-finder';

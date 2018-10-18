@@ -23,6 +23,7 @@ import Image from 'react-feather/dist/icons/image';
 import Layers from 'react-feather/dist/icons/layers';
 import LinkedIn from 'react-feather/dist/icons/linkedin';
 import Map from 'react-feather/dist/icons/map';
+import MapPin from 'react-feather/dist/icons/map-pin';
 import Menu from 'react-feather/dist/icons/menu';
 import MessageSquare from 'react-feather/dist/icons/message-square';
 import Mail from 'react-feather/dist/icons/mail';
@@ -33,6 +34,7 @@ import Repeat from 'react-feather/dist/icons/repeat';
 import Settings from 'react-feather/dist/icons/settings';
 import Search from 'react-feather/dist/icons/search';
 import Sidebar from 'react-feather/dist/icons/sidebar';
+import ThumbsUp from 'react-feather/dist/icons/thumbs-up';
 import Twitter from 'react-feather/dist/icons/twitter';
 import Trash2 from 'react-feather/dist/icons/trash-2';
 import Type from 'react-feather/dist/icons/type';
@@ -60,6 +62,7 @@ export {
   Image,
   Layers,
   Map,
+  MapPin,
   Menu,
   MessageSquare,
   Mail,
@@ -71,6 +74,7 @@ export {
   Search,
   Settings,
   Sidebar,
+  ThumbsUp,
   Twitter,
   Trash2,
   Type,

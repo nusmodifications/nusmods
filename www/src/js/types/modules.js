@@ -55,20 +55,20 @@ export type RawLesson = {
 };
 
 // Semester-specific information of a module.
-export type SemesterData = {
-  ExamDate?: string,
-  LecturePeriods: Array<string>,
-  Semester: Semester,
-  Timetable: Array<RawLesson>,
-  TutorialPeriods?: Array<string>,
-};
+export type SemesterData = {|
+  +ExamDate?: string,
+  +LecturePeriods: Array<string>,
+  +Semester: Semester,
+  +Timetable: Array<RawLesson>,
+  +TutorialPeriods?: Array<string>,
+|};
 
 // Recursive definition for walking a module tree
-export type TreeFragment = {
-  name: string,
+export type TreeFragment = {|
+  +name: string,
   // TreeFragment[] will result in infinite loop
-  children: Array<TreeFragment>,
-};
+  +children: Array<TreeFragment>,
+|};
 
 // Information for a module for a particular academic year.
 // This is probably the only model you need to be concerned with.
@@ -97,11 +97,11 @@ export type ModuleWithColor = Module & {
 };
 
 // This format is returned from the module list endpoint.
-export type ModuleCondensed = {
-  ModuleCode: ModuleCode,
-  ModuleTitle: ModuleTitle,
-  Semesters: Array<number>,
-};
+export type ModuleCondensed = {|
+  +ModuleCode: ModuleCode,
+  +ModuleTitle: ModuleTitle,
+  +Semesters: number[],
+|};
 
 // Subset of Module object that contains the properties that are
 // needed for module search

@@ -1,4 +1,4 @@
-@import "~styles/utils/modules-entry.scss";
+@import '~styles/utils/modules-entry.scss';
 
 /*
   Remove scroll on the body when react-modal is open
@@ -9,6 +9,21 @@
 */
 :global(.ReactModal__Body--open) {
   overflow: hidden;
+}
+
+.animated {
+  :global {
+    animation: zoomIn 0.2s;
+  }
+}
+
+:global(.ReactModal__Overlay--before-close) {
+  .animated {
+    :global {
+      // Update closeTimeoutMS prop in Modal.jsx if this duration is changed
+      animation: zoomOut 0.15s forwards;
+    }
+  }
 }
 
 .modal {

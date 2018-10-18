@@ -1,7 +1,7 @@
 // @flow
 
 import React, { PureComponent } from 'react';
-import Downshift from 'downshift';
+import Downshift, { type ChildrenFunction } from 'downshift';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
@@ -62,7 +62,13 @@ export class ExportMenuComponent extends PureComponent<Props, State> {
 
   closeMacOSWarningModal = () => this.setState({ isMacWarningOpen: false });
 
-  renderDropdown = ({ isOpen, getItemProps, toggleMenu, highlightedIndex }: any) => {
+  renderDropdown: ChildrenFunction<ExportAction> = ({
+    isOpen,
+    getItemProps,
+    getMenuProps,
+    toggleMenu,
+    highlightedIndex,
+  }) => {
     const { semester, state } = this.props;
     const counter = new Counter();
 
@@ -81,7 +87,10 @@ export class ExportMenuComponent extends PureComponent<Props, State> {
         </button>
 
         {isOpen && (
-          <div className={classnames('dropdown-menu show', styles.dropdownMenu)}>
+          <div
+            className={classnames('dropdown-menu show', styles.dropdownMenu)}
+            {...getMenuProps()}
+          >
             <Online>
               <a
                 href={exportApi.image(semester, state, window.devicePixelRatio)}
@@ -119,7 +128,11 @@ export class ExportMenuComponent extends PureComponent<Props, State> {
           </div>
         )}
 
-        <Modal isOpen={this.state.isMacWarningOpen} onRequestClose={this.closeMacOSWarningModal}>
+        <Modal
+          isOpen={this.state.isMacWarningOpen}
+          onRequestClose={this.closeMacOSWarningModal}
+          animate
+        >
           <div className={styles.modalContent}>
             <AlertTriangle />
             <p>The calendar you have just downloaded may not work with the macOS Calendar app.</p>
@@ -138,7 +151,7 @@ export class ExportMenuComponent extends PureComponent<Props, State> {
   };
 
   render() {
-    return <Downshift onSelect={this.onSelect} render={this.renderDropdown} />;
+    return <Downshift onSelect={this.onSelect}>{this.renderDropdown}</Downshift>;
   }
 }
 

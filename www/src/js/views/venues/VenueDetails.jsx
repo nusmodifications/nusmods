@@ -1,5 +1,4 @@
 // @flow
-
 import React, { Fragment, PureComponent } from 'react';
 import { Link, withRouter, type ContextRouter } from 'react-router-dom';
 import classnames from 'classnames';
@@ -17,6 +16,7 @@ import { modulePage, venuePage } from 'views/routes/paths';
 import Title from 'views/components/Title';
 import { mergeDualCodedModules } from 'utils/venues';
 import { breakpointDown } from 'utils/css';
+import VenueLocation from './VenueLocation';
 
 import styles from './VenueDetails.scss';
 
@@ -73,6 +73,8 @@ export class VenueDetailsComponent extends PureComponent<Props> {
             {next} <ChevronRight />
           </Link>
         </header>
+
+        <VenueLocation venue={venue} />
 
         <div className={classnames(styles.timetable, { verticalMode: matchBreakpoint })}>
           <Timetable
