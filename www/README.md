@@ -52,7 +52,7 @@ This will start webpack dev server, which will automatically rebuild and reload 
 
 We uses [CSS Modules][css-modules] to structure styles. This means that with the exception of a few global styles, styles for each component lives beside their source files (see [colocation](#colocation)). This allows us to write short, semantic names for styles without worrying about collision.
 
-```
+``` scss
 // MyComponent.scss
 import "~styles/utils/modules-entry"; // Import variables, mixins
 
@@ -70,7 +70,9 @@ import "~styles/utils/modules-entry"; // Import variables, mixins
     animation: fadeIn 0.3s;
   }
 }
+```
 
+``` js
 // MyComponent.jsx
 import styles from './MyComponent.scss';
 
@@ -120,11 +122,11 @@ Components should dispatch the action to fetch data. The dispatch function retur
 ```js
 import { fetchData } from 'actions/example';
 
-interface Props {
+type Props = {
   fetchData: () => Promise<MyData>,
 }
 
-interface State {
+type State = {
   data: ?MyData,
   error?: any,
 }
@@ -182,13 +184,13 @@ export function exampleBank(state: ExampleBank, action: FSA): ExampleBank {
 
 **Component example**
 
-```
-interface Props {
+```js
+type Props = {
   myData: ?MyData,
   fetchData: () => Promise<MyData>,
 }
 
-interface State {
+type State = {
   error?: any,
 }
 
@@ -302,8 +304,10 @@ $ yarn promote-staging # Promote ./dist to production
 │   │   ├── bootstrapping    - Code that runs once only on app initialization
 │   │   ├── config           - App configuration
 │   │   ├── data             - Static data such as theme colors
+│   │   ├── e2e              - End-to-end tests
 │   │   ├── middlewares      - Redux middlewares
 │   │   ├── reducers         - Redux reducers
+│   │   ├── selectors        - Redux state selectors
 │   │   ├── storage          - Persistance layer for Redux
 │   │   ├── test-utils       - Utilities for testing - this directory is not counted
 │   │   │                      for test coverage

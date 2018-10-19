@@ -1,6 +1,8 @@
 // @flow
 import React, { Fragment, PureComponent } from 'react';
+import { Map as LeafletMap } from 'leaflet';
 import { Map, Marker, TileLayer } from 'react-leaflet';
+import { GestureHandling } from 'leaflet-gesture-handling';
 import classnames from 'classnames';
 import { capitalize } from 'lodash';
 import type { LatLngTuple, VenueLocation as VenueLocationItem } from 'types/venues';
@@ -25,6 +27,8 @@ type State = {
   isFeedbackModalOpen: boolean,
 };
 
+LeafletMap.addInitHook('addHandler', 'gestureHandling', GestureHandling);
+
 function renderMap(position: LatLngTuple) {
   // Query param for https://developers.google.com/maps/documentation/urls/guide#search-action
   const googleMapQuery = encodeURIComponent(position.join(','));
@@ -37,7 +41,7 @@ function renderMap(position: LatLngTuple) {
       >
         Open in Google Maps
       </ExternalLink>
-      <Map center={position} zoom={18} maxZoom={19} className={styles.map}>
+      <Map center={position} zoom={18} maxZoom={19} className={styles.map} gestureHandling>
         <TileLayer
           attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

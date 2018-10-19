@@ -35,9 +35,10 @@ import {
 import config from 'config';
 import ModulesSelectContainer from 'views/timetable/ModulesSelectContainer';
 import CorsNotification from 'views/components/cors-info/CorsNotification';
-import Announcements from 'views/components/Announcements';
+import Announcements from 'views/components/notfications/Announcements';
 import Title from 'views/components/Title';
-import RefreshPrompt from 'views/components/RefreshPrompt';
+import RefreshPrompt from 'views/components/notfications/RefreshPrompt';
+import HacktoberfestBanner from 'views/components/notfications/HacktoberfestBanner';
 import NoLessonWarning from 'views/timetable/NoLessonWarning';
 import Timetable from './Timetable';
 import TimetableActions from './TimetableActions';
@@ -350,6 +351,12 @@ class TimetableContent extends Component<Props, State> {
               </div>
 
               <div className="col-md-12">{this.renderModuleSections(!isVerticalOrientation)}</div>
+            </div>
+            <div className="row">
+              <div className="col">
+                <br />
+                <HacktoberfestBanner />
+              </div>
             </div>
           </div>
         </div>

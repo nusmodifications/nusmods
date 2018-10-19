@@ -911,8 +911,8 @@
     "roomName": "LECTURE THEATRE 29",
     "floor": 1,
     "location": {
-      "x": 103.78098784913514,
-      "y": 1.2973635913960453
+      "x": 103.78121942281726,
+      "y": 1.2970306748465374
     }
   },
   "S14-0619": {
@@ -1239,8 +1239,8 @@
     "roomName": "LECTURE THEATRE 18",
     "floor": null,
     "location": {
-      "x": 103.77449496907752,
-      "y": 1.2935461937176957
+      "x": 103.77460509538652,
+      "y": 1.2933049908717555
     }
   },
   "S17-0404": {
@@ -1919,8 +1919,8 @@
     "roomName": "NUS THEATRETTE (LECTURE THEATRE 13)",
     "floor": 1,
     "location": {
-      "x": 103.77063920496695,
-      "y": 1.2947130861671068
+      "x": 103.77090632915497,
+      "y": 1.29506943418948
     }
   },
   "AS4-0601": {
@@ -2725,6 +2725,146 @@
     "location": {
       "x": 103.773178,
       "y": 1.305546
+    }
+  },
+  "TC-SR4": {
+    "roomName": "Tembusu Seminar Room 4",
+    "floor": 1
+  },
+  "TP-SR9": {
+    "roomName": "Town Plaza Seminar Room 9",
+    "floor": 2,
+    "location": {
+      "x": 103.7734447780531,
+      "y": 1.3040060366184345
+    }
+  },
+  "ERC-GLR": {
+    "roomName": "Global Learning Room",
+    "floor": 2,
+    "location": {
+      "x": 103.77296626567842,
+      "y": 1.3062266437833203
+    }
+  },
+  "CELC-TR7": {
+    "roomName": "Training Room 7",
+    "floor": 3,
+    "location": {
+      "x": 103.77142667770386,
+      "y": 1.2969754103578175
+    }
+  },
+  "UTSRC-LT51": {
+    "roomName": "LT51",
+    "floor": 1,
+    "location": {
+      "x": 103.77298235893251,
+      "y": 1.3040546181167396
+    }
+  },
+  "UTSRC-SR7": {
+    "roomName": "UTown Seminar Room 7",
+    "floor": 2,
+    "location": {
+      "x": 103.77302572325755,
+      "y": 1.3041726550718167
+    }
+  },
+  "Y-PgRm2": {
+    "roomName": "Yale-NUS Programme Room 2",
+    "floor": 2,
+    "location": {
+      "x": 103.77246850300989,
+      "y": 1.3074623343447909
+    }
+  },
+  "Y-CR3": {
+    "roomName": "Yale-NUS Saga College Classroom C",
+    "floor": 1,
+    "location": {
+      "x": 103.77201037850928,
+      "y": 1.3056591015490226
+    }
+  },
+  "BIZ2-0413C": {
+    "roomName": "BIZ2-0413C",
+    "floor": 4,
+    "location": {
+      "x": 103.77533733844759,
+      "y": 1.29322559256955
+    }
+  },
+  "RMI-SR1": {
+    "roomName": "RMI-SR1 (i3-01-05)",
+    "floor": 1,
+    "location": {
+      "x": 103.77548217773439,
+      "y": 1.2926128638467618
+    }
+  },
+  "HSSMLCR": {
+    "roomName": "HSSMLCR",
+    "floor": 3,
+    "location": {
+      "x": 103.77434492111207,
+      "y": 1.293218888755013
+    }
+  },
+  "RC4-SR6": {
+    "roomName": "Seminar Room 6",
+    "floor": 1,
+    "location": {
+      "x": 103.77289652824403,
+      "y": 1.3082901083261955
+    }
+  },
+  "SDE-SR15": {
+    "roomName": "Seminar Room 15",
+    "floor": 2,
+    "location": {
+      "x": 103.7704767581688,
+      "y": 1.2979434993900776
+    }
+  },
+  "UTSRC-SR2": {
+    "roomName": "UTown Seminar Room 2",
+    "floor": 1,
+    "location": {
+      "x": 103.77266854047777,
+      "y": 1.3043045855179205
+    }
+  },
+  "SDE_ER4-5": {
+    "roomName": "SDE-ER5",
+    "floor": 3,
+    "location": {
+      "x": 103.77096801996233,
+      "y": 1.297112209867133
+    }
+  },
+  "SDE-ES2": {
+    "roomName": "SDE-ES2",
+    "floor": 3,
+    "location": {
+      "x": 103.7712147831917,
+      "y": 1.2975278456969463
+    }
+  },
+  "SDE-ER5": {
+    "roomName": "SDE-ER5",
+    "floor": 3,
+    "location": {
+      "x": 103.77095997333528,
+      "y": 1.2971041653020217
+    }
+  },
+  "S11-0401A": {
+    "roomName": "Physics Level 2000 Laboratory",
+    "floor": 4,
+    "location": {
+      "x": 103.77884298563005,
+      "y": 1.2967373414850563
     }
   }
 }

@@ -25,9 +25,9 @@ import ModuleWorkload from 'views/components/module-info/ModuleWorkload';
 import AddToTimetableDropdown from 'views/components/module-info/AddModuleDropdown';
 import CorsStats from 'views/components/cors-stats/CorsStats';
 import CorsNotification from 'views/components/cors-info/CorsNotification';
-import Announcements from 'views/components/Announcements';
+import Announcements from 'views/components/notfications/Announcements';
 import Title from 'views/components/Title';
-import RefreshPrompt from 'views/components/RefreshPrompt';
+import RefreshPrompt from 'views/components/notfications/RefreshPrompt';
 
 import styles from './ModulePageContent.scss';
 
