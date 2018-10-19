@@ -49,7 +49,7 @@ function ModuleTombstone(props: Props) {
             </button>
           </div>
         </div>
-        <span>{`Removed ${tombstone.moduleCode}`}</span>
+        <span>Removed {tombstone.moduleCode}</span>
       </div>
     </div>
   );
