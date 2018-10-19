@@ -19,9 +19,21 @@ class ExpandMap extends PureComponent<Props> {
   }
 
   componentDidUpdate() {
+    const { map } = this.props.leaflet;
     // Leaflet maps need to have their cached size invalidated when their parent
     // element resizes
-    this.props.leaflet.map.invalidateSize();
+    map.invalidateSize();
+
+    // Only enable gesture handling if the map is expanded. Users expect to be able
+    // to pan / scroll the map when the map is the only thing on their screen.
+    // This is a little hacky because we are changing the behavior of the outer map
+    // component from inside it. Also the gestureHandling prop cannot be added to the
+    // outer Map component, otherwise the disable() below won't work
+    if (this.props.isExpanded) {
+      map.gestureHandling.disable();
+    } else {
+      map.gestureHandling.enable();
+    }
   }
 
   expandMap = () => {

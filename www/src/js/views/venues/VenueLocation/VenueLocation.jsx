@@ -43,9 +43,10 @@ export default class VenueLocation extends PureComponent<Props, State> {
   renderMap(position: LatLngTuple) {
     // Query param for https://developers.google.com/maps/documentation/urls/guide#search-action
     const googleMapQuery = encodeURIComponent(position.join(','));
+    const { isExpanded } = this.state;
 
     return (
-      <div className={classnames(styles.mapWrapper, { [styles.expanded]: this.state.isExpanded })}>
+      <div className={classnames(styles.mapWrapper, { [styles.expanded]: isExpanded })}>
         <ExternalLink
           href={`https://www.google.com/maps/search/?api=1&query=${googleMapQuery}`}
           className={classnames('btn btn-sm btn-primary', styles.gmapBtn)}
@@ -53,13 +54,13 @@ export default class VenueLocation extends PureComponent<Props, State> {
           Open in Google Maps
         </ExternalLink>
 
-        <Map center={position} zoom={18} maxZoom={19} className={styles.map} gestureHandling>
+        <Map center={position} zoom={18} maxZoom={19} className={styles.map}>
           <TileLayer
             attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
           <Marker position={position} icon={icon} />
-          <ExpandMap isExpanded={this.state.isExpanded} onToggleExpand={this.toggleMapExpand} />
+          <ExpandMap isExpanded={isExpanded} onToggleExpand={this.toggleMapExpand} />
         </Map>
       </div>
     );
@@ -82,8 +83,8 @@ export default class VenueLocation extends PureComponent<Props, State> {
 
           <Modal isOpen={this.state.isFeedbackModalOpen} onRequestClose={this.closeModal} animate>
             <CloseButton onClick={this.closeModal} />
-            <h2 className={styles.feedbackTitle}>Improve {this.props.venue}</h2>
-            <ImproveVenueForm venue={this.props.venue} />
+            <h2 className={styles.feedbackTitle}>Improve {venue}</h2>
+            <ImproveVenueForm venue={venue} />
           </Modal>
         </Fragment>
       );
