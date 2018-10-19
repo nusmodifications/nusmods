@@ -13,38 +13,32 @@ import type { SemTimetableConfigWithLessons } from 'types/timetables';
 import type { ColorMapping } from 'types/reducers';
 import Title from 'views/components/Title';
 import CorsNotification from 'views/components/cors-info/CorsNotification';
-import Announcements from 'views/components/Announcements';
-import RefreshPrompt from 'views/components/RefreshPrompt';
+import Announcements from 'views/components/notfications/Announcements';
+import RefreshPrompt from 'views/components/notfications/RefreshPrompt';
 import { getSemesterTimetable } from 'reducers/timetables';
 import { DaysOfWeek } from 'types/modules';
 import config from 'config';
-import { daysAfter } from 'utils/timify';
+import { daysAfter, getDayIndex } from 'utils/timify';
 import DayEvents from './DayEvents';
+import DayHeader from './DayHeader';
+import styles from './TodayContainer.scss';
 
 type Props = {
   timetableWithLessons: SemTimetableConfigWithLessons,
   colors: ColorMapping,
 };
 
-const monthNames = [
-  'January ',
-  'February ',
-  'March ',
-  'April ',
-  'May ',
-  'June ',
-  'July ',
-  'August ',
-  'September ',
-  'October ',
-  'November ',
-  'December ',
-];
+function renderDay(date: Date, lessons: ColoredLesson[], isToday: boolean) {
+  if (!lessons.length) {
+    // If it is a weekend / holiday
+    if (date.getDay() === 0 || date.getDay() === 6) {
+      return <p>Enjoy your weekend!</p>;
+    }
 
-function getDayName(date: Date) {
-  // -1 because JS weeks start at
-  const dayIndex = date.getDay() === 0 ? 6 : date.getDay() - 1;
-  return `${DaysOfWeek[dayIndex]}, ${date.getDate()} ${monthNames[date.getMonth()]}`;
+    return <p>You have no lessons today</p>;
+  }
+
+  return <DayEvents key={date} lessons={lessons} isToday={isToday} />;
 }
 
 class TodayContainer extends PureComponent<Props> {
@@ -62,16 +56,6 @@ class TodayContainer extends PureComponent<Props> {
     const groupedLessons = groupLessonsByDay(coloredTimetableLessons);
     const today = new Date();
 
-    let dayNames = [];
-
-    // Add in the days for the rest of the week
-    dayNames = dayNames.concat(
-      range(dayNames.length, 7).map((i) => getDayName(daysAfter(today, i))),
-    );
-
-    // Reorder and rotate the lessons
-    const days = [...range(today.getDay() - 1, 7), ...range(today.getDay())];
-
     return (
       <div className="page-container">
         <Title>Today</Title>
@@ -82,18 +66,26 @@ class TodayContainer extends PureComponent<Props> {
 
         <RefreshPrompt />
 
-        <h1>
-          {today.getDate()} {monthNames[today.getMonth()]}
-        </h1>
+        {range(7).map((i) => {
+          const date = daysAfter(today, i);
+          const dayText = DaysOfWeek[getDayIndex(date)];
 
-        {days.map((day, i) => (
-          <DayEvents
-            key={day}
-            lessons={groupedLessons[DaysOfWeek[day]] || []}
-            date={dayNames[day]}
-            isToday={i === 0}
-          />
-        ))}
+          let dayName;
+          if (i === 0) {
+            dayName = 'Today';
+          } else if (i === 1) {
+            dayName = 'Tomorrow';
+          } else {
+            dayName = dayText;
+          }
+
+          return (
+            <section className={styles.day}>
+              <DayHeader date={date} dayName={dayName} />
+              {renderDay(date, groupedLessons[dayText] || [], i === 0)}
+            </section>
+          );
+        })}
       </div>
     );
   }

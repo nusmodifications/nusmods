@@ -1,0 +1,70 @@
+.day {
+  margin-bottom: 4rem;
+
+  h3 {
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--gray-light);
+  }
+}
+
+.header {
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid var(--gray-light);
+
+  h2 {
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    font-size: 2rem;
+  }
+}
+
+.date {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: var(--gray-light);
+}
+
+.lesson {
+  display: flex;
+  margin-bottom: 1.5rem;
+}
+
+.lessonTime {
+  display: flex;
+  flex: 0 0 4.5rem;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0.2rem 0;
+  font-size: 0.8rem;
+  text-align: right;
+  text-transform: uppercase;
+
+  p {
+    margin: 0 0.8rem 0 0;
+  }
+}
+
+.card {
+  flex: 1 0;
+  padding: 0.7rem 1rem;
+  font-size: 0.9rem;
+  border-radius: 0.5rem;
+
+  h4 {
+    margin-bottom: 0.2rem;
+    font-weight: bold;
+    font-size: 1rem;
+    line-height: 1.3;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  .venueIcon {
+    width: 1rem;
+    vertical-align: bottom;
+  }
+}

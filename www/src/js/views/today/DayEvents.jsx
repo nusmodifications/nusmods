@@ -4,64 +4,50 @@ import React, { PureComponent } from 'react';
 import classnames from 'classnames';
 import type { ColoredLesson } from 'types/modules';
 import { MapPin } from 'views/components/icons';
-import { getCurrentHours, getCurrentMinutes } from 'utils/timify';
-import styles from './DayEvents.scss';
+import { formatTime, getCurrentHours, getCurrentMinutes } from 'utils/timify';
+import styles from './TodayContainer.scss';
 
 type Props = {
   lessons: ColoredLesson[],
-  date: ?string,
   isToday: boolean,
 };
 
 export default class DayEvents extends PureComponent<Props> {
   render() {
-    const { lessons, date, isToday } = this.props;
-
-    // if (lessons.length === 0) {
-    //   return null;
-    // }
+    const { lessons, isToday } = this.props;
 
     let sortedLessons = lessons.sort((a, b) => {
       const timeDiff = a.StartTime.localeCompare(b.StartTime);
       return timeDiff !== 0 ? timeDiff : a.ClassNo.localeCompare(b.ClassNo);
     });
 
+    // Don't show any lessons in the past
     if (isToday) {
       const currentTime = getCurrentHours() * 100 + getCurrentMinutes();
       sortedLessons = sortedLessons.filter((lesson) => parseInt(lesson.EndTime, 10) > currentTime);
     }
 
     return (
-      <div className={styles.day}>
-        {date && <h3>{date}</h3>}
-
-        {sortedLessons.length === 0 &&
-          (isToday ? (
-            <p className="text-center h4">
-              Your school day is over for today!{' '}
-              <span className="h3" role="img" aria-label="Tada!">
-                🎉
-              </span>
-            </p>
-          ) : (
-            <p className="text-center h4">Enjoy your weekend!</p>
-          ))}
-
+      <div>
         {sortedLessons.map((lesson) => (
           <div
-            key={`${lesson.ModuleCode}-${lesson.LessonType}-${lesson.ClassNo}`}
             className={styles.lesson}
+            key={`${lesson.ModuleCode}-${lesson.LessonType}-${lesson.ClassNo}`}
           >
-            <div className={classnames(styles.moduleStripe, `color-${lesson.colorIndex}`)} />
-            <div>
-              <div className={styles.lessonTime}>
-                {lesson.StartTime}-{lesson.EndTime}
-              </div>
+            <div className={styles.lessonTime}>
+              <p>{formatTime(lesson.StartTime)}</p>
+              <p>{formatTime(lesson.EndTime)}</p>
+            </div>
+
+            <div className={classnames(styles.card, `color-${lesson.colorIndex}`)}>
               <h4>
-                {lesson.ModuleCode} {lesson.LessonType}
+                {lesson.ModuleCode} {lesson.ModuleTitle}
               </h4>
               <p>
-                <MapPin /> {lesson.Venue}
+                {lesson.LessonType} {lesson.ClassNo}
+              </p>
+              <p>
+                <MapPin className={styles.venueIcon} /> {lesson.Venue}
               </p>
             </div>
           </div>

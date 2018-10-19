@@ -1,5 +1,6 @@
 // @flow
 import type { DayText, Lesson, LessonTime } from 'types/modules';
+import { padStart } from 'lodash';
 
 // Converts a 24-hour format time string to an index.
 // Each index corresponds to one cell of each timetable row.
@@ -36,6 +37,24 @@ export function formatHour(hour: number): string {
   if (hour === 0 || hour === 24) return '12 midnight';
   if (hour < 12) return `${hour}am`;
   return `${hour - 12}pm`;
+}
+
+export function formatTime(time: string | number): string {
+  const timeNumber = parseInt(time, 10);
+
+  if (timeNumber === 0) return '12 midnight';
+  if (timeNumber === 1200) return '12 noon';
+
+  let hour = Math.floor(timeNumber / 100);
+  let suffix = 'am';
+
+  if (hour >= 12) suffix = 'pm';
+  if (hour > 12) hour -= 12;
+  if (hour === 0) hour = 12;
+
+  const minute = padStart(String(timeNumber % 100), 2, '0');
+
+  return `${hour}:${minute} ${suffix}`;
 }
 
 export const SCHOOLDAYS: Array<DayText> = [
@@ -82,7 +101,7 @@ export function getCurrentMinutes(
 }
 
 // Monday = 0, Friday = 4, Sunday = 6
-export function getCurrentDayIndex(now: Date = new Date()): number {
+export function getDayIndex(now: Date = new Date()): number {
   const day = now.getDay();
   return day === 0
     ? 6 // Sunday = 6
