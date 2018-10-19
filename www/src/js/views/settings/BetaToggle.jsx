@@ -7,7 +7,7 @@ import ExternalLink from 'views/components/ExternalLink';
 import config from 'config';
 import styles from './SettingsContainer.scss';
 
-const currentTests = [];
+const currentTests = ['Today page: showing timetable as a schedule'];
 
 type Props = {
   betaTester: boolean,

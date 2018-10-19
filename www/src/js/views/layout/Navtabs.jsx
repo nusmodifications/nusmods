@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { NavLink, withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 
-import { BookOpen, Calendar, Heart, Map, Settings } from 'views/components/icons';
+import { BookOpen, Calendar, Clock, Heart, Map, Settings } from 'views/components/icons';
 import { timetablePage } from 'views/routes/paths';
 
 import styles from './Navtabs.scss';
@@ -16,6 +16,7 @@ export const NAVTAB_HEIGHT = 48;
 
 type Props = {
   activeSemester: Semester,
+  beta: boolean,
 };
 
 export function NavtabsComponent(props: Props) {
@@ -27,6 +28,12 @@ export function NavtabsComponent(props: Props) {
 
   return (
     <nav className={styles.nav}>
+      {props.beta && (
+        <NavLink {...tabProps} to="/today">
+          <Clock />
+          <span className={styles.title}>Timetable</span>
+        </NavLink>
+      )}
       <NavLink {...tabProps} to={timetablePage(props.activeSemester)}>
         <Calendar />
         <span className={styles.title}>Timetable</span>
@@ -59,5 +66,6 @@ export function NavtabsComponent(props: Props) {
 
 const connectedNavtabs = connect((state: State) => ({
   activeSemester: state.app.activeSemester,
+  beta: state.settings.beta,
 }))(NavtabsComponent);
 export default withRouter(connectedNavtabs);
