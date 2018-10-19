@@ -28,7 +28,7 @@ type Props = {
   archiveYear: ?string,
   moduleCode: ModuleCode,
   module: ?Module,
-  fetchModule: (ModuleCode) => Promise<*>,
+  fetchModule: () => Promise<*>,
 };
 
 type State = {
@@ -57,19 +57,19 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
   };
 
   componentDidMount() {
-    this.fetchModule(this.props.moduleCode);
+    this.fetchModule();
     this.fetchPageImport();
   }
 
   componentDidUpdate(prevProps: Props) {
     if (prevProps.moduleCode !== this.props.moduleCode) {
-      this.fetchModule(this.props.moduleCode);
+      this.fetchModule();
     }
   }
 
-  fetchModule(moduleCode: ModuleCode) {
+  fetchModule() {
     if (this.props.moduleExists || this.props.archiveYear) {
-      this.props.fetchModule(moduleCode).catch(this.handleFetchError);
+      this.props.fetchModule().catch(this.handleFetchError);
     }
   }
 
@@ -111,7 +111,7 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
     // If there is an error but module data can still be found, we assume module has
     // been loaded at some point, so we just show that instead
     if (error && !module) {
-      return <ApiError dataName="module information" retry={() => this.fetchModule(moduleCode)} />;
+      return <ApiError dataName="module information" retry={() => this.fetchModule()} />;
     }
 
     if (module && match.url !== this.canonicalUrl()) {
@@ -162,7 +162,9 @@ const mapDispatchToProps = (dispatch: Dispatch<*>, ownProps) => {
   const { moduleCode, year } = getPropsFromMatch(ownProps.match);
 
   return {
-    fetchModule: year ? () => dispatch(fetchModuleArchive(moduleCode, year)) : fetchModule,
+    fetchModule: year
+      ? () => dispatch(fetchModuleArchive(moduleCode, year))
+      : () => dispatch(fetchModule(moduleCode)),
   };
 };
 
