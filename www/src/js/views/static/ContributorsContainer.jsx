@@ -8,7 +8,7 @@ import ExternalLink from 'views/components/ExternalLink';
 
 import StaticPage from './StaticPage';
 
-const CONTRIBUTORS_URL = 'https://api.github.com/repos/NUSModifications/NUSMods/contributors';
+const CONTRIBUTORS_URL = 'https://api.github.com/repos/NUSModifications/NUSMods/contributors?per_page=100';
 
 type Props = {};
 
