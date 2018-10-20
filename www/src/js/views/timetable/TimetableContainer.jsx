@@ -197,7 +197,7 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
 
     return (
       <div>
-        <ScrollToTop onComponentWillMount />
+        <ScrollToTop onComponentDidMount />
         <TimetableContent
           semester={semester}
           timetable={displayedTimetable}
