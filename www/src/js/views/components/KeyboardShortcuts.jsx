@@ -66,9 +66,12 @@ export class KeyboardShortcutsComponent extends PureComponent<Props, State> {
       history.push('/settings');
     });
 
-    this.bind('/', NAVIGATION, 'Open global search', () => {
+    this.bind('/', NAVIGATION, 'Open global search', (e) => {
       if (ComponentMap.globalSearchInput) {
         ComponentMap.globalSearchInput.focus();
+
+        // Prevents the '/' character from being entered into the global search bar
+        e.preventDefault();
       }
     });
 
@@ -116,7 +119,7 @@ export class KeyboardShortcutsComponent extends PureComponent<Props, State> {
 
   closeModal = () => this.setState({ helpShown: false });
 
-  bind(key: Shortcut, section: Section, description: string, action: () => void) {
+  bind(key: Shortcut, section: Section, description: string, action: (e: Event) => void) {
     this.shortcuts.push({ key, description, section });
 
     Mousetrap.bind(key, action);
