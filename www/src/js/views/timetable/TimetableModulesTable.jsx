@@ -48,7 +48,7 @@ type Props = {
   moduleTableOrder: ModuleTableOrder,
   horizontalOrientation: boolean,
   readOnly: boolean,
-  tombstone: Tombstone,
+  tombstone: ?Tombstone,
   resetTombstone: Function,
 };
 
@@ -143,7 +143,7 @@ class TimetableModulesTable extends Component<Props> {
     const { semester, horizontalOrientation, tombstone } = this.props;
 
     if (!this.props.modules.length) {
-      if (tombstone.moduleCode !== '') {
+      if (tombstone) {
         return (
           <div className={classnames(styles.modulesTable, elements.moduleTable, 'row')}>
             <ModuleTombstone
@@ -165,7 +165,7 @@ class TimetableModulesTable extends Component<Props> {
     return (
       <Fragment>
         <div className={classnames(styles.modulesTable, elements.moduleTable, 'row')}>
-          {tombstone.moduleCode !== ''
+          {tombstone
             ? modules
                 .map((module) => this.renderModuleRow(module))
                 .concat(

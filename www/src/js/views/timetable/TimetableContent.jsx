@@ -76,28 +76,15 @@ type Props = {
 type State = {
   isScrolledHorizontally: boolean,
   showExamCalendar: boolean,
-  tombstone: Tombstone,
+  tombstone: ?Tombstone,
 };
 
 class TimetableContent extends Component<Props, State> {
   state: State = {
     isScrolledHorizontally: false,
     showExamCalendar: false,
-    tombstone: {
-      moduleCode: '',
-      semester: null,
-    },
+    tombstone: null,
   };
-
-  componentDidUpdate(prevProps, prevState) {
-    // remove tombstone after a certain time
-    const { tombstone } = this.state;
-    if (prevState.tombstone.moduleCode !== tombstone.moduleCode && tombstone.moduleCode !== '') {
-      setTimeout(() => {
-        this.resetTombstone();
-      }, 12000);
-    }
-  }
 
   componentWillUnmount() {
     this.cancelModifyLesson();
@@ -147,10 +134,7 @@ class TimetableContent extends Component<Props, State> {
 
   resetTombstone = () => {
     this.setState({
-      tombstone: {
-        moduleCode: '',
-        semester: null,
-      },
+      tombstone: null,
     });
   };
 
@@ -186,7 +170,7 @@ class TimetableContent extends Component<Props, State> {
     const clashes: { [string]: Array<Module> } = findExamClashes(modules, this.props.semester);
     const nonClashingMods: Array<Module> = _.difference(modules, _.flatten(_.values(clashes)));
 
-    if (_.isEmpty(clashes) && _.isEmpty(nonClashingMods) && tombstone.moduleCode === '') {
+    if (_.isEmpty(clashes) && _.isEmpty(nonClashingMods) && !tombstone) {
       return (
         <div className="row">
           <div className="col-sm-12">
