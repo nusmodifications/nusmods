@@ -3,6 +3,8 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { range } from 'lodash';
+import NUSModerator from 'nusmoderator';
+import { isSameDay } from 'date-fns';
 import type { ColoredLesson, Lesson } from 'types/modules';
 import {
   groupLessonsByDay,
@@ -18,7 +20,9 @@ import RefreshPrompt from 'views/components/notfications/RefreshPrompt';
 import { getSemesterTimetable } from 'reducers/timetables';
 import { DaysOfWeek } from 'types/modules';
 import config from 'config';
-import { daysAfter, getDayIndex } from 'utils/timify';
+/** @var {string[]} */
+import holidays from 'data/holidays.json';
+import { daysAfter, getCurrentHours, getCurrentMinutes, getDayIndex } from 'utils/timify';
 import DayEvents from './DayEvents';
 import DayHeader from './DayHeader';
 import styles from './TodayContainer.scss';
@@ -29,6 +33,11 @@ type Props = {
 };
 
 function renderDay(date: Date, lessons: ColoredLesson[], isToday: boolean) {
+  // Assume no lessons on public holidays
+  if (holidays.some((holiday) => isSameDay(date, holiday))) {
+    return <p>Happy holiday!</p>;
+  }
+
   if (!lessons.length) {
     // If it is a weekend / holiday
     if (date.getDay() === 0 || date.getDay() === 6) {
@@ -38,7 +47,19 @@ function renderDay(date: Date, lessons: ColoredLesson[], isToday: boolean) {
     return <p>You have no lessons today</p>;
   }
 
-  return <DayEvents key={date} lessons={lessons} isToday={isToday} />;
+  // Don't show any lessons in the past
+  if (isToday) {
+    const currentTime = getCurrentHours() * 100 + getCurrentMinutes();
+    // eslint-disable-next-line no-param-reassign
+    lessons = lessons.filter((lesson) => parseInt(lesson.EndTime, 10) > currentTime);
+  }
+
+  if (!lessons.length) {
+    return <p>You have no lessons left today</p>;
+  }
+
+  const dayInfo = NUSModerator.academicCalendar.getAcadWeekInfo(date);
+  return <DayEvents key={date} lessons={lessons} dayInfo={dayInfo} />;
 }
 
 class TodayContainer extends PureComponent<Props> {
@@ -80,7 +101,7 @@ class TodayContainer extends PureComponent<Props> {
           }
 
           return (
-            <section className={styles.day}>
+            <section className={styles.day} key={i}>
               <DayHeader date={date} dayName={dayName} />
               {renderDay(date, groupedLessons[dayText] || [], i === 0)}
             </section>

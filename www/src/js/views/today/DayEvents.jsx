@@ -1,31 +1,29 @@
 // @flow
 
+import type { AcadWeekInfo } from 'nusmoderator';
 import React, { PureComponent } from 'react';
 import classnames from 'classnames';
 import type { ColoredLesson } from 'types/modules';
 import { MapPin } from 'views/components/icons';
-import { formatTime, getCurrentHours, getCurrentMinutes } from 'utils/timify';
+import { formatTime } from 'utils/timify';
+import { isLessonAvailable } from 'utils/timetables';
 import styles from './TodayContainer.scss';
 
 type Props = {
   lessons: ColoredLesson[],
-  isToday: boolean,
+  dayInfo: AcadWeekInfo,
 };
 
 export default class DayEvents extends PureComponent<Props> {
   render() {
-    const { lessons, isToday } = this.props;
+    const { lessons, dayInfo } = this.props;
 
-    let sortedLessons = lessons.sort((a, b) => {
-      const timeDiff = a.StartTime.localeCompare(b.StartTime);
-      return timeDiff !== 0 ? timeDiff : a.ClassNo.localeCompare(b.ClassNo);
-    });
-
-    // Don't show any lessons in the past
-    if (isToday) {
-      const currentTime = getCurrentHours() * 100 + getCurrentMinutes();
-      sortedLessons = sortedLessons.filter((lesson) => parseInt(lesson.EndTime, 10) > currentTime);
-    }
+    const sortedLessons = lessons
+      .filter((lesson) => isLessonAvailable(lesson, dayInfo))
+      .sort((a, b) => {
+        const timeDiff = a.StartTime.localeCompare(b.StartTime);
+        return timeDiff !== 0 ? timeDiff : a.ClassNo.localeCompare(b.ClassNo);
+      });
 
     return (
       <div>
