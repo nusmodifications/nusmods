@@ -31,7 +31,7 @@ export function NavtabsComponent(props: Props) {
       {props.beta && (
         <NavLink {...tabProps} to="/today">
           <Clock />
-          <span className={styles.title}>Timetable</span>
+          <span className={styles.title}>Today</span>
         </NavLink>
       )}
       <NavLink {...tabProps} to={timetablePage(props.activeSemester)}>
