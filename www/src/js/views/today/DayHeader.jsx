@@ -1,8 +1,7 @@
 // @flow
 
 import React from 'react';
-import { DaysOfWeek } from 'types/modules';
-import { getDayIndex } from 'utils/timify';
+import { format } from 'date-fns';
 import styles from './TodayContainer.scss';
 
 type Props = {
@@ -10,23 +9,8 @@ type Props = {
   dayName: ?string, // eg. Today, Tomorrow
 };
 
-const monthNames = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-];
-
 function getDayName(date: Date) {
-  return `${DaysOfWeek[getDayIndex(date)]}, ${date.getDate()} ${monthNames[date.getMonth()]}`;
+  return format(date, 'iiii, do MMMM');
 }
 
 export default function(props: Props) {
