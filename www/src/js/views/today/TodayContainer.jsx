@@ -2,10 +2,11 @@
 
 import React, { PureComponent, Fragment, type Node } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { range, minBy } from 'lodash';
 import classnames from 'classnames';
 import NUSModerator from 'nusmoderator';
-import { isSameDay, addDays, formatDistanceStrict } from 'date-fns';
+import { isSameDay, addDays, formatDistanceStrict, differenceInHours } from 'date-fns';
 import type { ColoredLesson, Lesson } from 'types/modules';
 import {
   getStartTimeAsDate,
@@ -16,12 +17,13 @@ import {
 } from 'utils/timetables';
 import type { SemTimetableConfigWithLessons } from 'types/timetables';
 import type { ColorMapping } from 'types/reducers';
+import { DaysOfWeek } from 'types/modules';
 import Title from 'views/components/Title';
 import CorsNotification from 'views/components/cors-info/CorsNotification';
 import Announcements from 'views/components/notfications/Announcements';
 import RefreshPrompt from 'views/components/notfications/RefreshPrompt';
+import { venuePage } from 'views/routes/paths';
 import { getSemesterTimetable } from 'reducers/timetables';
-import { DaysOfWeek } from 'types/modules';
 import config from 'config';
 /** @var {string[]} */
 import holidays from 'data/holidays.json';
@@ -55,8 +57,23 @@ class TodayContainer extends PureComponent<Props, State> {
   intervalId;
 
   renderBeforeNextLessonCard(nextLesson: Lesson, marker: Node) {
-    // Otherwise add a new card on top
     const nextLessonDate = getStartTimeAsDate(nextLesson);
+    const hoursTillNextLesson = differenceInHours(nextLessonDate, new Date());
+
+    let comment = null;
+    if (hoursTillNextLesson <= 1) {
+      comment = <p>Better get a move on to your next class!</p>;
+    } else if (new Date().getHours() < 7) {
+      // Why are you up right now?
+      comment = <p>Why not go get some sleep?</p>;
+    } else {
+      comment = (
+        <p>
+          Remember to take breaks when studying. Need help finding a free classroom? Check out our{' '}
+          <Link to={venuePage()}>free room finder</Link>.
+        </p>
+      );
+    }
 
     return (
       <div className={styles.lesson}>
@@ -70,6 +87,7 @@ class TodayContainer extends PureComponent<Props, State> {
             You have <strong>{formatDistanceStrict(nextLessonDate, this.state.currentTime)}</strong>{' '}
             till the next class.
           </p>
+          {comment}
         </div>
       </div>
     );
@@ -106,10 +124,10 @@ class TodayContainer extends PureComponent<Props, State> {
         const marker = <p className={styles.nowMarker}>{formatTime(currentTime)}</p>;
 
         if (isLessonOngoing(nextLesson, currentTime)) {
-          // If the next lesson is still ongoing, we put the marker
-          // inside the next lesson
+          // If the next lesson is still ongoing, we put the marker inside the next lesson
           netLessonMarker = marker;
         } else {
+          // Otherwise add a new card before the next lesson
           beforeFirstLessonBlock = this.renderBeforeNextLessonCard(nextLesson, marker);
         }
       } else {
