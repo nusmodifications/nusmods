@@ -1,7 +1,7 @@
 // @flow
 
 import type { AcadWeekInfo } from 'nusmoderator';
-import React, { PureComponent } from 'react';
+import React, { PureComponent, type Node } from 'react';
 import classnames from 'classnames';
 import type { ColoredLesson } from 'types/modules';
 import { MapPin } from 'views/components/icons';
@@ -12,11 +12,12 @@ import styles from './TodayContainer.scss';
 type Props = {
   lessons: ColoredLesson[],
   dayInfo: AcadWeekInfo,
+  marker: Node,
 };
 
 export default class DayEvents extends PureComponent<Props> {
   render() {
-    const { lessons, dayInfo } = this.props;
+    const { lessons, dayInfo, marker } = this.props;
 
     const sortedLessons = lessons
       .filter((lesson) => isLessonAvailable(lesson, dayInfo))
@@ -34,6 +35,7 @@ export default class DayEvents extends PureComponent<Props> {
           >
             <div className={styles.lessonTime}>
               <p>{formatTime(lesson.StartTime)}</p>
+              {marker}
               <p>{formatTime(lesson.EndTime)}</p>
             </div>
 

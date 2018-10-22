@@ -1,14 +1,17 @@
 // @flow
 
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'react-redux';
-import { range } from 'lodash';
+import { range, minBy } from 'lodash';
+import classnames from 'classnames';
 import NUSModerator from 'nusmoderator';
-import { isSameDay } from 'date-fns';
+import { isSameDay, addDays, formatDistanceStrict } from 'date-fns';
 import type { ColoredLesson, Lesson } from 'types/modules';
 import {
+  getStartTimeAsDate,
   groupLessonsByDay,
   hydrateSemTimetableWithLessons,
+  isLessonOngoing,
   timetableLessonsArray,
 } from 'utils/timetables';
 import type { SemTimetableConfigWithLessons } from 'types/timetables';
@@ -22,7 +25,7 @@ import { DaysOfWeek } from 'types/modules';
 import config from 'config';
 /** @var {string[]} */
 import holidays from 'data/holidays.json';
-import { daysAfter, getCurrentHours, getCurrentMinutes, getDayIndex } from 'utils/timify';
+import { formatTime, getCurrentHours, getCurrentMinutes, getDayIndex } from 'utils/timify';
 import DayEvents from './DayEvents';
 import DayHeader from './DayHeader';
 import styles from './TodayContainer.scss';
@@ -32,37 +35,92 @@ type Props = {
   colors: ColorMapping,
 };
 
-function renderDay(date: Date, lessons: ColoredLesson[], isToday: boolean) {
-  // Assume no lessons on public holidays
-  if (holidays.some((holiday) => isSameDay(date, holiday))) {
-    return <p>Happy holiday!</p>;
+type State = {
+  currentTime: Date,
+};
+
+class TodayContainer extends PureComponent<Props, State> {
+  state: State = {
+    currentTime: new Date(),
+  };
+
+  componentDidMount() {
+    this.intervalId = setInterval(() => this.setState({ currentTime: new Date() }), 60 * 1000);
   }
 
-  if (!lessons.length) {
-    // If it is a weekend / holiday
-    if (date.getDay() === 0 || date.getDay() === 6) {
-      return <p>Enjoy your weekend!</p>;
+  componentWillUnmount() {
+    clearInterval(this.intervalId);
+  }
+
+  intervalId;
+
+  renderDay(date: Date, lessons: ColoredLesson[], isToday: boolean) {
+    let firstLessonMarker = null;
+    let beforeFirstLessonBlock = null;
+
+    // Assume no lessons on public holidays
+    if (holidays.some((holiday) => isSameDay(date, holiday))) {
+      return <p>Happy holiday!</p>;
     }
 
-    return <p>You have no lessons today</p>;
+    if (!lessons.length) {
+      // If it is a weekend / holiday
+      return date.getDay() === 0 || date.getDay() === 6 ? (
+        <p>Enjoy your weekend!</p>
+      ) : (
+        <p>You have no lessons today</p>
+      );
+    }
+
+    // Don't show any lessons in the past, and add the current time marker
+    if (isToday) {
+      const currentTime = getCurrentHours() * 100 + getCurrentMinutes();
+      // eslint-disable-next-line no-param-reassign
+      lessons = lessons.filter((lesson) => parseInt(lesson.EndTime, 10) > currentTime);
+
+      const nextLesson = minBy(lessons, (lesson) => lesson.StartTime);
+
+      if (nextLesson) {
+        const marker = <p className={styles.nowMarker}>{formatTime(currentTime)}</p>;
+
+        if (isLessonOngoing(nextLesson, currentTime)) {
+          firstLessonMarker = marker;
+        } else {
+          const nextLessonDate = getStartTimeAsDate(nextLesson);
+
+          beforeFirstLessonBlock = (
+            <div className={styles.lesson}>
+              <div className={styles.lessonTime}>
+                <p />
+                {marker}
+                <p />
+              </div>
+              <div className={classnames(styles.card, styles.inBetweenClass)}>
+                <p>
+                  You have{' '}
+                  <strong>{formatDistanceStrict(nextLessonDate, this.state.currentTime)}</strong>{' '}
+                  till the next class.
+                </p>
+              </div>
+            </div>
+          );
+        }
+      }
+    }
+
+    if (!lessons.length) {
+      return <p>You have no lessons left today</p>;
+    }
+
+    const dayInfo = NUSModerator.academicCalendar.getAcadWeekInfo(date);
+    return (
+      <Fragment>
+        {beforeFirstLessonBlock}
+        <DayEvents key={date} lessons={lessons} dayInfo={dayInfo} marker={firstLessonMarker} />
+      </Fragment>
+    );
   }
 
-  // Don't show any lessons in the past
-  if (isToday) {
-    const currentTime = getCurrentHours() * 100 + getCurrentMinutes();
-    // eslint-disable-next-line no-param-reassign
-    lessons = lessons.filter((lesson) => parseInt(lesson.EndTime, 10) > currentTime);
-  }
-
-  if (!lessons.length) {
-    return <p>You have no lessons left today</p>;
-  }
-
-  const dayInfo = NUSModerator.academicCalendar.getAcadWeekInfo(date);
-  return <DayEvents key={date} lessons={lessons} dayInfo={dayInfo} />;
-}
-
-class TodayContainer extends PureComponent<Props> {
   render() {
     const { colors } = this.props;
 
@@ -88,7 +146,7 @@ class TodayContainer extends PureComponent<Props> {
         <RefreshPrompt />
 
         {range(7).map((i) => {
-          const date = daysAfter(today, i);
+          const date = addDays(today, i);
           const dayText = DaysOfWeek[getDayIndex(date)];
 
           let dayName;
@@ -103,7 +161,7 @@ class TodayContainer extends PureComponent<Props> {
           return (
             <section className={styles.day} key={i}>
               <DayHeader date={date} dayName={dayName} />
-              {renderDay(date, groupedLessons[dayText] || [], i === 0)}
+              {this.renderDay(date, groupedLessons[dayText] || [], i === 0)}
             </section>
           );
         })}

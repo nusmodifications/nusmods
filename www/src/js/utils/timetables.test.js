@@ -41,6 +41,7 @@ import {
   validateModuleLessons,
   formatWeekNumber,
   isLessonAvailable,
+  isLessonOngoing,
 } from 'utils/timetables';
 import { getModuleTimetable, getModuleSemesterData } from 'utils/modules';
 
@@ -621,27 +622,25 @@ describe(isLessonAvailable, () => {
   };
 
   test('should retutrn false if it is not instruction week', () => {
-    expect(isLessonAvailable(createGenericLesson(), { ...weekInfo, type: 'Vacation' })).toBe(false);
-    expect(isLessonAvailable(createGenericLesson(), { ...weekInfo, type: 'Reading' })).toBe(false);
-    expect(isLessonAvailable(createGenericLesson(), { ...weekInfo, type: 'Examination' })).toBe(
-      false,
-    );
-    expect(isLessonAvailable(createGenericLesson(), { ...weekInfo, type: 'Recess' })).toBe(false);
-    expect(isLessonAvailable(createGenericLesson(), { ...weekInfo, type: 'Orientation' })).toBe(
-      false,
-    );
+    const lesson = createGenericLesson();
+    expect(isLessonAvailable(lesson, { ...weekInfo, type: 'Vacation' })).toBe(false);
+    expect(isLessonAvailable(lesson, { ...weekInfo, type: 'Reading' })).toBe(false);
+    expect(isLessonAvailable(lesson, { ...weekInfo, type: 'Examination' })).toBe(false);
+    expect(isLessonAvailable(lesson, { ...weekInfo, type: 'Recess' })).toBe(false);
+    expect(isLessonAvailable(lesson, { ...weekInfo, type: 'Orientation' })).toBe(false);
   });
 
   test('should return false if the lesson is a tutorial and it is week 1 and 2', () => {
+    const lesson = createGenericLesson('Monday', '0800', '1000', 'Tutorial');
     expect(
-      isLessonAvailable(createGenericLesson('Monday', '0800', '1000', 'Tutorial'), {
+      isLessonAvailable(lesson, {
         ...weekInfo,
         num: 1,
       }),
     ).toBe(false);
 
     expect(
-      isLessonAvailable(createGenericLesson('Monday', '0800', '1000', 'Tutorial'), {
+      isLessonAvailable(lesson, {
         ...weekInfo,
         num: 3,
       }),
@@ -678,5 +677,16 @@ describe(isLessonAvailable, () => {
         },
       ),
     ).toBe(true);
+  });
+});
+
+describe(isLessonOngoing, () => {
+  test('should return whether a lesson is ongoing', () => {
+    const lesson = createGenericLesson();
+    expect(isLessonOngoing(lesson, 759)).toBe(false);
+    expect(isLessonOngoing(lesson, 800)).toBe(true);
+    expect(isLessonOngoing(lesson, 805)).toBe(true);
+    expect(isLessonOngoing(lesson, 959)).toBe(true);
+    expect(isLessonOngoing(lesson, 900)).toBe(false);
   });
 });

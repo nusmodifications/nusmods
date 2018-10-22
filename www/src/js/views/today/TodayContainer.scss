@@ -1,3 +1,5 @@
+@import '~styles/utils/modules-entry';
+
 .day {
   margin-bottom: 4rem;
 
@@ -28,27 +30,38 @@
 
 .lesson {
   display: flex;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .lessonTime {
   display: flex;
-  flex: 0 0 4.5rem;
+  flex: 0 0 4.8rem;
   flex-direction: column;
   justify-content: space-between;
-  padding: 0.2rem 0;
+  padding: 0.4rem 0;
   font-size: 0.8rem;
   text-align: right;
   text-transform: uppercase;
 
   p {
     margin: 0 0.8rem 0 0;
+
+    &.nowMarker {
+      font-weight: bold;
+      color: theme-color('danger');
+
+      &::after {
+        content: '•';
+        position: absolute;
+        margin-left: 0.2rem;
+      }
+    }
   }
 }
 
 .card {
   flex: 1 0;
-  padding: 0.7rem 1rem;
+  padding: 0.6rem 1rem;
   font-size: 0.9rem;
   border-bottom: 0.3rem solid;
   border-radius: 0.5rem;
@@ -68,4 +81,9 @@
     width: 1rem;
     vertical-align: bottom;
   }
+}
+
+.inBetweenClass {
+  border: 1px solid var(--gray-lighter);
+  box-shadow: 0 0.2rem 0.25rem rgba(#000, 0.2);
 }

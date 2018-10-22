@@ -1,5 +1,6 @@
 // @flow
 import type { AcadWeekInfo } from 'nusmoderator';
+import { startOfDay, setHours, setMinutes } from 'date-fns';
 import _ from 'lodash';
 import qs from 'query-string';
 
@@ -258,6 +259,20 @@ export function isLessonAvailable(lesson: Lesson, weekInfo: $ReadOnly<AcadWeekIn
   }
 
   return true;
+}
+
+export function isLessonOngoing(lesson: Lesson, currentTime: number): boolean {
+  return parseInt(lesson.StartTime, 10) < currentTime && parseInt(lesson.EndTime, 10) > currentTime;
+}
+
+export function getStartTimeAsDate(lesson: Lesson, date: Date = new Date()): Date {
+  const dateNumber = parseInt(lesson.StartTime, 10);
+  return setHours(setMinutes(startOfDay(date), dateNumber % 100), Math.floor(dateNumber / 100));
+}
+
+export function getEndTimeAsDate(lesson: Lesson, date: Date = new Date()): Date {
+  const dateNumber = parseInt(lesson.EndTime, 10);
+  return setHours(setMinutes(startOfDay(date), dateNumber % 100), Math.floor(dateNumber / 100));
 }
 
 /**
