@@ -42,6 +42,8 @@ import {
   formatWeekNumber,
   isLessonAvailable,
   isLessonOngoing,
+  getStartTimeAsDate,
+  getEndTimeAsDate,
 } from 'utils/timetables';
 import { getModuleTimetable, getModuleSemesterData } from 'utils/modules';
 
@@ -687,6 +689,22 @@ describe(isLessonOngoing, () => {
     expect(isLessonOngoing(lesson, 800)).toBe(true);
     expect(isLessonOngoing(lesson, 805)).toBe(true);
     expect(isLessonOngoing(lesson, 959)).toBe(true);
-    expect(isLessonOngoing(lesson, 900)).toBe(false);
+    expect(isLessonOngoing(lesson, 1000)).toBe(false);
+  });
+});
+
+describe(getStartTimeAsDate, () => {
+  test('should return start time as date', () => {
+    const date = new Date(2018, 5, 10);
+    const lesson = createGenericLesson('Monday', '0830', '1045');
+    expect(getStartTimeAsDate(lesson, date)).toEqual(new Date(2018, 5, 10, 8, 30));
+  });
+});
+
+describe(getEndTimeAsDate, () => {
+  test('should return end time as date', () => {
+    const date = new Date(2018, 5, 10);
+    const lesson = createGenericLesson('Monday', '0830', '1045');
+    expect(getEndTimeAsDate(lesson, date)).toEqual(new Date(2018, 5, 10, 10, 45));
   });
 });

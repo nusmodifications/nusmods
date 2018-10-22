@@ -1,13 +1,12 @@
 // @flow
 import type { AcadWeekInfo } from 'nusmoderator';
-import { startOfDay, setHours, setMinutes } from 'date-fns';
 import _ from 'lodash';
 import qs from 'query-string';
 
 import type {
   ClassNo,
-  Lesson,
   ColoredLesson,
+  Lesson,
   LessonType,
   Module,
   ModuleCode,
@@ -28,6 +27,7 @@ import type { ModulesMap } from 'reducers/moduleBank';
 import type { ModuleCodeMap } from 'types/reducers';
 
 import { getModuleSemesterData, getModuleTimetable } from 'utils/modules';
+import { getTimeAsDate } from 'utils/timify';
 
 type LessonTypeAbbrev = { [LessonType]: string };
 export const LESSON_TYPE_ABBREV: LessonTypeAbbrev = {
@@ -262,17 +262,17 @@ export function isLessonAvailable(lesson: Lesson, weekInfo: $ReadOnly<AcadWeekIn
 }
 
 export function isLessonOngoing(lesson: Lesson, currentTime: number): boolean {
-  return parseInt(lesson.StartTime, 10) < currentTime && parseInt(lesson.EndTime, 10) > currentTime;
+  return (
+    parseInt(lesson.StartTime, 10) <= currentTime && currentTime < parseInt(lesson.EndTime, 10)
+  );
 }
 
 export function getStartTimeAsDate(lesson: Lesson, date: Date = new Date()): Date {
-  const dateNumber = parseInt(lesson.StartTime, 10);
-  return setHours(setMinutes(startOfDay(date), dateNumber % 100), Math.floor(dateNumber / 100));
+  return getTimeAsDate(lesson.StartTime, date);
 }
 
 export function getEndTimeAsDate(lesson: Lesson, date: Date = new Date()): Date {
-  const dateNumber = parseInt(lesson.EndTime, 10);
-  return setHours(setMinutes(startOfDay(date), dateNumber % 100), Math.floor(dateNumber / 100));
+  return getTimeAsDate(lesson.EndTime, date);
 }
 
 /**
