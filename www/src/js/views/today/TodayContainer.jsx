@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent, Fragment } from 'react';
+import React, { PureComponent, Fragment, type Node } from 'react';
 import { connect } from 'react-redux';
 import { range, minBy } from 'lodash';
 import classnames from 'classnames';
@@ -54,8 +54,29 @@ class TodayContainer extends PureComponent<Props, State> {
 
   intervalId;
 
+  renderBeforeNextLessonCard(nextLesson: Lesson, marker: Node) {
+    // Otherwise add a new card on top
+    const nextLessonDate = getStartTimeAsDate(nextLesson);
+
+    return (
+      <div className={styles.lesson}>
+        <div className={styles.lessonTime}>
+          <p />
+          {marker}
+          <p />
+        </div>
+        <div className={classnames(styles.card, styles.inBetweenClass)}>
+          <p>
+            You have <strong>{formatDistanceStrict(nextLessonDate, this.state.currentTime)}</strong>{' '}
+            till the next class.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   renderDay(date: Date, lessons: ColoredLesson[], isToday: boolean) {
-    let firstLessonMarker = null;
+    let netLessonMarker = null;
     let beforeFirstLessonBlock = null;
 
     // Assume no lessons on public holidays
@@ -63,8 +84,8 @@ class TodayContainer extends PureComponent<Props, State> {
       return <p>Happy holiday!</p>;
     }
 
+    // If it is a weekend / a day with no lessons
     if (!lessons.length) {
-      // If it is a weekend / holiday
       return date.getDay() === 0 || date.getDay() === 6 ? (
         <p>Enjoy your weekend!</p>
       ) : (
@@ -72,51 +93,35 @@ class TodayContainer extends PureComponent<Props, State> {
       );
     }
 
-    // Don't show any lessons in the past, and add the current time marker
     if (isToday) {
+      // Don't show any lessons in the past, and add the current time marker
       const currentTime = getCurrentHours() * 100 + getCurrentMinutes();
       // eslint-disable-next-line no-param-reassign
       lessons = lessons.filter((lesson) => parseInt(lesson.EndTime, 10) > currentTime);
 
       const nextLesson = minBy(lessons, (lesson) => lesson.StartTime);
 
+      // If there is at least one lesson remaining today...
       if (nextLesson) {
         const marker = <p className={styles.nowMarker}>{formatTime(currentTime)}</p>;
 
         if (isLessonOngoing(nextLesson, currentTime)) {
-          firstLessonMarker = marker;
+          // If the next lesson is still ongoing, we put the marker
+          // inside the next lesson
+          netLessonMarker = marker;
         } else {
-          const nextLessonDate = getStartTimeAsDate(nextLesson);
-
-          beforeFirstLessonBlock = (
-            <div className={styles.lesson}>
-              <div className={styles.lessonTime}>
-                <p />
-                {marker}
-                <p />
-              </div>
-              <div className={classnames(styles.card, styles.inBetweenClass)}>
-                <p>
-                  You have{' '}
-                  <strong>{formatDistanceStrict(nextLessonDate, this.state.currentTime)}</strong>{' '}
-                  till the next class.
-                </p>
-              </div>
-            </div>
-          );
+          beforeFirstLessonBlock = this.renderBeforeNextLessonCard(nextLesson, marker);
         }
+      } else {
+        return <p>You have no lessons left today</p>;
       }
-    }
-
-    if (!lessons.length) {
-      return <p>You have no lessons left today</p>;
     }
 
     const dayInfo = NUSModerator.academicCalendar.getAcadWeekInfo(date);
     return (
       <Fragment>
         {beforeFirstLessonBlock}
-        <DayEvents key={date} lessons={lessons} dayInfo={dayInfo} marker={firstLessonMarker} />
+        <DayEvents key={date} lessons={lessons} dayInfo={dayInfo} marker={netLessonMarker} />
       </Fragment>
     );
   }

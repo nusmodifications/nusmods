@@ -28,14 +28,14 @@ export default class DayEvents extends PureComponent<Props> {
 
     return (
       <div>
-        {sortedLessons.map((lesson) => (
+        {sortedLessons.map((lesson, i) => (
           <div
             className={styles.lesson}
             key={`${lesson.ModuleCode}-${lesson.LessonType}-${lesson.ClassNo}`}
           >
             <div className={styles.lessonTime}>
               <p>{formatTime(lesson.StartTime)}</p>
-              {marker}
+              {i === 0 && marker}
               <p>{formatTime(lesson.EndTime)}</p>
             </div>
 
