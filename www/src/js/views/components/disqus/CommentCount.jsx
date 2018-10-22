@@ -1,6 +1,6 @@
 // @flow
 import type { DisqusConfig } from 'types/views';
-
+import Raven from 'raven-js';
 import React, { PureComponent } from 'react';
 import config from 'config';
 import insertScript from 'utils/insertScript';
@@ -23,7 +23,7 @@ export default class CommentCount extends PureComponent<Props> {
       insertScript(`https://${config.disqusShortname}.disqus.com/count.js`, {
         id: SCRIPT_ID,
         async: true,
-      });
+      }).catch((e) => Raven.captureException(e));
     }
   }
 
