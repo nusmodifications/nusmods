@@ -90,7 +90,7 @@ export function createGenericColoredLesson(
 ): ColoredLesson {
   return {
     ...createGenericLesson(dayText, startTime, endTime, lessonType, classNo),
-    colorIndex: colorIndex,
+    colorIndex,
   };
 }
 
