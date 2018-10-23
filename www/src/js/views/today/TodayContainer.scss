@@ -10,6 +10,8 @@
 }
 
 .header {
+  display: flex;
+  justify-content: space-between;
   margin-bottom: 0.5rem;
   border-bottom: 1px solid var(--gray-light);
 
@@ -17,6 +19,14 @@
     margin-bottom: 0.5rem;
     font-weight: bold;
     font-size: 2rem;
+  }
+
+  .weather {
+    width: 4rem;
+
+    svg path {
+      fill: currentColor;
+    }
   }
 }
 

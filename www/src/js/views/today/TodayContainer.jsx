@@ -6,8 +6,19 @@ import { Link } from 'react-router-dom';
 import { range, minBy } from 'lodash';
 import classnames from 'classnames';
 import NUSModerator from 'nusmoderator';
-import { isSameDay, addDays, formatDistanceStrict, differenceInHours } from 'date-fns';
+import {
+  isSameDay,
+  addDays,
+  formatDistanceStrict,
+  differenceInHours,
+  differenceInCalendarDays,
+} from 'date-fns';
+
 import type { ColoredLesson, Lesson } from 'types/modules';
+import type { SemTimetableConfigWithLessons } from 'types/timetables';
+import type { ColorMapping } from 'types/reducers';
+import { DaysOfWeek } from 'types/modules';
+
 import {
   getStartTimeAsDate,
   groupLessonsByDay,
@@ -15,15 +26,13 @@ import {
   isLessonOngoing,
   timetableLessonsArray,
 } from 'utils/timetables';
-import type { SemTimetableConfigWithLessons } from 'types/timetables';
-import type { ColorMapping } from 'types/reducers';
-import { DaysOfWeek } from 'types/modules';
 import Title from 'views/components/Title';
 import CorsNotification from 'views/components/cors-info/CorsNotification';
 import Announcements from 'views/components/notfications/Announcements';
 import RefreshPrompt from 'views/components/notfications/RefreshPrompt';
 import { venuePage } from 'views/routes/paths';
 import { getSemesterTimetable } from 'reducers/timetables';
+import * as weatherAPI from 'apis/weather';
 import config from 'config';
 /** @var {string[]} */
 import holidays from 'data/holidays.json';
@@ -39,15 +48,35 @@ type Props = {
 
 type State = {
   currentTime: Date,
+  weather: { [string]: string },
 };
 
 class TodayContainer extends PureComponent<Props, State> {
   state: State = {
     currentTime: new Date(),
+    weather: {},
   };
 
   componentDidMount() {
     this.intervalId = setInterval(() => this.setState({ currentTime: new Date() }), 60 * 1000);
+
+    weatherAPI
+      .twoHour()
+      .then((weather) => this.setState({ weather: { ...this.state.weather, '0': weather } }));
+
+    weatherAPI
+      .tomorrow()
+      .then((weather) => this.setState({ weather: { ...this.state.weather, '1': weather } }));
+
+    weatherAPI.fourDay().then((forecasts) => {
+      forecasts.forEach((forecast) => {
+        const days = differenceInCalendarDays(forecast.timestamp, this.state.currentTime);
+
+        if (!this.state.weather[String(days)]) {
+          this.setState({ weather: { ...this.state.weather, [days]: forecast.forecast } });
+        }
+      });
+    });
   }
 
   componentWillUnmount() {
@@ -183,7 +212,7 @@ class TodayContainer extends PureComponent<Props, State> {
 
           return (
             <section className={styles.day} key={i}>
-              <DayHeader date={date} dayName={dayName} />
+              <DayHeader date={date} dayName={dayName} forecast={this.state.weather[String(i)]} />
               {this.renderDay(date, groupedLessons[dayText] || [], i === 0)}
             </section>
           );
