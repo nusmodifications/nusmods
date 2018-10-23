@@ -7,6 +7,7 @@ import Loader from 'views/components/LoadingSpinner';
 import ExternalLink from 'views/components/ExternalLink';
 
 import StaticPage from './StaticPage';
+import styles from './ContributorsContainer.scss';
 
 const CONTRIBUTORS_URL =
   'https://api.github.com/repos/NUSModifications/NUSMods/contributors?per_page=100';
@@ -96,18 +97,14 @@ class ContributorsContainer extends Component<Props, State> {
           <div className="row">
             {this.state.contributors.map((contributor) => (
               <div className="col-md-3 col-6 text-center" key={contributor.id}>
-                <div>
-                  <ExternalLink href={contributor.html_url}>
-                    <img
-                      src={contributor.avatar_url}
-                      alt={`${contributor.login} thumbnail`}
-                      className="rounded-circle img-fluid img-thumbnail"
-                    />
-                  </ExternalLink>
-                </div>
-                <div className="font-weight-bold">
-                  <ExternalLink href={contributor.html_url}>{contributor.login}</ExternalLink>
-                </div>
+                <ExternalLink href={contributor.html_url}>
+                  <img
+                    src={contributor.avatar_url}
+                    alt={`${contributor.login} thumbnail`}
+                    className="img-fluid img-thumbnail"
+                  />
+                  <span className={styles.contributorUsername}>{contributor.login}</span>
+                </ExternalLink>
                 <p>
                   <ExternalLink
                     className="text-muted"
