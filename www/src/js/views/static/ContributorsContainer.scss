@@ -1,7 +1,8 @@
 .contributorUsername {
-  display: block;
-  width: 100%;
+  display: inline-block;
+  max-width: 100%;
+  margin: 0.8rem 0 -0.4rem;
   overflow: hidden;
-  white-space: nowrap;
+  font-weight: bold;
   text-overflow: ellipsis;
 }
