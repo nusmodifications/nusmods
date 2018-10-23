@@ -48,6 +48,8 @@ type Props = {
 
 type State = {
   currentTime: Date,
+  // Mapping of number of days from today to the weather forecast for that day
+  // with zero being today
   weather: { [string]: string },
 };
 
