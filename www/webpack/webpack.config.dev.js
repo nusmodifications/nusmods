@@ -39,8 +39,8 @@ const developmentConfig = merge([
       // Enable multi-pass compilation for enhanced performance
       // in larger projects. Good default.
       // Waiting on: https://github.com/jantimon/html-webpack-plugin/issues/533
-      new webpack.HotModuleReplacementPlugin(),
       // { multiStep: true }
+      new webpack.HotModuleReplacementPlugin(),
       // do not emit compiled assets that include errors
       new webpack.NoEmitOnErrorsPlugin(),
       // Caches compiled modules to disk to improve rebuild times
