@@ -1,10 +1,8 @@
 // @flow
-import type { ComponentType } from 'react';
 import React, { Fragment, PureComponent } from 'react';
 import { Link, withRouter, type ContextRouter } from 'react-router-dom';
 import classnames from 'classnames';
 import { flatMap } from 'lodash';
-import Raven from 'raven-js';
 
 import type { DayAvailability, Venue, VenueLesson } from 'types/venues';
 import type { Lesson } from 'types/modules';
@@ -18,7 +16,7 @@ import { modulePage, venuePage } from 'views/routes/paths';
 import Title from 'views/components/Title';
 import { mergeDualCodedModules } from 'utils/venues';
 import { breakpointDown } from 'utils/css';
-import { retry } from 'utils/promise';
+import VenueLocation from './VenueLocation';
 
 import styles from './VenueDetails.scss';
 
@@ -33,27 +31,7 @@ type Props = {
   matchBreakpoint: boolean,
 };
 
-type State = {
-  VenueLocation: ComponentType<*>,
-};
-
-export class VenueDetailsComponent extends PureComponent<Props, State> {
-  state = {
-    VenueLocation: null,
-  };
-
-  componentDidMount() {
-    retry(
-      3,
-      () => import(/* webpackChunkName: "venue" */ 'views/venues/VenueLocation'),
-      (error) => error.message.includes('Loading chunk ') && window.navigator.onLine,
-    )
-      .then((module) => this.setState({ VenueLocation: module.default }))
-      .catch((error) => {
-        Raven.captureException(error);
-      });
-  }
-
+export class VenueDetailsComponent extends PureComponent<Props> {
   arrangedLessons() {
     const lessons = flatMap(this.props.availability, (day): VenueLesson[] =>
       mergeDualCodedModules(day.Classes),
@@ -65,7 +43,6 @@ export class VenueDetailsComponent extends PureComponent<Props, State> {
 
   render() {
     const { venue, previous, next, matchBreakpoint, history } = this.props;
-    const { VenueLocation } = this.state;
 
     return (
       <Fragment>
@@ -97,7 +74,7 @@ export class VenueDetailsComponent extends PureComponent<Props, State> {
           </Link>
         </header>
 
-        {VenueLocation && <VenueLocation venue={venue} />}
+        <VenueLocation venue={venue} />
 
         <div className={classnames(styles.timetable, { verticalMode: matchBreakpoint })}>
           <Timetable

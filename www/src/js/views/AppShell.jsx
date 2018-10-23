@@ -15,13 +15,14 @@ import classnames from 'classnames';
 import { each } from 'lodash';
 
 import weekText from 'utils/weekText';
+import { isMobileIos } from 'utils/css';
 import { openNotification } from 'actions/app';
 import { fetchModuleList } from 'actions/moduleBank';
 import { fetchTimetableModules, validateTimetable, setTimetable } from 'actions/timetables';
 import Footer from 'views/layout/Footer';
 import Navtabs from 'views/layout/Navtabs';
 import GlobalSearchContainer from 'views/layout/GlobalSearchContainer';
-import Notification from 'views/components/Notification';
+import Notification from 'views/components/notfications/Notification';
 import ErrorBoundary from 'views/errors/ErrorBoundary';
 import ErrorPage from 'views/errors/ErrorPage';
 import ApiError from 'views/errors/ApiError';
@@ -72,6 +73,8 @@ export class AppShellComponent extends Component<Props, State> {
     });
   }
 
+  isMobileIos = isMobileIos();
+
   fetchModuleList = () => {
     // TODO: This always re-fetch the entire modules list. Consider a better strategy for this
     this.props.fetchModuleList().catch((error) => {
@@ -110,6 +113,7 @@ export class AppShellComponent extends Component<Props, State> {
             className={classnames(`theme-${this.props.theme}`, {
               'mode-dark': isDarkMode,
               'mdc-theme--dark': isDarkMode,
+              'mobile-safari': this.isMobileIos,
             })}
           />
         </Helmet>

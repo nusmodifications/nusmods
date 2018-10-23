@@ -44,21 +44,18 @@
   }
 }
 
-.feedback {
+.feedbackTitle {
+  font-size: 1.4rem;
   text-align: center;
+  color: var(--gray-light);
+}
 
-  h2 {
-    color: var(--gray-light);
-  }
-
-  a {
+.feedback {
+  :global(.btn) {
     display: block;
     padding: 2rem 1rem;
     margin-bottom: 1rem;
-    color: var(--body-color);
-    border: 1px solid var(--gray-lighter);
-    border-radius: 0.4rem;
-    transition: border 0.3s;
+    white-space: normal;
 
     h3 {
       margin-bottom: 0.4rem;
@@ -66,13 +63,7 @@
       font-size: 1.2rem;
     }
 
-    p {
-      color: var(--gray);
-    }
-
     &:hover {
-      border-color: theme-color();
-
       svg {
         color: theme-color();
       }

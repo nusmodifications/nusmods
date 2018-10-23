@@ -8,15 +8,7 @@
   "ivleUrl": "http://ivle.nus.edu.sg/lms/public/list_course_public.aspx?code=<ModuleCode>",
   "disqusShortname": "nusmods-prod",
   "googleAnalyticsId": "UA-33503218-6",
-  "venueFeedbackForm": {
-    "url": "https://docs.google.com/forms/d/e/1FAIpQLSeeIhUYZvYGW8-b92d-OWAgYyJeqV0jtScQfe7e9JqoT-YfQQ/viewform?usp=pp_url&",
-    "query": {
-      "venue": "entry.1584868112",
-      "room": "entry.313403781",
-      "latlng": "entry.1569060901",
-      "floor": "entry.1541288095"
-    }
-  },
+  "venueFeedbackApi": "https://mediumdeviation.lib.id/nusmods-venue-github-hook@0.0.5/",
   "timetableAvailable": [1],
   "semesterNames": {
     "1": "Semester 1",
