@@ -10,6 +10,8 @@ import StaticPage from './StaticPage';
 
 const CONTRIBUTORS_URL =
   'https://api.github.com/repos/NUSModifications/NUSMods/contributors?per_page=100';
+const CONTRIBUTOR_TYPE_USER = 'User';
+const CONTRIBUTOR_ID_RENOVATE = 25180681;
 
 type Props = {};
 
@@ -94,32 +96,38 @@ class ContributorsContainer extends Component<Props, State> {
         )}
         {this.state.contributors && (
           <div className="row">
-            {this.state.contributors.map((contributor) => (
-              <div className="col-md-3 col-6 text-center" key={contributor.id}>
-                <div>
-                  <ExternalLink href={contributor.html_url}>
-                    <img
-                      src={contributor.avatar_url}
-                      alt={`${contributor.login} thumbnail`}
-                      className="rounded-circle img-fluid img-thumbnail"
-                    />
-                  </ExternalLink>
+            {this.state.contributors
+              .filter(
+                (contributor) =>
+                  contributor.type === CONTRIBUTOR_TYPE_USER &&
+                  contributor.id !== CONTRIBUTOR_ID_RENOVATE,
+              )
+              .map((contributor) => (
+                <div className="col-md-3 col-6 text-center" key={contributor.id}>
+                  <div>
+                    <ExternalLink href={contributor.html_url}>
+                      <img
+                        src={contributor.avatar_url}
+                        alt={`${contributor.login} thumbnail`}
+                        className="rounded-circle img-fluid img-thumbnail"
+                      />
+                    </ExternalLink>
+                  </div>
+                  <div className="font-weight-bold">
+                    <ExternalLink href={contributor.html_url}>{contributor.login}</ExternalLink>
+                  </div>
+                  <p>
+                    <ExternalLink
+                      className="text-muted"
+                      href={`https://github.com/nusmodifications/nusmods/commits?author=${
+                        contributor.login
+                      }`}
+                    >
+                      {contributor.contributions} commit{contributor.contributions !== 1 && 's'}
+                    </ExternalLink>
+                  </p>
                 </div>
-                <div className="font-weight-bold">
-                  <ExternalLink href={contributor.html_url}>{contributor.login}</ExternalLink>
-                </div>
-                <p>
-                  <ExternalLink
-                    className="text-muted"
-                    href={`https://github.com/nusmodifications/nusmods/commits?author=${
-                      contributor.login
-                    }`}
-                  >
-                    {contributor.contributions} commit{contributor.contributions !== 1 && 's'}
-                  </ExternalLink>
-                </p>
-              </div>
-            ))}
+              ))}
           </div>
         )}
       </StaticPage>
