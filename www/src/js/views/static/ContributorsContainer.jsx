@@ -7,6 +7,7 @@ import Loader from 'views/components/LoadingSpinner';
 import ExternalLink from 'views/components/ExternalLink';
 
 import StaticPage from './StaticPage';
+import styles from './ContributorsContainer.scss';
 
 const CONTRIBUTORS_URL =
   'https://api.github.com/repos/NUSModifications/NUSMods/contributors?per_page=100';
@@ -106,7 +107,9 @@ class ContributorsContainer extends Component<Props, State> {
                   </ExternalLink>
                 </div>
                 <div className="font-weight-bold">
-                  <ExternalLink href={contributor.html_url}>{contributor.login}</ExternalLink>
+                  <ExternalLink className={styles.contributorUsername} href={contributor.html_url}>
+                    {contributor.login}
+                  </ExternalLink>
                 </div>
                 <p>
                   <ExternalLink
