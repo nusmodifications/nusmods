@@ -17,10 +17,15 @@ module.exports = {
     development: {
       plugins: ['react-hot-loader/babel'],
     },
-    // Temporarily disable - either apply transforms individually or update preset
-    // production: {
-    //   presets: ['react-optimize'],
-    // },
+    production: {
+      plugins: [
+        // React Optimize plugins
+        '@babel/transform-react-inline-elements',
+        'transform-react-remove-prop-types',
+        'transform-react-pure-class-to-function',
+        'transform-react-constant-elements',
+      ],
+    },
     test: {
       plugins: ['@babel/plugin-transform-modules-commonjs', 'dynamic-import-node'],
     },
