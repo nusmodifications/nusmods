@@ -74,7 +74,7 @@
     "html-webpack-plugin": "3.2.0",
     "icalendar": "0.7.1",
     "identity-obj-proxy": "3.0.0",
-    "jest": "23.5.0",
+    "jest": "23.6.0",
     "jest-junit": "5.2.0",
     "js-combinatorics": "0.5.3",
     "lodash-webpack-plugin": "0.11.5",
