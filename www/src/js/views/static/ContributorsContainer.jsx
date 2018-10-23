@@ -100,6 +100,8 @@ class ContributorsContainer extends Component<Props, State> {
               .filter(
                 (contributor) =>
                   contributor.type === CONTRIBUTOR_TYPE_USER &&
+                  // Renovate used to report outdated dependencies as a user via the GitHub API,
+                  // hence we need to filter it out by its GitHub user ID.
                   contributor.id !== CONTRIBUTOR_ID_RENOVATE,
               )
               .map((contributor) => (
