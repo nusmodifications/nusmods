@@ -1,7 +1,7 @@
 {
   "presets": [
     [
-      "env",
+      "@babel/preset-env",
       {
         "targets": {
           "browsers": [
@@ -10,39 +10,37 @@
             "Safari >= 9",
             "not ie <= 11"
           ],
-          // We currently minify with uglify
-          // Remove after https://github.com/mishoo/UglifyJS2/issues/448
-          "uglify": true,
+          "uglify": true
         },
-        // Enable tree-shaking for webpack
         "modules": false,
-        "useBuiltIns": true,
+        "useBuiltIns": true
       }
     ],
-    "react",
+    "@babel/preset-react",
+    "@babel/preset-flow"
   ],
   "env": {
     "development": {
       "plugins": [
-        "react-hot-loader/babel",
-      ],
+        "react-hot-loader/babel"
+      ]
     },
     "production": {
       "presets": [
-        "react-optimize",
-      ],
+        "react-optimize"
+      ]
     },
     "test": {
       "plugins": [
-        "transform-es2015-modules-commonjs",
+        "@babel/plugin-transform-modules-commonjs",
         "dynamic-import-node"
-      ],
-    },
+      ]
+    }
   },
   "plugins": [
     "lodash",
-    "transform-object-rest-spread",
-    "transform-class-properties",
-    "syntax-dynamic-import",
-  ],
+    "@babel/plugin-proposal-object-rest-spread",
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-syntax-dynamic-import"
+  ]
 }
