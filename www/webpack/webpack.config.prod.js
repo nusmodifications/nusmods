@@ -1,7 +1,7 @@
 const path = require('path');
 const merge = require('webpack-merge');
 const webpack = require('webpack');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const TerserJsPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -96,11 +96,11 @@ const productionConfig = merge([
     ],
     optimization: {
       minimizer: [
-        new UglifyJsPlugin({
+        new TerserJsPlugin({
           cache: true,
           parallel: true,
           sourceMap: true,
-          uglifyOptions: {
+          terserOptions: {
             compress: {
               // Two passes yield the most optimal results
               passes: 2,
