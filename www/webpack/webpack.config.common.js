@@ -59,9 +59,6 @@ const commonConfig = merge([
       hints: false,
     },
   },
-  parts.lintJavaScript({
-    include: parts.PATHS.app,
-  }),
   parts.transpileJavascript({
     include: parts.PATHS.scripts,
   }),

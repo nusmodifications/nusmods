@@ -52,6 +52,9 @@ const developmentConfig = merge([
     ],
   },
   process.env.DEBUG_WORKBOX ? parts.workbox() : {},
+  parts.lintJavaScript({
+    include: parts.PATHS.app,
+  }),
   parts.loadImages({
     include: parts.PATHS.images,
   }),
