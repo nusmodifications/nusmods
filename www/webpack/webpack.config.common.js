@@ -1,5 +1,4 @@
 const merge = require('webpack-merge');
-const StyleLintPlugin = require('stylelint-webpack-plugin');
 
 const parts = require('./webpack.parts');
 
@@ -49,11 +48,6 @@ const commonConfig = merge([
       filename: '[name].js',
       pathinfo: false,
     },
-    plugins: [
-      new StyleLintPlugin({
-        context: parts.PATHS.app,
-      }),
-    ],
     performance: {
       // Disable performance hints since we use our own size reporter
       hints: false,

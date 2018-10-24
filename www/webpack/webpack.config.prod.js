@@ -128,8 +128,8 @@ const productionConfig = merge([
       name: 'img/[name].[hash].[ext]',
     },
   }),
-  // Fail for CI
-  parts.flow({ failOnError: true }),
+  // Lint and Flow type check are not enabled for production because CI has
+  // explicit lint stages
 ]);
 
 module.exports = productionConfig;

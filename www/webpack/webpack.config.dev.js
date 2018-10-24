@@ -55,6 +55,7 @@ const developmentConfig = merge([
   parts.lintJavaScript({
     include: parts.PATHS.app,
   }),
+  parts.lintCSS(),
   parts.loadImages({
     include: parts.PATHS.images,
   }),

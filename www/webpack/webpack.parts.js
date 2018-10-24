@@ -5,6 +5,7 @@ const _ = require('lodash');
 const { GenerateSW } = require('workbox-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const FlowStatusWebpackPlugin = require('flow-status-webpack-plugin');
+const StyleLintPlugin = require('stylelint-webpack-plugin');
 const childProcess = require('child_process');
 const moment = require('moment');
 
@@ -104,20 +105,39 @@ exports.extractBundle = ({ name, entries }) => ({
  *
  * @see https://survivejs.com/webpack/developing/linting/
  */
-exports.lintJavaScript = ({ include, exclude, options }) => ({
-  module: {
-    rules: [
-      {
-        test: /\.(js|jsx)$/,
-        include,
-        exclude,
-        enforce: 'pre',
+exports.lintJavaScript = ({ include, exclude, options }) =>
+  process.env.DISABLE_ESLINT
+    ? {}
+    : {
+        module: {
+          rules: [
+            {
+              test: /\.(js|jsx)$/,
+              include,
+              exclude,
+              enforce: 'pre',
 
-        use: [{ loader: 'eslint-loader', options }],
-      },
-    ],
-  },
-});
+              use: [{ loader: 'eslint-loader', options }],
+            },
+          ],
+        },
+      };
+
+/**
+ * Uses StyleLint to lint CSS
+ * @returns {*}
+ */
+exports.lintCSS = (options) =>
+  process.env.DISABLE_STYLELINT
+    ? {}
+    : {
+        plugins: [
+          new StyleLintPlugin({
+            context: PATHS.app,
+            ...options,
+          }),
+        ],
+      };
 
 /**
  * Allows us to write ES6/ES2015 Javascript.
@@ -206,19 +226,20 @@ exports.loadImages = ({ include, exclude, options } = {}) => ({
  *
  * @see https://survivejs.com/webpack/loading/javascript/#setting-up-flow
  */
-exports.flow = ({ failOnError, flowArgs }) => ({
-  // TODO: Use https://github.com/facebookincubator/create-react-app/pull/1152 instead
-  // TODO: Check out https://codemix.github.io/flow-runtime/#/
-  plugins: [
-    new FlowStatusWebpackPlugin({
-      // No reason to restart flow server
-      // if there's already one running.
-      restartFlow: false,
-      failOnError,
-      flowArgs,
-    }),
-  ],
-});
+exports.flow = ({ failOnError, flowArgs }) =>
+  process.env.DISABLE_FLOW
+    ? {}
+    : {
+        // TODO: Check out https://codemix.github.io/flow-runtime/#/
+        plugins: [
+          new FlowStatusWebpackPlugin({
+            // No reason to restart flow server if there's already one running.
+            restartFlow: false,
+            failOnError,
+            flowArgs,
+          }),
+        ],
+      };
 
 /**
  * Use Workbox to enable offline support with service worker
