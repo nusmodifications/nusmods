@@ -28,7 +28,7 @@ function ModuleTombstone(props: Props) {
           <div className="btn-group">
             <button
               type="button"
-              className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
+              className={classnames('btn btn-outline-secondary btn-link', styles.moduleAction)}
               title="Dismiss"
               aria-label="Dismiss"
               onClick={props.resetTombstone}
@@ -37,7 +37,7 @@ function ModuleTombstone(props: Props) {
             </button>
             <button
               type="button"
-              className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
+              className={classnames('btn btn-outline-secondary btn-link', styles.moduleAction)}
               title="Undo"
               aria-label="Undo"
               onClick={() => {
