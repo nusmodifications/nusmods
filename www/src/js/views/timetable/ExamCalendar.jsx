@@ -11,7 +11,7 @@ import { formatExamDate, getModuleExamDate } from 'utils/modules';
 import { daysAfter } from 'utils/timify';
 import { modulePage } from 'views/routes/paths';
 import elements from 'views/elements';
-import { DaysOfWeek } from 'types/modules';
+import { WorkingDaysOfWeek } from 'types/modules';
 
 import styles from './ExamCalendar.scss';
 
@@ -235,7 +235,7 @@ export default class ExamCalendar extends PureComponent<Props> {
             <tr>
               {range(daysWithExams).map((day) => (
                 <th key={day} className={styles.dayName}>
-                  {DaysOfWeek[day].slice(0, 3)}
+                  {WorkingDaysOfWeek[day].slice(0, 3)}
                 </th>
               ))}
             </tr>

@@ -95,6 +95,7 @@ export type SettingsState = {
   +hiddenInTimetable: ModuleCode[],
   +corsNotification: CorsNotificationSettings,
   +moduleTableOrder: ModuleTableOrder,
+  +beta?: boolean,
 };
 
 /* timetables.js */

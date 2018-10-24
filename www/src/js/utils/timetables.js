@@ -1,11 +1,12 @@
 // @flow
+import type { AcadWeekInfo } from 'nusmoderator';
 import _ from 'lodash';
 import qs from 'query-string';
 
 import type {
   ClassNo,
-  Lesson,
   ColoredLesson,
+  Lesson,
   LessonType,
   Module,
   ModuleCode,
@@ -26,6 +27,7 @@ import type { ModulesMap } from 'reducers/moduleBank';
 import type { ModuleCodeMap } from 'types/reducers';
 
 import { getModuleSemesterData, getModuleTimetable } from 'utils/modules';
+import { getTimeAsDate } from 'utils/timify';
 
 type LessonTypeAbbrev = { [LessonType]: string };
 export const LESSON_TYPE_ABBREV: LessonTypeAbbrev = {
@@ -232,6 +234,47 @@ export function findExamClashes(
   return _.omitBy(groupedModules, (mods) => mods.length === 1); // Remove non-clashing mods
 }
 
+export function isLessonAvailable(lesson: Lesson, weekInfo: $ReadOnly<AcadWeekInfo>): boolean {
+  if (weekInfo.type !== 'Instructional' || !weekInfo.num) {
+    return false;
+  }
+
+  if (lesson.LessonType === 'Tutorial' && weekInfo.num < 3) {
+    return false;
+  }
+
+  if (lesson.WeekText !== 'Every Week') {
+    if (lesson.WeekText === 'Even Week' && weekInfo.num % 2 === 1) {
+      return false;
+    }
+
+    if (lesson.WeekText === 'Odd Week' && weekInfo.num % 2 === 0) {
+      return false;
+    }
+
+    const weekNumbers = lesson.WeekText.split(',').map((n) => parseInt(n, 10));
+    if (weekNumbers.every((n) => !Number.isNaN(n)) && !weekNumbers.includes(weekInfo.num)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+export function isLessonOngoing(lesson: Lesson, currentTime: number): boolean {
+  return (
+    parseInt(lesson.StartTime, 10) <= currentTime && currentTime < parseInt(lesson.EndTime, 10)
+  );
+}
+
+export function getStartTimeAsDate(lesson: Lesson, date: Date = new Date()): Date {
+  return getTimeAsDate(lesson.StartTime, date);
+}
+
+export function getEndTimeAsDate(lesson: Lesson, date: Date = new Date()): Date {
+  return getTimeAsDate(lesson.EndTime, date);
+}
+
 /**
  * Validates the modules in a timetable. It removes all modules which do not exist in
  * the provided module code map from the timetable and returns that as the first item
@@ -333,7 +376,7 @@ function parseModuleConfig(serialized: ?string): ModuleLessonConfig {
  * - 1           => Week 1
  * - 1,2         => Weeks 1,2
  * - 1,2,3       => Weeks 1-3
- * - 1,2,3,4,5,6 => Weeks 1-3, 4-6
+ * - 1,2,3,5,6,7 => Weeks 1-3, 5-7
  */
 export function formatWeekNumber(weekText: WeekText) {
   // Check if this is a numeric week number list and bail if it's not
