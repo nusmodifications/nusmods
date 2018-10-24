@@ -12,6 +12,7 @@ import CloseButton from 'views/components/CloseButton';
 import { floorName } from 'utils/venues';
 /** @var { VenueLocationMap } */
 import venueLocations from 'data/venues.json';
+import VenueContext from 'views/venues/VenueContext';
 
 import { icon } from './icons';
 import FeedbackModal from './FeedbackModal';
@@ -19,8 +20,13 @@ import ImproveVenueForm from './ImproveVenueForm';
 import ExpandMap from './ExpandMap';
 import styles from './VenueLocation.scss';
 
-type Props = {
+type OwnProps = {
   venue: string,
+};
+
+type Props = OwnProps & {
+  // Provided by VenueContext
+  toggleScrollable: (boolean) => void,
 };
 
 type State = {
@@ -30,7 +36,7 @@ type State = {
 
 LeafletMap.addInitHook('addHandler', 'gestureHandling', GestureHandling);
 
-export default class VenueLocation extends PureComponent<Props, State> {
+class VenueLocation extends PureComponent<Props, State> {
   state: State = {
     isFeedbackModalOpen: false,
     isExpanded: false,
@@ -38,7 +44,12 @@ export default class VenueLocation extends PureComponent<Props, State> {
 
   openModal = () => this.setState({ isFeedbackModalOpen: true });
   closeModal = () => this.setState({ isFeedbackModalOpen: false });
-  toggleMapExpand = () => this.setState({ isExpanded: !this.state.isExpanded });
+  toggleMapExpand = () => {
+    const isExpanded = !this.state.isExpanded;
+
+    this.setState({ isExpanded });
+    this.props.toggleScrollable(!isExpanded);
+  };
 
   renderMap(position: LatLngTuple) {
     // Query param for https://developers.google.com/maps/documentation/urls/guide#search-action
@@ -136,4 +147,14 @@ export default class VenueLocation extends PureComponent<Props, State> {
       </div>
     );
   }
+}
+
+export default function(props: OwnProps) {
+  return (
+    <VenueContext.Consumer>
+      {({ toggleDetailScrollable }) => (
+        <VenueLocation toggleScrollable={toggleDetailScrollable} {...props} />
+      )}
+    </VenueContext.Consumer>
+  );
 }
