@@ -8,7 +8,7 @@ import mockDom from 'test-utils/mockDom';
 import ScrollToTop, { ScrollToTopComponent, type Props as ScrollToTopProps } from './ScrollToTop';
 
 type Props = {
-  onComponentWillMount?: boolean,
+  onComponentDidMount?: boolean,
   onPathChange?: boolean,
 };
 
@@ -31,7 +31,7 @@ describe('ScrollToTopComponent', () => {
       <MemoryRouter>
         {}
         <ScrollToTop
-          onComponentWillMount={getDefinedProp('onComponentWillMount')}
+          onComponentDidMount={getDefinedProp('onComponentDidMount')}
           onPathChange={getDefinedProp('onPathChange')}
         />
       </MemoryRouter>,
@@ -47,8 +47,8 @@ describe('ScrollToTopComponent', () => {
     expect(window.scrollTo).not.toHaveBeenCalled();
   });
 
-  test('onComponentWillMount attribute behaves correctly', () => {
-    make({ onComponentWillMount: true });
+  test('onComponentDidMount attribute behaves correctly', () => {
+    make({ onComponentDidMount: true });
     expect(window.scrollTo).toHaveBeenCalledWith(0, 0);
   });
 
@@ -60,13 +60,13 @@ describe('ScrollToTopComponent', () => {
     expect(window.scrollTo).toHaveBeenCalledWith(0, 0);
   });
 
-  test('onComponentWillMount attribute behaves correctly', () => {
-    make({ onComponentWillMount: true });
+  test('onComponentDidMount attribute behaves correctly', () => {
+    make({ onComponentDidMount: true });
     expect(window.scrollTo).toHaveBeenCalledWith(0, 0);
   });
 
   test('integration test', () => {
-    const wrapper = make({ onComponentWillMount: true, onPathChange: true });
+    const wrapper = make({ onComponentDidMount: true, onPathChange: true });
     const history = getHistory(wrapper);
 
     expect(window.scrollTo).toHaveBeenCalledTimes(1);
