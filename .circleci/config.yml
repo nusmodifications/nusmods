@@ -80,7 +80,7 @@ jobs:
     <<: *defaults
     working_directory: ~/nusmods/www
     environment:
-      NODE_ENV: test
+      NODE_ENV: production
     steps:
       - attach_workspace:
           at: ~/nusmods
@@ -96,6 +96,7 @@ jobs:
       - run:
           name: Test code
           environment:
+            NODE_ENV: test
             JEST_JUNIT_OUTPUT: reports/junit/js-test-results.xml
           command: |
             set -e
