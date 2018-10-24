@@ -27,7 +27,7 @@ const MODULE_CODE_MAP: ModuleCodeMap = {
 
 type MakeContainerOptions = {
   module: ?Module,
-  fetchModule: (ModuleCode) => Promise<*>,
+  fetchModule: () => Promise<*>,
   archiveYear: ?string,
   moduleExists: boolean,
 };
@@ -78,7 +78,7 @@ test('should fetch module', () => {
   const fetchModule = jest.fn().mockReturnValue(Promise.resolve());
   const component = make('CS1010S', CANONICAL, { fetchModule });
   expect(component.type()).toEqual(LoadingSpinner);
-  expect(fetchModule).toBeCalledWith('CS1010S');
+  expect(fetchModule).toBeCalled();
 });
 
 test('should show error if module fetch failed', async () => {
@@ -90,5 +90,5 @@ test('should show error if module fetch failed', async () => {
   });
 
   expect(component.type()).toEqual(ApiError);
-  expect(fetchModule).toBeCalledWith('CS1010S');
+  expect(fetchModule).toBeCalled();
 });
