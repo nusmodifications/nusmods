@@ -96,7 +96,7 @@ function settings(state: SettingsState = defaultSettingsState, action: FSA): Set
     case TOGGLE_BETA_TESTING_STATUS:
       return {
         ...state,
-        beta: !(state.beta || false),
+        beta: !state.beta,
       };
 
     case REHYDRATE: {

@@ -53,6 +53,25 @@ type State = {
   weather: { [string]: string },
 };
 
+const EMPTY_ARRAY = [];
+
+const freeRoomMessage = (
+  <Fragment>
+    Need help finding a free classroom to study in? Check out our{' '}
+    <Link to={venuePage()}>free room finder</Link>.
+  </Fragment>
+);
+
+function getDayName(date: Date, diffInDays: number): string {
+  if (diffInDays === 0) {
+    return 'Today';
+  } else if (diffInDays === 1) {
+    return 'Tomorrow';
+  }
+
+  return DaysOfWeek[getDayIndex(date)];
+}
+
 class TodayContainer extends PureComponent<Props, State> {
   state: State = {
     currentTime: new Date(),
@@ -92,18 +111,15 @@ class TodayContainer extends PureComponent<Props, State> {
     const hoursTillNextLesson = differenceInHours(nextLessonDate, new Date());
 
     let comment = null;
-    if (hoursTillNextLesson <= 1) {
-      comment = <p>Better get a move on to your next class!</p>;
-    } else if (new Date().getHours() < 7) {
+
+    const currentHour = new Date().getHours();
+    if (hoursTillNextLesson < 1) {
+      comment = <p>Better get a move on to your next class! {freeRoomMessage}</p>;
+    } else if (currentHour < 7 || currentHour >= 22) {
       // Why are you up right now?
       comment = <p>Why not go get some sleep?</p>;
     } else {
-      comment = (
-        <p>
-          Remember to take breaks when studying. Need help finding a free classroom? Check out our{' '}
-          <Link to={venuePage()}>free room finder</Link>.
-        </p>
-      );
+      comment = <p>Remember to take breaks when studying. {freeRoomMessage}</p>;
     }
 
     return (
@@ -201,21 +217,12 @@ class TodayContainer extends PureComponent<Props, State> {
 
         {range(7).map((i) => {
           const date = addDays(today, i);
-          const dayText = DaysOfWeek[getDayIndex(date)];
-
-          let dayName;
-          if (i === 0) {
-            dayName = 'Today';
-          } else if (i === 1) {
-            dayName = 'Tomorrow';
-          } else {
-            dayName = dayText;
-          }
+          const dayText = getDayName(date, i);
 
           return (
             <section className={styles.day} key={i}>
-              <DayHeader date={date} dayName={dayName} forecast={this.state.weather[String(i)]} />
-              {this.renderDay(date, groupedLessons[dayText] || [], i === 0)}
+              <DayHeader date={date} dayName={dayText} forecast={this.state.weather[String(i)]} />
+              {this.renderDay(date, groupedLessons[dayText] || EMPTY_ARRAY, i === 0)}
             </section>
           );
         })}

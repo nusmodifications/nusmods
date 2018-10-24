@@ -1,6 +1,6 @@
 // @flow
 import type { DayText, Lesson, LessonTime } from 'types/modules';
-import { format, setHours, setMinutes, startOfDay } from 'date-fns';
+import { getISODay, format, setHours, setMinutes, startOfDay } from 'date-fns';
 
 // Converts a 24-hour format time string to an index.
 // Each index corresponds to one cell of each timetable row.
@@ -97,11 +97,8 @@ export function getCurrentMinutes(
 }
 
 // Monday = 0, Friday = 4, Sunday = 6
-export function getDayIndex(now: Date = new Date()): number {
-  const day = now.getDay();
-  return day === 0
-    ? 6 // Sunday = 6
-    : day - 1; // Otherwise, minus one because JS days start on Sunday
+export function getDayIndex(date: Date = new Date()): number {
+  return getISODay(date) - 1;
 }
 
 /**
