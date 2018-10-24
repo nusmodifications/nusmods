@@ -14,6 +14,7 @@ import {
   getCurrentMinutes,
 } from 'utils/timify';
 import elements from 'views/elements';
+import withTimer from 'views/hocs/withTimer';
 
 import styles from './Timetable.scss';
 import TimetableTimings from './TimetableTimings';
@@ -32,8 +33,6 @@ type State = {
 };
 
 class Timetable extends PureComponent<Props, State> {
-  interval: IntervalID;
-
   static defaultProps = {
     isVerticalOrientation: false,
     isScrolledHorizontally: false,
@@ -44,16 +43,6 @@ class Timetable extends PureComponent<Props, State> {
   state = {
     hoverLesson: null,
   };
-
-  componentDidMount() {
-    this.interval = setInterval(() => {
-      this.forceUpdate();
-    }, 60000);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
 
   onCellHover = (hoverLesson: ?HoverLesson) => {
     this.setState({ hoverLesson });
@@ -117,4 +106,4 @@ class Timetable extends PureComponent<Props, State> {
   }
 }
 
-export default Timetable;
+export default withTimer(Timetable);
