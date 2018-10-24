@@ -42,6 +42,7 @@ function runDevServer(host, port, exportPort, protocol, shouldOpenBrowser) {
       errors: true,
       errorDetails: true,
       warnings: true,
+      entrypoints: false,
       performance: false,
     },
     https: protocol === 'https',

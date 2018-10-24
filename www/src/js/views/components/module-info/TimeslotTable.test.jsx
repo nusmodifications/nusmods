@@ -6,13 +6,13 @@ import { cartesianProduct } from 'js-combinatorics';
 import type { Node } from 'react';
 import type { Day, Time } from 'types/modules';
 
-import { DaysOfWeek, TimesOfDay } from 'types/modules';
+import { WorkingDaysOfWeek, TimesOfDay } from 'types/modules';
 import { getTimeslot } from 'utils/modules';
 import TimeslotTable from './TimeslotTable';
 
 function buildChildren(mapper: (day: Day, time: Time) => Node) {
   const children = new Map();
-  cartesianProduct(DaysOfWeek, TimesOfDay).forEach(([day, time]) => {
+  cartesianProduct(WorkingDaysOfWeek, TimesOfDay).forEach(([day, time]) => {
     children.set(getTimeslot(day, time), mapper(day, time));
   });
   return children;
