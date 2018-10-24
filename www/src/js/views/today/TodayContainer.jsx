@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { range, minBy } from 'lodash';
 import classnames from 'classnames';
 import NUSModerator from 'nusmoderator';
+import Raven from 'raven-js';
 import {
   isSameDay,
   addDays,
@@ -36,17 +37,18 @@ import * as weatherAPI from 'apis/weather';
 import config from 'config';
 /** @var {string[]} */
 import holidays from 'data/holidays.json';
-import withTimer from 'views/hocs/withTimer';
+import withTimer, { type TimerData } from 'views/hocs/withTimer';
 import { formatTime, getCurrentHours, getCurrentMinutes, getDayIndex } from 'utils/timify';
 import DayEvents from './DayEvents';
 import DayHeader from './DayHeader';
 import styles from './TodayContainer.scss';
 
-type Props = {
+type Props = {|
+  ...TimerData,
+
   timetableWithLessons: SemTimetableConfigWithLessons,
   colors: ColorMapping,
-  currentTime: Date,
-};
+|};
 
 type State = {
   // Mapping of number of days from today to the weather forecast for that day
@@ -82,12 +84,12 @@ export class TodayContainer extends PureComponent<Props, State> {
     weatherAPI
       .twoHour()
       .then((weather) => this.setState({ weather: { ...this.state.weather, '0': weather } }))
-      .catch();
+      .catch(Raven.captureException);
 
     weatherAPI
       .tomorrow()
       .then((weather) => this.setState({ weather: { ...this.state.weather, '1': weather } }))
-      .catch();
+      .catch(Raven.captureException);
 
     weatherAPI
       .fourDay()
@@ -100,7 +102,7 @@ export class TodayContainer extends PureComponent<Props, State> {
           }
         });
       })
-      .catch();
+      .catch(Raven.captureException);
   }
 
   renderBeforeNextLessonCard(nextLesson: Lesson, marker: Node) {

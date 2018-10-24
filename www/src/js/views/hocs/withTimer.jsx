@@ -2,15 +2,15 @@
 import React, { Component } from 'react';
 import { wrapComponentName } from 'utils/react';
 
-type State = {|
+export type TimerData = {|
   currentTime: Date,
 |};
 
 function withTimer<Props: {}>(
   WrappedComponent: ComponentType<Props>,
   intervalInMs: number = 60 * 1000,
-): ComponentType<$Diff<Props, State>> {
-  return class extends Component<Props, State> {
+): ComponentType<$Diff<Props, TimerData>> {
+  return class extends Component<Props, TimerData> {
     intervalId: IntervalID;
 
     static displayName = wrapComponentName(WrappedComponent, withTimer.name);
