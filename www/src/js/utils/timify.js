@@ -1,5 +1,6 @@
 // @flow
 import type { DayText, Lesson, LessonTime } from 'types/modules';
+import { getISODay, format, setHours, setMinutes, startOfDay } from 'date-fns';
 
 // Converts a 24-hour format time string to an index.
 // Each index corresponds to one cell of each timetable row.
@@ -38,6 +39,20 @@ export function formatHour(hour: number): string {
   return `${hour - 12}pm`;
 }
 
+export function getTimeAsDate(time: string | number, date: Date = new Date()): Date {
+  const dateNumber = parseInt(time, 10);
+  return setHours(setMinutes(startOfDay(date), dateNumber % 100), Math.floor(dateNumber / 100));
+}
+
+export function formatTime(time: string | number): string {
+  const timeNumber = parseInt(time, 10);
+
+  if (timeNumber === 0) return '12 midnight';
+  if (timeNumber === 1200) return '12 noon';
+
+  return format(getTimeAsDate(timeNumber), 'h:mm a').toLowerCase();
+}
+
 export const SCHOOLDAYS: Array<DayText> = [
   'Monday',
   'Tuesday',
@@ -73,7 +88,7 @@ export function getCurrentHours(
   return now.getHours();
 }
 
-// Gets the current time in hours, 0915 -> 15, 1315 -> 45
+// Gets the current time in hours, 0915 -> 15, 1345 -> 45
 // Current time to always match Singapore's
 export function getCurrentMinutes(
   now: Date = new Date(), // Used for tests only
@@ -82,11 +97,8 @@ export function getCurrentMinutes(
 }
 
 // Monday = 0, Friday = 4, Sunday = 6
-export function getCurrentDayIndex(now: Date = new Date()): number {
-  const day = now.getDay();
-  return day === 0
-    ? 6 // Sunday = 6
-    : day - 1; // Otherwise, minus one because JS days start on Sunday
+export function getDayIndex(date: Date = new Date()): number {
+  return getISODay(date) - 1;
 }
 
 /**

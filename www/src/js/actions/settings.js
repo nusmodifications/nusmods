@@ -75,3 +75,11 @@ export function setModuleTableOrder(sort: ModuleTableOrder): FSA {
     payload: sort,
   };
 }
+
+export const TOGGLE_BETA_TESTING_STATUS = 'TOGGLE_BETA_TESTING_STATUS';
+export function toggleBetaTesting(): FSA {
+  return {
+    type: TOGGLE_BETA_TESTING_STATUS,
+    payload: null,
+  };
+}
