@@ -27,7 +27,7 @@ const API_PREFIX = 'https://api.data.gov.sg/v1/environment';
 
 function getResponseData(response) {
   const { data } = response;
-  if (response.status >= 400 || data.api_info.status !== 'healthy') {
+  if (data.api_info.status !== 'healthy') {
     throw new Error(`API returned non-healthy status ${data.api_info.status}`);
   }
 
