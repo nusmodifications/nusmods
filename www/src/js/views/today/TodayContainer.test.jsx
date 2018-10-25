@@ -4,7 +4,7 @@ import React from 'react';
 import { flatten } from 'lodash';
 import axios from 'axios';
 import { shallow } from 'enzyme';
-import { TodayContainer } from './TodayContainer';
+import { TodayContainerComponent } from './TodayContainer';
 import DayHeader from './DayHeader';
 import DayEvents from './DayEvents';
 import styles from './TodayContainer.scss';
@@ -131,7 +131,7 @@ afterEach(() => {
 // Re 14 15 16 17 18 19 |
 // E1 21 22 23 24 25 26 |
 // E2 28 29 30          |
-describe(TodayContainer, () => {
+describe(TodayContainerComponent, () => {
   const getLessons = (wrapper) => {
     const days = wrapper.find(DayEvents);
     const cards = days.map((w) => w.shallow().find(`.${styles.lesson} h4`));
@@ -145,7 +145,7 @@ describe(TodayContainer, () => {
     const now = new Date('2016-08-08T00:00:00.000Z');
 
     const wrapper = shallow(
-      <TodayContainer currentTime={now} timetableWithLessons={{}} colors={COLORS} />,
+      <TodayContainerComponent currentTime={now} timetableWithLessons={{}} colors={COLORS} />,
     );
 
     expect(wrapper.find(DayHeader).map((w) => w.prop('dayName'))).toEqual([
@@ -166,7 +166,7 @@ describe(TodayContainer, () => {
     const now = new Date('2016-08-29T00:00:00.000Z');
 
     const wrapper = shallow(
-      <TodayContainer currentTime={now} timetableWithLessons={LESSONS} colors={COLORS} />,
+      <TodayContainerComponent currentTime={now} timetableWithLessons={LESSONS} colors={COLORS} />,
     );
 
     expect(wrapper.find(DayHeader)).toHaveLength(7);
@@ -178,7 +178,7 @@ describe(TodayContainer, () => {
     const now = new Date('2016-08-22T00:00:00.000Z');
 
     const wrapper = shallow(
-      <TodayContainer currentTime={now} timetableWithLessons={LESSONS} colors={COLORS} />,
+      <TodayContainerComponent currentTime={now} timetableWithLessons={LESSONS} colors={COLORS} />,
     );
 
     expect(getLessons(wrapper)).toHaveLength(5);

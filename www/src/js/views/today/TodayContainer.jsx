@@ -75,7 +75,7 @@ function getDayName(date: Date, diffInDays: number): string {
   return DaysOfWeek[getDayIndex(date)];
 }
 
-export class TodayContainer extends PureComponent<Props, State> {
+export class TodayContainerComponent extends PureComponent<Props, State> {
   state: State = {
     weather: {},
   };
@@ -230,7 +230,7 @@ export class TodayContainer extends PureComponent<Props, State> {
   }
 }
 
-const TodayContainerWithTimer = withTimer(TodayContainer);
+const TodayContainerWithTimer = withTimer(TodayContainerComponent);
 
 const ConnectedTimetableContainer = connect((state) => {
   const modules = state.moduleBank.modules;
