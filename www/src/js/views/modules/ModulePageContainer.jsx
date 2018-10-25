@@ -74,7 +74,7 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
     // getting the "Loading chunk x failed." error.
     retry(
       3,
-      () => import('views/modules/ModulePageContent'),
+      () => import(/* webpackChunkName: "module" */ 'views/modules/ModulePageContent'),
       (error) => error.message.includes('Loading chunk ') && window.navigator.onLine,
     )
       .then((module) => this.setState({ ModulePageContent: module.default }))

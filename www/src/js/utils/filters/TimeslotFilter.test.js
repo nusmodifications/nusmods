@@ -6,14 +6,14 @@ import cs1010s from '__mocks__/modules/CS1010S.json';
 import cs3216 from '__mocks__/modules/CS3216.json';
 
 import Combinatorics from 'js-combinatorics';
-import { DaysOfWeek, TimesOfDay, Semesters, Timeslots } from 'types/modules';
+import { WorkingDaysOfWeek, TimesOfDay, Semesters, Timeslots } from 'types/modules';
 import testFilter from 'test-utils/testFilter';
 import TimeslotFilter, { TimeslotTypes } from './TimeslotFilter';
 
 test('test() should filter modules according to their lecture timeslot', () => {
   // Generate all possible combinations of parameters to test against
   const possibleArgs = Combinatorics.cartesianProduct(
-    DaysOfWeek,
+    WorkingDaysOfWeek,
     TimesOfDay,
     TimeslotTypes,
     Semesters,

@@ -45,7 +45,7 @@ export function createSearchFilter(searchTerm: string): FilterGroup<ModuleFilter
   return new FilterGroup(SEARCH_QUERY_KEY, 'Search', [filter]).toggle(filter, !!searchTerm);
 }
 
-export function sortModules<T: { ModuleCode: ModuleCode, ModuleTitle: ModuleTitle }>(
+export function sortModules<T: { +ModuleCode: ModuleCode, +ModuleTitle: ModuleTitle }>(
   searchTerm: string,
   modules: T[],
 ): T[] {
