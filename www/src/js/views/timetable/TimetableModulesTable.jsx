@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component, Fragment } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
@@ -56,7 +56,7 @@ function renderMCs(moduleCredits) {
   return `${moduleCredits}${NBSP}${moduleCredits === 1 ? 'MC' : 'MCs'}`;
 }
 
-class TimetableModulesTable extends Component<Props> {
+class TimetableModulesTable extends PureComponent<Props> {
   totalMCs() {
     return sumBy(this.props.modules, (module) => parseInt(module.ModuleCredit, 10));
   }
@@ -102,7 +102,7 @@ class TimetableModulesTable extends Component<Props> {
     );
   }
 
-  renderModuleRow(module) {
+  renderModuleRow = (module) => {
     const { horizontalOrientation, semester, readOnly } = this.props;
 
     return (
@@ -137,71 +137,66 @@ class TimetableModulesTable extends Component<Props> {
         </div>
       </div>
     );
-  }
+  };
 
   render() {
     const { semester, horizontalOrientation, tombstone } = this.props;
-
-    if (!this.props.modules.length) {
-      if (tombstone) {
-        return (
-          <div className={classnames(styles.modulesTable, elements.moduleTable, 'row')}>
-            <ModuleTombstone
-              tombstone={tombstone}
-              horizontalOrientation={horizontalOrientation}
-              resetTombstone={this.props.resetTombstone}
-              key={`R_${tombstone.moduleCode}`}
-            />
-          </div>
-        );
-      }
-      return null;
-    }
 
     const modules = sortBy(this.props.modules, (module) =>
       moduleOrders[this.props.moduleTableOrder].orderBy(module, semester),
     );
 
+    const moduleTableItems = modules.map(this.renderModuleRow);
+
+    if (tombstone) {
+      moduleTableItems.push(
+        <div
+          className={classnames(styles.modulesTableRow, 'col-sm-6', {
+            'col-lg-4': horizontalOrientation,
+            'col-md-12': !horizontalOrientation,
+          })}
+          key={tombstone.moduleCode}
+        >
+          <ModuleTombstone
+            tombstone={tombstone}
+            resetTombstone={this.props.resetTombstone}
+            key={tombstone.moduleCode}
+          />
+        </div>,
+      );
+    }
+
     return (
       <Fragment>
         <div className={classnames(styles.modulesTable, elements.moduleTable, 'row')}>
-          {tombstone
-            ? modules
-                .map((module) => this.renderModuleRow(module))
-                .concat(
-                  <ModuleTombstone
-                    tombstone={tombstone}
-                    horizontalOrientation={horizontalOrientation}
-                    resetTombstone={this.props.resetTombstone}
-                    key={`R_${tombstone.moduleCode}`}
-                  />,
-                )
-            : modules.map((module) => this.renderModuleRow(module))}
+          {moduleTableItems}
         </div>
 
-        <div className={classnames(styles.footer, 'row align-items-center')}>
-          <div className="col-12">
-            <hr />
+        {modules.length > 0 && (
+          <div className={classnames(styles.footer, 'row align-items-center')}>
+            <div className="col-12">
+              <hr />
+            </div>
+            <div className="col">
+              Total Module Credits: <strong>{renderMCs(this.totalMCs())}</strong>
+            </div>
+            <div className={classnames(styles.moduleOrder, 'col no-export')}>
+              <label htmlFor="moduleOrder">Order</label>
+              <select
+                onChange={(evt) => this.props.setModuleTableOrder(evt.target.value)}
+                className={classnames(styles.moduleOrder, 'form-control form-control-sm')}
+                value={this.props.moduleTableOrder}
+                id="moduleOrder"
+              >
+                {map(moduleOrders, ({ label }, key) => (
+                  <option key={key} value={key}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
-          <div className="col">
-            Total Module Credits: <strong>{renderMCs(this.totalMCs())}</strong>
-          </div>
-          <div className={classnames(styles.moduleOrder, 'col no-export')}>
-            <label htmlFor="moduleOrder">Order</label>
-            <select
-              onChange={(evt) => this.props.setModuleTableOrder(evt.target.value)}
-              className={classnames(styles.moduleOrder, 'form-control form-control-sm')}
-              value={this.props.moduleTableOrder}
-              id="moduleOrder"
-            >
-              {map(moduleOrders, ({ label }, key) => (
-                <option key={key} value={key}>
-                  {label}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
+        )}
       </Fragment>
     );
   }
