@@ -1,10 +1,10 @@
 // @flow
 
-import React, { PureComponent, Fragment } from 'react';
+import React, { Fragment, PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
-import { sumBy, sortBy, map } from 'lodash';
+import { map, sortBy, sumBy } from 'lodash';
 
 import type { ModuleCode, ModuleWithColor, Semester } from 'types/modules';
 import type { ColorIndex } from 'types/reducers';
@@ -13,12 +13,12 @@ import type { ModuleTableOrder } from 'types/views';
 import ColorPicker from 'views/components/ColorPicker';
 import { Eye, EyeOff, Trash2 } from 'views/components/icons/index';
 import {
-  showLessonInTimetable,
   hideLessonInTimetable,
   selectModuleColor,
+  showLessonInTimetable,
 } from 'actions/timetables';
 import { setModuleTableOrder } from 'actions/settings';
-import { getModuleExamDate, getFormattedModuleExamDate } from 'utils/modules';
+import { getFormattedModuleExamDate, getModuleExamDate } from 'utils/modules';
 import { NBSP } from 'utils/react';
 import { modulePage } from 'views/routes/paths';
 import elements from 'views/elements';
@@ -105,27 +105,14 @@ class TimetableModulesTable extends PureComponent<Props> {
   }
 
   renderModule = (module) => {
-    const { horizontalOrientation, semester, readOnly, tombstone, resetTombstone } = this.props;
-
-    const itemClassName = classnames(styles.modulesTableRow, 'col-sm-6', {
-      'col-lg-4': horizontalOrientation,
-      'col-md-12': !horizontalOrientation,
-    });
+    const { semester, readOnly, tombstone, resetTombstone } = this.props;
 
     if (tombstone && tombstone.ModuleCode === module.ModuleCode) {
-      return (
-        <div className={itemClassName} key={module.ModuleCode}>
-          <ModuleTombstone
-            module={module}
-            resetTombstone={resetTombstone}
-            key={module.ModuleCode}
-          />
-        </div>
-      );
+      return <ModuleTombstone module={module} resetTombstone={resetTombstone} />;
     }
 
     return (
-      <div className={itemClassName} key={module.ModuleCode}>
+      <Fragment>
         <div className={styles.moduleColor}>
           <ColorPicker
             label={`Change ${module.ModuleCode} timetable color`}
@@ -148,28 +135,43 @@ class TimetableModulesTable extends PureComponent<Props> {
             &nbsp;&middot;&nbsp;{renderMCs(module.ModuleCredit)}
           </div>
         </div>
-      </div>
+      </Fragment>
     );
   };
 
   render() {
-    const { semester, tombstone } = this.props;
+    const { semester, tombstone, horizontalOrientation } = this.props;
     let { modules } = this.props;
 
+    // Show footer based on whether there are any non-deleted modules left
+    const showTableFooter = modules.length > 0;
+
+    // tombstone contains the data for the last deleted module. We insert it back
+    // so that it gets sorted into its original location, then in renderModule()
+    // takes care of rendering the tombstone
     if (tombstone) modules = [...modules, tombstone];
     modules = sortBy(modules, (module) =>
       moduleOrders[this.props.moduleTableOrder].orderBy(module, semester),
     );
 
-    const moduleTableItems = modules.map(this.renderModule);
-
     return (
       <Fragment>
         <div className={classnames(styles.modulesTable, elements.moduleTable, 'row')}>
-          {moduleTableItems}
+          {modules.map((module) => (
+            <div
+              className={classnames(
+                styles.modulesTableRow,
+                'col-sm-6',
+                horizontalOrientation ? 'col-lg-4' : 'col-md-12',
+              )}
+              key={module.ModuleCode}
+            >
+              {this.renderModule(module)}
+            </div>
+          ))}
         </div>
 
-        {modules.length > 0 && (
+        {showTableFooter && (
           <div className={classnames(styles.footer, 'row align-items-center')}>
             <div className="col-12">
               <hr />

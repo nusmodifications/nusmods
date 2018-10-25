@@ -19,15 +19,19 @@
   flex: 1 1 auto;
 }
 
-.tombstone {
-  padding: 0.5rem 0.3rem;
+.moduleInfo.tombstone {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.3rem;
 
-  .tombstoneText {
-    display: inline-block;
-    margin-top: 0.5rem;
+  .moduleActionButtons {
+    flex: 1 0 auto;
+    text-align: right;
   }
 
   .moduleAction {
+    flex: 0 1 auto;
     text-transform: uppercase;
   }
 }

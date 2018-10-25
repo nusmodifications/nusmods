@@ -17,7 +17,7 @@ function ModuleTombstone(props: Props) {
 
   return (
     <div className={classnames(styles.moduleInfo, styles.tombstone)}>
-      <span className={styles.tombstoneText}>{module.ModuleCode} removed</span>
+      <span>{module.ModuleCode} removed</span>
 
       <div className={styles.moduleActionButtons}>
         <button
