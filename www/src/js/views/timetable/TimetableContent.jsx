@@ -5,9 +5,16 @@ import { connect } from 'react-redux';
 import _, { isEmpty } from 'lodash';
 
 import type { ModulesMap } from 'reducers/moduleBank';
-import type { ColorMapping, TimetableOrientation, NotificationOptions } from 'types/reducers';
+import type { ColorMapping, TimetableOrientation } from 'types/reducers';
 import { HORIZONTAL } from 'types/reducers';
-import type { Lesson, ColoredLesson, Module, ModuleCode, Semester, Tombstone } from 'types/modules';
+import type {
+  Lesson,
+  ColoredLesson,
+  Module,
+  ModuleCode,
+  Semester,
+  ModuleWithColor,
+} from 'types/modules';
 import type {
   SemTimetableConfig,
   SemTimetableConfigWithLessons,
@@ -15,7 +22,6 @@ import type {
 } from 'types/timetables';
 
 import { cancelModifyLesson, changeLesson, modifyLesson, removeModule } from 'actions/timetables';
-import { openNotification } from 'actions/app';
 import { undo } from 'actions/undoHistory';
 import {
   getModuleTimetable,
@@ -69,14 +75,13 @@ type Props = {
   cancelModifyLesson: Function,
   toggleTimetableOrientation: Function,
   toggleTitleDisplay: Function,
-  openNotification: (string, NotificationOptions) => void,
   undo: () => void,
 };
 
 type State = {
   isScrolledHorizontally: boolean,
   showExamCalendar: boolean,
-  tombstone: ?Tombstone,
+  tombstone: ?ModuleWithColor,
 };
 
 class TimetableContent extends Component<Props, State> {
@@ -121,22 +126,14 @@ class TimetableContent extends Component<Props, State> {
     }
   };
 
-  removeModule = (moduleCode) => {
-    this.props.removeModule(this.props.semester, moduleCode);
+  removeModule = (module) => {
+    this.props.removeModule(this.props.semester, module.ModuleCode);
 
-    this.setState({
-      tombstone: {
-        moduleCode,
-        semester: this.props.semester,
-      },
-    });
+    // A tombstone is displayed in place of a deleted module
+    this.setState({ tombstone: module });
   };
 
-  resetTombstone = () => {
-    this.setState({
-      tombstone: null,
-    });
-  };
+  resetTombstone = () => this.setState({ tombstone: null });
 
   // Returns modules currently in the timetable
   addedModules(): Array<Module> {
@@ -386,6 +383,5 @@ export default connect(mapStateToProps, {
   modifyLesson,
   changeLesson,
   cancelModifyLesson,
-  openNotification,
   undo,
 })(TimetableContent);

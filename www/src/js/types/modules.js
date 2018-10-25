@@ -139,8 +139,3 @@ type Modifiable = {
 
 // Lessons do not implement a modifiable interface.
 export type ModifiableLesson = ColoredLesson & Modifiable;
-
-export type Tombstone = {
-  moduleCode: ModuleCode,
-  semester: ?Semester,
-};

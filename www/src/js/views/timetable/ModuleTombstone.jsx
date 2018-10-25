@@ -1,23 +1,23 @@
 // @flow
+import type { Module } from 'types/modules';
 import React from 'react';
 import { connect } from 'react-redux';
-import type { Tombstone } from 'types/modules';
 import { undo } from 'actions/undoHistory';
 import classnames from 'classnames';
 import styles from './TimetableModulesTable.scss';
 
 type Props = {
-  tombstone: Tombstone,
+  module: Module,
   undo: () => void,
-  resetTombstone: Function,
+  resetTombstone: () => void,
 };
 
 function ModuleTombstone(props: Props) {
-  const { tombstone } = props;
+  const { module } = props;
 
   return (
     <div className={classnames(styles.moduleInfo, styles.tombstone)}>
-      <span className={styles.tombstoneText}>{tombstone.moduleCode} removed</span>
+      <span className={styles.tombstoneText}>{module.ModuleCode} removed</span>
 
       <div className={styles.moduleActionButtons}>
         <button

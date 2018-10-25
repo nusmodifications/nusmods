@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 import { sumBy, sortBy, map } from 'lodash';
 
-import type { ModuleCode, ModuleWithColor, Semester, Tombstone } from 'types/modules';
+import type { ModuleCode, ModuleWithColor, Semester } from 'types/modules';
 import type { ColorIndex } from 'types/reducers';
 import type { ModuleTableOrder } from 'types/views';
 
@@ -38,18 +38,20 @@ const moduleOrders: { [ModuleTableOrder]: ModuleOrder } = {
 };
 
 type Props = {
+  semester: Semester,
+  readOnly: boolean,
+  horizontalOrientation: boolean,
+  moduleTableOrder: ModuleTableOrder,
+  modules: ModuleWithColor[],
+  tombstone: ?ModuleWithColor, // Placeholder for a deleted module
+
+  // Actions
   selectModuleColor: Function,
   hideLessonInTimetable: (Semester, ModuleCode) => void,
   showLessonInTimetable: (Semester, ModuleCode) => void,
   setModuleTableOrder: (ModuleTableOrder) => void,
-  semester: Semester,
-  modules: Array<ModuleWithColor>,
-  onRemoveModule: Function,
-  moduleTableOrder: ModuleTableOrder,
-  horizontalOrientation: boolean,
-  readOnly: boolean,
-  tombstone: ?Tombstone,
-  resetTombstone: Function,
+  onRemoveModule: (ModuleWithColor) => void,
+  resetTombstone: () => void,
 };
 
 function renderMCs(moduleCredits) {
@@ -74,7 +76,7 @@ class TimetableModulesTable extends PureComponent<Props> {
             className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
             title={removeBtnLabel}
             aria-label={removeBtnLabel}
-            onClick={() => this.props.onRemoveModule(module.ModuleCode)}
+            onClick={() => this.props.onRemoveModule(module)}
           >
             <Trash2 className={styles.actionIcon} />
           </button>
@@ -102,17 +104,28 @@ class TimetableModulesTable extends PureComponent<Props> {
     );
   }
 
-  renderModuleRow = (module) => {
-    const { horizontalOrientation, semester, readOnly } = this.props;
+  renderModule = (module) => {
+    const { horizontalOrientation, semester, readOnly, tombstone, resetTombstone } = this.props;
+
+    const itemClassName = classnames(styles.modulesTableRow, 'col-sm-6', {
+      'col-lg-4': horizontalOrientation,
+      'col-md-12': !horizontalOrientation,
+    });
+
+    if (tombstone && tombstone.ModuleCode === module.ModuleCode) {
+      return (
+        <div className={itemClassName} key={module.ModuleCode}>
+          <ModuleTombstone
+            module={module}
+            resetTombstone={resetTombstone}
+            key={module.ModuleCode}
+          />
+        </div>
+      );
+    }
 
     return (
-      <div
-        className={classnames(styles.modulesTableRow, 'col-sm-6', {
-          'col-lg-4': horizontalOrientation,
-          'col-md-12': !horizontalOrientation,
-        })}
-        key={module.ModuleCode}
-      >
+      <div className={itemClassName} key={module.ModuleCode}>
         <div className={styles.moduleColor}>
           <ColorPicker
             label={`Change ${module.ModuleCode} timetable color`}
@@ -140,31 +153,15 @@ class TimetableModulesTable extends PureComponent<Props> {
   };
 
   render() {
-    const { semester, horizontalOrientation, tombstone } = this.props;
+    const { semester, tombstone } = this.props;
+    let { modules } = this.props;
 
-    const modules = sortBy(this.props.modules, (module) =>
+    if (tombstone) modules = [...modules, tombstone];
+    modules = sortBy(modules, (module) =>
       moduleOrders[this.props.moduleTableOrder].orderBy(module, semester),
     );
 
-    const moduleTableItems = modules.map(this.renderModuleRow);
-
-    if (tombstone) {
-      moduleTableItems.push(
-        <div
-          className={classnames(styles.modulesTableRow, 'col-sm-6', {
-            'col-lg-4': horizontalOrientation,
-            'col-md-12': !horizontalOrientation,
-          })}
-          key={tombstone.moduleCode}
-        >
-          <ModuleTombstone
-            tombstone={tombstone}
-            resetTombstone={this.props.resetTombstone}
-            key={tombstone.moduleCode}
-          />
-        </div>,
-      );
-    }
+    const moduleTableItems = modules.map(this.renderModule);
 
     return (
       <Fragment>
