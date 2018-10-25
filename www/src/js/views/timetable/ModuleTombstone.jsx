@@ -23,8 +23,6 @@ function ModuleTombstone(props: Props) {
         <button
           type="button"
           className={classnames('btn btn-sm btn-link', styles.moduleAction)}
-          title="Dismiss"
-          aria-label="Dismiss"
           onClick={props.resetTombstone}
         >
           Dismiss
@@ -32,8 +30,6 @@ function ModuleTombstone(props: Props) {
         <button
           type="button"
           className={classnames('btn btn-sm btn-link', styles.moduleAction)}
-          title="Undo"
-          aria-label="Undo"
           onClick={() => {
             props.undo();
             props.resetTombstone();
