@@ -13,7 +13,7 @@ import CS1010S from '__mocks__/modules/CS1010S.json';
 
 import { AddModuleDropdownComponent } from './AddModuleDropdown';
 
-describe('<AddModuleDropdown>', () => {
+describe(AddModuleDropdownComponent, () => {
   function make(module: Module, timetables: TimetableConfig = {}) {
     const addModule = jest.fn();
     const removeModule = jest.fn();
