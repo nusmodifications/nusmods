@@ -171,6 +171,8 @@ $sentry-z-index: 2000;
 $modal-z-index: 1500;
 $module-select-z-index: 960;
 $module-finder-search-z-index-sm: 950;
+$venue-map-z-index: 920;
+$venue-detail-z-index: 920; // Need to be higher than navtabs so they don't overlap expanded map
 $navtabs-z-index: 900;
 $navbar-z-index: 890;
 $module-finder-search-z-index-md: 850;
