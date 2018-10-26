@@ -5,12 +5,12 @@ import { withLeaflet, type LeafletContext } from 'react-leaflet';
 import Control from 'react-leaflet-control';
 import { Maximize, Minimize } from 'views/components/icons';
 
-type Props = {
-  leaflet: LeafletContext,
+type Props = {|
+  +leaflet: LeafletContext,
 
-  isExpanded: boolean,
-  onToggleExpand: (boolean) => void,
-};
+  +isExpanded: boolean,
+  +onToggleExpand: (boolean) => void,
+|};
 
 class ExpandMap extends PureComponent<Props> {
   componentDidMount() {
