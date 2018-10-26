@@ -13,6 +13,7 @@ import {
   parseWorkload,
   renderMCs,
 } from 'utils/modules';
+import { noBreak } from 'utils/react';
 
 /** @var {Module} */
 import cs1010s from '__mocks__/modules/CS1010S.json';
@@ -221,15 +222,15 @@ test('parseWorkload should return input string as is if it cannot be parsed', ()
 });
 
 describe(renderMCs, () => {
-  test('pluralize when MC != 1', () => {
-    expect(renderMCs(0)).toEqual('0 MCs');
-    expect(renderMCs('0')).toEqual('0 MCs');
-    expect(renderMCs(5)).toEqual('5 MCs');
-    expect(renderMCs('5')).toEqual('5 MCs');
-  });
+  it.each([
+    // Plural
+    [0, '0 MCs'],
+    ['0', '0 MCs'],
+    [5, '5 MCs'],
+    ['5', '5 MCs'],
 
-  test('singular when MC = 1', () => {
-    expect(renderMCs(1)).toEqual('1 MC');
-    expect(renderMCs('1')).toEqual('1 MC');
-  });
+    // Singular
+    [1, '1 MC'],
+    ['1', '1 MC'],
+  ])('%s to equal %s', (mc, expected) => expect(renderMCs(mc)).toEqual(noBreak(expected)));
 });
