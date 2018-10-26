@@ -20,19 +20,20 @@ import ImproveVenueForm from './ImproveVenueForm';
 import ExpandMap from './ExpandMap';
 import styles from './VenueLocation.scss';
 
-type OwnProps = {
-  venue: string,
-};
+type OwnProps = {|
+  +venue: string,
+|};
 
-type Props = OwnProps & {
+type Props = {|
+  ...OwnProps,
   // Provided by VenueContext
-  toggleScrollable: (boolean) => void,
-};
+  +toggleScrollable: (boolean) => void,
+|};
 
-type State = {
-  isFeedbackModalOpen: boolean,
-  isExpanded: boolean,
-};
+type State = {|
+  +isFeedbackModalOpen: boolean,
+  +isExpanded: boolean,
+|};
 
 LeafletMap.addInitHook('addHandler', 'gestureHandling', GestureHandling);
 
