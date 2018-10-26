@@ -107,8 +107,8 @@
     "workbox-webpack-plugin": "3.6.3"
   },
   "dependencies": {
-    "@material/fab": "0.38.0",
-    "@material/snackbar": "0.38.0",
+    "@material/fab": "0.40.1",
+    "@material/snackbar": "0.40.1",
     "autotrack": "2.4.1",
     "axios": "0.18.0",
     "bootstrap": "4.1.3",
