@@ -802,61 +802,66 @@
     lodash "^4.17.10"
     to-fast-properties "^2.0.0"
 
-"@material/animation@^0.34.0":
-  version "0.34.0"
-  resolved "https://registry.yarnpkg.com/@material/animation/-/animation-0.34.0.tgz#a99cc9dabf7d0179b4da9a0aaa1575c4d1513823"
+"@material/animation@^0.40.1":
+  version "0.40.1"
+  resolved "https://registry.yarnpkg.com/@material/animation/-/animation-0.40.1.tgz#c5ff31e7d7e17324a0045e889d3530b150b9fcec"
 
-"@material/base@^0.35.0":
-  version "0.35.0"
-  resolved "https://registry.yarnpkg.com/@material/base/-/base-0.35.0.tgz#8640c2da385e8cc393ff56153c5a319f5a7704cb"
+"@material/base@^0.40.1":
+  version "0.40.1"
+  resolved "https://registry.yarnpkg.com/@material/base/-/base-0.40.1.tgz#a0d8e19cee98dae0f96dbf0887a14b3f7acd2aac"
 
-"@material/elevation@^0.38.0":
-  version "0.38.0"
-  resolved "https://registry.yarnpkg.com/@material/elevation/-/elevation-0.38.0.tgz#c7f8d0c9a28073b0ec62cb76248b76d5ff467bf8"
+"@material/elevation@^0.40.1":
+  version "0.40.1"
+  resolved "https://registry.yarnpkg.com/@material/elevation/-/elevation-0.40.1.tgz#beb17eb90bde94459c41cd826c2de13f13b10b25"
   dependencies:
-    "@material/animation" "^0.34.0"
-    "@material/theme" "^0.38.0"
+    "@material/animation" "^0.40.1"
+    "@material/theme" "^0.40.1"
 
-"@material/fab@0.38.0":
-  version "0.38.0"
-  resolved "https://registry.yarnpkg.com/@material/fab/-/fab-0.38.0.tgz#659886cfdec53404605b45b6cb86dee36ac9fd96"
+"@material/fab@0.40.1":
+  version "0.40.1"
+  resolved "https://registry.yarnpkg.com/@material/fab/-/fab-0.40.1.tgz#423f66e701685e5744fedbdb0d853ea602f83529"
   dependencies:
-    "@material/animation" "^0.34.0"
-    "@material/elevation" "^0.38.0"
-    "@material/ripple" "^0.38.0"
-    "@material/rtl" "^0.36.0"
-    "@material/theme" "^0.38.0"
-    "@material/typography" "^0.38.0"
+    "@material/animation" "^0.40.1"
+    "@material/elevation" "^0.40.1"
+    "@material/ripple" "^0.40.1"
+    "@material/rtl" "^0.40.1"
+    "@material/shape" "^0.40.1"
+    "@material/theme" "^0.40.1"
+    "@material/typography" "^0.40.1"
 
-"@material/ripple@^0.38.0":
-  version "0.38.0"
-  resolved "https://registry.yarnpkg.com/@material/ripple/-/ripple-0.38.0.tgz#c6bdd9b643cccb47e3dd6ba4572577410f241c8c"
+"@material/ripple@^0.40.1":
+  version "0.40.1"
+  resolved "https://registry.yarnpkg.com/@material/ripple/-/ripple-0.40.1.tgz#57cbc689303b48282229cb9b62556af7442e852a"
   dependencies:
-    "@material/animation" "^0.34.0"
-    "@material/base" "^0.35.0"
-    "@material/theme" "^0.38.0"
+    "@material/animation" "^0.40.1"
+    "@material/base" "^0.40.1"
+    "@material/theme" "^0.40.1"
 
-"@material/rtl@^0.36.0":
-  version "0.36.0"
-  resolved "https://registry.yarnpkg.com/@material/rtl/-/rtl-0.36.0.tgz#a81b587981dc6e09f51e26da8a7447f89358ccd5"
+"@material/rtl@^0.40.1":
+  version "0.40.1"
+  resolved "https://registry.yarnpkg.com/@material/rtl/-/rtl-0.40.1.tgz#5b0d973e3c6f8e2ea3656c06ada37ba2fedfa206"
 
-"@material/snackbar@0.38.0":
-  version "0.38.0"
-  resolved "https://registry.yarnpkg.com/@material/snackbar/-/snackbar-0.38.0.tgz#ad8dace225b4e838894767d7d266db6a0cd2d297"
+"@material/shape@^0.40.1":
+  version "0.40.1"
+  resolved "https://registry.yarnpkg.com/@material/shape/-/shape-0.40.1.tgz#bd4224902896c3d45fab353d788fe6c4866483a8"
+
+"@material/snackbar@0.40.1":
+  version "0.40.1"
+  resolved "https://registry.yarnpkg.com/@material/snackbar/-/snackbar-0.40.1.tgz#1af2dfcb766686daa2d9b41f2b20579ae6c26b54"
   dependencies:
-    "@material/animation" "^0.34.0"
-    "@material/base" "^0.35.0"
-    "@material/rtl" "^0.36.0"
-    "@material/theme" "^0.38.0"
-    "@material/typography" "^0.38.0"
+    "@material/animation" "^0.40.1"
+    "@material/base" "^0.40.1"
+    "@material/rtl" "^0.40.1"
+    "@material/theme" "^0.40.1"
+    "@material/typography" "^0.40.1"
 
-"@material/theme@^0.38.0":
-  version "0.38.0"
-  resolved "https://registry.yarnpkg.com/@material/theme/-/theme-0.38.0.tgz#c1a2247eba4af2ba47da4456921ab420869fda55"
+"@material/theme@^0.40.1":
+  version "0.40.1"
+  resolved "https://registry.yarnpkg.com/@material/theme/-/theme-0.40.1.tgz#3cc3f1bf87ee9581df03e347a1979e53ae617221"
 
-"@material/typography@^0.38.0":
-  version "0.38.0"
-  resolved "https://registry.yarnpkg.com/@material/typography/-/typography-0.38.0.tgz#fff8e4f25c5ef7b0afb5ed414bc700981e431703"
+"@material/typography@^0.40.1":
+  version "0.40.1"
+  resolved "https://registry.yarnpkg.com/@material/typography/-/typography-0.40.1.tgz#68ecb767f7c54ca2f4053cccdd1c4a0198e60f9b"
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
