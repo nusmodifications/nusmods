@@ -11,6 +11,7 @@ import {
   getFormattedModuleExamDate,
   getFirstAvailableSemester,
   parseWorkload,
+  renderMCs,
 } from 'utils/modules';
 
 /** @var {Module} */
@@ -216,5 +217,19 @@ test('parseWorkload should return input string as is if it cannot be parsed', ()
 
   invalidInputs.forEach((input) => {
     expect(parseWorkload(input)).toEqual(input);
+  });
+});
+
+describe(renderMCs, () => {
+  test('pluralize when MC != 1', () => {
+    expect(renderMCs(0)).toEqual('0 MCs');
+    expect(renderMCs('0')).toEqual('0 MCs');
+    expect(renderMCs(5)).toEqual('5 MCs');
+    expect(renderMCs('5')).toEqual('5 MCs');
+  });
+
+  test('singular when MC = 1', () => {
+    expect(renderMCs(1)).toEqual('1 MC');
+    expect(renderMCs('1')).toEqual('1 MC');
   });
 });

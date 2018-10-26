@@ -50,6 +50,7 @@ import Timetable from './Timetable';
 import TimetableActions from './TimetableActions';
 import TimetableModulesTable from './TimetableModulesTable';
 import ExamCalendar from './ExamCalendar';
+import ModulesTableFooter from './ModulesTableFooter';
 import styles from './TimetableContent.scss';
 
 type Props = {
@@ -136,34 +137,32 @@ class TimetableContent extends Component<Props, State> {
   resetTombstone = () => this.setState({ tombstone: null });
 
   // Returns modules currently in the timetable
-  addedModules(): Array<Module> {
+  addedModules(): Module[] {
     const modules = getSemesterModules(this.props.timetableWithLessons, this.props.modules);
     return _.sortBy(modules, (module: Module) => getModuleExamDate(module, this.props.semester));
   }
 
+  renderModuleTable = (modules, horizontalOrientation, tombstone) => (
+    <TimetableModulesTable
+      modules={modules.map((module) => ({
+        ...module,
+        colorIndex: this.props.colors[module.ModuleCode],
+        hiddenInTimetable: this.isHiddenInTimetable(module.ModuleCode),
+      }))}
+      horizontalOrientation={horizontalOrientation}
+      semester={this.props.semester}
+      onRemoveModule={this.removeModule}
+      readOnly={this.props.readOnly}
+      tombstone={tombstone}
+      resetTombstone={this.resetTombstone}
+    />
+  );
+
   // Returns component with table(s) of modules
-  renderModuleSections(horizontalOrientation) {
-    const { readOnly } = this.props;
+  renderModuleSections(modules, horizontalOrientation) {
     const { tombstone } = this.state;
 
-    const renderModuleTable = (modules) => (
-      <TimetableModulesTable
-        modules={modules.map((module) => ({
-          ...module,
-          colorIndex: this.props.colors[module.ModuleCode],
-          hiddenInTimetable: this.isHiddenInTimetable(module.ModuleCode),
-        }))}
-        horizontalOrientation={horizontalOrientation}
-        semester={this.props.semester}
-        onRemoveModule={this.removeModule}
-        readOnly={readOnly}
-        tombstone={tombstone}
-        resetTombstone={this.resetTombstone}
-      />
-    );
-
     // Separate added modules into sections of clashing modules
-    const modules = this.addedModules();
     const clashes: { [string]: Array<Module> } = findExamClashes(modules, this.props.semester);
     const nonClashingMods: Array<Module> = _.difference(modules, _.flatten(_.values(clashes)));
 
@@ -191,13 +190,13 @@ class TimetableContent extends Component<Props, State> {
                   <p>
                     Clash on <strong>{formatExamDate(clashDate)}</strong>
                   </p>
-                  {renderModuleTable(clashes[clashDate])}
+                  {this.renderModuleTable(clashes[clashDate], horizontalOrientation)}
                 </div>
               ))}
             <hr />
           </Fragment>
         )}
-        {renderModuleTable(nonClashingMods)}
+        {this.renderModuleTable(nonClashingMods, horizontalOrientation, tombstone)}
       </Fragment>
     );
   }
@@ -273,6 +272,7 @@ class TimetableContent extends Component<Props, State> {
     const isShowingTitle = !isVerticalOrientation && showTitle;
     const showNoLessonWarning =
       !config.timetableAvailable.includes(semester) && isEmpty(arrangedLessonsWithModifiableFlag);
+    const addedModules = this.addedModules();
 
     return (
       <div
@@ -302,7 +302,7 @@ class TimetableContent extends Component<Props, State> {
             {showExamCalendar ? (
               <ExamCalendar
                 semester={semester}
-                modules={this.addedModules().map((module) => ({
+                modules={addedModules.map((module) => ({
                   ...module,
                   colorIndex: this.props.colors[module.ModuleCode],
                   hiddenInTimetable: this.isHiddenInTimetable(module.ModuleCode),
@@ -345,7 +345,12 @@ class TimetableContent extends Component<Props, State> {
                 )}
               </div>
 
-              <div className="col-md-12">{this.renderModuleSections(!isVerticalOrientation)}</div>
+              <div className="col-12">
+                {this.renderModuleSections(addedModules, !isVerticalOrientation)}
+              </div>
+              <div className="col-12">
+                <ModulesTableFooter modules={addedModules} />
+              </div>
             </div>
             <div className="row">
               <div className="col">
