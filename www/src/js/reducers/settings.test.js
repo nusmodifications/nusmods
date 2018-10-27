@@ -19,6 +19,7 @@ const initialState: SettingsState = {
     dismissed: [],
   },
   moduleTableOrder: 'exam',
+  beta: false,
 };
 const settingsWithNewStudent: SettingsState = { ...initialState, newStudent: true };
 const faculty = 'School of Computing';
@@ -121,5 +122,29 @@ describe('corsNotification settings', () => {
 
     const state2 = reducer(initialState, actions.setModuleTableOrder('code'));
     expect(state2.moduleTableOrder).toEqual('code');
+  });
+});
+
+describe('beta testing state', () => {
+  test('toggle should enable when beta prop does not exist', () => {
+    const { beta, ...initialWithoutBeta } = initialState;
+    // $FlowFixMe Flow doesn't think this is sound, for some reason
+    const state = reducer(initialWithoutBeta, actions.toggleBetaTesting());
+    expect(state.beta).toEqual(true);
+  });
+
+  test('toggle should enable when beta prop is false', () => {
+    const state = reducer(initialState, actions.toggleBetaTesting());
+    expect(state.beta).toEqual(true);
+  });
+
+  test('toggle should disable when beta prop is true', () => {
+    const state = {
+      ...initialState,
+      beta: true,
+    };
+
+    const nextState = reducer(state, actions.toggleBetaTesting());
+    expect(nextState.beta).toEqual(false);
   });
 });

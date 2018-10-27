@@ -27,6 +27,8 @@ import MapPin from 'react-feather/dist/icons/map-pin';
 import Menu from 'react-feather/dist/icons/menu';
 import MessageSquare from 'react-feather/dist/icons/message-square';
 import Mail from 'react-feather/dist/icons/mail';
+import Maximize from 'react-feather/dist/icons/maximize-2';
+import Minimize from 'react-feather/dist/icons/minimize-2';
 import MinusSquare from 'react-feather/dist/icons/minus-square';
 import PlusSquare from 'react-feather/dist/icons/plus-square';
 import Refresh from 'react-feather/dist/icons/refresh-cw';
@@ -62,6 +64,8 @@ export {
   Image,
   Layers,
   Map,
+  Maximize,
+  Minimize,
   MapPin,
   Menu,
   MessageSquare,

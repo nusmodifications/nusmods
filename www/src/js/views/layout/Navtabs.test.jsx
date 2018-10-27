@@ -6,6 +6,6 @@ import { shallow } from 'enzyme';
 import { NavtabsComponent } from './Navtabs';
 
 test('renders into nav element', () => {
-  const navtabs = shallow(<NavtabsComponent activeSemester={1} />);
+  const navtabs = shallow(<NavtabsComponent activeSemester={1} beta={false} />);
   expect(navtabs).toMatchSnapshot();
 });

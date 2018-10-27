@@ -32,6 +32,7 @@ import AvailabilitySearch, { defaultSearchOptions } from './AvailabilitySearch';
 import VenueList from './VenueList';
 import VenueDetails from './VenueDetails';
 import VenueLocation from './VenueLocation';
+import VenueContext from './VenueContext';
 import styles from './VenuesContainer.scss';
 
 /* eslint-disable react/prop-types */
@@ -42,9 +43,13 @@ type Props = {
 };
 
 type State = {|
+  // Page data
   loading: boolean,
   error?: any,
   venues: ?VenueDetailList,
+
+  // View state
+  isDetailScrollable: boolean,
 
   // Search state
   searchTerm: string,
@@ -74,6 +79,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
     this.state = {
       searchOptions,
       isAvailabilityEnabled,
+      isDetailScrollable: true,
       loading: true,
       venues: null,
       searchTerm: params.q || '',
@@ -131,6 +137,10 @@ export class VenuesContainerComponent extends Component<Props, State> {
         pristineSearchOptions: false, // user changed searchOptions
       });
     }
+  };
+
+  onToggleDetailScrollable = (isDetailScrollable: boolean) => {
+    this.setState({ isDetailScrollable });
   };
 
   loadPageData = () => {
@@ -270,7 +280,15 @@ export class VenuesContainerComponent extends Component<Props, State> {
 
   render() {
     const selectedVenue = this.selectedVenue();
-    const { searchTerm, loading, error, isAvailabilityEnabled, searchOptions, venues } = this.state;
+    const {
+      searchTerm,
+      loading,
+      error,
+      isAvailabilityEnabled,
+      isDetailScrollable,
+      searchOptions,
+      venues,
+    } = this.state;
 
     if (error) {
       return <ApiError dataName="venue information" retry={this.loadPageData} />;
@@ -306,36 +324,40 @@ export class VenuesContainerComponent extends Component<Props, State> {
           )}
         </div>
 
-        {this.props.matchBreakpoint ? (
-          <Modal
-            isOpen={selectedVenue != null}
-            onRequestClose={this.onClearVenueSelect}
-            className={styles.venueDetailModal}
-            fullscreen
-          >
-            <button
-              className={classnames('btn btn-outline-primary btn-block', styles.closeButton)}
-              onClick={this.onClearVenueSelect}
+        <VenueContext.Provider value={{ toggleDetailScrollable: this.onToggleDetailScrollable }}>
+          {this.props.matchBreakpoint ? (
+            <Modal
+              isOpen={selectedVenue != null}
+              onRequestClose={this.onClearVenueSelect}
+              className={styles.venueDetailModal}
+              fullscreen
             >
-              Back to Venues
-            </button>
-            {this.renderSelectedVenue(matchedVenues)}
-          </Modal>
-        ) : (
-          <Fragment>
-            <div className={styles.venueDetail}>
-              {selectedVenue == null ? (
-                <div className={styles.noVenueSelected}>
-                  <Map />
-                  <p>Select a venue on the left to see its timetable</p>
-                </div>
-              ) : (
-                this.renderSelectedVenue(matchedVenues)
-              )}
-            </div>
-            <div className={styles.background} />
-          </Fragment>
-        )}
+              <button
+                className={classnames('btn btn-outline-primary btn-block', styles.closeButton)}
+                onClick={this.onClearVenueSelect}
+              >
+                Back to Venues
+              </button>
+              {this.renderSelectedVenue(matchedVenues)}
+            </Modal>
+          ) : (
+            <Fragment>
+              <div
+                className={classnames(styles.venueDetail, { 'scrollable-y': isDetailScrollable })}
+              >
+                {selectedVenue == null ? (
+                  <div className={styles.noVenueSelected}>
+                    <Map />
+                    <p>Select a venue on the left to see its timetable</p>
+                  </div>
+                ) : (
+                  this.renderSelectedVenue(matchedVenues)
+                )}
+              </div>
+              <div className={styles.background} />
+            </Fragment>
+          )}
+        </VenueContext.Provider>
       </div>
     );
   }
