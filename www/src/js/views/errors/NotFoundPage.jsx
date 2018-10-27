@@ -32,7 +32,7 @@ export default function NotFoundPage() {
           Something should be here
         </button>
         <button className="btn btn-outline-primary btn-svg">
-          <Link to="/">Woosp, bring me home</Link>
+          <Link to="/">Woops, bring me home</Link>
         </button>
       </div>
     </div>
