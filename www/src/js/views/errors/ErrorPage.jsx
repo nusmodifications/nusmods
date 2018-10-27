@@ -9,6 +9,8 @@ import Title from 'views/components/Title';
 import Online from 'views/components/Online';
 import styles from './ErrorPage.scss';
 
+import ReactKawaii from './ReactKawaii';
+
 type Props = {
   children?: Node,
   error?: string,
@@ -34,20 +36,20 @@ export default class ErrorPage extends PureComponent<Props> {
       <div>
         <Title>Uh oh...</Title>
 
-        <div className={styles.container}>
-          <h1 className={classnames('h2', styles.header)}>
-            <span className={styles.expr}>Uh oh...</span>
-            {this.errorMessage()}
-          </h1>
+        <div className={styles.centerContainer}>
+          <div className={styles.header}>
+            <ReactKawaii />
+          </div>
+          <h1 className={classnames('h2', styles.header)}>Uh oh, {this.errorMessage()}.</h1>
 
           {showRefresh && (
             <Online>
-              <p>
-                <button className={styles.link} onClick={() => window.location.reload(true)}>
-                  Refreshing the page
-                </button>{' '}
-                may help.
-              </p>
+              <button
+                className="btn btn-primary btn-svg"
+                onClick={() => window.location.reload(true)}
+              >
+                Refresh
+              </button>
             </Online>
           )}
 

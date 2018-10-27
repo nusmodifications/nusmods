@@ -7,6 +7,8 @@ import classnames from 'classnames';
 import Title from 'views/components/Title';
 import styles from './ErrorPage.scss';
 
+import ReactKawaii from './ReactKawaii';
+
 type Props = {
   children?: Node,
   retry?: () => void,
@@ -39,21 +41,22 @@ export default class ApiError extends PureComponent<Props> {
     const message = dataName ? `We can't load ${dataName}` : "We can't connect to NUSMods";
 
     return (
-      <div>
+      <div className={styles.centerContainer}>
         <Title>Oh no...</Title>
 
-        <div className={styles.container}>
+        <div>
+          <div className={styles.inline}>
+            <h1 className={styles.bigCharacter}>4</h1>
+            <ReactKawaii />
+            <h1 className={styles.bigCharacter}>4</h1>
+          </div>
+
           <h1 className={classnames('h2', styles.header)}>
             <span className={styles.expr}>Oh no...</span>
             {message}
           </h1>
 
-          <p>This could be because</p>
-
-          <ul>
-            <li>Your computer is offline</li>
-            <li>NUSMods is down :(</li>
-          </ul>
+          <p>This could be because your computer is offline or NUSMods is down :(</p>
 
           {retry && (
             <div>

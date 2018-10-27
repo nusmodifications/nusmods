@@ -7,6 +7,8 @@ import type { ModuleCode } from 'types/modules';
 import Title from 'views/components/Title';
 import styles from './ErrorPage.scss';
 
+import ReactKawaii from './ReactKawaii';
+
 type Props = {
   moduleCode: ModuleCode,
 };
@@ -16,29 +18,31 @@ export default function NotFoundPage({ moduleCode }: Props) {
   const eventId = Raven.lastEventId();
 
   return (
-    <div>
+    <div className={styles.centerContainer}>
       <Title>Module Not Found</Title>
 
-      <div className={styles.container}>
-        <h1 className={styles.header}>
-          <span className={styles.expr}>Oops...</span>
-          module {moduleCode} not found.
-        </h1>
-        <p>
-          This usually means you have a typo in the module code, or the module is not offered this
-          year.
-        </p>
-        <p>
-          If you think something <em>should</em> be here,{' '}
-          <button className={styles.link} onClick={() => Raven.showReportDialog({ eventId })}>
-            do tell us
-          </button>!
-        </p>
+      <div className={styles.inline}>
+        <h1 className={styles.bigCharacter}>4</h1>
+        <ReactKawaii />
+        <h1 className={styles.bigCharacter}>4</h1>
+      </div>
 
-        <p>
-          Otherwise, <Link to="/">go back to nusmods.com</Link> or{' '}
-          <Link to="/modules">try the module finder</Link>.
-        </p>
+      <h2>Ooops, module {moduleCode} not found.</h2>
+      <p>
+        This usually means you have a typo in the module code, or the module is not offered this
+        year. <br /> Are you <em>really</em> sure you are at the right page?
+      </p>
+
+      <div className={styles.authButtonContainer}>
+        <button
+          className="btn btn-primary btn-svg"
+          onClick={() => Raven.showReportDialog({ eventId })}
+        >
+          {moduleCode} should be here
+        </button>
+        <button className="btn btn-outline-primary btn-svg">
+          <Link to="/">Woops, bring me home</Link>
+        </button>
       </div>
     </div>
   );
