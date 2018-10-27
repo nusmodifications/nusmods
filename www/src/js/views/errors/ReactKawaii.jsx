@@ -9,6 +9,6 @@ export default class ReactKawaii extends PureComponent<Props> {
   render() {
     const icons = [Planet, SpeechBubble, Mug, Browser, Ghost];
     const Kawaii = icons[Math.floor(Math.random() * icons.length)];
-    return <Kawaii size={120} mood="sad" color="#FF715D" />;
+    return <Kawaii size={100} mood="sad" color="#FF715D" />;
   }
 }
