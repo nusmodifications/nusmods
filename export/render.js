@@ -7,11 +7,11 @@ const { getModules } = require('./data');
 // Arbitrarily high number - just make sure it doesn't clip the timetable
 const VIEWPORT_HEIGHT = 2000;
 
-async function setViewport(page, deviceScaleFactor = 1, height, width) {
+async function setViewport(page, options) {
   await page.setViewport({
-    deviceScaleFactor,
-    width: width || config.pageWidth,
-    height: height || VIEWPORT_HEIGHT,
+    deviceScaleFactor: options.deviceScaleFactor || 1,
+    width: options.width || config.pageWidth,
+    height: options.height || VIEWPORT_HEIGHT,
   });
 }
 
@@ -78,11 +78,8 @@ async function injectData(page, data) {
 }
 
 async function image(page, data, options = {}) {
-  if (options.height && options.width) {
-    const { height, width } = options;
-    await setViewport(page, null, Number(height), Number(width));
-  } else if (options.pixelRatio) {
-    await setViewport(page, Number(options.pixelRatio), height, width);
+  if (options.pixelRatio || (options.height && options.width)) {
+    await setViewport(page, options);
   }
 
   const boundingBox = await injectData(page, data);
