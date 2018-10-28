@@ -2866,5 +2866,37 @@
       "x": 103.77884298563005,
       "y": 1.2967373414850563
     }
+  },
+  "S16-0306": {
+    "roomName": "Seminar Room",
+    "floor": 3,
+    "location": {
+      "x": 103.78020528302606,
+      "y": 1.2966934651120505
+    }
+  },
+  "UTSRC-LT52": {
+    "roomName": "Lecture Theatre 52",
+    "floor": 2,
+    "location": {
+      "x": 103.77300515770914,
+      "y": 1.3041273122931338
+    }
+  },
+  "BIZ1-CMRI": {
+    "roomName": "CAMRI Lab",
+    "floor": 3,
+    "location": {
+      "x": 103.7741692364216,
+      "y": 1.2924643324975336
+    }
+  },
+  "CAPT-SR6": {
+    "roomName": "Seminar Room 6, College of Alice and Peter Tan",
+    "floor": -1,
+    "location": {
+      "x": 103.77342529373324,
+      "y": 1.3080039996096091
+    }
   }
 }

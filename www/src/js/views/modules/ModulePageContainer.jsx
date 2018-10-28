@@ -74,7 +74,7 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
     // getting the "Loading chunk x failed." error.
     retry(
       3,
-      () => import('views/modules/ModulePageContent'),
+      () => import(/* webpackChunkName: "module" */ 'views/modules/ModulePageContent'),
       (error) => error.message.includes('Loading chunk ') && window.navigator.onLine,
     )
       .then((module) => this.setState({ ModulePageContent: module.default }))
@@ -121,7 +121,10 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
     }
 
     if (module && ModulePageContent) {
-      return <ModulePageContent moduleCode={moduleCode} />;
+      // Unique key forces component to remount whenever the user moves to
+      // a new module. This allows the internal state (eg. currently selected
+      // timetable semester) of <ModulePageContent> to be consistent
+      return <ModulePageContent key={moduleCode} moduleCode={moduleCode} />;
     }
 
     return <LoadingSpinner />;

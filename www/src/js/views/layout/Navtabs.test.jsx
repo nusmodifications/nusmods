@@ -7,7 +7,7 @@ import { NavtabsComponent } from './Navtabs';
 
 describe(NavtabsComponent, () => {
   test('renders into nav element', () => {
-    const navtabs = shallow(<NavtabsComponent activeSemester={1} />);
+    const navtabs = shallow(<NavtabsComponent activeSemester={1} beta={false} />);
     expect(navtabs).toMatchSnapshot();
   });
 });

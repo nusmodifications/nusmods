@@ -21,9 +21,9 @@ export type SemTimetableConfig = {
 
 //  ModuleLessonConfigWithLessons is a mapping of LessonType to an array of Lessons for a module.
 //  The array of Lessons must belong to that LessonType.
-export type ModuleLessonConfigWithLessons = {|
-  +[LessonType]: Lesson[],
-|};
+export type ModuleLessonConfigWithLessons = {
+  [LessonType]: Lesson[],
+};
 
 // SemTimetableConfig is the timetable data for each semester with lessons data.
 export type SemTimetableConfigWithLessons = {

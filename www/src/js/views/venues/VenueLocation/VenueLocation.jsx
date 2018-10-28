@@ -10,55 +10,73 @@ import ExternalLink from 'views/components/ExternalLink';
 import Modal from 'views/components/Modal';
 import CloseButton from 'views/components/CloseButton';
 import { floorName } from 'utils/venues';
-
 /** @var { VenueLocationMap } */
 import venueLocations from 'data/venues.json';
+import VenueContext from 'views/venues/VenueContext';
 
 import { icon } from './icons';
 import FeedbackModal from './FeedbackModal';
-import styles from './VenueLocation.scss';
 import ImproveVenueForm from './ImproveVenueForm';
+import ExpandMap from './ExpandMap';
+import styles from './VenueLocation.scss';
 
-type Props = {
-  venue: string,
-};
+type OwnProps = {|
+  +venue: string,
+|};
 
-type State = {
-  isFeedbackModalOpen: boolean,
-};
+type Props = {|
+  ...OwnProps,
+  // Provided by VenueContext
+  +toggleScrollable: (boolean) => void,
+|};
+
+type State = {|
+  +isFeedbackModalOpen: boolean,
+  +isExpanded: boolean,
+|};
 
 LeafletMap.addInitHook('addHandler', 'gestureHandling', GestureHandling);
 
-function renderMap(position: LatLngTuple) {
-  // Query param for https://developers.google.com/maps/documentation/urls/guide#search-action
-  const googleMapQuery = encodeURIComponent(position.join(','));
-
-  return (
-    <div className={styles.mapWrapper}>
-      <ExternalLink
-        href={`https://www.google.com/maps/search/?api=1&query=${googleMapQuery}`}
-        className={classnames('btn btn-sm btn-primary', styles.gmapBtn)}
-      >
-        Open in Google Maps
-      </ExternalLink>
-      <Map center={position} zoom={18} maxZoom={19} className={styles.map} gestureHandling>
-        <TileLayer
-          attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        <Marker position={position} icon={icon} />
-      </Map>
-    </div>
-  );
-}
-
-export default class VenueLocation extends PureComponent<Props, State> {
-  state = {
+class VenueLocation extends PureComponent<Props, State> {
+  state: State = {
     isFeedbackModalOpen: false,
+    isExpanded: false,
   };
 
   openModal = () => this.setState({ isFeedbackModalOpen: true });
   closeModal = () => this.setState({ isFeedbackModalOpen: false });
+  toggleMapExpand = () => {
+    const isExpanded = !this.state.isExpanded;
+
+    this.setState({ isExpanded });
+    this.props.toggleScrollable(!isExpanded);
+  };
+
+  renderMap(position: LatLngTuple) {
+    // Query param for https://developers.google.com/maps/documentation/urls/guide#search-action
+    const googleMapQuery = encodeURIComponent(position.join(','));
+    const { isExpanded } = this.state;
+
+    return (
+      <div className={classnames(styles.mapWrapper, { [styles.expanded]: isExpanded })}>
+        <ExternalLink
+          href={`https://www.google.com/maps/search/?api=1&query=${googleMapQuery}`}
+          className={classnames('btn btn-sm btn-primary', styles.gmapBtn)}
+        >
+          Open in Google Maps
+        </ExternalLink>
+
+        <Map center={position} zoom={18} maxZoom={19} className={styles.map}>
+          <TileLayer
+            attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          <Marker position={position} icon={icon} />
+          <ExpandMap isExpanded={isExpanded} onToggleExpand={this.toggleMapExpand} />
+        </Map>
+      </div>
+    );
+  }
 
   render() {
     const { venue } = this.props;
@@ -77,8 +95,8 @@ export default class VenueLocation extends PureComponent<Props, State> {
 
           <Modal isOpen={this.state.isFeedbackModalOpen} onRequestClose={this.closeModal} animate>
             <CloseButton onClick={this.closeModal} />
-            <h2 className={styles.feedbackTitle}>Improve {this.props.venue}</h2>
-            <ImproveVenueForm venue={this.props.venue} />
+            <h2 className={styles.feedbackTitle}>Improve {venue}</h2>
+            <ImproveVenueForm venue={venue} />
           </Modal>
         </Fragment>
       );
@@ -99,7 +117,7 @@ export default class VenueLocation extends PureComponent<Props, State> {
         </p>
 
         {position ? (
-          renderMap(position)
+          this.renderMap(position)
         ) : (
           <Fragment>
             <p>We don&apos;t have the location of this venue.</p>
@@ -130,4 +148,14 @@ export default class VenueLocation extends PureComponent<Props, State> {
       </div>
     );
   }
+}
+
+export default function(props: OwnProps) {
+  return (
+    <VenueContext.Consumer>
+      {({ toggleDetailScrollable }) => (
+        <VenueLocation toggleScrollable={toggleDetailScrollable} {...props} />
+      )}
+    </VenueContext.Consumer>
+  );
 }

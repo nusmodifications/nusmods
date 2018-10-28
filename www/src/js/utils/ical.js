@@ -118,7 +118,6 @@ export function calculateExclusion(lesson: RawLesson, firstLesson: Date) {
     default: {
       const weeksWithClasses = lesson.WeekText.split(',').map((w) => parseInt(w, 10));
       excludedWeeks = _.union(excludedWeeks, _.difference(ALL_WEEKS, weeksWithClasses));
-      break;
     }
   }
 

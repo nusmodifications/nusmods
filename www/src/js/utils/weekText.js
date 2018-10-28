@@ -1,13 +1,6 @@
 // @flow
-import NUSModerator from 'nusmoderator';
+import NUSModerator, { type AcadWeekInfo } from 'nusmoderator';
 import { noBreak } from 'utils/react';
-
-type AcadWeekInfo = {
-  year: string,
-  sem: 'Semester 1' | 'Semester 2' | 'Special Sem 1' | 'Special Sem 2',
-  type: 'Instructional' | 'Reading' | 'Examination' | 'Recess' | 'Vacation' | 'Orientation',
-  num: ?number,
-};
 
 export const getWeekText = (acadWeekInfo: AcadWeekInfo) => {
   const parts: Array<string> = [`AY20${acadWeekInfo.year}`];
@@ -28,7 +21,7 @@ export const getWeekText = (acadWeekInfo: AcadWeekInfo) => {
 
 // Text computed in an IIFE because this only needs to be computed on page load.
 const weekText = (() => {
-  const acadWeekInfo: AcadWeekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(new Date());
+  const acadWeekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(new Date());
   return getWeekText(acadWeekInfo);
 })();
 

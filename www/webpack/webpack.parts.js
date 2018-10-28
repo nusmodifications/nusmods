@@ -3,11 +3,9 @@ const webpack = require('webpack');
 const _ = require('lodash');
 
 const { GenerateSW } = require('workbox-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const cssnano = require('cssnano');
 const FlowStatusWebpackPlugin = require('flow-status-webpack-plugin');
+const StyleLintPlugin = require('stylelint-webpack-plugin');
 const childProcess = require('child_process');
 const moment = require('moment');
 
@@ -15,7 +13,6 @@ const packageJson = require('../package.json');
 const nusmods = require('../src/js/apis/nusmods');
 const config = require('../src/js/config/app-config.json');
 
-const IS_DEV = process.env.NODE_ENV === 'development';
 const ROOT = path.join(__dirname, '..');
 const SRC = 'src';
 
@@ -45,20 +42,7 @@ const VENDOR = [
   'history', // History module used by router
   'fbjs', // facebook deps
   'prop-types', // gone but not forgotten
-  'loader', // style loader fallbacks
-  'equal', // various comparison libs used by deps
 ];
-
-const DLL = {
-  ENTRIES: {
-    vendor: VENDOR,
-  },
-  FILE_FORMAT: '[name].dll.js',
-};
-
-function insertIf(condition, element) {
-  return condition ? [element] : [];
-}
 
 /**
  * Set environment variables (and more).
@@ -121,20 +105,39 @@ exports.extractBundle = ({ name, entries }) => ({
  *
  * @see https://survivejs.com/webpack/developing/linting/
  */
-exports.lintJavaScript = ({ include, exclude, options }) => ({
-  module: {
-    rules: [
-      {
-        test: /\.(js|jsx)$/,
-        include,
-        exclude,
-        enforce: 'pre',
+exports.lintJavaScript = ({ include, exclude, options }) =>
+  process.env.DISABLE_ESLINT
+    ? {}
+    : {
+        module: {
+          rules: [
+            {
+              test: /\.(js|jsx)$/,
+              include,
+              exclude,
+              enforce: 'pre',
 
-        use: [...insertIf(IS_DEV, 'cache-loader'), { loader: 'eslint-loader', options }],
-      },
-    ],
-  },
-});
+              use: [{ loader: 'eslint-loader', options }],
+            },
+          ],
+        },
+      };
+
+/**
+ * Uses StyleLint to lint CSS
+ * @returns {*}
+ */
+exports.lintCSS = (options) =>
+  process.env.DISABLE_STYLELINT
+    ? {}
+    : {
+        plugins: [
+          new StyleLintPlugin({
+            context: PATHS.app,
+            ...options,
+          }),
+        ],
+      };
 
 /**
  * Allows us to write ES6/ES2015 Javascript.
@@ -150,57 +153,13 @@ exports.transpileJavascript = ({ include, exclude, options }) => ({
         include,
         exclude,
 
-        use: [...insertIf(IS_DEV, 'cache-loader'), { loader: 'babel-loader', options }],
+        use: [{ loader: 'babel-loader', options }],
       },
     ],
   },
 });
 
-/**
- * Minifies Javascript to make them smaller and faster.
- *
- * @see https://webpack.js.org/plugins/uglifyjs-webpack-plugin/
- * @see https://survivejs.com/webpack/optimizing/minifying/
- */
-exports.minifyJavascript = () =>
-  // TODO: Use Babili instead when it's out of beta
-  // Currently breaks Timify.js
-  // SEE: https://webpack.js.org/plugins/babili-webpack-plugin/
-  /*
-  plugins: [
-    new BabiliPlugin({
-      mangle: {
-        blacklist: ['$'],
-      },
-      removeConsole: false,
-      keepFnName: true,
-    }),
-  ],
-  */
-  ({
-    plugins: [
-      new UglifyJsPlugin({
-        sourceMap: true,
-        // See: https://github.com/mishoo/UglifyJS2/tree/harmony
-        uglifyOptions: {
-          // Don't beautify output (enable for neater output).
-          beautify: false,
-          // Eliminate comments.
-          comments: false,
-          // Compression specific options.
-          compress: {
-            // Two passes yield the most optimal results
-            passes: 2,
-          },
-          // Required to avoid Safari 10/11 bugs
-          safari10: true,
-        },
-      }),
-    ],
-  });
-
 exports.getCSSConfig = ({ options } = {}) => [
-  ...insertIf(IS_DEV, 'cache-loader'), // Because css-loader is slow
   {
     loader: 'css-loader',
     // Enable 'composes' from other scss files
@@ -240,21 +199,6 @@ exports.loadCSS = ({ include, exclude, options } = {}) => ({
 });
 
 /**
- * Minifies CSS to make it super small.
- *
- * @see https://survivejs.com/webpack/optimizing/minifying/#minifying-css
- */
-exports.minifyCSS = ({ options }) => ({
-  plugins: [
-    new OptimizeCSSAssetsPlugin({
-      cssProcessor: cssnano,
-      cssProcessorOptions: options,
-      canPrint: false,
-    }),
-  ],
-});
-
-/**
  * Allows importing images into javascript.
  *
  * @see https://webpack.js.org/guides/asset-management/#loading-images
@@ -282,19 +226,20 @@ exports.loadImages = ({ include, exclude, options } = {}) => ({
  *
  * @see https://survivejs.com/webpack/loading/javascript/#setting-up-flow
  */
-exports.flow = ({ failOnError, flowArgs }) => ({
-  // TODO: Use https://github.com/facebookincubator/create-react-app/pull/1152 instead
-  // TODO: Check out https://codemix.github.io/flow-runtime/#/
-  plugins: [
-    new FlowStatusWebpackPlugin({
-      // No reason to restart flow server
-      // if there's already one running.
-      restartFlow: false,
-      failOnError,
-      flowArgs,
-    }),
-  ],
-});
+exports.flow = ({ failOnError, flowArgs }) =>
+  process.env.DISABLE_FLOW
+    ? {}
+    : {
+        // TODO: Check out https://codemix.github.io/flow-runtime/#/
+        plugins: [
+          new FlowStatusWebpackPlugin({
+            // No reason to restart flow server if there's already one running.
+            restartFlow: false,
+            failOnError,
+            flowArgs,
+          }),
+        ],
+      };
 
 /**
  * Use Workbox to enable offline support with service worker
@@ -391,4 +336,3 @@ exports.appVersion = () => {
 
 exports.PATHS = PATHS;
 exports.VENDOR = VENDOR;
-exports.DLL = DLL;
