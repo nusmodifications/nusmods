@@ -115,7 +115,7 @@
     "bowser": "1.9.4",
     "classnames": "2.2.6",
     "core-js": "2.5.7",
-    "date-fns": "2.0.0-alpha.23",
+    "date-fns": "2.0.0-alpha.24",
     "downshift": "2.2.3",
     "ical-generator": "https://github.com/ZhangYiJiang/ical-generator.git#ed6928fe",
     "immutability-helper": "2.8.1",
