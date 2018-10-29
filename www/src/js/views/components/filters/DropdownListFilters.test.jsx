@@ -7,7 +7,7 @@ import FilterGroup from 'utils/filters/FilterGroup';
 import { createGroup, createModule } from 'test-utils/filterHelpers';
 import { DropdownListFiltersComponent } from './DropdownListFilters';
 
-describe('<DropdownListFilters>', () => {
+describe(DropdownListFiltersComponent, () => {
   const CHECKBOX = '☑';
   const modules = [createModule('CS1010S'), createModule('CS3216')];
 

@@ -84,12 +84,12 @@ export class TodayContainerComponent extends PureComponent<Props, State> {
     weatherAPI
       .twoHour()
       .then((weather) => this.setState({ weather: { ...this.state.weather, '0': weather } }))
-      .catch(Raven.captureException);
+      .catch((e) => Raven.captureException(e));
 
     weatherAPI
       .tomorrow()
       .then((weather) => this.setState({ weather: { ...this.state.weather, '1': weather } }))
-      .catch(Raven.captureException);
+      .catch((e) => Raven.captureException(e));
 
     weatherAPI
       .fourDay()
@@ -102,7 +102,7 @@ export class TodayContainerComponent extends PureComponent<Props, State> {
           }
         });
       })
-      .catch(Raven.captureException);
+      .catch((e) => Raven.captureException(e));
   }
 
   renderBeforeNextLessonCard(nextLesson: Lesson, marker: Node) {
