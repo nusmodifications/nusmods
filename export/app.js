@@ -49,8 +49,19 @@ router
       pixelRatio: _.clamp((Number(ctx.query.pixelRatio) || 1), 1, 3),
     };
 
-    if (height && width) {
-      options = { ...options, height, width };
+    if (
+      typeof height !== 'undefined' &&
+      typeof width !== 'undefined' &&
+      !Number.isNan(height) && // accept floats
+      !Number.isNan(width) && // accept floats
+      height > 0 &&
+      width > 0
+    ) {
+      options = {
+        ...options,
+        height: Number(height),
+        width: Number(width),
+      };
     }
 
     ctx.body = await render.image(page, data, options);
