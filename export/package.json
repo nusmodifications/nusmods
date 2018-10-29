@@ -13,6 +13,8 @@
     "deploy": "rsync -avu --delete-after . ../../nusmods-export"
   },
   "dependencies": {
+    "@sentry/browser": "^4.2.3",
+    "@sentry/node": "^4.2.3",
     "axios": "0.18.0",
     "bunyan": "1.8.12",
     "forever": "0.15.3",
