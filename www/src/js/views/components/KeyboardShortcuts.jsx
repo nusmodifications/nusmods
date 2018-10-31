@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { type Element, type ElementType, PureComponent } from 'react';
 import { withRouter, type ContextRouter } from 'react-router-dom';
 import type { Dispatch } from 'redux';
 import { connect } from 'react-redux';
@@ -139,13 +139,19 @@ export class KeyboardShortcutsComponent extends PureComponent<Props, State> {
     }
   }
 
-  renderShortcut = (shortcut: Shortcut) => {
+  renderSingleShortcut = (shortcut: string): Element<ElementType> => {
+    const capitalized = shortcut.replace(/\b([a-z])/, (c) => c.toUpperCase());
+    return <kbd key={shortcut}>{capitalized}</kbd>;
+  };
+
+  renderShortcut = (
+    shortcut: Shortcut,
+  ): Element<ElementType> | Array<Element<ElementType> | string> => {
     if (typeof shortcut === 'string') {
-      const capitalized = shortcut.replace(/\b([a-z])/, (c) => c.toUpperCase());
-      return <kbd key={shortcut}>{capitalized}</kbd>;
+      return this.renderSingleShortcut(shortcut);
     }
 
-    return intersperse(shortcut.map(this.renderShortcut), ' or ');
+    return intersperse(shortcut.map(this.renderSingleShortcut), ' or ');
   };
 
   render() {

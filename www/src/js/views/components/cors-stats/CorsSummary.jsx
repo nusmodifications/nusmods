@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import React, { type Element, type ElementType } from 'react';
 import { map, size } from 'lodash';
 
 import type { BiddingSummary } from 'types/cors';
@@ -21,7 +21,7 @@ const STUDENT_TYPE_LABELS = {
  * Summary statistics consists of minimum amount of bid points required
  * to get a module for each type of student in each faculty
  */
-export default function(props: Props) {
+export default function(props: Props): Element<ElementType>[] {
   const { summary } = props;
 
   return map(summary, (facultyStats, name) => (

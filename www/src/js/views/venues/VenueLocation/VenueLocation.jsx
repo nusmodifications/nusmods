@@ -20,7 +20,7 @@ import ImproveVenueForm from './ImproveVenueForm';
 import ExpandMap from './ExpandMap';
 import styles from './VenueLocation.scss';
 
-type OwnProps = {|
+export type OwnProps = {|
   +venue: string,
 |};
 

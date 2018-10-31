@@ -44,7 +44,7 @@ export default class ModuleFinderList extends Component<Props> {
     });
   };
 
-  pages() {
+  pages(): Module[][] {
     return _.chunk(this.props.modules, MODULES_PER_PAGE);
   }
 
