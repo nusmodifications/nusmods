@@ -80,12 +80,16 @@ jobs:
     <<: *defaults
     working_directory: ~/nusmods/www
     environment:
-      NODE_ENV: test
+      NODE_ENV: production
     steps:
       - attach_workspace:
           at: ~/nusmods
       - restore_cache: *restore_node_deps
-      - run: yarn
+      - run:
+          name: Install dependencies
+          environment:
+            NODE_ENV: test
+          command: yarn
       - save_cache: *save_node_deps
       - run:
           name: Type check code
@@ -96,6 +100,7 @@ jobs:
       - run:
           name: Test code
           environment:
+            NODE_ENV: test
             JEST_JUNIT_OUTPUT: reports/junit/js-test-results.xml
           command: |
             set -e

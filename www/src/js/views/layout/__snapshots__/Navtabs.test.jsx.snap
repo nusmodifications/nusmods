@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders into nav element 1`] = `
+exports[`NavtabsComponent renders into nav element 1`] = `
 <nav
   className="nav"
 >

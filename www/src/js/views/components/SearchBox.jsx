@@ -22,19 +22,17 @@ type State = {
 };
 
 export default class SearchBox extends PureComponent<Props, State> {
-  props: Props;
-
   constructor(props: Props) {
     super(props);
 
+    this.state = {
+      isFocused: false,
+      searchTerm: this.props.initialSearchTerm || '',
+      hasChanges: false,
+    };
+
     this.props.onSearch(this.state.searchTerm);
   }
-
-  state: State = {
-    isFocused: false,
-    searchTerm: this.props.initialSearchTerm || '',
-    hasChanges: false,
-  };
 
   onSubmit = () => {
     const { searchElement } = this;

@@ -4,7 +4,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { OnlineComponent } from './Online';
 
-describe('<Online>', () => {
+describe(OnlineComponent, () => {
   // React 15.6 doesn't allow raw string as content
   const testContent = <span>Test</span>;
 

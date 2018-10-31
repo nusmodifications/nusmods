@@ -13,6 +13,7 @@ import ContributorsContainer from 'views/static/ContributorsContainer';
 import FaqContainer from 'views/static/FaqContainer';
 import AppsContainer from 'views/static/AppsContainer';
 import NotFoundPage from 'views/errors/NotFoundPage';
+import TodayContainer from 'views/today/TodayContainer';
 import HacktoberfestContainer from 'views/static/HacktoberfestContainer';
 import ExternalRedirect from './ExternalRedirect';
 
@@ -25,6 +26,7 @@ export default function Routes() {
       <Route exact path="/modules" component={ModuleFinderContainer} />
       <Route path="/modules/:moduleCode/:slug?" component={ModulePageContainer} />
       <Route path="/venues/:venue?" component={VenuesContainer} />
+      <Route path="/today" component={TodayContainer} />
 
       <Route path="/about" component={AboutContainer} />
       <Route path="/faq" component={FaqContainer} />

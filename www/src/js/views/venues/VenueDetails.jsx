@@ -20,16 +20,16 @@ import VenueLocation from './VenueLocation';
 
 import styles from './VenueDetails.scss';
 
-type Props = {
+type Props = {|
   ...ContextRouter,
 
-  venue: Venue,
-  previous?: ?Venue,
-  next?: ?Venue,
-  availability: DayAvailability[],
+  +venue: Venue,
+  +previous?: ?Venue,
+  +next?: ?Venue,
+  +availability: DayAvailability[],
 
-  matchBreakpoint: boolean,
-};
+  +matchBreakpoint: boolean,
+|};
 
 export class VenueDetailsComponent extends PureComponent<Props> {
   arrangedLessons() {

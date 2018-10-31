@@ -86,47 +86,45 @@ export class ExportMenuComponent extends PureComponent<Props, State> {
           <ChevronDown className={classnames(styles.chevron, 'svg-small')} />
         </button>
 
-        {isOpen && (
-          <div
-            className={classnames('dropdown-menu show', styles.dropdownMenu)}
-            {...getMenuProps()}
-          >
-            <Online>
-              <a
-                href={exportApi.image(semester, state, window.devicePixelRatio)}
-                className={classnames('dropdown-item', {
-                  'dropdown-selected': counter.matches(highlightedIndex),
-                })}
-                {...getItemProps({ item: IMAGE })}
-              >
-                <Image className="svg svg-small" /> Image (.png)
-              </a>
+        <div
+          className={classnames('dropdown-menu', styles.dropdownMenu, { show: isOpen })}
+          {...getMenuProps()}
+        >
+          <Online>
+            <a
+              href={exportApi.image(semester, state, window.devicePixelRatio)}
+              className={classnames('dropdown-item', {
+                'dropdown-selected': counter.matches(highlightedIndex),
+              })}
+              {...getItemProps({ item: IMAGE })}
+            >
+              <Image className="svg svg-small" /> Image (.png)
+            </a>
 
-              <a
-                href={exportApi.pdf(semester, state)}
-                className={classnames('dropdown-item', {
-                  'dropdown-selected': counter.matches(highlightedIndex),
-                })}
-                {...getItemProps({ item: PDF })}
-              >
-                <FileText className="svg svg-small" /> PDF (.pdf)
-              </a>
-            </Online>
+            <a
+              href={exportApi.pdf(semester, state)}
+              className={classnames('dropdown-item', {
+                'dropdown-selected': counter.matches(highlightedIndex),
+              })}
+              {...getItemProps({ item: PDF })}
+            >
+              <FileText className="svg svg-small" /> PDF (.pdf)
+            </a>
+          </Online>
 
-            {SUPPORTS_DOWNLOAD && (
-              <button
-                className={classnames('dropdown-item', {
-                  'dropdown-selected': counter.matches(highlightedIndex),
-                })}
-                type="button"
-                {...getItemProps({ item: CALENDAR })}
-              >
-                <Calendar className="svg svg-small" />iCalendar File (.ics)<br />
-                (For Google Calendar / Outlook)
-              </button>
-            )}
-          </div>
-        )}
+          {SUPPORTS_DOWNLOAD && (
+            <button
+              className={classnames('dropdown-item', {
+                'dropdown-selected': counter.matches(highlightedIndex),
+              })}
+              type="button"
+              {...getItemProps({ item: CALENDAR })}
+            >
+              <Calendar className="svg svg-small" />iCalendar File (.ics)<br />
+              (For Google Calendar / Outlook)
+            </button>
+          )}
+        </div>
 
         <Modal
           isOpen={this.state.isMacWarningOpen}
