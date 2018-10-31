@@ -1,5 +1,5 @@
 // @flow
-import { createContext } from 'react';
+import { createContext, type Context } from 'react';
 
 type VenueContextValue = {|
   +toggleDetailScrollable: (boolean) => void,
@@ -11,6 +11,6 @@ const defaultValue: VenueContextValue = {
   toggleDetailScrollable: () => {},
 };
 
-const VenueContext = createContext<VenueContextValue>(defaultValue);
+const VenueContext: Context<VenueContextValue> = createContext(defaultValue);
 
 export default VenueContext;
