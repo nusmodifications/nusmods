@@ -196,10 +196,12 @@ export class TodayContainerComponent extends PureComponent<Props, State> {
     const timetableLessons: Lesson[] = timetableLessonsArray(this.props.timetableWithLessons);
 
     // Inject color into module
-    const coloredTimetableLessons = timetableLessons.map((lesson: Lesson): ColoredLesson => ({
-      ...lesson,
-      colorIndex: colors[lesson.ModuleCode],
-    }));
+    const coloredTimetableLessons = timetableLessons.map(
+      (lesson: Lesson): ColoredLesson => ({
+        ...lesson,
+        colorIndex: colors[lesson.ModuleCode],
+      }),
+    );
 
     const groupedLessons = groupLessonsByDay(coloredTimetableLessons);
 

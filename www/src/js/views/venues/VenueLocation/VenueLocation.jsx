@@ -113,7 +113,8 @@ class VenueLocation extends PureComponent<Props, State> {
               {' '}
               is on <strong>floor {floorName(location.floor)}</strong>
             </Fragment>
-          )}.
+          )}
+          .
         </p>
 
         {position ? (

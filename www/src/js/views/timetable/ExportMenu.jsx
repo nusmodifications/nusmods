@@ -82,7 +82,8 @@ export class ExportMenuComponent extends PureComponent<Props, State> {
           type="button"
           onClick={toggleMenu}
         >
-          <Download className="svg svg-small" />Download
+          <Download className="svg svg-small" />
+          Download
           <ChevronDown className={classnames(styles.chevron, 'svg-small')} />
         </button>
 
@@ -120,7 +121,9 @@ export class ExportMenuComponent extends PureComponent<Props, State> {
               type="button"
               {...getItemProps({ item: CALENDAR })}
             >
-              <Calendar className="svg svg-small" />iCalendar File (.ics)<br />
+              <Calendar className="svg svg-small" />
+              iCalendar File (.ics)
+              <br />
               (For Google Calendar / Outlook)
             </button>
           )}
@@ -153,4 +156,7 @@ export class ExportMenuComponent extends PureComponent<Props, State> {
   }
 }
 
-export default connect((state: StoreState) => ({ state }), { downloadAsIcal })(ExportMenuComponent);
+export default connect(
+  (state: StoreState) => ({ state }),
+  { downloadAsIcal },
+)(ExportMenuComponent);
