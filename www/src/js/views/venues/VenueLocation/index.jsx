@@ -6,7 +6,7 @@ import LoadingSpinner from 'views/components/LoadingSpinner';
 import type { OwnProps } from './VenueLocation';
 
 const AsyncVenueLocation: ComponentType<OwnProps> = Loadable({
-  loader: () => import(/* webpackChunkName: "venue" */ './VenueLocation'),
+  loader: () => import(/* webpackChunkName: "venue" , webpackPreload: true */ './VenueLocation'),
   loading: (props: LoadingProps) => {
     if (props.error) {
       return (

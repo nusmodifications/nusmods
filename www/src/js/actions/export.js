@@ -25,8 +25,8 @@ export const SUPPORTS_DOWNLOAD = 'download' in document.createElement('a');
 export function downloadAsIcal(semester: Semester) {
   return (dispatch: Function, getState: GetState) => {
     Promise.all([
-      import(/* webpackChunkName: "export" */ 'ical-generator'),
-      import(/* webpackChunkName: "export" */ 'utils/ical'),
+      import(/* webpackChunkName: "export", webpackPreload: true */ 'ical-generator'),
+      import(/* webpackChunkName: "export", webpackPreload: true */ 'utils/ical'),
     ])
       .then(([ical, icalUtils]) => {
         const {

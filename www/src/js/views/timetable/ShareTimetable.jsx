@@ -55,7 +55,7 @@ export default class ShareTimetable extends PureComponent<Props, State> {
   loadShortUrl(url: string) {
     const showFullUrl = () => this.setState({ shortUrl: url });
 
-    import(/* webpackChunkName: "export" */ 'react-qr-svg').then((module) => {
+    import(/* webpackChunkName: "export", webpackPreload: true */ 'react-qr-svg').then((module) => {
       this.QRCode = module.QRCode;
     });
 

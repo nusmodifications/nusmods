@@ -3,7 +3,7 @@ import config from 'config';
 
 export default function initializeGA() {
   window.addEventListener('load', () => {
-    import(/* webpackChunkName: "autotrack" */ 'autotrack/autotrack').then(() => {
+    import(/* webpackChunkName: "autotrack", webpackPreload: true */ 'autotrack/autotrack').then(() => {
       const origHandleUrlChange = window.gaplugins.UrlChangeTracker.prototype.handleUrlChange;
       // The following is a mega hack for using react-helmet together with autotrack...
       // This timeout is needed because React (and consequently React Helmet's) render
