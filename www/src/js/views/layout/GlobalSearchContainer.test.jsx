@@ -11,12 +11,14 @@ import createHistory from 'test-utils/createHistory';
 const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
 // Produces 26 * 26 = 676 modules of the form AA1010, AB1010, ...
-const MODULES = _.flatMap(letters, (firstLetter): ModuleCondensed[] =>
-  letters.map((secondLetter) => ({
-    ModuleCode: `${firstLetter}${secondLetter}1010`,
-    ModuleTitle: 'Test',
-    Semesters: [1],
-  })),
+const MODULES = _.flatMap(
+  letters,
+  (firstLetter): ModuleCondensed[] =>
+    letters.map((secondLetter) => ({
+      ModuleCode: `${firstLetter}${secondLetter}1010`,
+      ModuleTitle: 'Test',
+      Semesters: [1],
+    })),
 );
 
 // Produces 26 venues of the form AA-1, BB-1, CC-1, ...

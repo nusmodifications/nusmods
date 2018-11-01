@@ -227,14 +227,17 @@ const mapStateToProps = (state: StoreState) => ({
   betaTester: state.settings.beta || false,
 });
 
-const connectedSettings = connect(mapStateToProps, {
-  selectTheme,
-  selectNewStudent,
-  selectFaculty,
-  selectMode,
-  toggleCorsNotificationGlobally,
-  dismissCorsNotification,
-  enableCorsNotification,
-  toggleBetaTesting,
-})(SettingsContainer);
+const connectedSettings = connect(
+  mapStateToProps,
+  {
+    selectTheme,
+    selectNewStudent,
+    selectFaculty,
+    selectMode,
+    toggleCorsNotificationGlobally,
+    dismissCorsNotification,
+    enableCorsNotification,
+    toggleBetaTesting,
+  },
+)(SettingsContainer);
 export default deferComponentRender(connectedSettings);

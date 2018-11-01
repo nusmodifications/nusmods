@@ -35,7 +35,9 @@ export default function Checklist({ groupId, filters, onChange, getCount }: Prop
                 [styles.enabled]: filter.enabled,
               })}
             >
-              {filter.label}&nbsp;<span className="text-muted">({getCount(filter)})</span>
+              {filter.label}
+              &nbsp;
+              <span className="text-muted">({getCount(filter)})</span>
             </label>
           </li>
         );

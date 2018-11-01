@@ -34,7 +34,10 @@ export class ScrollToTopComponent extends Component<Props> {
   }
 
   componentDidUpdate(prevProps: Props) {
-    const { onPathChange, location: { pathname, hash } } = this.props;
+    const {
+      onPathChange,
+      location: { pathname, hash },
+    } = this.props;
 
     if (
       onPathChange &&
