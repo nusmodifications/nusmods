@@ -12,7 +12,7 @@ export function isArchiveLoading(state: State, moduleCode: ModuleCode) {
   );
 }
 
-export function availableArchive(state: State, moduleCode: ModuleCode) {
+export function availableArchive(state: State, moduleCode: ModuleCode): string[] {
   return config.archiveYears.filter((year) =>
     isSuccess(state, fetchArchiveRequest(moduleCode, year)),
   );
