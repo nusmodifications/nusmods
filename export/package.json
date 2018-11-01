@@ -16,15 +16,15 @@
     "axios": "0.18.0",
     "bunyan": "1.8.12",
     "forever": "0.15.3",
-    "fs-extra": "5.0.0",
+    "fs-extra": "7.0.0",
     "http-graceful-shutdown": "2.1.1",
     "koa": "2.6.1",
     "koa-router": "7.4.0",
     "koa-views": "6.1.4",
     "lodash": "4.17.11",
-    "nodemon": "1.17.2",
+    "nodemon": "1.18.5",
     "pug": "2.0.3",
-    "puppeteer": "1.2.0",
+    "puppeteer": "1.9.0",
     "raven": "2.6.3"
   }
 }
