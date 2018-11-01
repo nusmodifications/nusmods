@@ -28,7 +28,11 @@ export default class BetaToggle extends PureComponent<Props> {
     const testDescriptions = hasTests ? (
       <Fragment>
         <h5>Current tests</h5>
-        <ul>{currentTests.map((test) => <li key={test}>{test}</li>)}</ul>
+        <ul>
+          {currentTests.map((test) => (
+            <li key={test}>{test}</li>
+          ))}
+        </ul>
       </Fragment>
     ) : (
       <p>There are currently no tests</p>

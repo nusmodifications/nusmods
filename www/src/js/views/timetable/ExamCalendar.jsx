@@ -136,7 +136,7 @@ function ExamWeek({
 }
 
 export default class ExamCalendar extends PureComponent<Props> {
-  getVisibleModules() {
+  getVisibleModules(): ModuleWithColor[] {
     return this.props.modules.filter((module) => !module.hiddenInTimetable);
   }
 

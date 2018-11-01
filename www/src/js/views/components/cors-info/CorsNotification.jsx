@@ -119,9 +119,12 @@ const mapStateToProps = (state: State) => ({
   dismissedRounds: state.settings.corsNotification.dismissed,
 });
 
-const withStoreCorsNotification = connect(mapStateToProps, {
-  dismissCorsNotification,
-  openNotification,
-})(CorsNotificationComponent);
+const withStoreCorsNotification = connect(
+  mapStateToProps,
+  {
+    dismissCorsNotification,
+    openNotification,
+  },
+)(CorsNotificationComponent);
 const CorsNotification = withRouter(withStoreCorsNotification);
 export default CorsNotification;

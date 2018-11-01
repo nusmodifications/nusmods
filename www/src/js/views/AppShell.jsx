@@ -174,13 +174,16 @@ const mapStateToProps = (state: StoreState) => ({
   activeSemester: state.app.activeSemester,
 });
 
-const connectedAppShell = connect(mapStateToProps, {
-  fetchModuleList,
-  fetchTimetableModules,
-  setTimetable,
-  validateTimetable,
-  openNotification,
-})(AppShellComponent);
+const connectedAppShell = connect(
+  mapStateToProps,
+  {
+    fetchModuleList,
+    fetchTimetableModules,
+    setTimetable,
+    validateTimetable,
+    openNotification,
+  },
+)(AppShellComponent);
 
 // withRouter here is used to ensure re-render when routes change, since
 // connect implements shouldComponentUpdate based purely on props. If it

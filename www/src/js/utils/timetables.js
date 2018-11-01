@@ -102,11 +102,13 @@ export function hydrateSemTimetableWithLessons(
           (lesson: RawLesson): boolean =>
             lesson.LessonType === lessonType && lesson.ClassNo === classNo,
         );
-        const timetableLessons: Array<Lesson> = newLessons.map((lesson: RawLesson): Lesson => ({
-          ...lesson,
-          ModuleCode: moduleCode,
-          ModuleTitle: module.ModuleTitle,
-        }));
+        const timetableLessons: Array<Lesson> = newLessons.map(
+          (lesson: RawLesson): Lesson => ({
+            ...lesson,
+            ModuleCode: moduleCode,
+            ModuleTitle: module.ModuleTitle,
+          }),
+        );
         return timetableLessons;
       });
     },

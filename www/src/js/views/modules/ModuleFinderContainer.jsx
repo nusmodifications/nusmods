@@ -377,7 +377,8 @@ const mapStateToProps = (state: StoreState) => ({
 
 // Explicitly naming the components to make HMR work
 const ModuleFinderContainerWithRouter = withRouter(ModuleFinderContainerComponent);
-const ModuleFinderContainer = connect(mapStateToProps, { resetModuleFinder })(
-  ModuleFinderContainerWithRouter,
-);
+const ModuleFinderContainer = connect(
+  mapStateToProps,
+  { resetModuleFinder },
+)(ModuleFinderContainerWithRouter);
 export default ModuleFinderContainer;

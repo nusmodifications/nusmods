@@ -44,4 +44,7 @@ function ModuleTombstone(props: Props) {
 
 export { ModuleTombstone as DisconnectedModuleTombstone };
 
-export default connect(null, { undo })(ModuleTombstone);
+export default connect(
+  null,
+  { undo },
+)(ModuleTombstone);

@@ -111,7 +111,8 @@ class TimetableModulesTable extends PureComponent<Props> {
             {getModuleExamDate(module, semester)
               ? `Exam: ${getFormattedModuleExamDate(module, semester)}`
               : 'No Exam'}
-            &nbsp;&middot;&nbsp;{renderMCs(module.ModuleCredit)}
+            &nbsp;&middot;&nbsp;
+            {renderMCs(module.ModuleCredit)}
           </div>
         </div>
       </Fragment>
@@ -147,8 +148,11 @@ class TimetableModulesTable extends PureComponent<Props> {
   }
 }
 
-export default connect((state) => ({ moduleTableOrder: state.settings.moduleTableOrder }), {
-  selectModuleColor,
-  hideLessonInTimetable,
-  showLessonInTimetable,
-})(TimetableModulesTable);
+export default connect(
+  (state) => ({ moduleTableOrder: state.settings.moduleTableOrder }),
+  {
+    selectModuleColor,
+    hideLessonInTimetable,
+    showLessonInTimetable,
+  },
+)(TimetableModulesTable);

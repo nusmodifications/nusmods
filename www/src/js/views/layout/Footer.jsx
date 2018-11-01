@@ -36,7 +36,8 @@ export function FooterComponent(props: Props) {
         NUSMods R version{' '}
         <ExternalLink href={`https://github.com/nusmodifications/nusmods/commit/${commitHash}`}>
           {versionStr}
-        </ExternalLink>.
+        </ExternalLink>
+        .
       </span>
     );
 

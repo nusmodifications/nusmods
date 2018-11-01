@@ -59,6 +59,9 @@ function ModulesTableFooter(props: Props) {
   );
 }
 
-export default connect((state) => ({ moduleTableOrder: state.settings.moduleTableOrder }), {
-  setModuleTableOrder,
-})(ModulesTableFooter);
+export default connect(
+  (state) => ({ moduleTableOrder: state.settings.moduleTableOrder }),
+  {
+    setModuleTableOrder,
+  },
+)(ModulesTableFooter);

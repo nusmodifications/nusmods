@@ -245,10 +245,12 @@ class TimetableContent extends Component<Props, State> {
     }
 
     // Inject color into module
-    const coloredTimetableLessons = timetableLessons.map((lesson: Lesson): ColoredLesson => ({
-      ...lesson,
-      colorIndex: colors[lesson.ModuleCode],
-    }));
+    const coloredTimetableLessons = timetableLessons.map(
+      (lesson: Lesson): ColoredLesson => ({
+        ...lesson,
+        colorIndex: colors[lesson.ModuleCode],
+      }),
+    );
 
     const arrangedLessons = arrangeLessonsForWeek(coloredTimetableLessons);
     const arrangedLessonsWithModifiableFlag: TimetableArrangement = _.mapValues(
@@ -383,10 +385,13 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default connect(mapStateToProps, {
-  removeModule,
-  modifyLesson,
-  changeLesson,
-  cancelModifyLesson,
-  undo,
-})(TimetableContent);
+export default connect(
+  mapStateToProps,
+  {
+    removeModule,
+    modifyLesson,
+    changeLesson,
+    cancelModifyLesson,
+    undo,
+  },
+)(TimetableContent);

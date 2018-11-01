@@ -41,28 +41,31 @@ function appliesTo(studentAccountType: string): StudentType {
   }
 }
 
-export function mergeBiddingStats(biddingStats: BiddingStat[]) {
+export function mergeBiddingStats(biddingStats: BiddingStat[]): GroupedBiddingStat[] {
   // Merge quotas and data from each lecture/sectional group - these groups are interchangeable
   // so its better to take their combined statistics instead
   const groupedStats = groupBy(biddingStats, (stats: BiddingStat) =>
     [stats.AcadYear, stats.Semester, stats.Faculty, stats.Round, stats.StudentAcctType].join('-'),
   );
-  return map(groupedStats, (statsGroup: BiddingStat[]): GroupedBiddingStat => {
-    // eslint-disable-next-line no-shadow
-    const { AcadYear, Faculty, Semester, Round, StudentAcctType } = head(statsGroup);
+  return map(
+    groupedStats,
+    (statsGroup: BiddingStat[]): GroupedBiddingStat => {
+      // eslint-disable-next-line no-shadow
+      const { AcadYear, Faculty, Semester, Round, StudentAcctType } = head(statsGroup);
 
-    return {
-      AcadYear,
-      Faculty,
-      Semester,
-      Round,
+      return {
+        AcadYear,
+        Faculty,
+        Semester,
+        Round,
 
-      StudentType: appliesTo(StudentAcctType),
-      Quota: sumBy(statsGroup, (stats) => Number(stats.Quota)),
-      Bidders: sumBy(statsGroup, (stats) => Number(stats.Bidders)),
-      LowestSuccessfulBid: min(statsGroup.map((stats) => Number(stats.LowestSuccessfulBid))),
-    };
-  }).filter((stat) => stat.StudentType !== NON_BIDDING);
+        StudentType: appliesTo(StudentAcctType),
+        Quota: sumBy(statsGroup, (stats) => Number(stats.Quota)),
+        Bidders: sumBy(statsGroup, (stats) => Number(stats.Bidders)),
+        LowestSuccessfulBid: min(statsGroup.map((stats) => Number(stats.LowestSuccessfulBid))),
+      };
+    },
+  ).filter((stat) => stat.StudentType !== NON_BIDDING);
 }
 
 export function findQuota(stats: GroupedBiddingStat[]): number {
@@ -122,30 +125,33 @@ export function analyseStats(biddingStats: BiddingStat[]): { [string]: SemesterS
       `${stats.AcadYear} ${config.shortSemesterNames[Number(stats.Semester)]}`,
   );
 
-  const extractStats = mapValues(groupedBySem, (stats: GroupedBiddingStat[]): SemesterStats => {
-    // Check if there are multiple faculties
-    const faculties = new Set();
-    stats.forEach((stat) => faculties.add(stat.Faculty));
+  const extractStats = mapValues(
+    groupedBySem,
+    (stats: GroupedBiddingStat[]): SemesterStats => {
+      // Check if there are multiple faculties
+      const faculties = new Set();
+      stats.forEach((stat) => faculties.add(stat.Faculty));
 
-    // Find out how many people have managed to take the module to get a rough idea of
-    // heavily subscribed a module is. This number of bidders may be higher than quota because
-    // students can drop modules during bidding, so we cap it at quota
-    const quota = findQuota(stats);
-    const bids = Math.min(
-      quota,
-      sumBy(stats, (stat) => Math.min(Number(stat.Bidders), Number(stat.Quota))),
-    );
+      // Find out how many people have managed to take the module to get a rough idea of
+      // heavily subscribed a module is. This number of bidders may be higher than quota because
+      // students can drop modules during bidding, so we cap it at quota
+      const quota = findQuota(stats);
+      const bids = Math.min(
+        quota,
+        sumBy(stats, (stat) => Math.min(Number(stat.Bidders), Number(stat.Quota))),
+      );
 
-    const summary = biddingSummary(stats);
+      const summary = biddingSummary(stats);
 
-    return {
-      quota,
-      bids,
-      faculties,
-      stats,
-      summary,
-    };
-  });
+      return {
+        quota,
+        bids,
+        faculties,
+        stats,
+        summary,
+      };
+    },
+  );
 
   return extractStats;
 }
