@@ -42,7 +42,7 @@ function getExamDate(module: Module, semester: Semester): string {
 /**
  * Return a copy of the original Date incremented by the given number of hours
  */
-export function hoursAfter(date: Date, sgHour: number) {
+export function hoursAfter(date: Date, sgHour: number): Date {
   const d = new Date(date.valueOf());
   d.setUTCHours(d.getUTCHours() + Math.floor(sgHour), (sgHour % 1) * 60);
   return d;
@@ -68,7 +68,7 @@ export function isTutorial(lesson: RawLesson): boolean {
   );
 }
 
-export function holidaysForYear(hourOffset: number = 0) {
+export function holidaysForYear(hourOffset: number = 0): Date[] {
   return config.holidays
     .map((date) => new Date(date.valueOf() - SG_UTC_TIME_DIFF_MS)) // Convert to local time
     .map((holiday) => hoursAfter(holiday, hourOffset));

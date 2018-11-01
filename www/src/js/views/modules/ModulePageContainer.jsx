@@ -177,8 +177,9 @@ const mapDispatchToProps = (dispatch: Dispatch<*>, ownProps) => {
   };
 };
 
-const connectedModulePageContainer = connect(mapStateToProps, mapDispatchToProps)(
-  ModulePageContainerComponent,
-);
+const connectedModulePageContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ModulePageContainerComponent);
 const routedModulePageContainer = withRouter(connectedModulePageContainer);
 export default deferComponentRender(routedModulePageContainer);

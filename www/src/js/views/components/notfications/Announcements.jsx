@@ -62,4 +62,7 @@ class Announcements extends PureComponent<Props, State> {
   }
 }
 
-export default connect(null, { toggleFeedback })(Announcements);
+export default connect(
+  null,
+  { toggleFeedback },
+)(Announcements);

@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { type Node, PureComponent } from 'react';
 import { withRouter, type ContextRouter } from 'react-router-dom';
 import type { Dispatch } from 'redux';
 import { connect } from 'react-redux';
@@ -139,7 +139,7 @@ export class KeyboardShortcutsComponent extends PureComponent<Props, State> {
     }
   }
 
-  renderShortcut = (shortcut: Shortcut) => {
+  renderShortcut = (shortcut: Shortcut): Node => {
     if (typeof shortcut === 'string') {
       const capitalized = shortcut.replace(/\b([a-z])/, (c) => c.toUpperCase());
       return <kbd key={shortcut}>{capitalized}</kbd>;

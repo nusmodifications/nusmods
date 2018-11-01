@@ -23,7 +23,8 @@ export default function NotFoundPage() {
           If you think something <em>should</em> be here,{' '}
           <button className={styles.link} onClick={() => Raven.showReportDialog({ eventId })}>
             do tell us
-          </button>!
+          </button>
+          !
         </p>
 
         <p>

@@ -20,7 +20,7 @@ import ImproveVenueForm from './ImproveVenueForm';
 import ExpandMap from './ExpandMap';
 import styles from './VenueLocation.scss';
 
-type OwnProps = {|
+export type OwnProps = {|
   +venue: string,
 |};
 
@@ -113,7 +113,8 @@ class VenueLocation extends PureComponent<Props, State> {
               {' '}
               is on <strong>floor {floorName(location.floor)}</strong>
             </Fragment>
-          )}.
+          )}
+          .
         </p>
 
         {position ? (
