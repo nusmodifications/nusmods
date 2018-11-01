@@ -7,7 +7,7 @@ const { getModules } = require('./data');
 // Arbitrarily high number - just make sure it doesn't clip the timetable
 const VIEWPORT_HEIGHT = 2000;
 
-async function setViewport(page, options) {
+async function setViewport(page, options = {}) {
   await page.setViewport({
     deviceScaleFactor: options.deviceScaleFactor || 1,
     width: options.width || config.pageWidth,
