@@ -9,5 +9,5 @@ $mdc-theme-secondary: theme-color();
 
 $mdc-typography-font-family: $font-family-base;
 
-// MDC Web doesn't allow snackbar bg and font colors to be customized, so
-// we do a hard override in Notifications.scss
+$mdc-snackbar-background-color: var(--gray-dark);
+$mdc-snackbar-foreground-color: var(--gray-lightest);

@@ -8,7 +8,7 @@ import type { ModuleCodeMap } from 'types/reducers';
 
 import { LinkModuleCodesComponent } from './LinkModuleCodes';
 
-describe('LinkModuleCodesComponent', () => {
+describe(LinkModuleCodesComponent, () => {
   const testModules = {
     CS3216: {
       ModuleCode: 'CS3216',

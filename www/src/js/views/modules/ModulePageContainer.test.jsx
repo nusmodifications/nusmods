@@ -25,52 +25,54 @@ const MODULE_CODE_MAP: ModuleCodeMap = {
   },
 };
 
-function make(
-  moduleCode: ModuleCode,
-  url: string,
-  module: ?Module = null,
-  fetchModule: (ModuleCode) => Promise<*> = () => Promise.resolve(),
-) {
-  return shallow(
-    <ModulePageContainerComponent
-      moduleCode={moduleCode}
-      moduleCodes={MODULE_CODE_MAP}
-      module={module}
-      fetchModule={fetchModule}
-      {...createHistory()}
-    />,
-  );
-}
+describe(ModulePageContainerComponent, () => {
+  function make(
+    moduleCode: ModuleCode,
+    url: string,
+    module: ?Module = null,
+    fetchModule: (ModuleCode) => Promise<*> = () => Promise.resolve(),
+  ) {
+    return shallow(
+      <ModulePageContainerComponent
+        moduleCode={moduleCode}
+        moduleCodes={MODULE_CODE_MAP}
+        module={module}
+        fetchModule={fetchModule}
+        {...createHistory()}
+      />,
+    );
+  }
 
-function assertRedirect(component, redirectTo = CANONICAL) {
-  expect(component.type()).toEqual(Redirect);
-  expect(component.props()).toMatchObject({ to: { pathname: redirectTo } });
-}
+  function assertRedirect(component, redirectTo = CANONICAL) {
+    expect(component.type()).toEqual(Redirect);
+    expect(component.props()).toMatchObject({ to: { pathname: redirectTo } });
+  }
 
-test('should show 404 page when the module code does not exist', () => {
-  expect(make('CS1234', '/modules/CS1234').type()).toEqual(ModuleNotFoundPage);
-});
-
-test('should redirect to canonical URL', () => {
-  assertRedirect(make('CS1010S', '/modules/cs1010s/programming-methodology', cs1010s));
-  assertRedirect(make('CS1010S', '/modules/CS1010S', cs1010s));
-});
-
-test('should fetch module', () => {
-  const fetchModule = jest.fn().mockReturnValue(Promise.resolve());
-  const component = make('CS1010S', CANONICAL, null, fetchModule);
-  expect(component.type()).toEqual(LoadingSpinner);
-  expect(fetchModule).toBeCalledWith('CS1010S');
-});
-
-test('should show error if module fetch failed', async () => {
-  const fetchModule = jest.fn().mockReturnValue(Promise.reject(new Error('Test error')));
-  const component = make('CS1010S', CANONICAL, null, fetchModule);
-  await waitFor(() => {
-    component.update();
-    return component.type() !== LoadingSpinner;
+  test('should show 404 page when the module code does not exist', () => {
+    expect(make('CS1234', '/modules/CS1234').type()).toEqual(ModuleNotFoundPage);
   });
 
-  expect(component.type()).toEqual(ApiError);
-  expect(fetchModule).toBeCalledWith('CS1010S');
+  test('should redirect to canonical URL', () => {
+    assertRedirect(make('CS1010S', '/modules/cs1010s/programming-methodology', cs1010s));
+    assertRedirect(make('CS1010S', '/modules/CS1010S', cs1010s));
+  });
+
+  test('should fetch module', () => {
+    const fetchModule = jest.fn().mockReturnValue(Promise.resolve());
+    const component = make('CS1010S', CANONICAL, null, fetchModule);
+    expect(component.type()).toEqual(LoadingSpinner);
+    expect(fetchModule).toBeCalledWith('CS1010S');
+  });
+
+  test('should show error if module fetch failed', async () => {
+    const fetchModule = jest.fn().mockReturnValue(Promise.reject(new Error('Test error')));
+    const component = make('CS1010S', CANONICAL, null, fetchModule);
+    await waitFor(() => {
+      component.update();
+      return component.type() !== LoadingSpinner;
+    });
+
+    expect(component.type()).toEqual(ApiError);
+    expect(fetchModule).toBeCalledWith('CS1010S');
+  });
 });

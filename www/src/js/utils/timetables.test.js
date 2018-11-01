@@ -1,4 +1,5 @@
 // @flow
+import type { AcadWeekInfo } from 'nusmoderator';
 import type {
   ModuleLessonConfig,
   SemTimetableConfig,
@@ -39,6 +40,10 @@ import {
   validateTimetableModules,
   validateModuleLessons,
   formatWeekNumber,
+  isLessonAvailable,
+  isLessonOngoing,
+  getStartTimeAsDate,
+  getEndTimeAsDate,
 } from 'utils/timetables';
 import { getModuleTimetable, getModuleSemesterData } from 'utils/modules';
 
@@ -58,17 +63,17 @@ import lessonsArray from '__mocks__/lessons-array.json';
 
 // A generic lesson with some default.
 export function createGenericLesson(
-  dayText: DayText,
-  startTime: LessonTime,
-  endTime: LessonTime,
-  lessonType?: LessonType,
-  classNo?: ClassNo,
+  dayText: DayText = 'Monday',
+  startTime: LessonTime = '0800',
+  endTime: LessonTime = '1000',
+  lessonType: LessonType = 'Recitation',
+  classNo: ClassNo = '1',
 ): Lesson {
   return {
     ModuleCode: 'GC1101',
     ModuleTitle: 'Generic Title',
-    ClassNo: classNo || '1',
-    LessonType: lessonType || 'Recitation',
+    ClassNo: classNo,
+    LessonType: lessonType,
     WeekText: 'Every Week',
     Venue: 'VCRm',
     DayText: dayText,
@@ -78,16 +83,16 @@ export function createGenericLesson(
 }
 
 export function createGenericColoredLesson(
-  dayText: DayText,
-  startTime: LessonTime,
-  endTime: LessonTime,
+  dayText?: DayText,
+  startTime?: LessonTime,
+  endTime?: LessonTime,
   lessonType?: LessonType,
   classNo?: ClassNo,
-  colorIndex?: number,
+  colorIndex: number = 0,
 ): ColoredLesson {
   return {
     ...createGenericLesson(dayText, startTime, endTime, lessonType, classNo),
-    colorIndex: colorIndex || 0,
+    colorIndex,
   };
 }
 
@@ -607,5 +612,99 @@ describe(formatWeekNumber, () => {
     expect(formatWeekNumber('1,3,5')).toEqual('Weeks 1, 3, 5');
     expect(formatWeekNumber('1,2,4,5,6,7')).toEqual('Weeks 1, 2, 4-7');
     expect(formatWeekNumber('1,2,4,5')).toEqual('Weeks 1, 2, 4, 5');
+  });
+});
+
+describe(isLessonAvailable, () => {
+  const weekInfo: AcadWeekInfo = {
+    year: '2017-2018',
+    sem: 'Semester 1',
+    type: 'Instructional',
+    num: 5,
+  };
+
+  test('should retutrn false if it is not instruction week', () => {
+    const lesson = createGenericLesson();
+    expect(isLessonAvailable(lesson, { ...weekInfo, type: 'Vacation' })).toBe(false);
+    expect(isLessonAvailable(lesson, { ...weekInfo, type: 'Reading' })).toBe(false);
+    expect(isLessonAvailable(lesson, { ...weekInfo, type: 'Examination' })).toBe(false);
+    expect(isLessonAvailable(lesson, { ...weekInfo, type: 'Recess' })).toBe(false);
+    expect(isLessonAvailable(lesson, { ...weekInfo, type: 'Orientation' })).toBe(false);
+  });
+
+  test('should return false if the lesson is a tutorial and it is week 1 and 2', () => {
+    const lesson = createGenericLesson('Monday', '0800', '1000', 'Tutorial');
+    expect(
+      isLessonAvailable(lesson, {
+        ...weekInfo,
+        num: 1,
+      }),
+    ).toBe(false);
+
+    expect(
+      isLessonAvailable(lesson, {
+        ...weekInfo,
+        num: 3,
+      }),
+    ).toBe(true);
+  });
+
+  test("should return false if the lesson's weekText does not match the week number", () => {
+    expect(
+      isLessonAvailable(
+        { ...createGenericLesson(), WeekText: 'Odd Week' },
+        {
+          ...weekInfo,
+          num: 4,
+        },
+      ),
+    ).toBe(false);
+
+    expect(
+      isLessonAvailable(
+        { ...createGenericLesson(), WeekText: '1, 2, 3' },
+        {
+          ...weekInfo,
+          num: 4,
+        },
+      ),
+    ).toBe(false);
+
+    expect(
+      isLessonAvailable(
+        { ...createGenericLesson(), WeekText: 'Odd Week' },
+        {
+          ...weekInfo,
+          num: 5,
+        },
+      ),
+    ).toBe(true);
+  });
+});
+
+describe(isLessonOngoing, () => {
+  test('should return whether a lesson is ongoing', () => {
+    const lesson = createGenericLesson();
+    expect(isLessonOngoing(lesson, 759)).toBe(false);
+    expect(isLessonOngoing(lesson, 800)).toBe(true);
+    expect(isLessonOngoing(lesson, 805)).toBe(true);
+    expect(isLessonOngoing(lesson, 959)).toBe(true);
+    expect(isLessonOngoing(lesson, 1000)).toBe(false);
+  });
+});
+
+describe(getStartTimeAsDate, () => {
+  test('should return start time as date', () => {
+    const date = new Date(2018, 5, 10);
+    const lesson = createGenericLesson('Monday', '0830', '1045');
+    expect(getStartTimeAsDate(lesson, date)).toEqual(new Date(2018, 5, 10, 8, 30));
+  });
+});
+
+describe(getEndTimeAsDate, () => {
+  test('should return end time as date', () => {
+    const date = new Date(2018, 5, 10);
+    const lesson = createGenericLesson('Monday', '0830', '1045');
+    expect(getEndTimeAsDate(lesson, date)).toEqual(new Date(2018, 5, 10, 10, 45));
   });
 });
