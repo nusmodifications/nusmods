@@ -2,8 +2,10 @@
 
 import React from 'react';
 import { flatten } from 'lodash';
-import axios from 'axios';
 import { shallow } from 'enzyme';
+import * as weather from 'apis/weather';
+import Raven from 'raven-js';
+import { waitFor } from 'test-utils/async';
 import { TodayContainerComponent } from './TodayContainer';
 import DayHeader from './DayHeader';
 import DayEvents from './DayEvents';
@@ -106,13 +108,15 @@ const LESSONS = {
   PC1222: PC1222_LESSONS,
 };
 
+jest.mock('apis/weather');
+
 // Mock axios to stop it from firing API requests
 beforeEach(() => {
-  jest.spyOn(axios, 'get').mockImplementation(() => Promise.reject());
+  jest.spyOn(Raven, 'captureException').mockImplementation(() => {});
 });
 
 afterEach(() => {
-  axios.get.mockRestore();
+  Raven.captureException.mockRestore();
 });
 
 //     August 2016            September 2016         October 2016
@@ -182,5 +186,24 @@ describe(TodayContainerComponent, () => {
     );
 
     expect(getLessons(wrapper)).toHaveLength(5);
+  });
+
+  test('should capture exception when weather API fails to load', async () => {
+    // $FlowFixMe
+    weather.fourDay.mockRejectedValueOnce(new Error('Cannot load weather'));
+
+    const now = new Date('2016-08-22T00:00:00.000Z');
+
+    shallow(
+      <TodayContainerComponent currentTime={now} timetableWithLessons={LESSONS} colors={COLORS} />,
+    );
+
+    expect(weather.twoHour).toBeCalled();
+    expect(weather.tomorrow).toBeCalled();
+    expect(weather.fourDay).toBeCalled();
+
+    await waitFor(() => Raven.captureException.mock.calls.length > 0);
+
+    expect(Raven.captureException).toBeCalled();
   });
 });
