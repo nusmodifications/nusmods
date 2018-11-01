@@ -52,8 +52,8 @@ router
     if (
       typeof height !== 'undefined' &&
       typeof width !== 'undefined' &&
-      !Number.isNan(height) && // accept floats
-      !Number.isNan(width) && // accept floats
+      !Number.isNaN(height) && // accept floats
+      !Number.isNaN(width) && // accept floats
       height > 0 &&
       width > 0
     ) {
