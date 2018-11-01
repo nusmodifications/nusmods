@@ -41,7 +41,7 @@ function appliesTo(studentAccountType: string): StudentType {
   }
 }
 
-export function mergeBiddingStats(biddingStats: BiddingStat[]) {
+export function mergeBiddingStats(biddingStats: BiddingStat[]): GroupedBiddingStat[] {
   // Merge quotas and data from each lecture/sectional group - these groups are interchangeable
   // so its better to take their combined statistics instead
   const groupedStats = groupBy(biddingStats, (stats: BiddingStat) =>
