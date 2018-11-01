@@ -126,7 +126,16 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
     }
 
     if (module && ModulePageContent) {
-      return <ModulePageContent module={module} archiveYear={this.props.archiveYear} />;
+      // Unique key forces component to remount whenever the user moves to
+      // a new module. This allows the internal state (eg. currently selected
+      // timetable semester) of <ModulePageContent> to be consistent
+      return (
+        <ModulePageContent
+          key={moduleCode}
+          moduleCode={moduleCode}
+          archiveYear={this.props.archiveYear}
+        />
+      );
     }
 
     return <LoadingSpinner />;

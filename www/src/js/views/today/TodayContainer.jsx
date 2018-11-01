@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { range, minBy } from 'lodash';
 import classnames from 'classnames';
 import NUSModerator from 'nusmoderator';
+import Raven from 'raven-js';
 import {
   isSameDay,
   addDays,
@@ -36,18 +37,20 @@ import * as weatherAPI from 'apis/weather';
 import config from 'config';
 /** @var {string[]} */
 import holidays from 'data/holidays.json';
+import withTimer, { type TimerData } from 'views/hocs/withTimer';
 import { formatTime, getCurrentHours, getCurrentMinutes, getDayIndex } from 'utils/timify';
 import DayEvents from './DayEvents';
 import DayHeader from './DayHeader';
 import styles from './TodayContainer.scss';
 
-type Props = {
+type Props = {|
+  ...TimerData,
+
   timetableWithLessons: SemTimetableConfigWithLessons,
   colors: ColorMapping,
-};
+|};
 
 type State = {
-  currentTime: Date,
   // Mapping of number of days from today to the weather forecast for that day
   // with zero being today
   weather: { [string]: string },
@@ -72,47 +75,43 @@ function getDayName(date: Date, diffInDays: number): string {
   return DaysOfWeek[getDayIndex(date)];
 }
 
-class TodayContainer extends PureComponent<Props, State> {
+export class TodayContainerComponent extends PureComponent<Props, State> {
   state: State = {
-    currentTime: new Date(),
     weather: {},
   };
 
   componentDidMount() {
-    this.intervalId = setInterval(() => this.setState({ currentTime: new Date() }), 60 * 1000);
-
     weatherAPI
       .twoHour()
-      .then((weather) => this.setState({ weather: { ...this.state.weather, '0': weather } }));
+      .then((weather) => this.setState({ weather: { ...this.state.weather, '0': weather } }))
+      .catch((e) => Raven.captureException(e));
 
     weatherAPI
       .tomorrow()
-      .then((weather) => this.setState({ weather: { ...this.state.weather, '1': weather } }));
+      .then((weather) => this.setState({ weather: { ...this.state.weather, '1': weather } }))
+      .catch((e) => Raven.captureException(e));
 
-    weatherAPI.fourDay().then((forecasts) => {
-      forecasts.forEach((forecast) => {
-        const days = differenceInCalendarDays(forecast.timestamp, this.state.currentTime);
+    weatherAPI
+      .fourDay()
+      .then((forecasts) => {
+        forecasts.forEach((forecast) => {
+          const days = differenceInCalendarDays(forecast.timestamp, this.props.currentTime);
 
-        if (!this.state.weather[String(days)]) {
-          this.setState({ weather: { ...this.state.weather, [days]: forecast.forecast } });
-        }
-      });
-    });
+          if (!this.state.weather[String(days)]) {
+            this.setState({ weather: { ...this.state.weather, [days]: forecast.forecast } });
+          }
+        });
+      })
+      .catch((e) => Raven.captureException(e));
   }
-
-  componentWillUnmount() {
-    clearInterval(this.intervalId);
-  }
-
-  intervalId;
 
   renderBeforeNextLessonCard(nextLesson: Lesson, marker: Node) {
     const nextLessonDate = getStartTimeAsDate(nextLesson);
-    const hoursTillNextLesson = differenceInHours(nextLessonDate, new Date());
+    const hoursTillNextLesson = differenceInHours(nextLessonDate, this.props.currentTime);
 
     let comment = null;
 
-    const currentHour = new Date().getHours();
+    const currentHour = this.props.currentTime.getHours();
     if (hoursTillNextLesson < 1) {
       comment = <p>Better get a move on to your next class! {freeRoomMessage}</p>;
     } else if (currentHour < 7 || currentHour >= 22) {
@@ -131,7 +130,7 @@ class TodayContainer extends PureComponent<Props, State> {
         </div>
         <div className={classnames(styles.card, styles.inBetweenClass)}>
           <p>
-            You have <strong>{formatDistanceStrict(nextLessonDate, this.state.currentTime)}</strong>{' '}
+            You have <strong>{formatDistanceStrict(nextLessonDate, this.props.currentTime)}</strong>{' '}
             till the next class.
           </p>
           {comment}
@@ -141,7 +140,7 @@ class TodayContainer extends PureComponent<Props, State> {
   }
 
   renderDay(date: Date, lessons: ColoredLesson[], isToday: boolean) {
-    let netLessonMarker = null;
+    let nextLessonMarker = null;
     let beforeFirstLessonBlock = null;
 
     // Assume no lessons on public holidays
@@ -172,7 +171,7 @@ class TodayContainer extends PureComponent<Props, State> {
 
         if (isLessonOngoing(nextLesson, currentTime)) {
           // If the next lesson is still ongoing, we put the marker inside the next lesson
-          netLessonMarker = marker;
+          nextLessonMarker = marker;
         } else {
           // Otherwise add a new card before the next lesson
           beforeFirstLessonBlock = this.renderBeforeNextLessonCard(nextLesson, marker);
@@ -186,13 +185,13 @@ class TodayContainer extends PureComponent<Props, State> {
     return (
       <Fragment>
         {beforeFirstLessonBlock}
-        <DayEvents key={date} lessons={lessons} dayInfo={dayInfo} marker={netLessonMarker} />
+        <DayEvents lessons={lessons} dayInfo={dayInfo} marker={nextLessonMarker} />
       </Fragment>
     );
   }
 
   render() {
-    const { colors } = this.props;
+    const { colors, currentTime } = this.props;
 
     const timetableLessons: Lesson[] = timetableLessonsArray(this.props.timetableWithLessons);
 
@@ -203,7 +202,6 @@ class TodayContainer extends PureComponent<Props, State> {
     }));
 
     const groupedLessons = groupLessonsByDay(coloredTimetableLessons);
-    const today = new Date();
 
     return (
       <div className="page-container">
@@ -216,12 +214,13 @@ class TodayContainer extends PureComponent<Props, State> {
         <RefreshPrompt />
 
         {range(7).map((i) => {
-          const date = addDays(today, i);
-          const dayText = getDayName(date, i);
+          const date = addDays(currentTime, i);
+          const dayText = DaysOfWeek[getDayIndex(date)];
+          const dayName = getDayName(date, i);
 
           return (
             <section className={styles.day} key={i}>
-              <DayHeader date={date} dayName={dayText} forecast={this.state.weather[String(i)]} />
+              <DayHeader date={date} dayName={dayName} forecast={this.state.weather[String(i)]} />
               {this.renderDay(date, groupedLessons[dayText] || EMPTY_ARRAY, i === 0)}
             </section>
           );
@@ -231,7 +230,9 @@ class TodayContainer extends PureComponent<Props, State> {
   }
 }
 
-export default connect((state) => {
+const TodayContainerWithTimer = withTimer(TodayContainerComponent);
+
+const ConnectedTimetableContainer = connect((state) => {
   const modules = state.moduleBank.modules;
   const semester = config.semester;
   const { timetable, colors } = getSemesterTimetable(semester, state.timetables);
@@ -241,4 +242,6 @@ export default connect((state) => {
     colors,
     timetableWithLessons,
   };
-})(TodayContainer);
+})(TodayContainerWithTimer);
+
+export default ConnectedTimetableContainer;

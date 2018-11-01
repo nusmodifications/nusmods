@@ -9,7 +9,7 @@ import type { Module } from 'types/modules';
 import config from 'config';
 import { formatExamDate, getSemestersOffered } from 'utils/modules';
 import { intersperse } from 'utils/array';
-import { BULLET, scrollToHash } from 'utils/react';
+import { BULLET } from 'utils/react';
 import { NAVTAB_HEIGHT } from 'views/layout/Navtabs';
 import ModuleTree from 'views/modules/ModuleTree';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
@@ -27,6 +27,7 @@ import CorsNotification from 'views/components/cors-info/CorsNotification';
 import Announcements from 'views/components/notfications/Announcements';
 import Title from 'views/components/Title';
 import RefreshPrompt from 'views/components/notfications/RefreshPrompt';
+import ScrollToTop from 'views/components/ScrollToTop';
 
 import styles from './ModulePageContent.scss';
 
@@ -54,10 +55,6 @@ export default class ModulePageContent extends Component<Props, State> {
     isMenuOpen: false,
   };
 
-  componentDidMount() {
-    scrollToHash();
-  }
-
   toggleMenu = (isMenuOpen: boolean) => this.setState({ isMenuOpen });
 
   render() {
@@ -82,6 +79,8 @@ export default class ModulePageContent extends Component<Props, State> {
         <RefreshPrompt />
 
         <CorsNotification />
+
+        <ScrollToTop onComponentDidMount scrollToHash />
 
         {this.props.archiveYear && (
           <div className="alert alert-warning">

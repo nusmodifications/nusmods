@@ -1,4 +1,4 @@
-@import "~styles/utils/modules-entry.scss";
+@import '~styles/utils/modules-entry.scss';
 
 $gutter: $grid-gutter-width / 2;
 $sticky-top: $navbar-height + 1rem;
@@ -15,17 +15,13 @@ $venue-list-width: 16rem;
   }
 }
 
-.venueDetail {
-  composes: scrollable-y from global;
-}
-
 @include media-breakpoint-up(md) {
   .venuesList,
   .venueDetail {
     position: fixed;
     top: $sticky-top;
     bottom: 0;
-    z-index: 1;
+    z-index: $venue-detail-z-index;
   }
 
   .venuesList {

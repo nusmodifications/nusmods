@@ -12,7 +12,7 @@ import CS1010S from '__mocks__/modules/CS1010S.json';
 
 import ModulePageContent from './ModulePageContent';
 
-describe('<ModulePageContent>', () => {
+describe(ModulePageContent, () => {
   function make(module: Module = CS1010S, timetables: TimetableConfig = {}) {
     return shallow(
       <ModulePageContent
