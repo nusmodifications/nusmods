@@ -13,3 +13,5 @@ Object {
   "type": "FETCH_MODULE_LIST",
 }
 `;
+
+exports[`getLRUModule should return the LRU and non-timetable module 1`] = `"ACC1003"`;
