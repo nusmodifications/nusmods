@@ -15,3 +15,17 @@ Object {
 `;
 
 exports[`getLRUModule should return the LRU and non-timetable module 1`] = `"ACC1003"`;
+
+exports[`removeLRUModule should return an action 1`] = `
+Object {
+  "payload": "ACC1001",
+  "type": "REMOVE_LRU_MODULE",
+}
+`;
+
+exports[`updateModuleTimestamp should return an action 1`] = `
+Object {
+  "payload": "ACC1001",
+  "type": "UPDATE_MODULE_TIMESTAMP",
+}
+`;

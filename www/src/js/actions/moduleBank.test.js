@@ -1,6 +1,7 @@
 // @flow
 import type { FSA } from 'types/redux';
 import type { TimetableConfig } from 'types/timetables';
+import type { ModuleCode } from 'types/modules';
 
 import * as actions from 'actions/moduleBank';
 import NUSModsApi from 'apis/nusmods';
@@ -39,5 +40,17 @@ test('getLRUModule should return the LRU and non-timetable module', () => {
   };
   const currentModule = 'ACC1002';
   const resultOfAction = actions.getLRUModule(modules, timetableConfig, currentModule);
+  expect(resultOfAction).toMatchSnapshot();
+});
+
+test('removeLRUModule should return an action', () => {
+  const LRUModuleCode: ModuleCode = 'ACC1001';
+  const resultOfAction = actions.removeLRUModule(LRUModuleCode);
+  expect(resultOfAction).toMatchSnapshot();
+});
+
+test('updateModuleTimestamp should return an action', () => {
+  const moduleCode: ModuleCode = 'ACC1001';
+  const resultOfAction = actions.updateModuleTimestamp(moduleCode);
   expect(resultOfAction).toMatchSnapshot();
 });
