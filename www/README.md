@@ -164,11 +164,11 @@ export default connect(null, { fetchData })(MyComponent);
 
 #### Caching data
 
-To make the data available offline, the data must be stored in the Redux store which is then persisted. To do this create a reducer which listens to [request type] + SUCCESS. The payload of the action is the result of the API call. Then in the component, instead of using the result from the Promise directly, we pull the data from the Redux store instead.
+To make the data available offline, the data must be stored in the Redux store which is then persisted. To do this create a reducer which listens to `[request type] + SUCCESS`. The payload of the action is the result of the API call. Then in the component, instead of using the result from the Promise directly, we pull the data from the Redux store instead.
 
 This is the [cache-then-network strategy described in the Offline Cookbook][offline-cookbook] and is similar to Workbox's revalidate-while-stale strategy.
 
-**Note:** This assumes the result from the API will not be significantly different after it is loaded. If this is not the case, you might want to use another strategy, otherwise the user may be surprised by the content of the page changing while they're reading it.
+**Note:** This assumes the result from the API will not be significantly different after it is loaded. If this is not the case, you might want to use another strategy, otherwise the user may be surprised by the content of the page changing while they're reading it, as the page first renders with stale data, then rerenders with fresh data from the server.
 
 **Reducer example**
 
@@ -247,13 +247,11 @@ $ yarn test:watch
 # Lint all JS and CSS
 $ yarn lint
 
-# Linting CSS, JS source, tests and scripts separately
+# Linting CSS, JS source, and run typechecking separately
 $ yarn lint:styles
-$ yarn lint:src
-$ yarn lint:test
-$ yarn lint:scripts
+$ yarn lint:code
 # Append `--fix` to fix lint errors automatically
-# e.g. yarn lint:src --fix
+# e.g. yarn lint:code --fix
 # p.s. Use yarn lint:styles --fix with care (it's experimental),
 #      remember to reset changes for themes.scss.
 

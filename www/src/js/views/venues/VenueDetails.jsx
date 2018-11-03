@@ -33,8 +33,9 @@ type Props = {|
 
 export class VenueDetailsComponent extends PureComponent<Props> {
   arrangedLessons() {
-    const lessons = flatMap(this.props.availability, (day): VenueLesson[] =>
-      mergeDualCodedModules(day.Classes),
+    const lessons = flatMap(
+      this.props.availability,
+      (day): VenueLesson[] => mergeDualCodedModules(day.Classes),
     ).map((venueLesson) => ({ ...venueLesson, ModuleTitle: '', isModifiable: true }));
 
     const coloredLessons = colorLessonsByKey(lessons, 'ModuleCode');

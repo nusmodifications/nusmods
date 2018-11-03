@@ -141,8 +141,9 @@ const mapStateToProps = (state, ownState) => {
   };
 };
 
-const connectedModulePageContainer = connect(mapStateToProps, { fetchModule })(
-  ModulePageContainerComponent,
-);
+const connectedModulePageContainer = connect(
+  mapStateToProps,
+  { fetchModule },
+)(ModulePageContainerComponent);
 const routedModulePageContainer = withRouter(connectedModulePageContainer);
 export default deferComponentRender(routedModulePageContainer);

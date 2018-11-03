@@ -146,7 +146,13 @@ export class ModulesSelectComponent extends Component<Props, State> {
         )}
         {showNoResultMessage && (
           <div className={styles.tip}>
-            No modules found for <strong>&quot;{inputValue}&quot;</strong>.
+            No modules found for{' '}
+            <strong>
+              &quot;
+              {inputValue}
+              &quot;
+            </strong>
+            .
           </div>
         )}
       </div>

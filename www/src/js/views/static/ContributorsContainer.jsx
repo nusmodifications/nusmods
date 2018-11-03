@@ -122,7 +122,8 @@ class ContributorsContainer extends Component<Props, State> {
                         contributor.login
                       }`}
                     >
-                      {contributor.contributions} commit{contributor.contributions !== 1 && 's'}
+                      {contributor.contributions} commit
+                      {contributor.contributions !== 1 && 's'}
                     </ExternalLink>
                   </p>
                 </div>
