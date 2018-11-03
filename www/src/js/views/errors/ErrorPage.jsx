@@ -5,11 +5,10 @@ import React, { PureComponent } from 'react';
 import Raven from 'raven-js';
 import classnames from 'classnames';
 
+import RandomKawaii from 'views/components/RandomKawaii';
 import Title from 'views/components/Title';
 import Online from 'views/components/Online';
 import styles from './ErrorPage.scss';
-
-import ReactKawaii from './ReactKawaii';
 
 type Props = {
   children?: Node,
@@ -38,7 +37,7 @@ export default class ErrorPage extends PureComponent<Props> {
 
         <div className={styles.centerContainer}>
           <div className={styles.header}>
-            <ReactKawaii />
+            <RandomKawaii size={100} mood="sad" color="#FF715D" />
           </div>
           <h1 className={classnames('h2', styles.header)}>Uh oh, {this.errorMessage()}.</h1>
 

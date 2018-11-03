@@ -4,10 +4,9 @@ import type { Node } from 'react';
 import React, { PureComponent } from 'react';
 import classnames from 'classnames';
 
+import RandomKawaii from 'views/components/RandomKawaii';
 import Title from 'views/components/Title';
 import styles from './ErrorPage.scss';
-
-import ReactKawaii from './ReactKawaii';
 
 type Props = {
   children?: Node,
@@ -41,14 +40,12 @@ export default class ApiError extends PureComponent<Props> {
     const message = dataName ? `We can't load ${dataName}` : "We can't connect to NUSMods";
 
     return (
-      <div className={styles.centerContainer}>
+      <div>
         <Title>Oh no...</Title>
 
-        <div>
-          <div className={styles.inline}>
-            <h1 className={styles.bigCharacter}>4</h1>
-            <ReactKawaii />
-            <h1 className={styles.bigCharacter}>4</h1>
+        <div className={styles.centerContainer}>
+          <div className={styles.header}>
+            <RandomKawaii size={100} mood="sad" color="#FF715D" />
           </div>
 
           <h1 className={classnames('h2', styles.header)}>
@@ -56,7 +53,7 @@ export default class ApiError extends PureComponent<Props> {
             {message}
           </h1>
 
-          <p>This could be because your computer is offline or NUSMods is down :(</p>
+          <p>This could be because your device is offline or NUSMods is down :(</p>
 
           {retry && (
             <div>
