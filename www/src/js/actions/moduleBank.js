@@ -57,7 +57,7 @@ export function getLRUModule(
   return moduleToBeDeleted || null;
 }
 
-const MAX_MODULE_LIMIT: number = 1;
+const MAX_MODULE_LIMIT: number = 100;
 export function fetchModule(moduleCode: ModuleCode) {
   return (dispatch: Function, getState: GetState) =>
     dispatch(
