@@ -1,8 +1,9 @@
 // @flow
-import type { ModuleCode } from 'types/modules';
+import type { ModuleCode, Module } from 'types/modules';
+import type { TimetableConfig } from 'types/timetables';
 import type { FSA, GetState } from 'types/redux';
 
-import { size, get } from 'lodash';
+import { size, get, flatMap, sortBy } from 'lodash';
 import { requestAction } from 'actions/requests';
 import NUSModsApi from 'apis/nusmods';
 
@@ -34,25 +35,29 @@ export function removeLRUModule(moduleCode: ModuleCode) {
   };
 }
 
-function getLRUModule(modules, lessons, currentModule) {
+// Export for testing
+export function getLRUModule(
+  modules: { [string]: Module },
+  lessons: TimetableConfig,
+  currentModule: string,
+) {
   // Pull all the modules in all the timetables
-  // used parseInt since object.keys returns array of strings even if the key is a integer
-  const timeTableModules = Object.keys(lessons).reduce(
-    (moduleList, semester) => [...moduleList, ...Object.keys(lessons[parseInt(semester, 10)])],
-    [],
+  const timeTableModules = flatMap(lessons, (semester) => Object.keys(semester));
+
+  // Sort them based on the timestamp alone
+  const sortedModules = sortBy(Object.keys(modules), (moduleCode) =>
+    get(modules[moduleCode], ['timestamp'], 0),
   );
-  const sortedModules = Object.keys(modules).sort(
-    (currElem, nextElem) =>
-      get(modules[currElem], ['timestamp'], 0) - get(modules[nextElem], ['timestamp'], 0),
-  );
+
   // Remove the module which is least recently used and which is not in timetable and not the currently loaded one
   const moduleToBeDeleted = sortedModules.find(
     (module) => !timeTableModules.includes(module) && module !== currentModule,
   );
+
   return moduleToBeDeleted || null;
 }
 
-const MAX_MODULE_LIMIT: number = 100;
+const MAX_MODULE_LIMIT: number = 1;
 export function fetchModule(moduleCode: ModuleCode) {
   return (dispatch: Function, getState: GetState) =>
     dispatch(

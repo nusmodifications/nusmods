@@ -17,7 +17,7 @@ test('fetchModuleList should return a request action', () => {
   expect(resultOfAction).toMatchSnapshot();
 });
 
-test('fetchModule should return a request action', () => {
-  const resultOfAction: FSA = actions.fetchModule('CS1010S');
+test('fetchModule should return a thunk', () => {
+  const resultOfAction = actions.fetchModule('CS1010S');
   expect(resultOfAction).toMatchSnapshot();
 });
