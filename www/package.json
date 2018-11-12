@@ -86,7 +86,7 @@
     "postcss-custom-properties": "7.0.0",
     "postcss-loader": "3.0.0",
     "prettier": "1.14.3",
-    "react-dev-utils": "6.0.5",
+    "react-dev-utils": "6.1.1",
     "react-hot-loader": "4.3.12",
     "react-test-renderer": "16.3.2",
     "redux-logger": "3.0.6",
