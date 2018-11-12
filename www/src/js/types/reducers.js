@@ -95,6 +95,7 @@ export type SettingsState = {
   +hiddenInTimetable: ModuleCode[],
   +corsNotification: CorsNotificationSettings,
   +moduleTableOrder: ModuleTableOrder,
+  +beta?: boolean,
 };
 
 /* timetables.js */
@@ -126,11 +127,11 @@ export type ModuleCodeMap = { [ModuleCode]: ModuleCondensed };
 // VenueList is defined in venues.js
 
 /* moduleFinder.js */
-export type ModuleSearch = {
+export type ModuleSearch = {|
   +term: string,
   +tokens: string[],
-};
+|};
 
-export type ModuleFinderState = {
+export type ModuleFinderState = {|
   +search: ModuleSearch,
-};
+|};

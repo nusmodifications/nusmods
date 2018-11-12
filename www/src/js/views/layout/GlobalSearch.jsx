@@ -133,7 +133,11 @@ class GlobalSearch extends Component<Props, State> {
                 <Help />
                 <p>
                   No results found for{' '}
-                  <strong className={styles.searchTerm}>&quot;{inputValue}&quot;</strong>
+                  <strong className={styles.searchTerm}>
+                    &quot;
+                    {inputValue}
+                    &quot;
+                  </strong>
                 </p>
                 <p>
                   Try searching all{' '}

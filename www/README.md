@@ -42,7 +42,13 @@ To run the development build, simply run:
 $ yarn start
 ```
 
-This will start webpack dev server, which will automatically rebuild and reload any code and components that you have changed. We recommend the following development tools to help speed up your work
+This will start webpack dev server, which will automatically rebuild and reload any code and components that you have changed. If your editor or IDE has built in support for Flow/ESLint/StyleLint, you can disable them to speed up the build process.
+
+```sh
+$ DISABLE_ESLINT=1 DISABLE_FLOW=1 DISABLE_STYLELINT=1 yarn start
+```
+
+We recommend the following development tools to help speed up your work
 
 * React Developer Tools ([Chrome](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi), [Firefox](https://addons.mozilla.org/firefox/addon/react-devtools/))
 * [Redux DevTools](http://extension.remotedev.io/#installation)
@@ -158,11 +164,11 @@ export default connect(null, { fetchData })(MyComponent);
 
 #### Caching data
 
-To make the data available offline, the data must be stored in the Redux store which is then persisted. To do this create a reducer which listens to [request type] + SUCCESS. The payload of the action is the result of the API call. Then in the component, instead of using the result from the Promise directly, we
+To make the data available offline, the data must be stored in the Redux store which is then persisted. To do this create a reducer which listens to `[request type] + SUCCESS`. The payload of the action is the result of the API call. Then in the component, instead of using the result from the Promise directly, we pull the data from the Redux store instead.
 
 This is the [cache-then-network strategy described in the Offline Cookbook][offline-cookbook] and is similar to Workbox's revalidate-while-stale strategy.
 
-**Note:** This assumes the result from the API will not be significantly different after it is loaded. If this is not the case, you might want to use another strategy, otherwise the user may be surprised by the content of the page changing while they're reading it.
+**Note:** This assumes the result from the API will not be significantly different after it is loaded. If this is not the case, you might want to use another strategy, otherwise the user may be surprised by the content of the page changing while they're reading it, as the page first renders with stale data, then rerenders with fresh data from the server.
 
 **Reducer example**
 
@@ -241,13 +247,11 @@ $ yarn test:watch
 # Lint all JS and CSS
 $ yarn lint
 
-# Linting CSS, JS source, tests and scripts separately
+# Linting CSS, JS source, and run typechecking separately
 $ yarn lint:styles
-$ yarn lint:src
-$ yarn lint:test
-$ yarn lint:scripts
+$ yarn lint:code
 # Append `--fix` to fix lint errors automatically
-# e.g. yarn lint:src --fix
+# e.g. yarn lint:code --fix
 # p.s. Use yarn lint:styles --fix with care (it's experimental),
 #      remember to reset changes for themes.scss.
 
@@ -273,7 +277,7 @@ LAUNCH_URL="https://deploy-preview-1024--nusmods.netlify.com" yarn e2e
 
 # Enable local testing
 ./BrowserStackLocal --key $BROWSERSTACK_ACCESS_KEY
-LAUNCH_URL="http://localhost:8080" lOCAL_TEST=1 yarn e2e
+LAUNCH_URL="http://localhost:8080" LOCAL_TEST=1 yarn e2e
 ```
 
 ### Deployment
@@ -281,11 +285,11 @@ LAUNCH_URL="http://localhost:8080" lOCAL_TEST=1 yarn e2e
 Our staging is served from the `./dist` directory, which is generated using `yarn build`. From there, it can be promoted to production using `yarn promote-staging`. This flow is summarized below:
 
 ```sh
-$ yarn # Install dependencies
-$ yarn test # Ensure all unit tests pass
-$ yarn build # Build to staging ./dist directory
-# Manually ensure staging build works.
-$ yarn promote-staging # Promote ./dist to production
+$ yarn                  # Install dependencies
+$ yarn test             # Ensure all unit tests pass
+$ yarn build            # Build to staging ./dist directory
+# Open http://staging.nusmods.com and manually test to ensure it works
+$ yarn promote-staging  # Promote ./dist to production
 ```
 
 * `yarn build` packages and optimizes the app for deployment. The files will be placed in the `./dist` directory.

@@ -1,10 +1,11 @@
 // @flow
 
-import React from 'react';
+import React, { type ComponentType } from 'react';
 import Loadable, { type LoadingProps } from 'react-loadable';
 import LoadingSpinner from 'views/components/LoadingSpinner';
+import type { OwnProps } from './VenueLocation';
 
-export default Loadable({
+const AsyncVenueLocation: ComponentType<OwnProps> = Loadable({
   loader: () => import(/* webpackChunkName: "venue" */ './VenueLocation'),
   loading: (props: LoadingProps) => {
     if (props.error) {
@@ -23,3 +24,5 @@ export default Loadable({
     return null;
   },
 });
+
+export default AsyncVenueLocation;

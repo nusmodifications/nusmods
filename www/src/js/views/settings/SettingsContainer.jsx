@@ -18,6 +18,7 @@ import {
   dismissCorsNotification,
   enableCorsNotification,
   toggleCorsNotificationGlobally,
+  toggleBetaTesting,
 } from 'actions/settings';
 // import FacultySelect from 'views/components/FacultySelect';
 // import NewStudentSelect from 'views/components/NewStudentSelect';
@@ -36,6 +37,7 @@ import ThemeOption from './ThemeOption';
 import ModeSelect from './ModeSelect';
 import styles from './SettingsContainer.scss';
 import previewTimetable from './previewTimetable';
+import BetaToggle from './BetaToggle';
 
 type Props = {
   newStudent: boolean,
@@ -43,12 +45,14 @@ type Props = {
   currentThemeId: string,
   mode: Mode,
   corsNotification: CorsNotificationSettings,
+  betaTester: boolean,
 
   selectTheme: Function,
   selectNewStudent: Function,
   selectFaculty: Function,
   selectMode: Function,
 
+  toggleBetaTesting: () => void,
   dismissCorsNotification: Function,
   enableCorsNotification: Function,
   toggleCorsNotificationGlobally: Function,
@@ -119,7 +123,7 @@ class SettingsContainer extends Component<Props> {
 
     return (
       <div className={classnames(styles.settingsPage, 'page-container')}>
-        <ScrollToTop onComponentWillMount />
+        <ScrollToTop onComponentDidMount />
         <Title>Settings</Title>
 
         <h1 className={styles.title}>Settings</h1>
@@ -204,6 +208,11 @@ class SettingsContainer extends Component<Props> {
         <hr />
 
         {corsNotification.enabled && corsRound && this.renderCorsNotitificationOption(corsRound)}
+
+        <BetaToggle
+          betaTester={this.props.betaTester}
+          toggleStates={this.props.toggleBetaTesting}
+        />
       </div>
     );
   }
@@ -215,15 +224,20 @@ const mapStateToProps = (state: StoreState) => ({
   mode: state.settings.mode,
   corsNotification: state.settings.corsNotification,
   currentThemeId: state.theme.id,
+  betaTester: state.settings.beta || false,
 });
 
-const connectedSettings = connect(mapStateToProps, {
-  selectTheme,
-  selectNewStudent,
-  selectFaculty,
-  selectMode,
-  toggleCorsNotificationGlobally,
-  dismissCorsNotification,
-  enableCorsNotification,
-})(SettingsContainer);
+const connectedSettings = connect(
+  mapStateToProps,
+  {
+    selectTheme,
+    selectNewStudent,
+    selectFaculty,
+    selectMode,
+    toggleCorsNotificationGlobally,
+    dismissCorsNotification,
+    enableCorsNotification,
+    toggleBetaTesting,
+  },
+)(SettingsContainer);
 export default deferComponentRender(connectedSettings);

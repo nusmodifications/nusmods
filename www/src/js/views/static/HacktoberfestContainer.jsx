@@ -53,7 +53,8 @@ export default function TeamContainer() {
           and fix the issue. Don&apos;t see an issue you like? You can always{' '}
           <ExternalLink href="https://github.com/nusmodifications/nusmods/issues/new/choose">
             open new ones
-          </ExternalLink>!
+          </ExternalLink>
+          !
         </li>
         <li>
           <ExternalLink href="https://github.com/nusmodifications/nusmods/compare">
@@ -71,7 +72,8 @@ export default function TeamContainer() {
         read{' '}
         <ExternalLink href="https://hacktoberfest.digitalocean.com/#gettingstarted">
           Hacktoberfest&apos;s Getting Started guide
-        </ExternalLink>.
+        </ExternalLink>
+        .
       </p>
 
       <hr />

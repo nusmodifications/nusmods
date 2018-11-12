@@ -12,8 +12,7 @@ const holidays = [];
 
 inputs.forEach((file) => {
   console.log(`Reading holidays from ${file}`);
-  fs
-    .readFileSync(path.join(IN_DIR, file), 'utf-8')
+  fs.readFileSync(path.join(IN_DIR, file), 'utf-8')
     .trim()
     .split('\n')
     // Remove header row

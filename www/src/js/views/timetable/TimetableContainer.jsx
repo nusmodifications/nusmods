@@ -197,7 +197,7 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
 
     return (
       <div>
-        <ScrollToTop onComponentWillMount />
+        <ScrollToTop onComponentDidMount />
         <TimetableContent
           semester={semester}
           timetable={displayedTimetable}
@@ -226,12 +226,15 @@ const mapStateToProps = (state: StoreState, ownProps) => {
 };
 
 // Explicitly declare top level components for React hot reloading to work.
-const connectedTimetableContainer = connect(mapStateToProps, {
-  selectSemester,
-  setTimetable,
-  fetchTimetableModules,
-  openNotification,
-  undo,
-})(TimetableContainerComponent);
+const connectedTimetableContainer = connect(
+  mapStateToProps,
+  {
+    selectSemester,
+    setTimetable,
+    fetchTimetableModules,
+    openNotification,
+    undo,
+  },
+)(TimetableContainerComponent);
 const routedTimetableContainer = withRouter(connectedTimetableContainer);
 export default deferComponentRender(routedTimetableContainer);

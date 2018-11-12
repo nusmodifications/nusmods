@@ -31,7 +31,7 @@ const commonProps = {
   disabled: false,
 };
 
-describe('<ModulesSelectComponent>', () => {
+describe(ModulesSelectComponent, () => {
   it('should show results on input value change', () => {
     const wrapper = mount(<ModulesSelectComponent {...commonProps} matchBreakpoint />);
     wrapper.setState({ isOpen: true });

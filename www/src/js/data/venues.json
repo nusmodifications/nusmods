@@ -2834,5 +2834,69 @@
       "x": 103.77266854047777,
       "y": 1.3043045855179205
     }
+  },
+  "SDE_ER4-5": {
+    "roomName": "SDE-ER5",
+    "floor": 3,
+    "location": {
+      "x": 103.77096801996233,
+      "y": 1.297112209867133
+    }
+  },
+  "SDE-ES2": {
+    "roomName": "SDE-ES2",
+    "floor": 3,
+    "location": {
+      "x": 103.7712147831917,
+      "y": 1.2975278456969463
+    }
+  },
+  "SDE-ER5": {
+    "roomName": "SDE-ER5",
+    "floor": 3,
+    "location": {
+      "x": 103.77095997333528,
+      "y": 1.2971041653020217
+    }
+  },
+  "S11-0401A": {
+    "roomName": "Physics Level 2000 Laboratory",
+    "floor": 4,
+    "location": {
+      "x": 103.77884298563005,
+      "y": 1.2967373414850563
+    }
+  },
+  "S16-0306": {
+    "roomName": "Seminar Room",
+    "floor": 3,
+    "location": {
+      "x": 103.78020528302606,
+      "y": 1.2966934651120505
+    }
+  },
+  "UTSRC-LT52": {
+    "roomName": "Lecture Theatre 52",
+    "floor": 2,
+    "location": {
+      "x": 103.77300515770914,
+      "y": 1.3041273122931338
+    }
+  },
+  "BIZ1-CMRI": {
+    "roomName": "CAMRI Lab",
+    "floor": 3,
+    "location": {
+      "x": 103.7741692364216,
+      "y": 1.2924643324975336
+    }
+  },
+  "CAPT-SR6": {
+    "roomName": "Seminar Room 6, College of Alice and Peter Tan",
+    "floor": -1,
+    "location": {
+      "x": 103.77342529373324,
+      "y": 1.3080039996096091
+    }
   }
 }

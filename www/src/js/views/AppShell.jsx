@@ -26,6 +26,7 @@ import Notification from 'views/components/notfications/Notification';
 import ErrorBoundary from 'views/errors/ErrorBoundary';
 import ErrorPage from 'views/errors/ErrorPage';
 import ApiError from 'views/errors/ApiError';
+import { configureMamoto } from 'bootstrapping/mamoto';
 import { DARK_MODE } from 'types/settings';
 import LoadingSpinner from './components/LoadingSpinner';
 import FeedbackModal from './components/FeedbackModal';
@@ -71,6 +72,9 @@ export class AppShellComponent extends Component<Props, State> {
       const semester = Number(semesterString);
       this.fetchTimetableModules(timetable, semester);
     });
+
+    // Enable Mamoto analytics
+    configureMamoto(this.props.history);
   }
 
   isMobileIos = isMobileIos();
@@ -170,13 +174,16 @@ const mapStateToProps = (state: StoreState) => ({
   activeSemester: state.app.activeSemester,
 });
 
-const connectedAppShell = connect(mapStateToProps, {
-  fetchModuleList,
-  fetchTimetableModules,
-  setTimetable,
-  validateTimetable,
-  openNotification,
-})(AppShellComponent);
+const connectedAppShell = connect(
+  mapStateToProps,
+  {
+    fetchModuleList,
+    fetchTimetableModules,
+    setTimetable,
+    validateTimetable,
+    openNotification,
+  },
+)(AppShellComponent);
 
 // withRouter here is used to ensure re-render when routes change, since
 // connect implements shouldComponentUpdate based purely on props. If it
