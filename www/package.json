@@ -69,7 +69,7 @@
     "flow-scripts": "0.4.0",
     "flow-status-webpack-plugin": "0.1.7",
     "fs-extra": "7.0.0",
-    "graceful-fs": "4.1.11",
+    "graceful-fs": "4.1.15",
     "hard-source-webpack-plugin": "0.12.0",
     "html-webpack-inline-source-plugin": "0.0.10",
     "html-webpack-plugin": "3.2.0",
