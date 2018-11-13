@@ -45,7 +45,7 @@ export default class ApiError extends PureComponent<Props> {
 
         <div className={styles.centerContainer}>
           <div className={styles.header}>
-            <RandomKawaii size={100} mood="sad" color="#FF715D" />
+            <RandomKawaii size={100} />
           </div>
 
           <h1 className={classnames('h2', styles.header)}>

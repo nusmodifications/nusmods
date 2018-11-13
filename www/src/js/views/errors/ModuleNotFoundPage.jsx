@@ -20,11 +20,11 @@ export default function NotFoundPage({ moduleCode }: Props) {
     <div className={styles.centerContainer}>
       <Title>Module Not Found</Title>
 
-      <div className={styles.inlineContainer}>
+      <h1 className={styles.inlineContainer}>
         <span className={styles.bigCharacter}>4</span>
-        <RandomKawaii aria-label="0" title="0" size={100} mood="sad" color="#FF715D" />
+        <RandomKawaii aria-label="0" title="0" size={100} />
         <span className={styles.bigCharacter}>4</span>
-      </div>
+      </h1>
 
       <h2>Ooops, module {moduleCode} not found.</h2>
       <p>
@@ -34,7 +34,7 @@ export default function NotFoundPage({ moduleCode }: Props) {
 
       <div className={styles.errorButtonContainer}>
         <button
-          className="btn btn-primary btn-svg"
+          className="btn btn-outline-primary btn-svg"
           onClick={() =>
             Raven.showReportDialog({
               eventId,
@@ -44,7 +44,7 @@ export default function NotFoundPage({ moduleCode }: Props) {
           {moduleCode} should be here
         </button>
         <Link className="btn btn-outline-primary btn-svg" to="/">
-          Woops, bring me home
+          Whoops, bring me home
         </Link>
       </div>
     </div>

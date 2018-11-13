@@ -19,8 +19,8 @@
 }
 
 .subheader {
-  composes: font-weight-bold from global;
   margin-bottom: 0;
+  font-weight: bold;
 }
 
 .link {
@@ -39,27 +39,23 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  margin-bottom: -2em;
+  margin-bottom: 0;
   text-align: center;
 }
 
-.errorButtonContainer > {
-  :not(:last-child) {
-    margin-right: 1em;
-  }
+.errorButtonContainer > :not(:last-child) {
+  margin-right: 1em;
 }
 
 .bigCharacter {
-  padding: 0.1em;
+  padding: 0.1rem;
   font-weight: bolder;
-  font-size: 8em;
-  text-shadow: 3px 3px 0 #ff5138,
-    -1px -1px 0 #ff5138,
-    1px -1px 0 #ff5138,
-    -1px 1px 0 #ff5138,
-    1px 1px 0 #ff5138;
+  font-size: 8rem;
+  text-shadow:
+    3px 3px 0 theme-color(),
+    -1px -1px 0 theme-color(),
+    1px -1px 0 theme-color(),
+    -1px 1px 0 theme-color(),
+    1px 1px 0 theme-color();
   color: black;
-  -webkit-text-fill-color: white;
-  -webkit-text-stroke-color: rgb(255, 81, 56);
-  -webkit-text-stroke-width: 2px;
 }

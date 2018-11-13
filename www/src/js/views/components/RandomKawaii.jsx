@@ -10,17 +10,31 @@ type Props = {
   'aria-label'?: string,
 };
 
+const icons = [Planet, SpeechBubble, Mug, Browser, Ghost];
+
 class RandomKawaii extends PureComponent<Props> {
   kawaii: ComponentType;
+
+  static defaultProps = {
+    mood: 'sad',
+    color: '#FF715D',
+  };
+
   constructor() {
     super();
-    const icons = [Planet, SpeechBubble, Mug, Browser, Ghost];
+
     this.kawaii = icons[Math.floor(Math.random() * icons.length)];
   }
+
   render() {
-    const { size, mood, color } = this.props;
+    const { size, mood, color, ...wrapperProps } = this.props;
     const Kawaii = this.kawaii;
-    return <Kawaii size={size} mood={mood} color={color} />;
+
+    return (
+      <div {...wrapperProps} title={this.props.title}>
+        <Kawaii size={size} mood={mood} color={color} />
+      </div>
+    );
   }
 }
 
