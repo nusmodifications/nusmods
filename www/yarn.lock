@@ -9093,9 +9093,10 @@ react-is@^16.5.2:
   version "16.5.2"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.5.2.tgz#e2a7b7c3f5d48062eb769fcb123505eb928722e3"
 
-react-kawaii@^0.6.0:
+react-kawaii@0.6.0:
   version "0.6.0"
   resolved "https://registry.yarnpkg.com/react-kawaii/-/react-kawaii-0.6.0.tgz#60c43b44b7ea36d17dccd4a887a61dc70619c104"
+  integrity sha512-Kk4l8H+g+FBzQ64eWgEn1Yh7bAjGZdSPL0Wp1XI4n89yi1I7x3DMfSrQqMEVQtIfpH23LdjCTbGzCXkoFCm/mg==
   dependencies:
     prop-types "^15.6.2"
 
