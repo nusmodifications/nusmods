@@ -3,7 +3,6 @@ import React, { PureComponent } from 'react';
 import LocationMap from 'views/components/map/LocationMap';
 
 import classnames from 'classnames';
-import { capitalize } from 'lodash';
 import type { VenueLocation as VenueLocationItem } from 'types/venues';
 import Modal from 'views/components/Modal';
 import CloseButton from 'views/components/CloseButton';
@@ -76,7 +75,7 @@ class VenueLocation extends PureComponent<Props, State> {
     return (
       <div className={styles.location}>
         <p>
-          <strong>{capitalize(location.roomName)}</strong> ({venue})
+          <strong>{location.roomName}</strong> ({venue})
           {location.floor && (
             <>
               {' '}

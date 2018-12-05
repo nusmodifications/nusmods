@@ -2898,5 +2898,45 @@
       "x": 103.77342529373324,
       "y": 1.3080039996096091
     }
+  },
+  "USP-SR1": {
+    "roomName": "Seminar Room 1",
+    "floor": 1,
+    "location": {
+      "x": 103.77313256263734,
+      "y": 1.3064958843341745
+    }
+  },
+  "USP-SR2": {
+    "roomName": "Seminar Room 2",
+    "floor": 2,
+    "location": {
+      "x": 103.77303868532184,
+      "y": 1.306742080617189
+    }
+  },
+  "RVR_MPR1": {
+    "roomName": "RVR Multi-Purpose Room 1",
+    "floor": 3,
+    "location": {
+      "x": 103.77694934606554,
+      "y": 1.297287053455881
+    }
+  },
+  "USP-MC": {
+    "roomName": "USP MC",
+    "floor": 3,
+    "location": {
+      "x": 103.77334982156756,
+      "y": 1.306699131752514
+    }
+  },
+  "YSTCM-SR8": {
+    "roomName": "Seminar Room 8",
+    "floor": 1,
+    "location": {
+      "x": 103.77213938131032,
+      "y": 1.302343504192887
+    }
   }
 }
