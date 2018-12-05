@@ -97,7 +97,10 @@ class ContributeContainer extends Component<Props, State> {
 
         <div className={classnames('row no-gutters', styles.actionContainer)}>
           <div className={classnames('col-lg', styles.btnContainer)}>
-            <button onClick={this.props.toggleFeedback} className="btn btn-primary btn-svg btn-block">
+            <button
+              onClick={this.props.toggleFeedback}
+              className="btn btn-primary btn-svg btn-block"
+            >
               <Mail className="svg" />
               We need feedback!
             </button>
@@ -132,9 +135,7 @@ class ContributeContainer extends Component<Props, State> {
 
         <br />
         <h4>Contributors</h4>
-        <p>
-          This could be you! ;)
-        </p>
+
         {this.state.isLoading && <Loader />}
         {this.state.isError && (
           <div className="alert alert-danger">
@@ -142,6 +143,11 @@ class ContributeContainer extends Component<Props, State> {
             {this.state.errorMessage}
           </div>
         )}
+
+        <p>
+          {!this.state.isLoading && this.state.contributors.length} people have contributed to
+          NUSMods, you could be next ;)
+        </p>
         {this.state.contributors && (
           <div className="row">
             {this.state.contributors
