@@ -18,6 +18,7 @@ import {
 import type { ColoredLesson, Lesson } from 'types/modules';
 import type { SemTimetableConfigWithLessons } from 'types/timetables';
 import type { ColorMapping } from 'types/reducers';
+import type { SelectedLesson } from 'types/views';
 import { DaysOfWeek } from 'types/modules';
 
 import {
@@ -54,6 +55,9 @@ type State = {
   // Mapping of number of days from today to the weather forecast for that day
   // with zero being today
   weather: { [string]: string },
+
+  // Which lesson has an open venue map
+  openLesson: ?SelectedLesson,
 };
 
 const EMPTY_ARRAY = [];
@@ -78,6 +82,7 @@ function getDayName(date: Date, diffInDays: number): string {
 export class TodayContainerComponent extends PureComponent<Props, State> {
   state: State = {
     weather: {},
+    openLesson: null,
   };
 
   componentDidMount() {
@@ -104,6 +109,10 @@ export class TodayContainerComponent extends PureComponent<Props, State> {
       })
       .catch((e) => Raven.captureException(e));
   }
+
+  onOpenLesson = (date: Date, lesson: Lesson) => {
+    this.setState({ openLesson: { date, lesson } });
+  };
 
   renderBeforeNextLessonCard(nextLesson: Lesson, marker: Node) {
     const nextLessonDate = getStartTimeAsDate(nextLesson);
@@ -185,7 +194,14 @@ export class TodayContainerComponent extends PureComponent<Props, State> {
     return (
       <Fragment>
         {beforeFirstLessonBlock}
-        <DayEvents lessons={lessons} dayInfo={dayInfo} marker={nextLessonMarker} />
+        <DayEvents
+          lessons={lessons}
+          date={date}
+          dayInfo={dayInfo}
+          marker={nextLessonMarker}
+          openLesson={this.state.openLesson}
+          onOpenLesson={this.onOpenLesson}
+        />
       </Fragment>
     );
   }

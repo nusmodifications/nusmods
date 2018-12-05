@@ -32,12 +32,15 @@
 }
 
 .card {
+  $v-padding: 0.6rem;
+  $h-padding: 1rem;
+
   flex: 1 0;
-  padding: 0.6rem 1rem;
+  padding: $v-padding $h-padding;
+  overflow: hidden;
   font-size: 0.9rem;
   border-bottom: 0.3rem solid;
-  border-radius: 0.5rem;
-  cursor: pointer;
+  border-radius: 0.8rem;
 
   h4 {
     margin-bottom: 0.2rem;
@@ -55,17 +58,8 @@
     vertical-align: bottom;
   }
 
-  .menuBtn {
-    display: block;
-    width: 100%;
-    padding: 0.4rem;
-    margin: 0.4rem 0 -0.4rem;
-    text-align: center;
-    color: inherit;
-    background: none;
-    cursor: pointer;
-    border: 1px solid inherit;
-    border-width: 1px 0 0 0;
+  .map {
+    margin: 0.5rem (-$h-padding) (-$v-padding) (-$h-padding);
   }
 
   @include media-breakpoint-down(sm) {
