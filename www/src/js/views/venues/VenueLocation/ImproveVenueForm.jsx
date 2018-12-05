@@ -8,10 +8,10 @@ import type { LatLngTuple, VenueLocation } from 'types/venues';
 import config from 'config';
 import { MapPin, ThumbsUp } from 'views/components/icons';
 import LoadingSpinner from 'views/components/LoadingSpinner';
-import { icon } from './icons';
+import { icon } from 'views/components/map/icons';
+import ExpandMap from 'views/components/map/ExpandMap';
 import styles from './ImproveVenueForm.scss';
 import venueStyles from './VenueLocation.scss';
-import ExpandMap from './ExpandMap';
 
 type Props = {
   venue: string,

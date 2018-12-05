@@ -1,7 +1,7 @@
 // @flow
 import { createContext } from 'react';
 
-type VenueContextValue = {|
+export type VenueContextValue = {|
   +toggleDetailScrollable: (boolean) => void,
 |};
 
