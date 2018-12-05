@@ -27,25 +27,15 @@ type Props = {|
 
 type State = {|
   +isFeedbackModalOpen: boolean,
-  +isExpanded: boolean,
 |};
 
 class VenueLocation extends PureComponent<Props, State> {
   state: State = {
     isFeedbackModalOpen: false,
-    isExpanded: false,
   };
 
   openModal = () => this.setState({ isFeedbackModalOpen: true });
   closeModal = () => this.setState({ isFeedbackModalOpen: false });
-  toggleMapExpand = () => {
-    const isExpanded = !this.state.isExpanded;
-
-    this.setState({ isExpanded });
-    if (this.props.toggleScrollable) {
-      this.props.toggleScrollable(!isExpanded);
-    }
-  };
 
   render() {
     const { venue } = this.props;
