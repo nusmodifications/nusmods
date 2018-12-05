@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { NavLink, withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 
-import { BookOpen, Calendar, Clock, Heart, Map, Settings } from 'views/components/icons';
+import { BookOpen, Calendar, Clock, Heart, Map, Settings, Star } from 'views/components/icons';
 import ExternalLink from 'views/components/ExternalLink';
 import Online from 'views/components/Online';
 import { timetablePage } from 'views/routes/paths';
@@ -62,6 +62,10 @@ export function NavtabsComponent(props: Props) {
             />
           </Online>
         )}
+      </NavLink>
+      <NavLink {...tabProps} to="/contribute">
+        <Star />
+        <span className={styles.title}>Contribute</span>
       </NavLink>
       <div className={styles.divider} />
       <ExternalLink

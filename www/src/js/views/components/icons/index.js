@@ -37,6 +37,7 @@ import Repeat from 'react-feather/dist/icons/repeat';
 import Settings from 'react-feather/dist/icons/settings';
 import Search from 'react-feather/dist/icons/search';
 import Sidebar from 'react-feather/dist/icons/sidebar';
+import Star from 'react-feather/dist/icons/star';
 import ThumbsUp from 'react-feather/dist/icons/thumbs-up';
 import Twitter from 'react-feather/dist/icons/twitter';
 import Trash2 from 'react-feather/dist/icons/trash-2';
@@ -80,6 +81,7 @@ export {
   Search,
   Settings,
   Sidebar,
+  Star,
   ThumbsUp,
   Twitter,
   Trash2,
