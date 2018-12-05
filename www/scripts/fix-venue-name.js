@@ -1,9 +1,25 @@
+/**
+ * Simple script to correctly capitalize venue names coming from
+ * NUS venues API, which only has names in ALL CAPS. This makes the
+ * venue names more human readable.
+ *
+ * It tries to match works in the name with dictionary words, and
+ * assume anything that's not to be an acronym or abbreviation and
+ * leaves them untouched.
+ */
 const venueFile = '../src/js/data/venues.json';
 
 const venues = require(venueFile); // eslint-disable-line import/no-dynamic-require
 const _ = require('lodash');
 const fs = require('fs-extra');
 const path = require('path');
+
+if (process.platform === 'win32') {
+  console.warn(
+    'This script will probably not work on Windows as ' +
+      'it relies on the Unix words dictionary file',
+  );
+}
 
 // List of special names, mapping all lower version of the name to
 // the properly cased version
@@ -57,9 +73,14 @@ _.each(venues, (venue) => {
 
     if (specialNames[lowercaseWord]) {
       return specialNames[lowercaseWord];
-    } else if (index !== 0 && articles.has(lowercaseWord)) {
-      // Ignore articles that are not the first word
-    } else if (dict.has(lowercaseWord)) {
+    }
+
+    if (
+      // Do not capitalize articles, unless it is the first word
+      (!articles.has(lowercaseWord) || index === 0) &&
+      // Use title case for words in the dictionary
+      dict.has(lowercaseWord)
+    ) {
       return _.capitalize(word);
     }
 
