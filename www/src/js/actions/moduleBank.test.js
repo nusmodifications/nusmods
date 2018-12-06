@@ -1,7 +1,7 @@
 // @flow
+import _ from 'lodash';
 import type { FSA } from 'types/redux';
 import type { TimetableConfig } from 'types/timetables';
-import type { ModuleCode } from 'types/modules';
 
 import * as actions from 'actions/moduleBank';
 import NUSModsApi from 'apis/nusmods';
@@ -24,10 +24,33 @@ test('fetchModule should return a thunk', async () => {
   const thunk = actions.fetchModule('CS1010S');
   expect(thunk).toBeInstanceOf(Function);
 
-  const dispatch = jest.fn().mockReturnValue(Promise.resolve(null));
+  const dispatch = jest.fn().mockResolvedValue();
   const getState = jest.fn().mockReturnValue(
     ({
       moduleBank: { modules: { CS1010S: {} } },
+    }: any),
+  );
+
+  thunk(dispatch, getState);
+
+  await waitFor(() => getState.mock.calls.length > 0);
+
+  expect(dispatch.mock.calls).toMatchSnapshot();
+});
+
+test('fetchModule should remove LRU modules above limit', async () => {
+  const thunk = actions.fetchModule('CS1010S');
+
+  const modules = {};
+  _.range(105).forEach((i) => {
+    modules[`CS${i}`] = { timestamp: i };
+  });
+
+  const dispatch = jest.fn().mockResolvedValue();
+  const getState = jest.fn().mockReturnValue(
+    ({
+      moduleBank: { modules },
+      timetables: {},
     }: any),
   );
 
@@ -46,26 +69,24 @@ test('getLRUModule should return the LRU and non-timetable module', () => {
     },
   };
   /* eslint-enable */
-  const modules = {
-    ACC1001: ({ timestamp: 1 }: any),
-    ACC1002: ({ timestamp: 2 }: any),
-    ACC1003: ({ timestamp: 3 }: any),
-    ACC1004: ({ timestamp: 4 }: any),
+  const modules: any = {
+    ACC1001: { timestamp: 1 },
+    ACC1002: { timestamp: 2 },
+    ACC1003: { timestamp: 3 }, // To be deleted
+    ACC1004: { timestamp: 4 },
   };
 
   const currentModule = 'ACC1002';
-  const resultOfAction = actions.getLRUModule(modules, timetableConfig, currentModule);
+  const resultOfAction = actions.getLRUModules(modules, timetableConfig, currentModule);
   expect(resultOfAction).toMatchSnapshot();
 });
 
 test('removeLRUModule should return an action', () => {
-  const LRUModuleCode: ModuleCode = 'ACC1001';
-  const resultOfAction = actions.removeLRUModule(LRUModuleCode);
+  const resultOfAction = actions.removeLRUModule(['ACC1001']);
   expect(resultOfAction).toMatchSnapshot();
 });
 
 test('updateModuleTimestamp should return an action', () => {
-  const moduleCode: ModuleCode = 'ACC1001';
-  const resultOfAction = actions.updateModuleTimestamp(moduleCode);
+  const resultOfAction = actions.updateModuleTimestamp('ACC1001');
   expect(resultOfAction).toMatchSnapshot();
 });

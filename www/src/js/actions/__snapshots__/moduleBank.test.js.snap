@@ -1,5 +1,33 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`fetchModule should remove LRU modules above limit 1`] = `
+Array [
+  Array [
+    Object {
+      "meta": Object {
+        "API_REQUEST": "FETCH_MODULE_CS1010S",
+      },
+      "payload": Object {
+        "url": "test://MOCK_MOD_DETAILS_URL/CS1010S",
+      },
+      "type": "FETCH_MODULE",
+    },
+  ],
+  Array [
+    Object {
+      "payload": Array [
+        "CS0",
+        "CS1",
+        "CS2",
+        "CS3",
+        "CS4",
+      ],
+      "type": "REMOVE_LRU_MODULE",
+    },
+  ],
+]
+`;
+
 exports[`fetchModule should return a thunk 1`] = `
 Array [
   Array [
@@ -34,11 +62,17 @@ Object {
 }
 `;
 
-exports[`getLRUModule should return the LRU and non-timetable module 1`] = `"ACC1003"`;
+exports[`getLRUModule should return the LRU and non-timetable module 1`] = `
+Array [
+  "ACC1003",
+]
+`;
 
 exports[`removeLRUModule should return an action 1`] = `
 Object {
-  "payload": "ACC1001",
+  "payload": Array [
+    "ACC1001",
+  ],
   "type": "REMOVE_LRU_MODULE",
 }
 `;

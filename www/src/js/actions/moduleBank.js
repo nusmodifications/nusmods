@@ -1,11 +1,14 @@
 // @flow
-import type { ModuleCode, Module } from 'types/modules';
+import type { ModuleCode } from 'types/modules';
 import type { TimetableConfig } from 'types/timetables';
 import type { FSA, GetState } from 'types/redux';
 
 import { size, get, flatMap, sortBy } from 'lodash';
 import { requestAction } from 'actions/requests';
 import NUSModsApi from 'apis/nusmods';
+import type { ModulesMap } from 'reducers/moduleBank';
+
+const MAX_MODULE_LIMIT: number = 100;
 
 export const FETCH_MODULE_LIST: string = 'FETCH_MODULE_LIST';
 export function fetchModuleList(): FSA {
@@ -28,7 +31,7 @@ export function updateModuleTimestamp(moduleCode: ModuleCode) {
 }
 
 export const REMOVE_LRU_MODULE = 'REMOVE_LRU_MODULE';
-export function removeLRUModule(moduleCode: ModuleCode) {
+export function removeLRUModule(moduleCode: ModuleCode[]) {
   return {
     type: REMOVE_LRU_MODULE,
     payload: moduleCode,
@@ -36,28 +39,29 @@ export function removeLRUModule(moduleCode: ModuleCode) {
 }
 
 // Export for testing
-export function getLRUModule(
-  modules: { [string]: Module },
+export function getLRUModules(
+  modules: ModulesMap,
   lessons: TimetableConfig,
   currentModule: string,
-) {
+  toRemove: number = 1,
+): ModuleCode[] {
   // Pull all the modules in all the timetables
-  const timeTableModules = flatMap(lessons, (semester) => Object.keys(semester));
+  const timetableModules = new Set(flatMap(lessons, (semester) => Object.keys(semester)));
+
+  // Remove the module which is least recently used and which is not in timetable
+  // and not the currently loaded one
+  const canRemove = Object.keys(modules).filter(
+    (moduleCode) => moduleCode !== currentModule && !timetableModules.has(moduleCode),
+  );
 
   // Sort them based on the timestamp alone
-  const sortedModules = sortBy(Object.keys(modules), (moduleCode) =>
+  const sortedModules = sortBy(canRemove, (moduleCode) =>
     get(modules[moduleCode], ['timestamp'], 0),
   );
 
-  // Remove the module which is least recently used and which is not in timetable and not the currently loaded one
-  const moduleToBeDeleted = sortedModules.find(
-    (module) => !timeTableModules.includes(module) && module !== currentModule,
-  );
-
-  return moduleToBeDeleted || null;
+  return sortedModules.slice(0, toRemove);
 }
 
-const MAX_MODULE_LIMIT: number = 100;
 export function fetchModule(moduleCode: ModuleCode) {
   return (dispatch: Function, getState: GetState) =>
     dispatch(
@@ -69,13 +73,20 @@ export function fetchModule(moduleCode: ModuleCode) {
       if (getState().moduleBank.modules[moduleCode]) {
         dispatch(updateModuleTimestamp(moduleCode));
       }
-      // Remove the LRU module if the size exceeds the maximum one and if anything can be removed
-      if (size(getState().moduleBank.modules) > MAX_MODULE_LIMIT) {
-        const LRUModule = getLRUModule(
-          getState().moduleBank.modules,
-          getState().timetables.lessons,
+
+      // Remove the LRU module if the size exceeds the maximum and if anything
+      // can be removed
+      const overLimitCount = size(getState().moduleBank.modules) - MAX_MODULE_LIMIT;
+      if (overLimitCount > 0) {
+        const { moduleBank, timetables } = getState();
+
+        const LRUModule = getLRUModules(
+          moduleBank.modules,
+          timetables.lessons,
           moduleCode,
+          overLimitCount,
         );
+
         if (LRUModule) {
           dispatch(removeLRUModule(LRUModule));
         }
