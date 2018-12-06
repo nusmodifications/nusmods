@@ -1,3 +1,5 @@
+@import '~styles/utils/modules-entry';
+
 /* stylelint-disable */
 
 .leaflet-pane,
@@ -309,10 +311,10 @@
 }
 
 /* general toolbar styles */
+$button-bg: theme-color(secondary);
 
 .leaflet-bar {
   border-radius: 4px;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65);
 }
 
 .leaflet-bar a,
@@ -323,9 +325,9 @@
   line-height: 26px;
   text-align: center;
   text-decoration: none;
-  color: black;
+  color: #fff;
   border-bottom: 1px solid #ccc;
-  background-color: #fff;
+  background-color: $button-bg;
 }
 
 .leaflet-bar a,
@@ -336,7 +338,7 @@
 }
 
 .leaflet-bar a:hover {
-  background-color: #f4f4f4;
+  background-color: darken($button-bg, 10);
 }
 
 .leaflet-bar a:first-child {
@@ -351,8 +353,7 @@
 }
 
 .leaflet-bar a.leaflet-disabled {
-  color: #bbb;
-  background-color: #f4f4f4;
+  background-color: lighten($button-bg, 20);
   cursor: default;
 }
 
@@ -380,9 +381,10 @@
   text-indent: 1px;
 }
 
-.leaflet-touch .leaflet-control-zoom-in,
-.leaflet-touch .leaflet-control-zoom-out {
+.leaflet-touch .leaflet-bar .leaflet-control-zoom-in,
+.leaflet-touch .leaflet-bar .leaflet-control-zoom-out {
   font-size: 22px;
+  line-height: 26px;
 }
 
 /* layers control */
@@ -390,7 +392,6 @@
 .leaflet-control-layers {
   border-radius: 5px;
   background: #fff;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
 }
 
 .leaflet-touch .leaflet-control-layers-toggle {
@@ -506,7 +507,6 @@
 
 .leaflet-touch .leaflet-control-layers,
 .leaflet-touch .leaflet-bar {
-  border: 2px solid rgba(0, 0, 0, 0.2);
   background-clip: padding-box;
 }
 
@@ -593,7 +593,8 @@
 
 /* Tooltip */
 
-/* Base styles for the element that has a tooltip */
+/*
+// Base styles for the element that has a tooltip
 .leaflet-tooltip {
   position: absolute;
   padding: 6px;
@@ -623,7 +624,7 @@
   pointer-events: none;
 }
 
-/* Directions */
+// Directions
 
 .leaflet-tooltip-bottom {
   margin-top: 6px;
@@ -677,3 +678,4 @@
   margin-left: -12px;
   border-right-color: #fff;
 }
+*/

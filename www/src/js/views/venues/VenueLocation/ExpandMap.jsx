@@ -46,7 +46,7 @@ class ExpandMap extends PureComponent<Props> {
         <button
           aria-label={this.props.isExpanded ? 'Minimize map' : 'Maximize map'}
           type="button"
-          className="btn btn-secondary"
+          className="btn btn-sm btn-secondary"
           onClick={this.expandMap}
         >
           {this.props.isExpanded ? <Minimize /> : <Maximize />}
