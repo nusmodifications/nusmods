@@ -1,6 +1,26 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`fetchModule should return a thunk 1`] = `[Function]`;
+exports[`fetchModule should return a thunk 1`] = `
+Array [
+  Array [
+    Object {
+      "meta": Object {
+        "API_REQUEST": "FETCH_MODULE_CS1010S",
+      },
+      "payload": Object {
+        "url": "test://MOCK_MOD_DETAILS_URL/CS1010S",
+      },
+      "type": "FETCH_MODULE",
+    },
+  ],
+  Array [
+    Object {
+      "payload": "CS1010S",
+      "type": "UPDATE_MODULE_TIMESTAMP",
+    },
+  ],
+]
+`;
 
 exports[`fetchModuleList should return a request action 1`] = `
 Object {
