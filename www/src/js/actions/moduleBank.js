@@ -63,12 +63,8 @@ export function getLRUModules(
 }
 
 export function fetchModule(moduleCode: ModuleCode) {
-  return (dispatch: Function, getState: GetState) =>
-    dispatch(
-      requestAction(fetchModuleRequest(moduleCode), FETCH_MODULE, {
-        url: NUSModsApi.moduleDetailsUrl(moduleCode),
-      }),
-    ).finally(() => {
+  return (dispatch: Function, getState: GetState) => {
+    const onFinally = () => {
       // Update the timestamp of the accessed module if it is in the store.
       if (getState().moduleBank.modules[moduleCode]) {
         dispatch(updateModuleTimestamp(moduleCode));
@@ -91,5 +87,12 @@ export function fetchModule(moduleCode: ModuleCode) {
           dispatch(removeLRUModule(LRUModule));
         }
       }
-    });
+    };
+
+    return dispatch(
+      requestAction(fetchModuleRequest(moduleCode), FETCH_MODULE, {
+        url: NUSModsApi.moduleDetailsUrl(moduleCode),
+      }),
+    ).then(onFinally, onFinally);
+  };
 }
