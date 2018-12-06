@@ -906,6 +906,14 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
+"@tippy.js/react@1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@tippy.js/react/-/react-1.1.1.tgz#91476726529e31d4c9f9074d995d0fa31f3b6e2d"
+  integrity sha512-TkL1VufxgUvTMouDoBGv2vTdtUxtLUaRpspI4Rv0DsoKe2Ex1E5bl/qISk434mhuAhEnXuemrcgTaPWrfDvmGw==
+  dependencies:
+    prop-types "^15.6.2"
+    tippy.js "^3.2.0"
+
 "@types/node@*":
   version "9.3.0"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-9.3.0.tgz#3a129cda7c4e5df2409702626892cb4b96546dd5"
@@ -8089,6 +8097,11 @@ pn@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/pn/-/pn-1.1.0.tgz#e2f4cef0e219f463c179ab37463e4e1ecdccbafb"
 
+popper.js@^1.14.6:
+  version "1.14.6"
+  resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.14.6.tgz#ab20dd4edf9288b8b3b6531c47c361107b60b4b0"
+  integrity sha512-AGwHGQBKumlk/MDfrSOf0JHhJCImdDMcGNoqKmKkU+68GFazv3CQ6q9r7Ja1sKDZmYWTckY/uLyEznheTDycnA==
+
 portfinder@^1.0.9:
   version "1.0.13"
   resolved "https://registry.yarnpkg.com/portfinder/-/portfinder-1.0.13.tgz#bb32ecd87c27104ae6ee44b5a3ccbf0ebb1aede9"
@@ -10728,6 +10741,13 @@ timers-browserify@^2.0.4:
 timsort@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/timsort/-/timsort-0.3.0.tgz#405411a8e7e6339fe64db9a234de11dc31e02bd4"
+
+tippy.js@^3.2.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/tippy.js/-/tippy.js-3.3.0.tgz#90d4f90be9c80fdc0d0025f49378e3d9f60508d3"
+  integrity sha512-2gIQg57EFSCBqE97NZbakSkGBJF0GzdOhx/lneGQGMzJiJyvbpyKgNy4l4qofq0nEbXACl7C/jW/ErsdQa21aQ==
+  dependencies:
+    popper.js "^1.14.6"
 
 tmp@^0.0.33:
   version "0.0.33"
