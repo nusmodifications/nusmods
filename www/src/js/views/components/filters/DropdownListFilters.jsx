@@ -48,7 +48,7 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
     this.setState({ searchedFilters: uniq([...this.state.searchedFilters, selectedItem]) });
   };
 
-  searchInput = React.createRef();
+  searchInput = React.createRef<HTMLInputElement>();
 
   focusInput = () => {
     if (this.searchInput.current) this.searchInput.current.focus();
