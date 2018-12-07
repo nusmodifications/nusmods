@@ -5582,10 +5582,9 @@ har-validator@~5.1.0:
     ajv "^5.3.0"
     har-schema "^2.0.0"
 
-hard-source-webpack-plugin@0.12.0:
+"hard-source-webpack-plugin@https://github.com/nomcopter/hard-source-webpack-plugin.git#3bb1650":
   version "0.12.0"
-  resolved "https://registry.yarnpkg.com/hard-source-webpack-plugin/-/hard-source-webpack-plugin-0.12.0.tgz#ea21f0407538fcb62f6995371541baab0a5f679e"
-  integrity sha512-xELLABhB3WtdVxDZ4iku8W5Xi0Tq5w+1fOXrSWjeML90uWikykkiQmTV6Lk0MKC5uFEKUZcSuTY5BZS+8ZXr8A==
+  resolved "https://github.com/nomcopter/hard-source-webpack-plugin.git#3bb1650dee49ac670ea6b8ea6721b4f7e47240f3"
   dependencies:
     chalk "^2.4.1"
     find-cache-dir "^2.0.0"
