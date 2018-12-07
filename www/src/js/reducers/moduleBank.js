@@ -1,18 +1,17 @@
 // @flow
 import type { FSA } from 'types/redux';
-import type { Module, ModuleCode, Semester } from 'types/modules';
-import type { SemTimetableConfig } from 'types/timetables';
-import type { ModuleCodeMap, ModuleList, ModuleSelectListItem } from 'types/reducers';
+import type { Module, ModuleCode } from 'types/modules';
+import type { ModuleCodeMap, ModuleList } from 'types/reducers';
 import { SUCCESS } from 'types/reducers';
 
 import { REHYDRATE } from 'redux-persist';
-import { keyBy, size, zipObject, omit } from 'lodash';
+import { keyBy, omit, size, zipObject } from 'lodash';
 
 import {
   FETCH_MODULE,
   FETCH_MODULE_LIST,
-  UPDATE_MODULE_TIMESTAMP,
   REMOVE_LRU_MODULE,
+  UPDATE_MODULE_TIMESTAMP,
 } from 'actions/moduleBank';
 import { SET_EXPORTED_DATA } from 'actions/export';
 
@@ -98,22 +97,6 @@ function moduleBank(state: ModuleBank = defaultModuleBankState, action: FSA): Mo
     default:
       return state;
   }
-}
-
-export function getSemModuleSelectList(
-  state: ModuleBank,
-  semester: Semester,
-  semTimetableConfig: SemTimetableConfig,
-): ModuleSelectListItem[] {
-  return (
-    state.moduleList
-      // In specified semester and not within the timetable.
-      .filter((item) => item.Semesters.includes(semester))
-      .map((mod) => ({
-        ...mod,
-        isAdded: mod.ModuleCode in semTimetableConfig,
-      }))
-  );
 }
 
 export default moduleBank;

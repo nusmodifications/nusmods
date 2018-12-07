@@ -17,12 +17,13 @@ import elements from 'views/elements';
 import styles from './ModulesSelect.scss';
 
 type Props = {
-  getFilteredModules: (?string) => ModuleSelectList,
-  onChange: (ModuleCode) => void,
   moduleCount: number,
   placeholder: string,
   matchBreakpoint: boolean,
   disabled?: boolean,
+
+  getFilteredModules: (?string) => ModuleSelectList,
+  onChange: (ModuleCode) => void,
 };
 
 type State = {
@@ -71,6 +72,13 @@ export class ModulesSelectComponent extends Component<Props, State> {
         }
         this.closeSelect();
         return changes;
+      case Downshift.stateChangeTypes.keyDownEnter:
+      case Downshift.stateChangeTypes.clickItem:
+        // Don't reset highlighted index back to 0 when an item is selected
+        return {
+          ...changes,
+          highlightedIndex: state.highlightedIndex,
+        };
       default:
         return changes;
     }
@@ -87,7 +95,7 @@ export class ModulesSelectComponent extends Component<Props, State> {
     inputValue,
     highlightedIndex,
   }) => {
-    const { placeholder } = this.props;
+    const { placeholder, disabled, moduleCount } = this.props;
     const isModalOpen = !this.props.matchBreakpoint && isOpen;
     const results = this.props.getFilteredModules(inputValue);
     const showResults = isOpen && results.length > 0;
@@ -103,11 +111,11 @@ export class ModulesSelectComponent extends Component<Props, State> {
           {...getInputProps({
             className: classnames(styles.input, elements.addModuleInput),
             autoFocus: isModalOpen,
+            disabled,
             placeholder,
-            onFocus: this.openSelect,
             // no onBlur as that means people can't click menu items as
             // input has lost focus, see 'onOuterClick' instead
-            disabled: this.props.disabled,
+            onFocus: this.openSelect,
           })}
         />
         {isModalOpen && <CloseButton className={styles.close} onClick={this.closeSelect} />}
@@ -116,13 +124,13 @@ export class ModulesSelectComponent extends Component<Props, State> {
             {results.map((module, index) => (
               <li
                 {...getItemProps({
+                  index,
                   key: module.ModuleCode,
                   item: module.ModuleCode,
-                  index,
-                  disabled: module.isAdded,
+                  disabled: module.isAdded || module.isAdding,
                 })}
                 className={classnames(styles.option, {
-                  [styles.optionDisabled]: module.isAdded,
+                  [styles.optionDisabled]: module.isAdded || module.isAdding,
                   [styles.optionSelected]: highlightedIndex === index,
                 })}
               >
@@ -134,6 +142,11 @@ export class ModulesSelectComponent extends Component<Props, State> {
                     <span className="badge badge-info">Added</span>
                   </div>
                 )}
+                {module.isAdding && (
+                  <div>
+                    <span className="badge badge-primary">Adding...</span>
+                  </div>
+                )}
               </li>
             ))}
           </ol>
@@ -141,7 +154,7 @@ export class ModulesSelectComponent extends Component<Props, State> {
         {showTip && (
           <div className={styles.tip}>
             Try &quot;GER1000&quot; or &quot;Quantitative Reasoning&quot;. Searching{' '}
-            <strong>{this.props.moduleCount}</strong> modules.
+            <strong>{moduleCount}</strong> modules.
           </div>
         )}
         {showNoResultMessage && (
