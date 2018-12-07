@@ -36,15 +36,31 @@
 
 .inlineContainer {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   margin-bottom: 0;
   text-align: center;
 }
 
-.errorButtonContainer > :not(:last-child) {
+.errorButtonContainer {
+  display: flex;
+  flex-direction: column;
   margin-right: 1em;
+  margin-left: 1em;
+
+  :not(:last-child) {
+    margin-bottom: 0.5em;
+  }
+
+  @include media-breakpoint-up(sm) {
+    flex-direction: row;
+    justify-content: center;
+
+    :not(:last-child) {
+      margin-right: 1em;
+      margin-bottom: 0;
+    }
+  }
 }
 
 .bigCharacter {

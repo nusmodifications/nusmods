@@ -26,10 +26,11 @@ export default function NotFoundPage({ moduleCode }: Props) {
         <span className={styles.bigCharacter}>4</span>
       </h1>
 
-      <h2>Ooops, module {moduleCode} not found.</h2>
+      <h2>Oops, module {moduleCode} not found.</h2>
       <p>
         This usually means you have a typo in the module code, or the module is not offered this
-        year. <br /> Are you sure you are at the right page?
+        year.
+        <br /> Are you sure you are at the right page?
       </p>
 
       <div className={styles.errorButtonContainer}>
@@ -44,7 +45,7 @@ export default function NotFoundPage({ moduleCode }: Props) {
           {moduleCode} should be here
         </button>
         <Link className="btn btn-outline-primary btn-svg" to="/">
-          Whoops, bring me home
+          Bring me home
         </Link>
       </div>
     </div>
