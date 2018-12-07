@@ -172,7 +172,7 @@ describe(actions.fetchTimetableModules, () => {
       invalid: {},
     };
 
-    const thunk = actions.fetchTimetableModules(timetable);
+    const thunk = actions.fetchTimetableModules([timetable]);
     await thunk(dispatch, getState);
     expect(dispatch).not.toBeCalled();
   });

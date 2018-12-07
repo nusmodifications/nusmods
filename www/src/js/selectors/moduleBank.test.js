@@ -1,8 +1,8 @@
 // @flow
 
-import { isValidModule } from 'selectors/moduleBank';
+import { getModuleCondensed } from 'selectors/moduleBank';
 
-describe(isValidModule, () => {
+describe(getModuleCondensed, () => {
   test('should return a function that determines if the given module code is valid', () => {
     const state: any = {
       moduleCodes: {
@@ -10,10 +10,10 @@ describe(isValidModule, () => {
       },
     };
 
-    const checker = isValidModule(state);
+    const checker = getModuleCondensed(state);
     expect(checker).toBeInstanceOf(Function);
 
-    expect(checker('CS1010S')).toBe(true);
-    expect(checker('ACC1000')).toBe(false);
+    expect(checker('CS1010S')).toBeTruthy();
+    expect(checker('ACC1000')).toBeFalsy();
   });
 });

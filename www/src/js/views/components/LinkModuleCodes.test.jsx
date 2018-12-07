@@ -5,6 +5,7 @@ import { mount } from 'enzyme';
 import { entries } from 'lodash';
 
 import type { ModuleCodeMap } from 'types/reducers';
+import { getModuleCondensed } from 'selectors/moduleBank';
 
 import { LinkModuleCodesComponent } from './LinkModuleCodes';
 
@@ -42,10 +43,18 @@ describe(LinkModuleCodesComponent, () => {
     },
   };
 
-  function create(content: string, modules: ModuleCodeMap = {}) {
+  function create(content: string, moduleCodes: ModuleCodeMap = {}) {
+    const getModule = getModuleCondensed(
+      ({
+        moduleCodes,
+      }: any),
+    );
+
     return mount(
       <MemoryRouter>
-        <LinkModuleCodesComponent moduleCodes={modules}>{content}</LinkModuleCodesComponent>
+        <LinkModuleCodesComponent getModuleCondensed={getModule}>
+          {content}
+        </LinkModuleCodesComponent>
       </MemoryRouter>,
     );
   }

@@ -16,7 +16,7 @@ import { getSemesterTimetable } from 'reducers/timetables';
 import { setTimetable, fetchTimetableModules } from 'actions/timetables';
 import { openNotification } from 'actions/app';
 import { undo } from 'actions/undoHistory';
-import { isValidModule } from 'selectors/moduleBank';
+import { getModuleCondensed } from 'selectors/moduleBank';
 import { deserializeTimetable } from 'utils/timetables';
 import { fillColorMapping } from 'utils/colors';
 import { semesterForTimetablePage, timetablePage, TIMETABLE_SHARE } from 'views/routes/paths';
@@ -224,9 +224,8 @@ const mapStateToProps = (state: StoreState, ownProps) => {
     semester,
     timetable,
     colors,
-    isValidModule: isValidModule(state.moduleBank),
+    isValidModule: getModuleCondensed(state.moduleBank),
     modules: state.moduleBank.modules,
-    moduleCodes: state.moduleBank.moduleCodes,
     activeSemester: state.app.activeSemester,
   };
 };
