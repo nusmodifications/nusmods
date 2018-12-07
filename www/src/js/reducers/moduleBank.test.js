@@ -25,7 +25,7 @@ describe(UPDATE_MODULE_TIMESTAMP, () => {
   });
 
   it('should update module timestamp', () => {
-    const modules = {
+    const modules: any = {
       CS1010S: { timestamp: 0 },
       ACC1000: { timestamp: 0 },
     };
@@ -46,7 +46,7 @@ describe(UPDATE_MODULE_TIMESTAMP, () => {
 
 describe(REMOVE_LRU_MODULE, () => {
   it('should remove modules', () => {
-    const modules = {
+    const modules: any = {
       CS1010S: {},
       ACC1000: {},
     };
