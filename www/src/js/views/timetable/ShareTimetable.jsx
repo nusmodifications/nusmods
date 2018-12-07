@@ -50,7 +50,7 @@ export default class ShareTimetable extends PureComponent<Props, State> {
     shortUrl: null,
   };
 
-  urlInput = React.createRef();
+  urlInput = React.createRef<HTMLInputElement>();
 
   loadShortUrl(url: string) {
     const showFullUrl = () => this.setState({ shortUrl: url });
@@ -114,7 +114,10 @@ export default class ShareTimetable extends PureComponent<Props, State> {
   };
 
   renderSharing(url: string) {
-    const { QRCode, props: { semester } } = this;
+    const {
+      QRCode,
+      props: { semester },
+    } = this;
 
     return (
       <div>

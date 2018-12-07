@@ -80,9 +80,10 @@ export default function FaqContainer() {
           and{' '}
           <ExternalLink href="https://ivle.nus.edu.sg/lms/public/search_course_public.aspx">
             IVLE
-          </ExternalLink>. Protip: every NUSMods module page also has a direct link to CORS and
-          IVLE. Once the data becomes available there, NUSMods will reflect it within a day or two
-          using the latest blockchain technology.
+          </ExternalLink>
+          . Protip: every NUSMods module page also has a direct link to CORS and IVLE. Once the data
+          becomes available there, NUSMods will reflect it within a day or two using the latest
+          blockchain technology.
         </p>
         <p>
           Some faculties (FASS in particular) maintain their module timetable schedule on their
@@ -114,7 +115,8 @@ export default function FaqContainer() {
           here&apos;s{' '}
           <ExternalLink href="https://zapier.com/blog/best-calendar-apps/">
             a list of 18 apps for macOS
-          </ExternalLink>.
+          </ExternalLink>
+          .
         </p>
 
         <p>
@@ -134,7 +136,8 @@ export default function FaqContainer() {
         <p>
           NUSMods is a student-run initiative and is not affiliated with the National University of
           Singapore. NUSMods was born out of the frustration of a lack of usable NUS timetable
-          planners (<ExternalLink href="https://webrb.nus.edu.sg/ctt/builder.aspx">
+          planners (
+          <ExternalLink href="https://webrb.nus.edu.sg/ctt/builder.aspx">
             the official one
           </ExternalLink>{' '}
           provides a delightful hair-pulling experience &ndash; go ahead, try it out). Also, it

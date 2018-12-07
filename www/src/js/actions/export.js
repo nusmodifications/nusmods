@@ -1,9 +1,10 @@
 // @flow
-import type { Module, Semester } from 'types/modules';
 
-import { hydrateSemTimetableWithLessons } from 'utils/timetables';
+import type { Module, Semester } from 'types/modules';
 import type { ExportData } from 'types/export';
 import type { FSA, GetState } from 'types/redux';
+import Raven from 'raven-js';
+import { hydrateSemTimetableWithLessons } from 'utils/timetables';
 import { getSemesterTimetable } from 'reducers/timetables';
 
 function downloadUrl(blob: Blob, filename: string) {
@@ -26,22 +27,29 @@ export function downloadAsIcal(semester: Semester) {
     Promise.all([
       import(/* webpackChunkName: "export" */ 'ical-generator'),
       import(/* webpackChunkName: "export" */ 'utils/ical'),
-    ]).then(([ical, icalUtils]) => {
-      const { moduleBank: { modules }, timetables } = getState();
-      const { timetable } = getSemesterTimetable(semester, timetables);
-      const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
+    ])
+      .then(([ical, icalUtils]) => {
+        const {
+          moduleBank: { modules },
+          timetables,
+        } = getState();
+        const { timetable } = getSemesterTimetable(semester, timetables);
+        const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
 
-      const events = icalUtils.default(semester, timetableWithLessons, modules);
-      // $FlowFixMe Flow doesn't seem to like import() for CJS modules
-      const cal = ical({
-        domain: 'nusmods.com',
-        prodId: '//NUSMods//NUSMods//EN',
-        events,
+        const events = icalUtils.default(semester, timetableWithLessons, modules);
+        const cal = ical.default({
+          domain: 'nusmods.com',
+          prodId: '//NUSMods//NUSMods//EN',
+          events,
+        });
+
+        const blob = new Blob([cal.toString()], { type: 'text/plain' });
+        downloadUrl(blob, 'nusmods_calendar.ics');
+      })
+      .catch((e) => {
+        Raven.captureException(e);
+        console.error(e); // eslint-disable-line no-console
       });
-
-      const blob = new Blob([cal.toString()], { type: 'text/plain' });
-      downloadUrl(blob, 'nusmods_calendar.ics');
-    });
   };
 }
 

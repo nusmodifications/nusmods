@@ -26,8 +26,9 @@ type State = {
  * Previous keys:
  * - 'nusmods-r-announcement' - NUSMods R announcement message
  * - 'ay201819-new-data' - AY2018/19 data is available
+ * - 'ay201819-s2-new-data' - S2 data available
  */
-const key = announcementKey('ay201819-new-data');
+const key = announcementKey('ay201819-s2-new-data');
 
 class Announcements extends PureComponent<Props, State> {
   constructor(props: Props) {
@@ -35,7 +36,7 @@ class Announcements extends PureComponent<Props, State> {
 
     this.state = {
       // Set to constant false to turn off announcement
-      isOpen: false, // key ? !storage.getItem(key) : true,
+      isOpen: key ? !storage.getItem(key) : true,
     };
   }
 
@@ -52,8 +53,11 @@ class Announcements extends PureComponent<Props, State> {
         <Heart className={styles.backgroundIcon} />
 
         <div className={styles.body}>
-          <h3>AY2018/19 modules now available</h3>
-          <p>NUSMods now has AY2018/19 module information available. Happy planning!</p>
+          <h3>Semester 2 modules now available</h3>
+          <p>
+            CORS has been updated with lesson timetables. Please note that these can change at any
+            time during the holidays, so check back often. Happy planning!
+          </p>
         </div>
 
         {key && <CloseButton className={styles.closeButton} onClick={this.dismiss} />}
@@ -62,4 +66,7 @@ class Announcements extends PureComponent<Props, State> {
   }
 }
 
-export default connect(null, { toggleFeedback })(Announcements);
+export default connect(
+  null,
+  { toggleFeedback },
+)(Announcements);

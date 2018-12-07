@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Fragment } from 'react';
+import React, { type Node, Fragment } from 'react';
 import { groupBy, map, size } from 'lodash';
 
 import type { Faculty } from 'types/modules';
@@ -72,7 +72,7 @@ function renderBidTable(groupedStats: GroupedBiddingStat[]) {
  * Detailed bidding info for a single round. We first group by faculty then group
  * by studentType.
  */
-function CorsRound(props: Props) {
+function CorsRound(props: Props): Node {
   const groupedByFaculty = groupBy(props.stats, (stats) => stats.Faculty);
 
   if (!size(groupedByFaculty)) {

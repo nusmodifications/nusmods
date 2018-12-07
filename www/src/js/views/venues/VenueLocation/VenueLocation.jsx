@@ -4,7 +4,6 @@ import { Map as LeafletMap } from 'leaflet';
 import { Map, Marker, TileLayer } from 'react-leaflet';
 import { GestureHandling } from 'leaflet-gesture-handling';
 import classnames from 'classnames';
-import { capitalize } from 'lodash';
 import type { LatLngTuple, VenueLocation as VenueLocationItem } from 'types/venues';
 import ExternalLink from 'views/components/ExternalLink';
 import Modal from 'views/components/Modal';
@@ -20,7 +19,7 @@ import ImproveVenueForm from './ImproveVenueForm';
 import ExpandMap from './ExpandMap';
 import styles from './VenueLocation.scss';
 
-type OwnProps = {|
+export type OwnProps = {|
   +venue: string,
 |};
 
@@ -107,13 +106,14 @@ class VenueLocation extends PureComponent<Props, State> {
     return (
       <div className={styles.location}>
         <p>
-          <strong>{capitalize(location.roomName)}</strong> ({venue})
+          <strong>{location.roomName}</strong> ({venue})
           {location.floor && (
             <Fragment>
               {' '}
               is on <strong>floor {floorName(location.floor)}</strong>
             </Fragment>
-          )}.
+          )}
+          .
         </p>
 
         {position ? (

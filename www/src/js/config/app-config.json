@@ -9,7 +9,7 @@
   "disqusShortname": "nusmods-prod",
   "googleAnalyticsId": "UA-33503218-6",
   "venueFeedbackApi": "https://mediumdeviation.lib.id/nusmods-venue-github-hook@0.0.5/",
-  "timetableAvailable": [1],
+  "timetableAvailable": [1, 2],
   "semesterNames": {
     "1": "Semester 1",
     "2": "Semester 2",

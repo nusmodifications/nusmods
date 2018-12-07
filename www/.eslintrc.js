@@ -23,7 +23,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['**/*.test.{js,jsx}', '__mocks__/**/*.{js,jsx}'],
+      files: ['**/*.test.{js,jsx}', '**/__mocks__/**/*.{js,jsx}'],
       env: {
         jest: true,
       },

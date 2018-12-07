@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 import axios from 'axios';
+import classnames from 'classnames';
 
 import Loader from 'views/components/LoadingSpinner';
 import ExternalLink from 'views/components/ExternalLink';
@@ -111,7 +112,7 @@ class ContributorsContainer extends Component<Props, State> {
                     <img
                       src={contributor.avatar_url}
                       alt={`${contributor.login} thumbnail`}
-                      className="img-fluid img-thumbnail"
+                      className={classnames(styles.thumbnail, 'img-fluid img-thumbnail')}
                     />
                     <span className={styles.contributorUsername}>{contributor.login}</span>
                   </ExternalLink>
@@ -122,7 +123,8 @@ class ContributorsContainer extends Component<Props, State> {
                         contributor.login
                       }`}
                     >
-                      {contributor.contributions} commit{contributor.contributions !== 1 && 's'}
+                      {contributor.contributions} commit
+                      {contributor.contributions !== 1 && 's'}
                     </ExternalLink>
                   </p>
                 </div>

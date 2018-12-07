@@ -25,7 +25,7 @@ function createComponent(selectedVenue: ?Venue, search?: string) {
 
 const venues = sortVenues(venueInfo);
 
-describe('VenuesContainer', () => {
+describe(VenuesContainerComponent, () => {
   beforeEach(() => {
     mockDom();
   });
