@@ -31,10 +31,10 @@ export function updateModuleTimestamp(moduleCode: ModuleCode) {
 }
 
 export const REMOVE_LRU_MODULE = 'REMOVE_LRU_MODULE';
-export function removeLRUModule(moduleCode: ModuleCode[]) {
+export function removeLRUModule(moduleCodes: ModuleCode[]) {
   return {
     type: REMOVE_LRU_MODULE,
-    payload: moduleCode,
+    payload: moduleCodes,
   };
 }
 

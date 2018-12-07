@@ -66,7 +66,7 @@ function moduleBank(state: ModuleBank = defaultModuleBankState, action: FSA): Mo
           ...state.modules,
           [action.payload]: {
             ...state.modules[action.payload],
-            timestamp: new Date().getTime(),
+            timestamp: Date.now(),
           },
         },
       };
