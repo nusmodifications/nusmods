@@ -19,12 +19,12 @@ jest.mock('storage', () => ({
 // see: https://github.com/reactjs/redux/blob/master/docs/recipes/WritingTests.md#example-1
 // TODO: write addModule test with nock and mockStore.
 test('addModule should create an action to add a module', () => {
-  const moduleCode: ModuleCode = 'CS1010';
-  const semester: Semester = 1;
+  const moduleCode = 'CS1010';
+  const semester = 1;
 
-  const value: Function = actions.addModule(semester, moduleCode);
+  const value = actions.addModule(semester, moduleCode);
   // TODO
-  expect(typeof value === 'function').toBe(true);
+  expect(value).toBeInstanceOf(Function);
 });
 
 test('removeLesson should return information to remove module', () => {
@@ -131,5 +131,49 @@ describe('hide/show timetable modules', () => {
   test('should dispatch a module code for showing', () => {
     const moduleCode: ModuleCode = 'CS1020';
     expect(actions.showLessonInTimetable(semester, moduleCode)).toMatchSnapshot();
+  });
+});
+
+describe(actions.fetchTimetableModules, () => {
+  const moduleCodes: any = {
+    CS1010S: {},
+  };
+
+  const state: any = {
+    moduleBank: {
+      moduleCodes,
+    },
+  };
+
+  const dispatch = jest.fn().mockResolvedValue();
+  const getState = jest.fn().mockReturnValue(state);
+
+  beforeEach(() => {
+    dispatch.mockClear();
+    getState.mockClear();
+  });
+
+  test('should fetch modules', async () => {
+    const timetable = {
+      CS1010S: {},
+    };
+
+    const thunk = actions.fetchTimetableModules([timetable]);
+    expect(thunk).toBeInstanceOf(Function);
+
+    await thunk(dispatch, getState);
+
+    expect(dispatch).toBeCalled();
+    expect(dispatch.mock.calls).toMatchSnapshot();
+  });
+
+  test('should not fetch invalid modules', async () => {
+    const timetable = {
+      invalid: {},
+    };
+
+    const thunk = actions.fetchTimetableModules(timetable);
+    await thunk(dispatch, getState);
+    expect(dispatch).not.toBeCalled();
   });
 });

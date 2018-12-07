@@ -8,6 +8,7 @@ import type { ClassNo, Lesson, LessonType, Module, ModuleCode, Semester } from '
 
 import { fetchModule } from 'actions/moduleBank';
 import { openNotification } from 'actions/app';
+import { isValidModule } from 'selectors/moduleBank';
 import {
   randomModuleLessonConfig,
   validateModuleLessons,
@@ -164,10 +165,11 @@ export function validateTimetable(semester: Semester) {
 export function fetchTimetableModules(timetables: SemTimetableConfig[]) {
   return (dispatch: Function, getState: GetState) => {
     const moduleCodes = new Set(flatMap(timetables, Object.keys));
-    const validModuleCodes = getState().moduleBank.moduleCodes;
+    const validateModule = isValidModule(getState().moduleBank);
+
     return Promise.all(
       Array.from(moduleCodes)
-        .filter((moduleCode) => validModuleCodes[moduleCode])
+        .filter(validateModule)
         .map((moduleCode) => dispatch(fetchModule(moduleCode))),
     );
   };
