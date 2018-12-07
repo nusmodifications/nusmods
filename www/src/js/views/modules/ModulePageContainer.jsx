@@ -8,10 +8,10 @@ import { Redirect, withRouter } from 'react-router-dom';
 import deferComponentRender from 'views/hocs/deferComponentRender';
 import Raven from 'raven-js';
 
-import type { ModuleCodeMap } from 'types/reducers';
 import type { Module, ModuleCode } from 'types/modules';
 
 import { fetchModule } from 'actions/moduleBank';
+import { getModuleCondensed } from 'selectors/moduleBank';
 import { retry } from 'utils/promise';
 import ApiError from 'views/errors/ApiError';
 import ModuleNotFoundPage from 'views/errors/ModuleNotFoundPage';
@@ -22,8 +22,8 @@ type Props = {
   ...ContextRouter,
 
   moduleCode: ModuleCode,
-  moduleCodes: ModuleCodeMap,
   module: ?Module,
+  isModuleValid: (ModuleCode) => boolean,
   fetchModule: (ModuleCode) => Promise<*>,
 };
 
@@ -64,7 +64,7 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
   }
 
   fetchModule(moduleCode: ModuleCode) {
-    if (this.doesModuleExist(moduleCode)) {
+    if (this.props.isModuleValid(moduleCode)) {
       this.props.fetchModule(moduleCode).catch(this.handleFetchError);
     }
   }
@@ -86,10 +86,6 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
     Raven.captureException(error);
   };
 
-  doesModuleExist(moduleCode: ModuleCode): boolean {
-    return !!this.props.moduleCodes[moduleCode];
-  }
-
   canonicalUrl() {
     if (!this.props.module) throw new Error('canonicalUrl() called before module is loaded');
     return modulePage(this.props.moduleCode, this.props.module.ModuleTitle);
@@ -99,7 +95,7 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
     const { ModulePageContent, error } = this.state;
     const { module, moduleCode, match, location } = this.props;
 
-    if (!this.doesModuleExist(moduleCode)) {
+    if (!this.props.isModuleValid(moduleCode)) {
       return <ModuleNotFoundPage moduleCode={moduleCode} />;
     }
 
@@ -136,7 +132,7 @@ const mapStateToProps = (state, ownState) => {
 
   return {
     moduleCode,
-    moduleCodes: state.moduleBank.moduleCodes,
+    isModuleValid: getModuleCondensed(state.moduleBank),
     module: state.moduleBank.modules[moduleCode],
   };
 };
