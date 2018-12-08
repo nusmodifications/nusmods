@@ -10,8 +10,8 @@ import { MapPin, ThumbsUp } from 'views/components/icons';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import { icon } from 'views/components/map/icons';
 import ExpandMap from 'views/components/map/ExpandMap';
+import mapStyles from 'views/components/map/LocationMap.scss';
 import styles from './ImproveVenueForm.scss';
-import venueStyles from './VenueLocation.scss';
 
 type Props = {
   venue: string,
@@ -218,12 +218,12 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
         </div>
 
         <div
-          className={classnames('col-sm-12', venueStyles.mapWrapper, {
-            [venueStyles.expanded]: isMapExpanded,
+          className={classnames('col-sm-12', mapStyles.mapWrapper, {
+            [mapStyles.expanded]: isMapExpanded,
           })}
         >
           <Map
-            className={venueStyles.map}
+            className={mapStyles.map}
             center={location}
             zoom={19}
             maxZoom={19}
