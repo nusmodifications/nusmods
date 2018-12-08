@@ -50,7 +50,7 @@ export default class ShareTimetable extends PureComponent<Props, State> {
     shortUrl: null,
   };
 
-  urlInput = React.createRef();
+  urlInput = React.createRef<HTMLInputElement>();
 
   loadShortUrl(url: string) {
     const showFullUrl = () => this.setState({ shortUrl: url });

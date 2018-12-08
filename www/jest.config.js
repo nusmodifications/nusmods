@@ -17,6 +17,7 @@ module.exports = {
   ],
   coveragePathIgnorePatterns: [
     'src/js/test_utils',
+    'src/js/e2e',
     // Code in this file triggers this bug - https://github.com/istanbuljs/babel-plugin-istanbul/issues/116
     'src/js/views/modules/ModulePageContent.jsx',
   ],
