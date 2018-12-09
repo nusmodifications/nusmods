@@ -30,7 +30,6 @@ import {
 import Title from 'views/components/Title';
 import CorsNotification from 'views/components/cors-info/CorsNotification';
 import Announcements from 'views/components/notfications/Announcements';
-import RefreshPrompt from 'views/settings/RefreshPrompt';
 import { venuePage } from 'views/routes/paths';
 import { getSemesterTimetable } from 'reducers/timetables';
 import * as weatherAPI from 'apis/weather';
@@ -212,8 +211,6 @@ export class TodayContainerComponent extends PureComponent<Props, State> {
         <CorsNotification />
 
         <Announcements />
-
-        <RefreshPrompt />
 
         {range(7).map((i) => {
           const date = addDays(currentTime, i);
