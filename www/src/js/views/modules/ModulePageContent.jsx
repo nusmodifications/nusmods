@@ -27,7 +27,7 @@ import CorsStats from 'views/components/cors-stats/CorsStats';
 import CorsNotification from 'views/components/cors-info/CorsNotification';
 import Announcements from 'views/components/notfications/Announcements';
 import Title from 'views/components/Title';
-import RefreshPrompt from 'views/components/notfications/RefreshPrompt';
+import RefreshPrompt from 'views/settings/RefreshPrompt';
 import ScrollToTop from 'views/components/ScrollToTop';
 
 import styles from './ModulePageContent.scss';

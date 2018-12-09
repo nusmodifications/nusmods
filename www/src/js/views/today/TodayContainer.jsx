@@ -30,7 +30,7 @@ import {
 import Title from 'views/components/Title';
 import CorsNotification from 'views/components/cors-info/CorsNotification';
 import Announcements from 'views/components/notfications/Announcements';
-import RefreshPrompt from 'views/components/notfications/RefreshPrompt';
+import RefreshPrompt from 'views/settings/RefreshPrompt';
 import { venuePage } from 'views/routes/paths';
 import { getSemesterTimetable } from 'reducers/timetables';
 import * as weatherAPI from 'apis/weather';
