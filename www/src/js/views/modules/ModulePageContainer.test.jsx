@@ -37,6 +37,7 @@ describe(ModulePageContainerComponent, () => {
         moduleCode={moduleCode}
         moduleCodes={MODULE_CODE_MAP}
         module={module}
+        isModuleValid={(code: ModuleCode) => !!MODULE_CODE_MAP[code]}
         fetchModule={fetchModule}
         {...createHistory()}
       />,

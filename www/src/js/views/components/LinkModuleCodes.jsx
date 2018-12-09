@@ -4,17 +4,18 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import type { State } from 'reducers';
-import type { ModuleCodeMap } from 'types/reducers';
+import type { ModuleCode, ModuleCondensed } from 'types/modules';
 
 import { modulePage } from 'views/routes/paths';
 import Tooltip from 'views/components/Tooltip';
 import SemesterBadge from 'views/components/SemesterBadge';
+import { getModuleCondensed } from 'selectors/moduleBank';
 import { replaceWithNode } from 'utils/react';
 import styles from './LinkModuleCodes.scss';
 
 type Props = {
   children: string,
-  moduleCodes: ModuleCodeMap,
+  getModuleCondensed: (ModuleCode) => ?ModuleCondensed,
   className?: string,
 };
 
@@ -26,11 +27,11 @@ type Props = {
 const MODULE_CODE_REGEX = /\b(\w{2,3}\s*\d{4}\w{0,2})\b/g;
 
 export function LinkModuleCodesComponent(props: Props) {
-  const { children, moduleCodes, className } = props;
+  const { children, className } = props;
 
   return replaceWithNode(children, MODULE_CODE_REGEX, (part, i) => {
     const code = part.replace(/\s*/g, '');
-    const module = moduleCodes[code];
+    const module = props.getModuleCondensed(code);
     if (!module) return part;
 
     const tooltip = (
@@ -54,7 +55,7 @@ export function LinkModuleCodesComponent(props: Props) {
 // Exclude dispatch from props
 export default connect(
   (state: State) => ({
-    moduleCodes: state.moduleBank.moduleCodes,
+    getModuleCondensed: getModuleCondensed(state.moduleBank),
   }),
   null,
 )(LinkModuleCodesComponent);
