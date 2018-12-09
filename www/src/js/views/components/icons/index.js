@@ -42,6 +42,7 @@ import ThumbsUp from 'react-feather/dist/icons/thumbs-up';
 import Twitter from 'react-feather/dist/icons/twitter';
 import Trash2 from 'react-feather/dist/icons/trash-2';
 import Type from 'react-feather/dist/icons/type';
+import Zap from 'react-feather/dist/icons/zap';
 
 export {
   Archive,
@@ -86,4 +87,5 @@ export {
   Twitter,
   Trash2,
   Type,
+  Zap,
 };

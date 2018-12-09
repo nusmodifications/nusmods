@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import { toggleFeedback } from 'actions/app';
 import config from 'config';
 
-import { Mail, Layers, GitHub } from 'views/components/icons';
+import { Mail, Layers, GitHub, Zap } from 'views/components/icons';
 import ExternalLink from 'views/components/ExternalLink';
 import Loader from 'views/components/LoadingSpinner';
 import UnmappedVenues from 'views/components/UnmappedVenues';
@@ -122,6 +122,15 @@ class ContributeContainer extends Component<Props, State> {
             >
               <GitHub className="svg" />
               We need code!
+            </ExternalLink>
+          </div>
+          <div className={classnames('col-lg', styles.btnContainer)}>
+            <ExternalLink
+              href="https://opencollective.com/nusmods#sponsor"
+              className="btn btn-primary btn-svg btn-block"
+            >
+              <Zap className="svg" />
+              We need sponsors!
             </ExternalLink>
           </div>
         </div>
