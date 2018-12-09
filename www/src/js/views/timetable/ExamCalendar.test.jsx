@@ -54,7 +54,7 @@ describe(ExamCalendar, () => {
     expect(withoutSaturdayExams.find('thead th')).toHaveLength(5);
   });
 
-  test('show month names only in the first cell and on first day of month', () => {
+  test('show month names only in the first cell and on first weekday of month', () => {
     const wrapper = make(modulesWithColor);
 
     wrapper.find(`.${styles.day} h3`).forEach((element, index) => {
