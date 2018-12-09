@@ -10271,10 +10271,10 @@ range-parser@^1.0.3, range-parser@~1.2.0:
   resolved "https://registry.yarnpkg.com/range-parser/-/range-parser-1.2.0.tgz#f49be6b487894ddc40dcc94a322f611092e00d5e"
   integrity sha1-9JvmtIeJTdxA3MlKMi9hEJLgDV4=
 
-raven-for-redux@1.3.1:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/raven-for-redux/-/raven-for-redux-1.3.1.tgz#865f0056ec1706073c1b3a33164640453ed4fed2"
-  integrity sha512-FbjUivbKV2tX+8HQE1dyyuXSz6yCzF/9zvdKWfk4Rr66WE4RF9behxbxqAny6GhzV+NKEzotL7YS25Q93oV/dw==
+raven-for-redux@1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/raven-for-redux/-/raven-for-redux-1.4.0.tgz#37cf4fc7bdde227ce5cc8fa29942f21ea517b7fb"
+  integrity sha512-BYe+nvctbC+6YgaP6hxMJci96bE3782ldGsXmLbw6uhOBDVV80t4Q2kPG613dbe2ldyXdrbpxLf9O/vKqusgww==
 
 raven-js@3.26.4:
   version "3.26.4"
