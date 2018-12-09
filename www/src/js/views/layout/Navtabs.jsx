@@ -27,6 +27,7 @@ export function NavtabsComponent(props: Props) {
   const tabProps = {
     className: styles.link,
     activeClassName: styles.linkActive,
+    ariaCurrent: 'page',
   };
 
   return (
