@@ -9,6 +9,7 @@ import config from 'config';
 import { Mail, Layers, GitHub } from 'views/components/icons';
 import ExternalLink from 'views/components/ExternalLink';
 import Loader from 'views/components/LoadingSpinner';
+import UnmappedVenues from 'views/components/UnmappedVenues';
 
 import StaticPage from './StaticPage';
 import styles from './AboutContainer.scss';
@@ -127,6 +128,8 @@ class ContributeContainer extends Component<Props, State> {
 
         <br />
         <h4>Locate the venues</h4>
+        <UnmappedVenues />
+
         <p>
           We also need help in locating the venues. All you have to do is choose a venue and mark
           where it is on the map. If youre at the venue, you can also use your phone&apos;s GPS to
@@ -143,12 +146,14 @@ class ContributeContainer extends Component<Props, State> {
             {this.state.errorMessage}
           </div>
         )}
-
-        <p>
-          {!this.state.isLoading && this.state.contributors.length} people have contributed to
-          NUSMods, you could be next ;)
-        </p>
+        
         {this.state.contributors && (
+          <div>
+            <p>
+              {this.state.contributors && this.state.contributors.length} people have contributed to
+              NUSMods, you could be next ;)
+            </p>
+
           <div className="row">
             {this.state.contributors
               .filter(
@@ -181,6 +186,7 @@ class ContributeContainer extends Component<Props, State> {
                   </p>
                 </div>
               ))}
+          </div>
           </div>
         )}
       </StaticPage>
