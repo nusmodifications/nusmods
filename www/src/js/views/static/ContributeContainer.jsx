@@ -1,10 +1,13 @@
 // @flow
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import axios from 'axios';
 import classnames from 'classnames';
 import { toggleFeedback } from 'actions/app';
 import config from 'config';
+
+import type { Contributor } from 'types/contributor';
+
+import getContributors from 'apis/contributor';
 
 import { Mail, Layers, GitHub, Zap, Users } from 'views/components/icons';
 import ExternalLink from 'views/components/ExternalLink';
@@ -14,34 +17,8 @@ import UnmappedVenues from 'views/components/UnmappedVenues';
 import StaticPage from './StaticPage';
 import styles from './ContributeContainer.scss';
 
-const CONTRIBUTORS_URL =
-  'https://api.github.com/repos/NUSModifications/NUSMods/contributors?per_page=100';
-const CONTRIBUTOR_TYPE_USER = 'User';
-const CONTRIBUTOR_ID_RENOVATE = 25180681;
-
 type Props = {
   toggleFeedback: Function,
-};
-
-type Contributor = {
-  avatar_url: string,
-  contributions: number,
-  events_url: string,
-  followers_url: string,
-  following_url: string,
-  gists_url: string,
-  gravatar_id: string,
-  html_url: string,
-  id: number,
-  login: string,
-  organizations_ur: string,
-  received_events_ur: string,
-  repos_ur: string,
-  site_admin: boolean,
-  starred_ur: string,
-  subscriptions_ur: string,
-  type: string,
-  url: string,
 };
 
 type State = {
@@ -64,11 +41,10 @@ class ContributeContainer extends Component<Props, State> {
   }
 
   componentDidMount() {
-    axios
-      .get(CONTRIBUTORS_URL)
-      .then((response) => {
+    getContributors()
+      .then((contributors) => {
         this.setState({
-          contributors: response.data,
+          contributors,
           isLoading: false,
         });
       })
@@ -166,42 +142,34 @@ class ContributeContainer extends Component<Props, State> {
         {this.state.contributors && (
           <div>
             <p>
-              {this.state.contributors.length} people have contributed to NUSMods, you could be next
-              ;)
+              Here are our top NUSMods contributors, you could be next ;) View all contributors
+              <a href="/contributors"> here</a>.
             </p>
 
             <div className="row">
-              {this.state.contributors
-                .filter(
-                  (contributor) =>
-                    contributor.type === CONTRIBUTOR_TYPE_USER &&
-                    // Renovate used to report outdated dependencies as a user via the GitHub API,
-                    // hence we need to filter it out by its GitHub user ID.
-                    contributor.id !== CONTRIBUTOR_ID_RENOVATE,
-                )
-                .map((contributor) => (
-                  <div className="col-md-3 col-6 text-center" key={contributor.id}>
-                    <ExternalLink href={contributor.html_url}>
-                      <img
-                        src={contributor.avatar_url}
-                        alt={`${contributor.login} thumbnail`}
-                        className={classnames(styles.thumbnail, 'img-fluid img-thumbnail')}
-                      />
-                      <span className={styles.contributorUsername}>{contributor.login}</span>
+              {this.state.contributors.slice(0, 12).map((contributor) => (
+                <div className="col-md-2 col-6 text-center" key={contributor.id}>
+                  <ExternalLink href={contributor.html_url}>
+                    <img
+                      src={contributor.avatar_url}
+                      alt={`${contributor.login} thumbnail`}
+                      className={classnames(styles.thumbnail, 'img-fluid img-thumbnail')}
+                    />
+                    <span className={styles.contributorUsername}>{contributor.login}</span>
+                  </ExternalLink>
+                  <p>
+                    <ExternalLink
+                      className="text-muted"
+                      href={`https://github.com/nusmodifications/nusmods/commits?author=${
+                        contributor.login
+                      }`}
+                    >
+                      {contributor.contributions} commit
+                      {contributor.contributions !== 1 && 's'}
                     </ExternalLink>
-                    <p>
-                      <ExternalLink
-                        className="text-muted"
-                        href={`https://github.com/nusmodifications/nusmods/commits?author=${
-                          contributor.login
-                        }`}
-                      >
-                        {contributor.contributions} commit
-                        {contributor.contributions !== 1 && 's'}
-                      </ExternalLink>
-                    </p>
-                  </div>
-                ))}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         )}

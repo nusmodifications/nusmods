@@ -1,0 +1,21 @@
+// @flow
+export type Contributor = {|
+  +avatar_url: string,
+  +contributions: number,
+  +events_url: string,
+  +followers_url: string,
+  +following_url: string,
+  +gists_url: string,
+  +gravatar_id: string,
+  +html_url: string,
+  +id: number,
+  +login: string,
+  +organizations_ur: string,
+  +received_events_ur: string,
+  +repos_ur: string,
+  +site_admin: boolean,
+  +starred_ur: string,
+  +subscriptions_ur: string,
+  +type: string,
+  +url: string,
+|};
