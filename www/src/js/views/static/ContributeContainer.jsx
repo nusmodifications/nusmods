@@ -6,13 +6,13 @@ import classnames from 'classnames';
 import { toggleFeedback } from 'actions/app';
 import config from 'config';
 
-import { Mail, Layers, GitHub, Zap } from 'views/components/icons';
+import { Mail, Layers, GitHub, Zap, Users } from 'views/components/icons';
 import ExternalLink from 'views/components/ExternalLink';
 import Loader from 'views/components/LoadingSpinner';
 import UnmappedVenues from 'views/components/UnmappedVenues';
 
 import StaticPage from './StaticPage';
-import styles from './AboutContainer.scss';
+import styles from './ContributeContainer.scss';
 
 const CONTRIBUTORS_URL =
   'https://api.github.com/repos/NUSModifications/NUSMods/contributors?per_page=100';
@@ -93,8 +93,7 @@ class ContributeContainer extends Component<Props, State> {
           to be done. Help us help you!
         </p>
 
-        <br />
-        <h4>Here&apos;s how you can help</h4>
+        {/* <h4>Here&apos;s how you can help</h4> */}
 
         <div className={classnames('row no-gutters', styles.actionContainer)}>
           <div className={classnames('col-lg', styles.btnContainer)}>
@@ -124,29 +123,37 @@ class ContributeContainer extends Component<Props, State> {
               We need code!
             </ExternalLink>
           </div>
+        </div>
+
+        <div className={classnames('row no-gutters', styles.actionContainer)}>
           <div className={classnames('col-lg', styles.btnContainer)}>
             <ExternalLink
-              href="https://opencollective.com/nusmods#sponsor"
+              href="https://github.com/nusmodifications/nusmods#backers"
               className="btn btn-primary btn-svg btn-block"
             >
               <Zap className="svg" />
+              We need backers!
+            </ExternalLink>
+          </div>
+          <div className={classnames('col-lg', styles.btnContainer)}>
+            <ExternalLink
+              href="https://github.com/nusmodifications/nusmods#sponsors"
+              className="btn btn-primary btn-svg btn-block"
+            >
+              <Users className="svg" />
               We need sponsors!
             </ExternalLink>
           </div>
         </div>
 
+        <hr />
         <br />
-        <h4>Locate the venues</h4>
+        <h3>Locate the venues</h3>
         <UnmappedVenues />
 
-        <p>
-          We also need help in locating the venues. All you have to do is choose a venue and mark
-          where it is on the map. If youre at the venue, you can also use your phone&apos;s GPS to
-          get the location automatically.
-        </p>
-
+        <hr />
         <br />
-        <h4>Contributors</h4>
+        <h3>Contributors</h3>
 
         {this.state.isLoading && <Loader />}
         {this.state.isError && (
@@ -155,47 +162,47 @@ class ContributeContainer extends Component<Props, State> {
             {this.state.errorMessage}
           </div>
         )}
-        
+
         {this.state.contributors && (
           <div>
             <p>
-              {this.state.contributors && this.state.contributors.length} people have contributed to
-              NUSMods, you could be next ;)
+              {this.state.contributors.length} people have contributed to NUSMods, you could be next
+              ;)
             </p>
 
-          <div className="row">
-            {this.state.contributors
-              .filter(
-                (contributor) =>
-                  contributor.type === CONTRIBUTOR_TYPE_USER &&
-                  // Renovate used to report outdated dependencies as a user via the GitHub API,
-                  // hence we need to filter it out by its GitHub user ID.
-                  contributor.id !== CONTRIBUTOR_ID_RENOVATE,
-              )
-              .map((contributor) => (
-                <div className="col-md-3 col-6 text-center" key={contributor.id}>
-                  <ExternalLink href={contributor.html_url}>
-                    <img
-                      src={contributor.avatar_url}
-                      alt={`${contributor.login} thumbnail`}
-                      className={classnames(styles.thumbnail, 'img-fluid img-thumbnail')}
-                    />
-                    <span className={styles.contributorUsername}>{contributor.login}</span>
-                  </ExternalLink>
-                  <p>
-                    <ExternalLink
-                      className="text-muted"
-                      href={`https://github.com/nusmodifications/nusmods/commits?author=${
-                        contributor.login
-                      }`}
-                    >
-                      {contributor.contributions} commit
-                      {contributor.contributions !== 1 && 's'}
+            <div className="row">
+              {this.state.contributors
+                .filter(
+                  (contributor) =>
+                    contributor.type === CONTRIBUTOR_TYPE_USER &&
+                    // Renovate used to report outdated dependencies as a user via the GitHub API,
+                    // hence we need to filter it out by its GitHub user ID.
+                    contributor.id !== CONTRIBUTOR_ID_RENOVATE,
+                )
+                .map((contributor) => (
+                  <div className="col-md-3 col-6 text-center" key={contributor.id}>
+                    <ExternalLink href={contributor.html_url}>
+                      <img
+                        src={contributor.avatar_url}
+                        alt={`${contributor.login} thumbnail`}
+                        className={classnames(styles.thumbnail, 'img-fluid img-thumbnail')}
+                      />
+                      <span className={styles.contributorUsername}>{contributor.login}</span>
                     </ExternalLink>
-                  </p>
-                </div>
-              ))}
-          </div>
+                    <p>
+                      <ExternalLink
+                        className="text-muted"
+                        href={`https://github.com/nusmodifications/nusmods/commits?author=${
+                          contributor.login
+                        }`}
+                      >
+                        {contributor.contributions} commit
+                        {contributor.contributions !== 1 && 's'}
+                      </ExternalLink>
+                    </p>
+                  </div>
+                ))}
+            </div>
           </div>
         )}
       </StaticPage>
