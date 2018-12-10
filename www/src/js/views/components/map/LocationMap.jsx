@@ -13,6 +13,7 @@ import styles from './LocationMap.scss';
 export type Props = {|
   +position: [number, number],
   +toggleScrollable?: (boolean) => void,
+  +className?: string,
 |};
 
 type State = {|
@@ -36,14 +37,14 @@ export default class LocationMap extends PureComponent<Props, State> {
   };
 
   render() {
-    const { position } = this.props;
+    const { position, className } = this.props;
 
     // Query param for https://developers.google.com/maps/documentation/urls/guide#search-action
     const googleMapQuery = encodeURIComponent(position.join(','));
     const { isExpanded } = this.state;
 
     return (
-      <div className={classnames(styles.mapWrapper, { [styles.expanded]: isExpanded })}>
+      <div className={classnames(styles.mapWrapper, className, { [styles.expanded]: isExpanded })}>
         <ExternalLink
           href={`https://www.google.com/maps/search/?api=1&query=${googleMapQuery}`}
           className={classnames('btn btn-sm btn-primary', styles.gmapBtn)}

@@ -12,15 +12,15 @@ import { isLessonAvailable, isSameLesson } from 'utils/timetables';
 import EventMap from './EventMap';
 import styles from './DayEvents.scss';
 
-type Props = {
-  lessons: ColoredLesson[],
-  date: Date,
-  dayInfo: AcadWeekInfo,
-  openLesson: ?SelectedLesson,
-  marker: Node,
+type Props = {|
+  +lessons: ColoredLesson[],
+  +date: Date,
+  +dayInfo: AcadWeekInfo,
+  +openLesson: ?SelectedLesson,
+  +marker: Node,
 
-  onOpenLesson: (date: Date, lesson: Lesson) => void,
-};
+  +onOpenLesson: (date: Date, lesson: Lesson) => void,
+|};
 
 export default class DayEvents extends PureComponent<Props> {
   renderLesson = (lesson: ColoredLesson, i: number) => {

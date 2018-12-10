@@ -8,13 +8,13 @@ import type { Venue, VenueLocation } from 'types/venues';
 import LocationMap from 'views/components/map/LocationMap';
 import styles from './EventMap.scss';
 
-export type Props = {
-  isOpen: boolean,
-  className?: string,
-  venue: Venue,
+export type Props = {|
+  +isOpen: boolean,
+  +className?: string,
+  +venue: Venue,
 
-  toggleOpen: () => void,
-};
+  +toggleOpen: () => void,
+|};
 
 export default function(props: Props) {
   const venueLocation: VenueLocation = venueLocations[props.venue];

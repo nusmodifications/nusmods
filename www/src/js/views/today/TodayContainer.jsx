@@ -47,18 +47,18 @@ import styles from './TodayContainer.scss';
 type Props = {|
   ...TimerData,
 
-  timetableWithLessons: SemTimetableConfigWithLessons,
-  colors: ColorMapping,
+  +timetableWithLessons: SemTimetableConfigWithLessons,
+  +colors: ColorMapping,
 |};
 
-type State = {
+type State = {|
   // Mapping of number of days from today to the weather forecast for that day
   // with zero being today
-  weather: { [string]: string },
+  +weather: { [string]: string },
 
   // Which lesson has an open venue map
-  openLesson: ?SelectedLesson,
-};
+  +openLesson: ?SelectedLesson,
+|};
 
 const EMPTY_ARRAY = [];
 
