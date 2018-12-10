@@ -8,6 +8,10 @@
 
 .map {
   height: 30rem;
+
+  @include media-breakpoint-down(sm) {
+    height: 20rem;
+  }
 }
 
 .gmapBtn {
