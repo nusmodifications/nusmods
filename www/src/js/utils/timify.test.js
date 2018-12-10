@@ -1,4 +1,5 @@
 // @flow
+import { createGenericLesson } from 'test-utils/timetable';
 
 import {
   convertTimeToIndex,
@@ -9,8 +10,7 @@ import {
   formatTime,
   DEFAULT_EARLIEST_TIME,
   DEFAULT_LATEST_TIME,
-} from 'utils/timify';
-import { createGenericLesson } from './timetables.test';
+} from './timify';
 
 describe('convertTimeToIndex', () => {
   test('convert time string to index', () => {
