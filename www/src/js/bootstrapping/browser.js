@@ -6,7 +6,7 @@
 // user will at least be able to see the dialog warning them of the browser incompatibility.
 
 import bowser from 'bowser';
-import Raven from 'raven-js';
+import * as Sentry from '@sentry/browser';
 
 import { canUseBrowserLocalStorage } from 'storage/localStorage';
 import { BROWSER_WARNING_KEY } from 'storage/keys';
@@ -22,21 +22,22 @@ const linkForChromePlayStore = composeAnchorText(
 );
 
 const browserCanUseLocalStorage = canUseBrowserLocalStorage();
+const isBrowserSupported = bowser.check(
+  {
+    msedge: '14',
+    chrome: '56',
+    firefox: '52',
+    safari: '9',
+  },
+  true,
+);
 
-if (
-  !bowser.check(
-    {
-      msedge: '14',
-      chrome: '56',
-      firefox: '52',
-      safari: '9',
-    },
-    true,
-  )
-) {
-  // Add unsupported tag to Raven so that we can filter out reports from those users
-  Raven.setTagsContext({ unsupported: true });
+// Add unsupported tag to Raven so that we can filter out reports from those users
+Sentry.configureScope((scope) => {
+  scope.setTag('unsupported', !isBrowserSupported);
+});
 
+if (!isBrowserSupported) {
   // Show unsupported browser warning
   if (
     (browserCanUseLocalStorage && !localStorage.getItem(BROWSER_WARNING_KEY)) ||
