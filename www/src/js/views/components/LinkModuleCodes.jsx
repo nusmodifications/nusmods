@@ -7,8 +7,11 @@ import type { State } from 'reducers';
 import type { ModuleCode, ModuleCondensed } from 'types/modules';
 
 import { modulePage } from 'views/routes/paths';
-import { replaceWithNode } from 'utils/react';
+import Tooltip from 'views/components/Tooltip';
+import SemesterBadge from 'views/components/SemesterBadge';
 import { getModuleCondensed } from 'selectors/moduleBank';
+import { replaceWithNode } from 'utils/react';
+import styles from './LinkModuleCodes.scss';
 
 type Props = {
   children: string,
@@ -31,15 +34,19 @@ export function LinkModuleCodesComponent(props: Props) {
     const module = props.getModuleCondensed(code);
     if (!module) return part;
 
+    const tooltip = (
+      <>
+        {module.ModuleTitle}{' '}
+        <SemesterBadge className={styles.semesters} semesters={module.Semesters} />{' '}
+      </>
+    );
+
     return (
-      <Link
-        className={className}
-        title={module.ModuleTitle}
-        to={modulePage(code, module.ModuleTitle)}
-        key={i}
-      >
-        {part}
-      </Link>
+      <Tooltip content={tooltip} distance={5} key={i}>
+        <Link className={className} to={modulePage(code, module.ModuleTitle)}>
+          {part}
+        </Link>
+      </Tooltip>
     );
   });
 }

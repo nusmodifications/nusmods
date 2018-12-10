@@ -1,6 +1,6 @@
 // @flow
 import FilterGroup from 'utils/filters/FilterGroup';
-import type { Department, Faculty, ModuleCondensed, Lesson } from './modules';
+import type { Department, Faculty, Lesson, ModuleCondensed, ModuleWithColor } from './modules';
 import type { ModuleList } from './reducers';
 import type { Venue, VenueList } from './venues';
 
@@ -121,3 +121,14 @@ export type Tracker = {
   // remembered. After calling this method, the user will have to consent again in order to be tracked.
   forgetConsentGiven: () => void,
 };
+
+export type TimeSegment = 'Morning' | 'Afternoon' | 'Evening';
+export const TIME_SEGMENTS = ['Morning', 'Afternoon', 'Evening'];
+
+export type ModuleWithExamTime = {|
+  +module: ModuleWithColor,
+  +dateTime: string,
+  +date: string,
+  +time: string,
+  +timeSegment: TimeSegment,
+|};
