@@ -82,7 +82,7 @@
     "mini-css-extract-plugin": "0.4.4",
     "moment": "2.22.2",
     "nightwatch": "0.9.21",
-    "node-sass": "4.10.0",
+    "node-sass": "4.11.0",
     "postcss-custom-properties": "7.0.0",
     "postcss-loader": "3.0.0",
     "prettier": "1.14.3",
