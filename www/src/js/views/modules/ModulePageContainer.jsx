@@ -6,13 +6,13 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Redirect, withRouter } from 'react-router-dom';
 import deferComponentRender from 'views/hocs/deferComponentRender';
-import Raven from 'raven-js';
 
 import type { Module, ModuleCode } from 'types/modules';
 
 import { fetchModule } from 'actions/moduleBank';
 import { getModuleCondensed } from 'selectors/moduleBank';
 import { retry } from 'utils/promise';
+import { captureException } from 'utils/error';
 import ApiError from 'views/errors/ApiError';
 import ModuleNotFoundPage from 'views/errors/ModuleNotFoundPage';
 import LoadingSpinner from 'views/components/LoadingSpinner';
@@ -83,7 +83,7 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
 
   handleFetchError = (error: $AxiosError<*>) => {
     this.setState({ error });
-    Raven.captureException(error);
+    captureException(error);
   };
 
   canonicalUrl() {

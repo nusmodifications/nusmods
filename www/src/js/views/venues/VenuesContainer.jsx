@@ -4,7 +4,6 @@ import { withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 import axios from 'axios';
 import qs from 'query-string';
-import Raven from 'raven-js';
 import { pick, mapValues, size, isEqual, get } from 'lodash';
 
 import type { ContextRouter } from 'react-router-dom';
@@ -24,6 +23,7 @@ import HistoryDebouncer from 'utils/HistoryDebouncer';
 import { searchVenue, filterAvailability, sortVenues } from 'utils/venues';
 import { breakpointDown } from 'utils/css';
 import { defer } from 'utils/react';
+import { captureException } from 'utils/error';
 import makeResponsive from 'views/hocs/makeResponsive';
 import Modal from 'views/components/Modal';
 import Title from 'views/components/Title';
@@ -155,7 +155,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
         });
       })
       .catch((error) => {
-        Raven.captureException(error);
+        captureException(error);
         this.setState({ error });
       });
   };

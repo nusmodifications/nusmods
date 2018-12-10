@@ -10,12 +10,12 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { NavLink, withRouter, type ContextRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import Raven from 'raven-js';
 import classnames from 'classnames';
 import { each } from 'lodash';
 
 import weekText from 'utils/weekText';
 import { isMobileIos } from 'utils/css';
+import { captureException } from 'utils/error';
 import { openNotification } from 'actions/app';
 import { fetchModuleList } from 'actions/moduleBank';
 import { fetchTimetableModules, validateTimetable, setTimetable } from 'actions/timetables';
@@ -82,7 +82,7 @@ export class AppShellComponent extends Component<Props, State> {
   fetchModuleList = () => {
     // TODO: This always re-fetch the entire modules list. Consider a better strategy for this
     this.props.fetchModuleList().catch((error) => {
-      Raven.captureException(error);
+      captureException(error);
       this.setState({ moduleListError: error });
     });
   };
@@ -92,7 +92,7 @@ export class AppShellComponent extends Component<Props, State> {
       .fetchTimetableModules([timetable])
       .then(() => this.props.validateTimetable(semester))
       .catch((error) => {
-        Raven.captureException(error);
+        captureException(error);
         this.props.openNotification('Data for some modules failed to load', {
           action: {
             text: 'Retry',

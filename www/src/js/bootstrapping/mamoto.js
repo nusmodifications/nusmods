@@ -2,8 +2,8 @@
 
 import type { RouterHistory } from 'react-router-dom';
 import type { Tracker } from 'types/views';
-import Raven from 'raven-js';
 import insertScript from 'utils/insertScript';
+import { getScriptErrorHandler } from 'utils/error';
 
 let tracker: ?Tracker; // eslint-disable-line import/no-mutable-exports
 
@@ -31,17 +31,7 @@ function configureMamoto(history: RouterHistory) {
         }
       });
     })
-    .catch((error) => {
-      if (error instanceof Error) {
-        Raven.captureException(error);
-      } else {
-        Raven.captureException(new Error('Error instantiating Mamoto'), {
-          extra: {
-            error,
-          },
-        });
-      }
-    });
+    .catch(getScriptErrorHandler('Mamoto'));
 }
 
 export { tracker, configureMamoto };

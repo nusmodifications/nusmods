@@ -3,8 +3,8 @@
 import type { Module, Semester } from 'types/modules';
 import type { ExportData } from 'types/export';
 import type { FSA, GetState } from 'types/redux';
-import Raven from 'raven-js';
 import { hydrateSemTimetableWithLessons } from 'utils/timetables';
+import { captureException } from 'utils/error';
 import { getSemesterTimetable } from 'reducers/timetables';
 
 function downloadUrl(blob: Blob, filename: string) {
@@ -46,10 +46,7 @@ export function downloadAsIcal(semester: Semester) {
         const blob = new Blob([cal.toString()], { type: 'text/plain' });
         downloadUrl(blob, 'nusmods_calendar.ics');
       })
-      .catch((e) => {
-        Raven.captureException(e);
-        console.error(e); // eslint-disable-line no-console
-      });
+      .catch(captureException);
   };
 }
 

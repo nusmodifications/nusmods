@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 import { range, minBy } from 'lodash';
 import classnames from 'classnames';
 import NUSModerator from 'nusmoderator';
-import Raven from 'raven-js';
 import {
   isSameDay,
   addDays,
@@ -27,6 +26,7 @@ import {
   isLessonOngoing,
   timetableLessonsArray,
 } from 'utils/timetables';
+import { captureException } from 'utils/error';
 import Title from 'views/components/Title';
 import CorsNotification from 'views/components/cors-info/CorsNotification';
 import Announcements from 'views/components/notfications/Announcements';
@@ -84,12 +84,12 @@ export class TodayContainerComponent extends PureComponent<Props, State> {
     weatherAPI
       .twoHour()
       .then((weather) => this.setState({ weather: { ...this.state.weather, '0': weather } }))
-      .catch((e) => Raven.captureException(e));
+      .catch(captureException);
 
     weatherAPI
       .tomorrow()
       .then((weather) => this.setState({ weather: { ...this.state.weather, '1': weather } }))
-      .catch((e) => Raven.captureException(e));
+      .catch(captureException);
 
     weatherAPI
       .fourDay()
@@ -102,7 +102,7 @@ export class TodayContainerComponent extends PureComponent<Props, State> {
           }
         });
       })
-      .catch((e) => Raven.captureException(e));
+      .catch(captureException);
   }
 
   renderBeforeNextLessonCard(nextLesson: Lesson, marker: Node) {
