@@ -34,11 +34,13 @@ describe(TimetableContainerComponent, () => {
     const fetchTimetableModules = jest.fn();
     const openNotification = jest.fn();
     const undo = jest.fn();
+    const isModuleValid = jest.fn().mockReturnValue(true);
 
     return {
       selectSemester,
       setTimetable,
       fetchTimetableModules,
+      isModuleValid,
       history: router.history,
 
       wrapper: shallow(
@@ -53,6 +55,7 @@ describe(TimetableContainerComponent, () => {
           setTimetable={setTimetable}
           fetchTimetableModules={fetchTimetableModules}
           openNotification={openNotification}
+          isValidModule={isModuleValid}
           undo={undo}
           {...router}
         />,

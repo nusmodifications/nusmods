@@ -104,7 +104,7 @@ jobs:
             JEST_JUNIT_OUTPUT: reports/junit/js-test-results.xml
           command: |
             set -e
-            yarn test --runInBand --testResultsProcessor="jest-junit"
+            yarn test --runInBand --reporters=default --reporters=jest-junit
             cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
       - run:
           name: Lint styles

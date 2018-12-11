@@ -6,9 +6,14 @@ import type { ModuleCodeMap, ModuleList, ModuleSelectListItem } from 'types/redu
 import { SUCCESS } from 'types/reducers';
 
 import { REHYDRATE } from 'redux-persist';
-import { keyBy, size, zipObject } from 'lodash';
+import { keyBy, size, zipObject, omit } from 'lodash';
 
-import { FETCH_MODULE, FETCH_MODULE_LIST } from 'actions/moduleBank';
+import {
+  FETCH_MODULE,
+  FETCH_MODULE_LIST,
+  UPDATE_MODULE_TIMESTAMP,
+  REMOVE_LRU_MODULE,
+} from 'actions/moduleBank';
 import { SET_EXPORTED_DATA } from 'actions/export';
 
 export type ModulesMap = {
@@ -53,6 +58,26 @@ function moduleBank(state: ModuleBank = defaultModuleBankState, action: FSA): Mo
           [action.payload.ModuleCode]: action.payload,
         },
       };
+
+    case UPDATE_MODULE_TIMESTAMP:
+      return {
+        ...state,
+        modules: {
+          ...state.modules,
+          [action.payload]: {
+            ...state.modules[action.payload],
+            timestamp: Date.now(),
+          },
+        },
+      };
+
+    case REMOVE_LRU_MODULE: {
+      const trimmedModules = omit(state.modules, action.payload);
+      return {
+        ...state,
+        modules: trimmedModules,
+      };
+    }
 
     case SET_EXPORTED_DATA:
       return {
