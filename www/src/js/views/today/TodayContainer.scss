@@ -38,15 +38,13 @@
   color: var(--gray-light);
 }
 
-.inBetweenClass {
-  border: 1px solid var(--gray-lighter);
-  box-shadow: 0 0.2rem 0.25rem rgba(#000, 0.2);
+.nowMarker {
+  font-weight: bold;
+  color: theme-color('danger');
 
-  p {
-    margin-bottom: 0.4rem;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
+  &::after {
+    content: '•';
+    position: absolute;
+    margin-left: 0.2rem;
   }
 }

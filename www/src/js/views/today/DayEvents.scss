@@ -17,17 +17,6 @@
 
   p {
     margin: 0 0.8rem 0 0;
-
-    &.nowMarker {
-      font-weight: bold;
-      color: theme-color('danger');
-
-      &::after {
-        content: '•';
-        position: absolute;
-        margin-left: 0.2rem;
-      }
-    }
   }
 }
 
