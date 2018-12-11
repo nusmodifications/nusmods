@@ -191,19 +191,19 @@
 }
 
 .leaflet-top .leaflet-control {
-  margin-top: 10px;
+  margin-top: $leaflet-control-offset;
 }
 
 .leaflet-bottom .leaflet-control {
-  margin-bottom: 10px;
+  margin-bottom: $leaflet-control-offset;
 }
 
 .leaflet-left .leaflet-control {
-  margin-left: 10px;
+  margin-left: $leaflet-control-offset;
 }
 
 .leaflet-right .leaflet-control {
-  margin-right: 10px;
+  margin-right: $leaflet-control-offset;
 }
 
 /* zoom and fade animations */
@@ -389,7 +389,7 @@ $button-bg: theme-color(secondary);
 }
 
 /* layers control */
-
+/*
 .leaflet-control-layers {
   border-radius: 5px;
   background: #fff;
@@ -441,7 +441,7 @@ $button-bg: theme-color(secondary);
 .leaflet-default-icon-path {
   background-image: url('../img/marker-icon.png');
 }
-
+*/
 /* attribution and scale controls */
 
 .leaflet-container .leaflet-control-attribution {
