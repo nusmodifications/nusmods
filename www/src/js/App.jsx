@@ -20,9 +20,10 @@ type Props = {
 
 export default function App({ store, persistor }: Props) {
   const onBeforeLift = () => {
-    withTracker((tracker) =>
-      tracker.setCustomDimension(DIMENSIONS.theme, store.getState().theme.id),
-    );
+    withTracker((tracker) => {
+      tracker.setCustomDimension(DIMENSIONS.theme, store.getState().theme.id);
+      tracker.setCustomDimension(DIMENSIONS.beta, !!store.getState().settings.beta);
+    });
   };
 
   return (

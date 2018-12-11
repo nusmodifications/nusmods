@@ -62,4 +62,5 @@ export function trackPageView(history: RouterHistory) {
 // to set up additional custom dimensions
 export const DIMENSIONS = {
   theme: 1,
+  beta: 2,
 };
