@@ -28,6 +28,7 @@ import Announcements from 'views/components/notfications/Announcements';
 import Title from 'views/components/Title';
 import RefreshPrompt from 'views/components/notfications/RefreshPrompt';
 import ScrollToTop from 'views/components/ScrollToTop';
+import { Archive } from 'views/components/icons';
 
 import styles from './ModulePageContent.scss';
 
@@ -84,9 +85,12 @@ export default class ModulePageContent extends Component<Props, State> {
         <ScrollToTop onComponentDidMount scrollToHash />
 
         {isArchive && (
-          <div className="alert alert-warning">
-            You are looking at archived information of this module from academic year{' '}
-            <strong>{archiveYear}</strong>. Information on this page may be out of date.
+          <div className={classnames(styles.archiveWarning, "alert alert-warning")}>
+            <Archive className={styles.archiveIcon} />
+            <p>
+              You are looking at archived information of this module from academic year{' '}
+              <strong>{archiveYear}</strong>. Information on this page may be out of date.
+            </p>
           </div>
         )}
 
