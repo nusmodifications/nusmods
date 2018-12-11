@@ -47,7 +47,6 @@ type Props = {
   mode: Mode,
   corsNotification: CorsNotificationSettings,
   betaTester: boolean,
-  promptRefresh: boolean,
 
   selectTheme: Function,
   selectNewStudent: Function,
@@ -118,7 +117,7 @@ class SettingsContainer extends Component<Props> {
   }
 
   render() {
-    const { corsNotification, currentThemeId, promptRefresh } = this.props;
+    const { corsNotification, currentThemeId } = this.props;
 
     const corsRound = currentRound();
     const corsText = corsNotificationText(false);
@@ -229,7 +228,6 @@ const mapStateToProps = (state: StoreState) => ({
   corsNotification: state.settings.corsNotification,
   currentThemeId: state.theme.id,
   betaTester: state.settings.beta || false,
-  promptRefresh: true, // state.app.promptRefresh,
 });
 
 const connectedSettings = connect(
