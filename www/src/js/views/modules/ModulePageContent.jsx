@@ -21,7 +21,7 @@ import SideMenu from 'views/components/SideMenu';
 import LessonTimetable from 'views/components/module-info/LessonTimetable';
 import ModuleExamClash from 'views/components/module-info/ModuleExamClash';
 import ModuleWorkload from 'views/components/module-info/ModuleWorkload';
-import AddToTimetableDropdown from 'views/components/module-info/AddModuleDropdown';
+import AddModuleDropdown from 'views/components/module-info/AddModuleDropdown';
 import CorsStats from 'views/components/cors-stats/CorsStats';
 import CorsNotification from 'views/components/cors-info/CorsNotification';
 import Announcements from 'views/components/notfications/Announcements';
@@ -31,7 +31,7 @@ import ScrollToTop from 'views/components/ScrollToTop';
 
 import styles from './ModulePageContent.scss';
 
-type Props = {
+export type Props = {
   module: Module,
   archiveYear?: string,
 };
@@ -58,11 +58,12 @@ export default class ModulePageContent extends Component<Props, State> {
   toggleMenu = (isMenuOpen: boolean) => this.setState({ isMenuOpen });
 
   render() {
-    const { module } = this.props;
+    const { module, archiveYear } = this.props;
     const { ModuleCode, ModuleTitle } = module;
 
     const pageTitle = `${ModuleCode} ${ModuleTitle}`;
     const semesters = getSemestersOffered(module);
+    const isArchive = !!archiveYear;
 
     const disqusConfig = {
       url: `https://nusmods.com/modules/${ModuleCode}/reviews`,
@@ -82,10 +83,10 @@ export default class ModulePageContent extends Component<Props, State> {
 
         <ScrollToTop onComponentDidMount scrollToHash />
 
-        {this.props.archiveYear && (
+        {isArchive && (
           <div className="alert alert-warning">
             You are looking at archived information of this module from academic year{' '}
-            <strong>{this.props.archiveYear}</strong>. Information on this page may be out of date.
+            <strong>{archiveYear}</strong>. Information on this page may be out of date.
           </div>
         )}
 
@@ -181,9 +182,11 @@ export default class ModulePageContent extends Component<Props, State> {
                     </div>
                   ))}
 
-                  <div className={styles.addToTimetable}>
-                    <AddToTimetableDropdown module={module} className="btn-group-sm" block />
-                  </div>
+                  {!isArchive && (
+                    <div className={styles.addToTimetable}>
+                      <AddModuleDropdown module={module} className="btn-group-sm" block />
+                    </div>
+                  )}
 
                   <div>
                     <h3 className={styles.descriptionHeading}>Official Links</h3>

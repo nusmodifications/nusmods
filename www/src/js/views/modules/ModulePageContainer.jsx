@@ -20,6 +20,8 @@ import LoadingSpinner from 'views/components/LoadingSpinner';
 import { moduleArchive, modulePage } from 'views/routes/paths';
 import { isFailure } from 'selectors/requests';
 
+import type { Props as ModulePageContentProp } from './ModulePageContent';
+
 type Props = {
   ...ContextRouter,
 
@@ -31,7 +33,7 @@ type Props = {
 };
 
 type State = {
-  ModulePageContent: ?ComponentType<*>,
+  ModulePageContent: ?ComponentType<ModulePageContentProp>,
   error?: any,
 };
 
@@ -90,18 +92,20 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
   };
 
   canonicalUrl() {
-    if (!this.props.module) {
+    const { module, moduleCode, archiveYear } = this.props;
+
+    if (!module) {
       throw new Error('canonicalUrl() called before module is loaded');
     }
 
-    return this.props.archiveYear
-      ? moduleArchive(this.props.moduleCode, this.props.archiveYear, this.props.module.ModuleTitle)
-      : modulePage(this.props.moduleCode, this.props.module.ModuleTitle);
+    return archiveYear
+      ? moduleArchive(moduleCode, archiveYear, module.ModuleTitle)
+      : modulePage(moduleCode, module.ModuleTitle);
   }
 
   render() {
     const { ModulePageContent, error } = this.state;
-    const { module, moduleCode, moduleExists, match, location } = this.props;
+    const { module, moduleCode, moduleExists, match, location, archiveYear } = this.props;
 
     if (!moduleExists) {
       return <ModuleNotFoundPage moduleCode={moduleCode} />;
@@ -132,7 +136,8 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
         <ModulePageContent
           key={moduleCode}
           moduleCode={moduleCode}
-          archiveYear={this.props.archiveYear}
+          archiveYear={archiveYear}
+          module={module}
         />
       );
     }
@@ -152,17 +157,24 @@ const getPropsFromMatch = (match: Match) => {
 
 const mapStateToProps = (state: StoreState, ownProps) => {
   const { moduleCode, year } = getPropsFromMatch(ownProps.match);
+  const { moduleBank } = state;
+
+  // If this is an archive page, load data from the archive
+  if (year) {
+    return {
+      moduleCode,
+      archiveYear: year,
+      // Use !isFailure to account for loading state
+      moduleExists: !isFailure(state, fetchArchiveRequest(moduleCode, year)),
+      module: get(moduleBank.moduleArchive, [moduleCode, year], null),
+    };
+  }
 
   return {
-    archiveYear: year,
     moduleCode,
-    moduleExists: year
-      ? // Use !isFailure to account for loading state
-        !isFailure(state, fetchArchiveRequest(moduleCode, year))
-      : state.moduleBank.moduleCodes[moduleCode],
-    module: year
-      ? get(state.moduleBank.moduleArchive, [moduleCode, year], null)
-      : state.moduleBank.modules[moduleCode],
+    archiveYear: year,
+    moduleExists: !!moduleBank.moduleCodes[moduleCode],
+    module: moduleBank.modules[moduleCode],
   };
 };
 
