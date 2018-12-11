@@ -237,8 +237,7 @@ export function findExamClashes(
 }
 
 export function isLessonAvailable(lesson: Lesson, weekInfo: $ReadOnly<AcadWeekInfo>): boolean {
-  // TODO: Uncomment this
-  if (/* weekInfo.type !== 'Instructional' || */ !weekInfo.num) {
+  if (!weekInfo.num) {
     return false;
   }
 

@@ -1,4 +1,5 @@
-// @flow// A generic lesson with some default.
+// @flow
+
 import type {
   ClassNo,
   ColoredLesson,
@@ -8,6 +9,7 @@ import type {
   LessonType,
 } from 'types/modules';
 
+// A generic lesson with some default.
 export function createGenericLesson(
   dayText: DayText = 'Monday',
   startTime: LessonTime = '0800',
