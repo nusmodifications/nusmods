@@ -4,49 +4,9 @@
   text-align: center;
 }
 
-.location {
-  margin-bottom: 2rem;
-
-  @include media-breakpoint-down(sm) {
-    margin: 0 $grid-gutter-width / 2;
-  }
-}
-
-.map {
-  height: 30rem;
-}
-
-.gmapBtn {
-  position: absolute;
-  top: 0.4rem;
-  right: 0.4rem;
-  z-index: 1000;
-}
-
-.mapWrapper {
-  position: relative;
-  margin-bottom: 1rem;
-
-  &.expanded {
-    position: fixed;
-    top: $navbar-height;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: $venue-map-z-index;
-    margin: 0;
-
-    .map {
-      height: 100%;
-    }
-
-    @include media-breakpoint-down(sm) {
-      top: 0;
-    }
-  }
-}
-
 .feedbackBtn {
+  margin-top: 1rem;
+
   :global(.btn) {
     margin: 0 0 0 0.4rem;
   }
@@ -95,3 +55,4 @@
     transition: color 0.3s;
   }
 }
+
