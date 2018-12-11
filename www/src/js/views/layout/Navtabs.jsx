@@ -54,7 +54,11 @@ export function NavtabsComponent(props: Props) {
         <Settings />
         <span className={styles.title}>Settings</span>
         {props.promptRefresh && (
-          <div className={classnames(styles.updateDot)}>Update Available</div>
+          <div
+            className={classnames(styles.updateDot)}
+            title="Update available"
+            aria-label="Update available"
+          />
         )}
       </NavLink>
       <div className={styles.divider} />
@@ -85,7 +89,7 @@ export function NavtabsComponent(props: Props) {
 const connectedNavtabs = connect((state: State) => ({
   activeSemester: state.app.activeSemester,
   beta: state.settings.beta,
-  promptRefresh: true, // state.app.promptRefresh,
+  promptRefresh: state.app.promptRefresh,
 }))(NavtabsComponent);
 
 export default withRouter(connectedNavtabs);

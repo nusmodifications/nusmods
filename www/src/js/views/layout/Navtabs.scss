@@ -55,6 +55,7 @@
 }
 
 .link {
+  position: relative;
   flex: 1 0 auto;
   line-height: 1.6;
   text-align: center;
@@ -127,31 +128,23 @@
 }
 
 .updateDot {
+  position: absolute;
+  top: 0.5rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  padding: 0;
+  margin-left: 1.8rem;
   font-size: $font-size-xs;
   line-height: 1.2;
+  border-radius: 50%;
+  background: theme-color(success);
 
   :global {
     animation: zoomIn 0.4s;
   }
 
-  @include media-breakpoint-down(sm) {
-    position: absolute;
-    top: 0.5rem;
-    width: 0.5rem;
-    height: 0.5rem;
-    margin-left: 1.8rem;
-    border-radius: 50%;
-    background: theme-color(success);
-    text-indent: -9999px;
-  }
-
   @include media-breakpoint-up(md) {
-    padding: 0.2rem;
-    margin-top: 0.4rem;
-    color: theme-color(success);
-    border: 1px solid theme-color(success);
-    border-radius: 2px;
-    background: rgba(theme-color(success), 0.2);
+    right: 1.4rem;
   }
 
   @include media-breakpoint-up(xl) {
@@ -180,13 +173,15 @@
   .refreshIcon {
     display: block;
     margin: 0.2rem auto 0.5rem;
+
+    :global {
+      animation: spin 2s infinite linear paused;
+    }
   }
 
   &:hover {
     .refreshIcon {
-      :global {
-        animation: spin 2s infinite linear;
-      }
+      animation-play-state: running;
     }
 
     :global(.btn) {
