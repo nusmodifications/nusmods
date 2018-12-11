@@ -59,7 +59,7 @@ export function trackPageView(history: RouterHistory) {
 }
 
 // Go to the Settings > Website > Custom Dimensions on https://analytics.nusmods.com
-// to set this up
+// to set up additional custom dimensions
 export const DIMENSIONS = {
   theme: 1,
 };

@@ -97,6 +97,8 @@ export type Tracker = {
   enableCrossDomainLinking: () => void,
   setCrossDomainLinkingTimeout: (timeout: number) => void,
 
+  setCustomDimension: (customDimensionId: number, customDimensionValue: string) => void,
+
   /**
    * Managing Consent
    */
