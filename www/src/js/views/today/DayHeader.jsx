@@ -5,11 +5,11 @@ import { format } from 'date-fns';
 import getWeatherIcon from 'views/components/icons/weather';
 import styles from './TodayContainer.scss';
 
-type Props = {
-  date: Date,
-  dayName: ?string, // eg. Today, Tomorrow
-  forecast: ?string,
-};
+type Props = {|
+  +date: Date,
+  +dayName: ?string, // eg. Today, Tomorrow
+  +forecast: ?string,
+|};
 
 function getDayName(date: Date) {
   return format(date, 'iiii, do MMMM');
