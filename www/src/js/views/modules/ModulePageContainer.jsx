@@ -1,7 +1,6 @@
 // @flow
 import type { ContextRouter, Match } from 'react-router-dom';
 import type { $AxiosError } from 'axios';
-import type { Dispatch } from 'redux';
 
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
@@ -24,8 +23,8 @@ import { isFailure } from 'selectors/requests';
 type Props = {
   ...ContextRouter,
 
-  moduleExists: boolean,
   archiveYear: ?string,
+  moduleExists: boolean,
   moduleCode: ModuleCode,
   module: ?Module,
   fetchModule: () => Promise<*>,
@@ -167,7 +166,7 @@ const mapStateToProps = (state: StoreState, ownProps) => {
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<*>, ownProps) => {
+const mapDispatchToProps = (dispatch: Function, ownProps) => {
   const { moduleCode, year } = getPropsFromMatch(ownProps.match);
 
   return {

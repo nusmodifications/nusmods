@@ -107,7 +107,7 @@ export class NotificationComponent extends Component<Props, State> {
     }
   };
 
-  element = React.createRef();
+  element = React.createRef<HTMLDivElement>();
   transitioning: boolean = false;
 
   openSnackbar = () => {

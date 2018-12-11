@@ -12,6 +12,7 @@ import type {
 
 import _ from 'lodash';
 import config from 'config';
+import { NBSP } from 'utils/react';
 
 // Look for strings that look like module codes - eg.
 // ACC1010  - 3 chars, 4 digits, no suffix
@@ -122,4 +123,9 @@ export function parseWorkload(workloadString: string): Workload {
 
 export function getTimeslot(day: Day, time: Time): string {
   return `${day} ${time}`;
+}
+
+export function renderMCs(moduleCredits: number | string) {
+  const credit = parseInt(moduleCredits, 10);
+  return `${credit}${NBSP}${credit === 1 ? 'MC' : 'MCs'}`;
 }

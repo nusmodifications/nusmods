@@ -31,7 +31,17 @@ function configureMamoto(history: RouterHistory) {
         }
       });
     })
-    .catch((e) => Raven.captureException(e));
+    .catch((error) => {
+      if (error instanceof Error) {
+        Raven.captureException(error);
+      } else {
+        Raven.captureException(new Error('Error instantiating Mamoto'), {
+          extra: {
+            error,
+          },
+        });
+      }
+    });
 }
 
 export { tracker, configureMamoto };

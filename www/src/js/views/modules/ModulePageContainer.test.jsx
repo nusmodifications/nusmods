@@ -5,7 +5,6 @@ import { shallow } from 'enzyme';
 import { Redirect } from 'react-router-dom';
 
 import createHistory from 'test-utils/createHistory';
-import type { ModuleCodeMap } from 'types/reducers';
 import type { Module, ModuleCode } from 'types/modules';
 
 /* @var {Module} */
@@ -17,13 +16,6 @@ import ApiError from 'views/errors/ApiError';
 import { ModulePageContainerComponent } from './ModulePageContainer';
 
 const CANONICAL = '/modules/CS1010S/programming-methodology';
-const MODULE_CODE_MAP: ModuleCodeMap = {
-  CS1010S: {
-    ModuleCode: 'CS1010S',
-    ModuleTitle: 'Programming Methodology',
-    Semesters: [1, 2],
-  },
-};
 
 type MakeContainerOptions = {
   module: ?Module,
@@ -45,12 +37,7 @@ function make(moduleCode: ModuleCode, url: string, options: $Shape<MakeContainer
   );
 
   return shallow(
-    <ModulePageContainerComponent
-      moduleCode={moduleCode}
-      moduleCodes={MODULE_CODE_MAP}
-      {...props}
-      {...createHistory()}
-    />,
+    <ModulePageContainerComponent moduleCode={moduleCode} {...props} {...createHistory()} />,
   );
 }
 

@@ -14,7 +14,6 @@ import FaqContainer from 'views/static/FaqContainer';
 import AppsContainer from 'views/static/AppsContainer';
 import NotFoundPage from 'views/errors/NotFoundPage';
 import TodayContainer from 'views/today/TodayContainer';
-import HacktoberfestContainer from 'views/static/HacktoberfestContainer';
 import ExternalRedirect from './ExternalRedirect';
 
 // IMPORTANT: Remember to update any route changes on the sitemap
@@ -35,7 +34,6 @@ export default function Routes() {
       <Route path="/team" component={TeamContainer} />
       <Route path="/contributors" component={ContributorsContainer} />
       <Route path="/apps" component={AppsContainer} />
-      <Route path="/hacktoberfest" component={HacktoberfestContainer} />
 
       {/* v2 routes */}
       <Redirect from="/venueavailability" to="/venues" />
