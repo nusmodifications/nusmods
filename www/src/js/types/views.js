@@ -1,6 +1,6 @@
 // @flow
 import FilterGroup from 'utils/filters/FilterGroup';
-import type { Department, Faculty, ModuleCondensed } from './modules';
+import type { Department, Faculty, Lesson, ModuleCondensed, ModuleWithColor } from './modules';
 import type { ModuleList } from './reducers';
 import type { Venue, VenueList } from './venues';
 
@@ -58,6 +58,8 @@ export type DisqusConfig = {|
 |};
 
 export type ModuleTableOrder = 'exam' | 'mc' | 'code';
+
+export type SelectedLesson = {| date: Date, lesson: Lesson |};
 
 // Incomplete typing of Mamoto's API. If you need something not here, feel free
 // to declare the typing here.
@@ -119,3 +121,14 @@ export type Tracker = {
   // remembered. After calling this method, the user will have to consent again in order to be tracked.
   forgetConsentGiven: () => void,
 };
+
+export type TimeSegment = 'Morning' | 'Afternoon' | 'Evening';
+export const TIME_SEGMENTS = ['Morning', 'Afternoon', 'Evening'];
+
+export type ModuleWithExamTime = {|
+  +module: ModuleWithColor,
+  +dateTime: string,
+  +date: string,
+  +time: string,
+  +timeSegment: TimeSegment,
+|};
