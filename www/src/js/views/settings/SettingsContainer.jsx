@@ -38,6 +38,7 @@ import ModeSelect from './ModeSelect';
 import styles from './SettingsContainer.scss';
 import previewTimetable from './previewTimetable';
 import BetaToggle from './BetaToggle';
+import RefreshPrompt from './RefreshPrompt';
 
 type Props = {
   newStudent: boolean,
@@ -46,6 +47,7 @@ type Props = {
   mode: Mode,
   corsNotification: CorsNotificationSettings,
   betaTester: boolean,
+  promptRefresh: boolean,
 
   selectTheme: Function,
   selectNewStudent: Function,
@@ -116,7 +118,7 @@ class SettingsContainer extends Component<Props> {
   }
 
   render() {
-    const { corsNotification, currentThemeId } = this.props;
+    const { corsNotification, currentThemeId, promptRefresh } = this.props;
 
     const corsRound = currentRound();
     const corsText = corsNotificationText(false);
@@ -125,6 +127,8 @@ class SettingsContainer extends Component<Props> {
       <div className={classnames(styles.settingsPage, 'page-container')}>
         <ScrollToTop onComponentDidMount />
         <Title>Settings</Title>
+
+        <RefreshPrompt />
 
         <h1 className={styles.title}>Settings</h1>
 
@@ -225,6 +229,7 @@ const mapStateToProps = (state: StoreState) => ({
   corsNotification: state.settings.corsNotification,
   currentThemeId: state.theme.id,
   betaTester: state.settings.beta || false,
+  promptRefresh: true, // state.app.promptRefresh,
 });
 
 const connectedSettings = connect(
