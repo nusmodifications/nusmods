@@ -85,7 +85,7 @@ export default class ModulePageContent extends Component<Props, State> {
         <ScrollToTop onComponentDidMount scrollToHash />
 
         {isArchive && (
-          <div className={classnames(styles.archiveWarning, "alert alert-warning")}>
+          <div className={classnames(styles.archiveWarning, 'alert alert-warning')}>
             <Archive className={styles.archiveIcon} />
             <p>
               You are looking at archived information of this module from academic year{' '}
