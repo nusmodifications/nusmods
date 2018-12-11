@@ -2,17 +2,18 @@
 import _ from 'lodash';
 
 import type {
+  Day,
   Lesson,
   Module,
   RawLesson,
   Semester,
   SemesterData,
-  WorkloadComponent,
   Time,
-  Day,
+  WorkloadComponent,
 } from 'types/modules';
 
 import config from 'config';
+import { NBSP } from 'utils/react';
 
 // Returns semester specific details such as exam date and timetable.
 export function getModuleSemesterData(module: Module, semester: Semester): ?SemesterData {
@@ -116,4 +117,9 @@ export function parseWorkload(workloadString: string): Workload {
 
 export function getTimeslot(day: Day, time: Time): string {
   return `${day} ${time}`;
+}
+
+export function renderMCs(moduleCredits: number | string) {
+  const credit = parseInt(moduleCredits, 10);
+  return `${credit}${NBSP}${credit === 1 ? 'MC' : 'MCs'}`;
 }
