@@ -1,6 +1,6 @@
 import { Icon } from 'leaflet';
 import marker from 'img/marker.svg';
-import styles from './VenueLocation.scss';
+import styles from './LocationMap.scss';
 
 /* eslint-disable import/prefer-default-export */
 export const icon = new Icon({
