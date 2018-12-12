@@ -50,6 +50,8 @@ function processRound(type, text) {
         // eg. 02/08/2017 09:00 to 15:00
         // So end = 02/08/2017 15:00
         end = formatDateTime(chunks[0], chunks[3]);
+      } else if (chunks.length === 9) {
+        end = formatDateTime(chunks[7], chunks[8]);
       } else {
         assert.fail(`Unexpected number of chunks in a period - ${period}`);
       }

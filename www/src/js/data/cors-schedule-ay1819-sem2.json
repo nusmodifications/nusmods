@@ -1,0 +1,128 @@
+[
+  {
+    "round": "0",
+    "periods": [
+      {
+        "type": "open",
+        "start": "Thursday 3rd January, 9am",
+        "startTs": "2019-01-03T01:00:00.000Z",
+        "end": "Thursday 3rd January, 5pm",
+        "endTs": "2019-01-03T09:00:00.000Z"
+      }
+    ]
+  },
+  {
+    "round": "1A",
+    "periods": [
+      {
+        "type": "open",
+        "start": "Friday 4th January, 9am",
+        "startTs": "2019-01-04T01:00:00.000Z",
+        "end": "Monday 7th January, 1pm",
+        "endTs": "2019-01-07T05:00:00.000Z"
+      },
+      {
+        "type": "closed",
+        "start": "Monday 7th January, 1pm",
+        "startTs": "2019-01-07T05:00:00.000Z",
+        "end": "Monday 7th January, 5pm",
+        "endTs": "2019-01-07T09:00:00.000Z"
+      }
+    ]
+  },
+  {
+    "round": "1B",
+    "periods": [
+      {
+        "type": "open",
+        "start": "Tuesday 8th January, 9am",
+        "startTs": "2019-01-08T01:00:00.000Z",
+        "end": "Tuesday 8th January, 3pm",
+        "endTs": "2019-01-08T07:00:00.000Z"
+      },
+      {
+        "type": "closed",
+        "start": "Tuesday 8th January, 3pm",
+        "startTs": "2019-01-08T07:00:00.000Z",
+        "end": "Tuesday 8th January, 5pm",
+        "endTs": "2019-01-08T09:00:00.000Z"
+      }
+    ]
+  },
+  {
+    "round": "2A",
+    "periods": [
+      {
+        "type": "open",
+        "start": "Wednesday 9th January, 9am",
+        "startTs": "2019-01-09T01:00:00.000Z",
+        "end": "Thursday 10th January, 1pm",
+        "endTs": "2019-01-10T05:00:00.000Z"
+      },
+      {
+        "type": "closed",
+        "start": "Thursday 10th January, 1pm",
+        "startTs": "2019-01-10T05:00:00.000Z",
+        "end": "Thursday 10th January, 5pm",
+        "endTs": "2019-01-10T09:00:00.000Z"
+      }
+    ]
+  },
+  {
+    "round": "2B",
+    "periods": [
+      {
+        "type": "open",
+        "start": "Friday 11th January, 9am",
+        "startTs": "2019-01-11T01:00:00.000Z",
+        "end": "Friday 11th January, 3pm",
+        "endTs": "2019-01-11T07:00:00.000Z"
+      },
+      {
+        "type": "closed",
+        "start": "Friday 11th January, 3pm",
+        "startTs": "2019-01-11T07:00:00.000Z",
+        "end": "Friday 11th January, 5pm",
+        "endTs": "2019-01-11T09:00:00.000Z"
+      }
+    ]
+  },
+  {
+    "round": "3A",
+    "periods": [
+      {
+        "type": "open",
+        "start": "Monday 14th January, 9am",
+        "startTs": "2019-01-14T01:00:00.000Z",
+        "end": "Monday 14th January, 3pm",
+        "endTs": "2019-01-14T07:00:00.000Z"
+      },
+      {
+        "type": "closed",
+        "start": "Monday 14th January, 3pm",
+        "startTs": "2019-01-14T07:00:00.000Z",
+        "end": "Monday 14th January, 5pm",
+        "endTs": "2019-01-14T09:00:00.000Z"
+      }
+    ]
+  },
+  {
+    "round": "3B",
+    "periods": [
+      {
+        "type": "open",
+        "start": "Tuesday 15th January, 9am",
+        "startTs": "2019-01-15T01:00:00.000Z",
+        "end": "Tuesday 15th January, 3pm",
+        "endTs": "2019-01-15T07:00:00.000Z"
+      },
+      {
+        "type": "closed",
+        "start": "Tuesday 15th January, 3pm",
+        "startTs": "2019-01-15T07:00:00.000Z",
+        "end": "Tuesday 15th January, 5pm",
+        "endTs": "2019-01-15T09:00:00.000Z"
+      }
+    ]
+  }
+]
