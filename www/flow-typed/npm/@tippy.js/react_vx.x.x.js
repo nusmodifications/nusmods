@@ -21,7 +21,7 @@ declare module '@tippy.js/react' {
   declare type ArrowType = 'sharp' | 'round';
   declare type SizeType = 'regular' | 'large';
 
-  declare type PropperProps = {
+  declare type PopperProps = {|
     a11y?: boolean,
     allowHTML?: boolean,
     animateFill?: boolean,
@@ -72,10 +72,10 @@ declare module '@tippy.js/react' {
     wait?: (tip: TippyInstance, event: any) => void,
 
     zIndex?: number,
-  };
+  |};
 
-  declare export type TippyProps = {
-    ...PropperProps,
+  declare export type TippyProps = {|
+    ...PopperProps,
 
     children: React.Node,
     content: React.Node,
@@ -84,7 +84,7 @@ declare module '@tippy.js/react' {
     isVisible?: boolean,
 
     onCreate?: (tip: TippyInstance) => void,
-  };
+  |};
 
   declare class Tippy extends React$Component<TippyProps> {}
 

@@ -11,6 +11,7 @@ import Tooltip from 'views/components/Tooltip';
 import SemesterBadge from 'views/components/SemesterBadge';
 import { getModuleCondensed } from 'selectors/moduleBank';
 import { replaceWithNode } from 'utils/react';
+import { MODULE_CODE_REGEX } from 'utils/modules';
 import styles from './LinkModuleCodes.scss';
 
 type Props = {
@@ -18,13 +19,6 @@ type Props = {
   getModuleCondensed: (ModuleCode) => ?ModuleCondensed,
   className?: string,
 };
-
-// Look for strings that look like module codes - eg.
-// ACC1010  - 3 chars, 4 digits, no suffix
-// CS1010FC - 2 chars, 4 digits, 2 chars
-// CS2014R  - 2 chars, 4 digits, 1 char
-// BMA 5001 - 3 chars, space, 4 digits
-const MODULE_CODE_REGEX = /\b(\w{2,3}\s*\d{4}\w{0,2})\b/g;
 
 export function LinkModuleCodesComponent(props: Props) {
   const { children, className } = props;

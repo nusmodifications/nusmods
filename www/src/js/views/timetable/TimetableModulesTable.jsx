@@ -20,6 +20,7 @@ import {
 import { getFormattedModuleExamDate, getModuleExamDate, renderMCs } from 'utils/modules';
 import { modulePage } from 'views/routes/paths';
 import elements from 'views/elements';
+import Tooltip from 'views/components/Tooltip';
 
 import styles from './TimetableModulesTable.scss';
 import ModuleTombstone from './ModuleTombstone';
@@ -50,34 +51,36 @@ class TimetableModulesTable extends PureComponent<Props> {
     return (
       <div className={styles.moduleActionButtons}>
         <div className="btn-group">
-          <button
-            type="button"
-            className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
-            title={removeBtnLabel}
-            aria-label={removeBtnLabel}
-            onClick={() => this.props.onRemoveModule(module)}
-          >
-            <Trash2 className={styles.actionIcon} />
-          </button>
-          <button
-            type="button"
-            className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
-            title={hideBtnLabel}
-            aria-label={hideBtnLabel}
-            onClick={() => {
-              if (module.hiddenInTimetable) {
-                this.props.showLessonInTimetable(semester, module.ModuleCode);
-              } else {
-                this.props.hideLessonInTimetable(semester, module.ModuleCode);
-              }
-            }}
-          >
-            {module.hiddenInTimetable ? (
-              <Eye className={styles.actionIcon} />
-            ) : (
-              <EyeOff className={styles.actionIcon} />
-            )}
-          </button>
+          <Tooltip content={removeBtnLabel}>
+            <button
+              type="button"
+              className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
+              aria-label={removeBtnLabel}
+              onClick={() => this.props.onRemoveModule(module)}
+            >
+              <Trash2 className={styles.actionIcon} />
+            </button>
+          </Tooltip>
+          <Tooltip content={hideBtnLabel}>
+            <button
+              type="button"
+              className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
+              aria-label={hideBtnLabel}
+              onClick={() => {
+                if (module.hiddenInTimetable) {
+                  this.props.showLessonInTimetable(semester, module.ModuleCode);
+                } else {
+                  this.props.hideLessonInTimetable(semester, module.ModuleCode);
+                }
+              }}
+            >
+              {module.hiddenInTimetable ? (
+                <Eye className={styles.actionIcon} />
+              ) : (
+                <EyeOff className={styles.actionIcon} />
+              )}
+            </button>
+          </Tooltip>
         </div>
       </div>
     );

@@ -1,6 +1,7 @@
 // @flow
 // Refer to https://feathericons.com/ for full list.
 import AlertTriangle from 'react-feather/dist/icons/alert-triangle';
+import Archive from 'react-feather/dist/icons/archive';
 import BookOpen from 'react-feather/dist/icons/book-open';
 import Calendar from 'react-feather/dist/icons/calendar';
 import ChevronLeft from 'react-feather/dist/icons/chevron-left';
@@ -42,6 +43,7 @@ import Trash2 from 'react-feather/dist/icons/trash-2';
 import Type from 'react-feather/dist/icons/type';
 
 export {
+  Archive,
   AlertTriangle,
   BookOpen,
   Calendar,
