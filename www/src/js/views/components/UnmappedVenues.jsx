@@ -1,20 +1,62 @@
 // @flow
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
-export default function UnmappedVenues() {
-  return (
-    <div>
-      <div className="progress">
-        <div
-          className="progress-bar bg-success"
-          role="progressbar"
-          style={{width: "75%"}}
-          aria-valuenow="25"
-          aria-valuemin="0"
-          aria-valuemax="100"
-        />
+import { fetchVenueList } from 'actions/venueBank';
+
+import venueLocations from 'data/venues.json';
+// import styles from './UnmappedVenues.scss';
+
+type Props = {
+  venueList: VenueList,
+
+  fetchVenueList: () => void,
+};
+
+class UnmappedVenues extends Component<Props> {
+  componentDidMount() {
+    this.props.fetchVenueList();
+  }
+
+  shouldComponentUpdate(nextProps: Props) {
+    return this.props.venueList.length !== nextProps.venueList.length;
+  }
+
+  render() {
+    const percentageMapped =
+      (Object.keys(venueLocations).length / this.props.venueList.length) * 100;
+    const percentageMappedStr = percentageMapped.toFixed().toString();
+
+    return (
+      <div>
+        <div className="progress">
+          {/* <div className={styles.progressBar}> */}
+          <div
+            className="progress-bar progress-bar-striped progress-bar-animated bg-success"
+            role="progressbar"
+            style={{ width: percentageMappedStr.concat('%') }}
+            aria-valuenow={percentageMappedStr}
+            aria-valuemin="0"
+            aria-valuemax="100"
+          >
+            {percentageMappedStr}%
+          </div>
+          {/* </div> */}
+        </div>
+        <br />
+        <p>
+          {percentageMappedStr}% of venues are mapped! Help us locate the remaining venues. All you
+          have to do is choose a venue and mark where it is on the map. If you&apos;re at the venue,
+          you can also use your phone&apos;s GPS to get the location automatically.
+        </p>
       </div>
-      75% of venues are mapped! Help us locate the remaining venues.
-    </div>
-  );
+    );
+  }
 }
+
+export default connect(
+  (state: State) => ({
+    venueList: state.venueBank.venueList,
+  }),
+  { fetchVenueList },
+)(UnmappedVenues);
