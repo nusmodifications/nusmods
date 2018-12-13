@@ -5,7 +5,7 @@ import { last } from 'lodash';
 import type { EmptyGroupType } from 'types/views';
 import * as icons from 'views/components/icons/svg';
 import HeaderDate from './HeaderDate';
-import styles from './TodayContainer.scss';
+import styles from './TodayContainer/TodayContainer.scss';
 
 type Props = {
   dates: Date[],

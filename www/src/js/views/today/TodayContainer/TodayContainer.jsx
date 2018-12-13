@@ -31,13 +31,13 @@ import config from 'config';
 import holidays from 'data/holidays.json';
 import withTimer, { type TimerData } from 'views/hocs/withTimer';
 import { formatTime, getCurrentHours, getCurrentMinutes, getDayIndex } from 'utils/timify';
-import DayEvents from './DayEvents';
-import DayHeader from './DayHeader';
-import EmptyLessonGroup from './EmptyLessonGroup';
-import BeforeLessonCard from './BeforeLessonCard';
+import DayEvents from '../DayEvents';
+import DayHeader from '../DayHeader';
+import EmptyLessonGroup from '../EmptyLessonGroup';
+import BeforeLessonCard from '../BeforeLessonCard';
 import styles from './TodayContainer.scss';
 
-type Props = {|
+export type Props = {|
   ...TimerData,
 
   +timetableWithLessons: SemTimetableConfigWithLessons,

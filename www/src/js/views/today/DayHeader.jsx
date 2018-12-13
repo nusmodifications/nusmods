@@ -2,7 +2,7 @@
 
 import React from 'react';
 import getWeatherIcon from 'views/components/icons/weather';
-import styles from './TodayContainer.scss';
+import styles from './TodayContainer/TodayContainer.scss';
 import HeaderDate from './HeaderDate';
 
 type Props = {|

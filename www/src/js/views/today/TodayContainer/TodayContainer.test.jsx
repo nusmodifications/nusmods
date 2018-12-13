@@ -3,12 +3,12 @@
 import React from 'react';
 import { flatten } from 'lodash';
 import { shallow } from 'enzyme';
-import * as weather from 'apis/weather';
+import * as weather from '../../../apis/weather';
 import Raven from 'raven-js';
-import { waitFor } from 'test-utils/async';
+import { waitFor } from '../../../test-utils/async';
 import { TodayContainerComponent } from './TodayContainer';
-import DayHeader from './DayHeader';
-import DayEvents from './DayEvents';
+import DayHeader from '../DayHeader';
+import DayEvents from '../DayEvents';
 import styles from './TodayContainer.scss';
 
 const COLORS = {

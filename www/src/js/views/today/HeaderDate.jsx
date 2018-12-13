@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { format } from 'date-fns';
-import styles from './TodayContainer.scss';
+import styles from './TodayContainer/TodayContainer.scss';
 
 // Get the subtitle and title headings
 type Props = {|
