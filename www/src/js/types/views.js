@@ -1,6 +1,6 @@
 // @flow
 import FilterGroup from 'utils/filters/FilterGroup';
-import type { Department, Faculty, ModuleCondensed, ModuleWithColor } from './modules';
+import type { Department, Faculty, Lesson, ModuleCondensed, ModuleWithColor } from './modules';
 import type { ModuleList } from './reducers';
 import type { Venue, VenueList } from './venues';
 
@@ -59,6 +59,8 @@ export type DisqusConfig = {|
 
 export type ModuleTableOrder = 'exam' | 'mc' | 'code';
 
+export type SelectedLesson = {| date: Date, lesson: Lesson |};
+
 // Incomplete typing of Mamoto's API. If you need something not here, feel free
 // to declare the typing here.
 // Full list: https://developer.matomo.org/api-reference/tracking-javascript
@@ -96,6 +98,11 @@ export type Tracker = {
   enableHeartBeatTimer: (delayInSeconds: number) => void,
   enableCrossDomainLinking: () => void,
   setCrossDomainLinkingTimeout: (timeout: number) => void,
+
+  setCustomDimension: (
+    customDimensionId: number,
+    customDimensionValue: string | number | boolean,
+  ) => void,
 
   /**
    * Managing Consent

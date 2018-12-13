@@ -1,8 +1,8 @@
 // @flow
-import _ from 'lodash';
-import type { FSA } from 'types/redux';
-import type { TimetableConfig } from 'types/timetables';
 
+import _ from 'lodash';
+
+import type { TimetableConfig } from 'types/timetables';
 import * as actions from 'actions/moduleBank';
 import NUSModsApi from 'apis/nusmods';
 import { waitFor } from 'test-utils/async';
@@ -16,7 +16,7 @@ NUSModsApi.moduleDetailsUrl.mockImplementation(
 );
 
 test('fetchModuleList should return a request action', () => {
-  const resultOfAction: FSA = actions.fetchModuleList();
+  const resultOfAction = actions.fetchModuleList();
   expect(resultOfAction).toMatchSnapshot();
 });
 
@@ -89,4 +89,16 @@ test('removeLRUModule should return an action', () => {
 test('updateModuleTimestamp should return an action', () => {
   const resultOfAction = actions.updateModuleTimestamp('ACC1001');
   expect(resultOfAction).toMatchSnapshot();
+});
+
+test('fetchModuleArchive should return a request action', () => {
+  expect(actions.fetchModuleArchive('CS1010S', '2016/2017')).toMatchSnapshot();
+});
+
+test('fetchAllModuleArchive should return multiple request actions', () => {
+  const dispatch = jest.fn().mockReturnValue(Promise.resolve());
+  const thunk = actions.fetchAllModuleArchive('CS1010S');
+  expect(thunk).toEqual(expect.any(Function));
+  thunk(dispatch);
+  expect(dispatch.mock.calls).toMatchSnapshot();
 });

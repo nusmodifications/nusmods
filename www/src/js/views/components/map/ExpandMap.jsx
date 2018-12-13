@@ -4,6 +4,7 @@ import React, { PureComponent } from 'react';
 import { withLeaflet, type LeafletContext } from 'react-leaflet';
 import Control from 'react-leaflet-control';
 import { Maximize, Minimize } from 'views/components/icons';
+import Tooltip from 'views/components/Tooltip';
 
 type Props = {|
   +leaflet: LeafletContext,
@@ -41,16 +42,20 @@ class ExpandMap extends PureComponent<Props> {
   };
 
   render() {
+    const label = this.props.isExpanded ? 'Minimize map' : 'Maximize map';
+
     return (
       <Control position="bottomleft">
-        <button
-          aria-label={this.props.isExpanded ? 'Minimize map' : 'Maximize map'}
-          type="button"
-          className="btn btn-secondary"
-          onClick={this.expandMap}
-        >
-          {this.props.isExpanded ? <Minimize /> : <Maximize />}
-        </button>
+        <Tooltip content={label}>
+          <button
+            aria-label={label}
+            type="button"
+            className="btn btn-sm btn-secondary"
+            onClick={this.expandMap}
+          >
+            {this.props.isExpanded ? <Minimize /> : <Maximize />}
+          </button>
+        </Tooltip>
       </Control>
     );
   }

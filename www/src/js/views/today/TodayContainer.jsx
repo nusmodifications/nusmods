@@ -1,27 +1,19 @@
 // @flow
 
-import React, { PureComponent, Fragment, type Node } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { range, minBy } from 'lodash';
-import classnames from 'classnames';
 import NUSModerator from 'nusmoderator';
 import Raven from 'raven-js';
-import {
-  isSameDay,
-  addDays,
-  formatDistanceStrict,
-  differenceInHours,
-  differenceInCalendarDays,
-} from 'date-fns';
+import { isSameDay, addDays, differenceInCalendarDays } from 'date-fns';
 
 import type { ColoredLesson, Lesson } from 'types/modules';
 import type { SemTimetableConfigWithLessons } from 'types/timetables';
 import type { ColorMapping } from 'types/reducers';
+import type { SelectedLesson } from 'types/views';
 import { DaysOfWeek } from 'types/modules';
 
 import {
-  getStartTimeAsDate,
   groupLessonsByDay,
   hydrateSemTimetableWithLessons,
   isLessonOngoing,
@@ -30,7 +22,6 @@ import {
 import Title from 'views/components/Title';
 import CorsNotification from 'views/components/cors-info/CorsNotification';
 import Announcements from 'views/components/notfications/Announcements';
-import { venuePage } from 'views/routes/paths';
 import { getSemesterTimetable } from 'reducers/timetables';
 import * as weatherAPI from 'apis/weather';
 import config from 'config';
@@ -40,29 +31,26 @@ import withTimer, { type TimerData } from 'views/hocs/withTimer';
 import { formatTime, getCurrentHours, getCurrentMinutes, getDayIndex } from 'utils/timify';
 import DayEvents from './DayEvents';
 import DayHeader from './DayHeader';
+import BeforeLessonCard from './BeforeLessonCard';
 import styles from './TodayContainer.scss';
 
 type Props = {|
   ...TimerData,
 
-  timetableWithLessons: SemTimetableConfigWithLessons,
-  colors: ColorMapping,
+  +timetableWithLessons: SemTimetableConfigWithLessons,
+  +colors: ColorMapping,
 |};
 
-type State = {
+type State = {|
   // Mapping of number of days from today to the weather forecast for that day
   // with zero being today
-  weather: { [string]: string },
-};
+  +weather: { [string]: string },
+
+  // Which lesson has an open venue map
+  +openLesson: ?SelectedLesson,
+|};
 
 const EMPTY_ARRAY = [];
-
-const freeRoomMessage = (
-  <Fragment>
-    Need help finding a free classroom to study in? Check out our{' '}
-    <Link to={venuePage()}>free room finder</Link>.
-  </Fragment>
-);
 
 function getDayName(date: Date, diffInDays: number): string {
   if (diffInDays === 0) {
@@ -77,6 +65,7 @@ function getDayName(date: Date, diffInDays: number): string {
 export class TodayContainerComponent extends PureComponent<Props, State> {
   state: State = {
     weather: {},
+    openLesson: null,
   };
 
   componentDidMount() {
@@ -104,39 +93,9 @@ export class TodayContainerComponent extends PureComponent<Props, State> {
       .catch((e) => Raven.captureException(e));
   }
 
-  renderBeforeNextLessonCard(nextLesson: Lesson, marker: Node) {
-    const nextLessonDate = getStartTimeAsDate(nextLesson);
-    const hoursTillNextLesson = differenceInHours(nextLessonDate, this.props.currentTime);
-
-    let comment = null;
-
-    const currentHour = this.props.currentTime.getHours();
-    if (hoursTillNextLesson < 1) {
-      comment = <p>Better get a move on to your next class! {freeRoomMessage}</p>;
-    } else if (currentHour < 7 || currentHour >= 22) {
-      // Why are you up right now?
-      comment = <p>Why not go get some sleep?</p>;
-    } else {
-      comment = <p>Remember to take breaks when studying. {freeRoomMessage}</p>;
-    }
-
-    return (
-      <div className={styles.lesson}>
-        <div className={styles.lessonTime}>
-          <p />
-          {marker}
-          <p />
-        </div>
-        <div className={classnames(styles.card, styles.inBetweenClass)}>
-          <p>
-            You have <strong>{formatDistanceStrict(nextLessonDate, this.props.currentTime)}</strong>{' '}
-            till the next class.
-          </p>
-          {comment}
-        </div>
-      </div>
-    );
-  }
+  onOpenLesson = (date: Date, lesson: Lesson) => {
+    this.setState({ openLesson: { date, lesson } });
+  };
 
   renderDay(date: Date, lessons: ColoredLesson[], isToday: boolean) {
     let nextLessonMarker = null;
@@ -173,7 +132,13 @@ export class TodayContainerComponent extends PureComponent<Props, State> {
           nextLessonMarker = marker;
         } else {
           // Otherwise add a new card before the next lesson
-          beforeFirstLessonBlock = this.renderBeforeNextLessonCard(nextLesson, marker);
+          beforeFirstLessonBlock = (
+            <BeforeLessonCard
+              currentTime={this.props.currentTime}
+              nextLesson={nextLesson}
+              marker={marker}
+            />
+          );
         }
       } else {
         return <p>You have no lessons left today</p>;
@@ -184,7 +149,14 @@ export class TodayContainerComponent extends PureComponent<Props, State> {
     return (
       <Fragment>
         {beforeFirstLessonBlock}
-        <DayEvents lessons={lessons} dayInfo={dayInfo} marker={nextLessonMarker} />
+        <DayEvents
+          lessons={lessons}
+          date={date}
+          dayInfo={dayInfo}
+          marker={nextLessonMarker}
+          openLesson={this.state.openLesson}
+          onOpenLesson={this.onOpenLesson}
+        />
       </Fragment>
     );
   }
