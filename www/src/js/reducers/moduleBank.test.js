@@ -12,6 +12,7 @@ const defaultModuleBankState: ModuleBank = {
   moduleList: [], // List of modules
   modules: {}, // Object of ModuleCode -> ModuleDetails
   moduleCodes: {},
+  moduleArchive: {},
   apiLastUpdatedTimestamp: undefined,
 };
 
