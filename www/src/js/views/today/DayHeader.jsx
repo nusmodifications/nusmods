@@ -3,6 +3,7 @@
 import React from 'react';
 import { format } from 'date-fns';
 import getWeatherIcon from 'views/components/icons/weather';
+import Tooltip from 'views/components/Tooltip/Tooltip';
 import styles from './TodayContainer.scss';
 
 type Props = {|
@@ -26,9 +27,11 @@ export default function(props: Props) {
       </h2>
 
       {Icon && (
-        <div className={styles.weather} title={props.forecast} aria-label={props.forecast}>
-          <Icon />
-        </div>
+        <Tooltip content={props.forecast} placement="bottom" offset={0}>
+          <div className={styles.weather} aria-label={props.forecast}>
+            <Icon />
+          </div>
+        </Tooltip>
       )}
     </header>
   );
