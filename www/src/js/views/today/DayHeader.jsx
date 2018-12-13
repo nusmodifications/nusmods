@@ -3,7 +3,7 @@
 import React from 'react';
 import { format } from 'date-fns';
 import getWeatherIcon from 'views/components/icons/weather';
-import Tooltip from 'views/components/Tooltip/Tooltip';
+import Tooltip from 'views/components/Tooltip';
 import styles from './TodayContainer.scss';
 
 type Props = {|

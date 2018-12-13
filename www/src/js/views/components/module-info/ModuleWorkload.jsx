@@ -7,7 +7,7 @@ import _ from 'lodash';
 import type { WorkloadComponent } from 'types/modules';
 
 import { parseWorkload } from 'utils/modules';
-import Tooltip from 'views/components/Tooltip/Tooltip';
+import Tooltip from 'views/components/Tooltip';
 
 const ROW_MAX = 10;
 

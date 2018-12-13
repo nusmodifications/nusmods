@@ -4,6 +4,7 @@
   composes: btn btn-link btn-block from global;
   color: inherit;
   border-top: 1px solid;
+  border-radius: 0;
 
   &:hover {
     color: inherit;

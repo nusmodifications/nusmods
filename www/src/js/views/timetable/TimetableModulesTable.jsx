@@ -20,7 +20,7 @@ import {
 import { getFormattedModuleExamDate, getModuleExamDate, renderMCs } from 'utils/modules';
 import { modulePage } from 'views/routes/paths';
 import elements from 'views/elements';
-import Tooltip from 'views/components/Tooltip/Tooltip';
+import Tooltip from 'views/components/Tooltip';
 
 import styles from './TimetableModulesTable.scss';
 import ModuleTombstone from './ModuleTombstone';

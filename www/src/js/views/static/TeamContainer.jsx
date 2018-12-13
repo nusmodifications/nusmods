@@ -3,7 +3,7 @@
 import React from 'react';
 
 import ExternalLink from 'views/components/ExternalLink';
-import Tooltip from 'views/components/Tooltip/Tooltip';
+import Tooltip from 'views/components/Tooltip';
 import { Facebook, LinkedIn, GitHub, Twitter } from 'views/components/icons';
 import teamMembers from 'data/team.json';
 import StaticPage from './StaticPage';
