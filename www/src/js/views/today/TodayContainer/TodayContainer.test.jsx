@@ -8,7 +8,6 @@ import Raven from 'raven-js';
 import * as weather from 'apis/weather';
 import { waitFor } from 'test-utils/async';
 import { TodayContainerComponent } from './TodayContainer';
-import DayHeader from '../DayHeader';
 import DayEvents from '../DayEvents';
 import styles from './TodayContainer.scss';
 
@@ -153,15 +152,6 @@ describe(TodayContainerComponent, () => {
       <TodayContainerComponent currentTime={now} timetableWithLessons={{}} colors={COLORS} />,
     );
 
-    expect(wrapper.find(DayHeader).map((w) => w.prop('dayName'))).toEqual([
-      'Today',
-      'Tomorrow',
-      'Wednesday',
-      'Thursday',
-      'Friday',
-      'Saturday',
-      'Sunday',
-    ]);
     expect(getLessons(wrapper)).toHaveLength(0);
     expect(wrapper.text().match(/You have no lessons today/gi)).toHaveLength(5);
   });
@@ -174,7 +164,6 @@ describe(TodayContainerComponent, () => {
       <TodayContainerComponent currentTime={now} timetableWithLessons={LESSONS} colors={COLORS} />,
     );
 
-    expect(wrapper.find(DayHeader)).toHaveLength(7);
     expect(getLessons(wrapper)).toHaveLength(6);
   });
 

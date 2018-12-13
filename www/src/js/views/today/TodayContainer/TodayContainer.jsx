@@ -130,7 +130,7 @@ export class TodayContainerComponent extends PureComponent<Props, State> {
 
     const pushCurrentGroup = () => {
       if (!currentGroup) return;
-      days.push(<EmptyLessonGroup {...currentGroup} />);
+      days.push(<EmptyLessonGroup key={currentGroup.dates[0].toDateString()} {...currentGroup} />);
       currentGroup = null;
     };
 
@@ -170,7 +170,7 @@ export class TodayContainerComponent extends PureComponent<Props, State> {
         const forecast = this.state.weather[String(day)];
 
         days.push(
-          <section className={styles.day}>
+          <section className={styles.day} key={date.toDateString()}>
             <DayHeader date={date} offset={day} forecast={forecast} />
             {this.renderDay(date, lessons, day === 0)}
           </section>,
