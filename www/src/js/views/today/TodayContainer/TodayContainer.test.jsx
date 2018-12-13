@@ -3,9 +3,10 @@
 import React from 'react';
 import { flatten } from 'lodash';
 import { shallow } from 'enzyme';
-import * as weather from '../../../apis/weather';
 import Raven from 'raven-js';
-import { waitFor } from '../../../test-utils/async';
+
+import * as weather from 'apis/weather';
+import { waitFor } from 'test-utils/async';
 import { TodayContainerComponent } from './TodayContainer';
 import DayHeader from '../DayHeader';
 import DayEvents from '../DayEvents';

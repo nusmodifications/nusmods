@@ -12,7 +12,7 @@ const AsyncTodayContainer: ComponentType<Props> = Loadable({
     if (props.error) {
       return (
         <div className="text-center">
-          <p>Sorry, there was an error loading the map</p>
+          <p>Sorry, there was an error loading this page</p>
           <button className="btn btn-outline-primary" onClick={props.retry}>
             Try Again
           </button>
