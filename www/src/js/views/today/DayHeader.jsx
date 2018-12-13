@@ -1,19 +1,15 @@
 // @flow
 
 import React from 'react';
-import { format } from 'date-fns';
 import getWeatherIcon from 'views/components/icons/weather';
 import styles from './TodayContainer.scss';
+import HeaderDate from './HeaderDate';
 
 type Props = {|
   +date: Date,
-  +dayName: ?string, // eg. Today, Tomorrow
   +forecast: ?string,
+  +offset: number, // number of days from today
 |};
-
-function getDayName(date: Date) {
-  return format(date, 'iiii, do MMMM');
-}
 
 export default function(props: Props) {
   const Icon = props.forecast ? getWeatherIcon(props.forecast) : null;
@@ -21,8 +17,7 @@ export default function(props: Props) {
   return (
     <header className={styles.header}>
       <h2>
-        <span className={styles.date}>{getDayName(props.date)}</span>
-        {props.dayName}
+        <HeaderDate offset={props.offset}>{props.date}</HeaderDate>
       </h2>
 
       {Icon && (

@@ -16,6 +16,7 @@
   border-bottom: 1px solid var(--gray-light);
 
   h2 {
+    display: flex;
     margin-bottom: 0.5rem;
     font-weight: bold;
     font-size: 2rem;
@@ -30,12 +31,17 @@
   }
 }
 
-.date {
+.date,
+.to {
   display: block;
-  margin-bottom: 0.4rem;
   font-size: 0.8rem;
   text-transform: uppercase;
   color: var(--gray-light);
+}
+
+.to {
+  align-self: center;
+  margin: 0 0.9rem;
 }
 
 .nowMarker {
@@ -47,4 +53,24 @@
     position: absolute;
     margin-left: 0.2rem;
   }
+}
+
+.emptyGroup {
+  img {
+    display: block;
+    max-width: 8rem;
+    margin: 2rem auto 1rem;
+  }
+
+  p {
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+}
+
+.attribution {
+  font-size: 0.9rem;
+  text-align: right;
+  color: var(--gray-light);
 }

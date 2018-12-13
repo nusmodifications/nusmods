@@ -132,3 +132,13 @@ export type ModuleWithExamTime = {|
   +time: string,
   +timeSegment: TimeSegment,
 |};
+
+/* views/today */
+export type EmptyGroupType =
+  | 'winter'
+  | 'summer'
+  | 'orientation'
+  | 'weekend'
+  | 'holiday'
+  | 'recess'
+  | 'reading';
