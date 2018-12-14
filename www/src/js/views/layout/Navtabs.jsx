@@ -54,11 +54,13 @@ export function NavtabsComponent(props: Props) {
         <Settings />
         <span className={styles.title}>Settings</span>
         {props.promptRefresh && (
-          <div
-            className={classnames(styles.updateDot)}
-            title="Update available"
-            aria-label="Update available"
-          />
+          <Online>
+            <div
+              className={classnames(styles.updateDot)}
+              title="Update available"
+              aria-label="Update available"
+            />
+          </Online>
         )}
       </NavLink>
       <div className={styles.divider} />
@@ -71,14 +73,12 @@ export function NavtabsComponent(props: Props) {
       </ExternalLink>
       {props.promptRefresh && (
         <Online>
-          <button
-            className={classnames(styles.refreshPrompt, 'alert alert-success')}
-            type="button"
-            onClick={updateServiceWorker}
-          >
-            <Refresh size={30} className={styles.refreshIcon} />
-            NUSMods update available
-            <div className="btn btn-sm btn-block btn-success">Refresh page</div>
+          <button className={styles.refreshPrompt} type="button" onClick={updateServiceWorker}>
+            <div className={classnames('alert alert-success')}>
+              <Refresh size={30} className={styles.refreshIcon} />
+              NUSMods update available
+              <div className="btn btn-sm btn-block btn-success">Refresh page</div>
+            </div>
           </button>
         </Online>
       )}

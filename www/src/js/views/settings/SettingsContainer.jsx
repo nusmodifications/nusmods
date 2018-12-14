@@ -30,6 +30,7 @@ import Toggle from 'views/components/Toggle';
 import CorsNotification, {
   corsNotificationText,
 } from 'views/components/cors-info/CorsNotification';
+import Online from 'views/components/Online';
 import { currentRound } from 'utils/cors';
 import { supportsCSSVariables } from 'utils/css';
 
@@ -127,7 +128,9 @@ class SettingsContainer extends Component<Props> {
         <ScrollToTop onComponentDidMount />
         <Title>Settings</Title>
 
-        <RefreshPrompt />
+        <Online>
+          <RefreshPrompt />
+        </Online>
 
         <h1 className={styles.title}>Settings</h1>
 

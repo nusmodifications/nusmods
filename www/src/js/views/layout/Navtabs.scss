@@ -133,7 +133,7 @@
   width: 0.5rem;
   height: 0.5rem;
   padding: 0;
-  margin-left: 1.8rem;
+  margin-left: 1rem;
   font-size: $font-size-xs;
   line-height: 1.2;
   border-radius: 50%;
@@ -152,18 +152,24 @@
   }
 }
 
-:global(.alert).refreshPrompt {
+.refreshPrompt {
   $margin-offset: 6px;
 
-  padding: 0.5rem;
+  display: block;
   margin: 0.5rem (-$margin-offset) 0 ($grid-gutter-width / 2 - $margin-offset);
   font-size: $font-size-s;
   line-height: 1.2;
   text-align: center;
+  border: 0;
+  background: none;
   cursor: pointer;
 
   :global {
     animation: zoomIn 0.4s;
+  }
+
+  :global(.alert) {
+    padding: 0.5rem;
   }
 
   :global(.btn) {
