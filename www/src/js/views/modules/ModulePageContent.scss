@@ -1,4 +1,4 @@
-@import "~styles/utils/modules-entry";
+@import '~styles/utils/modules-entry';
 
 $header-margin-top: 1rem;
 $sticky-top: $navbar-height;
@@ -14,6 +14,22 @@ $sticky-top: $navbar-height;
 
   :global {
     animation-name: $page-entering-animation;
+  }
+}
+
+.archiveWarning {
+  display: flex;
+  align-items: center;
+
+  p {
+    max-width: 40rem;
+    margin: 0;
+  }
+
+  .archiveIcon {
+    flex: 0 0 2rem;
+    height: 2rem;
+    margin-right: 1.2rem;
   }
 }
 

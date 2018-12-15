@@ -1,14 +1,94 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`fetchModule should return a request action 1`] = `
+exports[`fetchAllModuleArchive should return multiple request actions 1`] = `
+Array [
+  Array [
+    Object {
+      "meta": Object {
+        "API_REQUEST": "FETCH_ARCHIVE_MODULE_CS1010S_2016/2017",
+        "academicYear": "2016/2017",
+      },
+      "payload": Object {
+        "url": "test://MOCK_MOD_DETAILS_URL/CS1010S/2016/2017",
+      },
+      "type": "FETCH_ARCHIVE_MODULE",
+    },
+  ],
+  Array [
+    Object {
+      "meta": Object {
+        "API_REQUEST": "FETCH_ARCHIVE_MODULE_CS1010S_2017/2018",
+        "academicYear": "2017/2018",
+      },
+      "payload": Object {
+        "url": "test://MOCK_MOD_DETAILS_URL/CS1010S/2017/2018",
+      },
+      "type": "FETCH_ARCHIVE_MODULE",
+    },
+  ],
+]
+`;
+
+exports[`fetchModule should remove LRU modules above limit 1`] = `
+Array [
+  Array [
+    Object {
+      "meta": Object {
+        "API_REQUEST": "FETCH_MODULE_CS1010S",
+      },
+      "payload": Object {
+        "url": "test://MOCK_MOD_DETAILS_URL/CS1010S",
+      },
+      "type": "FETCH_MODULE",
+    },
+  ],
+  Array [
+    Object {
+      "payload": Array [
+        "CS0",
+        "CS1",
+        "CS2",
+        "CS3",
+        "CS4",
+      ],
+      "type": "REMOVE_LRU_MODULE",
+    },
+  ],
+]
+`;
+
+exports[`fetchModule should return a thunk 1`] = `
+Array [
+  Array [
+    Object {
+      "meta": Object {
+        "API_REQUEST": "FETCH_MODULE_CS1010S",
+      },
+      "payload": Object {
+        "url": "test://MOCK_MOD_DETAILS_URL/CS1010S",
+      },
+      "type": "FETCH_MODULE",
+    },
+  ],
+  Array [
+    Object {
+      "payload": "CS1010S",
+      "type": "UPDATE_MODULE_TIMESTAMP",
+    },
+  ],
+]
+`;
+
+exports[`fetchModuleArchive should return a request action 1`] = `
 Object {
   "meta": Object {
-    "API_REQUEST": "FETCH_MODULE_CS1010S",
+    "API_REQUEST": "FETCH_ARCHIVE_MODULE_CS1010S_2016/2017",
+    "academicYear": "2016/2017",
   },
   "payload": Object {
-    "url": "test://MOCK_MOD_DETAILS_URL/CS1010S",
+    "url": "test://MOCK_MOD_DETAILS_URL/CS1010S/2016/2017",
   },
-  "type": "FETCH_MODULE",
+  "type": "FETCH_ARCHIVE_MODULE",
 }
 `;
 
@@ -21,5 +101,27 @@ Object {
     "url": "test://MOCK_MOD_LIST_URL",
   },
   "type": "FETCH_MODULE_LIST",
+}
+`;
+
+exports[`getLRUModule should return the LRU and non-timetable module 1`] = `
+Array [
+  "ACC1003",
+]
+`;
+
+exports[`removeLRUModule should return an action 1`] = `
+Object {
+  "payload": Array [
+    "ACC1001",
+  ],
+  "type": "REMOVE_LRU_MODULE",
+}
+`;
+
+exports[`updateModuleTimestamp should return an action 1`] = `
+Object {
+  "payload": "ACC1001",
+  "type": "UPDATE_MODULE_TIMESTAMP",
 }
 `;
