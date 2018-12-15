@@ -35,7 +35,7 @@ export default function NotFoundPage() {
         >
           Something should be here
         </button>
-        <Link className="btn btn-outline-primary" to="/">
+        <Link className="btn btn-primary" to="/">
           Bring me home
         </Link>
       </div>

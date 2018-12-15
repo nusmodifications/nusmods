@@ -71,8 +71,8 @@ export class ModuleNotFoundPageComponent extends PureComponent<Props> {
             </div>
 
             <p>
-              Click on them to view the archived module information. Otherwise, if this is not what
-              you are looking for, <Link to="/">go back to nusmods.com</Link> or{' '}
+              Otherwise, if this is not what you are looking for,{' '}
+              <Link to="/">go back to nusmods.com</Link> or{' '}
               <Link to="/modules">try the module finder</Link>.
             </p>
           </Fragment>
@@ -102,7 +102,7 @@ export class ModuleNotFoundPageComponent extends PureComponent<Props> {
               >
                 {moduleCode} should be here
               </button>
-              <Link className="btn btn-outline-primary" to="/">
+              <Link className="btn btn-primary" to="/">
                 Bring me home
               </Link>
             </div>
