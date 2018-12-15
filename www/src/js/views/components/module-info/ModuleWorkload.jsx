@@ -95,9 +95,8 @@ export default class ModuleWorkload extends PureComponent<Props> {
         <h4>Workload - {total} hrs</h4>
         <div className="module-workload">
           {sortWorkload(workload).map(([component, hours]) => (
-            <Tooltip content={`${hours} hours of ${component}`}>
+            <Tooltip content={`${hours} hours of ${component}`} key={component}>
               <div
-                key={component}
                 className="module-workload-component"
                 style={{ width: `${(100 / ROW_MAX) * Math.min(ROW_MAX, Math.ceil(hours))}%` }}
               >

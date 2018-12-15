@@ -25,6 +25,7 @@ import LoadingSpinner from 'views/components/LoadingSpinner';
 import SideMenu, { OPEN_MENU_LABEL } from 'views/components/SideMenu';
 import { Filter } from 'views/components/icons';
 import Title from 'views/components/Title';
+import Omelette, { matchEgg } from 'views/components/Omelette';
 
 import {
   defaultGroups,
@@ -320,11 +321,15 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
 
             <ModuleSearchBox useInstantSearch={this.useInstantSearch} />
 
-            <ModuleFinderList
-              modules={filteredModules}
-              page={page}
-              onPageChange={this.onPageChange}
-            />
+            {matchEgg(this.props.searchTerm) ? (
+              <Omelette query={this.props.searchTerm} />
+            ) : (
+              <ModuleFinderList
+                modules={filteredModules}
+                page={page}
+                onPageChange={this.onPageChange}
+              />
+            )}
           </div>
 
           <div className="col-md-4 col-lg-3">
