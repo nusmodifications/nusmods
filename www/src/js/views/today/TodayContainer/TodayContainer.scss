@@ -1,0 +1,27 @@
+@import '~styles/utils/modules-entry';
+
+.day {
+  margin-bottom: 4rem;
+
+  h3 {
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--gray-light);
+  }
+}
+
+.nowMarker {
+  font-weight: bold;
+  color: theme-color('danger');
+
+  &::after {
+    content: '•';
+    position: absolute;
+    margin-left: 0.2rem;
+  }
+}
+
+.attribution {
+  font-size: 0.9rem;
+  text-align: right;
+  color: var(--gray-light);
+}
