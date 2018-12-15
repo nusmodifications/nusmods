@@ -35,18 +35,18 @@ export default class ErrorPage extends PureComponent<Props> {
       <div>
         <Title>Uh oh...</Title>
 
-        <div className={styles.centerContainer}>
+        <div className="text-center">
           <div className={styles.header}>
             <RandomKawaii size={100} />
           </div>
-          <h1 className={classnames('h2', styles.header)}>Uh oh, {this.errorMessage()}.</h1>
+
+          <h1 className={classnames('h3', styles.header)}>
+            <span className={styles.expr}>Uh oh</span> {this.errorMessage()}
+          </h1>
 
           {showRefresh && (
             <Online>
-              <button
-                className="btn btn-primary btn-svg"
-                onClick={() => window.location.reload(true)}
-              >
+              <button className="btn btn-primary" onClick={() => window.location.reload(true)}>
                 Refresh
               </button>
             </Online>

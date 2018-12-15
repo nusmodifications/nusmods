@@ -37,20 +37,19 @@ export default class ApiError extends PureComponent<Props> {
 
   render() {
     const { retry, dataName } = this.props;
-    const message = dataName ? `We can't load ${dataName}` : "We can't connect to NUSMods";
+    const message = dataName ? `We can't load the ${dataName}` : "We can't connect to NUSMods";
 
     return (
       <div>
         <Title>Oh no...</Title>
 
-        <div className={styles.centerContainer}>
+        <div className={styles.container}>
           <div className={styles.header}>
             <RandomKawaii size={100} />
           </div>
 
-          <h1 className={classnames('h2', styles.header)}>
-            <span className={styles.expr}>Oh no...</span>
-            {message}
+          <h1 className={classnames('h3', styles.header)}>
+            <span className={styles.expr}>Oh no...</span> {message}
           </h1>
 
           <p>This could be because your device is offline or NUSMods is down :(</p>

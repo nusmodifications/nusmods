@@ -1,7 +1,8 @@
 @import '~styles/utils/modules-entry.scss';
 
 .container {
-  composes: page-container from global;
+  composes: page-container text-center from global;
+  max-width: 40rem;
   margin-top: 1rem;
 
   @include media-breakpoint-up(md) {
@@ -16,11 +17,7 @@
 .expr {
   composes: text-primary from global;
   display: block;
-}
-
-.subheader {
-  margin-bottom: 0;
-  font-weight: bold;
+  font-size: 2.5rem;
 }
 
 .link {
@@ -30,11 +27,7 @@
   border: 0;
 }
 
-.centerContainer {
-  text-align: center;
-}
-
-.inlineContainer {
+.heading {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -42,21 +35,16 @@
   text-align: center;
 }
 
-.errorButtonContainer {
+.buttons {
   display: flex;
   flex-direction: column;
-  margin-right: 1em;
-  margin-left: 1em;
-
-  :not(:last-child) {
-    margin-bottom: 0.5em;
-  }
+  margin-bottom: 2rem;
 
   @include media-breakpoint-up(sm) {
     flex-direction: row;
     justify-content: center;
 
-    :not(:last-child) {
+    :global(.btn):not(:last-child) {
       margin-right: 1em;
       margin-bottom: 0;
     }
@@ -67,8 +55,7 @@
   padding: 0.1rem;
   font-weight: bolder;
   font-size: 8rem;
-  text-shadow:
-    3px 3px 0 theme-color(),
+  text-shadow: 3px 3px 0 theme-color(),
     -1px -1px 0 theme-color(),
     1px -1px 0 theme-color(),
     -1px 1px 0 theme-color(),

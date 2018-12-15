@@ -12,10 +12,10 @@ export default function NotFoundPage() {
   const eventId = Raven.lastEventId();
 
   return (
-    <div className={styles.centerContainer}>
+    <div className={styles.container}>
       <Title>Page Not Found</Title>
 
-      <div className={styles.inlineContainer}>
+      <div className={styles.heading}>
         <span className={styles.bigCharacter}>4</span>
         <RandomKawaii aria-label="0" title="0" size={100} />
         <span className={styles.bigCharacter}>4</span>
@@ -24,9 +24,9 @@ export default function NotFoundPage() {
       <h2>Ooops, page not found.</h2>
       <p>Are you sure you are at the right page?</p>
 
-      <div className={styles.errorButtonContainer}>
+      <div className={styles.buttons}>
         <button
-          className="btn btn-outline-primary btn-svg"
+          className="btn btn-outline-primary"
           onClick={() =>
             Raven.showReportDialog({
               eventId,
@@ -35,7 +35,7 @@ export default function NotFoundPage() {
         >
           Something should be here
         </button>
-        <Link className="btn btn-outline-primary btn-svg" to="/">
+        <Link className="btn btn-outline-primary" to="/">
           Bring me home
         </Link>
       </div>
