@@ -1,16 +1,12 @@
 // @flow
 
 import React from 'react';
-import { last } from 'lodash';
 import type { EmptyGroupType } from 'types/views';
 import * as icons from 'views/components/icons/svg';
-import HeaderDate from './HeaderDate';
-import styles from './TodayContainer/TodayContainer.scss';
+import styles from './EmptyLessonGroup.scss';
 
 type Props = {
-  dates: Date[],
   type: EmptyGroupType,
-  offset: number,
 };
 
 function renderType(type: EmptyGroupType) {
@@ -77,26 +73,5 @@ function renderType(type: EmptyGroupType) {
 }
 
 export default function(props: Props) {
-  return (
-    <section className={styles.day}>
-      <header className={styles.header}>
-        <h2>
-          <div>
-            <HeaderDate offset={props.offset}>{props.dates[0]}</HeaderDate>
-          </div>
-          {props.dates.length > 1 && (
-            <>
-              <div className={styles.to}> to </div>
-              <div>
-                <HeaderDate offset={props.offset + props.dates.length - 1}>
-                  {last(props.dates)}
-                </HeaderDate>
-              </div>
-            </>
-          )}
-        </h2>
-      </header>
-      <div className={styles.emptyGroup}>{renderType(props.type)}</div>
-    </section>
-  );
+  return <div className={styles.emptyGroup}>{renderType(props.type)}</div>;
 }

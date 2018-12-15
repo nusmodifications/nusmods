@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Fragment, PureComponent } from 'react';
+import React, { Fragment, PureComponent, type Node } from 'react';
 import { connect } from 'react-redux';
 import { minBy, range } from 'lodash';
 import NUSModerator, { type AcadWeekInfo } from 'nusmoderator';
@@ -74,6 +74,20 @@ function getDayType(date: Date, weekInfo: AcadWeekInfo): EmptyGroupType {
   }
 }
 
+export function DaySection(props: {
+  children: Node,
+  date: Date | Date[],
+  offset: number,
+  forecast?: string,
+}) {
+  return (
+    <section className={styles.day}>
+      <DayHeader date={props.date} offset={props.offset} forecast={props.forecast} />
+      {props.children}
+    </section>
+  );
+}
+
 export class TodayContainerComponent extends PureComponent<Props, State> {
   state: State = {
     weather: {},
@@ -124,13 +138,19 @@ export class TodayContainerComponent extends PureComponent<Props, State> {
 
     const groupedLessons = groupLessonsByDay(coloredTimetableLessons);
 
-    // Group empty days / non-instructional dates
+    // Group empty days / non-instructional dates together
     const days = [];
     let currentGroup = null;
 
     const pushCurrentGroup = () => {
       if (!currentGroup) return;
-      days.push(<EmptyLessonGroup key={currentGroup.dates[0].toDateString()} {...currentGroup} />);
+      const { dates, type, offset } = currentGroup;
+      days.push(
+        <DaySection date={dates} offset={offset} key={offset}>
+          <EmptyLessonGroup type={type} />
+        </DaySection>,
+      );
+      days.push();
       currentGroup = null;
     };
 
@@ -170,10 +190,9 @@ export class TodayContainerComponent extends PureComponent<Props, State> {
         const forecast = this.state.weather[String(day)];
 
         days.push(
-          <section className={styles.day} key={date.toDateString()}>
-            <DayHeader date={date} offset={day} forecast={forecast} />
+          <DaySection date={date} offset={day} forecast={forecast} key={day}>
             {this.renderDay(date, lessons, day === 0)}
-          </section>,
+          </DaySection>,
         );
       }
     });
