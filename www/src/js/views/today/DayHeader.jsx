@@ -2,6 +2,7 @@
 
 import React from 'react';
 import getWeatherIcon from 'views/components/icons/weather';
+import Tooltip from 'views/components/Tooltip';
 import styles from './TodayContainer/TodayContainer.scss';
 import HeaderDate from './HeaderDate';
 
@@ -21,9 +22,11 @@ export default function(props: Props) {
       </h2>
 
       {Icon && (
-        <div className={styles.weather} title={props.forecast} aria-label={props.forecast}>
-          <Icon />
-        </div>
+        <Tooltip content={props.forecast} placement="bottom" offset={0}>
+          <div className={styles.weather} aria-label={props.forecast}>
+            <Icon />
+          </div>
+        </Tooltip>
       )}
     </header>
   );

@@ -7,6 +7,7 @@ import _ from 'lodash';
 import type { WorkloadComponent } from 'types/modules';
 
 import { parseWorkload } from 'utils/modules';
+import Tooltip from 'views/components/Tooltip';
 
 const ROW_MAX = 10;
 
@@ -94,21 +95,23 @@ export default class ModuleWorkload extends PureComponent<Props> {
         <h4>Workload - {total} hrs</h4>
         <div className="module-workload">
           {sortWorkload(workload).map(([component, hours]) => (
-            <div
-              key={component}
-              className="module-workload-component"
-              style={{ width: `${(100 / ROW_MAX) * Math.min(ROW_MAX, Math.ceil(hours))}%` }}
-            >
-              <h5 className={textClass(component)}>{workloadLabel(component, hours)}</h5>
-
+            <Tooltip content={`${hours} hours of ${component}`}>
               <div
-                className={classnames('module-workload-blocks', {
-                  'blocks-fixed': Math.ceil(hours) > ROW_MAX,
-                })}
+                key={component}
+                className="module-workload-component"
+                style={{ width: `${(100 / ROW_MAX) * Math.min(ROW_MAX, Math.ceil(hours))}%` }}
               >
-                {workloadBlocks(component, hours)}
+                <h5 className={textClass(component)}>{workloadLabel(component, hours)}</h5>
+
+                <div
+                  className={classnames('module-workload-blocks', {
+                    'blocks-fixed': Math.ceil(hours) > ROW_MAX,
+                  })}
+                >
+                  {workloadBlocks(component, hours)}
+                </div>
               </div>
-            </div>
+            </Tooltip>
           ))}
         </div>
       </div>

@@ -16,9 +16,9 @@
 
 .gmapBtn {
   position: absolute;
-  top: 0.4rem;
-  right: 0.4rem;
-  z-index: 1000;
+  top: $leaflet-control-offset;
+  right: $leaflet-control-offset;
+  z-index: 180;
 }
 
 .mapWrapper {
