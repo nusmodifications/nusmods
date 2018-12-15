@@ -9,6 +9,7 @@ exports[`HeaderDate render date as day of week if offset more than one 1`] = `
   >
     23rd November
   </span>
+   
   Wednesday
 </time>
 `;
@@ -22,6 +23,7 @@ exports[`HeaderDate render date as day of week if offset more than one 2`] = `
   >
     23rd November
   </span>
+   
   Wednesday
 </time>
 `;
