@@ -2,17 +2,36 @@
 
 import React from 'react';
 import { castArray, last } from 'lodash';
+import { format } from 'date-fns';
 
 import getWeatherIcon from 'views/components/icons/weather';
 import Tooltip from 'views/components/Tooltip';
 import styles from './DayHeader.scss';
-import HeaderDate from './HeaderDate';
 
 type Props = {|
   +date: Date | Date[],
   +forecast?: ?string,
   +offset: number, // number of days from today
 |};
+
+export function HeaderDate({ children, offset }: {| +children: Date, +offset: number |}) {
+  let title;
+  let subtitle;
+
+  if (offset < 2) {
+    title = offset === 0 ? 'Today' : 'Tomorrow';
+    subtitle = format(children, 'iiii, do MMMM');
+  } else {
+    title = format(children, 'iiii');
+    subtitle = format(children, 'do MMMM');
+  }
+
+  return (
+    <time dateTime={children.toISOString()}>
+      <span className={styles.date}>{subtitle}</span> {title}
+    </time>
+  );
+}
 
 export default function(props: Props) {
   const Icon = props.forecast ? getWeatherIcon(props.forecast) : null;

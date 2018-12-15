@@ -74,12 +74,12 @@ function getDayType(date: Date, weekInfo: AcadWeekInfo): EmptyGroupType {
   }
 }
 
-export function DaySection(props: {
-  children: Node,
-  date: Date | Date[],
-  offset: number,
-  forecast?: string,
-}) {
+export function DaySection(props: {|
+  +children: Node,
+  +date: Date | Date[],
+  +offset: number,
+  +forecast?: string,
+|}) {
   return (
     <section className={styles.day}>
       <DayHeader date={props.date} offset={props.offset} forecast={props.forecast} />
