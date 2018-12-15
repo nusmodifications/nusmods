@@ -40,13 +40,21 @@
   flex-direction: column;
   margin-bottom: 2rem;
 
+  :global(.btn) {
+    margin-bottom: 0.8rem;
+  }
+
   @include media-breakpoint-up(sm) {
     flex-direction: row;
     justify-content: center;
 
-    :global(.btn):not(:last-child) {
+    :global(.btn) {
       margin-right: 1em;
       margin-bottom: 0;
+    }
+
+    :global(.btn):last-child {
+      margin-right: 0;
     }
   }
 }

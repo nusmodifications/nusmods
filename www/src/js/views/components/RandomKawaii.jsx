@@ -5,7 +5,7 @@ import { SpeechBubble, Mug, Browser, Ghost } from 'react-kawaii';
 
 type Props = {
   size?: number,
-  mood?: string,
+  mood?: ?string,
   color?: string,
   title?: string,
   'aria-label'?: string,
