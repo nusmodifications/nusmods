@@ -70,7 +70,7 @@
     "flow-status-webpack-plugin": "0.1.7",
     "fs-extra": "7.0.1",
     "graceful-fs": "4.1.15",
-    "hard-source-webpack-plugin": "https://github.com/nomcopter/hard-source-webpack-plugin.git#3bb1650",
+    "hard-source-webpack-plugin": "0.13.1",
     "html-webpack-inline-source-plugin": "0.0.10",
     "html-webpack-plugin": "3.2.0",
     "icalendar": "0.7.1",
