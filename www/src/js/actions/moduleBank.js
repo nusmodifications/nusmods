@@ -102,7 +102,16 @@ export function fetchModule(moduleCode: ModuleCode) {
       requestAction(key, FETCH_MODULE, {
         url: NUSModsApi.moduleDetailsUrl(moduleCode),
       }),
-    ).then(onFinally, onFinally);
+    ).then(
+      (result) => {
+        onFinally();
+        return result;
+      },
+      (error) => {
+        onFinally();
+        throw error;
+      },
+    );
   };
 }
 
