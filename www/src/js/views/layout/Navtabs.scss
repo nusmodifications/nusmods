@@ -55,6 +55,7 @@
 }
 
 .link {
+  position: relative;
   flex: 1 0 auto;
   line-height: 1.6;
   text-align: center;
@@ -122,6 +123,79 @@
   background: var(--gray-lighter);
 
   @include media-breakpoint-up(xl) {
-    margin: $margin 1.2rem $margin 1.4rem;
+    margin: $margin 1rem $margin 1.4rem;
+  }
+}
+
+.updateDot {
+  position: absolute;
+  top: 0.5rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  padding: 0;
+  margin-left: 1rem;
+  font-size: $font-size-xs;
+  line-height: 1.2;
+  border-radius: 50%;
+  background: theme-color(success);
+
+  :global {
+    animation: zoomIn 0.4s;
+  }
+
+  @include media-breakpoint-up(md) {
+    right: 1.4rem;
+  }
+
+  @include media-breakpoint-up(xl) {
+    display: none;
+  }
+}
+
+.refreshPrompt {
+  $margin-offset: 6px;
+
+  display: block;
+  margin: 0.5rem (-$margin-offset) 0 ($grid-gutter-width / 2 - $margin-offset);
+  font-size: $font-size-s;
+  line-height: 1.2;
+  text-align: center;
+  border: 0;
+  background: none;
+  cursor: pointer;
+
+  :global {
+    animation: zoomIn 0.4s;
+  }
+
+  :global(.alert) {
+    padding: 0.5rem;
+  }
+
+  :global(.btn) {
+    margin-top: 0.5rem;
+  }
+
+  .refreshIcon {
+    display: block;
+    margin: 0.2rem auto 0.5rem;
+
+    :global {
+      animation: spin 2s infinite linear paused;
+    }
+  }
+
+  &:hover {
+    .refreshIcon {
+      animation-play-state: running;
+    }
+
+    :global(.btn) {
+      background: lighten(theme-color(success), 10);
+    }
+  }
+
+  @include media-breakpoint-down(lg) {
+    display: none;
   }
 }

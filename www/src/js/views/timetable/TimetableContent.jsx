@@ -43,7 +43,6 @@ import ModulesSelectContainer from 'views/timetable/ModulesSelectContainer';
 import CorsNotification from 'views/components/cors-info/CorsNotification';
 import Announcements from 'views/components/notfications/Announcements';
 import Title from 'views/components/Title';
-import RefreshPrompt from 'views/components/notfications/RefreshPrompt';
 import NoLessonWarning from 'views/timetable/NoLessonWarning';
 import Timetable from './Timetable';
 import TimetableActions from './TimetableActions';
@@ -288,8 +287,6 @@ class TimetableContent extends Component<Props, State> {
         <CorsNotification />
 
         <Announcements />
-
-        <RefreshPrompt />
 
         <div>{this.props.header}</div>
 
