@@ -1,8 +1,9 @@
 // @flow
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import type { VenueList } from 'types/venues';
+import type { State } from 'reducers';
 
-import { fetchVenueList } from 'actions/venueBank';
+import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
 
 import venueLocations from 'data/venues.json';
 // import styles from './UnmappedVenues.scss';
@@ -13,15 +14,7 @@ type Props = {
   fetchVenueList: () => void,
 };
 
-class UnmappedVenues extends Component<Props> {
-  componentDidMount() {
-    this.props.fetchVenueList();
-  }
-
-  shouldComponentUpdate(nextProps: Props) {
-    return this.props.venueList.length !== nextProps.venueList.length;
-  }
-
+class UnmappedVenues extends PureComponent<Props> {
   render() {
     const percentageMapped =
       (Object.keys(venueLocations).length / this.props.venueList.length) * 100;
@@ -58,5 +51,5 @@ export default connect(
   (state: State) => ({
     venueList: state.venueBank.venueList,
   }),
-  { fetchVenueList },
+  null,
 )(UnmappedVenues);
