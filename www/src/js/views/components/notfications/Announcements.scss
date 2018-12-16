@@ -45,10 +45,6 @@
   .actions {
     margin-top: 0.5rem;
   }
-
-  @include media-breakpoint-down(xs) {
-    @include wrap-buttons;
-  }
 }
 
 .buttons {
@@ -70,6 +66,12 @@
   width: 8rem;
   height: 8rem;
   pointer-events: none;
+}
+
+.wrapButtons {
+  @include media-breakpoint-down(xs) {
+    @include wrap-buttons;
+  }
 }
 
 .hacktoberfest {

@@ -19,7 +19,7 @@ class RefreshPrompt extends PureComponent<Props> {
     }
 
     return (
-      <div className={classnames('alert alert-success', styles.announcement)}>
+      <div className={classnames('alert alert-success', styles.announcement, styles.wrapButtons)}>
         <Refresh className={styles.backgroundIcon} />
 
         <div className={styles.body}>
