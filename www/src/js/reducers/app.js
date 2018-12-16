@@ -3,6 +3,7 @@ import type { FSA } from 'types/redux';
 import type { AppState } from 'types/reducers';
 import config from 'config';
 
+import { forceRefreshPrompt } from 'utils/debug';
 import { MODIFY_LESSON, CHANGE_LESSON, CANCEL_MODIFY_LESSON } from 'actions/timetables';
 import { SELECT_SEMESTER } from 'actions/settings';
 import {
@@ -20,7 +21,7 @@ const defaultAppState = (): AppState => ({
   activeLesson: null,
   isOnline: navigator.onLine,
   isFeedbackModalOpen: false,
-  promptRefresh: false,
+  promptRefresh: forceRefreshPrompt(),
   notifications: [],
 });
 
