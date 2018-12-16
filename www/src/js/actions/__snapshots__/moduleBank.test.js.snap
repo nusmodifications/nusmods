@@ -1,5 +1,34 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`fetchAllModuleArchive should return multiple request actions 1`] = `
+Array [
+  Array [
+    Object {
+      "meta": Object {
+        "API_REQUEST": "FETCH_ARCHIVE_MODULE_CS1010S_2016/2017",
+        "academicYear": "2016/2017",
+      },
+      "payload": Object {
+        "url": "test://MOCK_MOD_DETAILS_URL/CS1010S/2016/2017",
+      },
+      "type": "FETCH_ARCHIVE_MODULE",
+    },
+  ],
+  Array [
+    Object {
+      "meta": Object {
+        "API_REQUEST": "FETCH_ARCHIVE_MODULE_CS1010S_2017/2018",
+        "academicYear": "2017/2018",
+      },
+      "payload": Object {
+        "url": "test://MOCK_MOD_DETAILS_URL/CS1010S/2017/2018",
+      },
+      "type": "FETCH_ARCHIVE_MODULE",
+    },
+  ],
+]
+`;
+
 exports[`fetchModule should remove LRU modules above limit 1`] = `
 Array [
   Array [
@@ -48,6 +77,19 @@ Array [
     },
   ],
 ]
+`;
+
+exports[`fetchModuleArchive should return a request action 1`] = `
+Object {
+  "meta": Object {
+    "API_REQUEST": "FETCH_ARCHIVE_MODULE_CS1010S_2016/2017",
+    "academicYear": "2016/2017",
+  },
+  "payload": Object {
+    "url": "test://MOCK_MOD_DETAILS_URL/CS1010S/2016/2017",
+  },
+  "type": "FETCH_ARCHIVE_MODULE",
+}
 `;
 
 exports[`fetchModuleList should return a request action 1`] = `

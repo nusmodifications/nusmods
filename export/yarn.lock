@@ -1208,9 +1208,9 @@ http-errors@~1.5.0:
     setprototypeof "1.0.2"
     statuses ">= 1.3.1 < 2"
 
-http-graceful-shutdown@2.1.3:
-  version "2.1.3"
-  resolved "https://registry.yarnpkg.com/http-graceful-shutdown/-/http-graceful-shutdown-2.1.3.tgz#5e603a2b7a078fb44c3fc7f6496e1fcffe903b0d"
+http-graceful-shutdown@2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/http-graceful-shutdown/-/http-graceful-shutdown-2.2.1.tgz#11b6d94ea9ed551f83b23ae77c27a3c12cad30f2"
   dependencies:
     debug "^4.1.0"
 

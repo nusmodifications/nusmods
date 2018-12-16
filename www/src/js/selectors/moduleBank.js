@@ -6,7 +6,7 @@ import type { State } from 'reducers';
 import type { SemTimetableConfig } from 'types/timetables';
 import type { ModuleSelectListItem } from 'types/reducers';
 import { getRequestModuleCode } from 'actions/moduleBank';
-import { isPending } from './requests';
+import { isOngoing } from './requests';
 
 export function getModuleCondensed(
   moduleBank: ModuleBank,
@@ -16,7 +16,7 @@ export function getModuleCondensed(
 
 export function getAllPendingModules(state: State): ModuleCode[] {
   return Object.keys(state.requests)
-    .filter((key) => isPending(state, key))
+    .filter((key) => isOngoing(state, key))
     .map(getRequestModuleCode)
     .filter(Boolean);
 }

@@ -1,6 +1,16 @@
 // @flow
 import type { DayText, Lesson, LessonTime } from 'types/modules';
-import { getISODay, format, setHours, setMinutes, startOfDay } from 'date-fns';
+import {
+  getISODay,
+  format,
+  getHours,
+  getMinutes,
+  getSeconds,
+  setHours,
+  setMinutes,
+  setSeconds,
+  startOfDay,
+} from 'date-fns';
 
 // Converts a 24-hour format time string to an index.
 // Each index corresponds to one cell of each timetable row.
@@ -51,6 +61,11 @@ export function formatTime(time: string | number): string {
   if (timeNumber === 1200) return '12 noon';
 
   return format(getTimeAsDate(timeNumber), 'h:mm a').toLowerCase();
+}
+
+// Create a new date object with time from the second date object
+export function setTime(date: Date, time: Date): Date {
+  return setHours(setMinutes(setSeconds(date, getSeconds(time)), getMinutes(time)), getHours(time));
 }
 
 export const SCHOOLDAYS: Array<DayText> = [

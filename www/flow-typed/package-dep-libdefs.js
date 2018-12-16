@@ -15,3 +15,7 @@ declare module 'leaflet' {
 declare module 'leaflet-gesture-handling' {
   declare module.exports: any;
 }
+
+declare module 'react-kawaii' {
+  declare module.exports: any;
+}

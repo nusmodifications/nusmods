@@ -2,10 +2,15 @@
 import React, { Component } from 'react';
 import { differenceInMilliseconds } from 'date-fns';
 import { wrapComponentName } from 'utils/react';
+import { forceTimer } from 'utils/debug';
 
 export type TimerData = {|
   currentTime: Date,
 |};
+
+function getCurrentTime() {
+  return forceTimer() || new Date();
+}
 
 function withTimer<Props: {}>(
   WrappedComponent: ComponentType<Props>,
@@ -17,11 +22,14 @@ function withTimer<Props: {}>(
     static displayName = wrapComponentName(WrappedComponent, withTimer.name);
 
     state = {
-      currentTime: new Date(),
+      currentTime: getCurrentTime(),
     };
 
     componentDidMount() {
-      this.intervalId = setInterval(() => this.setState({ currentTime: new Date() }), intervalInMs);
+      this.intervalId = setInterval(
+        () => this.setState({ currentTime: getCurrentTime() }),
+        intervalInMs,
+      );
       document.addEventListener('visibilitychange', this.onPageVisibilityChange);
     }
 
@@ -35,11 +43,12 @@ function withTimer<Props: {}>(
       // are out of focus, mobile browsers slow down timers, so we run an
       // additional check to make sure the page state has not drifted too far
       // from the wall clock
+      const now = getCurrentTime();
       if (
         !document.hidden &&
-        differenceInMilliseconds(new Date(), this.state.currentTime) > intervalInMs
+        differenceInMilliseconds(now, this.state.currentTime) > intervalInMs
       ) {
-        this.setState({ currentTime: new Date() });
+        this.setState({ currentTime: now });
       }
     };
 

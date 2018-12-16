@@ -1,5 +1,23 @@
 @import '~styles/utils/modules-entry';
 
+// Make the buttons move below the body on small screens and in vertical mode
+@mixin wrap-buttons {
+  flex-wrap: wrap;
+
+  .buttons {
+    flex: 1 0 auto;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 1rem;
+
+    :global(.btn) {
+      display: block;
+      width: 100%;
+      text-align: center;
+    }
+  }
+}
+
 .announcement {
   display: flex;
   justify-content: space-between;
@@ -27,6 +45,10 @@
   .actions {
     margin-top: 0.5rem;
   }
+
+  @include media-breakpoint-down(xs) {
+    @include wrap-buttons;
+  }
 }
 
 .buttons {
@@ -50,23 +72,8 @@
   pointer-events: none;
 }
 
-// Make the buttons move below the body on small screens and in vertical mode
-@mixin hacktoberfest-banner {
-  flex-wrap: wrap;
-
-  .buttons {
-    flex: 1 0 auto;
-    justify-content: space-between;
-    margin-top: 1rem;
-  }
-}
-
 .hacktoberfest {
   :global(.verticalMode) & {
-    @include hacktoberfest-banner;
-  }
-
-  @include media-breakpoint-down(xs) {
-    @include hacktoberfest-banner;
+    @include wrap-buttons;
   }
 }

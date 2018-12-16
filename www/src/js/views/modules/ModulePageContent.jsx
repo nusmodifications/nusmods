@@ -1,7 +1,6 @@
 // @flow
 import React, { Component, Fragment } from 'react';
 import classnames from 'classnames';
-import { connect } from 'react-redux';
 import ScrollSpy from 'react-scrollspy';
 import { kebabCase, map, mapValues, values } from 'lodash';
 
@@ -22,18 +21,19 @@ import SideMenu from 'views/components/SideMenu';
 import LessonTimetable from 'views/components/module-info/LessonTimetable';
 import ModuleExamClash from 'views/components/module-info/ModuleExamClash';
 import ModuleWorkload from 'views/components/module-info/ModuleWorkload';
-import AddToTimetableDropdown from 'views/components/module-info/AddModuleDropdown';
+import AddModuleDropdown from 'views/components/module-info/AddModuleDropdown';
 import CorsStats from 'views/components/cors-stats/CorsStats';
 import CorsNotification from 'views/components/cors-info/CorsNotification';
 import Announcements from 'views/components/notfications/Announcements';
 import Title from 'views/components/Title';
-import RefreshPrompt from 'views/components/notfications/RefreshPrompt';
 import ScrollToTop from 'views/components/ScrollToTop';
+import { Archive } from 'views/components/icons';
 
 import styles from './ModulePageContent.scss';
 
-type Props = {
+export type Props = {
   module: Module,
+  archiveYear?: string,
 };
 
 type State = {
@@ -50,7 +50,7 @@ export const SIDE_MENU_LABELS = {
 
 export const SIDE_MENU_ITEMS = mapValues(SIDE_MENU_LABELS, kebabCase);
 
-export class ModulePageContentComponent extends Component<Props, State> {
+export default class ModulePageContent extends Component<Props, State> {
   state: State = {
     isMenuOpen: false,
   };
@@ -58,11 +58,12 @@ export class ModulePageContentComponent extends Component<Props, State> {
   toggleMenu = (isMenuOpen: boolean) => this.setState({ isMenuOpen });
 
   render() {
-    const { module } = this.props;
+    const { module, archiveYear } = this.props;
     const { ModuleCode, ModuleTitle } = module;
 
     const pageTitle = `${ModuleCode} ${ModuleTitle}`;
     const semesters = getSemestersOffered(module);
+    const isArchive = !!archiveYear;
 
     const disqusConfig = {
       url: `https://nusmods.com/modules/${ModuleCode}/reviews`,
@@ -76,11 +77,19 @@ export class ModulePageContentComponent extends Component<Props, State> {
 
         <Announcements />
 
-        <RefreshPrompt />
-
         <CorsNotification />
 
         <ScrollToTop onComponentDidMount scrollToHash />
+
+        {isArchive && (
+          <div className={classnames(styles.archiveWarning, 'alert alert-warning')}>
+            <Archive className={styles.archiveIcon} />
+            <p>
+              You are looking at archived information of this module from academic year{' '}
+              <strong>{archiveYear}</strong>. Information on this page may be out of date.
+            </p>
+          </div>
+        )}
 
         <div className="row">
           <div className="col-md-9">
@@ -174,9 +183,11 @@ export class ModulePageContentComponent extends Component<Props, State> {
                     </div>
                   ))}
 
-                  <div className={styles.addToTimetable}>
-                    <AddToTimetableDropdown module={module} className="btn-group-sm" block />
-                  </div>
+                  {!isArchive && (
+                    <div className={styles.addToTimetable}>
+                      <AddModuleDropdown module={module} className="btn-group-sm" block />
+                    </div>
+                  )}
 
                   <div>
                     <h3 className={styles.descriptionHeading}>Official Links</h3>
@@ -283,7 +294,3 @@ export class ModulePageContentComponent extends Component<Props, State> {
     );
   }
 }
-
-export default connect((state, ownProps) => ({
-  module: state.moduleBank.modules[ownProps.moduleCode],
-}))(ModulePageContentComponent);

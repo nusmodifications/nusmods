@@ -11,7 +11,7 @@ import type { Venue } from 'types/venues';
 import type { ResultType, SearchItem, SearchResult } from 'types/views';
 
 import ComponentMap from 'utils/ComponentMap';
-import config from 'config';
+import SemesterBadge from 'views/components/SemesterBadge';
 import { MODULE_RESULT, SEARCH_RESULT, VENUE_RESULT } from 'types/views';
 import styles from './GlobalSearch.scss';
 
@@ -28,15 +28,6 @@ type State = {
 };
 
 const PLACEHOLDER = 'Search modules & venues. Try "GER" or "LT".';
-
-/* eslint-disable no-useless-computed-key */
-const BADGE_COLOR = {
-  [1]: styles.sem1,
-  [2]: styles.sem2,
-  [3]: styles.sem3,
-  [4]: styles.sem4,
-};
-/* eslint-enable */
 
 class GlobalSearch extends Component<Props, State> {
   input: ?HTMLInputElement;
@@ -209,17 +200,7 @@ class GlobalSearch extends Component<Props, State> {
                   >
                     <span>{highlight(`${module.ModuleCode} ${module.ModuleTitle}`, tokens)}</span>
 
-                    <span className={styles.semesters}>
-                      {module.Semesters.sort().map((semester) => (
-                        <span
-                          key={semester}
-                          className={classnames('badge', BADGE_COLOR[semester])}
-                          title={config.semesterNames[semester]}
-                        >
-                          {config.shortSemesterNames[semester]}
-                        </span>
-                      ))}
-                    </span>
+                    <SemesterBadge className={styles.semesters} semesters={module.Semesters} />
                   </div>
                 ))}
               </Fragment>
