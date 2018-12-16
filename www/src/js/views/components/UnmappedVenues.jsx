@@ -4,6 +4,7 @@ import type { State } from 'reducers';
 
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 
 import venueLocations from 'data/venues.json';
 // import styles from './UnmappedVenues.scss';
@@ -16,7 +17,7 @@ type Props = {
 
 class UnmappedVenues extends PureComponent<Props> {
   render() {
-    const percentageMapped =
+    const percentageMapped = (_.size(venueLocations) / this.props.venueList.length) * 100;
       (Object.keys(venueLocations).length / this.props.venueList.length) * 100;
     const percentageMappedStr = percentageMapped.toFixed().toString();
 
