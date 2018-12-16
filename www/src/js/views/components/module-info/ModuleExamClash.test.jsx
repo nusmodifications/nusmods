@@ -47,6 +47,6 @@ describe(ModuleExamClashComponent, () => {
   test('should return all conflicting modules', () => {
     const component = make('CS1010E', '2017-11-29T17:00+0800');
     const link = component.find(LinkModuleCodes);
-    expect(link.text()).toEqual('CS1010S');
+    expect(link.children().text()).toEqual('CS1010S');
   });
 });
