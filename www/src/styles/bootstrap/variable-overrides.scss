@@ -47,8 +47,16 @@ $hr-border-color: var(--gray-lighter);
 $input-border-color: var(--gray-lighter);
 $input-disabled-bg: var(--gray-lighter);
 
-$dropdown-border-color: var(--gray-lighter);
-$dropdown-bg: var(--body-bg);
+$input-bg: var(--body-bg);
+$input-color: var(--body-color);
+$input-border-color: var(--gray-lighter);
+$input-focus-bg: var(--body-bg);
+$input-focus-color: var(--body-color);
+$input-focus-border-color: $primary;
+$input-disabled-bg: var(--body-bg);
+
+$mark-padding: 0;
+
 // $zindex-dropdown: 820 - set in constants.css with the rest of the z-indexes
 
 // Close button line color

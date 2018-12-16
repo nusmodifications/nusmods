@@ -6,20 +6,8 @@ body {
 }
 
 mark {
-  padding: 0;
   font-weight: bold;
   color: currentColor;
-}
-
-// Forms
-.form-control,
-.form-control:focus {
-  color: var(--body-color);
-  background: var(--body-bg);
-}
-
-.form-control:disabled {
-  background: var(--body-bg);
 }
 
 // Dropdown menu
