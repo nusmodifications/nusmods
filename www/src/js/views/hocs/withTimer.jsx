@@ -2,22 +2,14 @@
 import React, { Component } from 'react';
 import { differenceInMilliseconds } from 'date-fns';
 import { wrapComponentName } from 'utils/react';
-import qs from 'query-string';
-import { setTime } from 'utils/timify';
+import { forceTimer } from 'utils/debug';
 
 export type TimerData = {|
   currentTime: Date,
 |};
 
 function getCurrentTime() {
-  const now = new Date();
-  const params = qs.parse(window.location.search);
-  if (!params.date) return now;
-
-  const date = new Date(params.date);
-  if (Number.isNaN(date.getTime())) return now;
-
-  return setTime(date, now);
+  return forceTimer() || new Date();
 }
 
 function withTimer<Props: {}>(

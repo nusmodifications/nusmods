@@ -118,6 +118,7 @@ export type TimetablesState = {
 /* moduleBank.js */
 export type ModuleSelectListItem = SearchableModule & {
   +isAdded: boolean,
+  +isAdding: boolean,
 };
 export type ModuleList = ModuleCondensed[];
 export type ModuleSelectList = ModuleSelectListItem[];

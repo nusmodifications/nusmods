@@ -22,9 +22,8 @@ import {
 import Title from 'views/components/Title';
 import CorsNotification from 'views/components/cors-info/CorsNotification';
 import Announcements from 'views/components/notfications/Announcements';
-import RefreshPrompt from 'views/components/notfications/RefreshPrompt';
-import ExternalLink from 'views/components/ExternalLink';
 import { getSemesterTimetable } from 'reducers/timetables';
+import ExternalLink from 'views/components/ExternalLink';
 import * as weatherAPI from 'apis/weather';
 import config from 'config';
 /** @var {string[]} */
@@ -268,8 +267,6 @@ export class TodayContainerComponent extends PureComponent<Props, State> {
         <CorsNotification />
 
         <Announcements />
-
-        <RefreshPrompt />
 
         {this.groupLessons()}
 

@@ -34,7 +34,7 @@ Array [
   Array [
     Object {
       "meta": Object {
-        "API_REQUEST": "FETCH_MODULE_CS1010S",
+        "API_REQUEST": "FETCH_MODULE/CS1010S",
       },
       "payload": Object {
         "url": "test://MOCK_MOD_DETAILS_URL/CS1010S",
@@ -62,7 +62,7 @@ Array [
   Array [
     Object {
       "meta": Object {
-        "API_REQUEST": "FETCH_MODULE_CS1010S",
+        "API_REQUEST": "FETCH_MODULE/CS1010S",
       },
       "payload": Object {
         "url": "test://MOCK_MOD_DETAILS_URL/CS1010S",

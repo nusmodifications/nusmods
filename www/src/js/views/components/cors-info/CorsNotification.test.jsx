@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { shallow, type ShallowWrapper } from 'enzyme';
+import { mount, type ReactWrapper } from 'enzyme';
 import moment from 'moment';
 
 import config, { type CorsRound, type CorsPeriod, type CorsPeriodType } from 'config';
@@ -46,7 +46,7 @@ describe(CorsNotificationComponent, () => {
       dismissCorsNotification,
       openNotification,
 
-      wrapper: shallow(
+      wrapper: mount(
         <CorsNotificationComponent
           enabled={enabled}
           dismissedRounds={dismissedRounds}
@@ -58,7 +58,7 @@ describe(CorsNotificationComponent, () => {
     };
   }
 
-  function expectEmpty(container: { wrapper: ShallowWrapper }) {
+  function expectEmpty(container: { wrapper: ReactWrapper }) {
     expect(container.wrapper.html()).toBeNull();
   }
 

@@ -6,7 +6,6 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import update from 'immutability-helper';
-import qs from 'query-string';
 import Raven from 'raven-js';
 import { each, mapValues, values } from 'lodash';
 
@@ -26,7 +25,7 @@ import SideMenu, { OPEN_MENU_LABEL } from 'views/components/SideMenu';
 import { Filter } from 'views/components/icons';
 import Title from 'views/components/Title';
 import Omelette, { matchEgg } from 'views/components/Omelette';
-
+import { forceInstantSearch } from 'utils/debug';
 import {
   defaultGroups,
   updateGroups,
@@ -205,7 +204,6 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
     // Finally initialize everything
     Promise.all([modulesRequest, facultiesRequest])
       .then(([modules, faculties]) => {
-        const params = qs.parse(this.props.location.search);
         const filterGroups = defaultGroups(faculties, this.props.location.search);
 
         // Benchmark the amount of time taken to run the filters to determine if we can
@@ -217,10 +215,11 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
           : // If the user's browser doesn't support performance.now, we assume it is too old for instant search
             Number.MAX_VALUE;
 
-        if ('instant' in params) {
+        const force = forceInstantSearch();
+        if (typeof force === 'boolean') {
           // Manual override - use 'instant=1' to force instant search, and
           // 'instant=0' to force non-instant search
-          this.useInstantSearch = params.instant === '1';
+          this.useInstantSearch = force;
         } else {
           // By default, only turn on instant search for desktop and if the
           // benchmark earlier is fast enough
