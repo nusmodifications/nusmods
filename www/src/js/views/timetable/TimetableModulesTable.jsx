@@ -51,7 +51,7 @@ class TimetableModulesTable extends PureComponent<Props> {
     return (
       <div className={styles.moduleActionButtons}>
         <div className="btn-group">
-          <Tooltip content={removeBtnLabel} wrapButton>
+          <Tooltip content={removeBtnLabel} touchHold>
             <button
               type="button"
               className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
@@ -61,7 +61,7 @@ class TimetableModulesTable extends PureComponent<Props> {
               <Trash2 className={styles.actionIcon} />
             </button>
           </Tooltip>
-          <Tooltip content={hideBtnLabel} wrapButton>
+          <Tooltip content={hideBtnLabel} touchHold>
             <button
               type="button"
               className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}

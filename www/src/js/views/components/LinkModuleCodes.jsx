@@ -36,7 +36,7 @@ export function LinkModuleCodesComponent(props: Props) {
     );
 
     return (
-      <Tooltip content={tooltip} distance={5} key={i} wrapButton>
+      <Tooltip content={tooltip} distance={5} key={i} touchHold>
         <Link className={className} to={modulePage(code, module.ModuleTitle)}>
           {part}
         </Link>

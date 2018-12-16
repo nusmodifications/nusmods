@@ -46,7 +46,7 @@ class ExpandMap extends PureComponent<Props> {
 
     return (
       <Control position="bottomleft">
-        <Tooltip content={label}>
+        <Tooltip content={label} touchHold>
           <button
             aria-label={label}
             type="button"

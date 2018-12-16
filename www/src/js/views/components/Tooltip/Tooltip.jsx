@@ -6,21 +6,16 @@ import bowser from 'bowser';
 import 'styles/tippy/tippy.css';
 
 export type Props = {|
-  +wrapButton?: boolean,
   ...TippyProps,
 |};
 
 function Tooltip(props: Props) {
-  // eslint-disable-next-line prefer-const
-  let { wrapButton, ...tippyProps } = props;
+  const tippyProps = props;
 
-  if (wrapButton) {
-    tippyProps = {
-      touchHold: true,
-      ...tippyProps,
-    };
-
-    if (bowser.ios) tippyProps.trigger = 'focus';
+  // HACK: Emulate Android tooltip behavior (hold to show tooltip, tap to
+  // activate click) on iOS
+  if (tippyProps.touchHold && bowser.ios) {
+    tippyProps.trigger = 'focus';
   }
 
   return <Tippy {...tippyProps} />;
