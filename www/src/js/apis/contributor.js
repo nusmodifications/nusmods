@@ -3,7 +3,7 @@ import axios from 'axios';
 import type { Contributor } from 'types/contributor';
 
 const CONTRIBUTORS_URL =
-  'https://api.github.com/repos/NUSModifications/NUSMods/contributors?per_page=100';
+  'https://api.github.com/repos/nusmodifications/nusmods/contributors?per_page=100';
 const CONTRIBUTOR_TYPE_USER = 'User';
 const CONTRIBUTOR_ID_RENOVATE = 25180681;
 
