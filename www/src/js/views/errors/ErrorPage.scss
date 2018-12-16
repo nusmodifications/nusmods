@@ -1,7 +1,8 @@
 @import '~styles/utils/modules-entry.scss';
 
 .container {
-  composes: page-container from global;
+  composes: page-container text-center from global;
+  max-width: 40rem;
   margin-top: 1rem;
 
   @include media-breakpoint-up(md) {
@@ -16,11 +17,7 @@
 .expr {
   composes: text-primary from global;
   display: block;
-}
-
-.subheader {
-  composes: font-weight-bold from global;
-  margin-bottom: 0;
+  font-size: 2.5rem;
 }
 
 .link {
@@ -28,4 +25,48 @@
   padding: 0;
   margin: 0;
   border: 0;
+}
+
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0;
+  text-align: center;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2rem;
+
+  :global(.btn) {
+    margin-bottom: 0.8rem;
+  }
+
+  @include media-breakpoint-up(sm) {
+    flex-direction: row;
+    justify-content: center;
+
+    :global(.btn) {
+      margin-right: 1em;
+      margin-bottom: 0;
+    }
+
+    :global(.btn):last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+.bigCharacter {
+  padding: 0.1rem;
+  font-weight: bolder;
+  font-size: 8rem;
+  text-shadow: 3px 3px 0 theme-color(),
+    -1px -1px 0 theme-color(),
+    1px -1px 0 theme-color(),
+    -1px 1px 0 theme-color(),
+    1px 1px 0 theme-color();
+  color: black;
 }
