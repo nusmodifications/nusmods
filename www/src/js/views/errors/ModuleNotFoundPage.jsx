@@ -2,9 +2,11 @@
 import React, { PureComponent, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import classnames from 'classnames';
 import Raven from 'raven-js';
 
 import type { ModuleCode } from 'types/modules';
+import RandomKawaii from 'views/components/RandomKawaii';
 import Title from 'views/components/Title';
 import { fetchAllModuleArchive } from 'actions/moduleBank';
 import { MODULE_CODE_REGEX } from 'utils/modules';
@@ -40,62 +42,72 @@ export class ModuleNotFoundPageComponent extends PureComponent<Props> {
     }
 
     return (
-      <div>
+      <div className={styles.container}>
         <Title>Module Not Found</Title>
 
-        <div className={styles.container}>
-          {this.props.availableArchive.length ? (
-            <Fragment>
-              <h1 className={styles.header}>
-                <span className={styles.expr}>Oops...</span>
-                Module not mounted
-              </h1>
+        {this.props.availableArchive.length ? (
+          <Fragment>
+            <div className={styles.header}>
+              <RandomKawaii size={100} />
+            </div>
 
-              <p>
-                {moduleCode} is not mounted this year. However, it was previously mounted in these
-                academic years
-              </p>
+            <h1 className={classnames('h3', styles.header)}>
+              <span className={styles.expr}>{moduleCode}</span> is not currently offered
+            </h1>
 
-              <ul>
-                {this.props.availableArchive.map((year) => (
-                  <li key={year}>
-                    <Link to={moduleArchive(moduleCode, year)}>{year} archive</Link>
-                  </li>
-                ))}
-              </ul>
+            <p>However, it was previously offered in these academic years</p>
 
-              <p>
-                Click on them to view the archived module information. Otherwise, if this is not
-                what you are looking for, <Link to="/">go back to nusmods.com</Link> or{' '}
-                <Link to="/modules">try the module finder</Link>.
-              </p>
-            </Fragment>
-          ) : (
-            <Fragment>
-              <h1 className={styles.header}>
-                <span className={styles.expr}>Oops...</span>
-                module {moduleCode} not found.
-              </h1>
+            <div className={styles.buttons}>
+              {this.props.availableArchive.map((year) => (
+                <Link
+                  className="btn btn-outline-primary"
+                  to={moduleArchive(moduleCode, year)}
+                  key={year}
+                >
+                  AY
+                  {year} archive
+                </Link>
+              ))}
+            </div>
 
-              <p>
-                This usually means you have a typo in the module code, or the module is not offered
-                this year.
-              </p>
-              <p>
-                If you think something <em>should</em> be here,{' '}
-                <button className={styles.link} onClick={() => Raven.showReportDialog({ eventId })}>
-                  do tell us
-                </button>
-                !
-              </p>
+            <p>
+              Otherwise, if this is not what you are looking for,{' '}
+              <Link to="/">go back to nusmods.com</Link> or{' '}
+              <Link to="/modules">try the module finder</Link>.
+            </p>
+          </Fragment>
+        ) : (
+          <Fragment>
+            <h1 className={styles.heading}>
+              <span className={styles.bigCharacter}>4</span>
+              <RandomKawaii aria-label="0" title="0" size={100} />
+              <span className={styles.bigCharacter}>4</span>
+            </h1>
 
-              <p>
-                Otherwise, <Link to="/">go back to nusmods.com</Link> or{' '}
-                <Link to="/modules">try the module finder</Link>.
-              </p>
-            </Fragment>
-          )}
-        </div>
+            <h2>Oops, module {moduleCode} not found.</h2>
+
+            <p>
+              This usually means you have a typo in the module code, or the module is not offered
+              this year.
+            </p>
+
+            <div className={styles.buttons}>
+              <button
+                className="btn btn-outline-primary"
+                onClick={() =>
+                  Raven.showReportDialog({
+                    eventId,
+                  })
+                }
+              >
+                {moduleCode} should be here
+              </button>
+              <Link className="btn btn-primary" to="/">
+                Bring me home
+              </Link>
+            </div>
+          </Fragment>
+        )}
       </div>
     );
   }

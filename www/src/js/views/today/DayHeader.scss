@@ -1,0 +1,54 @@
+@import '~styles/utils/modules-entry';
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid var(--gray-light);
+
+  h2 {
+    display: flex;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    font-size: 2rem;
+  }
+
+  .date,
+  .to {
+    display: block;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: var(--gray-light);
+  }
+
+  .to {
+    align-self: center;
+    margin: 0 0.9rem;
+  }
+
+  .weather {
+    width: 4rem;
+
+    svg path {
+      fill: currentColor;
+    }
+  }
+
+  @include media-breakpoint-down(sm) {
+    h2 {
+      font-size: 1.6rem;
+    }
+
+    .date {
+      font-size: 0.7rem;
+    }
+
+    .to {
+      margin: 0 0.5rem;
+    }
+
+    .weather {
+      width: 3rem;
+    }
+  }
+}
