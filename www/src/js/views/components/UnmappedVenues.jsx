@@ -27,7 +27,7 @@ class UnmappedVenues extends PureComponent<Props> {
           <div
             className="progress-bar progress-bar-striped progress-bar-animated bg-success"
             role="progressbar"
-            style={{ width: percentageMappedStr.concat('%') }}
+            style={{ width: `${percentageMappedStr}%` }}
             aria-valuenow={percentageMappedStr}
             aria-valuemin="0"
             aria-valuemax="100"
