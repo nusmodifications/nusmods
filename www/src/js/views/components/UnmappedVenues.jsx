@@ -11,8 +11,6 @@ import venueLocations from 'data/venues.json';
 
 type Props = {
   venueList: VenueList,
-
-  fetchVenueList: () => void,
 };
 
 class UnmappedVenues extends PureComponent<Props> {
