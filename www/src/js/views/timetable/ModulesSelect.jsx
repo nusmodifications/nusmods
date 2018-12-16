@@ -144,7 +144,7 @@ export class ModulesSelectComponent extends Component<Props, State> {
                 )}
                 {module.isAdding && (
                   <div>
-                    <span className="badge badge-primary">Adding...</span>
+                    <span className="badge badge-warning">Adding...</span>
                   </div>
                 )}
               </li>
