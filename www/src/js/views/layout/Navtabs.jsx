@@ -63,10 +63,10 @@ export function NavtabsComponent(props: Props) {
           </Online>
         )}
       </NavLink>
-      <NavLink {...tabProps} to="/contribute">
+      <a className={classnames(tabProps.className, styles.hiddenOnMobile)} href="/contribute">
         <Star />
         <span className={styles.title}>Contribute</span>
-      </NavLink>
+      </a>
       <div className={styles.divider} />
       <ExternalLink
         className={classnames(tabProps.className, styles.hiddenOnMobile)}
