@@ -28,6 +28,7 @@ import Announcements from 'views/components/notfications/Announcements';
 import Title from 'views/components/Title';
 import ScrollToTop from 'views/components/ScrollToTop';
 import { Archive } from 'views/components/icons';
+import ExternalLink from 'views/components/ExternalLink';
 
 import styles from './ModulePageContent.scss';
 
@@ -193,12 +194,18 @@ export default class ModulePageContent extends Component<Props, State> {
                     <h3 className={styles.descriptionHeading}>Official Links</h3>
                     {intersperse(
                       [
-                        <a key="ivle" href={config.ivleUrl.replace('<ModuleCode>', ModuleCode)}>
+                        <ExternalLink
+                          key="ivle"
+                          href={config.ivleUrl.replace('<ModuleCode>', ModuleCode)}
+                        >
                           IVLE
-                        </a>,
-                        <a key="cors" href={config.corsUrl.replace('<ModuleCode>', ModuleCode)}>
+                        </ExternalLink>,
+                        <ExternalLink
+                          key="cors"
+                          href={config.corsUrl.replace('<ModuleCode>', ModuleCode)}
+                        >
                           CORS
-                        </a>,
+                        </ExternalLink>,
                       ],
                       BULLET,
                     )}

@@ -75,7 +75,9 @@ export class VenueDetailsComponent extends PureComponent<Props> {
           </Link>
         </header>
 
-        <VenueLocation venue={venue} />
+        <div className={styles.location}>
+          <VenueLocation venue={venue} />
+        </div>
 
         <div className={classnames(styles.timetable, { verticalMode: matchBreakpoint })}>
           <Timetable

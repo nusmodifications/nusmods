@@ -63,7 +63,7 @@ class VenueLocation extends PureComponent<Props, State> {
     const position = location.location ? [location.location.y, location.location.x] : null;
 
     return (
-      <div className={styles.location}>
+      <div>
         <p>
           <strong>{location.roomName}</strong> ({venue})
           {location.floor && (
