@@ -3,20 +3,47 @@ import React, { PureComponent } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 
-import type { State } from 'reducers';
+import type { State as StoreState } from 'reducers';
 import { updateServiceWorker } from 'bootstrapping/service-worker';
 import { Refresh } from 'views/components/icons';
 import styles from 'views/components/notfications/Announcements.scss';
+import LoadingSpinner from 'views/components/LoadingSpinner';
 
 type Props = {
   showPrompt: boolean,
 };
 
-class RefreshPrompt extends PureComponent<Props> {
+type State = {
+  isReloading: boolean,
+};
+
+class RefreshPrompt extends PureComponent<Props, State> {
+  buttonWidth: ?number;
+
+  state = {
+    isReloading: false,
+  };
+
+  onReload = () => {
+    // Preserve the button's width so the button doesn't shrink when
+    // we replace the text with the loading spinner
+    const button = this.buttonRef.current;
+    if (button) {
+      this.buttonWidth = button.offsetWidth;
+    }
+
+    this.setState({ isReloading: true });
+    updateServiceWorker();
+  };
+
+  buttonRef = React.createRef<HTMLButtonElement>();
+
   render() {
     if (!this.props.showPrompt) {
       return null;
     }
+
+    const { isReloading } = this.state;
 
     return (
       <div className={classnames('alert alert-success', styles.announcement, styles.wrapButtons)}>
@@ -28,8 +55,15 @@ class RefreshPrompt extends PureComponent<Props> {
         </div>
 
         <div className={styles.buttons}>
-          <button className="btn btn-success" type="button" onClick={updateServiceWorker}>
-            Refresh page
+          <button
+            className="btn btn-success"
+            type="button"
+            onClick={this.onReload}
+            style={{ width: this.buttonWidth }}
+            disabled={isReloading}
+            ref={this.buttonRef}
+          >
+            {isReloading ? <LoadingSpinner small /> : 'Refresh page'}
           </button>
         </div>
       </div>
@@ -37,6 +71,6 @@ class RefreshPrompt extends PureComponent<Props> {
   }
 }
 
-export default connect((state: State) => ({
+export default connect((state: StoreState) => ({
   showPrompt: state.app.promptRefresh,
 }))(RefreshPrompt);
