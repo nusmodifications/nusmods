@@ -3,7 +3,7 @@
 import React, { PureComponent } from 'react';
 import { updateServiceWorker } from 'bootstrapping/service-worker';
 import classnames from 'classnames';
-import Refresh from 'react-feather/dist/icons/refresh-cw';
+import { Refresh } from 'views/components/icons';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import styles from './NavRefreshPrompt.scss';
 
