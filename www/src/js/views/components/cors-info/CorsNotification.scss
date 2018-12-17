@@ -15,7 +15,7 @@
   background: var(--body-bg);
 
   @include media-breakpoint-down(sm) {
-    margin: 0.5rem 0;
+    margin: 0 0 1rem;
 
     br {
       display: none;

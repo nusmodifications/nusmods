@@ -7,11 +7,11 @@ import { connect } from 'react-redux';
 import { NavLink, withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 
-import { BookOpen, Calendar, Clock, Heart, Map, Settings, Refresh } from 'views/components/icons';
+import { BookOpen, Calendar, Clock, Heart, Map, Settings } from 'views/components/icons';
 import ExternalLink from 'views/components/ExternalLink';
 import Online from 'views/components/Online';
 import { timetablePage } from 'views/routes/paths';
-import { updateServiceWorker } from 'bootstrapping/service-worker';
+import NavRefreshPrompt from './NavRefreshPrompt';
 
 import styles from './Navtabs.scss';
 
@@ -73,13 +73,7 @@ export function NavtabsComponent(props: Props) {
       </ExternalLink>
       {props.promptRefresh && (
         <Online>
-          <button className={styles.refreshPrompt} type="button" onClick={updateServiceWorker}>
-            <div className={classnames('alert alert-success')}>
-              <Refresh size={30} className={styles.refreshIcon} />
-              NUSMods update available
-              <div className="btn btn-sm btn-block btn-success">Refresh page</div>
-            </div>
-          </button>
+          <NavRefreshPrompt />
         </Online>
       )}
     </nav>
