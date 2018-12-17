@@ -55,6 +55,9 @@ $input-focus-color: var(--body-color);
 $input-focus-border-color: $primary;
 $input-disabled-bg: var(--body-bg);
 
+$dropdown-border-color: var(--gray-lighter);
+$dropdown-bg: var(--body-bg);
+
 $mark-padding: 0;
 
 // $zindex-dropdown: 820 - set in constants.css with the rest of the z-indexes
