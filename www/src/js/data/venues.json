@@ -3009,15 +3009,27 @@
   },
   "Y-CR11": {
     "roomName": "Elm College - Classroom 11",
-    "floor": 2
+    "floor": 2,
+    "location": {
+      "x": 103.77229837467895,
+      "y": 1.306441772265005
+    }
   },
   "Y-CR12": {
     "roomName": "Elm College - Classroom 12",
-    "floor": 2
+    "floor": 2,
+    "location": {
+      "x": 103.77229837467895,
+      "y": 1.306441772265005
+    }
   },
   "Y-CR13": {
     "roomName": "Elm College - Classroom 13",
-    "floor": 2
+    "floor": 2,
+    "location": {
+      "x": 103.77229837467895,
+      "y": 1.306441772265005
+    }
   },
   "Y-CR14": {
     "roomName": "Elm College - Classroom 14",
@@ -3029,7 +3041,11 @@
   },
   "Y-KChanrai": {
     "roomName": "Elm College - Kewalram Chanrai Room",
-    "floor": 1
+    "floor": 1,
+    "location": {
+      "x": 103.77229837467895,
+      "y": 1.306441772265005
+    }
   },
   "Y-TCTLT": {
     "roomName": "Elm College - Tan Chin Tuan Lecture Theatre",
@@ -3069,7 +3085,11 @@
   },
   "Y-LT1": {
     "roomName": "Saga College - Lecture Theatre 1",
-    "floor": "Ground"
+    "floor": "Ground",
+    "location": {
+      "x": 103.77202,
+      "y": 1.30588
+    }
   },
   "Y-ArtsStud": {
     "roomName": "West Core - Studio 2 (Georgette Chen Arts Studio)",
