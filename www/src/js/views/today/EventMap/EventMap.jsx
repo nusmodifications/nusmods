@@ -1,41 +1,32 @@
 // @flow
 
 import React from 'react';
-import classnames from 'classnames';
 /** @var { VenueLocationMap } */
 import venueLocations from 'data/venues.json';
 import type { Venue, VenueLocation } from 'types/venues';
 import LocationMap from 'views/components/map/LocationMap';
+import { Map } from 'views/components/icons';
 import styles from './EventMap.scss';
 
 export type Props = {|
-  +isOpen: boolean,
-  +className?: string,
-  +venue: Venue,
-
-  +toggleOpen: () => void,
+  +venue: ?Venue,
 |};
 
 export default function(props: Props) {
-  const venueLocation: VenueLocation = venueLocations[props.venue];
-  if (!venueLocation || !venueLocation.location) {
-    return null;
-  }
-
-  if (!props.isOpen) {
+  if (!props.venue) {
     return (
-      <div className={props.className}>
-        <button onClick={props.toggleOpen} className={classnames(styles.openMap)}>
-          Open Map
-        </button>
+      <div className={styles.noLessonSelected}>
+        <Map />
+        <p>Select a venue on the left to see its timetable</p>
       </div>
     );
   }
 
+  const venueLocation: VenueLocation = venueLocations[props.venue];
+  if (!venueLocation || !venueLocation.location) {
+    return <p>We don&apos;t have information about this venue :(</p>;
+  }
+
   const position = [venueLocation.location.y, venueLocation.location.x];
-  return (
-    <div className={props.className}>
-      <LocationMap position={position} />
-    </div>
-  );
+  return <LocationMap className={styles.map} position={position} />;
 }

@@ -1,5 +1,49 @@
 @import '~styles/utils/modules-entry';
 
+$schedule-width: 25rem;
+$gutter: 0.75rem;
+
+.todayPage {
+  composes: page-container from global;
+
+  :global {
+    animation-name: $page-entering-animation;
+  }
+}
+
+@include media-breakpoint-up(lg) {
+  .schedule,
+  .map {
+    top: $navbar-height;
+    bottom: 0;
+  }
+
+  .schedule {
+    position: fixed;
+    padding-top: 1rem;
+    z-index: 1;
+    left: $side-nav-width-md + $gutter;
+    width: $schedule-width;
+    overflow: auto;
+  }
+
+  .map {
+    position: fixed;
+    right: 0;
+    left: $side-nav-width-md + $schedule-width + $gutter;
+  }
+}
+
+@include media-breakpoint-up(xl) {
+  .schedule {
+    left: $side-nav-width-lg + $gutter;
+  }
+
+  .map {
+    left: $side-nav-width-lg + $schedule-width + $gutter;
+  }
+}
+
 .day {
   margin-bottom: 4rem;
 
