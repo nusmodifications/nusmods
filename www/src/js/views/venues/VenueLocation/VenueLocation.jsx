@@ -76,25 +76,26 @@ class VenueLocation extends PureComponent<Props, State> {
         </p>
 
         {position ? (
-          <LocationMap position={position} toggleScrollable={this.props.toggleScrollable} />
+          <>
+            <LocationMap position={position} toggleScrollable={this.props.toggleScrollable} />
+            <p className={styles.feedbackBtn}>
+              See a problem?{' '}
+              <button
+                className={classnames('btn btn-primary btn-outline-primary')}
+                onClick={this.openModal}
+              >
+                Help us improve this map
+              </button>
+            </p>
+          </>
         ) : (
           <>
-            <p>We don&apos;t have the location of this venue.</p>
+            <p>We don&apos;t have the location of this venue, sorry :(</p>
             <button className="btn btn-primary btn-outline-primary" onClick={this.openModal}>
               Help us map this venue
             </button>
           </>
         )}
-
-        <p className={styles.feedbackBtn}>
-          See a problem?{' '}
-          <button
-            className={classnames('btn btn-primary btn-outline-primary')}
-            onClick={this.openModal}
-          >
-            Help us improve this map
-          </button>
-        </p>
 
         <FeedbackModal
           venue={venue}
