@@ -105,6 +105,11 @@ export function mergeDualCodedModules(classes: VenueLesson[]): VenueLesson[] {
   return mergedModules;
 }
 
-export function floorName(floor: number): string {
-  return floor < 0 ? `B${-floor}` : String(floor);
+export function floorName(floor: number | string): string {
+  if (typeof floor === 'string') {
+    return `${floor.toLowerCase()} floor`;
+  }
+
+  const floorNumber = floor < 0 ? `B${-floor}` : floor;
+  return `floor ${floorNumber}`;
 }
