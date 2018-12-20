@@ -189,14 +189,19 @@ describe(mergeDualCodedModules, () => {
 
 describe(floorName, () => {
   it('should add B to basement floors', () => {
-    expect(floorName(-1)).toEqual('B1');
-    expect(floorName(-2)).toEqual('B2');
-    expect(floorName(-5)).toEqual('B5');
+    expect(floorName(-1)).toEqual('floor B1');
+    expect(floorName(-2)).toEqual('floor B2');
+    expect(floorName(-5)).toEqual('floor B5');
   });
 
   it('should not add B to above ground floors', () => {
-    expect(floorName(1)).toEqual('1');
-    expect(floorName(2)).toEqual('2');
-    expect(floorName(5)).toEqual('5');
+    expect(floorName(1)).toEqual('floor 1');
+    expect(floorName(2)).toEqual('floor 2');
+    expect(floorName(5)).toEqual('floor 5');
+  });
+
+  it('should handle named floors', () => {
+    expect(floorName('Ground')).toEqual('ground floor');
+    expect(floorName('Mezzanine')).toEqual('mezzanine floor');
   });
 });

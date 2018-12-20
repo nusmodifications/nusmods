@@ -39,7 +39,7 @@ export type VenueDetailList = [Venue, DayAvailability[]][];
 
 export type VenueLocation = {|
   +roomName: string,
-  +floor: ?number,
+  +floor: ?(number | string),
   +location?: { x: number, y: number },
 |};
 
