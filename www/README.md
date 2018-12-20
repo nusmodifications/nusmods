@@ -232,6 +232,21 @@ export default connect(state => ({
 
 If you need to access the status of a request from outside the component which initiated the request, you can use the `isSuccess` and `isFailure` selectors to get the status of any request given its key.
 
+### Adding dependencies
+
+NUSMods tries to be as lean as possible. Adding external dependencies should be done with care to avoid bloating our bundle. Use [Bundlephobia][bundlephobia] to ensure the new dependency is reasonably sized.
+
+#### Flow libdef
+
+When adding a JavaScript package, Flow requires a library definition, or libdef. To try to install one from the [community repository][flow-typed], use the `flow-typed` command. If a community libdef is not available, the same command can also be used to create a stub libdef which you can use immediately in a pinch, or edit to fill in the correct definitions.
+
+```sh
+# Use ./node_modules/.bin/flow-typed if you don't want to use npx
+npx flow-typed install my-dep@1.0
+
+# Use create-stub for packages without community libdef
+npx flow-typed create-stub my-dep
+```
 
 ### Testing and Linting
 
@@ -367,3 +382,5 @@ Components should keep their styles and tests in the same directory with the sam
 [css-modules]: https://github.com/css-modules/css-modules
 [offline-cookbook]: https://developers.google.com/web/fundamentals/instant-and-offline/offline-cookbook/#cache-then-network
 [axios-config]: https://github.com/axios/axios#request-config
+[flow-typed]: https://github.com/flow-typed/flow-typed
+[bundlephobia]: https://bundlephobia.com/
