@@ -24,7 +24,6 @@ import { createMigrate, type PersistConfig } from 'redux-persist';
 
 const EMPTY_OBJECT = {};
 
-export const PERSIST_KEY = 'timetables';
 export const persistConfig = {
   /* eslint-disable no-useless-computed-key */
   migrate: createMigrate({

@@ -21,7 +21,7 @@ $arrow-height: 1.5rem;
   border: 0;
 
   &.hidden {
-    border: 1px dashed;
+    border: 1px dashed var(--gray-light);
     background: none;
   }
 }

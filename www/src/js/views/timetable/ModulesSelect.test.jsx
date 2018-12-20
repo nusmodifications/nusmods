@@ -11,11 +11,13 @@ const modules = [
     ModuleCode: 'Test1',
     ModuleTitle: 'ModuleTitle',
     isAdded: false,
+    isAdding: false,
   },
   {
     ModuleCode: 'Test2',
     ModuleTitle: 'ModuleTitle',
     isAdded: true,
+    isAdding: false,
   },
 ];
 

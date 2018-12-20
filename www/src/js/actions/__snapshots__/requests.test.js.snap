@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`requestAction should use provided key if three params are provided 1`] = `
+Object {
+  "meta": Object {
+    "API_REQUEST": "TEST_KEY",
+  },
+  "payload": Object {
+    "url": "http://api.example.com",
+  },
+  "type": "TEST_ACTION",
+}
+`;
+
+exports[`requestAction should use type as key if two params are provided 1`] = `
+Object {
+  "meta": Object {
+    "API_REQUEST": "TEST_ACTION",
+  },
+  "payload": Object {
+    "url": "http://api.example.com",
+  },
+  "type": "TEST_ACTION",
+}
+`;

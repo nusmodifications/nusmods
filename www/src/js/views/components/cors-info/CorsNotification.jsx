@@ -4,7 +4,6 @@ import React, { PureComponent, type Node, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, type ContextRouter } from 'react-router-dom';
 import { capitalize } from 'lodash';
-import qs from 'query-string';
 
 import type { State } from 'reducers';
 import type { NotificationOptions } from 'types/reducers';
@@ -13,7 +12,9 @@ import config, { type CorsRound } from 'config';
 import { dismissCorsNotification } from 'actions/settings';
 import { openNotification } from 'actions/app';
 import { roundStart, currentPeriod, currentRound } from 'utils/cors';
+import { forceCorsRound } from 'utils/debug';
 import CloseButton from 'views/components/CloseButton';
+import ExternalLink from 'views/components/ExternalLink';
 
 import styles from './CorsNotification.scss';
 
@@ -54,19 +55,19 @@ export function corsNotificationText(
   );
 }
 
-export class CorsNotificationComponent extends PureComponent<Props> {
-  currentTime() {
-    const debugRound = qs.parse(this.props.location.search).round;
+function currentTime() {
+  const debugRound = forceCorsRound();
 
-    // For manual testing - add ?round=1A (or other round names) to trigger the notification
-    if (debugRound) {
-      const round = config.corsSchedule.find((r) => r.round === debugRound);
-      if (round) return roundStart(round);
-    }
-
-    return NOW;
+  // For manual testing - add ?round=1A (or other round names) to trigger the notification
+  if (debugRound) {
+    const round = config.corsSchedule.find((r) => r.round === debugRound);
+    if (round) return roundStart(round);
   }
 
+  return NOW;
+}
+
+export class CorsNotificationComponent extends PureComponent<Props> {
   dismiss = (round: string) => {
     this.props.dismissCorsNotification(round);
     this.props.openNotification('Reminder snoozed until start of next round', {
@@ -86,7 +87,7 @@ export class CorsNotificationComponent extends PureComponent<Props> {
     // User has disabled CORS notification globally
     if (!enabled) return null;
 
-    const round = currentRound(this.currentTime());
+    const round = currentRound(currentTime());
 
     // CORS bidding is over - don't show anything
     if (!round) return null;
@@ -96,15 +97,11 @@ export class CorsNotificationComponent extends PureComponent<Props> {
 
     return (
       <div className={styles.wrapper}>
-        <a
-          href="https://myaces.nus.edu.sg/cors/StudentLogin"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <ExternalLink href="https://myaces.nus.edu.sg/cors/StudentLogin">
           <div className={styles.notification}>
-            {corsNotificationText(true, round, this.currentTime())}
+            {corsNotificationText(true, round, currentTime())}
           </div>
-        </a>
+        </ExternalLink>
 
         {!hideCloseButton && (
           <CloseButton className={styles.close} onClick={() => this.dismiss(round.round)} />

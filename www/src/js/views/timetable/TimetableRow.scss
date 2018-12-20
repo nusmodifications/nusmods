@@ -19,9 +19,7 @@
   }
 
   @include vertical-mode {
-    .timetableRow {
-      height: auto;
-      margin: 0 1px 0 0;
-    }
+    height: auto;
+    margin: 0 1px 0 0;
   }
 }

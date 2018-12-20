@@ -30,6 +30,7 @@ import Toggle from 'views/components/Toggle';
 import CorsNotification, {
   corsNotificationText,
 } from 'views/components/cors-info/CorsNotification';
+import Online from 'views/components/Online';
 import { currentRound } from 'utils/cors';
 import { supportsCSSVariables } from 'utils/css';
 
@@ -38,6 +39,7 @@ import ModeSelect from './ModeSelect';
 import styles from './SettingsContainer.scss';
 import previewTimetable from './previewTimetable';
 import BetaToggle from './BetaToggle';
+import RefreshPrompt from './RefreshPrompt';
 
 type Props = {
   newStudent: boolean,
@@ -125,6 +127,10 @@ class SettingsContainer extends Component<Props> {
       <div className={classnames(styles.settingsPage, 'page-container')}>
         <ScrollToTop onComponentDidMount />
         <Title>Settings</Title>
+
+        <Online>
+          <RefreshPrompt />
+        </Online>
 
         <h1 className={styles.title}>Settings</h1>
 

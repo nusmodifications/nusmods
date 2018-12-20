@@ -10,43 +10,17 @@ import type {
 } from 'types/timetables';
 import type {
   ClassNo,
-  DayText,
-  Lesson,
-  LessonTime,
+  ColoredLesson,
   LessonType,
   ModuleCode,
   RawLesson,
-  ColoredLesson,
   Semester,
 } from 'types/modules';
 import type { ModulesMap } from 'reducers/moduleBank';
 
 import _ from 'lodash';
-import {
-  areOtherClassesAvailable,
-  arrangeLessonsForWeek,
-  arrangeLessonsWithinDay,
-  doLessonsOverlap,
-  groupLessonsByDay,
-  hydrateSemTimetableWithLessons,
-  isValidSemester,
-  lessonsForLessonType,
-  randomModuleLessonConfig,
-  timetableLessonsArray,
-  serializeTimetable,
-  deserializeTimetable,
-  isSameTimetableConfig,
-  findExamClashes,
-  validateTimetableModules,
-  validateModuleLessons,
-  formatWeekNumber,
-  isLessonAvailable,
-  isLessonOngoing,
-  getStartTimeAsDate,
-  getEndTimeAsDate,
-} from 'utils/timetables';
-import { getModuleTimetable, getModuleSemesterData } from 'utils/modules';
 
+import { getModuleSemesterData, getModuleTimetable } from 'utils/modules';
 /** @var {Module} */
 import cs1010s from '__mocks__/modules/CS1010S.json';
 /** @var {Module} */
@@ -60,41 +34,31 @@ import modulesList from '__mocks__/module-list.json';
 
 import timetable from '__mocks__/sem-timetable.json';
 import lessonsArray from '__mocks__/lessons-array.json';
+import { createGenericColoredLesson, createGenericLesson } from 'test-utils/timetable';
 
-// A generic lesson with some default.
-export function createGenericLesson(
-  dayText: DayText = 'Monday',
-  startTime: LessonTime = '0800',
-  endTime: LessonTime = '1000',
-  lessonType: LessonType = 'Recitation',
-  classNo: ClassNo = '1',
-): Lesson {
-  return {
-    ModuleCode: 'GC1101',
-    ModuleTitle: 'Generic Title',
-    ClassNo: classNo,
-    LessonType: lessonType,
-    WeekText: 'Every Week',
-    Venue: 'VCRm',
-    DayText: dayText,
-    StartTime: startTime,
-    EndTime: endTime,
-  };
-}
-
-export function createGenericColoredLesson(
-  dayText?: DayText,
-  startTime?: LessonTime,
-  endTime?: LessonTime,
-  lessonType?: LessonType,
-  classNo?: ClassNo,
-  colorIndex: number = 0,
-): ColoredLesson {
-  return {
-    ...createGenericLesson(dayText, startTime, endTime, lessonType, classNo),
-    colorIndex,
-  };
-}
+import {
+  areOtherClassesAvailable,
+  arrangeLessonsForWeek,
+  arrangeLessonsWithinDay,
+  deserializeTimetable,
+  doLessonsOverlap,
+  findExamClashes,
+  formatWeekNumber,
+  getEndTimeAsDate,
+  getStartTimeAsDate,
+  groupLessonsByDay,
+  hydrateSemTimetableWithLessons,
+  isLessonAvailable,
+  isLessonOngoing,
+  isSameTimetableConfig,
+  isValidSemester,
+  lessonsForLessonType,
+  randomModuleLessonConfig,
+  serializeTimetable,
+  timetableLessonsArray,
+  validateModuleLessons,
+  validateTimetableModules,
+} from './timetables';
 
 describe('isValidSemester', () => {
   test('semesters 1-4 are valid', () => {
@@ -622,15 +586,6 @@ describe(isLessonAvailable, () => {
     type: 'Instructional',
     num: 5,
   };
-
-  test('should retutrn false if it is not instruction week', () => {
-    const lesson = createGenericLesson();
-    expect(isLessonAvailable(lesson, { ...weekInfo, type: 'Vacation' })).toBe(false);
-    expect(isLessonAvailable(lesson, { ...weekInfo, type: 'Reading' })).toBe(false);
-    expect(isLessonAvailable(lesson, { ...weekInfo, type: 'Examination' })).toBe(false);
-    expect(isLessonAvailable(lesson, { ...weekInfo, type: 'Recess' })).toBe(false);
-    expect(isLessonAvailable(lesson, { ...weekInfo, type: 'Orientation' })).toBe(false);
-  });
 
   test('should return false if the lesson is a tutorial and it is week 1 and 2', () => {
     const lesson = createGenericLesson('Monday', '0800', '1000', 'Tutorial');

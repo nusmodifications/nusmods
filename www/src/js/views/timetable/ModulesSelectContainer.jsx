@@ -8,7 +8,7 @@ import type { ModuleCode, Semester } from 'types/modules';
 import Online from 'views/components/Online';
 import { addModule } from 'actions/timetables';
 import { popNotification } from 'actions/app';
-import { getSemModuleSelectList } from 'reducers/moduleBank';
+import { getSemModuleSelectList } from 'selectors/moduleBank';
 import { createSearchPredicate, sortModules } from 'utils/moduleSearch';
 import ModulesSelect from './ModulesSelect';
 
@@ -59,7 +59,7 @@ class ModulesSelectContainer extends Component<Props> {
 
 function mapStateToProps(state, ownProps) {
   const { semester, timetable } = ownProps;
-  const moduleList = getSemModuleSelectList(state.moduleBank, semester, timetable);
+  const moduleList = getSemModuleSelectList(state, semester, timetable);
 
   return {
     semester,

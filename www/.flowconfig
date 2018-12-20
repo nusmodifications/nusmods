@@ -7,7 +7,7 @@
 node_modules/downshift/flow-typed/npm
 
 [options]
-module.name_mapper='^\(actions\|apis\|bootstrapping\|config\|data\|middlewares\|reducers\|storage\|stores\|types\|utils\|views\|test-utils\)\/?\(.*\)$' -> '<PROJECT_ROOT>/src/js/\1/\2'
+module.name_mapper='^\(actions\|apis\|bootstrapping\|config\|data\|middlewares\|reducers\|selectors\|storage\|stores\|types\|utils\|views\|test-utils\)\/?\(.*\)$' -> '<PROJECT_ROOT>/src/js/\1/\2'
 module.name_mapper='^\styles\/?\(.*\)$' -> '<PROJECT_ROOT>/src/styles/\1'
 module.name_mapper='^\__mocks__\/?\(.*\)$' -> '<PROJECT_ROOT>/__mocks__/\1'
 module.name_mapper='.*\.\(svg\|png\|jpg\|gif\)$' -> '<PROJECT_ROOT>/flow/url-loader.js'

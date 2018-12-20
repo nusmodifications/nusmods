@@ -3,12 +3,12 @@
 import React from 'react';
 import { flatten } from 'lodash';
 import { shallow } from 'enzyme';
-import * as weather from 'apis/weather';
 import Raven from 'raven-js';
+
+import * as weather from 'apis/weather';
 import { waitFor } from 'test-utils/async';
-import { TodayContainerComponent } from './TodayContainer';
-import DayHeader from './DayHeader';
-import DayEvents from './DayEvents';
+import { DaySection, TodayContainerComponent } from './TodayContainer';
+import DayEvents from '../DayEvents';
 import styles from './TodayContainer.scss';
 
 const COLORS = {
@@ -137,7 +137,7 @@ afterEach(() => {
 // E2 28 29 30          |
 describe(TodayContainerComponent, () => {
   const getLessons = (wrapper) => {
-    const days = wrapper.find(DayEvents);
+    const days = wrapper.find(DaySection).find(DayEvents);
     const cards = days.map((w) => w.shallow().find(`.${styles.lesson} h4`));
     const titles = cards.map((c) => c.map((h) => h.text()));
 
@@ -152,17 +152,7 @@ describe(TodayContainerComponent, () => {
       <TodayContainerComponent currentTime={now} timetableWithLessons={{}} colors={COLORS} />,
     );
 
-    expect(wrapper.find(DayHeader).map((w) => w.prop('dayName'))).toEqual([
-      'Today',
-      'Tomorrow',
-      'Wednesday',
-      'Thursday',
-      'Friday',
-      'Saturday',
-      'Sunday',
-    ]);
     expect(getLessons(wrapper)).toHaveLength(0);
-    expect(wrapper.text().match(/You have no lessons today/gi)).toHaveLength(5);
   });
 
   test('should render lessons on a normal week', () => {
@@ -173,7 +163,6 @@ describe(TodayContainerComponent, () => {
       <TodayContainerComponent currentTime={now} timetableWithLessons={LESSONS} colors={COLORS} />,
     );
 
-    expect(wrapper.find(DayHeader)).toHaveLength(7);
     expect(getLessons(wrapper)).toHaveLength(6);
   });
 
