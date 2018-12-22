@@ -44,9 +44,9 @@ export class FeedbackModalComponent extends PureComponent<Props> {
               <GitHub />
               GitHub
             </ExternalLink>
-            <ExternalLink className={styles.form} href="https://goo.gl/forms/iZd8uVXAiJfu8D6e2">
+            <ExternalLink className={styles.form} href="mailto:mods@nusmods.com">
               <Mail />
-              Feedback Form
+              Email
             </ExternalLink>
           </div>
         </div>
