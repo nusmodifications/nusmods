@@ -26,7 +26,7 @@ import Notification from 'views/components/notfications/Notification';
 import ErrorBoundary from 'views/errors/ErrorBoundary';
 import ErrorPage from 'views/errors/ErrorPage';
 import ApiError from 'views/errors/ApiError';
-import { configureMamoto } from 'bootstrapping/mamoto';
+import { trackPageView } from 'bootstrapping/mamoto';
 import { DARK_MODE } from 'types/settings';
 import LoadingSpinner from './components/LoadingSpinner';
 import FeedbackModal from './components/FeedbackModal';
@@ -74,7 +74,7 @@ export class AppShellComponent extends Component<Props, State> {
     });
 
     // Enable Mamoto analytics
-    configureMamoto(this.props.history);
+    trackPageView(this.props.history);
   }
 
   isMobileIos = isMobileIos();

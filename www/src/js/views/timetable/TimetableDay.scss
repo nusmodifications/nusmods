@@ -87,7 +87,7 @@
 
   @include vertical-mode {
     flex-direction: row;
-    padding: 0 0.1rem 0 0;
+    padding: 0 0 0 1px;
     background: linear-gradient(to bottom, var(--gray-lightest) 50%, transparent 50%);
   }
 }

@@ -2,6 +2,7 @@
 import { createStore, applyMiddleware, compose, type Store } from 'redux';
 import { persistStore } from 'redux-persist';
 import thunk from 'redux-thunk';
+import update from 'immutability-helper';
 import rootReducer, { type State } from 'reducers';
 import requestsMiddleware from 'middlewares/requests-middleware';
 import ravenMiddleware from 'middlewares/raven-middleware';
@@ -14,6 +15,11 @@ declare var module: {
     accept(path: string | string[], callback: () => void): void,
   },
 };
+
+// Extend immutability-helper with autovivification commands. This allows immutability-helper
+// to automatically create objects if it doesn't exist before
+// See: https://github.com/kolodny/immutability-helper#autovivification
+update.extend('$auto', (value, object) => (object ? update(object, value) : update({}, value)));
 
 // For redux-devtools-extensions - see
 // https://github.com/zalmoxisus/redux-devtools-extension

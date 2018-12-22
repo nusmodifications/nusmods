@@ -19,6 +19,25 @@
   flex: 1 1 auto;
 }
 
+.moduleInfo.tombstone {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.3rem 0.3rem 0.3rem 0.9rem;
+  border-radius: 3px;
+  background: var(--gray-lightest);
+
+  .moduleActionButtons {
+    flex: 1 0 auto;
+    text-align: right;
+  }
+
+  .moduleAction {
+    flex: 0 1 auto;
+    text-transform: uppercase;
+  }
+}
+
 .moduleExam {
   display: block;
   font-size: 87%;

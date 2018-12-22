@@ -128,7 +128,7 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
               highlightedIndex,
               getMenuProps,
             }) => (
-              <div className="dropdown" {...getMenuProps()}>
+              <div className="dropdown">
                 <div
                   className={classnames(styles.searchWrapper, {
                     [styles.focused]: this.state.isFocused,
@@ -152,7 +152,7 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
                 </div>
 
                 {isOpen && (
-                  <div className="dropdown-menu show">
+                  <div className="dropdown-menu show" {...getMenuProps()}>
                     {this.displayedFilters(inputValue).map(([filter, count], index) => {
                       const id = `${group.id}-${filter.id}`;
                       return (

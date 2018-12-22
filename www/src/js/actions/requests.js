@@ -1,17 +1,17 @@
 // @flow
 
 import type { AxiosXHRConfig } from 'axios';
-import type { FSA } from 'types/redux';
 import type { RequestKey } from 'types/reducers';
 
 export const API_REQUEST = 'API_REQUEST';
 
-export type RequestAction = FSA & {
+export type RequestAction = {|
+  type: string,
   payload: AxiosXHRConfig<*>,
   meta: {
     [typeof API_REQUEST]: string,
   },
-};
+|};
 
 /* eslint-disable import/prefer-default-export, no-param-reassign */
 type RequestActionCreator = {

@@ -38,6 +38,14 @@ export function modulePage(moduleCode: ModuleCode, moduleTitle: ModuleTitle): st
   return `/modules/${moduleCode}/${kebabCase(moduleTitle)}`;
 }
 
+export function moduleArchive(
+  moduleCode: ModuleCode,
+  year: string,
+  moduleTitle: ModuleTitle = '',
+): string {
+  return `/archive/${moduleCode}/${year.replace('/', '-')}/${kebabCase(moduleTitle)}`;
+}
+
 // Venue -> Venue page path
 export function venuePage(venue?: ?Venue): string {
   if (!venue) return '/venues';

@@ -1,25 +1,33 @@
 // @flow
-import type { ModuleCode } from 'types/modules';
+import type { AcadYear, Module, ModuleCode } from 'types/modules';
 import type { TimetableConfig } from 'types/timetables';
-import type { FSA, GetState } from 'types/redux';
 
-import { size, get, flatMap, sortBy } from 'lodash';
+import type { GetState } from 'types/redux';
+import type { ModulesMap } from 'reducers/moduleBank';
+import { size, get, flatMap, sortBy, zip } from 'lodash';
 import { requestAction } from 'actions/requests';
 import NUSModsApi from 'apis/nusmods';
-import type { ModulesMap } from 'reducers/moduleBank';
+import config from 'config';
 
 const MAX_MODULE_LIMIT: number = 100;
 
 export const FETCH_MODULE_LIST: string = 'FETCH_MODULE_LIST';
-export function fetchModuleList(): FSA {
+export function fetchModuleList() {
   return requestAction(FETCH_MODULE_LIST, FETCH_MODULE_LIST, {
     url: NUSModsApi.moduleListUrl(),
   });
 }
 
+// Action to fetch modules
 export const FETCH_MODULE: string = 'FETCH_MODULE';
 export function fetchModuleRequest(moduleCode: ModuleCode) {
-  return `${FETCH_MODULE}_${moduleCode}`;
+  return `${FETCH_MODULE}/${moduleCode}`;
+}
+
+export function getRequestModuleCode(key: string): ?ModuleCode {
+  const parts = key.split('/');
+  if (parts.length === 2 && parts[0] === FETCH_MODULE) return parts[1];
+  return null;
 }
 
 export const UPDATE_MODULE_TIMESTAMP = 'UPDATE_MODULE_TIMESTAMP';
@@ -89,10 +97,47 @@ export function fetchModule(moduleCode: ModuleCode) {
       }
     };
 
+    const key = fetchModuleRequest(moduleCode);
     return dispatch(
-      requestAction(fetchModuleRequest(moduleCode), FETCH_MODULE, {
+      requestAction(key, FETCH_MODULE, {
         url: NUSModsApi.moduleDetailsUrl(moduleCode),
       }),
-    ).then(onFinally, onFinally);
+    ).then(
+      (result) => {
+        onFinally();
+        return result;
+      },
+      (error) => {
+        onFinally();
+        throw error;
+      },
+    );
   };
+}
+
+// Action to fetch module from previous years
+export const FETCH_ARCHIVE_MODULE: string = 'FETCH_ARCHIVE_MODULE';
+export function fetchArchiveRequest(moduleCode: ModuleCode, year: string) {
+  return `${FETCH_ARCHIVE_MODULE}_${moduleCode}_${year}`;
+}
+
+export function fetchModuleArchive(moduleCode: ModuleCode, year: string) {
+  const key = fetchArchiveRequest(moduleCode, year);
+  const action = requestAction(key, FETCH_ARCHIVE_MODULE, {
+    url: NUSModsApi.moduleDetailsUrl(moduleCode, year),
+  });
+
+  action.meta.academicYear = year;
+
+  return action;
+}
+
+export function fetchAllModuleArchive(moduleCode: ModuleCode) {
+  // Returns: Promise<[AcadYear, Module?][]>
+  return (dispatch: Function) =>
+    Promise.all(
+      config.archiveYears.map((year) =>
+        dispatch(fetchModuleArchive(moduleCode, year)).catch(() => null),
+      ),
+    ).then((modules) => zip<AcadYear, Array<Module>>(config.archiveYears, modules));
 }

@@ -1,11 +1,10 @@
 // @flow
-import _ from 'lodash';
-import type { FSA } from 'types/redux';
-import type { TimetableConfig } from 'types/timetables';
 
+import _ from 'lodash';
+
+import type { TimetableConfig } from 'types/timetables';
 import * as actions from 'actions/moduleBank';
 import NUSModsApi from 'apis/nusmods';
-import { waitFor } from 'test-utils/async';
 
 // Mock NUSModsApi as its URLs contain the current AY, breaking the snapshot tests
 // every AY.
@@ -16,49 +15,61 @@ NUSModsApi.moduleDetailsUrl.mockImplementation(
 );
 
 test('fetchModuleList should return a request action', () => {
-  const resultOfAction: FSA = actions.fetchModuleList();
+  const resultOfAction = actions.fetchModuleList();
   expect(resultOfAction).toMatchSnapshot();
 });
 
-test('fetchModule should return a thunk', async () => {
-  const thunk = actions.fetchModule('CS1010S');
-  expect(thunk).toBeInstanceOf(Function);
+describe(actions.fetchModule, () => {
+  test('should return a thunk', async () => {
+    const thunk = actions.fetchModule('CS1010S');
+    expect(thunk).toBeInstanceOf(Function);
 
-  const dispatch = jest.fn().mockResolvedValue();
-  const getState = jest.fn().mockReturnValue(
-    ({
-      moduleBank: { modules: { CS1010S: {} } },
-    }: any),
-  );
+    const dispatch = jest.fn().mockResolvedValue();
+    const getState = jest.fn().mockReturnValue(
+      ({
+        moduleBank: { modules: { CS1010S: {} } },
+      }: any),
+    );
 
-  thunk(dispatch, getState);
+    await thunk(dispatch, getState);
 
-  await waitFor(() => getState.mock.calls.length > 0);
-
-  expect(dispatch.mock.calls).toMatchSnapshot();
-});
-
-test('fetchModule should remove LRU modules above limit', async () => {
-  const thunk = actions.fetchModule('CS1010S');
-
-  const modules = {};
-  _.range(105).forEach((i) => {
-    modules[`CS${i}`] = { timestamp: i };
+    expect(dispatch.mock.calls).toMatchSnapshot();
   });
 
-  const dispatch = jest.fn().mockResolvedValue();
-  const getState = jest.fn().mockReturnValue(
-    ({
-      moduleBank: { modules },
-      timetables: {},
-    }: any),
-  );
+  test('should remove LRU modules above limit', async () => {
+    const thunk = actions.fetchModule('CS1010S');
 
-  thunk(dispatch, getState);
+    const modules = {};
+    _.range(105).forEach((i) => {
+      modules[`CS${i}`] = { timestamp: i };
+    });
 
-  await waitFor(() => getState.mock.calls.length > 0);
+    const dispatch = jest.fn().mockResolvedValue();
+    const getState = jest.fn().mockReturnValue(
+      ({
+        moduleBank: { modules },
+        timetables: {},
+      }: any),
+    );
 
-  expect(dispatch.mock.calls).toMatchSnapshot();
+    await thunk(dispatch, getState);
+
+    expect(dispatch.mock.calls).toMatchSnapshot();
+  });
+
+  test('should rethrow errors', async () => {
+    const thunk = actions.fetchModule('CS1010S');
+
+    const error = new Error('Error loading module');
+    const dispatch = jest.fn().mockRejectedValue(error);
+    const getState = jest.fn().mockReturnValue(
+      ({
+        moduleBank: { modules: { CS1010S: {} } },
+      }: any),
+    );
+
+    await expect(thunk(dispatch, getState)).rejects.toThrowError(error);
+  });
 });
 
 test('getLRUModule should return the LRU and non-timetable module', () => {
@@ -89,4 +100,16 @@ test('removeLRUModule should return an action', () => {
 test('updateModuleTimestamp should return an action', () => {
   const resultOfAction = actions.updateModuleTimestamp('ACC1001');
   expect(resultOfAction).toMatchSnapshot();
+});
+
+test('fetchModuleArchive should return a request action', () => {
+  expect(actions.fetchModuleArchive('CS1010S', '2016/2017')).toMatchSnapshot();
+});
+
+test('fetchAllModuleArchive should return multiple request actions', () => {
+  const dispatch = jest.fn().mockReturnValue(Promise.resolve());
+  const thunk = actions.fetchAllModuleArchive('CS1010S');
+  expect(thunk).toEqual(expect.any(Function));
+  thunk(dispatch);
+  expect(dispatch.mock.calls).toMatchSnapshot();
 });

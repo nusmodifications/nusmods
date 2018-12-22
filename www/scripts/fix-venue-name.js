@@ -39,6 +39,9 @@ const additionalWords = [
   'BOH',
   'THEATRETTE',
   'DEPT',
+  'CENDANA',
+  'KEWALRAM',
+  'CHANRAI',
 
   // Damn American dictionaries
   'HONOURS',

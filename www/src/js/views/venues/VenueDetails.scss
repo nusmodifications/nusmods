@@ -1,4 +1,4 @@
-@import "~styles/utils/modules-entry.scss";
+@import '~styles/utils/modules-entry.scss';
 
 .header {
   display: flex;
@@ -40,4 +40,10 @@
 .timetable {
   composes: scrollable from global;
   padding-bottom: 1rem;
+}
+
+.location {
+  @include media-breakpoint-down(sm) {
+    margin: 0 ($grid-gutter-width / 2);
+  }
 }

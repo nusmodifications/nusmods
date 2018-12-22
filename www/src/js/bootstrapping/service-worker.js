@@ -5,8 +5,14 @@ import { captureException } from 'utils/error';
 
 let currentRegistration: ServiceWorkerRegistration;
 
-export function getRegistration() {
-  return currentRegistration;
+export function updateServiceWorker() {
+  if (!currentRegistration || !currentRegistration.waiting) {
+    // Just to ensure registration.waiting is available before
+    // calling postMessage()
+    return;
+  }
+
+  currentRegistration.waiting.postMessage('skipWaiting');
 }
 
 // Code taken from https://developers.google.com/web/tools/workbox/guides/advanced-recipes
