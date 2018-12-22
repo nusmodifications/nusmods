@@ -36,7 +36,7 @@ class Announcements extends PureComponent<Props, State> {
 
     this.state = {
       // Set to constant false to turn off announcement
-      isOpen: key ? !storage.getItem(key) : true,
+      isOpen: false, // key ? !storage.getItem(key) : true,
     };
   }
 
