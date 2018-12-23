@@ -45,7 +45,7 @@
       background: $button-bg;
 
       &:hover {
-        background: lighten($button-bg, 10);
+        background: lighten($button-bg, 15);
       }
     }
 
@@ -55,7 +55,7 @@
       background: $button-bg;
 
       &:hover {
-        background: lighten($button-bg, 30);
+        background: lighten($button-bg, 15);
       }
     }
 
@@ -65,7 +65,7 @@
       background: $button-bg;
 
       &:hover {
-        background: lighten($button-bg, 10);
+        background: lighten($button-bg, 15);
       }
     }
   }
