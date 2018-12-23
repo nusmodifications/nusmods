@@ -32,39 +32,37 @@ export default class ErrorPage extends PureComponent<Props> {
     const { showRefresh, showReportDialog } = this.props;
 
     return (
-      <div>
+      <div className={styles.container}>
         <Title>Uh oh...</Title>
 
-        <div className="text-center">
-          <div className={styles.header}>
-            <RandomKawaii size={100} />
-          </div>
-
-          <h1 className={classnames('h3', styles.header)}>
-            <span className={styles.expr}>Uh oh</span> {this.errorMessage()}
-          </h1>
-
-          {showRefresh && (
-            <Online>
-              <button className="btn btn-primary" onClick={() => window.location.reload(true)}>
-                Refresh
-              </button>
-            </Online>
-          )}
-
-          {showReportDialog && (
-            <Online isLive={false}>
-              <p>
-                An error report has been made and we will look into this. We would really appreciate
-                it if you could{' '}
-                <button className={styles.link} onClick={() => Sentry.showReportDialog()}>
-                  tell us more about what happened
-                </button>{' '}
-                so we can better fix this.
-              </p>
-            </Online>
-          )}
+        <div className={styles.header}>
+          <RandomKawaii size={100} />
         </div>
+
+        <h1 className={classnames('h3', styles.header)}>
+          <span className={styles.expr}>Uh oh</span> {this.errorMessage()}
+        </h1>
+
+        {showReportDialog && (
+          <Online isLive={false}>
+            <p>
+              An error report has been made and we will look into this. We would really appreciate
+              it if you could{' '}
+              <button className={styles.link} onClick={() => Sentry.showReportDialog()}>
+                tell us more about what happened
+              </button>{' '}
+              so we can better fix this.
+            </p>
+          </Online>
+        )}
+
+        {showRefresh && (
+          <Online>
+            <button className="btn btn-primary" onClick={() => window.location.reload(true)}>
+              Refresh
+            </button>
+          </Online>
+        )}
       </div>
     );
   }
