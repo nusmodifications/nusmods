@@ -109,7 +109,7 @@ const LESSONS = {
 };
 
 jest.mock('apis/weather');
-jest.mock('utils/errors');
+jest.mock('utils/error');
 
 //     August 2016            September 2016         October 2016
 // Wk Mo Tu We Th Fr Sa | Wk Mo Tu We Th Fr Sa | Wk Mo Tu We Th Fr Sa
