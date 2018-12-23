@@ -137,7 +137,7 @@ export class AppShellComponent extends Component<Props, State> {
 
           <main className="main-content">
             {isModuleListReady ? (
-              <ErrorBoundary errorPage={(error, eventId) => <ErrorPage eventId={eventId} />}>
+              <ErrorBoundary errorPage={() => <ErrorPage showReportDialog />}>
                 {this.props.children}
               </ErrorBoundary>
             ) : (

@@ -2,7 +2,7 @@
 import type { Node } from 'react';
 
 import React, { PureComponent } from 'react';
-import Raven from 'raven-js';
+import * as Sentry from '@sentry/browser';
 import classnames from 'classnames';
 
 import RandomKawaii from 'views/components/RandomKawaii';
@@ -13,7 +13,7 @@ import styles from './ErrorPage.scss';
 type Props = {
   children?: Node,
   error?: string,
-  eventId?: ?string,
+  showReportDialog?: ?boolean,
   showRefresh: boolean,
 };
 
@@ -29,7 +29,7 @@ export default class ErrorPage extends PureComponent<Props> {
   }
 
   render() {
-    const { showRefresh, eventId } = this.props;
+    const { showRefresh, showReportDialog } = this.props;
 
     return (
       <div>
@@ -52,12 +52,12 @@ export default class ErrorPage extends PureComponent<Props> {
             </Online>
           )}
 
-          {eventId && (
+          {showReportDialog && (
             <Online isLive={false}>
               <p>
                 An error report has been made and we will look into this. We would really appreciate
                 it if you could{' '}
-                <button className={styles.link} onClick={() => Raven.showReportDialog({ eventId })}>
+                <button className={styles.link} onClick={() => Sentry.showReportDialog()}>
                   tell us more about what happened
                 </button>{' '}
                 so we can better fix this.

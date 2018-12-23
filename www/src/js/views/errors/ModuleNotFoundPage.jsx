@@ -3,7 +3,7 @@ import React, { PureComponent, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import Raven from 'raven-js';
+import * as Sentry from '@sentry/browser';
 
 import type { ModuleCode } from 'types/modules';
 import RandomKawaii from 'views/components/RandomKawaii';
@@ -25,7 +25,9 @@ type Props = {
 
 export class ModuleNotFoundPageComponent extends PureComponent<Props> {
   componentDidMount() {
-    Raven.captureMessage('404 - Module Not Found');
+    Sentry.withScope(() => {
+      Sentry.captureMessage('404 - Module Not Found');
+    });
 
     // If we think this is a module, try checking for archived modules
     if (this.props.moduleCode.match(MODULE_CODE_REGEX)) {
@@ -35,7 +37,6 @@ export class ModuleNotFoundPageComponent extends PureComponent<Props> {
 
   render() {
     const { moduleCode, isLoading } = this.props;
-    const eventId = Raven.lastEventId();
 
     if (isLoading) {
       return <LoadingSpinner />;
@@ -92,14 +93,7 @@ export class ModuleNotFoundPageComponent extends PureComponent<Props> {
             </p>
 
             <div className={styles.buttons}>
-              <button
-                className="btn btn-outline-primary"
-                onClick={() =>
-                  Raven.showReportDialog({
-                    eventId,
-                  })
-                }
-              >
+              <button className="btn btn-outline-primary" onClick={() => Sentry.showReportDialog()}>
                 {moduleCode} should be here
               </button>
               <Link className="btn btn-primary" to="/">
