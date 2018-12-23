@@ -5,20 +5,14 @@ import React from 'react';
 import Loadable, { type LoadingProps } from 'react-loadable';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import { retryImport } from 'utils/error';
+import ApiError from 'views/errors/ApiError';
 import type { Props } from './TodayContainer';
 
 const AsyncTodayContainer: ComponentType<Props> = Loadable({
   loader: () => retryImport(() => import(/* webpackChunkName: "today" */ './TodayContainer')),
   loading: (props: LoadingProps) => {
     if (props.error) {
-      return (
-        <div className="text-center">
-          <p>Sorry, there was an error loading this page</p>
-          <button className="btn btn-outline-primary" onClick={props.retry}>
-            Try Again
-          </button>
-        </div>
-      );
+      return <ApiError dataName="page" retry={props.retry} />;
     } else if (props.pastDelay) {
       return <LoadingSpinner />;
     }
