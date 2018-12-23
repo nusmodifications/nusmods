@@ -13,21 +13,22 @@ $gutter: 0.75rem;
 
 @include media-breakpoint-up(lg) {
   .schedule,
-  .map {
+  .mapContainer {
     top: $navbar-height;
     bottom: 0;
   }
 
   .schedule {
     position: fixed;
-    padding-top: 1rem;
-    z-index: 1;
     left: $side-nav-width-md + $gutter;
+    z-index: 1;
     width: $schedule-width;
+    padding: 1rem $gutter 0 0;
     overflow: auto;
+    border-right: 1px solid var(--gray-lighter);
   }
 
-  .map {
+  .mapContainer {
     position: fixed;
     right: 0;
     left: $side-nav-width-md + $schedule-width + $gutter;
@@ -39,7 +40,7 @@ $gutter: 0.75rem;
     left: $side-nav-width-lg + $gutter;
   }
 
-  .map {
+  .mapContainer {
     left: $side-nav-width-lg + $schedule-width + $gutter;
   }
 }

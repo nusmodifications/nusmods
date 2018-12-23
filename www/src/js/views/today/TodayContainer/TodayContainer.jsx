@@ -2,7 +2,7 @@
 
 import React, { Fragment, PureComponent, type Node } from 'react';
 import { connect } from 'react-redux';
-import { minBy, range } from 'lodash';
+import { minBy, range, get } from 'lodash';
 import NUSModerator, { type AcadWeekInfo } from 'nusmoderator';
 import Raven from 'raven-js';
 import { addDays, differenceInCalendarDays, isSameDay, isWeekend } from 'date-fns';
@@ -16,6 +16,7 @@ import type { EmptyGroupType, SelectedLesson } from 'types/views';
 import {
   groupLessonsByDay,
   hydrateSemTimetableWithLessons,
+  isLessonAvailable,
   isLessonOngoing,
   timetableLessonsArray,
 } from 'utils/timetables';
@@ -185,7 +186,9 @@ export class TodayContainerComponent extends PureComponent<Props, State> {
       const date = addDays(currentTime, day);
       const dayOfWeek = DaysOfWeek[getDayIndex(date)];
       const weekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(date);
-      const lessons = groupedLessons[dayOfWeek] || EMPTY_ARRAY;
+      const lessons = get(groupedLessons, dayOfWeek, EMPTY_ARRAY).filter((lesson) =>
+        isLessonAvailable(lesson, weekInfo),
+      );
 
       if (
         // Non-instructional week
@@ -296,7 +299,7 @@ export class TodayContainerComponent extends PureComponent<Props, State> {
         {this.props.matchBreakpoint && (
           <>
             <NoFooter />
-            <div className={styles.map}>
+            <div className={styles.mapContainer}>
               <EventMap venue={this.state.openLesson?.lesson.Venue} />
             </div>
           </>
