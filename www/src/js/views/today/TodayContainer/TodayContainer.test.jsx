@@ -187,7 +187,7 @@ describe(TodayContainerComponent, () => {
     const wrapper = make({ currentTime: now });
 
     expect(getLessons(wrapper)).toEqual([
-      'CS3216 1',
+      'CS3216 Lecture 1',
       'PC1222 Lecture SL1',
       'PC1222 Laboratory U02',
       'PC1222 Tutorial T11',
@@ -202,7 +202,7 @@ describe(TodayContainerComponent, () => {
     const wrapper = make({ currentTime: now });
 
     expect(getLessons(wrapper)).toEqual([
-      'CS3216 1',
+      'CS3216 Lecture 1',
       'PC1222 Lecture SL1',
       'PC1222 Tutorial T11',
       'CS1010S Recitation 9',
