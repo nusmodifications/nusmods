@@ -14,6 +14,7 @@ import { Repeat, Copy, Mail } from 'views/components/icons';
 import Modal from 'views/components/Modal';
 import CloseButton from 'views/components/CloseButton';
 import LoadingSpinner from 'views/components/LoadingSpinner';
+import { retryImport } from 'utils/error';
 
 import styles from './ShareTimetable.scss';
 
@@ -55,7 +56,7 @@ export default class ShareTimetable extends PureComponent<Props, State> {
 
   componentDidMount() {
     if (!ShareTimetable.QRCode) {
-      import(/* webpackChunkName: "export" */ 'react-qr-svg').then((module) => {
+      retryImport(() => import(/* webpackChunkName: "export" */ 'react-qr-svg')).then((module) => {
         ShareTimetable.QRCode = module.QRCode;
         this.forceUpdate();
       });

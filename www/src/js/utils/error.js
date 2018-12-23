@@ -1,6 +1,7 @@
 // @flow
 import * as Sentry from '@sentry/browser';
 import { each, size } from 'lodash';
+import { retry } from 'utils/promise';
 
 // eslint-disable-next-line import/prefer-default-export
 export function captureException(error: any, extra: Object = {}) {
@@ -26,4 +27,12 @@ export function getScriptErrorHandler(scriptName: string) {
       });
     }
   };
+}
+
+export function retryImport(importFactory: () => Promise<*>, retries: number = 3) {
+  return retry(
+    retries,
+    importFactory,
+    (error) => error.message.includes('Loading chunk ') && window.navigator.onLine,
+  );
 }

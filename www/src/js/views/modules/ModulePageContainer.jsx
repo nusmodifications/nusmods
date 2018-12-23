@@ -12,8 +12,7 @@ import type { Module, ModuleCode } from 'types/modules';
 import type { State as StoreState } from 'reducers';
 
 import { fetchArchiveRequest, fetchModule, fetchModuleArchive } from 'actions/moduleBank';
-import { retry } from 'utils/promise';
-import { captureException } from 'utils/error';
+import { captureException, retryImport } from 'utils/error';
 import ApiError from 'views/errors/ApiError';
 import ModuleNotFoundPage from 'views/errors/ModuleNotFoundPage';
 import LoadingSpinner from 'views/components/LoadingSpinner';
@@ -77,11 +76,7 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
   fetchPageImport() {
     // Try importing ModulePageContent thrice if we're online and
     // getting the "Loading chunk x failed." error.
-    retry(
-      3,
-      () => import(/* webpackChunkName: "module" */ 'views/modules/ModulePageContent'),
-      (error) => error.message.includes('Loading chunk ') && window.navigator.onLine,
-    )
+    retryImport(() => import(/* webpackChunkName: "module" */ 'views/modules/ModulePageContent'))
       .then((module) => this.setState({ ModulePageContent: module.default }))
       .catch(this.handleFetchError);
   }
