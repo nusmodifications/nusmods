@@ -48,7 +48,7 @@
     "coveralls": "3.0.2",
     "cross-env": "5.2.0",
     "css-loader": "1.0.0",
-    "cssnano": "4.1.7",
+    "cssnano": "4.1.8",
     "enzyme": "3.7.0",
     "enzyme-adapter-react-16": "1.7.0",
     "enzyme-to-json": "3.3.5",
