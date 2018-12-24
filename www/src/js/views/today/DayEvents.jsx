@@ -9,7 +9,7 @@ import type { SelectedLesson } from 'types/views';
 import { MapPin } from 'views/components/icons';
 import { formatTime } from 'utils/timify';
 import { isLessonAvailable, isSameLesson } from 'utils/timetables';
-import EventMap from './EventMap';
+import EventMapInline from './EventMapInline';
 import styles from './DayEvents.scss';
 
 type Props = {|
@@ -49,7 +49,7 @@ export default class DayEvents extends PureComponent<Props> {
           </p>
           <MapPin className={styles.venueIcon} /> {lesson.Venue}
           <div>
-            <EventMap
+            <EventMapInline
               className={styles.map}
               venue={lesson.Venue}
               isOpen={isOpen}
