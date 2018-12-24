@@ -28,11 +28,11 @@ const isBrowserSupported =
       msedge: '14',
       chrome: '56',
       firefox: '52',
-      safari: '9',
+      safari: '10',
     },
     true,
   ) ||
-  (bowser.ios && parseFloat(bowser.osversion) >= 9);
+  (bowser.ios && parseFloat(bowser.osversion) >= 10);
 
 // Add unsupported tag to Raven so that we can filter out reports from those users
 Sentry.configureScope((scope) => {
