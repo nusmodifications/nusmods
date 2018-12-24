@@ -30,6 +30,7 @@ if (
       chrome: '56',
       firefox: '52',
       safari: '9',
+      ios: '9',
     },
     true,
   )
