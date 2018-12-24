@@ -28,5 +28,5 @@ export default function(props: Props) {
   }
 
   const position = [venueLocation.location.y, venueLocation.location.x];
-  return <LocationMap className={styles.map} position={position} />;
+  return <LocationMap height="100%" position={position} />;
 }
