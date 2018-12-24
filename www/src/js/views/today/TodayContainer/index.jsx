@@ -4,8 +4,8 @@ import type { ComponentType } from 'react';
 import React from 'react';
 import Loadable, { type LoadingProps } from 'react-loadable';
 import LoadingSpinner from 'views/components/LoadingSpinner';
-import { retryImport } from 'utils/error';
 import ApiError from 'views/errors/ApiError';
+import { retryImport } from 'utils/error';
 import type { Props } from './TodayContainer';
 
 const AsyncTodayContainer: ComponentType<Props> = Loadable({

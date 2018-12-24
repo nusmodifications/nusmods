@@ -1,13 +1,16 @@
 @import '~styles/utils/modules-entry';
 
-.openMap {
-  composes: btn btn-link btn-block from global;
-  color: inherit;
-  border-top: 1px solid;
-  border-radius: 0;
+.noLessonSelected {
+  $icon-size: 6rem;
 
-  &:hover {
-    color: inherit;
-    border-top: 1px solid;
+  opacity: 0.6;
+  margin-top: 10vh;
+  font-size: 1.4rem;
+  text-align: center;
+
+  svg {
+    width: $icon-size;
+    height: $icon-size;
+    margin-bottom: 1rem;
   }
 }

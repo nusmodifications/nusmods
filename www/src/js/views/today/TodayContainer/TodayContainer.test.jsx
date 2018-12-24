@@ -7,9 +7,9 @@ import { shallow } from 'enzyme';
 import * as weather from 'apis/weather';
 import { waitFor } from 'test-utils/async';
 import { captureException } from 'utils/error';
-import { DaySection, TodayContainerComponent } from './TodayContainer';
+import { DaySection, TodayContainerComponent, type Props } from './TodayContainer';
 import DayEvents from '../DayEvents';
-import styles from './TodayContainer.scss';
+import styles from '../DayEvents.scss';
 
 const COLORS = {
   CS3216: 1,
@@ -130,19 +130,45 @@ jest.mock('utils/error');
 describe(TodayContainerComponent, () => {
   const getLessons = (wrapper) => {
     const days = wrapper.find(DaySection).find(DayEvents);
-    const cards = days.map((w) => w.shallow().find(`.${styles.lesson} h4`));
-    const titles = cards.map((c) => c.map((h) => h.text()));
+    const cards = days.map((w) => w.shallow().find(`.${styles.card}`));
+    const titles = cards.map((c) =>
+      c.map((ele) => {
+        const code = ele
+          .find('h4')
+          .text()
+          .split(' ')[0];
+
+        const lesson = ele
+          .find('p')
+          .first()
+          .text();
+
+        return `${code} ${lesson}`;
+      }),
+    );
 
     return flatten(titles);
+  };
+
+  const make = (props: $Shape<Props> = {}) => {
+    const componentProps: Props = {
+      colors: COLORS,
+      matchBreakpoint: false,
+      timetableWithLessons: LESSONS,
+      ...props,
+    };
+
+    return shallow(<TodayContainerComponent {...componentProps} />);
   };
 
   test('should render', () => {
     // Monday, 8th August 2016, 0800 - week 4
     const now = new Date('2016-08-08T00:00:00.000Z');
 
-    const wrapper = shallow(
-      <TodayContainerComponent currentTime={now} timetableWithLessons={{}} colors={COLORS} />,
-    );
+    const wrapper = make({
+      currentTime: now,
+      timetableWithLessons: {},
+    });
 
     expect(getLessons(wrapper)).toHaveLength(0);
   });
@@ -150,23 +176,30 @@ describe(TodayContainerComponent, () => {
   test('should render lessons on a normal week', () => {
     // Monday, 29th August 2016, 0800 - week 4
     const now = new Date('2016-08-29T00:00:00.000Z');
+    const wrapper = make({ currentTime: now });
 
-    const wrapper = shallow(
-      <TodayContainerComponent currentTime={now} timetableWithLessons={LESSONS} colors={COLORS} />,
-    );
-
-    expect(getLessons(wrapper)).toHaveLength(6);
+    expect(getLessons(wrapper)).toEqual([
+      'CS3216 Lecture 1',
+      'PC1222 Lecture SL1',
+      'PC1222 Laboratory U02',
+      'PC1222 Tutorial T11',
+      'CS1010S Recitation 9',
+      'PC1222 Lecture SL1',
+    ]);
   });
 
   test('should not render even week lessons on odd weeks', () => {
     // Monday, 22th August 2016, 0800 - week 3
     const now = new Date('2016-08-22T00:00:00.000Z');
+    const wrapper = make({ currentTime: now });
 
-    const wrapper = shallow(
-      <TodayContainerComponent currentTime={now} timetableWithLessons={LESSONS} colors={COLORS} />,
-    );
-
-    expect(getLessons(wrapper)).toHaveLength(5);
+    expect(getLessons(wrapper)).toEqual([
+      'CS3216 Lecture 1',
+      'PC1222 Lecture SL1',
+      'PC1222 Tutorial T11',
+      'CS1010S Recitation 9',
+      'PC1222 Lecture SL1',
+    ]);
   });
 
   test('should capture exception when weather API fails to load', async () => {
@@ -174,10 +207,7 @@ describe(TodayContainerComponent, () => {
     weather.fourDay.mockRejectedValueOnce(new Error('Cannot load weather'));
 
     const now = new Date('2016-08-22T00:00:00.000Z');
-
-    shallow(
-      <TodayContainerComponent currentTime={now} timetableWithLessons={LESSONS} colors={COLORS} />,
-    );
+    make({ currentTime: now });
 
     expect(weather.twoHour).toBeCalled();
     expect(weather.tomorrow).toBeCalled();

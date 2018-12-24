@@ -14,6 +14,7 @@ export type Props = {|
   +position: [number, number],
   +toggleScrollable?: (boolean) => void,
   +className?: string,
+  +height?: string,
 |};
 
 type State = {|
@@ -37,14 +38,17 @@ export default class LocationMap extends PureComponent<Props, State> {
   };
 
   render() {
-    const { position, className } = this.props;
+    const { position, className, height } = this.props;
 
     // Query param for https://developers.google.com/maps/documentation/urls/guide#search-action
     const googleMapQuery = encodeURIComponent(position.join(','));
     const { isExpanded } = this.state;
 
     return (
-      <div className={classnames(styles.mapWrapper, className, { [styles.expanded]: isExpanded })}>
+      <div
+        style={{ height }}
+        className={classnames(styles.mapWrapper, className, { [styles.expanded]: isExpanded })}
+      >
         <ExternalLink
           href={`https://www.google.com/maps/search/?api=1&query=${googleMapQuery}`}
           className={classnames('btn btn-sm btn-primary', styles.gmapBtn)}

@@ -2,7 +2,7 @@
 
 import React, { Fragment, PureComponent, type Node } from 'react';
 import { connect } from 'react-redux';
-import { minBy, range } from 'lodash';
+import { minBy, range, get } from 'lodash';
 import NUSModerator, { type AcadWeekInfo } from 'nusmoderator';
 import { addDays, differenceInCalendarDays, isSameDay, isWeekend } from 'date-fns';
 
@@ -15,6 +15,7 @@ import type { EmptyGroupType, SelectedLesson } from 'types/views';
 import {
   groupLessonsByDay,
   hydrateSemTimetableWithLessons,
+  isLessonAvailable,
   isLessonOngoing,
   timetableLessonsArray,
 } from 'utils/timetables';
@@ -25,22 +26,35 @@ import Announcements from 'views/components/notfications/Announcements';
 import { getSemesterTimetable } from 'reducers/timetables';
 import ExternalLink from 'views/components/ExternalLink';
 import * as weatherAPI from 'apis/weather';
-import config from 'config';
 /** @var {string[]} */
 import holidays from 'data/holidays.json';
 import withTimer, { type TimerData } from 'views/hocs/withTimer';
+import makeResponsive from 'views/hocs/makeResponsive';
+import NoFooter from 'views/layout/NoFooter';
 import { formatTime, getCurrentHours, getCurrentMinutes, getDayIndex } from 'utils/timify';
+import { breakpointUp } from 'utils/css';
+
 import DayEvents from '../DayEvents';
 import DayHeader from '../DayHeader';
 import EmptyLessonGroup from '../EmptyLessonGroup';
 import BeforeLessonCard from '../BeforeLessonCard';
+import EventMap from '../EventMap';
 import styles from './TodayContainer.scss';
+
+// Map the semester property from AcadWeekInfo to semester number
+const semesterNameMap = {
+  'Semester 1': 1,
+  'Semester 2': 2,
+  'Special Sem 1': 3,
+  'Special Sem 2': 4,
+};
 
 export type Props = {|
   ...TimerData,
 
   +timetableWithLessons: SemTimetableConfigWithLessons,
   +colors: ColorMapping,
+  +matchBreakpoint: boolean,
 |};
 
 type State = {|
@@ -172,7 +186,9 @@ export class TodayContainerComponent extends PureComponent<Props, State> {
       const date = addDays(currentTime, day);
       const dayOfWeek = DaysOfWeek[getDayIndex(date)];
       const weekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(date);
-      const lessons = groupedLessons[dayOfWeek] || EMPTY_ARRAY;
+      const lessons = get(groupedLessons, dayOfWeek, EMPTY_ARRAY).filter((lesson) =>
+        isLessonAvailable(lesson, weekInfo),
+      );
 
       if (
         // Non-instructional week
@@ -203,6 +219,10 @@ export class TodayContainerComponent extends PureComponent<Props, State> {
 
   renderDay(date: Date, lessons: ColoredLesson[], isToday: boolean) {
     const dayInfo = NUSModerator.academicCalendar.getAcadWeekInfo(date);
+
+    // In lg and above, we use the sidebar to show the map instead
+    // of displaying inline inside the lesson, so the opened lesson is always null
+    const openLesson = this.props.matchBreakpoint ? null : this.state.openLesson;
 
     // If it is a day with no lessons
     if (!lessons.length) {
@@ -252,7 +272,7 @@ export class TodayContainerComponent extends PureComponent<Props, State> {
           date={date}
           dayInfo={dayInfo}
           marker={nextLessonMarker}
-          openLesson={this.state.openLesson}
+          openLesson={openLesson}
           onOpenLesson={this.onOpenLesson}
         />
       </Fragment>
@@ -261,29 +281,38 @@ export class TodayContainerComponent extends PureComponent<Props, State> {
 
   render() {
     return (
-      <div className="page-container">
+      <div className={styles.todayPage}>
         <Title>Today</Title>
 
         <CorsNotification />
 
         <Announcements />
 
-        {this.groupLessons()}
+        <div className={styles.schedule}>
+          {this.groupLessons()}
+          <p className={styles.attribution}>
+            Icon made by <ExternalLink href="https://www.freepik.com/">Freepik</ExternalLink> from{' '}
+            <ExternalLink href="https://www.flaticon.com/">www.flaticon.com</ExternalLink>
+          </p>
+        </div>
 
-        <p className={styles.attribution}>
-          Icon made by <ExternalLink href="https://www.freepik.com/">Freepik</ExternalLink> from{' '}
-          <ExternalLink href="https://www.flaticon.com/">www.flaticon.com</ExternalLink>
-        </p>
+        {this.props.matchBreakpoint && (
+          <>
+            <NoFooter />
+            <div className={styles.mapContainer}>
+              <EventMap venue={this.state.openLesson?.lesson.Venue} />
+            </div>
+          </>
+        )}
       </div>
     );
   }
 }
 
-const TodayContainerWithTimer = withTimer(TodayContainerComponent);
-
-const ConnectedTimetableContainer = connect((state) => {
+const ConnectedTimetableContainer = connect((state, ownProps) => {
   const modules = state.moduleBank.modules;
-  const semester = config.semester;
+  const weekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(ownProps.currentTime);
+  const semester = semesterNameMap[weekInfo.sem];
   const { timetable, colors } = getSemesterTimetable(semester, state.timetables);
   const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
 
@@ -291,6 +320,9 @@ const ConnectedTimetableContainer = connect((state) => {
     colors,
     timetableWithLessons,
   };
-})(TodayContainerWithTimer);
+})(TodayContainerComponent);
 
-export default ConnectedTimetableContainer;
+const TodayContainerWithTimer = withTimer(ConnectedTimetableContainer);
+const ResponsiveTodayContainer = makeResponsive(TodayContainerWithTimer, breakpointUp('lg'));
+
+export default ResponsiveTodayContainer;

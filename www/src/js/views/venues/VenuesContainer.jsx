@@ -27,6 +27,7 @@ import { captureException } from 'utils/error';
 import makeResponsive from 'views/hocs/makeResponsive';
 import Modal from 'views/components/Modal';
 import Title from 'views/components/Title';
+import NoFooter from 'views/layout/NoFooter';
 
 import AvailabilitySearch, { defaultSearchOptions } from './AvailabilitySearch';
 import VenueList from './VenueList';
@@ -354,7 +355,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
                   this.renderSelectedVenue(matchedVenues)
                 )}
               </div>
-              <div className={styles.background} />
+              <NoFooter />
             </Fragment>
           )}
         </VenueContext.Provider>
