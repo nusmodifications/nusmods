@@ -45,6 +45,5 @@ if (
 }
 
 if (process.env.NODE_ENV === 'production') {
-  initializeGA();
   initializeMamoto();
 }
