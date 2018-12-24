@@ -17,7 +17,7 @@ export default function(props: Props) {
     return (
       <div className={styles.noLessonSelected}>
         <Map />
-        <p>Select a venue on the left to see its timetable</p>
+        <p>Select a lesson on the left to see its timetable</p>
       </div>
     );
   }

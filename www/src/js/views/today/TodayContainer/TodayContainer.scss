@@ -26,12 +26,15 @@ $gutter: 0.75rem;
     padding: 1rem $gutter 0 0;
     overflow: auto;
     border-right: 1px solid var(--gray-lighter);
+
+    @include scrollable-y;
   }
 
   .mapContainer {
     position: fixed;
     right: 0;
     left: $side-nav-width-md + $schedule-width + $gutter;
+    z-index: $venue-map-z-index;
   }
 }
 
