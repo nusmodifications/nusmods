@@ -22,15 +22,17 @@ const linkForChromePlayStore = composeAnchorText(
 );
 
 const browserCanUseLocalStorage = canUseBrowserLocalStorage();
-const isBrowserSupported = bowser.check(
-  {
-    msedge: '14',
-    chrome: '56',
-    firefox: '52',
-    safari: '9',
-  },
-  true,
-);
+const isBrowserSupported =
+  bowser.check(
+    {
+      msedge: '14',
+      chrome: '56',
+      firefox: '52',
+      safari: '9',
+    },
+    true,
+  ) ||
+  (bowser.ios && String(bowser.osversion) >= '9');
 
 // Add unsupported tag to Raven so that we can filter out reports from those users
 Sentry.configureScope((scope) => {
