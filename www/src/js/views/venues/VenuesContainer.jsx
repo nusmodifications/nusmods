@@ -368,3 +368,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
 const responsiveVenueContainer = makeResponsive(VenuesContainerComponent, breakpointDown('sm'));
 const routedVenuesContainer = withRouter(responsiveVenueContainer);
 export default deferComponentRender(routedVenuesContainer);
+
+export function preload() {
+  VenueLocation.preload();
+}
