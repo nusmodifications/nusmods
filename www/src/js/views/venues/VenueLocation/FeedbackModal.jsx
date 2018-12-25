@@ -12,16 +12,16 @@ import styles from './VenueLocation.scss';
 
 type Page = 'menu' | 'form';
 
-type Props = {
-  venue: string,
-  isOpen: boolean,
-  onRequestClose: () => void,
-  existingLocation: ?VenueLocation,
-};
+type Props = {|
+  +venue: string,
+  +isOpen: boolean,
+  +onRequestClose: () => void,
+  +existingLocation: ?VenueLocation,
+|};
 
-type State = {
-  page: Page,
-};
+type State = {|
+  +page: Page,
+|};
 
 export default class FeedbackModal extends PureComponent<Props, State> {
   state: State = {
