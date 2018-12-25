@@ -4,13 +4,8 @@ import { getModuleSemesterData, getTimeslot } from 'utils/modules';
 import ModuleFilter from 'utils/filters/ModuleFilter';
 import type { Semester, Time, Day } from 'types/modules';
 
-const TimeslotTypesEnum = {
-  Lecture: 'Lecture',
-  Tutorial: 'Tutorial',
-};
-
-export const TimeslotTypes = Object.keys(TimeslotTypesEnum);
-export type TimeslotType = $Keys<typeof TimeslotTypesEnum>;
+export type TimeslotType = 'Lecture' | 'Tutorial';
+export const TimeslotTypes = ['Lecture', 'Tutorial'];
 
 // Map TimeslotTypes to the property on SemesterData that contains the lecture or tutorial
 // timeslot info

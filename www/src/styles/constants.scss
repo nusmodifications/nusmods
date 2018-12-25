@@ -29,7 +29,9 @@ $material-sharp-curve: cubic-bezier(0.4, 0, 0.6, 1);
 $page-entering-duration: $fullscreen-duration;
 $page-entering-animation: fadeIn;
 
-$alert-override-themes: success, danger, warning;
+$leaflet-control-offset: 0.5rem;
+
+$alert-override-themes: success, info, danger, warning;
 
 // Workload colors map
 $workload-colors: (
@@ -165,11 +167,14 @@ $nusmods-theme-colors: (
 );
 
 // Z-index
+$browser-warning-z-index: 9999;
 $snackbar-z-index: 2500;
 $sentry-z-index: 2000;
 $modal-z-index: 1500;
 $module-select-z-index: 960;
 $module-finder-search-z-index-sm: 950;
+$venue-map-z-index: 920;
+$venue-detail-z-index: 920; // Need to be higher than navtabs so they don't overlap expanded map
 $navtabs-z-index: 900;
 $navbar-z-index: 890;
 $module-finder-search-z-index-md: 850;
@@ -178,6 +183,7 @@ $fab-z-index: 800;
 $side-menu-z-index: 700;
 $side-menu-overlay-z-index: 690;
 $cors-notification-z-index: 500;
+$timetable-warning-z-index: 200;
 $timetable-scolled-day-z-index: 120;
 $timetable-selected-cell-z-index: 110;
 $timetable-timing-z-index: 95;

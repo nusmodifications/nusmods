@@ -3,12 +3,15 @@ import type { State } from 'reducers';
 import type { Semester } from 'types/modules';
 
 import React from 'react';
-import { connect, type MapStateToProps } from 'react-redux';
-import { withRouter, NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { NavLink, withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 
-import { Calendar, Heart, Map, BookOpen, Settings } from 'views/components/icons';
+import { BookOpen, Calendar, Clock, Heart, Map, Settings } from 'views/components/icons';
+import ExternalLink from 'views/components/ExternalLink';
+import Online from 'views/components/Online';
 import { timetablePage } from 'views/routes/paths';
+import NavRefreshPrompt from './NavRefreshPrompt';
 
 import styles from './Navtabs.scss';
 
@@ -16,6 +19,8 @@ export const NAVTAB_HEIGHT = 48;
 
 type Props = {
   activeSemester: Semester,
+  beta: boolean,
+  promptRefresh: boolean,
 };
 
 export function NavtabsComponent(props: Props) {
@@ -27,6 +32,12 @@ export function NavtabsComponent(props: Props) {
 
   return (
     <nav className={styles.nav}>
+      {props.beta && (
+        <NavLink {...tabProps} to="/today">
+          <Clock />
+          <span className={styles.title}>Today</span>
+        </NavLink>
+      )}
       <NavLink {...tabProps} to={timetablePage(props.activeSemester)}>
         <Calendar />
         <span className={styles.title}>Timetable</span>
@@ -42,24 +53,37 @@ export function NavtabsComponent(props: Props) {
       <NavLink {...tabProps} to="/settings">
         <Settings />
         <span className={styles.title}>Settings</span>
+        {props.promptRefresh && (
+          <Online>
+            <div
+              className={classnames(styles.updateDot)}
+              title="Update available"
+              aria-label="Update available"
+            />
+          </Online>
+        )}
       </NavLink>
       <div className={styles.divider} />
-      <a
+      <ExternalLink
         className={classnames(tabProps.className, styles.hiddenOnMobile)}
         href="https://nuswhispers.com"
-        target="_blank"
-        rel="noreferrer noopener"
       >
         <Heart />
         <span className={styles.title}>Whispers</span>
-      </a>
+      </ExternalLink>
+      {props.promptRefresh && (
+        <Online>
+          <NavRefreshPrompt />
+        </Online>
+      )}
     </nav>
   );
 }
 
-const mapStateToProps: MapStateToProps<*, *, *> = (state: State) => ({
+const connectedNavtabs = connect((state: State) => ({
   activeSemester: state.app.activeSemester,
-});
+  beta: state.settings.beta,
+  promptRefresh: state.app.promptRefresh,
+}))(NavtabsComponent);
 
-const connectedNavtabs = connect(mapStateToProps)(NavtabsComponent);
 export default withRouter(connectedNavtabs);

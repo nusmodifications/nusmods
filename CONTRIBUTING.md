@@ -20,23 +20,23 @@ We practice trunk-based development and do deployments from the `master` branch,
 
 We are using [GitHub Issues](https://github.com/nusmodifications/nusmods/issues) for our public bugs. Before filing a new task, try to make sure your problem doesn't already exist.
 
-#### Reporting New Issues
+#### Reporting Bug
 
-Simply open up the [new issue form](https://github.com/nusmodifications/nusmods/issues/new) and fill in the given template.
+Simply open up the [bug report form](https://github.com/nusmodifications/nusmods/issues/new?template=BUG_REPORT.md) and fill in the given template.
 
 ## How to Get in Touch
 
 We can be reached via the following methods, in order of preference.
 
-* Telegram: https://telegram.me/nusmods
-* Messenger: https://www.m.me/nusmods
-* Facebook: https://www.facebook.com/nusmods
-* Twitter: https://twitter.com/nusmods
-* Email: nusmods@googlegroups.com
+- Telegram: https://telegram.me/nusmods
+- Messenger: https://www.m.me/nusmods
+- Facebook: https://www.facebook.com/nusmods
+- Twitter: https://twitter.com/nusmods
+- Email: nusmods@googlegroups.com
 
 ## Proposing a Change
 
-If you intend to make any non-trivial changes to the UI or implementation in any of the projects, we recommend first [filing an issue](https://github.com/nusmodifications/nusmods/issues/new). This lets us reach an agreement on your proposal before you put significant effort into it.
+If you intend to make any non-trivial changes to the UI or implementation in any of the projects, we recommend first [filing an issue](https://github.com/nusmodifications/nusmods/issues/new?template=FEATURE_REQUEST.md). This lets us reach an agreement on your proposal before you put significant effort into it.
 
 If you're only fixing a bug, it's fine to submit a pull request right away but we still recommend to file an issue detailing what you're fixing. This is helpful in case we don't accept that specific fix but want to keep track of the issue.
 
@@ -67,8 +67,8 @@ Before submitting a pull request, please make sure the following is done:
 
 ## Contribution Prerequisites
 
-* You have [Node](https://nodejs.org/) installed at v8.0.0+ and [Yarn](https://yarnpkg.com/en/) at v1.2.0+. We recommend using [nvm](https://github.com/creationix/nvm) to manage your Node versions.
-* You are familiar with Git.
+- You have [Node](https://nodejs.org/) installed at v8.0.0+ and [Yarn](https://yarnpkg.com/en/) at v1.2.0+. We recommend using [nvm](https://github.com/creationix/nvm) to manage your Node versions.
+- You are familiar with Git.
 
 ## Development Workflow
 

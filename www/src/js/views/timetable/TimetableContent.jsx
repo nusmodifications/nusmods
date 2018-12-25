@@ -2,12 +2,19 @@
 import React, { Component, Fragment, type Node } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import _ from 'lodash';
+import _, { isEmpty } from 'lodash';
 
 import type { ModulesMap } from 'reducers/moduleBank';
-import type { ColorMapping, TimetableOrientation, NotificationOptions } from 'types/reducers';
+import type { ColorMapping, TimetableOrientation } from 'types/reducers';
 import { HORIZONTAL } from 'types/reducers';
-import type { Lesson, Module, ModuleCode, Semester } from 'types/modules';
+import type {
+  Lesson,
+  ColoredLesson,
+  Module,
+  ModuleCode,
+  Semester,
+  ModuleWithColor,
+} from 'types/modules';
 import type {
   SemTimetableConfig,
   SemTimetableConfigWithLessons,
@@ -15,7 +22,6 @@ import type {
 } from 'types/timetables';
 
 import { cancelModifyLesson, changeLesson, modifyLesson, removeModule } from 'actions/timetables';
-import { openNotification } from 'actions/app';
 import { undo } from 'actions/undoHistory';
 import {
   getModuleTimetable,
@@ -32,13 +38,17 @@ import {
   findExamClashes,
   getSemesterModules,
 } from 'utils/timetables';
+import config from 'config';
 import ModulesSelectContainer from 'views/timetable/ModulesSelectContainer';
 import CorsNotification from 'views/components/cors-info/CorsNotification';
-import Announcements from 'views/components/Announcements';
+import Announcements from 'views/components/notfications/Announcements';
 import Title from 'views/components/Title';
+import NoLessonWarning from 'views/timetable/NoLessonWarning';
 import Timetable from './Timetable';
 import TimetableActions from './TimetableActions';
 import TimetableModulesTable from './TimetableModulesTable';
+import ExamCalendar from './ExamCalendar';
+import ModulesTableFooter from './ModulesTableFooter';
 import styles from './TimetableContent.scss';
 
 type Props = {
@@ -64,17 +74,20 @@ type Props = {
   cancelModifyLesson: Function,
   toggleTimetableOrientation: Function,
   toggleTitleDisplay: Function,
-  openNotification: (string, NotificationOptions) => void,
   undo: () => void,
 };
 
 type State = {
   isScrolledHorizontally: boolean,
+  showExamCalendar: boolean,
+  tombstone: ?ModuleWithColor,
 };
 
 class TimetableContent extends Component<Props, State> {
   state: State = {
     isScrolledHorizontally: false,
+    showExamCalendar: false,
+    tombstone: null,
   };
 
   componentWillUnmount() {
@@ -112,60 +125,46 @@ class TimetableContent extends Component<Props, State> {
     }
   };
 
-  removeModule = (moduleCode) => {
-    // Display alert on iPhones and iPod touches because snackbar action will take 2 taps
-    // TODO: Replace with a more permanent solution
-    // Using indexOf() as userAgent doesn't have contains()
-    const { userAgent } = navigator;
-    if (userAgent.indexOf('iPhone') !== -1 || userAgent.indexOf('iPod') !== -1) {
-      const confirmMessage = `Are you sure you want to remove ${moduleCode}?`;
-      if (window.confirm(confirmMessage)) {
-        this.props.removeModule(this.props.semester, moduleCode);
-      }
-      return;
-    }
+  removeModule = (module) => {
+    this.props.removeModule(this.props.semester, module.ModuleCode);
 
-    this.props.removeModule(this.props.semester, moduleCode);
-    this.props.openNotification(`Removed ${moduleCode}`, {
-      timeout: 12000,
-      overwritable: true,
-      action: {
-        text: 'Undo',
-        handler: this.props.undo,
-      },
-    });
+    // A tombstone is displayed in place of a deleted module
+    this.setState({ tombstone: module });
   };
 
+  resetTombstone = () => this.setState({ tombstone: null });
+
   // Returns modules currently in the timetable
-  addedModules(): Array<Module> {
+  addedModules(): Module[] {
     const modules = getSemesterModules(this.props.timetableWithLessons, this.props.modules);
     return _.sortBy(modules, (module: Module) => getModuleExamDate(module, this.props.semester));
   }
 
-  // Returns component with table(s) of modules
-  renderModuleSections(horizontalOrientation) {
-    const { readOnly } = this.props;
+  renderModuleTable = (modules, horizontalOrientation, tombstone) => (
+    <TimetableModulesTable
+      modules={modules.map((module) => ({
+        ...module,
+        colorIndex: this.props.colors[module.ModuleCode],
+        hiddenInTimetable: this.isHiddenInTimetable(module.ModuleCode),
+      }))}
+      horizontalOrientation={horizontalOrientation}
+      semester={this.props.semester}
+      onRemoveModule={this.removeModule}
+      readOnly={this.props.readOnly}
+      tombstone={tombstone}
+      resetTombstone={this.resetTombstone}
+    />
+  );
 
-    const renderModuleTable = (modules) => (
-      <TimetableModulesTable
-        modules={modules.map((module) => ({
-          ...module,
-          colorIndex: this.props.colors[module.ModuleCode],
-          hiddenInTimetable: this.isHiddenInTimetable(module.ModuleCode),
-        }))}
-        horizontalOrientation={horizontalOrientation}
-        semester={this.props.semester}
-        onRemoveModule={this.removeModule}
-        readOnly={readOnly}
-      />
-    );
+  // Returns component with table(s) of modules
+  renderModuleSections(modules, horizontalOrientation) {
+    const { tombstone } = this.state;
 
     // Separate added modules into sections of clashing modules
-    const modules = this.addedModules();
     const clashes: { [string]: Array<Module> } = findExamClashes(modules, this.props.semester);
     const nonClashingMods: Array<Module> = _.difference(modules, _.flatten(_.values(clashes)));
 
-    if (_.isEmpty(clashes) && _.isEmpty(nonClashingMods)) {
+    if (_.isEmpty(clashes) && _.isEmpty(nonClashingMods) && !tombstone) {
       return (
         <div className="row">
           <div className="col-sm-12">
@@ -189,13 +188,13 @@ class TimetableContent extends Component<Props, State> {
                   <p>
                     Clash on <strong>{formatExamDate(clashDate)}</strong>
                   </p>
-                  {renderModuleTable(clashes[clashDate])}
+                  {this.renderModuleTable(clashes[clashDate], horizontalOrientation)}
                 </div>
               ))}
             <hr />
           </Fragment>
         )}
-        {renderModuleTable(nonClashingMods)}
+        {this.renderModuleTable(nonClashingMods, horizontalOrientation, tombstone)}
       </Fragment>
     );
   }
@@ -211,6 +210,8 @@ class TimetableContent extends Component<Props, State> {
       readOnly,
     } = this.props;
 
+    const { showExamCalendar } = this.state;
+
     let timetableLessons: Lesson[] = timetableLessonsArray(this.props.timetableWithLessons)
       // Do not process hidden modules
       .filter((lesson) => !this.isHiddenInTimetable(lesson.ModuleCode));
@@ -225,12 +226,13 @@ class TimetableContent extends Component<Props, State> {
       const module = modules[moduleCode];
       const moduleTimetable = getModuleTimetable(module, semester);
       lessonsForLessonType(moduleTimetable, activeLesson.LessonType).forEach((lesson) => {
-        const modifiableLesson = {
+        const modifiableLesson: Object = {
           ...lesson,
           // Inject module code in
           ModuleCode: moduleCode,
           ModuleTitle: module.ModuleTitle,
         };
+
         if (areLessonsSameClass(modifiableLesson, activeLesson)) {
           modifiableLesson.isActive = true;
         } else if (lesson.LessonType === activeLesson.LessonType) {
@@ -241,12 +243,14 @@ class TimetableContent extends Component<Props, State> {
     }
 
     // Inject color into module
-    timetableLessons = timetableLessons.map((lesson): Lesson => ({
-      ...lesson,
-      colorIndex: colors[lesson.ModuleCode],
-    }));
+    const coloredTimetableLessons = timetableLessons.map(
+      (lesson: Lesson): ColoredLesson => ({
+        ...lesson,
+        colorIndex: colors[lesson.ModuleCode],
+      }),
+    );
 
-    const arrangedLessons = arrangeLessonsForWeek(timetableLessons);
+    const arrangedLessons = arrangeLessonsForWeek(coloredTimetableLessons);
     const arrangedLessonsWithModifiableFlag: TimetableArrangement = _.mapValues(
       arrangedLessons,
       (dayRows) =>
@@ -266,6 +270,9 @@ class TimetableContent extends Component<Props, State> {
 
     const isVerticalOrientation = timetableOrientation !== HORIZONTAL;
     const isShowingTitle = !isVerticalOrientation && showTitle;
+    const showNoLessonWarning =
+      !config.timetableAvailable.includes(semester) && isEmpty(arrangedLessonsWithModifiableFlag);
+    const addedModules = this.addedModules();
 
     return (
       <div
@@ -290,15 +297,27 @@ class TimetableContent extends Component<Props, State> {
               'col-md-8': isVerticalOrientation,
             })}
           >
-            <div className={styles.timetableWrapper} onScroll={this.onScroll}>
-              <Timetable
-                lessons={arrangedLessonsWithModifiableFlag}
-                isVerticalOrientation={isVerticalOrientation}
-                isScrolledHorizontally={this.state.isScrolledHorizontally}
-                showTitle={isShowingTitle}
-                onModifyCell={this.modifyCell}
+            {showExamCalendar ? (
+              <ExamCalendar
+                semester={semester}
+                modules={addedModules.map((module) => ({
+                  ...module,
+                  colorIndex: this.props.colors[module.ModuleCode],
+                  hiddenInTimetable: this.isHiddenInTimetable(module.ModuleCode),
+                }))}
               />
-            </div>
+            ) : (
+              <div className={styles.timetableWrapper} onScroll={this.onScroll}>
+                <Timetable
+                  lessons={arrangedLessonsWithModifiableFlag}
+                  isVerticalOrientation={isVerticalOrientation}
+                  isScrolledHorizontally={this.state.isScrolledHorizontally}
+                  showTitle={isShowingTitle}
+                  onModifyCell={this.modifyCell}
+                />
+                {showNoLessonWarning && <NoLessonWarning />}
+              </div>
+            )}
           </div>
           <div
             className={classnames({
@@ -313,14 +332,23 @@ class TimetableContent extends Component<Props, State> {
                   showTitle={isShowingTitle}
                   semester={semester}
                   timetable={this.props.timetable}
+                  showExamCalendar={showExamCalendar}
+                  toggleExamCalendar={() => this.setState({ showExamCalendar: !showExamCalendar })}
                 />
               </div>
+
               <div className={styles.modulesSelect}>
                 {!readOnly && (
                   <ModulesSelectContainer semester={semester} timetable={this.props.timetable} />
                 )}
               </div>
-              <div className="col-md-12">{this.renderModuleSections(!isVerticalOrientation)}</div>
+
+              <div className="col-12">
+                {this.renderModuleSections(addedModules, !isVerticalOrientation)}
+              </div>
+              <div className="col-12">
+                <ModulesTableFooter modules={addedModules} />
+              </div>
             </div>
           </div>
         </div>
@@ -347,11 +375,13 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default connect(mapStateToProps, {
-  removeModule,
-  modifyLesson,
-  changeLesson,
-  cancelModifyLesson,
-  openNotification,
-  undo,
-})(TimetableContent);
+export default connect(
+  mapStateToProps,
+  {
+    removeModule,
+    modifyLesson,
+    changeLesson,
+    cancelModifyLesson,
+    undo,
+  },
+)(TimetableContent);

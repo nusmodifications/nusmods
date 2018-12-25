@@ -3,7 +3,8 @@
   border-color: darken($color, 20%);
   background-color: $color;
 
-  &:enabled:hover {
+  &.hoverable:hover,
+  &.hoverable.hover {
     background-color: darken($color, 10%);
   }
 }

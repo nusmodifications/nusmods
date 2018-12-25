@@ -1,16 +1,23 @@
 // This file contains the styles for the overall site
 
-// HACK: Stops this rule from activating on small screens - mainly to stop
-// this from running on iOS Safari 9
-@media (min-height: 50rem) {
+html,
+body,
+#app,
+.app-container {
+  // Ensures the page always fill the height of the page. Combined with the
+  // flexbox on .app-container, this allows the footer to be aligned to the
+  // page bottom when there's insufficient page content
+  height: 100%;
+}
+
+// Disables the above rule on iOS 9 - on Mobile Safari 9 the browser takes 100% to
+// be 100% of the viewport only, which means the page becomes unscrollerable and the
+// footer appears at the bottom of the page with no scrolling
+// See https://solvit.io/bcf61b6 for the hack
+@supports (overflow: -webkit-marquee) and (justify-content: inherit) {
   html,
-  body,
-  #app,
-  .app-container {
-    // Ensures the page always fill the height of the page. Combined with the
-    // flexbox on .app-container, this allows the footer to be aligned to the
-    // page bottom when there's insufficient page content
-    height: 100%;
+  body {
+    height: auto;
   }
 }
 

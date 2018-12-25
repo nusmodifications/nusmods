@@ -1,6 +1,6 @@
 {
   "name": "nusmoderator",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "A lightweight library with helpful functions for NUS-related matters",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
@@ -20,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/nusmodifications/nusmoderator.git"
+    "url": "https://github.com/nusmodifications/nusmods.git"
   },
   "keywords": [
     "NUS",
@@ -36,22 +36,22 @@
   "author": "NUSModifications",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/nusmodifications/nusmoderator/issues"
+    "email": "mods@nusmods.com"
   },
-  "homepage": "https://github.com/nusmodifications/nusmoderator",
+  "homepage": "https://github.com/nusmodifications/nusmods/tree/master/packages/nusmoderator",
   "npmName": "nusmoderator",
   "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-eslint": "^7.0.0",
-    "babel-jest": "^22.0.4",
-    "babel-preset-env": "^1.6.1",
-    "documentation": "^5.3.5",
-    "eslint": "4.9.0",
-    "eslint-config-airbnb-base": "^12.1.0w",
-    "eslint-plugin-flowtype": "^2.20.0",
-    "eslint-plugin-import": "2.7.0",
-    "jest": "^22.0.4",
-    "microbundle": "^0.2.4",
-    "rimraf": "^2.5.4"
+    "babel-core": "6.26.0",
+    "babel-eslint": "8.2.2",
+    "babel-jest": "22.4.1",
+    "babel-preset-env": "1.7.0",
+    "documentation": "6.1.0",
+    "eslint": "4.19.1",
+    "eslint-config-airbnb-base": "12.1.0",
+    "eslint-plugin-flowtype": "2.46.1",
+    "eslint-plugin-import": "2.9.0",
+    "jest": "22.4.2",
+    "microbundle": "0.6.0",
+    "rimraf": "2.6.2"
   }
 }

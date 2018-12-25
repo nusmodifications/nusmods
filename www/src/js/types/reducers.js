@@ -3,12 +3,13 @@ import type {
   Faculty,
   Lesson,
   ModuleCode,
-  SearchableModule,
   ModuleCondensed,
+  SearchableModule,
   Semester,
 } from 'types/modules';
 import type { Mode } from 'types/settings';
 import type { TimetableConfig } from 'types/timetables';
+import type { ModuleTableOrder } from 'types/views';
 
 /* app.js */
 export type NotificationOptions = {
@@ -52,19 +53,23 @@ export type AppState = {
   +isLoginModalOpen: boolean,
   +isFeedbackModalOpen: boolean,
   +notifications: NotificationData[],
+  +promptRefresh: boolean,
 };
 
 /* requests.js */
-export type RequestType = string;
+export type RequestKey = string;
+
+export type ApiStatus = '_REQUEST' | '_SUCCESS' | '_FAILURE';
+export const REQUEST = '_REQUEST';
+export const SUCCESS = '_SUCCESS';
+export const FAILURE = '_FAILURE';
 
 export type FetchRequest = {
-  isPending: boolean,
-  isSuccessful: boolean,
-  isFailure: boolean,
+  status: ApiStatus,
   error?: any,
 };
 
-export type Requests = { [RequestType]: FetchRequest };
+export type Requests = { [RequestKey]: FetchRequest };
 
 /* theme.js */
 export type TimetableOrientation = 'HORIZONTAL' | 'VERTICAL';
@@ -90,6 +95,8 @@ export type SettingsState = {
   +mode: Mode,
   +hiddenInTimetable: ModuleCode[],
   +corsNotification: CorsNotificationSettings,
+  +moduleTableOrder: ModuleTableOrder,
+  +beta?: boolean,
 };
 
 /* timetables.js */
@@ -105,11 +112,14 @@ export type TimetablesState = {
   +colors: SemesterColorMap,
   +hidden: HiddenModulesMap,
   +academicYear: string,
+  // Mapping of academic year to old timetable config
+  +archive: { [string]: TimetableConfig },
 };
 
 /* moduleBank.js */
 export type ModuleSelectListItem = SearchableModule & {
   +isAdded: boolean,
+  +isAdding: boolean,
 };
 export type ModuleList = ModuleCondensed[];
 export type ModuleSelectList = ModuleSelectListItem[];
@@ -119,11 +129,11 @@ export type ModuleCodeMap = { [ModuleCode]: ModuleCondensed };
 // VenueList is defined in venues.js
 
 /* moduleFinder.js */
-export type ModuleSearch = {
+export type ModuleSearch = {|
   +term: string,
   +tokens: string[],
-};
+|};
 
-export type ModuleFinderState = {
+export type ModuleFinderState = {|
   +search: ModuleSearch,
-};
+|};

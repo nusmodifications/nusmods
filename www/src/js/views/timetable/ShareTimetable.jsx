@@ -41,9 +41,11 @@ function shareUrl(semester: Semester, timetable: SemTimetableConfig): string {
 export const SHORT_URL_KEY = 'shorturl';
 
 export default class ShareTimetable extends PureComponent<Props, State> {
-  urlInput: ?HTMLInputElement;
+  // Save a copy of the current URL to detect when URL changes
   url: ?string;
-  QRCode: ?Object;
+
+  // React QR component is lazy loaded for performance
+  static QRCode: ?ComponentType<any>;
 
   state: State = {
     isOpen: false,
@@ -51,12 +53,19 @@ export default class ShareTimetable extends PureComponent<Props, State> {
     shortUrl: null,
   };
 
+  componentDidMount() {
+    if (!ShareTimetable.QRCode) {
+      import(/* webpackChunkName: "export" */ 'react-qr-svg').then((module) => {
+        ShareTimetable.QRCode = module.QRCode;
+        this.forceUpdate();
+      });
+    }
+  }
+
+  urlInput = React.createRef<HTMLInputElement>();
+
   loadShortUrl(url: string) {
     const showFullUrl = () => this.setState({ shortUrl: url });
-
-    import(/* webpackChunkName: "export" */ 'react-qr-svg').then((module) => {
-      this.QRCode = module.QRCode;
-    });
 
     axios
       .get('/short_url.php', { params: { url }, timeout: 2000 })
@@ -97,7 +106,7 @@ export default class ShareTimetable extends PureComponent<Props, State> {
     });
 
   copyText = () => {
-    const input = this.urlInput;
+    const input = this.urlInput.current;
 
     if (input) {
       input.select();
@@ -113,7 +122,7 @@ export default class ShareTimetable extends PureComponent<Props, State> {
   };
 
   renderSharing(url: string) {
-    const { QRCode, props: { semester } } = this;
+    const { semester } = this.props;
 
     return (
       <div>
@@ -121,9 +130,7 @@ export default class ShareTimetable extends PureComponent<Props, State> {
           <input
             value={url}
             className={classnames('form-control', styles.url)}
-            ref={(r) => {
-              this.urlInput = r;
-            }}
+            ref={this.urlInput}
             readOnly
           />
           <div className="input-group-append">
@@ -148,7 +155,9 @@ export default class ShareTimetable extends PureComponent<Props, State> {
         <div className="row">
           <div className="col-sm-4">
             <h3 className={styles.shareHeading}>QR Code</h3>
-            <div className={styles.qrCode}>{QRCode && <QRCode value={url} />}</div>
+            <div className={styles.qrCode}>
+              {ShareTimetable.QRCode && <ShareTimetable.QRCode value={url} />}
+            </div>
           </div>
           <div className="col-sm-4">
             <h3 className={styles.shareHeading}>Via email</h3>
@@ -203,7 +212,7 @@ export default class ShareTimetable extends PureComponent<Props, State> {
           Share/Sync
         </button>
 
-        <Modal isOpen={isOpen} onRequestClose={this.closeModal}>
+        <Modal isOpen={isOpen} onRequestClose={this.closeModal} animate>
           <CloseButton absolutePositioned onClick={this.closeModal} />
           <div className={styles.header}>
             <Repeat />

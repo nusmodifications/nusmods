@@ -4,7 +4,7 @@ import React, { type Node, Component } from 'react';
 import ReactModal from 'react-modal';
 import classnames from 'classnames';
 
-import noScroll from 'utils/noScroll';
+import disableScrolling from 'utils/disableScrolling';
 import styles from './Modal.scss';
 
 type Props = {
@@ -13,6 +13,7 @@ type Props = {
   className?: string,
   children: Node,
   fullscreen: boolean,
+  animate?: boolean,
 };
 
 export default class Modal extends Component<Props> {
@@ -21,31 +22,32 @@ export default class Modal extends Component<Props> {
   };
 
   componentDidMount() {
-    noScroll(this.props.isOpen);
+    disableScrolling(this.props.isOpen);
   }
 
-  // noScroll must trigger before actual opening of modal
-  componentWillUpdate(nextProps: Props) {
-    if (this.props.isOpen !== nextProps.isOpen) {
-      noScroll(nextProps.isOpen);
+  componentDidUpdate(prevProps: Props) {
+    if (this.props.isOpen !== prevProps.isOpen) {
+      disableScrolling(this.props.isOpen);
     }
   }
 
   componentWillUnmount() {
-    // Ensure noScroll is disabled if the component is unmounted without
-    // the modal closing
-    noScroll(false);
+    // Ensure disableScrolling is disabled if the component is
+    // unmounted without the modal closing
+    disableScrolling(false);
   }
 
   render() {
-    const { className, overlayClassName, children, fullscreen, ...rest } = this.props;
+    const { className, overlayClassName, children, fullscreen, animate, ...rest } = this.props;
 
     return (
       <ReactModal
         overlayClassName={classnames(styles.overlay, overlayClassName)}
         className={classnames(styles.modal, className, {
           [styles.fullscreen]: fullscreen,
+          [styles.animated]: animate,
         })}
+        closeTimeoutMS={animate ? 150 : 0}
         {...rest}
       >
         {children}

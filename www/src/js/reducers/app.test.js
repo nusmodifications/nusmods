@@ -21,6 +21,7 @@ const appInitialState: AppState = {
   isOnline: true,
   isLoginModalOpen: false,
   isFeedbackModalOpen: false,
+  promptRefresh: false,
   notifications: [],
 };
 const appHasSemesterTwoState: AppState = { ...appInitialState, activeSemester: anotherSemester };

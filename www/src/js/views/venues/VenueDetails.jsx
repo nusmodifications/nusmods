@@ -1,5 +1,4 @@
 // @flow
-
 import React, { Fragment, PureComponent } from 'react';
 import { Link, withRouter, type ContextRouter } from 'react-router-dom';
 import classnames from 'classnames';
@@ -15,26 +14,30 @@ import Timetable from 'views/timetable/Timetable';
 import makeResponsive from 'views/hocs/makeResponsive';
 import { modulePage, venuePage } from 'views/routes/paths';
 import Title from 'views/components/Title';
+import { mergeDualCodedModules } from 'utils/venues';
 import { breakpointDown } from 'utils/css';
+import VenueLocation from './VenueLocation';
 
 import styles from './VenueDetails.scss';
 
-type Props = {
+type Props = {|
   ...ContextRouter,
 
-  venue: Venue,
-  previous?: ?Venue,
-  next?: ?Venue,
-  availability: DayAvailability[],
+  +venue: Venue,
+  +previous?: ?Venue,
+  +next?: ?Venue,
+  +availability: DayAvailability[],
 
-  matchBreakpoint: boolean,
-};
+  +matchBreakpoint: boolean,
+|};
 
 export class VenueDetailsComponent extends PureComponent<Props> {
   arrangedLessons() {
-    const lessons = flatMap(this.props.availability, (day): VenueLesson[] => day.Classes).map(
-      (venueLesson) => ({ ...venueLesson, ModuleTitle: '', isModifiable: true }),
-    );
+    const lessons = flatMap(
+      this.props.availability,
+      (day): VenueLesson[] => mergeDualCodedModules(day.Classes),
+    ).map((venueLesson) => ({ ...venueLesson, ModuleTitle: '', isModifiable: true }));
+
     const coloredLessons = colorLessonsByKey(lessons, 'ModuleCode');
     return arrangeLessonsForWeek(coloredLessons);
   }
@@ -44,7 +47,7 @@ export class VenueDetailsComponent extends PureComponent<Props> {
 
     return (
       <Fragment>
-        <Title>{`${venue} - Venues`}</Title>
+        <Title description={`NUS classroom timetable for ${venue}`}>{`${venue} - Venues`}</Title>
 
         <header className={styles.header}>
           <Link
@@ -71,6 +74,10 @@ export class VenueDetailsComponent extends PureComponent<Props> {
             {next} <ChevronRight />
           </Link>
         </header>
+
+        <div className={styles.location}>
+          <VenueLocation venue={venue} />
+        </div>
 
         <div className={classnames(styles.timetable, { verticalMode: matchBreakpoint })}>
           <Timetable

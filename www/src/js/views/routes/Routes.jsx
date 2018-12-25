@@ -1,6 +1,6 @@
 // @flow
-import React, { type Node } from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import React from 'react';
+import { Redirect, Route, Switch } from 'react-router-dom';
 
 import TimetableContainer from 'views/timetable/TimetableContainer';
 import ModulePageContainer from 'views/modules/ModulePageContainer';
@@ -13,7 +13,10 @@ import ContributorsContainer from 'views/static/ContributorsContainer';
 import FaqContainer from 'views/static/FaqContainer';
 import AppsContainer from 'views/static/AppsContainer';
 import NotFoundPage from 'views/errors/NotFoundPage';
+import TodayContainer from 'views/today/TodayContainer';
+import ExternalRedirect from './ExternalRedirect';
 
+// IMPORTANT: Remember to update any route changes on the sitemap
 export default function Routes() {
   return (
     <Switch>
@@ -21,10 +24,12 @@ export default function Routes() {
       <Route path="/timetable/:semester?/:action?" component={TimetableContainer} />
       <Route exact path="/modules" component={ModuleFinderContainer} />
       <Route path="/modules/:moduleCode/:slug?" component={ModulePageContainer} />
+      <Route path="/archive/:moduleCode/:year/:slug?" component={ModulePageContainer} />
       <Route path="/venues/:venue?" component={VenuesContainer} />
+      <Route path="/today" component={TodayContainer} />
+
       <Route path="/about" component={AboutContainer} />
       <Route path="/faq" component={FaqContainer} />
-      <Route path="/contact" component={FaqContainer} />
       <Route path="/settings" component={SettingsContainer} />
       <Route path="/team" component={TeamContainer} />
       <Route path="/contributors" component={ContributorsContainer} />
@@ -33,20 +38,11 @@ export default function Routes() {
       {/* v2 routes */}
       <Redirect from="/venueavailability" to="/venues" />
       <Redirect from="/contribute/developers" to="/contributors" />
-      <Route
-        path="/news/nusdiscount"
-        render={(): Node => {
-          window.location = 'https://www.facebook.com/nusdiscount/';
-          return null;
-        }}
-      />
-      <Route
-        path="/news/bareNUS"
-        render={(): Node => {
-          window.location = 'https://www.facebook.com/bareNUS';
-          return null;
-        }}
-      />
+      <Redirect from="/contact" to="/faq" />
+      <Redirect from="/help" to="/faq" />
+      <ExternalRedirect path="/news/nusdiscount" to="https://www.facebook.com/nusdiscount/" />
+      <ExternalRedirect path="/news/bareNUS" to="https://www.facebook.com/bareNUS" />
+      <ExternalRedirect path="/api" to="https://api.nusmods.com" appendPath />
 
       {/* 404 page */}
       <Route component={NotFoundPage} />

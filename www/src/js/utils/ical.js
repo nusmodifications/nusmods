@@ -2,7 +2,7 @@
 import _ from 'lodash';
 import type { EventOption } from 'ical-generator';
 
-import type { RawLesson, Module, ModuleCode, Semester } from 'types/modules';
+import type { Module, ModuleCode, RawLesson, Semester } from 'types/modules';
 import type {
   ModuleLessonConfigWithLessons,
   SemTimetableConfigWithLessons,
@@ -11,6 +11,7 @@ import type {
 import config from 'config';
 import academicCalendar from 'data/academic-calendar.json';
 import { getModuleSemesterData } from 'utils/modules';
+import { daysAfter } from 'utils/timify';
 
 const SG_UTC_TIME_DIFF_MS = 8 * 60 * 60 * 1000;
 export const RECESS_WEEK = -1;
@@ -39,18 +40,9 @@ function getExamDate(module: Module, semester: Semester): string {
 }
 
 /**
- * Return a copy of the original Date incremented by the given number of days
- */
-export function daysAfter(startDate: Date, days: number): Date {
-  const d = new Date(startDate.valueOf());
-  d.setUTCDate(d.getUTCDate() + days);
-  return d;
-}
-
-/**
  * Return a copy of the original Date incremented by the given number of hours
  */
-export function hoursAfter(date: Date, sgHour: number) {
+export function hoursAfter(date: Date, sgHour: number): Date {
   const d = new Date(date.valueOf());
   d.setUTCHours(d.getUTCHours() + Math.floor(sgHour), (sgHour % 1) * 60);
   return d;
@@ -76,7 +68,7 @@ export function isTutorial(lesson: RawLesson): boolean {
   );
 }
 
-export function holidaysForYear(hourOffset: number = 0) {
+export function holidaysForYear(hourOffset: number = 0): Date[] {
   return config.holidays
     .map((date) => new Date(date.valueOf() - SG_UTC_TIME_DIFF_MS)) // Convert to local time
     .map((holiday) => hoursAfter(holiday, hourOffset));
@@ -126,7 +118,6 @@ export function calculateExclusion(lesson: RawLesson, firstLesson: Date) {
     default: {
       const weeksWithClasses = lesson.WeekText.split(',').map((w) => parseInt(w, 10));
       excludedWeeks = _.union(excludedWeeks, _.difference(ALL_WEEKS, weeksWithClasses));
-      break;
     }
   }
 

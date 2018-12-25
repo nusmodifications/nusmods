@@ -1,10 +1,10 @@
 // @flow
 import type { FSA } from 'types/redux';
 import type {
-  Requests,
-  SettingsState,
   AppState,
   ModuleFinderState,
+  Requests,
+  SettingsState,
   TimetablesState,
 } from 'types/reducers';
 import type { ModuleBank } from 'reducers/moduleBank';
@@ -25,7 +25,7 @@ import createUndoReducer from './undoHistory';
 // Persisted reducers
 import moduleBankReducer, { persistConfig as moduleBankPersistConfig } from './moduleBank';
 import venueBankReducer, { persistConfig as venueBankPersistConfig } from './venueBank';
-import timetablesReducer from './timetables';
+import timetablesReducer, { persistConfig as timetablesPersistConfig } from './timetables';
 import themeReducer from './theme';
 import settingsReducer from './settings';
 
@@ -42,13 +42,14 @@ export type State = {
 };
 
 // Convenience function to both persist and sync a reducer
-const persistAndSyncReducer = (key: string, reducer: Function) =>
-  persistReducer(key, syncReducer(key, reducer));
+const persistAndSyncReducer = (key: string, reducer: Function, config) =>
+  // $FlowFixMe - 'S is incompatible with undefined in the first argument'?
+  persistReducer(key, syncReducer(key, reducer), config);
 
 // Persist reducers
 const moduleBank = persistReducer('moduleBank', moduleBankReducer, moduleBankPersistConfig);
 const venueBank = persistReducer('venueBank', venueBankReducer, venueBankPersistConfig);
-const timetables = persistAndSyncReducer('timetables', timetablesReducer);
+const timetables = persistAndSyncReducer('timetables', timetablesReducer, timetablesPersistConfig);
 const theme = persistAndSyncReducer('theme', themeReducer);
 const settings = persistAndSyncReducer('settings', settingsReducer);
 

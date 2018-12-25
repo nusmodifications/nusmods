@@ -1,5 +1,7 @@
 @import "./_variables.scss";
 
+$btn-margin: 0.25rem;
+
 .sidebarIcon {
   composes: svg svg-small from global;
   transform: rotate(180deg);
@@ -11,12 +13,6 @@
 
 .titleIcon {
   composes: svg svg-small from global;
-}
-
-.orientationBtn {
-  @include vertical-mode {
-    flex: 1;
-  }
 }
 
 .titleBtn {
@@ -54,6 +50,20 @@
   .rightButtonGroup,
   .leftButtonGroup {
     width: 100%;
+    min-width: 0;
+  }
+
+  .leftButtonGroup {
+    flex-wrap: wrap;
+
+    > * {
+      width: calc(50% - #{$btn-margin});
+    }
+
+    .calendarBtn {
+      width: 100%;
+      margin-top: 0.5rem;
+    }
   }
 }
 
@@ -69,16 +79,20 @@
   min-width: 16rem;
 
   > * {
-    width: calc(50% - 0.25rem);
+    width: calc(50% - #{$btn-margin});
   }
 }
 
 .leftButtonGroup {
   justify-content: space-between;
-  min-width: 17rem;
+  min-width: 25rem;
 
   > * {
-    width: calc(50% - 0.25rem);
+    width: calc(31% - #{$btn-margin});
+  }
+
+  .calendarBtn {
+    width: calc(38% - #{$btn-margin});
   }
 }
 
@@ -90,12 +104,16 @@
 
   @include layout-1;
 
-  @include media-breakpoint-only(sm) {
-    @include layout-2;
+  .leftButtonGroup > * { // stylelint-disable-line
+    width: 100%;
   }
 
-  @media (min-width: 90rem) {
-    @include layout-2;
+  @include media-breakpoint-only(sm) {
+    .leftButtonGroup > *,
+    .leftButtonGroup .calendarBtn {
+      width: calc(50% - #{$btn-margin});
+      margin: 0;
+    }
   }
 }
 

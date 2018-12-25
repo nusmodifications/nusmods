@@ -1,36 +1,36 @@
 // Based on the original Bootstrap colors for alerts
 @mixin alert-variables($name) {
-  --alert-#{$name}-color: theme-color-level($name, 6);
-  --alert-#{$name}-background: theme-color-level($name, -10);
-  --alert-#{$name}-border: theme-color-level($name, -7);
+  --alert-#{$name}-color: #{theme-color-level($name, 6)};
+  --alert-#{$name}-background: #{theme-color-level($name, -10)};
+  --alert-#{$name}-border: #{theme-color-level($name, -7)};
 }
 
 @mixin alert-variables-dark($name) {
-  --alert-#{$name}-color: theme-color-level($name, -6);
-  --alert-#{$name}-background: theme-color-level($name, 9);
-  --alert-#{$name}-border: theme-color-level($name, 6);
+  --alert-#{$name}-color: #{theme-color-level($name, -6)};
+  --alert-#{$name}-background: #{theme-color-level($name, 9)};
+  --alert-#{$name}-border: #{theme-color-level($name, 6)};
 }
 
 // Root and dark mode CSS variable declaration
 :root {
   // Body background
-  --body-bg: $body-bg;
-  --body-bg-40: rgba($body-bg, 0.4);
-  --body-bg-70: rgba($body-bg, 0.7);
-  --body-bg-transparent: rgba($body-bg, 0);
+  --body-bg: #{$body-bg};
+  --body-bg-40: #{rgba($body-bg, 0.4)};
+  --body-bg-70: #{rgba($body-bg, 0.7)};
+  --body-bg-transparent: #{rgba($body-bg, 0)};
 
   // Shadows
-  --navtab-shadow: rgba(#000, 0.1);
+  --navtab-shadow: #{rgba(#000, 0.1)};
 
   // Body font color
-  --body-color: $body-color;
+  --body-color: #{$body-color};
 
   // Shade of grays
-  --gray: $gray;
-  --gray-light: $gray-light;
-  --gray-lighter: $gray-lighter;
-  --gray-lightest: $gray-lightest;
-  --gray-dark: $gray-dark;
+  --gray: #{$gray};
+  --gray-light: #{$gray-light};
+  --gray-lighter: #{$gray-lighter};
+  --gray-lightest: #{$gray-lightest};
+  --gray-dark: #{$gray-dark};
 
   // Alert colors
   @each $color in $alert-override-themes {
@@ -39,19 +39,19 @@
 
   // Workload colors
   @each $name, $color in $workload-colors {
-    --workload-#{$name}-bg: $color;
-    --workload-#{$name}-color: darken($color, 50);
+    --workload-#{$name}-bg: #{$color};
+    --workload-#{$name}-color: #{darken($color, 50)};
   }
 }
 
 body.mode-dark {
-  --body-bg: $gray-dark;
-  --body-bg-40: rgba($gray-dark, 0.4);
-  --body-bg-70: rgba($gray-dark, 0.7);
-  --body-bg-transparent: rgba($gray-dark, 0);
+  --body-bg: #{$gray-dark};
+  --body-bg-40: #{rgba($gray-dark, 0.4)};
+  --body-bg-70: #{rgba($gray-dark, 0.7)};
+  --body-bg-transparent: #{rgba($gray-dark, 0)};
 
   // Shadows
-  --navtab-shadow: rgba(#000, 0.26);
+  --navtab-shadow: #{rgba(#000, 0.26)};
 
   // Body font color
   --body-color: #aaa;
@@ -61,7 +61,7 @@ body.mode-dark {
   --gray-light: #666;
   --gray-lighter: #474747;
   --gray-lightest: #292929;
-  --gray-dark: invert($gray-dark);
+  --gray-dark: #{invert($gray-dark)};
 
   // Alert colors
   @each $color in $alert-override-themes {
@@ -70,7 +70,7 @@ body.mode-dark {
 
   // Workload colors
   @each $name, $color in $workload-colors {
-    --workload-#{$name}-bg: darken($color, 65);
-    --workload-#{$name}-color: darken($color, 30);
+    --workload-#{$name}-bg: #{darken($color, 65)};
+    --workload-#{$name}-color: #{darken($color, 30)};
   }
 }

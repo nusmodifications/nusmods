@@ -1,0 +1,64 @@
+{
+  "name": "nusmods-server-data",
+  "version": "1.0.0",
+  "description": "University data GraphQL API server",
+  "homepage": "http://api.nusmods.com",
+  "author": {
+    "name": "NUSModifications",
+    "email": "mods@nusmods.com"
+  },
+  "scripts": {
+    "ci": "yarn lint && yarn test",
+    "start": "webpack | bunyan -o short --color",
+    "test": "jest --config jest.config.js --coverage",
+    "test:watch": "jest --config jest.config.js --watch",
+    "lint": "eslint . --ignore-path ../../.gitignore",
+    "lint:fix": "eslint . --ignore-path ../../.gitignore --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/nusmodifications/nusmods.git"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/nusmodifications/nusmods/blob/master/LICENSE"
+    }
+  ],
+  "private": true,
+  "dependencies": {
+    "apollo-server": "^2.0.5",
+    "axios": "^0.18.0",
+    "bluebird": "^3.5.1",
+    "bunyan": "^1.8.12",
+    "dotenv": "^5.0.1",
+    "fs-extra": "^5.0.0",
+    "graphql": "^0.13.2",
+    "knex": "^0.14.4",
+    "lodash": "^4.17.5",
+    "sanitize-filename": "^1.6.1",
+    "sqlite3": "^3.1.13"
+  },
+  "devDependencies": {
+    "@babel/cli": "7.0.0",
+    "@babel/core": "7.0.0",
+    "@babel/preset-env": "7.0.0",
+    "@babel/preset-flow": "7.0.0",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-eslint": "^8.2.2",
+    "babel-jest": "^23.4.2",
+    "babel-loader": "^8.0.0-beta.0",
+    "eslint": "^4.18.2",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-import-resolver-node": "^0.3.2",
+    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-prettier": "^2.6.0",
+    "jest": "^23.5.0",
+    "prettier": "^1.14.2",
+    "start-server-webpack-plugin": "^2.2.5",
+    "webpack": "^4.17.1",
+    "webpack-cli": "^3.1.0",
+    "webpack-node-externals": "^1.7.2"
+  }
+}

@@ -11,7 +11,7 @@ import { PersistGate } from 'redux-persist/lib/integration/react';
 
 import AppShell from 'views/AppShell';
 import Routes from 'views/routes/Routes';
-import storage from 'storage';
+import { DIMENSIONS, withTracker } from 'bootstrapping/mamoto';
 
 type Props = {
   store: Store<State, *, *>,
@@ -19,10 +19,17 @@ type Props = {
 };
 
 export default function App({ store, persistor }: Props) {
+  const onBeforeLift = () => {
+    withTracker((tracker) => {
+      tracker.setCustomDimension(DIMENSIONS.theme, store.getState().theme.id);
+      tracker.setCustomDimension(DIMENSIONS.beta, !!store.getState().settings.beta);
+    });
+  };
+
   return (
     <AppContainer>
       <Provider store={store}>
-        <PersistGate persistor={persistor} onBeforeLift={storage.stateMigrationComplete}>
+        <PersistGate persistor={persistor} onBeforeLift={onBeforeLift}>
           <Router>
             <AppShell>
               <Routes />

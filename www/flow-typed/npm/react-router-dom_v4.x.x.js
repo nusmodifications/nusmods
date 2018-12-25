@@ -1,23 +1,24 @@
-// flow-typed signature: 7ef7e99bfa7953a438470755d51dc345
-// flow-typed version: 107feb8c45/react-router-dom_v4.x.x/flow_>=v0.53.x
+// flow-typed signature: 9fac6739b666e8a59414aa13358b677e
+// flow-typed version: 187bd8b1be/react-router-dom_v4.x.x/flow_>=v0.63.x
 
 declare module "react-router-dom" {
-  declare export class BrowserRouter extends React$Component<{
+  declare export class BrowserRouter extends React$Component<{|
     basename?: string,
     forceRefresh?: boolean,
     getUserConfirmation?: GetUserConfirmation,
     keyLength?: number,
     children?: React$Node
-  }> {}
+  |}> {}
 
-  declare export class HashRouter extends React$Component<{
+  declare export class HashRouter extends React$Component<{|
     basename?: string,
     getUserConfirmation?: GetUserConfirmation,
     hashType?: "slash" | "noslash" | "hashbang",
     children?: React$Node
-  }> {}
+  |}> {}
 
   declare export class Link extends React$Component<{
+    className?: string,
     to: string | LocationShape,
     replace?: boolean,
     children?: React$Node
@@ -85,64 +86,80 @@ declare module "react-router-dom" {
   declare export type ContextRouter = {|
     history: RouterHistory,
     location: Location,
-    match: Match
+    match: Match,
+    staticContext?: StaticRouterContext
   |};
+
+  declare type ContextRouterVoid = {
+    history: RouterHistory | void,
+    location: Location | void,
+    match: Match | void,
+    staticContext?: StaticRouterContext | void
+  };
 
   declare export type GetUserConfirmation = (
     message: string,
     callback: (confirmed: boolean) => void
   ) => void;
 
-  declare type StaticRouterContext = {
+  declare export type StaticRouterContext = {
     url?: string
   };
 
-  declare export class StaticRouter extends React$Component<{
+  declare export class StaticRouter extends React$Component<{|
     basename?: string,
     location?: string | Location,
     context: StaticRouterContext,
     children?: React$Node
-  }> {}
+  |}> {}
 
-  declare export class MemoryRouter extends React$Component<{
+  declare export class MemoryRouter extends React$Component<{|
     initialEntries?: Array<LocationShape | string>,
     initialIndex?: number,
     getUserConfirmation?: GetUserConfirmation,
     keyLength?: number,
     children?: React$Node
-  }> {}
+  |}> {}
 
-  declare export class Router extends React$Component<{
+  declare export class Router extends React$Component<{|
     history: RouterHistory,
     children?: React$Node
-  }> {}
+  |}> {}
 
-  declare export class Prompt extends React$Component<{
+  declare export class Prompt extends React$Component<{|
     message: string | ((location: Location) => string | boolean),
     when?: boolean
-  }> {}
+  |}> {}
 
-  declare export class Redirect extends React$Component<{
+  declare export class Redirect extends React$Component<{|
     to: string | LocationShape,
-    push?: boolean
-  }> {}
+    push?: boolean,
+    from?: string,
+    exact?: boolean,
+    strict?: boolean
+  |}> {}
 
-  declare export class Route extends React$Component<{
+  declare export class Route extends React$Component<{|
     component?: React$ComponentType<*>,
     render?: (router: ContextRouter) => React$Node,
     children?: React$ComponentType<ContextRouter> | React$Node,
     path?: string,
     exact?: boolean,
-    strict?: boolean
-  }> {}
+    strict?: boolean,
+    location?: LocationShape,
+    sensitive?: boolean
+  |}> {}
 
-  declare export class Switch extends React$Component<{
-    children?: React$Node
-  }> {}
+  declare export class Switch extends React$Component<{|
+    children?: React$Node,
+    location?: Location
+  |}> {}
 
-  declare export function withRouter<P>(
-    Component: React$ComponentType<{| ...ContextRouter, ...P |}>
-  ): React$ComponentType<P>;
+  declare export function withRouter<P: {}, Component: React$ComponentType<P>>(
+    WrappedComponent: Component
+  ): React$ComponentType<
+    $Diff<React$ElementConfig<Component>, ContextRouterVoid>
+  >;
 
   declare type MatchPathOptions = {
     path?: string,
@@ -153,6 +170,9 @@ declare module "react-router-dom" {
 
   declare export function matchPath(
     pathname: string,
-    options?: MatchPathOptions | string
+    options?: MatchPathOptions | string,
+    parent?: Match
   ): null | Match;
+  
+  declare export function generatePath(pattern?: string, params?: Object): string;
 }

@@ -1,21 +1,22 @@
 // @flow
 import React, { Component, Fragment } from 'react';
 import { stubString } from 'lodash';
-import Downshift from 'downshift';
+import Downshift, { type ChildrenFunction } from 'downshift';
 import classnames from 'classnames';
 
 import { highlight } from 'utils/react';
 import { ChevronRight, Help, Search } from 'views/components/icons';
 import type { ModuleCondensed } from 'types/modules';
 import type { Venue } from 'types/venues';
-import type { ResultType, SearchResult } from 'types/views';
+import type { ResultType, SearchItem, SearchResult } from 'types/views';
 
-import config from 'config';
+import ComponentMap from 'utils/ComponentMap';
+import SemesterBadge from 'views/components/SemesterBadge';
 import { MODULE_RESULT, SEARCH_RESULT, VENUE_RESULT } from 'types/views';
 import styles from './GlobalSearch.scss';
 
 type Props = {
-  getResults: (string) => ?SearchResult,
+  getResults: (?string) => ?SearchResult,
 
   onSelectVenue: (Venue) => void,
   onSelectModule: (ModuleCondensed) => void,
@@ -28,17 +29,9 @@ type State = {
 
 const PLACEHOLDER = 'Search modules & venues. Try "GER" or "LT".';
 
-/* eslint-disable no-useless-computed-key */
-const BADGE_COLOR = {
-  [1]: styles.sem1,
-  [2]: styles.sem2,
-  [3]: styles.sem3,
-  [4]: styles.sem4,
-};
-/* eslint-enable */
-
 class GlobalSearch extends Component<Props, State> {
   input: ?HTMLInputElement;
+
   state = {
     isOpen: false,
   };
@@ -53,21 +46,24 @@ class GlobalSearch extends Component<Props, State> {
     });
   };
 
-  onChange = ([resultType, item]: [ResultType, any]) => {
+  onChange = (item: SearchItem) => {
     const { onSelectModule, onSelectVenue, onSearch } = this.props;
 
-    switch (resultType) {
+    switch (item.type) {
       case VENUE_RESULT:
-        onSelectVenue(item);
+        onSelectVenue(item.venue);
         break;
 
       case MODULE_RESULT:
-        onSelectModule(item);
+        onSelectModule(item.module);
         break;
 
       case SEARCH_RESULT:
+        onSearch(item.type, item.term);
+        break;
+
       default:
-        onSearch(...item);
+        throw new Error(`Unexpected result type ${item.type}`);
     }
 
     this.onClose();
@@ -75,15 +71,15 @@ class GlobalSearch extends Component<Props, State> {
 
   // Downshift attaches label for us, so we can ignore ESLint here
   /* eslint-disable jsx-a11y/label-has-for */
-  // TODO: Inject types from downshift when https://github.com/paypal/downshift/pull/180 is implemented
-  renderDropdown = ({
+  renderDropdown: ChildrenFunction<SearchItem> = ({
     getLabelProps,
     getInputProps,
     getItemProps,
+    getMenuProps,
     isOpen,
     inputValue,
     highlightedIndex,
-  }: any) => {
+  }) => {
     // key to ensure the input element does not change during rerender, which would cause
     // selection to be lost
     const searchForm = (
@@ -93,8 +89,9 @@ class GlobalSearch extends Component<Props, State> {
           {PLACEHOLDER}
         </label>
         <input
-          ref={(input) => {
-            this.input = input;
+          ref={(r) => {
+            this.input = r;
+            ComponentMap.globalSearchInput = r;
           }}
           className={classnames(styles.input, { [styles.inputOpen]: isOpen })}
           {...getInputProps({ placeholder: PLACEHOLDER })}
@@ -106,7 +103,7 @@ class GlobalSearch extends Component<Props, State> {
     const searchResults = this.props.getResults(inputValue);
 
     // 1. Search is not active - just show the search form
-    if (!searchResults) {
+    if (!searchResults || !inputValue) {
       return <div className={styles.container}>{searchForm}</div>;
     }
 
@@ -127,13 +124,17 @@ class GlobalSearch extends Component<Props, State> {
                 <Help />
                 <p>
                   No results found for{' '}
-                  <strong className={styles.searchTerm}>&quot;{inputValue}&quot;</strong>
+                  <strong className={styles.searchTerm}>
+                    &quot;
+                    {inputValue}
+                    &quot;
+                  </strong>
                 </p>
                 <p>
                   Try searching all{' '}
                   <button
                     {...getItemProps({
-                      item: [SEARCH_RESULT, [MODULE_RESULT, inputValue]],
+                      item: { type: SEARCH_RESULT, result: MODULE_RESULT, term: inputValue },
                     })}
                     className={classnames('btn btn-inline', {
                       [styles.selected]: highlightedIndex === 0,
@@ -144,7 +145,7 @@ class GlobalSearch extends Component<Props, State> {
                   or{' '}
                   <button
                     {...getItemProps({
-                      item: [SEARCH_RESULT, [VENUE_RESULT, inputValue]],
+                      item: { type: SEARCH_RESULT, result: VENUE_RESULT, term: inputValue },
                     })}
                     className={classnames('btn btn-inline', {
                       [styles.selected]: highlightedIndex === 1,
@@ -170,12 +171,12 @@ class GlobalSearch extends Component<Props, State> {
 
         {/* Wrap select list in absolute-positioned container to fix macOS Safari scrolling perf */}
         <div className={styles.selectListContainer}>
-          <div className={styles.selectList}>
+          <div className={styles.selectList} {...getMenuProps()}>
             {hasModules && (
               <Fragment>
                 <div
                   {...getItemProps({
-                    item: [SEARCH_RESULT, [MODULE_RESULT, inputValue]],
+                    item: { type: SEARCH_RESULT, result: MODULE_RESULT, term: inputValue },
                   })}
                   className={classnames(styles.selectHeader, {
                     [styles.selected]: highlightedIndex === 0,
@@ -191,7 +192,7 @@ class GlobalSearch extends Component<Props, State> {
                   <div
                     {...getItemProps({
                       key: module.ModuleCode,
-                      item: [MODULE_RESULT, module],
+                      item: { type: MODULE_RESULT, module },
                     })}
                     className={classnames(styles.option, {
                       [styles.selected]: highlightedIndex === index + 1,
@@ -199,26 +200,17 @@ class GlobalSearch extends Component<Props, State> {
                   >
                     <span>{highlight(`${module.ModuleCode} ${module.ModuleTitle}`, tokens)}</span>
 
-                    <span className={styles.semesters}>
-                      {module.Semesters.sort().map((semester) => (
-                        <span
-                          key={semester}
-                          className={classnames('badge', BADGE_COLOR[semester])}
-                          title={config.semesterNames[semester]}
-                        >
-                          {config.shortSemesterNames[semester]}
-                        </span>
-                      ))}
-                    </span>
+                    <SemesterBadge className={styles.semesters} semesters={module.Semesters} />
                   </div>
                 ))}
               </Fragment>
             )}
+
             {hasVenues && (
               <Fragment>
                 <div
                   {...getItemProps({
-                    item: [SEARCH_RESULT, [VENUE_RESULT, inputValue]],
+                    item: { type: SEARCH_RESULT, result: VENUE_RESULT, term: inputValue },
                   })}
                   className={classnames(styles.selectHeader, {
                     [styles.selected]: highlightedIndex === venueHeaderIndex,
@@ -234,7 +226,7 @@ class GlobalSearch extends Component<Props, State> {
                   <div
                     {...getItemProps({
                       key: venue,
-                      item: [VENUE_RESULT, venue],
+                      item: { type: VENUE_RESULT, venue },
                     })}
                     className={classnames(styles.option, {
                       [styles.selected]: highlightedIndex === venueItemOffset + index,
@@ -257,12 +249,13 @@ class GlobalSearch extends Component<Props, State> {
       <Downshift
         isOpen={isOpen}
         onOuterClick={this.onClose}
-        render={this.renderDropdown}
         onChange={this.onChange}
         /* Hack to force item selection to be empty */
         itemToString={stubString}
         selectedItem=""
-      />
+      >
+        {this.renderDropdown}
+      </Downshift>
     );
   }
 }

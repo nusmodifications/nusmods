@@ -71,7 +71,7 @@ class AppsContainer extends Component<Props, State> {
     errorMessage: '',
   };
 
-  componentWillMount() {
+  componentDidMount() {
     axios
       .get(APPS_URL)
       .then((response) => {
@@ -99,7 +99,8 @@ class AppsContainer extends Component<Props, State> {
           Have an NUS app that you want added to the list? Simply add it to our{' '}
           <ExternalLink href="https://github.com/nusmodifications/nusmods-apps">
             Apps repository
-          </ExternalLink>!
+          </ExternalLink>
+          !
         </p>
 
         {this.state.isLoading && <Loader />}

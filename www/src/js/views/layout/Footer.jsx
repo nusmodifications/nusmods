@@ -3,7 +3,7 @@ import type { State } from 'reducers';
 
 import React from 'react';
 import classnames from 'classnames';
-import { connect, type MapStateToProps } from 'react-redux';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import ExternalLink from 'views/components/ExternalLink';
@@ -37,7 +37,8 @@ export function FooterComponent(props: Props) {
         NUSMods R version{' '}
         <ExternalLink href={`https://github.com/nusmodifications/nusmods/commit/${commitHash}`}>
           {versionStr}
-        </ExternalLink>.
+        </ExternalLink>
+        .
       </span>
     );
 
@@ -89,6 +90,15 @@ export function FooterComponent(props: Props) {
           <li>
             <Link to="/faq">FAQ</Link>
           </li>
+
+          {new Date().getMonth() === 9 && (
+            <li>
+              <Link to="/hacktoberfest">
+                <strong>Hacktoberfest!</strong>
+              </Link>
+            </li>
+          )}
+
           <li>
             <button
               type="button"
@@ -112,11 +122,12 @@ export function FooterComponent(props: Props) {
   );
 }
 
-const mapStateToProps: MapStateToProps<*, *, *> = (state: State) => {
-  const lastUpdatedString = state.moduleBank.apiLastUpdatedTimestamp;
-  return {
-    lastUpdatedDate: lastUpdatedString && new Date(lastUpdatedString),
-  };
-};
-
-export default connect(mapStateToProps, { toggleFeedback, toggleLoginDialog })(FooterComponent);
+export default connect(
+  (state: State) => {
+    const lastUpdatedString = state.moduleBank.apiLastUpdatedTimestamp;
+    return {
+      lastUpdatedDate: lastUpdatedString && new Date(lastUpdatedString),
+    };
+  },
+  { toggleFeedback, toggleLoginDialog },
+)(FooterComponent);

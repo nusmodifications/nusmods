@@ -21,3 +21,9 @@
   composes: col-12 from global;
   margin-bottom: 1rem;
 }
+
+.moduleTableFooter {
+  padding-top: 0.5rem;
+  margin-top: 1rem;
+  border-top: 1px solid var(--gray-lighter);
+}

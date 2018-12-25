@@ -42,11 +42,27 @@ const router = new Router();
 router
   .get('/image', async (ctx) => {
     const { page, data } = ctx.state;
+    const { height, width } = ctx.query;
 
     // Validate options
-    const options = {
+    let options = {
       pixelRatio: _.clamp((Number(ctx.query.pixelRatio) || 1), 1, 3),
     };
+
+    if (
+      typeof height !== 'undefined' &&
+      typeof width !== 'undefined' &&
+      !Number.isNaN(height) && // accept floats
+      !Number.isNaN(width) && // accept floats
+      height > 0 &&
+      width > 0
+    ) {
+      options = {
+        ...options,
+        height: Number(height),
+        width: Number(width),
+      };
+    }
 
     ctx.body = await render.image(page, data, options);
     ctx.attachment('My Timetable.png');

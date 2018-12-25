@@ -1,0 +1,40 @@
+{
+  "extends": [
+    "config:base",
+    "schedule:earlyMondays",
+    "group:linters",
+    ":automergePr",
+    ":automergeRequireAllStatusChecks",
+    ":automergeLinters",
+    ":prConcurrentLimit10",
+    ":label(dependencies)",
+    ":timezone(Asia/Singapore)"
+  ],
+  "packageRules": [
+    {
+      "description": "Group Webpack-related packages together",
+      "packagePatterns": ["-loader$", "webpack"],
+      "excludePackageNames": ["react-hot-loader"],
+      "groupName": "webpack"
+    },
+    {
+      "description": "Group material-components-web monorepo packages together",
+      "packagePatterns": ["^@material/"],
+      "groupName": "material monorepo"
+    }
+  ],
+  "ignoreDeps": [
+    "stylelint",
+    "webpack",
+    "webpack-dev-server",
+    "optimize-css-assets-webpack-plugin"
+  ],
+  "pathRules": [
+    {
+      "paths": ["packages/**"],
+      "extends": ["config:js-lib"]
+    }
+  ],
+  "ignorePaths": ["api/data", "scrapers/nus", ".nvmrc"],
+  "prHourlyLimit": 0
+}

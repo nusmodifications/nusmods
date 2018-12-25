@@ -13,6 +13,7 @@ import {
 } from 'actions/theme';
 import themes from 'data/themes.json';
 import { VERTICAL, HORIZONTAL } from 'types/reducers';
+import { DIMENSIONS, withTracker } from 'bootstrapping/mamoto';
 
 const defaultColorsState: ColorMapping = {};
 export const defaultThemeState: ThemeState = {
@@ -25,27 +26,35 @@ export const defaultThemeState: ThemeState = {
 export const themeIds = themes.map((obj: Theme) => obj.id);
 
 function theme(state: ThemeState = defaultThemeState, action: FSA): ThemeState {
+  function setTheme(newTheme: string): ThemeState {
+    // Update theme analytics info
+    withTracker((tracker) => tracker.setCustomDimension(DIMENSIONS.theme, newTheme));
+
+    return {
+      ...state,
+      id: newTheme,
+    };
+  }
+
   switch (action.type) {
     case SELECT_THEME:
-      return {
-        ...state,
-        id: action.payload,
-      };
+      return setTheme(action.payload);
+
     case CYCLE_THEME: {
       const newThemeIndex =
         (themeIds.indexOf(state.id) + themeIds.length + action.payload) % themeIds.length;
-      return {
-        ...state,
-        id: themeIds[newThemeIndex],
-      };
+
+      return setTheme(themeIds[newThemeIndex]);
     }
     case TOGGLE_TIMETABLE_ORIENTATION:
       return {
         ...state,
         timetableOrientation: state.timetableOrientation === VERTICAL ? HORIZONTAL : VERTICAL,
       };
+
     case SET_EXPORTED_DATA:
       return action.payload.theme;
+
     case TOGGLE_TITLE_DISPLAY:
       return {
         ...state,

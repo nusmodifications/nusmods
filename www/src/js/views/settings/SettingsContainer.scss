@@ -52,6 +52,8 @@
   float: left;
   width: 25%;
   margin-bottom: 0.4rem;
+  color: var(--body-color);
+  background: none;
 
   @include media-breakpoint-down('sm') {
     width: 50%;
@@ -64,4 +66,8 @@
   &:empty {
     margin: 0;
   }
+}
+
+.betaToggle {
+  margin-bottom: 1rem;
 }

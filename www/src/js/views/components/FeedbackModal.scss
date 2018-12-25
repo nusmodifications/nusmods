@@ -1,11 +1,5 @@
 @import "~styles/utils/modules-entry";
 
-.modal {
-  :global {
-    animation: zoomIn 0.2s;
-  }
-}
-
 .content {
   text-align: center;
 
@@ -51,7 +45,7 @@
       background: $button-bg;
 
       &:hover {
-        background: lighten($button-bg, 10);
+        background: lighten($button-bg, 15);
       }
     }
 
@@ -61,7 +55,7 @@
       background: $button-bg;
 
       &:hover {
-        background: lighten($button-bg, 30);
+        background: lighten($button-bg, 15);
       }
     }
 
@@ -71,7 +65,7 @@
       background: $button-bg;
 
       &:hover {
-        background: lighten($button-bg, 10);
+        background: lighten($button-bg, 15);
       }
     }
   }

@@ -6,6 +6,8 @@ import type { SemTimetableConfig } from 'types/timetables';
 import { serializeTimetable } from 'utils/timetables';
 import config from 'config';
 
+// IMPORTANT: Remember to update any route changes on the sitemap
+
 // Cache semester -> path and path -> semester mappings
 export const fromSemester: { [Semester]: string } = {};
 const toSemester: { [string]: Semester } = {};
@@ -34,6 +36,14 @@ export function semesterForTimetablePage(semStr: ?string): ?Semester {
 // Module Code, Module Title -> Module page path
 export function modulePage(moduleCode: ModuleCode, moduleTitle: ModuleTitle): string {
   return `/modules/${moduleCode}/${kebabCase(moduleTitle)}`;
+}
+
+export function moduleArchive(
+  moduleCode: ModuleCode,
+  year: string,
+  moduleTitle: ModuleTitle = '',
+): string {
+  return `/archive/${moduleCode}/${year.replace('/', '-')}/${kebabCase(moduleTitle)}`;
 }
 
 // Venue -> Venue page path

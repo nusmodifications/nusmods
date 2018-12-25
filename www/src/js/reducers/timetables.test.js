@@ -1,6 +1,6 @@
 // @flow
 
-import reducer, { defaultTimetableState } from 'reducers/timetables';
+import reducer, { defaultTimetableState, persistConfig } from 'reducers/timetables';
 import {
   ADD_MODULE,
   SET_TIMETABLE,
@@ -10,8 +10,11 @@ import {
   setLessonConfig,
 } from 'actions/timetables';
 import type { TimetablesState } from 'types/reducers';
+import config from 'config';
 
 const initialState = defaultTimetableState;
+
+jest.mock('config');
 
 /* eslint-disable no-useless-computed-key */
 describe('color reducers', () => {
@@ -155,6 +158,76 @@ describe('lesson reducer', () => {
             Lecture: '1',
           },
         },
+      },
+    });
+  });
+});
+
+describe('stateReconciler', () => {
+  const oldArchive = {
+    '2015/2016': {
+      [1]: {
+        GET1006: {
+          Lecture: '1',
+        },
+      },
+    },
+  };
+
+  const oldLessons = {
+    [1]: {
+      CS1010S: {
+        Lecture: '1',
+        Recitation: '2',
+      },
+    },
+    [2]: {
+      CS3217: {
+        Lecture: '1',
+      },
+    },
+  };
+
+  const inbound: TimetablesState = {
+    lessons: oldLessons,
+    colors: {
+      [1]: {
+        CS1010S: '1',
+      },
+      [2]: {
+        CS3217: '2',
+      },
+    },
+    hidden: {
+      [1]: {
+        CS1010S: '1',
+      },
+    },
+    academicYear: config.academicYear,
+    archive: oldArchive,
+  };
+
+  const { stateReconciler } = persistConfig;
+  const mockConfig: any = { debug: false };
+  if (!stateReconciler) {
+    throw new Error('No stateReconciler');
+  }
+
+  test('should return inbound state when academic year is the same', () => {
+    expect(stateReconciler(inbound, initialState, initialState, mockConfig)).toEqual(inbound);
+  });
+
+  test('should archive old timetables and clear state when academic year is different', () => {
+    const oldInbound = {
+      ...inbound,
+      academicYear: '2016/2017',
+    };
+
+    expect(stateReconciler(oldInbound, initialState, initialState, mockConfig)).toEqual({
+      ...initialState,
+      archive: {
+        ...oldArchive,
+        '2016/2017': oldLessons,
       },
     });
   });

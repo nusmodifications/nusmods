@@ -22,29 +22,28 @@ type State = {
 };
 
 export default class SearchBox extends PureComponent<Props, State> {
-  props: Props;
-  searchElement: ?HTMLInputElement;
+  constructor(props: Props) {
+    super(props);
 
-  state: State = {
-    isFocused: false,
-    searchTerm: this.props.initialSearchTerm || '',
-    hasChanges: false,
-  };
+    this.state = {
+      isFocused: false,
+      searchTerm: this.props.initialSearchTerm || '',
+      hasChanges: false,
+    };
 
-  componentWillMount() {
-    this.search(this.state.searchTerm);
+    this.props.onSearch(this.state.searchTerm);
   }
 
   onSubmit = () => {
-    const { searchElement } = this;
+    const element = this.searchElement.current;
 
-    if (searchElement) {
-      const searchTerm = searchElement.value;
+    if (element) {
+      const searchTerm = element.value;
       this.setState({ searchTerm });
 
       this.debouncedSearch(searchTerm);
       this.debouncedSearch.flush();
-      searchElement.blur();
+      element.blur();
     }
   };
 
@@ -56,6 +55,8 @@ export default class SearchBox extends PureComponent<Props, State> {
       if (this.props.useInstantSearch) this.debouncedSearch(searchTerm);
     }
   };
+
+  searchElement = React.createRef<HTMLInputElement>();
 
   search = (input: string) => {
     this.setState({ hasChanges: false });
@@ -70,8 +71,8 @@ export default class SearchBox extends PureComponent<Props, State> {
     return (
       !this.props.useInstantSearch &&
       this.state.hasChanges &&
-      this.searchElement &&
-      this.searchElement.value
+      this.searchElement.current &&
+      this.searchElement.current.value
     );
   }
 
@@ -97,9 +98,8 @@ export default class SearchBox extends PureComponent<Props, State> {
             id="search-box"
             className="form-control form-control-lg"
             type="search"
-            ref={(e) => {
-              this.searchElement = e;
-            }}
+            autoComplete="off"
+            ref={this.searchElement}
             value={this.state.searchTerm}
             onChange={this.onInput}
             onFocus={() => this.setState({ isFocused: true })}

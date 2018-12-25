@@ -1,0 +1,26 @@
+@import '~styles/utils/modules-entry';
+
+.modal {
+  h2 {
+    margin-bottom: 0;
+    font-size: $font-size-lg;
+  }
+
+  table {
+    th,
+    td,
+    tbody + tbody {
+      border: 0;
+    }
+
+    tr:first-child th {
+      padding-top: 1rem;
+      border-bottom: 1px solid var(--gray-lighter);
+    }
+  }
+
+  .key {
+    padding-right: 1rem;
+    text-align: right;
+  }
+}

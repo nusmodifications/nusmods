@@ -1,10 +1,34 @@
 // @flow
 import venueInfo from '__mocks__/venueInformation.json';
 
-import { searchVenue, filterAvailability, sortVenues } from './venues';
+import type { WeekText, ModuleCode, StartTime } from 'types/modules';
+import { ZWSP } from 'utils/react';
+import {
+  searchVenue,
+  filterAvailability,
+  sortVenues,
+  getDuplicateModules,
+  mergeDualCodedModules,
+  floorName,
+} from './venues';
 
 const venues = sortVenues(venueInfo);
 const getVenues = (...names) => venues.filter(([name]) => names.includes(name));
+
+const makeVenueLesson = (
+  moduleCode: ModuleCode,
+  props: { WeekText?: WeekText, StartTime?: StartTime } = {},
+) => ({
+  ClassNo: '1',
+  DayText: 'Monday',
+  LessonType: 'Lecture',
+  EndTime: '1000',
+  StartTime: '0900',
+  Venue: 'LT1',
+  WeekText: 'Every Week',
+  ModuleCode: moduleCode,
+  ...props,
+});
 
 describe('sortVenues', () => {
   test('handle empty venue object', () => {
@@ -97,5 +121,87 @@ describe('filterAvailability()', () => {
         duration: 14,
       }),
     ).toEqual(getVenues('CQT/SR0622'));
+  });
+});
+
+describe(getDuplicateModules, () => {
+  it('should return an array of duplicated module codes', () => {
+    expect(getDuplicateModules([makeVenueLesson('GEK1901'), makeVenueLesson('GET1001')])).toEqual([
+      'GEK1901',
+      'GET1001',
+    ]);
+
+    expect(
+      getDuplicateModules([
+        makeVenueLesson('GEK1901', { WeekText: 'Odd Week' }),
+        makeVenueLesson('GET1001', { WeekText: 'Odd Week' }),
+        makeVenueLesson('GET1002', { WeekText: 'Even Week' }),
+      ]),
+    ).toEqual(['GEK1901', 'GET1001']);
+  });
+
+  it('should not consider modules happening on different weeks as duplicates', () => {
+    expect(
+      getDuplicateModules([
+        makeVenueLesson('GEK1901', { WeekText: 'Odd Week' }),
+        makeVenueLesson('GET1001', { WeekText: 'Even Week' }),
+      ]),
+    ).toEqual([]);
+  });
+});
+
+describe(mergeDualCodedModules, () => {
+  it('should merge modules with the same starting time', () => {
+    expect(mergeDualCodedModules([makeVenueLesson('GEK1901'), makeVenueLesson('GET1001')])).toEqual(
+      [makeVenueLesson(`GEK1901/${ZWSP}GET1001`)],
+    );
+  });
+
+  it('should merge module sets of modules with the same starting time', () => {
+    expect(
+      mergeDualCodedModules([
+        makeVenueLesson('GEK1901', { StartTime: '1000' }),
+        makeVenueLesson('GEK1901', { StartTime: '1400' }),
+        makeVenueLesson('GET1001', { StartTime: '1000' }),
+        makeVenueLesson('GET1001', { StartTime: '1400' }),
+        makeVenueLesson('GEK1902', { StartTime: '1200' }),
+        makeVenueLesson('GES1001', { StartTime: '1200' }),
+      ]),
+    ).toEqual([
+      makeVenueLesson(`GEK1901/${ZWSP}GET1001`, { StartTime: '1000' }),
+      makeVenueLesson(`GEK1901/${ZWSP}GET1001`, { StartTime: '1400' }),
+      makeVenueLesson(`GEK1902/${ZWSP}GES1001`, { StartTime: '1200' }),
+    ]);
+  });
+
+  it('should not merge modules on different weeks', () => {
+    expect(
+      mergeDualCodedModules([
+        makeVenueLesson('GEK1901', { WeekText: 'Odd Week' }),
+        makeVenueLesson('GET1001', { WeekText: 'Even Week' }),
+      ]),
+    ).toEqual([
+      makeVenueLesson('GEK1901', { WeekText: 'Odd Week' }),
+      makeVenueLesson('GET1001', { WeekText: 'Even Week' }),
+    ]);
+  });
+});
+
+describe(floorName, () => {
+  it('should add B to basement floors', () => {
+    expect(floorName(-1)).toEqual('floor B1');
+    expect(floorName(-2)).toEqual('floor B2');
+    expect(floorName(-5)).toEqual('floor B5');
+  });
+
+  it('should not add B to above ground floors', () => {
+    expect(floorName(1)).toEqual('floor 1');
+    expect(floorName(2)).toEqual('floor 2');
+    expect(floorName(5)).toEqual('floor 5');
+  });
+
+  it('should handle named floors', () => {
+    expect(floorName('Ground')).toEqual('ground floor');
+    expect(floorName('Mezzanine')).toEqual('mezzanine floor');
   });
 });

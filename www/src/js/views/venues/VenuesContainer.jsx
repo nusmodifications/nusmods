@@ -11,7 +11,7 @@ import type { ContextRouter } from 'react-router-dom';
 import type { Venue, VenueDetailList, VenueInfo, VenueSearchOptions } from 'types/venues';
 
 import deferComponentRender from 'views/hocs/deferComponentRender';
-import ErrorPage from 'views/errors/ErrorPage';
+import ApiError from 'views/errors/ApiError';
 import Warning from 'views/errors/Warning';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import SearchBox from 'views/components/SearchBox';
@@ -27,10 +27,13 @@ import { defer } from 'utils/react';
 import makeResponsive from 'views/hocs/makeResponsive';
 import Modal from 'views/components/Modal';
 import Title from 'views/components/Title';
+import NoFooter from 'views/layout/NoFooter';
 
 import AvailabilitySearch, { defaultSearchOptions } from './AvailabilitySearch';
 import VenueList from './VenueList';
 import VenueDetails from './VenueDetails';
+import VenueLocation from './VenueLocation';
+import VenueContext from './VenueContext';
 import styles from './VenuesContainer.scss';
 
 /* eslint-disable react/prop-types */
@@ -41,14 +44,19 @@ type Props = {
 };
 
 type State = {|
+  // Page data
   loading: boolean,
   error?: any,
   venues: ?VenueDetailList,
+
+  // View state
+  isDetailScrollable: boolean,
 
   // Search state
   searchTerm: string,
   isAvailabilityEnabled: boolean,
   searchOptions: VenueSearchOptions,
+  pristineSearchOptions: boolean,
 |};
 
 const pageHead = <Title>Venues</Title>;
@@ -72,25 +80,17 @@ export class VenuesContainerComponent extends Component<Props, State> {
     this.state = {
       searchOptions,
       isAvailabilityEnabled,
+      isDetailScrollable: true,
       loading: true,
       venues: null,
       searchTerm: params.q || '',
+      pristineSearchOptions: !isAvailabilityEnabled,
     };
   }
 
   componentDidMount() {
-    axios
-      .get(nusmods.venuesUrl(config.semester))
-      .then(({ data }: { data: VenueInfo }) => {
-        this.setState({
-          loading: false,
-          venues: sortVenues(data),
-        });
-      })
-      .catch((error) => {
-        Raven.captureException(error);
-        this.setState({ error });
-      });
+    this.loadPageData();
+    VenueLocation.preload();
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
@@ -103,6 +103,21 @@ export class VenuesContainerComponent extends Component<Props, State> {
       this.updateURL();
     }
   }
+
+  onFindFreeRoomsClicked = () => {
+    const { pristineSearchOptions, isAvailabilityEnabled } = this.state;
+    const stateUpdate: $Shape<State> = { isAvailabilityEnabled: !isAvailabilityEnabled };
+
+    // Only reset search options if the user has never changed it, and if the
+    // search box is being opened. By resetting the option when the box is opened,
+    // the time when the box is opened will be used, instead of the time when the
+    // page is loaded
+    if (pristineSearchOptions && !isAvailabilityEnabled) {
+      stateUpdate.searchOptions = defaultSearchOptions();
+    }
+
+    this.setState(stateUpdate);
+  };
 
   onClearVenueSelect = () =>
     this.props.history.push({
@@ -118,8 +133,32 @@ export class VenuesContainerComponent extends Component<Props, State> {
 
   onAvailabilityUpdate = (searchOptions: VenueSearchOptions) => {
     if (!isEqual(searchOptions, this.state.searchOptions)) {
-      this.setState({ searchOptions });
+      this.setState({
+        searchOptions,
+        pristineSearchOptions: false, // user changed searchOptions
+      });
     }
+  };
+
+  onToggleDetailScrollable = (isDetailScrollable: boolean) => {
+    this.setState({ isDetailScrollable });
+  };
+
+  loadPageData = () => {
+    this.setState({ error: null });
+
+    axios
+      .get(nusmods.venuesUrl(config.semester))
+      .then(({ data }: { data: VenueInfo }) => {
+        this.setState({
+          loading: false,
+          venues: sortVenues(data),
+        });
+      })
+      .catch((error) => {
+        Raven.captureException(error);
+        this.setState({ error });
+      });
   };
 
   updateURL = (debounce: boolean = true) => {
@@ -166,7 +205,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
             styles.availabilityToggle,
             isAvailabilityEnabled ? 'btn-primary' : 'btn-outline-primary',
           )}
-          onClick={() => this.setState({ isAvailabilityEnabled: !isAvailabilityEnabled })}
+          onClick={this.onFindFreeRoomsClicked}
         >
           <Clock className="svg" /> Find free rooms
         </button>
@@ -242,10 +281,18 @@ export class VenuesContainerComponent extends Component<Props, State> {
 
   render() {
     const selectedVenue = this.selectedVenue();
-    const { searchTerm, loading, error, isAvailabilityEnabled, searchOptions, venues } = this.state;
+    const {
+      searchTerm,
+      loading,
+      error,
+      isAvailabilityEnabled,
+      isDetailScrollable,
+      searchOptions,
+      venues,
+    } = this.state;
 
     if (error) {
-      return <ErrorPage error="cannot load venues info" eventId={Raven.lastEventId()} />;
+      return <ApiError dataName="venue information" retry={this.loadPageData} />;
     }
 
     if (loading || !venues) {
@@ -278,36 +325,40 @@ export class VenuesContainerComponent extends Component<Props, State> {
           )}
         </div>
 
-        {this.props.matchBreakpoint ? (
-          <Modal
-            isOpen={selectedVenue != null}
-            onRequestClose={this.onClearVenueSelect}
-            className={styles.venueDetailModal}
-            fullscreen
-          >
-            <button
-              className={classnames('btn btn-outline-primary btn-block', styles.closeButton)}
-              onClick={this.onClearVenueSelect}
+        <VenueContext.Provider value={{ toggleDetailScrollable: this.onToggleDetailScrollable }}>
+          {this.props.matchBreakpoint ? (
+            <Modal
+              isOpen={selectedVenue != null}
+              onRequestClose={this.onClearVenueSelect}
+              className={styles.venueDetailModal}
+              fullscreen
             >
-              Back to Venues
-            </button>
-            {this.renderSelectedVenue(matchedVenues)}
-          </Modal>
-        ) : (
-          <Fragment>
-            <div className={styles.venueDetail}>
-              {selectedVenue == null ? (
-                <div className={styles.noVenueSelected}>
-                  <Map />
-                  <p>Select a venue on the left to see its timetable</p>
-                </div>
-              ) : (
-                this.renderSelectedVenue(matchedVenues)
-              )}
-            </div>
-            <div className={styles.background} />
-          </Fragment>
-        )}
+              <button
+                className={classnames('btn btn-outline-primary btn-block', styles.closeButton)}
+                onClick={this.onClearVenueSelect}
+              >
+                Back to Venues
+              </button>
+              {this.renderSelectedVenue(matchedVenues)}
+            </Modal>
+          ) : (
+            <Fragment>
+              <div
+                className={classnames(styles.venueDetail, { 'scrollable-y': isDetailScrollable })}
+              >
+                {selectedVenue == null ? (
+                  <div className={styles.noVenueSelected}>
+                    <Map />
+                    <p>Select a venue on the left to see its timetable</p>
+                  </div>
+                ) : (
+                  this.renderSelectedVenue(matchedVenues)
+                )}
+              </div>
+              <NoFooter />
+            </Fragment>
+          )}
+        </VenueContext.Provider>
       </div>
     );
   }

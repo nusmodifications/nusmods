@@ -6,6 +6,7 @@ import { escapeRegExp, castArray } from 'lodash';
 
 // Define some useful Unicode characters as constants
 export const NBSP = '\u00a0';
+export const ZWSP = '\u200b';
 export const BULLET = ' • ';
 
 /**
@@ -100,7 +101,7 @@ export class Counter {
     return this.count;
   }
 
-  matches(index: number) {
+  matches(index: ?number) {
     this.count += 1;
     return this.count === index;
   }

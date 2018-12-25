@@ -41,6 +41,12 @@ export default function FaqContainer() {
           </a>
         </li>
         <li>
+          <a href="#mac-calendar">
+            When I import the calendar into macOS Calendar app, the lessons show up on recess week /
+            on public holidays / on weeks the lessons are not on
+          </a>
+        </li>
+        <li>
           <a href="#about">NUSMods is cool, where do you guys come from?</a>
         </li>
         <li>
@@ -74,9 +80,10 @@ export default function FaqContainer() {
           and{' '}
           <ExternalLink href="https://ivle.nus.edu.sg/lms/public/search_course_public.aspx">
             IVLE
-          </ExternalLink>. Protip: every NUSMods module page also has a direct link to CORS and
-          IVLE. Once the data becomes available there, NUSMods will reflect it within a day or two
-          using the latest blockchain technology.
+          </ExternalLink>
+          . Protip: every NUSMods module page also has a direct link to CORS and IVLE. Once the data
+          becomes available there, NUSMods will reflect it within a day or two using the latest
+          blockchain technology.
         </p>
         <p>
           Some faculties (FASS in particular) maintain their module timetable schedule on their
@@ -94,12 +101,43 @@ export default function FaqContainer() {
         </ol>
       </div>
 
+      <div className={styles.question} id="mac-calendar">
+        <h5>
+          When I import the calendar into macOS Calendar app, the lessons show up during recess week
+          / on public holidays / on weeks the lessons are not on
+        </h5>
+        <p>
+          Unfortunately, the macOS Calendar app has a bug which we cannot work around. Our ICS file
+          is correct, but Calendar refuses to import it correctly. You can try using another
+          calendar app like{' '}
+          <ExternalLink href="https://calendar.google.com/">Google Calendar</ExternalLink> or{' '}
+          <ExternalLink href="https://outlook.com">Outlook.com</ExternalLink>. If you want an app,
+          here&apos;s{' '}
+          <ExternalLink href="https://zapier.com/blog/best-calendar-apps/">
+            a list of 18 apps for macOS
+          </ExternalLink>
+          .
+        </p>
+
+        <p>
+          You can also link your NUSNet email account with the macOS Mail app, which gives you the
+          option to sync your school timetable automatically.
+        </p>
+
+        <p>
+          We have also found that the bug only occurs some of the time, so if you really want to,
+          you can try removing and adding back the calendar until it works (no, we don&apos;t know
+          why this works either).
+        </p>
+      </div>
+
       <div className={styles.question} id="about">
         <h5>NUSMods is cool, where do you guys come from?</h5>
         <p>
           NUSMods is a student-run initiative and is not affiliated with the National University of
           Singapore. NUSMods was born out of the frustration of a lack of usable NUS timetable
-          planners (<ExternalLink href="https://webrb.nus.edu.sg/ctt/builder.aspx">
+          planners (
+          <ExternalLink href="https://webrb.nus.edu.sg/ctt/builder.aspx">
             the official one
           </ExternalLink>{' '}
           provides a delightful hair-pulling experience &ndash; go ahead, try it out). Also, it

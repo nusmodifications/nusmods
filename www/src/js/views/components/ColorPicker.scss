@@ -19,6 +19,11 @@ $arrow-height: 1.5rem;
   height: $button-size;
   padding: 0;
   border: 0;
+
+  &.hidden {
+    border: 1px dashed var(--gray-light);
+    background: none;
+  }
 }
 
 .palette {
@@ -33,7 +38,7 @@ $arrow-height: 1.5rem;
   margin-left: -$width/2 + $arrow-width/2 + 0.15rem;
   border-radius: 5px;
   background: $background-color;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.14), 0 1px 2px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 6px 18px rgba(#000, 0.14), 0 1px 2px rgba(#000, 0.24);
 
   // arrowtip
   &::before {
@@ -59,9 +64,22 @@ $arrow-height: 1.5rem;
 
 .option {
   composes: btn from global;
+  position: relative;
   width: $size;
   height: $size;
   margin-bottom: $margin-bottom;
+
+  // Add a cross mark to indicate the currently selected color
+  &.selected::after {
+    content: '✕';
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    font-size: $size * 0.8;
+    line-height: $size;
+    text-align: center;
+  }
 }
 
 // Override .btn styles

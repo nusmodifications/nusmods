@@ -20,13 +20,11 @@ if (loadRaven) {
       /^chrome:\/\//i,
       /^chrome-extension:\/\//i,
       /^moz-extension:\/\//i,
+      // UC Browser injected script
+      /u\.c\.b\.r\.o\.w\.s\.e\.r/i,
       // Disqus
       /embed\.js$/i,
+      /alfalfa\.[0-9a-f]+\.js$/i,
     ],
   }).install();
-
-  // Capture unhandled Promise rejections
-  window.addEventListener('unhandledrejection', (evt) => {
-    Raven.captureException(evt.reason);
-  });
 }

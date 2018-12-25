@@ -1,0 +1,60 @@
+@import '~styles/utils/modules-entry';
+
+.jumpSelect,
+.instructions,
+.geolocate {
+  z-index: 1000;
+}
+
+.jumpSelect {
+  position: absolute;
+  top: 0.2rem;
+  right: 0.5rem;
+  opacity: 0.5;
+  width: auto;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.instructions {
+  position: relative;
+  display: block;
+  max-width: 20rem;
+  padding: 0.2rem 0.4rem;
+  margin: -7rem auto 4.5rem auto;
+  font-weight: bold;
+  text-align: center;
+  color: #fff;
+  background: rgba(#000, 0.6);
+  pointer-events: none;
+  transition: opacity 0.2s;
+
+  &.moved {
+    opacity: 0;
+  }
+}
+
+.geolocate {
+  position: absolute;
+  right: 1rem;
+  bottom: 1.75rem;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.submitted {
+  text-align: center;
+
+  svg {
+    width: 6rem;
+    height: 6rem;
+    margin-bottom: 1rem;
+    color: theme-color('success');
+  }
+}

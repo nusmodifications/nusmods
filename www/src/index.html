@@ -8,33 +8,24 @@
     <link href="${htmlWebpackPlugin.files.publicPath}favicon-16x16.png" rel="icon" type="image/png" sizes="16x16">
     <link href="${htmlWebpackPlugin.files.publicPath}safari-pinned-tab.svg" rel="mask-icon" color="#ff5138">
     <link href="${htmlWebpackPlugin.files.publicPath}manifest.json" rel="manifest">
-    <link href="${htmlWebpackPlugin.options.moduleListUrl}" rel="preload" as="fetch">
+    <link href="${htmlWebpackPlugin.options.moduleListUrl}" rel="preload" as="fetch" crossorigin="anonymous">
     <link href="${htmlWebpackPlugin.options.venuesUrl}" rel="prefetch">
-    <title>NUSMods</title>
-    <meta name="description" content="NUSMods is a timetable builder and knowledge platform, providing students with a better way to plan their school timetable and useful module-related information that are community-driven.">
+    <title>${htmlWebpackPlugin.options.brandName}</title>
+    <!-- data-react-helmet="true" is set on tags which should be replaced by React Helmet (See <Title> component) -->
+    <meta name="description" content="${htmlWebpackPlugin.options.description}" data-react-helmet="true">
     <!-- Open Graph general (Facebook, Pinterest & Google+) -->
-    <meta name="og:title" content="NUSMods">
-    <meta name="og:description" content="NUSMods is a timetable builder and knowledge platform, providing students with a better way to plan their school timetable and useful module-related information that are community-driven.">
+    <meta name="og:title" content="${htmlWebpackPlugin.options.brandName}" data-react-helmet="true">
+    <meta name="og:description" content="${htmlWebpackPlugin.options.description}" data-react-helmet="true">
     <meta name="og:image" content="${htmlWebpackPlugin.files.publicPath}share.png">
-    <meta name="og:site_name" content="NUSMods">
+    <meta name="og:site_name" content="${htmlWebpackPlugin.options.brandName}">
     <meta name="og:type" content="website">
     <!-- Open Search -->
-    <link href="${htmlWebpackPlugin.files.publicPath}opensearch.xml" rel="search" title="NUSMods Modules" type="application/opensearchdescription+xml">
+    <link href="${htmlWebpackPlugin.files.publicPath}opensearch.xml" rel="search" title="${htmlWebpackPlugin.options.brandName} Modules" type="application/opensearchdescription+xml">
     <meta name="theme-color" content="#ffffff" />
   </head>
   <body>
     <div id="app"></div>
-    <noscript>Please enable JavaScript to use NUSMods</noscript>
+    <noscript>Please enable JavaScript to use ${htmlWebpackPlugin.options.brandName}</noscript>
     <script async src="https://www.google-analytics.com/analytics.js"></script>
-    <script>
-      (function (h, o, t, j, a, r) {
-        h.hj = h.hj || function () { (h.hj.q = h.hj.q || []).push(arguments) };
-        h._hjSettings = { hjid: 761441, hjsv: 6 };
-        a = o.getElementsByTagName('head')[0];
-        r = o.createElement('script'); r.async = 1;
-        r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
-        a.appendChild(r);
-      })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
-    </script>
   </body>
 </html>

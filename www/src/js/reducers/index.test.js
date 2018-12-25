@@ -70,6 +70,7 @@ test('reducers should set export data state', () => {
     },
     hidden: { [1]: ['PC1222'] },
     academicYear: expect.any(String),
+    archive: {},
   });
 
   expect(state.settings).toMatchObject({

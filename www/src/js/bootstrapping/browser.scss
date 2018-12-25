@@ -1,0 +1,25 @@
+@import '~styles/utils/modules-entry';
+
+.browserWarning {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: $browser-warning-z-index;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.5);
+
+  .modal {
+    max-width: 48em;
+    padding: 2em;
+    margin-right: auto;
+    margin-left: auto;
+    background: #fff;
+
+    .checkboxContainer {
+      padding-top: 0.5em;
+      padding-bottom: 0.5em;
+    }
+  }
+}

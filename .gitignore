@@ -1,7 +1,7 @@
 ### NUSMods ###
 
 # Build folders
-api/app
+/data/
 dist/
 dist-timetable/
 build/
@@ -11,7 +11,7 @@ build/
 cache/
 .cache-loader
 
-# Local config 
+# Local config
 /export/config.js
 
 # Rest adapted from https://www.gitignore.io/api/vim,node,linux,macos,emacs,windows,ansible,database,webstorm,visualstudiocode
@@ -195,6 +195,8 @@ typings/
 # dotenv environment variables file
 .env
 
+# Junit reports
+reports
 
 ### Vim ###
 # swap

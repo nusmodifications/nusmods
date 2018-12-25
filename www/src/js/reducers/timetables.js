@@ -21,8 +21,49 @@ import {
 } from 'actions/timetables';
 import { SET_EXPORTED_DATA } from 'actions/export';
 import { getNewColor } from 'utils/colors';
+import { createMigrate, type PersistConfig } from 'redux-persist';
 
 const EMPTY_OBJECT = {};
+
+export const persistConfig = {
+  /* eslint-disable no-useless-computed-key */
+  migrate: createMigrate({
+    [1]: (state: TimetablesState) => ({
+      ...state,
+      archive: {},
+    }),
+  }),
+  /* eslint-enable */
+  version: 1,
+
+  // Our own state reconciler archives old timetables if the acad year is different,
+  // otherwise use the persisted timetable state
+  stateReconciler: (
+    inbound: TimetablesState,
+    original: TimetablesState,
+    reduced: TimetablesState,
+    { debug }: PersistConfig,
+  ): TimetablesState => {
+    if (inbound.academicYear === original.academicYear) {
+      return inbound;
+    }
+
+    if (debug) {
+      // eslint-disable-next-line no-console
+      console.log(
+        'New academic year detected - resetting timetable and adding timetable to archive',
+      );
+    }
+
+    return {
+      ...original,
+      archive: {
+        ...inbound.archive,
+        [inbound.academicYear]: inbound.lessons,
+      },
+    };
+  },
+};
 
 // Map of LessonType to ClassNo.
 const defaultModuleLessonConfig: ModuleLessonConfig = {};
@@ -128,9 +169,11 @@ export const defaultTimetableState: TimetablesState = {
   colors: {},
   hidden: {},
   academicYear: config.academicYear,
+  archive: {},
 };
 
 function timetables(state: TimetablesState = defaultTimetableState, action: FSA): TimetablesState {
+  // All normal timetable actions should specify their semester
   if (!action.payload || !action.payload.semester) {
     return state;
   }

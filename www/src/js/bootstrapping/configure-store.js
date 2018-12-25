@@ -1,24 +1,32 @@
 // @flow
-
-import { createStore, applyMiddleware, compose } from 'redux';
+import { createStore, applyMiddleware, compose, type Store } from 'redux';
 import { persistStore } from 'redux-persist';
 import thunk from 'redux-thunk';
+import update from 'immutability-helper';
 import rootReducer, { type State } from 'reducers';
 import requestsMiddleware from 'middlewares/requests-middleware';
 import ravenMiddleware from 'middlewares/raven-middleware';
 import syncCompleter from 'middlewares/sync-completer';
 import syncMiddleware from 'bootstrapping/configure-sync-middleware';
 
+// Typedef for Webpack-augmented global module variable.
+// Docs: https://webpack.js.org/api/hot-module-replacement/
+// Source: https://github.com/flowtype/flow-typed/issues/165#issuecomment-246002816
+declare var module: {
+  hot: {
+    accept(path: string | string[], callback: () => void): void,
+  },
+};
+
+// Extend immutability-helper with autovivification commands. This allows immutability-helper
+// to automatically create objects if it doesn't exist before
+// See: https://github.com/kolodny/immutability-helper#autovivification
+update.extend('$auto', (value, object) => (object ? update(object, value) : update({}, value)));
+
 // For redux-devtools-extensions - see
 // https://github.com/zalmoxisus/redux-devtools-extension
-/* eslint-disable no-underscore-dangle */
-const composeEnhancers =
-  typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-        // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
-      })
-    : compose;
-/* eslint-enable no-underscore-dangle */
+// eslint-disable-next-line no-underscore-dangle
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 export default function configureStore(defaultState?: State) {
   const middlewares = [ravenMiddleware, thunk, requestsMiddleware, syncMiddleware, syncCompleter];
@@ -32,6 +40,9 @@ export default function configureStore(defaultState?: State) {
       collapsed: true,
       duration: true,
       diff: true,
+      // Avoid diffing actions that insert a lot of stuff into the state to prevent console from lagging
+      diffPredicate: (getState, action) =>
+        !action.type.startsWith('FETCH_MODULE_LIST') && !action.type.startsWith('persist/'),
     });
     middlewares.push(logger);
   }
@@ -46,7 +57,7 @@ export default function configureStore(defaultState?: State) {
 
   if (module.hot) {
     // Enable webpack hot module replacement for reducers
-    (module.hot: any).accept('../reducers', () => store.replaceReducer(rootReducer));
+    module.hot.accept('../reducers', () => store.replaceReducer(rootReducer));
   }
 
   const persistor = persistStore(store);

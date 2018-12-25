@@ -15,8 +15,11 @@ import {
   DISMISS_CORS_NOTIFICATION,
   ENABLE_CORS_NOTIFICATION,
   TOGGLE_CORS_NOTIFICATION_GLOBALLY,
+  SET_MODULE_TABLE_SORT,
+  TOGGLE_BETA_TESTING_STATUS,
 } from 'actions/settings';
 import { SET_EXPORTED_DATA } from 'actions/export';
+import { DIMENSIONS, withTracker } from 'bootstrapping/mamoto';
 import { LIGHT_MODE, DARK_MODE } from 'types/settings';
 import config from 'config';
 
@@ -32,6 +35,8 @@ const defaultSettingsState: SettingsState = {
   mode: LIGHT_MODE,
   hiddenInTimetable: [],
   corsNotification: defaultCorsNotificationState,
+  moduleTableOrder: 'exam',
+  beta: false,
 };
 
 function settings(state: SettingsState = defaultSettingsState, action: FSA): SettingsState {
@@ -83,6 +88,22 @@ function settings(state: SettingsState = defaultSettingsState, action: FSA): Set
         ...state,
         ...action.payload.settings,
       };
+
+    case SET_MODULE_TABLE_SORT:
+      return {
+        ...state,
+        moduleTableOrder: action.payload,
+      };
+
+    case TOGGLE_BETA_TESTING_STATUS: {
+      const newStatus = !state.beta;
+      withTracker((tracker) => tracker.setCustomDimension(DIMENSIONS.beta, newStatus));
+
+      return {
+        ...state,
+        beta: newStatus,
+      };
+    }
 
     case REHYDRATE: {
       let nextState = state;

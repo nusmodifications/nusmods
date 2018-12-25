@@ -1,15 +1,37 @@
 // @flow
-import type { DayText, LessonTime, Lesson } from 'types/modules';
+import type { DayText, Lesson, LessonTime } from 'types/modules';
+import {
+  getISODay,
+  format,
+  getHours,
+  getMinutes,
+  getSeconds,
+  setHours,
+  setMinutes,
+  setSeconds,
+  startOfDay,
+} from 'date-fns';
 
 // Converts a 24-hour format time string to an index.
 // Each index corresponds to one cell of each timetable row.
 // Each row may not start from index 0, it depends on the config's starting time.
 // 0000 -> 0, 0030 -> 1, 0100 -> 2, ...
 export function convertTimeToIndex(time: LessonTime): number {
-  const hour: number = parseInt(time.substring(0, 2), 10);
-  const minute: string = time.substring(2);
-  // eslint-disable-next-line quote-props
-  return hour * 2 + { '00': 0, '30': 1, '59': 2 }[minute];
+  const hour = parseInt(time.substring(0, 2), 10);
+  const minute = parseInt(time.substring(2), 10);
+
+  // TODO: Expose incorrect offsets to user via UI
+  // Currently we round up in half hour blocks, but the actual time is not shown
+  let minuteOffset;
+  if (minute === 0) {
+    minuteOffset = 0;
+  } else if (minute <= 30) {
+    minuteOffset = 1;
+  } else {
+    minuteOffset = 2;
+  }
+
+  return hour * 2 + minuteOffset;
 }
 
 // Reverse of convertTimeToIndex.
@@ -25,6 +47,25 @@ export function formatHour(hour: number): string {
   if (hour === 0 || hour === 24) return '12 midnight';
   if (hour < 12) return `${hour}am`;
   return `${hour - 12}pm`;
+}
+
+export function getTimeAsDate(time: string | number, date: Date = new Date()): Date {
+  const dateNumber = parseInt(time, 10);
+  return setHours(setMinutes(startOfDay(date), dateNumber % 100), Math.floor(dateNumber / 100));
+}
+
+export function formatTime(time: string | number): string {
+  const timeNumber = parseInt(time, 10);
+
+  if (timeNumber === 0) return '12 midnight';
+  if (timeNumber === 1200) return '12 noon';
+
+  return format(getTimeAsDate(timeNumber), 'h:mm a').toLowerCase();
+}
+
+// Create a new date object with time from the second date object
+export function setTime(date: Date, time: Date): Date {
+  return setHours(setMinutes(setSeconds(date, getSeconds(time)), getMinutes(time)), getHours(time));
 }
 
 export const SCHOOLDAYS: Array<DayText> = [
@@ -62,7 +103,7 @@ export function getCurrentHours(
   return now.getHours();
 }
 
-// Gets the current time in hours, 0915 -> 15, 1315 -> 45
+// Gets the current time in hours, 0915 -> 15, 1345 -> 45
 // Current time to always match Singapore's
 export function getCurrentMinutes(
   now: Date = new Date(), // Used for tests only
@@ -70,9 +111,16 @@ export function getCurrentMinutes(
   return now.getMinutes();
 }
 
-// Monday = 0, Friday = 4
-export function getCurrentDayIndex(
-  now: Date = new Date(), // Used for tests only
-): number {
-  return now.getDay() - 1; // Minus 1 because JS week starts on Sunday
+// Monday = 0, Friday = 4, Sunday = 6
+export function getDayIndex(date: Date = new Date()): number {
+  return getISODay(date) - 1;
+}
+
+/**
+ * Return a copy of the original Date incremented by the given number of days
+ */
+export function daysAfter(startDate: Date, days: number): Date {
+  const d = new Date(startDate.valueOf());
+  d.setUTCDate(d.getUTCDate() + days);
+  return d;
 }

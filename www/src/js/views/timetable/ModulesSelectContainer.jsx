@@ -8,7 +8,7 @@ import type { ModuleCode, Semester } from 'types/modules';
 import Online from 'views/components/Online';
 import { addModule } from 'actions/timetables';
 import { popNotification } from 'actions/app';
-import { getSemModuleSelectList } from 'reducers/moduleBank';
+import { getSemModuleSelectList } from 'selectors/moduleBank';
 import { createSearchPredicate, sortModules } from 'utils/moduleSearch';
 import ModulesSelect from './ModulesSelect';
 
@@ -31,7 +31,7 @@ class ModulesSelectContainer extends Component<Props> {
     this.props.addModule(this.props.semester, moduleCode);
   };
 
-  getFilteredModules = (inputValue: string) => {
+  getFilteredModules = (inputValue: ?string) => {
     if (!inputValue) return [];
     const predicate = createSearchPredicate(inputValue);
     const results = this.props.moduleList.filter(predicate);
@@ -59,7 +59,7 @@ class ModulesSelectContainer extends Component<Props> {
 
 function mapStateToProps(state, ownProps) {
   const { semester, timetable } = ownProps;
-  const moduleList = getSemModuleSelectList(state.moduleBank, semester, timetable);
+  const moduleList = getSemModuleSelectList(state, semester, timetable);
 
   return {
     semester,
@@ -67,7 +67,10 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default connect(mapStateToProps, {
-  addModule,
-  popNotification,
-})(ModulesSelectContainer);
+export default connect(
+  mapStateToProps,
+  {
+    addModule,
+    popNotification,
+  },
+)(ModulesSelectContainer);

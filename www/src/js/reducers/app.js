@@ -3,11 +3,13 @@ import type { FSA } from 'types/redux';
 import type { AppState } from 'types/reducers';
 import config from 'config';
 
+import { forceRefreshPrompt } from 'utils/debug';
 import { MODIFY_LESSON, CHANGE_LESSON, CANCEL_MODIFY_LESSON } from 'actions/timetables';
 import { SELECT_SEMESTER } from 'actions/settings';
 import {
   OPEN_NOTIFICATION,
   POP_NOTIFICATION,
+  PROMPT_REFRESH,
   SET_ONLINE_STATUS,
   TOGGLE_LOGIN_MODAL,
   TOGGLE_FEEDBACK_MODAL,
@@ -21,6 +23,7 @@ const defaultAppState = (): AppState => ({
   isOnline: navigator.onLine,
   isLoginModalOpen: false,
   isFeedbackModalOpen: false,
+  promptRefresh: forceRefreshPrompt(),
   notifications: [],
 });
 
@@ -57,6 +60,12 @@ function app(state: AppState = defaultAppState(), action: FSA): AppState {
       return {
         ...state,
         isFeedbackModalOpen: !state.isFeedbackModalOpen,
+      };
+
+    case PROMPT_REFRESH:
+      return {
+        ...state,
+        promptRefresh: true,
       };
     case OPEN_NOTIFICATION: {
       if (state.notifications.length) {

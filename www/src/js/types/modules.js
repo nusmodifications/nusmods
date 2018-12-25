@@ -16,36 +16,37 @@ export type LessonType = string; // E.g. "Lecture", "Tutorial"
 export type LessonTime = StartTime | EndTime;
 export type ModuleCode = string; // E.g. "CS3216"
 export type ModuleTitle = string;
-export type Semester = number; // E.g. 0/1/2/3/4. 3 and 4 means special sem i and ii.
+export type Semester = number; // E.g. 1/2/3/4. 3 and 4 means special sem i and ii.
 export type WeekText = string; // E.g. "Every Week", "Odd Week"
 
 // Auxiliary data types
-const DaysOfWeekEnum = {
-  Monday: 'Monday',
-  Tuesday: 'Tuesday',
-  Wednesday: 'Wednesday',
-  Thursday: 'Thursday',
-  Friday: 'Friday',
-  Saturday: 'Saturday',
-};
+export type Day =
+  | 'Monday'
+  | 'Tuesday'
+  | 'Wednesday'
+  | 'Thursday'
+  | 'Friday'
+  | 'Saturday'
+  | 'Sunday';
+export const WorkingDaysOfWeek: Day[] = [
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+];
+export const DaysOfWeek: Day[] = [...WorkingDaysOfWeek, 'Sunday'];
 
-export const DaysOfWeek = Object.keys(DaysOfWeekEnum);
-export type Day = $Keys<typeof DaysOfWeekEnum>;
+export type Time = 'Morning' | 'Afternoon' | 'Evening';
+export const TimesOfDay: Time[] = ['Morning', 'Afternoon', 'Evening'];
 
-const TimesOfDayEnum = {
-  Morning: 'Morning',
-  Afternoon: 'Afternoon',
-  Evening: 'Evening',
-};
-
-export const TimesOfDay = Object.keys(TimesOfDayEnum);
-export type Time = $Keys<typeof TimesOfDayEnum>;
-
-export const Timeslots: [Day, Time][] = flatMap(DaysOfWeek, (day): [Day, Time][] =>
-  TimesOfDay.map((time) => [day, time]),
+export const Timeslots: [Day, Time][] = flatMap(
+  WorkingDaysOfWeek,
+  (day): [Day, Time][] => TimesOfDay.map((time) => [day, time]),
 );
 
-export type ModuleLevel = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+export type ModuleLevel = 1 | 2 | 3 | 4 | 5 | 6 | 8;
 export const Semesters = [1, 2, 3, 4];
 
 export type WorkloadComponent = 'Lecture' | 'Tutorial' | 'Laboratory' | 'Project' | 'Preparation';
@@ -63,20 +64,20 @@ export type RawLesson = {
 };
 
 // Semester-specific information of a module.
-export type SemesterData = {
-  ExamDate?: string,
-  LecturePeriods: Array<string>,
-  Semester: Semester,
-  Timetable: Array<RawLesson>,
-  TutorialPeriods?: Array<string>,
-};
+export type SemesterData = {|
+  +ExamDate?: string,
+  +LecturePeriods: Array<string>,
+  +Semester: Semester,
+  +Timetable: Array<RawLesson>,
+  +TutorialPeriods?: Array<string>,
+|};
 
 // Recursive definition for walking a module tree
-export type TreeFragment = {
-  name: string,
+export type TreeFragment = {|
+  +name: string,
   // TreeFragment[] will result in infinite loop
-  children: Array<TreeFragment>,
-};
+  +children: Array<TreeFragment>,
+|};
 
 // Information for a module for a particular academic year.
 // This is probably the only model you need to be concerned with.
@@ -105,11 +106,11 @@ export type ModuleWithColor = Module & {
 };
 
 // This format is returned from the module list endpoint.
-export type ModuleCondensed = {
-  ModuleCode: ModuleCode,
-  ModuleTitle: ModuleTitle,
-  Semesters: Array<number>,
-};
+export type ModuleCondensed = {|
+  +ModuleCode: ModuleCode,
+  +ModuleTitle: ModuleTitle,
+  +Semesters: number[],
+|};
 
 // Subset of Module object that contains the properties that are
 // needed for module search
@@ -126,6 +127,10 @@ export type Lesson = RawLesson & {
   ModuleTitle: ModuleTitle,
 };
 
+export type ColoredLesson = Lesson & {
+  colorIndex: number,
+};
+
 type Modifiable = {
   isModifiable?: boolean,
   isAvailable?: boolean,
@@ -134,4 +139,4 @@ type Modifiable = {
 };
 
 // Lessons do not implement a modifiable interface.
-export type ModifiableLesson = Lesson & Modifiable;
+export type ModifiableLesson = ColoredLesson & Modifiable;

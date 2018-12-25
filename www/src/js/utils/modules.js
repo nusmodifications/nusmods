@@ -1,18 +1,25 @@
 // @flow
-import _ from 'lodash';
-
 import type {
+  Day,
   Lesson,
   Module,
   RawLesson,
   Semester,
   SemesterData,
-  WorkloadComponent,
   Time,
-  Day,
+  WorkloadComponent,
 } from 'types/modules';
 
+import _ from 'lodash';
 import config from 'config';
+import { NBSP } from 'utils/react';
+
+// Look for strings that look like module codes - eg.
+// ACC1010  - 3 chars, 4 digits, no suffix
+// CS1010FC - 2 chars, 4 digits, 2 chars
+// CS2014R  - 2 chars, 4 digits, 1 char
+// BMA 5001 - 3 chars, space, 4 digits
+export const MODULE_CODE_REGEX = /\b(\w{2,3}\s*\d{4}\w{0,3})\b/g;
 
 // Returns semester specific details such as exam date and timetable.
 export function getModuleSemesterData(module: Module, semester: Semester): ?SemesterData {
@@ -116,4 +123,9 @@ export function parseWorkload(workloadString: string): Workload {
 
 export function getTimeslot(day: Day, time: Time): string {
   return `${day} ${time}`;
+}
+
+export function renderMCs(moduleCredits: number | string) {
+  const credit = parseInt(moduleCredits, 10);
+  return `${credit}${NBSP}${credit === 1 ? 'MC' : 'MCs'}`;
 }

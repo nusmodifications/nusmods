@@ -1,4 +1,4 @@
-@import "~styles/utils/modules-entry.scss";
+@import '~styles/utils/modules-entry.scss';
 
 .modulesTable {
   font-size: 0.9rem;
@@ -17,6 +17,25 @@
 .moduleInfo {
   display: table-cell;
   flex: 1 1 auto;
+}
+
+.moduleInfo.tombstone {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.3rem 0.3rem 0.3rem 0.9rem;
+  border-radius: 3px;
+  background: var(--gray-lightest);
+
+  .moduleActionButtons {
+    flex: 1 0 auto;
+    text-align: right;
+  }
+
+  .moduleAction {
+    flex: 0 1 auto;
+    text-transform: uppercase;
+  }
 }
 
 .moduleExam {
@@ -43,5 +62,33 @@
       padding: 0.5rem;
       border: 0;
     }
+  }
+}
+
+.footer {
+  font-size: $font-size-sm;
+  color: var(--gray-light);
+
+  hr {
+    margin: 1rem 0 0.5rem;
+  }
+
+  strong {
+    color: var(--gray);
+  }
+}
+
+.moduleOrder {
+  text-align: right;
+
+  label {
+    padding-right: 1rem;
+    margin: 0;
+  }
+
+  :global(.form-control) {
+    display: inline-block;
+    width: auto;
+    text-align: left;
   }
 }

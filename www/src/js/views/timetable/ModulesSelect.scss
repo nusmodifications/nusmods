@@ -8,25 +8,25 @@ $module-list-height: 13.5rem;
 
 .input {
   composes: form-control from global;
-  height: $input-height;
   text-align: left;
   white-space: nowrap;
 
-  // Remove bootstrap's box-shadow
-  &:global(.form-control):focus {
-    box-shadow: none;
+  &:global(.form-control) {
+    height: $input-height;
+  }
+
+  &:not(:disabled) {
+    box-shadow: inset 2px 2px 4px rgba(#000, 0.1);
+
+    @include night-mode {
+      box-shadow: inset 2px 2px 4px rgba(#000, 0.9);
+    }
   }
 }
 
-.modal {
-  .container {
-    height: 100%;
-  }
-
-  .input {
-    border-width: 0 0 1px;
-    border-radius: 0;
-  }
+.modal .input {
+  border-width: 0 0 1px;
+  border-radius: 0;
 }
 
 .close {
@@ -36,21 +36,6 @@ $module-list-height: 13.5rem;
   z-index: 1;
   width: $input-height;
   height: $input-height;
-}
-
-// Override offsets in Modal.scss
-div > .modal {
-  height: 100%;
-
-  @include media-breakpoint-down(xs) {
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    max-width: 100%;
-    max-height: 100%;
-    padding: 0;
-  }
 }
 
 .selectList {

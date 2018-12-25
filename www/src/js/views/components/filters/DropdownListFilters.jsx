@@ -29,8 +29,6 @@ type State = {
 };
 
 export class DropdownListFiltersComponent extends PureComponent<Props, State> {
-  searchInput: ?HTMLInputElement;
-
   constructor(props: Props) {
     super(props);
 
@@ -50,8 +48,10 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
     this.setState({ searchedFilters: uniq([...this.state.searchedFilters, selectedItem]) });
   };
 
+  searchInput = React.createRef<HTMLInputElement>();
+
   focusInput = () => {
-    if (this.searchInput) this.searchInput.focus();
+    if (this.searchInput.current) this.searchInput.current.focus();
   };
 
   displayedFilters(inputValue?: string): [ModuleFilter, number][] {
@@ -114,18 +114,19 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
         ) : (
           /* Use a search-select combo dropdown on desktop */
           <Downshift
-            breakingChanges={{ resetInputOnSelection: true }}
             onChange={(selectedItem, { clearSelection }) => {
               this.onSelectItem(selectedItem);
               clearSelection();
             }}
-            render={({
+          >
+            {({
               getInputProps,
               getItemProps,
               openMenu,
               isOpen,
               inputValue,
               highlightedIndex,
+              getMenuProps,
             }) => (
               <div className="dropdown">
                 <div
@@ -135,9 +136,7 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
                 >
                   <Search className={styles.searchIcon} onClick={this.focusInput} />
                   <input
-                    ref={(r) => {
-                      this.searchInput = r;
-                    }}
+                    ref={this.searchInput}
                     {...getInputProps({
                       onFocus: () => {
                         this.setState({ isFocused: true });
@@ -153,7 +152,7 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
                 </div>
 
                 {isOpen && (
-                  <div className="dropdown-menu show">
+                  <div className="dropdown-menu show" {...getMenuProps()}>
                     {this.displayedFilters(inputValue).map(([filter, count], index) => {
                       const id = `${group.id}-${filter.id}`;
                       return (
@@ -188,7 +187,7 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
                 )}
               </div>
             )}
-          />
+          </Downshift>
         )}
 
         {/* Show all filters that have been selected at some point */}

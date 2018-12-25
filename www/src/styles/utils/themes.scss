@@ -2,6 +2,10 @@
   border: 1px solid #ccc;
 }
 
+.hoverable {
+  transition: background-color $desktop-entering-duration $material-deceleration-curve;
+}
+
 @each $name, $colors in $nusmods-theme-colors {
   .theme-#{$name},
   // Specificity override for the theme settings page

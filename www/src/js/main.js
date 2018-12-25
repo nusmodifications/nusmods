@@ -2,26 +2,23 @@ import 'bootstrapping/polyfill';
 
 // Import Sentry earliest to capture exceptions
 import 'bootstrapping/sentry';
+import 'bootstrapping/browser';
 
 import ReactDOM from 'react-dom';
 import ReactModal from 'react-modal';
-import Raven from 'raven-js';
 
 import App from 'App';
-import storage from 'storage';
 
 import configureStore from 'bootstrapping/configure-store';
 import subscribeOnlineEvents from 'bootstrapping/subscribeOnlineEvents';
-import initKeyboardShortcuts from 'bootstrapping/keyboardShortcuts';
-import initializeGA from 'bootstrapping/google-analytics';
+import { initializeMamoto } from 'bootstrapping/mamoto';
+import initializeServiceWorker from 'bootstrapping/service-worker';
 
 import '../styles/main.scss';
 
-const persistedState = storage.loadState();
-const { store, persistor } = configureStore(persistedState);
+const { store, persistor } = configureStore();
 
 subscribeOnlineEvents(store);
-initKeyboardShortcuts(store);
 
 // Initialize ReactModal
 ReactModal.setAppElement('#app');
@@ -36,12 +33,16 @@ if (module.hot) {
 
 render();
 
-if (process.env.NODE_ENV === 'production') {
-  if ('serviceWorker' in navigator && window.location.protocol === 'https:') {
-    navigator.serviceWorker.register('/sw.js').catch((e) => {
-      Raven.captureException(e);
-    });
-  }
+if (
+  ('serviceWorker' in navigator &&
+    window.location.protocol === 'https:' &&
+    process.env.NODE_ENV === 'production') ||
+  // Allow us to force Workbox to be enabled for debugging
+  process.env.DEBUG_WORKBOX
+) {
+  initializeServiceWorker(store);
+}
 
-  initializeGA();
+if (process.env.NODE_ENV === 'production') {
+  initializeMamoto();
 }

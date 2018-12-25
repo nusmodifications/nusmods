@@ -2,7 +2,7 @@
 import React from 'react';
 import classnames from 'classnames';
 
-import type { TimetableDayArrangement } from 'types/timetables';
+import type { TimetableDayArrangement, HoverLesson } from 'types/timetables';
 
 import styles from './TimetableDay.scss';
 import TimetableRow from './TimetableRow';
@@ -19,10 +19,12 @@ type Props = {
   onModifyCell: Function,
   isCurrentDay: boolean,
   currentTimeIndicatorStyle: Object,
+  hoverLesson: ?HoverLesson,
+  onCellHover: ?(?HoverLesson) => void,
 };
 
 // Height of timetable per hour in vertical mode
-const VERTICAL_HEIGHT = 2;
+const VERTICAL_HEIGHT = 2.4;
 
 function TimetableDay(props: Props) {
   const columns = props.endingIndex - props.startingIndex;
@@ -46,6 +48,7 @@ function TimetableDay(props: Props) {
       </div>
       <div className={styles.dayRows} style={rowStyle}>
         <CurrentTimeIndicator style={props.currentTimeIndicatorStyle} />
+
         {props.dayLessonRows.map((dayLessonRow, i) => (
           <TimetableRow
             key={i}
@@ -55,6 +58,8 @@ function TimetableDay(props: Props) {
             showTitle={props.showTitle}
             lessons={dayLessonRow}
             onModifyCell={props.onModifyCell}
+            hoverLesson={props.hoverLesson}
+            onCellHover={props.onCellHover}
           />
         ))}
       </div>

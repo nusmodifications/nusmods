@@ -30,23 +30,34 @@ type State = {
   loading: ?Semester,
 };
 
+function isModuleOnTimetable(
+  semester: Semester,
+  timetables: TimetableConfig,
+  module: Module,
+): boolean {
+  return !!get(timetables, [String(semester), module.ModuleCode]);
+}
+
 export class AddModuleDropdownComponent extends PureComponent<Props, State> {
+  static getDerivedStateFromProps(nextProps: Props, prevState: State) {
+    const { timetables, module } = nextProps;
+    const { loading } = prevState;
+
+    if (loading != null && isModuleOnTimetable(loading, timetables, module)) {
+      return { loading: null };
+    }
+
+    return null;
+  }
+
   state: State = {
     loading: null,
   };
 
-  componentWillReceiveProps(nextProps: Props) {
-    if (
-      this.state.loading != null &&
-      this.moduleOnTimetable(this.state.loading, nextProps.timetables)
-    ) {
-      this.setState({ loading: null });
-    }
-  }
-
   onSelect(semester: Semester) {
     const { module, timetables } = this.props;
-    if (this.moduleOnTimetable(semester, timetables)) {
+
+    if (isModuleOnTimetable(semester, timetables, module)) {
       this.props.removeModule(semester, module.ModuleCode);
     } else {
       this.setState({ loading: semester });
@@ -56,15 +67,11 @@ export class AddModuleDropdownComponent extends PureComponent<Props, State> {
 
   buttonLabel(semester: Semester) {
     if (this.state.loading === semester) {
-      return (
-        <Fragment>
-          Adding...<br />
-          <strong>{config.semesterNames[semester]}</strong>
-        </Fragment>
-      );
+      return 'Adding...';
     }
 
-    return this.moduleOnTimetable(semester, this.props.timetables) ? (
+    const hasModule = isModuleOnTimetable(semester, this.props.timetables, this.props.module);
+    return hasModule ? (
       <Fragment>
         Remove from <br />
         <strong>{config.semesterNames[semester]}</strong>
@@ -83,11 +90,6 @@ export class AddModuleDropdownComponent extends PureComponent<Props, State> {
       .sort();
   }
 
-  moduleOnTimetable(semester: Semester, timetables: TimetableConfig): boolean {
-    const { module } = this.props;
-    return !!get(timetables, [String(semester), module.ModuleCode]);
-  }
-
   render() {
     const { block, className, module } = this.props;
 
@@ -98,7 +100,7 @@ export class AddModuleDropdownComponent extends PureComponent<Props, State> {
     /* eslint-disable jsx-a11y/label-has-for */
     return (
       <Downshift>
-        {({ getLabelProps, getItemProps, isOpen, toggleMenu, highlightedIndex }) => (
+        {({ getLabelProps, getItemProps, isOpen, toggleMenu, highlightedIndex, getMenuProps }) => (
           <div>
             <label {...getLabelProps({ htmlFor: id })} className="sr-only">
               Add module to timetable
@@ -133,22 +135,20 @@ export class AddModuleDropdownComponent extends PureComponent<Props, State> {
                 </button>
               )}
 
-              {isOpen && (
-                <div className="dropdown-menu show">
-                  {otherSemesters.map((semester, index) => (
-                    <button
-                      {...getItemProps({ item: semester })}
-                      key={semester}
-                      className={classnames('dropdown-item', styles.dropdownItem, {
-                        'dropdown-selected': index === highlightedIndex,
-                      })}
-                      onClick={() => this.onSelect(semester)}
-                    >
-                      {this.buttonLabel(semester)}
-                    </button>
-                  ))}
-                </div>
-              )}
+              <div className={classnames('dropdown-menu', { show: isOpen })} {...getMenuProps()}>
+                {otherSemesters.map((semester, index) => (
+                  <button
+                    {...getItemProps({ item: semester })}
+                    key={semester}
+                    className={classnames('dropdown-item', styles.dropdownItem, {
+                      'dropdown-selected': index === highlightedIndex,
+                    })}
+                    onClick={() => this.onSelect(semester)}
+                  >
+                    {this.buttonLabel(semester)}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         )}

@@ -6,7 +6,6 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import update from 'immutability-helper';
-import qs from 'query-string';
 import Raven from 'raven-js';
 import { each, mapValues, values } from 'lodash';
 
@@ -20,12 +19,13 @@ import ModuleSearchBox from 'views/modules/ModuleSearchBox';
 import ChecklistFilters from 'views/components/filters/ChecklistFilters';
 import TimeslotFilters from 'views/components/filters/TimeslotFilters';
 import DropdownListFilters from 'views/components/filters/DropdownListFilters';
-import ErrorPage from 'views/errors/ErrorPage';
+import ApiError from 'views/errors/ApiError';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import SideMenu, { OPEN_MENU_LABEL } from 'views/components/SideMenu';
 import { Filter } from 'views/components/icons';
 import Title from 'views/components/Title';
-
+import Omelette, { matchEgg } from 'views/components/Omelette';
+import { forceInstantSearch } from 'utils/debug';
 import {
   defaultGroups,
   updateGroups,
@@ -40,7 +40,7 @@ import {
   SEMESTER,
   TUTORIAL_TIMESLOTS,
 } from 'utils/moduleFilters';
-import { createSearchFilter, sortModules } from 'utils/moduleSearch';
+import { createSearchFilter, SEARCH_QUERY_KEY, sortModules } from 'utils/moduleSearch';
 import nusmods from 'apis/nusmods';
 import { resetModuleFinder } from 'actions/moduleFinder';
 import FilterGroup from 'utils/filters/FilterGroup';
@@ -111,63 +111,12 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
   }
 
   componentDidMount() {
-    // Load module data
-    const modulesRequest = axios.get(nusmods.modulesUrl()).then(({ data }) => data);
-
-    // Load faculty-department mapping
-    const makeFacultyRequest = (semester) =>
-      axios
-        .get(nusmods.facultyDepartmentsUrl(semester))
-        .then(({ data }) => invertFacultyDepartments(data));
-
-    const facultiesRequest = Promise.all(Semesters.map(makeFacultyRequest))
-      // Then merge all of the mappings together
-      .then((mappings) => Object.assign({}, ...mappings));
-
-    // Finally initialize everything
-    Promise.all([modulesRequest, facultiesRequest])
-      .then(([modules, faculties]) => {
-        const params = qs.parse(this.props.location.search);
-        const filterGroups = defaultGroups(faculties, this.props.location.search);
-
-        // Benchmark the amount of time taken to run the filters to determine if we can
-        // use instant search
-        const start = window.performance && performance.now();
-        each(filterGroups, (group) => group.initFilters(modules));
-        const time = window.performance
-          ? performance.now() - start
-          : // If the user's browser doesn't support performance.now, we don't use instant search
-            Number.MAX_VALUE;
-
-        if ('instant' in params) {
-          // Manual override - use 'instant=1' to force instant search, and
-          // 'instant=0' to force non-instant search
-          this.useInstantSearch = params.instant === '1';
-        } else {
-          // By default, only turn on instant search for desktop and if the
-          // benchmark earlier is fast enough
-          this.useInstantSearch =
-            queryMatch(breakpointUp('sm')).matches && time < INSTANT_SEARCH_THRESHOLD;
-        }
-
-        console.info(`${time}ms taken to init filters`); // eslint-disable-line
-        console.info(this.useInstantSearch ? 'Instant search on' : 'Instant search off'); // eslint-disable-line
-
-        this.setState({
-          filterGroups,
-          modules,
-          loading: false,
-        });
-      })
-      .catch((error) => {
-        Raven.captureException(error);
-        this.setState({ error });
-      });
+    this.loadPageData();
   }
 
-  componentWillReceiveProps(nextProps: Props) {
-    if (this.props.searchTerm !== nextProps.searchTerm) {
-      this.onSearch(nextProps.searchTerm);
+  componentDidUpdate(prevProps: Props) {
+    if (this.props.searchTerm !== prevProps.searchTerm) {
+      this.onSearch(this.props.searchTerm);
     }
   }
 
@@ -198,11 +147,7 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
           page: { $merge: { start: 0, current: 0 } },
         }),
       () => {
-        // Update query string after state is updated
-        this.history.push({
-          ...this.props.history.location,
-          search: serializeGroups(this.state.filterGroups),
-        });
+        this.updateQueryString();
 
         // Scroll back to the top
         if (resetScroll) window.scrollTo(0, 0);
@@ -219,6 +164,16 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
     );
   };
 
+  onClearFilter = () => {
+    const filterGroups = mapValues(this.state.filterGroups, (group: FilterGroup<*>) => {
+      // Don't clear search query
+      if (group.id === SEARCH_QUERY_KEY) return group;
+      return group.reset();
+    });
+
+    this.setState({ filterGroups }, this.updateQueryString);
+  };
+
   onSearch(searchTerm: string) {
     const filter = createSearchFilter(searchTerm).initFilters(this.state.modules);
 
@@ -229,6 +184,71 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
   }
 
   useInstantSearch = false;
+
+  loadPageData = () => {
+    this.setState({ error: null });
+
+    // Load module data
+    const modulesRequest = axios.get(nusmods.modulesUrl()).then(({ data }) => data);
+
+    // Load faculty-department mapping
+    const makeFacultyRequest = (semester) =>
+      axios
+        .get(nusmods.facultyDepartmentsUrl(semester))
+        .then(({ data }) => invertFacultyDepartments(data));
+
+    const facultiesRequest = Promise.all(Semesters.map(makeFacultyRequest))
+      // Then merge all of the mappings together
+      .then((mappings) => Object.assign({}, ...mappings));
+
+    // Finally initialize everything
+    Promise.all([modulesRequest, facultiesRequest])
+      .then(([modules, faculties]) => {
+        const filterGroups = defaultGroups(faculties, this.props.location.search);
+
+        // Benchmark the amount of time taken to run the filters to determine if we can
+        // use instant search
+        const start = window.performance && performance.now();
+        each(filterGroups, (group) => group.initFilters(modules));
+        const time = window.performance
+          ? performance.now() - start
+          : // If the user's browser doesn't support performance.now, we assume it is too old for instant search
+            Number.MAX_VALUE;
+
+        const force = forceInstantSearch();
+        if (typeof force === 'boolean') {
+          // Manual override - use 'instant=1' to force instant search, and
+          // 'instant=0' to force non-instant search
+          this.useInstantSearch = force;
+        } else {
+          // By default, only turn on instant search for desktop and if the
+          // benchmark earlier is fast enough
+          this.useInstantSearch =
+            queryMatch(breakpointUp('sm')).matches && time < INSTANT_SEARCH_THRESHOLD;
+        }
+
+        console.info(`${time}ms taken to init filters`); // eslint-disable-line
+        console.info(this.useInstantSearch ? 'Instant search on' : 'Instant search off'); // eslint-disable-line
+
+        this.setState({
+          filterGroups,
+          modules,
+          loading: false,
+        });
+      })
+      .catch((error) => {
+        Raven.captureException(error);
+        this.setState({ error });
+      });
+  };
+
+  updateQueryString = () => {
+    // Update query string after state is updated
+    this.history.push({
+      ...this.props.history.location,
+      search: serializeGroups(this.state.filterGroups),
+    });
+  };
 
   updatePageHash = () => {
     // Update the location hash so that users can share the URL and go back to the
@@ -261,7 +281,7 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
     const { filterGroups: groups, isMenuOpen, modules, loading, page, error } = this.state;
 
     if (error) {
-      return <ErrorPage error="cannot load modules info" eventId={Raven.lastEventId()} />;
+      return <ApiError dataName="module information" retry={this.loadPageData} />;
     }
 
     if (loading) {
@@ -284,6 +304,12 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
       onFilterChange: this.onFilterChange,
     };
 
+    // The clear filter button is only shown when there is at least one filter
+    // active
+    const showClearFilters = this.filterGroups().some(
+      (group) => group.isActive() && group.id !== SEARCH_QUERY_KEY,
+    );
+
     return (
       <div className="modules-page-container page-container">
         {pageHead}
@@ -294,11 +320,15 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
 
             <ModuleSearchBox useInstantSearch={this.useInstantSearch} />
 
-            <ModuleFinderList
-              modules={filteredModules}
-              page={page}
-              onPageChange={this.onPageChange}
-            />
+            {matchEgg(this.props.searchTerm) ? (
+              <Omelette query={this.props.searchTerm} />
+            ) : (
+              <ModuleFinderList
+                modules={filteredModules}
+                page={page}
+                onPageChange={this.onPageChange}
+              />
+            )}
           </div>
 
           <div className="col-md-4 col-lg-3">
@@ -310,15 +340,11 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
               <div className={styles.moduleFilters}>
                 <header className={styles.filterHeader}>
                   <h3>Refine by</h3>
-                  {this.filterGroups().some((group) => group.isActive()) && (
+                  {showClearFilters && (
                     <button
                       className="btn btn-link btn-sm"
                       type="button"
-                      onClick={() =>
-                        this.setState({
-                          filterGroups: mapValues(groups, (group: FilterGroup<*>) => group.reset()),
-                        })
-                      }
+                      onClick={this.onClearFilter}
                     >
                       Clear Filters
                     </button>
@@ -355,7 +381,8 @@ const mapStateToProps = (state: StoreState) => ({
 
 // Explicitly naming the components to make HMR work
 const ModuleFinderContainerWithRouter = withRouter(ModuleFinderContainerComponent);
-const ModuleFinderContainer = connect(mapStateToProps, { resetModuleFinder })(
-  ModuleFinderContainerWithRouter,
-);
+const ModuleFinderContainer = connect(
+  mapStateToProps,
+  { resetModuleFinder },
+)(ModuleFinderContainerWithRouter);
 export default ModuleFinderContainer;

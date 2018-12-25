@@ -13,6 +13,20 @@
   }
 }
 
+@keyframes pulse-more {
+  from {
+    transform: scale3d(1, 1, 1);
+  }
+
+  50% {
+    transform: scale3d(1.2, 1.2, 1.2);
+  }
+
+  to {
+    transform: scale3d(1, 1, 1);
+  }
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -31,6 +45,17 @@
 
   50% {
     opacity: 1;
+  }
+}
+
+@keyframes zoomOut {
+  50% {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+    transform: scale3d(0.3, 0.3, 0.3);
   }
 }
 

@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import { range } from 'lodash';
 
 import type { VenueSearchOptions } from 'types/venues';
-import { SCHOOLDAYS, formatHour, getCurrentDayIndex, getCurrentHours } from 'utils/timify';
+import { SCHOOLDAYS, formatHour, getDayIndex, getCurrentHours } from 'utils/timify';
 import styles from './AvailabilitySearch.scss';
 
 type Props = {
@@ -24,7 +24,7 @@ export function defaultSearchOptions(
   now: Date = new Date(), // Used for tests only
 ): VenueSearchOptions {
   // Set day of week - if it is not a school day, then set to Monday (0)
-  const day = Math.max(getCurrentDayIndex(now), 0);
+  const day = getDayIndex(now) === 6 ? 0 : getDayIndex(now);
 
   // Set time - if the current time is outside class hours, set it to the
   // time of the earliest lesson
@@ -38,12 +38,12 @@ export function defaultSearchOptions(
 }
 
 export default class AvailabilitySearch extends PureComponent<Props> {
-  onUpdate = (event: Event, key: $Keys<VenueSearchOptions>) => {
-    if (typeof event.target.value !== 'undefined') {
+  onUpdate = (event: SyntheticEvent<HTMLSelectElement>, key: $Keys<VenueSearchOptions>) => {
+    if (typeof event.currentTarget.value !== 'undefined') {
       const { searchOptions, onUpdate } = this.props;
       onUpdate({
         ...searchOptions,
-        [key]: +event.target.value,
+        [key]: +event.currentTarget.value,
       });
     }
   };

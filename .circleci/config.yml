@@ -1,64 +1,139 @@
 version: 2
+
+defaults: &defaults
+  docker:
+    - image: circleci/node:8
+
+restore_cache: &restore_node_deps
+  name: Restore node_modules cache
+  keys:
+    - v1-node-{{ arch }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
+    - v1-node-{{ arch }}-{{ .Branch }}-
+    - v1-node-{{ arch }}-
+
+save_cache: &save_node_deps
+  name: Save node_modules cache
+  key: v1-node-{{ arch }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
+  paths:
+    - node_modules
+
 jobs:
-  build:
-
-    docker:
-      - image: circleci/node:8
-        environment:
-            NODE_ENV: test
-
-    working_directory: ~/nusmods/
-
+  checkout:
+    <<: *defaults
+    working_directory: ~/nusmods
     steps:
       - checkout
-
       - run: echo $CIRCLE_COMPARE_URL | cut -d/ -f7
-
-      - restore_cache:
-          name: Restore node_modules cache
-          keys:
-            - v1-node-{{ arch }}-{{ .Branch }}-{{ checksum "www/yarn.lock" }}
-            - v1-node-{{ arch }}-{{ .Branch }}-
-            - v1-node-{{ arch }}-
-
-      - run:
-          name: Install node_modules packages
-          command: cd www && yarn install
-
-      - save_cache:
-          name: Save node_modules cache
-          key: v1-node-{{ arch }}-{{ .Branch }}-{{ checksum "www/yarn.lock" }}
+      - persist_to_workspace:
+          root: .
           paths:
-            - www/node_modules
+            - .
 
+  data-server:
+    <<: *defaults
+    working_directory: ~/nusmods/api/data
+    steps:
+      - attach_workspace:
+          at: ~/nusmods
+      - restore_cache: *restore_node_deps
+      - run: yarn
+      - save_cache: *save_node_deps
+      - run: yarn lint
+      - run: yarn test --runInBand
+
+  nus-scrapers:
+    <<: *defaults
+    working_directory: ~/nusmods/scrapers/nus
+    steps:
+      - attach_workspace:
+          at: ~/nusmods
+      - restore_cache: *restore_node_deps
+      - run: yarn
+      - save_cache: *save_node_deps
+      - run: yarn lint
+      - run: yarn test --runInBand
+      - run:
+          name: Build scraper
+          environment:
+            NODE_ENV: production
+          command: yarn build:scraper
+
+  nusmoderator:
+    <<: *defaults
+    working_directory: ~/nusmods/packages/nusmoderator
+    steps:
+      - attach_workspace:
+          at: ~/nusmods
+      - restore_cache: *restore_node_deps
+      - run: yarn
+      - save_cache: *save_node_deps
+      - run: yarn lint
+      - run: yarn test --runInBand
+      - run: yarn build
+      - store_artifacts:
+          path: dist
+      - run: yarn docs
+      - store_artifacts:
+          path: README.md
+
+  www:
+    <<: *defaults
+    working_directory: ~/nusmods/www
+    environment:
+      NODE_ENV: production
+    steps:
+      - attach_workspace:
+          at: ~/nusmods
+      - restore_cache: *restore_node_deps
+      - run:
+          name: Install dependencies
+          environment:
+            NODE_ENV: test
+          command: yarn
+      - save_cache: *save_node_deps
       - run:
           name: Type check code
-          command: cd www && yarn flow
-
+          command: yarn flow
       - run:
           name: Lint code
-          command: cd www && yarn lint:code --format junit -o reports/junit/js-lint-results.xml
-
+          command: yarn lint:code --format junit -o reports/junit/js-lint-results.xml
       - run:
           name: Test code
           environment:
+            NODE_ENV: test
             JEST_JUNIT_OUTPUT: reports/junit/js-test-results.xml
           command: |
-            cd www
             set -e
-            yarn jest --ci --testResultsProcessor="jest-junit" --coverage
+            yarn test --runInBand --reporters=default --reporters=jest-junit
             cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
-
       - run:
           name: Lint styles
-          command: cd www && yarn lint:styles
-
+          command: yarn lint:styles
       - run:
           name: Build web page
-          command: cd www && yarn build
-
+          command: yarn build
+      - run:
+          name: Report bundle size
+          command: yarn size
       - store_test_results:
-          path: www/reports/junit
-
+          path: reports/junit
       - store_artifacts:
-          path: www/dist
+          path: dist
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - checkout
+      - data-server:
+          requires:
+            - checkout
+      - nus-scrapers:
+          requires:
+            - checkout
+      - nusmoderator:
+          requires:
+            - checkout
+      - www:
+          requires:
+            - checkout

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders into nav element 1`] = `
+exports[`NavtabsComponent renders into nav element 1`] = `
 <nav
   className="nav"
 >
@@ -71,11 +71,9 @@ exports[`renders into nav element 1`] = `
   <div
     className="divider"
   />
-  <a
+  <ExternalLink
     className="link hiddenOnMobile"
     href="https://nuswhispers.com"
-    rel="noreferrer noopener"
-    target="_blank"
   >
     <Heart
       color="currentColor"
@@ -86,6 +84,6 @@ exports[`renders into nav element 1`] = `
     >
       Whispers
     </span>
-  </a>
+  </ExternalLink>
 </nav>
 `;

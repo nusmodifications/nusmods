@@ -35,3 +35,27 @@
     }
   }
 }
+
+.modalContent {
+  display: flex;
+  font-size: 1.4rem;
+  line-height: 1.3;
+
+  svg {
+    $size: 3.8rem;
+
+    width: $size;
+    height: $size;
+    margin-right: 1.2rem;
+    color: theme-color(warning);
+  }
+}
+
+.modalButtons {
+  text-align: right;
+
+  :global(.btn) {
+    margin-right: 0.5rem;
+  }
+}
+

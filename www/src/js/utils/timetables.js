@@ -1,17 +1,21 @@
 // @flow
+import type { AcadWeekInfo } from 'nusmoderator';
 import _ from 'lodash';
 import qs from 'query-string';
 
 import type {
   ClassNo,
+  ColoredLesson,
   Lesson,
   LessonType,
   Module,
   ModuleCode,
   RawLesson,
   Semester,
+  WeekText,
 } from 'types/modules';
 import type {
+  HoverLesson,
   ModuleLessonConfig,
   SemTimetableConfig,
   SemTimetableConfigWithLessons,
@@ -23,6 +27,7 @@ import type { ModulesMap } from 'reducers/moduleBank';
 import type { ModuleCodeMap } from 'types/reducers';
 
 import { getModuleSemesterData, getModuleTimetable } from 'utils/modules';
+import { getTimeAsDate } from 'utils/timify';
 
 type LessonTypeAbbrev = { [LessonType]: string };
 export const LESSON_TYPE_ABBREV: LessonTypeAbbrev = {
@@ -97,11 +102,13 @@ export function hydrateSemTimetableWithLessons(
           (lesson: RawLesson): boolean =>
             lesson.LessonType === lessonType && lesson.ClassNo === classNo,
         );
-        const timetableLessons: Array<Lesson> = newLessons.map((lesson: RawLesson): Lesson => ({
-          ...lesson,
-          ModuleCode: moduleCode,
-          ModuleTitle: module.ModuleTitle,
-        }));
+        const timetableLessons: Array<Lesson> = newLessons.map(
+          (lesson: RawLesson): Lesson => ({
+            ...lesson,
+            ModuleCode: moduleCode,
+            ModuleTitle: module.ModuleTitle,
+          }),
+        );
         return timetableLessons;
       });
     },
@@ -132,7 +139,7 @@ export function timetableLessonsArray(timetable: SemTimetableConfigWithLessons):
 //    Monday: [Lesson, Lesson, ...],
 //    Tuesday: [Lesson, ...],
 //  }
-export function groupLessonsByDay(lessons: Array<Lesson>): TimetableDayFormat {
+export function groupLessonsByDay(lessons: ColoredLesson[]): TimetableDayFormat {
   return _.groupBy(lessons, (lesson) => lesson.DayText);
 }
 
@@ -152,7 +159,7 @@ export function doLessonsOverlap(lesson1: Lesson, lesson2: Lesson): boolean {
 //    [Lesson, Lesson, ...],
 //    [Lesson, ...],
 //  ]
-export function arrangeLessonsWithinDay(lessons: Array<Lesson>): TimetableDayArrangement {
+export function arrangeLessonsWithinDay(lessons: ColoredLesson[]): TimetableDayArrangement {
   const rows: TimetableDayArrangement = [[]];
   if (_.isEmpty(lessons)) {
     return rows;
@@ -161,9 +168,9 @@ export function arrangeLessonsWithinDay(lessons: Array<Lesson>): TimetableDayArr
     const timeDiff = a.StartTime.localeCompare(b.StartTime);
     return timeDiff !== 0 ? timeDiff : a.ClassNo.localeCompare(b.ClassNo);
   });
-  sortedLessons.forEach((lesson: Lesson) => {
+  sortedLessons.forEach((lesson: ColoredLesson) => {
     for (let i = 0; i < rows.length; i++) {
-      const rowLessons: Array<Lesson> = rows[i];
+      const rowLessons: ColoredLesson[] = rows[i];
       const previousLesson = _.last(rowLessons);
       if (!previousLesson || !doLessonsOverlap(previousLesson, lesson)) {
         // Lesson does not overlap with any Lesson in the row. Add it to row.
@@ -193,9 +200,11 @@ export function arrangeLessonsWithinDay(lessons: Array<Lesson>): TimetableDayArr
 //    ...
 //  }
 // $FlowFixMe - Flow refuses to accept 'extra' properties on Lesson object
-export function arrangeLessonsForWeek(lessons: Lesson[]): TimetableArrangement {
+export function arrangeLessonsForWeek(lessons: ColoredLesson[]): TimetableArrangement {
   const dayLessons = groupLessonsByDay(lessons);
-  return _.mapValues(dayLessons, (dayLesson: Lesson[]) => arrangeLessonsWithinDay(dayLesson));
+  return _.mapValues(dayLessons, (dayLesson: ColoredLesson[]) =>
+    arrangeLessonsWithinDay(dayLesson),
+  );
 }
 
 //  Determines if a Lesson on the timetable can be modifiable / dragged around.
@@ -225,6 +234,47 @@ export function findExamClashes(
   );
   delete groupedModules.undefined; // Remove modules without exams
   return _.omitBy(groupedModules, (mods) => mods.length === 1); // Remove non-clashing mods
+}
+
+export function isLessonAvailable(lesson: Lesson, weekInfo: $ReadOnly<AcadWeekInfo>): boolean {
+  if (!weekInfo.num) {
+    return false;
+  }
+
+  if (lesson.LessonType === 'Tutorial' && weekInfo.num < 3) {
+    return false;
+  }
+
+  if (lesson.WeekText !== 'Every Week') {
+    if (lesson.WeekText === 'Even Week' && weekInfo.num % 2 === 1) {
+      return false;
+    }
+
+    if (lesson.WeekText === 'Odd Week' && weekInfo.num % 2 === 0) {
+      return false;
+    }
+
+    const weekNumbers = lesson.WeekText.split(',').map((n) => parseInt(n, 10));
+    if (weekNumbers.every((n) => !Number.isNaN(n)) && !weekNumbers.includes(weekInfo.num)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+export function isLessonOngoing(lesson: Lesson, currentTime: number): boolean {
+  return (
+    parseInt(lesson.StartTime, 10) <= currentTime && currentTime < parseInt(lesson.EndTime, 10)
+  );
+}
+
+export function getStartTimeAsDate(lesson: Lesson, date: Date = new Date()): Date {
+  return getTimeAsDate(lesson.StartTime, date);
+}
+
+export function getEndTimeAsDate(lesson: Lesson, date: Date = new Date()): Date {
+  return getTimeAsDate(lesson.EndTime, date);
 }
 
 /**
@@ -322,6 +372,56 @@ function parseModuleConfig(serialized: ?string): ModuleLessonConfig {
   return config;
 }
 
+/**
+ * Formats numeric week number string into something human readable
+ *
+ * - 1           => Week 1
+ * - 1,2         => Weeks 1,2
+ * - 1,2,3       => Weeks 1-3
+ * - 1,2,3,5,6,7 => Weeks 1-3, 5-7
+ */
+export function formatWeekNumber(weekText: WeekText) {
+  // Check if this is a numeric week number list and bail if it's not
+  const weeks = weekText.split(',').map((week) => parseInt(week.trim(), 10));
+  if (weeks.some(Number.isNaN)) {
+    return weekText;
+  }
+
+  if (weeks.length === 1) {
+    return `Week ${weeks[0]}`;
+  }
+
+  // Find consecutive week numbers
+  const processed = [];
+  let start = weeks.shift();
+  let last = start;
+
+  const mergeConsecutive = () => {
+    if (last - start > 2) {
+      processed.push(`${start}-${last}`);
+    } else {
+      processed.push(..._.range(start, last + 1));
+    }
+  };
+
+  while (weeks.length) {
+    const next = weeks.shift();
+    if (next - last === 1) {
+      // Consecutive week number - keep going
+      last = next;
+    } else {
+      // Break = push the current chunk into processed
+      mergeConsecutive();
+      start = next;
+      last = start;
+    }
+  }
+
+  mergeConsecutive();
+
+  return `Weeks ${processed.join(', ')}`;
+}
+
 // Converts a timetable config to query string
 // eg:
 // {
@@ -340,4 +440,24 @@ export function deserializeTimetable(serialized: string): SemTimetableConfig {
 
 export function isSameTimetableConfig(t1: SemTimetableConfig, t2: SemTimetableConfig): boolean {
   return _.isEqual(t1, t2);
+}
+
+export function isSameLesson(l1: Lesson, l2: Lesson) {
+  return (
+    l1.LessonType === l2.LessonType &&
+    l1.ClassNo === l2.ClassNo &&
+    l1.ModuleCode === l2.ModuleCode &&
+    l1.StartTime === l2.StartTime &&
+    l1.EndTime === l2.EndTime &&
+    l1.DayText === l2.DayText &&
+    l1.WeekText === l2.WeekText
+  );
+}
+
+export function getHoverLesson(lesson: Lesson): HoverLesson {
+  return {
+    classNo: lesson.ClassNo,
+    moduleCode: lesson.ModuleCode,
+    lessonType: lesson.LessonType,
+  };
 }
