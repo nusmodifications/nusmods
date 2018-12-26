@@ -11,6 +11,7 @@ const {
 const production = require('../webpack/webpack.config.prod');
 const timetableOnly = require('../webpack/webpack.config.timetable-only');
 const parts = require('../webpack/webpack.parts');
+const createTag = require('./create-tag');
 
 function runWebpack(config) {
   const compiler = webpack(config);
@@ -89,4 +90,11 @@ function writeCommitHash() {
 // This lets us display how much they changed later.
 measureFileSizesBeforeBuild(parts.PATHS.build)
   .then((previousFileSizes) => build(previousFileSizes))
+  .then(async () => {
+    try {
+      await createTag();
+    } catch (e) {
+      // Swallow error
+    }
+  })
   .then(writeCommitHash);
