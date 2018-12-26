@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import classnames from 'classnames';
+import { Flipper } from 'react-flip-toolkit';
 
 import type { TimetableDayArrangement, HoverLesson } from 'types/timetables';
 
@@ -49,7 +50,7 @@ function TimetableDay(props: Props) {
   if (props.verticalMode) rowStyle.height = `${VERTICAL_HEIGHT * columns}rem`;
 
   return (
-    <li className={styles.day}>
+    <Flipper element="li" flipKey={props.flipKey} className={styles.day}>
       <div
         className={classnames(styles.dayName, {
           [styles.dayNameScrolled]: props.isScrolledHorizontally,
@@ -63,7 +64,6 @@ function TimetableDay(props: Props) {
         {props.dayLessonRows.map((dayLessonRow, i) => (
           <TimetableRow
             key={i}
-            flipKey={props.flipKey}
             startingIndex={props.startingIndex}
             endingIndex={props.endingIndex}
             verticalMode={props.verticalMode}
@@ -76,7 +76,7 @@ function TimetableDay(props: Props) {
         ))}
       </div>
       {props.isCurrentDay && <div className={classnames('no-export', styles.currentDay)} />}
-    </li>
+    </Flipper>
   );
 }
 

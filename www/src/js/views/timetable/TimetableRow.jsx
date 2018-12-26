@@ -1,6 +1,5 @@
 // @flow
 import React from 'react';
-import { Flipper, Flipped } from 'react-flip-toolkit';
 
 import type { ColoredLesson } from 'types/modules';
 import type { HoverLesson } from 'types/timetables';
@@ -13,7 +12,6 @@ import TimetableCell from './TimetableCell';
 type Props = {
   verticalMode: boolean,
   showTitle: boolean,
-  flipKey: string,
   hoverLesson: ?HoverLesson,
   onCellHover: ?(?HoverLesson) => void,
   startingIndex: number,
@@ -43,7 +41,7 @@ function TimetableRow(props: Props) {
 
   let lastStartIndex = startingIndex;
   return (
-    <Flipper flipKey={props.flipKey} className={styles.timetableRow}>
+    <div className={styles.timetableRow}>
       {lessons.map((lesson) => {
         const lessonStartIndex: number = convertTimeToIndex(lesson.StartTime);
         const lessonEndIndex: number = convertTimeToIndex(lesson.EndTime);
@@ -67,22 +65,18 @@ function TimetableRow(props: Props) {
           : {};
 
         return (
-          <Flipped flipId={getLessonKey(lesson)} key={getLessonKey(lesson)}>
-            {(flipProps) => (
-              <TimetableCell
-                style={style}
-                lesson={lesson}
-                showTitle={props.showTitle}
-                hoverLesson={props.hoverLesson}
-                onHover={props.onCellHover}
-                flipProps={flipProps}
-                {...conditionalProps}
-              />
-            )}
-          </Flipped>
+          <TimetableCell
+            key={getLessonKey(lesson)}
+            style={style}
+            lesson={lesson}
+            showTitle={props.showTitle}
+            hoverLesson={props.hoverLesson}
+            onHover={props.onCellHover}
+            {...conditionalProps}
+          />
         );
       })}
-    </Flipper>
+    </div>
   );
 }
 
