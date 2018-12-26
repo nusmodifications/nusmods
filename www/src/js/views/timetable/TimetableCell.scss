@@ -18,6 +18,7 @@ $cell-border-radius: 6px;
   border-style: solid;
   transition: background-color $desktop-entering-duration $material-deceleration-curve;
   animation-duration: $desktop-entering-duration;
+  scroll-snap-align: start;
 
   &:hover,
   &:focus {
