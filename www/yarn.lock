@@ -10548,6 +10548,13 @@ react-feather@1.1.4:
   resolved "https://registry.yarnpkg.com/react-feather/-/react-feather-1.1.4.tgz#d0143da95f9d52843cf13a553091573a7c617897"
   integrity sha512-Odke3WUl00+a2scGQKlep4m+qDESl/x+PsTRB3v6fAV/2dteF4EaRjqhX8h7HM3mU3V3v0xGTv8Z5S26bpQ5PQ==
 
+react-flip-toolkit@6.3.1:
+  version "6.3.1"
+  resolved "https://registry.yarnpkg.com/react-flip-toolkit/-/react-flip-toolkit-6.3.1.tgz#387039e4c506df95286a51b6412db33461836148"
+  integrity sha512-2vQqZVvzVReks67jcn0tsioK8C//rs3aFpOvDURIPZs1UTKOIh13SeIV19uq3Y0o5YmmkQYtPXikzrcifACcXg==
+  dependencies:
+    rematrix "^0.2.2"
+
 react-helmet@5.2.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/react-helmet/-/react-helmet-5.2.0.tgz#a81811df21313a6d55c5f058c4aeba5d6f3d97a7"
@@ -11076,6 +11083,11 @@ remark@^9.0.0:
     remark-parse "^5.0.0"
     remark-stringify "^5.0.0"
     unified "^6.0.0"
+
+rematrix@^0.2.2:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/rematrix/-/rematrix-0.2.3.tgz#37ec6b060a3c03c0fde3cf5628c6e109ea51e9d4"
+  integrity sha512-azqvZjYaJZhWy2kxcajtyweoAmLDeqIvqMK8nEJW18vTJut58LO5KmfEK8Jkws/el9aTbyWBXhjvawDjR82hWg==
 
 remove-trailing-separator@^1.0.1:
   version "1.1.0"
