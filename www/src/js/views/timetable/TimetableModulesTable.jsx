@@ -2,6 +2,7 @@
 
 import React, { Fragment, PureComponent } from 'react';
 import { connect } from 'react-redux';
+import { Flipper, Flipped } from 'react-flip-toolkit';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 import { sortBy } from 'lodash';
@@ -129,24 +130,27 @@ class TimetableModulesTable extends PureComponent<Props> {
     // tombstone contains the data for the last deleted module. We insert it back
     // so that it gets sorted into its original location, then in renderModule()
     // takes care of rendering the tombstone
-    if (tombstone) modules = [...modules, tombstone];
+    if (tombstone) modules = [...modules, { ...tombstone, isTombstone: true }];
     modules = sortBy(modules, (module) => moduleOrders[moduleTableOrder].orderBy(module, semester));
 
     return (
-      <div className={classnames(styles.modulesTable, elements.moduleTable, 'row')}>
-        {modules.map((module) => (
-          <div
-            className={classnames(
-              styles.modulesTableRow,
-              'col-sm-6',
-              horizontalOrientation ? 'col-lg-4' : 'col-md-12',
-            )}
-            key={module.ModuleCode}
-          >
-            {this.renderModule(module)}
-          </div>
-        ))}
-      </div>
+      <Flipper flipKey={modules.map((module) => `${module.ModuleCode}`).join(' ')}>
+        <div className={classnames(styles.modulesTable, elements.moduleTable, 'row')}>
+          {modules.map((module) => (
+            <Flipped key={module.ModuleCode} flipId={module.ModuleCode}>
+              <div
+                className={classnames(
+                  styles.modulesTableRow,
+                  'col-sm-6',
+                  horizontalOrientation ? 'col-lg-4' : 'col-md-12',
+                )}
+              >
+                {this.renderModule(module)}
+              </div>
+            </Flipped>
+          ))}
+        </div>
+      </Flipper>
     );
   }
 }
