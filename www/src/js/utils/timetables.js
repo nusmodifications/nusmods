@@ -461,3 +461,13 @@ export function getHoverLesson(lesson: Lesson): HoverLesson {
     lessonType: lesson.LessonType,
   };
 }
+
+export function getLessonKey(lesson: Lesson) {
+  return [
+    lesson.ModuleCode,
+    lesson.LessonType,
+    lesson.ClassNo,
+    lesson.DayText,
+    lesson.StartTime,
+  ].join(' ');
+}

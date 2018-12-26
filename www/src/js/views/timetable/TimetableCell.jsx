@@ -18,6 +18,7 @@ type Props = {
   onClick?: Function,
   onHover: ?(?HoverLesson) => void,
   hoverLesson: ?HoverLesson,
+  flipProps?: Object,
 };
 
 /**
@@ -26,7 +27,7 @@ type Props = {
  * might explore other representations e.g. grouped lessons
  */
 function TimetableCell(props: Props) {
-  const { lesson, showTitle, onClick, onHover, hoverLesson } = props;
+  const { lesson, showTitle, onClick, onHover, hoverLesson, flipProps } = props;
 
   const moduleName = showTitle ? `${lesson.ModuleCode} ${lesson.ModuleTitle}` : lesson.ModuleCode;
   const conditionalProps = { onClick };
@@ -53,6 +54,7 @@ function TimetableCell(props: Props) {
       onMouseEnter={() => onHover && onHover(getHoverLesson(lesson))}
       onMouseLeave={() => onHover && onHover(null)}
       {...conditionalProps}
+      {...flipProps}
     >
       <div className={styles.cellContainer}>
         <div className={styles.moduleName}>{moduleName}</div>

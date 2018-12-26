@@ -1,20 +1,21 @@
 // @flow
 import React, { PureComponent } from 'react';
-import { values, flattenDeep, noop } from 'lodash';
+import { flattenDeep, noop, values } from 'lodash';
 import classnames from 'classnames';
 
 import type { Lesson } from 'types/modules';
 import type { HoverLesson, TimetableArrangement } from 'types/timetables';
 
 import {
-  SCHOOLDAYS,
   calculateBorderTimings,
-  getDayIndex,
   getCurrentHours,
   getCurrentMinutes,
+  getDayIndex,
+  SCHOOLDAYS,
 } from 'utils/timify';
 import elements from 'views/elements';
 import withTimer from 'views/hocs/withTimer';
+import { getLessonKey } from 'utils/timetables';
 
 import styles from './Timetable.scss';
 import TimetableTimings from './TimetableTimings';
@@ -54,6 +55,7 @@ class Timetable extends PureComponent<Props, State> {
     );
 
     const lessons: Array<Lesson> = flattenDeep(values(this.props.lessons));
+    const lessonsKey = lessons.map(getLessonKey).join('/');
     const { startingIndex, endingIndex } = calculateBorderTimings(lessons);
     const currentDayIndex = getDayIndex(); // Monday = 0, Friday = 4
 
@@ -76,7 +78,11 @@ class Timetable extends PureComponent<Props, State> {
     return (
       <div>
         <div className={classnames(styles.container, elements.timetable)}>
-          <TimetableTimings startingIndex={startingIndex} endingIndex={endingIndex} />
+          <TimetableTimings
+            startingIndex={startingIndex}
+            endingIndex={endingIndex}
+            verticalMode={this.props.isVerticalOrientation}
+          />
           <ol className={styles.days}>
             {schoolDays.map((day, index) => (
               <TimetableDay
@@ -90,6 +96,7 @@ class Timetable extends PureComponent<Props, State> {
                 verticalMode={this.props.isVerticalOrientation}
                 showTitle={this.props.showTitle}
                 dayLessonRows={this.props.lessons[day] || [[]]}
+                flipKey={lessonsKey}
                 isScrolledHorizontally={this.props.isScrolledHorizontally}
                 isCurrentDay={index === currentDayIndex}
                 currentTimeIndicatorStyle={

@@ -11,6 +11,7 @@ import CurrentTimeIndicator from './CurrentTimeIndicator';
 
 type Props = {
   day: string,
+  flipKey: string,
   dayLessonRows: TimetableDayArrangement,
   verticalMode: boolean,
   showTitle: boolean,
@@ -41,8 +42,8 @@ function TimetableDay(props: Props) {
 
   const rowStyle: Object = {
     // Firefox defaults the second value (width) to auto if not specified
-    backgroundSize: `${size}% 100%`,
-    backgroundPosition: `left ${bgOffset}% top`,
+    backgroundSize: `${size}% ${size}%`,
+    backgroundPosition: `left ${bgOffset}% top ${bgOffset}%`,
   };
 
   if (props.verticalMode) rowStyle.height = `${VERTICAL_HEIGHT * columns}rem`;
@@ -62,6 +63,7 @@ function TimetableDay(props: Props) {
         {props.dayLessonRows.map((dayLessonRow, i) => (
           <TimetableRow
             key={i}
+            flipKey={props.flipKey}
             startingIndex={props.startingIndex}
             endingIndex={props.endingIndex}
             verticalMode={props.verticalMode}

@@ -9,27 +9,26 @@ import styles from './TimetableTimings.scss';
 type Props = {
   startingIndex: number,
   endingIndex: number,
+  verticalMode: boolean,
 };
 
 function TimetableTimings(props: Props) {
   const range = _.range(props.startingIndex, props.endingIndex);
 
   return (
-    <Flipper flipKey={range.join(' ')}>
-      <div className={styles.timings}>
-        {range.map((i) => {
-          const time = convertIndexToTime(i);
-          if (i % 2 === 0) {
-            return (
-              <Flipped key={time} flipId={time}>
-                <time className={styles.time}>{time}</time>
-              </Flipped>
-            );
-          }
-          return null;
-        })}
-        <span />
-      </div>
+    <Flipper flipKey={range.join(' ') + String(props.verticalMode)} className={styles.timings}>
+      {range.map((i) => {
+        const time = convertIndexToTime(i);
+        if (i % 2 === 0) {
+          return (
+            <Flipped key={time} flipId={time}>
+              <time className={styles.time}>{time}</time>
+            </Flipped>
+          );
+        }
+        return null;
+      })}
+      <span />
     </Flipper>
   );
 }
