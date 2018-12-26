@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import { Flipper, Flipped } from 'react-flip-toolkit';
 import _ from 'lodash';
 
 import { convertIndexToTime } from 'utils/timify';
@@ -14,20 +15,22 @@ function TimetableTimings(props: Props) {
   const range = _.range(props.startingIndex, props.endingIndex);
 
   return (
-    <div className={styles.timings}>
-      {range.map((i) => {
-        const time = convertIndexToTime(i);
-        if (i % 2 === 0) {
-          return (
-            <time key={time} className={styles.time}>
-              {time}
-            </time>
-          );
-        }
-        return null;
-      })}
-      <span />
-    </div>
+    <Flipper flipKey={range.join(' ')}>
+      <div className={styles.timings}>
+        {range.map((i) => {
+          const time = convertIndexToTime(i);
+          if (i % 2 === 0) {
+            return (
+              <Flipped key={time} flipId={time}>
+                <time className={styles.time}>{time}</time>
+              </Flipped>
+            );
+          }
+          return null;
+        })}
+        <span />
+      </div>
+    </Flipper>
   );
 }
 
