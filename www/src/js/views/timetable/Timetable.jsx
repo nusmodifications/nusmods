@@ -55,7 +55,8 @@ class Timetable extends PureComponent<Props, State> {
     );
 
     const lessons: Array<Lesson> = flattenDeep(values(this.props.lessons));
-    const lessonsKey = lessons.map(getLessonKey).join('/');
+    const lessonsKey =
+      lessons.map(getLessonKey).join('/') + String(this.props.isVerticalOrientation);
     const { startingIndex, endingIndex } = calculateBorderTimings(lessons);
     const currentDayIndex = getDayIndex(); // Monday = 0, Friday = 4
 

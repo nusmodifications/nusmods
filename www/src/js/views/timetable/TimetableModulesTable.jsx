@@ -133,23 +133,26 @@ class TimetableModulesTable extends PureComponent<Props> {
     if (tombstone) modules = [...modules, { ...tombstone, isTombstone: true }];
     modules = sortBy(modules, (module) => moduleOrders[moduleTableOrder].orderBy(module, semester));
 
+    const flipKey =
+      modules.map((module) => `${module.ModuleCode}`).join(' ') + String(horizontalOrientation);
     return (
-      <Flipper flipKey={modules.map((module) => `${module.ModuleCode}`).join(' ')}>
-        <div className={classnames(styles.modulesTable, elements.moduleTable, 'row')}>
-          {modules.map((module) => (
-            <Flipped key={module.ModuleCode} flipId={module.ModuleCode}>
-              <div
-                className={classnames(
-                  styles.modulesTableRow,
-                  'col-sm-6',
-                  horizontalOrientation ? 'col-lg-4' : 'col-md-12',
-                )}
-              >
-                {this.renderModule(module)}
-              </div>
-            </Flipped>
-          ))}
-        </div>
+      <Flipper
+        flipKey={flipKey}
+        className={classnames(styles.modulesTable, elements.moduleTable, 'row')}
+      >
+        {modules.map((module) => (
+          <Flipped key={module.ModuleCode} flipId={module.ModuleCode} translate>
+            <div
+              className={classnames(
+                styles.modulesTableRow,
+                'col-sm-6',
+                horizontalOrientation ? 'col-lg-4' : 'col-md-12',
+              )}
+            >
+              {this.renderModule(module)}
+            </div>
+          </Flipped>
+        ))}
       </Flipper>
     );
   }
