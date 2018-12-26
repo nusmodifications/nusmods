@@ -9,6 +9,8 @@ $line-width: 0.1rem;
   width: 0;
   height: 100%;
   background: none;
+  transition-property: margin, top;
+  transition-duration: $timetable-transition-duration;
 
   &:hover {
     opacity: 0.2;

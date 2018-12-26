@@ -84,7 +84,8 @@
   min-height: $timetable-row-height;
   padding-bottom: 0.3rem;
   background: linear-gradient(to right, var(--gray-lightest) 50%, transparent 50%);
-  transition: background-size, background-position 0.3s;
+  transition-property: background-size, background-position;
+  transition-duration: $timetable-transition-duration;
 
   @include vertical-mode {
     flex-direction: row;
