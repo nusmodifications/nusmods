@@ -1,10 +1,11 @@
 // @flow
 import type { VenueList } from 'types/venues';
-import type { State } from 'reducers';
 
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+
+import Loader from 'views/components/LoadingSpinner';
 
 import venueLocations from 'data/venues.json';
 // import styles from './UnmappedVenues.scss';
@@ -14,19 +15,17 @@ type Props = {
 };
 
 class UnmappedVenues extends PureComponent<Props> {
-  render() {
+  renderProgressBar() {
     const percentageMapped = (_.size(venueLocations) / this.props.venueList.length) * 100;
-      (Object.keys(venueLocations).length / this.props.venueList.length) * 100;
     const percentageMappedStr = percentageMapped.toFixed().toString();
-
     return (
       <div>
-        <div className="progress">
+        <div className="progress" style={{ height: '20px' }}>
           {/* <div className={styles.progressBar}> */}
           <div
-            className="progress-bar progress-bar-striped progress-bar-animated bg-success"
+            className="progress-bar progress-bar-striped bg-success"
             role="progressbar"
-            style={{ width: `${percentageMappedStr}%` }}
+            style={{ width: `${percentageMappedStr}%`, height: '20px' }}
             aria-valuenow={percentageMappedStr}
             aria-valuemin="0"
             aria-valuemax="100"
@@ -43,6 +42,10 @@ class UnmappedVenues extends PureComponent<Props> {
         </p>
       </div>
     );
+  }
+
+  render() {
+    return <div>{this.props.venueList ? this.renderProgressBar() : <Loader />}</div>;
   }
 }
 
