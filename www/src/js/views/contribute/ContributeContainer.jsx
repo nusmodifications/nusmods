@@ -12,9 +12,9 @@ import getContributors from 'apis/contributor';
 import { Mail, Layers, GitHub, Zap, Users } from 'views/components/icons';
 import ExternalLink from 'views/components/ExternalLink';
 import Loader from 'views/components/LoadingSpinner';
-import UnmappedVenues from 'views/components/UnmappedVenues';
+import UnmappedVenues from 'views/contribute/UnmappedVenues';
 
-import StaticPage from './StaticPage';
+import StaticPage from '../static/StaticPage';
 import styles from './ContributeContainer.scss';
 
 type Props = {

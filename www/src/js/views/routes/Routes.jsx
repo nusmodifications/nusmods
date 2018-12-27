@@ -8,7 +8,7 @@ import ModuleFinderContainer from 'views/modules/ModuleFinderContainer';
 import VenuesContainer from 'views/venues/VenuesContainer';
 import SettingsContainer from 'views/settings/SettingsContainer';
 import AboutContainer from 'views/static/AboutContainer';
-import ContributeContainer from 'views/static/ContributeContainer';
+import ContributeContainer from 'views/contribute/ContributeContainer';
 import TeamContainer from 'views/static/TeamContainer';
 import ContributorsContainer from 'views/static/ContributorsContainer';
 import FaqContainer from 'views/static/FaqContainer';

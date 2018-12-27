@@ -1,0 +1,13 @@
+@import "~utils/modules-entry";
+
+.progressBar {
+  float: left;
+  width: 25%;
+  margin-bottom: 0.4rem;
+  color: green;
+  background: none;
+
+  @include media-breakpoint-down('sm') {
+    width: 50%;
+  }
+}
