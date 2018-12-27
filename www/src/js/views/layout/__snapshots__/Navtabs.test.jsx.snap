@@ -68,6 +68,20 @@ exports[`NavtabsComponent renders into nav element 1`] = `
       Settings
     </span>
   </NavLink>
+  <a
+    className="link hiddenOnMobile"
+    href="/contribute"
+  >
+    <Star
+      color="currentColor"
+      size="24"
+    />
+    <span
+      className="title"
+    >
+      Contribute
+    </span>
+  </a>
   <div
     className="divider"
   />
