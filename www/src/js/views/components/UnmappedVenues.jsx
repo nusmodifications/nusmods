@@ -1,5 +1,6 @@
 // @flow
 import type { VenueList } from 'types/venues';
+import type { State } from 'reducers';
 
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
