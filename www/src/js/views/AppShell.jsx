@@ -66,7 +66,6 @@ export class AppShellComponent extends Component<Props, State> {
     // Checks initial load
     if (this.checkFirstLoad()) this.enableOSMode();
     const mqlDark = matchMedia('(prefers-color-scheme: dark)');
-    console.log(this.props.osEnabled);
     mqlDark.addListener((e) => {
       if (e.matches && this.props.osEnabled) {
         this.props.selectMode('DARK');

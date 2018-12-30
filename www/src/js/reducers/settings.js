@@ -20,7 +20,7 @@ import {
 } from 'actions/settings';
 import { SET_EXPORTED_DATA } from 'actions/export';
 import { DIMENSIONS, withTracker } from 'bootstrapping/mamoto';
-import { LIGHT_MODE, DARK_MODE, OS_MODE } from 'types/settings';
+import { LIGHT_MODE, DARK_MODE } from 'types/settings';
 import config from 'config';
 
 export const defaultCorsNotificationState = {

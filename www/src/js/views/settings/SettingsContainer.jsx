@@ -19,6 +19,7 @@ import {
   enableCorsNotification,
   toggleCorsNotificationGlobally,
   toggleBetaTesting,
+  enableOsMode,
 } from 'actions/settings';
 // import FacultySelect from 'views/components/FacultySelect';
 // import NewStudentSelect from 'views/components/NewStudentSelect';
@@ -46,9 +47,11 @@ type Props = {
   faculty: Faculty,
   currentThemeId: string,
   mode: Mode,
+  osEnabled: boolean,
   corsNotification: CorsNotificationSettings,
   betaTester: boolean,
 
+  enableOsMode: Function,
   selectTheme: Function,
   selectNewStudent: Function,
   selectFaculty: Function,
@@ -76,7 +79,11 @@ class SettingsContainer extends Component<Props> {
             </p>
           </div>
           <div className={classnames('col-sm-4 offset-sm-1', styles.toggle)}>
-            <ModeSelect mode={this.props.mode} onSelectMode={this.props.selectMode} />
+            <ModeSelect
+              mode={this.props.mode}
+              onSelectMode={this.props.selectMode}
+              enableOsMode={this.props.enableOsMode}
+            />
           </div>
         </div>
         <hr />
@@ -236,6 +243,7 @@ const mapStateToProps = (state: StoreState) => ({
 const connectedSettings = connect(
   mapStateToProps,
   {
+    enableOsMode,
     selectTheme,
     selectNewStudent,
     selectFaculty,
