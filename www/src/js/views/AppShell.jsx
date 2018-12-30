@@ -15,6 +15,7 @@ import classnames from 'classnames';
 import { each } from 'lodash';
 
 import weekText from 'utils/weekText';
+import { enableOsMode, selectMode } from 'actions/settings';
 import { isMobileIos } from 'utils/css';
 import { openNotification } from 'actions/app';
 import { fetchModuleList } from 'actions/moduleBank';
@@ -62,7 +63,17 @@ export class AppShellComponent extends Component<Props, State> {
 
   componentDidMount() {
     const { timetables } = this.props;
-
+    // Checks initial load
+    if (this.checkFirstLoad()) this.enableOSMode();
+    const mqlDark = matchMedia('(prefers-color-scheme: dark)');
+    console.log(this.props.osEnabled);
+    mqlDark.addListener((e) => {
+      if (e.matches && this.props.osEnabled) {
+        this.props.selectMode('DARK');
+      } else if (!e.matches && this.props.osEnabled) {
+        this.props.selectMode('LIGHT');
+      }
+    });
     // Retrieve module list
     this.fetchModuleList();
 
@@ -100,6 +111,18 @@ export class AppShellComponent extends Component<Props, State> {
           },
         });
       });
+  };
+  checkFirstLoad = () => localStorage.getItem('persist:settings') == null;
+
+  enableOSMode = () => {
+    // Enables OS MODE on initial load if Browser Supports.
+    const mqlLight = matchMedia('(prefers-color-scheme: light)');
+    const mqlDark = matchMedia('(prefers-color-scheme: dark)');
+    if (mqlLight.matches) {
+      this.props.enableOsMode('LIGHT');
+    } else if (mqlDark.matches) {
+      this.props.enableOsMode('DARK');
+    }
   };
 
   render() {
@@ -171,6 +194,7 @@ const mapStateToProps = (state: StoreState) => ({
   timetables: state.timetables.lessons,
   theme: state.theme.id,
   mode: state.settings.mode,
+  osEnabled: state.settings.osEnabled,
   activeSemester: state.app.activeSemester,
 });
 
@@ -182,6 +206,8 @@ const connectedAppShell = connect(
     setTimetable,
     validateTimetable,
     openNotification,
+    enableOsMode,
+    selectMode,
   },
 )(AppShellComponent);
 

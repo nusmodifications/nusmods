@@ -16,10 +16,11 @@ import {
   TOGGLE_CORS_NOTIFICATION_GLOBALLY,
   SET_MODULE_TABLE_SORT,
   TOGGLE_BETA_TESTING_STATUS,
+  ENABLE_OS_MODE,
 } from 'actions/settings';
 import { SET_EXPORTED_DATA } from 'actions/export';
 import { DIMENSIONS, withTracker } from 'bootstrapping/mamoto';
-import { LIGHT_MODE, DARK_MODE } from 'types/settings';
+import { LIGHT_MODE, DARK_MODE, OS_MODE } from 'types/settings';
 import config from 'config';
 
 export const defaultCorsNotificationState = {
@@ -29,6 +30,7 @@ export const defaultCorsNotificationState = {
 };
 
 const defaultSettingsState: SettingsState = {
+  osEnabled: false,
   newStudent: false,
   faculty: '',
   mode: LIGHT_MODE,
@@ -67,7 +69,12 @@ function settings(state: SettingsState = defaultSettingsState, action: FSA): Set
           enabled: { $set: action.payload.enabled },
         },
       });
-
+    case ENABLE_OS_MODE:
+      return {
+        ...state,
+        mode: action.payload,
+        osEnabled: true,
+      };
     case DISMISS_CORS_NOTIFICATION:
       return update(state, {
         corsNotification: {

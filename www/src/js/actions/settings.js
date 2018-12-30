@@ -43,6 +43,13 @@ export function toggleMode(): FSA {
     payload: null,
   };
 }
+export const ENABLE_OS_MODE: string = 'ENABLE_OS_MODE';
+export function enableOsMode(mode: Mode): FSA {
+  return {
+    type: ENABLE_OS_MODE,
+    payload: mode,
+  };
+}
 
 export const DISMISS_CORS_NOTIFICATION = 'DISMISS_CORS_NOTIFICATION';
 export function dismissCorsNotification(round: string): FSA {
