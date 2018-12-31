@@ -68,9 +68,9 @@ export class AppShellComponent extends Component<Props, State> {
     const mqlDark = matchMedia('(prefers-color-scheme: dark)');
     mqlDark.addListener((e) => {
       if (e.matches && this.props.osEnabled) {
-        this.props.selectMode('DARK');
+        this.props.enableOsMode('DARK');
       } else if (!e.matches && this.props.osEnabled) {
-        this.props.selectMode('LIGHT');
+        this.props.enableOsMode('LIGHT');
       }
     });
     // Retrieve module list

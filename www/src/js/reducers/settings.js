@@ -11,6 +11,7 @@ import {
   SELECT_FACULTY,
   SELECT_MODE,
   TOGGLE_MODE,
+  TOGGLE_MODE_OS,
   DISMISS_CORS_NOTIFICATION,
   ENABLE_CORS_NOTIFICATION,
   TOGGLE_CORS_NOTIFICATION_GLOBALLY,
@@ -56,13 +57,20 @@ function settings(state: SettingsState = defaultSettingsState, action: FSA): Set
       return {
         ...state,
         mode: action.payload,
+        osEnabled: false,
       };
     case TOGGLE_MODE:
       return {
         ...state,
-        mode: state.mode === LIGHT_MODE ? DARK_MODE : LIGHT_MODE,
+        mode: state.osEnabled || state.mode === LIGHT_MODE ? DARK_MODE : LIGHT_MODE,
+        osEnabled: false,
       };
-
+    case TOGGLE_MODE_OS:
+      return {
+        ...state,
+        mode: !state.osEnabled && state.mode === LIGHT_MODE ? action.payload : LIGHT_MODE,
+        osEnabled: !state.osEnabled && state.mode === LIGHT_MODE,
+      };
     case TOGGLE_CORS_NOTIFICATION_GLOBALLY:
       return update(state, {
         corsNotification: {
@@ -72,8 +80,8 @@ function settings(state: SettingsState = defaultSettingsState, action: FSA): Set
     case ENABLE_OS_MODE:
       return {
         ...state,
-        mode: action.payload,
         osEnabled: true,
+        mode: action.payload,
       };
     case DISMISS_CORS_NOTIFICATION:
       return update(state, {

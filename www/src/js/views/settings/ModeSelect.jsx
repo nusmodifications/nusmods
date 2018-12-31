@@ -9,6 +9,7 @@ type Props = {
   mode: Mode,
   onSelectMode: Function,
   enableOsMode: Function,
+  osEnabled: boolean,
 };
 type ModeOption = { value: Mode, label: string };
 
@@ -22,27 +23,27 @@ const MODES: Array<ModeOption> = [
     value: LIGHT_MODE,
   },
   {
-    label: 'OS',
+    label: 'OS DEFAULT',
     value: true,
   },
 ];
 
 export default function ModeSelect(props: Props) {
-  const { enableOsMode, mode, onSelectMode } = props;
+  const { osEnabled, enableOsMode, mode, onSelectMode } = props;
   const mqlLight = matchMedia('(prefers-color-scheme: light)');
   const mqlDark = matchMedia('(prefers-color-scheme: dark)');
   const browserSupport = mqlLight.matches || mqlDark.matches;
   return (
     <div className="btn-group" role="group">
-      {MODES.filter(({ label }) => label !== 'OS' || browserSupport).map(
+      {MODES.filter(({ label }) => label !== 'OS DEFAULT' || browserSupport).map(
         ({ value, label }) =>
-          label !== 'OS' ? (
+          label !== 'OS DEFAULT' ? (
             <button
               type="button"
               key={value}
               className={classnames('btn', {
-                'btn-primary': mode === value,
-                'btn-outline-primary': mode !== value,
+                'btn-primary': !osEnabled && mode === value,
+                'btn-outline-primary': osEnabled || mode !== value,
               })}
               onClick={() => onSelectMode(value)}
             >
@@ -53,12 +54,12 @@ export default function ModeSelect(props: Props) {
               type="button"
               key={value}
               className={classnames('btn', {
-                'btn-primary': mode === value,
-                'btn-outline-primary': mode !== value,
+                'btn-primary': osEnabled,
+                'btn-outline-primary': !osEnabled,
               })}
               onClick={() => {
                 if (mqlLight.matches) enableOsMode('LIGHT');
-                else enableOsMode('DARK');
+                else if (mqlDark.matches) enableOsMode('DARK');
               }}
             >
               {label}

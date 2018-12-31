@@ -43,6 +43,15 @@ export function toggleMode(): FSA {
     payload: null,
   };
 }
+
+export const TOGGLE_MODE_OS: string = 'TOGGLE_MODE_OS';
+export function toggleModeOs(mode: Mode): FSA {
+  return {
+    type: TOGGLE_MODE_OS,
+    payload: mode,
+  };
+}
+
 export const ENABLE_OS_MODE: string = 'ENABLE_OS_MODE';
 export function enableOsMode(mode: Mode): FSA {
   return {

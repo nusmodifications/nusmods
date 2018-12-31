@@ -20,6 +20,7 @@ const initialState: SettingsState = {
   },
   moduleTableOrder: 'exam',
   beta: false,
+  osEnabled: false,
 };
 const settingsWithNewStudent: SettingsState = { ...initialState, newStudent: true };
 const faculty = 'School of Computing';

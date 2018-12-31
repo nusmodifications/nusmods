@@ -83,6 +83,7 @@ class SettingsContainer extends Component<Props> {
               mode={this.props.mode}
               onSelectMode={this.props.selectMode}
               enableOsMode={this.props.enableOsMode}
+              osEnabled={this.props.osEnabled}
             />
           </div>
         </div>
@@ -235,6 +236,7 @@ const mapStateToProps = (state: StoreState) => ({
   newStudent: state.settings.newStudent,
   faculty: state.settings.faculty,
   mode: state.settings.mode,
+  osEnabled: state.settings.osEnabled,
   corsNotification: state.settings.corsNotification,
   currentThemeId: state.theme.id,
   betaTester: state.settings.beta || false,

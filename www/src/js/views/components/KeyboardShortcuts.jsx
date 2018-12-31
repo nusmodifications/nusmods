@@ -11,7 +11,7 @@ import type { Mode, ThemeId } from 'types/settings';
 import themes from 'data/themes.json';
 import { cycleTheme, toggleTimetableOrientation } from 'actions/theme';
 import { openNotification } from 'actions/app';
-import { toggleMode } from 'actions/settings';
+import { toggleMode, toggleModeOs } from 'actions/settings';
 import { intersperse } from 'utils/array';
 import ComponentMap from 'utils/ComponentMap';
 import Modal from './Modal';
@@ -21,6 +21,7 @@ type Props = ContextRouter & {
   dispatch: Dispatch<*>,
   theme: ThemeId,
   mode: Mode,
+  osEnabled: boolean,
 };
 
 type State = {
@@ -94,8 +95,15 @@ export class KeyboardShortcutsComponent extends PureComponent<Props, State> {
 
     // Toggle night mode
     this.bind('x', APPEARANCE, 'Toggle Night Mode', () => {
-      this.props.dispatch(toggleMode());
-
+      const mqlLight = matchMedia('(prefers-color-scheme: light)');
+      const mqlDark = matchMedia('(prefers-color-scheme: dark)');
+      if (mqlLight.matches && !this.props.osEnabled) {
+        this.props.dispatch(toggleModeOs('LIGHT'));
+      } else if (mqlDark.matches && !this.props.osEnabled) {
+        this.props.dispatch(toggleModeOs('DARK'));
+      } else {
+        this.props.dispatch(toggleMode());
+      }
       dispatch(
         openNotification(`Night mode ${this.props.mode === DARK_MODE ? 'on' : 'off'}`, {
           overwritable: true,
@@ -185,6 +193,7 @@ export class KeyboardShortcutsComponent extends PureComponent<Props, State> {
 const KeyboardShortcutsConnected = connect((state) => ({
   mode: state.settings.mode,
   theme: state.theme.id,
+  osEnabled: state.settings.osEnabled,
 }))(KeyboardShortcutsComponent);
 
 export default withRouter(KeyboardShortcutsConnected);
