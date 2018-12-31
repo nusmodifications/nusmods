@@ -6,6 +6,7 @@ export type Theme = {|
   +name: string,
 |};
 
-export type Mode = 'LIGHT' | 'DARK';
+export type Mode = 'LIGHT' | 'DARK' | 'OS';
 export const LIGHT_MODE: Mode = 'LIGHT';
 export const DARK_MODE: Mode = 'DARK';
+export const OS_MODE: Mode = 'OS';

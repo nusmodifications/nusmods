@@ -45,6 +45,7 @@ type Props = {
   theme: string,
   mode: Mode,
   activeSemester: Semester,
+  osEnabled: boolean,
 
   // From Redux actions
   fetchModuleList: () => Promise<*>,
@@ -52,6 +53,7 @@ type Props = {
   setTimetable: (Semester, SemTimetableConfig) => void,
   validateTimetable: (Semester) => void,
   openNotification: (string, ?NotificationOptions) => void,
+  enableOsMode: (Mode) => void,
 };
 
 type State = {

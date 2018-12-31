@@ -96,6 +96,7 @@ export type SettingsState = {
   +corsNotification: CorsNotificationSettings,
   +moduleTableOrder: ModuleTableOrder,
   +beta?: boolean,
+  +osEnabled: boolean,
 };
 
 /* timetables.js */

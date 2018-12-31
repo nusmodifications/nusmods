@@ -3,7 +3,7 @@ import type { Mode } from 'types/settings';
 
 import React from 'react';
 import classnames from 'classnames';
-import { LIGHT_MODE, DARK_MODE } from 'types/settings';
+import { LIGHT_MODE, DARK_MODE, OS_MODE } from 'types/settings';
 
 type Props = {
   mode: Mode,
@@ -24,7 +24,7 @@ const MODES: Array<ModeOption> = [
   },
   {
     label: 'OS DEFAULT',
-    value: true,
+    value: OS_MODE,
   },
 ];
 
