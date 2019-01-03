@@ -136,3 +136,13 @@ export type ModuleSearch = {|
 export type ModuleFinderState = {|
   +search: ModuleSearch,
 |};
+
+/* planner.js */
+export type AcadYearModules = {
+  // Mapping acad years to a map of semester to module code
+  +[string]: {| +[Semester]: ModuleCode[] |},
+};
+
+export type PlannerState = {|
+  +modules: AcadYearModules,
+|};

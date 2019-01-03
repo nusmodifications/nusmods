@@ -3,6 +3,7 @@ import type { FSA } from 'types/redux';
 import type {
   AppState,
   ModuleFinderState,
+  PlannerState,
   Requests,
   SettingsState,
   TimetablesState,
@@ -27,6 +28,7 @@ import venueBankReducer, { persistConfig as venueBankPersistConfig } from './ven
 import timetablesReducer, { persistConfig as timetablesPersistConfig } from './timetables';
 import themeReducer from './theme';
 import settingsReducer from './settings';
+import plannerReducer from './planner';
 
 export type State = {
   moduleBank: ModuleBank,
@@ -37,6 +39,7 @@ export type State = {
   theme: Object,
   settings: SettingsState,
   moduleFinder: ModuleFinderState,
+  planner: PlannerState,
   undoHistory: UndoHistoryState,
 };
 
@@ -46,6 +49,7 @@ const venueBank = persistReducer('venueBank', venueBankReducer, venueBankPersist
 const timetables = persistReducer('timetables', timetablesReducer, timetablesPersistConfig);
 const theme = persistReducer('theme', themeReducer);
 const settings = persistReducer('settings', settingsReducer);
+const planner = persistReducer('planner', plannerReducer);
 
 // $FlowFixMe: State default is delegated to its child reducers.
 const defaultState: State = {};
@@ -67,6 +71,7 @@ export default function(state: State = defaultState, action: FSA): State {
     theme: theme(state.theme, action),
     settings: settings(state.settings, action),
     moduleFinder: moduleFinder(state.moduleFinder, action),
+    planner: planner(state.planner, action),
     undoHistory: state.undoHistory,
   };
   return undoReducer(state, newState, action);
