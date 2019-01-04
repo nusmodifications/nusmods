@@ -65,18 +65,16 @@ export class AppShellComponent extends Component<Props, State> {
   componentDidMount() {
     const { timetables } = this.props;
     // Checks initial load
+    const mqlLight = matchMedia('(prefers-color-scheme: light)');
+    const mqlDark = matchMedia('(prefers-color-scheme: dark)');
     if (window.localStorage.length === 0) {
       // Enables OS MODE on initial load if Browser Supports.
-      const mqlLight = matchMedia('(prefers-color-scheme: light)');
-      const mqlDark = matchMedia('(prefers-color-scheme: dark)');
       if (mqlLight.matches) {
         this.props.enableOsMode('LIGHT');
       } else if (mqlDark.matches) {
         this.props.enableOsMode('DARK');
       }
     }
-    const mqlDark = matchMedia('(prefers-color-scheme: dark)');
-    const mqlLight = matchMedia('(prefers-color-scheme: light)');
     mqlDark.addListener((e) => {
       if (e.matches) {
         this.props.enableOsMode('DARK');
