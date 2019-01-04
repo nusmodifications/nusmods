@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import Mousetrap from 'mousetrap';
 import { groupBy, map } from 'lodash';
 
-import { DARK_MODE } from 'types/settings';
+import { LIGHT_MODE, DARK_MODE } from 'types/settings';
 import type { Mode, ThemeId } from 'types/settings';
 import themes from 'data/themes.json';
 import { cycleTheme, toggleTimetableOrientation } from 'actions/theme';
@@ -21,6 +21,7 @@ type Props = ContextRouter & {
   dispatch: Dispatch<*>,
   theme: ThemeId,
   mode: Mode,
+  userPreference: Mode,
   osEnabled: boolean,
 };
 
@@ -97,18 +98,30 @@ export class KeyboardShortcutsComponent extends PureComponent<Props, State> {
     this.bind('x', APPEARANCE, 'Toggle Night Mode', () => {
       const mqlLight = matchMedia('(prefers-color-scheme: light)');
       const mqlDark = matchMedia('(prefers-color-scheme: dark)');
-      if (mqlLight.matches && !this.props.osEnabled) {
+      const userPreferLightMode = this.props.userPreference === LIGHT_MODE;
+
+      if (mqlLight.matches && userPreferLightMode) {
         this.props.dispatch(toggleModeOs('LIGHT'));
-      } else if (mqlDark.matches && !this.props.osEnabled) {
+        dispatch(
+          openNotification(`OS mode enabled`, {
+            overwritable: true,
+          }),
+        );
+      } else if (mqlDark.matches && userPreferLightMode) {
         this.props.dispatch(toggleModeOs('DARK'));
+        dispatch(
+          openNotification(`OS mode enabled`, {
+            overwritable: true,
+          }),
+        );
       } else {
         this.props.dispatch(toggleMode());
+        dispatch(
+          openNotification(`Night mode ${this.props.mode === DARK_MODE ? 'on' : 'off'}`, {
+            overwritable: true,
+          }),
+        );
       }
-      dispatch(
-        openNotification(`Night mode ${this.props.mode === DARK_MODE ? 'on' : 'off'}`, {
-          overwritable: true,
-        }),
-      );
     });
 
     // Cycle through themes
@@ -192,6 +205,7 @@ export class KeyboardShortcutsComponent extends PureComponent<Props, State> {
 
 const KeyboardShortcutsConnected = connect((state) => ({
   mode: state.settings.mode,
+  userPreference: state.settings.userPreference,
   theme: state.theme.id,
   osEnabled: state.settings.osEnabled,
 }))(KeyboardShortcutsComponent);

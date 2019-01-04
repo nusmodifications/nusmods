@@ -47,6 +47,7 @@ type Props = {
   faculty: Faculty,
   currentThemeId: string,
   mode: Mode,
+  userPreference: Mode,
   osEnabled: boolean,
   corsNotification: CorsNotificationSettings,
   betaTester: boolean,
@@ -81,6 +82,7 @@ class SettingsContainer extends Component<Props> {
           <div className={classnames('col-sm-4 offset-sm-1', styles.toggle)}>
             <ModeSelect
               mode={this.props.mode}
+              userPreference={this.props.userPreference}
               onSelectMode={this.props.selectMode}
               enableOsMode={this.props.enableOsMode}
               osEnabled={this.props.osEnabled}
@@ -236,7 +238,7 @@ const mapStateToProps = (state: StoreState) => ({
   newStudent: state.settings.newStudent,
   faculty: state.settings.faculty,
   mode: state.settings.mode,
-  osEnabled: state.settings.osEnabled,
+  userPreference: state.settings.userPreference,
   corsNotification: state.settings.corsNotification,
   currentThemeId: state.theme.id,
   betaTester: state.settings.beta || false,

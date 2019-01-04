@@ -45,7 +45,6 @@ type Props = {
   theme: string,
   mode: Mode,
   activeSemester: Semester,
-  osEnabled: boolean,
 
   // From Redux actions
   fetchModuleList: () => Promise<*>,
@@ -66,12 +65,25 @@ export class AppShellComponent extends Component<Props, State> {
   componentDidMount() {
     const { timetables } = this.props;
     // Checks initial load
-    if (this.checkFirstLoad()) this.enableOSMode();
-    const mqlDark = matchMedia('(prefers-color-scheme: dark)');
-    mqlDark.addListener((e) => {
-      if (e.matches && this.props.osEnabled) {
+    if (window.localStorage.length === 0) {
+      // Enables OS MODE on initial load if Browser Supports.
+      const mqlLight = matchMedia('(prefers-color-scheme: light)');
+      const mqlDark = matchMedia('(prefers-color-scheme: dark)');
+      if (mqlLight.matches) {
+        this.props.enableOsMode('LIGHT');
+      } else if (mqlDark.matches) {
         this.props.enableOsMode('DARK');
-      } else if (!e.matches && this.props.osEnabled) {
+      }
+    }
+    const mqlDark = matchMedia('(prefers-color-scheme: dark)');
+    const mqlLight = matchMedia('(prefers-color-scheme: light)');
+    mqlDark.addListener((e) => {
+      if (e.matches) {
+        this.props.enableOsMode('DARK');
+      }
+    });
+    mqlLight.addListener((e) => {
+      if (e.matches) {
         this.props.enableOsMode('LIGHT');
       }
     });
@@ -112,18 +124,6 @@ export class AppShellComponent extends Component<Props, State> {
           },
         });
       });
-  };
-  checkFirstLoad = () => localStorage.getItem('persist:settings') == null;
-
-  enableOSMode = () => {
-    // Enables OS MODE on initial load if Browser Supports.
-    const mqlLight = matchMedia('(prefers-color-scheme: light)');
-    const mqlDark = matchMedia('(prefers-color-scheme: dark)');
-    if (mqlLight.matches) {
-      this.props.enableOsMode('LIGHT');
-    } else if (mqlDark.matches) {
-      this.props.enableOsMode('DARK');
-    }
   };
 
   render() {
@@ -195,7 +195,7 @@ const mapStateToProps = (state: StoreState) => ({
   timetables: state.timetables.lessons,
   theme: state.theme.id,
   mode: state.settings.mode,
-  osEnabled: state.settings.osEnabled,
+  userPreference: state.settings.userPreference,
   activeSemester: state.app.activeSemester,
 });
 

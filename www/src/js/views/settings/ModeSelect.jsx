@@ -9,7 +9,7 @@ type Props = {
   mode: Mode,
   onSelectMode: Function,
   enableOsMode: Function,
-  osEnabled: boolean,
+  userPreference: Mode,
 };
 type ModeOption = { value: Mode, label: string };
 
@@ -23,27 +23,27 @@ const MODES: Array<ModeOption> = [
     value: LIGHT_MODE,
   },
   {
-    label: 'OS DEFAULT',
+    label: 'OS mode',
     value: OS_MODE,
   },
 ];
 
 export default function ModeSelect(props: Props) {
-  const { osEnabled, enableOsMode, mode, onSelectMode } = props;
+  const { enableOsMode, userPreference, onSelectMode } = props;
   const mqlLight = matchMedia('(prefers-color-scheme: light)');
   const mqlDark = matchMedia('(prefers-color-scheme: dark)');
   const browserSupport = mqlLight.matches || mqlDark.matches;
   return (
     <div className="btn-group" role="group">
-      {MODES.filter(({ label }) => label !== 'OS DEFAULT' || browserSupport).map(
+      {MODES.filter(({ label }) => label !== 'OS mode' || browserSupport).map(
         ({ value, label }) =>
-          label !== 'OS DEFAULT' ? (
+          label !== 'OS mode' ? (
             <button
               type="button"
               key={value}
               className={classnames('btn', {
-                'btn-primary': !osEnabled && mode === value,
-                'btn-outline-primary': osEnabled || mode !== value,
+                'btn-primary': userPreference === value,
+                'btn-outline-primary': userPreference !== value,
               })}
               onClick={() => onSelectMode(value)}
             >
@@ -54,8 +54,8 @@ export default function ModeSelect(props: Props) {
               type="button"
               key={value}
               className={classnames('btn', {
-                'btn-primary': osEnabled,
-                'btn-outline-primary': !osEnabled,
+                'btn-primary': userPreference === value,
+                'btn-outline-primary': userPreference !== value,
               })}
               onClick={() => {
                 if (mqlLight.matches) enableOsMode('LIGHT');

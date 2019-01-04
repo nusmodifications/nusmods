@@ -21,7 +21,7 @@ import {
 } from 'actions/settings';
 import { SET_EXPORTED_DATA } from 'actions/export';
 import { DIMENSIONS, withTracker } from 'bootstrapping/mamoto';
-import { LIGHT_MODE, DARK_MODE } from 'types/settings';
+import { LIGHT_MODE, DARK_MODE, OS_MODE } from 'types/settings';
 import config from 'config';
 
 export const defaultCorsNotificationState = {
@@ -31,9 +31,9 @@ export const defaultCorsNotificationState = {
 };
 
 const defaultSettingsState: SettingsState = {
-  osEnabled: false,
   newStudent: false,
   faculty: '',
+  userPreference: LIGHT_MODE,
   mode: LIGHT_MODE,
   hiddenInTimetable: [],
   corsNotification: defaultCorsNotificationState,
@@ -57,19 +57,19 @@ function settings(state: SettingsState = defaultSettingsState, action: FSA): Set
       return {
         ...state,
         mode: action.payload,
-        osEnabled: false,
+        userPreference: action.payload,
       };
     case TOGGLE_MODE:
       return {
         ...state,
-        mode: state.osEnabled || state.mode === LIGHT_MODE ? DARK_MODE : LIGHT_MODE,
-        osEnabled: false,
+        userPreference: state.userPreference === DARK_MODE ? LIGHT_MODE : DARK_MODE,
+        mode: state.userPreference === DARK_MODE ? LIGHT_MODE : DARK_MODE,
       };
     case TOGGLE_MODE_OS:
       return {
         ...state,
-        mode: !state.osEnabled && state.mode === LIGHT_MODE ? action.payload : LIGHT_MODE,
-        osEnabled: !state.osEnabled && state.mode === LIGHT_MODE,
+        mode: action.payload,
+        userPreference: OS_MODE,
       };
     case TOGGLE_CORS_NOTIFICATION_GLOBALLY:
       return update(state, {
@@ -80,7 +80,7 @@ function settings(state: SettingsState = defaultSettingsState, action: FSA): Set
     case ENABLE_OS_MODE:
       return {
         ...state,
-        osEnabled: true,
+        userPreference: OS_MODE,
         mode: action.payload,
       };
     case DISMISS_CORS_NOTIFICATION:

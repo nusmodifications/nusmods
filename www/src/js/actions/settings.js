@@ -37,10 +37,10 @@ export function selectMode(mode: Mode): FSA {
 }
 
 export const TOGGLE_MODE: string = 'TOGGLE_MODE';
-export function toggleMode(): FSA {
+export function toggleMode(mode: Mode): FSA {
   return {
     type: TOGGLE_MODE,
-    payload: null,
+    payload: mode || null,
   };
 }
 
