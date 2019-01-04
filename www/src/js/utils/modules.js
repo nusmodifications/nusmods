@@ -129,3 +129,22 @@ export function renderMCs(moduleCredits: number | string) {
   const credit = parseInt(moduleCredits, 10);
   return `${credit}${NBSP}${credit === 1 ? 'MC' : 'MCs'}`;
 }
+
+export function subtractAcadYear(acadYear: string): string {
+  return acadYear.replace(/\d+/g, (year) => String(parseInt(year, 10) - 1));
+}
+
+export function addAcadYear(acadYear: string): string {
+  return acadYear.replace(/\d+/g, (year) => String(parseInt(year, 10) + 1));
+}
+
+export function getYearsBetween(minYear: string, maxYear: string): string[] {
+  const years = [];
+  let nextYear = minYear;
+  while (nextYear !== maxYear) {
+    years.push(nextYear);
+    nextYear = addAcadYear(nextYear);
+  }
+  years.push(maxYear);
+  return years;
+}

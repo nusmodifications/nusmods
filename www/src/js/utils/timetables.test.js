@@ -46,6 +46,7 @@ import {
   formatWeekNumber,
   getEndTimeAsDate,
   getStartTimeAsDate,
+  getTimetableModules,
   groupLessonsByDay,
   hydrateSemTimetableWithLessons,
   isLessonAvailable,
@@ -661,5 +662,46 @@ describe(getEndTimeAsDate, () => {
     const date = new Date(2018, 5, 10);
     const lesson = createGenericLesson('Monday', '0830', '1045');
     expect(getEndTimeAsDate(lesson, date)).toEqual(new Date(2018, 5, 10, 10, 45));
+  });
+});
+
+describe(getTimetableModules, () => {
+  test('should extract module codes as array', () => {
+    /* eslint-disable no-useless-computed-key */
+    expect(getTimetableModules({})).toEqual({});
+
+    expect(
+      getTimetableModules({
+        [1]: {},
+      }),
+    ).toEqual({
+      '1': [],
+    });
+
+    expect(
+      getTimetableModules({
+        [1]: {
+          CS1010S: {},
+          CS2030: {},
+        },
+      }),
+    ).toEqual({
+      '1': ['CS1010S', 'CS2030'],
+    });
+
+    expect(
+      getTimetableModules({
+        [1]: {
+          CS1010S: {},
+          CS2030: {},
+        },
+        [2]: {
+          CS3217: {},
+        },
+      }),
+    ).toEqual({
+      '1': ['CS1010S', 'CS2030'],
+      '2': ['CS3217'],
+    });
   });
 });

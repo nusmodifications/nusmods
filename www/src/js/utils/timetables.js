@@ -20,6 +20,7 @@ import type {
   SemTimetableConfig,
   SemTimetableConfigWithLessons,
   TimetableArrangement,
+  TimetableConfig,
   TimetableDayArrangement,
   TimetableDayFormat,
 } from 'types/timetables';
@@ -460,4 +461,8 @@ export function getHoverLesson(lesson: Lesson): HoverLesson {
     moduleCode: lesson.ModuleCode,
     lessonType: lesson.LessonType,
   };
+}
+
+export function getTimetableModules(timetable: TimetableConfig) {
+  return _.mapValues(timetable, (value) => Object.keys(value));
 }
