@@ -12,25 +12,37 @@ export function addPlannerYear(year: string): FSA {
 }
 
 export const ADD_PLANNER_MODULE = 'ADD_PLANNER_MODULE';
-export function addPlannerModule(moduleCode: ModuleCode, year: string, semester: Semester): FSA {
+export function addPlannerModule(
+  moduleCode: ModuleCode,
+  year: string,
+  semester: Semester,
+  index: ?number = null,
+): FSA {
   return {
     type: ADD_PLANNER_MODULE,
     payload: {
       year,
       semester,
       moduleCode,
+      index,
     },
   };
 }
 
-export const MOVE_PLANNER_MODULE = 'MOVE_PLANNER_MODULE'
-export function movePlannerModule(moduleCode: ModuleCode, year: string, semester: Semester): FSA {
+export const MOVE_PLANNER_MODULE = 'MOVE_PLANNER_MODULE';
+export function movePlannerModule(
+  moduleCode: ModuleCode,
+  year: string,
+  semester: Semester,
+  index: ?number = null,
+): FSA {
   return {
     type: MOVE_PLANNER_MODULE,
     payload: {
       year,
       semester,
       moduleCode,
+      index,
     },
   };
 }

@@ -143,8 +143,9 @@ export type AcadYearModules = {
   +[string]: {| +[Semester]: ModuleCode[] |},
 };
 
-// The year and semester the module will be taken in
-export type ModuleTime = [string, Semester];
+// The year, semester the module will be taken in, and the order
+// it appears on the list
+export type ModuleTime = [string, Semester, number];
 
 // Mapping modules to when they will be taken
 export type PlannerState = {|

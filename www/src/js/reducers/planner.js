@@ -1,5 +1,6 @@
 // @flow
-import update from 'immutability-helper';
+import produce from 'immer';
+import { toPairs, max } from 'lodash';
 import type { PlannerState } from 'types/reducers';
 import type { FSA } from 'types/redux';
 import {
@@ -43,20 +44,34 @@ export default function planner(
       const { year, semester } = action.payload;
       const moduleCode = action.payload.moduleCode.toUpperCase();
 
-      return update(state, {
-        modules: {
-          [moduleCode]: {
-            $set: [year, semester],
-          },
-        },
+      // To insert the module into the correct position we need to shift the other
+      // modules
+      const otherModules = toPairs(state.modules).filter(([otherModuleCode, timing]) => {
+        const [moduleYear, moduleSemester] = timing;
+        return otherModuleCode !== moduleCode && moduleYear === year && moduleSemester === semester;
+      });
+      let index = action.payload.index;
+      // If the index is not specified, we insert the new module at the end
+      if (index == null) {
+        index =
+          otherModules.length === 0 ? 0 : max(otherModules.map(([, timing]) => timing[2])) + 1;
+      }
+
+      return produce(state, (draft: $Shape<PlannerState>) => {
+        // $FlowFixMe states are mutable in immer
+        draft.modules[moduleCode] = [year, semester, index];
+
+        otherModules.forEach(([otherModuleCode, timing]) => {
+          if (timing[2] >= index) {
+            draft.modules[otherModuleCode][2] += 1;
+          }
+        });
       });
     }
 
     case REMOVE_PLANNER_MODULE:
-      return update(state, {
-        modules: {
-          $unset: [action.payload.moduleCode],
-        },
+      return produce(state, (draft) => {
+        delete draft.modules[action.payload.moduleCode];
       });
 
     default:
