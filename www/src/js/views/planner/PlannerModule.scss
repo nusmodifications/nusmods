@@ -1,0 +1,11 @@
+@import '~styles/utils/modules-entry';
+
+.module {
+  padding: 0.4rem 0.7rem;
+  border-radius: 0.2rem;
+  margin-bottom: 0.4rem;
+  background: theme-color();
+  color: darken(theme-color(), 40);
+  font-size: 0.9rem;
+  line-height: 1.3;
+}

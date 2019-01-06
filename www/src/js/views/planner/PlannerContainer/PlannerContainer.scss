@@ -1,0 +1,41 @@
+@import '~styles/utils/modules-entry';
+
+.pageContainer {
+  composes: page-container from global;
+  height: 100%;
+
+  :global {
+    animation-name: $page-entering-animation;
+  }
+}
+
+.header {
+}
+
+.yearWrapper {
+  overflow: auto;
+  display: flex;
+  height: 100%;
+}
+
+.year {
+  padding: 0.5rem;
+  background: var(--gray-lightest);
+  margin-right: 0.5rem;
+  border-radius: 0.5rem;
+
+  &.currentYear {
+    background: rgba(theme-color(), 0.1);
+    border: 1px solid rgba(theme-color(), 0.5);
+  }
+}
+
+.yearHeader {
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.semesters {
+  display: flex;
+  margin-right: -0.5rem;
+}

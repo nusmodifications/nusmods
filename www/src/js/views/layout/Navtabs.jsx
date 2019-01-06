@@ -50,6 +50,12 @@ export function NavtabsComponent(props: Props) {
         <Map />
         <span className={styles.title}>Venues</span>
       </NavLink>
+      {props.beta && (
+        <NavLink {...tabProps} to="/planner">
+          <Clock />
+          <span className={styles.title}>Planner</span>
+        </NavLink>
+      )}
       <NavLink {...tabProps} to="/settings">
         <Settings />
         <span className={styles.title}>Settings</span>
