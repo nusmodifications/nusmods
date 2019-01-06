@@ -42,15 +42,14 @@ export default class BetaToggle extends PureComponent<Props> {
       <div>
         <h4>NUSMods Beta</h4>
 
-        <div className={classnames(styles.toggleRow, 'row')}>
-          <div className={classnames(styles.toggleDescription, 'col-sm-7')}>
+        <div className={classnames(styles.toggleRow)}>
+          <div className={classnames(styles.toggleDescription)}>
             <p>Help us improve NUSMods by testing new features and providing feedback.</p>
             {testDescriptions}
           </div>
 
-          <div className={classnames('col-sm-4 offset-sm-1', styles.toggle)}>
+          <div className={classnames(styles.toggle)}>
             <Toggle className={styles.betaToggle} isOn={betaTester} onChange={toggleStates} />
-            <br />
             {betaTester &&
               hasTests && (
                 <ExternalLink className="btn btn-success" href={config.contact.messenger}>
