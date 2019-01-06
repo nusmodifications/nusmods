@@ -1,0 +1,25 @@
+@import '~styles/utils/modules-entry';
+
+.semesters {
+  :global(.badge) {
+    margin-right: 0.2rem;
+    border-radius: 1px;
+  }
+}
+
+.sem1,
+.sem2,
+.sem3,
+.sem4 {
+  color: var(--body-color);
+}
+
+@each $semester in (1, 2, 3, 4) {
+  .sem#{$semester} {
+    background: darken($gray-lightest, 5% * $semester);
+
+    @include night-mode {
+      background: lighten(#2c2c2c, 5% * $semester);
+    }
+  }
+}

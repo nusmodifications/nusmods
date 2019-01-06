@@ -1,28 +1,27 @@
 // @flow
 
+import type { VenueLocation } from 'types/venues';
 import React, { PureComponent } from 'react';
+import classnames from 'classnames';
 import Modal from 'views/components/Modal';
 import CloseButton from 'views/components/CloseButton';
-import classnames from 'classnames';
-import styles from 'views/venues/VenueLocation/VenueLocation.scss';
 import ExternalLink from 'views/components/ExternalLink';
-import { Map as MapIcon } from 'views/components/icons';
-import MapPin from 'react-feather/dist/icons/map-pin';
-import ImproveVenueForm from 'views/venues/VenueLocation/ImproveVenueForm';
-import type { VenueLocation } from 'types/venues';
+import { MapPin, Map as MapIcon } from 'views/components/icons';
+import ImproveVenueForm from './ImproveVenueForm';
+import styles from './VenueLocation.scss';
 
 type Page = 'menu' | 'form';
 
-type Props = {
-  venue: string,
-  isOpen: boolean,
-  onRequestClose: () => void,
-  existingLocation: ?VenueLocation,
-};
+type Props = {|
+  +venue: string,
+  +isOpen: boolean,
+  +onRequestClose: () => void,
+  +existingLocation: ?VenueLocation,
+|};
 
-type State = {
-  page: Page,
-};
+type State = {|
+  +page: Page,
+|};
 
 export default class FeedbackModal extends PureComponent<Props, State> {
   state: State = {

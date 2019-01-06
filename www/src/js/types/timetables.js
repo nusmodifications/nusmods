@@ -50,8 +50,8 @@ export type TimetableArrangement = {
 
 // Represents the lesson which the user is currently hovering over.
 // Used to highlight lessons which have the same classNo
-export type HoverLesson = {
-  classNo: ClassNo,
-  moduleCode: ModuleCode,
-  lessonType: LessonType,
-};
+export type HoverLesson = {|
+  +classNo: ClassNo,
+  +moduleCode: ModuleCode,
+  +lessonType: LessonType,
+|};

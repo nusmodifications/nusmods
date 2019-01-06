@@ -1,6 +1,7 @@
 // @flow
 // Refer to https://feathericons.com/ for full list.
 import AlertTriangle from 'react-feather/dist/icons/alert-triangle';
+import Archive from 'react-feather/dist/icons/archive';
 import BookOpen from 'react-feather/dist/icons/book-open';
 import Calendar from 'react-feather/dist/icons/calendar';
 import ChevronLeft from 'react-feather/dist/icons/chevron-left';
@@ -27,6 +28,8 @@ import MapPin from 'react-feather/dist/icons/map-pin';
 import Menu from 'react-feather/dist/icons/menu';
 import MessageSquare from 'react-feather/dist/icons/message-square';
 import Mail from 'react-feather/dist/icons/mail';
+import Maximize from 'react-feather/dist/icons/maximize-2';
+import Minimize from 'react-feather/dist/icons/minimize-2';
 import MinusSquare from 'react-feather/dist/icons/minus-square';
 import PlusSquare from 'react-feather/dist/icons/plus-square';
 import Refresh from 'react-feather/dist/icons/refresh-cw';
@@ -40,6 +43,7 @@ import Trash2 from 'react-feather/dist/icons/trash-2';
 import Type from 'react-feather/dist/icons/type';
 
 export {
+  Archive,
   AlertTriangle,
   BookOpen,
   Calendar,
@@ -62,6 +66,8 @@ export {
   Image,
   Layers,
   Map,
+  Maximize,
+  Minimize,
   MapPin,
   Menu,
   MessageSquare,

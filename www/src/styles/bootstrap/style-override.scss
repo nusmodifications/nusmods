@@ -6,20 +6,8 @@ body {
 }
 
 mark {
-  padding: 0;
   font-weight: bold;
   color: currentColor;
-}
-
-// Forms
-.form-control,
-.form-control:focus {
-  color: var(--body-color);
-  background: var(--body-bg);
-}
-
-.form-control:disabled {
-  background: var(--body-bg);
 }
 
 // Dropdown menu
@@ -75,4 +63,9 @@ mark {
 
 @each $color in $alert-override-themes {
   @include alert-colors($color);
+}
+
+// Display util (we don't import the whole thing, since we just need this one)
+.hidden {
+  display: none;
 }

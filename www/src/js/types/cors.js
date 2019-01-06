@@ -35,30 +35,30 @@ export const GENERAL_ACCOUNT: StudentType = 1 << 2;
 export const studentTypes = [NEW_STUDENT, RETURNING_STUDENT, GENERAL_ACCOUNT];
 
 // Simplified version of BiddingStat from modules
-export type GroupedBiddingStat = {
-  AcadYear: AcadYear,
-  Faculty: Faculty,
-  Semester: string,
-  StudentType: StudentType,
-  Round: string,
-  Quota: number,
-  Bidders: number,
-  LowestSuccessfulBid: number,
-};
+export type GroupedBiddingStat = {|
+  +AcadYear: AcadYear,
+  +Faculty: Faculty,
+  +Semester: string,
+  +StudentType: StudentType,
+  +Round: string,
+  +Quota: number,
+  +Bidders: number,
+  +LowestSuccessfulBid: number,
+|};
 
 export type BiddingSummary = {
-  [Faculty]: {
-    [StudentType]: {
-      minBid: number,
-      round: string,
+  +[Faculty]: {
+    +[StudentType]: {
+      +minBid: number,
+      +round: string,
     },
   },
 };
 
-export type SemesterStats = {
-  quota: number,
-  bids: number,
-  faculties: Set<Faculty>,
-  stats: GroupedBiddingStat[],
-  summary: BiddingSummary,
-};
+export type SemesterStats = {|
+  +quota: number,
+  +bids: number,
+  +faculties: Set<Faculty>,
+  +stats: GroupedBiddingStat[],
+  +summary: BiddingSummary,
+|};

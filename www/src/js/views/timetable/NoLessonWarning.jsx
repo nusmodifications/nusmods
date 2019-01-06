@@ -10,7 +10,7 @@ export default function NoLessonWarning() {
         <h3>Timetable information not available</h3>
         <p>
           In the meantime you can still plan your modules and exams for this semester. We&apos;ll
-          put up an announcement the information becomes available. Stay tuned!
+          put up an announcement when the information becomes available. Stay tuned!
         </p>
       </div>
     </div>

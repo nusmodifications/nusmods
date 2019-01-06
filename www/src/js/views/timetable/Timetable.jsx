@@ -9,11 +9,12 @@ import type { HoverLesson, TimetableArrangement } from 'types/timetables';
 import {
   SCHOOLDAYS,
   calculateBorderTimings,
-  getCurrentDayIndex,
+  getDayIndex,
   getCurrentHours,
   getCurrentMinutes,
 } from 'utils/timify';
 import elements from 'views/elements';
+import withTimer from 'views/hocs/withTimer';
 
 import styles from './Timetable.scss';
 import TimetableTimings from './TimetableTimings';
@@ -32,8 +33,6 @@ type State = {
 };
 
 class Timetable extends PureComponent<Props, State> {
-  interval: IntervalID;
-
   static defaultProps = {
     isVerticalOrientation: false,
     isScrolledHorizontally: false,
@@ -44,16 +43,6 @@ class Timetable extends PureComponent<Props, State> {
   state = {
     hoverLesson: null,
   };
-
-  componentDidMount() {
-    this.interval = setInterval(() => {
-      this.forceUpdate();
-    }, 60000);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
 
   onCellHover = (hoverLesson: ?HoverLesson) => {
     this.setState({ hoverLesson });
@@ -66,14 +55,14 @@ class Timetable extends PureComponent<Props, State> {
 
     const lessons: Array<Lesson> = flattenDeep(values(this.props.lessons));
     const { startingIndex, endingIndex } = calculateBorderTimings(lessons);
-    const currentDayIndex: number = getCurrentDayIndex(); // Monday = 0, Friday = 4
+    const currentDayIndex = getDayIndex(); // Monday = 0, Friday = 4
 
     // Calculate the margin offset for the CurrentTimeIndicator
     const columns = endingIndex - startingIndex;
     const currentHours = getCurrentHours();
     const currentMinutes = getCurrentMinutes();
-    const hoursMarginOffset = (currentHours * 2 - startingIndex) / columns * 100;
-    const minutesMarginOffset = currentMinutes / 30 / columns * 100;
+    const hoursMarginOffset = ((currentHours * 2 - startingIndex) / columns) * 100;
+    const minutesMarginOffset = (currentMinutes / 30 / columns) * 100;
     const currentTimeIndicatorVisible =
       currentHours * 2 >= startingIndex && currentHours * 2 < endingIndex;
     const dirStyle = this.props.isVerticalOrientation ? 'top' : 'marginLeft';
@@ -117,4 +106,4 @@ class Timetable extends PureComponent<Props, State> {
   }
 }
 
-export default Timetable;
+export default withTimer(Timetable);

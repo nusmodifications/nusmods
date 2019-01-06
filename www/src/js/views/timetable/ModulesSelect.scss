@@ -15,9 +15,12 @@ $module-list-height: 13.5rem;
     height: $input-height;
   }
 
-  // Remove bootstrap's box-shadow
-  &:global(.form-control):focus {
-    box-shadow: none;
+  &:not(:disabled) {
+    box-shadow: inset 2px 2px 4px rgba(#000, 0.1);
+
+    @include night-mode {
+      box-shadow: inset 2px 2px 4px rgba(#000, 0.9);
+    }
   }
 }
 

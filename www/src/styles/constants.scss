@@ -29,7 +29,9 @@ $material-sharp-curve: cubic-bezier(0.4, 0, 0.6, 1);
 $page-entering-duration: $fullscreen-duration;
 $page-entering-animation: fadeIn;
 
-$alert-override-themes: success, danger, warning;
+$leaflet-control-offset: 0.5rem;
+
+$alert-override-themes: success, info, danger, warning;
 
 // Workload colors map
 $workload-colors: (
@@ -171,6 +173,8 @@ $sentry-z-index: 2000;
 $modal-z-index: 1500;
 $module-select-z-index: 960;
 $module-finder-search-z-index-sm: 950;
+$venue-map-z-index: 920;
+$venue-detail-z-index: 920; // Need to be higher than navtabs so they don't overlap expanded map
 $navtabs-z-index: 900;
 $navbar-z-index: 890;
 $module-finder-search-z-index-md: 850;

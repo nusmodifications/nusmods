@@ -19,6 +19,14 @@ Object {
 }
 `;
 
+exports[`fetchTimetableModules should fetch modules 1`] = `
+Array [
+  Array [
+    [Function],
+  ],
+]
+`;
+
 exports[`hide/show timetable modules should dispatch a module code for hiding 1`] = `
 Object {
   "payload": Object {

@@ -5,6 +5,7 @@ import React, { PureComponent } from 'react';
 import Raven from 'raven-js';
 import classnames from 'classnames';
 
+import RandomKawaii from 'views/components/RandomKawaii';
 import Title from 'views/components/Title';
 import Online from 'views/components/Online';
 import styles from './ErrorPage.scss';
@@ -34,20 +35,20 @@ export default class ErrorPage extends PureComponent<Props> {
       <div>
         <Title>Uh oh...</Title>
 
-        <div className={styles.container}>
-          <h1 className={classnames('h2', styles.header)}>
-            <span className={styles.expr}>Uh oh...</span>
-            {this.errorMessage()}
+        <div className="text-center">
+          <div className={styles.header}>
+            <RandomKawaii size={100} />
+          </div>
+
+          <h1 className={classnames('h3', styles.header)}>
+            <span className={styles.expr}>Uh oh</span> {this.errorMessage()}
           </h1>
 
           {showRefresh && (
             <Online>
-              <p>
-                <button className={styles.link} onClick={() => window.location.reload(true)}>
-                  Refreshing the page
-                </button>{' '}
-                may help.
-              </p>
+              <button className="btn btn-primary" onClick={() => window.location.reload(true)}>
+                Refresh
+              </button>
             </Online>
           )}
 

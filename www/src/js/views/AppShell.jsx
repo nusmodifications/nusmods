@@ -15,16 +15,18 @@ import classnames from 'classnames';
 import { each } from 'lodash';
 
 import weekText from 'utils/weekText';
+import { isMobileIos } from 'utils/css';
 import { openNotification } from 'actions/app';
 import { fetchModuleList } from 'actions/moduleBank';
 import { fetchTimetableModules, validateTimetable, setTimetable } from 'actions/timetables';
 import Footer from 'views/layout/Footer';
 import Navtabs from 'views/layout/Navtabs';
 import GlobalSearchContainer from 'views/layout/GlobalSearchContainer';
-import Notification from 'views/components/Notification';
+import Notification from 'views/components/notfications/Notification';
 import ErrorBoundary from 'views/errors/ErrorBoundary';
 import ErrorPage from 'views/errors/ErrorPage';
 import ApiError from 'views/errors/ApiError';
+import { trackPageView } from 'bootstrapping/mamoto';
 import { DARK_MODE } from 'types/settings';
 import LoadingSpinner from './components/LoadingSpinner';
 import FeedbackModal from './components/FeedbackModal';
@@ -70,7 +72,12 @@ export class AppShellComponent extends Component<Props, State> {
       const semester = Number(semesterString);
       this.fetchTimetableModules(timetable, semester);
     });
+
+    // Enable Mamoto analytics
+    trackPageView(this.props.history);
   }
+
+  isMobileIos = isMobileIos();
 
   fetchModuleList = () => {
     // TODO: This always re-fetch the entire modules list. Consider a better strategy for this
@@ -110,6 +117,7 @@ export class AppShellComponent extends Component<Props, State> {
             className={classnames(`theme-${this.props.theme}`, {
               'mode-dark': isDarkMode,
               'mdc-theme--dark': isDarkMode,
+              'mobile-safari': this.isMobileIos,
             })}
           />
         </Helmet>
@@ -166,13 +174,16 @@ const mapStateToProps = (state: StoreState) => ({
   activeSemester: state.app.activeSemester,
 });
 
-const connectedAppShell = connect(mapStateToProps, {
-  fetchModuleList,
-  fetchTimetableModules,
-  setTimetable,
-  validateTimetable,
-  openNotification,
-})(AppShellComponent);
+const connectedAppShell = connect(
+  mapStateToProps,
+  {
+    fetchModuleList,
+    fetchTimetableModules,
+    setTimetable,
+    validateTimetable,
+    openNotification,
+  },
+)(AppShellComponent);
 
 // withRouter here is used to ensure re-render when routes change, since
 // connect implements shouldComponentUpdate based purely on props. If it

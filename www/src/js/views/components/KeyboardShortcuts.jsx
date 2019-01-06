@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { type Node, PureComponent } from 'react';
 import { withRouter, type ContextRouter } from 'react-router-dom';
 import type { Dispatch } from 'redux';
 import { connect } from 'react-redux';
@@ -66,9 +66,12 @@ export class KeyboardShortcutsComponent extends PureComponent<Props, State> {
       history.push('/settings');
     });
 
-    this.bind('/', NAVIGATION, 'Open global search', () => {
+    this.bind('/', NAVIGATION, 'Open global search', (e) => {
       if (ComponentMap.globalSearchInput) {
         ComponentMap.globalSearchInput.focus();
+
+        // Prevents the '/' character from being entered into the global search bar
+        e.preventDefault();
       }
     });
 
@@ -116,7 +119,7 @@ export class KeyboardShortcutsComponent extends PureComponent<Props, State> {
 
   closeModal = () => this.setState({ helpShown: false });
 
-  bind(key: Shortcut, section: Section, description: string, action: () => void) {
+  bind(key: Shortcut, section: Section, description: string, action: (e: Event) => void) {
     this.shortcuts.push({ key, description, section });
 
     Mousetrap.bind(key, action);
@@ -136,7 +139,7 @@ export class KeyboardShortcutsComponent extends PureComponent<Props, State> {
     }
   }
 
-  renderShortcut = (shortcut: Shortcut) => {
+  renderShortcut = (shortcut: Shortcut): Node => {
     if (typeof shortcut === 'string') {
       const capitalized = shortcut.replace(/\b([a-z])/, (c) => c.toUpperCase());
       return <kbd key={shortcut}>{capitalized}</kbd>;

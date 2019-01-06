@@ -20,8 +20,15 @@ export type Semester = number; // E.g. 1/2/3/4. 3 and 4 means special sem i and 
 export type WeekText = string; // E.g. "Every Week", "Odd Week"
 
 // Auxiliary data types
-export type Day = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday';
-export const DaysOfWeek: Day[] = [
+export type Day =
+  | 'Monday'
+  | 'Tuesday'
+  | 'Wednesday'
+  | 'Thursday'
+  | 'Friday'
+  | 'Saturday'
+  | 'Sunday';
+export const WorkingDaysOfWeek: Day[] = [
   'Monday',
   'Tuesday',
   'Wednesday',
@@ -29,12 +36,14 @@ export const DaysOfWeek: Day[] = [
   'Friday',
   'Saturday',
 ];
+export const DaysOfWeek: Day[] = [...WorkingDaysOfWeek, 'Sunday'];
 
 export type Time = 'Morning' | 'Afternoon' | 'Evening';
 export const TimesOfDay: Time[] = ['Morning', 'Afternoon', 'Evening'];
 
-export const Timeslots: [Day, Time][] = flatMap(DaysOfWeek, (day): [Day, Time][] =>
-  TimesOfDay.map((time) => [day, time]),
+export const Timeslots: [Day, Time][] = flatMap(
+  WorkingDaysOfWeek,
+  (day): [Day, Time][] => TimesOfDay.map((time) => [day, time]),
 );
 
 export type ModuleLevel = 1 | 2 | 3 | 4 | 5 | 6 | 8;
@@ -55,20 +64,20 @@ export type RawLesson = {
 };
 
 // Semester-specific information of a module.
-export type SemesterData = {
-  ExamDate?: string,
-  LecturePeriods: Array<string>,
-  Semester: Semester,
-  Timetable: Array<RawLesson>,
-  TutorialPeriods?: Array<string>,
-};
+export type SemesterData = {|
+  +ExamDate?: string,
+  +LecturePeriods: Array<string>,
+  +Semester: Semester,
+  +Timetable: Array<RawLesson>,
+  +TutorialPeriods?: Array<string>,
+|};
 
 // Recursive definition for walking a module tree
-export type TreeFragment = {
-  name: string,
+export type TreeFragment = {|
+  +name: string,
   // TreeFragment[] will result in infinite loop
-  children: Array<TreeFragment>,
-};
+  +children: Array<TreeFragment>,
+|};
 
 // Information for a module for a particular academic year.
 // This is probably the only model you need to be concerned with.
@@ -97,11 +106,11 @@ export type ModuleWithColor = Module & {
 };
 
 // This format is returned from the module list endpoint.
-export type ModuleCondensed = {
-  ModuleCode: ModuleCode,
-  ModuleTitle: ModuleTitle,
-  Semesters: Array<number>,
-};
+export type ModuleCondensed = {|
+  +ModuleCode: ModuleCode,
+  +ModuleTitle: ModuleTitle,
+  +Semesters: number[],
+|};
 
 // Subset of Module object that contains the properties that are
 // needed for module search

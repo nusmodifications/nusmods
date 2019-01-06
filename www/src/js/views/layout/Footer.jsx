@@ -36,7 +36,8 @@ export function FooterComponent(props: Props) {
         NUSMods R version{' '}
         <ExternalLink href={`https://github.com/nusmodifications/nusmods/commit/${commitHash}`}>
           {versionStr}
-        </ExternalLink>.
+        </ExternalLink>
+        .
       </span>
     );
 
@@ -79,6 +80,15 @@ export function FooterComponent(props: Props) {
           <li>
             <Link to="/faq">FAQ</Link>
           </li>
+
+          {new Date().getMonth() === 9 && (
+            <li>
+              <Link to="/hacktoberfest">
+                <strong>Hacktoberfest!</strong>
+              </Link>
+            </li>
+          )}
+
           <li>
             <button
               type="button"

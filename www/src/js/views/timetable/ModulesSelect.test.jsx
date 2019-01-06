@@ -11,11 +11,13 @@ const modules = [
     ModuleCode: 'Test1',
     ModuleTitle: 'ModuleTitle',
     isAdded: false,
+    isAdding: false,
   },
   {
     ModuleCode: 'Test2',
     ModuleTitle: 'ModuleTitle',
     isAdded: true,
+    isAdding: false,
   },
 ];
 
@@ -31,7 +33,7 @@ const commonProps = {
   disabled: false,
 };
 
-describe('<ModulesSelectComponent>', () => {
+describe(ModulesSelectComponent, () => {
   it('should show results on input value change', () => {
     const wrapper = mount(<ModulesSelectComponent {...commonProps} matchBreakpoint />);
     wrapper.setState({ isOpen: true });

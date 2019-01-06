@@ -1,13 +1,5 @@
 @import '~styles/utils/modules-entry';
 
-.mapWrapper {
-  position: relative;
-}
-
-.map {
-  height: 25rem;
-}
-
 .jumpSelect,
 .instructions,
 .geolocate {
@@ -31,7 +23,7 @@
   display: block;
   max-width: 20rem;
   padding: 0.2rem 0.4rem;
-  margin: -6rem auto 4rem auto;
+  margin: -7rem auto 4.5rem auto;
   font-weight: bold;
   text-align: center;
   color: #fff;
@@ -46,8 +38,8 @@
 
 .geolocate {
   position: absolute;
-  bottom: 1rem;
-  left: 0.5rem;
+  right: 1rem;
+  bottom: 1.75rem;
 }
 
 .actions {

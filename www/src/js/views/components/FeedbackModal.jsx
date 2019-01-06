@@ -7,6 +7,7 @@ import type { State } from 'reducers';
 
 import config from 'config';
 import { toggleFeedback } from 'actions/app';
+import ExternalLink from './ExternalLink';
 import { Heart, GitHub, Facebook, Mail } from './icons';
 import CloseButton from './CloseButton';
 import Modal from './Modal';
@@ -35,33 +36,18 @@ export class FeedbackModalComponent extends PureComponent<Props> {
             fill up a short feedback form (takes you less than 3 minutes).
           </p>
           <div className={styles.links}>
-            <a
-              className={styles.messenger}
-              href={config.contact.messenger}
-              target="_blank"
-              rel="noreferrer noopener"
-            >
+            <ExternalLink className={styles.messenger} href={config.contact.messenger}>
               <Facebook />
               Messenger
-            </a>
-            <a
-              className={styles.github}
-              href={config.contact.githubRepo}
-              target="_blank"
-              rel="noreferrer noopener"
-            >
+            </ExternalLink>
+            <ExternalLink className={styles.github} href={config.contact.githubRepo}>
               <GitHub />
               GitHub
-            </a>
-            <a
-              className={styles.form}
-              href="https://goo.gl/forms/iZd8uVXAiJfu8D6e2"
-              target="_blank"
-              rel="noreferrer noopener"
-            >
+            </ExternalLink>
+            <ExternalLink className={styles.form} href="mailto:mods@nusmods.com">
               <Mail />
-              Feedback Form
-            </a>
+              Email
+            </ExternalLink>
           </div>
         </div>
       </Modal>

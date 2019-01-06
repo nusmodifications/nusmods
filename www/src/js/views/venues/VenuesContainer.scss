@@ -1,4 +1,4 @@
-@import "~styles/utils/modules-entry.scss";
+@import '~styles/utils/modules-entry.scss';
 
 $gutter: $grid-gutter-width / 2;
 $sticky-top: $navbar-height + 1rem;
@@ -15,17 +15,13 @@ $venue-list-width: 16rem;
   }
 }
 
-.venueDetail {
-  composes: scrollable-y from global;
-}
-
 @include media-breakpoint-up(md) {
   .venuesList,
   .venueDetail {
     position: fixed;
     top: $sticky-top;
     bottom: 0;
-    z-index: 1;
+    z-index: $venue-detail-z-index;
   }
 
   .venuesList {
@@ -44,7 +40,7 @@ $venue-list-width: 16rem;
 
 @include media-breakpoint-up(xl) {
   .venueDetail {
-    left: $venue-list-width + $side-nav-width-lg;
+    left: calc(#{$venue-list-width + $side-nav-width-lg} + #{$gutter});
   }
 }
 
@@ -59,17 +55,6 @@ $venue-list-width: 16rem;
     left: auto;
     width: 60rem;
   }
-}
-
-// HACK (really stupid): hide the footer on md and above so it doesn't appear behind
-// the content
-.background {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: var(--body-bg);
 }
 
 .venueDetailModal {

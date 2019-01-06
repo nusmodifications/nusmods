@@ -11,7 +11,9 @@ import {
   getFormattedModuleExamDate,
   getFirstAvailableSemester,
   parseWorkload,
+  renderMCs,
 } from 'utils/modules';
+import { noBreak } from 'utils/react';
 
 /** @var {Module} */
 import cs1010s from '__mocks__/modules/CS1010S.json';
@@ -217,4 +219,18 @@ test('parseWorkload should return input string as is if it cannot be parsed', ()
   invalidInputs.forEach((input) => {
     expect(parseWorkload(input)).toEqual(input);
   });
+});
+
+describe(renderMCs, () => {
+  it.each([
+    // Plural
+    [0, '0 MCs'],
+    ['0', '0 MCs'],
+    [5, '5 MCs'],
+    ['5', '5 MCs'],
+
+    // Singular
+    [1, '1 MC'],
+    ['1', '1 MC'],
+  ])('%s to equal %s', (mc, expected) => expect(renderMCs(mc)).toEqual(noBreak(expected)));
 });

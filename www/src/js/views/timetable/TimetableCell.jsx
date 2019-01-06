@@ -50,8 +50,10 @@ function TimetableCell(props: Props) {
         hover,
       })}
       style={props.style}
-      onMouseEnter={() => onHover && onHover(getHoverLesson(lesson))}
-      onMouseLeave={() => onHover && onHover(null)}
+      onMouseEnter={() => onHover?.(getHoverLesson(lesson))}
+      onTouchStart={() => onHover?.(getHoverLesson(lesson))}
+      onMouseLeave={() => onHover?.(null)}
+      onTouchEnd={() => onHover?.(null)}
       {...conditionalProps}
     >
       <div className={styles.cellContainer}>

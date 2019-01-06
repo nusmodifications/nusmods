@@ -8,7 +8,7 @@ import { scrollToHash } from 'utils/react';
 
 export type Props = {
   ...ContextRouter,
-  onComponentWillMount: boolean,
+  onComponentDidMount: boolean,
   onPathChange: boolean,
   scrollToHash: boolean,
 };
@@ -20,25 +20,24 @@ function scrollToTop() {
 // $FlowFixMe - https://github.com/flowtype/flow-typed/issues/1179
 export class ScrollToTopComponent extends Component<Props> {
   static defaultProps = {
-    onComponentWillMount: false,
+    onComponentDidMount: false,
     onPathChange: false,
     scrollToHash: true,
   };
 
-  componentWillMount() {
-    if (this.props.onComponentWillMount && !window.location.hash) {
-      scrollToTop();
-    }
-  }
-
   componentDidMount() {
-    if (this.props.scrollToHash) {
+    if (this.props.onComponentDidMount && !window.location.hash) {
+      scrollToTop();
+    } else if (this.props.scrollToHash) {
       scrollToHash();
     }
   }
 
   componentDidUpdate(prevProps: Props) {
-    const { onPathChange, location: { pathname, hash } } = this.props;
+    const {
+      onPathChange,
+      location: { pathname, hash },
+    } = this.props;
 
     if (
       onPathChange &&

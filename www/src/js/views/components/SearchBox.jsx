@@ -22,30 +22,28 @@ type State = {
 };
 
 export default class SearchBox extends PureComponent<Props, State> {
-  props: Props;
-
   constructor(props: Props) {
     super(props);
+
+    this.state = {
+      isFocused: false,
+      searchTerm: this.props.initialSearchTerm || '',
+      hasChanges: false,
+    };
 
     this.props.onSearch(this.state.searchTerm);
   }
 
-  state: State = {
-    isFocused: false,
-    searchTerm: this.props.initialSearchTerm || '',
-    hasChanges: false,
-  };
-
   onSubmit = () => {
-    const { searchElement } = this;
+    const element = this.searchElement.current;
 
-    if (searchElement.current) {
-      const searchTerm = searchElement.current.value;
+    if (element) {
+      const searchTerm = element.value;
       this.setState({ searchTerm });
 
       this.debouncedSearch(searchTerm);
       this.debouncedSearch.flush();
-      searchElement.current.blur();
+      element.blur();
     }
   };
 
@@ -58,7 +56,7 @@ export default class SearchBox extends PureComponent<Props, State> {
     }
   };
 
-  searchElement = React.createRef();
+  searchElement = React.createRef<HTMLInputElement>();
 
   search = (input: string) => {
     this.setState({ hasChanges: false });
@@ -100,6 +98,7 @@ export default class SearchBox extends PureComponent<Props, State> {
             id="search-box"
             className="form-control form-control-lg"
             type="search"
+            autoComplete="off"
             ref={this.searchElement}
             value={this.state.searchTerm}
             onChange={this.onInput}

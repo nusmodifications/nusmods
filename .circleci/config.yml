@@ -39,7 +39,7 @@ jobs:
       - run: yarn
       - save_cache: *save_node_deps
       - run: yarn lint
-      - run: yarn test
+      - run: yarn test --runInBand
 
   nus-scrapers:
     <<: *defaults
@@ -51,7 +51,7 @@ jobs:
       - run: yarn
       - save_cache: *save_node_deps
       - run: yarn lint
-      - run: yarn test
+      - run: yarn test --runInBand
       - run:
           name: Build scraper
           environment:
@@ -68,7 +68,7 @@ jobs:
       - run: yarn
       - save_cache: *save_node_deps
       - run: yarn lint
-      - run: yarn test
+      - run: yarn test --runInBand
       - run: yarn build
       - store_artifacts:
           path: dist
@@ -80,12 +80,16 @@ jobs:
     <<: *defaults
     working_directory: ~/nusmods/www
     environment:
-      NODE_ENV: test
+      NODE_ENV: production
     steps:
       - attach_workspace:
           at: ~/nusmods
       - restore_cache: *restore_node_deps
-      - run: yarn
+      - run:
+          name: Install dependencies
+          environment:
+            NODE_ENV: test
+          command: yarn
       - save_cache: *save_node_deps
       - run:
           name: Type check code
@@ -96,10 +100,11 @@ jobs:
       - run:
           name: Test code
           environment:
+            NODE_ENV: test
             JEST_JUNIT_OUTPUT: reports/junit/js-test-results.xml
           command: |
             set -e
-            yarn jest --ci --testResultsProcessor="jest-junit" --coverage
+            yarn test --runInBand --reporters=default --reporters=jest-junit
             cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
       - run:
           name: Lint styles

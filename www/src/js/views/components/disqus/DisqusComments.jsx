@@ -1,24 +1,42 @@
 // @flow
 
 import type { DisqusConfig } from 'types/views';
+import Raven from 'raven-js';
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
+
+import type { Mode } from 'types/settings';
+import type { State } from 'reducers';
 import config from 'config';
 import insertScript from 'utils/insertScript';
 
-type Props = DisqusConfig;
+type Props = {|
+  ...DisqusConfig,
+  // Disqus autodetects page background color so that its own font color has
+  // enough contrast to be read, but only when the widget is loaded, so we use
+  // this to force the widget after night mode is activated or deactivated
+  mode: Mode,
+|};
 
 const SCRIPT_ID = 'dsq-embed-scr';
 
-export default class DisqusComments extends PureComponent<Props> {
+class DisqusComments extends PureComponent<Props> {
   componentDidMount() {
     this.loadInstance();
   }
 
-  componentDidUpdate() {
-    this.loadInstance();
+  componentDidUpdate(prevProps: Props) {
+    // Wait a bit for the page colors to change before reloading instance
+    // 2 second delay is found empirically, and is longer than necessary to
+    // account for lag is slower user agents
+    if (prevProps.mode !== this.props.mode) {
+      setTimeout(this.loadInstance, 2000);
+    } else {
+      this.loadInstance();
+    }
   }
 
-  loadInstance() {
+  loadInstance = () => {
     if (window.DISQUS) {
       // See https://help.disqus.com/customer/portal/articles/472107
       window.DISQUS.reset({
@@ -31,9 +49,12 @@ export default class DisqusComments extends PureComponent<Props> {
       window.disqus_config = this.getDisqusConfig();
       window.disqus_shortname = config.disqusShortname;
 
-      insertScript(`https://${config.disqusShortname}.disqus.com/embed.js`, SCRIPT_ID, true);
+      insertScript(`https://${config.disqusShortname}.disqus.com/embed.js`, {
+        id: SCRIPT_ID,
+        async: true,
+      }).catch((e) => Raven.captureException(e));
     }
-  }
+  };
 
   getDisqusConfig() {
     // Disqus is configured using a function that modifies 'this', so we cannot use
@@ -52,3 +73,7 @@ export default class DisqusComments extends PureComponent<Props> {
     return <div id="disqus_thread" />;
   }
 }
+
+export default connect((state: State) => ({
+  mode: state.settings.mode,
+}))(DisqusComments);

@@ -1,13 +1,13 @@
 import bunyan from 'bunyan';
-import omit from 'lodash/omit';
+import { omit, isObjectLike } from 'lodash';
 
 function apolloDataSerializer(data) {
-  const { __schema, ...responseData } = data;
-  const newSchema = omit(__schema, 'types', 'directives');
-  return {
-    ...responseData,
-    __schema: newSchema,
-  };
+  if (!isObjectLike(data)) return data;
+  /* eslint-disable no-underscore-dangle */
+  const newData = omit(data, '__schema');
+  const newSchema = omit(data.__schema, 'types', 'directives');
+  newData.__schema = newSchema;
+  return newData;
 }
 
 /**

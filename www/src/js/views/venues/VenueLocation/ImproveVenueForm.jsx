@@ -8,7 +8,9 @@ import type { LatLngTuple, VenueLocation } from 'types/venues';
 import config from 'config';
 import { MapPin, ThumbsUp } from 'views/components/icons';
 import LoadingSpinner from 'views/components/LoadingSpinner';
-import { icon } from './icons';
+import { icon } from 'views/components/map/icons';
+import ExpandMap from 'views/components/map/ExpandMap';
+import mapStyles from 'views/components/map/LocationMap.scss';
 import styles from './ImproveVenueForm.scss';
 
 type Props = {
@@ -28,6 +30,7 @@ type State = {
   latlngUpdated: boolean,
   submitting: boolean,
   submitted: boolean,
+  isMapExpanded: boolean,
   error?: any,
 };
 
@@ -70,6 +73,7 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
       latlngUpdated: false,
       submitting: false,
       submitted: false,
+      isMapExpanded: false,
       ...location,
     };
   }
@@ -125,7 +129,7 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
   };
 
   render() {
-    const { location, reporterEmail, floor, roomName } = this.state;
+    const { location, reporterEmail, floor, roomName, isMapExpanded } = this.state;
 
     if (this.state.submitted) {
       return (
@@ -213,14 +217,17 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
           </small>
         </div>
 
-        <div className={classnames('col-sm-12', styles.mapWrapper)}>
+        <div
+          className={classnames('col-sm-12', mapStyles.mapWrapper, {
+            [mapStyles.expanded]: isMapExpanded,
+          })}
+        >
           <Map
-            className={styles.map}
+            className={mapStyles.map}
             center={location}
             zoom={19}
             maxZoom={19}
             onClick={(evt) => this.updateLocation(evt.latlng)}
-            gestureHandling
           >
             <Marker
               position={location}
@@ -232,6 +239,10 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
             <TileLayer
               attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            <ExpandMap
+              isExpanded={isMapExpanded}
+              onToggleExpand={() => this.setState({ isMapExpanded: !isMapExpanded })}
             />
           </Map>
 
@@ -257,7 +268,7 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
 
           {'geolocation' in navigator && (
             <button
-              className={classnames('btn btn-sm btn-outline-secondary', styles.geolocate)}
+              className={classnames('btn btn-sm btn-secondary', styles.geolocate)}
               title="Center on my location"
               aria-label="Center on my location"
               type="button"

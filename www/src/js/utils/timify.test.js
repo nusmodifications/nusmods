@@ -1,4 +1,5 @@
 // @flow
+import { createGenericLesson } from 'test-utils/timetable';
 
 import {
   convertTimeToIndex,
@@ -6,10 +7,10 @@ import {
   calculateBorderTimings,
   formatHour,
   daysAfter,
+  formatTime,
   DEFAULT_EARLIEST_TIME,
   DEFAULT_LATEST_TIME,
-} from 'utils/timify';
-import { createGenericLesson } from './timetables.test';
+} from './timify';
 
 describe('convertTimeToIndex', () => {
   test('convert time string to index', () => {
@@ -109,4 +110,25 @@ test('daysAfter should create a date days after', () => {
   expect(daysAfter(new Date('2016-11-23T09:00+0800'), 1)).toEqual(
     new Date('2016-11-24T09:00+0800'),
   );
+});
+
+describe(formatTime, () => {
+  test('should format time numbers to strings', () => {
+    expect(formatTime(0)).toEqual('12 midnight');
+    expect(formatTime(10)).toEqual('12:10 am');
+    expect(formatTime(900)).toEqual('9:00 am');
+    expect(formatTime(1100)).toEqual('11:00 am');
+    expect(formatTime(1200)).toEqual('12 noon');
+    expect(formatTime(1210)).toEqual('12:10 pm');
+    expect(formatTime(2359)).toEqual('11:59 pm');
+  });
+
+  test('should format time strings', () => {
+    expect(formatTime('0000')).toEqual('12 midnight');
+    expect(formatTime('0900')).toEqual('9:00 am');
+    expect(formatTime('1100')).toEqual('11:00 am');
+    expect(formatTime('1200')).toEqual('12 noon');
+    expect(formatTime('1210')).toEqual('12:10 pm');
+    expect(formatTime('2359')).toEqual('11:59 pm');
+  });
 });
