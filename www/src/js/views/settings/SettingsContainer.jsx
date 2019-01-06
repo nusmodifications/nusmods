@@ -90,8 +90,8 @@ class SettingsContainer extends Component<Props> {
 
     return (
       <Fragment>
-        <div className={classnames(styles.toggleRow, 'row')}>
-          <div className={classnames(styles.toggleDescription, 'col-sm-7')}>
+        <div className={styles.toggleRow}>
+          <div className={styles.toggleDescription}>
             <p>
               {isSnoozed
                 ? 'You have snoozed reminders until the end of this round'
@@ -136,8 +136,8 @@ class SettingsContainer extends Component<Props> {
 
         {/* TODO: Finish the CORS bidding stats filter feature and re-enable this
       <h4>New Student</h4>
-      <div className={classnames(styles.toggleRow, 'row')}>
-        <div className={classnames(styles.toggleDescription, 'col-sm-7')}>
+      <div className={styles.toggleRow}>
+        <div className={styles.toggleDescription}>
           <p>For certain modules, places are reserved for new students in CORS Bidding Rounds
                 1 and 2. Enabling this will highlight those numbers and rounds.</p>
         </div>
