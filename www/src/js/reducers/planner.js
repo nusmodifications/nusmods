@@ -1,6 +1,6 @@
 // @flow
 import produce from 'immer';
-import { toPairs, max } from 'lodash';
+import { pull } from 'lodash';
 import type { PlannerState } from 'types/reducers';
 import type { FSA } from 'types/redux';
 import {
@@ -10,6 +10,7 @@ import {
   REMOVE_PLANNER_MODULE,
 } from 'actions/planner';
 import config from 'config';
+import { filterModuleForSemester } from 'selectors/planner';
 
 const defaultPlannerState: PlannerState = {
   minYear: config.academicYear,
@@ -41,30 +42,27 @@ export default function planner(
 
     case ADD_PLANNER_MODULE:
     case MOVE_PLANNER_MODULE: {
-      const { year, semester } = action.payload;
+      const { year, semester, index } = action.payload;
       const moduleCode = action.payload.moduleCode.toUpperCase();
 
       // To insert the module into the correct position we need to shift the other
       // modules
-      const otherModules = toPairs(state.modules).filter(([otherModuleCode, timing]) => {
-        const [moduleYear, moduleSemester] = timing;
-        return otherModuleCode !== moduleCode && moduleYear === year && moduleSemester === semester;
-      });
-      let index = action.payload.index;
-      // If the index is not specified, we insert the new module at the end
+      const newModuleOrder = pull(
+        filterModuleForSemester(state.modules, year, semester),
+        moduleCode,
+      );
       if (index == null) {
-        index =
-          otherModules.length === 0 ? 0 : max(otherModules.map(([, timing]) => timing[2])) + 1;
+        newModuleOrder.push(moduleCode);
+      } else {
+        newModuleOrder.splice(index, 0, moduleCode);
       }
 
       return produce(state, (draft: $Shape<PlannerState>) => {
         // $FlowFixMe states are mutable in immer
         draft.modules[moduleCode] = [year, semester, index];
 
-        otherModules.forEach(([otherModuleCode, timing]) => {
-          if (timing[2] >= index) {
-            draft.modules[otherModuleCode][2] += 1;
-          }
+        newModuleOrder.forEach((newModuleCode, order) => {
+          draft.modules[newModuleCode][2] = order;
         });
       });
     }

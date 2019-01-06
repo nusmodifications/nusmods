@@ -96,6 +96,24 @@ describe(MOVE_PLANNER_MODULE, () => {
       CS2030: ['2018/2019', 2, 1],
       CS2105: ['2018/2019', 2, 0],
     });
+
+    expect(
+      reducer(
+        {
+          ...initial,
+          modules: {
+            CS1010S: ['2018/2019', 2, 0],
+            CS2030: ['2018/2019', 2, 1],
+            CS2105: ['2018/2019', 2, 2],
+          },
+        },
+        movePlannerModule('CS2105', '2018/2019', 2, 1),
+      ).modules,
+    ).toEqual({
+      CS1010S: ['2018/2019', 2, 0],
+      CS2105: ['2018/2019', 2, 1],
+      CS2030: ['2018/2019', 2, 2],
+    });
   });
 
   test('should move module to other acad year or semester', () => {
@@ -110,6 +128,12 @@ describe(MOVE_PLANNER_MODULE, () => {
       CS1010S: ['2017/2018', 2, 0],
       CS2030: ['2018/2019', 2, 0],
       CS2105: ['2018/2019', 2, 1],
+    });
+
+    expect(reducer(initial, movePlannerModule('CS1010S', '2018/2019', 2, 1)).modules).toEqual({
+      CS1010S: ['2018/2019', 2, 1],
+      CS2030: ['2018/2019', 2, 0],
+      CS2105: ['2018/2019', 2, 2],
     });
   });
 });
