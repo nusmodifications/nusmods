@@ -70,7 +70,7 @@ class VenueLocation extends PureComponent<Props, State> {
         <>
           <div className={styles.noLocation}>
             <p>We don&apos;t have data for this venue.</p>
-            <button className="btn btn-primary btn-outline-primary" onClick={this.openModal}>
+            <button className="btn btn-outline-primary" onClick={this.openModal}>
               Help us map this venue
             </button>
           </div>
@@ -100,10 +100,7 @@ class VenueLocation extends PureComponent<Props, State> {
             <LocationMap position={position} toggleScrollable={this.props.toggleScrollable} />
             <p className={styles.feedbackBtn}>
               See a problem?{' '}
-              <button
-                className={classnames('btn btn-primary btn-outline-primary')}
-                onClick={this.openModal}
-              >
+              <button className={classnames('btn btn-outline-primary')} onClick={this.openModal}>
                 Help us improve this map
               </button>
             </p>
@@ -111,7 +108,7 @@ class VenueLocation extends PureComponent<Props, State> {
         ) : (
           <>
             <p>We don&apos;t have the location of this venue, sorry :(</p>
-            <button className="btn btn-primary btn-outline-primary" onClick={this.openModal}>
+            <button className="btn btn-outline-primary" onClick={this.openModal}>
               Help us map this venue
             </button>
           </>
