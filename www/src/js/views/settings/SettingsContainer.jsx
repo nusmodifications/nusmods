@@ -63,7 +63,7 @@ type Props = {
 class SettingsContainer extends Component<Props> {
   renderNightModeOption() {
     return (
-      <div className={styles.settingsSection}>
+      <div>
         <h4 id="night-mode">Night Mode</h4>
         <div className={styles.toggleRow}>
           <div className={styles.toggleDescription}>
@@ -167,57 +167,51 @@ class SettingsContainer extends Component<Props> {
       */}
         {supportsCSSVariables() && this.renderNightModeOption()}
 
-        <div className={styles.settingsSection}>
-          <h4 id="theme">Theme</h4>
+        <h4 id="theme">Theme</h4>
 
-          <p>Liven up your timetable with different color schemes!</p>
-          <p>
-            Protip: Press <kbd>Z</kbd>/<kbd>C</kbd> to cycle through the themes anywhere on NUSMods.
-          </p>
+        <p>Liven up your timetable with different color schemes!</p>
+        <p>
+          Protip: Press <kbd>Z</kbd>/<kbd>C</kbd> to cycle through the themes anywhere on NUSMods.
+        </p>
 
-          <div className={styles.preview}>
-            <Timetable lessons={previewTimetable} />
-          </div>
+        <div className={styles.preview}>
+          <Timetable lessons={previewTimetable} />
+        </div>
 
-          <div>
-            {availableThemes.map((theme) => (
-              <ThemeOption
-                key={theme.id}
-                className={styles.themeOption}
-                theme={theme}
-                isSelected={currentThemeId === theme.id}
-                onSelectTheme={this.props.selectTheme}
-              />
-            ))}
-          </div>
+        <div>
+          {availableThemes.map((theme) => (
+            <ThemeOption
+              key={theme.id}
+              className={styles.themeOption}
+              theme={theme}
+              isSelected={currentThemeId === theme.id}
+              onSelectTheme={this.props.selectTheme}
+            />
+          ))}
         </div>
 
         <hr />
 
-        <div className={styles.settingsSection}>
-          <h4 id="cors">CORS Bidding Reminder</h4>
+        <h4 id="cors">CORS Bidding Reminder</h4>
 
-          <div className={styles.notificationPreview}>
-            <CorsNotification hideCloseButton />
-          </div>
-
-          <div className={styles.toggleRow}>
-            <div className={styles.toggleDescription}>
-              <p>
-                You can get a reminder about when CORS bidding starts with a small notification.
-              </p>
-              {corsText && <p>{corsText}</p>}
-            </div>
-            <div className={styles.toggle}>
-              <Toggle
-                isOn={corsNotification.enabled}
-                onChange={this.props.toggleCorsNotificationGlobally}
-              />
-            </div>
-          </div>
-
-          {corsNotification.enabled && corsRound && this.renderCorsNotitificationOption(corsRound)}
+        <div className={styles.notificationPreview}>
+          <CorsNotification hideCloseButton />
         </div>
+
+        <div className={styles.toggleRow}>
+          <div className={styles.toggleDescription}>
+            <p>You can get a reminder about when CORS bidding starts with a small notification.</p>
+            {corsText && <p>{corsText}</p>}
+          </div>
+          <div className={styles.toggle}>
+            <Toggle
+              isOn={corsNotification.enabled}
+              onChange={this.props.toggleCorsNotificationGlobally}
+            />
+          </div>
+        </div>
+
+        {corsNotification.enabled && corsRound && this.renderCorsNotitificationOption(corsRound)}
 
         <hr />
 
