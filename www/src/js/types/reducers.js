@@ -140,11 +140,12 @@ export type ModuleFinderState = {|
 /* planner.js */
 export type AcadYearModules = {
   // Mapping acad years to a map of semester to module code
+  // This is the form used by the actual UI
   +[string]: {| +[Semester]: ModuleCode[] |},
 };
 
 // The year, semester the module will be taken in, and the order
-// it appears on the list
+// it appears on the list for the semester
 export type ModuleTime = [string, Semester, number];
 
 // Mapping modules to when they will be taken

@@ -40,21 +40,40 @@ export default function planner(
 
       return state;
 
+    // Adding and updating planner modules currently do the exact same thing.
+    // We assume the user knows when evoking MOVE that the module is in the
+    // planner already
     case ADD_PLANNER_MODULE:
     case MOVE_PLANNER_MODULE: {
       const { year, semester, index } = action.payload;
       const moduleCode = action.payload.moduleCode.toUpperCase();
 
-      // To insert the module into the correct position we need to shift the other
-      // modules
+      // Insert the module into its new location and update the location of
+      // all other modules on the list
       const newModuleOrder = pull(
         filterModuleForSemester(state.modules, year, semester),
         moduleCode,
       );
+
+      // If index is not specified we assume the module is to be pushed to the
+      // end of the index
       if (index == null) {
         newModuleOrder.push(moduleCode);
       } else {
         newModuleOrder.splice(index, 0, moduleCode);
+      }
+
+      // If the module is moved from another year / semeser, then we also need
+      // to update the index of the old module list
+      let oldModuleOrder = [];
+      if (state.modules[moduleCode]) {
+        const [oldYear, oldSemester] = state.modules[moduleCode];
+        if (oldYear !== year || oldSemester !== semester) {
+          oldModuleOrder = pull(
+            filterModuleForSemester(state.modules, oldYear, oldSemester),
+            moduleCode,
+          );
+        }
       }
 
       return produce(state, (draft: $Shape<PlannerState>) => {
@@ -63,6 +82,10 @@ export default function planner(
 
         newModuleOrder.forEach((newModuleCode, order) => {
           draft.modules[newModuleCode][2] = order;
+        });
+
+        oldModuleOrder.forEach((oldModuleCode, order) => {
+          draft.modules[oldModuleCode][2] = order;
         });
       });
     }

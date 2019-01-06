@@ -7,6 +7,10 @@ import type { ModuleCode, Semester } from 'types/modules';
 
 /* eslint-disable no-useless-computed-key */
 
+/**
+ * Get a list of modules planned for a specific semester in an acad year
+ * in the order specified by the index
+ */
 export function filterModuleForSemester(
   modules: { +[ModuleCode]: ModuleTime },
   year: string,
@@ -20,6 +24,10 @@ export function filterModuleForSemester(
   return sortBy<ModuleCode>(filteredModules, (moduleCode: ModuleCode) => modules[moduleCode][2]);
 }
 
+/**
+ * Convert PlannerState into AcadYearModules form which is more easily
+ * consumed by the UI
+ */
 export function getAcadYearModules(state: PlannerState): AcadYearModules {
   const years = getYearsBetween(state.minYear, state.maxYear);
   const modules = {};

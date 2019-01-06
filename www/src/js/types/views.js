@@ -1,6 +1,14 @@
 // @flow
 import FilterGroup from 'utils/filters/FilterGroup';
-import type { Department, Faculty, Lesson, ModuleCondensed, ModuleWithColor } from './modules';
+import type {
+  Module,
+  TreeFragment,
+  Department,
+  Faculty,
+  Lesson,
+  ModuleCondensed,
+  ModuleWithColor,
+} from './modules';
 import type { ModuleList } from './reducers';
 import type { Venue, VenueList } from './venues';
 
@@ -147,3 +155,9 @@ export type EmptyGroupType =
   | 'holiday'
   | 'recess'
   | 'reading';
+
+/* views/planner */
+export type ModuleInfo = {
+  module: Module,
+  conflicts: ?Array<TreeFragment>,
+};
