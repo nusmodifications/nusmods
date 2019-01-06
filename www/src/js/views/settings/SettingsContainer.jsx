@@ -218,17 +218,11 @@ class SettingsContainer extends Component<Props> {
               </div>
             </div>
 
-            <hr />
-
             {corsNotification.enabled &&
               corsRound &&
               this.renderCorsNotitificationOption(corsRound)}
           </div>
         </div>
-
-        <hr />
-
-        {corsNotification.enabled && corsRound && this.renderCorsNotitificationOption(corsRound)}
 
         <BetaToggle
           betaTester={this.props.betaTester}
