@@ -16,6 +16,11 @@
     margin-top: 1rem;
   }
 
+  .settingsSection {
+    // Disable collapsing margins https://stackoverflow.com/a/33132624
+    padding: 0.05px;
+  }
+
   // Styles nested for specificity
   .toggleRow {
     display: flex;

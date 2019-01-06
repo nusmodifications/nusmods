@@ -63,25 +63,23 @@ type Props = {
 class SettingsContainer extends Component<Props> {
   renderNightModeOption() {
     return (
-      <div className="row">
-        <div className="col">
-          <h4 id="night-mode">Night Mode</h4>
-          <div className={styles.toggleRow}>
-            <div className={styles.toggleDescription}>
-              <p>
-                Night mode turns the light surfaces of the page dark, creating an experience ideal
-                for the dark. Try it out!
-              </p>
-              <p>
-                Protip: Press <kbd>X</kbd> to toggle modes anywhere on NUSMods.
-              </p>
-            </div>
-            <div className={styles.toggle}>
-              <ModeSelect mode={this.props.mode} onSelectMode={this.props.selectMode} />
-            </div>
+      <div className={styles.settingsSection}>
+        <h4 id="night-mode">Night Mode</h4>
+        <div className={styles.toggleRow}>
+          <div className={styles.toggleDescription}>
+            <p>
+              Night mode turns the light surfaces of the page dark, creating an experience ideal for
+              the dark. Try it out!
+            </p>
+            <p>
+              Protip: Press <kbd>X</kbd> to toggle modes anywhere on NUSMods.
+            </p>
           </div>
-          <hr />
+          <div className={styles.toggle}>
+            <ModeSelect mode={this.props.mode} onSelectMode={this.props.selectMode} />
+          </div>
         </div>
+        <hr />
       </div>
     );
   }
@@ -114,7 +112,6 @@ class SettingsContainer extends Component<Props> {
             </button>
           </div>
         </div>
-        <hr />
       </Fragment>
     );
   }
@@ -170,59 +167,59 @@ class SettingsContainer extends Component<Props> {
       */}
         {supportsCSSVariables() && this.renderNightModeOption()}
 
-        <h4 id="theme">Theme</h4>
+        <div className={styles.settingsSection}>
+          <h4 id="theme">Theme</h4>
 
-        <p>Liven up your timetable with different color schemes!</p>
-        <p>
-          Protip: Press <kbd>Z</kbd>/<kbd>C</kbd> to cycle through the themes anywhere on NUSMods.
-        </p>
+          <p>Liven up your timetable with different color schemes!</p>
+          <p>
+            Protip: Press <kbd>Z</kbd>/<kbd>C</kbd> to cycle through the themes anywhere on NUSMods.
+          </p>
 
-        <div className={styles.preview}>
-          <Timetable lessons={previewTimetable} />
-        </div>
+          <div className={styles.preview}>
+            <Timetable lessons={previewTimetable} />
+          </div>
 
-        <div>
-          {availableThemes.map((theme) => (
-            <ThemeOption
-              key={theme.id}
-              className={styles.themeOption}
-              theme={theme}
-              isSelected={currentThemeId === theme.id}
-              onSelectTheme={this.props.selectTheme}
-            />
-          ))}
+          <div>
+            {availableThemes.map((theme) => (
+              <ThemeOption
+                key={theme.id}
+                className={styles.themeOption}
+                theme={theme}
+                isSelected={currentThemeId === theme.id}
+                onSelectTheme={this.props.selectTheme}
+              />
+            ))}
+          </div>
         </div>
 
         <hr />
 
-        <div className="row">
-          <div className="col">
-            <h4 id="cors">CORS Bidding Reminder</h4>
+        <div className={styles.settingsSection}>
+          <h4 id="cors">CORS Bidding Reminder</h4>
 
-            <div className={styles.notificationPreview}>
-              <CorsNotification hideCloseButton />
-            </div>
-
-            <div className={styles.toggleRow}>
-              <div className={styles.toggleDescription}>
-                <p>
-                  You can get a reminder about when CORS bidding starts with a small notification.
-                </p>
-                {corsText && <p>{corsText}</p>}
-              </div>
-              <div className={styles.toggle}>
-                <Toggle
-                  isOn={corsNotification.enabled}
-                  onChange={this.props.toggleCorsNotificationGlobally}
-                />
-              </div>
-            </div>
-
-            {corsNotification.enabled &&
-              corsRound &&
-              this.renderCorsNotitificationOption(corsRound)}
+          <div className={styles.notificationPreview}>
+            <CorsNotification hideCloseButton />
           </div>
+
+          <div className={styles.toggleRow}>
+            <div className={styles.toggleDescription}>
+              <p>
+                You can get a reminder about when CORS bidding starts with a small notification.
+              </p>
+              {corsText && <p>{corsText}</p>}
+            </div>
+            <div className={styles.toggle}>
+              <Toggle
+                isOn={corsNotification.enabled}
+                onChange={this.props.toggleCorsNotificationGlobally}
+              />
+            </div>
+          </div>
+
+          {corsNotification.enabled && corsRound && this.renderCorsNotitificationOption(corsRound)}
         </div>
+
+        <hr />
 
         <BetaToggle
           betaTester={this.props.betaTester}
