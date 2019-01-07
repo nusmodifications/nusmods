@@ -41,7 +41,7 @@
     "babel-plugin-lodash": "3.3.4",
     "babel-preset-react-optimize": "1.0.1",
     "bundlesize": "0.17.0",
-    "chalk": "2.4.1",
+    "chalk": "2.4.2",
     "cheerio": "1.0.0-rc.2",
     "clean-webpack-plugin": "0.1.19",
     "connect-history-api-fallback": "1.5.0",
