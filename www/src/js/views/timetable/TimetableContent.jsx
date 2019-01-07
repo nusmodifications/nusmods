@@ -340,9 +340,9 @@ class TimetableContent extends Component<Props, State> {
               <div className={styles.modulesSelect}>
                 {!readOnly && (
                   <ModulesSelectContainer
-                  semester={semester}
-                  timetable={this.props.timetable}
-                  resetTombstone={this.resetTombstone}
+                    semester={semester}
+                    timetable={this.props.timetable}
+                    resetTombstone={this.resetTombstone}
                   />
                 )}
               </div>
