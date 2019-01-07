@@ -32,12 +32,14 @@ import Maximize from 'react-feather/dist/icons/maximize-2';
 import Minimize from 'react-feather/dist/icons/minimize-2';
 import MinusSquare from 'react-feather/dist/icons/minus-square';
 import PlusSquare from 'react-feather/dist/icons/plus-square';
+import Plus from 'react-feather/dist/icons/plus';
 import Refresh from 'react-feather/dist/icons/refresh-cw';
 import Repeat from 'react-feather/dist/icons/repeat';
 import Settings from 'react-feather/dist/icons/settings';
 import Search from 'react-feather/dist/icons/search';
 import Sidebar from 'react-feather/dist/icons/sidebar';
 import ThumbsUp from 'react-feather/dist/icons/thumbs-up';
+import Trello from 'react-feather/dist/icons/trello';
 import Twitter from 'react-feather/dist/icons/twitter';
 import Trash2 from 'react-feather/dist/icons/trash-2';
 import Type from 'react-feather/dist/icons/type';
@@ -77,10 +79,12 @@ export {
   Repeat,
   MinusSquare,
   PlusSquare,
+  Plus,
   Search,
   Settings,
   Sidebar,
   ThumbsUp,
+  Trello,
   Twitter,
   Trash2,
   Type,
