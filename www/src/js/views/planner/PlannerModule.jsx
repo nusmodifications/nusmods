@@ -4,13 +4,15 @@ import type { Module, ModuleCode, TreeFragment } from 'types/modules';
 import React, { PureComponent } from 'react';
 import Downshift from 'downshift';
 import { Draggable } from 'react-beautiful-dnd';
-import classnames from 'classnames';
+import { Link } from 'react-router-dom';
 
+import classnames from 'classnames';
 import { renderMCs } from 'utils/modules';
 import { conflictToText } from 'utils/planner';
 import { AlertTriangle, ChevronDown } from 'views/components/icons';
 import Tooltip from 'views/components/Tooltip';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
+import { modulePage } from 'views/routes/paths';
 import styles from './PlannerModule.scss';
 
 type Props = {|
@@ -44,7 +46,9 @@ export default class PlannerModule extends PureComponent<Props> {
           >
             <div className={styles.moduleInfo}>
               <div className={styles.moduleName}>
-                <strong>{moduleCode}</strong> {module?.ModuleTitle}
+                <Link to={modulePage(moduleCode, module?.ModuleTitle)}>
+                  <strong>{moduleCode}</strong> {module?.ModuleTitle}
+                </Link>
               </div>
               {module &&
                 showMeta && (
