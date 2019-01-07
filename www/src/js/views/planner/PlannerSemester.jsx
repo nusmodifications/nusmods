@@ -8,7 +8,7 @@ import { sum } from 'lodash';
 import type { ModuleCode, Semester } from 'types/modules';
 import type { ModuleInfo } from 'types/views';
 import config from 'config';
-import { renderMCs } from 'utils/modules';
+import { getModuleExamDate, renderMCs } from 'utils/modules';
 import { getDroppableId } from 'utils/planner';
 import PlannerModule from './PlannerModule';
 import AddModule from './AddModule';
@@ -56,17 +56,22 @@ export default class PlannerSemester extends PureComponent<Props> {
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
-              {modulesWithInfo.map(([moduleCode, moduleInfo], index) => (
-                <PlannerModule
-                  key={moduleCode}
-                  moduleCode={moduleCode}
-                  index={index}
-                  module={moduleInfo?.module}
-                  conflicts={showConflicts ? moduleInfo?.conflicts : null}
-                  showMeta={showModuleMeta}
-                  removeModule={() => this.props.removeModule(moduleCode)}
-                />
-              ))}
+              {modulesWithInfo.map(([moduleCode, moduleInfo], index) => {
+                const { conflicts, module } = moduleInfo || {};
+
+                return (
+                  <PlannerModule
+                    key={moduleCode}
+                    index={index}
+                    moduleCode={moduleCode}
+                    moduleTitle={module?.ModuleTitle}
+                    examDate={showModuleMeta && module ? getModuleExamDate(module, semester) : null}
+                    moduleCredit={showModuleMeta ? +module?.ModuleCredit : null}
+                    conflicts={showConflicts ? conflicts : null}
+                    removeModule={() => this.props.removeModule(moduleCode)}
+                  />
+                );
+              })}
               {provided.placeholder}
               {modules.length === 0 && (
                 <p className={styles.emptyListMessage}>

@@ -21,6 +21,10 @@
   justify-content: space-between;
   font-size: 0.9rem;
   color: var(--gray);
+
+  p {
+    margin-bottom: 0;
+  }
 }
 
 .emptyListMessage {

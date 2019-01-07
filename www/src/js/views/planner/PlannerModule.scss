@@ -37,9 +37,16 @@
   }
 
   .warningIcon {
-    flex: 0 0 1.8rem;
+    width: 1.8rem;
     height: 1.8rem;
     margin-left: 0.5rem;
+  }
+
+  .moduleMeta {
+    display: flex;
+    opacity: 0.8;
+    justify-content: space-between;
+    font-size: 0.8rem;
   }
 }
 
@@ -51,6 +58,7 @@
   margin-bottom: 0.4rem;
 
   a {
+    display: block;
     color: inherit;
   }
 }
