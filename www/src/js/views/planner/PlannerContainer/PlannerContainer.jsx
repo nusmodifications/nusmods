@@ -89,7 +89,7 @@ export class PlannerContainerComponent extends PureComponent<Props> {
               <PlannerSemester
                 year={EXEMPTION_YEAR}
                 semester={EXEMPTION_SEMESTER}
-                semesterModules={this.props.exemptions}
+                modules={this.props.exemptions}
                 getModuleInfo={this.props.getModuleInfo}
                 addModule={this.onAddModule}
                 removeModule={this.props.removeModule}
@@ -112,7 +112,7 @@ export class PlannerContainerComponent extends PureComponent<Props> {
                       key={semester}
                       year={year}
                       semester={+semester}
-                      semesterModules={modules}
+                      modules={modules}
                       getModuleInfo={this.props.getModuleInfo}
                       addModule={this.onAddModule}
                       removeModule={this.props.removeModule}

@@ -16,6 +16,13 @@
   min-height: 6rem;
 }
 
+.semesterMeta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: var(--gray);
+}
+
 .emptyListMessage {
   position: absolute;
   top: 0;

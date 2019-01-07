@@ -32,11 +32,12 @@ export default class PlannerModule extends PureComponent<Props> {
 
     return (
       <Draggable key={moduleCode} draggableId={moduleCode} index={index}>
-        {(provided) => (
+        {(provided, snapshot) => (
           <div
             ref={provided.innerRef}
             className={classnames(styles.module, {
               [styles.warning]: conflicts,
+              [styles.isDragging]: snapshot.isDragging,
             })}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
