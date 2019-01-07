@@ -1,9 +1,12 @@
 // @flow
-import { sortBy } from 'lodash';
+import { sortBy, each } from 'lodash';
 import { Semesters } from 'types/modules';
+import type { ModuleInfo } from 'types/views';
 import type { AcadYearModules, ModuleTime, PlannerState } from 'types/reducers';
-import { getYearsBetween } from 'utils/modules';
 import type { ModuleCode, Semester } from 'types/modules';
+import type { State } from 'reducers';
+import { getYearsBetween } from 'utils/modules';
+import { checkPrerequisite, EXEMPTION_SEMESTER, EXEMPTION_YEAR } from 'utils/planner';
 
 /* eslint-disable no-useless-computed-key */
 
@@ -50,4 +53,44 @@ export function getAcadYearModules(state: PlannerState): AcadYearModules {
   });
 
   return modules;
+}
+
+export function getExemptions(state: PlannerState) {
+  // Exemptions are stored in a special year which is not a valid AY
+  return filterModuleForSemester(state.modules, EXEMPTION_YEAR, EXEMPTION_SEMESTER);
+}
+
+/**
+ * Higher order function returning a function that returns module info from the module
+ * bank and checks if prereqs are met from modules taken in previous semesters
+ */
+export function getModuleInfo(state: State) {
+  // Memoize module sets for each year / semester
+  const moduleSets = {};
+
+  return (moduleCode: ModuleCode, year: string, semester: Semester): ?ModuleInfo => {
+    // Get detailed module info from the module bank
+    const module = state.moduleBank.modules[moduleCode];
+    if (!module) return null;
+
+    // Build a set of modules that have been taken before this semester
+    const key = `${year}-${semester}`;
+    let moduleSet = moduleSets[key];
+    if (!moduleSet) {
+      // If the set has never been built before
+      moduleSet = new Set();
+      each(state.planner.modules, (timing, plannerModuleCode) => {
+        const [moduleYear, moduleSemester] = timing;
+        if (moduleYear < year || (moduleYear === year && moduleSemester < semester)) {
+          moduleSet.add(plannerModuleCode);
+        }
+      });
+      moduleSets[key] = moduleSet;
+    }
+
+    return {
+      module,
+      conflicts: checkPrerequisite(moduleSet, module.ModmavenTree),
+    };
+  };
 }

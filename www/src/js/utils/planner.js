@@ -1,6 +1,10 @@
 // @flow
-import { flatten } from 'lodash';
+import { flatten, castArray } from 'lodash';
 import type { ModuleCode, Semester, TreeFragment } from 'types/modules';
+
+// Exemptions are listed in a column using -1 for year and -1 for semester
+export const EXEMPTION_YEAR = '-1';
+export const EXEMPTION_SEMESTER: Semester = -1;
 
 /**
  * Check if a prereq tree is fulfilled given a set of modules that have already
@@ -9,6 +13,9 @@ import type { ModuleCode, Semester, TreeFragment } from 'types/modules';
  */
 export function checkPrerequisite(moduleSet: Set<ModuleCode>, tree: TreeFragment) {
   function walkTree(fragment: TreeFragment): ?Array<TreeFragment> {
+    // eslint-disable-next-line no-param-reassign
+    if (Array.isArray(fragment)) fragment = fragment[0];
+
     if (fragment.name === 'or') {
       return fragment.children.every(walkTree)
         ? // All return non-null = all unfulfilled
@@ -16,16 +23,29 @@ export function checkPrerequisite(moduleSet: Set<ModuleCode>, tree: TreeFragment
         : null;
     } else if (fragment.name === 'and') {
       const notFulfilled = fragment.children.map(walkTree).filter(Boolean);
-      return notFulfilled.length ? flatten(notFulfilled) : null;
+      return notFulfilled.length === 0 ? null : flatten(notFulfilled);
     }
 
     return moduleSet.has(fragment.name) ? null : [fragment];
   }
 
   // The root node is always the module itself, so we always start one child down
-  if (tree.children.length === 0) return null;
+  const children = castArray(tree.children);
+  if (children.length === 0) return null;
+  return walkTree(children[0]);
+}
 
-  return walkTree(tree.children[0]);
+/**
+ * Converts conflicts into human readable text form
+ */
+export function conflictToText(conflict: TreeFragment) {
+  if (conflict.name === 'or') {
+    return conflict.children.map(conflictToText).join(' or ');
+  } else if (conflict.name === 'and') {
+    return conflict.children.map(conflictToText).join(' and ');
+  }
+
+  return conflict.name;
 }
 
 /**
