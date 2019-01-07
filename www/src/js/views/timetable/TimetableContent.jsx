@@ -343,7 +343,7 @@ class TimetableContent extends Component<Props, State> {
                     semester={semester}
                     timetable={this.props.timetable}
                     resetTombstone={this.resetTombstone}
-                    tombstone={this.tombstone}
+                    tombstone={this.state.tombstone}
                   />
                 )}
               </div>

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import type { ModuleSelectList } from 'types/reducers';
-import type { ModuleCode, Semester } from 'types/modules';
+import type { ModuleCode, ModuleWithColor, Semester } from 'types/modules';
 
 import Online from 'views/components/Online';
 import { addModule } from 'actions/timetables';
@@ -15,7 +15,7 @@ import ModulesSelect from './ModulesSelect';
 type Props = {
   moduleList: ModuleSelectList,
   semester: Semester,
-  tombstone: module,
+  tombstone: ?ModuleWithColor,
   addModule: (Semester, ModuleCode) => void,
   popNotification: () => void,
   resetTombstone: () => void,
