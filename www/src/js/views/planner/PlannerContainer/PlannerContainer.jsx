@@ -10,7 +10,7 @@ import type { AcadYearModules } from 'types/reducers';
 import type { Module, ModuleCode, Semester } from 'types/modules';
 import type { ModuleInfo } from 'types/views';
 
-import { addAcadYear, subtractAcadYear } from 'utils/modules';
+import { addAcadYear, MODULE_CODE_REGEX, subtractAcadYear } from 'utils/modules';
 import { EXEMPTION_SEMESTER, EXEMPTION_YEAR, fromDroppableId } from 'utils/planner';
 import {
   addPlannerYear,
@@ -47,10 +47,17 @@ export class PlannerContainerComponent extends PureComponent<Props> {
     );
   }
 
-  onAddModule = (moduleCode: ModuleCode, year: string, semester: Semester) => {
-    this.props.addModule(moduleCode, year, semester);
-    // TODO: Handle error
-    this.props.fetchModule(moduleCode);
+  onAddModule = (input: string, year: string, semester: Semester) => {
+    // Extract everything that looks like a module code
+    const moduleCodes = input.toUpperCase().match(MODULE_CODE_REGEX);
+
+    if (moduleCodes) {
+      moduleCodes.forEach((moduleCode) => {
+        this.props.addModule(moduleCode, year, semester);
+        // TODO: Handle error
+        this.props.fetchModule(moduleCode);
+      });
+    }
   };
 
   render() {

@@ -1,10 +1,9 @@
 // @flow
 
 import React, { PureComponent } from 'react';
-import type { ModuleCode } from 'types/modules';
 
 type Props = {
-  onAddModule: (moduleCode: ModuleCode) => void,
+  onAddModule: (input: string) => void,
 };
 
 type State = {
