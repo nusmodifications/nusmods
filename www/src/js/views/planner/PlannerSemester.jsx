@@ -9,7 +9,7 @@ import type { ModuleCode, Semester } from 'types/modules';
 import type { ModuleInfo } from 'types/views';
 import config from 'config';
 import { getModuleExamDate, renderMCs } from 'utils/modules';
-import { getDroppableId } from 'utils/planner';
+import { getDroppableId, getSemesterName } from 'utils/planner';
 import PlannerModule from './PlannerModule';
 import AddModule from './AddModule';
 import styles from './PlannerSemester.scss';
@@ -72,10 +72,12 @@ export default class PlannerSemester extends PureComponent<Props> {
                   />
                 );
               })}
+
               {provided.placeholder}
+
               {modules.length === 0 && (
                 <p className={styles.emptyListMessage}>
-                  Drop module to add to {config.semesterNames[+semester]}
+                  Drop module to add to {getSemesterName(semester)}
                 </p>
               )}
 

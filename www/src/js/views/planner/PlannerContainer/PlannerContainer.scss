@@ -10,32 +10,24 @@
 }
 
 .header {
-}
-
-.yearWrapper {
-  overflow: auto;
-  display: flex;
-  height: 100%;
-}
-
-.year {
-  padding: 0.5rem;
-  background: var(--gray-lightest);
-  margin-right: 0.5rem;
-  border-radius: 0.5rem;
-
-  &.currentYear {
-    background: rgba(theme-color(), 0.1);
-    border: 1px solid rgba(theme-color(), 0.5);
+  h1 {
+    margin: 1rem 0 0;
+    font-size: $font-size-xlg;
   }
 }
 
-.yearHeader {
-  font-size: 1.2rem;
-  text-align: center;
+.yearWrapper {
+  display: flex;
+  height: 100%;
+  margin: 2rem 0;
+  overflow: auto;
 }
 
-.semesters {
+.moduleLists {
   display: flex;
-  margin-right: -0.5rem;
+}
+
+.modListHeaders {
+  font-size: 1.2rem;
+  text-align: center;
 }

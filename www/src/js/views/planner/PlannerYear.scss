@@ -1,0 +1,27 @@
+@import '~styles/utils/modules-entry';
+
+.year {
+  padding: 0.5rem;
+  margin-right: 0.5rem;
+  border-radius: 0.5rem;
+  background: var(--gray-lightest);
+
+  &.currentYear {
+    border: 1px solid rgba(theme-color(), 0.5);
+    background: rgba(theme-color(), 0.1);
+  }
+}
+
+.yearHeader {
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.semesters {
+  display: flex;
+  margin-right: -0.5rem;
+}
+
+.specialSemToggle {
+  text-align: right;
+}

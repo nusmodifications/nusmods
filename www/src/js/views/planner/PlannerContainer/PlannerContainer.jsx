@@ -1,9 +1,8 @@
 // @flow
 
 import React, { PureComponent } from 'react';
-import classnames from 'classnames';
 import { connect } from 'react-redux';
-import { map, sortBy, toPairs, min, max, each } from 'lodash';
+import { sortBy, toPairs, min, max, each } from 'lodash';
 import { DragDropContext } from 'react-beautiful-dnd';
 
 import type { AcadYearModules } from 'types/reducers';
@@ -11,7 +10,13 @@ import type { Module, ModuleCode, Semester } from 'types/modules';
 import type { ModuleInfo } from 'types/views';
 
 import { addAcadYear, MODULE_CODE_REGEX, subtractAcadYear } from 'utils/modules';
-import { EXEMPTION_SEMESTER, EXEMPTION_YEAR, fromDroppableId } from 'utils/planner';
+import {
+  EXEMPTION_SEMESTER,
+  EXEMPTION_YEAR,
+  fromDroppableId,
+  PLAN_TO_TAKE_SEMESTER,
+  PLAN_TO_TAKE_YEAR,
+} from 'utils/planner';
 import {
   addPlannerYear,
   addPlannerModule,
@@ -19,15 +24,16 @@ import {
   removePlannerModule,
 } from 'actions/planner';
 import { fetchModule } from 'actions/moduleBank';
-import { getAcadYearModules, getExemptions, getModuleInfo } from 'selectors/planner';
-import config from 'config';
+import { getAcadYearModules, getExemptions, getModuleInfo, getPlanToTake } from 'selectors/planner';
 import Title from 'views/components/Title';
 import PlannerSemester from '../PlannerSemester';
+import PlannerYear from '../PlannerYear';
 import styles from './PlannerContainer.scss';
 
 export type Props = {|
   +plannerModules: AcadYearModules,
   +exemptions: ModuleCode[],
+  +planToTake: ModuleCode[],
 
   +getModuleInfo: (moduleCode: ModuleCode, year: string, semester: Semester) => ?ModuleInfo,
   +fetchModule: (ModuleCode) => Promise<Module>,
@@ -91,8 +97,23 @@ export class PlannerContainerComponent extends PureComponent<Props> {
         >
           <div className={styles.yearWrapper}>
             <button onClick={() => this.props.addYear(prevYear)}>Add Previous Year</button>
+
+            {sortedModules.map(([year, semesters]) => (
+              <PlannerYear
+                key={year}
+                year={year}
+                semesters={semesters}
+                getModuleInfo={this.props.getModuleInfo}
+                addModule={this.onAddModule}
+                removeModule={this.props.removeModule}
+              />
+            ))}
+            <button onClick={() => this.props.addYear(nextYear)}>Add Next Year</button>
+          </div>
+
+          <div className={styles.moduleLists}>
             <section>
-              <h2 className={styles.yearHeader}>Exemptions</h2>
+              <h2 className={styles.modListHeaders}>Exemptions</h2>
               <PlannerSemester
                 year={EXEMPTION_YEAR}
                 semester={EXEMPTION_SEMESTER}
@@ -105,30 +126,19 @@ export class PlannerContainerComponent extends PureComponent<Props> {
               />
             </section>
 
-            {map(sortedModules, ([year, semesters]) => (
-              <section
-                key={year}
-                className={classnames(styles.year, {
-                  [styles.currentYear]: year === config.academicYear,
-                })}
-              >
-                <h2 className={styles.yearHeader}>{year}</h2>
-                <div className={styles.semesters}>
-                  {map(semesters, (modules, semester) => (
-                    <PlannerSemester
-                      key={semester}
-                      year={year}
-                      semester={+semester}
-                      modules={modules}
-                      getModuleInfo={this.props.getModuleInfo}
-                      addModule={this.onAddModule}
-                      removeModule={this.props.removeModule}
-                    />
-                  ))}
-                </div>
-              </section>
-            ))}
-            <button onClick={() => this.props.addYear(nextYear)}>Add Next Year</button>
+            <section>
+              <h2 className={styles.modListHeaders}>Plan to Take</h2>
+              <PlannerSemester
+                year={PLAN_TO_TAKE_YEAR}
+                semester={PLAN_TO_TAKE_SEMESTER}
+                modules={this.props.planToTake}
+                getModuleInfo={this.props.getModuleInfo}
+                addModule={this.onAddModule}
+                removeModule={this.props.removeModule}
+                showConflicts={false}
+                showModuleMeta={false}
+              />
+            </section>
           </div>
         </DragDropContext>
       </div>
@@ -142,9 +152,8 @@ const mapStateToProps = (state) => {
   return {
     getModuleInfo: getModuleInfo(state),
     exemptions: getExemptions(state.planner),
-    plannerModules: {
-      ...modules,
-    },
+    planToTake: getPlanToTake(state.planner),
+    plannerModules: modules,
   };
 };
 

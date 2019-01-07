@@ -1,10 +1,25 @@
 // @flow
 import { flatten, castArray } from 'lodash';
 import type { ModuleCode, Semester, TreeFragment } from 'types/modules';
+import config from 'config';
 
-// Exemptions are listed in a column using -1 for year and -1 for semester
+// Exemptions and plan to take are special columns used to hold modules
+// outside the
 export const EXEMPTION_YEAR = '-1';
 export const EXEMPTION_SEMESTER: Semester = -1;
+
+export const PLAN_TO_TAKE_YEAR = '-2';
+export const PLAN_TO_TAKE_SEMESTER = -2;
+
+export function getSemesterName(semester: Semester) {
+  if (semester === EXEMPTION_SEMESTER) {
+    return 'exemptions';
+  } else if (semester === PLAN_TO_TAKE_SEMESTER) {
+    return 'plan to take modules';
+  }
+
+  return config.semesterNames[semester];
+}
 
 /**
  * Check if a prereq tree is fulfilled given a set of modules that have already

@@ -6,7 +6,13 @@ import type { AcadYearModules, ModuleTime, PlannerState } from 'types/reducers';
 import type { ModuleCode, Semester } from 'types/modules';
 import type { State } from 'reducers';
 import { getYearsBetween } from 'utils/modules';
-import { checkPrerequisite, EXEMPTION_SEMESTER, EXEMPTION_YEAR } from 'utils/planner';
+import {
+  checkPrerequisite,
+  EXEMPTION_SEMESTER,
+  EXEMPTION_YEAR,
+  PLAN_TO_TAKE_SEMESTER,
+  PLAN_TO_TAKE_YEAR,
+} from 'utils/planner';
 
 /* eslint-disable no-useless-computed-key */
 
@@ -58,6 +64,11 @@ export function getAcadYearModules(state: PlannerState): AcadYearModules {
 export function getExemptions(state: PlannerState) {
   // Exemptions are stored in a special year which is not a valid AY
   return filterModuleForSemester(state.modules, EXEMPTION_YEAR, EXEMPTION_SEMESTER);
+}
+
+export function getPlanToTake(state: PlannerState) {
+  // 'Plan to take' are stored in a special year which is not a valid AY
+  return filterModuleForSemester(state.modules, PLAN_TO_TAKE_YEAR, PLAN_TO_TAKE_SEMESTER);
 }
 
 /**
