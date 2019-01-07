@@ -20,7 +20,7 @@
     "http-graceful-shutdown": "2.2.2",
     "koa": "2.6.2",
     "koa-router": "7.4.0",
-    "koa-views": "6.1.4",
+    "koa-views": "6.1.5",
     "lodash": "4.17.11",
     "nodemon": "1.17.2",
     "pug": "2.0.3",
