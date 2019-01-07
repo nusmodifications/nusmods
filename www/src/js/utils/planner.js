@@ -8,7 +8,7 @@ import config from 'config';
 export const EXEMPTION_YEAR = '-1';
 export const EXEMPTION_SEMESTER: Semester = -1;
 
-export const PLAN_TO_TAKE_YEAR = '-2';
+export const PLAN_TO_TAKE_YEAR = '3000';
 export const PLAN_TO_TAKE_SEMESTER = -2;
 
 export function getSemesterName(semester: Semester) {
@@ -69,7 +69,7 @@ export function conflictToText(conflict: TreeFragment) {
  * Create an unique Droppable ID for each semester of each year
  */
 export function getDroppableId(year: string, semester: Semester): string {
-  return `${year}-${semester}`;
+  return `${year}|${semester}`;
 }
 
 /**
@@ -77,6 +77,6 @@ export function getDroppableId(year: string, semester: Semester): string {
  * getDroppableId.
  */
 export function fromDroppableId(id: string): [string, Semester] {
-  const [acadYear, semesterString] = id.split('-');
+  const [acadYear, semesterString] = id.split('|');
   return [acadYear, +semesterString];
 }
