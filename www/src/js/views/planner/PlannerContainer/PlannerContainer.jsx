@@ -3,7 +3,8 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { sortBy, toPairs, min, max, each } from 'lodash';
-import { DragDropContext } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable, type OnDragEndResponder } from 'react-beautiful-dnd';
+import classnames from 'classnames';
 
 import type { AcadYearModules } from 'types/reducers';
 import type { Module, ModuleCode, Semester } from 'types/modules';
@@ -25,6 +26,7 @@ import {
 } from 'actions/planner';
 import { fetchModule } from 'actions/moduleBank';
 import { getAcadYearModules, getExemptions, getModuleInfo, getPlanToTake } from 'selectors/planner';
+import { Trash2 } from 'views/components/icons';
 import Title from 'views/components/Title';
 import PlannerSemester from '../PlannerSemester';
 import PlannerYear from '../PlannerYear';
@@ -43,6 +45,8 @@ export type Props = {|
   +moveModule: (moduleCode: ModuleCode, year: string, semester: Semester, index: number) => void,
   +removeModule: (moduleCode: ModuleCode) => void,
 |};
+
+const TRASH_ID = 'trash';
 
 export class PlannerContainerComponent extends PureComponent<Props> {
   componentDidMount() {
@@ -66,6 +70,20 @@ export class PlannerContainerComponent extends PureComponent<Props> {
     }
   };
 
+  onDropEnd: OnDragEndResponder = (evt) => {
+    const { destination, draggableId } = evt;
+
+    // No destination = drag and drop cancelled / dropped on invalid target
+    if (!destination) return;
+
+    if (destination.droppableId === TRASH_ID) {
+      this.props.removeModule(draggableId);
+    } else {
+      const [year, semester] = fromDroppableId(destination.droppableId);
+      this.props.moveModule(draggableId, year, +semester, destination.index);
+    }
+  };
+
   render() {
     // Sort acad years since acad years may not be inserted in display order
     const sortedModules: Array<[string, { [Semester]: ModuleCode[] }]> = sortBy(
@@ -84,17 +102,7 @@ export class PlannerContainerComponent extends PureComponent<Props> {
           <h1>Module Planner</h1>
         </header>
 
-        <DragDropContext
-          onDragEnd={(evt) => {
-            const { destination, draggableId } = evt;
-
-            // No destination = drag and drop cancelled / dropped on invalid target
-            if (!destination) return;
-
-            const [year, semester] = fromDroppableId(destination.droppableId);
-            this.props.moveModule(draggableId, year, +semester, destination.index);
-          }}
-        >
+        <DragDropContext onDragEnd={this.onDropEnd}>
           <div className={styles.yearWrapper}>
             <button onClick={() => this.props.addYear(prevYear)}>Add Previous Year</button>
 
@@ -139,6 +147,23 @@ export class PlannerContainerComponent extends PureComponent<Props> {
                 showModuleMeta={false}
               />
             </section>
+
+            <Droppable droppableId={TRASH_ID}>
+              {(provided, snapshot) => (
+                <div
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  className={classnames(styles.trash, {
+                    [styles.dragOver]: snapshot.isDraggingOver,
+                  })}
+                >
+                  <div className={styles.trashMessage}>
+                    <Trash2 />
+                    <p>Drop modules here to remove them</p>
+                  </div>
+                </div>
+              )}
+            </Droppable>
           </div>
         </DragDropContext>
       </div>

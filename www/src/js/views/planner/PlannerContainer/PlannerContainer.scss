@@ -31,3 +31,27 @@
   font-size: 1.2rem;
   text-align: center;
 }
+
+.trash {
+  opacity: 0.6;
+  width: 12.5rem;
+  text-align: center;
+  color: theme-color('danger');
+  border: 1px dashed theme-color('danger');
+  border-radius: 0.4rem;
+  background: rgba(theme-color('danger'), 0.1);
+
+  &.isDraggingOver {
+    opacity: 1;
+  }
+}
+
+.trashMessage {
+  margin: 1rem 0.5rem;
+
+  svg {
+    width: 2rem;
+    height: 2rem;
+    margin-bottom: 0.4rem;
+  }
+}
