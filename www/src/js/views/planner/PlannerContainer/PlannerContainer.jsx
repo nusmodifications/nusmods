@@ -12,8 +12,6 @@ import type { ModuleInfo } from 'types/views';
 
 import { addAcadYear, subtractAcadYear } from 'utils/modules';
 import { EXEMPTION_SEMESTER, EXEMPTION_YEAR, fromDroppableId } from 'utils/planner';
-// import { checkPrerequisite } from 'utils/planner';
-// import { getTimetableModules } from 'utils/timetables';
 import {
   addPlannerYear,
   addPlannerModule,
@@ -95,8 +93,11 @@ export class PlannerContainerComponent extends PureComponent<Props> {
                 getModuleInfo={this.props.getModuleInfo}
                 addModule={this.onAddModule}
                 removeModule={this.props.removeModule}
+                showConflicts={false}
+                showModuleMeta={false}
               />
             </section>
+
             {map(sortedModules, ([year, semesters]) => (
               <section
                 key={year}
@@ -136,7 +137,6 @@ const mapStateToProps = (state) => {
     exemptions: getExemptions(state.planner),
     plannerModules: {
       ...modules,
-      // [config.academicYear]: timetableModules,
     },
   };
 };

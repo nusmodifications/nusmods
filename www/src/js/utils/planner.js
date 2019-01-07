@@ -13,6 +13,8 @@ export const EXEMPTION_SEMESTER: Semester = -1;
  */
 export function checkPrerequisite(moduleSet: Set<ModuleCode>, tree: TreeFragment) {
   function walkTree(fragment: TreeFragment): ?Array<TreeFragment> {
+    // TreeFragment appears to be incorrectly typed. Sometimes for no apparent
+    // reason the fragment is double wrapped in an array
     // eslint-disable-next-line no-param-reassign
     if (Array.isArray(fragment)) fragment = fragment[0];
 

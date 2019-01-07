@@ -16,6 +16,9 @@ type Props = {|
   +year: string,
   +semester: Semester,
   +semesterModules: ModuleCode[],
+  +showConflicts: boolean,
+  +showModuleMeta: boolean,
+
   +getModuleInfo: (moduleCode: ModuleCode, year: string, semester: Semester) => ?ModuleInfo,
 
   +addModule: (moduleCode: ModuleCode, year: string, semester: Semester) => void,
@@ -23,8 +26,13 @@ type Props = {|
 |};
 
 export default class PlannerSemester extends PureComponent<Props> {
+  static defaultProps = {
+    showConflicts: true,
+    showModuleMeta: true,
+  };
+
   render() {
-    const { year, semester, semesterModules } = this.props;
+    const { year, semester, semesterModules, showConflicts, showModuleMeta } = this.props;
     const droppableId = getDroppableId(year, semester);
     return (
       <div className={styles.semester}>
@@ -49,7 +57,8 @@ export default class PlannerSemester extends PureComponent<Props> {
                     moduleCode={moduleCode}
                     index={index}
                     module={moduleInfo?.module}
-                    conflicts={moduleInfo?.conflicts}
+                    conflicts={showConflicts ? moduleInfo?.conflicts : null}
+                    showMeta={showModuleMeta}
                     removeModule={() => this.props.removeModule(moduleCode)}
                   />
                 );

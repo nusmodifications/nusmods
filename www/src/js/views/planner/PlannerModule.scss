@@ -2,6 +2,7 @@
 
 .module {
   display: flex;
+  align-items: flex-start;
   padding: 0.4rem 0.7rem;
   margin-bottom: 0.4rem;
   font-size: 0.9rem;
@@ -15,13 +16,32 @@
     color: darken(theme-color('warning'), 40);
     border-color: darken(theme-color('warning'), 10);
     background: theme-color('warning');
+
+    .menuBtn {
+      :global(.close) {
+        color: #000;
+      }
+    }
   }
 
-  .warning {
+  .menuBtn {
+    position: relative;
+    margin: -0.3rem -0.3rem 0 0;
+
+    :global(.close) {
+      color: #fff;
+    }
+  }
+
+  .warningIcon {
     flex: 0 0 1.8rem;
     height: 1.8rem;
     margin-left: 0.5rem;
   }
+}
+
+.moduleInfo {
+  flex: 1 1 auto;
 }
 
 .moduleName {
