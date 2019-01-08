@@ -40,6 +40,8 @@ exports[`NavtabsComponent renders into nav element 1`] = `
     activeClassName="linkActive"
     ariaCurrent="page"
     className="link"
+    onFocus={[Function]}
+    onMouseOver={[Function]}
     to="/venues"
   >
     <Map
