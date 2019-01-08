@@ -203,6 +203,7 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
       <div>
         <ScrollToTop onComponentDidMount />
         <TimetableContent
+          key={semester}
           semester={semester}
           timetable={displayedTimetable}
           colors={colors}
