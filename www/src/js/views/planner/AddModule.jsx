@@ -77,7 +77,7 @@ export default class AddModule extends PureComponent<Props, State> {
             value={this.state.value}
             onKeyDown={(evt) => {
               if (evt.key === 'Enter') this.onSubmit(evt);
-              if (evt.key === 'Esc') this.onCancel();
+              if (evt.key === 'Escape') this.onCancel();
             }}
             onChange={(evt) => this.setState({ value: evt.target.value })}
             onBlur={this.onBlur}
