@@ -36,7 +36,7 @@ class RandomKawaii extends PureComponent<Props> {
     const moodProp = mood || this.defaultMood;
 
     return (
-      <div {...wrapperProps} title={this.props.title}>
+      <div {...wrapperProps}>
         <Kawaii size={size} mood={moodProp} color={color} />
       </div>
     );
