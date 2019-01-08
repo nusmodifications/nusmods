@@ -24,10 +24,7 @@
     }
   ],
   "ignoreDeps": [
-    "stylelint",
-    "webpack",
-    "webpack-dev-server",
-    "optimize-css-assets-webpack-plugin"
+    "stylelint"
   ],
   "pathRules": [
     {

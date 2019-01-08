@@ -22,7 +22,13 @@ const fryingPans = [
 
 const cook = (query) => fryingPans.reduce((a, b) => a.map(b), Array.from(query)).join('');
 
-export const matchEgg = (query) => eggs[btoa(cook(query.toLowerCase()))];
+export const matchEgg = (query) => {
+  try {
+    return eggs[btoa(cook(query.toLowerCase()))];
+  } catch (e) {
+    // Swallow error
+  }
+};
 
 type Props = {
   query: string,
