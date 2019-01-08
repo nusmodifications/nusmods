@@ -144,7 +144,6 @@ export class PlannerContainerComponent extends PureComponent<Props> {
                 addModule={this.onAddModule}
                 removeModule={this.props.removeModule}
                 showConflicts={false}
-                showModuleMeta={false}
               />
             </section>
 

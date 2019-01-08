@@ -65,10 +65,9 @@ export default class PlannerYear extends PureComponent<Props, State> {
         <h2 className={styles.yearHeader}>{year}</h2>
         <div className={styles.semesters}>
           {sortedSemesters.map(([semester, modules]) => (
-            <div>
+            <div key={semester}>
               <h3 className={styles.semesterHeader}>{getSemesterName(+semester)}</h3>
               <PlannerSemester
-                key={semester}
                 year={year}
                 semester={+semester}
                 modules={modules}
