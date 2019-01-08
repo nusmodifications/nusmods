@@ -21,7 +21,13 @@ import type {
   TimetableArrangement,
 } from 'types/timetables';
 
-import { cancelModifyLesson, changeLesson, modifyLesson, removeModule } from 'actions/timetables';
+import {
+  addModule,
+  cancelModifyLesson,
+  changeLesson,
+  modifyLesson,
+  removeModule,
+} from 'actions/timetables';
 import { undo } from 'actions/undoHistory';
 import {
   getModuleTimetable,
@@ -68,6 +74,7 @@ type Props = {
   hiddenInTimetable: ModuleCode[],
 
   // Actions
+  addModule: (Semester, ModuleCode) => void,
   removeModule: (Semester, ModuleCode) => void,
   modifyLesson: Function,
   changeLesson: Function,
@@ -123,6 +130,11 @@ class TimetableContent extends Component<Props, State> {
     } else {
       this.props.modifyLesson(lesson);
     }
+  };
+
+  addModule = (semester, moduleCode) => {
+    this.props.addModule(semester, moduleCode);
+    this.resetTombstone();
   };
 
   removeModule = (module) => {
@@ -342,7 +354,7 @@ class TimetableContent extends Component<Props, State> {
                   <ModulesSelectContainer
                     semester={semester}
                     timetable={this.props.timetable}
-                    resetTombstone={this.resetTombstone}
+                    addModule={this.addModule}
                   />
                 )}
               </div>
@@ -382,6 +394,7 @@ function mapStateToProps(state, ownProps) {
 export default connect(
   mapStateToProps,
   {
+    addModule,
     removeModule,
     modifyLesson,
     changeLesson,

@@ -17,7 +17,6 @@ type Props = {
   semester: Semester,
   addModule: (Semester, ModuleCode) => void,
   popNotification: () => void,
-  resetTombstone: () => void,
 };
 
 const RESULTS_LIMIT = 500;
@@ -30,7 +29,6 @@ class ModulesSelectContainer extends Component<Props> {
   onChange = (moduleCode: ModuleCode) => {
     this.props.popNotification();
     this.props.addModule(this.props.semester, moduleCode);
-    this.props.resetTombstone();
   };
 
   getFilteredModules = (inputValue: ?string) => {
@@ -72,7 +70,6 @@ function mapStateToProps(state, ownProps) {
 export default connect(
   mapStateToProps,
   {
-    addModule,
     popNotification,
   },
 )(ModulesSelectContainer);
