@@ -8,7 +8,7 @@ import type { ModuleCode, Semester } from 'types/modules';
 import type { ModuleInfo } from 'types/views';
 import config from 'config';
 import { getSemesterName } from 'utils/planner';
-import { Plus } from 'views/components/icons';
+import { Minus, Plus } from 'views/components/icons';
 import PlannerSemester from './PlannerSemester';
 import styles from './PlannerYear.scss';
 
@@ -84,7 +84,7 @@ export default class PlannerYear extends PureComponent<Props, State> {
               className="btn btn-sm btn-outline-primary"
               onClick={() => this.setState({ showSpecialSem: !showSpecialSem })}
             >
-              <Plus />
+              {showSpecialSem ? <Minus /> : <Plus />}
               Special Semesters
             </button>
           </p>
