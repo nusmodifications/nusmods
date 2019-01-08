@@ -13,9 +13,9 @@ export const PLAN_TO_TAKE_SEMESTER = -2;
 
 export function getSemesterName(semester: Semester) {
   if (semester === EXEMPTION_SEMESTER) {
-    return 'exemptions';
+    return 'Exemptions';
   } else if (semester === PLAN_TO_TAKE_SEMESTER) {
-    return 'plan to take modules';
+    return 'Plan to Take';
   }
 
   return config.semesterNames[semester];

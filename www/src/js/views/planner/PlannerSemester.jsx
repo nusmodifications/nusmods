@@ -27,6 +27,21 @@ type Props = {|
   +removeModule: (moduleCode: ModuleCode) => void,
 |};
 
+function renderSemesterMeta(modulesWithInfo: Array<[ModuleCode, ?ModuleInfo]>) {
+  const moduleCredits = sum(
+    modulesWithInfo.map(([, moduleInfo]) => +moduleInfo?.module?.ModuleCredit || 0),
+  );
+
+  return (
+    <div className={styles.semesterMeta}>
+      <p>
+        {modulesWithInfo.length} {modulesWithInfo.length === 1 ? 'module' : 'modules'}
+      </p>
+      <p>{renderMCs(moduleCredits)}</p>
+    </div>
+  );
+}
+
 export default class PlannerSemester extends PureComponent<Props> {
   static defaultProps = {
     showConflicts: true,
@@ -44,8 +59,6 @@ export default class PlannerSemester extends PureComponent<Props> {
 
     return (
       <div className={styles.semester}>
-        <h3 className={styles.semesterHeader}>{config.semesterNames[+semester]}</h3>
-
         <Droppable droppableId={droppableId}>
           {(provided, snapshot) => (
             <div
@@ -58,6 +71,7 @@ export default class PlannerSemester extends PureComponent<Props> {
             >
               {modulesWithInfo.map(([moduleCode, moduleInfo], index) => {
                 const { conflicts, module } = moduleInfo || {};
+                const showExamDate = showModuleMeta && config.academicYear === year;
 
                 return (
                   <PlannerModule
@@ -65,7 +79,7 @@ export default class PlannerSemester extends PureComponent<Props> {
                     index={index}
                     moduleCode={moduleCode}
                     moduleTitle={module?.ModuleTitle}
-                    examDate={showModuleMeta && module ? getModuleExamDate(module, semester) : null}
+                    examDate={showExamDate && module ? getModuleExamDate(module, semester) : null}
                     moduleCredit={showModuleMeta ? +module?.ModuleCredit : null}
                     conflicts={showConflicts ? conflicts : null}
                     removeModule={() => this.props.removeModule(moduleCode)}
@@ -81,23 +95,7 @@ export default class PlannerSemester extends PureComponent<Props> {
                 </p>
               )}
 
-              {showModuleMeta &&
-                modulesWithInfo.length > 0 && (
-                  <div className={styles.semesterMeta}>
-                    <p>
-                      {modulesWithInfo.length} {modulesWithInfo.length === 1 ? 'module' : 'modules'}
-                    </p>
-                    <p>
-                      {renderMCs(
-                        sum(
-                          modulesWithInfo.map(
-                            ([, moduleInfo]) => +moduleInfo?.module?.ModuleCredit || 0,
-                          ),
-                        ),
-                      )}
-                    </p>
-                  </div>
-                )}
+              {showModuleMeta && modulesWithInfo.length > 0 && renderSemesterMeta(modulesWithInfo)}
             </div>
           )}
         </Droppable>

@@ -60,6 +60,10 @@
   a {
     display: block;
     color: inherit;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
 
