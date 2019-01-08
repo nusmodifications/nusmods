@@ -1,15 +1,23 @@
 // @flow
 
 import React, { PureComponent } from 'react';
+import classnames from 'classnames';
+import type { Semester } from 'types/modules';
+import { Plus, Close } from 'views/components/icons';
+import styles from './AddModule.scss';
 
-type Props = {
-  onAddModule: (input: string) => void,
-};
+type Props = {|
+  +year: string,
+  +semester: Semester,
 
-type State = {
-  isOpen: boolean,
-  value: string,
-};
+  +className?: string,
+  +onAddModule: (input: string) => void,
+|};
+
+type State = {|
+  +isOpen: boolean,
+  +value: string,
+|};
 
 export default class AddModule extends PureComponent<Props, State> {
   state = {
@@ -20,7 +28,11 @@ export default class AddModule extends PureComponent<Props, State> {
   onSubmit = (evt: SyntheticUIEvent<HTMLFormElement>) => {
     evt.preventDefault();
     this.props.onAddModule(this.state.value.trim());
-    this.setState({ value: '', isOpen: false });
+    this.setState({ value: '' });
+
+    if (this.textareaRef.current) {
+      this.textareaRef.current.focus();
+    }
   };
 
   onBlur = () => {
@@ -29,23 +41,44 @@ export default class AddModule extends PureComponent<Props, State> {
     }
   };
 
+  onCancel = () => {
+    this.setState({ value: '', isOpen: false });
+  };
+
+  textareaRef = React.createRef<HTMLTextAreaElement>();
+
   render() {
     if (!this.state.isOpen) {
       return (
-        <button className="btn btn-link btn-block" onClick={() => this.setState({ isOpen: true })}>
-          Add Module
-        </button>
+        <div className={this.props.className}>
+          <button
+            className={classnames(styles.toggle, 'btn btn-sm btn-link btn-block')}
+            onClick={() => this.setState({ isOpen: true })}
+          >
+            <Plus />
+            Add Module
+          </button>
+        </div>
       );
     }
 
+    const inputId = `${this.props.year}-${this.props.semester}`;
     return (
-      <form onSubmit={this.onSubmit}>
-        <label>Module Code</label>
+      <form onSubmit={this.onSubmit} className={classnames(this.props.className, styles.form)}>
+        <label htmlFor={inputId} className="sr-only">
+          Module Code
+        </label>
         <div className="input-group">
-          <input
+          <textarea
+            ref={this.textareaRef}
+            id={inputId}
             className="form-control"
             placeholder="eg. CS1010S"
             value={this.state.value}
+            onKeyDown={(evt) => {
+              if (evt.key === 'Enter') this.onSubmit(evt);
+              if (evt.key === 'Esc') this.onCancel();
+            }}
             onChange={(evt) => this.setState({ value: evt.target.value })}
             onBlur={this.onBlur}
             // We can use autofocus here because this element only appears when
@@ -53,7 +86,19 @@ export default class AddModule extends PureComponent<Props, State> {
             autoFocus // eslint-disable-line jsx-a11y/no-autofocus
           />
         </div>
-        <button className="btn btn-primary">Add module</button>
+        <div className={styles.actions}>
+          <button className={classnames('btn btn-primary')} type="submit">
+            Add module
+          </button>
+          <button
+            className={classnames(styles.cancel, 'btn btn-svg')}
+            type="button"
+            onClick={this.onCancel}
+          >
+            <Close />
+            <span className="sr-only">Cancel</span>
+          </button>
+        </div>
       </form>
     );
   }

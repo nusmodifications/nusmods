@@ -1,7 +1,8 @@
 @import '~styles/utils/modules-entry';
+@import 'variables';
 
 .semester {
-  width: 12.5rem;
+  width: $semester-width;
   margin: 0 0.5rem 2rem 0;
 }
 

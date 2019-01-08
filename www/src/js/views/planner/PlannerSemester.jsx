@@ -101,6 +101,8 @@ export default class PlannerSemester extends PureComponent<Props> {
         </Droppable>
 
         <AddModule
+          year={year}
+          semester={semester}
           onAddModule={(moduleCode) => this.props.addModule(moduleCode, year, +semester)}
         />
       </div>
