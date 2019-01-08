@@ -1,9 +1,11 @@
 // @flow
 
+import type { LatLng } from 'leaflet';
 import React, { PureComponent } from 'react';
-import { type LatLng, Map, Marker, TileLayer } from 'react-leaflet';
+import { Map, Marker, TileLayer } from 'react-leaflet';
 import classnames from 'classnames';
 import axios from 'axios';
+
 import type { LatLngTuple, VenueLocation } from 'types/venues';
 import config from 'config';
 import { MapPin, ThumbsUp } from 'views/components/icons';
