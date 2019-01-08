@@ -26,7 +26,7 @@ import {
 } from 'actions/planner';
 import { fetchModule } from 'actions/moduleBank';
 import { getAcadYearModules, getExemptions, getModuleInfo, getPlanToTake } from 'selectors/planner';
-import { Trash2 } from 'views/components/icons';
+import { Trash } from 'views/components/icons';
 import Title from 'views/components/Title';
 import PlannerSemester from '../PlannerSemester';
 import PlannerYear from '../PlannerYear';
@@ -157,7 +157,7 @@ export class PlannerContainerComponent extends PureComponent<Props> {
                   })}
                 >
                   <div className={styles.trashMessage}>
-                    <Trash2 />
+                    <Trash />
                     <p>Drop modules here to remove them</p>
                   </div>
                 </div>
