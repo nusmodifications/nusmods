@@ -6,7 +6,6 @@ import type { ModuleSelectList } from 'types/reducers';
 import type { ModuleCode, Semester } from 'types/modules';
 
 import Online from 'views/components/Online';
-import { addModule } from 'actions/timetables';
 import { popNotification } from 'actions/app';
 import { getSemModuleSelectList } from 'selectors/moduleBank';
 import { createSearchPredicate, sortModules } from 'utils/moduleSearch';
