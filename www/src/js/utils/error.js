@@ -3,7 +3,6 @@ import * as Sentry from '@sentry/browser';
 import { each, size } from 'lodash';
 import { retry } from 'utils/promise';
 
-// eslint-disable-next-line import/prefer-default-export
 export function captureException(error: any, extra: Object = {}) {
   Sentry.withScope((scope) => {
     each(extra, (data, key) => {
@@ -17,6 +16,10 @@ export function captureException(error: any, extra: Object = {}) {
   });
 }
 
+/**
+ * Higher order function that returns a error handler useful when injecting
+ * scripts using <script> tags
+ */
 export function getScriptErrorHandler(scriptName: string) {
   return (error: any) => {
     if (error instanceof Error) {
@@ -29,6 +32,10 @@ export function getScriptErrorHandler(scriptName: string) {
   };
 }
 
+/**
+ * Wrap an async import() so that it automatically retries in case of a chunk
+ * load error and when the user is online
+ */
 export function retryImport(importFactory: () => Promise<*>, retries: number = 3) {
   return retry(
     retries,

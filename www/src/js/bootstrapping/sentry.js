@@ -13,8 +13,7 @@ if (loadRaven) {
     beforeSend(event, hint) {
       const { message } = hint.originalException;
       if (message && message.match(/top\.globals|canvas\.contentDocument/i)) {
-        // eslint-disable-next-line no-param-reassign
-        event.fingerprint = ['database-unavailable'];
+        return null;
       }
       return event;
     },
