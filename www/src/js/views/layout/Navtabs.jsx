@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { NavLink, withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 
-import { BookOpen, Calendar, Clock, Heart, Map, Settings } from 'views/components/icons';
+import { BookOpen, Calendar, Clock, Heart, Map, Trello, Settings } from 'views/components/icons';
 import ExternalLink from 'views/components/ExternalLink';
 import Online from 'views/components/Online';
 import { timetablePage } from 'views/routes/paths';
@@ -52,7 +52,7 @@ export function NavtabsComponent(props: Props) {
       </NavLink>
       {props.beta && (
         <NavLink {...tabProps} to="/planner">
-          <Clock />
+          <Trello />
           <span className={styles.title}>Planner</span>
         </NavLink>
       )}
