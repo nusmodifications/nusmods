@@ -7,6 +7,8 @@ import LoadingSpinner from 'views/components/LoadingSpinner';
 import ApiError from 'views/errors/ApiError';
 import { retryImport } from 'utils/error';
 import type { Props } from './TodayContainer';
+import EventMapInline from '../EventMapInline';
+import EventMap from '../EventMap';
 
 const AsyncTodayContainer: ComponentType<Props> = Loadable({
   loader: () => retryImport(() => import(/* webpackChunkName: "today" */ './TodayContainer')),
@@ -22,3 +24,9 @@ const AsyncTodayContainer: ComponentType<Props> = Loadable({
 });
 
 export default AsyncTodayContainer;
+
+export function preload() {
+  AsyncTodayContainer.preload();
+  EventMapInline.preload();
+  EventMap.preload();
+}

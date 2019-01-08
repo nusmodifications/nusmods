@@ -37,6 +37,30 @@ class VenueLocation extends PureComponent<Props, State> {
   openModal = () => this.setState({ isFeedbackModalOpen: true });
   closeModal = () => this.setState({ isFeedbackModalOpen: false });
 
+  renderFeedbackMenu(existingLocation: ?VenueLocationItem = null) {
+    const { venue } = this.props;
+    const { isFeedbackModalOpen } = this.state;
+
+    if (!existingLocation || !existingLocation.location) {
+      return (
+        <Modal isOpen={isFeedbackModalOpen} onRequestClose={this.closeModal} animate>
+          <CloseButton onClick={this.closeModal} />
+          <h2 className={styles.feedbackTitle}>Improve {venue}</h2>
+          <ImproveVenueForm venue={venue} />
+        </Modal>
+      );
+    }
+
+    return (
+      <FeedbackModal
+        venue={venue}
+        isOpen={isFeedbackModalOpen}
+        onRequestClose={this.closeModal}
+        existingLocation={existingLocation}
+      />
+    );
+  }
+
   render() {
     const { venue } = this.props;
     const location: ?VenueLocationItem = venueLocations[venue];
@@ -51,11 +75,7 @@ class VenueLocation extends PureComponent<Props, State> {
             </button>
           </div>
 
-          <Modal isOpen={this.state.isFeedbackModalOpen} onRequestClose={this.closeModal} animate>
-            <CloseButton onClick={this.closeModal} />
-            <h2 className={styles.feedbackTitle}>Improve {venue}</h2>
-            <ImproveVenueForm venue={venue} />
-          </Modal>
+          {this.renderFeedbackMenu()}
         </>
       );
     }
@@ -97,12 +117,7 @@ class VenueLocation extends PureComponent<Props, State> {
           </>
         )}
 
-        <FeedbackModal
-          venue={venue}
-          isOpen={this.state.isFeedbackModalOpen}
-          onRequestClose={this.closeModal}
-          existingLocation={location}
-        />
+        {this.renderFeedbackMenu(location)}
       </div>
     );
   }
