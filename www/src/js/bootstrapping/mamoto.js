@@ -2,8 +2,8 @@
 
 import type { RouterHistory } from 'react-router-dom';
 import type { Tracker } from 'types/views';
-import Raven from 'raven-js';
 import insertScript from 'utils/insertScript';
+import { getScriptErrorHandler } from 'utils/error';
 
 /* eslint-disable no-underscore-dangle */
 
@@ -23,17 +23,7 @@ export function initializeMamoto() {
       // Track initial page view
       mamoto.trackPageView();
     })
-    .catch((error) => {
-      if (error instanceof Error) {
-        Raven.captureException(error);
-      } else {
-        Raven.captureException(new Error('Error instantiating Mamoto'), {
-          extra: {
-            error,
-          },
-        });
-      }
-    });
+    .catch(getScriptErrorHandler('Mamoto'));
 }
 
 export function withTracker(action: (Tracker) => void) {

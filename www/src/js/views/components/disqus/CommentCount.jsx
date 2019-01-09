@@ -1,9 +1,9 @@
 // @flow
 import type { DisqusConfig } from 'types/views';
-import Raven from 'raven-js';
 import React, { PureComponent } from 'react';
 import config from 'config';
 import insertScript from 'utils/insertScript';
+import { getScriptErrorHandler } from 'utils/error';
 import { MessageSquare } from 'views/components/icons';
 import styles from './CommentCount.scss';
 
@@ -23,7 +23,7 @@ export default class CommentCount extends PureComponent<Props> {
       insertScript(`https://${config.disqusShortname}.disqus.com/count.js`, {
         id: SCRIPT_ID,
         async: true,
-      }).catch((e) => Raven.captureException(e));
+      }).catch(getScriptErrorHandler('Disqus comment count'));
     }
   }
 
