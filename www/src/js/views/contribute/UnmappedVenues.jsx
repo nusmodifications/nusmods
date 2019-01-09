@@ -1,89 +1,57 @@
 // @flow
-import type { VenueList } from 'types/venues';
+import type { VenueList as Venues } from 'types/venues';
 import type { State } from 'reducers';
 
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { map, groupBy, size } from 'lodash';
+import classnames from 'classnames';
+import { has, size, partition } from 'lodash';
 
-import Loader from 'views/components/LoadingSpinner';
-
+import LoadingSpinner from 'views/components/LoadingSpinner';
+import VenueList from 'views/venues/VenueList';
 import venueLocations from 'data/venues.json';
 import styles from './UnmappedVenues.scss';
 
 type Props = {
-  venueList: VenueList,
+  venueList: Venues,
 };
 
 class UnmappedVenues extends PureComponent<Props> {
-  renderUnmappedVenueList() {
-    const unmappedVenueList = this.props.venueList
-      .filter((venue) => !(venue in venueLocations))
-      .sort()
-      .slice(1);
-    const unmappedVenueListPages = groupBy(unmappedVenueList, (venue) =>
-      venue.charAt(0).toUpperCase(),
-    );
-
-    return (
-      <div>
-        <p>Here are the remaining unmapped venues:</p>
-
-        <ul className={styles.venueList}>
-          {map(unmappedVenueListPages, (venues, heading) => (
-            <li key={heading}>
-              <h3 className={styles.heading}>{heading}</h3>
-              <ul className={styles.subList}>
-                {venues.map((venue) => (
-                  <li key={venue}>{venue}</li>
-                ))}
-              </ul>
-            </li>
-          ))}
-        </ul>
-      </div>
-    );
-  }
-
-  renderProgressBar() {
-    const percentageMapped = (size(venueLocations) / this.props.venueList.length) * 100;
-    const percentageMappedStr = percentageMapped.toFixed().toString();
-
-    return (
-      <div>
-        <div className="progress" style={{ height: '20px' }}>
-          <div
-            className="progress-bar progress-bar-striped bg-success"
-            role="progressbar"
-            style={{ width: `${percentageMappedStr}%`, height: '20px' }}
-            aria-valuenow={percentageMappedStr}
-            aria-valuemin="0"
-            aria-valuemax="100"
-          >
-            {percentageMappedStr}%
-          </div>
-        </div>
-        <br />
-        <p>
-          {percentageMappedStr}% of venues are mapped! Help us locate the remaining venues{' '}
-          <a href="/venues">here</a>. All you have to do is choose a venue and mark where it is on
-          the map. If you&apos;re at that exact venue, you can also use your phone GPS to use your
-          current location.
-        </p>
-      </div>
-    );
-  }
-
   render() {
+    const { venueList } = this.props;
+    const [mappedVenues, unmappedVenues] = partition(venueList, (venue) =>
+      has(venueLocations, venue),
+    );
+    const percentageMapped = String(((mappedVenues.length / venueList.length) * 100).toFixed());
+
     return (
       <div>
         {this.props.venueList ? (
-          <div>
-            {this.renderProgressBar()}
-            {this.renderUnmappedVenueList()}
+          <div className={styles.wrapper}>
+            <div>
+              <div className={classnames(styles.progress, 'progress')}>
+                <div
+                  className={classnames('progress-bar progress-bar-striped bg-success')}
+                  role="progressbar"
+                  style={{ width: `${percentageMapped}%` }}
+                  aria-valuenow={percentageMapped}
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  {percentageMapped}%
+                </div>
+              </div>
+              <p>
+                {percentageMapped}% of venues are mapped! Help us locate the remaining venues - all
+                you have to do is choose a venue and mark where it is on the map. If you&apos;re at
+                that exact venue, you can also use your phone GPS to use your current location.
+              </p>
+            </div>
+
+            <VenueList venues={unmappedVenues} selectedVenue={null} />
           </div>
         ) : (
-          <Loader />
+          <LoadingSpinner />
         )}
       </div>
     );
