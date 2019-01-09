@@ -1,16 +1,51 @@
-@import "~utils/modules-entry";
+@import '~utils/modules-entry';
 
-.actionContainer {
-  .btnContainer {
-    margin-bottom: 0.5rem;
+.pageContainer {
+  composes: page-container from global;
+  max-width: 40rem;
 
-    &:last-child {
-      margin-right: 0;
-      margin-bottom: 1rem;
+  header {
+    text-align: center;
+
+    img {
+      display: inline-block;
+      max-width: 8rem;
+      margin: 0 0.5rem 1rem;
     }
 
-    @include media-breakpoint-up(lg) {
-      margin-right: 1rem;
+    h1 {
+      font-weight: bold;
+      font-size: 2rem;
     }
+
+    h2 {
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+  }
+
+  hr {
+    margin-bottom: 4rem;
+  }
+}
+
+.btnContainer {
+  margin-bottom: 1rem;
+
+  &:last-child {
+    margin-right: 0;
+  }
+
+  @include media-breakpoint-up(sm) {
+    margin-right: 1rem;
+  }
+}
+
+.bigButton {
+  svg {
+    display: block;
+    width: 2.5rem;
+    height: 2.5rem;
+    margin: 1rem auto;
   }
 }

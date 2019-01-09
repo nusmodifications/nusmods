@@ -1,8 +1,9 @@
-@import "~utils/modules-entry";
+@import '~utils/modules-entry';
 
 .wrapper {
   .progress {
-    height: 4rem;
+    height: 3rem;
     margin-bottom: 1rem;
+    font-size: 1.2rem;
   }
 }

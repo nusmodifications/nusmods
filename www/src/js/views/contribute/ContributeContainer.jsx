@@ -11,9 +11,12 @@ import config from 'config';
 import getContributors from 'apis/contributor';
 import { Mail, Layers, GitHub, Zap, Users } from 'views/components/icons';
 import ExternalLink from 'views/components/ExternalLink';
-import Loader from 'views/components/LoadingSpinner';
-import StaticPage from 'views/static/StaticPage';
-
+import LoadingSpinner from 'views/components/LoadingSpinner';
+import ScrollToTop from 'views/components/ScrollToTop';
+import Title from 'views/components/Title';
+import developerIcon from 'img/icons/programmer.svg';
+import contributeIcon from 'img/icons/love.svg';
+import venueIcon from 'img/icons/compass.svg';
 import UnmappedVenues from './UnmappedVenues';
 import ContributorList from './ContributorList';
 import styles from './ContributeContainer.scss';
@@ -60,8 +63,15 @@ class ContributeContainer extends Component<Props, State> {
 
   render() {
     return (
-      <StaticPage title="Contribute">
-        <h3>Help us help you!</h3>
+      <div className={styles.pageContainer}>
+        <ScrollToTop onComponentDidMount />
+        <Title>Contribute</Title>
+
+        <header>
+          <img src={contributeIcon} alt="" />
+          <h1>Help us help you!</h1>
+        </header>
+
         <p>
           NUSMods is a 100% student-run, open source project. We rely on the continuous support of
           our valued contributors and the NUS student community. Many students have reported issues,
@@ -71,49 +81,49 @@ class ContributeContainer extends Component<Props, State> {
         </p>
 
         <div className={classnames('row no-gutters', styles.actionContainer)}>
-          <div className={classnames('col-lg', styles.btnContainer)}>
+          <div className={classnames('col-sm', styles.btnContainer)}>
             <button
               onClick={this.props.toggleFeedback}
-              className="btn btn-primary btn-svg btn-block"
+              className={classnames(styles.bigButton, 'btn btn-outline-primary btn-block')}
             >
-              <Mail className="svg" />
+              <Mail />
               We need feedback!
             </button>
           </div>
-          <div className={classnames('col-lg', styles.btnContainer)}>
+          <div className={classnames('col-sm', styles.btnContainer)}>
             <ExternalLink
               href={config.contact.messenger}
-              className="btn btn-primary btn-svg btn-block"
+              className={classnames(styles.bigButton, 'btn btn-outline-primary btn-block')}
             >
-              <Layers className="svg" />
+              <Layers />
               We need designers!
             </ExternalLink>
           </div>
-          <div className={classnames('col-lg', styles.btnContainer)}>
+          <div className={classnames('col-sm', styles.btnContainer)}>
             <ExternalLink
               href={config.contact.githubRepo}
-              className="btn btn-primary btn-svg btn-block"
+              className={classnames(styles.bigButton, 'btn btn-outline-primary btn-block')}
             >
-              <GitHub className="svg" />
+              <GitHub />
               We need code!
             </ExternalLink>
           </div>
         </div>
 
         <div className={classnames('row no-gutters', styles.actionContainer)}>
-          <div className={classnames('col-lg', styles.btnContainer)}>
+          <div className={classnames('col-sm', styles.btnContainer)}>
             <ExternalLink
               href="https://github.com/nusmodifications/nusmods#backers"
-              className="btn btn-primary btn-svg btn-block"
+              className="btn btn-outline-primary btn-svg btn-block"
             >
               <Zap className="svg" />
               We need backers!
             </ExternalLink>
           </div>
-          <div className={classnames('col-lg', styles.btnContainer)}>
+          <div className={classnames('col-sm', styles.btnContainer)}>
             <ExternalLink
               href="https://github.com/nusmodifications/nusmods#sponsors"
-              className="btn btn-primary btn-svg btn-block"
+              className="btn btn-outline-primary btn-svg btn-block"
             >
               <Users className="svg" />
               We need sponsors!
@@ -123,14 +133,12 @@ class ContributeContainer extends Component<Props, State> {
 
         <hr />
 
-        <h3>Locate the venues</h3>
-        <UnmappedVenues />
+        <header>
+          <img src={developerIcon} alt="" />
+          <h2>Contributors</h2>
+        </header>
 
-        <hr />
-
-        <h3>Contributors</h3>
-
-        {this.state.isLoading && <Loader />}
+        {this.state.isLoading && <LoadingSpinner />}
         {this.state.isError && (
           <div className="alert alert-danger">
             <strong>Something went wrong!</strong>
@@ -148,12 +156,22 @@ class ContributeContainer extends Component<Props, State> {
             <ContributorList contributors={this.state.contributors.slice(0, 12)} />
           </div>
         )}
-      </StaticPage>
+
+        <hr />
+
+        <header>
+          <img src={venueIcon} alt="" />
+          <h2>Locate Venues</h2>
+        </header>
+        <UnmappedVenues />
+      </div>
     );
   }
 }
 
-export default connect(
+const ConnectedContributeContainer = connect(
   null,
   { toggleFeedback },
 )(ContributeContainer);
+
+export default ConnectedContributeContainer;

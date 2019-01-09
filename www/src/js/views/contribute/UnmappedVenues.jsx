@@ -44,9 +44,11 @@ class UnmappedVenues extends PureComponent<Props> {
                 </div>
               </div>
               <p>
-                {percentageMapped}% of venues are mapped! Help us locate the remaining venues - all
-                you have to do is choose a venue and mark where it is on the map. If you&apos;re at
-                that exact venue, you can also use your phone GPS to use your current location.
+                {percentageMapped}% ({mappedVenues.length}/{venueList.length}) of all classroom
+                venues are mapped! Help us locate the remaining venues so that NUS is easier to
+                navigate - all you have to do is choose a venue and mark where it is on the map. If
+                you&apos;re at that exact venue, you can also use your phone GPS to use your current
+                location.
               </p>
             </div>
 
