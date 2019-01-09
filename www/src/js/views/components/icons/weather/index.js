@@ -1,5 +1,5 @@
 // @flow
-import Raven from 'raven-js';
+import { captureException } from 'utils/error';
 
 import Cloudy from './cloudy';
 import Rain from './rain';
@@ -55,6 +55,6 @@ export default function getWeatherIcon(description: string) {
     return Wind;
   }
 
-  Raven.captureException(new Error(`Unknown weather description "${description}"`));
+  captureException(new Error('Unknown weather description'), { description });
   return null;
 }

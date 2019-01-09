@@ -1,15 +1,16 @@
 // @flow
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Raven from 'raven-js';
+import * as Sentry from '@sentry/browser';
 
 import RandomKawaii from 'views/components/RandomKawaii';
 import Title from 'views/components/Title';
 import styles from './ErrorPage.scss';
 
 export default function NotFoundPage() {
-  Raven.captureMessage('404 - Page Not Found');
-  const eventId = Raven.lastEventId();
+  Sentry.withScope(() => {
+    Sentry.captureMessage('404 - Page Not Found');
+  });
 
   return (
     <div className={styles.container}>
@@ -25,14 +26,7 @@ export default function NotFoundPage() {
       <p>Are you sure you are at the right page?</p>
 
       <div className={styles.buttons}>
-        <button
-          className="btn btn-outline-primary"
-          onClick={() =>
-            Raven.showReportDialog({
-              eventId,
-            })
-          }
-        >
+        <button className="btn btn-outline-primary" onClick={() => Sentry.showReportDialog()}>
           Something should be here
         </button>
         <Link className="btn btn-primary" to="/">

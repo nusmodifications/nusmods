@@ -15,10 +15,6 @@ type Props = {
 };
 
 export default class ApiError extends PureComponent<Props> {
-  static defaultProps = {
-    showRefresh: true,
-  };
-
   componentDidMount() {
     if (!navigator.onLine) {
       window.addEventListener('online', this.onlineListener);
@@ -57,7 +53,7 @@ export default class ApiError extends PureComponent<Props> {
           {retry && (
             <div>
               <button className="btn btn-primary btn-lg" onClick={retry}>
-                Try again
+                Click to try again
               </button>
             </div>
           )}

@@ -3,10 +3,10 @@
 import React from 'react';
 import { flatten } from 'lodash';
 import { shallow } from 'enzyme';
-import Raven from 'raven-js';
 
 import * as weather from 'apis/weather';
 import { waitFor } from 'test-utils/async';
+import { captureException } from 'utils/error';
 import { DaySection, TodayContainerComponent, type Props } from './TodayContainer';
 import DayEvents from '../DayEvents';
 import styles from '../DayEvents.scss';
@@ -109,15 +109,7 @@ const LESSONS = {
 };
 
 jest.mock('apis/weather');
-
-// Mock axios to stop it from firing API requests
-beforeEach(() => {
-  jest.spyOn(Raven, 'captureException').mockImplementation(() => {});
-});
-
-afterEach(() => {
-  Raven.captureException.mockRestore();
-});
+jest.mock('utils/error');
 
 //     August 2016            September 2016         October 2016
 // Wk Mo Tu We Th Fr Sa | Wk Mo Tu We Th Fr Sa | Wk Mo Tu We Th Fr Sa
@@ -221,8 +213,9 @@ describe(TodayContainerComponent, () => {
     expect(weather.tomorrow).toBeCalled();
     expect(weather.fourDay).toBeCalled();
 
-    await waitFor(() => Raven.captureException.mock.calls.length > 0);
+    // $FlowFixMe
+    await waitFor(() => captureException.mock.calls.length > 0);
 
-    expect(Raven.captureException).toBeCalled();
+    expect(captureException).toBeCalled();
   });
 });

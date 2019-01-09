@@ -1,6 +1,7 @@
 // @flow
 
 import React, { type ComponentType } from 'react';
+import { retryImport } from 'utils/error';
 import type { Props } from './Tooltip';
 
 // Can't use react-loadable for this since children and other props
@@ -10,7 +11,7 @@ export default class AsyncTooltip extends React.PureComponent<Props> {
 
   componentDidMount() {
     if (!AsyncTooltip.Tooltip) {
-      import(/* webpackChunkName: "tooltip" */ './Tooltip').then((module) => {
+      retryImport(() => import(/* webpackChunkName: "tooltip" */ './Tooltip')).then((module) => {
         // Dirty but it works
         AsyncTooltip.Tooltip = module.default;
         this.forceUpdate();

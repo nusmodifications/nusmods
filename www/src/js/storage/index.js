@@ -1,6 +1,6 @@
 // @flow
 import { isString } from 'lodash';
-import Raven from 'raven-js';
+import { captureException } from 'utils/error';
 import getLocalStorage from './localStorage';
 
 // Simple wrapper around localStorage to automagically parse and stringify payloads.
@@ -22,10 +22,8 @@ function setItem(key: string, value: any) {
       // Ignore error
     }
 
-    Raven.captureException(e, {
-      extra: {
-        usedSpace,
-      },
+    captureException(e, {
+      usedSpace,
     });
   }
 }
@@ -39,7 +37,7 @@ function getItem(key: string): any {
     }
     return undefined;
   } catch (e) {
-    Raven.captureException(e);
+    captureException(e);
     return value;
   }
 }
@@ -48,7 +46,7 @@ function removeItem(key: string) {
   try {
     getLocalStorage().removeItem(key);
   } catch (e) {
-    Raven.captureException(e);
+    captureException(e);
   }
 }
 
