@@ -104,7 +104,16 @@ export class PlannerContainerComponent extends PureComponent<Props> {
 
         <DragDropContext onDragEnd={this.onDropEnd}>
           <div className={styles.yearWrapper}>
-            <button onClick={() => this.props.addYear(prevYear)}>Add Previous Year</button>
+            <button
+              className={classnames(
+                styles.addYearButton,
+                styles.addPrevYear,
+                'btn btn-outline-primary',
+              )}
+              onClick={() => this.props.addYear(prevYear)}
+            >
+              Add Previous Year
+            </button>
 
             {sortedModules.map(([year, semesters]) => (
               <PlannerYear
@@ -116,7 +125,12 @@ export class PlannerContainerComponent extends PureComponent<Props> {
                 removeModule={this.props.removeModule}
               />
             ))}
-            <button onClick={() => this.props.addYear(nextYear)}>Add Next Year</button>
+            <button
+              className={classnames(styles.addYearButton, 'btn btn-outline-primary')}
+              onClick={() => this.props.addYear(nextYear)}
+            >
+              Add Next Year
+            </button>
           </div>
 
           <div className={styles.moduleLists}>

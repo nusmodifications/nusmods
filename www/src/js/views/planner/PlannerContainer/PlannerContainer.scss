@@ -17,6 +17,14 @@
   }
 }
 
+.addYearButton {
+  white-space: normal;
+}
+
+.addPrevYear {
+  margin-right: $column-gutter;
+}
+
 .yearWrapper {
   display: flex;
   height: 100%;

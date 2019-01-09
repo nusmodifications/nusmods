@@ -3,7 +3,7 @@
 
 .semester {
   width: $semester-width;
-  margin: 0 0.5rem 2rem 0;
+  margin: 0 $column-gutter 2rem 0;
 }
 
 .moduleList {
