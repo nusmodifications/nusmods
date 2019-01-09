@@ -14,9 +14,11 @@ import ExternalLink from 'views/components/ExternalLink';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import ScrollToTop from 'views/components/ScrollToTop';
 import Title from 'views/components/Title';
+
 import developerIcon from 'img/icons/programmer.svg';
 import contributeIcon from 'img/icons/love.svg';
 import venueIcon from 'img/icons/compass.svg';
+
 import UnmappedVenues from './UnmappedVenues';
 import ContributorList from './ContributorList';
 import styles from './ContributeContainer.scss';
@@ -76,8 +78,7 @@ class ContributeContainer extends Component<Props, State> {
           NUSMods is a 100% student-run, open source project. We rely on the continuous support of
           our valued contributors and the NUS student community. Many students have reported issues,
           suggested improvements, and even contributed code. Join us to make NUS a better place for
-          its students (your friends)! NUSMods is a fast-evolving project, and there are many things
-          to be done. Help us help you!
+          its students and your friends!
         </p>
 
         <div className={classnames('row no-gutters', styles.actionContainer)}>
@@ -149,11 +150,18 @@ class ContributeContainer extends Component<Props, State> {
         {this.state.contributors && (
           <div>
             <p>
-              Here are our top NUSMods contributors, you could be next ;) View all contributors{' '}
-              <Link to="/contributors">here</Link>.
+              Here are our top NUSMods contributors. Previous maintainers have gone on to work at
+              Google, Facebook, and other prestigious technology companies. <strong>You</strong>{' '}
+              could be next!
             </p>
 
             <ContributorList contributors={this.state.contributors.slice(0, 12)} />
+
+            <p className="text-right">
+              <Link to="/contributors" className="btn btn-outline-primary">
+                View all contributors →
+              </Link>
+            </p>
           </div>
         )}
 
