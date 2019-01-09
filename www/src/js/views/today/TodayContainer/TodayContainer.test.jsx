@@ -7,9 +7,11 @@ import { shallow } from 'enzyme';
 import * as weather from 'apis/weather';
 import { waitFor } from 'test-utils/async';
 import { captureException } from 'utils/error';
-import { DaySection, TodayContainerComponent, type Props } from './TodayContainer';
+import { type Props, DaySection, TodayContainerComponent, mapStateToProps } from './TodayContainer';
 import DayEvents from '../DayEvents';
 import styles from '../DayEvents.scss';
+
+/* eslint-disable no-useless-computed-key */
 
 const COLORS = {
   CS3216: 1,
@@ -217,5 +219,36 @@ describe(TodayContainerComponent, () => {
     await waitFor(() => captureException.mock.calls.length > 0);
 
     expect(captureException).toBeCalled();
+  });
+});
+
+describe(mapStateToProps, () => {
+  test('should use correct semester', () => {
+    // On week -1 of sem 2 the semester should be 2, not 1
+    const ownProps: any = {
+      // Week -1 of sem 2 of AY2018/2019
+      currentTime: new Date('2019-01-09T00:00:00.000Z'),
+    };
+
+    const state: any = {
+      moduleBank: { modules: {} },
+      timetables: {
+        lessons: {
+          [1]: {
+            CS3216: {},
+          },
+          [2]: {
+            CS1010S: {},
+          },
+        },
+        colors: {
+          [1]: COLORS,
+          [2]: COLORS,
+        },
+      },
+    };
+
+    // Should return sem 2 timetable, not sem 1
+    expect(mapStateToProps(state, ownProps).timetableWithLessons).toHaveProperty('CS1010S');
   });
 });
