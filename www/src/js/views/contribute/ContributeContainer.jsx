@@ -3,18 +3,19 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { toggleFeedback } from 'actions/app';
-import config from 'config';
+import { Link } from 'react-router-dom';
 
 import type { Contributor } from 'types/contributor';
 
+import config from 'config';
 import getContributors from 'apis/contributor';
-
 import { Mail, Layers, GitHub, Zap, Users } from 'views/components/icons';
 import ExternalLink from 'views/components/ExternalLink';
 import Loader from 'views/components/LoadingSpinner';
-import UnmappedVenues from 'views/contribute/UnmappedVenues';
+import StaticPage from 'views/static/StaticPage';
 
-import StaticPage from '../static/StaticPage';
+import UnmappedVenues from './UnmappedVenues';
+import ContributorList from './ContributorList';
 import styles from './ContributeContainer.scss';
 
 type Props = {
@@ -69,8 +70,6 @@ class ContributeContainer extends Component<Props, State> {
           to be done. Help us help you!
         </p>
 
-        {/* <h4>Here&apos;s how you can help</h4> */}
-
         <div className={classnames('row no-gutters', styles.actionContainer)}>
           <div className={classnames('col-lg', styles.btnContainer)}>
             <button
@@ -123,12 +122,12 @@ class ContributeContainer extends Component<Props, State> {
         </div>
 
         <hr />
-        <br />
+
         <h3>Locate the venues</h3>
         <UnmappedVenues />
 
         <hr />
-        <br />
+
         <h3>Contributors</h3>
 
         {this.state.isLoading && <Loader />}
@@ -142,35 +141,11 @@ class ContributeContainer extends Component<Props, State> {
         {this.state.contributors && (
           <div>
             <p>
-              Here are our top NUSMods contributors, you could be next ;) View all contributors
-              <a href="/contributors"> here</a>.
+              Here are our top NUSMods contributors, you could be next ;) View all contributors{' '}
+              <Link to="/contributors">here</Link>.
             </p>
 
-            <div className="row">
-              {this.state.contributors.slice(0, 12).map((contributor) => (
-                <div className="col-md-2 col-6 text-center" key={contributor.id}>
-                  <ExternalLink href={contributor.html_url}>
-                    <img
-                      src={contributor.avatar_url}
-                      alt={`${contributor.login} thumbnail`}
-                      className={classnames(styles.thumbnail, 'img-fluid img-thumbnail')}
-                    />
-                    <span className={styles.contributorUsername}>{contributor.login}</span>
-                  </ExternalLink>
-                  <p>
-                    <ExternalLink
-                      className="text-muted"
-                      href={`https://github.com/nusmodifications/nusmods/commits?author=${
-                        contributor.login
-                      }`}
-                    >
-                      {contributor.contributions} commit
-                      {contributor.contributions !== 1 && 's'}
-                    </ExternalLink>
-                  </p>
-                </div>
-              ))}
-            </div>
+            <ContributorList contributors={this.state.contributors.slice(0, 12)} />
           </div>
         )}
       </StaticPage>
