@@ -1,9 +1,10 @@
 // @flow
 
 import React from 'react';
-import ExternalLink from 'views/contribute/ContributeContainer';
 import classnames from 'classnames';
+
 import type { Contributor } from 'types/contributor';
+import ExternalLink from 'views/components/ExternalLink';
 import styles from './ContributorList.scss';
 
 type Props = {

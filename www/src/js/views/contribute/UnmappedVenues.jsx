@@ -1,24 +1,26 @@
 // @flow
-import type { VenueList as Venues } from 'types/venues';
+import type { VenueList as Venues, VenueLocationMap } from 'types/venues';
 import type { State } from 'reducers';
 
 import React, { PureComponent } from 'react';
+import Loadable, { type LoadingProps } from 'react-loadable';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import { has, size, partition } from 'lodash';
+import { has, partition } from 'lodash';
 
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import VenueList from 'views/venues/VenueList';
-import venueLocations from 'data/venues.json';
+import ApiError from 'views/errors/ApiError';
 import styles from './UnmappedVenues.scss';
 
 type Props = {
   venueList: Venues,
+  venueLocations: VenueLocationMap,
 };
 
 class UnmappedVenues extends PureComponent<Props> {
   render() {
-    const { venueList } = this.props;
+    const { venueList, venueLocations } = this.props;
     const [mappedVenues, unmappedVenues] = partition(venueList, (venue) =>
       has(venueLocations, venue),
     );
@@ -58,9 +60,24 @@ class UnmappedVenues extends PureComponent<Props> {
   }
 }
 
-export default connect(
-  (state: State) => ({
-    venueList: state.venueBank.venueList,
-  }),
-  null,
-)(UnmappedVenues);
+const AsyncUnmappedVenues = Loadable.Map({
+  loader: {
+    venueLocations: () => import(/* webpackChunkName: "venue" */ 'data/venues.json'),
+  },
+  loading: (props: LoadingProps) => {
+    if (props.error) {
+      return <ApiError dataName="venue locations" retry={props.retry} />;
+    } else if (props.pastDelay) {
+      return <LoadingSpinner />;
+    }
+
+    return null;
+  },
+  render(loaded, props) {
+    return <UnmappedVenues venueLocations={loaded.venueLocations.default} {...props} />;
+  },
+});
+
+export default connect((state: State) => ({
+  venueList: state.venueBank.venueList,
+}))(AsyncUnmappedVenues);
