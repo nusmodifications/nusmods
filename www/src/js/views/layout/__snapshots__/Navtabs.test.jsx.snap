@@ -70,9 +70,11 @@ exports[`NavtabsComponent renders into nav element 1`] = `
       Settings
     </span>
   </NavLink>
-  <a
+  <NavLink
+    activeClassName="linkActive"
+    ariaCurrent="page"
     className="link hiddenOnMobile"
-    href="/contribute"
+    to="/contribute"
   >
     <Star
       color="currentColor"
@@ -83,7 +85,7 @@ exports[`NavtabsComponent renders into nav element 1`] = `
     >
       Contribute
     </span>
-  </a>
+  </NavLink>
   <div
     className="divider"
   />
