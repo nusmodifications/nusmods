@@ -2,7 +2,7 @@
 
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { sortBy, toPairs, min, max, each } from 'lodash';
+import { flatMap, sortBy, toPairs, min, max } from 'lodash';
 import { DragDropContext, Droppable, type OnDragEndResponder } from 'react-beautiful-dnd';
 import classnames from 'classnames';
 
@@ -28,6 +28,7 @@ import { fetchModule } from 'actions/moduleBank';
 import { getAcadYearModules, getExemptions, getModuleInfo, getPlanToTake } from 'selectors/planner';
 import { Trash } from 'views/components/icons';
 import Title from 'views/components/Title';
+import LoadingSpinner from 'views/components/LoadingSpinner';
 import PlannerSemester from '../PlannerSemester';
 import PlannerYear from '../PlannerYear';
 import styles from './PlannerContainer.scss';
@@ -46,14 +47,23 @@ export type Props = {|
   +removeModule: (moduleCode: ModuleCode) => void,
 |};
 
+type State = {|
+  +loading: boolean,
+|};
+
 const TRASH_ID = 'trash';
 
-export class PlannerContainerComponent extends PureComponent<Props> {
+export class PlannerContainerComponent extends PureComponent<Props, State> {
+  state = {
+    loading: true,
+  };
+
   componentDidMount() {
-    each(this.props.plannerModules, (year) =>
-      each(year, (semester) =>
-        semester.forEach((moduleCode) => this.props.fetchModule(moduleCode)),
-      ),
+    // TODO: Handle error
+    const modules = flatMap(this.props.plannerModules, flatMap);
+    Promise.all(modules.map((moduleCode) => this.props.fetchModule(moduleCode))).then(
+      () => this.setState({ loading: false }),
+      () => this.setState({ loading: false }),
     );
   }
 
@@ -85,6 +95,12 @@ export class PlannerContainerComponent extends PureComponent<Props> {
   };
 
   render() {
+    // Don't render anything on initial load because every fetched module will
+    // cause a re-render, which kills performance
+    if (this.state.loading) {
+      return <LoadingSpinner />;
+    }
+
     // Sort acad years since acad years may not be inserted in display order
     const sortedModules: Array<[string, { [Semester]: ModuleCode[] }]> = sortBy(
       toPairs(this.props.plannerModules),
@@ -98,6 +114,7 @@ export class PlannerContainerComponent extends PureComponent<Props> {
     return (
       <div className={styles.pageContainer}>
         <Title>Module Planner</Title>
+
         <header className={styles.header}>
           <h1>Module Planner</h1>
         </header>
