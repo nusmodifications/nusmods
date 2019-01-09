@@ -17,18 +17,23 @@ import { modulePage } from 'views/routes/paths';
 import styles from './PlannerModule.scss';
 
 type Props = {|
+  // Module information
   +moduleCode: ModuleCode,
   +moduleTitle: ?ModuleTitle,
   +moduleCredit: ?number,
   +examDate: ?string,
-
-  +index: number,
-
   +conflicts: ?Array<TreeFragment>,
 
+  // For draggable
+  +index: number,
+
+  // Actions
   +removeModule: () => void,
 |};
 
+/**
+ * Component for a single module on the planner
+ */
 export default class PlannerModule extends PureComponent<Props> {
   onMenuSelect = (item: string) => {
     this.menuItems.forEach(([menuItem, onSelect]) => {
@@ -38,6 +43,7 @@ export default class PlannerModule extends PureComponent<Props> {
     });
   };
 
+  // List of actions in the module's dropdown menu
   menuItems = [['Remove', this.props.removeModule]];
 
   renderMeta() {

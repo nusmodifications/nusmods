@@ -42,6 +42,9 @@ function renderSemesterMeta(modulesWithInfo: Array<[ModuleCode, ?ModuleInfo]>) {
   );
 }
 
+/**
+ * Component for a single column of modules for a single semester
+ */
 export default class PlannerSemester extends PureComponent<Props> {
   static defaultProps = {
     showConflicts: true,

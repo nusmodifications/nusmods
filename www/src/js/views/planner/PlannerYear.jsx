@@ -27,6 +27,7 @@ type State = {|
 
 export default class PlannerYear extends PureComponent<Props, State> {
   state = {
+    // Always display Special Terms I and II if either one has modules
     showSpecialSem: Boolean(this.props.semesters[3]) || Boolean(this.props.semesters[4]),
   };
 
@@ -34,8 +35,8 @@ export default class PlannerYear extends PureComponent<Props, State> {
     const { year, semesters } = this.props;
     const { showSpecialSem } = this.state;
 
-    // If showSpecialSem is enabled, we add in blank sem 3 and 4
-    // for the user to drop modules onto
+    // If showSpecialSem is enabled, we add in blank sem 3 and 4 placeholders for the
+    // user to drop modules onto
     const specialSem = showSpecialSem
       ? {
           /* eslint-disable no-useless-computed-key */
@@ -45,6 +46,9 @@ export default class PlannerYear extends PureComponent<Props, State> {
         }
       : {};
 
+    // Only show the toggle if special terms are currently empty
+    const showSpecialSemToggle = !semesters[3] && !semesters[4];
+
     const sortedSemesters = sortBy(
       toPairs({
         ...specialSem,
@@ -52,8 +56,6 @@ export default class PlannerYear extends PureComponent<Props, State> {
       }),
       ([semester]) => semester,
     );
-
-    const showSpecialSemToggle = !semesters[3] && !semesters[4];
 
     return (
       <section
@@ -63,6 +65,7 @@ export default class PlannerYear extends PureComponent<Props, State> {
         })}
       >
         <h2 className={styles.yearHeader}>{year}</h2>
+
         <div className={styles.semesters}>
           {sortedSemesters.map(([semester, modules]) => (
             <div key={semester}>
@@ -78,6 +81,7 @@ export default class PlannerYear extends PureComponent<Props, State> {
             </div>
           ))}
         </div>
+
         {showSpecialSemToggle && (
           <p className={styles.specialSemToggle}>
             <button
