@@ -65,8 +65,8 @@ class SettingsContainer extends Component<Props> {
     return (
       <div>
         <h4 id="night-mode">Night Mode</h4>
-        <div className={classnames(styles.toggleRow, 'row')}>
-          <div className={classnames(styles.toggleDescription, 'col-sm-7')}>
+        <div className={styles.toggleRow}>
+          <div className={styles.toggleDescription}>
             <p>
               Night mode turns the light surfaces of the page dark, creating an experience ideal for
               the dark. Try it out!
@@ -75,7 +75,7 @@ class SettingsContainer extends Component<Props> {
               Protip: Press <kbd>X</kbd> to toggle modes anywhere on NUSMods.
             </p>
           </div>
-          <div className={classnames('col-sm-4 offset-sm-1', styles.toggle)}>
+          <div className={styles.toggle}>
             <ModeSelect mode={this.props.mode} onSelectMode={this.props.selectMode} />
           </div>
         </div>
@@ -90,8 +90,8 @@ class SettingsContainer extends Component<Props> {
 
     return (
       <Fragment>
-        <div className={classnames(styles.toggleRow, 'row')}>
-          <div className={classnames(styles.toggleDescription, 'col-sm-7')}>
+        <div className={styles.toggleRow}>
+          <div className={styles.toggleDescription}>
             <p>
               {isSnoozed
                 ? 'You have snoozed reminders until the end of this round'
@@ -112,7 +112,6 @@ class SettingsContainer extends Component<Props> {
             </button>
           </div>
         </div>
-        <hr />
       </Fragment>
     );
   }
@@ -133,11 +132,12 @@ class SettingsContainer extends Component<Props> {
         </Online>
 
         <h1 className={styles.title}>Settings</h1>
+        <hr />
 
         {/* TODO: Finish the CORS bidding stats filter feature and re-enable this
       <h4>New Student</h4>
-      <div className={classnames(styles.toggleRow, 'row')}>
-        <div className={classnames(styles.toggleDescription, 'col-sm-7')}>
+      <div className={styles.toggleRow}>
+        <div className={styles.toggleDescription}>
           <p>For certain modules, places are reserved for new students in CORS Bidding Rounds
                 1 and 2. Enabling this will highlight those numbers and rounds.</p>
         </div>
@@ -198,12 +198,12 @@ class SettingsContainer extends Component<Props> {
           <CorsNotification hideCloseButton />
         </div>
 
-        <div className={classnames(styles.toggleRow, 'row')}>
-          <div className={classnames(styles.toggleDescription, 'col-sm-7')}>
+        <div className={styles.toggleRow}>
+          <div className={styles.toggleDescription}>
             <p>You can get a reminder about when CORS bidding starts with a small notification.</p>
             {corsText && <p>{corsText}</p>}
           </div>
-          <div className={classnames('col-sm-4 offset-sm-1', styles.toggle)}>
+          <div className={styles.toggle}>
             <Toggle
               isOn={corsNotification.enabled}
               onChange={this.props.toggleCorsNotificationGlobally}
@@ -211,9 +211,9 @@ class SettingsContainer extends Component<Props> {
           </div>
         </div>
 
-        <hr />
-
         {corsNotification.enabled && corsRound && this.renderCorsNotitificationOption(corsRound)}
+
+        <hr />
 
         <BetaToggle
           betaTester={this.props.betaTester}

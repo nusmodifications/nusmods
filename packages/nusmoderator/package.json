@@ -45,13 +45,13 @@
     "babel-eslint": "8.2.2",
     "babel-jest": "22.4.1",
     "babel-preset-env": "1.7.0",
-    "documentation": "6.1.0",
+    "documentation": "6.3.3",
     "eslint": "4.19.1",
     "eslint-config-airbnb-base": "12.1.0",
     "eslint-plugin-flowtype": "2.46.1",
     "eslint-plugin-import": "2.9.0",
     "jest": "22.4.2",
-    "microbundle": "0.6.0",
+    "microbundle": "0.9.0",
     "rimraf": "2.6.2"
   }
 }

@@ -6,7 +6,6 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import update from 'immutability-helper';
-import Raven from 'raven-js';
 import { each, mapValues, values } from 'lodash';
 
 import type { Module } from 'types/modules';
@@ -47,6 +46,7 @@ import FilterGroup from 'utils/filters/FilterGroup';
 import HistoryDebouncer from 'utils/HistoryDebouncer';
 import { defer } from 'utils/react';
 import { breakpointUp, queryMatch } from 'utils/css';
+import { captureException } from 'utils/error';
 import styles from './ModuleFinderContainer.scss';
 
 type Props = {
@@ -237,7 +237,7 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
         });
       })
       .catch((error) => {
-        Raven.captureException(error);
+        captureException(error);
         this.setState({ error });
       });
   };

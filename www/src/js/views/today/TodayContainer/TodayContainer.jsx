@@ -4,7 +4,6 @@ import React, { Fragment, PureComponent, type Node } from 'react';
 import { connect } from 'react-redux';
 import { minBy, range, get } from 'lodash';
 import NUSModerator, { type AcadWeekInfo } from 'nusmoderator';
-import Raven from 'raven-js';
 import { addDays, differenceInCalendarDays, isSameDay, isWeekend } from 'date-fns';
 
 import type { ColoredLesson, Lesson } from 'types/modules';
@@ -20,6 +19,7 @@ import {
   isLessonOngoing,
   timetableLessonsArray,
 } from 'utils/timetables';
+import { captureException } from 'utils/error';
 import Title from 'views/components/Title';
 import CorsNotification from 'views/components/cors-info/CorsNotification';
 import Announcements from 'views/components/notfications/Announcements';
@@ -111,12 +111,12 @@ export class TodayContainerComponent extends PureComponent<Props, State> {
     weatherAPI
       .twoHour()
       .then((weather) => this.setState({ weather: { ...this.state.weather, '0': weather } }))
-      .catch((e) => Raven.captureException(e));
+      .catch(captureException);
 
     weatherAPI
       .tomorrow()
       .then((weather) => this.setState({ weather: { ...this.state.weather, '1': weather } }))
-      .catch((e) => Raven.captureException(e));
+      .catch(captureException);
 
     weatherAPI
       .fourDay()
@@ -129,7 +129,7 @@ export class TodayContainerComponent extends PureComponent<Props, State> {
           }
         });
       })
-      .catch((e) => Raven.captureException(e));
+      .catch(captureException);
   }
 
   onOpenLesson = (date: Date, lesson: Lesson) => {
