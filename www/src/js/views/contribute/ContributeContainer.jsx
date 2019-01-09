@@ -164,6 +164,11 @@ class ContributeContainer extends Component<Props, State> {
           <h2>Locate Venues</h2>
         </header>
         <UnmappedVenues />
+
+        <p className={styles.attribution}>
+          Icon made by <ExternalLink href="https://www.freepik.com/">Freepik</ExternalLink> from{' '}
+          <ExternalLink href="https://www.flaticon.com/">www.flaticon.com</ExternalLink>
+        </p>
       </div>
     );
   }
