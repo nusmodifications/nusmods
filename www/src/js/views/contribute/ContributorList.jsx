@@ -31,7 +31,7 @@ export default function ContributorList(props: Props) {
                 contributor.login
               }`}
             >
-              {contributor.contributions} {contributor.contributions === 1 ? 'commit' : 'commit'}
+              {contributor.contributions} {contributor.contributions === 1 ? 'commit' : 'commits'}
             </ExternalLink>
           </p>
         </div>

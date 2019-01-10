@@ -25,7 +25,7 @@ class UnmappedVenues extends PureComponent<Props> {
       venueList,
       (venue) => venueLocations[venue] && venueLocations[venue].location,
     );
-    const percentageMapped = String(((mappedVenues.length / venueList.length) * 100).toFixed());
+    const percentageMapped = ((mappedVenues.length / venueList.length) * 100).toFixed();
 
     return (
       <div>
