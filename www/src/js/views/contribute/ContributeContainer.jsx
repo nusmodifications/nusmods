@@ -2,19 +2,28 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import { toggleFeedback } from 'actions/app';
 import { Link } from 'react-router-dom';
+import { flatMap } from 'lodash';
 
 import type { Contributor } from 'types/contributor';
+import type { ModuleCode } from 'types/modules';
 
-import config from 'config';
+import { toggleFeedback } from 'actions/app';
+import { toggleBetaTesting } from 'actions/settings';
 import getContributors from 'apis/contributor';
-import { Mail, Layers, GitHub, Zap, Users } from 'views/components/icons';
+import { modulePage } from 'views/routes/paths';
+import { Zap } from 'views/components/icons';
 import ExternalLink from 'views/components/ExternalLink';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import ScrollToTop from 'views/components/ScrollToTop';
 import Title from 'views/components/Title';
+import { FeedbackButtons } from 'views/components/FeedbackModal';
 
+import reviewIcon from 'img/icons/review.svg';
+import wrenchIcon from 'img/icons/wrench.svg';
+import chatIcon from 'img/icons/chat.svg';
+import charityIcon from 'img/icons/charity.svg';
+import bugReportIcon from 'img/icons/bug-report.svg';
 import developerIcon from 'img/icons/programmer.svg';
 import contributeIcon from 'img/icons/love.svg';
 import venueIcon from 'img/icons/compass.svg';
@@ -24,7 +33,11 @@ import ContributorList from './ContributorList';
 import styles from './ContributeContainer.scss';
 
 type Props = {
-  toggleFeedback: Function,
+  modules: ModuleCode[],
+  beta: boolean,
+
+  toggleFeedback: () => void,
+  toggleBetaTesting: () => void,
 };
 
 type State = {
@@ -70,8 +83,8 @@ class ContributeContainer extends Component<Props, State> {
         <Title>Contribute</Title>
 
         <header>
-          <img src={contributeIcon} alt="" />
-          <h1>Help us help you!</h1>
+          <img className={styles.topImage} src={contributeIcon} alt="" />
+          <h1>Help Us Help You!</h1>
         </header>
 
         <p>
@@ -81,97 +94,206 @@ class ContributeContainer extends Component<Props, State> {
           its students and your friends!
         </p>
 
-        <div className={classnames('row no-gutters', styles.actionContainer)}>
-          <div className={classnames('col-sm', styles.btnContainer)}>
-            <button
-              onClick={this.props.toggleFeedback}
-              className={classnames(styles.bigButton, 'btn btn-outline-primary btn-block')}
-            >
-              <Mail />
-              We need feedback!
-            </button>
-          </div>
-          <div className={classnames('col-sm', styles.btnContainer)}>
-            <ExternalLink
-              href={config.contact.messenger}
-              className={classnames(styles.bigButton, 'btn btn-outline-primary btn-block')}
-            >
-              <Layers />
-              We need designers!
-            </ExternalLink>
-          </div>
-          <div className={classnames('col-sm', styles.btnContainer)}>
-            <ExternalLink
-              href={config.contact.githubRepo}
-              className={classnames(styles.bigButton, 'btn btn-outline-primary btn-block')}
-            >
-              <GitHub />
-              We need code!
-            </ExternalLink>
-          </div>
-        </div>
-
-        <div className={classnames('row no-gutters', styles.actionContainer)}>
-          <div className={classnames('col-sm', styles.btnContainer)}>
-            <ExternalLink
-              href="https://github.com/nusmodifications/nusmods#backers"
-              className="btn btn-outline-primary btn-svg btn-block"
-            >
-              <Zap className="svg" />
-              We need backers!
-            </ExternalLink>
-          </div>
-          <div className={classnames('col-sm', styles.btnContainer)}>
-            <ExternalLink
-              href="https://github.com/nusmodifications/nusmods#sponsors"
-              className="btn btn-outline-primary btn-svg btn-block"
-            >
-              <Users className="svg" />
-              We need sponsors!
-            </ExternalLink>
-          </div>
-        </div>
-
-        <hr />
-
         <header>
-          <img src={developerIcon} alt="" />
-          <h2>Contributors</h2>
+          <h2>For Everyone</h2>
         </header>
 
-        {this.state.isLoading && <LoadingSpinner />}
-        {this.state.isError && (
-          <div className="alert alert-danger">
-            <strong>Something went wrong!</strong>
-            {this.state.errorMessage}
-          </div>
-        )}
+        <section>
+          <header>
+            <img src={reviewIcon} alt="" />
+            <h3>Write Module Reviews</h3>
+          </header>
 
-        {this.state.contributors && (
-          <div>
-            <p>
-              Here are our top NUSMods contributors. Previous maintainers have gone on to work at
-              Google, Facebook, and other prestigious technology companies. <strong>You</strong>{' '}
-              could be next!
-            </p>
+          <p>
+            Help your fellow students make better choices when planning their module by leaving your
+            honest opinions on modules you have taken before. Here are all of the modules you have
+            taken this year:
+          </p>
 
-            <ContributorList contributors={this.state.contributors.slice(0, 12)} />
-
-            <p className="text-right">
-              <Link to="/contributors" className="btn btn-outline-primary">
-                View all contributors →
+          <div className={styles.reviewWrapper}>
+            {this.props.modules.map((moduleCode) => (
+              <Link
+                key={moduleCode}
+                className={classnames(styles.reviewButton, 'btn btn-outline-primary')}
+                to={modulePage(moduleCode, '')}
+              >
+                Review <span>{moduleCode}</span>
               </Link>
-            </p>
+            ))}
           </div>
-        )}
+        </section>
 
-        <hr />
+        <section>
+          <header>
+            <img src={venueIcon} alt="" />
+            <h3>Map the School</h3>
+          </header>
+
+          <p>
+            We are mapping venues found on timetables to help students, especially freshmen students
+            get around the school.
+          </p>
+
+          <UnmappedVenues />
+        </section>
+
+        <section>
+          <header>
+            <img src={wrenchIcon} alt="" />
+            <h3>Test Drive NUSMods Beta</h3>
+          </header>
+
+          <p>
+            We&apos;re constantly updating NUSMods with new and exciting features, and you can use
+            them before everyone else by participating in NUSMods Beta. Help find bugs and provide
+            feedback to shape the future of NUSMods.
+          </p>
+
+          {this.props.beta ? (
+            <p className="text-center">
+              <button
+                className={classnames(styles.betaButton, 'btn btn-lg btn-outline-primary')}
+                onClick={this.props.toggleBetaTesting}
+              >
+                <Zap />
+                Join NUSMods Beta
+              </button>
+            </p>
+          ) : (
+            <>
+              <p>You are already in the beta program.</p>
+              <p className="text-center">
+                <button
+                  className="btn btn-lg btn-outline-primary"
+                  onClick={this.props.toggleFeedback}
+                >
+                  Give Feedback
+                </button>
+              </p>
+            </>
+          )}
+        </section>
+
+        <section>
+          <header>
+            <img src={chatIcon} alt="" />
+            <h3>Give Us Feedback</h3>
+          </header>
+
+          <p>
+            We are always open to feedback. If you see something that doesn&apos;t seem quite right,
+            or have a new idea for making NUSMods better, you can use these links below to reach us.
+          </p>
+
+          <FeedbackButtons />
+        </section>
+
+        <section>
+          <header>
+            <img src={charityIcon} alt="" />
+            <h3>Donate</h3>
+          </header>
+          <p>
+            NUSMods runs on servers that costs US$20 (about S$27) every month to run. Currently we
+            fund this out of our own pockets, but you can help defray this cost as well as view our
+            expenses on{' '}
+            <ExternalLink href="https://opencollective.com">OpenCollective</ExternalLink>.
+          </p>
+
+          <p>
+            <ExternalLink href="https://opencollective.com/nusmods#backers">
+              <img
+                alt="Avatar of our backers"
+                src="https://opencollective.com/nusmods/backers.svg?width=610"
+              />
+            </ExternalLink>
+          </p>
+
+          <p className="text-center">
+            <ExternalLink
+              href="https://opencollective.com/nusmods"
+              className="btn btn-lg btn-outline-primary"
+            >
+              Donate to NUSMods
+            </ExternalLink>
+          </p>
+        </section>
 
         <header>
-          <img src={venueIcon} alt="" />
-          <h2>Locate Venues</h2>
+          <h2>For Developers & Designers</h2>
         </header>
-        <UnmappedVenues />
+
+        <section>
+          <header>
+            <img src={bugReportIcon} alt="" />
+            <h3>File Bug Reports and Feature Requests</h3>
+          </header>
+
+          <p>
+            If you have an account on GitHub, you can file bug reports and feature request directly
+            using GitHub issues.
+          </p>
+
+          <div className={styles.githubLinks}>
+            <ExternalLink
+              className="btn btn-outline-primary"
+              href="https://github.com/nusmodifications/nusmods/issues/new?template=Bug_report.md"
+            >
+              <h4>Bug Report</h4>
+              <p>Create a report to help reproduce and fix the issue</p>
+            </ExternalLink>
+            <ExternalLink
+              className="btn btn-outline-primary"
+              href="https://github.com/nusmodifications/nusmods/issues/new?template=Feature_request.md"
+            >
+              <h4>Feature Request</h4>
+              <p>Suggest a new feature or enhancement for the project</p>
+            </ExternalLink>
+          </div>
+        </section>
+
+        <section>
+          <header>
+            <img src={developerIcon} alt="" />
+            <h3>Contribute Code and Design</h3>
+          </header>
+
+          <p>
+            You can also help directly contribute code and design. We welcome all contributions, big
+            and small. To get your feet wet, we have a list of{' '}
+            <ExternalLink href="https://github.com/nusmodifications/nusmods/issues?utf8=%E2%9C%93&q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22+-label%3ATaken">
+              good first issues
+            </ExternalLink>{' '}
+            suitable for first time contributors of various skill levels.
+          </p>
+
+          {this.state.isLoading && <LoadingSpinner />}
+          {this.state.isError && (
+            <div className="alert alert-danger">
+              <strong>Something went wrong!</strong> {this.state.errorMessage}
+            </div>
+          )}
+
+          {this.state.contributors && (
+            <div>
+              <p>
+                Here are our top NUSMods contributors. Previous maintainers have gone on to work at
+                Google, Facebook, and other prestigious technology companies. <strong>You</strong>{' '}
+                could be next!
+              </p>
+
+              <ContributorList contributors={this.state.contributors.slice(0, 12)} />
+
+              <p className="text-right">
+                <Link to="/contributors" className="btn btn-outline-primary">
+                  View all contributors →
+                </Link>
+              </p>
+            </div>
+          )}
+        </section>
+
+        <hr />
 
         <p className={styles.attribution}>
           Icon made by <ExternalLink href="https://www.freepik.com/">Freepik</ExternalLink> from{' '}
@@ -183,8 +305,15 @@ class ContributeContainer extends Component<Props, State> {
 }
 
 const ConnectedContributeContainer = connect(
-  null,
-  { toggleFeedback },
+  (state) => {
+    const { lessons } = state.timetables;
+
+    return {
+      beta: state.settings.beta,
+      modules: flatMap(lessons, Object.keys),
+    };
+  },
+  { toggleFeedback, toggleBetaTesting },
 )(ContributeContainer);
 
 export default ConnectedContributeContainer;

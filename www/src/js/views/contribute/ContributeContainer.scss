@@ -9,19 +9,33 @@
 
     img {
       display: inline-block;
-      max-width: 8rem;
+      max-width: 6rem;
       margin: 0 0.5rem 1rem;
+
+      &.topImage {
+        max-width: 12rem;
+      }
     }
 
     h1 {
+      margin-bottom: 1rem;
       font-weight: bold;
       font-size: 2rem;
     }
 
     h2 {
+      margin-top: 3rem;
       font-weight: bold;
-      font-size: 1.5rem;
+      font-size: 1.9rem;
     }
+
+    h3 {
+      font-size: 1.6rem;
+    }
+  }
+
+  section {
+    margin-bottom: 8rem;
   }
 
   hr {
@@ -29,24 +43,41 @@
   }
 }
 
-.btnContainer {
-  margin-bottom: 1rem;
+.reviewWrapper {
+  display: grid;
+  grid-gap: 0.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
+}
 
-  &:last-child {
-    margin-right: 0;
-  }
+.reviewButton {
+  white-space: normal;
 
-  @include media-breakpoint-up(sm) {
-    margin-right: 1rem;
+  span {
+    display: block;
+    font-size: 1.5rem;
   }
 }
 
-.bigButton {
+.githubLinks {
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+
+  h4 {
+    margin: 1rem 0 0.5rem;
+  }
+
+  :global(.btn) {
+    white-space: normal;
+  }
+}
+
+.betaButton {
   svg {
     display: block;
-    width: 2.5rem;
-    height: 2.5rem;
-    margin: 1rem auto;
+    width: 3rem;
+    height: 3rem;
+    margin: 0.5rem auto;
   }
 }
 

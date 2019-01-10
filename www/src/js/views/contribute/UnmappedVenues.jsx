@@ -1,6 +1,6 @@
 // @flow
 import type { VenueList as Venues, VenueLocationMap } from 'types/venues';
-import type { State } from 'reducers';
+import type { State as StoreState } from 'reducers';
 
 import React, { PureComponent } from 'react';
 import Loadable, { type LoadingProps } from 'react-loadable';
@@ -18,9 +18,19 @@ type Props = {
   venueLocations: VenueLocationMap,
 };
 
-class UnmappedVenues extends PureComponent<Props> {
+type State = {|
+  +expanded: boolean,
+|};
+
+class UnmappedVenues extends PureComponent<Props, State> {
+  state = {
+    expanded: false,
+  };
+
   render() {
     const { venueList, venueLocations } = this.props;
+    const { expanded } = this.state;
+
     const [mappedVenues, unmappedVenues] = partition(
       venueList,
       (venue) => venueLocations[venue] && venueLocations[venue].location,
@@ -57,7 +67,24 @@ class UnmappedVenues extends PureComponent<Props> {
               </p>
             </div>
 
-            <VenueList venues={unmappedVenues} selectedVenue={null} />
+            <div
+              className={classnames({
+                [styles.hidden]: !expanded,
+              })}
+            >
+              <VenueList venues={unmappedVenues} selectedVenue={null} />
+            </div>
+            {!expanded && (
+              <p className={styles.showMore}>
+                <button
+                  className="btn btn-outline-primary"
+                  type="button"
+                  onClick={() => this.setState({ expanded: true })}
+                >
+                  Show More
+                </button>
+              </p>
+            )}
           </div>
         ) : (
           <LoadingSpinner />
@@ -85,6 +112,6 @@ const AsyncUnmappedVenues = Loadable.Map({
   },
 });
 
-export default connect((state: State) => ({
+export default connect((state: StoreState) => ({
   venueList: state.venueBank.venueList,
 }))(AsyncUnmappedVenues);
