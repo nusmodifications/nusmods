@@ -6,7 +6,7 @@ import React, { PureComponent } from 'react';
 import Loadable, { type LoadingProps } from 'react-loadable';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import { has, partition } from 'lodash';
+import { partition } from 'lodash';
 
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import VenueList from 'views/venues/VenueList';
@@ -21,8 +21,9 @@ type Props = {
 class UnmappedVenues extends PureComponent<Props> {
   render() {
     const { venueList, venueLocations } = this.props;
-    const [mappedVenues, unmappedVenues] = partition(venueList, (venue) =>
-      has(venueLocations, venue),
+    const [mappedVenues, unmappedVenues] = partition(
+      venueList,
+      (venue) => venueLocations[venue] && venueLocations[venue].location,
     );
     const percentageMapped = String(((mappedVenues.length / venueList.length) * 100).toFixed());
 
