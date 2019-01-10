@@ -35,7 +35,7 @@
   }
 
   section {
-    margin-bottom: 8rem;
+    margin-bottom: 16rem;
   }
 
   hr {
@@ -46,29 +46,40 @@
 .reviewWrapper {
   display: grid;
   grid-gap: 0.5rem;
-  grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
-}
+  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
 
-.reviewButton {
-  white-space: normal;
+  .reviewButton {
+    line-height: 1.25;
+    white-space: normal;
 
-  span {
-    display: block;
-    font-size: 1.5rem;
+    span {
+      display: block;
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
   }
 }
 
-.githubLinks {
+.githubLinks,
+.contributeLinks {
   display: grid;
+  margin-bottom: 2rem;
   grid-gap: 1rem;
   grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
 
-  h4 {
-    margin: 1rem 0 0.5rem;
-  }
-
   :global(.btn) {
     white-space: normal;
+  }
+
+  h4 {
+    margin: 1rem 0 0.3rem;
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+
+  p {
+    font-size: 1rem;
+    line-height: 1.3;
   }
 }
 

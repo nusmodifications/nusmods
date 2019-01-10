@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { flatMap } from 'lodash';
 
 import type { Contributor } from 'types/contributor';
-import type { ModuleCode } from 'types/modules';
+import type { ModuleCondensed } from 'types/modules';
 
 import { toggleFeedback } from 'actions/app';
 import { toggleBetaTesting } from 'actions/settings';
@@ -18,6 +18,7 @@ import LoadingSpinner from 'views/components/LoadingSpinner';
 import ScrollToTop from 'views/components/ScrollToTop';
 import Title from 'views/components/Title';
 import { FeedbackButtons } from 'views/components/FeedbackModal';
+import { getModuleCondensed } from 'selectors/moduleBank';
 
 import reviewIcon from 'img/icons/review.svg';
 import wrenchIcon from 'img/icons/wrench.svg';
@@ -33,7 +34,7 @@ import ContributorList from './ContributorList';
 import styles from './ContributeContainer.scss';
 
 type Props = {
-  modules: ModuleCode[],
+  modules: ModuleCondensed[],
   beta: boolean,
 
   toggleFeedback: () => void,
@@ -98,30 +99,32 @@ class ContributeContainer extends Component<Props, State> {
           <h2>For Everyone</h2>
         </header>
 
-        <section>
-          <header>
-            <img src={reviewIcon} alt="" />
-            <h3>Write Module Reviews</h3>
-          </header>
+        {this.props.modules.length > 0 && (
+          <section>
+            <header>
+              <img src={reviewIcon} alt="" />
+              <h3>Write Module Reviews</h3>
+            </header>
 
-          <p>
-            Help your fellow students make better choices when planning their module by leaving your
-            honest opinions on modules you have taken before. Here are all of the modules you have
-            taken this year:
-          </p>
+            <p>
+              Help your fellow students make better choices when planning their module by leaving
+              your honest opinions on modules you have taken before. Here are all of the modules you
+              have taken this year:
+            </p>
 
-          <div className={styles.reviewWrapper}>
-            {this.props.modules.map((moduleCode) => (
-              <Link
-                key={moduleCode}
-                className={classnames(styles.reviewButton, 'btn btn-outline-primary')}
-                to={modulePage(moduleCode, '')}
-              >
-                Review <span>{moduleCode}</span>
-              </Link>
-            ))}
-          </div>
-        </section>
+            <div className={styles.reviewWrapper}>
+              {this.props.modules.map(({ ModuleCode, ModuleTitle }) => (
+                <Link
+                  key={ModuleCode}
+                  className={classnames(styles.reviewButton, 'btn btn-outline-primary')}
+                  to={modulePage(ModuleCode, ModuleTitle)}
+                >
+                  Review <span>{ModuleCode}</span> {ModuleTitle}
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
 
         <section>
           <header>
@@ -150,16 +153,6 @@ class ContributeContainer extends Component<Props, State> {
           </p>
 
           {this.props.beta ? (
-            <p className="text-center">
-              <button
-                className={classnames(styles.betaButton, 'btn btn-lg btn-outline-primary')}
-                onClick={this.props.toggleBetaTesting}
-              >
-                <Zap />
-                Join NUSMods Beta
-              </button>
-            </p>
-          ) : (
             <>
               <p>You are already in the beta program.</p>
               <p className="text-center">
@@ -171,6 +164,16 @@ class ContributeContainer extends Component<Props, State> {
                 </button>
               </p>
             </>
+          ) : (
+            <p className="text-center">
+              <button
+                className={classnames(styles.betaButton, 'btn btn-lg btn-outline-primary')}
+                onClick={this.props.toggleBetaTesting}
+              >
+                <Zap />
+                Join NUSMods Beta
+              </button>
+            </p>
           )}
         </section>
 
@@ -260,12 +263,30 @@ class ContributeContainer extends Component<Props, State> {
 
           <p>
             You can also help directly contribute code and design. We welcome all contributions, big
-            and small. To get your feet wet, we have a list of{' '}
-            <ExternalLink href="https://github.com/nusmodifications/nusmods/issues?utf8=%E2%9C%93&q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22+-label%3ATaken">
-              good first issues
-            </ExternalLink>{' '}
-            suitable for first time contributors of various skill levels.
+            and small. To get your feet wet, we suggest starting with the good first issues suitable
+            for first time contributors of various skill levels.
           </p>
+
+          <div className={styles.contributeLinks}>
+            <ExternalLink
+              className="btn btn-outline-primary"
+              href="https://github.com/nusmodifications/nusmods/issues?utf8=%E2%9C%93&q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22+-label%3ATaken"
+            >
+              <h4>Good First Issues</h4>
+              <p>Issues with limited scope good for first time contributors</p>
+            </ExternalLink>
+            <ExternalLink
+              className="btn btn-outline-primary"
+              href="https://github.com/nusmodifications/nusmods/blob/master/CONTRIBUTING.md"
+            >
+              <h4>Contribution Guide</h4>
+              <p>Information for first time contributors</p>
+            </ExternalLink>
+            <ExternalLink className="btn btn-outline-primary" href="https://t.me/NUSMods">
+              <h4>Telegram Chat</h4>
+              <p>Talk to us about NUSMods development</p>
+            </ExternalLink>
+          </div>
 
           {this.state.isLoading && <LoadingSpinner />}
           {this.state.isError && (
@@ -306,11 +327,12 @@ class ContributeContainer extends Component<Props, State> {
 
 const ConnectedContributeContainer = connect(
   (state) => {
-    const { lessons } = state.timetables;
+    const getModule = getModuleCondensed(state.moduleBank);
+    const modules = flatMap(state.timetables.lessons, Object.keys).map(getModule);
 
     return {
       beta: state.settings.beta,
-      modules: flatMap(lessons, Object.keys),
+      modules,
     };
   },
   { toggleFeedback, toggleBetaTesting },

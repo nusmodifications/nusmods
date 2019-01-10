@@ -61,9 +61,8 @@ class UnmappedVenues extends PureComponent<Props, State> {
                 of all class venues are mapped!
               </p>
               <p>
-                Help us locate the remaining venues so that NUS is easier to navigate—all you have
-                to do is choose a venue and mark where it is on the map. If you&apos;re at that
-                exact venue, you can also use your phone GPS to use your current location.
+                All you have to do is choose a venue and mark where it is on the map. If you&apos;re
+                at that venue already, you can also use your phone GPS to use your current location.
               </p>
             </div>
 
