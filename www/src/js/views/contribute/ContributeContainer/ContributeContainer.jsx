@@ -29,8 +29,8 @@ import developerIcon from 'img/icons/programmer.svg';
 import contributeIcon from 'img/icons/love.svg';
 import venueIcon from 'img/icons/compass.svg';
 
-import UnmappedVenues from './UnmappedVenues';
-import ContributorList from './ContributorList';
+import UnmappedVenues from '../UnmappedVenues';
+import ContributorList from '../ContributorList';
 import styles from './ContributeContainer.scss';
 
 type Props = {
@@ -117,7 +117,7 @@ class ContributeContainer extends Component<Props, State> {
                 <Link
                   key={ModuleCode}
                   className={classnames(styles.reviewButton, 'btn btn-outline-primary')}
-                  to={modulePage(ModuleCode, ModuleTitle)}
+                  to={`${modulePage(ModuleCode, ModuleTitle)}#reviews`}
                 >
                   Review <span>{ModuleCode}</span> {ModuleTitle}
                 </Link>
