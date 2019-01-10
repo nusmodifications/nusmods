@@ -14,6 +14,7 @@ import { Repeat, Copy, Mail } from 'views/components/icons';
 import Modal from 'views/components/Modal';
 import CloseButton from 'views/components/CloseButton';
 import LoadingSpinner from 'views/components/LoadingSpinner';
+import { retryImport } from 'utils/error';
 
 import styles from './ShareTimetable.scss';
 
@@ -55,7 +56,7 @@ export default class ShareTimetable extends PureComponent<Props, State> {
 
   componentDidMount() {
     if (!ShareTimetable.QRCode) {
-      import(/* webpackChunkName: "export" */ 'react-qr-svg').then((module) => {
+      retryImport(() => import(/* webpackChunkName: "export" */ 'react-qr-svg')).then((module) => {
         ShareTimetable.QRCode = module.QRCode;
         this.forceUpdate();
       });
@@ -64,8 +65,23 @@ export default class ShareTimetable extends PureComponent<Props, State> {
 
   urlInput = React.createRef<HTMLInputElement>();
 
-  loadShortUrl(url: string) {
+  loadShortUrl = () => {
+    const { semester, timetable } = this.props;
+    const url = shareUrl(semester, timetable);
+
+    // Don't do anything if the long URL has not changed
+    if (this.url === url) return;
+
     const showFullUrl = () => this.setState({ shortUrl: url });
+    this.url = url;
+
+    // Only try to retrieve shortUrl if the user is online
+    if (!navigator.onLine) {
+      showFullUrl();
+      return;
+    }
+
+    this.setState({ shortUrl: null });
 
     axios
       .get('/short_url.php', { params: { url }, timeout: 2000 })
@@ -78,24 +94,10 @@ export default class ShareTimetable extends PureComponent<Props, State> {
       })
       // Cannot get short URL - just use long URL instead
       .catch(showFullUrl);
-  }
+  };
 
   openModal = () => {
-    const { semester, timetable } = this.props;
-    const nextUrl = shareUrl(semester, timetable);
-
-    if (this.url !== nextUrl) {
-      this.url = nextUrl;
-
-      // Only try to retrieve shortUrl if the user is online
-      if (navigator.onLine) {
-        this.setState({ shortUrl: null });
-        this.loadShortUrl(nextUrl);
-      } else {
-        this.setState({ shortUrl: nextUrl });
-      }
-    }
-
+    this.loadShortUrl();
     this.setState({ isOpen: true });
   };
 
@@ -207,7 +209,13 @@ export default class ShareTimetable extends PureComponent<Props, State> {
 
     return (
       <Fragment>
-        <button type="button" className="btn btn-outline-primary btn-svg" onClick={this.openModal}>
+        <button
+          type="button"
+          className="btn btn-outline-primary btn-svg"
+          onClick={this.openModal}
+          onMouseOver={this.loadShortUrl}
+          onFocus={this.loadShortUrl}
+        >
           <Repeat className="svg svg-small" />
           Share/Sync
         </button>

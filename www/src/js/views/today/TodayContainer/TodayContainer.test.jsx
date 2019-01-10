@@ -3,13 +3,15 @@
 import React from 'react';
 import { flatten } from 'lodash';
 import { shallow } from 'enzyme';
-import Raven from 'raven-js';
 
 import * as weather from 'apis/weather';
 import { waitFor } from 'test-utils/async';
-import { DaySection, TodayContainerComponent, type Props } from './TodayContainer';
+import { captureException } from 'utils/error';
+import { type Props, DaySection, TodayContainerComponent, mapStateToProps } from './TodayContainer';
 import DayEvents from '../DayEvents';
 import styles from '../DayEvents.scss';
+
+/* eslint-disable no-useless-computed-key */
 
 const COLORS = {
   CS3216: 1,
@@ -109,15 +111,7 @@ const LESSONS = {
 };
 
 jest.mock('apis/weather');
-
-// Mock axios to stop it from firing API requests
-beforeEach(() => {
-  jest.spyOn(Raven, 'captureException').mockImplementation(() => {});
-});
-
-afterEach(() => {
-  Raven.captureException.mockRestore();
-});
+jest.mock('utils/error');
 
 //     August 2016            September 2016         October 2016
 // Wk Mo Tu We Th Fr Sa | Wk Mo Tu We Th Fr Sa | Wk Mo Tu We Th Fr Sa
@@ -221,8 +215,40 @@ describe(TodayContainerComponent, () => {
     expect(weather.tomorrow).toBeCalled();
     expect(weather.fourDay).toBeCalled();
 
-    await waitFor(() => Raven.captureException.mock.calls.length > 0);
+    // $FlowFixMe
+    await waitFor(() => captureException.mock.calls.length > 0);
 
-    expect(Raven.captureException).toBeCalled();
+    expect(captureException).toBeCalled();
+  });
+});
+
+describe(mapStateToProps, () => {
+  test('should use correct semester', () => {
+    // On week -1 of sem 2 the semester should be 2, not 1
+    const ownProps: any = {
+      // Week -1 of sem 2 of AY2018/2019
+      currentTime: new Date('2019-01-09T00:00:00.000Z'),
+    };
+
+    const state: any = {
+      moduleBank: { modules: {} },
+      timetables: {
+        lessons: {
+          [1]: {
+            CS3216: {},
+          },
+          [2]: {
+            CS1010S: {},
+          },
+        },
+        colors: {
+          [1]: COLORS,
+          [2]: COLORS,
+        },
+      },
+    };
+
+    // Should return sem 2 timetable, not sem 1
+    expect(mapStateToProps(state, ownProps).timetableWithLessons).toHaveProperty('CS1010S');
   });
 });

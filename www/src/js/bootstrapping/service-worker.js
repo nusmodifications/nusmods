@@ -1,7 +1,7 @@
 // @flow
 import type { Store } from 'redux';
-import Raven from 'raven-js';
 import { promptRefresh } from 'actions/app';
+import { captureException } from 'utils/error';
 
 let currentRegistration: ServiceWorkerRegistration;
 
@@ -86,7 +86,5 @@ export default function initializeServiceWorker(store: Store<*, *, *>) {
         window.clearInterval(updateIntervalId);
       });
     })
-    .catch((e) => {
-      Raven.captureException(e);
-    });
+    .catch(captureException);
 }

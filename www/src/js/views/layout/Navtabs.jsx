@@ -11,6 +11,8 @@ import { BookOpen, Calendar, Clock, Heart, Map, Settings } from 'views/component
 import ExternalLink from 'views/components/ExternalLink';
 import Online from 'views/components/Online';
 import { timetablePage } from 'views/routes/paths';
+import { preload as preloadToday } from 'views/today/TodayContainer';
+import { preload as preloadVenues } from 'views/venues/VenuesContainer';
 import NavRefreshPrompt from './NavRefreshPrompt';
 
 import styles from './Navtabs.scss';
@@ -33,7 +35,7 @@ export function NavtabsComponent(props: Props) {
   return (
     <nav className={styles.nav}>
       {props.beta && (
-        <NavLink {...tabProps} to="/today">
+        <NavLink {...tabProps} to="/today" onMouseOver={preloadToday} onFocus={preloadToday}>
           <Clock />
           <span className={styles.title}>Today</span>
         </NavLink>
@@ -46,7 +48,7 @@ export function NavtabsComponent(props: Props) {
         <BookOpen />
         <span className={styles.title}>Modules</span>
       </NavLink>
-      <NavLink {...tabProps} to="/venues">
+      <NavLink {...tabProps} to="/venues" onMouseOver={preloadVenues} onFocus={preloadVenues}>
         <Map />
         <span className={styles.title}>Venues</span>
       </NavLink>
