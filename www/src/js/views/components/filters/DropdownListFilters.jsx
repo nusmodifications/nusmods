@@ -6,6 +6,7 @@ import classnames from 'classnames';
 import { each, values, uniq } from 'lodash';
 
 import type { OnFilterChange } from 'types/views';
+import type { DownshiftState, StateChangeOptions } from 'downshift';
 
 import { Search, ChevronDown } from 'views/components/icons';
 import makeResponsive from 'views/hocs/makeResponsive';
@@ -25,6 +26,7 @@ type Props = {
 
 type State = {
   isFocused: boolean,
+  inputValue: string,
   searchedFilters: string[],
 };
 
@@ -34,6 +36,7 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
 
     this.state = {
       isFocused: false,
+      inputValue: '',
       searchedFilters: values(props.group.filters)
         .filter((filter) => filter.enabled)
         .map((filter) => filter.id),
@@ -48,10 +51,30 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
     this.setState({ searchedFilters: uniq([...this.state.searchedFilters, selectedItem]) });
   };
 
-  searchInput = React.createRef<HTMLInputElement>();
+  onOuterClick = () => {
+    this.setState({ inputValue: this.state.inputValue });
+  };
+
+  onInputValueChange = (newInputValue: string) => {
+    this.setState({ inputValue: newInputValue });
+  };
 
   focusInput = () => {
     if (this.searchInput.current) this.searchInput.current.focus();
+  };
+
+  searchInput = React.createRef<HTMLInputElement>();
+
+  stateReducer = (state: DownshiftState<string>, changes: StateChangeOptions<string>) => {
+    switch (changes.type) {
+      case Downshift.stateChangeTypes.blurInput:
+        return {
+          ...changes,
+          inputValue: state.inputValue,
+        };
+      default:
+        return changes;
+    }
   };
 
   displayedFilters(inputValue?: string): [ModuleFilter, number][] {
@@ -114,10 +137,14 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
         ) : (
           /* Use a search-select combo dropdown on desktop */
           <Downshift
+            onOuterClick={this.onOuterClick}
             onChange={(selectedItem, { clearSelection }) => {
               this.onSelectItem(selectedItem);
               clearSelection();
             }}
+            onInputValueChange={this.onInputValueChange}
+            inputValue={this.state.inputValue}
+            stateReducer={this.stateReducer}
           >
             {({
               getInputProps,
