@@ -1,9 +1,9 @@
 // @flow
-import { sortBy, each } from 'lodash';
+import { each, sortBy } from 'lodash';
+import type { ModuleCode, Semester } from 'types/modules';
 import { Semesters } from 'types/modules';
 import type { ModuleInfo } from 'types/views';
 import type { AcadYearModules, ModuleTime, PlannerState } from 'types/reducers';
-import type { ModuleCode, Semester } from 'types/modules';
 import type { State } from 'reducers';
 import { getYearsBetween } from 'utils/modules';
 import {
@@ -45,16 +45,7 @@ export function getAcadYearModules(state: PlannerState): AcadYearModules {
     modules[year] = {};
 
     Semesters.forEach((semester) => {
-      const moduleCodes = filterModuleForSemester(state.modules, year, semester);
-
-      if (moduleCodes.length === 0) {
-        if (semester === 1 || semester === 2) {
-          modules[year][semester] = [];
-        }
-        return;
-      }
-
-      modules[year][semester] = moduleCodes;
+      modules[year][semester] = filterModuleForSemester(state.modules, year, semester);
     });
   });
 

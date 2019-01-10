@@ -28,34 +28,25 @@ type State = {|
 export default class PlannerYear extends PureComponent<Props, State> {
   state = {
     // Always display Special Terms I and II if either one has modules
-    showSpecialSem: Boolean(this.props.semesters[3]) || Boolean(this.props.semesters[4]),
+    showSpecialSem: this.hasSpecialTermModules(),
   };
+
+  hasSpecialTermModules() {
+    const { semesters } = this.props;
+    return semesters[3].length > 0 || semesters[4].length > 0;
+  }
 
   render() {
     const { year, semesters } = this.props;
     const { showSpecialSem } = this.state;
 
-    // If showSpecialSem is enabled, we add in blank sem 3 and 4 placeholders for the
-    // user to drop modules onto
-    const specialSem = showSpecialSem
-      ? {
-          /* eslint-disable no-useless-computed-key */
-          [3]: [],
-          [4]: [],
-          /* eslint-enable */
-        }
-      : {};
-
     // Only show the toggle if special terms are currently empty
-    const showSpecialSemToggle = !semesters[3] && !semesters[4];
+    const showSpecialSemToggle = !this.hasSpecialTermModules();
 
-    const sortedSemesters = sortBy(
-      toPairs({
-        ...specialSem,
-        ...semesters,
-      }),
-      ([semester]) => semester,
-    );
+    let sortedSemesters = sortBy(toPairs(semesters), ([semester]) => semester);
+    if (!showSpecialSem) {
+      sortedSemesters = sortedSemesters.filter(([semester]) => +semester <= 2);
+    }
 
     return (
       <section
@@ -89,7 +80,7 @@ export default class PlannerYear extends PureComponent<Props, State> {
               onClick={() => this.setState({ showSpecialSem: !showSpecialSem })}
             >
               {showSpecialSem ? <Minus /> : <Plus />}
-              Special Semesters
+              Special Term
             </button>
           </p>
         )}
