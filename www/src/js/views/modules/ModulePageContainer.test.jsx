@@ -15,6 +15,8 @@ import { waitFor } from 'test-utils/async';
 import ApiError from 'views/errors/ApiError';
 import { ModulePageContainerComponent } from './ModulePageContainer';
 
+jest.mock('utils/error');
+
 const CANONICAL = '/modules/CS1010S/programming-methodology';
 
 type MakeContainerOptions = {

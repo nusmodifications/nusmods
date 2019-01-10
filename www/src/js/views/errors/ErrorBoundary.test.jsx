@@ -2,11 +2,10 @@
 
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import Raven from 'raven-js';
-
+import { captureException } from 'utils/error';
 import ErrorBoundary from './ErrorBoundary';
 
-jest.mock('raven-js');
+jest.mock('utils/error');
 jest.mock(
   'views/errors/ErrorPage',
   () =>
@@ -25,7 +24,8 @@ describe('ErrorBoundary', () => {
   let consoleError;
 
   beforeEach(() => {
-    Raven.captureException.mockReset();
+    // $FlowFixMe
+    captureException.mockReset();
 
     // Silence console errors
     consoleError = global.console.error;
@@ -54,14 +54,12 @@ describe('ErrorBoundary', () => {
     );
 
     expect(wrapper.isEmptyRender()).toBe(true);
-    expect(Raven.captureException).toHaveBeenCalledWith(error, expect.any(Object));
+    expect(captureException).toHaveBeenCalledWith(error, expect.any(Object));
   });
 
   test('should show custom error page if provided', () => {
     const errorPage = jest.fn(() => 'Custom content');
-    const eventId = '12345';
 
-    Raven.lastEventId.mockReturnValue(eventId);
     const wrapper = mount(
       <ErrorBoundary errorPage={errorPage}>
         <ThrowsError>Some content</ThrowsError>
@@ -69,7 +67,7 @@ describe('ErrorBoundary', () => {
     );
 
     expect(wrapper.text()).toEqual('Custom content');
-    expect(errorPage).toHaveBeenCalledWith(error, eventId);
+    expect(errorPage).toHaveBeenCalledWith(error);
   });
 
   test('should not capture error if captureError is false', () => {
@@ -79,6 +77,6 @@ describe('ErrorBoundary', () => {
       </ErrorBoundary>,
     );
 
-    expect(Raven.captureException).not.toHaveBeenCalled();
+    expect(captureException).not.toHaveBeenCalled();
   });
 });
