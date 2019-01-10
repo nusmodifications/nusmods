@@ -42,9 +42,19 @@ export class ModulesSelectComponent extends Component<Props, State> {
   onStateChange = (changes: StateChangeOptions<ModuleCode>) => {
     if (has(changes, 'selectedItem')) {
       this.props.onChange(changes.selectedItem);
-    } else if (has(changes, 'inputValue')) {
-      this.setState({ inputValue: changes.inputValue });
     }
+  };
+
+  onInputValueChange = (newInputValue: string) => {
+    this.setState({ inputValue: newInputValue });
+  };
+
+  onOuterClick = () => {
+    this.setState({
+      isOpen: false,
+      inputValue: this.state.inputValue,
+      selectedItem: null,
+    });
   };
 
   closeSelect = () => {
@@ -179,8 +189,9 @@ export class ModulesSelectComponent extends Component<Props, State> {
     const downshiftComponent = (
       <Downshift
         isOpen={isOpen}
-        onOuterClick={this.closeSelect}
+        onOuterClick={this.onOuterClick}
         onStateChange={this.onStateChange}
+        onInputValueChange={this.onInputValueChange}
         inputValue={this.state.inputValue}
         selectedItem={this.state.selectedItem}
         stateReducer={this.preventResetOnBlur}
