@@ -18,8 +18,10 @@ type Props = {|
   +year: string,
   +semester: Semester,
   +modules: ModuleWithInfo[],
+
   +showConflicts: boolean,
   +showModuleMeta: boolean,
+  +className?: string,
 
   +addModule: (moduleCode: ModuleCode, year: string, semester: Semester) => void,
   +removeModule: (moduleCode: ModuleCode) => void,
@@ -54,56 +56,56 @@ export default class PlannerSemester extends PureComponent<Props> {
     const droppableId = getDroppableId(year, semester);
 
     return (
-      <div className={styles.semester}>
-        <Droppable droppableId={droppableId}>
-          {(provided, snapshot) => (
-            <div
-              className={classnames(styles.moduleList, {
-                [styles.emptyList]: modules.length === 0,
-                [styles.dragOver]: snapshot.isDraggingOver,
-              })}
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-            >
-              {modules.map((moduleWithInfo, index) => {
-                const { moduleCode, moduleInfo, conflicts } = moduleWithInfo;
-                const showExamDate = showModuleMeta && config.academicYear === year;
+      <Droppable droppableId={droppableId}>
+        {(provided, snapshot) => (
+          <div
+            className={classnames(styles.semester, this.props.className, {
+              [styles.emptyList]: modules.length === 0,
+              [styles.dragOver]: snapshot.isDraggingOver,
+            })}
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+          >
+            {modules.map((moduleWithInfo, index) => {
+              const { moduleCode, moduleInfo, conflicts } = moduleWithInfo;
+              const showExamDate = showModuleMeta && config.academicYear === year;
 
-                return (
-                  <PlannerModule
-                    key={moduleCode}
-                    index={index}
-                    moduleCode={moduleCode}
-                    moduleTitle={moduleInfo?.ModuleTitle}
-                    examDate={
-                      showExamDate && moduleInfo ? getModuleExamDate(moduleInfo, semester) : null
-                    }
-                    moduleCredit={showModuleMeta ? +moduleInfo?.ModuleCredit : null}
-                    conflicts={showConflicts ? conflicts : null}
-                    removeModule={() => this.props.removeModule(moduleCode)}
-                  />
-                );
-              })}
+              return (
+                <PlannerModule
+                  key={moduleCode}
+                  index={index}
+                  moduleCode={moduleCode}
+                  moduleTitle={moduleInfo?.ModuleTitle}
+                  examDate={
+                    showExamDate && moduleInfo ? getModuleExamDate(moduleInfo, semester) : null
+                  }
+                  moduleCredit={showModuleMeta ? +moduleInfo?.ModuleCredit : null}
+                  conflicts={showConflicts ? conflicts : null}
+                  removeModule={() => this.props.removeModule(moduleCode)}
+                />
+              );
+            })}
 
-              {provided.placeholder}
+            {provided.placeholder}
 
-              {modules.length === 0 && (
-                <p className={styles.emptyListMessage}>
-                  Drop module to add to {getSemesterName(semester)}
-                </p>
-              )}
+            {modules.length === 0 && (
+              <p className={styles.emptyListMessage}>
+                Drop module here to add to {getSemesterName(semester)}
+              </p>
+            )}
 
-              {showModuleMeta && modules.length > 0 && renderSemesterMeta(modules)}
+            {showModuleMeta && modules.length > 0 && renderSemesterMeta(modules)}
+
+            <div className={styles.addModule}>
+              <AddModule
+                year={year}
+                semester={semester}
+                onAddModule={(moduleCode) => this.props.addModule(moduleCode, year, +semester)}
+              />
             </div>
-          )}
-        </Droppable>
-
-        <AddModule
-          year={year}
-          semester={semester}
-          onAddModule={(moduleCode) => this.props.addModule(moduleCode, year, +semester)}
-        />
-      </div>
+          </div>
+        )}
+      </Droppable>
     );
   }
 }

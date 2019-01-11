@@ -60,10 +60,13 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
     // TODO: Handle error
     const modules = flatten(flatMap(this.props.modules, values));
 
-    Promise.all(modules.map((module) => this.props.fetchModule(module.moduleCode))).then(
-      () => this.setState({ loading: false }),
-      () => this.setState({ loading: false }),
-    );
+    Promise.all(
+      modules.map((module) =>
+        this.props.fetchModule(module.moduleCode).catch(() => {
+          // TODO: Handle error
+        }),
+      ),
+    ).then(() => this.setState({ loading: false }));
   }
 
   onAddModule = (input: string, year: string, semester: Semester) => {

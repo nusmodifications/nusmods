@@ -11,7 +11,6 @@
   border-bottom: 0.25rem solid darken(theme-color('success'), 10);
   border-radius: 0.35rem;
   background: lighten(theme-color('success'), 3);
-  transition: $transition-base;
 
   &.warning {
     color: darken(theme-color('warning'), 40);

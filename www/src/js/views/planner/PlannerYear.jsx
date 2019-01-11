@@ -58,12 +58,13 @@ export default class PlannerYear extends PureComponent<Props, State> {
 
         <div className={styles.semesters}>
           {sortedSemesters.map(([semester, modules]) => (
-            <div key={semester}>
+            <div className={styles.semesterWrapper} key={semester}>
               <h3 className={styles.semesterHeader}>{getSemesterName(+semester)}</h3>
               <PlannerSemester
                 year={year}
                 semester={+semester}
                 modules={modules}
+                className={styles.semester}
                 addModule={this.props.addModule}
                 removeModule={this.props.removeModule}
               />
