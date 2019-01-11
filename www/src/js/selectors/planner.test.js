@@ -5,7 +5,14 @@ import { getAcadYearModules } from 'selectors/planner';
 /* eslint-disable no-useless-computed-key */
 
 describe(getAcadYearModules, () => {
-  test('should add semester 1 and 2 for empty years', () => {
+  test('should add semesters for empty years', () => {
+    const emptyYear = {
+      [1]: [],
+      [2]: [],
+      [3]: [],
+      [4]: [],
+    };
+
     expect(
       getAcadYearModules({
         minYear: '2018/2019',
@@ -13,10 +20,7 @@ describe(getAcadYearModules, () => {
         modules: {},
       }),
     ).toEqual({
-      '2018/2019': {
-        [1]: [],
-        [2]: [],
-      },
+      '2018/2019': emptyYear,
     });
 
     expect(
@@ -26,18 +30,9 @@ describe(getAcadYearModules, () => {
         modules: {},
       }),
     ).toEqual({
-      '2016/2017': {
-        [1]: [],
-        [2]: [],
-      },
-      '2017/2018': {
-        [1]: [],
-        [2]: [],
-      },
-      '2018/2019': {
-        [1]: [],
-        [2]: [],
-      },
+      '2016/2017': emptyYear,
+      '2017/2018': emptyYear,
+      '2018/2019': emptyYear,
     });
   });
 
@@ -54,6 +49,8 @@ describe(getAcadYearModules, () => {
       '2018/2019': {
         [1]: ['CS1010S'],
         [2]: [],
+        [3]: [],
+        [4]: [],
       },
     });
 
@@ -70,6 +67,7 @@ describe(getAcadYearModules, () => {
         [1]: [],
         [2]: [],
         [3]: ['CS1010X'],
+        [4]: [],
       },
     });
   });
@@ -89,6 +87,8 @@ describe(getAcadYearModules, () => {
       '2018/2019': {
         [1]: ['MA1521', 'CS1010S', 'MA1101R'],
         [2]: [],
+        [3]: [],
+        [4]: [],
       },
     });
   });
