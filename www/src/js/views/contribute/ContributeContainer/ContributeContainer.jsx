@@ -119,6 +119,7 @@ class ContributeContainer extends Component<Props, State> {
                   key={ModuleCode}
                   className={classnames(styles.reviewButton, 'btn btn-outline-primary')}
                   to={`${modulePage(ModuleCode, ModuleTitle)}#reviews`}
+                  target="_blank"
                 >
                   Review <span>{ModuleCode}</span> {ModuleTitle}
                 </Link>
@@ -341,8 +342,8 @@ const ConnectedContributeContainer = connect(
     const modules = flatMap(state.timetables.lessons, Object.keys).map(getModule);
 
     return {
-      beta: state.settings.beta,
       modules,
+      beta: state.settings.beta,
     };
   },
   { toggleFeedback, toggleBetaTesting },

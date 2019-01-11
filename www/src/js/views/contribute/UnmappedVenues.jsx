@@ -71,7 +71,7 @@ class UnmappedVenues extends PureComponent<Props, State> {
                 [styles.hidden]: !expanded,
               })}
             >
-              <VenueList venues={unmappedVenues} selectedVenue={null} />
+              <VenueList venues={unmappedVenues} linkProps={{ target: '_blank' }} />
             </div>
             {!expanded && (
               <p className={styles.showMore}>

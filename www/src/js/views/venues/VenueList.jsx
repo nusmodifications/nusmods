@@ -11,7 +11,8 @@ import styles from './VenueList.scss';
 
 type Props = {
   venues: Venue[],
-  selectedVenue: ?Venue,
+  selectedVenue?: ?Venue,
+  linkProps?: { [string]: any },
 };
 
 export default function VenueList(props: Props) {
@@ -36,6 +37,7 @@ export default function VenueList(props: Props) {
                     'btn',
                     venue === props.selectedVenue ? 'btn-primary' : 'btn-outline-primary',
                   )}
+                  {...props.linkProps}
                 >
                   {venue}
                 </Link>
