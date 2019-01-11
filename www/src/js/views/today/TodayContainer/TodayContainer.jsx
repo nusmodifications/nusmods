@@ -11,6 +11,7 @@ import { DaysOfWeek } from 'types/modules';
 import type { SemTimetableConfigWithLessons } from 'types/timetables';
 import type { ColorMapping } from 'types/reducers';
 import type { EmptyGroupType, SelectedLesson } from 'types/views';
+import type { State as StoreState } from 'reducers';
 
 import {
   groupLessonsByDay,
@@ -49,8 +50,10 @@ const semesterNameMap = {
   'Special Sem 2': 4,
 };
 
+export type OwnProps = TimerData;
+
 export type Props = {|
-  ...TimerData,
+  ...OwnProps,
 
   +timetableWithLessons: SemTimetableConfigWithLessons,
   +colors: ColorMapping,
@@ -67,6 +70,9 @@ type State = {|
 |};
 
 const EMPTY_ARRAY = [];
+
+// Number of days to display
+const DAYS = 7;
 
 function getDayType(date: Date, weekInfo: AcadWeekInfo): EmptyGroupType {
   switch (weekInfo.type) {
@@ -182,7 +188,7 @@ export class TodayContainerComponent extends PureComponent<Props, State> {
       currentGroup.dates.push(date);
     };
 
-    range(7).forEach((day) => {
+    range(DAYS).forEach((day) => {
       const date = addDays(currentTime, day);
       const dayOfWeek = DaysOfWeek[getDayIndex(date)];
       const weekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(date);
@@ -309,9 +315,10 @@ export class TodayContainerComponent extends PureComponent<Props, State> {
   }
 }
 
-const ConnectedTimetableContainer = connect((state, ownProps) => {
+export const mapStateToProps = (state: StoreState, ownProps: OwnProps) => {
   const modules = state.moduleBank.modules;
-  const weekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(ownProps.currentTime);
+  const lastDay = addDays(ownProps.currentTime, DAYS);
+  const weekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(lastDay);
   const semester = semesterNameMap[weekInfo.sem];
   const { timetable, colors } = getSemesterTimetable(semester, state.timetables);
   const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
@@ -320,7 +327,9 @@ const ConnectedTimetableContainer = connect((state, ownProps) => {
     colors,
     timetableWithLessons,
   };
-})(TodayContainerComponent);
+};
+
+const ConnectedTimetableContainer = connect(mapStateToProps)(TodayContainerComponent);
 
 const TodayContainerWithTimer = withTimer(ConnectedTimetableContainer);
 const ResponsiveTodayContainer = makeResponsive(TodayContainerWithTimer, breakpointUp('lg'));
