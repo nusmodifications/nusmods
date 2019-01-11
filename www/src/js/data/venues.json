@@ -3122,5 +3122,53 @@
   "Y-Studio5": {
     "roomName": "West Core - Studio 5",
     "floor": "Ground"
+  },
+  "UT-AUD1": {
+    "roomName": "UTown Auditorium 1",
+    "floor": 1,
+    "location": {
+      "x": 103.77335250377655,
+      "y": 1.304010121737994
+    }
+  },
+  "UT-AUD2": {
+    "roomName": "UTown Auditorium 2",
+    "floor": 1,
+    "location": {
+      "x": 103.7727275490761,
+      "y": 1.304382852208324
+    }
+  },
+  "UTSRC-GLR": {
+    "roomName": "Global Learning Room",
+    "floor": 1,
+    "location": {
+      "x": 103.7731781601906,
+      "y": 1.304262184076501
+    }
+  },
+  "USP-MML": {
+    "roomName": "USP Multimedia Lab",
+    "floor": 1,
+    "location": {
+      "x": 103.77321299859408,
+      "y": 1.3065007445741714
+    }
+  },
+  "EH-SR1": {
+    "roomName": "EH-SR1",
+    "floor": 1,
+    "location": {
+      "x": 103.77461339347067,
+      "y": 1.2917351246659363
+    }
+  },
+  "CEREBRO": {
+    "roomName": "Cerebro@SOC",
+    "floor": 2,
+    "location": {
+      "x": 103.77368777990343,
+      "y": 1.2950667526656219
+    }
   }
 }
