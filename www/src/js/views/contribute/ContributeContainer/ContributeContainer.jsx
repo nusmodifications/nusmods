@@ -19,6 +19,7 @@ import ScrollToTop from 'views/components/ScrollToTop';
 import Title from 'views/components/Title';
 import { FeedbackButtons } from 'views/components/FeedbackModal';
 import { getModuleCondensed } from 'selectors/moduleBank';
+import { currentTests } from 'views/settings/BetaToggle';
 
 import reviewIcon from 'img/icons/review.svg';
 import wrenchIcon from 'img/icons/wrench.svg';
@@ -90,7 +91,7 @@ class ContributeContainer extends Component<Props, State> {
 
         <p>
           NUSMods is a 100% student-run, open source project. We rely on the continuous support of
-          our valued contributors and the NUS student community. Many students have reported issues,
+          our contributors and the NUS student community. Many students have reported issues,
           suggested improvements, and even contributed code. Join us to make NUS a better place for
           its students and your friends!
         </p>
@@ -133,49 +134,58 @@ class ContributeContainer extends Component<Props, State> {
           </header>
 
           <p>
-            We are mapping venues found on timetables to help students, especially freshmen students
-            get around the school.
+            We are mapping venues found on timetables to help students get around the school. This
+            is especially useful for freshmen and exchange students who find NUS hard to navigate.
           </p>
 
           <UnmappedVenues />
         </section>
 
-        <section>
-          <header>
-            <img src={wrenchIcon} alt="" />
-            <h3>Test Drive NUSMods Beta</h3>
-          </header>
+        {currentTests.length > 0 && (
+          <section>
+            <header>
+              <img src={wrenchIcon} alt="" />
+              <h3>Test Drive NUSMods Beta</h3>
+            </header>
 
-          <p>
-            We&apos;re constantly updating NUSMods with new and exciting features, and you can use
-            them before everyone else by participating in NUSMods Beta. Help find bugs and provide
-            feedback to shape the future of NUSMods.
-          </p>
+            <p>
+              We&apos;re constantly updating NUSMods with new and exciting features, and you can use
+              them before everyone else by participating in NUSMods Beta. Help find bugs and provide
+              feedback to shape the future of NUSMods. Currently we are testing the following
+              features:
+            </p>
 
-          {this.props.beta ? (
-            <>
-              <p>You are already in the beta program.</p>
+            <ul>
+              {currentTests.map((test, index) => (
+                <li key={index}>{test}</li>
+              ))}
+            </ul>
+
+            {this.props.beta ? (
+              <>
+                <p>You are already in the beta program.</p>
+                <p className="text-center">
+                  <button
+                    className="btn btn-lg btn-outline-primary"
+                    onClick={this.props.toggleFeedback}
+                  >
+                    Give Feedback
+                  </button>
+                </p>
+              </>
+            ) : (
               <p className="text-center">
                 <button
-                  className="btn btn-lg btn-outline-primary"
-                  onClick={this.props.toggleFeedback}
+                  className={classnames(styles.betaButton, 'btn btn-lg btn-outline-primary')}
+                  onClick={this.props.toggleBetaTesting}
                 >
-                  Give Feedback
+                  <Zap />
+                  Join NUSMods Beta
                 </button>
               </p>
-            </>
-          ) : (
-            <p className="text-center">
-              <button
-                className={classnames(styles.betaButton, 'btn btn-lg btn-outline-primary')}
-                onClick={this.props.toggleBetaTesting}
-              >
-                <Zap />
-                Join NUSMods Beta
-              </button>
-            </p>
-          )}
-        </section>
+            )}
+          </section>
+        )}
 
         <section>
           <header>
@@ -198,8 +208,8 @@ class ContributeContainer extends Component<Props, State> {
           </header>
           <p>
             NUSMods runs on servers that costs US$20 (about S$27) every month to run. Currently we
-            fund this out of our own pockets, but you can help defray this cost as well as view our
-            expenses on{' '}
+            fund this out of our own pockets, but you can help defray this cost. Our expenses are
+            transparent and can be viewed on{' '}
             <ExternalLink href="https://opencollective.com">OpenCollective</ExternalLink>.
           </p>
 
@@ -296,7 +306,7 @@ class ContributeContainer extends Component<Props, State> {
           )}
 
           {this.state.contributors && (
-            <div>
+            <>
               <p>
                 Here are our top NUSMods contributors. Previous maintainers have gone on to work at
                 Google, Facebook, and other prestigious technology companies. <strong>You</strong>{' '}
@@ -310,7 +320,7 @@ class ContributeContainer extends Component<Props, State> {
                   View all contributors →
                 </Link>
               </p>
-            </div>
+            </>
           )}
         </section>
 
