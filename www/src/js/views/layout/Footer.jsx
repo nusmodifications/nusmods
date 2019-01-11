@@ -2,7 +2,6 @@
 import type { State } from 'reducers';
 
 import React from 'react';
-import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -81,22 +80,18 @@ export function FooterComponent(props: Props) {
             <Link to="/faq">FAQ</Link>
           </li>
 
-          {new Date().getMonth() === 9 && (
+          {/* new Date().getMonth() === 9 && (
             <li>
               <Link to="/hacktoberfest">
                 <strong>Hacktoberfest!</strong>
               </Link>
             </li>
-          )}
+          ) */}
 
           <li>
-            <button
-              type="button"
-              onClick={props.toggleFeedback}
-              className={classnames('btn btn-inline', styles.feedbackBtn)}
-            >
-              Feedback Welcome!
-            </button>
+            <Link to="/contribute" className={styles.feedbackBtn}>
+              Contribute to NUSMods!
+            </Link>
           </li>
         </ul>
         <p>{lastUpdatedText}</p>
