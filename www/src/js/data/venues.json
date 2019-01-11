@@ -3170,5 +3170,69 @@
       "x": 103.77368777990343,
       "y": 1.2950667526656219
     }
+  },
+  "TP-GLR": {
+    "roomName": "Town Plaza Global Learning Room",
+    "floor": 2,
+    "location": {
+      "x": 103.77340883016588,
+      "y": 1.3039978035313131
+    }
+  },
+  "TP-SR1": {
+    "roomName": "Town Plaza Seminar Room 1",
+    "floor": 2,
+    "location": {
+      "x": 103.77340883016588,
+      "y": 1.3039978035313131
+    }
+  },
+  "TP-SR3": {
+    "roomName": "Town Plaza Seminar Room 3",
+    "floor": 2,
+    "location": {
+      "x": 103.77340883016588,
+      "y": 1.3039978035313131
+    }
+  },
+  "TP-SR4": {
+    "roomName": "Town Plaza Seminar Room 4",
+    "floor": 2,
+    "location": {
+      "x": 103.77340883016588,
+      "y": 1.3039978035313131
+    }
+  },
+  "TP-SR5": {
+    "roomName": "Town Plaza Seminar Room 5",
+    "floor": 2,
+    "location": {
+      "x": 103.77340883016588,
+      "y": 1.3039978035313131
+    }
+  },
+  "TP-SR6": {
+    "roomName": "Town Plaza Seminar Room 5",
+    "floor": 2,
+    "location": {
+      "x": 103.77340883016588,
+      "y": 1.3039978035313131
+    }
+  },
+  "TP-SR7": {
+    "roomName": "Town Plaza Seminar Room 7",
+    "floor": 2,
+    "location": {
+      "x": 103.77340883016588,
+      "y": 1.3039978035313131
+    }
+  },
+  "TP-SR8": {
+    "roomName": "Town Plaza Seminar Room 8",
+    "floor": 2,
+    "location": {
+      "x": 103.77340883016588,
+      "y": 1.3039978035313131
+    }
   }
 }
