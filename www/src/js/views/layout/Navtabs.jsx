@@ -13,6 +13,7 @@ import Online from 'views/components/Online';
 import { timetablePage } from 'views/routes/paths';
 import { preload as preloadToday } from 'views/today/TodayContainer';
 import { preload as preloadVenues } from 'views/venues/VenuesContainer';
+import { preload as preloadContribute } from 'views/contribute/ContributeContainer';
 import NavRefreshPrompt from './NavRefreshPrompt';
 
 import styles from './Navtabs.scss';
@@ -68,6 +69,8 @@ export function NavtabsComponent(props: Props) {
       <NavLink
         {...tabProps}
         className={classnames(tabProps.className, styles.hiddenOnMobile)}
+        onMouseOver={preloadContribute}
+        onFocus={preloadContribute}
         to="/contribute"
       >
         <Star />

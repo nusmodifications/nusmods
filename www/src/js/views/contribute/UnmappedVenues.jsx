@@ -93,7 +93,11 @@ class UnmappedVenues extends PureComponent<Props, State> {
   }
 }
 
-const AsyncUnmappedVenues = Loadable.Map({
+const ConnectedUnmappedVenue = connect((state: StoreState) => ({
+  venueList: state.venueBank.venueList,
+}))(UnmappedVenues);
+
+export const AsyncUnmappedVenues = Loadable.Map<{}, *>({
   loader: {
     venueLocations: () => import(/* webpackChunkName: "venue" */ 'data/venues.json'),
   },
@@ -107,10 +111,8 @@ const AsyncUnmappedVenues = Loadable.Map({
     return null;
   },
   render(loaded, props) {
-    return <UnmappedVenues venueLocations={loaded.venueLocations.default} {...props} />;
+    return <ConnectedUnmappedVenue venueLocations={loaded.venueLocations.default} {...props} />;
   },
 });
 
-export default connect((state: StoreState) => ({
-  venueList: state.venueBank.venueList,
-}))(AsyncUnmappedVenues);
+export default AsyncUnmappedVenues;
