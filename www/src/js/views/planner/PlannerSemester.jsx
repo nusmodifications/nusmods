@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import { sum } from 'lodash';
 
 import type { ModuleCode, Semester } from 'types/modules';
-import type { ModuleInfo } from 'types/views';
+import type { ModuleWithInfo } from 'types/views';
 import config from 'config';
 import { getModuleExamDate, renderMCs } from 'utils/modules';
 import { getDroppableId, getSemesterName } from 'utils/planner';
@@ -17,19 +17,17 @@ import styles from './PlannerSemester.scss';
 type Props = {|
   +year: string,
   +semester: Semester,
-  +modules: ModuleCode[],
+  +modules: ModuleWithInfo[],
   +showConflicts: boolean,
   +showModuleMeta: boolean,
-
-  +getModuleInfo: (moduleCode: ModuleCode, year: string, semester: Semester) => ?ModuleInfo,
 
   +addModule: (moduleCode: ModuleCode, year: string, semester: Semester) => void,
   +removeModule: (moduleCode: ModuleCode) => void,
 |};
 
-function renderSemesterMeta(modulesWithInfo: Array<[ModuleCode, ?ModuleInfo]>) {
+function renderSemesterMeta(modulesWithInfo: ModuleWithInfo[]) {
   const moduleCredits = sum(
-    modulesWithInfo.map(([, moduleInfo]) => +moduleInfo?.module?.ModuleCredit || 0),
+    modulesWithInfo.map(({ moduleInfo }) => +moduleInfo?.ModuleCredit || 0),
   );
 
   return (
@@ -55,11 +53,6 @@ export default class PlannerSemester extends PureComponent<Props> {
     const { year, semester, modules, showConflicts, showModuleMeta } = this.props;
     const droppableId = getDroppableId(year, semester);
 
-    const modulesWithInfo = modules.map((moduleCode) => [
-      moduleCode,
-      this.props.getModuleInfo(moduleCode, year, semester),
-    ]);
-
     return (
       <div className={styles.semester}>
         <Droppable droppableId={droppableId}>
@@ -72,8 +65,8 @@ export default class PlannerSemester extends PureComponent<Props> {
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
-              {modulesWithInfo.map(([moduleCode, moduleInfo], index) => {
-                const { conflicts, module } = moduleInfo || {};
+              {modules.map((moduleWithInfo, index) => {
+                const { moduleCode, moduleInfo, conflicts } = moduleWithInfo;
                 const showExamDate = showModuleMeta && config.academicYear === year;
 
                 return (
@@ -81,9 +74,11 @@ export default class PlannerSemester extends PureComponent<Props> {
                     key={moduleCode}
                     index={index}
                     moduleCode={moduleCode}
-                    moduleTitle={module?.ModuleTitle}
-                    examDate={showExamDate && module ? getModuleExamDate(module, semester) : null}
-                    moduleCredit={showModuleMeta ? +module?.ModuleCredit : null}
+                    moduleTitle={moduleInfo?.ModuleTitle}
+                    examDate={
+                      showExamDate && moduleInfo ? getModuleExamDate(moduleInfo, semester) : null
+                    }
+                    moduleCredit={showModuleMeta ? +moduleInfo?.ModuleCredit : null}
                     conflicts={showConflicts ? conflicts : null}
                     removeModule={() => this.props.removeModule(moduleCode)}
                   />
@@ -98,7 +93,7 @@ export default class PlannerSemester extends PureComponent<Props> {
                 </p>
               )}
 
-              {showModuleMeta && modulesWithInfo.length > 0 && renderSemesterMeta(modulesWithInfo)}
+              {showModuleMeta && modules.length > 0 && renderSemesterMeta(modules)}
             </div>
           )}
         </Droppable>

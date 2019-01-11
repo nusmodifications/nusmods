@@ -1,13 +1,15 @@
 // @flow
 import FilterGroup from 'utils/filters/FilterGroup';
 import type {
-  Module,
-  TreeFragment,
   Department,
   Faculty,
   Lesson,
+  Module,
+  ModuleCode,
   ModuleCondensed,
   ModuleWithColor,
+  Semester,
+  TreeFragment,
 } from './modules';
 import type { ModuleList } from './reducers';
 import type { Venue, VenueList } from './venues';
@@ -157,7 +159,16 @@ export type EmptyGroupType =
   | 'reading';
 
 /* views/planner */
-export type ModuleInfo = {
-  module: Module,
-  conflicts: ?Array<TreeFragment>,
+export type ModuleWithInfo = {
+  moduleCode: ModuleCode,
+  moduleInfo?: Module,
+  conflicts?: ?Array<TreeFragment>,
+};
+
+export type PlannerModulesWithInfo = {
+  // Mapping acad years to a map of semester to module information object
+  // This is the form used by the UI
+  +[string]: {|
+    +[Semester]: ModuleWithInfo,
+  |},
 };

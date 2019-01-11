@@ -2,13 +2,12 @@
 
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { flatMap, sortBy, toPairs, min, max } from 'lodash';
+import { flatMap, values, flatten, max, min, sortBy, toPairs } from 'lodash';
 import { DragDropContext, Droppable, type OnDragEndResponder } from 'react-beautiful-dnd';
 import classnames from 'classnames';
-
-import type { AcadYearModules } from 'types/reducers';
 import type { Module, ModuleCode, Semester } from 'types/modules';
-import type { ModuleInfo } from 'types/views';
+import type { ModuleWithInfo, PlannerModulesWithInfo } from 'types/views';
+import type { State as StoreState } from 'reducers';
 
 import { addAcadYear, MODULE_CODE_REGEX, subtractAcadYear } from 'utils/modules';
 import {
@@ -19,13 +18,13 @@ import {
   PLAN_TO_TAKE_YEAR,
 } from 'utils/planner';
 import {
-  addPlannerYear,
   addPlannerModule,
+  addPlannerYear,
   movePlannerModule,
   removePlannerModule,
 } from 'actions/planner';
 import { fetchModule } from 'actions/moduleBank';
-import { getAcadYearModules, getExemptions, getModuleInfo, getPlanToTake } from 'selectors/planner';
+import { getAcadYearModules, getExemptions, getPlanToTake } from 'selectors/planner';
 import { Trash } from 'views/components/icons';
 import Title from 'views/components/Title';
 import LoadingSpinner from 'views/components/LoadingSpinner';
@@ -34,11 +33,10 @@ import PlannerYear from '../PlannerYear';
 import styles from './PlannerContainer.scss';
 
 export type Props = {|
-  +plannerModules: AcadYearModules,
-  +exemptions: ModuleCode[],
-  +planToTake: ModuleCode[],
+  +modules: PlannerModulesWithInfo,
+  +exemptions: ModuleWithInfo[],
+  +planToTake: ModuleWithInfo[],
 
-  +getModuleInfo: (moduleCode: ModuleCode, year: string, semester: Semester) => ?ModuleInfo,
   +fetchModule: (ModuleCode) => Promise<Module>,
 
   +addYear: (year: string) => void,
@@ -60,8 +58,9 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
 
   componentDidMount() {
     // TODO: Handle error
-    const modules = flatMap(this.props.plannerModules, flatMap);
-    Promise.all(modules.map((moduleCode) => this.props.fetchModule(moduleCode))).then(
+    const modules = flatten(flatMap(this.props.modules, values));
+
+    Promise.all(modules.map((module) => this.props.fetchModule(module.moduleCode))).then(
       () => this.setState({ loading: false }),
       () => this.setState({ loading: false }),
     );
@@ -102,12 +101,12 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
     }
 
     // Sort acad years since acad years may not be inserted in display order
-    const sortedModules: Array<[string, { [Semester]: ModuleCode[] }]> = sortBy(
-      toPairs(this.props.plannerModules),
+    const sortedModules: Array<[string, { [Semester]: ModuleWithInfo[] }]> = sortBy(
+      toPairs(this.props.modules),
       (pairs) => pairs[0],
     );
 
-    const years = Object.keys(this.props.plannerModules);
+    const years = Object.keys(this.props.modules);
     const prevYear = subtractAcadYear(min(years));
     const nextYear = addAcadYear(max(years));
 
@@ -137,7 +136,6 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
                 key={year}
                 year={year}
                 semesters={semesters}
-                getModuleInfo={this.props.getModuleInfo}
                 addModule={this.onAddModule}
                 removeModule={this.props.removeModule}
               />
@@ -157,7 +155,6 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
                 year={EXEMPTION_YEAR}
                 semester={EXEMPTION_SEMESTER}
                 modules={this.props.exemptions}
-                getModuleInfo={this.props.getModuleInfo}
                 addModule={this.onAddModule}
                 removeModule={this.props.removeModule}
                 showConflicts={false}
@@ -171,7 +168,6 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
                 year={PLAN_TO_TAKE_YEAR}
                 semester={PLAN_TO_TAKE_SEMESTER}
                 modules={this.props.planToTake}
-                getModuleInfo={this.props.getModuleInfo}
                 addModule={this.onAddModule}
                 removeModule={this.props.removeModule}
                 showConflicts={false}
@@ -201,16 +197,11 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
   }
 }
 
-const mapStateToProps = (state) => {
-  const modules = getAcadYearModules(state.planner);
-
-  return {
-    getModuleInfo: getModuleInfo(state),
-    exemptions: getExemptions(state.planner),
-    planToTake: getPlanToTake(state.planner),
-    plannerModules: modules,
-  };
-};
+const mapStateToProps = (state: StoreState) => ({
+  modules: getAcadYearModules(state),
+  exemptions: getExemptions(state),
+  planToTake: getPlanToTake(state),
+});
 
 const PlannerContainer = connect(
   mapStateToProps,

@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import { sortBy, toPairs } from 'lodash';
 
 import type { ModuleCode, Semester } from 'types/modules';
-import type { ModuleInfo } from 'types/views';
+import type { ModuleWithInfo } from 'types/views';
 import config from 'config';
 import { getSemesterName } from 'utils/planner';
 import { Minus, Plus } from 'views/components/icons';
@@ -14,9 +14,8 @@ import styles from './PlannerYear.scss';
 
 type Props = {|
   +year: string,
-  +semesters: { [Semester]: ModuleCode[] },
+  +semesters: { [Semester]: ModuleWithInfo[] },
 
-  +getModuleInfo: (moduleCode: ModuleCode, year: string, semester: Semester) => ?ModuleInfo,
   +addModule: (moduleCode: ModuleCode, year: string, semester: Semester) => void,
   +removeModule: (moduleCode: ModuleCode) => void,
 |};
@@ -65,7 +64,6 @@ export default class PlannerYear extends PureComponent<Props, State> {
                 year={year}
                 semester={+semester}
                 modules={modules}
-                getModuleInfo={this.props.getModuleInfo}
                 addModule={this.props.addModule}
                 removeModule={this.props.removeModule}
               />

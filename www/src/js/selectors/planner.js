@@ -1,9 +1,9 @@
 // @flow
-import { each, sortBy } from 'lodash';
+import { sortBy } from 'lodash';
 import type { ModuleCode, Semester } from 'types/modules';
 import { Semesters } from 'types/modules';
-import type { ModuleInfo } from 'types/views';
-import type { AcadYearModules, ModuleTime, PlannerState } from 'types/reducers';
+import type { ModuleWithInfo, PlannerModulesWithInfo } from 'types/views';
+import type { ModuleTime } from 'types/reducers';
 import type { State } from 'reducers';
 import { getYearsBetween } from 'utils/modules';
 import {
@@ -13,6 +13,7 @@ import {
   PLAN_TO_TAKE_SEMESTER,
   PLAN_TO_TAKE_YEAR,
 } from 'utils/planner';
+import type { ModulesMap } from 'reducers/moduleBank';
 
 /* eslint-disable no-useless-computed-key */
 
@@ -33,66 +34,64 @@ export function filterModuleForSemester(
   return sortBy<ModuleCode>(filteredModules, (moduleCode: ModuleCode) => modules[moduleCode][2]);
 }
 
+export function mapModuleToInfo(
+  moduleCode: ModuleCode,
+  modulesMap: ModulesMap,
+  modulesTaken: Set<ModuleCode>,
+): ModuleWithInfo {
+  const moduleInfo = modulesMap[moduleCode];
+  if (!moduleInfo) return { moduleCode };
+
+  return {
+    moduleCode,
+    moduleInfo,
+    conflicts: checkPrerequisite(modulesTaken, moduleInfo.ModmavenTree),
+  };
+}
+
+export function getExemptions(state: State): ModuleWithInfo[] {
+  const { planner, moduleBank } = state;
+  const taken = new Set();
+
+  // Exemptions are stored in a special year which is not a valid AY
+  return filterModuleForSemester(planner.modules, EXEMPTION_YEAR, EXEMPTION_SEMESTER).map(
+    (moduleCode) => mapModuleToInfo(moduleCode, moduleBank.modules, taken),
+  );
+}
+
+export function getPlanToTake(state: State): ModuleWithInfo[] {
+  const { planner, moduleBank } = state;
+  const taken = new Set();
+
+  // 'Plan to take' are stored in a special year which is not a valid AY
+  return filterModuleForSemester(planner.modules, PLAN_TO_TAKE_YEAR, PLAN_TO_TAKE_SEMESTER).map(
+    (moduleCode) => mapModuleToInfo(moduleCode, moduleBank.modules, taken),
+  );
+}
+
 /**
  * Convert PlannerState into AcadYearModules form which is more easily
  * consumed by the UI
  */
-export function getAcadYearModules(state: PlannerState): AcadYearModules {
-  const years = getYearsBetween(state.minYear, state.maxYear);
+export function getAcadYearModules(state: State): PlannerModulesWithInfo {
+  const { planner, moduleBank } = state;
+  const years = getYearsBetween(planner.minYear, planner.maxYear);
   const modules = {};
+  const modulesTaken = new Set<ModuleCode>(getExemptions(state).map((module) => module.moduleCode));
 
   years.forEach((year) => {
     modules[year] = {};
 
     Semesters.forEach((semester) => {
-      modules[year][semester] = filterModuleForSemester(state.modules, year, semester);
+      const moduleCodes = filterModuleForSemester(planner.modules, year, semester);
+      modules[year][semester] = moduleCodes.map((moduleCode) =>
+        mapModuleToInfo(moduleCode, moduleBank.modules, modulesTaken),
+      );
+
+      // Add taken modules to set of modules taken for prerequisite calculation
+      moduleCodes.forEach((moduleCode) => modulesTaken.add(moduleCode));
     });
   });
 
   return modules;
-}
-
-export function getExemptions(state: PlannerState) {
-  // Exemptions are stored in a special year which is not a valid AY
-  return filterModuleForSemester(state.modules, EXEMPTION_YEAR, EXEMPTION_SEMESTER);
-}
-
-export function getPlanToTake(state: PlannerState) {
-  // 'Plan to take' are stored in a special year which is not a valid AY
-  return filterModuleForSemester(state.modules, PLAN_TO_TAKE_YEAR, PLAN_TO_TAKE_SEMESTER);
-}
-
-/**
- * Higher order function returning a function that returns module info from the module
- * bank and checks if prereqs are met from modules taken in previous semesters
- */
-export function getModuleInfo(state: State) {
-  // Memoize module sets for each year / semester
-  const moduleSets = {};
-
-  return (moduleCode: ModuleCode, year: string, semester: Semester): ?ModuleInfo => {
-    // Get detailed module info from the module bank
-    const module = state.moduleBank.modules[moduleCode];
-    if (!module) return null;
-
-    // Build a set of modules that have been taken before this semester
-    const key = `${year}-${semester}`;
-    let moduleSet = moduleSets[key];
-    if (!moduleSet) {
-      // If the set has never been built before
-      moduleSet = new Set();
-      each(state.planner.modules, (timing, plannerModuleCode) => {
-        const [moduleYear, moduleSemester] = timing;
-        if (moduleYear < year || (moduleYear === year && moduleSemester < semester)) {
-          moduleSet.add(plannerModuleCode);
-        }
-      });
-      moduleSets[key] = moduleSet;
-    }
-
-    return {
-      module,
-      conflicts: checkPrerequisite(moduleSet, module.ModmavenTree),
-    };
-  };
 }
