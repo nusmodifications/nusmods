@@ -3234,5 +3234,117 @@
       "x": 103.77340883016588,
       "y": 1.3039978035313131
     }
+  },
+  "UTSRC-SR1": {
+    "roomName": "Seminar Room 1",
+    "floor": 1,
+    "location": {
+      "x": 103.77282410860063,
+      "y": 1.3042731670895074
+    }
+  },
+  "UTSRC-SR3": {
+    "roomName": "Seminar Room 3",
+    "floor": 1,
+    "location": {
+      "x": 103.77282410860063,
+      "y": 1.3042731670895074
+    }
+  },
+  "UTSRC-SR4": {
+    "roomName": "Seminar Room 4",
+    "floor": 1,
+    "location": {
+      "x": 103.77282410860063,
+      "y": 1.3042731670895074
+    }
+  },
+  "UTSRC-SR5": {
+    "roomName": "Seminar Room 5",
+    "floor": 1,
+    "location": {
+      "x": 103.77282410860063,
+      "y": 1.3042731670895074
+    }
+  },
+  "UTSRC-SR6": {
+    "roomName": "Seminar Room 6",
+    "floor": 1,
+    "location": {
+      "x": 103.77282410860063,
+      "y": 1.3042731670895074
+    }
+  },
+  "UTSRC-SR9": {
+    "roomName": "Seminar Room 9",
+    "floor": 2,
+    "location": {
+      "x": 103.773151,
+      "y": 1.3043189
+    }
+  },
+  "UTSRC-SR8": {
+    "roomName": "Seminar Room 8",
+    "floor": 2,
+    "location": {
+      "x": 103.773151,
+      "y": 1.3043189
+    }
+  },
+  "ERC-ALR": {
+    "roomName": "Active Learning Room",
+    "floor": 2,
+    "location": {
+      "x": 103.7728786,
+      "y": 1.3063385
+    }
+  },
+  "ERC-SR4": {
+    "roomName": "Seminar Room 4",
+    "floor": 2,
+    "location": {
+      "x": 103.7728786,
+      "y": 1.3063385
+    }
+  },
+  "ERC-SR9CAM": {
+    "roomName": "Charted Asset Management Seminar Room ",
+    "floor": 2,
+    "location": {
+      "x": 103.7728749,
+      "y": 1.3062172
+    }
+  },
+  "UTSRC-LT50": {
+    "roomName": "Lecture Theater 50",
+    "floor": 1,
+    "location": {
+      "x": 103.77278119325639,
+      "y": 1.3041793140944875
+    }
+  },
+  "UTSRC-LT53": {
+    "roomName": "Lecture Theater 53",
+    "floor": 2,
+    "location": {
+      "x": 103.77297163009645,
+      "y": 1.3041498174381898
+    }
+  },
+  "ERC-SR8": {
+    "roomName": "Seminar Room 8",
+    "floor": 2,
+    "location": {
+      "x": 103.7728786,
+      "y": 1.3063385
+    }
+  },
+  "ERC-SR10": {
+    "roomName": "Seminar Room 10",
+    "floor": 2,
+    "location": {
+      "x": 103.7727329,
+      "y": 1.3057714
+    }
   }
 }
