@@ -60,6 +60,15 @@
   }
 }
 
+.backerAvatars {
+  margin-bottom: 1.5rem;
+  overflow: auto;
+
+  img {
+    display: block;
+  }
+}
+
 .githubLinks,
 .contributeLinks {
   display: grid;

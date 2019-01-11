@@ -213,7 +213,7 @@ class ContributeContainer extends Component<Props, State> {
             <ExternalLink href="https://opencollective.com">OpenCollective</ExternalLink>.
           </p>
 
-          <p>
+          <p className={styles.backerAvatars}>
             <ExternalLink href="https://opencollective.com/nusmods#backers">
               <img
                 alt="Avatar of our backers"
