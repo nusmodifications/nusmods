@@ -37,7 +37,7 @@ function TimetableActions(props: Props) {
       role="toolbar"
       aria-label="Timetable utilities"
     >
-      <div className={styles.leftButtonGroup} role="group" aria-label="Timetable manipulation">
+      <div className={styles.buttonGroup} role="group" aria-label="Timetable manipulation">
         <button
           type="button"
           className={classnames('btn btn-outline-primary btn-svg')}
@@ -81,7 +81,7 @@ function TimetableActions(props: Props) {
         </button>
       </div>
 
-      <div className={styles.rightButtonGroup} role="group" aria-label="Timetable exporting">
+      <div className={styles.buttonGroup} role="group" aria-label="Timetable exporting">
         <ExportMenu semester={props.semester} />
 
         <ShareTimetable semester={props.semester} timetable={props.timetable} />

@@ -28,6 +28,7 @@ import Announcements from 'views/components/notfications/Announcements';
 import Title from 'views/components/Title';
 import ScrollToTop from 'views/components/ScrollToTop';
 import { Archive } from 'views/components/icons';
+import ErrorBoundary from 'views/errors/ErrorBoundary';
 import ExternalLink from 'views/components/ExternalLink';
 
 import styles from './ModulePageContent.scss';
@@ -216,7 +217,9 @@ export default class ModulePageContent extends Component<Props, State> {
 
             <section className={styles.section} id={SIDE_MENU_ITEMS.prerequisites}>
               <h2 className={styles.sectionHeading}>Prerequisite Tree</h2>
-              <ModuleTree module={module} />
+              <ErrorBoundary>
+                <ModuleTree module={module} />
+              </ErrorBoundary>
             </section>
 
             <section className={styles.section} id="timetable">
