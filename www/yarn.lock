@@ -10599,10 +10599,10 @@ react-error-overlay@^5.1.0:
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-5.1.0.tgz#c516995a5652e7bfbed8b497910d5280df74a7e8"
   integrity sha512-akMy/BQT5m1J3iJIHkSb4qycq2wzllWsmmolaaFVnb+LPV9cIJ/nTud40ZsiiT0H3P+/wXIdbjx2fzF61OaeOQ==
 
-react-feather@1.1.4:
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/react-feather/-/react-feather-1.1.4.tgz#d0143da95f9d52843cf13a553091573a7c617897"
-  integrity sha512-Odke3WUl00+a2scGQKlep4m+qDESl/x+PsTRB3v6fAV/2dteF4EaRjqhX8h7HM3mU3V3v0xGTv8Z5S26bpQ5PQ==
+react-feather@1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/react-feather/-/react-feather-1.1.5.tgz#f7f9384c17d2d061b5b8298f46efc0e497f48469"
+  integrity sha512-hAPWatSFnhTNp9Ub96B7LMgOnWzXonA/LxqC2ANfUuc57jJocuWyO96yow2flUUDpitodh9mf6iOZzkyGYmAng==
 
 react-helmet@5.2.0:
   version "5.2.0"
