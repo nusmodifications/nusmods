@@ -1,6 +1,6 @@
 // @flow
 
-import { checkPrerequisite } from 'utils/planner';
+import { checkPrerequisite, conflictToText } from 'utils/planner';
 
 describe(checkPrerequisite, () => {
   const moduleSet = new Set(['CS1010S', 'CS2107', 'CS2105', 'MA1101R', 'MA1521', 'MA2104']);
@@ -119,5 +119,16 @@ describe(checkPrerequisite, () => {
         ],
       },
     ]);
+  });
+});
+
+describe(conflictToText, () => {
+  test('should describe single modules', () => {
+    expect(
+      conflictToText({
+        name: 'CS1010S',
+        children: [],
+      }),
+    ).toEqual('CS1010S');
   });
 });

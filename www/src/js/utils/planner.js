@@ -56,6 +56,11 @@ export function checkPrerequisite(moduleSet: Set<ModuleCode>, tree: TreeFragment
  * Converts conflicts into human readable text form
  */
 export function conflictToText(conflict: TreeFragment) {
+  // TreeFragment appears to be incorrectly typed. Sometimes for no apparent
+  // reason the fragment is double wrapped in an array
+  // eslint-disable-next-line no-param-reassign
+  if (Array.isArray(conflict)) conflict = conflict[0];
+
   if (conflict.name === 'or') {
     return conflict.children.map(conflictToText).join(' or ');
   } else if (conflict.name === 'and') {
