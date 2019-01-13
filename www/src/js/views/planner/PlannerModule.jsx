@@ -11,7 +11,6 @@ import classnames from 'classnames';
 import { examDateToDate, renderMCs } from 'utils/modules';
 import { conflictToText } from 'utils/planner';
 import { AlertTriangle, ChevronDown } from 'views/components/icons';
-import Tooltip from 'views/components/Tooltip';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
 import { modulePage } from 'views/routes/paths';
 import styles from './PlannerModule.scss';
@@ -59,27 +58,24 @@ export default class PlannerModule extends PureComponent<Props> {
   }
 
   renderConflict() {
-    const { conflicts, moduleCode } = this.props;
+    const { conflicts } = this.props;
     if (!conflicts) return null;
 
     return (
-      <Tooltip
-        content={
-          <div className={styles.prereqs}>
-            <p>{moduleCode} requires these modules to be taken</p>
-            <ul>
-              {conflicts.map((conflict, i) => (
-                <li key={i}>
-                  <LinkModuleCodes>{conflictToText(conflict)}</LinkModuleCodes>
-                </li>
-              ))}
-            </ul>
-          </div>
-        }
-        interactive
-      >
-        <AlertTriangle className={styles.warningIcon} />
-      </Tooltip>
+      <div className={styles.conflicts}>
+        <div className={styles.conflictHeader}>
+          <AlertTriangle className={styles.warningIcon} />
+          <p>These modules may need to be taken first</p>
+        </div>
+
+        <ul className={styles.prereqs}>
+          {conflicts.map((conflict, i) => (
+            <li key={i}>
+              <LinkModuleCodes>{conflictToText(conflict)}</LinkModuleCodes>
+            </li>
+          ))}
+        </ul>
+      </div>
     );
   }
 
@@ -132,6 +128,8 @@ export default class PlannerModule extends PureComponent<Props> {
             {...provided.draggableProps}
             {...provided.dragHandleProps}
           >
+            <Downshift onChange={this.onMenuSelect}>{this.renderMenu}</Downshift>
+
             <div className={styles.moduleInfo}>
               <div className={styles.moduleName}>
                 <Link to={modulePage(moduleCode, moduleTitle)}>
@@ -140,10 +138,6 @@ export default class PlannerModule extends PureComponent<Props> {
               </div>
 
               {this.renderMeta()}
-            </div>
-
-            <div className={styles.actions}>
-              <Downshift onChange={this.onMenuSelect}>{this.renderMenu}</Downshift>
 
               {this.renderConflict()}
             </div>

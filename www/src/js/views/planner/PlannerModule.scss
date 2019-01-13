@@ -2,7 +2,6 @@
 @import 'variables';
 
 .module {
-  display: flex;
   padding: $module-padding-v $module-padding-h;
   margin-bottom: 0.4rem;
   font-size: 0.9rem;
@@ -30,27 +29,15 @@
   }
 }
 
-.actions {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  justify-content: space-between;
-}
-
 .menuBtn {
   position: relative;
+  float: right;
   margin: -0.3rem -0.3rem 0 0;
 
   :global(.close) {
     float: none;
     color: #fff;
   }
-}
-
-.warningIcon {
-  width: 1.8rem;
-  height: 1.8rem;
-  margin-left: 0.5rem;
 }
 
 .moduleMeta {
@@ -77,11 +64,30 @@
   }
 }
 
-.prereqs {
-  text-align: left;
+.conflicts {
+  padding-top: 0.4rem;
+  margin-top: 0.4rem;
+  font-size: $font-size-s;
+  line-height: 1.25;
+  border-top: 1px solid darken(theme-color('warning'), 10);
+}
 
-  p,
-  ul {
-    margin: 0 0 0.2rem;
+.warningIcon {
+  flex: 0 0 1.5rem;
+  margin-right: 0.4rem;
+}
+
+.conflictHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.3rem;
+
+  p {
+    margin-bottom: 0;
   }
+}
+
+.prereqs {
+  padding: 0;
+  margin: 0 0 0.2rem 1rem;
 }
