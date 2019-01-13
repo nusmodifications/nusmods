@@ -48,7 +48,10 @@ export default class ErrorPage extends PureComponent<Props> {
             <p>
               An error report has been made and we will look into this. We would really appreciate
               it if you could{' '}
-              <button className={styles.link} onClick={() => Sentry.showReportDialog()}>
+              <button
+                className={classnames('btn btn-link', styles.link)}
+                onClick={() => Sentry.showReportDialog()}
+              >
                 tell us more about what happened
               </button>{' '}
               so we can better fix this.
