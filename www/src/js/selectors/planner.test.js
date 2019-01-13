@@ -4,14 +4,14 @@ import { getAcadYearModules } from 'selectors/planner';
 import type { PlannerState } from 'types/reducers';
 import type { State } from 'reducers';
 
+/** @var Module */
+import CS3216 from '__mocks__/modules/CS3216.json';
+
 /* eslint-disable no-useless-computed-key */
 
 describe(getAcadYearModules, () => {
-  const moduleBank = {
-    modules: {},
-  };
-
-  const getState = (planner: PlannerState): State => ({ planner, moduleBank }: any);
+  const getState = (planner: PlannerState): State =>
+    ({ planner, moduleBank: { modules: {} } }: any);
 
   test('should add semesters for empty years', () => {
     const emptyYear = {
@@ -108,6 +108,38 @@ describe(getAcadYearModules, () => {
         [3]: [],
         [4]: [],
       },
+    });
+  });
+
+  // Allow variants to fulfill prereqs eg. CS1010S should fulfill CS1010
+  // This is a heuristic - not all variants are equal, but it should work
+  // in most cases
+  test('should allow variants to serve as prereqs', () => {
+    const planner: PlannerState = {
+      minYear: '2018/2019',
+      maxYear: '2018/2019',
+      modules: {
+        // CS3216 requires CS2103, but we have CS2103T
+        CS2103T: ['2018/2019', 1, 0],
+        CS3216: ['2018/2019', 2, 0],
+      },
+    };
+
+    const moduleBank = {
+      modules: {
+        CS3216,
+      },
+    };
+
+    const state: any = {
+      planner,
+      moduleBank,
+    };
+
+    expect(getAcadYearModules(state)).toHaveProperty('2018/2019.2.0', {
+      moduleCode: 'CS3216',
+      moduleInfo: CS3216,
+      conflicts: null,
     });
   });
 });

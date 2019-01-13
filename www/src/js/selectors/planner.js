@@ -89,7 +89,13 @@ export function getAcadYearModules(state: State): PlannerModulesWithInfo {
       );
 
       // Add taken modules to set of modules taken for prerequisite calculation
-      moduleCodes.forEach((moduleCode) => modulesTaken.add(moduleCode));
+      moduleCodes.forEach((moduleCode) => {
+        modulesTaken.add(moduleCode);
+
+        // Also try to match the non-variant version of the module code
+        const match = /([A-Z]+\d+)[A-Z]+$/gi.exec(moduleCode);
+        if (match) modulesTaken.add(match[1]);
+      });
     });
   });
 
