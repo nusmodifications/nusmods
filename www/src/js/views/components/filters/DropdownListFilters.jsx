@@ -3,7 +3,7 @@
 import React, { PureComponent } from 'react';
 import Downshift from 'downshift';
 import classnames from 'classnames';
-import { each, values, uniq } from 'lodash';
+import { each, values, uniq, omit } from 'lodash';
 
 import type { OnFilterChange } from 'types/views';
 import type { DownshiftState, StateChangeOptions } from 'downshift';
@@ -55,8 +55,8 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
     this.setState({ inputValue: this.state.inputValue });
   };
 
-  onInputValueChange = (newInputValue: string) => {
-    this.setState({ inputValue: newInputValue });
+  onInputValueChange = (inputValue: string) => {
+    this.setState({ inputValue });
   };
 
   focusInput = () => {
@@ -68,10 +68,7 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
   stateReducer = (state: DownshiftState<string>, changes: StateChangeOptions<string>) => {
     switch (changes.type) {
       case Downshift.stateChangeTypes.blurInput:
-        return {
-          ...changes,
-          inputValue: state.inputValue,
-        };
+        return omit(changes, 'inputValue');
       default:
         return changes;
     }
@@ -113,8 +110,8 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
           <label htmlFor={htmlId}>{group.label}</label>
         </h4>
 
-        {/* Use a native select for mobile devices */}
         {matchBreakpoint ? (
+          // Use a native select for mobile devices
           <select
             className="form-control"
             id={htmlId}
@@ -128,14 +125,13 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
             <option>{placeholder}</option>
             {this.displayedFilters().map(([filter, count]) => (
               <option key={filter.id} value={filter.id}>
-                {/* Extra layer of interpolation to workaround https://github.com/facebook/react/issues/11911 */}
                 {/* Use a unicode checkbox to indicate to the user filters that are already enabled */}
-                {filter.enabled ? `☑ ${filter.label} (${count})` : `${filter.label} (${count})`}
+                {filter.enabled && '☑'} {filter.label} ({count})
               </option>
             ))}
           </select>
         ) : (
-          /* Use a search-select combo dropdown on desktop */
+          // Use a search-select combo dropdown on desktop
           <Downshift
             onOuterClick={this.onOuterClick}
             onChange={(selectedItem, { clearSelection }) => {

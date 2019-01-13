@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { has } from 'lodash';
+import { has, omit } from 'lodash';
 import type { ChildrenFunction, DownshiftState, StateChangeOptions } from 'downshift';
 import Downshift from 'downshift';
 import classnames from 'classnames';
@@ -29,52 +29,46 @@ type Props = {
 type State = {
   isOpen: boolean,
   inputValue: string,
-  selectedItem: ?ModuleCode,
 };
 
 export class ModulesSelectComponent extends Component<Props, State> {
   state = {
     isOpen: false,
     inputValue: '',
-    selectedItem: null,
   };
 
+  // This component does not use the usual onChange and onInputChange helper
+  // props because we don't want to trigger some of the default
   onStateChange = (changes: StateChangeOptions<ModuleCode>) => {
     if (has(changes, 'selectedItem')) {
       this.props.onChange(changes.selectedItem);
+    } else if (
+      has(changes, 'inputValue') &&
+      changes.type !== Downshift.stateChangeTypes.blurInput
+    ) {
+      // This allows us to retain input value when an element is selected
+      this.setState({ inputValue: changes.inputValue });
     }
   };
 
-  onInputValueChange = (newInputValue: string) => {
-    this.setState({ inputValue: newInputValue });
-  };
-
-  onOuterClick = () => {
+  onOuterClick = () =>
     this.setState({
       isOpen: false,
       inputValue: this.state.inputValue,
-      selectedItem: null,
     });
-  };
 
-  closeSelect = () => {
+  closeSelect = () =>
     this.setState({
       isOpen: false,
       inputValue: '',
-      selectedItem: null,
     });
-  };
 
-  openSelect = () => {
+  openSelect = () =>
     this.setState({
       isOpen: true,
     });
-  };
 
-  preventResetOnBlur = (
-    state: DownshiftState<ModuleCode>,
-    changes: StateChangeOptions<ModuleCode>,
-  ) => {
+  stateReducer = (state: DownshiftState<ModuleCode>, changes: StateChangeOptions<ModuleCode>) => {
     switch (changes.type) {
       case Downshift.stateChangeTypes.blurInput:
         if (state.inputValue) {
@@ -82,6 +76,7 @@ export class ModulesSelectComponent extends Component<Props, State> {
         }
         this.closeSelect();
         return changes;
+
       case Downshift.stateChangeTypes.keyDownEnter:
       case Downshift.stateChangeTypes.clickItem:
         // Don't reset highlighted index back to 0 when an item is selected
@@ -89,6 +84,11 @@ export class ModulesSelectComponent extends Component<Props, State> {
           ...changes,
           highlightedIndex: state.highlightedIndex,
         };
+
+      case Downshift.stateChangeTypes.mouseUp:
+        // Don't clear input on blur
+        return omit(changes, 'inputValue');
+
       default:
         return changes;
     }
@@ -191,10 +191,9 @@ export class ModulesSelectComponent extends Component<Props, State> {
         isOpen={isOpen}
         onOuterClick={this.onOuterClick}
         onStateChange={this.onStateChange}
-        onInputValueChange={this.onInputValueChange}
         inputValue={this.state.inputValue}
-        selectedItem={this.state.selectedItem}
-        stateReducer={this.preventResetOnBlur}
+        selectedItem={null}
+        stateReducer={this.stateReducer}
         defaultHighlightedIndex={0}
       >
         {this.renderDropdown}
