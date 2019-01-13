@@ -57,6 +57,8 @@ export class ModulesSelectComponent extends Component<Props, State> {
       inputValue: this.state.inputValue,
     });
 
+  input = React.createRef<HTMLInputElement>();
+
   closeSelect = () =>
     this.setState({
       isOpen: false,
@@ -64,9 +66,18 @@ export class ModulesSelectComponent extends Component<Props, State> {
     });
 
   openSelect = () =>
-    this.setState({
-      isOpen: true,
-    });
+    this.setState(
+      {
+        isOpen: true,
+      },
+      () => {
+        // On iOS the modal may be scrolled down when it is opened, so the
+        // input is out of view. This makes sure it is always visible
+        if (this.input.current) {
+          this.input.current.scrollIntoView();
+        }
+      },
+    );
 
   stateReducer = (state: DownshiftState<ModuleCode>, changes: StateChangeOptions<ModuleCode>) => {
     switch (changes.type) {
@@ -118,6 +129,7 @@ export class ModulesSelectComponent extends Component<Props, State> {
           {placeholder}
         </label>
         <input
+          ref={this.input}
           {...getInputProps({
             className: classnames(styles.input, elements.addModuleInput),
             autoFocus: isModalOpen,
