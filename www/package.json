@@ -80,7 +80,7 @@
     "js-combinatorics": "0.5.4",
     "lodash-webpack-plugin": "0.11.5",
     "mini-css-extract-plugin": "0.5.0",
-    "moment": "2.22.2",
+    "moment": "2.23.0",
     "nightwatch": "0.9.21",
     "node-sass": "4.11.0",
     "postcss-custom-properties": "7.0.0",
