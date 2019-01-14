@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import Loader from 'views/components/LoadingSpinner';
 
 import type { Contributor } from 'types/contributor';
-import getContributors from 'apis/contributor';
+import { getContributors } from 'apis/github';
 import ContributorList from 'views/contribute/ContributorList';
 import StaticPage from './StaticPage';
 

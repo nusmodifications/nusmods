@@ -10,7 +10,7 @@ import type { ModuleCondensed } from 'types/modules';
 
 import { toggleFeedback } from 'actions/app';
 import { toggleBetaTesting } from 'actions/settings';
-import getContributors from 'apis/contributor';
+import { getContributors } from 'apis/github';
 import { modulePage } from 'views/routes/paths';
 import { Zap, DollarSign } from 'views/components/icons';
 import ExternalLink from 'views/components/ExternalLink';
