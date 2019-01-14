@@ -11,12 +11,8 @@
   }
 }
 
-.form {
-  margin-top: 1rem;
-
-  textarea {
-    font-size: 0.9rem;
-  }
+.form textarea {
+  font-size: 0.9rem;
 }
 
 .actions {
@@ -27,4 +23,11 @@
   color: var(--gray-light);
   border: 0;
   background: none;
+}
+
+.tip {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  line-height: 1.25;
+  color: var(--gray);
 }

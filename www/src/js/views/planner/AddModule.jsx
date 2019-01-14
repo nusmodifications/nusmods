@@ -56,7 +56,7 @@ export default class AddModule extends PureComponent<Props, State> {
             onClick={() => this.setState({ isOpen: true })}
           >
             <Plus />
-            Add Module
+            Add Modules
           </button>
         </div>
       );
@@ -98,6 +98,9 @@ export default class AddModule extends PureComponent<Props, State> {
             <Close />
             <span className="sr-only">Cancel</span>
           </button>
+          <p className={styles.tip}>
+            Tip: You can add multiple module at once, eg. copy from your transcript
+          </p>
         </div>
       </form>
     );
