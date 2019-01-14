@@ -278,7 +278,10 @@ export class VenuesContainerComponent extends Component<Props, State> {
           {size(matchedVenues) === 0 ? (
             this.renderNoResult(unfilteredCount)
           ) : (
-            <VenueList venues={matchedVenues} selectedVenue={selectedVenue} />
+            <VenueList
+              venues={matchedVenues.map(([venue]) => venue)}
+              selectedVenue={selectedVenue}
+            />
           )}
         </div>
 
