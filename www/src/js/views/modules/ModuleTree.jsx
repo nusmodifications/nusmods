@@ -77,15 +77,16 @@ function Tree({ layer, name, branches, isPrereq = false }: TreeDisplay) {
 }
 
 function ModuleTree(props: Props) {
-  const modTree = props.module.ModmavenTree;
-  const lockedModules = props.module.LockedModules;
+  const { ModmavenTree, LockedModules } = props.module;
+  if (!ModmavenTree) return null;
+
   return (
     <div className={styles.container}>
-      {lockedModules &&
-        lockedModules.length > 0 && (
+      {LockedModules &&
+        LockedModules.length > 0 && (
           <Fragment>
             <ul className={styles.prereqTree}>
-              {lockedModules.map((name) => (
+              {LockedModules.map((name) => (
                 <Tree key={name} layer={0} name={name} branches={null} isPrereq />
               ))}
             </ul>
@@ -93,7 +94,7 @@ function ModuleTree(props: Props) {
           </Fragment>
         )}
       <ul className={classnames(styles.tree, styles.root)}>
-        <Tree layer={1} name={modTree.name} branches={_.castArray(modTree.children)} />
+        <Tree layer={1} name={ModmavenTree.name} branches={_.castArray(ModmavenTree.children)} />
       </ul>
     </div>
   );
