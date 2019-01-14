@@ -205,22 +205,21 @@ export class VenuesContainerComponent extends Component<Props, State> {
     return (
       <Fragment>
         <Warning message="No matching venues found" />
-        {!!unfilteredCount &&
-          isAvailabilityEnabled && (
-            <p className="text-center text-muted">
-              {unfilteredCount === 1
-                ? 'There is a venue that is not shown because it is not free'
-                : `There are ${unfilteredCount} venues that are not shown because they are not free`}
-              <br />
-              <button
-                type="button"
-                className="btn btn-link"
-                onClick={() => this.setState({ isAvailabilityEnabled: false })}
-              >
-                Cancel free room search
-              </button>
-            </p>
-          )}
+        {!!unfilteredCount && isAvailabilityEnabled && (
+          <p className="text-center text-muted">
+            {unfilteredCount === 1
+              ? 'There is a venue that is not shown because it is not free'
+              : `There are ${unfilteredCount} venues that are not shown because they are not free`}
+            <br />
+            <button
+              type="button"
+              className="btn btn-link"
+              onClick={() => this.setState({ isAvailabilityEnabled: false })}
+            >
+              Cancel free room search
+            </button>
+          </p>
+        )}
       </Fragment>
     );
   }

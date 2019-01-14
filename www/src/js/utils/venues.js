@@ -82,15 +82,16 @@ export function mergeModules(classes: VenueLesson[], modules: ModuleCode[]): Ven
   const mergedModuleCode = modules.join(`/${ZWSP}`);
   const removeModuleCodes = new Set(modules.slice(1));
 
-  return classes.filter((lesson) => !removeModuleCodes.has(lesson.ModuleCode)).map(
-    (lesson) =>
+  return classes
+    .filter((lesson) => !removeModuleCodes.has(lesson.ModuleCode))
+    .map((lesson) =>
       lesson.ModuleCode === modules[0]
         ? {
             ...lesson,
             ModuleCode: mergedModuleCode,
           }
         : lesson,
-  );
+    );
 }
 
 export function mergeDualCodedModules(classes: VenueLesson[]): VenueLesson[] {
