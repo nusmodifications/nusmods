@@ -1,7 +1,8 @@
 // @flow
 
+import type { LatLng, Viewport } from 'react-leaflet';
 import React, { PureComponent } from 'react';
-import { type LatLng, Map, Marker, TileLayer } from 'react-leaflet';
+import { Map, Marker, TileLayer } from 'react-leaflet';
 import classnames from 'classnames';
 import axios from 'axios';
 
@@ -34,6 +35,9 @@ type State = {
   submitted: boolean,
   isMapExpanded: boolean,
   promptUpdateMap: boolean,
+  // viewport is stored as a separate state because viewport may be animated separately
+  // from location
+  viewport: Viewport,
   error?: any,
 };
 
@@ -52,7 +56,7 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
     super(props);
 
     const { existingLocation } = props;
-    const location = {
+    const locationInfo = {
       roomName: '',
       floor: 1,
       location: wellKnownLocations['Central Library'],
@@ -60,25 +64,31 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
 
     // Make sure we copy only non-null values into the new location
     if (existingLocation) {
-      location.roomName = existingLocation.roomName;
+      locationInfo.roomName = existingLocation.roomName;
 
       if (typeof existingLocation.floor === 'number') {
-        location.floor = existingLocation.floor;
+        locationInfo.floor = existingLocation.floor;
       }
 
       if (existingLocation.location) {
-        location.location = [existingLocation.location.y, existingLocation.location.x];
+        locationInfo.location = [existingLocation.location.y, existingLocation.location.x];
       }
     }
 
+    const viewport = {
+      center: locationInfo.location,
+      zoom: 19,
+    };
+
     this.state = {
+      viewport,
       reporterEmail: '',
       latlngUpdated: false,
       submitting: false,
       submitted: false,
       isMapExpanded: false,
       promptUpdateMap: false,
-      ...location,
+      ...locationInfo,
     };
   }
 
@@ -115,9 +125,7 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
     if (!(evt.target instanceof HTMLSelectElement)) return;
 
     const location = wellKnownLocations[evt.target.value];
-    if (location) {
-      this.setState({ location });
-    }
+    if (location) this.updateLocation(location);
   };
 
   geolocate = () => {
@@ -129,13 +137,21 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
     );
   };
 
-  updateLocation = (latlng: LatLng) => {
+  updateLocation = (latlng: LatLng, updateViewport: boolean = true) => {
     const location = Array.isArray(latlng) ? latlng : [latlng.lat, latlng.lng];
-
-    this.setState({
+    const update: $Shape<State> = {
       location,
       latlngUpdated: true,
-    });
+    };
+
+    if (updateViewport) {
+      update.viewport = {
+        ...this.state.viewport,
+        center: latlng,
+      };
+    }
+
+    this.setState(update);
   };
 
   render() {
@@ -222,12 +238,12 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
         >
           <Map
             className={mapStyles.map}
-            center={location}
-            zoom={19}
+            viewport={this.state.viewport}
             maxZoom={19}
-            onViewportChange={(viewport) => {
-              this.updateLocation(viewport.center);
-            }}
+            // Don't update viewport because this is also called when viewport is animated
+            // and updating viewport will cause the
+            onViewportChange={(viewport) => this.updateLocation(viewport.center, false)}
+            onViewportChanged={(viewport) => this.setState({ viewport })}
             onClick={(evt) => this.updateLocation(evt.latlng)}
           >
             <Marker
