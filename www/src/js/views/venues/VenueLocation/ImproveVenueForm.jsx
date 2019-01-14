@@ -6,7 +6,7 @@ import { Map, Marker, TileLayer } from 'react-leaflet';
 import classnames from 'classnames';
 import axios from 'axios';
 
-import type { LatLngTuple, VenueLocation } from 'types/venues';
+import type { LatLngTuple, Venue, VenueLocation } from 'types/venues';
 import config from 'config';
 import { MapPin, ThumbsUp } from 'views/components/icons';
 import LoadingSpinner from 'views/components/LoadingSpinner';
@@ -17,7 +17,7 @@ import mapStyles from 'views/components/map/LocationMap.scss';
 import styles from './ImproveVenueForm.scss';
 
 type Props = {
-  venue: string,
+  venue: Venue,
   existingLocation?: ?VenueLocation,
   onBack?: () => void,
 };
@@ -281,7 +281,7 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
               [styles.shake]: this.state.promptUpdateMap,
             })}
           >
-            Drag marker or click on map so that the marker is pointing to the location.
+            Move marker or map so that marker is pointing to {this.props.venue}
           </small>
 
           {'geolocation' in navigator && (
