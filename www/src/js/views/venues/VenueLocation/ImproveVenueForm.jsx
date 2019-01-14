@@ -4,12 +4,14 @@ import React, { PureComponent } from 'react';
 import { type LatLng, Map, Marker, TileLayer } from 'react-leaflet';
 import classnames from 'classnames';
 import axios from 'axios';
+
 import type { LatLngTuple, VenueLocation } from 'types/venues';
 import config from 'config';
 import { MapPin, ThumbsUp } from 'views/components/icons';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import { icon } from 'views/components/map/icons';
 import ExpandMap from 'views/components/map/ExpandMap';
+
 import mapStyles from 'views/components/map/LocationMap.scss';
 import styles from './ImproveVenueForm.scss';
 
@@ -31,6 +33,7 @@ type State = {
   submitting: boolean,
   submitted: boolean,
   isMapExpanded: boolean,
+  promptUpdateMap: boolean,
   error?: any,
 };
 
@@ -74,6 +77,7 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
       submitting: false,
       submitted: false,
       isMapExpanded: false,
+      promptUpdateMap: false,
       ...location,
     };
   }
@@ -81,12 +85,20 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
   onSubmit = (evt: SyntheticEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
+    // Don't allow the user to submit without changing the latlng on the map
+    if (!this.state.latlngUpdated) {
+      // Shake the prompt a little to prompt the user to update the map
+      this.setState({ promptUpdateMap: true });
+      setTimeout(() => this.setState({ promptUpdateMap: false }), 500);
+      return;
+    }
+
     this.setState({ submitting: true });
 
     const { reporterEmail, roomName, location, floor } = this.state;
     const { venue } = this.props;
 
-    return axios
+    axios
       .post(config.venueFeedbackApi, {
         venue,
         reporterEmail,
@@ -250,6 +262,7 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
           <small
             className={classnames(styles.instructions, {
               [styles.moved]: this.state.latlngUpdated,
+              [styles.shake]: this.state.promptUpdateMap,
             })}
           >
             Drag marker or click on map so that the marker is pointing to the location.
@@ -275,7 +288,12 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
             </button>
           )}
 
-          <button className="btn btn-lg btn-primary" type="submit">
+          <button
+            className={classnames('btn btn-lg btn-primary', {
+              disabled: !this.state.latlngUpdated,
+            })}
+            type="submit"
+          >
             Submit
           </button>
         </div>

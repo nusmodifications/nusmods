@@ -10,8 +10,9 @@
   position: absolute;
   top: 0.2rem;
   right: 0.5rem;
-  opacity: 0.5;
+  opacity: 0.7;
   width: auto;
+  background: var(--body-bg);
 
   &:hover {
     opacity: 1;
@@ -33,6 +34,12 @@
 
   &.moved {
     opacity: 0;
+  }
+
+  &.shake {
+    :global {
+      animation: shake 0.25s infinite;
+    }
   }
 }
 
