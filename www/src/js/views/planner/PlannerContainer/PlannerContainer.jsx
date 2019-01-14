@@ -51,6 +51,11 @@ type State = {|
 
 const TRASH_ID = 'trash';
 
+function addYearLabel(year: string) {
+  // Remove the 20 prefix from AY
+  return year.replace(/20/g, '');
+}
+
 export class PlannerContainerComponent extends PureComponent<Props, State> {
   state = {
     loading: true,
@@ -131,7 +136,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
               )}
               onClick={() => this.props.addYear(prevYear)}
             >
-              Add Previous Year
+              Add Plans For {addYearLabel(prevYear)}
             </button>
 
             {sortedModules.map(([year, semesters]) => (
@@ -147,7 +152,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
               className={classnames(styles.addYearButton, 'btn btn-outline-primary')}
               onClick={() => this.props.addYear(nextYear)}
             >
-              Add Next Year
+              Add Plans For {addYearLabel(nextYear)}
             </button>
           </div>
 
