@@ -12,7 +12,7 @@ import { toggleFeedback } from 'actions/app';
 import { toggleBetaTesting } from 'actions/settings';
 import getContributors from 'apis/contributor';
 import { modulePage } from 'views/routes/paths';
-import { Zap } from 'views/components/icons';
+import { Zap, DollarSign } from 'views/components/icons';
 import ExternalLink from 'views/components/ExternalLink';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import ScrollToTop from 'views/components/ScrollToTop';
@@ -218,6 +218,8 @@ class ContributeContainer extends Component<Props, State> {
             <ExternalLink href="https://opencollective.com">OpenCollective</ExternalLink>.
           </p>
 
+          <p>These are our current backers:</p>
+
           <p className={styles.backerAvatars}>
             <ExternalLink href="https://opencollective.com/nusmods#backers">
               <img
@@ -230,8 +232,9 @@ class ContributeContainer extends Component<Props, State> {
           <p className="text-center">
             <ExternalLink
               href="https://opencollective.com/nusmods"
-              className="btn btn-lg btn-outline-primary"
+              className={classnames(styles.donateButton, 'btn btn-lg btn-outline-primary')}
             >
+              <DollarSign />
               Donate to NUSMods
             </ExternalLink>
           </p>
@@ -279,7 +282,9 @@ class ContributeContainer extends Component<Props, State> {
           <p>
             You can also help directly contribute code and design. We welcome all contributions, big
             and small. To get your feet wet, we suggest starting with the good first issues suitable
-            for first time contributors of various skill levels.
+            for first time contributors of various skill levels. We think NUSMods is a good way to
+            learn modern web development on a production web application and make a positive impact
+            on the lives of NUS students.
           </p>
 
           <div className={styles.contributeLinks}>
@@ -335,8 +340,6 @@ class ContributeContainer extends Component<Props, State> {
             </>
           )}
         </section>
-
-        <hr />
 
         <p className={styles.attribution}>
           Icon made by <ExternalLink href="https://www.freepik.com/">Freepik</ExternalLink> from{' '}

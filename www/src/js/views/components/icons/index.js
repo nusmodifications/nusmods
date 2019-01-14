@@ -10,6 +10,7 @@ import ChevronDown from 'react-feather/dist/icons/chevron-down';
 import Close from 'react-feather/dist/icons/x';
 import Clock from 'react-feather/dist/icons/clock';
 import Copy from 'react-feather/dist/icons/copy';
+import DollarSign from 'react-feather/dist/icons/dollar-sign';
 import Download from 'react-feather/dist/icons/download';
 import Eye from 'react-feather/dist/icons/eye';
 import EyeOff from 'react-feather/dist/icons/eye-off';
@@ -56,6 +57,7 @@ export {
   Close,
   Clock,
   Copy,
+  DollarSign,
   Download,
   Eye,
   EyeOff,
