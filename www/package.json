@@ -44,7 +44,7 @@
     "chalk": "2.4.2",
     "cheerio": "1.0.0-rc.2",
     "clean-webpack-plugin": "0.1.19",
-    "connect-history-api-fallback": "1.5.0",
+    "connect-history-api-fallback": "1.6.0",
     "copy-webpack-plugin": "4.5.4",
     "coveralls": "3.0.2",
     "cross-env": "5.2.0",
