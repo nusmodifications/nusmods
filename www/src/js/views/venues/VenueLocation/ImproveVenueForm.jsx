@@ -100,9 +100,7 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
   };
 
   onMapJump = (evt: SyntheticEvent<HTMLSelectElement>) => {
-    if (!(evt.target instanceof HTMLSelectElement)) {
-      return;
-    }
+    if (!(evt.target instanceof HTMLSelectElement)) return;
 
     const location = wellKnownLocations[evt.target.value];
     if (location) {
@@ -120,10 +118,10 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
   };
 
   updateLocation = (latlng: LatLng) => {
-    const { lat, lng } = latlng;
+    const location = Array.isArray(latlng) ? latlng : [latlng.lat, latlng.lng];
 
     this.setState({
-      location: [lat, lng],
+      location,
       latlngUpdated: true,
     });
   };
@@ -166,11 +164,7 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
             type="email"
             placeholder="example@nusmods.com"
             value={reporterEmail}
-            onChange={(evt) =>
-              this.setState({
-                reporterEmail: evt.target.value,
-              })
-            }
+            onChange={(evt) => this.setState({ reporterEmail: evt.target.value })}
           />
           <small className="form-text text-muted" id="improve-venue-email-help">
             This will be visible publicly. If you fill this we can contact you when your
@@ -186,11 +180,7 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
             type="text"
             placeholder="eg. Seminar Room 2, Physics Lab 5"
             value={roomName}
-            onChange={(evt) =>
-              this.setState({
-                roomName: evt.target.value,
-              })
-            }
+            onChange={(evt) => this.setState({ roomName: evt.target.value })}
             required
           />
         </div>
@@ -205,11 +195,7 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
             step="1"
             placeholder="eg. 1"
             value={floor}
-            onChange={(evt) =>
-              this.setState({
-                floor: parseInt(evt.target.value, 10),
-              })
-            }
+            onChange={(evt) => this.setState({ floor: parseInt(evt.target.value, 10) })}
             required
           />
           <small className="form-text text-muted" id="improve-venue-floor-help">
@@ -227,6 +213,9 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
             center={location}
             zoom={19}
             maxZoom={19}
+            onViewportChange={(viewport) => {
+              this.updateLocation(viewport.center);
+            }}
             onClick={(evt) => this.updateLocation(evt.latlng)}
           >
             <Marker
