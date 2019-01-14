@@ -121,7 +121,7 @@ class ContributeContainer extends Component<Props, State> {
                   to={`${modulePage(ModuleCode, ModuleTitle)}#reviews`}
                   target="_blank"
                 >
-                  Review <span>{ModuleCode}</span> {ModuleTitle}
+                  Review <span className={styles.reviewModuleCode}>{ModuleCode}</span> {ModuleTitle}
                 </Link>
               ))}
             </div>
@@ -172,6 +172,10 @@ class ContributeContainer extends Component<Props, State> {
                   >
                     Give Feedback
                   </button>
+                </p>
+                <p>
+                  Go to <Link to="/settings#beta">settings</Link> if you wish to stop using NUSMods
+                  Beta.
                 </p>
               </>
             ) : (
@@ -295,7 +299,14 @@ class ContributeContainer extends Component<Props, State> {
             </ExternalLink>
             <ExternalLink className="btn btn-outline-primary" href="https://t.me/NUSMods">
               <h4>Telegram Chat</h4>
-              <p>Talk to us about NUSMods development</p>
+              <p>Talk to us about NUSMods design and development</p>
+            </ExternalLink>
+            <ExternalLink
+              className="btn btn-outline-primary"
+              href="https://groups.google.com/forum/#!forum/nusmods"
+            >
+              <h4>Mailing List</h4>
+              <p>Subscribe to news and updates</p>
             </ExternalLink>
           </div>
 
