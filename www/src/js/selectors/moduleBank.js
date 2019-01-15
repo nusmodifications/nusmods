@@ -1,5 +1,6 @@
 // @flow
 
+import { createSelector } from 'reselect';
 import type { ModuleCode, ModuleCondensed, Semester } from 'types/modules';
 import type { ModuleBank } from 'reducers/moduleBank';
 import type { State } from 'reducers';
@@ -8,11 +9,14 @@ import type { ModuleSelectListItem } from 'types/reducers';
 import { getRequestModuleCode } from 'actions/moduleBank';
 import { isOngoing } from './requests';
 
-export function getModuleCondensed(
-  moduleBank: ModuleBank,
-): (moduleCode: ModuleCode) => ?ModuleCondensed {
-  return (moduleCode) => moduleBank.moduleCodes[moduleCode];
-}
+const moduleCodesSelector = (state: ModuleBank) => state.moduleCodes;
+
+// Returns a getter that returns module condensed given a module code
+export type ModuleCondensedGetter = (moduleCode: ModuleCode) => ?ModuleCondensed;
+export const getModuleCondensed = createSelector(
+  moduleCodesSelector,
+  (moduleCodes): ModuleCondensedGetter => (moduleCode) => moduleCodes[moduleCode],
+);
 
 export function getAllPendingModules(state: State): ModuleCode[] {
   return Object.keys(state.requests)
