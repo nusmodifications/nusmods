@@ -29,6 +29,7 @@ import ApiError from 'views/errors/ApiError';
 import { trackPageView } from 'bootstrapping/mamoto';
 import { DARK_MODE } from 'types/settings';
 import LoadingSpinner from './components/LoadingSpinner';
+import LoginModal from './components/accounts/LoginModal';
 import FeedbackModal from './components/FeedbackModal';
 import KeyboardShortcuts from './components/KeyboardShortcuts';
 import styles from './AppShell.scss';
@@ -146,6 +147,9 @@ export class AppShellComponent extends Component<Props, State> {
           </main>
         </div>
 
+        <ErrorBoundary>
+          <LoginModal />
+        </ErrorBoundary>
         <ErrorBoundary>
           <FeedbackModal />
         </ErrorBoundary>

@@ -1,6 +1,7 @@
 // @flow
 import type { FSA } from 'types/redux';
 import type { ColorMapping, ThemeState } from 'types/reducers';
+import type { SyncConfig } from 'types/sync';
 import type { Theme } from 'types/settings';
 
 import { SET_EXPORTED_DATA } from 'actions/export';
@@ -65,3 +66,8 @@ function theme(state: ThemeState = defaultThemeState, action: FSA): ThemeState {
 }
 
 export default theme;
+
+export const syncConfig: SyncConfig = {
+  actions: [SELECT_THEME, CYCLE_THEME],
+  keyPaths: ['id'],
+};

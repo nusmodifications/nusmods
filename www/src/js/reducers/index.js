@@ -14,6 +14,7 @@ import type { UndoHistoryState } from 'reducers/undoHistory';
 import { REMOVE_MODULE, SET_TIMETABLE } from 'actions/timetables';
 
 import persistReducer from 'storage/persistReducer';
+import syncReducer from 'reducers/sync';
 
 // Non-persisted reducers
 import requests from './requests';
@@ -40,12 +41,17 @@ export type State = {
   undoHistory: UndoHistoryState,
 };
 
+// Convenience function to both persist and sync a reducer
+const persistAndSyncReducer = (key: string, reducer: Function, config) =>
+  // $FlowFixMe - 'S is incompatible with undefined in the first argument'?
+  persistReducer(key, syncReducer(key, reducer), config);
+
 // Persist reducers
 const moduleBank = persistReducer('moduleBank', moduleBankReducer, moduleBankPersistConfig);
 const venueBank = persistReducer('venueBank', venueBankReducer, venueBankPersistConfig);
-const timetables = persistReducer('timetables', timetablesReducer, timetablesPersistConfig);
-const theme = persistReducer('theme', themeReducer);
-const settings = persistReducer('settings', settingsReducer);
+const timetables = persistAndSyncReducer('timetables', timetablesReducer, timetablesPersistConfig);
+const theme = persistAndSyncReducer('theme', themeReducer);
+const settings = persistAndSyncReducer('settings', settingsReducer);
 
 // $FlowFixMe: State default is delegated to its child reducers.
 const defaultState: State = {};

@@ -7,12 +7,13 @@ import { Link } from 'react-router-dom';
 
 import ExternalLink from 'views/components/ExternalLink';
 import config from 'config';
-import { toggleFeedback } from 'actions/app';
+import { toggleFeedback, toggleLoginDialog } from 'actions/app';
 import styles from './Footer.scss';
 
 type Props = {
   lastUpdatedDate: ?Date,
   toggleFeedback: Function,
+  toggleLoginDialog: Function,
 };
 
 export function FooterComponent(props: Props) {
@@ -43,6 +44,15 @@ export function FooterComponent(props: Props) {
     <footer className={styles.footer}>
       <div className="container">
         <ul className={styles.footerLinks}>
+          <li>
+            <button
+              type="button"
+              onClick={props.toggleLoginDialog}
+              className={classnames('btn btn-inline', styles.feedbackBtn)}
+            >
+              SIGN IN
+            </button>
+          </li>
           <li>
             <ExternalLink href={config.contact.githubRepo}>GitHub</ExternalLink>
           </li>
@@ -113,5 +123,5 @@ export default connect(
       lastUpdatedDate: lastUpdatedString && new Date(lastUpdatedString),
     };
   },
-  { toggleFeedback },
+  { toggleFeedback, toggleLoginDialog },
 )(FooterComponent);

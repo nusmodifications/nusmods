@@ -208,12 +208,13 @@ describe('stateReconciler', () => {
   };
 
   const { stateReconciler } = persistConfig;
+  const mockConfig: any = { debug: false };
   if (!stateReconciler) {
     throw new Error('No stateReconciler');
   }
 
   test('should return inbound state when academic year is the same', () => {
-    expect(stateReconciler(inbound, initialState, initialState, { debug: false })).toEqual(inbound);
+    expect(stateReconciler(inbound, initialState, initialState, mockConfig)).toEqual(inbound);
   });
 
   test('should archive old timetables and clear state when academic year is different', () => {
@@ -222,11 +223,7 @@ describe('stateReconciler', () => {
       academicYear: '2016/2017',
     };
 
-    expect(
-      stateReconciler(oldInbound, initialState, initialState, {
-        debug: false,
-      }),
-    ).toEqual({
+    expect(stateReconciler(oldInbound, initialState, initialState, mockConfig)).toEqual({
       ...initialState,
       archive: {
         ...oldArchive,

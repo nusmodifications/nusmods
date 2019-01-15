@@ -5,6 +5,7 @@ import { REHYDRATE } from 'redux-persist';
 
 import type { FSA } from 'types/redux';
 import type { SettingsState } from 'types/reducers';
+import type { SyncConfig } from 'types/sync';
 
 import {
   SELECT_NEW_STUDENT,
@@ -127,3 +128,8 @@ function settings(state: SettingsState = defaultSettingsState, action: FSA): Set
 }
 
 export default settings;
+
+export const syncConfig: SyncConfig = {
+  actions: [SELECT_MODE, TOGGLE_MODE],
+  keyPaths: ['mode'],
+};

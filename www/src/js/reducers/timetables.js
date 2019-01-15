@@ -3,6 +3,7 @@ import type { FSA } from 'types/redux';
 import type { Semester } from 'types/modules';
 import type { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
 import type { ColorMapping, TimetablesState } from 'types/reducers';
+import type { SyncConfig } from 'types/sync';
 
 import { get, omit, values } from 'lodash';
 import update from 'immutability-helper';
@@ -241,3 +242,20 @@ export function getSemesterTimetable(
     colors: state.colors[semester] || EMPTY_OBJECT,
   };
 }
+
+// This is declared as a function instead of a const object
+// as all these consts are undefined on file load.
+export const syncConfig = (): SyncConfig => ({
+  actions: [
+    SET_TIMETABLE,
+    CHANGE_LESSON,
+    ADD_MODULE,
+    REMOVE_MODULE,
+    SELECT_MODULE_COLOR,
+    CHANGE_LESSON,
+    SET_LESSON_CONFIG,
+    HIDE_LESSON_IN_TIMETABLE,
+    SHOW_LESSON_IN_TIMETABLE,
+  ],
+  keyPaths: ['lessons', 'colors', 'hidden'],
+});

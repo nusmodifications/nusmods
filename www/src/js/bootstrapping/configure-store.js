@@ -6,6 +6,8 @@ import update, { extend } from 'immutability-helper';
 import rootReducer, { type State } from 'reducers';
 import requestsMiddleware from 'middlewares/requests-middleware';
 import ravenMiddleware from 'middlewares/raven-middleware';
+import syncCompleter from 'middlewares/sync-completer';
+import syncMiddleware from 'bootstrapping/configure-sync-middleware';
 
 // Typedef for Webpack-augmented global module variable.
 // Docs: https://webpack.js.org/api/hot-module-replacement/
@@ -27,7 +29,7 @@ extend('$auto', (value, object) => (object ? update(object, value) : update({}, 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 export default function configureStore(defaultState?: State) {
-  const middlewares = [ravenMiddleware, thunk, requestsMiddleware];
+  const middlewares = [ravenMiddleware, thunk, requestsMiddleware, syncMiddleware, syncCompleter];
 
   if (process.env.NODE_ENV === 'development') {
     /* eslint-disable */
