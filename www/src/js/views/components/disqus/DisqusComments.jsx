@@ -1,7 +1,6 @@
 // @flow
 
 import type { DisqusConfig } from 'types/views';
-import Raven from 'raven-js';
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 
@@ -9,6 +8,7 @@ import type { Mode } from 'types/settings';
 import type { State } from 'reducers';
 import config from 'config';
 import insertScript from 'utils/insertScript';
+import { getScriptErrorHandler } from 'utils/error';
 
 type Props = {|
   ...DisqusConfig,
@@ -52,7 +52,7 @@ class DisqusComments extends PureComponent<Props> {
       insertScript(`https://${config.disqusShortname}.disqus.com/embed.js`, {
         id: SCRIPT_ID,
         async: true,
-      }).catch((e) => Raven.captureException(e));
+      }).catch(getScriptErrorHandler('Disqus comments'));
     }
   };
 

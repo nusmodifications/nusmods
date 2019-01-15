@@ -1,11 +1,11 @@
 // @flow
 import { type Node, Component } from 'react';
-import Raven from 'raven-js';
+import { captureException } from 'utils/error';
 
 type Props = {
   children: Node,
   captureError: boolean,
-  errorPage: (error: Error, eventId: ?string) => Node,
+  errorPage: (error: Error) => Node,
 };
 
 type State = {
@@ -13,8 +13,6 @@ type State = {
 };
 
 export default class ErrorBoundary extends Component<Props, State> {
-  eventId: ?string;
-
   static defaultProps = {
     captureError: true,
     errorPage: () => null,
@@ -28,17 +26,13 @@ export default class ErrorBoundary extends Component<Props, State> {
     this.setState({ error });
 
     if (this.props.captureError) {
-      Raven.captureException(error, {
-        extra: { info },
-      });
-
-      this.eventId = Raven.lastEventId();
+      captureException(error, { info });
     }
   }
 
   render() {
     if (this.state.error) {
-      return this.props.errorPage(this.state.error, this.eventId);
+      return this.props.errorPage(this.state.error);
     }
 
     return this.props.children;

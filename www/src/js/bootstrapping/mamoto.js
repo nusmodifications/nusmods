@@ -1,11 +1,36 @@
 // @flow
-
 import type { RouterHistory } from 'react-router-dom';
 import type { Tracker } from 'types/views';
-import Raven from 'raven-js';
+import { each } from 'lodash';
 import insertScript from 'utils/insertScript';
+import { getScriptErrorHandler } from 'utils/error';
 
-/* eslint-disable no-underscore-dangle */
+// Custom dimension keys mapped to their human readable names
+// Go to the Settings > Website > Custom Dimensions on https://analytics.nusmods.com
+// to set up additional custom dimensions
+export const DIMENSIONS = {
+  theme: 1,
+  beta: 2,
+};
+
+const queuedTasks = [];
+let mamoto: ?Tracker;
+let initialDimensions = false;
+let initialViewTracked = false;
+
+// This function is called by both initializeMamoto and setCustomDimensions
+// so that the initial page view is only tracked if both the tracker and the
+// store is ready
+function trackInitialPageView() {
+  const tracker = mamoto;
+  if (initialViewTracked || !initialDimensions || !tracker) return;
+
+  // Run all queued tasks then track initial page view
+  queuedTasks.forEach((action) => action(tracker));
+  tracker.trackPageView();
+
+  initialViewTracked = true;
+}
 
 // Code mostly adopted from https://github.com/AmazingDreams/vue-matomo
 export function initializeMamoto() {
@@ -13,38 +38,30 @@ export function initializeMamoto() {
   const host = 'https://analytics.nusmods.com';
   const scriptSrc = `${host}/piwik.js`;
 
-  window._paq = window._paq || [];
-
   insertScript(scriptSrc, { defer: true, async: true })
     .then(() => {
-      // Save a non-null instance of the tracker
-      const mamoto: Tracker = window.Piwik.getTracker(`${host}/piwik.php`, siteId);
-
-      // Track initial page view
-      mamoto.trackPageView();
+      mamoto = window.Piwik.getTracker(`${host}/piwik.php`, siteId);
+      trackInitialPageView();
     })
-    .catch((error) => {
-      if (error instanceof Error) {
-        Raven.captureException(error);
-      } else {
-        Raven.captureException(new Error('Error instantiating Mamoto'), {
-          extra: {
-            error,
-          },
-        });
-      }
-    });
+    .catch(getScriptErrorHandler('Mamoto'));
 }
 
 export function withTracker(action: (Tracker) => void) {
-  window._paq = window._paq || [];
+  if (mamoto) {
+    action(mamoto);
+  } else {
+    queuedTasks.push(action);
+  }
+}
 
-  window._paq.push([
-    // eslint-disable-next-line func-names
-    function() {
-      action(this);
-    },
-  ]);
+export function setCustomDimensions(dimensions: { [number]: string }) {
+  // Set custom dimensions
+  each(dimensions, (value, id) => {
+    withTracker((tracker) => tracker.setCustomDimension(+id, value));
+  });
+
+  initialDimensions = true;
+  trackInitialPageView();
 }
 
 export function trackPageView(history: RouterHistory) {
@@ -57,10 +74,3 @@ export function trackPageView(history: RouterHistory) {
     }
   });
 }
-
-// Go to the Settings > Website > Custom Dimensions on https://analytics.nusmods.com
-// to set up additional custom dimensions
-export const DIMENSIONS = {
-  theme: 1,
-  beta: 2,
-};

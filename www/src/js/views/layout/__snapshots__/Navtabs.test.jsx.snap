@@ -40,6 +40,8 @@ exports[`NavtabsComponent renders into nav element 1`] = `
     activeClassName="linkActive"
     ariaCurrent="page"
     className="link"
+    onFocus={[Function]}
+    onMouseOver={[Function]}
     to="/venues"
   >
     <Map
@@ -66,6 +68,24 @@ exports[`NavtabsComponent renders into nav element 1`] = `
       className="title"
     >
       Settings
+    </span>
+  </NavLink>
+  <NavLink
+    activeClassName="linkActive"
+    ariaCurrent="page"
+    className="link hiddenOnMobile"
+    onFocus={[Function]}
+    onMouseOver={[Function]}
+    to="/contribute"
+  >
+    <Star
+      color="currentColor"
+      size="24"
+    />
+    <span
+      className="title"
+    >
+      Contribute
     </span>
   </NavLink>
   <div

@@ -46,10 +46,9 @@ years
             date: moment(event.getPropertyValue('DTSTART').valueOf()),
             name: event.getPropertyValue('SUMMARY'),
           }))
-          .sort(
-            (a, b) =>
-              // Order not guaranteed. Have to sort.
-              a.date.isBefore(b.date) ? -1 : 1,
+          .sort((a, b) =>
+            // Order not guaranteed. Have to sort.
+            a.date.isBefore(b.date) ? -1 : 1,
           );
 
         const data = [];

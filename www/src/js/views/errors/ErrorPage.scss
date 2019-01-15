@@ -20,11 +20,9 @@
   font-size: 2.5rem;
 }
 
-.link {
-  composes: btn-link from global;
+:global(.btn).link {
   padding: 0;
-  margin: 0;
-  border: 0;
+  cursor: pointer;
 }
 
 .heading {
