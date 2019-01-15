@@ -51,9 +51,10 @@ type State = {|
 
 const TRASH_ID = 'trash';
 
-function addYearLabel(year: string) {
+// Exported for testing
+export function addYearLabel(year: string) {
   // Remove the 20 prefix from AY
-  return year.replace(/20/g, '');
+  return year.replace(/\d{4}/g, (match) => match.slice(2));
 }
 
 export class PlannerContainerComponent extends PureComponent<Props, State> {
