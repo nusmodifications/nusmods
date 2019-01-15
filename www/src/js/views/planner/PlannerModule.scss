@@ -16,10 +16,8 @@
     border-color: darken(theme-color('warning'), 10);
     background: theme-color('warning');
 
-    .menuBtn {
-      :global(.close) {
-        color: #000;
-      }
+    .menuBtn :global(.close) {
+      color: #000;
     }
   }
 

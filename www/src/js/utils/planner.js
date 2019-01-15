@@ -3,8 +3,10 @@ import { flatten, castArray } from 'lodash';
 import type { ModuleCode, Semester, TreeFragment } from 'types/modules';
 import config from 'config';
 
-// Exemptions and plan to take are special columns used to hold modules
-// outside the
+// "Exemption" and "plan to take" modules are special columns used to hold modules
+// outside the normal planner. "Exemption" modules are coded as -1 year so
+// they can always be used to fulfill prereqs, while "plan to take" modules use
+// 3000 so they can never fulfill prereqs
 export const EXEMPTION_YEAR = '-1';
 export const EXEMPTION_SEMESTER: Semester = -1;
 

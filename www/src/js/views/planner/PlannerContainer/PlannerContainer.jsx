@@ -224,6 +224,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
                     <Trash />
                     <p>Drop modules here to remove them</p>
                   </div>
+                  {provided.placeholder}
                 </div>
               )}
             </Droppable>

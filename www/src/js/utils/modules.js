@@ -42,7 +42,7 @@ export function areLessonsSameClass(lesson1: Lesson, lesson2: Lesson): boolean {
 
 /**
  * Convert examDate to JS Date object. Unfortunately just doing
- * new Date(examDate) won't work on Safari, since the ts is almost but not
+ * new Date(examDate) won't work on Safari, since the timestamp is almost but not
  * quite ISO8601 standard
  *
  * The API returns examDate with hhmm as the TZ specifier, but we want

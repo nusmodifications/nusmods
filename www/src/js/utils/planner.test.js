@@ -1,6 +1,7 @@
 // @flow
 
-import { checkPrerequisite, conflictToText } from 'utils/planner';
+import { checkPrerequisite, conflictToText, fromDroppableId, getDroppableId } from 'utils/planner';
+import type { Semester } from 'types/modules';
 
 describe(checkPrerequisite, () => {
   const moduleSet = new Set(['CS1010S', 'CS2107', 'CS2105', 'MA1101R', 'MA1521', 'MA2104']);
@@ -130,5 +131,17 @@ describe(conflictToText, () => {
         children: [],
       }),
     ).toEqual('CS1010S');
+  });
+});
+
+describe(getDroppableId, () => {
+  test('should convert from and to ID', () => {
+    const checkDroppableId = (acadYear: string, semester: Semester) =>
+      expect(fromDroppableId(getDroppableId(acadYear, semester))).toEqual([acadYear, semester]);
+
+    checkDroppableId('2018/2019', 1);
+    checkDroppableId('2018/2019', 2);
+    checkDroppableId('2018/2019', 3);
+    checkDroppableId('2018/2019', 4);
   });
 });

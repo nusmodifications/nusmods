@@ -53,7 +53,7 @@ export function getExemptions(state: State): ModuleWithInfo[] {
   const { planner, moduleBank } = state;
   const taken = new Set();
 
-  // Exemptions are stored in a special year which is not a valid AY
+  // "Exemption" modules are stored in a special year which is not a valid AY
   return filterModuleForSemester(planner.modules, EXEMPTION_YEAR, EXEMPTION_SEMESTER).map(
     (moduleCode) => mapModuleToInfo(moduleCode, moduleBank.modules, taken),
   );
@@ -63,14 +63,14 @@ export function getPlanToTake(state: State): ModuleWithInfo[] {
   const { planner, moduleBank } = state;
   const taken = new Set();
 
-  // 'Plan to take' are stored in a special year which is not a valid AY
+  // "Plan to take" modules are stored in a special year which is not a valid AY
   return filterModuleForSemester(planner.modules, PLAN_TO_TAKE_YEAR, PLAN_TO_TAKE_SEMESTER).map(
     (moduleCode) => mapModuleToInfo(moduleCode, moduleBank.modules, taken),
   );
 }
 
 /**
- * Convert PlannerState into AcadYearModules form which is more easily
+ * Convert PlannerState into PlannerModulesWithInfo form which is more easily
  * consumed by the UI
  */
 export function getAcadYearModules(state: State): PlannerModulesWithInfo {
@@ -92,7 +92,8 @@ export function getAcadYearModules(state: State): PlannerModulesWithInfo {
       moduleCodes.forEach((moduleCode) => {
         modulesTaken.add(moduleCode);
 
-        // Also try to match the non-variant version of the module code
+        // Also try to match the non-variant version (without the suffix alphabets)
+        // of the module code
         const match = /([A-Z]+\d+)[A-Z]+$/gi.exec(moduleCode);
         if (match) modulesTaken.add(match[1]);
       });

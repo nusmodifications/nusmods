@@ -462,7 +462,3 @@ export function getHoverLesson(lesson: Lesson): HoverLesson {
     lessonType: lesson.LessonType,
   };
 }
-
-export function getTimetableModules(timetable: TimetableConfig) {
-  return _.mapValues(timetable, (value) => Object.keys(value));
-}
