@@ -1,5 +1,5 @@
 // @flow
-import { parseISO } from 'date-fns'
+import { parseISO } from 'date-fns';
 import type { Semester, AcadYear } from 'types/modules';
 
 import holidays from 'data/holidays.json';
