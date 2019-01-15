@@ -2,14 +2,14 @@
 
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { flatMap, values, flatten, max, min, sortBy, toPairs } from 'lodash';
+import { flatMap, values, flatten, max, min, sortBy, toPairs, sumBy } from 'lodash';
 import { DragDropContext, Droppable, type OnDragEndResponder } from 'react-beautiful-dnd';
 import classnames from 'classnames';
 import type { Module, ModuleCode, Semester } from 'types/modules';
 import type { ModuleWithInfo, PlannerModulesWithInfo } from 'types/views';
 import type { State as StoreState } from 'reducers';
 
-import { addAcadYear, MODULE_CODE_REGEX, subtractAcadYear } from 'utils/modules';
+import { addAcadYear, MODULE_CODE_REGEX, renderMCs, subtractAcadYear } from 'utils/modules';
 import {
   EXEMPTION_SEMESTER,
   EXEMPTION_YEAR,
@@ -23,6 +23,7 @@ import {
   movePlannerModule,
   removePlannerModule,
 } from 'actions/planner';
+import { toggleFeedback } from 'actions/app';
 import { fetchModule } from 'actions/moduleBank';
 import { getAcadYearModules, getExemptions, getPlanToTake } from 'selectors/planner';
 import { Trash } from 'views/components/icons';
@@ -37,7 +38,9 @@ export type Props = {|
   +exemptions: ModuleWithInfo[],
   +planToTake: ModuleWithInfo[],
 
+  // Actions
   +fetchModule: (ModuleCode) => Promise<Module>,
+  +toggleFeedback: () => void,
 
   +addYear: (year: string) => void,
   +addModule: (moduleCode: ModuleCode, year: string, semester: Semester) => void,
@@ -102,6 +105,33 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
     }
   };
 
+  renderHeader() {
+    const modules = flatten(flatMap(this.props.modules, values));
+    const credits = sumBy(modules, (module) => +module.moduleInfo?.ModuleCredit || 0);
+    const count = modules.length;
+
+    return (
+      <header className={styles.header}>
+        <h1>
+          Module Planner{' '}
+          <button
+            className="btn btn-sm btn-outline-success"
+            type="button"
+            onClick={this.props.toggleFeedback}
+          >
+            Beta - Send Feedback
+          </button>
+        </h1>
+
+        <div>
+          <p>
+            {count} {count === 1 ? 'module' : 'modules'} / {renderMCs(credits)}
+          </p>
+        </div>
+      </header>
+    );
+  }
+
   render() {
     // Don't render anything on initial load because every fetched module will
     // cause a re-render, which kills performance
@@ -123,9 +153,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
       <div className={styles.pageContainer}>
         <Title>Module Planner</Title>
 
-        <header className={styles.header}>
-          <h1>Module Planner</h1>
-        </header>
+        {this.renderHeader()}
 
         <DragDropContext onDragEnd={this.onDropEnd}>
           <div className={styles.yearWrapper}>
@@ -216,6 +244,7 @@ const PlannerContainer = connect(
   mapStateToProps,
   {
     fetchModule,
+    toggleFeedback,
     addModule: addPlannerModule,
     moveModule: movePlannerModule,
     removeModule: removePlannerModule,

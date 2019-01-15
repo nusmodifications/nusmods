@@ -11,9 +11,23 @@
 }
 
 .header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
   h1 {
-    margin: 1rem 0 0;
+    display: flex;
+    align-items: center;
+    margin: 0;
     font-size: $font-size-xlg;
+
+    button {
+      margin-left: 1rem;
+    }
+  }
+
+  p {
+    margin: 0;
   }
 }
 
@@ -30,7 +44,7 @@
 .yearWrapper {
   display: flex;
   height: 100%;
-  margin: 2rem 0;
+  margin: 1rem 0 2rem;
 
   @include scrollable;
 }

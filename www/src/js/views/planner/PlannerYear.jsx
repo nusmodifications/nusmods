@@ -92,7 +92,7 @@ export default class PlannerYear extends PureComponent<Props, State> {
         </div>
 
         {showSpecialSemToggle && (
-          <p className={styles.specialSemToggle}>
+          <div className={styles.specialSemToggle}>
             <button
               className="btn btn-sm btn-outline-primary"
               onClick={() => this.setState({ showSpecialSem: !showSpecialSem })}
@@ -100,7 +100,7 @@ export default class PlannerYear extends PureComponent<Props, State> {
               {showSpecialSem ? <Minus /> : <Plus />}
               Special Term
             </button>
-          </p>
+          </div>
         )}
       </section>
     );
