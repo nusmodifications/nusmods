@@ -10,6 +10,7 @@ import ChevronDown from 'react-feather/dist/icons/chevron-down';
 import Close from 'react-feather/dist/icons/x';
 import Clock from 'react-feather/dist/icons/clock';
 import Copy from 'react-feather/dist/icons/copy';
+import DollarSign from 'react-feather/dist/icons/dollar-sign';
 import Download from 'react-feather/dist/icons/download';
 import Eye from 'react-feather/dist/icons/eye';
 import EyeOff from 'react-feather/dist/icons/eye-off';
@@ -39,11 +40,14 @@ import Repeat from 'react-feather/dist/icons/repeat';
 import Settings from 'react-feather/dist/icons/settings';
 import Search from 'react-feather/dist/icons/search';
 import Sidebar from 'react-feather/dist/icons/sidebar';
+import Star from 'react-feather/dist/icons/star';
 import ThumbsUp from 'react-feather/dist/icons/thumbs-up';
 import Trello from 'react-feather/dist/icons/trello';
 import Twitter from 'react-feather/dist/icons/twitter';
 import Trash from 'react-feather/dist/icons/trash-2';
 import Type from 'react-feather/dist/icons/type';
+import Users from 'react-feather/dist/icons/users';
+import Zap from 'react-feather/dist/icons/zap';
 
 export {
   Archive,
@@ -56,6 +60,7 @@ export {
   Close,
   Clock,
   Copy,
+  DollarSign,
   Download,
   Eye,
   EyeOff,
@@ -85,9 +90,12 @@ export {
   Search,
   Settings,
   Sidebar,
+  Star,
   ThumbsUp,
   Trello,
   Twitter,
   Trash,
   Type,
+  Users,
+  Zap,
 };

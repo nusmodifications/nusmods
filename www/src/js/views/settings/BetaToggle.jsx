@@ -6,7 +6,7 @@ import ExternalLink from 'views/components/ExternalLink';
 import config from 'config';
 import styles from './SettingsContainer.scss';
 
-const currentTests = [
+export const currentTests = [
   'Today page: showing timetable as a schedule',
   'Module planner: plan modules in future semesters',
 ];
@@ -42,7 +42,7 @@ export default class BetaToggle extends PureComponent<Props> {
 
     return (
       <div>
-        <h4>NUSMods Beta</h4>
+        <h4 id="beta">NUSMods Beta</h4>
 
         <div className={styles.toggleRow}>
           <div className={styles.toggleDescription}>
@@ -52,12 +52,11 @@ export default class BetaToggle extends PureComponent<Props> {
 
           <div className={styles.toggle}>
             <Toggle className={styles.betaToggle} isOn={betaTester} onChange={toggleStates} />
-            {betaTester &&
-              hasTests && (
-                <ExternalLink className="btn btn-success" href={config.contact.messenger}>
-                  Leave Feedback
-                </ExternalLink>
-              )}
+            {betaTester && hasTests && (
+              <ExternalLink className="btn btn-success" href={config.contact.messenger}>
+                Leave Feedback
+              </ExternalLink>
+            )}
           </div>
         </div>
 

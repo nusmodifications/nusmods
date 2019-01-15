@@ -113,15 +113,19 @@ export default function TeamContainer() {
       </p>
 
       <h4 className={styles.heading}>NUSMods Core (Active)</h4>
-      {teamMembers.filter((member) => member.active).map((member) => (
-        <TeamMember key={member.name} member={member} />
-      ))}
+      {teamMembers
+        .filter((member) => member.active)
+        .map((member) => (
+          <TeamMember key={member.name} member={member} />
+        ))}
       <hr />
 
       <h4 className={styles.heading}>NUSMods Alumni</h4>
-      {teamMembers.filter((member) => !member.active).map((member) => (
-        <TeamMember key={member.name} member={member} />
-      ))}
+      {teamMembers
+        .filter((member) => !member.active)
+        .map((member) => (
+          <TeamMember key={member.name} member={member} />
+        ))}
     </StaticPage>
   );
 }

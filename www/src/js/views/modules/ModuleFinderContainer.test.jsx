@@ -28,11 +28,10 @@ describe(ModuleFinderContainerComponent, () => {
     // Mock axios to stop it from firing API requests
     jest
       .spyOn(axios, 'get')
-      .mockImplementation(
-        (url) =>
-          url.includes('facultyDepartments')
-            ? Promise.resolve({ data: {} })
-            : Promise.resolve({ data: [] }),
+      .mockImplementation((url) =>
+        url.includes('facultyDepartments')
+          ? Promise.resolve({ data: {} })
+          : Promise.resolve({ data: [] }),
       );
   });
 

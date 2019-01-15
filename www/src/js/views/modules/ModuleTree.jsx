@@ -70,8 +70,9 @@ function Tree({ layer, name, branches, isPrereq = false }: TreeDisplay) {
           <LinkModuleCodes className={styles.link}>{name}</LinkModuleCodes>
         )}
       </div>
-      {branches &&
-        branches.length > 0 && <Branch layer={incrementLayer(layer, name)} branches={branches} />}
+      {branches && branches.length > 0 && (
+        <Branch layer={incrementLayer(layer, name)} branches={branches} />
+      )}
     </li>
   );
 }
@@ -82,17 +83,16 @@ function ModuleTree(props: Props) {
 
   return (
     <div className={styles.container}>
-      {LockedModules &&
-        LockedModules.length > 0 && (
-          <Fragment>
-            <ul className={styles.prereqTree}>
-              {LockedModules.map((name) => (
-                <Tree key={name} layer={0} name={name} branches={null} isPrereq />
-              ))}
-            </ul>
-            <div className={classnames(styles.node, styles.conditional)}>needs</div>
-          </Fragment>
-        )}
+      {LockedModules && LockedModules.length > 0 && (
+        <Fragment>
+          <ul className={styles.prereqTree}>
+            {LockedModules.map((name) => (
+              <Tree key={name} layer={0} name={name} branches={null} isPrereq />
+            ))}
+          </ul>
+          <div className={classnames(styles.node, styles.conditional)}>needs</div>
+        </Fragment>
+      )}
       <ul className={classnames(styles.tree, styles.root)}>
         <Tree layer={1} name={ModmavenTree.name} branches={_.castArray(ModmavenTree.children)} />
       </ul>
