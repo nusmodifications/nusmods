@@ -20,7 +20,6 @@ import type {
   SemTimetableConfig,
   SemTimetableConfigWithLessons,
   TimetableArrangement,
-  TimetableConfig,
   TimetableDayArrangement,
   TimetableDayFormat,
 } from 'types/timetables';
