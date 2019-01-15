@@ -81,7 +81,7 @@ export default class PlannerSemester extends PureComponent<Props> {
                   }
                   moduleCredit={showModuleMeta ? +moduleInfo?.ModuleCredit : null}
                   conflicts={showConflicts ? conflicts : null}
-                  removeModule={() => this.props.removeModule(moduleCode)}
+                  removeModule={this.props.removeModule}
                 />
               );
             })}

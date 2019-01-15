@@ -2,7 +2,7 @@
 
 import type { ModuleCode, ModuleTitle, TreeFragment } from 'types/modules';
 import React, { PureComponent } from 'react';
-import Downshift, { type ChildrenFunction } from 'downshift';
+import Downshift from 'downshift';
 import { Draggable } from 'react-beautiful-dnd';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
@@ -27,24 +27,57 @@ type Props = {|
   +index: number,
 
   // Actions
-  +removeModule: () => void,
+  +removeModule: (ModuleCode) => void,
 |};
+
+const ModuleMenu = React.memo((props: {| +removeModule: () => void |}) => {
+  const menuItems = [['Remove', props.removeModule]];
+
+  return (
+    <Downshift
+      onChange={(item) => {
+        menuItems.forEach(([menuItem, onSelect]) => {
+          if (item === menuItem) {
+            onSelect();
+          }
+        });
+      }}
+    >
+      {({ getItemProps, getMenuProps, highlightedIndex, isOpen, toggleMenu }) => (
+        <div className={styles.menuBtn}>
+          <button
+            className={classnames('btn close')}
+            type="button"
+            onClick={toggleMenu}
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded={isOpen}
+          >
+            <ChevronDown />
+          </button>
+          <div className={classnames('dropdown-menu', { show: isOpen })} {...getMenuProps()}>
+            {menuItems.map(([item], itemIndex) => (
+              <button
+                key={item}
+                className={classnames('dropdown-item', {
+                  'dropdown-selected': highlightedIndex === itemIndex,
+                })}
+                {...getItemProps({ item })}
+              >
+                {item}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+    </Downshift>
+  );
+});
 
 /**
  * Component for a single module on the planner
  */
 export default class PlannerModule extends PureComponent<Props> {
-  onMenuSelect = (item: string) => {
-    this.menuItems.forEach(([menuItem, onSelect]) => {
-      if (item === menuItem) {
-        onSelect();
-      }
-    });
-  };
-
-  // List of actions in the module's dropdown menu
-  menuItems = [['Remove', this.props.removeModule]];
-
   renderMeta() {
     const { moduleCredit, examDate } = this.props;
     if (!moduleCredit && !examDate) return null;
@@ -79,39 +112,7 @@ export default class PlannerModule extends PureComponent<Props> {
     );
   }
 
-  renderMenu: ChildrenFunction<string> = ({
-    getItemProps,
-    getMenuProps,
-    highlightedIndex,
-    isOpen,
-    toggleMenu,
-  }) => (
-    <div className={styles.menuBtn}>
-      <button
-        className={classnames('btn close')}
-        type="button"
-        onClick={toggleMenu}
-        data-toggle="dropdown"
-        aria-haspopup="true"
-        aria-expanded={isOpen}
-      >
-        <ChevronDown />
-      </button>
-      <div className={classnames('dropdown-menu', { show: isOpen })} {...getMenuProps()}>
-        {this.menuItems.map(([item], itemIndex) => (
-          <button
-            key={item}
-            className={classnames('dropdown-item', {
-              'dropdown-selected': highlightedIndex === itemIndex,
-            })}
-            {...getItemProps({ item })}
-          >
-            {item}
-          </button>
-        ))}
-      </div>
-    </div>
-  );
+  removeModule = () => this.props.removeModule(this.props.moduleCode);
 
   render() {
     const { moduleCode, moduleTitle, index, conflicts } = this.props;
@@ -128,7 +129,7 @@ export default class PlannerModule extends PureComponent<Props> {
             {...provided.draggableProps}
             {...provided.dragHandleProps}
           >
-            <Downshift onChange={this.onMenuSelect}>{this.renderMenu}</Downshift>
+            <ModuleMenu removeModule={this.removeModule} />
 
             <div className={styles.moduleInfo}>
               <div className={styles.moduleName}>
