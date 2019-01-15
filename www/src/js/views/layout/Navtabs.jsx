@@ -63,7 +63,11 @@ export function NavtabsComponent(props: Props) {
         <span className={styles.title}>Venues</span>
       </NavLink>
       {props.beta && (
-        <NavLink {...tabProps} to="/planner">
+        <NavLink
+          {...tabProps}
+          className={classnames(tabProps.className, styles.hiddenOnMobile)}
+          to="/planner"
+        >
           <Trello />
           <span className={styles.title}>Planner</span>
         </NavLink>
