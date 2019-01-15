@@ -49,12 +49,11 @@ export default class BetaToggle extends PureComponent<Props> {
 
           <div className={styles.toggle}>
             <Toggle className={styles.betaToggle} isOn={betaTester} onChange={toggleStates} />
-            {betaTester &&
-              hasTests && (
-                <ExternalLink className="btn btn-success" href={config.contact.messenger}>
-                  Leave Feedback
-                </ExternalLink>
-              )}
+            {betaTester && hasTests && (
+              <ExternalLink className="btn btn-success" href={config.contact.messenger}>
+                Leave Feedback
+              </ExternalLink>
+            )}
           </div>
         </div>
 
