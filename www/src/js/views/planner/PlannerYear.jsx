@@ -2,13 +2,14 @@
 
 import React, { PureComponent } from 'react';
 import classnames from 'classnames';
-import { sortBy, toPairs } from 'lodash';
+import { sortBy, toPairs, flatMap, values, sumBy } from 'lodash';
 
 import type { ModuleCode, Semester } from 'types/modules';
 import type { ModuleWithInfo } from 'types/views';
 import config from 'config';
 import { getSemesterName } from 'utils/planner';
 import { Minus, Plus } from 'views/components/icons';
+import { renderMCs } from 'utils/modules';
 import PlannerSemester from './PlannerSemester';
 import styles from './PlannerYear.scss';
 
@@ -35,6 +36,24 @@ export default class PlannerYear extends PureComponent<Props, State> {
     return semesters[3].length > 0 || semesters[4].length > 0;
   }
 
+  renderHeader() {
+    const { year, semesters } = this.props;
+    const modules = flatMap(semesters, values);
+    const credits = sumBy(modules, (module) => +module.moduleInfo?.ModuleCredit || 0);
+    const count = modules.length;
+
+    return (
+      <header className={styles.yearHeader}>
+        <h2>{year}</h2>
+        <div>
+          <p>
+            {count} {count === 1 ? 'module' : 'modules'} / {renderMCs(credits)}
+          </p>
+        </div>
+      </header>
+    );
+  }
+
   render() {
     const { year, semesters } = this.props;
     const { showSpecialSem } = this.state;
@@ -54,7 +73,7 @@ export default class PlannerYear extends PureComponent<Props, State> {
           [styles.currentYear]: year === config.academicYear,
         })}
       >
-        <h2 className={styles.yearHeader}>{year}</h2>
+        {this.renderHeader()}
 
         <div className={styles.semesters}>
           {sortedSemesters.map(([semester, modules]) => (

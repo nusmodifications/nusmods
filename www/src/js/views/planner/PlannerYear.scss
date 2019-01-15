@@ -16,8 +16,24 @@
 }
 
 .yearHeader {
-  font-size: 1.2rem;
-  text-align: center;
+  display: flex;
+  opacity: 0.8;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+
+  h2,
+  p {
+    margin: 0;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+  }
+
+  p {
+    font-size: 0.9rem;
+  }
 }
 
 .semesters {
