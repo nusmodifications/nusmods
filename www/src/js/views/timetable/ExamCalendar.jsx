@@ -8,7 +8,7 @@ import type { ModuleWithColor, Semester } from 'types/modules';
 import type { ModuleWithExamTime, TimeSegment } from 'types/views';
 import { WorkingDaysOfWeek } from 'types/modules';
 import config from 'config';
-import { formatExamDate, getModuleExamDate } from 'utils/modules';
+import { examDateToDate, formatExamDate, getModuleExamDate } from 'utils/modules';
 import { daysAfter } from 'utils/timify';
 import elements from 'views/elements';
 import ExamWeek from './ExamWeek';
@@ -18,12 +18,6 @@ type Props = {|
   +semester: Semester,
   +modules: ModuleWithColor[],
 |};
-
-// The API returns examDate with hhmm as the TZ specifier, but we want this to work
-// on machines in all timezones, so instead we lop it off and pretend it is in UTC time
-function examDateStringToDate(date: string): Date {
-  return new Date(`${date.slice(0, 16)}Z`);
-}
 
 // NUS exams are grouped into morning, afternoon and evening exams. Afternoon exams happen at 2.30PM
 // on Fridays only. We don't want to create two different groups for 1pm and 2.30pm exams, so we
@@ -58,7 +52,7 @@ export default class ExamCalendar extends PureComponent<Props> {
       const dateString = getModuleExamDate(module, semester);
       if (!dateString) return;
 
-      const date = examDateStringToDate(dateString);
+      const date = examDateToDate(dateString);
       while (date < firstDayOfExams) {
         firstDayOfExams = daysAfter(firstDayOfExams, -7);
         weekCount += 1;
@@ -118,7 +112,7 @@ export default class ExamCalendar extends PureComponent<Props> {
     // (5 days), and expand as necessary
     const daysWithExams = Math.max(
       5,
-      ...modulesWithExams.map((module) => examDateStringToDate(module.dateTime).getUTCDay()),
+      ...modulesWithExams.map((module) => examDateToDate(module.dateTime).getUTCDay()),
     );
 
     const modulesByExamDate = groupBy(modulesWithExams, (module) => module.date);

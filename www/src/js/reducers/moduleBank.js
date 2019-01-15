@@ -23,6 +23,7 @@ export type ModulesMap = {
 
 export type ModuleArchive = {
   [ModuleCode]: {
+    // Mapping acad year to module info
     [string]: Module,
   },
 };

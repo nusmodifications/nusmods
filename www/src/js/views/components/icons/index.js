@@ -31,8 +31,10 @@ import MessageSquare from 'react-feather/dist/icons/message-square';
 import Mail from 'react-feather/dist/icons/mail';
 import Maximize from 'react-feather/dist/icons/maximize-2';
 import Minimize from 'react-feather/dist/icons/minimize-2';
+import Minus from 'react-feather/dist/icons/minus';
 import MinusSquare from 'react-feather/dist/icons/minus-square';
 import PlusSquare from 'react-feather/dist/icons/plus-square';
+import Plus from 'react-feather/dist/icons/plus';
 import Refresh from 'react-feather/dist/icons/refresh-cw';
 import Repeat from 'react-feather/dist/icons/repeat';
 import Settings from 'react-feather/dist/icons/settings';
@@ -40,8 +42,9 @@ import Search from 'react-feather/dist/icons/search';
 import Sidebar from 'react-feather/dist/icons/sidebar';
 import Star from 'react-feather/dist/icons/star';
 import ThumbsUp from 'react-feather/dist/icons/thumbs-up';
+import Trello from 'react-feather/dist/icons/trello';
 import Twitter from 'react-feather/dist/icons/twitter';
-import Trash2 from 'react-feather/dist/icons/trash-2';
+import Trash from 'react-feather/dist/icons/trash-2';
 import Type from 'react-feather/dist/icons/type';
 import Users from 'react-feather/dist/icons/users';
 import Zap from 'react-feather/dist/icons/zap';
@@ -72,6 +75,7 @@ export {
   Layers,
   Map,
   Maximize,
+  Minus,
   Minimize,
   MapPin,
   Menu,
@@ -82,13 +86,15 @@ export {
   Repeat,
   MinusSquare,
   PlusSquare,
+  Plus,
   Search,
   Settings,
   Sidebar,
   Star,
   ThumbsUp,
+  Trello,
   Twitter,
-  Trash2,
+  Trash,
   Type,
   Users,
   Zap,
