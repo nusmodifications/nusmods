@@ -51,15 +51,15 @@ import TrashIcon from 'react-feather/dist/icons/trash-2';
 import TypeIcon from 'react-feather/dist/icons/type';
 import ZapIcon from 'react-feather/dist/icons/zap';
 
-//
-type Props = {|
+type Props = {
   // These props are explicitly supported by React Feather
   size?: number,
   color?: string,
+  className?: string,
 
   // And the rest are just spread onto the <svg> element
   [key: string]: any,
-|};
+};
 
 // Memoize icon elements to stop them from re-rendering when their parent component
 // is re-rendered, since their props rarely change
