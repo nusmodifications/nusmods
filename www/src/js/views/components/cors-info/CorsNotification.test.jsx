@@ -1,10 +1,11 @@
 // @flow
 import React from 'react';
-import { mount, type ReactWrapper } from 'enzyme';
+import { shallow } from 'enzyme';
 import moment from 'moment';
 
 import config, { type CorsRound, type CorsPeriod, type CorsPeriodType } from 'config';
 import createHistory from 'test-utils/createHistory';
+import ExternalLink from 'views/components/ExternalLink';
 import { CorsNotificationComponent } from './CorsNotification';
 
 describe(CorsNotificationComponent, () => {
@@ -46,7 +47,7 @@ describe(CorsNotificationComponent, () => {
       dismissCorsNotification,
       openNotification,
 
-      wrapper: mount(
+      wrapper: shallow(
         <CorsNotificationComponent
           enabled={enabled}
           dismissedRounds={dismissedRounds}
@@ -58,14 +59,10 @@ describe(CorsNotificationComponent, () => {
     };
   }
 
-  function expectEmpty(container: { wrapper: ReactWrapper }) {
-    expect(container.wrapper.html()).toBeNull();
-  }
-
   test('should not show up if there is no CORS bidding data', () => {
     setSchedule([]);
 
-    expectEmpty(make());
+    expect(make().wrapper.isEmptyRender()).toBe(true);
   });
 
   test('should not show up if CORS bidding is over', () => {
@@ -76,7 +73,7 @@ describe(CorsNotificationComponent, () => {
       },
     ]);
 
-    expectEmpty(make());
+    expect(make().wrapper.isEmptyRender()).toBe(true);
   });
 
   test('should not show up if CORS notification is not enabled', () => {
@@ -87,7 +84,7 @@ describe(CorsNotificationComponent, () => {
       },
     ]);
 
-    expectEmpty(make([], false));
+    expect(make([], false).wrapper.isEmptyRender()).toBe(true);
   });
 
   test('should not show up if it has been dismissed', () => {
@@ -98,7 +95,7 @@ describe(CorsNotificationComponent, () => {
       },
     ]);
 
-    expectEmpty(make(['0'], false));
+    expect(make(['0'], false).wrapper.isEmptyRender()).toBe(true);
   });
 
   test('should show next round when it has not started yet', () => {
@@ -109,7 +106,12 @@ describe(CorsNotificationComponent, () => {
       },
     ]);
 
-    const content = make(['1']).wrapper.text();
+    const { wrapper } = make(['1']);
+    const content = wrapper
+      .find(ExternalLink)
+      .shallow()
+      .text();
+
     expect(content).toMatch('Next');
     expect(content).toMatch('0 (Open)');
   });
@@ -125,7 +127,12 @@ describe(CorsNotificationComponent, () => {
       },
     ]);
 
-    const content = make(['1']).wrapper.text();
+    const { wrapper } = make(['1']);
+    const content = wrapper
+      .find(ExternalLink)
+      .shallow()
+      .text();
+
     expect(content).toMatch('Next');
     expect(content).toMatch('0 (Closed)');
   });
@@ -138,7 +145,12 @@ describe(CorsNotificationComponent, () => {
       },
     ]);
 
-    const content = make(['1']).wrapper.text();
+    const { wrapper } = make(['1']);
+    const content = wrapper
+      .find(ExternalLink)
+      .shallow()
+      .text();
+
     expect(content).toMatch('Current');
     expect(content).toMatch('0 (Open)');
   });
