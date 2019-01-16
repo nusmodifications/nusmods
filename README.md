@@ -70,11 +70,11 @@ All projects and packages in this repository are [MIT licensed](LICENSE).
 
 ## Supported by
 
-[BrowserStack](browserstack) lets us ensure NUSMods functions across all browsers and devices by allowing us to test NUSMods on real devices, including Safari on older iPhones and previous versions of browsers.
+[BrowserStack][browserstack] lets us ensure NUSMods functions across all browsers and devices by allowing us to test NUSMods on real devices, including Safari on older iPhones and previous versions of browsers.
 
 [![](docs/browserstack-logo.png)][browserstack]
 
-[Zoho](zoho) has kindly given us individual email accounts, allowing us to communicate more effectively.
+[Zoho][zoho] has kindly given us individual email accounts, allowing us to communicate more effectively.
 
 [![](docs/zoho-logo.png)][zoho]
 
