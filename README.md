@@ -74,7 +74,7 @@ All projects and packages in this repository are [MIT licensed](LICENSE).
 
 [![](docs/browserstack-logo.png)][browserstack]
 
-[Zoho][zoho] has kindly given us individual email accounts, allowing us to communicate more effectively.
+[Zoho][zoho] has kindly given us individual email accounts. Zoho Mail is a secure and reliable email solution, tailor-made for an organization's communication needs. With enhanced collaboration features, it's not just an inbox… [it's more](https://www.zoho.com/workplace/).
 
 [![](docs/zoho-logo.png)][zoho]
 
