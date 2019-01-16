@@ -5,6 +5,7 @@ import React, { PureComponent } from 'react';
 import { Map, Marker, TileLayer } from 'react-leaflet';
 import classnames from 'classnames';
 import axios from 'axios';
+import bowser from 'bowser';
 
 import type { LatLngTuple, Venue, VenueLocation } from 'types/venues';
 import config from 'config';
@@ -173,6 +174,11 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
       return <LoadingSpinner />;
     }
 
+    // HACK: There's an iOS bug that clips the expanded map around the modal,
+    // making it impossible to exit the expanded state. While we find a better
+    // solution for now we'll just hide the button
+    const showExpandMapBtn = !bowser.ios;
+
     return (
       <form className="form-row" onSubmit={this.onSubmit}>
         {this.state.error && (
@@ -257,10 +263,12 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
               attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            <ExpandMap
-              isExpanded={isMapExpanded}
-              onToggleExpand={() => this.setState({ isMapExpanded: !isMapExpanded })}
-            />
+            {showExpandMapBtn && (
+              <ExpandMap
+                isExpanded={isMapExpanded}
+                onToggleExpand={() => this.setState({ isMapExpanded: !isMapExpanded })}
+              />
+            )}
           </Map>
 
           <select
@@ -297,9 +305,11 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
           )}
         </div>
 
-        <p className={styles.fullscreenTip}>
-          Tip: Open the map in fullscreen to easily edit the location
-        </p>
+        {showExpandMapBtn && (
+          <p className={styles.fullscreenTip}>
+            Tip: Open the map in fullscreen to easily edit the location
+          </p>
+        )}
 
         <div className={classnames(styles.actions, 'col-sm-12')}>
           {this.props.onBack && (
