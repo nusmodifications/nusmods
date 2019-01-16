@@ -70,6 +70,24 @@ exports[`NavtabsComponent renders into nav element 1`] = `
       Settings
     </span>
   </NavLink>
+  <NavLink
+    activeClassName="linkActive"
+    ariaCurrent="page"
+    className="link hiddenOnMobile"
+    onFocus={[Function]}
+    onMouseOver={[Function]}
+    to="/contribute"
+  >
+    <Star
+      color="currentColor"
+      size="24"
+    />
+    <span
+      className="title"
+    >
+      Contribute
+    </span>
+  </NavLink>
   <div
     className="divider"
   />

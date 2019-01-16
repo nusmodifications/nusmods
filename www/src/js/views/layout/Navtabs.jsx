@@ -7,12 +7,22 @@ import { connect } from 'react-redux';
 import { NavLink, withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 
-import { BookOpen, Calendar, Clock, Heart, Map, Settings } from 'views/components/icons';
+import {
+  BookOpen,
+  Calendar,
+  Clock,
+  Heart,
+  Map,
+  Trello,
+  Settings,
+  Star,
+} from 'views/components/icons';
 import ExternalLink from 'views/components/ExternalLink';
 import Online from 'views/components/Online';
 import { timetablePage } from 'views/routes/paths';
 import { preload as preloadToday } from 'views/today/TodayContainer';
 import { preload as preloadVenues } from 'views/venues/VenuesContainer';
+import { preload as preloadContribute } from 'views/contribute/ContributeContainer';
 import NavRefreshPrompt from './NavRefreshPrompt';
 
 import styles from './Navtabs.scss';
@@ -52,6 +62,16 @@ export function NavtabsComponent(props: Props) {
         <Map />
         <span className={styles.title}>Venues</span>
       </NavLink>
+      {props.beta && (
+        <NavLink
+          {...tabProps}
+          className={classnames(tabProps.className, styles.hiddenOnMobile)}
+          to="/planner"
+        >
+          <Trello />
+          <span className={styles.title}>Planner</span>
+        </NavLink>
+      )}
       <NavLink {...tabProps} to="/settings">
         <Settings />
         <span className={styles.title}>Settings</span>
@@ -64,6 +84,16 @@ export function NavtabsComponent(props: Props) {
             />
           </Online>
         )}
+      </NavLink>
+      <NavLink
+        {...tabProps}
+        className={classnames(tabProps.className, styles.hiddenOnMobile)}
+        onMouseOver={preloadContribute}
+        onFocus={preloadContribute}
+        to="/contribute"
+      >
+        <Star />
+        <span className={styles.title}>Contribute</span>
       </NavLink>
       <div className={styles.divider} />
       <ExternalLink

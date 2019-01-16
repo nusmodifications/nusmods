@@ -1,9 +1,11 @@
 // @flow
 
+import type { LatLng } from 'leaflet';
 import React, { PureComponent } from 'react';
-import { type LatLng, Map, Marker, TileLayer } from 'react-leaflet';
+import { Map, Marker, TileLayer } from 'react-leaflet';
 import classnames from 'classnames';
 import axios from 'axios';
+
 import type { LatLngTuple, VenueLocation } from 'types/venues';
 import config from 'config';
 import { MapPin, ThumbsUp } from 'views/components/icons';
@@ -237,7 +239,7 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
               autoPan
             />
             <TileLayer
-              attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
+              attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             <ExpandMap
