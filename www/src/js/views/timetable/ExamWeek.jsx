@@ -80,7 +80,7 @@ export default function ExamWeek(props: Props) {
         );
 
         return (
-          <td className={styles.day} key={date}>
+          <td className={styles.day} key={date.getTime()}>
             {!!modulesAtThisTime.length && (
               <Fragment>
                 <h4>{modulesAtThisTime[0].time}</h4>
