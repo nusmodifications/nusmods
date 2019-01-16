@@ -24,9 +24,30 @@ $module-list-height: 13.5rem;
   }
 }
 
-.modal .input {
-  border-width: 0 0 1px;
-  border-radius: 0;
+.modal {
+  // Fix the input to the top of the modal. This resolves an iOS bug
+  // where the input is moved out of view by the keyboard that opens
+  // due to input autofocus
+  .selectList {
+    margin-top: $input-height;
+  }
+
+  .close {
+    position: fixed;
+  }
+
+  .input {
+    position: fixed;
+    top: 0;
+    border-width: 0 0 1px;
+    border-radius: 0;
+    box-shadow: none;
+
+    // Damn specificity
+    @include night-mode {
+      box-shadow: none;
+    }
+  }
 }
 
 .close {
