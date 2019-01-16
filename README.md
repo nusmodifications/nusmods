@@ -74,4 +74,9 @@ All projects and packages in this repository are [MIT licensed](LICENSE).
 
 [![](docs/browserstack-logo.png)][browserstack]
 
+[Zoho](zoho) has kindly given us individual email accounts, allowing us to communicate more effectively.
+
+[![](docs/zoho-logo.png)][zoho]
+
 [browserstack]: https://www.browserstack.com/
+[zoho]: https://www.zoho.com/
