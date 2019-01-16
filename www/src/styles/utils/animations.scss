@@ -93,3 +93,21 @@
     transform: translate3d(0, 0, 0);
   }
 }
+
+@keyframes shake {
+  from {
+    transform: translate(0, 0);
+  }
+
+  33% {
+    transform: translate(10px, 0);
+  }
+
+  66% {
+    transform: translate(-10px, 0);
+  }
+
+  to {
+    transform: translate(0, 0);
+  }
+}
