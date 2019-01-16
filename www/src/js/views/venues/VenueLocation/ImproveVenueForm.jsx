@@ -297,6 +297,10 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
           )}
         </div>
 
+        <p className={styles.fullscreenTip}>
+          Tip: Open the map in fullscreen to easily edit the location
+        </p>
+
         <div className={classnames(styles.actions, 'col-sm-12')}>
           {this.props.onBack && (
             <button className="btn btn-lg btn-secondary" onClick={this.props.onBack}>
