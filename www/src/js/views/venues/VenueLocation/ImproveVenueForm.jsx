@@ -1,22 +1,23 @@
 // @flow
 
-import type { LatLng } from 'leaflet';
+import type { LatLng, Viewport } from 'react-leaflet';
 import React, { PureComponent } from 'react';
 import { Map, Marker, TileLayer } from 'react-leaflet';
 import classnames from 'classnames';
 import axios from 'axios';
 
-import type { LatLngTuple, VenueLocation } from 'types/venues';
+import type { LatLngTuple, Venue, VenueLocation } from 'types/venues';
 import config from 'config';
 import { MapPin, ThumbsUp } from 'views/components/icons';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import { icon } from 'views/components/map/icons';
 import ExpandMap from 'views/components/map/ExpandMap';
+
 import mapStyles from 'views/components/map/LocationMap.scss';
 import styles from './ImproveVenueForm.scss';
 
 type Props = {
-  venue: string,
+  venue: Venue,
   existingLocation?: ?VenueLocation,
   onBack?: () => void,
 };
@@ -33,6 +34,10 @@ type State = {
   submitting: boolean,
   submitted: boolean,
   isMapExpanded: boolean,
+  promptUpdateMap: boolean,
+  // viewport is stored as a separate state because viewport may be animated separately
+  // from location
+  viewport: Viewport,
   error?: any,
 };
 
@@ -51,7 +56,7 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
     super(props);
 
     const { existingLocation } = props;
-    const location = {
+    const locationInfo = {
       roomName: '',
       floor: 1,
       location: wellKnownLocations['Central Library'],
@@ -59,36 +64,51 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
 
     // Make sure we copy only non-null values into the new location
     if (existingLocation) {
-      location.roomName = existingLocation.roomName;
+      locationInfo.roomName = existingLocation.roomName;
 
       if (typeof existingLocation.floor === 'number') {
-        location.floor = existingLocation.floor;
+        locationInfo.floor = existingLocation.floor;
       }
 
       if (existingLocation.location) {
-        location.location = [existingLocation.location.y, existingLocation.location.x];
+        locationInfo.location = [existingLocation.location.y, existingLocation.location.x];
       }
     }
 
+    const viewport = {
+      center: locationInfo.location,
+      zoom: 19,
+    };
+
     this.state = {
+      viewport,
       reporterEmail: '',
       latlngUpdated: false,
       submitting: false,
       submitted: false,
       isMapExpanded: false,
-      ...location,
+      promptUpdateMap: false,
+      ...locationInfo,
     };
   }
 
   onSubmit = (evt: SyntheticEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
+    // Don't allow the user to submit without changing the latlng on the map
+    if (!this.state.latlngUpdated) {
+      // Shake the prompt a little to prompt the user to update the map
+      this.setState({ promptUpdateMap: true });
+      setTimeout(() => this.setState({ promptUpdateMap: false }), 500);
+      return;
+    }
+
     this.setState({ submitting: true });
 
     const { reporterEmail, roomName, location, floor } = this.state;
     const { venue } = this.props;
 
-    return axios
+    axios
       .post(config.venueFeedbackApi, {
         venue,
         reporterEmail,
@@ -102,14 +122,10 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
   };
 
   onMapJump = (evt: SyntheticEvent<HTMLSelectElement>) => {
-    if (!(evt.target instanceof HTMLSelectElement)) {
-      return;
-    }
+    if (!(evt.target instanceof HTMLSelectElement)) return;
 
     const location = wellKnownLocations[evt.target.value];
-    if (location) {
-      this.setState({ location });
-    }
+    if (location) this.updateLocation(location);
   };
 
   geolocate = () => {
@@ -121,13 +137,21 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
     );
   };
 
-  updateLocation = (latlng: LatLng) => {
-    const { lat, lng } = latlng;
-
-    this.setState({
-      location: [lat, lng],
+  updateLocation = (latlng: LatLng, updateViewport: boolean = true) => {
+    const location = Array.isArray(latlng) ? latlng : [latlng.lat, latlng.lng];
+    const update: $Shape<State> = {
+      location,
       latlngUpdated: true,
-    });
+    };
+
+    if (updateViewport) {
+      update.viewport = {
+        ...this.state.viewport,
+        center: latlng,
+      };
+    }
+
+    this.setState(update);
   };
 
   render() {
@@ -168,11 +192,7 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
             type="email"
             placeholder="example@nusmods.com"
             value={reporterEmail}
-            onChange={(evt) =>
-              this.setState({
-                reporterEmail: evt.target.value,
-              })
-            }
+            onChange={(evt) => this.setState({ reporterEmail: evt.target.value })}
           />
           <small className="form-text text-muted" id="improve-venue-email-help">
             This will be visible publicly. If you fill this we can contact you when your
@@ -188,11 +208,7 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
             type="text"
             placeholder="eg. Seminar Room 2, Physics Lab 5"
             value={roomName}
-            onChange={(evt) =>
-              this.setState({
-                roomName: evt.target.value,
-              })
-            }
+            onChange={(evt) => this.setState({ roomName: evt.target.value })}
             required
           />
         </div>
@@ -207,11 +223,7 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
             step="1"
             placeholder="eg. 1"
             value={floor}
-            onChange={(evt) =>
-              this.setState({
-                floor: parseInt(evt.target.value, 10),
-              })
-            }
+            onChange={(evt) => this.setState({ floor: parseInt(evt.target.value, 10) })}
             required
           />
           <small className="form-text text-muted" id="improve-venue-floor-help">
@@ -226,9 +238,12 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
         >
           <Map
             className={mapStyles.map}
-            center={location}
-            zoom={19}
+            viewport={this.state.viewport}
             maxZoom={19}
+            // Don't update viewport because this is also called when viewport is animated
+            // and updating viewport will cause the
+            onViewportChange={(viewport) => this.updateLocation(viewport.center, false)}
+            onViewportChanged={(viewport) => this.setState({ viewport })}
             onClick={(evt) => this.updateLocation(evt.latlng)}
           >
             <Marker
@@ -263,9 +278,10 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
           <small
             className={classnames(styles.instructions, {
               [styles.moved]: this.state.latlngUpdated,
+              [styles.shake]: this.state.promptUpdateMap,
             })}
           >
-            Drag marker or click on map so that the marker is pointing to the location.
+            Move marker or map so that marker is pointing to {this.props.venue}
           </small>
 
           {'geolocation' in navigator && (
@@ -281,6 +297,10 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
           )}
         </div>
 
+        <p className={styles.fullscreenTip}>
+          Tip: Open the map in fullscreen to easily edit the location
+        </p>
+
         <div className={classnames(styles.actions, 'col-sm-12')}>
           {this.props.onBack && (
             <button className="btn btn-lg btn-secondary" onClick={this.props.onBack}>
@@ -288,7 +308,12 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
             </button>
           )}
 
-          <button className="btn btn-lg btn-primary" type="submit">
+          <button
+            className={classnames('btn btn-lg btn-primary', {
+              disabled: !this.state.latlngUpdated,
+            })}
+            type="submit"
+          >
             Submit
           </button>
         </div>
