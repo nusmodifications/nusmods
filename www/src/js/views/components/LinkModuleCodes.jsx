@@ -20,7 +20,7 @@ type Props = {
   className?: string,
 };
 
-export const LinkModuleCodesComponent = React.memo<Props>((props) => {
+export function LinkModuleCodesComponent(props: Props) {
   const { children, className } = props;
 
   return replaceWithNode(children, MODULE_CODE_REGEX, (part, i) => {
@@ -43,7 +43,7 @@ export const LinkModuleCodesComponent = React.memo<Props>((props) => {
       </Tooltip>
     );
   });
-});
+}
 
 export default connect(
   (state: State) => ({
