@@ -1,0 +1,63 @@
+@import '~styles/utils/modules-entry';
+@import 'variables';
+
+.year {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+  margin-right: $column-gutter;
+  border-radius: 0.5rem;
+  background: var(--gray-lightest);
+
+  &.currentYear {
+    border: 1px solid rgba(theme-color(), 0.5);
+    background: rgba(theme-color(), 0.1);
+  }
+}
+
+.yearHeader {
+  display: flex;
+  opacity: 0.7;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+
+  h2,
+  p {
+    margin: 0;
+  }
+
+  h2 {
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+
+  p {
+    font-size: 0.9rem;
+  }
+}
+
+.semesters {
+  display: flex;
+  flex: 1 1 auto;
+  margin-right: -$column-gutter;
+}
+
+.semesterWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.semesterHeader {
+  margin-bottom: 0.2rem;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.semester {
+  flex: 1 1 auto;
+}
+
+.specialSemToggle {
+  text-align: right;
+}

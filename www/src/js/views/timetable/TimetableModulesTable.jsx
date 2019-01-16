@@ -11,7 +11,7 @@ import type { ColorIndex } from 'types/reducers';
 import type { ModuleTableOrder } from 'types/views';
 
 import ColorPicker from 'views/components/ColorPicker';
-import { Eye, EyeOff, Trash2 } from 'views/components/icons/index';
+import { Eye, EyeOff, Trash } from 'views/components/icons/index';
 import {
   hideLessonInTimetable,
   selectModuleColor,
@@ -58,7 +58,7 @@ class TimetableModulesTable extends PureComponent<Props> {
               aria-label={removeBtnLabel}
               onClick={() => this.props.onRemoveModule(module)}
             >
-              <Trash2 className={styles.actionIcon} />
+              <Trash className={styles.actionIcon} />
             </button>
           </Tooltip>
           <Tooltip content={hideBtnLabel} touchHold>

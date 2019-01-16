@@ -1,30 +1,32 @@
 // @flow
 import React from 'react';
 import classnames from 'classnames';
-import { map, groupBy } from 'lodash';
+import { groupBy, toPairs, sortBy } from 'lodash';
 import { Link } from 'react-router-dom';
 
-import type { Venue, VenueDetailList } from 'types/venues';
+import type { Venue } from 'types/venues';
 import { venuePage } from 'views/routes/paths';
 
 import styles from './VenueList.scss';
 
 type Props = {
-  venues: VenueDetailList,
-  selectedVenue: ?Venue,
+  venues: Venue[],
+  selectedVenue?: ?Venue,
+  linkProps?: { [string]: any },
 };
 
 export default function VenueList(props: Props) {
-  const venueListPages = groupBy(props.venues, ([venue]) => venue.charAt(0).toUpperCase());
+  const venueList = groupBy(props.venues, (venue) => venue.charAt(0).toUpperCase());
+  const sortedVenueList = sortBy(toPairs(venueList), ([key]) => key);
 
   return (
     <ul className={styles.venueList}>
-      {map(venueListPages, (venues, heading) => (
+      {sortedVenueList.map(([heading, venues]) => (
         <li key={heading}>
           <h3 className={styles.heading}>{heading}</h3>
 
           <ul className={styles.subList}>
-            {venues.map(([venue]) => (
+            {venues.map((venue) => (
               <li key={venue}>
                 <Link
                   to={{
@@ -35,6 +37,7 @@ export default function VenueList(props: Props) {
                     'btn',
                     venue === props.selectedVenue ? 'btn-primary' : 'btn-outline-primary',
                   )}
+                  {...props.linkProps}
                 >
                   {venue}
                 </Link>
