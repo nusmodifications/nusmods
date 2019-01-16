@@ -44,9 +44,12 @@ export default class LocationMap extends PureComponent<Props, State> {
     const googleMapQuery = encodeURIComponent(position.join(','));
     const { isExpanded } = this.state;
 
+    // The map uses position: fixed when expanded so we don't need inline height
+    const style = isExpanded ? {} : { height };
+
     return (
       <div
-        style={{ height }}
+        style={style}
         className={classnames(styles.mapWrapper, className, { [styles.expanded]: isExpanded })}
       >
         <ExternalLink
