@@ -102,10 +102,11 @@ export function getAcadYearModules(state: State): PlannerModulesWithInfo {
     });
   });
 
-  // Don't show semesters 1 and 2 in the iBLOCs year
+  // Don't show semesters 1 and 2 and special term 2 in the iBLOCs year
   if (planner.iblocs) {
     delete modules[minYear][1];
     delete modules[minYear][2];
+    delete modules[minYear][4];
   }
 
   return modules;

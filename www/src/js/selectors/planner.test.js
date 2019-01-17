@@ -133,7 +133,6 @@ describe(getAcadYearModules, () => {
       '2017/2018': {
         // iBlOCs only happen in special term, so we don't show sem 1 and 2
         [3]: [{ moduleCode: 'CS1010X' }],
-        [4]: [],
       },
       '2018/2019': {
         [1]: [{ moduleCode: 'MA1521' }],
