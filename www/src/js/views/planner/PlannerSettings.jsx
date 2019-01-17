@@ -36,16 +36,6 @@ export function getYearLabels(minOffset: number, maxOffset: number) {
   );
 }
 
-function matriculationLabel(year: string, offset: number) {
-  const startingYear = acadYearLabel(year);
-
-  if (offset >= 0) return [`Year ${offset + 1}`, `started in ${startingYear}`];
-  return [
-    `${-offset} ${offset === -1 ? 'year' : 'years'} from matriculation`,
-    `starting in ${startingYear}`,
-  ];
-}
-
 function graduationLabel(offset: number) {
   if (offset === 0) return 'This year';
   if (offset === 1) return 'Next year';
@@ -59,11 +49,11 @@ export function PlannerSettingsComponent(props: Props) {
   return (
     <div className={styles.settings}>
       <section>
-        <p className={styles.label}>I&apos;m currently in...</p>
+        <h2 className={styles.label}>Matriculated in</h2>
         <ul className={styles.years}>
           {matriculationLabels
             .map((year, i) => {
-              const [countLabel, startLabel] = matriculationLabel(year, -i - MIN_YEARS);
+              const offset = -i - MIN_YEARS;
 
               return (
                 <li key={year}>
@@ -75,9 +65,10 @@ export function PlannerSettingsComponent(props: Props) {
                     })}
                     onClick={() => props.setMinYear(year)}
                   >
-                    {countLabel}
-                    <br />
-                    <span className={styles.startTime}>({startLabel})</span>
+                    AY{acadYearLabel(year)}
+                    {offset >= 0 && (
+                      <span className={styles.subtitle}>(currently year {offset + 1})</span>
+                    )}
                   </button>
                 </li>
               );
@@ -87,7 +78,7 @@ export function PlannerSettingsComponent(props: Props) {
       </section>
 
       <section>
-        <p className={styles.label}>I will be graduating...</p>
+        <h2 className={styles.label}>Graduating</h2>
         <ul className={styles.years}>
           {graduationLabels.map((year, offset) => (
             <li key={year}>
@@ -100,8 +91,7 @@ export function PlannerSettingsComponent(props: Props) {
                 onClick={() => props.setMaxYear(year)}
               >
                 {graduationLabel(offset)}
-                <br />
-                <span className={styles.startTime}>(AY{acadYearLabel(year)})</span>
+                <span className={styles.subtitle}>(AY{acadYearLabel(year)})</span>
               </button>
             </li>
           ))}
@@ -110,7 +100,7 @@ export function PlannerSettingsComponent(props: Props) {
 
       <section className={styles.toggleSection}>
         <div>
-          <p className={styles.label}>I have / will be taking iBLOCs</p>
+          <h2 className={styles.label}>Taking / taken iBLOCs</h2>
 
           <p>
             <ExternalLink href="http://www.nus.edu.sg/ibloc/iBLOC.html">iBLOCs</ExternalLink> is a

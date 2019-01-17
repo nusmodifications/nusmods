@@ -8,13 +8,13 @@
     &:last-child {
       margin-bottom: 0;
     }
-  }
-}
 
-.label {
-  margin-bottom: 0.4rem;
-  font-weight: bold;
-  font-size: 1.2rem;
+    h2 {
+      margin-bottom: 0.4rem;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+  }
 }
 
 .years {
@@ -26,12 +26,14 @@
 
   button {
     height: 100%;
+    font-weight: bold;
     line-height: 1.25;
   }
 
-  .startTime {
+  .subtitle {
     display: block;
-    margin-top: 0.4rem;
+    margin-top: 0.2rem;
+    font-weight: normal;
     font-size: 0.9rem;
   }
 }
