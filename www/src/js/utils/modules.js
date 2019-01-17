@@ -40,14 +40,29 @@ export function areLessonsSameClass(lesson1: Lesson, lesson2: Lesson): boolean {
   );
 }
 
-// Convert exam in ISO format to 12-hour date/time format. We slice off the
-// SGT time zone and interpret as UTC time, then use the getUTC* methods so
-// that they will correspond to Singapore time regardless of the local time
-// zone.
+/**
+ * Convert examDate to JS Date object. Unfortunately just doing
+ * new Date(examDate) won't work on Safari, since the timestamp is almost but not
+ * quite ISO8601 standard
+ *
+ * The API returns examDate with hhmm as the TZ specifier, but we want
+ * this to work on machines in all timezones, so instead we lop it off and
+ * pretend it is in UTC time
+ */
+export function examDateToDate(examDate: string): Date {
+  return new Date(`${examDate.slice(0, 16)}Z`);
+}
+
+/**
+ * Convert exam in ISO format to 12-hour date/time format. We slice off the
+ * SGT time zone and interpret as UTC time, then use the getUTC* methods so
+ * that they will correspond to Singapore time regardless of the local time
+ * zone.
+ */
 export function formatExamDate(examDate: ?string): string {
   if (!examDate) return 'No Exam';
 
-  const date: Date = new Date(`${examDate.slice(0, 16)}Z`);
+  const date = examDateToDate(examDate);
   const hours: number = date.getUTCHours();
 
   const day: string = _.padStart(`${date.getUTCDate().toString()}`, 2, '0');
@@ -128,4 +143,23 @@ export function getTimeslot(day: Day, time: Time): string {
 export function renderMCs(moduleCredits: number | string) {
   const credit = parseInt(moduleCredits, 10);
   return `${credit}${NBSP}${credit === 1 ? 'MC' : 'MCs'}`;
+}
+
+export function subtractAcadYear(acadYear: string): string {
+  return acadYear.replace(/\d+/g, (year) => String(parseInt(year, 10) - 1));
+}
+
+export function addAcadYear(acadYear: string): string {
+  return acadYear.replace(/\d+/g, (year) => String(parseInt(year, 10) + 1));
+}
+
+export function getYearsBetween(minYear: string, maxYear: string): string[] {
+  const years = [];
+  let nextYear = minYear;
+  while (nextYear !== maxYear) {
+    years.push(nextYear);
+    nextYear = addAcadYear(nextYear);
+  }
+  years.push(maxYear);
+  return years;
 }

@@ -29,16 +29,15 @@ export function FooterComponent(props: Props) {
     }
   }
 
-  const versionSpan = commitHash &&
-    versionStr && (
-      <span>
-        NUSMods R version{' '}
-        <ExternalLink href={`https://github.com/nusmodifications/nusmods/commit/${commitHash}`}>
-          {versionStr}
-        </ExternalLink>
-        .
-      </span>
-    );
+  const versionSpan = commitHash && versionStr && (
+    <span>
+      NUSMods R version{' '}
+      <ExternalLink href={`https://github.com/nusmodifications/nusmods/commit/${commitHash}`}>
+        {versionStr}
+      </ExternalLink>
+      .
+    </span>
+  );
 
   return (
     <footer className={styles.footer}>

@@ -1,7 +1,8 @@
 // @flow
 import React, { Component, Fragment } from 'react';
-import { stubString } from 'lodash';
-import Downshift, { type ChildrenFunction } from 'downshift';
+import { stubString, omit } from 'lodash';
+import type { ChildrenFunction, DownshiftState, StateChangeOptions } from 'downshift';
+import Downshift from 'downshift';
 import classnames from 'classnames';
 
 import { highlight } from 'utils/react';
@@ -25,6 +26,7 @@ type Props = {
 
 type State = {
   isOpen: boolean,
+  inputValue: string,
 };
 
 const PLACEHOLDER = 'Search modules & venues. Try "GER" or "LT".';
@@ -34,6 +36,7 @@ class GlobalSearch extends Component<Props, State> {
 
   state = {
     isOpen: false,
+    inputValue: '',
   };
 
   onOpen = () => {
@@ -41,9 +44,29 @@ class GlobalSearch extends Component<Props, State> {
   };
 
   onClose = () => {
-    this.setState({ isOpen: false }, () => {
-      if (this.input) this.input.blur();
+    this.setState({
+      isOpen: false,
+      inputValue: '',
     });
+
+    if (this.input) this.input.blur();
+  };
+
+  onOuterClick = () => {
+    if (this.state.inputValue) {
+      this.setState({
+        isOpen: true,
+        inputValue: this.state.inputValue,
+      });
+
+      if (this.input) this.input.blur();
+    } else {
+      this.onClose();
+    }
+  };
+
+  onInputValueChange = (newInputValue: string) => {
+    this.setState({ inputValue: newInputValue });
   };
 
   onChange = (item: SearchItem) => {
@@ -67,6 +90,15 @@ class GlobalSearch extends Component<Props, State> {
     }
 
     this.onClose();
+  };
+
+  stateReducer = (state: DownshiftState<SearchItem>, changes: StateChangeOptions<SearchItem>) => {
+    switch (changes.type) {
+      case Downshift.stateChangeTypes.blurInput:
+        return omit(changes, 'inputValue');
+      default:
+        return changes;
+    }
   };
 
   // Downshift attaches label for us, so we can ignore ESLint here
@@ -101,9 +133,10 @@ class GlobalSearch extends Component<Props, State> {
     );
 
     const searchResults = this.props.getResults(inputValue);
+    const hasFocus = document.activeElement === this.input;
 
     // 1. Search is not active - just show the search form
-    if (!searchResults || !inputValue) {
+    if (!searchResults || !inputValue || !hasFocus) {
       return <div className={styles.container}>{searchForm}</div>;
     }
 
@@ -244,12 +277,16 @@ class GlobalSearch extends Component<Props, State> {
   };
 
   render() {
-    const { isOpen } = this.state;
+    const { isOpen, inputValue } = this.state;
+
     return (
       <Downshift
         isOpen={isOpen}
-        onOuterClick={this.onClose}
+        onOuterClick={this.onOuterClick}
         onChange={this.onChange}
+        onInputValueChange={this.onInputValueChange}
+        inputValue={inputValue}
+        stateReducer={this.stateReducer}
         /* Hack to force item selection to be empty */
         itemToString={stubString}
         selectedItem=""

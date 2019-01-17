@@ -90,6 +90,11 @@ module.exports = {
         specialLink: ['to'],
       },
     ],
+    // For use with immer
+    'no-param-reassign': [
+      'error',
+      { props: true, ignorePropertyModificationsFor: ['draft', 'draftState'] },
+    ],
     // Let git handle the linebreaks instead.
     'linebreak-style': 'off',
   },

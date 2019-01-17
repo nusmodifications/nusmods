@@ -4,7 +4,7 @@ import React, { Fragment, PureComponent, type Node } from 'react';
 import { connect } from 'react-redux';
 import { minBy, range, get } from 'lodash';
 import NUSModerator, { type AcadWeekInfo } from 'nusmoderator';
-import { addDays, differenceInCalendarDays, isSameDay, isWeekend } from 'date-fns';
+import { addDays, differenceInCalendarDays, isSameDay, isWeekend, parseISO } from 'date-fns';
 
 import type { ColoredLesson, Lesson } from 'types/modules';
 import { DaysOfWeek } from 'types/modules';
@@ -27,8 +27,7 @@ import Announcements from 'views/components/notfications/Announcements';
 import { getSemesterTimetable } from 'reducers/timetables';
 import ExternalLink from 'views/components/ExternalLink';
 import * as weatherAPI from 'apis/weather';
-/** @var {string[]} */
-import holidays from 'data/holidays.json';
+import config from 'config';
 import withTimer, { type TimerData } from 'views/hocs/withTimer';
 import makeResponsive from 'views/hocs/makeResponsive';
 import NoFooter from 'views/layout/NoFooter';
@@ -128,7 +127,10 @@ export class TodayContainerComponent extends PureComponent<Props, State> {
       .fourDay()
       .then((forecasts) => {
         forecasts.forEach((forecast) => {
-          const days = differenceInCalendarDays(forecast.timestamp, this.props.currentTime);
+          const days = differenceInCalendarDays(
+            parseISO(forecast.timestamp),
+            this.props.currentTime,
+          );
 
           if (!this.state.weather[String(days)]) {
             this.setState({ weather: { ...this.state.weather, [days]: forecast.forecast } });
@@ -200,7 +202,7 @@ export class TodayContainerComponent extends PureComponent<Props, State> {
         // Non-instructional week
         weekInfo.type !== 'Instructional' ||
         // Holiday during instructional week
-        holidays.some((holiday) => isSameDay(date, holiday)) ||
+        config.holidays.some((holiday) => isSameDay(date, holiday)) ||
         // Weekend with no lesson
         (lessons.length === 0 && isWeekend(date))
       ) {
