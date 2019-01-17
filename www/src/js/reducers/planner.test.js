@@ -2,40 +2,58 @@
 
 import {
   ADD_PLANNER_MODULE,
-  ADD_PLANNER_YEAR,
   MOVE_PLANNER_MODULE,
   REMOVE_PLANNER_MODULE,
   addPlannerModule,
-  addPlannerYear,
   movePlannerModule,
   removePlannerModule,
+  setPlannerMinYear,
+  SET_PLANNER_MIN_YEAR,
+  SET_PLANNER_MAX_YEAR,
+  setPlannerMaxYear,
+  SET_PLANNER_IBLOCS,
+  setPlannerIBLOCs,
 } from 'actions/planner';
 import type { PlannerState } from 'types/reducers';
 import reducer from './planner';
 
+const defaultState: PlannerState = {
+  minYear: '2017/2018',
+  maxYear: '2018/2019',
+  iblocs: false,
+  modules: {},
+};
+
 /* eslint-disable no-useless-computed-key */
 
-describe(ADD_PLANNER_YEAR, () => {
-  const initial: PlannerState = {
-    minYear: '2017/2018',
-    maxYear: '2018/2019',
-    modules: {},
-  };
-
-  test('should not do anything if year already exists', () => {
-    expect(reducer(initial, addPlannerYear('2018/2019'))).toEqual(initial);
-  });
-
-  test('should add year with empty semesters', () => {
-    expect(reducer(initial, addPlannerYear('2019/2020'))).toEqual({
-      minYear: '2017/2018',
-      maxYear: '2019/2020',
-      modules: {},
-    });
-
-    expect(reducer(initial, addPlannerYear('2016/2017'))).toEqual({
+describe(SET_PLANNER_MIN_YEAR, () => {
+  test('should set min year', () => {
+    expect(reducer(defaultState, setPlannerMinYear('2016/2017'))).toEqual({
       minYear: '2016/2017',
       maxYear: '2018/2019',
+      iblocs: false,
+      modules: {},
+    });
+  });
+});
+
+describe(SET_PLANNER_MAX_YEAR, () => {
+  test('should set max year', () => {
+    expect(reducer(defaultState, setPlannerMaxYear('2020/2021'))).toEqual({
+      minYear: '2017/2018',
+      maxYear: '2020/2021',
+      iblocs: false,
+      modules: {},
+    });
+  });
+});
+
+describe(SET_PLANNER_IBLOCS, () => {
+  test('should set iblocs status', () => {
+    expect(reducer(defaultState, setPlannerIBLOCs(true))).toEqual({
+      minYear: '2017/2018',
+      maxYear: '2018/2019',
+      iblocs: true,
       modules: {},
     });
   });
@@ -43,8 +61,8 @@ describe(ADD_PLANNER_YEAR, () => {
 
 describe(ADD_PLANNER_MODULE, () => {
   const initial: PlannerState = {
-    minYear: '2017/2018',
-    maxYear: '2018/2019',
+    ...defaultState,
+
     modules: { CS1010S: ['2018/2019', 1, 0] },
   };
 
@@ -81,8 +99,8 @@ describe(ADD_PLANNER_MODULE, () => {
 
 describe(MOVE_PLANNER_MODULE, () => {
   const initial: PlannerState = {
-    minYear: '2017/2018',
-    maxYear: '2018/2019',
+    ...defaultState,
+
     modules: {
       CS1010S: ['2018/2019', 1, 0],
       CS2030: ['2018/2019', 2, 0],
@@ -140,8 +158,8 @@ describe(MOVE_PLANNER_MODULE, () => {
 
 describe(REMOVE_PLANNER_MODULE, () => {
   const initial: PlannerState = {
-    minYear: '2017/2018',
-    maxYear: '2018/2019',
+    ...defaultState,
+
     modules: { CS1010S: ['2018/2019', 1, 0] },
   };
 

@@ -2,28 +2,22 @@
 
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { flatMap, flatten, max, min, sortBy, sumBy, toPairs, values } from 'lodash';
+import { flatMap, flatten, sortBy, sumBy, toPairs, values } from 'lodash';
 import { DragDropContext, Droppable, type OnDragEndResponder } from 'react-beautiful-dnd';
 import classnames from 'classnames';
 import type { Module, ModuleCode, Semester } from 'types/modules';
 import type { ModuleWithInfo, PlannerModulesWithInfo } from 'types/views';
 import type { State as StoreState } from 'reducers';
 
-import { addAcadYear, MODULE_CODE_REGEX, renderMCs, subtractAcadYear } from 'utils/modules';
+import { MODULE_CODE_REGEX, renderMCs } from 'utils/modules';
 import {
-  acadYearLabel,
   EXEMPTION_SEMESTER,
   EXEMPTION_YEAR,
   fromDroppableId,
   PLAN_TO_TAKE_SEMESTER,
   PLAN_TO_TAKE_YEAR,
 } from 'utils/planner';
-import {
-  addPlannerModule,
-  addPlannerYear,
-  movePlannerModule,
-  removePlannerModule,
-} from 'actions/planner';
+import { addPlannerModule, movePlannerModule, removePlannerModule } from 'actions/planner';
 import { toggleFeedback } from 'actions/app';
 import { fetchModule } from 'actions/moduleBank';
 import { getAcadYearModules, getExemptions, getPlanToTake } from 'selectors/planner';
@@ -44,7 +38,6 @@ export type Props = {|
   +fetchModule: (ModuleCode) => Promise<Module>,
   +toggleFeedback: () => void,
 
-  +addYear: (year: string) => void,
   +addModule: (moduleCode: ModuleCode, year: string, semester: Semester) => void,
   +moveModule: (moduleCode: ModuleCode, year: string, semester: Semester, index: number) => void,
   +removeModule: (moduleCode: ModuleCode) => void,
@@ -141,10 +134,6 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
       (pairs) => pairs[0],
     );
 
-    const years = Object.keys(this.props.modules);
-    const prevYear = subtractAcadYear(min(years));
-    const nextYear = addAcadYear(max(years));
-
     return (
       <div className={styles.pageContainer}>
         <Title>Module Planner</Title>
@@ -155,17 +144,6 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
 
         <DragDropContext onDragEnd={this.onDropEnd}>
           <div className={styles.yearWrapper}>
-            <button
-              className={classnames(
-                styles.addYearButton,
-                styles.addPrevYear,
-                'btn btn-outline-primary',
-              )}
-              onClick={() => this.props.addYear(prevYear)}
-            >
-              Add Plans For {acadYearLabel(prevYear)}
-            </button>
-
             {sortedModules.map(([year, semesters]) => (
               <PlannerYear
                 key={year}
@@ -175,12 +153,6 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
                 removeModule={this.props.removeModule}
               />
             ))}
-            <button
-              className={classnames(styles.addYearButton, 'btn btn-outline-primary')}
-              onClick={() => this.props.addYear(nextYear)}
-            >
-              Add Plans For {acadYearLabel(nextYear)}
-            </button>
           </div>
 
           <div className={styles.moduleLists}>
@@ -247,7 +219,6 @@ const PlannerContainer = connect(
     addModule: addPlannerModule,
     moveModule: movePlannerModule,
     removeModule: removePlannerModule,
-    addYear: addPlannerYear,
   },
 )(PlannerContainerComponent);
 
