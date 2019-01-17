@@ -8,6 +8,7 @@ import config from 'config';
 import { getYearsBetween, offsetAcadYear } from 'utils/modules';
 import { acadYearLabel } from 'utils/planner';
 import { setPlannerIBLOCs, setPlannerMaxYear, setPlannerMinYear } from 'actions/planner';
+import ExternalLink from 'views/components/ExternalLink';
 import Toggle from 'views/components/Toggle';
 import styles from './PlannerSettings.scss';
 
@@ -24,6 +25,9 @@ type Props = {|
 
 const MIN_YEARS = -5; // Studying year 6
 const MAX_YEARS = 1; // One year before matriculation
+
+// Extracted to a constant to reduce re-renders
+const TOGGLE_LABELS = ['Yes', 'No'];
 
 export function getYearLabels(minOffset: number, maxOffset: number) {
   return getYearsBetween(
@@ -53,63 +57,73 @@ export function PlannerSettingsComponent(props: Props) {
   const graduationLabels = getYearLabels(0, 6);
 
   return (
-    <div>
-      <p>I&apos;m currently in</p>
-      <ul className={styles.years}>
-        {matriculationLabels
-          .map((year, i) => {
-            const [countLabel, startLabel] = matriculationLabel(year, -i - MIN_YEARS);
+    <div className={styles.settings}>
+      <section>
+        <p className={styles.label}>I&apos;m currently in...</p>
+        <ul className={styles.years}>
+          {matriculationLabels
+            .map((year, i) => {
+              const [countLabel, startLabel] = matriculationLabel(year, -i - MIN_YEARS);
 
-            return (
-              <li key={year}>
-                <button
-                  type="button"
-                  className={classnames('btn btn-block', {
-                    'btn-outline-primary': props.minYear !== year,
-                    'btn-primary': props.minYear === year,
-                  })}
-                  onClick={() => props.setMinYear(year)}
-                >
-                  {countLabel}
-                  <br />
-                  <span className={styles.startTime}>({startLabel})</span>
-                </button>
-              </li>
-            );
-          })
-          .reverse()}
-      </ul>
+              return (
+                <li key={year}>
+                  <button
+                    type="button"
+                    className={classnames('btn btn-block', {
+                      'btn-outline-primary': props.minYear !== year,
+                      'btn-primary': props.minYear === year,
+                    })}
+                    onClick={() => props.setMinYear(year)}
+                  >
+                    {countLabel}
+                    <br />
+                    <span className={styles.startTime}>({startLabel})</span>
+                  </button>
+                </li>
+              );
+            })
+            .reverse()}
+        </ul>
+      </section>
 
-      <div>
-        <label>
-          I have / will be taking iBLOCs
-          <Toggle
-            labels={['Yes', 'No']}
-            isOn={props.iblocs}
-            onChange={(checked) => props.setIBLOCs(checked)}
-          />
-        </label>
-      </div>
+      <section>
+        <p className={styles.label}>I will be graduating...</p>
+        <ul className={styles.years}>
+          {graduationLabels.map((year, offset) => (
+            <li key={year}>
+              <button
+                type="button"
+                className={classnames('btn btn-block', {
+                  'btn-outline-primary': props.maxYear !== year,
+                  'btn-primary': props.maxYear === year,
+                })}
+                onClick={() => props.setMaxYear(year)}
+              >
+                {graduationLabel(offset)}
+                <br />
+                <span className={styles.startTime}>(AY{acadYearLabel(year)})</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      </section>
 
-      <p>I will be graduating</p>
-      <ul className={styles.years}>
-        {graduationLabels.map((year, offset) => (
-          <li key={year}>
-            <button
-              type="button"
-              className={classnames('btn btn-block', {
-                'btn-outline-primary': props.maxYear !== year,
-                'btn-primary': props.maxYear === year,
-              })}
-              onClick={() => props.setMaxYear(year)}
-            >
-              {graduationLabel(offset)}
-              <br />
-              <span className={styles.startTime}>(AY{acadYearLabel(year)})</span>
-            </button>
-          </li>
-        ))}
-      </ul>
+      <section className={styles.toggleSection}>
+        <div>
+          <p className={styles.label}>I have / will be taking iBLOCs</p>
+
+          <p>
+            <ExternalLink href="http://www.nus.edu.sg/ibloc/iBLOC.html">iBLOCs</ExternalLink> is a
+            program that full-time NSmen to read some modules before matriculating.
+          </p>
+        </div>
+
+        <Toggle
+          labels={TOGGLE_LABELS}
+          isOn={props.iblocs}
+          onChange={(checked) => props.setIBLOCs(checked)}
+        />
+      </section>
     </div>
   );
 }
