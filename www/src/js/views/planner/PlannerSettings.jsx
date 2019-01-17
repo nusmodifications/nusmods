@@ -64,7 +64,7 @@ export function PlannerSettingsComponent(props: Props) {
               <li key={year}>
                 <button
                   type="button"
-                  className={classnames('btn btn-lg btn-block', {
+                  className={classnames('btn btn-block', {
                     'btn-outline-primary': props.minYear !== year,
                     'btn-primary': props.minYear === year,
                   })}
@@ -97,7 +97,7 @@ export function PlannerSettingsComponent(props: Props) {
           <li key={year}>
             <button
               type="button"
-              className={classnames('btn btn-lg btn-block', {
+              className={classnames('btn btn-block', {
                 'btn-outline-primary': props.maxYear !== year,
                 'btn-primary': props.maxYear === year,
               })}

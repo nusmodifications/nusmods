@@ -21,9 +21,10 @@ import { addPlannerModule, movePlannerModule, removePlannerModule } from 'action
 import { toggleFeedback } from 'actions/app';
 import { fetchModule } from 'actions/moduleBank';
 import { getAcadYearModules, getExemptions, getPlanToTake } from 'selectors/planner';
-import { Trash } from 'views/components/icons';
+import { Trash, Settings } from 'views/components/icons';
 import Title from 'views/components/Title';
 import LoadingSpinner from 'views/components/LoadingSpinner';
+import Modal from 'views/components/Modal';
 import PlannerSemester from '../PlannerSemester';
 import PlannerYear from '../PlannerYear';
 import PlannerSettings from '../PlannerSettings';
@@ -33,6 +34,7 @@ export type Props = {|
   +modules: PlannerModulesWithInfo,
   +exemptions: ModuleWithInfo[],
   +planToTake: ModuleWithInfo[],
+  +iblocs: boolean,
 
   // Actions
   +fetchModule: (ModuleCode) => Promise<Module>,
@@ -45,6 +47,7 @@ export type Props = {|
 
 type State = {|
   +loading: boolean,
+  +showSettings: boolean,
 |};
 
 const TRASH_ID = 'trash';
@@ -52,6 +55,7 @@ const TRASH_ID = 'trash';
 export class PlannerContainerComponent extends PureComponent<Props, State> {
   state = {
     loading: true,
+    showSettings: false,
   };
 
   componentDidMount() {
@@ -94,6 +98,12 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
     }
   };
 
+  getYearLabel(index: number) {
+    if (!this.props.iblocs) return `Year ${index + 1}`;
+    if (index === 0) return 'iBLOCs';
+    return `Year ${index}`;
+  }
+
   renderHeader() {
     const modules = flatten(flatMap(this.props.modules, values));
     const credits = sumBy(modules, (module) => +module.moduleInfo?.ModuleCredit || 0);
@@ -113,6 +123,13 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
         </h1>
 
         <div>
+          <button
+            className="btn btn-svg btn-outline-primary"
+            type="button"
+            onClick={() => this.setState({ showSettings: true })}
+          >
+            <Settings className="svg" /> Settings
+          </button>
           <p>
             {count} {count === 1 ? 'module' : 'modules'} / {renderMCs(credits)}
           </p>
@@ -140,13 +157,12 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
 
         {this.renderHeader()}
 
-        <PlannerSettings />
-
         <DragDropContext onDragEnd={this.onDropEnd}>
           <div className={styles.yearWrapper}>
-            {sortedModules.map(([year, semesters]) => (
+            {sortedModules.map(([year, semesters], index) => (
               <PlannerYear
                 key={year}
+                name={this.getYearLabel(index)}
                 year={year}
                 semesters={semesters}
                 addModule={this.onAddModule}
@@ -200,12 +216,22 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
             </Droppable>
           </div>
         </DragDropContext>
+
+        <Modal
+          isOpen={this.state.showSettings}
+          onRequestClose={() => this.setState({ showSettings: false })}
+          animate
+        >
+          <PlannerSettings />
+        </Modal>
       </div>
     );
   }
 }
 
 const mapStateToProps = (state: StoreState) => ({
+  iblocs: state.planner.iblocs,
+
   modules: getAcadYearModules(state),
   exemptions: getExemptions(state),
   planToTake: getPlanToTake(state),
