@@ -5,7 +5,7 @@ import { Semesters } from 'types/modules';
 import type { ModuleWithInfo, PlannerModulesWithInfo } from 'types/views';
 import type { ModuleTime } from 'types/reducers';
 import type { State } from 'reducers';
-import { getYearsBetween } from 'utils/modules';
+import { getYearsBetween, subtractAcadYear } from 'utils/modules';
 import {
   checkPrerequisite,
   EXEMPTION_SEMESTER,
@@ -75,7 +75,9 @@ export function getPlanToTake(state: State): ModuleWithInfo[] {
  */
 export function getAcadYearModules(state: State): PlannerModulesWithInfo {
   const { planner, moduleBank } = state;
-  const years = getYearsBetween(planner.minYear, planner.maxYear);
+  // iBLOCs happens in the year before matriculation
+  const minYear = planner.iblocs ? subtractAcadYear(planner.minYear) : planner.minYear;
+  const years = getYearsBetween(minYear, planner.maxYear);
   const modules = {};
   const modulesTaken = new Set<ModuleCode>(getExemptions(state).map((module) => module.moduleCode));
 
@@ -99,6 +101,12 @@ export function getAcadYearModules(state: State): PlannerModulesWithInfo {
       });
     });
   });
+
+  // Don't show semesters 1 and 2 in the iBLOCs year
+  if (planner.iblocs) {
+    delete modules[minYear][1];
+    delete modules[minYear][2];
+  }
 
   return modules;
 }

@@ -1,0 +1,20 @@
+@import '~styles/utils/modules-entry';
+@import 'variables';
+
+.years {
+  composes: list-unstyled from global;
+  display: grid;
+  grid-gap: 0.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
+
+  button {
+    height: 100%;
+    line-height: 1.25;
+  }
+
+  .startTime {
+    display: block;
+    margin-top: 0.4rem;
+    font-size: 0.9rem;
+  }
+}

@@ -153,6 +153,23 @@ export function addAcadYear(acadYear: string): string {
   return acadYear.replace(/\d+/g, (year) => String(parseInt(year, 10) + 1));
 }
 
+export function offsetAcadYear(year: string, offset: number) {
+  let i = offset;
+  let currentYear = year;
+
+  while (i !== 0) {
+    if (offset < 0) {
+      currentYear = subtractAcadYear(currentYear);
+      i += 1;
+    } else {
+      currentYear = addAcadYear(currentYear);
+      i -= 1;
+    }
+  }
+
+  return currentYear;
+}
+
 export function getYearsBetween(minYear: string, maxYear: string): string[] {
   const years = [];
   let nextYear = minYear;
