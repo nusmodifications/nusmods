@@ -2,7 +2,7 @@
 
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { flatMap, values, flatten, max, min, sortBy, toPairs, sumBy } from 'lodash';
+import { flatMap, flatten, max, min, sortBy, sumBy, toPairs, values } from 'lodash';
 import { DragDropContext, Droppable, type OnDragEndResponder } from 'react-beautiful-dnd';
 import classnames from 'classnames';
 import type { Module, ModuleCode, Semester } from 'types/modules';
@@ -11,6 +11,7 @@ import type { State as StoreState } from 'reducers';
 
 import { addAcadYear, MODULE_CODE_REGEX, renderMCs, subtractAcadYear } from 'utils/modules';
 import {
+  acadYearLabel,
   EXEMPTION_SEMESTER,
   EXEMPTION_YEAR,
   fromDroppableId,
@@ -31,6 +32,7 @@ import Title from 'views/components/Title';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import PlannerSemester from '../PlannerSemester';
 import PlannerYear from '../PlannerYear';
+import PlannerSettings from '../PlannerSettings';
 import styles from './PlannerContainer.scss';
 
 export type Props = {|
@@ -53,12 +55,6 @@ type State = {|
 |};
 
 const TRASH_ID = 'trash';
-
-// Exported for testing
-export function addYearLabel(year: string) {
-  // Remove the 20 prefix from AY
-  return year.replace(/\d{4}/g, (match) => match.slice(2));
-}
 
 export class PlannerContainerComponent extends PureComponent<Props, State> {
   state = {
@@ -155,6 +151,8 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
 
         {this.renderHeader()}
 
+        <PlannerSettings />
+
         <DragDropContext onDragEnd={this.onDropEnd}>
           <div className={styles.yearWrapper}>
             <button
@@ -165,7 +163,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
               )}
               onClick={() => this.props.addYear(prevYear)}
             >
-              Add Plans For {addYearLabel(prevYear)}
+              Add Plans For {acadYearLabel(prevYear)}
             </button>
 
             {sortedModules.map(([year, semesters]) => (
@@ -181,7 +179,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
               className={classnames(styles.addYearButton, 'btn btn-outline-primary')}
               onClick={() => this.props.addYear(nextYear)}
             >
-              Add Plans For {addYearLabel(nextYear)}
+              Add Plans For {acadYearLabel(nextYear)}
             </button>
           </div>
 

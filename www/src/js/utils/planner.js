@@ -1,5 +1,5 @@
 // @flow
-import { flatten, castArray } from 'lodash';
+import { castArray, flatten } from 'lodash';
 import type { ModuleCode, Semester, TreeFragment } from 'types/modules';
 import config from 'config';
 
@@ -86,4 +86,10 @@ export function getDroppableId(year: string, semester: Semester): string {
 export function fromDroppableId(id: string): [string, Semester] {
   const [acadYear, semesterString] = id.split('|');
   return [acadYear, +semesterString];
+}
+
+// Create shortened AY labels - eg. 2019/2020 -> 19/20
+export function acadYearLabel(year: string) {
+  // Remove the 20 prefix from AY
+  return year.replace(/\d{4}/g, (match) => match.slice(2));
 }
