@@ -1,10 +1,11 @@
 // @flow
-import { sortBy } from 'lodash';
+import { sortBy, values } from 'lodash';
 import type { ModuleCode, Semester } from 'types/modules';
 import { Semesters } from 'types/modules';
-import type { ModuleWithInfo, PlannerModulesWithInfo } from 'types/views';
-import type { ModuleTime } from 'types/reducers';
+import type { Conflict, ExamClashes, ModuleWithInfo, PlannerModulesWithInfo } from 'types/views';
+import type { ModuleCodeMap, ModuleTime } from 'types/reducers';
 import type { State } from 'reducers';
+import config from 'config';
 import { getYearsBetween } from 'utils/modules';
 import {
   checkPrerequisite,
@@ -14,6 +15,8 @@ import {
   PLAN_TO_TAKE_YEAR,
 } from 'utils/planner';
 import type { ModulesMap } from 'reducers/moduleBank';
+import { findExamClashes } from 'utils/timetables';
+import { firstNonNull } from "utils/array";
 
 /* eslint-disable no-useless-computed-key */
 
@@ -34,38 +37,77 @@ export function filterModuleForSemester(
   return sortBy<ModuleCode>(filteredModules, (moduleCode: ModuleCode) => modules[moduleCode][2]);
 }
 
-export function mapModuleToInfo(
+// Conflict mappers - checks if a module may need a warning attached to it
+function prereqConflict(
   moduleCode: ModuleCode,
   modulesMap: ModulesMap,
   modulesTaken: Set<ModuleCode>,
-): ModuleWithInfo {
+): ?Conflict {
+  const moduleInfo = modulesMap[moduleCode];
+  if (!moduleInfo) return null;
+
+  const unfulfilledPrereqs = checkPrerequisite(modulesTaken, moduleInfo.ModmavenTree);
+  if (!unfulfilledPrereqs || !unfulfilledPrereqs.length) return null;
+
+  return { type: 'prereq', unfulfilledPrereqs };
+}
+
+function noInfoConflict(moduleCode: ModuleCode, moduleCodeMap: ModuleCodeMap): ?Conflict {
+  return !moduleCodeMap[moduleCode] ? { type: 'noInfo' } : null;
+}
+
+function semesterConflict(
+  moduleCode: ModuleCode,
+  moduleCodeMap: ModuleCodeMap,
+  semester: Semester,
+): ?Conflict {
+  const moduleCondensed = moduleCodeMap[moduleCode];
+  if (!moduleCondensed) return null;
+  if (!moduleCondensed.Semesters.includes(semester)) {
+    return { type: 'semester', semestersOffered: moduleCondensed.Semesters };
+  }
+  return null;
+}
+
+function examConflict(moduleCode: ModuleCode, clashes: ExamClashes): ?Conflict {
+  const clash = values(clashes).find((modules) =>
+    modules.find((module) => module.ModuleCode === moduleCode),
+  );
+  if (clash) return { type: 'exam', conflictModules: clash.map((module) => module.ModuleCode) };
+  return null;
+}
+
+export function mapModuleInfo(moduleCode: ModuleCode, modulesMap: ModulesMap): ModuleWithInfo {
   const moduleInfo = modulesMap[moduleCode];
   if (!moduleInfo) return { moduleCode };
 
   return {
     moduleCode,
     moduleInfo,
-    conflicts: checkPrerequisite(modulesTaken, moduleInfo.ModmavenTree),
   };
 }
 
 export function getExemptions(state: State): ModuleWithInfo[] {
   const { planner, moduleBank } = state;
-  const taken = new Set();
 
   // "Exemption" modules are stored in a special year which is not a valid AY
   return filterModuleForSemester(planner.modules, EXEMPTION_YEAR, EXEMPTION_SEMESTER).map(
-    (moduleCode) => mapModuleToInfo(moduleCode, moduleBank.modules, taken),
+    (moduleCode) => ({
+      ...mapModuleInfo(moduleCode, moduleBank.modules),
+      conflict: noInfoConflict(moduleCode, moduleBank.moduleCodes),
+    }),
   );
 }
 
 export function getPlanToTake(state: State): ModuleWithInfo[] {
   const { planner, moduleBank } = state;
-  const taken = new Set();
 
   // "Plan to take" modules are stored in a special year which is not a valid AY
   return filterModuleForSemester(planner.modules, PLAN_TO_TAKE_YEAR, PLAN_TO_TAKE_SEMESTER).map(
-    (moduleCode) => mapModuleToInfo(moduleCode, moduleBank.modules, taken),
+    (moduleCode) => ({
+      ...mapModuleInfo(moduleCode, moduleBank.modules),
+      conflict: noInfoConflict(moduleCode, moduleBank.moduleCodes),
+    }),
   );
 }
 
@@ -84,9 +126,24 @@ export function getAcadYearModules(state: State): PlannerModulesWithInfo {
 
     Semesters.forEach((semester) => {
       const moduleCodes = filterModuleForSemester(planner.modules, year, semester);
-      modules[year][semester] = moduleCodes.map((moduleCode) =>
-        mapModuleToInfo(moduleCode, moduleBank.modules, modulesTaken),
-      );
+      // Only check for exam clashes for modules in the current year
+      const clashes =
+        year === config.academicYear
+          ? findExamClashes(
+              moduleCodes.map((moduleCode) => moduleBank.modules[moduleCode]).filter(Boolean),
+              semester,
+            )
+          : {};
+
+      modules[year][semester] = moduleCodes.map((moduleCode) => ({
+        ...mapModuleInfo(moduleCode, moduleBank.modules),
+        conflict: firstNonNull([
+          () => noInfoConflict(moduleCode, moduleBank.moduleCodes),
+          () => prereqConflict(moduleCode, moduleBank.modules, modulesTaken),
+          () => semesterConflict(moduleCode, moduleBank.moduleCodes, semester),
+          () => examConflict(moduleCode, clashes),
+        ]),
+      }));
 
       // Add taken modules to set of modules taken for prerequisite calculation
       moduleCodes.forEach((moduleCode) => {
