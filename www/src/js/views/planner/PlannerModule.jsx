@@ -1,13 +1,15 @@
 // @flow
 
-import type { ModuleCode, ModuleTitle, TreeFragment } from 'types/modules';
 import React, { PureComponent } from 'react';
 import Downshift from 'downshift';
 import { Draggable } from 'react-beautiful-dnd';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
-
 import classnames from 'classnames';
+
+import type { ModuleCode, ModuleTitle } from 'types/modules';
+import type { Conflict } from 'types/views';
+import config from 'config';
 import { examDateToDate, renderMCs } from 'utils/modules';
 import { conflictToText } from 'utils/planner';
 import { AlertTriangle, ChevronDown } from 'views/components/icons';
@@ -21,7 +23,7 @@ type Props = {|
   +moduleTitle: ?ModuleTitle,
   +moduleCredit: ?number,
   +examDate: ?string,
-  +conflicts: ?Array<TreeFragment>,
+  +conflict: ?Conflict,
 
   // For draggable
   +index: number,
@@ -74,6 +76,60 @@ const ModuleMenu = React.memo((props: {| +removeModule: () => void |}) => {
   );
 });
 
+function renderConflict(conflict: Conflict) {
+  switch (conflict.type) {
+    case 'noInfo':
+      return (
+        <div className={styles.conflictHeader}>
+          <AlertTriangle className={styles.warningIcon} />
+          <p>No data on this module</p>
+        </div>
+      );
+
+    case 'semester':
+      return (
+        <div className={styles.conflictHeader}>
+          <AlertTriangle className={styles.warningIcon} />
+          <p>
+            Module may only only be offered in{' '}
+            {conflict.semestersOffered
+              .map((semester) => config.shortSemesterNames[semester])
+              .join(', ')}
+          </p>
+        </div>
+      );
+
+    case 'exam':
+      return (
+        <div className={styles.conflictHeader}>
+          <AlertTriangle className={styles.warningIcon} />
+          <p>{conflict.conflictModules.join(', ')} have clashing exams</p>
+        </div>
+      );
+
+    case 'prereq':
+      return (
+        <>
+          <div className={styles.conflictHeader}>
+            <AlertTriangle className={styles.warningIcon} />
+            <p>These modules may need to be taken first</p>
+          </div>
+
+          <ul className={styles.prereqs}>
+            {conflict.unfulfilledPrereqs.map((prereq, i) => (
+              <li key={i}>
+                <LinkModuleCodes>{conflictToText(prereq)}</LinkModuleCodes>
+              </li>
+            ))}
+          </ul>
+        </>
+      );
+
+    default:
+      return null;
+  }
+}
+
 /**
  * Component for a single module on the planner
  */
@@ -90,32 +146,10 @@ export default class PlannerModule extends PureComponent<Props> {
     );
   }
 
-  renderConflict() {
-    const { conflicts } = this.props;
-    if (!conflicts) return null;
-
-    return (
-      <div className={styles.conflicts}>
-        <div className={styles.conflictHeader}>
-          <AlertTriangle className={styles.warningIcon} />
-          <p>These modules may need to be taken first</p>
-        </div>
-
-        <ul className={styles.prereqs}>
-          {conflicts.map((conflict, i) => (
-            <li key={i}>
-              <LinkModuleCodes>{conflictToText(conflict)}</LinkModuleCodes>
-            </li>
-          ))}
-        </ul>
-      </div>
-    );
-  }
-
   removeModule = () => this.props.removeModule(this.props.moduleCode);
 
   render() {
-    const { moduleCode, moduleTitle, index, conflicts } = this.props;
+    const { moduleCode, moduleTitle, index, conflict } = this.props;
 
     return (
       <Draggable key={moduleCode} draggableId={moduleCode} index={index}>
@@ -123,7 +157,7 @@ export default class PlannerModule extends PureComponent<Props> {
           <div
             ref={provided.innerRef}
             className={classnames(styles.module, {
-              [styles.warning]: conflicts,
+              [styles.warning]: conflict,
               [styles.isDragging]: snapshot.isDragging,
             })}
             {...provided.draggableProps}
@@ -140,7 +174,7 @@ export default class PlannerModule extends PureComponent<Props> {
 
               {this.renderMeta()}
 
-              {this.renderConflict()}
+              {conflict && <div className={styles.conflicts}>{renderConflict(conflict)}</div>}
             </div>
           </div>
         )}
