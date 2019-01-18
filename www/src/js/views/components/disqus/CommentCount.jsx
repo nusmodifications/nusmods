@@ -1,17 +1,22 @@
 // @flow
 import type { DisqusConfig } from 'types/views';
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
+
 import config from 'config';
 import insertScript from 'utils/insertScript';
 import { getScriptErrorHandler } from 'utils/error';
 import { MessageSquare } from 'views/components/icons';
 import styles from './CommentCount.scss';
 
-type Props = DisqusConfig;
+type Props = {
+  ...DisqusConfig,
+  loadDisqusManually: boolean,
+};
 
 const SCRIPT_ID = 'dsq-count-scr';
 
-export default class CommentCount extends PureComponent<Props> {
+export class CommentCountComponent extends PureComponent<Props> {
   static loadInstance() {
     if (window.document.getElementById(SCRIPT_ID)) {
       if (window.DISQUSWIDGETS) {
@@ -28,15 +33,18 @@ export default class CommentCount extends PureComponent<Props> {
   }
 
   componentDidMount() {
-    CommentCount.loadInstance();
+    if (this.props.loadDisqusManually) return;
+    CommentCountComponent.loadInstance();
   }
 
   componentDidUpdate() {
-    CommentCount.loadInstance();
+    if (this.props.loadDisqusManually) return;
+    CommentCountComponent.loadInstance();
   }
 
   render() {
-    const { identifier, url } = this.props;
+    const { identifier, url, loadDisqusManually } = this.props;
+    if (loadDisqusManually) return null;
 
     return (
       <span className={styles.comment}>
@@ -52,3 +60,9 @@ export default class CommentCount extends PureComponent<Props> {
     );
   }
 }
+
+const CommentCount = connect((state) => ({
+  loadDisqusManually: state.settings.loadDisqusManually,
+}))(CommentCountComponent);
+
+export default CommentCount;

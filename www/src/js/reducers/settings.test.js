@@ -19,6 +19,7 @@ const initialState: SettingsState = {
     dismissed: [],
   },
   moduleTableOrder: 'exam',
+  loadDisqusManually: false,
   beta: false,
 };
 const settingsWithNewStudent: SettingsState = { ...initialState, newStudent: true };

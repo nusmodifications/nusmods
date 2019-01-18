@@ -19,6 +19,7 @@ import {
   enableCorsNotification,
   toggleCorsNotificationGlobally,
   toggleBetaTesting,
+  setLoadDisqusManually,
 } from 'actions/settings';
 // import FacultySelect from 'views/components/FacultySelect';
 // import NewStudentSelect from 'views/components/NewStudentSelect';
@@ -50,6 +51,7 @@ type Props = {
   mode: Mode,
   corsNotification: CorsNotificationSettings,
   betaTester: boolean,
+  loadDisqusManually: boolean,
 
   selectTheme: Function,
   selectNewStudent: Function,
@@ -57,6 +59,7 @@ type Props = {
   selectMode: Function,
 
   toggleBetaTesting: () => void,
+  setLoadDisqusManually: (boolean) => void,
   dismissCorsNotification: Function,
   enableCorsNotification: Function,
   toggleCorsNotificationGlobally: Function,
@@ -288,6 +291,25 @@ class SettingsContainer extends Component<Props, State> {
             </div>
           )}
         </div>
+
+        <br />
+
+        <div className={styles.toggleRow}>
+          <div className={styles.toggleDescription}>
+            <p>
+              We use Disqus for comments on NUSMods modules. Disqus may load its own tracking code
+              which we cannot control. To improve privacy you may opt to load Disqus only when you
+              wish to see or read the comments.
+            </p>
+          </div>
+          <div className={styles.toggle}>
+            <Toggle
+              labels={['Load manually', 'Load automatically']}
+              isOn={this.props.loadDisqusManually === true}
+              onChange={this.props.setLoadDisqusManually}
+            />
+          </div>
+        </div>
       </div>
     );
   }
@@ -300,6 +322,7 @@ const mapStateToProps = (state: StoreState) => ({
   corsNotification: state.settings.corsNotification,
   currentThemeId: state.theme.id,
   betaTester: state.settings.beta || false,
+  loadDisqusManually: state.settings.loadDisqusManually,
 });
 
 const connectedSettings = connect(
@@ -313,6 +336,7 @@ const connectedSettings = connect(
     dismissCorsNotification,
     enableCorsNotification,
     toggleBetaTesting,
+    setLoadDisqusManually,
   },
 )(SettingsContainer);
 export default deferComponentRender(connectedSettings);
