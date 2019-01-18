@@ -33,6 +33,8 @@ import CorsNotification, {
 import Online from 'views/components/Online';
 import { currentRound } from 'utils/cors';
 import { supportsCSSVariables } from 'utils/css';
+import { withTracker } from 'bootstrapping/mamoto';
+import ExternalLink from 'views/components/ExternalLink';
 
 import ThemeOption from './ThemeOption';
 import ModeSelect from './ModeSelect';
@@ -60,7 +62,35 @@ type Props = {
   toggleCorsNotificationGlobally: Function,
 };
 
-class SettingsContainer extends Component<Props> {
+type State = {|
+  +allowTracking: boolean,
+|};
+
+class SettingsContainer extends Component<Props, State> {
+  state = {
+    allowTracking: true,
+  };
+
+  componentDidMount() {
+    withTracker((tracker) =>
+      this.setState({
+        allowTracking: !tracker.isUserOptedOut(),
+      }),
+    );
+  }
+
+  onToggleTracking = (allowTracking: boolean) => {
+    withTracker((tracker) => {
+      if (allowTracking) {
+        tracker.forgetUserOptOut();
+      } else {
+        tracker.optUserOut();
+      }
+
+      this.setState({ allowTracking: !tracker.isUserOptedOut() });
+    });
+  };
+
   renderNightModeOption() {
     return (
       <div>
@@ -219,6 +249,45 @@ class SettingsContainer extends Component<Props> {
           betaTester={this.props.betaTester}
           toggleStates={this.props.toggleBetaTesting}
         />
+
+        <h4 id="privacy">Privacy</h4>
+
+        <div className={styles.toggleRow}>
+          <div className={styles.toggleDescription}>
+            <p>
+              We collect anonymized information such as page visits, browsers and operating system
+              using <ExternalLink href="https://matomo.org/">Matomo</ExternalLink>, an open source
+              analytics software we host ourselves. We use this information to make decisions about
+              what features and browsers to support, address issues and improve the performance of
+              NUSMods.
+            </p>
+            <p>
+              You can see the data we collect at{' '}
+              <ExternalLink href="https://analytics.nusmods.com/">
+                analytics.nusmods.com
+              </ExternalLink>
+              .
+            </p>
+          </div>
+
+          {navigator.doNotTrack === '1' ? (
+            <div className="alert alert-warning">
+              You have enabled{' '}
+              <ExternalLink href="https://en.wikipedia.org/wiki/Do_Not_Track">
+                do not track
+              </ExternalLink>{' '}
+              in your browser, so you will not be tracked until that option is disabled.
+            </div>
+          ) : (
+            <div className={styles.toggle}>
+              <Toggle
+                labels={['Allow Tracking', 'Opt out']}
+                isOn={this.state.allowTracking}
+                onChange={this.onToggleTracking}
+              />
+            </div>
+          )}
+        </div>
       </div>
     );
   }
