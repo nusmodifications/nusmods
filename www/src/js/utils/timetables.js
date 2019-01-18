@@ -28,6 +28,7 @@ import type { ModuleCodeMap } from 'types/reducers';
 
 import { getModuleSemesterData, getModuleTimetable } from 'utils/modules';
 import { getTimeAsDate } from 'utils/timify';
+import type { ExamClashes } from 'types/views';
 
 type LessonTypeAbbrev = { [LessonType]: string };
 export const LESSON_TYPE_ABBREV: LessonTypeAbbrev = {
@@ -225,10 +226,7 @@ export function areOtherClassesAvailable(
 
 // Find all exam clashes between modules in semester
 // Returns object associating exam dates with the modules clashing on those dates
-export function findExamClashes(
-  modules: Array<Module>,
-  semester: Semester,
-): { string: Array<Module> } {
+export function findExamClashes(modules: Array<Module>, semester: Semester): ExamClashes {
   const groupedModules = _.groupBy(modules, (module) =>
     _.get(getModuleSemesterData(module, semester), 'ExamDate'),
   );
