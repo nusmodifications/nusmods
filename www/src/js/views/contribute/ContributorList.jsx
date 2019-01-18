@@ -11,11 +11,7 @@ import ApiError from 'views/errors/ApiError';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import styles from './ContributorList.scss';
 
-type Props = {
-  contributors: Contributor[],
-};
-
-export function ContributorListComponent(props: Props) {
+export function ContributorListComponent(props: { contributors: Contributor[] }) {
   return (
     <div className="row">
       {props.contributors.map((contributor) => (
@@ -45,6 +41,10 @@ export function ContributorListComponent(props: Props) {
 }
 
 // Wrapper around ContributorList that loads contributor data
+type Props = {
+  size?: number,
+};
+
 const ContributorList = Loadable.Map<Props, *>({
   loader: {
     contributors: () => getContributors(),
