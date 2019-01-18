@@ -16,7 +16,7 @@ import {
 } from 'utils/planner';
 import type { ModulesMap } from 'reducers/moduleBank';
 import { findExamClashes } from 'utils/timetables';
-import { firstNonNull } from "utils/array";
+import { firstNonNull } from 'utils/array';
 
 /* eslint-disable no-useless-computed-key */
 
@@ -38,6 +38,10 @@ export function filterModuleForSemester(
 }
 
 // Conflict mappers - checks if a module may need a warning attached to it
+
+/**
+ * Checks if a module has unfulfilled prereqs
+ */
 function prereqConflict(
   moduleCode: ModuleCode,
   modulesMap: ModulesMap,
@@ -52,10 +56,16 @@ function prereqConflict(
   return { type: 'prereq', unfulfilledPrereqs };
 }
 
+/**
+ * Checks if a module exists in our data
+ */
 function noInfoConflict(moduleCode: ModuleCode, moduleCodeMap: ModuleCodeMap): ?Conflict {
   return !moduleCodeMap[moduleCode] ? { type: 'noInfo' } : null;
 }
 
+/**
+ * Checks if modules are added to semesters in which they are not available
+ */
 function semesterConflict(
   moduleCode: ModuleCode,
   moduleCodeMap: ModuleCodeMap,
@@ -69,6 +79,11 @@ function semesterConflict(
   return null;
 }
 
+/**
+ * Checks if there are exam clashes. The clashes come from the caller since the exam clash function
+ * calculates clashes for all modules in one semester, so it would be wasteful to rerun the exam
+ * clash function for every call to this function.
+ */
 function examConflict(moduleCode: ModuleCode, clashes: ExamClashes): ?Conflict {
   const clash = values(clashes).find((modules) =>
     modules.find((module) => module.ModuleCode === moduleCode),
@@ -77,13 +92,19 @@ function examConflict(moduleCode: ModuleCode, clashes: ExamClashes): ?Conflict {
   return null;
 }
 
-export function mapModuleInfo(moduleCode: ModuleCode, modulesMap: ModulesMap): ModuleWithInfo {
+function mapModuleInfo(
+  moduleCode: ModuleCode,
+  modulesMap: ModulesMap,
+  conflictChecks: Array<() => ?Conflict>,
+): ModuleWithInfo {
+  const conflict = firstNonNull(conflictChecks);
   const moduleInfo = modulesMap[moduleCode];
-  if (!moduleInfo) return { moduleCode };
+  if (!moduleInfo) return { moduleCode, conflict };
 
   return {
     moduleCode,
     moduleInfo,
+    conflict,
   };
 }
 
@@ -92,10 +113,10 @@ export function getExemptions(state: State): ModuleWithInfo[] {
 
   // "Exemption" modules are stored in a special year which is not a valid AY
   return filterModuleForSemester(planner.modules, EXEMPTION_YEAR, EXEMPTION_SEMESTER).map(
-    (moduleCode) => ({
-      ...mapModuleInfo(moduleCode, moduleBank.modules),
-      conflict: noInfoConflict(moduleCode, moduleBank.moduleCodes),
-    }),
+    (moduleCode) =>
+      mapModuleInfo(moduleCode, moduleBank.modules, [
+        () => noInfoConflict(moduleCode, moduleBank.moduleCodes),
+      ]),
   );
 }
 
@@ -104,10 +125,10 @@ export function getPlanToTake(state: State): ModuleWithInfo[] {
 
   // "Plan to take" modules are stored in a special year which is not a valid AY
   return filterModuleForSemester(planner.modules, PLAN_TO_TAKE_YEAR, PLAN_TO_TAKE_SEMESTER).map(
-    (moduleCode) => ({
-      ...mapModuleInfo(moduleCode, moduleBank.modules),
-      conflict: noInfoConflict(moduleCode, moduleBank.moduleCodes),
-    }),
+    (moduleCode) =>
+      mapModuleInfo(moduleCode, moduleBank.modules, [
+        () => noInfoConflict(moduleCode, moduleBank.moduleCodes),
+      ]),
   );
 }
 
@@ -135,15 +156,14 @@ export function getAcadYearModules(state: State): PlannerModulesWithInfo {
             )
           : {};
 
-      modules[year][semester] = moduleCodes.map((moduleCode) => ({
-        ...mapModuleInfo(moduleCode, moduleBank.modules),
-        conflict: firstNonNull([
+      modules[year][semester] = moduleCodes.map((moduleCode) =>
+        mapModuleInfo(moduleCode, moduleBank.modules, [
           () => noInfoConflict(moduleCode, moduleBank.moduleCodes),
           () => prereqConflict(moduleCode, moduleBank.modules, modulesTaken),
           () => semesterConflict(moduleCode, moduleBank.moduleCodes, semester),
           () => examConflict(moduleCode, clashes),
         ]),
-      }));
+      );
 
       // Add taken modules to set of modules taken for prerequisite calculation
       moduleCodes.forEach((moduleCode) => {
