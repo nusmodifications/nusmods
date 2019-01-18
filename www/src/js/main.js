@@ -43,6 +43,6 @@ if (
   initializeServiceWorker(store);
 }
 
-// if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production') {
   initializeMamoto();
-// }
+}

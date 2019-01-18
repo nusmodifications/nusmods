@@ -10,7 +10,6 @@ import type { State as StoreState } from 'reducers';
 
 import config from 'config';
 import { MessageSquare } from 'views/components/icons';
-import LoadingSpinner from 'views/components/LoadingSpinner';
 import insertScript from 'utils/insertScript';
 import { getScriptErrorHandler } from 'utils/error';
 import styles from './DisqusComments.scss';
