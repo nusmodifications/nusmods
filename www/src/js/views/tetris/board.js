@@ -6,7 +6,7 @@ import type { ColorIndex } from 'types/reducers';
 import { DaysOfWeek } from 'types/modules';
 import type { ColoredLesson } from 'types/modules';
 import { convertIndexToTime } from 'utils/timify';
-import type { TimetableArrangement } from 'types/timetables';
+import type { TimetableArrangement, TimetableDayArrangement } from 'types/timetables';
 
 export const ROWS = 20;
 export const COLUMNS = 9;
@@ -14,7 +14,7 @@ export const COLUMNS = 9;
 /* eslint-disable no-continue, consistent-return, no-loop-func */
 
 // The first timetable row index to be used
-const INITIAL_ROW_INDEX = 16; // 8am
+export const INITIAL_ROW_INDEX = 16; // 8am
 
 export type Square = {|
   +color: ColorIndex,
@@ -32,10 +32,14 @@ export function makePiece(shape: string[], color: ColorIndex): Piece {
   // Find the number of tiles needed to move the entire piece above the start line
   const y = -findLastIndex(shape, (row) => row.includes('1')) - 1;
 
+  // Map 1s to filled squares and 0s to to empty squares (null)
+  const rows = shape.map((row) => row.split('').map((tile) => (tile === '1' ? { color } : null)));
+
   return {
     y,
     x: 0,
-    tiles: shape.map((row) => row.split('').map((tile) => (tile === '1' ? { color } : null))),
+    // $FlowFixMe lodash has incorrect zip libdefs
+    tiles: zip(...rows),
   };
 }
 function iterateBoard(
@@ -193,4 +197,12 @@ export function boardToTimetableArrangement(board: Board): TimetableArrangement 
   });
 
   return timetable;
+}
+
+export function pieceToTimetableDayArrangement(board: Board): TimetableDayArrangement {
+  // Filter out empty cols / rows
+
+  return board.map((row) =>
+    row.filter(Boolean).map((tile, index) => createLessonSquare(tile.color, index)),
+  );
 }

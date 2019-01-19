@@ -2,15 +2,18 @@
 
 import React, { PureComponent } from 'react';
 import Mousetrap from 'mousetrap';
-import { range, sample } from 'lodash';
+import { range, shuffle, noop } from 'lodash';
 import classnames from 'classnames';
 import produce from 'immer';
 
 import Timetable from 'views/timetable/Timetable';
+import TimetableDay from 'views/timetable/TimetableDay';
+
 import type { Board, Piece } from './board';
 import {
   ROWS,
   COLUMNS,
+  INITIAL_ROW_INDEX,
   makePiece,
   boardToTimetableArrangement,
   placePieceOnBoard,
@@ -18,6 +21,7 @@ import {
   isPiecePositionValid,
   removeCompleteRows,
   rotatePiece,
+  pieceToTimetableDayArrangement,
 } from './board';
 import styles from './TetrisContainer.scss';
 
@@ -36,7 +40,7 @@ type State = {|
   status: GameStatus,
 
   currentPiece: Piece,
-  nextPiece: Piece,
+  nextPieces: Piece[],
 |};
 
 // Scores taken from https://tetris.com/play-tetris
@@ -105,18 +109,26 @@ const PIECES = [
   ], 6),
 ];
 
+const displayNone = { display: 'none' };
+
 const defaultBoard: Board = range(COLUMNS).map(() => range(ROWS).map(() => null));
 
 export default class TetrisContainer extends PureComponent<Props, State> {
-  state = {
-    status: NOT_STARTED,
+  constructor(props: Props) {
+    super(props);
 
-    board: defaultBoard,
-    score: 0,
+    const [currentPiece, ...nextPieces] = shuffle(PIECES);
 
-    currentPiece: sample(PIECES),
-    nextPiece: sample(PIECES),
-  };
+    this.state = {
+      status: NOT_STARTED,
+
+      board: defaultBoard,
+      score: 0,
+
+      currentPiece,
+      nextPieces,
+    };
+  }
 
   componentDidMount() {
     this.keybindings.forEach(([key, binding]) => {
@@ -172,12 +184,14 @@ export default class TetrisContainer extends PureComponent<Props, State> {
     this.ticks = 0;
     this.gameSpeed = 10;
 
+    const [currentPiece, ...nextPieces] = shuffle(PIECES);
+
     this.setState({
       status: PLAYING,
       score: 0,
       board: defaultBoard,
-      currentPiece: sample(PIECES),
-      nextPiece: sample(PIECES),
+      currentPiece,
+      nextPieces,
     });
   };
 
@@ -255,8 +269,10 @@ export default class TetrisContainer extends PureComponent<Props, State> {
       }
 
       // Create next piece
-      draft.currentPiece = draft.nextPiece;
-      draft.nextPiece = sample(PIECES);
+      draft.currentPiece = draft.nextPieces.shift();
+      if (draft.nextPieces.length === 0) {
+        draft.nextPieces = shuffle(PIECES);
+      }
 
       return true;
     }
@@ -352,7 +368,8 @@ export default class TetrisContainer extends PureComponent<Props, State> {
   }
 
   render() {
-    const { score, board, currentPiece, nextPiece } = this.state;
+    const { score, board, currentPiece, nextPieces } = this.state;
+    const nextPiece = nextPieces[0];
 
     const boardWithPiece = placePieceOnBoard(board, currentPiece);
     const lessons = boardToTimetableArrangement(boardWithPiece);
@@ -364,9 +381,27 @@ export default class TetrisContainer extends PureComponent<Props, State> {
           <Timetable lessons={lessons} isVerticalOrientation />
         </div>
         <div className={styles.sidebar}>
-          <p>
-            Score: <strong>{score}</strong>
-          </p>
+          <div>
+            <h3>Score</h3>
+            <strong>{score}</strong>
+          </div>
+          <div>
+            <h3>Next piece</h3>
+            <TimetableDay
+              day=""
+              verticalMode
+              dayLessonRows={pieceToTimetableDayArrangement(nextPiece.tiles)}
+              showTitle={false}
+              isScrolledHorizontally={false}
+              startingIndex={INITIAL_ROW_INDEX}
+              endingIndex={INITIAL_ROW_INDEX + nextPiece.tiles[0].length}
+              onModifyCell={noop}
+              isCurrentDay={false}
+              currentTimeIndicatorStyle={displayNone}
+              hoverLesson={null}
+              onCellHover={null}
+            />
+          </div>
         </div>
       </div>
     );
