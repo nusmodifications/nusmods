@@ -1,5 +1,5 @@
 // @flow
-import { range, zip } from 'lodash';
+import { range, zip, findLastIndex } from 'lodash';
 import produce from 'immer';
 
 import type { ColorIndex } from 'types/reducers';
@@ -28,7 +28,10 @@ export type Piece = {|
   tiles: Board,
 |};
 
-export function makePiece(shape: string[], color: ColorIndex, y: number = 0): Piece {
+export function makePiece(shape: string[], color: ColorIndex): Piece {
+  // Find the number of tiles needed to move the entire piece above the start line
+  const y = -findLastIndex(shape, (row) => row.includes('1')) - 1;
+
   return {
     y,
     x: 0,
@@ -78,7 +81,6 @@ export function rotatePiece(piece: Piece): Piece {
     let dy = 0;
 
     iteratePiece(draft, (tile, col, row) => {
-      if (row < 0) dy = Math.max(dy, -row);
       if (col < 0) dx = Math.max(dx, -col);
       if (row >= ROWS) dy = Math.min(dy, ROWS - row - 1);
       if (col >= COLUMNS) dx = Math.min(dx, COLUMNS - col - 1);
@@ -101,7 +103,7 @@ export function isPieceInBounds(piece: Piece) {
   let isValid = true;
 
   iteratePiece(piece, (tile, col, row) => {
-    if (row < 0 || row >= ROWS || col < 0 || col >= COLUMNS) {
+    if (row >= ROWS || col < 0 || col >= COLUMNS) {
       isValid = false;
       return false;
     }

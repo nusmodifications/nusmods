@@ -9,9 +9,15 @@
 
   // HACK: Make the border lessons actually look like a border
   :global(.color-10) {
+    color: transparent;
     border: 0;
     border-radius: 0;
     background: var(--gray-light);
+  }
+
+  h1,
+  h2 {
+    font-weight: bold;
   }
 }
 
@@ -26,7 +32,7 @@
   bottom: 0;
   left: 0;
   z-index: 2000;
-  background: rgba(#000, 0.6);
+  background: var(--body-bg-70);
 }
 
 .overlayContent {
