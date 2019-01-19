@@ -43,4 +43,16 @@
 
 .sidebar {
   margin-left: 1rem;
+
+  section {
+    margin-bottom: 1.5rem;
+  }
+
+  h3 {
+    margin-bottom: 0;
+  }
+}
+
+.score {
+  font-size: 3rem;
 }

@@ -201,8 +201,7 @@ export function boardToTimetableArrangement(board: Board): TimetableArrangement 
 
 export function pieceToTimetableDayArrangement(board: Board): TimetableDayArrangement {
   // Filter out empty cols / rows
-
-  return board.map((row) =>
-    row.filter(Boolean).map((tile, index) => createLessonSquare(tile.color, index)),
+  return board.map((column) =>
+    column.filter(Boolean).map((tile, index) => createLessonSquare(tile.color, index)),
   );
 }

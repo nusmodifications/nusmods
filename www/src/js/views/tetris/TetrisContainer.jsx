@@ -24,6 +24,7 @@ import {
   pieceToTimetableDayArrangement,
 } from './board';
 import styles from './TetrisContainer.scss';
+import ScrollingNumber from './ScrollingNumber';
 
 type GameStatus = 'playing' | 'paused' | 'not started' | 'game over';
 const PLAYING: GameStatus = 'playing';
@@ -36,6 +37,7 @@ type Props = {||};
 type State = {|
   board: Board,
   score: number,
+  linesCleared: number,
 
   status: GameStatus,
 
@@ -63,12 +65,11 @@ const PIECES = [
     '0010',
     '0010',
     '0010',
-    '0010'
+    '0010',
   ], 0),
 
   // J
   makePiece([
-    '0010',
     '0010',
     '0010',
     '0110',
@@ -76,7 +77,6 @@ const PIECES = [
 
   // L
   makePiece([
-    '0100',
     '0100',
     '0100',
     '0110',
@@ -114,6 +114,9 @@ const displayNone = { display: 'none' };
 const defaultBoard: Board = range(COLUMNS).map(() => range(ROWS).map(() => null));
 
 export default class TetrisContainer extends PureComponent<Props, State> {
+  ticks: number;
+  gameSpeed: number; // In ticks per move
+
   constructor(props: Props) {
     super(props);
 
@@ -124,6 +127,7 @@ export default class TetrisContainer extends PureComponent<Props, State> {
 
       board: defaultBoard,
       score: 0,
+      linesCleared: 0,
 
       currentPiece,
       nextPieces,
@@ -163,16 +167,13 @@ export default class TetrisContainer extends PureComponent<Props, State> {
     );
   };
 
-  ticks: number;
-  gameSpeed: number; // In ticks per move
-
   keybindings = [
     ['left', () => this.moveLeft()],
     ['right', () => this.moveRight()],
     ['down', () => this.moveDown()],
     ['up', () => this.rotatePiece()],
     ['space', () => this.hardDrop()],
-    ['p', () => this.togglePause()],
+    [['p', 'esc'], () => this.togglePause()],
   ];
 
   isPlaying() {
@@ -189,6 +190,8 @@ export default class TetrisContainer extends PureComponent<Props, State> {
     this.setState({
       status: PLAYING,
       score: 0,
+      linesCleared: 0,
+
       board: defaultBoard,
       currentPiece,
       nextPieces,
@@ -244,6 +247,10 @@ export default class TetrisContainer extends PureComponent<Props, State> {
     }
   };
 
+  /**
+   * Moves the current piece down by 1 unit, returning true if it is possible and
+   * false otherwise, because the piece has collided with the bottom or other blocks
+   */
   movePieceDown = (draft: State) => {
     if (!this.isPlaying()) return false;
 
@@ -262,6 +269,7 @@ export default class TetrisContainer extends PureComponent<Props, State> {
       const { newBoard, rowsCleared } = removeCompleteRows(boardWithPiece);
       draft.board = newBoard;
       draft.score += SCORING.lineClear(rowsCleared);
+      draft.linesCleared += rowsCleared;
 
       // If a piece has reached the top row, trigger game over
       if (draft.board.some((column) => column[0])) {
@@ -274,11 +282,11 @@ export default class TetrisContainer extends PureComponent<Props, State> {
         draft.nextPieces = shuffle(PIECES);
       }
 
-      return true;
+      return false;
     }
 
     draft.currentPiece = nextPiece;
-    return false;
+    return true;
   };
 
   hardDrop = () => {
@@ -287,7 +295,7 @@ export default class TetrisContainer extends PureComponent<Props, State> {
     this.setState(
       produce(this.state, (draft) => {
         let distance = 0;
-        while (!this.movePieceDown(draft)) {
+        while (this.movePieceDown(draft)) {
           distance += 1;
         }
 
@@ -317,7 +325,7 @@ export default class TetrisContainer extends PureComponent<Props, State> {
               <h2>Game Paused</h2>
               <p>Score: {this.state.score}</p>
               <button
-                className="btn btn-lg btn-outline-primary"
+                className="btn btn-lg btn-primary"
                 type="button"
                 onClick={() => this.setState({ status: PLAYING })}
               >
@@ -333,7 +341,7 @@ export default class TetrisContainer extends PureComponent<Props, State> {
             <div className={styles.overlayContent}>
               <h1>NUSMotris</h1>
               <button
-                className="btn btn-lg btn-outline-primary"
+                className="btn btn-lg btn-primary"
                 type="button"
                 onClick={() => this.startGame()}
               >
@@ -352,7 +360,7 @@ export default class TetrisContainer extends PureComponent<Props, State> {
                 Final Score: <strong>{this.state.score}</strong>
               </p>
               <button
-                className="btn btn-lg btn-outline-primary"
+                className="btn btn-lg btn-primary"
                 type="button"
                 onClick={() => this.setState({ status: NOT_STARTED })}
               >
@@ -368,7 +376,7 @@ export default class TetrisContainer extends PureComponent<Props, State> {
   }
 
   render() {
-    const { score, board, currentPiece, nextPieces } = this.state;
+    const { score, linesCleared, board, currentPiece, nextPieces } = this.state;
     const nextPiece = nextPieces[0];
 
     const boardWithPiece = placePieceOnBoard(board, currentPiece);
@@ -381,11 +389,21 @@ export default class TetrisContainer extends PureComponent<Props, State> {
           <Timetable lessons={lessons} isVerticalOrientation />
         </div>
         <div className={styles.sidebar}>
-          <div>
+          <section>
             <h3>Score</h3>
-            <strong>{score}</strong>
-          </div>
-          <div>
+            <ScrollingNumber tagName="strong" className={styles.score}>
+              {score}
+            </ScrollingNumber>
+          </section>
+
+          <section>
+            <h3>Lines Cleared</h3>
+            <ScrollingNumber tagName="strong" className={styles.score}>
+              {linesCleared}
+            </ScrollingNumber>
+          </section>
+
+          <section>
             <h3>Next piece</h3>
             <TimetableDay
               day=""
@@ -401,7 +419,7 @@ export default class TetrisContainer extends PureComponent<Props, State> {
               hoverLesson={null}
               onCellHover={null}
             />
-          </div>
+          </section>
         </div>
       </div>
     );
