@@ -21,6 +21,12 @@ import {
 } from './board';
 import styles from './TetrisContainer.scss';
 
+type GameStatus = 'playing' | 'paused' | 'not started' | 'game over';
+const PLAYING: GameStatus = 'playing';
+const PAUSED: GameStatus = 'paused';
+const NOT_STARTED: GameStatus = 'not started';
+const GAME_OVER: GameStatus = 'game over';
+
 type Props = {||};
 
 type State = {|
@@ -28,6 +34,8 @@ type State = {|
   board: Board,
   score: number,
   gameSpeed: number,
+
+  status: GameStatus,
 
   currentPiece: Piece,
   nextPiece: Piece,
@@ -106,6 +114,8 @@ export default class TetrisContainer extends PureComponent<Props, State> {
     ticks: 0,
     gameSpeed: 10, // In ticks per move
 
+    status: NOT_STARTED,
+
     board: defaultBoard,
     score: 0,
 
@@ -139,11 +149,18 @@ export default class TetrisContainer extends PureComponent<Props, State> {
       this.hardDrop();
     });
 
+    Mousetrap.bind('p', (evt) => {
+      evt.preventDefault();
+      this.togglePause();
+    });
+
     // Begin ticks
     setInterval(this.onTick, 50);
   }
 
   onTick = () => {
+    if (!this.isPlaying()) return;
+
     this.setState(
       produce(this.state, (draft) => {
         draft.ticks += 1;
@@ -156,15 +173,23 @@ export default class TetrisContainer extends PureComponent<Props, State> {
     );
   };
 
+  isPlaying() {
+    return this.state.status === PLAYING;
+  }
+
   moveLeft = () => {
+    if (!this.isPlaying()) return;
     this.movePieceHorizontal(-1);
   };
 
   moveRight = () => {
+    if (!this.isPlaying()) return;
     this.movePieceHorizontal(1);
   };
 
   rotatePiece = () => {
+    if (!this.isPlaying()) return;
+
     const nextPiece = rotatePiece(this.state.currentPiece);
 
     // Don't allow the rotated piece to collide with existing blocks
@@ -176,6 +201,8 @@ export default class TetrisContainer extends PureComponent<Props, State> {
   };
 
   moveDown = () => {
+    if (!this.isPlaying()) return;
+
     this.setState(
       produce(this.state, (draft) => {
         this.movePieceDown(draft);
@@ -185,6 +212,8 @@ export default class TetrisContainer extends PureComponent<Props, State> {
   };
 
   movePieceHorizontal = (dx: number) => {
+    if (!this.isPlaying()) return;
+
     const { currentPiece } = this.state;
 
     const nextPiece = {
@@ -198,6 +227,8 @@ export default class TetrisContainer extends PureComponent<Props, State> {
   };
 
   movePieceDown = (draft: State) => {
+    if (!this.isPlaying()) return false;
+
     const nextPiece = {
       ...draft.currentPiece,
       y: draft.currentPiece.y + 1,
@@ -226,6 +257,8 @@ export default class TetrisContainer extends PureComponent<Props, State> {
   };
 
   hardDrop = () => {
+    if (!this.isPlaying()) return;
+
     this.setState(
       produce(this.state, (draft) => {
         let distance = 0;
@@ -238,6 +271,75 @@ export default class TetrisContainer extends PureComponent<Props, State> {
     );
   };
 
+  togglePause() {
+    const { status } = this.state;
+    if (status === PAUSED) {
+      this.setState({ status: PLAYING });
+    } else if (status === PLAYING) {
+      this.setState({ status: PAUSED });
+    }
+  }
+
+  renderOverlay() {
+    switch (this.state.status) {
+      case PLAYING:
+        return null;
+
+      case PAUSED:
+        return (
+          <div className={styles.overlay}>
+            <div className={styles.overlayContent}>
+              <h2>Game Paused</h2>
+              <p>Score: {this.state.score}</p>
+              <button
+                className="btn btn-outline-primary"
+                type="button"
+                onClick={() => this.setState({ status: PLAYING })}
+              >
+                Resume
+              </button>
+            </div>
+          </div>
+        );
+
+      case NOT_STARTED:
+        return (
+          <div className={styles.overlay}>
+            <div className={styles.overlayContent}>
+              <h1>NUSMotris</h1>
+              <button
+                className="btn btn-outline-primary"
+                type="button"
+                onClick={() => this.setState({ status: PLAYING })}
+              >
+                Start
+              </button>
+            </div>
+          </div>
+        );
+
+      case GAME_OVER:
+        return (
+          <div className={styles.overlay}>
+            <div className={styles.overlayContent}>
+              <h2>Game Over</h2>
+              <p>Score: {this.state.score}</p>
+              <button
+                className="btn btn-outline-primary"
+                type="button"
+                onClick={() => this.setState({ status: NOT_STARTED })}
+              >
+                Continue
+              </button>
+            </div>
+          </div>
+        );
+
+      default:
+        throw new Error(`Unknown game status ${this.state.status}`);
+    }
+  }
+
   render() {
     const { score, board, currentPiece, nextPiece } = this.state;
 
@@ -246,10 +348,11 @@ export default class TetrisContainer extends PureComponent<Props, State> {
 
     return (
       <div className={classnames('page-container verticalMode', styles.container)}>
-        <div>
+        <div className={styles.game}>
+          {this.renderOverlay()}
           <Timetable lessons={lessons} isVerticalOrientation />
         </div>
-        <div>
+        <div className={styles.sidebar}>
           <p>Score: {score}</p>
         </div>
       </div>

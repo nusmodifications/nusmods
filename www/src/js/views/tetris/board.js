@@ -11,6 +11,8 @@ import type { TimetableArrangement } from 'types/timetables';
 export const ROWS = 20;
 export const COLUMNS = 9;
 
+/* eslint-disable no-continue, consistent-return, no-loop-func */
+
 // The first timetable row index to be used
 const INITIAL_ROW_INDEX = 16; // 8am
 
@@ -26,10 +28,10 @@ export type Piece = {|
   tiles: Board,
 |};
 
-export function makePiece(shape: string[], color: ColorIndex): Piece {
+export function makePiece(shape: string[], color: ColorIndex, y: number = 0): Piece {
   return {
+    y,
     x: 0,
-    y: 0,
     tiles: shape.map((row) => row.split('').map((tile) => (tile === '1' ? { color } : null))),
   };
 }
@@ -164,7 +166,7 @@ function createLessonSquare(color: ColorIndex, row: number): ColoredLesson {
   };
 }
 
-const BORDER_COLOR = 7;
+const BORDER_COLOR = 10;
 export function boardToTimetableArrangement(board: Board): TimetableArrangement {
   // Assume column count is divisible by 3
   const days = DaysOfWeek.slice(0, 5);
@@ -172,6 +174,7 @@ export function boardToTimetableArrangement(board: Board): TimetableArrangement 
 
   days.forEach((day) => {
     if (day === DaysOfWeek[0] || day === DaysOfWeek[4]) {
+      // Monday and Friday are filled with a single column of mock lessons acting as a border
       timetable[day] = [range(ROWS + 2).map((i) => createLessonSquare(BORDER_COLOR, i))];
     } else {
       timetable[day] = range(3).map(() => [

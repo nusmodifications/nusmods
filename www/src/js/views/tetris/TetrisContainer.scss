@@ -1,7 +1,40 @@
 @import '~styles/utils/modules-entry';
 
 .container {
+  display: flex;
+
   :global {
     animation-name: $page-entering-animation;
   }
+
+  // HACK: Make the border lessons actually look like a border
+  :global(.color-10) {
+    border: 0;
+    border-radius: 0;
+    background: var(--gray-light);
+  }
+}
+
+.game {
+  position: relative;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2000;
+  background: rgba(#000, 0.6);
+}
+
+.overlayContent {
+  width: 20rem;
+  margin: 6rem auto 0;
+  text-align: center;
+}
+
+.sidebar {
+  margin-left: 1rem;
 }
