@@ -143,6 +143,31 @@ describe(getAcadYearModules, () => {
     });
   });
 
+  test('should include empty iBLOCs semester', () => {
+    expect(
+      getAcadYearModules(
+        getState({
+          minYear: '2018/2019',
+          maxYear: '2018/2019',
+          iblocs: true,
+          modules: {
+            MA1521: ['2018/2019', 1, 0],
+          },
+        }),
+      ),
+    ).toEqual({
+      '2017/2018': {
+        [3]: [],
+      },
+      '2018/2019': {
+        [1]: [{ moduleCode: 'MA1521' }],
+        [2]: [],
+        [3]: [],
+        [4]: [],
+      },
+    });
+  });
+
   // Allow variants to fulfill prereqs eg. CS1010S should fulfill CS1010
   // This is a heuristic - not all variants are equal, but it should work
   // in most cases

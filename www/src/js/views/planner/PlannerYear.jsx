@@ -2,7 +2,7 @@
 
 import React, { PureComponent } from 'react';
 import classnames from 'classnames';
-import { sortBy, toPairs, flatMap, values, sumBy } from 'lodash';
+import { size, sortBy, toPairs, flatMap, values, sumBy } from 'lodash';
 
 import type { ModuleCode, Semester } from 'types/modules';
 import type { ModuleWithInfo } from 'types/views';
@@ -34,7 +34,7 @@ export default class PlannerYear extends PureComponent<Props, State> {
 
   hasSpecialTermModules() {
     const { semesters } = this.props;
-    return semesters[3].length > 0 || semesters[4].length > 0;
+    return size(semesters[3]) > 0 || size(semesters[4]) > 0;
   }
 
   renderHeader() {

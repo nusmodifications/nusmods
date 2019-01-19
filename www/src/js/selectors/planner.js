@@ -77,6 +77,7 @@ export function getAcadYearModules(state: State): PlannerModulesWithInfo {
   const { planner, moduleBank } = state;
   // iBLOCs happens in the year before matriculation
   const minYear = planner.iblocs ? subtractAcadYear(planner.minYear) : planner.minYear;
+
   const years = getYearsBetween(minYear, planner.maxYear);
   const modules = {};
   const modulesTaken = new Set<ModuleCode>(getExemptions(state).map((module) => module.moduleCode));
