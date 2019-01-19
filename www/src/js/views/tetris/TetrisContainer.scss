@@ -1,0 +1,7 @@
+@import '~styles/utils/modules-entry';
+
+.container {
+  :global {
+    animation-name: $page-entering-animation;
+  }
+}
