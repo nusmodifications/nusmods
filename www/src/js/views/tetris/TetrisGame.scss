@@ -49,13 +49,13 @@
 
   h3 {
     padding-bottom: 0.2rem;
+    margin: 1rem 0 0.2rem;
     font-size: 1.2rem;
     text-transform: uppercase;
-    margin: 1rem 0 0.2rem;
     border-bottom: 1px solid var(--gray-lighter);
   }
 
-  button {
+  .primaryBtn {
     margin-top: 1rem;
     font-size: 2rem;
     text-transform: uppercase;
@@ -63,6 +63,14 @@
     :global {
       animation: pulse 1.5s infinite;
     }
+  }
+}
+
+.scoreSection {
+  display: flex;
+
+  > div {
+    flex: 1 1 auto;
   }
 }
 

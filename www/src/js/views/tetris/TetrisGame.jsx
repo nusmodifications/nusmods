@@ -28,6 +28,8 @@ import {
 import ScrollingNumber from './ScrollingNumber';
 import TetrisLogo from './TetrisLogo';
 import styles from './TetrisGame.scss';
+import HighScoreForm from './HighScoreForm';
+import HighScoreTable from './HighScoreTable';
 
 type GameStatus = 'playing' | 'paused' | 'not started' | 'game over';
 const PLAYING: GameStatus = 'playing';
@@ -320,7 +322,7 @@ export default class TetrisGame extends PureComponent<Props, State> {
                 Score: <strong>{this.state.score}</strong>
               </p>
               <button
-                className="btn btn-lg btn-primary"
+                className={classnames(styles.primaryBtn, 'btn btn-lg btn-primary')}
                 type="button"
                 onClick={() => this.setState({ status: PLAYING })}
               >
@@ -341,37 +343,50 @@ export default class TetrisGame extends PureComponent<Props, State> {
                 <img src={instructionImage} alt="" />
               </div>
 
-              <h3>Scores</h3>
-              <table className={classnames(styles.scoreTable, 'table table-sm table-borderless ')}>
-                <tbody>
-                  <tr>
-                    <th>Soft Drop</th>
-                    <td>1 &times; distance</td>
-                  </tr>
-                  <tr>
-                    <th>Hard Drop</th>
-                    <td>2 &times; distance</td>
-                  </tr>
-                  <tr>
-                    <th>1 row clear</th>
-                    <td>100</td>
-                  </tr>
-                  <tr>
-                    <th>2 rows clear</th>
-                    <td>300</td>
-                  </tr>
-                  <tr>
-                    <th>3 rows clear</th>
-                    <td>500</td>
-                  </tr>
-                  <tr>
-                    <th>4 rows clear</th>
-                    <td>800</td>
-                  </tr>
-                </tbody>
-              </table>
+              <section className={styles.scoreSection}>
+                <div>
+                  <h3>Scores</h3>
+                  <table
+                    className={classnames(styles.scoreTable, 'table table-sm table-borderless ')}
+                  >
+                    <tbody>
+                      <tr>
+                        <th>Soft Drop</th>
+                        <td>1 &times; distance</td>
+                      </tr>
+                      <tr>
+                        <th>Hard Drop</th>
+                        <td>2 &times; distance</td>
+                      </tr>
+                      <tr>
+                        <th>1 row clear</th>
+                        <td>100</td>
+                      </tr>
+                      <tr>
+                        <th>2 rows clear</th>
+                        <td>300</td>
+                      </tr>
+                      <tr>
+                        <th>3 rows clear</th>
+                        <td>500</td>
+                      </tr>
+                      <tr>
+                        <th>4 rows clear</th>
+                        <td>800</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div>
+                  <HighScoreTable />
+                </div>
+              </section>
 
-              <button className="btn btn-lg btn-primary" type="button" onClick={this.startGame}>
+              <button
+                className={classnames(styles.primaryBtn, 'btn btn-lg btn-primary')}
+                type="button"
+                onClick={this.startGame}
+              >
                 Start
               </button>
             </div>
@@ -382,12 +397,15 @@ export default class TetrisGame extends PureComponent<Props, State> {
         return (
           <div className={styles.overlay}>
             <div className={styles.overlayContent}>
-              <h2>Game Over</h2>
+              <h2>Game Over!</h2>
               <p>
                 Final Score: <strong>{this.state.score}</strong>
               </p>
+
+              <HighScoreForm score={this.state.score} />
+
               <button
-                className="btn btn-lg btn-primary"
+                className={classnames('btn btn-lg btn-primary')}
                 type="button"
                 onClick={() => this.props.resetGame()}
               >
