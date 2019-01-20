@@ -39,8 +39,6 @@ export default class Gamepad {
       return;
     }
 
-
-
     window.requestAnimationFrame(this.onRequestAnimationFrame);
   }
 }

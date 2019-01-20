@@ -15,6 +15,10 @@ type State = {|
   currentValue: number,
 |};
 
+/**
+ * Animates a number such that it increments or decrements (spins) towards
+ * the actual value provided as the children
+ */
 export default class ScrollingNumber extends PureComponent<Props, State> {
   static defaultProps = {
     tagName: 'span',
@@ -39,8 +43,12 @@ export default class ScrollingNumber extends PureComponent<Props, State> {
     }
 
     this.isAnimating = true;
+
+    // Find how much to change based on the difference to the actual value
     let delta;
-    if (Math.abs(currentValue - this.props.children) > 100) {
+    if (Math.abs(currentValue - this.props.children) > 250) {
+      delta = currentValue < this.props.children ? 10 : -10;
+    } else if (Math.abs(currentValue - this.props.children) > 100) {
       delta = currentValue < this.props.children ? 5 : -5;
     } else {
       delta = currentValue < this.props.children ? 1 : -1;
@@ -53,6 +61,7 @@ export default class ScrollingNumber extends PureComponent<Props, State> {
   isAnimating = false;
 
   render() {
+    // Children is ignored since that represents the actual value
     const { children, tagName, ...otherProps } = this.props;
     const Tag = tagName;
     return <Tag {...otherProps}>{this.state.currentValue}</Tag>;

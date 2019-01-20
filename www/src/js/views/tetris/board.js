@@ -1,10 +1,10 @@
 // @flow
-import { range, zip, findLastIndex } from 'lodash';
+import { findLastIndex, range, zip } from 'lodash';
 import produce from 'immer';
 
 import type { ColorIndex } from 'types/reducers';
-import { DaysOfWeek } from 'types/modules';
 import type { ColoredLesson } from 'types/modules';
+import { DaysOfWeek } from 'types/modules';
 import { convertIndexToTime } from 'utils/timify';
 import type { TimetableArrangement, TimetableDayArrangement } from 'types/timetables';
 
@@ -32,16 +32,72 @@ export function makePiece(shape: string[], color: ColorIndex): Piece {
   // Find the number of tiles needed to move the entire piece above the start line
   const y = -findLastIndex(shape, (row) => row.includes('1')) - 1;
 
+  // Center the piece
+  const x = Math.floor(COLUMNS / 2 - shape.length / 2);
+
   // Map 1s to filled squares and 0s to to empty squares (null)
   const rows = shape.map((row) => row.split('').map((tile) => (tile === '1' ? { color } : null)));
 
   return {
     y,
-    x: 0,
+    x,
     // $FlowFixMe lodash has incorrect zip libdefs
     tiles: zip(...rows),
   };
 }
+
+// prettier-ignore
+export const PIECES = [
+  // I-piece
+  makePiece([
+    "0010",
+    "0010",
+    "0010",
+    "0010"
+  ], 0),
+
+  // J
+  makePiece([
+    "001",
+    "001",
+    "011"
+  ], 1),
+
+  // L
+  makePiece([
+    "100",
+    "100",
+    "110"
+  ], 2),
+
+  // O
+  makePiece([
+    "11",
+    "11"
+  ], 3),
+
+  // S
+  makePiece([
+    "000",
+    "011",
+    "110"
+  ], 4),
+
+  // T
+  makePiece([
+    "000",
+    "010",
+    "111"
+  ], 5),
+
+  // Z
+  makePiece([
+    "000",
+    "110",
+    "011"
+  ], 6)
+];
+
 function iterateBoard(
   board: Board,
   iterator: (tile: Square, col: number, row: number) => ?boolean,
@@ -73,25 +129,53 @@ function iteratePiece(
   );
 }
 
-export function rotatePiece(piece: Piece): Piece {
-  return produce(piece, (draft: Piece) => {
-    // Rotate the piece using zip and reverse
-    // $FlowFixMe - lodash zip's typing isn't correct
-    draft.tiles = zip(...piece.tiles).reverse();
+/**
+ * Rotating the piece may cause it to go out of bounds. If that
+ * happens we try to push it back in bounds
+ *
+ * @param draft - assumed to be the draft state from immer's produce
+ */
+function pushPieceInBounds(draft: Piece) {
+  let dx = 0;
+  let dy = 0;
 
-    // Rotating the piece may cause it to go out of bounds. If that
-    // happens we try to push it back in bounds
-    let dx = 0;
-    let dy = 0;
+  iteratePiece(draft, (tile, col, row) => {
+    if (col < 0) dx = Math.max(dx, -col);
+    if (row >= ROWS) dy = Math.min(dy, ROWS - row - 1);
+    if (col >= COLUMNS) dx = Math.min(dx, COLUMNS - col - 1);
+  });
 
-    iteratePiece(draft, (tile, col, row) => {
-      if (col < 0) dx = Math.max(dx, -col);
-      if (row >= ROWS) dy = Math.min(dy, ROWS - row - 1);
-      if (col >= COLUMNS) dx = Math.min(dx, COLUMNS - col - 1);
-    });
+  draft.x += dx;
+  draft.y += dy;
+}
 
-    draft.x += dx;
-    draft.y += dy;
+export function rotatePieceRight(piece: Piece): Piece {
+  if (piece.tiles.length === 0) return piece;
+
+  return produce(piece, (draft) => {
+    const newTiles = [];
+    // When turning rightwards, the last row becomes the first column
+    for (let row = draft.tiles[0].length - 1; row >= 0; row--) {
+      newTiles.push(draft.tiles.map((column) => column[row]));
+    }
+    draft.tiles = newTiles;
+
+    pushPieceInBounds(draft);
+  });
+}
+
+export function rotatePieceLeft(piece: Piece): Piece {
+  if (piece.tiles.length === 0) return piece;
+
+  return produce(piece, (draft) => {
+    const newTiles = [];
+    // When turning leftwards the first row becomes the first column reversed
+    for (let row = 0; row < draft.tiles[0].length; row++) {
+      newTiles.push(draft.tiles.map((column) => column[row]).reverse());
+    }
+    draft.tiles = newTiles;
+
+    pushPieceInBounds(draft);
   });
 }
 
@@ -107,6 +191,8 @@ export function isPieceInBounds(piece: Piece) {
   let isValid = true;
 
   iteratePiece(piece, (tile, col, row) => {
+    // row < 0 is not checked because pieces begin above the board, so those are
+    // valid locations
     if (row >= ROWS || col < 0 || col >= COLUMNS) {
       isValid = false;
       return false;
@@ -200,8 +286,9 @@ export function boardToTimetableArrangement(board: Board): TimetableArrangement 
 }
 
 export function pieceToTimetableDayArrangement(board: Board): TimetableDayArrangement {
-  // Filter out empty cols / rows
   return board.map((column) =>
-    column.filter(Boolean).map((tile, index) => createLessonSquare(tile.color, index)),
+    column
+      .map((tile, index) => (!tile ? null : createLessonSquare(tile.color, index)))
+      .filter(Boolean),
   );
 }
