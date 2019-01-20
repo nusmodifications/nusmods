@@ -52,6 +52,7 @@ type State = {|
   status: GameStatus,
 
   currentPiece: Piece,
+  holdPiece: ?Piece,
   nextPieces: Piece[],
 |};
 
@@ -85,6 +86,7 @@ export default class TetrisGame extends PureComponent<Props, State> {
       score: 0,
       linesCleared: 0,
 
+      holdPiece: null,
       currentPiece,
       nextPieces,
     };
@@ -126,6 +128,7 @@ export default class TetrisGame extends PureComponent<Props, State> {
     [['up', 'e'], () => this.rotatePieceRight()],
 
     [['space', 'w'], () => this.hardDrop()],
+    [['f', 'h'], () => this.holdPiece()],
     [['p', 'esc'], () => this.togglePause()],
   ];
 
@@ -277,6 +280,23 @@ export default class TetrisGame extends PureComponent<Props, State> {
     );
   };
 
+  holdPiece = () => {
+    if (!this.isPlaying()) return;
+
+    this.setState(
+      produce(this.state, (draft) => {
+        const holdPiece = draft.holdPiece;
+        draft.holdPiece = draft.nextPieces.shift();
+
+        if (holdPiece) {
+          draft.nextPieces.unshift(holdPiece);
+        } else if (draft.nextPieces.length === 0) {
+          draft.nextPieces = shuffle(PIECES);
+        }
+      }),
+    );
+  };
+
   togglePause() {
     const { status } = this.state;
     if (status === PAUSED) {
@@ -383,7 +403,7 @@ export default class TetrisGame extends PureComponent<Props, State> {
   }
 
   render() {
-    const { score, linesCleared, board, currentPiece, nextPieces } = this.state;
+    const { score, linesCleared, board, currentPiece, nextPieces, holdPiece } = this.state;
     const nextPiece = nextPieces[0];
 
     const boardWithPiece = placePieceOnBoard(board, currentPiece);
@@ -426,6 +446,30 @@ export default class TetrisGame extends PureComponent<Props, State> {
               hoverLesson={null}
               onCellHover={null}
             />
+          </section>
+
+          <section>
+            <h3>Hold</h3>
+            {holdPiece ? (
+              <TimetableDay
+                day=""
+                verticalMode
+                dayLessonRows={pieceToTimetableDayArrangement(holdPiece.tiles)}
+                showTitle={false}
+                isScrolledHorizontally={false}
+                startingIndex={INITIAL_ROW_INDEX}
+                endingIndex={INITIAL_ROW_INDEX + holdPiece.tiles[0].length}
+                onModifyCell={noop}
+                isCurrentDay={false}
+                currentTimeIndicatorStyle={displayNone}
+                hoverLesson={null}
+                onCellHover={null}
+              />
+            ) : (
+              <p className={styles.holdText}>
+                Press <kbd>F</kbd> or <kbd>H</kbd> to hold the next piece
+              </p>
+            )}
           </section>
         </div>
       </div>

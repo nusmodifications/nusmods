@@ -19,6 +19,13 @@
   h2 {
     font-weight: bold;
   }
+
+  // HACK: Hide module text content
+  @for $theme from 0 to 8 {
+    :global(.color-#{$theme}) {
+      color: transparent !important;
+    }
+  }
 }
 
 .game {
@@ -36,15 +43,21 @@
 }
 
 .overlayContent {
-  width: 40rem;
+  width: 30rem;
   margin: 2rem auto 0;
   text-align: center;
 
   h3 {
-    margin: 1rem 0 0;
+    padding-bottom: 0.2rem;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    margin: 1rem 0 0.2rem;
+    border-bottom: 1px solid var(--gray-lighter);
   }
 
   button {
+    margin-top: 1rem;
+    font-size: 2rem;
     text-transform: uppercase;
 
     :global {
@@ -66,6 +79,7 @@
 }
 
 .sidebar {
+  width: 12rem;
   margin-left: 1rem;
 
   section {
@@ -75,7 +89,11 @@
 
   h3 {
     opacity: 0.7;
-    margin-bottom: 0;
+    margin-bottom: 0.4rem;
+  }
+
+  .holdText {
+    line-height: 1.4;
   }
 }
 
