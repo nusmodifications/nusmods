@@ -1,5 +1,9 @@
 // @flow
 
+/**
+ * Handles high scores for ModTris
+ */
+
 import { sortBy } from 'lodash';
 import getLocalStorage from 'storage/localStorage';
 import { MODTRIS_SCORES } from 'storage/keys';

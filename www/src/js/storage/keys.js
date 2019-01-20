@@ -15,4 +15,4 @@ export function announcementKey(key: ?string) {
 }
 
 // Used by ModTris
-export const MODTRIS_SCORES = 'modtris-scores'
+export const MODTRIS_SCORES = 'modtris-scores';

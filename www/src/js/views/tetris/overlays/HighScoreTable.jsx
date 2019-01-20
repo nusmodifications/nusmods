@@ -12,9 +12,10 @@ export default function HighScoreTable() {
       {highScores.length > 0 ? (
         <table className="table table-sm table-borderless">
           <tbody>
-            {highScores.map((entry) => (
+            {highScores.map((entry, index) => (
               <tr key={entry.time}>
-                <th>{entry.name}</th>
+                <th>{index + 1}</th>
+                <td className="text-right">{entry.name}</td>
                 <td>{entry.score}</td>
               </tr>
             ))}

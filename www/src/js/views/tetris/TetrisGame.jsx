@@ -2,40 +2,44 @@
 
 import React, { PureComponent } from 'react';
 import Mousetrap from 'mousetrap';
-import { noop, range, shuffle } from 'lodash';
+import { noop, shuffle } from 'lodash';
 import classnames from 'classnames';
 import produce from 'immer';
 
 import Timetable from 'views/timetable/Timetable';
 import TimetableDay from 'views/timetable/TimetableDay';
-import instructionImage from 'img/instructions.png';
 
 import type { Board, Piece } from './board';
 import {
   boardToTimetableArrangement,
-  ROWS,
-  COLUMNS,
+  defaultBoard,
   INITIAL_ROW_INDEX,
-  PIECES,
   isPieceInBounds,
   isPiecePositionValid,
+  PIECES,
   pieceToTimetableDayArrangement,
   placePieceOnBoard,
   removeCompleteRows,
   rotatePieceLeft,
   rotatePieceRight,
 } from './board';
+import GameStart from './overlays/GameStart';
+import GamePaused from './overlays/GamePaused';
+import GameOver from './overlays/GameOver';
 import ScrollingNumber from './ScrollingNumber';
-import TetrisLogo from './TetrisLogo';
 import styles from './TetrisGame.scss';
-import HighScoreForm from './HighScoreForm';
-import HighScoreTable from './HighScoreTable';
 
+// Game status enum
 type GameStatus = 'playing' | 'paused' | 'not started' | 'game over';
 const PLAYING: GameStatus = 'playing';
 const PAUSED: GameStatus = 'paused';
 const NOT_STARTED: GameStatus = 'not started';
 const GAME_OVER: GameStatus = 'game over';
+
+// Piece rotation enum
+type Rotation = 'left' | 'right';
+const LEFT: Rotation = 'left';
+const RIGHT: Rotation = 'right';
 
 // Game speed in ticks per move
 const DEFAULT_SPEED = 10; // 50ms * 10 = 0.5 seconds
@@ -71,11 +75,11 @@ const SCORING = {
   },
 };
 
-const displayNone = { display: 'none' };
-
-const defaultBoard: Board = range(COLUMNS).map(() => range(ROWS).map(() => null));
+const DISPLAY_NONE = { display: 'none' };
 
 export default class TetrisGame extends PureComponent<Props, State> {
+  intervalId: IntervalID;
+
   constructor(props: Props) {
     super(props);
 
@@ -103,6 +107,7 @@ export default class TetrisGame extends PureComponent<Props, State> {
 
   componentWillUnmount() {
     Mousetrap.reset();
+    clearInterval(this.intervalId);
   }
 
   onTick = () => {
@@ -120,14 +125,16 @@ export default class TetrisGame extends PureComponent<Props, State> {
     );
   };
 
+  // Ticks are not stored as state because it only affects game logic
+  // and not rendering
   ticks = 0;
   keybindings = [
-    [['left', 'a'], () => this.moveLeft()],
-    [['right', 'd'], () => this.moveRight()],
+    [['left', 'a'], () => this.movePieceHorizontal(-1)],
+    [['right', 'd'], () => this.movePieceHorizontal(1)],
     [['down', 's'], () => this.moveDown()],
 
-    ['q', () => this.rotatePieceLeft()],
-    [['up', 'e'], () => this.rotatePieceRight()],
+    ['q', () => this.rotatePiece(LEFT)],
+    [['up', 'e'], () => this.rotatePiece(RIGHT)],
 
     [['space', 'w'], () => this.hardDrop()],
     [['f', 'h'], () => this.holdPiece()],
@@ -143,8 +150,9 @@ export default class TetrisGame extends PureComponent<Props, State> {
     // Only allow game initialization when the game isn;t already running
     if (this.state.status !== NOT_STARTED) return;
 
-    // We are binding these on game start because <KeyboardShortcuts> is mounted after us,
-    // so it will override some of these shortcuts
+    // We are binding these only on game start because <KeyboardShortcuts> is mounted
+    // after us, so it will override some of these shortcuts.
+
     // Try to clear any existing bindings before binding our own
     Mousetrap.reset();
 
@@ -156,7 +164,7 @@ export default class TetrisGame extends PureComponent<Props, State> {
     });
 
     // Start game ticking
-    setInterval(this.onTick, GAME_TICK_INTERVAL);
+    this.intervalId = setInterval(this.onTick, GAME_TICK_INTERVAL);
 
     this.setState({ status: PLAYING });
   };
@@ -165,34 +173,15 @@ export default class TetrisGame extends PureComponent<Props, State> {
     return this.state.status === PLAYING;
   }
 
-  moveLeft = () => {
-    if (!this.isPlaying()) return;
-    this.movePieceHorizontal(-1);
-  };
-
-  moveRight = () => {
-    if (!this.isPlaying()) return;
-    this.movePieceHorizontal(1);
-  };
-
-  rotatePieceRight = () => {
+  rotatePiece = (rotation: Rotation) => {
     if (!this.isPlaying()) return;
 
-    const nextPiece = rotatePieceRight(this.state.currentPiece);
+    const { currentPiece, board } = this.state;
+    const nextPiece =
+      rotation === LEFT ? rotatePieceLeft(currentPiece) : rotatePieceRight(currentPiece);
 
     // Don't allow the rotated piece to collide with existing blocks
-    if (isPiecePositionValid(this.state.board, nextPiece)) {
-      this.setState({
-        currentPiece: nextPiece,
-      });
-    }
-  };
-
-  rotatePieceLeft = () => {
-    const nextPiece = rotatePieceLeft(this.state.currentPiece);
-
-    // Don't allow the rotated piece to collide with existing blocks
-    if (isPiecePositionValid(this.state.board, nextPiece)) {
+    if (isPiecePositionValid(board, nextPiece)) {
       this.setState({
         currentPiece: nextPiece,
       });
@@ -213,14 +202,14 @@ export default class TetrisGame extends PureComponent<Props, State> {
   movePieceHorizontal = (dx: number) => {
     if (!this.isPlaying()) return;
 
-    const { currentPiece } = this.state;
+    const { currentPiece, board } = this.state;
 
     const nextPiece = {
       ...currentPiece,
       x: currentPiece.x + dx,
     };
 
-    if (isPieceInBounds(nextPiece) && isPiecePositionValid(this.state.board, nextPiece)) {
+    if (isPieceInBounds(nextPiece) && isPiecePositionValid(board, nextPiece)) {
       this.setState({ currentPiece: nextPiece });
     }
   };
@@ -267,6 +256,9 @@ export default class TetrisGame extends PureComponent<Props, State> {
     return false;
   };
 
+  /**
+   * Drops the piece immediately to its final position
+   */
   hardDrop = () => {
     if (!this.isPlaying()) return;
 
@@ -299,14 +291,15 @@ export default class TetrisGame extends PureComponent<Props, State> {
     );
   };
 
-  togglePause() {
+  togglePause = () => {
     const { status } = this.state;
+
     if (status === PAUSED) {
       this.setState({ status: PLAYING });
     } else if (status === PLAYING) {
       this.setState({ status: PAUSED });
     }
-  }
+  };
 
   renderOverlay() {
     switch (this.state.status) {
@@ -314,106 +307,13 @@ export default class TetrisGame extends PureComponent<Props, State> {
         return null;
 
       case PAUSED:
-        return (
-          <div className={styles.overlay}>
-            <div className={styles.overlayContent}>
-              <h2>Game Paused</h2>
-              <p>
-                Score: <strong className={styles.finalScore}>{this.state.score}</strong>
-              </p>
-              <button
-                className={classnames(styles.primaryBtn, 'btn btn-lg btn-primary')}
-                type="button"
-                onClick={() => this.setState({ status: PLAYING })}
-              >
-                Resume
-              </button>
-            </div>
-          </div>
-        );
+        return <GamePaused score={this.state.score} resumeGame={this.togglePause} />;
 
       case NOT_STARTED:
-        return (
-          <div className={styles.overlay}>
-            <div className={styles.overlayContent}>
-              <TetrisLogo />
-
-              <h3>How to Play</h3>
-              <div>
-                <img src={instructionImage} alt="" />
-              </div>
-
-              <section className={styles.scoreSection}>
-                <div>
-                  <h3>Scores</h3>
-                  <table
-                    className={classnames(styles.scoreTable, 'table table-sm table-borderless ')}
-                  >
-                    <tbody>
-                      <tr>
-                        <th>Soft Drop</th>
-                        <td>1 &times; distance</td>
-                      </tr>
-                      <tr>
-                        <th>Hard Drop</th>
-                        <td>2 &times; distance</td>
-                      </tr>
-                      <tr>
-                        <th>1 row clear</th>
-                        <td>100</td>
-                      </tr>
-                      <tr>
-                        <th>2 rows clear</th>
-                        <td>300</td>
-                      </tr>
-                      <tr>
-                        <th>3 rows clear</th>
-                        <td>500</td>
-                      </tr>
-                      <tr>
-                        <th>4 rows clear</th>
-                        <td>800</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div>
-                  <HighScoreTable />
-                </div>
-              </section>
-
-              <button
-                className={classnames(styles.primaryBtn, 'btn btn-lg btn-primary')}
-                type="button"
-                onClick={this.startGame}
-              >
-                Start
-              </button>
-            </div>
-          </div>
-        );
+        return <GameStart startGame={this.startGame} />;
 
       case GAME_OVER:
-        return (
-          <div className={styles.overlay}>
-            <div className={styles.overlayContent}>
-              <h2>Game Over!</h2>
-              <p>
-                Final Score: <strong>{this.state.score}</strong>
-              </p>
-
-              <HighScoreForm score={this.state.score} />
-
-              <button
-                className={classnames('btn btn-lg btn-primary')}
-                type="button"
-                onClick={() => this.props.resetGame()}
-              >
-                Continue
-              </button>
-            </div>
-          </div>
-        );
+        return <GameOver score={this.state.score} resetGame={this.props.resetGame} />;
 
       default:
         throw new Error(`Unknown game status ${this.state.status}`);
@@ -460,7 +360,7 @@ export default class TetrisGame extends PureComponent<Props, State> {
               endingIndex={INITIAL_ROW_INDEX + nextPiece.tiles[0].length}
               onModifyCell={noop}
               isCurrentDay={false}
-              currentTimeIndicatorStyle={displayNone}
+              currentTimeIndicatorStyle={DISPLAY_NONE}
               hoverLesson={null}
               onCellHover={null}
             />
@@ -479,7 +379,7 @@ export default class TetrisGame extends PureComponent<Props, State> {
                 endingIndex={INITIAL_ROW_INDEX + holdPiece.tiles[0].length}
                 onModifyCell={noop}
                 isCurrentDay={false}
-                currentTimeIndicatorStyle={displayNone}
+                currentTimeIndicatorStyle={DISPLAY_NONE}
                 hoverLesson={null}
                 onCellHover={null}
               />

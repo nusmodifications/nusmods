@@ -28,6 +28,8 @@ export type Piece = {|
   tiles: Board,
 |};
 
+export const defaultBoard: Board = range(COLUMNS).map(() => range(ROWS).map(() => null));
+
 export function makePiece(shape: string[], color: ColorIndex): Piece {
   // Find the number of tiles needed to move the entire piece above the start line
   const y = -findLastIndex(shape, (row) => row.includes('1')) - 1;

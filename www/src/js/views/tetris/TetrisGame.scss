@@ -15,11 +15,6 @@
     background: var(--gray-light);
   }
 
-  h1,
-  h2 {
-    font-weight: bold;
-  }
-
   // HACK: Hide module text content
   @for $theme from 0 to 8 {
     :global(.color-#{$theme}) {
@@ -30,65 +25,12 @@
 
 .game {
   position: relative;
-}
-
-.overlay {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 2000;
-  background: var(--body-bg-70);
-}
-
-.overlayContent {
-  width: 30rem;
-  margin: 2rem auto 0;
-  text-align: center;
-
-  h3 {
-    padding-bottom: 0.2rem;
-    margin: 1rem 0 0.2rem;
-    font-size: 1.2rem;
-    text-transform: uppercase;
-    border-bottom: 1px solid var(--gray-lighter);
-  }
-
-  .primaryBtn {
-    margin-top: 1rem;
-    font-size: 2rem;
-    text-transform: uppercase;
-
-    :global {
-      animation: pulse 1.5s infinite;
-    }
-  }
-}
-
-.scoreSection {
-  display: flex;
-
-  > div {
-    flex: 1 1 auto;
-  }
-}
-
-.scoreTable {
-  margin: 0 auto;
-
-  th {
-    text-align: right;
-  }
-
-  td {
-    text-align: left;
-  }
+  user-select: none;
 }
 
 .sidebar {
   width: 12rem;
-  margin-left: 1rem;
+  margin-left: 2rem;
 
   section {
     margin-bottom: 2rem;
@@ -101,14 +43,10 @@
   }
 
   .holdText {
-    line-height: 1.4;
+    line-height: 1.6;
   }
 }
 
 .score {
   font-size: 3rem;
-}
-
-.finalScore {
-  font-size: 2rem;
 }

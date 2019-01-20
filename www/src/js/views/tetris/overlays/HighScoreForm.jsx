@@ -7,9 +7,9 @@ import { addScoreData, getScoreData, HIGH_SCORE_COUNT } from './score';
 import HighScoreTable from './HighScoreTable';
 import styles from './HighScoreForm.scss';
 
-type Props = {
-  score: number,
-};
+type Props = {|
+  +score: number,
+|};
 
 type State = {
   name: string,
@@ -36,21 +36,21 @@ export default class HighScoreForm extends PureComponent<Props, State> {
 
   renderForm() {
     return (
-      <form onSubmit={this.onSubmit}>
-        <div className={classnames(styles.nameInput, 'input-group')}>
+      <form className={styles.form} onSubmit={this.onSubmit}>
+        <div className="input-group">
           <label className="sr-only" htmlFor="score-name">
             Name
           </label>
           <input
             required
             type="text"
-            className={classnames('form-control')}
+            className={classnames('form-control form-control-sm')}
             value={this.state.name}
             placeholder="Gaben"
             onChange={(evt) => this.setState({ name: evt.target.value })}
           />
           <div className="input-group-append">
-            <button type="submit" className="btn btn-primary">
+            <button type="submit" className="btn btn-sm btn-primary">
               Save!
             </button>
           </div>
@@ -64,7 +64,14 @@ export default class HighScoreForm extends PureComponent<Props, State> {
     const { score } = this.props;
 
     if (this.state.submitted) {
-      return <HighScoreTable />;
+      return (
+        <div>
+          <p className="text-success">
+            <strong>Score saved!</strong>
+          </p>
+          <HighScoreTable />
+        </div>
+      );
     }
 
     const sortedEntries = sortBy(
@@ -73,15 +80,16 @@ export default class HighScoreForm extends PureComponent<Props, State> {
     ).reverse();
 
     // If your score comes in later than the other high scores, then sorry!
-    if (sortedEntries.length > HIGH_SCORE_COUNT && !last(sortedEntries[1])) {
+    if (sortedEntries.length > HIGH_SCORE_COUNT && !last(sortedEntries)[1]) {
       return null;
     }
 
     return (
-      <div>
-        <table className="table table-sm table-borderless">
+      <div className={styles.highScore}>
+        <table className={classnames(styles.table, 'table table-sm table-borderless')}>
           <thead>
             <tr>
+              <th />
               <th>Name</th>
               <th>Score</th>
             </tr>
@@ -90,11 +98,8 @@ export default class HighScoreForm extends PureComponent<Props, State> {
           <tbody>
             {sortedEntries.map(([entryScore, entry], index) => (
               <tr key={index}>
-                {entry ? (
-                  <th className={styles.nameCell}>{entry.name}</th>
-                ) : (
-                  <th>{this.renderForm()}</th>
-                )}
+                <th>{index + 1}</th>
+                <td className={styles.nameCell}>{entry ? entry.name : this.renderForm()}</td>
                 <td className={styles.scoreCell}>{entryScore}</td>
               </tr>
             ))}
