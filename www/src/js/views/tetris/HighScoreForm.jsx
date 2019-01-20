@@ -1,8 +1,11 @@
 // @flow
 import { last, sortBy } from 'lodash';
 import React, { PureComponent } from 'react';
+import classnames from 'classnames';
+
 import { addScoreData, getScoreData, HIGH_SCORE_COUNT } from './score';
 import HighScoreTable from './HighScoreTable';
+import styles from './HighScoreForm.scss';
 
 type Props = {
   score: number,
@@ -34,14 +37,14 @@ export default class HighScoreForm extends PureComponent<Props, State> {
   renderForm() {
     return (
       <form onSubmit={this.onSubmit}>
-        <div className="input-group">
+        <div className={classnames(styles.nameInput, 'input-group')}>
           <label className="sr-only" htmlFor="score-name">
             Name
           </label>
           <input
             required
             type="text"
-            className="form-control"
+            className={classnames('form-control')}
             value={this.state.name}
             placeholder="Gaben"
             onChange={(evt) => this.setState({ name: evt.target.value })}
@@ -87,8 +90,12 @@ export default class HighScoreForm extends PureComponent<Props, State> {
           <tbody>
             {sortedEntries.map(([entryScore, entry], index) => (
               <tr key={index}>
-                {entry ? <th>{entry.name}</th> : <th>{this.renderForm()}</th>}
-                <td>{entryScore}</td>
+                {entry ? (
+                  <th className={styles.nameCell}>{entry.name}</th>
+                ) : (
+                  <th>{this.renderForm()}</th>
+                )}
+                <td className={styles.scoreCell}>{entryScore}</td>
               </tr>
             ))}
           </tbody>

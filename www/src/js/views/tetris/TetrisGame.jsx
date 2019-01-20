@@ -319,7 +319,7 @@ export default class TetrisGame extends PureComponent<Props, State> {
             <div className={styles.overlayContent}>
               <h2>Game Paused</h2>
               <p>
-                Score: <strong>{this.state.score}</strong>
+                Score: <strong className={styles.finalScore}>{this.state.score}</strong>
               </p>
               <button
                 className={classnames(styles.primaryBtn, 'btn btn-lg btn-primary')}
