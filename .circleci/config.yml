@@ -115,6 +115,9 @@ jobs:
       - run:
           name: Report bundle size
           command: yarn size
+      - run:
+          name: Obtain lighthouse score
+          command: yarn lighthouse
       - store_test_results:
           path: reports/junit
       - store_artifacts:
