@@ -8,6 +8,7 @@ import produce from 'immer';
 
 import Timetable from 'views/timetable/Timetable';
 import TimetableDay from 'views/timetable/TimetableDay';
+import instructionImage from 'img/instructions.png';
 
 import type { Board, Piece } from './board';
 import {
@@ -314,6 +315,42 @@ export default class TetrisGame extends PureComponent<Props, State> {
           <div className={styles.overlay}>
             <div className={styles.overlayContent}>
               <TetrisLogo />
+
+              <h3>How to Play</h3>
+              <div>
+                <img src={instructionImage} alt="" />
+              </div>
+
+              <h3>Scores</h3>
+              <table className={classnames(styles.scoreTable, 'table table-sm table-borderless ')}>
+                <tbody>
+                  <tr>
+                    <th>Soft Drop</th>
+                    <td>1 &times; distance</td>
+                  </tr>
+                  <tr>
+                    <th>Hard Drop</th>
+                    <td>2 &times; distance</td>
+                  </tr>
+                  <tr>
+                    <th>1 row clear</th>
+                    <td>100</td>
+                  </tr>
+                  <tr>
+                    <th>2 rows clear</th>
+                    <td>300</td>
+                  </tr>
+                  <tr>
+                    <th>3 rows clear</th>
+                    <td>500</td>
+                  </tr>
+                  <tr>
+                    <th>4 rows clear</th>
+                    <td>800</td>
+                  </tr>
+                </tbody>
+              </table>
+
               <button className="btn btn-lg btn-primary" type="button" onClick={this.startGame}>
                 Start
               </button>

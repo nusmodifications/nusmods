@@ -37,8 +37,32 @@
 
 .overlayContent {
   width: 40rem;
-  margin: 6rem auto 0;
+  margin: 2rem auto 0;
   text-align: center;
+
+  h3 {
+    margin: 1rem 0 0;
+  }
+
+  button {
+    text-transform: uppercase;
+
+    :global {
+      animation: pulse 1.5s infinite;
+    }
+  }
+}
+
+.scoreTable {
+  margin: 0 auto;
+
+  th {
+    text-align: right;
+  }
+
+  td {
+    text-align: left;
+  }
 }
 
 .sidebar {

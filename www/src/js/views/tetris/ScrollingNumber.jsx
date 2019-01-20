@@ -36,8 +36,9 @@ export default class ScrollingNumber extends PureComponent<Props, State> {
 
   onNextFrame = () => {
     const { currentValue } = this.state;
+    const targetValue = this.props.children;
 
-    if (currentValue === this.props.children) {
+    if (currentValue === targetValue) {
       this.isAnimating = false;
       return;
     }
@@ -45,13 +46,12 @@ export default class ScrollingNumber extends PureComponent<Props, State> {
     this.isAnimating = true;
 
     // Find how much to change based on the difference to the actual value
+    const cubicDiff = Math.round((targetValue - currentValue) / 25);
     let delta;
-    if (Math.abs(currentValue - this.props.children) > 250) {
-      delta = currentValue < this.props.children ? 10 : -10;
-    } else if (Math.abs(currentValue - this.props.children) > 100) {
-      delta = currentValue < this.props.children ? 5 : -5;
+    if (cubicDiff === 0) {
+      delta = currentValue < targetValue ? 1 : -1;
     } else {
-      delta = currentValue < this.props.children ? 1 : -1;
+      delta = cubicDiff;
     }
 
     this.setState({ currentValue: currentValue + delta });
