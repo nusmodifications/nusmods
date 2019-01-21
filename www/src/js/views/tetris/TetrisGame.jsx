@@ -2,7 +2,7 @@
 
 import React, { PureComponent } from 'react';
 import Mousetrap from 'mousetrap';
-import { noop, shuffle } from 'lodash';
+import { debounce, noop, shuffle } from 'lodash';
 import classnames from 'classnames';
 import produce from 'immer';
 
@@ -46,6 +46,7 @@ const RIGHT: Rotation = 'right';
 const DEFAULT_SPEED = 10; // 50ms * 10 = 0.5 seconds
 const MAX_SPEED = 4; // 50ms * 4 = 0.2 seconds
 const GAME_TICK_INTERVAL = 50; // In milliseconds
+const TARGET_HEIGHT = 940; // In px, the height of the game for resizing on smaller screens
 
 type Props = {|
   +resetGame: () => void,
@@ -120,6 +121,10 @@ export default class TetrisGame extends PureComponent<Props, State> {
   }
 
   componentDidMount() {
+    window.addEventListener('resize', this.onResize);
+    this.onResize();
+    this.onResize.flush();
+
     Mousetrap.bind('space', (evt) => {
       evt.preventDefault();
       this.startGame();
@@ -127,9 +132,22 @@ export default class TetrisGame extends PureComponent<Props, State> {
   }
 
   componentWillUnmount() {
+    window.removeEventListener('resize', this.onResize);
     Mousetrap.reset();
     clearInterval(this.intervalId);
   }
+
+  // Hack to ensure the ModTris board is always visible by resizing the wrapper
+  // such that it is always the correct size
+  onResize = debounce(() => {
+    const element = this.gameWrapper.current;
+    if (!element) return;
+
+    const viewportHeight = window.innerHeight;
+
+    const scale = viewportHeight > TARGET_HEIGHT ? 1 : viewportHeight / TARGET_HEIGHT;
+    element.style.transform = `scale(${scale})`;
+  }, 100);
 
   onTick = () => {
     if (!this.isPlaying()) return;
@@ -146,6 +164,7 @@ export default class TetrisGame extends PureComponent<Props, State> {
     );
   };
 
+  gameWrapper = React.createRef<HTMLDivElement>();
   // Ticks are not stored as state because it only affects game logic
   // and not rendering
   ticks = 0;
@@ -349,7 +368,10 @@ export default class TetrisGame extends PureComponent<Props, State> {
     const lessons = boardToTimetableArrangement(boardWithPiece);
 
     return (
-      <div className={classnames('page-container verticalMode', styles.container)}>
+      <div
+        className={classnames('page-container verticalMode', styles.container)}
+        ref={this.gameWrapper}
+      >
         <Title>ModTris!</Title>
 
         <div className={styles.game}>

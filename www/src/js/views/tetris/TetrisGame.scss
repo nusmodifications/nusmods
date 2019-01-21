@@ -2,6 +2,7 @@
 
 .container {
   display: flex;
+  transform-origin: top left;
 
   :global {
     animation-name: $page-entering-animation;
@@ -43,6 +44,7 @@
   }
 
   .holdText {
+    font-size: 1.2rem;
     line-height: 1.6;
   }
 }
