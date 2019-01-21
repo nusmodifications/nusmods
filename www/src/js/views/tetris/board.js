@@ -21,7 +21,7 @@ export const COLUMNS = 9;
 export const INITIAL_ROW_INDEX = 16; // 8am
 
 export type Square = {|
-  +color: ColorIndex,
+  color: ColorIndex,
 |};
 
 // A 2D array of squares representing the Tetris board in column major order.
@@ -195,10 +195,12 @@ export function rotatePieceLeft(piece: Piece): Piece {
   });
 }
 
-export function placePieceOnBoard(board: Board, piece: Piece): Board {
+export function placePieceOnBoard(board: Board, ...pieces: Piece[]): Board {
   return produce(board, (draft) => {
-    iteratePiece(piece, (tile, col, row) => {
-      draft[col][row] = tile;
+    pieces.forEach((piece) => {
+      iteratePiece(piece, (tile, col, row) => {
+        draft[col][row] = tile;
+      });
     });
   });
 }
@@ -230,6 +232,29 @@ export function isPiecePositionValid(board: Board, piece: Piece) {
   });
 
   return isValid;
+}
+
+export function dropPiece(board: Board, piece: Piece) {
+  let lastPiece = piece;
+  let nextPiece = piece;
+
+  do {
+    lastPiece = nextPiece;
+    nextPiece = {
+      ...lastPiece,
+      y: lastPiece.y + 1,
+    };
+  } while (isPiecePositionValid(board, nextPiece) && isPieceInBounds(nextPiece));
+
+  return lastPiece;
+}
+
+export function recolorPiece(piece: Piece, newColor: ColorIndex) {
+  return produce(piece, (draft) => {
+    iteratePiece(draft, (square) => {
+      square.color = newColor; // eslint-disable-line no-param-reassign
+    });
+  });
 }
 
 export function removeCompleteRows(board: Board) {

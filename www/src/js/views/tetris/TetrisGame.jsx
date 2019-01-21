@@ -6,6 +6,7 @@ import { debounce, noop, shuffle } from 'lodash';
 import classnames from 'classnames';
 import produce from 'immer';
 
+import type { ColorIndex } from 'types/reducers';
 import Timetable from 'views/timetable/Timetable';
 import TimetableDay from 'views/timetable/TimetableDay';
 import Title from 'views/components/Title';
@@ -21,9 +22,11 @@ import {
   originalPosition,
   pieceToTimetableDayArrangement,
   placePieceOnBoard,
+  recolorPiece,
   removeCompleteRows,
   rotatePieceLeft,
   rotatePieceRight,
+  dropPiece,
 } from './board';
 import GameStart from './overlays/GameStart';
 import GamePaused from './overlays/GamePaused';
@@ -48,6 +51,8 @@ const DEFAULT_SPEED = 10; // 50ms * 10 = 0.5 seconds
 const MAX_SPEED = 4; // 50ms * 4 = 0.2 seconds
 const GAME_TICK_INTERVAL = 50; // In milliseconds
 const TARGET_HEIGHT = 940; // In px, the height of the game for resizing on smaller screens
+
+const PREVIEW_COLOR: ColorIndex = 11;
 
 type Props = {|
   +resetGame: () => void,
@@ -379,7 +384,8 @@ export default class TetrisGame extends PureComponent<Props, State> {
     const { score, linesCleared, board, currentPiece, nextPieces, holdPiece, canHold } = this.state;
     const nextPiece = nextPieces[0];
 
-    const boardWithPiece = placePieceOnBoard(board, currentPiece);
+    const previewPiece = dropPiece(board, recolorPiece(currentPiece, PREVIEW_COLOR));
+    const boardWithPiece = placePieceOnBoard(board, previewPiece, currentPiece);
     const lessons = boardToTimetableArrangement(boardWithPiece);
 
     return (

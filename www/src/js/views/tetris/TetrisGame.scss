@@ -16,6 +16,11 @@
     background: var(--gray-light);
   }
 
+  :global(.color-11) {
+    color: transparent;
+    border: 3px dotted var(--gray) !important;
+  }
+
   // HACK: Hide module text content
   @for $theme from 0 to 8 {
     :global(.color-#{$theme}) {
