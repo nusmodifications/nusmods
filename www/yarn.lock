@@ -10740,13 +10740,14 @@ react-loadable@5.5.0:
   dependencies:
     prop-types "^15.5.0"
 
-react-modal@3.3.2:
-  version "3.3.2"
-  resolved "https://registry.yarnpkg.com/react-modal/-/react-modal-3.3.2.tgz#b13da9490653a7c76bc0e9600323eb1079c620e7"
-  integrity sha512-DLrmPG9PyXWSNA2ve1LttnNRE9Umy3u3awFeK+72dLOksLM+EoTg8Z2h/i/DV3O8ZGvnEhacjAVXdZuRDGvaag==
+react-modal@3.8.1:
+  version "3.8.1"
+  resolved "https://registry.yarnpkg.com/react-modal/-/react-modal-3.8.1.tgz#7300f94a6f92a2e17994de0be6ccb61734464c9e"
+  integrity sha512-aLKeZM9pgXpIKVwopRHMuvqKWiBajkqisDA8UzocdCF6S4fyKVfLWmZR5G1Q0ODBxxxxf2XIwiCP8G/11GJAuw==
   dependencies:
     exenv "^1.2.0"
     prop-types "^15.5.10"
+    react-lifecycles-compat "^3.0.0"
     warning "^3.0.0"
 
 react-qr-svg@2.1.0:
