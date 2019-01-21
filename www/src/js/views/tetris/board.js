@@ -1,5 +1,5 @@
 // @flow
-import { findLastIndex, range, zip } from 'lodash';
+import { findLastIndex, min, range, zip } from 'lodash';
 import produce from 'immer';
 
 import type { ColorIndex } from 'types/reducers';
@@ -24,6 +24,8 @@ export type Square = {|
   +color: ColorIndex,
 |};
 
+// A 2D array of squares representing the Tetris board in column major order.
+// The top right corner is (0, 0)
 export type Board = Array<Array<?Square>>;
 
 export type Piece = {|
@@ -34,21 +36,25 @@ export type Piece = {|
 
 export const defaultBoard: Board = range(COLUMNS).map(() => range(ROWS).map(() => null));
 
+export function originalPosition(tiles: Board) {
+  return {
+    // Center the piece
+    x: Math.floor(COLUMNS / 2 - tiles.length / 2),
+    // Find the number of tiles needed to move the entire piece above the start line
+    y: -min(tiles.map((column) => findLastIndex(column, (tile) => tile))) - 1,
+  };
+}
+
 export function makePiece(shape: string[], color: ColorIndex): Piece {
-  // Find the number of tiles needed to move the entire piece above the start line
-  const y = -findLastIndex(shape, (row) => row.includes('1')) - 1;
-
-  // Center the piece
-  const x = Math.floor(COLUMNS / 2 - shape.length / 2);
-
   // Map 1s to filled squares and 0s to to empty squares (null)
   const rows = shape.map((row) => row.split('').map((tile) => (tile === '1' ? { color } : null)));
 
+  // $FlowFixMe lodash has incorrect zip libdefs
+  const tiles: Board = zip(...rows);
+
   return {
-    y,
-    x,
-    // $FlowFixMe lodash has incorrect zip libdefs
-    tiles: zip(...rows),
+    tiles,
+    ...originalPosition(tiles),
   };
 }
 

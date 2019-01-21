@@ -12,12 +12,13 @@ import Title from 'views/components/Title';
 
 import type { Board, Piece } from './board';
 import {
+  INITIAL_ROW_INDEX,
+  PIECES,
   boardToTimetableArrangement,
   defaultBoard,
-  INITIAL_ROW_INDEX,
   isPieceInBounds,
   isPiecePositionValid,
-  PIECES,
+  originalPosition,
   pieceToTimetableDayArrangement,
   placePieceOnBoard,
   removeCompleteRows,
@@ -58,6 +59,7 @@ type State = {|
   linesCleared: number,
 
   status: GameStatus,
+  canHold: boolean,
 
   currentPiece: Piece,
   holdPiece: ?Piece,
@@ -109,6 +111,7 @@ export default class TetrisGame extends PureComponent<Props, State> {
 
     this.state = {
       status: NOT_STARTED,
+      canHold: true,
 
       board: defaultBoard,
       score: 0,
@@ -281,6 +284,7 @@ export default class TetrisGame extends PureComponent<Props, State> {
     draft.board = newBoard;
     draft.score += SCORING.lineClear(rowsCleared);
     draft.linesCleared += rowsCleared;
+    draft.canHold = true;
 
     // If a piece has reached the top row, trigger game over
     if (draft.board.some((column) => column[0])) {
@@ -288,10 +292,7 @@ export default class TetrisGame extends PureComponent<Props, State> {
     }
 
     // Create next piece
-    draft.currentPiece = draft.nextPieces.shift();
-    if (draft.nextPieces.length === 0) {
-      draft.nextPieces = shuffle(PIECES);
-    }
+    this.popNextPiece(draft);
 
     return false;
   };
@@ -315,20 +316,34 @@ export default class TetrisGame extends PureComponent<Props, State> {
   };
 
   holdPiece = () => {
-    if (!this.isPlaying()) return;
+    if (!this.isPlaying() || !this.state.canHold) return;
 
     this.setState(
       produce(this.state, (draft) => {
         const holdPiece = draft.holdPiece;
-        draft.holdPiece = draft.nextPieces.shift();
+
+        // Reset the position of the current piece when it is held
+        draft.holdPiece = {
+          ...draft.currentPiece,
+          ...originalPosition(draft.currentPiece.tiles),
+        };
+
+        draft.canHold = false;
 
         if (holdPiece) {
-          draft.nextPieces.unshift(holdPiece);
-        } else if (draft.nextPieces.length === 0) {
-          draft.nextPieces = shuffle(PIECES);
+          draft.currentPiece = holdPiece;
+        } else {
+          this.popNextPiece(draft);
         }
       }),
     );
+  };
+
+  popNextPiece = (draft: State) => {
+    draft.currentPiece = draft.nextPieces.shift();
+    if (draft.nextPieces.length === 0) {
+      draft.nextPieces = shuffle(PIECES);
+    }
   };
 
   togglePause = () => {
@@ -361,7 +376,7 @@ export default class TetrisGame extends PureComponent<Props, State> {
   }
 
   render() {
-    const { score, linesCleared, board, currentPiece, nextPieces, holdPiece } = this.state;
+    const { score, linesCleared, board, currentPiece, nextPieces, holdPiece, canHold } = this.state;
     const nextPiece = nextPieces[0];
 
     const boardWithPiece = placePieceOnBoard(board, currentPiece);
@@ -396,16 +411,20 @@ export default class TetrisGame extends PureComponent<Props, State> {
 
           <section>
             <h3>Next piece</h3>
-            {renderPiece(nextPiece.tiles)}
+            <div className={styles.piecePreview}>{renderPiece(nextPiece.tiles)}</div>
           </section>
 
           <section>
             <h3>Hold</h3>
             {holdPiece ? (
-              renderPiece(holdPiece.tiles)
+              <div
+                className={classnames(styles.piecePreview, { [styles.holdUnavailable]: !canHold })}
+              >
+                {renderPiece(holdPiece.tiles)}
+              </div>
             ) : (
               <p className={styles.holdText}>
-                Press <kbd>F</kbd> or <kbd>H</kbd> to hold the next piece
+                Press <kbd>F</kbd> or <kbd>H</kbd> to hold the current piece
               </p>
             )}
           </section>
