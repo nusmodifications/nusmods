@@ -11,6 +11,10 @@ import type { TimetableArrangement, TimetableDayArrangement } from 'types/timeta
 export const ROWS = 20;
 export const COLUMNS = 9;
 
+/**
+ * Contains most of the gameplay logic
+ */
+
 /* eslint-disable no-continue, consistent-return, no-loop-func */
 
 // The first timetable row index to be used
@@ -100,6 +104,10 @@ export const PIECES = [
   ], 6)
 ];
 
+/**
+ * Iterate over all tiles on the board. Return false in the iterator to
+ * break the loop early.
+ */
 function iterateBoard(
   board: Board,
   iterator: (tile: Square, col: number, row: number) => ?boolean,

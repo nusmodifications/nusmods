@@ -24,6 +24,7 @@ export function getScoreData(): ScoreData {
 }
 
 export function addScoreData(newEntry: ScoreEntry) {
+  // Add the new entry into the list and sort by score
   const entries = sortBy([...getScoreData(), newEntry], (entry) => entry.score).reverse();
   localStorage.setItem(MODTRIS_SCORES, JSON.stringify(entries.slice(0, HIGH_SCORE_COUNT)));
 }

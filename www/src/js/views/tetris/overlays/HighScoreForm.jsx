@@ -74,6 +74,7 @@ export default class HighScoreForm extends PureComponent<Props, State> {
       );
     }
 
+    // Add the new score into the list and sort
     const sortedEntries = sortBy(
       [...entries.map((entry) => [entry.score, entry]), [score, null]],
       ([entryScore]) => entryScore,

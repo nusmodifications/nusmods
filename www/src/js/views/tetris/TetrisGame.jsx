@@ -8,6 +8,7 @@ import produce from 'immer';
 
 import Timetable from 'views/timetable/Timetable';
 import TimetableDay from 'views/timetable/TimetableDay';
+import Title from 'views/components/Title';
 
 import type { Board, Piece } from './board';
 import {
@@ -75,7 +76,27 @@ const SCORING = {
   },
 };
 
+// Constant styles extracted as an object to prevent rerender
 const DISPLAY_NONE = { display: 'none' };
+
+function renderPiece(tiles: Board) {
+  return (
+    <TimetableDay
+      day=""
+      verticalMode
+      dayLessonRows={pieceToTimetableDayArrangement(tiles)}
+      showTitle={false}
+      isScrolledHorizontally={false}
+      startingIndex={INITIAL_ROW_INDEX}
+      endingIndex={INITIAL_ROW_INDEX + tiles[0].length}
+      onModifyCell={noop}
+      isCurrentDay={false}
+      currentTimeIndicatorStyle={DISPLAY_NONE}
+      hoverLesson={null}
+      onCellHover={null}
+    />
+  );
+}
 
 export default class TetrisGame extends PureComponent<Props, State> {
   intervalId: IntervalID;
@@ -147,7 +168,7 @@ export default class TetrisGame extends PureComponent<Props, State> {
   }
 
   startGame = () => {
-    // Only allow game initialization when the game isn;t already running
+    // Only allow game initialization when the game isn't already running
     if (this.state.status !== NOT_STARTED) return;
 
     // We are binding these only on game start because <KeyboardShortcuts> is mounted
@@ -329,10 +350,13 @@ export default class TetrisGame extends PureComponent<Props, State> {
 
     return (
       <div className={classnames('page-container verticalMode', styles.container)}>
+        <Title>ModTris!</Title>
+
         <div className={styles.game}>
           {this.renderOverlay()}
           <Timetable lessons={lessons} isVerticalOrientation />
         </div>
+
         <div className={styles.sidebar}>
           <section>
             <h3>Score</h3>
@@ -350,39 +374,13 @@ export default class TetrisGame extends PureComponent<Props, State> {
 
           <section>
             <h3>Next piece</h3>
-            <TimetableDay
-              day=""
-              verticalMode
-              dayLessonRows={pieceToTimetableDayArrangement(nextPiece.tiles)}
-              showTitle={false}
-              isScrolledHorizontally={false}
-              startingIndex={INITIAL_ROW_INDEX}
-              endingIndex={INITIAL_ROW_INDEX + nextPiece.tiles[0].length}
-              onModifyCell={noop}
-              isCurrentDay={false}
-              currentTimeIndicatorStyle={DISPLAY_NONE}
-              hoverLesson={null}
-              onCellHover={null}
-            />
+            {renderPiece(nextPiece.tiles)}
           </section>
 
           <section>
             <h3>Hold</h3>
             {holdPiece ? (
-              <TimetableDay
-                day=""
-                verticalMode
-                dayLessonRows={pieceToTimetableDayArrangement(holdPiece.tiles)}
-                showTitle={false}
-                isScrolledHorizontally={false}
-                startingIndex={INITIAL_ROW_INDEX}
-                endingIndex={INITIAL_ROW_INDEX + holdPiece.tiles[0].length}
-                onModifyCell={noop}
-                isCurrentDay={false}
-                currentTimeIndicatorStyle={DISPLAY_NONE}
-                hoverLesson={null}
-                onCellHover={null}
-              />
+              renderPiece(holdPiece.tiles)
             ) : (
               <p className={styles.holdText}>
                 Press <kbd>F</kbd> or <kbd>H</kbd> to hold the next piece
