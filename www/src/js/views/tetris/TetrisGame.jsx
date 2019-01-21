@@ -418,7 +418,9 @@ export default class TetrisGame extends PureComponent<Props, State> {
             <h3>Hold</h3>
             {holdPiece ? (
               <div
-                className={classnames(styles.piecePreview, { [styles.holdUnavailable]: !canHold })}
+                className={classnames(styles.piecePreview, {
+                  [styles.holdUnavailable]: !canHold,
+                })}
               >
                 {renderPiece(holdPiece.tiles)}
               </div>
