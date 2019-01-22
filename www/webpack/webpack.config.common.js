@@ -56,6 +56,7 @@ const commonConfig = merge([
   parts.transpileJavascript({
     include: parts.PATHS.scripts,
   }),
+  parts.loadSVG(parts.PATHS.images),
   parts.mockNode(),
   parts.setFreeVariable('process.env', parts.appVersion()),
 ]);

@@ -208,7 +208,7 @@ exports.loadImages = ({ include, exclude, options } = {}) => ({
   module: {
     rules: [
       {
-        test: /\.(ico|jpg|jpeg|png|gif|svg)(\?.*)?$/,
+        test: /\.(ico|jpg|jpeg|png|gif)(\?.*)?$/,
         include,
         exclude,
 
@@ -216,6 +216,30 @@ exports.loadImages = ({ include, exclude, options } = {}) => ({
           loader: 'url-loader',
           options,
         },
+      },
+    ],
+  },
+});
+
+/**
+ * Allow SVG images to be imported as React components
+ *
+ * @see https://www.smooth-code.com/open-source/svgr/docs/webpack/
+ */
+exports.loadSVG = ({ include, exclude, options } = {}) => ({
+  module: {
+    rules: [
+      {
+        test: /.svg$/,
+        include,
+        exclude,
+
+        use: [
+          {
+            loader: '@svgr/webpack',
+            options,
+          },
+        ],
       },
     ],
   },
