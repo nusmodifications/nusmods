@@ -1,20 +1,17 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import { flatMap } from 'lodash';
 
-import type { Contributor } from 'types/contributor';
 import type { ModuleCondensed } from 'types/modules';
 
 import { toggleFeedback } from 'actions/app';
 import { toggleBetaTesting } from 'actions/settings';
-import getContributors from 'apis/contributor';
 import { modulePage } from 'views/routes/paths';
 import { Zap, DollarSign } from 'views/components/icons';
 import ExternalLink from 'views/components/ExternalLink';
-import LoadingSpinner from 'views/components/LoadingSpinner';
 import ScrollToTop from 'views/components/ScrollToTop';
 import Title from 'views/components/Title';
 import { FeedbackButtons } from 'views/components/FeedbackModal';
@@ -42,42 +39,7 @@ type Props = {
   toggleBetaTesting: () => void,
 };
 
-type State = {
-  contributors: ?Array<Contributor>,
-  isLoading: boolean,
-  isError: boolean,
-  errorMessage: string,
-};
-
-class ContributeContainer extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      contributors: null,
-      isLoading: true,
-      isError: false,
-      errorMessage: '',
-    };
-  }
-
-  componentDidMount() {
-    getContributors()
-      .then((contributors) => {
-        this.setState({
-          contributors,
-          isLoading: false,
-        });
-      })
-      .catch((err) => {
-        this.setState({
-          isError: true,
-          errorMessage: err.message,
-          isLoading: false,
-        });
-      });
-  }
-
+class ContributeContainer extends PureComponent<Props> {
   render() {
     return (
       <div className={styles.pageContainer}>
@@ -315,30 +277,19 @@ class ContributeContainer extends Component<Props, State> {
             </ExternalLink>
           </div>
 
-          {this.state.isLoading && <LoadingSpinner />}
-          {this.state.isError && (
-            <div className="alert alert-danger">
-              <strong>Something went wrong!</strong> {this.state.errorMessage}
-            </div>
-          )}
+          <p>
+            Here are our top NUSMods contributors. Previous maintainers have gone on to work at
+            Google, Facebook, and other prestigious technology companies. <strong>You</strong> could
+            be next!
+          </p>
 
-          {this.state.contributors && (
-            <>
-              <p>
-                Here are our top NUSMods contributors. Previous maintainers have gone on to work at
-                Google, Facebook, and other prestigious technology companies. <strong>You</strong>{' '}
-                could be next!
-              </p>
+          <ContributorList size={12} />
 
-              <ContributorList contributors={this.state.contributors.slice(0, 12)} />
-
-              <p className="text-right">
-                <Link to="/contributors" className="btn btn-outline-primary">
-                  View all contributors →
-                </Link>
-              </p>
-            </>
-          )}
+          <p className="text-right">
+            <Link to="/contributors" className="btn btn-outline-primary">
+              View all contributors →
+            </Link>
+          </p>
         </section>
 
         <p className={styles.attribution}>
