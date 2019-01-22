@@ -30,7 +30,7 @@ export function FeedbackButtons() {
           <GitHub />
           GitHub
         </ExternalLink>
-        <ExternalLink className={styles.form} href={`mailto:${config.contact.email}`}>
+        <ExternalLink className={styles.email} href={`mailto:${config.contact.email}`}>
           <Mail />
           Email
         </ExternalLink>
