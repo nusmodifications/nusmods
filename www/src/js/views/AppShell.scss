@@ -1,15 +1,14 @@
-@import "~styles/utils/modules-entry.scss";
+@import '~styles/utils/modules-entry.scss';
+
+$vert-padding: 0.5rem;
 
 .navbar {
-  $vert-padding: 0.5rem;
-
   position: fixed;
   top: 0;
   right: 0;
   left: 0;
   z-index: $navbar-z-index;
   display: flex;
-  flex-direction: row;
   align-items: center;
   justify-content: space-between;
   height: $navbar-height;
@@ -22,17 +21,13 @@
 }
 
 .brand {
-  $image-height: 130;
-  $image-width: 789;
-  $unit: 0.01rem;
-
-  width: $image-width * $unit;
-  height: $image-height * $unit;
+  height: 1.5rem;
   margin-right: 1rem;
-  background-image: url('img/nusmods-logo.png');
-  background-position: center center;
-  background-size: contain;
-  background-repeat: no-repeat;
+
+  svg {
+    display: block;
+    height: 100%;
+  }
 }
 
 .weekText {
@@ -45,5 +40,15 @@
 @include media-breakpoint-down(xs) {
   .weekText {
     display: none;
+  }
+
+  .brand {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+
+    svg {
+      margin: 0 auto;
+    }
   }
 }
