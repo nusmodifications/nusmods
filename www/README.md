@@ -2,9 +2,11 @@
 
 NUSMods R is built using [React][react], [Redux][redux] and [Bootstrap][bootstrap], and is designed to be **fast, modern and responsive**.
 
-- Production deployment: https://nusmods.com/
+- Production: https://nusmods.com/
 - Latest build: https://latest.nusmods.com/
 - Issues: https://github.com/nusmodifications/nusmods/issues?q=is%3Aissue+is%3Aopen
+- Analytics: https://analytics.nusmods.com/
+- Deployment dashboard: https://launch.nusmods.com/
 
 To install NUSMods V2 (the previous version of NUSMods), refer [here](../provisioning/README.md).
 
@@ -17,8 +19,10 @@ Desktop browsers:
 
 Mobile browsers:
 
-- iOS 9 and above
+- iOS 10 and above
 - Chrome Mobile last two versions
+
+We try not to break iOS 9 (ie. display white screen of death or use unsupported APIs), but we don't guarantee the page will be appear exactly the same as in more modern browsers.
 
 ## Contributing
 
@@ -234,7 +238,7 @@ If you need to access the status of a request from outside the component which i
 
 ### Adding dependencies
 
-NUSMods tries to be as lean as possible. Adding external dependencies should be done with care to avoid bloating our bundle. Use [Bundlephobia][bundlephobia] to ensure the new dependency is reasonably sized.
+NUSMods tries to be as lean as possible. Adding external dependencies should be done with care to avoid bloating our bundle. Use [Bundlephobia][bundlephobia] to ensure the new dependency is reasonably sized, or if the dependency is limited to one specific page/component, use code splitting to ensure the main bundle's size is not affected.
 
 #### Flow libdef
 
@@ -334,24 +338,27 @@ $ yarn promote-staging  # Promote ./dist to production
 │   │   ├── types            - Flow type definitions
 │   │   ├── utils            - Utility functions and classes
 │   │   └── views
-│   │       ├── browse       - Module info and module finder related components
 │   │       ├── components   - Reusable components
+│   │       ├── contribute   - Contribute page components
 │   │       ├── errors       - Error pages
 │   │       ├── hocs         - Higher order components
 │   │       ├── layout       - Global layout components
 │   │       ├── modules      - Module finder and module info components
+│   │       ├── planner      - Module planner related components
 │   │       ├── routes       - Routing related components
 │   │       ├── settings     - Settings page component
 │   │       ├── static       - Static pages like /team and /developers
 │   │       ├── timetable    - Timetable builder related components
+│   │       ├── today        - Today schedule page related components
 │   │       └── venues       - Venues page related components
 │   └── styles
 │       ├── bootstrap        - Bootstrapping, uh, Bootstrap
-│       ├── material         - Material components
 │       ├── components       - Legacy component styles
 │       │                      (new components should colocate their styles)
 │       ├── layout           - Site-wide layout styles
+│       ├── material         - Material components
 │       ├── pages            - Page specific styles
+│       ├── tippy            - Styles for tippy.js tooltips
 │       └── utils            - Utility classes, mixins, functions
 ├── static                   - Static assets, eg. favicons
 │                              These will be copied directly into /dist
