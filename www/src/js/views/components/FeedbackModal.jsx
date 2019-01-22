@@ -20,19 +20,27 @@ type Props = {
 
 export function FeedbackButtons() {
   return (
-    <div className={styles.links}>
-      <ExternalLink className={styles.messenger} href={config.contact.messenger}>
-        <Facebook />
-        Messenger
-      </ExternalLink>
-      <ExternalLink className={styles.github} href={config.contact.githubRepo}>
-        <GitHub />
-        GitHub
-      </ExternalLink>
-      <ExternalLink className={styles.form} href="mailto:mods@nusmods.com">
-        <Mail />
-        Email
-      </ExternalLink>
+    <div>
+      <div className={styles.links}>
+        <ExternalLink className={styles.messenger} href={config.contact.messenger}>
+          <Facebook />
+          Messenger
+        </ExternalLink>
+        <ExternalLink className={styles.github} href={config.contact.githubRepo}>
+          <GitHub />
+          GitHub
+        </ExternalLink>
+        <ExternalLink className={styles.form} href={`mailto:${config.contact.email}`}>
+          <Mail />
+          Email
+        </ExternalLink>
+      </div>
+      <p className="text-muted">
+        To contact us privately, such as for security issues, please email{' '}
+        <ExternalLink href={`mailto:${config.contact.privateEmail}`}>
+          {config.contact.privateEmail}
+        </ExternalLink>
+      </p>
     </div>
   );
 }

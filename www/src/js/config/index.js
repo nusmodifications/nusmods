@@ -51,6 +51,7 @@ export type Config = {
   contact: {
     blog: string,
     email: string,
+    privateEmail: string,
     facebook: string,
     githubOrg: string,
     githubRepo: string,
