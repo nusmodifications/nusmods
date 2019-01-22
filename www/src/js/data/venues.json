@@ -3346,5 +3346,37 @@
       "x": 103.7727329,
       "y": 1.3057714
     }
+  },
+  "YI-PAR-TYO": {
+    "roomName": "Paris Tokyo Room",
+    "floor": 3,
+    "location": {
+      "x": 103.77488308492505,
+      "y": 1.2985444911529218
+    }
+  },
+  "EA-04-07": {
+    "roomName": "Control & Mechanics Teaching Lab",
+    "floor": 4,
+    "location": {
+      "x": 103.77043694257739,
+      "y": 1.300150916814686
+    }
+  },
+  "EA-04-06": {
+    "roomName": "Control & Mechanics Teaching Lab",
+    "floor": 4,
+    "location": {
+      "x": 103.77039939165117,
+      "y": 1.300059745184751
+    }
+  },
+  "EA-04-04": {
+    "roomName": "Control & Mechanics Teaching Lab 1",
+    "floor": 4,
+    "location": {
+      "x": 103.77038061618806,
+      "y": 1.2999068986213047
+    }
   }
 }

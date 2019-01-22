@@ -22,7 +22,6 @@ import {
 } from 'utils/timetables';
 import { captureException } from 'utils/error';
 import Title from 'views/components/Title';
-import CorsNotification from 'views/components/cors-info/CorsNotification';
 import Announcements from 'views/components/notfications/Announcements';
 import { getSemesterTimetable } from 'reducers/timetables';
 import ExternalLink from 'views/components/ExternalLink';
@@ -291,8 +290,6 @@ export class TodayContainerComponent extends PureComponent<Props, State> {
     return (
       <div className={styles.todayPage}>
         <Title>Today</Title>
-
-        <CorsNotification />
 
         <Announcements />
 

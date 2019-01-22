@@ -22,8 +22,6 @@ import LessonTimetable from 'views/components/module-info/LessonTimetable';
 import ModuleExamClash from 'views/components/module-info/ModuleExamClash';
 import ModuleWorkload from 'views/components/module-info/ModuleWorkload';
 import AddModuleDropdown from 'views/components/module-info/AddModuleDropdown';
-import CorsStats from 'views/components/cors-stats/CorsStats';
-import CorsNotification from 'views/components/cors-info/CorsNotification';
 import Announcements from 'views/components/notfications/Announcements';
 import Title from 'views/components/Title';
 import ScrollToTop from 'views/components/ScrollToTop';
@@ -46,7 +44,6 @@ export const SIDE_MENU_LABELS = {
   details: 'Details',
   prerequisites: 'Prerequisites',
   timetable: 'Timetable',
-  cors: 'Bidding Stats',
   reviews: 'Reviews',
 };
 
@@ -78,8 +75,6 @@ export default class ModulePageContent extends Component<Props, State> {
         <Title description={module.ModuleDescription}>{pageTitle}</Title>
 
         <Announcements />
-
-        <CorsNotification />
 
         <ScrollToTop onComponentDidMount scrollToHash />
 
@@ -225,20 +220,6 @@ export default class ModulePageContent extends Component<Props, State> {
             <section className={styles.section} id="timetable">
               <h2 className={styles.sectionHeading}>Timetable</h2>
               <LessonTimetable semestersOffered={semesters} semesterData={module.History} />
-            </section>
-
-            <section className={styles.section} id={SIDE_MENU_ITEMS.cors}>
-              <h2 className={styles.sectionHeading}>CORS Bidding Stats</h2>
-              {module.CorsBiddingStats ? (
-                <div>
-                  <CorsStats stats={module.CorsBiddingStats} />
-                </div>
-              ) : (
-                <div>
-                  No CORS bidding data available. This may be because the module is new, or the
-                  module is not available from CORS.
-                </div>
-              )}
             </section>
 
             <section className={styles.section} id={SIDE_MENU_ITEMS.reviews}>
