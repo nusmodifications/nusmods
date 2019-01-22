@@ -902,10 +902,17 @@
     core-js "^2.5.7"
     regenerator-runtime "^0.12.0"
 
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2":
+"@babel/runtime@^7.1.2":
   version "7.2.0"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.2.0.tgz#b03e42eeddf5898e00646e4c840fa07ba8dcad7f"
   integrity sha512-oouEibCbHMVdZSDlJBO6bZmID/zA/G/Qx3H1d3rSNPTD+L8UNKvCat7aKWSJ74zYbm5zWGh0GQN0hKj8zYFTCg==
+  dependencies:
+    regenerator-runtime "^0.12.0"
+
+"@babel/runtime@^7.2.0":
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.3.0.tgz#d0f6cd4f1b34515782e7e328e5cf54f8db391769"
+  integrity sha512-7K/aLEgWRClfSCCIXVYw07d6jnBMDwr+NGIfNJtCIlw5FcnP1C2GMDPovn8LNZtZuMf2gWzsCz8+CINad05Dow==
   dependencies:
     regenerator-runtime "^0.12.0"
 
@@ -6260,7 +6267,7 @@ hoist-non-react-statics@^2.3.0, hoist-non-react-statics@^2.5.0:
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.5.0.tgz#d2ca2dfc19c5a91c5a6615ce8e564ef0347e2a40"
   integrity sha512-6Bl6XsDT1ntE0lHbIhr4Kp2PGcleGZ66qu5Jqk8lc0Xc/IeG6gVLmwUGs/K0Us+L8VWoKgj0uWdPMataOsm31w==
 
-hoist-non-react-statics@^3.1.0:
+hoist-non-react-statics@^3.1.0, hoist-non-react-statics@^3.2.1:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-3.2.1.tgz#c09c0555c84b38a7ede6912b61efddafd6e75e1e"
   integrity sha512-TFsu3TV3YLY+zFTZDrN8L2DTFanObwmBLpWvJs1qfUuEQ5bTAdFcwfx2T/bsCXfM9QHSLvjfP+nihEl0yvozxw==
@@ -8086,11 +8093,6 @@ locate-path@^3.0.0:
   dependencies:
     p-locate "^3.0.0"
     path-exists "^3.0.0"
-
-lodash-es@^4.0.0:
-  version "4.17.10"
-  resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.10.tgz#62cd7104cdf5dd87f235a837f0ede0e8e5117e05"
-  integrity sha512-iesFYPmxYYGTcmQK0sL8bX3TGHyM6b2qREaB4kamHfQyfPJP0xgoGxp19nsH16nsfquLdiyKyX3mQkfiSGV8Rg==
 
 lodash-es@^4.17.5:
   version "4.17.5"
@@ -11098,15 +11100,14 @@ react-leaflet-control@2.0.0:
   resolved "https://registry.yarnpkg.com/react-leaflet-control/-/react-leaflet-control-2.0.0.tgz#3d9ac4c67e86032520bf581b7a1a0dc7b450f682"
   integrity sha512-pUJsOJPfAvsI0PV9cjSV7Sj4DNKgaCmpBem9oC2qqyhH54d5HaQR90O45y1gGCX9ps8P1r4yR66TdDhWOlNDnw==
 
-react-leaflet@2.1.2:
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/react-leaflet/-/react-leaflet-2.1.2.tgz#2f55055335ea97fe7bca56fe958440d9f0c871d6"
-  integrity sha512-eBzp3fANQqxY4jFNkbZdRd3ilLQblU8qu0DPqtwKergbmwsDqFRyIq+H+7Umsl1JGSfx2T6KdY5mAq2OyqXdqA==
+react-leaflet@2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/react-leaflet/-/react-leaflet-2.2.0.tgz#9372dc74790515cef723a173833009b7709cbec6"
+  integrity sha512-TCjqIp9ET2LMOK+rBjJTQQesk/9UrP6+zsXoSJU8ZzuyJWVQERLGadDng4yZ63XgIcB7aEAXnl93IsmF46uDyQ==
   dependencies:
-    "@babel/runtime" "^7.0.0"
-    hoist-non-react-statics "^3.1.0"
-    lodash "^4.0.0"
-    lodash-es "^4.0.0"
+    "@babel/runtime" "^7.2.0"
+    fast-deep-equal "^2.0.1"
+    hoist-non-react-statics "^3.2.1"
     warning "^4.0.0"
 
 react-lifecycles-compat@^3.0.0, react-lifecycles-compat@^3.0.4:
