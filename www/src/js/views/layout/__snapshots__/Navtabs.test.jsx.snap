@@ -10,7 +10,10 @@ exports[`NavtabsComponent renders into nav element 1`] = `
     className="link"
     to="/timetable/sem-1"
   >
-    <React.Memo />
+    <Calendar
+      color="currentColor"
+      size="24"
+    />
     <span
       className="title"
     >
@@ -23,7 +26,10 @@ exports[`NavtabsComponent renders into nav element 1`] = `
     className="link"
     to="/modules"
   >
-    <React.Memo />
+    <BookOpen
+      color="currentColor"
+      size="24"
+    />
     <span
       className="title"
     >
@@ -38,7 +44,10 @@ exports[`NavtabsComponent renders into nav element 1`] = `
     onMouseOver={[Function]}
     to="/venues"
   >
-    <React.Memo />
+    <Map
+      color="currentColor"
+      size="24"
+    />
     <span
       className="title"
     >
@@ -51,7 +60,10 @@ exports[`NavtabsComponent renders into nav element 1`] = `
     className="link"
     to="/settings"
   >
-    <React.Memo />
+    <Settings
+      color="currentColor"
+      size="24"
+    />
     <span
       className="title"
     >
@@ -66,7 +78,10 @@ exports[`NavtabsComponent renders into nav element 1`] = `
     onMouseOver={[Function]}
     to="/contribute"
   >
-    <React.Memo />
+    <Star
+      color="currentColor"
+      size="24"
+    />
     <span
       className="title"
     >
@@ -80,7 +95,10 @@ exports[`NavtabsComponent renders into nav element 1`] = `
     className="link hiddenOnMobile"
     href="https://nuswhispers.com"
   >
-    <React.Memo />
+    <Heart
+      color="currentColor"
+      size="24"
+    />
     <span
       className="title"
     >

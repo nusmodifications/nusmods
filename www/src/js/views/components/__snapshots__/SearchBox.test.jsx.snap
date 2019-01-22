@@ -14,8 +14,10 @@ exports[`SearchBox should match snapshot 1`] = `
     className="searchWrapper"
     onSubmit={[Function]}
   >
-    <React.Memo
+    <Search
       className="searchIcon"
+      color="currentColor"
+      size="24"
     />
     <input
       autoComplete="off"
@@ -47,8 +49,10 @@ exports[`SearchBox should match snapshot 2`] = `
     className="searchWrapper"
     onSubmit={[Function]}
   >
-    <React.Memo
+    <Search
       className="searchIcon"
+      color="currentColor"
+      size="24"
     />
     <input
       autoComplete="off"
