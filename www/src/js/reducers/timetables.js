@@ -1,11 +1,14 @@
 // @flow
+
+import { get, omit, values } from 'lodash';
+import update from 'immutability-helper';
+import { createMigrate } from 'redux-persist';
+
+import type { PersistConfig } from 'storage/persistReducer';
 import type { FSA } from 'types/redux';
 import type { Semester } from 'types/modules';
 import type { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
 import type { ColorMapping, TimetablesState } from 'types/reducers';
-
-import { get, omit, values } from 'lodash';
-import update from 'immutability-helper';
 
 import config from 'config';
 import {
@@ -20,7 +23,6 @@ import {
 } from 'actions/timetables';
 import { SET_EXPORTED_DATA } from 'actions/export';
 import { getNewColor } from 'utils/colors';
-import { createMigrate, type PersistConfig } from 'redux-persist';
 
 const EMPTY_OBJECT = {};
 
