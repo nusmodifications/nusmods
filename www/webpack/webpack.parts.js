@@ -208,36 +208,38 @@ exports.loadImages = ({ include, exclude, options } = {}) => ({
   module: {
     rules: [
       {
-        test: /\.(ico|jpg|jpeg|png|gif)(\?.*)?$/,
         include,
         exclude,
-
-        use: {
-          loader: 'url-loader',
-          options,
-        },
-      },
-    ],
-  },
-});
-
-/**
- * Allow SVG images to be imported as React components
- *
- * @see https://www.smooth-code.com/open-source/svgr/docs/webpack/
- */
-exports.loadSVG = ({ include, exclude, options } = {}) => ({
-  module: {
-    rules: [
-      {
-        test: /.svg$/,
-        include,
-        exclude,
-
-        use: [
+        oneOf: [
           {
-            loader: '@svgr/webpack',
-            options,
+            test: /\.(ico|jpg|jpeg|png|gif)(\?.*)?$/,
+            use: {
+              loader: 'url-loader',
+              options,
+            },
+          },
+          /**
+           * Load SVG as URL if ?url query is specified, eg.
+           * import marker from 'img/marker.svg?url'
+           */
+          {
+            test: /\.(svg)(\?.*)?$/,
+            resourceQuery: /url/,
+            use: {
+              loader: 'url-loader',
+              options,
+            },
+          },
+          /**
+           * Load SVG as React component
+           * @see https://github.com/smooth-code/svgr
+           */
+          {
+            test: /\.(svg)(\?.*)?$/,
+            use: {
+              loader: '@svgr/webpack',
+              options,
+            },
           },
         ],
       },
