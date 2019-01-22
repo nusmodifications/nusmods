@@ -13,6 +13,9 @@ export const EXEMPTION_SEMESTER: Semester = -1;
 export const PLAN_TO_TAKE_YEAR = '3000';
 export const PLAN_TO_TAKE_SEMESTER = -2;
 
+// We assume iBLOCs takes place in special term 1
+export const IBLOCS_SEMESTER = 3;
+
 export function getSemesterName(semester: Semester) {
   if (semester === EXEMPTION_SEMESTER) {
     return 'Exemptions';

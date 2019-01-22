@@ -9,19 +9,20 @@ import type { Module, ModuleCode, Semester } from 'types/modules';
 import type { ModuleWithInfo, PlannerModulesWithInfo } from 'types/views';
 import type { State as StoreState } from 'reducers';
 
-import { MODULE_CODE_REGEX, renderMCs } from 'utils/modules';
+import { MODULE_CODE_REGEX, renderMCs, subtractAcadYear } from 'utils/modules';
 import {
   EXEMPTION_SEMESTER,
   EXEMPTION_YEAR,
   fromDroppableId,
+  IBLOCS_SEMESTER,
   PLAN_TO_TAKE_SEMESTER,
   PLAN_TO_TAKE_YEAR,
 } from 'utils/planner';
 import { addPlannerModule, movePlannerModule, removePlannerModule } from 'actions/planner';
 import { toggleFeedback } from 'actions/app';
 import { fetchModule } from 'actions/moduleBank';
-import { getAcadYearModules, getExemptions, getPlanToTake } from 'selectors/planner';
-import { Trash, Settings } from 'views/components/icons';
+import { getAcadYearModules, getExemptions, getIBLOCs, getPlanToTake } from 'selectors/planner';
+import { Settings, Trash } from 'views/components/icons';
 import Title from 'views/components/Title';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import Modal from 'views/components/Modal';
@@ -34,6 +35,7 @@ export type Props = {|
   +modules: PlannerModulesWithInfo,
   +exemptions: ModuleWithInfo[],
   +planToTake: ModuleWithInfo[],
+  +iblocsModules: ModuleWithInfo[],
   +iblocs: boolean,
 
   // Actions
@@ -60,7 +62,12 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
 
   componentDidMount() {
     // TODO: Handle error
-    const modules = flatten(flatMap(this.props.modules, values));
+    const modules = [
+      ...flatten(flatMap(this.props.modules, values)),
+      ...this.props.exemptions,
+      ...this.props.planToTake,
+      ...this.props.iblocsModules,
+    ];
 
     Promise.all(
       modules.map((module) =>
@@ -98,14 +105,8 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
     }
   };
 
-  getYearLabel(index: number) {
-    if (!this.props.iblocs) return `Year ${index + 1}`;
-    if (index === 0) return 'iBLOCs';
-    return `Year ${index}`;
-  }
-
   renderHeader() {
-    const modules = flatten(flatMap(this.props.modules, values));
+    const modules = [...this.props.iblocsModules, ...flatten(flatMap(this.props.modules, values))];
     const credits = sumBy(modules, (module) => +module.moduleInfo?.ModuleCredit || 0);
     const count = modules.length;
 
@@ -145,9 +146,11 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
       return <LoadingSpinner />;
     }
 
+    const { modules, exemptions, planToTake, iblocs, iblocsModules } = this.props;
+
     // Sort acad years since acad years may not be inserted in display order
     const sortedModules: Array<[string, { [Semester]: ModuleWithInfo[] }]> = sortBy(
-      toPairs(this.props.modules),
+      toPairs(modules),
       (pairs) => pairs[0],
     );
 
@@ -159,10 +162,24 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
 
         <DragDropContext onDragEnd={this.onDropEnd}>
           <div className={styles.yearWrapper}>
+            {iblocs && (
+              <section>
+                <h2 className={styles.modListHeaders}>iBLOCs</h2>
+                <PlannerSemester
+                  year={subtractAcadYear(sortedModules[0][0])}
+                  semester={IBLOCS_SEMESTER}
+                  modules={iblocsModules}
+                  addModule={this.onAddModule}
+                  removeModule={this.props.removeModule}
+                  showConflicts={false}
+                />
+              </section>
+            )}
+
             {sortedModules.map(([year, semesters], index) => (
               <PlannerYear
                 key={year}
-                name={this.getYearLabel(index)}
+                name={`Year ${index + 1}`}
                 year={year}
                 semesters={semesters}
                 addModule={this.onAddModule}
@@ -177,7 +194,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
               <PlannerSemester
                 year={EXEMPTION_YEAR}
                 semester={EXEMPTION_SEMESTER}
-                modules={this.props.exemptions}
+                modules={exemptions}
                 addModule={this.onAddModule}
                 removeModule={this.props.removeModule}
                 showConflicts={false}
@@ -190,7 +207,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
               <PlannerSemester
                 year={PLAN_TO_TAKE_YEAR}
                 semester={PLAN_TO_TAKE_SEMESTER}
-                modules={this.props.planToTake}
+                modules={planToTake}
                 addModule={this.onAddModule}
                 removeModule={this.props.removeModule}
                 showConflicts={false}
@@ -235,6 +252,7 @@ const mapStateToProps = (state: StoreState) => ({
   modules: getAcadYearModules(state),
   exemptions: getExemptions(state),
   planToTake: getPlanToTake(state),
+  iblocsModules: getIBLOCs(state),
 });
 
 const PlannerContainer = connect(

@@ -1,6 +1,6 @@
 // @flow
 
-import { getAcadYearModules } from 'selectors/planner';
+import { getAcadYearModules, getPrereqModuleCode } from 'selectors/planner';
 import type { PlannerState } from 'types/reducers';
 import type { State } from 'reducers';
 
@@ -8,6 +8,13 @@ import type { State } from 'reducers';
 import CS3216 from '__mocks__/modules/CS3216.json';
 
 /* eslint-disable no-useless-computed-key */
+
+describe(getPrereqModuleCode, () => {
+  test('should return both original and variant module codes', () => {
+    expect(getPrereqModuleCode('CS1010')).toEqual(['CS1010']);
+    expect(getPrereqModuleCode('CS1010X')).toEqual(['CS1010X', 'CS1010']);
+  });
+});
 
 describe(getAcadYearModules, () => {
   const getState = (planner: PlannerState): State =>
@@ -109,58 +116,6 @@ describe(getAcadYearModules, () => {
     ).toEqual({
       '2018/2019': {
         [1]: [{ moduleCode: 'MA1521' }, { moduleCode: 'CS1010S' }, { moduleCode: 'MA1101R' }],
-        [2]: [],
-        [3]: [],
-        [4]: [],
-      },
-    });
-  });
-
-  test('should map iBLOCs modules', () => {
-    expect(
-      getAcadYearModules(
-        getState({
-          minYear: '2018/2019',
-          maxYear: '2018/2019',
-          iblocs: true,
-          modules: {
-            CS1010X: ['2017/2018', 3, 0],
-            MA1521: ['2018/2019', 1, 0],
-          },
-        }),
-      ),
-    ).toEqual({
-      '2017/2018': {
-        // iBlOCs only happen in special term, so we don't show sem 1 and 2
-        [3]: [{ moduleCode: 'CS1010X' }],
-      },
-      '2018/2019': {
-        [1]: [{ moduleCode: 'MA1521' }],
-        [2]: [],
-        [3]: [],
-        [4]: [],
-      },
-    });
-  });
-
-  test('should include empty iBLOCs semester', () => {
-    expect(
-      getAcadYearModules(
-        getState({
-          minYear: '2018/2019',
-          maxYear: '2018/2019',
-          iblocs: true,
-          modules: {
-            MA1521: ['2018/2019', 1, 0],
-          },
-        }),
-      ),
-    ).toEqual({
-      '2017/2018': {
-        [3]: [],
-      },
-      '2018/2019': {
-        [1]: [{ moduleCode: 'MA1521' }],
         [2]: [],
         [3]: [],
         [4]: [],
