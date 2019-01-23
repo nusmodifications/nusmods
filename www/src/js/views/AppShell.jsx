@@ -122,18 +122,22 @@ export class AppShellComponent extends Component<Props, State> {
             })}
           />
         </Helmet>
+
         <nav className={styles.navbar}>
           <NavLink className={styles.brand} to="/" title="Home">
             <Logo />
             <span className="sr-only">NUSMods</span>
           </NavLink>
 
-          <ErrorBoundary>
-            <GlobalSearchContainer />
-          </ErrorBoundary>
+          <div className={styles.navRight}>
+            <ErrorBoundary>
+              <GlobalSearchContainer />
+            </ErrorBoundary>
 
-          <div className={styles.weekText}>{weekText}</div>
+            <div className={styles.weekText}>{weekText}</div>
+          </div>
         </nav>
+
         <div className="main-container">
           <Navtabs />
 
