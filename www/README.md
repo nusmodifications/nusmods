@@ -98,6 +98,37 @@ Both SCSS and CSS variables (aka. custom properties) are used. In most cases, **
 
 Currently CSS variables are used only for colors that change under night mode.
 
+### Importing images
+
+Prefer SVG when possible. SVG images are usually smaller and more flexible. `.svg` files are loaded using [SVGR][svgr] as React components - this means you can add classnames, inline styles and other SVG attributes to the component loaded. SVGR also automatically optimizes the image.
+
+```js
+import CloudyIcon from 'img/weather/cloudy.svg';
+
+const cloud = <CloudyIcon className={styles.myIcon} />;
+```
+
+PNG, JPEG and GIF files will be loaded using `url-loader` and can be imported as a string representing the URL of the asset after bundling. In production files smaller than 15kb will be converted into data URL
+
+```js
+import partyParrot from 'img/gif/partyparrot.gif';
+
+const danceParty = <img src={partyParrot} alt=":partyparrot:" />;
+```
+
+To load SVG as files using `url-loader` instead, add the `?url` resource query to the end of the path.
+
+```js
+import { Icon } from 'leaflet';
+// eslint-disable-next-line import/extensions
+import marker from 'img/marker.svg?url';
+
+// Leaflet expects iconUrl to be a URL string, not a React component
+new Icon({
+  iconUrl: marker,
+});
+```
+
 ### Fetching data
 
 We use Redux actions to make REST requests. This allows us to store request status in the Redux store, making it available to any component that needs it, and also allows the Redux store to cache the results from requests to make it offline if necessary. Broadly, our strategy corresponds to
@@ -382,6 +413,7 @@ Components should keep their styles and tests in the same directory with the sam
 [enzyme]: http://airbnb.io/enzyme/
 [flow]: https://flow.org/
 [eslint]: https://eslint.org/
+[svgr]: https://github.com/smooth-code/svgr
 [eslint-airbnb]: https://www.npmjs.com/package/eslint-config-airbnb
 [prettier]: https://prettier.io/docs/en/
 [stylelint]: https://stylelint.io/
