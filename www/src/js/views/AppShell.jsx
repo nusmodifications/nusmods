@@ -125,8 +125,7 @@ export class AppShellComponent extends Component<Props, State> {
 
         <nav className={styles.navbar}>
           <NavLink className={styles.brand} to="/" title="Home">
-            <Logo />
-            <span className="sr-only">NUSMods</span>
+            <Logo title="NUSMods" />
           </NavLink>
 
           <div className={styles.navRight}>

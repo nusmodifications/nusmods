@@ -238,7 +238,9 @@ exports.loadImages = ({ include, exclude, options } = {}) => ({
             test: /\.(svg)(\?.*)?$/,
             use: {
               loader: '@svgr/webpack',
-              options,
+              options: {
+                titleProp: true,
+              },
             },
           },
         ],
