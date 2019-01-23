@@ -1,0 +1,63 @@
+@import '~styles/utils/modules-entry';
+
+.container {
+  display: flex;
+  transform-origin: top left;
+
+  :global {
+    animation-name: $page-entering-animation;
+  }
+
+  // HACK: Make the border lessons actually look like a border
+  :global(.color-10) {
+    color: transparent;
+    border: 0;
+    border-radius: 0;
+    background: var(--gray-light);
+  }
+
+  :global(.color-11) {
+    color: transparent;
+    border: 3px dotted var(--gray) !important;
+  }
+
+  // HACK: Hide module text content
+  @for $theme from 0 to 8 {
+    :global(.color-#{$theme}) {
+      color: transparent !important;
+    }
+  }
+}
+
+.game {
+  position: relative;
+  user-select: none;
+}
+
+.sidebar {
+  width: 12rem;
+  margin-left: 2rem;
+
+  section {
+    margin-bottom: 2rem;
+    line-height: 1;
+  }
+
+  h3 {
+    opacity: 0.7;
+    margin-bottom: 0.4rem;
+  }
+
+  .holdText {
+    font-size: 1.2rem;
+    line-height: 1.6;
+  }
+
+  .holdUnavailable {
+    opacity: 0.5;
+  }
+}
+
+.score {
+  font-size: 3rem;
+}
