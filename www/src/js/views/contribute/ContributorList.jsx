@@ -2,16 +2,16 @@
 
 import React from 'react';
 import classnames from 'classnames';
+import Loadable, { type LoadingProps } from 'react-loadable';
 
 import type { Contributor } from 'types/contributor';
+import { getContributors } from 'apis/github';
 import ExternalLink from 'views/components/ExternalLink';
+import ApiError from 'views/errors/ApiError';
+import LoadingSpinner from 'views/components/LoadingSpinner';
 import styles from './ContributorList.scss';
 
-type Props = {
-  contributors: Contributor[],
-};
-
-export default function ContributorList(props: Props) {
+export function ContributorListComponent(props: { contributors: Contributor[] }) {
   return (
     <div className="row">
       {props.contributors.map((contributor) => (
@@ -39,3 +39,34 @@ export default function ContributorList(props: Props) {
     </div>
   );
 }
+
+// Wrapper around ContributorList that loads contributor data
+type Props = {
+  size?: number,
+};
+
+const ContributorList = Loadable.Map<Props, *>({
+  loader: {
+    contributors: () => getContributors(),
+  },
+  loading: (props: LoadingProps) => {
+    if (props.error) {
+      return <ApiError dataName="venue locations" retry={props.retry} />;
+    } else if (props.pastDelay) {
+      return <LoadingSpinner />;
+    }
+
+    return null;
+  },
+
+  // This is not a proper render function, so prop validation doesn't work
+  /* eslint-disable react/prop-types */
+  render(loaded, props: Props) {
+    let { contributors } = loaded;
+    if (props.size) contributors = contributors.slice(0, props.size);
+
+    return <ContributorListComponent contributors={contributors} />;
+  },
+});
+
+export default ContributorList;
