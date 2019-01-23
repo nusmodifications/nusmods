@@ -110,7 +110,7 @@
   "dependencies": {
     "@material/fab": "0.40.1",
     "@material/snackbar": "0.40.1",
-    "@sentry/browser": "4.4.2",
+    "@sentry/browser": "4.5.3",
     "@tippy.js/react": "1.1.1",
     "axios": "0.18.0",
     "bootstrap": "4.2.1",
