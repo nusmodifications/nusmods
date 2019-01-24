@@ -3,7 +3,7 @@ module.exports = {
     [
       '@babel/preset-env',
       {
-        tagets: { node: 'current' },
+        targets: { node: 'current' },
         useBuiltIns: 'entry',
       },
     ],
