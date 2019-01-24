@@ -6,9 +6,9 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "build": "yarn babel src -d build --ignore \"src/**/*.test.js\" -s",
-    "watch": "yarn babel -w src -d build --ignore \"src/**/*.test.js\" -s",
-    "lint": "yarn flow && yarn lint:code",
+    "build": "babel src -d build --ignore \"src/**/*.test.js\" -s",
+    "watch": "babel -w src -d build --ignore \"src/**/*.test.js\" -s",
+    "lint": "flow && yarn lint:code",
     "lint:code": "eslint src index.js",
     "test": "jest"
   },
