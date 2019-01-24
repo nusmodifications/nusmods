@@ -8,6 +8,7 @@ module.exports = {
     'prettier/babel',
     'prettier/flowtype'
   ],
+
   env: {
     node: true,
   },

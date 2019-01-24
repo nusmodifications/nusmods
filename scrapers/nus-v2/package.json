@@ -6,10 +6,11 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "build": "yarn babel src --out-dir build --ignore \"src/**/*.test.js\"",
-    "watch": "yarn babel --watch src --out-dir build --ignore \"src/**/*.test.js\"",
+    "build": "yarn babel src -d build --ignore \"src/**/*.test.js\" -s",
+    "watch": "yarn babel -w src -d build --ignore \"src/**/*.test.js\" -s",
     "lint": "yarn flow && yarn lint:code",
-    "lint:code": "eslint src index.js"
+    "lint:code": "eslint src index.js",
+    "test": "jest"
   },
   "devDependencies": {
     "@babel/cli": "7.2.3",
@@ -18,7 +19,9 @@
     "@babel/plugin-proposal-optional-chaining": "7.2.0",
     "@babel/preset-env": "7.3.1",
     "@babel/preset-flow": "7.0.0",
+    "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "10.0.1",
+    "babel-jest": "23.6.0",
     "eslint": "5.12.1",
     "eslint-config-airbnb-base": "13.1.0",
     "eslint-config-prettier": "3.6.0",
