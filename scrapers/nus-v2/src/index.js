@@ -16,9 +16,7 @@ const commands: CommandModule[] = [
   {
     command: 'test',
     describe: 'run some simple tests against the API to ensure things are set up correctly',
-    handler: () => {
-      runTask(TestApi);
-    },
+    handler: () => runTask(TestApi),
   },
 ];
 

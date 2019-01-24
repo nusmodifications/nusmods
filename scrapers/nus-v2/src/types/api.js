@@ -1,5 +1,11 @@
 // @flow
 
+/**
+ * Shape of the raw data from the API. These are subsequently mapped
+ * to the intermediate types in mapper.js and transformed to the final
+ * types used in modules.js
+ */
+
 export type AcademicGroup = {|
   +EffectiveStatus: string,
   +AcademicGroup: string,

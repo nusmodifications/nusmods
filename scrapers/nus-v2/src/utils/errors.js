@@ -1,9 +1,9 @@
 // @flow
 
-import type { AxiosResponse } from 'axios';
+import type { $AxiosXHR } from 'axios';
 
 export class ApiError extends Error {
-  response: ?AxiosResponse;
+  response: ?$AxiosXHR<any>;
 }
 
 export class UnknownApiError extends ApiError {}
