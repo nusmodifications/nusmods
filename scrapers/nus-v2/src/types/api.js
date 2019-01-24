@@ -45,3 +45,29 @@ export type ModuleInfo = {|
   PreRequisite: string,
   Subject: string,
 |};
+
+export type TimetableLesson = {|
+  term: string,
+  room: string,
+  numweeks: number,
+  start_time: string,
+  activity: string,
+  csize: number,
+  module: string,
+  eventdate: string,
+  session: string,
+  end_time: string,
+  modgrp: string,
+  deptfac: string,
+  day: string,
+|};
+
+export type ModuleExam = {|
+  term: string,
+  start_time: string,
+  acad_org: string,
+  module: string,
+  end_time: string,
+  duration: number,
+  exam_date: string,
+|};

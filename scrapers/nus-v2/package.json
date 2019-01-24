@@ -7,6 +7,7 @@
   "private": true,
   "scripts": {
     "build": "yarn babel src --out-dir build --ignore \"src/**/*.test.js\"",
+    "watch": "yarn babel --watch src --out-dir build --ignore \"src/**/*.test.js\"",
     "lint": "yarn flow && yarn lint:code",
     "lint:code": "eslint src index.js"
   },

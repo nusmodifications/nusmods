@@ -14,95 +14,20 @@
  */
 
 declare module 'yargs' {
-  declare module.exports: any;
-}
+  declare type Argv = {
+    _: string[],
+    $0: string,
 
-/**
- * We include stubs for each file inside this npm package in case you need to
- * require those files directly. Feel free to delete any files that aren't
- * needed.
- */
-declare module 'yargs/lib/apply-extends' {
-  declare module.exports: any;
-}
+    [argName: string]: any,
+  }
 
-declare module 'yargs/lib/argsert' {
-  declare module.exports: any;
-}
+  declare type CommandModule = {|
+    command: string | string[],
+    aliases?: string | string[],
+    describe: string | false,
+    builder?: (any) => void | any,
+    handler?: (Argv) => void,
+  |}
 
-declare module 'yargs/lib/command' {
   declare module.exports: any;
-}
-
-declare module 'yargs/lib/completion' {
-  declare module.exports: any;
-}
-
-declare module 'yargs/lib/levenshtein' {
-  declare module.exports: any;
-}
-
-declare module 'yargs/lib/middleware' {
-  declare module.exports: any;
-}
-
-declare module 'yargs/lib/obj-filter' {
-  declare module.exports: any;
-}
-
-declare module 'yargs/lib/usage' {
-  declare module.exports: any;
-}
-
-declare module 'yargs/lib/validation' {
-  declare module.exports: any;
-}
-
-declare module 'yargs/lib/yerror' {
-  declare module.exports: any;
-}
-
-declare module 'yargs/yargs' {
-  declare module.exports: any;
-}
-
-// Filename aliases
-declare module 'yargs/index' {
-  declare module.exports: $Exports<'yargs'>;
-}
-declare module 'yargs/index.js' {
-  declare module.exports: $Exports<'yargs'>;
-}
-declare module 'yargs/lib/apply-extends.js' {
-  declare module.exports: $Exports<'yargs/lib/apply-extends'>;
-}
-declare module 'yargs/lib/argsert.js' {
-  declare module.exports: $Exports<'yargs/lib/argsert'>;
-}
-declare module 'yargs/lib/command.js' {
-  declare module.exports: $Exports<'yargs/lib/command'>;
-}
-declare module 'yargs/lib/completion.js' {
-  declare module.exports: $Exports<'yargs/lib/completion'>;
-}
-declare module 'yargs/lib/levenshtein.js' {
-  declare module.exports: $Exports<'yargs/lib/levenshtein'>;
-}
-declare module 'yargs/lib/middleware.js' {
-  declare module.exports: $Exports<'yargs/lib/middleware'>;
-}
-declare module 'yargs/lib/obj-filter.js' {
-  declare module.exports: $Exports<'yargs/lib/obj-filter'>;
-}
-declare module 'yargs/lib/usage.js' {
-  declare module.exports: $Exports<'yargs/lib/usage'>;
-}
-declare module 'yargs/lib/validation.js' {
-  declare module.exports: $Exports<'yargs/lib/validation'>;
-}
-declare module 'yargs/lib/yerror.js' {
-  declare module.exports: $Exports<'yargs/lib/yerror'>;
-}
-declare module 'yargs/yargs.js' {
-  declare module.exports: $Exports<'yargs/yargs'>;
 }

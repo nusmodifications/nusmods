@@ -17,6 +17,8 @@ export default class BaseTask {
     getFacultyModules,
   };
 
+  // TODO: Logging, error handling, fs output
+
   async run(): Promise<void> {
     // Placeholder for subclass to override
     return Promise.reject(new Error('Tasks should override run()'));
