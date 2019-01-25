@@ -1077,6 +1077,14 @@ babel-plugin-syntax-object-rest-spread@^6.13.0:
   resolved "https://registry.yarnpkg.com/babel-plugin-syntax-object-rest-spread/-/babel-plugin-syntax-object-rest-spread-6.13.0.tgz#fd6536f2bce13836ffa3a5458c4903a597bb3bf5"
   integrity sha1-/WU28rzhODb/o6VFjEkDpZe7O/U=
 
+babel-plugin-transform-builtin-extend@1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/babel-plugin-transform-builtin-extend/-/babel-plugin-transform-builtin-extend-1.1.2.tgz#5e96fecf58b8fa1ed74efcad88475b2af3c9116e"
+  integrity sha1-Xpb+z1i4+h7XTvytiEdbKvPJEW4=
+  dependencies:
+    babel-runtime "^6.2.0"
+    babel-template "^6.3.0"
+
 babel-preset-jest@^23.2.0:
   version "23.2.0"
   resolved "https://registry.yarnpkg.com/babel-preset-jest/-/babel-preset-jest-23.2.0.tgz#8ec7a03a138f001a1a8fb1e8113652bf1a55da46"
@@ -1098,7 +1106,7 @@ babel-register@^6.26.0:
     mkdirp "^0.5.1"
     source-map-support "^0.4.15"
 
-babel-runtime@^6.22.0, babel-runtime@^6.26.0:
+babel-runtime@^6.2.0, babel-runtime@^6.22.0, babel-runtime@^6.26.0:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
   integrity sha1-llxwWGaOgrVde/4E/yM3vItWR/4=
@@ -1106,7 +1114,7 @@ babel-runtime@^6.22.0, babel-runtime@^6.26.0:
     core-js "^2.4.0"
     regenerator-runtime "^0.11.0"
 
-babel-template@^6.16.0, babel-template@^6.24.1, babel-template@^6.26.0:
+babel-template@^6.16.0, babel-template@^6.24.1, babel-template@^6.26.0, babel-template@^6.3.0:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-template/-/babel-template-6.26.0.tgz#de03e2d16396b069f46dd9fff8521fb1a0e35e02"
   integrity sha1-3gPi0WOWsGn0bdn/+FIfsaDjXgI=
@@ -2552,6 +2560,11 @@ http-signature@~1.2.0:
     assert-plus "^1.0.0"
     jsprim "^1.2.2"
     sshpk "^1.7.0"
+
+http-status@1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/http-status/-/http-status-1.3.1.tgz#340a500e778a3091d18fda026df80f104a02dde7"
+  integrity sha512-PcI9NUm6EUOhHlaxYABCqDQQWS7IgoBZ/PmPkhuzj+oR01ffjv3EJfKnnWJZcUhILtUh6/NdJi1Zs/mIr6v8DA==
 
 https-proxy-agent@2.2.1:
   version "2.2.1"

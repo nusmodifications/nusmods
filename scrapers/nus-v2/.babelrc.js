@@ -12,6 +12,8 @@ module.exports = {
   plugins: [
     '@babel/plugin-proposal-class-properties',
     ['@babel/plugin-proposal-optional-chaining', { loose: true }],
+    // Make sure builtin subclasses are instanceof of their superclass like Error
+    ['babel-plugin-transform-builtin-extend', { globals: ['Error'] }],
   ],
   env: {
     test: {

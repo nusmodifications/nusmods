@@ -21,6 +21,12 @@ const OKAY: STATUS_CODE = '00000';
 const AUTH_ERROR: STATUS_CODE = '10000';
 const RECORD_NOT_FOUND: STATUS_CODE = '10001';
 
+export function getTermCode(academicYear: string, semester: number | string) {
+  const year = /\d\d(\d\d)/.exec(academicYear);
+  if (!year) throw new RangeError('academicYear should be in the format of YYYY/YYYY or YYYY-YY');
+  return `${year[1]}${semester}0`;
+}
+
 /**
  * Base API call function. Do not call this directly, instead use one of the provided
  * methods.
@@ -28,40 +34,53 @@ const RECORD_NOT_FOUND: STATUS_CODE = '10001';
  * This function wraps around axios to provide basic configuration such as authentication
  * which all API calls should have, as well as error handling.
  */
-async function callApi<Data>(endpoint: string, params: ApiParams): Promise<Data> {
+export async function callApi<Data>(endpoint: string, params: ApiParams): Promise<Data> {
   const url = `${config.baseUrl}/${endpoint}`;
-  return axios
-    .post(url, params, {
+  let response;
+
+  try {
+    response = await axios.post(url, params, {
       transformRequest: [(data) => JSON.stringify(data)],
       headers: {
         'X-APP-API': config.appKey,
         'X-STUDENT-API': config.studentKey,
         'Content-Type': 'application/json',
       },
-    })
-    .then((response) => {
-      const { msg, data, code } = response.data;
-
-      if (response.data.code !== OKAY) {
-        let error;
-
-        switch (code) {
-          case AUTH_ERROR:
-            error = new AuthError(msg);
-            break;
-          case RECORD_NOT_FOUND:
-            error = new NotFoundError(msg);
-            break;
-          default:
-            error = new UnknownApiError(msg);
-        }
-
-        error.response = response;
-        throw error;
-      }
-
-      return data;
     });
+  } catch (e) {
+    if (e.status) {
+      const error = new UnknownApiError(`Server returned status ${e.status} - ${e.statusText}`);
+      error.data = e.data;
+      throw error;
+    }
+
+    const error = new UnknownApiError(`Unknown error - ${e.message}`);
+    error.originalError = e;
+    throw error;
+  }
+
+  const { msg, data, code } = response.data;
+
+  if (code !== OKAY) {
+    let error;
+
+    switch (code) {
+      case AUTH_ERROR:
+        error = new AuthError(msg);
+        break;
+      case RECORD_NOT_FOUND:
+        error = new NotFoundError(msg);
+        break;
+      default:
+        error = new UnknownApiError(msg);
+    }
+
+    error.response = response;
+    error.data = data;
+    throw error;
+  }
+
+  return data;
 }
 
 /**
@@ -92,6 +111,8 @@ export async function getDepartment(): Promise<AcademicOrg[]> {
  * @throws {NotFoundError} If module cannot be found.
  */
 export async function getModuleInfo(term: string, moduleCode: ModuleCode): Promise<ModuleInfo> {
+  // Module info API takes in subject and catalog number separately, so we need
+  // to split the module code prefix out from the rest of it
   const parts = /^([a-z]+)(.+)$/i.exec(moduleCode);
 
   if (!parts || parts.length < 2) {
