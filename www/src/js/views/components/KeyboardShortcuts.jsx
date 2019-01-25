@@ -113,6 +113,11 @@ export class KeyboardShortcutsComponent extends PureComponent<Props, State> {
       dispatch(cycleTheme(1));
       this.notifyThemeChange();
     });
+
+    // ???
+    Mousetrap.bind('up up down down left right left right b a', () => {
+      history.push('/tetris');
+    });
   }
 
   shortcuts: KeyBinding[] = [];

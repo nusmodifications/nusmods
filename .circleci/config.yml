@@ -58,6 +58,23 @@ jobs:
             NODE_ENV: production
           command: yarn build:scraper
 
+  nus-scrapers-v2:
+    <<: *defaults
+    working_directory: ~/nusmods/scrapers/nus-v2
+    steps:
+      - attach_workspace:
+          at: ~/nusmods
+      - restore_cache: *restore_node_deps
+      - run: yarn
+      - save_cache: *save_node_deps
+      - run: yarn lint
+      - run: yarn test --runInBand
+      - run:
+          name: Build scraper
+          environment:
+            NODE_ENV: production
+          command: yarn build
+
   nusmoderator:
     <<: *defaults
     working_directory: ~/nusmods/packages/nusmoderator
@@ -129,6 +146,9 @@ workflows:
           requires:
             - checkout
       - nus-scrapers:
+          requires:
+            - checkout
+      - nus-scrapers-v2:
           requires:
             - checkout
       - nusmoderator:
