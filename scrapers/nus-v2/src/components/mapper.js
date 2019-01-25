@@ -1,7 +1,9 @@
 // @flow
-import { fromPairs, pick } from 'lodash';
+import { fromPairs, groupBy, values } from 'lodash';
+import NUSModerator from 'nusmoderator';
+
 import type { AcademicGroup, AcademicOrg, ModuleInfo, TimetableLesson } from '../types/api';
-import type { RawLesson, Module } from '../types/modules';
+import type { Module, RawLesson, WeekText } from '../types/modules';
 import type { DepartmentCodeMap, FacultyCodeMap, ModuleInfoMapped } from '../types/mapper';
 
 /**
@@ -60,6 +62,105 @@ export function mapModuleInfo(moduleInfo: ModuleInfoMapped): Module {
   };
 }
 
+const dayTextMap = {
+  '1': 'Monday',
+  '2': 'Tuesday',
+  '3': 'Wednesday',
+  '4': 'Thursday',
+  '5': 'Friday',
+  '6': 'Saturday',
+};
+
+const activityLessonTypeMap = {
+  '2': 'Tutorial Type 2',
+  '3': 'Tutorial Type 3',
+  '4': 'Tutorial Type 4',
+  '5': 'Tutorial Type 5',
+  '6': 'Tutorial Type 6',
+  '7': 'Tutorial Type 7',
+  '8': 'Tutorial Type 8',
+  '9': 'Tutorial Type 9',
+  A: 'Supervision of Academic Exercise',
+  B: 'Laboratory',
+  D: 'Design Lecture',
+  L: 'Lecture',
+  O: 'Others',
+  S: 'Sectional Teaching',
+  T: 'Tutorial',
+  W: 'Workshop',
+  E: 'Seminar-Style Module Class',
+  R: 'Recitation',
+  V: 'Lecture On Demand',
+  I: 'Independent Study Module',
+  P: 'Packaged Lecture',
+  X: 'Packaged Tutorial',
+  C: 'Bedside Tutorial',
+  M: 'Ensemble Teaching',
+  J: 'Mini-Project',
+};
+
+function getLessonKey(lesson: TimetableLesson) {
+  return [
+    lesson.activity,
+    lesson.modgrp,
+    lesson.day,
+    lesson.start_time,
+    lesson.end_time,
+    lesson.session,
+    lesson.room,
+  ].join('|');
+}
+
+function getWeekText(lessons: TimetableLesson[]): WeekText {
+  // All 13 weeks
+  if (lessons.length === 13) return 'Every Week';
+
+  // Get the week numbers the dates are in
+  const weeks = lessons
+    .map((lesson) => new Date(lesson.eventdate))
+    .map((date) => NUSModerator.academicCalendar.getAcadWeekInfo(date))
+    .map((weekInfo) => weekInfo.num)
+    .sort((a, b) => a - b);
+
+  // Calculate the number of weeks between lessons to check for
+  // odd/even weeks
+  const weekDelta = [];
+  for (let i = 0; i < weeks.length - 1; i++) {
+    weekDelta.push(weeks[i + 1] - weeks[i]);
+  }
+
+  if (weekDelta.every((delta) => delta === 2)) {
+    // TODO: Check for tutorial / lab
+    if (weeks.length === 6) {
+      return weeks[0] === 1 ? 'Odd Weeks' : 'Even Weeks';
+    }
+  }
+
+  return weeks.join(',');
+}
+
 export function mapTimetableLessons(lessons: TimetableLesson[]): RawLesson[] {
-  return [];
+  // Group the same lessons together
+  const groupedLessons = groupBy(lessons, (lesson) => getLessonKey(lesson));
+
+  // For each lesson, map the keys from the NUS API to ours. Most have close
+  // mappings, but week text needs to be inferred from the event's dates
+  return values(groupedLessons).map((events: TimetableLesson[]) => {
+    // eslint-disable-next-line camelcase
+    const { room, start_time, end_time, day, modgrp, activity } = events[0];
+
+    return {
+      // mod group contains the activity at the start - we remove that because
+      // it is redundant
+      ClassNo: modgrp.replace(activity, ''),
+      // Start and end time don't have the ':' delimiter
+      StartTime: start_time.replace(':', ''),
+      EndTime: end_time.replace(':', ''),
+      // Week text is inferred from the event's dates
+      WeekText: getWeekText(events),
+      Venue: room,
+      DayText: dayTextMap[day],
+      LessonType: activityLessonTypeMap[activity],
+    };
+  });
 }
