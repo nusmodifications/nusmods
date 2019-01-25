@@ -8,7 +8,7 @@ export type Config = {|
   +studentKey: string,
   +baseUrl: string,
 
-  // Current academic year in the format YYYY-YYYY
+  // Current academic year in the format YYYY/YYYY
   +academicYear: string,
 
   // The number of concurrent requests allowed by the API
@@ -32,7 +32,7 @@ const config: Config = {
   baseUrl: env.baseUrl,
 
   // Other config
-  academicYear: '2018-2019',
+  academicYear: '2018/2019',
   apiConcurrency: 5,
   dataPath: path.resolve(__dirname, '../data'),
 };
