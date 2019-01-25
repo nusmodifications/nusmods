@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 import httpStatus from 'http-status';
-import { API, callApi, getTermCode } from './api';
+import { API, callApi} from './api';
 import { AuthError, NotFoundError, UnknownApiError } from './errors';
 
 beforeEach(() => {
@@ -92,14 +92,6 @@ describe(callApi, () => {
       'Server returned status 500 - Internal Server Error',
     );
     await expect(result).rejects.toHaveProperty('data', 'The server is on fire');
-  });
-});
-
-describe(getTermCode, () => {
-  test('should return term code', () => {
-    expect(getTermCode('2018/2019', 1)).toEqual('1810');
-    expect(getTermCode('2018/2019', '2')).toEqual('1820');
-    expect(getTermCode('2018/19', '2')).toEqual('1820');
   });
 });
 

@@ -10,19 +10,13 @@
  * should not be used directly.
  */
 
-import axios from 'axios';
-import Queue from 'promise-queue';
+import axios from "axios";
+import Queue from "promise-queue";
 
-import type { ModuleCode } from '../types/modules';
-import type {
-  AcademicGroup,
-  AcademicOrg,
-  ModuleExam,
-  ModuleInfo,
-  TimetableLesson,
-} from '../types/api';
-import config from '../config';
-import { AuthError, NotFoundError, UnknownApiError } from './errors';
+import type { ModuleCode } from "../types/modules";
+import type { AcademicGroup, AcademicOrg, ModuleExam, ModuleInfo, TimetableLesson } from "../types/api";
+import config from "../config";
+import { AuthError, NotFoundError, UnknownApiError } from "./errors";
 
 type ApiParams = { [key: string]: any };
 
@@ -31,15 +25,6 @@ type STATUS_CODE = string;
 const OKAY: STATUS_CODE = '00000';
 const AUTH_ERROR: STATUS_CODE = '10000';
 const RECORD_NOT_FOUND: STATUS_CODE = '10001';
-
-/**
- * Construct the 4 number term code from the academic year and semester
- */
-export function getTermCode(semester: number | string, academicYear: string = config.academicYear) {
-  const year = /\d\d(\d\d)/.exec(academicYear);
-  if (!year) throw new RangeError('academicYear should be in the format of YYYY/YYYY or YYYY-YY');
-  return `${year[1]}${semester}0`;
-}
 
 /**
  * Base API call function. Do not call this directly, instead use one of the provided
