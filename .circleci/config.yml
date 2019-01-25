@@ -59,6 +59,7 @@ jobs:
           command: yarn build:scraper
 
   nus-scrapers-v2:
+    <<: *defaults
     working_directory: ~/nusmods/scrapers/nus-v2
     steps:
       - attach_workspace:
