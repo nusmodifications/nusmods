@@ -1,3 +1,6 @@
+self.importScripts('https://browser.sentry-cdn.com/4.5.3/bundle.min.js');
+Sentry.init({ dsn: 'https://4b4fe71954424fd39ac88a4f889ffe20@sentry.io/213986' });
+
 // Code taken from https://developers.google.com/web/tools/workbox/guides/advanced-recipes
 self.addEventListener('message', (event) => {
   if (!event.data) {
@@ -14,4 +17,8 @@ self.addEventListener('message', (event) => {
       // NOOP
       break;
   }
+});
+
+self.addEventListener('error', (error) => {
+  Sentry.captureException(error);
 });
