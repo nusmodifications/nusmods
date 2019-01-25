@@ -6,7 +6,7 @@ module.exports = {
     'plugin:flowtype/recommended',
     'prettier',
     'prettier/babel',
-    'prettier/flowtype'
+    'prettier/flowtype',
   ],
 
   env: {
@@ -25,6 +25,12 @@ module.exports = {
   ],
 
   rules: {
+    // Enable i++ in for loops
+    'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
+
+    // Allows for more compact class declaration
+    'lines-between-class-members': ['error', 'always', { exceptAfterSingleLine: true }],
+
     // Let git handle the linebreaks instead.
     'linebreak-style': 'off',
   },
