@@ -10,7 +10,7 @@
     "watch": "babel -w src -d build --ignore \"src/**/*.test.js\" -s",
     "lint": "flow && yarn lint:code",
     "lint:code": "eslint src index.js",
-    "test": "jest",
+    "test": "jest --coverage",
     "test:watch": "jest --watch"
   },
   "devDependencies": {
