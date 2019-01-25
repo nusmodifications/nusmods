@@ -40,6 +40,7 @@
     "@babel/polyfill": "7.2.5",
     "@sentry/node": "4.5.3",
     "axios": "0.18.0",
+    "fs-extra": "7.0.1",
     "lodash": "4.17.11",
     "moment": "2.24.0",
     "promise-queue": "2.2.5",
