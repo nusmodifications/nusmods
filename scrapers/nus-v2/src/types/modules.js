@@ -67,7 +67,7 @@ export type RawLesson = {
 // Semester-specific information of a module.
 export type SemesterData = {|
   +ExamDate?: string,
-  +LecturePeriods: Array<string>,
+  +LecturePeriods?: Array<string>, // Changed from frontend - this has to be generated, and I'm too lazy to
   +Semester: Semester,
   +Timetable: Array<RawLesson>,
   +TutorialPeriods?: Array<string>,
@@ -94,7 +94,7 @@ export type Module = {
   ModuleTitle: ModuleTitle,
   Preclusion?: string,
   Prerequisite?: string,
-  Types: Array<string>,
+  Types?: Array<string>, // Changed from frontend - this is unused
   Workload?: string,
   ModmavenTree: TreeFragment,
   LockedModules?: Array<ModuleCode>,
