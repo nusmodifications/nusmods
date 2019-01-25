@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 import httpStatus from 'http-status';
-import { callApi, getTermCode } from './api';
+import { API, callApi, getTermCode } from './api';
 import { AuthError, NotFoundError, UnknownApiError } from './errors';
 
 beforeEach(() => {
@@ -40,6 +40,15 @@ function mockResponse(
 }
 
 describe(callApi, () => {
+  test('should return data if everything is okay', async () => {
+    axios.post.mockResolvedValue(
+      mockResponse({ code: '00000', msg: '', data: 'Turn down for whaaaaat?' }),
+    );
+
+    const result = await callApi('test', {});
+    expect(result).toEqual('Turn down for whaaaaat?');
+  });
+
   test('should throw auth error', async () => {
     axios.post.mockResolvedValue(
       mockResponse({ code: '10000', msg: 'Incorrect user key', data: [] }),
@@ -84,15 +93,6 @@ describe(callApi, () => {
     );
     await expect(result).rejects.toHaveProperty('data', 'The server is on fire');
   });
-
-  test('should return data if everything is okay', async () => {
-    axios.post.mockResolvedValue(
-      mockResponse({ code: '00000', msg: '', data: 'Turn down for whaaaaat?' }),
-    );
-
-    const result = await callApi('test', {});
-    expect(result).toEqual('Turn down for whaaaaat?');
-  });
 });
 
 describe(getTermCode, () => {
@@ -100,5 +100,34 @@ describe(getTermCode, () => {
     expect(getTermCode('2018/2019', 1)).toEqual('1810');
     expect(getTermCode('2018/2019', '2')).toEqual('1820');
     expect(getTermCode('2018/19', '2')).toEqual('1820');
+  });
+});
+
+describe(API, () => {
+  test('should enforce maximum concurrency', async () => {
+    axios.post.mockResolvedValue(
+      mockResponse({ code: '00000', msg: '', data: 'Turn down for whaaaaat?' }),
+    );
+
+    const api = new API(2);
+
+    const p1 = api.callApi('test-1', {});
+    const p2 = api.callApi('test-2', {});
+    const p3 = api.callApi('test-3', {});
+    const p4 = api.callApi('test-4', {});
+
+    expect(axios.post).toBeCalledTimes(2);
+    expect(api.queue.pendingPromises).toEqual(2);
+
+    await p1;
+    await p2;
+
+    expect(axios.post).toBeCalledTimes(4);
+    expect(api.queue.pendingPromises).toEqual(2);
+
+    await p3;
+    await p4;
+
+    expect(api.queue.pendingPromises).toEqual(0);
   });
 });

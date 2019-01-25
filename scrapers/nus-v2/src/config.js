@@ -6,6 +6,10 @@ export type Config = {|
   +appKey: string,
   +studentKey: string,
   +baseUrl: string,
+
+  // The number of concurrent requests allowed by the API
+  // Any additional requests will be queued
+  +apiConcurrency: number,
 |};
 
 if (!env.appKey || !env.studentKey || !env.baseUrl) {
@@ -19,6 +23,8 @@ const config: Config = {
   appKey: env.appKey,
   studentKey: env.studentKey,
   baseUrl: env.baseUrl,
+
+  apiConcurrency: 5,
 };
 
 export default config;
