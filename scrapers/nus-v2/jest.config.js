@@ -15,10 +15,10 @@ module.exports = {
   // collectCoverage: false,
 
   // An array of glob patterns indicating a set of files for which coverage information should be collected
-  // collectCoverageFrom: null,
+  collectCoverageFrom: ['src/**/*.js'],
 
   // The directory where Jest should output its coverage files
-  coverageDirectory: "coverage",
+  coverageDirectory: 'coverage',
 
   // An array of regexp pattern strings used to skip coverage collection
   // coveragePathIgnorePatterns: [
@@ -26,18 +26,8 @@ module.exports = {
   // ],
 
   // A list of reporter names that Jest uses when writing coverage reports
-  // coverageReporters: [
-  //   "json",
-  //   "text",
-  //   "lcov",
-  //   "clover"
-  // ],
-
-  // An object that configures minimum threshold enforcement for coverage results
-  // coverageThreshold: null,
-
-  // Make calling deprecated APIs throw helpful error messages
-  // errorOnDeprecated: false,
+  // Only write lcov files in CIs
+  coverageReporters: ['text'].concat(process.env.CI ? 'lcov' : []),
 
   // A path to a module which exports an async function that is triggered once before all test suites
   // globalSetup: null,
@@ -45,44 +35,11 @@ module.exports = {
   // A path to a module which exports an async function that is triggered once after all test suites
   // globalTeardown: null,
 
-  // A set of global variables that need to be available in all test environments
-  // globals: {},
-
-  // A map from regular expressions to module names that allow to stub out resources with a single module
-  // moduleNameMapper: {},
-
-  // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
-  // modulePathIgnorePatterns: [],
-
-  // Activates notifications for test results
-  // notify: false,
-
-  // An enum that specifies notification mode. Requires { notify: true }
-  // notifyMode: "always",
-
   // A preset that is used as a base for Jest's configuration
   // preset: null,
 
-  // Run tests from one or more projects
-  // projects: null,
-
   // Use this configuration option to add custom reporters to Jest
   // reporters: undefined,
-
-  // Automatically reset mock state between every test
-  // resetMocks: false,
-
-  // Reset the module registry before running each individual test
-  // resetModules: false,
-
-  // A path to a custom resolver
-  // resolver: null,
-
-  // Automatically restore mock state between every test
-  // restoreMocks: false,
-
-  // The root directory that Jest should scan for tests and modules within
-  // rootDir: null,
 
   // A list of paths to directories that Jest should use to search for files in
   // roots: [
@@ -102,19 +59,10 @@ module.exports = {
   // snapshotSerializers: [],
 
   // The test environment that will be used for testing
-  testEnvironment: "node",
+  testEnvironment: 'node',
 
   // Options that will be passed to the testEnvironment
   // testEnvironmentOptions: {},
-
-  // Adds a location field to test results
-  // testLocationInResults: false,
-
-  // The glob patterns Jest uses to detect test files
-  // testMatch: [
-  //   "**/__tests__/**/*.js?(x)",
-  //   "**/?(*.)+(spec|test).js?(x)"
-  // ],
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
   // testPathIgnorePatterns: [
@@ -124,15 +72,6 @@ module.exports = {
   // This option allows the use of a custom results processor
   // testResultsProcessor: null,
 
-  // A map from regular expressions to paths to transformers
-  // transform: null,
-
-  // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them
-  // unmockedModulePathPatterns: undefined,
-
   // An array of regexp patterns that are matched against all source file paths before re-running tests in watch mode
   // watchPathIgnorePatterns: [],
-
-  // Whether to use watchman for file crawling
-  // watchman: true,
 };
