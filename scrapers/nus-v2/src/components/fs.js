@@ -28,8 +28,11 @@ function file<T>(filepath: string, expirationInMin: number = defaultExpiry): Fil
       const [data, stat] = await Promise.all([fs.readJSON(filepath), fs.stat(filepath)]);
 
       // Throw an error if the file has expired
-      if (Date.now() - stat.atimeMs > expirationInMin * 60 * 1000) {
-        throw new CacheExpiredError();
+      if (Date.now() - stat.mtimeMs > expirationInMin * 60 * 1000) {
+        const error = new CacheExpiredError('Cache expired');
+        error.path = filepath;
+        error.fileModifiedTime = stat.mtimeMs;
+        throw error;
       }
 
       return data;

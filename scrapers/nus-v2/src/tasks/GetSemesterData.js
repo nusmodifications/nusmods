@@ -44,45 +44,51 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
   }
 
   async getModuleInfo(input: Input) {
-    this.logger.info(`Getting semester data for ${this.academicYear} semester ${this.semester}`);
-
     // Retrieve all module info from this semester
     const getModules = new GetSemesterModules(this.semester, this.academicYear);
     const modules: ModuleInfoMapped[] = await getModules.run(input);
 
     // Fan out and get all timetables
-    const requests = modules.map(async (moduleInfo) => {
+    const requests = modules.map((moduleInfo) => {
       const moduleCode = moduleInfo.Subject + moduleInfo.CatalogNumber;
-
       const getTimetable = new GetModuleTimetable(moduleCode, this.semester, this.academicYear);
 
-      let timetable;
-      try {
-        timetable = await getTimetable.run();
-      } catch (e) {
-        // Skip the module if we cannot get its timetable
-        this.logger.error(e, `Error getting timetable for ${moduleCode}`);
-        return null;
-      }
-
-      return { moduleCode, moduleInfo, timetable };
+      return getTimetable
+        .run()
+        .then((timetable) => ({
+          moduleCode,
+          moduleInfo,
+          timetable,
+        }))
+        .catch((e) => {
+          // Skip the module if we cannot get its timetable. Return null so we can filter out
+          // these later
+          this.logger.error(e, `Error getting timetable for ${moduleCode}`);
+        });
     });
 
-    return (await Promise.all(requests)).filter(Boolean);
+    const completedRequests = (await Promise.all(requests)).filter(Boolean);
+
+    // Log some statistics
+    const completedPercent = (completedRequests.length / requests.length) * 100;
+    this.logger.info(
+      '%i/%i (%s%%) timetables downloaded successfully',
+      requests.length,
+      completedRequests.length,
+      completedPercent.toFixed(1),
+    );
+
+    return completedRequests;
   }
 
   async getExams() {
     const getExams = new GetSemesterExams(this.semester, this.academicYear);
-
-    try {
-      return getExams.run();
-    } catch (e) {
-      this.logger.critical(e, 'Error loading exams');
-      throw e;
-    }
+    return getExams.run();
   }
 
   async run(input: Input) {
+    this.logger.info(`Getting semester data for ${this.academicYear} semester ${this.semester}`);
+
     const [exams, modules] = await Promise.all([this.getExams(), this.getModuleInfo(input)]);
 
     // Merge exam and timetable data to form semester data

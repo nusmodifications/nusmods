@@ -5,10 +5,11 @@ import type { ModuleExam } from '../types/api';
 import type { ExamInfoMap } from '../types/mapper';
 import type { Semester } from '../types/modules';
 import config from '../config';
-import { getTermCode } from '../utils/api';
+import { cacheDownload, getTermCode } from '../utils/api';
 import BaseTask from './BaseTask';
 import type { Task } from '../types/tasks';
 import { mapExamInfo } from '../components/mapper';
+import { TaskError } from '../components/errors';
 
 type Output = ExamInfoMap;
 
@@ -43,11 +44,20 @@ export default class GetSemesterExams extends BaseTask implements Task<void, Out
     const term = getTermCode(this.semester, this.academicYear);
 
     // Make API requests to get the exam info
-    const rawExams: ModuleExam[] = await this.api.getTermExams(term);
-    const exams = mapValues(keyBy(rawExams, (exam) => exam.module), mapExamInfo);
+    let rawExams: ModuleExam[];
+    try {
+      rawExams = await cacheDownload(
+        'exams',
+        () => this.api.getTermExams(term),
+        this.fs.raw.semester(this.semester).exams,
+        this.logger,
+      );
+    } catch (e) {
+      throw new TaskError('Cannot get exam data', this, e);
+    }
 
-    // Cache module info to disk
-    await this.fs.raw.semester(this.semester).exams.write(rawExams);
+    const exams = mapValues(keyBy(rawExams, (exam) => exam.module), mapExamInfo);
+    this.logger.info(`Downloaded ${rawExams.length} exams`);
 
     return exams;
   }

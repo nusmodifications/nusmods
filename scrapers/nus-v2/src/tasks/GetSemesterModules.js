@@ -14,6 +14,7 @@ import {
   mapFacultyDepartmentCodes,
 } from '../components/mapper';
 import type { Task } from '../types/tasks';
+import { TaskError } from '../components/errors';
 
 type Input = {|
   +departments: AcademicOrg[],
@@ -55,7 +56,6 @@ export default class GetSemesterModules extends BaseTask implements Task<Input, 
     const facultyMap = getFacultyCodeMap(faculties);
     const departmentMap = getDepartmentCodeMap(departments);
 
-    // Make API requests to get the modules we need
     // We make a new request for each faculty because the API will timeout if
     // we try to request for all of them in one shot
     const requests = faculties.map((faculty) =>
@@ -65,7 +65,12 @@ export default class GetSemesterModules extends BaseTask implements Task<Input, 
       }),
     );
 
-    const rawModules: ModuleInfo[] = flatten(await Promise.all(requests));
+    let rawModules: ModuleInfo[];
+    try {
+      rawModules = flatten(await Promise.all(requests));
+    } catch (e) {
+      throw new TaskError('Cannot get module list', this, e);
+    }
 
     // The ModuleInfo object from the API comes with a useless AcademicOrg and
     // AcademicDept object, which we replace with a string to save on space

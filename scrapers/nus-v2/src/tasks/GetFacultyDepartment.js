@@ -3,7 +3,7 @@
 import BaseTask from './BaseTask';
 import type { AcademicGroup, AcademicOrg } from '../types/api';
 import type { Task } from '../types/tasks';
-import type { File } from '../components/fs';
+import { cacheDownload } from '../utils/api';
 
 type Output = {|
   +departments: AcademicOrg[],
@@ -21,27 +21,17 @@ export default class GetFacultyDepartment extends BaseTask implements Task<void,
     task: GetFacultyDepartment.name,
   });
 
-  async cacheDownload<T>(name: string, download: () => Promise<T>, cache: File<T>): Promise<T> {
-    try {
-      // The department and faculties endpoints have high failure rates,
-      // while their data changes infrequently. This makes them suitable
-      // for caching
-      const data = await download();
-      await cache.write(data);
-      return data;
-    } catch (e) {
-      // If the file is not available we try to load it from cache instead
-      this.logger.warn(e, `Cannot load ${name} from API, attempting to read from cache`);
-      return cache.read();
-    }
-  }
-
   async getDepartments() {
-    return this.cacheDownload('department codes', this.api.getDepartment, this.fs.raw.departments);
+    return cacheDownload(
+      'department codes',
+      this.api.getDepartment,
+      this.fs.raw.departments,
+      this.logger,
+    );
   }
 
   async getFaculties() {
-    return this.cacheDownload('faculty codes', this.api.getFaculty, this.fs.raw.faculties);
+    return cacheDownload('faculty codes', this.api.getFaculty, this.fs.raw.faculties, this.logger);
   }
 
   async run() {
