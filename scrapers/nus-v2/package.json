@@ -41,12 +41,12 @@
     "@babel/polyfill": "7.2.5",
     "@sentry/node": "4.5.3",
     "axios": "0.18.0",
+    "bunyan": "1.8.12",
     "fs-extra": "7.0.1",
     "lodash": "4.17.11",
     "moment": "2.24.0",
+    "nusmoderator": "latest",
     "promise-queue": "2.2.5",
-    "winston": "3.1.0",
-    "yargs": "12.0.5",
-    "nusmoderator": "latest"
+    "yargs": "12.0.5"
   }
 }
