@@ -25,7 +25,7 @@ type Output = ModuleInfoMapped[];
 /**
  * Download modules info for all faculties in a specific semester
  */
-export default class GetFacultyModules extends BaseTask implements Task<Input, Output> {
+export default class GetSemesterModules extends BaseTask implements Task<Input, Output> {
   semester: Semester;
   academicYear: string;
 

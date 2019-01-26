@@ -66,10 +66,15 @@ export type RawLesson = {
 
 // Semester-specific information of a module.
 export type SemesterData = {|
-  +ExamDate?: string,
-  +LecturePeriods?: Array<string>, // Changed from frontend - this has to be generated, and I'm too lazy to
   +Semester: Semester,
   +Timetable: Array<RawLesson>,
+
+  // Exam
+  +ExamDate?: string,
+  +ExamDuration?: number,
+
+  // Deprecated
+  +LecturePeriods?: Array<string>,
   +TutorialPeriods?: Array<string>,
 |};
 
@@ -85,17 +90,27 @@ export type TreeFragment = {|
 // For some reason es6 object literal property value shorthand is not recognized >_<
 export type Module = {
   AcadYear: AcadYear,
-  Corequisite?: string,
-  Department: Department,
-  History: Array<SemesterData>,
+
+  // Basic info
   ModuleCode: ModuleCode,
-  ModuleCredit: string,
-  ModuleDescription?: string,
   ModuleTitle: ModuleTitle,
-  Preclusion?: string,
-  Prerequisite?: string,
-  Types?: Array<string>, // Changed from frontend - this is unused
+
+  // Additional info
+  ModuleDescription?: string,
+  ModuleCredit: string,
+  Department: Department,
   Workload?: string,
+
+  // Requsites
+  Prerequisite?: string,
+  Corequisite?: string,
+  Preclusion?: string,
+
+  // Semester data
+  History: Array<SemesterData>,
   ModmavenTree: TreeFragment,
   LockedModules?: Array<ModuleCode>,
+
+  // Deprecated
+  Types?: Array<string>,
 };

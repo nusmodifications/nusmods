@@ -1,13 +1,16 @@
 // @flow
 
+import { mapValues, keyBy } from 'lodash';
 import type { ModuleExam } from '../types/api';
+import type { ExamInfoMap } from '../types/mapper';
 import type { Semester } from '../types/modules';
 import config from '../config';
 import { getTermCode } from '../utils/api';
 import BaseTask from './BaseTask';
 import type { Task } from '../types/tasks';
+import { mapExamInfo } from '../components/mapper';
 
-type Output = ModuleExam[];
+type Output = ExamInfoMap;
 
 /**
  * Download modules info for all faculties in a specific semester
@@ -31,10 +34,11 @@ export default class GetSemesterExams extends BaseTask implements Task<void, Out
     const term = getTermCode(this.semester, this.academicYear);
 
     // Make API requests to get the exam info
-    const exams = await this.api.getTermExams(term);
+    const rawExams: ModuleExam[] = await this.api.getTermExams(term);
+    const exams = mapValues(keyBy(rawExams, (exam) => exam.module), mapExamInfo);
 
     // Cache module info to disk
-    await this.fs.saveRawExams(this.semester, exams);
+    await this.fs.saveRawExams(this.semester, rawExams);
 
     return exams;
   }

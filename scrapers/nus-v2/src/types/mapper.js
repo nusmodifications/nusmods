@@ -6,6 +6,7 @@
  */
 
 import type { ModuleInfo } from './api';
+import type { Module, ModuleCode, SemesterData, TreeFragment } from './modules';
 
 /**
  * Module info with the AcademicGroup and AcademicOrg mapped to the actual
@@ -15,6 +16,36 @@ export type ModuleInfoMapped = {
   ...ModuleInfo,
   AcademicGroup: string,
   AcademicOrganisation: string,
+};
+
+/**
+ * Module type with semester-related info removed
+ */
+export type SemesterModule = $Diff<
+  Module,
+  {
+    History: Array<SemesterData>,
+    ModmavenTree: TreeFragment,
+    LockedModules?: Array<ModuleCode>,
+  },
+>;
+
+export type SemesterModuleData = {
+  ModuleCode: ModuleCode,
+  Module: SemesterModule,
+  SemesterData: SemesterData,
+}
+
+/**
+ * The exam info part of semester data
+ */
+export type ExamInfo = {
+  ExamDate: string,
+  ExamDuration: number,
+};
+
+export type ExamInfoMap = {
+  [ModuleCode]: ExamInfo,
 };
 
 /**

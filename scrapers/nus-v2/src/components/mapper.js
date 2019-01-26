@@ -1,10 +1,28 @@
 // @flow
 import { fromPairs, groupBy, values } from 'lodash';
+import moment from 'moment';
 import NUSModerator from 'nusmoderator';
 
-import type { AcademicGroup, AcademicOrg, ModuleInfo, TimetableLesson } from '../types/api';
-import type { Module, RawLesson, WeekText } from '../types/modules';
-import type { DepartmentCodeMap, FacultyCodeMap, ModuleInfoMapped } from '../types/mapper';
+import type {
+  AcademicGroup,
+  AcademicOrg,
+  ModuleExam,
+  ModuleInfo,
+  TimetableLesson,
+} from '../types/api';
+import type { RawLesson, WeekText } from '../types/modules';
+import type {
+  DepartmentCodeMap,
+  ExamInfo,
+  FacultyCodeMap,
+  ModuleInfoMapped,
+  SemesterModule,
+} from '../types/mapper';
+import { fromTermCode } from '../utils/api';
+
+const UTC_OFFSET = 8 * 60; // Singapore is UTC+8
+
+/* eslint-disable camelcase */
 
 /**
  * Create a mapping of faculty code to faculty name from a list of faculties
@@ -22,6 +40,10 @@ export function getDepartmentCodeMap(departments: AcademicOrg[]): DepartmentCode
   );
 }
 
+/**
+ * Overwrite AcademicOrganisation and AcademicGroup with their names instead
+ * of an object
+ */
 export function mapFacultyDepartmentCodes(
   moduleInfo: ModuleInfo,
   faculties: FacultyCodeMap,
@@ -35,8 +57,12 @@ export function mapFacultyDepartmentCodes(
   };
 }
 
-export function mapModuleInfo(moduleInfo: ModuleInfoMapped): Module {
+/**
+ * Map ModuleInfo from the API into something that looks more
+ */
+export function mapModuleInfo(moduleInfo: ModuleInfoMapped): SemesterModule {
   const {
+    Term,
     AcademicOrganisation,
     CourseTitle,
     WorkLoadHours,
@@ -49,7 +75,10 @@ export function mapModuleInfo(moduleInfo: ModuleInfoMapped): Module {
     CatalogNumber,
   } = moduleInfo;
 
+  const [AcadYear] = fromTermCode(Term);
+
   return {
+    AcadYear,
     Description,
     Preclusion,
     Department: AcademicOrganisation,
@@ -59,6 +88,19 @@ export function mapModuleInfo(moduleInfo: ModuleInfoMapped): Module {
     Corequisite: CoRequisite,
     ModuleCredit: ModularCredit,
     ModuleCode: Subject + CatalogNumber,
+  };
+}
+
+/**
+ * Extract the part of the raw ModuleExam that is used in SemesterData
+ */
+export function mapExamInfo(moduleExam: ModuleExam): ExamInfo {
+  const { exam_date, start_time, duration } = moduleExam;
+  const date = moment(`${exam_date} ${start_time}`, '').utcOffset(UTC_OFFSET);
+
+  return {
+    ExamDate: date.toISOString(true),
+    ExamDuration: parseInt(duration, 10),
   };
 }
 
@@ -111,6 +153,9 @@ function getLessonKey(lesson: TimetableLesson) {
   ].join('|');
 }
 
+/**
+ * Try to infer week text from the provided list of events
+ */
 function getWeekText(lessons: TimetableLesson[]): WeekText {
   // All 13 weeks
   if (lessons.length === 13) return 'Every Week';
@@ -139,6 +184,9 @@ function getWeekText(lessons: TimetableLesson[]): WeekText {
   return weeks.join(',');
 }
 
+/**
+ * Convert API provided timetable data to RawLesson format used by the frontend
+ */
 export function mapTimetableLessons(lessons: TimetableLesson[]): RawLesson[] {
   // Group the same lessons together
   const groupedLessons = groupBy(lessons, (lesson) => getLessonKey(lesson));
@@ -146,7 +194,6 @@ export function mapTimetableLessons(lessons: TimetableLesson[]): RawLesson[] {
   // For each lesson, map the keys from the NUS API to ours. Most have close
   // mappings, but week text needs to be inferred from the event's dates
   return values(groupedLessons).map((events: TimetableLesson[]) => {
-    // eslint-disable-next-line camelcase
     const { room, start_time, end_time, day, modgrp, activity } = events[0];
 
     return {

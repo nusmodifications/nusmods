@@ -3,22 +3,15 @@
 import path from 'path';
 import * as fs from 'fs-extra';
 
-import type { AcademicGroup, AcademicOrg } from '../types/api';
-import type { ModuleCode, RawLesson, Semester } from '../types/modules';
-import type { ModuleInfoMapped } from '../types/mapper';
+import type { AcademicGroup, AcademicOrg, ModuleExam } from '../types/api';
+import type { ModuleCode, RawLesson, Semester, SemesterData } from '../types/modules';
+import type { ModuleInfoMapped, SemesterModuleData } from '../types/mapper';
 import config from '../config';
 
 const yearRoot = path.join(config.dataPath, config.academicYear.replace('/', '-'));
 
 // Raw paths are for caching the direct and intermediate outputs from the API
 const rawRoot = path.join(yearRoot, 'raw');
-const rawPaths = {
-  root: rawRoot,
-  departments: path.join(rawRoot, 'departments.json'),
-  faculties: path.join(rawRoot, 'faculties.json'),
-
-  semesterModuleList: (semester: Semester) => path.join(rawRoot, String(semester), 'modules.json'),
-};
 
 // Output paths are for completed, public facing output from the scraper
 const outputPaths = {
@@ -35,18 +28,37 @@ const outputPaths = {
 
   timetable: (moduleCode: ModuleCode, semester: Semester) =>
     path.join(yearRoot, String(semester), 'modules', moduleCode, 'timetable.json'),
+
+  moduleSemesterData: (moduleCode: ModuleCode, semester: Semester) =>
+    path.join(yearRoot, String(semester), 'modules', moduleCode, 'semesterData.json'),
 };
 
 export async function saveRawDepartments(departments: AcademicOrg[]) {
-  return fs.outputJSON(rawPaths.departments, departments);
+  const filepath = path.join(rawRoot, 'departments.json');
+  return fs.outputJSON(filepath, departments);
 }
 
 export async function saveRawFaculties(faculties: AcademicGroup[]) {
-  return fs.outputJSON(rawPaths.faculties, faculties);
+  const filepath = path.join(rawRoot, 'faculties.json');
+  return fs.outputJSON(filepath, faculties);
 }
 
 export async function saveRawModules(semester: Semester, modules: ModuleInfoMapped[]) {
-  return fs.outputJSON(rawPaths.semesterModuleList(semester), modules);
+  const filepath = path.join(rawRoot, String(semester), 'modules.json');
+  return fs.outputJSON(filepath, modules);
+}
+
+export async function saveRawExams(semester: Semester, exams: ModuleExam[]) {
+  const filepath = path.join(rawRoot, String(semester), 'exams.json');
+  return fs.outputJSON(filepath, exams);
+}
+
+export async function saveRawSemesterModuleData(
+  semester: Semester,
+  moduleData: SemesterModuleData[],
+) {
+  const filepath = path.join(rawRoot, String(semester), 'moduleData.json');
+  return fs.outputJSON(filepath, moduleData);
 }
 
 export async function saveTimetable(
@@ -56,4 +68,13 @@ export async function saveTimetable(
 ) {
   const filepath = outputPaths.timetable(moduleCode, semester);
   return fs.outputJSON(filepath, timetable);
+}
+
+export async function saveSemesterData(
+  semester: Semester,
+  moduleCode: ModuleCode,
+  semesterData: SemesterData,
+) {
+  const filepath = outputPaths.moduleSemesterData(moduleCode, semester);
+  return fs.outputJSON(filepath, semesterData);
 }

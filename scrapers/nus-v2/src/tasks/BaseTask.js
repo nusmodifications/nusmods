@@ -6,7 +6,9 @@ import {
   saveRawFaculties,
   saveRawModules,
   saveRawExams,
+  saveRawSemesterModuleData,
   saveTimetable,
+  saveSemesterData,
 } from '../components/output';
 
 /**
@@ -25,8 +27,10 @@ export default class BaseTask {
     saveRawFaculties,
     saveRawModules,
     saveRawExams,
+    saveRawSemesterModuleData,
 
     // Save output
     saveTimetable,
+    saveSemesterData,
   };
 }

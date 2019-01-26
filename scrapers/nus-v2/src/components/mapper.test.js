@@ -7,7 +7,12 @@ import CS4238Timetable from './__mocks__/CS4238_timetable.json';
 import MA2213Timetable from './__mocks__/MA2213_timetable.json';
 import CS2100Timetable from './__mocks__/CS2100_timetable.json';
 
-import { getDepartmentCodeMap, getFacultyCodeMap, mapTimetableLessons } from './mapper';
+import {
+  getDepartmentCodeMap,
+  getFacultyCodeMap,
+  mapExamInfo,
+  mapTimetableLessons,
+} from './mapper';
 import type { RawLesson } from '../types/modules';
 
 describe(getFacultyCodeMap, () => {
@@ -32,6 +37,25 @@ describe(getDepartmentCodeMap, () => {
       '00101ACAD1': 'Chinese Studies',
       '00102ACAD1': 'Communications & New Media',
       '00103ACAD1': 'Economics',
+    });
+  });
+});
+
+describe(mapExamInfo, () => {
+  test('should map module exam to date strings', () => {
+    expect(
+      mapExamInfo({
+        term: '1810',
+        start_time: '17:00',
+        acad_org: '00301ACAD1',
+        module: 'CS2100',
+        end_time: '19:00',
+        duration: 120,
+        exam_date: '2018-11-27',
+      }),
+    ).toEqual({
+      ExamDate: '2018-11-27T17:00:00.000+08:00',
+      ExamDuration: 120,
     });
   });
 });
