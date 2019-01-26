@@ -1,6 +1,7 @@
 // @flow
 
 import api from '../components/api';
+import logger from '../components/logger';
 import {
   saveRawDepartments,
   saveRawFaculties,
@@ -9,7 +10,7 @@ import {
   saveRawSemesterModuleData,
   saveTimetable,
   saveSemesterData,
-} from '../components/output';
+} from '../components/fs';
 
 /**
  * Base task class. Dependencies and components are instance properties
@@ -33,4 +34,6 @@ export default class BaseTask {
     saveTimetable,
     saveSemesterData,
   };
+
+  rootLogger = logger;
 }

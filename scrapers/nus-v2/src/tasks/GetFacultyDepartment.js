@@ -15,11 +15,35 @@ type Output = {|
 export default class GetFacultyDepartment extends BaseTask implements Task<void, Output> {
   name = 'Get faculties and departments';
 
+  logger = this.rootLogger.child({
+    task: GetFacultyDepartment.name,
+  });
+
+  async getDepartments() {
+    try {
+      return this.api.getDepartment();
+    } catch (e) {
+      this.logger.error(e, 'Cannot get department codes');
+      throw e;
+    }
+  }
+
+  async getFaculties() {
+    try {
+      return this.api.getFaculty();
+    } catch (e) {
+      this.logger.error(e, 'Cannot get faculty codes');
+      throw e;
+    }
+  }
+
   async run() {
+    this.logger.info('Downloading faculty and department codes');
+
     // Download department and faculties in parallel
     const [departments, faculties] = await Promise.all([
-      this.api.getDepartment(),
-      this.api.getFaculty(),
+      this.getDepartments(),
+      this.getFaculties(),
     ]);
 
     // Cache results on disk

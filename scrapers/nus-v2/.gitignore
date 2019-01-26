@@ -2,3 +2,5 @@
 /build/
 /coverage/
 /data/
+/logs/
+*.log

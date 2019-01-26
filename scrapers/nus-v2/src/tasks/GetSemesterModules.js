@@ -50,9 +50,8 @@ export default class GetSemesterModules extends BaseTask implements Task<Input, 
     // Make API requests to get the modules we need
     // We make a new request for each faculty because the API will timeout if
     // we try to request for all of them in one shot
-    const requests = faculties.map((faculty) =>
-      this.api.getFacultyModules(term, faculty.AcademicGroup),
-    );
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+    const requests = letters.map((letter) => this.api.getPrefixModules(term, letter));
     const rawModules: ModuleInfo[] = flatten(await Promise.all(requests));
 
     // The ModuleInfo object from the API comes with a useless AcademicOrg and AcademicDept

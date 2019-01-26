@@ -10,13 +10,19 @@
  * should not be used directly.
  */
 
-import axios from "axios";
-import Queue from "promise-queue";
+import axios from 'axios';
+import Queue from 'promise-queue';
 
-import type { ModuleCode } from "../types/modules";
-import type { AcademicGroup, AcademicOrg, ModuleExam, ModuleInfo, TimetableLesson } from "../types/api";
-import config from "../config";
-import { AuthError, NotFoundError, UnknownApiError } from "./errors";
+import type { ModuleCode } from '../types/modules';
+import type {
+  AcademicGroup,
+  AcademicOrg,
+  ModuleExam,
+  ModuleInfo,
+  TimetableLesson,
+} from '../types/api';
+import config from '../config';
+import { AuthError, NotFoundError, UnknownApiError } from './errors';
 
 type ApiParams = { [key: string]: any };
 
@@ -157,20 +163,52 @@ export class API {
    * Get all modules corresponding to a specific faculty during a specific term
    */
   async getFacultyModules(term: string, facultyCode: string) {
-    return this.callApi('module', {
-      term,
-      acadgroup: facultyCode,
-    });
+    try {
+      return this.callApi('module', {
+        term,
+        acadgroup: facultyCode,
+      });
+    } catch (e) {
+      if (e instanceof NotFoundError) {
+        return [];
+      }
+
+      throw e;
+    }
+  }
+
+  async getPrefixModules(term: string, prefix: string) {
+    try {
+      return this.callApi('module', {
+        term,
+        subject: `${prefix}%`,
+        catalognbr: '%',
+      });
+    } catch (e) {
+      if (e instanceof NotFoundError) {
+        return [];
+      }
+
+      throw e;
+    }
   }
 
   /**
    * Get all modules corresponding to a specific department during a specific term
    */
   async getDepartmentModules(term: string, departmentCode: string): Promise<ModuleInfo[]> {
-    return this.callApi('module', {
-      term,
-      acadorg: departmentCode,
-    });
+    try {
+      return this.callApi('module', {
+        term,
+        acadorg: departmentCode,
+      });
+    } catch (e) {
+      if (e instanceof NotFoundError) {
+        return [];
+      }
+
+      throw e;
+    }
   }
 
   /**
@@ -201,15 +239,12 @@ export class API {
   }
 
   /**
-   * Get exam info on all modules
+   * Get exam info on all modules in a semester
    *
    * TODO: See if this endpoint will trigger timeout on the actual server
    */
-  async getAllExams(term: string): Promise<ModuleExam[]> {
-    return this.callApi('examtt', {
-      term,
-      module: '%',
-    });
+  async getTermExams(term: string): Promise<ModuleExam[]> {
+    return this.callApi('examtt', { term });
   }
 }
 

@@ -19,6 +19,12 @@ export default class GetSemesterExams extends BaseTask implements Task<void, Out
   semester: Semester;
   academicYear: string;
 
+  logger = this.rootLogger.child({
+    task: GetSemesterExams.name,
+    year: this.academicYear,
+    semester: this.semester,
+  });
+
   get name() {
     return `Get exams for semester ${this.semester}`;
   }
@@ -31,6 +37,9 @@ export default class GetSemesterExams extends BaseTask implements Task<void, Out
   }
 
   async run() {
+    this.logger.info(
+      `Getting exams for all modules in ${this.academicYear} semester ${this.semester}`,
+    );
     const term = getTermCode(this.semester, this.academicYear);
 
     // Make API requests to get the exam info

@@ -26,6 +26,12 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
   semester: Semester;
   academicYear: string;
 
+  logger = this.rootLogger.child({
+    task: GetSemesterData.name,
+    year: this.academicYear,
+    semester: this.semester,
+  });
+
   get name() {
     return `Get data for semester ${this.semester}`;
   }
@@ -38,6 +44,8 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
   }
 
   async getModuleInfo(input: Input) {
+    this.logger.info(`Getting semester data for ${this.academicYear} semester ${this.semester}`);
+
     // Retrieve all module info from this semester
     const getModules = new GetSemesterModules(this.semester, this.academicYear);
     const modules: ModuleInfoMapped[] = await getModules.run(input);
@@ -47,18 +55,34 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
       const moduleCode = moduleInfo.Subject + moduleInfo.CatalogNumber;
 
       const getTimetable = new GetModuleTimetable(moduleCode, this.semester, this.academicYear);
-      const timetable = await getTimetable.run();
+
+      let timetable;
+      try {
+        timetable = await getTimetable.run();
+      } catch (e) {
+        this.logger.error(e, `Error getting timetable for ${moduleCode}`);
+        return null;
+      }
 
       return { moduleCode, moduleInfo, timetable };
     });
 
-    return Promise.all(requests);
+    return (await Promise.all(requests)).filter(Boolean);
+  }
+
+  async getExams() {
+    const getExams = new GetSemesterExams(this.semester, this.academicYear);
+
+    try {
+      return getExams.run();
+    } catch (e) {
+      this.logger.critical(e, 'Error loading exams');
+      throw e;
+    }
   }
 
   async run(input: Input) {
-    const getExams = new GetSemesterExams(this.semester, this.academicYear);
-
-    const [exams, modules] = await Promise.all([getExams.run(), this.getModuleInfo(input)]);
+    const [exams, modules] = await Promise.all([this.getExams(), this.getModuleInfo(input)]);
 
     // Merge exam and timetable data to form semester data
     const semesterModuleData = modules.map<SemesterModuleData>(

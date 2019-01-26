@@ -25,7 +25,7 @@ declare module 'yargs' {
     command: string | string[],
     aliases?: string | string[],
     describe: string | false,
-    builder?: (any) => void | any,
+    builder?: ((any) => void) | Object,
     handler?: (Argv) => void,
   |}
 
