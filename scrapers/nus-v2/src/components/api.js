@@ -107,38 +107,58 @@ export class API {
   /**
    * Wrapper around base callApi method that pushes the call into a queue
    */
-  callApi(endpoint: string, params: ApiParams) {
-    return this.queue.add(() => callApi(endpoint, params));
-  }
+  callApi = async (endpoint: string, params: ApiParams) =>
+    this.queue.add(() => callApi(endpoint, params));
+
+  /**
+   * Calls the modules endpoint
+   */
+  callModulesEndpoint = async (term: string, params: ApiParams) => {
+    try {
+      // DO NOT remove this await - the promise must settle so the catch
+      // can handle the NotFoundError from the API
+      return await this.callApi('module', {
+        term,
+        ...params,
+      });
+    } catch (e) {
+      // The modules endpoint will return NotFound even for valid inputs
+      // that just happen to have no records, so we ignore this error
+      // and just return an empty array
+      if (e instanceof NotFoundError) {
+        return [];
+      }
+
+      throw e;
+    }
+  };
 
   /**
    * Obtain an array of faculties in the school (aka. academic groups)
    */
-  async getFaculty(): Promise<AcademicGroup[]> {
-    return this.callApi('config/get-acadgroup', {
+  getFaculty = async (): Promise<AcademicGroup[]> =>
+    this.callApi('config/get-acadgroup', {
       eff_status: 'A',
       // % is a wildcard so this function returns everything
       acad_group: '%',
     });
-  }
 
   /**
    * Obtain an array of departments in the school (aka. academic organizations)
    */
-  async getDepartment(): Promise<AcademicOrg[]> {
-    return this.callApi('config/get-acadorg', {
+  getDepartment = async (): Promise<AcademicOrg[]> =>
+    this.callApi('config/get-acadorg', {
       eff_status: 'A',
       // % is a wildcard so this function returns everything
       acad_org: '%',
     });
-  }
 
   /**
    * Get info for a specific module in a specific term.
    *
    * @throws {NotFoundError} If module cannot be found.
    */
-  async getModuleInfo(term: string, moduleCode: ModuleCode): Promise<ModuleInfo> {
+  getModuleInfo = async (term: string, moduleCode: ModuleCode): Promise<ModuleInfo> => {
     // Module info API takes in subject and catalog number separately, so we need
     // to split the module code prefix out from the rest of it
     const parts = /^([a-z]+)(.+)$/i.exec(moduleCode);
@@ -157,70 +177,29 @@ export class API {
 
     if (modules.length === 0) throw new NotFoundError();
     return modules[0];
-  }
+  };
 
   /**
    * Get all modules corresponding to a specific faculty during a specific term
    */
-  async getFacultyModules(term: string, facultyCode: string) {
-    try {
-      return this.callApi('module', {
-        term,
-        acadgroup: facultyCode,
-      });
-    } catch (e) {
-      if (e instanceof NotFoundError) {
-        return [];
-      }
-
-      throw e;
-    }
-  }
-
-  async getPrefixModules(term: string, prefix: string) {
-    try {
-      return this.callApi('module', {
-        term,
-        subject: `${prefix}%`,
-        catalognbr: '%',
-      });
-    } catch (e) {
-      if (e instanceof NotFoundError) {
-        return [];
-      }
-
-      throw e;
-    }
-  }
+  getFacultyModules = async (term: string, facultyCode: string) =>
+    this.callModulesEndpoint(term, { acadgroup: facultyCode });
 
   /**
    * Get all modules corresponding to a specific department during a specific term
    */
-  async getDepartmentModules(term: string, departmentCode: string): Promise<ModuleInfo[]> {
-    try {
-      return this.callApi('module', {
-        term,
-        acadorg: departmentCode,
-      });
-    } catch (e) {
-      if (e instanceof NotFoundError) {
-        return [];
-      }
-
-      throw e;
-    }
-  }
+  getDepartmentModules = async (term: string, departmentCode: string): Promise<ModuleInfo[]> =>
+    this.callModulesEndpoint(term, { acadorg: departmentCode });
 
   /**
    * Returns every lesson associated with a module in a specific term in one massive
    * array
    */
-  async getModuleTimetable(term: string, module: ModuleCode): Promise<TimetableLesson[]> {
-    return this.callApi('classtt/withdate', {
+  getModuleTimetable = async (term: string, module: ModuleCode): Promise<TimetableLesson[]> =>
+    this.callApi('classtt/withdate', {
       term,
       module,
     });
-  }
 
   /**
    * Get exam info for a specific module
@@ -228,7 +207,7 @@ export class API {
    * @throws {NotFoundError} If the module in question has no exam (or if the information
    *    is not available yet - the API makes no distinction)
    */
-  async getModuleExam(term: string, module: ModuleCode): Promise<ModuleExam> {
+  getModuleExam = async (term: string, module: ModuleCode): Promise<ModuleExam> => {
     const exams = await this.callApi('examtt', {
       term,
       module,
@@ -236,16 +215,14 @@ export class API {
 
     if (exams.length === 0) throw new NotFoundError();
     return exams[0];
-  }
+  };
 
   /**
    * Get exam info on all modules in a semester
    *
    * TODO: See if this endpoint will trigger timeout on the actual server
    */
-  async getTermExams(term: string): Promise<ModuleExam[]> {
-    return this.callApi('examtt', { term });
-  }
+  getTermExams = async (term: string): Promise<ModuleExam[]> => this.callApi('examtt', { term });
 }
 
 // Export as default a singleton instance to be used globally

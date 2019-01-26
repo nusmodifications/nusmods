@@ -12,7 +12,7 @@ import { CacheExpiredError } from './errors';
 /**
  * Object representing a file on the filesystem that may or may not exist
  */
-type File<T> = {
+export type File<T> = {
   path: string,
   write: (T) => Promise<void>,
   read: () => Promise<T>,

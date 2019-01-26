@@ -3,6 +3,7 @@
 import BaseTask from './BaseTask';
 import type { AcademicGroup, AcademicOrg } from '../types/api';
 import type { Task } from '../types/tasks';
+import type { File } from '../components/fs';
 
 type Output = {|
   +departments: AcademicOrg[],
@@ -10,7 +11,8 @@ type Output = {|
 |};
 
 /**
- * Downloads faculty and department data
+ * Downloads faculty and department codes. This is used to map to the codes that appear in
+ * module information.
  */
 export default class GetFacultyDepartment extends BaseTask implements Task<void, Output> {
   name = 'Get faculties and departments';
@@ -19,22 +21,27 @@ export default class GetFacultyDepartment extends BaseTask implements Task<void,
     task: GetFacultyDepartment.name,
   });
 
-  async getDepartments() {
+  async cacheDownload<T>(name: string, download: () => Promise<T>, cache: File<T>): Promise<T> {
     try {
-      return this.api.getDepartment();
+      // The department and faculties endpoints have high failure rates,
+      // while their data changes infrequently. This makes them suitable
+      // for caching
+      const data = await download();
+      await cache.write(data);
+      return data;
     } catch (e) {
-      this.logger.error(e, 'Cannot get department codes');
-      throw e;
+      // If the file is not available we try to load it from cache instead
+      this.logger.warn(e, `Cannot load ${name} from API, attempting to read from cache`);
+      return cache.read();
     }
   }
 
+  async getDepartments() {
+    return this.cacheDownload('department codes', this.api.getDepartment, this.fs.raw.departments);
+  }
+
   async getFaculties() {
-    try {
-      return this.api.getFaculty();
-    } catch (e) {
-      this.logger.error(e, 'Cannot get faculty codes');
-      throw e;
-    }
+    return this.cacheDownload('faculty codes', this.api.getFaculty, this.fs.raw.faculties);
   }
 
   async run() {
@@ -44,12 +51,6 @@ export default class GetFacultyDepartment extends BaseTask implements Task<void,
     const [departments, faculties] = await Promise.all([
       this.getDepartments(),
       this.getFaculties(),
-    ]);
-
-    // Cache results on disk
-    await Promise.all([
-      this.fs.raw.departments.write(departments),
-      this.fs.raw.faculties.write(faculties),
     ]);
 
     // Return data for next task in pipeline

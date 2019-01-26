@@ -3,6 +3,8 @@
 import path from 'path';
 import bunyan from 'bunyan';
 
+const logRoot = path.join(__dirname, '../../logs');
+
 const rootLogger = bunyan.createLogger({
   name: 'scraper',
   streams: [
@@ -11,7 +13,12 @@ const rootLogger = bunyan.createLogger({
       level: 'info',
     },
     {
-      path: path.join(__dirname, '../../logs/scraper.log'),
+      path: path.join(logRoot, 'info.log'),
+      level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
+    },
+    {
+      path: path.join(logRoot, 'errors.log'),
+      level: 'warn',
     },
   ],
 });

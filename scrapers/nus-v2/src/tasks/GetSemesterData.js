@@ -60,6 +60,7 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
       try {
         timetable = await getTimetable.run();
       } catch (e) {
+        // Skip the module if we cannot get its timetable
         this.logger.error(e, `Error getting timetable for ${moduleCode}`);
         return null;
       }

@@ -6,9 +6,8 @@ import './utils/sentry';
 import type { CommandModule } from 'yargs';
 import * as yargs from 'yargs';
 
-import { TestApi, GetFacultyDepartment } from './tasks';
+import { TestApi, GetFacultyDepartment, GetSemesterData } from './tasks';
 import config from './config';
-import GetSemesterData from './tasks/GetSemesterData';
 
 function runTask(Task, ...params) {
   new Task(...params).run().catch((e) => {

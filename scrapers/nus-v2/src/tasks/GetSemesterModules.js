@@ -47,6 +47,8 @@ export default class GetSemesterModules extends BaseTask implements Task<Input, 
   }
 
   async run(input: Input) {
+    this.logger.info(`Getting modules for ${this.academicYear} semester ${this.semester}`);
+
     const { faculties, departments } = input;
     const term = getTermCode(this.semester, this.academicYear);
 
@@ -56,15 +58,13 @@ export default class GetSemesterModules extends BaseTask implements Task<Input, 
     // Make API requests to get the modules we need
     // We make a new request for each faculty because the API will timeout if
     // we try to request for all of them in one shot
-    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-    const requests = letters.map(async (letter) => {
-      try {
-        return this.api.getPrefixModules(term, letter);
-      } catch (e) {
-        this.logger.error(e, `Cannot get modules starting with ${letter}`);
+    const requests = faculties.map((faculty) =>
+      this.api.getFacultyModules(term, faculty.AcademicGroup).catch((e) => {
+        this.logger.error(e, `Cannot get modules from ${faculty.Description}`);
         throw e;
-      }
-    });
+      }),
+    );
+
     const rawModules: ModuleInfo[] = flatten(await Promise.all(requests));
 
     // The ModuleInfo object from the API comes with a useless AcademicOrg and

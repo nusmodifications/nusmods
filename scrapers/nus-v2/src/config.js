@@ -33,7 +33,7 @@ const config: Config = {
 
   // Other config
   academicYear: '2018/2019',
-  apiConcurrency: 5,
+  apiConcurrency: 1,
   dataPath: path.resolve(__dirname, '../data'),
 };
 
