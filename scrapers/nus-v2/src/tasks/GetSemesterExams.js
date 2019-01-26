@@ -47,7 +47,7 @@ export default class GetSemesterExams extends BaseTask implements Task<void, Out
     const exams = mapValues(keyBy(rawExams, (exam) => exam.module), mapExamInfo);
 
     // Cache module info to disk
-    await this.fs.saveRawExams(this.semester, rawExams);
+    await this.fs.raw.semester(this.semester).exams.write(rawExams);
 
     return exams;
   }

@@ -42,7 +42,7 @@ export default class GetModuleTimetable extends BaseTask implements Task<void, O
     const timetable = mapTimetableLessons(lessons);
 
     // Cache timetable to disk
-    await this.fs.saveTimetable(this.semester, this.moduleCode, timetable);
+    await this.fs.output.timetable(this.semester, this.moduleCode).write(timetable);
 
     // Return output for next task in pipeline
     return timetable;

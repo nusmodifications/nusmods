@@ -29,6 +29,12 @@ export default class GetSemesterModules extends BaseTask implements Task<Input, 
   semester: Semester;
   academicYear: string;
 
+  logger = this.rootLogger.child({
+    task: GetSemesterModules.name,
+    year: this.academicYear,
+    semester: this.semester,
+  });
+
   get name() {
     return `Get modules info for semester ${this.semester}`;
   }
@@ -51,18 +57,25 @@ export default class GetSemesterModules extends BaseTask implements Task<Input, 
     // We make a new request for each faculty because the API will timeout if
     // we try to request for all of them in one shot
     const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-    const requests = letters.map((letter) => this.api.getPrefixModules(term, letter));
+    const requests = letters.map(async (letter) => {
+      try {
+        return this.api.getPrefixModules(term, letter);
+      } catch (e) {
+        this.logger.error(e, `Cannot get modules starting with ${letter}`);
+        throw e;
+      }
+    });
     const rawModules: ModuleInfo[] = flatten(await Promise.all(requests));
 
-    // The ModuleInfo object from the API comes with a useless AcademicOrg and AcademicDept
-    // object, which we replace with a string to save on space and to make it
-    // more readable
+    // The ModuleInfo object from the API comes with a useless AcademicOrg and
+    // AcademicDept object, which we replace with a string to save on space
+    // and improve readability
     const modules: ModuleInfoMapped[] = rawModules.map((moduleInfo) =>
       mapFacultyDepartmentCodes(moduleInfo, facultyMap, departmentMap),
     );
 
     // Cache module info to disk
-    await this.fs.saveRawModules(this.semester, modules);
+    await this.fs.raw.semester(this.semester).modules.write(modules);
 
     return modules;
   }

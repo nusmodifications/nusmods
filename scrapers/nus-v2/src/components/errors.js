@@ -26,3 +26,7 @@ export class UnknownApiError extends ApiError {}
 export class NotFoundError extends ApiError {}
 
 export class AuthError extends ApiError {}
+
+export class CacheExpiredError extends Error {
+  path: string;
+}

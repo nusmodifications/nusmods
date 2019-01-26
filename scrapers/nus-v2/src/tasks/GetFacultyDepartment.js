@@ -48,8 +48,8 @@ export default class GetFacultyDepartment extends BaseTask implements Task<void,
 
     // Cache results on disk
     await Promise.all([
-      this.fs.saveRawDepartments(departments),
-      this.fs.saveRawFaculties(faculties),
+      this.fs.raw.departments.write(departments),
+      this.fs.raw.faculties.write(faculties),
     ]);
 
     // Return data for next task in pipeline

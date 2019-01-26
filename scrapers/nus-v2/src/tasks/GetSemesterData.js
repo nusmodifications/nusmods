@@ -109,11 +109,11 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
     // Save the merged semester data to disk
     await Promise.all(
       semesterModuleData.map(({ ModuleCode, SemesterData }) =>
-        this.fs.saveSemesterData(this.semester, ModuleCode, SemesterData),
+        this.fs.output.semesterData(this.semester, ModuleCode).write(SemesterData),
       ),
     );
 
-    await this.fs.saveRawSemesterModuleData(this.semester, semesterModuleData);
+    await this.fs.raw.semester(this.semester).moduleData.write(semesterModuleData);
 
     return semesterModuleData;
   }

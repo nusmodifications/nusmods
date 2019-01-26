@@ -2,15 +2,7 @@
 
 import api from '../components/api';
 import logger from '../components/logger';
-import {
-  saveRawDepartments,
-  saveRawFaculties,
-  saveRawModules,
-  saveRawExams,
-  saveRawSemesterModuleData,
-  saveTimetable,
-  saveSemesterData,
-} from '../components/fs';
+import getFileSystem from '../components/fs';
 
 /**
  * Base task class. Dependencies and components are instance properties
@@ -22,18 +14,7 @@ export default class BaseTask {
   api = api;
 
   // For storing data to the file system
-  fs = {
-    // Save raw data
-    saveRawDepartments,
-    saveRawFaculties,
-    saveRawModules,
-    saveRawExams,
-    saveRawSemesterModuleData,
-
-    // Save output
-    saveTimetable,
-    saveSemesterData,
-  };
+  fs = getFileSystem();
 
   rootLogger = logger;
 }
