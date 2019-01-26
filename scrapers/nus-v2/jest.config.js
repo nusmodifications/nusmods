@@ -35,11 +35,6 @@ module.exports = {
   // A path to a module which exports an async function that is triggered once after all test suites
   // globalTeardown: null,
 
-  moduleNameMapper: {
-    // For CI, which doesn't have an env.json
-    '../env.json': '<rootDir>/src/__mock__/env.json',
-  },
-
   // A preset that is used as a base for Jest's configuration
   // preset: null,
 
@@ -56,7 +51,7 @@ module.exports = {
   // setupFiles: [],
 
   // The path to a module that runs some code to configure or set up the testing framework before each test
-  // setupTestFrameworkScriptFile: null,
+  setupFilesAfterEnv: ['./scripts/jest-setup.js'],
 
   // A list of paths to snapshot serializer modules Jest should use for snapshot testing
   // snapshotSerializers: [],

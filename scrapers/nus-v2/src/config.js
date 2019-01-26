@@ -1,7 +1,7 @@
 // @flow
 
 import path from 'path'
-import env from '../env.json';
+import * as fs from 'fs-extra'
 
 export type Config = {|
   +appKey: string,
@@ -18,6 +18,8 @@ export type Config = {|
   // Root folder for data
   +dataPath: string,
 |};
+
+const env = fs.readJSONSync('../env.json');
 
 if (!env.appKey || !env.studentKey || !env.baseUrl) {
   throw new Error(
