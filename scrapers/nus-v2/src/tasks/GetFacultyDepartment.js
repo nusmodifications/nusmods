@@ -13,8 +13,6 @@ type Output = {|
  * Downloads faculty and department data
  */
 export default class GetFacultyDepartment extends BaseTask implements Task<void, Output> {
-  input: void;
-  output: Output;
   name = 'Get faculties and departments';
 
   async run() {
@@ -24,16 +22,16 @@ export default class GetFacultyDepartment extends BaseTask implements Task<void,
       this.api.getFaculty(),
     ]);
 
-    // Save data for next task in pipeline
-    this.output = {
-      departments,
-      faculties,
-    };
-
     // Cache results on disk
     await Promise.all([
       this.fs.saveRawDepartments(departments),
       this.fs.saveRawFaculties(faculties),
     ]);
+
+    // Return data for next task in pipeline
+    return {
+      departments,
+      faculties,
+    };
   }
 }

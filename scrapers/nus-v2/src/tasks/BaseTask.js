@@ -5,7 +5,7 @@ import {
   saveRawDepartments,
   saveRawFaculties,
   saveRawModules,
-
+  saveRawExams,
   saveTimetable,
 } from '../components/output';
 
@@ -20,10 +20,13 @@ export default class BaseTask {
 
   // For storing data to the file system
   fs = {
+    // Save raw data
     saveRawDepartments,
     saveRawFaculties,
     saveRawModules,
+    saveRawExams,
 
+    // Save output
     saveTimetable,
   };
 }

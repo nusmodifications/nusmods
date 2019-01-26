@@ -20,10 +20,7 @@ type Input = {|
   +faculties: AcademicGroup[],
 |};
 
-type Output = {|
-  +term: string,
-  +modules: ModuleInfoMapped[],
-|};
+type Output = ModuleInfoMapped[];
 
 /**
  * Download modules info for all faculties in a specific semester
@@ -31,9 +28,6 @@ type Output = {|
 export default class GetFacultyModules extends BaseTask implements Task<Input, Output> {
   semester: Semester;
   academicYear: string;
-
-  input: Input;
-  output: Output;
 
   get name() {
     return `Get modules info for semester ${this.semester}`;
@@ -46,8 +40,8 @@ export default class GetFacultyModules extends BaseTask implements Task<Input, O
     this.academicYear = academicYear;
   }
 
-  async run() {
-    const { faculties, departments } = this.input;
+  async run(input: Input) {
+    const { faculties, departments } = input;
     const term = getTermCode(this.semester, this.academicYear);
 
     const facultyMap = getFacultyCodeMap(faculties);
@@ -64,17 +58,13 @@ export default class GetFacultyModules extends BaseTask implements Task<Input, O
     // The ModuleInfo object from the API comes with a useless AcademicOrg and AcademicDept
     // object, which we replace with a string to save on space and to make it
     // more readable
-    const modules = rawModules.map((moduleInfo) =>
+    const modules: ModuleInfoMapped[] = rawModules.map((moduleInfo) =>
       mapFacultyDepartmentCodes(moduleInfo, facultyMap, departmentMap),
     );
 
-    // Save output for next task in pipeline
-    this.output = {
-      term,
-      modules,
-    };
-
     // Cache module info to disk
     await this.fs.saveRawModules(this.semester, modules);
+
+    return modules;
   }
 }

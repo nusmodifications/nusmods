@@ -7,9 +7,7 @@ import BaseTask from './BaseTask';
 import { mapTimetableLessons } from '../components/mapper';
 import type { Task } from '../types/tasks';
 
-type Output = {|
-  +timetable: RawLesson[],
-|};
+type Output = RawLesson[];
 
 /**
  * Download the timetable for a specific module
@@ -20,7 +18,6 @@ export default class GetModuleTimetable extends BaseTask implements Task<void, O
   moduleCode: ModuleCode;
 
   input: void;
-  output: Output;
 
   get name() {
     return `Get timetable for ${this.moduleCode} for semester ${this.semester}`;
@@ -44,12 +41,10 @@ export default class GetModuleTimetable extends BaseTask implements Task<void, O
     const lessons = await this.api.getModuleTimetable(term, this.moduleCode);
     const timetable = mapTimetableLessons(lessons);
 
-    // Save output for next task in pipeline
-    this.output = {
-      timetable,
-    };
-
     // Cache timetable to disk
     await this.fs.saveTimetable(this.semester, this.moduleCode, timetable);
+
+    // Return output for next task in pipeline
+    return timetable;
   }
 }
