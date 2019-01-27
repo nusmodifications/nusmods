@@ -1,6 +1,7 @@
 // @flow
 
 import { sortBy } from 'lodash';
+import moment from 'moment';
 import departments from './__mocks__/departments.json';
 import faculties from './__mocks__/faculties.json';
 import CS4238Timetable from './__mocks__/CS4238_timetable.json';
@@ -43,17 +44,19 @@ describe(getDepartmentCodeMap, () => {
 
 describe(mapExamInfo, () => {
   test('should map module exam to date strings', () => {
-    expect(
-      mapExamInfo({
-        term: '1810',
-        start_time: '17:00',
-        acad_org: '00301ACAD1',
-        module: 'CS2100',
-        end_time: '19:00',
-        duration: 120,
-        exam_date: '2018-11-27',
-      }),
-    ).toEqual({
+    const actual = mapExamInfo({
+      term: '1810',
+      start_time: '17:00',
+      acad_org: '00301ACAD1',
+      module: 'CS2100',
+      end_time: '19:00',
+      duration: 120,
+      exam_date: '2018-11-27',
+    });
+
+    expect(moment(actual.ExamDate, moment.ISO_8601).isValid()).toBe(true);
+
+    expect(actual).toEqual({
       ExamDate: '2018-11-27T17:00:00.000+08:00',
       ExamDuration: 120,
     });
@@ -220,7 +223,7 @@ describe(mapTimetableLessons, () => {
     expectLessonsEqual(mapTimetableLessons(MA2213Timetable), expected);
   });
 
-  // CS2100 has a lot of lessons, and two lecture groups
+  // CS2100 has a lot of lessons, and two joined lecture groups
   test('should map CS2100 timetable lessons correctly', () => {
     const expected = [
       {

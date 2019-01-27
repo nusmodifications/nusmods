@@ -96,7 +96,7 @@ export function mapModuleInfo(moduleInfo: ModuleInfoMapped): SemesterModule {
  */
 export function mapExamInfo(moduleExam: ModuleExam): ExamInfo {
   const { exam_date, start_time, duration } = moduleExam;
-  const date = moment(`${exam_date} ${start_time}`, '').utcOffset(UTC_OFFSET);
+  const date = moment(`${exam_date} ${start_time}+08:00`).utcOffset(UTC_OFFSET);
 
   return {
     ExamDate: date.toISOString(true),
