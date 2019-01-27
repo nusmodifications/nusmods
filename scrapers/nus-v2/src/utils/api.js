@@ -28,6 +28,10 @@ export function fromTermCode(term: string): [string, Semester] {
   return [`20${year}/20${year + 1}`, semester];
 }
 
+/**
+ * Cache and return download if it succeeds, otherwise return cached data if
+ * it has not expired yet
+ */
 export async function cacheDownload<T>(
   name: string,
   download: () => Promise<T>,
@@ -49,5 +53,20 @@ export async function cacheDownload<T>(
     // If the file is not available we try to load it from cache instead
     logger.warn(e, `Cannot load ${name} from API, attempting to read from cache`);
     return cache.read();
+  }
+}
+
+export async function retry<T>(
+  promiseFactory: () => Promise<T>,
+  maxRetries: number,
+  retryIf: (Error) => boolean = () => true,
+): Promise<T> {
+  try {
+    return await promiseFactory();
+  } catch (e) {
+    // If we run out of tries, or if the given condition is not fulfilled, we
+    // don't retry
+    if (maxRetries <= 1 || !retryIf(e)) throw e;
+    return retry(promiseFactory, maxRetries - 1, retryIf);
   }
 }

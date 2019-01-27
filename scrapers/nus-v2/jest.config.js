@@ -21,13 +21,13 @@ module.exports = {
   coverageDirectory: '<rootDir>/../coverage',
 
   // An array of regexp pattern strings used to skip coverage collection
-  // coveragePathIgnorePatterns: [
-  //   "/node_modules/"
-  // ],
+  coveragePathIgnorePatterns: [
+    '<rootDir>/utils/test-utils\\.js',
+  ],
 
   // A list of reporter names that Jest uses when writing coverage reports
   // Only write lcov files in CIs
-  coverageReporters: ['text'].concat(process.env.CI ? 'lcov' : []),
+  coverageReporters: ['text', 'lcov'],
 
   // A path to a module which exports an async function that is triggered once before all test suites
   // globalSetup: null,

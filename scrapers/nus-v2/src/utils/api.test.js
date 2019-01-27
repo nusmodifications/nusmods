@@ -1,7 +1,7 @@
 // @flow
 
-import type { File } from '../components/fs';
-import { cacheDownload, fromTermCode, getTermCode } from './api';
+import { cacheDownload, fromTermCode, getTermCode, retry } from './api';
+import { makeMockFile } from './test-utils';
 
 describe(getTermCode, () => {
   test('should return term code', () => {
@@ -21,14 +21,6 @@ describe(fromTermCode, () => {
 });
 
 describe(cacheDownload, () => {
-  function makeMockFile(fileContent: string = ''): File<string> {
-    return {
-      path: './fake',
-      write: jest.fn().mockResolvedValue(),
-      read: jest.fn().mockResolvedValue(fileContent),
-    };
-  }
-
   test('should return and save to cache if download is successful', async () => {
     const download = jest.fn().mockResolvedValue('My data');
     const cache = makeMockFile('File content');
@@ -56,5 +48,53 @@ describe(cacheDownload, () => {
     const result = await cacheDownload('data', download, cache);
     expect(result).toEqual('File content');
     expect(cache.write).not.toBeCalled();
+  });
+});
+
+describe(retry, () => {
+  test('it should return the resolved value', async () => {
+    const fn = jest.fn().mockResolvedValue('Hello world');
+    expect(retry(fn, 3)).resolves.toEqual('Hello world');
+    expect(fn).toBeCalledTimes(1);
+  });
+
+  test('it should retry the function until it succeeds', async () => {
+    const fn = jest
+      .fn()
+      .mockRejectedValueOnce(new Error('Oh no bees'))
+      // $FlowFixMe Flow pls
+      .mockResolvedValue('Hello world');
+
+    const result = await retry(fn, 3);
+    expect(result).toEqual('Hello world');
+    expect(fn).toBeCalledTimes(2);
+  });
+
+  test('it should retry the function until it runs out of tries', async () => {
+    const error = new Error('Oh no bees');
+    const fn = jest.fn().mockRejectedValue(error);
+    expect.assertions(2);
+
+    try {
+      await retry(fn, 3);
+    } catch (e) {
+      expect(e).toEqual(error);
+    }
+
+    expect(fn).toBeCalledTimes(3);
+  });
+
+  test('it should not retry if condition returns false', async () => {
+    const error = new Error('Oh no bees');
+    const fn = jest.fn().mockRejectedValue(error);
+    expect.assertions(2);
+
+    try {
+      await retry(fn, 3, () => false);
+    } catch (e) {
+      expect(e).toEqual(error);
+    }
+
+    expect(fn).toBeCalledTimes(1);
   });
 });
