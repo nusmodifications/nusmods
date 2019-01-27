@@ -4,8 +4,6 @@
  * Small utility functions that don't need to be part of the main API class
  */
 
-/* eslint-disable import/prefer-default-export */
-
 import { Logger } from 'bunyan';
 import type { Semester } from '../types/modules';
 import type { File } from '../components/fs';
@@ -39,7 +37,13 @@ export async function cacheDownload<T>(
   try {
     // Try to download the data, and if successful cache it
     const data = await download();
-    await cache.write(data);
+
+    try {
+      await cache.write(data);
+    } catch (e) {
+      logger.warn(`Failed to cache data to ${cache.path}`);
+    }
+
     return data;
   } catch (e) {
     // If the file is not available we try to load it from cache instead
