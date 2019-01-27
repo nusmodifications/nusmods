@@ -68,7 +68,7 @@ function parse(key: 'Prerequisite' | 'Preclusion', data: ModuleWithoutTree[], su
   )(moduleCodeToData);
 
   Object.keys(moduleCodeToData).forEach((moduleCode) => {
-    if (!Object.prototype.hasOwnProperty.call(parsable, moduleCode)) {
+    if (!parsable[moduleCode]) {
       // log.debug(`${moduleCode}'s ${key} cannot be parsed: ${moduleCodeToData[moduleCode]}`);
     }
   });
@@ -147,7 +147,7 @@ function generateRequirements(allModules, moduleCodes) {
     const parsedPrerequisite = module.ParsedPrerequisite || [];
     const flattenedPrerequisites = flattenTree(parsedPrerequisite);
     flattenedPrerequisites.forEach((moduleCode) => {
-      if (Object.prototype.hasOwnProperty.call(modules, moduleCode)) {
+      if (modules[moduleCode]) {
         modules[moduleCode].LockedModules.add(thisModuleCode);
       }
     });
@@ -155,14 +155,15 @@ function generateRequirements(allModules, moduleCodes) {
 
   // convert set back to array
   moduleCodes.forEach((moduleCode) => {
-    modules[moduleCode].LockedModules = [...modules[moduleCode].LockedModules];
+    modules[moduleCode].LockedModules = Array.from(modules[moduleCode].LockedModules);
   });
+
   return modules;
 }
 
 export default async function genReqTree(allModules: ModuleWithoutTree[]) {
   // check that all modules match regex and no modules contain operators
-  const moduleCodes = R.uniq(R.pluck('ModuleCode', allModules));
+  const moduleCodes: string[] = R.uniq(R.pluck('ModuleCode', allModules));
 
   moduleCodes.forEach((moduleCode) => {
     const isModule = MODULE_REGEX.test(moduleCode);

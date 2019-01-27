@@ -44,7 +44,7 @@
     "@sentry/node": "4.5.3",
     "axios": "0.18.0",
     "bunyan": "1.8.12",
-    "chevrotain": "0.35.0",
+    "chevrotain": "4.2.0",
     "fs-extra": "7.0.1",
     "joi": "14.3.1",
     "lodash": "4.17.11",

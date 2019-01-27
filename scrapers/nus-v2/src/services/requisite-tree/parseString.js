@@ -1,9 +1,9 @@
 // @flow
 
 import { Logger } from 'bunyan';
-import { Token, Lexer, Parser } from 'chevrotain';
+import { createToken, Lexer, Parser, type Token } from 'chevrotain';
 import * as R from 'ramda';
-import { OPERATORS, MODULE_REGEX, AND_OR_REGEX } from './constants';
+import { AND_OR_REGEX, MODULE_REGEX, OPERATORS } from './constants';
 
 /**
  * Parses the string to build a tree of requirements for the module.
@@ -13,35 +13,55 @@ import { OPERATORS, MODULE_REGEX, AND_OR_REGEX } from './constants';
  * Library used for lexing/parsing is chevrotain:
  * https://github.com/SAP/chevrotain
  */
-class Module extends Token {}
-Module.PATTERN = MODULE_REGEX;
-class And extends Token {}
-And.PATTERN = 'and';
-class Or extends Token {}
-Or.PATTERN = 'or';
+const Module = createToken({
+  name: 'Module',
+  pattern: MODULE_REGEX,
+});
 
-class LeftBracket extends Token {}
-LeftBracket.PATTERN = /\(/;
-class RightBracket extends Token {}
-RightBracket.PATTERN = /\)/;
+const And = createToken({
+  name: 'And',
+  pattern: 'and',
+});
 
-class WhiteSpace extends Token {}
-WhiteSpace.PATTERN = /\s+/;
-WhiteSpace.GROUP = Lexer.SKIPPED;
-WhiteSpace.LINE_BREAKS = true;
+const Or = createToken({
+  name: 'Or',
+  pattern: 'or',
+});
 
-class IrrelevantWord extends Token {}
-IrrelevantWord.PATTERN = /[^\s()]+/;
-IrrelevantWord.GROUP = Lexer.SKIPPED;
+const LeftBracket = createToken({
+  name: 'LeftBracket',
+  pattern: /\(/,
+});
+
+const RightBracket = createToken({
+  name: 'RightBracket',
+  pattern: /\)/,
+});
+
+const WhiteSpace = createToken({
+  name: 'Whitespace',
+  pattern: /\s+/,
+  group: Lexer.SKIPPED,
+  lineBreaks: true,
+});
+
+const IrrelevantWord = createToken({
+  name: 'IrrelevantWord',
+  pattern: /[^\s()]+/,
+  group: Lexer.SKIPPED,
+});
 
 const allTokens = [WhiteSpace, Module, And, Or, LeftBracket, RightBracket, IrrelevantWord];
 const ReqTreeLexer = new Lexer(allTokens);
 
 function generateAndBranch(modules) {
+  // $FlowFixMe
   const children = R.uniq(modules);
   return { and: children };
 }
+
 function generateOrBranch(modules) {
+  // $FlowFixMe
   const children = R.uniq(modules);
   return { or: children };
 }
@@ -52,8 +72,9 @@ function generateOrBranch(modules) {
  * @see https://github.com/SAP/chevrotain/blob/master/examples/grammars/calculator/calculator_embedded_actions.js
  */
 class ReqTreeParser extends Parser {
-  constructor(input) {
-    super(input, allTokens, { recoveryEnabled: true });
+  constructor() {
+    super(allTokens, { recoveryEnabled: true, outputCst: false });
+
     this.RULE('parse', () => this.SUBRULE(this.andExpression));
 
     // And has the lowest precedence thus it is first in the rule chain (think +- in math)
@@ -69,10 +90,8 @@ class ReqTreeParser extends Parser {
         // identify the unique position in the grammar during runtime
         value.push(this.SUBRULE2(this.orExpression));
       });
-      if (value.length === 1) {
-        return value[0];
-      }
-      return generateAndBranch(value);
+
+      return value.length === 1 ? value[0] : generateAndBranch(value);
     });
 
     // Or has the higher precedence (think */ in math)
@@ -124,8 +143,8 @@ class ReqTreeParser extends Parser {
 
 // removes unneeded `or` and `and` operators, recursively while noting brackets
 export function cleanOperators(tokens: Token[]) {
-  const output = [];
-  let temp = [];
+  const output: Token[] = [];
+  let temp: Token[] = [];
   let bracketsCount = 0;
 
   tokens.forEach((token) => {
@@ -167,13 +186,10 @@ export function cleanOperators(tokens: Token[]) {
 
   const removedDuplicates = processedTokens.filter((item, pos, arr) => {
     // always keep the first and last element
-    if (pos === 0 || pos === arr.length - 1) {
-      return true;
-    }
-    const currentImage = item.image;
-    const nextImage = arr[pos + 1].image;
+    if (pos === 0 || pos === arr.length - 1) return true;
+
     // then check if each element is different than the one before it
-    return !(AND_OR_REGEX.test(currentImage) && AND_OR_REGEX.test(nextImage));
+    return !(AND_OR_REGEX.test(item.image) && AND_OR_REGEX.test(arr[pos + 1].image));
   });
 
   const moduleTokens = [];
@@ -183,7 +199,7 @@ export function cleanOperators(tokens: Token[]) {
     const { image } = token;
     if (image === 'and' || image === 'or') {
       if (acc === null) return token;
-      if (image !== acc.image) return false;
+      if (acc.image !== image) return false;
     }
     return acc;
   }, null);
@@ -248,7 +264,8 @@ function parseString(pre: string, log: Logger) {
   const lexingResult = ReqTreeLexer.tokenize(pre);
   const tokens = cleanOperators(lexingResult.tokens);
 
-  const parser = new ReqTreeParser(tokens);
+  const parser = new ReqTreeParser();
+  parser.input = tokens;
   const result = parser.parse();
 
   if (parser.errors.length > 0) {

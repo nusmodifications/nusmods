@@ -1397,10 +1397,12 @@ chardet@^0.7.0:
   resolved "https://registry.yarnpkg.com/chardet/-/chardet-0.7.0.tgz#90094849f0937f2eedc2425d0d28a9e5f0cbad9e"
   integrity sha512-mT8iDcrh03qDGRRmoA2hmBJnxpllMR+0/0qlzjqZES6NdiWDcZkCNAk4rPFZ9Q85r27unkiNNg8ZOiwZXBHwcA==
 
-chevrotain@0.35.0:
-  version "0.35.0"
-  resolved "https://registry.yarnpkg.com/chevrotain/-/chevrotain-0.35.0.tgz#d98a61745c533687a2dd37ab46eb9e8a8f56336a"
-  integrity sha512-6eZd3XV/SLXTQ05cwM+s86Z7dxD0IoYpN2ACak3TNUGiF9BP+SJzsVbwrby01IZPI4iZS22vsyXM0Xtz8mhD2g==
+chevrotain@4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/chevrotain/-/chevrotain-4.2.0.tgz#45b4813f8f6f7c3f0d80391d28e0a4561950a4be"
+  integrity sha512-uiwhNpkudwrk3rHxKKfrvsWNe4SBDjnswbF2FDqDfrqsfYr4gY0Yl1k2m9yPKR0fqfbiIP67EbgOv4e+JP+GGg==
+  dependencies:
+    regexp-to-ast "0.3.5"
 
 chokidar@^2.0.3:
   version "2.0.4"
@@ -4932,6 +4934,11 @@ regex-not@^1.0.0, regex-not@^1.0.2:
   dependencies:
     extend-shallow "^3.0.2"
     safe-regex "^1.1.0"
+
+regexp-to-ast@0.3.5:
+  version "0.3.5"
+  resolved "https://registry.yarnpkg.com/regexp-to-ast/-/regexp-to-ast-0.3.5.tgz#dedadd11bbb5f849df76b4e84b0b5335831c0473"
+  integrity sha512-1CJygtdvsfNFwiyjaMLBWtg2tfEqx/jSZ8S6TV+GlNL8kiH8rb4cm5Pb7A/C2BpyM/fA8ZJEudlCwi/jvAY+Ow==
 
 regexp-tree@^0.1.0:
   version "0.1.0"
