@@ -6,15 +6,15 @@ import type { AcademicGroup, AcademicOrg, ModuleInfo } from '../types/api';
 import type { ModuleInfoMapped } from '../types/mapper';
 import type { Semester } from '../types/modules';
 import config from '../config';
-import { getTermCode } from '../utils/api';
+import { getTermCode, retry } from '../utils/api';
 import BaseTask from './BaseTask';
 import {
   getDepartmentCodeMap,
   getFacultyCodeMap,
   mapFacultyDepartmentCodes,
-} from '../components/mapper';
+} from '../services/mapper';
 import type { Task } from '../types/tasks';
-import { TaskError } from '../components/errors';
+import { TaskError, UnknownApiError } from '../services/errors';
 
 type Input = {|
   +departments: AcademicOrg[],
@@ -60,7 +60,10 @@ export default class GetSemesterModules extends BaseTask implements Task<Input, 
     // we try to request for all of them in one shot
     const requests = departments.map(async (department) => {
       try {
-        const modules = await this.api.getDepartmentModules(term, department.AcademicOrganisation);
+        const getModules = () =>
+          this.api.getDepartmentModules(term, department.AcademicOrganisation);
+        const modules = await retry(getModules, 3, (error) => error instanceof UnknownApiError);
+
         this.logger.info(`Downloaded ${modules.length} modules from ${department.Description}`);
         return modules;
       } catch (e) {

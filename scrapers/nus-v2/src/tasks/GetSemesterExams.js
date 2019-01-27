@@ -8,9 +8,9 @@ import config from '../config';
 import { cacheDownload, getTermCode } from '../utils/api';
 import BaseTask from './BaseTask';
 import type { Task } from '../types/tasks';
-import { mapExamInfo } from '../components/mapper';
-import { TaskError } from '../components/errors';
-import { validateExam } from '../components/validation';
+import { mapExamInfo } from '../services/mapper';
+import { TaskError } from '../services/errors';
+import { validateExam } from '../services/validation';
 
 type Output = ExamInfoMap;
 

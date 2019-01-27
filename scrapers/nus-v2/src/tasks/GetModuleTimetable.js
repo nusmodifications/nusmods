@@ -7,8 +7,8 @@ import type { Task } from '../types/tasks';
 import BaseTask from './BaseTask';
 import config from '../config';
 import { getTermCode } from '../utils/api';
-import { mapTimetableLessons } from '../components/mapper';
-import { validateLesson } from '../components/validation';
+import { mapTimetableLessons } from '../services/mapper';
+import { validateLesson } from '../services/validation';
 
 type Output = RawLesson[];
 

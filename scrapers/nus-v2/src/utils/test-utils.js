@@ -2,7 +2,7 @@
 
 /* eslint-env jest */
 
-import type { File } from '../components/fs';
+import type { File } from '../services/fs';
 
 /* eslint-disable import/prefer-default-export */
 

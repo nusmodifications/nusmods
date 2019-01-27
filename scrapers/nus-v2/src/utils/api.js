@@ -6,8 +6,8 @@
 
 import { Logger } from 'bunyan';
 import type { Semester } from '../types/modules';
-import type { File } from '../components/fs';
-import rootLogger from '../components/logger';
+import type { File } from '../services/fs';
+import rootLogger from '../services/logger';
 
 /**
  * Construct the 4 number term code from the academic year and semester

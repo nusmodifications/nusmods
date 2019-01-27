@@ -1,8 +1,8 @@
 // @flow
 
-import api from '../components/api';
-import logger from '../components/logger';
-import getFileSystem from '../components/fs';
+import api from '../services/api';
+import logger from '../services/logger';
+import getFileSystem from '../services/fs';
 
 /**
  * Base task class. Dependencies and components are instance properties
