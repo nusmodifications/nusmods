@@ -11,7 +11,7 @@
     "bunyan": "bunyan -L -o short --color",
     "build": "babel src -d build --ignore \"src/**/*.test.js\" -s",
     "lint": "flow && yarn lint:code",
-    "lint:code": "eslint src",
+    "lint:code": "eslint src scripts",
     "test": "jest --coverage",
     "test:watch": "jest --watch"
   },
