@@ -58,5 +58,9 @@
     "microbundle": "0.9.0",
     "prettier": "1.16.4",
     "rimraf": "2.6.3"
+  },
+  "dependencies": {
+    "date-fns": "^2.0.0-alpha.27",
+    "nusmoderator": "^2.1.1"
   }
 }

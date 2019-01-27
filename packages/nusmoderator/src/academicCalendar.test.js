@@ -1,5 +1,5 @@
 import {
-  acadYearStartDates,
+  getAcadYearStartDate,
   getAcadYear,
   getAcadSem,
   getAcadWeekName,
@@ -10,9 +10,14 @@ import {
 /* eslint-disable no-console */
 console.warn = jest.fn();
 
-describe('acadYearStartDates', () => {
-  it('has the start dates of 6 academic years', () => {
-    expect(Object.keys(acadYearStartDates).length).toBe(6);
+describe('getAcadYearStartDate', ()=>{
+  it('gets the starting date of an academic year', ()=>{
+    expect(getAcadYearStartDate('14/15')).toEqual(new Date('August 4, 2014'));
+    expect(getAcadYearStartDate('15/16')).toEqual(new Date('August 3, 2015'));
+    expect(getAcadYearStartDate('16/17')).toEqual(new Date('August 1, 2016'));
+    expect(getAcadYearStartDate('17/18')).toEqual(new Date('August 7, 2017'));
+    expect(getAcadYearStartDate('18/19')).toEqual(new Date('August 6, 2018'));
+    expect(getAcadYearStartDate('19/20')).toEqual(new Date('August 5, 2019'));
   });
 });
 
@@ -21,14 +26,8 @@ describe('getAcadYear', () => {
     expect(getAcadYear(new Date('July 31, 2016')).year).toBe('15/16');
     expect(getAcadYear(new Date('August 1, 2016')).year).toBe('16/17');
     expect(getAcadYear(new Date('October 17, 2016')).year).toBe('16/17');
+    expect(getAcadYear(new Date('July 31, 2017')).year).toBe('16/17');
     expect(getAcadYear(new Date('October 17, 2017')).year).toBe('17/18');
-  });
-
-  it('gives defaults for unsupported dates', () => {
-    // Earlier than supported year range.
-    expect(getAcadYear(new Date('October 17, 2006'))).toBe(null);
-    // Later than supported year range.
-    expect(getAcadYear(new Date('October 17, 2106')).year).toBe('19/20');
   });
 });
 
@@ -68,7 +67,7 @@ describe('getAcadWeekName', () => {
     expect(getAcadWeekName(16)).toEqual({ weekType: 'Examination', weekNumber: 1 });
     expect(getAcadWeekName(17)).toEqual({ weekType: 'Examination', weekNumber: 2 });
   });
-
+  
   it('gives null for unsupported weeks', () => {
     expect(getAcadWeekName(-1)).toBe(null);
     expect(getAcadWeekName(0)).toBe(null);
@@ -257,10 +256,6 @@ describe('getExamWeek', () => {
     expect(getExamWeek('17/18', 2)).toEqual(new Date('30 April, 2018'));
     expect(getExamWeek('17/18', 3)).toEqual(new Date('18 June, 2018'));
     expect(getExamWeek('16/17', 4)).toEqual(new Date('24 July, 2017'));
-  });
-
-  it('returns null for unsupported years', () => {
-    expect(getExamWeek('09/10', 1)).toBeNull();
   });
 
   it('returns null for unknown semesters', () => {

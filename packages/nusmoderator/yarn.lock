@@ -2197,6 +2197,11 @@ dashdash@^1.12.0:
   dependencies:
     assert-plus "^1.0.0"
 
+date-fns@^2.0.0-alpha.27:
+  version "2.0.0-alpha.27"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.0.0-alpha.27.tgz#5ecd4204ef0e7064264039570f6e8afbc014481c"
+  integrity sha512-cqfVLS+346P/Mpj2RpDrBv0P4p2zZhWWvfY5fuWrXNR/K38HaAGEkeOwb47hIpQP9Jr/TIxjZ2/sNMQwdXuGMg==
+
 de-indent@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/de-indent/-/de-indent-1.0.2.tgz#b2038e846dc33baa5796128d0804b455b8c1e21d"
@@ -5267,6 +5272,11 @@ num2fraction@^1.2.2:
 number-is-nan@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/number-is-nan/-/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
+
+nusmoderator@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/nusmoderator/-/nusmoderator-2.1.1.tgz#4d41b577ed5884843b7ae06d30e055c8ff1b2c26"
+  integrity sha512-uTkwv+QelYQQIfU1EYxqZZ7BtLa47K3kA++M3oA3lV23ewZKqqkjvo1TAgnXgKImLJy7B8HzRBNNSY+rAtoRjA==
 
 nwmatcher@^1.4.3:
   version "1.4.3"

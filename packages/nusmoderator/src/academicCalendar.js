@@ -1,4 +1,14 @@
+
+//const startOfMonth = require('date-fns/startOfMonth');
+const getDay = require('date-fns/getDay');
+const addDays = require('date-fns/addDays');
+const isBefore = require('date-fns/isBefore');
+const getYear = require('date-fns/getYear');
+
+//import {startOfMonth, getDay, addDays} from 'date-fns';
+
 /* eslint-disable no-fallthrough, no-console */
+/// TODO: OLD STUFF
 export const acadYearStartDates = {
   '19/20': new Date('August 5, 2019'),
   '18/19': new Date('August 6, 2018'),
@@ -8,6 +18,31 @@ export const acadYearStartDates = {
   '14/15': new Date('August 4, 2014'),
 };
 
+/**
+ * Returns a Date object of the first weekday of Week 0 of that academic year.
+ * Assumes Week 0 begins on the first Monday of August.
+ * @param {String} acadYear the academic year. E.g. "18/19"
+ * @return {Date} Start date of the academic year
+ */
+export function getAcadYearStartDate(acadYear){
+  const DAY_MONDAY = 1;
+  const MONTH_AUGUST = "7";
+  const lastTwoDigits = acadYear.split("/")[0];
+  const targetYear = parseInt(20 + lastTwoDigits);
+  const firstDateOfMonth = new Date(targetYear, MONTH_AUGUST, 1, 0, 0, 0);
+  const firstDay = getDay(firstDateOfMonth);
+  if (firstDay === DAY_MONDAY){
+    return firstDateOfMonth;
+  } else{
+    // Finds the next nearest Monday.
+    // % 7 is because if Sunday (0), will return +8
+    const daysDifference = (7 - firstDay + DAY_MONDAY) % 7;
+    const firstMonday = addDays(firstDateOfMonth, daysDifference);
+    //console.log("firstAddMonday " + firstMonday.toString());
+    return firstMonday;
+  };
+}
+
 // Constant variables.
 const oneWeekDuration = 1000 * 60 * 60 * 24 * 7;
 const sem1 = 'Semester 1';
@@ -16,27 +51,32 @@ const special1 = 'Special Term I';
 const special2 = 'Special Term II';
 
 /**
- * Computes the current acad year and return an object of acad year and start date for that year.
- * If the date is too far into the future (not within supported range),
- * the last-supported academic year is returned.
- * If the date is too early (not within supported range), null is returned.
+ * Takes in a Date and returns an object of acad year and start date for that year.
  * @param  {Date} date
  * @return {Object} acadYearObject - { year: "15/16", startDate: Date }
  */
 export function getAcadYear(date) {
-  const years = Object.keys(acadYearStartDates);
-  years.sort().reverse();
+  const dateYear = getYear(date);
+  const firstTwoDigits = dateYear%100;
+  const lastTwoDigits = firstTwoDigits + 1;
+  const potentialAcadYear = firstTwoDigits+'/'+lastTwoDigits;
+  const potentialStartDate = getAcadYearStartDate(potentialAcadYear);
 
-  for (let i = 0; i < years.length; i += 1) {
-    const year = years[i];
-    if (date >= acadYearStartDates[year]) {
-      return {
-        year,
-        startDate: acadYearStartDates[year],
-      };
-    }
+  let year
+  // check if date is before the start of that year's AY start date
+  // Small HACK to workaround isBefore() because it returns true for same day
+  if(isBefore(date, potentialStartDate)){
+    //Before
+    year = (firstTwoDigits - 1)+'/'+(lastTwoDigits - 1);
+  }else{
+    //After
+    year = potentialAcadYear;
   }
-  return null;
+
+  return {
+    year,
+    startDate: getAcadYearStartDate(year),
+  };
 }
 
 /**
@@ -128,7 +168,7 @@ export function getAcadWeekName(acadWeekNumber) {
 export function getAcadWeekInfo(date) {
   const currentAcad = getAcadYear(date);
   const acadYear = currentAcad.year;
-  const acadYearStartDate = currentAcad.startDate;
+  const acadYearStartDate = getAcadYearStartDate(acadYear);
 
   let acadWeekNumber = Math.ceil(
     (date.getTime() - acadYearStartDate.getTime() + 1) / oneWeekDuration,
@@ -185,7 +225,7 @@ export function getAcadWeekInfo(date) {
  * @returns {Date}
  */
 export function getExamWeek(year, semester) {
-  const startDate = acadYearStartDates[year];
+  const startDate = getAcadYearStartDate(year);
 
   if (!startDate) {
     console.warn(`[nusmoderator] Unsupported year: ${year}`);
@@ -211,7 +251,7 @@ export function getExamWeek(year, semester) {
 }
 
 export default {
-  acadYearStartDates,
+  getAcadYearStartDate,
   getAcadYear,
   getAcadSem,
   getAcadWeekName,
