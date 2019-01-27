@@ -9,6 +9,7 @@ import type { Module, ModuleCode, RawLesson, Semester, SemesterData } from '../t
 import type { ModuleInfoMapped, SemesterModuleData } from '../types/mapper';
 import config from '../config';
 import { CacheExpiredError } from './errors';
+import type { Venue, VenueInfo } from '../types/venues';
 
 /**
  * Object representing a file on the filesystem that may or may not exist
@@ -76,6 +77,14 @@ export default function getFileSystem() {
 
       // List of partial module info for module finder
       moduleInformation: file<Module[]>(path.join(yearRoot, 'moduleInformation.json')),
+
+      // List of venues
+      venueList: (semester: Semester) =>
+        file<Venue[]>(path.join(yearRoot, String(semester), 'venues.json')),
+
+      // List of venues mapped to their availability
+      venueInformation: (semester: Semester) =>
+        file<VenueInfo>(path.join(yearRoot, String(semester), 'venueInformation.json')),
 
       // Output for a specific module's data
       module: (moduleCode: ModuleCode) =>

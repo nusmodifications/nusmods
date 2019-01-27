@@ -1,5 +1,5 @@
 // @flow
-import { fromPairs, groupBy, values } from 'lodash';
+import { entries, fromPairs, groupBy, mapValues, values } from 'lodash';
 import moment from 'moment';
 import NUSModerator from 'nusmoderator';
 
@@ -10,7 +10,7 @@ import type {
   ModuleInfo,
   TimetableLesson,
 } from '../types/api';
-import type { RawLesson, WeekText } from '../types/modules';
+import type { ModuleCode, RawLesson, WeekText } from '../types/modules';
 import type {
   DepartmentCodeMap,
   ExamInfo,
@@ -19,6 +19,8 @@ import type {
   SemesterModule,
 } from '../types/mapper';
 import { fromTermCode } from '../utils/api';
+import { getTimeRange } from '../utils/time';
+import { OCCUPIED } from '../types/venues';
 
 const UTC_OFFSET = 8 * 60; // Singapore is UTC+8
 
@@ -102,6 +104,34 @@ export function mapExamInfo(moduleExam: ModuleExam): ExamInfo {
     ExamDate: date.toISOString(true),
     ExamDuration: parseInt(duration, 10),
   };
+}
+
+export function extractVenueAvailability(moduleCode: ModuleCode, timetable: RawLesson[]) {
+  // Map lessons to the venue they're in
+  return mapValues(groupBy(timetable, (lesson) => lesson.Venue), (lessons) =>
+    // Then map them again to the day of the lesson
+    entries(groupBy(lessons, (lesson) => lesson.DayText)).map(([Day, dayLessons]) => {
+      // Inject module code and remove Venue from the class
+      const Classes = dayLessons.map(({ Venue, ...lesson }) => ({
+        ...lesson,
+        ModuleCode: moduleCode,
+      }));
+
+      // Mark time between lesson start and end as occupied
+      const Availability = {};
+      dayLessons.forEach((lesson) => {
+        getTimeRange(lesson.StartTime, lesson.EndTime).forEach((time) => {
+          Availability[time] = OCCUPIED;
+        });
+      });
+
+      return {
+        Day,
+        Classes,
+        Availability,
+      };
+    }),
+  );
 }
 
 export const dayTextMap = {
