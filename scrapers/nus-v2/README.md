@@ -55,3 +55,7 @@ Run these through `yarn scrape` in production or `yarn dev` in development piped
 - `LecturePeriods` and `TutorialPeriods` are removed - these are not provided by the API, and it is a lot of work and space for not a lot of information
 - `ExamDate` is now a proper ISO8601 date, formatted with TZ included to Singapore time (UTC+8)
 - `ExamDuration` is a new nullable field providing the duration of the exam in minutes
+
+### Venue data
+
+- `Availability` now only marks occupied times. Vacant times are simply left out of the object.
