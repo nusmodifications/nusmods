@@ -1,5 +1,6 @@
 // @flow
 
+import type { WriteOptions } from 'fs-extra';
 import path from 'path';
 import * as fs from 'fs-extra';
 
@@ -20,10 +21,15 @@ export type File<T> = {
 
 const defaultExpiry = 24 * 60; // 1 day
 
+const writeOptions: WriteOptions = {
+  // Use 2 spaces for better formatting in development
+  spaces: process.env.NODE_ENV === 'production' ? 0 : 2,
+};
+
 function file<T>(filepath: string, expirationInMin: number = defaultExpiry): File<T> {
   return {
     path: filepath,
-    write: (o) => fs.outputJSON(filepath, o),
+    write: (o) => fs.outputJSON(filepath, o, writeOptions),
     read: async () => {
       const [data, stat] = await Promise.all([fs.readJSON(filepath), fs.stat(filepath)]);
 

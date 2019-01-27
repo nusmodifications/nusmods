@@ -50,7 +50,6 @@ export default class GetModuleTimetable extends BaseTask implements Task<void, O
 
     // Validate lessons
     const [validLessons, invalidLessons] = partition(lessons, validateLesson);
-
     if (invalidLessons.length > 0) {
       this.logger.warn({ invalidLessons }, 'Removed %i invalid lessons', invalidLessons.length);
     }
@@ -60,7 +59,6 @@ export default class GetModuleTimetable extends BaseTask implements Task<void, O
     // Cache timetable to disk
     await this.fs.output.timetable(this.semester, this.moduleCode).write(timetable);
 
-    // Return output for next task in pipeline
     return timetable;
   }
 }
