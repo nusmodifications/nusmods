@@ -1,11 +1,14 @@
 // @flow
+import { partition } from 'lodash';
 
 import type { ModuleCode, RawLesson, Semester } from '../types/modules';
+import type { Task } from '../types/tasks';
+
+import BaseTask from './BaseTask';
 import config from '../config';
 import { getTermCode } from '../utils/api';
-import BaseTask from './BaseTask';
 import { mapTimetableLessons } from '../components/mapper';
-import type { Task } from '../types/tasks';
+import { validateLesson } from '../components/validation';
 
 type Output = RawLesson[];
 
@@ -17,7 +20,12 @@ export default class GetModuleTimetable extends BaseTask implements Task<void, O
   academicYear: string;
   moduleCode: ModuleCode;
 
-  input: void;
+  logger = this.rootLogger.child({
+    task: GetModuleTimetable.name,
+    year: this.academicYear,
+    semester: this.semester,
+    moduleCode: this.moduleCode,
+  });
 
   get name() {
     return `Get timetable for ${this.moduleCode} for semester ${this.semester}`;
@@ -39,7 +47,15 @@ export default class GetModuleTimetable extends BaseTask implements Task<void, O
     const term = getTermCode(this.semester, this.academicYear);
 
     const lessons = await this.api.getModuleTimetable(term, this.moduleCode);
-    const timetable = mapTimetableLessons(lessons);
+
+    // Validate lessons
+    const [validLessons, invalidLessons] = partition(lessons, validateLesson);
+
+    if (invalidLessons.length > 0) {
+      this.logger.warn({ invalidLessons }, 'Removed %i invalid lessons', invalidLessons.length);
+    }
+
+    const timetable = mapTimetableLessons(validLessons);
 
     // Cache timetable to disk
     await this.fs.output.timetable(this.semester, this.moduleCode).write(timetable);

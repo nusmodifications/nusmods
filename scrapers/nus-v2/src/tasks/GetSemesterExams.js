@@ -1,6 +1,6 @@
 // @flow
 
-import { mapValues, keyBy } from 'lodash';
+import { mapValues, keyBy, partition } from 'lodash';
 import type { ModuleExam } from '../types/api';
 import type { ExamInfoMap } from '../types/mapper';
 import type { Semester } from '../types/modules';
@@ -10,6 +10,7 @@ import BaseTask from './BaseTask';
 import type { Task } from '../types/tasks';
 import { mapExamInfo } from '../components/mapper';
 import { TaskError } from '../components/errors';
+import { validateExam } from '../components/validation';
 
 type Output = ExamInfoMap;
 
@@ -56,7 +57,17 @@ export default class GetSemesterExams extends BaseTask implements Task<void, Out
       throw new TaskError('Cannot get exam data', this, e);
     }
 
-    const exams = mapValues(keyBy(rawExams, (exam) => exam.module), mapExamInfo);
+    // Try to filter out invalid exams
+    const [validExams, invalidExams] = partition(rawExams, validateExam);
+    if (invalidExams.length > 0) {
+      this.logger.warn(
+        { invalidExams },
+        `Removed %i exams because they were invalid`,
+        invalidExams.length,
+      );
+    }
+
+    const exams = mapValues(keyBy(validExams, (exam) => exam.module), mapExamInfo);
     this.logger.info(`Downloaded ${rawExams.length} exams`);
 
     return exams;

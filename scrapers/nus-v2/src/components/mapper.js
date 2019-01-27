@@ -104,7 +104,7 @@ export function mapExamInfo(moduleExam: ModuleExam): ExamInfo {
   };
 }
 
-const dayTextMap = {
+export const dayTextMap = {
   '1': 'Monday',
   '2': 'Tuesday',
   '3': 'Wednesday',
@@ -113,7 +113,7 @@ const dayTextMap = {
   '6': 'Saturday',
 };
 
-const activityLessonTypeMap = {
+export const activityLessonTypeMap = {
   '2': 'Tutorial Type 2',
   '3': 'Tutorial Type 3',
   '4': 'Tutorial Type 4',

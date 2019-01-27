@@ -81,6 +81,10 @@ describe(mapTimetableLessons, () => {
     expect(sortBy(actual, serializeLesson)).toEqual(sortBy(expected, serializeLesson));
   }
 
+  test('should map empty timetable lessons', () => {
+    expect(mapTimetableLessons([])).toEqual([]);
+  });
+
   // CS4238 is relatively simple - two lesson types, four lessons, every week
   test('should map CS4238 timetable lessons correctly', () => {
     const expected = [
