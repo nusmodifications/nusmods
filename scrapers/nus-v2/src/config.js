@@ -19,7 +19,7 @@ export type Config = {|
   +dataPath: string,
 |};
 
-const env = fs.readJSONSync('../env.json');
+const env = fs.readJSONSync(path.join(__dirname, '../env.json'));
 
 if (!env.appKey || !env.studentKey || !env.baseUrl) {
   throw new Error(
