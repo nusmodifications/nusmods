@@ -54,7 +54,7 @@ export type ModuleInfo = {|
 
 export type TimetableLesson = {|
   term: string,
-  room: string,
+  room: ?string,
   numweeks: number,
   start_time: string,
   activity: string,

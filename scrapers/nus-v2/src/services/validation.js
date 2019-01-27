@@ -9,7 +9,8 @@ import type { ModuleExam, TimetableLesson } from '../types/api';
 import { activityLessonTypeMap, dayTextMap } from './mapper';
 
 const lessonSchema = Joi.object({
-  room: Joi.string(),
+  // Allow null because we can still use the rest of the information
+  room: Joi.string().allow(null),
   start_time: Joi.string(),
   eventdate: Joi.string().isoDate(),
   activity: Joi.string().only(Object.keys(activityLessonTypeMap)),

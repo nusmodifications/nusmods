@@ -135,6 +135,22 @@ describe(extractVenueAvailability, () => {
       ],
     });
   });
+
+  test('should not map lessons that have no venue', () => {
+    expect(
+      extractVenueAvailability('CS3216', [
+        {
+          ClassNo: '1',
+          StartTime: '1830',
+          EndTime: '2030',
+          WeekText: 'Every Week',
+          Venue: '',
+          DayText: 'Monday',
+          LessonType: 'Lecture',
+        },
+      ]),
+    ).toEqual({});
+  });
 });
 
 describe(mapTimetableLessons, () => {

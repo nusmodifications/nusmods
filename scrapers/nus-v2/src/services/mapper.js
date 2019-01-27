@@ -11,6 +11,7 @@ import type {
   TimetableLesson,
 } from '../types/api';
 import type { ModuleCode, RawLesson, WeekText } from '../types/modules';
+import type { VenueLesson } from '../types/venues';
 import type {
   DepartmentCodeMap,
   ExamInfo,
@@ -18,9 +19,10 @@ import type {
   ModuleInfoMapped,
   SemesterModule,
 } from '../types/mapper';
+
+import { OCCUPIED } from '../types/venues';
 import { fromTermCode } from '../utils/api';
 import { getTimeRange } from '../utils/time';
-import { OCCUPIED } from '../types/venues';
 
 const UTC_OFFSET = 8 * 60; // Singapore is UTC+8
 
@@ -106,31 +108,41 @@ export function mapExamInfo(moduleExam: ModuleExam): ExamInfo {
   };
 }
 
+/**
+ * Convert module timetable into venue availability
+ */
 export function extractVenueAvailability(moduleCode: ModuleCode, timetable: RawLesson[]) {
-  // Map lessons to the venue they're in
-  return mapValues(groupBy(timetable, (lesson) => lesson.Venue), (lessons) =>
-    // Then map them again to the day of the lesson
-    entries(groupBy(lessons, (lesson) => lesson.DayText)).map(([Day, dayLessons]) => {
-      // Inject module code and remove Venue from the class
-      const Classes = dayLessons.map(({ Venue, ...lesson }) => ({
-        ...lesson,
-        ModuleCode: moduleCode,
-      }));
+  // 1. Only include lessons that actually have a venue
+  const filteredLessons = timetable.filter((lesson) => lesson.Venue);
 
-      // Mark time between lesson start and end as occupied
-      const Availability = {};
-      dayLessons.forEach((lesson) => {
-        getTimeRange(lesson.StartTime, lesson.EndTime).forEach((time) => {
-          Availability[time] = OCCUPIED;
+  // 2. Map lessons to the venue they're in
+  const groupedLessons = groupBy(filteredLessons, (lesson) => lesson.Venue);
+
+  return mapValues(groupedLessons, (lessons: RawLesson[]) =>
+    // 3. Then map them again to the day of the lesson
+    entries(groupBy(lessons, (lesson) => lesson.DayText)).map(
+      ([Day, dayLessons]: [string, RawLesson[]]) => {
+        // 4. Inject module code and remove Venue from the class
+        const Classes = dayLessons.map<VenueLesson>(({ Venue, ...lesson }) => ({
+          ...lesson,
+          ModuleCode: moduleCode,
+        }));
+
+        // 5. Mark time between lesson start and end as occupied
+        const Availability = {};
+        dayLessons.forEach((lesson) => {
+          getTimeRange(lesson.StartTime, lesson.EndTime).forEach((time) => {
+            Availability[time] = OCCUPIED;
+          });
         });
-      });
 
-      return {
-        Day,
-        Classes,
-        Availability,
-      };
-    }),
+        return {
+          Day,
+          Classes,
+          Availability,
+        };
+      },
+    ),
   );
 }
 
@@ -238,7 +250,8 @@ export function mapTimetableLessons(lessons: TimetableLesson[]): RawLesson[] {
       EndTime: end_time.replace(':', ''),
       // Week text is inferred from the event's dates
       WeekText: getWeekText(events),
-      Venue: room,
+      // Room can be null
+      Venue: room || '',
       DayText: dayTextMap[day],
       LessonType: activityLessonTypeMap[activity],
     };
