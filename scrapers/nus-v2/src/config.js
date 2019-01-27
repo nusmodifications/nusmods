@@ -6,6 +6,8 @@ import * as fs from 'fs-extra'
 export type Config = {|
   +appKey: string,
   +studentKey: string,
+
+  // Base URL for all API requests
   +baseUrl: string,
 
   // Current academic year in the format YYYY/YYYY
@@ -32,10 +34,10 @@ const config: Config = {
   appKey: env.appKey,
   studentKey: env.studentKey,
   baseUrl: env.baseUrl,
+  apiConcurrency: env.apiConcurrency || 5,
 
   // Other config
   academicYear: '2018/2019',
-  apiConcurrency: 1,
   dataPath: path.resolve(__dirname, '../data'),
 };
 
