@@ -58,12 +58,16 @@ export default class GetSemesterModules extends BaseTask implements Task<Input, 
 
     // We make a new request for each faculty because the API will timeout if
     // we try to request for all of them in one shot
-    const requests = faculties.map((faculty) =>
-      this.api.getFacultyModules(term, faculty.AcademicGroup).catch((e) => {
-        this.logger.error(e, `Cannot get modules from ${faculty.Description}`);
+    const requests = departments.map(async (department) => {
+      try {
+        const modules = await this.api.getDepartmentModules(term, department.AcademicOrganisation);
+        this.logger.info(`Downloaded ${modules.length} modules from ${department.Description}`);
+        return modules;
+      } catch (e) {
+        this.logger.error(e, `Cannot get modules from ${department.Description}`);
         throw e;
-      }),
-    );
+      }
+    });
 
     let rawModules: ModuleInfo[];
     try {
@@ -71,6 +75,8 @@ export default class GetSemesterModules extends BaseTask implements Task<Input, 
     } catch (e) {
       throw new TaskError('Cannot get module list', this, e);
     }
+
+    this.logger.info(`Downloaded ${rawModules.length} modules in all`);
 
     // The ModuleInfo object from the API comes with a useless AcademicOrg and
     // AcademicDept object, which we replace with a string to save on space

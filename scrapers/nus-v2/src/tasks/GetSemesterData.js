@@ -20,7 +20,12 @@ type Input = {|
 type Output = SemesterModuleData[];
 
 /**
- * Download modules info for all faculties in a specific semester
+ * Download modules info for all faculties in a specific semester. This task
+ * uses the subtasks
+ *
+ * - GetSemesterExams
+ * - GetSemesterModules
+ * - GetModuleTimetable
  */
 export default class GetSemesterData extends BaseTask implements Task<Input, Output> {
   semester: Semester;
@@ -49,22 +54,22 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
     const modules: ModuleInfoMapped[] = await getModules.run(input);
 
     // Fan out and get all timetables
-    const requests = modules.map((moduleInfo) => {
+    const requests = modules.map(async (moduleInfo) => {
       const moduleCode = moduleInfo.Subject + moduleInfo.CatalogNumber;
       const getTimetable = new GetModuleTimetable(moduleCode, this.semester, this.academicYear);
 
-      return getTimetable
-        .run()
-        .then((timetable) => ({
-          moduleCode,
-          moduleInfo,
-          timetable,
-        }))
-        .catch((e) => {
-          // Skip the module if we cannot get its timetable. Return null so we can filter out
-          // these later
-          this.logger.error(e, `Error getting timetable for ${moduleCode}`);
-        });
+      const timetable = await getTimetable.run().catch((e) => {
+        // Skip the module if we cannot get its timetable. Return null so we can filter out
+        // these later
+        this.logger.warn(e, `Error getting timetable for ${moduleCode}. Skipping.`);
+        return [];
+      });
+
+      return {
+        moduleCode,
+        moduleInfo,
+        timetable,
+      };
     });
 
     const completedRequests = (await Promise.all(requests)).filter(Boolean);
