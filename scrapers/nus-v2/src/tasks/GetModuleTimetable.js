@@ -51,7 +51,7 @@ export default class GetModuleTimetable extends BaseTask implements Task<void, O
     // Validate lessons
     const [validLessons, invalidLessons] = partition(lessons, validateLesson);
     if (invalidLessons.length > 0) {
-      this.logger.warn({ invalidLessons }, 'Removed %i invalid lessons', invalidLessons.length);
+      this.logger.info({ invalidLessons }, 'Removed %i invalid lessons', invalidLessons.length);
     }
 
     const timetable = mapTimetableLessons(validLessons);

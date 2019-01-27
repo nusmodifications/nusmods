@@ -35,13 +35,17 @@ export type ModuleAcademicGroup = {|
 export type ModuleInfo = {|
   Term: string,
   AcademicOrganisation: ModuleAcademicOrganisation,
+  AcademicGroup: ModuleAcademicGroup,
   WorkLoadHours: string,
   EffectiveDate: string,
   CourseId: string,
   CourseOfferNumber: string,
   Preclusion: string,
-  AcademicGroup: ModuleAcademicGroup,
-  CatalogPrint: string,
+
+  // Some system uses PrintCatalog, others use CatalogPrint
+  PrintCatalog?: string,
+  CatalogPrint?: string,
+
   CourseTitle: string,
   YearLong: string,
   CoRequisite: string,

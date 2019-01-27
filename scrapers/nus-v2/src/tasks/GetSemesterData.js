@@ -1,8 +1,8 @@
 // @flow
 
 import type { AcademicGroup, AcademicOrg } from '../types/api';
-import type { SemesterModuleData } from '../types/mapper';
-import type { ModuleCode, Semester } from '../types/modules';
+import type { ModuleInfoMapped, SemesterModuleData } from '../types/mapper';
+import type { ModuleCode, RawLesson, Semester } from '../types/modules';
 import config from '../config';
 import BaseTask from './BaseTask';
 
@@ -37,9 +37,6 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
     semester: this.semester,
   });
 
-  // Number of errors encountered while downloading timetables
-  timetableErrors = 0;
-
   get name() {
     return `Get data for semester ${this.semester}`;
   }
@@ -57,22 +54,21 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
     return getExams.run();
   }
 
-  async getModules(input: Input) {
+  async getModules(input: Input): Promise<ModuleInfoMapped[]> {
     // Retrieve all module info from this semester
     const getModules = new GetSemesterModules(this.semester, this.academicYear);
     return getModules.run(input);
   }
 
-  async getTimetable(moduleCode: ModuleCode) {
+  async getTimetable(moduleCode: ModuleCode): Promise<?Array<RawLesson[]>> {
     const getTimetable = new GetModuleTimetable(moduleCode, this.semester, this.academicYear);
 
     try {
       return await getTimetable.run();
     } catch (e) {
-      // Return [] if we can't get this module's timetable
-      this.logger.warn(e, `Error getting timetable for ${moduleCode}. Skipping.`);
-      this.timetableErrors += 1;
-      return [];
+      // If the API does not have a timetable record (even one with invalid lessons)
+      // then the class isn't actually offered
+      return null;
     }
   }
 
@@ -85,7 +81,9 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
     // Fan out to get module timetable
     const timetableRequests = modules.map(async (moduleInfo) => {
       const moduleCode = moduleInfo.Subject + moduleInfo.CatalogNumber;
+
       const timetable = await this.getTimetable(moduleCode);
+      if (!timetable) return null;
 
       // Combine timetable and exam data into SemesterData
       const examInfo = exams[moduleCode] || {};
@@ -105,17 +103,10 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
       };
     });
 
-    const semesterModuleData = await Promise.all(timetableRequests);
+    const semesterModuleData = (await Promise.all(timetableRequests)).filter(Boolean);
 
     // Log some statistics
-    const completed = modules.length - this.timetableErrors;
-    const completedPercent = (completed / modules.length) * 100;
-    this.logger.info(
-      '%i/%i (%s%%) timetables downloaded successfully',
-      completed,
-      modules.length,
-      completedPercent.toFixed(1),
-    );
+    this.logger.debug('%i/%i modules have timetables', semesterModuleData.length, modules.length);
 
     // Save the merged semester data to disk
     await Promise.all(

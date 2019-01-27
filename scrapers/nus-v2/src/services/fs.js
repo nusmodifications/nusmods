@@ -92,6 +92,7 @@ export default function getFileSystem() {
 
       timetable: (semester: Semester, moduleCode: ModuleCode) =>
         file<RawLesson[]>(path.join(yearRoot, String(semester), moduleCode, 'timetable.json')),
+
       semesterData: (semester: Semester, moduleCode: ModuleCode) =>
         file<SemesterData>(path.join(yearRoot, String(semester), moduleCode, 'semesterData.json')),
     },

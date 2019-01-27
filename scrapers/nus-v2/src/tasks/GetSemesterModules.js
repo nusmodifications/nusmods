@@ -1,6 +1,6 @@
 // @flow
 
-import { flatten } from 'lodash';
+import { flatten, partition } from 'lodash';
 
 import type { AcademicGroup, AcademicOrg, ModuleInfo } from '../types/api';
 import type { ModuleInfoMapped } from '../types/mapper';
@@ -64,11 +64,26 @@ export default class GetSemesterModules extends BaseTask implements Task<Input, 
           this.api.getDepartmentModules(term, department.AcademicOrganisation);
         const modules = await retry(getModules, 3, (error) => error instanceof UnknownApiError);
 
-        this.logger.info(`Downloaded ${modules.length} modules from ${department.Description}`);
-        return modules;
+        // Only return modules which are visible in the system
+        const [printedModules, hiddenModules] = partition(
+          modules,
+          // Some systems use CatalogPrint while others use PrintCatalog
+          (module) => (module.CatalogPrint || module.PrintCatalog) === 'Y',
+        );
+
+        this.logger.info(
+          `Downloaded %i modules from %s`,
+          printedModules.length,
+          department.Description,
+        );
+        this.logger.debug(`Filterd out %i non-print modules`, hiddenModules.length);
+
+        return printedModules;
       } catch (e) {
         this.logger.error(e, `Cannot get modules from ${department.Description}`);
-        throw e;
+
+        // TODO: Uncomment when the API stops misbehaving
+        return []; // throw e;
       }
     });
 

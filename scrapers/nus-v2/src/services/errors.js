@@ -5,7 +5,6 @@
  */
 
 import type { $AxiosXHR } from 'axios';
-import { Logger } from 'bunyan';
 import type { Task } from '../types/tasks';
 
 /**
@@ -43,13 +42,6 @@ export class TaskError extends Error {
 
   constructor(message: string, task: Task<any, any>, originalError: ?Error = null) {
     super(message);
-
-    // $FlowFixMe Duck typing here - quack!
-    const logger: Logger = task.logger || task.rootLogger;
-    if (logger) {
-      logger.error(originalError, message);
-    }
-
     this.task = task;
     this.originalError = originalError;
   }
