@@ -4,6 +4,12 @@
 
 [include]
 
+[ignore]
+<PROJECT_ROOT>/logs/.*
+<PROJECT_ROOT>/data/.*
+<PROJECT_ROOT>/coverage/.*
+<PROJECT_ROOT>/build/.*
+
 [libs]
 
 [options]
