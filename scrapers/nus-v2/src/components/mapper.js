@@ -114,8 +114,21 @@ export const dayTextMap = {
 };
 
 export const activityLessonTypeMap = {
+  // Recognized by frontend
+  B: 'Laboratory',
+  L: 'Lecture',
+  D: 'Design Lecture',
+  R: 'Recitation',
+  P: 'Packaged Lecture',
+  X: 'Packaged Tutorial',
+  W: 'Workshop',
+  E: 'Seminar-Style Module Class',
+  S: 'Sectional Teaching',
+  T: 'Tutorial',
   '2': 'Tutorial Type 2',
   '3': 'Tutorial Type 3',
+
+  // Not recognized by frontend
   '4': 'Tutorial Type 4',
   '5': 'Tutorial Type 5',
   '6': 'Tutorial Type 6',
@@ -123,19 +136,9 @@ export const activityLessonTypeMap = {
   '8': 'Tutorial Type 8',
   '9': 'Tutorial Type 9',
   A: 'Supervision of Academic Exercise',
-  B: 'Laboratory',
-  D: 'Design Lecture',
-  L: 'Lecture',
   O: 'Others',
-  S: 'Sectional Teaching',
-  T: 'Tutorial',
-  W: 'Workshop',
-  E: 'Seminar-Style Module Class',
-  R: 'Recitation',
   V: 'Lecture On Demand',
   I: 'Independent Study Module',
-  P: 'Packaged Lecture',
-  X: 'Packaged Tutorial',
   C: 'Bedside Tutorial',
   M: 'Ensemble Teaching',
   J: 'Mini-Project',

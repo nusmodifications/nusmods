@@ -7,7 +7,7 @@
   "private": true,
   "scripts": {
     "scrape": "node build/index.js",
-    "dev": "babel-node build/index.js",
+    "dev": "babel-node src/index.js",
     "bunyan": "bunyan -L -o short --color",
     "build": "babel src -d build --ignore \"src/**/*.test.js\" -s",
     "lint": "flow && yarn lint:code",
