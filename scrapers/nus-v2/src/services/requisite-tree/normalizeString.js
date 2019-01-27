@@ -1,6 +1,6 @@
 // @flow
 
-import R from 'ramda';
+import * as R from 'ramda';
 import romanify from 'romanify';
 
 import type { ModuleCode } from '../../types/modules';
@@ -72,7 +72,7 @@ function convertCommas(oxfordString) {
 
 // converts roman numerals and alphabets into digits
 // e.g. (a) (b) (c) into (1) (2) (3)
-function convertToNumerals(number, string) {
+function convertToNumerals(number: number, string: string) {
   const alphabet = 'abcdefghijklmnopqrstuvwxyz'[(number - 1) % 26];
   const roman = romanify(number).toLowerCase();
   // detect roman numeral or alphabet in brackets
@@ -87,7 +87,7 @@ function convertToNumerals(number, string) {
 }
 
 // converts `1) x 2) y` to `(1) x (2) y`
-function fixBrackets(string) {
+function fixBrackets(string: string) {
   // check brackets aren't balanced before fixing
   if (R.match(/\(/g, string).length === R.match(/\)/g, string).length) {
     return string;

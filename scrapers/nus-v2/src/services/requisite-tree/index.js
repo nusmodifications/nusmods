@@ -3,8 +3,8 @@
 import path from 'path';
 import { values } from 'lodash';
 import * as fs from 'fs-extra';
-import bunyan from 'bunyan';
-import R from 'ramda';
+import bunyan, { Logger } from 'bunyan';
+import * as R from 'ramda';
 
 import type { ModuleWithoutTree } from '../../types/mapper';
 import config from '../../config';
@@ -53,18 +53,19 @@ const RESTRICTED_KEYWORDS = [
   '4 of the 5',
 ];
 
-function parse(key, data, subLog) {
-  const moduleCodeToData = R.pipe(
+function parse(key: 'Prerequisite' | 'Preclusion', data: ModuleWithoutTree[], subLog: Logger) {
+  const moduleCodeToData: { [string]: string } = R.pipe(
     R.map(R.props(['ModuleCode', key])),
     R.fromPairs, // [key, val] => { key: val }
     R.filter(R.identity),
   )(data);
 
-  const filterUnparseable = R.pipe(
-    R.filter((str) => !RESTRICTED_KEYWORDS.some((keyword) => str.includes(keyword))), // remove restricted
-    R.filter(R.test(MODULE_REGEX)), // remove those with no modules
-  );
-  const parsable = filterUnparseable(moduleCodeToData);
+  const parsable = R.pipe(
+    // remove restricted
+    R.filter((str) => !RESTRICTED_KEYWORDS.some((keyword) => str.includes(keyword))),
+    // remove those with no modules
+    R.filter(R.test(MODULE_REGEX)),
+  )(moduleCodeToData);
 
   Object.keys(moduleCodeToData).forEach((moduleCode) => {
     if (!Object.prototype.hasOwnProperty.call(parsable, moduleCode)) {
@@ -86,8 +87,8 @@ function parse(key, data, subLog) {
         }
       : null;
   });
-  const removeNull = R.filter(R.identity);
-  return removeNull(parsable);
+
+  return R.filter(R.identity, parsable);
 }
 
 function generateRequirements(allModules, moduleCodes) {
@@ -181,8 +182,8 @@ export default async function genReqTree(allModules: ModuleWithoutTree[]) {
 
   const merged = allModules.map((data) => {
     const moduleCode = data.ModuleCode;
-    const mergedPrerequisite = R.merge(data, prerequisites[moduleCode]);
-    const mergedPreclusion = R.merge(mergedPrerequisite, preclusions[moduleCode]);
+    const mergedPrerequisite = R.mergeRight(data, prerequisites[moduleCode]);
+    const mergedPreclusion = R.mergeRight(mergedPrerequisite, preclusions[moduleCode]);
     return mergedPreclusion;
   });
 

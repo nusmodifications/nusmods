@@ -2,7 +2,7 @@
 
 import { Logger } from 'bunyan';
 import { Token, Lexer, Parser } from 'chevrotain';
-import R from 'ramda';
+import * as R from 'ramda';
 import { OPERATORS, MODULE_REGEX, AND_OR_REGEX } from './constants';
 
 /**
