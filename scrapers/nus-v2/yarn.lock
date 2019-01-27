@@ -1397,6 +1397,11 @@ chardet@^0.7.0:
   resolved "https://registry.yarnpkg.com/chardet/-/chardet-0.7.0.tgz#90094849f0937f2eedc2425d0d28a9e5f0cbad9e"
   integrity sha512-mT8iDcrh03qDGRRmoA2hmBJnxpllMR+0/0qlzjqZES6NdiWDcZkCNAk4rPFZ9Q85r27unkiNNg8ZOiwZXBHwcA==
 
+chevrotain@0.35.0:
+  version "0.35.0"
+  resolved "https://registry.yarnpkg.com/chevrotain/-/chevrotain-0.35.0.tgz#d98a61745c533687a2dd37ab46eb9e8a8f56336a"
+  integrity sha512-6eZd3XV/SLXTQ05cwM+s86Z7dxD0IoYpN2ACak3TNUGiF9BP+SJzsVbwrby01IZPI4iZS22vsyXM0Xtz8mhD2g==
+
 chokidar@^2.0.3:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-2.0.4.tgz#356ff4e2b0e8e43e322d18a372460bbcf3accd26"
@@ -4780,6 +4785,11 @@ qs@~6.5.2:
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.2.tgz#cb3ae806e8740444584ef154ce8ee98d403f3e36"
   integrity sha512-N5ZAX4/LxJmF+7wN74pUD6qAh9/wnvdQcjq9TZjevvXzSUo7bfmw91saqMjzGS2xq91/odN2dW/WOl7qQHNDGA==
 
+ramda@0.26.1:
+  version "0.26.1"
+  resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.26.1.tgz#8d41351eb8111c55353617fc3bbffad8e4d35d06"
+  integrity sha512-hLWjpy7EnsDBb0p+Z3B7rPi3GDeRG5ZtiI33kJhTt+ORCd38AbAIjB/9zRIUoeTbE/AVX5ZkU7m6bznsvrf8eQ==
+
 randomatic@^3.0.0:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/randomatic/-/randomatic-3.1.1.tgz#b776efc59375984e36c537b2f51a1f0aff0da1ed"
@@ -5095,6 +5105,11 @@ rimraf@~2.4.0:
   integrity sha1-7nEM5dk6j9uFb7Xqj/Di11k0sto=
   dependencies:
     glob "^6.0.1"
+
+romanify@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/romanify/-/romanify-1.0.0.tgz#8c674e37a6a3cda33b84eb486cfdab8c94afa448"
+  integrity sha1-jGdON6ajzaM7hOtIbP2rjJSvpEg=
 
 rsvp@^3.3.3:
   version "3.6.2"
