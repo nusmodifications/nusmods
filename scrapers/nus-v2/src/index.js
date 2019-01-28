@@ -7,16 +7,14 @@ import type { CommandModule } from 'yargs';
 import * as yargs from 'yargs';
 import { size } from 'lodash';
 
-import {
-  TestApi,
-  GetFacultyDepartment,
-  GetSemesterData,
-  CollateVenues,
-  CollateModules,
-} from './tasks';
-import getFileSystem from './services/fs';
 import logger from './services/logger';
 import { Semesters } from './types/modules';
+
+import TestApi from './tasks/TestApi';
+import GetFacultyDepartment from './tasks/GetFacultyDepartment';
+import GetSemesterData, { semesterModuleCache } from './tasks/GetSemesterData';
+import CollateVenues from './tasks/CollateVenues';
+import CollateModules from './tasks/CollateModules';
 
 function runTask(Task, ...params) {
   new Task(...params).run().catch((e) => {
@@ -25,8 +23,6 @@ function runTask(Task, ...params) {
     console.error(e.stack);
   });
 }
-
-const files = getFileSystem();
 
 const commands: CommandModule[] = [
   {
@@ -70,9 +66,8 @@ const commands: CommandModule[] = [
     handler: ({ sem }) => {
       if (sem < 1 || sem > 4) throw new RangeError('Semester out of range. Expect 1, 2, 3 or 4.');
 
-      files.raw
-        .semester(sem)
-        .moduleData.read()
+      semesterModuleCache(sem)
+        .read()
         .then((semesterModuleData) => new CollateVenues(sem).run(semesterModuleData))
         .then((venues) => logger.info(`Collated ${size(venues)} venues`));
     },
@@ -82,15 +77,14 @@ const commands: CommandModule[] = [
     describe: 'combine semester data for modules',
     handler: () => {
       Promise.all(
-        Semesters.map((semester) =>
-          files.raw
-            .semester(semester)
-            .moduleData.read()
-            .catch(() => {
-              logger.warn(`No semester data available for ${semester}`);
-              return [];
-            }),
-        ),
+        Semesters.map(async (semester) => {
+          try {
+            return await semesterModuleCache(semester).read();
+          } catch (e) {
+            logger.warn(`No semester data available for ${semester}`);
+            return [];
+          }
+        }),
       ).then((semesterData) => new CollateModules().run(semesterData));
     },
   },

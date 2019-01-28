@@ -15,6 +15,7 @@ import {
 } from '../services/mapper';
 import type { Task } from '../types/tasks';
 import { TaskError, UnknownApiError } from '../services/errors';
+import { getCache } from '../services/output';
 
 type Input = {|
   +departments: AcademicOrg[],
@@ -23,12 +24,17 @@ type Input = {|
 
 type Output = ModuleInfoMapped[];
 
+export const modulesCache = (semester: Semester) =>
+  getCache<ModuleInfoMapped[]>(`semester-${semester}-modules`);
+
 /**
  * Download modules info for all faculties in a specific semester
  */
 export default class GetSemesterModules extends BaseTask implements Task<Input, Output> {
   semester: Semester;
   academicYear: string;
+
+  modulesCache = modulesCache(this.semester);
 
   logger = this.rootLogger.child({
     task: GetSemesterModules.name,
@@ -104,7 +110,7 @@ export default class GetSemesterModules extends BaseTask implements Task<Input, 
     );
 
     // Cache module info to disk
-    await this.fs.raw.semester(this.semester).modules.write(modules);
+    await this.modulesCache.write(modules);
 
     return modules;
   }

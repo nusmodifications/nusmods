@@ -51,7 +51,7 @@ export default class CollateModules extends BaseTask implements Task<Input, Outp
 
     // Save final combined module to their individual files
     await Promise.all(
-      modules.map((module) => this.fs.output.module(module.ModuleCode).write(module)),
+      modules.map((module) => this.output.module(module.ModuleCode, module)),
     );
 
     // Save condensed versions of the same information for searching
@@ -59,8 +59,8 @@ export default class CollateModules extends BaseTask implements Task<Input, Outp
     const moduleInformation = modules.map(getModuleInformation);
 
     await Promise.all([
-      this.fs.output.moduleList.write(moduleCondensed),
-      this.fs.output.moduleInformation.write(moduleInformation),
+      this.output.moduleList(moduleCondensed),
+      this.output.moduleInformation(moduleInformation),
     ]);
 
     return values(modules);

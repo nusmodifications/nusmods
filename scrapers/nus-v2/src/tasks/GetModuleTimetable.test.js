@@ -1,7 +1,6 @@
 // @flow
 
 import GetModuleTimetable from './GetModuleTimetable';
-import { makeMockFile } from '../utils/test-utils';
 
 describe(GetModuleTimetable, () => {
   test('should not crash if the data is invalid', async () => {
@@ -25,9 +24,8 @@ describe(GetModuleTimetable, () => {
       },
     ];
 
-    const mockFile = makeMockFile([]);
     task.api.getModuleTimetable = jest.fn().mockResolvedValue(lessons);
-    task.fs.output.timetable = jest.fn().mockReturnValue(mockFile);
+    task.output.timetable = jest.fn();
 
     const results = await task.run();
 
@@ -70,13 +68,12 @@ describe(GetModuleTimetable, () => {
       },
     ];
 
-    const mockFile = makeMockFile([]);
     task.api.getModuleTimetable = jest.fn().mockResolvedValue(lessons);
-    task.fs.output.timetable = jest.fn().mockReturnValue(mockFile);
+    task.output.timetable = jest.fn();
 
     const results = await task.run();
 
     expect(results).toMatchSnapshot();
-    expect(mockFile.write).toHaveBeenCalled();
+    expect(task.output.timetable).toHaveBeenCalled();
   });
 });

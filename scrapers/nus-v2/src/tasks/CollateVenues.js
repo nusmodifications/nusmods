@@ -1,4 +1,5 @@
 // @flow
+
 import { merge } from 'lodash';
 import BaseTask from './BaseTask';
 import type { Task } from '../types/tasks';
@@ -12,6 +13,10 @@ import { extractVenueAvailability } from '../services/mapper';
 type Input = SemesterModuleData[];
 type Output = VenueInfo;
 
+/**
+ * Map timetable lessons to venues to create a map of when each venue is being
+ * used
+ */
 export default class CollateVenues extends BaseTask implements Task<Input, Output> {
   semester: Semester;
   academicYear: string;
@@ -48,9 +53,10 @@ export default class CollateVenues extends BaseTask implements Task<Input, Outpu
     });
 
     // Save the results
+    const venueList = Object.keys(venues);
     await Promise.all([
-      this.fs.output.venueInformation(this.semester).write(venues),
-      this.fs.output.venueList(this.semester).write(Object.keys(venues)),
+      this.output.venueInformation(this.semester, venues),
+      this.output.venueList(this.semester, venueList),
     ]);
 
     return venues;

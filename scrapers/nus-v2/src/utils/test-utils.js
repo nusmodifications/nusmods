@@ -2,11 +2,11 @@
 
 /* eslint-env jest */
 
-import type { File } from '../services/fs';
+import type { Cache } from '../services/output';
 
 /* eslint-disable import/prefer-default-export */
 
-export function makeMockFile<T>(fileContent: T): File<T> {
+export function mockCache<T>(fileContent: T): Cache<T> {
   return {
     path: './fake',
     write: jest.fn().mockResolvedValue(),

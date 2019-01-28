@@ -11,6 +11,7 @@ import GetSemesterExams from './GetSemesterExams';
 import GetModuleTimetable from './GetModuleTimetable';
 import GetSemesterModules from './GetSemesterModules';
 import { mapModuleInfo } from '../services/mapper';
+import { getCache } from '../services/output';
 
 type Input = {|
   +departments: AcademicOrg[],
@@ -18,6 +19,9 @@ type Input = {|
 |};
 
 type Output = SemesterModuleData[];
+
+export const semesterModuleCache = (semester: Semester) =>
+  getCache<SemesterModuleData[]>(`semester-${semester}-module-data`);
 
 /**
  * Download modules info for all faculties in a specific semester. This task
@@ -36,6 +40,8 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
     year: this.academicYear,
     semester: this.semester,
   });
+
+  semesterModuleCache = semesterModuleCache(this.semester);
 
   get name() {
     return `Get data for semester ${this.semester}`;
@@ -111,13 +117,12 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
     // Save the merged semester data to disk
     await Promise.all(
       semesterModuleData.map((semesterData) =>
-        this.fs.output
-          .semesterData(this.semester, semesterData.ModuleCode)
-          .write(semesterData.SemesterData),
+        this.output.semesterData(this.semester, semesterData.ModuleCode, semesterData.SemesterData),
       ),
     );
 
-    await this.fs.raw.semester(this.semester).moduleData.write(semesterModuleData);
+    // Cache semester data to disk
+    await this.semesterModuleCache.write(semesterModuleData);
 
     return semesterModuleData;
   }

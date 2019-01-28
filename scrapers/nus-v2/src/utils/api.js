@@ -6,7 +6,7 @@
 
 import { Logger } from 'bunyan';
 import type { Semester } from '../types/modules';
-import type { File } from '../services/fs';
+import type { Cache } from '../services/output';
 import rootLogger from '../services/logger';
 
 /**
@@ -35,7 +35,7 @@ export function fromTermCode(term: string): [string, Semester] {
 export async function cacheDownload<T>(
   name: string,
   download: () => Promise<T>,
-  cache: File<T>,
+  cache: Cache<T>,
   logger: Logger = rootLogger,
 ): Promise<T> {
   try {

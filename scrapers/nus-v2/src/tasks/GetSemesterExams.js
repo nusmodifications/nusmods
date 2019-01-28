@@ -11,8 +11,12 @@ import type { Task } from '../types/tasks';
 import { mapExamInfo } from '../services/mapper';
 import { TaskError } from '../services/errors';
 import { validateExam } from '../services/validation';
+import { getCache } from '../services/output';
 
 type Output = ExamInfoMap;
+
+export const examCache = (semester: Semester) =>
+  getCache<ModuleExam[]>(`semester-${semester}-exams`);
 
 /**
  * Download modules info for all faculties in a specific semester
@@ -26,6 +30,8 @@ export default class GetSemesterExams extends BaseTask implements Task<void, Out
     year: this.academicYear,
     semester: this.semester,
   });
+
+  examCache = examCache(this.semester);
 
   get name() {
     return `Get exams for semester ${this.semester}`;
@@ -50,7 +56,7 @@ export default class GetSemesterExams extends BaseTask implements Task<void, Out
       rawExams = await cacheDownload(
         'exams',
         () => this.api.getTermExams(term),
-        this.fs.raw.semester(this.semester).exams,
+        this.examCache,
         this.logger,
       );
     } catch (e) {

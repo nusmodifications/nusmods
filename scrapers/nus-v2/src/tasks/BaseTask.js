@@ -2,7 +2,7 @@
 
 import api from '../services/api';
 import logger from '../services/logger';
-import getFileSystem from '../services/fs';
+import { getOutput, getCache } from '../services/output';
 
 /**
  * Base task class. Dependencies and components are instance properties
@@ -14,7 +14,11 @@ export default class BaseTask {
   api = api;
 
   // For storing data to the file system
-  fs = getFileSystem();
+  output = getOutput();
+
+  // To cache intermediate results (subclasses call this to get a single
+  // Cache<T> object for each thing they need to cache)
+  getCache = getCache;
 
   rootLogger = logger;
 }

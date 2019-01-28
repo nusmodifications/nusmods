@@ -1,7 +1,7 @@
 // @flow
 
 import { cacheDownload, fromTermCode, getTermCode, retry } from './api';
-import { makeMockFile } from './test-utils';
+import { mockCache } from './test-utils';
 
 describe(getTermCode, () => {
   test('should return term code', () => {
@@ -23,7 +23,7 @@ describe(fromTermCode, () => {
 describe(cacheDownload, () => {
   test('should return and save to cache if download is successful', async () => {
     const download = jest.fn().mockResolvedValue('My data');
-    const cache = makeMockFile('File content');
+    const cache = mockCache('File content');
 
     const result = await cacheDownload('data', download, cache);
     expect(result).toEqual('My data');
@@ -33,7 +33,7 @@ describe(cacheDownload, () => {
 
   test('should not throw if cache save is unsuccessful', async () => {
     const download = jest.fn().mockResolvedValue('My data');
-    const cache = makeMockFile('File content');
+    const cache = mockCache('File content');
     cache.write.mockRejectedValue(new Error('The server is full of eels'));
 
     const result = await cacheDownload('data', download, cache);
@@ -43,7 +43,7 @@ describe(cacheDownload, () => {
 
   test('should try to read from cache if download is not successful', async () => {
     const download = jest.fn().mockRejectedValue(new Error('The API server is on fire'));
-    const cache = makeMockFile('File content');
+    const cache = mockCache('File content');
 
     const result = await cacheDownload('data', download, cache);
     expect(result).toEqual('File content');
