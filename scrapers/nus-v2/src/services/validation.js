@@ -6,16 +6,21 @@
 
 import Joi from 'joi';
 import type { ModuleExam, TimetableLesson } from '../types/api';
-import { activityLessonTypeMap, dayTextMap } from './mapper';
+import { activityLessonTypeMap, dayTextMap } from './data';
 
 const lessonSchema = Joi.object({
   // Allow null because we can still use the rest of the information
   room: Joi.string().allow(null),
   start_time: Joi.string(),
   eventdate: Joi.string().isoDate(),
+
   activity: Joi.string().only(Object.keys(activityLessonTypeMap)),
+
   modgrp: Joi.string(),
+
+  // Assume lessons on Sunday are invalid
   day: Joi.string().only(Object.keys(dayTextMap)),
+
   numweeks: Joi.number()
     .integer()
     .greater(0),

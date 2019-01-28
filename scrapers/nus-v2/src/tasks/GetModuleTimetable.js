@@ -1,21 +1,96 @@
 // @flow
-import { partition } from 'lodash';
+import { groupBy, partition, values } from 'lodash';
+import NUSModerator from 'nusmoderator';
 
-import type { ModuleCode, RawLesson, Semester } from '../types/modules';
+import type { ModuleCode, RawLesson, Semester, WeekText } from '../types/modules';
 import type { Task } from '../types/tasks';
 
 import BaseTask from './BaseTask';
 import config from '../config';
 import { getTermCode } from '../utils/api';
-import { mapTimetableLessons } from '../services/mapper';
 import { validateLesson } from '../services/validation';
+import type { TimetableLesson } from '../types/api';
+import { activityLessonTypeMap, dayTextMap } from '../services/data';
 
-type Output = RawLesson[];
+/**
+ * For deduplicating timetable lessons
+ */
+const getLessonKey = (lesson: TimetableLesson) =>
+  [
+    lesson.activity,
+    lesson.modgrp,
+    lesson.day,
+    lesson.start_time,
+    lesson.end_time,
+    lesson.session,
+    lesson.room,
+  ].join('|');
+
+/**
+ * Try to infer week text from the provided list of events
+ */
+function getWeekText(lessons: TimetableLesson[]): WeekText {
+  // All 13 weeks
+  if (lessons.length === 13) return 'Every Week';
+
+  // Get the week numbers the dates are in
+  const weeks = lessons
+    .map((lesson) => new Date(lesson.eventdate))
+    .map((date) => NUSModerator.academicCalendar.getAcadWeekInfo(date))
+    .map((weekInfo) => weekInfo.num)
+    .sort((a, b) => a - b);
+
+  // Calculate the number of weeks between lessons to check for
+  // odd/even weeks
+  const weekDelta = [];
+  for (let i = 0; i < weeks.length - 1; i++) {
+    weekDelta.push(weeks[i + 1] - weeks[i]);
+  }
+
+  if (weekDelta.every((delta) => delta === 2)) {
+    // TODO: Check for tutorial / lab
+    if (weeks.length === 6) {
+      return weeks[0] === 1 ? 'Odd Weeks' : 'Even Weeks';
+    }
+  }
+
+  return weeks.join(',');
+}
+
+/**
+ * Convert API provided timetable data to RawLesson format used by the frontend
+ */
+export function mapTimetableLessons(lessons: TimetableLesson[]): RawLesson[] {
+  // Group the same lessons together
+  const groupedLessons = groupBy(lessons, getLessonKey);
+
+  // For each lesson, map the keys from the NUS API to ours. Most have close
+  // mappings, but week text needs to be inferred from the event's dates
+  return values(groupedLessons).map((events: TimetableLesson[]) => {
+    // eslint-disable-next-line camelcase
+    const { room, start_time, end_time, day, modgrp, activity } = events[0];
+
+    return {
+      // mod group contains the activity at the start - we remove that because
+      // it is redundant
+      ClassNo: modgrp.replace(activity, ''),
+      // Start and end time don't have the ':' delimiter
+      StartTime: start_time.replace(':', ''),
+      EndTime: end_time.replace(':', ''),
+      // Week text is inferred from the event's dates
+      WeekText: getWeekText(events),
+      // Room can be null
+      Venue: room || '',
+      DayText: dayTextMap[day],
+      LessonType: activityLessonTypeMap[activity],
+    };
+  });
+}
 
 /**
  * Download the timetable for a specific module
  */
-export default class GetModuleTimetable extends BaseTask implements Task<void, Output> {
+export default class GetModuleTimetable extends BaseTask implements Task<void, RawLesson[]> {
   semester: Semester;
   academicYear: string;
   moduleCode: ModuleCode;
@@ -48,7 +123,7 @@ export default class GetModuleTimetable extends BaseTask implements Task<void, O
 
     const lessons = await this.api.getModuleTimetable(term, this.moduleCode);
 
-    // Validate lessons
+    // Validate and remove invalid lessons
     const [validLessons, invalidLessons] = partition(lessons, validateLesson);
     if (invalidLessons.length > 0) {
       this.logger.info({ invalidLessons }, 'Removed %i invalid lessons', invalidLessons.length);

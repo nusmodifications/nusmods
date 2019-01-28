@@ -16,8 +16,8 @@ import GetSemesterData, { semesterModuleCache } from './tasks/GetSemesterData';
 import CollateVenues from './tasks/CollateVenues';
 import CollateModules from './tasks/CollateModules';
 
-function runTask(Task, ...params) {
-  new Task(...params).run().catch((e) => {
+function runTask(Task) {
+  new Task().run().catch((e) => {
     // TODO: Proper logging
     console.error(`[${e.constructor.name}] ${e.message}`);
     console.error(e.stack);
@@ -43,7 +43,7 @@ const commands: CommandModule[] = [
         type: 'integer',
       },
     },
-    handler: (argv) => {
+    handler(argv) {
       const { sem } = argv;
       if (sem < 1 || sem > 4) throw new RangeError('Semester out of range. Expect 1, 2, 3 or 4.');
 
@@ -63,7 +63,7 @@ const commands: CommandModule[] = [
         type: 'integer',
       },
     },
-    handler: ({ sem }) => {
+    handler({ sem }) {
       if (sem < 1 || sem > 4) throw new RangeError('Semester out of range. Expect 1, 2, 3 or 4.');
 
       semesterModuleCache(sem)
@@ -75,7 +75,7 @@ const commands: CommandModule[] = [
   {
     command: 'combine',
     describe: 'combine semester data for modules',
-    handler: () => {
+    handler() {
       Promise.all(
         Semesters.map(async (semester) => {
           try {

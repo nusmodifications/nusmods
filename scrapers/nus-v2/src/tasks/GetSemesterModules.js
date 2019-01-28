@@ -3,19 +3,32 @@
 import { flatten, partition } from 'lodash';
 
 import type { AcademicGroup, AcademicOrg, ModuleInfo } from '../types/api';
-import type { ModuleInfoMapped } from '../types/mapper';
+import type { DepartmentCodeMap, FacultyCodeMap, ModuleInfoMapped } from '../types/mapper';
 import type { Semester } from '../types/modules';
 import config from '../config';
 import { getTermCode, retry } from '../utils/api';
 import BaseTask from './BaseTask';
-import {
-  getDepartmentCodeMap,
-  getFacultyCodeMap,
-  mapFacultyDepartmentCodes,
-} from '../services/mapper';
 import type { Task } from '../types/tasks';
 import { TaskError, UnknownApiError } from '../services/errors';
 import { getCache } from '../services/output';
+import { getDepartmentCodeMap, getFacultyCodeMap } from './GetFacultyDepartment';
+
+/**
+ * Overwrite AcademicOrganisation and AcademicGroup with their names instead
+ * of an object
+ */
+export function mapFacultyDepartmentCodes(
+  moduleInfo: ModuleInfo,
+  faculties: FacultyCodeMap,
+  departments: DepartmentCodeMap,
+): ModuleInfoMapped {
+  // $FlowFixMe Flow won't recognize this spread is overwriting the original's properties
+  return {
+    ...moduleInfo,
+    AcademicOrganisation: departments[moduleInfo.AcademicOrganisation.Code],
+    AcademicGroup: faculties[moduleInfo.AcademicGroup.Code],
+  };
+}
 
 type Input = {|
   +departments: AcademicOrg[],
@@ -82,7 +95,7 @@ export default class GetSemesterModules extends BaseTask implements Task<Input, 
           printedModules.length,
           department.Description,
         );
-        this.logger.debug(`Filterd out %i non-print modules`, hiddenModules.length);
+        this.logger.debug(`Filtered out %i non-print modules`, hiddenModules.length);
 
         return printedModules;
       } catch (e) {

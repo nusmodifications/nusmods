@@ -1,14 +1,15 @@
 // @flow
+import moment from 'moment';
+import { keyBy, mapValues, partition } from 'lodash';
 
-import { mapValues, keyBy, partition } from 'lodash';
 import type { ModuleExam } from '../types/api';
-import type { ExamInfoMap } from '../types/mapper';
+import type { ExamInfo, ExamInfoMap } from '../types/mapper';
 import type { Semester } from '../types/modules';
+import type { Task } from '../types/tasks';
+
+import BaseTask from './BaseTask';
 import config from '../config';
 import { cacheDownload, getTermCode } from '../utils/api';
-import BaseTask from './BaseTask';
-import type { Task } from '../types/tasks';
-import { mapExamInfo } from '../services/mapper';
 import { TaskError } from '../services/errors';
 import { validateExam } from '../services/validation';
 import { getCache } from '../services/output';
@@ -17,6 +18,23 @@ type Output = ExamInfoMap;
 
 export const examCache = (semester: Semester) =>
   getCache<ModuleExam[]>(`semester-${semester}-exams`);
+
+const UTC_OFFSET = 8 * 60;
+
+/**
+ * Extract the part of the raw ModuleExam that is used in SemesterData
+ */
+export function mapExamInfo(moduleExam: ModuleExam): ExamInfo {
+  /* eslint-disable camelcase */
+  const { exam_date, start_time, duration } = moduleExam;
+  const date = moment(`${exam_date} ${start_time}+08:00`).utcOffset(UTC_OFFSET);
+
+  return {
+    ExamDate: date.toISOString(true),
+    ExamDuration: parseInt(duration, 10),
+  };
+  /* eslint-enable */
+}
 
 /**
  * Download modules info for all faculties in a specific semester

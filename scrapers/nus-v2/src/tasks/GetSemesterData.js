@@ -1,17 +1,17 @@
 // @flow
 
 import type { AcademicGroup, AcademicOrg } from '../types/api';
-import type { ModuleInfoMapped, SemesterModuleData } from '../types/mapper';
+import type { ModuleInfoMapped, SemesterModule, SemesterModuleData } from '../types/mapper';
 import type { ModuleCode, RawLesson, Semester } from '../types/modules';
-import config from '../config';
-import BaseTask from './BaseTask';
 
 import type { Task } from '../types/tasks';
+import config from '../config';
+import BaseTask from './BaseTask';
 import GetSemesterExams from './GetSemesterExams';
 import GetModuleTimetable from './GetModuleTimetable';
 import GetSemesterModules from './GetSemesterModules';
-import { mapModuleInfo } from '../services/mapper';
 import { getCache } from '../services/output';
+import { fromTermCode } from '../utils/api';
 
 type Input = {|
   +departments: AcademicOrg[],
@@ -22,6 +22,40 @@ type Output = SemesterModuleData[];
 
 export const semesterModuleCache = (semester: Semester) =>
   getCache<SemesterModuleData[]>(`semester-${semester}-module-data`);
+
+/**
+ * Map ModuleInfo from the API into something closer to our own representation
+ */
+const mapModuleInfo = (moduleInfo: ModuleInfoMapped): SemesterModule => {
+  const {
+    Term,
+    AcademicOrganisation,
+    CourseTitle,
+    WorkLoadHours,
+    Preclusion,
+    PreRequisite,
+    CoRequisite,
+    ModularCredit,
+    Description,
+    Subject,
+    CatalogNumber,
+  } = moduleInfo;
+
+  const [AcadYear] = fromTermCode(Term);
+
+  return {
+    AcadYear,
+    Description,
+    Preclusion,
+    Department: AcademicOrganisation,
+    ModuleTitle: CourseTitle,
+    Workload: WorkLoadHours,
+    Prerequisite: PreRequisite,
+    Corequisite: CoRequisite,
+    ModuleCredit: ModularCredit,
+    ModuleCode: Subject + CatalogNumber,
+  };
+};
 
 /**
  * Download modules info for all faculties in a specific semester. This task
