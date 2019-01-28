@@ -1,13 +1,12 @@
 // @flow
 
-import { sortBy } from "lodash";
+import { sortBy } from 'lodash';
 
-import type { RawLesson } from "../types/modules";
-import CS4238Timetable from "./fixtures/CS4238_timetable";
-import MA2213Timetable from "./fixtures/MA2213_timetable";
-import CS2100Timetable from "./fixtures/CS2100_timetable";
+import type { RawLesson } from '../types/modules';
+import CS4238Timetable from './fixtures/CS4238_timetable';
+import MA2213Timetable from './fixtures/MA2213_timetable';
+import CS2100Timetable from './fixtures/CS2100_timetable';
 import GetModuleTimetable, { mapTimetableLessons } from './GetModuleTimetable';
-
 
 describe(mapTimetableLessons, () => {
   function serializeLesson(lesson: RawLesson) {
@@ -577,7 +576,6 @@ describe(mapTimetableLessons, () => {
     expectLessonsEqual(mapTimetableLessons(CS2100Timetable), expected);
   });
 });
-
 
 describe(GetModuleTimetable, () => {
   test('should not crash if the data is invalid', async () => {

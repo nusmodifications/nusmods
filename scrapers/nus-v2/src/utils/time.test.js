@@ -1,7 +1,6 @@
 // @flow
 
-
-import { convertIndexToTime, convertTimeToIndex, getTimeRange } from "./time";
+import { convertIndexToTime, convertTimeToIndex, getTimeRange } from './time';
 
 describe(convertTimeToIndex, () => {
   it('should convert time string to index', () => {

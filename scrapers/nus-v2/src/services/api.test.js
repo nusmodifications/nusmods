@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 import httpStatus from 'http-status';
-import { API, callApi} from './api';
+import { API, callApi } from './api';
 import { AuthError, NotFoundError, UnknownApiError } from './errors';
 
 beforeEach(() => {

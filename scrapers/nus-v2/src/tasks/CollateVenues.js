@@ -1,16 +1,15 @@
 // @flow
 
-import { entries, groupBy, mapValues, merge } from "lodash";
+import { entries, groupBy, mapValues, merge } from 'lodash';
 import type { Task } from '../types/tasks';
-import type { ModuleCode, RawLesson, Semester } from "../types/modules";
+import type { ModuleCode, RawLesson, Semester } from '../types/modules';
 import type { SemesterModuleData } from '../types/mapper';
-import type { VenueInfo, VenueLesson } from "../types/venues";
+import type { VenueInfo, VenueLesson } from '../types/venues';
 
 import BaseTask from './BaseTask';
 import config from '../config';
-import { getTimeRange } from "../utils/time";
-import { OCCUPIED } from "../types/venues";
-
+import { getTimeRange } from '../utils/time';
+import { OCCUPIED } from '../types/venues';
 
 /**
  * Convert module timetable into venue availability
@@ -49,8 +48,6 @@ export function extractVenueAvailability(moduleCode: ModuleCode, timetable: RawL
     ),
   );
 }
-
-
 
 type Input = SemesterModuleData[];
 type Output = VenueInfo;

@@ -1,7 +1,6 @@
 // @flow
 
-
-import { extractVenueAvailability } from "./CollateVenues";
+import { extractVenueAvailability } from './CollateVenues';
 
 describe(extractVenueAvailability, () => {
   test('should map lessons to venues', () => {
@@ -91,4 +90,3 @@ describe(extractVenueAvailability, () => {
     ).toEqual({});
   });
 });
-

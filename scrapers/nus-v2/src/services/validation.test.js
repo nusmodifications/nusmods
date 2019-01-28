@@ -61,22 +61,24 @@ describe(validateLesson, () => {
   });
 
   test('should allow lessons with null room', () => {
-    expect(validateLesson({
-      "term": "1810",
-      "room": null,
-      "numweeks": 13,
-      "start_time": "13:00",
-      "activity": "S",
-      "csize": 60,
-      "module": "CN3109",
-      "eventdate": "2018-08-21",
-      "session": "1",
-      "end_time": "17:00",
-      "modgrp": "S2",
-      "deptfac": "00602ACAD1",
-      "day": "2"
-    })).toEqual(true)
-  })
+    expect(
+      validateLesson({
+        term: '1810',
+        room: null,
+        numweeks: 13,
+        start_time: '13:00',
+        activity: 'S',
+        csize: 60,
+        module: 'CN3109',
+        eventdate: '2018-08-21',
+        session: '1',
+        end_time: '17:00',
+        modgrp: 'S2',
+        deptfac: '00602ACAD1',
+        day: '2',
+      }),
+    ).toEqual(true);
+  });
 });
 
 describe(validateExam, () => {
