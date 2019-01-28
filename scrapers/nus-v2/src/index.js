@@ -15,12 +15,11 @@ import GetFacultyDepartment from './tasks/GetFacultyDepartment';
 import GetSemesterData, { semesterModuleCache } from './tasks/GetSemesterData';
 import CollateVenues from './tasks/CollateVenues';
 import CollateModules from './tasks/CollateModules';
+import DataPipeline from './tasks/DataPipeline';
 
 function runTask(Task) {
   new Task().run().catch((e) => {
-    // TODO: Proper logging
-    console.error(`[${e.constructor.name}] ${e.message}`);
-    console.error(e.stack);
+    logger.fatal(e, 'Fatal error while running %s', Task.constructor.name);
   });
 }
 
@@ -52,7 +51,8 @@ const commands: CommandModule[] = [
         .then((organizations) => new GetSemesterData(sem).run(organizations))
         .then((modules) => {
           logger.info(`Collected data for ${modules.length} modules`);
-        });
+        })
+        .catch((e) => logger.fatal(e, 'Fatal error'));
     },
   },
   {
@@ -69,7 +69,8 @@ const commands: CommandModule[] = [
       semesterModuleCache(sem)
         .read()
         .then((semesterModuleData) => new CollateVenues(sem).run(semesterModuleData))
-        .then((venues) => logger.info(`Collated ${size(venues)} venues`));
+        .then((venues) => logger.info(`Collated ${size(venues)} venues`))
+        .catch((e) => logger.fatal(e, 'Fatal error'));
     },
   },
   {
@@ -85,8 +86,15 @@ const commands: CommandModule[] = [
             return [];
           }
         }),
-      ).then((semesterData) => new CollateModules().run(semesterData));
+      )
+        .then((semesterData) => new CollateModules().run(semesterData))
+        .catch((e) => logger.fatal(e, 'Fatal error'));
     },
+  },
+  {
+    command: 'all',
+    describe: 'run all tasks in a single pipeline',
+    handler: () => runTask(DataPipeline),
   },
 ];
 
