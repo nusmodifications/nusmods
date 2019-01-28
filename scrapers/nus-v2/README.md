@@ -42,7 +42,18 @@ Run these through `yarn scrape` in production or `yarn dev` in development piped
 
 ## Data Pipeline
 
+- Get department / faculty codes (`GetDepartmentFaculty`)
+- Get semester data for all four semesters (`GetSemesterData`)
+    - Get semester modules (`GetSemesterModules`)
+        - Fan out to all modules
+            - Get module timetable (`GetModuleTimetable`)
+    - Get semester exams (`GetModuleExams`)
+- Collate venues (`CollateVenues`)
+- Collate modules (`CombineModules`)
+
 ## Logging and error handling
+
+Logging is done via [Bunyan][bunyan].
 
 ## v2 Data Changes
 
@@ -53,9 +64,13 @@ Run these through `yarn scrape` in production or `yarn dev` in development piped
 ### Semester data
 
 - `LecturePeriods` and `TutorialPeriods` are removed - these are not provided by the API, and it is a lot of work and space for not a lot of information
-- `ExamDate` is now a proper ISO8601 date, formatted with TZ included to Singapore time (UTC+8)
+- `ExamDate` is now a proper ISO8601 date, formatted including timezone (UTC+8)
 - `ExamDuration` is a new nullable field providing the duration of the exam in minutes
+- `FacultyDepartment` will now be published under yearly data, not semester
 
 ### Venue data
 
 - `Availability` now only marks occupied times. Vacant times are simply left out of the object.
+
+[bunyan]: https://github.com/trentm/node-bunyan
+

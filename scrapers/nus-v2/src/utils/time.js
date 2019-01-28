@@ -3,6 +3,11 @@
 import { range } from 'lodash';
 
 /**
+ * Utility function for dealing with time, specifically for the timetable
+ * where we divide classes up into chunks of 30 minute blocks
+ */
+
+/**
  * Converts a 24-hour format time string to an index.
  * @param {string} time - 24-hour format time to convert to index
  * @example 0000 -> 0, 0030 -> 1, 0100 -> 2, ...

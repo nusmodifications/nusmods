@@ -65,6 +65,8 @@ export async function callApi<Data>(endpoint: string, params: ApiParams): Promis
       throw error;
     }
 
+    // If there is no status it usually means the client can't make the HTTP request,
+    // possibly because the network is down
     const error = new UnknownApiError(`Unknown error - ${e.message}`);
     error.originalError = e;
     throw error;
@@ -96,7 +98,7 @@ export async function callApi<Data>(endpoint: string, params: ApiParams): Promis
   return data;
 }
 
-// Export for testing
+// Export for testing. Do not instantiate directly, use the singleton instance instead
 export class API {
   queue: Queue;
 
@@ -219,8 +221,6 @@ export class API {
 
   /**
    * Get exam info on all modules in a semester
-   *
-   * TODO: See if this endpoint will trigger timeout on the actual server
    */
   getTermExams = async (term: string): Promise<ModuleExam[]> => this.callApi('examtt', { term });
 }

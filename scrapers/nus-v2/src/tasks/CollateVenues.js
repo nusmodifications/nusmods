@@ -55,6 +55,10 @@ type Output = VenueInfo;
 /**
  * Map timetable lessons to venues to create a map of when each venue is being
  * used
+ *
+ * Output:
+ * - <semester>/venues.json
+ * - <semester>/venueInformation.json
  */
 export default class CollateVenues extends BaseTask implements Task<Input, Output> {
   semester: Semester;

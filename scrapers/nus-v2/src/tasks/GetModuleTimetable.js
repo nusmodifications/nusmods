@@ -24,6 +24,8 @@ const getLessonKey = (lesson: TimetableLesson) =>
     lesson.end_time,
     lesson.session,
     lesson.room,
+    // '|' is used as a delimiter because it is unlikely to appear
+    // organically in the data
   ].join('|');
 
 /**
@@ -48,7 +50,7 @@ function getWeekText(lessons: TimetableLesson[]): WeekText {
   }
 
   if (weekDelta.every((delta) => delta === 2)) {
-    // TODO: Check for tutorial / lab
+    // TODO: Check for tutorial / lab, those may only 5 classes
     if (weeks.length === 6) {
       return weeks[0] === 1 ? 'Odd Weeks' : 'Even Weeks';
     }
@@ -59,6 +61,9 @@ function getWeekText(lessons: TimetableLesson[]): WeekText {
 
 /**
  * Convert API provided timetable data to RawLesson format used by the frontend
+ *
+ * Output:
+ *  - <semester>/<module code>/timetable.json
  */
 export function mapTimetableLessons(lessons: TimetableLesson[]): RawLesson[] {
   // Group the same lessons together

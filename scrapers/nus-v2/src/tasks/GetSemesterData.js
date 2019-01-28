@@ -64,6 +64,9 @@ const mapModuleInfo = (moduleInfo: ModuleInfoMapped): SemesterModule => {
  * - GetSemesterExams
  * - GetSemesterModules
  * - GetModuleTimetable
+ *
+ * Output:
+ * - <semester>/<module code>/semesterData.json
  */
 export default class GetSemesterData extends BaseTask implements Task<Input, Output> {
   semester: Semester;
@@ -107,7 +110,8 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
       return await getTimetable.run();
     } catch (e) {
       // If the API does not have a timetable record (even one with invalid lessons)
-      // then the class isn't actually offered
+      // then the class isn't actually offered, so we return null and have it
+      // filtered out after Promise.all
       return null;
     }
   }
