@@ -47,5 +47,12 @@
     "Description": "Strategy and Policy",
     "EffectiveDate": "2010-01-01",
     "AcademicOrganisation": "00202ACAD1"
+  },
+  {
+    "EffectiveStatus": "A",
+    "DescriptionShort": "DCS",
+    "Description": "Computer Science",
+    "EffectiveDate": "1905-01-01",
+    "AcademicOrganisation": "00301ACAD1"
   }
 ]

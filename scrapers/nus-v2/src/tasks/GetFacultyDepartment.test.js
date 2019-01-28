@@ -19,7 +19,7 @@ describe(mapFacultyDepartments, () => {
         'Economics',
       ],
       'NUS Business School': ['Accounting', 'Strategy and Policy'],
-      'School of Computing': [],
+      'School of Computing': ['Computer Science'],
       'Faculty of Dentistry': [],
     });
   });
@@ -46,6 +46,7 @@ describe(getDepartmentCodeMap, () => {
       '00103ACAD1': 'Economics',
       '00201ACAD1': 'Accounting',
       '00202ACAD1': 'Strategy and Policy',
+      '00301ACAD1': 'Computer Science',
     });
   });
 });

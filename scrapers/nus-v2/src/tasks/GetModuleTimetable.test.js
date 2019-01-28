@@ -3,29 +3,29 @@
 import { sortBy } from 'lodash';
 
 import type { RawLesson } from '../types/modules';
-import CS4238Timetable from './fixtures/CS4238_timetable';
-import MA2213Timetable from './fixtures/MA2213_timetable';
-import CS2100Timetable from './fixtures/CS2100_timetable';
+import CS4238Timetable from './fixtures/timetable/CS4238';
+import MA2213Timetable from './fixtures/timetable/MA2213';
+import CS2100Timetable from './fixtures/timetable/CS2100_2';
 import GetModuleTimetable, { mapTimetableLessons } from './GetModuleTimetable';
 
+export function serializeLesson(lesson: RawLesson) {
+  return [
+    lesson.LessonType,
+    lesson.ClassNo,
+    lesson.StartTime,
+    lesson.WeekText,
+    lesson.DayText,
+    lesson.Venue,
+  ].join('|');
+}
+
+export function expectLessonsEqual(actual: RawLesson[], expected: RawLesson[]) {
+  // Sort both expected and actual lessons because Jest expects
+  // array to be in the same order
+  expect(sortBy(actual, serializeLesson)).toEqual(sortBy(expected, serializeLesson));
+}
+
 describe(mapTimetableLessons, () => {
-  function serializeLesson(lesson: RawLesson) {
-    return [
-      lesson.LessonType,
-      lesson.ClassNo,
-      lesson.StartTime,
-      lesson.WeekText,
-      lesson.DayText,
-      lesson.Venue,
-    ].join('|');
-  }
-
-  function expectLessonsEqual(actual, expected) {
-    // Sort both expected and actual lessons because Jest expects
-    // array to be in the same order
-    expect(sortBy(actual, serializeLesson)).toEqual(sortBy(expected, serializeLesson));
-  }
-
   test('should map empty timetable lessons', () => {
     expect(mapTimetableLessons([])).toEqual([]);
   });

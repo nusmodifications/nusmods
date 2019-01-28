@@ -13,3 +13,10 @@ export function mockCache<T>(fileContent: T): Cache<T> {
     read: jest.fn().mockResolvedValue(fileContent),
   };
 }
+
+/**
+ * Check the two objects have the same properties
+ */
+export function expectSameKeys<T: Object>(actual: T, expected: T) {
+  expect(Object.keys(actual).sort()).toEqual(Object.keys(expected).sort())
+}
