@@ -1,8 +1,8 @@
 // @flow
 
 import type { WriteOptions } from 'fs-extra';
-import path from 'path';
 import * as fs from 'fs-extra';
+import path from 'path';
 
 import type {
   Module,
@@ -19,7 +19,7 @@ import { CacheExpiredError } from './errors';
 import type { Venue, VenueInfo } from '../types/venues';
 
 /**
- * Object representing a file on the filesystem that may or may not exist
+ * Object representing a unique cache file on disk
  */
 export type Cache<T> = {
   path: string,
@@ -41,23 +41,22 @@ const cacheRoot = path.join(yearRoot, 'raw');
 /**
  * Get a cache for a specific file
  */
-export function getCache<T>(key: string): Cache<T> {
+export function getCache<T>(key: string, expiryInMin: number = defaultExpiry): Cache<T> {
   const filepath = path.join(cacheRoot, `${key}.json`);
 
   return {
     path: filepath,
 
+    expiry: expiryInMin,
+
     write: (o: T) => fs.outputJSON(filepath, o, writeOptions),
 
-    read: async (expiryInMin: number = defaultExpiry) => {
+    read: async () => {
       const [data, stat] = await Promise.all([fs.readJSON(filepath), fs.stat(filepath)]);
 
-      // Throw an error if the file has expired
+      // Throw an error instead of returning stale data if the file has expired
       if (Date.now() - stat.mtimeMs > expiryInMin * 60 * 1000) {
-        const error = new CacheExpiredError('Cache expired');
-        error.path = filepath;
-        error.fileModifiedTime = stat.mtimeMs;
-        throw error;
+        throw new CacheExpiredError('Cache expired', filepath, stat.mtimeMs);
       }
 
       return data;
@@ -66,7 +65,8 @@ export function getCache<T>(key: string): Cache<T> {
 }
 
 /**
- * Uses a factory so that objects are not shared
+ * Create an object that maps each of the file output from the scraper.
+ * Uses a factory so that objects are not shared.
  */
 export function getOutput() {
   return {

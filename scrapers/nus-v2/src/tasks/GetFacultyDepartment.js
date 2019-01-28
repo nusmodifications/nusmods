@@ -56,8 +56,9 @@ type Output = {|
 |};
 
 // Exported so that the CLI can use these caches
-export const departmentCache = getCache<AcademicOrg[]>('departments');
-export const facultyCache = getCache<AcademicGroup[]>('faculty');
+const expiry = 7 * 24 * 60; // Cache these for 7 days since they change rarely
+export const departmentCache = getCache<AcademicOrg[]>('departments', expiry);
+export const facultyCache = getCache<AcademicGroup[]>('faculty', expiry);
 
 /**
  * Downloads faculty and department codes. This is used to map to the codes that appear in

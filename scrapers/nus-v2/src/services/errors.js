@@ -31,6 +31,13 @@ export class AuthError extends ApiError {}
 export class CacheExpiredError extends Error {
   path: string;
   fileModifiedTime: number;
+
+  constructor(message: string, path: string, fileModifiedTime: number) {
+    super(message);
+
+    this.path = path;
+    this.fileModifiedTime = fileModifiedTime;
+  }
 }
 
 /**
