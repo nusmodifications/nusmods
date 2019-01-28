@@ -7,9 +7,16 @@ import type { CommandModule } from 'yargs';
 import * as yargs from 'yargs';
 import { size } from 'lodash';
 
-import { TestApi, GetFacultyDepartment, GetSemesterData, CollateVenues } from './tasks';
-import config from './config';
+import {
+  TestApi,
+  GetFacultyDepartment,
+  GetSemesterData,
+  CollateVenues,
+  CollateModules,
+} from './tasks';
 import getFileSystem from './services/fs';
+import logger from './services/logger';
+import { Semesters } from './types/modules';
 
 function runTask(Task, ...params) {
   new Task(...params).run().catch((e) => {
@@ -33,30 +40,23 @@ const commands: CommandModule[] = [
     handler: () => runTask(GetFacultyDepartment),
   },
   {
-    command: 'semester [year] <sem>',
+    command: 'semester <sem>',
     describe: 'download all data for the given semester',
     builder: {
-      year: {
-        default: config.academicYear,
-        type: 'string',
-      },
       sem: {
         type: 'integer',
       },
     },
     handler: (argv) => {
-      (async () => {
-        const { sem, year } = argv;
-        if (sem < 1 || sem > 4) throw new RangeError('Semester out of range. Expect 1, 2, 3 or 4.');
+      const { sem } = argv;
+      if (sem < 1 || sem > 4) throw new RangeError('Semester out of range. Expect 1, 2, 3 or 4.');
 
-        const getOrganizations = new GetFacultyDepartment();
-        const organizations = await getOrganizations.run();
-
-        const getSemesterData = new GetSemesterData(sem, year);
-        const data = await getSemesterData.run(organizations);
-
-        console.log(`Collected data for ${data.length} modules`);
-      })();
+      new GetFacultyDepartment()
+        .run()
+        .then((organizations) => new GetSemesterData(sem).run(organizations))
+        .then((modules) => {
+          logger.info(`Collected data for ${modules.length} modules`);
+        });
     },
   },
   {
@@ -68,16 +68,30 @@ const commands: CommandModule[] = [
       },
     },
     handler: ({ sem }) => {
-      (async () => {
-        if (sem < 1 || sem > 4) throw new RangeError('Semester out of range. Expect 1, 2, 3 or 4.');
+      if (sem < 1 || sem > 4) throw new RangeError('Semester out of range. Expect 1, 2, 3 or 4.');
 
-        const semesterModuleData = await files.raw.semester(sem).moduleData.read();
-        const collateVenues = new CollateVenues(sem);
-
-        const venues = await collateVenues.run(semesterModuleData);
-
-        console.log(`Collated ${size(venues)} venues`);
-      })();
+      files.raw
+        .semester(sem)
+        .moduleData.read()
+        .then((semesterModuleData) => new CollateVenues(sem).run(semesterModuleData))
+        .then((venues) => logger.info(`Collated ${size(venues)} venues`));
+    },
+  },
+  {
+    command: 'combine',
+    describe: 'combine semester data for modules',
+    handler: () => {
+      Promise.all(
+        Semesters.map((semester) =>
+          files.raw
+            .semester(semester)
+            .moduleData.read()
+            .catch(() => {
+              logger.warn(`No semester data available for ${semester}`);
+              return [];
+            }),
+        ),
+      ).then((semesterData) => new CollateModules().run(semesterData));
     },
   },
 ];

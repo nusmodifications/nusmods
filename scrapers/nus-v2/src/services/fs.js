@@ -5,7 +5,15 @@ import path from 'path';
 import * as fs from 'fs-extra';
 
 import type { AcademicGroup, AcademicOrg, ModuleExam } from '../types/api';
-import type { Module, ModuleCode, RawLesson, Semester, SemesterData } from '../types/modules';
+import type {
+  Module,
+  ModuleCode,
+  ModuleCondensed,
+  ModuleInformation,
+  RawLesson,
+  Semester,
+  SemesterData,
+} from '../types/modules';
 import type { ModuleInfoMapped, SemesterModuleData } from '../types/mapper';
 import config from '../config';
 import { CacheExpiredError } from './errors';
@@ -73,10 +81,10 @@ export default function getFileSystem() {
 
     output: {
       // List of ModuleCondensed for searching
-      // moduleList: file<ModuleCondensed[]>(path.join(yearRoot, 'moduleList.json')),
+      moduleList: file<ModuleCondensed[]>(path.join(yearRoot, 'moduleList.json')),
 
       // List of partial module info for module finder
-      moduleInformation: file<Module[]>(path.join(yearRoot, 'moduleInformation.json')),
+      moduleInformation: file<ModuleInformation[]>(path.join(yearRoot, 'moduleInformation.json')),
 
       // List of venues
       venueList: (semester: Semester) =>

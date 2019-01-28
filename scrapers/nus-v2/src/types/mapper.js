@@ -30,11 +30,13 @@ export type SemesterModule = $Diff<
   },
 >;
 
-export type SemesterModuleData = {
+export type SemesterModuleData = {|
   ModuleCode: ModuleCode,
   Module: SemesterModule,
   SemesterData: SemesterData,
-}
+|};
+
+export type ModuleWithoutTree = $Diff<Module, { ModmavenTree: TreeFragment }>;
 
 /**
  * The exam info part of semester data

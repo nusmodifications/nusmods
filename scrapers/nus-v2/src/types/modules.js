@@ -1,7 +1,5 @@
 // @flow
 
-import { flatMap } from 'lodash';
-
 // Components within a module:
 export type AcadYear = string; // E.g. "2016/2017"
 export type ClassNo = string; // E.g. "1", "A"
@@ -41,11 +39,6 @@ export const DaysOfWeek: Day[] = [...WorkingDaysOfWeek, 'Sunday'];
 
 export type Time = 'Morning' | 'Afternoon' | 'Evening';
 export const TimesOfDay: Time[] = ['Morning', 'Afternoon', 'Evening'];
-
-export const Timeslots: [Day, Time][] = flatMap(
-  WorkingDaysOfWeek,
-  (day): [Day, Time][] => TimesOfDay.map((time) => [day, time]),
-);
 
 export type ModuleLevel = 1 | 2 | 3 | 4 | 5 | 6 | 8;
 export const Semesters = [1, 2, 3, 4];
@@ -108,9 +101,48 @@ export type Module = {
 
   // Semester data
   History: Array<SemesterData>,
+
+  // Requisites
   ModmavenTree: TreeFragment,
   LockedModules?: Array<ModuleCode>,
 
   // Deprecated
   Types?: Array<string>,
 };
+
+// This format is returned from the module list endpoint.
+export type ModuleCondensed = {|
+  +ModuleCode: ModuleCode,
+  +ModuleTitle: ModuleTitle,
+  +Semesters: number[],
+|};
+
+// This format is returned from the module information endpoint
+export type SemesterDataCondensed = {|
+  +Semester: Semester,
+  +ExamDate?: string,
+  +ExamDuration?: number,
+  // The full timetable is not provided to reduce space
+|};
+
+export type ModuleInformation = {|
+  // Basic info
+  +ModuleCode: ModuleCode,
+  +ModuleTitle: ModuleTitle,
+
+  // Additional info
+  +ModuleDescription?: string,
+  +ModuleCredit: string,
+  +Department: Department,
+  +Workload?: string,
+
+  // Requsites
+  +Prerequisite?: string,
+  +Corequisite?: string,
+  +Preclusion?: string,
+
+  // Condensed semester info
+  +History: Array<SemesterDataCondensed>,
+
+  // Requisite tree is not returned to save space
+|};

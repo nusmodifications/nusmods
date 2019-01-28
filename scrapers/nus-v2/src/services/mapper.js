@@ -1,5 +1,5 @@
 // @flow
-import { entries, fromPairs, groupBy, mapValues, values } from 'lodash';
+import { pick, entries, fromPairs, groupBy, mapValues, values } from 'lodash';
 import moment from 'moment';
 import NUSModerator from 'nusmoderator';
 
@@ -10,14 +10,22 @@ import type {
   ModuleInfo,
   TimetableLesson,
 } from '../types/api';
-import type { ModuleCode, RawLesson, WeekText } from '../types/modules';
+import type {
+  ModuleCode,
+  RawLesson,
+  WeekText,
+  ModuleCondensed,
+  ModuleInformation,
+} from '../types/modules';
 import type { VenueLesson } from '../types/venues';
 import type {
   DepartmentCodeMap,
   ExamInfo,
   FacultyCodeMap,
   ModuleInfoMapped,
+  ModuleWithoutTree,
   SemesterModule,
+  SemesterModuleData,
 } from '../types/mapper';
 
 import { OCCUPIED } from '../types/venues';
@@ -144,6 +152,61 @@ export function extractVenueAvailability(moduleCode: ModuleCode, timetable: RawL
       },
     ),
   );
+}
+
+/**
+ * Combine modules from multiple semesters into one
+ */
+export function combineModules(semesters: SemesterModuleData[][]) {
+  const modules: { [ModuleCode]: ModuleWithoutTree } = {};
+
+  // 1. Iterate over each module
+  semesters.forEach((semesterModules) =>
+    semesterModules.forEach((module) => {
+      if (!modules[module.ModuleCode]) {
+        // 2. If the module doesn't exist yet, we'll add it
+        modules[module.ModuleCode] = {
+          ...module.Module,
+          History: [module.SemesterData],
+        };
+      } else {
+        // 3. If it does then we simply append the semester data
+        modules[module.ModuleCode].History.push(module.SemesterData);
+      }
+    }),
+  );
+
+  return values(modules);
+}
+
+export function getModuleCondensed(module: ModuleWithoutTree): ModuleCondensed {
+  return {
+    ModuleCode: module.ModuleCode,
+    ModuleTitle: module.ModuleTitle,
+    Semesters: module.History.map((semester) => semester.Semester),
+  };
+}
+
+export function getModuleInformation(module: ModuleWithoutTree): ModuleInformation {
+  const History = module.History.map((semester) =>
+    pick(semester, ['Semester', 'ExamDate', 'ExamDuration']),
+  );
+
+  const moduleInformation = pick(module, [
+    'ModuleCode',
+    'ModuleTitle',
+    'ModuleDescription',
+    'ModuleCredit',
+    'Department',
+    'Workload',
+    'Prerequisite',
+    'Preclusion',
+  ]);
+
+  return {
+    ...moduleInformation,
+    History,
+  };
 }
 
 export const dayTextMap = {
