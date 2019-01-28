@@ -11,7 +11,7 @@ import GetSemesterExams from './GetSemesterExams';
 import GetModuleTimetable from './GetModuleTimetable';
 import GetSemesterModules from './GetSemesterModules';
 import { getCache } from '../services/output';
-import { fromTermCode } from '../utils/api';
+import { cleanObject, fromTermCode } from '../utils/api';
 
 type Input = {|
   +departments: AcademicOrg[],
@@ -26,6 +26,7 @@ export const semesterModuleCache = (semester: Semester) =>
 /**
  * Map ModuleInfo from the API into something closer to our own representation
  */
+const cleanKeys = ['Workload', 'Prerequisite', 'Corequisite', 'Preclusion'];
 const mapModuleInfo = (moduleInfo: ModuleInfoMapped): SemesterModule => {
   const {
     Term,
@@ -43,18 +44,21 @@ const mapModuleInfo = (moduleInfo: ModuleInfoMapped): SemesterModule => {
 
   const [AcadYear] = fromTermCode(Term);
 
-  return {
-    AcadYear,
-    Description,
-    Preclusion,
-    Department: AcademicOrganisation,
-    ModuleTitle: CourseTitle,
-    Workload: WorkLoadHours,
-    Prerequisite: PreRequisite,
-    Corequisite: CoRequisite,
-    ModuleCredit: ModularCredit,
-    ModuleCode: Subject + CatalogNumber,
-  };
+  return cleanObject(
+    {
+      AcadYear,
+      Preclusion,
+      ModuleDescription: Description,
+      Department: AcademicOrganisation,
+      ModuleTitle: CourseTitle,
+      Workload: WorkLoadHours,
+      Prerequisite: PreRequisite,
+      Corequisite: CoRequisite,
+      ModuleCredit: ModularCredit,
+      ModuleCode: Subject + CatalogNumber,
+    },
+    cleanKeys,
+  );
 };
 
 /**

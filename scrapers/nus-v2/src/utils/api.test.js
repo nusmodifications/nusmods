@@ -1,6 +1,6 @@
 // @flow
 
-import { cacheDownload, fromTermCode, getTermCode, retry } from './api';
+import { cacheDownload, cleanObject, fromTermCode, getTermCode, retry } from './api';
 import { mockCache } from './test-utils';
 
 describe(getTermCode, () => {
@@ -54,7 +54,7 @@ describe(cacheDownload, () => {
 describe(retry, () => {
   test('it should return the resolved value', async () => {
     const fn = jest.fn().mockResolvedValue('Hello world');
-    expect(retry(fn, 3)).resolves.toEqual('Hello world');
+    await expect(retry(fn, 3)).resolves.toEqual('Hello world');
     expect(fn).toBeCalledTimes(1);
   });
 
@@ -96,5 +96,61 @@ describe(retry, () => {
     }
 
     expect(fn).toBeCalledTimes(1);
+  });
+});
+
+describe(cleanObject, () => {
+  test('it should remove null and empty strings', () => {
+    expect(
+      cleanObject(
+        {
+          a: null,
+          b: '',
+          c: 0,
+          d: 12,
+          e: 'x',
+        },
+        ['a', 'b', 'c'],
+      ),
+    ).toEqual({
+      d: 12,
+      e: 'x',
+    });
+  });
+
+  test('it should not remove keys that are not in keys', () => {
+    expect(
+      cleanObject(
+        {
+          a: null,
+          b: '',
+          c: 0,
+          d: 12,
+          e: 'x',
+        },
+        [],
+      ),
+    ).toEqual({
+      a: null,
+      b: '',
+      c: 0,
+      d: 12,
+      e: 'x',
+    });
+  });
+
+  test('it should remove nil strings', () => {
+    expect(
+      cleanObject(
+        {
+          a: 'nil',
+          b: 'None',
+          c: 'n/a',
+          d: 'Hello',
+          e: 'x',
+        },
+        ['a', 'b', 'c', 'd', 'e'],
+      ),
+    ).toEqual({ d: 'Hello', e: 'x' });
   });
 });

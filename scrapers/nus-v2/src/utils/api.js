@@ -56,6 +56,9 @@ export async function cacheDownload<T>(
   }
 }
 
+/**
+ * Retries the given promise
+ */
 export async function retry<T>(
   promiseFactory: () => Promise<T>,
   maxRetries: number,
@@ -69,4 +72,24 @@ export async function retry<T>(
     if (maxRetries <= 1 || !retryIf(e)) throw e;
     return retry(promiseFactory, maxRetries - 1, retryIf);
   }
+}
+
+/**
+ * Remove keys with empty values, null or strings like 'nil', 'none'
+ * Mutates the input object
+ */
+const nullStrings = new Set(['nil', 'na', 'n/a', 'null', 'none']);
+export function cleanObject<T: Object>(object: T, keys: $Keys<T>[]) {
+  /* eslint-disable no-param-reassign */
+  keys.forEach((key) => {
+    const value = object[key];
+
+    if (!value) delete object[key];
+    if (typeof value === 'string' && nullStrings.has(value.trim().toLowerCase())) {
+      delete object[key];
+    }
+  });
+  /* eslint-enable */
+
+  return object;
 }
