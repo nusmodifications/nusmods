@@ -69,6 +69,7 @@ export function getCache<T>(key: string, expiryInMin: number = defaultExpiry): C
  * Uses a factory so that objects are not shared.
  */
 export function getOutput() {
+  // Folder structure
   return {
     // List of ModuleCondensed for searching
     moduleList: (data: ModuleCondensed[]) =>

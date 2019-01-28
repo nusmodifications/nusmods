@@ -4,6 +4,7 @@ import { fromPairs } from 'lodash';
 import type { DepartmentCodeMap, FacultyCodeMap } from '../types/mapper';
 import type { AcademicGroup, AcademicOrg } from '../types/api';
 import type { Task } from '../types/tasks';
+
 import BaseTask from './BaseTask';
 import { cacheDownload } from '../utils/api';
 import { getCache } from '../services/output';

@@ -1,6 +1,6 @@
 // @flow
 
-import { validateExam, validateLesson } from './validation';
+import { validateExam, validateLesson, validateSemester } from './validation';
 
 describe(validateLesson, () => {
   test('should return false if the lesson is invalid', () => {
@@ -120,5 +120,22 @@ describe(validateExam, () => {
         exam_date: '2018-11-22',
       }),
     ).toBe(true);
+  });
+});
+
+describe(validateSemester, () => {
+  test('should return true for valid semesters', () => {
+    expect(validateSemester(1)).toBe(true);
+    expect(validateSemester('1')).toBe(true);
+    expect(validateSemester(4)).toBe(true);
+    expect(validateSemester('4')).toBe(true);
+  });
+
+  test('should return false for anything else', () => {
+    expect(validateSemester(5)).toBe(false);
+    expect(validateSemester(0)).toBe(false);
+    expect(validateSemester(1.5)).toBe(false);
+    expect(validateSemester('Ahhh')).toBe(false);
+    expect(validateSemester('Not semester')).toBe(false);
   });
 });

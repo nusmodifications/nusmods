@@ -1,6 +1,7 @@
 // @flow
 
 import { entries, groupBy, mapValues, merge } from 'lodash';
+
 import type { Task } from '../types/tasks';
 import type { ModuleCode, RawLesson, Semester } from '../types/modules';
 import type { SemesterModuleData } from '../types/mapper';
@@ -64,12 +65,6 @@ export default class CollateVenues extends BaseTask implements Task<Input, Outpu
   semester: Semester;
   academicYear: string;
 
-  logger = this.rootLogger.child({
-    task: CollateVenues.name,
-    year: this.academicYear,
-    semester: this.semester,
-  });
-
   get name() {
     return `Collating venues for semester ${this.semester}`;
   }
@@ -79,6 +74,12 @@ export default class CollateVenues extends BaseTask implements Task<Input, Outpu
 
     this.semester = semester;
     this.academicYear = academicYear;
+
+    this.logger = this.rootLogger.child({
+      semester,
+      task: CollateVenues.name,
+      year: academicYear,
+    });
   }
 
   async run(input: Input) {

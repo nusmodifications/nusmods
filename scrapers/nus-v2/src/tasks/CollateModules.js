@@ -1,6 +1,7 @@
 // @flow
 
 import { pick, values } from 'lodash';
+
 import type { Task } from '../types/tasks';
 import type { ModuleWithoutTree, SemesterModuleData } from '../types/mapper';
 import type { Module, ModuleCode, ModuleCondensed, ModuleInformation } from '../types/modules';
@@ -76,11 +77,6 @@ const getModuleInformation = (module: ModuleWithoutTree): ModuleInformation => {
 export default class CollateModules extends BaseTask implements Task<Input, Output> {
   academicYear: string;
 
-  logger = this.rootLogger.child({
-    task: CollateModules.name,
-    year: this.academicYear,
-  });
-
   get name() {
     return `Collating modules for ${this.academicYear}`;
   }
@@ -89,6 +85,10 @@ export default class CollateModules extends BaseTask implements Task<Input, Outp
     super();
 
     this.academicYear = academicYear;
+    this.logger = this.rootLogger.child({
+      task: CollateModules.name,
+      year: academicYear,
+    });
   }
 
   async run(input: Input) {

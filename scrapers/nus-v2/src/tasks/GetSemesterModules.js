@@ -1,17 +1,20 @@
 // @flow
 
+import { strict as assert } from 'assert';
 import { flatten, partition } from 'lodash';
 
 import type { AcademicGroup, AcademicOrg, ModuleInfo } from '../types/api';
 import type { DepartmentCodeMap, FacultyCodeMap, ModuleInfoMapped } from '../types/mapper';
 import type { Semester } from '../types/modules';
+import type { Task } from '../types/tasks';
+
+import BaseTask from './BaseTask';
 import config from '../config';
 import { getTermCode, retry } from '../utils/api';
-import BaseTask from './BaseTask';
-import type { Task } from '../types/tasks';
 import { TaskError, UnknownApiError } from '../services/errors';
-import { getCache } from '../services/output';
+import { getCache, type Cache } from '../services/output';
 import { getDepartmentCodeMap, getFacultyCodeMap } from './GetFacultyDepartment';
+import { validateSemester } from '../services/validation';
 
 /**
  * Overwrite AcademicOrganisation and AcademicGroup with their names instead
@@ -37,8 +40,10 @@ type Input = {|
 
 type Output = ModuleInfoMapped[];
 
-export const modulesCache = (semester: Semester) =>
-  getCache<ModuleInfoMapped[]>(`semester-${semester}-modules`);
+export const modulesCache = (semester: Semester) => {
+  assert(validateSemester(semester), `${semester} is not a valid semester`);
+  return getCache<ModuleInfoMapped[]>(`semester-${semester}-modules`);
+};
 
 /**
  * Download modules info for all faculties in a specific semester
@@ -47,13 +52,7 @@ export default class GetSemesterModules extends BaseTask implements Task<Input, 
   semester: Semester;
   academicYear: string;
 
-  modulesCache = modulesCache(this.semester);
-
-  logger = this.rootLogger.child({
-    task: GetSemesterModules.name,
-    year: this.academicYear,
-    semester: this.semester,
-  });
+  modulesCache: Cache<ModuleInfoMapped[]>;
 
   get name() {
     return `Get modules info for semester ${this.semester}`;
@@ -64,6 +63,14 @@ export default class GetSemesterModules extends BaseTask implements Task<Input, 
 
     this.semester = semester;
     this.academicYear = academicYear;
+
+    this.modulesCache = modulesCache(semester);
+
+    this.logger = this.rootLogger.child({
+      semester,
+      task: GetSemesterModules.name,
+      year: academicYear,
+    });
   }
 
   async run(input: Input) {

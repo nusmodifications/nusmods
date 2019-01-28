@@ -39,13 +39,10 @@ const commands: CommandModule[] = [
     describe: 'download all data for the given semester',
     builder: {
       sem: {
-        type: 'integer',
+        choices: Semesters,
       },
     },
-    handler(argv) {
-      const { sem } = argv;
-      if (sem < 1 || sem > 4) throw new RangeError('Semester out of range. Expect 1, 2, 3 or 4.');
-
+    handler({ sem }) {
       new GetFacultyDepartment()
         .run()
         .then((organizations) => new GetSemesterData(sem).run(organizations))
@@ -60,12 +57,10 @@ const commands: CommandModule[] = [
     describe: 'collate venue for given semester',
     builder: {
       sem: {
-        type: 'integer',
+        choices: Semesters,
       },
     },
     handler({ sem }) {
-      if (sem < 1 || sem > 4) throw new RangeError('Semester out of range. Expect 1, 2, 3 or 4.');
-
       semesterModuleCache(sem)
         .read()
         .then((semesterModuleData) => new CollateVenues(sem).run(semesterModuleData))

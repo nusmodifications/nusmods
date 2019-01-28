@@ -100,13 +100,6 @@ export default class GetModuleTimetable extends BaseTask implements Task<void, R
   academicYear: string;
   moduleCode: ModuleCode;
 
-  logger = this.rootLogger.child({
-    task: GetModuleTimetable.name,
-    year: this.academicYear,
-    semester: this.semester,
-    moduleCode: this.moduleCode,
-  });
-
   get name() {
     return `Get timetable for ${this.moduleCode} for semester ${this.semester}`;
   }
@@ -121,6 +114,13 @@ export default class GetModuleTimetable extends BaseTask implements Task<void, R
     this.semester = semester;
     this.academicYear = academicYear;
     this.moduleCode = moduleCode;
+
+    this.logger = this.rootLogger.child({
+      semester,
+      moduleCode,
+      task: GetModuleTimetable.name,
+      year: academicYear,
+    });
   }
 
   async run() {

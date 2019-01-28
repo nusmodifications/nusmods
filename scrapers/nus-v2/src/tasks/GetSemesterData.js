@@ -1,17 +1,20 @@
 // @flow
 
+import { strict as assert } from 'assert';
+
 import type { AcademicGroup, AcademicOrg } from '../types/api';
 import type { ModuleInfoMapped, SemesterModule, SemesterModuleData } from '../types/mapper';
 import type { ModuleCode, RawLesson, Semester } from '../types/modules';
-
 import type { Task } from '../types/tasks';
+
 import config from '../config';
 import BaseTask from './BaseTask';
 import GetSemesterExams from './GetSemesterExams';
 import GetModuleTimetable from './GetModuleTimetable';
 import GetSemesterModules from './GetSemesterModules';
-import { getCache } from '../services/output';
+import { getCache, type Cache } from '../services/output';
 import { cleanObject, fromTermCode } from '../utils/api';
+import { validateSemester } from '../services/validation';
 
 type Input = {|
   +departments: AcademicOrg[],
@@ -20,8 +23,10 @@ type Input = {|
 
 type Output = SemesterModuleData[];
 
-export const semesterModuleCache = (semester: Semester) =>
-  getCache<SemesterModuleData[]>(`semester-${semester}-module-data`);
+export const semesterModuleCache = (semester: Semester) => {
+  assert(validateSemester(semester), `${semester} is not a valid semester`);
+  return getCache<SemesterModuleData[]>(`semester-${semester}-module-data`);
+};
 
 /**
  * Map ModuleInfo from the API into something closer to our own representation
@@ -76,13 +81,7 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
   semester: Semester;
   academicYear: string;
 
-  logger = this.rootLogger.child({
-    task: GetSemesterData.name,
-    year: this.academicYear,
-    semester: this.semester,
-  });
-
-  semesterModuleCache = semesterModuleCache(this.semester);
+  outputCache: Cache<Output>;
 
   get name() {
     return `Get data for semester ${this.semester}`;
@@ -93,6 +92,12 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
 
     this.semester = semester;
     this.academicYear = academicYear;
+    this.outputCache = semesterModuleCache(semester);
+    this.logger = this.rootLogger.child({
+      semester,
+      year: academicYear,
+      task: GetSemesterData.name,
+    });
   }
 
   async getExams() {
@@ -164,7 +169,7 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
     );
 
     // Cache semester data to disk
-    await this.semesterModuleCache.write(semesterModuleData);
+    await this.outputCache.write(semesterModuleData);
 
     return semesterModuleData;
   }
