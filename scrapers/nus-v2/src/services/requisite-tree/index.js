@@ -22,7 +22,7 @@ import { MODULE_REGEX, OPERATORS_REGEX } from './constants';
  */
 
 const logger = rootLogger.child({
-  name: 'genReqTree',
+  service: 'requisite-tree',
 });
 
 // Add any key-words and reasons for which NO parsing should be done and
