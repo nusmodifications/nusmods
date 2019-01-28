@@ -1,5 +1,5 @@
 // @flow
-import { sortBy, omit, zip } from 'lodash';
+
 import DataPipeline from './DataPipeline';
 import api, { API } from '../services/api';
 
@@ -10,8 +10,7 @@ import CS2100Timeable2 from './fixtures/timetable/CS2100_2';
 import CS2100Expected from './fixtures/expected/CS2100';
 
 import { fromTermCode } from '../utils/api';
-import type { Module, SemesterData } from '../types/modules';
-import { expectLessonsEqual } from './GetModuleTimetable.test';
+import { expectModulesEqual } from '../utils/test-utils';
 
 jest.mock('../services/api');
 const mockApi = (api: { [$Keys<API>]: JestMockFn<any, any> });
@@ -121,26 +120,6 @@ const moduleTimetableData = {
   '1': CS2100Timeable1,
   '2': CS2100Timeable2,
 };
-
-function expectHistoryEqual(actual: SemesterData[], expected: SemesterData[]) {
-  zip(
-    sortBy(actual, (semester) => semester.Semester),
-    sortBy(expected, (semester) => semester.Semester),
-  ).forEach(([actualSemester, expectedSemester]) => {
-    expect(omit(actualSemester, 'Timetable')).toEqual(omit(expectedSemester, 'Timetable'));
-
-    expectLessonsEqual(actualSemester.Timetable, expectedSemester.Timetable);
-  });
-}
-
-function expectModulesEqual(actual: Module, expected: Module) {
-  // LockedModules is excluded because the modules that require CS2100 are not part of this test
-  const omittedKeys = ['History', 'LockedModules'];
-  expect(omit(actual, omittedKeys)).toEqual(omit(expected, omittedKeys));
-
-  // Sort semesters and check history
-  expectHistoryEqual(actual.History, expected.History);
-}
 
 describe(DataPipeline, () => {
   jest.fn();
