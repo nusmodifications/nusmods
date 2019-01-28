@@ -230,12 +230,12 @@ describe(combineModules, () => {
           },
         ],
       ]),
-    ).toEqual({
-      ACC1006: {
+    ).toEqual([
+      {
         ...Module,
         History: [semesterOneData, semesterTwoData],
       },
-    });
+    ]);
   });
 });
 
