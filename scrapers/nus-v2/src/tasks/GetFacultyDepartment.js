@@ -98,6 +98,10 @@ export default class GetFacultyDepartment extends BaseTask implements Task<void,
       this.getFaculties(),
     ]);
 
+    // Save the mapping of departments to faculties
+    const mappings = mapFacultyDepartments(faculties, departments);
+    await this.output.facultyDepartments(mappings);
+
     // Return data for next task in pipeline
     return {
       departments,

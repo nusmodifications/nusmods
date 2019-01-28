@@ -91,6 +91,8 @@ export function getOutput() {
       ),
 
     // List of faculties and their departments
+    facultyDepartments: (data: { [string]: string[] }) =>
+      fs.outputJSON(path.join(yearRoot, 'facultyDepartments.json'), data, writeOptions),
 
     // Output for a specific module's data
     module: (moduleCode: ModuleCode, data: Module) =>
