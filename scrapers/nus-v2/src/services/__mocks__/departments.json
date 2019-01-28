@@ -33,5 +33,19 @@
     "Description": "Economics",
     "EffectiveDate": "1905-01-01",
     "AcademicOrganisation": "00103ACAD1"
+  },
+  {
+    "EffectiveStatus": "A",
+    "DescriptionShort": "ACC",
+    "Description": "Accounting",
+    "EffectiveDate": "1905-01-01",
+    "AcademicOrganisation": "00201ACAD1"
+  },
+  {
+    "EffectiveStatus": "A",
+    "DescriptionShort": "DSP",
+    "Description": "Strategy and Policy",
+    "EffectiveDate": "2010-01-01",
+    "AcademicOrganisation": "00202ACAD1"
   }
 ]

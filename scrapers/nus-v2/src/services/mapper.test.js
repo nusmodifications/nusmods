@@ -14,9 +14,27 @@ import {
   getDepartmentCodeMap,
   getFacultyCodeMap,
   mapExamInfo,
+  mapFacultyDepartments,
   mapTimetableLessons,
 } from './mapper';
 import type { RawLesson } from '../types/modules';
+
+describe(mapFacultyDepartments, () => {
+  test('should produce a mapping of department to their faculties', () => {
+    expect(mapFacultyDepartments(faculties, departments)).toEqual({
+      'Faculty of Arts & Social Sci': [
+        'Arts & Social Sciences',
+        'FASS DO/Office of Programmes',
+        'Chinese Studies',
+        'Communications & New Media',
+        'Economics',
+      ],
+      'NUS Business School': ['Accounting', 'Strategy and Policy'],
+      'School of Computing': [],
+      'Faculty of Dentistry': [],
+    });
+  });
+});
 
 describe(getFacultyCodeMap, () => {
   test('should map faculty codes to their description', () => {
@@ -25,9 +43,6 @@ describe(getFacultyCodeMap, () => {
       '002': 'NUS Business School',
       '003': 'School of Computing',
       '004': 'Faculty of Dentistry',
-      '005': 'School of Design & Environment',
-      '006': 'Faculty of Engineering',
-      '007': 'Faculty of Law',
     });
   });
 });
@@ -40,6 +55,8 @@ describe(getDepartmentCodeMap, () => {
       '00101ACAD1': 'Chinese Studies',
       '00102ACAD1': 'Communications & New Media',
       '00103ACAD1': 'Economics',
+      '00201ACAD1': 'Accounting',
+      '00202ACAD1': 'Strategy and Policy',
     });
   });
 });

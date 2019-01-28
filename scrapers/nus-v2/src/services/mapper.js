@@ -37,6 +37,34 @@ const UTC_OFFSET = 8 * 60; // Singapore is UTC+8
 /* eslint-disable camelcase */
 
 /**
+ * Map department to their faculties. This is useful for the frontend
+ */
+export function mapFacultyDepartments(
+  faculties: AcademicGroup[],
+  departments: AcademicOrg[],
+): { [string]: string[] } {
+  // Get a mapping of faculty code -> name
+  const facultyCodes = {};
+  const mappings = {};
+  faculties.forEach((faculty) => {
+    facultyCodes[faculty.AcademicGroup] = faculty.Description;
+    mappings[faculty.Description] = [];
+  });
+
+  // Then add each department to their faculty
+  departments.forEach((department) => {
+    // The department code's first three characters is its faculty code
+    const faculty = facultyCodes[department.AcademicOrganisation.slice(0, 3)];
+
+    if (mappings[faculty]) {
+      mappings[faculty].push(department.Description);
+    }
+  });
+
+  return mappings;
+}
+
+/**
  * Create a mapping of faculty code to faculty name from a list of faculties
  */
 export function getFacultyCodeMap(faculties: AcademicGroup[]): FacultyCodeMap {
