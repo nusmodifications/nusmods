@@ -1,7 +1,10 @@
+// @flow
+
 import { normalize } from './normalizeString';
 
 /* eslint-disable max-len */
-describe('normalizeString', () => {
+
+describe(normalize, () => {
   it('converts commas to delimiter or', () => {
     const testString =
       'ACC1002 Financial Accounting, BSP1004 Legal Environment of Business, FIN2004 Finance';
@@ -56,40 +59,32 @@ describe('normalizeString', () => {
   });
 
   it('changes roman numerals to digits', () => {
-    const testString = '(i) CS1000 (ii) CS1001';
-    const testString1 = 'i) CS1000 ii) CS1001';
     const expected = '(1) CS1000 (2) CS1001';
-    expect(normalize(testString)).toBe(expected);
-    expect(normalize(testString1)).toBe(expected);
+    expect(normalize('(i) CS1000 (ii) CS1001')).toBe(expected);
+    expect(normalize('i) CS1000 ii) CS1001')).toBe(expected);
   });
 
   it('changes alphabets to digits', () => {
-    const testString = '(a) CS1000 (b) CS1001';
-    const testString1 = 'a) CS1000 b) CS1001';
     const expected = '(1) CS1000 (2) CS1001';
-    expect(normalize(testString)).toBe(expected);
-    expect(normalize(testString1)).toBe(expected);
+    expect(normalize('(a) CS1000 (b) CS1001')).toBe(expected);
+    expect(normalize('a) CS1000 b) CS1001')).toBe(expected);
     expect(normalize('a) CS1000 or b) CS1001')).toBe('(1) CS1000 or (2) CS1001');
   });
 
   it('does not change modules or operators to digits', () => {
-    const testString = '(CS1000)';
-    expect(normalize(testString)).toBe(testString);
-    const testString1 = 'CS1000)';
+    const testString1 = '(CS1000)';
     expect(normalize(testString1)).toBe(testString1);
-    const testString2 = '(or)';
+    const testString2 = 'CS1000)';
     expect(normalize(testString2)).toBe(testString2);
+    const testString3 = '(or)';
+    expect(normalize(testString3)).toBe(testString3);
   });
 
   it('fixes listing brackets', () => {
-    const testString = '1) CS1000 2) CS1001';
-    const expected = '(1) CS1000 (2) CS1001';
-    expect(normalize(testString)).toBe(expected);
+    expect(normalize('1) CS1000 2) CS1001')).toBe('(1) CS1000 (2) CS1001');
   });
 
   it('changes listing into brackets given that an operator exists', () => {
-    const testString = '1) CS1000 or 2) CS1001';
-    const expected = '(1) CS1000 or (2) CS1001';
-    expect(normalize(testString)).toBe(expected);
+    expect(normalize('1) CS1000 or 2) CS1001')).toBe('(1) CS1000 or (2) CS1001');
   });
 });

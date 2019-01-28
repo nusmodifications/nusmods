@@ -1,16 +1,17 @@
 // @flow
 
+import * as R from 'ramda';
 import { Logger } from 'bunyan';
 import { createToken, Lexer, Parser, type Token } from 'chevrotain';
-import * as R from 'ramda';
+
 import { AND_OR_REGEX, MODULE_REGEX, OPERATORS } from './constants';
 
 /**
  * Parses the string to build a tree of requirements for the module.
- * First it goes through a lexer to generate tokens,
- * then a parser to build the tree.
+ * First it goes through a lexer to generate tokens, then a parser to build
+ * the tree.
  *
- * Library used for lexing/parsing is chevrotain:
+ * Library used for lexing/parsing is Chevrotain:
  * https://github.com/SAP/chevrotain
  */
 const Module = createToken({
@@ -55,13 +56,11 @@ const allTokens = [WhiteSpace, Module, And, Or, LeftBracket, RightBracket, Irrel
 const ReqTreeLexer = new Lexer(allTokens);
 
 function generateAndBranch(modules) {
-  // $FlowFixMe
   const children = R.uniq(modules);
   return { and: children };
 }
 
 function generateOrBranch(modules) {
-  // $FlowFixMe
   const children = R.uniq(modules);
   return { or: children };
 }
@@ -131,7 +130,7 @@ class ReqTreeParser extends Parser {
     // very important to call this after all the rules have been defined.
     // otherwise the parser may not work correctly as it will lack information
     // derived during the self analysis phase.
-    Parser.performSelfAnalysis(this);
+    this.performSelfAnalysis();
   }
 
   // avoids inserting module literals as these can have multiple(and infinite) semantic values
@@ -177,7 +176,6 @@ export function cleanOperators(tokens: Token[]) {
   const findFirstRelevant = R.findIndex(
     (token) => MODULE_REGEX.test(token.image) || token.image === '(',
   );
-
   const findLastRelevant = R.findLastIndex(
     (token) => MODULE_REGEX.test(token.image) || token.image === ')',
   );
@@ -211,11 +209,9 @@ export function cleanOperators(tokens: Token[]) {
     const isModule = MODULE_REGEX.test(token.image);
     const isAnotherModule = nextToken && MODULE_REGEX.test(nextToken.image);
 
+    moduleTokens.push(token);
     if (singularConjunction && isModule && isAnotherModule) {
-      moduleTokens.push(token);
       moduleTokens.push(singularConjunction);
-    } else {
-      moduleTokens.push(token);
     }
   }
 
@@ -225,12 +221,12 @@ export function cleanOperators(tokens: Token[]) {
 /**
  * Parses the prerequisite string to produce the tokenized form.
  * @see __tests__/genReqTree.test.js
- * @param {String} pre The prerequisite string
- * @param {bunyan} log The bunyan logger
+ * @param {String} prerequisite The prerequisite string
+ * @param {bunyan} logger Bunyan logger
  */
-function parseString(pre: string, log: Logger) {
+export default function parseString(prerequisite: string, logger: Logger) {
   const findModules = R.match(new RegExp(MODULE_REGEX, 'g'));
-  const moduleMatches = findModules(pre);
+  const moduleMatches = findModules(prerequisite);
 
   if (moduleMatches.length === 0) {
     return null;
@@ -241,27 +237,27 @@ function parseString(pre: string, log: Logger) {
     return moduleMatches[0];
   }
 
-  if (!pre.includes(OPERATORS.or) && !pre.includes(OPERATORS.and)) {
+  if (!prerequisite.includes(OPERATORS.or) && !prerequisite.includes(OPERATORS.and)) {
     // e.g. 'CS1010 CS1231 Some module title'
     return generateOrBranch(moduleMatches);
   }
 
-  if (!pre.includes(OPERATORS.or)) {
+  if (!prerequisite.includes(OPERATORS.or)) {
     // e.g. 'CS1010 and CS1231'
     return generateAndBranch(moduleMatches);
   }
 
-  if (!pre.includes(OPERATORS.and)) {
+  if (!prerequisite.includes(OPERATORS.and)) {
     // e.g. 'CS1010 or CS1231'
     return generateOrBranch(moduleMatches);
   }
 
   // check that all brackets are fully enclosed
-  if (R.match(/\(/g, pre).length !== R.match(/\)/g, pre).length) {
-    log.error(`pre ${pre}'s brackets do not self enclose.`);
+  if (R.match(/\(/g, prerequisite).length !== R.match(/\)/g, prerequisite).length) {
+    logger.error(`pre ${prerequisite}'s brackets do not self enclose.`);
   }
 
-  const lexingResult = ReqTreeLexer.tokenize(pre);
+  const lexingResult = ReqTreeLexer.tokenize(prerequisite);
   const tokens = cleanOperators(lexingResult.tokens);
 
   const parser = new ReqTreeParser();
@@ -269,10 +265,8 @@ function parseString(pre: string, log: Logger) {
   const result = parser.parse();
 
   if (parser.errors.length > 0) {
-    log.error(`'${pre}' encoutered parsing errors:\n${parser.errors}`);
+    logger.error({ pre: prerequisite, errors: parser.errors }, 'Encountered parsing errors');
   }
 
   return result;
 }
-
-export default parseString;

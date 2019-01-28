@@ -10,7 +10,7 @@ import { normalize } from './normalizeString';
 const mockLogger = bunyan.createLogger({ name: 'test' });
 const parse = (string) => parseString(normalize(string), mockLogger);
 
-describe('parse', () => {
+describe(parseString, () => {
   it('parses query `(1) either BSP1005 or EC1301 and (2) either DSC2008 or EC2303`)', () => {
     const result = {
       and: [

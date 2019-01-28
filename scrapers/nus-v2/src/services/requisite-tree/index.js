@@ -3,10 +3,11 @@
 import path from 'path';
 import { values } from 'lodash';
 import * as fs from 'fs-extra';
-import bunyan, { Logger } from 'bunyan';
 import * as R from 'ramda';
+import { Logger } from 'bunyan';
 
 import type { ModuleWithoutTree } from '../../types/mapper';
+import rootLogger from '../logger';
 import config from '../../config';
 import parseString from './parseString';
 import normalizeString from './normalizeString';
@@ -20,10 +21,8 @@ import { MODULE_REGEX, OPERATORS_REGEX } from './constants';
  * ModmavenTree: different format of ParsedPrerequisite
  */
 
-const log = bunyan.createLogger({
+const logger = rootLogger.child({
   name: 'genReqTree',
-  // $FlowFixMe
-  level: process.env.NODE_ENV === 'development' ? 'debug' : 'info',
 });
 
 // Add any key-words and reasons for which NO parsing should be done and
@@ -53,7 +52,7 @@ const RESTRICTED_KEYWORDS = [
   '4 of the 5',
 ];
 
-function parse(key: 'Prerequisite' | 'Preclusion', data: ModuleWithoutTree[], subLog: Logger) {
+function parse(key: 'Prerequisite' | 'Preclusion', data: ModuleWithoutTree[], subLogger: Logger) {
   const moduleCodeToData: { [string]: string } = R.pipe(
     R.map(R.props(['ModuleCode', key])),
     R.fromPairs, // [key, val] => { key: val }
@@ -69,7 +68,7 @@ function parse(key: 'Prerequisite' | 'Preclusion', data: ModuleWithoutTree[], su
 
   Object.keys(moduleCodeToData).forEach((moduleCode) => {
     if (!parsable[moduleCode]) {
-      // log.debug(`${moduleCode}'s ${key} cannot be parsed: ${moduleCodeToData[moduleCode]}`);
+      logger.debug(`${moduleCode}'s ${key} cannot be parsed: ${moduleCodeToData[moduleCode]}`);
     }
   });
 
@@ -77,7 +76,7 @@ function parse(key: 'Prerequisite' | 'Preclusion', data: ModuleWithoutTree[], su
     const string = parsable[moduleCode];
     const normalizedString = normalizeString(string, moduleCode);
 
-    const moduleLog = subLog.child({ moduleCode });
+    const moduleLog = subLogger.child({ moduleCode });
     const parsedString = parseString(normalizedString, moduleLog);
 
     parsable[moduleCode] = parsedString
@@ -178,8 +177,8 @@ export default async function genReqTree(allModules: ModuleWithoutTree[]) {
     }
   });
 
-  const prerequisites = parse('Prerequisite', allModules, log);
-  const preclusions = parse('Preclusion', allModules, log);
+  const prerequisites = parse('Prerequisite', allModules, logger);
+  const preclusions = parse('Preclusion', allModules, logger);
 
   const merged = allModules.map((data) => {
     const moduleCode = data.ModuleCode;

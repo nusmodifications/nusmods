@@ -1,12 +1,17 @@
+// @flow
+
+import bunyan from 'bunyan';
 import parseString, { cleanOperators } from './parseString';
 
-describe('cleanOperators', () => {
-  const andToken = { image: 'and' };
-  const orToken = { image: 'or' };
-  const moduleToken = { image: 'CS1000' };
+const mockLogger = bunyan.createLogger({ name: 'test' });
 
-  const leftBracketToken = { image: '(' };
-  const rightBracketToken = { image: ')' };
+describe(cleanOperators, () => {
+  const andToken: any = { image: 'and' };
+  const orToken: any = { image: 'or' };
+  const moduleToken: any = { image: 'CS1000' };
+
+  const leftBracketToken: any = { image: '(' };
+  const rightBracketToken: any = { image: ')' };
 
   it('cleans excess operators from simple strings', () => {
     const tokens = [andToken, moduleToken, orToken, andToken];
@@ -97,19 +102,21 @@ describe('cleanOperators', () => {
   });
 });
 
-describe('parseString', () => {
+describe(parseString, () => {
+  const parse = (string) => parseString(string, mockLogger);
+
   it('parses single module to a leaf', () => {
-    expect(parseString('CS1000')).toEqual('CS1000');
+    expect(parse('CS1000')).toEqual('CS1000');
   });
 
   it('parses simple strings in `or` form', () => {
-    expect(parseString('CS1000 or CS1001')).toEqual({
+    expect(parse('CS1000 or CS1001')).toEqual({
       or: ['CS1000', 'CS1001'],
     });
   });
 
   it('parses simple strings in `and` form', () => {
-    expect(parseString('CS1000 and CS1001')).toEqual({
+    expect(parse('CS1000 and CS1001')).toEqual({
       and: ['CS1000', 'CS1001'],
     });
   });
@@ -123,7 +130,7 @@ describe('parseString', () => {
         },
       ],
     };
-    expect(parseString('CS1000 and CS1001 or CS1002')).toEqual(result);
+    expect(parse('CS1000 and CS1001 or CS1002')).toEqual(result);
   });
 
   it('parses left to right order for `CS1000 or CS1001 and CS1002`', () => {
@@ -135,7 +142,7 @@ describe('parseString', () => {
         'CS1002',
       ],
     };
-    expect(parseString('CS1000 or CS1001 and CS1002')).toEqual(result);
+    expect(parse('CS1000 or CS1001 and CS1002')).toEqual(result);
   });
 
   it('parses left to right order for very complex queries multiple(`or` `and`)', () => {
@@ -149,50 +156,50 @@ describe('parseString', () => {
         },
       ],
     };
-    expect(parseString('CS1000 or CS1001 and CS1002 or CS1003')).toEqual(result);
+    expect(parse('CS1000 or CS1001 and CS1002 or CS1003')).toEqual(result);
   });
 
   it('parses strings with excess `or` operator', () => {
-    expect(parseString('or CS1000')).toEqual('CS1000');
-    expect(parseString('CS1000 or')).toEqual('CS1000');
+    expect(parse('or CS1000')).toEqual('CS1000');
+    expect(parse('CS1000 or')).toEqual('CS1000');
   });
 
   it('parses strings with excess `and` operator', () => {
-    expect(parseString('and CS1000')).toEqual('CS1000');
-    expect(parseString('CS1000 and')).toEqual('CS1000');
-    expect(parseString('(CS1000 and)')).toEqual('CS1000');
+    expect(parse('and CS1000')).toEqual('CS1000');
+    expect(parse('CS1000 and')).toEqual('CS1000');
+    expect(parse('(CS1000 and)')).toEqual('CS1000');
   });
 
   it('parses strings with duplicate `and` operator', () => {
-    expect(parseString('CS1000 and and CS1001')).toEqual({
+    expect(parse('CS1000 and and CS1001')).toEqual({
       and: ['CS1000', 'CS1001'],
     });
   });
 
   it('parses strings with duplicate `or` operator', () => {
-    expect(parseString('CS1000 or or CS1001')).toEqual({
+    expect(parse('CS1000 or or CS1001')).toEqual({
       or: ['CS1000', 'CS1001'],
     });
   });
 
   it('parses strings with parenthesis that have no modules in between', () => {
-    expect(parseString('CS1000 ()')).toEqual('CS1000');
+    expect(parse('CS1000 ()')).toEqual('CS1000');
   });
 
   it('parses strings with operators that have no modules in between', () => {
-    expect(parseString('CS1000 or and CS1001')).toEqual({
+    expect(parse('CS1000 or and CS1001')).toEqual({
       and: ['CS1000', 'CS1001'],
     });
   });
 
   it('parses strings with modules with no operators in between', () => {
-    expect(parseString('(ES1231 or ESP2107 ST1232) and (MA1102R or MA1505)')).toEqual({
+    expect(parse('(ES1231 or ESP2107 ST1232) and (MA1102R or MA1505)')).toEqual({
       and: [{ or: ['ES1231', 'ESP2107', 'ST1232'] }, { or: ['MA1102R', 'MA1505'] }],
     });
   });
 
   it('parses strings with modules with no operators in between', () => {
-    expect(parseString('(ES1231 and ESP2107 ST1232) or (MA1102R and MA1505)')).toEqual({
+    expect(parse('(ES1231 and ESP2107 ST1232) or (MA1102R and MA1505)')).toEqual({
       or: [{ and: ['ES1231', 'ESP2107', 'ST1232'] }, { and: ['MA1102R', 'MA1505'] }],
     });
   });
