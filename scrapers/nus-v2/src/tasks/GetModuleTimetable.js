@@ -10,7 +10,7 @@ import config from '../config';
 import { getTermCode } from '../utils/api';
 import { validateLesson } from '../services/validation';
 import type { TimetableLesson } from '../types/api';
-import { activityLessonTypeMap, dayTextMap } from '../services/data';
+import { activityLessonType, dayTextMap } from '../services/data';
 
 /**
  * For deduplicating timetable lessons
@@ -87,7 +87,7 @@ export function mapTimetableLessons(lessons: TimetableLesson[]): RawLesson[] {
       // Room can be null
       Venue: room || '',
       DayText: dayTextMap[day],
-      LessonType: activityLessonTypeMap[activity],
+      LessonType: activityLessonType[activity],
     };
   });
 }

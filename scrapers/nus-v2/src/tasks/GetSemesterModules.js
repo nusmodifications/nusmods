@@ -4,7 +4,6 @@ import { strict as assert } from 'assert';
 import { flatten, partition } from 'lodash';
 
 import type { AcademicGroup, AcademicOrg, ModuleInfo } from '../types/api';
-import type { DepartmentCodeMap, FacultyCodeMap, ModuleInfoMapped } from '../types/mapper';
 import type { Semester } from '../types/modules';
 import type { Task } from '../types/tasks';
 
@@ -13,36 +12,18 @@ import config from '../config';
 import { getTermCode, retry } from '../utils/api';
 import { TaskError, UnknownApiError } from '../services/errors';
 import { getCache, type Cache } from '../services/output';
-import { getDepartmentCodeMap, getFacultyCodeMap } from './GetFacultyDepartment';
 import { validateSemester } from '../services/validation';
-
-/**
- * Overwrite AcademicOrganisation and AcademicGroup with their names instead
- * of an object
- */
-export function mapFacultyDepartmentCodes(
-  moduleInfo: ModuleInfo,
-  faculties: FacultyCodeMap,
-  departments: DepartmentCodeMap,
-): ModuleInfoMapped {
-  // $FlowFixMe Flow won't recognize this spread is overwriting the original's properties
-  return {
-    ...moduleInfo,
-    AcademicOrganisation: departments[moduleInfo.AcademicOrganisation.Code],
-    AcademicGroup: faculties[moduleInfo.AcademicGroup.Code],
-  };
-}
 
 type Input = {|
   +departments: AcademicOrg[],
   +faculties: AcademicGroup[],
 |};
 
-type Output = ModuleInfoMapped[];
+type Output = ModuleInfo[];
 
 export const modulesCache = (semester: Semester) => {
   assert(validateSemester(semester), `${semester} is not a valid semester`);
-  return getCache<ModuleInfoMapped[]>(`semester-${semester}-modules`);
+  return getCache<Output>(`semester-${semester}-modules`);
 };
 
 /**
@@ -52,7 +33,7 @@ export default class GetSemesterModules extends BaseTask implements Task<Input, 
   semester: Semester;
   academicYear: string;
 
-  modulesCache: Cache<ModuleInfoMapped[]>;
+  modulesCache: Cache<Output>;
 
   get name() {
     return `Get modules info for semester ${this.semester}`;
@@ -76,35 +57,27 @@ export default class GetSemesterModules extends BaseTask implements Task<Input, 
   async run(input: Input) {
     this.logger.info(`Getting modules for ${this.academicYear} semester ${this.semester}`);
 
-    const { faculties, departments } = input;
     const term = getTermCode(this.semester, this.academicYear);
-
-    const facultyMap = getFacultyCodeMap(faculties);
-    const departmentMap = getDepartmentCodeMap(departments);
 
     // We make a new request for each faculty because the API will timeout if
     // we try to request for all of them in one shot
-    const requests = departments.map(async (department) => {
+    const requests = input.departments.map(async (department) => {
       try {
         const getModules = () =>
           this.api.getDepartmentModules(term, department.AcademicOrganisation);
         const modules = await retry(getModules, 3, (error) => error instanceof UnknownApiError);
 
         // Only return modules which are visible in the system
-        const [printedModules, hiddenModules] = partition(
+        const [printed, hidden] = partition(
           modules,
           // Some systems use CatalogPrint while others use PrintCatalog
-          (module) => (module.CatalogPrint || module.PrintCatalog) === 'Y',
+          (module: ModuleInfo) => (module.CatalogPrint || module.PrintCatalog) === 'Y',
         );
 
-        this.logger.info(
-          `Downloaded %i modules from %s`,
-          printedModules.length,
-          department.Description,
-        );
-        this.logger.debug(`Filtered out %i non-print modules`, hiddenModules.length);
+        this.logger.info(`Downloaded %i modules from %s`, printed.length, department.Description);
+        this.logger.debug(`Filtered out %i non-print modules`, hidden.length);
 
-        return printedModules;
+        return printed;
       } catch (e) {
         this.logger.error(e, `Cannot get modules from ${department.Description}`);
 
@@ -113,21 +86,14 @@ export default class GetSemesterModules extends BaseTask implements Task<Input, 
       }
     });
 
-    let rawModules: ModuleInfo[];
+    let modules: ModuleInfo[];
     try {
-      rawModules = flatten(await Promise.all(requests));
+      modules = flatten<ModuleInfo>(await Promise.all(requests));
     } catch (e) {
       throw new TaskError('Cannot get module list', this, e);
     }
 
-    this.logger.info(`Downloaded ${rawModules.length} modules in all`);
-
-    // The ModuleInfo object from the API comes with a useless AcademicOrg and
-    // AcademicDept object, which we replace with a string to save on space
-    // and improve readability
-    const modules: ModuleInfoMapped[] = rawModules.map((moduleInfo) =>
-      mapFacultyDepartmentCodes(moduleInfo, facultyMap, departmentMap),
-    );
+    this.logger.info(`Downloaded ${modules.length} modules in all`);
 
     // Cache module info to disk
     await this.modulesCache.write(modules);

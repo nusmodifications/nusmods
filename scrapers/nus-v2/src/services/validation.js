@@ -8,7 +8,7 @@ import Joi from 'joi';
 import type { ModuleExam, TimetableLesson } from '../types/api';
 import type { Semester } from '../types/modules';
 
-import { activityLessonTypeMap, dayTextMap } from './data';
+import { activityLessonType, dayTextMap } from './data';
 import { Semesters } from '../types/modules';
 
 const lessonSchema = Joi.object({
@@ -17,7 +17,7 @@ const lessonSchema = Joi.object({
   start_time: Joi.string(),
   eventdate: Joi.string().isoDate(),
 
-  activity: Joi.string().only(Object.keys(activityLessonTypeMap)),
+  activity: Joi.string().only(Object.keys(activityLessonType)),
 
   modgrp: Joi.string(),
 

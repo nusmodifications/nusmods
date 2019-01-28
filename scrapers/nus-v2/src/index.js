@@ -96,4 +96,4 @@ const commands: CommandModule[] = [
 commands.forEach((command) => yargs.command(command));
 
 // eslint-disable-next-line no-unused-expressions
-yargs.demandCommand().help().argv;
+yargs.demandCommand().strict().help().argv;

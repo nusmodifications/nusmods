@@ -4,10 +4,10 @@
  * Small utility functions that don't need to be part of the main API class
  */
 
-import { Logger } from 'bunyan';
-import type { Semester } from '../types/modules';
-import type { Cache } from '../services/output';
-import rootLogger from '../services/logger';
+import { Logger } from "bunyan";
+import type { Semester } from "../types/modules";
+import type { Cache } from "../services/output";
+import rootLogger from "../services/logger";
 
 /**
  * Construct the 4 number term code from the academic year and semester
@@ -72,24 +72,4 @@ export async function retry<T>(
     if (maxRetries <= 1 || !retryIf(e)) throw e;
     return retry(promiseFactory, maxRetries - 1, retryIf);
   }
-}
-
-/**
- * Remove keys with empty values, null or strings like 'nil', 'none'
- * Mutates the input object
- */
-const nullStrings = new Set(['nil', 'na', 'n/a', 'null', 'none']);
-export function cleanObject<T: Object>(object: T, keys: $Keys<T>[]) {
-  /* eslint-disable no-param-reassign */
-  keys.forEach((key) => {
-    const value = object[key];
-
-    if (!value) delete object[key];
-    if (typeof value === 'string' && nullStrings.has(value.trim().toLowerCase())) {
-      delete object[key];
-    }
-  });
-  /* eslint-enable */
-
-  return object;
 }

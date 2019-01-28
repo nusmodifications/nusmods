@@ -1,10 +1,11 @@
 // @flow
 
+import { fromPairs } from 'lodash';
 import { strict as assert } from 'assert';
 
-import type { AcademicGroup, AcademicOrg } from '../types/api';
-import type { ModuleInfoMapped, SemesterModule, SemesterModuleData } from '../types/mapper';
-import type { ModuleCode, RawLesson, Semester } from '../types/modules';
+import type { AcademicGroup, AcademicOrg, ModuleInfo } from '../types/api';
+import type { DepartmentCodeMap, SemesterModule, SemesterModuleData } from '../types/mapper';
+import type { Semester } from '../types/modules';
 import type { Task } from '../types/tasks';
 
 import config from '../config';
@@ -13,8 +14,9 @@ import GetSemesterExams from './GetSemesterExams';
 import GetModuleTimetable from './GetModuleTimetable';
 import GetSemesterModules from './GetSemesterModules';
 import { getCache, type Cache } from '../services/output';
-import { cleanObject, fromTermCode } from '../utils/api';
+import { fromTermCode } from '../utils/api';
 import { validateSemester } from '../services/validation';
+import { cleanObject, titleize } from "../services/data";
 
 type Input = {|
   +departments: AcademicOrg[],
@@ -25,14 +27,37 @@ type Output = SemesterModuleData[];
 
 export const semesterModuleCache = (semester: Semester) => {
   assert(validateSemester(semester), `${semester} is not a valid semester`);
-  return getCache<SemesterModuleData[]>(`semester-${semester}-module-data`);
+  return getCache<Output>(`semester-${semester}-module-data`);
 };
+
+/**
+ * Create a mapping of department code to department name from a list of faculties
+ */
+export const getDepartmentCodeMap = (departments: AcademicOrg[]): DepartmentCodeMap =>
+  fromPairs(
+    departments.map((department) => [department.AcademicOrganisation, department.Description]),
+  );
+
+/**
+ * Clean module info
+ *
+ * - Remove empty fields and fields with text like 'nil'
+ * - Properly capitalize ALL CAPS title
+ */
+const cleanKeys = ['Workload', 'Prerequisite', 'Corequisite', 'Preclusion'];
+export function cleanModuleInfo(module: SemesterModule) {
+  if (module.ModuleTitle === module.ModuleTitle.toUpperCase()) {
+    // eslint-disable-next-line no-param-reassign
+    module.ModuleTitle = titleize(module.ModuleTitle);
+  }
+
+  return cleanObject(module, cleanKeys);
+}
 
 /**
  * Map ModuleInfo from the API into something closer to our own representation
  */
-const cleanKeys = ['Workload', 'Prerequisite', 'Corequisite', 'Preclusion'];
-const mapModuleInfo = (moduleInfo: ModuleInfoMapped): SemesterModule => {
+const mapModuleInfo = (moduleInfo: ModuleInfo, departments: DepartmentCodeMap): SemesterModule => {
   const {
     Term,
     AcademicOrganisation,
@@ -49,21 +74,22 @@ const mapModuleInfo = (moduleInfo: ModuleInfoMapped): SemesterModule => {
 
   const [AcadYear] = fromTermCode(Term);
 
-  return cleanObject(
-    {
-      AcadYear,
-      Preclusion,
-      ModuleDescription: Description,
-      Department: AcademicOrganisation,
-      ModuleTitle: CourseTitle,
-      Workload: WorkLoadHours,
-      Prerequisite: PreRequisite,
-      Corequisite: CoRequisite,
-      ModuleCredit: ModularCredit,
-      ModuleCode: Subject + CatalogNumber,
-    },
-    cleanKeys,
-  );
+  // We map department from our department list because
+  // AcademicOrganisation.Description is empty for some reason
+  const Department = departments[AcademicOrganisation.Code];
+
+  return {
+    AcadYear,
+    Preclusion,
+    Department,
+    ModuleDescription: Description,
+    ModuleTitle: CourseTitle,
+    Workload: WorkLoadHours,
+    Prerequisite: PreRequisite,
+    Corequisite: CoRequisite,
+    ModuleCredit: ModularCredit,
+    ModuleCode: Subject + CatalogNumber,
+  };
 };
 
 /**
@@ -100,54 +126,45 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
     });
   }
 
-  async getExams() {
-    // Retrieve all exams for this semester
-    const getExams = new GetSemesterExams(this.semester, this.academicYear);
-    return getExams.run();
-  }
-
-  async getModules(input: Input): Promise<ModuleInfoMapped[]> {
-    // Retrieve all module info from this semester
-    const getModules = new GetSemesterModules(this.semester, this.academicYear);
-    return getModules.run(input);
-  }
-
-  async getTimetable(moduleCode: ModuleCode): Promise<?Array<RawLesson[]>> {
-    const getTimetable = new GetModuleTimetable(moduleCode, this.semester, this.academicYear);
-
-    try {
-      return await getTimetable.run();
-    } catch (e) {
-      // If the API does not have a timetable record (even one with invalid lessons)
-      // then the class isn't actually offered, so we return null and have it
-      // filtered out after Promise.all
-      return null;
-    }
-  }
-
   async run(input: Input) {
-    this.logger.info(`Getting semester data for ${this.academicYear} semester ${this.semester}`);
+    const { semester, academicYear } = this;
+
+    this.logger.info(`Getting semester data for ${academicYear} semester ${semester}`);
 
     // Get exams and module info in parallel
-    const [exams, modules] = await Promise.all([this.getExams(), this.getModules(input)]);
+    const [exams, modules] = await Promise.all([
+      new GetSemesterExams(semester, academicYear).run(),
+      new GetSemesterModules(semester, academicYear).run(input),
+    ]);
 
-    // Fan out to get module timetable
+    // Map department codes to department name
+    const departmentMap = getDepartmentCodeMap(input.departments);
+
+    // Fan out to individual modules to get timetable
     const timetableRequests = modules.map(async (moduleInfo) => {
       const moduleCode = moduleInfo.Subject + moduleInfo.CatalogNumber;
+      let timetable;
 
-      const timetable = await this.getTimetable(moduleCode);
-      if (!timetable) return null;
+      try {
+        timetable = await new GetModuleTimetable(moduleCode, semester, academicYear).run();
+      } catch (e) {
+        // If the API does not have a timetable record (even one with invalid lessons)
+        // then the class isn't actually offered, so we return null and have it
+        // filtered out
+        return null;
+      }
 
       // Combine timetable and exam data into SemesterData
       const examInfo = exams[moduleCode] || {};
       const SemesterData = {
-        Semester: this.semester,
+        Semester: semester,
         Timetable: timetable,
         ...examInfo,
       };
 
-      // Map module info to the shape expected by our frontend
-      const Module = mapModuleInfo(moduleInfo);
+      // Map module info to the shape expected by our frontend and clean up the data
+      const rawModule = mapModuleInfo(moduleInfo, departmentMap);
+      const Module = cleanModuleInfo(rawModule);
 
       return {
         ModuleCode: moduleCode,

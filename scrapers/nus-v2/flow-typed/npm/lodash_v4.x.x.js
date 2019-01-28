@@ -264,6 +264,10 @@ declare module "lodash" {
     ): -1;
     // alias of _.head
     first<T>(array: ?$ReadOnlyArray<T>): T;
+
+    // Manual modification by Yi Jiang
+    flatten<T>(array?: ?Array<Array<T>>): Array<T>;
+
     flatten<T, X>(array?: ?Array<Array<T> | X>): Array<T | X>;
     flattenDeep<T>(array?: ?(any[])): Array<T>;
     flattenDepth(array?: ?(any[]), depth?: ?number): any[];
