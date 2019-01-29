@@ -25,6 +25,7 @@ type Props = {|
 
 const MIN_YEARS = -5; // Studying year 6
 const MAX_YEARS = 1; // One year before matriculation
+const GRADUATE_IN = 6; // Graduating a max of 6 years from now
 
 // Extracted to a constant to reduce re-renders
 const TOGGLE_LABELS = ['Yes', 'No'];
@@ -42,9 +43,21 @@ function graduationLabel(offset: number) {
   return `In ${offset} years`;
 }
 
+function buttonProps(selected: boolean, disabled: boolean) {
+  return {
+    disabled,
+    type: 'button',
+    className: classnames('btn btn-block', {
+      'btn-outline-secondary': disabled,
+      'btn-outline-primary': !selected && !disabled,
+      'btn-primary': selected,
+    }),
+  };
+}
+
 export function PlannerSettingsComponent(props: Props) {
   const matriculationLabels = getYearLabels(MIN_YEARS, MAX_YEARS).reverse();
-  const graduationLabels = getYearLabels(0, 6);
+  const graduationLabels = getYearLabels(0, GRADUATE_IN);
 
   return (
     <div className={styles.settings}>
@@ -57,13 +70,8 @@ export function PlannerSettingsComponent(props: Props) {
             return (
               <li key={year}>
                 <button
-                  type="button"
-                  className={classnames('btn btn-block', {
-                    'btn-outline-primary': props.minYear !== year,
-                    'btn-primary': props.minYear === year,
-                  })}
                   onClick={() => props.setMinYear(year)}
-                  disabled={year > props.maxYear}
+                  {...buttonProps(props.minYear === year, year > props.maxYear)}
                 >
                   AY{acadYearLabel(year)}
                   <span className={styles.subtitle}>
@@ -86,13 +94,8 @@ export function PlannerSettingsComponent(props: Props) {
           {graduationLabels.map((year, offset) => (
             <li key={year}>
               <button
-                type="button"
-                className={classnames('btn btn-block', {
-                  'btn-outline-primary': props.maxYear !== year,
-                  'btn-primary': props.maxYear === year,
-                })}
                 onClick={() => props.setMaxYear(year)}
-                disabled={year < props.minYear}
+                {...buttonProps(props.maxYear === year, year < props.minYear)}
               >
                 {graduationLabel(offset)}
                 <span className={styles.subtitle}>(AY{acadYearLabel(year)})</span>
