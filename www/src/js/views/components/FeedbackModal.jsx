@@ -36,7 +36,7 @@ export function FeedbackButtons() {
         </ExternalLink>
       </div>
       <p className="text-muted">
-        To contact us privately, such as for security issues, please email{' '}
+        To email us privately, such as for security issues, please use{' '}
         <ExternalLink href={`mailto:${config.contact.privateEmail}`}>
           {config.contact.privateEmail}
         </ExternalLink>
