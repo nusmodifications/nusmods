@@ -50,7 +50,7 @@ function insertPostFixAsStandalone(string) {
 // People write 'x, y and z', meaning 'x and y and z' but
 // people write 'x, y, z' meaning 'x or y or z'
 function convertCommas(oxfordString) {
-  // replace Xxford comma
+  // replace Oxford comma
   const string = oxfordString.replace(/,\s*and\b/gi, OPERATORS.and);
   if (!string.includes(',')) return string;
 
