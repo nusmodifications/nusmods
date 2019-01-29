@@ -98,14 +98,13 @@ class ReqTreeParser extends Parser {
       const value = [];
 
       value.push(this.SUBRULE(this.atomicExpression));
+
       this.MANY(() => {
         this.CONSUME(Or);
         value.push(this.SUBRULE2(this.atomicExpression));
       });
-      if (value.length === 1) {
-        return value[0];
-      }
-      return generateOrBranch(value);
+
+      return value.length === 1 ? value[0] : generateOrBranch(value);
     });
 
     this.RULE('atomicExpression', () =>
@@ -254,7 +253,7 @@ export default function parseString(prerequisite: string, logger: Logger) {
 
   // check that all brackets are fully enclosed
   if (R.match(/\(/g, prerequisite).length !== R.match(/\)/g, prerequisite).length) {
-    logger.error(`pre ${prerequisite}'s brackets do not self enclose.`);
+    logger.info({ prerequisite }, 'Brackets do not self enclose');
   }
 
   const lexingResult = ReqTreeLexer.tokenize(prerequisite);
@@ -265,7 +264,7 @@ export default function parseString(prerequisite: string, logger: Logger) {
   const result = parser.parse();
 
   if (parser.errors.length > 0) {
-    logger.error({ pre: prerequisite, errors: parser.errors }, 'Encountered parsing errors');
+    logger.info({ prerequisite, errors: parser.errors }, 'Encountered parsing errors');
   }
 
   return result;

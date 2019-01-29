@@ -66,12 +66,6 @@ function parse(key: 'Prerequisite' | 'Preclusion', data: ModuleWithoutTree[], su
     R.filter(R.test(MODULE_REGEX)),
   )(moduleCodeToData);
 
-  Object.keys(moduleCodeToData).forEach((moduleCode) => {
-    if (!parsable[moduleCode]) {
-      logger.debug(`${moduleCode}'s ${key} cannot be parsed: ${moduleCodeToData[moduleCode]}`);
-    }
-  });
-
   Object.keys(parsable).forEach((moduleCode) => {
     const string = parsable[moduleCode];
     const normalizedString = normalizeString(string, moduleCode);

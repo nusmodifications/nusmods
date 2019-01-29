@@ -1,6 +1,6 @@
 // @flow
 
-export const MODULE_REGEX = /[A-Z]{2,3}[0-9]{4}(?:[A-Z]|[A-Z]R)?/;
+export const MODULE_REGEX = /[A-Z]{2,3}[0-9]{4}[A-Z]{0,3}/;
 
 export const OPERATORS = {
   and: ' and ',
