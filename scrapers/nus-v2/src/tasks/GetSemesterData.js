@@ -18,6 +18,7 @@ import { fromTermCode } from '../utils/api';
 import { validateSemester } from '../services/validation';
 import { cleanObject, titleize } from '../services/data';
 import { NotFoundError } from '../utils/errors';
+import { difference } from '../utils/set';
 
 type Input = {|
   +departments: AcademicOrg[],
@@ -201,7 +202,18 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
 
     const semesterModuleData = (await Promise.all(timetableRequests)).filter(Boolean);
 
-    // Log some statistics
+    // Check that every module that has exam also has a timetable
+    // This is an invariant check on the validity of the data
+    const moduleCodes = new Set(semesterModuleData.map((module) => module.ModuleCode));
+    const noInfoModulesWithExams = difference(moduleCodes, new Set(Object.keys(exams)));
+    if (noInfoModulesWithExams.size > 0) {
+      this.logger.warn(
+        { moduleCodes: Array.from(noInfoModulesWithExams) },
+        'Found modules with exam but no info/timetable',
+      );
+    }
+
+    // We want to know how many requests we're wasting
     this.logger.debug('%i/%i modules have timetables', semesterModuleData.length, modules.length);
 
     // Save the merged semester data to disk

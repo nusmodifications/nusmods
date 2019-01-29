@@ -1,5 +1,6 @@
 // @flow
-import { groupBy, partition, values } from 'lodash';
+import { groupBy, partition, values, has } from 'lodash';
+import { Logger } from 'bunyan';
 import NUSModerator from 'nusmoderator';
 
 import type { ModuleCode, RawLesson, Semester, WeekText } from '../types/modules';
@@ -10,7 +11,7 @@ import config from '../config';
 import { getTermCode, retry } from '../utils/api';
 import { validateLesson } from '../services/validation';
 import type { TimetableLesson } from '../types/api';
-import { activityLessonType, dayTextMap } from '../services/data';
+import { activityLessonType, dayTextMap, unrecognizedLessonTypes } from '../services/data';
 
 /**
  * For deduplicating timetable lessons
@@ -65,7 +66,7 @@ function getWeekText(lessons: TimetableLesson[]): WeekText {
  * Output:
  *  - <semester>/<module code>/timetable.json
  */
-export function mapTimetableLessons(lessons: TimetableLesson[]): RawLesson[] {
+export function mapTimetableLessons(lessons: TimetableLesson[], logger: Logger): RawLesson[] {
   // Group the same lessons together
   const groupedLessons = groupBy(lessons, getLessonKey);
 
@@ -74,6 +75,10 @@ export function mapTimetableLessons(lessons: TimetableLesson[]): RawLesson[] {
   return values(groupedLessons).map((events: TimetableLesson[]) => {
     // eslint-disable-next-line camelcase
     const { room, start_time, end_time, day, modgrp, activity } = events[0];
+
+    if (has(unrecognizedLessonTypes, activity)) {
+      logger.warn({ activity }, `Lesson type not recognized by the frontend used`);
+    }
 
     return {
       // mod group contains the activity at the start - we remove that because
@@ -131,10 +136,10 @@ export default class GetModuleTimetable extends BaseTask implements Task<void, R
     // Validate and remove invalid lessons
     const [validLessons, invalidLessons] = partition(lessons, validateLesson);
     if (invalidLessons.length > 0) {
-      this.logger.info({ invalidLessons }, 'Removed %i invalid lessons', invalidLessons.length);
+      this.logger.info({ invalidLessons }, 'Removed invalid lessons');
     }
 
-    const timetable = mapTimetableLessons(validLessons);
+    const timetable = mapTimetableLessons(validLessons, this.logger);
 
     // Cache timetable to disk
     await this.output.timetable(this.semester, this.moduleCode, timetable);

@@ -92,7 +92,7 @@ export default class GetSemesterExams extends BaseTask implements Task<void, Out
     if (invalidExams.length > 0) {
       this.logger.warn(
         { invalidExams },
-        `Removed %i exams because they were invalid`,
+        `Removed exams because they were invalid`,
         invalidExams.length,
       );
     }
