@@ -2,7 +2,7 @@
 import { sortBy, values } from 'lodash';
 import type { ModuleCode, Semester } from 'types/modules';
 import { Semesters } from 'types/modules';
-import type { Conflict, ExamClashes, ModuleWithInfo, PlannerModulesWithInfo } from 'types/views';
+import type { Conflict, ExamClashes, PlannerModuleInfo, PlannerModulesWithInfo } from 'types/views';
 import type { ModuleCodeMap, ModuleTime } from 'types/reducers';
 import type { State } from 'reducers';
 import config from 'config';
@@ -96,7 +96,7 @@ function mapModuleInfo(
   moduleCode: ModuleCode,
   modulesMap: ModulesMap,
   conflictChecks: Array<() => ?Conflict>,
-): ModuleWithInfo {
+): PlannerModuleInfo {
   const conflict = firstNonNull(conflictChecks);
   const moduleInfo = modulesMap[moduleCode];
   if (!moduleInfo) return { moduleCode, conflict };
@@ -108,7 +108,7 @@ function mapModuleInfo(
   };
 }
 
-export function getExemptions(state: State): ModuleWithInfo[] {
+export function getExemptions(state: State): PlannerModuleInfo[] {
   const { planner, moduleBank } = state;
 
   // "Exemption" modules are stored in a special year which is not a valid AY
@@ -120,7 +120,7 @@ export function getExemptions(state: State): ModuleWithInfo[] {
   );
 }
 
-export function getPlanToTake(state: State): ModuleWithInfo[] {
+export function getPlanToTake(state: State): PlannerModuleInfo[] {
   const { planner, moduleBank } = state;
 
   // "Plan to take" modules are stored in a special year which is not a valid AY

@@ -6,7 +6,7 @@ import { flatMap, values, flatten, max, min, sortBy, toPairs, sumBy } from 'loda
 import { DragDropContext, Droppable, type OnDragEndResponder } from 'react-beautiful-dnd';
 import classnames from 'classnames';
 import type { Module, ModuleCode, Semester } from 'types/modules';
-import type { ModuleWithInfo, PlannerModulesWithInfo } from 'types/views';
+import type { PlannerModuleInfo, PlannerModulesWithInfo } from 'types/views';
 import type { State as StoreState } from 'reducers';
 
 import { addAcadYear, MODULE_CODE_REGEX, renderMCs, subtractAcadYear } from 'utils/modules';
@@ -35,8 +35,8 @@ import styles from './PlannerContainer.scss';
 
 export type Props = {|
   +modules: PlannerModulesWithInfo,
-  +exemptions: ModuleWithInfo[],
-  +planToTake: ModuleWithInfo[],
+  +exemptions: PlannerModuleInfo[],
+  +planToTake: PlannerModuleInfo[],
 
   // Actions
   +fetchModule: (ModuleCode) => Promise<Module>,
@@ -140,7 +140,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
     }
 
     // Sort acad years since acad years may not be inserted in display order
-    const sortedModules: Array<[string, { [Semester]: ModuleWithInfo[] }]> = sortBy(
+    const sortedModules: Array<[string, { [Semester]: PlannerModuleInfo[] }]> = sortBy(
       toPairs(this.props.modules),
       (pairs) => pairs[0],
     );

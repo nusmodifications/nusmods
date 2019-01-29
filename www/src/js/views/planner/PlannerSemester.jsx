@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import { sum } from 'lodash';
 
 import type { ModuleCode, Semester } from 'types/modules';
-import type { ModuleWithInfo } from 'types/views';
+import type { PlannerModuleInfo } from 'types/views';
 import config from 'config';
 import { getModuleExamDate, renderMCs } from 'utils/modules';
 import { getDroppableId, getSemesterName } from 'utils/planner';
@@ -17,7 +17,7 @@ import styles from './PlannerSemester.scss';
 type Props = {|
   +year: string,
   +semester: Semester,
-  +modules: ModuleWithInfo[],
+  +modules: PlannerModuleInfo[],
 
   +showConflicts: boolean,
   +showModuleMeta: boolean,
@@ -27,7 +27,7 @@ type Props = {|
   +removeModule: (moduleCode: ModuleCode) => void,
 |};
 
-function renderSemesterMeta(modulesWithInfo: ModuleWithInfo[]) {
+function renderSemesterMeta(modulesWithInfo: PlannerModuleInfo[]) {
   const moduleCredits = sum(
     modulesWithInfo.map(({ moduleInfo }) => +moduleInfo?.ModuleCredit || 0),
   );

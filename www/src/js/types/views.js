@@ -182,7 +182,7 @@ export type NoInfo = {
 
 export type Conflict = PrereqConflict | ExamConflict | SemesterConflict | NoInfo;
 
-export type ModuleWithInfo = {|
+export type PlannerModuleInfo = {|
   moduleCode: ModuleCode,
   moduleInfo?: Module,
   conflict?: ?Conflict,
@@ -192,6 +192,6 @@ export type PlannerModulesWithInfo = {
   // Mapping acad years to a map of semester to module information object
   // This is the form used by the UI
   +[string]: {|
-    +[Semester]: ModuleWithInfo,
+    +[Semester]: PlannerModuleInfo,
   |},
 };
