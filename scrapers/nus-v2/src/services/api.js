@@ -22,7 +22,7 @@ import type {
   TimetableLesson,
 } from '../types/api';
 import config from '../config';
-import { AuthError, NotFoundError, UnknownApiError } from './errors';
+import { AuthError, NotFoundError, UnknownApiError } from '../utils/errors';
 
 type ApiParams = { [key: string]: any };
 

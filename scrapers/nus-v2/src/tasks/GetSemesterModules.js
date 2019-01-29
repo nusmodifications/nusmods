@@ -10,7 +10,7 @@ import type { Task } from '../types/tasks';
 import BaseTask from './BaseTask';
 import config from '../config';
 import { getTermCode, retry } from '../utils/api';
-import { TaskError, UnknownApiError } from '../services/errors';
+import { TaskError, UnknownApiError } from '../utils/errors';
 import { getCache, type Cache } from '../services/output';
 import { validateSemester } from '../services/validation';
 

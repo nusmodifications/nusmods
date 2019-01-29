@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 import { API, callApi } from './api';
-import { AuthError, NotFoundError, UnknownApiError } from './errors';
+import { AuthError, NotFoundError, UnknownApiError } from '../utils/errors';
 import { mockResponse } from '../utils/test-utils';
 
 beforeEach(() => {

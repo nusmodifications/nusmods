@@ -2,7 +2,7 @@
 
 import * as fs from 'fs-extra';
 import { getCache } from './output';
-import { CacheExpiredError } from './errors';
+import { CacheExpiredError } from '../utils/errors';
 
 const hourToMs = 60 * 60 * 1000;
 

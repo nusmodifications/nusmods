@@ -1,6 +1,6 @@
 // @flow
 import bunyan from 'bunyan';
-import { ApiError } from '../errors';
+import { ApiError } from '../../utils/errors';
 
 /* eslint-disable import/prefer-default-export */
 

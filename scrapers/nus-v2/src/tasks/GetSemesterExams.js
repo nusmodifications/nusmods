@@ -12,7 +12,7 @@ import type { Cache } from '../services/output';
 import BaseTask from './BaseTask';
 import config from '../config';
 import { cacheDownload, getTermCode } from '../utils/api';
-import { TaskError } from '../services/errors';
+import { TaskError } from '../utils/errors';
 import { validateExam, validateSemester } from '../services/validation';
 import { getCache } from '../services/output';
 

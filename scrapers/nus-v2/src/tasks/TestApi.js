@@ -4,7 +4,7 @@ import { strict as assert } from 'assert';
 
 import BaseTask from './BaseTask';
 import type { Task } from '../types/tasks';
-import { AuthError } from '../services/errors';
+import { AuthError } from '../utils/errors';
 
 export default class TestApi extends BaseTask implements Task<> {
   name = 'Test task';

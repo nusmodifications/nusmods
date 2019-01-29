@@ -7,7 +7,7 @@ import type { Task } from '../types/tasks';
 
 import BaseTask from './BaseTask';
 import config from '../config';
-import { getTermCode } from '../utils/api';
+import { getTermCode, retry } from '../utils/api';
 import { validateLesson } from '../services/validation';
 import type { TimetableLesson } from '../types/api';
 import { activityLessonType, dayTextMap } from '../services/data';
@@ -126,7 +126,7 @@ export default class GetModuleTimetable extends BaseTask implements Task<void, R
   async run() {
     const term = getTermCode(this.semester, this.academicYear);
 
-    const lessons = await this.api.getModuleTimetable(term, this.moduleCode);
+    const lessons = await retry(() => this.api.getModuleTimetable(term, this.moduleCode), 3);
 
     // Validate and remove invalid lessons
     const [validLessons, invalidLessons] = partition(lessons, validateLesson);

@@ -15,7 +15,7 @@ import type {
 } from '../types/modules';
 
 import config from '../config';
-import { CacheExpiredError } from './errors';
+import { CacheExpiredError } from '../utils/errors';
 import type { Venue, VenueInfo } from '../types/venues';
 
 /**

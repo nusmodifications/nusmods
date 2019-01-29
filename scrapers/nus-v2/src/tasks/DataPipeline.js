@@ -33,7 +33,9 @@ export default class DataPipeline extends BaseTask implements Task<void, Module[
   async run() {
     const organizations = await new GetFacultyDepartment().run();
 
-    // Get each semester's data in series
+    // Get each semester's data in series. Running it in parallel provides
+    // little benefit since the bottleneck is in timetable retrieval, which has to
+    // run for each module and takes up most of the time
     /* eslint-disable no-await-in-loop */
     const semesterModules = [];
     for (const semester of Semesters) {

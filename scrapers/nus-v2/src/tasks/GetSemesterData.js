@@ -1,22 +1,23 @@
 // @flow
 
-import { fromPairs } from "lodash";
-import { strict as assert } from "assert";
+import { fromPairs } from 'lodash';
+import { strict as assert } from 'assert';
 
-import type { AcademicGroup, AcademicOrg, ModuleInfo } from "../types/api";
-import type { DepartmentCodeMap, SemesterModule, SemesterModuleData } from "../types/mapper";
-import type { Semester, Workload } from "../types/modules";
-import type { Task } from "../types/tasks";
+import type { AcademicGroup, AcademicOrg, ModuleInfo } from '../types/api';
+import type { DepartmentCodeMap, SemesterModule, SemesterModuleData } from '../types/mapper';
+import type { Semester, Workload } from '../types/modules';
+import type { Task } from '../types/tasks';
 
-import config from "../config";
-import BaseTask from "./BaseTask";
-import GetSemesterExams from "./GetSemesterExams";
-import GetModuleTimetable from "./GetModuleTimetable";
-import GetSemesterModules from "./GetSemesterModules";
-import { type Cache, getCache } from "../services/output";
-import { fromTermCode } from "../utils/api";
-import { validateSemester } from "../services/validation";
-import { cleanObject, titleize } from "../services/data";
+import config from '../config';
+import BaseTask from './BaseTask';
+import GetSemesterExams from './GetSemesterExams';
+import GetModuleTimetable from './GetModuleTimetable';
+import GetSemesterModules from './GetSemesterModules';
+import { type Cache, getCache } from '../services/output';
+import { fromTermCode } from '../utils/api';
+import { validateSemester } from '../services/validation';
+import { cleanObject, titleize } from '../services/data';
+import { NotFoundError } from '../utils/errors';
 
 type Input = {|
   +departments: AcademicOrg[],
@@ -162,14 +163,20 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
     // Fan out to individual modules to get timetable
     const timetableRequests = modules.map(async (moduleInfo) => {
       const moduleCode = moduleInfo.Subject + moduleInfo.CatalogNumber;
-      let timetable;
 
+      let timetable;
       try {
         timetable = await new GetModuleTimetable(moduleCode, semester, academicYear).run();
-      } catch (e) {
+      } catch (err) {
         // If the API does not have a timetable record (even one with invalid lessons)
         // then the class isn't actually offered, so we return null and have it
         // filtered out
+        if (!(err instanceof NotFoundError)) {
+          // We expect the API to throw NotFoundErrors. Other kinds of errors are
+          // not expected, so we need to log them
+          this.logger.warn({ err, moduleCode }, 'Unable to download timetable');
+        }
+
         return null;
       }
 

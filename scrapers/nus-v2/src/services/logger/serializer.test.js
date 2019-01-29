@@ -1,7 +1,7 @@
 // @flow
 
 import { errorSerializer } from './serializer';
-import { UnknownApiError } from '../errors';
+import { UnknownApiError } from '../../utils/errors';
 import { mockResponse } from '../../utils/test-utils';
 
 jest.unmock('bunyan');
