@@ -90,11 +90,7 @@ export default class GetSemesterExams extends BaseTask implements Task<void, Out
     // Try to filter out invalid exams
     const [validExams, invalidExams] = partition(rawExams, validateExam);
     if (invalidExams.length > 0) {
-      this.logger.warn(
-        { invalidExams },
-        `Removed exams because they were invalid`,
-        invalidExams.length,
-      );
+      this.logger.warn({ invalidExams }, `Removed invalid exams`);
     }
 
     const exams = mapValues(keyBy(validExams, (exam) => exam.module), mapExamInfo);

@@ -133,13 +133,13 @@ describe(DataPipeline, () => {
       const [, semester] = fromTermCode(term);
       return moduleInfoData[semester] || [];
     });
+    mockApi.getSemesterTimetables.mockImplementation(async (term) => {
+      const [, semester] = fromTermCode(term);
+      return moduleTimetableData[semester] || [];
+    });
     mockApi.getTermExams.mockImplementation(async (term) => {
       const [, semester] = fromTermCode(term);
       return moduleExamData[semester] || [];
-    });
-    mockApi.getModuleTimetable.mockImplementation(async (term) => {
-      const [, semester] = fromTermCode(term);
-      return moduleTimetableData[semester] || [];
     });
 
     const pipeline = new DataPipeline();

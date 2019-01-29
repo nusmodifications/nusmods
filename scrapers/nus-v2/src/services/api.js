@@ -207,6 +207,18 @@ export class API {
       module,
     });
 
+  getDepartmentTimetables = async (
+    term: string,
+    departmentCode: string,
+  ): Promise<TimetableLesson[]> =>
+    this.callApi('classtt/withdate', {
+      term,
+      deptfac: departmentCode,
+    });
+
+  getSemesterTimetables = async (term: string): Promise<TimetableLesson[]> =>
+    this.callApi('classtt/withdate', { term });
+
   /**
    * Get exam info for a specific module
    *

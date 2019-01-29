@@ -1,16 +1,16 @@
 // @flow
-import { groupBy, partition, values, has } from 'lodash';
+import { groupBy, has, map, mapValues, partition, values } from 'lodash';
 import { Logger } from 'bunyan';
 import NUSModerator from 'nusmoderator';
 
 import type { ModuleCode, RawLesson, Semester, WeekText } from '../types/modules';
 import type { Task } from '../types/tasks';
+import type { TimetableLesson } from '../types/api';
 
 import BaseTask from './BaseTask';
 import config from '../config';
 import { getTermCode, retry } from '../utils/api';
 import { validateLesson } from '../services/validation';
-import type { TimetableLesson } from '../types/api';
 import { activityLessonType, dayTextMap, unrecognizedLessonTypes } from '../services/data';
 
 /**
@@ -62,9 +62,6 @@ function getWeekText(lessons: TimetableLesson[]): WeekText {
 
 /**
  * Convert API provided timetable data to RawLesson format used by the frontend
- *
- * Output:
- *  - <semester>/<module code>/timetable.json
  */
 export function mapTimetableLessons(lessons: TimetableLesson[], logger: Logger): RawLesson[] {
   // Group the same lessons together
@@ -97,33 +94,34 @@ export function mapTimetableLessons(lessons: TimetableLesson[], logger: Logger):
   });
 }
 
+type Input = void;
+type Output = { [ModuleCode]: RawLesson[] };
+
 /**
- * Download the timetable for a specific module
+ * Download the timetable for a specific semester. Since the format provided by the
+ * school is so inefficient, we make a separate request for each department and
+ * reduce its size before moving onto the next one to reduce memory usage.
+ *
+ * Output:
+ *  - <semester>/<module code>/timetable.json
  */
-export default class GetModuleTimetable extends BaseTask implements Task<void, RawLesson[]> {
+export default class GetSemesterTimetable extends BaseTask implements Task<Input, Output> {
   semester: Semester;
   academicYear: string;
-  moduleCode: ModuleCode;
 
   get name() {
-    return `Get timetable for ${this.moduleCode} for semester ${this.semester}`;
+    return `Get timetable for semester ${this.semester}`;
   }
 
-  constructor(
-    moduleCode: ModuleCode,
-    semester: Semester,
-    academicYear: string = config.academicYear,
-  ) {
+  constructor(semester: Semester, academicYear: string = config.academicYear) {
     super();
 
     this.semester = semester;
     this.academicYear = academicYear;
-    this.moduleCode = moduleCode;
 
     this.logger = this.rootLogger.child({
       semester,
-      moduleCode,
-      task: GetModuleTimetable.name,
+      task: GetSemesterTimetable.name,
       year: academicYear,
     });
   }
@@ -131,19 +129,35 @@ export default class GetModuleTimetable extends BaseTask implements Task<void, R
   async run() {
     const term = getTermCode(this.semester, this.academicYear);
 
-    const lessons = await retry(() => this.api.getModuleTimetable(term, this.moduleCode), 3);
+    // Get all lessons in a semester from the API
+    const lessons = await retry(() => this.api.getSemesterTimetables(term), 3);
 
-    // Validate and remove invalid lessons
+    // Remove invalid lessons
     const [validLessons, invalidLessons] = partition(lessons, validateLesson);
     if (invalidLessons.length > 0) {
-      this.logger.info({ invalidLessons }, 'Removed invalid lessons');
+      this.logger.info(
+        { valid: validLessons.length, invalid: invalidLessons.length },
+        'Removed invalid lessons',
+      );
+      this.logger.debug({ invalidLessons }, 'Invalid lessons');
     }
 
-    const timetable = mapTimetableLessons(validLessons, this.logger);
+    // Group lessons by modules, then turn each of those into RawLesson[]
+    const lessonsByModule: { [ModuleCode]: TimetableLesson[] } = groupBy(
+      validLessons,
+      (lesson) => lesson.module,
+    );
+    const timetables: { [ModuleCode]: RawLesson[] } = mapValues(lessonsByModule, (moduleLessons) =>
+      mapTimetableLessons(moduleLessons, this.logger),
+    );
 
-    // Cache timetable to disk
-    await this.output.timetable(this.semester, this.moduleCode, timetable);
+    // Save all the timetables to disk
+    await Promise.all(
+      map(timetables, (timetable, moduleCode) =>
+        this.output.timetable(this.semester, moduleCode, timetable),
+      ),
+    );
 
-    return timetable;
+    return timetables;
   }
 }

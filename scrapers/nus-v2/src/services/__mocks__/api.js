@@ -3,7 +3,11 @@ const mockApi = {
   getFaculty: jest.fn(),
   getDepartment: jest.fn(),
   getDepartmentModules: jest.fn(),
+
   getModuleTimetable: jest.fn(),
+  getDepartmentTimetables: jest.fn(),
+  getSemesterTimetables: jest.fn(),
+
   getTermExams: jest.fn(),
 };
 

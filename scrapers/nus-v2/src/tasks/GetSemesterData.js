@@ -1,6 +1,6 @@
 // @flow
 
-import { fromPairs } from 'lodash';
+import { each, fromPairs, keyBy } from 'lodash';
 import { strict as assert } from 'assert';
 
 import type { AcademicGroup, AcademicOrg, ModuleInfo } from '../types/api';
@@ -11,13 +11,12 @@ import type { Task } from '../types/tasks';
 import config from '../config';
 import BaseTask from './BaseTask';
 import GetSemesterExams from './GetSemesterExams';
-import GetModuleTimetable from './GetModuleTimetable';
+import GetSemesterTimetable from './GetSemesterTimetable';
 import GetSemesterModules from './GetSemesterModules';
 import { type Cache, getCache } from '../services/output';
 import { fromTermCode } from '../utils/api';
 import { validateSemester } from '../services/validation';
 import { cleanObject, titleize } from '../services/data';
-import { NotFoundError } from '../utils/errors';
 import { difference } from '../utils/set';
 
 type Input = {|
@@ -153,35 +152,33 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
     this.logger.info(`Getting semester data for ${academicYear} semester ${semester}`);
 
     // Get exams and module info in parallel
-    const [exams, modules] = await Promise.all([
+    const [timetables, exams, modules] = await Promise.all([
+      new GetSemesterTimetable(semester, academicYear).run(),
       new GetSemesterExams(semester, academicYear).run(),
       new GetSemesterModules(semester, academicYear).run(input),
     ]);
 
-    // Map department codes to department name
+    // Map department codes to department name for use during module data sanitization
     const departmentMap = getDepartmentCodeMap(input.departments);
 
-    // Fan out to individual modules to get timetable
-    const timetableRequests = modules.map(async (moduleInfo) => {
-      const moduleCode = moduleInfo.Subject + moduleInfo.CatalogNumber;
+    // Key modules by their module code for easier mapping
+    const modulesMap = keyBy(
+      modules,
+      (moduleInfo) => moduleInfo.Subject + moduleInfo.CatalogNumber,
+    );
 
-      let timetable;
-      try {
-        timetable = await new GetModuleTimetable(moduleCode, semester, academicYear).run();
-      } catch (err) {
-        // If the API does not have a timetable record (even one with invalid lessons)
-        // then the class isn't actually offered, so we return null and have it
-        // filtered out
-        if (!(err instanceof NotFoundError)) {
-          // We expect the API to throw NotFoundErrors. Other kinds of errors are
-          // not expected, so we need to log them
-          this.logger.warn({ err, moduleCode }, 'Unable to download timetable');
-        }
-
-        return null;
+    // Combine all three source of data into one set of semester module info
+    const semesterModuleData = [];
+    each(timetables, (timetable, moduleCode) => {
+      const moduleInfo = modulesMap[moduleCode];
+      if (!moduleInfo) {
+        this.logger.warn(
+          { moduleCode, timetable },
+          'Found module with timetable but no module info',
+        );
+        return;
       }
 
-      // Combine timetable and exam data into SemesterData
       const examInfo = exams[moduleCode] || {};
       const SemesterData = {
         Semester: semester,
@@ -193,28 +190,24 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
       const rawModule = mapModuleInfo(moduleInfo, departmentMap);
       const Module = cleanModuleInfo(rawModule);
 
-      return {
+      semesterModuleData.push({
         ModuleCode: moduleCode,
         Module,
         SemesterData,
-      };
+      });
     });
-
-    const semesterModuleData = (await Promise.all(timetableRequests)).filter(Boolean);
 
     // Check that every module that has exam also has a timetable
     // This is an invariant check on the validity of the data
-    const moduleCodes = new Set(semesterModuleData.map((module) => module.ModuleCode));
-    const noInfoModulesWithExams = difference(moduleCodes, new Set(Object.keys(exams)));
-    if (noInfoModulesWithExams.size > 0) {
+    const noInfoModulesWithExams = Array.from(
+      difference(new Set(Object.keys(timetables)), new Set(Object.keys(exams))),
+    );
+    if (noInfoModulesWithExams.length > 0) {
       this.logger.warn(
-        { moduleCodes: Array.from(noInfoModulesWithExams) },
+        { moduleCodes: noInfoModulesWithExams.sort() },
         'Found modules with exam but no info/timetable',
       );
     }
-
-    // We want to know how many requests we're wasting
-    this.logger.debug('%i/%i modules have timetables', semesterModuleData.length, modules.length);
 
     // Save the merged semester data to disk
     await Promise.all(
