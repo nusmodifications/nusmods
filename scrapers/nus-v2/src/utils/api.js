@@ -4,10 +4,10 @@
  * Small utility functions that don't need to be part of the main API class
  */
 
-import { Logger } from "bunyan";
-import type { Semester } from "../types/modules";
-import type { Cache } from "../services/output";
-import rootLogger from "../services/logger";
+import { Logger } from 'bunyan';
+import type { Semester } from '../types/modules';
+import type { Cache } from '../services/output';
+import rootLogger from '../services/logger';
 
 /**
  * Construct the 4 number term code from the academic year and semester
@@ -44,14 +44,14 @@ export async function cacheDownload<T>(
 
     try {
       await cache.write(data);
-    } catch (e) {
-      logger.warn(`Failed to cache data to ${cache.path}`);
+    } catch (err) {
+      logger.warn({ err, path: cache.path }, 'Failed to cache data');
     }
 
     return data;
-  } catch (e) {
+  } catch (err) {
     // If the file is not available we try to load it from cache instead
-    logger.warn(e, `Cannot load ${name} from API, attempting to read from cache`);
+    logger.warn(err, `Cannot load ${name} from API, attempting to read from cache`);
     return cache.read();
   }
 }

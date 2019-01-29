@@ -59,16 +59,20 @@ export async function callApi<Data>(endpoint: string, params: ApiParams): Promis
   } catch (e) {
     // 4. Handle network / request level errors, eg. server returning non-200
     //    status code
-    if (e.status) {
-      const error = new UnknownApiError(`Server returned status ${e.status} - ${e.statusText}`);
-      error.data = e.data;
-      throw error;
+    let message;
+    if (e.response) {
+      const { status, statusText } = e.response;
+      message = `Server returned status ${status} - ${statusText}`;
+    } else {
+      // If there is no response it usually means the client can't make the HTTP request,
+      // possibly because the network is down
+      message = `Unknown error - ${e.message}`;
     }
 
-    // If there is no status it usually means the client can't make the HTTP request,
-    // possibly because the network is down
-    const error = new UnknownApiError(`Unknown error - ${e.message}`);
+    const error = new UnknownApiError(message);
     error.originalError = e;
+    error.response = e.response;
+    error.requestConfig = e.config;
     throw error;
   }
 
@@ -90,7 +94,7 @@ export async function callApi<Data>(endpoint: string, params: ApiParams): Promis
     }
 
     error.response = response;
-    error.data = data;
+    error.requestConfig = response.config;
     throw error;
   }
 

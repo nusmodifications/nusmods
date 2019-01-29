@@ -1,10 +1,11 @@
 // @flow
 
-/* eslint-env jest */
+import type { AxiosXHRConfig, $AxiosXHR } from 'axios';
+import { omit, sortBy, zip } from 'lodash';
+import httpStatus from 'http-status';
 
-import { omit, sortBy, zip } from "lodash";
-import type { Cache } from "../services/output";
-import type { Module, RawLesson, SemesterData } from "../types/modules";
+import type { Cache } from '../services/output';
+import type { Module, RawLesson, SemesterData } from '../types/modules';
 
 /* eslint-disable import/prefer-default-export */
 
@@ -46,9 +47,9 @@ export function expectLessonsEqual(actual: RawLesson[], expected: RawLesson[]) {
 function expectHistoryEqual(actual: SemesterData[], expected: SemesterData[]) {
   zip(
     sortBy(actual, (semester) => semester.Semester),
-    sortBy(expected, (semester) => semester.Semester)
+    sortBy(expected, (semester) => semester.Semester),
   ).forEach(([actualSemester, expectedSemester]) => {
-    expect(omit(actualSemester, "Timetable")).toEqual(omit(expectedSemester, "Timetable"));
+    expect(omit(actualSemester, 'Timetable')).toEqual(omit(expectedSemester, 'Timetable'));
 
     expectLessonsEqual(actualSemester.Timetable, expectedSemester.Timetable);
   });
@@ -56,9 +57,36 @@ function expectHistoryEqual(actual: SemesterData[], expected: SemesterData[]) {
 
 export function expectModulesEqual(actual: Module, expected: Module) {
   // LockedModules is excluded because the modules that require CS2100 are not part of this test
-  const omittedKeys = ["History", "LockedModules"];
+  const omittedKeys = ['History', 'LockedModules'];
   expect(omit(actual, omittedKeys)).toEqual(omit(expected, omittedKeys));
 
   // Sort semesters and check history
   expectHistoryEqual(actual.History, expected.History);
+}
+
+/**
+ * Mock an Axios response object
+ */
+export function mockResponse<T>(
+  data: T,
+  additionalFields: {
+    headers?: { [name: string]: string },
+    config?: $Shape<AxiosXHRConfig<T>>,
+    request?: any,
+    status?: number,
+    statusText?: string,
+  } = {},
+): $AxiosXHR<T> {
+  const { headers, config, request, status, statusText } = additionalFields;
+  const response: any = {
+    data,
+    // The server almost always returns 200, even if there is an application error
+    status: status || 200,
+    statusText: statusText || httpStatus[status] || 'OK',
+    headers: headers || {},
+    config: config || {},
+    request: request || {},
+  };
+
+  return response;
 }

@@ -1,9 +1,9 @@
 // @flow
 
 import axios from 'axios';
-import httpStatus from 'http-status';
 import { API, callApi } from './api';
 import { AuthError, NotFoundError, UnknownApiError } from './errors';
+import { mockResponse } from '../utils/test-utils';
 
 beforeEach(() => {
   // $FlowFixMe Flow doesn't allow these class methods to be overwritten
@@ -13,31 +13,6 @@ beforeEach(() => {
 afterEach(() => {
   axios.post.mockRestore();
 });
-
-/**
- * Mock an Axios response object
- */
-function mockResponse(
-  data,
-  additionalFields: {
-    headers?: { [name: string]: string },
-    config?: { [key: string]: any },
-    request?: any,
-    status?: number,
-    statusText?: string,
-  } = {},
-) {
-  const { headers, config, request, status, statusText } = additionalFields;
-  return {
-    data,
-    // The server almost always returns 200, even if there is an application error
-    status: status || 200,
-    statusText: statusText || httpStatus[status] || 'OK',
-    headers: headers || {},
-    config: config || {},
-    request: request || {},
-  };
-}
 
 describe(callApi, () => {
   test('should return data if everything is okay', async () => {
@@ -83,7 +58,16 @@ describe(callApi, () => {
   });
 
   test('should throw if the server returns non-200 response', async () => {
-    axios.post.mockRejectedValue(mockResponse('The server is on fire', { status: 500 }));
+    const config = {
+      url: 'http://api.example.com',
+      method: 'post',
+      data: '{"hello": 200}',
+    };
+
+    axios.post.mockRejectedValue({
+      config,
+      response: mockResponse('The server is on fire', { status: 500 }),
+    });
 
     const result = callApi('test', {});
     await expect(result).rejects.toBeInstanceOf(UnknownApiError);
@@ -91,7 +75,23 @@ describe(callApi, () => {
       'message',
       'Server returned status 500 - Internal Server Error',
     );
-    await expect(result).rejects.toHaveProperty('data', 'The server is on fire');
+    await expect(result).rejects.toHaveProperty('response.data', 'The server is on fire');
+  });
+
+  test('should throw if the request could not be made', async () => {
+    const config = {
+      url: 'http://api.example.com',
+      method: 'post',
+      data: '{"hello": 200}',
+    };
+
+    axios.post.mockRejectedValue({
+      config,
+    });
+
+    const result = callApi('test', {});
+    await expect(result).rejects.toBeInstanceOf(UnknownApiError);
+    await expect(result).rejects.toHaveProperty('requestConfig', config);
   });
 });
 

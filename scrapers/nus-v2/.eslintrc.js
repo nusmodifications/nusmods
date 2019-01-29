@@ -17,7 +17,7 @@ module.exports = {
 
   overrides: [
     {
-      files: ['**/*.test.js', '**/__mocks__/**/*.js'],
+      files: ['**/*.test.js', '**/__mocks__/**/*.js', 'src/utils/test-utils.js'],
       env: {
         jest: true,
       },
@@ -53,6 +53,10 @@ module.exports = {
         message:
           '`with` is disallowed in strict mode because it makes code impossible to predict and optimize.',
       },
+    ],
+
+    'import/no-extraneous-dependencies': [
+      'error', { devDependencies: ['**/*.test.js', 'src/utils/test-utils.js'] },
     ],
   },
 };
