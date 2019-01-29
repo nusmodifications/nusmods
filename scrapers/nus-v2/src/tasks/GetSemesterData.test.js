@@ -1,7 +1,7 @@
 // @flow
 
 import departments from './fixtures/departments';
-import { cleanModuleInfo, getDepartmentCodeMap } from './GetSemesterData';
+import { cleanModuleInfo, getDepartmentCodeMap, parseWorkload } from './GetSemesterData';
 
 describe(getDepartmentCodeMap, () => {
   test('should map department codes to their description', () => {
@@ -80,5 +80,51 @@ describe(cleanModuleInfo, () => {
         ModuleCode: 'ME5513',
       }),
     ).toHaveProperty('ModuleTitle', 'Fracture and Fatigue of Materials');
+  });
+});
+
+describe(parseWorkload, () => {
+  test('should be able to handle well formed strings', () => {
+    expect(parseWorkload('2-1-0-8-2')).toEqual([2, 1, 0, 8, 2]);
+    expect(parseWorkload('2-1-1-3-3')).toEqual([2, 1, 1, 3, 3]);
+  });
+
+  test('should parse decimal workloads', () => {
+    expect(parseWorkload('2.5-0.5-0-3-4')).toEqual([2.5, 0.5, 0, 3, 4]);
+
+    expect(parseWorkload('0-1-0-0-0.25')).toEqual([0, 1, 0, 0, 0.25]);
+
+    expect(parseWorkload('0.0-0.0-0.0-20.0-0.0')).toEqual([0, 0, 0, 20, 0]);
+  });
+
+  test('should handle unusual workload strings', () => {
+    // Extract all workload strings using jq
+    // cat moduleInformation.json | jq '.[] | [.ModuleCode, .Workload] | join(": ")'
+
+    // HY5660 / HY6660
+    expect(parseWorkload('NA-NA-NA-NA-10')).toEqual([0, 0, 0, 0, 10]);
+
+    // MKT3402A/B
+    expect(parseWorkload('3-0-0-5-3 (tentative)')).toEqual([3, 0, 0, 5, 3]);
+
+    expect(parseWorkload('3(sectional)-0-0-4-3')).toEqual([3, 0, 0, 4, 3]);
+  });
+
+  test('parseWorkload should return input string as is if it cannot be parsed', () => {
+    const invalidInputs = [
+      '',
+      '\n',
+      '2-2-2-2-3-4', // CE1101 (six components)
+      '2-4-5-4', // CE1102 (four components)
+      'approximately 120 hours of independent study and research and consultation with a NUS lecturer.',
+      'Varies depending on individual student with their supervisor',
+      '16 weeks of industrial attachment',
+      'See remarks',
+      'Lectures: 450 hours, Clinics: 3150 hours, Seminars/Tutorial: 450 hours,Technique/Practical: 450 hou',
+    ];
+
+    invalidInputs.forEach((input) => {
+      expect(parseWorkload(input)).toEqual(input);
+    });
   });
 });

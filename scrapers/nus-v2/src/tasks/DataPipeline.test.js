@@ -16,7 +16,7 @@ jest.mock('../services/api');
 const mockApi = (api: { [$Keys<API>]: JestMockFn<any, any> });
 
 /**
- * Full integration tests
+ * Full integration tests for the entire pipeline
  */
 
 // Mock data for the module info API endpoint
@@ -124,12 +124,12 @@ const moduleTimetableData = {
 describe(DataPipeline, () => {
   jest.fn();
   test('everything works', async () => {
-    // Setup code
+    // Setup code to mock all used API endpoints
     mockApi.getFaculty.mockResolvedValue(faculties);
     mockApi.getDepartment.mockResolvedValue(departments);
     mockApi.getDepartmentModules.mockImplementation(async (term, code) => {
-      // 00101ACAD1 is Chinese studies, but let's pretend this will return CS2100
-      if (code !== '00101ACAD1') return [];
+      // 00301ACAD1 is Computer Science
+      if (code !== '00301ACAD1') return [];
       const [, semester] = fromTermCode(term);
       return moduleInfoData[semester] || [];
     });

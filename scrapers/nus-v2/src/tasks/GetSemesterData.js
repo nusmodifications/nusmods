@@ -1,21 +1,21 @@
 // @flow
 
-import { fromPairs } from 'lodash';
-import { strict as assert } from 'assert';
+import { fromPairs } from "lodash";
+import { strict as assert } from "assert";
 
-import type { AcademicGroup, AcademicOrg, ModuleInfo } from '../types/api';
-import type { DepartmentCodeMap, SemesterModule, SemesterModuleData } from '../types/mapper';
-import type { Semester } from '../types/modules';
-import type { Task } from '../types/tasks';
+import type { AcademicGroup, AcademicOrg, ModuleInfo } from "../types/api";
+import type { DepartmentCodeMap, SemesterModule, SemesterModuleData } from "../types/mapper";
+import type { Semester, Workload } from "../types/modules";
+import type { Task } from "../types/tasks";
 
-import config from '../config';
-import BaseTask from './BaseTask';
-import GetSemesterExams from './GetSemesterExams';
-import GetModuleTimetable from './GetModuleTimetable';
-import GetSemesterModules from './GetSemesterModules';
-import { getCache, type Cache } from '../services/output';
-import { fromTermCode } from '../utils/api';
-import { validateSemester } from '../services/validation';
+import config from "../config";
+import BaseTask from "./BaseTask";
+import GetSemesterExams from "./GetSemesterExams";
+import GetModuleTimetable from "./GetModuleTimetable";
+import GetSemesterModules from "./GetSemesterModules";
+import { type Cache, getCache } from "../services/output";
+import { fromTermCode } from "../utils/api";
+import { validateSemester } from "../services/validation";
 import { cleanObject, titleize } from "../services/data";
 
 type Input = {|
@@ -40,7 +40,6 @@ export const getDepartmentCodeMap = (departments: AcademicOrg[]): DepartmentCode
 
 /**
  * Clean module info
- *
  * - Remove empty fields and fields with text like 'nil'
  * - Properly capitalize ALL CAPS title
  */
@@ -52,6 +51,28 @@ export function cleanModuleInfo(module: SemesterModule) {
   }
 
   return cleanObject(module, cleanKeys);
+}
+
+/**
+ * Parse the workload string into a mapping of individual components to their hours.
+ * If the string is unparsable, it is returned without any modification.
+ */
+export function parseWorkload(workloadString: string): Workload {
+  const cleanedWorkloadString = workloadString
+    .replace(/\(.*?\)/g, '') // Remove stuff in parenthesis
+    .replace(/NA/gi, '0') // Replace 'NA' with 0
+    .replace(/\s+/g, ''); // Remove whitespace
+
+  if (!/^((^|-)([\d.]+)){5}$/.test(cleanedWorkloadString)) return workloadString;
+  // Workload string is formatted as A-B-C-D-E where
+  // A: no. of lecture hours per week
+  // B: no. of tutorial hours per week
+  // C: no. of laboratory hours per week
+  // D: no. of hours for projects, assignments, fieldwork etc per week
+  // E: no. of hours for preparatory work by a student per week
+  // Taken from CORS:
+  // https://myaces.nus.edu.sg/cors/jsp/report/ModuleDetailedInfo.jsp?acad_y=2017/2018&sem_c=1&mod_c=CS2105
+  return cleanedWorkloadString.split('-').map((text) => parseFloat(text));
 }
 
 /**
@@ -76,15 +97,13 @@ const mapModuleInfo = (moduleInfo: ModuleInfo, departments: DepartmentCodeMap): 
 
   // We map department from our department list because
   // AcademicOrganisation.Description is empty for some reason
-  const Department = departments[AcademicOrganisation.Code];
-
   return {
     AcadYear,
     Preclusion,
-    Department,
     ModuleDescription: Description,
     ModuleTitle: CourseTitle,
-    Workload: WorkLoadHours,
+    Department: departments[AcademicOrganisation.Code],
+    Workload: parseWorkload(WorkLoadHours),
     Prerequisite: PreRequisite,
     Corequisite: CoRequisite,
     ModuleCredit: ModularCredit,
@@ -93,7 +112,7 @@ const mapModuleInfo = (moduleInfo: ModuleInfo, departments: DepartmentCodeMap): 
 };
 
 /**
- * Download modules info for all faculties in a specific semester. This task
+ * Download, clean and combine module info, timetable, and exam info. This task
  * uses the subtasks
  *
  * - GetSemesterExams
