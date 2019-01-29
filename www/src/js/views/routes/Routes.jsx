@@ -16,6 +16,7 @@ import AppsContainer from 'views/static/AppsContainer';
 import NotFoundPage from 'views/errors/NotFoundPage';
 import TodayContainer from 'views/today/TodayContainer';
 import PlannerContainer from 'views/planner/PlannerContainer';
+import TetrisContainer from 'views/tetris/TetrisContainer';
 import ExternalRedirect from './ExternalRedirect';
 
 // IMPORTANT: Remember to update any route changes on the sitemap
@@ -30,6 +31,7 @@ export default function Routes() {
       <Route path="/venues/:venue?" component={VenuesContainer} />
       <Route path="/today" component={TodayContainer} />
       <Route path="/planner" component={PlannerContainer} />
+      <Route path="/tetris" component={TetrisContainer} />
 
       <Route path="/about" component={AboutContainer} />
       <Route path="/faq" component={FaqContainer} />

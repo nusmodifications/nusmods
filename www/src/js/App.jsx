@@ -1,7 +1,7 @@
 // @flow
 import type { Store } from 'redux';
-import type { Persistor } from 'redux-persist';
 import type { State } from 'reducers';
+import type { Persistor } from 'storage/persistReducer';
 
 import React from 'react';
 import { AppContainer } from 'react-hot-loader'; // eslint-disable-line import/no-extraneous-dependencies

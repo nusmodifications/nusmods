@@ -1,3 +1,5 @@
+// @flow
+
 import { Icon } from 'leaflet';
 import marker from 'img/marker.svg';
 import styles from './LocationMap.scss';
