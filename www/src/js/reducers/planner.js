@@ -1,6 +1,6 @@
 // @flow
 import produce from 'immer';
-import { pull } from 'lodash';
+import { pull, max, min } from 'lodash';
 import type { PlannerState } from 'types/reducers';
 import type { FSA } from 'types/redux';
 import {
@@ -28,10 +28,18 @@ export default function planner(
 ): PlannerState {
   switch (action.type) {
     case SET_PLANNER_MIN_YEAR:
-      return { ...state, minYear: action.payload };
+      return {
+        ...state,
+        minYear: action.payload,
+        maxYear: max([action.payload, state.maxYear]),
+      };
 
     case SET_PLANNER_MAX_YEAR:
-      return { ...state, maxYear: action.payload };
+      return {
+        ...state,
+        maxYear: action.payload,
+        minYear: min([action.payload, state.minYear]),
+      };
 
     case SET_PLANNER_IBLOCS:
       return { ...state, iblocs: action.payload };
@@ -59,7 +67,7 @@ export default function planner(
         newModuleOrder.splice(index, 0, moduleCode);
       }
 
-      // If the module is moved from another year / semeser, then we also need
+      // If the module is moved from another year / semester, then we also need
       // to update the index of the old module list
       let oldModuleOrder = [];
       if (state.modules[moduleCode]) {

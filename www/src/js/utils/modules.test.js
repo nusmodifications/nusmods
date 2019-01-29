@@ -264,6 +264,10 @@ describe(getYearsBetween, () => {
       '2018/2019',
     ]);
   });
+
+  test('should throw if min year is less than max year', () => {
+    expect(() => getYearsBetween('2016/2017', '2014/2015')).toThrow();
+  });
 });
 
 describe(offsetAcadYear, () => {

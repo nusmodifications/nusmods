@@ -35,6 +35,15 @@ describe(SET_PLANNER_MIN_YEAR, () => {
       modules: {},
     });
   });
+
+  test('should set max year if min year is past it', () => {
+    expect(reducer(defaultState, setPlannerMinYear('2019/2020'))).toEqual({
+      minYear: '2019/2020',
+      maxYear: '2019/2020',
+      iblocs: false,
+      modules: {},
+    });
+  });
 });
 
 describe(SET_PLANNER_MAX_YEAR, () => {
@@ -42,6 +51,15 @@ describe(SET_PLANNER_MAX_YEAR, () => {
     expect(reducer(defaultState, setPlannerMaxYear('2020/2021'))).toEqual({
       minYear: '2017/2018',
       maxYear: '2020/2021',
+      iblocs: false,
+      modules: {},
+    });
+  });
+
+  test('should set min year if max year is past it', () => {
+    expect(reducer(defaultState, setPlannerMaxYear('2016/2017'))).toEqual({
+      minYear: '2016/2017',
+      maxYear: '2016/2017',
       iblocs: false,
       modules: {},
     });

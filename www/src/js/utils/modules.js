@@ -171,6 +171,8 @@ export function offsetAcadYear(year: string, offset: number) {
 }
 
 export function getYearsBetween(minYear: string, maxYear: string): string[] {
+  if (minYear > maxYear) throw new Error('minYear should be less than or equal to maxYear');
+
   const years = [];
   let nextYear = minYear;
   while (nextYear !== maxYear) {
