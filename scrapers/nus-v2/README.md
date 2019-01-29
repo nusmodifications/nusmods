@@ -1,5 +1,7 @@
 ## Getting Started
 
+Node 8.13 or above is required, though Node 10 is preferred.
+
 Use `yarn` to install dependencies, then set up `env.json` with all the necessary keys, then run the test script to check the setup is okay.
 
 ```
@@ -38,7 +40,10 @@ Run these through `yarn scrape` in production or `yarn dev` in development piped
 
 - `test` - run some simple API requests to check you have set everything up correctly
 - `department` - download department and faculty codes
-- `semester [sem] <year=current year>` - download data for a single academic year and semester. Year is optional and the current year is assumed if not provided.
+- `semester [sem]` - download module and timetable data for the given semester
+- `venue [sem]` - collate venue data into the shape needed by the frontend
+- `combine` - combine the module data for all four semesters together
+- `all` - run the complete pipeline from start to end
 
 ## Data Pipeline
 
@@ -53,13 +58,20 @@ Run these through `yarn scrape` in production or `yarn dev` in development piped
 
 ## Logging and error handling
 
-Logging is done via [Bunyan][bunyan].
+Logging is done via [Bunyan][bunyan]. When logging things, use the first parameter to hold variables, and make the message the same for all errors of the same type. This allows for easier searching.
+
+The application automatically streams `info` to `logs/info.log` and `logs/errors.log` as well as Sentry (for error and fatal events) and stdout. On production the logs are suffixed by the date and time of the run to make it easier to find the correct log.
+
+Use `yarn bunyan`, which comes with some presets to make things easier to work with in the CLI.
+
+Error handling is done through Sentry.
 
 ## v2 Data Changes
 
 ### Module data
 
 - `Types` is removed - this is not used anywhere in the v3 frontend
+- `Workload` will now be parsed on the server into a tuple of 5 numbers. A string is only returned if the text is unparsable.
 
 ### Semester data
 
