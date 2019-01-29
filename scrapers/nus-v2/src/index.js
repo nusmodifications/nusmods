@@ -31,6 +31,7 @@ const commands: CommandModule[] = [
   },
   {
     command: 'departments',
+    aliases: ['department', 'faculty', 'faculties'],
     describe: 'download data for all active departments and faculties',
     handler: () => runTask(GetFacultyDepartment),
   },
@@ -54,6 +55,7 @@ const commands: CommandModule[] = [
   },
   {
     command: 'venue <sem>',
+    aliases: ['venues'],
     describe: 'collate venue for given semester',
     builder: {
       sem: {
