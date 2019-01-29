@@ -1,7 +1,7 @@
 // @flow
 
-import path from 'path'
-import * as fs from 'fs-extra'
+import path from 'path';
+import * as fs from 'fs-extra';
 
 export type Config = {|
   +appKey: string,

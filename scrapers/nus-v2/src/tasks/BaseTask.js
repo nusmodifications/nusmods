@@ -1,6 +1,6 @@
 // @flow
 
-import { Logger } from 'bunyan'
+import { Logger } from 'bunyan';
 
 import api from '../services/api';
 import logger from '../services/logger';

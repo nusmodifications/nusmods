@@ -25,6 +25,8 @@ module.exports = {
   ],
 
   rules: {
+    'prettier/prettier': 'error',
+
     // Enable i++ in for loops
     'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
 
