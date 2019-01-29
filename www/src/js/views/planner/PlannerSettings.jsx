@@ -43,7 +43,7 @@ function graduationLabel(offset: number) {
 }
 
 export function PlannerSettingsComponent(props: Props) {
-  const matriculationLabels = getYearLabels(MIN_YEARS, MAX_YEARS);
+  const matriculationLabels = getYearLabels(MIN_YEARS, MAX_YEARS).reverse();
   const graduationLabels = getYearLabels(0, 6);
 
   return (
@@ -51,29 +51,32 @@ export function PlannerSettingsComponent(props: Props) {
       <section>
         <h2 className={styles.label}>Matriculated in</h2>
         <ul className={styles.years}>
-          {matriculationLabels
-            .map((year, i) => {
-              const offset = -i - MIN_YEARS;
+          {matriculationLabels.map((year, i) => {
+            const offset = i - MAX_YEARS;
 
-              return (
-                <li key={year}>
-                  <button
-                    type="button"
-                    className={classnames('btn btn-block', {
-                      'btn-outline-primary': props.minYear !== year,
-                      'btn-primary': props.minYear === year,
-                    })}
-                    onClick={() => props.setMinYear(year)}
-                  >
-                    AY{acadYearLabel(year)}
-                    {offset >= 0 && (
-                      <span className={styles.subtitle}>(currently year {offset + 1})</span>
-                    )}
-                  </button>
-                </li>
-              );
-            })
-            .reverse()}
+            return (
+              <li key={year}>
+                <button
+                  type="button"
+                  className={classnames('btn btn-block', {
+                    'btn-outline-primary': props.minYear !== year,
+                    'btn-primary': props.minYear === year,
+                  })}
+                  onClick={() => props.setMinYear(year)}
+                  disabled={year > props.maxYear}
+                >
+                  AY{acadYearLabel(year)}
+                  <span className={styles.subtitle}>
+                    (
+                    {offset >= 0
+                      ? `currently year ${offset + 1}`
+                      : graduationLabel(-offset).toLowerCase()}
+                    )
+                  </span>
+                </button>
+              </li>
+            );
+          })}
         </ul>
       </section>
 
@@ -89,6 +92,7 @@ export function PlannerSettingsComponent(props: Props) {
                   'btn-primary': props.maxYear === year,
                 })}
                 onClick={() => props.setMaxYear(year)}
+                disabled={year < props.minYear}
               >
                 {graduationLabel(offset)}
                 <span className={styles.subtitle}>(AY{acadYearLabel(year)})</span>
@@ -100,11 +104,11 @@ export function PlannerSettingsComponent(props: Props) {
 
       <section className={styles.toggleSection}>
         <div>
-          <h2 className={styles.label}>Taking / taken iBLOCs</h2>
+          <h2 className={styles.label}>Taking iBLOCs</h2>
 
           <p>
             <ExternalLink href="http://www.nus.edu.sg/ibloc/iBLOC.html">iBLOCs</ExternalLink> is a
-            program that full-time NSmen to read some modules before matriculating.
+            program that allow full-time NSmen to read some modules before matriculating.
           </p>
         </div>
 
