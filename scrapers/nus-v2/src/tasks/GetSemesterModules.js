@@ -74,8 +74,10 @@ export default class GetSemesterModules extends BaseTask implements Task<Input, 
           (module: ModuleInfo) => (module.CatalogPrint || module.PrintCatalog) === 'Y',
         );
 
-        this.logger.info('Downloaded %i modules from %s', printed.length, department.Description);
-        this.logger.debug('Filtered out %i non-print modules', hidden.length);
+        this.logger.debug('Downloaded %i modules from %s', printed.length, department.Description);
+        if (hidden.length > 0) {
+          this.logger.debug('Filtered out %i non-print modules', hidden.length);
+        }
 
         return printed;
       } catch (e) {

@@ -115,10 +115,9 @@ const mapModuleInfo = (moduleInfo: ModuleInfo, departments: DepartmentCodeMap): 
 /**
  * Download, clean and combine module info, timetable, and exam info. This task
  * uses the subtasks
- *
  * - GetSemesterExams
  * - GetSemesterModules
- * - GetModuleTimetable
+ * - GetSemesterTimetable
  *
  * Output:
  * - <semester>/<module code>/semesterData.json
