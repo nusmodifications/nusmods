@@ -10,7 +10,7 @@ const logRoot = path.join(__dirname, '../../../logs');
 
 // In production, create a new log for each run
 const logSuffix =
-  process.env.NODE_ENV === 'production' ? moment().format('-DD-MM-YYYY.HH-mm-ss') : '';
+  process.env.NODE_ENV === 'production' ? moment().format('-YYYY-MM-DD.HH-mm-ss') : '';
 
 const rootLogger = bunyan.createLogger({
   name: 'scraper',
