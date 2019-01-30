@@ -1,6 +1,6 @@
 // @flow
-
-import type { LatLng, Viewport } from 'react-leaflet';
+import type { LatLng } from 'leaflet';
+import type { Viewport } from 'react-leaflet';
 import React, { PureComponent } from 'react';
 import { Map, Marker, TileLayer } from 'react-leaflet';
 import classnames from 'classnames';
@@ -138,8 +138,8 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
     );
   };
 
-  updateLocation = (latlng: LatLng, updateViewport: boolean = true) => {
-    const location = Array.isArray(latlng) ? latlng : [latlng.lat, latlng.lng];
+  updateLocation = (latlng: LatLng | LatLngTuple, updateViewport: boolean = true) => {
+    const location: LatLngTuple = Array.isArray(latlng) ? latlng : [latlng.lat, latlng.lng];
     const update: $Shape<State> = {
       location,
       latlngUpdated: true,

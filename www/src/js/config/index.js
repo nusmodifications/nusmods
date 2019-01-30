@@ -1,5 +1,4 @@
 // @flow
-import { parseISO } from 'date-fns';
 import type { Semester, AcadYear } from 'types/modules';
 
 import holidays from 'data/holidays.json';
@@ -82,7 +81,7 @@ const augmentedConfig: Config = {
     .replace('<AcademicYear>', appConfig.academicYear)
     .replace('<Semester>', appConfig.semester),
 
-  holidays: holidays.map(parseISO),
+  holidays: holidays.map((date) => new Date(date)),
 
   corsSchedule: corsData.map(convertCorsDate),
 

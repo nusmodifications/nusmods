@@ -13,3 +13,6 @@ export function announcementKey(key: ?string) {
   if (!key) return null;
   return `${ANNOUNCEMENT_PREFIX}${key}`;
 }
+
+// Used by ModTris
+export const MODTRIS_SCORES = 'modtris-scores';

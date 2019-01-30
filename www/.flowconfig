@@ -1,10 +1,13 @@
-[ignore]
-.*/node_modules/react-leaflet/.*
-.*/node_modules/redux-persist/.*
+[lints]
+all=warn
+
+[untyped]
+<PROJECT_ROOT>/node_modules/redux-persist/lib/integration/.*
 
 [include]
 
 [libs]
+node_modules/downshift/flow-typed/npm
 
 [options]
 esproposal.optional_chaining=enable
@@ -12,6 +15,7 @@ module.name_mapper='^\(actions\|apis\|bootstrapping\|config\|data\|middlewares\|
 module.name_mapper='^\styles\/?\(.*\)$' -> '<PROJECT_ROOT>/src/styles/\1'
 module.name_mapper='^\__mocks__\/?\(.*\)$' -> '<PROJECT_ROOT>/__mocks__/\1'
 module.name_mapper='.*\.\(svg\|png\|jpg\|gif\)$' -> '<PROJECT_ROOT>/flow/url-loader.js'
+module.name_mapper='.*\.\(css\|scss\|sass\)$' -> '<PROJECT_ROOT>/flow/css-loader.js'
 module.file_ext=.jsx
 module.file_ext=.js
 module.file_ext=.json

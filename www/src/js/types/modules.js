@@ -1,7 +1,6 @@
 // @flow
 import type { ColorIndex } from 'types/reducers';
 import { flatMap } from 'lodash';
-import type { BiddingStat } from './cors';
 import type { Venue } from './venues';
 
 // Components within a module:
@@ -85,7 +84,6 @@ export type TreeFragment = {|
 export type Module = {
   AcadYear: AcadYear,
   Corequisite?: string,
-  CorsBiddingStats: Array<BiddingStat>,
   Department: Department,
   History: Array<SemesterData>,
   ModuleCode: ModuleCode,
