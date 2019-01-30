@@ -2,9 +2,11 @@
 
 NUSMods R is built using [React][react], [Redux][redux] and [Bootstrap][bootstrap], and is designed to be **fast, modern and responsive**.
 
-* Production deployment: https://nusmods.com/
-* Latest build: https://latest.nusmods.com/
-* Issues: https://github.com/nusmodifications/nusmods/issues?q=is%3Aissue+is%3Aopen
+- Production: https://nusmods.com/
+- Latest build: https://latest.nusmods.com/
+- Issues: https://github.com/nusmodifications/nusmods/issues?q=is%3Aissue+is%3Aopen
+- Analytics: https://analytics.nusmods.com/
+- Deployment dashboard: https://launch.nusmods.com/
 
 To install NUSMods V2 (the previous version of NUSMods), refer [here](../provisioning/README.md).
 
@@ -12,13 +14,15 @@ To install NUSMods V2 (the previous version of NUSMods), refer [here](../provisi
 
 Desktop browsers:
 
-* Last two versions of all evergreen desktop browsers (Chrome, Firefox, Edge, Safari)
-* IE is completely **unsupported**
+- Last two versions of all evergreen desktop browsers (Chrome, Firefox, Edge, Safari)
+- IE is completely **unsupported**
 
 Mobile browsers:
 
-* iOS 9 and above
-* Chrome Mobile last two versions
+- iOS 10 and above
+- Chrome Mobile last two versions
+
+We try not to break iOS 9 (ie. display white screen of death or use unsupported APIs), but we don't guarantee the page will be appear exactly the same as in more modern browsers.
 
 ## Contributing
 
@@ -50,15 +54,15 @@ $ DISABLE_ESLINT=1 DISABLE_FLOW=1 DISABLE_STYLELINT=1 yarn start
 
 We recommend the following development tools to help speed up your work
 
-* React Developer Tools ([Chrome](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi), [Firefox](https://addons.mozilla.org/firefox/addon/react-devtools/))
-* [Redux DevTools](http://extension.remotedev.io/#installation)
-* [Firefox Developer Edition](https://www.mozilla.org/en-US/firefox/developer/)
+- React Developer Tools ([Chrome](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi), [Firefox](https://addons.mozilla.org/firefox/addon/react-devtools/))
+- [Redux DevTools](http://extension.remotedev.io/#installation)
+- [Firefox Developer Edition](https://www.mozilla.org/en-US/firefox/developer/)
 
 ### Writing styles
 
 We uses [CSS Modules][css-modules] to structure styles. This means that with the exception of a few global styles, styles for each component lives beside their source files (see [colocation](#colocation)). This allows us to write short, semantic names for styles without worrying about collision.
 
-``` scss
+```scss
 // MyComponent.scss
 import "~styles/utils/modules-entry"; // Import variables, mixins
 
@@ -78,7 +82,7 @@ import "~styles/utils/modules-entry"; // Import variables, mixins
 }
 ```
 
-``` js
+```js
 // MyComponent.jsx
 import styles from './MyComponent.scss';
 
@@ -114,7 +118,7 @@ import { requestAction } from 'actions/requests';
 export const FETCH_DATA = 'FETCH_DATA';
 export function fetchData() {
   return requestAction(FETCH_DATA, {
-    url: 'http://example.com/api/my-data'
+    url: 'http://example.com/api/my-data',
   });
 }
 ```
@@ -177,7 +181,7 @@ import { SUCCESS } from 'types/reducers';
 import { FETCH_DATA } from 'actions/example';
 
 export function exampleBank(state: ExampleBank, action: FSA): ExampleBank {
-  switch(action.type) {
+  switch (action.type) {
     case FETCH_DATA + SUCCESS:
       return action.payload;
 
@@ -234,7 +238,7 @@ If you need to access the status of a request from outside the component which i
 
 ### Adding dependencies
 
-NUSMods tries to be as lean as possible. Adding external dependencies should be done with care to avoid bloating our bundle. Use [Bundlephobia][bundlephobia] to ensure the new dependency is reasonably sized.
+NUSMods tries to be as lean as possible. Adding external dependencies should be done with care to avoid bloating our bundle. Use [Bundlephobia][bundlephobia] to ensure the new dependency is reasonably sized, or if the dependency is limited to one specific page/component, use code splitting to ensure the main bundle's size is not affected.
 
 #### Flow libdef
 
@@ -307,9 +311,9 @@ $ yarn build            # Build to staging ./dist directory
 $ yarn promote-staging  # Promote ./dist to production
 ```
 
-* `yarn build` packages and optimizes the app for deployment. The files will be placed in the `./dist` directory.
-* `yarn promote-staging` deploys `./dist` to the production folder, currently `../../beta.nusmods.com`. It is designed to be safe, executing a dry run and asking for confirmation before deployment.
-* `yarn rsync <dest-dir>` syncs `./dist` to the specified destination folder `<dest-dir>`. It is mainly used by `yarn promote-staging` but could be used to sync `./dist` to any folder.
+- `yarn build` packages and optimizes the app for deployment. The files will be placed in the `./dist` directory.
+- `yarn promote-staging` deploys `./dist` to the production folder, currently `../../beta.nusmods.com`. It is designed to be safe, executing a dry run and asking for confirmation before deployment.
+- `yarn rsync <dest-dir>` syncs `./dist` to the specified destination folder `<dest-dir>`. It is mainly used by `yarn promote-staging` but could be used to sync `./dist` to any folder.
 
 ## Project Structure
 
@@ -334,24 +338,27 @@ $ yarn promote-staging  # Promote ./dist to production
 │   │   ├── types            - Flow type definitions
 │   │   ├── utils            - Utility functions and classes
 │   │   └── views
-│   │       ├── browse       - Module info and module finder related components
 │   │       ├── components   - Reusable components
+│   │       ├── contribute   - Contribute page components
 │   │       ├── errors       - Error pages
 │   │       ├── hocs         - Higher order components
 │   │       ├── layout       - Global layout components
 │   │       ├── modules      - Module finder and module info components
+│   │       ├── planner      - Module planner related components
 │   │       ├── routes       - Routing related components
 │   │       ├── settings     - Settings page component
 │   │       ├── static       - Static pages like /team and /developers
 │   │       ├── timetable    - Timetable builder related components
+│   │       ├── today        - Today schedule page related components
 │   │       └── venues       - Venues page related components
 │   └── styles
 │       ├── bootstrap        - Bootstrapping, uh, Bootstrap
-│       ├── material         - Material components
 │       ├── components       - Legacy component styles
 │       │                      (new components should colocate their styles)
 │       ├── layout           - Site-wide layout styles
+│       ├── material         - Material components
 │       ├── pages            - Page specific styles
+│       ├── tippy            - Styles for tippy.js tooltips
 │       └── utils            - Utility classes, mixins, functions
 ├── static                   - Static assets, eg. favicons
 │                              These will be copied directly into /dist
