@@ -199,7 +199,7 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
     // Check that every module that has exam also has a timetable
     // This is an invariant check on the validity of the data
     const noInfoModulesWithExams = Array.from(
-      difference(new Set(Object.keys(timetables)), new Set(Object.keys(exams))),
+      difference(new Set(Object.keys(exams)), new Set(Object.keys(timetables))),
     );
     if (noInfoModulesWithExams.length > 0) {
       this.logger.warn(

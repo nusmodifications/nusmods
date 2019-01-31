@@ -1,5 +1,5 @@
 // @flow
-import { groupBy, has, map, mapValues, partition, values } from 'lodash';
+import { groupBy, has, map, mapValues, values, trimStart } from 'lodash';
 import { Logger } from 'bunyan';
 import NUSModerator from 'nusmoderator';
 
@@ -14,7 +14,8 @@ import { validateLesson } from '../services/validation';
 import { activityLessonType, dayTextMap, unrecognizedLessonTypes } from '../services/data';
 
 /**
- * For deduplicating timetable lessons
+ * For deduplicating timetable lessons - we need a unique string identifier
+ * for each lesson, so we leave out props that changes every lesson like eventdate
  */
 const getLessonKey = (lesson: TimetableLesson) =>
   [
@@ -80,7 +81,7 @@ export function mapTimetableLessons(lessons: TimetableLesson[], logger: Logger):
     return {
       // mod group contains the activity at the start - we remove that because
       // it is redundant
-      ClassNo: modgrp.replace(activity, ''),
+      ClassNo: trimStart(modgrp, activity),
       // Start and end time don't have the ':' delimiter
       StartTime: start_time.replace(':', ''),
       EndTime: end_time.replace(':', ''),
@@ -129,29 +130,45 @@ export default class GetSemesterTimetable extends BaseTask implements Task<Input
   async run() {
     const term = getTermCode(this.semester, this.academicYear);
 
-    // Get all lessons in a semester from the API
+    // 1. Get all lessons in a semester from the API
     const lessons = await retry(() => this.api.getSemesterTimetables(term), 3);
 
-    // Remove invalid lessons
-    const [validLessons, invalidLessons] = partition(lessons, validateLesson);
+    // 2. Collect all modules found by their module code, and invalid lessons
+    //    for logging
+    const lessonsByModule = {};
+    const invalidLessons = [];
+
+    lessons.forEach((lesson) => {
+      // 3. Even if the lesson is invalid, as long as any lesson appears in the
+      //    system we know the module is offered this semester, so we insert it
+      //    into lessonsByModule before checking lesson validity
+      if (!lessonsByModule[lesson.module]) {
+        lessonsByModule[lesson.module] = [];
+      }
+
+      // 4. Only keep valid lessons
+      if (!validateLesson(lesson, this.logger)) {
+        invalidLessons.push(lesson);
+      } else {
+        lessonsByModule[lesson.module].push(lesson);
+      }
+    });
+
+    // 5. Log all invalid lessons for debugging
     if (invalidLessons.length > 0) {
       this.logger.info(
-        { valid: validLessons.length, invalid: invalidLessons.length },
+        { valid: lessons.length - invalidLessons.length, invalid: invalidLessons.length },
         'Removed invalid lessons',
       );
       this.logger.debug({ invalidLessons }, 'Invalid lessons');
     }
 
-    // Group lessons by modules, then turn each of those into RawLesson[]
-    const lessonsByModule: { [ModuleCode]: TimetableLesson[] } = groupBy(
-      validLessons,
-      (lesson) => lesson.module,
-    );
+    // 6. Turn each module's TimetableLesson[] into RawLesson[]
     const timetables: { [ModuleCode]: RawLesson[] } = mapValues(lessonsByModule, (moduleLessons) =>
       mapTimetableLessons(moduleLessons, this.logger),
     );
 
-    // Save all the timetables to disk
+    // 7. Save all the timetables to disk
     await Promise.all(
       map(timetables, (timetable, moduleCode) =>
         this.output.timetable(this.semester, moduleCode, timetable),
