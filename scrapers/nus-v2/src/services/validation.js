@@ -5,11 +5,14 @@
  */
 
 import Joi from 'joi';
+import { Logger } from 'bunyan';
+
 import type { ModuleExam, TimetableLesson } from '../types/api';
 import type { Semester } from '../types/modules';
 
 import { activityLessonType, dayTextMap } from './data';
 import { Semesters } from '../types/modules';
+import rootLogger from './logger';
 
 const lessonSchema = Joi.object({
   // Allow null because we can still use the rest of the information
@@ -29,8 +32,15 @@ const lessonSchema = Joi.object({
     .greater(0),
 });
 
-export function validateLesson(lesson: TimetableLesson) {
-  const result = Joi.validate(lesson, lessonSchema, { presence: 'required', allowUnknown: true });
+export function validateLesson(lesson: TimetableLesson, logger: Logger = rootLogger) {
+  const result = Joi.validate(lesson, lessonSchema, {
+    presence: 'required',
+    allowUnknown: true,
+    // Don't abort early so we can log all errors
+    abortEarly: process.env.NODE_ENV === 'production',
+  });
+
+  if (result.error) logger.debug({ service: 'validation', error: result.error }, 'Invalid lesson');
   return !result.error;
 }
 
@@ -43,8 +53,15 @@ const examSchema = Joi.object({
   exam_date: Joi.string().isoDate(),
 });
 
-export function validateExam(exam: ModuleExam) {
-  const result = Joi.validate(exam, examSchema, { presence: 'required', allowUnknown: true });
+export function validateExam(exam: ModuleExam, logger: Logger = rootLogger) {
+  const result = Joi.validate(exam, examSchema, {
+    presence: 'required',
+    allowUnknown: true,
+    // Don't abort early so we can log all errors
+    abortEarly: process.env.NODE_ENV === 'production',
+  });
+
+  if (result.error) logger.debug({ service: 'validation', error: result.error }, 'Invalid exam');
   return !result.error;
 }
 
