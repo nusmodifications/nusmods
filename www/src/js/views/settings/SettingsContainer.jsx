@@ -255,17 +255,17 @@ class SettingsContainer extends Component<Props, State> {
 
         <h4 id="privacy">Privacy</h4>
 
-        <div className={styles.toggleRow}>
-          <div className={styles.toggleDescription}>
+        <div className="row">
+          <div className="col-md-8">
             <p>
-              We collect anonymized information such as page visits, browsers and operating system
-              using <ExternalLink href="https://matomo.org/">Matomo</ExternalLink>, an open source
-              analytics software we host ourselves. We use this information to make decisions about
-              what features and browsers to support, address issues and improve the performance of
-              NUSMods.
+              We collect anonymous, aggregated usage information on NUSMods - think of it as a
+              survey to tells us which browsers to support and what features are popular. Note that
+              if you opt out, we may remove features that you use since we won&apos;t know if anyone
+              is using them.
             </p>
             <p>
-              You can see the data we collect at{' '}
+              We do not use this information for advertising, or share this information with
+              anybody. You can see the data we collect at{' '}
               <ExternalLink href="https://analytics.nusmods.com/">
                 analytics.nusmods.com
               </ExternalLink>
@@ -273,38 +273,40 @@ class SettingsContainer extends Component<Props, State> {
             </p>
           </div>
 
-          {navigator.doNotTrack === '1' ? (
-            <div className="alert alert-warning">
-              You have enabled{' '}
-              <ExternalLink href="https://en.wikipedia.org/wiki/Do_Not_Track">
-                do not track
-              </ExternalLink>{' '}
-              in your browser, so you will not be tracked until that option is disabled.
-            </div>
-          ) : (
-            <div className={styles.toggle}>
-              <Toggle
-                labels={['Allow Tracking', 'Opt out']}
-                isOn={this.state.allowTracking}
-                onChange={this.onToggleTracking}
-              />
-            </div>
-          )}
+          <div className="col-md-4">
+            {navigator.doNotTrack === '1' ? (
+              <div className="alert alert-warning">
+                You have enabled{' '}
+                <ExternalLink href="https://en.wikipedia.org/wiki/Do_Not_Track">
+                  do not track
+                </ExternalLink>{' '}
+                in your browser, so you will not be tracked until that option is disabled.
+              </div>
+            ) : (
+              <div className="text-right">
+                <Toggle
+                  labels={['Allow', 'Opt out']}
+                  isOn={this.state.allowTracking}
+                  onChange={this.onToggleTracking}
+                />
+              </div>
+            )}
+          </div>
         </div>
 
         <br />
 
-        <div className={styles.toggleRow}>
-          <div className={styles.toggleDescription}>
+        <div className="row">
+          <div className="col-md-8">
             <p>
-              We use Disqus for comments on NUSMods modules. Disqus may load its own tracking code
-              which we cannot control. To improve privacy you may opt to load Disqus only when you
-              wish to see or read the comments.
+              We use Disqus for comments. Disqus may load its own tracking code which we cannot
+              control. To improve privacy you may opt to load Disqus only when you wish to see or
+              read the comments.
             </p>
           </div>
-          <div className={styles.toggle}>
+          <div className="col-md-4 text-right">
             <Toggle
-              labels={['Load manually', 'Load automatically']}
+              labels={['Load Manually', 'Always Load']}
               isOn={this.props.loadDisqusManually === true}
               onChange={this.props.setLoadDisqusManually}
             />
@@ -339,4 +341,5 @@ const connectedSettings = connect(
     setLoadDisqusManually,
   },
 )(SettingsContainer);
+
 export default deferComponentRender(connectedSettings);
