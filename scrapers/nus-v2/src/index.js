@@ -17,11 +17,13 @@ import CollateVenues from './tasks/CollateVenues';
 import CollateModules from './tasks/CollateModules';
 import DataPipeline from './tasks/DataPipeline';
 
+function handleFatalError(e: Error) {
+  logger.fatal(e, 'Fatal error');
+  process.exitCode = 1;
+}
+
 function runTask(Task) {
-  new Task().run().catch((e) => {
-    logger.fatal(e, 'Fatal error while running %s', Task.name);
-    throw e;
-  });
+  new Task().run().catch(handleFatalError);
 }
 
 const commands: CommandModule[] = [
@@ -51,7 +53,7 @@ const commands: CommandModule[] = [
         .then((modules) => {
           logger.info(`Collected data for ${modules.length} modules`);
         })
-        .catch((e) => logger.fatal(e, 'Fatal error'));
+        .catch(handleFatalError);
     },
   },
   {
@@ -68,7 +70,7 @@ const commands: CommandModule[] = [
         .read()
         .then((semesterModuleData) => new CollateVenues(sem).run(semesterModuleData))
         .then((venues) => logger.info(`Collated ${size(venues)} venues`))
-        .catch((e) => logger.fatal(e, 'Fatal error'));
+        .catch(handleFatalError);
     },
   },
   {
@@ -86,7 +88,7 @@ const commands: CommandModule[] = [
         }),
       )
         .then((semesterData) => new CollateModules().run(semesterData))
-        .catch((e) => logger.fatal(e, 'Fatal error'));
+        .catch(handleFatalError);
     },
   },
   {
