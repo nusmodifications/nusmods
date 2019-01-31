@@ -3,11 +3,27 @@
 import type { ModuleCode, Semester } from 'types/modules';
 import type { FSA } from 'types/redux';
 
-export const ADD_PLANNER_YEAR = 'ADD_PLANNER_YEAR';
-export function addPlannerYear(year: string): FSA {
+export const SET_PLANNER_MIN_YEAR = 'SET_PLANNER_MIN_YEAR';
+export function setPlannerMinYear(year: string) {
   return {
-    type: ADD_PLANNER_YEAR,
+    type: SET_PLANNER_MIN_YEAR,
     payload: year,
+  };
+}
+
+export const SET_PLANNER_MAX_YEAR = 'SET_PLANNER_MAX_YEAR';
+export function setPlannerMaxYear(year: string) {
+  return {
+    type: SET_PLANNER_MAX_YEAR,
+    payload: year,
+  };
+}
+
+export const SET_PLANNER_IBLOCS = 'SET_PLANNER_IBLOCS';
+export function setPlannerIBLOCs(iblocs: boolean) {
+  return {
+    type: SET_PLANNER_IBLOCS,
+    payload: iblocs,
   };
 }
 

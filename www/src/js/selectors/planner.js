@@ -1,15 +1,16 @@
 // @flow
-import { sortBy } from 'lodash';
+import { flatMap, sortBy } from 'lodash';
 import type { ModuleCode, Semester } from 'types/modules';
 import { Semesters } from 'types/modules';
 import type { ModuleWithInfo, PlannerModulesWithInfo } from 'types/views';
 import type { ModuleTime } from 'types/reducers';
 import type { State } from 'reducers';
-import { getYearsBetween } from 'utils/modules';
+import { getYearsBetween, subtractAcadYear } from 'utils/modules';
 import {
   checkPrerequisite,
   EXEMPTION_SEMESTER,
   EXEMPTION_YEAR,
+  IBLOCS_SEMESTER,
   PLAN_TO_TAKE_SEMESTER,
   PLAN_TO_TAKE_YEAR,
 } from 'utils/planner';
@@ -49,24 +50,46 @@ export function mapModuleToInfo(
   };
 }
 
-export function getExemptions(state: State): ModuleWithInfo[] {
+export function getPrereqModuleCode(moduleCode: ModuleCode): ModuleCode[] {
+  const moduleCodes = [moduleCode];
+
+  // Also try to match the non-variant version (without the suffix alphabets)
+  // of the module code
+  const match = /([A-Z]+\d+)[A-Z]+$/gi.exec(moduleCode);
+  if (match) moduleCodes.push(match[1]);
+
+  return moduleCodes;
+}
+
+/**
+ * Maps modules from sources outside the normal timetable,
+ * such as exemptions, "plan to take" and iBLOCs modules
+ */
+export function mapNonTimetableModules(
+  state: State,
+  year: string,
+  semester: Semester,
+): ModuleWithInfo[] {
   const { planner, moduleBank } = state;
   const taken = new Set();
 
-  // "Exemption" modules are stored in a special year which is not a valid AY
-  return filterModuleForSemester(planner.modules, EXEMPTION_YEAR, EXEMPTION_SEMESTER).map(
-    (moduleCode) => mapModuleToInfo(moduleCode, moduleBank.modules, taken),
+  return filterModuleForSemester(planner.modules, year, semester).map((moduleCode) =>
+    mapModuleToInfo(moduleCode, moduleBank.modules, taken),
   );
 }
 
-export function getPlanToTake(state: State): ModuleWithInfo[] {
-  const { planner, moduleBank } = state;
-  const taken = new Set();
+export function getIBLOCs(state: State): ModuleWithInfo[] {
+  if (!state.planner.iblocs) return [];
+  const iblocsYear = subtractAcadYear(state.planner.minYear);
+  return mapNonTimetableModules(state, iblocsYear, IBLOCS_SEMESTER);
+}
 
-  // "Plan to take" modules are stored in a special year which is not a valid AY
-  return filterModuleForSemester(planner.modules, PLAN_TO_TAKE_YEAR, PLAN_TO_TAKE_SEMESTER).map(
-    (moduleCode) => mapModuleToInfo(moduleCode, moduleBank.modules, taken),
-  );
+export function getExemptions(state: State): ModuleWithInfo[] {
+  return mapNonTimetableModules(state, EXEMPTION_YEAR, EXEMPTION_SEMESTER);
+}
+
+export function getPlanToTake(state: State): ModuleWithInfo[] {
+  return mapNonTimetableModules(state, PLAN_TO_TAKE_YEAR, PLAN_TO_TAKE_SEMESTER);
 }
 
 /**
@@ -76,9 +99,17 @@ export function getPlanToTake(state: State): ModuleWithInfo[] {
 export function getAcadYearModules(state: State): PlannerModulesWithInfo {
   const { planner, moduleBank } = state;
   const years = getYearsBetween(planner.minYear, planner.maxYear);
-  const modules = {};
-  const modulesTaken = new Set<ModuleCode>(getExemptions(state).map((module) => module.moduleCode));
+  const exemptions = [
+    // Normal exemptions
+    ...getExemptions(state),
+    // iBLOCs modules, if there are any, are also not included in acad year modules
+    ...getIBLOCs(state),
+  ];
+  const modulesTaken = new Set<ModuleCode>(
+    flatMap(exemptions, (module) => getPrereqModuleCode(module.moduleCode)),
+  );
 
+  const modules = {};
   years.forEach((year) => {
     modules[year] = {};
 
@@ -90,12 +121,9 @@ export function getAcadYearModules(state: State): PlannerModulesWithInfo {
 
       // Add taken modules to set of modules taken for prerequisite calculation
       moduleCodes.forEach((moduleCode) => {
-        modulesTaken.add(moduleCode);
-
-        // Also try to match the non-variant version (without the suffix alphabets)
-        // of the module code
-        const match = /([A-Z]+\d+)[A-Z]+$/gi.exec(moduleCode);
-        if (match) modulesTaken.add(match[1]);
+        getPrereqModuleCode(moduleCode).forEach((prereq) => {
+          modulesTaken.add(prereq);
+        });
       });
     });
   });

@@ -146,6 +146,7 @@ export type ModuleTime = [string, Semester, number];
 export type PlannerState = {|
   +minYear: string,
   +maxYear: string,
+  +iblocs: boolean,
 
   +modules: {
     +[ModuleCode]: ModuleTime,
