@@ -1,5 +1,5 @@
 // @flow
-import { flatten, castArray } from 'lodash';
+import { castArray, flatten } from 'lodash';
 import type { ModuleCode, Semester, TreeFragment } from 'types/modules';
 import config from 'config';
 
@@ -12,6 +12,9 @@ export const EXEMPTION_SEMESTER: Semester = -1;
 
 export const PLAN_TO_TAKE_YEAR = '3000';
 export const PLAN_TO_TAKE_SEMESTER = -2;
+
+// We assume iBLOCs takes place in special term 1
+export const IBLOCS_SEMESTER = 3;
 
 export function getSemesterName(semester: Semester) {
   if (semester === EXEMPTION_SEMESTER) {
@@ -86,4 +89,10 @@ export function getDroppableId(year: string, semester: Semester): string {
 export function fromDroppableId(id: string): [string, Semester] {
   const [acadYear, semesterString] = id.split('|');
   return [acadYear, +semesterString];
+}
+
+// Create shortened AY labels - eg. 2019/2020 -> 19/20
+export function acadYearLabel(year: string) {
+  // Remove the 20 prefix from AY
+  return year.replace(/\d{4}/g, (match) => match.slice(2));
 }

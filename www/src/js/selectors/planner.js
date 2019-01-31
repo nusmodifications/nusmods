@@ -1,16 +1,17 @@
 // @flow
-import { sortBy, values } from 'lodash';
+import { flatMap, sortBy, values } from 'lodash';
 import type { ModuleCode, Semester } from 'types/modules';
 import { Semesters } from 'types/modules';
 import type { Conflict, ExamClashes, PlannerModuleInfo, PlannerModulesWithInfo } from 'types/views';
 import type { ModuleCodeMap, ModuleTime } from 'types/reducers';
 import type { State } from 'reducers';
 import config from 'config';
-import { getYearsBetween } from 'utils/modules';
+import { getYearsBetween, subtractAcadYear } from 'utils/modules';
 import {
   checkPrerequisite,
   EXEMPTION_SEMESTER,
   EXEMPTION_YEAR,
+  IBLOCS_SEMESTER,
   PLAN_TO_TAKE_SEMESTER,
   PLAN_TO_TAKE_YEAR,
 } from 'utils/planner';
@@ -98,7 +99,7 @@ const examConflict = (clashes: ExamClashes) => (moduleCode: ModuleCode): ?Confli
   return null;
 };
 
-function mapModuleInfo(
+function mapModuleToInfo(
   moduleCode: ModuleCode,
   modulesMap: ModulesMap,
   conflictChecks: Array<(moduleCode: ModuleCode) => ?Conflict>,
@@ -118,24 +119,45 @@ function mapModuleInfo(
   };
 }
 
-export function getExemptions(state: State): PlannerModuleInfo[] {
+export function getPrereqModuleCode(moduleCode: ModuleCode): ModuleCode[] {
+  const moduleCodes = [moduleCode];
+
+  // Also try to match the non-variant version (without the suffix alphabets)
+  // of the module code
+  const match = /([A-Z]+\d+)[A-Z]+$/gi.exec(moduleCode);
+  if (match) moduleCodes.push(match[1]);
+
+  return moduleCodes;
+}
+
+/**
+ * Maps modules from sources outside the normal timetable,
+ * such as exemptions, "plan to take" and iBLOCs modules
+ */
+export function mapNonTimetableModules(
+  state: State,
+  year: string,
+  semester: Semester,
+): PlannerModuleInfo[] {
   const { planner, moduleBank } = state;
 
-  // "Exemption" modules are stored in a special year which is not a valid AY
-  return filterModuleForSemester(planner.modules, EXEMPTION_YEAR, EXEMPTION_SEMESTER).map(
-    (moduleCode) =>
-      mapModuleInfo(moduleCode, moduleBank.modules, [noInfoConflict(moduleBank.moduleCodes)]),
+  return filterModuleForSemester(planner.modules, year, semester).map((moduleCode) =>
+    mapModuleToInfo(moduleCode, moduleBank.modules, [noInfoConflict(moduleBank.moduleCodes)]),
   );
 }
 
-export function getPlanToTake(state: State): PlannerModuleInfo[] {
-  const { planner, moduleBank } = state;
+export function getIBLOCs(state: State): PlannerModuleInfo[] {
+  if (!state.planner.iblocs) return [];
+  const iblocsYear = subtractAcadYear(state.planner.minYear);
+  return mapNonTimetableModules(state, iblocsYear, IBLOCS_SEMESTER);
+}
 
-  // "Plan to take" modules are stored in a special year which is not a valid AY
-  return filterModuleForSemester(planner.modules, PLAN_TO_TAKE_YEAR, PLAN_TO_TAKE_SEMESTER).map(
-    (moduleCode) =>
-      mapModuleInfo(moduleCode, moduleBank.modules, [noInfoConflict(moduleBank.moduleCodes)]),
-  );
+export function getExemptions(state: State): PlannerModuleInfo[] {
+  return mapNonTimetableModules(state, EXEMPTION_YEAR, EXEMPTION_SEMESTER);
+}
+
+export function getPlanToTake(state: State): PlannerModuleInfo[] {
+  return mapNonTimetableModules(state, PLAN_TO_TAKE_YEAR, PLAN_TO_TAKE_SEMESTER);
 }
 
 /**
@@ -145,9 +167,17 @@ export function getPlanToTake(state: State): PlannerModuleInfo[] {
 export function getAcadYearModules(state: State): PlannerModulesWithInfo {
   const { planner, moduleBank } = state;
   const years = getYearsBetween(planner.minYear, planner.maxYear);
-  const modules = {};
-  const modulesTaken = new Set<ModuleCode>(getExemptions(state).map((module) => module.moduleCode));
+  const exemptions = [
+    // Normal exemptions
+    ...getExemptions(state),
+    // iBLOCs modules, if there are any, since they are also not included in acad year modules
+    ...getIBLOCs(state),
+  ];
+  const modulesTaken = new Set<ModuleCode>(
+    flatMap(exemptions, (module) => getPrereqModuleCode(module.moduleCode)),
+  );
 
+  const modules = {};
   years.forEach((year) => {
     modules[year] = {};
 
@@ -164,7 +194,7 @@ export function getAcadYearModules(state: State): PlannerModulesWithInfo {
       }
 
       modules[year][semester] = moduleCodes.map((moduleCode) =>
-        mapModuleInfo(moduleCode, moduleBank.modules, [
+        mapModuleToInfo(moduleCode, moduleBank.modules, [
           noInfoConflict(moduleBank.moduleCodes),
           prereqConflict(moduleBank.modules, modulesTaken),
           semesterConflict(moduleBank.moduleCodes, semester),
@@ -174,12 +204,9 @@ export function getAcadYearModules(state: State): PlannerModulesWithInfo {
 
       // Add taken modules to set of modules taken for prerequisite calculation
       moduleCodes.forEach((moduleCode) => {
-        modulesTaken.add(moduleCode);
-
-        // Also try to match the non-variant version (without the suffix alphabets)
-        // of the module code
-        const match = /([A-Z]+\d+)[A-Z]+$/gi.exec(moduleCode);
-        if (match) modulesTaken.add(match[1]);
+        getPrereqModuleCode(moduleCode).forEach((prereq) => {
+          modulesTaken.add(prereq);
+        });
       });
     });
   });

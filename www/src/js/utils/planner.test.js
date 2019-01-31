@@ -1,6 +1,12 @@
 // @flow
 
-import { checkPrerequisite, conflictToText, fromDroppableId, getDroppableId } from 'utils/planner';
+import {
+  acadYearLabel,
+  checkPrerequisite,
+  conflictToText,
+  fromDroppableId,
+  getDroppableId,
+} from 'utils/planner';
 import type { Semester } from 'types/modules';
 
 describe(checkPrerequisite, () => {
@@ -143,5 +149,14 @@ describe(getDroppableId, () => {
     checkDroppableId('2018/2019', 2);
     checkDroppableId('2018/2019', 3);
     checkDroppableId('2018/2019', 4);
+  });
+});
+
+describe(acadYearLabel, () => {
+  test('should remove 20 prefix from AY', () => {
+    expect(acadYearLabel('2018/2019')).toEqual('18/19');
+
+    // Don't remove every '20' in the string
+    expect(acadYearLabel('2019/2020')).toEqual('19/20');
   });
 });

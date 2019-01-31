@@ -1,7 +1,7 @@
 // @flow
 
 import { clone } from 'lodash';
-import { getAcadYearModules } from 'selectors/planner';
+import { getAcadYearModules, getPrereqModuleCode } from 'selectors/planner';
 import type { PlannerState } from 'types/reducers';
 import type { State } from 'reducers';
 import type { ModuleCode } from 'types/modules';
@@ -16,6 +16,13 @@ const CS1010X = clone(CS1010S);
 CS1010X.ModuleCode = 'CS1010X';
 
 /* eslint-disable no-useless-computed-key */
+
+describe(getPrereqModuleCode, () => {
+  test('should return both original and variant module codes', () => {
+    expect(getPrereqModuleCode('CS1010')).toEqual(['CS1010']);
+    expect(getPrereqModuleCode('CS1010X')).toEqual(['CS1010X', 'CS1010']);
+  });
+});
 
 describe(getAcadYearModules, () => {
   const getState = (planner: PlannerState): State =>
@@ -46,6 +53,7 @@ describe(getAcadYearModules, () => {
         getState({
           minYear: '2018/2019',
           maxYear: '2018/2019',
+          iblocs: false,
           modules: {},
         }),
       ),
@@ -58,6 +66,7 @@ describe(getAcadYearModules, () => {
         getState({
           minYear: '2016/2017',
           maxYear: '2018/2019',
+          iblocs: false,
           modules: {},
         }),
       ),
@@ -74,6 +83,7 @@ describe(getAcadYearModules, () => {
         getState({
           minYear: '2018/2019',
           maxYear: '2018/2019',
+          iblocs: false,
           modules: {
             CS1010S: ['2018/2019', 1, 0],
           },
@@ -93,6 +103,7 @@ describe(getAcadYearModules, () => {
         getState({
           minYear: '2018/2019',
           maxYear: '2018/2019',
+          iblocs: false,
           modules: {
             CS1010X: ['2018/2019', 3, 0],
           },
@@ -114,6 +125,7 @@ describe(getAcadYearModules, () => {
         getState({
           minYear: '2018/2019',
           maxYear: '2018/2019',
+          iblocs: false,
           modules: {
             CS1010S: ['2018/2019', 1, 1],
             MA1521: ['2018/2019', 1, 0],
@@ -135,6 +147,7 @@ describe(getAcadYearModules, () => {
     const planner: PlannerState = {
       minYear: '2018/2019',
       maxYear: '2018/2019',
+      iblocs: false,
       modules: {
         // CS3216 is not offered in sem 2
         CS3216: ['2018/2019', 2, 0],
@@ -158,6 +171,7 @@ describe(getAcadYearModules, () => {
     const planner: PlannerState = {
       minYear: '2018/2019',
       maxYear: '2018/2019',
+      iblocs: false,
       modules: {
         // CS3216 requires CS2103
         CS3216: ['2018/2019', 1, 0],
@@ -185,6 +199,7 @@ describe(getAcadYearModules, () => {
     const planner: PlannerState = {
       minYear: '2017/2018',
       maxYear: '2017/2018',
+      iblocs: false,
       modules: {
         // config.academicYear is mocked to '2017/2018'
         CS1010X: ['2017/2018', 1, 0],
@@ -226,6 +241,7 @@ describe(getAcadYearModules, () => {
     const planner: PlannerState = {
       minYear: '2016/2017',
       maxYear: '2016/2017',
+      iblocs: false,
       modules: {
         // config.academicYear is mocked to '2017/2018'
         CS1010X: ['2016/2017', 1, 0],
@@ -264,6 +280,7 @@ describe(getAcadYearModules, () => {
     const planner: PlannerState = {
       minYear: '2018/2019',
       maxYear: '2018/2019',
+      iblocs: false,
       modules: {
         // CS3216 requires CS2103, but we have CS2103T
         CS2103T: ['2018/2019', 1, 0],
