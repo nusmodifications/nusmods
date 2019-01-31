@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import { size, sortBy, toPairs, flatMap, values, sumBy } from 'lodash';
 
 import type { ModuleCode, Semester } from 'types/modules';
-import type { ModuleWithInfo } from 'types/views';
+import type { PlannerModuleInfo } from 'types/views';
 import config from 'config';
 import { getSemesterName } from 'utils/planner';
 import { Minus, Plus } from 'views/components/icons';
@@ -16,7 +16,7 @@ import styles from './PlannerYear.scss';
 type Props = {|
   +name: string, // eg. iBLOCs, Year 1, etc.
   +year: string, // Actual academic year
-  +semesters: { [Semester]: ModuleWithInfo[] },
+  +semesters: { [Semester]: PlannerModuleInfo[] },
 
   +addModule: (moduleCode: ModuleCode, year: string, semester: Semester) => void,
   +removeModule: (moduleCode: ModuleCode) => void,

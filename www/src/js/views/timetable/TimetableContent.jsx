@@ -172,7 +172,7 @@ class TimetableContent extends Component<Props, State> {
     const { tombstone } = this.state;
 
     // Separate added modules into sections of clashing modules
-    const clashes: { [string]: Array<Module> } = findExamClashes(modules, this.props.semester);
+    const clashes = findExamClashes(modules, this.props.semester);
     const nonClashingMods: Array<Module> = _.difference(modules, _.flatten(_.values(clashes)));
 
     if (_.isEmpty(clashes) && _.isEmpty(nonClashingMods) && !tombstone) {

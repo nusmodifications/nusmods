@@ -22,3 +22,12 @@ export function takeUntil<T>(array: T[], max: number, predicate: (T) => boolean)
 
   return filtered;
 }
+
+export function firstNonNull<T>(producers: Array<() => ?T>): ?T {
+  for (let i = 0; i < producers.length; i++) {
+    const result = producers[i]();
+    if (result != null) return result;
+  }
+
+  return null;
+}

@@ -6,7 +6,7 @@ import { flatMap, flatten, sortBy, sumBy, toPairs, values } from 'lodash';
 import { DragDropContext, Droppable, type OnDragEndResponder } from 'react-beautiful-dnd';
 import classnames from 'classnames';
 import type { Module, ModuleCode, Semester } from 'types/modules';
-import type { ModuleWithInfo, PlannerModulesWithInfo } from 'types/views';
+import type { PlannerModuleInfo, PlannerModulesWithInfo } from 'types/views';
 import type { State as StoreState } from 'reducers';
 
 import { MODULE_CODE_REGEX, renderMCs, subtractAcadYear } from 'utils/modules';
@@ -33,9 +33,9 @@ import styles from './PlannerContainer.scss';
 
 export type Props = {|
   +modules: PlannerModulesWithInfo,
-  +exemptions: ModuleWithInfo[],
-  +planToTake: ModuleWithInfo[],
-  +iblocsModules: ModuleWithInfo[],
+  +exemptions: PlannerModuleInfo[],
+  +planToTake: PlannerModuleInfo[],
+  +iblocsModules: PlannerModuleInfo[],
   +iblocs: boolean,
 
   // Actions
@@ -149,7 +149,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
     const { modules, exemptions, planToTake, iblocs, iblocsModules } = this.props;
 
     // Sort acad years since acad years may not be inserted in display order
-    const sortedModules: Array<[string, { [Semester]: ModuleWithInfo[] }]> = sortBy(
+    const sortedModules: Array<[string, { [Semester]: PlannerModuleInfo[] }]> = sortBy(
       toPairs(modules),
       (pairs) => pairs[0],
     );

@@ -71,6 +71,8 @@ export type ModuleTableOrder = 'exam' | 'mc' | 'code';
 
 export type SelectedLesson = {| date: Date, lesson: Lesson |};
 
+export type ExamClashes = { [string]: Module[] };
+
 // Incomplete typing of Mamoto's API. If you need something not here, feel free
 // to declare the typing here.
 // Full list: https://developer.matomo.org/api-reference/tracking-javascript
@@ -159,16 +161,37 @@ export type EmptyGroupType =
   | 'reading';
 
 /* views/planner */
-export type ModuleWithInfo = {
+export type PrereqConflict = {
+  type: 'prereq',
+  unfulfilledPrereqs: Array<TreeFragment>,
+};
+
+export type ExamConflict = {
+  type: 'exam',
+  conflictModules: ModuleCode[],
+};
+
+export type SemesterConflict = {
+  type: 'semester',
+  semestersOffered: Semester[],
+};
+
+export type NoInfo = {
+  type: 'noInfo',
+};
+
+export type Conflict = PrereqConflict | ExamConflict | SemesterConflict | NoInfo;
+
+export type PlannerModuleInfo = {|
   moduleCode: ModuleCode,
   moduleInfo?: Module,
-  conflicts?: ?Array<TreeFragment>,
-};
+  conflict?: ?Conflict,
+|};
 
 export type PlannerModulesWithInfo = {
   // Mapping acad years to a map of semester to module information object
   // This is the form used by the UI
   +[string]: {|
-    +[Semester]: ModuleWithInfo,
+    +[Semester]: PlannerModuleInfo,
   |},
 };
