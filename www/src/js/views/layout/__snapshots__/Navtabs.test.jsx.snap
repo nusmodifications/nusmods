@@ -6,7 +6,7 @@ exports[`NavtabsComponent renders into nav element 1`] = `
 >
   <NavLink
     activeClassName="linkActive"
-    ariaCurrent="page"
+    aria-current="page"
     className="link"
     to="/timetable/sem-1"
   >
@@ -22,7 +22,7 @@ exports[`NavtabsComponent renders into nav element 1`] = `
   </NavLink>
   <NavLink
     activeClassName="linkActive"
-    ariaCurrent="page"
+    aria-current="page"
     className="link"
     to="/modules"
   >
@@ -38,7 +38,7 @@ exports[`NavtabsComponent renders into nav element 1`] = `
   </NavLink>
   <NavLink
     activeClassName="linkActive"
-    ariaCurrent="page"
+    aria-current="page"
     className="link"
     onFocus={[Function]}
     onMouseOver={[Function]}
@@ -56,7 +56,7 @@ exports[`NavtabsComponent renders into nav element 1`] = `
   </NavLink>
   <NavLink
     activeClassName="linkActive"
-    ariaCurrent="page"
+    aria-current="page"
     className="link"
     to="/settings"
   >
@@ -72,7 +72,7 @@ exports[`NavtabsComponent renders into nav element 1`] = `
   </NavLink>
   <NavLink
     activeClassName="linkActive"
-    ariaCurrent="page"
+    aria-current="page"
     className="link hiddenOnMobile"
     onFocus={[Function]}
     onMouseOver={[Function]}
