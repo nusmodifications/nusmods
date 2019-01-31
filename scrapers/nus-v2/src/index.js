@@ -19,7 +19,8 @@ import DataPipeline from './tasks/DataPipeline';
 
 function runTask(Task) {
   new Task().run().catch((e) => {
-    logger.fatal(e, 'Fatal error while running %s', Task.constructor.name);
+    logger.fatal(e, 'Fatal error while running %s', Task.name);
+    throw e;
   });
 }
 

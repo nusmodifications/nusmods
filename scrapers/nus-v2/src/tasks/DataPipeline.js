@@ -31,6 +31,14 @@ export default class DataPipeline extends BaseTask implements Task<void, Module[
   }
 
   async run() {
+    // Set up resource usage monitoring
+    setInterval(() => {
+      this.logger.debug(
+        { time: Date.now(), memory: process.memoryUsage(), cpu: process.cpuUsage() },
+        'Resource usage',
+      );
+    }, 50);
+
     const organizations = await new GetFacultyDepartment().run();
 
     // Get each semester's data in series. Running it in parallel provides
