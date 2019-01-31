@@ -31,42 +31,30 @@ export default class DataPipeline extends BaseTask implements Task<void, Module[
   }
 
   async run() {
-    // Set up resource usage monitoring
-    const intervalID = setInterval(() => {
-      this.logger.debug(
-        { time: Date.now(), memory: process.memoryUsage(), cpu: process.cpuUsage() },
-        'Resource usage',
-      );
-    }, 50);
+    const organizations = await new GetFacultyDepartment().run();
 
-    try {
-      const organizations = await new GetFacultyDepartment().run();
+    // Get each semester's data in series. Running it in parallel provides
+    // little benefit since the bottleneck is in timetable retrieval, which has to
+    // run for each module and takes up most of the time
+    /* eslint-disable no-await-in-loop */
+    const semesterModules = [];
+    for (const semester of Semesters) {
+      this.logger.info(`Getting data for semester ${semester}`);
 
-      // Get each semester's data in series. Running it in parallel provides
-      // little benefit since the bottleneck is in timetable retrieval, which has to
-      // run for each module and takes up most of the time
-      /* eslint-disable no-await-in-loop */
-      const semesterModules = [];
-      for (const semester of Semesters) {
-        this.logger.info(`Getting data for semester ${semester}`);
+      // Contains module and semester specific data
+      const getSemesterData = new GetSemesterData(semester, this.academicYear);
+      const modules = await getSemesterData.run(organizations);
 
-        // Contains module and semester specific data
-        const getSemesterData = new GetSemesterData(semester, this.academicYear);
-        const modules = await getSemesterData.run(organizations);
+      // Collect venue data for this semester
+      await new CollateVenues(semester, this.academicYear).run(modules);
 
-        // Collect venue data for this semester
-        await new CollateVenues(semester, this.academicYear).run(modules);
-
-        semesterModules.push(modules);
-      }
-      /* eslint-enable */
-
-      const collateModules = new CollateModules(this.academicYear);
-      const modules = await collateModules.run(semesterModules);
-
-      return modules;
-    } finally {
-      clearInterval(intervalID);
+      semesterModules.push(modules);
     }
+    /* eslint-enable */
+
+    const collateModules = new CollateModules(this.academicYear);
+    const modules = await collateModules.run(semesterModules);
+
+    return modules;
   }
 }
