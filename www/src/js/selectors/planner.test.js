@@ -17,6 +17,14 @@ CS1010X.ModuleCode = 'CS1010X';
 
 /* eslint-disable no-useless-computed-key */
 
+const defaultState: PlannerState = {
+  minYear: '2018/2019',
+  maxYear: '2018/2019',
+  iblocs: false,
+  modules: {},
+  custom: {},
+};
+
 describe(getPrereqModuleCode, () => {
   test('should return both original and variant module codes', () => {
     expect(getPrereqModuleCode('CS1010')).toEqual(['CS1010']);
@@ -48,26 +56,16 @@ describe(getAcadYearModules, () => {
       [4]: [],
     };
 
-    expect(
-      getAcadYearModules(
-        getState({
-          minYear: '2018/2019',
-          maxYear: '2018/2019',
-          iblocs: false,
-          modules: {},
-        }),
-      ),
-    ).toEqual({
+    expect(getAcadYearModules(getState(defaultState))).toEqual({
       '2018/2019': emptyYear,
     });
 
     expect(
       getAcadYearModules(
         getState({
+          ...defaultState,
           minYear: '2016/2017',
           maxYear: '2018/2019',
-          iblocs: false,
-          modules: {},
         }),
       ),
     ).toEqual({
@@ -81,9 +79,7 @@ describe(getAcadYearModules, () => {
     expect(
       getAcadYearModules(
         getState({
-          minYear: '2018/2019',
-          maxYear: '2018/2019',
-          iblocs: false,
+          ...defaultState,
           modules: {
             CS1010S: ['2018/2019', 1, 0],
           },
@@ -101,9 +97,7 @@ describe(getAcadYearModules, () => {
     expect(
       getAcadYearModules(
         getState({
-          minYear: '2018/2019',
-          maxYear: '2018/2019',
-          iblocs: false,
+          ...defaultState,
           modules: {
             CS1010X: ['2018/2019', 3, 0],
           },
@@ -123,9 +117,7 @@ describe(getAcadYearModules, () => {
     expect(
       getAcadYearModules(
         getState({
-          minYear: '2018/2019',
-          maxYear: '2018/2019',
-          iblocs: false,
+          ...defaultState,
           modules: {
             CS1010S: ['2018/2019', 1, 1],
             MA1521: ['2018/2019', 1, 0],
@@ -145,9 +137,7 @@ describe(getAcadYearModules, () => {
 
   test('should return semester conflicts', () => {
     const planner: PlannerState = {
-      minYear: '2018/2019',
-      maxYear: '2018/2019',
-      iblocs: false,
+      ...defaultState,
       modules: {
         // CS3216 is not offered in sem 2
         CS3216: ['2018/2019', 2, 0],
@@ -169,9 +159,7 @@ describe(getAcadYearModules, () => {
 
   test('should return module prereq conflicts', () => {
     const planner: PlannerState = {
-      minYear: '2018/2019',
-      maxYear: '2018/2019',
-      iblocs: false,
+      ...defaultState,
       modules: {
         // CS3216 requires CS2103
         CS3216: ['2018/2019', 1, 0],
@@ -197,9 +185,7 @@ describe(getAcadYearModules, () => {
 
   test('should return semester exam conflicts', () => {
     const planner: PlannerState = {
-      minYear: '2017/2018',
-      maxYear: '2017/2018',
-      iblocs: false,
+      ...defaultState,
       modules: {
         // config.academicYear is mocked to '2017/2018'
         CS1010X: ['2017/2018', 1, 0],
@@ -239,9 +225,9 @@ describe(getAcadYearModules, () => {
 
   test('should not show exam conflicts for modules not taken this year', () => {
     const planner: PlannerState = {
+      ...defaultState,
       minYear: '2016/2017',
       maxYear: '2016/2017',
-      iblocs: false,
       modules: {
         // config.academicYear is mocked to '2017/2018'
         CS1010X: ['2016/2017', 1, 0],
@@ -278,9 +264,7 @@ describe(getAcadYearModules, () => {
   // in most cases
   test('should allow variants to serve as prereqs', () => {
     const planner: PlannerState = {
-      minYear: '2018/2019',
-      maxYear: '2018/2019',
-      iblocs: false,
+      ...defaultState,
       modules: {
         // CS3216 requires CS2103, but we have CS2103T
         CS2103T: ['2018/2019', 1, 0],

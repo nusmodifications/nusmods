@@ -22,6 +22,7 @@ const defaultState: PlannerState = {
   maxYear: '2018/2019',
   iblocs: false,
   modules: {},
+  custom: {},
 };
 
 /* eslint-disable no-useless-computed-key */

@@ -4,12 +4,14 @@ import { pull, max, min } from 'lodash';
 import type { PlannerState } from 'types/reducers';
 import type { FSA } from 'types/redux';
 import {
+  SET_CUSTOM_PLANNER_DATA,
   ADD_PLANNER_MODULE,
   MOVE_PLANNER_MODULE,
   REMOVE_PLANNER_MODULE,
   SET_PLANNER_IBLOCS,
   SET_PLANNER_MAX_YEAR,
   SET_PLANNER_MIN_YEAR,
+  ADD_CUSTOM_PLANNER_DATA,
 } from 'actions/planner';
 import config from 'config';
 import { filterModuleForSemester } from 'selectors/planner';
@@ -20,6 +22,7 @@ const defaultPlannerState: PlannerState = {
   iblocs: false,
 
   modules: {},
+  custom: {},
 };
 
 export default function planner(
@@ -98,6 +101,17 @@ export default function planner(
       return produce(state, (draft) => {
         delete draft.modules[action.payload.moduleCode];
       });
+
+    case ADD_CUSTOM_PLANNER_DATA:
+      return produce(state, (draft) => {
+        draft.custom[action.payload.moduleCode] = action.payload.data;
+      });
+
+    case SET_CUSTOM_PLANNER_DATA:
+      return {
+        ...state,
+        custom: action.payload.data,
+      };
 
     default:
       return state;
