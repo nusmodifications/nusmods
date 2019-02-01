@@ -3557,7 +3557,7 @@
   },
   "CAPT-SR5": {
     "roomName": "Seminar Room 5",
-    "floor": 0,
+    "floor": 1,
     "location": {
       "x": 103.77318935135669,
       "y": 1.30782701977229
@@ -3565,7 +3565,7 @@
   },
   "CAPT-SR4": {
     "roomName": "Seminar Room 4",
-    "floor": 0,
+    "floor": 1,
     "location": {
       "x": 103.77346605635373,
       "y": 1.307735312249234
@@ -3573,7 +3573,7 @@
   },
   "CAPT-SR3": {
     "roomName": "Seminar Room 3",
-    "floor": 0,
+    "floor": 1,
     "location": {
       "x": 103.77344694870638,
       "y": 1.3077358486658872
