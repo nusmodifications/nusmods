@@ -3530,5 +3530,93 @@
       "x": 103.78062566185325,
       "y": 1.2967792133731033
     }
+  },
+  "RVR-SRM01": {
+    "roomName": "Seminar room 1",
+    "floor": 1,
+    "location": {
+      "x": 103.77682412831622,
+      "y": 1.29736535383388
+    }
+  },
+  "AS6-0212": {
+    "roomName": "Seminar Room",
+    "floor": 2,
+    "location": {
+      "x": 103.77316343106568,
+      "y": 1.2955665885672616
+    }
+  },
+  "MD4_LAB9": {
+    "roomName": "MD4 LS LAB9",
+    "floor": 4,
+    "location": {
+      "x": 103.78087073564531,
+      "y": 1.2957451781135965
+    }
+  },
+  "CAPT-SR5": {
+    "roomName": "Seminar Room 5",
+    "floor": 0,
+    "location": {
+      "x": 103.77318935135669,
+      "y": 1.30782701977229
+    }
+  },
+  "CAPT-SR4": {
+    "roomName": "Seminar Room 4",
+    "floor": 0,
+    "location": {
+      "x": 103.77346605635373,
+      "y": 1.307735312249234
+    }
+  },
+  "CAPT-SR3": {
+    "roomName": "Seminar Room 3",
+    "floor": 0,
+    "location": {
+      "x": 103.77344694870638,
+      "y": 1.3077358486658872
+    }
+  },
+  "CAPT-SR1-2": {
+    "roomName": "Seminar Room 1 & 2",
+    "floor": 1,
+    "location": {
+      "x": 103.77290429366835,
+      "y": 1.3073191457445208
+    }
+  },
+  "TC-SR3": {
+    "roomName": "Seminar Room 3",
+    "floor": 1,
+    "location": {
+      "x": 103.7735061935529,
+      "y": 1.3058646900451434
+    }
+  },
+  "RVR-SRM03": {
+    "roomName": "Seminar Room 3",
+    "floor": 1,
+    "location": {
+      "x": 103.77678093383261,
+      "y": 1.2974598197265705
+    }
+  },
+  "YSTCM-ER3": {
+    "roomName": "Ensemble Room 3",
+    "floor": 3,
+    "location": {
+      "x": 103.7721522152424,
+      "y": 1.3023290630565256
+    }
+  },
+  "YSTCM-ER2": {
+    "roomName": "Ensemble Room 2",
+    "floor": 3,
+    "location": {
+      "x": 103.77247569384055,
+      "y": 1.3024826427002318
+    }
   }
 }
