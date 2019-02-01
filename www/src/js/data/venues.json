@@ -3418,5 +3418,117 @@
       "x": 103.77213443414018,
       "y": 1.2951454107251619
     }
+  },
+  "EW1-01-01": {
+    "roomName": "Concrete Technology Lab",
+    "floor": 1,
+    "location": {
+      "x": 103.77059982927568,
+      "y": 1.2988274380292781
+    }
+  },
+  "EW1-03-02": {
+    "roomName": "GEOTECHNICAL Engineering Lab",
+    "floor": 3,
+    "location": {
+      "x": 103.7708524696206,
+      "y": 1.2985588481386496
+    }
+  },
+  "MD9-01-02": {
+    "roomName": "Physiology Lab",
+    "floor": 1,
+    "location": {
+      "x": 103.78134551280169,
+      "y": 1.2966962086013787
+    }
+  },
+  "MD10-02-01": {
+    "roomName": "Anatomy Teaching Museum",
+    "floor": 2,
+    "location": {
+      "x": 103.78172415012327,
+      "y": 1.296514508777875
+    }
+  },
+  "E1-02-03": {
+    "roomName": "Dynamics Lab 2",
+    "floor": 2,
+    "location": {
+      "x": 103.77103038230325,
+      "y": 1.298702438473506
+    }
+  },
+  "E1-03-01": {
+    "roomName": "ESP Multidisciplinary Lab",
+    "floor": 3,
+    "location": {
+      "x": 103.77108113816666,
+      "y": 1.29860013623642
+    }
+  },
+  "E3A-05-04": {
+    "roomName": "Heat Treatment",
+    "floor": 5,
+    "location": {
+      "x": 103.77121465020501,
+      "y": 1.3004357792527184
+    }
+  },
+  "E4-07-08": {
+    "roomName": "Staff ROOM1",
+    "floor": 7,
+    "location": {
+      "x": 103.77179762078876,
+      "y": 1.298644862043683
+    }
+  },
+  "MD1-05-03K": {
+    "roomName": "Seminar Room 4",
+    "floor": 5,
+    "location": {
+      "x": 103.78048012617927,
+      "y": 1.2952805409717725
+    }
+  },
+  "MD1-08-01A": {
+    "roomName": "Computer Lab 1",
+    "floor": 8,
+    "location": {
+      "x": 103.78055915336888,
+      "y": 1.2954814634702438
+    }
+  },
+  "MD1-10-01A": {
+    "roomName": "Conference Room 2",
+    "floor": 10,
+    "location": {
+      "x": 103.78041258914575,
+      "y": 1.2955764204697735
+    }
+  },
+  "BIZ2-0422": {
+    "roomName": "Seminar Room 4-22",
+    "floor": 4,
+    "location": {
+      "x": 103.77486423822306,
+      "y": 1.2934012209405132
+    }
+  },
+  "AS4-0519": {
+    "roomName": "Dept Meeting Room",
+    "floor": 5,
+    "location": {
+      "x": 103.77214966390184,
+      "y": 1.2946837531651085
+    }
+  },
+  "S16-0302": {
+    "roomName": "Reading Hall",
+    "floor": 3,
+    "location": {
+      "x": 103.78062566185325,
+      "y": 1.2967792133731033
+    }
   }
 }
