@@ -145,7 +145,7 @@ export type ModuleTime = [string, Semester, number];
 export type CustomModule = {
   // For modules which the school no longer offers, we let students
   // key in the name and MCs manually
-  +name?: string,
+  +title?: string,
   +moduleCredit: number,
 };
 

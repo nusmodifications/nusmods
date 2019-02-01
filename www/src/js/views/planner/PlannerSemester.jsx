@@ -51,8 +51,32 @@ export default class PlannerSemester extends PureComponent<Props> {
     showModuleMeta: true,
   };
 
+  renderModule = (plannerModule: PlannerModuleInfo, index: number) => {
+    const { year, semester, showConflicts, showModuleMeta } = this.props;
+    const { moduleCode, moduleInfo, customInfo, conflict } = plannerModule;
+
+    const showExamDate = showModuleMeta && config.academicYear === year;
+
+    // Custom info entered by the user overrides module info from our data
+    const moduleTitle = customInfo?.title || moduleInfo?.ModuleTitle;
+    const moduleCredit = customInfo?.moduleCredit || +moduleInfo?.ModuleCredit;
+
+    return (
+      <PlannerModule
+        key={moduleCode}
+        index={index}
+        moduleCode={moduleCode}
+        moduleTitle={moduleTitle}
+        examDate={showExamDate && moduleInfo ? getModuleExamDate(moduleInfo, semester) : null}
+        moduleCredit={showModuleMeta ? moduleCredit : null}
+        conflict={showConflicts ? conflict : null}
+        removeModule={this.props.removeModule}
+      />
+    );
+  };
+
   render() {
-    const { year, semester, modules, showConflicts, showModuleMeta } = this.props;
+    const { year, semester, modules, showModuleMeta } = this.props;
     const droppableId = getDroppableId(year, semester);
 
     return (
@@ -66,25 +90,7 @@ export default class PlannerSemester extends PureComponent<Props> {
             ref={provided.innerRef}
             {...provided.droppableProps}
           >
-            {modules.map((moduleWithInfo, index) => {
-              const { moduleCode, moduleInfo, conflict } = moduleWithInfo;
-              const showExamDate = showModuleMeta && config.academicYear === year;
-
-              return (
-                <PlannerModule
-                  key={moduleCode}
-                  index={index}
-                  moduleCode={moduleCode}
-                  moduleTitle={moduleInfo?.ModuleTitle}
-                  examDate={
-                    showExamDate && moduleInfo ? getModuleExamDate(moduleInfo, semester) : null
-                  }
-                  moduleCredit={showModuleMeta ? +moduleInfo?.ModuleCredit : null}
-                  conflict={showConflicts ? conflict : null}
-                  removeModule={this.props.removeModule}
-                />
-              );
-            })}
+            {modules.map(this.renderModule)}
 
             {provided.placeholder}
 

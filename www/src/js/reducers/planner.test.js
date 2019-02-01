@@ -4,14 +4,14 @@ import {
   ADD_PLANNER_MODULE,
   MOVE_PLANNER_MODULE,
   REMOVE_PLANNER_MODULE,
+  SET_PLANNER_MIN_YEAR,
+  SET_PLANNER_MAX_YEAR,
+  SET_PLANNER_IBLOCS,
   addPlannerModule,
   movePlannerModule,
   removePlannerModule,
   setPlannerMinYear,
-  SET_PLANNER_MIN_YEAR,
-  SET_PLANNER_MAX_YEAR,
   setPlannerMaxYear,
-  SET_PLANNER_IBLOCS,
   setPlannerIBLOCs,
 } from 'actions/planner';
 import type { PlannerState } from 'types/reducers';
@@ -30,19 +30,17 @@ const defaultState: PlannerState = {
 describe(SET_PLANNER_MIN_YEAR, () => {
   test('should set min year', () => {
     expect(reducer(defaultState, setPlannerMinYear('2016/2017'))).toEqual({
+      ...defaultState,
       minYear: '2016/2017',
       maxYear: '2018/2019',
-      iblocs: false,
-      modules: {},
     });
   });
 
   test('should set max year if min year is past it', () => {
     expect(reducer(defaultState, setPlannerMinYear('2019/2020'))).toEqual({
+      ...defaultState,
       minYear: '2019/2020',
       maxYear: '2019/2020',
-      iblocs: false,
-      modules: {},
     });
   });
 });
@@ -50,19 +48,17 @@ describe(SET_PLANNER_MIN_YEAR, () => {
 describe(SET_PLANNER_MAX_YEAR, () => {
   test('should set max year', () => {
     expect(reducer(defaultState, setPlannerMaxYear('2020/2021'))).toEqual({
+      ...defaultState,
       minYear: '2017/2018',
       maxYear: '2020/2021',
-      iblocs: false,
-      modules: {},
     });
   });
 
   test('should set min year if max year is past it', () => {
     expect(reducer(defaultState, setPlannerMaxYear('2016/2017'))).toEqual({
+      ...defaultState,
       minYear: '2016/2017',
       maxYear: '2016/2017',
-      iblocs: false,
-      modules: {},
     });
   });
 });
@@ -70,10 +66,8 @@ describe(SET_PLANNER_MAX_YEAR, () => {
 describe(SET_PLANNER_IBLOCS, () => {
   test('should set iblocs status', () => {
     expect(reducer(defaultState, setPlannerIBLOCs(true))).toEqual({
-      minYear: '2017/2018',
-      maxYear: '2018/2019',
+      ...defaultState,
       iblocs: true,
-      modules: {},
     });
   });
 });
@@ -81,7 +75,6 @@ describe(SET_PLANNER_IBLOCS, () => {
 describe(ADD_PLANNER_MODULE, () => {
   const initial: PlannerState = {
     ...defaultState,
-
     modules: { CS1010S: ['2018/2019', 1, 0] },
   };
 
