@@ -2,8 +2,8 @@
 
 import { mockLogger } from '../utils/test-utils';
 
-const mockBunyan = {
-  createLogger: mockLogger,
-};
+const mockedBunyan = jest.genMockFromModule('bunyan');
 
-export default mockBunyan;
+mockedBunyan.createLogger = mockLogger;
+
+export default mockedBunyan;
