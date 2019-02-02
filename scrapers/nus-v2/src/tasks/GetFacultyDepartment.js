@@ -1,10 +1,10 @@
 // @flow
 import type { AcademicGrp, AcademicOrg } from '../types/api';
 import type { Task } from '../types/tasks';
+import type { Cache } from '../services/io';
 
 import BaseTask from './BaseTask';
 import { cacheDownload } from '../utils/api';
-import { getCache } from '../services/io';
 
 /**
  * Map department to their faculties. This is useful for the frontend
@@ -39,10 +39,8 @@ type Output = {|
   +faculties: AcademicGrp[],
 |};
 
-// Exported so that the CLI can use these caches
-const expiry = 7 * 24 * 60; // Cache these for 7 days since they change rarely
-export const departmentCache = getCache<AcademicOrg[]>('departments', expiry);
-export const facultyCache = getCache<AcademicGrp[]>('faculty', expiry);
+// Cache these for 7 days since they change rarely
+const cacheExpiry = 7 * 24 * 60;
 
 /**
  * Downloads faculty and department codes. This is used to map to the codes that appear in
@@ -58,8 +56,15 @@ export default class GetFacultyDepartment extends BaseTask implements Task<void,
     task: GetFacultyDepartment.name,
   });
 
-  departmentCache = departmentCache;
-  facultyCache = facultyCache;
+  departmentCache: Cache<AcademicOrg[]>;
+  facultyCache: Cache<AcademicGrp[]>;
+
+  constructor(academicYear: string) {
+    super(academicYear);
+
+    this.departmentCache = this.getCache('departments', cacheExpiry);
+    this.facultyCache = this.getCache('faculty', cacheExpiry);
+  }
 
   async getDepartments() {
     return cacheDownload(

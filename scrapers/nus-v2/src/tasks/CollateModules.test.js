@@ -1,14 +1,18 @@
 // @flow
 
 import { combineModules } from './CollateModules';
+import { mockLogger } from '../utils/test-utils';
 
 describe(combineModules, () => {
+  const logger = mockLogger();
+
   test('should merge modules from different semesters together', () => {
     const ModuleCode = 'ACC1006';
     const Module = {
       AcadYear: '2018/2019',
       Description: 'This course aims to help students understand the role of information...',
       Preclusion: 'Students who have passed FNA1006',
+      Faculty: 'Business',
       Department: 'Accounting',
       ModuleTitle: 'Accounting Information Systems',
       Workload: '0-3-0-4-3',
@@ -62,22 +66,25 @@ describe(combineModules, () => {
     };
 
     expect(
-      combineModules([
+      combineModules(
         [
-          {
-            ModuleCode,
-            Module,
-            SemesterData: semesterOneData,
-          },
+          [
+            {
+              ModuleCode,
+              Module,
+              SemesterData: semesterOneData,
+            },
+          ],
+          [
+            {
+              ModuleCode,
+              Module,
+              SemesterData: semesterTwoData,
+            },
+          ],
         ],
-        [
-          {
-            ModuleCode,
-            Module,
-            SemesterData: semesterTwoData,
-          },
-        ],
-      ]),
+        logger,
+      ),
     ).toEqual([
       {
         ...Module,

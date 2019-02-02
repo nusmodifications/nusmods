@@ -6,13 +6,13 @@ import NUSModerator from 'nusmoderator';
 import type { ModuleCode, RawLesson, Semester, WeekText } from '../types/modules';
 import type { Task } from '../types/tasks';
 import type { TimetableLesson } from '../types/api';
+import type { Cache } from '../services/io';
 
 import BaseTask from './BaseTask';
 import config from '../config';
 import { cacheDownload, getTermCode, retry } from '../utils/api';
 import { validateLesson, validateSemester } from '../services/validation';
 import { Logger } from '../services/logger';
-import { getCache, type Cache } from '../services/io';
 import { activityLessonType, dayTextMap, unrecognizedLessonTypes } from '../utils/data';
 
 /**
@@ -97,11 +97,6 @@ export function mapTimetableLessons(lessons: TimetableLesson[], logger: Logger):
   });
 }
 
-const timetableCache = (semester: Semester) => {
-  assert(validateSemester(semester), `${semester} is not a valid semester`);
-  return getCache(`semester-${semester}-cache`);
-};
-
 type Input = void;
 type Output = { [ModuleCode]: RawLesson[] };
 
@@ -123,7 +118,9 @@ export default class GetSemesterTimetable extends BaseTask implements Task<Input
   }
 
   constructor(semester: Semester, academicYear: string = config.academicYear) {
-    super();
+    assert(validateSemester(semester), `${semester} is not a valid semester`);
+
+    super(academicYear);
 
     this.semester = semester;
     this.academicYear = academicYear;
@@ -134,7 +131,7 @@ export default class GetSemesterTimetable extends BaseTask implements Task<Input
       year: academicYear,
     });
 
-    this.timetableCache = timetableCache(semester);
+    this.timetableCache = this.getCache(`semester-${semester}-cache`);
   }
 
   async getTimetable() {

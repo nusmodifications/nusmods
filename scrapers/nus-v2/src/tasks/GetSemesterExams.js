@@ -14,14 +14,6 @@ import config from '../config';
 import { cacheDownload, getTermCode } from '../utils/api';
 import { TaskError } from '../utils/errors';
 import { validateExam, validateSemester } from '../services/validation';
-import { getCache } from '../services/io';
-
-type Output = ExamInfoMap;
-
-export const examCache = (semester: Semester) => {
-  assert(validateSemester(semester), `${semester} is not a valid semester`);
-  return getCache<ModuleExam[]>(`semester-${semester}-exams`);
-};
 
 const UTC_OFFSET = 8 * 60;
 
@@ -40,6 +32,8 @@ export function mapExamInfo(moduleExam: ModuleExam): ExamInfo {
   /* eslint-enable */
 }
 
+type Output = ExamInfoMap;
+
 /**
  * Download modules info for all faculties in a specific semester
  */
@@ -54,7 +48,9 @@ export default class GetSemesterExams extends BaseTask implements Task<void, Out
   }
 
   constructor(semester: Semester, academicYear: string = config.academicYear) {
-    super();
+    assert(validateSemester(semester), `${semester} is not a valid semester`);
+
+    super(academicYear);
 
     this.semester = semester;
     this.academicYear = academicYear;
@@ -65,7 +61,7 @@ export default class GetSemesterExams extends BaseTask implements Task<void, Out
       year: academicYear,
     });
 
-    this.examCache = examCache(semester);
+    this.examCache = this.getCache<ModuleExam[]>(`semester-${semester}-exams`);
   }
 
   async run() {

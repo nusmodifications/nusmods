@@ -159,13 +159,12 @@ export default async function genReqTree(allModules: ModuleWithoutTree[]) {
 
   moduleCodes.forEach((moduleCode) => {
     const isModule = MODULE_REGEX.test(moduleCode);
+
     if (!isModule) {
       throw new Error(`Module ${moduleCode}'s module code does not match regex.`);
     }
 
-    const hasOperators = OPERATORS_REGEX.test(moduleCode);
-
-    if (hasOperators) {
+    if (OPERATORS_REGEX.test(moduleCode)) {
       throw new Error(`Module ${moduleCode}'s module code contains operators.`);
     }
   });
@@ -175,15 +174,13 @@ export default async function genReqTree(allModules: ModuleWithoutTree[]) {
 
   const merged = allModules.map((data) => {
     const moduleCode = data.ModuleCode;
-    const mergedPrerequisite = R.mergeRight(data, prerequisites[moduleCode]);
-    const mergedPreclusion = R.mergeRight(mergedPrerequisite, preclusions[moduleCode]);
-    return mergedPreclusion;
+    return R.mergeRight(data, prerequisites[moduleCode], preclusions[moduleCode]);
   });
 
   const modules = generateRequirements(merged, moduleCodes);
 
   // for debugging usage
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV !== 'production') {
     const debugOutput = R.map(
       R.pick([
         'Prerequisite',

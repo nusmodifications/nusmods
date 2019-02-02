@@ -21,7 +21,7 @@ export default class DataPipeline extends BaseTask implements Task<void, Module[
   name = 'Get all data';
 
   constructor(academicYear: string = config.academicYear) {
-    super();
+    super(academicYear);
 
     this.academicYear = academicYear;
     this.logger = this.rootLogger.child({
@@ -31,7 +31,7 @@ export default class DataPipeline extends BaseTask implements Task<void, Module[
   }
 
   async run() {
-    const organizations = await new GetFacultyDepartment().run();
+    const organizations = await new GetFacultyDepartment(this.academicYear).run();
 
     // Get each semester's data in series. Running it in parallel provides
     // little benefit since the bottleneck is in module retrieval, which has to

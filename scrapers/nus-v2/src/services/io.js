@@ -40,33 +40,36 @@ const writeOptions: WriteOptions = {
   spaces: process.env.NODE_ENV === 'production' ? 0 : 2,
 };
 
-// Root directories
-const yearRoot = path.join(config.dataPath, config.academicYear.replace('/', '-'));
-const cacheRoot = path.join(yearRoot, 'raw');
+const getFileRoot = (academicYear: string) =>
+  path.join(config.dataPath, academicYear.replace('/', '-'));
 
 /**
- * Get a cache for a specific file
+ * Create a cache factory for BaseTask
  */
-export function getCache<T>(key: string, expiryInMin: number = defaultExpiry): Cache<T> {
-  const filepath = path.join(cacheRoot, `${key}.json`);
+export function getCacheFactory(academicYear: string) {
+  const cacheRoot = path.join(getFileRoot(academicYear), 'cache');
 
-  return {
-    path: filepath,
+  return function getCache<T>(key: string, expiryInMin: number = defaultExpiry): Cache<T> {
+    const filepath = path.join(cacheRoot, `${key}.json`);
 
-    expiry: expiryInMin,
+    return {
+      path: filepath,
 
-    write: (o: T) => fs.outputJSON(filepath, o, writeOptions),
+      expiry: expiryInMin,
 
-    read: async () => {
-      const [data, stat] = await Promise.all([fs.readJSON(filepath), fs.stat(filepath)]);
+      write: (o: T) => fs.outputJSON(filepath, o, writeOptions),
 
-      // Throw an error instead of returning stale data if the file has expired
-      if (Date.now() - stat.mtimeMs > expiryInMin * 60 * 1000) {
-        throw new CacheExpiredError('Cache expired', filepath, stat.mtimeMs);
-      }
+      read: async () => {
+        const [data, stat] = await Promise.all([fs.readJSON(filepath), fs.stat(filepath)]);
 
-      return data;
-    },
+        // Throw an error instead of returning stale data if the file has expired
+        if (Date.now() - stat.mtimeMs > expiryInMin * 60 * 1000) {
+          throw new CacheExpiredError('Cache expired', filepath, stat.mtimeMs);
+        }
+
+        return data;
+      },
+    };
   };
 }
 
@@ -76,7 +79,9 @@ export function getCache<T>(key: string, expiryInMin: number = defaultExpiry): C
  * a function to send output to, this can be replaced with any persistence
  * mechanism in the future, eg. a database
  */
-export function getDataWriter() {
+export function getDataWriter(academicYear: string) {
+  const yearRoot = getFileRoot(academicYear);
+
   return {
     // List of ModuleCondensed for searching
     moduleList: (data: ModuleCondensed[]) =>

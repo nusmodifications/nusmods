@@ -23,10 +23,11 @@ declare module 'yargs' {
 
   declare type CommandModule = {|
     command: string | string[],
+    coerce?: (string, any) => any,
     aliases?: string | string[],
     describe: string | false,
     builder?: ((any) => void) | Object,
-    handler?: (Argv) => void,
+    handler?: (Argv) => any,
   |}
 
   declare module.exports: any;

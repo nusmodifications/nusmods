@@ -6,12 +6,12 @@ import { flatten, partition } from 'lodash';
 import type { AcademicGrp, AcademicOrg, ModuleInfo } from '../types/api';
 import type { Semester } from '../types/modules';
 import type { Task } from '../types/tasks';
+import type { Cache } from '../services/io';
 
 import BaseTask from './BaseTask';
 import config from '../config';
 import { getTermCode, retry } from '../utils/api';
 import { TaskError, UnknownApiError } from '../utils/errors';
-import { getCache, type Cache } from '../services/io';
 import { validateSemester } from '../services/validation';
 
 type Input = {|
@@ -20,11 +20,6 @@ type Input = {|
 |};
 
 type Output = ModuleInfo[];
-
-export const modulesCache = (semester: Semester) => {
-  assert(validateSemester(semester), `${semester} is not a valid semester`);
-  return getCache<Output>(`semester-${semester}-modules`);
-};
 
 /**
  * Download modules info for all faculties in a specific semester
@@ -40,12 +35,14 @@ export default class GetSemesterModules extends BaseTask implements Task<Input, 
   }
 
   constructor(semester: Semester, academicYear: string = config.academicYear) {
-    super();
+    assert(validateSemester(semester), `${semester} is not a valid semester`);
+
+    super(academicYear);
 
     this.semester = semester;
     this.academicYear = academicYear;
 
-    this.modulesCache = modulesCache(semester);
+    this.modulesCache = this.getCache<Output>(`semester-${semester}-modules`);
 
     this.logger = this.rootLogger.child({
       semester,

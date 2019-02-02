@@ -1,12 +1,19 @@
 // @flow
 
 import * as fs from 'fs-extra';
-import { getCache } from './io';
+import { getCacheFactory } from './io';
 import { CacheExpiredError } from '../utils/errors';
 
 const hourToMs = 60 * 60 * 1000;
 
-describe(getCache, () => {
+describe(getCacheFactory, () => {
+  const getCache = getCacheFactory('2018/2019');
+
+  test('should write/read to the correct path', () => {
+    const cache = getCache<string>('test');
+    expect(cache.path).toMatch('2018-2019');
+  });
+
   test('should allow cache file to be written', async () => {
     fs.outputJSON.mockResolvedValue();
     const cache = getCache<string>('test');

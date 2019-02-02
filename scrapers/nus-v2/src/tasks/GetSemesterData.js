@@ -12,13 +12,13 @@ import type {
 } from '../types/mapper';
 import type { Semester, Workload } from '../types/modules';
 import type { Task } from '../types/tasks';
+import type { Cache } from '../services/io';
 
 import config from '../config';
 import BaseTask from './BaseTask';
 import GetSemesterExams from './GetSemesterExams';
 import GetSemesterTimetable from './GetSemesterTimetable';
 import GetSemesterModules from './GetSemesterModules';
-import { type Cache, getCache } from '../services/io';
 import { fromTermCode } from '../utils/api';
 import { validateSemester } from '../services/validation';
 import { cleanObject, titleize } from '../utils/data';
@@ -30,11 +30,6 @@ type Input = {|
 |};
 
 type Output = SemesterModuleData[];
-
-export const semesterModuleCache = (semester: Semester) => {
-  assert(validateSemester(semester), `${semester} is not a valid semester`);
-  return getCache<Output>(`semester-${semester}-module-data`);
-};
 
 /**
  * Create a mapping of department code to department name from a list of faculties
@@ -147,11 +142,13 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
   }
 
   constructor(semester: Semester, academicYear: string = config.academicYear) {
-    super();
+    assert(validateSemester(semester), `${semester} is not a valid semester`);
+
+    super(academicYear);
 
     this.semester = semester;
     this.academicYear = academicYear;
-    this.outputCache = semesterModuleCache(semester);
+    this.outputCache = this.getCache<Output>(`semester-${semester}-module-data`);
     this.logger = this.rootLogger.child({
       semester,
       year: academicYear,

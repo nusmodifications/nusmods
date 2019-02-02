@@ -1,6 +1,7 @@
 // @flow
 
 import { values, omit, isEqual } from 'lodash';
+
 import type { Task } from '../types/tasks';
 import type { ModuleWithoutTree, SemesterModuleData } from '../types/mapper';
 import type { Module, ModuleCode, ModuleCondensed, ModuleInformation } from '../types/modules';
@@ -106,7 +107,7 @@ export default class CollateModules extends BaseTask implements Task<Input, Outp
   }
 
   constructor(academicYear: string = config.academicYear) {
-    super();
+    super(academicYear);
 
     this.academicYear = academicYear;
     this.logger = this.rootLogger.child({

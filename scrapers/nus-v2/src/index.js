@@ -12,89 +12,102 @@ import { Semesters } from './types/modules';
 
 import TestApi from './tasks/TestApi';
 import GetFacultyDepartment from './tasks/GetFacultyDepartment';
-import GetSemesterData, { semesterModuleCache } from './tasks/GetSemesterData';
+import GetSemesterData from './tasks/GetSemesterData';
 import CollateVenues from './tasks/CollateVenues';
 import CollateModules from './tasks/CollateModules';
 import DataPipeline from './tasks/DataPipeline';
+
+import config from './config';
 
 function handleFatalError(e: Error) {
   logger.fatal(e, 'Fatal error');
   process.exitCode = 1;
 }
 
-function runTask(Task) {
-  new Task().run().catch(handleFatalError);
+function run(fn: (...args: any[]) => Promise<any>) {
+  return (...args) => fn(...args).catch(handleFatalError);
 }
+
+const parameters = {
+  sem: {
+    choices: Semesters,
+  },
+  year: {
+    type: 'string',
+    default: config.academicYear,
+    coerce: (value: string) => {
+      if (value.length === 2) return `20${value}/20${+value + 1}`;
+      if (value.length === 4) return `${value}-${+value + 1}`;
+      return value.replace('-', '/');
+    },
+  },
+};
 
 const commands: CommandModule[] = [
   {
     command: 'test',
     describe: 'run some simple tests against the API to ensure things are set up correctly',
-    handler: () => runTask(TestApi),
+    handler: run(new TestApi(config.academicYear).run),
   },
   {
-    command: 'departments',
+    command: 'departments [year]',
     aliases: ['department', 'faculty', 'faculties'],
     describe: 'download data for all active departments and faculties',
-    handler: () => runTask(GetFacultyDepartment),
+    builder: {
+      year: parameters.year,
+    },
+    handler: run(({ year }) => new GetFacultyDepartment(year).run()),
   },
   {
-    command: 'semester <sem>',
+    command: 'semester [year] <sem>',
     describe: 'download all data for the given semester',
     builder: {
-      sem: {
-        choices: Semesters,
-      },
+      sem: parameters.sem,
+      year: parameters.year,
     },
-    handler({ sem }) {
-      new GetFacultyDepartment()
-        .run()
-        .then((organizations) => new GetSemesterData(sem).run(organizations))
-        .then((modules) => {
-          logger.info(`Collected data for ${modules.length} modules`);
-        })
-        .catch(handleFatalError);
-    },
+    handler: run(async ({ sem, year }) => {
+      const organizations = await new GetFacultyDepartment(year).run();
+      const modules = await new GetSemesterData(sem).run(organizations);
+      logger.info(`Collected data for ${modules.length} modules`);
+    }),
   },
   {
-    command: 'venue <sem>',
+    command: 'venue [year] <sem>',
     aliases: ['venues'],
     describe: 'collate venue for given semester',
     builder: {
-      sem: {
-        choices: Semesters,
-      },
+      sem: parameters.sem,
+      year: parameters.year,
     },
-    handler({ sem }) {
-      semesterModuleCache(sem)
-        .read()
-        .then((semesterModuleData) => new CollateVenues(sem).run(semesterModuleData))
-        .then((venues) => logger.info(`Collated ${size(venues)} venues`))
-        .catch(handleFatalError);
-    },
+    handler: run(async ({ sem, year }) => {
+      const modules = await new GetSemesterData(sem, year).outputCache.read();
+      const venues = await new CollateVenues(sem, year).run(modules);
+      logger.info(`Collated ${size(venues)} venues`);
+    }),
   },
   {
-    command: 'combine',
+    command: 'combine [year]',
     describe: 'combine semester data for modules',
-    handler() {
-      Promise.all(
-        Semesters.map(async (semester) => {
-          try {
-            return await semesterModuleCache(semester).read();
-          } catch (e) {
-            logger.warn(`No semester data available for ${semester}`);
-            return [];
-          }
-        }),
-      )
-        .then((semesterData) => new CollateModules().run(semesterData))
-        .catch(handleFatalError);
+    builder: {
+      year: parameters.year,
     },
+    handler: run(async ({ year }) => {
+      const modules = await Promise.all(
+        Semesters.map((semester) =>
+          new GetSemesterData(semester, year).outputCache.read().catch((e) => {
+            logger.warn(e, `No semester data available for ${semester}`);
+            return [];
+          }),
+        ),
+      );
+
+      await new CollateModules().run(modules);
+    }),
   },
   {
     command: 'all',
     describe: 'run all tasks in a single pipeline',
-    handler: () => runTask(DataPipeline),
+    handler: run(({ year }) => new DataPipeline(year).run()),
   },
 ];
 

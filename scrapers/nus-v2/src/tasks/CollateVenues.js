@@ -70,7 +70,7 @@ export default class CollateVenues extends BaseTask implements Task<Input, Outpu
   }
 
   constructor(semester: Semester, academicYear: string = config.academicYear) {
-    super();
+    super(academicYear);
 
     this.semester = semester;
     this.academicYear = academicYear;
