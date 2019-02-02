@@ -1,14 +1,14 @@
 // @flow
 
-import bunyan from 'bunyan';
 import parseString from './parseString';
 import { normalize } from './normalizeString';
+import { mockLogger } from '../../utils/test-utils';
 
 /* eslint-disable max-len */
 
 // integration tests, normalize + parse
-const mockLogger = bunyan.createLogger({ name: 'test' });
-const parse = (string) => parseString(normalize(string), mockLogger);
+const logger = mockLogger();
+const parse = (string) => parseString(normalize(string), logger);
 
 describe(parseString, () => {
   it('parses query `(1) either BSP1005 or EC1301 and (2) either DSC2008 or EC2303`)', () => {

@@ -4,10 +4,9 @@
  * Small utility functions that don't need to be part of the main API class
  */
 
-import { Logger } from 'bunyan';
 import type { Semester } from '../types/modules';
 import type { Cache } from '../services/io';
-import rootLogger from '../services/logger';
+import rootLogger, { Logger } from '../services/logger';
 
 /**
  * Construct the 4 number term code from the academic year and semester

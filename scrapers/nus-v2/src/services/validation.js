@@ -5,14 +5,13 @@
  */
 
 import Joi from 'joi';
-import { Logger } from 'bunyan';
 
 import type { ModuleExam, TimetableLesson } from '../types/api';
 import type { Semester } from '../types/modules';
 
 import { activityLessonType, dayTextMap } from '../utils/data';
 import { Semesters } from '../types/modules';
-import rootLogger from './logger';
+import rootLogger, { Logger } from './logger';
 
 const lessonSchema = Joi.object({
   // Allow null because we can still use the rest of the information

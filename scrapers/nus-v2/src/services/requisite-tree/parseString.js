@@ -1,9 +1,9 @@
 // @flow
 
 import * as R from 'ramda';
-import { Logger } from 'bunyan';
 import { createToken, Lexer, Parser, type Token } from 'chevrotain';
 
+import { Logger } from '../logger';
 import { AND_OR_REGEX, MODULE_REGEX, OPERATORS } from './constants';
 
 /**

@@ -6,6 +6,7 @@ import httpStatus from 'http-status';
 
 import type { Cache } from '../services/io';
 import type { Module, RawLesson, SemesterData } from '../types/modules';
+import { Logger } from '../services/logger';
 
 /* eslint-disable import/prefer-default-export */
 
@@ -15,6 +16,21 @@ export function mockCache<T>(fileContent: T): Cache<T> {
     write: jest.fn().mockResolvedValue(),
     read: jest.fn().mockResolvedValue(fileContent),
   };
+}
+
+export function mockLogger(): Logger {
+  return ({
+    // Mock all logged functions
+    critical: jest.fn(),
+    error: jest.fn(),
+    warn: jest.fn(),
+    info: jest.fn(),
+    debug: jest.fn(),
+    trace: jest.fn(),
+
+    // Calling child simply creates another mock logger
+    child: mockLogger,
+  }: any);
 }
 
 /**

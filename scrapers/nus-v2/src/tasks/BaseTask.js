@@ -1,9 +1,7 @@
 // @flow
 
-import { Logger } from 'bunyan';
-
 import api from '../services/api';
-import logger from '../services/logger';
+import logger, { Logger } from '../services/logger';
 import { getDataWriter } from '../services/io';
 
 /**

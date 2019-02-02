@@ -1,17 +1,16 @@
 // @flow
 
-import bunyan from 'bunyan';
 import CS4238Timetable from './fixtures/timetable/CS4238';
 import MA2213Timetable from './fixtures/timetable/MA2213';
 import CS2100Timetable from './fixtures/timetable/CS2100_2';
 import { mapTimetableLessons } from './GetSemesterTimetable';
-import { expectLessonsEqual } from '../utils/test-utils';
+import { expectLessonsEqual, mockLogger } from '../utils/test-utils';
 
 describe(mapTimetableLessons, () => {
-  const mockLogger = bunyan.createLogger({ name: 'test' });
+  const logger = mockLogger();
 
   test('should map empty timetable lessons', () => {
-    expect(mapTimetableLessons([], mockLogger)).toEqual([]);
+    expect(mapTimetableLessons([], logger)).toEqual([]);
   });
 
   // CS4238 is relatively simple - two lesson types, four lessons, every week
@@ -55,7 +54,7 @@ describe(mapTimetableLessons, () => {
       },
     ];
 
-    expectLessonsEqual(mapTimetableLessons(CS4238Timetable, mockLogger), expected);
+    expectLessonsEqual(mapTimetableLessons(CS4238Timetable, logger), expected);
   });
 
   // MA2213 is more complicated, with some alternating lessons for lab and tutorials
@@ -153,7 +152,7 @@ describe(mapTimetableLessons, () => {
       },
     ];
 
-    expectLessonsEqual(mapTimetableLessons(MA2213Timetable, mockLogger), expected);
+    expectLessonsEqual(mapTimetableLessons(MA2213Timetable, logger), expected);
   });
 
   // CS2100 has a lot of lessons, and two joined lecture groups
@@ -557,6 +556,6 @@ describe(mapTimetableLessons, () => {
       },
     ];
 
-    expectLessonsEqual(mapTimetableLessons(CS2100Timetable, mockLogger), expected);
+    expectLessonsEqual(mapTimetableLessons(CS2100Timetable, logger), expected);
   });
 });

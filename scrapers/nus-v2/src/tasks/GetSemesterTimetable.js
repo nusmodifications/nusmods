@@ -1,7 +1,6 @@
 // @flow
 import { strict as assert } from 'assert';
 import { groupBy, has, map, mapValues, values, trimStart } from 'lodash';
-import { Logger } from 'bunyan';
 import NUSModerator from 'nusmoderator';
 
 import type { ModuleCode, RawLesson, Semester, WeekText } from '../types/modules';
@@ -12,6 +11,7 @@ import BaseTask from './BaseTask';
 import config from '../config';
 import { cacheDownload, getTermCode, retry } from '../utils/api';
 import { validateLesson, validateSemester } from '../services/validation';
+import { Logger } from '../services/logger';
 import { getCache, type Cache } from '../services/io';
 import { activityLessonType, dayTextMap, unrecognizedLessonTypes } from '../utils/data';
 

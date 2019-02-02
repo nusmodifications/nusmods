@@ -47,4 +47,6 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
+// Reexport Logger class to allow for easier refactoring in the future
+export { Logger } from 'bunyan';
 export default rootLogger;

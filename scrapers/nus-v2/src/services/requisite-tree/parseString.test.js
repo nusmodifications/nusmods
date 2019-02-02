@@ -1,9 +1,9 @@
 // @flow
 
-import bunyan from 'bunyan';
 import parseString, { cleanOperators } from './parseString';
+import { mockLogger } from '../../utils/test-utils';
 
-const mockLogger = bunyan.createLogger({ name: 'test' });
+const logger = mockLogger();
 
 describe(cleanOperators, () => {
   const andToken: any = { image: 'and' };
@@ -103,7 +103,7 @@ describe(cleanOperators, () => {
 });
 
 describe(parseString, () => {
-  const parse = (string) => parseString(string, mockLogger);
+  const parse = (string) => parseString(string, logger);
 
   it('parses single module to a leaf', () => {
     expect(parse('CS1000')).toEqual('CS1000');

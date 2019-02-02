@@ -1,14 +1,13 @@
 // @flow
 
-import { Logger } from 'bunyan';
 import { values, omit, isEqual } from 'lodash';
-
 import type { Task } from '../types/tasks';
 import type { ModuleWithoutTree, SemesterModuleData } from '../types/mapper';
 import type { Module, ModuleCode, ModuleCondensed, ModuleInformation } from '../types/modules';
 
 import BaseTask from './BaseTask';
 import config from '../config';
+import { Logger } from '../services/logger';
 import genReqTree from '../services/requisite-tree';
 
 type Input = SemesterModuleData[][];

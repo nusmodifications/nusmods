@@ -4,10 +4,9 @@ import path from 'path';
 import { values } from 'lodash';
 import * as fs from 'fs-extra';
 import * as R from 'ramda';
-import { Logger } from 'bunyan';
 
 import type { ModuleWithoutTree } from '../../types/mapper';
-import rootLogger from '../logger';
+import rootLogger, { Logger } from '../logger';
 import config from '../../config';
 import parseString from './parseString';
 import normalizeString from './normalizeString';
