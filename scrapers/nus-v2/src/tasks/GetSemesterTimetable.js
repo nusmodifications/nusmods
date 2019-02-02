@@ -1,4 +1,5 @@
 // @flow
+import { strict as assert } from 'assert';
 import { groupBy, has, map, mapValues, values, trimStart } from 'lodash';
 import { Logger } from 'bunyan';
 import NUSModerator from 'nusmoderator';
@@ -9,8 +10,9 @@ import type { TimetableLesson } from '../types/api';
 
 import BaseTask from './BaseTask';
 import config from '../config';
-import { getTermCode, retry } from '../utils/api';
-import { validateLesson } from '../services/validation';
+import { cacheDownload, getTermCode, retry } from '../utils/api';
+import { validateLesson, validateSemester } from '../services/validation';
+import { getCache, type Cache } from '../services/io';
 import { activityLessonType, dayTextMap, unrecognizedLessonTypes } from '../utils/data';
 
 /**
@@ -95,6 +97,11 @@ export function mapTimetableLessons(lessons: TimetableLesson[], logger: Logger):
   });
 }
 
+const timetableCache = (semester: Semester) => {
+  assert(validateSemester(semester), `${semester} is not a valid semester`);
+  return getCache(`semester-${semester}-cache`);
+};
+
 type Input = void;
 type Output = { [ModuleCode]: RawLesson[] };
 
@@ -109,6 +116,7 @@ type Output = { [ModuleCode]: RawLesson[] };
 export default class GetSemesterTimetable extends BaseTask implements Task<Input, Output> {
   semester: Semester;
   academicYear: string;
+  timetableCache: Cache<TimetableLesson[]>;
 
   get name() {
     return `Get timetable for semester ${this.semester}`;
@@ -125,13 +133,24 @@ export default class GetSemesterTimetable extends BaseTask implements Task<Input
       task: GetSemesterTimetable.name,
       year: academicYear,
     });
+
+    this.timetableCache = timetableCache(semester);
+  }
+
+  async getTimetable() {
+    const term = getTermCode(this.semester, this.academicYear);
+
+    return cacheDownload(
+      'timetable',
+      () => retry(() => this.api.getSemesterTimetables(term), 3),
+      this.timetableCache,
+      this.logger,
+    );
   }
 
   async run() {
-    const term = getTermCode(this.semester, this.academicYear);
-
     // 1. Get all lessons in a semester from the API
-    const lessons = await retry(() => this.api.getSemesterTimetables(term), 3);
+    const lessons = await this.getTimetable();
 
     // 2. Collect all modules found by their module code, and invalid lessons
     //    for logging
