@@ -6,7 +6,9 @@
  * types used in modules.js
  */
 
-export type AcademicGroup = {|
+// AcademicGrp and AcademicOrg use abbreviation to avoid clashing with the
+// name of the field when destructuring
+export type AcademicGrp = {|
   +EffectiveStatus: string,
   +AcademicGroup: string,
   +DescriptionShort: string,

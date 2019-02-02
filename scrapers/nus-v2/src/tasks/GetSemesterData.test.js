@@ -1,7 +1,13 @@
 // @flow
 
 import departments from './fixtures/departments';
-import { cleanModuleInfo, getDepartmentCodeMap, parseWorkload } from './GetSemesterData';
+import faculties from './fixtures/faculties';
+import {
+  cleanModuleInfo,
+  getDepartmentCodeMap,
+  getFacultyCodeMap,
+  parseWorkload,
+} from './GetSemesterData';
 
 describe(getDepartmentCodeMap, () => {
   test('should map department codes to their description', () => {
@@ -14,6 +20,17 @@ describe(getDepartmentCodeMap, () => {
       '00201ACAD1': 'Accounting',
       '00202ACAD1': 'Strategy and Policy',
       '00301ACAD1': 'Computer Science',
+    });
+  });
+});
+
+describe(getFacultyCodeMap, () => {
+  test('should map faculty codes to their description', () => {
+    expect(getFacultyCodeMap(faculties)).toEqual({
+      '001': 'Faculty of Arts & Social Sci',
+      '002': 'NUS Business School',
+      '003': 'School of Computing',
+      '004': 'Faculty of Dentistry',
     });
   });
 });

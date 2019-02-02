@@ -93,6 +93,7 @@ export type Module = {
   ModuleDescription?: string,
   ModuleCredit: string,
   Department: Department,
+  Faculty: Faculty,
   Workload?: Workload,
 
   // Requsites
@@ -135,7 +136,8 @@ export type ModuleInformation = {|
   +ModuleDescription?: string,
   +ModuleCredit: string,
   +Department: Department,
-  +Workload?: string,
+  +Faculty: Faculty,
+  +Workload?: Workload,
 
   // Requsites
   +Prerequisite?: string,

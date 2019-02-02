@@ -9,7 +9,7 @@ import type { ModuleInfo } from './api';
 import type { Module, ModuleCode, SemesterData, TreeFragment } from './modules';
 
 /**
- * Module info with the AcademicGroup and AcademicOrg mapped to the actual
+ * Module info with the AcademicGrp and AcademicOrg mapped to the actual
  * faculty and department
  */
 export type ModuleInfoMapped = {

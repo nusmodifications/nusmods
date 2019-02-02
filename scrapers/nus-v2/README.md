@@ -70,8 +70,11 @@ Error handling is done through Sentry.
 
 ### Module data
 
+- `Faculty` is provided in addition to `Department`
 - `Types` is removed - this is not used anywhere in the v3 frontend
 - `Workload` will now be parsed on the server into a tuple of 5 numbers. A string is only returned if the text is unparsable.
+- `ModmavenTree` is renamed to `PrereqTree`.
+- `LockedModules` is renamed to `FulfillRequirements`
 
 ### Semester data
 

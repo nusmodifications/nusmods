@@ -15,7 +15,7 @@ import Queue from 'promise-queue';
 
 import type { ModuleCode } from '../types/modules';
 import type {
-  AcademicGroup,
+  AcademicGrp,
   AcademicOrg,
   ModuleExam,
   ModuleInfo,
@@ -142,7 +142,7 @@ export class API {
   /**
    * Obtain an array of faculties in the school (aka. academic groups)
    */
-  getFaculty = async (): Promise<AcademicGroup[]> =>
+  getFaculty = async (): Promise<AcademicGrp[]> =>
     this.callApi('config/get-acadgroup', {
       eff_status: 'A',
       // % is a wildcard so this function returns everything

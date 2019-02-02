@@ -1,6 +1,6 @@
 // @flow
 
-import { pick, values } from 'lodash';
+import { values } from 'lodash';
 
 import type { Task } from '../types/tasks';
 import type { ModuleWithoutTree, SemesterModuleData } from '../types/mapper';
@@ -44,27 +44,35 @@ const getModuleCondensed = (module: ModuleWithoutTree): ModuleCondensed => ({
   Semesters: module.History.map((semester) => semester.Semester),
 });
 
-const getModuleInformation = (module: ModuleWithoutTree): ModuleInformation => {
-  const History = module.History.map((semester) =>
-    pick(semester, ['Semester', 'ExamDate', 'ExamDuration']),
-  );
-
-  const moduleInformation = pick(module, [
-    'ModuleCode',
-    'ModuleTitle',
-    'ModuleDescription',
-    'ModuleCredit',
-    'Department',
-    'Workload',
-    'Prerequisite',
-    'Preclusion',
-  ]);
-
-  return {
-    ...moduleInformation,
-    History,
-  };
-};
+/* eslint-disable no-shadow */
+const getModuleInformation = ({
+  ModuleCode,
+  ModuleTitle,
+  ModuleDescription,
+  ModuleCredit,
+  Department,
+  Faculty,
+  Workload,
+  Prerequisite,
+  Preclusion,
+  History,
+}: ModuleWithoutTree): ModuleInformation => ({
+  ModuleCode,
+  ModuleTitle,
+  ModuleDescription,
+  ModuleCredit,
+  Department,
+  Faculty,
+  Workload,
+  Prerequisite,
+  Preclusion,
+  History: History.map(({ Semester, ExamDate, ExamDuration }) => ({
+    Semester,
+    ExamDate,
+    ExamDuration,
+  })),
+});
+/* eslint-enable */
 
 /**
  * Collect semester data from multiple semesters together

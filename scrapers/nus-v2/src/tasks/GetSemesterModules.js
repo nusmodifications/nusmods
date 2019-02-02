@@ -3,7 +3,7 @@
 import { strict as assert } from 'assert';
 import { flatten, partition } from 'lodash';
 
-import type { AcademicGroup, AcademicOrg, ModuleInfo } from '../types/api';
+import type { AcademicGrp, AcademicOrg, ModuleInfo } from '../types/api';
 import type { Semester } from '../types/modules';
 import type { Task } from '../types/tasks';
 
@@ -16,7 +16,7 @@ import { validateSemester } from '../services/validation';
 
 type Input = {|
   +departments: AcademicOrg[],
-  +faculties: AcademicGroup[],
+  +faculties: AcademicGrp[],
 |};
 
 type Output = ModuleInfo[];

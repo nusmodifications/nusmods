@@ -1,5 +1,5 @@
 // @flow
-import type { AcademicGroup, AcademicOrg } from '../types/api';
+import type { AcademicGrp, AcademicOrg } from '../types/api';
 import type { Task } from '../types/tasks';
 
 import BaseTask from './BaseTask';
@@ -10,7 +10,7 @@ import { getCache } from '../services/io';
  * Map department to their faculties. This is useful for the frontend
  */
 export function mapFacultyDepartments(
-  faculties: AcademicGroup[],
+  faculties: AcademicGrp[],
   departments: AcademicOrg[],
 ): { [string]: string[] } {
   // Get a mapping of faculty code -> name
@@ -36,13 +36,13 @@ export function mapFacultyDepartments(
 
 type Output = {|
   +departments: AcademicOrg[],
-  +faculties: AcademicGroup[],
+  +faculties: AcademicGrp[],
 |};
 
 // Exported so that the CLI can use these caches
 const expiry = 7 * 24 * 60; // Cache these for 7 days since they change rarely
 export const departmentCache = getCache<AcademicOrg[]>('departments', expiry);
-export const facultyCache = getCache<AcademicGroup[]>('faculty', expiry);
+export const facultyCache = getCache<AcademicGrp[]>('faculty', expiry);
 
 /**
  * Downloads faculty and department codes. This is used to map to the codes that appear in

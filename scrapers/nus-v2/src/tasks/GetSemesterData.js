@@ -3,8 +3,13 @@
 import { each, fromPairs, keyBy } from 'lodash';
 import { strict as assert } from 'assert';
 
-import type { AcademicGroup, AcademicOrg, ModuleInfo } from '../types/api';
-import type { DepartmentCodeMap, SemesterModule, SemesterModuleData } from '../types/mapper';
+import type { AcademicGrp, AcademicOrg, ModuleInfo } from '../types/api';
+import type {
+  DepartmentCodeMap,
+  FacultyCodeMap,
+  SemesterModule,
+  SemesterModuleData,
+} from '../types/mapper';
 import type { Semester, Workload } from '../types/modules';
 import type { Task } from '../types/tasks';
 
@@ -21,7 +26,7 @@ import { difference } from '../utils/set';
 
 type Input = {|
   +departments: AcademicOrg[],
-  +faculties: AcademicGroup[],
+  +faculties: AcademicGrp[],
 |};
 
 type Output = SemesterModuleData[];
@@ -38,6 +43,9 @@ export const getDepartmentCodeMap = (departments: AcademicOrg[]): DepartmentCode
   fromPairs(
     departments.map((department) => [department.AcademicOrganisation, department.Description]),
   );
+
+export const getFacultyCodeMap = (departments: AcademicGrp[]): FacultyCodeMap =>
+  fromPairs(departments.map((faculty) => [faculty.AcademicGroup, faculty.Description]));
 
 /**
  * Clean module info
@@ -79,10 +87,15 @@ export function parseWorkload(workloadString: string): Workload {
 /**
  * Map ModuleInfo from the API into something closer to our own representation
  */
-const mapModuleInfo = (moduleInfo: ModuleInfo, departments: DepartmentCodeMap): SemesterModule => {
+const mapModuleInfo = (
+  moduleInfo: ModuleInfo,
+  departmentMap: DepartmentCodeMap,
+  facultyMap: FacultyCodeMap,
+): SemesterModule => {
   const {
     Term,
     AcademicOrganisation,
+    AcademicGroup,
     CourseTitle,
     WorkLoadHours,
     Preclusion,
@@ -103,7 +116,8 @@ const mapModuleInfo = (moduleInfo: ModuleInfo, departments: DepartmentCodeMap): 
     Preclusion,
     ModuleDescription: Description,
     ModuleTitle: CourseTitle,
-    Department: departments[AcademicOrganisation.Code],
+    Department: departmentMap[AcademicOrganisation.Code],
+    Faculty: facultyMap[AcademicGroup.Code],
     Workload: parseWorkload(WorkLoadHours),
     Prerequisite: PreRequisite,
     Corequisite: CoRequisite,
@@ -157,8 +171,9 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
       new GetSemesterModules(semester, academicYear).run(input),
     ]);
 
-    // Map department codes to department name for use during module data sanitization
+    // Map department and faculty codes to their names for use during module data sanitization
     const departmentMap = getDepartmentCodeMap(input.departments);
+    const facultyMap = getFacultyCodeMap(input.faculties);
 
     // Key modules by their module code for easier mapping
     const modulesMap = keyBy(
@@ -171,7 +186,7 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
     each(timetables, (timetable, moduleCode) => {
       const moduleInfo = modulesMap[moduleCode];
       if (!moduleInfo) {
-        this.logger.warn(
+        this.logger.debug(
           { moduleCode, timetable },
           'Found module with timetable but no module info',
         );
@@ -186,23 +201,22 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
       };
 
       // Map module info to the shape expected by our frontend and clean up the data
-      const rawModule = mapModuleInfo(moduleInfo, departmentMap);
+      const rawModule = mapModuleInfo(moduleInfo, departmentMap, facultyMap);
       const Module = cleanModuleInfo(rawModule);
 
       semesterModuleData.push({
-        ModuleCode: moduleCode,
         Module,
         SemesterData,
+        ModuleCode: moduleCode,
       });
     });
 
-    // Check that every module that has exam also has a timetable
-    // This is an invariant check on the validity of the data
+    // Log modules that have exams but no timetables
     const noInfoModulesWithExams = Array.from(
       difference(new Set(Object.keys(exams)), new Set(Object.keys(timetables))),
     );
     if (noInfoModulesWithExams.length > 0) {
-      this.logger.warn(
+      this.logger.debug(
         { moduleCodes: noInfoModulesWithExams.sort() },
         'Found modules with exam but no info/timetable',
       );
