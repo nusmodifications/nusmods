@@ -1,7 +1,7 @@
 // @flow
 
 import DataPipeline from './DataPipeline';
-import api, { API } from '../services/api';
+import api, { NusApi } from '../services/nus-api';
 
 import faculties from './fixtures/faculties';
 import departments from './fixtures/departments';
@@ -12,8 +12,8 @@ import CS2100Expected from './fixtures/expected/CS2100';
 import { fromTermCode } from '../utils/api';
 import { expectModulesEqual } from '../utils/test-utils';
 
-jest.mock('../services/api');
-const mockApi = (api: { [$Keys<API>]: JestMockFn<any, any> });
+jest.mock('../services/nus-api');
+const mockApi = (api: { [$Keys<NusApi>]: JestMockFn<any, any> });
 
 /**
  * Full integration tests for the entire pipeline

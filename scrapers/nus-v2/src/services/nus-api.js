@@ -103,7 +103,7 @@ export async function callApi<Data>(endpoint: string, params: ApiParams): Promis
 }
 
 // Export for testing. Do not instantiate directly, use the singleton instance instead
-export class API {
+export class NusApi {
   queue: Queue;
 
   constructor(concurrency: number) {
@@ -242,5 +242,5 @@ export class API {
 }
 
 // Export as default a singleton instance to be used globally
-const singletonInstance = new API(config.apiConcurrency);
+const singletonInstance = new NusApi(config.apiConcurrency);
 export default singletonInstance;

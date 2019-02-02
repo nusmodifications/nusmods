@@ -1,6 +1,6 @@
 // @flow
 
-import api from '../services/api';
+import api from '../services/nus-api';
 import logger, { Logger } from '../services/logger';
 import { getDataWriter, getCacheFactory, type Cache } from '../services/io';
 

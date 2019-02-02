@@ -1,7 +1,7 @@
 // @flow
 
 import axios from 'axios';
-import { API, callApi } from './api';
+import { NusApi, callApi } from './nus-api';
 import { AuthError, NotFoundError, UnknownApiError } from '../utils/errors';
 import { mockResponse } from '../utils/test-utils';
 
@@ -95,13 +95,13 @@ describe(callApi, () => {
   });
 });
 
-describe(API, () => {
+describe(NusApi, () => {
   test('should enforce maximum concurrency', async () => {
     axios.post.mockResolvedValue(
       mockResponse({ code: '00000', msg: '', data: 'Turn down for whaaaaat?' }),
     );
 
-    const api = new API(2);
+    const api = new NusApi(2);
 
     const p1 = api.callApi('test-1', {});
     const p2 = api.callApi('test-2', {});

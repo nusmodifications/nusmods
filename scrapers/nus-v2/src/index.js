@@ -1,5 +1,6 @@
 // @flow
 
+// Imported for side effects, so they have to be right at the top
 import '@babel/polyfill';
 import './utils/sentry';
 
@@ -36,6 +37,7 @@ const parameters = {
     type: 'string',
     default: config.academicYear,
     coerce: (value: string) => {
+      // Handle year given in two or four number form
       if (value.length === 2) return `20${value}/20${+value + 1}`;
       if (value.length === 4) return `${value}-${+value + 1}`;
       return value.replace('-', '/');
