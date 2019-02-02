@@ -1,6 +1,7 @@
 // @flow
 
-import { values } from 'lodash';
+import { Logger } from 'bunyan';
+import { values, omit, isEqual } from 'lodash';
 
 import type { Task } from '../types/tasks';
 import type { ModuleWithoutTree, SemesterModuleData } from '../types/mapper';
@@ -16,7 +17,10 @@ type Output = Module[];
 /**
  * Combine modules from multiple semesters into one
  */
-export function combineModules(semesters: SemesterModuleData[][]) {
+export function combineModules(
+  semesters: SemesterModuleData[][],
+  logger: Logger,
+): ModuleWithoutTree[] {
   const modules: { [ModuleCode]: ModuleWithoutTree } = {};
 
   // 1. Iterate over each module
@@ -29,8 +33,20 @@ export function combineModules(semesters: SemesterModuleData[][]) {
           History: [module.SemesterData],
         };
       } else {
-        // 3. If it does then we simply append the semester data
+        // 3. If the module has been added already then we simply merge the
+        //    semester data
         modules[module.ModuleCode].History.push(module.SemesterData);
+
+        // 4. Safety check for diverging module info between semester
+        const left = omit(modules[module.ModuleCode], 'SemesterData');
+        const right = omit(module, 'SemesterData');
+        if (!isEqual(left, right)) {
+          const { History } = modules[module.ModuleCode];
+          logger.warn(
+            { left, right, semesters: [History[0].Semester, module.SemesterData.Semester] },
+            'Module with different module info between semesters',
+          );
+        }
       }
     }),
   );
@@ -44,6 +60,7 @@ const getModuleCondensed = (module: ModuleWithoutTree): ModuleCondensed => ({
   Semesters: module.History.map((semester) => semester.Semester),
 });
 
+// Avoid using _.pick here because it is not type safe
 /* eslint-disable no-shadow */
 const getModuleInformation = ({
   ModuleCode,
@@ -102,7 +119,7 @@ export default class CollateModules extends BaseTask implements Task<Input, Outp
   async run(input: Input) {
     this.logger.info(`Collating modules for ${this.academicYear}`);
 
-    const modulesWithoutTree: ModuleWithoutTree[] = combineModules(input);
+    const modulesWithoutTree: ModuleWithoutTree[] = combineModules(input, this.logger);
 
     // Insert prerequisite trees into the modules
     const modules: Module[] = await genReqTree(modulesWithoutTree);
