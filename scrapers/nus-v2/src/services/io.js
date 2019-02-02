@@ -1,5 +1,11 @@
 // @flow
 
+/**
+ * Contains Cache, which is used to store temporary expiring data
+ * (usually directly from the API), and the factory for DataWriter
+ * which is how Tasks primarily save their results to disk.
+ */
+
 import type { WriteOptions } from 'fs-extra';
 import * as fs from 'fs-extra';
 import path from 'path';
@@ -66,10 +72,11 @@ export function getCache<T>(key: string, expiryInMin: number = defaultExpiry): C
 
 /**
  * Create an object that maps each of the file output from the scraper.
- * Uses a factory so that objects are not shared.
+ * Uses a factory so that objects are not shared. Since the Tasks only see
+ * a function to send output to, this can be replaced with any persistence
+ * mechanism in the future, eg. a database
  */
-export function getOutput() {
-  // Folder structure
+export function getDataWriter() {
   return {
     // List of ModuleCondensed for searching
     moduleList: (data: ModuleCondensed[]) =>
@@ -79,7 +86,7 @@ export function getOutput() {
     moduleInformation: (data: ModuleInformation[]) =>
       fs.outputJSON(path.join(yearRoot, 'moduleInformation.json'), data, writeOptions),
 
-    // List of venues
+    // List of venue codes used for searching
     venueList: (semester: Semester, data: Venue[]) =>
       fs.outputJSON(path.join(yearRoot, String(semester), 'venues.json'), data, writeOptions),
 

@@ -93,14 +93,16 @@ export default class CollateVenues extends BaseTask implements Task<Input, Outpu
         module.SemesterData.Timetable,
       );
 
+      // Deep merging is used here because we want each module's venue occupancy
+      // status to be added
       venues = merge(venues, availability);
     });
 
     // Save the results
     const venueList = Object.keys(venues);
     await Promise.all([
-      this.output.venueInformation(this.semester, venues),
-      this.output.venueList(this.semester, venueList),
+      this.io.venueInformation(this.semester, venues),
+      this.io.venueList(this.semester, venueList),
     ]);
 
     return venues;

@@ -1,7 +1,7 @@
 // @flow
 
 import * as fs from 'fs-extra';
-import { getCache } from './output';
+import { getCache } from './io';
 import { CacheExpiredError } from '../utils/errors';
 
 const hourToMs = 60 * 60 * 1000;

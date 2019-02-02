@@ -6,7 +6,7 @@
 
 import { Logger } from 'bunyan';
 import type { Semester } from '../types/modules';
-import type { Cache } from '../services/output';
+import type { Cache } from '../services/io';
 import rootLogger from '../services/logger';
 
 /**

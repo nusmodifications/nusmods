@@ -4,7 +4,7 @@ import { Logger } from 'bunyan';
 
 import api from '../services/api';
 import logger from '../services/logger';
-import { getOutput } from '../services/output';
+import { getDataWriter } from '../services/io';
 
 /**
  * Base task class. Dependencies and components are instance properties
@@ -16,7 +16,7 @@ export default class BaseTask {
   api = api;
 
   // For storing data to the file system
-  output = getOutput();
+  io = getDataWriter();
 
   rootLogger = logger;
 

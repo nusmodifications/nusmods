@@ -13,10 +13,10 @@ import BaseTask from './BaseTask';
 import GetSemesterExams from './GetSemesterExams';
 import GetSemesterTimetable from './GetSemesterTimetable';
 import GetSemesterModules from './GetSemesterModules';
-import { type Cache, getCache } from '../services/output';
+import { type Cache, getCache } from '../services/io';
 import { fromTermCode } from '../utils/api';
 import { validateSemester } from '../services/validation';
-import { cleanObject, titleize } from '../services/data';
+import { cleanObject, titleize } from '../utils/data';
 import { difference } from '../utils/set';
 
 type Input = {|
@@ -211,7 +211,7 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
     // Save the merged semester data to disk
     await Promise.all(
       semesterModuleData.map((semesterData) =>
-        this.output.semesterData(this.semester, semesterData.ModuleCode, semesterData.SemesterData),
+        this.io.semesterData(this.semester, semesterData.ModuleCode, semesterData.SemesterData),
       ),
     );
 

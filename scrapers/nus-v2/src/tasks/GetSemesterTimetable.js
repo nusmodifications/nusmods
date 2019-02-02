@@ -11,7 +11,7 @@ import BaseTask from './BaseTask';
 import config from '../config';
 import { getTermCode, retry } from '../utils/api';
 import { validateLesson } from '../services/validation';
-import { activityLessonType, dayTextMap, unrecognizedLessonTypes } from '../services/data';
+import { activityLessonType, dayTextMap, unrecognizedLessonTypes } from '../utils/data';
 
 /**
  * For deduplicating timetable lessons - we need a unique string identifier
@@ -171,7 +171,7 @@ export default class GetSemesterTimetable extends BaseTask implements Task<Input
     // 7. Save all the timetables to disk
     await Promise.all(
       map(timetables, (timetable, moduleCode) =>
-        this.output.timetable(this.semester, moduleCode, timetable),
+        this.io.timetable(this.semester, moduleCode, timetable),
       ),
     );
 

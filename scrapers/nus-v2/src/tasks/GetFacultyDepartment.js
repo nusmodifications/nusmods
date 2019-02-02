@@ -4,7 +4,7 @@ import type { Task } from '../types/tasks';
 
 import BaseTask from './BaseTask';
 import { cacheDownload } from '../utils/api';
-import { getCache } from '../services/output';
+import { getCache } from '../services/io';
 
 /**
  * Map department to their faculties. This is useful for the frontend
@@ -85,7 +85,7 @@ export default class GetFacultyDepartment extends BaseTask implements Task<void,
 
     // Save the mapping of departments to faculties
     const mappings = mapFacultyDepartments(faculties, departments);
-    await this.output.facultyDepartments(mappings);
+    await this.io.facultyDepartments(mappings);
 
     // Return data for next task in pipeline
     return {

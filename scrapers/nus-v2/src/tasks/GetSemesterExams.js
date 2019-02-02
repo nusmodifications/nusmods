@@ -7,14 +7,14 @@ import type { ModuleExam } from '../types/api';
 import type { ExamInfo, ExamInfoMap } from '../types/mapper';
 import type { Semester } from '../types/modules';
 import type { Task } from '../types/tasks';
-import type { Cache } from '../services/output';
+import type { Cache } from '../services/io';
 
 import BaseTask from './BaseTask';
 import config from '../config';
 import { cacheDownload, getTermCode } from '../utils/api';
 import { TaskError } from '../utils/errors';
 import { validateExam, validateSemester } from '../services/validation';
-import { getCache } from '../services/output';
+import { getCache } from '../services/io';
 
 type Output = ExamInfoMap;
 

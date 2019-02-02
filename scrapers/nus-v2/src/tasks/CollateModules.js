@@ -102,15 +102,15 @@ export default class CollateModules extends BaseTask implements Task<Input, Outp
     this.logger.info(`Collated ${modules.length} modules`);
 
     // Save final combined module to their individual files
-    await Promise.all(modules.map((module) => this.output.module(module.ModuleCode, module)));
+    await Promise.all(modules.map((module) => this.io.module(module.ModuleCode, module)));
 
     // Save condensed versions of the same information for searching
     const moduleCondensed = modules.map(getModuleCondensed);
     const moduleInformation = modules.map(getModuleInformation);
 
     await Promise.all([
-      this.output.moduleList(moduleCondensed),
-      this.output.moduleInformation(moduleInformation),
+      this.io.moduleList(moduleCondensed),
+      this.io.moduleInformation(moduleInformation),
     ]);
 
     return values(modules);

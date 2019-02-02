@@ -62,7 +62,7 @@ export const dayTextMap = {
   '4': 'Thursday',
   '5': 'Friday',
   '6': 'Saturday',
-  // Assume lessons on Sunday are invalid
+  // Assume lessons on Sunday (7) are invalid
 };
 
 export const unrecognizedLessonTypes = {

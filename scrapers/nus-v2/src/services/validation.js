@@ -10,7 +10,7 @@ import { Logger } from 'bunyan';
 import type { ModuleExam, TimetableLesson } from '../types/api';
 import type { Semester } from '../types/modules';
 
-import { activityLessonType, dayTextMap } from './data';
+import { activityLessonType, dayTextMap } from '../utils/data';
 import { Semesters } from '../types/modules';
 import rootLogger from './logger';
 

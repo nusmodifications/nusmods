@@ -85,4 +85,3 @@ Error handling is done through Sentry.
 - `Availability` now only marks occupied times. Vacant times are simply left out of the object.
 
 [bunyan]: https://github.com/trentm/node-bunyan
-

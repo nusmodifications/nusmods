@@ -4,7 +4,7 @@ import type { AxiosXHRConfig, $AxiosXHR } from 'axios';
 import { omit, sortBy, zip } from 'lodash';
 import httpStatus from 'http-status';
 
-import type { Cache } from '../services/output';
+import type { Cache } from '../services/io';
 import type { Module, RawLesson, SemesterData } from '../types/modules';
 
 /* eslint-disable import/prefer-default-export */
