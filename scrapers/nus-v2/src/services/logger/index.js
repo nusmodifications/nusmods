@@ -2,7 +2,7 @@
 
 import path from 'path';
 import bunyan from 'bunyan';
-import moment from 'moment';
+import { lightFormat } from 'date-fns';
 import getSentryStream from './SentryStream';
 import { errorSerializer } from './serializer';
 
@@ -10,7 +10,7 @@ const logRoot = path.join(__dirname, '../../../logs');
 
 // In production, create a new log for each run
 const logSuffix =
-  process.env.NODE_ENV === 'production' ? moment().format('-YYYY-MM-DD.HH-mm-ss') : '';
+  process.env.NODE_ENV === 'production' ? lightFormat(new Date(), '-yyyy-MM-dd.HH-mm-ss') : '';
 
 const rootLogger = bunyan.createLogger({
   name: 'scraper',

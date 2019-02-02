@@ -1,6 +1,5 @@
 // @flow
 
-import moment from 'moment';
 import { mapExamInfo } from './GetSemesterExams';
 
 describe(mapExamInfo, () => {
@@ -15,10 +14,8 @@ describe(mapExamInfo, () => {
       exam_date: '2018-11-27',
     });
 
-    expect(moment(actual.ExamDate, moment.ISO_8601).isValid()).toBe(true);
-
     expect(actual).toEqual({
-      ExamDate: '2018-11-27T17:00:00.000+08:00',
+      ExamDate: '2018-11-27T09:00:00.000Z',
       ExamDuration: 120,
     });
   });

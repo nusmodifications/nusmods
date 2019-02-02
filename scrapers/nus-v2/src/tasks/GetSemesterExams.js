@@ -1,5 +1,5 @@
 // @flow
-import moment from 'moment';
+import { parse } from 'date-fns';
 import { keyBy, mapValues, partition } from 'lodash';
 import { strict as assert } from 'assert';
 
@@ -15,18 +15,16 @@ import { cacheDownload, getTermCode } from '../utils/api';
 import { TaskError } from '../utils/errors';
 import { validateExam, validateSemester } from '../services/validation';
 
-const UTC_OFFSET = 8 * 60;
-
 /**
  * Extract the part of the raw ModuleExam that is used in SemesterData
  */
 export function mapExamInfo(moduleExam: ModuleExam): ExamInfo {
   /* eslint-disable camelcase */
   const { exam_date, start_time, duration } = moduleExam;
-  const date = moment(`${exam_date} ${start_time}+08:00`).utcOffset(UTC_OFFSET);
+  const date = parse(`${exam_date} ${start_time} +08:00`, 'yyyy-MM-dd HH:mm XXX', new Date());
 
   return {
-    ExamDate: date.toISOString(true),
+    ExamDate: date.toISOString(),
     ExamDuration: parseInt(duration, 10),
   };
   /* eslint-enable */
