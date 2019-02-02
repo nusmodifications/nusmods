@@ -174,7 +174,12 @@ export default async function genReqTree(allModules: ModuleWithoutTree[]) {
 
   const merged = allModules.map((data) => {
     const moduleCode = data.ModuleCode;
-    return R.mergeRight(data, prerequisites[moduleCode], preclusions[moduleCode]);
+
+    return {
+      ...data,
+      ...prerequisites[moduleCode],
+      ...preclusions[moduleCode],
+    };
   });
 
   const modules = generateRequirements(merged, moduleCodes);
