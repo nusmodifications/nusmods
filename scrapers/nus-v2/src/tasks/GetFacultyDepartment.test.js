@@ -1,8 +1,26 @@
 // @flow
 
-import { mapFacultyDepartments } from './GetFacultyDepartment';
+import { cleanNames, mapFacultyDepartments } from './GetFacultyDepartment';
 import faculties from './fixtures/faculties';
 import departments from './fixtures/departments';
+
+describe(cleanNames, () => {
+  test('should remove redundant parts', () => {
+    expect(cleanNames('School of Computing')).toEqual('Computing');
+    expect(cleanNames('Faculty of Law')).toEqual('Law');
+    expect(cleanNames('LKY School of Public Policy')).toEqual('LKY School of Public Policy');
+  });
+
+  test('should expand abbreviations', () => {
+    expect(cleanNames('Sci Eng Mgmt')).toEqual('Science Engineering Management');
+    expect(cleanNames('Arts & Social Sciences')).toEqual('Arts and Social Sciences');
+  });
+
+  test('should not double expand', () => {
+    expect(cleanNames('Science Engineering Management')).toEqual('Science Engineering Management');
+    expect(cleanNames('Science-Engineering-Management')).toEqual('Science-Engineering-Management');
+  });
+});
 
 describe(mapFacultyDepartments, () => {
   test('should produce a mapping of department to their faculties', () => {

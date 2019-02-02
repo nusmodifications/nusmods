@@ -1,10 +1,54 @@
 // @flow
+import { escapeRegExp, map } from 'lodash';
+
 import type { AcademicGrp, AcademicOrg } from '../types/api';
 import type { Task } from '../types/tasks';
 import type { Cache } from '../services/io';
 
 import BaseTask from './BaseTask';
 import { cacheDownload } from '../utils/api';
+
+const abbreviationMap = {
+  Mgmt: 'Management',
+  Eng: 'Engineering',
+  Conserv: 'Conservatory',
+  Edun: 'Education',
+  Ctr: 'Center',
+  Appl: 'Applied',
+  "Computat'l": 'Computational',
+  Instits: 'Institutes',
+  Div: 'Division',
+  Info: 'Information',
+  Sci: 'Science',
+  Grad: 'Graduate',
+  DO: "Dean's Office",
+  Stud: 'Studies',
+};
+
+const abbreviationRegex = map(abbreviationMap, (expanded, abbr) => [
+  new RegExp(`\\b${escapeRegExp(abbr)}\\b`, 'gi'),
+  expanded,
+]);
+
+export function cleanNames(name: string): string {
+  // 1. Expand all abbreviations. '&' has to be defined separately because it
+  //    cannot be combined with word boundaries (\b) anchors
+  let expandedName = name.replace(/&/g, 'and');
+  abbreviationRegex.forEach(([regex, expanded]) => {
+    expandedName = expandedName.replace(regex, expanded);
+  });
+
+  // 2. Remove redundant parts
+  return expandedName
+    .replace(/^(School|Faculty) of/i, '')
+    .replace(/^The/, '')
+    .trim();
+}
+
+export const cleanFacultyDepartment = <T: AcademicGrp | AcademicOrg>(organization: T): T => ({
+  ...organization,
+  Description: cleanNames(organization.Description),
+});
 
 /**
  * Map department to their faculties. This is useful for the frontend
@@ -83,10 +127,10 @@ export default class GetFacultyDepartment extends BaseTask implements Task<void,
     this.logger.info('Downloading faculty and department codes');
 
     // Download department and faculties in parallel
-    const [departments, faculties] = await Promise.all([
-      this.getDepartments(),
-      this.getFaculties(),
-    ]);
+    let [departments, faculties] = await Promise.all([this.getDepartments(), this.getFaculties()]);
+
+    departments = departments.map(cleanFacultyDepartment);
+    faculties = faculties.map(cleanFacultyDepartment);
 
     // Save the mapping of departments to faculties
     const mappings = mapFacultyDepartments(faculties, departments);
