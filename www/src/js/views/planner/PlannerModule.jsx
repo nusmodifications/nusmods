@@ -30,110 +30,121 @@ type Props = {|
 
   // Actions
   +removeModule: (ModuleCode) => void,
+  +addCustomData: (ModuleCode) => void,
 |};
 
-const ModuleMenu = React.memo((props: {| +removeModule: () => void |}) => {
-  const menuItems = [['Remove', props.removeModule]];
+const ModuleMenu = React.memo(
+  (props: {| +removeModule: () => void, +editCustomData: () => void |}) => {
+    const menuItems = [['Remove', props.removeModule], ['Edit MC and Title', props.editCustomData]];
 
-  return (
-    <Downshift
-      onChange={(item) => {
-        menuItems.forEach(([menuItem, onSelect]) => {
-          if (item === menuItem) {
-            onSelect();
-          }
-        });
-      }}
-    >
-      {({ getItemProps, getMenuProps, highlightedIndex, isOpen, toggleMenu }) => (
-        <div className={styles.menuBtn}>
-          <button
-            className={classnames('btn close')}
-            type="button"
-            onClick={toggleMenu}
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded={isOpen}
-          >
-            <ChevronDown />
-          </button>
-          <div className={classnames('dropdown-menu', { show: isOpen })} {...getMenuProps()}>
-            {menuItems.map(([item], itemIndex) => (
-              <button
-                key={item}
-                className={classnames('dropdown-item', {
-                  'dropdown-selected': highlightedIndex === itemIndex,
-                })}
-                {...getItemProps({ item })}
-              >
-                {item}
-              </button>
-            ))}
+    return (
+      <Downshift
+        onSelect={(item) => {
+          menuItems.forEach(([menuItem, onSelect]) => {
+            if (item === menuItem) {
+              onSelect();
+            }
+          });
+        }}
+      >
+        {({ getItemProps, getMenuProps, highlightedIndex, isOpen, toggleMenu }) => (
+          <div className={styles.menuBtn}>
+            <button
+              className={classnames('btn close')}
+              type="button"
+              onClick={toggleMenu}
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded={isOpen}
+            >
+              <ChevronDown />
+            </button>
+            <div
+              className={classnames(styles.menu, 'dropdown-menu', { show: isOpen })}
+              {...getMenuProps()}
+            >
+              {menuItems.map(([item], itemIndex) => (
+                <button
+                  key={item}
+                  className={classnames('dropdown-item', {
+                    'dropdown-selected': highlightedIndex === itemIndex,
+                  })}
+                  {...getItemProps({ item })}
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
-      )}
-    </Downshift>
-  );
-});
-
-function renderConflict(conflict: Conflict) {
-  switch (conflict.type) {
-    case 'noInfo':
-      return (
-        <div className={styles.conflictHeader}>
-          <AlertTriangle className={styles.warningIcon} />
-          <p>No data on this module</p>
-        </div>
-      );
-
-    case 'semester':
-      return (
-        <div className={styles.conflictHeader}>
-          <AlertTriangle className={styles.warningIcon} />
-          <p>
-            Module may only only be offered in{' '}
-            {conflict.semestersOffered
-              .map((semester) => config.shortSemesterNames[semester])
-              .join(', ')}
-          </p>
-        </div>
-      );
-
-    case 'exam':
-      return (
-        <div className={styles.conflictHeader}>
-          <AlertTriangle className={styles.warningIcon} />
-          <p>{conflict.conflictModules.join(', ')} have clashing exams</p>
-        </div>
-      );
-
-    case 'prereq':
-      return (
-        <>
-          <div className={styles.conflictHeader}>
-            <AlertTriangle className={styles.warningIcon} />
-            <p>These modules may need to be taken first</p>
-          </div>
-
-          <ul className={styles.prereqs}>
-            {conflict.unfulfilledPrereqs.map((prereq, i) => (
-              <li key={i}>
-                <LinkModuleCodes>{conflictToText(prereq)}</LinkModuleCodes>
-              </li>
-            ))}
-          </ul>
-        </>
-      );
-
-    default:
-      return null;
-  }
-}
+        )}
+      </Downshift>
+    );
+  },
+);
 
 /**
  * Component for a single module on the planner
  */
 export default class PlannerModule extends PureComponent<Props> {
+  renderConflict(conflict: Conflict) {
+    switch (conflict.type) {
+      case 'noInfo':
+        return (
+          <div className={styles.conflictHeader}>
+            <AlertTriangle className={styles.warningIcon} />
+            <p>
+              No data on this module.{' '}
+              <button className="btn btn-link btn-inline" onClick={this.editCustomData}>
+                Add data
+              </button>
+            </p>
+          </div>
+        );
+
+      case 'semester':
+        return (
+          <div className={styles.conflictHeader}>
+            <AlertTriangle className={styles.warningIcon} />
+            <p>
+              Module may only only be offered in{' '}
+              {conflict.semestersOffered
+                .map((semester) => config.shortSemesterNames[semester])
+                .join(', ')}
+            </p>
+          </div>
+        );
+
+      case 'exam':
+        return (
+          <div className={styles.conflictHeader}>
+            <AlertTriangle className={styles.warningIcon} />
+            <p>{conflict.conflictModules.join(', ')} have clashing exams</p>
+          </div>
+        );
+
+      case 'prereq':
+        return (
+          <>
+            <div className={styles.conflictHeader}>
+              <AlertTriangle className={styles.warningIcon} />
+              <p>These modules may need to be taken first</p>
+            </div>
+
+            <ul className={styles.prereqs}>
+              {conflict.unfulfilledPrereqs.map((prereq, i) => (
+                <li key={i}>
+                  <LinkModuleCodes>{conflictToText(prereq)}</LinkModuleCodes>
+                </li>
+              ))}
+            </ul>
+          </>
+        );
+
+      default:
+        return null;
+    }
+  }
+
   renderMeta() {
     const { moduleCredit, examDate } = this.props;
     if (!moduleCredit && !examDate) return null;
@@ -147,6 +158,7 @@ export default class PlannerModule extends PureComponent<Props> {
   }
 
   removeModule = () => this.props.removeModule(this.props.moduleCode);
+  editCustomData = () => this.props.addCustomData(this.props.moduleCode);
 
   render() {
     const { moduleCode, moduleTitle, index, conflict } = this.props;
@@ -163,7 +175,7 @@ export default class PlannerModule extends PureComponent<Props> {
             {...provided.draggableProps}
             {...provided.dragHandleProps}
           >
-            <ModuleMenu removeModule={this.removeModule} />
+            <ModuleMenu removeModule={this.removeModule} editCustomData={this.editCustomData} />
 
             <div className={styles.moduleInfo}>
               <div className={styles.moduleName}>
@@ -174,7 +186,7 @@ export default class PlannerModule extends PureComponent<Props> {
 
               {this.renderMeta()}
 
-              {conflict && <div className={styles.conflicts}>{renderConflict(conflict)}</div>}
+              {conflict && <div className={styles.conflicts}>{this.renderConflict(conflict)}</div>}
             </div>
           </div>
         )}

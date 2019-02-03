@@ -3,13 +3,13 @@
 import React, { PureComponent } from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 import classnames from 'classnames';
-import { sum } from 'lodash';
+import { sumBy } from 'lodash';
 
 import type { ModuleCode, Semester } from 'types/modules';
 import type { PlannerModuleInfo } from 'types/views';
 import config from 'config';
 import { getModuleExamDate, renderMCs } from 'utils/modules';
-import { getDroppableId, getSemesterName } from 'utils/planner';
+import { getDroppableId, getModuleCredit, getModuleTitle, getSemesterName } from 'utils/planner';
 import PlannerModule from './PlannerModule';
 import AddModule from './AddModule';
 import styles from './PlannerSemester.scss';
@@ -25,12 +25,11 @@ type Props = {|
 
   +addModule: (moduleCode: ModuleCode, year: string, semester: Semester) => void,
   +removeModule: (moduleCode: ModuleCode) => void,
+  +addCustomData: (moduleCode: ModuleCode) => void,
 |};
 
 function renderSemesterMeta(modulesWithInfo: PlannerModuleInfo[]) {
-  const moduleCredits = sum(
-    modulesWithInfo.map(({ moduleInfo }) => +moduleInfo?.ModuleCredit || 0),
-  );
+  const moduleCredits = sumBy(modulesWithInfo, getModuleCredit);
 
   return (
     <div className={styles.semesterMeta}>
@@ -53,24 +52,21 @@ export default class PlannerSemester extends PureComponent<Props> {
 
   renderModule = (plannerModule: PlannerModuleInfo, index: number) => {
     const { year, semester, showConflicts, showModuleMeta } = this.props;
-    const { moduleCode, moduleInfo, customInfo, conflict } = plannerModule;
+    const { moduleCode, moduleInfo, conflict } = plannerModule;
 
     const showExamDate = showModuleMeta && config.academicYear === year;
-
-    // Custom info entered by the user overrides module info from our data
-    const moduleTitle = customInfo?.title || moduleInfo?.ModuleTitle;
-    const moduleCredit = customInfo?.moduleCredit || +moduleInfo?.ModuleCredit;
 
     return (
       <PlannerModule
         key={moduleCode}
         index={index}
         moduleCode={moduleCode}
-        moduleTitle={moduleTitle}
+        moduleTitle={getModuleTitle(plannerModule)}
         examDate={showExamDate && moduleInfo ? getModuleExamDate(moduleInfo, semester) : null}
-        moduleCredit={showModuleMeta ? moduleCredit : null}
+        moduleCredit={showModuleMeta ? getModuleCredit(plannerModule) : null}
         conflict={showConflicts ? conflict : null}
         removeModule={this.props.removeModule}
+        addCustomData={this.props.addCustomData}
       />
     );
   };

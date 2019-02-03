@@ -14,6 +14,7 @@ import {
   EXEMPTION_SEMESTER,
   EXEMPTION_YEAR,
   fromDroppableId,
+  getModuleCredit,
   IBLOCS_SEMESTER,
   PLAN_TO_TAKE_SEMESTER,
   PLAN_TO_TAKE_YEAR,
@@ -29,6 +30,8 @@ import Modal from 'views/components/Modal';
 import PlannerSemester from '../PlannerSemester';
 import PlannerYear from '../PlannerYear';
 import PlannerSettings from '../PlannerSettings';
+import CustomModuleForm from '../CustomModuleForm';
+
 import styles from './PlannerContainer.scss';
 
 export type Props = {|
@@ -50,6 +53,8 @@ export type Props = {|
 type State = {|
   +loading: boolean,
   +showSettings: boolean,
+  // Module code is the module being edited. null means the modal is not open
+  +showCustomModule: ?ModuleCode,
 |};
 
 const TRASH_ID = 'trash';
@@ -58,6 +63,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
   state = {
     loading: true,
     showSettings: false,
+    showCustomModule: null,
   };
 
   componentDidMount() {
@@ -105,9 +111,16 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
     }
   };
 
+  onAddCustomData = (moduleCode: ModuleCode) =>
+    this.setState({
+      showCustomModule: moduleCode,
+    });
+
+  closeAddCustomData = () => this.setState({ showCustomModule: null });
+
   renderHeader() {
     const modules = [...this.props.iblocsModules, ...flatten(flatMap(this.props.modules, values))];
-    const credits = sumBy(modules, (module) => +module.moduleInfo?.ModuleCredit || 0);
+    const credits = sumBy(modules, getModuleCredit);
     const count = modules.length;
 
     return (
@@ -171,6 +184,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
                   modules={iblocsModules}
                   addModule={this.onAddModule}
                   removeModule={this.props.removeModule}
+                  addCustomData={this.onAddCustomData}
                   showConflicts={false}
                 />
               </section>
@@ -184,6 +198,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
                 semesters={semesters}
                 addModule={this.onAddModule}
                 removeModule={this.props.removeModule}
+                addCustomData={this.onAddCustomData}
               />
             ))}
           </div>
@@ -199,6 +214,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
                 removeModule={this.props.removeModule}
                 showConflicts={false}
                 showModuleMeta={false}
+                addCustomData={this.onAddCustomData}
               />
             </section>
 
@@ -211,6 +227,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
                 addModule={this.onAddModule}
                 removeModule={this.props.removeModule}
                 showConflicts={false}
+                addCustomData={this.onAddCustomData}
               />
             </section>
 
@@ -240,6 +257,19 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
           animate
         >
           <PlannerSettings />
+        </Modal>
+
+        <Modal
+          isOpen={!!this.state.showCustomModule}
+          onRequestClose={this.closeAddCustomData}
+          animate
+        >
+          {this.state.showCustomModule && (
+            <CustomModuleForm
+              moduleCode={this.state.showCustomModule}
+              onFinishEditing={this.closeAddCustomData}
+            />
+          )}
         </Modal>
       </div>
     );
