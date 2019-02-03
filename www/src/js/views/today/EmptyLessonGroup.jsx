@@ -2,7 +2,14 @@
 
 import React from 'react';
 import type { EmptyGroupType } from 'types/views';
-import * as icons from 'views/components/icons/svg';
+
+import BeachIcon from 'img/icons/beach.svg';
+import BooksIcon from 'img/icons/books.svg';
+import CompassIcon from 'img/icons/compass.svg';
+import ConfettiIcon from 'img/icons/confetti.svg';
+import ParkIcon from 'img/icons/park.svg';
+import WinterIcon from 'img/icons/winter.svg';
+
 import styles from './EmptyLessonGroup.scss';
 
 type Props = {
@@ -14,7 +21,7 @@ function renderType(type: EmptyGroupType) {
     case 'winter':
       return (
         <>
-          <img src={icons.winter} alt="" />
+          <WinterIcon />
           <p>Enjoy your winter break!</p>
         </>
       );
@@ -22,7 +29,7 @@ function renderType(type: EmptyGroupType) {
     case 'summer':
       return (
         <>
-          <img src={icons.beach} alt="" />
+          <BeachIcon />
           <p>Enjoy your summer break!</p>
         </>
       );
@@ -30,7 +37,7 @@ function renderType(type: EmptyGroupType) {
     case 'holiday':
       return (
         <>
-          <img src={icons.confetti} alt="" />
+          <ConfettiIcon />
           <p>Happy holiday!</p>
         </>
       );
@@ -38,7 +45,7 @@ function renderType(type: EmptyGroupType) {
     case 'weekend':
       return (
         <>
-          <img src={icons.books} alt="" />
+          <BooksIcon />
           <p>It&apos;s the weekend!</p>
         </>
       );
@@ -46,7 +53,7 @@ function renderType(type: EmptyGroupType) {
     case 'orientation':
       return (
         <>
-          <img src={icons.compass} alt="" />
+          <CompassIcon />
           <p>Happy orientation week!</p>
         </>
       );
@@ -54,7 +61,7 @@ function renderType(type: EmptyGroupType) {
     case 'recess':
       return (
         <>
-          <img src={icons.park} alt="" />
+          <ParkIcon />
           <p>It&apos; recess week!</p>
         </>
       );
@@ -62,7 +69,7 @@ function renderType(type: EmptyGroupType) {
     case 'reading':
       return (
         <>
-          <img src={icons.books} alt="" />
+          <BooksIcon />
           <p>Time to study for your exams!</p>
         </>
       );

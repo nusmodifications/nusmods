@@ -1,17 +1,16 @@
 // @flow
 import { captureException } from 'utils/error';
 
-import Cloudy from './cloudy';
-import Rain from './rain';
-import Showers from './showers';
-import Thunderstorm from './thunderstorm';
-import Dust from './dust';
-import Fog from './fog';
-import Wind from './strong-wind';
-import Sunny from './day-sunny';
-import ClearNight from './night-clear';
-
 // Weather icons from https://github.com/erikflowers/weather-icons
+import Cloudy from 'img/weather/cloudy.svg';
+import Rain from 'img/weather/rain.svg';
+import Showers from 'img/weather/showers.svg';
+import Thunderstorm from 'img/weather/thunderstorm.svg';
+import Dust from 'img/weather/dust.svg';
+import Fog from 'img/weather/fog.svg';
+import Wind from 'img/weather/strong-wind.svg';
+import Sunny from 'img/weather/day-sunny.svg';
+import ClearNight from 'img/weather/night-clear.svg';
 
 // Forecast description pulled from several months worth of forecasts
 // from the nowcast endpoint, mapped by hand to the closest icon
