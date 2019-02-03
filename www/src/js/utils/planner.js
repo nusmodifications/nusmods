@@ -1,5 +1,5 @@
 // @flow
-import { castArray, flatten } from 'lodash';
+import { castArray, flatten, sum } from 'lodash';
 import type { ModuleCode, Semester, TreeFragment } from 'types/modules';
 import type { PlannerModuleInfo } from 'types/views';
 import config from 'config';
@@ -99,6 +99,17 @@ export function acadYearLabel(year: string) {
 }
 
 /**
+ * Get a planner module's title, preferring customInfo over moduleInfo.
+ * This allows the user to override our data in case there are mistakes.
+ */
+export function getModuleTitle(module: PlannerModuleInfo): ?string {
+  const { moduleInfo, customInfo } = module;
+  // customInfo.title is nullable, and there's no point in displaying an
+  // empty string, so we can use || here
+  return customInfo?.title || moduleInfo?.ModuleTitle || null;
+}
+
+/**
  * Get a planner module's credits, preferring customInfo over moduleInfo.
  * This allows the user to override our data in case there are mistakes.
  */
@@ -113,12 +124,9 @@ export function getModuleCredit(module: PlannerModuleInfo): ?number {
 }
 
 /**
- * Get a planner module's title, preferring customInfo over moduleInfo.
- * This allows the user to override our data in case there are mistakes.
+ * Get total module credits for the given array of planner modules
  */
-export function getModuleTitle(module: PlannerModuleInfo): ?string {
-  const { moduleInfo, customInfo } = module;
-  // customInfo.title is nullable, and there's no point in displaying an
-  // empty string, so we can use ||
-  return customInfo?.title || moduleInfo?.ModuleTitle || null;
+export function getTotalMC(modules: PlannerModuleInfo[]): number {
+  // Remove nulls using .filter(Boolean)
+  return sum(modules.map(getModuleCredit).filter(Boolean));
 }

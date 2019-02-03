@@ -2,7 +2,7 @@
 
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { flatMap, flatten, sortBy, sumBy, toPairs, values } from 'lodash';
+import { flatMap, flatten, sortBy, toPairs, values } from 'lodash';
 import { DragDropContext, Droppable, type OnDragEndResponder } from 'react-beautiful-dnd';
 import classnames from 'classnames';
 import type { Module, ModuleCode, Semester } from 'types/modules';
@@ -13,11 +13,11 @@ import { MODULE_CODE_REGEX, renderMCs, subtractAcadYear } from 'utils/modules';
 import {
   EXEMPTION_SEMESTER,
   EXEMPTION_YEAR,
-  fromDroppableId,
-  getModuleCredit,
   IBLOCS_SEMESTER,
   PLAN_TO_TAKE_SEMESTER,
   PLAN_TO_TAKE_YEAR,
+  fromDroppableId,
+  getTotalMC,
 } from 'utils/planner';
 import { addPlannerModule, movePlannerModule, removePlannerModule } from 'actions/planner';
 import { toggleFeedback } from 'actions/app';
@@ -120,7 +120,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
 
   renderHeader() {
     const modules = [...this.props.iblocsModules, ...flatten(flatMap(this.props.modules, values))];
-    const credits = sumBy(modules, getModuleCredit);
+    const credits = getTotalMC(modules);
     const count = modules.length;
 
     return (
@@ -185,7 +185,6 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
                   addModule={this.onAddModule}
                   removeModule={this.props.removeModule}
                   addCustomData={this.onAddCustomData}
-                  showConflicts={false}
                 />
               </section>
             )}
@@ -212,7 +211,6 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
                 modules={exemptions}
                 addModule={this.onAddModule}
                 removeModule={this.props.removeModule}
-                showConflicts={false}
                 showModuleMeta={false}
                 addCustomData={this.onAddCustomData}
               />
@@ -226,7 +224,6 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
                 modules={planToTake}
                 addModule={this.onAddModule}
                 removeModule={this.props.removeModule}
-                showConflicts={false}
                 addCustomData={this.onAddCustomData}
               />
             </section>

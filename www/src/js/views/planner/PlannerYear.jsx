@@ -2,12 +2,12 @@
 
 import React, { PureComponent } from 'react';
 import classnames from 'classnames';
-import { size, sortBy, toPairs, flatMap, values, sumBy } from 'lodash';
+import { size, sortBy, toPairs, flatMap, values } from 'lodash';
 
 import type { ModuleCode, Semester } from 'types/modules';
 import type { PlannerModuleInfo } from 'types/views';
 import config from 'config';
-import { getModuleCredit, getSemesterName } from 'utils/planner';
+import { getTotalMC, getSemesterName } from 'utils/planner';
 import { Minus, Plus } from 'views/components/icons';
 import { renderMCs } from 'utils/modules';
 import PlannerSemester from './PlannerSemester';
@@ -41,7 +41,7 @@ export default class PlannerYear extends PureComponent<Props, State> {
   renderHeader() {
     const { year, name, semesters } = this.props;
     const modules = flatMap(semesters, values);
-    const credits = sumBy(modules, getModuleCredit);
+    const credits = getTotalMC(modules);
     const count = modules.length;
 
     return (

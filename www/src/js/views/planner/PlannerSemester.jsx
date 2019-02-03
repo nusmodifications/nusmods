@@ -3,13 +3,18 @@
 import React, { PureComponent } from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 import classnames from 'classnames';
-import { sumBy } from 'lodash';
 
 import type { ModuleCode, Semester } from 'types/modules';
 import type { PlannerModuleInfo } from 'types/views';
 import config from 'config';
 import { getModuleExamDate, renderMCs } from 'utils/modules';
-import { getDroppableId, getModuleCredit, getModuleTitle, getSemesterName } from 'utils/planner';
+import {
+  getDroppableId,
+  getModuleCredit,
+  getModuleTitle,
+  getSemesterName,
+  getTotalMC,
+} from 'utils/planner';
 import PlannerModule from './PlannerModule';
 import AddModule from './AddModule';
 import styles from './PlannerSemester.scss';
@@ -19,7 +24,6 @@ type Props = {|
   +semester: Semester,
   +modules: PlannerModuleInfo[],
 
-  +showConflicts: boolean,
   +showModuleMeta: boolean,
   +className?: string,
 
@@ -28,13 +32,13 @@ type Props = {|
   +addCustomData: (moduleCode: ModuleCode) => void,
 |};
 
-function renderSemesterMeta(modulesWithInfo: PlannerModuleInfo[]) {
-  const moduleCredits = sumBy(modulesWithInfo, getModuleCredit);
+function renderSemesterMeta(plannerModules: PlannerModuleInfo[]) {
+  const moduleCredits = getTotalMC(plannerModules);
 
   return (
     <div className={styles.semesterMeta}>
       <p>
-        {modulesWithInfo.length} {modulesWithInfo.length === 1 ? 'module' : 'modules'}
+        {plannerModules.length} {plannerModules.length === 1 ? 'module' : 'modules'}
       </p>
       <p>{renderMCs(moduleCredits)}</p>
     </div>
@@ -46,12 +50,11 @@ function renderSemesterMeta(modulesWithInfo: PlannerModuleInfo[]) {
  */
 export default class PlannerSemester extends PureComponent<Props> {
   static defaultProps = {
-    showConflicts: true,
     showModuleMeta: true,
   };
 
   renderModule = (plannerModule: PlannerModuleInfo, index: number) => {
-    const { year, semester, showConflicts, showModuleMeta } = this.props;
+    const { year, semester, showModuleMeta } = this.props;
     const { moduleCode, moduleInfo, conflict } = plannerModule;
 
     const showExamDate = showModuleMeta && config.academicYear === year;
@@ -64,7 +67,7 @@ export default class PlannerSemester extends PureComponent<Props> {
         moduleTitle={getModuleTitle(plannerModule)}
         examDate={showExamDate && moduleInfo ? getModuleExamDate(moduleInfo, semester) : null}
         moduleCredit={showModuleMeta ? getModuleCredit(plannerModule) : null}
-        conflict={showConflicts ? conflict : null}
+        conflict={conflict}
         removeModule={this.props.removeModule}
         addCustomData={this.props.addCustomData}
       />
