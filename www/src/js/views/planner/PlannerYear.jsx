@@ -2,10 +2,10 @@
 
 import React, { PureComponent } from 'react';
 import classnames from 'classnames';
-import { sortBy, toPairs, flatMap, values, sumBy } from 'lodash';
+import { size, sortBy, toPairs, flatMap, values, sumBy } from 'lodash';
 
 import type { ModuleCode, Semester } from 'types/modules';
-import type { ModuleWithInfo } from 'types/views';
+import type { PlannerModuleInfo } from 'types/views';
 import config from 'config';
 import { getSemesterName } from 'utils/planner';
 import { Minus, Plus } from 'views/components/icons';
@@ -14,8 +14,9 @@ import PlannerSemester from './PlannerSemester';
 import styles from './PlannerYear.scss';
 
 type Props = {|
-  +year: string,
-  +semesters: { [Semester]: ModuleWithInfo[] },
+  +name: string, // eg. iBLOCs, Year 1, etc.
+  +year: string, // Actual academic year
+  +semesters: { [Semester]: PlannerModuleInfo[] },
 
   +addModule: (moduleCode: ModuleCode, year: string, semester: Semester) => void,
   +removeModule: (moduleCode: ModuleCode) => void,
@@ -33,22 +34,25 @@ export default class PlannerYear extends PureComponent<Props, State> {
 
   hasSpecialTermModules() {
     const { semesters } = this.props;
-    return semesters[3].length > 0 || semesters[4].length > 0;
+    return size(semesters[3]) > 0 || size(semesters[4]) > 0;
   }
 
   renderHeader() {
-    const { year, semesters } = this.props;
+    const { year, name, semesters } = this.props;
     const modules = flatMap(semesters, values);
     const credits = sumBy(modules, (module) => +module.moduleInfo?.ModuleCredit || 0);
     const count = modules.length;
 
     return (
       <header className={styles.yearHeader}>
-        <h2>{year}</h2>
-        <div>
+        <h2>
+          {name} <span className={styles.acadYear}>{year}</span>
+        </h2>
+        <div className={styles.yearMeta}>
           <p>
-            {count} {count === 1 ? 'module' : 'modules'} / {renderMCs(credits)}
+            {count} {count === 1 ? 'module' : 'modules'}
           </p>
+          <p>{renderMCs(credits)}</p>
         </div>
       </header>
     );

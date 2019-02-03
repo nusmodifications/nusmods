@@ -15,6 +15,7 @@ import {
   subtractAcadYear,
   addAcadYear,
   getYearsBetween,
+  offsetAcadYear,
 } from 'utils/modules';
 import { noBreak } from 'utils/react';
 
@@ -262,5 +263,25 @@ describe(getYearsBetween, () => {
       '2017/2018',
       '2018/2019',
     ]);
+  });
+
+  test('should throw if min year is less than max year', () => {
+    expect(() => getYearsBetween('2016/2017', '2014/2015')).toThrow();
+  });
+});
+
+describe(offsetAcadYear, () => {
+  test('should return year unchanged if offset is zero', () => {
+    expect(offsetAcadYear('2018/2019', 0)).toEqual('2018/2019');
+  });
+
+  test('should work with negative offsets', () => {
+    expect(offsetAcadYear('2018/2019', -1)).toEqual('2017/2018');
+    expect(offsetAcadYear('2018/2019', -4)).toEqual('2014/2015');
+  });
+
+  test('should work with positive offsets', () => {
+    expect(offsetAcadYear('2018/2019', 1)).toEqual('2019/2020');
+    expect(offsetAcadYear('2018/2019', 4)).toEqual('2022/2023');
   });
 });

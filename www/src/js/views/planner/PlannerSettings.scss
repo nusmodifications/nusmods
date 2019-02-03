@@ -1,0 +1,44 @@
+@import '~styles/utils/modules-entry';
+@import 'variables';
+
+.settings {
+  section {
+    margin-bottom: 2rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    h2 {
+      margin-bottom: 0.4rem;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+  }
+}
+
+.years {
+  composes: list-unstyled from global;
+  display: grid;
+  grid-auto-rows: 1fr;
+  grid-gap: 0.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
+
+  button {
+    height: 100%;
+    font-weight: bold;
+    line-height: 1.25;
+  }
+
+  .subtitle {
+    display: block;
+    margin-top: 0.2rem;
+    font-weight: normal;
+    font-size: 0.9rem;
+  }
+}
+
+.toggleSection {
+  display: flex;
+  align-items: center;
+}
