@@ -79,9 +79,7 @@ export default class GetSemesterModules extends BaseTask implements Task<Input, 
         return printed;
       } catch (e) {
         this.logger.error(e, `Cannot get modules from ${department.Description}`);
-
-        // TODO: Uncomment when the API stops misbehaving
-        return []; // throw e;
+        throw new TaskError(`Cannot get modules from ${department.Description}`, this, e);
       }
     });
 

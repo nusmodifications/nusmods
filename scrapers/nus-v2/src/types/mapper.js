@@ -25,8 +25,8 @@ export type SemesterModule = $Diff<
   Module,
   {
     History: Array<SemesterData>,
-    ModmavenTree: TreeFragment,
-    LockedModules?: Array<ModuleCode>,
+    PrereqTree: TreeFragment,
+    FulfillRequirements?: ModuleCode[],
   },
 >;
 
@@ -36,7 +36,7 @@ export type SemesterModuleData = {|
   SemesterData: SemesterData,
 |};
 
-export type ModuleWithoutTree = $Diff<Module, { ModmavenTree: TreeFragment }>;
+export type ModuleWithoutTree = $Diff<Module, { PrereqTree: TreeFragment }>;
 
 /**
  * The exam info part of semester data

@@ -5,6 +5,7 @@ import { createToken, Lexer, Parser, type Token } from 'chevrotain';
 
 import { Logger } from '../logger';
 import { AND_OR_REGEX, MODULE_REGEX, OPERATORS } from './constants';
+import type { ParseTree } from "./types";
 
 /**
  * Parses the string to build a tree of requirements for the module.
@@ -223,7 +224,7 @@ export function cleanOperators(tokens: Token[]) {
  * @param {String} prerequisite The prerequisite string
  * @param {bunyan} logger Bunyan logger
  */
-export default function parseString(prerequisite: string, logger: Logger) {
+export default function parseString(prerequisite: string, logger: Logger): ?ParseTree {
   const findModules = R.match(new RegExp(MODULE_REGEX, 'g'));
   const moduleMatches = findModules(prerequisite);
 

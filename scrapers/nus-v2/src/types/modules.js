@@ -75,8 +75,7 @@ export type SemesterData = {|
 // Recursive definition for walking a module tree
 export type TreeFragment = {|
   +name: string,
-  // TreeFragment[] will result in infinite loop
-  +children: Array<TreeFragment>,
+  +children?: TreeFragment[],
 |};
 
 // Information for a module for a particular academic year.
@@ -105,8 +104,8 @@ export type Module = {
   History: Array<SemesterData>,
 
   // Requisites
-  ModmavenTree: TreeFragment,
-  LockedModules?: Array<ModuleCode>,
+  PrereqTree: TreeFragment,
+  FulfillRequirements?: ModuleCode[],
 
   // Deprecated
   Types?: Array<string>,

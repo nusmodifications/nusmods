@@ -1,22 +1,24 @@
 // @flow
 
 import path from 'path';
-import { values } from 'lodash';
+import { entries, uniq } from 'lodash';
 import * as fs from 'fs-extra';
 import * as R from 'ramda';
 
+import type { Module, ModuleCode } from '../../types/modules';
 import type { ModuleWithoutTree } from '../../types/mapper';
 import rootLogger, { Logger } from '../logger';
 import config from '../../config';
 import parseString from './parseString';
 import normalizeString from './normalizeString';
 import { MODULE_REGEX, OPERATORS_REGEX } from './constants';
+import { flattenTree, generatePrereqTree, node } from './tree';
+import type { ParseTree } from './types';
 
 /**
  * Generate the following fields for modules:
- * ParsedPrerequisite: prerequisite in the form of a tree
- * ParsedPreclusion: preclusion in the form of a tree
- * LockedModules: modules that cannot be taken until this module is fulfilled
+ *
+ * FulfillRequirements: modules that cannot be taken until this module is fulfilled
  * ModmavenTree: different format of ParsedPrerequisite
  */
 
@@ -27,7 +29,7 @@ const logger = rootLogger.child({
 // Add any key-words and reasons for which NO parsing should be done and
 // the entire pre-req string should be shown instead
 const RESTRICTED_KEYWORDS = [
-  // requirement to be USP students cannot be represented
+  // Requirement to be USP students cannot be represented
   'USP',
   // Yearly based modules cannot be represented
   'Cohort',
@@ -51,111 +53,70 @@ const RESTRICTED_KEYWORDS = [
   '4 of the 5',
 ];
 
-function parse(key: 'Prerequisite' | 'Preclusion', data: ModuleWithoutTree[], subLogger: Logger) {
-  const moduleCodeToData: { [string]: string } = R.pipe(
-    R.map(R.props(['ModuleCode', key])),
-    R.fromPairs, // [key, val] => { key: val }
-    R.filter(R.identity),
-  )(data);
+function parse(data: ModuleWithoutTree[], subLogger: Logger): { [ModuleCode]: ParseTree } {
+  const results = {};
 
-  const parsable = R.pipe(
-    // remove restricted
-    R.filter((str) => !RESTRICTED_KEYWORDS.some((keyword) => str.includes(keyword))),
-    // remove those with no modules
-    R.filter(R.test(MODULE_REGEX)),
-  )(moduleCodeToData);
+  for (const module of data) {
+    const moduleCode = module.ModuleCode;
+    const value = module.Prerequisite;
 
-  Object.keys(parsable).forEach((moduleCode) => {
-    const string = parsable[moduleCode];
-    const normalizedString = normalizeString(string, moduleCode);
+    if (
+      // Filter out empty values
+      value &&
+      // Filter out values which don't contain any module codes
+      MODULE_REGEX.exec(value) &&
+      // Filter out values with restricted keywords which indicate the value
+      // has some requirements that cannot be parsed as a tree
+      !RESTRICTED_KEYWORDS.some((keyword) => value.includes(keyword))
+    ) {
+      // Sanitize, then parse the value
+      const normalizedValue = normalizeString(value, moduleCode);
+      const moduleLog = subLogger.child({ moduleCode });
 
-    const moduleLog = subLogger.child({ moduleCode });
-    const parsedString = parseString(normalizedString, moduleLog);
+      const parsedValue = parseString(normalizedValue, moduleLog);
 
-    parsable[moduleCode] = parsedString
-      ? {
-          [key]: string,
-          [`Parsed${key}`]: parsedString,
-        }
-      : null;
-  });
+      if (parsedValue) {
+        results[module.ModuleCode] = parsedValue;
+      }
+    }
+  }
 
-  return R.filter(R.identity, parsable);
+  return results;
 }
 
-function generateRequirements(allModules, moduleCodes) {
-  const modules = {};
+function generateRequirements(allModules, prerequisites): Module[] {
+  // Find modules which this module fulfill the requirements for
+  const fulfillModules = {};
+  allModules.forEach((module) => {
+    fulfillModules[module.ModuleCode] = new Set();
+  });
 
-  // converts { key: val } turns into { name: key, children: val }
-  function node(key, val) {
-    return { name: key, children: val };
+  for (const [moduleCode, prereqs] of entries(prerequisites)) {
+    for (const fulfillsModule of flattenTree(prereqs)) {
+      if (fulfillModules[fulfillsModule]) {
+        // Since module requires fulfillsModule, that means fulfillsModule
+        // fulfills the requirements for module
+        fulfillModules[fulfillsModule].add(moduleCode);
+      }
+    }
   }
 
-  function genModmavenTree(tree) {
-    if (typeof tree === 'string') {
-      return node(tree, []);
-    }
-
-    if (Array.isArray(tree)) {
-      return tree.map(genModmavenTree);
-    }
-
-    return Object.entries(tree).map(([key, val]) => {
-      // recursively gen tree
-      const children = genModmavenTree(val);
-      return node(key, children);
-    });
-  }
-
-  values(allModules).forEach((module) => {
+  return allModules.map((module) => {
     const moduleCode = module.ModuleCode;
-    const parsedPrerequisite = genModmavenTree(module.ParsedPrerequisite || []);
-    modules[moduleCode] = {
+    const parsedPrerequisite =
+      prerequisites[moduleCode] && generatePrereqTree(prerequisites[moduleCode]);
+
+    return {
       ...module,
-      ModmavenTree: node(moduleCode, parsedPrerequisite),
+      PrereqTree: node(moduleCode, parsedPrerequisite),
+      FulfillRequirements: Array.from(fulfillModules[moduleCode]),
     };
   });
-
-  // locked modules mean 'inverse prerequisite', or
-  // 'if you have not taken this module, you cannot take the following'
-
-  // inject 'LockedModules' key into every module as a set
-  moduleCodes.forEach((moduleCode) => {
-    modules[moduleCode].LockedModules = new Set();
-  });
-
-  function flattenTree(tree) {
-    if (typeof tree === 'string') {
-      return [tree];
-    }
-
-    return Array.isArray(tree)
-      ? R.unnest(tree.map(flattenTree))
-      : R.unnest(Object.values(tree).map(flattenTree));
-  }
-
-  values(modules).forEach((module) => {
-    const thisModuleCode = module.ModuleCode;
-    const parsedPrerequisite = module.ParsedPrerequisite || [];
-    const flattenedPrerequisites = flattenTree(parsedPrerequisite);
-    flattenedPrerequisites.forEach((moduleCode) => {
-      if (modules[moduleCode]) {
-        modules[moduleCode].LockedModules.add(thisModuleCode);
-      }
-    });
-  });
-
-  // convert set back to array
-  moduleCodes.forEach((moduleCode) => {
-    modules[moduleCode].LockedModules = Array.from(modules[moduleCode].LockedModules);
-  });
-
-  return modules;
 }
 
-export default async function genReqTree(allModules: ModuleWithoutTree[]) {
+export default async function genReqTree(allModules: ModuleWithoutTree[]): Promise<Module[]> {
   // check that all modules match regex and no modules contain operators
-  const moduleCodes: string[] = R.uniq(R.pluck('ModuleCode', allModules));
+  const moduleCodes: string[] = uniq(allModules.map((module) => module.ModuleCode));
 
   moduleCodes.forEach((moduleCode) => {
     const isModule = MODULE_REGEX.test(moduleCode);
@@ -169,20 +130,8 @@ export default async function genReqTree(allModules: ModuleWithoutTree[]) {
     }
   });
 
-  const prerequisites = parse('Prerequisite', allModules, logger);
-  const preclusions = parse('Preclusion', allModules, logger);
-
-  const merged = allModules.map((data) => {
-    const moduleCode = data.ModuleCode;
-
-    return {
-      ...data,
-      ...prerequisites[moduleCode],
-      ...preclusions[moduleCode],
-    };
-  });
-
-  const modules = generateRequirements(merged, moduleCodes);
+  const prerequisites = parse(allModules, logger);
+  const modules = generateRequirements(allModules, prerequisites);
 
   // for debugging usage
   if (process.env.NODE_ENV !== 'production') {
@@ -192,8 +141,8 @@ export default async function genReqTree(allModules: ModuleWithoutTree[]) {
         'ParsedPrerequisite',
         'Preclusion',
         'ParsedPreclusion',
-        'ModmavenTree',
-        'LockedModules',
+        'PrereqTree',
+        'FulfillRequirements',
       ]),
       modules,
     );
@@ -202,5 +151,5 @@ export default async function genReqTree(allModules: ModuleWithoutTree[]) {
     await fs.outputJson(pathToWrite, debugOutput, { spaces: 2 });
   }
 
-  return values(modules);
+  return modules;
 }
