@@ -5,7 +5,7 @@ import {
   getAcadWeekName,
   getAcadWeekInfo,
   getExamWeek,
-} from '../src/academicCalendar';
+} from './academicCalendar';
 
 /* eslint-disable no-console */
 console.warn = jest.fn();

@@ -55,11 +55,14 @@ export function getAcadSem(acadWeekNumber) {
 
   if (acadWeekNumber >= earliestSupportedWeek && acadWeekNumber <= lastWeekofSem1) {
     return sem1;
-  } else if (acadWeekNumber > lastWeekofSem1 && acadWeekNumber <= lastWeekofSem2) {
+  }
+  if (acadWeekNumber > lastWeekofSem1 && acadWeekNumber <= lastWeekofSem2) {
     return sem2;
-  } else if (acadWeekNumber > lastWeekofSem2 && acadWeekNumber <= lastWeekofSpecialSem1) {
+  }
+  if (acadWeekNumber > lastWeekofSem2 && acadWeekNumber <= lastWeekofSpecialSem1) {
     return special1;
-  } else if (acadWeekNumber > lastWeekofSpecialSem1 && acadWeekNumber <= lastWeekofSpecialSem2) {
+  }
+  if (acadWeekNumber > lastWeekofSpecialSem1 && acadWeekNumber <= lastWeekofSpecialSem2) {
     return special2;
   }
 
