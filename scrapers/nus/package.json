@@ -39,7 +39,7 @@
     "fs-extra": "^4.0.0",
     "got": "^8.0.2",
     "gulp": "^4.0.0",
-    "gulp-cli": "^2.0.0",
+    "gulp-cli": "^2.0.1",
     "is-binary-path": "^2.0.0",
     "moment": "^2.17.1",
     "nusmoderator": "^2.1.0",
@@ -68,8 +68,8 @@
     "jest": "^22.4.2",
     "mock-fs": "^4.2.0",
     "prettier": "^1.11.1",
-    "webpack": "^4.1.1",
-    "webpack-cli": "^2.0.10",
-    "webpack-node-externals": "^1.6.0"
+    "webpack": "^4.29.1",
+    "webpack-cli": "^3.2.3",
+    "webpack-node-externals": "^1.7.2"
   }
 }
