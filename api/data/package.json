@@ -31,10 +31,10 @@
     "axios": "^0.18.0",
     "bluebird": "^3.5.3",
     "bunyan": "^1.8.12",
-    "dotenv": "^5.0.1",
-    "fs-extra": "^5.0.0",
+    "dotenv": "^6.2.0",
+    "fs-extra": "^7.0.1",
     "graphql": "^14.1.1",
-    "knex": "^0.14.4",
+    "knex": "^0.16.3",
     "lodash": "^4.17.11",
     "sanitize-filename": "^1.6.1",
     "sqlite3": "^4.0.6"
