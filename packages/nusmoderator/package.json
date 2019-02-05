@@ -11,7 +11,7 @@
   "scripts": {
     "clean": "rimraf dist coverage",
     "ci": "npm run lint && npm run test",
-    "lint": "eslint src",
+    "lint": "documentation lint src && eslint src",
     "docs": "documentation readme src --section=API",
     "build": "microbundle",
     "test": "jest --coverage",
