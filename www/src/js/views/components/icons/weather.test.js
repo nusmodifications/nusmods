@@ -1,15 +1,15 @@
 // @flow
 
-import getWeatherIcon from './index';
-import Cloudy from './cloudy';
-import Rain from './rain';
-import Showers from './showers';
-import Thunderstorm from './thunderstorm';
-import Dust from './dust';
-import Fog from './fog';
-import Wind from './strong-wind';
-import Sunny from './day-sunny';
-import ClearNight from './night-clear';
+import Cloudy from 'img/weather/cloudy.svg';
+import Rain from 'img/weather/rain.svg';
+import Showers from 'img/weather/showers.svg';
+import Thunderstorm from 'img/weather/thunderstorm.svg';
+import Dust from 'img/weather/dust.svg';
+import Fog from 'img/weather/fog.svg';
+import Wind from 'img/weather/strong-wind.svg';
+import Sunny from 'img/weather/day-sunny.svg';
+import ClearNight from 'img/weather/night-clear.svg';
+import getWeatherIcon from './weather';
 
 describe(getWeatherIcon, () => {
   it.each([

@@ -1265,9 +1265,9 @@ http-errors@^1.6.3, http-errors@~1.6.2:
     setprototypeof "1.1.0"
     statuses ">= 1.4.0 < 2"
 
-http-graceful-shutdown@2.2.2:
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/http-graceful-shutdown/-/http-graceful-shutdown-2.2.2.tgz#5fe4efc886d849ccef3896287e1d0815b4f1806e"
+http-graceful-shutdown@2.2.3:
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/http-graceful-shutdown/-/http-graceful-shutdown-2.2.3.tgz#c8b908a3a0bcfb51cde21f5329ce9aa08441ed59"
   dependencies:
     debug "^4.1.0"
 
@@ -1701,9 +1701,9 @@ koa-views@6.1.5:
     mz "^2.4.0"
     pretty "^2.0.0"
 
-koa@2.6.2:
-  version "2.6.2"
-  resolved "https://registry.yarnpkg.com/koa/-/koa-2.6.2.tgz#57ba4d049b0a99cae0d594e6144e2931949a7ce1"
+koa@2.7.0:
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/koa/-/koa-2.7.0.tgz#7e00843506942b9d82c6cc33749f657c6e5e7adf"
   dependencies:
     accepts "^1.3.5"
     cache-content-type "^1.0.0"

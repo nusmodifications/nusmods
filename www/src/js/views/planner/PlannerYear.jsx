@@ -2,12 +2,12 @@
 
 import React, { PureComponent } from 'react';
 import classnames from 'classnames';
-import { size, sortBy, toPairs, flatMap, values, sumBy } from 'lodash';
+import { size, sortBy, toPairs, flatMap, values } from 'lodash';
 
 import type { ModuleCode, Semester } from 'types/modules';
 import type { PlannerModuleInfo } from 'types/views';
 import config from 'config';
-import { getSemesterName } from 'utils/planner';
+import { getTotalMC, getSemesterName } from 'utils/planner';
 import { Minus, Plus } from 'views/components/icons';
 import { renderMCs } from 'utils/modules';
 import PlannerSemester from './PlannerSemester';
@@ -20,6 +20,7 @@ type Props = {|
 
   +addModule: (moduleCode: ModuleCode, year: string, semester: Semester) => void,
   +removeModule: (moduleCode: ModuleCode) => void,
+  +addCustomData: (moduleCode: ModuleCode) => void,
 |};
 
 type State = {|
@@ -40,7 +41,7 @@ export default class PlannerYear extends PureComponent<Props, State> {
   renderHeader() {
     const { year, name, semesters } = this.props;
     const modules = flatMap(semesters, values);
-    const credits = sumBy(modules, (module) => +module.moduleInfo?.ModuleCredit || 0);
+    const credits = getTotalMC(modules);
     const count = modules.length;
 
     return (
@@ -90,6 +91,7 @@ export default class PlannerYear extends PureComponent<Props, State> {
                 className={styles.semester}
                 addModule={this.props.addModule}
                 removeModule={this.props.removeModule}
+                addCustomData={this.props.addCustomData}
               />
             </div>
           ))}

@@ -28,6 +28,7 @@ import ErrorPage from 'views/errors/ErrorPage';
 import ApiError from 'views/errors/ApiError';
 import { trackPageView } from 'bootstrapping/mamoto';
 import { DARK_MODE } from 'types/settings';
+import Logo from 'img/nusmods-logo.svg';
 import LoadingSpinner from './components/LoadingSpinner';
 import FeedbackModal from './components/FeedbackModal';
 import KeyboardShortcuts from './components/KeyboardShortcuts';
@@ -121,17 +122,21 @@ export class AppShellComponent extends Component<Props, State> {
             })}
           />
         </Helmet>
+
         <nav className={styles.navbar}>
           <NavLink className={styles.brand} to="/" title="Home">
-            <span className="sr-only">NUSMods</span>
+            <Logo title="NUSMods" />
           </NavLink>
 
-          <ErrorBoundary>
-            <GlobalSearchContainer />
-          </ErrorBoundary>
+          <div className={styles.navRight}>
+            <ErrorBoundary>
+              <GlobalSearchContainer />
+            </ErrorBoundary>
 
-          <div className={styles.weekText}>{weekText}</div>
+            <div className={styles.weekText}>{weekText}</div>
+          </div>
         </nav>
+
         <div className="main-container">
           <Navtabs />
 

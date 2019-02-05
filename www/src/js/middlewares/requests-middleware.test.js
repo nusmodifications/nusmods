@@ -76,13 +76,7 @@ describe(requestMiddleware, () => {
     axios.mockReturnValue(Promise.reject(error));
 
     const p = store.dispatch(requestAction);
-    expect(p).toEqual(Promise.reject(error));
-
-    try {
-      await p;
-    } catch (e) {
-      // Ignore
-    }
+    await expect(p).rejects.toEqual(error);
 
     expect(axios).toBeCalledTimes(1);
 

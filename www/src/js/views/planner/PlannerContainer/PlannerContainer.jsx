@@ -2,7 +2,7 @@
 
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { flatMap, flatten, sortBy, sumBy, toPairs, values } from 'lodash';
+import { flatMap, flatten, sortBy, toPairs, values } from 'lodash';
 import { DragDropContext, Droppable, type OnDragEndResponder } from 'react-beautiful-dnd';
 import classnames from 'classnames';
 import type { Module, ModuleCode, Semester } from 'types/modules';
@@ -13,10 +13,11 @@ import { MODULE_CODE_REGEX, renderMCs, subtractAcadYear } from 'utils/modules';
 import {
   EXEMPTION_SEMESTER,
   EXEMPTION_YEAR,
-  fromDroppableId,
   IBLOCS_SEMESTER,
   PLAN_TO_TAKE_SEMESTER,
   PLAN_TO_TAKE_YEAR,
+  fromDroppableId,
+  getTotalMC,
 } from 'utils/planner';
 import { addPlannerModule, movePlannerModule, removePlannerModule } from 'actions/planner';
 import { toggleFeedback } from 'actions/app';
@@ -29,6 +30,8 @@ import Modal from 'views/components/Modal';
 import PlannerSemester from '../PlannerSemester';
 import PlannerYear from '../PlannerYear';
 import PlannerSettings from '../PlannerSettings';
+import CustomModuleForm from '../CustomModuleForm';
+
 import styles from './PlannerContainer.scss';
 
 export type Props = {|
@@ -50,6 +53,8 @@ export type Props = {|
 type State = {|
   +loading: boolean,
   +showSettings: boolean,
+  // Module code is the module being edited. null means the modal is not open
+  +showCustomModule: ?ModuleCode,
 |};
 
 const TRASH_ID = 'trash';
@@ -58,6 +63,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
   state = {
     loading: true,
     showSettings: false,
+    showCustomModule: null,
   };
 
   componentDidMount() {
@@ -105,9 +111,16 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
     }
   };
 
+  onAddCustomData = (moduleCode: ModuleCode) =>
+    this.setState({
+      showCustomModule: moduleCode,
+    });
+
+  closeAddCustomData = () => this.setState({ showCustomModule: null });
+
   renderHeader() {
     const modules = [...this.props.iblocsModules, ...flatten(flatMap(this.props.modules, values))];
-    const credits = sumBy(modules, (module) => +module.moduleInfo?.ModuleCredit || 0);
+    const credits = getTotalMC(modules);
     const count = modules.length;
 
     return (
@@ -171,7 +184,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
                   modules={iblocsModules}
                   addModule={this.onAddModule}
                   removeModule={this.props.removeModule}
-                  showConflicts={false}
+                  addCustomData={this.onAddCustomData}
                 />
               </section>
             )}
@@ -184,6 +197,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
                 semesters={semesters}
                 addModule={this.onAddModule}
                 removeModule={this.props.removeModule}
+                addCustomData={this.onAddCustomData}
               />
             ))}
           </div>
@@ -197,8 +211,8 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
                 modules={exemptions}
                 addModule={this.onAddModule}
                 removeModule={this.props.removeModule}
-                showConflicts={false}
                 showModuleMeta={false}
+                addCustomData={this.onAddCustomData}
               />
             </section>
 
@@ -210,7 +224,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
                 modules={planToTake}
                 addModule={this.onAddModule}
                 removeModule={this.props.removeModule}
-                showConflicts={false}
+                addCustomData={this.onAddCustomData}
               />
             </section>
 
@@ -240,6 +254,19 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
           animate
         >
           <PlannerSettings />
+        </Modal>
+
+        <Modal
+          isOpen={!!this.state.showCustomModule}
+          onRequestClose={this.closeAddCustomData}
+          animate
+        >
+          {this.state.showCustomModule && (
+            <CustomModuleForm
+              moduleCode={this.state.showCustomModule}
+              onFinishEditing={this.closeAddCustomData}
+            />
+          )}
         </Modal>
       </div>
     );

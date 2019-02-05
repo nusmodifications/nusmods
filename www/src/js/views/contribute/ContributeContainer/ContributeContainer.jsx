@@ -18,14 +18,14 @@ import { FeedbackButtons } from 'views/components/FeedbackModal';
 import { getModuleCondensed } from 'selectors/moduleBank';
 import { currentTests } from 'views/settings/BetaToggle';
 
-import reviewIcon from 'img/icons/review.svg';
-import wrenchIcon from 'img/icons/wrench.svg';
-import chatIcon from 'img/icons/chat.svg';
-import charityIcon from 'img/icons/charity.svg';
-import bugReportIcon from 'img/icons/bug-report.svg';
-import developerIcon from 'img/icons/programmer.svg';
-import contributeIcon from 'img/icons/love.svg';
-import venueIcon from 'img/icons/compass.svg';
+import ReviewIcon from 'img/icons/review.svg';
+import WrenchIcon from 'img/icons/wrench.svg';
+import ChatIcon from 'img/icons/chat.svg';
+import CharityIcon from 'img/icons/charity.svg';
+import BugReportIcon from 'img/icons/bug-report.svg';
+import DeveloperIcon from 'img/icons/programmer.svg';
+import ContributeIcon from 'img/icons/love.svg';
+import VenueIcon from 'img/icons/compass.svg';
 
 import UnmappedVenues from '../UnmappedVenues';
 import ContributorList from '../ContributorList';
@@ -47,7 +47,7 @@ class ContributeContainer extends PureComponent<Props> {
         <Title>Contribute</Title>
 
         <header>
-          <img className={styles.topImage} src={contributeIcon} alt="" />
+          <ContributeIcon className={styles.topImage} />
           <h1>Help Us Help You!</h1>
         </header>
 
@@ -65,7 +65,7 @@ class ContributeContainer extends PureComponent<Props> {
         {this.props.modules.length > 0 && (
           <section>
             <header>
-              <img src={reviewIcon} alt="" />
+              <ReviewIcon />
               <h3>Write Module Reviews</h3>
             </header>
 
@@ -92,7 +92,7 @@ class ContributeContainer extends PureComponent<Props> {
 
         <section>
           <header>
-            <img src={venueIcon} alt="" />
+            <VenueIcon />
             <h3>Map the School</h3>
           </header>
 
@@ -107,7 +107,7 @@ class ContributeContainer extends PureComponent<Props> {
         {currentTests.length > 0 && (
           <section>
             <header>
-              <img src={wrenchIcon} alt="" />
+              <WrenchIcon />
               <h3>Test Drive NUSMods Beta</h3>
             </header>
 
@@ -156,7 +156,7 @@ class ContributeContainer extends PureComponent<Props> {
 
         <section>
           <header>
-            <img src={chatIcon} alt="" />
+            <ChatIcon />
             <h3>Give Us Feedback</h3>
           </header>
 
@@ -170,7 +170,7 @@ class ContributeContainer extends PureComponent<Props> {
 
         <section>
           <header>
-            <img src={charityIcon} alt="" />
+            <CharityIcon />
             <h3>Donate</h3>
           </header>
           <p>
@@ -208,7 +208,7 @@ class ContributeContainer extends PureComponent<Props> {
 
         <section>
           <header>
-            <img src={bugReportIcon} alt="" />
+            <BugReportIcon />
             <h3>File Bug Reports and Feature Requests</h3>
           </header>
 
@@ -237,7 +237,7 @@ class ContributeContainer extends PureComponent<Props> {
 
         <section>
           <header>
-            <img src={developerIcon} alt="" />
+            <DeveloperIcon />
             <h3>Contribute Code and Design</h3>
           </header>
 

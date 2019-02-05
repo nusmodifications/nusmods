@@ -142,6 +142,17 @@ export type ModuleFinderState = {|
 // it appears on the list for the semester
 export type ModuleTime = [string, Semester, number];
 
+export type CustomModule = {
+  // For modules which the school no longer offers, we let students
+  // key in the name and MCs manually
+  +title?: string,
+  +moduleCredit: number,
+};
+
+export type CustomModuleData = {
+  [ModuleCode]: CustomModule,
+};
+
 // Mapping modules to when they will be taken
 export type PlannerState = {|
   +minYear: string,
@@ -149,6 +160,8 @@ export type PlannerState = {|
   +iblocs: boolean,
 
   +modules: {
-    +[ModuleCode]: ModuleTime,
+    [ModuleCode]: ModuleTime,
   },
+
+  +custom: CustomModuleData,
 |};
