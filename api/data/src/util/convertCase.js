@@ -6,7 +6,8 @@ const memoizeCamelCase = memoize(camelCase);
 function camelCaseResult(x) {
   if (Array.isArray(x)) {
     return x.map(camelCaseResult);
-  } else if (isObjectLike(x)) {
+  }
+  if (isObjectLike(x)) {
     const obj = {};
     Object.entries(x).forEach(([key, value]) => {
       obj[memoizeCamelCase(key)] = value;
