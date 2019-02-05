@@ -1,36 +1,37 @@
 // @flow
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Raven from 'raven-js';
+import * as Sentry from '@sentry/browser';
 
+import RandomKawaii from 'views/components/RandomKawaii';
 import Title from 'views/components/Title';
 import styles from './ErrorPage.scss';
 
 export default function NotFoundPage() {
-  Raven.captureMessage('404 - Page Not Found');
-  const eventId = Raven.lastEventId();
+  Sentry.withScope(() => {
+    Sentry.captureMessage('404 - Page Not Found');
+  });
 
   return (
-    <div>
+    <div className={styles.container}>
       <Title>Page Not Found</Title>
 
-      <div className={styles.container}>
-        <h1 className={styles.header}>
-          <span className={styles.expr}>Oops...</span>
-          page not found.
-        </h1>
-        <p>
-          If you think something <em>should</em> be here,{' '}
-          <button className={styles.link} onClick={() => Raven.showReportDialog({ eventId })}>
-            do tell us
-          </button>
-          !
-        </p>
+      <div className={styles.heading}>
+        <span className={styles.bigCharacter}>4</span>
+        <RandomKawaii aria-label="0" title="0" size={100} />
+        <span className={styles.bigCharacter}>4</span>
+      </div>
 
-        <p>
-          Otherwise, <Link to="/">go back to nusmods.com</Link> or{' '}
-          <Link to="/modules">try the module finder</Link>.
-        </p>
+      <h2>Ooops, page not found.</h2>
+      <p>Are you sure you are at the right page?</p>
+
+      <div className={styles.buttons}>
+        <button className="btn btn-outline-primary" onClick={() => Sentry.showReportDialog()}>
+          Something should be here
+        </button>
+        <Link className="btn btn-primary" to="/">
+          Bring me home
+        </Link>
       </div>
     </div>
   );

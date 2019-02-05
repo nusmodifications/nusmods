@@ -1,4 +1,6 @@
-# ![](docs/nusmods-logo.png)
+<h1>
+  <img src="docs/nusmods-logo.svg" alt="NUSMods" width="400" />
+</h1>
 
 [![Backers on Open Collective](https://opencollective.com/nusmods/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/nusmods/sponsors/badge.svg)](#sponsors) [![Coverage Status](https://coveralls.io/repos/github/nusmodifications/nusmods/badge.svg?branch=master)](https://coveralls.io/github/nusmodifications/nusmods?branch=master) [![CircleCI Build Status](https://circleci.com/gh/nusmodifications/nusmods.svg?style=shield)](https://circleci.com/gh/nusmodifications/nusmods)
 
@@ -20,9 +22,9 @@ We can be reached via the following methods, in order of preference.
 
 - Telegram: https://telegram.me/nusmods
 - Messenger: https://www.m.me/nusmods
+- Email: nusmods@googlegroups.com (for security related issues please email mods@nusmods.com instead)
 - Facebook: https://www.facebook.com/nusmods
 - Twitter: https://twitter.com/nusmods
-- Email: nusmods@googlegroups.com
 
 ## Contributing
 
@@ -70,8 +72,13 @@ All projects and packages in this repository are [MIT licensed](LICENSE).
 
 ## Supported by
 
-[BrowserStack](browserstack) lets us ensure NUSMods functions across all browsers and devices by allowing us to test NUSMods on real devices, including Safari on older iPhones and previous versions of browsers.
+[BrowserStack][browserstack] lets us ensure NUSMods functions across all browsers and devices by allowing us to test NUSMods on real devices, including Safari on older iPhones and previous versions of browsers.
 
 [![](docs/browserstack-logo.png)][browserstack]
 
+[Zoho][zoho] has kindly given us individual email accounts. Zoho Mail is a secure and reliable email solution, tailor-made for an organization's communication needs. With enhanced collaboration features, it's not just an inbox… [it's more](https://www.zoho.com/workplace/).
+
+[![](docs/zoho-logo.png)][zoho]
+
 [browserstack]: https://www.browserstack.com/
+[zoho]: https://www.zoho.com/

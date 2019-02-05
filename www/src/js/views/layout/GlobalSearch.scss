@@ -14,6 +14,10 @@ $dropdown-height: 40rem;
   margin-left: auto;
   font-size: 0.9rem;
   border-right: 1px solid var(--gray-lighter);
+
+  &:hover .icon {
+    color: theme-color();
+  }
 }
 
 $icon-dist: $input-width-open - $input-width;
@@ -26,7 +30,7 @@ $icon-dist-lg: $input-width-open-lg - $input-width;
   width: $icon-size;
   height: $icon-size;
   transform: translate($icon-dist - 0.25rem);
-  transition: transform $desktop-entering-duration $material-deceleration-curve;
+  transition: all $desktop-entering-duration $material-deceleration-curve;
 
   @include media-breakpoint-up(lg) {
     right: $icon-dist-lg + $container-padding;
@@ -35,6 +39,7 @@ $icon-dist-lg: $input-width-open-lg - $input-width;
 }
 
 .iconOpen {
+  color: theme-color();
   transform: translate(0);
 }
 
@@ -50,7 +55,9 @@ $icon-dist-lg: $input-width-open-lg - $input-width;
   border: 0;
   background: transparent;
   transform: translate($input-width-open);
-  transition: transform $desktop-entering-duration $material-deceleration-curve, opacity $desktop-entering-duration $material-deceleration-curve 75ms;
+  cursor: pointer;
+  transition: transform $desktop-entering-duration $material-deceleration-curve,
+    opacity $desktop-entering-duration $material-deceleration-curve 75ms;
 
   &:focus {
     background: transparent;
@@ -72,6 +79,7 @@ $icon-dist-lg: $input-width-open-lg - $input-width;
   right: 0;
   opacity: 1;
   transform: translate(0);
+  cursor: auto;
 }
 
 .selectListContainer {
@@ -142,11 +150,6 @@ $icon-dist-lg: $input-width-open-lg - $input-width;
     flex: 0 0 auto;
     margin-right: 0.4rem;
   }
-
-  :global(.badge) {
-    margin-right: 0.2rem;
-    border-radius: 1px;
-  }
 }
 
 .noResults {
@@ -173,21 +176,4 @@ $icon-dist-lg: $input-width-open-lg - $input-width;
   composes: h4 from global;
   display: block;
   white-space: normal;
-}
-
-.sem1,
-.sem2,
-.sem3,
-.sem4 {
-  color: var(--body-color);
-}
-
-@each $semester in (1, 2, 3, 4) {
-  .sem#{$semester} {
-    background: darken($gray-lightest, 5% * $semester);
-
-    @include night-mode {
-      background: lighten(#2c2c2c, 5% * $semester);
-    }
-  }
 }

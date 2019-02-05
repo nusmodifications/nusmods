@@ -1,14 +1,14 @@
 // @flow
 import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
+import Loadable, { type LoadingProps } from 'react-loadable';
 import classnames from 'classnames';
 import axios from 'axios';
 import qs from 'query-string';
-import Raven from 'raven-js';
 import { pick, mapValues, size, isEqual, get } from 'lodash';
 
 import type { ContextRouter } from 'react-router-dom';
-import type { Venue, VenueDetailList, VenueInfo, VenueSearchOptions } from 'types/venues';
+import type { Venue, VenueDetailList, VenueSearchOptions } from 'types/venues';
 
 import deferComponentRender from 'views/hocs/deferComponentRender';
 import ApiError from 'views/errors/ApiError';
@@ -27,6 +27,7 @@ import { defer } from 'utils/react';
 import makeResponsive from 'views/hocs/makeResponsive';
 import Modal from 'views/components/Modal';
 import Title from 'views/components/Title';
+import NoFooter from 'views/layout/NoFooter';
 
 import AvailabilitySearch, { defaultSearchOptions } from './AvailabilitySearch';
 import VenueList from './VenueList';
@@ -40,14 +41,10 @@ import styles from './VenuesContainer.scss';
 type Props = {
   ...ContextRouter,
   matchBreakpoint: boolean,
+  venues: VenueDetailList,
 };
 
 type State = {|
-  // Page data
-  loading: boolean,
-  error?: any,
-  venues: ?VenueDetailList,
-
   // View state
   isDetailScrollable: boolean,
 
@@ -80,15 +77,12 @@ export class VenuesContainerComponent extends Component<Props, State> {
       searchOptions,
       isAvailabilityEnabled,
       isDetailScrollable: true,
-      loading: true,
-      venues: null,
       searchTerm: params.q || '',
       pristineSearchOptions: !isAvailabilityEnabled,
     };
   }
 
   componentDidMount() {
-    this.loadPageData();
     VenueLocation.preload();
   }
 
@@ -141,23 +135,6 @@ export class VenuesContainerComponent extends Component<Props, State> {
 
   onToggleDetailScrollable = (isDetailScrollable: boolean) => {
     this.setState({ isDetailScrollable });
-  };
-
-  loadPageData = () => {
-    this.setState({ error: null });
-
-    axios
-      .get(nusmods.venuesUrl(config.semester))
-      .then(({ data }: { data: VenueInfo }) => {
-        this.setState({
-          loading: false,
-          venues: sortVenues(data),
-        });
-      })
-      .catch((error) => {
-        Raven.captureException(error);
-        this.setState({ error });
-      });
   };
 
   updateURL = (debounce: boolean = true) => {
@@ -228,29 +205,29 @@ export class VenuesContainerComponent extends Component<Props, State> {
     return (
       <Fragment>
         <Warning message="No matching venues found" />
-        {!!unfilteredCount &&
-          isAvailabilityEnabled && (
-            <p className="text-center text-muted">
-              {unfilteredCount === 1
-                ? 'There is a venue that is not shown because it is not free'
-                : `There are ${unfilteredCount} venues that are not shown because they are not free`}
-              <br />
-              <button
-                type="button"
-                className="btn btn-link"
-                onClick={() => this.setState({ isAvailabilityEnabled: false })}
-              >
-                Cancel free room search
-              </button>
-            </p>
-          )}
+        {!!unfilteredCount && isAvailabilityEnabled && (
+          <p className="text-center text-muted">
+            {unfilteredCount === 1
+              ? 'There is a venue that is not shown because it is not free'
+              : `There are ${unfilteredCount} venues that are not shown because they are not free`}
+            <br />
+            <button
+              type="button"
+              className="btn btn-link"
+              onClick={() => this.setState({ isAvailabilityEnabled: false })}
+            >
+              Cancel free room search
+            </button>
+          </p>
+        )}
       </Fragment>
     );
   }
 
   renderSelectedVenue(matchedVenues: VenueDetailList) {
     const selectedVenue = this.selectedVenue();
-    const { venues } = this.state;
+    const { venues } = this.props;
+
     if (!venues || !selectedVenue) return null;
 
     // Find the index of the current venue on the list of matched venues so
@@ -280,28 +257,8 @@ export class VenuesContainerComponent extends Component<Props, State> {
 
   render() {
     const selectedVenue = this.selectedVenue();
-    const {
-      searchTerm,
-      loading,
-      error,
-      isAvailabilityEnabled,
-      isDetailScrollable,
-      searchOptions,
-      venues,
-    } = this.state;
-
-    if (error) {
-      return <ApiError dataName="venue information" retry={this.loadPageData} />;
-    }
-
-    if (loading || !venues) {
-      return (
-        <div>
-          {pageHead}
-          <LoadingSpinner />
-        </div>
-      );
-    }
+    const { searchTerm, isAvailabilityEnabled, isDetailScrollable, searchOptions } = this.state;
+    const { venues } = this.props;
 
     let matchedVenues = searchVenue(venues, searchTerm);
     const unfilteredCount = size(matchedVenues);
@@ -320,7 +277,10 @@ export class VenuesContainerComponent extends Component<Props, State> {
           {size(matchedVenues) === 0 ? (
             this.renderNoResult(unfilteredCount)
           ) : (
-            <VenueList venues={matchedVenues} selectedVenue={selectedVenue} />
+            <VenueList
+              venues={matchedVenues.map(([venue]) => venue)}
+              selectedVenue={selectedVenue}
+            />
           )}
         </div>
 
@@ -354,7 +314,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
                   this.renderSelectedVenue(matchedVenues)
                 )}
               </div>
-              <div className={styles.background} />
+              <NoFooter />
             </Fragment>
           )}
         </VenueContext.Provider>
@@ -364,6 +324,29 @@ export class VenuesContainerComponent extends Component<Props, State> {
 }
 
 // Explicitly declare top level components for React hot reloading to work.
-const responsiveVenueContainer = makeResponsive(VenuesContainerComponent, breakpointDown('sm'));
-const routedVenuesContainer = withRouter(responsiveVenueContainer);
-export default deferComponentRender(routedVenuesContainer);
+const ResponsiveVenuesContainer = makeResponsive(VenuesContainerComponent, breakpointDown('sm'));
+const RoutedVenuesContainer = withRouter(ResponsiveVenuesContainer);
+const AsyncVenuesContainer = Loadable.Map({
+  loader: {
+    venues: () => axios.get(nusmods.venuesUrl(config.semester)),
+  },
+  loading: (props: LoadingProps) => {
+    if (props.error) {
+      return <ApiError dataName="venue information" retry={props.retry} />;
+    } else if (props.pastDelay) {
+      return <LoadingSpinner />;
+    }
+
+    return null;
+  },
+  render(loaded, props) {
+    return <RoutedVenuesContainer venues={sortVenues(loaded.venues.data)} {...props} />;
+  },
+});
+
+export default deferComponentRender(AsyncVenuesContainer);
+
+export function preload() {
+  AsyncVenuesContainer.preload();
+  VenueLocation.preload();
+}

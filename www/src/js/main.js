@@ -11,7 +11,7 @@ import App from 'App';
 
 import configureStore from 'bootstrapping/configure-store';
 import subscribeOnlineEvents from 'bootstrapping/subscribeOnlineEvents';
-import initializeGA from 'bootstrapping/google-analytics';
+import { initializeMamoto } from 'bootstrapping/mamoto';
 import initializeServiceWorker from 'bootstrapping/service-worker';
 
 import '../styles/main.scss';
@@ -44,5 +44,5 @@ if (
 }
 
 if (process.env.NODE_ENV === 'production') {
-  initializeGA();
+  initializeMamoto();
 }

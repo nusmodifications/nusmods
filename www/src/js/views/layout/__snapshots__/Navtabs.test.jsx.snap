@@ -6,7 +6,7 @@ exports[`NavtabsComponent renders into nav element 1`] = `
 >
   <NavLink
     activeClassName="linkActive"
-    ariaCurrent="page"
+    aria-current="page"
     className="link"
     to="/timetable/sem-1"
   >
@@ -22,7 +22,7 @@ exports[`NavtabsComponent renders into nav element 1`] = `
   </NavLink>
   <NavLink
     activeClassName="linkActive"
-    ariaCurrent="page"
+    aria-current="page"
     className="link"
     to="/modules"
   >
@@ -38,8 +38,10 @@ exports[`NavtabsComponent renders into nav element 1`] = `
   </NavLink>
   <NavLink
     activeClassName="linkActive"
-    ariaCurrent="page"
+    aria-current="page"
     className="link"
+    onFocus={[Function]}
+    onMouseOver={[Function]}
     to="/venues"
   >
     <Map
@@ -54,7 +56,7 @@ exports[`NavtabsComponent renders into nav element 1`] = `
   </NavLink>
   <NavLink
     activeClassName="linkActive"
-    ariaCurrent="page"
+    aria-current="page"
     className="link"
     to="/settings"
   >
@@ -68,14 +70,30 @@ exports[`NavtabsComponent renders into nav element 1`] = `
       Settings
     </span>
   </NavLink>
+  <NavLink
+    activeClassName="linkActive"
+    aria-current="page"
+    className="link hiddenOnMobile"
+    onFocus={[Function]}
+    onMouseOver={[Function]}
+    to="/contribute"
+  >
+    <Star
+      color="currentColor"
+      size="24"
+    />
+    <span
+      className="title"
+    >
+      Contribute
+    </span>
+  </NavLink>
   <div
     className="divider"
   />
-  <a
+  <ExternalLink
     className="link hiddenOnMobile"
     href="https://nuswhispers.com"
-    rel="noreferrer noopener"
-    target="_blank"
   >
     <Heart
       color="currentColor"
@@ -86,6 +104,6 @@ exports[`NavtabsComponent renders into nav element 1`] = `
     >
       Whispers
     </span>
-  </a>
+  </ExternalLink>
 </nav>
 `;

@@ -118,6 +118,7 @@ export type TimetablesState = {
 /* moduleBank.js */
 export type ModuleSelectListItem = SearchableModule & {
   +isAdded: boolean,
+  +isAdding: boolean,
 };
 export type ModuleList = ModuleCondensed[];
 export type ModuleSelectList = ModuleSelectListItem[];
@@ -134,4 +135,20 @@ export type ModuleSearch = {|
 
 export type ModuleFinderState = {|
   +search: ModuleSearch,
+|};
+
+/* planner.js */
+// The year, semester the module will be taken in, and the order
+// it appears on the list for the semester
+export type ModuleTime = [string, Semester, number];
+
+// Mapping modules to when they will be taken
+export type PlannerState = {|
+  +minYear: string,
+  +maxYear: string,
+  +iblocs: boolean,
+
+  +modules: {
+    +[ModuleCode]: ModuleTime,
+  },
 |};

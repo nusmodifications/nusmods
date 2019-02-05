@@ -28,6 +28,7 @@ import type { ModuleCodeMap } from 'types/reducers';
 
 import { getModuleSemesterData, getModuleTimetable } from 'utils/modules';
 import { getTimeAsDate } from 'utils/timify';
+import type { ExamClashes } from 'types/views';
 
 type LessonTypeAbbrev = { [LessonType]: string };
 export const LESSON_TYPE_ABBREV: LessonTypeAbbrev = {
@@ -225,10 +226,7 @@ export function areOtherClassesAvailable(
 
 // Find all exam clashes between modules in semester
 // Returns object associating exam dates with the modules clashing on those dates
-export function findExamClashes(
-  modules: Array<Module>,
-  semester: Semester,
-): { string: Array<Module> } {
+export function findExamClashes(modules: Array<Module>, semester: Semester): ExamClashes {
   const groupedModules = _.groupBy(modules, (module) =>
     _.get(getModuleSemesterData(module, semester), 'ExamDate'),
   );
@@ -237,7 +235,7 @@ export function findExamClashes(
 }
 
 export function isLessonAvailable(lesson: Lesson, weekInfo: $ReadOnly<AcadWeekInfo>): boolean {
-  if (weekInfo.type !== 'Instructional' || !weekInfo.num) {
+  if (!weekInfo.num) {
     return false;
   }
 
@@ -440,6 +438,18 @@ export function deserializeTimetable(serialized: string): SemTimetableConfig {
 
 export function isSameTimetableConfig(t1: SemTimetableConfig, t2: SemTimetableConfig): boolean {
   return _.isEqual(t1, t2);
+}
+
+export function isSameLesson(l1: Lesson, l2: Lesson) {
+  return (
+    l1.LessonType === l2.LessonType &&
+    l1.ClassNo === l2.ClassNo &&
+    l1.ModuleCode === l2.ModuleCode &&
+    l1.StartTime === l2.StartTime &&
+    l1.EndTime === l2.EndTime &&
+    l1.DayText === l2.DayText &&
+    l1.WeekText === l2.WeekText
+  );
 }
 
 export function getHoverLesson(lesson: Lesson): HoverLesson {

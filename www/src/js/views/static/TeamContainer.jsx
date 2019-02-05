@@ -3,8 +3,8 @@
 import React from 'react';
 
 import ExternalLink from 'views/components/ExternalLink';
+import Tooltip from 'views/components/Tooltip';
 import { Facebook, LinkedIn, GitHub, Twitter } from 'views/components/icons';
-
 import teamMembers from 'data/team.json';
 import StaticPage from './StaticPage';
 import styles from './TeamContainer.scss';
@@ -45,49 +45,53 @@ function TeamMember({ member }: Props) {
           <div className="row">
             {member.facebook && (
               <div className="col-sm-1 col">
-                <ExternalLink
-                  href={`https://www.facebook.com/${member.facebook}`}
-                  title="Facebook profile"
-                  aria-label="Facebook profile"
-                >
-                  <Facebook />
-                </ExternalLink>
+                <Tooltip content="Facebook profile" touchHold>
+                  <ExternalLink
+                    href={`https://www.facebook.com/${member.facebook}`}
+                    aria-label="Facebook profile"
+                  >
+                    <Facebook />
+                  </ExternalLink>
+                </Tooltip>
               </div>
             )}
 
             {member.twitter && (
               <div className="col-sm-1 col">
-                <ExternalLink
-                  href={`https://www.twitter.com/${member.twitter}`}
-                  title="Twitter profile"
-                  aria-label="Twitter profile"
-                >
-                  <Twitter />
-                </ExternalLink>
+                <Tooltip content="Twitter profile" touchHold>
+                  <ExternalLink
+                    href={`https://www.twitter.com/${member.twitter}`}
+                    aria-label="Twitter profile"
+                  >
+                    <Twitter />
+                  </ExternalLink>
+                </Tooltip>
               </div>
             )}
 
             {member.github && (
               <div className="col-sm-1 col">
-                <ExternalLink
-                  href={`https://www.github.com/${member.github}`}
-                  title="GitHub profile"
-                  aria-label="GitHub profile"
-                >
-                  <GitHub />
-                </ExternalLink>
+                <Tooltip content="GitHub profile" touchHold>
+                  <ExternalLink
+                    href={`https://www.github.com/${member.github}`}
+                    aria-label="GitHub profile"
+                  >
+                    <GitHub />
+                  </ExternalLink>
+                </Tooltip>
               </div>
             )}
 
             {member.linkedin && (
               <div className="col-sm-1 col">
-                <ExternalLink
-                  href={`https://www.linkedin.com/in/${member.linkedin}`}
-                  title="Linkedin profile"
-                  aria-label="Linkedin profile"
-                >
-                  <LinkedIn />
-                </ExternalLink>
+                <Tooltip content="Linkedin profile" touchHold>
+                  <ExternalLink
+                    href={`https://www.linkedin.com/in/${member.linkedin}`}
+                    aria-label="Linkedin profile"
+                  >
+                    <LinkedIn />
+                  </ExternalLink>
+                </Tooltip>
               </div>
             )}
           </div>
@@ -109,15 +113,19 @@ export default function TeamContainer() {
       </p>
 
       <h4 className={styles.heading}>NUSMods Core (Active)</h4>
-      {teamMembers.filter((member) => member.active).map((member) => (
-        <TeamMember key={member.name} member={member} />
-      ))}
+      {teamMembers
+        .filter((member) => member.active)
+        .map((member) => (
+          <TeamMember key={member.name} member={member} />
+        ))}
       <hr />
 
       <h4 className={styles.heading}>NUSMods Alumni</h4>
-      {teamMembers.filter((member) => !member.active).map((member) => (
-        <TeamMember key={member.name} member={member} />
-      ))}
+      {teamMembers
+        .filter((member) => !member.active)
+        .map((member) => (
+          <TeamMember key={member.name} member={member} />
+        ))}
     </StaticPage>
   );
 }

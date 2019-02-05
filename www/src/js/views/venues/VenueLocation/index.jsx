@@ -3,20 +3,15 @@
 import React, { type ComponentType } from 'react';
 import Loadable, { type LoadingProps } from 'react-loadable';
 import LoadingSpinner from 'views/components/LoadingSpinner';
+import { retryImport } from 'utils/error';
+import ApiError from 'views/errors/ApiError';
 import type { OwnProps } from './VenueLocation';
 
 const AsyncVenueLocation: ComponentType<OwnProps> = Loadable({
-  loader: () => import(/* webpackChunkName: "venue" */ './VenueLocation'),
+  loader: () => retryImport(() => import(/* webpackChunkName: "venue" */ './VenueLocation')),
   loading: (props: LoadingProps) => {
     if (props.error) {
-      return (
-        <div className="text-center">
-          <p>Sorry, there was an error loading the map</p>
-          <button className="btn btn-outline-primary" onClick={props.retry}>
-            Try Again
-          </button>
-        </div>
-      );
+      return <ApiError dataName="page" retry={props.retry} />;
     } else if (props.pastDelay) {
       return <LoadingSpinner />;
     }

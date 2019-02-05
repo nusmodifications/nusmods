@@ -34,8 +34,16 @@ export function semesterForTimetablePage(semStr: ?string): ?Semester {
 }
 
 // Module Code, Module Title -> Module page path
-export function modulePage(moduleCode: ModuleCode, moduleTitle: ModuleTitle): string {
+export function modulePage(moduleCode: ModuleCode, moduleTitle: ?ModuleTitle): string {
   return `/modules/${moduleCode}/${kebabCase(moduleTitle)}`;
+}
+
+export function moduleArchive(
+  moduleCode: ModuleCode,
+  year: string,
+  moduleTitle: ModuleTitle = '',
+): string {
+  return `/archive/${moduleCode}/${year.replace('/', '-')}/${kebabCase(moduleTitle)}`;
 }
 
 // Venue -> Venue page path

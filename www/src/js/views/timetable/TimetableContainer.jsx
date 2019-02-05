@@ -6,7 +6,7 @@ import { withRouter, Redirect, type ContextRouter } from 'react-router-dom';
 import classnames from 'classnames';
 
 import type { State as StoreState } from 'reducers';
-import type { Semester } from 'types/modules';
+import type { ModuleCode, Semester } from 'types/modules';
 import type { SemTimetableConfig } from 'types/timetables';
 import type { ColorMapping, NotificationOptions } from 'types/reducers';
 import type { ModulesMap } from 'reducers/moduleBank';
@@ -16,6 +16,7 @@ import { getSemesterTimetable } from 'reducers/timetables';
 import { setTimetable, fetchTimetableModules } from 'actions/timetables';
 import { openNotification } from 'actions/app';
 import { undo } from 'actions/undoHistory';
+import { getModuleCondensed } from 'selectors/moduleBank';
 import { deserializeTimetable } from 'utils/timetables';
 import { fillColorMapping } from 'utils/colors';
 import { semesterForTimetablePage, timetablePage, TIMETABLE_SHARE } from 'views/routes/paths';
@@ -37,6 +38,7 @@ type Props = {
   timetable: SemTimetableConfig,
   colors: ColorMapping,
 
+  isValidModule: (ModuleCode) => boolean,
   selectSemester: (Semester) => void,
   setTimetable: (Semester, SemTimetableConfig, ColorMapping) => void,
   fetchTimetableModules: (SemTimetableConfig[]) => void,
@@ -89,7 +91,9 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
 
     const moduleCodes = new Set(Object.keys(timetable));
     if (importedTimetable) {
-      Object.keys(importedTimetable).forEach((moduleCode) => moduleCodes.add(moduleCode));
+      Object.keys(importedTimetable)
+        .filter(this.props.isValidModule)
+        .forEach((moduleCode) => moduleCodes.add(moduleCode));
     }
 
     // TODO: Account for loading error
@@ -199,6 +203,7 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
       <div>
         <ScrollToTop onComponentDidMount />
         <TimetableContent
+          key={semester}
           semester={semester}
           timetable={displayedTimetable}
           colors={colors}
@@ -220,6 +225,7 @@ const mapStateToProps = (state: StoreState, ownProps) => {
     semester,
     timetable,
     colors,
+    isValidModule: getModuleCondensed(state.moduleBank),
     modules: state.moduleBank.modules,
     activeSemester: state.app.activeSemester,
   };

@@ -14,6 +14,7 @@ import { Repeat, Copy, Mail } from 'views/components/icons';
 import Modal from 'views/components/Modal';
 import CloseButton from 'views/components/CloseButton';
 import LoadingSpinner from 'views/components/LoadingSpinner';
+import { retryImport } from 'utils/error';
 
 import styles from './ShareTimetable.scss';
 
@@ -41,8 +42,11 @@ function shareUrl(semester: Semester, timetable: SemTimetableConfig): string {
 export const SHORT_URL_KEY = 'shorturl';
 
 export default class ShareTimetable extends PureComponent<Props, State> {
+  // Save a copy of the current URL to detect when URL changes
   url: ?string;
-  QRCode: ?Object;
+
+  // React QR component is lazy loaded for performance
+  static QRCode: ?ComponentType<any>;
 
   state: State = {
     isOpen: false,
@@ -50,14 +54,34 @@ export default class ShareTimetable extends PureComponent<Props, State> {
     shortUrl: null,
   };
 
-  urlInput = React.createRef();
+  componentDidMount() {
+    if (!ShareTimetable.QRCode) {
+      retryImport(() => import(/* webpackChunkName: "export" */ 'react-qr-svg')).then((module) => {
+        ShareTimetable.QRCode = module.QRCode;
+        this.forceUpdate();
+      });
+    }
+  }
 
-  loadShortUrl(url: string) {
+  urlInput = React.createRef<HTMLInputElement>();
+
+  loadShortUrl = () => {
+    const { semester, timetable } = this.props;
+    const url = shareUrl(semester, timetable);
+
+    // Don't do anything if the long URL has not changed
+    if (this.url === url) return;
+
     const showFullUrl = () => this.setState({ shortUrl: url });
+    this.url = url;
 
-    import(/* webpackChunkName: "export" */ 'react-qr-svg').then((module) => {
-      this.QRCode = module.QRCode;
-    });
+    // Only try to retrieve shortUrl if the user is online
+    if (!navigator.onLine) {
+      showFullUrl();
+      return;
+    }
+
+    this.setState({ shortUrl: null });
 
     axios
       .get('/short_url.php', { params: { url }, timeout: 2000 })
@@ -70,24 +94,10 @@ export default class ShareTimetable extends PureComponent<Props, State> {
       })
       // Cannot get short URL - just use long URL instead
       .catch(showFullUrl);
-  }
+  };
 
   openModal = () => {
-    const { semester, timetable } = this.props;
-    const nextUrl = shareUrl(semester, timetable);
-
-    if (this.url !== nextUrl) {
-      this.url = nextUrl;
-
-      // Only try to retrieve shortUrl if the user is online
-      if (navigator.onLine) {
-        this.setState({ shortUrl: null });
-        this.loadShortUrl(nextUrl);
-      } else {
-        this.setState({ shortUrl: nextUrl });
-      }
-    }
-
+    this.loadShortUrl();
     this.setState({ isOpen: true });
   };
 
@@ -114,10 +124,7 @@ export default class ShareTimetable extends PureComponent<Props, State> {
   };
 
   renderSharing(url: string) {
-    const {
-      QRCode,
-      props: { semester },
-    } = this;
+    const { semester } = this.props;
 
     return (
       <div>
@@ -150,7 +157,9 @@ export default class ShareTimetable extends PureComponent<Props, State> {
         <div className="row">
           <div className="col-sm-4">
             <h3 className={styles.shareHeading}>QR Code</h3>
-            <div className={styles.qrCode}>{QRCode && <QRCode value={url} />}</div>
+            <div className={styles.qrCode}>
+              {ShareTimetable.QRCode && <ShareTimetable.QRCode value={url} />}
+            </div>
           </div>
           <div className="col-sm-4">
             <h3 className={styles.shareHeading}>Via email</h3>
@@ -200,7 +209,13 @@ export default class ShareTimetable extends PureComponent<Props, State> {
 
     return (
       <Fragment>
-        <button type="button" className="btn btn-outline-primary btn-svg" onClick={this.openModal}>
+        <button
+          type="button"
+          className="btn btn-outline-primary btn-svg"
+          onClick={this.openModal}
+          onMouseOver={this.loadShortUrl}
+          onFocus={this.loadShortUrl}
+        >
           <Repeat className="svg svg-small" />
           Share/Sync
         </button>

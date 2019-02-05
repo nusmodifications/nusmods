@@ -18,6 +18,7 @@ import {
   TOGGLE_BETA_TESTING_STATUS,
 } from 'actions/settings';
 import { SET_EXPORTED_DATA } from 'actions/export';
+import { DIMENSIONS, withTracker } from 'bootstrapping/mamoto';
 import { LIGHT_MODE, DARK_MODE } from 'types/settings';
 import config from 'config';
 
@@ -93,11 +94,15 @@ function settings(state: SettingsState = defaultSettingsState, action: FSA): Set
         moduleTableOrder: action.payload,
       };
 
-    case TOGGLE_BETA_TESTING_STATUS:
+    case TOGGLE_BETA_TESTING_STATUS: {
+      const newStatus = !state.beta;
+      withTracker((tracker) => tracker.setCustomDimension(DIMENSIONS.beta, newStatus));
+
       return {
         ...state,
-        beta: !state.beta,
+        beta: newStatus,
       };
+    }
 
     case REHYDRATE: {
       let nextState = state;

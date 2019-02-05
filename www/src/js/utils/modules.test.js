@@ -11,7 +11,13 @@ import {
   getFormattedModuleExamDate,
   getFirstAvailableSemester,
   parseWorkload,
+  renderMCs,
+  subtractAcadYear,
+  addAcadYear,
+  getYearsBetween,
+  offsetAcadYear,
 } from 'utils/modules';
+import { noBreak } from 'utils/react';
 
 /** @var {Module} */
 import cs1010s from '__mocks__/modules/CS1010S.json';
@@ -216,5 +222,66 @@ test('parseWorkload should return input string as is if it cannot be parsed', ()
 
   invalidInputs.forEach((input) => {
     expect(parseWorkload(input)).toEqual(input);
+  });
+});
+
+describe(renderMCs, () => {
+  it.each([
+    // Plural
+    [0, '0 MCs'],
+    ['0', '0 MCs'],
+    [5, '5 MCs'],
+    ['5', '5 MCs'],
+
+    // Singular
+    [1, '1 MC'],
+    ['1', '1 MC'],
+  ])('%s to equal %s', (mc, expected) => expect(renderMCs(mc)).toEqual(noBreak(expected)));
+});
+
+describe(subtractAcadYear, () => {
+  test('should subtract acad years', () => {
+    expect(subtractAcadYear('2018/2019')).toEqual('2017/2018');
+    expect(subtractAcadYear('2015/2016')).toEqual('2014/2015');
+  });
+});
+
+describe(addAcadYear, () => {
+  test('should add acad years', () => {
+    expect(addAcadYear('2018/2019')).toEqual('2019/2020');
+    expect(addAcadYear('2015/2016')).toEqual('2016/2017');
+  });
+});
+
+describe(getYearsBetween, () => {
+  test('should get years between min and maxYear', () => {
+    expect(getYearsBetween('2018/2019', '2018/2019')).toEqual(['2018/2019']);
+    expect(getYearsBetween('2014/2015', '2018/2019')).toEqual([
+      '2014/2015',
+      '2015/2016',
+      '2016/2017',
+      '2017/2018',
+      '2018/2019',
+    ]);
+  });
+
+  test('should throw if min year is less than max year', () => {
+    expect(() => getYearsBetween('2016/2017', '2014/2015')).toThrow();
+  });
+});
+
+describe(offsetAcadYear, () => {
+  test('should return year unchanged if offset is zero', () => {
+    expect(offsetAcadYear('2018/2019', 0)).toEqual('2018/2019');
+  });
+
+  test('should work with negative offsets', () => {
+    expect(offsetAcadYear('2018/2019', -1)).toEqual('2017/2018');
+    expect(offsetAcadYear('2018/2019', -4)).toEqual('2014/2015');
+  });
+
+  test('should work with positive offsets', () => {
+    expect(offsetAcadYear('2018/2019', 1)).toEqual('2019/2020');
+    expect(offsetAcadYear('2018/2019', 4)).toEqual('2022/2023');
   });
 });

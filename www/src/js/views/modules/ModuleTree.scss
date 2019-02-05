@@ -5,6 +5,8 @@ $connector-size: 0.75rem;
 .container {
   display: flex;
   align-items: center;
+  // Leave some space for the tooltip
+  padding: 3rem 0;
   overflow-y: auto;
 
   @include media-breakpoint-up(sm) {

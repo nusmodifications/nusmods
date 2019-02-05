@@ -1,6 +1,16 @@
 // @flow
 import FilterGroup from 'utils/filters/FilterGroup';
-import type { Department, Faculty, ModuleCondensed } from './modules';
+import type {
+  Department,
+  Faculty,
+  Lesson,
+  Module,
+  ModuleCode,
+  ModuleCondensed,
+  ModuleWithColor,
+  Semester,
+  TreeFragment,
+} from './modules';
 import type { ModuleList } from './reducers';
 import type { Venue, VenueList } from './venues';
 
@@ -59,6 +69,10 @@ export type DisqusConfig = {|
 
 export type ModuleTableOrder = 'exam' | 'mc' | 'code';
 
+export type SelectedLesson = {| date: Date, lesson: Lesson |};
+
+export type ExamClashes = { [string]: Module[] };
+
 // Incomplete typing of Mamoto's API. If you need something not here, feel free
 // to declare the typing here.
 // Full list: https://developer.matomo.org/api-reference/tracking-javascript
@@ -97,6 +111,11 @@ export type Tracker = {
   enableCrossDomainLinking: () => void,
   setCrossDomainLinkingTimeout: (timeout: number) => void,
 
+  setCustomDimension: (
+    customDimensionId: number,
+    customDimensionValue: string | number | boolean,
+  ) => void,
+
   /**
    * Managing Consent
    */
@@ -118,4 +137,61 @@ export type Tracker = {
   // Removes a user's consent, both if the consent was one-time only and if the consent was
   // remembered. After calling this method, the user will have to consent again in order to be tracked.
   forgetConsentGiven: () => void,
+};
+
+export type TimeSegment = 'Morning' | 'Afternoon' | 'Evening';
+export const TIME_SEGMENTS = ['Morning', 'Afternoon', 'Evening'];
+
+export type ModuleWithExamTime = {|
+  +module: ModuleWithColor,
+  +dateTime: string,
+  +date: string,
+  +time: string,
+  +timeSegment: TimeSegment,
+|};
+
+/* views/today */
+export type EmptyGroupType =
+  | 'winter'
+  | 'summer'
+  | 'orientation'
+  | 'weekend'
+  | 'holiday'
+  | 'recess'
+  | 'reading';
+
+/* views/planner */
+export type PrereqConflict = {
+  type: 'prereq',
+  unfulfilledPrereqs: Array<TreeFragment>,
+};
+
+export type ExamConflict = {
+  type: 'exam',
+  conflictModules: ModuleCode[],
+};
+
+export type SemesterConflict = {
+  type: 'semester',
+  semestersOffered: Semester[],
+};
+
+export type NoInfo = {
+  type: 'noInfo',
+};
+
+export type Conflict = PrereqConflict | ExamConflict | SemesterConflict | NoInfo;
+
+export type PlannerModuleInfo = {|
+  moduleCode: ModuleCode,
+  moduleInfo?: Module,
+  conflict?: ?Conflict,
+|};
+
+export type PlannerModulesWithInfo = {
+  // Mapping acad years to a map of semester to module information object
+  // This is the form used by the UI
+  +[string]: {|
+    +[Semester]: PlannerModuleInfo,
+  |},
 };

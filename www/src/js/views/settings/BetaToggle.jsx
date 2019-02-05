@@ -1,13 +1,15 @@
 // @flow
 
 import React, { Fragment, PureComponent } from 'react';
-import classnames from 'classnames';
 import Toggle from 'views/components/Toggle';
 import ExternalLink from 'views/components/ExternalLink';
 import config from 'config';
 import styles from './SettingsContainer.scss';
 
-const currentTests = ['Today page: showing timetable as a schedule'];
+export const currentTests = [
+  'Today page: showing timetable as a schedule',
+  'Module planner: plan modules in future semesters',
+];
 
 type Props = {
   betaTester: boolean,
@@ -40,23 +42,21 @@ export default class BetaToggle extends PureComponent<Props> {
 
     return (
       <div>
-        <h4>NUSMods Beta</h4>
+        <h4 id="beta">NUSMods Beta</h4>
 
-        <div className={classnames(styles.toggleRow, 'row')}>
-          <div className={classnames(styles.toggleDescription, 'col-sm-7')}>
+        <div className={styles.toggleRow}>
+          <div className={styles.toggleDescription}>
             <p>Help us improve NUSMods by testing new features and providing feedback.</p>
             {testDescriptions}
           </div>
 
-          <div className={classnames('col-sm-4 offset-sm-1', styles.toggle)}>
+          <div className={styles.toggle}>
             <Toggle className={styles.betaToggle} isOn={betaTester} onChange={toggleStates} />
-            <br />
-            {betaTester &&
-              hasTests && (
-                <ExternalLink className="btn btn-success" href={config.contact.messenger}>
-                  Leave Feedback
-                </ExternalLink>
-              )}
+            {betaTester && hasTests && (
+              <ExternalLink className="btn btn-success" href={config.contact.messenger}>
+                Leave Feedback
+              </ExternalLink>
+            )}
           </div>
         </div>
 

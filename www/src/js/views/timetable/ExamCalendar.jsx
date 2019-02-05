@@ -1,47 +1,23 @@
 // @flow
-import React, { Fragment, PureComponent } from 'react';
-import { Link } from 'react-router-dom';
+import React, { PureComponent } from 'react';
 import NUSModerator from 'nusmoderator';
 import { groupBy, range } from 'lodash';
 import classnames from 'classnames';
 
 import type { ModuleWithColor, Semester } from 'types/modules';
-import config from 'config';
-import { formatExamDate, getModuleExamDate } from 'utils/modules';
-import { daysAfter } from 'utils/timify';
-import { modulePage } from 'views/routes/paths';
-import elements from 'views/elements';
+import type { ModuleWithExamTime, TimeSegment } from 'types/views';
 import { WorkingDaysOfWeek } from 'types/modules';
-
+import config from 'config';
+import { examDateToDate, formatExamDate, getModuleExamDate } from 'utils/modules';
+import { daysAfter } from 'utils/timify';
+import elements from 'views/elements';
+import ExamWeek from './ExamWeek';
 import styles from './ExamCalendar.scss';
 
-type Props = {
-  semester: Semester,
-  modules: ModuleWithColor[],
-};
-
-type TimeSegment = 'Morning' | 'Afternoon' | 'Evening';
-const TIME_SEGMENTS = ['Morning', 'Afternoon', 'Evening'];
-
-type ModuleWithExamTime = {
-  module: ModuleWithColor,
-  dateTime: string,
-  date: string,
-  time: string,
-  timeSegment: TimeSegment,
-};
-
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
-// The API returns examDate with hhmm as the TZ specifier, but we want this to work
-// on machines in all timezones, so instead we lop it off and pretend it is in UTC time
-function examDateStringToDate(date: string): Date {
-  return new Date(`${date.slice(0, 16)}Z`);
-}
-
-function getExamDate(date: Date): string {
-  return formatExamDate(date.toISOString()).split(' ')[0];
-}
+type Props = {|
+  +semester: Semester,
+  +modules: ModuleWithColor[],
+|};
 
 // NUS exams are grouped into morning, afternoon and evening exams. Afternoon exams happen at 2.30PM
 // on Fridays only. We don't want to create two different groups for 1pm and 2.30pm exams, so we
@@ -53,86 +29,6 @@ export function getTimeSegment(time: string): TimeSegment {
 
   const hour = parseInt(time, 10);
   return hour === 12 || hour < 5 ? 'Afternoon' : 'Evening';
-}
-
-function ExamModule({ module }: { module: ModuleWithColor }) {
-  return (
-    <Link
-      to={modulePage(module.ModuleCode, module.ModuleTitle)}
-      className={`hoverable color-${module.colorIndex}`}
-    >
-      <div className={styles.moduleCode}>{module.ModuleCode}</div>
-      <div className={styles.moduleTitle}>{module.ModuleTitle}</div>
-    </Link>
-  );
-}
-
-function ExamWeek({
-  modules,
-  weekNumber,
-  firstDayOfExams,
-  days,
-}: {
-  modules: { [string]: ModuleWithExamTime[] },
-  weekNumber: number,
-  firstDayOfExams: Date,
-  days: number,
-}) {
-  // Array of dates to display
-  const dayDates = range(days).map((offset) => daysAfter(firstDayOfExams, weekNumber * 7 + offset));
-
-  // Each week consists of a header row and three module rows, one for each possible time segment
-  const headerRow = (
-    <tr>
-      {dayDates.map((date, dayNumber) => {
-        // Format the date number for each day of the exam. We avoid repeating
-        // the month name unnecessarily by only showing it for the very first cell,
-        // and when the month changes
-        let examDateString = String(date.getUTCDate());
-        if ((weekNumber === 0 && dayNumber === 0) || examDateString === '1') {
-          examDateString = `${MONTHS[date.getUTCMonth()]} ${examDateString}`;
-        }
-
-        return (
-          <th className={styles.dayDate} key={examDateString}>
-            <time dateTime={date.toDateString()}>{examDateString}</time>
-          </th>
-        );
-      })}
-    </tr>
-  );
-
-  const moduleRows = TIME_SEGMENTS.map((timeSegment) => (
-    <tr key={timeSegment}>
-      {dayDates.map((date) => {
-        // Get modules with exams on this day and time segment
-        const modulesOnThisDay = modules[getExamDate(date)] || [];
-        const modulesAtThisTime = modulesOnThisDay.filter(
-          (module) => module.timeSegment === timeSegment,
-        );
-
-        return (
-          <td className={styles.day} key={date}>
-            {!!modulesAtThisTime.length && (
-              <Fragment>
-                <h4>{modulesAtThisTime[0].time}</h4>
-                {modulesAtThisTime.map(({ module }) => (
-                  <ExamModule key={module.ModuleCode} module={module} />
-                ))}
-              </Fragment>
-            )}
-          </td>
-        );
-      })}
-    </tr>
-  ));
-
-  return (
-    <Fragment>
-      {headerRow}
-      {moduleRows}
-    </Fragment>
-  );
 }
 
 export default class ExamCalendar extends PureComponent<Props> {
@@ -156,7 +52,7 @@ export default class ExamCalendar extends PureComponent<Props> {
       const dateString = getModuleExamDate(module, semester);
       if (!dateString) return;
 
-      const date = examDateStringToDate(dateString);
+      const date = examDateToDate(dateString);
       while (date < firstDayOfExams) {
         firstDayOfExams = daysAfter(firstDayOfExams, -7);
         weekCount += 1;
@@ -216,7 +112,7 @@ export default class ExamCalendar extends PureComponent<Props> {
     // (5 days), and expand as necessary
     const daysWithExams = Math.max(
       5,
-      ...modulesWithExams.map((module) => examDateStringToDate(module.dateTime).getUTCDay()),
+      ...modulesWithExams.map((module) => examDateToDate(module.dateTime).getUTCDay()),
     );
 
     const modulesByExamDate = groupBy(modulesWithExams, (module) => module.date);

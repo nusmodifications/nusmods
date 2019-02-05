@@ -1,10 +1,11 @@
 // @flow
 import type { FSA } from 'types/redux';
 import type {
-  Requests,
-  SettingsState,
   AppState,
   ModuleFinderState,
+  PlannerState,
+  Requests,
+  SettingsState,
   TimetablesState,
 } from 'types/reducers';
 import type { ModuleBank } from 'reducers/moduleBank';
@@ -24,12 +25,10 @@ import createUndoReducer from './undoHistory';
 // Persisted reducers
 import moduleBankReducer, { persistConfig as moduleBankPersistConfig } from './moduleBank';
 import venueBankReducer, { persistConfig as venueBankPersistConfig } from './venueBank';
-import timetablesReducer, {
-  PERSIST_KEY as timetablesPersistKey,
-  persistConfig as timetablesPersistConfig,
-} from './timetables';
+import timetablesReducer, { persistConfig as timetablesPersistConfig } from './timetables';
 import themeReducer from './theme';
 import settingsReducer from './settings';
+import plannerReducer from './planner';
 
 export type State = {
   moduleBank: ModuleBank,
@@ -40,15 +39,17 @@ export type State = {
   theme: Object,
   settings: SettingsState,
   moduleFinder: ModuleFinderState,
+  planner: PlannerState,
   undoHistory: UndoHistoryState,
 };
 
 // Persist reducers
 const moduleBank = persistReducer('moduleBank', moduleBankReducer, moduleBankPersistConfig);
 const venueBank = persistReducer('venueBank', venueBankReducer, venueBankPersistConfig);
-const timetables = persistReducer(timetablesPersistKey, timetablesReducer, timetablesPersistConfig);
+const timetables = persistReducer('timetables', timetablesReducer, timetablesPersistConfig);
 const theme = persistReducer('theme', themeReducer);
 const settings = persistReducer('settings', settingsReducer);
+const planner = persistReducer('planner', plannerReducer);
 
 // $FlowFixMe: State default is delegated to its child reducers.
 const defaultState: State = {};
@@ -70,6 +71,7 @@ export default function(state: State = defaultState, action: FSA): State {
     theme: theme(state.theme, action),
     settings: settings(state.settings, action),
     moduleFinder: moduleFinder(state.moduleFinder, action),
+    planner: planner(state.planner, action),
     undoHistory: state.undoHistory,
   };
   return undoReducer(state, newState, action);
