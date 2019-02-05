@@ -73,11 +73,11 @@ function expectHistoryEqual(actual: SemesterData[], expected: SemesterData[]) {
 
 export function expectModulesEqual(actual: Module, expected: Module) {
   // FulfillRequirements is excluded because the modules that require CS2100 are not part of this test
-  const omittedKeys = ['History', 'FulfillRequirements'];
+  const omittedKeys = ['SemesterData', 'FulfillRequirements'];
   expect(omit(actual, omittedKeys)).toEqual(omit(expected, omittedKeys));
 
   // Sort semesters and check history
-  expectHistoryEqual(actual.History, expected.History);
+  expectHistoryEqual(actual.SemesterData, expected.SemesterData);
 }
 
 /**

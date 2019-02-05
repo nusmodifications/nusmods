@@ -30,20 +30,20 @@ export function combineModules(
         // 2. If the module doesn't exist yet, we'll add it
         modules[module.ModuleCode] = {
           ...module.Module,
-          History: [module.SemesterData],
+          SemesterData: [module.SemesterData],
         };
       } else {
         // 3. If the module has been added already then we simply merge the
         //    semester data
-        modules[module.ModuleCode].History.push(module.SemesterData);
+        modules[module.ModuleCode].SemesterData.push(module.SemesterData);
 
         // 4. Safety check for diverging module info between semester
         const left = omit(modules[module.ModuleCode], 'SemesterData');
         const right = omit(module, 'SemesterData');
         if (!isEqual(left, right)) {
-          const { History } = modules[module.ModuleCode];
+          const { SemesterData } = modules[module.ModuleCode];
           logger.warn(
-            { left, right, semesters: [History[0].Semester, module.SemesterData.Semester] },
+            { left, right, semesters: [SemesterData[0].Semester, module.SemesterData.Semester] },
             'Module with different module info between semesters',
           );
         }
@@ -57,7 +57,7 @@ export function combineModules(
 const getModuleCondensed = (module: ModuleWithoutTree): ModuleCondensed => ({
   ModuleCode: module.ModuleCode,
   ModuleTitle: module.ModuleTitle,
-  Semesters: module.History.map((semester) => semester.Semester),
+  Semesters: module.SemesterData.map((semester) => semester.Semester),
 });
 
 // Avoid using _.pick here because it is not type safe
@@ -72,7 +72,7 @@ const getModuleInformation = ({
   Workload,
   Prerequisite,
   Preclusion,
-  History,
+  SemesterData,
 }: ModuleWithoutTree): ModuleInformation => ({
   ModuleCode,
   ModuleTitle,
@@ -83,7 +83,7 @@ const getModuleInformation = ({
   Workload,
   Prerequisite,
   Preclusion,
-  History: History.map(({ Semester, ExamDate, ExamDuration }) => ({
+  History: SemesterData.map(({ Semester, ExamDate, ExamDuration }) => ({
     Semester,
     ExamDate,
     ExamDuration,

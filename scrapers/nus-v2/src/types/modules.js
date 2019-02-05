@@ -98,7 +98,7 @@ export type Module = {
   Preclusion?: string,
 
   // Semester data
-  History: Array<SemesterData>,
+  SemesterData: SemesterData[],
 
   // Requisites
   PrereqTree?: PrereqTree,

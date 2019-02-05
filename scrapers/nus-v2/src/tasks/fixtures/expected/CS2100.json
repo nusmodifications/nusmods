@@ -9,7 +9,7 @@
   "Workload": [3, 1, 1, 3, 2],
   "Prerequisite": "CS1010 or its equivalent",
   "Preclusion": "CS1104 or Students from Department of ECE",
-  "History": [
+  "SemesterData": [
     {
       "Semester": 1,
       "ExamDate": "2018-11-27T09:00:00.000Z",
@@ -253,7 +253,7 @@
     },
     {
       "Semester": 2,
-      "ExamDate": "2019-05-02T17:00:00.000+08:00",
+      "ExamDate": "2019-05-02T09:00:00.000Z",
       "ExamDuration": 120,
       "Timetable": [
         {
@@ -655,14 +655,6 @@
       ]
     }
   ],
-  "ParsedPrerequisite": "CS1010",
-  "ParsedPreclusion": "CS1104",
-  "ModmavenTree": {
-    "name": "CS2100",
-    "children": {
-      "name": "CS1010",
-      "children": []
-    }
-  },
-  "LockedModules": ["CS2106", "CS3210"]
+  "PrereqTree": "CS1010",
+  "FulfillRequirements": ["CS2106", "CS3210"]
 }

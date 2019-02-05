@@ -6,7 +6,7 @@
  */
 
 import type { ModuleInfo } from './api';
-import type { Module, ModuleCode, SemesterData, TreeFragment } from './modules';
+import type { Module, ModuleCode, PrereqTree, SemesterData } from './modules';
 
 /**
  * Module info with the AcademicGrp and AcademicOrg mapped to the actual
@@ -24,8 +24,8 @@ export type ModuleInfoMapped = {
 export type SemesterModule = $Diff<
   Module,
   {
-    History: Array<SemesterData>,
-    PrereqTree: TreeFragment,
+    SemesterData: SemesterData[],
+    PrereqTree?: PrereqTree,
     FulfillRequirements?: ModuleCode[],
   },
 >;
@@ -36,7 +36,7 @@ export type SemesterModuleData = {|
   SemesterData: SemesterData,
 |};
 
-export type ModuleWithoutTree = $Diff<Module, { PrereqTree: TreeFragment }>;
+export type ModuleWithoutTree = $Diff<Module, { PrereqTree?: PrereqTree }>;
 
 /**
  * The exam info part of semester data

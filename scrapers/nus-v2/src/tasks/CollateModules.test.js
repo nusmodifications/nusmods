@@ -88,7 +88,7 @@ describe(combineModules, () => {
     ).toEqual([
       {
         ...Module,
-        History: [semesterOneData, semesterTwoData],
+        SemesterData: [semesterOneData, semesterTwoData],
       },
     ]);
   });
