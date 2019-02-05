@@ -17,6 +17,9 @@ export type WeekText = string; // E.g. "Every Week", "Odd Week"
 export type Workload = string | number[];
 export type Venue = string;
 
+// Recursive tree of module codes and boolean operators for the prereq tree
+export type PrereqTree = string | { ['and' | 'or']: PrereqTree[] };
+
 // Auxiliary data types
 export type Day =
   | 'Monday'
@@ -72,12 +75,6 @@ export type SemesterData = {|
   +TutorialPeriods?: Array<string>,
 |};
 
-// Recursive definition for walking a module tree
-export type TreeFragment = {|
-  +name: string,
-  +children?: TreeFragment[],
-|};
-
 // Information for a module for a particular academic year.
 // This is probably the only model you need to be concerned with.
 // For some reason es6 object literal property value shorthand is not recognized >_<
@@ -104,7 +101,7 @@ export type Module = {
   History: Array<SemesterData>,
 
   // Requisites
-  PrereqTree: TreeFragment,
+  PrereqTree?: PrereqTree,
   FulfillRequirements?: ModuleCode[],
 
   // Deprecated

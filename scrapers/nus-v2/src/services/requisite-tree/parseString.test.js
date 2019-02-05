@@ -6,98 +6,45 @@ import { mockLogger } from '../../utils/test-utils';
 const logger = mockLogger();
 
 describe(cleanOperators, () => {
-  const andToken: any = { image: 'and' };
-  const orToken: any = { image: 'or' };
-  const moduleToken: any = { image: 'CS1000' };
+  const and: any = { image: 'and' };
+  const or: any = { image: 'or' };
+  const module: any = { image: 'CS1000' };
 
-  const leftBracketToken: any = { image: '(' };
-  const rightBracketToken: any = { image: ')' };
+  const leftParen: any = { image: '(' };
+  const rightParen: any = { image: ')' };
 
   it('cleans excess operators from simple strings', () => {
-    const tokens = [andToken, moduleToken, orToken, andToken];
-    expect(cleanOperators(tokens)).toEqual([moduleToken]);
+    const tokens = [and, module, or, and];
+    expect(cleanOperators(tokens)).toEqual([module]);
   });
 
   it('cleans excess operators within parenthesis', () => {
-    const tokens = [leftBracketToken, andToken, moduleToken, orToken, rightBracketToken];
-    expect(cleanOperators(tokens)).toEqual([leftBracketToken, moduleToken, rightBracketToken]);
+    const tokens = [leftParen, and, module, or, rightParen];
+    expect(cleanOperators(tokens)).toEqual([leftParen, module, rightParen]);
   });
 
   it('cleans excess operators outside and within parenthesis', () => {
-    const tokens = [
-      orToken,
-      leftBracketToken,
-      andToken,
-      moduleToken,
-      orToken,
-      rightBracketToken,
-      andToken,
-    ];
-    expect(cleanOperators(tokens)).toEqual([leftBracketToken, moduleToken, rightBracketToken]);
+    const tokens = [or, leftParen, and, module, or, rightParen, and];
+    expect(cleanOperators(tokens)).toEqual([leftParen, module, rightParen]);
   });
 
   it('cleans excess operators within nested parenthesis', () => {
-    const tokens = [
-      leftBracketToken,
-      orToken,
-      leftBracketToken,
-      andToken,
-      moduleToken,
-      orToken,
-      rightBracketToken,
-      andToken,
-      rightBracketToken,
-    ];
-    expect(cleanOperators(tokens)).toEqual([
-      leftBracketToken,
-      leftBracketToken,
-      moduleToken,
-      rightBracketToken,
-      rightBracketToken,
-    ]);
+    const tokens = [leftParen, or, leftParen, and, module, or, rightParen, and, rightParen];
+    expect(cleanOperators(tokens)).toEqual([leftParen, leftParen, module, rightParen, rightParen]);
   });
 
   it('cleans excess operators within nested parenthesis', () => {
-    const tokens = [
-      leftBracketToken,
-      leftBracketToken,
-      andToken,
-      moduleToken,
-      orToken,
-      rightBracketToken,
-      rightBracketToken,
-    ];
-    expect(cleanOperators(tokens)).toEqual([
-      leftBracketToken,
-      leftBracketToken,
-      moduleToken,
-      rightBracketToken,
-      rightBracketToken,
-    ]);
+    const tokens = [leftParen, leftParen, and, module, or, rightParen, rightParen];
+    expect(cleanOperators(tokens)).toEqual([leftParen, leftParen, module, rightParen, rightParen]);
   });
 
   it('inserts necessary operators when missing', () => {
-    const tokens = [
-      leftBracketToken,
-      moduleToken,
-      orToken,
-      moduleToken,
-      moduleToken,
-      rightBracketToken,
-    ];
-    expect(cleanOperators(tokens)).toEqual([
-      leftBracketToken,
-      moduleToken,
-      orToken,
-      moduleToken,
-      orToken,
-      moduleToken,
-      rightBracketToken,
-    ]);
+    const tokens = [leftParen, module, or, module, module, rightParen];
+    expect(cleanOperators(tokens)).toEqual([leftParen, module, or, module, or, module, rightParen]);
   });
 
   it('does not throw with empty parenthesis', () => {
-    const tokens = [leftBracketToken, rightBracketToken];
+    const tokens = [leftParen, rightParen];
     expect(cleanOperators(tokens)).toEqual([]);
   });
 });

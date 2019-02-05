@@ -1,41 +1,35 @@
 // @flow
 
-import { generatePrereqTree, node } from './tree';
+import { flattenTree } from './tree';
 
-const n = node;
-
-describe(generatePrereqTree, () => {
-  test('should handle branches', () => {
-    expect(
-      generatePrereqTree({
-        or: ['EE2004', 'EE3406', 'EE3431C'],
-      }),
-    ).toEqual(n('or', [n('EE2004'), n('EE3406'), n('EE3431C')]));
-
-    expect(
-      generatePrereqTree({
-        and: ['CM2101', 'CM2142', 'CM2192'],
-      }),
-    ).toEqual(n('and', [n('CM2101'), n('CM2142'), n('CM2192')]));
+describe(flattenTree, () => {
+  test('should return an array of module codes', () => {
+    expect(flattenTree('CS1010')).toEqual(['CS1010']);
+    expect(flattenTree((['CS1010', 'CS1020']: any))).toEqual(['CS1010', 'CS1020']);
   });
 
-  test('should handle nested branches', () => {
+  test('should flatten branches', () => {
+    expect(flattenTree({ or: ['CS1010', 'CS1020'] })).toEqual(['CS1010', 'CS1020']);
+    expect(flattenTree({ and: ['CS1010', 'CS1020'] })).toEqual(['CS1010', 'CS1020']);
     expect(
-      generatePrereqTree({
+      flattenTree({
         and: [
           {
-            or: ['IS2101', 'CS2101'],
+            or: ['CS1020', 'CS2020'],
           },
           {
-            or: ['CS2103', 'CS2103T', 'IS2150', 'BT2101'],
+            or: ['CG1107', 'CS2100'],
           },
         ],
       }),
-    ).toEqual(
-      n('and', [
-        n('or', [n('IS2101'), n('CS2101')]),
-        n('or', [n('CS2103'), n('CS2103T'), n('IS2150'), n('BT2101')]),
-      ]),
-    );
+    ).toEqual(['CS1020', 'CS2020', 'CG1107', 'CS2100']);
+  });
+
+  test('should flatten mixed branches', () => {
+    expect(flattenTree({ and: ['CS1010', { or: ['CS1020', 'CS2020'] }] })).toEqual([
+      'CS1010',
+      'CS1020',
+      'CS2020',
+    ]);
   });
 });

@@ -1,19 +1,15 @@
 // @flow
 
-import path from 'path';
 import { entries, uniq } from 'lodash';
-import * as fs from 'fs-extra';
-import * as R from 'ramda';
 
-import type { Module, ModuleCode } from '../../types/modules';
+import type { Module, ModuleCode, PrereqTree } from '../../types/modules';
 import type { ModuleWithoutTree } from '../../types/mapper';
 import rootLogger, { Logger } from '../logger';
-import config from '../../config';
+
+import { MODULE_REGEX, OPERATORS_REGEX } from './constants';
 import parseString from './parseString';
 import normalizeString from './normalizeString';
-import { MODULE_REGEX, OPERATORS_REGEX } from './constants';
-import { flattenTree, generatePrereqTree, node } from './tree';
-import type { ParseTree } from './types';
+import { flattenTree } from './tree';
 
 /**
  * Generate the following fields for modules:
@@ -53,7 +49,7 @@ const RESTRICTED_KEYWORDS = [
   '4 of the 5',
 ];
 
-function parse(data: ModuleWithoutTree[], subLogger: Logger): { [ModuleCode]: ParseTree } {
+function parse(data: ModuleWithoutTree[], subLogger: Logger): { [ModuleCode]: PrereqTree } {
   const results = {};
 
   for (const module of data) {
@@ -103,18 +99,18 @@ function generateRequirements(allModules, prerequisites): Module[] {
 
   return allModules.map((module) => {
     const moduleCode = module.ModuleCode;
-    const parsedPrerequisite =
-      prerequisites[moduleCode] && generatePrereqTree(prerequisites[moduleCode]);
 
     return {
       ...module,
-      PrereqTree: node(moduleCode, parsedPrerequisite),
+      PrereqTree: prerequisites[moduleCode],
       FulfillRequirements: Array.from(fulfillModules[moduleCode]),
     };
   });
 }
 
-export default async function genReqTree(allModules: ModuleWithoutTree[]): Promise<Module[]> {
+export default async function generatePrereqTree(
+  allModules: ModuleWithoutTree[],
+): Promise<Module[]> {
   // check that all modules match regex and no modules contain operators
   const moduleCodes: string[] = uniq(allModules.map((module) => module.ModuleCode));
 
@@ -132,24 +128,6 @@ export default async function genReqTree(allModules: ModuleWithoutTree[]): Promi
 
   const prerequisites = parse(allModules, logger);
   const modules = generateRequirements(allModules, prerequisites);
-
-  // for debugging usage
-  if (process.env.NODE_ENV !== 'production') {
-    const debugOutput = R.map(
-      R.pick([
-        'Prerequisite',
-        'ParsedPrerequisite',
-        'Preclusion',
-        'ParsedPreclusion',
-        'PrereqTree',
-        'FulfillRequirements',
-      ]),
-      modules,
-    );
-
-    const pathToWrite = path.join(config.dataPath, config.academicYear, 'reqTree.json');
-    await fs.outputJson(pathToWrite, debugOutput, { spaces: 2 });
-  }
 
   return modules;
 }

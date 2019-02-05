@@ -9,7 +9,7 @@ import type { Module, ModuleCode, ModuleCondensed, ModuleInformation } from '../
 import BaseTask from './BaseTask';
 import config from '../config';
 import { Logger } from '../services/logger';
-import genReqTree from '../services/requisite-tree';
+import generatePrereqTree from '../services/requisite-tree';
 
 type Input = SemesterModuleData[][];
 type Output = Module[];
@@ -122,7 +122,7 @@ export default class CollateModules extends BaseTask implements Task<Input, Outp
     const modulesWithoutTree: ModuleWithoutTree[] = combineModules(input, this.logger);
 
     // Insert prerequisite trees into the modules
-    const modules: Module[] = await genReqTree(modulesWithoutTree);
+    const modules: Module[] = await generatePrereqTree(modulesWithoutTree);
 
     this.logger.info(`Collated ${modules.length} modules`);
 
