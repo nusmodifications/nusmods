@@ -184,10 +184,10 @@ export type Conflict = PrereqConflict | ExamConflict | SemesterConflict | NoInfo
 
 export type PlannerModuleInfo = {|
   moduleCode: ModuleCode,
-  moduleInfo?: Module,
+  moduleInfo?: ?Module,
   // Custom info added by the student to override our data or to fill in the blanks
   // This is a separate field for easier typing
-  customInfo?: CustomModule,
+  customInfo?: ?CustomModule,
   conflict?: ?Conflict,
 |};
 

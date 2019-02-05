@@ -5,9 +5,11 @@ import { connect } from 'react-redux';
 
 import type { State as StoreState } from 'reducers';
 import type { CustomModule } from 'types/reducers';
-import type { ModuleCode } from 'types/modules';
+import type { Module, ModuleCode } from 'types/modules';
 
+import Tooltip from 'views/components/Tooltip/Tooltip';
 import { addCustomModule } from 'actions/planner';
+import { getModuleCredit, getModuleTitle } from 'utils/planner';
 import styles from './CustomModuleForm.scss';
 
 type OwnProps = {|
@@ -18,7 +20,8 @@ type OwnProps = {|
 type Props = {|
   ...OwnProps,
 
-  +data: ?CustomModule,
+  +customInfo: ?CustomModule,
+  +moduleInfo: ?Module,
   +addCustomModule: (moduleCode: ModuleCode, data: CustomModule) => void,
 |};
 
@@ -29,26 +32,47 @@ export class CustomModuleFormComponent extends PureComponent<Props> {
     const moduleCredit = this.inputModuleCredit.current?.value;
     const title = this.inputTitle.current?.value;
 
+    // Module credit is required
     if (moduleCredit == null) return;
 
-    const data = {
+    this.props.addCustomModule(this.props.moduleCode, {
       moduleCredit: +moduleCredit,
       title,
-    };
+    });
 
-    this.props.addCustomModule(this.props.moduleCode, data);
     this.props.onFinishEditing();
   };
 
+  // We use an uncontrolled form here because we don't want to update the
+  // module title and MCs live
   inputModuleCredit = React.createRef<HTMLInputElement>();
   inputTitle = React.createRef<HTMLInputElement>();
 
+  resetCustomInfo = () => {
+    const { moduleInfo } = this.props;
+    if (!moduleInfo) return;
+
+    // We don't use props.addCustomModule because we don't want to save the reset
+    // immediately in case the user wants to cancel
+    if (this.inputModuleCredit.current) {
+      this.inputModuleCredit.current.value = moduleInfo.ModuleCredit;
+    }
+
+    if (this.inputTitle.current) {
+      this.inputTitle.current.value = moduleInfo.ModuleTitle;
+    }
+  };
+
   render() {
-    const { moduleCode, data } = this.props;
+    const { moduleCode, moduleInfo, customInfo } = this.props;
+
+    const plannerModule = { moduleCode, customInfo, moduleInfo };
+    const moduleCredit = getModuleCredit(plannerModule);
+    const title = getModuleTitle(plannerModule);
 
     return (
       <form onSubmit={this.onSubmit}>
-        <h3 className={styles.heading}>Edit {moduleCode}</h3>
+        <h3 className={styles.heading}>Edit info for {moduleCode}</h3>
 
         <div className="form-row">
           <div className="col-md-3">
@@ -58,7 +82,7 @@ export class CustomModuleFormComponent extends PureComponent<Props> {
               id="input-mc"
               type="number"
               className="form-control"
-              defaultValue={data?.moduleCredit}
+              defaultValue={moduleCredit}
               required
             />
           </div>
@@ -69,19 +93,32 @@ export class CustomModuleFormComponent extends PureComponent<Props> {
               id="input-title"
               type="text"
               className="form-control"
-              defaultValue={data?.title}
+              defaultValue={title}
             />
           </div>
         </div>
 
         <div className={styles.formAction}>
-          <button type="submit" className="btn btn-primary">
-            Save
-          </button>
+          <div>
+            <button type="submit" className="btn btn-primary">
+              Save
+            </button>
+            <button type="button" className="btn btn-link" onClick={this.props.onFinishEditing}>
+              Cancel
+            </button>
+          </div>
 
-          <button type="button" className="btn btn-link" onClick={this.props.onFinishEditing}>
-            Cancel
-          </button>
+          {moduleInfo && (
+            <Tooltip
+              content={`Reset title to "${moduleInfo.ModuleTitle}" and credits to ${
+                moduleInfo.ModuleCredit
+              }`}
+            >
+              <button type="button" className="btn btn-secondary" onClick={this.resetCustomInfo}>
+                Reset Info
+              </button>
+            </Tooltip>
+          )}
         </div>
       </form>
     );
@@ -90,7 +127,8 @@ export class CustomModuleFormComponent extends PureComponent<Props> {
 
 const CustomModuleForm = connect(
   (state: StoreState, ownProps: OwnProps) => ({
-    data: state.planner.custom[ownProps.moduleCode],
+    customInfo: state.planner.custom[ownProps.moduleCode],
+    moduleInfo: state.moduleBank.modules[ownProps.moduleCode],
   }),
   {
     addCustomModule,
