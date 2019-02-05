@@ -45,7 +45,7 @@ export function serializeLesson(lesson: RawLesson) {
     lesson.LessonType,
     lesson.ClassNo,
     lesson.StartTime,
-    lesson.WeekText,
+    lesson.Weeks.join('/'),
     lesson.DayText,
     lesson.Venue,
   ].join('|');

@@ -9,6 +9,7 @@
 <PROJECT_ROOT>/data/.*
 <PROJECT_ROOT>/coverage/.*
 <PROJECT_ROOT>/build/.*
+<PROJECT_ROOT>/node_modules/oboe/test/.*
 
 [libs]
 

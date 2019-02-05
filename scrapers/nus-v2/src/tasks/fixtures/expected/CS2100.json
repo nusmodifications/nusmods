@@ -18,7 +18,7 @@
         {
           "ClassNo": "01",
           "LessonType": "Laboratory",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1300",
           "EndTime": "1400",
@@ -27,7 +27,7 @@
         {
           "ClassNo": "02",
           "LessonType": "Laboratory",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1400",
           "EndTime": "1500",
@@ -36,7 +36,7 @@
         {
           "ClassNo": "03",
           "LessonType": "Laboratory",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1500",
           "EndTime": "1600",
@@ -45,7 +45,7 @@
         {
           "ClassNo": "04",
           "LessonType": "Laboratory",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1600",
           "EndTime": "1700",
@@ -54,7 +54,7 @@
         {
           "ClassNo": "05",
           "LessonType": "Laboratory",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1700",
           "EndTime": "1800",
@@ -63,7 +63,7 @@
         {
           "ClassNo": "06",
           "LessonType": "Laboratory",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Thursday",
           "StartTime": "1100",
           "EndTime": "1200",
@@ -72,7 +72,7 @@
         {
           "ClassNo": "07",
           "LessonType": "Laboratory",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Thursday",
           "StartTime": "1200",
           "EndTime": "1300",
@@ -81,7 +81,7 @@
         {
           "ClassNo": "08",
           "LessonType": "Laboratory",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Thursday",
           "StartTime": "1300",
           "EndTime": "1400",
@@ -90,7 +90,7 @@
         {
           "ClassNo": "09",
           "LessonType": "Laboratory",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Thursday",
           "StartTime": "1400",
           "EndTime": "1500",
@@ -99,7 +99,7 @@
         {
           "ClassNo": "10",
           "LessonType": "Laboratory",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Thursday",
           "StartTime": "1500",
           "EndTime": "1600",
@@ -108,7 +108,7 @@
         {
           "ClassNo": "11",
           "LessonType": "Laboratory",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Thursday",
           "StartTime": "1600",
           "EndTime": "1700",
@@ -117,7 +117,7 @@
         {
           "ClassNo": "12",
           "LessonType": "Laboratory",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Thursday",
           "StartTime": "1700",
           "EndTime": "1800",
@@ -126,7 +126,7 @@
         {
           "ClassNo": "1",
           "LessonType": "Lecture",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "1600",
           "EndTime": "1800",
@@ -135,7 +135,7 @@
         {
           "ClassNo": "1",
           "LessonType": "Lecture",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Wednesday",
           "StartTime": "1200",
           "EndTime": "1300",
@@ -144,7 +144,7 @@
         {
           "ClassNo": "01",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Friday",
           "StartTime": "1300",
           "EndTime": "1400",
@@ -153,7 +153,7 @@
         {
           "ClassNo": "02",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "0800",
           "EndTime": "0900",
@@ -162,7 +162,7 @@
         {
           "ClassNo": "03",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Wednesday",
           "StartTime": "0900",
           "EndTime": "1000",
@@ -171,7 +171,7 @@
         {
           "ClassNo": "04",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1600",
           "EndTime": "1700",
@@ -180,7 +180,7 @@
         {
           "ClassNo": "05",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1700",
           "EndTime": "1800",
@@ -189,7 +189,7 @@
         {
           "ClassNo": "06",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Thursday",
           "StartTime": "0900",
           "EndTime": "1000",
@@ -198,7 +198,7 @@
         {
           "ClassNo": "07",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Wednesday",
           "StartTime": "1000",
           "EndTime": "1100",
@@ -207,7 +207,7 @@
         {
           "ClassNo": "08",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Friday",
           "StartTime": "1100",
           "EndTime": "1200",
@@ -216,7 +216,7 @@
         {
           "ClassNo": "09",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Thursday",
           "StartTime": "1600",
           "EndTime": "1700",
@@ -225,7 +225,7 @@
         {
           "ClassNo": "10",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Friday",
           "StartTime": "1500",
           "EndTime": "1600",
@@ -234,7 +234,7 @@
         {
           "ClassNo": "11",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Friday",
           "StartTime": "1300",
           "EndTime": "1400",
@@ -243,7 +243,7 @@
         {
           "ClassNo": "12",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "0900",
           "EndTime": "1000",
@@ -259,7 +259,7 @@
         {
           "ClassNo": "01",
           "LessonType": "Laboratory",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "0800",
           "EndTime": "0900",
@@ -268,7 +268,7 @@
         {
           "ClassNo": "02",
           "LessonType": "Laboratory",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "0900",
           "EndTime": "1000",
@@ -277,7 +277,7 @@
         {
           "ClassNo": "03",
           "LessonType": "Laboratory",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1000",
           "EndTime": "1100",
@@ -286,7 +286,7 @@
         {
           "ClassNo": "04",
           "LessonType": "Laboratory",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1100",
           "EndTime": "1200",
@@ -295,7 +295,7 @@
         {
           "ClassNo": "05",
           "LessonType": "Laboratory",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1200",
           "EndTime": "1300",
@@ -304,7 +304,7 @@
         {
           "ClassNo": "06",
           "LessonType": "Laboratory",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1300",
           "EndTime": "1400",
@@ -313,7 +313,7 @@
         {
           "ClassNo": "07",
           "LessonType": "Laboratory",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1400",
           "EndTime": "1500",
@@ -322,7 +322,7 @@
         {
           "ClassNo": "08",
           "LessonType": "Laboratory",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1500",
           "EndTime": "1600",
@@ -331,7 +331,7 @@
         {
           "ClassNo": "09",
           "LessonType": "Laboratory",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1600",
           "EndTime": "1700",
@@ -340,7 +340,7 @@
         {
           "ClassNo": "10",
           "LessonType": "Laboratory",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1700",
           "EndTime": "1800",
@@ -349,7 +349,7 @@
         {
           "ClassNo": "11",
           "LessonType": "Laboratory",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Thursday",
           "StartTime": "0800",
           "EndTime": "0900",
@@ -358,7 +358,7 @@
         {
           "ClassNo": "12",
           "LessonType": "Laboratory",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Thursday",
           "StartTime": "0900",
           "EndTime": "1000",
@@ -367,7 +367,7 @@
         {
           "ClassNo": "13",
           "LessonType": "Laboratory",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Thursday",
           "StartTime": "1000",
           "EndTime": "1100",
@@ -376,7 +376,7 @@
         {
           "ClassNo": "14",
           "LessonType": "Laboratory",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Thursday",
           "StartTime": "1100",
           "EndTime": "1200",
@@ -385,7 +385,7 @@
         {
           "ClassNo": "15",
           "LessonType": "Laboratory",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Thursday",
           "StartTime": "1200",
           "EndTime": "1300",
@@ -394,7 +394,7 @@
         {
           "ClassNo": "16",
           "LessonType": "Laboratory",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Thursday",
           "StartTime": "1300",
           "EndTime": "1400",
@@ -403,7 +403,7 @@
         {
           "ClassNo": "17",
           "LessonType": "Laboratory",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Thursday",
           "StartTime": "1400",
           "EndTime": "1500",
@@ -412,7 +412,7 @@
         {
           "ClassNo": "18",
           "LessonType": "Laboratory",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Thursday",
           "StartTime": "1500",
           "EndTime": "1600",
@@ -421,7 +421,7 @@
         {
           "ClassNo": "19",
           "LessonType": "Laboratory",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Thursday",
           "StartTime": "1600",
           "EndTime": "1700",
@@ -430,7 +430,7 @@
         {
           "ClassNo": "20",
           "LessonType": "Laboratory",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Thursday",
           "StartTime": "1700",
           "EndTime": "1800",
@@ -439,7 +439,7 @@
         {
           "ClassNo": "1",
           "LessonType": "Lecture",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "1600",
           "EndTime": "1800",
@@ -448,7 +448,7 @@
         {
           "ClassNo": "1",
           "LessonType": "Lecture",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Wednesday",
           "StartTime": "1400",
           "EndTime": "1500",
@@ -457,7 +457,7 @@
         {
           "ClassNo": "2",
           "LessonType": "Lecture",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1000",
           "EndTime": "1200",
@@ -466,7 +466,7 @@
         {
           "ClassNo": "2",
           "LessonType": "Lecture",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Wednesday",
           "StartTime": "1500",
           "EndTime": "1600",
@@ -475,7 +475,7 @@
         {
           "ClassNo": "01",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Wednesday",
           "StartTime": "1100",
           "EndTime": "1200",
@@ -484,7 +484,7 @@
         {
           "ClassNo": "02",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Friday",
           "StartTime": "0900",
           "EndTime": "1000",
@@ -493,7 +493,7 @@
         {
           "ClassNo": "03",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "1000",
           "EndTime": "1100",
@@ -502,7 +502,7 @@
         {
           "ClassNo": "04",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Wednesday",
           "StartTime": "1100",
           "EndTime": "1200",
@@ -511,7 +511,7 @@
         {
           "ClassNo": "05",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Friday",
           "StartTime": "1100",
           "EndTime": "1200",
@@ -520,7 +520,7 @@
         {
           "ClassNo": "06",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Friday",
           "StartTime": "1200",
           "EndTime": "1300",
@@ -529,7 +529,7 @@
         {
           "ClassNo": "07",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "1300",
           "EndTime": "1400",
@@ -538,7 +538,7 @@
         {
           "ClassNo": "08",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1200",
           "EndTime": "1300",
@@ -547,7 +547,7 @@
         {
           "ClassNo": "09",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1600",
           "EndTime": "1700",
@@ -556,7 +556,7 @@
         {
           "ClassNo": "10",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "0900",
           "EndTime": "1000",
@@ -565,7 +565,7 @@
         {
           "ClassNo": "11",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1500",
           "EndTime": "1600",
@@ -574,7 +574,7 @@
         {
           "ClassNo": "12",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Thursday",
           "StartTime": "1700",
           "EndTime": "1800",
@@ -583,7 +583,7 @@
         {
           "ClassNo": "13",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Wednesday",
           "StartTime": "1000",
           "EndTime": "1100",
@@ -592,7 +592,7 @@
         {
           "ClassNo": "14",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "1100",
           "EndTime": "1200",
@@ -601,7 +601,7 @@
         {
           "ClassNo": "15",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Friday",
           "StartTime": "0800",
           "EndTime": "0900",
@@ -610,7 +610,7 @@
         {
           "ClassNo": "16",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Wednesday",
           "StartTime": "1200",
           "EndTime": "1300",
@@ -619,7 +619,7 @@
         {
           "ClassNo": "17",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Wednesday",
           "StartTime": "1300",
           "EndTime": "1400",
@@ -628,7 +628,7 @@
         {
           "ClassNo": "18",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Friday",
           "StartTime": "1300",
           "EndTime": "1400",
@@ -637,7 +637,7 @@
         {
           "ClassNo": "19",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Friday",
           "StartTime": "1400",
           "EndTime": "1500",
@@ -646,7 +646,7 @@
         {
           "ClassNo": "20",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Friday",
           "StartTime": "1500",
           "EndTime": "1600",

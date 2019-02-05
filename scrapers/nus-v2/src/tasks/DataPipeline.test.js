@@ -133,9 +133,11 @@ describe(DataPipeline, () => {
       const [, semester] = fromTermCode(term);
       return moduleInfoData[semester] || [];
     });
-    mockApi.getSemesterTimetables.mockImplementation(async (term) => {
+    mockApi.getSemesterTimetables.mockImplementation(async (term, consumer) => {
       const [, semester] = fromTermCode(term);
-      return moduleTimetableData[semester] || [];
+      const lessons = moduleTimetableData[semester] || [];
+      lessons.forEach((lesson) => consumer(lesson));
+      return Promise.resolve();
     });
     mockApi.getTermExams.mockImplementation(async (term) => {
       const [, semester] = fromTermCode(term);
