@@ -1,4 +1,4 @@
-import nusmoderator from '.';
+import nusmoderator from './index';
 
 describe('nusmoderator', () => {
   test('academicCalendar', () => {
