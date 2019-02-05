@@ -42,8 +42,8 @@ export function getAcadYear(date) {
 /**
  * Computes the current academic semester.
  * Expects a week number of a year.
- * @param  {Number} acadWeekNumber
- * @return {String} semester - "Semester 1"
+ * @param  {number} acadWeekNumber
+ * @return {string} semester - "Semester 1"
  * @example acadWeekNumber(3)
  */
 export function getAcadSem(acadWeekNumber) {
@@ -55,11 +55,14 @@ export function getAcadSem(acadWeekNumber) {
 
   if (acadWeekNumber >= earliestSupportedWeek && acadWeekNumber <= lastWeekofSem1) {
     return sem1;
-  } else if (acadWeekNumber > lastWeekofSem1 && acadWeekNumber <= lastWeekofSem2) {
+  }
+  if (acadWeekNumber > lastWeekofSem1 && acadWeekNumber <= lastWeekofSem2) {
     return sem2;
-  } else if (acadWeekNumber > lastWeekofSem2 && acadWeekNumber <= lastWeekofSpecialSem1) {
+  }
+  if (acadWeekNumber > lastWeekofSem2 && acadWeekNumber <= lastWeekofSpecialSem1) {
     return special1;
-  } else if (acadWeekNumber > lastWeekofSpecialSem1 && acadWeekNumber <= lastWeekofSpecialSem2) {
+  }
+  if (acadWeekNumber > lastWeekofSpecialSem1 && acadWeekNumber <= lastWeekofSpecialSem2) {
     return special2;
   }
 
@@ -70,8 +73,8 @@ export function getAcadSem(acadWeekNumber) {
 /**
  * Computes the current academic week of the semester
  * Expects a week number of a semester.
- * @param  {Number} acadWeekNumber
- * @return {String} semester - "Recess" | "Reading" | "Examination"
+ * @param  {number} acadWeekNumber
+ * @return {string} semester - "Recess" | "Reading" | "Examination"
  * @example acadWeekNumber(3)
  */
 export function getAcadWeekName(acadWeekNumber) {

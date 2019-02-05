@@ -5,10 +5,10 @@ import {
   getAcadWeekName,
   getAcadWeekInfo,
   getExamWeek,
-} from '../src/academicCalendar';
+} from './academicCalendar';
 
 /* eslint-disable no-console */
-console.warn = jest.genMockFn();
+console.warn = jest.fn();
 
 describe('acadYearStartDates', () => {
   it('has the start dates of 6 academic years', () => {
