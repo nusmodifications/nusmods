@@ -1,0 +1,13 @@
+@import '~styles/utils/modules-entry';
+@import 'variables';
+
+.heading {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.formAction {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}

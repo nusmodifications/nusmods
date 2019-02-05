@@ -1,13 +1,18 @@
 // @flow
 
+import type { Semester } from 'types/modules';
+
+/** @var {Module} */
+import CS1010S from '__mocks__/modules/CS1010S.json';
+
 import {
   acadYearLabel,
   checkPrerequisite,
   conflictToText,
   fromDroppableId,
   getDroppableId,
+  getTotalMC,
 } from 'utils/planner';
-import type { Semester } from 'types/modules';
 
 describe(checkPrerequisite, () => {
   const moduleSet = new Set(['CS1010S', 'CS2107', 'CS2105', 'MA1101R', 'MA1521', 'MA2104']);
@@ -158,5 +163,24 @@ describe(acadYearLabel, () => {
 
     // Don't remove every '20' in the string
     expect(acadYearLabel('2019/2020')).toEqual('19/20');
+  });
+});
+
+describe(getTotalMC, () => {
+  test('should return 0 for empty array', () => {
+    expect(getTotalMC([])).toEqual(0);
+  });
+
+  test('should use 0 for module with no data', () => {
+    expect(getTotalMC([{ moduleCode: 'CS2020' }, { moduleCode: 'CS1010S' }])).toEqual(0);
+  });
+
+  test('should merge module credit from module info and custom info', () => {
+    expect(
+      getTotalMC([
+        { moduleCode: 'CS2020', customInfo: { moduleCredit: 6 } },
+        { moduleCode: 'CS1010S', moduleInfo: CS1010S },
+      ]),
+    ).toEqual(10);
   });
 });

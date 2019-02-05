@@ -11,7 +11,7 @@ import type {
   Semester,
   TreeFragment,
 } from './modules';
-import type { ModuleList } from './reducers';
+import type { CustomModule, ModuleList } from './reducers';
 import type { Venue, VenueList } from './venues';
 
 export type ComponentMap = {|
@@ -184,7 +184,10 @@ export type Conflict = PrereqConflict | ExamConflict | SemesterConflict | NoInfo
 
 export type PlannerModuleInfo = {|
   moduleCode: ModuleCode,
-  moduleInfo?: Module,
+  moduleInfo?: ?Module,
+  // Custom info added by the student to override our data or to fill in the blanks
+  // This is a separate field for easier typing
+  customInfo?: ?CustomModule,
   conflict?: ?Conflict,
 |};
 
