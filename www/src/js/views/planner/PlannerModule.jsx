@@ -33,54 +33,66 @@ type Props = {|
   +addCustomData: (ModuleCode) => void,
 |};
 
-const ModuleMenu = React.memo(
-  (props: {| +removeModule: () => void, +editCustomData: () => void |}) => {
-    const menuItems = [['Remove', props.removeModule], ['Edit MC and Title', props.editCustomData]];
+type MenuProps = {|
+  +removeModule: () => void,
+  +editCustomData: () => void,
+|};
 
-    return (
-      <Downshift
-        onSelect={(item) => {
-          menuItems.forEach(([menuItem, onSelect]) => {
-            if (item === menuItem) {
-              onSelect();
-            }
-          });
-        }}
-      >
-        {({ getItemProps, getMenuProps, highlightedIndex, isOpen, toggleMenu }) => (
-          <div className={styles.menuBtn}>
-            <button
-              className={classnames('btn close')}
-              type="button"
-              onClick={toggleMenu}
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded={isOpen}
-            >
-              <ChevronDown />
-            </button>
-            <div
-              className={classnames(styles.menu, 'dropdown-menu', { show: isOpen })}
-              {...getMenuProps()}
-            >
-              {menuItems.map(([item], itemIndex) => (
-                <button
-                  key={item}
-                  className={classnames('dropdown-item', {
-                    'dropdown-selected': highlightedIndex === itemIndex,
-                  })}
-                  {...getItemProps({ item })}
-                >
-                  {item}
-                </button>
-              ))}
-            </div>
+type MenuItem = {|
+  label: string,
+  action: () => void,
+  className?: string,
+|};
+
+const ModuleMenu = React.memo((props: MenuProps) => {
+  const menuItems: MenuItem[] = [
+    { label: 'Edit MC and Title', action: props.editCustomData },
+    { label: 'Remove', action: props.removeModule, className: 'dropdown-item-danger' },
+  ];
+
+  return (
+    <Downshift
+      onSelect={(item) => {
+        menuItems.forEach(({ label, action }) => {
+          if (item === label) {
+            action();
+          }
+        });
+      }}
+    >
+      {({ getItemProps, getMenuProps, highlightedIndex, isOpen, toggleMenu }) => (
+        <div className={styles.menuBtn}>
+          <button
+            className={classnames('btn close')}
+            type="button"
+            onClick={toggleMenu}
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded={isOpen}
+          >
+            <ChevronDown />
+          </button>
+          <div
+            className={classnames(styles.menu, 'dropdown-menu', { show: isOpen })}
+            {...getMenuProps()}
+          >
+            {menuItems.map(({ label, className }, itemIndex) => (
+              <button
+                key={label}
+                className={classnames('dropdown-item', className, {
+                  'dropdown-selected': highlightedIndex === itemIndex,
+                })}
+                {...getItemProps({ item: label })}
+              >
+                {label}
+              </button>
+            ))}
           </div>
-        )}
-      </Downshift>
-    );
-  },
-);
+        </div>
+      )}
+    </Downshift>
+  );
+});
 
 /**
  * Component for a single module on the planner
