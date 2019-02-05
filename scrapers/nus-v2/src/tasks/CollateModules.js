@@ -39,7 +39,7 @@ export function combineModules(
 
         // 4. Safety check for diverging module info between semester
         const left = omit(modules[module.ModuleCode], 'SemesterData');
-        const right = omit(module, 'SemesterData');
+        const right = module.Module;
         if (!isEqual(left, right)) {
           const { SemesterData } = modules[module.ModuleCode];
           logger.warn(

@@ -11,6 +11,7 @@
  */
 
 import axios from 'axios';
+import oboe from 'oboe';
 import Queue from 'promise-queue';
 
 import type { ModuleCode } from '../types/modules';
@@ -32,6 +33,33 @@ const OKAY: STATUS_CODE = '00000';
 const AUTH_ERROR: STATUS_CODE = '10000';
 const RECORD_NOT_FOUND: STATUS_CODE = '10001';
 
+const headers = {
+  // Authentication via tokens sent through headers
+  'X-APP-API': config.appKey,
+  'X-STUDENT-API': config.studentKey,
+  'Content-Type': 'application/json',
+};
+
+/**
+ * Map the error code from the API to the correct class
+ */
+function mapErrorCode(code: string, msg: string) {
+  let error;
+
+  switch (code) {
+    case AUTH_ERROR:
+      error = new AuthError(msg);
+      break;
+    case RECORD_NOT_FOUND:
+      error = new NotFoundError(msg);
+      break;
+    default:
+      error = new UnknownApiError(msg);
+  }
+
+  return error;
+}
+
 /**
  * Base API call function. Do not call this directly, instead use one of the provided
  * methods.
@@ -50,11 +78,7 @@ export async function callApi<Data>(endpoint: string, params: ApiParams): Promis
     response = await axios.post(url, params, {
       transformRequest: [(data) => JSON.stringify(data)],
       // 3. Apply authentication using header
-      headers: {
-        'X-APP-API': config.appKey,
-        'X-STUDENT-API': config.studentKey,
-        'Content-Type': 'application/json',
-      },
+      headers,
     });
   } catch (e) {
     // 4. Handle network / request level errors, eg. server returning non-200
@@ -80,18 +104,7 @@ export async function callApi<Data>(endpoint: string, params: ApiParams): Promis
 
   // 5. Handle application level errors
   if (code !== OKAY) {
-    let error;
-
-    switch (code) {
-      case AUTH_ERROR:
-        error = new AuthError(msg);
-        break;
-      case RECORD_NOT_FOUND:
-        error = new NotFoundError(msg);
-        break;
-      default:
-        error = new UnknownApiError(msg);
-    }
+    const error = mapErrorCode(code, msg);
 
     error.response = response;
     error.requestConfig = response.config;
@@ -216,8 +229,52 @@ export class NusApi {
       deptfac: departmentCode,
     });
 
-  getSemesterTimetables = async (term: string): Promise<TimetableLesson[]> =>
-    this.callApi('classtt/withdate', { term });
+  /**
+   * Loads an entire semester's timetable from the API. Because the JSON returned
+   * is very large, instead of waiting for the entire JSON to be loaded into memory
+   * we pass the individual lessons to a consumer function instead as they are
+   * streamed
+   */
+  getSemesterTimetables = async (
+    term: string,
+    lessonConsumer: (TimetableLesson) => void,
+  ): Promise<void> =>
+    new Promise((resolve, reject) => {
+      const endpoint = 'classtt/withdate';
+      const url = `${config.baseUrl}/${endpoint}`;
+      const body = JSON.stringify({ term });
+
+      oboe({
+        url,
+        headers,
+        body,
+        method: 'POST',
+      })
+        .node('data[*]', (lesson: TimetableLesson) => {
+          // Consume and drop each lesson
+          lessonConsumer(lesson);
+          return oboe.drop;
+        })
+        .done((data) => {
+          // Handle application level errors
+          const { code, msg } = data;
+
+          if (code === OKAY) {
+            resolve();
+          } else {
+            const error = mapErrorCode(code, msg);
+            error.requestConfig = { url, body };
+            reject(error);
+          }
+        })
+        .fail((error) => {
+          if (error.thrown) {
+            reject(error.thrown);
+          } else {
+            reject(new UnknownApiError(`Unable to get semester timetable`));
+          }
+        });
+    });
 
   /**
    * Get exam info for a specific module

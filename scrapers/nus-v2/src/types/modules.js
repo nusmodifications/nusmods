@@ -58,7 +58,7 @@ export type RawLesson = {
   LessonType: LessonType,
   StartTime: StartTime,
   Venue: Venue,
-  WeekText: WeekText,
+  Weeks: number[],
 };
 
 // Semester-specific information of a module.

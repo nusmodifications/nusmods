@@ -49,10 +49,10 @@ Run these through `yarn scrape` in production or `yarn dev` in development piped
 
 - Get department / faculty codes (`GetDepartmentFaculty`)
 - Get semester data for all four semesters (`GetSemesterData`)
-    - Get semester modules (`GetSemesterModules`)
-        - Fan out to all modules
-            - Get module timetable (`GetModuleTimetable`)
-    - Get semester exams (`GetModuleExams`)
+  - Get semester modules (`GetSemesterModules`)
+    - Fan out to all modules
+      - Get module timetable (`GetModuleTimetable`)
+  - Get semester exams (`GetModuleExams`)
 - Collate venues (`CollateVenues`)
 - Collate modules (`CombineModules`)
 
@@ -71,10 +71,11 @@ Error handling is done through Sentry.
 ### Module data
 
 - `Faculty` is provided in addition to `Department`
-- `Types` is removed - this is not used anywhere in the v3 frontend
+- `Types` is removed - this is not used anywhere in the v3 frontend because it is difficult to keep up to date
 - `Workload` will now be parsed on the server into a tuple of 5 numbers. A string is only returned if the text is unparsable.
-- `ModmavenTree` is renamed to `PrereqTree`.
+- `ModmavenTree` is renamed to `PrereqTree`, is now optional, and is represented by a recursive tree of `type PrereqTree = string | { ['and' | 'or']: PrereqTree[] }`
 - `LockedModules` is renamed to `FulfillRequirements`
+- `History` has been renamed `SemesterData`
 
 ### Semester data
 
@@ -82,6 +83,10 @@ Error handling is done through Sentry.
 - `ExamDate` is now a proper ISO8601 date, formatted including timezone (UTC+8)
 - `ExamDuration` is a new nullable field providing the duration of the exam in minutes
 - `FacultyDepartment` will now be published under yearly data, not semester
+
+### Lesson data
+
+- `WeekText` is now just `Weeks` and is an array of numbers representing the weeks on which the lesson will be held instead of a string. Weeks start from 1 representing the first week of the semester, and each normal term semester has 13 weeks.
 
 ### Venue data
 
