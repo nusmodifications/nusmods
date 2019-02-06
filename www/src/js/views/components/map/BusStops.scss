@@ -1,0 +1,21 @@
+@import '~styles/utils/modules-entry';
+
+.iconWrapper {
+  .hitArea {
+    width: 100%;
+    height: 100%;
+
+    // Highlight the bus stops when editing
+    &.editing {
+      border: 1px solid #000;
+      background: rgba(#000, 0.3);
+    }
+
+    &:hover {
+      $color: theme-color();
+
+      background: rgba($color, 0.3);
+      box-shadow: 0 0 6px rgba($color, 0.3);
+    }
+  }
+}

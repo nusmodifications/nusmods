@@ -6,7 +6,7 @@ import marker from 'img/marker.svg?url';
 import styles from './LocationMap.scss';
 
 /* eslint-disable import/prefer-default-export */
-export const icon = new Icon({
+export const markerIcon = new Icon({
   iconUrl: marker,
   className: styles.marker,
   // SVG is 365x560

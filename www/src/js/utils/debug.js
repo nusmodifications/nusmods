@@ -43,3 +43,7 @@ export function forceTimer() {
 export function forceCorsRound() {
   return getParams().round;
 }
+
+export function allowBusStopEditing() {
+  return getParams().edit === '1';
+}
