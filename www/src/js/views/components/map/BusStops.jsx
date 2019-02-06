@@ -68,15 +68,29 @@ export default class BusStops extends PureComponent<Props, State> {
             [styles.editing]: allowEditing,
           });
 
+          const routeWrapperClass = classnames(styles.routeWrapper, {
+            [styles.left]: stop.displayRoutesLeft,
+          });
+
+          const routeIndicators = stop.routes.map(
+            (route) =>
+              `<span class="${classnames(styles.route, styles[`route${route}`])}">${route}</span>`,
+          );
+
           const icon = new DivIcon({
             html: `
               <div 
                 title="${stop.name}" 
                 data-code="${stop.code}" 
                 class="${hitAreaClass}"
-              ></div>`,
+              ></div>
+              <div class="${routeWrapperClass}">
+                ${routeIndicators.join('')}
+              </div>`,
             className: styles.iconWrapper,
             iconSize: [30, 30],
+            // Move the popup a bit higher so it won't cover the bus stop icon
+            popupAnchor: [0, -4],
           });
 
           return (
@@ -89,7 +103,7 @@ export default class BusStops extends PureComponent<Props, State> {
               autoPan={allowEditing}
             >
               <Popup>
-                <h3>{stop.name}</h3>
+                <h3 className={styles.heading}>{stop.name}</h3>
               </Popup>
             </Marker>
           );
