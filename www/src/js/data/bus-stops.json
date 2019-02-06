@@ -1,0 +1,306 @@
+[
+  {
+    "name": "AS5",
+    "location": [
+      1.2936110496521,
+      103.771942138672
+    ],
+    "code": "AS7"
+  },
+  {
+    "name": "BIZ 2",
+    "location": [
+      1.29333997411937,
+      103.775159716606
+    ],
+    "code": "BIZ2"
+  },
+  {
+    "name": "Botanic Gardens MRT",
+    "location": [
+      1.32270002365112,
+      103.815101623535
+    ],
+    "code": "BG-MRT"
+  },
+  {
+    "name": "Car Park 11 (BIZ)",
+    "location": [
+      1.2940000295639,
+      103.775199890137
+    ],
+    "code": "BIZ2-E"
+  },
+  {
+    "name": "Central Library",
+    "location": [
+      1.29649996757507,
+      103.772399902344
+    ],
+    "code": "CENLIB"
+  },
+  {
+    "name": "College Green",
+    "location": [
+      1.32333302497864,
+      103.816307067871
+    ],
+    "code": "CGH"
+  },
+  {
+    "name": "COM2",
+    "location": [
+      1.29416704177856,
+      103.773612976074
+    ],
+    "code": "COM2"
+  },
+  {
+    "name": "EA",
+    "location": [
+      1.30040001869202,
+      103.77010345459
+    ],
+    "code": "BLK-EA-OPP"
+  },
+  {
+    "name": "Information Technology",
+    "location": [
+      1.29737591743469,
+      103.772850036621
+    ],
+    "code": "COMCEN"
+  },
+  {
+    "name": "Kent Ridge Bus Terminal",
+    "location": [
+      1.29416704177856,
+      103.769721984863
+    ],
+    "code": "KR-BT"
+  },
+  {
+    "name": "Kent Ridge Bus Terminal (E)",
+    "location": [
+      1.29460000991821,
+      103.769798278809
+    ],
+    "code": "KR-BTE"
+  },
+  {
+    "name": "Kent Ridge Bus Terminal End",
+    "location": [
+      1.29470002651215,
+      103.769798278809
+    ],
+    "code": "KTR-EN"
+  },
+  {
+    "name": "Kent Ridge MRT",
+    "location": [
+      1.29379999637604,
+      103.784896850586
+    ],
+    "code": "KR-MRT"
+  },
+  {
+    "name": "Kent Vale",
+    "location": [
+      1.30209994316101,
+      103.769096374512
+    ],
+    "code": "KV"
+  },
+  {
+    "name": "LT13",
+    "location": [
+      1.29477859091277,
+      103.770588576794
+    ],
+    "code": "LT13"
+  },
+  {
+    "name": "LT27",
+    "location": [
+      1.29739999771118,
+      103.780899047852
+    ],
+    "code": "LT27"
+  },
+  {
+    "name": "Museum",
+    "location": [
+      1.30110192298889,
+      103.77367401123
+    ],
+    "code": "MUSEUM"
+  },
+  {
+    "name": "Oei Tiong Ham Building",
+    "location": [
+      1.31910002231598,
+      103.816802978516
+    ],
+    "code": "BUKITTIMAH-BTC2"
+  },
+  {
+    "name": "Opp HSSML",
+    "location": [
+      1.29277801513672,
+      103.775001525879
+    ],
+    "code": "HSSML-OPP"
+  },
+  {
+    "name": "Opp Kent Ridge MRT",
+    "location": [
+      1.2936999797821,
+      103.785202026367
+    ],
+    "code": "KR-MRT-OPP"
+  },
+  {
+    "name": "Opp NUSS",
+    "location": [
+      1.29330003261566,
+      103.772399902344
+    ],
+    "code": "NUSS-OPP"
+  },
+  {
+    "name": "Opp TCOMS",
+    "location": [
+      1.29379999637604,
+      103.777000427246
+    ],
+    "code": "PGP12-OPP"
+  },
+  {
+    "name": "Opp UHall",
+    "location": [
+      1.29750001430511,
+      103.778297424316
+    ],
+    "code": "UHALL-OPP"
+  },
+  {
+    "name": "Opp University Health Centre",
+    "location": [
+      1.29882680680667,
+      103.775636911392
+    ],
+    "code": "STAFFCLUB-OPP"
+  },
+  {
+    "name": "Opp YIH",
+    "location": [
+      1.29910004138947,
+      103.774299621582
+    ],
+    "code": "YIH-OPP"
+  },
+  {
+    "name": "PGP Hse 15",
+    "location": [
+      1.29305601119995,
+      103.777778625488
+    ],
+    "code": "PGP14-15"
+  },
+  {
+    "name": "PGP Hse 7",
+    "location": [
+      1.29320001602173,
+      103.777801513672
+    ],
+    "code": "PGP7"
+  },
+  {
+    "name": "PGPR",
+    "location": [
+      1.29083299636841,
+      103.780830383301
+    ],
+    "code": "PGP"
+  },
+  {
+    "name": "Prince George's Park",
+    "location": [
+      1.29194402694702,
+      103.7802734375
+    ],
+    "code": "PGPT"
+  },
+  {
+    "name": "Raffles Hall",
+    "location": [
+      1.30102869529789,
+      103.772705554962
+    ],
+    "code": "RAFFLES"
+  },
+  {
+    "name": "S17",
+    "location": [
+      1.29747665891241,
+      103.781354546547
+    ],
+    "code": "S17"
+  },
+  {
+    "name": "TCOMS",
+    "location": [
+      1.2936110496521,
+      103.776947021484
+    ],
+    "code": "PGP12"
+  },
+  {
+    "name": "The Japanese Primary School",
+    "location": [
+      1.30073094367981,
+      103.769973754883
+    ],
+    "code": "JP-SCH-16151"
+  },
+  {
+    "name": "UHall",
+    "location": [
+      1.29748737812042,
+      103.77791595459
+    ],
+    "code": "UHALL"
+  },
+  {
+    "name": "University Health Centre",
+    "location": [
+      1.2989000082016,
+      103.776298522949
+    ],
+    "code": "STAFFCLUB"
+  },
+  {
+    "name": "University Town",
+    "location": [
+      1.30357886193758,
+      103.774490177631
+    ],
+    "code": "UTown"
+  },
+  {
+    "name": "Ventus (Opp LT13)",
+    "location": [
+      1.29530000686646,
+      103.770599365234
+    ],
+    "code": "LT13-OPP"
+  },
+  {
+    "name": "YIH",
+    "location": [
+      1.29869997501373,
+      103.774299621582
+    ],
+    "code": "YIH"
+  }
+]

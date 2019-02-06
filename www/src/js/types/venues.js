@@ -45,5 +45,13 @@ export type VenueLocation = {|
 
 export type LatLngTuple = [number, number];
 
+export type BusStop = {|
+  +location: LatLngTuple,
+  // Human readable name for the stop
+  +name: string,
+  // Used for accessing the next bus API. This is called 'name' in the API.
+  +code: string,
+|};
+
 // data/venues.json is of this type
 export type VenueLocationMap = {| +[string]: VenueLocation |};
