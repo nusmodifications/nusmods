@@ -5,7 +5,13 @@
       1.2936110496521,
       103.771942138672
     ],
-    "code": "AS7"
+    "code": "AS7",
+    "routes": [
+      "A1",
+      "B1",
+      "BTC1",
+      "D1"
+    ]
   },
   {
     "name": "BIZ 2",
@@ -13,7 +19,14 @@
       1.29333997411937,
       103.775159716606
     ],
-    "code": "BIZ2"
+    "code": "BIZ2",
+    "routes": [
+      "A1",
+      "B1",
+      "BTC1",
+      "D1",
+      "D2"
+    ]
   },
   {
     "name": "Botanic Gardens MRT",
@@ -21,7 +34,10 @@
       1.32270002365112,
       103.815101623535
     ],
-    "code": "BG-MRT"
+    "code": "BG-MRT",
+    "routes": [
+      "BTC2"
+    ]
   },
   {
     "name": "Car Park 11 (BIZ)",
@@ -29,7 +45,10 @@
       1.2940000295639,
       103.775199890137
     ],
-    "code": "BIZ2-E"
+    "code": "BIZ2-E",
+    "routes": [
+      "D2"
+    ]
   },
   {
     "name": "Central Library",
@@ -37,7 +56,13 @@
       1.29649996757507,
       103.772399902344
     ],
-    "code": "CENLIB"
+    "code": "CENLIB",
+    "routes": [
+      "A1",
+      "B1",
+      "BTC1",
+      "D1"
+    ]
   },
   {
     "name": "College Green",
@@ -45,7 +70,10 @@
       1.32333302497864,
       103.816307067871
     ],
-    "code": "CGH"
+    "code": "CGH",
+    "routes": [
+      "BTC1"
+    ]
   },
   {
     "name": "COM2",
@@ -53,7 +81,12 @@
       1.29416704177856,
       103.773612976074
     ],
-    "code": "COM2"
+    "code": "COM2",
+    "routes": [
+      "A1",
+      "A2",
+      "D1"
+    ]
   },
   {
     "name": "EA",
@@ -61,7 +94,12 @@
       1.30040001869202,
       103.77010345459
     ],
-    "code": "BLK-EA-OPP"
+    "code": "BLK-EA-OPP",
+    "routes": [
+      "B2",
+      "C",
+      "BTC2"
+    ]
   },
   {
     "name": "Information Technology",
@@ -69,7 +107,13 @@
       1.29737591743469,
       103.772850036621
     ],
-    "code": "COMCEN"
+    "code": "COMCEN",
+    "routes": [
+      "A2",
+      "B1",
+      "B2",
+      "D1"
+    ]
   },
   {
     "name": "Kent Ridge Bus Terminal",
@@ -77,23 +121,13 @@
       1.29416704177856,
       103.769721984863
     ],
-    "code": "KR-BT"
-  },
-  {
-    "name": "Kent Ridge Bus Terminal (E)",
-    "location": [
-      1.29460000991821,
-      103.769798278809
-    ],
-    "code": "KR-BTE"
-  },
-  {
-    "name": "Kent Ridge Bus Terminal End",
-    "location": [
-      1.29470002651215,
-      103.769798278809
-    ],
-    "code": "KTR-EN"
+    "code": "KR-BT",
+    "routes": [
+      "B1",
+      "C",
+      "BTC1",
+      "BTC2"
+    ]
   },
   {
     "name": "Kent Ridge MRT",
@@ -101,7 +135,10 @@
       1.29379999637604,
       103.784896850586
     ],
-    "code": "KR-MRT"
+    "code": "KR-MRT",
+    "routes": [
+
+    ]
   },
   {
     "name": "Kent Vale",
@@ -109,7 +146,11 @@
       1.30209994316101,
       103.769096374512
     ],
-    "code": "KV"
+    "code": "KV",
+    "routes": [
+      "C",
+      "BTC1"
+    ]
   },
   {
     "name": "LT13",
@@ -117,7 +158,13 @@
       1.29477859091277,
       103.770588576794
     ],
-    "code": "LT13"
+    "code": "LT13",
+    "routes": [
+      "A1",
+      "B1",
+      "BTC1",
+      "D1"
+    ]
   },
   {
     "name": "LT27",
@@ -125,7 +172,12 @@
       1.29739999771118,
       103.780899047852
     ],
-    "code": "LT27"
+    "code": "LT27",
+    "routes": [
+      "A1",
+      "C",
+      "D2"
+    ]
   },
   {
     "name": "Museum",
@@ -133,7 +185,15 @@
       1.30110192298889,
       103.77367401123
     ],
-    "code": "MUSEUM"
+    "code": "MUSEUM",
+    "routes": [
+      "A2",
+      "C",
+      "BTC1",
+      "BTC2",
+      "D1",
+      "D2"
+    ]
   },
   {
     "name": "Oei Tiong Ham Building",
@@ -141,7 +201,11 @@
       1.31910002231598,
       103.816802978516
     ],
-    "code": "BUKITTIMAH-BTC2"
+    "code": "BUKITTIMAH-BTC2",
+    "routes": [
+      "BTC1",
+      "BTC2"
+    ]
   },
   {
     "name": "Opp HSSML",
@@ -149,7 +213,12 @@
       1.29277801513672,
       103.775001525879
     ],
-    "code": "HSSML-OPP"
+    "code": "HSSML-OPP",
+    "routes": [
+      "A2",
+      "B2",
+      "D1"
+    ]
   },
   {
     "name": "Opp Kent Ridge MRT",
@@ -157,7 +226,11 @@
       1.2936999797821,
       103.785202026367
     ],
-    "code": "KR-MRT-OPP"
+    "code": "KR-MRT-OPP",
+    "routes": [
+      "A2",
+      "D2"
+    ]
   },
   {
     "name": "Opp NUSS",
@@ -165,7 +238,12 @@
       1.29330003261566,
       103.772399902344
     ],
-    "code": "NUSS-OPP"
+    "code": "NUSS-OPP",
+    "routes": [
+      "A2",
+      "B2",
+      "D1"
+    ]
   },
   {
     "name": "Opp TCOMS",
@@ -173,7 +251,10 @@
       1.29379999637604,
       103.777000427246
     ],
-    "code": "PGP12-OPP"
+    "code": "PGP12-OPP",
+    "routes": [
+      "A1"
+    ]
   },
   {
     "name": "Opp UHall",
@@ -181,7 +262,12 @@
       1.29750001430511,
       103.778297424316
     ],
-    "code": "UHALL-OPP"
+    "code": "UHALL-OPP",
+    "routes": [
+      "A2",
+      "C",
+      "D2"
+    ]
   },
   {
     "name": "Opp University Health Centre",
@@ -189,7 +275,12 @@
       1.29882680680667,
       103.775636911392
     ],
-    "code": "STAFFCLUB-OPP"
+    "code": "STAFFCLUB-OPP",
+    "routes": [
+      "A1",
+      "C",
+      "D2"
+    ]
   },
   {
     "name": "Opp YIH",
@@ -197,7 +288,13 @@
       1.29910004138947,
       103.774299621582
     ],
-    "code": "YIH-OPP"
+    "code": "YIH-OPP",
+    "routes": [
+      "A2",
+      "B1",
+      "B2",
+      "D1"
+    ]
   },
   {
     "name": "PGP Hse 15",
@@ -205,7 +302,10 @@
       1.29305601119995,
       103.777778625488
     ],
-    "code": "PGP14-15"
+    "code": "PGP14-15",
+    "routes": [
+      "A2"
+    ]
   },
   {
     "name": "PGP Hse 7",
@@ -213,7 +313,10 @@
       1.29320001602173,
       103.777801513672
     ],
-    "code": "PGP7"
+    "code": "PGP7",
+    "routes": [
+      "A1"
+    ]
   },
   {
     "name": "PGPR",
@@ -221,7 +324,10 @@
       1.29083299636841,
       103.780830383301
     ],
-    "code": "PGP"
+    "code": "PGP",
+    "routes": [
+      "D2"
+    ]
   },
   {
     "name": "Prince George's Park",
@@ -229,7 +335,13 @@
       1.29194402694702,
       103.7802734375
     ],
-    "code": "PGPT"
+    "code": "PGPT",
+    "routes": [
+      "A1",
+      "A2",
+      "BTC1",
+      "D2"
+    ]
   },
   {
     "name": "Raffles Hall",
@@ -237,7 +349,11 @@
       1.30102869529789,
       103.772705554962
     ],
-    "code": "RAFFLES"
+    "code": "RAFFLES",
+    "routes": [
+      "B2",
+      "C"
+    ]
   },
   {
     "name": "S17",
@@ -245,7 +361,12 @@
       1.29747665891241,
       103.781354546547
     ],
-    "code": "S17"
+    "code": "S17",
+    "routes": [
+      "A2",
+      "C",
+      "D2"
+    ]
   },
   {
     "name": "TCOMS",
@@ -253,7 +374,10 @@
       1.2936110496521,
       103.776947021484
     ],
-    "code": "PGP12"
+    "code": "PGP12",
+    "routes": [
+      "A2"
+    ]
   },
   {
     "name": "The Japanese Primary School",
@@ -261,7 +385,10 @@
       1.30073094367981,
       103.769973754883
     ],
-    "code": "JP-SCH-16151"
+    "code": "JP-SCH-16151",
+    "routes": [
+      "C"
+    ]
   },
   {
     "name": "UHall",
@@ -269,7 +396,12 @@
       1.29748737812042,
       103.77791595459
     ],
-    "code": "UHALL"
+    "code": "UHALL",
+    "routes": [
+      "A1",
+      "C",
+      "D2"
+    ]
   },
   {
     "name": "University Health Centre",
@@ -277,7 +409,12 @@
       1.2989000082016,
       103.776298522949
     ],
-    "code": "STAFFCLUB"
+    "code": "STAFFCLUB",
+    "routes": [
+      "A2",
+      "C",
+      "D2"
+    ]
   },
   {
     "name": "University Town",
@@ -285,7 +422,15 @@
       1.30357886193758,
       103.774490177631
     ],
-    "code": "UTown"
+    "code": "UTown",
+    "routes": [
+      "B1",
+      "B2",
+      "C",
+      "C",
+      "D1",
+      "D2"
+    ]
   },
   {
     "name": "Ventus (Opp LT13)",
@@ -293,7 +438,12 @@
       1.29530000686646,
       103.770599365234
     ],
-    "code": "LT13-OPP"
+    "code": "LT13-OPP",
+    "routes": [
+      "A2",
+      "B2",
+      "D1"
+    ]
   },
   {
     "name": "YIH",
@@ -301,6 +451,12 @@
       1.29869997501373,
       103.774299621582
     ],
-    "code": "YIH"
+    "code": "YIH",
+    "routes": [
+      "A1",
+      "B1",
+      "BTC1",
+      "D1"
+    ]
   }
 ]
