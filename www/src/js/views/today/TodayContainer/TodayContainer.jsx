@@ -144,6 +144,7 @@ export class TodayContainerComponent extends PureComponent<Props, State> {
                 parseISO(forecast.timestamp),
                 this.props.currentTime,
               );
+
               const key = String(days);
               if (!draft.weather[key]) {
                 draft.weather[key] = forecast.forecast;
