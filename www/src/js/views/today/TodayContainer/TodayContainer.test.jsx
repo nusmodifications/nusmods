@@ -1,13 +1,14 @@
 // @flow
 
 import React from 'react';
-import { flatten } from 'lodash';
+import { flatten, size } from 'lodash';
 import { shallow } from 'enzyme';
 
 import * as weather from 'apis/weather';
 import { waitFor } from 'test-utils/async';
 import { captureException } from 'utils/error';
 import { type Props, DaySection, TodayContainerComponent, mapStateToProps } from './TodayContainer';
+import forecasts from './__mocks__/forecasts.json';
 import DayEvents from '../DayEvents';
 import styles from '../DayEvents.scss';
 
@@ -219,6 +220,46 @@ describe(TodayContainerComponent, () => {
     await waitFor(() => captureException.mock.calls.length > 0);
 
     expect(captureException).toBeCalled();
+  });
+
+  test('should show icons for the next four days', async () => {
+    // $FlowFixMe
+    weather.twoHour.mockResolvedValue('Cloudy');
+    // $FlowFixMe
+    weather.tomorrow.mockResolvedValue('Fair (Day)');
+    // $FlowFixMe
+    weather.fourDay.mockResolvedValue(forecasts);
+
+    const now = new Date('2019-02-07T00:00:00.000Z');
+    const wrapper = make({ currentTime: now });
+
+    await waitFor(() => size(wrapper.state('weather')) > 3);
+    expect(wrapper.state('weather')).toEqual({
+      '0': 'Cloudy',
+      '1': 'Fair (Day)',
+      '2': 'Afternoon thundery showers.',
+      '3': 'Fair.',
+    });
+  });
+
+  test('should work when tomorrow return null', async () => {
+    // $FlowFixMe
+    weather.twoHour.mockResolvedValue('Cloudy');
+    // $FlowFixMe
+    weather.tomorrow.mockResolvedValue(null);
+    // $FlowFixMe
+    weather.fourDay.mockResolvedValue(forecasts);
+
+    const now = new Date('2019-02-07T00:00:00.000Z');
+    const wrapper = make({ currentTime: now });
+
+    await waitFor(() => size(wrapper.state('weather')) > 3);
+    expect(wrapper.state('weather')).toEqual({
+      '0': 'Cloudy',
+      '1': 'Late afternoon thundery showers.',
+      '2': 'Afternoon thundery showers.',
+      '3': 'Fair.',
+    });
   });
 });
 

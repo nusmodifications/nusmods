@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { minBy, range, get } from 'lodash';
 import NUSModerator, { type AcadWeekInfo } from 'nusmoderator';
 import { addDays, differenceInCalendarDays, isSameDay, isWeekend, parseISO } from 'date-fns';
+import produce from 'immer';
 
 import type { ColoredLesson, Lesson } from 'types/modules';
 import { DaysOfWeek } from 'types/modules';
@@ -128,16 +129,20 @@ export class TodayContainerComponent extends PureComponent<Props, State> {
     weatherAPI
       .fourDay()
       .then((forecasts) => {
-        forecasts.forEach((forecast) => {
-          const days = differenceInCalendarDays(
-            parseISO(forecast.timestamp),
-            this.props.currentTime,
-          );
-
-          if (!this.state.weather[String(days)]) {
-            this.setState({ weather: { ...this.state.weather, [days]: forecast.forecast } });
-          }
-        });
+        this.setState(
+          produce(this.state, (draft) => {
+            forecasts.forEach((forecast) => {
+              const days = differenceInCalendarDays(
+                parseISO(forecast.timestamp),
+                this.props.currentTime,
+              );
+              const key = String(days);
+              if (!draft.weather[key]) {
+                draft.weather[key] = forecast.forecast;
+              }
+            });
+          }),
+        );
       })
       .catch(captureException);
   }
