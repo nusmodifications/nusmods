@@ -119,7 +119,10 @@ export class TodayContainerComponent extends PureComponent<Props, State> {
 
     weatherAPI
       .tomorrow()
-      .then((weather) => this.setState({ weather: { ...this.state.weather, '1': weather } }))
+      .then((weather) => {
+        if (!weather) return;
+        this.setState({ weather: { ...this.state.weather, '1': weather } });
+      })
       .catch(captureException);
 
     weatherAPI
