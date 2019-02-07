@@ -258,7 +258,7 @@
     ]
   },
   {
-    "name": "Opp UHall",
+    "name": "Opp University Hall",
     "location": [
       1.2975686131995663,
       103.7780946493149
@@ -307,7 +307,8 @@
     "code": "PGP14-15",
     "routes": [
       "A2"
-    ]
+    ],
+    "displayRoutesLeft": true
   },
   {
     "name": "PGP Hse 7",
@@ -393,7 +394,7 @@
     ]
   },
   {
-    "name": "UHall",
+    "name": "University Hall",
     "location": [
       1.297118117594622,
       103.77874910831453

@@ -10,22 +10,27 @@ $route-colors: (
 );
 
 .iconWrapper {
+  $color: #0092da;
+
   .hitArea {
+    opacity: 0;
     width: 100%;
     height: 100%;
+    border-radius: 50%;
+    background: rgba($color, 0.3);
+    box-shadow: 0 0 8px rgba($color, 0.3);
+    transition: opacity 0.25s;
 
     // Highlight the bus stops when editing
     &.editing {
+      opacity: 1;
       border: 1px solid #000;
       background: rgba(#000, 0.3);
     }
   }
 
   &:hover .hitArea {
-    $color: theme-color();
-
-    background: rgba($color, 0.3);
-    box-shadow: 0 0 6px rgba($color, 0.3);
+    opacity: 1;
   }
 
   .routeWrapper {
@@ -52,50 +57,85 @@ $route-colors: (
     line-height: 1;
     color: #fff;
     border-radius: 1px;
-    background: theme-color();
     pointer-events: auto;
-
-    // Define a color for each route
-    &.routeA1 {
-      background: map-get($route-colors, A);
-    }
-
-    &.routeA2 {
-      background: darken(map-get($route-colors, A), 12);
-    }
-
-    &.routeB1 {
-      background: map-get($route-colors, B);
-    }
-
-    &.routeB2 {
-      background: lighten(map-get($route-colors, B), 15);
-    }
-
-    &.routeC {
-      background: map-get($route-colors, C);
-    }
-
-    &.routeD1 {
-      background: map-get($route-colors, D);
-    }
-
-    &.routeD2 {
-      background: lighten(map-get($route-colors, D), 10);
-    }
-
-    &.routeBTC1 {
-      background: map-get($route-colors, BTC);
-    }
-
-    &.routeBTC2 {
-      background: lighten(map-get($route-colors, BTC), 15);
-    }
   }
 }
 
 // Popup styles
 .heading {
+  margin-bottom: 0.5rem;
   font-weight: bold;
   font-size: 0.9rem;
+}
+
+.timings {
+  margin-bottom: 0.2rem;
+
+  td {
+    font-size: 0.85rem;
+    white-space: nowrap;
+
+    strong {
+      color: theme-color(success);
+    }
+  }
+
+  .routeHeading {
+    vertical-align: middle;
+    color: #fff;
+  }
+}
+
+.refreshBtn {
+  width: 100%;
+  padding: 3px 0;
+
+  .refreshIcon {
+    margin-right: 0.6rem;
+
+    :global {
+      animation: spin 2s infinite linear paused;
+    }
+  }
+
+  &.isLoading .refreshIcon {
+    animation-play-state: running;
+  }
+}
+
+// Define a color for each route
+.routeA1 {
+  background: map-get($route-colors, A);
+}
+
+.routeA2 {
+  background: darken(map-get($route-colors, A), 12);
+}
+
+.routeB1 {
+  background: map-get($route-colors, B);
+}
+
+.routeB2 {
+  background: lighten(map-get($route-colors, B), 15);
+}
+
+.routeC {
+  background: map-get($route-colors, C);
+}
+
+.routeD1 {
+  background: map-get($route-colors, D);
+}
+
+.routeD2 {
+  background: lighten(map-get($route-colors, D), 10);
+}
+
+.routeBTC1 {
+  background: map-get($route-colors, BTC);
+}
+
+.routeBTC2 {
+  background: lighten(map-get($route-colors, BTC), 15);
 }

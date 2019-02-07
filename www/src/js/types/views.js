@@ -12,7 +12,7 @@ import type {
   TreeFragment,
 } from './modules';
 import type { CustomModule, ModuleList } from './reducers';
-import type { Venue, VenueList } from './venues';
+import type { NextBusTimings, Venue, VenueList } from './venues';
 
 export type ComponentMap = {|
   globalSearchInput: ?HTMLInputElement,
@@ -198,3 +198,11 @@ export type PlannerModulesWithInfo = {
     +[Semester]: PlannerModuleInfo,
   |},
 };
+
+export type BusTiming = {|
+  // Loading uses a boolean instead of making timings null so that
+  // the old timing can be seen while it is refreshed
+  isLoading: boolean,
+  timings: ?NextBusTimings,
+  error: ?Error,
+|};

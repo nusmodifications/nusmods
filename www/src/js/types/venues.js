@@ -58,10 +58,14 @@ export type BusStop = {
   +displayRoutesLeft?: boolean,
 };
 
+export type NextBusTime = number | '-' | 'Arr'
+
 export type NextBus = {|
-  +arriveTime: ?number,
-  +nextArrivalTime: ?number,
+  +arrivalTime: NextBusTime,
+  +nextArrivalTime: NextBusTime,
 |};
+
+export type NextBusTimings = { [route: string]: NextBus };
 
 // data/venues.json is of this type
 export type VenueLocationMap = {| +[string]: VenueLocation |};
