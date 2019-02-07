@@ -258,29 +258,25 @@ export class TodayContainerComponent extends PureComponent<Props, State> {
     let beforeFirstLessonCard = null;
 
     if (isToday) {
+      const { currentTime } = this.props;
       // Don't show any lessons in the past, and add the current time marker
-      const currentTime =
-        getHours(this.props.currentTime) * 100 + getMinutes(this.props.currentTime);
+      const time = getHours(currentTime) * 100 + getMinutes(currentTime);
       // eslint-disable-next-line no-param-reassign
-      lessons = lessons.filter((lesson) => parseInt(lesson.EndTime, 10) > currentTime);
+      lessons = lessons.filter((lesson) => parseInt(lesson.EndTime, 10) > time);
 
       const nextLesson = minBy(lessons, (lesson) => lesson.StartTime);
 
       // If there is at least one lesson remaining today...
       if (nextLesson) {
-        const marker = <p className={styles.nowMarker}>{formatTime(currentTime)}</p>;
+        const marker = <p className={styles.nowMarker}>{formatTime(time)}</p>;
 
-        if (isLessonOngoing(nextLesson, currentTime)) {
+        if (isLessonOngoing(nextLesson, time)) {
           // If the next lesson is still ongoing, we put the marker inside the next lesson
           nextLessonMarker = marker;
         } else {
           // Otherwise add a new card before the next lesson
           beforeFirstLessonCard = (
-            <BeforeLessonCard
-              currentTime={this.props.currentTime}
-              nextLesson={nextLesson}
-              marker={marker}
-            />
+            <BeforeLessonCard currentTime={currentTime} nextLesson={nextLesson} marker={marker} />
           );
         }
       } else {
