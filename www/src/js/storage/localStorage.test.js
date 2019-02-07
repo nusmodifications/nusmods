@@ -45,7 +45,7 @@ describe('#createLocalStorageShim', () => {
 
 describe('#canUseBrowserLocalStorage', () => {
   test('should return false if localStorage is undefined', () => {
-    window.localStorage = undefined;
+    delete window.localStorage;
     expect(canUseBrowserLocalStorage()).toEqual(false);
   });
 
@@ -74,7 +74,7 @@ describe('#getLocalStorage', () => {
   });
 
   test('should return a shim if browser cannot use localStorage', () => {
-    window.localStorage = undefined;
+    delete window.localStorage;
     expect(canUseBrowserLocalStorage()).toEqual(false);
     expect(getLocalStorage()).toMatchObject(
       expect.objectContaining({
