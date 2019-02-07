@@ -23,8 +23,12 @@ module.exports = {
   ],
   setupFiles: ['<rootDir>/scripts/test.js'],
   moduleNameMapper: {
-    // Mock non js files for jest to process
-    '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': '<rootDir>/__mocks__/fileMock.js',
+    // Mock non JS files as strings
+    '\\.(jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': '<rootDir>/__mocks__/fileMock.js',
+    // Mock SVG as React component
+    '\\.svg\\?url': '<rootDir>/__mocks__/fileMock.js',
+    '\\.svg': '<rootDir>/__mocks__/svgMock.jsx',
+    // Mock SCSS and CSS modules as objects
     '\\.(css|scss)$': 'identity-obj-proxy',
   },
   // Allow us to directly use enzyme wrappers for snapshotting
