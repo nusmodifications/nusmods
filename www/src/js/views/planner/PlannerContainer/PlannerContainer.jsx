@@ -23,7 +23,7 @@ import { addPlannerModule, movePlannerModule, removePlannerModule } from 'action
 import { toggleFeedback } from 'actions/app';
 import { fetchModule } from 'actions/moduleBank';
 import { getAcadYearModules, getExemptions, getIBLOCs, getPlanToTake } from 'selectors/planner';
-import { Settings, Trash } from 'views/components/icons';
+import { SettingsIcon, TrashIcon } from 'views/components/icons';
 import Title from 'views/components/Title';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import Modal from 'views/components/Modal';
@@ -142,7 +142,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
             type="button"
             onClick={() => this.setState({ showSettings: true })}
           >
-            <Settings className="svg" /> Settings
+            <SettingsIcon className="svg" /> Settings
           </button>
           <p>
             {count} {count === 1 ? 'module' : 'modules'} / {renderMCs(credits)}
@@ -238,7 +238,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
                   })}
                 >
                   <div className={styles.trashMessage}>
-                    <Trash />
+                    <TrashIcon />
                     <p>Drop modules here to remove them</p>
                   </div>
                   {provided.placeholder}

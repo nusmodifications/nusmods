@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import storage from 'storage';
 import { announcementKey } from 'storage/keys';
 import { toggleFeedback } from 'actions/app';
-import { Heart } from 'views/components/icons';
+import { HeartIcon } from 'views/components/icons';
 import CloseButton from 'views/components/CloseButton';
 import styles from './Announcements.scss';
 
@@ -50,7 +50,7 @@ class Announcements extends PureComponent<Props, State> {
 
     return (
       <div className={classnames('alert alert-success no-export', styles.announcement)}>
-        <Heart className={styles.backgroundIcon} />
+        <HeartIcon className={styles.backgroundIcon} />
 
         <div className={styles.body}>
           <h3>Semester 2 modules now available</h3>

@@ -21,7 +21,7 @@ import { deserializeTimetable } from 'utils/timetables';
 import { fillColorMapping } from 'utils/colors';
 import { semesterForTimetablePage, timetablePage, TIMETABLE_SHARE } from 'views/routes/paths';
 import deferComponentRender from 'views/hocs/deferComponentRender';
-import { Repeat } from 'views/components/icons';
+import { RepeatIcon } from 'views/components/icons';
 import SemesterSwitcher from 'views/components/semester-switcher/SemesterSwitcher';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import ScrollToTop from 'views/components/ScrollToTop';
@@ -127,7 +127,7 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
   sharingHeader(semester: Semester, timetable: SemTimetableConfig) {
     return (
       <div className={classnames('alert', 'alert-success', styles.importAlert)}>
-        <Repeat />
+        <RepeatIcon />
 
         <div className={classnames('row', styles.row)}>
           <div className={classnames('col')}>

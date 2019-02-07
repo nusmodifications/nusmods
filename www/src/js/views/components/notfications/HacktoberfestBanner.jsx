@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 import storage from 'storage';
 import { HACKTOBERFEST } from 'storage/keys';
-import { Heart } from 'views/components/icons';
+import { HeartIcon } from 'views/components/icons';
 import CloseButton from 'views/components/CloseButton';
 import styles from './Announcements.scss';
 
@@ -38,7 +38,7 @@ export default class HacktoberfestBanner extends PureComponent<Props, State> {
           styles.hacktoberfest,
         )}
       >
-        <Heart className={styles.backgroundIcon} />
+        <HeartIcon className={styles.backgroundIcon} />
 
         <div className={styles.body}>
           <h3>Hacktoberfest 2018 now open!</h3>

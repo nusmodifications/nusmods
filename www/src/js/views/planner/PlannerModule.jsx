@@ -12,7 +12,7 @@ import type { Conflict } from 'types/views';
 import config from 'config';
 import { examDateToDate, renderMCs } from 'utils/modules';
 import { conflictToText } from 'utils/planner';
-import { AlertTriangle, ChevronDown } from 'views/components/icons';
+import { AlertTriangleIcon, ChevronDown } from 'views/components/icons';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
 import { modulePage } from 'views/routes/paths';
 import styles from './PlannerModule.scss';
@@ -103,7 +103,7 @@ export default class PlannerModule extends PureComponent<Props> {
       case 'noInfo':
         return (
           <div className={styles.conflictHeader}>
-            <AlertTriangle className={styles.warningIcon} />
+            <AlertTriangleIcon className={styles.warningIcon} />
             <p>
               No data on this module.{' '}
               <button className="btn btn-link btn-inline" onClick={this.editCustomData}>
@@ -116,7 +116,7 @@ export default class PlannerModule extends PureComponent<Props> {
       case 'semester':
         return (
           <div className={styles.conflictHeader}>
-            <AlertTriangle className={styles.warningIcon} />
+            <AlertTriangleIcon className={styles.warningIcon} />
             <p>
               Module may only only be offered in{' '}
               {conflict.semestersOffered
@@ -129,7 +129,7 @@ export default class PlannerModule extends PureComponent<Props> {
       case 'exam':
         return (
           <div className={styles.conflictHeader}>
-            <AlertTriangle className={styles.warningIcon} />
+            <AlertTriangleIcon className={styles.warningIcon} />
             <p>{conflict.conflictModules.join(', ')} have clashing exams</p>
           </div>
         );
@@ -138,7 +138,7 @@ export default class PlannerModule extends PureComponent<Props> {
         return (
           <>
             <div className={styles.conflictHeader}>
-              <AlertTriangle className={styles.warningIcon} />
+              <AlertTriangleIcon className={styles.warningIcon} />
               <p>These modules may need to be taken first</p>
             </div>
 

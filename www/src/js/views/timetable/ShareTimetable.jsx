@@ -10,7 +10,7 @@ import type { Semester } from 'types/modules';
 
 import config from 'config';
 import { absolutePath, timetableShare } from 'views/routes/paths';
-import { Repeat, Copy, Mail } from 'views/components/icons';
+import { RepeatIcon, CopyIcon, MailIcon } from 'views/components/icons';
 import Modal from 'views/components/Modal';
 import CloseButton from 'views/components/CloseButton';
 import LoadingSpinner from 'views/components/LoadingSpinner';
@@ -142,7 +142,7 @@ export default class ShareTimetable extends PureComponent<Props, State> {
               aria-label="Copy URL"
               onClick={this.copyText}
             >
-              <Copy className={styles.copyIcon} />
+              <CopyIcon className={styles.copyIcon} />
             </button>
           </div>
 
@@ -173,7 +173,7 @@ export default class ShareTimetable extends PureComponent<Props, State> {
                   ` can be found at ${url}`,
               })}`}
             >
-              <Mail className="svg" /> Send Email
+              <MailIcon className="svg" /> Send Email
             </a>
           </div>
           <div className="col-sm-4">
@@ -216,14 +216,14 @@ export default class ShareTimetable extends PureComponent<Props, State> {
           onMouseOver={this.loadShortUrl}
           onFocus={this.loadShortUrl}
         >
-          <Repeat className="svg svg-small" />
+          <RepeatIcon className="svg svg-small" />
           Share/Sync
         </button>
 
         <Modal isOpen={isOpen} onRequestClose={this.closeModal} animate>
           <CloseButton absolutePositioned onClick={this.closeModal} />
           <div className={styles.header}>
-            <Repeat />
+            <RepeatIcon />
 
             <h3>Share/Sync Your Timetable</h3>
             <p>

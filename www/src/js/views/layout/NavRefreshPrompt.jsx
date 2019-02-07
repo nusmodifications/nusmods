@@ -3,7 +3,7 @@
 import React, { PureComponent } from 'react';
 import { updateServiceWorker } from 'bootstrapping/service-worker';
 import classnames from 'classnames';
-import { Refresh } from 'views/components/icons';
+import { RefreshIcon } from 'views/components/icons';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import styles from './NavRefreshPrompt.scss';
 
@@ -34,7 +34,7 @@ export default class NavRefreshPrompt extends PureComponent<Props, State> {
         disabled={isReloading}
       >
         <div className={classnames('alert alert-success')}>
-          <Refresh size={30} className={styles.refreshIcon} />
+          <RefreshIcon size={30} className={styles.refreshIcon} />
           NUSMods update available
           <div
             className={classnames('btn btn-sm btn-block btn-success', { disabled: isReloading })}

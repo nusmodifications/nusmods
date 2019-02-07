@@ -21,7 +21,7 @@ import DropdownListFilters from 'views/components/filters/DropdownListFilters';
 import ApiError from 'views/errors/ApiError';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import SideMenu, { OPEN_MENU_LABEL } from 'views/components/SideMenu';
-import { Filter } from 'views/components/icons';
+import { FilterIcon } from 'views/components/icons';
 import Title from 'views/components/Title';
 import Omelette, { matchEgg } from 'views/components/Omelette';
 import { forceInstantSearch } from 'utils/debug';
@@ -335,7 +335,7 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
             <SideMenu
               isOpen={isMenuOpen}
               toggleMenu={this.toggleMenu}
-              openIcon={<Filter aria-label={OPEN_MENU_LABEL} />}
+              openIcon={<FilterIcon aria-label={OPEN_MENU_LABEL} />}
             >
               <div className={styles.moduleFilters}>
                 <header className={styles.filterHeader}>

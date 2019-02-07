@@ -8,7 +8,7 @@ import type { State } from 'reducers';
 import config from 'config';
 import { toggleFeedback } from 'actions/app';
 import ExternalLink from './ExternalLink';
-import { Heart, GitHub, Facebook, Mail } from './icons';
+import { HeartIcon, GitHubIcon, FacebookIcon, MailIcon } from './icons';
 import CloseButton from './CloseButton';
 import Modal from './Modal';
 import styles from './FeedbackModal.scss';
@@ -22,15 +22,15 @@ export function FeedbackButtons() {
   return (
     <div className={styles.links}>
       <ExternalLink className={styles.messenger} href={config.contact.messenger}>
-        <Facebook />
+        <FacebookIcon />
         Messenger
       </ExternalLink>
       <ExternalLink className={styles.github} href={config.contact.githubRepo}>
-        <GitHub />
+        <GitHubIcon />
         GitHub
       </ExternalLink>
       <ExternalLink className={styles.form} href="mailto:mods@nusmods.com">
-        <Mail />
+        <MailIcon />
         Email
       </ExternalLink>
     </div>
@@ -48,7 +48,7 @@ export class FeedbackModalComponent extends PureComponent<Props> {
       >
         <CloseButton absolutePositioned onClick={this.props.toggleFeedback} />
         <div className={styles.content}>
-          <Heart className={styles.topIcon} />
+          <HeartIcon className={styles.topIcon} />
           <h1>Let us know what you think!</h1>
           <p>
             Thank you for your time! You can talk to us on Messenger, file an issue on GitHub, or

@@ -12,12 +12,12 @@ import type { Semester } from 'types/modules';
 import exportApi from 'apis/export';
 import { downloadAsIcal, SUPPORTS_DOWNLOAD } from 'actions/export';
 import {
-  Image,
-  Calendar,
-  FileText,
-  Download,
+  ImageIcon,
+  CalendarIcon,
+  FileTextIcon,
+  DownloadIcon,
   ChevronDown,
-  AlertTriangle,
+  AlertTriangleIcon,
 } from 'views/components/icons';
 import Online from 'views/components/Online';
 import Modal from 'views/components/Modal';
@@ -82,7 +82,7 @@ export class ExportMenuComponent extends PureComponent<Props, State> {
           type="button"
           onClick={toggleMenu}
         >
-          <Download className="svg svg-small" />
+          <DownloadIcon className="svg svg-small" />
           Download
           <ChevronDown className={classnames(styles.chevron, 'svg-small')} />
         </button>
@@ -99,7 +99,7 @@ export class ExportMenuComponent extends PureComponent<Props, State> {
               })}
               {...getItemProps({ item: IMAGE })}
             >
-              <Image className="svg svg-small" /> Image (.png)
+              <ImageIcon className="svg svg-small" /> Image (.png)
             </a>
 
             <a
@@ -109,7 +109,7 @@ export class ExportMenuComponent extends PureComponent<Props, State> {
               })}
               {...getItemProps({ item: PDF })}
             >
-              <FileText className="svg svg-small" /> PDF (.pdf)
+              <FileTextIcon className="svg svg-small" /> PDF (.pdf)
             </a>
           </Online>
 
@@ -121,7 +121,7 @@ export class ExportMenuComponent extends PureComponent<Props, State> {
               type="button"
               {...getItemProps({ item: CALENDAR })}
             >
-              <Calendar className="svg svg-small" />
+              <CalendarIcon className="svg svg-small" />
               iCalendar File (.ics)
               <br />
               (For Google Calendar / Outlook)
@@ -135,7 +135,7 @@ export class ExportMenuComponent extends PureComponent<Props, State> {
           animate
         >
           <div className={styles.modalContent}>
-            <AlertTriangle />
+            <AlertTriangleIcon />
             <p>The calendar you have just downloaded may not work with the macOS Calendar app.</p>
           </div>
           <div className={styles.modalButtons}>

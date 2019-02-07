@@ -6,7 +6,7 @@ import React, { PureComponent, type Node } from 'react';
 import classnames from 'classnames';
 import type { ColoredLesson, Lesson } from 'types/modules';
 import type { SelectedLesson } from 'types/views';
-import { MapPin } from 'views/components/icons';
+import { MapPinIcon } from 'views/components/icons';
 import { formatTime } from 'utils/timify';
 import { isLessonAvailable, isSameLesson } from 'utils/timetables';
 import EventMapInline from './EventMapInline';
@@ -47,7 +47,7 @@ export default class DayEvents extends PureComponent<Props> {
           <p>
             {lesson.LessonType} {lesson.ClassNo}
           </p>
-          <MapPin className={styles.venueIcon} /> {lesson.Venue}
+          <MapPinIcon className={styles.venueIcon} /> {lesson.Venue}
           <div>
             <EventMapInline
               className={styles.map}

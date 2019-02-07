@@ -1,101 +1,95 @@
 // @flow
 // Refer to https://feathericons.com/ for full list.
-import AlertTriangle from 'react-feather/dist/icons/alert-triangle';
-import Archive from 'react-feather/dist/icons/archive';
-import BookOpen from 'react-feather/dist/icons/book-open';
-import Calendar from 'react-feather/dist/icons/calendar';
-import ChevronLeft from 'react-feather/dist/icons/chevron-left';
-import ChevronRight from 'react-feather/dist/icons/chevron-right';
-import ChevronDown from 'react-feather/dist/icons/chevron-down';
-import Close from 'react-feather/dist/icons/x';
-import Clock from 'react-feather/dist/icons/clock';
-import Copy from 'react-feather/dist/icons/copy';
-import DollarSign from 'react-feather/dist/icons/dollar-sign';
-import Download from 'react-feather/dist/icons/download';
-import Eye from 'react-feather/dist/icons/eye';
-import EyeOff from 'react-feather/dist/icons/eye-off';
-import Facebook from 'react-feather/dist/icons/facebook';
-import FileText from 'react-feather/dist/icons/file-text';
-import Filter from 'react-feather/dist/icons/filter';
-import GitHub from 'react-feather/dist/icons/github';
-import Grid from 'react-feather/dist/icons/grid';
-import Heart from 'react-feather/dist/icons/heart';
-import Help from 'react-feather/dist/icons/help-circle';
-import Image from 'react-feather/dist/icons/image';
-import Layers from 'react-feather/dist/icons/layers';
-import LinkedIn from 'react-feather/dist/icons/linkedin';
-import Map from 'react-feather/dist/icons/map';
-import MapPin from 'react-feather/dist/icons/map-pin';
-import Menu from 'react-feather/dist/icons/menu';
-import MessageSquare from 'react-feather/dist/icons/message-square';
-import Mail from 'react-feather/dist/icons/mail';
-import Maximize from 'react-feather/dist/icons/maximize-2';
-import Minimize from 'react-feather/dist/icons/minimize-2';
-import Minus from 'react-feather/dist/icons/minus';
-import MinusSquare from 'react-feather/dist/icons/minus-square';
-import PlusSquare from 'react-feather/dist/icons/plus-square';
-import Plus from 'react-feather/dist/icons/plus';
-import Refresh from 'react-feather/dist/icons/refresh-cw';
-import Repeat from 'react-feather/dist/icons/repeat';
-import Settings from 'react-feather/dist/icons/settings';
-import Search from 'react-feather/dist/icons/search';
-import Sidebar from 'react-feather/dist/icons/sidebar';
-import Star from 'react-feather/dist/icons/star';
-import ThumbsUp from 'react-feather/dist/icons/thumbs-up';
-import Trello from 'react-feather/dist/icons/trello';
-import Twitter from 'react-feather/dist/icons/twitter';
-import Trash from 'react-feather/dist/icons/trash-2';
-import Type from 'react-feather/dist/icons/type';
-import Users from 'react-feather/dist/icons/users';
-import Zap from 'react-feather/dist/icons/zap';
+import AlertTriangleIcon from 'feather-icons/dist/icons/alert-triangle.svg';
+import ArchiveIcon from 'feather-icons/dist/icons/archive.svg';
+import BookOpenIcon from 'feather-icons/dist/icons/book-open.svg';
+import CalendarIcon from 'feather-icons/dist/icons/calendar.svg';
+import ChevronLeft from 'feather-icons/dist/icons/chevron-left.svg';
+import ChevronRight from 'feather-icons/dist/icons/chevron-right.svg';
+import ChevronDown from 'feather-icons/dist/icons/chevron-down.svg';
+import CloseIcon from 'feather-icons/dist/icons/x.svg';
+import ClockIcon from 'feather-icons/dist/icons/clock.svg';
+import CopyIcon from 'feather-icons/dist/icons/copy.svg';
+import DollarSign from 'feather-icons/dist/icons/dollar-sign.svg';
+import DownloadIcon from 'feather-icons/dist/icons/download.svg';
+import EyeIcon from 'feather-icons/dist/icons/eye.svg';
+import EyeOffIcon from 'feather-icons/dist/icons/eye-off.svg';
+import FacebookIcon from 'feather-icons/dist/icons/facebook.svg';
+import FileTextIcon from 'feather-icons/dist/icons/file-text.svg';
+import FilterIcon from 'feather-icons/dist/icons/filter.svg';
+import GitHubIcon from 'feather-icons/dist/icons/github.svg';
+import GridIcon from 'feather-icons/dist/icons/grid.svg';
+import HeartIcon from 'feather-icons/dist/icons/heart.svg';
+import HelpIcon from 'feather-icons/dist/icons/help-circle.svg';
+import ImageIcon from 'feather-icons/dist/icons/image.svg';
+import LayersIcon from 'feather-icons/dist/icons/layers.svg';
+import LinkedInIcon from 'feather-icons/dist/icons/linkedin.svg';
+import MapIcon from 'feather-icons/dist/icons/map.svg';
+import MapPinIcon from 'feather-icons/dist/icons/map-pin.svg';
+import MenuIcon from 'feather-icons/dist/icons/menu.svg';
+import MessageIconSquare from 'feather-icons/dist/icons/message-square.svg';
+import MailIcon from 'feather-icons/dist/icons/mail.svg';
+import MaximizeIcon from 'feather-icons/dist/icons/maximize-2.svg';
+import MinimizeIcon from 'feather-icons/dist/icons/minimize-2.svg';
+import MinusIcon from 'feather-icons/dist/icons/minus.svg';
+import PlusIcon from 'feather-icons/dist/icons/plus.svg';
+import RefreshIcon from 'feather-icons/dist/icons/refresh-cw.svg';
+import RepeatIcon from 'feather-icons/dist/icons/repeat.svg';
+import SettingsIcon from 'feather-icons/dist/icons/settings.svg';
+import SearchIcon from 'feather-icons/dist/icons/search.svg';
+import SidebarIcon from 'feather-icons/dist/icons/sidebar.svg';
+import StarIcon from 'feather-icons/dist/icons/star.svg';
+import ThumbsUpIcon from 'feather-icons/dist/icons/thumbs-up.svg';
+import TrelloIcon from 'feather-icons/dist/icons/trello.svg';
+import TwitterIcon from 'feather-icons/dist/icons/twitter.svg';
+import TrashIcon from 'feather-icons/dist/icons/trash-2.svg';
+import TypeIcon from 'feather-icons/dist/icons/type.svg';
+import ZapIcon from 'feather-icons/dist/icons/zap.svg';
 
 export {
-  Archive,
-  AlertTriangle,
-  BookOpen,
-  Calendar,
+  ArchiveIcon,
+  AlertTriangleIcon,
+  BookOpenIcon,
+  CalendarIcon,
   ChevronLeft,
   ChevronRight,
   ChevronDown,
-  Close,
-  Clock,
-  Copy,
+  CloseIcon,
+  ClockIcon,
+  CopyIcon,
   DollarSign,
-  Download,
-  Eye,
-  EyeOff,
-  Facebook,
-  Filter,
-  FileText,
-  GitHub,
-  Grid,
-  Heart,
-  Help,
-  Image,
-  Layers,
-  Map,
-  Maximize,
-  Minus,
-  Minimize,
-  MapPin,
-  Menu,
-  MessageSquare,
-  Mail,
-  LinkedIn,
-  Refresh,
-  Repeat,
-  MinusSquare,
-  PlusSquare,
-  Plus,
-  Search,
-  Settings,
-  Sidebar,
-  Star,
-  ThumbsUp,
-  Trello,
-  Twitter,
-  Trash,
-  Type,
-  Users,
-  Zap,
+  DownloadIcon,
+  EyeIcon,
+  EyeOffIcon,
+  FacebookIcon,
+  FilterIcon,
+  FileTextIcon,
+  GitHubIcon,
+  GridIcon,
+  HeartIcon,
+  HelpIcon,
+  ImageIcon,
+  LayersIcon,
+  MapIcon,
+  MaximizeIcon,
+  MinusIcon,
+  MinimizeIcon,
+  MapPinIcon,
+  MenuIcon,
+  MessageIconSquare,
+  MailIcon,
+  LinkedInIcon,
+  RefreshIcon,
+  RepeatIcon,
+  PlusIcon,
+  SearchIcon,
+  SettingsIcon,
+  SidebarIcon,
+  StarIcon,
+  ThumbsUpIcon,
+  TrelloIcon,
+  TwitterIcon,
+  TrashIcon,
+  TypeIcon,
+  ZapIcon,
 };

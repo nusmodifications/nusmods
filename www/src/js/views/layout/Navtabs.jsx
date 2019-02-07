@@ -8,14 +8,14 @@ import { NavLink, withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 
 import {
-  BookOpen,
-  Calendar,
-  Clock,
-  Heart,
-  Map,
-  Trello,
-  Settings,
-  Star,
+  BookOpenIcon,
+  CalendarIcon,
+  ClockIcon,
+  HeartIcon,
+  MapIcon,
+  TrelloIcon,
+  SettingsIcon,
+  StarIcon,
 } from 'views/components/icons';
 import ExternalLink from 'views/components/ExternalLink';
 import Online from 'views/components/Online';
@@ -45,20 +45,20 @@ export function NavtabsComponent(props: Props) {
     <nav className={styles.nav}>
       {props.beta && (
         <NavLink {...tabProps} to="/today" onMouseOver={preloadToday} onFocus={preloadToday}>
-          <Clock />
+          <ClockIcon />
           <span className={styles.title}>Today</span>
         </NavLink>
       )}
       <NavLink {...tabProps} to={timetablePage(props.activeSemester)}>
-        <Calendar />
+        <CalendarIcon />
         <span className={styles.title}>Timetable</span>
       </NavLink>
       <NavLink {...tabProps} to="/modules">
-        <BookOpen />
+        <BookOpenIcon />
         <span className={styles.title}>Modules</span>
       </NavLink>
       <NavLink {...tabProps} to="/venues" onMouseOver={preloadVenues} onFocus={preloadVenues}>
-        <Map />
+        <MapIcon />
         <span className={styles.title}>Venues</span>
       </NavLink>
       {props.beta && (
@@ -67,12 +67,12 @@ export function NavtabsComponent(props: Props) {
           className={classnames(tabProps.className, styles.hiddenOnMobile)}
           to="/planner"
         >
-          <Trello />
+          <TrelloIcon />
           <span className={styles.title}>Planner</span>
         </NavLink>
       )}
       <NavLink {...tabProps} to="/settings">
-        <Settings />
+        <SettingsIcon />
         <span className={styles.title}>Settings</span>
         {props.promptRefresh && (
           <Online>
@@ -91,7 +91,7 @@ export function NavtabsComponent(props: Props) {
         onFocus={preloadContribute}
         to="/contribute"
       >
-        <Star />
+        <StarIcon />
         <span className={styles.title}>Contribute</span>
       </NavLink>
       <div className={styles.divider} />
@@ -99,7 +99,7 @@ export function NavtabsComponent(props: Props) {
         className={classnames(tabProps.className, styles.hiddenOnMobile)}
         href="https://nuswhispers.com"
       >
-        <Heart />
+        <HeartIcon />
         <span className={styles.title}>Whispers</span>
       </ExternalLink>
       {props.promptRefresh && (

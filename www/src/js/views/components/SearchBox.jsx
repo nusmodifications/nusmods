@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import classnames from 'classnames';
 import { debounce } from 'lodash';
 
-import { Search } from 'views/components/icons';
+import { SearchIcon } from 'views/components/icons';
 import styles from './SearchBox.scss';
 
 type Props = {
@@ -93,7 +93,7 @@ export default class SearchBox extends PureComponent<Props, State> {
             evt.preventDefault();
           }}
         >
-          <Search className={styles.searchIcon} />
+          <SearchIcon className={styles.searchIcon} />
           <input
             id="search-box"
             className="form-control form-control-lg"

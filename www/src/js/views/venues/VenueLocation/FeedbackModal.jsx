@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import Modal from 'views/components/Modal';
 import CloseButton from 'views/components/CloseButton';
 import ExternalLink from 'views/components/ExternalLink';
-import { MapPin, Map as MapIcon } from 'views/components/icons';
+import { MapPinIcon, MapIcon } from 'views/components/icons';
 import ImproveVenueForm from './ImproveVenueForm';
 import styles from './VenueLocation.scss';
 
@@ -54,7 +54,7 @@ export default class FeedbackModal extends PureComponent<Props, State> {
                 className="btn btn-outline-secondary"
                 onClick={() => this.setState({ page: 'form' })}
               >
-                <MapPin />
+                <MapPinIcon />
                 <h3>Problem with venue data</h3>
                 <p>eg. incorrect room name, floor, location of the map pin</p>
               </button>

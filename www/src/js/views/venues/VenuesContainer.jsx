@@ -15,7 +15,7 @@ import ApiError from 'views/errors/ApiError';
 import Warning from 'views/errors/Warning';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import SearchBox from 'views/components/SearchBox';
-import { Clock, Map } from 'views/components/icons';
+import { ClockIcon, MapIcon } from 'views/components/icons';
 import { venuePage } from 'views/routes/paths';
 
 import config from 'config';
@@ -183,7 +183,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
           )}
           onClick={this.onFindFreeRoomsClicked}
         >
-          <Clock className="svg" /> Find free rooms
+          <ClockIcon className="svg" /> Find free rooms
         </button>
 
         {isAvailabilityEnabled && (
@@ -307,7 +307,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
               >
                 {selectedVenue == null ? (
                   <div className={styles.noVenueSelected}>
-                    <Map />
+                    <MapIcon />
                     <p>Select a venue on the left to see its timetable</p>
                   </div>
                 ) : (

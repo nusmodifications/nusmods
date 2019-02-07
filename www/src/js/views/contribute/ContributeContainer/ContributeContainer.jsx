@@ -10,7 +10,7 @@ import type { ModuleCondensed } from 'types/modules';
 import { toggleFeedback } from 'actions/app';
 import { toggleBetaTesting } from 'actions/settings';
 import { modulePage } from 'views/routes/paths';
-import { Zap, DollarSign } from 'views/components/icons';
+import { ZapIcon, DollarSign } from 'views/components/icons';
 import ExternalLink from 'views/components/ExternalLink';
 import ScrollToTop from 'views/components/ScrollToTop';
 import Title from 'views/components/Title';
@@ -146,7 +146,7 @@ class ContributeContainer extends PureComponent<Props> {
                   className={classnames(styles.betaButton, 'btn btn-lg btn-outline-primary')}
                   onClick={this.props.toggleBetaTesting}
                 >
-                  <Zap />
+                  <ZapIcon />
                   Join NUSMods Beta
                 </button>
               </p>

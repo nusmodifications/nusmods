@@ -5,7 +5,7 @@ import StaticPage from 'views/static/StaticPage';
 import styles from 'views/static/HacktoberfestContainer.scss';
 import ExternalLink from 'views/components/ExternalLink';
 import HacktoberfestLogo from 'views/static/HacktoberfestLogo';
-import { Heart } from 'views/components/icons';
+import { HeartIcon } from 'views/components/icons';
 import Logo from 'img/nusmods-logo.svg';
 import shirt from 'img/nusmods-shirts.png';
 
@@ -15,7 +15,7 @@ export default function TeamContainer() {
   return (
     <StaticPage title={title} className={styles.page}>
       <h2>
-        <Logo className={styles.logo} /> <Heart className={styles.heart} />
+        <Logo className={styles.logo} /> <HeartIcon className={styles.heart} />
         <HacktoberfestLogo />
         <span className="sr-only">{title}</span>
       </h2>

@@ -9,7 +9,7 @@ import bowser from 'bowser';
 
 import type { LatLngTuple, Venue, VenueLocation } from 'types/venues';
 import config from 'config';
-import { MapPin, ThumbsUp } from 'views/components/icons';
+import { MapPinIcon, ThumbsUpIcon } from 'views/components/icons';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import { markerIcon } from 'views/components/map/icons';
 import ExpandMap from 'views/components/map/ExpandMap';
@@ -161,7 +161,7 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
     if (this.state.submitted) {
       return (
         <div className={styles.submitted}>
-          <ThumbsUp />
+          <ThumbsUpIcon />
           <p>
             Thank you for helping us improve NUSMods. If you have left your email, we will send you
             a message when your update goes live
@@ -300,7 +300,7 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
               type="button"
               onClick={this.geolocate}
             >
-              <MapPin /> Use my location
+              <MapPinIcon /> Use my location
             </button>
           )}
         </div>

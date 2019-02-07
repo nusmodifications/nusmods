@@ -3,7 +3,7 @@
 import React, { PureComponent, type Node, Fragment } from 'react';
 import classnames from 'classnames';
 
-import { Menu, Close } from 'views/components/icons';
+import { MenuIcon, CloseIcon } from 'views/components/icons';
 import makeResponsive from 'views/hocs/makeResponsive';
 import disableScrolling from 'utils/disableScrolling';
 import { breakpointUp } from 'utils/css';
@@ -25,8 +25,8 @@ export const CLOSE_MENU_LABEL = 'Close menu';
 
 export class SideMenuComponent extends PureComponent<Props> {
   static defaultProps = {
-    openIcon: <Menu aria-label={OPEN_MENU_LABEL} />,
-    closeIcon: <Close aria-label={CLOSE_MENU_LABEL} />,
+    openIcon: <MenuIcon aria-label={OPEN_MENU_LABEL} />,
+    closeIcon: <CloseIcon aria-label={CLOSE_MENU_LABEL} />,
   };
 
   componentDidMount() {

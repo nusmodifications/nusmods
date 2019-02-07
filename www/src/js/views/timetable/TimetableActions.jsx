@@ -7,7 +7,7 @@ import { toggleTimetableOrientation, toggleTitleDisplay } from 'actions/theme';
 import type { Semester } from 'types/modules';
 import type { SemTimetableConfig } from 'types/timetables';
 
-import { Sidebar, Type, Grid, Calendar } from 'views/components/icons';
+import { SidebarIcon, TypeIcon, GridIcon, CalendarIcon } from 'views/components/icons';
 import elements from 'views/elements';
 import ShareTimetable from './ShareTimetable';
 import ExportMenu from './ExportMenu';
@@ -44,7 +44,7 @@ function TimetableActions(props: Props) {
           onClick={props.toggleTimetableOrientation}
           disabled={props.showExamCalendar}
         >
-          <Sidebar className={styles.sidebarIcon} />
+          <SidebarIcon className={styles.sidebarIcon} />
           {isVerticalOrientation ? 'Horizontal Mode' : 'Vertical Mode'}
         </button>
 
@@ -55,7 +55,7 @@ function TimetableActions(props: Props) {
             onClick={props.toggleTitleDisplay}
             disabled={props.showExamCalendar}
           >
-            <Type className={styles.titleIcon} />
+            <TypeIcon className={styles.titleIcon} />
             {showTitle ? 'Hide Titles' : 'Show Titles'}
           </button>
         )}
@@ -71,11 +71,11 @@ function TimetableActions(props: Props) {
         >
           {props.showExamCalendar ? (
             <Fragment>
-              <Grid className="svg svg-small" /> Timetable
+              <GridIcon className="svg svg-small" /> Timetable
             </Fragment>
           ) : (
             <Fragment>
-              <Calendar className="svg svg-small" /> Exam Calendar
+              <CalendarIcon className="svg svg-small" /> Exam Calendar
             </Fragment>
           )}
         </button>

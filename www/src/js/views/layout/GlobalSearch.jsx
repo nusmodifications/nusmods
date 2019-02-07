@@ -6,7 +6,7 @@ import Downshift from 'downshift';
 import classnames from 'classnames';
 
 import { highlight } from 'utils/react';
-import { ChevronRight, Help, Search } from 'views/components/icons';
+import { ChevronRight, HelpIcon, SearchIcon } from 'views/components/icons';
 import type { ModuleCondensed } from 'types/modules';
 import type { Venue } from 'types/venues';
 import type { ResultType, SearchItem, SearchResult } from 'types/views';
@@ -116,7 +116,7 @@ class GlobalSearch extends Component<Props, State> {
     // selection to be lost
     const searchForm = (
       <Fragment key="search">
-        <Search className={classnames(styles.icon, { [styles.iconOpen]: isOpen })} />
+        <SearchIcon className={classnames(styles.icon, { [styles.iconOpen]: isOpen })} />
         <label className="sr-only" {...getLabelProps()}>
           {PLACEHOLDER}
         </label>
@@ -154,7 +154,7 @@ class GlobalSearch extends Component<Props, State> {
           <div className={styles.selectListContainer}>
             <div className={styles.selectList}>
               <div className={styles.noResults}>
-                <Help />
+                <HelpIcon />
                 <p>
                   No results found for{' '}
                   <strong className={styles.searchTerm}>

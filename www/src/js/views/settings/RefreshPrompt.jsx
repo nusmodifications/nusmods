@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import type { State as StoreState } from 'reducers';
 import { updateServiceWorker } from 'bootstrapping/service-worker';
-import { Refresh } from 'views/components/icons';
+import { RefreshIcon } from 'views/components/icons';
 import styles from 'views/components/notfications/Announcements.scss';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 
@@ -47,7 +47,7 @@ class RefreshPrompt extends PureComponent<Props, State> {
 
     return (
       <div className={classnames('alert alert-success', styles.announcement, styles.wrapButtons)}>
-        <Refresh className={styles.backgroundIcon} />
+        <RefreshIcon className={styles.backgroundIcon} />
 
         <div className={styles.body}>
           <h3>A new version of NUSMods is available</h3>

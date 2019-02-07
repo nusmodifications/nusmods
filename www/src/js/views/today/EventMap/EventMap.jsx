@@ -5,7 +5,7 @@ import React from 'react';
 import venueLocations from 'data/venues.json';
 import type { Venue, VenueLocation } from 'types/venues';
 import LocationMap from 'views/components/map/LocationMap';
-import { Map } from 'views/components/icons';
+import { MapIcon } from 'views/components/icons';
 import styles from './EventMap.scss';
 
 export type Props = {|
@@ -16,7 +16,7 @@ export default function(props: Props) {
   if (!props.venue) {
     return (
       <div className={styles.noLessonSelected}>
-        <Map />
+        <MapIcon />
         <p>Select a lesson on the left to see its timetable</p>
       </div>
     );

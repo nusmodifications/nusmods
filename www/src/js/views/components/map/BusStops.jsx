@@ -13,7 +13,7 @@ import busStops from 'data/bus-stops.json';
 import { allowBusStopEditing } from 'utils/debug';
 import { DivIcon } from 'leaflet';
 import { nextBus } from 'apis/nextbus';
-import { Refresh } from 'views/components/icons';
+import { RefreshIcon } from 'views/components/icons';
 import styles from './BusStops.scss';
 
 type Props = {};
@@ -133,7 +133,7 @@ export const ArrivalTimes = React.memo<ArrivalTimesProps>((props) => {
         disabled={props.isLoading}
         onClick={() => props.reload(props.code)}
       >
-        <Refresh size={14} className={styles.refreshIcon} />
+        <RefreshIcon size={14} className={styles.refreshIcon} />
         {props.isLoading ? 'Loading...' : 'Refresh'}
       </button>
     </>

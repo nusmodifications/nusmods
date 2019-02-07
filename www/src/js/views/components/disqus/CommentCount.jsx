@@ -4,7 +4,7 @@ import React, { PureComponent } from 'react';
 import config from 'config';
 import insertScript from 'utils/insertScript';
 import { getScriptErrorHandler } from 'utils/error';
-import { MessageSquare } from 'views/components/icons';
+import { MessageIconSquare } from 'views/components/icons';
 import styles from './CommentCount.scss';
 
 type Props = DisqusConfig;
@@ -41,7 +41,7 @@ export default class CommentCount extends PureComponent<Props> {
     return (
       <span className={styles.comment}>
         <span className={styles.icon}>
-          <MessageSquare aria-label="Comment count" />
+          <MessageIconSquare aria-label="Comment count" />
         </span>
         <span
           className="disqus-comment-count"

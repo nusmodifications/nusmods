@@ -2,7 +2,7 @@
 
 import React from 'react';
 import classnames from 'classnames';
-import { Close } from 'views/components/icons';
+import { CloseIcon } from 'views/components/icons';
 
 import styles from './CloseButton.scss';
 
@@ -20,7 +20,7 @@ function RawCloseButton({ onClick, className }: Props) {
       onClick={onClick}
       aria-label="Close"
     >
-      <Close />
+      <CloseIcon />
     </button>
   );
 }

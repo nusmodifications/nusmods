@@ -4,7 +4,7 @@ import React from 'react';
 
 import ExternalLink from 'views/components/ExternalLink';
 import Tooltip from 'views/components/Tooltip';
-import { Facebook, LinkedIn, GitHub, Twitter } from 'views/components/icons';
+import { FacebookIcon, LinkedInIcon, GitHubIcon, TwitterIcon } from 'views/components/icons';
 import teamMembers from 'data/team.json';
 import StaticPage from './StaticPage';
 import styles from './TeamContainer.scss';
@@ -50,7 +50,7 @@ function TeamMember({ member }: Props) {
                     href={`https://www.facebook.com/${member.facebook}`}
                     aria-label="Facebook profile"
                   >
-                    <Facebook />
+                    <FacebookIcon />
                   </ExternalLink>
                 </Tooltip>
               </div>
@@ -63,7 +63,7 @@ function TeamMember({ member }: Props) {
                     href={`https://www.twitter.com/${member.twitter}`}
                     aria-label="Twitter profile"
                   >
-                    <Twitter />
+                    <TwitterIcon />
                   </ExternalLink>
                 </Tooltip>
               </div>
@@ -76,7 +76,7 @@ function TeamMember({ member }: Props) {
                     href={`https://www.github.com/${member.github}`}
                     aria-label="GitHub profile"
                   >
-                    <GitHub />
+                    <GitHubIcon />
                   </ExternalLink>
                 </Tooltip>
               </div>
@@ -89,7 +89,7 @@ function TeamMember({ member }: Props) {
                     href={`https://www.linkedin.com/in/${member.linkedin}`}
                     aria-label="Linkedin profile"
                   >
-                    <LinkedIn />
+                    <LinkedInIcon />
                   </ExternalLink>
                 </Tooltip>
               </div>

@@ -8,7 +8,7 @@ import { each, values, uniq, omit } from 'lodash';
 import type { OnFilterChange } from 'types/views';
 import type { DownshiftState, StateChangeOptions } from 'downshift';
 
-import { Search, ChevronDown } from 'views/components/icons';
+import { SearchIcon, ChevronDown } from 'views/components/icons';
 import makeResponsive from 'views/hocs/makeResponsive';
 import FilterGroup from 'utils/filters/FilterGroup';
 import ModuleFilter from 'utils/filters/ModuleFilter';
@@ -157,7 +157,7 @@ export class DropdownListFiltersComponent extends PureComponent<Props, State> {
                     [styles.focused]: this.state.isFocused,
                   })}
                 >
-                  <Search className={styles.searchIcon} onClick={this.focusInput} />
+                  <SearchIcon className={styles.searchIcon} onClick={this.focusInput} />
                   <input
                     ref={this.searchInput}
                     {...getInputProps({

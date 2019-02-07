@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import { toggleFeedback } from 'actions/app';
 import config from 'config';
 
-import { Mail, Layers, GitHub } from 'views/components/icons';
+import { MailIcon, LayersIcon, GitHubIcon } from 'views/components/icons';
 import ExternalLink from 'views/components/ExternalLink';
 
 import StaticPage from './StaticPage';
@@ -50,7 +50,7 @@ function AboutContainer(props: Props) {
       <div className={classnames('row no-gutters', styles.actionContainer)}>
         <div className={classnames('col-lg', styles.btnContainer)}>
           <button onClick={props.toggleFeedback} className="btn btn-primary btn-svg btn-block">
-            <Mail className="svg" />
+            <MailIcon className="svg" />
             We need feedback!
           </button>
         </div>
@@ -59,7 +59,7 @@ function AboutContainer(props: Props) {
             href={config.contact.messenger}
             className="btn btn-primary btn-svg btn-block"
           >
-            <Layers className="svg" />
+            <LayersIcon className="svg" />
             We need designers!
           </ExternalLink>
         </div>
@@ -68,7 +68,7 @@ function AboutContainer(props: Props) {
             href={config.contact.githubRepo}
             className="btn btn-primary btn-svg btn-block"
           >
-            <GitHub className="svg" />
+            <GitHubIcon className="svg" />
             We need code!
           </ExternalLink>
         </div>

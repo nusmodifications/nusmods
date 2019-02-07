@@ -3,7 +3,7 @@
 import React, { PureComponent } from 'react';
 import classnames from 'classnames';
 import type { Semester } from 'types/modules';
-import { Plus, Close } from 'views/components/icons';
+import { PlusIcon, CloseIcon } from 'views/components/icons';
 import styles from './AddModule.scss';
 
 type Props = {|
@@ -55,7 +55,7 @@ export default class AddModule extends PureComponent<Props, State> {
             className={classnames(styles.toggle, 'btn btn-sm btn-link btn-block')}
             onClick={() => this.setState({ isOpen: true })}
           >
-            <Plus />
+            <PlusIcon />
             Add Modules
           </button>
         </div>
@@ -95,7 +95,7 @@ export default class AddModule extends PureComponent<Props, State> {
             type="button"
             onClick={this.onCancel}
           >
-            <Close />
+            <CloseIcon />
             <span className="sr-only">Cancel</span>
           </button>
           <p className={styles.tip}>

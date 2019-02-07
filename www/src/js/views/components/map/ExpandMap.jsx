@@ -3,7 +3,7 @@
 import React, { PureComponent } from 'react';
 import { withLeaflet, type LeafletContext } from 'react-leaflet';
 import Control from 'react-leaflet-control';
-import { Maximize, Minimize } from 'views/components/icons';
+import { MaximizeIcon, MinimizeIcon } from 'views/components/icons';
 import Tooltip from 'views/components/Tooltip';
 
 type Props = {|
@@ -56,7 +56,7 @@ class ExpandMap extends PureComponent<Props> {
             className="btn btn-sm btn-secondary"
             onClick={this.expandMap}
           >
-            {this.props.isExpanded ? <Minimize /> : <Maximize />}
+            {this.props.isExpanded ? <MinimizeIcon /> : <MaximizeIcon />}
           </button>
         </Tooltip>
       </Control>

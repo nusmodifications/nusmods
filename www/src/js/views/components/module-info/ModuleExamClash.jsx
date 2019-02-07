@@ -8,7 +8,7 @@ import { get } from 'lodash';
 import type { State } from 'reducers';
 import type { Module, Semester, ModuleCode } from 'types/modules';
 
-import { AlertTriangle } from 'views/components/icons';
+import { AlertTriangleIcon } from 'views/components/icons';
 import { getModuleSemesterData } from 'utils/modules';
 import { getSemesterModules } from 'utils/timetables';
 import { getSemesterTimetable } from 'reducers/timetables';
@@ -46,7 +46,7 @@ export class ModuleExamClashComponent extends PureComponent<Props> {
 
     return (
       <div className={classnames('text-danger', styles.alert)}>
-        <AlertTriangle className={styles.icon} />
+        <AlertTriangleIcon className={styles.icon} />
         <p className={styles.warning}>
           Your {useSingular ? 'module' : 'modules'}{' '}
           <LinkModuleCodes>{clashes.map((module) => module.ModuleCode).join(', ')}</LinkModuleCodes>{' '}
