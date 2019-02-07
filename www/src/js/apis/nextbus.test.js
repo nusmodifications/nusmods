@@ -22,7 +22,7 @@ describe(nextBus, () => {
       },
       A1E: {
         arrivalTime: 1,
-        nextArrivalTime: null,
+        nextArrivalTime: '-',
       },
       D2: {
         arrivalTime: 2,

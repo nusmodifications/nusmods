@@ -58,7 +58,7 @@ export type BusStop = {
   +displayRoutesLeft?: boolean,
 };
 
-export type NextBusTime = number | '-' | 'Arr'
+export type NextBusTime = number | '-' | 'Arr';
 
 export type NextBus = {|
   +arrivalTime: NextBusTime,

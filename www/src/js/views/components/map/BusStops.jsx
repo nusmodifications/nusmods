@@ -35,8 +35,10 @@ type ArrivalTimesProps = {|
   reload: (code: string) => void,
 |};
 
+/**
+ * Extract the route name from the start of a string
+ */
 const routes = ['A1', 'A2', 'B1', 'B2', 'C', 'D1', 'D2', 'BTC1', 'BTC2'];
-
 export function extractRoute(route: string) {
   for (let i = 0; i < routes.length; i++) {
     if (route.startsWith(routes[i])) return routes[i];
@@ -44,6 +46,10 @@ export function extractRoute(route: string) {
   return null;
 }
 
+/**
+ * Adds 'min' to numeric timings and highlight any buses that are arriving
+ * soon with a <strong> tag
+ */
 function renderTiming(time: NextBusTime) {
   if (typeof time === 'number') {
     if (time <= 3) return <strong>{time} min</strong>;
@@ -54,6 +60,11 @@ function renderTiming(time: NextBusTime) {
   return time;
 }
 
+/**
+ * Route names with parenthesis in them don't have a space in front of the
+ * opening bracket, causing the text to wrap weirdly. This forces the opening
+ * paren to always have a space in front of it.
+ */
 function fixRouteName(name: string) {
   return name.replace(/\s?\(/, ' (');
 }
