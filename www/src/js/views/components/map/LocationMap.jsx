@@ -6,8 +6,9 @@ import { GestureHandling } from 'leaflet-gesture-handling';
 import classnames from 'classnames';
 import ExternalLink from 'views/components/ExternalLink';
 
-import { icon } from './icons';
+import { markerIcon } from './icons';
 import ExpandMap from './ExpandMap';
+import BusStops from './BusStops';
 import styles from './LocationMap.scss';
 
 export type Props = {|
@@ -64,7 +65,8 @@ export default class LocationMap extends PureComponent<Props, State> {
             attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <Marker position={position} icon={icon} />
+          <BusStops />
+          <Marker position={position} icon={markerIcon} />
           <ExpandMap isExpanded={isExpanded} onToggleExpand={this.toggleMapExpand} />
         </Map>
       </div>

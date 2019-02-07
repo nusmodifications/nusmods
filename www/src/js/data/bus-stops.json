@@ -1,0 +1,464 @@
+[
+  {
+    "name": "AS5",
+    "location": [
+      1.293551691227065,
+      103.77174317836763
+    ],
+    "code": "AS7",
+    "routes": [
+      "A1",
+      "B1",
+      "BTC1",
+      "D1"
+    ]
+  },
+  {
+    "name": "BIZ 2",
+    "location": [
+      1.2932406342533864,
+      103.77507448196413
+    ],
+    "code": "BIZ2",
+    "routes": [
+      "A1",
+      "B1",
+      "BTC1",
+      "D1",
+      "D2"
+    ]
+  },
+  {
+    "name": "Botanic Gardens MRT",
+    "location": [
+      1.3226192595887374,
+      103.8159030675888
+    ],
+    "code": "BG-MRT",
+    "routes": [
+      "BTC2"
+    ]
+  },
+  {
+    "name": "Car Park 11 (BIZ)",
+    "location": [
+      1.2946511164318655,
+      103.77472579479218
+    ],
+    "code": "BIZ2-E",
+    "routes": [
+      "D2"
+    ]
+  },
+  {
+    "name": "Central Library",
+    "location": [
+      1.2962707565966372,
+      103.77222597599031
+    ],
+    "code": "CENLIB",
+    "routes": [
+      "A1",
+      "B1",
+      "BTC1",
+      "D1"
+    ]
+  },
+  {
+    "name": "College Green",
+    "location": [
+      1.323335218492123,
+      103.81627857685089
+    ],
+    "code": "CGH",
+    "routes": [
+      "BTC1"
+    ]
+  },
+  {
+    "name": "COM2",
+    "location": [
+      1.294264976902039,
+      103.77378165721895
+    ],
+    "code": "COM2",
+    "routes": [
+      "A1",
+      "A2",
+      "D1"
+    ]
+  },
+  {
+    "name": "EA",
+    "location": [
+      1.3006255455408364,
+      103.77019286155702
+    ],
+    "code": "BLK-EA-OPP",
+    "routes": [
+      "B2",
+      "C",
+      "BTC2"
+    ]
+  },
+  {
+    "name": "Information Technology",
+    "location": [
+      1.297209289330673,
+      103.77268731594086
+    ],
+    "code": "COMCEN",
+    "routes": [
+      "A2",
+      "B1",
+      "B2",
+      "D1"
+    ]
+  },
+  {
+    "name": "Kent Ridge Bus Terminal",
+    "location": [
+      1.2942864290996847,
+      103.76965105533601
+    ],
+    "code": "KR-BT",
+    "routes": [
+      "B1",
+      "C",
+      "BTC1",
+      "BTC2"
+    ]
+  },
+  {
+    "name": "Kent Ridge MRT",
+    "location": [
+      1.2948120078852723,
+      103.78438711166382
+    ],
+    "code": "KR-MRT",
+    "routes": [
+      "A1",
+      "D2"
+    ]
+  },
+  {
+    "name": "Kent Vale",
+    "location": [
+      1.3018268653075227,
+      103.7696135044098
+    ],
+    "code": "KV",
+    "routes": [
+      "C",
+      "BTC1"
+    ]
+  },
+  {
+    "name": "LT13",
+    "location": [
+      1.2948388231265124,
+      103.77063274383546
+    ],
+    "code": "LT13",
+    "routes": [
+      "A1",
+      "B1",
+      "BTC1",
+      "D1"
+    ]
+  },
+  {
+    "name": "LT27",
+    "location": [
+      1.2973487284500391,
+      103.78098607063295
+    ],
+    "code": "LT27",
+    "routes": [
+      "A1",
+      "C",
+      "D2"
+    ]
+  },
+  {
+    "name": "Museum",
+    "location": [
+      1.3011672121136006,
+      103.77347052097322
+    ],
+    "code": "MUSEUM",
+    "routes": [
+      "A2",
+      "C",
+      "BTC1",
+      "BTC2",
+      "D1",
+      "D2"
+    ]
+  },
+  {
+    "name": "Oei Tiong Ham Building",
+    "location": [
+      1.3198090518600787,
+      103.81776988506319
+    ],
+    "code": "BUKITTIMAH-BTC2",
+    "routes": [
+      "BTC1",
+      "BTC2"
+    ]
+  },
+  {
+    "name": "Opp HSSML",
+    "location": [
+      1.292951029450497,
+      103.77512276172638
+    ],
+    "code": "HSSML-OPP",
+    "routes": [
+      "A2",
+      "B2",
+      "D1"
+    ]
+  },
+  {
+    "name": "Opp Kent Ridge MRT",
+    "location": [
+      1.2949889884722228,
+      103.78460705280305
+    ],
+    "code": "KR-MRT-OPP",
+    "routes": [
+      "A2",
+      "D2"
+    ]
+  },
+  {
+    "name": "Opp NUSS",
+    "location": [
+      1.2932620864596833,
+      103.7723869085312
+    ],
+    "code": "NUSS-OPP",
+    "routes": [
+      "A2",
+      "B2",
+      "D1"
+    ]
+  },
+  {
+    "name": "Opp TCOMS",
+    "location": [
+      1.2937179458008194,
+      103.77702713012695
+    ],
+    "code": "PGP12-OPP",
+    "routes": [
+      "A1"
+    ]
+  },
+  {
+    "name": "Opp University Hall",
+    "location": [
+      1.2975686131995663,
+      103.7780946493149
+    ],
+    "code": "UHALL-OPP",
+    "routes": [
+      "A2",
+      "C",
+      "D2"
+    ]
+  },
+  {
+    "name": "Opp University Health Centre",
+    "location": [
+      1.2987431192208145,
+      103.77566456794739
+    ],
+    "code": "STAFFCLUB-OPP",
+    "routes": [
+      "A1",
+      "C",
+      "D2"
+    ]
+  },
+  {
+    "name": "Opp YIH",
+    "location": [
+      1.2989040104141159,
+      103.77412497997285
+    ],
+    "code": "YIH-OPP",
+    "routes": [
+      "A2",
+      "B1",
+      "B2",
+      "D1"
+    ],
+    "displayRoutesLeft": true
+  },
+  {
+    "name": "PGP Hse 15",
+    "location": [
+      1.2929939338678234,
+      103.77791225910187
+    ],
+    "code": "PGP14-15",
+    "routes": [
+      "A2"
+    ],
+    "displayRoutesLeft": true
+  },
+  {
+    "name": "PGP Hse 7",
+    "location": [
+      1.2931119210117246,
+      103.77807319164278
+    ],
+    "code": "PGP7",
+    "routes": [
+      "A1"
+    ]
+  },
+  {
+    "name": "PGPR",
+    "location": [
+      1.2909506101880284,
+      103.78111481666566
+    ],
+    "code": "PGP",
+    "routes": [
+      "D2"
+    ]
+  },
+  {
+    "name": "Prince George's Park",
+    "location": [
+      1.29181942518183,
+      103.78042280673982
+    ],
+    "code": "PGPT",
+    "routes": [
+      "A1",
+      "A2",
+      "BTC1",
+      "D2"
+    ]
+  },
+  {
+    "name": "Raffles Hall",
+    "location": [
+      1.3009634167830397,
+      103.77275168895723
+    ],
+    "code": "RAFFLES",
+    "routes": [
+      "B2",
+      "C"
+    ]
+  },
+  {
+    "name": "S17",
+    "location": [
+      1.297541797987231,
+      103.78069639205934
+    ],
+    "code": "S17",
+    "routes": [
+      "A2",
+      "C",
+      "D2"
+    ]
+  },
+  {
+    "name": "TCOMS",
+    "location": [
+      1.2935731434307414,
+      103.77705395221712
+    ],
+    "code": "PGP12",
+    "routes": [
+      "A2"
+    ]
+  },
+  {
+    "name": "The Japanese Primary School",
+    "location": [
+      1.3007596214360164,
+      103.76990854740144
+    ],
+    "code": "JP-SCH-16151",
+    "routes": [
+      "C"
+    ]
+  },
+  {
+    "name": "University Hall",
+    "location": [
+      1.297118117594622,
+      103.77874910831453
+    ],
+    "code": "UHALL",
+    "routes": [
+      "A1",
+      "C",
+      "D2"
+    ]
+  },
+  {
+    "name": "University Health Centre",
+    "location": [
+      1.298952277770091,
+      103.7760615348816
+    ],
+    "code": "STAFFCLUB",
+    "routes": [
+      "A2",
+      "C",
+      "D2"
+    ]
+  },
+  {
+    "name": "University Town",
+    "location": [
+      1.303543035409685,
+      103.77443075180055
+    ],
+    "code": "UTown",
+    "routes": [
+      "B1",
+      "B2",
+      "C",
+      "D1",
+      "D2"
+    ]
+  },
+  {
+    "name": "Ventus (Opp LT13)",
+    "location": [
+      1.2953590387504565,
+      103.77057909965517
+    ],
+    "code": "LT13-OPP",
+    "routes": [
+      "A2",
+      "B2",
+      "D1"
+    ]
+  },
+  {
+    "name": "YIH",
+    "location": [
+      1.2988611060969004,
+      103.77432882785799
+    ],
+    "code": "YIH",
+    "routes": [
+      "A1",
+      "B1",
+      "BTC1",
+      "D1"
+    ]
+  }
+]
