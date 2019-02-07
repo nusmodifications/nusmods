@@ -4,7 +4,15 @@ import React, { Fragment, PureComponent, type Node } from 'react';
 import { connect } from 'react-redux';
 import { minBy, range, get } from 'lodash';
 import NUSModerator, { type AcadWeekInfo } from 'nusmoderator';
-import { addDays, differenceInCalendarDays, isSameDay, isWeekend, parseISO } from 'date-fns';
+import {
+  addDays,
+  differenceInCalendarDays,
+  isSameDay,
+  isWeekend,
+  parseISO,
+  getHours,
+  getMinutes,
+} from 'date-fns';
 import produce from 'immer';
 
 import type { ColoredLesson, Lesson } from 'types/modules';
@@ -31,7 +39,7 @@ import config from 'config';
 import withTimer, { type TimerData } from 'views/hocs/withTimer';
 import makeResponsive from 'views/hocs/makeResponsive';
 import NoFooter from 'views/layout/NoFooter';
-import { formatTime, getCurrentHours, getCurrentMinutes, getDayIndex } from 'utils/timify';
+import { formatTime, getDayIndex } from 'utils/timify';
 import { breakpointUp } from 'utils/css';
 
 import DayEvents from '../DayEvents';
@@ -251,7 +259,8 @@ export class TodayContainerComponent extends PureComponent<Props, State> {
 
     if (isToday) {
       // Don't show any lessons in the past, and add the current time marker
-      const currentTime = getCurrentHours() * 100 + getCurrentMinutes();
+      const currentTime =
+        getHours(this.props.currentTime) * 100 + getMinutes(this.props.currentTime);
       // eslint-disable-next-line no-param-reassign
       lessons = lessons.filter((lesson) => parseInt(lesson.EndTime, 10) > currentTime);
 

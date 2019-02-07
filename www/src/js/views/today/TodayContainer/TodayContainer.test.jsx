@@ -165,8 +165,8 @@ describe(TodayContainerComponent, () => {
   };
 
   test('should render', () => {
-    // Monday, 8th August 2016, 0800 - week 4
-    const now = new Date('2016-08-08T00:00:00.000Z');
+    // Monday, 8th August 2016, 0800 - week 1
+    const now = new Date('2016-08-08T08:00:00+08:00');
 
     const wrapper = make({
       currentTime: now,
@@ -178,7 +178,7 @@ describe(TodayContainerComponent, () => {
 
   test('should render lessons on a normal week', () => {
     // Monday, 29th August 2016, 0800 - week 4
-    const now = new Date('2016-08-29T00:00:00.000Z');
+    const now = new Date('2016-08-29T08:00:00+08:00');
     const wrapper = make({ currentTime: now });
 
     expect(getLessons(wrapper)).toEqual([
@@ -193,7 +193,7 @@ describe(TodayContainerComponent, () => {
 
   test('should not render even week lessons on odd weeks', () => {
     // Monday, 22th August 2016, 0800 - week 3
-    const now = new Date('2016-08-22T00:00:00.000Z');
+    const now = new Date('2016-08-22T08:00:00+08:00');
     const wrapper = make({ currentTime: now });
 
     expect(getLessons(wrapper)).toEqual([
@@ -209,7 +209,7 @@ describe(TodayContainerComponent, () => {
     // $FlowFixMe
     weather.fourDay.mockRejectedValueOnce(new Error('Cannot load weather'));
 
-    const now = new Date('2016-08-22T00:00:00.000Z');
+    const now = new Date('2016-08-22T18:00:00+08:00');
     make({ currentTime: now });
 
     expect(weather.twoHour).toBeCalled();
@@ -230,7 +230,7 @@ describe(TodayContainerComponent, () => {
     // $FlowFixMe
     weather.fourDay.mockResolvedValue(forecasts);
 
-    const now = new Date('2019-02-07T00:00:00.000Z');
+    const now = new Date('2019-02-07T08:00:00+08:00');
     const wrapper = make({ currentTime: now });
 
     await waitFor(() => size(wrapper.state('weather')) > 3);
@@ -250,7 +250,7 @@ describe(TodayContainerComponent, () => {
     // $FlowFixMe
     weather.fourDay.mockResolvedValue(forecasts);
 
-    const now = new Date('2019-02-07T00:00:00.000Z');
+    const now = new Date('2019-02-07T08:00:00+08:00');
     const wrapper = make({ currentTime: now });
 
     await waitFor(() => size(wrapper.state('weather')) > 3);
