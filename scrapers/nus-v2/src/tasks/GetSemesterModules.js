@@ -56,7 +56,7 @@ export default class GetSemesterModules extends BaseTask implements Task<Input, 
 
     const term = getTermCode(this.semester, this.academicYear);
 
-    // We make a new request for each faculty because the API will timeout if
+    // We make a new request for each department because the API will timeout if
     // we try to request for all of them in one shot
     const requests = input.departments.map(async (department) => {
       try {
@@ -67,8 +67,7 @@ export default class GetSemesterModules extends BaseTask implements Task<Input, 
         // Only return modules which are visible in the system
         const [printed, hidden] = partition(
           modules,
-          // Some systems use CatalogPrint while others use PrintCatalog
-          (module: ModuleInfo) => (module.CatalogPrint || module.PrintCatalog) === 'Y',
+          (module: ModuleInfo) => module.PrintCatalog === 'Y',
         );
 
         this.logger.debug('Downloaded %i modules from %s', printed.length, department.Description);

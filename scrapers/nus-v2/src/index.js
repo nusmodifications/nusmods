@@ -45,12 +45,15 @@ const parameters = {
   },
 };
 
+/* eslint-disable no-await-in-loop */
+
 const commands: CommandModule[] = [
   {
     command: 'test',
     describe: 'run some simple tests against the API to ensure things are set up correctly',
     handler: run(new TestApi(config.academicYear).run),
   },
+
   {
     command: 'departments [year]',
     aliases: ['department', 'faculty', 'faculties'],
@@ -60,6 +63,7 @@ const commands: CommandModule[] = [
     },
     handler: run(({ year }) => new GetFacultyDepartment(year).run()),
   },
+
   {
     command: 'semester [year] <sem>',
     describe: 'download all data for the given semester',
@@ -73,6 +77,7 @@ const commands: CommandModule[] = [
       logger.info(`Collected data for ${modules.length} modules`);
     }),
   },
+
   {
     command: 'venue [year] <sem>',
     aliases: ['venues'],
@@ -87,6 +92,7 @@ const commands: CommandModule[] = [
       logger.info(`Collated ${size(venues)} venues`);
     }),
   },
+
   {
     command: 'combine [year]',
     describe: 'combine semester data for modules',
@@ -94,18 +100,29 @@ const commands: CommandModule[] = [
       year: parameters.year,
     },
     handler: run(async ({ year }) => {
-      const modules = await Promise.all(
-        Semesters.map((semester) =>
-          new GetSemesterData(semester, year).outputCache.read().catch((e) => {
-            logger.warn(e, `No semester data available for ${semester}`);
-            return [];
-          }),
-        ),
-      );
+      const aliases = [];
+      const semesterData = [];
 
-      await new CollateModules().run(modules);
+      for (const semester of Semesters) {
+        const semesterAliases = await new CollateVenues(semester, year).aliasCache
+          .read()
+          .catch((e) => {
+            logger.warn(e, `No module alias info available for ${semester}`);
+            return [];
+          });
+        aliases.push(semesterAliases);
+
+        const modules = await new GetSemesterData(semester, year).outputCache.read().catch((e) => {
+          logger.warn(e, `No semester data available for ${semester}`);
+          return [];
+        });
+        semesterData.push(modules);
+      }
+
+      await new CollateModules().run({ semesterData, aliases });
     }),
   },
+
   {
     command: 'all',
     describe: 'run all tasks in a single pipeline',

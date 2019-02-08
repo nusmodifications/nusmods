@@ -1,6 +1,6 @@
 // @flow
 
-import { values, omit, isEqual, mergeWith } from 'lodash';
+import { mapValues, values, omit, isEqual, mergeWith } from 'lodash';
 
 import type { Task } from '../types/tasks';
 import type { ModuleAliases, ModuleWithoutTree, SemesterModuleData } from '../types/mapper';
@@ -18,12 +18,19 @@ type Input = {|
 |};
 type Output = Module[];
 
-export function mergeAliases(aliases: ModuleAliases[]): ModuleAliases {
+/**
+ * Merge aliases and convert set to array
+ */
+export function mergeAliases(aliases: ModuleAliases[]): { [ModuleCode]: ModuleCode[] } {
   // Returning undefined causes mergeWith to use the original merge
   // eslint-disable-next-line consistent-return
-  return mergeWith(...aliases, (src, dest) => {
+  const merged = mergeWith(...aliases, (src, dest) => {
     if (src && dest) return union(src, dest);
   });
+
+  // Convert the set to an array to make it easier to output since JSON doesn't
+  // encode Sets by default
+  return mapValues(merged, (set) => Array.from(set));
 }
 
 /**
@@ -31,7 +38,7 @@ export function mergeAliases(aliases: ModuleAliases[]): ModuleAliases {
  */
 export function combineModules(
   semesters: SemesterModuleData[][],
-  aliases: ModuleAliases,
+  aliases: { [ModuleCode]: ModuleCode[] },
   logger: Logger,
 ): ModuleWithoutTree[] {
   const modules: { [ModuleCode]: ModuleWithoutTree } = {};
@@ -44,7 +51,7 @@ export function combineModules(
       // 2. Create the merged module data
       const module = {
         ...semesterModule.Module,
-        Aliases: aliases[moduleCode] && Array.from(aliases[moduleCode]),
+        Aliases: aliases[moduleCode],
         SemesterData: [semesterModule.SemesterData],
       };
 
@@ -144,10 +151,10 @@ export default class CollateModules extends BaseTask implements Task<Input, Outp
     this.logger.info(`Collating modules for ${this.academicYear}`);
 
     const { semesterData, aliases } = input;
-    const combinedAlias = mergeAliases(aliases);
+    const combinedAliases = mergeAliases(aliases);
     const modulesWithoutTree: ModuleWithoutTree[] = combineModules(
       semesterData,
-      combinedAlias,
+      combinedAliases,
       this.logger,
     );
 
@@ -166,6 +173,7 @@ export default class CollateModules extends BaseTask implements Task<Input, Outp
     await Promise.all([
       this.io.moduleList(moduleCondensed),
       this.io.moduleInformation(moduleInformation),
+      this.io.moduleAliases(combinedAliases),
     ]);
 
     return values(modules);

@@ -83,6 +83,7 @@ describe(combineModules, () => {
             },
           ],
         ],
+        {},
         logger,
       ),
     ).toEqual([
@@ -110,8 +111,8 @@ describe(mergeAliases, () => {
         },
       ]),
     ).toEqual({
-      GET1025: s('GEK2041'),
-      GEK2041: s('GET1025'),
+      GET1025: ['GEK2041'],
+      GEK2041: ['GET1025'],
     });
 
     expect(
@@ -126,9 +127,9 @@ describe(mergeAliases, () => {
         },
       ]),
     ).toEqual({
-      GES1001: s('GEK2041'),
-      GET1025: s('GEK2041', 'GES1001'),
-      GEK2041: s('GET1025'),
+      GES1001: ['GEK2041'],
+      GET1025: ['GEK2041', 'GES1001'],
+      GEK2041: ['GET1025'],
     });
   });
 });
