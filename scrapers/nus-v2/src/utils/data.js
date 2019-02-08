@@ -9,7 +9,7 @@ import { trim } from 'lodash';
 /**
  * NUS specific title case function that accounts for school names, etc.
  */
-const minorWords = ['and', 'or', 'the', 'a', 'an', 'to', 'of'];
+const minorWords = ['and', 'or', 'the', 'a', 'an', 'to', 'of', 'in'];
 const abbreviations = ['NUS', 'MIT', 'IP', 'NA'];
 export function titleize(string: string) {
   let capitalized = string
@@ -19,7 +19,7 @@ export function titleize(string: string) {
 
   // Minor words are lowercase unless they are the first word of the title
   minorWords.forEach((properCasing) => {
-    const regex = new RegExp(properCasing, 'gi');
+    const regex = new RegExp(`\\b${properCasing}\\b`, 'gi');
     capitalized = capitalized.replace(regex, (match, index) =>
       index === 0 ? match : properCasing,
     );
@@ -27,7 +27,7 @@ export function titleize(string: string) {
 
   // Abbreviations are uppercase regardless of where they are
   abbreviations.forEach((abbreviation) => {
-    const regex = new RegExp(abbreviation, 'gi');
+    const regex = new RegExp(`\\b${abbreviation}\\b`, 'gi');
     capitalized = capitalized.replace(regex, abbreviation);
   });
 
@@ -40,7 +40,7 @@ export function titleize(string: string) {
  */
 const trimChars = ' \t\n.,!?/-_';
 const nullStrings = new Set(['', 'nil', 'na', 'n/a', 'null', 'none']);
-export function cleanObject<T: Object>(object: T, keys: $Keys<T>[]) {
+export function removeEmptyValues<T: Object>(object: T, keys: $Keys<T>[]) {
   /* eslint-disable no-param-reassign */
   keys.forEach((key) => {
     const value = object[key];
@@ -48,6 +48,24 @@ export function cleanObject<T: Object>(object: T, keys: $Keys<T>[]) {
     if (!value) delete object[key];
     if (typeof value === 'string' && nullStrings.has(trim(value, trimChars).toLowerCase())) {
       delete object[key];
+    }
+  });
+  /* eslint-enable */
+
+  return object;
+}
+
+/**
+ * Trim given values if they are strings
+ * Mutates the input object
+ */
+export function trimValues<T: Object>(object: T, keys: $Keys<T>[]) {
+  /* eslint-disable no-param-reassign */
+  keys.forEach((key) => {
+    const value = object[key];
+
+    if (typeof value === 'string') {
+      object[key] = value.trim();
     }
   });
   /* eslint-enable */

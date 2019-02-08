@@ -21,7 +21,7 @@ import GetSemesterTimetable from './GetSemesterTimetable';
 import GetSemesterModules from './GetSemesterModules';
 import { fromTermCode } from '../utils/api';
 import { validateSemester } from '../services/validation';
-import { cleanObject, titleize } from '../utils/data';
+import { removeEmptyValues, titleize, trimValues } from '../utils/data';
 import { difference } from '../utils/set';
 
 type Input = {|
@@ -45,16 +45,36 @@ export const getFacultyCodeMap = (departments: AcademicGrp[]): FacultyCodeMap =>
 /**
  * Clean module info
  * - Remove empty fields and fields with text like 'nil'
+ * - Trim whitespace from module title, description and other text fields
  * - Properly capitalize ALL CAPS title
  */
-const cleanKeys = ['Workload', 'Prerequisite', 'Corequisite', 'Preclusion'];
 export function cleanModuleInfo(module: SemesterModule) {
-  if (module.ModuleTitle === module.ModuleTitle.toUpperCase()) {
-    // eslint-disable-next-line no-param-reassign
-    module.ModuleTitle = titleize(module.ModuleTitle);
+  let cleanedModule = module;
+
+  // Title case module title if it is all uppercase
+  if (cleanedModule.ModuleTitle === cleanedModule.ModuleTitle.toUpperCase()) {
+    cleanedModule.ModuleTitle = titleize(cleanedModule.ModuleTitle);
   }
 
-  return cleanObject(module, cleanKeys);
+  // Remove empty values like 'nil' and empty strings for keys that allow them
+  // to be nullable
+  cleanedModule = removeEmptyValues(cleanedModule, [
+    'Workload',
+    'Prerequisite',
+    'Corequisite',
+    'Preclusion',
+  ]);
+
+  // Remove whitespace from some string values
+  trimValues(cleanedModule, [
+    'ModuleTitle',
+    'ModuleDescription',
+    'Prerequisite',
+    'Corequisite',
+    'Preclusion',
+  ]);
+
+  return cleanedModule;
 }
 
 /**
@@ -168,7 +188,8 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
       new GetSemesterModules(semester, academicYear).run(input),
     ]);
 
-    // Map department and faculty codes to their names for use during module data sanitization
+    // Map department and faculty codes to their names for use during module
+    // data sanitization
     const departmentMap = getDepartmentCodeMap(input.departments);
     const facultyMap = getFacultyCodeMap(input.faculties);
 
@@ -178,7 +199,16 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
       (moduleInfo) => moduleInfo.Subject + moduleInfo.CatalogNumber,
     );
 
-    // Combine all three source of data into one set of semester module info
+    // Combine all three source of data into one set of semester module info.
+    //
+    // We iterate over timetables because only modules with timetable lessons
+    // are are actually offered.
+    //
+    // The data source is less consistent than we'd like, because there are
+    // modules with timetable but no module info, and modules with exam info
+    // but no timetable/module info. Timetable is the best option here compared
+    // to module info (which has a lot of modules but most are not offered)
+    // and exam info (missing modules since many modules don't have exams).
     const semesterModuleData = [];
     each(timetables, (timetable, moduleCode) => {
       const moduleInfo = modulesMap[moduleCode];
@@ -197,7 +227,8 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
         ...examInfo,
       };
 
-      // Map module info to the shape expected by our frontend and clean up the data
+      // Map module info to the shape expected by our frontend and clean up
+      // the data by removing nil fields and fixing data issues
       const rawModule = mapModuleInfo(moduleInfo, departmentMap, facultyMap);
       const Module = cleanModuleInfo(rawModule);
 

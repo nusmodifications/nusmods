@@ -84,7 +84,7 @@ describe(cleanModuleInfo, () => {
     expect(cleanedYID3216).not.toHaveProperty('Corequisite');
   });
 
-  test('should titlecase all caps titles', () => {
+  test('should title case all caps titles', () => {
     expect(
       cleanModuleInfo({
         AcadYear: '2018/2019',
@@ -97,6 +97,46 @@ describe(cleanModuleInfo, () => {
         ModuleCode: 'ME5513',
       }),
     ).toHaveProperty('ModuleTitle', 'Fracture and Fatigue of Materials');
+
+    expect(
+      cleanModuleInfo({
+        AcadYear: '2018/2019',
+        ModuleTitle: 'GRADUATE SEMINAR MODULE IN BIOLOGICAL SCIENCES',
+        Corequisite: 'NIL',
+        ModuleCode: 'BL5198',
+        ModuleDescription: 'This is a required module for all research Masters and PhD...',
+        ModuleCredit: '4',
+        Prerequisite: 'Basic knowledge in life sciences',
+        Department: 'Life Sciences',
+        Faculty: 'Science',
+      }),
+    ).toHaveProperty('ModuleTitle', 'Graduate Seminar Module in Biological Sciences');
+  });
+
+  test('should trim titles and other fields with whitespace characters', () => {
+    expect(
+      cleanModuleInfo({
+        AcadYear: '2018/2019',
+        ModuleDescription: 'The module covers the foundational knowledge of the sound...',
+        ModuleTitle: ' Phonetics and Phonology',
+        Department: 'English Language and Literature',
+        Faculty: 'Arts and Social Science',
+        Prerequisite:
+          'Must be registered as a Graduate student in the university or with the approval of the Department.  ',
+        ModuleCredit: '4',
+        ModuleCode: 'EL5102',
+      }),
+    ).toEqual({
+      AcadYear: '2018/2019',
+      ModuleDescription: 'The module covers the foundational knowledge of the sound...',
+      ModuleTitle: 'Phonetics and Phonology',
+      Department: 'English Language and Literature',
+      Faculty: 'Arts and Social Science',
+      Prerequisite:
+        'Must be registered as a Graduate student in the university or with the approval of the Department.',
+      ModuleCredit: '4',
+      ModuleCode: 'EL5102',
+    });
   });
 });
 
