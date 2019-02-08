@@ -11,7 +11,7 @@ type Props = {
   isOpen: boolean,
   overlayClassName?: string,
   className?: string,
-  children: Node,
+  children: ?Node,
   fullscreen: boolean,
   animate?: boolean,
 };

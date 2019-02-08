@@ -10,6 +10,7 @@ import {
   SET_PLANNER_IBLOCS,
   SET_PLANNER_MAX_YEAR,
   SET_PLANNER_MIN_YEAR,
+  ADD_CUSTOM_PLANNER_DATA,
 } from 'actions/planner';
 import config from 'config';
 import { filterModuleForSemester } from 'selectors/planner';
@@ -20,6 +21,7 @@ const defaultPlannerState: PlannerState = {
   iblocs: false,
 
   modules: {},
+  custom: {},
 };
 
 export default function planner(
@@ -97,6 +99,11 @@ export default function planner(
     case REMOVE_PLANNER_MODULE:
       return produce(state, (draft) => {
         delete draft.modules[action.payload.moduleCode];
+      });
+
+    case ADD_CUSTOM_PLANNER_DATA:
+      return produce(state, (draft) => {
+        draft.custom[action.payload.moduleCode] = action.payload.data;
       });
 
     default:

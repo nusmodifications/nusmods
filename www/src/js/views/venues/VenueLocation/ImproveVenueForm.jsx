@@ -11,7 +11,7 @@ import type { LatLngTuple, Venue, VenueLocation } from 'types/venues';
 import config from 'config';
 import { MapPin, ThumbsUp } from 'views/components/icons';
 import LoadingSpinner from 'views/components/LoadingSpinner';
-import { icon } from 'views/components/map/icons';
+import { markerIcon } from 'views/components/map/icons';
 import ExpandMap from 'views/components/map/ExpandMap';
 
 import mapStyles from 'views/components/map/LocationMap.scss';
@@ -254,7 +254,7 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
           >
             <Marker
               position={location}
-              icon={icon}
+              icon={markerIcon}
               onDragEnd={(evt) => this.updateLocation(evt.target.getLatLng())}
               draggable
               autoPan

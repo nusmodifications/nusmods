@@ -281,7 +281,6 @@
 .leaflet-marker-icon.leaflet-interactive,
 .leaflet-image-layer.leaflet-interactive,
 .leaflet-pane > svg path.leaflet-interactive {
-  pointer-events: visiblePainted; /* IE 9-10 doesn't have auto */
   pointer-events: auto;
 }
 
@@ -512,7 +511,6 @@ $button-bg: theme-color(secondary);
 }
 
 /* popup */
-/*
 .leaflet-popup {
   position: absolute;
   margin-bottom: 20px;
@@ -522,11 +520,11 @@ $button-bg: theme-color(secondary);
 .leaflet-popup-content-wrapper {
   padding: 1px;
   text-align: left;
-  border-radius: 12px;
+  border-radius: 4px;
 }
 
 .leaflet-popup-content {
-  margin: 13px 19px;
+  margin: 8px 24px 8px 12px;
   line-height: 1.4;
 }
 
@@ -584,7 +582,7 @@ $button-bg: theme-color(secondary);
   border-top: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
 }
-*/
+
 /* div icon */
 
 .leaflet-div-icon {

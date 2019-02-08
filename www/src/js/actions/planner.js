@@ -2,6 +2,7 @@
 
 import type { ModuleCode, Semester } from 'types/modules';
 import type { FSA } from 'types/redux';
+import type { CustomModule } from 'types/reducers';
 
 export const SET_PLANNER_MIN_YEAR = 'SET_PLANNER_MIN_YEAR';
 export function setPlannerMinYear(year: string) {
@@ -70,5 +71,13 @@ export function removePlannerModule(moduleCode: ModuleCode): FSA {
     payload: {
       moduleCode,
     },
+  };
+}
+
+export const ADD_CUSTOM_PLANNER_DATA = 'ADD_CUSTOM_PLANNER_DATA';
+export function addCustomModule(moduleCode: ModuleCode, data: CustomModule): FSA {
+  return {
+    type: ADD_CUSTOM_PLANNER_DATA,
+    payload: { moduleCode, data },
   };
 }

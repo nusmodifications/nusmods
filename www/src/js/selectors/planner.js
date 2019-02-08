@@ -3,7 +3,7 @@ import { flatMap, sortBy, values } from 'lodash';
 import type { ModuleCode, Semester } from 'types/modules';
 import { Semesters } from 'types/modules';
 import type { Conflict, ExamClashes, PlannerModuleInfo, PlannerModulesWithInfo } from 'types/views';
-import type { ModuleCodeMap, ModuleTime } from 'types/reducers';
+import type { CustomModuleData, ModuleCodeMap, ModuleTime } from 'types/reducers';
 import type { State } from 'reducers';
 import config from 'config';
 import { getYearsBetween, subtractAcadYear } from 'utils/modules';
@@ -64,8 +64,9 @@ const prereqConflict = (modulesMap: ModulesMap, modulesTaken: Set<ModuleCode>) =
 /**
  * Checks if a module exists in our data
  */
-const noInfoConflict = (moduleCodeMap: ModuleCodeMap) => (moduleCode: ModuleCode): ?Conflict =>
-  !moduleCodeMap[moduleCode] ? { type: 'noInfo' } : null;
+const noInfoConflict = (moduleCodeMap: ModuleCodeMap, customData: CustomModuleData) => (
+  moduleCode: ModuleCode,
+): ?Conflict => (moduleCodeMap[moduleCode] || customData[moduleCode] ? null : { type: 'noInfo' });
 
 /**
  * Checks if modules are added to semesters in which they are not available
@@ -102,6 +103,7 @@ const examConflict = (clashes: ExamClashes) => (moduleCode: ModuleCode): ?Confli
 function mapModuleToInfo(
   moduleCode: ModuleCode,
   modulesMap: ModulesMap,
+  customModules: CustomModuleData,
   conflictChecks: Array<(moduleCode: ModuleCode) => ?Conflict>,
 ): PlannerModuleInfo {
   // Only continue checking until the first conflict is found
@@ -115,6 +117,7 @@ function mapModuleToInfo(
   return {
     moduleCode,
     conflict,
+    customInfo: customModules[moduleCode],
     moduleInfo: modulesMap[moduleCode],
   };
 }
@@ -140,25 +143,24 @@ export function mapNonTimetableModules(
   semester: Semester,
 ): PlannerModuleInfo[] {
   const { planner, moduleBank } = state;
+  const conflictChecks = [noInfoConflict(moduleBank.moduleCodes, planner.custom)];
 
   return filterModuleForSemester(planner.modules, year, semester).map((moduleCode) =>
-    mapModuleToInfo(moduleCode, moduleBank.modules, [noInfoConflict(moduleBank.moduleCodes)]),
+    mapModuleToInfo(moduleCode, moduleBank.modules, planner.custom, conflictChecks),
   );
 }
 
-export function getIBLOCs(state: State): PlannerModuleInfo[] {
+export const getIBLOCs = (state: State): PlannerModuleInfo[] => {
   if (!state.planner.iblocs) return [];
   const iblocsYear = subtractAcadYear(state.planner.minYear);
   return mapNonTimetableModules(state, iblocsYear, IBLOCS_SEMESTER);
-}
+};
 
-export function getExemptions(state: State): PlannerModuleInfo[] {
-  return mapNonTimetableModules(state, EXEMPTION_YEAR, EXEMPTION_SEMESTER);
-}
+export const getExemptions = (state: State): PlannerModuleInfo[] =>
+  mapNonTimetableModules(state, EXEMPTION_YEAR, EXEMPTION_SEMESTER);
 
-export function getPlanToTake(state: State): PlannerModuleInfo[] {
-  return mapNonTimetableModules(state, PLAN_TO_TAKE_YEAR, PLAN_TO_TAKE_SEMESTER);
-}
+export const getPlanToTake = (state: State): PlannerModuleInfo[] =>
+  mapNonTimetableModules(state, PLAN_TO_TAKE_YEAR, PLAN_TO_TAKE_SEMESTER);
 
 /**
  * Convert PlannerState into PlannerModulesWithInfo form which is more easily
@@ -193,13 +195,15 @@ export function getAcadYearModules(state: State): PlannerModulesWithInfo {
         clashes = findExamClashes(sememsterModules, semester);
       }
 
+      const conflictChecks = [
+        noInfoConflict(moduleBank.moduleCodes, planner.custom),
+        prereqConflict(moduleBank.modules, modulesTaken),
+        semesterConflict(moduleBank.moduleCodes, semester),
+        examConflict(clashes),
+      ];
+
       modules[year][semester] = moduleCodes.map((moduleCode) =>
-        mapModuleToInfo(moduleCode, moduleBank.modules, [
-          noInfoConflict(moduleBank.moduleCodes),
-          prereqConflict(moduleBank.modules, modulesTaken),
-          semesterConflict(moduleBank.moduleCodes, semester),
-          examConflict(clashes),
-        ]),
+        mapModuleToInfo(moduleCode, moduleBank.modules, planner.custom, conflictChecks),
       );
 
       // Add taken modules to set of modules taken for prerequisite calculation
