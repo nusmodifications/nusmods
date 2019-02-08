@@ -31,7 +31,7 @@ describe('#getNewColor()', () => {
       );
     }
 
-    range(100).forEach(() => {
+    range(NUM_DIFFERENT_COLORS * 5).forEach(() => {
       // When there are no current colors
       expectValidIndex([], []);
       // When there are colors that have not been picked
@@ -51,7 +51,6 @@ describe('#colorLessonsByKey()', () => {
     EndTime: '',
     LessonType: '',
     StartTime: '',
-    Venue: '',
     WeekText: '',
     ModuleCode: '',
     ModuleTitle: '',
@@ -59,17 +58,21 @@ describe('#colorLessonsByKey()', () => {
 
   test('it should assign colors deterministically', () => {
     const lessons: Lesson[] = [];
-    range(100).forEach((i) => {
+    range(NUM_DIFFERENT_COLORS).forEach((i) => {
       // Add 2 lessons for this ith venue
       const newLesson = { ...bareLesson, Venue: `LT${i}` };
       lessons.push(newLesson);
       lessons.push(newLesson);
+    });
 
-      const coloredLessons = colorLessonsByKey(lessons, 'Venue');
-      const coloredLesson = coloredLessons[coloredLessons.length - 1];
+    const coloredLessons = colorLessonsByKey(lessons, 'Venue');
 
-      expect(coloredLesson).toMatchObject(newLesson); // Ensure that existing lesson info wasn't modified
-      expect(coloredLesson).toHaveProperty('colorIndex', i % NUM_DIFFERENT_COLORS);
+    range(NUM_DIFFERENT_COLORS * 2).forEach((i) => {
+      const coloredLesson = coloredLessons[i];
+      const index = Math.floor(i / 2);
+      expect(coloredLesson).toMatchObject(bareLesson); // Ensure that existing lesson info wasn't modified
+      expect(coloredLesson).toHaveProperty('Venue', `LT${index}`);
+      expect(coloredLesson).toHaveProperty('colorIndex', index % NUM_DIFFERENT_COLORS);
     });
   });
 });

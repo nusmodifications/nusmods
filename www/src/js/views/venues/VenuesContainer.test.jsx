@@ -6,7 +6,6 @@ import qs from 'query-string';
 import type { Venue, VenueDetailList } from 'types/venues';
 import venueInfo from '__mocks__/venueInformation.json';
 import createHistory from 'test-utils/createHistory';
-import mockDom from 'test-utils/mockDom';
 import { sortVenues } from 'utils/venues';
 import { venuePage } from 'views/routes/paths';
 import VenueDetails from 'views/venues/VenueDetails';
@@ -29,10 +28,6 @@ function createComponent(selectedVenue: ?Venue, search?: string) {
 }
 
 describe(VenuesContainerComponent, () => {
-  beforeEach(() => {
-    mockDom();
-  });
-
   describe('URL handling', () => {
     test('should not select or filter if no venue is present in URL', () => {
       const { wrapper } = createComponent();
