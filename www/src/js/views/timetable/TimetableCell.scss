@@ -24,6 +24,11 @@ $cell-border-radius: 6px;
     outline: none;
   }
 
+  // Prevent cell's children from intefering with click events
+  > * {
+    pointer-events: none;
+  }
+
   @include vertical-mode {
     position: absolute;
     width: 100%;

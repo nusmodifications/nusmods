@@ -459,3 +459,43 @@ export function getHoverLesson(lesson: Lesson): HoverLesson {
     lessonType: lesson.LessonType,
   };
 }
+
+/**
+ * Resets the scroll position to (0,0)
+ */
+export function resetScrollPosition() {
+  window.scrollTo(0, 0);
+}
+
+/**
+ * Maintain a lesson's position when the viewport size changes
+ * Prevents disorientation while nagivating a module with lots of options (e.g. GER1000)
+ * @param {String} cellID
+ * @param {boolean} isScrolledHorizontally
+ */
+export function maintainLessonPosition(cellID: String, isScrolledHorizontally: boolean) {
+  // 1. Store lesson's original position
+  const oPos = document.getElementById(cellID).getBoundingClientRect();
+
+  // 2. Add subsequent processing to the end of the event loop,
+  //     allowing for a re-render before the new position is queried
+  setTimeout(() => {
+    // 3. Query for viewport dimensions and lesson's new position
+    const vh = window.innerHeight;
+    const vw = window.innerWidth;
+    const nPos = document.getElementById(cellID).getBoundingClientRect();
+
+    // 4. Perform scroll if new position is outside of the viewport
+    if (nPos.bottom > vh || nPos.right > vw) {
+      const x = nPos.left - oPos.left;
+      const y = nPos.top - oPos.top;
+
+      window.scroll({ top: y, left: 0, behavior: 'smooth' });
+
+      if (!isScrolledHorizontally) {
+        const timetable = document.querySelector('.scrollable');
+        timetable.scroll({ top: 0, left: x, behavior: 'smooth' });
+      }
+    }
+  }, 0);
+}

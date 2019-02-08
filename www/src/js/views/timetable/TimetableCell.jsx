@@ -50,6 +50,7 @@ function TimetableCell(props: Props) {
         hover,
       })}
       style={props.style}
+      id={`${lesson.ModuleCode}-${LESSON_TYPE_ABBREV[lesson.LessonType]}-${lesson.ClassNo}`}
       onMouseEnter={() => onHover?.(getHoverLesson(lesson))}
       onTouchStart={() => onHover?.(getHoverLesson(lesson))}
       onMouseLeave={() => onHover?.(null)}

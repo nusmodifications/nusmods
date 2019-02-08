@@ -43,6 +43,8 @@ import {
   lessonsForLessonType,
   findExamClashes,
   getSemesterModules,
+  resetScrollPosition,
+  maintainLessonPosition,
 } from 'utils/timetables';
 import config from 'config';
 import ModulesSelectContainer from 'views/timetable/ModulesSelectContainer';
@@ -114,20 +116,24 @@ class TimetableContent extends Component<Props, State> {
   cancelModifyLesson = () => {
     if (this.props.activeLesson) {
       this.props.cancelModifyLesson();
+      resetScrollPosition();
     }
   };
 
   isHiddenInTimetable = (moduleCode: ModuleCode) =>
     this.props.hiddenInTimetable.includes(moduleCode);
 
-  modifyCell = (lesson: Lesson) => {
+  modifyCell = (e: Event, lesson: Lesson) => {
     // $FlowFixMe When object spread type actually works
     if (lesson.isAvailable) {
       this.props.changeLesson(this.props.semester, lesson);
+      resetScrollPosition();
     } else if (lesson.isActive) {
       this.props.cancelModifyLesson();
+      resetScrollPosition();
     } else {
       this.props.modifyLesson(lesson);
+      maintainLessonPosition(e.target.id, this.props.timetableOrientation === HORIZONTAL);
     }
   };
 

@@ -58,7 +58,8 @@ function TimetableRow(props: Props) {
           ? {
               onClick: (e: Event) => {
                 e.stopPropagation();
-                return onModifyCell(lesson);
+
+                return onModifyCell(e, lesson);
               },
             }
           : {};
