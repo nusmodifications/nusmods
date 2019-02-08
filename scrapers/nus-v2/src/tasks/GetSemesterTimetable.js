@@ -3,7 +3,7 @@ import { strict as assert } from 'assert';
 import { has, map, mapValues, values, trimStart } from 'lodash';
 import NUSModerator from 'nusmoderator';
 
-import type { ModuleCode, RawLesson, Semester } from '../types/modules';
+import type { LessonWeek, ModuleCode, RawLesson, Semester } from '../types/modules';
 import type { Task } from '../types/tasks';
 import type { TimetableLesson } from '../types/api';
 import type { Cache } from '../services/io';
@@ -13,7 +13,12 @@ import BaseTask from './BaseTask';
 import config from '../config';
 import { getTermCode, retry } from '../utils/api';
 import { validateLesson, validateSemester } from '../services/validation';
-import { activityLessonType, dayTextMap, unrecognizedLessonTypes } from '../utils/data';
+import {
+  activityLessonType,
+  compareWeeks,
+  dayTextMap,
+  unrecognizedLessonTypes,
+} from '../utils/data';
 
 /**
  * For deduplicating timetable lessons - we need a unique string identifier
@@ -32,8 +37,17 @@ const getLessonKey = (lesson: TimetableLesson) =>
     // organically in the data
   ].join('|');
 
-export function getWeek(date: string): number {
+export function getWeek(date: string): LessonWeek {
   const weekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(new Date(date));
+
+  // Some classes have lessons on orientation, reading or recess week
+  if (weekInfo.num == null) {
+    assert(
+      weekInfo.type === 'Orientation' || weekInfo.type === 'Reading' || weekInfo.type === 'Recess',
+    );
+    return weekInfo.type;
+  }
+
   return weekInfo.num;
 }
 
@@ -142,7 +156,7 @@ export default class GetSemesterTimetable extends BaseTask implements Task<Input
     return mapValues(timetables, (timetableObject) => {
       // 5. Remove the lesson key inserted in (2) and sort the week counts
       const timetable = values(timetableObject);
-      timetable.forEach((lesson) => lesson.Weeks.sort((a, b) => a - b));
+      timetable.forEach((lesson) => lesson.Weeks.sort(compareWeeks));
       return timetable;
     });
   };

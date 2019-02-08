@@ -12,17 +12,18 @@ export const OCCUPIED: VenueOccupiedState = 'occupied';
 
 export type Availability = { [LessonTime]: VenueOccupiedState }; // E.g. { "1000": "vacant", "1030": "occupied", ... }
 
-// Raw lessons obtained from venue info API includes ModuleCode by default
-export type VenueLesson = $Diff<RawLesson, { Venue: Venue }> & {
+// Raw Lesson with Module Code and without Venue
+export type VenueLesson = {
+  ...$Diff<RawLesson, { Venue: Venue }>,
   ModuleCode: ModuleCode,
 };
 
 // A venue's availability info for one day
 // E.g. { "Day": "Monday", "Classes": [...], "Availability": {...} }
 export type DayAvailability = {|
-  +Day: DayText,
-  +Classes: VenueLesson[],
-  +Availability: Availability,
+  Day: DayText,
+  Classes: VenueLesson[],
+  Availability: Availability,
 |};
 
 // Describes venueInformation.json

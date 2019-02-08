@@ -3,6 +3,7 @@
 import CS4238Timetable from './fixtures/timetable/CS4238.json';
 import MA2213Timetable from './fixtures/timetable/MA2213.json';
 import CS2100Timetable from './fixtures/timetable/CS2100_2.json';
+import CN4205ETimetable from './fixtures/timetable/CN4205E.json';
 
 import GetSemesterTimetable from './GetSemesterTimetable';
 import { expectLessonsEqual } from '../utils/test-utils';
@@ -23,6 +24,67 @@ describe(GetSemesterTimetable, () => {
   test('should map empty timetable lessons', async () => {
     const task = createTask([]);
     await expect(task.run()).resolves.toEqual({});
+  });
+
+  // This module has classes on recess and reading week for some reason
+  test('should map CN4205E timetable lessons correctly', async () => {
+    const task = createTask(CN4205ETimetable);
+    const timetable = await task.run();
+
+    expect(timetable.CN4205E).toMatchInlineSnapshot(`
+Array [
+  Object {
+    "ClassNo": "1",
+    "DayText": "Wednesday",
+    "EndTime": "2030",
+    "LessonType": "Lecture",
+    "StartTime": "1800",
+    "Venue": "E5-03-23",
+    "Weeks": Array [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      "Recess",
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      "Reading",
+    ],
+  },
+  Object {
+    "ClassNo": "1",
+    "DayText": "Wednesday",
+    "EndTime": "2130",
+    "LessonType": "Tutorial",
+    "StartTime": "2030",
+    "Venue": "E5-03-23",
+    "Weeks": Array [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      "Recess",
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      "Reading",
+    ],
+  },
+]
+`);
   });
 
   // CS4238 is relatively simple - two lesson types, four lessons, every week

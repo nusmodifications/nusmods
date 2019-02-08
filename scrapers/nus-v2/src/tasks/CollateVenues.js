@@ -1,57 +1,54 @@
 // @flow
 
-import { entries, groupBy, mapValues, merge } from 'lodash';
+import { map, entries, flatMap, groupBy, mapValues, values } from 'lodash';
 
 import type { Task } from '../types/tasks';
 import type { ModuleCode, RawLesson, Semester } from '../types/modules';
-import type { SemesterModuleData } from '../types/mapper';
-import type { VenueInfo, VenueLesson } from '../types/venues';
+import type { LessonWithModuleCode, ModuleAliases, SemesterModuleData } from '../types/mapper';
+import type { DayAvailability, VenueInfo, VenueLesson } from '../types/venues';
 
 import BaseTask from './BaseTask';
 import config from '../config';
 import { getTimeRange } from '../utils/time';
 import { OCCUPIED } from '../types/venues';
+import { mergeDualCodedModules } from '../utils/data';
+import { union } from '../utils/set';
 
 /**
- * Convert module timetable into venue availability
+ * Convert module timetable into venue availability and insert it into venues
  */
-export function extractVenueAvailability(moduleCode: ModuleCode, timetable: RawLesson[]) {
+export function extractVenueAvailability(timetable: LessonWithModuleCode[]) {
   // 1. Only include lessons that actually have a venue
   const filteredLessons = timetable.filter((lesson) => lesson.Venue);
 
   // 2. Map lessons to the venue they're in
-  const groupedLessons = groupBy(filteredLessons, (lesson) => lesson.Venue);
+  const groupByVenue = groupBy(filteredLessons, (lesson) => lesson.Venue);
 
-  return mapValues(groupedLessons, (lessons: RawLesson[]) =>
-    // 3. Then map them again to the day of the lesson
-    entries(groupBy(lessons, (lesson) => lesson.DayText)).map(
-      ([Day, dayLessons]: [string, RawLesson[]]) => {
-        // 4. Inject module code and remove Venue from the class
-        const Classes = dayLessons.map<VenueLesson>(({ Venue, ...lesson }) => ({
-          ...lesson,
-          ModuleCode: moduleCode,
-        }));
+  return mapValues(groupByVenue, (venueLessons: LessonWithModuleCode[]) => {
+    // 3. Remove the Venue key and map them again to the day of the lesson
+    const lessonWithoutVenue: VenueLesson[] = venueLessons.map(({ Venue, ...lesson }) => lesson);
+    const groupByDay = groupBy(lessonWithoutVenue, (lesson) => lesson.DayText);
 
-        // 5. Mark time between lesson start and end as occupied
-        const Availability = {};
-        dayLessons.forEach((lesson) => {
-          getTimeRange(lesson.StartTime, lesson.EndTime).forEach((time) => {
-            Availability[time] = OCCUPIED;
-          });
+    return map(groupByDay, (Classes: VenueLesson[], Day: string) => {
+      // 4. Mark time between lesson start and end as occupied
+      const Availability = {};
+      for (const lesson of Classes) {
+        getTimeRange(lesson.StartTime, lesson.EndTime).forEach((time) => {
+          Availability[time] = OCCUPIED;
         });
+      }
 
-        return {
-          Day,
-          Classes,
-          Availability,
-        };
-      },
-    ),
-  );
+      return {
+        Day,
+        Classes,
+        Availability,
+      };
+    });
+  });
 }
 
 type Input = SemesterModuleData[];
-type Output = VenueInfo;
+type Output = {| venues: VenueInfo, aliases: ModuleAliases |};
 
 /**
  * Map timetable lessons to venues to create a map of when each venue is being
@@ -85,26 +82,42 @@ export default class CollateVenues extends BaseTask implements Task<Input, Outpu
   async run(input: Input) {
     this.logger.info(`Collating venues for ${this.academicYear} semester ${this.semester}`);
 
-    let venues = {};
-    input.forEach((module) => {
-      // Extract availability for each module and merge the result back into venues
-      const availability = extractVenueAvailability(
-        module.ModuleCode,
-        module.SemesterData.Timetable,
-      );
+    // Insert module code and flatten lessons
+    const venueLessons: LessonWithModuleCode[] = flatMap(input, (module) =>
+      module.SemesterData.Timetable.map(
+        (lesson: RawLesson): LessonWithModuleCode => ({
+          ...lesson,
+          ModuleCode: module.ModuleCode,
+        }),
+      ),
+    );
 
-      // Deep merging is used here because we want each module's venue occupancy
-      // status to be added
-      venues = merge(venues, availability);
-    });
+    const venues = extractVenueAvailability(venueLessons);
+
+    // Merge dual-coded modules and extract the aliases generated for use later
+    const allAliases = {};
+    for (const venue: DayAvailability[] of values(venues)) {
+      for (const availability of venue) {
+        const { lessons, aliases } = mergeDualCodedModules(availability.Classes);
+        availability.Classes = lessons;
+
+        // Merge the alias mappings
+        for (const [moduleCode, alias]: [ModuleCode, Set<ModuleCode>] of entries(aliases)) {
+          allAliases[moduleCode] = union(allAliases[moduleCode] || new Set(), alias);
+        }
+      }
+    }
 
     // Save the results
+    const outputAliases = mapValues(allAliases, (moduleCodes) => Array.from(moduleCodes));
     const venueList = Object.keys(venues);
+
     await Promise.all([
       this.io.venueInformation(this.semester, venues),
       this.io.venueList(this.semester, venueList),
+      this.io.moduleAliases(this.semester, outputAliases),
     ]);
 
-    return venues;
+    return { venues, aliases: allAliases };
   }
 }

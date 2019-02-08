@@ -83,7 +83,7 @@ const commands: CommandModule[] = [
     },
     handler: run(async ({ sem, year }) => {
       const modules = await new GetSemesterData(sem, year).outputCache.read();
-      const venues = await new CollateVenues(sem, year).run(modules);
+      const { venues } = await new CollateVenues(sem, year).run(modules);
       logger.info(`Collated ${size(venues)} venues`);
     }),
   },

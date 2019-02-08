@@ -13,7 +13,7 @@ export type LessonTime = StartTime | EndTime;
 export type ModuleCode = string; // E.g. "CS3216"
 export type ModuleTitle = string;
 export type Semester = number; // E.g. 1/2/3/4. 3 and 4 means special sem i and ii.
-export type WeekText = string; // E.g. "Every Week", "Odd Week"
+export type LessonWeek = number | 'Reading' | 'Recess' | 'Orientation';
 export type Workload = string | number[];
 export type Venue = string;
 
@@ -51,15 +51,15 @@ export type WorkloadComponent = 'Lecture' | 'Tutorial' | 'Laboratory' | 'Project
 
 // RawLesson is a lesson time slot obtained from the API.
 // Usually ModuleCode and ModuleTitle has to be injected in before using in the timetable.
-export type RawLesson = {
+export type RawLesson = {|
   ClassNo: ClassNo,
   DayText: DayText,
   EndTime: EndTime,
   LessonType: LessonType,
   StartTime: StartTime,
   Venue: Venue,
-  Weeks: number[],
-};
+  Weeks: LessonWeek[],
+|};
 
 // Semester-specific information of a module.
 export type SemesterData = {|
@@ -76,8 +76,6 @@ export type SemesterData = {|
 |};
 
 // Information for a module for a particular academic year.
-// This is probably the only model you need to be concerned with.
-// For some reason es6 object literal property value shorthand is not recognized >_<
 export type Module = {
   AcadYear: AcadYear,
 
@@ -91,6 +89,7 @@ export type Module = {
   Department: Department,
   Faculty: Faculty,
   Workload?: Workload,
+  Aliases?: ModuleCode[],
 
   // Requsites
   Prerequisite?: string,

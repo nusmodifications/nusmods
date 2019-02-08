@@ -38,7 +38,8 @@ export default class DataPipeline extends BaseTask implements Task<void, Module[
     // run for each department and takes up most of the time
 
     /* eslint-disable no-await-in-loop */
-    const semesterModules = [];
+    const semesterData = [];
+    const allAliases = [];
     for (const semester of Semesters) {
       this.logger.info(`Getting data for semester ${semester}`);
 
@@ -47,14 +48,15 @@ export default class DataPipeline extends BaseTask implements Task<void, Module[
       const modules = await getSemesterData.run(organizations);
 
       // Collect venue data for this semester
-      await new CollateVenues(semester, this.academicYear).run(modules);
+      const { aliases } = await new CollateVenues(semester, this.academicYear).run(modules);
 
-      semesterModules.push(modules);
+      allAliases.push(aliases);
+      semesterData.push(modules);
     }
     /* eslint-enable */
 
     const collateModules = new CollateModules(this.academicYear);
-    const modules = await collateModules.run(semesterModules);
+    const modules = await collateModules.run({ semesterData, aliases: allAliases });
 
     return modules;
   }

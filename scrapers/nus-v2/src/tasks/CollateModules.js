@@ -1,55 +1,79 @@
 // @flow
 
-import { values, omit, isEqual } from 'lodash';
+import { values, omit, isEqual, mergeWith } from 'lodash';
 
 import type { Task } from '../types/tasks';
-import type { ModuleWithoutTree, SemesterModuleData } from '../types/mapper';
+import type { ModuleAliases, ModuleWithoutTree, SemesterModuleData } from '../types/mapper';
 import type { Module, ModuleCode, ModuleCondensed, ModuleInformation } from '../types/modules';
 
 import BaseTask from './BaseTask';
 import config from '../config';
 import { Logger } from '../services/logger';
 import generatePrereqTree from '../services/requisite-tree';
+import { union } from '../utils/set';
 
-type Input = SemesterModuleData[][];
+type Input = {|
+  +semesterData: SemesterModuleData[][],
+  +aliases: ModuleAliases[],
+|};
 type Output = Module[];
+
+export function mergeAliases(aliases: ModuleAliases[]): ModuleAliases {
+  // Returning undefined causes mergeWith to use the original merge
+  // eslint-disable-next-line consistent-return
+  return mergeWith(...aliases, (src, dest) => {
+    if (src && dest) return union(src, dest);
+  });
+}
 
 /**
  * Combine modules from multiple semesters into one
  */
 export function combineModules(
   semesters: SemesterModuleData[][],
+  aliases: ModuleAliases,
   logger: Logger,
 ): ModuleWithoutTree[] {
   const modules: { [ModuleCode]: ModuleWithoutTree } = {};
 
   // 1. Iterate over each module
-  semesters.forEach((semesterModules) =>
-    semesterModules.forEach((module) => {
-      if (!modules[module.ModuleCode]) {
-        // 2. If the module doesn't exist yet, we'll add it
-        modules[module.ModuleCode] = {
-          ...module.Module,
-          SemesterData: [module.SemesterData],
-        };
-      } else {
-        // 3. If the module has been added already then we simply merge the
-        //    semester data
-        modules[module.ModuleCode].SemesterData.push(module.SemesterData);
+  for (const semesterModules of semesters) {
+    for (const semesterModule of semesterModules) {
+      const moduleCode = semesterModule.ModuleCode;
 
-        // 4. Safety check for diverging module info between semester
-        const left = omit(modules[module.ModuleCode], 'SemesterData');
-        const right = module.Module;
+      // 2. Create the merged module data
+      const module = {
+        ...semesterModule.Module,
+        Aliases: aliases[moduleCode] && Array.from(aliases[moduleCode]),
+        SemesterData: [semesterModule.SemesterData],
+      };
+
+      // 3. On rare occasion the module data can change between semesters,
+      //    which we log here for safety
+      const existingData = modules[moduleCode];
+      if (existingData) {
+        const left = omit(existingData, ['SemesterData', 'Aliases']);
+        const right = semesterModule.Module;
+
         if (!isEqual(left, right)) {
-          const { SemesterData } = modules[module.ModuleCode];
           logger.warn(
-            { left, right, semesters: [SemesterData[0].Semester, module.SemesterData.Semester] },
+            {
+              left,
+              right,
+            },
             'Module with different module info between semesters',
           );
         }
+
+        // 4. Always use the latest semester's data. In case the two semester's data
+        //    diverge we trust the latest semester's data to be canonical as most
+        //    changes are additive, eg. adding more prereq options
+        module.SemesterData.unshift(...existingData.SemesterData);
       }
-    }),
-  );
+
+      modules[moduleCode] = module;
+    }
+  }
 
   return values(modules);
 }
@@ -119,7 +143,13 @@ export default class CollateModules extends BaseTask implements Task<Input, Outp
   async run(input: Input) {
     this.logger.info(`Collating modules for ${this.academicYear}`);
 
-    const modulesWithoutTree: ModuleWithoutTree[] = combineModules(input, this.logger);
+    const { semesterData, aliases } = input;
+    const combinedAlias = mergeAliases(aliases);
+    const modulesWithoutTree: ModuleWithoutTree[] = combineModules(
+      semesterData,
+      combinedAlias,
+      this.logger,
+    );
 
     // Insert prerequisite trees into the modules
     const modules: Module[] = await generatePrereqTree(modulesWithoutTree);

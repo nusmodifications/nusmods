@@ -6,7 +6,7 @@
  */
 
 import type { ModuleInfo } from './api';
-import type { Module, ModuleCode, PrereqTree, SemesterData } from './modules';
+import type { Module, ModuleCode, PrereqTree, RawLesson, SemesterData } from './modules';
 
 /**
  * Module info with the AcademicGrp and AcademicOrg mapped to the actual
@@ -37,6 +37,16 @@ export type SemesterModuleData = {|
 |};
 
 export type ModuleWithoutTree = $Diff<Module, { PrereqTree?: PrereqTree }>;
+
+// Intermediate shape used for venue collation
+export type LessonWithModuleCode = {|
+  ...RawLesson,
+  ModuleCode: ModuleCode,
+|};
+
+export type ModuleAliases = {
+  [ModuleCode]: Set<ModuleCode>,
+};
 
 /**
  * The exam info part of semester data

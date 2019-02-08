@@ -1,6 +1,6 @@
 // @flow
 
-import { combineModules } from './CollateModules';
+import { combineModules, mergeAliases } from './CollateModules';
 import { mockLogger } from '../utils/test-utils';
 
 describe(combineModules, () => {
@@ -91,5 +91,44 @@ describe(combineModules, () => {
         SemesterData: [semesterOneData, semesterTwoData],
       },
     ]);
+  });
+});
+
+const s = (...elements) => new Set(elements);
+
+describe(mergeAliases, () => {
+  test('should merge aliases', () => {
+    expect(
+      mergeAliases([
+        {
+          GET1025: s('GEK2041'),
+          GEK2041: s('GET1025'),
+        },
+        {
+          GET1025: s('GEK2041'),
+          GEK2041: s('GET1025'),
+        },
+      ]),
+    ).toEqual({
+      GET1025: s('GEK2041'),
+      GEK2041: s('GET1025'),
+    });
+
+    expect(
+      mergeAliases([
+        {
+          GES1001: s('GEK2041'),
+          GET1025: s('GES1001'),
+        },
+        {
+          GET1025: s('GEK2041'),
+          GEK2041: s('GET1025'),
+        },
+      ]),
+    ).toEqual({
+      GES1001: s('GEK2041'),
+      GET1025: s('GEK2041', 'GES1001'),
+      GEK2041: s('GET1025'),
+    });
   });
 });

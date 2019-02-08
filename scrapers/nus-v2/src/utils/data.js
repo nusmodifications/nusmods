@@ -4,7 +4,12 @@
  * Code for data mapping, cleanup and validation
  */
 
-import { trim } from 'lodash';
+import { uniq, trim, groupBy, values } from 'lodash';
+import type { VenueLesson } from '../types/venues';
+import type { LessonWeek, ModuleCode } from '../types/modules';
+import type { ModuleAliases } from '../types/mapper';
+
+export const ZWSP = '\u200b';
 
 /**
  * NUS specific title case function that accounts for school names, etc.
@@ -71,6 +76,92 @@ export function trimValues<T: Object>(object: T, keys: $Keys<T>[]) {
   /* eslint-enable */
 
   return object;
+}
+
+/**
+ * Find modules which have lessons that fall on the exact same times
+ */
+export function getDuplicateModules(classes: VenueLesson[]): ModuleCode[] {
+  const lessonsByTime: VenueLesson[][] = values(
+    groupBy(classes, (lesson) => [lesson.StartTime, lesson.EndTime, lesson.Weeks, lesson.DayText]),
+  );
+
+  for (const lessons of lessonsByTime) {
+    if (lessons.length > 1) {
+      // Occasionally two classes share the same venue, so we don't count those
+      const moduleCodes = uniq(lessons.map((lesson) => lesson.ModuleCode));
+      if (uniq(moduleCodes).length > 1) return moduleCodes;
+    }
+  }
+
+  return [];
+}
+
+/**
+ * Remove duplicated lessons given by the modules array and merge their module
+ * codes
+ */
+export function mergeModules(classes: VenueLesson[], modules: ModuleCode[]): VenueLesson[] {
+  const mergedModuleCode = modules.join(`/${ZWSP}`);
+  const removeModuleCodes = new Set(modules.slice(1));
+
+  return classes
+    .filter((lesson) => !removeModuleCodes.has(lesson.ModuleCode))
+    .map((lesson) =>
+      lesson.ModuleCode === modules[0]
+        ? {
+            ...lesson,
+            ModuleCode: mergedModuleCode,
+          }
+        : lesson,
+    );
+}
+
+export function mergeDualCodedModules(
+  classes: VenueLesson[],
+): { lessons: VenueLesson[], aliases: ModuleAliases } {
+  let mergedModules = classes;
+  let duplicateModules = getDuplicateModules(mergedModules);
+  const aliases = {};
+
+  while (duplicateModules.length) {
+    // Mark the current set of modules as aliases
+    for (const moduleCode of duplicateModules) {
+      if (!aliases[moduleCode]) aliases[moduleCode] = new Set();
+      duplicateModules
+        .filter((moduleToAdd) => moduleToAdd !== moduleCode)
+        .forEach((moduleToAdd) => aliases[moduleCode].add(moduleToAdd));
+    }
+
+    // Merge the lessons of the dual-coded module together
+    mergedModules = mergeModules(mergedModules, duplicateModules);
+    duplicateModules = getDuplicateModules(mergedModules);
+  }
+
+  return { lessons: mergedModules, aliases };
+}
+
+const weekOrder = {
+  Orientation: 0,
+  '1': 1,
+  '2': 2,
+  '3': 3,
+  '4': 4,
+  '5': 5,
+  '6': 6,
+  Recess: 6.5,
+  '7': 7,
+  '8': 8,
+  '9': 9,
+  '10': 10,
+  '11': 11,
+  '12': 12,
+  '13': 13,
+  Reading: 14,
+};
+
+export function compareWeeks(a: LessonWeek, b: LessonWeek) {
+  return weekOrder[a] - weekOrder[b];
 }
 
 export const dayTextMap = {

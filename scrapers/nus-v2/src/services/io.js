@@ -103,6 +103,10 @@ export function getDataWriter(academicYear: string) {
         writeOptions,
       ),
 
+    // Mapping modules to other dual coded modules
+    moduleAliases: (semester: Semester, data: { [ModuleCode]: ModuleCode[] }) =>
+      fs.outputJSON(path.join(yearRoot, String(semester), 'aliases.json'), data, writeOptions),
+
     // List of faculties and their departments
     facultyDepartments: (data: { [string]: string[] }) =>
       fs.outputJSON(path.join(yearRoot, 'facultyDepartments.json'), data, writeOptions),
