@@ -123,7 +123,7 @@ class TimetableContent extends Component<Props, State> {
   isHiddenInTimetable = (moduleCode: ModuleCode) =>
     this.props.hiddenInTimetable.includes(moduleCode);
 
-  modifyCell = (e: Event, lesson: Lesson) => {
+  modifyCell = (e: SyntheticEvent<HTMLButtonElement>, lesson: Lesson) => {
     // $FlowFixMe When object spread type actually works
     if (lesson.isAvailable) {
       this.props.changeLesson(this.props.semester, lesson);
@@ -133,7 +133,7 @@ class TimetableContent extends Component<Props, State> {
       resetScrollPosition();
     } else {
       this.props.modifyLesson(lesson);
-      maintainLessonPosition(e.target.id, this.props.timetableOrientation === HORIZONTAL);
+      maintainLessonPosition(e.currentTarget.id, this.props.timetableOrientation === HORIZONTAL);
     }
   };
 
