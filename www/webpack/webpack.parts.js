@@ -30,7 +30,7 @@ const PATHS = {
   images: path.join(ROOT, SRC, 'img'),
   build: path.join(ROOT, 'dist'),
   buildTimetable: path.join(ROOT, 'dist-timetable'),
-  fixtures: path.join(ROOT, '__mocks__'),
+  fixtures: path.join(ROOT, SRC, 'js', '__mocks__'),
 };
 
 // These dependencies will be extracted out into `vendor.js` in production build.
