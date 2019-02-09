@@ -1,10 +1,9 @@
 module.exports = {
   roots: ['<rootDir>/src/js'],
-  moduleDirectories: ['node_modules', 'src/js'],
+  moduleDirectories: ['node_modules', '<rootDir>/src/js'],
   moduleFileExtensions: ['jsx', 'js'],
   testPathIgnorePatterns: [],
   testRegex: 'src/js/.+\\.test\\.jsx?$',
-  coveragePathIgnorePatterns: ['/node_modules/', '<rootDir>/src/js/(?:test_utils|e2e)'],
   setupFiles: ['<rootDir>/scripts/test.js'],
   moduleNameMapper: {
     // Mock non JS files as strings
@@ -19,6 +18,8 @@ module.exports = {
   // Allow us to directly use enzyme wrappers for snapshotting
   // Usage: expect(enzyme.shallow(<div/>)).toMatchSnapshot();
   snapshotSerializers: ['<rootDir>/node_modules/enzyme-to-json/serializer'],
+  collectCoverageFrom: ['**/*.{js,jsx}'],
+  coveragePathIgnorePatterns: ['/node_modules/', '<rootDir>/src/js/(?:test-utils|e2e)'],
   // Only write lcov files in CIs
-  coverageReporters: process.env.CI ? ['text', 'lcov'] : ['text-summary'],
+  coverageReporters: ['text'].concat(process.env.CI ? 'lcov' : []),
 };

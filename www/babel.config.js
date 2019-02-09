@@ -22,17 +22,16 @@ module.exports = (api) => {
   ];
 
   const plugins = [
+    'babel-plugin-lodash',
     '@babel/plugin-syntax-dynamic-import',
-    // // See https://github.com/facebook/create-react-app/issues/4263
+    // Deviate from spec, but Object.defineProperty is expensive
+    // See https://github.com/facebook/create-react-app/issues/4263
     ['@babel/plugin-proposal-class-properties', { loose: true }],
     ['@babel/plugin-proposal-optional-chaining', { loose: true }],
   ];
 
   if (IS_DEV || IS_PROD) {
-    plugins.push('babel-plugin-lodash', [
-      '@babel/plugin-proposal-object-rest-spread',
-      { useBuiltIns: true },
-    ]);
+    plugins.push(['@babel/plugin-proposal-object-rest-spread', { useBuiltIns: true }]);
   }
   if (IS_DEV) {
     plugins.push('react-hot-loader/babel');

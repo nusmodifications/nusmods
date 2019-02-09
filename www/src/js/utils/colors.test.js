@@ -45,7 +45,7 @@ describe('#getNewColor()', () => {
 });
 
 describe('#colorLessonsByKey()', () => {
-  const bareLesson: Lesson = {
+  const bareLesson = {
     ClassNo: '',
     DayText: '',
     EndTime: '',
