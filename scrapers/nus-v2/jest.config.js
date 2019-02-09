@@ -36,7 +36,7 @@ module.exports = {
   // globalTeardown: null,
 
   // A preset that is used as a base for Jest's configuration
-  // preset: null,
+  preset: 'ts-jest',
 
   // Use this configuration option to add custom reporters to Jest
   // reporters: undefined,

@@ -1,26 +1,40 @@
 module.exports = {
-  parser: 'babel-eslint',
+  parser: '@typescript-eslint/parser',
+
+  parserOptions: {
+    project: './tsconfig.json',
+  },
+
   root: true,
+
   extends: [
     'airbnb-base',
-    'plugin:flowtype/recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:import/typescript',
     'prettier',
-    'prettier/babel',
-    'prettier/flowtype',
+    'prettier/@typescript-eslint'
   ],
 
   env: {
     node: true,
   },
 
-  plugins: ['flowtype', 'prettier', 'import'],
+  plugins: [
+    '@typescript-eslint',
+    'prettier',
+    'import',
+  ],
 
   overrides: [
     {
-      files: ['**/*.test.js', '**/__mocks__/**/*.js', 'src/utils/test-utils.js'],
+      files: ['**/*.test.ts', '**/__mocks__/**/*.ts', 'src/utils/test-utils.ts'],
       env: {
         jest: true,
       },
+      rules: {
+        // any is needed for mocking, amongst other things
+        '@typescript-eslint/no-explicit-any': 'off'
+      }
     },
   ],
 
@@ -57,8 +71,16 @@ module.exports = {
       },
     ],
 
-    'import/no-extraneous-dependencies': [
-      'error', { devDependencies: ['**/*.test.js', 'src/utils/test-utils.js'] },
-    ],
+    'import/no-extraneous-dependencies': ['error', { devDependencies: ['**/*.test.ts', 'src/utils/test-utils.ts'] },],
+
+    // Rule is buggy when used with TypeScript
+    // TODO: Remove this when https://github.com/benmosher/eslint-plugin-import/issues/1282 is resolved
+    'import/named': 'off',
+
+    // Makes the code unnecessarily verbose
+    '@typescript-eslint/explicit-member-accessibility': 'off',
+
+    // Reduce to warning for now. This may be too verbose
+    '@typescript-eslint/explicit-function-return-type': 'warn',
   },
 };
