@@ -1,5 +1,6 @@
 // @flow
 
+import { mapValues } from 'lodash';
 import { combineModules, mergeAliases } from './CollateModules';
 import { mockLogger } from '../utils/test-utils';
 
@@ -96,10 +97,14 @@ describe(combineModules, () => {
 });
 
 const s = (...elements) => new Set(elements);
+const sortArray = (arr) => arr.sort();
+const expectAliasesEqual = (actual, expected) => {
+  expect(mapValues(actual, sortArray)).toEqual(mapValues(expected, sortArray));
+};
 
 describe(mergeAliases, () => {
   test('should merge aliases', () => {
-    expect(
+    expectAliasesEqual(
       mergeAliases([
         {
           GET1025: s('GEK2041'),
@@ -110,12 +115,13 @@ describe(mergeAliases, () => {
           GEK2041: s('GET1025'),
         },
       ]),
-    ).toEqual({
-      GET1025: ['GEK2041'],
-      GEK2041: ['GET1025'],
-    });
+      {
+        GET1025: ['GEK2041'],
+        GEK2041: ['GET1025'],
+      },
+    );
 
-    expect(
+    expectAliasesEqual(
       mergeAliases([
         {
           GES1001: s('GEK2041'),
@@ -126,10 +132,11 @@ describe(mergeAliases, () => {
           GEK2041: s('GET1025'),
         },
       ]),
-    ).toEqual({
-      GES1001: ['GEK2041'],
-      GET1025: ['GEK2041', 'GES1001'],
-      GEK2041: ['GET1025'],
-    });
+      {
+        GES1001: ['GEK2041'],
+        GET1025: ['GEK2041', 'GES1001'],
+        GEK2041: ['GET1025'],
+      },
+    );
   });
 });
