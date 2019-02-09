@@ -1,5 +1,4 @@
 // Imported for side effects, so they have to be right at the top
-import '@babel/polyfill';
 import './utils/sentry';
 
 import * as yargs from 'yargs';
