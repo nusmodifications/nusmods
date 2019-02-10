@@ -1203,6 +1203,11 @@
     prop-types "^15.6.2"
     tippy.js "^3.2.0"
 
+"@types/anymatch@*":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@types/anymatch/-/anymatch-1.3.0.tgz#d1d55958d1fccc5527d4aba29fc9c4b942f563ff"
+  integrity sha512-7WcbyctkE8GTzogDb0ulRAEw7v8oIS54ft9mQTU7PfM0hp5e+8kpa+HeQ7IQrFbKtJXBKcZ4bh+Em9dTw5L6AQ==
+
 "@types/cheerio@*":
   version "0.22.10"
   resolved "https://registry.yarnpkg.com/@types/cheerio/-/cheerio-0.22.10.tgz#780d552467824be4a241b29510a7873a7432c4a6"
@@ -1236,7 +1241,7 @@
   resolved "https://registry.yarnpkg.com/@types/jest/-/jest-24.0.0.tgz#848492026c327b3548d92be0352a545c36a21e8a"
   integrity sha512-kOafJnUTnMd7/OfEO/x3I47EHswNjn+dbz9qk3mtonr1RvKT+1FGVxnxAx08I9K8Tl7j9hpoJRE7OCf+t10fng==
 
-"@types/leaflet@^1.4.1":
+"@types/leaflet@*", "@types/leaflet@^1.4.1":
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/@types/leaflet/-/leaflet-1.4.1.tgz#5807f53b06d13dd2755426b7b4d48000e7c36a91"
   integrity sha512-2Z4AM/kf8Yif7i0YazjG/ures+0zIarc4BDP8QqvcCIiI8GWbCxkfJLf7DWMtMPRZv0bh+a1ZSJRTuSwOtPzzQ==
@@ -1274,6 +1279,29 @@
   version "5.0.8"
   resolved "https://registry.yarnpkg.com/@types/react-helmet/-/react-helmet-5.0.8.tgz#f080eea6652e44f60b4574463d238f268d81d9af"
   integrity sha512-ZTr12eDAYI0yUiMx1K82EHqRYa8J1BOOLus+0gL+AkksUiIPwLE0wLiXa9FNqD8r9GXAi+yRPZImkRh1JNlTkQ==
+  dependencies:
+    "@types/react" "*"
+
+"@types/react-leaflet@1.1.6":
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/@types/react-leaflet/-/react-leaflet-1.1.6.tgz#663bf2568a7017081406a85ae0f593f89e53cd7c"
+  integrity sha512-OSsVphTvQxacAmwySe/ju/ahhRoMnHmJzdc6tYjfTHAaSeLkJs8WSkBzdgsTu8tPLmhY0ULQ1KJ27ue5kU3zUQ==
+  dependencies:
+    "@types/leaflet" "*"
+    "@types/react" "*"
+
+"@types/react-loadable@5.5.0":
+  version "5.5.0"
+  resolved "https://registry.yarnpkg.com/@types/react-loadable/-/react-loadable-5.5.0.tgz#7a878408ad940250aeb91d77d2b54a18f3c7c946"
+  integrity sha512-evH/O6Wytz6lSmi36YL7YHnFc46zRPSA8+XNtTXI4D7A/CP7OVwcWbHjb2yGbh/jDxxhnTwIVO/PeqDXtUegnQ==
+  dependencies:
+    "@types/react" "*"
+    "@types/webpack" "*"
+
+"@types/react-modal@3.8.0":
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/@types/react-modal/-/react-modal-3.8.0.tgz#f51371e69e8f2c07454127901ac26ca0ec7f4162"
+  integrity sha512-E2Vl5qjALYxvB1oqJMqd6zcRTBw1eXRuJglKe5opTW2/TIxhH4X/YIeUpUT91jAIgxrKZzIfnn5ts7EAba7TXQ==
   dependencies:
     "@types/react" "*"
 
@@ -1317,6 +1345,18 @@
   dependencies:
     redux "^4.0.0"
 
+"@types/tapable@*":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@types/tapable/-/tapable-1.0.4.tgz#b4ffc7dc97b498c969b360a41eee247f82616370"
+  integrity sha512-78AdXtlhpCHT0K3EytMpn4JNxaf5tbqbLcbIRoQIHzpTIyjpxLQKRoxU55ujBXAtg3Nl2h/XWvfDa9dsMOd0pQ==
+
+"@types/uglify-js@*":
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/@types/uglify-js/-/uglify-js-3.0.4.tgz#96beae23df6f561862a830b4288a49e86baac082"
+  integrity sha512-SudIN9TRJ+v8g5pTG8RRCqfqTMNqgWCKKd3vtynhGzkIIjxaicNAMuY5TRadJ6tzDu3Dotf3ngaMILtmOdmWEQ==
+  dependencies:
+    source-map "^0.6.1"
+
 "@types/unist@*", "@types/unist@^2.0.0":
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/@types/unist/-/unist-2.0.2.tgz#5dc0a7f76809b7518c0df58689cd16a19bd751c6"
@@ -1338,6 +1378,17 @@
     "@types/node" "*"
     "@types/unist" "*"
     "@types/vfile-message" "*"
+
+"@types/webpack@*":
+  version "4.4.24"
+  resolved "https://registry.yarnpkg.com/@types/webpack/-/webpack-4.4.24.tgz#75bc301176066f566ec54151b6101c2b45abb8b2"
+  integrity sha512-yg99CjvB7xZ/iuHrsZ7dkGKoq/FRDzqLzAxKh2EmTem6FWjzrty4FqCqBYuX5z+MFwSaaQGDAX4Q9HQkLjGLnQ==
+  dependencies:
+    "@types/anymatch" "*"
+    "@types/node" "*"
+    "@types/tapable" "*"
+    "@types/uglify-js" "*"
+    source-map "^0.6.0"
 
 "@webassemblyjs/ast@1.7.11":
   version "1.7.11"
